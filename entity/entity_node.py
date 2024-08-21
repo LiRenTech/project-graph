@@ -1,0 +1,46 @@
+from PyQt5.QtGui import QPainter, QColor
+
+from camera import Camera
+from data_struct.number_vector import NumberVector
+from paint.paint_utils import PainterUtils
+from .entity import Entity
+
+
+class EntityNode(Entity):
+    def __init__(self, body_shape):
+        super().__init__(body_shape)
+        self.children = []
+
+        # 是否是被选中的状态
+        self.is_selected = False
+
+    def add_child(self, entity_node):
+        self.children.append(entity_node)
+
+    def remove_child(self, entity_node):
+        self.children.remove(entity_node)
+
+    def paint(self, painter: QPainter, camera: 'Camera'):
+        location = camera.location_world2view(self.body_shape.location_left_top)
+        PainterUtils.paint_rect_from_left_top(
+            painter,
+            location,
+            self.body_shape.width * camera.current_scale,
+            self.body_shape.height * camera.current_scale,
+            QColor(24, 161, 255, 128),
+            QColor(106, 203, 255),
+            1 * camera.current_scale
+        )
+        if self.is_selected:
+            PainterUtils.paint_rect_from_left_top(
+                painter,
+                camera.location_world2view(
+                    self.body_shape.location_left_top - NumberVector(10, 10)
+                ),
+                (self.body_shape.width + 20) * camera.current_scale,
+                (self.body_shape.height + 20) * camera.current_scale,
+                QColor(0, 0, 0, 0),
+                QColor(106, 203, 255),
+                3 * camera.current_scale
+            )
+        pass
