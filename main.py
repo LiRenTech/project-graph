@@ -54,6 +54,8 @@ class Canvas(QMainWindow):
         self.is_cutting = False
         # 准备要被切断的线
         self.warning_lines: list[tuple[Line, EntityNode, EntityNode]] = []
+        # 准备要删除的节点
+        self.warning_nodes: list[EntityNode] = []
 
     def init_ui(self):
         # 设置窗口标题和尺寸
@@ -134,15 +136,22 @@ class Canvas(QMainWindow):
             elif a0.buttons() == Qt.RightButton:
                 self.mouse_right_location = point_world_location
                 self.warning_lines.clear()
+                self.warning_nodes.clear()
                 if self.is_cutting:
                     cutting_line = Line(self.mouse_right_start_location, self.mouse_right_location)
+                    # 查看切割线是否和其他连线相交
                     for line, start_node, end_node in self.node_manager.get_all_lines_and_node():
                         if line.is_intersecting(cutting_line):
                             # 准备要切断这个线，先进行标注
                             self.warning_lines.append((line, start_node, end_node))
                             pass
-
-                    pass
+                    # 查看切割线是否和其他节点相交
+                    for node in self.node_manager.nodes:
+                        if node == self.connect_from_node:
+                            continue
+                        if node.body_shape.is_intersect_with_line(cutting_line):
+                            # 准备要切断这个节点，先进行标注
+                            self.warning_nodes.append(node)
                 else:
                     # 如果是右键，开始连线
                     for node in self.node_manager.nodes:
@@ -175,7 +184,10 @@ class Canvas(QMainWindow):
                 for line, start_node, end_node in self.warning_lines:
                     self.node_manager.disconnect_node(start_node, end_node)
                 self.warning_lines.clear()
-
+                # 删除所有准备删除的节点
+                for node in self.warning_nodes:
+                    self.node_manager.delete_node(node)
+                self.warning_nodes.clear()
                 self.is_cutting = False
         pass
 
@@ -282,6 +294,17 @@ class Canvas(QMainWindow):
                 painter,
                 self.camera.location_world2view(line.start),
                 self.camera.location_world2view(line.end),
+                QColor(255, 0, 0, 128),
+                10 * self.camera.current_scale,
+            )
+        # 所有要被删除的节点
+        for node in self.warning_nodes:
+            PainterUtils.paint_rect_from_left_top(
+                painter,
+                self.camera.location_world2view(node.body_shape.location_left_top),
+                node.body_shape.width * self.camera.current_scale,
+                node.body_shape.height * self.camera.current_scale,
+                QColor(255, 0, 0, 128),
                 QColor(255, 0, 0, 128),
                 10 * self.camera.current_scale,
             )

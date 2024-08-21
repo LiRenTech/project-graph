@@ -13,13 +13,16 @@ class NodeManager:
 
     def __init__(self):
         self.nodes: list[EntityNode] = []
-        self.lines = {}
         pass
 
     def add_node_by_click(self, location_world: NumberVector):
         self.nodes.append(
             EntityNode(Rectangle(location_world - NumberVector(50, 50), 100, 100))
         )
+
+    def delete_node(self, node: EntityNode):
+        if node in self.nodes:
+            self.nodes.remove(node)
 
     def connect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:

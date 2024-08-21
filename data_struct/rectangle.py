@@ -120,6 +120,33 @@ class Rectangle:
     def __repr__(self):
         return f"Rectangle({self.location_left_top}, {self.width}, {self.height})"
 
+    def is_intersect_with_line(self, line: Line) -> bool:
+        """判断线段是否与矩形相交"""
+        # 遍历自己的上下左右四个边，看是否有交点
+        top_line = Line(self.location_left_top, NumberVector(self.right(), self.top()))
+        if top_line.is_intersecting(line):
+            return True
+
+        bottom_line = Line(
+            NumberVector(self.left(), self.bottom()),
+            NumberVector(self.right(), self.bottom()),
+        )
+        if bottom_line.is_intersecting(line):
+            return True
+
+        left_line = Line(self.location_left_top, NumberVector(self.left(), self.bottom()))
+        if left_line.is_intersecting(line):
+            return True
+
+        right_line = Line(
+            NumberVector(self.right(), self.top()),
+            NumberVector(self.right(), self.bottom()),
+        )
+        if right_line.is_intersecting(line):
+            return True
+
+        return False
+
     def get_line_intersection_point(self, line: Line) -> NumberVector:
         """
         返回一个线段和这个矩形的交点，如果没有交点，就返回这个矩形的中心点
