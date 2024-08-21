@@ -92,7 +92,6 @@ class Canvas(QMainWindow):
                 node.is_selected = False
             for node in self.node_manager.nodes:
                 if node.body_shape.is_contain_point(point_world_location):
-                    print(f"选中节点: {node}")
                     node.is_selected = True
                     break
             # 拖拽移动

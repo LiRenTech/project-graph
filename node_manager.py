@@ -23,6 +23,10 @@ class NodeManager:
     def delete_node(self, node: EntityNode):
         if node in self.nodes:
             self.nodes.remove(node)
+        # 不仅要删除节点本身，其他节点的child中也要删除该节点
+        for father_node in self.nodes:
+            if node in father_node.children:
+                father_node.children.remove(node)
 
     def connect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
