@@ -7,11 +7,10 @@ from data_struct.rectangle import Rectangle
 from paint.paint_utils import PainterUtils
 
 
-
 def paint_grid(paint: QPainter, camera: Camera):
     try:
-        line_color = QColor(255, 255, 255, 100)
-        line_color_light = QColor(255, 255, 255, 255)
+        line_color = QColor(255, 255, 255, 50)
+        line_color_light = QColor(255, 255, 255, 100)
 
         for y in range(-1000, 1000, 100):
             PainterUtils.paint_solid_line(
@@ -72,11 +71,11 @@ def paint_alert_message(paint: QPainter, camera: Camera, message: str):
 
 
 def paint_rect_in_world(
-    paint: QPainter,
-    camera: Camera,
-    rect: Rectangle,
-    fill_color: QColor,
-    stroke_color: QColor,
+        paint: QPainter,
+        camera: Camera,
+        rect: Rectangle,
+        fill_color: QColor,
+        stroke_color: QColor,
 ):
     PainterUtils.paint_rect_from_left_top(
         paint,
@@ -87,4 +86,3 @@ def paint_rect_in_world(
         stroke_color,
         1,
     )
-

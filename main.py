@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import (
     QMainWindow,
     QFileDialog,
     QMessageBox,
-    QPushButton,
+    QPushButton, QInputDialog,
 )
 
 from assets import assets
@@ -196,9 +196,23 @@ class Canvas(QMainWindow):
         click_location = self.camera.location_view2world(
             NumberVector(event.pos().x(), event.pos().y())
         )
-        # 如果是左键，添加节点
+
         if event.button() == Qt.MouseButton.LeftButton:
-            self.node_manager.add_node_by_click(click_location)
+
+            select_node = None
+            for node in self.node_manager.nodes:
+                if node.body_shape.is_contain_point(click_location):
+                    select_node = node
+                    break
+
+            if select_node is None:
+                # 在空白地方左键是添加节点
+                self.node_manager.add_node_by_click(click_location)
+            else:
+                # 在节点上左键是编辑文字
+                text, ok = QInputDialog.getText(self, '编辑节点文字', '输入新的文字:', text=select_node.inner_text)
+                if ok:
+                    select_node.inner_text = text
 
     def wheelEvent(self, a0: QWheelEvent | None):
         assert a0 is not None

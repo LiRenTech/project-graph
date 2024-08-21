@@ -11,8 +11,16 @@ class EntityNode(Entity):
         super().__init__(body_shape)
         self.children: list['EntityNode'] = []
 
+        self.inner_text = "..."
+
         # 是否是被选中的状态
         self.is_selected = False
+
+    def adjust_size_by_text(self):
+        """
+        根据文本内容调整节点大小
+        :return:
+        """
 
     def add_child(self, entity_node) -> bool:
         # 不能添加自己作为自己的子节点
@@ -40,6 +48,13 @@ class EntityNode(Entity):
             QColor(24, 161, 255, 128),
             QColor(106, 203, 255),
             1 * camera.current_scale
+        )
+        PainterUtils.paint_word_from_left_top(
+            painter,
+            camera.location_world2view(self.body_shape.location_left_top),
+            self.inner_text,
+            20 * camera.current_scale,
+            QColor(255, 255, 255),
         )
         if self.is_selected:
             PainterUtils.paint_rect_from_left_top(
