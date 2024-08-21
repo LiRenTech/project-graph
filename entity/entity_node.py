@@ -9,7 +9,7 @@ from .entity import Entity
 class EntityNode(Entity):
     def __init__(self, body_shape):
         super().__init__(body_shape)
-        self.children = []
+        self.children: list['EntityNode'] = []
 
         # 是否是被选中的状态
         self.is_selected = False

@@ -12,6 +12,7 @@ from PyQt5.QtWidgets import (
 
 from assets import assets
 from camera import Camera
+from data_struct.line import Line
 from data_struct.number_vector import NumberVector
 from entity.entity import Entity
 from entity.entity_node import EntityNode
@@ -45,7 +46,14 @@ class Canvas(QMainWindow):
         # 连线相关的操作
         self.connect_from_node: EntityNode | None = None
         self.connect_to_node: EntityNode | None = None
-        self.connect_point: NumberVector = NumberVector.zero()  # 世界坐标
+        # 鼠标右键的当前位置
+        self.mouse_right_location: NumberVector = NumberVector.zero()
+        # 右键开始拖拽的位置
+        self.mouse_right_start_location: NumberVector = NumberVector.zero()
+        # 当前是否正在切断线
+        self.is_cutting = False
+        # 准备要被切断的线
+        self.warning_lines: list[tuple[Line, EntityNode, EntityNode]] = []
 
     def init_ui(self):
         # 设置窗口标题和尺寸
@@ -98,12 +106,15 @@ class Canvas(QMainWindow):
                             point_world_location - node.body_shape.location_left_top
                     )
         elif a0.button() == Qt.MouseButton.RightButton:
-            self.connect_point = point_world_location
+            self.mouse_right_location = point_world_location
+            self.mouse_right_start_location = point_world_location.clone()
             # 开始连线
+            self.is_cutting = True
             for node in self.node_manager.nodes:
                 if node.body_shape.is_contain_point(point_world_location):
                     self.connect_from_node = node
                     print("开始连线")
+                    self.is_cutting = False
                     break
             pass
 
@@ -121,13 +132,23 @@ class Canvas(QMainWindow):
                     d_location = new_left_top - node.body_shape.location_left_top
                     node.move(d_location)
             elif a0.buttons() == Qt.RightButton:
-                self.connect_point = point_world_location
-                # 如果是右键，开始连线
-                for node in self.node_manager.nodes:
-                    if node.body_shape.is_contain_point(point_world_location):
-                        self.connect_to_node = node
-                        break
-                pass
+                self.mouse_right_location = point_world_location
+                self.warning_lines.clear()
+                if self.is_cutting:
+                    cutting_line = Line(self.mouse_right_start_location, self.mouse_right_location)
+                    for line, start_node, end_node in self.node_manager.get_all_lines_and_node():
+                        if line.is_intersecting(cutting_line):
+                            # 准备要切断这个线，先进行标注
+                            self.warning_lines.append((line, start_node, end_node))
+                            pass
+
+                    pass
+                else:
+                    # 如果是右键，开始连线
+                    for node in self.node_manager.nodes:
+                        if node.body_shape.is_contain_point(point_world_location):
+                            self.connect_to_node = node
+                            break
 
     def mouseReleaseEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
@@ -138,6 +159,7 @@ class Canvas(QMainWindow):
         if a0.button() == Qt.LeftButton:
             pass
         if a0.button() == Qt.RightButton:
+
             # 结束连线
             if self.connect_from_node is not None and self.connect_to_node is not None:
                 connect_result = self.node_manager.connect_node(
@@ -147,6 +169,14 @@ class Canvas(QMainWindow):
                 print(f"连接结果: {connect_result}")
             self.connect_from_node = None
             self.connect_to_node = None
+
+            if self.is_cutting:
+                # 切断所有准备切断的线
+                for line, start_node, end_node in self.warning_lines:
+                    self.node_manager.disconnect_node(start_node, end_node)
+                self.warning_lines.clear()
+
+                self.is_cutting = False
         pass
 
     # 双击
@@ -205,15 +235,24 @@ class Canvas(QMainWindow):
         painter.fillRect(rect, QColor(43, 43, 43, 255))
         # 画网格
         paint_grid(painter, self.camera)
+        # 当前的切断线
+        if self.is_cutting:
+            PainterUtils.paint_solid_line(
+                painter,
+                self.camera.location_world2view(self.mouse_right_start_location),
+                self.camera.location_world2view(self.mouse_right_location),
+                QColor(255, 0, 0),
+                2 * self.camera.current_scale,
+            )
 
         # 当前鼠标画连接线
-        if self.connect_from_node is not None and self.connect_point is not None:
+        if self.connect_from_node is not None and self.mouse_right_location is not None:
             # 如果鼠标位置是没有和任何节点相交的
             connect_node = None
             for node in self.node_manager.nodes:
                 if node == self.connect_from_node:
                     continue
-                if node.body_shape.is_contain_point(self.connect_point):
+                if node.body_shape.is_contain_point(self.mouse_right_location):
                     connect_node = node
                     break
             if connect_node:
@@ -231,13 +270,21 @@ class Canvas(QMainWindow):
                 PainterUtils.paint_arrow(
                     painter,
                     self.camera.location_world2view(self.connect_from_node.body_shape.center),
-                    self.camera.location_world2view(self.connect_point),
+                    self.camera.location_world2view(self.mouse_right_location),
                     QColor(255, 255, 255),
                     2 * self.camera.current_scale,
                     30 * self.camera.current_scale,
                 )
         self.node_manager.paint(painter, self.camera)
-
+        # 所有要被切断的线
+        for line, _, _ in self.warning_lines:
+            PainterUtils.paint_solid_line(
+                painter,
+                self.camera.location_world2view(line.start),
+                self.camera.location_world2view(line.end),
+                QColor(255, 0, 0, 128),
+                10 * self.camera.current_scale,
+            )
         # 绘制细节信息
         paint_details_data(
             painter,

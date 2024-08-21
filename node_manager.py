@@ -31,20 +31,38 @@ class NodeManager:
             return from_node.remove_child(to_node)
         return False
 
-    def paint(self, painter: QPainter, camera: Camera):
-        # 画节点本身
+    def get_all_lines(self) -> list[Line]:
+        lines = []
         for node in self.nodes:
-            node.paint(painter, camera)
-
             for child in node.children:
                 connect_line = Line(node.body_shape.center, child.body_shape.center)
                 from_point = node.body_shape.get_line_intersection_point(connect_line)
                 to_point = child.body_shape.get_line_intersection_point(connect_line)
 
+                lines.append(Line(from_point, to_point))
+        return lines
+
+    def get_all_lines_and_node(self) -> list[tuple[Line, EntityNode, EntityNode]]:
+        lines = []
+        for node in self.nodes:
+            for child in node.children:
+                connect_line = Line(node.body_shape.center, child.body_shape.center)
+                from_point = node.body_shape.get_line_intersection_point(connect_line)
+                to_point = child.body_shape.get_line_intersection_point(connect_line)
+
+                lines.append((Line(from_point, to_point), node, child))
+        return lines
+
+    def paint(self, painter: QPainter, camera: Camera):
+        # 画节点本身
+        for node in self.nodes:
+            node.paint(painter, camera)
+
+            for line in self.get_all_lines():
                 PainterUtils.paint_arrow(
                     painter,
-                    camera.location_world2view(from_point),
-                    camera.location_world2view(to_point),
+                    camera.location_world2view(line.start),
+                    camera.location_world2view(line.end),
                     QColor(255, 255, 255),
                     2 * camera.current_scale,
                     30 * camera.current_scale,
