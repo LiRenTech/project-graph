@@ -73,7 +73,6 @@ class Line:
         if not self.is_intersecting(other):
             return None
         try:
-            print("get_intersection", self.start, self.end, other.start, other.end)
             x1, y1 = self.start.x, self.start.y
             x2, y2 = self.end.x, self.end.y
             x3, y3 = other.start.x, other.start.y

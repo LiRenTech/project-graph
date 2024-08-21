@@ -40,7 +40,6 @@ class NodeManager:
                 connect_line = Line(node.body_shape.center, child.body_shape.center)
                 from_point = node.body_shape.get_line_intersection_point(connect_line)
                 to_point = child.body_shape.get_line_intersection_point(connect_line)
-                print(from_point, to_point)
 
                 PainterUtils.paint_arrow(
                     painter,

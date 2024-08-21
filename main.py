@@ -77,6 +77,14 @@ class Canvas(QMainWindow):
         point_world_location = self.camera.location_view2world(point_view_location)
         self.is_dragging = True
         if a0.button() == Qt.MouseButton.LeftButton:
+            # 更新被选中的节点
+            for node in self.node_manager.nodes:
+                node.is_selected = False
+            for node in self.node_manager.nodes:
+                if node.body_shape.is_contain_point(point_world_location):
+                    print(f"选中节点: {node}")
+                    node.is_selected = True
+                    break
             # 拖拽移动
             self.drag_list.clear()
 
@@ -111,7 +119,6 @@ class Canvas(QMainWindow):
                 for node in self.drag_list:
                     new_left_top = point_world_location - node.dragging_offset
                     d_location = new_left_top - node.body_shape.location_left_top
-                    print(d_location)
                     node.move(d_location)
             elif a0.buttons() == Qt.RightButton:
                 self.connect_point = point_world_location
@@ -129,14 +136,7 @@ class Canvas(QMainWindow):
         self.is_dragging = False
 
         if a0.button() == Qt.LeftButton:
-            # 更新被选中的节点
-            for node in self.node_manager.nodes:
-                node.is_selected = False
-            for node in self.node_manager.nodes:
-                if node.body_shape.is_contain_point(point_world_location):
-                    print(f"选中节点: {node}")
-                    node.is_selected = True
-                    break
+            pass
         if a0.button() == Qt.RightButton:
             # 结束连线
             if self.connect_from_node is not None and self.connect_to_node is not None:
@@ -151,13 +151,13 @@ class Canvas(QMainWindow):
 
     # 双击
     def mouseDoubleClickEvent(self, event):
-        # 弹出文件选择框
-        print(event.pos())
         # 把点击坐标转换为世界坐标
         click_location = self.camera.location_view2world(
             NumberVector(event.pos().x(), event.pos().y())
         )
-        self.node_manager.add_node_by_click(click_location)
+        # 如果是左键，添加节点
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.node_manager.add_node_by_click(click_location)
 
     def wheelEvent(self, a0: QWheelEvent | None):
         assert a0 is not None
@@ -208,14 +208,34 @@ class Canvas(QMainWindow):
 
         # 当前鼠标画连接线
         if self.connect_from_node is not None and self.connect_point is not None:
-            PainterUtils.paint_arrow(
-                painter,
-                self.camera.location_world2view(self.connect_from_node.body_shape.center),
-                self.camera.location_world2view(self.connect_point),
-                QColor(255, 255, 255),
-                2 * self.camera.current_scale,
-                30 * self.camera.current_scale,
-            )
+            # 如果鼠标位置是没有和任何节点相交的
+            connect_node = None
+            for node in self.node_manager.nodes:
+                if node == self.connect_from_node:
+                    continue
+                if node.body_shape.is_contain_point(self.connect_point):
+                    connect_node = node
+                    break
+            if connect_node:
+                # 像吸附住了一样画线
+                PainterUtils.paint_arrow(
+                    painter,
+                    self.camera.location_world2view(self.connect_from_node.body_shape.center),
+                    self.camera.location_world2view(connect_node.body_shape.center),
+                    QColor(255, 255, 255),
+                    2 * self.camera.current_scale,
+                    30 * self.camera.current_scale,
+                )
+            else:
+                # 实时连线
+                PainterUtils.paint_arrow(
+                    painter,
+                    self.camera.location_world2view(self.connect_from_node.body_shape.center),
+                    self.camera.location_world2view(self.connect_point),
+                    QColor(255, 255, 255),
+                    2 * self.camera.current_scale,
+                    30 * self.camera.current_scale,
+                )
         self.node_manager.paint(painter, self.camera)
 
         # 绘制细节信息
