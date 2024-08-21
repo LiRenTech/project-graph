@@ -11,6 +11,18 @@ class NumberVector:
     def zero():
         return NumberVector(0, 0)
 
+    @staticmethod
+    def from_two_points(p1: "NumberVector", p2: "NumberVector"):
+        return NumberVector(p2.x - p1.x, p2.y - p1.y)
+
+    def rotate(self, degrees: float):
+        radians = math.radians(degrees)
+        cos_theta = math.cos(radians)
+        sin_theta = math.sin(radians)
+        x = self.x * cos_theta - self.y * sin_theta
+        y = self.x * sin_theta + self.y * cos_theta
+        return NumberVector(x, y)
+
     def is_zero(self):
         return self.x == 0 and self.y == 0
 
@@ -124,3 +136,7 @@ class NumberVector:
     def magnitude(self) -> float:
         """返回向量的模长"""
         return math.sqrt(self.x ** 2 + self.y ** 2)
+
+    def cross(self, other: "NumberVector") -> float:
+        """计算两个向量的叉积"""
+        return self.x * other.y - self.y * other.x

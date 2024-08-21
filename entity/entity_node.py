@@ -14,11 +14,21 @@ class EntityNode(Entity):
         # 是否是被选中的状态
         self.is_selected = False
 
-    def add_child(self, entity_node):
+    def add_child(self, entity_node) -> bool:
+        # 不能添加自己作为自己的子节点
+        if entity_node is self:
+            return False
+        # 增加之前先看看是否已经有了
+        if entity_node in self.children:
+            return False
         self.children.append(entity_node)
+        return True
 
     def remove_child(self, entity_node):
+        if entity_node not in self.children:
+            return False
         self.children.remove(entity_node)
+        return True
 
     def paint(self, painter: QPainter, camera: 'Camera'):
         location = camera.location_world2view(self.body_shape.location_left_top)

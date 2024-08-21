@@ -1,5 +1,6 @@
 from typing import Any
 
+from data_struct.line import Line
 from data_struct.number_vector import NumberVector
 
 
@@ -27,9 +28,9 @@ class Rectangle:
 
     def __contains__(self, item: NumberVector) -> bool:
         return (
-            self.location_left_top.x <= item.x <= self.location_left_top.x + self.width
+                self.location_left_top.x <= item.x <= self.location_left_top.x + self.width
         ) and (
-            self.location_left_top.y <= item.y <= self.location_left_top.y + self.height
+                self.location_left_top.y <= item.y <= self.location_left_top.y + self.height
         )
 
     def clone(self) -> "Rectangle":
@@ -91,33 +92,71 @@ class Rectangle:
             bool: self是否与rect之间的最小边距小于margin
         """
         collision_x = (
-            self.right() - rect.left() > -margin
-            and rect.right() - self.left() > -margin
+                self.right() - rect.left() > -margin
+                and rect.right() - self.left() > -margin
         )
         collision_y = (
-            self.bottom() - rect.top() > -margin
-            and rect.bottom() - self.top() > -margin
+                self.bottom() - rect.top() > -margin
+                and rect.bottom() - self.top() > -margin
         )
         return collision_x and collision_y
 
     def is_contain(self, rect: "Rectangle") -> bool:
         """判断是否包含另一个矩形，另一个矩形是否被套在自己内部"""
         return (
-            self.left() <= rect.left()
-            and self.right() >= rect.right()
-            and self.top() <= rect.top()
-            and self.bottom() >= rect.bottom()
+                self.left() <= rect.left()
+                and self.right() >= rect.right()
+                and self.top() <= rect.top()
+                and self.bottom() >= rect.bottom()
         )
 
     def is_contain_point(self, point: NumberVector) -> bool:
         """判断是否包含点"""
         return (
-            self.left() <= point.x <= self.right()
-            and self.top() <= point.y <= self.bottom()
+                self.left() <= point.x <= self.right()
+                and self.top() <= point.y <= self.bottom()
         )
 
     def __repr__(self):
         return f"Rectangle({self.location_left_top}, {self.width}, {self.height})"
+
+    def get_line_intersection_point(self, line: Line) -> NumberVector:
+        """
+        返回一个线段和这个矩形的交点，如果没有交点，就返回这个矩形的中心点
+        :param line:
+        :return:
+        """
+        # 遍历自己的上下左右四个边，看是否有交点
+        top_line = Line(self.location_left_top, NumberVector(self.right(), self.top()))
+        top_intersection = top_line.get_intersection(line)
+        if top_intersection is not None:
+            return top_intersection
+
+        bottom_line = Line(
+            NumberVector(self.left(), self.bottom()),
+            NumberVector(self.right(), self.bottom()),
+        )
+
+        bottom_intersection = bottom_line.get_intersection(line)
+        if bottom_intersection is not None:
+            return bottom_intersection
+
+        left_line = Line(self.location_left_top, NumberVector(self.left(), self.bottom()))
+
+        left_intersection = left_line.get_intersection(line)
+        if left_intersection is not None:
+            return left_intersection
+
+        right_line = Line(
+            NumberVector(self.right(), self.top()),
+            NumberVector(self.right(), self.bottom()),
+        )
+
+        right_intersection = right_line.get_intersection(line)
+        if right_intersection is not None:
+            return right_intersection
+
+        return self.center
 
 
 # test

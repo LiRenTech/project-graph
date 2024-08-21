@@ -17,6 +17,7 @@ from entity.entity import Entity
 from entity.entity_node import EntityNode
 from node_manager import NodeManager
 from paint.paint_elements import paint_details_data, paint_grid
+from paint.paint_utils import PainterUtils
 
 
 # 是为了引入assets文件夹中的资源文件，看似是灰色的没有用，但实际不能删掉
@@ -41,6 +42,10 @@ class Canvas(QMainWindow):
         self.drag_list: list[EntityNode] = []
         # 当前是否正在拖拽
         self.is_dragging = False
+        # 连线相关的操作
+        self.connect_from_node: EntityNode | None = None
+        self.connect_to_node: EntityNode | None = None
+        self.connect_point: NumberVector = NumberVector.zero()  # 世界坐标
 
     def init_ui(self):
         # 设置窗口标题和尺寸
@@ -72,6 +77,7 @@ class Canvas(QMainWindow):
         point_world_location = self.camera.location_view2world(point_view_location)
         self.is_dragging = True
         if a0.button() == Qt.MouseButton.LeftButton:
+            # 拖拽移动
             self.drag_list.clear()
 
             for node in self.node_manager.nodes:
@@ -83,6 +89,15 @@ class Canvas(QMainWindow):
                     node.dragging_offset = (
                             point_world_location - node.body_shape.location_left_top
                     )
+        elif a0.button() == Qt.MouseButton.RightButton:
+            self.connect_point = point_world_location
+            # 开始连线
+            for node in self.node_manager.nodes:
+                if node.body_shape.is_contain_point(point_world_location):
+                    self.connect_from_node = node
+                    print("开始连线")
+                    break
+            pass
 
     def mouseMoveEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
@@ -91,16 +106,21 @@ class Canvas(QMainWindow):
 
         if self.is_dragging:
 
-            # if a0.buttons() == Qt.LeftButton:
-            # 如果是左键，移动节点
-            for node in self.drag_list:
-                new_left_top = point_world_location - node.dragging_offset
-                d_location = new_left_top - node.body_shape.location_left_top
-                print(d_location)
-                node.move(d_location)
-            # elif a0.buttons() == Qt.RightButton:
-            #     # 如果是右键，旋转节点
-            #     pass
+            if a0.buttons() == Qt.LeftButton:
+                # 如果是左键，移动节点
+                for node in self.drag_list:
+                    new_left_top = point_world_location - node.dragging_offset
+                    d_location = new_left_top - node.body_shape.location_left_top
+                    print(d_location)
+                    node.move(d_location)
+            elif a0.buttons() == Qt.RightButton:
+                self.connect_point = point_world_location
+                # 如果是右键，开始连线
+                for node in self.node_manager.nodes:
+                    if node.body_shape.is_contain_point(point_world_location):
+                        self.connect_to_node = node
+                        break
+                pass
 
     def mouseReleaseEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
@@ -117,6 +137,16 @@ class Canvas(QMainWindow):
                     print(f"选中节点: {node}")
                     node.is_selected = True
                     break
+        if a0.button() == Qt.RightButton:
+            # 结束连线
+            if self.connect_from_node is not None and self.connect_to_node is not None:
+                connect_result = self.node_manager.connect_node(
+                    self.connect_from_node,
+                    self.connect_to_node,
+                )
+                print(f"连接结果: {connect_result}")
+            self.connect_from_node = None
+            self.connect_to_node = None
         pass
 
     # 双击
@@ -176,8 +206,17 @@ class Canvas(QMainWindow):
         # 画网格
         paint_grid(painter, self.camera)
 
-        for node in self.node_manager.nodes:
-            node.paint(painter, self.camera)
+        # 当前鼠标画连接线
+        if self.connect_from_node is not None and self.connect_point is not None:
+            PainterUtils.paint_arrow(
+                painter,
+                self.camera.location_world2view(self.connect_from_node.body_shape.center),
+                self.camera.location_world2view(self.connect_point),
+                QColor(255, 255, 255),
+                2 * self.camera.current_scale,
+                30 * self.camera.current_scale,
+            )
+        self.node_manager.paint(painter, self.camera)
 
         # 绘制细节信息
         paint_details_data(
