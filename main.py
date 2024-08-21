@@ -59,7 +59,7 @@ class Canvas(QMainWindow):
 
     def init_ui(self):
         # 设置窗口标题和尺寸
-        self.setWindowTitle("FastBrainstorming")
+        self.setWindowTitle("节点图编辑器")
         self._move_window_to_center()
 
     def _move_window_to_center(self):
