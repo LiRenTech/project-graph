@@ -38,7 +38,7 @@ class NodeManager:
             return from_node.remove_child(to_node)
         return False
 
-    def get_all_lines(self) -> list[Line]:
+    def _get_all_lines(self) -> list[Line]:
         lines = []
         for node in self.nodes:
             for child in node.children:
@@ -65,7 +65,7 @@ class NodeManager:
         for node in self.nodes:
             node.paint(painter, camera)
 
-            for line in self.get_all_lines():
+            for line in self._get_all_lines():
                 PainterUtils.paint_arrow(
                     painter,
                     camera.location_world2view(line.start),

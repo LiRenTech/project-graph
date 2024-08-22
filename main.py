@@ -36,13 +36,16 @@ class Canvas(QMainWindow):
         # 启动定时器
         self.timer.start()
 
-        # 重要对象绑定
+        # ====== 重要对象绑定
         self.camera = Camera(NumberVector.zero(), 1920, 1080)
+
         self.node_manager = NodeManager()
-        # 所有拖拽的对象的列表
+
+        # 所有拖拽的对象的列表（目前只支持一个，未支持框选多个拖拽）
         self.drag_list: list[EntityNode] = []
         # 当前是否正在拖拽
         self.is_dragging = False
+
         # 连线相关的操作
         self.connect_from_node: EntityNode | None = None
         self.connect_to_node: EntityNode | None = None
@@ -50,6 +53,7 @@ class Canvas(QMainWindow):
         self.mouse_right_location: NumberVector = NumberVector.zero()
         # 右键开始拖拽的位置
         self.mouse_right_start_location: NumberVector = NumberVector.zero()
+
         # 当前是否正在切断线
         self.is_cutting = False
         # 准备要被切断的线
@@ -174,7 +178,6 @@ class Canvas(QMainWindow):
                     self.connect_from_node,
                     self.connect_to_node,
                 )
-                print(f"连接结果: {connect_result}")
             self.connect_from_node = None
             self.connect_to_node = None
 

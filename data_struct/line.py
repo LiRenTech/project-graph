@@ -2,6 +2,9 @@ from data_struct.number_vector import NumberVector
 
 
 class Line:
+    """
+    线段类
+    """
     def __init__(self, start: NumberVector, end: NumberVector):
         self.start = start
         self.end = end

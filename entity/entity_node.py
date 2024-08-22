@@ -11,16 +11,27 @@ class EntityNode(Entity):
         super().__init__(body_shape)
         self.children: list['EntityNode'] = []
 
-        self.inner_text = "..."
+        self._inner_text = "..."
 
         # 是否是被选中的状态
         self.is_selected = False
+        self.adjust_size_by_text()
+
+    @property
+    def inner_text(self) -> str:
+        return self._inner_text
+
+    @inner_text.setter
+    def inner_text(self, value: str):
+        self._inner_text = value
+        self.adjust_size_by_text()
 
     def adjust_size_by_text(self):
         """
         根据文本内容调整节点大小
         :return:
         """
+        pass
 
     def add_child(self, entity_node) -> bool:
         # 不能添加自己作为自己的子节点
