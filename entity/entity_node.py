@@ -6,6 +6,7 @@ from data_struct.number_vector import NumberVector
 from data_struct.text import Text
 from paint.paint_utils import PainterUtils
 from paint.paintables import PaintContext, Paintable
+from tools.string_tools import get_width_by_file_name
 from .entity import Entity
 
 
@@ -34,6 +35,7 @@ class EntityNode(Entity):
         根据文本内容调整节点大小
         :return:
         """
+        self.body_shape.width = get_width_by_file_name(self._inner_text)
         pass
 
     def add_child(self, entity_node) -> bool:
