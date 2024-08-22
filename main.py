@@ -95,6 +95,13 @@ class Canvas(QMainWindow):
         # 准备要删除的节点
         self.warning_nodes: list[EntityNode] = []
 
+        # 拖拽文件进入窗口相关
+        self.is_dragging_file = False  # 是否文件正在拖拽悬浮在窗口上
+        self.is_dragging_file_valid = False  # 是否文件拖拽的有效文件
+        self.dragging_file_location = (
+            NumberVector.zero()
+        )  # 拖拽文件悬浮在窗口上的世界位置
+
     def init_ui(self):
         # 设置窗口标题和尺寸
         self.setWindowTitle("节点图编辑器")
@@ -159,13 +166,29 @@ class Canvas(QMainWindow):
 
     def dragEnterEvent(self, event):
         """从外部拖拽文件进入窗口"""
+        self.is_dragging_file = True
+        self.is_dragging_file_valid = False
+
         file = event.mimeData().urls()[0].toLocalFile()
         if file.endswith(".json"):
+            self.is_dragging_file_valid = True
             event.acceptProposedAction()
+
+    def dragMoveEvent(self, event):
+        view_location = NumberVector(event.pos().x(), event.pos().y())
+        world_location = self.camera.location_view2world(view_location)
+        self.dragging_file_location = world_location.clone()
+
+    def dragLeaveEvent(self, event):
+        self.is_dragging_file = False
+        self.is_dragging_file_valid = False
 
     def dropEvent(self, event):
         """从外部拖拽文件进入窗口并松开"""
         print("dropEvent", event)
+        self.is_dragging_file = False
+        self.is_dragging_file_valid = False
+
         for url in event.mimeData().urls():
             print(url)
             file_path = url.toLocalFile()
@@ -561,6 +584,59 @@ class Canvas(QMainWindow):
                 f"effect: {len(self.effect_manager.effects)}",
             ],
         )
+        # 最终覆盖在屏幕上一层：拖拽情况
+        if self.is_dragging_file:
+            PainterUtils.paint_rect_from_left_top(
+                painter,
+                NumberVector.zero(),
+                a0.rect().width(),
+                a0.rect().height(),
+                QColor(0, 0, 0, 128),
+                QColor(255, 255, 255, 0),
+                int(10 * self.camera.current_scale),
+            )
+            # 绘制横竖线
+            PainterUtils.paint_solid_line(
+                painter,
+                NumberVector(
+                    0, self.camera.location_world2view(self.dragging_file_location).y
+                ),
+                NumberVector(
+                    a0.rect().width(),
+                    self.camera.location_world2view(self.dragging_file_location).y,
+                ),
+                QColor(148, 220, 254),
+                1,
+            )
+            PainterUtils.paint_solid_line(
+                painter,
+                NumberVector(
+                    self.camera.location_world2view(self.dragging_file_location).x, 0
+                ),
+                NumberVector(
+                    self.camera.location_world2view(self.dragging_file_location).x,
+                    a0.rect().height(),
+                ),
+                QColor(148, 220, 254),
+                1,
+            )
+            if self.is_dragging_file_valid:
+                PainterUtils.paint_word_from_center(
+                    painter,
+                    NumberVector(a0.rect().width() / 2, a0.rect().height() / 2),
+                    "拖拽文件到窗口中",
+                    30,
+                    QColor(255, 255, 255),
+                )
+            else:
+                PainterUtils.paint_word_from_center(
+                    painter,
+                    NumberVector(a0.rect().width() / 2, a0.rect().height() / 2),
+                    "不支持的文件类型，请拖入json文件",
+                    30,
+                    QColor(255, 0, 0),
+                )
+            pass
         pass
 
 
