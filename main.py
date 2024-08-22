@@ -47,10 +47,15 @@ APP_AUTHOR = "LiRen"
 DATA_DIR = user_data_dir(APP_NAME, APP_AUTHOR)
 print(DATA_DIR)
 
+
 class Canvas(QMainWindow):
     def __init__(self):
         super().__init__()
         self.init_ui()
+
+        # 允许拖拽文件到窗口
+        self.setAcceptDrops(True)
+
         # 创建一个定时器用于定期更新窗口
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.tick)
@@ -144,6 +149,25 @@ class Canvas(QMainWindow):
         else:
             # 如果用户取消了保存操作
             print("Save operation cancelled.")
+
+    def dragEnterEvent(self, event):
+        """从外部拖拽文件进入窗口"""
+        file = event.mimeData().urls()[0].toLocalFile()
+        if file.endswith(".json"):
+            event.acceptProposedAction()
+
+    def dropEvent(self, event):
+        """从外部拖拽文件进入窗口并松开"""
+        print("dropEvent", event)
+        for url in event.mimeData().urls():
+            print(url)
+            file_path = url.toLocalFile()
+            if file_path.endswith(".json"):
+                with open(file_path, "r", encoding="utf-8") as f:
+                    load_data = json.loads(f.read())
+                    self.node_manager.load_from_dict(load_data)
+                event.acceptProposedAction()
+                break
 
     @staticmethod
     def on_about():
