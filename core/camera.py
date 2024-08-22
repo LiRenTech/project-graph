@@ -103,12 +103,12 @@ class Camera:
             if not self.speed.is_zero():
                 speed_size = self.speed.magnitude()
                 friction = (
-                        self.speed.normalize()
-                        * -1
-                        * (self.frictionCoefficient * speed_size ** self.frictionExponent)
+                    self.speed.normalize()
+                    * -1
+                    * (self.frictionCoefficient * speed_size**self.frictionExponent)
                 )
             self.speed += self.accelerateCommander * (
-                    self.moveAmplitude * (1 / self.current_scale)
+                self.moveAmplitude * (1 / self.current_scale)
             )
             self.speed += friction
 
@@ -162,8 +162,8 @@ class Camera:
         :return:
         """
         v: NumberVector = (
-                                  view_location - NumberVector(self.view_width / 2, self.view_height / 2)
-                          ) / self.current_scale
+            view_location - NumberVector(self.view_width / 2, self.view_height / 2)
+        ) / self.current_scale
         return v + self.location
 
     def get_world2view_transform(self) -> QTransform:
