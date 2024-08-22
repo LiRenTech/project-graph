@@ -259,6 +259,14 @@ class Canvas(QMainWindow):
             self.camera.press_move(NumberVector(1, 0))
         elif key == Qt.Key.Key_W:
             self.camera.press_move(NumberVector(0, -1))
+        elif key == Qt.Key.Key_BracketLeft:
+            # `[` 键来缩小视野
+            for _ in range(5):
+                self.camera.zoom_out()
+        elif key == Qt.Key.Key_BracketRight:
+            # `]` 键来放大视野
+            for _ in range(5):
+                self.camera.zoom_in()
 
     def keyReleaseEvent(self, a0: QKeyEvent | None):
         assert a0 is not None
