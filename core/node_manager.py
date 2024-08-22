@@ -1,12 +1,12 @@
 from PyQt5.QtGui import QPainter, QColor
 
 from core.camera import Camera
-from data_struct.line import Line
-from data_struct.number_vector import NumberVector
-from data_struct.rectangle import Rectangle
-from entity.entity_node import EntityNode
-from paint.paint_utils import PainterUtils
-from paint.paintables import PaintContext
+from core.data_struct.line import Line
+from core.data_struct.number_vector import NumberVector
+from core.data_struct.rectangle import Rectangle
+from core.entity.entity_node import EntityNode
+from core.paint.paint_utils import PainterUtils
+from core.paint.paintables import PaintContext
 
 
 class NodeManager:

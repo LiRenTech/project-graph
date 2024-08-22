@@ -23,15 +23,15 @@ from PyQt5.QtWidgets import (
 
 from assets import assets
 from core.camera import Camera
-from data_struct.line import Line
-from data_struct.number_vector import NumberVector
-from entity.entity import Entity
-from entity.entity_node import EntityNode
+from core.data_struct.line import Line
+from core.data_struct.number_vector import NumberVector
+from core.entity.entity import Entity
+from core.entity.entity_node import EntityNode
 from core.node_manager import NodeManager
-from paint.paint_elements import paint_details_data, paint_grid
-from paint.paint_utils import PainterUtils
-from paint.paintables import PaintContext
-from paint.painters import ProjectGraphPainter
+from core.paint.paint_elements import paint_details_data, paint_grid
+from core.paint.paint_utils import PainterUtils
+from core.paint.paintables import PaintContext
+from core.paint.painters import ProjectGraphPainter
 
 
 # 是为了引入assets文件夹中的资源文件，看似是灰色的没有用，但实际不能删掉

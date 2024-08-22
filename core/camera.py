@@ -2,8 +2,8 @@ import traceback
 
 from PyQt5.QtGui import QTransform
 
-from data_struct.number_vector import NumberVector
-from data_struct.rectangle import Rectangle
+from core.data_struct.number_vector import NumberVector
+from core.data_struct.rectangle import Rectangle
 
 
 class Camera:

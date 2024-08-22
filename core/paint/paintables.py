@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 from typing import List
 
 from core.camera import Camera
-from paint.painters import ProjectGraphPainter
+from core.paint.painters import ProjectGraphPainter
 
 
 class PaintContext:

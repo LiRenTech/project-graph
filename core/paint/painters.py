@@ -1,8 +1,8 @@
 from PyQt5.QtCore import QRectF, QPointF
 from PyQt5.QtGui import QPainter
 
-from data_struct.rectangle import Rectangle
-from data_struct.text import Text
+from core.data_struct.rectangle import Rectangle
+from core.data_struct.text import Text
 
 
 # 施工中...

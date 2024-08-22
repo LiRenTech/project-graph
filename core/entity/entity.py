@@ -1,9 +1,9 @@
 from abc import ABC
 from typing import List
 
-from data_struct.number_vector import NumberVector
-from data_struct.rectangle import Rectangle
-from paint.paintables import Paintable
+from core.data_struct.number_vector import NumberVector
+from core.data_struct.rectangle import Rectangle
+from core.paint.paintables import Paintable
 
 
 class Entity(Paintable, ABC):

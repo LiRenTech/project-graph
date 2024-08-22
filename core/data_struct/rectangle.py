@@ -1,7 +1,7 @@
 from typing import Any
 
-from data_struct.line import Line
-from data_struct.number_vector import NumberVector
+from core.data_struct.line import Line
+from core.data_struct.number_vector import NumberVector
 
 
 class Rectangle:

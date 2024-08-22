@@ -7,7 +7,7 @@ import traceback
 from PyQt5.QtCore import QPoint, QPointF, Qt
 from PyQt5.QtGui import QPainter, QColor, QPen, QFont, QFontMetrics
 
-from data_struct.number_vector import NumberVector
+from core.data_struct.number_vector import NumberVector
 
 
 class PainterUtils:

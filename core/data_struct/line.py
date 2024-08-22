@@ -1,4 +1,4 @@
-from data_struct.number_vector import NumberVector
+from core.data_struct.number_vector import NumberVector
 
 
 class Line:
