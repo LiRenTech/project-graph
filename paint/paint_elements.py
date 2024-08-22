@@ -1,6 +1,6 @@
 from PyQt5.QtGui import QPainter, QColor
 
-from camera import Camera
+from core.camera import Camera
 from data_struct.number_vector import NumberVector
 from data_struct.rectangle import Rectangle
 

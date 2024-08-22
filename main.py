@@ -11,12 +11,12 @@ from PyQt5.QtWidgets import (
 )
 
 from assets import assets
-from camera import Camera
+from core.camera import Camera
 from data_struct.line import Line
 from data_struct.number_vector import NumberVector
 from entity.entity import Entity
 from entity.entity_node import EntityNode
-from node_manager import NodeManager
+from core.node_manager import NodeManager
 from paint.paint_elements import paint_details_data, paint_grid
 from paint.paint_utils import PainterUtils
 
@@ -130,13 +130,13 @@ class Canvas(QMainWindow):
 
         if self.is_dragging:
 
-            if a0.buttons() == Qt.LeftButton:
+            if a0.buttons() == Qt.MouseButton.LeftButton:
                 # 如果是左键，移动节点
                 for node in self.drag_list:
                     new_left_top = point_world_location - node.dragging_offset
                     d_location = new_left_top - node.body_shape.location_left_top
                     node.move(d_location)
-            elif a0.buttons() == Qt.RightButton:
+            elif a0.buttons() == Qt.MouseButton.RightButton:
                 self.mouse_right_location = point_world_location
                 self.warning_lines.clear()
                 self.warning_nodes.clear()
@@ -168,9 +168,9 @@ class Canvas(QMainWindow):
         point_world_location = self.camera.location_view2world(point_view_location)
         self.is_dragging = False
 
-        if a0.button() == Qt.LeftButton:
+        if a0.button() == Qt.MouseButton.LeftButton:
             pass
-        if a0.button() == Qt.RightButton:
+        if a0.button() == Qt.MouseButton.RightButton:
 
             # 结束连线
             if self.connect_from_node is not None and self.connect_to_node is not None:
@@ -311,7 +311,7 @@ class Canvas(QMainWindow):
                 self.camera.location_world2view(line.start),
                 self.camera.location_world2view(line.end),
                 QColor(255, 0, 0, 128),
-                10 * self.camera.current_scale,
+                int(10 * self.camera.current_scale),
             )
         # 所有要被删除的节点
         for node in self.warning_nodes:
@@ -322,7 +322,7 @@ class Canvas(QMainWindow):
                 node.body_shape.height * self.camera.current_scale,
                 QColor(255, 0, 0, 128),
                 QColor(255, 0, 0, 128),
-                10 * self.camera.current_scale,
+                int(10 * self.camera.current_scale),
             )
         # 绘制细节信息
         paint_details_data(

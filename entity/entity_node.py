@@ -1,6 +1,6 @@
 from PyQt5.QtGui import QPainter, QColor
 
-from camera import Camera
+from core.camera import Camera
 from data_struct.number_vector import NumberVector
 from paint.paint_utils import PainterUtils
 from .entity import Entity
@@ -58,7 +58,7 @@ class EntityNode(Entity):
             self.body_shape.height * camera.current_scale,
             QColor(24, 161, 255, 128),
             QColor(106, 203, 255),
-            1 * camera.current_scale
+            int(1 * camera.current_scale)
         )
         PainterUtils.paint_word_from_left_top(
             painter,
@@ -77,6 +77,6 @@ class EntityNode(Entity):
                 (self.body_shape.height + 20) * camera.current_scale,
                 QColor(0, 0, 0, 0),
                 QColor(106, 203, 255),
-                3 * camera.current_scale
+                int(3 * camera.current_scale)
             )
         pass
