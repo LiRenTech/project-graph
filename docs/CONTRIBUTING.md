@@ -14,3 +14,5 @@ pyinstaller --onefile --windowed --icon=./assets/favicon.ico main.py -n project-
 macOS:
 pyinstaller --onefile --windowed --icon=./assets/favicon.icns main.py -n project-graph
 ```
+
+踩坑：必须在虚拟环境中安装 pyinstaller, 否则打包出来的exe没有appdirs这个依赖库
