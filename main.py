@@ -7,6 +7,7 @@ from PyQt5.QtGui import (
     QWheelEvent,
     QKeyEvent,
     QMouseEvent,
+    QDesktopServices,
 )
 from PyQt5.QtWidgets import (
     QApplication,
@@ -77,6 +78,99 @@ class Canvas(QMainWindow):
         # 设置窗口标题和尺寸
         self.setWindowTitle("节点图编辑器")
         self._move_window_to_center()
+        # 菜单栏
+        menubar = self.menuBar()
+        assert menubar is not None
+        # 文件菜单
+        file_menu = menubar.addMenu("文件")
+        assert file_menu is not None
+        # 打开文件
+        open_action = QAction("打开", self)
+        open_action.triggered.connect(self.on_open_file)
+        # 保存文件
+        save_action = QAction("保存", self)
+        save_action.triggered.connect(self.on_save_file)
+        file_menu.addAction(open_action)
+        file_menu.addAction(save_action)
+
+        # 帮助说明菜单
+        help_menu = menubar.addMenu("帮助")
+        assert help_menu is not None
+        # 帮助说明
+        help_action = QAction("帮助说明", self)
+        help_action.triggered.connect(self.on_help)
+        # 关于
+        about_action = QAction("关于", self)
+        about_action.triggered.connect(self.on_about)
+        help_menu.addAction(help_action)
+        help_menu.addAction(about_action)
+
+    def on_open_file(self):
+        pass
+
+    def on_save_file(self):
+        pass
+
+    @staticmethod
+    def on_about():
+        # 创建一个消息框
+        msg_box = QMessageBox()
+        msg_box.setWindowIcon(QIcon("assets/favicon.ico"))
+        msg_box.setIcon(QMessageBox.Information)
+        msg_box.setWindowTitle("project-graph 关于")
+        msg_box.setText(
+            "\n\n".join(
+                [
+                    "这是一个快速绘制节点图的工具，可以用于项目拓扑图绘制、快速头脑风暴草稿。",
+                    "Xmind只能用来绘制树形结构图、FigJamBoard可以用来绘制但网页打开有点慢了",
+                    "所以做了这个小软件",
+                ]
+            )
+        )
+        msg_box.exec_()
+        pass
+
+    @staticmethod
+    def on_help():
+        # 创建一个消息框
+        msg_box = QMessageBox()
+        msg_box.setWindowIcon(QIcon("assets/favicon.ico"))
+        msg_box.setIcon(QMessageBox.Information)
+        msg_box.setWindowTitle("project-graph 帮助说明")
+        msg_box.setText(
+            "\n\n".join(
+                [
+                    "1. 创建节点：双击空白部分",
+                    "2. 编辑节点：双击节点，出现输入框",
+                    "3. 移动节点：左键拖拽一个节点",
+                    "4. 连接节点：按住右键从一个节点滑动到另一个节点",
+                    "5. 切断连线：在空白地方按住右键划出一道切割线",
+                    "6. 删除节点：同样使用切割线切节点来删除",
+                    "7. 移动视野：W A S D 键",
+                    "8. 缩放视野：鼠标滚轮",
+                ]
+            )
+        )
+        # github按钮
+        button_github = QPushButton("Github 项目地址")
+        msg_box.addButton(button_github, QMessageBox.ActionRole)
+        button_github.clicked.connect(Canvas.__open_github)
+        msg_box.setStandardButtons(QMessageBox.Ok)
+        # b站按钮
+        button_bilibili = QPushButton("bilibili 视频介绍")
+        msg_box.addButton(button_bilibili, QMessageBox.ActionRole)
+        button_bilibili.clicked.connect(Canvas.__open_bilibili)
+
+        # 显示消息框
+        msg_box.exec_()
+
+    @staticmethod
+    def __open_github():
+        QDesktopServices.openUrl(QUrl("https://github.com/LiRenTech/visual-file-qt"))
+
+    @staticmethod
+    def __open_bilibili():
+        QDesktopServices.openUrl(QUrl("https://www.bilibili.com/video/BV1qw4m1k7LD"))
 
     def _move_window_to_center(self):
         # 获取屏幕可用空间（macOS上会有titlebar占据一部分空间）
