@@ -103,14 +103,14 @@ class PainterUtils:
         PainterUtils.paint_solid_line(
             painter,
             point2,
-            point2 - lien_body_vector.normalize().rotate(15) * arrow_size,
+            point2 - lien_body_vector.normalize().rotate(20) * arrow_size,
             color,
             width,
         )
         PainterUtils.paint_solid_line(
             painter,
             point2,
-            point2 - lien_body_vector.normalize().rotate(-15) * arrow_size,
+            point2 - lien_body_vector.normalize().rotate(-20) * arrow_size,
             color,
             width,
         )

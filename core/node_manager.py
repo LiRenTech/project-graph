@@ -62,16 +62,16 @@ class NodeManager:
         return lines
 
     def paint(self, context: PaintContext):
-        # 画节点本身
         for node in self.nodes:
+            # 画节点本身
             node.paint(context)
-
+            # 连线
             for line in self._get_all_lines():
                 PainterUtils.paint_arrow(
                     context.painter.q_painter(),
                     context.camera.location_world2view(line.start),
                     context.camera.location_world2view(line.end),
-                    QColor(255, 255, 255),
-                    2 * context.camera.current_scale,
+                    QColor(23, 159, 255, 200),
+                    4 * context.camera.current_scale,
                     30 * context.camera.current_scale,
                 )

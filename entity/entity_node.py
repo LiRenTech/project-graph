@@ -70,9 +70,9 @@ class EntityNode(Entity):
             context.camera.location_world2view(self.body_shape.location_left_top),
             self.body_shape.width * context.camera.current_scale,
             self.body_shape.height * context.camera.current_scale,
-            QColor(24, 161, 255, 128),
-            QColor(106, 203, 255),
-            int(1 * context.camera.current_scale),
+            QColor(31, 31, 31, 200),
+            QColor(23, 159, 255),
+            int(2 * context.camera.current_scale),
         )
 
         PainterUtils.paint_word_from_center(
@@ -80,7 +80,7 @@ class EntityNode(Entity):
             context.camera.location_world2view(self.body_shape.center),
             self.inner_text,
             self.FONT_SIZE * context.camera.current_scale,
-            QColor(255, 255, 255),
+            QColor(156, 220, 254),
         )
 
         if self.is_selected:
@@ -92,7 +92,7 @@ class EntityNode(Entity):
                 (self.body_shape.width + 20) * context.camera.current_scale,
                 (self.body_shape.height + 20) * context.camera.current_scale,
                 QColor(0, 0, 0, 0),
-                QColor(106, 203, 255),
+                QColor(156, 220, 254),
                 int(3 * context.camera.current_scale),
             )
         pass
