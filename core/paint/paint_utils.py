@@ -7,17 +7,18 @@ import traceback
 from PyQt5.QtCore import QPoint, QPointF, Qt
 from PyQt5.QtGui import QPainter, QColor, QPen, QFont, QFontMetrics
 
+from core.data_struct.circle import Circle
 from core.data_struct.number_vector import NumberVector
 
 
 class PainterUtils:
     @staticmethod
     def paint_solid_line(
-            painter: QPainter,
-            point1: NumberVector,
-            point2: NumberVector,
-            color: QColor,
-            width: float,
+        painter: QPainter,
+        point1: NumberVector,
+        point2: NumberVector,
+        color: QColor,
+        width: float,
     ):
         """
         绘制一条实线
@@ -40,12 +41,12 @@ class PainterUtils:
 
     @staticmethod
     def paint_dashed_line(
-            painter: QPainter,
-            point1: NumberVector,
-            point2: NumberVector,
-            color: QColor,
-            width: float,
-            dash_length: float,
+        painter: QPainter,
+        point1: NumberVector,
+        point2: NumberVector,
+        color: QColor,
+        width: float,
+        dash_length: float,
     ):
         """
         绘制一条虚线
@@ -65,7 +66,7 @@ class PainterUtils:
         painter.setRenderHint(QPainter.Antialiasing)
         dx = point2.x - point1.x
         dy = point2.y - point1.y
-        length = (dx ** 2 + dy ** 2) ** 0.5
+        length = (dx**2 + dy**2) ** 0.5
         num_dashes = int(length / dash_length)
         if num_dashes == 0:
             num_dashes = 1
@@ -77,15 +78,47 @@ class PainterUtils:
         painter.drawLine(int(point1.x), int(point1.y), int(point2.x), int(point2.y))
         pass
 
+    @staticmethod
+    def paint_circle(
+        painter: QPainter,
+        circle: Circle,
+        color: QColor,
+        stroke_color: QColor,
+        stroke_width: float,
+    ):
+        """
+        绘制一个圆
+        :param painter:
+        :param circle:
+        :param color:
+        :param stroke_color:
+        :param stroke_width:
+        :return:
+        """
+        pen = QPen(stroke_color, stroke_width)  # 创建QPen并设置颜色和宽度
+        painter.setPen(pen)
+        painter.setBrush(color)
+        # painter.setRenderHint(QPainter.Antialiasing)
+        painter.drawEllipse(
+            int(circle.center.x - circle.radius),
+            int(circle.center.y - circle.radius),
+            int(circle.radius * 2),
+            int(circle.radius * 2),
+        )
+        painter.setPen(QColor(0, 0, 0, 0))
+        painter.setBrush(QColor(0, 0, 0, 0))
+        # painter.setRenderHint(QPainter.Antialiasing, False)
+        pass
+
     # 画一个箭头
     @staticmethod
     def paint_arrow(
-            painter: QPainter,
-            point1: NumberVector,
-            point2: NumberVector,
-            color: QColor,
-            width: float,
-            arrow_size: float,
+        painter: QPainter,
+        point1: NumberVector,
+        point2: NumberVector,
+        color: QColor,
+        width: float,
+        arrow_size: float,
     ):
         """
         绘制一个箭头
@@ -118,13 +151,13 @@ class PainterUtils:
 
     @staticmethod
     def paint_rect_from_left_top(
-            painter: QPainter,
-            left_top: NumberVector,
-            width: float,
-            height: float,
-            fill_color: QColor,
-            stroke_color: QColor,
-            stroke_width: int,
+        painter: QPainter,
+        left_top: NumberVector,
+        width: float,
+        height: float,
+        fill_color: QColor,
+        stroke_color: QColor,
+        stroke_width: int,
     ):
         """
         绘制一个矩形，左上角坐标为left_top，宽为width，高为height，填充色为fill_color，边框色为stroke_color
@@ -152,11 +185,11 @@ class PainterUtils:
 
     @staticmethod
     def paint_word_from_left_top(
-            painter: QPainter,
-            left_top: NumberVector,
-            text: str,
-            font_size: float,
-            color: QColor,
+        painter: QPainter,
+        left_top: NumberVector,
+        text: str,
+        font_size: float,
+        color: QColor,
     ):
         """
         绘制一个文本，左上角坐标为left_top，文本为text，字体大小为font_size，颜色为color
@@ -169,7 +202,7 @@ class PainterUtils:
         """
         # 创建QFont对象并设置字体大小
         try:
-            font = QFont("Consolas")
+            font = QFont("Times New Roman")
             font.setPointSizeF(font_size)
             # 获取字体度量信息
             font_metrics = QFontMetrics(font)
@@ -208,11 +241,11 @@ class PainterUtils:
 
     @staticmethod
     def paint_word_from_center(
-            painter: QPainter,
-            center: NumberVector,
-            text: str,
-            font_size: float,
-            color: QColor,
+        painter: QPainter,
+        center: NumberVector,
+        text: str,
+        font_size: float,
+        color: QColor,
     ) -> tuple[int, int]:
         """
         绘制一个文本，其中心坐标为中心point，文本为text，字体大小为font_size，颜色为color
@@ -224,7 +257,7 @@ class PainterUtils:
         :return: None
         """
         try:
-            font = QFont("Consolas")
+            font = QFont("Times New Roman")
             font.setPointSize(int(font_size))
             font_metrics = QFontMetrics(font)
 
@@ -243,7 +276,7 @@ class PainterUtils:
 
             # 计算文本中心点相对于左上角的位置
             left_top_x = center.x() - text_width // 2
-            left_top_y = center.y() - (text_height // 2) + ascent 
+            left_top_y = center.y() - (text_height // 2) + ascent
 
             # 创建新的左上角坐标
             left_top = QPoint(left_top_x, left_top_y)

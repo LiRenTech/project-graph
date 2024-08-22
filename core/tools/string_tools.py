@@ -20,7 +20,7 @@ def get_size_by_text(font_size: float, text: str) -> tuple[int, int, int]:
     """
     返回文本的宽度、高度和基线
     """
-    font = QFont("Consolas")
+    font = QFont("Times New Roman")
     font.setPointSize(int(font_size))
     font_metrics = QFontMetrics(font)
 

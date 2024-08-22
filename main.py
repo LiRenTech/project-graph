@@ -25,6 +25,13 @@ from assets import assets
 from core.camera import Camera
 from core.data_struct.line import Line
 from core.data_struct.number_vector import NumberVector
+from core.data_struct.rectangle import Rectangle
+from core.effect.effect_concreate import (
+    EffectCuttingFlash,
+    EffectRectangleFlash,
+    EffectRectangleShrink,
+)
+from core.effect.effect_manager import EffectManager
 from core.entity.entity import Entity
 from core.entity.entity_node import EntityNode
 from core.node_manager import NodeManager
@@ -65,7 +72,7 @@ class Canvas(QMainWindow):
 
         # ====== 重要对象绑定
         self.camera = Camera(NumberVector.zero(), 1920, 1080)
-
+        self.effect_manager = EffectManager()
         self.node_manager = NodeManager()
 
         # 所有拖拽的对象的列表（目前只支持一个，未支持框选多个拖拽）
@@ -246,6 +253,7 @@ class Canvas(QMainWindow):
         self.setGeometry(int(new_left), int(new_top), int(new_width), int(new_height))
 
     def tick(self):
+        self.effect_manager.tick()
         self.camera.tick()
         self.update()
 
@@ -284,6 +292,10 @@ class Canvas(QMainWindow):
                     self.connect_from_node = node
                     print("开始连线")
                     self.is_cutting = False
+                    # 加特效
+                    self.effect_manager.add_effect(
+                        EffectRectangleFlash(15, node.body_shape.clone())
+                    )
                     break
             pass
 
@@ -348,6 +360,18 @@ class Canvas(QMainWindow):
                     self.connect_from_node,
                     self.connect_to_node,
                 )
+                if connect_result:
+                    # 加特效
+                    self.effect_manager.add_effect(
+                        EffectRectangleFlash(
+                            15, self.connect_to_node.body_shape.clone()
+                        )
+                    )
+                    self.effect_manager.add_effect(
+                        EffectRectangleFlash(
+                            15, self.connect_from_node.body_shape.clone()
+                        )
+                    )
             self.connect_from_node = None
             self.connect_to_node = None
 
@@ -359,8 +383,21 @@ class Canvas(QMainWindow):
                 # 删除所有准备删除的节点
                 for node in self.warning_nodes:
                     self.node_manager.delete_node(node)
+                    # 加特效
+                    self.effect_manager.add_effect(
+                        EffectRectangleShrink(15, node.body_shape.clone())
+                    )
                 self.warning_nodes.clear()
                 self.is_cutting = False
+                # 加特效
+                self.effect_manager.add_effect(
+                    EffectCuttingFlash(
+                        15,
+                        Line(
+                            self.mouse_right_start_location, self.mouse_right_location
+                        ),
+                    )
+                )
         pass
 
     # 双击
@@ -487,7 +524,11 @@ class Canvas(QMainWindow):
                     2 * self.camera.current_scale,
                     30 * self.camera.current_scale,
                 )
-        self.node_manager.paint(PaintContext(ProjectGraphPainter(painter), self.camera))
+
+        # 上下文对象
+        paint_context = PaintContext(ProjectGraphPainter(painter), self.camera)
+
+        self.node_manager.paint(paint_context)
         # 所有要被切断的线
         for line, _, _ in self.warning_lines:
             PainterUtils.paint_solid_line(
@@ -508,12 +549,16 @@ class Canvas(QMainWindow):
                 QColor(255, 0, 0, 128),
                 int(10 * self.camera.current_scale),
             )
+        # 特效
+        self.effect_manager.paint(paint_context)
         # 绘制细节信息
         paint_details_data(
             painter,
             self.camera,
             [
-                f"当前缩放: {self.camera.current_scale:.2f} location: {self.camera.location}"
+                f"当前缩放: {self.camera.current_scale:.2f}",
+                f"location: {self.camera.location}",
+                f"effect: {len(self.effect_manager.effects)}",
             ],
         )
         pass
