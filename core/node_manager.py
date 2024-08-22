@@ -29,8 +29,8 @@ class NodeManager:
                         "height": h,
                     },
                     inner_text: "text",
-                    uuid: "...",
-                    children: [ "(uuid)" ]
+                    uuid: "(uuid str)",
+                    children: [ "(uuid str)" ]
                 },
             ]
         }
@@ -39,13 +39,39 @@ class NodeManager:
 
         return res
 
-    def load_from_dict(self, data: dict):
+    @staticmethod
+    def refresh_all_uuid(data: dict) -> dict:
         """
-        从字典等可序列化的格式中恢复节点信息
+        刷新所有节点的uuid, 并返回更新后的字典
+        刷新的意义是用户可能会重复复制添加一大堆节点内容，防止出现uuid冲突
         """
-        # 先清空原有节点
-        self.nodes.clear()
+        from uuid import uuid4
+        from copy import deepcopy
+        new_data = deepcopy(data)
+        for node in new_data["nodes"]:
+            # 把每个节点的uuid都改成新的uuid
+            old_uuid = node["uuid"]
+            new_uuid = str(uuid4())
+            node["uuid"] = new_uuid
 
+            for i, other_node in enumerate(new_data["nodes"]):
+                if other_node == node:
+                    continue
+                for j, child_uuid in enumerate(other_node.get("children", [])):
+                    if child_uuid == old_uuid:
+                        other_node["children"][j] = new_uuid
+
+            # for i, child_uuid in enumerate(node.get("children", [])):
+            #     if child_uuid == old_uuid:
+            #         node["children"][i] = new_uuid
+        return new_data
+    
+    def add_from_dict(self, data: dict, location_world: NumberVector, refresh_uuid=True):
+        """
+        从字典等可序列化的格式中添加节点信息
+        """
+        if refresh_uuid:
+            data = self.refresh_all_uuid(data)
         # 开始构建节点本身
         for node_data in data["nodes"]:
             assert isinstance(node_data, dict)
@@ -54,8 +80,8 @@ class NodeManager:
             if body_shape_data["type"] == "Rectangle":
                 body_shape = Rectangle(
                     NumberVector(
-                        body_shape_data["location_left_top"][0],
-                        body_shape_data["location_left_top"][1],
+                        body_shape_data["location_left_top"][0] + location_world.x,
+                        body_shape_data["location_left_top"][1] + location_world.y,
                     ),
                     body_shape_data["width"],
                     body_shape_data["height"],
@@ -81,6 +107,16 @@ class NodeManager:
                 if child is None:
                     continue
                 node.add_child(child)
+        pass
+
+    def load_from_dict(self, data: dict):
+        """
+        从字典等可序列化的格式中恢复节点信息
+        """
+        # 先清空原有节点
+        self.nodes.clear()
+        self.add_from_dict(data, NumberVector(0, 0), refresh_uuid=False)
+        
     
     def get_node_by_uuid(self, uuid: str) -> EntityNode | None:
         for node in self.nodes:

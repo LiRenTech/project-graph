@@ -98,9 +98,14 @@ class Canvas(QMainWindow):
         # 拖拽文件进入窗口相关
         self.is_dragging_file = False  # 是否文件正在拖拽悬浮在窗口上
         self.is_dragging_file_valid = False  # 是否文件拖拽的有效文件
+
+        
         self.dragging_file_location = (
             NumberVector.zero()
-        )  # 拖拽文件悬浮在窗口上的世界位置
+        )
+        """拖拽文件悬浮在窗口上的世界位置"""
+
+        pass
 
     def init_ui(self):
         # 设置窗口标题和尺寸
@@ -195,7 +200,7 @@ class Canvas(QMainWindow):
             if file_path.endswith(".json"):
                 with open(file_path, "r", encoding="utf-8") as f:
                     load_data = json.loads(f.read())
-                    self.node_manager.load_from_dict(load_data)
+                    self.node_manager.add_from_dict(load_data, self.dragging_file_location)
                 event.acceptProposedAction()
                 break
 
