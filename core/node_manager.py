@@ -16,6 +16,78 @@ class NodeManager:
         self.nodes: list[EntityNode] = []
         pass
 
+    def dump_all_nodes(self) -> dict:
+        """
+        将所有节点信息转成字典等可序列化的格式
+        {
+            "nodes": [
+                {
+                    body_shape: {
+                        "type": "Rectangle",
+                        "location_left_top": [x, y],
+                        "width": w,
+                        "height": h,
+                    },
+                    inner_text: "text",
+                    uuid: "...",
+                    children: [ "(uuid)" ]
+                },
+            ]
+        }
+        """
+        res = {"nodes": [node.dump() for node in self.nodes]}
+
+        return res
+
+    def load_from_dict(self, data: dict):
+        """
+        从字典等可序列化的格式中恢复节点信息
+        """
+        # 先清空原有节点
+        self.nodes.clear()
+
+        # 开始构建节点本身
+        for node_data in data["nodes"]:
+            assert isinstance(node_data, dict)
+
+            body_shape_data = node_data["body_shape"]
+            if body_shape_data["type"] == "Rectangle":
+                body_shape = Rectangle(
+                    NumberVector(
+                        body_shape_data["location_left_top"][0],
+                        body_shape_data["location_left_top"][1],
+                    ),
+                    body_shape_data["width"],
+                    body_shape_data["height"],
+                )
+            else:
+                raise ValueError(
+                    f"Unsupported body shape type: {body_shape_data['type']}"
+                )
+
+            node = EntityNode(body_shape)
+            node.inner_text = node_data.get("inner_text", "")
+
+            node.uuid = node_data["uuid"]
+            self.nodes.append(node)
+        
+        # 构建节点之间的连接关系
+        for node_data in data["nodes"]:
+            node = self.get_node_by_uuid(node_data["uuid"])
+            if node is None:
+                continue
+            for child_uuid in node_data.get("children", []):
+                child = self.get_node_by_uuid(child_uuid)
+                if child is None:
+                    continue
+                node.add_child(child)
+    
+    def get_node_by_uuid(self, uuid: str) -> EntityNode | None:
+        for node in self.nodes:
+            if node.uuid == uuid:
+                return node
+        return None
+
     def add_node_by_click(self, location_world: NumberVector):
         self.nodes.append(
             EntityNode(Rectangle(location_world - NumberVector(50, 50), 100, 100))

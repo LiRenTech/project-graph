@@ -1,3 +1,4 @@
+import json
 from PyQt5.QtCore import Qt, QTimer, QUrl
 from PyQt5.QtGui import (
     QIcon,
@@ -37,6 +38,14 @@ from paint.painters import ProjectGraphPainter
 # 只是为了让pyinstaller打包时能打包到exe文件中。
 # 需要进入assets文件夹后在命令行输入指令 `pyrcc5 image.rcc -o assets.py` 来更新assets.py文件
 
+from appdirs import user_data_dir
+import os
+
+APP_NAME = "project-graph"
+APP_AUTHOR = "LiRen"
+
+DATA_DIR = user_data_dir(APP_NAME, APP_AUTHOR)
+print(DATA_DIR)
 
 class Canvas(QMainWindow):
     def __init__(self):
@@ -106,10 +115,35 @@ class Canvas(QMainWindow):
         help_menu.addAction(about_action)
 
     def on_open_file(self):
-        pass
+        # 选择json文件
+        file_path, _ = QFileDialog.getOpenFileName(
+            self, "选择要打开的文件", DATA_DIR, "JSON Files (*.json)"
+        )
+        if file_path == "":
+            return
+        # 读取json文件
+        with open(file_path, "r", encoding="utf-8") as f:
+            load_data = json.loads(f.read())
+            self.node_manager.load_from_dict(load_data)
 
     def on_save_file(self):
-        pass
+        file_path, _ = QFileDialog.getSaveFileName(
+            self, "保存文件", "", "JSON Files (*.json);;All Files (*)"
+        )
+        if file_path:
+            # 如果用户选择了文件并点击了保存按钮
+            # 保存布局文件
+            save_data: dict = self.node_manager.dump_all_nodes()
+
+            # 确保文件扩展名为 .json
+            if not file_path.endswith(".json"):
+                file_path += ".json"
+
+            with open(file_path, "w") as f:
+                json.dump(save_data, f)
+        else:
+            # 如果用户取消了保存操作
+            print("Save operation cancelled.")
 
     @staticmethod
     def on_about():
@@ -464,6 +498,12 @@ class Canvas(QMainWindow):
 def main():
     import sys
     import traceback
+
+    # 确保数据目录存在
+    if not os.path.exists(DATA_DIR):
+        os.makedirs(DATA_DIR)
+        with open(os.path.join(DATA_DIR, "settings.json"), "w", encoding="utf-8") as f:
+            f.write("{}")
 
     try:
         sys.excepthook = sys.__excepthook__

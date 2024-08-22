@@ -1,4 +1,6 @@
 from typing import List
+from uuid import uuid4
+
 from PyQt5.QtGui import QPainter, QColor
 
 from core.camera import Camera
@@ -19,6 +21,7 @@ class EntityNode(Entity):
         self.children: list["EntityNode"] = []
 
         self._inner_text = "..."
+        self.uuid = str(uuid4())
 
         # 是否是被选中的状态
         self.is_selected = False
@@ -32,6 +35,25 @@ class EntityNode(Entity):
     def inner_text(self, value: str):
         self._inner_text = value
         self.adjust_size_by_text()
+
+    def dump(self) -> dict:
+        """
+        转化成字典格式
+        """
+        return {
+            "body_shape": {
+                "type": "Rectangle",
+                "width": self.body_shape.width,
+                "height": self.body_shape.height,
+                "location_left_top": [
+                    self.body_shape.location_left_top.x,
+                    self.body_shape.location_left_top.y,
+                ],
+            },
+            "inner_text": self.inner_text,
+            "children": [child.uuid for child in self.children],
+            "uuid": self.uuid,
+        }
 
     def adjust_size_by_text(self):
         """
