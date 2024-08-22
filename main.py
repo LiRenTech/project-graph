@@ -1,5 +1,13 @@
 from PyQt5.QtCore import Qt, QTimer, QUrl
-from PyQt5.QtGui import QIcon, QPainter, QPaintEvent, QColor, QWheelEvent, QKeyEvent, QMouseEvent
+from PyQt5.QtGui import (
+    QIcon,
+    QPainter,
+    QPaintEvent,
+    QColor,
+    QWheelEvent,
+    QKeyEvent,
+    QMouseEvent,
+)
 from PyQt5.QtWidgets import (
     QApplication,
     QDesktopWidget,
@@ -7,7 +15,8 @@ from PyQt5.QtWidgets import (
     QMainWindow,
     QFileDialog,
     QMessageBox,
-    QPushButton, QInputDialog,
+    QPushButton,
+    QInputDialog,
 )
 
 from assets import assets
@@ -19,11 +28,14 @@ from entity.entity_node import EntityNode
 from core.node_manager import NodeManager
 from paint.paint_elements import paint_details_data, paint_grid
 from paint.paint_utils import PainterUtils
+from paint.paintables import PaintContext
+from paint.painters import ProjectGraphPainter
 
 
 # 是为了引入assets文件夹中的资源文件，看似是灰色的没有用，但实际不能删掉
 # 只是为了让pyinstaller打包时能打包到exe文件中。
 # 需要进入assets文件夹后在命令行输入指令 `pyrcc5 image.rcc -o assets.py` 来更新assets.py文件
+
 
 class Canvas(QMainWindow):
     def __init__(self):
@@ -108,7 +120,7 @@ class Canvas(QMainWindow):
             for node in self.drag_list:
                 if node.is_selected:
                     node.dragging_offset = (
-                            point_world_location - node.body_shape.location_left_top
+                        point_world_location - node.body_shape.location_left_top
                     )
         elif a0.button() == Qt.MouseButton.RightButton:
             self.mouse_right_location = point_world_location
@@ -141,9 +153,15 @@ class Canvas(QMainWindow):
                 self.warning_lines.clear()
                 self.warning_nodes.clear()
                 if self.is_cutting:
-                    cutting_line = Line(self.mouse_right_start_location, self.mouse_right_location)
+                    cutting_line = Line(
+                        self.mouse_right_start_location, self.mouse_right_location
+                    )
                     # 查看切割线是否和其他连线相交
-                    for line, start_node, end_node in self.node_manager.get_all_lines_and_node():
+                    for (
+                        line,
+                        start_node,
+                        end_node,
+                    ) in self.node_manager.get_all_lines_and_node():
                         if line.is_intersecting(cutting_line):
                             # 准备要切断这个线，先进行标注
                             self.warning_lines.append((line, start_node, end_node))
@@ -213,7 +231,9 @@ class Canvas(QMainWindow):
                 self.node_manager.add_node_by_click(click_location)
             else:
                 # 在节点上左键是编辑文字
-                text, ok = QInputDialog.getText(self, '编辑节点文字', '输入新的文字:', text=select_node.inner_text)
+                text, ok = QInputDialog.getText(
+                    self, "编辑节点文字", "输入新的文字:", text=select_node.inner_text
+                )
                 if ok:
                     select_node.inner_text = text
 
@@ -287,7 +307,9 @@ class Canvas(QMainWindow):
                 # 像吸附住了一样画线
                 PainterUtils.paint_arrow(
                     painter,
-                    self.camera.location_world2view(self.connect_from_node.body_shape.center),
+                    self.camera.location_world2view(
+                        self.connect_from_node.body_shape.center
+                    ),
                     self.camera.location_world2view(connect_node.body_shape.center),
                     QColor(255, 255, 255),
                     2 * self.camera.current_scale,
@@ -297,13 +319,15 @@ class Canvas(QMainWindow):
                 # 实时连线
                 PainterUtils.paint_arrow(
                     painter,
-                    self.camera.location_world2view(self.connect_from_node.body_shape.center),
+                    self.camera.location_world2view(
+                        self.connect_from_node.body_shape.center
+                    ),
                     self.camera.location_world2view(self.mouse_right_location),
                     QColor(255, 255, 255),
                     2 * self.camera.current_scale,
                     30 * self.camera.current_scale,
                 )
-        self.node_manager.paint(painter, self.camera)
+        self.node_manager.paint(PaintContext(ProjectGraphPainter(painter), self.camera))
         # 所有要被切断的线
         for line, _, _ in self.warning_lines:
             PainterUtils.paint_solid_line(

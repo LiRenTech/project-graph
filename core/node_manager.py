@@ -1,11 +1,12 @@
 from PyQt5.QtGui import QPainter, QColor
 
-from camera import Camera
+from core.camera import Camera
 from data_struct.line import Line
 from data_struct.number_vector import NumberVector
 from data_struct.rectangle import Rectangle
 from entity.entity_node import EntityNode
 from paint.paint_utils import PainterUtils
+from paint.paintables import PaintContext
 
 
 class NodeManager:
@@ -60,17 +61,17 @@ class NodeManager:
                 lines.append((Line(from_point, to_point), node, child))
         return lines
 
-    def paint(self, painter: QPainter, camera: Camera):
+    def paint(self, context: PaintContext):
         # 画节点本身
         for node in self.nodes:
-            node.paint(painter, camera)
+            node.paint(context)
 
             for line in self._get_all_lines():
                 PainterUtils.paint_arrow(
-                    painter,
-                    camera.location_world2view(line.start),
-                    camera.location_world2view(line.end),
+                    context.painter.q_painter(),
+                    context.camera.location_world2view(line.start),
+                    context.camera.location_world2view(line.end),
                     QColor(255, 255, 255),
-                    2 * camera.current_scale,
-                    30 * camera.current_scale,
+                    2 * context.camera.current_scale,
+                    30 * context.camera.current_scale,
                 )

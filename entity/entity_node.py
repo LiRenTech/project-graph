@@ -1,15 +1,18 @@
+from typing import List
 from PyQt5.QtGui import QPainter, QColor
 
 from core.camera import Camera
 from data_struct.number_vector import NumberVector
+from data_struct.text import Text
 from paint.paint_utils import PainterUtils
+from paint.paintables import PaintContext, Paintable
 from .entity import Entity
 
 
 class EntityNode(Entity):
     def __init__(self, body_shape):
         super().__init__(body_shape)
-        self.children: list['EntityNode'] = []
+        self.children: list["EntityNode"] = []
 
         self._inner_text = "..."
 
@@ -49,34 +52,49 @@ class EntityNode(Entity):
         self.children.remove(entity_node)
         return True
 
-    def paint(self, painter: QPainter, camera: 'Camera'):
-        location = camera.location_world2view(self.body_shape.location_left_top)
+    def get_components(self) -> List[Paintable]:
+        return super().get_components()
+
+    def paint(self, context: PaintContext):
+        location = context.camera.location_world2view(self.body_shape.location_left_top)
+        # 绘制边框
         PainterUtils.paint_rect_from_left_top(
-            painter,
+            context.painter.q_painter(),
             location,
-            self.body_shape.width * camera.current_scale,
-            self.body_shape.height * camera.current_scale,
+            self.body_shape.width * context.camera.current_scale,
+            self.body_shape.height * context.camera.current_scale,
             QColor(24, 161, 255, 128),
             QColor(106, 203, 255),
-            int(1 * camera.current_scale)
+            int(1 * context.camera.current_scale),
         )
+
+        # context.painter.paint_rect(
+        #     self.body_shape
+        # )
+
+        # 绘制文字
         PainterUtils.paint_word_from_left_top(
-            painter,
-            camera.location_world2view(self.body_shape.location_left_top),
+            context.painter.q_painter(),
+            context.camera.location_world2view(self.body_shape.location_left_top),
             self.inner_text,
-            20 * camera.current_scale,
+            20 * context.camera.current_scale,
             QColor(255, 255, 255),
         )
+
+        # context.painter.paint_text(
+        #     Text(self.body_shape.location_left_top, self._inner_text)
+        # )
+
         if self.is_selected:
             PainterUtils.paint_rect_from_left_top(
-                painter,
-                camera.location_world2view(
+                context.painter.q_painter(),
+                context.camera.location_world2view(
                     self.body_shape.location_left_top - NumberVector(10, 10)
                 ),
-                (self.body_shape.width + 20) * camera.current_scale,
-                (self.body_shape.height + 20) * camera.current_scale,
+                (self.body_shape.width + 20) * context.camera.current_scale,
+                (self.body_shape.height + 20) * context.camera.current_scale,
                 QColor(0, 0, 0, 0),
                 QColor(106, 203, 255),
-                int(3 * camera.current_scale)
+                int(3 * context.camera.current_scale),
             )
         pass

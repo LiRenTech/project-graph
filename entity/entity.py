@@ -1,10 +1,12 @@
 from abc import ABC
+from typing import List
 
 from data_struct.number_vector import NumberVector
 from data_struct.rectangle import Rectangle
+from paint.paintables import Paintable
 
 
-class Entity(ABC):
+class Entity(Paintable, ABC):
     """
     实体类
     场景里参与碰撞检测的都算实体
@@ -31,3 +33,6 @@ class Entity(ABC):
         :return:
         """
         self.body_shape.location_left_top = location
+    
+    def get_components(self) -> List[Paintable]:
+        return []
