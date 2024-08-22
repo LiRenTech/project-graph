@@ -213,7 +213,7 @@ class PainterUtils:
             text: str,
             font_size: float,
             color: QColor,
-    ):
+    ) -> tuple[int, int]:
         """
         绘制一个文本，其中心坐标为中心point，文本为text，字体大小为font_size，颜色为color
         :param painter: QPainter对象
@@ -238,21 +238,23 @@ class PainterUtils:
 
             # 获取文本的宽度和高度
             text_width = font_metrics.width(text)
-            # text_height = font_metrics.height()
+            text_height = font_metrics.height()
             ascent = font_metrics.ascent()
 
             # 计算文本中心点相对于左上角的位置
             left_top_x = center.x() - text_width // 2
-            left_top_y = center.y() - ascent
+            left_top_y = center.y() - (text_height // 2) + ascent 
 
             # 创建新的左上角坐标
             left_top = QPoint(left_top_x, left_top_y)
 
             # 绘制文本
             painter.drawText(left_top, text)
+            return text_width, text_height
         except Exception as e:
             print(f"Exception type: {type(e)}")
             print(f"Error message: {str(e)}")
             import traceback
 
             traceback.print_exc()
+            return 0, 0

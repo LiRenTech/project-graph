@@ -356,6 +356,7 @@ class Canvas(QMainWindow):
                 f"当前缩放: {self.camera.current_scale:.2f} location: {self.camera.location}"
             ],
         )
+        pass
 
 
 def main():

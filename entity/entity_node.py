@@ -6,11 +6,14 @@ from data_struct.number_vector import NumberVector
 from data_struct.text import Text
 from paint.paint_utils import PainterUtils
 from paint.paintables import PaintContext, Paintable
-from tools.string_tools import get_width_by_file_name
+from tools.string_tools import get_size_by_text, get_width_by_file_name
 from .entity import Entity
 
 
 class EntityNode(Entity):
+    FONT_SIZE = 20  # 字体大小, 不是像素
+    PADDING = 20  # 内边距，像素
+
     def __init__(self, body_shape):
         super().__init__(body_shape)
         self.children: list["EntityNode"] = []
@@ -35,7 +38,9 @@ class EntityNode(Entity):
         根据文本内容调整节点大小
         :return:
         """
-        self.body_shape.width = get_width_by_file_name(self._inner_text)
+        width, height, ascent = get_size_by_text(self.FONT_SIZE, self._inner_text)
+        self.body_shape.width = width + 2 * self.PADDING
+        self.body_shape.height = height + 2 * self.PADDING
         pass
 
     def add_child(self, entity_node) -> bool:
@@ -58,11 +63,11 @@ class EntityNode(Entity):
         return super().get_components()
 
     def paint(self, context: PaintContext):
-        location = context.camera.location_world2view(self.body_shape.location_left_top)
+
         # 绘制边框
         PainterUtils.paint_rect_from_left_top(
             context.painter.q_painter(),
-            location,
+            context.camera.location_world2view(self.body_shape.location_left_top),
             self.body_shape.width * context.camera.current_scale,
             self.body_shape.height * context.camera.current_scale,
             QColor(24, 161, 255, 128),
@@ -70,22 +75,13 @@ class EntityNode(Entity):
             int(1 * context.camera.current_scale),
         )
 
-        # context.painter.paint_rect(
-        #     self.body_shape
-        # )
-
-        # 绘制文字
-        PainterUtils.paint_word_from_left_top(
+        PainterUtils.paint_word_from_center(
             context.painter.q_painter(),
-            context.camera.location_world2view(self.body_shape.location_left_top),
+            context.camera.location_world2view(self.body_shape.center),
             self.inner_text,
-            20 * context.camera.current_scale,
+            self.FONT_SIZE * context.camera.current_scale,
             QColor(255, 255, 255),
         )
-
-        # context.painter.paint_text(
-        #     Text(self.body_shape.location_left_top, self._inner_text)
-        # )
 
         if self.is_selected:
             PainterUtils.paint_rect_from_left_top(
