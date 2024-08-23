@@ -1,0 +1,8 @@
+[project]
+name = "project-graph-qt"
+version = "0.1.0"
+
+
+[tool.black]
+line-length = 88
+target-version = ['py36', 'py37', 'py38']

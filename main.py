@@ -21,7 +21,13 @@ from PyQt5.QtWidgets import (
     QInputDialog,
 )
 
-from assets import assets
+try:
+    from assets import assets
+except:
+    from PyQt5 import pyrcc_main
+
+    pyrcc_main.processResourceFile(["assets/assets.rcc"], "assets/assets.py", True)
+    from assets import assets
 from core.camera import Camera
 from core.data_struct.line import Line
 from core.data_struct.number_vector import NumberVector
