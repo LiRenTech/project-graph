@@ -143,3 +143,7 @@ class NumberVector:
 
     def to_qt(self) -> QPointF:
         return QPointF(self.x, self.y)
+    
+    def distance_to(self, other: "NumberVector") -> float:
+        """计算两个向量的距离"""
+        return (self - other).__len__()

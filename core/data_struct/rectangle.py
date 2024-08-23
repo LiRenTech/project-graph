@@ -80,6 +80,22 @@ class Rectangle:
             self.location_left_top.y + self.height / 2,
         )
 
+    @property
+    def left_center(self) -> NumberVector:
+        return NumberVector(self.location_left_top.x, self.center.y)
+
+    @property
+    def right_center(self) -> NumberVector:
+        return NumberVector(self.location_left_top.x + self.width, self.center.y)
+
+    @property
+    def top_center(self) -> NumberVector:
+        return NumberVector(self.center.x, self.location_left_top.y)
+
+    @property
+    def bottom_center(self) -> NumberVector:
+        return NumberVector(self.center.x, self.location_left_top.y + self.height)
+
     def is_collision(self, rect: "Rectangle", margin: float = 0) -> bool:
         """判断self是否与rect之间的最小边距小于margin。
         当margin=0时，此时为判断self与rect是否重叠

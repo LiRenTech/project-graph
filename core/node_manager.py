@@ -52,8 +52,8 @@ class NodeManager:
                 if node == self.cursor_node:
                     continue
                 if node.body_shape.center.y < self.cursor_node.body_shape.center.y:
-                    dist = abs(
-                        node.body_shape.center.y - self.cursor_node.body_shape.center.y
+                    dist = node.body_shape.bottom_center.distance_to(
+                        self.cursor_node.body_shape.top_center
                     )
                     if dist < min_dist:
                         min_dist = dist
@@ -68,8 +68,8 @@ class NodeManager:
                 if node == self.cursor_node:
                     continue
                 if node.body_shape.center.y > self.cursor_node.body_shape.center.y:
-                    dist = abs(
-                        node.body_shape.center.y - self.cursor_node.body_shape.center.y
+                    dist = node.body_shape.top_center.distance_to(
+                        self.cursor_node.body_shape.bottom_center
                     )
                     if dist < min_dist:
                         min_dist = dist
@@ -84,8 +84,8 @@ class NodeManager:
                 if node == self.cursor_node:
                     continue
                 if node.body_shape.center.x < self.cursor_node.body_shape.center.x:
-                    dist = abs(
-                        node.body_shape.center.x - self.cursor_node.body_shape.center.x
+                    dist = node.body_shape.right_center.distance_to(
+                        self.cursor_node.body_shape.left_center
                     )
                     if dist < min_dist:
                         min_dist = dist
@@ -100,8 +100,8 @@ class NodeManager:
                 if node == self.cursor_node:
                     continue
                 if node.body_shape.center.x > self.cursor_node.body_shape.center.x:
-                    dist = abs(
-                        node.body_shape.center.x - self.cursor_node.body_shape.center.x
+                    dist = node.body_shape.left_center.distance_to(
+                        self.cursor_node.body_shape.right_center
                     )
                     if dist < min_dist:
                         min_dist = dist
