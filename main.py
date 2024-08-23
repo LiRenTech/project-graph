@@ -339,7 +339,8 @@ class Canvas(QMainWindow):
                 for node in self.drag_list:
                     new_left_top = point_world_location - node.dragging_offset
                     d_location = new_left_top - node.body_shape.location_left_top
-                    node.move(d_location)
+                    # node.move(d_location)
+                    self.node_manager.move_node(node, d_location)
             elif a0.buttons() == Qt.MouseButton.RightButton:
                 self.mouse_right_location = point_world_location
                 self.warning_lines.clear()

@@ -32,11 +32,12 @@ class PainterUtils:
         pen = QPen(color, width)  # 创建QPen并设置颜色和宽度
         painter.setPen(pen)
         painter.setBrush(color)
-        painter.setRenderHint(QPainter.Antialiasing)
+        
+        # painter.setRenderHint(QPainter.Antialiasing)
         painter.drawLine(int(point1.x), int(point1.y), int(point2.x), int(point2.y))
-        painter.setPen(QColor(0, 0, 0, 0))
-        painter.setBrush(QColor(0, 0, 0, 0))
-        painter.setRenderHint(QPainter.Antialiasing, False)
+        # painter.setPen(QColor(0, 0, 0, 0))
+        # painter.setBrush(QColor(0, 0, 0, 0))
+        # painter.setRenderHint(QPainter.Antialiasing, False)
         pass
 
     @staticmethod

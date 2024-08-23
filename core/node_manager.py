@@ -14,6 +14,10 @@ class NodeManager:
 
     def __init__(self):
         self.nodes: list[EntityNode] = []
+        
+        self.lines: list[Line] = []
+        """lines只用于绘制的时候给一个缓存，不参与逻辑运算，只在改变的时候重新计算"""
+
         pass
 
     def dump_all_nodes(self) -> dict:
@@ -40,7 +44,7 @@ class NodeManager:
         return res
 
     @staticmethod
-    def refresh_all_uuid(data: dict) -> dict:
+    def _refresh_all_uuid(data: dict) -> dict:
         """
         刷新所有节点的uuid, 并返回更新后的字典
         刷新的意义是用户可能会重复复制添加一大堆节点内容，防止出现uuid冲突
@@ -71,7 +75,7 @@ class NodeManager:
         从字典等可序列化的格式中添加节点信息
         """
         if refresh_uuid:
-            data = self.refresh_all_uuid(data)
+            data = self._refresh_all_uuid(data)
         # 开始构建节点本身
         for node_data in data["nodes"]:
             assert isinstance(node_data, dict)
@@ -107,6 +111,8 @@ class NodeManager:
                 if child is None:
                     continue
                 node.add_child(child)
+
+        self._update_lines()
         pass
 
     def load_from_dict(self, data: dict):
@@ -116,6 +122,7 @@ class NodeManager:
         # 先清空原有节点
         self.nodes.clear()
         self.add_from_dict(data, NumberVector(0, 0), refresh_uuid=False)
+        self._update_lines()
         
     
     def get_node_by_uuid(self, uuid: str) -> EntityNode | None:
@@ -123,6 +130,10 @@ class NodeManager:
             if node.uuid == uuid:
                 return node
         return None
+
+    def move_node(self, node: EntityNode, d_location: NumberVector):
+        node.move(d_location)
+        self._update_lines()
 
     def add_node_by_click(self, location_world: NumberVector):
         self.nodes.append(
@@ -136,15 +147,20 @@ class NodeManager:
         for father_node in self.nodes:
             if node in father_node.children:
                 father_node.children.remove(node)
+        self._update_lines()
 
     def connect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
-            return from_node.add_child(to_node)
+            res = from_node.add_child(to_node)
+            self._update_lines()
+            return res
         return False
 
     def disconnect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
-            return from_node.remove_child(to_node)
+            res = from_node.remove_child(to_node)
+            self._update_lines()
+            return res
         return False
 
     def _get_all_lines(self) -> list[Line]:
@@ -157,6 +173,10 @@ class NodeManager:
 
                 lines.append(Line(from_point, to_point))
         return lines
+    
+    def _update_lines(self):
+        print("update lines")
+        self.lines = self._get_all_lines()
 
     def get_all_lines_and_node(self) -> list[tuple[Line, EntityNode, EntityNode]]:
         lines = []
@@ -174,12 +194,12 @@ class NodeManager:
             # 画节点本身
             node.paint(context)
             # 连线
-            for line in self._get_all_lines():
+            for line in self.lines:
                 PainterUtils.paint_arrow(
                     context.painter.q_painter(),
                     context.camera.location_world2view(line.start),
                     context.camera.location_world2view(line.end),
-                    QColor(23, 159, 255, 200),
+                    QColor(23, 159, 255),
                     4 * context.camera.current_scale,
                     30 * context.camera.current_scale,
                 )
