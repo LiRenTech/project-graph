@@ -12,6 +12,7 @@ from core.data_struct.number_vector import NumberVector
 
 
 class PainterUtils:
+
     @staticmethod
     def paint_solid_path(
         painter: QPainter,
@@ -19,6 +20,7 @@ class PainterUtils:
         color: QColor,
         width: float,
     ):
+        """这个多余了，其实当时是怀疑qt渲染直线有性能问题所以换了个方法，但并不是"""
         pen = QPen(color, width)  # 创建QPen并设置颜色和宽度
         painter.setPen(pen)
         painter.setBrush(color)

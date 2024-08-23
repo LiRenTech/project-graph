@@ -60,16 +60,12 @@ class NodeManager:
             new_uuid = str(uuid4())
             node["uuid"] = new_uuid
 
-            for i, other_node in enumerate(new_data["nodes"]):
+            for _, other_node in enumerate(new_data["nodes"]):
                 if other_node == node:
                     continue
                 for j, child_uuid in enumerate(other_node.get("children", [])):
                     if child_uuid == old_uuid:
                         other_node["children"][j] = new_uuid
-
-            # for i, child_uuid in enumerate(node.get("children", [])):
-            #     if child_uuid == old_uuid:
-            #         node["children"][i] = new_uuid
         return new_data
 
     def add_from_dict(
