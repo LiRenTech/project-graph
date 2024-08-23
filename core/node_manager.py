@@ -8,13 +8,14 @@ from core.entity.entity_node import EntityNode
 from core.paint.paint_utils import PainterUtils
 from core.paint.paintables import PaintContext
 
+from time import perf_counter_ns
 
 class NodeManager:
     """管理所有节点"""
 
     def __init__(self):
         self.nodes: list[EntityNode] = []
-        
+
         self.lines: list[Line] = []
         """lines只用于绘制的时候给一个缓存，不参与逻辑运算，只在改变的时候重新计算"""
 
@@ -51,6 +52,7 @@ class NodeManager:
         """
         from uuid import uuid4
         from copy import deepcopy
+
         new_data = deepcopy(data)
         for node in new_data["nodes"]:
             # 把每个节点的uuid都改成新的uuid
@@ -69,8 +71,10 @@ class NodeManager:
             #     if child_uuid == old_uuid:
             #         node["children"][i] = new_uuid
         return new_data
-    
-    def add_from_dict(self, data: dict, location_world: NumberVector, refresh_uuid=True):
+
+    def add_from_dict(
+        self, data: dict, location_world: NumberVector, refresh_uuid=True
+    ):
         """
         从字典等可序列化的格式中添加节点信息
         """
@@ -100,7 +104,7 @@ class NodeManager:
 
             node.uuid = node_data["uuid"]
             self.nodes.append(node)
-        
+
         # 构建节点之间的连接关系
         for node_data in data["nodes"]:
             node = self.get_node_by_uuid(node_data["uuid"])
@@ -123,8 +127,7 @@ class NodeManager:
         self.nodes.clear()
         self.add_from_dict(data, NumberVector(0, 0), refresh_uuid=False)
         self._update_lines()
-        
-    
+
     def get_node_by_uuid(self, uuid: str) -> EntityNode | None:
         for node in self.nodes:
             if node.uuid == uuid:
@@ -173,7 +176,7 @@ class NodeManager:
 
                 lines.append(Line(from_point, to_point))
         return lines
-    
+
     def _update_lines(self):
         print("update lines")
         self.lines = self._get_all_lines()
@@ -190,16 +193,16 @@ class NodeManager:
         return lines
 
     def paint(self, context: PaintContext):
+        # 画节点本身
         for node in self.nodes:
-            # 画节点本身
             node.paint(context)
-            # 连线
-            for line in self.lines:
-                PainterUtils.paint_arrow(
-                    context.painter.q_painter(),
-                    context.camera.location_world2view(line.start),
-                    context.camera.location_world2view(line.end),
-                    QColor(23, 159, 255),
-                    4 * context.camera.current_scale,
-                    30 * context.camera.current_scale,
-                )
+        # 连线
+        for line in self.lines:
+            PainterUtils.paint_arrow(
+                context.painter.q_painter(),
+                context.camera.location_world2view(line.start),
+                context.camera.location_world2view(line.end),
+                QColor(23, 159, 255),
+                4 * context.camera.current_scale,
+                30 * context.camera.current_scale,
+            )

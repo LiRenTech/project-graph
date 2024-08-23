@@ -5,13 +5,35 @@
 import traceback
 
 from PyQt5.QtCore import QPoint, QPointF, Qt
-from PyQt5.QtGui import QPainter, QColor, QPen, QFont, QFontMetrics
+from PyQt5.QtGui import QPainter, QColor, QPen, QFont, QFontMetrics, QPainterPath
 
 from core.data_struct.circle import Circle
 from core.data_struct.number_vector import NumberVector
 
 
 class PainterUtils:
+    @staticmethod
+    def paint_solid_path(
+        painter: QPainter,
+        points: list[NumberVector],
+        color: QColor,
+        width: float,
+    ):
+        pen = QPen(color, width)  # 创建QPen并设置颜色和宽度
+        painter.setPen(pen)
+        painter.setBrush(color)
+        path = QPainterPath()
+        if len(points) == 1:
+            return
+        for i, location in enumerate(points):
+            if i == 0:
+                path.moveTo(int(location.x), int(location.y))
+            else:
+                path.lineTo(int(location.x), int(location.y))
+        painter.drawPath(path)
+        pass
+    
+
     @staticmethod
     def paint_solid_line(
         painter: QPainter,
