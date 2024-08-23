@@ -168,8 +168,8 @@ class Camera:
 
     def get_world2view_transform(self) -> QTransform:
         q_translate_center = QTransform().translate(-self.location.x, -self.location.y)
-        q_sacle = QTransform().scale(self.current_scale, self.current_scale)
+        q_scale = QTransform().scale(self.current_scale, self.current_scale)
         q_translate_offset = QTransform().translate(
             self.view_width / 2, self.view_height / 2
         )
-        return q_translate_center * q_sacle * q_translate_offset
+        return q_translate_center * q_scale * q_translate_offset

@@ -26,7 +26,7 @@ from core.camera import Camera
 from core.data_struct.line import Line
 from core.data_struct.number_vector import NumberVector
 from core.data_struct.rectangle import Rectangle
-from core.effect.effect_concreate import (
+from core.effect.effect_concrete import (
     EffectCuttingFlash,
     EffectRectangleFlash,
     EffectRectangleShrink,
