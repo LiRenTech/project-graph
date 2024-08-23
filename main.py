@@ -511,24 +511,22 @@ class Canvas(QMainWindow):
         elif key == 16777220:
             # Qt.Key.Key_Enter 这里写这个无效
             # 回车键，如果当前有正在选中的节点，则进入编辑模式
-            if self.drag_list:
-                select_node = self.drag_list[0]
+            if self.node_manager.cursor_node is not None:
                 # 在节点上左键是编辑文字
                 text, ok = QInputDialog.getText(
-                    self, "编辑节点文字", "输入新的文字:", text=select_node.inner_text
+                    self, "编辑节点文字", "输入新的文字:", text=self.node_manager.cursor_node.inner_text
                 )
                 if ok:
-                    select_node.inner_text = text
+                    self.node_manager.cursor_node.inner_text = text
 
         elif key == Qt.Key.Key_Left:
-            # TODO: 这里打算增加方向键切换正在选择的节点的功能，以快速修改节点内文字
-            print("left")
+            self.node_manager.move_cursor('left')
         elif key == Qt.Key.Key_Right:
-            print("right")
+            self.node_manager.move_cursor('right')
         elif key == Qt.Key.Key_Up:
-            print("up")
+            self.node_manager.move_cursor('up')
         elif key == Qt.Key.Key_Down:
-            print("down")
+            self.node_manager.move_cursor('down')
 
     def keyReleaseEvent(self, a0: QKeyEvent | None):
         assert a0 is not None

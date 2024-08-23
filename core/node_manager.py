@@ -3,6 +3,7 @@ from time import perf_counter_ns
 from PyQt5.QtGui import QColor, QPainter
 
 from core.camera import Camera
+from core.data_struct.circle import Circle
 from core.data_struct.curve import ConnectCurve
 from core.data_struct.line import Line
 from core.data_struct.number_vector import NumberVector
@@ -21,10 +22,90 @@ class NodeManager:
     def __init__(self):
         self.nodes: list[EntityNode] = []
 
-        self.lines: list[Line] = []
+        self._lines: list[Line] = []
         """lines只用于绘制的时候给一个缓存，不参与逻辑运算，只在改变的时候重新计算"""
 
+        self.cursor_node: EntityNode | None = None
+        """有一个游标在节点群上移动，这个游标通过上下左右或者点击更改附着的节点"""
+
         pass
+
+    def move_cursor(self, direction: str):
+        """
+        移动游标，方向为上下左右键
+        """
+        if self.cursor_node is None:
+            # 随机选一个节点作为游标
+            if self.nodes:
+                self.cursor_node = self.nodes[0]
+            return
+        # 当前一定 有游标
+        if direction == "up":
+            # 搜一个距离自己上边缘最近的节点
+            min_dist = float("inf")
+            min_node = None
+            for node in self.nodes:
+                if node == self.cursor_node:
+                    continue
+                if node.body_shape.center.y < self.cursor_node.body_shape.center.y:
+                    dist = abs(
+                        node.body_shape.center.y - self.cursor_node.body_shape.center.y
+                    )
+                    if dist < min_dist:
+                        min_dist = dist
+                        min_node = node
+            if min_node is not None:
+                self.cursor_node = min_node
+        elif direction == "down":
+            # 搜一个距离自己下边缘最近的节点
+            min_dist = float("inf")
+            min_node = None
+            for node in self.nodes:
+                if node == self.cursor_node:
+                    continue
+                if node.body_shape.center.y > self.cursor_node.body_shape.center.y:
+                    dist = abs(
+                        node.body_shape.center.y - self.cursor_node.body_shape.center.y
+                    )
+                    if dist < min_dist:
+                        min_dist = dist
+                        min_node = node
+            if min_node is not None:
+                self.cursor_node = min_node
+        elif direction == "left":
+            # 搜一个距离自己左边缘最近的节点
+            min_dist = float("inf")
+            min_node = None
+            for node in self.nodes:
+                if node == self.cursor_node:
+                    continue
+                if node.body_shape.center.x < self.cursor_node.body_shape.center.x:
+                    dist = abs(
+                        node.body_shape.center.x - self.cursor_node.body_shape.center.x
+                    )
+                    if dist < min_dist:
+                        min_dist = dist
+                        min_node = node
+            if min_node is not None:
+                self.cursor_node = min_node
+        elif direction == "right":
+            # 搜一个距离自己右边缘最近的节点
+            min_dist = float("inf")
+            min_node = None
+            for node in self.nodes:
+                if node == self.cursor_node:
+                    continue
+                if node.body_shape.center.x > self.cursor_node.body_shape.center.x:
+                    dist = abs(
+                        node.body_shape.center.x - self.cursor_node.body_shape.center.x
+                    )
+                    if dist < min_dist:
+                        min_dist = dist
+                        min_node = node
+            if min_node is not None:
+                self.cursor_node = min_node
+        else:
+            pass
 
     def dump_all_nodes(self) -> dict:
         """
@@ -180,7 +261,7 @@ class NodeManager:
 
     def _update_lines(self):
         print("update lines")
-        self.lines = self._get_all_lines()
+        self._lines = self._get_all_lines()
 
     def get_all_lines_and_node(self) -> list[tuple[Line, EntityNode, EntityNode]]:
         lines = []
@@ -201,7 +282,7 @@ class NodeManager:
         context.painter.q_painter().setTransform(
             context.camera.get_world2view_transform()
         )
-        for line in self.lines:
+        for line in self._lines:
             context.painter.paint_curve(ConnectCurve(line.start, line.end))
             # PainterUtils.paint_arrow(
             #     context.painter.q_painter(),
@@ -212,3 +293,17 @@ class NodeManager:
             #     30 * context.camera.current_scale,
             # )
         context.painter.q_painter().resetTransform()
+        # 画游标
+        if self.cursor_node is not None:
+            PainterUtils.paint_circle(
+                context.painter.q_painter(),
+                Circle(
+                    context.camera.location_world2view(
+                        self.cursor_node.body_shape.location_left_top
+                    ),
+                    15 * context.camera.current_scale,
+                ),
+                QColor(78, 201, 176),
+                QColor(45, 128, 106, 128),
+                4 * context.camera.current_scale,
+            )
