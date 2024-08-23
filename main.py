@@ -1,4 +1,7 @@
 import json
+import platform
+import subprocess
+from pathlib import Path
 
 from PyQt5.QtCore import Qt, QTimer, QUrl
 from PyQt5.QtGui import (
@@ -21,6 +24,8 @@ from PyQt5.QtWidgets import (
     QMessageBox,
     QPushButton,
 )
+
+from core.tools.file_tools import read_file
 
 try:
     from assets import assets
@@ -202,13 +207,18 @@ class Canvas(QMainWindow):
 
         for url in event.mimeData().urls():
             print(url)
-            file_path = url.toLocalFile()
+            file_path: str = url.toLocalFile()
+            print(file_path)
             if file_path.endswith(".json"):
-                with open(file_path, "r", encoding="utf-8") as f:
-                    load_data = json.loads(f.read())
-                    self.node_manager.add_from_dict(
-                        load_data, self.dragging_file_location
+                load_data = json.loads(read_file(Path(file_path)))
+                print(load_data)
+                if "nodes" not in load_data:
+                    # 不是合法的节点图文件
+                    QMessageBox.warning(
+                        self, "错误", "文件内容不正确，无法打开。", QMessageBox.Ok
                     )
+                    return
+                self.node_manager.add_from_dict(load_data, self.dragging_file_location)
                 event.acceptProposedAction()
                 break
 
