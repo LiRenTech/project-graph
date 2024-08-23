@@ -330,17 +330,16 @@ class NodeManager:
         context.painter.q_painter().resetTransform()
         # 画游标
         if self.cursor_node is not None:
-            PainterUtils.paint_circle(
+            PainterUtils.paint_rect_from_left_top(
                 context.painter.q_painter(),
-                Circle(
-                    context.camera.location_world2view(
-                        self.cursor_node.body_shape.location_left_top
-                    ),
-                    15 * context.camera.current_scale,
+                context.camera.location_world2view(
+                    self.cursor_node.body_shape.location_left_top - NumberVector(5, 5)
                 ),
-                QColor(78, 201, 176),
-                QColor(45, 128, 106, 128),
-                4 * context.camera.current_scale,
+                context.camera.current_scale * (self.cursor_node.body_shape.width + 10),
+                context.camera.current_scale * (self.cursor_node.body_shape.height + 10),
+                QColor(255, 255, 255, 0),
+                QColor(255, 255, 255, 128),
+                int(5 * context.camera.current_scale),
             )
         # 画虚拟的待生长的节点
         if self.grow_node_location is not None and self.cursor_node is not None:
