@@ -28,6 +28,10 @@ class NodeManager:
         self.cursor_node: EntityNode | None = None
         """有一个游标在节点群上移动，这个游标通过上下左右或者点击更改附着的节点"""
 
+        self.grow_node_location: NumberVector | None = None
+        """相对于cursor_node的位置，看成一个相对位置矢量，世界坐标格式，用于生长节点"""
+        self.grow_node_inner_text: str = ""
+        """生长节点的内置文本"""
         pass
 
     def move_cursor(self, direction: str):
@@ -106,6 +110,44 @@ class NodeManager:
                 self.cursor_node = min_node
         else:
             pass
+
+    def is_grow_node_prepared(self) -> bool:
+        """
+        是否已经准备好生长节点
+        """
+        return self.grow_node_location is not None
+
+    def grow_node(self):
+        """
+        生长节点，按下Tab的时候使用
+        """
+        if self.cursor_node is None:
+            return
+        self.grow_node_location = NumberVector(400, 0)
+        self.grow_node_inner_text = "New Node"
+        pass
+
+    def grow_node_cancel(self):
+        """
+        生长节点取消
+        """
+        self.grow_node_location = None
+        self.grow_node_inner_text = ""
+        pass
+
+    def grow_node_confirm(self):
+        """
+        生长节点确认，再次按下tab的时候使用
+        """
+        if self.cursor_node is None:
+            return
+        if self.grow_node_location is None:
+            return
+        new_node = self.add_node_by_click(
+            self.cursor_node.body_shape.center + self.grow_node_location
+        )
+        self.connect_node(self.cursor_node, new_node)
+        self.grow_node_cancel()
 
     def dump_all_nodes(self) -> dict:
         """
@@ -220,10 +262,10 @@ class NodeManager:
         node.move(d_location)
         self._update_lines()
 
-    def add_node_by_click(self, location_world: NumberVector):
-        self.nodes.append(
-            EntityNode(Rectangle(location_world - NumberVector(50, 50), 100, 100))
-        )
+    def add_node_by_click(self, location_world: NumberVector) -> EntityNode:
+        res = EntityNode(Rectangle(location_world - NumberVector(50, 50), 100, 100))
+        self.nodes.append(res)
+        return res
 
     def delete_node(self, node: EntityNode):
         if node in self.nodes:
@@ -284,14 +326,7 @@ class NodeManager:
         )
         for line in self._lines:
             context.painter.paint_curve(ConnectCurve(line.start, line.end))
-            # PainterUtils.paint_arrow(
-            #     context.painter.q_painter(),
-            #     context.camera.location_world2view(line.start),
-            #     context.camera.location_world2view(line.end),
-            #     QColor(23, 159, 255),
-            #     4 * context.camera.current_scale,
-            #     30 * context.camera.current_scale,
-            # )
+
         context.painter.q_painter().resetTransform()
         # 画游标
         if self.cursor_node is not None:
@@ -306,4 +341,29 @@ class NodeManager:
                 QColor(78, 201, 176),
                 QColor(45, 128, 106, 128),
                 4 * context.camera.current_scale,
+            )
+        # 画虚拟的待生长的节点
+        if self.grow_node_location is not None and self.cursor_node is not None:
+            PainterUtils.paint_circle(
+                context.painter.q_painter(),
+                Circle(
+                    context.camera.location_world2view(
+                        self.cursor_node.body_shape.location_left_top
+                        + self.grow_node_location
+                    ),
+                    50 * context.camera.current_scale,
+                ),
+                QColor(255, 255, 255, 128),
+                QColor(255, 255, 255, 128),
+                4 * context.camera.current_scale,
+            )
+            PainterUtils.paint_arrow(
+                context.painter.q_painter(),
+                context.camera.location_world2view(self.cursor_node.body_shape.center),
+                context.camera.location_world2view(
+                    self.grow_node_location + self.cursor_node.body_shape.center
+                ),
+                QColor(23, 159, 255),
+                4 * context.camera.current_scale,
+                30 * context.camera.current_scale,
             )

@@ -521,12 +521,24 @@ class Canvas(QMainWindow):
 
         elif key == Qt.Key.Key_Left:
             self.node_manager.move_cursor('left')
+            self.node_manager.grow_node_cancel()
         elif key == Qt.Key.Key_Right:
             self.node_manager.move_cursor('right')
+            self.node_manager.grow_node_cancel()
         elif key == Qt.Key.Key_Up:
             self.node_manager.move_cursor('up')
+            self.node_manager.grow_node_cancel()
         elif key == Qt.Key.Key_Down:
             self.node_manager.move_cursor('down')
+            self.node_manager.grow_node_cancel()
+        elif key == Qt.Key.Key_Tab:
+            if self.node_manager.is_grow_node_prepared():
+                self.node_manager.grow_node_confirm()
+            else:
+                self.node_manager.grow_node()
+        elif key == Qt.Key.Key_Escape:
+            if self.node_manager.is_grow_node_prepared():
+                self.node_manager.grow_node_cancel()
 
     def keyReleaseEvent(self, a0: QKeyEvent | None):
         assert a0 is not None
