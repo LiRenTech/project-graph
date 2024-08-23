@@ -13,7 +13,10 @@ from core.paint.paintables import PaintContext
 
 
 class NodeManager:
-    """管理所有节点"""
+    """
+    存储并管理所有节点和连接
+    节点的增删改、连接断开、移动、渲染等操作都在这里进行
+    """
 
     def __init__(self):
         self.nodes: list[EntityNode] = []

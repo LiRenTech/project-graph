@@ -89,29 +89,32 @@ class Canvas(QMainWindow):
         self.effect_manager = EffectManager()
         self.node_manager = NodeManager()
 
-        # 所有拖拽的对象的列表（目前只支持一个，未支持框选多个拖拽）
+        # ====== 拖拽相关
         self.drag_list: list[EntityNode] = []
-        # 当前是否正在拖拽
+        """所有拖拽的对象的列表（目前只支持一个，未支持框选多个拖拽）"""
         self.is_dragging = False
+        """当前是否正在拖拽"""
 
-        # 连线相关的操作
+        # ====== 连线/断开 相关的操作
         self.connect_from_node: EntityNode | None = None
         self.connect_to_node: EntityNode | None = None
-        # 鼠标右键的当前位置
         self.mouse_right_location: NumberVector = NumberVector.zero()
-        # 右键开始拖拽的位置
+        """鼠标右键的当前位置"""
         self.mouse_right_start_location: NumberVector = NumberVector.zero()
+        """右键开始拖拽前按下的位置"""
 
-        # 当前是否正在切断线
         self.is_cutting = False
-        # 准备要被切断的线
+        """当前是否正在切断线"""
         self.warning_lines: list[tuple[Line, EntityNode, EntityNode]] = []
-        # 准备要删除的节点
+        """准备要被切断的线"""
         self.warning_nodes: list[EntityNode] = []
+        """准备要删除的节点"""
 
-        # 拖拽文件进入窗口相关
-        self.is_dragging_file = False  # 是否文件正在拖拽悬浮在窗口上
-        self.is_dragging_file_valid = False  # 是否文件拖拽的有效文件
+        # ====== 拖拽文件进入窗口相关
+        self.is_dragging_file = False
+        """是否文件正在拖拽悬浮在窗口上"""
+        self.is_dragging_file_valid = False
+        """是否文件拖拽的有效文件"""
 
         self.dragging_file_location = NumberVector.zero()
         """拖拽文件悬浮在窗口上的世界位置"""
