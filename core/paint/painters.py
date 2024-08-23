@@ -1,12 +1,15 @@
-from PyQt5.QtCore import QPointF, QRectF
-from PyQt5.QtGui import QPainter
+from PyQt5.QtCore import QPointF, QRectF, QLineF
+from PyQt5.QtGui import QPainter, QPen, QColor, QBrush
 
+from core.data_struct.curve import ConnectCurve
 from core.data_struct.rectangle import Rectangle
 from core.data_struct.text import Text
 
 
-# 施工中...
 class ProjectGraphPainter:
+    """该类可用于定义样式，他传入的参数一般是data_struct下自定义的某些数据,
+    然后做的内容一般是设置相关的Pen，Brush等，然后将其绘制出来
+    """
     def __init__(self, painter: QPainter):
         self._painter = painter
 
@@ -45,3 +48,12 @@ class ProjectGraphPainter:
             ),
             str_text,
         )
+
+    def paint_curve(self, curve: ConnectCurve):
+        color = QColor(23, 159, 255)
+        pen = QPen(color, 2)  # 创建QPen并设置颜色和宽度
+        self._painter.setPen(pen)
+        self._painter.setBrush(QBrush())
+        self._painter.drawPath(curve.path)
+        self._painter.setBrush(color)
+        self._painter.drawPath(curve.arrow.path)

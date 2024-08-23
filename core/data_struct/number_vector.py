@@ -1,5 +1,5 @@
 import math
-
+from PyQt5.QtCore import QPointF
 
 class NumberVector:
 
@@ -140,3 +140,6 @@ class NumberVector:
     def cross(self, other: "NumberVector") -> float:
         """计算两个向量的叉积"""
         return self.x * other.y - self.y * other.x
+
+    def to_qt(self) -> QPointF:
+        return QPointF(self.x, self.y)

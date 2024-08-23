@@ -3,6 +3,7 @@ from time import perf_counter_ns
 from PyQt5.QtGui import QColor, QPainter
 
 from core.camera import Camera
+from core.data_struct.curve import ConnectCurve
 from core.data_struct.line import Line
 from core.data_struct.number_vector import NumberVector
 from core.data_struct.rectangle import Rectangle
@@ -194,12 +195,17 @@ class NodeManager:
         for node in self.nodes:
             node.paint(context)
         # 连线
+        context.painter.q_painter().setTransform(
+            context.camera.get_world2view_transform()
+        )
         for line in self.lines:
-            PainterUtils.paint_arrow(
-                context.painter.q_painter(),
-                context.camera.location_world2view(line.start),
-                context.camera.location_world2view(line.end),
-                QColor(23, 159, 255),
-                4 * context.camera.current_scale,
-                30 * context.camera.current_scale,
-            )
+            context.painter.paint_curve(ConnectCurve(line.start, line.end))
+            # PainterUtils.paint_arrow(
+            #     context.painter.q_painter(),
+            #     context.camera.location_world2view(line.start),
+            #     context.camera.location_world2view(line.end),
+            #     QColor(23, 159, 255),
+            #     4 * context.camera.current_scale,
+            #     30 * context.camera.current_scale,
+            # )
+        context.painter.q_painter().resetTransform()
