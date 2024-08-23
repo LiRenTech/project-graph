@@ -26,6 +26,8 @@ Xmind只能用来绘制树形结构图、FigJamBoard可以用来绘制但网页�
 
 可能会报病毒，但无恶意代码。若您担心可以自己使用python编译打包。
 
+所有和应用相关的设置、缓存文件，如果是windows，会放在 `C:\Users\你的用户名\AppData\Local\LiRen\project-graph` 这里
+
 ## 设计原则
 
 好的工具应该有以下三个原则：
