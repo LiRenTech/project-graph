@@ -11,7 +11,7 @@ from core.data_struct.number_vector import NumberVector
 from core.data_struct.rectangle import Rectangle
 from core.effect.effect import Effect
 from core.paint.paint_utils import PainterUtils
-from core.paint.paintables import PaintContext, Paintable
+from core.paint.paintables import Paintable, PaintContext
 
 
 class EffectCuttingFlash(Effect):
@@ -104,8 +104,8 @@ class EffectRectangleShrink(Effect):
             int(10 * self.finish_rate),
         )
 
+
 class EffectCircleExpand(Effect):
     """
     圆圈扩大效果
     """
-    

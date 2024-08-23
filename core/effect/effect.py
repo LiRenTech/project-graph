@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from core.paint.paintables import PaintContext, Paintable
+from core.paint.paintables import Paintable, PaintContext
 
 
 class Effect(Paintable, ABC):

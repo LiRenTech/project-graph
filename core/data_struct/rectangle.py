@@ -28,9 +28,9 @@ class Rectangle:
 
     def __contains__(self, item: NumberVector) -> bool:
         return (
-                self.location_left_top.x <= item.x <= self.location_left_top.x + self.width
+            self.location_left_top.x <= item.x <= self.location_left_top.x + self.width
         ) and (
-                self.location_left_top.y <= item.y <= self.location_left_top.y + self.height
+            self.location_left_top.y <= item.y <= self.location_left_top.y + self.height
         )
 
     def clone(self) -> "Rectangle":
@@ -92,29 +92,29 @@ class Rectangle:
             bool: self是否与rect之间的最小边距小于margin
         """
         collision_x = (
-                self.right() - rect.left() > -margin
-                and rect.right() - self.left() > -margin
+            self.right() - rect.left() > -margin
+            and rect.right() - self.left() > -margin
         )
         collision_y = (
-                self.bottom() - rect.top() > -margin
-                and rect.bottom() - self.top() > -margin
+            self.bottom() - rect.top() > -margin
+            and rect.bottom() - self.top() > -margin
         )
         return collision_x and collision_y
 
     def is_contain(self, rect: "Rectangle") -> bool:
         """判断是否包含另一个矩形，另一个矩形是否被套在自己内部"""
         return (
-                self.left() <= rect.left()
-                and self.right() >= rect.right()
-                and self.top() <= rect.top()
-                and self.bottom() >= rect.bottom()
+            self.left() <= rect.left()
+            and self.right() >= rect.right()
+            and self.top() <= rect.top()
+            and self.bottom() >= rect.bottom()
         )
 
     def is_contain_point(self, point: NumberVector) -> bool:
         """判断是否包含点"""
         return (
-                self.left() <= point.x <= self.right()
-                and self.top() <= point.y <= self.bottom()
+            self.left() <= point.x <= self.right()
+            and self.top() <= point.y <= self.bottom()
         )
 
     def __repr__(self):
@@ -134,7 +134,9 @@ class Rectangle:
         if bottom_line.is_intersecting(line):
             return True
 
-        left_line = Line(self.location_left_top, NumberVector(self.left(), self.bottom()))
+        left_line = Line(
+            self.location_left_top, NumberVector(self.left(), self.bottom())
+        )
         if left_line.is_intersecting(line):
             return True
 
@@ -168,7 +170,9 @@ class Rectangle:
         if bottom_intersection is not None:
             return bottom_intersection
 
-        left_line = Line(self.location_left_top, NumberVector(self.left(), self.bottom()))
+        left_line = Line(
+            self.location_left_top, NumberVector(self.left(), self.bottom())
+        )
 
         left_intersection = left_line.get_intersection(line)
         if left_intersection is not None:

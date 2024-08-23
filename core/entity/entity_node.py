@@ -1,14 +1,15 @@
 from typing import List
 from uuid import uuid4
 
-from PyQt5.QtGui import QPainter, QColor
+from PyQt5.QtGui import QColor, QPainter
 
 from core.camera import Camera
 from core.data_struct.number_vector import NumberVector
 from core.data_struct.text import Text
 from core.paint.paint_utils import PainterUtils
-from core.paint.paintables import PaintContext, Paintable
+from core.paint.paintables import Paintable, PaintContext
 from core.tools.string_tools import get_size_by_text, get_width_by_file_name
+
 from .entity import Entity
 
 

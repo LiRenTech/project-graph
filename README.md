@@ -37,4 +37,3 @@ Xmind只能用来绘制树形结构图、FigJamBoard可以用来绘制但网页�
 来自：https://www.bilibili.com/video/BV1sN411a79K
 
 以上的三个原则是这个视频10:45秒开始的地方他提到的四个原则的总结
-

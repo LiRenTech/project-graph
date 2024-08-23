@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QRectF, QPointF
+from PyQt5.QtCore import QPointF, QRectF
 from PyQt5.QtGui import QPainter
 
 from core.data_struct.rectangle import Rectangle
@@ -43,5 +43,5 @@ class ProjectGraphPainter:
                 rect.location_left_top.x + (rect.width - text_width) / 2,
                 rect.location_left_top.y + (rect.height - text_height) / 2 + ascent,
             ),
-            str_text
+            str_text,
         )

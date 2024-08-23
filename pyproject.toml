@@ -2,6 +2,8 @@
 name = "project-graph-qt"
 version = "0.1.0"
 
+[tool.isort]
+profile = "black"
 
 [tool.black]
 line-length = 88

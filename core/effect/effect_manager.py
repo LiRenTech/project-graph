@@ -14,7 +14,7 @@ class EffectManager:
             effect.tick()
         # 清理播放完毕的特效
         self.effects = [effect for effect in self.effects if not effect.is_done()]
-    
+
     def paint(self, context: PaintContext):
         for effect in self.effects:
             effect.paint(context)

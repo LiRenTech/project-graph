@@ -5,7 +5,7 @@
 import traceback
 
 from PyQt5.QtCore import QPoint, QPointF, Qt
-from PyQt5.QtGui import QPainter, QColor, QPen, QFont, QFontMetrics, QPainterPath
+from PyQt5.QtGui import QColor, QFont, QFontMetrics, QPainter, QPainterPath, QPen
 
 from core.data_struct.circle import Circle
 from core.data_struct.number_vector import NumberVector
@@ -34,7 +34,6 @@ class PainterUtils:
                 path.lineTo(int(location.x), int(location.y))
         painter.drawPath(path)
         pass
-    
 
     @staticmethod
     def paint_solid_line(
@@ -56,7 +55,7 @@ class PainterUtils:
         pen = QPen(color, width)  # 创建QPen并设置颜色和宽度
         painter.setPen(pen)
         painter.setBrush(color)
-        
+
         # painter.setRenderHint(QPainter.Antialiasing)
         painter.drawLine(int(point1.x), int(point1.y), int(point2.x), int(point2.y))
         # painter.setPen(QColor(0, 0, 0, 0))

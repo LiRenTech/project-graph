@@ -131,11 +131,11 @@ class NumberVector:
 
     def __len__(self) -> float:
         """返回向量的模长"""
-        return math.sqrt(self.x ** 2 + self.y ** 2)
+        return math.sqrt(self.x**2 + self.y**2)
 
     def magnitude(self) -> float:
         """返回向量的模长"""
-        return math.sqrt(self.x ** 2 + self.y ** 2)
+        return math.sqrt(self.x**2 + self.y**2)
 
     def cross(self, other: "NumberVector") -> float:
         """计算两个向量的叉积"""

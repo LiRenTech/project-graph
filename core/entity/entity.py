@@ -33,6 +33,6 @@ class Entity(Paintable, ABC):
         :return:
         """
         self.body_shape.location_left_top = location
-    
+
     def get_components(self) -> List[Paintable]:
         return []

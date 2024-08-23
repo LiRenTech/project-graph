@@ -5,6 +5,7 @@ class Line:
     """
     线段类
     """
+
     def __init__(self, start: NumberVector, end: NumberVector):
         self.start = start
         self.end = end
@@ -18,24 +19,26 @@ class Line:
     def direction(self) -> NumberVector:
         return self.end - self.start
 
-    def is_parallel(self, other: 'Line') -> bool:
+    def is_parallel(self, other: "Line") -> bool:
         """判断两条线段是否平行"""
         return self.direction().cross(other.direction()) == 0
 
-    def is_collinear(self, other: 'Line') -> bool:
+    def is_collinear(self, other: "Line") -> bool:
         """判断两条线段是否共线"""
-        return self.is_parallel(other) and (self.start - other.start).cross(self.direction()) == 0
+        return (
+            self.is_parallel(other)
+            and (self.start - other.start).cross(self.direction()) == 0
+        )
 
-    def is_intersecting(self, other: 'Line') -> bool:
+    def is_intersecting(self, other: "Line") -> bool:
         """判断两条线段是否相交"""
         if self.is_collinear(other):
             return False
 
         def on_segment(p: NumberVector, q: NumberVector, r: NumberVector) -> bool:
-            return (
-                    max(p.x, r.x) >= q.x >= min(p.x, r.x) and
-                    max(p.y, r.y) >= q.y >= min(p.y, r.y)
-            )
+            return max(p.x, r.x) >= q.x >= min(p.x, r.x) and max(
+                p.y, r.y
+            ) >= q.y >= min(p.y, r.y)
 
         def orientation(p: NumberVector, q: NumberVector, r: NumberVector) -> int:
             val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y)
@@ -65,11 +68,11 @@ class Line:
 
         return False
 
-    def cross(self, other: 'Line') -> float:
+    def cross(self, other: "Line") -> float:
         """计算两条线段方向向量的叉积"""
         return self.direction().cross(other.direction())
 
-    def get_intersection(self, other: 'Line') -> NumberVector | None:
+    def get_intersection(self, other: "Line") -> NumberVector | None:
         """
         计算两条线段的交点
         """

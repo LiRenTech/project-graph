@@ -1,4 +1,6 @@
-from PyQt5.QtGui import QPainter, QColor
+from time import perf_counter_ns
+
+from PyQt5.QtGui import QColor, QPainter
 
 from core.camera import Camera
 from core.data_struct.line import Line
@@ -8,7 +10,6 @@ from core.entity.entity_node import EntityNode
 from core.paint.paint_utils import PainterUtils
 from core.paint.paintables import PaintContext
 
-from time import perf_counter_ns
 
 class NodeManager:
     """管理所有节点"""
@@ -50,8 +51,8 @@ class NodeManager:
         刷新所有节点的uuid, 并返回更新后的字典
         刷新的意义是用户可能会重复复制添加一大堆节点内容，防止出现uuid冲突
         """
-        from uuid import uuid4
         from copy import deepcopy
+        from uuid import uuid4
 
         new_data = deepcopy(data)
         for node in new_data["nodes"]:

@@ -1,24 +1,25 @@
 import json
+
 from PyQt5.QtCore import Qt, QTimer, QUrl
 from PyQt5.QtGui import (
-    QIcon,
-    QPainter,
-    QPaintEvent,
     QColor,
-    QWheelEvent,
+    QDesktopServices,
+    QIcon,
     QKeyEvent,
     QMouseEvent,
-    QDesktopServices,
+    QPainter,
+    QPaintEvent,
+    QWheelEvent,
 )
 from PyQt5.QtWidgets import (
+    QAction,
     QApplication,
     QDesktopWidget,
-    QAction,
-    QMainWindow,
     QFileDialog,
+    QInputDialog,
+    QMainWindow,
     QMessageBox,
     QPushButton,
-    QInputDialog,
 )
 
 try:
@@ -28,6 +29,11 @@ except:
 
     pyrcc_main.processResourceFile(["assets/assets.rcc"], "assets/assets.py", True)
     from assets import assets
+
+import os
+
+from appdirs import user_data_dir
+
 from core.camera import Camera
 from core.data_struct.line import Line
 from core.data_struct.number_vector import NumberVector
@@ -46,13 +52,10 @@ from core.paint.paint_utils import PainterUtils
 from core.paint.paintables import PaintContext
 from core.paint.painters import ProjectGraphPainter
 
-
 # 是为了引入assets文件夹中的资源文件，看似是灰色的没有用，但实际不能删掉
 # 只是为了让pyinstaller打包时能打包到exe文件中。
 # 需要进入assets文件夹后在命令行输入指令 `pyrcc5 image.rcc -o assets.py` 来更新assets.py文件
 
-from appdirs import user_data_dir
-import os
 
 APP_NAME = "project-graph"
 APP_AUTHOR = "LiRen"

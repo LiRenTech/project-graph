@@ -1,9 +1,8 @@
-from PyQt5.QtGui import QPainter, QColor
+from PyQt5.QtGui import QColor, QPainter
 
 from core.camera import Camera
 from core.data_struct.number_vector import NumberVector
 from core.data_struct.rectangle import Rectangle
-
 from core.paint.paint_utils import PainterUtils
 
 
@@ -71,11 +70,11 @@ def paint_alert_message(paint: QPainter, camera: Camera, message: str):
 
 
 def paint_rect_in_world(
-        paint: QPainter,
-        camera: Camera,
-        rect: Rectangle,
-        fill_color: QColor,
-        stroke_color: QColor,
+    paint: QPainter,
+    camera: Camera,
+    rect: Rectangle,
+    fill_color: QColor,
+    stroke_color: QColor,
 ):
     PainterUtils.paint_rect_from_left_top(
         paint,
