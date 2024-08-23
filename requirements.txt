@@ -1,0 +1,4 @@
+PyQt5==5.15.11
+PyQt5_sip==12.15.0
+appdirs==1.4.4
+pyinstaller==6.10.0
