@@ -99,10 +99,7 @@ class Canvas(QMainWindow):
         self.is_dragging_file = False  # 是否文件正在拖拽悬浮在窗口上
         self.is_dragging_file_valid = False  # 是否文件拖拽的有效文件
 
-        
-        self.dragging_file_location = (
-            NumberVector.zero()
-        )
+        self.dragging_file_location = NumberVector.zero()
         """拖拽文件悬浮在窗口上的世界位置"""
 
         pass
@@ -200,7 +197,9 @@ class Canvas(QMainWindow):
             if file_path.endswith(".json"):
                 with open(file_path, "r", encoding="utf-8") as f:
                     load_data = json.loads(f.read())
-                    self.node_manager.add_from_dict(load_data, self.dragging_file_location)
+                    self.node_manager.add_from_dict(
+                        load_data, self.dragging_file_location
+                    )
                 event.acceptProposedAction()
                 break
 
@@ -469,6 +468,8 @@ class Canvas(QMainWindow):
     def keyPressEvent(self, a0: QKeyEvent | None):
         assert a0 is not None
         key = a0.key()
+        print(f"<{key}>", type(key))
+
         if key == Qt.Key.Key_A:
             self.camera.press_move(NumberVector(-1, 0))
         elif key == Qt.Key.Key_S:
@@ -485,6 +486,27 @@ class Canvas(QMainWindow):
             # `]` 键来放大视野
             for _ in range(5):
                 self.camera.zoom_in()
+        elif key == 16777220:
+            # Qt.Key.Key_Enter 这里写这个无效
+            # 回车键，如果当前有正在选中的节点，则进入编辑模式
+            if self.drag_list:
+                select_node = self.drag_list[0]
+                # 在节点上左键是编辑文字
+                text, ok = QInputDialog.getText(
+                    self, "编辑节点文字", "输入新的文字:", text=select_node.inner_text
+                )
+                if ok:
+                    select_node.inner_text = text
+
+        elif key == Qt.Key.Key_Left:
+            # TODO: 这里打算增加方向键切换正在选择的节点的功能，以快速修改节点内文字
+            print("left")
+        elif key == Qt.Key.Key_Right:
+            print("right")
+        elif key == Qt.Key.Key_Up:
+            print("up")
+        elif key == Qt.Key.Key_Down:
+            print("down")
 
     def keyReleaseEvent(self, a0: QKeyEvent | None):
         assert a0 is not None
