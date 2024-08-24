@@ -137,6 +137,10 @@ class Canvas(QMainWindow):
         # 保存文件
         save_action = QAction("保存", self)
         save_action.triggered.connect(self.on_save_file)
+        # 设置快捷键
+        open_action.setShortcut("Ctrl+O")
+        save_action.setShortcut("Ctrl+S")
+
         file_menu.addAction(open_action)
         file_menu.addAction(save_action)
 
