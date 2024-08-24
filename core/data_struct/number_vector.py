@@ -1,6 +1,7 @@
 import math
 from PyQt5.QtCore import QPointF
 
+
 class NumberVector:
 
     def __init__(self, x: float, y: float):
@@ -143,7 +144,7 @@ class NumberVector:
 
     def to_qt(self) -> QPointF:
         return QPointF(self.x, self.y)
-    
+
     def distance_to(self, other: "NumberVector") -> float:
         """计算两个向量的距离"""
         return (self - other).__len__()

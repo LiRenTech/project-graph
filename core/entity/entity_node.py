@@ -29,7 +29,7 @@ class EntityNode(Entity):
         self.adjust_size_by_text()
 
         # 颜色
-        self.color = QColor(156, 220, 254)
+        self.color = QColor(204, 204, 204)
         pass
 
     @property

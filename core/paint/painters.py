@@ -10,6 +10,7 @@ class ProjectGraphPainter:
     """该类可用于定义样式，他传入的参数一般是data_struct下自定义的某些数据,
     然后做的内容一般是设置相关的Pen，Brush等，然后将其绘制出来
     """
+
     def __init__(self, painter: QPainter):
         self._painter = painter
 
@@ -49,8 +50,7 @@ class ProjectGraphPainter:
             str_text,
         )
 
-    def paint_curve(self, curve: ConnectCurve):
-        color = QColor(23, 159, 255)
+    def paint_curve(self, curve: ConnectCurve, color: QColor):
         pen = QPen(color, 2)  # 创建QPen并设置颜色和宽度
         self._painter.setPen(pen)
         self._painter.setBrush(QBrush())

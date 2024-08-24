@@ -148,7 +148,7 @@ class NodeManager:
         )
         self.connect_node(self.cursor_node, new_node)
         self.grow_node_cancel()
-    
+
     def rotate_grow_direction(self, is_clockwise: bool):
         """
         旋转生长方向
@@ -340,7 +340,9 @@ class NodeManager:
             context.camera.get_world2view_transform()
         )
         for line in self._lines:
-            context.painter.paint_curve(ConnectCurve(line.start, line.end))
+            context.painter.paint_curve(
+                ConnectCurve(line.start, line.end), QColor(204, 204, 204)
+            )
 
         context.painter.q_painter().resetTransform()
         # 画游标
@@ -349,10 +351,13 @@ class NodeManager:
             PainterUtils.paint_rect_from_left_top(
                 context.painter.q_painter(),
                 context.camera.location_world2view(
-                    self.cursor_node.body_shape.location_left_top - NumberVector(margin, margin)
+                    self.cursor_node.body_shape.location_left_top
+                    - NumberVector(margin, margin)
                 ),
-                context.camera.current_scale * (self.cursor_node.body_shape.width + margin * 2),
-                context.camera.current_scale * (self.cursor_node.body_shape.height + margin * 2),
+                context.camera.current_scale
+                * (self.cursor_node.body_shape.width + margin * 2),
+                context.camera.current_scale
+                * (self.cursor_node.body_shape.height + margin * 2),
                 QColor(255, 255, 255, 0),
                 QColor(255, 255, 255, 200),
                 int(8 * context.camera.current_scale),
@@ -363,8 +368,7 @@ class NodeManager:
                 context.painter.q_painter(),
                 Circle(
                     context.camera.location_world2view(
-                        self.cursor_node.body_shape.center
-                        + self.grow_node_location
+                        self.cursor_node.body_shape.center + self.grow_node_location
                     ),
                     50 * context.camera.current_scale,
                 ),

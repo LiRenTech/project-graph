@@ -19,4 +19,3 @@ class ConnectCurve:
             ctrl2 = NumberVector(end.x, end.y - half_y)
         self.path.cubicTo(ctrl1.to_qt(), ctrl2.to_qt(), end.to_qt())
         self.arrow = Arrow(end - ctrl2, end)
-        

@@ -478,7 +478,8 @@ class Canvas(QMainWindow):
                 )
                 if ok:
                     select_node.inner_text = text
-                    
+                    self.node_manager.update_lines()
+
         elif event.button() == Qt.MouseButton.RightButton:
             if select_node is not None:
                 color = QColorDialog.getColor()  # 弹出颜色选择对话框
@@ -524,29 +525,32 @@ class Canvas(QMainWindow):
             if self.node_manager.cursor_node is not None:
                 # 在节点上左键是编辑文字
                 text, ok = QInputDialog.getText(
-                    self, "编辑节点文字", "输入新的文字:", text=self.node_manager.cursor_node.inner_text
+                    self,
+                    "编辑节点文字",
+                    "输入新的文字:",
+                    text=self.node_manager.cursor_node.inner_text,
                 )
                 if ok:
                     self.node_manager.cursor_node.inner_text = text
                     self.node_manager.update_lines()
 
         elif key == Qt.Key.Key_Left:
-            self.node_manager.move_cursor('left')
+            self.node_manager.move_cursor("left")
             self.node_manager.grow_node_cancel()
         elif key == Qt.Key.Key_Right:
-            self.node_manager.move_cursor('right')
+            self.node_manager.move_cursor("right")
             self.node_manager.grow_node_cancel()
         elif key == Qt.Key.Key_Up:
             if self.node_manager.is_grow_node_prepared():
                 self.node_manager.rotate_grow_direction(False)
                 return
-            self.node_manager.move_cursor('up')
+            self.node_manager.move_cursor("up")
             self.node_manager.grow_node_cancel()
         elif key == Qt.Key.Key_Down:
             if self.node_manager.is_grow_node_prepared():
                 self.node_manager.rotate_grow_direction(True)
                 return
-            self.node_manager.move_cursor('down')
+            self.node_manager.move_cursor("down")
             self.node_manager.grow_node_cancel()
         elif key == Qt.Key.Key_Tab:
             if self.node_manager.is_grow_node_prepared():
