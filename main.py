@@ -708,6 +708,12 @@ class Canvas(QMainWindow):
                     QColor(255, 0, 0),
                 )
             pass
+        
+        # 检查窗口是否处于激活状态
+        if not self.isActiveWindow():
+            # 绘制一个半透明的覆盖层（目的是放置WASD输入到别的软件上）
+            painter.setBrush(QColor(0, 0, 0, 128))  # 半透明的黑色
+            painter.drawRect(self.rect())
         pass
 
 
