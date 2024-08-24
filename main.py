@@ -195,7 +195,7 @@ class Canvas(QMainWindow):
         file = event.mimeData().urls()[0].toLocalFile()
         if file.endswith(".json"):
             self.is_dragging_file_valid = True
-            event.acceptProposedAction()
+        event.acceptProposedAction()
 
     def dragMoveEvent(self, event):
         view_location = NumberVector(event.pos().x(), event.pos().y())
