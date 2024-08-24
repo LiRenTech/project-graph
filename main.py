@@ -23,6 +23,7 @@ from PyQt5.QtWidgets import (
     QMainWindow,
     QMessageBox,
     QPushButton,
+    QColorDialog,
 )
 
 from core.tools.file_tools import read_file
@@ -284,7 +285,7 @@ class Canvas(QMainWindow):
 
     @staticmethod
     def __open_github():
-        QDesktopServices.openUrl(QUrl("https://github.com/LiRenTech/visual-file-qt"))
+        QDesktopServices.openUrl(QUrl("https://github.com/LiRenTech/project-graph-qt"))
 
     @staticmethod
     def __open_bilibili():
@@ -460,15 +461,13 @@ class Canvas(QMainWindow):
         click_location = self.camera.location_view2world(
             NumberVector(event.pos().x(), event.pos().y())
         )
+        select_node = None
+        for node in self.node_manager.nodes:
+            if node.body_shape.is_contain_point(click_location):
+                select_node = node
+                break
 
         if event.button() == Qt.MouseButton.LeftButton:
-
-            select_node = None
-            for node in self.node_manager.nodes:
-                if node.body_shape.is_contain_point(click_location):
-                    select_node = node
-                    break
-
             if select_node is None:
                 # 在空白地方左键是添加节点
                 self.node_manager.add_node_by_click(click_location)
@@ -479,6 +478,13 @@ class Canvas(QMainWindow):
                 )
                 if ok:
                     select_node.inner_text = text
+                    
+        elif event.button() == Qt.MouseButton.RightButton:
+            if select_node is not None:
+                color = QColorDialog.getColor()  # 弹出颜色选择对话框
+                if color.isValid():  # 检查颜色是否有效
+                    select_node.color = color  # 假设节点有一个 color 属性来存储颜色
+            pass
 
     def wheelEvent(self, a0: QWheelEvent | None):
         assert a0 is not None
@@ -708,7 +714,7 @@ class Canvas(QMainWindow):
                     QColor(255, 0, 0),
                 )
             pass
-        
+
         # 检查窗口是否处于激活状态
         if not self.isActiveWindow():
             # 绘制一个半透明的覆盖层（目的是放置WASD输入到别的软件上）
