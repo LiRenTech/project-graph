@@ -28,6 +28,10 @@ class EntityNode(Entity):
         self.is_selected = False
         self.adjust_size_by_text()
 
+        # 颜色
+        self.color = QColor(156, 220, 254)
+        pass
+
     @property
     def inner_text(self) -> str:
         return self._inner_text
@@ -94,7 +98,7 @@ class EntityNode(Entity):
             self.body_shape.width * context.camera.current_scale,
             self.body_shape.height * context.camera.current_scale,
             QColor(31, 31, 31, 200),
-            QColor(23, 159, 255),
+            QColor(156, 220, 254),
             int(2 * context.camera.current_scale),
         )
 
