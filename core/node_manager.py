@@ -148,6 +148,18 @@ class NodeManager:
         )
         self.connect_node(self.cursor_node, new_node)
         self.grow_node_cancel()
+    
+    def rotate_grow_direction(self, is_clockwise: bool):
+        """
+        旋转生长方向
+        是否是顺时针
+        """
+        if self.grow_node_location is None:
+            return
+        if is_clockwise:
+            self.grow_node_location = self.grow_node_location.rotate(30)
+        else:
+            self.grow_node_location = self.grow_node_location.rotate(-30)
 
     def dump_all_nodes(self) -> dict:
         """
@@ -240,7 +252,7 @@ class NodeManager:
                     continue
                 node.add_child(child)
 
-        self._update_lines()
+        self.update_lines()
         pass
 
     def load_from_dict(self, data: dict):
@@ -250,7 +262,7 @@ class NodeManager:
         # 先清空原有节点
         self.nodes.clear()
         self.add_from_dict(data, NumberVector(0, 0), refresh_uuid=False)
-        self._update_lines()
+        self.update_lines()
 
     def get_node_by_uuid(self, uuid: str) -> EntityNode | None:
         for node in self.nodes:
@@ -260,7 +272,7 @@ class NodeManager:
 
     def move_node(self, node: EntityNode, d_location: NumberVector):
         node.move(d_location)
-        self._update_lines()
+        self.update_lines()
 
     def add_node_by_click(self, location_world: NumberVector) -> EntityNode:
         res = EntityNode(Rectangle(location_world - NumberVector(50, 50), 100, 100))
@@ -274,19 +286,19 @@ class NodeManager:
         for father_node in self.nodes:
             if node in father_node.children:
                 father_node.children.remove(node)
-        self._update_lines()
+        self.update_lines()
 
     def connect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
             res = from_node.add_child(to_node)
-            self._update_lines()
+            self.update_lines()
             return res
         return False
 
     def disconnect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
             res = from_node.remove_child(to_node)
-            self._update_lines()
+            self.update_lines()
             return res
         return False
 
@@ -301,8 +313,11 @@ class NodeManager:
                 lines.append(Line(from_point, to_point))
         return lines
 
-    def _update_lines(self):
-        print("update lines")
+    def update_lines(self):
+        """
+        注意：此方法不要在外界频繁调用（尤其是循环渲染中），否则可能很卡
+        建议只在必要操作之后调用一下。
+        """
         self._lines = self._get_all_lines()
 
     def get_all_lines_and_node(self) -> list[tuple[Line, EntityNode, EntityNode]]:
@@ -330,16 +345,17 @@ class NodeManager:
         context.painter.q_painter().resetTransform()
         # 画游标
         if self.cursor_node is not None:
+            margin = 10
             PainterUtils.paint_rect_from_left_top(
                 context.painter.q_painter(),
                 context.camera.location_world2view(
-                    self.cursor_node.body_shape.location_left_top - NumberVector(5, 5)
+                    self.cursor_node.body_shape.location_left_top - NumberVector(margin, margin)
                 ),
-                context.camera.current_scale * (self.cursor_node.body_shape.width + 10),
-                context.camera.current_scale * (self.cursor_node.body_shape.height + 10),
+                context.camera.current_scale * (self.cursor_node.body_shape.width + margin * 2),
+                context.camera.current_scale * (self.cursor_node.body_shape.height + margin * 2),
                 QColor(255, 255, 255, 0),
-                QColor(255, 255, 255, 128),
-                int(5 * context.camera.current_scale),
+                QColor(255, 255, 255, 200),
+                int(8 * context.camera.current_scale),
             )
         # 画虚拟的待生长的节点
         if self.grow_node_location is not None and self.cursor_node is not None:
@@ -347,12 +363,12 @@ class NodeManager:
                 context.painter.q_painter(),
                 Circle(
                     context.camera.location_world2view(
-                        self.cursor_node.body_shape.location_left_top
+                        self.cursor_node.body_shape.center
                         + self.grow_node_location
                     ),
                     50 * context.camera.current_scale,
                 ),
-                QColor(255, 255, 255, 128),
+                QColor(255, 255, 255, 0),
                 QColor(255, 255, 255, 128),
                 4 * context.camera.current_scale,
             )
