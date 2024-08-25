@@ -272,7 +272,19 @@ class NodeManager:
 
     def move_node(self, node: EntityNode, d_location: NumberVector):
         node.move(d_location)
+        self.collide_dfs(node)
         self.update_lines()
+    
+    def collide_dfs(self, self_node: EntityNode):
+        """
+        self_node 是主体
+        """
+        for node in self.nodes:
+            if node == self_node:
+                continue
+            if node.body_shape.is_collision(self_node.body_shape):
+                self_node.collide_with(node)
+                self.collide_dfs(node)
 
     def add_node_by_click(self, location_world: NumberVector) -> EntityNode:
         res = EntityNode(Rectangle(location_world - NumberVector(50, 50), 100, 100))
