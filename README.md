@@ -4,7 +4,7 @@
 
 这是一个快速绘制节点图的工具，可以用于项目拓扑图绘制、快速头脑风暴草稿。
 
-Xmind只能用来绘制树形结构图、FigJamBoard可以用来绘制但网页打开有点慢了
+Xmind 只能用来绘制树形结构图、FigJamBoard 可以用来绘制但网页打开有点慢了
 
 ## 操作方法
 
@@ -24,9 +24,9 @@ Xmind只能用来绘制树形结构图、FigJamBoard可以用来绘制但网页�
 
 ## 注意事项
 
-可能会报病毒，但无恶意代码。若您担心可以自己使用python编译打包。
+可能会报病毒，但无恶意代码。若您担心可以自己使用 python 编译打包。
 
-所有和应用相关的设置、缓存文件，如果是windows，会放在 `C:\Users\你的用户名\AppData\Local\LiRen\project-graph` 这里
+所有和应用相关的设置、缓存文件，如果是 windows，会放在 `C:\Users\你的用户名\AppData\Local\LiRen\project-graph` 这里
 
 ## 设计原则
 
@@ -38,4 +38,14 @@ Xmind只能用来绘制树形结构图、FigJamBoard可以用来绘制但网页�
 
 来自：https://www.bilibili.com/video/BV1sN411a79K
 
-以上的三个原则是这个视频10:45秒开始的地方他提到的四个原则的总结
+以上的三个原则是这个视频 10:45 秒开始的地方他提到的四个原则的总结
+
+## Star History
+
+<a href="https://star-history.com/#LiRenTech/project-graph-qt&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=LiRenTech/project-graph-qt&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=LiRenTech/project-graph-qt&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=LiRenTech/project-graph-qt&type=Date" />
+ </picture>
+</a>
