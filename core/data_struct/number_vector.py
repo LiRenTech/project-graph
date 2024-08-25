@@ -32,6 +32,8 @@ class NumberVector:
 
     def normalize(self):
         """将此向量转化为单位向量"""
+        if self.__len__() == 0:
+            return self
         return self / self.__len__()
 
     def limit_x(self, min_value: float, max_value: float):
