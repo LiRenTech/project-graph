@@ -52,8 +52,10 @@ class ProjectGraphPainter:
 
     def paint_curve(self, curve: ConnectCurve, color: QColor):
         pen = QPen(color, 2)  # 创建QPen并设置颜色和宽度
+        self._painter.setRenderHint(QPainter.Antialiasing)
         self._painter.setPen(pen)
         self._painter.setBrush(QBrush())
         self._painter.drawPath(curve.path)
         self._painter.setBrush(color)
         self._painter.drawPath(curve.arrow.path)
+        self._painter.setRenderHint(QPainter.Antialiasing, False)
