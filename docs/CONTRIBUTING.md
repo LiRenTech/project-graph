@@ -15,3 +15,7 @@ pyinstaller --onefile --windowed --icon=./assets/favicon.ico main.py -n project-
 ```
 
 踩坑：必须在虚拟环境中安装 pyinstaller, 否则打包出来的 exe 没有 appdirs 这个依赖库
+
+## 更新assets
+
+需要进入assets文件夹后在命令行输入指令 `pyrcc5 image.rcc -o assets.py` 来更新assets.py文件

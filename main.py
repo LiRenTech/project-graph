@@ -58,10 +58,6 @@ from core.paint.paint_utils import PainterUtils
 from core.paint.paintables import PaintContext
 from core.paint.painters import ProjectGraphPainter
 
-# 是为了引入assets文件夹中的资源文件，看似是灰色的没有用，但实际不能删掉
-# 只是为了让pyinstaller打包时能打包到exe文件中。
-# 需要进入assets文件夹后在命令行输入指令 `pyrcc5 image.rcc -o assets.py` 来更新assets.py文件
-
 
 APP_NAME = "project-graph"
 APP_AUTHOR = "LiRen"
