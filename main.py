@@ -218,17 +218,23 @@ class Canvas(QMainWindow):
             file_path: str = url.toLocalFile()
             print(file_path)
             if file_path.endswith(".json"):
-                load_data = json.loads(read_file(Path(file_path)))
-                print(load_data)
-                if "nodes" not in load_data:
-                    # 不是合法的节点图文件
+                try:
+                    load_data = json.loads(read_file(Path(file_path)))
+
+                    if "nodes" not in load_data:
+                        # 不是合法的节点图文件
+                        QMessageBox.warning(
+                            self, "错误", f"{file_path} 文件内容不正确，无法打开。", QMessageBox.Ok
+                        )
+                        return
+                    self.node_manager.add_from_dict(load_data, self.dragging_file_location)
+                    event.acceptProposedAction()
+                    break
+                except Exception as e:
+                    print(e)
                     QMessageBox.warning(
-                        self, "错误", "文件内容不正确，无法打开。", QMessageBox.Ok
+                        self, "错误", f"{file_path} 文件内容不正确，无法打开。", QMessageBox.Ok
                     )
-                    return
-                self.node_manager.add_from_dict(load_data, self.dragging_file_location)
-                event.acceptProposedAction()
-                break
 
     @staticmethod
     def on_about():
