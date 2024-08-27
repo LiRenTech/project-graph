@@ -10,7 +10,7 @@ Xmind 只能用来绘制树形结构图、FigJamBoard 可以用来绘制但网�
 
 例如上面，在准备做一个事情之间可以**快速绘制**，用这个软件调动自己**有目的**的发散性思维，想到尽可能多的**可能性**
 
-当然上面的情况本质是**树**形图，Xmind可以完全替代
+当然上面的情况本质是**树**形图，Xmind 可以完全替代
 
 ![eg2](docs/eg2.png)
 
@@ -38,7 +38,11 @@ Xmind 只能用来绘制树形结构图、FigJamBoard 可以用来绘制但网�
 
 可能会报病毒，但无恶意代码。若您担心可以自己使用 python 编译打包。
 
-所有和应用相关的设置、缓存文件，如果是 windows，会放在 `C:\Users\你的用户名\AppData\Local\LiRen\project-graph` 这里
+所有和应用相关的设置、缓存文件
+
+Windows: `%LOCALAPPDATA%/LiRen/project-graph`
+
+Linux: `~/.local/share/project-graph` [（可自定义）](https://specifications.freedesktop.org/basedir-spec/latest/)
 
 ## 设计原则
 
