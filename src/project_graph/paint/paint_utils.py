@@ -211,7 +211,7 @@ class PainterUtils:
         pass
 
     @staticmethod
-    def paint_word_from_left_top(
+    def paint_text_from_top_left(
         painter: QPainter,
         left_top: NumberVector,
         text: str,

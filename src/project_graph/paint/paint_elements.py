@@ -41,7 +41,7 @@ def paint_details_data(paint: QPainter, camera: Camera, datas: list[str]):
     """
     start_y = 150
     for i, data in enumerate(datas):
-        PainterUtils.paint_word_from_left_top(
+        PainterUtils.paint_text_from_top_left(
             paint,
             NumberVector(20, start_y + i * 50),
             data,
