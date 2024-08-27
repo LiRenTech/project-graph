@@ -3,7 +3,12 @@ name = "project-graph"
 version = "0.1.0"
 description = "Project Graph"
 authors = [{ name = "LiRenTech", email = "liren@zty012.de" }]
-dependencies = ["PyQt5>=5.15.11", "PyQt5-sip>=12.15.0", "appdirs>=1.4.4"]
+dependencies = [
+    "pyqt5-qt5==5.15.2",
+    # "PyQt5==5.15.2",
+    "PyQt5-sip>=12.15.0",
+    "appdirs>=1.4.4",
+]
 requires-python = ">=3.12"
 readme = "README.md"
 license = { text = "Apache-2.0" }
