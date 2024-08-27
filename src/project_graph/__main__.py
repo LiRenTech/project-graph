@@ -34,12 +34,18 @@ from project_graph.recent_file_manager import RecentFileManager
 from project_graph.tools.file_tools import read_file
 
 try:
-    from project_graph.assets import assets
+    import project_graph.assets.assets  # type: ignore
 except:
     from PyQt5 import pyrcc_main
 
-    pyrcc_main.processResourceFile(["assets/assets.rcc"], "assets/assets.py", True)
-    from project_graph.assets import assets
+    if not pyrcc_main.processResourceFile(
+        [(Path(__file__).parent / "assets" / "image.rcc").as_posix()],
+        (Path(__file__).parent / "assets" / "assets.py").as_posix(),
+        False,
+    ):
+        print("Failed to compile assets.rcc")
+        exit(1)
+    import project_graph.assets.assets  # type: ignore
 
 import os
 
