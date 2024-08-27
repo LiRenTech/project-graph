@@ -62,9 +62,6 @@ from core.paint.paintables import PaintContext
 from core.paint.painters import ProjectGraphPainter
 
 
-
-
-
 class Canvas(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -121,6 +118,10 @@ class Canvas(QMainWindow):
     def init_ui(self):
         # 设置窗口标题和尺寸
         self.setWindowTitle("节点图编辑器")
+        if platform.system() == "Darwin":
+            self.setWindowIcon(QIcon("assets/favicon.ico"))
+        elif platform.system() == "Windows":
+            self.setWindowIcon(QIcon(":/favicon.ico"))
         self._move_window_to_center()
         # 菜单栏
         menubar = self.menuBar()
@@ -292,7 +293,10 @@ class Canvas(QMainWindow):
     def on_about():
         # 创建一个消息框
         msg_box = QMessageBox()
-        msg_box.setWindowIcon(QIcon("assets/favicon.ico"))
+        if platform.system() == "Darwin":
+            msg_box.setWindowIcon(QIcon("assets/favicon.ico"))
+        elif platform.system() == "Windows":
+            msg_box.setWindowIcon(QIcon(":/favicon.ico"))
         msg_box.setIcon(QMessageBox.Information)
         msg_box.setWindowTitle("project-graph 关于")
         msg_box.setText(
@@ -311,7 +315,10 @@ class Canvas(QMainWindow):
     def on_help():
         # 创建一个消息框
         msg_box = QMessageBox()
-        msg_box.setWindowIcon(QIcon("assets/favicon.ico"))
+        if platform.system() == "Darwin":
+            msg_box.setWindowIcon(QIcon("assets/favicon.ico"))
+        elif platform.system() == "Windows":
+            msg_box.setWindowIcon(QIcon(":/favicon.ico"))
         msg_box.setIcon(QMessageBox.Information)
         msg_box.setWindowTitle("project-graph 帮助说明")
         msg_box.setText(
