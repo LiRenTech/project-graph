@@ -102,7 +102,7 @@ class EntityNode(Entity):
             16,
         )
 
-        PainterUtils.paint_word_from_center(
+        PainterUtils.paint_text_from_center(
             context.painter.q_painter(),
             context.camera.location_world2view(self.body_shape.center),
             self.inner_text,

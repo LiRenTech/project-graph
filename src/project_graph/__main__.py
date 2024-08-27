@@ -782,7 +782,7 @@ class Canvas(QMainWindow):
                 1,
             )
             if self.is_dragging_file_valid:
-                PainterUtils.paint_word_from_center(
+                PainterUtils.paint_text_from_center(
                     painter,
                     NumberVector(a0.rect().width() / 2, a0.rect().height() / 2),
                     "拖拽文件到窗口中",
@@ -790,7 +790,7 @@ class Canvas(QMainWindow):
                     QColor(255, 255, 255),
                 )
             else:
-                PainterUtils.paint_word_from_center(
+                PainterUtils.paint_text_from_center(
                     painter,
                     NumberVector(a0.rect().width() / 2, a0.rect().height() / 2),
                     "不支持的文件类型，请拖入json文件",

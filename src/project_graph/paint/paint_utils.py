@@ -267,7 +267,7 @@ class PainterUtils:
         pass
 
     @staticmethod
-    def paint_word_from_center(
+    def paint_text_from_center(
         painter: QPainter,
         center: NumberVector,
         text: str,

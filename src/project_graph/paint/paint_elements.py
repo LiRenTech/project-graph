@@ -60,7 +60,7 @@ def paint_alert_message(paint: QPainter, camera: Camera, message: str):
     :return:
     """
 
-    PainterUtils.paint_word_from_center(
+    PainterUtils.paint_text_from_center(
         paint,
         NumberVector(camera.view_width / 2, camera.view_height / 2),
         message,
