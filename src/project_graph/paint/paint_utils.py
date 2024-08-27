@@ -182,6 +182,7 @@ class PainterUtils:
         fill_color: QColor,
         stroke_color: QColor,
         stroke_width: int,
+        radius: int = 0,
     ):
         """
         绘制一个矩形，左上角坐标为left_top，宽为width，高为height，填充色为fill_color，边框色为stroke_color
@@ -199,7 +200,9 @@ class PainterUtils:
         # painter.setPen(stroke_color)
         painter.setBrush(fill_color)
         painter.setRenderHint(QPainter.Antialiasing)
-        painter.drawRect(int(left_top.x), int(left_top.y), int(width), int(height))
+        painter.drawRoundedRect(
+            int(left_top.x), int(left_top.y), int(width), int(height), radius, radius
+        )
         # HACK: 这个数字转int有隐患，OverflowError: argument 3 overflowed: value must be in the range -2147483648 to 2147483647
         painter.setPen(QColor(0, 0, 0, 0))
         painter.setBrush(QColor(0, 0, 0, 0))
