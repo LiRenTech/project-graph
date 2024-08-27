@@ -76,7 +76,7 @@ def paint_rect_in_world(
     fill_color: QColor,
     stroke_color: QColor,
 ):
-    PainterUtils.paint_rect_from_left_top(
+    PainterUtils.paint_rect(
         paint,
         camera.location_world2view(rect.location_left_top),
         rect.width * camera.current_scale,

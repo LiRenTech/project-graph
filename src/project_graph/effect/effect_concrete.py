@@ -64,7 +64,7 @@ class EffectRectangleFlash(Effect):
         self.rect.height += 2
 
     def paint(self, context: PaintContext):
-        PainterUtils.paint_rect_from_left_top(
+        PainterUtils.paint_rect(
             context.painter.q_painter(),
             context.camera.location_world2view(self.rect.location_left_top),
             context.camera.current_scale * self.rect.width,
@@ -94,7 +94,7 @@ class EffectRectangleShrink(Effect):
         self.current_rect.height -= 2
 
     def paint(self, context: PaintContext):
-        PainterUtils.paint_rect_from_left_top(
+        PainterUtils.paint_rect(
             context.painter.q_painter(),
             context.camera.location_world2view(self.current_rect.location_left_top),
             context.camera.current_scale * self.current_rect.width,

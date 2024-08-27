@@ -174,7 +174,7 @@ class PainterUtils:
         pass
 
     @staticmethod
-    def paint_rect_from_left_top(
+    def paint_rect(
         painter: QPainter,
         left_top: NumberVector,
         width: float,

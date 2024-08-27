@@ -360,7 +360,7 @@ class NodeManager:
         # 画游标
         if self.cursor_node is not None:
             margin = 10
-            PainterUtils.paint_rect_from_left_top(
+            PainterUtils.paint_rect(
                 context.painter.q_painter(),
                 context.camera.location_world2view(
                     self.cursor_node.body_shape.location_left_top

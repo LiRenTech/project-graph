@@ -91,7 +91,7 @@ class EntityNode(Entity):
     def paint(self, context: PaintContext):
 
         # 绘制边框
-        PainterUtils.paint_rect_from_left_top(
+        PainterUtils.paint_rect(
             context.painter.q_painter(),
             context.camera.location_world2view(self.body_shape.location_left_top),
             self.body_shape.width * context.camera.current_scale,
@@ -111,7 +111,7 @@ class EntityNode(Entity):
         )
 
         if self.is_selected:
-            PainterUtils.paint_rect_from_left_top(
+            PainterUtils.paint_rect(
                 context.painter.q_painter(),
                 context.camera.location_world2view(
                     self.body_shape.location_left_top - NumberVector(10, 10)

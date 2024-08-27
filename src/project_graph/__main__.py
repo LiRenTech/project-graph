@@ -724,7 +724,7 @@ class Canvas(QMainWindow):
             )
         # 所有要被删除的节点
         for node in self.warning_nodes:
-            PainterUtils.paint_rect_from_left_top(
+            PainterUtils.paint_rect(
                 painter,
                 self.camera.location_world2view(node.body_shape.location_left_top),
                 node.body_shape.width * self.camera.current_scale,
@@ -747,7 +747,7 @@ class Canvas(QMainWindow):
         )
         # 最终覆盖在屏幕上一层：拖拽情况
         if self.is_dragging_file:
-            PainterUtils.paint_rect_from_left_top(
+            PainterUtils.paint_rect(
                 painter,
                 NumberVector.zero(),
                 a0.rect().width(),
