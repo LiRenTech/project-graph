@@ -24,8 +24,13 @@ from PyQt5.QtWidgets import (
     QMessageBox,
     QPushButton,
     QColorDialog,
+    QDialog,
+    QVBoxLayout,
+    QLabel,
 )
 
+from core.app_dir import DATA_DIR
+from core.recent_file_manager import RecentFileManager
 from core.tools.file_tools import read_file
 
 try:
@@ -37,8 +42,6 @@ except:
     from assets import assets
 
 import os
-
-from appdirs import user_data_dir
 
 from core.camera import Camera
 from core.data_struct.line import Line
@@ -59,11 +62,7 @@ from core.paint.paintables import PaintContext
 from core.paint.painters import ProjectGraphPainter
 
 
-APP_NAME = "project-graph"
-APP_AUTHOR = "LiRen"
 
-DATA_DIR = user_data_dir(APP_NAME, APP_AUTHOR)
-print(DATA_DIR)
 
 
 class Canvas(QMainWindow):
@@ -85,6 +84,7 @@ class Canvas(QMainWindow):
         self.camera = Camera(NumberVector.zero(), 1920, 1080)
         self.effect_manager = EffectManager()
         self.node_manager = NodeManager()
+        self.recent_file_manager = RecentFileManager()
 
         # ====== 拖拽相关
         self.drag_list: list[EntityNode] = []
@@ -129,17 +129,23 @@ class Canvas(QMainWindow):
         file_menu = menubar.addMenu("文件")
         assert file_menu is not None
         # 打开文件
-        open_action = QAction("打开", self)
+        open_action = QAction("打开新图", self)
         open_action.triggered.connect(self.on_open_file)
         # 保存文件
-        save_action = QAction("保存", self)
+        save_action = QAction("保存当前图", self)
         save_action.triggered.connect(self.on_save_file)
+        # 打开曾经保存的
+        open_recent_action = QAction("打开曾经保存的", self)
+        open_recent_action.triggered.connect(self.open_recent_file)
+
         # 设置快捷键
         open_action.setShortcut("Ctrl+O")
         save_action.setShortcut("Ctrl+S")
+        open_recent_action.setShortcut("Ctrl+R")
 
         file_menu.addAction(open_action)
         file_menu.addAction(save_action)
+        file_menu.addAction(open_recent_action)
 
         # 帮助说明菜单
         help_menu = menubar.addMenu("帮助")
@@ -153,6 +159,58 @@ class Canvas(QMainWindow):
         help_menu.addAction(help_action)
         help_menu.addAction(about_action)
 
+        # 打开缓存文件夹
+        cache_folder_action = QAction("打开缓存文件夹", self)
+        cache_folder_action.triggered.connect(self.open_cache_folder)
+        help_menu.addAction(cache_folder_action)
+
+    def open_cache_folder(self):
+        """打开缓存文件夹"""
+        if platform.system() == "Windows":
+            subprocess.Popen(r'explorer /select,"{}"'.format(DATA_DIR))
+        elif platform.system() == "Darwin":
+            subprocess.Popen(["open", DATA_DIR])
+        else:
+            subprocess.Popen(["xdg-open", DATA_DIR])
+
+    def open_recent_file(self):
+        """打开最近的文件"""
+        # 创建一个新的 QDialog 实例
+        dialog = QDialog(self)
+        dialog.setWindowTitle("最近的文件")
+
+        # 设置布局
+        layout = QVBoxLayout()
+
+        # 添加一些示例控件
+        label = QLabel("这里是最近的文件列表")
+        layout.addWidget(label)
+
+        for recent_file in self.recent_file_manager.recent_files_list:
+            file_path = recent_file.file_path
+            last_opened_time = recent_file.last_opened_time
+            size = recent_file.size
+            button = QPushButton(f"{file_path}  ({last_opened_time.strftime('%Y-%m-%d %H:%M:%S')}, {size}B)")
+            button.clicked.connect(lambda: self.on_open_file_by_path(str(file_path)))
+            layout.addWidget(button)
+            
+
+        # 设置布局到对话框
+        dialog.setLayout(layout)
+
+        # 显示对话框
+        dialog.exec_()
+
+    def on_open_file_by_path(self, file_path: str):
+        """
+        根据文件路径打开文件
+        """
+        # 读取json文件
+        with open(file_path, "r", encoding="utf-8") as f:
+            load_data = json.loads(f.read())
+            self.node_manager.load_from_dict(load_data)
+            self.recent_file_manager.add_recent_file(Path(file_path))
+
     def on_open_file(self):
         # 选择json文件
         file_path, _ = QFileDialog.getOpenFileName(
@@ -160,10 +218,7 @@ class Canvas(QMainWindow):
         )
         if file_path == "":
             return
-        # 读取json文件
-        with open(file_path, "r", encoding="utf-8") as f:
-            load_data = json.loads(f.read())
-            self.node_manager.load_from_dict(load_data)
+        self.on_open_file_by_path(file_path)
 
     def on_save_file(self):
         file_path, _ = QFileDialog.getSaveFileName(
@@ -180,6 +235,7 @@ class Canvas(QMainWindow):
 
             with open(file_path, "w") as f:
                 json.dump(save_data, f)
+            self.recent_file_manager.add_recent_file(Path(file_path))
         else:
             # 如果用户取消了保存操作
             print("Save operation cancelled.")
