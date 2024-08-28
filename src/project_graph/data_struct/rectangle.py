@@ -9,6 +9,15 @@ class Rectangle:
         self.location_left_top = location_left_top
         self.width: float = width
         self.height: float = height
+        print("初始化Rectangle", self)
+        # 处理负数情况
+        if self.width < 0:
+            self.width = abs(width)
+            self.location_left_top.x -= self.width
+        if self.height < 0:
+            self.height = abs(height)
+            self.location_left_top.y -= self.height
+        print("处理后的结果", self)
 
     def output_data(self) -> dict[str, Any]:
         return {
@@ -25,6 +34,9 @@ class Rectangle:
         self.location_left_top = NumberVector(
             data["locationLeftTop"][0], data["locationLeftTop"][1]
         )
+
+    def __str__(self) -> str:
+        return f"Rectangle({self.location_left_top}, {self.width}, {self.height})"
 
     def __contains__(self, item: NumberVector) -> bool:
         return (

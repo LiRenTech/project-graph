@@ -2,6 +2,7 @@ import json
 import platform
 import subprocess
 from pathlib import Path
+from typing import Literal
 
 from PyQt5.QtCore import Qt, QTimer, QUrl
 from PyQt5.QtGui import (
@@ -89,11 +90,9 @@ class Canvas(QMainWindow):
         self.node_manager = NodeManager()
         self.recent_file_manager = RecentFileManager()
 
-        # ====== 拖拽相关
-        self.drag_list: list[EntityNode] = []
-        """所有拖拽的对象的列表（目前只支持一个，未支持框选多个拖拽）"""
+        # ====== 鼠标事件相关
         self.is_dragging = False
-        """当前是否正在拖拽"""
+        """当前鼠标是否按下"""
 
         # ====== 连线/断开 相关的操作
         self.connect_from_node: EntityNode | None = None
@@ -109,6 +108,14 @@ class Canvas(QMainWindow):
         """准备要被切断的线"""
         self.warning_nodes: list[EntityNode] = []
         """准备要删除的节点"""
+
+        # ====== 框选相关
+        self.is_selecting = False
+        """是否正在框选"""
+        self.select_rectangle: Rectangle | None = None
+        """框选的矩形"""
+        self.select_start_location: NumberVector = NumberVector.zero()
+        """框选的矩形的左上角位置"""
 
         # ====== 拖拽文件进入窗口相关
         self.is_dragging_file = False
@@ -126,7 +133,7 @@ class Canvas(QMainWindow):
         self.setWindowTitle("节点图编辑器")
         if platform.system() == "Darwin":
             self.setWindowIcon(QIcon("assets/favicon.ico"))
-        elif platform.system() == "Windows":
+        elif platform.system() == "Windows" or platform.system() == "Linux":
             self.setWindowIcon(QIcon(":/favicon.ico"))
         self._move_window_to_center()
         # 菜单栏
@@ -397,25 +404,21 @@ class Canvas(QMainWindow):
         point_world_location = self.camera.location_view2world(point_view_location)
         self.is_dragging = True
         if a0.button() == Qt.MouseButton.LeftButton:
-            # 更新被选中的节点
-            for node in self.node_manager.nodes:
-                node.is_selected = False
+            # 更新被选中的节点，如果没有选中节点就开始框选
+            self.is_selecting = True
+            self.select_start_location = point_world_location.clone()
+            self.select_rectangle = None
+            print("开始框选", self.select_start_location)
             for node in self.node_manager.nodes:
                 if node.body_shape.is_contain_point(point_world_location):
+                    self.is_selecting = False
                     node.is_selected = True
-                    break
-            # 拖拽移动
-            self.drag_list.clear()
-
-            for node in self.node_manager.nodes:
-                if node.body_shape.is_contain_point(point_world_location):
-                    self.drag_list.append(node)
-
-            for node in self.drag_list:
-                if node.is_selected:
                     node.dragging_offset = (
                         point_world_location - node.body_shape.location_left_top
                     )
+                    break
+                else:
+                    node.is_selected = False
         elif a0.button() == Qt.MouseButton.RightButton:
             self.mouse_right_location = point_world_location
             self.mouse_right_start_location = point_world_location.clone()
@@ -441,12 +444,29 @@ class Canvas(QMainWindow):
         if self.is_dragging:
 
             if a0.buttons() == Qt.MouseButton.LeftButton:
-                # 如果是左键，移动节点
-                for node in self.drag_list:
-                    new_left_top = point_world_location - node.dragging_offset
-                    d_location = new_left_top - node.body_shape.location_left_top
-                    # node.move(d_location)
-                    self.node_manager.move_node(node, d_location)
+                # 如果是左键，移动节点或者框选
+                if self.is_selecting:
+                    # 框选
+                    # FIXME: 只能从左上选择到右下，不能反方向选择
+                    self.select_rectangle = Rectangle(
+                        self.select_start_location,
+                        point_world_location.x - self.select_start_location.x,
+                        point_world_location.y - self.select_start_location.y,
+                    )
+                    # 找到在框选范围内的所有节点
+                    for node in self.node_manager.nodes:
+                        node.is_selected = node.body_shape.is_collision(
+                            self.select_rectangle
+                        )
+                else:
+                    for node in self.node_manager.nodes:
+                        if node.is_selected:
+                            new_left_top = point_world_location - node.dragging_offset
+                            d_location = (
+                                new_left_top - node.body_shape.location_left_top
+                            )
+                            # node.move(d_location)
+                            self.node_manager.move_node(node, d_location)
             elif a0.buttons() == Qt.MouseButton.RightButton:
                 self.mouse_right_location = point_world_location
                 self.warning_lines.clear()
@@ -486,7 +506,9 @@ class Canvas(QMainWindow):
         self.is_dragging = False
 
         if a0.button() == Qt.MouseButton.LeftButton:
-            pass
+            # 结束框选
+            if self.is_selecting:
+                self.is_selecting = False
         if a0.button() == Qt.MouseButton.RightButton:
 
             # 结束连线
@@ -672,6 +694,18 @@ class Canvas(QMainWindow):
                 self.camera.location_world2view(self.mouse_right_location),
                 QColor(255, 0, 0),
                 2 * self.camera.current_scale,
+            )
+
+        # 框选区域
+        if self.is_selecting and self.select_rectangle is not None:
+            PainterUtils.paint_rect(
+                painter,
+                self.camera.location_world2view(self.select_start_location),
+                self.select_rectangle.width * self.camera.current_scale,
+                self.select_rectangle.height * self.camera.current_scale,
+                QColor(255, 255, 255, 20),
+                QColor(255, 255, 255, 128),
+                2,
             )
 
         # 当前鼠标画连接线
