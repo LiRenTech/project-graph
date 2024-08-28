@@ -81,7 +81,12 @@ windows下使用pdm安装pyqt这个库会报错，因此必须把 pyqt5-qt5 这�
 
 并且不能同时写 `pyqt5-qt5==5.15.2` 和 `PyQt5==5.15.2` ，因为一旦写了 `PyQt5==5.15.2` ，会导致前者 `pyqt5-qt5` 的版本号发生变化进而导致安装失败。
 
+## 如何打包
 
+详见这个仓库的README
 
+https://github.com/frostming/pdm-packer
 
-
+```sh
+pdm pack --exe -m project_graph.__main__:main
+```
