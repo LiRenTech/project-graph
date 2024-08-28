@@ -90,3 +90,60 @@ https://github.com/frostming/pdm-packer
 ```sh
 pdm pack --exe -m project_graph.__main__:main
 ```
+
+但用上面的打包是需要自己安装项目对应版本的python解释器的。
+
+pyinstaller 打包的配置如下：
+
+```
+block_cipher = None
+
+a = Analysis(['src/project_graph/__main__.py'],
+             pathex=[],
+             binaries=[],
+             datas=[('src/project_graph/assets', 'assets')],
+             hiddenimports=[],
+             hookspath=[],
+             hooksconfig={},
+             runtime_hooks=[],
+             excludes=[],
+             win_no_prefer_redirects=False,
+             win_private_assemblies=False,
+             cipher=block_cipher,
+             noarchive=False)
+pyz = PYZ(a.pure, a.zipped_data,
+             cipher=block_cipher)
+
+exe = EXE(pyz,
+          a.scripts, 
+          [],
+          exclude_binaries=True,
+          name='project-graph',
+          debug=False,
+          bootloader_ignore_signals=False,
+          strip=False,
+          upx=True,
+          console=False,
+          disable_windowed_traceback=False,
+          target_arch=None,
+          codesign_identity=None,
+          entitlements_file=None,
+          icon='src/project_graph/assets/favicon.ico' )
+coll = COLLECT(exe,
+               a.binaries,
+               a.zipfiles,
+               a.datas, 
+               strip=False,
+               upx=True,
+               upx_exclude=[],
+               name='main')
+
+```
+
+把这个文件保存为`pyinstaller.spec` 然后在项目根目录下运行
+
+```
+pyinstaller pyinstaller.spec
+```
+
+但目前还会报错，有待解决
