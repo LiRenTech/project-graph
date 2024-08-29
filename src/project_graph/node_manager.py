@@ -1,8 +1,5 @@
-from time import perf_counter_ns
+from PyQt5.QtGui import QColor
 
-from PyQt5.QtGui import QColor, QPainter
-
-from project_graph.camera import Camera
 from project_graph.data_struct.circle import Circle
 from project_graph.data_struct.curve import ConnectCurve
 from project_graph.data_struct.line import Line

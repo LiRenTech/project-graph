@@ -1,15 +1,13 @@
 from typing import List
 from uuid import uuid4
 
-from PyQt5.QtGui import QColor, QPainter
+from PyQt5.QtGui import QColor
 
-from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
-from project_graph.data_struct.text import Text
 from project_graph.entity.entity import Entity
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import Paintable, PaintContext
-from project_graph.tools.string_tools import get_size_by_text, get_width_by_file_name
+from project_graph.tools.string_tools import get_size_by_text
 
 
 class EntityNode(Entity):
@@ -89,7 +87,6 @@ class EntityNode(Entity):
         return super().get_components()
 
     def paint(self, context: PaintContext):
-
         # 绘制边框
         PainterUtils.paint_rect(
             context.painter.q_painter(),

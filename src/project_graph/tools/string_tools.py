@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QFont, QFontMetrics, QPainter
+from PyQt5.QtGui import QFont, QFontMetrics
 
 
 def get_width_by_file_name(file_name: str) -> int:

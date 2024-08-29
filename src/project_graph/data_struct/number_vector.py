@@ -4,7 +4,6 @@ from PyQt5.QtCore import QPointF
 
 
 class NumberVector:
-
     def __init__(self, x: float, y: float):
         self.x: float = x
         self.y: float = y

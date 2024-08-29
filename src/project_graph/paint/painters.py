@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QLineF, QPointF, QRectF
+from PyQt5.QtCore import QPointF, QRectF
 from PyQt5.QtGui import QBrush, QColor, QPainter, QPen
 
 from project_graph.data_struct.curve import ConnectCurve
