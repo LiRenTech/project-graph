@@ -12,7 +12,6 @@ from project_graph.data_struct.number_vector import NumberVector
 
 
 class PainterUtils:
-
     @staticmethod
     def paint_solid_path(
         painter: QPainter,

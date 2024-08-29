@@ -34,8 +34,8 @@ from project_graph.recent_file_manager import RecentFileManager
 from project_graph.tools.file_tools import read_file
 
 try:
-    import project_graph.assets.assets  # type: ignore
-except:
+    pass  # type: ignore
+except ImportError:
     from PyQt5 import pyrcc_main
 
     if not pyrcc_main.processResourceFile(
@@ -45,14 +45,12 @@ except:
     ):
         print("Failed to compile assets.rcc")
         exit(1)
-    import project_graph.assets.assets  # type: ignore
 
 import os
 
 from project_graph.camera import Camera
 from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
-from project_graph.data_struct.rectangle import Rectangle
 from project_graph.effect.effect_concrete import (
     EffectCircleExpand,
     EffectCuttingFlash,
@@ -60,7 +58,6 @@ from project_graph.effect.effect_concrete import (
     EffectRectangleShrink,
 )
 from project_graph.effect.effect_manager import EffectManager
-from project_graph.entity.entity import Entity
 from project_graph.entity.entity_node import EntityNode
 from project_graph.node_manager import NodeManager
 from project_graph.paint.paint_elements import paint_details_data, paint_grid
@@ -441,7 +438,6 @@ class Canvas(QMainWindow):
         point_world_location = self.camera.location_view2world(point_view_location)
 
         if self.is_dragging:
-
             if a0.buttons() == Qt.MouseButton.LeftButton:
                 # 如果是左键，移动节点
                 for node in self.drag_list:
@@ -483,14 +479,13 @@ class Canvas(QMainWindow):
 
     def mouseReleaseEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
-        point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
-        point_world_location = self.camera.location_view2world(point_view_location)
+        # point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
+        # point_world_location = self.camera.location_view2world(point_view_location)
         self.is_dragging = False
 
         if a0.button() == Qt.MouseButton.LeftButton:
             pass
         if a0.button() == Qt.MouseButton.RightButton:
-
             # 结束连线
             if self.connect_from_node is not None and self.connect_to_node is not None:
                 connect_result = self.node_manager.connect_node(
