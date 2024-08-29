@@ -34,7 +34,7 @@ from project_graph.recent_file_manager import RecentFileManager
 from project_graph.tools.file_tools import read_file
 
 try:
-    pass  # type: ignore
+    from project_graph.assets import assets  # type: ignore  # noqa: F401
 except ImportError:
     from PyQt5 import pyrcc_main
 
@@ -45,6 +45,8 @@ except ImportError:
     ):
         print("Failed to compile assets.rcc")
         exit(1)
+
+    from project_graph.assets import assets  # type: ignore  # noqa: F401
 
 import os
 
