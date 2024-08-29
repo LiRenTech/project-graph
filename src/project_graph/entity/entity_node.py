@@ -99,7 +99,7 @@ class EntityNode(Entity):
             QColor(31, 31, 31, 200),
             self.color,
             int(2 * context.camera.current_scale),
-            16,
+            16 * context.camera.current_scale,
         )
 
         PainterUtils.paint_text_from_center(
@@ -121,6 +121,6 @@ class EntityNode(Entity):
                 QColor(0, 0, 0, 0),
                 self.color,
                 int(3 * context.camera.current_scale),
-                20,
+                20 * context.camera.current_scale,
             )
         pass
