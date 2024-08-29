@@ -569,11 +569,32 @@ class Canvas(QMainWindow):
 
     def wheelEvent(self, a0: QWheelEvent | None):
         assert a0 is not None
-        # 检查滚轮方向
-        if a0.angleDelta().y() > 0:
-            self.camera.zoom_in()
+        delta = a0.angleDelta().y()
+        # 如果鼠标当前是在一个节点上的，那么不缩放
+        is_mouse_hover_node = False
+        hover_node = None
+        view_location = NumberVector(a0.pos().x(), a0.pos().y())
+        world_location = self.camera.location_view2world(view_location)
+        for node in self.node_manager.nodes:
+            if node.body_shape.is_contain_point(world_location):
+                is_mouse_hover_node = True
+                hover_node = node
+                break
+
+        if is_mouse_hover_node:
+            # 旋转节点
+            if hover_node is not None:
+                if delta > 0:
+                    self.node_manager.rotate_node(hover_node, 10)
+                else:
+                    self.node_manager.rotate_node(hover_node, -10)
+            pass
         else:
-            self.camera.zoom_out()
+            # 检查滚轮方向
+            if delta > 0:
+                self.camera.zoom_in()
+            else:
+                self.camera.zoom_out()
 
         # 你可以在这里添加更多的逻辑来响应滚轮事件
         a0.accept()
