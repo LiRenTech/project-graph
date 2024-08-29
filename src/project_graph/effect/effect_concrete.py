@@ -6,6 +6,7 @@ from typing import List
 
 from PyQt5.QtGui import QColor
 
+from project_graph.data_struct.circle import Circle
 from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
@@ -24,18 +25,23 @@ class EffectCuttingFlash(Effect):
         self.line = line
 
     def paint(self, context: PaintContext):
+        direction = self.line.end - self.line.start
         # 外部粗线
         PainterUtils.paint_solid_line(
             context.painter.q_painter(),
-            context.camera.location_world2view(self.line.start),
+            context.camera.location_world2view(
+                self.line.start + direction * self.finish_rate
+            ),
             context.camera.location_world2view(self.line.end),
-            QColor(218, 112, 214, int((1 - self.finish_rate) * 255)),
-            int(50 * self.finish_rate),
+            QColor(255, 0, 0, int((1 - self.finish_rate) * 255)),
+            int(20 * self.finish_rate),
         )
         # 内部细线
         PainterUtils.paint_solid_line(
             context.painter.q_painter(),
-            context.camera.location_world2view(self.line.start),
+            context.camera.location_world2view(
+                self.line.start + direction * self.finish_rate
+            ),
             context.camera.location_world2view(self.line.end),
             QColor(255, 0, 0, int((1 - self.finish_rate) * 255)),
             int(10 * self.finish_rate),
@@ -109,3 +115,26 @@ class EffectCircleExpand(Effect):
     """
     圆圈扩大效果
     """
+
+    def __init__(self, duration: int, center_location: NumberVector):
+        super().__init__(duration)
+        self.circle = Circle(center_location, 0)
+
+    def get_components(self) -> List[Paintable]:
+        return []
+
+    def tick(self):
+        super().tick()
+        self.circle.radius += 1
+
+    def paint(self, context: PaintContext):
+        PainterUtils.paint_circle(
+            context.painter.q_painter(),
+            Circle(
+                context.camera.location_world2view(self.circle.center),
+                context.camera.current_scale * self.circle.radius,
+            ),
+            QColor(0, 0, 0, 0),
+            QColor(156, 220, 254, int((1 - self.finish_rate) * 255)),
+            int(10 * self.finish_rate),
+        )

@@ -54,6 +54,7 @@ from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.effect.effect_concrete import (
+    EffectCircleExpand,
     EffectCuttingFlash,
     EffectRectangleFlash,
     EffectRectangleShrink,
@@ -551,6 +552,7 @@ class Canvas(QMainWindow):
             if select_node is None:
                 # 在空白地方左键是添加节点
                 self.node_manager.add_node_by_click(click_location)
+                self.effect_manager.add_effect(EffectCircleExpand(15, click_location))
             else:
                 # 在节点上左键是编辑文字
                 text, ok = QInputDialog.getText(
