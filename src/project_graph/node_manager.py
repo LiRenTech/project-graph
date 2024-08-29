@@ -343,6 +343,35 @@ class NodeManager:
                 lines.append((Line(from_point, to_point), node, child))
         return lines
 
+    def rotate_node(self, node: EntityNode, degrees: float):
+        """
+        按照一定角度旋转节点，旋转的是连接这个节点的所有子节点
+        也就是如果这个节点没有子节点，那么看上去没有效果
+        """
+        self._rotate_node_dfs(node, node, degrees)
+        self.update_lines()
+
+    def _rotate_node_dfs(
+        self, rotate_center_node: EntityNode, current_node: EntityNode, degrees: float
+    ):
+        rotate_center_location = rotate_center_node.body_shape.center
+        # 先旋转自己
+        radius = current_node.body_shape.center.distance_to(rotate_center_location)
+        center_to_child_vector = (
+            current_node.body_shape.center - rotate_center_location
+        ).normalize()
+        center_to_child_vector = center_to_child_vector.rotate(degrees) * radius
+        new_location = rotate_center_location + center_to_child_vector
+        current_node.move_to(
+            new_location
+            - NumberVector(
+                current_node.body_shape.width / 2, current_node.body_shape.height / 2
+            )
+        )
+        # 再旋转子节点
+        for child in current_node.children:
+            self._rotate_node_dfs(rotate_center_node, child, degrees)
+
     def paint(self, context: PaintContext):
         # 画节点本身
         for node in self.nodes:
