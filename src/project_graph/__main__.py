@@ -2,7 +2,6 @@ import json
 import platform
 import subprocess
 from pathlib import Path
-from typing import Literal
 
 from PyQt5.QtCore import Qt, QTimer, QUrl
 from PyQt5.QtGui import (
@@ -448,11 +447,11 @@ class Canvas(QMainWindow):
                 # 如果是左键，移动节点或者框选
                 if self.is_selecting:
                     # 框选
-                    # FIXME: 只能从左上选择到右下，不能反方向选择
+                    # HACK: 踩坑 location作为引用传递，导致修改了原来的对象被修改！
                     self.select_rectangle = Rectangle(
-                        self.select_start_location,
-                        point_world_location.x - self.select_start_location.x,
-                        point_world_location.y - self.select_start_location.y,
+                        self.select_start_location.clone(),
+                        point_world_location.x - self.select_start_location.clone().x,
+                        point_world_location.y - self.select_start_location.clone().y,
                     )
                     # 找到在框选范围内的所有节点
                     for node in self.node_manager.nodes:
@@ -505,6 +504,7 @@ class Canvas(QMainWindow):
         # point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
         # point_world_location = self.camera.location_view2world(point_view_location)
         self.is_dragging = False
+        print("结束拖拽")
 
         if a0.button() == Qt.MouseButton.LeftButton:
             # 结束框选
