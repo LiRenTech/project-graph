@@ -52,7 +52,10 @@ class NumberVector:
         return f"NumberVector({self.x}, {self.y})"
 
     def __add__(self, other):
-        return NumberVector(self.x + other.x, self.y + other.y)
+        if isinstance(other, NumberVector):
+            return NumberVector(self.x + other.x, self.y + other.y)
+        else:
+            return NumberVector(self.x + other, self.y + other)
 
     def __sub__(self, other):
         if isinstance(other, NumberVector):

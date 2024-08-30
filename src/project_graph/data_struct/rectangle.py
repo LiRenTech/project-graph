@@ -6,9 +6,19 @@ from project_graph.data_struct.number_vector import NumberVector
 
 class Rectangle:
     def __init__(self, location_left_top: NumberVector, width: float, height: float):
-        self.location_left_top = location_left_top
+        self.location_left_top = location_left_top.clone()
         self.width: float = width
         self.height: float = height
+        # 处理负数情况
+        if self.width < 0.0:
+            # 把x坐标减去width的绝对值
+            self.location_left_top.x += self.width
+            # 把width设置为绝对值
+            self.width = abs(width)
+        if self.height < 0.0:
+            # 同理
+            self.location_left_top.y += self.height
+            self.height = abs(height)
 
     def output_data(self) -> dict[str, Any]:
         return {

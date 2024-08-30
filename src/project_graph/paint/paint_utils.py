@@ -5,7 +5,15 @@
 import traceback
 
 from PyQt5.QtCore import QPoint, QPointF, Qt
-from PyQt5.QtGui import QColor, QFont, QFontMetrics, QPainter, QPainterPath, QPen
+from PyQt5.QtGui import (
+    QColor,
+    QFont,
+    QFontMetrics,
+    QPainter,
+    QPainterPath,
+    QPen,
+    QImage,
+)
 
 from project_graph.data_struct.circle import Circle
 from project_graph.data_struct.number_vector import NumberVector
@@ -179,9 +187,9 @@ class PainterUtils:
         width: float,
         height: float,
         fill_color: QColor,
-        stroke_color: QColor,
-        stroke_width: int,
-        radius: float = 0,
+        stroke_color: QColor = QColor(0, 0, 0, 0),
+        stroke_width: int = 0,
+        radius: float = 0.0,
     ):
         """
         绘制一个矩形，左上角坐标为left_top，宽为width，高为height，填充色为fill_color，边框色为stroke_color
@@ -322,3 +330,28 @@ class PainterUtils:
 
             traceback.print_exc()
             return 0, 0
+
+    @staticmethod
+    def paint_image(
+        painter: QPainter,
+        left_top: NumberVector,
+        image_path: str,
+        width: float,
+        height: float,
+    ):
+        """
+        绘制一个图片，左上角坐标为left_top，图片路径为image_path，宽为width，高为height
+        :param painter:
+        :param left_top:
+        :param image_path:
+        :param width:
+        :param height:
+        :return:
+        """
+        # 加载图片
+        image = QImage(image_path)
+        # 缩放图片
+        image = image.scaled(int(width), int(height))
+        # 绘制图片
+        painter.drawImage(int(left_top.x), int(left_top.y), image)
+        pass

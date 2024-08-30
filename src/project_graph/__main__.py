@@ -32,6 +32,7 @@ from PyQt5.QtWidgets import (
 from project_graph.app_dir import DATA_DIR
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.recent_file_manager import RecentFileManager
+from project_graph.toolbar.toolbar import Toolbar
 from project_graph.tools.file_tools import read_file
 
 try:
@@ -93,6 +94,8 @@ class Canvas(QMainWindow):
         # ====== 鼠标事件相关
         self.is_dragging = False
         """当前鼠标是否按下"""
+        self.mouse_location = NumberVector.zero()
+        """鼠标当前位置"""
 
         # ====== 连线/断开 相关的操作
         self.connect_from_node: EntityNode | None = None
@@ -116,6 +119,8 @@ class Canvas(QMainWindow):
         """框选的矩形"""
         self.select_start_location: NumberVector = NumberVector.zero()
         """框选的矩形的左上角位置"""
+        self.toolbar: Toolbar = Toolbar()
+        """工具栏对象"""
 
         # ====== 拖拽文件进入窗口相关
         self.is_dragging_file = False
@@ -403,13 +408,13 @@ class Canvas(QMainWindow):
         assert a0 is not None
         point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
         point_world_location = self.camera.location_view2world(point_view_location)
+        self.toolbar.nodes = []
         self.is_dragging = True
         if a0.button() == Qt.MouseButton.LeftButton:
             # 更新被选中的节点，如果没有选中节点就开始框选
             self.is_selecting = True
             self.select_start_location = point_world_location.clone()
             self.select_rectangle = None
-            print("开始框选", self.select_start_location)
             for node in self.node_manager.nodes:
                 if node.body_shape.is_contain_point(point_world_location):
                     self.is_selecting = False
@@ -442,6 +447,8 @@ class Canvas(QMainWindow):
         point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
         point_world_location = self.camera.location_view2world(point_view_location)
 
+        self.mouse_location = NumberVector(a0.x(), a0.y())
+
         if self.is_dragging:
             if a0.buttons() == Qt.MouseButton.LeftButton:
                 # 如果是左键，移动节点或者框选
@@ -449,9 +456,9 @@ class Canvas(QMainWindow):
                     # 框选
                     # HACK: 踩坑 location作为引用传递，导致修改了原来的对象被修改！
                     self.select_rectangle = Rectangle(
-                        self.select_start_location.clone(),
-                        point_world_location.x - self.select_start_location.clone().x,
-                        point_world_location.y - self.select_start_location.clone().y,
+                        self.select_start_location,
+                        point_world_location.x - self.select_start_location.x,
+                        point_world_location.y - self.select_start_location.y,
                     )
                     # 找到在框选范围内的所有节点
                     for node in self.node_manager.nodes:
@@ -504,12 +511,17 @@ class Canvas(QMainWindow):
         # point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
         # point_world_location = self.camera.location_view2world(point_view_location)
         self.is_dragging = False
-        print("结束拖拽")
 
         if a0.button() == Qt.MouseButton.LeftButton:
             # 结束框选
             if self.is_selecting:
                 self.is_selecting = False
+
+            # 显示toolbar
+            self.toolbar.nodes = [
+                node for node in self.node_manager.nodes if node.is_selected
+            ]
+            print("显示toolbar", self.toolbar.nodes)
         if a0.button() == Qt.MouseButton.RightButton:
             # 结束连线
             if self.connect_from_node is not None and self.connect_to_node is not None:
@@ -625,7 +637,6 @@ class Canvas(QMainWindow):
     def keyPressEvent(self, a0: QKeyEvent | None):
         assert a0 is not None
         key = a0.key()
-        print(f"<{key}>", type(key))
 
         if key == Qt.Key.Key_A:
             self.camera.press_move(NumberVector(-1, 0))
@@ -722,7 +733,9 @@ class Canvas(QMainWindow):
         if self.is_selecting and self.select_rectangle is not None:
             PainterUtils.paint_rect(
                 painter,
-                self.camera.location_world2view(self.select_start_location),
+                self.camera.location_world2view(
+                    self.select_rectangle.location_left_top
+                ),
                 self.select_rectangle.width * self.camera.current_scale,
                 self.select_rectangle.height * self.camera.current_scale,
                 QColor(255, 255, 255, 20),
@@ -766,7 +779,9 @@ class Canvas(QMainWindow):
                 )
 
         # 上下文对象
-        paint_context = PaintContext(ProjectGraphPainter(painter), self.camera)
+        paint_context = PaintContext(
+            ProjectGraphPainter(painter), self.camera, self.mouse_location
+        )
 
         self.node_manager.paint(paint_context)
         # 所有要被切断的线
@@ -801,6 +816,8 @@ class Canvas(QMainWindow):
                 f"effect: {len(self.effect_manager.effects)}",
             ],
         )
+        # 工具栏
+        self.toolbar.paint(paint_context)
         # 最终覆盖在屏幕上一层：拖拽情况
         if self.is_dragging_file:
             PainterUtils.paint_rect(
