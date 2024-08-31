@@ -1,5 +1,6 @@
 <RCC>
  <qresource>
 	 <file>favicon.ico</file>
+	 <file>icon_delete.png</file>
  </qresource>
 </RCC>

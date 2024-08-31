@@ -30,7 +30,9 @@ from PyQt5.QtWidgets import (
 )
 
 from project_graph.app_dir import DATA_DIR
+from project_graph.data_struct.rectangle import Rectangle
 from project_graph.recent_file_manager import RecentFileManager
+from project_graph.toolbar.toolbar import Toolbar
 from project_graph.tools.file_tools import read_file
 
 try:
@@ -88,12 +90,16 @@ class Canvas(QMainWindow):
         self.effect_manager = EffectManager()
         self.node_manager = NodeManager()
         self.recent_file_manager = RecentFileManager()
+        self.toolbar: Toolbar = Toolbar()
+        """工具栏对象"""
 
-        # ====== 拖拽相关
-        self.drag_list: list[EntityNode] = []
-        """所有拖拽的对象的列表（目前只支持一个，未支持框选多个拖拽）"""
+        self.init_toolbar()
+
+        # ====== 鼠标事件相关
         self.is_dragging = False
-        """当前是否正在拖拽"""
+        """当前鼠标是否按下"""
+        self.mouse_location = NumberVector.zero()
+        """鼠标当前位置"""
 
         # ====== 连线/断开 相关的操作
         self.connect_from_node: EntityNode | None = None
@@ -109,6 +115,16 @@ class Canvas(QMainWindow):
         """准备要被切断的线"""
         self.warning_nodes: list[EntityNode] = []
         """准备要删除的节点"""
+
+        # ====== 框选相关
+        self.is_selecting = False
+        """是否正在框选"""
+        self.select_rectangle: Rectangle | None = None
+        """框选的矩形"""
+        self.select_start_location: NumberVector = NumberVector.zero()
+        """框选的矩形的左上角位置"""
+        self.last_move_location = NumberVector.zero()
+        """在框选拖动移动时，上一帧鼠标的位置（用于计算上一帧到当前帧的向量）（世界坐标）"""
 
         # ====== 拖拽文件进入窗口相关
         self.is_dragging_file = False
@@ -126,7 +142,7 @@ class Canvas(QMainWindow):
         self.setWindowTitle("节点图编辑器")
         if platform.system() == "Darwin":
             self.setWindowIcon(QIcon("assets/favicon.ico"))
-        elif platform.system() == "Windows":
+        elif platform.system() == "Windows" or platform.system() == "Linux":
             self.setWindowIcon(QIcon(":/favicon.ico"))
         self._move_window_to_center()
         # 菜单栏
@@ -170,6 +186,20 @@ class Canvas(QMainWindow):
         cache_folder_action = QAction("打开缓存文件夹", self)
         cache_folder_action.triggered.connect(self.open_cache_folder)
         help_menu.addAction(cache_folder_action)
+
+    def init_toolbar(self):
+        self.toolbar.tool_list[0].set_bind_event_function(
+            self._delete_current_select_node
+        )
+        pass
+
+    def _delete_current_select_node(self):
+        """删除当前选中的节点"""
+        print("删除当前选中的节点")
+        self.node_manager.delete_nodes(
+            [node for node in self.node_manager.nodes if node.is_selected]
+        )
+        pass
 
     def open_cache_folder(self):
         """打开缓存文件夹"""
@@ -395,29 +425,78 @@ class Canvas(QMainWindow):
     def mousePressEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
         point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
+
+        is_press_toolbar = self.toolbar.on_click(point_view_location)
+        if is_press_toolbar:
+            print("按到了toolbar")
+            return
+
         point_world_location = self.camera.location_view2world(point_view_location)
+        self.toolbar.nodes = []
         self.is_dragging = True
         if a0.button() == Qt.MouseButton.LeftButton:
-            # 更新被选中的节点
-            for node in self.node_manager.nodes:
-                node.is_selected = False
+            # 可能的4种情况
+            # ------------ | 已有节点被选择 | 没有节点被选择
+            # 在空白地方按下 |      A       |      B
+            # 在节点身上按下 |      C       |      D
+
+            # A：取消选择那些节点，可能要重新开始框选
+            # B：可能是想开始框选
+            # C：如果点击的节点属于被上次选中的节点中，那么整体移动
+            #    如果点击的节点不属于被上次选中的节点中，那么单击选择
+            # D：只想单击这一个节点
+
+            # 更新被选中的节点，如果没有选中节点就开始框选
+
+            is_have_selected_node = any(
+                node.is_selected for node in self.node_manager.nodes
+            )
+            is_click_on_node = any(
+                node.body_shape.is_contain_point(point_world_location)
+                for node in self.node_manager.nodes
+            )
+
+            # 获取点击的节点
+            click_node = None
             for node in self.node_manager.nodes:
                 if node.body_shape.is_contain_point(point_world_location):
-                    node.is_selected = True
+                    click_node = node
                     break
-            # 拖拽移动
-            self.drag_list.clear()
 
-            for node in self.node_manager.nodes:
-                if node.body_shape.is_contain_point(point_world_location):
-                    self.drag_list.append(node)
+            if is_click_on_node:
+                assert click_node is not None
+                if is_have_selected_node:
+                    # C
+                    if click_node.is_selected:
+                        # 如果点击的节点属于被上次选中的节点中，那么整体移动
+                        pass
+                    else:
+                        # 取消选择所有节点
+                        for node in self.node_manager.nodes:
+                            node.is_selected = False
+                        # 单击选择
+                        click_node.is_selected = True
+                else:
+                    # D
+                    click_node.is_selected = True
+            else:
+                # A B
+                self.is_selecting = True
+                self.select_start_location = point_world_location.clone()
+                self.select_rectangle = None
+                # 取消选择所有节点
+                for node in self.node_manager.nodes:
+                    node.is_selected = False
+                pass
 
-            for node in self.drag_list:
-                if node.is_selected:
-                    node.dragging_offset = (
-                        point_world_location - node.body_shape.location_left_top
-                    )
+            # 为移动做准备
+            self.last_move_location = point_world_location.clone()
+
         elif a0.button() == Qt.MouseButton.RightButton:
+            # 如果是在节点上开始右键的，那么就开始连线
+            # 如果是在空白上开始右键的，那么就开始切割线
+            # TODO: 多个框选连线
+
             self.mouse_right_location = point_world_location
             self.mouse_right_start_location = point_world_location.clone()
             # 开始连线
@@ -436,19 +515,45 @@ class Canvas(QMainWindow):
 
     def mouseMoveEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
-        point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
-        point_world_location = self.camera.location_view2world(point_view_location)
+        mouse_view_location = NumberVector(a0.pos().x(), a0.pos().y())
+        mouse_world_location = self.camera.location_view2world(mouse_view_location)
+
+        self.mouse_location = NumberVector(a0.x(), a0.y())
 
         if self.is_dragging:
             if a0.buttons() == Qt.MouseButton.LeftButton:
-                # 如果是左键，移动节点
-                for node in self.drag_list:
-                    new_left_top = point_world_location - node.dragging_offset
-                    d_location = new_left_top - node.body_shape.location_left_top
-                    # node.move(d_location)
-                    self.node_manager.move_node(node, d_location)
+                # 如果是左键，移动节点或者框选
+                if self.is_selecting:
+                    # 框选
+                    # HACK: 踩坑 location作为引用传递，导致修改了原来的对象被修改！
+                    self.select_rectangle = Rectangle(
+                        self.select_start_location.clone(),
+                        mouse_world_location.x - self.select_start_location.x,
+                        mouse_world_location.y - self.select_start_location.y,
+                    )
+                    # 找到在框选范围内的所有节点
+                    for node in self.node_manager.nodes:
+                        node.is_selected = node.body_shape.is_collision(
+                            self.select_rectangle
+                        )
+                else:
+                    # 移动
+
+                    # 当前帧距离上一帧的 鼠标移动向量
+                    mouse_d_location = mouse_world_location - self.last_move_location
+                    for node in self.node_manager.nodes:
+                        if node.is_selected:
+                            # new_left_top = mouse_world_location - node.dragging_offset
+                            # d_location = (
+                            #     new_left_top - node.body_shape.location_left_top
+                            # )
+                            # node.move(d_location)
+                            self.node_manager.move_node(node, mouse_d_location)
+
+                self.last_move_location = mouse_world_location.clone()
+
             elif a0.buttons() == Qt.MouseButton.RightButton:
-                self.mouse_right_location = point_world_location
+                self.mouse_right_location = mouse_world_location
                 self.warning_lines.clear()
                 self.warning_nodes.clear()
                 if self.is_cutting:
@@ -475,18 +580,34 @@ class Canvas(QMainWindow):
                 else:
                     # 如果是右键，开始连线
                     for node in self.node_manager.nodes:
-                        if node.body_shape.is_contain_point(point_world_location):
+                        if node.body_shape.is_contain_point(mouse_world_location):
                             self.connect_to_node = node
                             break
 
     def mouseReleaseEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
-        # point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
-        # point_world_location = self.camera.location_view2world(point_view_location)
         self.is_dragging = False
+        mouse_view_location = NumberVector(a0.pos().x(), a0.pos().y())
 
         if a0.button() == Qt.MouseButton.LeftButton:
-            pass
+            # 结束框选
+            if self.is_selecting:
+                self.is_selecting = False
+            # 是否需要显示toolbar（如果是在toolbar上弹起的，就不显示）
+            if not self.toolbar.is_click_inside(mouse_view_location):
+                # 显示toolbar
+                self.toolbar.nodes = [
+                    node for node in self.node_manager.nodes if node.is_selected
+                ]
+                # 设定框的位置为鼠标释放位置并往右下角偏移一点点
+                self.toolbar.body_shape.location_left_top = (
+                    mouse_view_location + NumberVector(20, 20)
+                )
+            else:
+                # 隐藏toolbar，直接让其移动到视野之外解决
+                self.toolbar.body_shape.location_left_top = NumberVector(-1000, -1000)
+                self.toolbar.nodes = []
+                pass
         if a0.button() == Qt.MouseButton.RightButton:
             # 结束连线
             if self.connect_from_node is not None and self.connect_to_node is not None:
@@ -602,7 +723,6 @@ class Canvas(QMainWindow):
     def keyPressEvent(self, a0: QKeyEvent | None):
         assert a0 is not None
         key = a0.key()
-        print(f"<{key}>", type(key))
 
         if key == Qt.Key.Key_A:
             self.camera.press_move(NumberVector(-1, 0))
@@ -695,6 +815,20 @@ class Canvas(QMainWindow):
                 2 * self.camera.current_scale,
             )
 
+        # 框选区域
+        if self.is_selecting and self.select_rectangle is not None:
+            PainterUtils.paint_rect(
+                painter,
+                self.camera.location_world2view(
+                    self.select_rectangle.location_left_top
+                ),
+                self.select_rectangle.width * self.camera.current_scale,
+                self.select_rectangle.height * self.camera.current_scale,
+                QColor(255, 255, 255, 20),
+                QColor(255, 255, 255, 128),
+                2,
+            )
+
         # 当前鼠标画连接线
         if self.connect_from_node is not None and self.mouse_right_location is not None:
             # 如果鼠标位置是没有和任何节点相交的
@@ -731,7 +865,9 @@ class Canvas(QMainWindow):
                 )
 
         # 上下文对象
-        paint_context = PaintContext(ProjectGraphPainter(painter), self.camera)
+        paint_context = PaintContext(
+            ProjectGraphPainter(painter), self.camera, self.mouse_location
+        )
 
         self.node_manager.paint(paint_context)
         # 所有要被切断的线
@@ -766,6 +902,8 @@ class Canvas(QMainWindow):
                 f"effect: {len(self.effect_manager.effects)}",
             ],
         )
+        # 工具栏
+        self.toolbar.paint(paint_context)
         # 最终覆盖在屏幕上一层：拖拽情况
         if self.is_dragging_file:
             PainterUtils.paint_rect(

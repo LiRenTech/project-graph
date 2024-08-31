@@ -2,19 +2,23 @@ from abc import ABCMeta, abstractmethod
 from typing import List
 
 from project_graph.camera import Camera
+from project_graph.data_struct.number_vector import NumberVector
 from project_graph.paint.painters import ProjectGraphPainter
 
 
 class PaintContext:
     """绘制上下文，该类是为了便于在绘制时传递一些额外信息。"""
 
-    def __init__(self, painter: ProjectGraphPainter, camera: Camera):
+    def __init__(
+        self, painter: ProjectGraphPainter, camera: Camera, mouse_location: NumberVector
+    ):
         """
         Args:
             painter (QPainter): 已经使用QTransform将世界坐标转化为视野渲染坐标的painter
         """
         self.painter = painter
         self.camera = camera
+        self.mouse_location = mouse_location
 
 
 class Paintable(metaclass=ABCMeta):
