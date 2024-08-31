@@ -1,4 +1,5 @@
 from project_graph.data_struct.number_vector import NumberVector
+from project_graph.logging import log
 
 
 class Line:
@@ -98,8 +99,8 @@ class Line:
             else:
                 return None
         except ZeroDivisionError:
-            print("ZeroDivisionError")
+            log("ZeroDivisionError")
             return None
         except Exception as e:
-            print(e)
+            log(e)
             return None

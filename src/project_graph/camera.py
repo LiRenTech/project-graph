@@ -4,6 +4,7 @@ from PyQt5.QtGui import QTransform
 
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
+from project_graph.logging import log
 
 
 class Camera:
@@ -128,7 +129,7 @@ class Camera:
                 self.target_scale = self.SCALE_MAX - 1
         except Exception as e:
             traceback.print_exc()
-            print(e)
+            log(e)
 
     @property
     def cover_world_rectangle(self) -> Rectangle:
