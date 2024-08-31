@@ -50,5 +50,3 @@ jobs:
         with:
           name: project-graph_windows
           path: dist/project-graph*
-      - name: Release
-        uses: softprops/action-gh-release@v2
