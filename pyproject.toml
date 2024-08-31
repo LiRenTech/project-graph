@@ -9,7 +9,7 @@ dependencies = [
     "PyQt5-sip>=12.15.0",
     "appdirs>=1.4.4",
 ]
-requires-python = ">=3.12"
+requires-python = "<3.14,>=3.12"
 readme = "README.md"
 license = { text = "Apache-2.0" }
 
@@ -33,9 +33,7 @@ distribution = true
 
 [tool.pdm.scripts]
 start = { call = "project_graph.__main__:main" }
-package = { shell = "pyinstaller project-graph.spec" }
+package = { call = "package:main" }
 
 [tool.pdm.dev-dependencies]
-package = [
-    "pyinstaller>=4.5.1",
-]
+package = ["pyinstaller>=6.10.0"]
