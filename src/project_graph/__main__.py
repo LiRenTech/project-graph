@@ -422,6 +422,8 @@ class Canvas(QMainWindow):
         self.camera.tick()
         self.update()
 
+    # region 鼠标事件
+
     def mousePressEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
         point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
@@ -543,12 +545,10 @@ class Canvas(QMainWindow):
                     mouse_d_location = mouse_world_location - self.last_move_location
                     for node in self.node_manager.nodes:
                         if node.is_selected:
-                            # new_left_top = mouse_world_location - node.dragging_offset
-                            # d_location = (
-                            #     new_left_top - node.body_shape.location_left_top
-                            # )
-                            # node.move(d_location)
-                            self.node_manager.move_node(node, mouse_d_location)
+                            # self.node_manager.move_node(node, mouse_d_location)
+                            self.node_manager.move_node_with_children(
+                                node, mouse_d_location
+                            )
 
                 self.last_move_location = mouse_world_location.clone()
 
@@ -720,6 +720,8 @@ class Canvas(QMainWindow):
         # 你可以在这里添加更多的逻辑来响应滚轮事件
         a0.accept()
 
+    # region 键盘事件
+
     def keyPressEvent(self, a0: QKeyEvent | None):
         assert a0 is not None
         key = a0.key()
@@ -793,6 +795,8 @@ class Canvas(QMainWindow):
             self.camera.release_move(NumberVector(1, 0))
         elif key == Qt.Key.Key_W:
             self.camera.release_move(NumberVector(0, -1))
+
+    # region 绘制
 
     def paintEvent(self, a0: QPaintEvent | None):
         assert a0 is not None

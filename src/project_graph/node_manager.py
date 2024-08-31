@@ -268,13 +268,37 @@ class NodeManager:
         return None
 
     def move_node(self, node: EntityNode, d_location: NumberVector):
+        """
+        移动一个节点（不带动子节点的单独移动）
+        """
         node.move(d_location)
         self.collide_dfs(node)
         self.update_lines()
 
+    def move_node_with_children(self, node: EntityNode, d_location: NumberVector):
+        """
+        移动一个节点（带动子节点的整体移动）
+        """
+        self._move_node_with_children_dfs(node, d_location, [node.uuid])
+        self.update_lines()
+
+    def _move_node_with_children_dfs(
+        self, node: EntityNode, d_location: NumberVector, visited_uuids: list[str]
+    ):
+        node.move(d_location)
+        self.collide_dfs(node)
+        for child in node.children:
+            if child.uuid in visited_uuids:
+                # 防止出现环形连接，导致无限递归
+                continue
+            self._move_node_with_children_dfs(
+                child, d_location, visited_uuids + [node.uuid]
+            )
+
     def collide_dfs(self, self_node: EntityNode):
         """
         self_node 是主体
+        这个dfs指的不是子节点递归，是和周围其他节点的碰撞传递
         """
         for node in self.nodes:
             if node == self_node:
