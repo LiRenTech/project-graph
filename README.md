@@ -57,6 +57,12 @@ Linux: `~/.local/share/project-graph` [（可自定义）](https://specification
 
 以上的三个原则是这个视频 10:45 秒开始的地方他提到的四个原则的总结
 
+## 开发贡献指南
+
+本项目使用了 Qt 作为开发框架，以及pdm管理依赖、ruff
+
+详见本仓库下的 docs/CONTRIBUTING.md，包含如何运行等详细内容
+
 ## Star History
 
 <a href="https://star-history.com/#LiRenTech/project-graph-qt&Date">
