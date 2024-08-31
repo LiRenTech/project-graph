@@ -6,6 +6,7 @@ from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity_node import EntityNode
+from project_graph.entity.node_link import NodeLink
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 
@@ -18,6 +19,9 @@ class NodeManager:
 
     def __init__(self):
         self.nodes: list[EntityNode] = []
+
+        self._links: list[NodeLink] = []
+        """准备替代lines"""
 
         self._lines: list[Line] = []
         """lines只用于绘制的时候给一个缓存，不参与逻辑运算，只在改变的时候重新计算"""
@@ -250,6 +254,7 @@ class NodeManager:
                 node.add_child(child)
 
         self.update_lines()
+        self.update_links()
         pass
 
     def load_from_dict(self, data: dict):
@@ -260,6 +265,7 @@ class NodeManager:
         self.nodes.clear()
         self.add_from_dict(data, NumberVector(0, 0), refresh_uuid=False)
         self.update_lines()
+        self.update_links()
 
     def get_node_by_uuid(self, uuid: str) -> EntityNode | None:
         for node in self.nodes:
@@ -296,6 +302,7 @@ class NodeManager:
             if node in father_node.children:
                 father_node.children.remove(node)
         self.update_lines()
+        self.update_links()
 
     def delete_nodes(self, nodes: list[EntityNode]):
         for node in nodes:
@@ -306,11 +313,13 @@ class NodeManager:
                 if node in father_node.children:
                     father_node.children.remove(node)
         self.update_lines()
+        self.update_links()
 
     def connect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
             res = from_node.add_child(to_node)
             self.update_lines()
+            self.update_links()
             return res
         return False
 
@@ -318,6 +327,7 @@ class NodeManager:
         if from_node in self.nodes and to_node in self.nodes:
             res = from_node.remove_child(to_node)
             self.update_lines()
+            self.update_links()
             return res
         return False
 
@@ -338,6 +348,16 @@ class NodeManager:
         建议只在必要操作之后调用一下。
         """
         self._lines = self._get_all_lines()
+
+    def _get_all_links(self) -> list[NodeLink]:
+        links = []
+        for node in self.nodes:
+            for child in node.children:
+                links.append(NodeLink(node, child))
+        return links
+
+    def update_links(self):
+        self._links = self._get_all_links()
 
     def get_all_lines_and_node(self) -> list[tuple[Line, EntityNode, EntityNode]]:
         lines = []
@@ -396,9 +416,22 @@ class NodeManager:
         context.painter.q_painter().setTransform(
             context.camera.get_world2view_transform()
         )
-        for line in self._lines:
+        # for line in self._lines:
+        #     context.painter.paint_curve(
+        #         ConnectCurve(line.start, line.end), QColor(204, 204, 204)
+        #     )
+
+        # 新版本测试：link
+        for link in self._links:
+            from_node = link.source_node
+            to_node = link.target_node
+
             context.painter.paint_curve(
-                ConnectCurve(line.start, line.end), QColor(204, 204, 204)
+                ConnectCurve(
+                    from_node.body_shape.center,
+                    to_node.body_shape.center,
+                ),
+                QColor(204, 204, 204),
             )
 
         context.painter.q_painter().resetTransform()
