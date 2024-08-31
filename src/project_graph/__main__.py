@@ -530,23 +530,23 @@ class Canvas(QMainWindow):
 
     def mouseReleaseEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
-        # point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
-        # point_world_location = self.camera.location_view2world(point_view_location)
         self.is_dragging = False
-        mouse_location = NumberVector(a0.pos().x(), a0.pos().y())
+        mouse_view_location = NumberVector(a0.pos().x(), a0.pos().y())
 
         if a0.button() == Qt.MouseButton.LeftButton:
             # 结束框选
             if self.is_selecting:
                 self.is_selecting = False
             # 是否需要显示toolbar（如果是在toolbar上弹起的，就不显示）
-            if not self.toolbar.is_click_inside(mouse_location):
+            if not self.toolbar.is_click_inside(mouse_view_location):
                 # 显示toolbar
                 self.toolbar.nodes = [
                     node for node in self.node_manager.nodes if node.is_selected
                 ]
-                print("框选结束，显示toolbar", self.toolbar.nodes)
-                self.toolbar.body_shape.location_left_top = mouse_location.clone()
+                # 设定框的位置为鼠标释放位置并往右下角偏移一点点
+                self.toolbar.body_shape.location_left_top = (
+                    mouse_view_location + NumberVector(20, 20)
+                )
         if a0.button() == Qt.MouseButton.RightButton:
             # 结束连线
             if self.connect_from_node is not None and self.connect_to_node is not None:
