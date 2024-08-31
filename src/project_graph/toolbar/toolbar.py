@@ -48,8 +48,6 @@ class Toolbar(Paintable):
 
         self.tool_list: List[Tool] = [
             Tool("icon_delete.png"),
-            Tool("icon_delete.png"),
-            Tool("icon_delete.png"),
         ]
         """工具列表"""
 
