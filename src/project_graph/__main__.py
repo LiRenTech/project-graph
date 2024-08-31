@@ -40,7 +40,7 @@ from project_graph.toolbar.toolbar import Toolbar
 from project_graph.tools.file_tools import read_file
 
 try:
-    from project_graph.assets import assets  # type: ignore  # noqa: F401
+    import project_graph.assets.assets  # type: ignore  # noqa: F401
 except ImportError:
     from PyQt5 import pyrcc_main
 
@@ -52,7 +52,7 @@ except ImportError:
         log("Failed to compile assets.rcc")
         exit(1)
 
-    from project_graph.assets import assets  # type: ignore  # noqa: F401
+    import project_graph.assets.assets  # type: ignore  # noqa: F401
 
 import os
 
