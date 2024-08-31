@@ -4,10 +4,9 @@ version = "0.1.0"
 description = "Project Graph"
 authors = [{ name = "LiRenTech", email = "liren@zty012.de" }]
 dependencies = [
-    "pyqt5-qt5==5.15.2",
-    # "PyQt5==5.15.2",
     "PyQt5-sip>=12.15.0",
     "appdirs>=1.4.4",
+    "PyQt5>=5.15.11",
 ]
 requires-python = "<3.14,>=3.12"
 readme = "README.md"
