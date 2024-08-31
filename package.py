@@ -17,6 +17,7 @@ def main():
             "--onefile",
             "--windowed",
             f"--icon={path / 'src' / 'project_graph' / 'assets' / 'favicon.ico'}",
+            "--hidden-import=PyQt5",
             "-n",
             "project-graph",
             (path / "src" / "_package.py").as_posix(),
