@@ -101,6 +101,10 @@ class Canvas(QMainWindow):
         self.mouse_location = NumberVector.zero()
         """鼠标当前位置"""
 
+        # ====== 键盘事件相关
+        self.pressing_keys: set[int] = set()
+        """当前按下的键"""
+
         # ====== 连线/断开 相关的操作
         self.connect_from_node: EntityNode | None = None
         self.connect_to_node: EntityNode | None = None
@@ -371,7 +375,7 @@ class Canvas(QMainWindow):
                 [
                     "1. 创建节点：双击空白部分",
                     "2. 编辑节点：双击节点，出现输入框",
-                    "3. 移动节点：左键拖拽一个节点",
+                    "3. 移动节点：左键拖拽一个节点，但按住Ctrl键可以带动所有子节点拖动整个树",
                     "4. 连接节点：按住右键从一个节点滑动到另一个节点",
                     "5. 切断连线：在空白地方按住右键划出一道切割线",
                     "6. 删除节点：同样使用切割线切节点来删除",
@@ -545,10 +549,13 @@ class Canvas(QMainWindow):
                     mouse_d_location = mouse_world_location - self.last_move_location
                     for node in self.node_manager.nodes:
                         if node.is_selected:
-                            # self.node_manager.move_node(node, mouse_d_location)
-                            self.node_manager.move_node_with_children(
-                                node, mouse_d_location
-                            )
+                            if Qt.Key.Key_Control in self.pressing_keys:
+                                # 按住Ctrl，移动节点，带动子节点一起移动
+                                self.node_manager.move_node_with_children(
+                                    node, mouse_d_location
+                                )
+                            else:
+                                self.node_manager.move_node(node, mouse_d_location)
 
                 self.last_move_location = mouse_world_location.clone()
 
@@ -724,7 +731,8 @@ class Canvas(QMainWindow):
 
     def keyPressEvent(self, a0: QKeyEvent | None):
         assert a0 is not None
-        key = a0.key()
+        key: int = a0.key()
+        self.pressing_keys.add(key)
 
         if key == Qt.Key.Key_A:
             self.camera.press_move(NumberVector(-1, 0))
@@ -787,6 +795,9 @@ class Canvas(QMainWindow):
     def keyReleaseEvent(self, a0: QKeyEvent | None):
         assert a0 is not None
         key = a0.key()
+        if key in self.pressing_keys:
+            self.pressing_keys.remove(key)
+
         if key == Qt.Key.Key_A:
             self.camera.release_move(NumberVector(-1, 0))
         elif key == Qt.Key.Key_S:
