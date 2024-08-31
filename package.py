@@ -7,7 +7,6 @@ from PyQt5 import pyrcc_main
 def main():
     # 项目根目录，不是src
     path = Path(__file__).parent
-    print(path.as_posix())
     # 生成assets
     (path / "src" / "project_graph" / "assets" / "assets.py").unlink(True)
     pyrcc_main.processResourceFile(
@@ -26,7 +25,10 @@ def main():
             "--onefile",
             "--windowed",
             f"--icon={path / 'src' / 'project_graph' / 'assets' / 'favicon.ico'}",
-            "--hidden-import=PyQt5=project_graph.assets.assets",
+            "--hidden-import",
+            "PyQt5",
+            "--hidden-import",
+            "project_graph.assets.assets",
             "-n",
             "project-graph",
             (path / "src" / "_package.py").as_posix(),
