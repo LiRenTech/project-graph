@@ -17,6 +17,7 @@ from PyQt5.QtGui import (
 
 from project_graph.data_struct.circle import Circle
 from project_graph.data_struct.number_vector import NumberVector
+from project_graph.logging import log
 
 
 class PainterUtils:
@@ -273,8 +274,8 @@ class PainterUtils:
             # 绘制文本
             painter.drawText(left_top, text)
         except Exception as e:
-            print(f"Exception type: {type(e)}")
-            print(f"Error message: {str(e)}")
+            log(f"Exception type: {type(e)}")
+            log(f"Error message: {str(e)}")
             traceback.print_exc()
         pass
 
@@ -324,8 +325,8 @@ class PainterUtils:
             painter.drawText(left_top, text)
             return text_width, text_height
         except Exception as e:
-            print(f"Exception type: {type(e)}")
-            print(f"Error message: {str(e)}")
+            log(f"Exception type: {type(e)}")
+            log(f"Error message: {str(e)}")
             import traceback
 
             traceback.print_exc()

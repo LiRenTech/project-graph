@@ -3,6 +3,7 @@ from PyQt5.QtGui import QColor, QPainter
 from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
+from project_graph.logging import log
 from project_graph.paint.paint_utils import PainterUtils
 
 
@@ -28,7 +29,7 @@ def paint_grid(paint: QPainter, camera: Camera):
                 1 * camera.current_scale,
             )
     except Exception as e:
-        print(e)
+        log(e)
 
 
 def paint_details_data(paint: QPainter, camera: Camera, datas: list[str]):

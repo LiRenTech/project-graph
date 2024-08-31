@@ -2,6 +2,9 @@ import json
 import platform
 import subprocess
 from pathlib import Path
+import sys
+import traceback
+from types import TracebackType
 
 from PyQt5.QtCore import Qt, QTimer, QUrl
 from PyQt5.QtGui import (
@@ -31,6 +34,7 @@ from PyQt5.QtWidgets import (
 
 from project_graph.app_dir import DATA_DIR
 from project_graph.data_struct.rectangle import Rectangle
+from project_graph.logging import log, logs
 from project_graph.recent_file_manager import RecentFileManager
 from project_graph.toolbar.toolbar import Toolbar
 from project_graph.tools.file_tools import read_file
@@ -45,7 +49,7 @@ except ImportError:
         (Path(__file__).parent / "assets" / "assets.py").as_posix(),
         False,
     ):
-        print("Failed to compile assets.rcc")
+        log("Failed to compile assets.rcc")
         exit(1)
 
     from project_graph.assets import assets  # type: ignore  # noqa: F401
@@ -145,6 +149,7 @@ class Canvas(QMainWindow):
         elif platform.system() == "Windows" or platform.system() == "Linux":
             self.setWindowIcon(QIcon(":/favicon.ico"))
         self._move_window_to_center()
+
         # 菜单栏
         menubar = self.menuBar()
         assert menubar is not None
@@ -187,6 +192,14 @@ class Canvas(QMainWindow):
         cache_folder_action.triggered.connect(self.open_cache_folder)
         help_menu.addAction(cache_folder_action)
 
+        # 测试菜单
+        test_menu = menubar.addMenu("测试")
+        assert test_menu is not None
+        # 抛出异常
+        test_exception_action = QAction("抛出异常", self)
+        test_exception_action.triggered.connect(self.on_test_exception)
+        test_menu.addAction(test_exception_action)
+
     def init_toolbar(self):
         self.toolbar.tool_list[0].set_bind_event_function(
             self._delete_current_select_node
@@ -195,7 +208,7 @@ class Canvas(QMainWindow):
 
     def _delete_current_select_node(self):
         """删除当前选中的节点"""
-        print("删除当前选中的节点")
+        log("删除当前选中的节点")
         self.node_manager.delete_nodes(
             [node for node in self.node_manager.nodes if node.is_selected]
         )
@@ -276,7 +289,10 @@ class Canvas(QMainWindow):
             self.recent_file_manager.add_recent_file(Path(file_path))
         else:
             # 如果用户取消了保存操作
-            print("Save operation cancelled.")
+            log("Save operation cancelled.")
+
+    def on_test_exception(self):
+        raise Exception("测试异常")
 
     def dragEnterEvent(self, event):
         """从外部拖拽文件进入窗口"""
@@ -299,14 +315,14 @@ class Canvas(QMainWindow):
 
     def dropEvent(self, event):
         """从外部拖拽文件进入窗口并松开"""
-        print("dropEvent", event)
+        log("dropEvent", event)
         self.is_dragging_file = False
         self.is_dragging_file_valid = False
 
         for url in event.mimeData().urls():
-            print(url)
+            log(url)
             file_path: str = url.toLocalFile()
-            print(file_path)
+            log(file_path)
             if file_path.endswith(".json"):
                 try:
                     load_data = json.loads(read_file(Path(file_path)))
@@ -326,7 +342,7 @@ class Canvas(QMainWindow):
                     event.acceptProposedAction()
                     break
                 except Exception as e:
-                    print(e)
+                    log(e)
                     QMessageBox.warning(
                         self,
                         "错误",
@@ -428,7 +444,7 @@ class Canvas(QMainWindow):
 
         is_press_toolbar = self.toolbar.on_click(point_view_location)
         if is_press_toolbar:
-            print("按到了toolbar")
+            log("按到了toolbar")
             return
 
         point_world_location = self.camera.location_view2world(point_view_location)
@@ -504,7 +520,7 @@ class Canvas(QMainWindow):
             for node in self.node_manager.nodes:
                 if node.body_shape.is_contain_point(point_world_location):
                     self.connect_from_node = node
-                    print("开始连线")
+                    log("开始连线")
                     self.is_cutting = False
                     # 加特效
                     self.effect_manager.add_effect(
@@ -966,29 +982,43 @@ class Canvas(QMainWindow):
         pass
 
 
-def main():
-    import sys
-    import traceback
+def my_except_hook(
+    exctype: type[BaseException], value: BaseException, tb: TracebackType
+) -> None:
+    if exctype is KeyboardInterrupt:
+        sys.exit(0)
 
+    print("error!!!")
+    log("\n".join(traceback.format_exception(exctype, value, tb)))
+    print(logs)
+    # 用tkinter弹出错误信息，用输入框组件显示错误信息
+    import tkinter as tk
+
+    root = tk.Tk()
+    root.title("error!")
+    tk.Label(root, text="出现异常！").pack()
+    t = tk.Text(root, height=10, width=50)
+    for line in logs:
+        t.insert(tk.END, line + "\n")
+    t.pack()
+    tk.Button(root, text="确定", command=root.destroy).pack()
+    tk.Button(root, text="退出", command=sys.exit).pack()
+    root.mainloop()
+
+
+def main():
     # 确保数据目录存在
     if not os.path.exists(DATA_DIR):
         os.makedirs(DATA_DIR)
         with open(os.path.join(DATA_DIR, "settings.json"), "w", encoding="utf-8") as f:
             f.write("{}")
 
-    try:
-        sys.excepthook = sys.__excepthook__
+    sys.excepthook = my_except_hook
 
-        app = QApplication(sys.argv)
-        app.setWindowIcon(QIcon("./assets/favicon.ico"))
+    app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon("./assets/favicon.ico"))
 
-        canvas = Canvas()
-        canvas.show()
+    canvas = Canvas()
+    canvas.show()
 
-        sys.exit(app.exec_())
-    except Exception as e:
-        # 捕捉不到
-        traceback.print_exc()
-        print(e)
-        sys.exit(1)
-    pass
+    sys.exit(app.exec_())

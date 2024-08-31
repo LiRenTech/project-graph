@@ -8,10 +8,12 @@ from pathlib import Path
 
 from appdirs import user_data_dir
 
+from project_graph.logging import log
+
 _APP_NAME = "project-graph"
 _APP_AUTHOR = "LiRen"
 
 DATA_DIR = user_data_dir(_APP_NAME, _APP_AUTHOR)
-print(DATA_DIR)
+log(DATA_DIR)
 
-print(Path(DATA_DIR) / "test.txt")
+log(Path(DATA_DIR) / "test.txt")

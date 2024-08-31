@@ -2,6 +2,7 @@ from typing import List
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity_node import EntityNode
+from project_graph.logging import log
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import Paintable, PaintContext
 from PyQt5.QtGui import QColor
@@ -98,7 +99,7 @@ class Toolbar(Paintable):
         index = int(
             (view_location.x - self.body_shape.location_left_top.x) / Tool.VIEW_SIZE
         )
-        print(f"click tool {index}")
+        log(f"click tool {index}")
 
         if 0 <= index < len(self.tool_list):
             self.tool_list[index].bind_event_function()
