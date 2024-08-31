@@ -21,8 +21,8 @@ class EntityNode(Entity):
         self._inner_text = "..."
         self.uuid = str(uuid4())
 
-        # 是否是被选中的状态
         self.is_selected = False
+        """是否是被选中的状态, 包括框选"""
         self.adjust_size_by_text()
 
         # 颜色
