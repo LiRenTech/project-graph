@@ -547,6 +547,10 @@ class Canvas(QMainWindow):
                 self.toolbar.body_shape.location_left_top = (
                     mouse_view_location + NumberVector(20, 20)
                 )
+            else:
+                # 隐藏toolbar，直接让其移动到视野之外解决
+                self.toolbar.body_shape.location_left_top = NumberVector(-1000, -1000)
+                pass
         if a0.button() == Qt.MouseButton.RightButton:
             # 结束连线
             if self.connect_from_node is not None and self.connect_to_node is not None:
