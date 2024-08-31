@@ -110,7 +110,7 @@ class Canvas(QMainWindow):
         """当前按下的键"""
 
         # ====== 连线/断开 相关的操作
-        self.connect_from_node: EntityNode | None = None
+        self.connect_from_nodes: list[EntityNode] = []
         self.connect_to_node: EntityNode | None = None
         self.mouse_right_location: NumberVector = NumberVector.zero()
         """鼠标右键的当前位置"""
@@ -523,17 +523,41 @@ class Canvas(QMainWindow):
             self.mouse_right_start_location = point_world_location.clone()
             # 开始连线
             self.is_cutting = True
+            is_click_on_node = any(
+                node.body_shape.is_contain_point(point_world_location)
+                for node in self.node_manager.nodes
+            )
+
+            click_node = None
             for node in self.node_manager.nodes:
                 if node.body_shape.is_contain_point(point_world_location):
-                    self.connect_from_node = node
-                    log("开始连线")
-                    self.is_cutting = False
-                    # 加特效
-                    self.effect_manager.add_effect(
-                        EffectRectangleFlash(15, node.body_shape.clone())
-                    )
+                    click_node = node
                     break
-            pass
+
+            if is_click_on_node:
+                assert click_node is not None
+
+                self.is_cutting = False
+                self.connect_from_nodes = [
+                    node for node in self.node_manager.nodes if node.is_selected
+                ]
+                if click_node not in self.connect_from_nodes:
+                    # 如果 右键的节点 没有在被选中的节点中，则不触发多重连接
+                    self.connect_from_nodes = [click_node]
+                    self.effect_manager.add_effect(
+                        EffectRectangleFlash(15, click_node.body_shape.clone())
+                    )
+                else:
+                    # 如果在被选中的节点中，则触发多重连接
+                    for node in self.node_manager.nodes:
+                        # 加特效
+                        if node.is_selected:
+                            self.effect_manager.add_effect(
+                                EffectRectangleFlash(15, node.body_shape.clone())
+                            )
+            else:
+                self.is_cutting = True
+                self.connect_from_nodes = []
 
     def mouseMoveEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
@@ -595,7 +619,7 @@ class Canvas(QMainWindow):
                             pass
                     # 查看切割线是否和其他节点相交
                     for node in self.node_manager.nodes:
-                        if node == self.connect_from_node:
+                        if node == self.connect_from_nodes:
                             continue
                         if node.body_shape.is_intersect_with_line(cutting_line):
                             # 准备要切断这个节点，先进行标注
@@ -633,24 +657,23 @@ class Canvas(QMainWindow):
                 pass
         if a0.button() == Qt.MouseButton.RightButton:
             # 结束连线
-            if self.connect_from_node is not None and self.connect_to_node is not None:
-                connect_result = self.node_manager.connect_node(
-                    self.connect_from_node,
-                    self.connect_to_node,
-                )
-                if connect_result:
-                    # 加特效
-                    self.effect_manager.add_effect(
-                        EffectRectangleFlash(
-                            15, self.connect_to_node.body_shape.clone()
-                        )
+            if len(self.connect_from_nodes) > 0 and self.connect_to_node is not None:
+                for node in self.connect_from_nodes:
+                    connect_result = self.node_manager.connect_node(
+                        node,
+                        self.connect_to_node,
                     )
-                    self.effect_manager.add_effect(
-                        EffectRectangleFlash(
-                            15, self.connect_from_node.body_shape.clone()
+                    if connect_result:
+                        # 加特效
+                        self.effect_manager.add_effect(
+                            EffectRectangleFlash(
+                                15, self.connect_to_node.body_shape.clone()
+                            )
                         )
-                    )
-            self.connect_from_node = None
+                        self.effect_manager.add_effect(
+                            EffectRectangleFlash(15, node.body_shape.clone())
+                        )
+            self.connect_from_nodes = []
             self.connect_to_node = None
 
             if self.is_cutting:
@@ -861,39 +884,39 @@ class Canvas(QMainWindow):
             )
 
         # 当前鼠标画连接线
-        if self.connect_from_node is not None and self.mouse_right_location is not None:
+        if self.connect_from_nodes and self.mouse_right_location is not None:
             # 如果鼠标位置是没有和任何节点相交的
-            connect_node = None
+            connect_target_node = None
             for node in self.node_manager.nodes:
-                if node == self.connect_from_node:
+                if node in self.connect_from_nodes:
                     continue
                 if node.body_shape.is_contain_point(self.mouse_right_location):
-                    connect_node = node
+                    connect_target_node = node
                     break
-            if connect_node:
+            if connect_target_node:
                 # 像吸附住了一样画线
-                PainterUtils.paint_arrow(
-                    painter,
-                    self.camera.location_world2view(
-                        self.connect_from_node.body_shape.center
-                    ),
-                    self.camera.location_world2view(connect_node.body_shape.center),
-                    QColor(255, 255, 255),
-                    2 * self.camera.current_scale,
-                    30 * self.camera.current_scale,
-                )
+                for node in self.connect_from_nodes:
+                    PainterUtils.paint_arrow(
+                        painter,
+                        self.camera.location_world2view(node.body_shape.center),
+                        self.camera.location_world2view(
+                            connect_target_node.body_shape.center
+                        ),
+                        QColor(255, 255, 255),
+                        2 * self.camera.current_scale,
+                        30 * self.camera.current_scale,
+                    )
             else:
                 # 实时连线
-                PainterUtils.paint_arrow(
-                    painter,
-                    self.camera.location_world2view(
-                        self.connect_from_node.body_shape.center
-                    ),
-                    self.camera.location_world2view(self.mouse_right_location),
-                    QColor(255, 255, 255),
-                    2 * self.camera.current_scale,
-                    30 * self.camera.current_scale,
-                )
+                for node in self.connect_from_nodes:
+                    PainterUtils.paint_arrow(
+                        painter,
+                        self.camera.location_world2view(node.body_shape.center),
+                        self.camera.location_world2view(self.mouse_right_location),
+                        QColor(255, 255, 255),
+                        2 * self.camera.current_scale,
+                        30 * self.camera.current_scale,
+                    )
 
         # 上下文对象
         paint_context = PaintContext(
