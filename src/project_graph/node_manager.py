@@ -355,11 +355,15 @@ class NodeManager:
         按照一定角度旋转节点，旋转的是连接这个节点的所有子节点
         也就是如果这个节点没有子节点，那么看上去没有效果
         """
-        self._rotate_node_dfs(node, node, degrees)
+        self._rotate_node_dfs(node, node, degrees, [])
         self.update_lines()
 
     def _rotate_node_dfs(
-        self, rotate_center_node: EntityNode, current_node: EntityNode, degrees: float
+        self,
+        rotate_center_node: EntityNode,
+        current_node: EntityNode,
+        degrees: float,
+        visited_uuids: list[str],
     ):
         rotate_center_location = rotate_center_node.body_shape.center
         # 先旋转自己
@@ -377,7 +381,12 @@ class NodeManager:
         )
         # 再旋转子节点
         for child in current_node.children:
-            self._rotate_node_dfs(rotate_center_node, child, degrees)
+            if child.uuid in visited_uuids:
+                # 防止出现环形连接，导致无限递归
+                continue
+            self._rotate_node_dfs(
+                rotate_center_node, child, degrees, visited_uuids + [current_node.uuid]
+            )
 
     def paint(self, context: PaintContext):
         # 画节点本身

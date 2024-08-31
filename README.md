@@ -30,6 +30,8 @@ Xmind 只能用来绘制树形结构图、FigJamBoard 可以用来绘制但网�
 8. 缩放视野：鼠标滚轮
 9. 旋转节点：对准一个节点旋转滚轮
 
+b站视频介绍：https://www.bilibili.com/video/BV1hmHKeDE9D
+
 ## 软件特点
 
 1. 操作快
@@ -53,9 +55,15 @@ Linux: `~/.local/share/project-graph` [（可自定义）](https://specification
 2. 快速编辑节点里的文字
 3. 快速连接/删除节点之间的箭头连线
 
-来自：https://www.bilibili.com/video/BV1sN411a79K
+该原则来自其他up主（所长林超）的思维导图视频：https://www.bilibili.com/video/BV1sN411a79K
 
 以上的三个原则是这个视频 10:45 秒开始的地方他提到的四个原则的总结
+
+## 开发贡献指南
+
+本项目使用了 Qt 作为开发框架，以及pdm管理依赖、ruff
+
+详见本仓库下的 docs/CONTRIBUTING.md，包含如何运行等详细内容
 
 ## Star History
 

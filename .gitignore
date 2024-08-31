@@ -32,6 +32,9 @@ MANIFEST
 *.manifest
 *.spec
 
+# 详见pyinstaller小天才打包法（docs里）
+src/run_project.py
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
@@ -166,3 +169,9 @@ assets.py
 
 # build
 project_graph.exe
+
+# Ruff
+/.ruff_cache/
+
+# pyinstaller
+!/project-graph.spec
