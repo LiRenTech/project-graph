@@ -370,7 +370,7 @@ class Canvas(QMainWindow):
 
     @staticmethod
     def __open_bilibili():
-        QDesktopServices.openUrl(QUrl("https://www.bilibili.com/video/BV1qw4m1k7LD"))
+        QDesktopServices.openUrl(QUrl("https://www.bilibili.com/video/BV1hmHKeDE9D"))
 
     def _move_window_to_center(self):
         # 获取屏幕可用空间（macOS上会有titlebar占据一部分空间）
