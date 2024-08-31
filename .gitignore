@@ -167,5 +167,8 @@ cython_debug/
 # Assets
 assets.py
 
-# build
-project_graph.exe
+# Ruff
+/.ruff_cache/
+
+# pyinstaller
+!/project-graph.spec
