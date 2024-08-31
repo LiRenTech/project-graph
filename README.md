@@ -7,7 +7,7 @@
 ### ➡️ Linux 一键安装
 
 ```sh
-curl -sL https://github.com/LiRenTech/project-graph-qt/raw/master/install.sh | sh
+curl -sL https://github.com/LiRenTech/project-graph-qt/raw/master/install.sh | sudo sh
 ```
 
 ## ❓ 介绍与用途
