@@ -11,8 +11,14 @@ from project_graph.tools.string_tools import get_size_by_text
 
 
 class EntityNode(Entity):
-    FONT_SIZE = 20  # 字体大小, 不是像素
-    PADDING = 20  # 内边距，像素
+    FONT_SIZE = 20
+    """字体大小, 不是像素"""
+
+    FONT_DETAIL_SIZE = 16
+    """详细文字字体大小"""
+
+    PADDING = 20
+    """内边距，像素"""
 
     def __init__(self, body_shape):
         super().__init__(body_shape)
@@ -113,7 +119,19 @@ class EntityNode(Entity):
             self.FONT_SIZE * context.camera.current_scale,
             self.color,
         )
-
+        if self.is_detail_show:
+            PainterUtils.paint_document_from_left_top(
+                context.painter.q_painter(),
+                context.camera.location_world2view(
+                    self.body_shape.location_left_top
+                    + NumberVector(0, self.body_shape.height)
+                ),
+                self.details,
+                400 * context.camera.current_scale,
+                15 * context.camera.current_scale,
+                QColor(255, 255, 255),
+                QColor(0, 0, 0, 128),
+            )
         if self.is_selected:
             PainterUtils.paint_rect(
                 context.painter.q_painter(),

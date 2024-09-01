@@ -417,6 +417,7 @@ class NodeManager:
         # 画节点本身
         for node in self.nodes:
             node.paint(context)
+
         # 连线
         context.painter.q_painter().setTransform(
             context.camera.get_world2view_transform()
