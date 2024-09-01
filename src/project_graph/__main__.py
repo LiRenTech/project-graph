@@ -99,7 +99,7 @@ if platform.system() == "Linux":
 
 
 STATUS_TEXT = {
-    "normal": "左键 选择节点/框选节点 | 左键拖动 移动节点 | 双击左键 创建节点 | 右键拖动 切割删除节点 | 中键拖动 移动视角 | WASD 移动视角 | [] 缩放 | ↑↓←→ 移动游标",
+    "normal": "左键 选择节点/框选节点 | 左键拖动 移动节点 | 双击左键 创建节点 | 右键拖动 切割删除节点 | 中键拖动 移动视角 | WASD 移动视角 | 鼠标滚轮 缩放 | [] 缩放 | ↑↓←→ 移动游标",
     "select": "左键拖动 移动节点 | 双击左键 编辑文字 | Ctrl+双击左键 编辑注释 | 双击右键 修改颜色 | 右键拖动 连接节点",
     "cursor": "Tab 创建节点 | Enter 编辑文字 | ↑↓←→ 移动游标",
     "grow": "Tab 创建节点 | ↑↓ 修改方向",
@@ -214,6 +214,18 @@ class Canvas(QMainWindow):
         file_menu.addAction(open_action)
         file_menu.addAction(save_action)
         file_menu.addAction(open_recent_action)
+
+        # 视图菜单
+        view_menu = menubar.addMenu("视图")
+        assert view_menu is not None
+        # 重置位置
+        reset_view_action = QAction("重置位置", self)
+        reset_view_action.triggered.connect(self.reset_view)
+        view_menu.addAction(reset_view_action)
+        # 重置缩放
+        reset_scale_action = QAction("重置缩放", self)
+        reset_scale_action.triggered.connect(self.reset_scale)
+        view_menu.addAction(reset_scale_action)
 
         # 帮助说明菜单
         help_menu = menubar.addMenu("帮助")
@@ -359,6 +371,14 @@ class Canvas(QMainWindow):
         else:
             # 如果用户取消了保存操作
             log("Save operation cancelled.")
+
+    def reset_view(self):
+        """重置视角"""
+        self.camera.location = NumberVector.zero()
+
+    def reset_scale(self):
+        """重置缩放"""
+        self.camera.target_scale = 1.0
 
     def on_show_settings(self):
         """打开显示设置"""
