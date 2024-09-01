@@ -1,5 +1,4 @@
 import json
-import os
 import platform
 import shutil
 import subprocess
@@ -1280,12 +1279,6 @@ def my_except_hook(
 
 
 def main():
-    # 确保数据目录存在
-    if not os.path.exists(DATA_DIR):
-        os.makedirs(DATA_DIR)
-        with open(os.path.join(DATA_DIR, "settings.json"), "w", encoding="utf-8") as f:
-            f.write("{}")
-
     sys.excepthook = my_except_hook
 
     app = QApplication(sys.argv)
