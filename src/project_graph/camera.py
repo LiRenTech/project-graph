@@ -9,9 +9,6 @@ from project_graph.settings.setting_service import SETTING_SERVICE
 
 
 class Camera:
-    # 摩擦系数，越大摩擦力越大，摩擦力会使速度减慢
-    frictionCoefficient = 0.1
-
     frictionExponent = 1.5
 
     SCALE_MAX = 5000
