@@ -1052,7 +1052,9 @@ class Canvas(QMainWindow):
                     self, "更改线名称", "输入新的名称:", text="?"
                 )
                 if ok:
-                    pass
+                    for link in self.selected_links:
+                        link.inner_text = new_name
+                    self.selected_links.clear()
 
         elif key == Qt.Key.Key_Left:
             self.node_manager.move_cursor("left")
@@ -1209,7 +1211,6 @@ class Canvas(QMainWindow):
             )
         # 所有选择的线
         for link in self.selected_links:
-            # TODO:
             link_body_line = Line(
                 link.source_node.body_shape.center,
                 link.target_node.body_shape.center,
