@@ -24,6 +24,7 @@ from PyQt5.QtWidgets import (
     QAction,
     QApplication,
     QColorDialog,
+    QComboBox,
     QDesktopWidget,
     QDialog,
     QFileDialog,
@@ -33,6 +34,7 @@ from PyQt5.QtWidgets import (
     QMessageBox,
     QPushButton,
     QVBoxLayout,
+    QCheckBox,
 )
 
 from project_graph.app_dir import DATA_DIR
@@ -55,6 +57,7 @@ from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 from project_graph.paint.painters import ProjectGraphPainter
 from project_graph.recent_file_manager import RecentFileManager
+from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.toolbar.toolbar import Toolbar
 from project_graph.tools.file_tools import read_file
 
@@ -116,7 +119,6 @@ class Canvas(QMainWindow):
         self.node_manager = NodeManager()
         self.recent_file_manager = RecentFileManager()
         self.toolbar: Toolbar = Toolbar()
-        """工具栏对象"""
 
         self.init_toolbar()
 
@@ -219,6 +221,19 @@ class Canvas(QMainWindow):
         cache_folder_action.triggered.connect(self.open_cache_folder)
         help_menu.addAction(cache_folder_action)
 
+        # 设置
+        settings_menu = menubar.addMenu("设置")
+        assert settings_menu is not None
+
+        show_settings = QAction("显示设置", self)
+        show_settings.triggered.connect(self.on_show_settings)
+
+        physics_settings = QAction("物理设置", self)
+        physics_settings.triggered.connect(self.on_physics_settings)
+
+        settings_menu.addAction(show_settings)
+        settings_menu.addAction(physics_settings)
+
         # 测试菜单
         test_menu = menubar.addMenu("测试")
         assert test_menu is not None
@@ -317,6 +332,76 @@ class Canvas(QMainWindow):
         else:
             # 如果用户取消了保存操作
             log("Save operation cancelled.")
+
+    def on_show_settings(self):
+        """打开显示设置"""
+        dialog = QDialog(self)
+        dialog.setWindowTitle("显示设置")
+
+        # 设置布局
+        layout = QVBoxLayout()
+
+        # 添加一些示例控件
+        layout.addWidget(QLabel("线段方式"))
+        line_style_combo_box = QComboBox()
+        line_style_combo_box.addItem("贝塞尔曲线")
+        line_style_combo_box.addItem("直线")
+
+        def on_change_line_style(index):
+            SETTING_SERVICE.line_style = index
+
+        line_style_combo_box.currentIndexChanged.connect(on_change_line_style)
+        layout.addWidget(line_style_combo_box)
+
+        layout.addWidget(QLabel("主题颜色"))
+        theme_style_combo_box = QComboBox()
+        theme_style_combo_box.addItem("2b灰")
+        theme_style_combo_box.addItem("论文白")
+        theme_style_combo_box.addItem("猛男粉")
+
+        def on_change_theme_style(index):
+            SETTING_SERVICE.theme_style = index
+
+        theme_style_combo_box.currentIndexChanged.connect(on_change_theme_style)
+        layout.addWidget(theme_style_combo_box)
+
+        # 网格显示开关
+        show_grid_check_box = QCheckBox("显示网格")
+        show_grid_check_box.setChecked(SETTING_SERVICE.is_show_grid)
+
+        def on_change_show_grid(state):
+            SETTING_SERVICE.is_show_grid = state == 2  # type: ignore
+
+        show_grid_check_box.stateChanged.connect(on_change_show_grid)
+        layout.addWidget(show_grid_check_box)
+
+        # 显示调试信息
+        show_debug_info_check_box = QCheckBox("显示调试信息")
+        show_debug_info_check_box.setChecked(SETTING_SERVICE.is_show_debug_text)
+
+        def on_change_show_debug_info(state):
+            SETTING_SERVICE.is_show_debug_text = state == 2  # type: ignore
+
+        show_debug_info_check_box.stateChanged.connect(on_change_show_debug_info)
+        layout.addWidget(show_debug_info_check_box)
+
+        # 设置布局到对话框
+        dialog.setLayout(layout)
+        dialog.exec_()
+        pass
+
+    def on_physics_settings(self):
+        """打开物理设置"""
+        dialog = QDialog(self)
+        dialog.setWindowTitle("物理设置")
+
+        # 设置布局
+        layout = QVBoxLayout()
+        # 开启节点碰撞
+
+        # 设置布局到对话框
+        dialog.setLayout(layout)
+        dialog.exec_()
 
     def on_test_exception(self):
         raise Exception("测试异常")
@@ -917,7 +1002,8 @@ class Canvas(QMainWindow):
         # 使用黑色填充整个窗口
         painter.fillRect(rect, QColor(43, 43, 43, 255))
         # 画网格
-        paint_grid(painter, self.camera)
+        if SETTING_SERVICE.is_show_grid:
+            paint_grid(painter, self.camera)
         # 当前的切断线
         if self.is_cutting:
             PainterUtils.paint_solid_line(
@@ -1006,15 +1092,16 @@ class Canvas(QMainWindow):
         # 特效
         self.effect_manager.paint(paint_context)
         # 绘制细节信息
-        paint_details_data(
-            painter,
-            self.camera,
-            [
-                f"当前缩放: {self.camera.current_scale:.2f}",
-                f"location: {self.camera.location}",
-                f"effect: {len(self.effect_manager.effects)}",
-            ],
-        )
+        if SETTING_SERVICE.is_show_debug_text:
+            paint_details_data(
+                painter,
+                self.camera,
+                [
+                    f"当前缩放: {self.camera.current_scale:.2f}",
+                    f"location: {self.camera.location}",
+                    f"effect: {len(self.effect_manager.effects)}",
+                ],
+            )
         # 工具栏
         self.toolbar.paint(paint_context)
         # 最终覆盖在屏幕上一层：拖拽情况
