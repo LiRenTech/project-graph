@@ -22,7 +22,7 @@ class NodeManager:
     def __init__(self):
         self.nodes: list[EntityNode] = []
 
-        self._links: list[NodeLink] = []
+        self._links: set[NodeLink] = set()
         """准备替代lines"""
 
         self._lines: list[Line] = []
@@ -332,7 +332,13 @@ class NodeManager:
             if node in father_node.children:
                 father_node.children.remove(node)
         self.update_lines()
-        self.update_links()
+        # 删除所有相关link
+        prepare_delete_links = []
+        for link in self._links:
+            if link.target_node == node or link.source_node == node:
+                prepare_delete_links.append(link)
+        for link in prepare_delete_links:
+            self._links.remove(link)
 
     def delete_nodes(self, nodes: list[EntityNode]):
         for node in nodes:
@@ -342,8 +348,17 @@ class NodeManager:
             for father_node in self.nodes:
                 if node in father_node.children:
                     father_node.children.remove(node)
+
+            # 删除所有相关link
+            prepare_delete_links = []
+            for link in self._links:
+                if link.target_node == node or link.source_node == node:
+                    prepare_delete_links.append(link)
+            for link in prepare_delete_links:
+                self._links.remove(link)
         self.update_lines()
-        self.update_links()
+
+        # self.update_links()
 
     def connect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
@@ -351,8 +366,8 @@ class NodeManager:
             self.update_lines()
 
             new_link = NodeLink(from_node, to_node)
-            if new_link not in self._links:
-                self._links.append(new_link)
+            self._links.add(new_link)
+
             return res
         return False
 
@@ -386,7 +401,7 @@ class NodeManager:
         self._lines = self._get_all_lines()
 
     def get_all_links(self) -> list[NodeLink]:
-        return self._links
+        return [link for link in self._links]
 
     def update_links(self):
         links = []

@@ -1244,8 +1244,10 @@ class Canvas(QMainWindow):
                 self.camera,
                 [
                     f"当前缩放: {self.camera.current_scale:.2f}",
-                    f"location: ({self.camera.location.x:.2f}, {self.camera.location.y:.2f})",
-                    f"effect: {len(self.effect_manager.effects)}",
+                    f"摄像机位置: ({self.camera.location.x:.2f}, {self.camera.location.y:.2f})",
+                    f"特效数量: {len(self.effect_manager.effects)}",
+                    f"节点数量: {len(self.node_manager.nodes)}",
+                    f"连接数量: {len(self.node_manager.get_all_links())}",
                 ],
             )
         # 工具栏
