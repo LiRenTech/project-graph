@@ -23,6 +23,7 @@ from PyQt5.QtGui import (
 from PyQt5.QtWidgets import (
     QAction,
     QApplication,
+    QCheckBox,
     QColorDialog,
     QComboBox,
     QDesktopWidget,
@@ -33,8 +34,8 @@ from PyQt5.QtWidgets import (
     QMainWindow,
     QMessageBox,
     QPushButton,
+    QSlider,
     QVBoxLayout,
-    QCheckBox,
 )
 
 from project_graph.app_dir import DATA_DIR
@@ -337,6 +338,7 @@ class Canvas(QMainWindow):
         """打开显示设置"""
         dialog = QDialog(self)
         dialog.setWindowTitle("显示设置")
+        dialog.setMinimumWidth(500)
 
         # 设置布局
         layout = QVBoxLayout()
@@ -346,6 +348,7 @@ class Canvas(QMainWindow):
         line_style_combo_box = QComboBox()
         line_style_combo_box.addItem("贝塞尔曲线")
         line_style_combo_box.addItem("直线")
+        line_style_combo_box.setCurrentIndex(SETTING_SERVICE.line_style)
 
         def on_change_line_style(index):
             SETTING_SERVICE.line_style = index
@@ -358,6 +361,7 @@ class Canvas(QMainWindow):
         theme_style_combo_box.addItem("2b灰")
         theme_style_combo_box.addItem("论文白")
         theme_style_combo_box.addItem("猛男粉")
+        theme_style_combo_box.setCurrentIndex(SETTING_SERVICE.theme_style)
 
         def on_change_theme_style(index):
             SETTING_SERVICE.theme_style = index
@@ -394,6 +398,7 @@ class Canvas(QMainWindow):
         """打开物理设置"""
         dialog = QDialog(self)
         dialog.setWindowTitle("物理设置")
+        dialog.setMinimumWidth(500)
 
         # 设置布局
         layout = QVBoxLayout()
@@ -411,6 +416,49 @@ class Canvas(QMainWindow):
             on_change_enable_node_collision
         )
         layout.addWidget(enable_node_collision_check_box)
+
+        # 镜头缩放速度滑动框 数值类型
+        layout.addWidget(QLabel("镜头缩放速度"))
+        camera_zoom_speed_slider = QSlider(Qt.Orientation.Horizontal)
+        camera_zoom_speed_slider.setMinimum(10)
+        camera_zoom_speed_slider.setMaximum(20)
+        camera_zoom_speed_slider.setValue(
+            int(SETTING_SERVICE.camera_scale_exponent * 10)
+        )
+
+        def on_change_camera_zoom_speed(value):
+            SETTING_SERVICE.camera_scale_exponent = value / 10
+
+        camera_zoom_speed_slider.valueChanged.connect(on_change_camera_zoom_speed)
+        layout.addWidget(camera_zoom_speed_slider)
+
+        # 镜头移动速度滑动框
+        layout.addWidget(QLabel("镜头移动速度"))
+        camera_move_speed_slider = QSlider(Qt.Orientation.Horizontal)
+        camera_move_speed_slider.setMinimum(1)
+        camera_move_speed_slider.setMaximum(10)
+        camera_move_speed_slider.setValue(SETTING_SERVICE.camera_move_amplitude)
+
+        def on_change_camera_move_speed(value):
+            SETTING_SERVICE.camera_move_amplitude = value
+
+        camera_move_speed_slider.valueChanged.connect(on_change_camera_move_speed)
+        layout.addWidget(camera_move_speed_slider)
+        # 镜头移动摩擦力系数
+
+        layout.addWidget(QLabel("镜头移动摩擦力系数"))
+        camera_move_friction_slider = QSlider(Qt.Orientation.Horizontal)
+        camera_move_friction_slider.setMinimum(0)
+        camera_move_friction_slider.setMaximum(10)
+        camera_move_friction_slider.setValue(
+            int(SETTING_SERVICE.camera_move_friction * 10)
+        )
+
+        def on_change_camera_move_friction(value):
+            SETTING_SERVICE.camera_move_friction = value / 10
+
+        camera_move_friction_slider.valueChanged.connect(on_change_camera_move_friction)
+        layout.addWidget(camera_move_friction_slider)
 
         # 设置布局到对话框
         dialog.setLayout(layout)
@@ -1110,7 +1158,7 @@ class Canvas(QMainWindow):
                 self.camera,
                 [
                     f"当前缩放: {self.camera.current_scale:.2f}",
-                    f"location: {self.camera.location}",
+                    f"location: ({self.camera.location.x:.2f}, {self.camera.location.y:.2f})",
                     f"effect: {len(self.effect_manager.effects)}",
                 ],
             )
