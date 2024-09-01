@@ -12,6 +12,8 @@ python -m pip install --user pipx
 # 必须要用pipx安装pdm，不要用pip安装pdm，否则容易出问题，此项目是python3.12的
 ```
 
+> 使用 Anaconda 安装 pipx 和 pdm 加入环境变量时需要重启 Anaconda 才能使用
+
 然后
 
 ```
