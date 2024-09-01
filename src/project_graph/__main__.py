@@ -159,9 +159,6 @@ class Canvas(QMainWindow):
         self.last_move_location = NumberVector.zero()
         """在框选拖动移动时，上一帧鼠标的位置（用于计算上一帧到当前帧的向量）（世界坐标）"""
 
-        self.selected_lines: list[tuple[Line, EntityNode, EntityNode]] = []
-        """选择的线"""
-
         self.selected_links: list[NodeLink] = []
         """选择的连接"""
 
@@ -771,17 +768,8 @@ class Canvas(QMainWindow):
                         node.is_selected = node.body_shape.is_collision(
                             select_rectangle
                         )
-                    self.selected_lines.clear()
+                    self.selected_links.clear()
                     select_line = Line(self.select_start_location, mouse_world_location)
-
-                    for (
-                        line,
-                        start_node,
-                        end_node,
-                    ) in self.node_manager.get_all_lines_and_node():
-                        if line.is_intersecting(select_line):
-                            # 选择这个线
-                            self.selected_lines.append((line, start_node, end_node))
 
                     for link in self.node_manager.get_all_links():
                         link_body_line = Line(
@@ -1044,7 +1032,7 @@ class Canvas(QMainWindow):
                     self.node_manager.cursor_node.inner_text = text
                     self.node_manager.update_lines()
                 return
-            elif len(self.selected_lines) > 0:
+            elif len(self.selected_links) > 0:
                 # 统一更改这些线的名称
                 new_name, ok = QInputDialog.getText(
                     self, "更改线名称", "输入新的名称:", text="?"
@@ -1140,8 +1128,8 @@ class Canvas(QMainWindow):
                     painter,
                     self.camera.location_world2view(self.select_start_location.clone()),
                     self.camera.location_world2view(self.last_move_location.clone()),
-                    QColor(78, 201, 176, 255),
-                    4,
+                    QColor(0, 255, 0, 50),
+                    20,
                 )
 
         # 当前鼠标画连接线
@@ -1195,14 +1183,21 @@ class Canvas(QMainWindow):
                 int(10 * self.camera.current_scale),
             )
         # 所有选择的线
-        for line, _, _ in self.selected_lines:
+        for link in self.selected_links:
+            # TODO:
+            link_body_line = Line(
+                link.source_node.body_shape.center,
+                link.target_node.body_shape.center,
+            )
+
             PainterUtils.paint_solid_line(
                 painter,
-                self.camera.location_world2view(line.start),
-                self.camera.location_world2view(line.end),
-                QColor(0, 255, 0, 128),
-                int(10 * self.camera.current_scale),
+                self.camera.location_world2view(link_body_line.start),
+                self.camera.location_world2view(link_body_line.end),
+                QColor(0, 255, 0, 50),
+                int(20 * self.camera.current_scale),
             )
+            pass
         # 所有要被删除的节点
         for node in self.warning_nodes:
             PainterUtils.paint_rect(
