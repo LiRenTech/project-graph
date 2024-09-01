@@ -64,9 +64,9 @@ jobs:
           pip install pipx
           pipx install pdm
           brew install PyQt5
-          pdm add vext.pyqt5
+          pdm run pip install vext-pyqt5>=0.7.4
           pdm run vext -l
-          pdm install --with package
+          pdm install --with package --with macos
       - name: Package
         run: |
           pdm package
