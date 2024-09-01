@@ -234,6 +234,7 @@ class NodeManager:
 
             node = EntityNode(body_shape)
             node.inner_text = node_data.get("inner_text", "")
+            node.details = node_data.get("details", "")
 
             node.uuid = node_data["uuid"]
             self.nodes.append(node)

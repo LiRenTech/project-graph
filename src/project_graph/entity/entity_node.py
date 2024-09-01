@@ -19,6 +19,12 @@ class EntityNode(Entity):
         self.children: list["EntityNode"] = []
 
         self._inner_text = "..."
+
+        self.details = ""
+        """节点详细文字"""
+        self.is_detail_show = False
+        """是否显示详细文字"""
+
         self.uuid = str(uuid4())
 
         self.is_selected = False
@@ -53,6 +59,7 @@ class EntityNode(Entity):
                 ],
             },
             "inner_text": self.inner_text,
+            "details": self.details,
             "children": [child.uuid for child in self.children],
             "uuid": self.uuid,
         }
