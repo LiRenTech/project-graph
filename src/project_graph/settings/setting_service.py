@@ -16,6 +16,8 @@ class SettingService:
         self.is_show_debug_text = True
         """是否显示左上角调试信息"""
 
+        self.is_enable_node_collision = True
+        """是否启用节点碰撞检测"""
         pass
 
 

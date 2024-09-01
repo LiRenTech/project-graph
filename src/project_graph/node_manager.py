@@ -302,6 +302,9 @@ class NodeManager:
         self_node 是主体
         这个dfs指的不是子节点递归，是和周围其他节点的碰撞传递
         """
+        if not SETTING_SERVICE.is_enable_node_collision:
+            return
+
         for node in self.nodes:
             if node == self_node:
                 continue

@@ -370,7 +370,7 @@ class Canvas(QMainWindow):
         show_grid_check_box.setChecked(SETTING_SERVICE.is_show_grid)
 
         def on_change_show_grid(state):
-            SETTING_SERVICE.is_show_grid = state == 2  # type: ignore
+            SETTING_SERVICE.is_show_grid = state == 2
 
         show_grid_check_box.stateChanged.connect(on_change_show_grid)
         layout.addWidget(show_grid_check_box)
@@ -380,7 +380,7 @@ class Canvas(QMainWindow):
         show_debug_info_check_box.setChecked(SETTING_SERVICE.is_show_debug_text)
 
         def on_change_show_debug_info(state):
-            SETTING_SERVICE.is_show_debug_text = state == 2  # type: ignore
+            SETTING_SERVICE.is_show_debug_text = state == 2
 
         show_debug_info_check_box.stateChanged.connect(on_change_show_debug_info)
         layout.addWidget(show_debug_info_check_box)
@@ -397,7 +397,20 @@ class Canvas(QMainWindow):
 
         # 设置布局
         layout = QVBoxLayout()
+
         # 开启节点碰撞
+        enable_node_collision_check_box = QCheckBox("开启节点碰撞")
+        enable_node_collision_check_box.setChecked(
+            SETTING_SERVICE.is_enable_node_collision
+        )
+
+        def on_change_enable_node_collision(state):
+            SETTING_SERVICE.is_enable_node_collision = state == 2
+
+        enable_node_collision_check_box.stateChanged.connect(
+            on_change_enable_node_collision
+        )
+        layout.addWidget(enable_node_collision_check_box)
 
         # 设置布局到对话框
         dialog.setLayout(layout)
@@ -625,7 +638,6 @@ class Canvas(QMainWindow):
         elif a0.button() == Qt.MouseButton.RightButton:
             # 如果是在节点上开始右键的，那么就开始连线
             # 如果是在空白上开始右键的，那么就开始切割线
-            # TODO: 多个框选连线
 
             self.mouse_right_location = point_world_location
             self.mouse_right_start_location = point_world_location.clone()
