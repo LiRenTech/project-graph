@@ -8,6 +8,7 @@ from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity_node import EntityNode
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
+from project_graph.settings.setting_service import SETTING_SERVICE
 
 
 class NodeManager:
@@ -301,6 +302,9 @@ class NodeManager:
         self_node 是主体
         这个dfs指的不是子节点递归，是和周围其他节点的碰撞传递
         """
+        if not SETTING_SERVICE.is_enable_node_collision:
+            return
+
         for node in self.nodes:
             if node == self_node:
                 continue
@@ -423,9 +427,19 @@ class NodeManager:
             context.camera.get_world2view_transform()
         )
         for line in self._lines:
-            context.painter.paint_curve(
-                ConnectCurve(line.start, line.end), QColor(204, 204, 204)
-            )
+            if SETTING_SERVICE.line_style == 0:
+                context.painter.paint_curve(
+                    ConnectCurve(line.start, line.end), QColor(204, 204, 204)
+                )
+            elif SETTING_SERVICE.line_style == 1:
+                PainterUtils.paint_arrow(
+                    context.painter.q_painter(),
+                    line.start,
+                    line.end,
+                    QColor(204, 204, 204),
+                    4,
+                    30,
+                )
 
         context.painter.q_painter().resetTransform()
         # 画游标

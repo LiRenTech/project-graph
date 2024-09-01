@@ -5,17 +5,11 @@ from PyQt5.QtGui import QTransform
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.logging import log
+from project_graph.settings.setting_service import SETTING_SERVICE
 
 
 class Camera:
-    # 每个方向上的动力矢量大小
-    moveAmplitude = 2
-    # 摩擦系数，越大摩擦力越大，摩擦力会使速度减慢
-    frictionCoefficient = 0.1
-
     frictionExponent = 1.5
-
-    scaleExponent = 1.1  # 缩放指数，越大缩放速度越快
 
     SCALE_MAX = 5000
     SCALE_MIN = 0.0000001
@@ -51,12 +45,6 @@ class Camera:
         self.target_scale = 1.0
         self.location = NumberVector(0, 0)
 
-    def set_fast_mode(self):
-        self.scaleExponent = 1.5
-
-    def set_slow_mode(self):
-        self.scaleExponent = 1.1
-
     def set_scale_animation(self, is_open: bool):
         self.is_scale_animation_open = is_open
 
@@ -87,15 +75,15 @@ class Camera:
 
     def zoom_in(self):
         if self.is_scale_animation_open:
-            self.target_scale *= self.scaleExponent
+            self.target_scale *= SETTING_SERVICE.camera_scale_exponent
         else:
-            self.current_scale *= self.scaleExponent
+            self.current_scale *= SETTING_SERVICE.camera_scale_exponent
 
     def zoom_out(self):
         if self.is_scale_animation_open:
-            self.target_scale /= self.scaleExponent
+            self.target_scale /= SETTING_SERVICE.camera_scale_exponent
         else:
-            self.current_scale /= self.scaleExponent
+            self.current_scale /= SETTING_SERVICE.camera_scale_exponent
 
     def tick(self):
         try:
@@ -106,10 +94,13 @@ class Camera:
                 friction = (
                     self.speed.normalize()
                     * -1
-                    * (self.frictionCoefficient * speed_size**self.frictionExponent)
+                    * (
+                        SETTING_SERVICE.camera_move_friction
+                        * speed_size**self.frictionExponent
+                    )
                 )
             self.speed += self.accelerateCommander * (
-                self.moveAmplitude * (1 / self.current_scale)
+                SETTING_SERVICE.camera_move_amplitude * (1 / self.current_scale)
             )
             self.speed += friction
 
