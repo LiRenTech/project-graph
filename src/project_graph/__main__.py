@@ -1125,20 +1125,19 @@ class Canvas(QMainWindow):
         # 框选 + 线选
         if self.is_selecting:
             """
-                 |  有线  |  无线  |
-            有节点|  不可能|  画框
-            无节点|  画线  |  都画
+                 |  有线       |  无线  |
+            有节点|  不可能      |  画框
+            无节点|  画线+浅框   |  都画
             """
             is_have_selected_node = any(
                 node.is_selected for node in self.node_manager.nodes
             )
             is_have_selected_link = len(self.selected_links) > 0
-
+            rect = Rectangle.from_two_points(
+                self.select_start_location.clone(),
+                self.last_move_location.clone(),
+            )
             if not is_have_selected_link:
-                rect = Rectangle.from_two_points(
-                    self.select_start_location.clone(),
-                    self.last_move_location.clone(),
-                )
                 PainterUtils.paint_rect(
                     painter,
                     self.camera.location_world2view(rect.location_left_top),
@@ -1150,6 +1149,16 @@ class Canvas(QMainWindow):
                 )
             # 如果没有框选住节点，就画线
             if not is_have_selected_node:
+                # 画一个浅色框
+                PainterUtils.paint_rect(
+                    painter,
+                    self.camera.location_world2view(rect.location_left_top),
+                    rect.width * self.camera.current_scale,
+                    rect.height * self.camera.current_scale,
+                    QColor(0, 0, 0, 0),
+                    QColor(0, 255, 0, 128),
+                    2,
+                )
                 # 画框选对角线
                 PainterUtils.paint_solid_line(
                     painter,
