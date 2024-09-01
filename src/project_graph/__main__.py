@@ -100,10 +100,12 @@ class Canvas(QMainWindow):
         self.init_toolbar()
 
         # ====== 鼠标事件相关
-        self.is_dragging = False
-        """当前鼠标是否按下"""
+        self.is_pressing = False
+        """当前鼠标是否按下（左中右任意一个是否按下）"""
         self.mouse_location = NumberVector.zero()
         """鼠标当前位置"""
+        self.mouse_location_last_middle_button = NumberVector.zero()
+        """鼠标上一次按下中键的位置"""
 
         # ====== 键盘事件相关
         self.pressing_keys: set[int] = set()
@@ -455,7 +457,7 @@ class Canvas(QMainWindow):
 
         point_world_location = self.camera.location_view2world(point_view_location)
         self.toolbar.nodes = []
-        self.is_dragging = True
+        self.is_pressing = True
         if a0.button() == Qt.MouseButton.LeftButton:
             # 可能的4种情况
             # ------------ | 已有节点被选择 | 没有节点被选择
@@ -558,6 +560,11 @@ class Canvas(QMainWindow):
             else:
                 self.is_cutting = True
                 self.connect_from_nodes = []
+        elif a0.button() == Qt.MouseButton.MiddleButton:
+            # 准备移动视野
+            self.mouse_location_last_middle_button = self.camera.location_view2world(
+                NumberVector(a0.pos().x(), a0.pos().y())
+            )
 
     def mouseMoveEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
@@ -566,7 +573,7 @@ class Canvas(QMainWindow):
 
         self.mouse_location = NumberVector(a0.x(), a0.y())
 
-        if self.is_dragging:
+        if self.is_pressing:
             if a0.buttons() == Qt.MouseButton.LeftButton:
                 # 如果是左键，移动节点或者框选
                 if self.is_selecting:
@@ -630,10 +637,19 @@ class Canvas(QMainWindow):
                         if node.body_shape.is_contain_point(mouse_world_location):
                             self.connect_to_node = node
                             break
+            elif a0.buttons() == Qt.MouseButton.MiddleButton:
+                # 移动的时候，应该记录与上一次鼠标位置的相差距离向量
+                current_mouse_move_location = self.camera.location_view2world(
+                    NumberVector(a0.pos().x(), a0.pos().y())
+                )
+                diff_location = (
+                    current_mouse_move_location - self.mouse_location_last_middle_button
+                )
+                self.camera.location -= diff_location
 
     def mouseReleaseEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
-        self.is_dragging = False
+        self.is_pressing = False
         mouse_view_location = NumberVector(a0.pos().x(), a0.pos().y())
 
         if a0.button() == Qt.MouseButton.LeftButton:
