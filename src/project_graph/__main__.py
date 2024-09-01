@@ -741,6 +741,7 @@ class Canvas(QMainWindow):
             else:
                 self.is_cutting = True
                 self.connect_from_nodes = []
+                self.selected_links.clear()
         elif a0.button() == Qt.MouseButton.MiddleButton:
             # 准备移动视野
             self.mouse_location_last_middle_button = self.camera.location_view2world(
@@ -909,6 +910,7 @@ class Canvas(QMainWindow):
                 for line, start_node, end_node in self.warning_lines:
                     self.node_manager.disconnect_node(start_node, end_node)
                 self.warning_lines.clear()
+                self.selected_links.clear()
                 # 删除所有准备删除的节点
                 for node in self.warning_nodes:
                     self.node_manager.delete_node(node)
