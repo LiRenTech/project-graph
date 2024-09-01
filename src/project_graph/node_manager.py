@@ -428,8 +428,8 @@ class NodeManager:
 
             context.painter.paint_curve(
                 ConnectCurve(
-                    from_node.body_shape.center,
-                    to_node.body_shape.center,
+                    from_node.body_shape,
+                    to_node.body_shape,
                 ),
                 QColor(204, 204, 204),
             )
