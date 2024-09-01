@@ -1,5 +1,4 @@
 import json
-import os
 import platform
 import shutil
 import subprocess
@@ -13,6 +12,7 @@ from PyQt5.QtCore import Qt, QTimer, QUrl
 from PyQt5.QtGui import (
     QColor,
     QDesktopServices,
+    QFont,
     QIcon,
     QKeyEvent,
     QMouseEvent,
@@ -96,6 +96,14 @@ if platform.system() == "Linux":
     if not target_path.exists():
         log(f"修复fcitx5输入法: Copy {source_path} to {target_path}")
         shutil.copy(source_path, target_path)
+
+
+STATUS_TEXT = {
+    "normal": "左键 选择节点/框选节点 | 左键拖动 移动节点 | 双击左键 创建节点 | 右键拖动 切割删除节点 | 中键拖动 移动视角 | WASD 移动视角 | [] 缩放 | ↑↓←→ 移动游标",
+    "select": "左键拖动 移动节点 | 双击左键 编辑文字 | Ctrl+双击左键 编辑注释 | 双击右键 修改颜色 | 右键拖动 连接节点",
+    "cursor": "Tab 创建节点 | Enter 编辑文字 | ↑↓←→ 移动游标",
+    "grow": "Tab 创建节点 | ↑↓ 修改方向",
+}
 
 
 class Canvas(QMainWindow):
@@ -252,6 +260,14 @@ class Canvas(QMainWindow):
         test_copy_camera_action = QAction("复制摄像机位置", self)
         test_copy_camera_action.triggered.connect(self.on_copy_camera)
         test_menu.addAction(test_copy_camera_action)
+
+        # 状态栏
+        status_bar = self.statusBar()
+        assert status_bar is not None
+        self.status_bar = status_bar
+        # 字体大小
+        status_bar.setFont(QFont(None, 16))
+        status_bar.showMessage(STATUS_TEXT["normal"])
 
     def init_toolbar(self):
         self.toolbar.tool_list[0].set_bind_event_function(
@@ -638,6 +654,8 @@ class Canvas(QMainWindow):
             log("按到了toolbar")
             return
 
+        self.node_manager.cursor_node = None
+
         point_world_location = self.camera.location_view2world(point_view_location)
         self.toolbar.nodes = []
         self.is_pressing = True
@@ -670,22 +688,26 @@ class Canvas(QMainWindow):
                     click_node = node
                     break
 
+            self.status_bar.showMessage(STATUS_TEXT["normal"])
+
             if is_click_on_node:
                 assert click_node is not None
                 if is_have_selected_node:
                     # C
                     if click_node.is_selected:
                         # 如果点击的节点属于被上次选中的节点中，那么整体移动
-                        pass
+                        self.status_bar.showMessage(STATUS_TEXT["select"])
                     else:
                         # 取消选择所有节点
                         for node in self.node_manager.nodes:
                             node.is_selected = False
                         # 单击选择
                         click_node.is_selected = True
+                        self.status_bar.showMessage(STATUS_TEXT["select"])
                 else:
                     # D
                     click_node.is_selected = True
+                    self.status_bar.showMessage(STATUS_TEXT["select"])
             else:
                 # A B
                 self.is_selecting = True
@@ -773,6 +795,7 @@ class Canvas(QMainWindow):
                     )
                     is_have_selected_node = False
                     # 找到在框选范围内的所有节点
+                    self.status_bar.showMessage(STATUS_TEXT["normal"])
                     for node in self.node_manager.nodes:
                         node.is_selected = node.body_shape.is_collision(
                             select_rectangle
@@ -783,7 +806,9 @@ class Canvas(QMainWindow):
 
                     # 线选
                     self.selected_links.clear()
-                    if not is_have_selected_node:
+                    if is_have_selected_node:
+                        self.status_bar.showMessage(STATUS_TEXT["select"])
+                    else:
                         select_line = Line(
                             self.select_start_location, mouse_world_location
                         )
@@ -1016,6 +1041,7 @@ class Canvas(QMainWindow):
         assert a0 is not None
         key: int = a0.key()
         self.pressing_keys.add(key)
+        self.status_bar.showMessage(STATUS_TEXT["normal"])
 
         if key == Qt.Key.Key_A:
             self.camera.press_move(NumberVector(-1, 0))
@@ -1037,6 +1063,7 @@ class Canvas(QMainWindow):
             # Qt.Key.Key_Enter 这里写这个无效
             # 回车键，如果当前有正在选中的节点，则进入编辑模式
             if self.node_manager.cursor_node is not None:
+                self.status_bar.showMessage(STATUS_TEXT["cursor"])
                 # 在节点上左键是编辑文字
                 text, ok = QInputDialog.getText(
                     self,
@@ -1061,26 +1088,34 @@ class Canvas(QMainWindow):
         elif key == Qt.Key.Key_Left:
             self.node_manager.move_cursor("left")
             self.node_manager.grow_node_cancel()
+            self.status_bar.showMessage(STATUS_TEXT["cursor"])
         elif key == Qt.Key.Key_Right:
             self.node_manager.move_cursor("right")
             self.node_manager.grow_node_cancel()
+            self.status_bar.showMessage(STATUS_TEXT["cursor"])
         elif key == Qt.Key.Key_Up:
             if self.node_manager.is_grow_node_prepared():
                 self.node_manager.rotate_grow_direction(False)
+                self.status_bar.showMessage(STATUS_TEXT["grow"])
                 return
             self.node_manager.move_cursor("up")
             self.node_manager.grow_node_cancel()
+            self.status_bar.showMessage(STATUS_TEXT["cursor"])
         elif key == Qt.Key.Key_Down:
             if self.node_manager.is_grow_node_prepared():
                 self.node_manager.rotate_grow_direction(True)
+                self.status_bar.showMessage(STATUS_TEXT["grow"])
                 return
             self.node_manager.move_cursor("down")
             self.node_manager.grow_node_cancel()
+            self.status_bar.showMessage(STATUS_TEXT["cursor"])
         elif key == Qt.Key.Key_Tab:
             if self.node_manager.is_grow_node_prepared():
                 self.node_manager.grow_node_confirm()
+                self.status_bar.showMessage(STATUS_TEXT["cursor"])
             else:
                 self.node_manager.grow_node()
+                self.status_bar.showMessage(STATUS_TEXT["grow"])
         elif key == Qt.Key.Key_Escape:
             if self.node_manager.is_grow_node_prepared():
                 self.node_manager.grow_node_cancel()
@@ -1365,12 +1400,6 @@ def my_except_hook(
 
 
 def main():
-    # 确保数据目录存在
-    if not os.path.exists(DATA_DIR):
-        os.makedirs(DATA_DIR)
-        with open(os.path.join(DATA_DIR, "settings.json"), "w", encoding="utf-8") as f:
-            f.write("{}")
-
     sys.excepthook = my_except_hook
 
     app = QApplication(sys.argv)
