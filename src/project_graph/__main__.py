@@ -246,6 +246,10 @@ class Canvas(QMainWindow):
         test_exception_action = QAction("抛出异常", self)
         test_exception_action.triggered.connect(self.on_test_exception)
         test_menu.addAction(test_exception_action)
+        # 复制摄像机位置
+        test_copy_camera_action = QAction("复制摄像机位置", self)
+        test_copy_camera_action.triggered.connect(self.on_copy_camera)
+        test_menu.addAction(test_copy_camera_action)
 
     def init_toolbar(self):
         self.toolbar.tool_list[0].set_bind_event_function(
@@ -470,6 +474,12 @@ class Canvas(QMainWindow):
 
     def on_test_exception(self):
         raise Exception("测试异常")
+
+    def on_copy_camera(self):
+        """复制摄像机位置"""
+        clip = QApplication.clipboard()
+        assert clip is not None
+        clip.setText(str(self.camera.location))
 
     def dragEnterEvent(self, event):
         """从外部拖拽文件进入窗口"""
