@@ -156,9 +156,12 @@ class Canvas(QMainWindow):
         self.select_rectangle: Rectangle | None = None
         """框选的矩形"""
         self.select_start_location: NumberVector = NumberVector.zero()
-        """框选的矩形的左上角位置"""
+        """框选的矩形的左上角位置（世界坐标）"""
         self.last_move_location = NumberVector.zero()
         """在框选拖动移动时，上一帧鼠标的位置（用于计算上一帧到当前帧的向量）（世界坐标）"""
+
+        self.selected_lines: list[tuple[Line, EntityNode, EntityNode]] = []
+        """选择的线"""
 
         # ====== 拖拽文件进入窗口相关
         self.is_dragging_file = False
@@ -770,6 +773,18 @@ class Canvas(QMainWindow):
                         node.is_selected = node.body_shape.is_collision(
                             self.select_rectangle
                         )
+                    # TODO: 矩形的对角线连线与其他连线相交
+                    self.selected_lines.clear()
+                    select_line = Line(self.select_start_location, mouse_world_location)
+                    for (
+                        line,
+                        start_node,
+                        end_node,
+                    ) in self.node_manager.get_all_lines_and_node():
+                        if line.is_intersecting(select_line):
+                            # 选择这个线
+                            self.selected_lines.append((line, start_node, end_node))
+                    pass
                 else:
                     # 移动
 
@@ -804,7 +819,6 @@ class Canvas(QMainWindow):
                         if line.is_intersecting(cutting_line):
                             # 准备要切断这个线，先进行标注
                             self.warning_lines.append((line, start_node, end_node))
-                            pass
                     # 查看切割线是否和其他节点相交
                     for node in self.node_manager.nodes:
                         if node == self.connect_from_nodes:
@@ -1021,6 +1035,14 @@ class Canvas(QMainWindow):
                 if ok:
                     self.node_manager.cursor_node.inner_text = text
                     self.node_manager.update_lines()
+                return
+            elif len(self.selected_lines) > 0:
+                # 统一更改这些线的名称
+                new_name, ok = QInputDialog.getText(
+                    self, "更改线名称", "输入新的名称:", text="?"
+                )
+                if ok:
+                    pass
 
         elif key == Qt.Key.Key_Left:
             self.node_manager.move_cursor("left")
@@ -1150,6 +1172,15 @@ class Canvas(QMainWindow):
                 self.camera.location_world2view(line.start),
                 self.camera.location_world2view(line.end),
                 QColor(255, 0, 0, 128),
+                int(10 * self.camera.current_scale),
+            )
+        # 所有选择的线
+        for line, _, _ in self.selected_lines:
+            PainterUtils.paint_solid_line(
+                painter,
+                self.camera.location_world2view(line.start),
+                self.camera.location_world2view(line.end),
+                QColor(0, 255, 0, 128),
                 int(10 * self.camera.current_scale),
             )
         # 所有要被删除的节点
