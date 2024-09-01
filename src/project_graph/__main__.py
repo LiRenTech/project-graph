@@ -51,6 +51,7 @@ from project_graph.effect.effect_concrete import (
 )
 from project_graph.effect.effect_manager import EffectManager
 from project_graph.entity.entity_node import EntityNode
+from project_graph.entity.node_link import NodeLink
 from project_graph.logging import log, logs
 from project_graph.node_manager import NodeManager
 from project_graph.paint.paint_elements import paint_details_data, paint_grid
@@ -160,6 +161,9 @@ class Canvas(QMainWindow):
 
         self.selected_lines: list[tuple[Line, EntityNode, EntityNode]] = []
         """选择的线"""
+
+        self.selected_links: list[NodeLink] = []
+        """选择的连接"""
 
         # ====== 拖拽文件进入窗口相关
         self.is_dragging_file = False
@@ -769,7 +773,7 @@ class Canvas(QMainWindow):
                         )
                     self.selected_lines.clear()
                     select_line = Line(self.select_start_location, mouse_world_location)
-                    # TODO: 待改成Link
+
                     for (
                         line,
                         start_node,
@@ -778,6 +782,16 @@ class Canvas(QMainWindow):
                         if line.is_intersecting(select_line):
                             # 选择这个线
                             self.selected_lines.append((line, start_node, end_node))
+
+                    for link in self.node_manager.get_all_links():
+                        link_body_line = Line(
+                            link.source_node.body_shape.center,
+                            link.target_node.body_shape.center,
+                        )
+                        if link_body_line.is_intersecting(select_line):
+                            # 选择这个link
+                            self.selected_links.append(link)
+                        pass
                     pass
                 else:
                     # 移动

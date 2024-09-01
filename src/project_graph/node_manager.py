@@ -378,7 +378,7 @@ class NodeManager:
         """
         self._lines = self._get_all_lines()
 
-    def _get_all_links(self) -> list[NodeLink]:
+    def get_all_links(self) -> list[NodeLink]:
         links = []
         for node in self.nodes:
             for child in node.children:
@@ -386,7 +386,7 @@ class NodeManager:
         return links
 
     def update_links(self):
-        self._links = self._get_all_links()
+        self._links = self.get_all_links()
 
     def get_all_lines_and_node(self) -> list[tuple[Line, EntityNode, EntityNode]]:
         lines = []
