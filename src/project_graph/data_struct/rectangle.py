@@ -72,6 +72,15 @@ class Rectangle:
         """通过四条边来创建矩形"""
         return Rectangle(NumberVector(left, top), right - left, bottom - top)
 
+    @staticmethod
+    def from_two_points(p1: NumberVector, p2: NumberVector) -> "Rectangle":
+        """通过两个点来创建矩形，可以用于框选生成矩形"""
+        left = min(p1.x, p2.x)
+        top = min(p1.y, p2.y)
+        right = max(p1.x, p2.x)
+        bottom = max(p1.y, p2.y)
+        return Rectangle(NumberVector(left, top), right - left, bottom - top)
+
     def get_fore_points(self) -> list[NumberVector]:
         return [
             NumberVector(self.location_left_top.x, self.location_left_top.y),

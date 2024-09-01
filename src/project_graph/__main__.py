@@ -51,6 +51,7 @@ from project_graph.effect.effect_concrete import (
 )
 from project_graph.effect.effect_manager import EffectManager
 from project_graph.entity.entity_node import EntityNode
+from project_graph.entity.node_link import NodeLink
 from project_graph.logging import log, logs
 from project_graph.node_manager import NodeManager
 from project_graph.paint.paint_elements import paint_details_data, paint_grid
@@ -160,13 +161,14 @@ class Canvas(QMainWindow):
 
         # ====== 框选相关
         self.is_selecting = False
-        """是否正在框选"""
-        self.select_rectangle: Rectangle | None = None
         """框选的矩形"""
         self.select_start_location: NumberVector = NumberVector.zero()
-        """框选的矩形的左上角位置"""
+        """框选的矩形的左上角位置（世界坐标）"""
         self.last_move_location = NumberVector.zero()
         """在框选拖动移动时，上一帧鼠标的位置（用于计算上一帧到当前帧的向量）（世界坐标）"""
+
+        self.selected_links: list[NodeLink] = []
+        """选择的连接"""
 
         # ====== 拖拽文件进入窗口相关
         self.is_dragging_file = False
@@ -730,7 +732,6 @@ class Canvas(QMainWindow):
                 # A B
                 self.is_selecting = True
                 self.select_start_location = point_world_location.clone()
-                self.select_rectangle = None
                 # 取消选择所有节点
                 for node in self.node_manager.nodes:
                     node.is_selected = False
@@ -782,6 +783,7 @@ class Canvas(QMainWindow):
             else:
                 self.is_cutting = True
                 self.connect_from_nodes = []
+                self.selected_links.clear()
         elif a0.button() == Qt.MouseButton.MiddleButton:
             # 准备移动视野
             self.mouse_location_last_middle_button = self.camera.location_view2world(
@@ -800,19 +802,45 @@ class Canvas(QMainWindow):
             if a0.buttons() == Qt.MouseButton.LeftButton:
                 # 如果是左键，移动节点或者框选
                 if self.is_selecting:
+                    """
+                    框选 + 线选 组合
+                    框选选节点，线选选连接
+                    如果什么都没选到，就都能选
+                    如果一旦框选选中了节点，就只能框选了，线选功能被屏蔽
+                    (框选优先级 > 线选)
+                    """
                     # 框选
-                    # HACK: 踩坑 location作为引用传递，导致修改了原来的对象被修改！
-                    self.select_rectangle = Rectangle(
-                        self.select_start_location.clone(),
-                        mouse_world_location.x - self.select_start_location.x,
-                        mouse_world_location.y - self.select_start_location.y,
+                    select_rectangle = Rectangle.from_two_points(
+                        self.select_start_location.clone(), mouse_world_location
                     )
+                    is_have_selected_node = False
                     # 找到在框选范围内的所有节点
                     self.status_bar.showMessage(STATUS_TEXT["normal"])
                     for node in self.node_manager.nodes:
-                        if node.body_shape.is_collision(self.select_rectangle):
-                            node.is_selected = True
-                            self.status_bar.showMessage(STATUS_TEXT["select"])
+                        node.is_selected = node.body_shape.is_collision(
+                            select_rectangle
+                        )
+                        is_have_selected_node = (
+                            is_have_selected_node or node.is_selected
+                        )
+
+                    # 线选
+                    self.selected_links.clear()
+                    if is_have_selected_node:
+                        self.status_bar.showMessage(STATUS_TEXT["select"])
+                    else:
+                        select_line = Line(
+                            self.select_start_location, mouse_world_location
+                        )
+
+                        for link in self.node_manager.get_all_links():
+                            link_body_line = Line(
+                                link.source_node.body_shape.center,
+                                link.target_node.body_shape.center,
+                            )
+                            if link_body_line.is_intersecting(select_line):
+                                # 选择这个link
+                                self.selected_links.append(link)
                 else:
                     # 移动
 
@@ -847,7 +875,6 @@ class Canvas(QMainWindow):
                         if line.is_intersecting(cutting_line):
                             # 准备要切断这个线，先进行标注
                             self.warning_lines.append((line, start_node, end_node))
-                            pass
                     # 查看切割线是否和其他节点相交
                     for node in self.node_manager.nodes:
                         if node == self.connect_from_nodes:
@@ -928,6 +955,7 @@ class Canvas(QMainWindow):
                 for line, start_node, end_node in self.warning_lines:
                     self.node_manager.disconnect_node(start_node, end_node)
                 self.warning_lines.clear()
+                self.selected_links.clear()
                 # 删除所有准备删除的节点
                 for node in self.warning_nodes:
                     self.node_manager.delete_node(node)
@@ -1066,6 +1094,16 @@ class Canvas(QMainWindow):
                 if ok:
                     self.node_manager.cursor_node.inner_text = text
                     self.node_manager.update_lines()
+                return
+            elif len(self.selected_links) > 0:
+                # 统一更改这些线的名称
+                new_name, ok = QInputDialog.getText(
+                    self, "更改线名称", "输入新的名称:", text="?"
+                )
+                if ok:
+                    for link in self.selected_links:
+                        link.inner_text = new_name
+                    self.selected_links.clear()
 
         elif key == Qt.Key.Key_Left:
             self.node_manager.move_cursor("left")
@@ -1141,19 +1179,51 @@ class Canvas(QMainWindow):
                 2 * self.camera.current_scale,
             )
 
-        # 框选区域
-        if self.is_selecting and self.select_rectangle is not None:
-            PainterUtils.paint_rect(
-                painter,
-                self.camera.location_world2view(
-                    self.select_rectangle.location_left_top
-                ),
-                self.select_rectangle.width * self.camera.current_scale,
-                self.select_rectangle.height * self.camera.current_scale,
-                QColor(255, 255, 255, 20),
-                QColor(255, 255, 255, 128),
-                2,
+        # 框选 + 线选
+        if self.is_selecting:
+            """
+                 |  有线       |  无线  |
+            有节点|  不可能      |  画框
+            无节点|  画线+浅框   |  都画
+            """
+            is_have_selected_node = any(
+                node.is_selected for node in self.node_manager.nodes
             )
+            is_have_selected_link = len(self.selected_links) > 0
+            rect = Rectangle.from_two_points(
+                self.select_start_location.clone(),
+                self.last_move_location.clone(),
+            )
+            if not is_have_selected_link:
+                PainterUtils.paint_rect(
+                    painter,
+                    self.camera.location_world2view(rect.location_left_top),
+                    rect.width * self.camera.current_scale,
+                    rect.height * self.camera.current_scale,
+                    QColor(255, 255, 255, 20),
+                    QColor(255, 255, 255, 128),
+                    2,
+                )
+            # 如果没有框选住节点，就画线
+            if not is_have_selected_node:
+                # 画一个浅色框
+                PainterUtils.paint_rect(
+                    painter,
+                    self.camera.location_world2view(rect.location_left_top),
+                    rect.width * self.camera.current_scale,
+                    rect.height * self.camera.current_scale,
+                    QColor(0, 0, 0, 0),
+                    QColor(0, 255, 0, 128),
+                    2,
+                )
+                # 画框选对角线
+                PainterUtils.paint_solid_line(
+                    painter,
+                    self.camera.location_world2view(self.select_start_location.clone()),
+                    self.camera.location_world2view(self.last_move_location.clone()),
+                    QColor(0, 255, 0, 50),
+                    20,
+                )
 
         # 当前鼠标画连接线
         if self.connect_from_nodes and self.mouse_right_location is not None:
@@ -1205,6 +1275,21 @@ class Canvas(QMainWindow):
                 QColor(255, 0, 0, 128),
                 int(10 * self.camera.current_scale),
             )
+        # 所有选择的线
+        for link in self.selected_links:
+            link_body_line = Line(
+                link.source_node.body_shape.center,
+                link.target_node.body_shape.center,
+            )
+
+            PainterUtils.paint_solid_line(
+                painter,
+                self.camera.location_world2view(link_body_line.start),
+                self.camera.location_world2view(link_body_line.end),
+                QColor(0, 255, 0, 50),
+                int(20 * self.camera.current_scale),
+            )
+            pass
         # 所有要被删除的节点
         for node in self.warning_nodes:
             PainterUtils.paint_rect(
@@ -1225,8 +1310,10 @@ class Canvas(QMainWindow):
                 self.camera,
                 [
                     f"当前缩放: {self.camera.current_scale:.2f}",
-                    f"location: ({self.camera.location.x:.2f}, {self.camera.location.y:.2f})",
-                    f"effect: {len(self.effect_manager.effects)}",
+                    f"摄像机位置: ({self.camera.location.x:.2f}, {self.camera.location.y:.2f})",
+                    f"特效数量: {len(self.effect_manager.effects)}",
+                    f"节点数量: {len(self.node_manager.nodes)}",
+                    f"连接数量: {len(self.node_manager.get_all_links())}",
                 ],
             )
         # 工具栏

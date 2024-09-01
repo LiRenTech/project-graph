@@ -10,6 +10,7 @@ from project_graph.entity.node_link import NodeLink
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 from project_graph.settings.setting_service import SETTING_SERVICE
+from project_graph.tools.string_tools import get_size_by_text
 
 
 class NodeManager:
@@ -21,7 +22,7 @@ class NodeManager:
     def __init__(self):
         self.nodes: list[EntityNode] = []
 
-        self._links: list[NodeLink] = []
+        self._links: set[NodeLink] = set()
         """准备替代lines"""
 
         self._lines: list[Line] = []
@@ -331,7 +332,13 @@ class NodeManager:
             if node in father_node.children:
                 father_node.children.remove(node)
         self.update_lines()
-        self.update_links()
+        # 删除所有相关link
+        prepare_delete_links = []
+        for link in self._links:
+            if link.target_node == node or link.source_node == node:
+                prepare_delete_links.append(link)
+        for link in prepare_delete_links:
+            self._links.remove(link)
 
     def delete_nodes(self, nodes: list[EntityNode]):
         for node in nodes:
@@ -341,14 +348,26 @@ class NodeManager:
             for father_node in self.nodes:
                 if node in father_node.children:
                     father_node.children.remove(node)
+
+            # 删除所有相关link
+            prepare_delete_links = []
+            for link in self._links:
+                if link.target_node == node or link.source_node == node:
+                    prepare_delete_links.append(link)
+            for link in prepare_delete_links:
+                self._links.remove(link)
         self.update_lines()
-        self.update_links()
+
+        # self.update_links()
 
     def connect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
             res = from_node.add_child(to_node)
             self.update_lines()
-            self.update_links()
+
+            new_link = NodeLink(from_node, to_node)
+            self._links.add(new_link)
+
             return res
         return False
 
@@ -356,7 +375,10 @@ class NodeManager:
         if from_node in self.nodes and to_node in self.nodes:
             res = from_node.remove_child(to_node)
             self.update_lines()
-            self.update_links()
+
+            link = NodeLink(from_node, to_node)
+            if link in self._links:
+                self._links.remove(link)
             return res
         return False
 
@@ -378,15 +400,15 @@ class NodeManager:
         """
         self._lines = self._get_all_lines()
 
-    def _get_all_links(self) -> list[NodeLink]:
+    def get_all_links(self) -> list[NodeLink]:
+        return [link for link in self._links]
+
+    def update_links(self):
         links = []
         for node in self.nodes:
             for child in node.children:
                 links.append(NodeLink(node, child))
-        return links
-
-    def update_links(self):
-        self._links = self._get_all_links()
+        self._lines = links
 
     def get_all_lines_and_node(self) -> list[tuple[Line, EntityNode, EntityNode]]:
         lines = []
@@ -468,6 +490,38 @@ class NodeManager:
                     4,
                     30,
                 )
+        # 画连线上的文字
+        for link in self._links:
+            link_text = link.inner_text
+            link_middle_point = Line(
+                link.source_node.body_shape.center,
+                link.target_node.body_shape.center,
+            ).midpoint()
+
+            padding_x = 20  # 左右各留 20px 的空白
+            padding_y = 2  # 上下各留 2px 的空白
+
+            if link_text != "":
+                link_text_font = 18
+                width, height, ascent = get_size_by_text(link_text_font, link_text)
+                # 绘制边框背景色
+                PainterUtils.paint_rect(
+                    context.painter.q_painter(),
+                    link_middle_point
+                    - NumberVector(width / 2 + padding_x, height / 2 + padding_y),
+                    width + padding_x * 2,
+                    height + padding_y * 2,
+                    QColor(31, 31, 31, 128),
+                )
+                # 绘制文字
+                PainterUtils.paint_text_from_center(
+                    context.painter.q_painter(),
+                    link_middle_point,
+                    link_text,
+                    18,
+                    QColor(204, 204, 204),
+                )
+                pass
 
         context.painter.q_painter().resetTransform()
         # 画游标

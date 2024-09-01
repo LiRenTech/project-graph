@@ -16,7 +16,7 @@ def bezier_curve(
 
 class ConnectCurve:
     def __init__(self, start: Rectangle, end: Rectangle):
-        direction = end.center - start.center
+        # direction = end.center - start.center
         line = Line(start.center, end.center)
         start_pt = start.get_line_intersection_point(line)
         point_at = end.get_line_intersection_point(line)
