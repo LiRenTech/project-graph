@@ -213,6 +213,18 @@ class Canvas(QMainWindow):
         file_menu.addAction(save_action)
         file_menu.addAction(open_recent_action)
 
+        # 视图菜单
+        view_menu = menubar.addMenu("视图")
+        assert view_menu is not None
+        # 重置位置
+        reset_view_action = QAction("重置位置", self)
+        reset_view_action.triggered.connect(self.reset_view)
+        view_menu.addAction(reset_view_action)
+        # 重置缩放
+        reset_scale_action = QAction("重置缩放", self)
+        reset_scale_action.triggered.connect(self.reset_scale)
+        view_menu.addAction(reset_scale_action)
+
         # 帮助说明菜单
         help_menu = menubar.addMenu("帮助")
         assert help_menu is not None
@@ -357,6 +369,14 @@ class Canvas(QMainWindow):
         else:
             # 如果用户取消了保存操作
             log("Save operation cancelled.")
+
+    def reset_view(self):
+        """重置视角"""
+        self.camera.location = NumberVector.zero()
+
+    def reset_scale(self):
+        """重置缩放"""
+        self.camera.target_scale = 1.0
 
     def on_show_settings(self):
         """打开显示设置"""
