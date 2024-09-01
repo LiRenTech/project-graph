@@ -232,8 +232,12 @@ class Canvas(QMainWindow):
         physics_settings = QAction("物理设置", self)
         physics_settings.triggered.connect(self.on_physics_settings)
 
+        save_settings = QAction("将设置保存", self)
+        save_settings.triggered.connect(SETTING_SERVICE.save_settings)
+
         settings_menu.addAction(show_settings)
         settings_menu.addAction(physics_settings)
+        settings_menu.addAction(save_settings)
 
         # 测试菜单
         test_menu = menubar.addMenu("测试")
