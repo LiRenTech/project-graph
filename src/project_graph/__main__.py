@@ -100,6 +100,8 @@ class Canvas(QMainWindow):
 
         # 允许拖拽文件到窗口
         self.setAcceptDrops(True)
+        # 设置鼠标追踪，否则无法捕捉鼠标移动事件，只有按下才能捕捉到了
+        self.setMouseTracking(True)
 
         # 创建一个定时器用于定期更新窗口
         self.timer = QTimer(self)
@@ -586,6 +588,7 @@ class Canvas(QMainWindow):
             )
 
     def mouseMoveEvent(self, a0: QMouseEvent | None):
+        """这个只有在配合鼠标按下的时候才会触发"""
         assert a0 is not None
         mouse_view_location = NumberVector(a0.pos().x(), a0.pos().y())
         mouse_world_location = self.camera.location_view2world(mouse_view_location)
@@ -665,6 +668,13 @@ class Canvas(QMainWindow):
                     current_mouse_move_location - self.mouse_location_last_middle_button
                 )
                 self.camera.location -= diff_location
+        else:
+            # 鼠标放在哪个节点上，就显示哪个节点的详细信息
+            for node in self.node_manager.nodes:
+                if node.body_shape.is_contain_point(mouse_world_location):
+                    node.is_detail_show = True
+                else:
+                    node.is_detail_show = False
 
     def mouseReleaseEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
@@ -754,13 +764,27 @@ class Canvas(QMainWindow):
                 self.node_manager.add_node_by_click(click_location)
                 self.effect_manager.add_effect(EffectCircleExpand(15, click_location))
             else:
-                # 在节点上左键是编辑文字
-                text, ok = QInputDialog.getText(
-                    self, "编辑节点文字", "输入新的文字:", text=select_node.inner_text
-                )
-                if ok:
-                    select_node.inner_text = text
-                    self.node_manager.update_lines()
+                if Qt.Key.Key_Control in self.pressing_keys:
+                    # 按住Ctrl 双击，编辑多行文本
+                    text, ok = QInputDialog.getMultiLineText(
+                        self,
+                        "编辑节点详细内容",
+                        "输入新的文字:",
+                        text=select_node.details,
+                    )
+                    if ok:
+                        select_node.details = text
+                else:
+                    # 在节点上左键是编辑文字
+                    text, ok = QInputDialog.getText(
+                        self,
+                        "编辑节点文字",
+                        "输入新的文字:",
+                        text=select_node.inner_text,
+                    )
+                    if ok:
+                        select_node.inner_text = text
+                        self.node_manager.update_lines()
 
         elif event.button() == Qt.MouseButton.RightButton:
             if select_node is not None:
@@ -1052,6 +1076,21 @@ class Canvas(QMainWindow):
             # 绘制一个半透明的覆盖层（目的是放置WASD输入到别的软件上）
             painter.setBrush(QColor(0, 0, 0, 128))  # 半透明的黑色
             painter.drawRect(self.rect())
+
+        self.paint_test(painter)
+        pass
+
+    def paint_test(self, painter: QPainter):
+        """测试渲染"""
+        # PainterUtils.paint_document_from_left_top(
+        #     painter,
+        #     self.camera.location_world2view(NumberVector(100, 100)),
+        #     "测试文本1111\n测试文本1111\n测试文本1111\n测试文本1111\n测试文本1111\n测试文本1111\n",
+        #     400 * self.camera.current_scale,
+        #     15 * self.camera.current_scale,
+        #     QColor(255, 255, 255),
+        #     QColor(0, 0, 0, 128),
+        # )
         pass
 
 

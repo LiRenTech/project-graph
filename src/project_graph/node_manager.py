@@ -234,6 +234,7 @@ class NodeManager:
 
             node = EntityNode(body_shape)
             node.inner_text = node_data.get("inner_text", "")
+            node.details = node_data.get("details", "")
 
             node.uuid = node_data["uuid"]
             self.nodes.append(node)
@@ -416,6 +417,7 @@ class NodeManager:
         # 画节点本身
         for node in self.nodes:
             node.paint(context)
+
         # 连线
         context.painter.q_painter().setTransform(
             context.camera.get_world2view_transform()
