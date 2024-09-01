@@ -40,7 +40,7 @@ pdm help
 pdm install
 ```
 
-生成 assets.py 文件：
+<!-- 生成 assets.py 文件：
 
 需要进入 assets 文件夹后在命令行输入指令 来生成 assets.py 文件
 
@@ -48,28 +48,13 @@ pdm install
 pyrcc5 image.rcc -o assets.py
 ```
 
-（需要保证控制台上输入 pyrcc5 能有这个东西）
+（需要保证控制台上输入 pyrcc5 能有这个东西） -->
 
 运行
 
 ```
 pdm run start
 ```
-
-## 踩坑
-
-```toml
-dependencies = [
-    "pyqt5-qt5==5.15.2",
-    # "PyQt5==5.15.2",
-    "PyQt5-sip>=12.15.0",
-    "appdirs>=1.4.4",
-]
-```
-
-windows 下使用 pdm 安装 pyqt 这个库会报错，因此必须把 pyqt5-qt5 这个库的版本卡死在 5.15.2
-
-并且不能同时写 `pyqt5-qt5==5.15.2` 和 `PyQt5==5.15.2` ，因为一旦写了 `PyQt5==5.15.2` ，会导致前者 `pyqt5-qt5` 的版本号发生变化进而导致安装失败。
 
 ## 如何打包
 
@@ -96,6 +81,7 @@ pdm pack --exe -m project_graph.__main__:main
 > 即：用 pycharm 打开 src 文件夹
 
 ```bash
+pdm install --with package
 pdm package
 ```
 
