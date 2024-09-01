@@ -51,8 +51,8 @@ Exec=project-graph
 Icon=project-graph
 Type=Application
 Categories=Utility;
-Comment=快速绘制各种图
-GenericName=图绘制工具
+Comment=快速绘制各种节点图
+GenericName=节点图绘制工具
 EOF
 if [ $? -ne 0 ]; then
     echo "Create desktop file failed"
