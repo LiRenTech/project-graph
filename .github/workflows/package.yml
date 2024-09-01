@@ -50,30 +50,30 @@ jobs:
         with:
           name: project-graph_windows
           path: dist/project-graph*
-  package-macos:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup Python 3.12
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.12"
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pipx
-          pipx install pdm
-          brew install PyQt5
-          pdm venv create
-          pdm run pip install --upgrade pip
-          pdm run pip install vext-pyqt5>=0.7.4
-          pdm run vext -l
-          pdm install --with package --with macos
-      - name: Package
-        run: |
-          pdm package
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: project-graph_macos
-          path: dist/project-graph*
+  # package-macos:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Setup Python 3.12
+  #       uses: actions/setup-python@v2
+  #       with:
+  #         python-version: "3.12"
+  #     - name: Install dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install pipx
+  #         pipx install pdm
+  #         brew install PyQt5
+  #         pdm venv create
+  #         pdm run pip install --upgrade pip
+  #         pdm run pip install vext-pyqt5>=0.7.4
+  #         pdm run vext -l
+  #         pdm install --with package --with macos
+  #     - name: Package
+  #       run: |
+  #         pdm package
+  #     - name: Upload artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: project-graph_macos
+  #         path: dist/project-graph*
