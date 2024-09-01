@@ -25,10 +25,9 @@ def main():
             "--onefile",
             "--windowed",
             f"--icon={path / 'src' / 'project_graph' / 'assets' / 'favicon.ico'}",
-            "--hidden-import",
-            "PyQt5",
-            "--hidden-import",
-            "project_graph.assets.assets",
+            # 支持fcitx5输入法
+            "--add-data",
+            f"{path / 'lib'/ 'libfcitx5platforminputcontextplugin.so'}:PyQt5/Qt5/plugins/platforminputcontexts",
             "-n",
             "project-graph",
             (path / "src" / "_package.py").as_posix(),

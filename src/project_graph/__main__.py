@@ -1,11 +1,14 @@
 import json
+import os
 import platform
+import shutil
 import subprocess
-from pathlib import Path
 import sys
 import traceback
+from pathlib import Path
 from types import TracebackType
 
+import PyQt5
 from PyQt5.QtCore import Qt, QTimer, QUrl
 from PyQt5.QtGui import (
     QColor,
@@ -33,12 +36,29 @@ from PyQt5.QtWidgets import (
 )
 
 from project_graph.app_dir import DATA_DIR
+from project_graph.camera import Camera
+from project_graph.data_struct.line import Line
+from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
+from project_graph.effect.effect_concrete import (
+    EffectCircleExpand,
+    EffectCuttingFlash,
+    EffectRectangleFlash,
+    EffectRectangleShrink,
+)
+from project_graph.effect.effect_manager import EffectManager
+from project_graph.entity.entity_node import EntityNode
 from project_graph.logging import log, logs
+from project_graph.node_manager import NodeManager
+from project_graph.paint.paint_elements import paint_details_data, paint_grid
+from project_graph.paint.paint_utils import PainterUtils
+from project_graph.paint.paintables import PaintContext
+from project_graph.paint.painters import ProjectGraphPainter
 from project_graph.recent_file_manager import RecentFileManager
 from project_graph.toolbar.toolbar import Toolbar
 from project_graph.tools.file_tools import read_file
 
+# 导入资源文件
 try:
     import project_graph.assets.assets  # type: ignore  # noqa: F401
 except ImportError:
@@ -54,24 +74,23 @@ except ImportError:
 
     import project_graph.assets.assets  # type: ignore  # noqa: F401
 
-import os
-
-from project_graph.camera import Camera
-from project_graph.data_struct.line import Line
-from project_graph.data_struct.number_vector import NumberVector
-from project_graph.effect.effect_concrete import (
-    EffectCircleExpand,
-    EffectCuttingFlash,
-    EffectRectangleFlash,
-    EffectRectangleShrink,
-)
-from project_graph.effect.effect_manager import EffectManager
-from project_graph.entity.entity_node import EntityNode
-from project_graph.node_manager import NodeManager
-from project_graph.paint.paint_elements import paint_details_data, paint_grid
-from project_graph.paint.paint_utils import PainterUtils
-from project_graph.paint.paintables import PaintContext
-from project_graph.paint.painters import ProjectGraphPainter
+# 修复fcitx5输入法
+if platform.system() == "Linux":
+    target_path = (
+        Path(PyQt5.__file__).parent
+        / "Qt5"
+        / "plugins"
+        / "platforminputcontexts"
+        / "libfcitx5platforminputcontextplugin.so"
+    )
+    source_path = (
+        Path(__file__).parent.parent.parent
+        / "lib"
+        / "libfcitx5platforminputcontextplugin.so"
+    )
+    if not target_path.exists():
+        log(f"修复fcitx5输入法: Copy {source_path} to {target_path}")
+        shutil.copy(source_path, target_path)
 
 
 class Canvas(QMainWindow):
