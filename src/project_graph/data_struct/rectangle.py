@@ -219,6 +219,25 @@ class Rectangle:
 
         return self.center
 
+    def get_normal_from_center_to_edge(self, point: NumberVector) -> NumberVector:
+        """如果point在这个矩形的四条边的某一条上，则返回从中心指向该边中点的单位向量。否则返回0向量"""
+        if (
+            point.x < self.left()
+            or point.x > self.right()
+            or point.y < self.top()
+            or point.y > self.bottom()
+        ):
+            return NumberVector.zero()
+        if point.x == self.left():
+            return NumberVector(-1, 0)
+        elif point.x == self.right():
+            return NumberVector(1, 0)
+        elif point.y == self.top():
+            return NumberVector(0, -1)
+        elif point.y == self.bottom():
+            return NumberVector(0, 1)
+        return NumberVector.zero()
+
 
 # test
 if __name__ == "__main__":

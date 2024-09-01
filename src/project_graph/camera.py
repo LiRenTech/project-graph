@@ -1,10 +1,8 @@
-import traceback
-
 from PyQt5.QtGui import QTransform
+from PyQt5.QtWidgets import QMessageBox
 
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
-from project_graph.logging import log
 from project_graph.settings.setting_service import SETTING_SERVICE
 
 
@@ -118,9 +116,11 @@ class Camera:
             elif self.current_scale < self.SCALE_MIN:
                 self.current_scale = self.SCALE_MAX - 1
                 self.target_scale = self.SCALE_MAX - 1
-        except Exception as e:
-            traceback.print_exc()
-            log(e)
+        except OverflowError:
+            # 彩蛋，原神怎么你了？
+            QMessageBox.about(None, "派蒙", "前面的区域以后再来探索吧？")
+            self.reset()
+            self.speed = NumberVector(0, 0)
 
     @property
     def cover_world_rectangle(self) -> Rectangle:
