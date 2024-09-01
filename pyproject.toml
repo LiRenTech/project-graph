@@ -3,13 +3,8 @@ name = "project-graph"
 version = "0.1.0"
 description = "Project Graph"
 authors = [{ name = "LiRenTech", email = "liren@zty012.de" }]
-dependencies = [
-    "pyqt5-qt5==5.15.2",
-    # "PyQt5==5.15.2",
-    "PyQt5-sip>=12.15.0",
-    "appdirs>=1.4.4",
-]
-requires-python = ">=3.12"
+dependencies = ["PyQt5-sip>=12.15.0", "appdirs>=1.4.4", "PyQt5>=5.15.11"]
+requires-python = "<3.14,>=3.12"
 readme = "README.md"
 license = { text = "Apache-2.0" }
 
@@ -33,9 +28,8 @@ distribution = true
 
 [tool.pdm.scripts]
 start = { call = "project_graph.__main__:main" }
-package = { shell = "pyinstaller project-graph.spec" }
+package = { call = "package:main" }
 
 [tool.pdm.dev-dependencies]
-package = [
-    "pyinstaller>=4.5.1",
-]
+package = ["pyinstaller>=6.10.0"]
+macos = ["vext-pyqt5>=0.7.4"]

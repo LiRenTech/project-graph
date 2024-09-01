@@ -1,8 +1,14 @@
 import json
+import os
 import platform
+import shutil
 import subprocess
+import sys
+import traceback
 from pathlib import Path
+from types import TracebackType
 
+import PyQt5
 from PyQt5.QtCore import Qt, QTimer, QUrl
 from PyQt5.QtGui import (
     QColor,
@@ -17,7 +23,9 @@ from PyQt5.QtGui import (
 from PyQt5.QtWidgets import (
     QAction,
     QApplication,
+    QCheckBox,
     QColorDialog,
+    QComboBox,
     QDesktopWidget,
     QDialog,
     QFileDialog,
@@ -26,35 +34,15 @@ from PyQt5.QtWidgets import (
     QMainWindow,
     QMessageBox,
     QPushButton,
+    QSlider,
     QVBoxLayout,
 )
 
 from project_graph.app_dir import DATA_DIR
-from project_graph.data_struct.rectangle import Rectangle
-from project_graph.recent_file_manager import RecentFileManager
-from project_graph.toolbar.toolbar import Toolbar
-from project_graph.tools.file_tools import read_file
-
-try:
-    from project_graph.assets import assets  # type: ignore  # noqa: F401
-except ImportError:
-    from PyQt5 import pyrcc_main
-
-    if not pyrcc_main.processResourceFile(
-        [(Path(__file__).parent / "assets" / "image.rcc").as_posix()],
-        (Path(__file__).parent / "assets" / "assets.py").as_posix(),
-        False,
-    ):
-        print("Failed to compile assets.rcc")
-        exit(1)
-
-    from project_graph.assets import assets  # type: ignore  # noqa: F401
-
-import os
-
 from project_graph.camera import Camera
 from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
+from project_graph.data_struct.rectangle import Rectangle
 from project_graph.effect.effect_concrete import (
     EffectCircleExpand,
     EffectCuttingFlash,
@@ -63,11 +51,50 @@ from project_graph.effect.effect_concrete import (
 )
 from project_graph.effect.effect_manager import EffectManager
 from project_graph.entity.entity_node import EntityNode
+from project_graph.logging import log, logs
 from project_graph.node_manager import NodeManager
 from project_graph.paint.paint_elements import paint_details_data, paint_grid
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 from project_graph.paint.painters import ProjectGraphPainter
+from project_graph.recent_file_manager import RecentFileManager
+from project_graph.settings.setting_service import SETTING_SERVICE
+from project_graph.toolbar.toolbar import Toolbar
+from project_graph.tools.file_tools import read_file
+
+# 导入资源文件
+try:
+    import project_graph.assets.assets  # type: ignore  # noqa: F401
+except ImportError:
+    from PyQt5 import pyrcc_main
+
+    if not pyrcc_main.processResourceFile(
+        [(Path(__file__).parent / "assets" / "image.rcc").as_posix()],
+        (Path(__file__).parent / "assets" / "assets.py").as_posix(),
+        False,
+    ):
+        log("Failed to compile assets.rcc")
+        exit(1)
+
+    import project_graph.assets.assets  # type: ignore  # noqa: F401
+
+# 修复fcitx5输入法
+if platform.system() == "Linux":
+    target_path = (
+        Path(PyQt5.__file__).parent
+        / "Qt5"
+        / "plugins"
+        / "platforminputcontexts"
+        / "libfcitx5platforminputcontextplugin.so"
+    )
+    source_path = (
+        Path(__file__).parent.parent.parent
+        / "lib"
+        / "libfcitx5platforminputcontextplugin.so"
+    )
+    if not target_path.exists():
+        log(f"修复fcitx5输入法: Copy {source_path} to {target_path}")
+        shutil.copy(source_path, target_path)
 
 
 class Canvas(QMainWindow):
@@ -77,6 +104,8 @@ class Canvas(QMainWindow):
 
         # 允许拖拽文件到窗口
         self.setAcceptDrops(True)
+        # 设置鼠标追踪，否则无法捕捉鼠标移动事件，只有按下才能捕捉到了
+        self.setMouseTracking(True)
 
         # 创建一个定时器用于定期更新窗口
         self.timer = QTimer(self)
@@ -91,18 +120,23 @@ class Canvas(QMainWindow):
         self.node_manager = NodeManager()
         self.recent_file_manager = RecentFileManager()
         self.toolbar: Toolbar = Toolbar()
-        """工具栏对象"""
 
         self.init_toolbar()
 
         # ====== 鼠标事件相关
-        self.is_dragging = False
-        """当前鼠标是否按下"""
+        self.is_pressing = False
+        """当前鼠标是否按下（左中右任意一个是否按下）"""
         self.mouse_location = NumberVector.zero()
         """鼠标当前位置"""
+        self.mouse_location_last_middle_button = NumberVector.zero()
+        """鼠标上一次按下中键的位置"""
+
+        # ====== 键盘事件相关
+        self.pressing_keys: set[int] = set()
+        """当前按下的键"""
 
         # ====== 连线/断开 相关的操作
-        self.connect_from_node: EntityNode | None = None
+        self.connect_from_nodes: list[EntityNode] = []
         self.connect_to_node: EntityNode | None = None
         self.mouse_right_location: NumberVector = NumberVector.zero()
         """鼠标右键的当前位置"""
@@ -145,6 +179,7 @@ class Canvas(QMainWindow):
         elif platform.system() == "Windows" or platform.system() == "Linux":
             self.setWindowIcon(QIcon(":/favicon.ico"))
         self._move_window_to_center()
+
         # 菜单栏
         menubar = self.menuBar()
         assert menubar is not None
@@ -187,6 +222,35 @@ class Canvas(QMainWindow):
         cache_folder_action.triggered.connect(self.open_cache_folder)
         help_menu.addAction(cache_folder_action)
 
+        # 设置
+        settings_menu = menubar.addMenu("设置")
+        assert settings_menu is not None
+
+        show_settings = QAction("显示设置", self)
+        show_settings.triggered.connect(self.on_show_settings)
+
+        physics_settings = QAction("物理设置", self)
+        physics_settings.triggered.connect(self.on_physics_settings)
+
+        save_settings = QAction("将设置保存", self)
+        save_settings.triggered.connect(SETTING_SERVICE.save_settings)
+
+        settings_menu.addAction(show_settings)
+        settings_menu.addAction(physics_settings)
+        settings_menu.addAction(save_settings)
+
+        # 测试菜单
+        test_menu = menubar.addMenu("测试")
+        assert test_menu is not None
+        # 抛出异常
+        test_exception_action = QAction("抛出异常", self)
+        test_exception_action.triggered.connect(self.on_test_exception)
+        test_menu.addAction(test_exception_action)
+        # 复制摄像机位置
+        test_copy_camera_action = QAction("复制摄像机位置", self)
+        test_copy_camera_action.triggered.connect(self.on_copy_camera)
+        test_menu.addAction(test_copy_camera_action)
+
     def init_toolbar(self):
         self.toolbar.tool_list[0].set_bind_event_function(
             self._delete_current_select_node
@@ -195,7 +259,7 @@ class Canvas(QMainWindow):
 
     def _delete_current_select_node(self):
         """删除当前选中的节点"""
-        print("删除当前选中的节点")
+        log("删除当前选中的节点")
         self.node_manager.delete_nodes(
             [node for node in self.node_manager.nodes if node.is_selected]
         )
@@ -276,7 +340,146 @@ class Canvas(QMainWindow):
             self.recent_file_manager.add_recent_file(Path(file_path))
         else:
             # 如果用户取消了保存操作
-            print("Save operation cancelled.")
+            log("Save operation cancelled.")
+
+    def on_show_settings(self):
+        """打开显示设置"""
+        dialog = QDialog(self)
+        dialog.setWindowTitle("显示设置")
+        dialog.setMinimumWidth(500)
+
+        # 设置布局
+        layout = QVBoxLayout()
+
+        # 添加一些示例控件
+        layout.addWidget(QLabel("线段方式"))
+        line_style_combo_box = QComboBox()
+        line_style_combo_box.addItem("贝塞尔曲线")
+        line_style_combo_box.addItem("直线")
+        line_style_combo_box.setCurrentIndex(SETTING_SERVICE.line_style)
+
+        def on_change_line_style(index):
+            SETTING_SERVICE.line_style = index
+
+        line_style_combo_box.currentIndexChanged.connect(on_change_line_style)
+        layout.addWidget(line_style_combo_box)
+
+        layout.addWidget(QLabel("主题颜色"))
+        theme_style_combo_box = QComboBox()
+        theme_style_combo_box.addItem("2b灰")
+        theme_style_combo_box.addItem("论文白")
+        theme_style_combo_box.addItem("猛男粉")
+        theme_style_combo_box.setCurrentIndex(SETTING_SERVICE.theme_style)
+
+        def on_change_theme_style(index):
+            SETTING_SERVICE.theme_style = index
+
+        theme_style_combo_box.currentIndexChanged.connect(on_change_theme_style)
+        layout.addWidget(theme_style_combo_box)
+
+        # 网格显示开关
+        show_grid_check_box = QCheckBox("显示网格")
+        show_grid_check_box.setChecked(SETTING_SERVICE.is_show_grid)
+
+        def on_change_show_grid(state):
+            SETTING_SERVICE.is_show_grid = state == 2
+
+        show_grid_check_box.stateChanged.connect(on_change_show_grid)
+        layout.addWidget(show_grid_check_box)
+
+        # 显示调试信息
+        show_debug_info_check_box = QCheckBox("显示调试信息")
+        show_debug_info_check_box.setChecked(SETTING_SERVICE.is_show_debug_text)
+
+        def on_change_show_debug_info(state):
+            SETTING_SERVICE.is_show_debug_text = state == 2
+
+        show_debug_info_check_box.stateChanged.connect(on_change_show_debug_info)
+        layout.addWidget(show_debug_info_check_box)
+
+        # 设置布局到对话框
+        dialog.setLayout(layout)
+        dialog.exec_()
+        pass
+
+    def on_physics_settings(self):
+        """打开物理设置"""
+        dialog = QDialog(self)
+        dialog.setWindowTitle("物理设置")
+        dialog.setMinimumWidth(500)
+
+        # 设置布局
+        layout = QVBoxLayout()
+
+        # 开启节点碰撞
+        enable_node_collision_check_box = QCheckBox("开启节点碰撞")
+        enable_node_collision_check_box.setChecked(
+            SETTING_SERVICE.is_enable_node_collision
+        )
+
+        def on_change_enable_node_collision(state):
+            SETTING_SERVICE.is_enable_node_collision = state == 2
+
+        enable_node_collision_check_box.stateChanged.connect(
+            on_change_enable_node_collision
+        )
+        layout.addWidget(enable_node_collision_check_box)
+
+        # 镜头缩放速度滑动框 数值类型
+        layout.addWidget(QLabel("镜头缩放速度"))
+        camera_zoom_speed_slider = QSlider(Qt.Orientation.Horizontal)
+        camera_zoom_speed_slider.setMinimum(10)
+        camera_zoom_speed_slider.setMaximum(20)
+        camera_zoom_speed_slider.setValue(
+            int(SETTING_SERVICE.camera_scale_exponent * 10)
+        )
+
+        def on_change_camera_zoom_speed(value):
+            SETTING_SERVICE.camera_scale_exponent = value / 10
+
+        camera_zoom_speed_slider.valueChanged.connect(on_change_camera_zoom_speed)
+        layout.addWidget(camera_zoom_speed_slider)
+
+        # 镜头移动速度滑动框
+        layout.addWidget(QLabel("镜头移动速度"))
+        camera_move_speed_slider = QSlider(Qt.Orientation.Horizontal)
+        camera_move_speed_slider.setMinimum(1)
+        camera_move_speed_slider.setMaximum(10)
+        camera_move_speed_slider.setValue(SETTING_SERVICE.camera_move_amplitude)
+
+        def on_change_camera_move_speed(value):
+            SETTING_SERVICE.camera_move_amplitude = value
+
+        camera_move_speed_slider.valueChanged.connect(on_change_camera_move_speed)
+        layout.addWidget(camera_move_speed_slider)
+        # 镜头移动摩擦力系数
+
+        layout.addWidget(QLabel("镜头移动摩擦力系数"))
+        camera_move_friction_slider = QSlider(Qt.Orientation.Horizontal)
+        camera_move_friction_slider.setMinimum(0)
+        camera_move_friction_slider.setMaximum(10)
+        camera_move_friction_slider.setValue(
+            int(SETTING_SERVICE.camera_move_friction * 10)
+        )
+
+        def on_change_camera_move_friction(value):
+            SETTING_SERVICE.camera_move_friction = value / 10
+
+        camera_move_friction_slider.valueChanged.connect(on_change_camera_move_friction)
+        layout.addWidget(camera_move_friction_slider)
+
+        # 设置布局到对话框
+        dialog.setLayout(layout)
+        dialog.exec_()
+
+    def on_test_exception(self):
+        raise Exception("测试异常")
+
+    def on_copy_camera(self):
+        """复制摄像机位置"""
+        clip = QApplication.clipboard()
+        assert clip is not None
+        clip.setText(str(self.camera.location))
 
     def dragEnterEvent(self, event):
         """从外部拖拽文件进入窗口"""
@@ -299,14 +502,14 @@ class Canvas(QMainWindow):
 
     def dropEvent(self, event):
         """从外部拖拽文件进入窗口并松开"""
-        print("dropEvent", event)
+        log("dropEvent", event)
         self.is_dragging_file = False
         self.is_dragging_file_valid = False
 
         for url in event.mimeData().urls():
-            print(url)
+            log(url)
             file_path: str = url.toLocalFile()
-            print(file_path)
+            log(file_path)
             if file_path.endswith(".json"):
                 try:
                     load_data = json.loads(read_file(Path(file_path)))
@@ -326,7 +529,7 @@ class Canvas(QMainWindow):
                     event.acceptProposedAction()
                     break
                 except Exception as e:
-                    print(e)
+                    log(e)
                     QMessageBox.warning(
                         self,
                         "错误",
@@ -370,12 +573,12 @@ class Canvas(QMainWindow):
             "\n\n".join(
                 [
                     "1. 创建节点：双击空白部分",
-                    "2. 编辑节点：双击节点，出现输入框",
-                    "3. 移动节点：左键拖拽一个节点",
+                    "2. 编辑节点：双击节点，出现输入框，按住Ctrl键可以编辑节点详细信息",
+                    "3. 移动节点：左键拖拽一个节点，但按住Ctrl键可以带动所有子节点拖动整个树",
                     "4. 连接节点：按住右键从一个节点滑动到另一个节点",
                     "5. 切断连线：在空白地方按住右键划出一道切割线",
                     "6. 删除节点：同样使用切割线切节点来删除",
-                    "7. 移动视野：W A S D 键",
+                    "7. 移动视野：W A S D 键 ，或者鼠标中键拖拽",
                     "8. 缩放视野：鼠标滚轮",
                     "9. 旋转节点：对准一个节点旋转滚轮",
                 ]
@@ -422,18 +625,20 @@ class Canvas(QMainWindow):
         self.camera.tick()
         self.update()
 
+    # region 鼠标事件
+
     def mousePressEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
         point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
 
         is_press_toolbar = self.toolbar.on_click(point_view_location)
         if is_press_toolbar:
-            print("按到了toolbar")
+            log("按到了toolbar")
             return
 
         point_world_location = self.camera.location_view2world(point_view_location)
         self.toolbar.nodes = []
-        self.is_dragging = True
+        self.is_pressing = True
         if a0.button() == Qt.MouseButton.LeftButton:
             # 可能的4种情况
             # ------------ | 已有节点被选择 | 没有节点被选择
@@ -495,32 +700,61 @@ class Canvas(QMainWindow):
         elif a0.button() == Qt.MouseButton.RightButton:
             # 如果是在节点上开始右键的，那么就开始连线
             # 如果是在空白上开始右键的，那么就开始切割线
-            # TODO: 多个框选连线
 
             self.mouse_right_location = point_world_location
             self.mouse_right_start_location = point_world_location.clone()
             # 开始连线
             self.is_cutting = True
+            is_click_on_node = any(
+                node.body_shape.is_contain_point(point_world_location)
+                for node in self.node_manager.nodes
+            )
+
+            click_node = None
             for node in self.node_manager.nodes:
                 if node.body_shape.is_contain_point(point_world_location):
-                    self.connect_from_node = node
-                    print("开始连线")
-                    self.is_cutting = False
-                    # 加特效
-                    self.effect_manager.add_effect(
-                        EffectRectangleFlash(15, node.body_shape.clone())
-                    )
+                    click_node = node
                     break
-            pass
+
+            if is_click_on_node:
+                assert click_node is not None
+
+                self.is_cutting = False
+                self.connect_from_nodes = [
+                    node for node in self.node_manager.nodes if node.is_selected
+                ]
+                if click_node not in self.connect_from_nodes:
+                    # 如果 右键的节点 没有在被选中的节点中，则不触发多重连接
+                    self.connect_from_nodes = [click_node]
+                    self.effect_manager.add_effect(
+                        EffectRectangleFlash(15, click_node.body_shape.clone())
+                    )
+                else:
+                    # 如果在被选中的节点中，则触发多重连接
+                    for node in self.node_manager.nodes:
+                        # 加特效
+                        if node.is_selected:
+                            self.effect_manager.add_effect(
+                                EffectRectangleFlash(15, node.body_shape.clone())
+                            )
+            else:
+                self.is_cutting = True
+                self.connect_from_nodes = []
+        elif a0.button() == Qt.MouseButton.MiddleButton:
+            # 准备移动视野
+            self.mouse_location_last_middle_button = self.camera.location_view2world(
+                NumberVector(a0.pos().x(), a0.pos().y())
+            )
 
     def mouseMoveEvent(self, a0: QMouseEvent | None):
+        """这个只有在配合鼠标按下的时候才会触发"""
         assert a0 is not None
         mouse_view_location = NumberVector(a0.pos().x(), a0.pos().y())
         mouse_world_location = self.camera.location_view2world(mouse_view_location)
 
         self.mouse_location = NumberVector(a0.x(), a0.y())
 
-        if self.is_dragging:
+        if self.is_pressing:
             if a0.buttons() == Qt.MouseButton.LeftButton:
                 # 如果是左键，移动节点或者框选
                 if self.is_selecting:
@@ -543,12 +777,13 @@ class Canvas(QMainWindow):
                     mouse_d_location = mouse_world_location - self.last_move_location
                     for node in self.node_manager.nodes:
                         if node.is_selected:
-                            # new_left_top = mouse_world_location - node.dragging_offset
-                            # d_location = (
-                            #     new_left_top - node.body_shape.location_left_top
-                            # )
-                            # node.move(d_location)
-                            self.node_manager.move_node(node, mouse_d_location)
+                            if Qt.Key.Key_Control in self.pressing_keys:
+                                # 按住Ctrl，移动节点，带动子节点一起移动
+                                self.node_manager.move_node_with_children(
+                                    node, mouse_d_location
+                                )
+                            else:
+                                self.node_manager.move_node(node, mouse_d_location)
 
                 self.last_move_location = mouse_world_location.clone()
 
@@ -572,7 +807,7 @@ class Canvas(QMainWindow):
                             pass
                     # 查看切割线是否和其他节点相交
                     for node in self.node_manager.nodes:
-                        if node == self.connect_from_node:
+                        if node == self.connect_from_nodes:
                             continue
                         if node.body_shape.is_intersect_with_line(cutting_line):
                             # 准备要切断这个节点，先进行标注
@@ -583,10 +818,26 @@ class Canvas(QMainWindow):
                         if node.body_shape.is_contain_point(mouse_world_location):
                             self.connect_to_node = node
                             break
+            elif a0.buttons() == Qt.MouseButton.MiddleButton:
+                # 移动的时候，应该记录与上一次鼠标位置的相差距离向量
+                current_mouse_move_location = self.camera.location_view2world(
+                    NumberVector(a0.pos().x(), a0.pos().y())
+                )
+                diff_location = (
+                    current_mouse_move_location - self.mouse_location_last_middle_button
+                )
+                self.camera.location -= diff_location
+        else:
+            # 鼠标放在哪个节点上，就显示哪个节点的详细信息
+            for node in self.node_manager.nodes:
+                if node.body_shape.is_contain_point(mouse_world_location):
+                    node.is_detail_show = True
+                else:
+                    node.is_detail_show = False
 
     def mouseReleaseEvent(self, a0: QMouseEvent | None):
         assert a0 is not None
-        self.is_dragging = False
+        self.is_pressing = False
         mouse_view_location = NumberVector(a0.pos().x(), a0.pos().y())
 
         if a0.button() == Qt.MouseButton.LeftButton:
@@ -610,24 +861,23 @@ class Canvas(QMainWindow):
                 pass
         if a0.button() == Qt.MouseButton.RightButton:
             # 结束连线
-            if self.connect_from_node is not None and self.connect_to_node is not None:
-                connect_result = self.node_manager.connect_node(
-                    self.connect_from_node,
-                    self.connect_to_node,
-                )
-                if connect_result:
-                    # 加特效
-                    self.effect_manager.add_effect(
-                        EffectRectangleFlash(
-                            15, self.connect_to_node.body_shape.clone()
-                        )
+            if len(self.connect_from_nodes) > 0 and self.connect_to_node is not None:
+                for node in self.connect_from_nodes:
+                    connect_result = self.node_manager.connect_node(
+                        node,
+                        self.connect_to_node,
                     )
-                    self.effect_manager.add_effect(
-                        EffectRectangleFlash(
-                            15, self.connect_from_node.body_shape.clone()
+                    if connect_result:
+                        # 加特效
+                        self.effect_manager.add_effect(
+                            EffectRectangleFlash(
+                                15, self.connect_to_node.body_shape.clone()
+                            )
                         )
-                    )
-            self.connect_from_node = None
+                        self.effect_manager.add_effect(
+                            EffectRectangleFlash(15, node.body_shape.clone())
+                        )
+            self.connect_from_nodes = []
             self.connect_to_node = None
 
             if self.is_cutting:
@@ -673,13 +923,27 @@ class Canvas(QMainWindow):
                 self.node_manager.add_node_by_click(click_location)
                 self.effect_manager.add_effect(EffectCircleExpand(15, click_location))
             else:
-                # 在节点上左键是编辑文字
-                text, ok = QInputDialog.getText(
-                    self, "编辑节点文字", "输入新的文字:", text=select_node.inner_text
-                )
-                if ok:
-                    select_node.inner_text = text
-                    self.node_manager.update_lines()
+                if Qt.Key.Key_Control in self.pressing_keys:
+                    # 按住Ctrl 双击，编辑多行文本
+                    text, ok = QInputDialog.getMultiLineText(
+                        self,
+                        "编辑节点详细内容",
+                        "输入新的文字:",
+                        text=select_node.details,
+                    )
+                    if ok:
+                        select_node.details = text
+                else:
+                    # 在节点上左键是编辑文字
+                    text, ok = QInputDialog.getText(
+                        self,
+                        "编辑节点文字",
+                        "输入新的文字:",
+                        text=select_node.inner_text,
+                    )
+                    if ok:
+                        select_node.inner_text = text
+                        self.node_manager.update_lines()
 
         elif event.button() == Qt.MouseButton.RightButton:
             if select_node is not None:
@@ -720,9 +984,12 @@ class Canvas(QMainWindow):
         # 你可以在这里添加更多的逻辑来响应滚轮事件
         a0.accept()
 
+    # region 键盘事件
+
     def keyPressEvent(self, a0: QKeyEvent | None):
         assert a0 is not None
-        key = a0.key()
+        key: int = a0.key()
+        self.pressing_keys.add(key)
 
         if key == Qt.Key.Key_A:
             self.camera.press_move(NumberVector(-1, 0))
@@ -785,6 +1052,9 @@ class Canvas(QMainWindow):
     def keyReleaseEvent(self, a0: QKeyEvent | None):
         assert a0 is not None
         key = a0.key()
+        if key in self.pressing_keys:
+            self.pressing_keys.remove(key)
+
         if key == Qt.Key.Key_A:
             self.camera.release_move(NumberVector(-1, 0))
         elif key == Qt.Key.Key_S:
@@ -793,6 +1063,8 @@ class Canvas(QMainWindow):
             self.camera.release_move(NumberVector(1, 0))
         elif key == Qt.Key.Key_W:
             self.camera.release_move(NumberVector(0, -1))
+
+    # region 绘制
 
     def paintEvent(self, a0: QPaintEvent | None):
         assert a0 is not None
@@ -804,7 +1076,8 @@ class Canvas(QMainWindow):
         # 使用黑色填充整个窗口
         painter.fillRect(rect, QColor(43, 43, 43, 255))
         # 画网格
-        paint_grid(painter, self.camera)
+        if SETTING_SERVICE.is_show_grid:
+            paint_grid(painter, self.camera)
         # 当前的切断线
         if self.is_cutting:
             PainterUtils.paint_solid_line(
@@ -830,39 +1103,39 @@ class Canvas(QMainWindow):
             )
 
         # 当前鼠标画连接线
-        if self.connect_from_node is not None and self.mouse_right_location is not None:
+        if self.connect_from_nodes and self.mouse_right_location is not None:
             # 如果鼠标位置是没有和任何节点相交的
-            connect_node = None
+            connect_target_node = None
             for node in self.node_manager.nodes:
-                if node == self.connect_from_node:
+                if node in self.connect_from_nodes:
                     continue
                 if node.body_shape.is_contain_point(self.mouse_right_location):
-                    connect_node = node
+                    connect_target_node = node
                     break
-            if connect_node:
+            if connect_target_node:
                 # 像吸附住了一样画线
-                PainterUtils.paint_arrow(
-                    painter,
-                    self.camera.location_world2view(
-                        self.connect_from_node.body_shape.center
-                    ),
-                    self.camera.location_world2view(connect_node.body_shape.center),
-                    QColor(255, 255, 255),
-                    2 * self.camera.current_scale,
-                    30 * self.camera.current_scale,
-                )
+                for node in self.connect_from_nodes:
+                    PainterUtils.paint_arrow(
+                        painter,
+                        self.camera.location_world2view(node.body_shape.center),
+                        self.camera.location_world2view(
+                            connect_target_node.body_shape.center
+                        ),
+                        QColor(255, 255, 255),
+                        2 * self.camera.current_scale,
+                        30 * self.camera.current_scale,
+                    )
             else:
                 # 实时连线
-                PainterUtils.paint_arrow(
-                    painter,
-                    self.camera.location_world2view(
-                        self.connect_from_node.body_shape.center
-                    ),
-                    self.camera.location_world2view(self.mouse_right_location),
-                    QColor(255, 255, 255),
-                    2 * self.camera.current_scale,
-                    30 * self.camera.current_scale,
-                )
+                for node in self.connect_from_nodes:
+                    PainterUtils.paint_arrow(
+                        painter,
+                        self.camera.location_world2view(node.body_shape.center),
+                        self.camera.location_world2view(self.mouse_right_location),
+                        QColor(255, 255, 255),
+                        2 * self.camera.current_scale,
+                        30 * self.camera.current_scale,
+                    )
 
         # 上下文对象
         paint_context = PaintContext(
@@ -893,15 +1166,16 @@ class Canvas(QMainWindow):
         # 特效
         self.effect_manager.paint(paint_context)
         # 绘制细节信息
-        paint_details_data(
-            painter,
-            self.camera,
-            [
-                f"当前缩放: {self.camera.current_scale:.2f}",
-                f"location: {self.camera.location}",
-                f"effect: {len(self.effect_manager.effects)}",
-            ],
-        )
+        if SETTING_SERVICE.is_show_debug_text:
+            paint_details_data(
+                painter,
+                self.camera,
+                [
+                    f"当前缩放: {self.camera.current_scale:.2f}",
+                    f"location: ({self.camera.location.x:.2f}, {self.camera.location.y:.2f})",
+                    f"effect: {len(self.effect_manager.effects)}",
+                ],
+            )
         # 工具栏
         self.toolbar.paint(paint_context)
         # 最终覆盖在屏幕上一层：拖拽情况
@@ -963,32 +1237,65 @@ class Canvas(QMainWindow):
             # 绘制一个半透明的覆盖层（目的是放置WASD输入到别的软件上）
             painter.setBrush(QColor(0, 0, 0, 128))  # 半透明的黑色
             painter.drawRect(self.rect())
+
+        self.paint_test(painter)
+        pass
+
+    def paint_test(self, painter: QPainter):
+        """测试渲染"""
+        # PainterUtils.paint_document_from_left_top(
+        #     painter,
+        #     self.camera.location_world2view(NumberVector(100, 100)),
+        #     "测试文本1111\n测试文本1111\n测试文本1111\n测试文本1111\n测试文本1111\n测试文本1111\n",
+        #     400 * self.camera.current_scale,
+        #     15 * self.camera.current_scale,
+        #     QColor(255, 255, 255),
+        #     QColor(0, 0, 0, 128),
+        # )
         pass
 
 
-def main():
-    import sys
-    import traceback
+def my_except_hook(
+    exctype: type[BaseException], value: BaseException, tb: TracebackType
+) -> None:
+    if exctype is KeyboardInterrupt:
+        sys.exit(0)
 
+    print("error!!!")
+    log("\n".join(traceback.format_exception(exctype, value, tb)))
+    print(logs)
+    # 用tkinter弹出错误信息，用输入框组件显示错误信息
+    import tkinter as tk
+
+    root = tk.Tk()
+    root.title("error!")
+    tk.Label(root, text="出现异常！").pack()
+    t = tk.Text(root, height=10, width=50)
+    for line in logs:
+        t.insert(tk.END, line + "\n")
+    t.pack()
+    tk.Button(root, text="确定", command=root.destroy).pack()
+    tk.Button(root, text="退出", command=sys.exit).pack()
+    root.mainloop()
+
+
+def main():
     # 确保数据目录存在
     if not os.path.exists(DATA_DIR):
         os.makedirs(DATA_DIR)
         with open(os.path.join(DATA_DIR, "settings.json"), "w", encoding="utf-8") as f:
             f.write("{}")
 
-    try:
-        sys.excepthook = sys.__excepthook__
+    sys.excepthook = my_except_hook
 
-        app = QApplication(sys.argv)
-        app.setWindowIcon(QIcon("./assets/favicon.ico"))
+    app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon("./assets/favicon.ico"))
 
-        canvas = Canvas()
-        canvas.show()
+    canvas = Canvas()
+    canvas.show()
 
-        sys.exit(app.exec_())
-    except Exception as e:
-        # 捕捉不到
-        traceback.print_exc()
-        print(e)
-        sys.exit(1)
-    pass
+    sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main()

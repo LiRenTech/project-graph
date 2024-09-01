@@ -2,6 +2,7 @@ from typing import Any
 
 from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
+from project_graph.logging import log
 
 
 class Rectangle:
@@ -242,6 +243,6 @@ class Rectangle:
 if __name__ == "__main__":
     r1 = Rectangle(NumberVector(0, 0), 10, 10)
     r2 = Rectangle(NumberVector(5, 5), 10, 10)
-    print(r1.is_collision(r2))  # True
-    print(r2.is_collision(r1))  # True
-    print(r1.center)  # (5, 5)
+    log(r1.is_collision(r2))  # True
+    log(r2.is_collision(r1))  # True
+    log(r1.center)  # (5, 5)

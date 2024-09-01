@@ -9,6 +9,7 @@ from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
+from project_graph.settings.setting_service import SETTING_SERVICE
 
 
 class NodeManager:
@@ -238,6 +239,7 @@ class NodeManager:
 
             node = EntityNode(body_shape)
             node.inner_text = node_data.get("inner_text", "")
+            node.details = node_data.get("details", "")
 
             node.uuid = node_data["uuid"]
             self.nodes.append(node)
@@ -274,14 +276,41 @@ class NodeManager:
         return None
 
     def move_node(self, node: EntityNode, d_location: NumberVector):
+        """
+        移动一个节点（不带动子节点的单独移动）
+        """
         node.move(d_location)
         self.collide_dfs(node)
         self.update_lines()
 
+    def move_node_with_children(self, node: EntityNode, d_location: NumberVector):
+        """
+        移动一个节点（带动子节点的整体移动）
+        """
+        self._move_node_with_children_dfs(node, d_location, [node.uuid])
+        self.update_lines()
+
+    def _move_node_with_children_dfs(
+        self, node: EntityNode, d_location: NumberVector, visited_uuids: list[str]
+    ):
+        node.move(d_location)
+        self.collide_dfs(node)
+        for child in node.children:
+            if child.uuid in visited_uuids:
+                # 防止出现环形连接，导致无限递归
+                continue
+            self._move_node_with_children_dfs(
+                child, d_location, visited_uuids + [node.uuid]
+            )
+
     def collide_dfs(self, self_node: EntityNode):
         """
         self_node 是主体
+        这个dfs指的不是子节点递归，是和周围其他节点的碰撞传递
         """
+        if not SETTING_SERVICE.is_enable_node_collision:
+            return
+
         for node in self.nodes:
             if node == self_node:
                 continue
@@ -412,27 +441,33 @@ class NodeManager:
         # 画节点本身
         for node in self.nodes:
             node.paint(context)
+
         # 连线
         context.painter.q_painter().setTransform(
             context.camera.get_world2view_transform()
         )
-        # for line in self._lines:
-        #     context.painter.paint_curve(
-        #         ConnectCurve(line.start, line.end), QColor(204, 204, 204)
-        #     )
+        if SETTING_SERVICE.line_style == 0:
+            for link in self._links:
+                from_node = link.source_node
+                to_node = link.target_node
 
-        # 新版本测试：link
-        for link in self._links:
-            from_node = link.source_node
-            to_node = link.target_node
-
-            context.painter.paint_curve(
-                ConnectCurve(
-                    from_node.body_shape,
-                    to_node.body_shape,
-                ),
-                QColor(204, 204, 204),
-            )
+                context.painter.paint_curve(
+                    ConnectCurve(
+                        from_node.body_shape,
+                        to_node.body_shape,
+                    ),
+                    QColor(204, 204, 204),
+                )
+        elif SETTING_SERVICE.line_style == 1:
+            for line in self._lines:
+                PainterUtils.paint_arrow(
+                    context.painter.q_painter(),
+                    line.start,
+                    line.end,
+                    QColor(204, 204, 204),
+                    4,
+                    30,
+                )
 
         context.painter.q_painter().resetTransform()
         # 画游标

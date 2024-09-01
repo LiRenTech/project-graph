@@ -4,19 +4,22 @@
 
 import traceback
 
-from PyQt5.QtCore import QPoint, QPointF, Qt
+from PyQt5.QtCore import QPoint, QPointF, QRectF, QSizeF, Qt
 from PyQt5.QtGui import (
     QColor,
     QFont,
     QFontMetrics,
+    QImage,
     QPainter,
     QPainterPath,
     QPen,
-    QImage,
+    QTextDocument,
 )
 
 from project_graph.data_struct.circle import Circle
 from project_graph.data_struct.number_vector import NumberVector
+from project_graph.data_struct.rectangle import Rectangle
+from project_graph.logging import log
 
 
 class PainterUtils:
@@ -273,8 +276,8 @@ class PainterUtils:
             # 绘制文本
             painter.drawText(left_top, text)
         except Exception as e:
-            print(f"Exception type: {type(e)}")
-            print(f"Error message: {str(e)}")
+            log(f"Exception type: {type(e)}")
+            log(f"Error message: {str(e)}")
             traceback.print_exc()
         pass
 
@@ -324,12 +327,61 @@ class PainterUtils:
             painter.drawText(left_top, text)
             return text_width, text_height
         except Exception as e:
-            print(f"Exception type: {type(e)}")
-            print(f"Error message: {str(e)}")
+            log(f"Exception type: {type(e)}")
+            log(f"Error message: {str(e)}")
             import traceback
 
             traceback.print_exc()
             return 0, 0
+
+    @staticmethod
+    def paint_document_from_left_top(
+        painter: QPainter,
+        location: NumberVector,
+        text: str,
+        text_width: float,
+        font_size: float,
+        text_color: QColor,
+        background_color: QColor,
+    ) -> Rectangle:
+        """
+        document 是可以换行的多行文本
+        text 传入的是html字符串
+        最终返回的Rectangle是文本的矩形大小，视野坐标
+        """
+        # 创建新的坐标
+
+        # 设置字体和颜色
+        font = QFont("Times New Roman", int(font_size))
+        # 使用QTextDocument绘制文本
+        document = QTextDocument()
+        text = text.replace("\n", "<br>")
+        document.setHtml(f'<body style="color: {text_color.name()};">{text}</body>')
+        document.setTextWidth(text_width)
+        h = document.size().height()
+        # 大小
+        css = f"body {{ color: {text_color.name()}; }}"
+        document.setDefaultStyleSheet(css)
+        document.setDefaultFont(font)
+
+        # 画背景  # 太奇怪了，高度不确定
+        # PainterUtils.paint_rect(
+        #     painter,
+        #     location,
+        #     text_width,
+        #     h,
+        #     background_color,
+        # )
+        location = QPointF(int(location.x), int(location.y))
+        # 调整坐标
+        painter.translate(location)
+        # 这个可能只是一个矩形遮罩
+        document.drawContents(painter, QRectF(QPointF(0, 0), QSizeF(5000, 5000)))
+        painter.translate(-location)
+
+        return Rectangle(
+            NumberVector(location.x(), location.y()), width=text_width, height=h
+        )
 
     @staticmethod
     def paint_image(

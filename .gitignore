@@ -25,15 +25,14 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+!/lib
+!/lib/*
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
-
-# 详见pyinstaller小天才打包法（docs里）
-src/run_project.py
 
 # Installer logs
 pip-log.txt
@@ -172,6 +171,3 @@ project_graph.exe
 
 # Ruff
 /.ruff_cache/
-
-# pyinstaller
-!/project-graph.spec
