@@ -759,28 +759,42 @@ class Canvas(QMainWindow):
             if a0.buttons() == Qt.MouseButton.LeftButton:
                 # 如果是左键，移动节点或者框选
                 if self.is_selecting:
+                    """
+                    框选 + 线选 组合
+                    框选选节点，线选选连接
+                    如果什么都没选到，就都能选
+                    如果一旦框选选中了节点，就只能框选了，线选功能被屏蔽
+                    (框选优先级 > 线选)
+                    """
                     # 框选
                     select_rectangle = Rectangle.from_two_points(
                         self.select_start_location.clone(), mouse_world_location
                     )
+                    is_have_selected_node = False
                     # 找到在框选范围内的所有节点
                     for node in self.node_manager.nodes:
                         node.is_selected = node.body_shape.is_collision(
                             select_rectangle
                         )
-                    self.selected_links.clear()
-                    select_line = Line(self.select_start_location, mouse_world_location)
-
-                    for link in self.node_manager.get_all_links():
-                        link_body_line = Line(
-                            link.source_node.body_shape.center,
-                            link.target_node.body_shape.center,
+                        is_have_selected_node = (
+                            is_have_selected_node or node.is_selected
                         )
-                        if link_body_line.is_intersecting(select_line):
-                            # 选择这个link
-                            self.selected_links.append(link)
-                        pass
-                    pass
+
+                    # 线选
+                    self.selected_links.clear()
+                    if not is_have_selected_node:
+                        select_line = Line(
+                            self.select_start_location, mouse_world_location
+                        )
+
+                        for link in self.node_manager.get_all_links():
+                            link_body_line = Line(
+                                link.source_node.body_shape.center,
+                                link.target_node.body_shape.center,
+                            )
+                            if link_body_line.is_intersecting(select_line):
+                                # 选择这个link
+                                self.selected_links.append(link)
                 else:
                     # 移动
 
@@ -1106,23 +1120,34 @@ class Canvas(QMainWindow):
                 2 * self.camera.current_scale,
             )
 
-        # 框选区域
+        # 框选 + 线选
         if self.is_selecting:
-            rect = Rectangle.from_two_points(
-                self.select_start_location.clone(),
-                self.last_move_location.clone(),
+            """
+                 |  有线  |  无线  |
+            有节点|  不可能|  画框
+            无节点|  画线  |  都画
+            """
+            is_have_selected_node = any(
+                node.is_selected for node in self.node_manager.nodes
             )
-            PainterUtils.paint_rect(
-                painter,
-                self.camera.location_world2view(rect.location_left_top),
-                rect.width * self.camera.current_scale,
-                rect.height * self.camera.current_scale,
-                QColor(255, 255, 255, 20),
-                QColor(255, 255, 255, 128),
-                2,
-            )
+            is_have_selected_link = len(self.selected_links) > 0
+
+            if not is_have_selected_link:
+                rect = Rectangle.from_two_points(
+                    self.select_start_location.clone(),
+                    self.last_move_location.clone(),
+                )
+                PainterUtils.paint_rect(
+                    painter,
+                    self.camera.location_world2view(rect.location_left_top),
+                    rect.width * self.camera.current_scale,
+                    rect.height * self.camera.current_scale,
+                    QColor(255, 255, 255, 20),
+                    QColor(255, 255, 255, 128),
+                    2,
+                )
             # 如果没有框选住节点，就画线
-            if not any(node.is_selected for node in self.node_manager.nodes):
+            if not is_have_selected_node:
                 # 画框选对角线
                 PainterUtils.paint_solid_line(
                     painter,
