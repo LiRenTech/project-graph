@@ -152,8 +152,6 @@ class Canvas(QMainWindow):
 
         # ====== 框选相关
         self.is_selecting = False
-        """是否正在框选"""
-        self.select_rectangle: Rectangle | None = None
         """框选的矩形"""
         self.select_start_location: NumberVector = NumberVector.zero()
         """框选的矩形的左上角位置（世界坐标）"""
@@ -691,7 +689,6 @@ class Canvas(QMainWindow):
                 # A B
                 self.is_selecting = True
                 self.select_start_location = point_world_location.clone()
-                self.select_rectangle = None
                 # 取消选择所有节点
                 for node in self.node_manager.nodes:
                     node.is_selected = False
@@ -762,20 +759,17 @@ class Canvas(QMainWindow):
                 # 如果是左键，移动节点或者框选
                 if self.is_selecting:
                     # 框选
-                    # HACK: 踩坑 location作为引用传递，导致修改了原来的对象被修改！
-                    self.select_rectangle = Rectangle(
-                        self.select_start_location.clone(),
-                        mouse_world_location.x - self.select_start_location.x,
-                        mouse_world_location.y - self.select_start_location.y,
+                    select_rectangle = Rectangle.from_two_points(
+                        self.select_start_location.clone(), mouse_world_location
                     )
                     # 找到在框选范围内的所有节点
                     for node in self.node_manager.nodes:
                         node.is_selected = node.body_shape.is_collision(
-                            self.select_rectangle
+                            select_rectangle
                         )
-                    # TODO: 矩形的对角线连线与其他连线相交
                     self.selected_lines.clear()
                     select_line = Line(self.select_start_location, mouse_world_location)
+                    # TODO: 待改成Link
                     for (
                         line,
                         start_node,
@@ -1111,18 +1105,30 @@ class Canvas(QMainWindow):
             )
 
         # 框选区域
-        if self.is_selecting and self.select_rectangle is not None:
+        if self.is_selecting:
+            rect = Rectangle.from_two_points(
+                self.select_start_location.clone(),
+                self.last_move_location.clone(),
+            )
             PainterUtils.paint_rect(
                 painter,
-                self.camera.location_world2view(
-                    self.select_rectangle.location_left_top
-                ),
-                self.select_rectangle.width * self.camera.current_scale,
-                self.select_rectangle.height * self.camera.current_scale,
+                self.camera.location_world2view(rect.location_left_top),
+                rect.width * self.camera.current_scale,
+                rect.height * self.camera.current_scale,
                 QColor(255, 255, 255, 20),
                 QColor(255, 255, 255, 128),
                 2,
             )
+            # 如果没有框选住节点，就画线
+            if not any(node.is_selected for node in self.node_manager.nodes):
+                # 画框选对角线
+                PainterUtils.paint_solid_line(
+                    painter,
+                    self.camera.location_world2view(self.select_start_location.clone()),
+                    self.camera.location_world2view(self.last_move_location.clone()),
+                    QColor(78, 201, 176, 255),
+                    4,
+                )
 
         # 当前鼠标画连接线
         if self.connect_from_nodes and self.mouse_right_location is not None:
