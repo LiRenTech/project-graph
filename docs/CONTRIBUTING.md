@@ -5,8 +5,6 @@
 
 ## 如何让源代码运行起来？
 
-### windows：
-
 先用 pip 安装 pipx
 
 ```shell
@@ -57,20 +55,6 @@ pdm run start
 ```
 
 ## 如何打包
-
-打包之前先生成生成 assets.py 文件。否则可能会报错
-
-### pdm 简单打包法
-
-详见这个仓库的 README
-
-https://github.com/frostming/pdm-packer
-
-```sh
-pdm pack --exe -m project_graph.__main__:main
-```
-
-但用上面的打包是需要自己安装项目对应版本的 python 解释器的。
 
 ### pyinstaller 打包法
 
