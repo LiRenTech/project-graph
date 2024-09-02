@@ -8,10 +8,12 @@ from PyQt5.QtWidgets import QMessageBox, QPushButton
 def show_help_panel():
     # 创建一个消息框
     msg_box = QMessageBox()
+
     if platform.system() == "Darwin":
         msg_box.setWindowIcon(QIcon("assets/favicon.ico"))
     elif platform.system() == "Windows":
         msg_box.setWindowIcon(QIcon(":/favicon.ico"))
+
     msg_box.setIcon(QMessageBox.Information)
     msg_box.setWindowTitle("project-graph 帮助说明")
     msg_box.setText(
