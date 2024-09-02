@@ -8,7 +8,6 @@ from PyQt5.QtGui import (
     QDragEnterEvent,
     QFont,
     QIcon,
-    QKeyEvent,
     QMouseEvent,
     QPaintEvent,
     QWheelEvent,
@@ -45,6 +44,7 @@ from project_graph.logging import log
 from project_graph.node_manager import NodeManager
 from project_graph.recent_file_manager import RecentFileManager
 from project_graph.settings.setting_service import SETTING_SERVICE
+from project_graph.status_text.status_text import STATUS_TEXT
 from project_graph.toolbar.toolbar import Toolbar
 from project_graph.ui.main_window.main_paint_event import main_window_paint_event
 from project_graph.ui.panel_about import show_about_panel
@@ -52,14 +52,7 @@ from project_graph.ui.panel_help import show_help_panel
 from project_graph.ui.panel_physics_settings import show_physics_settings
 from project_graph.ui.panel_visual_settings import show_visual_settings
 
-from . import main_drag_file_events
-
-STATUS_TEXT = {
-    "normal": "左键 选择节点/框选节点 | 左键拖动 移动节点 | 双击左键 创建节点 | 右键拖动 切割删除节点 | 中键拖动 移动视角 | WASD 移动视角 | 鼠标滚轮 缩放 | [] 缩放 | ↑↓←→ 移动游标",
-    "select": "左键拖动 移动节点 | 双击左键 编辑文字 | Ctrl+双击左键 编辑注释 | 双击右键 修改颜色 | 右键拖动 连接节点",
-    "cursor": "Tab 创建节点 | Enter 编辑文字 | ↑↓←→ 移动游标",
-    "grow": "Tab 创建节点 | ↑↓ 修改方向",
-}
+from . import main_drag_file_events, main_key_events
 
 
 class Canvas(QMainWindow):
@@ -780,106 +773,11 @@ class Canvas(QMainWindow):
         # 你可以在这里添加更多的逻辑来响应滚轮事件
         a0.accept()
 
-    # region 键盘事件
+    def keyPressEvent(self, a0: main_key_events.QKeyEvent | None) -> None:
+        main_key_events.keyPressEvent(self, a0)
 
-    def keyPressEvent(self, a0: QKeyEvent | None):
-        assert a0 is not None
-        key: int = a0.key()
-        self.pressing_keys.add(key)
-        self.status_bar.showMessage(STATUS_TEXT["normal"])
+    def keyReleaseEvent(self, a0: main_key_events.QKeyEvent | None) -> None:
+        main_key_events.keyReleaseEvent(self, a0)
 
-        if key == Qt.Key.Key_A:
-            self.camera.press_move(NumberVector(-1, 0))
-        elif key == Qt.Key.Key_S:
-            self.camera.press_move(NumberVector(0, 1))
-        elif key == Qt.Key.Key_D:
-            self.camera.press_move(NumberVector(1, 0))
-        elif key == Qt.Key.Key_W:
-            self.camera.press_move(NumberVector(0, -1))
-        elif key == Qt.Key.Key_BracketLeft:
-            # `[` 键来缩小视野
-            for _ in range(5):
-                self.camera.zoom_out()
-        elif key == Qt.Key.Key_BracketRight:
-            # `]` 键来放大视野
-            for _ in range(5):
-                self.camera.zoom_in()
-        elif key == 16777220:
-            # Qt.Key.Key_Enter 这里写这个无效
-            # 回车键，如果当前有正在选中的节点，则进入编辑模式
-            if self.node_manager.cursor_node is not None:
-                self.status_bar.showMessage(STATUS_TEXT["cursor"])
-                # 在节点上左键是编辑文字
-                text, ok = QInputDialog.getText(
-                    self,
-                    "编辑节点文字",
-                    "输入新的文字:",
-                    text=self.node_manager.cursor_node.inner_text,
-                )
-                if ok:
-                    self.node_manager.cursor_node.inner_text = text
-                    self.node_manager.update_lines()
-                return
-            elif len(self.selected_links) > 0:
-                # 统一更改这些线的名称
-                new_name, ok = QInputDialog.getText(
-                    self, "更改线名称", "输入新的名称:", text="?"
-                )
-                if ok:
-                    for link in self.selected_links:
-                        link.inner_text = new_name
-                    self.selected_links.clear()
-
-        elif key == Qt.Key.Key_Left:
-            self.node_manager.move_cursor("left")
-            self.node_manager.grow_node_cancel()
-            self.status_bar.showMessage(STATUS_TEXT["cursor"])
-        elif key == Qt.Key.Key_Right:
-            self.node_manager.move_cursor("right")
-            self.node_manager.grow_node_cancel()
-            self.status_bar.showMessage(STATUS_TEXT["cursor"])
-        elif key == Qt.Key.Key_Up:
-            if self.node_manager.is_grow_node_prepared():
-                self.node_manager.rotate_grow_direction(False)
-                self.status_bar.showMessage(STATUS_TEXT["grow"])
-                return
-            self.node_manager.move_cursor("up")
-            self.node_manager.grow_node_cancel()
-            self.status_bar.showMessage(STATUS_TEXT["cursor"])
-        elif key == Qt.Key.Key_Down:
-            if self.node_manager.is_grow_node_prepared():
-                self.node_manager.rotate_grow_direction(True)
-                self.status_bar.showMessage(STATUS_TEXT["grow"])
-                return
-            self.node_manager.move_cursor("down")
-            self.node_manager.grow_node_cancel()
-            self.status_bar.showMessage(STATUS_TEXT["cursor"])
-        elif key == Qt.Key.Key_Tab:
-            if self.node_manager.is_grow_node_prepared():
-                self.node_manager.grow_node_confirm()
-                self.status_bar.showMessage(STATUS_TEXT["cursor"])
-            else:
-                self.node_manager.grow_node()
-                self.status_bar.showMessage(STATUS_TEXT["grow"])
-        elif key == Qt.Key.Key_Escape:
-            if self.node_manager.is_grow_node_prepared():
-                self.node_manager.grow_node_cancel()
-
-    def keyReleaseEvent(self, a0: QKeyEvent | None):
-        assert a0 is not None
-        key = a0.key()
-        if key in self.pressing_keys:
-            self.pressing_keys.remove(key)
-
-        if key == Qt.Key.Key_A:
-            self.camera.release_move(NumberVector(-1, 0))
-        elif key == Qt.Key.Key_S:
-            self.camera.release_move(NumberVector(0, 1))
-        elif key == Qt.Key.Key_D:
-            self.camera.release_move(NumberVector(1, 0))
-        elif key == Qt.Key.Key_W:
-            self.camera.release_move(NumberVector(0, -1))
-
-    # region 绘制
     def paintEvent(self, a0: QPaintEvent | None):
         main_window_paint_event(self, a0)
