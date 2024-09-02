@@ -177,6 +177,7 @@ class NodeManager:
                         "height": h,
                     },
                     inner_text: "text",
+                    details: "",
                     uuid: "(uuid str)",
                     children: [ "(uuid str)" ]
                 },
@@ -404,11 +405,11 @@ class NodeManager:
         return [link for link in self._links]
 
     def update_links(self):
-        links = []
+        s = set()
         for node in self.nodes:
             for child in node.children:
-                links.append(NodeLink(node, child))
-        self._lines = links
+                s.add(NodeLink(node, child))
+        self._links = s
 
     def get_all_lines_and_node(self) -> list[tuple[Line, EntityNode, EntityNode]]:
         lines = []

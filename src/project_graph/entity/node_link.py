@@ -22,3 +22,6 @@ class NodeLink:
             self.source_node == other.source_node
             and self.target_node == other.target_node
         )
+
+    def __repr__(self) -> str:
+        return f"NodeLink({self.source_node}, {self.target_node})"
