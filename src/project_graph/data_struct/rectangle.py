@@ -72,6 +72,15 @@ class Rectangle:
         """通过四条边来创建矩形"""
         return Rectangle(NumberVector(left, top), right - left, bottom - top)
 
+    @staticmethod
+    def from_two_points(p1: NumberVector, p2: NumberVector) -> "Rectangle":
+        """通过两个点来创建矩形，可以用于框选生成矩形"""
+        left = min(p1.x, p2.x)
+        top = min(p1.y, p2.y)
+        right = max(p1.x, p2.x)
+        bottom = max(p1.y, p2.y)
+        return Rectangle(NumberVector(left, top), right - left, bottom - top)
+
     def get_fore_points(self) -> list[NumberVector]:
         return [
             NumberVector(self.location_left_top.x, self.location_left_top.y),
@@ -218,6 +227,25 @@ class Rectangle:
             return right_intersection
 
         return self.center
+
+    def get_normal_from_center_to_edge(self, point: NumberVector) -> NumberVector:
+        """如果point在这个矩形的四条边的某一条上，则返回从中心指向该边中点的单位向量。否则返回0向量"""
+        if (
+            point.x < self.left()
+            or point.x > self.right()
+            or point.y < self.top()
+            or point.y > self.bottom()
+        ):
+            return NumberVector.zero()
+        if point.x == self.left():
+            return NumberVector(-1, 0)
+        elif point.x == self.right():
+            return NumberVector(1, 0)
+        elif point.y == self.top():
+            return NumberVector(0, -1)
+        elif point.y == self.bottom():
+            return NumberVector(0, 1)
+        return NumberVector.zero()
 
 
 # test

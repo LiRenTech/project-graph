@@ -17,6 +17,11 @@ class Line:
     def length(self) -> float:
         return (self.end - self.start).magnitude()
 
+    def midpoint(self) -> NumberVector:
+        return NumberVector(
+            (self.start.x + self.end.x) / 2, (self.start.y + self.end.y) / 2
+        )
+
     def direction(self) -> NumberVector:
         return self.end - self.start
 

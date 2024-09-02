@@ -14,6 +14,9 @@ _APP_NAME = "project-graph"
 _APP_AUTHOR = "LiRen"
 
 DATA_DIR = user_data_dir(_APP_NAME, _APP_AUTHOR)
+
 log(DATA_DIR)
 
-log(Path(DATA_DIR) / "test.txt")
+# 确保目录存在
+if not Path(DATA_DIR).exists():
+    Path(DATA_DIR).mkdir(parents=True, exist_ok=True)
