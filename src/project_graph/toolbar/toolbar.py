@@ -118,7 +118,11 @@ class Toolbar(Paintable):
             return False
 
         index = int(
-            (view_location.x - self.body_shape.location_left_top.x) / Tool.VIEW_SIZE
+            (
+                view_location.x
+                - camera.location_world2view(self.body_shape.location_left_top).x
+            )
+            / Tool.VIEW_SIZE
         )
         if 0 <= index < len(self.tool_list):
             log(f"click tool {index}")
