@@ -44,7 +44,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
     # 框选 + 线选
     if self.is_selecting:
         """
-              |  有线       |  无线  |
+             |  有线       |  无线  |
         有节点|  不可能      |  画框
         无节点|  画线+浅框   |  都画
         """
@@ -129,11 +129,11 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
 
     self.node_manager.paint(paint_context)
     # 所有要被切断的线
-    for line, _, _ in self.warning_lines:
+    for link in self.warning_links:
         PainterUtils.paint_solid_line(
             painter,
-            self.camera.location_world2view(line.start),
-            self.camera.location_world2view(line.end),
+            self.camera.location_world2view(link.source_node.body_shape.center),
+            self.camera.location_world2view(link.target_node.body_shape.center),
             QColor(255, 0, 0, 128),
             int(10 * self.camera.current_scale),
         )

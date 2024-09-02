@@ -214,21 +214,18 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
 
         elif a0.buttons() == Qt.MouseButton.RightButton:
             self.mouse_right_location = mouse_world_location
-            self.warning_lines.clear()
+            self.warning_links.clear()
             self.warning_nodes.clear()
             if self.is_cutting:
                 cutting_line = Line(
                     self.mouse_right_start_location, self.mouse_right_location
                 )
-                # 查看切割线是否和其他连线相交
-                for (
-                    line,
-                    start_node,
-                    end_node,
-                ) in self.node_manager.get_all_lines_and_node():
-                    if line.is_intersecting(cutting_line):
-                        # 准备要切断这个线，先进行标注
-                        self.warning_lines.append((line, start_node, end_node))
+
+                for link in self.node_manager.get_all_links():
+                    if link.body_shape.is_intersecting(cutting_line):
+                        # 准备要切断这个link，先进行标注
+                        self.warning_links.append(link)
+
                 # 查看切割线是否和其他节点相交
                 for node in self.node_manager.nodes:
                     if node == self.connect_from_nodes:
@@ -312,9 +309,10 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
 
         if self.is_cutting:
             # 切断所有准备切断的线
-            for line, start_node, end_node in self.warning_lines:
-                self.node_manager.disconnect_node(start_node, end_node)
-            self.warning_lines.clear()
+            for link in self.warning_links:
+                self.node_manager.disconnect_node(link.source_node, link.target_node)
+
+            self.warning_links.clear()
             self.selected_links.clear()
             # 删除所有准备删除的节点
             for node in self.warning_nodes:
@@ -374,7 +372,6 @@ def mouseDoubleClickEvent(self: "Canvas", event: QMouseEvent | None):
                 )
                 if ok:
                     select_node.inner_text = text
-                    self.node_manager.update_lines()
 
     elif event.button() == Qt.MouseButton.RightButton:
         if select_node is not None:

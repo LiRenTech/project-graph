@@ -24,10 +24,7 @@ class NodeManager:
         self.nodes: list[EntityNode] = []
 
         self._links: set[NodeLink] = set()
-        """准备替代lines"""
-
-        self._lines: list[Line] = []
-        """lines只用于绘制的时候给一个缓存，不参与逻辑运算，只在改变的时候重新计算"""
+        """连接"""
 
         self.cursor_node: EntityNode | None = None
         """有一个游标在节点群上移动，这个游标通过上下左右或者点击更改附着的节点"""
@@ -268,7 +265,6 @@ class NodeManager:
                     continue
                 node.add_child(child)
 
-        self.update_lines()
         self.update_links()
         pass
 
@@ -279,7 +275,6 @@ class NodeManager:
         # 先清空原有节点
         self.nodes.clear()
         self.add_from_dict(data, NumberVector(0, 0), refresh_uuid=False)
-        self.update_lines()
         self.update_links()
 
     def get_node_by_uuid(self, uuid: str) -> EntityNode | None:
@@ -294,14 +289,12 @@ class NodeManager:
         """
         node.move(d_location)
         self.collide_dfs(node)
-        self.update_lines()
 
     def move_node_with_children(self, node: EntityNode, d_location: NumberVector):
         """
         移动一个节点（带动子节点的整体移动）
         """
         self._move_node_with_children_dfs(node, d_location, [node.uuid])
-        self.update_lines()
 
     def _move_node_with_children_dfs(
         self, node: EntityNode, d_location: NumberVector, visited_uuids: list[str]
@@ -343,7 +336,6 @@ class NodeManager:
         for father_node in self.nodes:
             if node in father_node.children:
                 father_node.children.remove(node)
-        self.update_lines()
         # 删除所有相关link
         prepare_delete_links = []
         for link in self._links:
@@ -368,14 +360,12 @@ class NodeManager:
                     prepare_delete_links.append(link)
             for link in prepare_delete_links:
                 self._links.remove(link)
-        self.update_lines()
 
         # self.update_links()
 
     def connect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
             res = from_node.add_child(to_node)
-            self.update_lines()
 
             new_link = NodeLink(from_node, to_node)
             self._links.add(new_link)
@@ -386,31 +376,12 @@ class NodeManager:
     def disconnect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
             res = from_node.remove_child(to_node)
-            self.update_lines()
 
             link = NodeLink(from_node, to_node)
             if link in self._links:
                 self._links.remove(link)
             return res
         return False
-
-    def _get_all_lines(self) -> list[Line]:
-        lines = []
-        for node in self.nodes:
-            for child in node.children:
-                connect_line = Line(node.body_shape.center, child.body_shape.center)
-                from_point = node.body_shape.get_line_intersection_point(connect_line)
-                to_point = child.body_shape.get_line_intersection_point(connect_line)
-
-                lines.append(Line(from_point, to_point))
-        return lines
-
-    def update_lines(self):
-        """
-        注意：此方法不要在外界频繁调用（尤其是循环渲染中），否则可能很卡
-        建议只在必要操作之后调用一下。
-        """
-        self._lines = self._get_all_lines()
 
     def get_all_links(self) -> list[NodeLink]:
         return [link for link in self._links]
@@ -425,24 +396,12 @@ class NodeManager:
                 s.add(NodeLink(node, child))
         self._links = s
 
-    def get_all_lines_and_node(self) -> list[tuple[Line, EntityNode, EntityNode]]:
-        lines = []
-        for node in self.nodes:
-            for child in node.children:
-                connect_line = Line(node.body_shape.center, child.body_shape.center)
-                from_point = node.body_shape.get_line_intersection_point(connect_line)
-                to_point = child.body_shape.get_line_intersection_point(connect_line)
-
-                lines.append((Line(from_point, to_point), node, child))
-        return lines
-
     def rotate_node(self, node: EntityNode, degrees: float):
         """
         按照一定角度旋转节点，旋转的是连接这个节点的所有子节点
         也就是如果这个节点没有子节点，那么看上去没有效果
         """
         self._rotate_node_dfs(node, node, degrees, [])
-        self.update_lines()
 
     def _rotate_node_dfs(
         self,
