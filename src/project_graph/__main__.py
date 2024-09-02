@@ -77,7 +77,7 @@ def main():
     app.setWindowIcon(QIcon("./assets/favicon.ico"))
 
     # 只在这里导入主窗口，防止最开始导入，一些东西没初始化好
-    from project_graph.ui.main_window import Canvas
+    from project_graph.ui.main_window.main_window import Canvas
 
     canvas = Canvas()
     canvas.show()

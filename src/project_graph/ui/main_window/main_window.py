@@ -1147,18 +1147,4 @@ class Canvas(QMainWindow):
             painter.setBrush(QColor(0, 0, 0, 128))  # 半透明的黑色
             painter.drawRect(self.rect())
 
-        self.paint_test(painter)
-        pass
-
-    def paint_test(self, painter: QPainter):
-        """测试渲染"""
-        # PainterUtils.paint_document_from_left_top(
-        #     painter,
-        #     self.camera.location_world2view(NumberVector(100, 100)),
-        #     "测试文本1111\n测试文本1111\n测试文本1111\n测试文本1111\n测试文本1111\n测试文本1111\n",
-        #     400 * self.camera.current_scale,
-        #     15 * self.camera.current_scale,
-        #     QColor(255, 255, 255),
-        #     QColor(0, 0, 0, 128),
-        # )
         pass
