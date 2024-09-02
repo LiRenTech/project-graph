@@ -4,7 +4,15 @@ import subprocess
 from pathlib import Path
 
 from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QFont, QIcon, QKeyEvent, QMouseEvent, QPaintEvent, QWheelEvent
+from PyQt5.QtGui import (
+    QDragEnterEvent,
+    QFont,
+    QIcon,
+    QKeyEvent,
+    QMouseEvent,
+    QPaintEvent,
+    QWheelEvent,
+)
 from PyQt5.QtWidgets import (
     QAction,
     QApplication,
@@ -15,7 +23,6 @@ from PyQt5.QtWidgets import (
     QInputDialog,
     QLabel,
     QMainWindow,
-    QMessageBox,
     QPushButton,
     QVBoxLayout,
 )
@@ -39,12 +46,13 @@ from project_graph.node_manager import NodeManager
 from project_graph.recent_file_manager import RecentFileManager
 from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.toolbar.toolbar import Toolbar
-from project_graph.tools.file_tools import read_file
 from project_graph.ui.main_window.main_paint_event import main_window_paint_event
 from project_graph.ui.panel_about import show_about_panel
 from project_graph.ui.panel_help import show_help_panel
 from project_graph.ui.panel_physics_settings import show_physics_settings
 from project_graph.ui.panel_visual_settings import show_visual_settings
+
+from . import main_drag_file_events
 
 STATUS_TEXT = {
     "normal": "左键 选择节点/框选节点 | 左键拖动 移动节点 | 双击左键 创建节点 | 右键拖动 切割删除节点 | 中键拖动 移动视角 | WASD 移动视角 | 鼠标滚轮 缩放 | [] 缩放 | ↑↓←→ 移动游标",
@@ -337,61 +345,21 @@ class Canvas(QMainWindow):
         assert clip is not None
         clip.setText(str(self.camera.location))
 
-    def dragEnterEvent(self, event):
-        """从外部拖拽文件进入窗口"""
-        self.is_dragging_file = True
-        self.is_dragging_file_valid = False
+    def dragEnterEvent(self, a0: QDragEnterEvent | None):
+        assert a0 is not None
+        main_drag_file_events.drag_enter_event(self, a0)
 
-        file = event.mimeData().urls()[0].toLocalFile()
-        if file.endswith(".json"):
-            self.is_dragging_file_valid = True
-        event.acceptProposedAction()
+    def dragMoveEvent(self, a0):
+        assert a0 is not None
+        main_drag_file_events.drag_move_event(self, a0)
 
-    def dragMoveEvent(self, event):
-        view_location = NumberVector(event.pos().x(), event.pos().y())
-        world_location = self.camera.location_view2world(view_location)
-        self.dragging_file_location = world_location.clone()
+    def dragLeaveEvent(self, a0):
+        assert a0 is not None
+        main_drag_file_events.drag_leave_event(self, a0)
 
-    def dragLeaveEvent(self, event):
-        self.is_dragging_file = False
-        self.is_dragging_file_valid = False
-
-    def dropEvent(self, event):
-        """从外部拖拽文件进入窗口并松开"""
-        log("dropEvent", event)
-        self.is_dragging_file = False
-        self.is_dragging_file_valid = False
-
-        for url in event.mimeData().urls():
-            log(url)
-            file_path: str = url.toLocalFile()
-            log(file_path)
-            if file_path.endswith(".json"):
-                try:
-                    load_data = json.loads(read_file(Path(file_path)))
-
-                    if "nodes" not in load_data:
-                        # 不是合法的节点图文件
-                        QMessageBox.warning(
-                            self,
-                            "错误",
-                            f"{file_path} 文件内容不正确，无法打开。",
-                            QMessageBox.Ok,
-                        )
-                        return
-                    self.node_manager.add_from_dict(
-                        load_data, self.dragging_file_location
-                    )
-                    event.acceptProposedAction()
-                    break
-                except Exception as e:
-                    log(e)
-                    QMessageBox.warning(
-                        self,
-                        "错误",
-                        f"{file_path} 文件内容不正确，无法打开。",
-                        QMessageBox.Ok,
-                    )
+    def dropEvent(self, a0):
+        assert a0 is not None
+        main_drag_file_events.drop_event(self, a0)
 
     def _move_window_to_center(self):
         # 获取屏幕可用空间（macOS上会有titlebar占据一部分空间）
