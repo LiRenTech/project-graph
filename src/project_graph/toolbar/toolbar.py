@@ -52,6 +52,8 @@ class Toolbar(Paintable):
 
         self.tool_list: List[Tool] = [
             Tool("icon_delete.png"),
+            Tool("icon_delete.png"),
+            Tool("icon_delete.png"),
         ]
         """工具列表"""
 
@@ -91,6 +93,11 @@ class Toolbar(Paintable):
                     self.IMAGE_SIZE,
                     self.IMAGE_SIZE,
                 )
+            # 调试
+            # PainterUtils.paint_location_sign(
+            #     context.painter.q_painter(),
+            #     context.camera.location_world2view(self.body_shape.location_left_top),
+            # )
 
     def get_components(self) -> List[Paintable]:
         return super().get_components()
@@ -113,10 +120,11 @@ class Toolbar(Paintable):
         index = int(
             (view_location.x - self.body_shape.location_left_top.x) / Tool.VIEW_SIZE
         )
-        log(f"click tool {index}")
-
         if 0 <= index < len(self.tool_list):
+            log(f"click tool {index}")
             self.tool_list[index].bind_event_function()
             return True
+        else:
+            log(f"index out of range {index}")
 
         return False

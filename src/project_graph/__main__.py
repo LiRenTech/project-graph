@@ -920,11 +920,15 @@ class Canvas(QMainWindow):
                 self.toolbar.nodes = [
                     node for node in self.node_manager.nodes if node.is_selected
                 ]
-                # TODO:
-                # 设定框的位置为鼠标释放位置并往右下角偏移一点点
-                self.toolbar.body_shape.location_left_top = (
-                    mouse_view_location + NumberVector(20, 20)
-                )
+                # 没有节点被选中就不显示
+                if len(self.toolbar.nodes) > 0:
+                    bounding_rectangle = Rectangle.get_bounding_rectangle(
+                        [node.body_shape for node in self.toolbar.nodes]
+                    )
+                    # toolbar 位置为所有选中的节点的外接矩形的右下角
+                    self.toolbar.body_shape.location_left_top = (
+                        bounding_rectangle.right_bottom + NumberVector(50, 50)
+                    )
             else:
                 # 隐藏toolbar，直接让其移动到视野之外解决
                 self.toolbar.body_shape.location_left_top = NumberVector(
