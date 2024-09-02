@@ -1,3 +1,4 @@
+from project_graph.data_struct.line import Line
 from project_graph.entity.entity_node import EntityNode
 
 
@@ -25,3 +26,17 @@ class NodeLink:
 
     def __repr__(self) -> str:
         return f"NodeLink({self.source_node}, {self.target_node})"
+
+    @property
+    def body_shape(self) -> Line:
+        """临时生成，返回一个身体形状线段"""
+        return Line(
+            self.source_node.body_shape.center, self.target_node.body_shape.center
+        )
+
+    def dump(self) -> dict:
+        return {
+            "source_node": self.source_node.uuid,
+            "target_node": self.target_node.uuid,
+            "inner_text": self.inner_text,
+        }

@@ -51,7 +51,6 @@ def keyPressEvent(self: "Canvas", a0: QKeyEvent | None):
             )
             if ok:
                 self.node_manager.cursor_node.inner_text = text
-                self.node_manager.update_lines()
             return
         elif len(self.selected_links) > 0:
             # 统一更改这些线的名称

@@ -26,7 +26,6 @@ from PyQt5.QtWidgets import (
 
 from project_graph.app_dir import DATA_DIR
 from project_graph.camera import Camera
-from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.effect.effect_manager import EffectManager
 from project_graph.entity.entity_node import EntityNode
@@ -97,9 +96,9 @@ class Canvas(QMainWindow):
         """右键开始拖拽前按下的位置"""
 
         self.is_cutting = False
-        """当前是否正在切断线"""
-        self.warning_lines: list[tuple[Line, EntityNode, EntityNode]] = []
         """准备要被切断的线"""
+        self.warning_links: list[NodeLink] = []
+        """准备要被切断的连接"""
         self.warning_nodes: list[EntityNode] = []
         """准备要删除的节点"""
 
