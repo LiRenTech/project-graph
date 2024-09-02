@@ -19,7 +19,7 @@ def keyPressEvent(self: "Canvas", a0: QKeyEvent | None):
     assert a0 is not None
     key: int = a0.key()
     self.pressing_keys.add(key)
-    self.status_bar.showMessage(STATUS_TEXT["normal"])
+    self.status_bar.showMessage(STATUS_TEXT["keyboard"])
 
     if key == Qt.Key.Key_A:
         self.camera.press_move(NumberVector(-1, 0))

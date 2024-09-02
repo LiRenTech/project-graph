@@ -28,6 +28,8 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
     assert a0 is not None
     point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
 
+    self.status_bar.showMessage(STATUS_TEXT["normal"])
+
     is_press_toolbar = self.toolbar.on_click(self.camera, point_view_location)
     if is_press_toolbar:
         log("按到了toolbar")
