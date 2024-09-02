@@ -61,6 +61,7 @@ from project_graph.recent_file_manager import RecentFileManager
 from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.toolbar.toolbar import Toolbar
 from project_graph.tools.file_tools import read_file
+from project_graph.ui.panel_about import show_about_panel
 from project_graph.ui.panel_help import show_help_panel
 
 # 导入资源文件
@@ -235,7 +236,7 @@ class Canvas(QMainWindow):
         help_action.triggered.connect(show_help_panel)
         # 关于
         about_action = QAction("关于", self)
-        about_action.triggered.connect(self.on_about)
+        about_action.triggered.connect(show_about_panel)
         help_menu.addAction(help_action)
         help_menu.addAction(about_action)
 
@@ -574,27 +575,6 @@ class Canvas(QMainWindow):
                         f"{file_path} 文件内容不正确，无法打开。",
                         QMessageBox.Ok,
                     )
-
-    @staticmethod
-    def on_about():
-        # 创建一个消息框
-        msg_box = QMessageBox()
-        if platform.system() == "Darwin":
-            msg_box.setWindowIcon(QIcon("assets/favicon.ico"))
-        elif platform.system() == "Windows":
-            msg_box.setWindowIcon(QIcon(":/favicon.ico"))
-        msg_box.setIcon(QMessageBox.Information)
-        msg_box.setWindowTitle("project-graph 关于")
-        msg_box.setText(
-            "\n\n".join(
-                [
-                    "这是一个快速绘制节点图的工具，可以用于项目拓扑图绘制、快速头脑风暴草稿。",
-                    "Xmind只能用来绘制树形结构图、FigJamBoard可以用来绘制但网页打开有点慢了",
-                    "所以做了这个小软件",
-                ]
-            )
-        )
-        msg_box.exec_()
 
     def _move_window_to_center(self):
         # 获取屏幕可用空间（macOS上会有titlebar占据一部分空间）
