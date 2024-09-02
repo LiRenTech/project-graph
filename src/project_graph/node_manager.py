@@ -181,10 +181,20 @@ class NodeManager:
                     uuid: "(uuid str)",
                     children: [ "(uuid str)" ]
                 },
+            ],
+            "links": [
+                {
+                    "source_node": "(uuid str)",
+                    "target_node": "(uuid str)",
+                    "inner_text": "...",
+                }
             ]
         }
         """
-        res = {"nodes": [node.dump() for node in self.nodes]}
+        res = {
+            "nodes": [node.dump() for node in self.nodes],
+            # "links": [link.dump() for link in self._links],
+        }
 
         return res
 
@@ -405,6 +415,9 @@ class NodeManager:
         return [link for link in self._links]
 
     def update_links(self):
+        """
+        根据nodes的表结构重新生成links
+        """
         s = set()
         for node in self.nodes:
             for child in node.children:

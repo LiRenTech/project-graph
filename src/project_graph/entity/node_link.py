@@ -25,3 +25,10 @@ class NodeLink:
 
     def __repr__(self) -> str:
         return f"NodeLink({self.source_node}, {self.target_node})"
+
+    def dump(self) -> dict:
+        return {
+            "source_node": self.source_node.uuid,
+            "target_node": self.target_node.uuid,
+            "inner_text": self.inner_text,
+        }
