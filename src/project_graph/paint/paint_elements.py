@@ -40,11 +40,11 @@ def paint_details_data(paint: QPainter, camera: Camera, datas: list[str]):
     :param datas:
     :return:
     """
-    start_y = 150
+    start_y = 30
     for i, data in enumerate(datas):
         PainterUtils.paint_text_from_top_left(
             paint,
-            NumberVector(20, start_y + i * 50),
+            NumberVector(20, start_y + (i - 1) * 50),
             data,
             12,
             QColor(255, 255, 255, 100),

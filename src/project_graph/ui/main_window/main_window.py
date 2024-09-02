@@ -228,8 +228,11 @@ class Canvas(QMainWindow):
         status_bar = self.statusBar()
         assert status_bar is not None
         self.status_bar = status_bar
-        # 字体大小
-        status_bar.setFont(QFont(None, 16))
+        # 字体
+        status_font = QFont()
+        status_font.setPointSize(12)
+        status_font.setStyleHint(QFont.StyleHint.System)
+        status_bar.setFont(status_font)
         status_bar.showMessage(STATUS_TEXT["normal"])
 
     def init_toolbar(self):
