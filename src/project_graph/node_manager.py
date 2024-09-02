@@ -1,6 +1,7 @@
 from PyQt5.QtGui import QColor
 
 from project_graph.data_struct.circle import Circle
+from project_graph.data_struct.connect_straight_line import ConnectStraightLine
 from project_graph.data_struct.curve import ConnectCurve
 from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
@@ -495,14 +496,16 @@ class NodeManager:
                     QColor(204, 204, 204),
                 )
         elif SETTING_SERVICE.line_style == 1:
-            for line in self._lines:
-                PainterUtils.paint_arrow(
-                    context.painter.q_painter(),
-                    line.start,
-                    line.end,
+            for link in self._links:
+                from_node = link.source_node
+                to_node = link.target_node
+
+                context.painter.paint_straight_line(
+                    ConnectStraightLine(
+                        from_node.body_shape,
+                        to_node.body_shape,
+                    ),
                     QColor(204, 204, 204),
-                    4,
-                    30,
                 )
         # 画连线上的文字
         for link in self._links:

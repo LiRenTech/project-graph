@@ -1,6 +1,7 @@
 from PyQt5.QtCore import QPointF, QRectF
 from PyQt5.QtGui import QBrush, QColor, QPainter, QPen
 
+from project_graph.data_struct.connect_straight_line import ConnectStraightLine
 from project_graph.data_struct.curve import ConnectCurve
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.data_struct.text import Text
@@ -58,4 +59,14 @@ class ProjectGraphPainter:
         self._painter.drawPath(curve.path)
         self._painter.setBrush(color)
         self._painter.drawPath(curve.arrow.path)
+        self._painter.setRenderHint(QPainter.Antialiasing, False)
+
+    def paint_straight_line(self, straight_line: ConnectStraightLine, color: QColor):
+        pen = QPen(color, 2)  # 创建QPen并设置颜色和宽度
+        self._painter.setRenderHint(QPainter.Antialiasing)
+        self._painter.setPen(pen)
+        self._painter.setBrush(QBrush())
+        self._painter.drawPath(straight_line.path)
+        self._painter.setBrush(color)
+        self._painter.drawPath(straight_line.arrow.path)
         self._painter.setRenderHint(QPainter.Antialiasing, False)
