@@ -8,10 +8,9 @@ from pathlib import Path
 from types import TracebackType
 
 import PyQt5
-from PyQt5.QtCore import Qt, QTimer, QUrl
+from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import (
     QColor,
-    QDesktopServices,
     QFont,
     QIcon,
     QKeyEvent,
@@ -62,6 +61,7 @@ from project_graph.recent_file_manager import RecentFileManager
 from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.toolbar.toolbar import Toolbar
 from project_graph.tools.file_tools import read_file
+from project_graph.ui.panel_help import show_help_panel
 
 # 导入资源文件
 try:
@@ -232,7 +232,7 @@ class Canvas(QMainWindow):
         assert help_menu is not None
         # 帮助说明
         help_action = QAction("帮助说明", self)
-        help_action.triggered.connect(self.on_help)
+        help_action.triggered.connect(show_help_panel)
         # 关于
         about_action = QAction("关于", self)
         about_action.triggered.connect(self.on_about)
@@ -595,53 +595,6 @@ class Canvas(QMainWindow):
             )
         )
         msg_box.exec_()
-        pass
-
-    @staticmethod
-    def on_help():
-        # 创建一个消息框
-        msg_box = QMessageBox()
-        if platform.system() == "Darwin":
-            msg_box.setWindowIcon(QIcon("assets/favicon.ico"))
-        elif platform.system() == "Windows":
-            msg_box.setWindowIcon(QIcon(":/favicon.ico"))
-        msg_box.setIcon(QMessageBox.Information)
-        msg_box.setWindowTitle("project-graph 帮助说明")
-        msg_box.setText(
-            "\n\n".join(
-                [
-                    "1. 创建节点：双击空白部分",
-                    "2. 编辑节点：双击节点，出现输入框，按住Ctrl键可以编辑节点详细信息",
-                    "3. 移动节点：左键拖拽一个节点，但按住Ctrl键可以带动所有子节点拖动整个树",
-                    "4. 连接节点：按住右键从一个节点滑动到另一个节点",
-                    "5. 切断连线：在空白地方按住右键划出一道切割线",
-                    "6. 删除节点：同样使用切割线切节点来删除",
-                    "7. 移动视野：W A S D 键 ，或者鼠标中键拖拽",
-                    "8. 缩放视野：鼠标滚轮",
-                    "9. 旋转节点：对准一个节点旋转滚轮",
-                ]
-            )
-        )
-        # github按钮
-        button_github = QPushButton("Github 项目地址")
-        msg_box.addButton(button_github, QMessageBox.ActionRole)
-        button_github.clicked.connect(Canvas.__open_github)
-        msg_box.setStandardButtons(QMessageBox.Ok)
-        # b站按钮
-        button_bilibili = QPushButton("bilibili 视频介绍")
-        msg_box.addButton(button_bilibili, QMessageBox.ActionRole)
-        button_bilibili.clicked.connect(Canvas.__open_bilibili)
-
-        # 显示消息框
-        msg_box.exec_()
-
-    @staticmethod
-    def __open_github():
-        QDesktopServices.openUrl(QUrl("https://github.com/LiRenTech/project-graph-qt"))
-
-    @staticmethod
-    def __open_bilibili():
-        QDesktopServices.openUrl(QUrl("https://www.bilibili.com/video/BV1hmHKeDE9D"))
 
     def _move_window_to_center(self):
         # 获取屏幕可用空间（macOS上会有titlebar占据一部分空间）
