@@ -1,3 +1,7 @@
+"""
+和鼠标事件相关的函数
+"""
+
 import typing
 
 from PyQt5.QtCore import Qt

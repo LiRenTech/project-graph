@@ -1,3 +1,7 @@
+"""
+渲染主窗口的事件
+"""
+
 import typing
 
 from PyQt5.QtGui import QColor, QPainter, QPaintEvent
