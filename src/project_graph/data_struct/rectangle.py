@@ -210,6 +210,7 @@ class Rectangle:
     def get_line_intersection_point(self, line: Line) -> NumberVector:
         """
         返回一个线段和这个矩形的交点，如果没有交点，就返回这个矩形的中心点
+        请确保线段和矩形只有一个交点，出现两个交点的情况还未测试
         :param line:
         :return:
         """
