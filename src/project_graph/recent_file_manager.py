@@ -57,10 +57,19 @@ class RecentFileManager:
             with open(self.recent_files_list_path, "w", encoding="utf-8") as f:
                 f.write(init_content)
         else:
+            list_dict = []
             with open(self.recent_files_list_path, "r", encoding="utf-8") as f:
-                self._recent_files = [
-                    RecentFile.load_from_dict(item) for item in json.load(f)
-                ]
+                list_dict = json.load(f)
+
+            # 检测和过滤 list_dict，看看是否路径都是有效的存在的
+
+            filtered_list_dict = filter(
+                lambda x: Path(x["file_path"]).exists(), list_dict
+            )
+
+            self._recent_files = [
+                RecentFile.load_from_dict(item) for item in filtered_list_dict
+            ]
             pass
 
     @property
