@@ -46,11 +46,11 @@ class RecentFileManager:
     def __init__(self):
         self._recent_files = []
 
-        self.init()
+        self.update_recent_files_list()
 
-    def init(self) -> None:
+    def update_recent_files_list(self) -> None:
         """
-        初始化最近文件列表
+        更新最近打开的文件列表
         """
         if not self.recent_files_list_path.exists():
             init_content = "[]"
