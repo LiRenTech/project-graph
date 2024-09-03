@@ -90,6 +90,7 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
                 click_node.is_selected = True
                 self.status_bar.showMessage(STATUS_TEXT["select"])
         else:
+            self.selected_links.clear()
             # A B
             self.is_selecting = True
             self.select_start_location = point_world_location.clone()
@@ -187,6 +188,7 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                 if is_have_selected_node:
                     self.status_bar.showMessage(STATUS_TEXT["select"])
                 else:
+                    self.status_bar.showMessage(STATUS_TEXT["select_link"])
                     select_line = Line(self.select_start_location, mouse_world_location)
 
                     for link in self.node_manager.get_all_links():
@@ -263,6 +265,10 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
     assert a0 is not None
     self.is_pressing = False
     mouse_view_location = NumberVector(a0.pos().x(), a0.pos().y())
+
+    # 如果没有选择任何东西
+    if not self.is_selecting and not self.is_cutting:
+        self.status_bar.showMessage(STATUS_TEXT["normal"])
 
     if a0.button() == Qt.MouseButton.LeftButton:
         # 结束框选
