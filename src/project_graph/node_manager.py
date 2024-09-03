@@ -485,14 +485,49 @@ class NodeManager:
             for link in self._links:
                 from_node = link.source_node
                 to_node = link.target_node
-
-                context.painter.paint_straight_line(
-                    ConnectStraightLine(
-                        from_node.body_shape,
-                        to_node.body_shape,
-                    ),
-                    QColor(204, 204, 204),
-                )
+                if link.inner_text == "":
+                    context.painter.paint_straight_line(
+                        ConnectStraightLine(
+                            from_node.body_shape,
+                            to_node.body_shape,
+                        ),
+                        QColor(204, 204, 204),
+                    )
+                else:
+                    #  ————   ————>  中间断开
+                    link_text_font = 18
+                    width, height, ascent = get_size_by_text(
+                        link_text_font, link.inner_text
+                    )
+                    padding_x = 20  # 左右各留 20px 的空白
+                    padding_y = 2  # 上下各留 2px 的空白
+                    link_middle_point = Line(
+                        link.source_node.body_shape.center,
+                        link.target_node.body_shape.center,
+                    ).midpoint()
+                    # 构造一个中心矩形
+                    mid_rect = Rectangle(
+                        link_middle_point
+                        - NumberVector(width / 2 + padding_x, height / 2 + padding_y),
+                        width + padding_x * 2,
+                        height + padding_y * 2,
+                    )
+                    context.painter.paint_straight_line(
+                        ConnectStraightLine(
+                            from_node.body_shape,
+                            mid_rect,
+                        ),
+                        QColor(204, 204, 204),
+                        with_arrow=False,
+                    )
+                    context.painter.paint_straight_line(
+                        ConnectStraightLine(
+                            mid_rect,
+                            to_node.body_shape,
+                        ),
+                        QColor(204, 204, 204),
+                    )
+                    pass
         # 画连线上的文字
         for link in self._links:
             link_text = link.inner_text
@@ -507,6 +542,11 @@ class NodeManager:
             if link_text != "":
                 link_text_font = 18
                 width, height, ascent = get_size_by_text(link_text_font, link_text)
+
+                text_rect_bg_color = QColor(31, 31, 31, 128)
+                if SETTING_SERVICE.line_style == 1:
+                    text_rect_bg_color = QColor(31, 31, 31, 0)
+
                 # 绘制边框背景色
                 PainterUtils.paint_rect(
                     context.painter.q_painter(),
@@ -514,7 +554,7 @@ class NodeManager:
                     - NumberVector(width / 2 + padding_x, height / 2 + padding_y),
                     width + padding_x * 2,
                     height + padding_y * 2,
-                    QColor(31, 31, 31, 128),
+                    text_rect_bg_color,
                 )
                 # 绘制文字
                 PainterUtils.paint_text_from_center(
