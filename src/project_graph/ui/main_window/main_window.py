@@ -268,6 +268,9 @@ class Canvas(QMainWindow):
         label = QLabel("这里是最近的文件列表")
         layout.addWidget(label)
 
+        # 先更新一下
+        self.recent_file_manager.update_recent_files_list()
+
         for recent_file in self.recent_file_manager.recent_files_list:
             file_path = recent_file.file_path
             last_opened_time = recent_file.last_opened_time
@@ -275,7 +278,12 @@ class Canvas(QMainWindow):
             button = QPushButton(
                 f"{file_path}  ({last_opened_time.strftime('%Y-%m-%d %H:%M:%S')}, {size}B)"
             )
-            button.clicked.connect(lambda: self.on_open_file_by_path(str(file_path)))
+
+            def click_function(fp: Path):
+                self.on_open_file_by_path(str(fp))
+                dialog.close()
+
+            button.clicked.connect(partial(click_function, fp=file_path))
             layout.addWidget(button)
 
         # 设置布局到对话框
