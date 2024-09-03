@@ -1,6 +1,7 @@
 import json
 import platform
 import subprocess
+from functools import partial
 from pathlib import Path
 
 from PyQt5.QtCore import QTimer
@@ -37,6 +38,7 @@ from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.status_text.status_text import STATUS_TEXT
 from project_graph.toolbar.toolbar import Toolbar
 from project_graph.ui.panel_about import show_about_panel
+from project_graph.ui.panel_export_text import show_text_export_dialog
 from project_graph.ui.panel_help import show_help_panel
 from project_graph.ui.panel_physics_settings import show_physics_settings
 from project_graph.ui.panel_visual_settings import show_visual_settings
@@ -52,8 +54,6 @@ from . import (
 class Canvas(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.init_ui()
-
         # 允许拖拽文件到窗口
         self.setAcceptDrops(True)
         # 设置鼠标追踪，否则无法捕捉鼠标移动事件，只有按下才能捕捉到了
@@ -122,6 +122,8 @@ class Canvas(QMainWindow):
         self.dragging_file_location = NumberVector.zero()
         """拖拽文件悬浮在窗口上的世界位置"""
 
+        # 最后再初始化UI
+        self.init_ui()
         pass
 
     def init_ui(self):
@@ -215,6 +217,12 @@ class Canvas(QMainWindow):
         test_copy_camera_action = QAction("复制摄像机位置", self)
         test_copy_camera_action.triggered.connect(self.on_copy_camera)
         test_menu.addAction(test_copy_camera_action)
+        # 导出纯文本
+        text_exporter_action = QAction("导出纯文本", self)
+        text_exporter_action.triggered.connect(
+            partial(show_text_export_dialog, node_manager=self.node_manager)
+        )
+        test_menu.addAction(text_exporter_action)
 
         # 状态栏
         status_bar = self.statusBar()

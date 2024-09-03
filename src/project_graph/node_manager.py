@@ -5,6 +5,7 @@ from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
+from project_graph.node_text_exporter import NodeTextExporter
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 from project_graph.settings.setting_service import SETTING_SERVICE
@@ -29,6 +30,10 @@ class NodeManager:
         """相对于cursor_node的位置，看成一个相对位置矢量，世界坐标格式，用于生长节点"""
         self.grow_node_inner_text: str = ""
         """生长节点的内置文本"""
+
+        self.text_exporter = NodeTextExporter(self)
+        """导出纯文本，为AI使用"""
+
         pass
 
     def move_cursor(self, direction: str):
@@ -503,3 +508,13 @@ class NodeManager:
                 4 * context.camera.current_scale,
                 30 * context.camera.current_scale,
             )
+
+    # region 纯和图算法相关
+
+    def get_all_root_nodes(self) -> list[EntityNode]:
+        # {node: 当前这个节点是否是根节点}
+        node_dict = {node: True for node in self.nodes}
+        for node in self.nodes:
+            for child in node.children:
+                node_dict[child] = False
+        return [node for node, is_root in node_dict.items() if is_root]
