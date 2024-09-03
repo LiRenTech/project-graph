@@ -1,7 +1,7 @@
 from typing import Callable
 from project_graph.liren_side.components import Component
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5.QtGui import QPaintEvent
+from PyQt5.QtGui import QPaintEvent, QKeyEvent
 
 import sys
 
@@ -15,7 +15,16 @@ class _NativeWindow(QMainWindow):
         init(self)
 
     def paintEvent(self, a0: QPaintEvent | None):
+        assert a0 is not None
         self.root.paintEvent(self, a0)
+
+    def keyPressEvent(self, a0: QKeyEvent | None):
+        assert a0 is not None
+        self.root.keyPressEvent(self, a0)
+
+    def keyReleaseEvent(self, a0: QKeyEvent | None):
+        assert a0 is not None
+        self.root.keyReleaseEvent(self, a0)
 
 
 class App:
