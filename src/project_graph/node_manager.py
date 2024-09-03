@@ -191,7 +191,7 @@ class NodeManager:
         """
         res = {
             "nodes": [node.dump() for node in self.nodes],
-            # "links": [link.dump() for link in self._links],
+            "links": [link.dump() for link in self._links],
         }
 
         return res
@@ -218,6 +218,12 @@ class NodeManager:
                 for j, child_uuid in enumerate(other_node.get("children", [])):
                     if child_uuid == old_uuid:
                         other_node["children"][j] = new_uuid
+            # 更新连线中的uuid
+            for link_dict in new_data.get("links", []):
+                if link_dict["source_node"] == old_uuid:
+                    link_dict["source_node"] = new_uuid
+                if link_dict["target_node"] == old_uuid:
+                    link_dict["target_node"] = new_uuid
         return new_data
 
     def add_from_dict(
@@ -254,7 +260,7 @@ class NodeManager:
             node.uuid = node_data["uuid"]
             self.nodes.append(node)
 
-        # 构建节点之间的连接关系
+        # 构建节点之间的连接关系 (根据的是children)
         for node_data in data["nodes"]:
             node = self.get_node_by_uuid(node_data["uuid"])
             if node is None:
@@ -266,7 +272,15 @@ class NodeManager:
                 node.add_child(child)
 
         self.update_links()
-        pass
+
+        # 补充每个连线上的信息（文字）
+        for link_data in data.get("links", []):
+            link = self.get_link_by_uuid(
+                link_data["source_node"], link_data["target_node"]
+            )
+            if link is None:
+                continue
+            link.inner_text = link_data.get("inner_text", "")
 
     def load_from_dict(self, data: dict):
         """
@@ -385,6 +399,19 @@ class NodeManager:
 
     def get_all_links(self) -> list[NodeLink]:
         return [link for link in self._links]
+
+    def get_link_by_uuid(
+        self, source_node_uuid: str, target_node_uuid: str
+    ) -> NodeLink | None:
+        """根据两个节点的uuid获取对应的link"""
+        # 其实可以优化成O(1) 但懒了
+        for link in self._links:
+            if (
+                link.source_node.uuid == source_node_uuid
+                and link.target_node.uuid == target_node_uuid
+            ):
+                return link
+        return None
 
     def update_links(self):
         """
