@@ -46,6 +46,26 @@ class PainterUtils:
         pass
 
     @staticmethod
+    def paint_location_sign(painter: QPainter, location: NumberVector):
+        """
+        一个点标记 调试用，是一个“X”的形状
+        """
+        PainterUtils.paint_solid_line(
+            painter,
+            location - NumberVector(10, 10),
+            location + NumberVector(10, 10),
+            QColor(255, 0, 0),
+            1,
+        )
+        PainterUtils.paint_solid_line(
+            painter,
+            location - NumberVector(10, -10),
+            location + NumberVector(10, -10),
+            QColor(255, 0, 0),
+            1,
+        )
+
+    @staticmethod
     def paint_solid_line(
         painter: QPainter,
         point1: NumberVector,

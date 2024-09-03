@@ -46,21 +46,30 @@ class RecentFileManager:
     def __init__(self):
         self._recent_files = []
 
-        self.init()
+        self.update_recent_files_list()
 
-    def init(self) -> None:
+    def update_recent_files_list(self) -> None:
         """
-        初始化最近文件列表
+        更新最近打开的文件列表
         """
         if not self.recent_files_list_path.exists():
             init_content = "[]"
             with open(self.recent_files_list_path, "w", encoding="utf-8") as f:
                 f.write(init_content)
         else:
+            list_dict = []
             with open(self.recent_files_list_path, "r", encoding="utf-8") as f:
-                self._recent_files = [
-                    RecentFile.load_from_dict(item) for item in json.load(f)
-                ]
+                list_dict = json.load(f)
+
+            # 检测和过滤 list_dict，看看是否路径都是有效的存在的
+
+            filtered_list_dict = filter(
+                lambda x: Path(x["file_path"]).exists(), list_dict
+            )
+
+            self._recent_files = [
+                RecentFile.load_from_dict(item) for item in filtered_list_dict
+            ]
             pass
 
     @property

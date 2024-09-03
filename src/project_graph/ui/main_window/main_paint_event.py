@@ -1,0 +1,243 @@
+"""
+渲染主窗口的事件
+"""
+
+import typing
+
+from PyQt5.QtGui import QColor, QPainter, QPaintEvent
+
+from project_graph.data_struct.line import Line
+from project_graph.data_struct.number_vector import NumberVector
+from project_graph.data_struct.rectangle import Rectangle
+from project_graph.paint.paint_elements import paint_details_data, paint_grid
+from project_graph.paint.paint_utils import PainterUtils
+from project_graph.paint.paintables import PaintContext
+from project_graph.paint.painters import ProjectGraphPainter
+from project_graph.settings.setting_service import SETTING_SERVICE
+
+if typing.TYPE_CHECKING:
+    from .main_window import Canvas
+
+
+def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
+    assert a0 is not None
+    painter = QPainter(self)
+    # 获取窗口的尺寸
+    rect = self.rect()
+    # 更新camera大小，防止放大窗口后缩放中心点还在左上部分
+    self.camera.reset_view_size(rect.width(), rect.height())
+    # 使用黑色填充整个窗口
+    painter.fillRect(rect, QColor(43, 43, 43, 255))
+    # 画网格
+    if SETTING_SERVICE.is_show_grid:
+        paint_grid(painter, self.camera)
+    # 当前的切断线
+    if self.is_cutting:
+        PainterUtils.paint_solid_line(
+            painter,
+            self.camera.location_world2view(self.mouse_right_start_location),
+            self.camera.location_world2view(self.mouse_right_location),
+            QColor(255, 0, 0),
+            2 * self.camera.current_scale,
+        )
+
+    # 框选 + 线选
+    if self.is_selecting:
+        """
+             |  有线       |  无线  |
+        有节点|  不可能      |  画框
+        无节点|  画线+浅框   |  都画
+        """
+        is_have_selected_node = any(
+            node.is_selected for node in self.node_manager.nodes
+        )
+        is_have_selected_link = len(self.selected_links) > 0
+        rect = Rectangle.from_two_points(
+            self.select_start_location.clone(),
+            self.last_move_location.clone(),
+        )
+        if not is_have_selected_link:
+            PainterUtils.paint_rect(
+                painter,
+                self.camera.location_world2view(rect.location_left_top),
+                rect.width * self.camera.current_scale,
+                rect.height * self.camera.current_scale,
+                QColor(255, 255, 255, 20),
+                QColor(255, 255, 255, 128),
+                2,
+            )
+        # 如果没有框选住节点，就画线
+        if not is_have_selected_node:
+            # 画一个浅色框
+            PainterUtils.paint_rect(
+                painter,
+                self.camera.location_world2view(rect.location_left_top),
+                rect.width * self.camera.current_scale,
+                rect.height * self.camera.current_scale,
+                QColor(0, 0, 0, 0),
+                QColor(0, 255, 0, 128),
+                2,
+            )
+            # 画框选对角线
+            PainterUtils.paint_solid_line(
+                painter,
+                self.camera.location_world2view(self.select_start_location.clone()),
+                self.camera.location_world2view(self.last_move_location.clone()),
+                QColor(0, 255, 0, 50),
+                20,
+            )
+
+    # 当前鼠标画连接线
+    if self.connect_from_nodes and self.mouse_right_location is not None:
+        # 如果鼠标位置是没有和任何节点相交的
+        connect_target_node = None
+        for node in self.node_manager.nodes:
+            if node in self.connect_from_nodes:
+                continue
+            if node.body_shape.is_contain_point(self.mouse_right_location):
+                connect_target_node = node
+                break
+        if connect_target_node:
+            # 像吸附住了一样画线
+            for node in self.connect_from_nodes:
+                PainterUtils.paint_arrow(
+                    painter,
+                    self.camera.location_world2view(node.body_shape.center),
+                    self.camera.location_world2view(
+                        connect_target_node.body_shape.center
+                    ),
+                    QColor(255, 255, 255),
+                    2 * self.camera.current_scale,
+                    30 * self.camera.current_scale,
+                )
+        else:
+            # 实时连线
+            for node in self.connect_from_nodes:
+                PainterUtils.paint_arrow(
+                    painter,
+                    self.camera.location_world2view(node.body_shape.center),
+                    self.camera.location_world2view(self.mouse_right_location),
+                    QColor(255, 255, 255),
+                    2 * self.camera.current_scale,
+                    30 * self.camera.current_scale,
+                )
+
+    # 上下文对象
+    paint_context = PaintContext(
+        ProjectGraphPainter(painter), self.camera, self.mouse_location
+    )
+
+    self.node_manager.paint(paint_context)
+    # 所有要被切断的线
+    for link in self.warning_links:
+        PainterUtils.paint_solid_line(
+            painter,
+            self.camera.location_world2view(link.source_node.body_shape.center),
+            self.camera.location_world2view(link.target_node.body_shape.center),
+            QColor(255, 0, 0, 128),
+            int(10 * self.camera.current_scale),
+        )
+    # 所有选择的线
+    for link in self.selected_links:
+        link_body_line = Line(
+            link.source_node.body_shape.center,
+            link.target_node.body_shape.center,
+        )
+
+        PainterUtils.paint_solid_line(
+            painter,
+            self.camera.location_world2view(link_body_line.start),
+            self.camera.location_world2view(link_body_line.end),
+            QColor(0, 255, 0, 50),
+            int(20 * self.camera.current_scale),
+        )
+        pass
+    # 所有要被删除的节点
+    for node in self.warning_nodes:
+        PainterUtils.paint_rect(
+            painter,
+            self.camera.location_world2view(node.body_shape.location_left_top),
+            node.body_shape.width * self.camera.current_scale,
+            node.body_shape.height * self.camera.current_scale,
+            QColor(255, 0, 0, 128),
+            QColor(255, 0, 0, 128),
+            int(10 * self.camera.current_scale),
+        )
+    # 特效
+    self.effect_manager.paint(paint_context)
+    # 绘制细节信息
+    if SETTING_SERVICE.is_show_debug_text:
+        paint_details_data(
+            painter,
+            self.camera,
+            [
+                f"当前缩放: {self.camera.current_scale:.2f}",
+                f"摄像机位置: ({self.camera.location.x:.2f}, {self.camera.location.y:.2f})",
+                f"特效数量: {len(self.effect_manager.effects)}",
+                f"节点数量: {len(self.node_manager.nodes)}",
+                f"连接数量: {len(self.node_manager.get_all_links())}",
+            ],
+        )
+    # 工具栏
+    self.toolbar.paint(paint_context)
+    # 最终覆盖在屏幕上一层：拖拽情况
+    if self.is_dragging_file:
+        PainterUtils.paint_rect(
+            painter,
+            NumberVector.zero(),
+            a0.rect().width(),
+            a0.rect().height(),
+            QColor(0, 0, 0, 128),
+            QColor(255, 255, 255, 0),
+            int(10 * self.camera.current_scale),
+        )
+        # 绘制横竖线
+        PainterUtils.paint_solid_line(
+            painter,
+            NumberVector(
+                0, self.camera.location_world2view(self.dragging_file_location).y
+            ),
+            NumberVector(
+                a0.rect().width(),
+                self.camera.location_world2view(self.dragging_file_location).y,
+            ),
+            QColor(148, 220, 254),
+            1,
+        )
+        PainterUtils.paint_solid_line(
+            painter,
+            NumberVector(
+                self.camera.location_world2view(self.dragging_file_location).x, 0
+            ),
+            NumberVector(
+                self.camera.location_world2view(self.dragging_file_location).x,
+                a0.rect().height(),
+            ),
+            QColor(148, 220, 254),
+            1,
+        )
+        if self.is_dragging_file_valid:
+            PainterUtils.paint_text_from_center(
+                painter,
+                NumberVector(a0.rect().width() / 2, a0.rect().height() / 2),
+                "拖拽文件到窗口中",
+                30,
+                QColor(255, 255, 255),
+            )
+        else:
+            PainterUtils.paint_text_from_center(
+                painter,
+                NumberVector(a0.rect().width() / 2, a0.rect().height() / 2),
+                "不支持的文件类型，请拖入json文件",
+                30,
+                QColor(255, 0, 0),
+            )
+        pass
+
+    # 检查窗口是否处于激活状态
+    if not self.isActiveWindow():
+        # 绘制一个半透明的覆盖层（目的是放置WASD输入到别的软件上）
+        painter.setBrush(QColor(0, 0, 0, 128))  # 半透明的黑色
+        painter.drawRect(self.rect())
+
+    pass

@@ -1,16 +1,14 @@
 from PyQt5.QtGui import QColor
 
 from project_graph.data_struct.circle import Circle
-from project_graph.data_struct.curve import ConnectCurve
-from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
+from project_graph.node_text_exporter import NodeTextExporter
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 from project_graph.settings.setting_service import SETTING_SERVICE
-from project_graph.tools.string_tools import get_size_by_text
 
 
 class NodeManager:
@@ -23,10 +21,7 @@ class NodeManager:
         self.nodes: list[EntityNode] = []
 
         self._links: set[NodeLink] = set()
-        """准备替代lines"""
-
-        self._lines: list[Line] = []
-        """lines只用于绘制的时候给一个缓存，不参与逻辑运算，只在改变的时候重新计算"""
+        """连接"""
 
         self.cursor_node: EntityNode | None = None
         """有一个游标在节点群上移动，这个游标通过上下左右或者点击更改附着的节点"""
@@ -35,6 +30,10 @@ class NodeManager:
         """相对于cursor_node的位置，看成一个相对位置矢量，世界坐标格式，用于生长节点"""
         self.grow_node_inner_text: str = ""
         """生长节点的内置文本"""
+
+        self.text_exporter = NodeTextExporter(self)
+        """导出纯文本，为AI使用"""
+
         pass
 
     def move_cursor(self, direction: str):
@@ -177,13 +176,24 @@ class NodeManager:
                         "height": h,
                     },
                     inner_text: "text",
+                    details: "",
                     uuid: "(uuid str)",
                     children: [ "(uuid str)" ]
                 },
+            ],
+            "links": [
+                {
+                    "source_node": "(uuid str)",
+                    "target_node": "(uuid str)",
+                    "inner_text": "...",
+                }
             ]
         }
         """
-        res = {"nodes": [node.dump() for node in self.nodes]}
+        res = {
+            "nodes": [node.dump() for node in self.nodes],
+            "links": [link.dump() for link in self._links],
+        }
 
         return res
 
@@ -209,6 +219,12 @@ class NodeManager:
                 for j, child_uuid in enumerate(other_node.get("children", [])):
                     if child_uuid == old_uuid:
                         other_node["children"][j] = new_uuid
+            # 更新连线中的uuid
+            for link_dict in new_data.get("links", []):
+                if link_dict["source_node"] == old_uuid:
+                    link_dict["source_node"] = new_uuid
+                if link_dict["target_node"] == old_uuid:
+                    link_dict["target_node"] = new_uuid
         return new_data
 
     def add_from_dict(
@@ -245,7 +261,7 @@ class NodeManager:
             node.uuid = node_data["uuid"]
             self.nodes.append(node)
 
-        # 构建节点之间的连接关系
+        # 构建节点之间的连接关系 (根据的是children)
         for node_data in data["nodes"]:
             node = self.get_node_by_uuid(node_data["uuid"])
             if node is None:
@@ -256,9 +272,16 @@ class NodeManager:
                     continue
                 node.add_child(child)
 
-        self.update_lines()
         self.update_links()
-        pass
+
+        # 补充每个连线上的信息（文字）
+        for link_data in data.get("links", []):
+            link = self.get_link_by_uuid(
+                link_data["source_node"], link_data["target_node"]
+            )
+            if link is None:
+                continue
+            link.inner_text = link_data.get("inner_text", "")
 
     def load_from_dict(self, data: dict):
         """
@@ -267,7 +290,6 @@ class NodeManager:
         # 先清空原有节点
         self.nodes.clear()
         self.add_from_dict(data, NumberVector(0, 0), refresh_uuid=False)
-        self.update_lines()
         self.update_links()
 
     def get_node_by_uuid(self, uuid: str) -> EntityNode | None:
@@ -282,14 +304,12 @@ class NodeManager:
         """
         node.move(d_location)
         self.collide_dfs(node)
-        self.update_lines()
 
     def move_node_with_children(self, node: EntityNode, d_location: NumberVector):
         """
         移动一个节点（带动子节点的整体移动）
         """
         self._move_node_with_children_dfs(node, d_location, [node.uuid])
-        self.update_lines()
 
     def _move_node_with_children_dfs(
         self, node: EntityNode, d_location: NumberVector, visited_uuids: list[str]
@@ -331,7 +351,6 @@ class NodeManager:
         for father_node in self.nodes:
             if node in father_node.children:
                 father_node.children.remove(node)
-        self.update_lines()
         # 删除所有相关link
         prepare_delete_links = []
         for link in self._links:
@@ -356,14 +375,12 @@ class NodeManager:
                     prepare_delete_links.append(link)
             for link in prepare_delete_links:
                 self._links.remove(link)
-        self.update_lines()
 
         # self.update_links()
 
     def connect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
             res = from_node.add_child(to_node)
-            self.update_lines()
 
             new_link = NodeLink(from_node, to_node)
             self._links.add(new_link)
@@ -374,7 +391,6 @@ class NodeManager:
     def disconnect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
             res = from_node.remove_child(to_node)
-            self.update_lines()
 
             link = NodeLink(from_node, to_node)
             if link in self._links:
@@ -382,44 +398,31 @@ class NodeManager:
             return res
         return False
 
-    def _get_all_lines(self) -> list[Line]:
-        lines = []
-        for node in self.nodes:
-            for child in node.children:
-                connect_line = Line(node.body_shape.center, child.body_shape.center)
-                from_point = node.body_shape.get_line_intersection_point(connect_line)
-                to_point = child.body_shape.get_line_intersection_point(connect_line)
-
-                lines.append(Line(from_point, to_point))
-        return lines
-
-    def update_lines(self):
-        """
-        注意：此方法不要在外界频繁调用（尤其是循环渲染中），否则可能很卡
-        建议只在必要操作之后调用一下。
-        """
-        self._lines = self._get_all_lines()
-
     def get_all_links(self) -> list[NodeLink]:
         return [link for link in self._links]
 
+    def get_link_by_uuid(
+        self, source_node_uuid: str, target_node_uuid: str
+    ) -> NodeLink | None:
+        """根据两个节点的uuid获取对应的link"""
+        # 其实可以优化成O(1) 但懒了
+        for link in self._links:
+            if (
+                link.source_node.uuid == source_node_uuid
+                and link.target_node.uuid == target_node_uuid
+            ):
+                return link
+        return None
+
     def update_links(self):
-        links = []
+        """
+        根据nodes的表结构重新生成links
+        """
+        s = set()
         for node in self.nodes:
             for child in node.children:
-                links.append(NodeLink(node, child))
-        self._lines = links
-
-    def get_all_lines_and_node(self) -> list[tuple[Line, EntityNode, EntityNode]]:
-        lines = []
-        for node in self.nodes:
-            for child in node.children:
-                connect_line = Line(node.body_shape.center, child.body_shape.center)
-                from_point = node.body_shape.get_line_intersection_point(connect_line)
-                to_point = child.body_shape.get_line_intersection_point(connect_line)
-
-                lines.append((Line(from_point, to_point), node, child))
-        return lines
+                s.add(NodeLink(node, child))
+        self._links = s
 
     def rotate_node(self, node: EntityNode, degrees: float):
         """
@@ -427,7 +430,6 @@ class NodeManager:
         也就是如果这个节点没有子节点，那么看上去没有效果
         """
         self._rotate_node_dfs(node, node, degrees, [])
-        self.update_lines()
 
     def _rotate_node_dfs(
         self,
@@ -463,67 +465,8 @@ class NodeManager:
         # 画节点本身
         for node in self.nodes:
             node.paint(context)
-
-        # 连线
-        context.painter.q_painter().setTransform(
-            context.camera.get_world2view_transform()
-        )
-        if SETTING_SERVICE.line_style == 0:
-            for link in self._links:
-                from_node = link.source_node
-                to_node = link.target_node
-
-                context.painter.paint_curve(
-                    ConnectCurve(
-                        from_node.body_shape,
-                        to_node.body_shape,
-                    ),
-                    QColor(204, 204, 204),
-                )
-        elif SETTING_SERVICE.line_style == 1:
-            for line in self._lines:
-                PainterUtils.paint_arrow(
-                    context.painter.q_painter(),
-                    line.start,
-                    line.end,
-                    QColor(204, 204, 204),
-                    4,
-                    30,
-                )
-        # 画连线上的文字
         for link in self._links:
-            link_text = link.inner_text
-            link_middle_point = Line(
-                link.source_node.body_shape.center,
-                link.target_node.body_shape.center,
-            ).midpoint()
-
-            padding_x = 20  # 左右各留 20px 的空白
-            padding_y = 2  # 上下各留 2px 的空白
-
-            if link_text != "":
-                link_text_font = 18
-                width, height, ascent = get_size_by_text(link_text_font, link_text)
-                # 绘制边框背景色
-                PainterUtils.paint_rect(
-                    context.painter.q_painter(),
-                    link_middle_point
-                    - NumberVector(width / 2 + padding_x, height / 2 + padding_y),
-                    width + padding_x * 2,
-                    height + padding_y * 2,
-                    QColor(31, 31, 31, 128),
-                )
-                # 绘制文字
-                PainterUtils.paint_text_from_center(
-                    context.painter.q_painter(),
-                    link_middle_point,
-                    link_text,
-                    18,
-                    QColor(204, 204, 204),
-                )
-                pass
-
-        context.painter.q_painter().resetTransform()
+            link.paint(context)
         # 画游标
         if self.cursor_node is not None:
             margin = 10
@@ -565,3 +508,13 @@ class NodeManager:
                 4 * context.camera.current_scale,
                 30 * context.camera.current_scale,
             )
+
+    # region 纯和图算法相关
+
+    def get_all_root_nodes(self) -> list[EntityNode]:
+        # {node: 当前这个节点是否是根节点}
+        node_dict = {node: True for node in self.nodes}
+        for node in self.nodes:
+            for child in node.children:
+                node_dict[child] = False
+        return [node for node, is_root in node_dict.items() if is_root]

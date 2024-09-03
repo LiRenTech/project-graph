@@ -15,6 +15,10 @@ def bezier_curve(
 
 
 class ConnectCurve:
+    """
+    连接两个矩形的，有方向箭头的 贝塞尔曲线
+    """
+
     def __init__(self, start: Rectangle, end: Rectangle):
         # direction = end.center - start.center
         line = Line(start.center, end.center)

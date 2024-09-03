@@ -81,6 +81,18 @@ class Rectangle:
         bottom = max(p1.y, p2.y)
         return Rectangle(NumberVector(left, top), right - left, bottom - top)
 
+    @staticmethod
+    def get_bounding_rectangle(rectangles: list["Rectangle"]) -> "Rectangle":
+        if not rectangles:
+            raise ValueError("矩形列表不能为空")
+
+        left = min(rect.location_left_top.x for rect in rectangles)
+        top = min(rect.location_left_top.y for rect in rectangles)
+        right = max(rect.location_left_top.x + rect.width for rect in rectangles)
+        bottom = max(rect.location_left_top.y + rect.height for rect in rectangles)
+
+        return Rectangle.from_edges(left, top, right, bottom)
+
     def get_fore_points(self) -> list[NumberVector]:
         return [
             NumberVector(self.location_left_top.x, self.location_left_top.y),
@@ -110,6 +122,13 @@ class Rectangle:
     @property
     def right_center(self) -> NumberVector:
         return NumberVector(self.location_left_top.x + self.width, self.center.y)
+
+    @property
+    def right_bottom(self) -> NumberVector:
+        return NumberVector(
+            self.location_left_top.x + self.width,
+            self.location_left_top.y + self.height,
+        )
 
     @property
     def top_center(self) -> NumberVector:
@@ -191,6 +210,7 @@ class Rectangle:
     def get_line_intersection_point(self, line: Line) -> NumberVector:
         """
         返回一个线段和这个矩形的交点，如果没有交点，就返回这个矩形的中心点
+        请确保线段和矩形只有一个交点，出现两个交点的情况还未测试
         :param line:
         :return:
         """
