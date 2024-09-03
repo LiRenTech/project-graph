@@ -61,7 +61,8 @@ def my_except_hook(
     root = tk.Tk()
     root.title("error!")
     tk.Label(root, text="出现异常！").pack()
-    t = tk.Text(root, height=10, width=50)
+    t = tk.Text(root, height=50, width=150)
+    t.config(fg="white", bg="black", font=("TkDefaultFont", 8))
     for line in logs:
         t.insert(tk.END, line + "\n")
     t.pack()
