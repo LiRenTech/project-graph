@@ -61,7 +61,7 @@ Xmind 只能用来绘制树形结构图、FigJam 可以用来绘制但网页打�
 
 视野：
 
-1. 移动视野：W A S D 键，或者鼠标中键拖拽，或按下Space键的同时左键拖拽
+1. 移动视野：W A S D 键，或者鼠标中键拖拽，或按下 Space 键的同时左键拖拽
 2. 缩放视野：鼠标滚轮，或者 `[` 和 `]`
 
 b 站视频介绍：https://www.bilibili.com/video/BV1hmHKeDE9D
@@ -89,9 +89,7 @@ Linux: `~/.local/share/project-graph` [（可自定义）](https://specification
 2. 快速编辑节点里的文字
 3. 快速连接/删除节点之间的箭头连线
 
-该原则来自其他 up 主（所长林超）的思维导图方法论视频：https://www.bilibili.com/video/BV1sN411a79K
-
-以上的三个原则是这个视频 10:45 秒开始的地方他提到的四个原则的总结
+该原则来自其他 up 主（所长林超）的思维导图方法论视频：[BV1sN411a79K 10:35](https://www.bilibili.com/video/BV1sN411a79K?t=634.5)
 
 ## 📖 开发贡献指南
 
