@@ -5,19 +5,25 @@ from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.logging import log
 from project_graph.paint.paint_utils import PainterUtils
+from project_graph.settings.setting_enums import ThemeEnum
+from project_graph.settings.setting_service import SETTING_SERVICE
 
 
 def paint_grid(paint: QPainter, camera: Camera):
     try:
-        line_color = QColor(255, 255, 255, 50)
-        line_color_light = QColor(255, 255, 255, 100)
+        if SETTING_SERVICE.theme_style == ThemeEnum.GRAY_2B:
+            grid_color = QColor(255, 255, 255, 50)
+            grid_color_main = QColor(255, 255, 255, 100)
+        elif SETTING_SERVICE.theme_style == ThemeEnum.WHITE_PAPER:
+            grid_color = QColor(0, 0, 0, 50)
+            grid_color_main = QColor(0, 0, 0, 100)
 
         for y in range(-1000, 1000, 100):
             PainterUtils.paint_solid_line(
                 paint,
                 camera.location_world2view(NumberVector(-1000, y)),
                 camera.location_world2view(NumberVector(1000, y)),
-                line_color_light if y == 0 else line_color,
+                grid_color_main if y == 0 else grid_color,
                 1 * camera.current_scale,
             )
         for x in range(-1000, 1000, 100):
@@ -25,7 +31,7 @@ def paint_grid(paint: QPainter, camera: Camera):
                 paint,
                 camera.location_world2view(NumberVector(x, -1000)),
                 camera.location_world2view(NumberVector(x, 1000)),
-                line_color_light if x == 0 else line_color,
+                grid_color_main if x == 0 else grid_color,
                 1 * camera.current_scale,
             )
     except Exception as e:

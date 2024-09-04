@@ -13,6 +13,7 @@ from project_graph.paint.paint_elements import paint_details_data, paint_grid
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 from project_graph.paint.painters import ProjectGraphPainter
+from project_graph.settings.setting_enums import ThemeEnum
 from project_graph.settings.setting_service import SETTING_SERVICE
 
 if typing.TYPE_CHECKING:
@@ -26,8 +27,13 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
     rect = self.rect()
     # 更新camera大小，防止放大窗口后缩放中心点还在左上部分
     self.camera.reset_view_size(rect.width(), rect.height())
+
     # 使用黑色填充整个窗口
-    painter.fillRect(rect, QColor(43, 43, 43, 255))
+    if SETTING_SERVICE.theme_style == ThemeEnum.GRAY_2B:
+        painter.fillRect(rect, QColor(43, 43, 43, 255))
+    elif SETTING_SERVICE.theme_style == ThemeEnum.GRAY_2B:
+        painter.fillRect(rect, QColor(255, 255, 255, 255))
+
     # 画网格
     if SETTING_SERVICE.is_show_grid:
         paint_grid(painter, self.camera)

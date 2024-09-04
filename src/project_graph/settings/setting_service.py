@@ -7,7 +7,7 @@
 from pathlib import Path
 
 from project_graph.app_dir import DATA_DIR
-
+from project_graph.settings.setting_enums import ThemeEnum
 
 settings_file_path = Path(DATA_DIR) / "settings.json"
 
@@ -18,7 +18,7 @@ class SettingService:
         初始化默认数值
         """
         self.line_style = 0  # 0: 贝塞尔，1：直线
-        self.theme_style = 0
+        self.theme_style = ThemeEnum.GRAY_2B
 
         self.is_show_grid = True
         """是否显示网格"""
@@ -80,7 +80,7 @@ class SettingService:
 
                 settings = json.loads(data)
                 self.line_style = settings.get("line_style", 0)
-                self.theme_style = settings.get("theme_style", 0)
+                self.theme_style = settings.get("theme_style", ThemeEnum.GRAY_2B)
                 self.is_show_grid = settings.get("is_show_grid", True)
                 self.is_show_debug_text = settings.get("is_show_debug_text", True)
                 self.is_enable_node_collision = settings.get(
