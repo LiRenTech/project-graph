@@ -7,6 +7,7 @@ from project_graph.data_struct.number_vector import NumberVector
 from project_graph.entity.entity import Entity
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import Paintable, PaintContext
+from project_graph.settings.style_service import STYLE_SERVICE
 from project_graph.tools.string_tools import get_size_by_text
 
 
@@ -36,9 +37,6 @@ class EntityNode(Entity):
         self.is_selected = False
         """是否是被选中的状态, 包括框选"""
         self.adjust_size_by_text()
-
-        # 颜色
-        self.color = QColor(204, 204, 204)
         pass
 
     @property
@@ -106,8 +104,8 @@ class EntityNode(Entity):
             context.camera.location_world2view(self.body_shape.location_left_top),
             self.body_shape.width * context.camera.current_scale,
             self.body_shape.height * context.camera.current_scale,
-            QColor(31, 31, 31, 200),
-            self.color,
+            STYLE_SERVICE.style.node_fill_color,
+            STYLE_SERVICE.style.node_border_color,
             int(2 * context.camera.current_scale),
             16 * context.camera.current_scale,
         )
@@ -117,7 +115,7 @@ class EntityNode(Entity):
             context.camera.location_world2view(self.body_shape.center),
             self.inner_text,
             self.FONT_SIZE * context.camera.current_scale,
-            self.color,
+            STYLE_SERVICE.style.node_text_color,
         )
         if self.is_detail_show:
             PainterUtils.paint_document_from_left_top(
@@ -129,7 +127,7 @@ class EntityNode(Entity):
                 self.details,
                 400 * context.camera.current_scale,
                 15 * context.camera.current_scale,
-                QColor(255, 255, 255),
+                STYLE_SERVICE.style.node_details_text_color,
                 QColor(0, 0, 0, 128),
             )
         if self.is_selected:
@@ -141,7 +139,7 @@ class EntityNode(Entity):
                 (self.body_shape.width + 20) * context.camera.current_scale,
                 (self.body_shape.height + 20) * context.camera.current_scale,
                 QColor(0, 0, 0, 0),
-                self.color,
+                STYLE_SERVICE.style.node_border_color,
                 int(3 * context.camera.current_scale),
                 20 * context.camera.current_scale,
             )

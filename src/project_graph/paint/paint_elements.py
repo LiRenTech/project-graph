@@ -5,18 +5,13 @@ from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.logging import log
 from project_graph.paint.paint_utils import PainterUtils
-from project_graph.settings.setting_enums import ThemeEnum
-from project_graph.settings.setting_service import SETTING_SERVICE
+from project_graph.settings.style_service import STYLE_SERVICE
 
 
 def paint_grid(paint: QPainter, camera: Camera):
     try:
-        if SETTING_SERVICE.theme_style == ThemeEnum.GRAY_2B:
-            grid_color = QColor(255, 255, 255, 50)
-            grid_color_main = QColor(255, 255, 255, 100)
-        elif SETTING_SERVICE.theme_style == ThemeEnum.WHITE_PAPER:
-            grid_color = QColor(0, 0, 0, 50)
-            grid_color_main = QColor(0, 0, 0, 100)
+        grid_color = STYLE_SERVICE.style.grid_line_color
+        grid_color_main = STYLE_SERVICE.style.grid_bold_line_color
 
         for y in range(-1000, 1000, 100):
             PainterUtils.paint_solid_line(
@@ -53,7 +48,7 @@ def paint_details_data(paint: QPainter, camera: Camera, datas: list[str]):
             NumberVector(20, start_y + (i - 1) * 50),
             data,
             12,
-            QColor(255, 255, 255, 100),
+            STYLE_SERVICE.style.details_debug_text_color,
         )
     pass
 
