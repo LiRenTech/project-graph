@@ -17,7 +17,9 @@ if typing.TYPE_CHECKING:
 
 def keyPressEvent(self: "Canvas", a0: QKeyEvent | None):
     assert a0 is not None
+    print(a0.key(), a0)
     key: int = a0.key()
+
     self.pressing_keys.add(key)
     self.status_bar.showMessage(STATUS_TEXT["keyboard"])
 
@@ -37,6 +39,11 @@ def keyPressEvent(self: "Canvas", a0: QKeyEvent | None):
         # `]` 键来放大视野
         for _ in range(5):
             self.camera.zoom_in()
+    elif key == Qt.Key.Key_Delete:
+        self.node_manager.delete_nodes(
+            [node for node in self.node_manager.nodes if node.is_selected]
+        )
+        self.toolbar.shift_off()
     elif key == 16777220:
         # Qt.Key.Key_Enter 这里写这个无效
         # 回车键，如果当前有正在选中的节点，则进入编辑模式

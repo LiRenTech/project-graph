@@ -99,6 +99,10 @@ class Toolbar(Paintable):
             #     context.camera.location_world2view(self.body_shape.location_left_top),
             # )
 
+    def shift_off(self):
+        """移出视野之外，隐藏"""
+        self.body_shape.location_left_top = NumberVector(-1000000, -1000000)
+
     def get_components(self) -> List[Paintable]:
         return super().get_components()
 

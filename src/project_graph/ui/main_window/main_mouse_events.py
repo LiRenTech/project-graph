@@ -290,8 +290,8 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
                     bounding_rectangle.right_bottom + NumberVector(50, 50)
                 )
         else:
-            # 隐藏toolbar，直接让其移动到视野之外解决
-            self.toolbar.body_shape.location_left_top = NumberVector(-1000000, -1000000)
+            # 隐藏toolbar
+            self.toolbar.shift_off()
             self.toolbar.nodes = []
             pass
     if a0.button() == Qt.MouseButton.RightButton:
@@ -385,7 +385,9 @@ def mouseDoubleClickEvent(self: "Canvas", event: QMouseEvent | None):
         if select_node is not None:
             color = QColorDialog.getColor()  # 弹出颜色选择对话框
             if color.isValid():  # 检查颜色是否有效
-                select_node.color = color  # 假设节点有一个 color 属性来存储颜色
+                # select_node.color = color  # 假设节点有一个 color 属性来存储颜色
+                # 到时候只做固定的颜色
+                pass
         pass
 
 
