@@ -16,7 +16,7 @@ def main():
     parser.add_argument("--assets-only", action="store_true")
     args = parser.parse_args()
     # 生成assets
-    if (path / "src" / "project_graph" / "assets" / "assets.py").exists():
+    if not (path / "src" / "project_graph" / "assets" / "assets.py").exists():
         pyrcc_main.processResourceFile(
             [(path / "src" / "project_graph" / "assets" / "image.rcc").as_posix()],
             (path / "src" / "project_graph" / "assets" / "assets.py").as_posix(),
