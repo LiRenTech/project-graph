@@ -6,6 +6,7 @@ from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
 from project_graph.node_text_exporter import NodeTextExporter
+from project_graph.node_text_importer import NodeTextImporter
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 from project_graph.settings.setting_service import SETTING_SERVICE
@@ -34,6 +35,8 @@ class NodeManager:
         self.text_exporter = NodeTextExporter(self)
         """导出纯文本，为AI使用"""
 
+        self.text_importer = NodeTextImporter(self)
+        """导入生成图用，方便手机用户"""
         pass
 
     def move_cursor(self, direction: str):
