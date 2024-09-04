@@ -52,10 +52,11 @@ class Toolbar(Paintable):
 
         self.tool_list: List[Tool] = [
             Tool("icon_delete.png"),
-            Tool("icon_delete.png"),
-            Tool("icon_delete.png"),
+            # Tool("icon_null.png"),
+            # Tool("icon_null.png"),
         ]
         """工具列表"""
+        # 只在测试的时候展示多个图标占位，以免给用户产生困惑
 
         self.body_shape = Rectangle(
             location_left_top=NumberVector(0, 0),
