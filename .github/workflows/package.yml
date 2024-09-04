@@ -30,8 +30,10 @@ jobs:
           apt-get download python3-pyqt5
           # 解压deb包
           dpkg -x $(ls python3-pyqt5*.deb) ./python3-pyqt5-deb
+          tree ./python3-pyqt5-deb
           # 解压data.tar.zst到python3-pyqt5-data
-          sudo tar -I zstd -xf python3-pyqt5-deb/data.tar.zst -C python3-pyqt5-data
+          tar -I zstd -xf ./python3-pyqt5-deb/data.tar.zst -C ./python3-pyqt5-data
+          tree ./python3-pyqt5-data
           # 把zst中的/usr/lib/python3/dist-packages/PyQt5复制到venv中的site-packages
           sudo cp -r python3-pyqt5-data/usr/lib/python3/dist-packages/PyQt5 ./.venv/lib/python3.12/site-packages/
           echo "全局的PyQt5位置"
