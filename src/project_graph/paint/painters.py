@@ -52,7 +52,7 @@ class ProjectGraphPainter:
         )
 
     def paint_curve(self, curve: ConnectCurve, color: QColor):
-        pen = QPen(color, 2)  # 创建QPen并设置颜色和宽度
+        pen = QPen(color, 3)  # 创建QPen并设置颜色和宽度
         self._painter.setRenderHint(QPainter.Antialiasing)
         self._painter.setPen(pen)
         self._painter.setBrush(QBrush())
@@ -64,7 +64,7 @@ class ProjectGraphPainter:
     def paint_straight_line(
         self, straight_line: ConnectStraightLine, color: QColor, with_arrow=True
     ):
-        pen = QPen(color, 2)  # 创建QPen并设置颜色和宽度
+        pen = QPen(color, 3)  # 创建QPen并设置颜色和宽度
         self._painter.setRenderHint(QPainter.Antialiasing)
         self._painter.setPen(pen)
         self._painter.setBrush(QBrush())

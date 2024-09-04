@@ -36,9 +36,11 @@ def show_visual_settings():
 
     layout.addWidget(QLabel("主题颜色"))
     theme_style_combo_box = QComboBox()
-    theme_style_combo_box.addItem("2b灰")
+    theme_style_combo_box.addItem("德古拉灰")
     theme_style_combo_box.addItem("论文白")
-    theme_style_combo_box.addItem("猛男粉")
+    theme_style_combo_box.addItem("马卡龙色系")
+    theme_style_combo_box.addItem("黑客帝国")
+    theme_style_combo_box.addItem("科技蓝主题")
     theme_style_combo_box.setCurrentIndex(SETTING_SERVICE.theme_style)
 
     def on_change_theme_style(index):

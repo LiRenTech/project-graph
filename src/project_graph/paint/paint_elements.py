@@ -5,19 +5,20 @@ from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.logging import log
 from project_graph.paint.paint_utils import PainterUtils
+from project_graph.settings.style_service import STYLE_SERVICE
 
 
 def paint_grid(paint: QPainter, camera: Camera):
     try:
-        line_color = QColor(255, 255, 255, 50)
-        line_color_light = QColor(255, 255, 255, 100)
+        grid_color = STYLE_SERVICE.style.grid_line_color
+        grid_color_main = STYLE_SERVICE.style.grid_bold_line_color
 
         for y in range(-1000, 1000, 100):
             PainterUtils.paint_solid_line(
                 paint,
                 camera.location_world2view(NumberVector(-1000, y)),
                 camera.location_world2view(NumberVector(1000, y)),
-                line_color_light if y == 0 else line_color,
+                grid_color_main if y == 0 else grid_color,
                 1 * camera.current_scale,
             )
         for x in range(-1000, 1000, 100):
@@ -25,7 +26,7 @@ def paint_grid(paint: QPainter, camera: Camera):
                 paint,
                 camera.location_world2view(NumberVector(x, -1000)),
                 camera.location_world2view(NumberVector(x, 1000)),
-                line_color_light if x == 0 else line_color,
+                grid_color_main if x == 0 else grid_color,
                 1 * camera.current_scale,
             )
     except Exception as e:
@@ -47,7 +48,7 @@ def paint_details_data(paint: QPainter, camera: Camera, datas: list[str]):
             NumberVector(20, start_y + (i - 1) * 50),
             data,
             12,
-            QColor(255, 255, 255, 100),
+            STYLE_SERVICE.style.details_debug_text_color,
         )
     pass
 

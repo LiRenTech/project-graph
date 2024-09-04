@@ -10,6 +10,7 @@ from project_graph.entity.entity_node import EntityNode
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import Paintable, PaintContext
 from project_graph.settings.setting_service import SETTING_SERVICE
+from project_graph.settings.style_service import STYLE_SERVICE
 from project_graph.tools.string_tools import get_size_by_text
 
 
@@ -90,7 +91,7 @@ class NodeLink(Entity):
                     from_node.body_shape,
                     to_node.body_shape,
                 ),
-                QColor(204, 204, 204),
+                STYLE_SERVICE.style.link_color,
             )
         elif SETTING_SERVICE.line_style == 1:
             from_node = self.source_node
@@ -101,7 +102,7 @@ class NodeLink(Entity):
                         from_node.body_shape,
                         to_node.body_shape,
                     ),
-                    QColor(204, 204, 204),
+                    STYLE_SERVICE.style.link_color,
                 )
             else:
                 #  ————   ————>  中间断开
@@ -110,7 +111,7 @@ class NodeLink(Entity):
                         from_node.body_shape,
                         mid_rect,
                     ),
-                    QColor(204, 204, 204),
+                    STYLE_SERVICE.style.link_color,
                     with_arrow=False,
                 )
                 context.painter.paint_straight_line(
@@ -118,7 +119,7 @@ class NodeLink(Entity):
                         mid_rect,
                         to_node.body_shape,
                     ),
-                    QColor(204, 204, 204),
+                    STYLE_SERVICE.style.link_color,
                 )
 
         # 画连线上的文字
@@ -129,7 +130,7 @@ class NodeLink(Entity):
         ).midpoint()
 
         if link_text != "":
-            text_rect_bg_color = QColor(31, 31, 31, 128)
+            text_rect_bg_color = STYLE_SERVICE.style.link_text_bg_color
             if SETTING_SERVICE.line_style == 1:
                 text_rect_bg_color = QColor(31, 31, 31, 0)
 
@@ -147,7 +148,7 @@ class NodeLink(Entity):
                 link_middle_point,
                 link_text,
                 18,
-                QColor(204, 204, 204),
+                STYLE_SERVICE.style.link_text_color,
             )
             pass
 
