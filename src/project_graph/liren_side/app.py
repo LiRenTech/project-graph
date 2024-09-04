@@ -1,4 +1,7 @@
+from pathlib import Path
 from typing import Callable
+
+from appdirs import user_data_dir
 from project_graph.liren_side.components import Component
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtGui import QPaintEvent, QKeyEvent
@@ -37,3 +40,10 @@ class App:
     def run(self):
         self.__window.show()
         sys.exit(self.__app.exec_())
+
+    @staticmethod
+    def get_data_dir(app_name: str):
+        data_dir = user_data_dir(app_name, "LiRen")
+        if not Path(data_dir).exists():
+            Path(data_dir).mkdir(parents=True, exist_ok=True)
+        return data_dir

@@ -1,4 +1,4 @@
-from typing import Callable, Union
+from typing import Callable
 from PyQt5.QtWidgets import QMainWindow, QMenu, QAction
 
 
