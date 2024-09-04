@@ -4,7 +4,7 @@
 
 from PyQt5.QtGui import QPainterPath
 
-from project_graph.data_struct.arrow import Arrow
+from project_graph.data_struct.arrow import SolidArrow
 from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
@@ -32,6 +32,6 @@ class ConnectStraightLine:
             start_pt,
             point_at,
         )
-        self.arrow = Arrow(point_at - start_pt, point_at)
+        self.arrow = SolidArrow(point_at - start_pt, point_at)
 
     pass
