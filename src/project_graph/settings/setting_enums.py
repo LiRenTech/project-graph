@@ -7,3 +7,9 @@ class ThemeEnum:
 
     PINK_MAN = 2
     """猛男粉主题"""
+
+    MATRIX = 3
+    """黑客帝国主题"""
+
+    TECH_BLUE = 4
+    """科技蓝主题"""
