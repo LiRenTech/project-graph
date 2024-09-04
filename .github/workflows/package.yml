@@ -23,6 +23,7 @@ jobs:
           pdm install --with package
           echo "venv中的PyQt5位置"
           pdm run python -c "import PyQt5; print(PyQt5.__file__)"
+          pdm package --assets-only
       - name: Install PyQt5
         run: |
           sudo apt-get update

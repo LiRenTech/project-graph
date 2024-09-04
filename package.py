@@ -13,12 +13,12 @@ def main():
     # 项目根目录，不是src
     path = Path(__file__).parent
     # 生成assets
-    (path / "src" / "project_graph" / "assets" / "assets.py").unlink(True)
-    pyrcc_main.processResourceFile(
-        [(path / "src" / "project_graph" / "assets" / "image.rcc").as_posix()],
-        (path / "src" / "project_graph" / "assets" / "assets.py").as_posix(),
-        False,
-    )
+    if (path / "src" / "project_graph" / "assets" / "assets.py").exists():
+        pyrcc_main.processResourceFile(
+            [(path / "src" / "project_graph" / "assets" / "image.rcc").as_posix()],
+            (path / "src" / "project_graph" / "assets" / "assets.py").as_posix(),
+            False,
+        )
     if args.assets_only:
         return
     # 创建临时文件
