@@ -41,6 +41,7 @@ def show_visual_settings():
     theme_style_combo_box.addItem("马卡龙色系")
     theme_style_combo_box.addItem("黑客帝国")
     theme_style_combo_box.addItem("科技蓝主题")
+    theme_style_combo_box.addItem("Catppuccin Mocha")
     theme_style_combo_box.setCurrentIndex(SETTING_SERVICE.theme_style)
 
     def on_change_theme_style(index):
