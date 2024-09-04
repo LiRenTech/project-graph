@@ -414,25 +414,29 @@ def mouseDoubleClickEvent(self: "Canvas", event: QMouseEvent | None):
 def wheelEvent(self: "Canvas", a0: QWheelEvent | None):
     assert a0 is not None
     delta = a0.angleDelta().y()
-    # 如果鼠标当前是在一个节点上的，那么不缩放
-    is_mouse_hover_node = False
-    hover_node = None
-    view_location = NumberVector(a0.pos().x(), a0.pos().y())
-    world_location = self.camera.location_view2world(view_location)
-    for node in self.node_manager.nodes:
-        if node.body_shape.is_contain_point(world_location):
-            is_mouse_hover_node = True
-            hover_node = node
-            break
 
-    if is_mouse_hover_node:
-        # 旋转节点
-        if hover_node is not None:
-            if delta > 0:
-                self.node_manager.rotate_node(hover_node, 10)
-            else:
-                self.node_manager.rotate_node(hover_node, -10)
-        pass
+    # 如果鼠标当前是在一个节点上的，那么不缩放
+    if Qt.Key.Key_Control in self.pressing_keys:
+        is_mouse_hover_node = False
+        hover_node = None
+        view_location = NumberVector(a0.pos().x(), a0.pos().y())
+        world_location = self.camera.location_view2world(view_location)
+        for node in self.node_manager.nodes:
+            if node.body_shape.is_contain_point(world_location):
+                is_mouse_hover_node = True
+                hover_node = node
+                break
+
+        if is_mouse_hover_node:
+            # 旋转节点
+            if hover_node is not None:
+                self.effect_manager.add_effect(
+                    EffectRectangleShrink(15, hover_node.body_shape.clone())
+                )
+                if delta > 0:
+                    self.node_manager.rotate_node(hover_node, 10)
+                else:
+                    self.node_manager.rotate_node(hover_node, -10)
     else:
         # 检查滚轮方向
         if delta > 0:
