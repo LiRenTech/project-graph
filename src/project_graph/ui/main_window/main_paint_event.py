@@ -245,5 +245,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
         # 绘制一个半透明的覆盖层（目的是放置WASD输入到别的软件上）
         painter.setBrush(QColor(0, 0, 0, 128))  # 半透明的黑色
         painter.drawRect(self.rect())
+        # 把按键清空，防止失效
+        self.pressing_keys = set()
 
     pass
