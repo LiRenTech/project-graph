@@ -98,49 +98,53 @@ class EntityNode(Entity):
         return super().get_components()
 
     def paint(self, context: PaintContext):
+        context.painter.q_painter().setTransform(
+            context.camera.get_world2view_transform()
+        )
+
         # 绘制边框
         PainterUtils.paint_rect(
             context.painter.q_painter(),
-            context.camera.location_world2view(self.body_shape.location_left_top),
-            self.body_shape.width * context.camera.current_scale,
-            self.body_shape.height * context.camera.current_scale,
+            (self.body_shape.location_left_top),
+            self.body_shape.width,
+            self.body_shape.height,
             STYLE_SERVICE.style.node_fill_color,
             STYLE_SERVICE.style.node_border_color,
-            int(2 * context.camera.current_scale),
-            16 * context.camera.current_scale,
+            3,
+            16,
         )
 
         PainterUtils.paint_text_from_center(
             context.painter.q_painter(),
-            context.camera.location_world2view(self.body_shape.center),
+            (self.body_shape.center),
             self.inner_text,
-            self.FONT_SIZE * context.camera.current_scale,
+            self.FONT_SIZE,
             STYLE_SERVICE.style.node_text_color,
         )
         if self.is_detail_show:
             PainterUtils.paint_document_from_left_top(
                 context.painter.q_painter(),
-                context.camera.location_world2view(
+                (
                     self.body_shape.location_left_top
                     + NumberVector(0, self.body_shape.height)
                 ),
                 self.details,
-                400 * context.camera.current_scale,
-                15 * context.camera.current_scale,
+                400,
+                15,
                 STYLE_SERVICE.style.node_details_text_color,
                 QColor(0, 0, 0, 128),
             )
         if self.is_selected:
             PainterUtils.paint_rect(
                 context.painter.q_painter(),
-                context.camera.location_world2view(
-                    self.body_shape.location_left_top - NumberVector(10, 10)
-                ),
-                (self.body_shape.width + 20) * context.camera.current_scale,
-                (self.body_shape.height + 20) * context.camera.current_scale,
+                (self.body_shape.location_left_top - NumberVector(10, 10)),
+                (self.body_shape.width + 20),
+                (self.body_shape.height + 20),
                 QColor(0, 0, 0, 0),
-                STYLE_SERVICE.style.node_border_color,
-                int(3 * context.camera.current_scale),
-                20 * context.camera.current_scale,
+                STYLE_SERVICE.style.node_selected_border_color,
+                3,
+                20,
             )
+
+        context.painter.q_painter().resetTransform()
         pass

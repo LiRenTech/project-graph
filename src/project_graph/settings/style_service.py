@@ -49,6 +49,7 @@ class ThemeStyle:
         # ==== 节点相关
         self.node_fill_color = QColor(31, 31, 31, 200)
         self.node_border_color = QColor(204, 204, 204)
+        self.node_selected_border_color = QColor(34, 217, 110)
         self.node_text_color = QColor(204, 204, 204)
         self.node_details_text_color = QColor(255, 255, 255)
         # ==== link相关
