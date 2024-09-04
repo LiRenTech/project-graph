@@ -6,7 +6,7 @@ authors = [{ name = "LiRenTech", email = "liren@zty012.de" }]
 dependencies = ["PyQt5-sip>=12.15.0", "appdirs>=1.4.4", "PyQt5>=5.15.11"]
 requires-python = "<3.14,>=3.12"
 readme = "README.md"
-license = { text = "Apache-2.0" }
+license = { text = "GPL-3.0-only" }
 
 [project.gui-scripts]
 # 使用pipx安装这个包后，可以用这个命令运行程序
