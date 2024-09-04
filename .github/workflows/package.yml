@@ -28,6 +28,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y python3-pyqt5
           echo "全局的PyQt5位置"
+          dpkg -S python3-pyqt5
           python -c "import PyQt5; print(PyQt5.__file__)"
           sudo rm -rf ./.venv/lib/python3.12/site-packages/PyQt5
           sudo cp -r $pythonLocation/lib/python3.12/site-packages/PyQt5 ./.venv/lib/python3.12/site-packages/
