@@ -2,7 +2,12 @@ import argparse
 from pathlib import Path
 
 import PyInstaller.__main__
-from PyQt5 import pyrcc_main
+
+# 项目根目录，不是src
+path = Path(__file__).parent
+
+if not (path / "src" / "project_graph" / "assets" / "assets.py").exists():
+    from PyQt5 import pyrcc_main
 
 
 def main():
@@ -10,8 +15,6 @@ def main():
     # 只编译assets文件
     parser.add_argument("--assets-only", action="store_true")
     args = parser.parse_args()
-    # 项目根目录，不是src
-    path = Path(__file__).parent
     # 生成assets
     if (path / "src" / "project_graph" / "assets" / "assets.py").exists():
         pyrcc_main.processResourceFile(
