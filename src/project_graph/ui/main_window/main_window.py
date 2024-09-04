@@ -233,6 +233,11 @@ class Canvas(QMainWindow):
         status_font.setPointSize(12)
         status_font.setStyleHint(QFont.StyleHint.System)
         status_bar.setFont(status_font)
+        # status_color = STYLE_SERVICE.style.details_debug_text_color
+        # style_sheet = f"color: rgb({status_color.red()}, {status_color.green()}, {status_color.blue()});"
+        # 这个地方可能需要实时监测设置的变化，然后更新样式
+        style_sheet = "color: rgb(206, 145, 120);"
+        status_bar.setStyleSheet(style_sheet)  # 将文字颜色设置为红色
         status_bar.showMessage(STATUS_TEXT["normal"])
 
     def init_toolbar(self):
