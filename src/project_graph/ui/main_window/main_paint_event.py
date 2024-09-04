@@ -179,6 +179,8 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
                 f"特效数量: {len(self.effect_manager.effects)}",
                 f"节点数量: {len(self.node_manager.nodes)}",
                 f"连接数量: {len(self.node_manager.get_all_links())}",
+                f"开始连接节点：{self.connect_from_nodes}",
+                f"连接目标节点：{self.connect_to_node}",
             ],
         )
     # 工具栏

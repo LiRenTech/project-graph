@@ -243,6 +243,8 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                     if node.body_shape.is_contain_point(mouse_world_location):
                         self.connect_to_node = node
                         break
+                else:
+                    self.connect_to_node = None
         elif a0.buttons() == Qt.MouseButton.MiddleButton:
             # 移动的时候，应该记录与上一次鼠标位置的相差距离向量
             current_mouse_move_location = self.camera.location_view2world(

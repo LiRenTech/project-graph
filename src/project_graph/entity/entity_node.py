@@ -148,3 +148,6 @@ class EntityNode(Entity):
 
         context.painter.q_painter().resetTransform()
         pass
+
+    def __repr__(self):
+        return f"{self.uuid[-4:]}"
