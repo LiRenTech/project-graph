@@ -21,7 +21,6 @@ jobs:
           pip install pipx
           pipx install pdm
           pdm install --with package
-          tree $pythonLocation
           python -c "import PyQt5; print(PyQt5.__file__)"
       - name: Install PyQt5
         run: |
