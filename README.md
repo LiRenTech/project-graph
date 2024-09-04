@@ -97,7 +97,7 @@ Linux: `~/.local/share/project-graph` [（可自定义）](https://specification
 
 本项目使用了 Qt 作为开发框架，以及 pdm 管理依赖、ruff
 
-详见本仓库下的 docs/CONTRIBUTING.md，包含如何运行等详细内容
+详见本仓库下的 (docs/CONTRIBUTING.md)[docs/CONTRIBUTING.md]，包含如何运行等详细内容
 
 ## ⭐ Star History
 
