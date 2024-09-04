@@ -41,6 +41,7 @@ jobs:
           pdm run python -c "import PyQt5; print(PyQt5.__file__)"
       - name: Package
         run: |
+          set
           pdm package
       - name: Upload artifact
         uses: actions/upload-artifact@v4
