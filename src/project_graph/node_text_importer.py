@@ -86,8 +86,8 @@ class NodeTextImporter:
         for char in line:
             if char == " ":
                 space_count += 1
-            else:
-                break
+            if char == "\t":
+                space_count += 4
         return space_count // 4, line[space_count:].strip()
 
 
