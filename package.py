@@ -1,3 +1,4 @@
+import argparse
 from pathlib import Path
 
 import PyInstaller.__main__
@@ -5,6 +6,10 @@ from PyQt5 import pyrcc_main
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    # 只编译assets文件
+    parser.add_argument("--assets-only", action="store_true")
+    args = parser.parse_args()
     # 项目根目录，不是src
     path = Path(__file__).parent
     # 生成assets
@@ -14,6 +19,8 @@ def main():
         (path / "src" / "project_graph" / "assets" / "assets.py").as_posix(),
         False,
     )
+    if args.assets_only:
+        return
     # 创建临时文件
     with open(path / "src" / "_package.py", "w") as f:
         f.write(
