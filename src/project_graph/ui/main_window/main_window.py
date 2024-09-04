@@ -40,6 +40,7 @@ from project_graph.toolbar.toolbar import Toolbar
 from project_graph.ui.panel_about import show_about_panel
 from project_graph.ui.panel_export_text import show_text_export_dialog
 from project_graph.ui.panel_help import show_help_panel
+from project_graph.ui.panel_import_text import show_text_import_dialog
 from project_graph.ui.panel_physics_settings import show_physics_settings
 from project_graph.ui.panel_visual_settings import show_visual_settings
 
@@ -224,6 +225,12 @@ class Canvas(QMainWindow):
         text_exporter_action.triggered.connect(
             partial(show_text_export_dialog, node_manager=self.node_manager)
         )
+        # 通过纯文本生成节点图
+        text_importer_action = QAction("通过纯文本生成节点图", self)
+        text_importer_action.triggered.connect(
+            partial(show_text_import_dialog, node_manager=self.node_manager)
+        )
+        test_menu.addAction(text_importer_action)
         test_menu.addAction(text_exporter_action)
 
         # 状态栏

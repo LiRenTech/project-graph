@@ -14,7 +14,6 @@ if typing.TYPE_CHECKING:
 
 
 class NodeTextExporter:
-    # TODO: 有待增加 带link标记信息的、node详细信息的
     def __init__(self, node_manager: "NodeManager"):
         self.node_manager = node_manager
 
