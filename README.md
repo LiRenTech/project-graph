@@ -61,7 +61,7 @@ Xmind 只能用来绘制树形结构图、FigJam 可以用来绘制但网页打�
 
 视野：
 
-1. 移动视野：W A S D 键，或者鼠标中键拖拽
+1. 移动视野：W A S D 键，或者鼠标中键拖拽，或按下Space键的同时左键拖拽
 2. 缩放视野：鼠标滚轮，或者 `[` 和 `]`
 
 b 站视频介绍：https://www.bilibili.com/video/BV1hmHKeDE9D

@@ -24,6 +24,28 @@ if typing.TYPE_CHECKING:
     from .main_window import Canvas
 
 
+# 下面两个函数供 按下空格键+左键 和 中键 移动视野共同调用
+
+
+def _move_camera_by_mouse_press(self: "Canvas", a0: QMouseEvent | None):
+    assert a0 is not None
+    self.mouse_location_last_middle_button = self.camera.location_view2world(
+        NumberVector(a0.pos().x(), a0.pos().y())
+    )
+    pass
+
+
+def _move_camera_by_mouse_move(self: "Canvas", a0: QMouseEvent | None):
+    assert a0 is not None
+    # 移动的时候，应该记录与上一次鼠标位置的相差距离向量
+    current_mouse_move_location = self.camera.location_view2world(
+        NumberVector(a0.pos().x(), a0.pos().y())
+    )
+    diff_location = current_mouse_move_location - self.mouse_location_last_middle_button
+    self.camera.location -= diff_location
+    pass
+
+
 def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
     assert a0 is not None
     point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
@@ -34,6 +56,9 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
     if is_press_toolbar:
         log("按到了toolbar")
         return
+
+    if Qt.Key.Key_Space in self.pressing_keys:
+        _move_camera_by_mouse_press(self, a0)
 
     self.node_manager.cursor_node = None
 
@@ -147,10 +172,7 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
             self.connect_from_nodes = []
             self.selected_links.clear()
     elif a0.button() == Qt.MouseButton.MiddleButton:
-        # 准备移动视野
-        self.mouse_location_last_middle_button = self.camera.location_view2world(
-            NumberVector(a0.pos().x(), a0.pos().y())
-        )
+        _move_camera_by_mouse_press(self, a0)
 
 
 def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
@@ -162,6 +184,9 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
     self.mouse_location = NumberVector(a0.x(), a0.y())
 
     if self.is_pressing:
+        if Qt.Key.Key_Space in self.pressing_keys:
+            _move_camera_by_mouse_move(self, a0)
+            return
         if a0.buttons() == Qt.MouseButton.LeftButton:
             # 如果是左键，移动节点或者框选
             if self.is_selecting:
@@ -246,14 +271,7 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                 else:
                     self.connect_to_node = None
         elif a0.buttons() == Qt.MouseButton.MiddleButton:
-            # 移动的时候，应该记录与上一次鼠标位置的相差距离向量
-            current_mouse_move_location = self.camera.location_view2world(
-                NumberVector(a0.pos().x(), a0.pos().y())
-            )
-            diff_location = (
-                current_mouse_move_location - self.mouse_location_last_middle_button
-            )
-            self.camera.location -= diff_location
+            _move_camera_by_mouse_move(self, a0)
     else:
         # 鼠标放在哪个节点上，就显示哪个节点的详细信息
         for node in self.node_manager.nodes:

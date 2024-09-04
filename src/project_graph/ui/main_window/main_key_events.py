@@ -44,6 +44,8 @@ def keyPressEvent(self: "Canvas", a0: QKeyEvent | None):
             [node for node in self.node_manager.nodes if node.is_selected]
         )
         self.toolbar.shift_off()
+    elif key == Qt.Key.Key_Space:
+        print("space")
     elif key == 16777220:
         # Qt.Key.Key_Enter 这里写这个无效
         # 回车键，如果当前有正在选中的节点，则进入编辑模式

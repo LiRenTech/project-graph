@@ -4,7 +4,7 @@ import subprocess
 from functools import partial
 from pathlib import Path
 
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import (
     QDragEnterEvent,
     QFont,
@@ -86,6 +86,8 @@ class Canvas(QMainWindow):
         # ====== 键盘事件相关
         self.pressing_keys: set[int] = set()
         """当前按下的键"""
+
+        # ====== 拖拽相关
 
         # ====== 连线/断开 相关的操作
         self.connect_from_nodes: list[EntityNode] = []
@@ -390,6 +392,14 @@ class Canvas(QMainWindow):
     def tick(self):
         self.effect_manager.tick()
         self.camera.tick()
+        # 更新鼠标手势
+        if Qt.Key.Key_Space in self.pressing_keys:
+            if self.is_pressing:
+                self.setCursor(Qt.CursorShape.ClosedHandCursor)
+            else:
+                self.setCursor(Qt.CursorShape.OpenHandCursor)
+        else:
+            self.setCursor(Qt.CursorShape.ArrowCursor)
         self.update()
 
     def mousePressEvent(self, a0: QMouseEvent | None) -> None:
