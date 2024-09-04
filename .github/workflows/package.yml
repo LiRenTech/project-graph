@@ -17,7 +17,7 @@ jobs:
           python-version: "3.12"
       - name: Install dependencies
         run: |
-          ls $pythonLocation/lib/python3.12
+          ls $LD_LIBRARY_PATH/site-packages
           python -m pip install --upgrade pip
           pip install pipx
           pipx install pdm
