@@ -4,9 +4,9 @@
 数据目录的具体位置取决于操作系统和用户配置。
 """
 
-from pathlib import Path
+# from pathlib import Path
 
-from appdirs import user_data_dir
+# from appdirs import user_data_dir
 
 from project_graph.liren_side.app import App
 from project_graph.logging import log
