@@ -17,6 +17,7 @@ jobs:
           python-version: "3.12"
       - name: Install dependencies
         run: |
+          tree $pythonLocation
           python -m pip install --upgrade pip
           pip install pipx
           pipx install pdm
@@ -26,7 +27,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y python3-pyqt5
           sudo rm -rf ./.venv/lib/python3.12/site-packages/PyQt5
-          sudo cp -r $LD_LIBRARY_PATH/python3.12/site-packages/PyQt5 ./.venv/lib/python3.12/site-packages/
+          sudo cp -r $pythonLocation/lib/python3.12/site-packages/PyQt5 ./.venv/lib/python3.12/site-packages/
       - name: Package
         run: |
           pdm package
