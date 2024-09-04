@@ -1,25 +1,36 @@
-from typing import Callable
-from PyQt5.QtWidgets import QMainWindow, QMenuBar, QMenu, QAction
+from typing import Callable, Union
+from PyQt5.QtWidgets import QMainWindow, QMenu, QAction
 
 
 class LAction:
-    def __init__(self, text: str, action: Callable[[], None] = lambda: None):
-        self.__text = text
+    def __init__(
+        self,
+        action: Callable[[], None] = lambda: None,
+        shortcut: str = "",
+        title: str = "",
+    ):
+        self._text = title
         self.__action = action
+        self.__shortcut = shortcut
+
+    def _apply_to_qt(self, action: QAction):
+        action.triggered.connect(self.__action)
+        if self.__shortcut != "":
+            action.setShortcut(self.__shortcut)
 
 
 class LMenu:
-    def __init__(self, *menus: "LMenu | LAction", title: str):
-        self.__menus = menus
-        self.__title = title
+    def __init__(self, title: str = "", children: tuple["LMenu | LAction", ...] = ()):
+        self.__menus = children
+        self._title = title
 
-    def __to_qt(self, native_menu: QMenu) -> QMenu:
+    def _apply_to_qt(self, native_menu: QMenu) -> QMenu:
         for menu in self.__menus:
             if isinstance(menu, LMenu):
-                menu.__to_qt(native_menu.addMenu(menu.__title))
+                menu._apply_to_qt(native_menu.addMenu(menu._title))
             else:
-                action = QAction(menu.__text, native_menu)
-                action.triggered.connect(menu.__action)
+                action = QAction(menu._text, native_menu)
+                menu._apply_to_qt(action)
                 native_menu.addAction(action)
         return native_menu
 
@@ -28,13 +39,13 @@ class LMenuBar:
     def __init__(self, *menus: "LMenu | LAction"):
         self.__menus = menus
 
-    def to_qt_by_window(self, native_window: QMainWindow) -> None:
+    def apply_to_qt_window(self, native_window: QMainWindow) -> None:
         menu_bar = native_window.menuBar()
         assert menu_bar is not None
         for menu in self.__menus:
             if isinstance(menu, LMenu):
-                menu.__to_qt(menu_bar.addMenu(menu.__title))
+                menu._apply_to_qt(menu_bar.addMenu(menu._title))
             else:
-                action = QAction(menu.__text, menu_bar)
-                action.triggered.connect(menu.__action)
+                action = QAction(menu._text, menu_bar)
+                menu._apply_to_qt(action)
                 menu_bar.addAction(action)
