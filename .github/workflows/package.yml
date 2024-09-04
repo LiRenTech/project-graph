@@ -17,11 +17,12 @@ jobs:
           python-version: "3.12"
       - name: Install dependencies
         run: |
-          tree $pythonLocation
           python -m pip install --upgrade pip
           pip install pipx
           pipx install pdm
           pdm install --with package
+          tree $pythonLocation
+          python -c "import PyQt5; print(PyQt5.__file__)"
       - name: Install PyQt5
         run: |
           sudo apt-get update
