@@ -286,10 +286,6 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
     self.is_pressing = False
     mouse_view_location = NumberVector(a0.pos().x(), a0.pos().y())
 
-    # 如果没有选择任何东西
-    if not self.is_selecting and not self.is_cutting:
-        self.status_bar.showMessage(STATUS_TEXT["normal"])
-
     if a0.button() == Qt.MouseButton.LeftButton:
         # 结束框选
         if self.is_selecting:
@@ -358,6 +354,10 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
                     Line(self.mouse_right_start_location, self.mouse_right_location),
                 )
             )
+
+    # 如果没有选择任何东西
+    if not self.is_selecting and not self.is_cutting:
+        self.status_bar.showMessage(STATUS_TEXT["normal"])
     pass
 
 
