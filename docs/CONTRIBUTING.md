@@ -1,7 +1,6 @@
 # 贡献指南
 
-1. 请自行安装 `pre-commit` 工具，然后运行 `pre-commit install` 安装 git hook，这样每次提交代码都会自动检查代码风格。
-2. 请自行安装 `nonemoji` 工具，然后使用 `nonemoji commit` 提交更改。
+1. 请自行安装 `nonemoji` 工具，然后使用 `nonemoji commit` 提交更改。
 
 ## 如何让源代码运行起来？
 
