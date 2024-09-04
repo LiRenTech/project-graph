@@ -17,6 +17,7 @@ jobs:
           python-version: "3.12"
       - name: Install dependencies
         run: |
+          echo $pythonLocation
           python -m pip install --upgrade pip
           pip install pipx
           pipx install pdm
