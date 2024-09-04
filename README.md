@@ -1,4 +1,8 @@
-# project-graph
+# Project Graph
+
+![GitHub License](https://img.shields.io/github/license/LiRenTech/project-graph-qt)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/LiRenTech/project-graph-qt/package.yml)
+[![Static Badge](https://img.shields.io/badge/QQ_%E7%BE%A4-972047940-blue)](https://qm.qq.com/cgi-bin/qm/qr?k=cfL8WVrA7GSgfPgBHBUQEbtQI3ZSnDUF&jump_from=webapi&authKey=u1nlYACfxEPnQnI0zBq2eWt4MpB/kI2CBqn8P12SIOKU9AmCcYwQBW4R0czpfgkg)
 
 ## ⬇️ 下载
 
