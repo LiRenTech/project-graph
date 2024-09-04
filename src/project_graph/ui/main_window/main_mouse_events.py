@@ -18,6 +18,7 @@ from project_graph.effect.effect_concrete import (
     EffectRectangleShrink,
 )
 from project_graph.logging import log
+from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.status_text.status_text import STATUS_TEXT
 
 if typing.TYPE_CHECKING:
@@ -274,11 +275,17 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
             _move_camera_by_mouse_move(self, a0)
     else:
         # 鼠标放在哪个节点上，就显示哪个节点的详细信息
-        for node in self.node_manager.nodes:
-            if node.body_shape.is_contain_point(mouse_world_location):
+        if SETTING_SERVICE.is_node_details_show_always:
+            # 显示所有节点的详细信息
+            for node in self.node_manager.nodes:
                 node.is_detail_show = True
-            else:
-                node.is_detail_show = False
+        else:
+            # 显示鼠标所在的节点的详细信息
+            for node in self.node_manager.nodes:
+                if node.body_shape.is_contain_point(mouse_world_location):
+                    node.is_detail_show = True
+                else:
+                    node.is_detail_show = False
 
 
 def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):

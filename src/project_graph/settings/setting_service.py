@@ -40,6 +40,11 @@ class SettingService:
         摩擦系数，越大摩擦力越大，摩擦力会使速度减慢
         """
 
+        self.is_node_details_show_always = False
+        """
+        节点的详细信息是否持续显示
+        False: 鼠标悬停显示，True: 始终显示
+        """
         pass
 
     def __dict__(self):
@@ -55,6 +60,7 @@ class SettingService:
             "camera_scale_exponent": self.camera_scale_exponent,
             "camera_move_amplitude": self.camera_move_amplitude,
             "camera_move_friction": self.camera_move_friction,
+            "is_node_details_show_always": self.is_node_details_show_always,
         }
 
     def to_json_string(self):
@@ -78,7 +84,7 @@ class SettingService:
             if data:
                 import json
 
-                settings = json.loads(data)
+                settings: dict = json.loads(data)
                 self.line_style = settings.get("line_style", 0)
                 self.theme_style = settings.get("theme_style", ThemeEnum.GRAY_2B)
                 self.is_show_grid = settings.get("is_show_grid", True)
@@ -89,6 +95,9 @@ class SettingService:
                 self.camera_scale_exponent = settings.get("camera_scale_exponent", 1.1)
                 self.camera_move_amplitude = settings.get("camera_move_amplitude", 2)
                 self.camera_move_friction = settings.get("camera_move_friction", 0.1)
+                self.is_node_details_show_always = settings.get(
+                    "is_node_details_show_always", False
+                )
 
     def save_settings(self):
         """

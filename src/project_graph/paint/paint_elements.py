@@ -41,7 +41,7 @@ def paint_details_data(paint: QPainter, camera: Camera, datas: list[str]):
     :param datas:
     :return:
     """
-    start_y = 30
+    start_y = 100  # 顶部留白一些，因为菜单栏挡住了很大一块
     for i, data in enumerate(datas):
         PainterUtils.paint_text_from_top_left(
             paint,

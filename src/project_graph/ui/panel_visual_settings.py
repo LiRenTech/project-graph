@@ -70,6 +70,16 @@ def show_visual_settings():
     show_debug_info_check_box.stateChanged.connect(on_change_show_debug_info)
     layout.addWidget(show_debug_info_check_box)
 
+    # 节点详细信息显示开关
+    show_node_detail_check_box = QCheckBox("显示节点详细信息")
+    show_node_detail_check_box.setChecked(SETTING_SERVICE.is_node_details_show_always)
+
+    def on_change_show_node_detail(state):
+        SETTING_SERVICE.is_node_details_show_always = state == 2
+
+    show_node_detail_check_box.stateChanged.connect(on_change_show_node_detail)
+    layout.addWidget(show_node_detail_check_box)
+
     # 设置布局到对话框
     dialog.setLayout(layout)
     dialog.exec_()

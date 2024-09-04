@@ -181,6 +181,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
                 f"连接数量: {len(self.node_manager.get_all_links())}",
                 f"开始连接节点：{self.connect_from_nodes}",
                 f"连接目标节点：{self.connect_to_node}",
+                f"按下的键: {self.pressing_keys}",
             ],
         )
     # 工具栏
