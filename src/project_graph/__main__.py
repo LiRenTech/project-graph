@@ -31,10 +31,11 @@ if platform.system() == "Linux":
     # 修复fcitx5输入法
     flag_file = Path(PyQt5.__file__).parent / ".liren-fcitx5-fixed"
     if (
-        # flag文件不存在
-        not flag_file.exists()
-        # 当前是打包的版本
-        or flag_file.as_posix().startswith("/tmp")
+        (  # flag文件不存在
+            not flag_file.exists()
+            # 当前是打包的版本
+            or flag_file.as_posix().startswith("/tmp")
+        )
         # 询问是否修复
         and input("是否修复fcitx5输入法?(y/N)").lower() == "y"
     ):
