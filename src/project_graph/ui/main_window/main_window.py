@@ -262,6 +262,19 @@ class Canvas(QMainWindow):
         self.toolbar.tool_reverse_link.set_bind_event_function(
             partial(self.node_manager.reverse_links, self.selected_links)
         )
+        # 对齐功能
+        self.toolbar.tool_align_col_center.set_bind_event_function(
+            self.node_manager.align_nodes_col_center
+        )
+        self.toolbar.tool_align_col_left.set_bind_event_function(
+            self.node_manager.align_nodes_col_left
+        )
+        self.toolbar.tool_align_col_right.set_bind_event_function(
+            self.node_manager.align_nodes_col_right
+        )
+        self.toolbar.tool_align_row_center.set_bind_event_function(
+            self.node_manager.align_nodes_row_center
+        )
         pass
 
     def show_message_box(self, message: str):

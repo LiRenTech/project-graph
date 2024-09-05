@@ -475,6 +475,63 @@ class NodeManager:
                 rotate_center_node, child, degrees, visited_uuids + [current_node.uuid]
             )
 
+    # region 对齐相关
+
+    def align_nodes_row_center(self):
+        nodes = [node for node in self.nodes if node.is_selected]
+        if not nodes:
+            return
+        # 计算平均y值
+
+        y_sum = sum(node.body_shape.location_left_top.y for node in nodes)
+        y_avg = y_sum / len(nodes)
+        # 移动所有节点到平均y值
+        for node in nodes:
+            node.move_to(NumberVector(node.body_shape.location_left_top.x, y_avg))
+
+    def align_nodes_col_left(self):
+        nodes = [node for node in self.nodes if node.is_selected]
+        if not nodes:
+            return
+        # 计算最小x值
+        x_min = min(node.body_shape.location_left_top.x for node in nodes)
+        # 移动所有节点到最小x值
+        for node in nodes:
+            node.move_to(NumberVector(x_min, node.body_shape.location_left_top.y))
+
+    def align_nodes_col_right(self):
+        nodes = [node for node in self.nodes if node.is_selected]
+        if not nodes:
+            return
+        # 计算最大x值 right()
+        x_max = max(node.body_shape.right() for node in nodes)
+        # 移动所有节点到最大x值
+        for node in nodes:
+            node.move_to(
+                NumberVector(
+                    x_max - node.body_shape.width, node.body_shape.location_left_top.y
+                )
+            )
+
+    def align_nodes_col_center(self):
+        # 竖着中心串串
+        nodes = [node for node in self.nodes if node.is_selected]
+        if not nodes:
+            return
+        # 计算平均x值 center.x
+        x_sum = sum(node.body_shape.center.x for node in nodes)
+        x_avg = x_sum / len(nodes)
+        # 移动所有节点到平均x值
+        for node in nodes:
+            node.move_to(
+                NumberVector(
+                    x_avg - node.body_shape.width / 2,
+                    node.body_shape.location_left_top.y,
+                )
+            )
+
+    # region 画布相关
+
     def paint(self, context: PaintContext):
         # 画节点本身
         for node in self.nodes:
