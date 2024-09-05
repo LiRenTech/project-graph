@@ -312,8 +312,12 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
         if Qt.Key.Key_Alt in self.pressing_keys:
             # 结束复制
             for node in self.clone_nodes:
-                # self.node_manager.add_node_by_click(node.body_shape.center)
                 self.node_manager.nodes.append(node)
+                # 加特效
+                self.effect_manager.add_effect(
+                    EffectRectangleFlash(15, node.body_shape.clone())
+                )
+
             # 清空复制节点数组
             self.clone_nodes = []
 
@@ -343,6 +347,8 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
     if a0.button() == Qt.MouseButton.RightButton:
         # 结束连线
         if len(self.connect_from_nodes) > 0 and self.connect_to_node is not None:
+            is_have_connect_result = False  # 在多重连接的情况下，是否有连接成功的
+
             for node in self.connect_from_nodes:
                 connect_result = self.node_manager.connect_node(
                     node,
@@ -351,13 +357,14 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
                 if connect_result:
                     # 加特效
                     self.effect_manager.add_effect(
-                        EffectRectangleFlash(
-                            15, self.connect_to_node.body_shape.clone()
-                        )
-                    )
-                    self.effect_manager.add_effect(
                         EffectRectangleFlash(15, node.body_shape.clone())
                     )
+                    is_have_connect_result = True
+
+            if is_have_connect_result:
+                self.effect_manager.add_effect(
+                    EffectRectangleFlash(15, self.connect_to_node.body_shape.clone())
+                )
         self.connect_from_nodes = []
         self.connect_to_node = None
 
