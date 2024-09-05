@@ -48,6 +48,16 @@ class EntityNode(Entity):
         self._inner_text = value
         self.adjust_size_by_text()
 
+    def clone(self):
+        """
+        克隆一个节点
+        """
+        res = EntityNode(self.body_shape.clone())
+        res.inner_text = self.inner_text
+        res.details = self.details
+
+        return res
+
     def dump(self) -> dict:
         """
         转化成字典格式

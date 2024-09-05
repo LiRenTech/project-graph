@@ -130,7 +130,12 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
         ProjectGraphPainter(painter), self.camera, self.mouse_location
     )
 
+    # 所有节点和连线
     self.node_manager.paint(paint_context)
+    # 复制的节点
+    for node in self.clone_nodes:
+        node.paint(paint_context)
+
     # 所有要被切断的线
     for link in self.warning_links:
         PainterUtils.paint_solid_line(

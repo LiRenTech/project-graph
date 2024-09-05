@@ -88,7 +88,9 @@ class Canvas(QMainWindow):
         self.pressing_keys: set[int] = set()
         """当前按下的键"""
 
-        # ====== 拖拽相关
+        # ====== 复制相关
+        self.clone_nodes: list[EntityNode] = []
+        """新产生的克隆节点先放在数组里，等到鼠标松开后再加入到实体管理器"""
 
         # ====== 连线/断开 相关的操作
         self.connect_from_nodes: list[EntityNode] = []

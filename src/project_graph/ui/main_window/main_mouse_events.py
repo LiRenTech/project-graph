@@ -74,9 +74,9 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
 
         # A：取消选择那些节点，可能要重新开始框选
         # B：可能是想开始框选
-        # C：如果点击的节点属于被上次选中的节点中，那么整体移动
-        #    如果点击的节点不属于被上次选中的节点中，那么单击选择
-        # D：只想单击这一个节点
+        # C：如果点击的节点属于被上次选中的节点中，那么整体移动，（如果还按下了Alt键，开始整体复制）
+        #    如果点击的节点不属于被上次选中的节点中，那么单击选择，并取消上一次框选的所有节点
+        # D：只想单击这一个节点，或者按下Alt键的时候，想复制这个节点
 
         # 更新被选中的节点，如果没有选中节点就开始框选
 
@@ -104,13 +104,22 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
                 if click_node.is_selected:
                     # 如果点击的节点属于被上次选中的节点中，那么整体移动
                     self.status_bar.showMessage(STATUS_TEXT["select"])
+                    if Qt.Key.Key_Alt in self.pressing_keys:
+                        self.clone_nodes = [
+                            node.clone()
+                            for node in self.node_manager.nodes
+                            if node.is_selected
+                        ]
                 else:
                     # 取消选择所有节点
                     for node in self.node_manager.nodes:
                         node.is_selected = False
-                    # 单击选择
-                    click_node.is_selected = True
-                    self.status_bar.showMessage(STATUS_TEXT["select"])
+                    if Qt.Key.Key_Alt in self.pressing_keys:
+                        self.clone_nodes = [click_node.clone()]
+                    else:
+                        # 单击选择
+                        click_node.is_selected = True
+                        self.status_bar.showMessage(STATUS_TEXT["select"])
             else:
                 # D
                 click_node.is_selected = True
@@ -212,6 +221,7 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                 # 线选
                 self.selected_links.clear()
                 if is_have_selected_node:
+                    # 框选框住了节点，就不再线选
                     self.status_bar.showMessage(STATUS_TEXT["select"])
                 else:
                     self.status_bar.showMessage(STATUS_TEXT["select_link"])
@@ -230,15 +240,20 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
 
                 # 当前帧距离上一帧的 鼠标移动向量
                 mouse_d_location = mouse_world_location - self.last_move_location
-                for node in self.node_manager.nodes:
-                    if node.is_selected:
-                        if Qt.Key.Key_Control in self.pressing_keys:
-                            # 按住Ctrl，移动节点，带动子节点一起移动
-                            self.node_manager.move_node_with_children(
-                                node, mouse_d_location
-                            )
-                        else:
-                            self.node_manager.move_node(node, mouse_d_location)
+                if Qt.Key.Key_Alt in self.pressing_keys:
+                    # 按住Alt键是复制克隆
+                    for node in self.clone_nodes:
+                        node.move(mouse_d_location)
+                else:
+                    for node in self.node_manager.nodes:
+                        if node.is_selected:
+                            if Qt.Key.Key_Control in self.pressing_keys:
+                                # 按住Ctrl，移动节点，带动子节点一起移动
+                                self.node_manager.move_node_with_children(
+                                    node, mouse_d_location
+                                )
+                            else:
+                                self.node_manager.move_node(node, mouse_d_location)
 
             self.last_move_location = mouse_world_location.clone()
 
@@ -294,6 +309,14 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
     mouse_view_location = NumberVector(a0.pos().x(), a0.pos().y())
 
     if a0.button() == Qt.MouseButton.LeftButton:
+        if Qt.Key.Key_Alt in self.pressing_keys:
+            # 结束复制
+            for node in self.clone_nodes:
+                # self.node_manager.add_node_by_click(node.body_shape.center)
+                self.node_manager.nodes.append(node)
+            # 清空复制节点数组
+            self.clone_nodes = []
+
         # 结束框选
         if self.is_selecting:
             self.is_selecting = False

@@ -121,3 +121,7 @@ def keyReleaseEvent(self: "Canvas", a0: QKeyEvent | None):
         self.camera.release_move(NumberVector(1, 0))
     elif key == Qt.Key.Key_W:
         self.camera.release_move(NumberVector(0, -1))
+
+    elif key == Qt.Key.Key_Alt:
+        # 一旦松开Alt键就取消复制状态
+        self.clone_nodes = []
