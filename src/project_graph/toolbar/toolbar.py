@@ -6,6 +6,7 @@ from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity_node import EntityNode
+from project_graph.entity.node_link import NodeLink
 from project_graph.logging import log
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import Paintable, PaintContext
@@ -38,7 +39,7 @@ class Tool:
 class Toolbar(Paintable):
     """
     选择节点后弹出的工具栏，整个应用中只能有一个
-    给每个工具栏绑定具体的事件的地方在 上层的 MainWindow 中
+    给每个工具栏绑定具体的事件的地方在 上层的 MainWindow 中 init_toolbar
     """
 
     HEIGHT = 50
@@ -50,13 +51,21 @@ class Toolbar(Paintable):
         self.nodes: list[EntityNode] = []
         """工具栏引用的节点，和 nodeManager 里所有选择住的节点一致"""
 
+        self.links: list[NodeLink] = []
+        """工具栏引用的连线"""
+
+        # ==== 一些具体的工具， 以tool_开头 ====
+        self.tool_delete_node = Tool("icon_delete.png")
+        self.tool_null = Tool("icon_null.png")
+        self.tool_reverse_link = Tool("icon_reverse.png")
+
         self.tool_list: List[Tool] = [
-            Tool("icon_delete.png"),
-            # Tool("icon_null.png"),
-            # Tool("icon_null.png"),
+            self.tool_delete_node,
+            self.tool_null,
+            self.tool_reverse_link,
+            self.tool_null,
         ]
         """工具列表"""
-        # 只在测试的时候展示多个图标占位，以免给用户产生困惑
 
         self.body_shape = Rectangle(
             location_left_top=NumberVector(0, 0),
@@ -68,8 +77,24 @@ class Toolbar(Paintable):
         位置坐标是world坐标，但大小是view坐标
         """
 
+    def check_nodes_mode(self):
+        """切换成节点模式的工具栏"""
+        self.tool_list = [
+            self.tool_delete_node,
+            self.tool_null,
+            self.tool_null,
+        ]
+
+    def check_link_mode(self):
+        """切换成连线模式的工具栏"""
+        self.tool_list = [
+            self.tool_delete_node,
+            self.tool_null,
+            self.tool_reverse_link,
+        ]
+
     def paint(self, context: PaintContext) -> None:
-        if self.nodes:
+        if self.nodes or self.links:
             PainterUtils.paint_rect(
                 context.painter.q_painter(),
                 context.camera.location_world2view(self.body_shape.location_left_top),

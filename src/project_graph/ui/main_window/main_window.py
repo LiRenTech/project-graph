@@ -21,6 +21,7 @@ from PyQt5.QtWidgets import (
     QFileDialog,
     QLabel,
     QMainWindow,
+    QMessageBox,
     QPushButton,
     QVBoxLayout,
 )
@@ -73,8 +74,6 @@ class Canvas(QMainWindow):
         self.node_manager = NodeManager()
         self.recent_file_manager = RecentFileManager()
         self.toolbar: Toolbar = Toolbar()
-
-        self.init_toolbar()
 
         # ====== 鼠标事件相关
         self.is_pressing = False
@@ -129,6 +128,7 @@ class Canvas(QMainWindow):
 
         # 最后再初始化UI
         self.init_ui()
+        self.init_toolbar()
         pass
 
     def init_ui(self):
@@ -252,10 +252,24 @@ class Canvas(QMainWindow):
         status_bar.showMessage(STATUS_TEXT["normal"])
 
     def init_toolbar(self):
-        self.toolbar.tool_list[0].set_bind_event_function(
+        self.toolbar.tool_delete_node.set_bind_event_function(
             self._delete_current_select_node
         )
+        # 弹出一个框说还没有实现这个功能
+        self.toolbar.tool_null.set_bind_event_function(
+            partial(self.show_message_box, "工具栏中的这个功能还没有做好")
+        )
+        self.toolbar.tool_reverse_link.set_bind_event_function(
+            partial(self.node_manager.reverse_links, self.selected_links)
+        )
         pass
+
+    def show_message_box(self, message: str):
+        """显示一个消息框"""
+        msg_box = QMessageBox()
+        msg_box.setWindowTitle("project-graph 消息")
+        msg_box.setText(message)
+        msg_box.exec_()
 
     def _delete_current_select_node(self):
         """删除当前选中的节点"""

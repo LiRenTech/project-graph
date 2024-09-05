@@ -417,6 +417,17 @@ class NodeManager:
                 return link
         return None
 
+    def reverse_links(self, links: list[NodeLink]):
+        for link in links:
+            from_node, to_node = link.source_node, link.target_node
+
+            self._links.remove(link)
+            self._links.add(link.reverse())
+
+            from_node.children.remove(to_node)
+            to_node.children.append(from_node)
+        pass
+
     def update_links(self):
         """
         根据nodes的表结构重新生成links
