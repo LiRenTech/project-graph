@@ -43,12 +43,26 @@ class NodeLink(Entity):
     def __repr__(self) -> str:
         return f"{self.source_node}➤{self.target_node}"
 
+    def clone(self) -> "NodeLink":
+        res = NodeLink(self.source_node, self.target_node)
+        res.inner_text = self.inner_text
+        return res
+
     @property
     def body_shape(self) -> Line:
         """临时生成，返回一个身体形状线段"""
         return Line(
             self.source_node.body_shape.center, self.target_node.body_shape.center
         )
+
+    def reverse(self) -> "NodeLink":
+        """
+        反转连线，并返回一个新的对象
+        """
+        res = self.clone()
+        res.inner_text = self.inner_text
+        res.source_node, res.target_node = res.target_node, res.source_node
+        return res
 
     def dump(self) -> dict:
         return {

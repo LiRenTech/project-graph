@@ -339,6 +339,7 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
             self.toolbar.nodes = [
                 node for node in self.node_manager.nodes if node.is_selected
             ]
+            self.toolbar.links = self.selected_links
             # 没有节点被选中就不显示
             if len(self.toolbar.nodes) > 0:
                 bounding_rectangle = Rectangle.get_bounding_rectangle(
@@ -348,6 +349,19 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
                 self.toolbar.body_shape.location_left_top = (
                     bounding_rectangle.right_bottom + NumberVector(50, 50)
                 )
+            if len(self.selected_links) > 0:
+                # 寻找最右下角的线的端点
+                max_x = max(
+                    max(link.body_shape.start.x, link.body_shape.end.x)
+                    for link in self.selected_links
+                )
+                max_y = max(
+                    max(link.body_shape.start.y, link.body_shape.end.y)
+                    for link in self.selected_links
+                )
+                self.toolbar.body_shape.location_left_top = NumberVector(
+                    max_x, max_y
+                ) + NumberVector(50, 50)
         else:
             # 隐藏toolbar
             self.toolbar.shift_off()

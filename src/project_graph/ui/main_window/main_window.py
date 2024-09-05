@@ -75,8 +75,6 @@ class Canvas(QMainWindow):
         self.recent_file_manager = RecentFileManager()
         self.toolbar: Toolbar = Toolbar()
 
-        self.init_toolbar()
-
         # ====== 鼠标事件相关
         self.is_pressing = False
         """当前鼠标是否按下（左中右任意一个是否按下）"""
@@ -130,6 +128,7 @@ class Canvas(QMainWindow):
 
         # 最后再初始化UI
         self.init_ui()
+        self.init_toolbar()
         pass
 
     def init_ui(self):
@@ -259,6 +258,9 @@ class Canvas(QMainWindow):
         # 弹出一个框说还没有实现这个功能
         self.toolbar.tool_null.set_bind_event_function(
             partial(self.show_message_box, "工具栏中的这个功能还没有做好")
+        )
+        self.toolbar.tool_reverse_link.set_bind_event_function(
+            partial(self.node_manager.reverse_links, self.selected_links)
         )
         pass
 

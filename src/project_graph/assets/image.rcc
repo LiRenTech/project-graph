@@ -3,5 +3,6 @@
 	 <file>favicon.ico</file>
 	 <file>icon_delete.png</file>
 	 <file>icon_null.png</file>
+	 <file>icon_reverse.png</file>
  </qresource>
 </RCC>
