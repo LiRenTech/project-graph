@@ -41,7 +41,7 @@ class NodeLink(Entity):
         )
 
     def __repr__(self) -> str:
-        return f"NodeLink({self.source_node}, {self.target_node})"
+        return f"{self.source_node}➤{self.target_node}"
 
     @property
     def body_shape(self) -> Line:
