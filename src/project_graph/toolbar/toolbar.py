@@ -50,10 +50,14 @@ class Toolbar(Paintable):
         self.nodes: list[EntityNode] = []
         """工具栏引用的节点，和 nodeManager 里所有选择住的节点一致"""
 
+        # ==== 一些具体的工具， 以tool_开头 ====
+        self.tool_delete_node = Tool("icon_delete.png")
+        self.tool_null = Tool("icon_null.png")
+
         self.tool_list: List[Tool] = [
-            Tool("icon_delete.png"),
-            # Tool("icon_null.png"),
-            # Tool("icon_null.png"),
+            self.tool_delete_node,
+            self.tool_null,
+            self.tool_null,
         ]
         """工具列表"""
         # 只在测试的时候展示多个图标占位，以免给用户产生困惑
