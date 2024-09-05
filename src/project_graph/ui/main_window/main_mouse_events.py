@@ -104,12 +104,20 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
                 if click_node.is_selected:
                     # 如果点击的节点属于被上次选中的节点中，那么整体移动
                     self.status_bar.showMessage(STATUS_TEXT["select"])
+
                     if Qt.Key.Key_Alt in self.pressing_keys:
-                        self.clone_nodes = [
-                            node.clone()
-                            for node in self.node_manager.nodes
-                            if node.is_selected
+                        # 为了处理克隆后的link，将选中的节点单独准备成一个数组
+                        selected_nodes = [
+                            node for node in self.node_manager.nodes if node.is_selected
                         ]
+                        clone_nodes = [node.clone() for node in selected_nodes]
+                        # 开始二重遍历数组，复制连接关系
+                        for i, father_node in enumerate(selected_nodes):
+                            for j, son_node in enumerate(selected_nodes):
+                                if son_node in father_node.children:
+                                    # 发现了 i -> j 为一个连接关系，需要复制
+                                    clone_nodes[i].add_child(clone_nodes[j])
+                        self.clone_nodes = clone_nodes
                 else:
                     # 取消选择所有节点
                     for node in self.node_manager.nodes:
@@ -320,6 +328,7 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
 
             # 清空复制节点数组
             self.clone_nodes = []
+            self.node_manager.update_links()
 
         # 结束框选
         if self.is_selecting:

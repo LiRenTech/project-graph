@@ -51,6 +51,7 @@ class EntityNode(Entity):
     def clone(self):
         """
         克隆一个节点
+        但不会和以前的节点连接
         """
         res = EntityNode(self.body_shape.clone())
         res.inner_text = self.inner_text
