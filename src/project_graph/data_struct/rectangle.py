@@ -1,5 +1,7 @@
 from typing import Any
 
+from PyQt5.QtCore import QRectF
+
 from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.logging import log
@@ -266,6 +268,11 @@ class Rectangle:
         elif point.y == self.bottom():
             return NumberVector(0, 1)
         return NumberVector.zero()
+
+    def to_qt(self) -> QRectF:
+        return QRectF(
+            self.location_left_top.x, self.location_left_top.y, self.width, self.height
+        )
 
 
 # test
