@@ -6,10 +6,8 @@ if [ $EUID -ne 0 ]; then
     exit 1
 fi
 
-rm -rf /tmp/project-graph* /usr/local/bin/project-graph /usr/share/applications/project-graph.desktop /usr/share/icons/hicolor/64x64/apps/project-graph.png
-
 echo "Download binary file"
-curl -L -o /tmp/project-graph.zip https://nightly.link/LiRenTech/project-graph-qt/workflows/package/master/project-graph_linux.zip
+curl -L -o /tmp/project-graph.zip https://nightly.link/LiRenTech/project-graph/workflows/package/master/project-graph_linux.zip
 if [ $? -ne 0 ]; then
     echo "Download failed"
     exit 1
@@ -21,6 +19,9 @@ if [ $? -ne 0 ]; then
     echo "Unzip failed"
     exit 1
 fi
+
+echo "Uninstall existing version"
+sudo rm -rf /tmp/project-graph* /usr/local/bin/project-graph /usr/share/applications/project-graph.desktop /usr/share/icons/hicolor/64x64/apps/project-graph.png
 
 echo "Copy binary file to /usr/local/bin"
 cp /tmp/project-graph/project-graph /usr/local/bin/project-graph
@@ -37,7 +38,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Download icon"
-curl -L -o /usr/share/icons/hicolor/64x64/apps/project-graph.png https://raw.githubusercontent.com/LiRenTech/project-graph-qt/master/src/project_graph/assets/favicon.png
+curl -L -o /usr/share/icons/hicolor/64x64/apps/project-graph.png https://raw.githubusercontent.com/LiRenTech/project-graph/master/src/project_graph/assets/favicon.png
 if [ $? -ne 0 ]; then
     echo "Download icon failed"
     exit 1
