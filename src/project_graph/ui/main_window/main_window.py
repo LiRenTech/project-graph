@@ -14,7 +14,6 @@ from PyQt5.QtGui import (
     QWheelEvent,
 )
 from PyQt5.QtWidgets import (
-    QAction,
     QApplication,
     QDesktopWidget,
     QDialog,
@@ -197,98 +196,21 @@ class Canvas(QMainWindow):
                             show_text_export_dialog, node_manager=self.node_manager
                         ),
                     ),
-                    LAction(title="通过纯文本生成节点图", action=partial(show_text_import_dialog, node_manager=self.node_manager)),
-                    LAction(title="查看当前舞台序列化信息", action=partial(show_serialize_dialog, node_manager=self.node_manager)),
+                    LAction(
+                        title="通过纯文本生成节点图",
+                        action=partial(
+                            show_text_import_dialog, node_manager=self.node_manager
+                        ),
+                    ),
+                    LAction(
+                        title="查看当前舞台序列化信息",
+                        action=partial(
+                            show_serialize_dialog, node_manager=self.node_manager
+                        ),
+                    ),
                 ),
             ),
         ).apply_to_qt_window(self)
-        # menubar = self.menuBar()
-        # assert menubar is not None
-        # # 文件菜单
-        # file_menu = menubar.addMenu("文件")
-        # assert file_menu is not None
-        # # 打开文件
-        # open_action = QAction("打开新图", self)
-        # open_action.triggered.connect(self.on_open_file)
-        # # 保存文件
-        # save_action = QAction("保存当前图", self)
-        # save_action.triggered.connect(self.on_save_file)
-        # # 打开曾经保存的
-        # open_recent_action = QAction("打开曾经保存的", self)
-        # open_recent_action.triggered.connect(self.open_recent_file)
-
-        # # 设置快捷键
-        # open_action.setShortcut("Ctrl+O")
-        # save_action.setShortcut("Ctrl+S")
-        # open_recent_action.setShortcut("Ctrl+R")
-
-        # file_menu.addAction(open_action)
-        # file_menu.addAction(save_action)
-        # file_menu.addAction(open_recent_action)
-
-        # # 视图菜单
-        # view_menu = menubar.addMenu("视图")
-        # assert view_menu is not None
-        # # 重置位置
-        # reset_view_action = QAction("重置位置", self)
-        # reset_view_action.triggered.connect(self.reset_view)
-        # view_menu.addAction(reset_view_action)
-        # # 重置缩放
-        # reset_scale_action = QAction("重置缩放", self)
-        # reset_scale_action.triggered.connect(self.reset_scale)
-        # view_menu.addAction(reset_scale_action)
-
-        # # 帮助说明菜单
-        # help_menu = menubar.addMenu("帮助")
-        # assert help_menu is not None
-        # # 帮助说明
-        # help_action = QAction("帮助说明", self)
-        # help_action.triggered.connect(show_help_panel)
-        # # 关于
-        # about_action = QAction("关于", self)
-        # about_action.triggered.connect(show_about_panel)
-        # help_menu.addAction(help_action)
-        # help_menu.addAction(about_action)
-
-        # # 打开缓存文件夹
-        # cache_folder_action = QAction("打开缓存文件夹", self)
-        # cache_folder_action.triggered.connect(self.open_cache_folder)
-        # help_menu.addAction(cache_folder_action)
-
-        # # 设置
-        # settings_menu = menubar.addMenu("设置")
-        # assert settings_menu is not None
-
-        # show_settings = QAction("显示设置", self)
-        # show_settings.triggered.connect(show_visual_settings)
-
-        # physics_settings = QAction("物理设置", self)
-        # physics_settings.triggered.connect(show_physics_settings)
-
-        # save_settings = QAction("将设置保存", self)
-        # save_settings.triggered.connect(SETTING_SERVICE.save_settings)
-
-        # settings_menu.addAction(show_settings)
-        # settings_menu.addAction(physics_settings)
-        # settings_menu.addAction(save_settings)
-
-        # # 测试菜单
-        # test_menu = menubar.addMenu("测试")
-        # assert test_menu is not None
-        # # 抛出异常
-        # test_exception_action = QAction("抛出异常", self)
-        # test_exception_action.triggered.connect(self.on_test_exception)
-        # test_menu.addAction(test_exception_action)
-        # # 复制摄像机位置
-        # test_copy_camera_action = QAction("复制摄像机位置", self)
-        # test_copy_camera_action.triggered.connect(self.on_copy_camera)
-        # test_menu.addAction(test_copy_camera_action)
-        # # 导出纯文本
-        # text_exporter_action = QAction("导出纯文本", self)
-        # text_exporter_action.triggered.connect(
-        #     partial(show_text_export_dialog, node_manager=self.node_manager)
-        # )
-        # test_menu.addAction(text_exporter_action)
 
         # 状态栏
         status_bar = self.statusBar()
