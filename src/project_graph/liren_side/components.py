@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from PyQt5.QtGui import QKeyEvent, QPainter, QPaintEvent
+from PyQt5.QtGui import QKeyEvent, QPaintEvent
 from PyQt5.QtWidgets import QMainWindow
 
 from project_graph.data_struct.number_vector import NumberVector
@@ -28,15 +28,16 @@ class World(Component):
         # self.__camera = Camera(NumberVector.zero(), 1920, 1080)
 
     def paintEvent(self, window: QMainWindow, event: QPaintEvent):
-        painter = QPainter(window)
+        # painter = QPainter(window)
         # 获取窗口的尺寸
-        rect = window.rect()
+        # rect = window.rect()
         # 更新camera大小，防止放大窗口后缩放中心点还在左上部分
         # self.__camera.reset_view_size(rect.width(), rect.height())
         # # 使用黑色填充整个窗口
         # painter.fillRect(rect, QColor(43, 43, 43, 255))
         # # 画网格
         # paint_grid(painter, self.__camera)
+        pass
 
     def contains(self, point: NumberVector) -> bool:
         return True
