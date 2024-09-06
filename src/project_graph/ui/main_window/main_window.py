@@ -42,6 +42,7 @@ from project_graph.ui.panel_about import show_about_panel
 from project_graph.ui.panel_export_text import show_text_export_dialog
 from project_graph.ui.panel_help import show_help_panel
 from project_graph.ui.panel_import_text import show_text_import_dialog
+from project_graph.ui.panel_performence_settings import show_performance_settings
 from project_graph.ui.panel_physics_settings import show_physics_settings
 from project_graph.ui.panel_serialize_test import show_serialize_dialog
 from project_graph.ui.panel_visual_settings import show_visual_settings
@@ -205,16 +206,20 @@ class Canvas(QMainWindow):
 
         show_settings = QAction("显示设置", self)
         show_settings.triggered.connect(show_visual_settings)
+        settings_menu.addAction(show_settings)
 
         physics_settings = QAction("物理设置", self)
         physics_settings.triggered.connect(show_physics_settings)
+        settings_menu.addAction(physics_settings)
+
+        performance_settings = QAction("性能设置", self)
+        performance_settings.triggered.connect(show_performance_settings)
+        settings_menu.addAction(performance_settings)
 
         save_settings = QAction("将设置保存", self)
         save_settings.triggered.connect(SETTING_SERVICE.save_settings)
-
-        settings_menu.addAction(show_settings)
-        settings_menu.addAction(physics_settings)
         settings_menu.addAction(save_settings)
+
 
         # 测试菜单
         test_menu = menubar.addMenu("测试")

@@ -45,6 +45,11 @@ class SettingService:
         节点的详细信息是否持续显示
         False: 鼠标悬停显示，True: 始终显示
         """
+
+        self.history_max_size = 20
+        """
+        历史记录最大数量
+        """
         pass
 
     def __dict__(self):
@@ -61,6 +66,7 @@ class SettingService:
             "camera_move_amplitude": self.camera_move_amplitude,
             "camera_move_friction": self.camera_move_friction,
             "is_node_details_show_always": self.is_node_details_show_always,
+            "history_max_size": self.history_max_size,
         }
 
     def to_json_string(self):
@@ -98,6 +104,7 @@ class SettingService:
                 self.is_node_details_show_always = settings.get(
                     "is_node_details_show_always", False
                 )
+                self.history_max_size = settings.get("history_max_size", 20)
 
     def save_settings(self):
         """
