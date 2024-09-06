@@ -9,7 +9,7 @@ fi
 rm -rf /tmp/project-graph* /usr/local/bin/project-graph /usr/share/applications/project-graph.desktop /usr/share/icons/hicolor/64x64/apps/project-graph.png
 
 echo "Download binary file"
-curl -L -o /tmp/project-graph.zip https://nightly.link/LiRenTech/project-graph-qt/workflows/package/master/project-graph_linux.zip
+curl -L -o /tmp/project-graph.zip https://nightly.link/LiRenTech/project-graph/workflows/package/master/project-graph_linux.zip
 if [ $? -ne 0 ]; then
     echo "Download failed"
     exit 1
