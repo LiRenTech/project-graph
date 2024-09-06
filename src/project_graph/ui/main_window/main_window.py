@@ -27,7 +27,9 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QVBoxLayout,
 )
+import httpx
 
+from project_graph import INFO
 from project_graph.ai.doubao import Doubao
 from project_graph.app_dir import DATA_DIR
 from project_graph.camera import Camera
@@ -48,6 +50,7 @@ from project_graph.ui.panel_help import show_help_panel
 from project_graph.ui.panel_import_text import show_text_import_dialog
 from project_graph.ui.panel_physics_settings import show_physics_settings
 from project_graph.ui.panel_serialize_test import show_serialize_dialog
+from project_graph.ui.panel_update import show_update_panel
 from project_graph.ui.panel_visual_settings import show_visual_settings
 
 from . import (
@@ -195,8 +198,12 @@ class Canvas(QMainWindow):
         # 关于
         about_action = QAction("关于", self)
         about_action.triggered.connect(show_about_panel)
+        # 关于 Qt
+        about_qt_action = QAction("关于 Qt", self)
+        about_qt_action.triggered.connect(QApplication.aboutQt)
         help_menu.addAction(help_action)
         help_menu.addAction(about_action)
+        help_menu.addAction(about_qt_action)
 
         # 打开缓存文件夹
         cache_folder_action = QAction("打开缓存文件夹", self)
@@ -216,9 +223,13 @@ class Canvas(QMainWindow):
         save_settings = QAction("将设置保存", self)
         save_settings.triggered.connect(SETTING_SERVICE.save_settings)
 
+        check_update = QAction("检查更新", self)
+        check_update.triggered.connect(show_update_panel)
+
         settings_menu.addAction(show_settings)
         settings_menu.addAction(physics_settings)
         settings_menu.addAction(save_settings)
+        settings_menu.addAction(check_update)
 
         # 测试菜单
         test_menu = menubar.addMenu("测试")
