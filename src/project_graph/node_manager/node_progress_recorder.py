@@ -104,7 +104,7 @@ class NodeProgressRecorder:
 
         if repeat_node is not None:
             repeat_node.prev = None  # 断开链接，这些部分将被自动垃圾回收
-        
+
         # 超长限制
         if self.node_count > SETTING_SERVICE.history_max_size:
             # 去掉开头一个
