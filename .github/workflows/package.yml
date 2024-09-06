@@ -41,7 +41,7 @@ jobs:
       #     pdm run python -c "import PyQt5; print(PyQt5.__file__)"
       - name: Package
         run: |
-          set
+          echo "ARK_API_KEY=${{ secrets.ARK_API_KEY }}" >> .env
           pdm package
       - name: Upload artifact
         uses: actions/upload-artifact@v4
