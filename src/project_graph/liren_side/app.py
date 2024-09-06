@@ -1,12 +1,12 @@
+import sys
 from pathlib import Path
 from typing import Callable
 
 from appdirs import user_data_dir
-from project_graph.liren_side.components import Component
+from PyQt5.QtGui import QKeyEvent, QPaintEvent
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5.QtGui import QPaintEvent, QKeyEvent
 
-import sys
+from project_graph.liren_side.components import Component
 
 
 class _NativeWindow(QMainWindow):

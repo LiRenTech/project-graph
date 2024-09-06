@@ -1,5 +1,6 @@
 from typing import Callable
-from PyQt5.QtWidgets import QMainWindow, QMenu, QAction
+
+from PyQt5.QtWidgets import QAction, QMainWindow, QMenu
 
 
 class LAction:

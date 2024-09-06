@@ -1,10 +1,10 @@
 import platform
+
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QDesktopWidget, QMainWindow
+
 from project_graph.liren_side.app import App
 from project_graph.liren_side.components import World
-from PyQt5.QtWidgets import QMainWindow, QDesktopWidget
-from PyQt5.QtGui import (
-    QIcon,
-)
 
 
 def init(window: QMainWindow):

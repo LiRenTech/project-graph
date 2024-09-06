@@ -1,9 +1,9 @@
 from abc import ABCMeta, abstractmethod
 
-from project_graph.data_struct.number_vector import NumberVector
+from PyQt5.QtGui import QKeyEvent, QPainter, QPaintEvent
 from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtGui import QPaintEvent, QPainter, QColor, QKeyEvent
-from PyQt5.QtCore import Qt
+
+from project_graph.data_struct.number_vector import NumberVector
 
 
 class Component(metaclass=ABCMeta):
