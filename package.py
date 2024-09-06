@@ -25,37 +25,39 @@ def main():
         )
     if args.assets_only:
         return
-    # 修改版本号
-    with open(path / "src" / "project_graph" / "__init__.py", "r") as f:
-        original_content = f.read()
-    with open(path / "src" / "project_graph" / "__init__.py", "w") as f:
-        f.write(
-            f"""\
-class INFO:
-    commit = {subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()}
-    date = {subprocess.check_output(["git", "log", "-1", "--format=%cd"]).decode().strip()}
-    branch = {subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode().strip()}
-    env = "prod"
-"""
+    try:
+        # 修改版本号
+        with open(path / "src" / "project_graph" / "__init__.py", "r") as f:
+            original_content = f.read()
+        with open(path / "src" / "project_graph" / "__init__.py", "w") as f:
+            f.write(
+                f"""\
+    class INFO:
+        commit = "{subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()}"
+        date = "{subprocess.check_output(["git", "log", "-1", "--format=%cd"]).decode().strip()}"
+        branch = "{subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode().strip()}"
+        env = "prod"
+    """
+            )
+        # 创建临时文件
+        with open(path / "src" / "_package.py", "w") as f:
+            f.write(
+                "from project_graph.__main__ import main\nif __name__ == '__main__': main()"
+            )
+        # 打包
+        PyInstaller.__main__.run(
+            [
+                "--onefile",
+                "--windowed",
+                f"--icon={path / 'src' / 'project_graph' / 'assets' / 'favicon.ico'}",
+                "-n",
+                "project-graph",
+                (path / "src" / "_package.py").as_posix(),
+            ]
         )
-    # 创建临时文件
-    with open(path / "src" / "_package.py", "w") as f:
-        f.write(
-            "from project_graph.__main__ import main\nif __name__ == '__main__': main()"
-        )
-    # 打包
-    PyInstaller.__main__.run(
-        [
-            "--onefile",
-            "--windowed",
-            f"--icon={path / 'src' / 'project_graph' / 'assets' / 'favicon.ico'}",
-            "-n",
-            "project-graph",
-            (path / "src" / "_package.py").as_posix(),
-        ]
-    )
-    # 还原版本号
-    with open(path / "src" / "project_graph" / "__init__.py", "w") as f:
-        f.write(original_content)
-    # 删除临时文件
-    (path / "src" / "_package.py").unlink()
+    finally:
+        # 还原版本号
+        with open(path / "src" / "project_graph" / "__init__.py", "w") as f:
+            f.write(original_content)
+        # 删除临时文件
+        (path / "src" / "_package.py").unlink()
