@@ -97,10 +97,10 @@ class NodeLink(Entity):
         )
 
         # 画连线
-        if SETTING_SERVICE.line_style == 0:
+        if self.source_node == self.target_node:
+            # 自环情况
             from_node = self.source_node
             to_node = self.target_node
-
             context.painter.paint_curve(
                 ConnectCurve(
                     from_node.body_shape,
@@ -108,34 +108,49 @@ class NodeLink(Entity):
                 ),
                 STYLE_SERVICE.style.link_color,
             )
-        elif SETTING_SERVICE.line_style == 1:
-            from_node = self.source_node
-            to_node = self.target_node
-            if self.inner_text == "":
-                context.painter.paint_straight_line(
-                    ConnectStraightLine(
+            pass
+        else:
+            # 非自环情况
+            if SETTING_SERVICE.line_style == 0:
+                from_node = self.source_node
+                to_node = self.target_node
+                
+                
+                context.painter.paint_curve(
+                    ConnectCurve(
                         from_node.body_shape,
                         to_node.body_shape,
                     ),
                     STYLE_SERVICE.style.link_color,
                 )
-            else:
-                #  ————   ————>  中间断开
-                context.painter.paint_straight_line(
-                    ConnectStraightLine(
-                        from_node.body_shape,
-                        mid_rect,
-                    ),
-                    STYLE_SERVICE.style.link_color,
-                    with_arrow=False,
-                )
-                context.painter.paint_straight_line(
-                    ConnectStraightLine(
-                        mid_rect,
-                        to_node.body_shape,
-                    ),
-                    STYLE_SERVICE.style.link_color,
-                )
+            elif SETTING_SERVICE.line_style == 1:
+                from_node = self.source_node
+                to_node = self.target_node
+                if self.inner_text == "":
+                    context.painter.paint_straight_line(
+                        ConnectStraightLine(
+                            from_node.body_shape,
+                            to_node.body_shape,
+                        ),
+                        STYLE_SERVICE.style.link_color,
+                    )
+                else:
+                    #  ————   ————>  中间断开
+                    context.painter.paint_straight_line(
+                        ConnectStraightLine(
+                            from_node.body_shape,
+                            mid_rect,
+                        ),
+                        STYLE_SERVICE.style.link_color,
+                        with_arrow=False,
+                    )
+                    context.painter.paint_straight_line(
+                        ConnectStraightLine(
+                            mid_rect,
+                            to_node.body_shape,
+                        ),
+                        STYLE_SERVICE.style.link_color,
+                    )
 
         # 画连线上的文字
         link_text = self.inner_text
