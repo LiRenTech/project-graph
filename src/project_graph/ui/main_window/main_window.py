@@ -43,6 +43,7 @@ from project_graph.ui.panel_export_text import show_text_export_dialog
 from project_graph.ui.panel_help import show_help_panel
 from project_graph.ui.panel_import_text import show_text_import_dialog
 from project_graph.ui.panel_physics_settings import show_physics_settings
+from project_graph.ui.panel_serialize_test import show_serialize_dialog
 from project_graph.ui.panel_visual_settings import show_visual_settings
 
 from . import (
@@ -233,13 +234,19 @@ class Canvas(QMainWindow):
         text_exporter_action.triggered.connect(
             partial(show_text_export_dialog, node_manager=self.node_manager)
         )
+        test_menu.addAction(text_exporter_action)
         # 通过纯文本生成节点图
         text_importer_action = QAction("通过纯文本生成节点图", self)
         text_importer_action.triggered.connect(
             partial(show_text_import_dialog, node_manager=self.node_manager)
         )
         test_menu.addAction(text_importer_action)
-        test_menu.addAction(text_exporter_action)
+        # 查看当前舞台序列化信息
+        test_serialize_action = QAction("查看当前舞台序列化信息", self)
+        test_serialize_action.triggered.connect(
+            partial(show_serialize_dialog, node_manager=self.node_manager)
+        )
+        test_menu.addAction(test_serialize_action)
 
         # 状态栏
         status_bar = self.statusBar()

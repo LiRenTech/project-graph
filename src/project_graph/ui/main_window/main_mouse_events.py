@@ -316,6 +316,7 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
 
     if self.is_last_moved:
         self.node_manager.move_finished()
+        self.is_last_moved = False
 
     if a0.button() == Qt.MouseButton.LeftButton:
         if Qt.Key.Key_Alt in self.pressing_keys:
