@@ -6,7 +6,7 @@ if [ $EUID -ne 0 ]; then
     exit 1
 fi
 
-rm -rf /tmp/project-graph* /usr/local/bin/project-graph /usr/share/applications/project-graph.desktop /usr/share/icons/hicolor/64x64/apps/project-graph.png
+sudo rm -rf /tmp/project-graph* /usr/local/bin/project-graph /usr/share/applications/project-graph.desktop /usr/share/icons/hicolor/64x64/apps/project-graph.png
 
 echo "Download binary file"
 curl -L -o /tmp/project-graph.zip https://nightly.link/LiRenTech/project-graph/workflows/package/master/project-graph_linux.zip
