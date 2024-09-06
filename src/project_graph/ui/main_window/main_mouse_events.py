@@ -230,11 +230,7 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                     select_line = Line(self.select_start_location, mouse_world_location)
 
                     for link in self.node_manager.get_all_links():
-                        link_body_line = Line(
-                            link.source_node.body_shape.center,
-                            link.target_node.body_shape.center,
-                        )
-                        if link_body_line.is_intersecting(select_line):
+                        if link.is_intersecting_line(select_line):
                             # 选择这个link
                             self.selected_links.append(link)
                 self.is_last_moved = False
@@ -268,7 +264,7 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                 )
 
                 for link in self.node_manager.get_all_links():
-                    if link.body_shape.is_intersecting(cutting_line):
+                    if link.is_intersecting_line(cutting_line):
                         # 准备要切断这个link，先进行标注
                         self.warning_links.append(link)
 

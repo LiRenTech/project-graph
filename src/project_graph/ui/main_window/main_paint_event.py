@@ -6,6 +6,7 @@ import typing
 
 from PyQt5.QtGui import QColor, QPainter, QPaintEvent
 
+from project_graph.data_struct.circle import Circle
 from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
@@ -124,27 +125,49 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
 
     # 所有要被切断的线
     for link in self.warning_links:
-        PainterUtils.paint_solid_line(
-            painter,
-            self.camera.location_world2view(link.source_node.body_shape.center),
-            self.camera.location_world2view(link.target_node.body_shape.center),
-            STYLE_SERVICE.style.warning_link_cover_color,
-            int(10 * self.camera.current_scale),
-        )
+        link_body_shape = link.get_body_shape()
+        if isinstance(link_body_shape, Line):
+            PainterUtils.paint_solid_line(
+                painter,
+                self.camera.location_world2view(link.source_node.body_shape.center),
+                self.camera.location_world2view(link.target_node.body_shape.center),
+                STYLE_SERVICE.style.warning_link_cover_color,
+                int(10 * self.camera.current_scale),
+            )
+        elif isinstance(link_body_shape, Circle):
+            PainterUtils.paint_circle(
+                painter,
+                Circle(
+                    self.camera.location_world2view(link_body_shape.center),
+                    link_body_shape.radius * self.camera.current_scale,
+                ),
+                QColor(0, 0, 0, 0),
+                STYLE_SERVICE.style.warning_link_cover_color,
+                10 * self.camera.current_scale,
+            )
+            pass
     # 所有选择的线
     for link in self.selected_links:
-        link_body_line = Line(
-            link.source_node.body_shape.center,
-            link.target_node.body_shape.center,
-        )
-
-        PainterUtils.paint_solid_line(
-            painter,
-            self.camera.location_world2view(link_body_line.start),
-            self.camera.location_world2view(link_body_line.end),
-            STYLE_SERVICE.style.selecting_link_cover_color,
-            int(20 * self.camera.current_scale),
-        )
+        link_body_line = link.get_body_shape()
+        if isinstance(link_body_line, Line):
+            PainterUtils.paint_solid_line(
+                painter,
+                self.camera.location_world2view(link_body_line.start),
+                self.camera.location_world2view(link_body_line.end),
+                STYLE_SERVICE.style.selecting_link_cover_color,
+                int(20 * self.camera.current_scale),
+            )
+        elif isinstance(link_body_line, Circle):
+            PainterUtils.paint_circle(
+                painter,
+                Circle(
+                    self.camera.location_world2view(link_body_line.center),
+                    link_body_line.radius * self.camera.current_scale,
+                ),
+                QColor(0, 0, 0, 0),
+                STYLE_SERVICE.style.selecting_link_cover_color,
+                20 * self.camera.current_scale,
+            )
         pass
     # 所有要被删除的节点
     for node in self.warning_nodes:
