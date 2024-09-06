@@ -171,3 +171,5 @@ project_graph.exe
 
 # Ruff
 /.ruff_cache/
+
+.buildozer/

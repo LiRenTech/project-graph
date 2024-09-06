@@ -18,10 +18,33 @@ from project_graph.effect.effect_concrete import (
     EffectRectangleShrink,
 )
 from project_graph.logging import log
+from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.status_text.status_text import STATUS_TEXT
 
 if typing.TYPE_CHECKING:
     from .main_window import Canvas
+
+
+# 下面两个函数供 按下空格键+左键 和 中键 移动视野共同调用
+
+
+def _move_camera_by_mouse_press(self: "Canvas", a0: QMouseEvent | None):
+    assert a0 is not None
+    self.mouse_location_last_middle_button = self.camera.location_view2world(
+        NumberVector(a0.pos().x(), a0.pos().y())
+    )
+    pass
+
+
+def _move_camera_by_mouse_move(self: "Canvas", a0: QMouseEvent | None):
+    assert a0 is not None
+    # 移动的时候，应该记录与上一次鼠标位置的相差距离向量
+    current_mouse_move_location = self.camera.location_view2world(
+        NumberVector(a0.pos().x(), a0.pos().y())
+    )
+    diff_location = current_mouse_move_location - self.mouse_location_last_middle_button
+    self.camera.location -= diff_location
+    pass
 
 
 def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
@@ -35,9 +58,13 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
         log("按到了toolbar")
         return
 
+    if Qt.Key.Key_Space in self.pressing_keys:
+        _move_camera_by_mouse_press(self, a0)
+
     self.node_manager.cursor_node = None
 
     point_world_location = self.camera.location_view2world(point_view_location)
+    self.mouse_location_last_left_button = point_world_location.clone()
     self.toolbar.nodes = []
     self.is_pressing = True
     if a0.button() == Qt.MouseButton.LeftButton:
@@ -48,9 +75,9 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
 
         # A：取消选择那些节点，可能要重新开始框选
         # B：可能是想开始框选
-        # C：如果点击的节点属于被上次选中的节点中，那么整体移动
-        #    如果点击的节点不属于被上次选中的节点中，那么单击选择
-        # D：只想单击这一个节点
+        # C：如果点击的节点属于被上次选中的节点中，那么整体移动，（如果还按下了Alt键，开始整体复制）
+        #    如果点击的节点不属于被上次选中的节点中，那么单击选择，并取消上一次框选的所有节点
+        # D：只想单击这一个节点，或者按下Alt键的时候，想复制这个节点
 
         # 更新被选中的节点，如果没有选中节点就开始框选
 
@@ -78,13 +105,23 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
                 if click_node.is_selected:
                     # 如果点击的节点属于被上次选中的节点中，那么整体移动
                     self.status_bar.showMessage(STATUS_TEXT["select"])
+
+                    if Qt.Key.Key_Alt in self.pressing_keys:
+                        # 为了处理克隆后的link，将选中的节点单独准备成一个数组
+                        selected_nodes = [
+                            node for node in self.node_manager.nodes if node.is_selected
+                        ]
+                        self.node_manager.copy_part(selected_nodes)
                 else:
                     # 取消选择所有节点
                     for node in self.node_manager.nodes:
                         node.is_selected = False
-                    # 单击选择
-                    click_node.is_selected = True
-                    self.status_bar.showMessage(STATUS_TEXT["select"])
+                    if Qt.Key.Key_Alt in self.pressing_keys:
+                        self.node_manager.copy_part([click_node.clone()])
+                    else:
+                        # 单击选择
+                        click_node.is_selected = True
+                        self.status_bar.showMessage(STATUS_TEXT["select"])
             else:
                 # D
                 click_node.is_selected = True
@@ -147,10 +184,7 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
             self.connect_from_nodes = []
             self.selected_links.clear()
     elif a0.button() == Qt.MouseButton.MiddleButton:
-        # 准备移动视野
-        self.mouse_location_last_middle_button = self.camera.location_view2world(
-            NumberVector(a0.pos().x(), a0.pos().y())
-        )
+        _move_camera_by_mouse_press(self, a0)
 
 
 def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
@@ -162,6 +196,9 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
     self.mouse_location = NumberVector(a0.x(), a0.y())
 
     if self.is_pressing:
+        if Qt.Key.Key_Space in self.pressing_keys:
+            _move_camera_by_mouse_move(self, a0)
+            return
         if a0.buttons() == Qt.MouseButton.LeftButton:
             # 如果是左键，移动节点或者框选
             if self.is_selecting:
@@ -186,6 +223,7 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                 # 线选
                 self.selected_links.clear()
                 if is_have_selected_node:
+                    # 框选框住了节点，就不再线选
                     self.status_bar.showMessage(STATUS_TEXT["select"])
                 else:
                     self.status_bar.showMessage(STATUS_TEXT["select_link"])
@@ -199,20 +237,24 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                         if link_body_line.is_intersecting(select_line):
                             # 选择这个link
                             self.selected_links.append(link)
+                self.is_last_moved = False
             else:
-                # 移动
-
                 # 当前帧距离上一帧的 鼠标移动向量
                 mouse_d_location = mouse_world_location - self.last_move_location
-                for node in self.node_manager.nodes:
-                    if node.is_selected:
-                        if Qt.Key.Key_Control in self.pressing_keys:
-                            # 按住Ctrl，移动节点，带动子节点一起移动
-                            self.node_manager.move_node_with_children(
-                                node, mouse_d_location
-                            )
-                        else:
-                            self.node_manager.move_node(node, mouse_d_location)
+                self.is_last_moved = True
+                if Qt.Key.Key_Alt in self.pressing_keys:
+                    # 按住Alt键是复制克隆
+                    self.node_manager.clone_diff_location = (
+                        mouse_world_location - self.mouse_location_last_left_button
+                    )
+                    pass
+                else:
+                    # 移动
+                    if Qt.Key.Key_Control in self.pressing_keys:
+                        # 按住Ctrl，移动节点，带动子节点一起移动
+                        self.node_manager.move_nodes_with_children(mouse_d_location)
+                    else:
+                        self.node_manager.move_nodes(mouse_d_location)
 
             self.last_move_location = mouse_world_location.clone()
 
@@ -243,22 +285,26 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                     if node.body_shape.is_contain_point(mouse_world_location):
                         self.connect_to_node = node
                         break
+                else:
+                    self.connect_to_node = None
         elif a0.buttons() == Qt.MouseButton.MiddleButton:
-            # 移动的时候，应该记录与上一次鼠标位置的相差距离向量
-            current_mouse_move_location = self.camera.location_view2world(
-                NumberVector(a0.pos().x(), a0.pos().y())
-            )
-            diff_location = (
-                current_mouse_move_location - self.mouse_location_last_middle_button
-            )
-            self.camera.location -= diff_location
+            _move_camera_by_mouse_move(self, a0)
     else:
         # 鼠标放在哪个节点上，就显示哪个节点的详细信息
-        for node in self.node_manager.nodes:
-            if node.body_shape.is_contain_point(mouse_world_location):
+        if SETTING_SERVICE.is_node_details_show_always:
+            # 显示所有节点的详细信息
+            for node in self.node_manager.nodes:
                 node.is_detail_show = True
-            else:
-                node.is_detail_show = False
+        else:
+            # 显示鼠标所在的节点的详细信息
+            for node in self.node_manager.nodes:
+                if node.body_shape.is_contain_point(mouse_world_location):
+                    node.is_detail_show = True
+                else:
+                    node.is_detail_show = False
+        self.node_manager.clone_diff_location = (
+            mouse_world_location - self.node_manager.press_ctrl_c_location
+        )
 
 
 def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
@@ -266,11 +312,15 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
     self.is_pressing = False
     mouse_view_location = NumberVector(a0.pos().x(), a0.pos().y())
 
-    # 如果没有选择任何东西
-    if not self.is_selecting and not self.is_cutting:
-        self.status_bar.showMessage(STATUS_TEXT["normal"])
+    if self.is_last_moved:
+        self.node_manager.move_finished()
+        self.is_last_moved = False
 
     if a0.button() == Qt.MouseButton.LeftButton:
+        if Qt.Key.Key_Alt in self.pressing_keys:
+            # 结束复制
+            self.node_manager.pase_cloned_nodes()
+
         # 结束框选
         if self.is_selecting:
             self.is_selecting = False
@@ -280,6 +330,7 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
             self.toolbar.nodes = [
                 node for node in self.node_manager.nodes if node.is_selected
             ]
+            self.toolbar.links = self.selected_links
             # 没有节点被选中就不显示
             if len(self.toolbar.nodes) > 0:
                 bounding_rectangle = Rectangle.get_bounding_rectangle(
@@ -289,14 +340,29 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
                 self.toolbar.body_shape.location_left_top = (
                     bounding_rectangle.right_bottom + NumberVector(50, 50)
                 )
+            if len(self.selected_links) > 0:
+                # 寻找最右下角的线的端点
+                max_x = max(
+                    max(link.body_shape.start.x, link.body_shape.end.x)
+                    for link in self.selected_links
+                )
+                max_y = max(
+                    max(link.body_shape.start.y, link.body_shape.end.y)
+                    for link in self.selected_links
+                )
+                self.toolbar.body_shape.location_left_top = NumberVector(
+                    max_x, max_y
+                ) + NumberVector(50, 50)
         else:
-            # 隐藏toolbar，直接让其移动到视野之外解决
-            self.toolbar.body_shape.location_left_top = NumberVector(-1000000, -1000000)
+            # 隐藏toolbar
+            self.toolbar.shift_off()
             self.toolbar.nodes = []
             pass
     if a0.button() == Qt.MouseButton.RightButton:
         # 结束连线
         if len(self.connect_from_nodes) > 0 and self.connect_to_node is not None:
+            is_have_connect_result = False  # 在多重连接的情况下，是否有连接成功的
+
             for node in self.connect_from_nodes:
                 connect_result = self.node_manager.connect_node(
                     node,
@@ -305,13 +371,14 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
                 if connect_result:
                     # 加特效
                     self.effect_manager.add_effect(
-                        EffectRectangleFlash(
-                            15, self.connect_to_node.body_shape.clone()
-                        )
-                    )
-                    self.effect_manager.add_effect(
                         EffectRectangleFlash(15, node.body_shape.clone())
                     )
+                    is_have_connect_result = True
+
+            if is_have_connect_result:
+                self.effect_manager.add_effect(
+                    EffectRectangleFlash(15, self.connect_to_node.body_shape.clone())
+                )
         self.connect_from_nodes = []
         self.connect_to_node = None
 
@@ -338,6 +405,10 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
                     Line(self.mouse_right_start_location, self.mouse_right_location),
                 )
             )
+
+    # 如果没有选择任何东西
+    if not self.is_selecting and not self.is_cutting:
+        self.status_bar.showMessage(STATUS_TEXT["normal"])
     pass
 
 
@@ -369,7 +440,7 @@ def mouseDoubleClickEvent(self: "Canvas", event: QMouseEvent | None):
                     text=select_node.details,
                 )
                 if ok:
-                    select_node.details = text
+                    self.node_manager.edit_node_details(select_node, text)
             else:
                 # 在节点上左键是编辑文字
                 text, ok = QInputDialog.getText(
@@ -379,38 +450,44 @@ def mouseDoubleClickEvent(self: "Canvas", event: QMouseEvent | None):
                     text=select_node.inner_text,
                 )
                 if ok:
-                    select_node.inner_text = text
+                    self.node_manager.edit_node_inner_text(select_node, text)
 
     elif event.button() == Qt.MouseButton.RightButton:
         if select_node is not None:
             color = QColorDialog.getColor()  # 弹出颜色选择对话框
             if color.isValid():  # 检查颜色是否有效
-                select_node.color = color  # 假设节点有一个 color 属性来存储颜色
+                # select_node.color = color  # 假设节点有一个 color 属性来存储颜色
+                # 到时候只做固定的颜色
+                pass
         pass
 
 
 def wheelEvent(self: "Canvas", a0: QWheelEvent | None):
     assert a0 is not None
     delta = a0.angleDelta().y()
-    # 如果鼠标当前是在一个节点上的，那么不缩放
-    is_mouse_hover_node = False
-    hover_node = None
-    view_location = NumberVector(a0.pos().x(), a0.pos().y())
-    world_location = self.camera.location_view2world(view_location)
-    for node in self.node_manager.nodes:
-        if node.body_shape.is_contain_point(world_location):
-            is_mouse_hover_node = True
-            hover_node = node
-            break
 
-    if is_mouse_hover_node:
-        # 旋转节点
-        if hover_node is not None:
-            if delta > 0:
-                self.node_manager.rotate_node(hover_node, 10)
-            else:
-                self.node_manager.rotate_node(hover_node, -10)
-        pass
+    # 如果鼠标当前是在一个节点上的，那么不缩放
+    if Qt.Key.Key_Control in self.pressing_keys:
+        is_mouse_hover_node = False
+        hover_node = None
+        view_location = NumberVector(a0.pos().x(), a0.pos().y())
+        world_location = self.camera.location_view2world(view_location)
+        for node in self.node_manager.nodes:
+            if node.body_shape.is_contain_point(world_location):
+                is_mouse_hover_node = True
+                hover_node = node
+                break
+
+        if is_mouse_hover_node:
+            # 旋转节点
+            if hover_node is not None:
+                self.effect_manager.add_effect(
+                    EffectRectangleShrink(15, hover_node.body_shape.clone())
+                )
+                if delta > 0:
+                    self.node_manager.rotate_node(hover_node, 10)
+                else:
+                    self.node_manager.rotate_node(hover_node, -10)
     else:
         # 检查滚轮方向
         if delta > 0:

@@ -211,7 +211,7 @@ class PainterUtils:
         height: float,
         fill_color: QColor,
         stroke_color: QColor = QColor(0, 0, 0, 0),
-        stroke_width: int = 0,
+        stroke_width: float = 0,
         radius: float = 0.0,
     ):
         """

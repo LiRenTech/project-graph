@@ -17,7 +17,9 @@ if typing.TYPE_CHECKING:
 
 def keyPressEvent(self: "Canvas", a0: QKeyEvent | None):
     assert a0 is not None
+    print(a0.key(), a0)
     key: int = a0.key()
+
     self.pressing_keys.add(key)
     self.status_bar.showMessage(STATUS_TEXT["keyboard"])
 
@@ -37,6 +39,13 @@ def keyPressEvent(self: "Canvas", a0: QKeyEvent | None):
         # `]` 键来放大视野
         for _ in range(5):
             self.camera.zoom_in()
+    elif key == Qt.Key.Key_Delete:
+        self.node_manager.delete_nodes(
+            [node for node in self.node_manager.nodes if node.is_selected]
+        )
+        self.toolbar.shift_off()
+    elif key == Qt.Key.Key_Space:
+        print("space")
     elif key == 16777220:
         # Qt.Key.Key_Enter 这里写这个无效
         # 回车键，如果当前有正在选中的节点，则进入编辑模式
@@ -50,16 +59,20 @@ def keyPressEvent(self: "Canvas", a0: QKeyEvent | None):
                 text=self.node_manager.cursor_node.inner_text,
             )
             if ok:
-                self.node_manager.cursor_node.inner_text = text
+                self.node_manager.edit_node_inner_text(
+                    self.node_manager.cursor_node, text
+                )
             return
         elif len(self.selected_links) > 0:
             # 统一更改这些线的名称
+            place_holder = "?"
+            if len(self.selected_links) == 1:
+                place_holder = self.selected_links[0].inner_text
             new_name, ok = QInputDialog.getText(
-                self, "更改线名称", "输入新的名称:", text="?"
+                self, "更改线名称", "输入新的名称:", text=place_holder
             )
             if ok:
-                for link in self.selected_links:
-                    link.inner_text = new_name
+                self.node_manager.edit_links_inner_text(self.selected_links, new_name)
                 self.selected_links.clear()
 
     elif key == Qt.Key.Key_Left:
@@ -97,6 +110,32 @@ def keyPressEvent(self: "Canvas", a0: QKeyEvent | None):
         if self.node_manager.is_grow_node_prepared():
             self.node_manager.grow_node_cancel()
 
+    elif key == Qt.Key.Key_Z:
+        if Qt.Key.Key_Control in self.pressing_keys:
+            if Qt.Key.Key_Shift in self.pressing_keys:
+                # 取消撤销
+                self.node_manager.progress_recorder.ctrl_shift_z()
+            else:
+                # 撤销
+                self.node_manager.progress_recorder.ctrl_z()
+
+    elif key == Qt.Key.Key_Y:
+        if Qt.Key.Key_Control in self.pressing_keys:
+            # 取消撤销
+            self.node_manager.progress_recorder.ctrl_shift_z()
+
+    elif key == Qt.Key.Key_C:
+        if Qt.Key.Key_Control in self.pressing_keys:
+            # 开始复制
+            self.node_manager.copy_part(
+                [node for node in self.node_manager.nodes if node.is_selected]
+            )
+            self.node_manager.press_ctrl_c_location = self.last_move_location.clone()
+    elif key == Qt.Key.Key_V:
+        if Qt.Key.Key_Control in self.pressing_keys:
+            # 触发粘贴
+            self.node_manager.pase_cloned_nodes()
+
 
 def keyReleaseEvent(self: "Canvas", a0: QKeyEvent | None):
     assert a0 is not None
@@ -112,3 +151,7 @@ def keyReleaseEvent(self: "Canvas", a0: QKeyEvent | None):
         self.camera.release_move(NumberVector(1, 0))
     elif key == Qt.Key.Key_W:
         self.camera.release_move(NumberVector(0, -1))
+
+    elif key == Qt.Key.Key_Alt:
+        # 一旦松开Alt键就取消复制状态
+        self.clone_nodes = []

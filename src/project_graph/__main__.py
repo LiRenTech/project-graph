@@ -27,23 +27,34 @@ except ImportError:
 
     import project_graph.assets.assets  # type: ignore  # noqa: F401
 
-# 修复fcitx5输入法
 if platform.system() == "Linux":
-    target_path = (
-        Path(PyQt5.__file__).parent
-        / "Qt5"
-        / "plugins"
-        / "platforminputcontexts"
-        / "libfcitx5platforminputcontextplugin.so"
-    )
-    source_path = (
-        Path(__file__).parent.parent.parent
-        / "lib"
-        / "libfcitx5platforminputcontextplugin.so"
-    )
-    if not target_path.exists():
-        log(f"修复fcitx5输入法: Copy {source_path} to {target_path}")
-        shutil.copy(source_path, target_path)
+    # 修复fcitx5输入法
+    flag_file = Path(PyQt5.__file__).parent / ".liren-fcitx5-fixed"
+    if (
+        (  # flag文件不存在
+            not flag_file.exists()
+            # 当前是打包的版本
+            or flag_file.as_posix().startswith("/tmp")
+        )
+        # 询问是否修复
+        and input("是否修复fcitx5输入法?(y/N)").lower() == "y"
+    ):
+        target_path = (
+            Path(PyQt5.__file__).parent
+            / "Qt5"
+            / "plugins"
+            / "platforminputcontexts"
+            / "libfcitx5platforminputcontextplugin.so"
+        )
+        source_path = (
+            Path(__file__).parent.parent.parent
+            / "lib"
+            / "libfcitx5platforminputcontextplugin.so"
+        )
+        if not target_path.exists():
+            log(f"修复fcitx5输入法: Copy {source_path} to {target_path}")
+            shutil.copy(source_path, target_path)
+    flag_file.touch()
 
 
 def my_except_hook(

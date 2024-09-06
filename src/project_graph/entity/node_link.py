@@ -10,12 +10,14 @@ from project_graph.entity.entity_node import EntityNode
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import Paintable, PaintContext
 from project_graph.settings.setting_service import SETTING_SERVICE
+from project_graph.settings.style_service import STYLE_SERVICE
 from project_graph.tools.string_tools import get_size_by_text
 
 
 class NodeLink(Entity):
     """
     连接两个节点的连线
+    在集合中的哈希值取决于两个节点的 uuid 组合
     """
 
     TEXT_PADDING_X = 20  # 左右各留 20px 的空白
@@ -40,7 +42,12 @@ class NodeLink(Entity):
         )
 
     def __repr__(self) -> str:
-        return f"NodeLink({self.source_node}, {self.target_node})"
+        return f"{self.source_node}➤{self.target_node}"
+
+    def clone(self) -> "NodeLink":
+        res = NodeLink(self.source_node, self.target_node)
+        res.inner_text = self.inner_text
+        return res
 
     @property
     def body_shape(self) -> Line:
@@ -48,6 +55,15 @@ class NodeLink(Entity):
         return Line(
             self.source_node.body_shape.center, self.target_node.body_shape.center
         )
+
+    def reverse(self) -> "NodeLink":
+        """
+        反转连线，并返回一个新的对象
+        """
+        res = self.clone()
+        res.inner_text = self.inner_text
+        res.source_node, res.target_node = res.target_node, res.source_node
+        return res
 
     def dump(self) -> dict:
         return {
@@ -90,7 +106,7 @@ class NodeLink(Entity):
                     from_node.body_shape,
                     to_node.body_shape,
                 ),
-                QColor(204, 204, 204),
+                STYLE_SERVICE.style.link_color,
             )
         elif SETTING_SERVICE.line_style == 1:
             from_node = self.source_node
@@ -101,7 +117,7 @@ class NodeLink(Entity):
                         from_node.body_shape,
                         to_node.body_shape,
                     ),
-                    QColor(204, 204, 204),
+                    STYLE_SERVICE.style.link_color,
                 )
             else:
                 #  ————   ————>  中间断开
@@ -110,7 +126,7 @@ class NodeLink(Entity):
                         from_node.body_shape,
                         mid_rect,
                     ),
-                    QColor(204, 204, 204),
+                    STYLE_SERVICE.style.link_color,
                     with_arrow=False,
                 )
                 context.painter.paint_straight_line(
@@ -118,7 +134,7 @@ class NodeLink(Entity):
                         mid_rect,
                         to_node.body_shape,
                     ),
-                    QColor(204, 204, 204),
+                    STYLE_SERVICE.style.link_color,
                 )
 
         # 画连线上的文字
@@ -129,7 +145,7 @@ class NodeLink(Entity):
         ).midpoint()
 
         if link_text != "":
-            text_rect_bg_color = QColor(31, 31, 31, 128)
+            text_rect_bg_color = STYLE_SERVICE.style.link_text_bg_color
             if SETTING_SERVICE.line_style == 1:
                 text_rect_bg_color = QColor(31, 31, 31, 0)
 
@@ -147,7 +163,7 @@ class NodeLink(Entity):
                 link_middle_point,
                 link_text,
                 18,
-                QColor(204, 204, 204),
+                STYLE_SERVICE.style.link_text_color,
             )
             pass
 

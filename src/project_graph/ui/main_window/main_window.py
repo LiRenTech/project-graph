@@ -4,7 +4,7 @@ import subprocess
 from functools import partial
 from pathlib import Path
 
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import (
     QDragEnterEvent,
     QFont,
@@ -21,6 +21,7 @@ from PyQt5.QtWidgets import (
     QFileDialog,
     QLabel,
     QMainWindow,
+    QMessageBox,
     QPushButton,
     QVBoxLayout,
 )
@@ -33,7 +34,7 @@ from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
 from project_graph.liren_side.menu import LAction, LMenu, LMenuBar
 from project_graph.logging import log
-from project_graph.node_manager import NodeManager
+from project_graph.node_manager.node_manager import NodeManager
 from project_graph.recent_file_manager import RecentFileManager
 from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.status_text.status_text import STATUS_TEXT
@@ -41,7 +42,10 @@ from project_graph.toolbar.toolbar import Toolbar
 from project_graph.ui.panel_about import show_about_panel
 from project_graph.ui.panel_export_text import show_text_export_dialog
 from project_graph.ui.panel_help import show_help_panel
+from project_graph.ui.panel_import_text import show_text_import_dialog
+from project_graph.ui.panel_performence_settings import show_performance_settings
 from project_graph.ui.panel_physics_settings import show_physics_settings
+from project_graph.ui.panel_serialize_test import show_serialize_dialog
 from project_graph.ui.panel_visual_settings import show_visual_settings
 
 from . import (
@@ -74,8 +78,6 @@ class Canvas(QMainWindow):
         self.recent_file_manager = RecentFileManager()
         self.toolbar: Toolbar = Toolbar()
 
-        self.init_toolbar()
-
         # ====== 鼠标事件相关
         self.is_pressing = False
         """当前鼠标是否按下（左中右任意一个是否按下）"""
@@ -83,6 +85,10 @@ class Canvas(QMainWindow):
         """鼠标当前位置"""
         self.mouse_location_last_middle_button = NumberVector.zero()
         """鼠标上一次按下中键的位置"""
+        self.mouse_location_last_left_button = NumberVector.zero()
+        """鼠标上一次按下左键的位置"""
+        self.is_last_moved = False
+        """是否上一次进行了移动节点的操作"""
 
         # ====== 键盘事件相关
         self.pressing_keys: set[int] = set()
@@ -125,6 +131,7 @@ class Canvas(QMainWindow):
 
         # 最后再初始化UI
         self.init_ui()
+        self.init_toolbar()
         pass
 
     def init_ui(self):
@@ -152,6 +159,7 @@ class Canvas(QMainWindow):
                         action=self.open_recent_file,
                         shortcut="Ctrl+R",
                     ),
+                    LAction(title="重做", action=self.node_manager.clear_all),
                 ),
             ),
             LMenu(
@@ -174,6 +182,7 @@ class Canvas(QMainWindow):
                 children=(
                     LAction(title="显示设置", action=show_visual_settings),
                     LAction(title="物理设置", action=show_physics_settings),
+                    LAction(title="性能设置", action=show_performance_settings),
                     LAction(title="将设置保存", action=SETTING_SERVICE.save_settings),
                 ),
             ),
@@ -188,6 +197,8 @@ class Canvas(QMainWindow):
                             show_text_export_dialog, node_manager=self.node_manager
                         ),
                     ),
+                    LAction(title="通过纯文本生成节点图", action=partial(show_text_import_dialog, node_manager=self.node_manager)),
+                    LAction(title="查看当前舞台序列化信息", action=partial(show_serialize_dialog, node_manager=self.node_manager)),
                 ),
             ),
         ).apply_to_qt_window(self)
@@ -288,13 +299,45 @@ class Canvas(QMainWindow):
         status_font.setPointSize(12)
         status_font.setStyleHint(QFont.StyleHint.System)
         status_bar.setFont(status_font)
+        # status_color = STYLE_SERVICE.style.details_debug_text_color
+        # style_sheet = f"color: rgb({status_color.red()}, {status_color.green()}, {status_color.blue()});"
+        # 这个地方可能需要实时监测设置的变化，然后更新样式
+        style_sheet = "color: rgb(206, 145, 120);"
+        status_bar.setStyleSheet(style_sheet)  # 将文字颜色设置为红色
         status_bar.showMessage(STATUS_TEXT["normal"])
 
     def init_toolbar(self):
-        self.toolbar.tool_list[0].set_bind_event_function(
+        self.toolbar.tool_delete_node.set_bind_event_function(
             self._delete_current_select_node
         )
+        # 弹出一个框说还没有实现这个功能
+        self.toolbar.tool_null.set_bind_event_function(
+            partial(self.show_message_box, "工具栏中的这个功能还没有做好")
+        )
+        self.toolbar.tool_reverse_link.set_bind_event_function(
+            partial(self.node_manager.reverse_links, self.selected_links)
+        )
+        # 对齐功能
+        self.toolbar.tool_align_col_center.set_bind_event_function(
+            self.node_manager.align_nodes_col_center
+        )
+        self.toolbar.tool_align_col_left.set_bind_event_function(
+            self.node_manager.align_nodes_col_left
+        )
+        self.toolbar.tool_align_col_right.set_bind_event_function(
+            self.node_manager.align_nodes_col_right
+        )
+        self.toolbar.tool_align_row_center.set_bind_event_function(
+            self.node_manager.align_nodes_row_center
+        )
         pass
+
+    def show_message_box(self, message: str):
+        """显示一个消息框"""
+        msg_box = QMessageBox()
+        msg_box.setWindowTitle("project-graph 消息")
+        msg_box.setText(message)
+        msg_box.exec_()
 
     def _delete_current_select_node(self):
         """删除当前选中的节点"""
@@ -359,6 +402,7 @@ class Canvas(QMainWindow):
             load_data = json.loads(f.read())
             self.node_manager.load_from_dict(load_data)
             self.recent_file_manager.add_recent_file(Path(file_path))
+        self.node_manager.progress_recorder.reset()
 
     def on_open_file(self):
         # 选择json文件
@@ -376,7 +420,7 @@ class Canvas(QMainWindow):
         if file_path:
             # 如果用户选择了文件并点击了保存按钮
             # 保存布局文件
-            save_data: dict = self.node_manager.dump_all_nodes()
+            save_data: dict = self.node_manager.dump_all()
 
             # 确保文件扩展名为 .json
             if not file_path.endswith(".json"):
@@ -385,6 +429,7 @@ class Canvas(QMainWindow):
             with open(file_path, "w") as f:
                 json.dump(save_data, f)
             self.recent_file_manager.add_recent_file(Path(file_path))
+            self.node_manager.progress_recorder.reset()
         else:
             # 如果用户取消了保存操作
             log("Save operation cancelled.")
@@ -440,6 +485,14 @@ class Canvas(QMainWindow):
     def tick(self):
         self.effect_manager.tick()
         self.camera.tick()
+        # 更新鼠标手势
+        if Qt.Key.Key_Space in self.pressing_keys:
+            if self.is_pressing:
+                self.setCursor(Qt.CursorShape.ClosedHandCursor)
+            else:
+                self.setCursor(Qt.CursorShape.OpenHandCursor)
+        else:
+            self.setCursor(Qt.CursorShape.ArrowCursor)
         self.update()
 
     def mousePressEvent(self, a0: QMouseEvent | None) -> None:

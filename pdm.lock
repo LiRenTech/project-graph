@@ -5,10 +5,10 @@
 groups = ["default", "package"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:29f9a7f630458102deee0233a80ff8db28bad5ec44e23ea076cb00bc8eb45bdf"
+content_hash = "sha256:f1f0b214424b973cf9c8894cd0ff96d64a7f4c7d614864dd0a77bb88dae095cc"
 
 [[metadata.targets]]
-requires_python = ">=3.12,<3.14"
+requires_python = ">=3.12,<3.13"
 
 [[package]]
 name = "altgraph"

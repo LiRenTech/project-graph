@@ -21,8 +21,27 @@ jobs:
           pip install pipx
           pipx install pdm
           pdm install --with package
+          echo "venv中的PyQt5位置"
+          pdm run python -c "import PyQt5; print(PyQt5.__file__)"
+      - name: Generate assets
+        run: |
+          pdm package --assets-only
+      - name: Install PyQt5
+        run: |
+          sudo apt-get update
+          # 下载pyqt5的deb包
+          apt-get download python3-pyqt5
+          # 解压deb包
+          dpkg -x $(ls python3-pyqt5*.deb) ./python3-pyqt5-deb
+          tree ./python3-pyqt5-deb
+          # 把deb中的/usr/lib/python3/dist-packages/PyQt5复制到venv中的site-packages
+          sudo rm -rf ./.venv/lib/python3.12/site-packages/PyQt5
+          sudo cp -r ./python3-pyqt5-deb/usr/lib/python3/dist-packages/PyQt5 ./.venv/lib/python3.12/site-packages/
+          echo "venv中的PyQt5位置"
+          pdm run python -c "import PyQt5; print(PyQt5.__file__)"
       - name: Package
         run: |
+          set
           pdm package
       - name: Upload artifact
         uses: actions/upload-artifact@v4

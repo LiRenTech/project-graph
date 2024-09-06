@@ -1,19 +1,29 @@
+import argparse
 from pathlib import Path
 
 import PyInstaller.__main__
-from PyQt5 import pyrcc_main
+
+# 项目根目录，不是src
+path = Path(__file__).parent
+
+if not (path / "src" / "project_graph" / "assets" / "assets.py").exists():
+    from PyQt5 import pyrcc_main
 
 
 def main():
-    # 项目根目录，不是src
-    path = Path(__file__).parent
+    parser = argparse.ArgumentParser()
+    # 只编译assets文件
+    parser.add_argument("--assets-only", action="store_true")
+    args = parser.parse_args()
     # 生成assets
-    (path / "src" / "project_graph" / "assets" / "assets.py").unlink(True)
-    pyrcc_main.processResourceFile(
-        [(path / "src" / "project_graph" / "assets" / "image.rcc").as_posix()],
-        (path / "src" / "project_graph" / "assets" / "assets.py").as_posix(),
-        False,
-    )
+    if not (path / "src" / "project_graph" / "assets" / "assets.py").exists():
+        pyrcc_main.processResourceFile(
+            [(path / "src" / "project_graph" / "assets" / "image.rcc").as_posix()],
+            (path / "src" / "project_graph" / "assets" / "assets.py").as_posix(),
+            False,
+        )
+    if args.assets_only:
+        return
     # 创建临时文件
     with open(path / "src" / "_package.py", "w") as f:
         f.write(
@@ -25,9 +35,6 @@ def main():
             "--onefile",
             "--windowed",
             f"--icon={path / 'src' / 'project_graph' / 'assets' / 'favicon.ico'}",
-            # 支持fcitx5输入法
-            "--add-data",
-            f"{path / 'lib'/ 'libfcitx5platforminputcontextplugin.so'}:PyQt5/Qt5/plugins/platforminputcontexts",
             "-n",
             "project-graph",
             (path / "src" / "_package.py").as_posix(),

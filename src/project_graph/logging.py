@@ -1,6 +1,5 @@
 import datetime
 
-
 logs: list[str] = []
 
 

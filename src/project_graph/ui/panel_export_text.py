@@ -14,7 +14,7 @@ from PyQt5.QtWidgets import (
 )
 
 if typing.TYPE_CHECKING:
-    from project_graph.node_manager import NodeManager
+    from project_graph.node_manager.node_manager import NodeManager
 
 
 def show_text_export_dialog(node_manager: "NodeManager"):
