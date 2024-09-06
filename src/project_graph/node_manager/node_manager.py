@@ -317,7 +317,7 @@ class NodeManager:
         # 先清空原有节点
         self.nodes.clear()
         self.add_from_dict(data, NumberVector(0, 0), refresh_uuid=False)
-        self.update_links_by_child_map()
+        # self.update_links_by_child_map()
 
     def get_node_by_uuid(self, uuid: str) -> EntityNode | None:
         for node in self.nodes:
