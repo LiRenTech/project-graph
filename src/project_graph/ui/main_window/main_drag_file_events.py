@@ -65,6 +65,7 @@ def drop_event(self: "Canvas", event):
                     )
                     return
                 self.node_manager.add_from_dict(load_data, self.dragging_file_location)
+                self.node_manager.save_a_step()
                 event.acceptProposedAction()
                 break
             except Exception as e:

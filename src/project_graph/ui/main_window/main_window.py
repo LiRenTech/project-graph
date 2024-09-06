@@ -358,6 +358,7 @@ class Canvas(QMainWindow):
             load_data = json.loads(f.read())
             self.node_manager.load_from_dict(load_data)
             self.recent_file_manager.add_recent_file(Path(file_path))
+        self.node_manager.progress_recorder.reset()
 
     def on_open_file(self):
         # 选择json文件
@@ -384,6 +385,7 @@ class Canvas(QMainWindow):
             with open(file_path, "w") as f:
                 json.dump(save_data, f)
             self.recent_file_manager.add_recent_file(Path(file_path))
+            self.node_manager.progress_recorder.reset()
         else:
             # 如果用户取消了保存操作
             log("Save operation cancelled.")

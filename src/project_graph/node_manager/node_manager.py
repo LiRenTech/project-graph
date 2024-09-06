@@ -354,6 +354,11 @@ class NodeManager:
         pass
 
     @record_step
+    def save_a_step(self):
+        """一个通用的保存一步的方法，供外部调用"""
+        pass
+
+    @record_step
     def pase_cloned_nodes(self):  # todo 可能要加个相对位置参数
         """粘贴复制的节点"""
         self.add_from_dict(
