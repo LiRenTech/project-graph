@@ -82,6 +82,8 @@ class Canvas(QMainWindow):
         """鼠标当前位置"""
         self.mouse_location_last_middle_button = NumberVector.zero()
         """鼠标上一次按下中键的位置"""
+        self.is_last_moved = False
+        """是否上一次进行了移动节点的操作"""
 
         # ====== 键盘事件相关
         self.pressing_keys: set[int] = set()
@@ -155,6 +157,9 @@ class Canvas(QMainWindow):
         # 打开曾经保存的
         open_recent_action = QAction("打开曾经保存的", self)
         open_recent_action.triggered.connect(self.open_recent_file)
+        # 重做
+        redo_action = QAction("重做", self)
+        redo_action.triggered.connect(self.node_manager.clear_all)
 
         # 设置快捷键
         open_action.setShortcut("Ctrl+O")
@@ -164,6 +169,7 @@ class Canvas(QMainWindow):
         file_menu.addAction(open_action)
         file_menu.addAction(save_action)
         file_menu.addAction(open_recent_action)
+        file_menu.addAction(redo_action)
 
         # 视图菜单
         view_menu = menubar.addMenu("视图")

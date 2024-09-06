@@ -243,25 +243,23 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                         if link_body_line.is_intersecting(select_line):
                             # 选择这个link
                             self.selected_links.append(link)
+                self.is_last_moved = False
             else:
-                # 移动
-
                 # 当前帧距离上一帧的 鼠标移动向量
                 mouse_d_location = mouse_world_location - self.last_move_location
                 if Qt.Key.Key_Alt in self.pressing_keys:
                     # 按住Alt键是复制克隆
                     for node in self.clone_nodes:
                         node.move(mouse_d_location)
+                    self.is_last_moved = False
                 else:
-                    for node in self.node_manager.nodes:
-                        if node.is_selected:
-                            if Qt.Key.Key_Control in self.pressing_keys:
-                                # 按住Ctrl，移动节点，带动子节点一起移动
-                                self.node_manager.move_node_with_children(
-                                    node, mouse_d_location
-                                )
-                            else:
-                                self.node_manager.move_node(node, mouse_d_location)
+                    # 移动
+                    if Qt.Key.Key_Control in self.pressing_keys:
+                        # 按住Ctrl，移动节点，带动子节点一起移动
+                        self.node_manager.move_nodes_with_children(mouse_d_location)
+                    else:
+                        self.node_manager.move_nodes(mouse_d_location)
+                    self.is_last_moved = True
 
             self.last_move_location = mouse_world_location.clone()
 
@@ -315,6 +313,9 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
     assert a0 is not None
     self.is_pressing = False
     mouse_view_location = NumberVector(a0.pos().x(), a0.pos().y())
+
+    if self.is_last_moved:
+        self.node_manager.move_finished()
 
     if a0.button() == Qt.MouseButton.LeftButton:
         if Qt.Key.Key_Alt in self.pressing_keys:
@@ -449,7 +450,7 @@ def mouseDoubleClickEvent(self: "Canvas", event: QMouseEvent | None):
                     text=select_node.details,
                 )
                 if ok:
-                    select_node.details = text
+                    self.node_manager.edit_node_details(select_node, text)
             else:
                 # 在节点上左键是编辑文字
                 text, ok = QInputDialog.getText(
@@ -459,7 +460,7 @@ def mouseDoubleClickEvent(self: "Canvas", event: QMouseEvent | None):
                     text=select_node.inner_text,
                 )
                 if ok:
-                    select_node.inner_text = text
+                    self.node_manager.edit_node_inner_text(select_node, text)
 
     elif event.button() == Qt.MouseButton.RightButton:
         if select_node is not None:

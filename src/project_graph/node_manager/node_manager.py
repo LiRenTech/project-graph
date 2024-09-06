@@ -5,6 +5,7 @@ from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
+from project_graph.node_manager.progress_snapshot import ProgressSnapshot
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 from project_graph.settings.setting_service import SETTING_SERVICE
@@ -12,6 +13,20 @@ from project_graph.settings.setting_service import SETTING_SERVICE
 from .node_progress_recorder import NodeProgressRecorder
 from .node_text_exporter import NodeTextExporter
 from .node_text_importer import NodeTextImporter
+
+
+def record_step(method):
+    """
+    步骤装饰器
+    给NodeManager里面涉及到操作的函数加上步骤记录
+    """
+
+    def new_method(self: "NodeManager", *args, **kwargs):
+        result = method(self, *args, **kwargs)
+        self.progress_recorder.record()
+        return result
+
+    return new_method
 
 
 class NodeManager:
@@ -304,14 +319,31 @@ class NodeManager:
                 return node
         return None
 
-    def move_node(self, node: EntityNode, d_location: NumberVector):
+    def move_nodes(self, d_location: NumberVector):
+        # 不要加步骤记录，因为是每帧实时移动，记录会爆炸
+        for node in self.nodes:
+            if node.is_selected:
+                self._move_node(node, d_location)
+
+    def move_nodes_with_children(self, d_location: NumberVector):
+        # 不要加步骤记录，因为是每帧实时移动，记录会爆炸
+        for node in self.nodes:
+            if node.is_selected:
+                self._move_node_with_children(node, d_location)
+
+    @record_step
+    def move_finished(self):
+        # 这里似乎真的什么都不用写
+        pass
+
+    def _move_node(self, node: EntityNode, d_location: NumberVector):
         """
         移动一个节点（不带动子节点的单独移动）
         """
         node.move(d_location)
         self.collide_dfs(node)
 
-    def move_node_with_children(self, node: EntityNode, d_location: NumberVector):
+    def _move_node_with_children(self, node: EntityNode, d_location: NumberVector):
         """
         移动一个节点（带动子节点的整体移动）
         """
@@ -345,11 +377,26 @@ class NodeManager:
                 self_node.collide_with(node)
                 self.collide_dfs(node)
 
+    @record_step
+    def edit_links_inner_text(self, links: list[NodeLink], new_text: str):
+        for link in links:
+            link.inner_text = new_text
+
+    @record_step
+    def edit_node_inner_text(self, node: EntityNode, new_text: str):
+        node.inner_text = new_text
+
+    @record_step
+    def edit_node_details(self, node: EntityNode, new_details: str):
+        node.details = new_details
+
+    @record_step
     def add_node_by_click(self, location_world: NumberVector) -> EntityNode:
         res = EntityNode(Rectangle(location_world - NumberVector(50, 50), 100, 100))
         self.nodes.append(res)
         return res
 
+    @record_step
     def delete_node(self, node: EntityNode):
         if node in self.nodes:
             self.nodes.remove(node)
@@ -365,6 +412,7 @@ class NodeManager:
         for link in prepare_delete_links:
             self._links.remove(link)
 
+    @record_step
     def delete_nodes(self, nodes: list[EntityNode]):
         for node in nodes:
             if node in self.nodes:
@@ -384,6 +432,7 @@ class NodeManager:
 
         # self.update_links()
 
+    @record_step
     def connect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
             res = from_node.add_child(to_node)
@@ -394,6 +443,7 @@ class NodeManager:
             return res
         return False
 
+    @record_step
     def disconnect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
             res = from_node.remove_child(to_node)
@@ -420,6 +470,7 @@ class NodeManager:
                 return link
         return None
 
+    @record_step
     def reverse_links(self, links: list[NodeLink]):
         for link in links:
             from_node, to_node = link.source_node, link.target_node
@@ -441,6 +492,7 @@ class NodeManager:
                 s.add(NodeLink(node, child))
         self._links = s
 
+    @record_step
     def rotate_node(self, node: EntityNode, degrees: float):
         """
         按照一定角度旋转节点，旋转的是连接这个节点的所有子节点
@@ -480,6 +532,7 @@ class NodeManager:
 
     # region 对齐相关
 
+    @record_step
     def align_nodes_row_center(self):
         nodes = [node for node in self.nodes if node.is_selected]
         if not nodes:
@@ -492,6 +545,7 @@ class NodeManager:
         for node in nodes:
             node.move_to(NumberVector(node.body_shape.location_left_top.x, y_avg))
 
+    @record_step
     def align_nodes_col_left(self):
         nodes = [node for node in self.nodes if node.is_selected]
         if not nodes:
@@ -502,6 +556,7 @@ class NodeManager:
         for node in nodes:
             node.move_to(NumberVector(x_min, node.body_shape.location_left_top.y))
 
+    @record_step
     def align_nodes_col_right(self):
         nodes = [node for node in self.nodes if node.is_selected]
         if not nodes:
@@ -516,6 +571,7 @@ class NodeManager:
                 )
             )
 
+    @record_step
     def align_nodes_col_center(self):
         # 竖着中心串串
         nodes = [node for node in self.nodes if node.is_selected]
@@ -532,6 +588,22 @@ class NodeManager:
                     node.body_shape.location_left_top.y,
                 )
             )
+
+    def update_from_snapshot(self, snapshot: ProgressSnapshot):
+        """将历史记录中的节点再独立拷贝一份放到node_manager的舞台上"""
+
+        # 恰好深拷贝一份，利用 ProgressSnapshot 内部已经写好的逻辑
+        coppied_snapshot = ProgressSnapshot(snapshot.nodes, snapshot.links)
+
+        self.nodes = coppied_snapshot.nodes
+        self._links = coppied_snapshot.links
+        pass
+
+    def clear_all(self):
+        """重做，历史记录也清空"""
+        self.nodes = []
+        self._links = set()
+        self.progress_recorder.reset()
 
     # region 画布相关
 

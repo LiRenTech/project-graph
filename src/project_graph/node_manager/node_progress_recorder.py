@@ -24,19 +24,9 @@ a -> b -> c -> d -> e -> f -> g
 """
 
 import typing
+from typing import Optional
 
-from project_graph.entity.entity_node import EntityNode
-from project_graph.entity.node_link import NodeLink
-
-
-class StageSnapshot:
-    """
-    画面快照
-    """
-
-    def __init__(self, nodes: list[EntityNode], links: list[NodeLink]):
-        self.nodes = nodes
-        self.links = links
+from project_graph.node_manager.progress_snapshot import ProgressSnapshot
 
 
 class ProgressRecordNode:
@@ -44,11 +34,19 @@ class ProgressRecordNode:
     双向节点类，用于记录操作过程
     """
 
-    def __init__(self, current_data, next: "ProgressRecordNode | None"):
+    def __init__(
+        self,
+        current_data: ProgressSnapshot,
+        next: "Optional[ProgressRecordNode]",
+        index: int,
+    ):
         """初始化一个头节点"""
         self.current_data = current_data
         self.next = next
-        self.prev = None
+        self.prev: "Optional[ProgressRecordNode]" = None
+
+        self.index = index
+        """方便知道当前是在第几个节点"""
 
 
 if typing.TYPE_CHECKING:
@@ -59,16 +57,52 @@ class NodeProgressRecorder:
     def __init__(self, node_manager: "NodeManager"):
         self.node_manager = node_manager
 
-        self.undo_stack_link = ProgressRecordNode(None, None)
+        self.undo_stack_link = ProgressRecordNode(
+            ProgressSnapshot.get_empty_snapshot(), None, 0
+        )
         "链表"
 
         self.current = self.undo_stack_link
         "当前节点"
 
-    def update_node_manager(
-        self,
-    ):
-        self.node_manager
+    def get_current_index(self) -> int:
+        return self.current.index
+
+    @property
+    def node_count(self) -> int:
+        res = 0
+        count_current = self.undo_stack_link
+        while count_current is not None:
+            res += 1
+            count_current = count_current.next
+        return res
+
+    def reset(self):
+        """清空历史记录"""
+        self.undo_stack_link = ProgressRecordNode(
+            ProgressSnapshot.get_empty_snapshot(), None, 0
+        )
+        self.current = self.undo_stack_link
+
+    def record(self):
+        """
+        用户操作一步
+        """
+        # 注意：如果是在链表中间操作，会截断后面的。todo
+        new_node = ProgressRecordNode(
+            ProgressSnapshot.get_snapshot(self.node_manager),
+            None,
+            self.current.index + 1,
+        )
+        new_node.prev = self.current
+
+        repeat_node = self.current.next  # 准备被替代的节点（current不是最后一个的情况）
+
+        self.current.next = new_node
+        self.current = new_node
+
+        if repeat_node is not None:
+            repeat_node.prev = None  # 断开链接，这些部分将被自动垃圾回收
 
     def ctrl_z(self):
         """
@@ -76,4 +110,32 @@ class NodeProgressRecorder:
         """
         if self.current.prev is not None:
             self.current = self.current.prev
-            # self.node_manager.update_node_data(self.current.current_data)
+            self.update_manager()
+
+    def ctrl_shift_z(self):
+        """
+        取消撤销
+        """
+        if self.current.next is not None:
+            self.current = self.current.next
+            self.update_manager()
+
+    def update_manager(self):
+        """
+        根据链表当前位置，更新node_manager里面的内容
+        将历史记录中的节点再独立拷贝一份放到node_manager的舞台上
+        """
+        self.node_manager.update_from_snapshot(self.current.current_data)
+
+    def stringify(self):
+        link_line = ""
+        cur = self.undo_stack_link
+
+        while cur is not None:
+            if cur == self.current:
+                link_line += f"[{cur.index}] > "
+            else:
+                link_line += f"{cur.index} > "
+            cur = cur.next
+
+        return link_line

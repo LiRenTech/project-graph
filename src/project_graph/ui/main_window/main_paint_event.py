@@ -181,6 +181,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
             [
                 f"当前缩放: {self.camera.current_scale:.2f}",
                 f"摄像机位置: ({self.camera.location.x:.2f}, {self.camera.location.y:.2f})",
+                f"历史情况：{self.node_manager.progress_recorder.stringify()}",
                 f"特效数量: {len(self.effect_manager.effects)}",
                 f"节点数量: {len(self.node_manager.nodes)}",
                 f"连接数量: {len(self.node_manager.get_all_links())}",
@@ -191,6 +192,8 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
                 f"待删除节点：{self.warning_nodes}",
                 f"待删除连接：{self.warning_links}",
                 f"选择的连接：{self.selected_links}",
+                f"历史记录当前节点：{self.node_manager.progress_recorder.get_current_index()}",
+                f"历史记录节点总量：{self.node_manager.progress_recorder.node_count}",
             ],
         )
     # 工具栏
