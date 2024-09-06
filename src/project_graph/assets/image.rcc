@@ -2,5 +2,12 @@
  <qresource>
 	 <file>favicon.ico</file>
 	 <file>icon_delete.png</file>
+	 <file>icon_null.png</file>
+	 <file>icon_reverse.png</file>
+	 <file>icon_alignment_col_left.png</file>
+	 <file>icon_alignment_col_center.png</file>
+	 <file>icon_alignment_col_right.png</file>
+	 <file>icon_alignment_row_center.png</file>
+
  </qresource>
 </RCC>

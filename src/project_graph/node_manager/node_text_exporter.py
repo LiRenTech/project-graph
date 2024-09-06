@@ -10,11 +10,10 @@ import typing
 from project_graph.entity.entity_node import EntityNode
 
 if typing.TYPE_CHECKING:
-    from project_graph.node_manager import NodeManager
+    from .node_manager import NodeManager
 
 
 class NodeTextExporter:
-    # TODO: 有待增加 带link标记信息的、node详细信息的
     def __init__(self, node_manager: "NodeManager"):
         self.node_manager = node_manager
 

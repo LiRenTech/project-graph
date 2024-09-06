@@ -7,7 +7,7 @@
 from pathlib import Path
 
 from project_graph.app_dir import DATA_DIR
-
+from project_graph.settings.setting_enums import ThemeEnum
 
 settings_file_path = Path(DATA_DIR) / "settings.json"
 
@@ -18,7 +18,7 @@ class SettingService:
         初始化默认数值
         """
         self.line_style = 0  # 0: 贝塞尔，1：直线
-        self.theme_style = 0
+        self.theme_style = ThemeEnum.GRAY_2B
 
         self.is_show_grid = True
         """是否显示网格"""
@@ -40,6 +40,16 @@ class SettingService:
         摩擦系数，越大摩擦力越大，摩擦力会使速度减慢
         """
 
+        self.is_node_details_show_always = False
+        """
+        节点的详细信息是否持续显示
+        False: 鼠标悬停显示，True: 始终显示
+        """
+
+        self.history_max_size = 20
+        """
+        历史记录最大数量
+        """
         pass
 
     def __dict__(self):
@@ -55,6 +65,8 @@ class SettingService:
             "camera_scale_exponent": self.camera_scale_exponent,
             "camera_move_amplitude": self.camera_move_amplitude,
             "camera_move_friction": self.camera_move_friction,
+            "is_node_details_show_always": self.is_node_details_show_always,
+            "history_max_size": self.history_max_size,
         }
 
     def to_json_string(self):
@@ -78,9 +90,9 @@ class SettingService:
             if data:
                 import json
 
-                settings = json.loads(data)
+                settings: dict = json.loads(data)
                 self.line_style = settings.get("line_style", 0)
-                self.theme_style = settings.get("theme_style", 0)
+                self.theme_style = settings.get("theme_style", ThemeEnum.GRAY_2B)
                 self.is_show_grid = settings.get("is_show_grid", True)
                 self.is_show_debug_text = settings.get("is_show_debug_text", True)
                 self.is_enable_node_collision = settings.get(
@@ -89,6 +101,10 @@ class SettingService:
                 self.camera_scale_exponent = settings.get("camera_scale_exponent", 1.1)
                 self.camera_move_amplitude = settings.get("camera_move_amplitude", 2)
                 self.camera_move_friction = settings.get("camera_move_friction", 0.1)
+                self.is_node_details_show_always = settings.get(
+                    "is_node_details_show_always", False
+                )
+                self.history_max_size = settings.get("history_max_size", 20)
 
     def save_settings(self):
         """

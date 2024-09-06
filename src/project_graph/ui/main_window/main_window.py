@@ -3,8 +3,10 @@ import platform
 import subprocess
 from functools import partial
 from pathlib import Path
+from threading import Thread
+from uuid import uuid4
 
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import (
     QDragEnterEvent,
     QFont,
@@ -14,25 +16,27 @@ from PyQt5.QtGui import (
     QWheelEvent,
 )
 from PyQt5.QtWidgets import (
-    QAction,
     QApplication,
     QDesktopWidget,
     QDialog,
     QFileDialog,
     QLabel,
     QMainWindow,
+    QMessageBox,
     QPushButton,
     QVBoxLayout,
 )
 
+from project_graph.ai.doubao import Doubao
 from project_graph.app_dir import DATA_DIR
 from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.effect.effect_manager import EffectManager
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
+from project_graph.liren_side.menu import LAction, LMenu, LMenuBar
 from project_graph.logging import log
-from project_graph.node_manager import NodeManager
+from project_graph.node_manager.node_manager import NodeManager
 from project_graph.recent_file_manager import RecentFileManager
 from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.status_text.status_text import STATUS_TEXT
@@ -40,7 +44,10 @@ from project_graph.toolbar.toolbar import Toolbar
 from project_graph.ui.panel_about import show_about_panel
 from project_graph.ui.panel_export_text import show_text_export_dialog
 from project_graph.ui.panel_help import show_help_panel
+from project_graph.ui.panel_import_text import show_text_import_dialog
+from project_graph.ui.panel_performence_settings import show_performance_settings
 from project_graph.ui.panel_physics_settings import show_physics_settings
+from project_graph.ui.panel_serialize_test import show_serialize_dialog
 from project_graph.ui.panel_visual_settings import show_visual_settings
 
 from . import (
@@ -73,8 +80,6 @@ class Canvas(QMainWindow):
         self.recent_file_manager = RecentFileManager()
         self.toolbar: Toolbar = Toolbar()
 
-        self.init_toolbar()
-
         # ====== 鼠标事件相关
         self.is_pressing = False
         """当前鼠标是否按下（左中右任意一个是否按下）"""
@@ -82,6 +87,10 @@ class Canvas(QMainWindow):
         """鼠标当前位置"""
         self.mouse_location_last_middle_button = NumberVector.zero()
         """鼠标上一次按下中键的位置"""
+        self.mouse_location_last_left_button = NumberVector.zero()
+        """鼠标上一次按下左键的位置"""
+        self.is_last_moved = False
+        """是否上一次进行了移动节点的操作"""
 
         # ====== 键盘事件相关
         self.pressing_keys: set[int] = set()
@@ -124,6 +133,7 @@ class Canvas(QMainWindow):
 
         # 最后再初始化UI
         self.init_ui()
+        self.init_toolbar()
         pass
 
     def init_ui(self):
@@ -136,93 +146,77 @@ class Canvas(QMainWindow):
         self._move_window_to_center()
 
         # 菜单栏
-        menubar = self.menuBar()
-        assert menubar is not None
-        # 文件菜单
-        file_menu = menubar.addMenu("文件")
-        assert file_menu is not None
-        # 打开文件
-        open_action = QAction("打开新图", self)
-        open_action.triggered.connect(self.on_open_file)
-        # 保存文件
-        save_action = QAction("保存当前图", self)
-        save_action.triggered.connect(self.on_save_file)
-        # 打开曾经保存的
-        open_recent_action = QAction("打开曾经保存的", self)
-        open_recent_action.triggered.connect(self.open_recent_file)
-
-        # 设置快捷键
-        open_action.setShortcut("Ctrl+O")
-        save_action.setShortcut("Ctrl+S")
-        open_recent_action.setShortcut("Ctrl+R")
-
-        file_menu.addAction(open_action)
-        file_menu.addAction(save_action)
-        file_menu.addAction(open_recent_action)
-
-        # 视图菜单
-        view_menu = menubar.addMenu("视图")
-        assert view_menu is not None
-        # 重置位置
-        reset_view_action = QAction("重置位置", self)
-        reset_view_action.triggered.connect(self.reset_view)
-        view_menu.addAction(reset_view_action)
-        # 重置缩放
-        reset_scale_action = QAction("重置缩放", self)
-        reset_scale_action.triggered.connect(self.reset_scale)
-        view_menu.addAction(reset_scale_action)
-
-        # 帮助说明菜单
-        help_menu = menubar.addMenu("帮助")
-        assert help_menu is not None
-        # 帮助说明
-        help_action = QAction("帮助说明", self)
-        help_action.triggered.connect(show_help_panel)
-        # 关于
-        about_action = QAction("关于", self)
-        about_action.triggered.connect(show_about_panel)
-        help_menu.addAction(help_action)
-        help_menu.addAction(about_action)
-
-        # 打开缓存文件夹
-        cache_folder_action = QAction("打开缓存文件夹", self)
-        cache_folder_action.triggered.connect(self.open_cache_folder)
-        help_menu.addAction(cache_folder_action)
-
-        # 设置
-        settings_menu = menubar.addMenu("设置")
-        assert settings_menu is not None
-
-        show_settings = QAction("显示设置", self)
-        show_settings.triggered.connect(show_visual_settings)
-
-        physics_settings = QAction("物理设置", self)
-        physics_settings.triggered.connect(show_physics_settings)
-
-        save_settings = QAction("将设置保存", self)
-        save_settings.triggered.connect(SETTING_SERVICE.save_settings)
-
-        settings_menu.addAction(show_settings)
-        settings_menu.addAction(physics_settings)
-        settings_menu.addAction(save_settings)
-
-        # 测试菜单
-        test_menu = menubar.addMenu("测试")
-        assert test_menu is not None
-        # 抛出异常
-        test_exception_action = QAction("抛出异常", self)
-        test_exception_action.triggered.connect(self.on_test_exception)
-        test_menu.addAction(test_exception_action)
-        # 复制摄像机位置
-        test_copy_camera_action = QAction("复制摄像机位置", self)
-        test_copy_camera_action.triggered.connect(self.on_copy_camera)
-        test_menu.addAction(test_copy_camera_action)
-        # 导出纯文本
-        text_exporter_action = QAction("导出纯文本", self)
-        text_exporter_action.triggered.connect(
-            partial(show_text_export_dialog, node_manager=self.node_manager)
-        )
-        test_menu.addAction(text_exporter_action)
+        LMenuBar(
+            LMenu(
+                title="文件",
+                children=(
+                    LAction(
+                        title="打开新图", action=self.on_open_file, shortcut="Ctrl+O"
+                    ),
+                    LAction(
+                        title="保存当前图", action=self.on_save_file, shortcut="Ctrl+S"
+                    ),
+                    LAction(
+                        title="打开曾经保存的",
+                        action=self.open_recent_file,
+                        shortcut="Ctrl+R",
+                    ),
+                    LAction(title="重做", action=self.node_manager.clear_all),
+                ),
+            ),
+            LMenu(
+                title="视图",
+                children=(
+                    LAction(title="重置位置", action=self.reset_view),
+                    LAction(title="重置缩放", action=self.reset_scale),
+                ),
+            ),
+            LMenu(
+                title="帮助",
+                children=(
+                    LAction(title="帮助说明", action=show_help_panel),
+                    LAction(title="关于", action=show_about_panel),
+                    LAction(title="打开缓存文件夹", action=self.open_cache_folder),
+                ),
+            ),
+            LMenu(
+                title="设置",
+                children=(
+                    LAction(title="显示设置", action=show_visual_settings),
+                    LAction(title="物理设置", action=show_physics_settings),
+                    LAction(title="性能设置", action=show_performance_settings),
+                    LAction(title="将设置保存", action=SETTING_SERVICE.save_settings),
+                ),
+            ),
+            LMenu(
+                title="AI", children=(LAction(title="测试", action=self.on_ai_test),)
+            ),
+            LMenu(
+                title="测试",
+                children=(
+                    LAction(title="抛出异常", action=self.on_test_exception),
+                    LAction(title="复制摄像机位置", action=self.on_copy_camera),
+                    LAction(
+                        title="导出纯文本",
+                        action=partial(
+                            show_text_export_dialog, node_manager=self.node_manager
+                        ),
+                    ),
+                    LAction(
+                        title="通过纯文本生成节点图",
+                        action=partial(
+                            show_text_import_dialog, node_manager=self.node_manager
+                        ),
+                    ),
+                    LAction(
+                        title="查看当前舞台序列化信息",
+                        action=partial(
+                            show_serialize_dialog, node_manager=self.node_manager
+                        ),
+                    ),
+                ),
+            ),
+        ).apply_to_qt_window(self)
 
         # 状态栏
         status_bar = self.statusBar()
@@ -233,13 +227,45 @@ class Canvas(QMainWindow):
         status_font.setPointSize(12)
         status_font.setStyleHint(QFont.StyleHint.System)
         status_bar.setFont(status_font)
+        # status_color = STYLE_SERVICE.style.details_debug_text_color
+        # style_sheet = f"color: rgb({status_color.red()}, {status_color.green()}, {status_color.blue()});"
+        # 这个地方可能需要实时监测设置的变化，然后更新样式
+        style_sheet = "color: rgb(206, 145, 120);"
+        status_bar.setStyleSheet(style_sheet)  # 将文字颜色设置为红色
         status_bar.showMessage(STATUS_TEXT["normal"])
 
     def init_toolbar(self):
-        self.toolbar.tool_list[0].set_bind_event_function(
+        self.toolbar.tool_delete_node.set_bind_event_function(
             self._delete_current_select_node
         )
+        # 弹出一个框说还没有实现这个功能
+        self.toolbar.tool_null.set_bind_event_function(
+            partial(self.show_message_box, "工具栏中的这个功能还没有做好")
+        )
+        self.toolbar.tool_reverse_link.set_bind_event_function(
+            partial(self.node_manager.reverse_links, self.selected_links)
+        )
+        # 对齐功能
+        self.toolbar.tool_align_col_center.set_bind_event_function(
+            self.node_manager.align_nodes_col_center
+        )
+        self.toolbar.tool_align_col_left.set_bind_event_function(
+            self.node_manager.align_nodes_col_left
+        )
+        self.toolbar.tool_align_col_right.set_bind_event_function(
+            self.node_manager.align_nodes_col_right
+        )
+        self.toolbar.tool_align_row_center.set_bind_event_function(
+            self.node_manager.align_nodes_row_center
+        )
         pass
+
+    def show_message_box(self, message: str):
+        """显示一个消息框"""
+        msg_box = QMessageBox()
+        msg_box.setWindowTitle("project-graph 消息")
+        msg_box.setText(message)
+        msg_box.exec_()
 
     def _delete_current_select_node(self):
         """删除当前选中的节点"""
@@ -304,6 +330,7 @@ class Canvas(QMainWindow):
             load_data = json.loads(f.read())
             self.node_manager.load_from_dict(load_data)
             self.recent_file_manager.add_recent_file(Path(file_path))
+        self.node_manager.progress_recorder.reset()
 
     def on_open_file(self):
         # 选择json文件
@@ -321,7 +348,7 @@ class Canvas(QMainWindow):
         if file_path:
             # 如果用户选择了文件并点击了保存按钮
             # 保存布局文件
-            save_data: dict = self.node_manager.dump_all_nodes()
+            save_data: dict = self.node_manager.dump_all()
 
             # 确保文件扩展名为 .json
             if not file_path.endswith(".json"):
@@ -330,6 +357,7 @@ class Canvas(QMainWindow):
             with open(file_path, "w") as f:
                 json.dump(save_data, f)
             self.recent_file_manager.add_recent_file(Path(file_path))
+            self.node_manager.progress_recorder.reset()
         else:
             # 如果用户取消了保存操作
             log("Save operation cancelled.")
@@ -350,6 +378,39 @@ class Canvas(QMainWindow):
         clip = QApplication.clipboard()
         assert clip is not None
         clip.setText(str(self.camera.location))
+
+    def on_ai_test(self):
+        """测试AI"""
+        instance = Doubao()
+        res = ""
+        selected_nodes = [node for node in self.node_manager.nodes if node.is_selected]
+
+        def run():
+            nonlocal res
+            res = instance.generate_node(self.node_manager)
+            log(res)
+            nodes = json.loads(res)
+            for dic in nodes:
+                dic["body_shape"]["width"] = 100
+                dic["body_shape"]["height"] = 100
+                dic["details"] = dic["details"].replace("$$$", "\n")
+                dic["uuid"] = str(uuid4())
+                dic["children"] = []
+                self.node_manager.add_from_dict(
+                    {"nodes": [dic]},
+                    NumberVector(
+                        dic["body_shape"]["location_left_top"][0],
+                        dic["body_shape"]["location_left_top"][1],
+                    ),
+                    refresh_uuid=False,
+                )
+                entity_node = self.node_manager.get_node_by_uuid(dic["uuid"])
+                assert entity_node is not None
+                for node in selected_nodes:
+                    log(node)
+                    self.node_manager.connect_node(node, entity_node)
+
+        Thread(target=run).start()
 
     def dragEnterEvent(self, a0: QDragEnterEvent | None):
         assert a0 is not None
@@ -385,6 +446,14 @@ class Canvas(QMainWindow):
     def tick(self):
         self.effect_manager.tick()
         self.camera.tick()
+        # 更新鼠标手势
+        if Qt.Key.Key_Space in self.pressing_keys:
+            if self.is_pressing:
+                self.setCursor(Qt.CursorShape.ClosedHandCursor)
+            else:
+                self.setCursor(Qt.CursorShape.OpenHandCursor)
+        else:
+            self.setCursor(Qt.CursorShape.ArrowCursor)
         self.update()
 
     def mousePressEvent(self, a0: QMouseEvent | None) -> None:

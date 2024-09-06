@@ -36,9 +36,12 @@ def show_visual_settings():
 
     layout.addWidget(QLabel("主题颜色"))
     theme_style_combo_box = QComboBox()
-    theme_style_combo_box.addItem("2b灰")
+    theme_style_combo_box.addItem("德古拉灰")
     theme_style_combo_box.addItem("论文白")
-    theme_style_combo_box.addItem("猛男粉")
+    theme_style_combo_box.addItem("马卡龙色系")
+    theme_style_combo_box.addItem("黑客帝国")
+    theme_style_combo_box.addItem("科技蓝主题")
+    theme_style_combo_box.addItem("Catppuccin Mocha")
     theme_style_combo_box.setCurrentIndex(SETTING_SERVICE.theme_style)
 
     def on_change_theme_style(index):
@@ -66,6 +69,17 @@ def show_visual_settings():
 
     show_debug_info_check_box.stateChanged.connect(on_change_show_debug_info)
     layout.addWidget(show_debug_info_check_box)
+
+    # 节点详细信息显示开关
+    show_node_detail_check_box = QCheckBox("持续显示节点详细信息")
+    show_node_detail_check_box.setChecked(SETTING_SERVICE.is_node_details_show_always)
+
+    def on_change_show_node_detail(state):
+        SETTING_SERVICE.is_node_details_show_always = state == 2
+
+    show_node_detail_check_box.stateChanged.connect(on_change_show_node_detail)
+    layout.addWidget(show_node_detail_check_box)
+    layout.addWidget(QLabel("即：鼠标不需要在上面悬浮即可看到节点详细信息。"))
 
     # 设置布局到对话框
     dialog.setLayout(layout)

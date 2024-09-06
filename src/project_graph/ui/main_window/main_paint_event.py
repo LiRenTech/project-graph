@@ -14,6 +14,7 @@ from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 from project_graph.paint.painters import ProjectGraphPainter
 from project_graph.settings.setting_service import SETTING_SERVICE
+from project_graph.settings.style_service import STYLE_SERVICE
 
 if typing.TYPE_CHECKING:
     from .main_window import Canvas
@@ -26,8 +27,10 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
     rect = self.rect()
     # 更新camera大小，防止放大窗口后缩放中心点还在左上部分
     self.camera.reset_view_size(rect.width(), rect.height())
+
     # 使用黑色填充整个窗口
-    painter.fillRect(rect, QColor(43, 43, 43, 255))
+    painter.fillRect(rect, STYLE_SERVICE.style.background_color)
+
     # 画网格
     if SETTING_SERVICE.is_show_grid:
         paint_grid(painter, self.camera)
@@ -37,7 +40,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
             painter,
             self.camera.location_world2view(self.mouse_right_start_location),
             self.camera.location_world2view(self.mouse_right_location),
-            QColor(255, 0, 0),
+            STYLE_SERVICE.style.cutting_warning_line_color,
             2 * self.camera.current_scale,
         )
 
@@ -62,8 +65,8 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
                 self.camera.location_world2view(rect.location_left_top),
                 rect.width * self.camera.current_scale,
                 rect.height * self.camera.current_scale,
-                QColor(255, 255, 255, 20),
-                QColor(255, 255, 255, 128),
+                STYLE_SERVICE.style.select_rectangle_fill_color,
+                STYLE_SERVICE.style.select_rectangle_border_color,
                 2,
             )
         # 如果没有框选住节点，就画线
@@ -75,7 +78,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
                 rect.width * self.camera.current_scale,
                 rect.height * self.camera.current_scale,
                 QColor(0, 0, 0, 0),
-                QColor(0, 255, 0, 128),
+                STYLE_SERVICE.style.select_line_rect_color,
                 2,
             )
             # 画框选对角线
@@ -83,7 +86,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
                 painter,
                 self.camera.location_world2view(self.select_start_location.clone()),
                 self.camera.location_world2view(self.last_move_location.clone()),
-                QColor(0, 255, 0, 50),
+                STYLE_SERVICE.style.select_line_color,
                 20,
             )
 
@@ -106,7 +109,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
                     self.camera.location_world2view(
                         connect_target_node.body_shape.center
                     ),
-                    QColor(255, 255, 255),
+                    STYLE_SERVICE.style.connecting_line_color,
                     2 * self.camera.current_scale,
                     30 * self.camera.current_scale,
                 )
@@ -117,7 +120,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
                     painter,
                     self.camera.location_world2view(node.body_shape.center),
                     self.camera.location_world2view(self.mouse_right_location),
-                    QColor(255, 255, 255),
+                    STYLE_SERVICE.style.connecting_line_color,
                     2 * self.camera.current_scale,
                     30 * self.camera.current_scale,
                 )
@@ -127,14 +130,16 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
         ProjectGraphPainter(painter), self.camera, self.mouse_location
     )
 
+    # 所有节点和连线
     self.node_manager.paint(paint_context)
+
     # 所有要被切断的线
     for link in self.warning_links:
         PainterUtils.paint_solid_line(
             painter,
             self.camera.location_world2view(link.source_node.body_shape.center),
             self.camera.location_world2view(link.target_node.body_shape.center),
-            QColor(255, 0, 0, 128),
+            STYLE_SERVICE.style.warning_link_cover_color,
             int(10 * self.camera.current_scale),
         )
     # 所有选择的线
@@ -148,7 +153,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
             painter,
             self.camera.location_world2view(link_body_line.start),
             self.camera.location_world2view(link_body_line.end),
-            QColor(0, 255, 0, 50),
+            STYLE_SERVICE.style.selecting_link_cover_color,
             int(20 * self.camera.current_scale),
         )
         pass
@@ -159,8 +164,8 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
             self.camera.location_world2view(node.body_shape.location_left_top),
             node.body_shape.width * self.camera.current_scale,
             node.body_shape.height * self.camera.current_scale,
-            QColor(255, 0, 0, 128),
-            QColor(255, 0, 0, 128),
+            STYLE_SERVICE.style.warning_node_cover_fill_color,
+            STYLE_SERVICE.style.warning_node_cover_stroke_color,
             int(10 * self.camera.current_scale),
         )
     # 特效
@@ -171,11 +176,21 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
             painter,
             self.camera,
             [
+                f"历史情况：{self.node_manager.progress_recorder.stringify()}",
                 f"当前缩放: {self.camera.current_scale:.2f}",
                 f"摄像机位置: ({self.camera.location.x:.2f}, {self.camera.location.y:.2f})",
                 f"特效数量: {len(self.effect_manager.effects)}",
                 f"节点数量: {len(self.node_manager.nodes)}",
                 f"连接数量: {len(self.node_manager.get_all_links())}",
+                f"开始连接节点：{self.connect_from_nodes}",
+                f"连接目标节点：{self.connect_to_node}",
+                f"按下的键: {self.pressing_keys}",
+                f"克隆节点：{len(self.node_manager.clone_series["nodes"])}",
+                f"待删除节点：{self.warning_nodes}",
+                f"待删除连接：{self.warning_links}",
+                f"选择的连接：{self.selected_links}",
+                f"历史记录当前节点：{self.node_manager.progress_recorder.get_current_index()}",
+                f"历史记录节点总量：{self.node_manager.progress_recorder.node_count}",
             ],
         )
     # 工具栏
@@ -201,7 +216,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
                 a0.rect().width(),
                 self.camera.location_world2view(self.dragging_file_location).y,
             ),
-            QColor(148, 220, 254),
+            STYLE_SERVICE.style.dragging_file_line_color,
             1,
         )
         PainterUtils.paint_solid_line(
@@ -213,7 +228,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
                 self.camera.location_world2view(self.dragging_file_location).x,
                 a0.rect().height(),
             ),
-            QColor(148, 220, 254),
+            STYLE_SERVICE.style.dragging_file_line_color,
             1,
         )
         if self.is_dragging_file_valid:
@@ -239,5 +254,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
         # 绘制一个半透明的覆盖层（目的是放置WASD输入到别的软件上）
         painter.setBrush(QColor(0, 0, 0, 128))  # 半透明的黑色
         painter.drawRect(self.rect())
+        # 把按键清空，防止失效
+        self.pressing_keys = set()
 
     pass

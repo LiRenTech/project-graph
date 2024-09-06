@@ -5,16 +5,40 @@ from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
-from project_graph.node_text_exporter import NodeTextExporter
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 from project_graph.settings.setting_service import SETTING_SERVICE
+from project_graph.settings.style_service import STYLE_SERVICE
+
+from .node_progress_recorder import NodeProgressRecorder
+from .node_text_exporter import NodeTextExporter
+from .node_text_importer import NodeTextImporter
+
+
+def record_step(method):
+    """
+    步骤装饰器
+    给NodeManager里面涉及到操作的函数加上步骤记录
+    """
+
+    def new_method(self: "NodeManager", *args, **kwargs):
+        result = method(self, *args, **kwargs)
+        self.progress_recorder.record()
+        return result
+
+    return new_method
 
 
 class NodeManager:
     """
     存储并管理所有节点和连接
     节点的增删改、连接断开、移动、渲染等操作都在这里进行
+
+    连线信息目前同时存储两种格式：
+    1. node.child表结构【递归、图算法方便】
+    2. links集合【连线处理方便】
+
+    能用任意一种结构覆盖更新另一种结构
     """
 
     def __init__(self):
@@ -33,6 +57,19 @@ class NodeManager:
 
         self.text_exporter = NodeTextExporter(self)
         """导出纯文本，为AI使用"""
+
+        self.text_importer = NodeTextImporter(self)
+        """导入生成图用，方便手机用户"""
+
+        self.progress_recorder = NodeProgressRecorder(self)
+        """步骤记录器"""
+
+        self.clone_series: dict = {"nodes": [], "links": []}
+        """正在复制，准备粘贴的东西"""
+        self.clone_diff_location = NumberVector(0, 0)
+        """即将要粘贴的东西"""
+        self.press_ctrl_c_location = NumberVector(0, 0)
+        """上次按下Ctrl+C的鼠标世界位置"""
 
         pass
 
@@ -163,9 +200,10 @@ class NodeManager:
         else:
             self.grow_node_location = self.grow_node_location.rotate(-30)
 
-    def dump_all_nodes(self) -> dict:
+    def dump_all(self) -> dict:
         """
-        将所有节点信息转成字典等可序列化的格式
+        将舞台上的东西全部序列化
+
         {
             "nodes": [
                 {
@@ -235,11 +273,29 @@ class NodeManager:
         """
         if refresh_uuid:
             data = self._refresh_all_uuid(data)
-        # 开始构建节点本身
-        for node_data in data["nodes"]:
-            assert isinstance(node_data, dict)
+        # 验证数据格式
+        assert isinstance(data, dict)
+        assert isinstance(data.get("nodes"), list)
+        for i in data["nodes"]:
+            assert isinstance(i, dict)
+            assert isinstance(i.get("body_shape"), dict)
+            assert isinstance(i["body_shape"].get("type"), str)
+            assert isinstance(i["body_shape"].get("location_left_top"), list)
+            assert len(i["body_shape"]["location_left_top"]) == 2
+            assert isinstance(i["body_shape"].get("width"), (int, float))
+            assert isinstance(i["body_shape"].get("height"), (int, float))
+            assert isinstance(i.get("inner_text"), str)
+            assert isinstance(i.get("details"), str)
+            assert isinstance(i.get("uuid"), str)
+            assert isinstance(i.get("children"), list)
+            for child_uuid in i.get("children", []):
+                assert isinstance(child_uuid, str)
 
-            body_shape_data = node_data["body_shape"]
+        # 开始构建节点本身
+        for new_node_dict in data["nodes"]:
+            assert isinstance(new_node_dict, dict)
+
+            body_shape_data = new_node_dict["body_shape"]
             if body_shape_data["type"] == "Rectangle":
                 body_shape = Rectangle(
                     NumberVector(
@@ -255,42 +311,45 @@ class NodeManager:
                 )
 
             node = EntityNode(body_shape)
-            node.inner_text = node_data.get("inner_text", "")
-            node.details = node_data.get("details", "")
+            node.inner_text = new_node_dict.get("inner_text", "")
+            node.details = new_node_dict.get("details", "")
 
-            node.uuid = node_data["uuid"]
+            node.uuid = new_node_dict["uuid"]
             self.nodes.append(node)
 
         # 构建节点之间的连接关系 (根据的是children)
-        for node_data in data["nodes"]:
-            node = self.get_node_by_uuid(node_data["uuid"])
+        for new_node_dict in data["nodes"]:
+            node = self.get_node_by_uuid(new_node_dict["uuid"])
             if node is None:
                 continue
-            for child_uuid in node_data.get("children", []):
+            for child_uuid in new_node_dict.get("children", []):
                 child = self.get_node_by_uuid(child_uuid)
                 if child is None:
                     continue
                 node.add_child(child)
-
-        self.update_links()
+                # 同时也把set里的连接关系也更新一下
+                self._links.add(NodeLink(node, child))
 
         # 补充每个连线上的信息（文字）
-        for link_data in data.get("links", []):
+        for link_dict in data.get("links", []):
             link = self.get_link_by_uuid(
-                link_data["source_node"], link_data["target_node"]
+                link_dict["source_node"], link_dict["target_node"]
             )
             if link is None:
                 continue
-            link.inner_text = link_data.get("inner_text", "")
+            link.inner_text = link_dict.get("inner_text", "")
 
     def load_from_dict(self, data: dict):
         """
-        从字典等可序列化的格式中恢复节点信息
+        反序列化：从字典等可序列化的格式中恢复节点信息
+        会先清空界面内信息
         """
         # 先清空原有节点
         self.nodes.clear()
+        self._links.clear()
+
         self.add_from_dict(data, NumberVector(0, 0), refresh_uuid=False)
-        self.update_links()
+        # self.update_links_by_child_map()
 
     def get_node_by_uuid(self, uuid: str) -> EntityNode | None:
         for node in self.nodes:
@@ -298,14 +357,72 @@ class NodeManager:
                 return node
         return None
 
-    def move_node(self, node: EntityNode, d_location: NumberVector):
+    def move_nodes(self, d_location: NumberVector):
+        # 不要加步骤记录，因为是每帧实时移动，记录会爆炸
+        for node in self.nodes:
+            if node.is_selected:
+                self._move_node(node, d_location)
+
+    def move_nodes_with_children(self, d_location: NumberVector):
+        # 不要加步骤记录，因为是每帧实时移动，记录会爆炸
+        for node in self.nodes:
+            if node.is_selected:
+                self._move_node_with_children(node, d_location)
+
+    @record_step
+    def move_finished(self):
+        """移动完成，触发一次历史操作存档"""
+        # 这里似乎真的什么都不用写
+        pass
+
+    @record_step
+    def save_a_step(self):
+        """一个通用的保存一步的方法，供外部调用"""
+        pass
+
+    @record_step
+    def pase_cloned_nodes(self):  # todo 可能要加个相对位置参数
+        """粘贴复制的节点"""
+        self.add_from_dict(
+            self.clone_series, self.clone_diff_location, refresh_uuid=True
+        )
+        self.clone_diff_location = NumberVector.zero()
+        # 粘贴之后还要清除掉当前正在选择的东西
+        self.clone_series = {"nodes": [], "links": []}
+
+    def copy_part(self, nodes: list[EntityNode]):
+        """
+        拷贝一部分选中的节点，更新自己的粘贴板属性值 </br>
+        注意只能通过选中节点来连带选中一些线条，不能单独拷贝线条
+        nodes，传入的时候可以是当前节点的引用，函数内部处理好拷贝
+        但拷贝后uuid信息还是相同的，后面注意处理
+        """
+        # 先清空原有节点
+        self.clone_series = {"nodes": [], "links": []}
+        for node in nodes:
+            if node not in self.nodes:
+                continue
+            self.clone_series["nodes"].append(node.dump())
+            for child in node.children:
+                link = self.get_link_by_uuid(node.uuid, child.uuid)
+                link_text = link.inner_text if link is not None else ""
+                self.clone_series["links"].append(
+                    {
+                        "source_node": node.uuid,
+                        "target_node": child.uuid,
+                        "inner_text": link_text,
+                    }
+                )
+        pass
+
+    def _move_node(self, node: EntityNode, d_location: NumberVector):
         """
         移动一个节点（不带动子节点的单独移动）
         """
         node.move(d_location)
         self.collide_dfs(node)
 
-    def move_node_with_children(self, node: EntityNode, d_location: NumberVector):
+    def _move_node_with_children(self, node: EntityNode, d_location: NumberVector):
         """
         移动一个节点（带动子节点的整体移动）
         """
@@ -339,11 +456,26 @@ class NodeManager:
                 self_node.collide_with(node)
                 self.collide_dfs(node)
 
+    @record_step
+    def edit_links_inner_text(self, links: list[NodeLink], new_text: str):
+        for link in links:
+            link.inner_text = new_text
+
+    @record_step
+    def edit_node_inner_text(self, node: EntityNode, new_text: str):
+        node.inner_text = new_text
+
+    @record_step
+    def edit_node_details(self, node: EntityNode, new_details: str):
+        node.details = new_details
+
+    @record_step
     def add_node_by_click(self, location_world: NumberVector) -> EntityNode:
         res = EntityNode(Rectangle(location_world - NumberVector(50, 50), 100, 100))
         self.nodes.append(res)
         return res
 
+    @record_step
     def delete_node(self, node: EntityNode):
         if node in self.nodes:
             self.nodes.remove(node)
@@ -359,6 +491,7 @@ class NodeManager:
         for link in prepare_delete_links:
             self._links.remove(link)
 
+    @record_step
     def delete_nodes(self, nodes: list[EntityNode]):
         for node in nodes:
             if node in self.nodes:
@@ -378,6 +511,7 @@ class NodeManager:
 
         # self.update_links()
 
+    @record_step
     def connect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
             res = from_node.add_child(to_node)
@@ -388,6 +522,7 @@ class NodeManager:
             return res
         return False
 
+    @record_step
     def disconnect_node(self, from_node: EntityNode, to_node: EntityNode) -> bool:
         if from_node in self.nodes and to_node in self.nodes:
             res = from_node.remove_child(to_node)
@@ -414,9 +549,22 @@ class NodeManager:
                 return link
         return None
 
-    def update_links(self):
+    @record_step
+    def reverse_links(self, links: list[NodeLink]):
+        for link in links:
+            from_node, to_node = link.source_node, link.target_node
+
+            self._links.remove(link)
+            self._links.add(link.reverse())
+
+            from_node.children.remove(to_node)
+            to_node.children.append(from_node)
+        pass
+
+    def update_links_by_child_map(self):
         """
-        根据nodes的表结构重新生成links
+        根据nodes的孩子关系表结构重新生成links
+        这个会丢失之前的link文字信息
         """
         s = set()
         for node in self.nodes:
@@ -424,6 +572,19 @@ class NodeManager:
                 s.add(NodeLink(node, child))
         self._links = s
 
+    def update_child_map_by_links(self):
+        """
+        根据links重新生成nodes的孩子关系表结构
+        """
+        # 先清空原有关系
+        for node in self.nodes:
+            node.children.clear()
+
+        # 再建立新的关系
+        for link in self._links:
+            link.source_node.children.append(link.target_node)
+
+    @record_step
     def rotate_node(self, node: EntityNode, degrees: float):
         """
         按照一定角度旋转节点，旋转的是连接这个节点的所有子节点
@@ -460,6 +621,73 @@ class NodeManager:
             self._rotate_node_dfs(
                 rotate_center_node, child, degrees, visited_uuids + [current_node.uuid]
             )
+
+    # region 对齐相关
+
+    @record_step
+    def align_nodes_row_center(self):
+        nodes = [node for node in self.nodes if node.is_selected]
+        if not nodes:
+            return
+        # 计算平均y值
+
+        y_sum = sum(node.body_shape.location_left_top.y for node in nodes)
+        y_avg = y_sum / len(nodes)
+        # 移动所有节点到平均y值
+        for node in nodes:
+            node.move_to(NumberVector(node.body_shape.location_left_top.x, y_avg))
+
+    @record_step
+    def align_nodes_col_left(self):
+        nodes = [node for node in self.nodes if node.is_selected]
+        if not nodes:
+            return
+        # 计算最小x值
+        x_min = min(node.body_shape.location_left_top.x for node in nodes)
+        # 移动所有节点到最小x值
+        for node in nodes:
+            node.move_to(NumberVector(x_min, node.body_shape.location_left_top.y))
+
+    @record_step
+    def align_nodes_col_right(self):
+        nodes = [node for node in self.nodes if node.is_selected]
+        if not nodes:
+            return
+        # 计算最大x值 right()
+        x_max = max(node.body_shape.right() for node in nodes)
+        # 移动所有节点到最大x值
+        for node in nodes:
+            node.move_to(
+                NumberVector(
+                    x_max - node.body_shape.width, node.body_shape.location_left_top.y
+                )
+            )
+
+    @record_step
+    def align_nodes_col_center(self):
+        # 竖着中心串串
+        nodes = [node for node in self.nodes if node.is_selected]
+        if not nodes:
+            return
+        # 计算平均x值 center.x
+        x_sum = sum(node.body_shape.center.x for node in nodes)
+        x_avg = x_sum / len(nodes)
+        # 移动所有节点到平均x值
+        for node in nodes:
+            node.move_to(
+                NumberVector(
+                    x_avg - node.body_shape.width / 2,
+                    node.body_shape.location_left_top.y,
+                )
+            )
+
+    def clear_all(self):
+        """重做，历史记录也清空"""
+        self.nodes = []
+        self._links = set()
+        self.progress_recorder.reset()
+
+    # region 画布相关
 
     def paint(self, context: PaintContext):
         # 画节点本身
@@ -507,6 +735,30 @@ class NodeManager:
                 QColor(23, 159, 255),
                 4 * context.camera.current_scale,
                 30 * context.camera.current_scale,
+            )
+        # 画正在复制的节点
+        if len(self.clone_series["nodes"]) > 0:
+            clone_nodes: list[dict] = self.clone_series["nodes"]
+            bounding_rect = Rectangle.get_bounding_rectangle(
+                [
+                    Rectangle(
+                        NumberVector(*node["body_shape"]["location_left_top"]),
+                        node["body_shape"]["width"],
+                        node["body_shape"]["height"],
+                    )
+                    for node in clone_nodes
+                ]
+            )
+            bounding_rect.location_left_top += self.clone_diff_location
+
+            PainterUtils.paint_rect(
+                context.painter.q_painter(),
+                context.camera.location_world2view(bounding_rect.location_left_top),
+                context.camera.current_scale * bounding_rect.width,
+                context.camera.current_scale * bounding_rect.height,
+                QColor(0, 0, 0, 0),
+                STYLE_SERVICE.style.node_selected_border_color,
+                2 * context.camera.current_scale,
             )
 
     # region 纯和图算法相关
