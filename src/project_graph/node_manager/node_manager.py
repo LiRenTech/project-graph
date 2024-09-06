@@ -273,6 +273,24 @@ class NodeManager:
         """
         if refresh_uuid:
             data = self._refresh_all_uuid(data)
+        # 验证数据格式
+        assert isinstance(data, dict)
+        assert isinstance(data.get("nodes"), list)
+        for i in data["nodes"]:
+            assert isinstance(i, dict)
+            assert isinstance(i.get("body_shape"), dict)
+            assert isinstance(i["body_shape"].get("type"), str)
+            assert isinstance(i["body_shape"].get("location_left_top"), list)
+            assert len(i["body_shape"]["location_left_top"]) == 2
+            assert isinstance(i["body_shape"].get("width"), (int, float))
+            assert isinstance(i["body_shape"].get("height"), (int, float))
+            assert isinstance(i.get("inner_text"), str)
+            assert isinstance(i.get("details"), str)
+            assert isinstance(i.get("uuid"), str)
+            assert isinstance(i.get("children"), list)
+            for child_uuid in i.get("children", []):
+                assert isinstance(child_uuid, str)
+
         # 开始构建节点本身
         for new_node_dict in data["nodes"]:
             assert isinstance(new_node_dict, dict)

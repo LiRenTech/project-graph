@@ -5,6 +5,7 @@ from PyQt5.QtGui import QColor
 
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.entity.entity import Entity
+from project_graph.logging import log
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import Paintable, PaintContext
 from project_graph.settings.style_service import STYLE_SERVICE
@@ -93,9 +94,11 @@ class EntityNode(Entity):
     def add_child(self, entity_node) -> bool:
         # 不能添加自己作为自己的子节点
         if entity_node is self:
+            log("cannot add self as child")
             return False
         # 增加之前先看看是否已经有了
         if entity_node in self.children:
+            log("already has this child")
             return False
         self.children.append(entity_node)
         return True

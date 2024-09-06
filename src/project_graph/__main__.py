@@ -8,6 +8,7 @@ from types import TracebackType
 import PyQt5
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
+from dotenv import load_dotenv
 
 from project_graph.logging import log, logs
 
@@ -84,6 +85,8 @@ def my_except_hook(
 
 def main():
     sys.excepthook = my_except_hook
+
+    load_dotenv()
 
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon("./assets/favicon.ico"))

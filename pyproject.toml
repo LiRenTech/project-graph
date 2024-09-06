@@ -3,7 +3,14 @@ name = "project-graph"
 version = "0.1.0"
 description = "Project Graph"
 authors = [{ name = "LiRenTech", email = "liren@zty012.de" }]
-dependencies = ["PyQt5-sip>=12.15.0", "appdirs>=1.4.4", "PyQt5>=5.15.11"]
+dependencies = [
+    "PyQt5-sip>=12.15.0",
+    "appdirs>=1.4.4",
+    "PyQt5>=5.15.11",
+    "python-dotenv>=1.0.1",
+    "jsonfixer>=0.2.2",
+    "volcengine-python-sdk>=1.0.100",
+]
 requires-python = "<3.13,>=3.12"
 readme = "README.md"
 license = { text = "GPL-3.0-only" }
