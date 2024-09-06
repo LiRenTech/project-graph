@@ -26,14 +26,11 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QVBoxLayout,
 )
-import httpx
 
-from project_graph import INFO
 from project_graph.ai.doubao import Doubao
 from project_graph.app_dir import DATA_DIR
 from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
-from project_graph.data_struct.rectangle import Rectangle
 from project_graph.effect.effect_manager import EffectManager
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
@@ -51,7 +48,6 @@ from project_graph.ui.panel_import_text import show_text_import_dialog
 from project_graph.ui.panel_performence_settings import show_performance_settings
 from project_graph.ui.panel_physics_settings import show_physics_settings
 from project_graph.ui.panel_serialize_test import show_serialize_dialog
-from project_graph.ui.panel_update import show_update_panel
 from project_graph.ui.panel_visual_settings import show_visual_settings
 
 from . import (

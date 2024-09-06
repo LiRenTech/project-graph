@@ -1,6 +1,6 @@
 import argparse
-from pathlib import Path
 import subprocess
+from pathlib import Path
 
 import PyInstaller.__main__
 
@@ -29,13 +29,15 @@ def main():
     with open(path / "src" / "project_graph" / "__init__.py", "r") as f:
         original_content = f.read()
     with open(path / "src" / "project_graph" / "__init__.py", "w") as f:
-        f.write(f"""\
+        f.write(
+            f"""\
 class INFO:
     commit = {subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()}
     date = {subprocess.check_output(["git", "log", "-1", "--format=%cd"]).decode().strip()}
     branch = {subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode().strip()}
     env = "prod"
-""")
+"""
+        )
     # 创建临时文件
     with open(path / "src" / "_package.py", "w") as f:
         f.write(

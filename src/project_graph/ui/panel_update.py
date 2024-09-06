@@ -1,5 +1,9 @@
 import platform
 from threading import Thread
+
+import dateutil
+import dateutil.parser
+import httpx
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (
     QCommandLinkButton,
@@ -9,9 +13,6 @@ from PyQt5.QtWidgets import (
     QSizePolicy,
     QVBoxLayout,
 )
-import dateutil
-import dateutil.parser
-import httpx
 
 from project_graph import INFO
 

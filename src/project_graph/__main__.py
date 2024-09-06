@@ -7,9 +7,9 @@ from pathlib import Path
 from types import TracebackType
 
 import PyQt5
+from dotenv import load_dotenv
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
-from dotenv import load_dotenv
 
 from project_graph import INFO
 from project_graph.logging import log, logs
