@@ -302,6 +302,9 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                     node.is_detail_show = True
                 else:
                     node.is_detail_show = False
+        self.node_manager.clone_diff_location = (
+            mouse_world_location - self.node_manager.press_ctrl_c_location
+        )
 
 
 def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):

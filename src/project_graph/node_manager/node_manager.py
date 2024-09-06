@@ -8,6 +8,7 @@ from project_graph.entity.node_link import NodeLink
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 from project_graph.settings.setting_service import SETTING_SERVICE
+from project_graph.settings.style_service import STYLE_SERVICE
 
 from .node_progress_recorder import NodeProgressRecorder
 from .node_text_exporter import NodeTextExporter
@@ -66,6 +67,9 @@ class NodeManager:
         self.clone_series: dict = {"nodes": [], "links": []}
         """正在复制，准备粘贴的东西"""
         self.clone_diff_location = NumberVector(0, 0)
+        """即将要粘贴的东西"""
+        self.press_ctrl_c_location = NumberVector(0, 0)
+        """上次按下Ctrl+C的鼠标世界位置"""
 
         pass
 
@@ -365,6 +369,8 @@ class NodeManager:
             self.clone_series, self.clone_diff_location, refresh_uuid=True
         )
         self.clone_diff_location = NumberVector.zero()
+        # 粘贴之后还要清除掉当前正在选择的东西
+        self.clone_series = {"nodes": [], "links": []}
 
     def copy_part(self, nodes: list[EntityNode]):
         """
@@ -657,16 +663,6 @@ class NodeManager:
                 )
             )
 
-    # def update_from_snapshot(self, snapshot: ProgressSnapshot):
-    #     """将历史记录中的节点再独立拷贝一份放到node_manager的舞台上"""
-
-    #     # 恰好深拷贝一份，利用 ProgressSnapshot 内部已经写好的逻辑
-    #     coppied_snapshot = ProgressSnapshot(snapshot.nodes, snapshot.links)
-    #     self.nodes = coppied_snapshot.nodes
-    #     self._links = coppied_snapshot.links
-    #     self.update_child_map_by_links()
-    #     pass
-
     def clear_all(self):
         """重做，历史记录也清空"""
         self.nodes = []
@@ -721,6 +717,30 @@ class NodeManager:
                 QColor(23, 159, 255),
                 4 * context.camera.current_scale,
                 30 * context.camera.current_scale,
+            )
+        # 画正在复制的节点
+        if len(self.clone_series["nodes"]) > 0:
+            clone_nodes: list[dict] = self.clone_series["nodes"]
+            bounding_rect = Rectangle.get_bounding_rectangle(
+                [
+                    Rectangle(
+                        NumberVector(*node["body_shape"]["location_left_top"]),
+                        node["body_shape"]["width"],
+                        node["body_shape"]["height"],
+                    )
+                    for node in clone_nodes
+                ]
+            )
+            bounding_rect.location_left_top += self.clone_diff_location
+
+            PainterUtils.paint_rect(
+                context.painter.q_painter(),
+                context.camera.location_world2view(bounding_rect.location_left_top),
+                context.camera.current_scale * bounding_rect.width,
+                context.camera.current_scale * bounding_rect.height,
+                QColor(0, 0, 0, 0),
+                STYLE_SERVICE.style.node_selected_border_color,
+                2 * context.camera.current_scale,
             )
 
     # region 纯和图算法相关

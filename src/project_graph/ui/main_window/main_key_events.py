@@ -130,11 +130,10 @@ def keyPressEvent(self: "Canvas", a0: QKeyEvent | None):
             self.node_manager.copy_part(
                 [node for node in self.node_manager.nodes if node.is_selected]
             )
+            self.node_manager.press_ctrl_c_location = self.last_move_location.clone()
     elif key == Qt.Key.Key_V:
         if Qt.Key.Key_Control in self.pressing_keys:
             # 触发粘贴
-            self.node_manager.clone_diff_location = NumberVector(300, 300)  # debug
-
             self.node_manager.pase_cloned_nodes()
 
 
