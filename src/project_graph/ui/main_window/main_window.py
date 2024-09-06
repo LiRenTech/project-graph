@@ -189,6 +189,9 @@ class Canvas(QMainWindow):
                 ),
             ),
             LMenu(
+                title="AI", children=(LAction(title="测试", action=self.on_ai_test),)
+            ),
+            LMenu(
                 title="测试",
                 children=(
                     LAction(title="抛出异常", action=self.on_test_exception),
@@ -214,13 +217,6 @@ class Canvas(QMainWindow):
                 ),
             ),
         ).apply_to_qt_window(self)
-
-        ai_menu = menubar.addMenu("AI")
-        assert ai_menu is not None
-        # 测试
-        ai_test_action = QAction("测试", self)
-        ai_test_action.triggered.connect(self.on_ai_test)
-        ai_menu.addAction(ai_test_action)
 
         # 状态栏
         status_bar = self.statusBar()
