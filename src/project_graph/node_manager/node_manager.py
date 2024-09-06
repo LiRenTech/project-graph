@@ -33,6 +33,12 @@ class NodeManager:
     """
     存储并管理所有节点和连接
     节点的增删改、连接断开、移动、渲染等操作都在这里进行
+
+    连线信息目前同时存储两种格式：
+    1. node.child表结构【递归、图算法方便】
+    2. links集合【连线处理方便】
+
+    能用任意一种结构覆盖更新另一种结构
     """
 
     def __init__(self):
@@ -293,7 +299,7 @@ class NodeManager:
                     continue
                 node.add_child(child)
 
-        self.update_links()
+        self.update_links_by_child_map()
 
         # 补充每个连线上的信息（文字）
         for link_data in data.get("links", []):
@@ -311,7 +317,7 @@ class NodeManager:
         # 先清空原有节点
         self.nodes.clear()
         self.add_from_dict(data, NumberVector(0, 0), refresh_uuid=False)
-        self.update_links()
+        self.update_links_by_child_map()
 
     def get_node_by_uuid(self, uuid: str) -> EntityNode | None:
         for node in self.nodes:
@@ -482,15 +488,27 @@ class NodeManager:
             to_node.children.append(from_node)
         pass
 
-    def update_links(self):
+    def update_links_by_child_map(self):
         """
-        根据nodes的表结构重新生成links
+        根据nodes的孩子关系表结构重新生成links
         """
         s = set()
         for node in self.nodes:
             for child in node.children:
                 s.add(NodeLink(node, child))
         self._links = s
+
+    def update_child_map_by_links(self):
+        """
+        根据links重新生成nodes的孩子关系表结构
+        """
+        # 先清空原有关系
+        for node in self.nodes:
+            node.children.clear()
+
+        # 再建立新的关系
+        for link in self._links:
+            link.source_node.children.append(link.target_node)
 
     @record_step
     def rotate_node(self, node: EntityNode, degrees: float):
@@ -594,9 +612,9 @@ class NodeManager:
 
         # 恰好深拷贝一份，利用 ProgressSnapshot 内部已经写好的逻辑
         coppied_snapshot = ProgressSnapshot(snapshot.nodes, snapshot.links)
-
         self.nodes = coppied_snapshot.nodes
         self._links = coppied_snapshot.links
+        self.update_child_map_by_links()
         pass
 
     def clear_all(self):

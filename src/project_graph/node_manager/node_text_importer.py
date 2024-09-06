@@ -73,7 +73,7 @@ class NodeTextImporter:
 
         # 循环执行完毕
         self.node_manager.nodes = prepare_nodes
-        self.node_manager.update_links()
+        self.node_manager.update_links_by_child_map()
         pass
 
     def parse_line(self, line: str) -> tuple[int, str]:

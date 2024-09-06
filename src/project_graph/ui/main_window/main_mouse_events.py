@@ -329,7 +329,7 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
 
             # 清空复制节点数组
             self.clone_nodes = []
-            self.node_manager.update_links()
+            self.node_manager.update_links_by_child_map()
 
         # 结束框选
         if self.is_selecting:

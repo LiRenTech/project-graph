@@ -18,10 +18,14 @@ class ProgressSnapshot:
         以防在链表上后面的节点画面中引用的是同一个
         """
         self.nodes = [node.clone() for node in nodes]
+        # self.links = set()
         # 建立 children
-        for i, n in enumerate(nodes):
-            for j, child in enumerate(n.children):
-                if child in n.children:
+        for i, father in enumerate(nodes):
+            for j, child in enumerate(father.children):
+                if child in father.children:
+                    # father -> child
+                    # self.links.add(NodeLink(self.nodes[i], self.nodes[j]))
+
                     self.nodes[i].children.append(self.nodes[j])
 
         self.links = {link.clone() for link in links}
