@@ -10,7 +10,7 @@ import typing
 from project_graph.entity.entity_node import EntityNode
 
 if typing.TYPE_CHECKING:
-    from project_graph.node_manager import NodeManager
+    from .node_manager import NodeManager
 
 
 class NodeTextExporter:

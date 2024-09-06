@@ -33,7 +33,7 @@ from project_graph.effect.effect_manager import EffectManager
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
 from project_graph.logging import log
-from project_graph.node_manager import NodeManager
+from project_graph.node_manager.node_manager import NodeManager
 from project_graph.recent_file_manager import RecentFileManager
 from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.status_text.status_text import STATUS_TEXT

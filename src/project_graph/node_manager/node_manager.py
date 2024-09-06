@@ -5,11 +5,13 @@ from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
-from project_graph.node_text_exporter import NodeTextExporter
-from project_graph.node_text_importer import NodeTextImporter
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 from project_graph.settings.setting_service import SETTING_SERVICE
+
+from .node_progress_recorder import NodeProgressRecorder
+from .node_text_exporter import NodeTextExporter
+from .node_text_importer import NodeTextImporter
 
 
 class NodeManager:
@@ -37,6 +39,7 @@ class NodeManager:
 
         self.text_importer = NodeTextImporter(self)
         """导入生成图用，方便手机用户"""
+        self.progress_recorder = NodeProgressRecorder(self)
         pass
 
     def move_cursor(self, direction: str):
