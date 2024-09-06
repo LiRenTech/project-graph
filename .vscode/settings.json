@@ -3,5 +3,16 @@
   "editor.formatOnSave": true,
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff"
-  }
+  },
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.packageIndexDepths": [
+    {
+      "name": "PyQt5",
+      "depth": 10
+    },
+    {
+      "name": "sparkai",
+      "depth": 4
+    }
+  ]
 }

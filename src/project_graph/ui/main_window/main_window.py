@@ -3,6 +3,8 @@ import platform
 import subprocess
 from functools import partial
 from pathlib import Path
+from threading import Thread
+from uuid import uuid4
 
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import (
@@ -25,6 +27,7 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
 )
 
+from project_graph.ai.doubao import Doubao
 from project_graph.app_dir import DATA_DIR
 from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
@@ -212,6 +215,13 @@ class Canvas(QMainWindow):
             ),
         ).apply_to_qt_window(self)
 
+        ai_menu = menubar.addMenu("AI")
+        assert ai_menu is not None
+        # 测试
+        ai_test_action = QAction("测试", self)
+        ai_test_action.triggered.connect(self.on_ai_test)
+        ai_menu.addAction(ai_test_action)
+
         # 状态栏
         status_bar = self.statusBar()
         assert status_bar is not None
@@ -372,6 +382,39 @@ class Canvas(QMainWindow):
         clip = QApplication.clipboard()
         assert clip is not None
         clip.setText(str(self.camera.location))
+
+    def on_ai_test(self):
+        """测试AI"""
+        instance = Doubao()
+        res = ""
+        selected_nodes = [node for node in self.node_manager.nodes if node.is_selected]
+
+        def run():
+            nonlocal res
+            res = instance.generate_node(self.node_manager)
+            log(res)
+            nodes = json.loads(res)
+            for dic in nodes:
+                dic["body_shape"]["width"] = 100
+                dic["body_shape"]["height"] = 100
+                dic["details"] = dic["details"].replace("$$$", "\n")
+                dic["uuid"] = str(uuid4())
+                dic["children"] = []
+                self.node_manager.add_from_dict(
+                    {"nodes": [dic]},
+                    NumberVector(
+                        dic["body_shape"]["location_left_top"][0],
+                        dic["body_shape"]["location_left_top"][1],
+                    ),
+                    refresh_uuid=False,
+                )
+                entity_node = self.node_manager.get_node_by_uuid(dic["uuid"])
+                assert entity_node is not None
+                for node in selected_nodes:
+                    log(node)
+                    self.node_manager.connect_node(node, entity_node)
+
+        Thread(target=run).start()
 
     def dragEnterEvent(self, a0: QDragEnterEvent | None):
         assert a0 is not None

@@ -1,14 +1,17 @@
 import platform
 import shutil
+import subprocess
 import sys
 import traceback
 from pathlib import Path
 from types import TracebackType
 
 import PyQt5
+from dotenv import load_dotenv
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
 
+from project_graph import INFO
 from project_graph.logging import log, logs
 
 # 导入资源文件
@@ -84,6 +87,22 @@ def my_except_hook(
 
 def main():
     sys.excepthook = my_except_hook
+
+    load_dotenv()
+    if INFO.env == "dev":
+        INFO.commit = (
+            subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()
+        )
+        INFO.date = (
+            subprocess.check_output(["git", "log", "-1", "--format=%cd"])
+            .decode()
+            .strip()
+        )
+        INFO.branch = (
+            subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
+            .decode()
+            .strip()
+        )
 
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon("./assets/favicon.ico"))
