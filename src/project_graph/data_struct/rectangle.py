@@ -1,9 +1,10 @@
 from typing import Any
 
+from PyQt5.QtCore import QRectF
+
 from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.logging import log
-from PyQt5.QtCore import QRectF
 
 
 class Rectangle:
