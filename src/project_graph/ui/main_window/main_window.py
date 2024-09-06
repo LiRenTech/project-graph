@@ -370,7 +370,7 @@ class Canvas(QMainWindow):
         if file_path:
             # 如果用户选择了文件并点击了保存按钮
             # 保存布局文件
-            save_data: dict = self.node_manager.dump_all_nodes()
+            save_data: dict = self.node_manager.dump_all()
 
             # 确保文件扩展名为 .json
             if not file_path.endswith(".json"):

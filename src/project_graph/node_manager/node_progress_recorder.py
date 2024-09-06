@@ -26,8 +26,6 @@ a -> b -> c -> d -> e -> f -> g
 import typing
 from typing import Optional
 
-from project_graph.node_manager.progress_snapshot import ProgressSnapshot
-
 
 class ProgressRecordNode:
     """
@@ -36,7 +34,7 @@ class ProgressRecordNode:
 
     def __init__(
         self,
-        current_data: ProgressSnapshot,
+        current_data: dict,
         next: "Optional[ProgressRecordNode]",
         index: int,
     ):
@@ -57,9 +55,7 @@ class NodeProgressRecorder:
     def __init__(self, node_manager: "NodeManager"):
         self.node_manager = node_manager
 
-        self.undo_stack_link = ProgressRecordNode(
-            ProgressSnapshot.get_empty_snapshot(), None, 0
-        )
+        self.undo_stack_link = ProgressRecordNode({"nodes": [], "links": []}, None, 0)
         "链表"
 
         self.current = self.undo_stack_link
@@ -79,9 +75,7 @@ class NodeProgressRecorder:
 
     def reset(self):
         """清空历史记录"""
-        self.undo_stack_link = ProgressRecordNode(
-            ProgressSnapshot.get_empty_snapshot(), None, 0
-        )
+        self.undo_stack_link = ProgressRecordNode({"nodes": [], "links": []}, None, 0)
         self.current = self.undo_stack_link
 
     def record(self):
@@ -90,7 +84,7 @@ class NodeProgressRecorder:
         """
         # 注意：如果是在链表中间操作，会截断后面的。todo
         new_node = ProgressRecordNode(
-            ProgressSnapshot.get_snapshot(self.node_manager),
+            self.node_manager.dump_all(),
             None,
             self.current.index + 1,
         )
@@ -110,7 +104,7 @@ class NodeProgressRecorder:
         """
         if self.current.prev is not None:
             self.current = self.current.prev
-            self.update_manager()
+            self.node_manager.load_from_dict(self.current.current_data)
 
     def ctrl_shift_z(self):
         """
@@ -118,14 +112,7 @@ class NodeProgressRecorder:
         """
         if self.current.next is not None:
             self.current = self.current.next
-            self.update_manager()
-
-    def update_manager(self):
-        """
-        根据链表当前位置，更新node_manager里面的内容
-        将历史记录中的节点再独立拷贝一份放到node_manager的舞台上
-        """
-        self.node_manager.update_from_snapshot(self.current.current_data)
+            self.node_manager.load_from_dict(self.current.current_data)
 
     def stringify(self):
         link_line = ""

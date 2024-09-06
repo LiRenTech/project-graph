@@ -5,7 +5,6 @@ from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
-from project_graph.node_manager.progress_snapshot import ProgressSnapshot
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 from project_graph.settings.setting_service import SETTING_SERVICE
@@ -190,9 +189,10 @@ class NodeManager:
         else:
             self.grow_node_location = self.grow_node_location.rotate(-30)
 
-    def dump_all_nodes(self) -> dict:
+    def dump_all(self) -> dict:
         """
-        将所有节点信息转成字典等可序列化的格式
+        将舞台上的东西全部序列化
+
         {
             "nodes": [
                 {
@@ -312,7 +312,7 @@ class NodeManager:
 
     def load_from_dict(self, data: dict):
         """
-        从字典等可序列化的格式中恢复节点信息
+        反序列化：从字典等可序列化的格式中恢复节点信息
         """
         # 先清空原有节点
         self.nodes.clear()
@@ -607,15 +607,15 @@ class NodeManager:
                 )
             )
 
-    def update_from_snapshot(self, snapshot: ProgressSnapshot):
-        """将历史记录中的节点再独立拷贝一份放到node_manager的舞台上"""
+    # def update_from_snapshot(self, snapshot: ProgressSnapshot):
+    #     """将历史记录中的节点再独立拷贝一份放到node_manager的舞台上"""
 
-        # 恰好深拷贝一份，利用 ProgressSnapshot 内部已经写好的逻辑
-        coppied_snapshot = ProgressSnapshot(snapshot.nodes, snapshot.links)
-        self.nodes = coppied_snapshot.nodes
-        self._links = coppied_snapshot.links
-        self.update_child_map_by_links()
-        pass
+    #     # 恰好深拷贝一份，利用 ProgressSnapshot 内部已经写好的逻辑
+    #     coppied_snapshot = ProgressSnapshot(snapshot.nodes, snapshot.links)
+    #     self.nodes = coppied_snapshot.nodes
+    #     self._links = coppied_snapshot.links
+    #     self.update_child_map_by_links()
+    #     pass
 
     def clear_all(self):
         """重做，历史记录也清空"""
