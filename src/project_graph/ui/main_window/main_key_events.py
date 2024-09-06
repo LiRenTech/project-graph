@@ -124,6 +124,19 @@ def keyPressEvent(self: "Canvas", a0: QKeyEvent | None):
             # 取消撤销
             self.node_manager.progress_recorder.ctrl_shift_z()
 
+    elif key == Qt.Key.Key_C:
+        if Qt.Key.Key_Control in self.pressing_keys:
+            # 开始复制
+            self.node_manager.copy_part(
+                [node for node in self.node_manager.nodes if node.is_selected]
+            )
+    elif key == Qt.Key.Key_V:
+        if Qt.Key.Key_Control in self.pressing_keys:
+            # 触发粘贴
+            self.node_manager.clone_diff_location = NumberVector(300, 300)  # debug
+
+            self.node_manager.pase_cloned_nodes()
+
 
 def keyReleaseEvent(self: "Canvas", a0: QKeyEvent | None):
     assert a0 is not None

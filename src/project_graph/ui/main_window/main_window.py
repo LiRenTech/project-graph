@@ -83,16 +83,14 @@ class Canvas(QMainWindow):
         """鼠标当前位置"""
         self.mouse_location_last_middle_button = NumberVector.zero()
         """鼠标上一次按下中键的位置"""
+        self.mouse_location_last_left_button = NumberVector.zero()
+        """鼠标上一次按下左键的位置"""
         self.is_last_moved = False
         """是否上一次进行了移动节点的操作"""
 
         # ====== 键盘事件相关
         self.pressing_keys: set[int] = set()
         """当前按下的键"""
-
-        # ====== 复制相关
-        self.clone_nodes: list[EntityNode] = []
-        """新产生的克隆节点先放在数组里，等到鼠标松开后再加入到实体管理器"""
 
         # ====== 连线/断开 相关的操作
         self.connect_from_nodes: list[EntityNode] = []

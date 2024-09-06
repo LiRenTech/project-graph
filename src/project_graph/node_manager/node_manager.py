@@ -59,7 +59,14 @@ class NodeManager:
 
         self.text_importer = NodeTextImporter(self)
         """导入生成图用，方便手机用户"""
+
         self.progress_recorder = NodeProgressRecorder(self)
+        """步骤记录器"""
+
+        self.clone_series: dict = {"nodes": [], "links": []}
+        """正在复制，准备粘贴的东西"""
+        self.clone_diff_location = NumberVector(0, 0)
+
         pass
 
     def move_cursor(self, direction: str):
@@ -263,10 +270,10 @@ class NodeManager:
         if refresh_uuid:
             data = self._refresh_all_uuid(data)
         # 开始构建节点本身
-        for node_data in data["nodes"]:
-            assert isinstance(node_data, dict)
+        for new_node_dict in data["nodes"]:
+            assert isinstance(new_node_dict, dict)
 
-            body_shape_data = node_data["body_shape"]
+            body_shape_data = new_node_dict["body_shape"]
             if body_shape_data["type"] == "Rectangle":
                 body_shape = Rectangle(
                     NumberVector(
@@ -282,40 +289,43 @@ class NodeManager:
                 )
 
             node = EntityNode(body_shape)
-            node.inner_text = node_data.get("inner_text", "")
-            node.details = node_data.get("details", "")
+            node.inner_text = new_node_dict.get("inner_text", "")
+            node.details = new_node_dict.get("details", "")
 
-            node.uuid = node_data["uuid"]
+            node.uuid = new_node_dict["uuid"]
             self.nodes.append(node)
 
         # 构建节点之间的连接关系 (根据的是children)
-        for node_data in data["nodes"]:
-            node = self.get_node_by_uuid(node_data["uuid"])
+        for new_node_dict in data["nodes"]:
+            node = self.get_node_by_uuid(new_node_dict["uuid"])
             if node is None:
                 continue
-            for child_uuid in node_data.get("children", []):
+            for child_uuid in new_node_dict.get("children", []):
                 child = self.get_node_by_uuid(child_uuid)
                 if child is None:
                     continue
                 node.add_child(child)
-
-        self.update_links_by_child_map()
+                # 同时也把set里的连接关系也更新一下
+                self._links.add(NodeLink(node, child))
 
         # 补充每个连线上的信息（文字）
-        for link_data in data.get("links", []):
+        for link_dict in data.get("links", []):
             link = self.get_link_by_uuid(
-                link_data["source_node"], link_data["target_node"]
+                link_dict["source_node"], link_dict["target_node"]
             )
             if link is None:
                 continue
-            link.inner_text = link_data.get("inner_text", "")
+            link.inner_text = link_dict.get("inner_text", "")
 
     def load_from_dict(self, data: dict):
         """
         反序列化：从字典等可序列化的格式中恢复节点信息
+        会先清空界面内信息
         """
         # 先清空原有节点
         self.nodes.clear()
+        self._links.clear()
+
         self.add_from_dict(data, NumberVector(0, 0), refresh_uuid=False)
         # self.update_links_by_child_map()
 
@@ -339,7 +349,41 @@ class NodeManager:
 
     @record_step
     def move_finished(self):
+        """移动完成，触发一次历史操作存档"""
         # 这里似乎真的什么都不用写
+        pass
+
+    @record_step
+    def pase_cloned_nodes(self):  # todo 可能要加个相对位置参数
+        """粘贴复制的节点"""
+        self.add_from_dict(
+            self.clone_series, self.clone_diff_location, refresh_uuid=True
+        )
+        self.clone_diff_location = NumberVector.zero()
+
+    def copy_part(self, nodes: list[EntityNode]):
+        """
+        拷贝一部分选中的节点，更新自己的粘贴板属性值 </br>
+        注意只能通过选中节点来连带选中一些线条，不能单独拷贝线条
+        nodes，传入的时候可以是当前节点的引用，函数内部处理好拷贝
+        但拷贝后uuid信息还是相同的，后面注意处理
+        """
+        # 先清空原有节点
+        self.clone_series = {"nodes": [], "links": []}
+        for node in nodes:
+            if node not in self.nodes:
+                continue
+            self.clone_series["nodes"].append(node.dump())
+            for child in node.children:
+                link = self.get_link_by_uuid(node.uuid, child.uuid)
+                link_text = link.inner_text if link is not None else ""
+                self.clone_series["links"].append(
+                    {
+                        "source_node": node.uuid,
+                        "target_node": child.uuid,
+                        "inner_text": link_text,
+                    }
+                )
         pass
 
     def _move_node(self, node: EntityNode, d_location: NumberVector):
@@ -491,6 +535,7 @@ class NodeManager:
     def update_links_by_child_map(self):
         """
         根据nodes的孩子关系表结构重新生成links
+        这个会丢失之前的link文字信息
         """
         s = set()
         for node in self.nodes:

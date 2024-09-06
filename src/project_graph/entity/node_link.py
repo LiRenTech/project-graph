@@ -17,6 +17,7 @@ from project_graph.tools.string_tools import get_size_by_text
 class NodeLink(Entity):
     """
     连接两个节点的连线
+    在集合中的哈希值取决于两个节点的 uuid 组合
     """
 
     TEXT_PADDING_X = 20  # 左右各留 20px 的空白
