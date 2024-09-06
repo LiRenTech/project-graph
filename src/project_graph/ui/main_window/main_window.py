@@ -223,7 +223,8 @@ class Canvas(QMainWindow):
         save_settings = QAction("将设置保存", self)
         save_settings.triggered.connect(SETTING_SERVICE.save_settings)
 
-        check_update = QAction("检查更新", self)
+        check_update = QAction("检查更新(暂未实现)", self)
+        check_update.setEnabled(False)
         check_update.triggered.connect(show_update_panel)
 
         settings_menu.addAction(show_settings)
