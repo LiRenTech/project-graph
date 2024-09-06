@@ -52,6 +52,7 @@ class EntityNode(Entity):
         """
         克隆一个节点
         但不会和以前的节点连接
+        也就是会丢失children
         """
         res = EntityNode(self.body_shape.clone())
         res.inner_text = self.inner_text

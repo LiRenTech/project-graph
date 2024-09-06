@@ -33,7 +33,7 @@ from project_graph.effect.effect_manager import EffectManager
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
 from project_graph.logging import log
-from project_graph.node_manager import NodeManager
+from project_graph.node_manager.node_manager import NodeManager
 from project_graph.recent_file_manager import RecentFileManager
 from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.status_text.status_text import STATUS_TEXT
@@ -43,6 +43,7 @@ from project_graph.ui.panel_export_text import show_text_export_dialog
 from project_graph.ui.panel_help import show_help_panel
 from project_graph.ui.panel_import_text import show_text_import_dialog
 from project_graph.ui.panel_physics_settings import show_physics_settings
+from project_graph.ui.panel_serialize_test import show_serialize_dialog
 from project_graph.ui.panel_visual_settings import show_visual_settings
 
 from . import (
@@ -82,14 +83,14 @@ class Canvas(QMainWindow):
         """鼠标当前位置"""
         self.mouse_location_last_middle_button = NumberVector.zero()
         """鼠标上一次按下中键的位置"""
+        self.mouse_location_last_left_button = NumberVector.zero()
+        """鼠标上一次按下左键的位置"""
+        self.is_last_moved = False
+        """是否上一次进行了移动节点的操作"""
 
         # ====== 键盘事件相关
         self.pressing_keys: set[int] = set()
         """当前按下的键"""
-
-        # ====== 复制相关
-        self.clone_nodes: list[EntityNode] = []
-        """新产生的克隆节点先放在数组里，等到鼠标松开后再加入到实体管理器"""
 
         # ====== 连线/断开 相关的操作
         self.connect_from_nodes: list[EntityNode] = []
@@ -155,6 +156,9 @@ class Canvas(QMainWindow):
         # 打开曾经保存的
         open_recent_action = QAction("打开曾经保存的", self)
         open_recent_action.triggered.connect(self.open_recent_file)
+        # 重做
+        redo_action = QAction("重做", self)
+        redo_action.triggered.connect(self.node_manager.clear_all)
 
         # 设置快捷键
         open_action.setShortcut("Ctrl+O")
@@ -164,6 +168,7 @@ class Canvas(QMainWindow):
         file_menu.addAction(open_action)
         file_menu.addAction(save_action)
         file_menu.addAction(open_recent_action)
+        file_menu.addAction(redo_action)
 
         # 视图菜单
         view_menu = menubar.addMenu("视图")
@@ -227,13 +232,19 @@ class Canvas(QMainWindow):
         text_exporter_action.triggered.connect(
             partial(show_text_export_dialog, node_manager=self.node_manager)
         )
+        test_menu.addAction(text_exporter_action)
         # 通过纯文本生成节点图
         text_importer_action = QAction("通过纯文本生成节点图", self)
         text_importer_action.triggered.connect(
             partial(show_text_import_dialog, node_manager=self.node_manager)
         )
         test_menu.addAction(text_importer_action)
-        test_menu.addAction(text_exporter_action)
+        # 查看当前舞台序列化信息
+        test_serialize_action = QAction("查看当前舞台序列化信息", self)
+        test_serialize_action.triggered.connect(
+            partial(show_serialize_dialog, node_manager=self.node_manager)
+        )
+        test_menu.addAction(test_serialize_action)
 
         # 状态栏
         status_bar = self.statusBar()
@@ -364,7 +375,7 @@ class Canvas(QMainWindow):
         if file_path:
             # 如果用户选择了文件并点击了保存按钮
             # 保存布局文件
-            save_data: dict = self.node_manager.dump_all_nodes()
+            save_data: dict = self.node_manager.dump_all()
 
             # 确保文件扩展名为 .json
             if not file_path.endswith(".json"):

@@ -64,6 +64,7 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
     self.node_manager.cursor_node = None
 
     point_world_location = self.camera.location_view2world(point_view_location)
+    self.mouse_location_last_left_button = point_world_location.clone()
     self.toolbar.nodes = []
     self.is_pressing = True
     if a0.button() == Qt.MouseButton.LeftButton:
@@ -110,20 +111,13 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
                         selected_nodes = [
                             node for node in self.node_manager.nodes if node.is_selected
                         ]
-                        clone_nodes = [node.clone() for node in selected_nodes]
-                        # 开始二重遍历数组，复制连接关系
-                        for i, father_node in enumerate(selected_nodes):
-                            for j, son_node in enumerate(selected_nodes):
-                                if son_node in father_node.children:
-                                    # 发现了 i -> j 为一个连接关系，需要复制
-                                    clone_nodes[i].add_child(clone_nodes[j])
-                        self.clone_nodes = clone_nodes
+                        self.node_manager.copy_part(selected_nodes)
                 else:
                     # 取消选择所有节点
                     for node in self.node_manager.nodes:
                         node.is_selected = False
                     if Qt.Key.Key_Alt in self.pressing_keys:
-                        self.clone_nodes = [click_node.clone()]
+                        self.node_manager.copy_part([click_node.clone()])
                     else:
                         # 单击选择
                         click_node.is_selected = True
@@ -243,25 +237,24 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                         if link_body_line.is_intersecting(select_line):
                             # 选择这个link
                             self.selected_links.append(link)
+                self.is_last_moved = False
             else:
-                # 移动
-
                 # 当前帧距离上一帧的 鼠标移动向量
                 mouse_d_location = mouse_world_location - self.last_move_location
+                self.is_last_moved = True
                 if Qt.Key.Key_Alt in self.pressing_keys:
                     # 按住Alt键是复制克隆
-                    for node in self.clone_nodes:
-                        node.move(mouse_d_location)
+                    self.node_manager.clone_diff_location = (
+                        mouse_world_location - self.mouse_location_last_left_button
+                    )
+                    pass
                 else:
-                    for node in self.node_manager.nodes:
-                        if node.is_selected:
-                            if Qt.Key.Key_Control in self.pressing_keys:
-                                # 按住Ctrl，移动节点，带动子节点一起移动
-                                self.node_manager.move_node_with_children(
-                                    node, mouse_d_location
-                                )
-                            else:
-                                self.node_manager.move_node(node, mouse_d_location)
+                    # 移动
+                    if Qt.Key.Key_Control in self.pressing_keys:
+                        # 按住Ctrl，移动节点，带动子节点一起移动
+                        self.node_manager.move_nodes_with_children(mouse_d_location)
+                    else:
+                        self.node_manager.move_nodes(mouse_d_location)
 
             self.last_move_location = mouse_world_location.clone()
 
@@ -316,19 +309,14 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
     self.is_pressing = False
     mouse_view_location = NumberVector(a0.pos().x(), a0.pos().y())
 
+    if self.is_last_moved:
+        self.node_manager.move_finished()
+        self.is_last_moved = False
+
     if a0.button() == Qt.MouseButton.LeftButton:
         if Qt.Key.Key_Alt in self.pressing_keys:
             # 结束复制
-            for node in self.clone_nodes:
-                self.node_manager.nodes.append(node)
-                # 加特效
-                self.effect_manager.add_effect(
-                    EffectRectangleFlash(15, node.body_shape.clone())
-                )
-
-            # 清空复制节点数组
-            self.clone_nodes = []
-            self.node_manager.update_links()
+            self.node_manager.pase_cloned_nodes()
 
         # 结束框选
         if self.is_selecting:
@@ -449,7 +437,7 @@ def mouseDoubleClickEvent(self: "Canvas", event: QMouseEvent | None):
                     text=select_node.details,
                 )
                 if ok:
-                    select_node.details = text
+                    self.node_manager.edit_node_details(select_node, text)
             else:
                 # 在节点上左键是编辑文字
                 text, ok = QInputDialog.getText(
@@ -459,7 +447,7 @@ def mouseDoubleClickEvent(self: "Canvas", event: QMouseEvent | None):
                     text=select_node.inner_text,
                 )
                 if ok:
-                    select_node.inner_text = text
+                    self.node_manager.edit_node_inner_text(select_node, text)
 
     elif event.button() == Qt.MouseButton.RightButton:
         if select_node is not None:

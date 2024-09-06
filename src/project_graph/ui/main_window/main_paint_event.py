@@ -132,9 +132,6 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
 
     # 所有节点和连线
     self.node_manager.paint(paint_context)
-    # 复制的节点
-    for node in self.clone_nodes:
-        node.paint(paint_context)
 
     # 所有要被切断的线
     for link in self.warning_links:
@@ -181,16 +178,19 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
             [
                 f"当前缩放: {self.camera.current_scale:.2f}",
                 f"摄像机位置: ({self.camera.location.x:.2f}, {self.camera.location.y:.2f})",
+                f"历史情况：{self.node_manager.progress_recorder.stringify()}",
                 f"特效数量: {len(self.effect_manager.effects)}",
                 f"节点数量: {len(self.node_manager.nodes)}",
                 f"连接数量: {len(self.node_manager.get_all_links())}",
                 f"开始连接节点：{self.connect_from_nodes}",
                 f"连接目标节点：{self.connect_to_node}",
                 f"按下的键: {self.pressing_keys}",
-                f"克隆节点：{self.clone_nodes}",
+                f"克隆节点：{len(self.node_manager.clone_series["nodes"])}",
                 f"待删除节点：{self.warning_nodes}",
                 f"待删除连接：{self.warning_links}",
                 f"选择的连接：{self.selected_links}",
+                f"历史记录当前节点：{self.node_manager.progress_recorder.get_current_index()}",
+                f"历史记录节点总量：{self.node_manager.progress_recorder.node_count}",
             ],
         )
     # 工具栏

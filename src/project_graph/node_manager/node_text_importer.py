@@ -9,7 +9,7 @@ from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity_node import EntityNode
 
 if typing.TYPE_CHECKING:
-    from project_graph.node_manager import NodeManager
+    from .node_manager import NodeManager
 
 
 class NodeTextImporter:
@@ -73,7 +73,7 @@ class NodeTextImporter:
 
         # 循环执行完毕
         self.node_manager.nodes = prepare_nodes
-        self.node_manager.update_links()
+        self.node_manager.update_links_by_child_map()
         pass
 
     def parse_line(self, line: str) -> tuple[int, str]:
