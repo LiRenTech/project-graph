@@ -21,10 +21,17 @@ a -> b -> c -> d -> e -> f -> g
                     此时一旦执行操作，后面的f和g就丢掉了，生成一个新的操作节点保存在e后面。
 
 清空历史记录，相当于前面所有节点都丢掉，指针指向链表最后一个节点。
+
+长度限制：
+每次增加节点都检测长度，如果长度过长，则去掉头节点
+
+长度限制不能小于等于2
 """
 
 import typing
 from typing import Optional
+
+from project_graph.settings.setting_service import SETTING_SERVICE
 
 
 class ProgressRecordNode:
@@ -97,6 +104,15 @@ class NodeProgressRecorder:
 
         if repeat_node is not None:
             repeat_node.prev = None  # 断开链接，这些部分将被自动垃圾回收
+
+        # 超长限制
+        if self.node_count > SETTING_SERVICE.history_max_size:
+            # 去掉开头一个
+            first = self.undo_stack_link
+            if first and first.next:
+                self.undo_stack_link = first.next
+                self.undo_stack_link.prev = None
+            pass
 
     def ctrl_z(self):
         """
