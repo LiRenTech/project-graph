@@ -9,6 +9,7 @@ from PyQt5.QtGui import QColor, QPainter, QPaintEvent
 from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
+from project_graph.entity.node_link import NodeLink
 from project_graph.paint.paint_elements import paint_details_data, paint_grid
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
@@ -27,7 +28,10 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
     rect = self.rect()
     # 更新camera大小，防止放大窗口后缩放中心点还在左上部分
     self.camera.reset_view_size(rect.width(), rect.height())
-
+    # 上下文对象
+    paint_context = PaintContext(
+        ProjectGraphPainter(painter), self.camera, self.mouse_location
+    )
     # 使用黑色填充整个窗口
     painter.fillRect(rect, STYLE_SERVICE.style.background_color)
 
@@ -95,24 +99,14 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
         # 如果鼠标位置是没有和任何节点相交的
         connect_target_node = None
         for node in self.node_manager.nodes:
-            if node in self.connect_from_nodes:
-                continue
             if node.body_shape.is_contain_point(self.mouse_right_location):
                 connect_target_node = node
                 break
         if connect_target_node:
             # 像吸附住了一样画线
             for node in self.connect_from_nodes:
-                PainterUtils.paint_arrow(
-                    painter,
-                    self.camera.location_world2view(node.body_shape.center),
-                    self.camera.location_world2view(
-                        connect_target_node.body_shape.center
-                    ),
-                    STYLE_SERVICE.style.connecting_line_color,
-                    2 * self.camera.current_scale,
-                    30 * self.camera.current_scale,
-                )
+                _link = NodeLink(node, connect_target_node)
+                _link.paint(paint_context)
         else:
             # 实时连线
             for node in self.connect_from_nodes:
@@ -124,11 +118,6 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
                     2 * self.camera.current_scale,
                     30 * self.camera.current_scale,
                 )
-
-    # 上下文对象
-    paint_context = PaintContext(
-        ProjectGraphPainter(painter), self.camera, self.mouse_location
-    )
 
     # 所有节点和连线
     self.node_manager.paint(paint_context)
