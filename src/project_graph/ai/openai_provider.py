@@ -6,12 +6,14 @@ import openai
 
 from project_graph.ai.ai_provider import AIProvider
 from project_graph.node_manager.node_manager import NodeManager
+from project_graph.settings.setting_service import SETTING_SERVICE
 
 
 class OpenAIProvider(AIProvider):
     def __init__(self) -> None:
         self.client = openai.OpenAI(
-            base_url=os.getenv("OPENAI_API_BASE"),
+            api_key=SETTING_SERVICE.openai_api_key or os.getenv("OPENAI_API_KEY"),
+            base_url=SETTING_SERVICE.openai_api_base or os.getenv("OPENAI_API_BASE"),
         )
 
     def generate_nodes(

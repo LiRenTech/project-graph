@@ -31,6 +31,7 @@ from PyQt5.QtWidgets import (
 from project_graph.ai.ai_provider import AIProvider
 from project_graph.ai.doubao_provider import DoubaoProvider
 from project_graph.ai.openai_provider import OpenAIProvider
+from project_graph.ai.request_thread import AIRequestThread
 from project_graph.app_dir import DATA_DIR
 from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
@@ -45,6 +46,7 @@ from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.status_text.status_text import STATUS_TEXT
 from project_graph.toolbar.toolbar import Toolbar
 from project_graph.ui.panel_about import show_about_panel
+from project_graph.ui.panel_ai_settings import show_ai_settings
 from project_graph.ui.panel_export_text import show_text_export_dialog
 from project_graph.ui.panel_help import show_help_panel
 from project_graph.ui.panel_import_text import show_text_import_dialog
@@ -190,6 +192,7 @@ class Canvas(QMainWindow):
                     LAction(title="显示设置", action=show_visual_settings),
                     LAction(title="物理设置", action=show_physics_settings),
                     LAction(title="性能设置", action=show_performance_settings),
+                    LAction(title="AI设置", action=show_ai_settings),
                     LAction(title="将设置保存", action=SETTING_SERVICE.save_settings),
                 ),
             ),
@@ -416,17 +419,11 @@ class Canvas(QMainWindow):
 
     def request_ai(self, provider: AIProvider, *args):
         selected_nodes = [node for node in self.node_manager.nodes if node.is_selected]
+        thread = None
 
-        def run():
-            print(args)
-            nodes = provider.generate_nodes(self.node_manager, *args)
-            log(nodes)
+        def on_finished(nodes):
+            nonlocal thread
             for dic in nodes:
-                dic["body_shape"]["width"] = 100
-                dic["body_shape"]["height"] = 100
-                dic["details"] = dic["details"].replace("$$$", "\n")
-                dic["uuid"] = str(uuid4())
-                dic["children"] = []
                 self.node_manager.add_from_dict(
                     {"nodes": [dic]},
                     NumberVector(
@@ -438,10 +435,21 @@ class Canvas(QMainWindow):
                 entity_node = self.node_manager.get_node_by_uuid(dic["uuid"])
                 assert entity_node is not None
                 for node in selected_nodes:
-                    log(node)
                     self.node_manager.connect_node(node, entity_node)
+            # 线程执行完毕后，销毁 `self.thread`
+            thread = None
 
-        Thread(target=run).start()
+        def on_error(error_message):
+            nonlocal thread
+            QMessageBox.critical(None, "AI 请求失败", error_message)
+            # 出错时，也销毁 `self.thread`
+            thread = None
+
+        if thread is None:  # 确保没有线程在运行
+            thread = AIRequestThread(provider, self.node_manager, *args)
+            thread.finished.connect(on_finished)
+            thread.error.connect(on_error)
+            thread.start()
 
     def custom_ai_model(self):
         """自定义 OpenAI 模型"""
