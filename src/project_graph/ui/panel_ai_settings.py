@@ -1,12 +1,7 @@
 import platform
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
-    QDialog,
-    QLabel,
-    QLineEdit,
-    QVBoxLayout,
-)
+from PyQt5.QtWidgets import QDialog, QLabel, QLineEdit, QVBoxLayout
 
 from project_graph.settings.setting_service import SETTING_SERVICE
 

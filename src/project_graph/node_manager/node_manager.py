@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from PyQt5.QtGui import QColor
 
 from project_graph.app_dir import DATA_DIR
@@ -12,11 +13,10 @@ from project_graph.paint.paintables import PaintContext
 from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.settings.style_service import STYLE_SERVICE
 
+from . import node_dict_checker
 from .node_progress_recorder import NodeProgressRecorder
 from .node_text_exporter import NodeTextExporter
 from .node_text_importer import NodeTextImporter
-
-from . import node_dict_checker
 
 
 def record_step(method):
