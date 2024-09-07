@@ -41,7 +41,6 @@ def paint_grid(paint_context: PaintContext):
             1,
         )
         y_start += gap
-    
 
     x_start = int(view_rect.location_left_top.x - (view_rect.location_left_top.x % gap))
     while x_start < view_rect.right():

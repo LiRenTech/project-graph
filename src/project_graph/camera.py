@@ -1,11 +1,11 @@
+import typing
+
 from PyQt5.QtGui import QColor, QTransform
 from PyQt5.QtWidgets import QMessageBox
 
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.settings.setting_service import SETTING_SERVICE
-
-import typing
 
 if typing.TYPE_CHECKING:
     from project_graph.effect.effect import Effect
