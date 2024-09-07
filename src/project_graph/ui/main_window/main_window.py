@@ -442,8 +442,11 @@ class Canvas(QMainWindow):
         clip.setText(str(self.camera.location))
 
     def request_ai(self, provider: AIProvider, *args):
+        """发送AI请求"""
         selected_nodes = [node for node in self.node_manager.nodes if node.is_selected]
         thread = None
+        for node in selected_nodes:
+            node.is_ai_generating = True
 
         def on_finished(nodes):
             nonlocal thread
@@ -460,11 +463,14 @@ class Canvas(QMainWindow):
                 assert entity_node is not None
                 for node in selected_nodes:
                     self.node_manager.connect_node(node, entity_node)
+                    node.is_ai_generating = False
             # 线程执行完毕后，销毁 `self.thread`
             thread = None
 
         def on_error(error_message):
             nonlocal thread
+            for node in selected_nodes:
+                node.is_ai_generating = False
             QMessageBox.critical(self, "AI 请求失败", error_message)
             # 出错时，也销毁 `self.thread`
             thread = None

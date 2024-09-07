@@ -1,3 +1,5 @@
+import math
+from time import time_ns
 from typing import List
 from uuid import uuid4
 
@@ -34,9 +36,14 @@ class EntityNode(Entity):
         """是否显示详细文字"""
 
         self.uuid = str(uuid4())
+        """节点的唯一标识符"""
 
         self.is_selected = False
         """是否是被选中的状态, 包括框选"""
+
+        self.is_ai_generating = False
+        """当前节点是否正在被AI生成内容"""
+
         self.adjust_size_by_text()
         pass
 
@@ -163,7 +170,22 @@ class EntityNode(Entity):
                 (context.camera.current_scale * 3),
                 context.camera.current_scale * 20,
             )
-
+        if self.is_ai_generating:
+            # 画一个左上角圆圈
+            color = QColor(
+                255, 255, 255, int(math.sin(time_ns() / 100000000) * 128 + 128)
+            )
+            PainterUtils.paint_rect(
+                context.painter.q_painter(),
+                context.camera.location_world2view(self.body_shape.location_left_top),
+                context.camera.current_scale * 30,
+                context.camera.current_scale * 30,
+                color,
+                QColor(0, 0, 0, 0),
+                0,
+                context.camera.current_scale * 15,
+            )
+            pass
         # context.painter.q_painter().resetTransform()
         pass
 

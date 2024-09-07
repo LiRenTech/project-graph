@@ -270,4 +270,33 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
         # 把按键清空，防止失效
         self.pressing_keys = set()
 
+    # paint_test(paint_context)
+    pass
+
+
+def paint_test(paint_context: PaintContext):
+    import math
+    from time import time_ns
+
+    color = QColor(255, 255, 255, int(math.sin(time_ns() / 100000000) * 128 + 128))
+    # PainterUtils.paint_circle(
+    #     paint_context.painter.q_painter(),
+    #     Circle(
+    #         paint_context.camera.location_world2view(NumberVector(100, 100)),
+    #         paint_context.camera.current_scale * 10,
+    #     ),
+    #     color,
+    #     QColor(0, 0, 0, 0),
+    #     0,
+    # )
+    PainterUtils.paint_rect(
+        paint_context.painter.q_painter(),
+        paint_context.camera.location_world2view(NumberVector(100, 100)),
+        paint_context.camera.current_scale * 30,
+        paint_context.camera.current_scale * 30,
+        color,
+        QColor(0, 0, 0, 0),
+        0,
+        paint_context.camera.current_scale * 15,
+    )
     pass
