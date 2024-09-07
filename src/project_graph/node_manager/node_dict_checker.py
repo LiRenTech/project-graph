@@ -5,6 +5,8 @@
 这个文件里全是工具函数，建议直接导入模块，不要拆碎导入函数
 """
 
+from project_graph.types import SFile
+
 
 def validate_dict(data: dict) -> bool:
     """
@@ -65,15 +67,15 @@ def validate_links_dict(data: dict) -> bool:
         return False
 
 
-def dict_transform_24_09_07(data: dict) -> dict:
+def transform_dict_to_2(data: dict) -> SFile:
     """
-    尝试将字典转换为符合要求的格式
-    主要是为了兼容不同版本的序列化数据
-
-    2024年9月7日新增兼容转换函数
-
-    转换后不敢保证完全符合要求，所以转换后还要再上游验证一次
+    1 -> 2 版本兼容性转换
+    2024-09-07
     """
+    if "version" in data:
+        # 如果有version字段，说明版本>=2，不需要转换
+        return SFile(**data)
+    data["version"] = 2
     if "nodes" not in data:
         data["nodes"] = []
     if "links" not in data:
@@ -86,10 +88,10 @@ def dict_transform_24_09_07(data: dict) -> dict:
             node["inner_text"] = ""
         if "children" not in node:
             node["children"] = []
-        # if "uuid" not in node:
-        #     node["uuid"] = ""
         # uuid没了那就真废了
+        if "uuid" not in node:
+            raise TypeError("节点缺少uuid字段")
     for link in data.get("links", []):
         if "inner_text" not in link:
             link["inner_text"] = ""
-    return data
+    return SFile(**data)

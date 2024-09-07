@@ -295,30 +295,12 @@ class NodeManager:
             data = self._refresh_all_uuid(data)
         # 先转换
         if not node_dict_checker.validate_dict(data):
-            data = node_dict_checker.dict_transform_24_09_07(data)
+            file = node_dict_checker.transform_dict_to_2(data)
             # 以后还可能有其他版本的转换
             # data = ...
 
-        # 验证数据格式
-        assert isinstance(data, dict)
-        assert isinstance(data.get("nodes"), list)
-        for i in data["nodes"]:
-            assert isinstance(i, dict)
-            assert isinstance(i.get("body_shape"), dict)
-            assert isinstance(i["body_shape"].get("type"), str)
-            assert isinstance(i["body_shape"].get("location_left_top"), list)
-            assert len(i["body_shape"]["location_left_top"]) == 2
-            assert isinstance(i["body_shape"].get("width"), (int, float))
-            assert isinstance(i["body_shape"].get("height"), (int, float))
-            assert isinstance(i.get("inner_text"), str)
-            assert isinstance(i.get("details"), str)
-            assert isinstance(i.get("uuid"), str)
-            assert isinstance(i.get("children"), list)
-            for child_uuid in i.get("children", []):
-                assert isinstance(child_uuid, str)
-
         # 开始构建节点本身
-        for new_node_dict in data["nodes"]:
+        for new_node_dict in file["nodes"]:
             assert isinstance(new_node_dict, dict)
 
             body_shape_data = new_node_dict["body_shape"]
@@ -344,7 +326,7 @@ class NodeManager:
             self.nodes.append(node)
 
         # 构建节点之间的连接关系 (根据的是children)
-        for new_node_dict in data["nodes"]:
+        for new_node_dict in file["nodes"]:
             node = self.get_node_by_uuid(new_node_dict["uuid"])
             if node is None:
                 continue
@@ -357,7 +339,7 @@ class NodeManager:
                 self._links.add(NodeLink(node, child))
 
         # 补充每个连线上的信息（文字）
-        for link_dict in data.get("links", []):
+        for link_dict in file.get("links", []):
             link = self.get_link_by_uuid(
                 link_dict["source_node"], link_dict["target_node"]
             )
