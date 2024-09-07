@@ -38,7 +38,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
 
     # 画网格
     if SETTING_SERVICE.is_show_grid:
-        paint_grid(painter, self.camera)
+        paint_grid(paint_context)
     # 当前的切断线
     if self.is_cutting:
         PainterUtils.paint_solid_line(
