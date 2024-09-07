@@ -49,6 +49,7 @@ from project_graph.status_text.status_text import STATUS_TEXT
 from project_graph.toolbar.toolbar import Toolbar
 from project_graph.ui.panel_about import show_about_panel
 from project_graph.ui.panel_ai_settings import show_ai_settings
+from project_graph.ui.panel_auto_namer import show_auto_namer_dialog
 from project_graph.ui.panel_export_text import show_text_export_dialog
 from project_graph.ui.panel_help import show_help_panel
 from project_graph.ui.panel_import_text import show_text_import_dialog
@@ -202,6 +203,7 @@ class Canvas(QMainWindow):
                     LAction(title="物理设置", action=show_physics_settings),
                     LAction(title="性能设置", action=show_performance_settings),
                     LAction(title="AI设置", action=show_ai_settings),
+                    LAction(title="自动命名设置", action=show_auto_namer_dialog),
                     LAction(title="将设置保存", action=SETTING_SERVICE.save_settings),
                 ),
             ),

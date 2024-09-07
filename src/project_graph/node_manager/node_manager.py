@@ -8,6 +8,7 @@ from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
+from project_graph.node_manager.node_auto_namer import NodeAutoNamer
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import PaintContext
 from project_graph.settings.setting_service import SETTING_SERVICE
@@ -67,6 +68,9 @@ class NodeManager:
 
         self.progress_recorder = NodeProgressRecorder(self)
         """步骤记录器"""
+
+        self._node_auto_namer = NodeAutoNamer(self)
+        """自动命名器"""
 
         self.clone_series: dict = {"nodes": [], "links": []}
         """正在复制，准备粘贴的东西"""
@@ -482,6 +486,7 @@ class NodeManager:
     @record_step
     def add_node_by_click(self, location_world: NumberVector) -> EntityNode:
         res = EntityNode(Rectangle(location_world - NumberVector(50, 50), 100, 100))
+        res.inner_text = self._node_auto_namer.get_new_name()
         self.nodes.append(res)
         return res
 

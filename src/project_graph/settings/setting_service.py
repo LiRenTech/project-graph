@@ -57,6 +57,9 @@ class SettingService:
         self.ark_api_key = ""
         self.openai_api_key = ""
         self.openai_api_base = ""
+
+        self.node_auto_name_template = "..."
+        """节点自动命名模板"""
         pass
 
     def __dict__(self):
@@ -78,6 +81,7 @@ class SettingService:
             "ark_api_key": self.ark_api_key,
             "openai_api_key": self.openai_api_key,
             "openai_api_base": self.openai_api_base,
+            "node_auto_name_template": self.node_auto_name_template,
         }
 
     def to_json_string(self):
@@ -120,6 +124,10 @@ class SettingService:
                 self.ark_api_key = settings.get("ark_api_key", "")
                 self.openai_api_key = settings.get("openai_api_key", "")
                 self.openai_api_base = settings.get("openai_api_base", "")
+
+                self.node_auto_name_template = settings.get(
+                    "node_auto_name_template", "..."
+                )
 
     def save_settings(self):
         """
