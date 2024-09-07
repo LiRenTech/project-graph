@@ -6,6 +6,7 @@ from pathlib import Path
 
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import (
+    QColor,
     QDragEnterEvent,
     QFont,
     QIcon,
@@ -33,6 +34,7 @@ from project_graph.ai.request_thread import AIRequestThread
 from project_graph.app_dir import DATA_DIR
 from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
+from project_graph.effect.effect_concrete import EffectViewFlash
 from project_graph.effect.effect_manager import EffectManager
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
@@ -83,6 +85,10 @@ class Canvas(QMainWindow):
         self.node_manager = NodeManager()
         self.recent_file_manager = RecentFileManager()
         self.toolbar: Toolbar = Toolbar()
+
+        self.on_open_file_by_path(
+            str(self.node_manager.file_path), record_history=False
+        )  # 一开始打开初始欢迎文件
 
         # ====== 鼠标事件相关
         self.is_pressing = False
@@ -157,8 +163,11 @@ class Canvas(QMainWindow):
                     LAction(
                         title="打开新图", action=self.on_open_file, shortcut="Ctrl+O"
                     ),
+                    LAction(title="保存", action=self.on_save_file, shortcut="Ctrl+S"),
                     LAction(
-                        title="保存当前图", action=self.on_save_file, shortcut="Ctrl+S"
+                        title="另存为",
+                        action=self.on_save_as_new_file,
+                        shortcut="Ctrl+Shift+S",
                     ),
                     LAction(
                         title="打开曾经保存的",
@@ -357,7 +366,7 @@ class Canvas(QMainWindow):
         # 显示对话框
         dialog.exec_()
 
-    def on_open_file_by_path(self, file_path: str):
+    def on_open_file_by_path(self, file_path: str, record_history=True):
         """
         根据文件路径打开文件
         """
@@ -365,7 +374,9 @@ class Canvas(QMainWindow):
         with open(file_path, "r", encoding="utf-8") as f:
             load_data = json.loads(f.read())
             self.node_manager.load_from_dict(load_data)
-            self.recent_file_manager.add_recent_file(Path(file_path))
+            self.node_manager.file_path = Path(file_path)
+            if record_history:
+                self.recent_file_manager.add_recent_file(Path(file_path))
         self.node_manager.progress_recorder.reset()
 
     def on_open_file(self):
@@ -378,12 +389,27 @@ class Canvas(QMainWindow):
         self.on_open_file_by_path(file_path)
 
     def on_save_file(self):
+        """保存"""
+        # 意外情况：如果node manager 的path属性没有找到文件，则会报错
+        if not self.node_manager.file_path.exists():
+            self.on_save_as_new_file()
+            return
+        else:
+            with open(self.node_manager.file_path, "w") as f:
+                save_data: dict = self.node_manager.dump_all()
+                json.dump(save_data, f)
+            self.node_manager.progress_recorder.reset()
+            self.effect_manager.add_effect(EffectViewFlash(30, QColor(0, 0, 0)))
+
+            self.camera.release_move(NumberVector(0, -1))
+
+    def on_save_as_new_file(self):
+        """另存为"""
         file_path, _ = QFileDialog.getSaveFileName(
-            self, "保存文件", "", "JSON Files (*.json);;All Files (*)"
+            self, "另存为", "", "JSON Files (*.json);;All Files (*)"
         )
         if file_path:
-            # 如果用户选择了文件并点击了保存按钮
-            # 保存布局文件
+            # 如果用户选择了文件并点击了另存为按钮
             save_data: dict = self.node_manager.dump_all()
 
             # 确保文件扩展名为 .json
@@ -395,7 +421,7 @@ class Canvas(QMainWindow):
             self.recent_file_manager.add_recent_file(Path(file_path))
             self.node_manager.progress_recorder.reset()
         else:
-            # 如果用户取消了保存操作
+            # 如果用户取消了另存为操作
             log("Save operation cancelled.")
 
     def reset_view(self):
