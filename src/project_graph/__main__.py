@@ -1,3 +1,4 @@
+import os
 import subprocess
 import sys
 import traceback
@@ -57,6 +58,9 @@ def main():
     sys.excepthook = my_except_hook
 
     load_dotenv()
+    os.environ["ARK_API_KEY"] = os.getenv("ARK_API_KEY", "")
+    os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY", "")
+    os.environ["OPENAI_API_BASE"] = os.getenv("OPENAI_API_BASE", "")
     if INFO.env == "dev":
         INFO.commit = (
             subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()
