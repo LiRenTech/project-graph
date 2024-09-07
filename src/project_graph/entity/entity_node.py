@@ -128,27 +128,28 @@ class EntityNode(Entity):
             (context.camera.current_scale * 3),
             context.camera.current_scale * 16,
         )
-
-        PainterUtils.paint_text_from_center(
-            context.painter.q_painter(),
-            context.camera.location_world2view(self.body_shape.center),
-            self.inner_text,
-            context.camera.current_scale * self.FONT_SIZE,
-            STYLE_SERVICE.style.node_text_color,
-        )
-        if self.is_detail_show:
-            PainterUtils.paint_document_from_left_top(
+        if context.camera.current_scale > 0.1:
+            # 此判断用于：太小了的时候不渲染文字
+            PainterUtils.paint_text_from_center(
                 context.painter.q_painter(),
-                context.camera.location_world2view(
-                    self.body_shape.location_left_top
-                    + NumberVector(0, self.body_shape.height)
-                ),
-                self.details,
-                context.camera.current_scale * 400,
-                context.camera.current_scale * 15,
-                STYLE_SERVICE.style.node_details_text_color,
-                QColor(0, 0, 0, 128),
+                context.camera.location_world2view(self.body_shape.center),
+                self.inner_text,
+                context.camera.current_scale * self.FONT_SIZE,
+                STYLE_SERVICE.style.node_text_color,
             )
+            if self.is_detail_show:
+                PainterUtils.paint_document_from_left_top(
+                    context.painter.q_painter(),
+                    context.camera.location_world2view(
+                        self.body_shape.location_left_top
+                        + NumberVector(0, self.body_shape.height)
+                    ),
+                    self.details,
+                    context.camera.current_scale * 400,
+                    context.camera.current_scale * 15,
+                    STYLE_SERVICE.style.node_details_text_color,
+                    QColor(0, 0, 0, 128),
+                )
         if self.is_selected:
             PainterUtils.paint_rect(
                 context.painter.q_painter(),

@@ -12,7 +12,7 @@ from project_graph.app_dir import DATA_DIR
 
 @dataclass
 class RecentFile:
-    """最近打开的文件"""
+    """最近打开的文件(一项)"""
 
     file_path: Path
     last_opened_time: datetime.datetime
@@ -41,6 +41,10 @@ class RecentFile:
 
 
 class RecentFileManager:
+    """
+    管理最近打开的文件列表
+    """
+
     recent_files_list_path = Path(DATA_DIR) / "recent_files_list.json"
 
     def __init__(self):

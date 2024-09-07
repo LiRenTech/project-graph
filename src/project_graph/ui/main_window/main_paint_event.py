@@ -189,6 +189,7 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
             self.camera,
             [
                 f"历史情况：{self.node_manager.progress_recorder.stringify()}",
+                f"path: {self.node_manager.file_path}",
                 f"当前缩放: {self.camera.current_scale:.2f}",
                 f"摄像机位置: ({self.camera.location.x:.2f}, {self.camera.location.y:.2f})",
                 f"特效数量: {len(self.effect_manager.effects)}",

@@ -1,5 +1,8 @@
+from pathlib import Path
+
 from PyQt5.QtGui import QColor
 
+from project_graph.app_dir import DATA_DIR
 from project_graph.data_struct.circle import Circle
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
@@ -10,6 +13,7 @@ from project_graph.paint.paintables import PaintContext
 from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.settings.style_service import STYLE_SERVICE
 
+from . import node_dict_checker
 from .node_progress_recorder import NodeProgressRecorder
 from .node_text_exporter import NodeTextExporter
 from .node_text_importer import NodeTextImporter
@@ -71,7 +75,23 @@ class NodeManager:
         self.press_ctrl_c_location = NumberVector(0, 0)
         """上次按下Ctrl+C的鼠标世界位置"""
 
+        self.file_path = Path(DATA_DIR) / "welcome.json"
+        """当前打开的文件路径"""
+
+        # == 初始化 ==
+        # 如果没有文件就先保存一个文件
+        if not self.file_path.exists():
+            self.save_file()
+        # 加载默认
+        # 在上层 main window调用
+
         pass
+
+    def save_file(self):
+        import json
+
+        with open(self.file_path, "w") as f:
+            f.write(json.dumps(self.dump_all(), indent=4))
 
     def move_cursor(self, direction: str):
         """
@@ -273,6 +293,12 @@ class NodeManager:
         """
         if refresh_uuid:
             data = self._refresh_all_uuid(data)
+        # 先转换
+        if not node_dict_checker.validate_dict(data):
+            data = node_dict_checker.dict_transform_24_09_07(data)
+            # 以后还可能有其他版本的转换
+            # data = ...
+
         # 验证数据格式
         assert isinstance(data, dict)
         assert isinstance(data.get("nodes"), list)

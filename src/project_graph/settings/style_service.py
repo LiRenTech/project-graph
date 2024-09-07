@@ -19,7 +19,7 @@ class ThemeStyle:
 
         self.grid_line_color = QColor(255, 255, 255, 50)
         """网格细线"""
-        self.grid_bold_line_color = QColor(255, 255, 255, 200)
+        self.grid_bold_line_color = QColor(255, 255, 255, 100)
         """网格粗线"""
         self.details_debug_text_color = QColor(255, 255, 255, 100)
         """左上角调试信息颜色"""
