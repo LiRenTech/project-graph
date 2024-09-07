@@ -20,7 +20,9 @@ from PyQt5.QtWidgets import (
     QDesktopWidget,
     QDialog,
     QFileDialog,
+    QInputDialog,
     QLabel,
+    QLineEdit,
     QMainWindow,
     QMessageBox,
     QPushButton,
@@ -209,6 +211,19 @@ class Canvas(QMainWindow):
                         action=partial(
                             self.request_ai, OpenAIProvider(), "net-gpt-3.5-turbo"
                         ),
+                    ),
+                    LAction(
+                        title=SETTING_SERVICE.custom_ai_model or "自定义模型",
+                        enabled=SETTING_SERVICE.custom_ai_model != "",
+                        action=partial(
+                            self.request_ai,
+                            OpenAIProvider(),
+                            SETTING_SERVICE.custom_ai_model,
+                        ),
+                    ),
+                    LAction(
+                        title="设置自定义 OpenAI 模型",
+                        action=self.custom_ai_model,
                     ),
                 ),
             ),
@@ -428,6 +443,20 @@ class Canvas(QMainWindow):
                     self.node_manager.connect_node(node, entity_node)
 
         Thread(target=run).start()
+
+    def custom_ai_model(self):
+        """自定义 OpenAI 模型"""
+        # 弹窗让用户输入模型名称
+        text, ok = QInputDialog.getText(
+            self,
+            "输入模型名称",
+            "请输入模型名称 (例如 gpt-4o-mini)",
+            text=SETTING_SERVICE.custom_ai_model,
+        )
+        if ok:
+            SETTING_SERVICE.custom_ai_model = text
+            SETTING_SERVICE.save_settings()
+            self.init_ui()
 
     def dragEnterEvent(self, a0: QDragEnterEvent | None):
         assert a0 is not None

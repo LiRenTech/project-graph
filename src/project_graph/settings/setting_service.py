@@ -50,6 +50,8 @@ class SettingService:
         """
         历史记录最大数量
         """
+
+        self.custom_ai_model = ""
         pass
 
     def __dict__(self):
@@ -67,6 +69,7 @@ class SettingService:
             "camera_move_friction": self.camera_move_friction,
             "is_node_details_show_always": self.is_node_details_show_always,
             "history_max_size": self.history_max_size,
+            "custom_ai_model": self.custom_ai_model,
         }
 
     def to_json_string(self):
@@ -105,6 +108,7 @@ class SettingService:
                     "is_node_details_show_always", False
                 )
                 self.history_max_size = settings.get("history_max_size", 20)
+                self.custom_ai_model = settings.get("custom_ai_model", "")
 
     def save_settings(self):
         """

@@ -9,13 +9,16 @@ class LAction:
         action: Callable[[], None] = lambda: None,
         shortcut: str = "",
         title: str = "",
+        enabled: bool = True,
     ):
         self._text = title
         self.__action = action
         self.__shortcut = shortcut
+        self.__enabled = enabled
 
     def _apply_to_qt(self, action: QAction):
         action.triggered.connect(self.__action)
+        action.setEnabled(self.__enabled)
         if self.__shortcut != "":
             action.setShortcut(self.__shortcut)
 
@@ -43,6 +46,7 @@ class LMenuBar:
     def apply_to_qt_window(self, native_window: QMainWindow) -> None:
         menu_bar = native_window.menuBar()
         assert menu_bar is not None
+        menu_bar.clear()
         for menu in self.__menus:
             if isinstance(menu, LMenu):
                 menu._apply_to_qt(menu_bar.addMenu(menu._title))
