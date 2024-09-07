@@ -77,21 +77,21 @@ class NodeManager:
 
         self.file_path = Path(DATA_DIR) / "welcome.json"
         """当前打开的文件路径"""
-        
+
         # == 初始化 ==
         # 如果没有文件就先保存一个文件
         if not self.file_path.exists():
             self.save_file()
         # 加载默认
         # 在上层 main window调用
-        
+
         pass
-    
+
     def save_file(self):
         import json
+
         with open(self.file_path, "w") as f:
             f.write(json.dumps(self.dump_all(), indent=4))
-    
 
     def move_cursor(self, direction: str):
         """

@@ -44,6 +44,7 @@ class RecentFileManager:
     """
     管理最近打开的文件列表
     """
+
     recent_files_list_path = Path(DATA_DIR) / "recent_files_list.json"
 
     def __init__(self):
