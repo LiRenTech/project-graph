@@ -439,7 +439,7 @@ class Canvas(QMainWindow):
 
         def on_error(error_message):
             nonlocal thread
-            QMessageBox.critical(None, "AI 请求失败", error_message)
+            QMessageBox.critical(self, "AI 请求失败", error_message)
             # 出错时，也销毁 `self.thread`
             thread = None
 
