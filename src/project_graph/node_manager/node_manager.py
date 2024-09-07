@@ -298,6 +298,8 @@ class NodeManager:
             file = node_dict_checker.transform_dict_to_2(data)
             # 以后还可能有其他版本的转换
             # data = ...
+        else:
+            file = data
 
         # 开始构建节点本身
         for new_node_dict in file["nodes"]:
