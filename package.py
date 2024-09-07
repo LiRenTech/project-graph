@@ -15,6 +15,8 @@ def main():
     parser = argparse.ArgumentParser()
     # 只编译assets文件
     parser.add_argument("--assets-only", action="store_true")
+    # 自定义环境变量，可以传多次，--env ARK_API_KEY xxx --env ARK_API_SECRET xxx
+    parser.add_argument("--env", action="append", nargs=2, metavar=("KEY", "VALUE"))
     args = parser.parse_args()
     # 生成assets
     if not (path / "src" / "project_graph" / "assets" / "assets.py").exists():
@@ -41,8 +43,11 @@ class INFO:
             )
         # 创建临时文件
         with open(path / "src" / "_package.py", "w") as f:
+            env_code = ""
+            for key, value in args.env or []:
+                env_code += f"os.environ['{key}'] = '{value}'\n"
             f.write(
-                "from project_graph.__main__ import main\nif __name__ == '__main__': main()"
+                f"import os\nfrom project_graph.__main__ import main\n{env_code}\nif __name__ == '__main__':main()"
             )
         # 打包
         PyInstaller.__main__.run(

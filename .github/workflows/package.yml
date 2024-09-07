@@ -41,8 +41,7 @@ jobs:
       #     pdm run python -c "import PyQt5; print(PyQt5.__file__)"
       - name: Package
         run: |
-          echo "ARK_API_KEY=${{ secrets.ARK_API_KEY }}" >> .env
-          pdm package
+          pdm package --env ARK_API_KEY ${{ secrets.ARK_API_KEY }} --env OPENAI_API_KEY ${{ secrets.OPENAI_API_KEY }} --env OPENAI_API_BASE https://free.gpt.ge/v1
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -64,7 +63,7 @@ jobs:
           pdm install --with package
       - name: Package
         run: |
-          pdm package
+          pdm package --env ARK_API_KEY ${{ secrets.ARK_API_KEY }} --env OPENAI_API_KEY ${{ secrets.OPENAI_API_KEY }} --env OPENAI_API_BASE https://free.gpt.ge/v1
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
