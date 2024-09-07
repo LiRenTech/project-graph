@@ -27,7 +27,7 @@ class DoubaoProvider(AIProvider):
                 messages=[
                     {
                         "role": "system",
-                        "content": self.system_prompt,
+                        "content": self.SYSTEM_PROMPT,
                     },
                     {
                         "role": "user",
