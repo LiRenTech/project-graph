@@ -6,6 +6,9 @@ if [ $EUID -ne 0 ]; then
     exit 1
 fi
 
+echo "Uninstall existing version"
+sudo rm -rf /tmp/project-graph* /usr/local/bin/project-graph /usr/share/applications/project-graph.desktop /usr/share/icons/hicolor/64x64/apps/project-graph.png
+
 echo "Download binary file"
 sudo curl -L -o /tmp/project-graph.zip https://nightly.link/LiRenTech/project-graph/workflows/package/master/project-graph_linux.zip
 if [ $? -ne 0 ]; then
@@ -19,9 +22,6 @@ if [ $? -ne 0 ]; then
     echo "Unzip failed"
     exit 1
 fi
-
-echo "Uninstall existing version"
-sudo rm -rf /tmp/project-graph* /usr/local/bin/project-graph /usr/share/applications/project-graph.desktop /usr/share/icons/hicolor/64x64/apps/project-graph.png
 
 echo "Copy binary file to /usr/local/bin"
 sudo cp /tmp/project-graph/project-graph /usr/local/bin/project-graph

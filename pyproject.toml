@@ -12,7 +12,8 @@ dependencies = [
     "volcengine-python-sdk>=1.0.100",
     "httpx>=0.23.0",
     "typing-extensions>=4.12.2",
-    "pydantic>=1.9.0"
+    "pydantic>=1.9.0",
+    "openai>=1.44.0",
 ]
 requires-python = "<3.13,>=3.12"
 readme = "README.md"

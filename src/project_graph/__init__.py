@@ -5,4 +5,4 @@ class INFO:
     commit: str = ""
     date: str = ""
     branch: str = ""
-    env: Literal["dev"] | Literal["prod"] = "dev"
+    env: Literal["dev", "prod"] = "dev"

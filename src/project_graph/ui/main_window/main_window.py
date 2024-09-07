@@ -27,7 +27,9 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
 )
 
-from project_graph.ai.doubao import Doubao
+from project_graph.ai.ai_provider import AIProvider
+from project_graph.ai.doubao_provider import DoubaoProvider
+from project_graph.ai.openai_provider import OpenAIProvider
 from project_graph.app_dir import DATA_DIR
 from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
@@ -48,6 +50,7 @@ from project_graph.ui.panel_import_text import show_text_import_dialog
 from project_graph.ui.panel_performence_settings import show_performance_settings
 from project_graph.ui.panel_physics_settings import show_physics_settings
 from project_graph.ui.panel_serialize_test import show_serialize_dialog
+from project_graph.ui.panel_update import show_update_panel
 from project_graph.ui.panel_visual_settings import show_visual_settings
 
 from . import (
@@ -177,6 +180,7 @@ class Canvas(QMainWindow):
                     LAction(title="帮助说明", action=show_help_panel),
                     LAction(title="关于", action=show_about_panel),
                     LAction(title="打开缓存文件夹", action=self.open_cache_folder),
+                    LAction(title="检查更新", action=show_update_panel),
                 ),
             ),
             LMenu(
@@ -189,7 +193,24 @@ class Canvas(QMainWindow):
                 ),
             ),
             LMenu(
-                title="AI", children=(LAction(title="测试", action=self.on_ai_test),)
+                title="AI",
+                children=(
+                    LAction(
+                        title="豆包", action=partial(self.request_ai, DoubaoProvider())
+                    ),
+                    LAction(
+                        title="gpt-4o-mini",
+                        action=partial(
+                            self.request_ai, OpenAIProvider(), "gpt-4o-mini"
+                        ),
+                    ),
+                    LAction(
+                        title="net-gpt-3.5-turbo",
+                        action=partial(
+                            self.request_ai, OpenAIProvider(), "net-gpt-3.5-turbo"
+                        ),
+                    ),
+                ),
             ),
             LMenu(
                 title="测试",
@@ -379,17 +400,13 @@ class Canvas(QMainWindow):
         assert clip is not None
         clip.setText(str(self.camera.location))
 
-    def on_ai_test(self):
-        """测试AI"""
-        instance = Doubao()
-        res = ""
+    def request_ai(self, provider: AIProvider, *args):
         selected_nodes = [node for node in self.node_manager.nodes if node.is_selected]
 
         def run():
-            nonlocal res
-            res = instance.generate_node(self.node_manager)
-            log(res)
-            nodes = json.loads(res)
+            print(args)
+            nodes = provider.generate_nodes(self.node_manager, *args)
+            log(nodes)
             for dic in nodes:
                 dic["body_shape"]["width"] = 100
                 dic["body_shape"]["height"] = 100
