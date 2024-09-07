@@ -26,6 +26,11 @@ def show_ai_settings():
     # 设置布局
     layout = QVBoxLayout()
 
+    # 提示：重启应用后生效
+    restart_label = QLabel("提示：重启应用后生效")
+    restart_label.setStyleSheet("color: red;")
+    layout.addWidget(restart_label)
+
     # ark_api_key
     ark_api_key_label = QLabel("ARK API Key:")
     ark_api_key_input = QLineEdit()

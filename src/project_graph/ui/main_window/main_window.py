@@ -3,8 +3,6 @@ import platform
 import subprocess
 from functools import partial
 from pathlib import Path
-from threading import Thread
-from uuid import uuid4
 
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import (
