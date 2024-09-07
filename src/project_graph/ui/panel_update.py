@@ -1,8 +1,11 @@
-from pathlib import Path
 import platform
 import shutil
 import subprocess
 import zipfile
+from pathlib import Path
+
+import dateutil.parser
+import httpx
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtGui import QCloseEvent, QFont
 from PyQt5.QtWidgets import (
@@ -13,8 +16,7 @@ from PyQt5.QtWidgets import (
     QSizePolicy,
     QVBoxLayout,
 )
-import dateutil.parser
-import httpx
+
 from project_graph import INFO
 
 
