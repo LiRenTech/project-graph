@@ -446,6 +446,11 @@ class Canvas(QMainWindow):
     def tick(self):
         self.effect_manager.tick()
         self.camera.tick()
+        # 把camera里的特效加到effect_manager里
+        for effect in self.camera.prepare_effect:
+            self.effect_manager.add_effect(effect)
+        self.camera.prepare_effect.clear()
+        
         # 更新鼠标手势
         if Qt.Key.Key_Space in self.pressing_keys:
             if self.is_pressing:
