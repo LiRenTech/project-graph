@@ -9,10 +9,13 @@ dependencies = [
     "PyQt5>=5.15.11",
     "python-dotenv>=1.0.1",
     "jsonfixer>=0.2.2",
+
+    # 豆包AI 与依赖
     "volcengine-python-sdk>=1.0.100",
     "httpx>=0.23.0",
     "typing-extensions>=4.12.2",
     "pydantic>=1.9.0",
+    # openai 与依赖
     "openai>=1.44.0",
 ]
 requires-python = "<3.13,>=3.12"

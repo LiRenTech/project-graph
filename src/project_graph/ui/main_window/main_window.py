@@ -22,7 +22,6 @@ from PyQt5.QtWidgets import (
     QFileDialog,
     QInputDialog,
     QLabel,
-    QLineEdit,
     QMainWindow,
     QMessageBox,
     QPushButton,
