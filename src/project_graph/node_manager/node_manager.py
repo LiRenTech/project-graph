@@ -486,6 +486,22 @@ class NodeManager:
         return res
 
     @record_step
+    def add_nodes_by_ai_fast(self, subtitles: list[str], source_node: EntityNode):
+        """
+        通过AI，快速扩展一个节点
+        """
+
+        for i, title in enumerate(subtitles):
+            new_location = source_node.body_shape.location_left_top + NumberVector(
+                source_node.body_shape.width + 20, i * 120
+            )
+            new_node = EntityNode(Rectangle(new_location, 100, 100))
+            new_node.inner_text = title
+            self.nodes.append(new_node)
+            self.connect_node(source_node, new_node)
+        pass
+
+    @record_step
     def delete_node(self, node: EntityNode):
         if node in self.nodes:
             self.nodes.remove(node)

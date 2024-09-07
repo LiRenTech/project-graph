@@ -30,7 +30,9 @@ from PyQt5.QtWidgets import (
 from project_graph.ai.ai_provider import AIProvider
 from project_graph.ai.doubao_provider import DoubaoProvider
 from project_graph.ai.openai_provider import OpenAIProvider
+from project_graph.ai.openai_provider_fast import OpenAIProviderFast
 from project_graph.ai.request_thread import AIRequestThread
+from project_graph.ai.request_thread_fast import AIRequestThreadFast
 from project_graph.app_dir import DATA_DIR
 from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
@@ -233,6 +235,12 @@ class Canvas(QMainWindow):
                     LAction(
                         title="设置自定义 OpenAI 模型",
                         action=self.custom_ai_model,
+                    ),
+                    LAction(
+                        title="gpt-4o-mini (快速扩展节点)",
+                        action=partial(
+                            self.request_ai_fast, OpenAIProviderFast(), "gpt-4o-mini"
+                        ),
                     ),
                 ),
             ),
@@ -480,6 +488,36 @@ class Canvas(QMainWindow):
             thread.finished.connect(on_finished)
             thread.error.connect(on_error)
             thread.start()
+
+    def request_ai_fast(self, provider: AIProvider, *args):
+        """发送AI请求 (快速简单版)"""
+        selected_nodes = [node for node in self.node_manager.nodes if node.is_selected]
+        thread = None
+        for node in selected_nodes:
+            node.is_ai_generating = True
+
+        def on_finished(nodes: list[str]):
+            nonlocal thread
+            self.node_manager.add_nodes_by_ai_fast(nodes, selected_nodes[0])
+            # 线程执行完毕后，销毁 `self.thread`
+            selected_nodes[0].is_ai_generating = False
+            thread = None
+
+        def on_error(error_message):
+            nonlocal thread
+            for node in selected_nodes:
+                node.is_ai_generating = False
+            QMessageBox.critical(self, "AI 请求失败", error_message)
+            # 出错时，也销毁 `self.thread`
+            thread = None
+
+        if thread is None:  # 确保没有线程在运行
+            thread = AIRequestThreadFast(provider, self.node_manager, *args)
+            thread.finished.connect(on_finished)
+            thread.error.connect(on_error)
+            thread.start()
+
+        pass
 
     def custom_ai_model(self):
         """自定义 OpenAI 模型"""
