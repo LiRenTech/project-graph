@@ -20,6 +20,7 @@ from project_graph.data_struct.circle import Circle
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.logging import log
+from project_graph.tools.safe_int import safe_int
 
 
 class PainterUtils:
@@ -39,9 +40,9 @@ class PainterUtils:
             return
         for i, location in enumerate(points):
             if i == 0:
-                path.moveTo(int(location.x), int(location.y))
+                path.moveTo(safe_int(location.x), safe_int(location.y))
             else:
-                path.lineTo(int(location.x), int(location.y))
+                path.lineTo(safe_int(location.x), safe_int(location.y))
         painter.drawPath(path)
         pass
 
@@ -87,7 +88,9 @@ class PainterUtils:
         painter.setBrush(color)
 
         # painter.setRenderHint(QPainter.Antialiasing)
-        painter.drawLine(int(point1.x), int(point1.y), int(point2.x), int(point2.y))
+        painter.drawLine(
+            int(point1.x), safe_int(point1.y), safe_int(point2.x), safe_int(point2.y)
+        )
         # painter.setPen(QColor(0, 0, 0, 0))
         # painter.setBrush(QColor(0, 0, 0, 0))
         # painter.setRenderHint(QPainter.Antialiasing, False)
@@ -121,7 +124,7 @@ class PainterUtils:
         dx = point2.x - point1.x
         dy = point2.y - point1.y
         length = (dx**2 + dy**2) ** 0.5
-        num_dashes = int(length / dash_length)
+        num_dashes = safe_int(length / dash_length)
         if num_dashes == 0:
             num_dashes = 1
         dash_pattern = [dash_length] * num_dashes
@@ -129,7 +132,12 @@ class PainterUtils:
         painter.setPen(QColor(0, 0, 0, 0))
         painter.setBrush(QColor(0, 0, 0, 0))
         painter.setRenderHint(QPainter.Antialiasing, False)
-        painter.drawLine(int(point1.x), int(point1.y), int(point2.x), int(point2.y))
+        painter.drawLine(
+            safe_int(point1.x),
+            safe_int(point1.y),
+            safe_int(point2.x),
+            safe_int(point2.y),
+        )
         pass
 
     @staticmethod
@@ -154,10 +162,10 @@ class PainterUtils:
         painter.setBrush(color)
         # painter.setRenderHint(QPainter.Antialiasing)
         painter.drawEllipse(
-            int(circle.center.x - circle.radius),
-            int(circle.center.y - circle.radius),
-            int(circle.radius * 2),
-            int(circle.radius * 2),
+            safe_int(circle.center.x - circle.radius),
+            safe_int(circle.center.y - circle.radius),
+            safe_int(circle.radius * 2),
+            safe_int(circle.radius * 2),
         )
         painter.setPen(QColor(0, 0, 0, 0))
         painter.setBrush(QColor(0, 0, 0, 0))
@@ -231,17 +239,15 @@ class PainterUtils:
         painter.setBrush(fill_color)
         painter.setRenderHint(QPainter.Antialiasing)
         painter.drawRoundedRect(
-            int(left_top.x),
-            int(left_top.y),
-            int(width),
-            int(height),
-            int(radius),
-            int(radius),
+            safe_int(left_top.x),
+            safe_int(left_top.y),
+            safe_int(width),
+            safe_int(height),
+            safe_int(radius),
+            safe_int(radius),
         )
-        # HACK: 这个数字转int有隐患，OverflowError: argument 3 overflowed: value must be in the range -2147483648 to 2147483647
         painter.setPen(QColor(0, 0, 0, 0))
         painter.setBrush(QColor(0, 0, 0, 0))
-
         painter.setRenderHint(QPainter.Antialiasing, False)
         pass
 
@@ -329,7 +335,7 @@ class PainterUtils:
 
             # 转换center为整数坐标
             center = center.integer()
-            center = QPoint(int(center.x), int(center.y))
+            center = QPoint(int(center.x), safe_int(center.y))
 
             # 获取文本的宽度和高度
             text_width = font_metrics.width(text)
@@ -372,7 +378,7 @@ class PainterUtils:
         # 创建新的坐标
 
         # 设置字体和颜色
-        font = QFont("Times New Roman", int(font_size))
+        font = QFont("Times New Roman", safe_int(font_size))
         # 使用QTextDocument绘制文本
         document = QTextDocument()
         text = text.replace("\n", "<br>")
@@ -392,7 +398,7 @@ class PainterUtils:
         #     h,
         #     background_color,
         # )
-        location = QPointF(int(location.x), int(location.y))
+        location = QPointF(int(location.x), safe_int(location.y))
         # 调整坐标
         painter.translate(location)
         # 这个可能只是一个矩形遮罩
@@ -423,7 +429,7 @@ class PainterUtils:
         # 加载图片
         image = QImage(image_path)
         # 缩放图片
-        image = image.scaled(int(width), int(height))
+        image = image.scaled(int(width), safe_int(height))
         # 绘制图片
-        painter.drawImage(int(left_top.x), int(left_top.y), image)
+        painter.drawImage(int(left_top.x), safe_int(left_top.y), image)
         pass

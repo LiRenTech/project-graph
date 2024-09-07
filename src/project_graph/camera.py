@@ -1,9 +1,14 @@
-from PyQt5.QtGui import QTransform
+import typing
+
+from PyQt5.QtGui import QColor, QTransform
 from PyQt5.QtWidgets import QMessageBox
 
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.settings.setting_service import SETTING_SERVICE
+
+if typing.TYPE_CHECKING:
+    from project_graph.effect.effect import Effect
 
 
 class Camera:
@@ -37,6 +42,9 @@ class Camera:
         # 可以看成一个九宫格，主要用于处理 w s a d 按键移动，
         self.accelerateCommander = NumberVector(0, 0)
         self.is_scale_animation_open = True
+
+        self.prepare_effect: "list[Effect]" = []
+        """准备添加到舞台上的特效"""
 
     def reset(self):
         """外界调用，重置相机状态"""
@@ -84,6 +92,8 @@ class Camera:
             self.current_scale /= SETTING_SERVICE.camera_scale_exponent
 
     def tick(self):
+        from project_graph.effect.effect_concrete import EffectViewFlash
+
         try:
             # 计算摩擦力
             friction = NumberVector.zero()
@@ -109,17 +119,20 @@ class Camera:
                 self.current_scale += (self.target_scale - self.current_scale) / 10
 
             # 彩蛋，《微观尽头》——刘慈欣
-
             if self.current_scale > self.SCALE_MAX:
                 self.current_scale = self.SCALE_MIN * 2
                 self.target_scale = self.SCALE_MIN * 2
+                self.prepare_effect.append(EffectViewFlash(15, QColor(255, 255, 255)))
             elif self.current_scale < self.SCALE_MIN:
                 self.current_scale = self.SCALE_MAX - 1
                 self.target_scale = self.SCALE_MAX - 1
+                self.prepare_effect.append(EffectViewFlash(15, QColor(255, 255, 255)))
+
         except OverflowError:
             # 彩蛋，原神怎么你了？
             QMessageBox.about(None, "派蒙", "前面的区域以后再来探索吧？")
             self.reset()
+            self.prepare_effect.append(EffectViewFlash(15, QColor(255, 255, 255)))
             self.speed = NumberVector(0, 0)
 
     @property

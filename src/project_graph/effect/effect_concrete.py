@@ -111,6 +111,38 @@ class EffectRectangleShrink(Effect):
         )
 
 
+class EffectViewFlash(Effect):
+    """
+    视野界面闪白效果，不一定是白，可以是其他颜色
+    """
+
+    def __init__(self, duration: int, color: QColor):
+        super().__init__(duration)
+        self.color = color
+
+    def get_components(self) -> List[Paintable]:
+        return []
+
+    def paint(self, context: PaintContext):
+        # rect = context.camera.cover_world_rectangle
+        device = context.painter.q_painter().device()
+        if device is not None:
+            PainterUtils.paint_rect(
+                context.painter.q_painter(),
+                NumberVector(0, 0),
+                device.width(),
+                device.height(),
+                QColor(
+                    self.color.red(),
+                    self.color.green(),
+                    self.color.blue(),
+                    int((1 - self.finish_rate) * 255),
+                ),
+                QColor(0, 0, 0, 0),
+                0,
+            )
+
+
 class EffectCircleExpand(Effect):
     """
     圆圈扩大效果
