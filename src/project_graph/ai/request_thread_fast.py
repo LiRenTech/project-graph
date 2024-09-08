@@ -13,7 +13,9 @@ class AIRequestThreadFast(QThread):
 
     def run(self):
         try:
-            nodes: list[str] = self.provider.generate_nodes(self.node_manager, *self.args)
+            nodes: list[str] = self.provider.generate_nodes(
+                self.node_manager, *self.args
+            )
             self.finished.emit(nodes)
         except Exception as e:
             self.error.emit(str(e))

@@ -86,7 +86,7 @@ class OpenAIProviderFast(AIProvider):
         print(f"<{content}>")
         lines = content.split("\n")
         lines = [line.strip() for line in lines if line.strip()]
-        
+
         # 如果有一行 是三个反引号，则去除
         if lines and lines[0].startswith("```") and lines[0].endswith("```"):
             lines = lines[1:]
