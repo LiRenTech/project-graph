@@ -26,6 +26,9 @@ def keyPressEvent(self: "Canvas", a0: QKeyEvent | None):
     if key == Qt.Key.Key_A:
         self.camera.press_move(NumberVector(-1, 0))
     elif key == Qt.Key.Key_S:
+        if Qt.Key.Key_Control in self.pressing_keys:
+            # 会被PyQt5的快捷键机制捕获，这里捕获不到
+            return
         self.camera.press_move(NumberVector(0, 1))
     elif key == Qt.Key.Key_D:
         self.camera.press_move(NumberVector(1, 0))
@@ -146,6 +149,10 @@ def keyReleaseEvent(self: "Canvas", a0: QKeyEvent | None):
     if key == Qt.Key.Key_A:
         self.camera.release_move(NumberVector(-1, 0))
     elif key == Qt.Key.Key_S:
+        if Qt.Key.Key_Control in self.pressing_keys:
+            # 这个意义是防止Ctrl+S被误触发
+            print("S 在 ctrl下 弹起")
+            return
         self.camera.release_move(NumberVector(0, 1))
     elif key == Qt.Key.Key_D:
         self.camera.release_move(NumberVector(1, 0))

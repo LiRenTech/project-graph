@@ -411,7 +411,7 @@ class Canvas(QMainWindow):
             self.node_manager.progress_recorder.reset()
             self.effect_manager.add_effect(EffectViewFlash(30, QColor(0, 0, 0)))
 
-            self.camera.release_move(NumberVector(0, -1))
+            # self.camera.accelerateCommander = NumberVector(0, 0)
 
     def on_save_as_new_file(self):
         """另存为"""
