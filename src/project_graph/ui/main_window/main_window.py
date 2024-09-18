@@ -37,7 +37,7 @@ from project_graph.app_dir import DATA_DIR
 from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
-from project_graph.effect.effect_concrete import EffectRectangleFlash, EffectViewFlash
+from project_graph.effect.effect_concrete import EffectViewFlash
 from project_graph.effect.effect_manager import EffectManager
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
