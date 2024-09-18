@@ -142,9 +142,8 @@ class Rectangle:
 
     def expand_from_center(self, delta_x: float, delta_y: float) -> "Rectangle":
         """以中心点为中心，扩展矩形"""
-        center = self.center
         return Rectangle(
-            NumberVector(center.x - delta_x, center.y - delta_y),
+            NumberVector(self.location_left_top.x - delta_x, self.location_left_top.y - delta_y),
             self.width + 2 * delta_x,
             self.height + 2 * delta_y,
         )

@@ -37,7 +37,7 @@ from project_graph.app_dir import DATA_DIR
 from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
-from project_graph.effect.effect_concrete import EffectViewFlash
+from project_graph.effect.effect_concrete import EffectRectangleFlash, EffectViewFlash
 from project_graph.effect.effect_manager import EffectManager
 from project_graph.entity.entity_node import EntityNode
 from project_graph.entity.node_link import NodeLink
@@ -179,6 +179,16 @@ class Canvas(QMainWindow):
                         shortcut="Ctrl+R",
                     ),
                     LAction(title="重做", action=self.node_manager.clear_all),
+                ),
+            ),
+            LMenu(
+                title="搜索",
+                children=(
+                    LAction(
+                        title="搜索节点",
+                        action=self.on_search_node_by_title,
+                        shortcut="Ctrl+F",
+                    ),
                 ),
             ),
             LMenu(
@@ -439,6 +449,26 @@ class Canvas(QMainWindow):
             # 如果用户取消了另存为操作
             log("Save operation cancelled.")
 
+    def on_search_node_by_title(self):
+        """搜索节点通过标题"""
+        # 弹出一个搜索框
+        text, ok = QInputDialog.getText(self, "搜索节点", "请输入要搜索的节点标题")
+        if ok:
+            if text.strip() == "":
+                self.show_message_box("输入内容为空")
+                return
+
+            for node in self.node_manager.nodes:
+                if text in node.inner_text:
+                    node.is_selected = True
+                else:
+                    node.is_selected = False
+            if any(node.is_selected for node in self.node_manager.nodes):
+                self.reset_view_by_selected_nodes()
+            else:
+                # 弹窗提示说没有找到
+                self.show_message_box("没有找到匹配的节点")
+
     def reset_view(self):
         """重置视角"""
         self.camera.location = NumberVector.zero()
@@ -456,7 +486,8 @@ class Canvas(QMainWindow):
             bounding_rect.width / 3, bounding_rect.height / 3
         )
         self.camera.location = bounding_rect.center
-
+        # 增加一个特效，调试用
+        # self.effect_manager.add_effect(EffectRectangleFlash(30, bounding_rect))
         if bounding_rect.width > bounding_rect.height:
             # 宽大于高
             self.camera.target_scale = self.camera.view_width / bounding_rect.width
