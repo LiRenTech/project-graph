@@ -36,6 +36,7 @@ from project_graph.ai.request_thread_fast import AIRequestThreadFast
 from project_graph.app_dir import DATA_DIR
 from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
+from project_graph.data_struct.rectangle import Rectangle
 from project_graph.effect.effect_concrete import EffectViewFlash
 from project_graph.effect.effect_manager import EffectManager
 from project_graph.entity.entity_node import EntityNode
@@ -185,6 +186,10 @@ class Canvas(QMainWindow):
                 children=(
                     LAction(title="重置位置", action=self.reset_view),
                     LAction(title="重置缩放", action=self.reset_scale),
+                    LAction(
+                        title="根据选中节点重置位置",
+                        action=self.reset_view_by_selected_nodes,
+                    ),
                 ),
             ),
             LMenu(
@@ -437,6 +442,27 @@ class Canvas(QMainWindow):
     def reset_view(self):
         """重置视角"""
         self.camera.location = NumberVector.zero()
+
+    def reset_view_by_selected_nodes(self):
+        """根据选中节点重置视角"""
+        selected_nodes = [node for node in self.node_manager.nodes if node.is_selected]
+        if len(selected_nodes) == 0:
+            self.reset_view()
+            return
+        bounding_rect = Rectangle.get_bounding_rectangle(
+            [node.body_shape for node in selected_nodes]
+        )
+        bounding_rect = bounding_rect.expand_from_center(
+            bounding_rect.width / 3, bounding_rect.height / 3
+        )
+        self.camera.location = bounding_rect.center
+
+        if bounding_rect.width > bounding_rect.height:
+            # 宽大于高
+            self.camera.target_scale = self.camera.view_width / bounding_rect.width
+        else:
+            # 宽小于高
+            self.camera.target_scale = self.camera.view_height / bounding_rect.height
 
     def reset_scale(self):
         """重置缩放"""

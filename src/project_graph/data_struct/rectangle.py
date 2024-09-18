@@ -140,6 +140,15 @@ class Rectangle:
     def bottom_center(self) -> NumberVector:
         return NumberVector(self.center.x, self.location_left_top.y + self.height)
 
+    def expand_from_center(self, delta_x: float, delta_y: float) -> "Rectangle":
+        """以中心点为中心，扩展矩形"""
+        center = self.center
+        return Rectangle(
+            NumberVector(center.x - delta_x, center.y - delta_y),
+            self.width + 2 * delta_x,
+            self.height + 2 * delta_y,
+        )
+
     def is_collision(self, rect: "Rectangle", margin: float = 0) -> bool:
         """判断self是否与rect之间的最小边距小于margin。
         当margin=0时，此时为判断self与rect是否重叠
