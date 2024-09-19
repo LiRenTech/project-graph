@@ -88,11 +88,12 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
         is_click_on_node = any(
             node.body_shape.is_contain_point(point_world_location)
             for node in self.node_manager.nodes
+            if not node.is_hidden_by_collapse
         )
         is_click_on_node_collapse = any(
             node.collapse_box.is_contain_point(point_world_location)
             for node in self.node_manager.nodes
-            if node.is_collapsed
+            if node.is_collapsed and not node.is_hidden_by_collapse
         )
 
         # 获取点击的节点
@@ -235,6 +236,8 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                 # 找到在框选范围内的所有节点
                 self.status_bar.showMessage(STATUS_TEXT["normal"])
                 for node in self.node_manager.nodes:
+                    if node.is_hidden_by_collapse:
+                        continue
                     node.is_selected = node.body_shape.is_collision(select_rectangle)
                     is_have_selected_node = is_have_selected_node or node.is_selected
 
@@ -248,6 +251,8 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                     select_line = Line(self.select_start_location, mouse_world_location)
 
                     for link in self.node_manager.get_all_links():
+                        if link.source_node.is_hidden_by_collapse or link.target_node.is_hidden_by_collapse:
+                            continue
                         if link.is_intersecting_line(select_line):
                             # 选择这个link
                             self.selected_links.append(link)
@@ -282,12 +287,18 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                 )
 
                 for link in self.node_manager.get_all_links():
+                    # 被隐藏的节点的link不参与切割
+                    if link.source_node.is_hidden_by_collapse or link.target_node.is_hidden_by_collapse:
+                        continue
+
                     if link.is_intersecting_line(cutting_line):
                         # 准备要切断这个link，先进行标注
                         self.warning_links.append(link)
 
                 # 查看切割线是否和其他节点相交
                 for node in self.node_manager.nodes:
+                    if node.is_hidden_by_collapse:
+                        continue
                     if node == self.connect_from_nodes:
                         continue
                     if node.body_shape.is_intersect_with_line(cutting_line):

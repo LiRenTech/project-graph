@@ -666,11 +666,15 @@ class NodeManager:
         """折叠一个节点"""
         if self.is_tree_node(node):
             node.is_collapsed = True
+            for child in self.get_tree_node_all_children(node):
+                child.is_hidden_by_collapse = True
 
     @record_step
     def uncollapse_node(self, node: EntityNode):
         """展开一个节点"""
         node.is_collapsed = False
+        for child in self.get_tree_node_all_children(node):
+                child.is_hidden_by_collapse = False
 
     # region 对齐相关
 
@@ -838,5 +842,25 @@ class NodeManager:
                     return False
             
             return True
+
+        return dfs(node)
+
+    # 获取一个树形节点的根节点的所有子节点
+    def get_tree_node_all_children(self, node: EntityNode) -> list[EntityNode]:
+        # {node: 当前这个节点是否是根节点}
+        visited_nodes = set()
+        def dfs(node: EntityNode) -> list[EntityNode]:
+            if node in visited_nodes:
+                return []
+
+            visited_nodes.add(node)
+            children = []
+            for child in node.children:
+                if child in visited_nodes:
+                    continue
+                children.append(child)
+                children.extend(dfs(child))
+            
+            return children
 
         return dfs(node)
