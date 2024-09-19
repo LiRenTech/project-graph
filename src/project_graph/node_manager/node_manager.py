@@ -240,7 +240,8 @@ class NodeManager:
                     inner_text: "text",
                     details: "",
                     uuid: "(uuid str)",
-                    children: [ "(uuid str)" ]
+                    children: [ "(uuid str)" ],
+                    is_collapsed: false,
                 },
             ],
             "links": [
@@ -327,6 +328,7 @@ class NodeManager:
             node = EntityNode(body_shape)
             node.inner_text = new_node_dict.get("inner_text", "")
             node.details = new_node_dict.get("details", "")
+            node.is_collapsed = new_node_dict.get("is_collapsed", False)
 
             node.uuid = new_node_dict["uuid"]
             self.nodes.append(node)
@@ -653,6 +655,27 @@ class NodeManager:
                 rotate_center_node, child, degrees, visited_uuids + [current_node.uuid]
             )
 
+    @record_step
+    def collapse_nodes(self):
+        """折叠所有选中的节点"""
+        for node in self.nodes:
+            if node.is_selected:
+                self._collapse_node(node)
+    
+    def _collapse_node(self, node: EntityNode):
+        """折叠一个节点"""
+        if self.is_tree_node(node):
+            node.is_collapsed = True
+            for child in self.get_tree_node_all_children(node):
+                child.is_hidden_by_collapse = True
+
+    @record_step
+    def uncollapse_node(self, node: EntityNode):
+        """展开一个节点"""
+        node.is_collapsed = False
+        for child in self.get_tree_node_all_children(node):
+                child.is_hidden_by_collapse = False
+
     # region 对齐相关
 
     @record_step
@@ -801,3 +824,43 @@ class NodeManager:
             for child in node.children:
                 node_dict[child] = False
         return [node for node, is_root in node_dict.items() if is_root]
+
+    def is_tree_node(self, node: EntityNode) -> bool:
+        """判断一个节点，它是否属于树形结构"""
+        # {node: 当前这个节点是否是根节点}
+        visited_nodes = set()
+
+        def dfs(node: EntityNode) -> bool:
+            if node in visited_nodes:
+                return False
+
+            visited_nodes.add(node)
+            for child in node.children:
+                if child in visited_nodes:
+                    return False
+                if not dfs(child):
+                    return False
+            
+            return True
+
+        return dfs(node)
+
+    # 获取一个树形节点的根节点的所有子节点
+    def get_tree_node_all_children(self, node: EntityNode) -> list[EntityNode]:
+        # {node: 当前这个节点是否是根节点}
+        visited_nodes = set()
+        def dfs(node: EntityNode) -> list[EntityNode]:
+            if node in visited_nodes:
+                return []
+
+            visited_nodes.add(node)
+            children = []
+            for child in node.children:
+                if child in visited_nodes:
+                    continue
+                children.append(child)
+                children.extend(dfs(child))
+            
+            return children
+
+        return dfs(node)

@@ -63,10 +63,12 @@ class Toolbar(Paintable):
         self.tool_align_col_left = Tool("icon_alignment_col_left.png")
         self.tool_align_col_center = Tool("icon_alignment_col_center.png")
         self.tool_align_col_right = Tool("icon_alignment_col_right.png")
+        # 折叠
+        self.tool_node_collapse = Tool("icon_arrow_collapse.png")
 
         self.tool_list: List[Tool] = [
             self.tool_delete_node,
-            self.tool_null,
+            self.tool_node_collapse,
             self.tool_reverse_link,
             self.tool_null,
             self.tool_align_row_center,

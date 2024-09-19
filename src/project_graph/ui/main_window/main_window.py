@@ -312,8 +312,13 @@ class Canvas(QMainWindow):
         self.toolbar.tool_null.set_bind_event_function(
             partial(self.show_message_box, "工具栏中的这个功能还没有做好")
         )
+        # 链接反向
         self.toolbar.tool_reverse_link.set_bind_event_function(
             partial(self.node_manager.reverse_links, self.selected_links)
+        )
+        # 节点折叠
+        self.toolbar.tool_node_collapse.set_bind_event_function(
+            self.node_manager.collapse_nodes
         )
         # 对齐功能
         self.toolbar.tool_align_col_center.set_bind_event_function(

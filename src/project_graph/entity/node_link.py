@@ -97,6 +97,13 @@ class NodeLink(Entity):
             raise TypeError(f"Unsupported body shape type: {type(body_shape)}")
 
     def paint(self, context: PaintContext):
+        # 隐藏的节点不绘制连线
+        if (
+            self.source_node.is_hidden_by_collapse
+            or self.target_node.is_hidden_by_collapse
+        ):
+            return
+
         context.painter.q_painter().setTransform(
             context.camera.get_world2view_transform()
         )

@@ -6,6 +6,7 @@ from uuid import uuid4
 from PyQt5.QtGui import QColor
 
 from project_graph.data_struct.number_vector import NumberVector
+from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity import Entity
 from project_graph.logging import log
 from project_graph.paint.paint_utils import PainterUtils
@@ -40,6 +41,12 @@ class EntityNode(Entity):
 
         self.is_selected = False
         """是否是被选中的状态, 包括框选"""
+
+        self.is_collapsed = False
+        """是否是折叠状态"""
+
+        self.is_hidden_by_collapse = False
+        """是否是由于父节点的折叠而被隐藏了"""
 
         self.is_ai_generating = False
         """当前节点是否正在被AI生成内容"""
@@ -86,6 +93,8 @@ class EntityNode(Entity):
             "details": self.details,
             "children": [child.uuid for child in self.children],
             "uuid": self.uuid,
+            "is_collapsed": self.is_collapsed,
+            "is_hidden_by_collapse": self.is_hidden_by_collapse,
         }
 
     def adjust_size_by_text(self):
@@ -123,6 +132,8 @@ class EntityNode(Entity):
         # context.painter.q_painter().setTransform(
         #     context.camera.get_world2view_transform()
         # )
+        if self.is_hidden_by_collapse:
+            return
 
         # 绘制边框
         PainterUtils.paint_rect(
@@ -186,7 +197,40 @@ class EntityNode(Entity):
                 context.camera.current_scale * 15,
             )
             pass
+        # 绘制折叠按钮 折叠后节点本身右上角显示一个 “+”
+        collapse_box = self.collapse_box
+        
+        if self.is_collapsed:
+            PainterUtils.paint_rect(
+                context.painter.q_painter(),
+                context.camera.location_world2view(collapse_box.location_left_top),
+                context.camera.current_scale * collapse_box.width,
+                context.camera.current_scale * collapse_box.height,
+                STYLE_SERVICE.style.node_fill_color,
+                QColor(0, 0, 0, 0),
+                0,
+                context.camera.current_scale * 15,
+            )
+            PainterUtils.paint_text_from_center(
+                context.painter.q_painter(),
+                context.camera.location_world2view(collapse_box.center),
+                "+",
+                context.camera.current_scale * self.FONT_SIZE,
+                STYLE_SERVICE.style.node_text_color,
+            )
         # context.painter.q_painter().resetTransform()
+        pass
+
+    @property
+    def collapse_box(self) -> Rectangle:
+        """获取折叠按钮的矩形"""
+        return Rectangle(
+            self.body_shape.location_left_top
+            + NumberVector(self.body_shape.width, 0)
+            - NumberVector(30, 30),
+            60,
+            60,
+        )
         pass
 
     def __repr__(self):
