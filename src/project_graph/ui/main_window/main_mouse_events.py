@@ -89,6 +89,11 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
             node.body_shape.is_contain_point(point_world_location)
             for node in self.node_manager.nodes
         )
+        is_click_on_node_collapse = any(
+            node.collapse_box.is_contain_point(point_world_location)
+            for node in self.node_manager.nodes
+            if node.is_collapsed
+        )
 
         # 获取点击的节点
         click_node = None
@@ -96,10 +101,21 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
             if node.body_shape.is_contain_point(point_world_location):
                 click_node = node
                 break
+        # 获取点击展开的节点
+        click_node_collapse = None
+        for node in self.node_manager.nodes:
+            if node.collapse_box.is_contain_point(point_world_location):
+                click_node_collapse = node
+                break
 
         self.status_bar.showMessage(STATUS_TEXT["normal"])
 
-        if is_click_on_node:
+        if is_click_on_node_collapse:
+            # 取消折叠这个节点
+            assert click_node_collapse is not None
+            self.node_manager.uncollapse_node(click_node_collapse)
+            pass
+        elif is_click_on_node:
             assert click_node is not None
             if is_have_selected_node:
                 # C

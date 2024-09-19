@@ -240,7 +240,8 @@ class NodeManager:
                     inner_text: "text",
                     details: "",
                     uuid: "(uuid str)",
-                    children: [ "(uuid str)" ]
+                    children: [ "(uuid str)" ],
+                    is_collapsed: false,
                 },
             ],
             "links": [
@@ -327,6 +328,7 @@ class NodeManager:
             node = EntityNode(body_shape)
             node.inner_text = new_node_dict.get("inner_text", "")
             node.details = new_node_dict.get("details", "")
+            node.is_collapsed = new_node_dict.get("is_collapsed", False)
 
             node.uuid = new_node_dict["uuid"]
             self.nodes.append(node)
@@ -652,6 +654,18 @@ class NodeManager:
             self._rotate_node_dfs(
                 rotate_center_node, child, degrees, visited_uuids + [current_node.uuid]
             )
+
+    @record_step
+    def collapse_nodes(self):
+        """折叠所有选中的节点"""
+        for node in self.nodes:
+            if node.is_selected:
+                node.is_collapsed = True
+
+    @record_step
+    def uncollapse_node(self, node: EntityNode):
+        """展开一个节点"""
+        node.is_collapsed = False
 
     # region 对齐相关
 
