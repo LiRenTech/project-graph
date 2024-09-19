@@ -660,7 +660,12 @@ class NodeManager:
         """折叠所有选中的节点"""
         for node in self.nodes:
             if node.is_selected:
-                node.is_collapsed = True
+                self._collapse_node(node)
+    
+    def _collapse_node(self, node: EntityNode):
+        """折叠一个节点"""
+        if self.is_tree_node(node):
+            node.is_collapsed = True
 
     @record_step
     def uncollapse_node(self, node: EntityNode):
@@ -815,3 +820,23 @@ class NodeManager:
             for child in node.children:
                 node_dict[child] = False
         return [node for node, is_root in node_dict.items() if is_root]
+
+    def is_tree_node(self, node: EntityNode) -> bool:
+        """判断一个节点，它是否属于树形结构"""
+        # {node: 当前这个节点是否是根节点}
+        visited_nodes = set()
+
+        def dfs(node: EntityNode) -> bool:
+            if node in visited_nodes:
+                return False
+
+            visited_nodes.add(node)
+            for child in node.children:
+                if child in visited_nodes:
+                    return False
+                if not dfs(child):
+                    return False
+            
+            return True
+
+        return dfs(node)

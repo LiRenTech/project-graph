@@ -45,6 +45,9 @@ class EntityNode(Entity):
         self.is_collapsed = False
         """是否是折叠状态"""
 
+        self.is_hidden_by_collapse = False
+        """是否是由于父节点的折叠而被隐藏了"""
+
         self.is_ai_generating = False
         """当前节点是否正在被AI生成内容"""
 
@@ -91,6 +94,7 @@ class EntityNode(Entity):
             "children": [child.uuid for child in self.children],
             "uuid": self.uuid,
             "is_collapsed": self.is_collapsed,
+            "is_hidden_by_collapse": self.is_hidden_by_collapse,
         }
 
     def adjust_size_by_text(self):
@@ -128,6 +132,8 @@ class EntityNode(Entity):
         # context.painter.q_painter().setTransform(
         #     context.camera.get_world2view_transform()
         # )
+        if self.is_hidden_by_collapse:
+            return
 
         # 绘制边框
         PainterUtils.paint_rect(
