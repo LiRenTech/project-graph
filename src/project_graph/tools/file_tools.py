@@ -4,7 +4,7 @@ from pathlib import Path
 
 from PyQt5.QtWidgets import QMessageBox
 
-from project_graph.logging import log
+from project_graph.log_utils import log
 
 
 def read_file(path: Path) -> str:

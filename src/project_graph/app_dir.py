@@ -9,7 +9,7 @@
 # from appdirs import user_data_dir
 
 from project_graph.liren_side.app import App
-from project_graph.logging import log
+from project_graph.log_utils import log
 
 _APP_NAME = "project-graph"
 _APP_AUTHOR = "LiRen"

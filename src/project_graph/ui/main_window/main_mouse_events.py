@@ -17,7 +17,7 @@ from project_graph.effect.effect_concrete import (
     EffectRectangleFlash,
     EffectRectangleShrink,
 )
-from project_graph.logging import log
+from project_graph.log_utils import log
 from project_graph.settings.setting_service import SETTING_SERVICE
 from project_graph.status_text.status_text import STATUS_TEXT
 

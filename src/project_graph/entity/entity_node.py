@@ -8,7 +8,7 @@ from PyQt5.QtGui import QColor
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.entity.entity import Entity
-from project_graph.logging import log
+from project_graph.log_utils import log
 from project_graph.paint.paint_utils import PainterUtils
 from project_graph.paint.paintables import Paintable, PaintContext
 from project_graph.settings.style_service import STYLE_SERVICE

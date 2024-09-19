@@ -19,7 +19,7 @@ from PyQt5.QtGui import (
 from project_graph.data_struct.circle import Circle
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
-from project_graph.logging import log
+from project_graph.log_utils import log
 from project_graph.tools.safe_int import safe_int
 
 

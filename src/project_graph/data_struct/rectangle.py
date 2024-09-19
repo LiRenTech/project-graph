@@ -4,7 +4,7 @@ from PyQt5.QtCore import QRectF
 
 from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
-from project_graph.logging import log
+from project_graph.log_utils import log
 
 
 class Rectangle:

@@ -10,7 +10,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
 
 from project_graph import INFO
-from project_graph.logging import log, logs
+from project_graph.log_utils import log, logs
 
 # 导入资源文件
 try:

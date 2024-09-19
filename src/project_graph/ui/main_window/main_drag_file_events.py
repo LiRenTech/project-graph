@@ -10,7 +10,7 @@ from PyQt5 import QtGui
 from PyQt5.QtWidgets import QMessageBox
 
 from project_graph.data_struct.number_vector import NumberVector
-from project_graph.logging import log
+from project_graph.log_utils import log
 from project_graph.tools.file_tools import read_file
 
 if typing.TYPE_CHECKING:
