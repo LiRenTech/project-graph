@@ -41,6 +41,9 @@ class EntityNode(Entity):
         self.is_selected = False
         """是否是被选中的状态, 包括框选"""
 
+        self.is_collapsed = False
+        """是否是折叠状态"""
+
         self.is_ai_generating = False
         """当前节点是否正在被AI生成内容"""
 
@@ -186,6 +189,34 @@ class EntityNode(Entity):
                 context.camera.current_scale * 15,
             )
             pass
+        # 绘制折叠按钮 折叠后节点本身右上角显示一个 “+”
+        # 40 * 40
+        collapse_size = 60
+        if self.is_collapsed:
+            PainterUtils.paint_rect(
+                context.painter.q_painter(),
+                context.camera.location_world2view(
+                    self.body_shape.location_left_top
+                    + NumberVector(self.body_shape.width, 0)
+                    - NumberVector(collapse_size / 2, collapse_size / 2)
+                ),
+                context.camera.current_scale * collapse_size,
+                context.camera.current_scale * collapse_size,
+                STYLE_SERVICE.style.node_fill_color,
+                QColor(0, 0, 0, 0),
+                0,
+                context.camera.current_scale * 15,
+            )
+            PainterUtils.paint_text_from_center(
+                context.painter.q_painter(),
+                context.camera.location_world2view(
+                    self.body_shape.location_left_top
+                    + NumberVector(self.body_shape.width, 0)
+                ),
+                "+",
+                context.camera.current_scale * self.FONT_SIZE,
+                STYLE_SERVICE.style.node_text_color,
+            )
         # context.painter.q_painter().resetTransform()
         pass
 
