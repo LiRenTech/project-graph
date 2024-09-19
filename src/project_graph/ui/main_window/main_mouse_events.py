@@ -47,6 +47,7 @@ def _move_camera_by_mouse_move(self: "Canvas", a0: QMouseEvent | None):
     pass
 
 
+# region 鼠标按下
 def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
     assert a0 is not None
     point_view_location = NumberVector(a0.pos().x(), a0.pos().y())
@@ -187,6 +188,7 @@ def mousePressEvent(self: "Canvas", a0: QMouseEvent | None):
         _move_camera_by_mouse_press(self, a0)
 
 
+# region 鼠标移动
 def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
     """这个只有在配合鼠标按下的时候才会触发"""
     assert a0 is not None
@@ -303,6 +305,7 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
         )
 
 
+# region 鼠标松开
 def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
     assert a0 is not None
     self.is_pressing = False
@@ -408,7 +411,7 @@ def mouseReleaseEvent(self: "Canvas", a0: QMouseEvent | None):
     pass
 
 
-# 双击
+# region 双击
 def mouseDoubleClickEvent(self: "Canvas", event: QMouseEvent | None):
     assert event is not None
     # 把点击坐标转换为世界坐标
@@ -456,6 +459,8 @@ def mouseDoubleClickEvent(self: "Canvas", event: QMouseEvent | None):
                 # 到时候只做固定的颜色
                 pass
         pass
+    elif event.button() == Qt.MouseButton.MiddleButton:
+        self.reset_view_by_all_nodes()
 
 
 def wheelEvent(self: "Canvas", a0: QWheelEvent | None):

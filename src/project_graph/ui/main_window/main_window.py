@@ -479,15 +479,24 @@ class Canvas(QMainWindow):
         if len(selected_nodes) == 0:
             self.reset_view()
             return
+        self._reset_view_by_nodes(selected_nodes)
+
+    def reset_view_by_all_nodes(self):
+        """根据所有节点重置视角"""
+        self._reset_view_by_nodes(self.node_manager.nodes)
+
+    def _reset_view_by_nodes(self, nodes: list[EntityNode]):
+        """根据节点重置视角"""
+        if len(nodes) == 0:
+            self.reset_view()
+            return
         bounding_rect = Rectangle.get_bounding_rectangle(
-            [node.body_shape for node in selected_nodes]
+            [node.body_shape for node in nodes]
         )
         bounding_rect = bounding_rect.expand_from_center(
             bounding_rect.width / 3, bounding_rect.height / 3
         )
         self.camera.location = bounding_rect.center
-        # 增加一个特效，调试用
-        # self.effect_manager.add_effect(EffectRectangleFlash(30, bounding_rect))
         if bounding_rect.width > bounding_rect.height:
             # 宽大于高
             self.camera.target_scale = self.camera.view_width / bounding_rect.width
