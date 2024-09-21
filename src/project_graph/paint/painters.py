@@ -2,7 +2,7 @@ from PyQt5.QtCore import QPointF, QRectF
 from PyQt5.QtGui import QBrush, QColor, QPainter, QPen
 
 from project_graph.data_struct.connect_straight_line import ConnectStraightLine
-from project_graph.data_struct.curve import ConnectCurve
+from project_graph.data_struct.curve import ConnectCurve, ConnectCurveShifted
 from project_graph.data_struct.rectangle import Rectangle
 from project_graph.data_struct.text import Text
 
@@ -51,7 +51,7 @@ class ProjectGraphPainter:
             str_text,
         )
 
-    def paint_curve(self, curve: ConnectCurve, color: QColor):
+    def paint_curve(self, curve: ConnectCurve | ConnectCurveShifted, color: QColor):
         pen = QPen(color, 3)  # 创建QPen并设置颜色和宽度
         self._painter.setRenderHint(QPainter.Antialiasing)
         self._painter.setPen(pen)

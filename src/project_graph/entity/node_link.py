@@ -1,10 +1,8 @@
-from os import link
-
 from PyQt5.QtGui import QColor
 
 from project_graph.data_struct.circle import Circle
 from project_graph.data_struct.connect_straight_line import ConnectStraightLine
-from project_graph.data_struct.curve import ConnectCurve
+from project_graph.data_struct.curve import ConnectCurve, ConnectCurveShifted
 from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
@@ -159,6 +157,20 @@ class NodeLink(Entity):
         link_middle_point_shifted = link_middle_point
         mid_text_rect_shifted = mid_text_rect
 
+        if self.is_shifting:
+            shift_vector = (
+                self.target_node.body_shape.center - self.source_node.body_shape.center
+            ).normalize().rotate(90) * 100
+            mid_point = (
+                Line(
+                    self.source_node.body_shape.center,
+                    self.target_node.body_shape.center,
+                ).midpoint()
+                + shift_vector
+            )
+            link_middle_point_shifted = mid_point
+            mid_text_rect_shifted = self._get_rect_by_point(link_middle_point_shifted)
+
         # 画连线
         if self.source_node == self.target_node:
             # 自环情况
@@ -177,14 +189,22 @@ class NodeLink(Entity):
             if SETTING_SERVICE.line_style == 0:
                 from_node = self.source_node
                 to_node = self.target_node
-
-                context.painter.paint_curve(
-                    ConnectCurve(
-                        from_node.body_shape,
-                        to_node.body_shape,
-                    ),
-                    STYLE_SERVICE.style.link_color,
-                )
+                if self.is_shifting:
+                    context.painter.paint_curve(
+                        ConnectCurveShifted(
+                            from_node.body_shape,
+                            to_node.body_shape,
+                        ),
+                        STYLE_SERVICE.style.link_color,
+                    )
+                else:
+                    context.painter.paint_curve(
+                        ConnectCurve(
+                            from_node.body_shape,
+                            to_node.body_shape,
+                        ),
+                        STYLE_SERVICE.style.link_color,
+                    )
             elif SETTING_SERVICE.line_style == 1:
                 from_node = self.source_node
                 to_node = self.target_node
@@ -233,19 +253,6 @@ class NodeLink(Entity):
                 else:
                     if self.is_shifting:
                         # 画折现
-                        shift_vector = (
-                            to_node.body_shape.center - from_node.body_shape.center
-                        ).normalize().rotate(90) * 100
-                        mid_point = (
-                            Line(
-                                from_node.body_shape.center, to_node.body_shape.center
-                            ).midpoint()
-                            + shift_vector
-                        )
-                        link_middle_point_shifted = mid_point
-                        mid_text_rect_shifted = self._get_rect_by_point(
-                            link_middle_point_shifted
-                        )
                         context.painter.paint_straight_line(
                             ConnectStraightLine(
                                 from_node.body_shape,

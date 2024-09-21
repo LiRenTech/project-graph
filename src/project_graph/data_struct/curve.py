@@ -41,3 +41,30 @@ class ConnectCurve:
             end_pt,
         )
         self.arrow = SolidArrow(-end_normal, point_at)
+
+
+class ConnectCurveShifted:
+    """
+    连接两个矩形，仅仅适用于双向互联的情况，偏移
+    """
+
+    def __init__(self, start: Rectangle, end: Rectangle):
+        if start == end:
+            raise ValueError("start and end cannot be the same rectangle")
+
+        shift_vector = (end.center - start.center).normalize().rotate(90) * 100
+        mid_point = Line(start.center, end.center).midpoint() + shift_vector
+        """这个点是偏移出去了的中间点"""
+
+        line_start_to_mid = Line(start.center, mid_point)
+        line_mid_to_end = Line(mid_point, end.center)
+
+        start_pt = start.get_line_intersection_point(line_start_to_mid)
+        point_at = end.get_line_intersection_point(line_mid_to_end)
+        self.path = bezier_curve(
+            start_pt,
+            mid_point,
+            mid_point,
+            point_at,
+        )
+        self.arrow = SolidArrow(line_mid_to_end.direction(), point_at)
