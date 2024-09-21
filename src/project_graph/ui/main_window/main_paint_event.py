@@ -129,8 +129,8 @@ def main_window_paint_event(self: "Canvas", a0: QPaintEvent | None):
         if isinstance(link_body_shape, Line):
             PainterUtils.paint_solid_line(
                 painter,
-                self.camera.location_world2view(link.source_node.body_shape.center),
-                self.camera.location_world2view(link.target_node.body_shape.center),
+                self.camera.location_world2view(link.body_shape.start),
+                self.camera.location_world2view(link.body_shape.end),
                 STYLE_SERVICE.style.warning_link_cover_color,
                 int(10 * self.camera.current_scale),
             )

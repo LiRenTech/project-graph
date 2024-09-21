@@ -550,6 +550,13 @@ class NodeManager:
             res = from_node.add_child(to_node)
 
             new_link = NodeLink(from_node, to_node)
+            
+            # 检测是否加了个双向线导致重叠了
+            link_reverse = self.get_link_by_uuid(to_node.uuid, from_node.uuid)
+            if link_reverse is not None:
+                link_reverse.is_shifting = True
+                new_link.is_shifting = True
+
             self._links.add(new_link)
 
             return res
@@ -563,6 +570,11 @@ class NodeManager:
             link = NodeLink(from_node, to_node)
             if link in self._links:
                 self._links.remove(link)
+                # 检测是否删除了双向线的其中一个
+                link_reverse = self.get_link_by_uuid(to_node.uuid, from_node.uuid)
+                if link_reverse is not None:
+                    link_reverse.is_shifting = False
+                    
             return res
         return False
 
@@ -661,7 +673,7 @@ class NodeManager:
         for node in self.nodes:
             if node.is_selected:
                 self._collapse_node(node)
-    
+
     def _collapse_node(self, node: EntityNode):
         """折叠一个节点"""
         if self.is_tree_node(node):
@@ -674,7 +686,7 @@ class NodeManager:
         """展开一个节点"""
         node.is_collapsed = False
         for child in self.get_tree_node_all_children(node):
-                child.is_hidden_by_collapse = False
+            child.is_hidden_by_collapse = False
 
     # region 对齐相关
 
@@ -840,7 +852,7 @@ class NodeManager:
                     return False
                 if not dfs(child):
                     return False
-            
+
             return True
 
         return dfs(node)
@@ -849,6 +861,7 @@ class NodeManager:
     def get_tree_node_all_children(self, node: EntityNode) -> list[EntityNode]:
         # {node: 当前这个节点是否是根节点}
         visited_nodes = set()
+
         def dfs(node: EntityNode) -> list[EntityNode]:
             if node in visited_nodes:
                 return []
@@ -860,7 +873,7 @@ class NodeManager:
                     continue
                 children.append(child)
                 children.extend(dfs(child))
-            
+
             return children
 
         return dfs(node)
