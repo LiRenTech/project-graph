@@ -10,7 +10,9 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
 
 from project_graph import INFO
-from project_graph.log_utils import log, logs
+from project_graph.log_utils import log, logs, log_dur
+
+log_dur("开始导入资源文件")
 
 # 导入资源文件
 try:
@@ -35,9 +37,9 @@ def my_except_hook(
     if exctype is KeyboardInterrupt:
         sys.exit(0)
 
-    print("error!!!")
+    log("error!!!")
     log("\n".join(traceback.format_exception(exctype, value, tb)))
-    print(logs)
+    log(logs)
     # 用tkinter弹出错误信息，用输入框组件显示错误信息
     import tkinter as tk
 
@@ -56,6 +58,8 @@ def my_except_hook(
 
 def main():
     sys.excepthook = my_except_hook
+    
+    log_dur("开始初始化项目")
 
     load_dotenv()
     os.environ["ARK_API_KEY"] = os.getenv("ARK_API_KEY", "")
@@ -76,14 +80,20 @@ def main():
             .strip()
         )
 
+    log_dur("开始初始化app")
+
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon("./assets/favicon.ico"))
 
     # 只在这里导入主窗口，防止最开始导入，一些东西没初始化好
     from project_graph.ui.main_window.main_window import Canvas
 
+    log_dur("开始显示窗口 Canvas")
+
     canvas = Canvas()
     canvas.show()
+
+    log_dur("显示窗口 Canvas 结束")
 
     sys.exit(app.exec_())
 
