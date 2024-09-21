@@ -1,6 +1,8 @@
 import os
 import subprocess
 import sys
+import threading
+import tkinter as tk
 import traceback
 from pathlib import Path
 from types import TracebackType
@@ -10,7 +12,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
 
 from project_graph import INFO
-from project_graph.log_utils import log, logs, log_dur
+from project_graph.log_utils import log, log_dur, logs
+from project_graph.ui.loading_window.loading_window import LoadingWindow
 
 log_dur("开始导入资源文件")
 
@@ -56,9 +59,23 @@ def my_except_hook(
     root.mainloop()
 
 
+loading_window_instance = None  # 用于保存加载窗口实例
+
+
+def show_loading_window():
+    global loading_window_instance
+    root = tk.Tk()
+    loading_window_instance = LoadingWindow(root)
+    root.mainloop()
+
+
 def main():
     sys.excepthook = my_except_hook
-    
+
+    # 开始加载Loading窗口
+    loading_thread = threading.Thread(target=show_loading_window)
+    loading_thread.start()
+
     log_dur("开始初始化项目")
 
     load_dotenv()
@@ -94,6 +111,11 @@ def main():
     canvas.show()
 
     log_dur("显示窗口 Canvas 结束")
+
+    # 关闭Loading窗口
+    if loading_window_instance is not None:
+        loading_window_instance.master.quit()  # 关闭Tkinter窗口
+        loading_thread.join()  # 等待加载线程结束
 
     sys.exit(app.exec_())
 
