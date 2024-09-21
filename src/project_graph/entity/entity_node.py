@@ -199,7 +199,7 @@ class EntityNode(Entity):
             pass
         # 绘制折叠按钮 折叠后节点本身右上角显示一个 “+”
         collapse_box = self.collapse_box
-        
+
         if self.is_collapsed:
             PainterUtils.paint_rect(
                 context.painter.q_painter(),

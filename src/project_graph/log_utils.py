@@ -1,6 +1,5 @@
 import datetime
 from time import perf_counter
-from tracemalloc import start
 
 logs: list[str] = []
 
@@ -15,6 +14,7 @@ def log(*args):
     )
     logs.append(msg)
     print(msg)
+
 
 start_time = perf_counter()
 last_time = perf_counter()

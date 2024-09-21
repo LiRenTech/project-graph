@@ -2,7 +2,7 @@ from PyQt5.QtGui import QColor
 
 from project_graph.data_struct.circle import Circle
 from project_graph.data_struct.connect_straight_line import ConnectStraightLine
-from project_graph.data_struct.curve import ConnectCurve
+from project_graph.data_struct.curve import ConnectCurve, ConnectCurveShifted
 from project_graph.data_struct.line import Line
 from project_graph.data_struct.number_vector import NumberVector
 from project_graph.data_struct.rectangle import Rectangle
@@ -32,6 +32,9 @@ class NodeLink(Entity):
         self.inner_text = ""
         """连线上标注的文本"""
 
+        self.is_shifting = False
+        """是否存在双向线的重叠，如果为True则会偏移渲染和偏移碰撞箱"""
+
     def __hash__(self) -> int:
         combine_uuid = self.source_node.uuid + self.target_node.uuid
         return hash(combine_uuid)
@@ -52,10 +55,21 @@ class NodeLink(Entity):
 
     @property
     def body_shape(self) -> Line:
-        """临时生成，返回一个身体形状线段"""
-        return Line(
-            self.source_node.body_shape.center, self.target_node.body_shape.center
-        )
+        """临时生成，返回一个身体形状线段，碰撞箱"""
+        if self.is_shifting:
+            # 偏移，源节点到目标节点的中心连线方向 顺时针旋转 30 度，长度50px
+            diff_vector = (
+                self.target_node.body_shape.center - self.source_node.body_shape.center
+            ).normalize().rotate(90) * 50
+
+            return Line(
+                self.source_node.body_shape.center + diff_vector,
+                self.target_node.body_shape.center + diff_vector,
+            )
+        else:
+            return Line(
+                self.source_node.body_shape.center, self.target_node.body_shape.center
+            )
 
     def reverse(self) -> "NodeLink":
         """
@@ -71,6 +85,7 @@ class NodeLink(Entity):
             "source_node": self.source_node.uuid,
             "target_node": self.target_node.uuid,
             "inner_text": self.inner_text,
+            "is_shifting": self.is_shifting,
         }
 
     def get_components(self) -> list[Paintable]:
@@ -96,6 +111,22 @@ class NodeLink(Entity):
         else:
             raise TypeError(f"Unsupported body shape type: {type(body_shape)}")
 
+    def _get_rect_by_point(self, point: NumberVector) -> Rectangle:
+        text_width, text_height, _ = get_size_by_text(
+            self.TEXT_FONT_SIZE, self.inner_text
+        )
+        # 构造一个中心矩形
+        mid_text_rect = Rectangle(
+            point
+            - NumberVector(
+                text_width / 2 + self.TEXT_PADDING_X,
+                text_height / 2 + self.TEXT_PADDING_Y,
+            ),
+            text_width + self.TEXT_PADDING_X * 2,
+            text_height + self.TEXT_PADDING_Y * 2,
+        )
+        return mid_text_rect
+
     def paint(self, context: PaintContext):
         # 隐藏的节点不绘制连线
         if (
@@ -108,21 +139,37 @@ class NodeLink(Entity):
             context.camera.get_world2view_transform()
         )
         # 先准备好线上文字的外框矩形
-        width, height, _ = get_size_by_text(self.TEXT_FONT_SIZE, self.inner_text)
+        text_width, text_height, _ = get_size_by_text(
+            self.TEXT_FONT_SIZE, self.inner_text
+        )
+        # 构造一个中心矩形
         link_middle_point = Line(
             self.source_node.body_shape.center,
             self.target_node.body_shape.center,
         ).midpoint()
-        # 构造一个中心矩形
-        mid_rect = Rectangle(
-            link_middle_point
-            - NumberVector(
-                width / 2 + self.TEXT_PADDING_X,
-                height / 2 + self.TEXT_PADDING_Y,
-            ),
-            width + self.TEXT_PADDING_X * 2,
-            height + self.TEXT_PADDING_Y * 2,
+        mid_text_rect = self._get_rect_by_point(
+            Line(
+                self.source_node.body_shape.center,
+                self.target_node.body_shape.center,
+            ).midpoint()
         )
+
+        link_middle_point_shifted = link_middle_point
+        mid_text_rect_shifted = mid_text_rect
+
+        if self.is_shifting:
+            shift_vector = (
+                self.target_node.body_shape.center - self.source_node.body_shape.center
+            ).normalize().rotate(90) * 100
+            mid_point = (
+                Line(
+                    self.source_node.body_shape.center,
+                    self.target_node.body_shape.center,
+                ).midpoint()
+                + shift_vector
+            )
+            link_middle_point_shifted = mid_point
+            mid_text_rect_shifted = self._get_rect_by_point(link_middle_point_shifted)
 
         # 画连线
         if self.source_node == self.target_node:
@@ -142,42 +189,104 @@ class NodeLink(Entity):
             if SETTING_SERVICE.line_style == 0:
                 from_node = self.source_node
                 to_node = self.target_node
-
-                context.painter.paint_curve(
-                    ConnectCurve(
-                        from_node.body_shape,
-                        to_node.body_shape,
-                    ),
-                    STYLE_SERVICE.style.link_color,
-                )
-            elif SETTING_SERVICE.line_style == 1:
-                from_node = self.source_node
-                to_node = self.target_node
-                if self.inner_text == "":
-                    context.painter.paint_straight_line(
-                        ConnectStraightLine(
+                if self.is_shifting:
+                    context.painter.paint_curve(
+                        ConnectCurveShifted(
                             from_node.body_shape,
                             to_node.body_shape,
                         ),
                         STYLE_SERVICE.style.link_color,
                     )
                 else:
-                    #  ————   ————>  中间断开
-                    context.painter.paint_straight_line(
-                        ConnectStraightLine(
+                    context.painter.paint_curve(
+                        ConnectCurve(
                             from_node.body_shape,
-                            mid_rect,
-                        ),
-                        STYLE_SERVICE.style.link_color,
-                        with_arrow=False,
-                    )
-                    context.painter.paint_straight_line(
-                        ConnectStraightLine(
-                            mid_rect,
                             to_node.body_shape,
                         ),
                         STYLE_SERVICE.style.link_color,
                     )
+            elif SETTING_SERVICE.line_style == 1:
+                from_node = self.source_node
+                to_node = self.target_node
+                if self.inner_text == "":
+                    if self.is_shifting:
+                        # 画折现
+                        shift_vector = (
+                            to_node.body_shape.center - from_node.body_shape.center
+                        ).normalize().rotate(90) * 100
+                        mid_point = (
+                            Line(
+                                from_node.body_shape.center, to_node.body_shape.center
+                            ).midpoint()
+                            + shift_vector
+                        )
+                        # 构造虚拟的中转矩形 50 * 50
+                        size = 1
+                        mid_text_rect = Rectangle(
+                            mid_point - NumberVector(size / 2, size / 2), size, size
+                        )
+                        context.painter.paint_straight_line(
+                            ConnectStraightLine(
+                                from_node.body_shape,
+                                mid_text_rect,
+                            ),
+                            STYLE_SERVICE.style.link_color,
+                            with_arrow=False,
+                        )
+                        context.painter.paint_straight_line(
+                            ConnectStraightLine(
+                                mid_text_rect,
+                                to_node.body_shape,
+                            ),
+                            STYLE_SERVICE.style.link_color,
+                        )
+                        pass
+                    else:
+                        # 直接连过去
+                        context.painter.paint_straight_line(
+                            ConnectStraightLine(
+                                from_node.body_shape,
+                                to_node.body_shape,
+                            ),
+                            STYLE_SERVICE.style.link_color,
+                        )
+                else:
+                    if self.is_shifting:
+                        # 画折现
+                        context.painter.paint_straight_line(
+                            ConnectStraightLine(
+                                from_node.body_shape,
+                                mid_text_rect_shifted,
+                            ),
+                            STYLE_SERVICE.style.link_color,
+                            with_arrow=False,
+                        )
+                        context.painter.paint_straight_line(
+                            ConnectStraightLine(
+                                mid_text_rect_shifted,
+                                to_node.body_shape,
+                            ),
+                            STYLE_SERVICE.style.link_color,
+                        )
+                    else:
+                        #  ————   ————>  中间断开
+                        context.painter.paint_straight_line(
+                            ConnectStraightLine(
+                                from_node.body_shape,
+                                mid_text_rect,
+                                self.is_shifting,
+                            ),
+                            STYLE_SERVICE.style.link_color,
+                            with_arrow=False,
+                        )
+                        context.painter.paint_straight_line(
+                            ConnectStraightLine(
+                                mid_text_rect,
+                                to_node.body_shape,
+                                self.is_shifting,
+                            ),
+                            STYLE_SERVICE.style.link_color,
+                        )
 
         # 画连线上的文字
         link_text = self.inner_text
@@ -205,15 +314,19 @@ class NodeLink(Entity):
                 # 绘制边框背景色
                 PainterUtils.paint_rect(
                     context.painter.q_painter(),
-                    mid_rect.location_left_top,
-                    width + self.TEXT_PADDING_X * 2,
-                    height + self.TEXT_PADDING_Y * 2,
+                    mid_text_rect_shifted.location_left_top
+                    if self.is_shifting
+                    else mid_text_rect.location_left_top,
+                    text_width + self.TEXT_PADDING_X * 2,
+                    text_height + self.TEXT_PADDING_Y * 2,
                     text_rect_bg_color,
                 )
                 # 绘制文字
                 PainterUtils.paint_text_from_center(
                     context.painter.q_painter(),
-                    link_middle_point,
+                    link_middle_point_shifted
+                    if self.is_shifting
+                    else link_middle_point,
                     link_text,
                     18,
                     STYLE_SERVICE.style.link_text_color,
