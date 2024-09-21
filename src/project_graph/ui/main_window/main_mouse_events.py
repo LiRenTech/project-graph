@@ -251,7 +251,10 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
                     select_line = Line(self.select_start_location, mouse_world_location)
 
                     for link in self.node_manager.get_all_links():
-                        if link.source_node.is_hidden_by_collapse or link.target_node.is_hidden_by_collapse:
+                        if (
+                            link.source_node.is_hidden_by_collapse
+                            or link.target_node.is_hidden_by_collapse
+                        ):
                             continue
                         if link.is_intersecting_line(select_line):
                             # 选择这个link
@@ -288,7 +291,10 @@ def mouseMoveEvent(self: "Canvas", a0: QMouseEvent | None):
 
                 for link in self.node_manager.get_all_links():
                     # 被隐藏的节点的link不参与切割
-                    if link.source_node.is_hidden_by_collapse or link.target_node.is_hidden_by_collapse:
+                    if (
+                        link.source_node.is_hidden_by_collapse
+                        or link.target_node.is_hidden_by_collapse
+                    ):
                         continue
 
                     if link.is_intersecting_line(cutting_line):

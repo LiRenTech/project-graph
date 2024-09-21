@@ -550,7 +550,7 @@ class NodeManager:
             res = from_node.add_child(to_node)
 
             new_link = NodeLink(from_node, to_node)
-            
+
             # 检测是否加了个双向线导致重叠了
             link_reverse = self.get_link_by_uuid(to_node.uuid, from_node.uuid)
             if link_reverse is not None:
@@ -574,7 +574,7 @@ class NodeManager:
                 link_reverse = self.get_link_by_uuid(to_node.uuid, from_node.uuid)
                 if link_reverse is not None:
                     link_reverse.is_shifting = False
-                    
+
             return res
         return False
 
