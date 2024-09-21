@@ -1,6 +1,17 @@
-# Tauri + React + Typescript
+# Project Graph
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+## 启动方式
+
+```sh
+# 安装依赖
+pnpm i
+# cmd可能要先输入一下这个指令防止报错
+set RUST_BACKTRACE=1
+# 安装rust依赖
+pnpm tauri dev
+```
+
+
 
 ## Recommended IDE Setup
 
