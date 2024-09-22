@@ -9,7 +9,7 @@ from project_graph.liren_side.components import World
 
 def init(window: QMainWindow):
     # 设置窗口标题和尺寸
-    window.setWindowTitle("节点图编辑器")
+    window.setWindowTitle("计划-投射")
     if platform.system() == "Darwin":
         window.setWindowIcon(QIcon("assets/favicon.ico"))
     elif platform.system() == "Windows" or platform.system() == "Linux":

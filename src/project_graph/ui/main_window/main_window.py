@@ -152,7 +152,7 @@ class Canvas(QMainWindow):
 
     def init_ui(self):
         # 设置窗口标题和尺寸
-        self.setWindowTitle("节点图编辑器")
+        self.setWindowTitle("计划-投射")
         if platform.system() == "Darwin":
             self.setWindowIcon(QIcon("assets/favicon.ico"))
         elif platform.system() == "Windows" or platform.system() == "Linux":

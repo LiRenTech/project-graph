@@ -173,3 +173,6 @@ project_graph.exe
 /.ruff_cache/
 
 .buildozer/
+
+node_modules/
+src-tauri/
