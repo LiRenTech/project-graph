@@ -30,9 +30,10 @@ from PyQt5.QtWidgets import (
 from project_graph.ai.ai_provider import AIProvider
 from project_graph.ai.doubao_provider import DoubaoProvider
 from project_graph.ai.openai_provider import OpenAIProvider
-from project_graph.ai.openai_provider_fast import OpenAIProviderFast
+from project_graph.ai.openai_provider_edit_node import OpenAIProviderEditNode
+from project_graph.ai.openai_provider_expand_node import OpenAIProviderExpandNode
 from project_graph.ai.request_thread import AIRequestThread
-from project_graph.ai.request_thread_fast import AIRequestThreadFast
+from project_graph.ai.request_thread_fast import AIRequestThreadEditNode, AIRequestThreadExpandNode
 from project_graph.app_dir import DATA_DIR
 from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
@@ -256,7 +257,9 @@ class Canvas(QMainWindow):
                     LAction(
                         title="gpt-4o-mini (快速扩展节点)",
                         action=partial(
-                            self.request_ai_fast, OpenAIProviderFast(), "gpt-4o-mini"
+                            self.request_ai_fast,
+                            OpenAIProviderExpandNode(),
+                            "gpt-4o-mini",
                         ),
                     ),
                 ),
@@ -333,6 +336,9 @@ class Canvas(QMainWindow):
         self.toolbar.tool_align_row_center.set_bind_event_function(
             self.node_manager.align_nodes_row_center
         )
+        # AI功能
+        self.toolbar.tool_ai_expand.set_bind_event_function(self.expand_nodes_by_ai)
+        self.toolbar.tool_ai_edit.set_bind_event_function(self.edit_node_by_ai)
         pass
 
     def show_message_box(self, message: str):
@@ -569,9 +575,16 @@ class Canvas(QMainWindow):
         for node in selected_nodes:
             node.is_ai_generating = True
 
-        def on_finished(nodes: list[str]):
+        def on_expand_finished(nodes: list[str]):
             nonlocal thread
-            self.node_manager.add_nodes_by_ai_fast(nodes, selected_nodes[0])
+            self.node_manager.expand_node_by_ai_fast(nodes, selected_nodes[0])
+            # 线程执行完毕后，销毁 `self.thread`
+            selected_nodes[0].is_ai_generating = False
+            thread = None
+        
+        def on_edit_finished(content: str):
+            nonlocal thread
+            self.node_manager.edit_node_by_ai_fast(selected_nodes[0], content)
             # 线程执行完毕后，销毁 `self.thread`
             selected_nodes[0].is_ai_generating = False
             thread = None
@@ -580,16 +593,36 @@ class Canvas(QMainWindow):
             nonlocal thread
             for node in selected_nodes:
                 node.is_ai_generating = False
-            QMessageBox.critical(self, "AI 请求失败", error_message)
+            QMessageBox.critical(self, "AI 请求失败!", error_message)
             # 出错时，也销毁 `self.thread`
             thread = None
 
         if thread is None:  # 确保没有线程在运行
-            thread = AIRequestThreadFast(provider, self.node_manager, *args)
-            thread.finished.connect(on_finished)
-            thread.error.connect(on_error)
-            thread.start()
+            if isinstance(provider, OpenAIProviderExpandNode):
+                thread = AIRequestThreadExpandNode(provider, self.node_manager, *args)
+                thread.finished.connect(on_expand_finished)
+                thread.error.connect(on_error)
+                thread.start()
+            elif isinstance(provider, OpenAIProviderEditNode):
+                thread = AIRequestThreadEditNode(provider, self.node_manager, *args)
+                thread.finished.connect(on_edit_finished)
+                thread.error.connect(on_error)
+                thread.start()
 
+        pass
+
+    def expand_nodes_by_ai(self):
+        """通过AI扩展节点"""
+        self.request_ai_fast(OpenAIProviderExpandNode(), "gpt-4o-mini")
+        pass
+
+    def edit_node_by_ai(self):
+        """通过AI编辑节点"""
+        self.request_ai_fast(OpenAIProviderEditNode(), "gpt-4o-mini")
+
+    def summarize_graph_by_ai(self):
+        """通过AI概述整个节点图"""
+        # self.request_ai(OpenAIProviderSummarizeNode(), "gpt-4o-mini")
         pass
 
     def custom_ai_model(self):

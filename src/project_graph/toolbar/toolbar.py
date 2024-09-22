@@ -63,18 +63,31 @@ class Toolbar(Paintable):
         self.tool_align_col_left = Tool("icon_alignment_col_left.png")
         self.tool_align_col_center = Tool("icon_alignment_col_center.png")
         self.tool_align_col_right = Tool("icon_alignment_col_right.png")
+
+        self.tool_align_col = Tool("icon_alignment_col.png")
+        self.tool_align_row = Tool("icon_alignment_row.png")
+
         # 折叠
         self.tool_node_collapse = Tool("icon_arrow_collapse.png")
+
+        # AI相关
+        self.tool_ai_edit = Tool("icon_ai_edit.png")
+        self.tool_ai_expand = Tool("icon_ai_expand.png")
+        self.tool_ai_summary = Tool("icon_ai_summary.png")
 
         self.tool_list: List[Tool] = [
             self.tool_delete_node,
             self.tool_node_collapse,
             self.tool_reverse_link,
-            self.tool_null,
+            self.tool_ai_edit,
+            self.tool_ai_expand,
+            self.tool_ai_summary,
             self.tool_align_row_center,
             self.tool_align_col_left,
             self.tool_align_col_center,
             self.tool_align_col_right,
+            self.tool_align_col,
+            self.tool_align_row,
         ]
         """工具列表"""
 

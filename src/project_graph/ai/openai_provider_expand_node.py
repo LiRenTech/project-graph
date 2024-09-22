@@ -37,7 +37,7 @@ _QUESTION_TEMPLATE = """\
 """
 
 
-class OpenAIProviderFast(AIProvider):
+class OpenAIProviderExpandNode(AIProvider):
     """
     简单快速扩展节点
     """

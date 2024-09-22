@@ -493,7 +493,7 @@ class NodeManager:
         return res
 
     @record_step
-    def add_nodes_by_ai_fast(self, subtitles: list[str], source_node: EntityNode):
+    def expand_node_by_ai_fast(self, subtitles: list[str], source_node: EntityNode):
         """
         通过AI，快速扩展一个节点
         """
@@ -507,6 +507,13 @@ class NodeManager:
             self.nodes.append(new_node)
             self.connect_node(source_node, new_node)
         pass
+
+    @record_step
+    def edit_node_by_ai_fast(self, node: EntityNode, new_text: str):
+        """
+        通过AI，快速编辑一个节点
+        """
+        node.details = new_text
 
     @record_step
     def delete_node(self, node: EntityNode):

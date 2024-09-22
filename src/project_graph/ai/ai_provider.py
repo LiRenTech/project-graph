@@ -124,4 +124,5 @@ class AIProvider(ABC):
     def generate_nodes(self, node_manager: NodeManager, *args) -> list[dict]:
         """
         根据节点管理器生成节点列表
+        不直接修改节点内容，返回一个新列表
         """
