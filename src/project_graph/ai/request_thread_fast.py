@@ -35,11 +35,29 @@ class AIRequestThreadEditNode(QThread):
 
     def run(self):
         try:
-            nodes: str = self.provider.generate_nodes(
-                self.node_manager, *self.args
-            )
-            print(nodes)
+            content: str = self.provider.generate_nodes(self.node_manager, *self.args)
+            print(content)
 
-            self.finished.emit(nodes)
+            self.finished.emit(content)
+        except Exception as e:
+            self.error.emit(str(e))
+
+
+class AIRequestThreadSummarizeAll(QThread):
+    finished = pyqtSignal(str)
+    error = pyqtSignal(str)
+
+    def __init__(self, provider, node_manager, *args):
+        super().__init__()
+        self.provider = provider
+        self.node_manager = node_manager
+        self.args = args
+
+    def run(self):
+        try:
+            content: str = self.provider.generate_nodes(self.node_manager, *self.args)
+            print(content)
+
+            self.finished.emit(content)
         except Exception as e:
             self.error.emit(str(e))

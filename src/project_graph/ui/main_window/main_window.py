@@ -32,8 +32,13 @@ from project_graph.ai.doubao_provider import DoubaoProvider
 from project_graph.ai.openai_provider import OpenAIProvider
 from project_graph.ai.openai_provider_edit_node import OpenAIProviderEditNode
 from project_graph.ai.openai_provider_expand_node import OpenAIProviderExpandNode
+from project_graph.ai.openai_provider_summarize_all import OpenAIProviderSummarizeAll
 from project_graph.ai.request_thread import AIRequestThread
-from project_graph.ai.request_thread_fast import AIRequestThreadEditNode, AIRequestThreadExpandNode
+from project_graph.ai.request_thread_fast import (
+    AIRequestThreadEditNode,
+    AIRequestThreadExpandNode,
+    AIRequestThreadSummarizeAll,
+)
 from project_graph.app_dir import DATA_DIR
 from project_graph.camera import Camera
 from project_graph.data_struct.number_vector import NumberVector
@@ -339,6 +344,7 @@ class Canvas(QMainWindow):
         # AI功能
         self.toolbar.tool_ai_expand.set_bind_event_function(self.expand_nodes_by_ai)
         self.toolbar.tool_ai_edit.set_bind_event_function(self.edit_node_by_ai)
+        self.toolbar.tool_ai_summary.set_bind_event_function(self.summarize_graph_by_ai)
         pass
 
     def show_message_box(self, message: str):
@@ -581,10 +587,19 @@ class Canvas(QMainWindow):
             # 线程执行完毕后，销毁 `self.thread`
             selected_nodes[0].is_ai_generating = False
             thread = None
-        
+
         def on_edit_finished(content: str):
             nonlocal thread
             self.node_manager.edit_node_by_ai_fast(selected_nodes[0], content)
+            # 线程执行完毕后，销毁 `self.thread`
+            selected_nodes[0].is_ai_generating = False
+            thread = None
+
+        def on_summarize_finished(content: str):
+            nonlocal thread
+            node = self.node_manager.add_node_by_click(NumberVector.zero())
+            node.inner_text = "Summary"
+            node.details = content
             # 线程执行完毕后，销毁 `self.thread`
             selected_nodes[0].is_ai_generating = False
             thread = None
@@ -608,13 +623,17 @@ class Canvas(QMainWindow):
                 thread.finished.connect(on_edit_finished)
                 thread.error.connect(on_error)
                 thread.start()
+            elif isinstance(provider, OpenAIProviderSummarizeAll):
+                thread = AIRequestThreadSummarizeAll(provider, self.node_manager, *args)
+                thread.finished.connect(on_summarize_finished)
+                thread.error.connect(on_error)
+                thread.start()
 
         pass
 
     def expand_nodes_by_ai(self):
         """通过AI扩展节点"""
         self.request_ai_fast(OpenAIProviderExpandNode(), "gpt-4o-mini")
-        pass
 
     def edit_node_by_ai(self):
         """通过AI编辑节点"""
@@ -622,8 +641,7 @@ class Canvas(QMainWindow):
 
     def summarize_graph_by_ai(self):
         """通过AI概述整个节点图"""
-        # self.request_ai(OpenAIProviderSummarizeNode(), "gpt-4o-mini")
-        pass
+        self.request_ai_fast(OpenAIProviderSummarizeAll(), "gpt-4o-mini")
 
     def custom_ai_model(self):
         """自定义 OpenAI 模型"""
