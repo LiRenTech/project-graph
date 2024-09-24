@@ -329,6 +329,12 @@ class NodeManager:
             node.inner_text = new_node_dict.get("inner_text", "")
             node.details = new_node_dict.get("details", "")
             node.is_collapsed = new_node_dict.get("is_collapsed", False)
+            node.is_color_set_by_user = new_node_dict.get("is_color_set_by_user", False)
+            node.user_color = QColor(
+                new_node_dict.get("user_color", [0, 0, 0])[0],
+                new_node_dict.get("user_color", [0, 0, 0])[1],
+                new_node_dict.get("user_color", [0, 0, 0])[2],
+            )
 
             node.uuid = new_node_dict["uuid"]
             self.nodes.append(node)
@@ -361,9 +367,6 @@ class NodeManager:
             if reverse_link is not None:
                 link.is_shifting = True
                 reverse_link.is_shifting = True
-        
-        
-
 
     def load_from_dict(self, data: dict):
         """
@@ -594,6 +597,28 @@ class NodeManager:
 
             return res
         return False
+
+    @record_step
+    def change_node_color(self, node: EntityNode, color: QColor):
+        """
+        自定义的改变一个节点的颜色
+        """
+        if color.isValid():  # 检查颜色是否有效
+            node.user_color = color  # 假设节点有一个 color 属性来存储颜色
+            node.is_color_set_by_user = True  # 标记颜色是否由用户设置
+
+    @record_step
+    def change_nodes_color_by_palette(self, color: QColor):
+        """
+        自定义的改变所有选中的节点的颜色
+        """
+        if not color.isValid():
+            return
+
+        for node in self.nodes:
+            if node.is_selected:
+                node.user_color = color  # 假设节点有一个 color 属性来存储颜色
+                node.is_color_set_by_user = True  # 标记颜色是否由用户设置
 
     def get_all_links(self) -> list[NodeLink]:
         return [link for link in self._links]

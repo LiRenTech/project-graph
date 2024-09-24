@@ -15,6 +15,8 @@ from project_graph.paint.paintables import Paintable, PaintContext
 class Tool:
     """
     工具类，只在工具栏中使用
+
+
     """
 
     VIEW_SIZE = 50
@@ -40,6 +42,8 @@ class Toolbar(Paintable):
     """
     选择节点后弹出的工具栏，整个应用中只能有一个
     给每个工具栏绑定具体的事件的地方在 上层的 MainWindow 中 init_toolbar
+
+    想要增加图标，进入  https://icones.js.org/collection/mdi
     """
 
     HEIGHT = 50
@@ -75,6 +79,10 @@ class Toolbar(Paintable):
         self.tool_ai_expand = Tool("icon_ai_expand.png")
         self.tool_ai_summary = Tool("icon_ai_summary.png")
 
+        # color
+        self.tool_fill_palette = Tool("icon_fill_palette.png")
+
+        # 最终排列
         self.tool_list: List[Tool] = [
             self.tool_delete_node,
             self.tool_node_collapse,
@@ -82,6 +90,7 @@ class Toolbar(Paintable):
             self.tool_ai_edit,
             self.tool_ai_expand,
             self.tool_ai_summary,
+            self.tool_fill_palette,
             self.tool_align_row_center,
             self.tool_align_col_left,
             self.tool_align_col_center,

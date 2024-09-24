@@ -16,6 +16,7 @@ from PyQt5.QtGui import (
 )
 from PyQt5.QtWidgets import (
     QApplication,
+    QColorDialog,
     QDesktopWidget,
     QDialog,
     QFileDialog,
@@ -341,11 +342,19 @@ class Canvas(QMainWindow):
         self.toolbar.tool_align_row_center.set_bind_event_function(
             self.node_manager.align_nodes_row_center
         )
+        # color
+        self.toolbar.tool_fill_palette.set_bind_event_function(
+            self.change_nodes_color_by_palette
+        )
         # AI功能
         self.toolbar.tool_ai_expand.set_bind_event_function(self.expand_nodes_by_ai)
         self.toolbar.tool_ai_edit.set_bind_event_function(self.edit_node_by_ai)
         self.toolbar.tool_ai_summary.set_bind_event_function(self.summarize_graph_by_ai)
         pass
+
+    def change_nodes_color_by_palette(self):
+        color = QColorDialog.getColor()  # 弹出颜色选择对话框
+        self.node_manager.change_nodes_color_by_palette(color)
 
     def show_message_box(self, message: str):
         """显示一个消息框"""

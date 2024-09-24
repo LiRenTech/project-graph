@@ -487,10 +487,7 @@ def mouseDoubleClickEvent(self: "Canvas", event: QMouseEvent | None):
     elif event.button() == Qt.MouseButton.RightButton:
         if select_node is not None:
             color = QColorDialog.getColor()  # 弹出颜色选择对话框
-            if color.isValid():  # 检查颜色是否有效
-                # select_node.color = color  # 假设节点有一个 color 属性来存储颜色
-                # 到时候只做固定的颜色
-                pass
+            self.node_manager.change_node_color(select_node, color)
         pass
     elif event.button() == Qt.MouseButton.MiddleButton:
         self.reset_view_by_all_nodes()

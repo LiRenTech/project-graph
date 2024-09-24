@@ -51,6 +51,12 @@ class EntityNode(Entity):
         self.is_ai_generating = False
         """当前节点是否正在被AI生成内容"""
 
+        self.is_color_set_by_user = False
+        """是否是用户手动设置了颜色"""
+
+        self.user_color = QColor(0, 0, 0)
+        """用户手动设置的颜色"""
+
         self.adjust_size_by_text()
         pass
 
@@ -95,6 +101,12 @@ class EntityNode(Entity):
             "uuid": self.uuid,
             "is_collapsed": self.is_collapsed,
             "is_hidden_by_collapse": self.is_hidden_by_collapse,
+            "is_color_set_by_user": self.is_color_set_by_user,
+            "user_color": [
+                self.user_color.red(),
+                self.user_color.green(),
+                self.user_color.blue(),
+            ],
         }
 
     def adjust_size_by_text(self):
@@ -135,13 +147,15 @@ class EntityNode(Entity):
         if self.is_hidden_by_collapse:
             return
 
-        # 绘制边框
+        # 绘制节点矩形
         PainterUtils.paint_rect(
             context.painter.q_painter(),
             context.camera.location_world2view(self.body_shape.location_left_top),
             context.camera.current_scale * self.body_shape.width,
             context.camera.current_scale * self.body_shape.height,
-            STYLE_SERVICE.style.node_fill_color,
+            self.user_color
+            if self.is_color_set_by_user
+            else STYLE_SERVICE.style.node_fill_color,
             STYLE_SERVICE.style.node_border_color,
             (context.camera.current_scale * 3),
             context.camera.current_scale * 16,
