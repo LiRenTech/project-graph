@@ -348,12 +348,22 @@ class NodeManager:
 
         # 补充每个连线上的信息（文字）
         for link_dict in file.get("links", []):
-            link = self.get_link_by_uuid(
+            link: NodeLink | None = self.get_link_by_uuid(
                 link_dict["source_node"], link_dict["target_node"]
             )
             if link is None:
                 continue
             link.inner_text = link_dict.get("inner_text", "")
+            # 反向线检测
+            reverse_link = self.get_link_by_uuid(
+                link_dict["target_node"], link_dict["source_node"]
+            )
+            if reverse_link is not None:
+                link.is_shifting = True
+                reverse_link.is_shifting = True
+        
+        
+
 
     def load_from_dict(self, data: dict):
         """
