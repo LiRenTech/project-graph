@@ -2,16 +2,15 @@
 
 ## 启动方式
 
-```sh
+```bash
 # 安装依赖
 pnpm i
-# cmd可能要先输入一下这个指令防止报错
-set RUST_BACKTRACE=1
-# 安装rust依赖
+# windows环境使用cmd时，需要设置此环境变量
+# set RUST_BACKTRACE=1
+# 启动项目
 pnpm tauri dev
+# 在adb设备上启动android
 ```
-
-
 
 ## Recommended IDE Setup
 
