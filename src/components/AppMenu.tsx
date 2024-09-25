@@ -12,6 +12,7 @@ import {
   Save,
   Settings,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function AppMenu({
   className = "",
@@ -20,6 +21,8 @@ export default function AppMenu({
   className?: string;
   open: boolean;
 }) {
+  const navigate = useNavigate();
+
   return (
     <div
       onMouseDown={(e) => e.stopPropagation()}
@@ -41,8 +44,12 @@ export default function AppMenu({
         <Col icon={<Image />}>图片</Col>
       </Row>
       <Row icon={<MoreHorizontal />}>
-        <Col icon={<Settings />}>设置</Col>
-        <Col icon={<Info />}>关于</Col>
+        <Col icon={<Settings />} onClick={() => navigate("/settings")}>
+          设置
+        </Col>
+        <Col icon={<Info />} onClick={() => navigate("/about")}>
+          关于
+        </Col>
       </Row>
     </div>
   );
@@ -54,7 +61,7 @@ function Row({
 }: React.PropsWithChildren<{ icon: React.ReactNode }>) {
   return (
     <div className="flex gap-2">
-      {icon}
+      <span className="text-neutral-400">{icon}</span>
       <div className="w-0.5 bg-neutral-700"></div>
       {children}
     </div>
@@ -64,9 +71,13 @@ function Row({
 function Col({
   children,
   icon,
-}: React.PropsWithChildren<{ icon: React.ReactNode }>) {
+  onClick = () => {},
+}: React.PropsWithChildren<{ icon: React.ReactNode; onClick?: () => void }>) {
   return (
-    <div className="flex w-max items-center gap-1 transition hover:opacity-80 active:scale-90">
+    <div
+      className="flex w-max items-center gap-1 transition hover:opacity-80 active:scale-90"
+      onClick={onClick}
+    >
       {icon}
       {children}
     </div>
