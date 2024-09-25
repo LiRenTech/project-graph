@@ -33,3 +33,5 @@ src/project_graph
 .pdm-python
 build/
 __pycache__/
+
+keystore.properties
