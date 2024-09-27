@@ -140,6 +140,19 @@ class EntityNode(Entity):
     def get_components(self) -> List[Paintable]:
         return super().get_components()
 
+    # 颜色反色逻辑
+    def _color_invert(self, color: QColor) -> QColor:
+        """
+        计算背景色的亮度 更精确的人眼感知亮度公式 0.2126 * R + 0.7152 * G + 0.0722 * B ，如果亮度较高，则使用黑色文字，
+        如果亮度较低，则使用白色文字。这种方法能够确保无论背景色如何变化，文字都能保持足够的对比度。
+        """
+        r, g, b = color.red(), color.green(), color.blue()
+        brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b
+        if brightness > 128:
+            return QColor(0, 0, 0)
+        else:
+            return QColor(255, 255, 255)
+
     def paint(self, context: PaintContext):
         # context.painter.q_painter().setTransform(
         #     context.camera.get_world2view_transform()
@@ -167,7 +180,9 @@ class EntityNode(Entity):
                 context.camera.location_world2view(self.body_shape.center),
                 self.inner_text,
                 context.camera.current_scale * self.FONT_SIZE,
-                STYLE_SERVICE.style.node_text_color,
+                self._color_invert(self.user_color)
+                if self.is_color_set_by_user
+                else STYLE_SERVICE.style.node_text_color,
             )
             if self.is_detail_show:
                 PainterUtils.paint_document_from_left_top(
@@ -230,7 +245,9 @@ class EntityNode(Entity):
                 context.camera.location_world2view(collapse_box.center),
                 "+",
                 context.camera.current_scale * self.FONT_SIZE,
-                STYLE_SERVICE.style.node_text_color,
+                self._color_invert(self.user_color)
+                if self.is_color_set_by_user
+                else STYLE_SERVICE.style.node_text_color,
             )
         # context.painter.q_painter().resetTransform()
         pass
