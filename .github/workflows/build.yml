@@ -41,8 +41,7 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v4
         with:
-          node-version: lts/*
-          cache: "pnpm"
+          node-version: 20
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
@@ -53,6 +52,9 @@ jobs:
         uses: swatinem/rust-cache@v2
         with:
           workspaces: "./src-tauri -> target"
+
+      - name: install pnpm
+        run: npm install -g pnpm
 
       - name: install frontend dependencies
         run: pnpm install # Use pnpm for frontend dependency installation.
