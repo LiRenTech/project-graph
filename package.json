@@ -12,6 +12,7 @@
   "dependencies": {
     "@generouted/react-router": "^1.19.6",
     "@tauri-apps/api": ">=2.0.0-rc.0",
+    "@tauri-apps/plugin-dialog": "^2.0.0-rc",
     "@tauri-apps/plugin-os": "^2.0.0-rc",
     "@tauri-apps/plugin-shell": ">=2.0.0-rc.0",
     "lucide-react": "^0.441.0",
