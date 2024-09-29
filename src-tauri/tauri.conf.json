@@ -1,5 +1,5 @@
 {
-  "productName": "project-graph",
+  "productName": "Project Graph",
   "version": "0.1.0",
   "identifier": "liren.project-graph",
   "build": {
@@ -11,7 +11,7 @@
   "app": {
     "windows": [
       {
-        "title": "project-graph",
+        "title": "Project Graph",
         "width": 800,
         "height": 600,
         "decorations": false,
