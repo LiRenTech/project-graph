@@ -11,6 +11,7 @@ import {
   Plus,
   Save,
   Settings,
+  TestTube2,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -25,11 +26,10 @@ export default function AppMenu({
 
   return (
     <div
-      onMouseDown={(e) => e.stopPropagation()}
       className={cn(
-        "flex origin-top-left scale-75 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800 p-3 opacity-0 transition",
+        "pointer-events-none flex origin-top-left scale-75 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800 p-3 opacity-0 transition",
         {
-          "scale-100 opacity-100": open,
+          "pointer-events-auto scale-100 opacity-100": open,
         },
         className,
       )}
@@ -49,6 +49,9 @@ export default function AppMenu({
         </Col>
         <Col icon={<Info />} onClick={() => navigate("/about")}>
           关于
+        </Col>
+        <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
+          测试
         </Col>
       </Row>
     </div>

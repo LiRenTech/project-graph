@@ -1,12 +1,25 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { ChevronDown, ChevronUp, Diamond, Menu, X } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronUp,
+  Diamond,
+  Menu,
+  X,
+} from "lucide-react";
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import AppMenu from "../components/AppMenu";
+import IconButton from "../components/ui/IconButton";
+import Button from "../components/ui/Button";
+import { platform } from "@tauri-apps/plugin-os";
+import { cn } from "../utils/cn";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
   const [openMenu, setOpenMenu] = React.useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   React.useEffect(() => {
     getCurrentWindow().onResized(() => {
@@ -35,46 +48,66 @@ export default function App() {
 
   return (
     <div
-      className="relative h-full w-full rounded-xl bg-neutral-950 text-white shadow-2xl"
-      onMouseDown={() => setOpenMenu(false)}
+      className={cn(
+        "relative h-full w-full rounded-xl bg-neutral-950 text-white shadow-2xl",
+        {
+          "[zoom:0.5]": platform() === "android",
+        },
+      )}
+      onClick={() => setOpenMenu(false)}
     >
       {/* 叠加层，显示窗口控件 */}
-      <div className="pointer-events-none absolute left-0 top-0 z-50 h-full w-full *:pointer-events-auto *:absolute *:rounded-md *:border *:border-neutral-700 *:bg-neutral-800 *:px-3 *:py-2 *:text-white">
-        <div
-          className="absolute left-4 top-4 !px-2 transition hover:opacity-80 active:scale-90"
-          onClick={() => setOpenMenu(!openMenu)}
-        >
-          <Menu />
+      <div
+        className={cn("absolute left-0 top-0 z-50 flex w-full gap-2 p-4", {
+          "p-8": platform() === "android",
+        })}
+      >
+        {/* 菜单按钮 */}
+        <div className="relative">
+          <IconButton
+            onClick={(e) => {
+              if (location.pathname !== "/") {
+                navigate("/");
+              } else {
+                e.stopPropagation();
+                setOpenMenu(!openMenu);
+              }
+            }}
+          >
+            {location.pathname === "/" ? <Menu /> : <ChevronLeft />}
+          </IconButton>
+          <AppMenu className="absolute top-12" open={openMenu} />
         </div>
         {/* 左上角标题 */}
-        <div data-tauri-drag-region className="left-16 top-4 flex flex-col">
-          <span>Project Graph</span>
-        </div>
-        <AppMenu className="absolute left-4 top-16" open={openMenu} />
+        <Button data-tauri-drag-region>Project Graph</Button>
+        {/* 中间空白 */}
+        <div className="flex-1" />
         {/* 右上角窗口控制按钮 */}
-        <div className="right-4 top-4 flex items-center gap-1">
-          <ChevronDown
-            onClick={() => getCurrentWindow().minimize()}
-            className="transition hover:opacity-80 active:scale-75"
-          />
-          {maxmized ? (
-            <Diamond
-              onClick={() => setMaxmized(false)}
-              size={18}
-              strokeWidth={3}
+        {platform() !== "android" && (
+          <Button className="right-4 top-4 flex items-center gap-1">
+            <ChevronDown
+              onClick={() => getCurrentWindow().minimize()}
               className="transition hover:opacity-80 active:scale-75"
             />
-          ) : (
-            <ChevronUp
-              onClick={() => setMaxmized(true)}
+            {maxmized ? (
+              <Diamond
+                onClick={() => setMaxmized(false)}
+                size={18}
+                strokeWidth={3}
+                className="transition hover:opacity-80 active:scale-75"
+              />
+            ) : (
+              <ChevronUp
+                onClick={() => setMaxmized(true)}
+                className="transition hover:opacity-80 active:scale-75"
+              />
+            )}
+            <X
+              onClick={() => getCurrentWindow().close()}
               className="transition hover:opacity-80 active:scale-75"
             />
-          )}
-          <X
-            onClick={() => getCurrentWindow().close()}
-            className="transition hover:opacity-80 active:scale-75"
-          />
-        </div>
+          </Button>
+        )}
       </div>
       <Outlet />
     </div>
