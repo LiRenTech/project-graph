@@ -14,6 +14,9 @@ import {
   TestTube2,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
+import { readTextFile } from "@tauri-apps/plugin-fs";
+import { NodeValidator } from "../core/NodeValidator";
 
 export default function AppMenu({
   className = "",
@@ -36,7 +39,34 @@ export default function AppMenu({
     >
       <Row icon={<File />}>
         <Col icon={<FilePlus />}>新建</Col>
-        <Col icon={<FileText />}>打开</Col>
+        <Col
+          icon={<FileText />}
+          onClick={async () => {
+            const path = await openFileDialog({
+              multiple: false,
+              directory: false,
+              filters: [
+                {
+                  name: "Project Graph",
+                  extensions: ["json"],
+                },
+              ],
+            });
+            if (!path) {
+              return;
+            }
+            const content = await readTextFile(path);
+            try {
+              const data = NodeValidator.validate(JSON.parse(content));
+              console.log(data);
+              alert("导入成功");
+            } catch (e) {
+              alert(e);
+            }
+          }}
+        >
+          打开
+        </Col>
         <Col icon={<Save />}>保存</Col>
       </Row>
       <Row icon={<Plus />}>

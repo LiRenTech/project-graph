@@ -15,6 +15,7 @@
     "core:window:allow-maximize",
     "core:window:allow-start-dragging",
     "os:default",
-    "dialog:default"
+    "dialog:default",
+    "fs:default"
   ]
 }
