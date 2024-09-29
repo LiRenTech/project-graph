@@ -6,11 +6,12 @@ export default function Button({
   children,
   className = "",
   onClick = () => {},
-  tauriDragRegion = false,
+  ...props
 }: React.PropsWithChildren<{
   className?: string;
   onClick?: (e: React.MouseEvent) => void;
   tauriDragRegion?: boolean;
+  [key: string]: any;
 }>) {
   return (
     <Box
@@ -20,7 +21,7 @@ export default function Button({
         className,
       )}
       onClick={onClick}
-      data-tauri-drag-region={tauriDragRegion}
+      {...props}
     >
       {children}
     </Box>

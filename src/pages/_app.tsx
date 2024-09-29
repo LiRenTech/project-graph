@@ -79,7 +79,7 @@ export default function App() {
           <AppMenu className="absolute top-12" open={openMenu} />
         </div>
         {/* 左上角标题 */}
-        <Button tauriDragRegion>Project Graph</Button>
+        <Button data-tauri-drag-region>Project Graph</Button>
         {/* 中间空白 */}
         <div className="flex-1" />
         {/* 右上角窗口控制按钮 */}
