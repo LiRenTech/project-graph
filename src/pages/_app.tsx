@@ -58,7 +58,7 @@ export default function App() {
       >
         {/* 叠加层，显示窗口控件 */}
         <div
-          className={cn("absolute left-0 top-0 z-40 flex w-full gap-2 p-4", {
+          className={cn("absolute left-0 top-0 z-40 flex w-full gap-2 p-4 hover:bg-neutral-950/50 transition-all", {
             "p-8": isMobile,
           })}
         >
