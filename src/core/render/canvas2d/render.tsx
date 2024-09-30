@@ -5,6 +5,7 @@ import { Stage } from "../../stage/Stage";
 import { RenderUtils } from "./RenderUtils";
 import { RenderEffect } from "./RenderEffect";
 import { Canvas } from "../../Canvas";
+import TextRiseEffect from "../../effect/concrete/textRiseEffect";
 
 /**
  * 渲染器
@@ -49,13 +50,17 @@ export class Render {
     this.rendDetails();
 
     // 渲染所有特效
+    this.rendEffects();
+  }
+  rendEffects() {
     for (const effect of this.stage.effects) {
       if (effect instanceof CircleFlameEffect) {
         RenderEffect.rendCircleFlameEffect(this, effect);
+      } else if (effect instanceof TextRiseEffect) {
+        RenderEffect.rendTextRiseEffect(this, effect);
       }
     }
   }
-
   rendGrid() {
     const gridSize = 32;
     for (let y = 0; y < 100; y++) {

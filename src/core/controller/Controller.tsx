@@ -4,6 +4,7 @@ import { ProgressNumber } from "../ProgressNumber";
 import { Vector } from "../Vector";
 import { Render } from "../render/canvas2d/render";
 import { Stage } from "../stage/Stage";
+import TextRiseEffect from "../effect/concrete/textRiseEffect";
 
 export class Controller {
   // 检测正在按下的键
@@ -17,10 +18,15 @@ export class Controller {
   };
 
   // 绑定事件
-  private boundMousedown: (e: MouseEvent) => void;
   private boundKeydown: (e: KeyboardEvent) => void;
   private boundKeyup: (e: KeyboardEvent) => void;
+  // 鼠标事件
+  private boundMousedown: (e: MouseEvent) => void;
+  private boundMousemove: (e: MouseEvent) => void;
+  private boundMouseup: (e: MouseEvent) => void;
   private boundMousewheel: (e: WheelEvent) => void;
+  private boundDblclick: (e: MouseEvent) => void;
+  private isMouseDown: boolean = false;
 
   constructor(
     public canvasElement: HTMLCanvasElement,
@@ -28,20 +34,36 @@ export class Controller {
     public render: Render,
   ) {
     // 初始化赋值
-    this.boundMousedown = this.mousedown.bind(this);
     this.boundKeydown = this.keydown.bind(this);
     this.boundKeyup = this.keyup.bind(this);
+    this.boundMousedown = this.mousedown.bind(this);
+    this.boundMousemove = this.mousemove.bind(this);
+    this.boundMouseup = this.mouseup.bind(this);
     this.boundMousewheel = this.mousewheel.bind(this);
+    this.boundDblclick = this.dblclick.bind(this);
 
     // 绑定事件
-    this.canvasElement.addEventListener("mousedown", this.boundMousedown);
     window.addEventListener("keydown", this.boundKeydown);
     window.addEventListener("keyup", this.boundKeyup);
+    this.canvasElement.addEventListener("mousedown", this.boundMousedown);
+    this.canvasElement.addEventListener("mousemove", this.boundMousemove);
+    this.canvasElement.addEventListener("mouseup", this.boundMouseup);
     this.canvasElement.addEventListener("wheel", this.boundMousewheel);
+    this.canvasElement.addEventListener("dblclick", this.boundDblclick);
   }
 
   mousedown(e: MouseEvent) {
-    console.log(e.clientX, e.clientY);
+    // 阻止默认行为，防止右键菜单弹出
+    e.preventDefault();
+
+    this.isMouseDown = true;
+    // 获取左右中键
+    const button = e.button;
+    this.stage.effects.push(
+      new TextRiseEffect(
+        `鼠标按下 ${button === 0 ? "左键" : button === 1 ? "中键" : "右键"}`,
+      ),
+    );
     this.stage.effects.push(
       new CircleFlameEffect(
         new ProgressNumber(0, 40),
@@ -50,6 +72,36 @@ export class Controller {
         new Color(255, 0, 0, 1),
       ),
     );
+  }
+
+  mousemove(e: MouseEvent) {
+    if (this.isMouseDown) {
+      this.stage.effects.push(
+        new CircleFlameEffect(
+          new ProgressNumber(0, 5),
+          this.render.transformView2World(new Vector(e.clientX, e.clientY)),
+          30,
+          new Color(141, 198, 229, 1),
+        ),
+      );
+    }
+  }
+
+  mouseup(e: MouseEvent) {
+    // 阻止默认行为
+    e.preventDefault();
+    // 阻止事件冒泡
+    e.stopPropagation();
+    this.isMouseDown = false;
+    this.stage.effects.push(
+      new CircleFlameEffect(
+        new ProgressNumber(0, 40),
+        this.render.transformView2World(new Vector(e.clientX, e.clientY)),
+        50,
+        new Color(0, 0, 255, 1),
+      ),
+    );
+    this.stage.effects.push(new TextRiseEffect("mouse up"));
   }
 
   mousewheel(e: WheelEvent) {
@@ -63,8 +115,19 @@ export class Controller {
     }
   }
 
+  dblclick(e: MouseEvent) {
+    this.stage.effects.push(
+      new CircleFlameEffect(
+        new ProgressNumber(0, 40),
+        this.render.transformView2World(new Vector(e.clientX, e.clientY)),
+        100,
+        new Color(0, 255, 0, 1),
+      ),
+    );
+    this.stage.effects.push(new TextRiseEffect("mouse up"));
+  }
+
   keydown(event: KeyboardEvent) {
-    console.log(event.key);
     const key = event.key.toLowerCase();
     this.pressingKeySet.add(key);
     if (this.keyMap[key]) {
@@ -78,7 +141,6 @@ export class Controller {
   }
 
   keyup(event: KeyboardEvent) {
-    console.log(event.key);
     const key = event.key.toLowerCase();
     if (!this.pressingKeySet.has(key)) {
       // 但这里有个问题，在按下 ctrl+alt+a 时，会显示画面一直往右走。原因是按下a没有被检测到，但抬起a被检测到了
