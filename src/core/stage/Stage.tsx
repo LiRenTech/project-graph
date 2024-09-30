@@ -1,4 +1,4 @@
-import Effect from "../core/effect/effect";
+import Effect from "../effect/effect";
 import Camera from "./Camera";
 // import { NodeManager } from "../core/NodeManager";
 

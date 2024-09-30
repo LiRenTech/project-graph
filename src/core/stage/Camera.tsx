@@ -1,4 +1,4 @@
-import { Vector } from "../core/Vector";
+import { Vector } from "../Vector";
 
 /**
  * 摄像机

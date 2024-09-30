@@ -1,9 +1,9 @@
-import Color from "../../core/Color";
-import CircleFlameEffect from "../../core/effect/concrete/circleFlameEffect";
-import { Vector } from "../../core/Vector";
+import Color from "../../Color";
+import CircleFlameEffect from "../../effect/concrete/circleFlameEffect";
+import { Vector } from "../../Vector";
 import { Stage } from "../../stage/Stage";
-import { RenderEffect } from "./renderEffect";
-import { RenderUtils } from "./renderUtils";
+import { RenderUtils } from "./RenderUtils";
+import { RenderEffect } from "./RenderEffect";
 
 /**
  * 渲染器

@@ -1,5 +1,5 @@
-import Color from "../../core/Color";
-import { Vector } from "../../core/Vector";
+import Color from "../../Color";
+import { Vector } from "../../Vector";
 
 export namespace RenderUtils {
   /**

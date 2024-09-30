@@ -1,7 +1,7 @@
-import Color from "../core/Color";
-import CircleFlameEffect from "../core/effect/concrete/circleFlameEffect";
-import { ProgressNumber } from "../core/ProgressNumber";
-import { Vector } from "../core/Vector";
+import Color from "../Color";
+import CircleFlameEffect from "../effect/concrete/circleFlameEffect";
+import { ProgressNumber } from "../ProgressNumber";
+import { Vector } from "../Vector";
 import { Render } from "../render/canvas2d/render";
 import { Stage } from "../stage/Stage";
 

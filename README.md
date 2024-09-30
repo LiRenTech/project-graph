@@ -19,3 +19,5 @@ https://littlefean.github.io/2024/09/28/tauri%E9%A1%B9%E7%9B%AE%E5%9C%A8windows%
 ```
 
 若发现修改代码后无法热更新，用 Ctrl+Shift+R 刷新。
+
+若重构代码，移动一些文件的位置并且解决导入路径问题，IDE中不报错后但发现启动后出现一个透明窗口，可以ctrl+shift+i查看控制台，看看报错信息，发现报错信息还是曾经的路径，在控制台中用 Ctrl+Shift+R 刷新。

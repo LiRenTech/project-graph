@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
-import { Render } from "../render/canvas2d/render";
+import { Render } from "../core/render/canvas2d/render";
 import { useDialog } from "../utils/dialog";
-import { Stage } from "../stage/Stage";
-import { Controller } from "../controller/Controller";
-import Camera from "../stage/Camera";
+import { Stage } from "../core/stage/Stage";
+import { Controller } from "../core/controller/Controller";
+import Camera from "../core/stage/Camera";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);

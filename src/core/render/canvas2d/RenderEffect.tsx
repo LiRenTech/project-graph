@@ -1,6 +1,6 @@
-import CircleFlameEffect from "../../core/effect/concrete/circleFlameEffect";
+import CircleFlameEffect from "../../effect/concrete/circleFlameEffect";
 import { Render } from "./render";
-import { RenderUtils } from "./renderUtils";
+import { RenderUtils } from "./RenderUtils";
 
 export namespace RenderEffect {
   /**
