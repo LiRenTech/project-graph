@@ -36,6 +36,8 @@ export class Render {
    * @returns
    */
   frameTick() {
+    this.stage.camera.frameTick();
+
     this.canvas.ctx.clearRect(0, 0, this.w, this.h);
 
     // 画一个2b2b2b的背景
@@ -59,8 +61,8 @@ export class Render {
     for (let y = 0; y < 100; y++) {
       RenderUtils.rendSolidLine(
         this.canvas.ctx,
-        new Vector(0, y * gridSize),
-        new Vector(this.w, y * gridSize),
+        this.transformWorld2View(new Vector(0, y * gridSize)),
+        this.transformWorld2View(new Vector(this.w, y * gridSize)),
         new Color(255, 255, 255, 0.1),
         1,
       );
@@ -68,8 +70,8 @@ export class Render {
     for (let x = 0; x < 100; x++) {
       RenderUtils.rendSolidLine(
         this.canvas.ctx,
-        new Vector(x * gridSize, 0),
-        new Vector(x * gridSize, this.h),
+        this.transformWorld2View(new Vector(x * gridSize, 0)),
+        this.transformWorld2View(new Vector(x * gridSize, this.h)),
         new Color(255, 255, 255, 0.1),
         1,
       );

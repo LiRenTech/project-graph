@@ -209,4 +209,12 @@ export class Vector {
   //   const angle = uniform(0, 2 * Math.PI);
   //   return Vector.fromAngle(angle);
   // }
+
+  limitX(min: number, max: number): Vector {
+    return new Vector(Math.min(Math.max(this.x, min), max), this.y);
+  }
+
+  limitY(min: number, max: number): Vector {
+    return new Vector(this.x, Math.min(Math.max(this.y, min), max));
+  }
 }
