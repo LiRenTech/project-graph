@@ -5,6 +5,7 @@ import { Stage } from "../core/stage/Stage";
 import { Controller } from "../core/controller/Controller";
 import Camera from "../core/stage/Camera";
 import { Canvas } from "../core/Canvas";
+import { NodeManager } from "../core/NodeManager";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);
@@ -64,6 +65,9 @@ export default function Home() {
       window.removeEventListener("resize", handleResize);
       controller?.destroy();
       cancelAnimationFrame(frameId);
+      NodeManager.destroy();
+
+
       
     };
   }, []);

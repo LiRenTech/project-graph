@@ -6,7 +6,14 @@ export class Node {
   text: string;
   details: string;
   children: Node[];
+  /**
+   * 左上角坐标
+   */
   location: Vector;
+
+  /**
+   * 从左上角到右下角构成的对角线向量
+   */
   size: Vector;
 
   constructor(

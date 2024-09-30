@@ -6,6 +6,7 @@ import { RenderUtils } from "./RenderUtils";
 import { RenderEffect } from "./RenderEffect";
 import { Canvas } from "../../Canvas";
 import TextRiseEffect from "../../effect/concrete/textRiseEffect";
+import { NodeManager } from "../../NodeManager";
 
 /**
  * 渲染器
@@ -46,12 +47,51 @@ export class Render {
     this.canvas.ctx.fillRect(0, 0, this.w, this.h);
     // 画网格
     this.rendGrid();
+
+    this.rendEntities();
+
     // 画详细信息
     this.rendDetails();
 
     // 渲染所有特效
     this.rendEffects();
   }
+
+  rendEntities() {
+    for (const node of NodeManager.nodes) {
+      RenderUtils.rendRectFromLeftTop(
+        this.canvas.ctx,
+        this.transformWorld2View(node.location),
+        node.size.x * this.stage.camera.currentScale,
+        node.size.y * this.stage.camera.currentScale,
+        new Color(0, 0, 0, 0.5),
+        new Color(255, 255, 255, 0.5),
+        2 * this.stage.camera.currentScale,
+      );
+
+      RenderUtils.rendTextFromLeftTop(
+        this.canvas.ctx,
+        node.text,
+        this.transformWorld2View(node.location),
+        100 * this.stage.camera.currentScale,
+        new Color(255, 255, 255),
+      );
+    }
+  }
+
+  // /**
+  //  * 获取最终要渲染的文字的大小，返回的是视野坐标系下的大小
+  //  * @param text
+  //  * @returns
+  //  */
+  // private getTextRectSize(text: string): Vector {
+  //   const metrics = this.canvas.ctx.measureText(text);
+  //   const textWidth = metrics.width;
+  //   const textHeight =
+  //     metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
+  //   return new Vector(textWidth, textHeight);
+  // }
+
   rendEffects() {
     for (const effect of this.stage.effects) {
       if (effect instanceof CircleFlameEffect) {
@@ -62,12 +102,12 @@ export class Render {
     }
   }
   rendGrid() {
-    const gridSize = 32;
+    const gridSize = 100;
     for (let y = 0; y < 100; y++) {
       RenderUtils.rendSolidLine(
         this.canvas.ctx,
         this.transformWorld2View(new Vector(0, y * gridSize)),
-        this.transformWorld2View(new Vector(this.w, y * gridSize)),
+        this.transformWorld2View(new Vector(1000, y * gridSize)),
         new Color(255, 255, 255, 0.1),
         1,
       );
@@ -76,7 +116,7 @@ export class Render {
       RenderUtils.rendSolidLine(
         this.canvas.ctx,
         this.transformWorld2View(new Vector(x * gridSize, 0)),
-        this.transformWorld2View(new Vector(x * gridSize, this.h)),
+        this.transformWorld2View(new Vector(x * gridSize, 1000)),
         new Color(255, 255, 255, 0.1),
         1,
       );
@@ -90,6 +130,7 @@ export class Render {
       `shake: ${this.stage.camera.shakeLocation.toString()}`,
       `location: ${this.stage.camera.location.x.toFixed(2)}, ${this.stage.camera.location.y.toFixed(2)}`,
       `window: ${this.w}x${this.h}`,
+      `node count: ${NodeManager.nodes.length}`,
     ];
     for (const line of detailsData) {
       RenderUtils.rendTextFromLeftTop(

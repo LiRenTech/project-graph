@@ -5,6 +5,7 @@ import { Vector } from "../Vector";
 import { Render } from "../render/canvas2d/render";
 import { Stage } from "../stage/Stage";
 import TextRiseEffect from "../effect/concrete/textRiseEffect";
+import { NodeManager } from "../NodeManager";
 
 export class Controller {
   // 检测正在按下的键
@@ -116,6 +117,12 @@ export class Controller {
   }
 
   dblclick(e: MouseEvent) {
+    // 如果是左键
+    if (e.button === 0) {
+      NodeManager.addNodeByClick(
+        this.render.transformView2World(new Vector(e.clientX, e.clientY)),
+      );
+    }
     this.stage.effects.push(
       new CircleFlameEffect(
         new ProgressNumber(0, 40),
