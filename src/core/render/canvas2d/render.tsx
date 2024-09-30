@@ -79,12 +79,22 @@ export class Render {
   }
 
   rendDetails() {
-    RenderUtils.rendTextFromLeftTop(
-      this.canvas.ctx,
-      `w: ${this.w}, h: ${this.h}`,
-      new Vector(10, 80),
-      12,
-    );
+    const detailsData = [
+      `scale: ${this.cameraCurrentScale.toFixed(2)}`,
+      `target: ${this.cameraTargetScale.toFixed(2)}`,
+      `shake: ${this.stage.camera.shakeLocation.toString()}`,
+      `location: ${this.stage.camera.location.x.toFixed(2)}, ${this.stage.camera.location.y.toFixed(2)}`,
+      `window: ${this.w}x${this.h}`,
+    ];
+    for (const line of detailsData) {
+      RenderUtils.rendTextFromLeftTop(
+        this.canvas.ctx,
+        line,
+        new Vector(10, 80 + detailsData.indexOf(line) * 12),
+        10,
+        new Color(255, 255, 255, 0.5),
+      );
+    }
   }
 
   get cameraCurrentScale(): number {
