@@ -4,17 +4,17 @@ import { Vector } from "../../Vector";
 import { Stage } from "../../stage/Stage";
 import { RenderUtils } from "./RenderUtils";
 import { RenderEffect } from "./RenderEffect";
+import { Canvas } from "../../Canvas";
 
 /**
  * 渲染器
  */
 export class Render {
   constructor(
-    public canvasElement: HTMLCanvasElement,
+    public canvas: Canvas,
     public w: number,
     public h: number,
     public stage: Stage,
-    public ctx: CanvasRenderingContext2D,
   ) {
     // 初始化操作
     this.resizeWindow(w, h);
@@ -24,13 +24,11 @@ export class Render {
     const pixelRatio = window.devicePixelRatio;
     this.w = w;
     this.h = h;
-    this.canvasElement.width = w * window.devicePixelRatio;
-    this.canvasElement.height = h * window.devicePixelRatio;
-    this.canvasElement.style.width = `${w}px`;
-    this.canvasElement.style.height = `${h}px`;
-    if (this.ctx) {
-      this.ctx.scale(pixelRatio, pixelRatio);
-    }
+    this.canvas.element.width = w * window.devicePixelRatio;
+    this.canvas.element.height = h * window.devicePixelRatio;
+    this.canvas.element.style.width = `${w}px`;
+    this.canvas.element.style.height = `${h}px`;
+    this.canvas.ctx.scale(pixelRatio, pixelRatio);
   }
 
   /**
@@ -38,14 +36,11 @@ export class Render {
    * @returns
    */
   frameTick() {
-    if (!this.ctx) {
-      return;
-    }
-    this.ctx.clearRect(0, 0, this.w, this.h);
+    this.canvas.ctx.clearRect(0, 0, this.w, this.h);
 
     // 画一个2b2b2b的背景
-    this.ctx.fillStyle = "#2b2b2b";
-    this.ctx.fillRect(0, 0, this.w, this.h);
+    this.canvas.ctx.fillStyle = "#2b2b2b";
+    this.canvas.ctx.fillRect(0, 0, this.w, this.h);
     // 画网格
     this.rendGrid();
     // 画详细信息
@@ -63,7 +58,7 @@ export class Render {
     const gridSize = 32;
     for (let y = 0; y < 100; y++) {
       RenderUtils.rendSolidLine(
-        this.ctx,
+        this.canvas.ctx,
         new Vector(0, y * gridSize),
         new Vector(this.w, y * gridSize),
         new Color(255, 255, 255, 0.1),
@@ -72,7 +67,7 @@ export class Render {
     }
     for (let x = 0; x < 100; x++) {
       RenderUtils.rendSolidLine(
-        this.ctx,
+        this.canvas.ctx,
         new Vector(x * gridSize, 0),
         new Vector(x * gridSize, this.h),
         new Color(255, 255, 255, 0.1),
@@ -83,7 +78,7 @@ export class Render {
 
   rendDetails() {
     RenderUtils.rendTextFromLeftTop(
-      this.ctx,
+      this.canvas.ctx,
       `w: ${this.w}, h: ${this.h}`,
       new Vector(10, 80),
       12,

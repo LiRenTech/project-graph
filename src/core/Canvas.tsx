@@ -1,9 +1,12 @@
-export namespace Canvas {
-  let el: HTMLCanvasElement;
-  let ctx: CanvasRenderingContext2D;
+/**
+ * 将Canvas标签和里面的ctx捏在一起封装成一个类
+ */
+export class Canvas {
+  element: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
 
-  export function init(el_: HTMLCanvasElement) {
-    el = el_;
-    ctx = el.getContext("2d")!;
+  constructor(el_: HTMLCanvasElement) {
+    this.element = el_;
+    this.ctx = el_.getContext("2d")!;
   }
 }

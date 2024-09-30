@@ -4,6 +4,7 @@ import { useDialog } from "../utils/dialog";
 import { Stage } from "../core/stage/Stage";
 import { Controller } from "../core/controller/Controller";
 import Camera from "../core/stage/Camera";
+import { Canvas } from "../core/Canvas";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);
@@ -31,12 +32,13 @@ export default function Home() {
     const stage = new Stage(new Camera());
 
     if (canvasElement) {
+      const canvasObject = new Canvas(canvasElement!);
+
       render = new Render(
-        canvasElement,
+        canvasObject,
         window.innerWidth,
         window.innerHeight,
         stage,
-        canvasElement.getContext("2d")!,
       );
       controller = new Controller(canvasElement, stage, render);
     } else {
