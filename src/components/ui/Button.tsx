@@ -10,7 +10,6 @@ export default function Button({
 }: React.PropsWithChildren<{
   className?: string;
   onClick?: (e: React.MouseEvent) => void;
-  tauriDragRegion?: boolean;
   [key: string]: any;
 }>) {
   return (

@@ -9,13 +9,13 @@ import {
 } from "lucide-react";
 import React from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import AppMenu from "../components/AppMenu";
+import AppMenu from "./_app_menu";
 import IconButton from "../components/ui/IconButton";
 import Button from "../components/ui/Button";
 import { cn } from "../utils/cn";
 import { DialogProvider } from "../utils/dialog";
 import Dialog from "../components/ui/Dialog";
-import { isDesktop, isMobile } from "../utils/platform";
+import { appScale, isDesktop, isMobile } from "../utils/platform";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -52,12 +52,8 @@ export default function App() {
     <DialogProvider>
       <Dialog />
       <div
-        className={cn(
-          "relative h-full w-full rounded-xl bg-neutral-950 text-white shadow-2xl",
-          {
-            "[zoom:0.5]": isMobile,
-          },
-        )}
+        className="relative h-full w-full rounded-xl bg-neutral-950 text-white shadow-2xl"
+        style={{ zoom: appScale }}
         onClick={() => setOpenMenu(false)}
       >
         {/* 叠加层，显示窗口控件 */}

@@ -16,6 +16,7 @@
     "core:window:allow-start-dragging",
     "os:default",
     "dialog:default",
-    "fs:default"
+    "fs:default",
+    "shell:default"
   ]
 }

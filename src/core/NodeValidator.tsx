@@ -3,6 +3,7 @@ import { Serialized } from "../types/node";
 export namespace NodeValidator {
   export function validate(data: Record<string, any>): Serialized.File {
     data = convertV1toV2(data);
+    data = convertV2toV3(data);
     return data as Serialized.File;
   }
 
@@ -38,6 +39,35 @@ export namespace NodeValidator {
       if (!("inner_text" in link)) {
         link.inner_text = "";
       }
+    }
+    return data;
+  }
+  function convertV2toV3(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 3) {
+      return data;
+    }
+    data.version = 3;
+    // 重命名字段
+    for (const node of data.nodes) {
+      node.shape = node.body_shape;
+      delete node.body_shape;
+      node.shape.location = node.shape.location_left_top;
+      delete node.shape.location_left_top;
+      node.shape.size = [node.shape.width, node.shape.height];
+      delete node.shape.width;
+      delete node.shape.height;
+      node.text = node.inner_text;
+      delete node.inner_text;
+    }
+    data.edges = data.links;
+    delete data.links;
+    for (const edge of data.edges) {
+      edge.source = edge.source_node;
+      delete edge.source_node;
+      edge.target = edge.target_node;
+      delete edge.target_node;
+      edge.text = edge.inner_text;
+      delete edge.inner_text;
     }
     return data;
   }

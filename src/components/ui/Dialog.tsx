@@ -22,19 +22,27 @@ export default function Dialog() {
   return (
     <div
       className={cn(
-        "fixed z-50 flex flex-col gap-4 overflow-auto bg-blue-950 p-8 text-white transition",
+        "fixed z-50 flex flex-col gap-4 overflow-auto text-wrap break-words p-8 text-white transition",
         {
           "pointer-events-none": !dialog.showDialog,
-          "bottom-0 right-0 top-0 w-1/3 duration-500": isMobile,
+          "bottom-0 right-0 top-0 w-1/3 duration-300": isMobile,
           "translate-x-full": isMobile && !dialog.showDialog,
           "left-1/2 top-1/2 max-h-[50vh] max-w-96 -translate-x-1/2 -translate-y-1/2 transform rounded-2xl":
             isDesktop,
           "scale-95 opacity-0": isDesktop && !dialog.showDialog,
+          "bg-blue-950": dialog.type === "info",
+          "bg-green-950": dialog.type === "success",
+          "bg-yellow-950": dialog.type === "warning",
+          "bg-red-950": dialog.type === "error",
         },
       )}
     >
       <h1 className="text-2xl font-bold">{dialog.title}</h1>
-      <p className="flex-1 overflow-auto">{dialog.content}</p>
+      <p className="flex-1 overflow-auto">
+        {dialog.content.split("\n").map((line, i) => (
+          <p key={i}>{line}</p>
+        ))}
+      </p>
       {dialog.buttons.map((btn, i) => (
         <Button key={i} onClick={btn.onClick}>
           {btn.text}
