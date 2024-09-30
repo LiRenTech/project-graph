@@ -102,10 +102,10 @@ ${data.nodes.length} 个节点，${data.edges.length} 条边`,
         <Col icon={<Image />}>图片</Col>
       </Row>
       <Row icon={<MoreHorizontal />}>
-        <Col icon={<Settings />} onClick={() => navigate("/settings")}>
+        <Col icon={<Settings />} onClick={() => navigate("/settings/visual")}>
           设置
         </Col>
-        <Col icon={<Info />} onClick={() => navigate("/about")}>
+        <Col icon={<Info />} onClick={() => navigate("/settings/about")}>
           关于
         </Col>
         <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
