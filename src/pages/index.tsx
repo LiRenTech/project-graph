@@ -64,6 +64,7 @@ export default function Home() {
       window.removeEventListener("resize", handleResize);
       controller?.destroy();
       cancelAnimationFrame(frameId);
+      
     };
   }, []);
 
