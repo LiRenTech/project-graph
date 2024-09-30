@@ -10,6 +10,14 @@ type DialogOptions = {
 };
 type DialogShowFunc = (options: Partial<DialogOptions>) => Promise<string>;
 
+/**
+ * 对话框上下文
+ * @param show 对话框显示函数
+ * @param showDialog 对话框是否显示
+ * @param title 对话框标题
+ * @param type 对话框类型 info | success | warning | error
+ * @param content 对话框内容
+ */
 const DialogContext = React.createContext<
   {
     show: DialogShowFunc;
@@ -72,6 +80,10 @@ export const DialogProvider = ({ children }: React.PropsWithChildren) => {
   );
 };
 
+/**
+ * 获取对话框上下文，dialog = useDialog()
+ * @returns DialogContext 
+ */
 export const useDialog = () => {
   return React.useContext(DialogContext);
 };

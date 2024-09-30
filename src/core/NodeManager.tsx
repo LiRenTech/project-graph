@@ -1,6 +1,7 @@
 import { Edge } from "./Edge";
 import { Node } from "./Node";
 
+// 应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 export namespace NodeManager {
   export const nodes: Node[] = [];
   export const edges: Edge[] = [];
