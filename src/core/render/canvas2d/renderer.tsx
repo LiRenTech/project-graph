@@ -19,6 +19,9 @@ export namespace Renderer {
   export const NODE_PADDING = 14;
   export let w = 0;
   export let h = 0;
+  let canvasRect: Rectangle;
+  export let renderedNodes: number = 0;
+  export let renderedEdges: number = 0;
 
   export function resizeWindow(newW: number, newH: number) {
     // HACK: 这里写的什么东西，我不知道，但是它能让画布的大小和屏幕的大小保持一致
@@ -44,9 +47,18 @@ export namespace Renderer {
     // 画一个2b2b2b的背景
     Canvas.ctx.fillStyle = "#2b2b2b";
     Canvas.ctx.fillRect(0, 0, w, h);
+
+    canvasRect = new Rectangle(
+      Camera.location.subtract(
+        new Vector(w / 2, h / 2).multiply(1 / Camera.currentScale),
+      ), // 计算左上角在世界坐标中的位置
+      new Vector(w, h).divide(Camera.currentScale), // 缩放后的大小
+    );
+
     // 画网格
     renderGrid();
 
+    renderEdges();
     renderEntities();
 
     // 画详细信息
@@ -57,25 +69,16 @@ export namespace Renderer {
   }
 
   export function renderEntities() {
-    const canvasRect = new Rectangle(
-      Camera.location.subtract(
-        new Vector(w, h).divide(2).multiply(1 / Camera.currentScale),
-      ),
-      new Vector(w, h).multiply(1 / Camera.currentScale),
-    );
-
+    renderedNodes = 0;
     for (const node of NodeManager.nodes) {
-      if (!canvasRect.intersects(node.rectangle)) {
+      if (!canvasRect.isCollideWith(node.rectangle)) {
         continue;
       }
 
       RenderUtils.renderRect(
-        Canvas.ctx,
         new Rectangle(
           transformWorld2View(node.rectangle.location),
-          node.rectangle.size
-            .add(Vector.same(NODE_PADDING).multiply(2))
-            .multiply(Camera.currentScale),
+          node.rectangle.size.multiply(Camera.currentScale),
         ),
         new Color(0, 0, 0, 0.5),
         new Color(255, 255, 255, 0.5),
@@ -84,7 +87,6 @@ export namespace Renderer {
       );
 
       RenderUtils.renderText(
-        Canvas.ctx,
         node.text,
         transformWorld2View(
           node.rectangle.location.add(Vector.same(NODE_PADDING)),
@@ -92,6 +94,43 @@ export namespace Renderer {
         FONT_SIZE * Camera.currentScale,
         new Color(255, 255, 255),
       );
+
+      renderedNodes++;
+    }
+  }
+
+  export function renderEdges() {
+    renderedEdges = 0;
+    for (const edge of NodeManager.edges) {
+      const lineRect = Rectangle.fromPoints(
+        edge.source.rectangle.getCenter(),
+        edge.target.rectangle.getCenter(),
+      );
+
+      // RenderUtils.renderRect(
+      //   lineRect,
+      //   new Color(255, 255, 255, 0.5),
+      //   new Color(255, 255, 255, 0.5),
+      //   2 * Camera.currentScale,
+      // );
+      if (!canvasRect.isCollideWith(lineRect)) {
+        continue;
+      }
+      RenderUtils.renderSolidLine(
+        transformWorld2View(edge.source.rectangle.getCenter()),
+        transformWorld2View(edge.target.rectangle.getCenter()),
+        new Color(255, 255, 255),
+        2 * Camera.currentScale,
+      );
+      // TODO: 这个没用
+      RenderUtils.renderArrow(
+        transformWorld2View(edge.source.rectangle.getCenter()),
+        transformWorld2View(edge.target.rectangle.getCenter()),
+        new Color(255, 255, 255),
+        2 * Camera.currentScale,
+      );
+
+      renderedEdges++;
     }
   }
 
@@ -120,8 +159,7 @@ export namespace Renderer {
   export function renderGrid() {
     const gridSize = 100;
     for (let y = 0; y < 100; y++) {
-      RenderUtils.rendSolidLine(
-        Canvas.ctx,
+      RenderUtils.renderSolidLine(
         transformWorld2View(new Vector(0, y * gridSize)),
         transformWorld2View(new Vector(1000, y * gridSize)),
         new Color(255, 255, 255, 0.1),
@@ -129,8 +167,7 @@ export namespace Renderer {
       );
     }
     for (let x = 0; x < 100; x++) {
-      RenderUtils.rendSolidLine(
-        Canvas.ctx,
+      RenderUtils.renderSolidLine(
         transformWorld2View(new Vector(x * gridSize, 0)),
         transformWorld2View(new Vector(x * gridSize, 1000)),
         new Color(255, 255, 255, 0.1),
@@ -145,16 +182,15 @@ export namespace Renderer {
       `target: ${Camera.targetScale.toFixed(2)}`,
       `shake: ${Camera.shakeLocation.toString()}`,
       `location: ${Camera.location.x.toFixed(2)}, ${Camera.location.y.toFixed(2)}`,
+      // `canvas rect: ${canvasRect.toString()}`,
       `window: ${w}x${h}`,
-      `node count: ${NodeManager.nodes.length}`,
-      `accelerate: ${Camera.accelerateCommander}`,
-      `speed: ${Camera.speed}`,
+      `node count: ${renderedNodes} / ${NodeManager.nodes.length}`,
+      `edge count: ${renderedEdges} / ${NodeManager.edges.length}`,
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(
-        Canvas.ctx,
         line,
-        new Vector(10, 80 + detailsData.indexOf(line) * 12),
+        new Vector(10, 48 + detailsData.indexOf(line) * 12),
         10,
         new Color(255, 255, 255, 0.5),
       );

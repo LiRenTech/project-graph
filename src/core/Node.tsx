@@ -29,7 +29,9 @@ export class Node {
     );
     this.rectangle = new Rectangle(
       new Vector(...shape.location),
-      getTextSize(text, Renderer.FONT_SIZE),
+      getTextSize(text, Renderer.FONT_SIZE).add(
+        Vector.same(Renderer.NODE_PADDING).multiply(2),
+      ),
     );
   }
 }

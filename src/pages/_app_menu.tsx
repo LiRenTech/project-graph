@@ -27,6 +27,7 @@ import { Node } from "../core/Node";
 import { useRecoilState } from "recoil";
 import { fileAtom } from "../state";
 import { Camera } from "../core/stage/Camera";
+import { Edge } from "../core/Edge";
 
 export default function AppMenu({
   className = "",
@@ -61,7 +62,8 @@ export default function AppMenu({
     if (!path) {
       return;
     }
-    setFile(path);
+    NodeManager.destroy();
+    setFile(decodeURIComponent(path));
     if (isDesktop && !path.endsWith(".json")) {
       dialog.show({
         title: "请选择一个JSON文件",
@@ -76,6 +78,10 @@ export default function AppMenu({
       for (const node of data.nodes) {
         NodeManager.addNode(new Node(node));
       }
+      for (const edge of data.edges) {
+        NodeManager.addEdge(new Edge(edge));
+      }
+      NodeManager.updateReferences();
       // const endTime = performance.now();
       //       dialog.show({
       //         title: "导入成功",

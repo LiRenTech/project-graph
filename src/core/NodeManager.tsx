@@ -1,5 +1,6 @@
 import { Edge } from "./Edge";
 import { Node } from "./Node";
+import { Renderer } from "./render/canvas2d/renderer";
 import { Vector } from "./Vector";
 import { v4 as uuidv4 } from "uuid";
 
@@ -13,20 +14,29 @@ export namespace NodeManager {
 
   export function addNode(node: Node) {
     nodes.push(node);
-    for (const otherNode of nodes) {
-      for (const child of otherNode.children) {
-        if (child.unknown && child.uuid === node.uuid) {
-          otherNode.children.splice(otherNode.children.indexOf(child), 1);
-          otherNode.children.push(child);
+  }
+
+  export function addEdge(edge: Edge) {
+    edges.push(edge);
+  }
+
+  export function updateReferences() {
+    for (const node of nodes) {
+      for (const otherNode of nodes) {
+        for (const child of otherNode.children) {
+          if (child.unknown && child.uuid === node.uuid) {
+            otherNode.children.splice(otherNode.children.indexOf(child), 1);
+            otherNode.children.push(child);
+          }
         }
       }
-    }
-    for (const edge of edges) {
-      if (edge.source.unknown && edge.source.uuid === node.uuid) {
-        edge.source = node;
-      }
-      if (edge.target.unknown && edge.target.uuid === node.uuid) {
-        edge.target = node;
+      for (const edge of edges) {
+        if (edge.source.unknown && edge.source.uuid === node.uuid) {
+          edge.source = node;
+        }
+        if (edge.target.unknown && edge.target.uuid === node.uuid) {
+          edge.target = node;
+        }
       }
     }
   }
@@ -62,6 +72,9 @@ export namespace NodeManager {
    * 计算所有节点的大小
    */
   export function getSize(): Vector {
+    if (nodes.length === 0) {
+      return new Vector(Renderer.w, Renderer.h);
+    }
     let size = Vector.getZero();
     for (const node of nodes) {
       if (node.rectangle.size.x > size.x) {

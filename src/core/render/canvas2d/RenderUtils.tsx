@@ -1,3 +1,4 @@
+import { Canvas } from "../../Canvas";
 import { Color } from "../../Color";
 import { Rectangle } from "../../Rectangle";
 import { Vector } from "../../Vector";
@@ -12,28 +13,26 @@ export namespace RenderUtils {
    * @param strokeColor
    * @param strokeWidth
    */
-  export function rendCircle(
-    ctx: CanvasRenderingContext2D,
+  export function renderCircle(
     centerLocation: Vector,
     radius: number,
     color: Color,
     strokeColor: Color,
     strokeWidth: number,
   ): void {
-    ctx.beginPath();
-    ctx.arc(centerLocation.x, centerLocation.y, radius, 0, 2 * Math.PI);
-    ctx.fillStyle = color.toString();
-    ctx.fill();
-    ctx.lineWidth = strokeWidth;
-    ctx.strokeStyle = strokeColor.toString();
-    ctx.stroke();
+    Canvas.ctx.beginPath();
+    Canvas.ctx.arc(centerLocation.x, centerLocation.y, radius, 0, 2 * Math.PI);
+    Canvas.ctx.fillStyle = color.toString();
+    Canvas.ctx.fill();
+    Canvas.ctx.lineWidth = strokeWidth;
+    Canvas.ctx.strokeStyle = strokeColor.toString();
+    Canvas.ctx.stroke();
   }
 
   /**
    * 画一个圆弧线但不填充
    */
-  export function rendArc(
-    ctx: CanvasRenderingContext2D,
+  export function renderArc(
     centerLocation: Vector,
     radius: number,
     angle1: number,
@@ -41,15 +40,14 @@ export namespace RenderUtils {
     strokeColor: Color,
     strokeWidth: number,
   ): void {
-    ctx.beginPath();
-    ctx.arc(centerLocation.x, centerLocation.y, radius, angle1, angle2);
-    ctx.lineWidth = strokeWidth;
-    ctx.strokeStyle = strokeColor.toString();
-    ctx.stroke();
+    Canvas.ctx.beginPath();
+    Canvas.ctx.arc(centerLocation.x, centerLocation.y, radius, angle1, angle2);
+    Canvas.ctx.lineWidth = strokeWidth;
+    Canvas.ctx.strokeStyle = strokeColor.toString();
+    Canvas.ctx.stroke();
   }
 
-  export function rendRectFromCenter(
-    ctx: CanvasRenderingContext2D,
+  export function renderRectFromCenter(
     centerLocation: Vector,
     width: number,
     height: number,
@@ -57,69 +55,66 @@ export namespace RenderUtils {
     strokeColor: Color,
     strokeWidth: number,
   ): void {
-    ctx.beginPath();
-    ctx.rect(
+    Canvas.ctx.beginPath();
+    Canvas.ctx.rect(
       centerLocation.x - width / 2,
       centerLocation.y - height / 2,
       width,
       height,
     );
-    ctx.fillStyle = color.toString();
-    ctx.fill();
-    ctx.lineWidth = strokeWidth;
-    ctx.strokeStyle = strokeColor.toString();
-    ctx.stroke();
+    Canvas.ctx.fillStyle = color.toString();
+    Canvas.ctx.fill();
+    Canvas.ctx.lineWidth = strokeWidth;
+    Canvas.ctx.strokeStyle = strokeColor.toString();
+    Canvas.ctx.stroke();
   }
 
   export function renderRect(
-    ctx: CanvasRenderingContext2D,
     rect: Rectangle,
     color: Color,
     strokeColor: Color,
     strokeWidth: number,
     radius: number = 0,
   ) {
-    ctx.beginPath();
-    ctx.roundRect(
+    Canvas.ctx.beginPath();
+    Canvas.ctx.roundRect(
       rect.location.x,
       rect.location.y,
       rect.size.x,
       rect.size.y,
       radius,
     );
-    ctx.fillStyle = color.toString();
-    ctx.fill();
-    ctx.lineWidth = strokeWidth;
-    ctx.strokeStyle = strokeColor.toString();
-    ctx.stroke();
+    Canvas.ctx.fillStyle = color.toString();
+    Canvas.ctx.fill();
+    Canvas.ctx.lineWidth = strokeWidth;
+    Canvas.ctx.strokeStyle = strokeColor.toString();
+    Canvas.ctx.stroke();
   }
 
   export function renderText(
-    ctx: CanvasRenderingContext2D,
     text: string,
     location: Vector,
     size: number,
     color: Color = Color.White,
   ): void {
-    ctx.textBaseline = "middle";
-    ctx.textAlign = "left";
-    ctx.font = `${size}px system-ui`;
-    ctx.fillStyle = color.toString();
-    ctx.fillText(text, location.x, location.y + size / 2);
+    Canvas.ctx.textBaseline = "middle";
+    Canvas.ctx.textAlign = "left";
+    Canvas.ctx.font = `${size}px system-ui`;
+    Canvas.ctx.fillStyle = color.toString();
+    Canvas.ctx.fillText(text, location.x, location.y + size / 2);
   }
 
-  export function rendTextFromCenter(
-    ctx: CanvasRenderingContext2D,
+  export function renderTextFromCenter(
     text: string,
     centerLocation: Vector,
     size: number,
     color: Color = Color.White,
   ): void {
-    ctx.textBaseline = "middle";
-    ctx.textAlign = "center";
-    ctx.font = `${size}px Arial`;
-    ctx.fillStyle = color.toString();
-    ctx.fillText(text, centerLocation.x, centerLocation.y);
+    Canvas.ctx.textBaseline = "middle";
+    Canvas.ctx.textAlign = "center";
+    Canvas.ctx.font = `${size}px Arial`;
+    Canvas.ctx.fillStyle = color.toString();
+    Canvas.ctx.fillText(text, centerLocation.x, centerLocation.y);
   }
 
   /**
@@ -130,77 +125,78 @@ export namespace RenderUtils {
    * @param color
    * @param width
    */
-  export function rendSolidLine(
-    ctx: CanvasRenderingContext2D,
+  export function renderSolidLine(
     start: Vector,
     end: Vector,
     color: Color,
     width: number,
   ): void {
-    ctx.beginPath();
-    ctx.moveTo(start.x, start.y);
-    ctx.lineTo(end.x, end.y);
-    ctx.lineWidth = width;
-    ctx.strokeStyle = color.toString();
-    ctx.stroke();
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(start.x, start.y);
+    Canvas.ctx.lineTo(end.x, end.y);
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.stroke();
   }
 
   /**
    * 绘制一个多边形并填充
    */
-  export function rendPolygonAndFill(
-    ctx: CanvasRenderingContext2D,
+  export function renderPolygonAndFill(
     points: Vector[],
     fillColor: Color,
     strokeColor: Color,
     strokeWidth: number,
   ): void {
-    ctx.beginPath();
-    ctx.moveTo(points[0].x, points[0].y);
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(points[0].x, points[0].y);
     for (let i = 1; i < points.length; i++) {
-      ctx.lineTo(points[i].x, points[i].y);
+      Canvas.ctx.lineTo(points[i].x, points[i].y);
     }
-    ctx.closePath();
-    ctx.fillStyle = fillColor.toString();
-    ctx.fill();
-    ctx.lineWidth = strokeWidth;
-    ctx.strokeStyle = strokeColor.toString();
-    ctx.stroke();
+    Canvas.ctx.closePath();
+    Canvas.ctx.fillStyle = fillColor.toString();
+    Canvas.ctx.fill();
+    Canvas.ctx.lineWidth = strokeWidth;
+    Canvas.ctx.strokeStyle = strokeColor.toString();
+    Canvas.ctx.stroke();
   }
 
   /**
    * 绘制一条从颜色渐变到另一种颜色的线
    */
-  export function rendGradientLine(
-    ctx: CanvasRenderingContext2D,
+  export function renderGradientLine(
     start: Vector,
     end: Vector,
     startColor: Color,
     endColor: Color,
     width: number,
   ): void {
-    let gradient = ctx.createLinearGradient(start.x, start.y, end.x, end.y);
+    let gradient = Canvas.ctx.createLinearGradient(
+      start.x,
+      start.y,
+      end.x,
+      end.y,
+    );
     // 添加颜色
     gradient.addColorStop(0, startColor.toString()); // 起始颜色
     gradient.addColorStop(1, endColor.toString()); // 结束颜色
-    ctx.beginPath();
-    ctx.moveTo(start.x, start.y);
-    ctx.lineTo(end.x, end.y);
-    ctx.lineWidth = width;
-    ctx.strokeStyle = gradient;
-    ctx.stroke();
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(start.x, start.y);
+    Canvas.ctx.lineTo(end.x, end.y);
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.strokeStyle = gradient;
+    Canvas.ctx.stroke();
   }
 
   /**
    * 绘制中心过渡的圆形不加边框
    */
-  export function rendCircleTransition(
-    ctx: CanvasRenderingContext2D,
+  export function renderCircleTransition(
     viewLocation: Vector,
     radius: number,
     centerColor: Color,
   ) {
-    let gradient = ctx.createRadialGradient(
+    let gradient = Canvas.ctx.createRadialGradient(
       viewLocation.x,
       viewLocation.y,
       0,
@@ -213,16 +209,22 @@ export namespace RenderUtils {
     const transparentColor = centerColor.clone();
     transparentColor.a = 0;
     gradient.addColorStop(1, transparentColor.toString()); // 边缘透明
-    ctx.fillStyle = gradient;
-    ctx.strokeStyle = "transparent";
+    Canvas.ctx.fillStyle = gradient;
+    Canvas.ctx.strokeStyle = "transparent";
     // 绘制圆形
-    ctx.beginPath();
-    ctx.arc(viewLocation.x, viewLocation.y, radius, 0, 2 * Math.PI, false);
-    ctx.fill();
+    Canvas.ctx.beginPath();
+    Canvas.ctx.arc(
+      viewLocation.x,
+      viewLocation.y,
+      radius,
+      0,
+      2 * Math.PI,
+      false,
+    );
+    Canvas.ctx.fill();
   }
 
-  export function rendSvgFromLeftTop(
-    ctx: CanvasRenderingContext2D,
+  export function renderSvgFromLeftTop(
     svg: string,
     location: Vector,
     width: number,
@@ -231,26 +233,63 @@ export namespace RenderUtils {
     let data = svg;
     let img = new Image();
     img.src = "data:image/svg+xml;base64," + btoa(data);
-    ctx.drawImage(img, location.x, location.y, width, height);
+    Canvas.ctx.drawImage(img, location.x, location.y, width, height);
   }
 
-  export function rendSvgFromCenter(
-    ctx: CanvasRenderingContext2D,
+  export function renderSvgFromCenter(
     svg: string,
     centerLocation: Vector,
     width: number,
-
     height: number,
   ): void {
     let data = svg;
     let img = new Image();
     img.src = "data:image/svg+xml;base64," + btoa(data);
-    ctx.drawImage(
+    Canvas.ctx.drawImage(
       img,
       centerLocation.x - width / 2,
       centerLocation.y - height / 2,
       width,
       height,
     );
+  }
+
+  /**
+   * 画箭头（只画头，不画线）
+   */
+  export function renderArrow(
+    direction: Vector,
+    location: Vector,
+    color: Color,
+    size: number,
+  ) {
+    /*
+    Python 代码：
+    self.path = QPainterPath(point_at.to_qt())
+        nor = direction.normalize()
+        self.path.lineTo((point_at - nor.rotate(20) * arrow_size).to_qt())
+        self.path.lineTo((point_at - nor * (arrow_size / 2)).to_qt())
+        self.path.lineTo((point_at - nor.rotate(-20) * arrow_size).to_qt())
+        self.path.closeSubpath()
+    */
+    let nor = direction.normalize();
+    let arrow_size = size / 2;
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(location.x, location.y);
+    Canvas.ctx.lineTo(
+      location.x - nor.rotate(20).x * arrow_size,
+      location.y - nor.rotate(20).y * arrow_size,
+    );
+    Canvas.ctx.lineTo(
+      location.x - nor.x * (arrow_size / 2),
+      location.y - nor.y * (arrow_size / 2),
+    );
+    Canvas.ctx.lineTo(
+      location.x - nor.rotate(-20).x * arrow_size,
+      location.y - nor.rotate(-20).y * arrow_size,
+    );
+    Canvas.ctx.closePath();
+    Canvas.ctx.fillStyle = color.toString();
+    Canvas.ctx.fill();
   }
 }

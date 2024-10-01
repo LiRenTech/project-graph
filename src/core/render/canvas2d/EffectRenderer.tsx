@@ -20,7 +20,7 @@ export namespace EffectRenderer {
     }
     effect.color.a = 1 - effect.timeProgress.rate;
     const rendRadius = effect.radius * effect.timeProgress.rate;
-    RenderUtils.rendCircleTransition(
+    RenderUtils.renderCircleTransition(
       Canvas.ctx,
       Renderer.transformWorld2View(effect.location),
       rendRadius * Camera.currentScale,
