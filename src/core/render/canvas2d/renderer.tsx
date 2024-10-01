@@ -192,6 +192,7 @@ export namespace Renderer {
       `node count: ${renderedNodes} / ${NodeManager.nodes.length}`,
       `edge count: ${renderedEdges} / ${NodeManager.edges.length}`,
       `pressingKeys: ${Controller.pressingKeysString()}`,
+      `鼠标按下情况: ${Controller.isMouseDown}`,
       `鼠标上次按下位置: ${Controller.lastMousePressLocationString()}`,
       `鼠标上次松开位置: ${Controller.lastMouseReleaseLocationString()}`,
     ];

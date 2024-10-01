@@ -49,7 +49,7 @@ export namespace Controller {
   export let touchStartDistance = 0;
   export let touchDelta = Vector.getZero();
 
-  export let isMouseDown: boolean = false;
+  export let isMouseDown: boolean[] = [false, false, false];
   export let canvasElement: HTMLCanvasElement;
 
   export function init(canvasElement: HTMLCanvasElement) {
@@ -67,26 +67,32 @@ export namespace Controller {
     canvasElement.addEventListener("touchend", touchend);
   }
 
+  function moveCameraByMousePress(e: MouseEvent) {}
+
+  function moveCameraByMouseMove(e: MouseEvent) {
+    const currentMouseMoveLocation = Renderer.transformView2World(
+      new Vector(e.clientX, e.clientY),
+    );
+    const diffLocation = currentMouseMoveLocation.subtract(
+      lastMousePressLocation[1],
+    );
+    Camera.location = Camera.location.subtract(diffLocation);
+  }
+
   function mousedown(e: MouseEvent) {
     // 阻止默认行为，防止右键菜单弹出
     e.preventDefault();
 
-    isMouseDown = true;
+    isMouseDown[e.button] = true;
 
-    // 如果当前有按下空格
-    if (pressingKeySet.has(" ")) {
-      console.log("空格按下的同时按下了鼠标左键");
-    }
-
-    const pressLocation = Renderer.transformView2World(
+    const pressWorldLocation = Renderer.transformView2World(
       new Vector(e.clientX, e.clientY),
     );
-    const clickedNode = NodeManager.findNodeByLocation(pressLocation);
+    const clickedNode = NodeManager.findNodeByLocation(pressWorldLocation);
 
     // 获取左右中键
     const button = e.button;
-    lastMousePressLocation[button] =
-      Renderer.transformView2World(pressLocation);
+    lastMousePressLocation[button] = pressWorldLocation;
     if (button === 0) {
       // 左键按下
       if (clickedNode !== null) {
@@ -114,7 +120,13 @@ export namespace Controller {
   }
 
   function mousemove(e: MouseEvent) {
-    if (isMouseDown) {
+    // 如果当前有按下空格
+    if (pressingKeySet.has(" ")) {
+      console.log("空格按下的同时按下了鼠标左键");
+      moveCameraByMouseMove(e);
+      return;
+    }
+    if (isMouseDown[0]) {
       Stage.effects.push(
         new CircleFlameEffect(
           new ProgressNumber(0, 5),
@@ -123,13 +135,18 @@ export namespace Controller {
           new Color(141, 198, 229, 1),
         ),
       );
+    } else if (isMouseDown[1]) {
+      // 中键按下
+      moveCameraByMouseMove(e);
+    } else if (isMouseDown[2]) {
+      // 右键按下
     }
   }
 
   function mouseup(e: MouseEvent) {
     // 阻止默认行为
     e.preventDefault();
-    isMouseDown = false;
+    isMouseDown[e.button] = false;
     Stage.effects.push(
       new CircleFlameEffect(
         new ProgressNumber(0, 40),
@@ -283,6 +300,16 @@ export namespace Controller {
   }
 
   export function destroy() {
+    window.removeEventListener("keydown", keydown);
+    window.removeEventListener("keyup", keyup);
+    canvasElement.removeEventListener("mousedown", mousedown);
+    canvasElement.removeEventListener("mousemove", mousemove);
+    canvasElement.removeEventListener("mouseup", mouseup);
+    canvasElement.removeEventListener("wheel", mousewheel);
+    canvasElement.removeEventListener("dblclick", dblclick);
+    canvasElement.removeEventListener("touchstart", touchstart);
+    canvasElement.removeEventListener("touchmove", touchmove);
+    canvasElement.removeEventListener("touchend", touchend);
     console.log("Controller destroyed.");
   }
 }

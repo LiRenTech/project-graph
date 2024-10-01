@@ -28,7 +28,9 @@ export namespace Camera {
    * 指数越大，速度衰减越快
    */
   export const frictionExponent = 1.5;
-
+  /**
+   * 摄像机的位置（世界坐标）
+   */
   export let location: Vector = Vector.getZero();
   /** 当前的 画布/摄像机移动的速度矢量 */
   export let speed: Vector = Vector.getZero();
