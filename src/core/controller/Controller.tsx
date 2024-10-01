@@ -54,6 +54,14 @@ export namespace Controller {
   export function lastMouseReleaseLocationString(): string {
     return lastMouseReleaseLocation.map((v) => v.toString()).join(",");
   }
+  /**
+   * 是否正在进行移动节点的操作
+   */
+  export let isMovingNode = false;
+  /**
+   * 为移动节点做准备，移动时，记录每上一帧移动的位置
+   */
+  export let lastMoveLocation = Vector.getZero();
 
   export let touchStartLocation = Vector.getZero();
   export let touchStartDistance = 0;
@@ -106,27 +114,29 @@ export namespace Controller {
        * 可能的4种情况
        *  ------------ | 已有节点被选择 | 没有节点被选择
        *  在空白地方按下 |      A       |      B
-       *  在节点身上按下 |      C       |      D
+       *  在节点身上按下 |    C1,C2     |      D
        *  ------------ |  ------------ |  ------------
        * A：取消选择那些节点，可能要重新开始框选
        * B：可能是想开始框选
-       * C：如果点击的节点属于被上次选中的节点中，那么整体移动，（如果还按下了Alt键，开始整体复制）
-       *   如果点击的节点不属于被上次选中的节点中，那么单击选择，并取消上一次框选的所有节点
+       * C：
+       *    C1: 如果点击的节点属于被上次选中的节点中，那么整体移动，（如果还按下了Alt键，开始整体复制）
+       *    C2: 如果点击的节点不属于被上次选中的节点中，那么单击选择，并取消上一次框选的所有节点
        * D：只想单击这一个节点，或者按下Alt键的时候，想复制这个节点
        *
        * 更新被选中的节点，如果没有选中节点就开始框选
        */
+      const isHaveNodeSelected = NodeManager.nodes.some(
+        (node) => node.isSelected,
+      );
       // 左键按下
       if (clickedNode === null) {
-        // AB
-        const isHaveNodeSelected = NodeManager.nodes.some(node => node.isSelected);
         if (isHaveNodeSelected) {
           // A
-          // 取消选择
-          NodeManager.nodes.forEach(node => {
+          // 取消选择所有节点
+          NodeManager.nodes.forEach((node) => {
             node.isSelected = false;
           });
-        } else  {
+        } else {
           // B
         }
         Stage.isSelecting = true;
@@ -135,27 +145,45 @@ export namespace Controller {
           Vector.getZero(),
         );
       } else {
-        // CD
+        Stage.effects.push(
+          new CircleFlameEffect(
+            new ProgressNumber(0, 40),
+            Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
+            50,
+            new Color(255, 0, 0, 1),
+          ),
+        );
+
+        if (isHaveNodeSelected) {
+          // C
+          clickedNode.isSelected = true;
+          if (clickedNode.isSelected) {
+            // C1
+          } else {
+            // C2
+            NodeManager.nodes.forEach((node) => {
+              node.isSelected = false;
+            });
+          }
+          isMovingNode = true;
+        } else {
+          // D
+          clickedNode.isSelected = true;
+          isMovingNode = true;
+        }
       }
     } else if (button === 1) {
       // 中键按下
     } else if (button === 2) {
       // 右键按下
     }
+    lastMoveLocation = pressWorldLocation.clone();
 
     // Stage.effects.push(
     //   new TextRiseEffect(
     //     `鼠标按下 ${button === 0 ? "左键" : button === 1 ? "中键" : "右键"}`,
     //   ),
     // );
-    Stage.effects.push(
-      new CircleFlameEffect(
-        new ProgressNumber(0, 40),
-        Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
-        50,
-        new Color(255, 0, 0, 1),
-      ),
-    );
   }
 
   function mousemove(e: MouseEvent) {
@@ -170,30 +198,41 @@ export namespace Controller {
       return;
     }
     if (isMouseDown[0]) {
-      Stage.effects.push(
-        new CircleFlameEffect(
-          new ProgressNumber(0, 5),
-          Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
-          30,
-          new Color(141, 198, 229, 1),
-        ),
-      );
-      // 更新选择框的大小
-      if (Stage.selectingRectangle) {
-        Stage.selectingRectangle.size = worldLocation.subtract(
-          lastMousePressLocation[0],
-        );
-        // 先清空所有已经选择了的
-        NodeManager.nodes.forEach(node => {
-          node.isSelected = false;
-        });
-        // 再开始选择
-        for (const node of NodeManager.nodes) {
-          if (Stage.selectingRectangle.isCollideWith(node.rectangle)) {
-            node.isSelected = true;
+      // 左键按下
+      if (Stage.isSelecting) {
+        // 正在框选
+
+        if (Stage.selectingRectangle) {
+          // 更新选择框的大小
+          Stage.selectingRectangle.size = worldLocation.subtract(
+            lastMousePressLocation[0],
+          );
+          // 先清空所有已经选择了的
+          NodeManager.nodes.forEach((node) => {
+            node.isSelected = false;
+          });
+          // 再开始选择
+          for (const node of NodeManager.nodes) {
+            if (Stage.selectingRectangle.isCollideWith(node.rectangle)) {
+              node.isSelected = true;
+            }
+          }
+        }
+        isMovingNode = false;
+      } else {
+        // 非框选
+        const diffLocation = worldLocation.subtract(lastMoveLocation);
+        isMovingNode = true;
+        if (pressingKeySet.has("alt")) {
+        } else {
+          if (pressingKeySet.has("control")) {
+          } else {
+            console.log(diffLocation.toString());
+            NodeManager.moveNodes(diffLocation);
           }
         }
       }
+      lastMoveLocation = worldLocation.clone();
     } else if (isMouseDown[1]) {
       // 中键按下
       moveCameraByMouseMove(e, 1);
@@ -209,14 +248,10 @@ export namespace Controller {
     // 阻止默认行为
     e.preventDefault();
     isMouseDown[e.button] = false;
-    Stage.effects.push(
-      new CircleFlameEffect(
-        new ProgressNumber(0, 40),
-        Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
-        50,
-        new Color(0, 0, 255, 1),
-      ),
-    );
+    if (isMovingNode) {
+      NodeManager.moveNodeFinished();
+      isMovingNode = false;
+    }
     if (e.button === 0) {
       // 左键松开
       Stage.isSelecting = false;

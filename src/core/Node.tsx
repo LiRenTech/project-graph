@@ -52,4 +52,12 @@ export class Node {
     this.text = text;
     this.adjustSizeByText();
   }
+
+  move(delta: Vector) {
+    this.rectangle.location = this.rectangle.location.add(delta);
+  }
+
+  moveTo(location: Vector) {
+    this.rectangle.location = location.clone();
+  }
 }

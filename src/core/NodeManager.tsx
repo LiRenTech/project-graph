@@ -59,6 +59,19 @@ export namespace NodeManager {
     );
     NodeManager.addNode(node);
   }
+  
+  export function moveNodes(delta: Vector) {
+    for (const node of nodes) {
+      if (node.isSelected) {
+        node.move(delta);
+      }
+    }
+  }
+
+  export function moveNodeFinished() {
+    // 以后有历史记录了再说，这里什么都不用写
+    // 需要查看ts的装饰器怎么用
+  }
 
   /**
    * 重命名节点
