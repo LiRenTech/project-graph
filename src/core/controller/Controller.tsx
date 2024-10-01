@@ -2,7 +2,7 @@ import Color from "../Color";
 import CircleFlameEffect from "../effect/concrete/circleFlameEffect";
 import { ProgressNumber } from "../ProgressNumber";
 import { Vector } from "../Vector";
-import { Render } from "../render/canvas2d/render";
+import { Renderer } from "../render/canvas2d/render";
 import { Stage } from "../stage/Stage";
 import TextRiseEffect from "../effect/concrete/textRiseEffect";
 import { NodeManager } from "../NodeManager";
@@ -32,7 +32,7 @@ export class Controller {
   constructor(
     public canvasElement: HTMLCanvasElement,
     public stage: Stage,
-    public render: Render,
+    public render: Renderer,
   ) {
     // 初始化赋值
     this.boundKeydown = this.keydown.bind(this);
@@ -58,7 +58,7 @@ export class Controller {
     e.preventDefault();
 
     this.isMouseDown = true;
-    
+
     const pressLocation = this.render.transformView2World(
       new Vector(e.clientX, e.clientY),
     );

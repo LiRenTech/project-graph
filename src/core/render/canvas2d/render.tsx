@@ -11,7 +11,7 @@ import { NodeManager } from "../../NodeManager";
 /**
  * 渲染器
  */
-export class Render {
+export class Renderer {
   constructor(
     public canvas: Canvas,
     public w: number,
@@ -46,18 +46,18 @@ export class Render {
     this.canvas.ctx.fillStyle = "#2b2b2b";
     this.canvas.ctx.fillRect(0, 0, this.w, this.h);
     // 画网格
-    this.rendGrid();
+    this.renderGrid();
 
-    this.rendEntities();
+    this.renderEntities();
 
     // 画详细信息
-    this.rendDetails();
+    this.renderDetails();
 
     // 渲染所有特效
-    this.rendEffects();
+    this.renderEffects();
   }
 
-  rendEntities() {
+  renderEntities() {
     for (const node of NodeManager.nodes) {
       RenderUtils.rendRectFromLeftTop(
         this.canvas.ctx,
@@ -92,7 +92,7 @@ export class Render {
   //   return new Vector(textWidth, textHeight);
   // }
 
-  rendEffects() {
+  renderEffects() {
     for (const effect of this.stage.effects) {
       if (effect instanceof CircleFlameEffect) {
         RenderEffect.rendCircleFlameEffect(this, effect);
@@ -101,7 +101,7 @@ export class Render {
       }
     }
   }
-  rendGrid() {
+  renderGrid() {
     const gridSize = 100;
     for (let y = 0; y < 100; y++) {
       RenderUtils.rendSolidLine(
@@ -123,7 +123,7 @@ export class Render {
     }
   }
 
-  rendDetails() {
+  renderDetails() {
     const detailsData = [
       `scale: ${this.cameraCurrentScale.toFixed(2)}`,
       `target: ${this.cameraTargetScale.toFixed(2)}`,

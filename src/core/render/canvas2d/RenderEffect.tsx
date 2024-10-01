@@ -2,7 +2,7 @@ import Color from "../../Color";
 import CircleFlameEffect from "../../effect/concrete/circleFlameEffect";
 import TextRiseEffect from "../../effect/concrete/textRiseEffect";
 import { Vector } from "../../Vector";
-import { Render } from "./render";
+import { Renderer } from "./render";
 import { RenderUtils } from "./RenderUtils";
 
 export namespace RenderEffect {
@@ -12,7 +12,7 @@ export namespace RenderEffect {
    * @returns
    */
   export function rendCircleFlameEffect(
-    render: Render,
+    render: Renderer,
     effect: CircleFlameEffect,
   ) {
     if (effect.timeProgress.isFull) {
@@ -27,14 +27,14 @@ export namespace RenderEffect {
       effect.color,
     );
   }
-  
+
   /**
    * 屏幕中央的上升文字特效
    * @param render
    * @param effect
    * @returns
    */
-  export function rendTextRiseEffect(render: Render, effect: TextRiseEffect) {
+  export function rendTextRiseEffect(render: Renderer, effect: TextRiseEffect) {
     if (effect.timeProgress.isFull) {
       return;
     }

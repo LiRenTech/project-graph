@@ -1,7 +1,7 @@
 import { Edge } from "./Edge";
 import { Node } from "./Node";
 import { Vector } from "./Vector";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 // 应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开

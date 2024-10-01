@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Render } from "../core/render/canvas2d/render";
+import { Renderer } from "../core/render/canvas2d/render";
 import { useDialog } from "../utils/dialog";
 import { Stage } from "../core/stage/Stage";
 import { Controller } from "../core/controller/Controller";
@@ -16,7 +16,7 @@ export default function Home() {
   /**
    * 渲染器
    */
-  let render: Render | null = null;
+  let render: Renderer | null = null;
   let controller: Controller | null = null;
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function Home() {
     if (canvasElement) {
       const canvasObject = new Canvas(canvasElement!);
 
-      render = new Render(
+      render = new Renderer(
         canvasObject,
         window.innerWidth,
         window.innerHeight,
@@ -66,9 +66,6 @@ export default function Home() {
       controller?.destroy();
       cancelAnimationFrame(frameId);
       NodeManager.destroy();
-
-
-      
     };
   }, []);
 
