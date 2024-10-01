@@ -11,6 +11,11 @@ export class Node {
   children: Node[];
   rectangle: Rectangle;
 
+  /**
+   * 节点是否被选中
+   */
+  isSelected: boolean = false;
+
   constructor(
     {
       uuid,

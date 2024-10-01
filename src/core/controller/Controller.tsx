@@ -119,6 +119,16 @@ export namespace Controller {
       // 左键按下
       if (clickedNode === null) {
         // AB
+        const isHaveNodeSelected = NodeManager.nodes.some(node => node.isSelected);
+        if (isHaveNodeSelected) {
+          // A
+          // 取消选择
+          NodeManager.nodes.forEach(node => {
+            node.isSelected = false;
+          });
+        } else  {
+          // B
+        }
         Stage.isSelecting = true;
         Stage.selectingRectangle = new Rectangle(
           pressWorldLocation.clone(),
@@ -168,10 +178,22 @@ export namespace Controller {
           new Color(141, 198, 229, 1),
         ),
       );
-      if (Stage.selectingRectangle)
+      // 更新选择框的大小
+      if (Stage.selectingRectangle) {
         Stage.selectingRectangle.size = worldLocation.subtract(
           lastMousePressLocation[0],
         );
+        // 先清空所有已经选择了的
+        NodeManager.nodes.forEach(node => {
+          node.isSelected = false;
+        });
+        // 再开始选择
+        for (const node of NodeManager.nodes) {
+          if (Stage.selectingRectangle.isCollideWith(node.rectangle)) {
+            node.isSelected = true;
+          }
+        }
+      }
     } else if (isMouseDown[1]) {
       // 中键按下
       moveCameraByMouseMove(e, 1);

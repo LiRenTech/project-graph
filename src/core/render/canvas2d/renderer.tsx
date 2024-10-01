@@ -110,6 +110,24 @@ export namespace Renderer {
         new Color(255, 255, 255),
       );
 
+      if (node.isSelected) {
+        // 在外面增加一个框
+        RenderUtils.renderRect(
+          new Rectangle(
+            transformWorld2View(
+              node.rectangle.location.subtract(Vector.same(5)),
+            ),
+            node.rectangle.size
+              .add(Vector.same(10))
+              .multiply(Camera.currentScale),
+          ),
+          new Color(0, 0, 0, 0),
+          new Color(255, 255, 255, 0.5),
+          2 * Camera.currentScale,
+          8 * Camera.currentScale,
+        );
+      }
+
       renderedNodes++;
     }
   }

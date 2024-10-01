@@ -32,6 +32,19 @@ export class Rectangle {
     const collision_y = this.bottom > other.top && this.top < other.bottom;
     return collision_x && collision_y;
   }
+
+  /**
+   * 是否完全在另一个矩形内
+   * AI写的，有待测试
+   * @param other
+   * @returns
+   */
+  public isInOther(other: Rectangle): boolean {
+    const collision_x = this.left > other.left && this.right < other.right;
+    const collision_y = this.top > other.top && this.bottom < other.bottom;
+    return collision_x && collision_y;
+  }
+
   /**
    * 判断点是否在矩形内
    */
@@ -72,7 +85,7 @@ export class Rectangle {
     return new Rectangle(
       Renderer.transformWorld2View(this.location),
       // Renderer.transformWorld2View(this.size),
-      this.size.multiply(Camera.currentScale)
+      this.size.multiply(Camera.currentScale),
     );
   }
 
