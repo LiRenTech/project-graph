@@ -20,10 +20,14 @@ export class Rectangle {
     return left < right && top < bottom;
   }
 
-  public withScale(scale: number): Rectangle {
+  public multiply(scale: number): Rectangle {
     return new Rectangle(
       this.location.multiply(scale),
       this.size.multiply(scale),
     );
+  }
+
+  public toString(): string {
+    return `[${this.location.toString()}, ${this.size.toString()}]`;
   }
 }

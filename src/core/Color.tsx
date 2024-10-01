@@ -2,7 +2,7 @@
  * 颜色对象
  * 不透明度最大值为1，最小值为0
  */
-export default class Color {
+export class Color {
   static White = new Color(255, 255, 255);
   static Black = new Color(0, 0, 0);
   static Red = new Color(255, 0, 0);

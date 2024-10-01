@@ -1,10 +1,10 @@
-import Color from "../Color";
-import CircleFlameEffect from "../effect/concrete/circleFlameEffect";
+import { Color } from "../Color";
+import { CircleFlameEffect } from "../effect/concrete/circleFlameEffect";
 import { ProgressNumber } from "../ProgressNumber";
 import { Vector } from "../Vector";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Stage } from "../stage/Stage";
-import TextRiseEffect from "../effect/concrete/textRiseEffect";
+import { TextRiseEffect } from "../effect/concrete/textRiseEffect";
 import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";
 
@@ -18,9 +18,9 @@ export class Controller {
     a: new Vector(-1, 0),
     d: new Vector(1, 0),
   };
-  private touchStartLocation = new Vector(0, 0);
+  private touchStartLocation = Vector.getZero();
   private touchStartDistance = 0;
-  private touchDelta = new Vector(0, 0);
+  private touchDelta = Vector.getZero();
 
   private isMouseDown: boolean = false;
 
@@ -211,6 +211,7 @@ export class Controller {
       .multiply(Camera.currentScale)
       .limitX(-1, 1)
       .limitY(-1, 1);
+    this.touchDelta = Vector.getZero();
     setTimeout(() => {
       Camera.accelerateCommander = Vector.getZero();
     }, 100);

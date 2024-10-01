@@ -1,11 +1,11 @@
-import Color from "../../Color";
-import CircleFlameEffect from "../../effect/concrete/circleFlameEffect";
+import { Color } from "../../Color";
+import { CircleFlameEffect } from "../../effect/concrete/circleFlameEffect";
 import { Vector } from "../../Vector";
 import { Stage } from "../../stage/Stage";
 import { RenderUtils } from "./RenderUtils";
 import { EffectRenderer } from "./EffectRenderer";
 import { Canvas } from "../../Canvas";
-import TextRiseEffect from "../../effect/concrete/textRiseEffect";
+import { TextRiseEffect } from "../../effect/concrete/textRiseEffect";
 import { NodeManager } from "../../NodeManager";
 import { appScale } from "../../../utils/platform";
 import { Rectangle } from "../../Rectangle";
@@ -16,7 +16,7 @@ import { Camera } from "../../stage/Camera";
  */
 export namespace Renderer {
   export const FONT_SIZE = 32;
-  export const NODE_PADDING = 12;
+  export const NODE_PADDING = 14;
   export let w = 0;
   export let h = 0;
 
@@ -80,6 +80,7 @@ export namespace Renderer {
         new Color(0, 0, 0, 0.5),
         new Color(255, 255, 255, 0.5),
         2 * Camera.currentScale,
+        8 * Camera.currentScale,
       );
 
       RenderUtils.renderText(

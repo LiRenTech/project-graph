@@ -4,7 +4,7 @@ import { ProgressNumber } from "../ProgressNumber";
  * 特效类
  * timeProgress 0~max 表示时间进度，0表示开始，单位：帧
  */
-export default abstract class Effect {
+export abstract class Effect {
   constructor(
     /**
      * 注意这个进度条初始值应该是0

@@ -1,4 +1,4 @@
-import Color from "../../Color";
+import { Color } from "../../Color";
 import { Rectangle } from "../../Rectangle";
 import { Vector } from "../../Vector";
 
@@ -77,9 +77,16 @@ export namespace RenderUtils {
     color: Color,
     strokeColor: Color,
     strokeWidth: number,
+    radius: number = 0,
   ) {
     ctx.beginPath();
-    ctx.rect(rect.location.x, rect.location.y, rect.size.x, rect.size.y);
+    ctx.roundRect(
+      rect.location.x,
+      rect.location.y,
+      rect.size.x,
+      rect.size.y,
+      radius,
+    );
     ctx.fillStyle = color.toString();
     ctx.fill();
     ctx.lineWidth = strokeWidth;

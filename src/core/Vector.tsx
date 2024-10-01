@@ -25,6 +25,9 @@ export class Vector {
   }
 
   divide(scalar: number): Vector {
+    if (scalar === 0) {
+      return Vector.getZero();
+    }
     return new Vector(this.x / scalar, this.y / scalar);
   }
 

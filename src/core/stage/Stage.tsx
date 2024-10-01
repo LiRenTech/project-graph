@@ -1,4 +1,4 @@
-import Effect from "../effect/effect";
+import { Effect } from "../effect/effect";
 
 /**
  * 舞台对象

@@ -1,4 +1,4 @@
-import TextRiseEffect from "../effect/concrete/textRiseEffect";
+import { TextRiseEffect } from "../effect/concrete/textRiseEffect";
 import { NodeManager } from "../NodeManager";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Vector } from "../Vector";
@@ -54,7 +54,7 @@ export namespace Camera {
    * 震动特效导致的位置偏移
    * 也就是当有震动特效的时候，不是舞台在震动，而是摄像机在震动
    */
-  export const shakeLocation: Vector = new Vector(0, 0);
+  export const shakeLocation: Vector = Vector.getZero();
 
   export function frameTick() {
     // 计算摩擦力 与速度方向相反,固定值,但速度为0摩擦力就不存在
@@ -125,6 +125,6 @@ export namespace Camera {
     Camera.location = NodeManager.getCenter();
     Camera.targetScale = 0.01;
     Camera.currentScale = 0.01;
-    Camera.targetScale = NodeManager.getSize().y / Renderer.h - 0.03;
+    Camera.targetScale = NodeManager.getSize().y / Renderer.h;
   }
 }
