@@ -14,6 +14,7 @@ import {
   Save,
   Settings,
   TestTube2,
+  View,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
@@ -25,6 +26,7 @@ import { NodeManager } from "../core/NodeManager";
 import { Node } from "../core/Node";
 import { useRecoilState } from "recoil";
 import { fileAtom } from "../state";
+import { Camera } from "../core/stage/Camera";
 
 export default function AppMenu({
   className = "",
@@ -36,6 +38,11 @@ export default function AppMenu({
   const navigate = useNavigate();
   const dialog = useDialog();
   const [, setFile] = useRecoilState(fileAtom);
+
+  const onNew = () => {
+    NodeManager.destroy();
+    setFile("Project Graph");
+  };
 
   const onOpen = async () => {
     const path = await openFileDialog({
@@ -57,7 +64,7 @@ export default function AppMenu({
     setFile(path);
     if (isDesktop && !path.endsWith(".json")) {
       dialog.show({
-        title: "请选择JSON文件",
+        title: "请选择一个JSON文件",
         type: "error",
       });
       return;
@@ -65,18 +72,19 @@ export default function AppMenu({
     try {
       const content = await readTextFile(path);
       const data = NodeLoader.validate(JSON.parse(content));
-      const startTime = performance.now();
+      // const startTime = performance.now();
       for (const node of data.nodes) {
         NodeManager.addNode(new Node(node));
       }
-      const endTime = performance.now();
-      dialog.show({
-        title: "导入成功",
-        content: `\
-解析耗时: ${(endTime - startTime).toFixed(2)} ms
-${data.nodes.length} 个节点，${data.edges.length} 条边`,
-        type: "success",
-      });
+      // const endTime = performance.now();
+      //       dialog.show({
+      //         title: "导入成功",
+      //         content: `\
+      // 解析耗时: ${(endTime - startTime).toFixed(2)} ms
+      // ${data.nodes.length} 个节点，${data.edges.length} 条边`,
+      //         type: "success",
+      //       });
+      Camera.reset();
     } catch (e) {
       dialog.show({
         title: "请选择正确的JSON文件",
@@ -97,18 +105,25 @@ ${data.nodes.length} 个节点，${data.edges.length} 条边`,
       )}
       onPointerDown={(e) => e.stopPropagation()}
     >
-      <Row icon={<File />}>
-        <Col icon={<FilePlus />}>新建</Col>
+      <Row icon={<File />} title="文件">
+        <Col icon={<FilePlus />} onClick={onNew}>
+          新建
+        </Col>
         <Col icon={<FileText />} onClick={onOpen}>
           打开
         </Col>
         <Col icon={<Save />}>保存</Col>
       </Row>
-      <Row icon={<Plus />}>
+      <Row icon={<Plus />} title="创建">
         <Col icon={<Cuboid />}>节点</Col>
         <Col icon={<Image />}>图片</Col>
       </Row>
-      <Row icon={<MoreHorizontal />}>
+      <Row icon={<View />} title="视图">
+        <Col icon={<RefreshCcw />} onClick={() => Camera.reset()}>
+          重置
+        </Col>
+      </Row>
+      <Row icon={<MoreHorizontal />} title="更多">
         <Col icon={<Settings />} onClick={() => navigate("/settings/visual")}>
           设置
         </Col>
@@ -119,7 +134,7 @@ ${data.nodes.length} 个节点，${data.edges.length} 条边`,
           测试
         </Col>
       </Row>
-      <Row icon={<AppWindow />}>
+      <Row icon={<AppWindow />} title="窗口">
         <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>
           刷新
         </Col>
@@ -130,11 +145,14 @@ ${data.nodes.length} 个节点，${data.edges.length} 条边`,
 
 function Row({
   children,
+  title,
   icon,
-}: React.PropsWithChildren<{ icon: React.ReactNode }>) {
+}: React.PropsWithChildren<{ title: string; icon: React.ReactNode }>) {
   return (
     <div className="flex gap-2">
-      <span className="text-neutral-400">{icon}</span>
+      <span className="flex gap-1 text-neutral-400">
+        {icon} {title}
+      </span>
       <div className="w-0.5 bg-neutral-700"></div>
       {children}
     </div>

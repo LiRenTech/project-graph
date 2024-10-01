@@ -1,4 +1,6 @@
 import TextRiseEffect from "../effect/concrete/textRiseEffect";
+import { NodeManager } from "../NodeManager";
+import { Renderer } from "../render/canvas2d/renderer";
 import { Vector } from "../Vector";
 import { Stage } from "./Stage";
 
@@ -68,9 +70,7 @@ export namespace Camera {
       Stage.effects.push(
         new TextRiseEffect("派蒙：前面的区域以后再来探索吧？"),
       );
-      location = Vector.getZero();
-      speed = Vector.getZero();
-      targetScale = 1;
+      reset();
       return;
     }
 
@@ -119,5 +119,12 @@ export namespace Camera {
         targetScale,
       );
     }
+  }
+
+  export function reset() {
+    Camera.location = NodeManager.getCenter();
+    Camera.targetScale = 0.01;
+    Camera.currentScale = 0.01;
+    Camera.targetScale = NodeManager.getSize().y / Renderer.h - 0.03;
   }
 }

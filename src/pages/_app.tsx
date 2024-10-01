@@ -71,21 +71,19 @@ export default function App() {
         )}
       >
         {/* 菜单按钮 */}
-        <div className="relative">
-          <IconButton
-            onClick={(e) => {
-              if (location.pathname !== "/") {
-                navigate("/");
-              } else {
-                e.stopPropagation();
-                setOpenMenu(!openMenu);
-              }
-            }}
-          >
-            {location.pathname === "/" ? <Menu /> : <ChevronLeft />}
-          </IconButton>
-          <AppMenu className="absolute top-12" open={openMenu} />
-        </div>
+        <IconButton
+          onClick={(e) => {
+            if (location.pathname !== "/") {
+              navigate("/");
+            } else {
+              e.stopPropagation();
+              setOpenMenu(!openMenu);
+            }
+          }}
+        >
+          {location.pathname === "/" ? <Menu /> : <ChevronLeft />}
+        </IconButton>
+        <AppMenu className="absolute top-20" open={openMenu} />
         {/* 左上角标题 */}
         <Button
           data-tauri-drag-region

@@ -48,6 +48,33 @@ export namespace NodeManager {
   }
 
   /**
+   * 计算所有节点的中心点
+   */
+  export function getCenter(): Vector {
+    let center = Vector.getZero();
+    for (const node of nodes) {
+      center = center.add(node.rectangle.location);
+    }
+    return center.divide(nodes.length);
+  }
+
+  /**
+   * 计算所有节点的大小
+   */
+  export function getSize(): Vector {
+    let size = Vector.getZero();
+    for (const node of nodes) {
+      if (node.rectangle.size.x > size.x) {
+        size.x = node.rectangle.size.x;
+      }
+      if (node.rectangle.size.y > size.y) {
+        size.y = node.rectangle.size.y;
+      }
+    }
+    return size;
+  }
+
+  /**
    * 销毁函数
    * 以防开发过程中造成多开
    */
