@@ -10,7 +10,7 @@ import { NodeManager } from "../../NodeManager";
 import { appScale } from "../../../utils/platform";
 import { Rectangle } from "../../Rectangle";
 import { Camera } from "../../stage/Camera";
-
+import { Controller } from "../../controller/Controller";
 
 /**
  * 渲染器
@@ -181,6 +181,7 @@ export namespace Renderer {
   }
 
   export function renderDetails() {
+    // BUG: 似乎点击左上角的时候会像被透明div挡住了一样
     const detailsData = [
       `scale: ${Camera.currentScale.toFixed(2)}`,
       `target: ${Camera.targetScale.toFixed(2)}`,
@@ -190,7 +191,9 @@ export namespace Renderer {
       `window: ${w}x${h}`,
       `node count: ${renderedNodes} / ${NodeManager.nodes.length}`,
       `edge count: ${renderedEdges} / ${NodeManager.edges.length}`,
-      // `pressingKeys: ${Controller.pressingKeysString}`
+      `pressingKeys: ${Controller.pressingKeysString()}`,
+      `鼠标上次按下位置: ${Controller.lastMousePressLocationString()}`,
+      `鼠标上次松开位置: ${Controller.lastMouseReleaseLocationString()}`,
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(

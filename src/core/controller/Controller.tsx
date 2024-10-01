@@ -23,13 +23,27 @@ export namespace Controller {
   };
 
   /**
-   * 存放鼠标 左 中 右 键上次 "按下" 时候的位置
+   * 存放鼠标 左 中 右 键上次 "按下" 时候的world位置
    */
-  export const lastMousePressLocation: Vector[] = [
+  const lastMousePressLocation: Vector[] = [
     Vector.getZero(),
     Vector.getZero(),
     Vector.getZero(),
   ];
+  export function lastMousePressLocationString(): string {
+    return lastMousePressLocation.map((v) => v.toString()).join(",");
+  }
+  /**
+   * 存放鼠标 左 中 右 键上次 "松开" 时候的world位置
+   */
+  const lastMouseReleaseLocation: Vector[] = [
+    Vector.getZero(),
+    Vector.getZero(),
+    Vector.getZero(),
+  ];
+  export function lastMouseReleaseLocationString(): string {
+    return lastMouseReleaseLocation.map((v) => v.toString()).join(",");
+  }
 
   export let touchStartLocation = Vector.getZero();
   export let touchStartDistance = 0;
@@ -71,7 +85,8 @@ export namespace Controller {
 
     // 获取左右中键
     const button = e.button;
-    lastMousePressLocation[button] = pressLocation;
+    lastMousePressLocation[button] =
+      Renderer.transformView2World(pressLocation);
     if (button === 0) {
       // 左键按下
       if (clickedNode !== null) {
@@ -122,6 +137,17 @@ export namespace Controller {
         50,
         new Color(0, 0, 255, 1),
       ),
+    );
+    if (e.button === 0) {
+      // 左键松开
+    } else if (e.button === 1) {
+      // 中键松开
+    } else if (e.button === 2) {
+      // 右键松开
+    }
+    // 记录松开位置
+    lastMouseReleaseLocation[e.button] = Renderer.transformView2World(
+      new Vector(e.clientX, e.clientY),
     );
     // Stage.effects.push(new TextRiseEffect("mouse up"));
   }
