@@ -1,4 +1,5 @@
 import Color from "../../Color";
+import { Rectangle } from "../../Rectangle";
 import { Vector } from "../../Vector";
 
 export namespace RenderUtils {
@@ -70,17 +71,15 @@ export namespace RenderUtils {
     ctx.stroke();
   }
 
-  export function rendRectFromLeftTop(
+  export function renderRect(
     ctx: CanvasRenderingContext2D,
-    leftTopLocation: Vector,
-    width: number,
-    height: number,
+    rect: Rectangle,
     color: Color,
     strokeColor: Color,
     strokeWidth: number,
   ) {
     ctx.beginPath();
-    ctx.rect(leftTopLocation.x, leftTopLocation.y, width, height);
+    ctx.rect(rect.location.x, rect.location.y, rect.size.x, rect.size.y);
     ctx.fillStyle = color.toString();
     ctx.fill();
     ctx.lineWidth = strokeWidth;
@@ -88,18 +87,18 @@ export namespace RenderUtils {
     ctx.stroke();
   }
 
-  export function rendTextFromLeftTop(
+  export function renderText(
     ctx: CanvasRenderingContext2D,
     text: string,
-    leftTopLocation: Vector,
+    location: Vector,
     size: number,
     color: Color = Color.White,
   ): void {
-    ctx.textBaseline = "top";
+    ctx.textBaseline = "middle";
     ctx.textAlign = "left";
-    ctx.font = `${size}px Arial`;
+    ctx.font = `${size}px system-ui`;
     ctx.fillStyle = color.toString();
-    ctx.fillText(text, leftTopLocation.x, leftTopLocation.y);
+    ctx.fillText(text, location.x, location.y + size / 2);
   }
 
   export function rendTextFromCenter(

@@ -39,6 +39,9 @@ export default function App() {
         setOpenMenu(false);
       }
     });
+    window.addEventListener("pointerdown", () => {
+      setOpenMenu(false);
+    });
   }, []);
   React.useEffect(() => {
     if (maxmized) {
@@ -60,7 +63,7 @@ export default function App() {
         {/* 叠加层，显示窗口控件 */}
         <div
           className={cn(
-            "absolute left-0 top-0 z-40 flex w-full gap-2 p-4 transition-all hover:bg-neutral-950/50",
+            "pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 p-4 transition-all *:pointer-events-auto",
             {
               "p-8": isMobile,
             },

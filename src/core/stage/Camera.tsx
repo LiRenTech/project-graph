@@ -68,6 +68,16 @@ export default class Camera {
     // 计算摩擦力 与速度方向相反,固定值,但速度为0摩擦力就不存在
     // 获得速度的大小和方向
 
+    // 回弹效果
+    if (this.currentScale < 0.005) {
+      this.targetScale = 0.01;
+    }
+    // 彩蛋
+    if (this.currentScale > 100) {
+      this.currentScale = 0.001;
+      this.targetScale = 0;
+    }
+
     let friction = Vector.getZero();
 
     if (!this.speed.isZero()) {

@@ -1,6 +1,6 @@
 import { Serialized } from "../types/node";
 
-export namespace NodeValidator {
+export namespace NodeLoader {
   export function validate(data: Record<string, any>): Serialized.File {
     data = convertV1toV2(data);
     data = convertV2toV3(data);

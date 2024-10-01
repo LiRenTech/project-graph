@@ -19,4 +19,11 @@ export class Rectangle {
     );
     return left < right && top < bottom;
   }
+
+  public withScale(scale: number): Rectangle {
+    return new Rectangle(
+      this.location.multiply(scale),
+      this.size.multiply(scale),
+    );
+  }
 }

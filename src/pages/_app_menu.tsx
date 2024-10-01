@@ -16,7 +16,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
 import { readTextFile } from "@tauri-apps/plugin-fs";
-import { NodeValidator } from "../core/NodeValidator";
+import { NodeLoader } from "../core/NodeLoader";
 import { useDialog } from "../utils/dialog";
 import { isDesktop } from "../utils/platform";
 import { NodeManager } from "../core/NodeManager";
@@ -58,7 +58,7 @@ export default function AppMenu({
     }
     try {
       const content = await readTextFile(path);
-      const data = NodeValidator.validate(JSON.parse(content));
+      const data = NodeLoader.validate(JSON.parse(content));
       const startTime = performance.now();
       for (const node of data.nodes) {
         NodeManager.addNode(new Node(node));
@@ -89,6 +89,7 @@ ${data.nodes.length} 个节点，${data.edges.length} 条边`,
         },
         className,
       )}
+      onPointerDown={(e) => e.stopPropagation()}
     >
       <Row icon={<File />}>
         <Col icon={<FilePlus />}>新建</Col>

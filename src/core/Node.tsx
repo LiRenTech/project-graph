@@ -1,5 +1,7 @@
 import { Serialized } from "../types/node";
+import { getTextSize } from "../utils/font";
 import { Rectangle } from "./Rectangle";
+import { Renderer } from "./render/canvas2d/renderer";
 import { Vector } from "./Vector";
 
 export class Node {
@@ -27,7 +29,7 @@ export class Node {
     );
     this.rectangle = new Rectangle(
       new Vector(...shape.location),
-      new Vector(...shape.size),
+      getTextSize(text, Renderer.FONT_SIZE),
     );
   }
 }

@@ -14,6 +14,9 @@ import { Rectangle } from "../../Rectangle";
  * 渲染器
  */
 export class Renderer {
+  static readonly FONT_SIZE = 32;
+  static readonly NODE_PADDING = 12;
+
   constructor(
     public canvas: Canvas,
     public w: number,
@@ -75,21 +78,26 @@ export class Renderer {
         continue;
       }
 
-      RenderUtils.rendRectFromLeftTop(
+      RenderUtils.renderRect(
         this.canvas.ctx,
-        this.transformWorld2View(node.rectangle.location),
-        node.rectangle.size.x * this.stage.camera.currentScale,
-        node.rectangle.size.y * this.stage.camera.currentScale,
+        new Rectangle(
+          this.transformWorld2View(node.rectangle.location),
+          node.rectangle.size
+            .add(Vector.same(Renderer.NODE_PADDING).multiply(2))
+            .multiply(this.stage.camera.currentScale),
+        ),
         new Color(0, 0, 0, 0.5),
         new Color(255, 255, 255, 0.5),
         2 * this.stage.camera.currentScale,
       );
 
-      RenderUtils.rendTextFromLeftTop(
+      RenderUtils.renderText(
         this.canvas.ctx,
         node.text,
-        this.transformWorld2View(node.rectangle.location),
-        100 * this.stage.camera.currentScale,
+        this.transformWorld2View(
+          node.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
+        ),
+        Renderer.FONT_SIZE * this.stage.camera.currentScale,
         new Color(255, 255, 255),
       );
     }
@@ -149,7 +157,7 @@ export class Renderer {
       `node count: ${NodeManager.nodes.length}`,
     ];
     for (const line of detailsData) {
-      RenderUtils.rendTextFromLeftTop(
+      RenderUtils.renderText(
         this.canvas.ctx,
         line,
         new Vector(10, 80 + detailsData.indexOf(line) * 12),

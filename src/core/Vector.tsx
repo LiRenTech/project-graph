@@ -217,4 +217,14 @@ export class Vector {
   limitY(min: number, max: number): Vector {
     return new Vector(this.x, Math.min(Math.max(this.y, min), max));
   }
+
+  /**
+   * 创建x和y相同的向量
+   */
+  static same(value: number): Vector {
+    return new Vector(value, value);
+  }
+  static fromTouch(touch: Touch): Vector {
+    return new Vector(touch.clientX, touch.clientY);
+  }
 }
