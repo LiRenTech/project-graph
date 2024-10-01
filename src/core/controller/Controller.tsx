@@ -7,6 +7,7 @@ import { Stage } from "../stage/Stage";
 import { TextRiseEffect } from "../effect/concrete/textRiseEffect";
 import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";
+import { Node } from "../Node";
 
 export class Controller {
   // 检测正在按下的键
@@ -57,7 +58,8 @@ export class Controller {
       // 左键按下
       for (const node of NodeManager.nodes) {
         if (node.rectangle.isPointInside(pressLocation)) {
-          console.log("Node clicked: " + node.uuid);
+          Stage.effects.push(new TextRiseEffect("按到了节点"));
+          break;
         }
       }
     } else if (button === 1) {
@@ -106,7 +108,7 @@ export class Controller {
         new Color(0, 0, 255, 1),
       ),
     );
-    Stage.effects.push(new TextRiseEffect("mouse up"));
+    // Stage.effects.push(new TextRiseEffect("mouse up"));
   }
 
   mousewheel(e: WheelEvent) {
@@ -123,14 +125,28 @@ export class Controller {
     );
     // 如果是左键
     if (e.button === 0) {
-      NodeManager.addNodeByClick(
-        Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
-      );
-      // 左键按下
+      let isHasNode = false;
+      let clickedNode: Node | null = null;
       for (const node of NodeManager.nodes) {
         if (node.rectangle.isPointInside(pressLocation)) {
           Stage.effects.push(new TextRiseEffect("Node clicked: " + node.uuid));
+          isHasNode = true;
+          clickedNode = node;
+          break;
         }
+      }
+
+      if (clickedNode !== null) {
+        // 编辑节点
+        let user_input = prompt("请输入节点名称", clickedNode.text);
+        if (user_input) {
+          NodeManager.renameNode(clickedNode, user_input);
+        }
+      } else {
+        // 新建节点
+        NodeManager.addNodeByClick(
+          Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
+        );
       }
     }
     Stage.effects.push(

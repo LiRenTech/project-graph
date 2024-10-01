@@ -61,6 +61,15 @@ export namespace NodeManager {
   }
 
   /**
+   * 重命名节点
+   * @param node 
+   * @param text 
+   */
+  export function renameNode(node: Node, text: string) {
+    node.rename(text);
+  }
+
+  /**
    * 计算所有节点的中心点
    */
   export function getCenter(): Vector {

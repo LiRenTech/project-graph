@@ -42,4 +42,9 @@ export class Node {
       ),
     );
   }
+
+  rename(text: string) {
+    this.text = text;
+    this.adjustSizeByText();
+  }
 }
