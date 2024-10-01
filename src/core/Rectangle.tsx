@@ -31,6 +31,20 @@ export class Rectangle {
     const collision_y = this.bottom > other.top && this.top < other.bottom;
     return collision_x && collision_y;
   }
+  /**
+   * 判断点是否在矩形内
+   */
+  public isPointInside(point: Vector): boolean {
+    const collision_x = this.left <= point.x && this.right >= point.x;
+    const collision_y = this.top <= point.y && this.bottom >= point.y;
+    return collision_x && collision_y;
+  }
+
+  /**
+   *
+   * @param scale
+   * @returns
+   */
 
   public multiply(scale: number): Rectangle {
     return new Rectangle(

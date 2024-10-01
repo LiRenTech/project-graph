@@ -47,17 +47,19 @@ export class Controller {
 
     this.isMouseDown = true;
 
-    // const pressLocation = this.render.transformView2World(
-    //   new Vector(e.clientX, e.clientY),
-    // );
+    const pressLocation = Renderer.transformView2World(
+      new Vector(e.clientX, e.clientY),
+    );
 
     // 获取左右中键
     const button = e.button;
     if (button === 0) {
       // 左键按下
-      // for (const node of NodeManager.nodes) {
-      //   // TODO: Node的bodyShape应该用矩形表示，矩形有好多运算方法
-      // }
+      for (const node of NodeManager.nodes) {
+        if (node.rectangle.isPointInside(pressLocation)) {
+          console.log("Node clicked: " + node.uuid);
+        }
+      }
     } else if (button === 1) {
       // 中键按下
     } else if (button === 2) {
@@ -116,11 +118,20 @@ export class Controller {
   }
 
   dblclick(e: MouseEvent) {
+    const pressLocation = Renderer.transformView2World(
+      new Vector(e.clientX, e.clientY),
+    );
     // 如果是左键
     if (e.button === 0) {
       NodeManager.addNodeByClick(
         Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
       );
+      // 左键按下
+      for (const node of NodeManager.nodes) {
+        if (node.rectangle.isPointInside(pressLocation)) {
+          Stage.effects.push(new TextRiseEffect("Node clicked: " + node.uuid));
+        }
+      }
     }
     Stage.effects.push(
       new CircleFlameEffect(
@@ -130,7 +141,6 @@ export class Controller {
         new Color(0, 255, 0, 1),
       ),
     );
-    Stage.effects.push(new TextRiseEffect("mouse up"));
   }
 
   keydown(event: KeyboardEvent) {

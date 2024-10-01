@@ -42,19 +42,22 @@ export namespace NodeManager {
   }
 
   export function addNodeByClick(clickWorldLocation: Vector) {
-    NodeManager.addNode(
-      new Node({
-        uuid: uuidv4(),
-        text: "...",
-        details: "",
-        children: [],
-        shape: {
-          type: "Rectangle",
-          location: [clickWorldLocation.x, clickWorldLocation.y],
-          size: [100, 100],
-        },
-      }),
+    const node = new Node({
+      uuid: uuidv4(),
+      text: "...",
+      details: "",
+      children: [],
+      shape: {
+        type: "Rectangle",
+        location: [clickWorldLocation.x, clickWorldLocation.y],
+        size: [100, 100],
+      },
+    });
+    // 将node本身向左上角移动，使其居中
+    node.rectangle.location = node.rectangle.location.subtract(
+      node.rectangle.size.divide(2)
     );
+    NodeManager.addNode(node);
   }
 
   /**

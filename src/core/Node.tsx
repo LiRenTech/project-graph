@@ -29,7 +29,15 @@ export class Node {
     );
     this.rectangle = new Rectangle(
       new Vector(...shape.location),
-      getTextSize(text, Renderer.FONT_SIZE).add(
+      new Vector(...shape.size),
+    );
+    this.adjustSizeByText();
+  }
+
+  adjustSizeByText() {
+    this.rectangle = new Rectangle(
+      this.rectangle.location.clone(),
+      getTextSize(this.text, Renderer.FONT_SIZE).add(
         Vector.same(Renderer.NODE_PADDING).multiply(2),
       ),
     );
