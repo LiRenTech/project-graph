@@ -1,4 +1,5 @@
 import { Renderer } from "./render/canvas2d/renderer";
+import { Camera } from "./stage/Camera";
 import { Vector } from "./Vector";
 
 export class Rectangle {
@@ -70,7 +71,8 @@ export class Rectangle {
   public transformWorld2View(): Rectangle {
     return new Rectangle(
       Renderer.transformWorld2View(this.location),
-      Renderer.transformWorld2View(this.size),
+      // Renderer.transformWorld2View(this.size),
+      this.size.multiply(Camera.currentScale)
     );
   }
 

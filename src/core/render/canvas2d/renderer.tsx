@@ -64,6 +64,17 @@ export namespace Renderer {
 
     renderEdges();
     renderEntities();
+    // 框选框
+    if (Stage.isSelecting) {
+      if (Stage.selectingRectangle) {
+        RenderUtils.renderRect(
+          Stage.selectingRectangle.transformWorld2View(),
+          new Color(255, 255, 255, 0.1),
+          new Color(255, 255, 255, 0.5),
+          1,
+        );
+      }
+    }
 
     // 画详细信息
     renderDetails();
@@ -195,6 +206,7 @@ export namespace Renderer {
       `鼠标按下情况: ${Controller.isMouseDown}`,
       `鼠标上次按下位置: ${Controller.lastMousePressLocationString()}`,
       `鼠标上次松开位置: ${Controller.lastMouseReleaseLocationString()}`,
+      `框选框: ${Stage.selectingRectangle}`,
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(

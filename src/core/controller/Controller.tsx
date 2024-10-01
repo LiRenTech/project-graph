@@ -7,6 +7,7 @@ import { Stage } from "../stage/Stage";
 import { TextRiseEffect } from "../effect/concrete/textRiseEffect";
 import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";
+import { Rectangle } from "../Rectangle";
 
 export namespace Controller {
   /**
@@ -101,9 +102,30 @@ export namespace Controller {
     const button = e.button;
     lastMousePressLocation[button] = pressWorldLocation;
     if (button === 0) {
+      /**
+       * 可能的4种情况
+       *  ------------ | 已有节点被选择 | 没有节点被选择
+       *  在空白地方按下 |      A       |      B
+       *  在节点身上按下 |      C       |      D
+       *  ------------ |  ------------ |  ------------
+       * A：取消选择那些节点，可能要重新开始框选
+       * B：可能是想开始框选
+       * C：如果点击的节点属于被上次选中的节点中，那么整体移动，（如果还按下了Alt键，开始整体复制）
+       *   如果点击的节点不属于被上次选中的节点中，那么单击选择，并取消上一次框选的所有节点
+       * D：只想单击这一个节点，或者按下Alt键的时候，想复制这个节点
+       *
+       * 更新被选中的节点，如果没有选中节点就开始框选
+       */
       // 左键按下
-      if (clickedNode !== null) {
-        // 点击到节点
+      if (clickedNode === null) {
+        // AB
+        Stage.isSelecting = true;
+        Stage.selectingRectangle = new Rectangle(
+          pressWorldLocation.clone(),
+          Vector.getZero(),
+        );
+      } else {
+        // CD
       }
     } else if (button === 1) {
       // 中键按下
@@ -127,6 +149,9 @@ export namespace Controller {
   }
 
   function mousemove(e: MouseEvent) {
+    const worldLocation = Renderer.transformView2World(
+      new Vector(e.clientX, e.clientY),
+    );
     // 如果当前有按下空格
     if (pressingKeySet.has(" ") && isMouseDown[0]) {
       console.log("空格按下的同时按下了鼠标左键");
@@ -143,6 +168,10 @@ export namespace Controller {
           new Color(141, 198, 229, 1),
         ),
       );
+      if (Stage.selectingRectangle)
+        Stage.selectingRectangle.size = worldLocation.subtract(
+          lastMousePressLocation[0],
+        );
     } else if (isMouseDown[1]) {
       // 中键按下
       moveCameraByMouseMove(e, 1);
@@ -168,6 +197,7 @@ export namespace Controller {
     );
     if (e.button === 0) {
       // 左键松开
+      Stage.isSelecting = false;
     } else if (e.button === 1) {
       // 中键松开
       setCursorName("default");
