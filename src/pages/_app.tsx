@@ -54,6 +54,7 @@ export default function App() {
         className="relative h-full w-full rounded-xl bg-neutral-950 text-white shadow-2xl"
         style={{ zoom: appScale }}
         onClick={() => setOpenMenu(false)}
+        onContextMenu={(e) => e.preventDefault()}
       >
         <Dialog />
         {/* 叠加层，显示窗口控件 */}

@@ -1,4 +1,5 @@
 import { Serialized } from "../types/node";
+import { Rectangle } from "./Rectangle";
 import { Vector } from "./Vector";
 
 export class Node {
@@ -6,15 +7,7 @@ export class Node {
   text: string;
   details: string;
   children: Node[];
-  /**
-   * 左上角坐标
-   */
-  location: Vector;
-
-  /**
-   * 从左上角到右下角构成的对角线向量
-   */
-  size: Vector;
+  rectangle: Rectangle;
 
   constructor(
     {
@@ -32,7 +25,9 @@ export class Node {
     this.children = children.map(
       (childUUID) => new Node({ uuid: childUUID }, true),
     );
-    this.location = new Vector(...shape.location);
-    this.size = new Vector(...shape.size);
+    this.rectangle = new Rectangle(
+      new Vector(...shape.location),
+      new Vector(...shape.size),
+    );
   }
 }

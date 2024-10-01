@@ -8,6 +8,7 @@ import { Canvas } from "../../Canvas";
 import TextRiseEffect from "../../effect/concrete/textRiseEffect";
 import { NodeManager } from "../../NodeManager";
 import { appScale } from "../../../utils/platform";
+import { Rectangle } from "../../Rectangle";
 
 /**
  * 渲染器
@@ -60,12 +61,25 @@ export class Renderer {
   }
 
   renderEntities() {
+    const canvasRect = new Rectangle(
+      this.stage.camera.location.subtract(
+        new Vector(this.w, this.h)
+          .divide(2)
+          .multiply(1 / this.stage.camera.currentScale),
+      ),
+      new Vector(this.w, this.h).multiply(1 / this.stage.camera.currentScale),
+    );
+
     for (const node of NodeManager.nodes) {
+      if (!canvasRect.intersects(node.rectangle)) {
+        continue;
+      }
+
       RenderUtils.rendRectFromLeftTop(
         this.canvas.ctx,
-        this.transformWorld2View(node.location),
-        node.size.x * this.stage.camera.currentScale,
-        node.size.y * this.stage.camera.currentScale,
+        this.transformWorld2View(node.rectangle.location),
+        node.rectangle.size.x * this.stage.camera.currentScale,
+        node.rectangle.size.y * this.stage.camera.currentScale,
         new Color(0, 0, 0, 0.5),
         new Color(255, 255, 255, 0.5),
         2 * this.stage.camera.currentScale,
@@ -74,7 +88,7 @@ export class Renderer {
       RenderUtils.rendTextFromLeftTop(
         this.canvas.ctx,
         node.text,
-        this.transformWorld2View(node.location),
+        this.transformWorld2View(node.rectangle.location),
         100 * this.stage.camera.currentScale,
         new Color(255, 255, 255),
       );

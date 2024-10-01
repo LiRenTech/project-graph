@@ -59,17 +59,17 @@ export class Controller {
 
     this.isMouseDown = true;
 
-    const pressLocation = this.render.transformView2World(
-      new Vector(e.clientX, e.clientY),
-    );
+    // const pressLocation = this.render.transformView2World(
+    //   new Vector(e.clientX, e.clientY),
+    // );
 
     // 获取左右中键
     const button = e.button;
     if (button === 0) {
       // 左键按下
-      for (const node of NodeManager.nodes) {
-        // TODO: Node的bodyShape应该用矩形表示，矩形有好多运算方法
-      }
+      // for (const node of NodeManager.nodes) {
+      //   // TODO: Node的bodyShape应该用矩形表示，矩形有好多运算方法
+      // }
     } else if (button === 1) {
       // 中键按下
     } else if (button === 2) {
