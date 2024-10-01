@@ -11,6 +11,7 @@ import { appScale } from "../../../utils/platform";
 import { Rectangle } from "../../Rectangle";
 import { Camera } from "../../stage/Camera";
 
+
 /**
  * 渲染器
  */
@@ -23,6 +24,9 @@ export namespace Renderer {
   export let renderedNodes: number = 0;
   export let renderedEdges: number = 0;
 
+  /**
+   * 解决Canvas模糊问题
+   */
   export function resizeWindow(newW: number, newH: number) {
     // HACK: 这里写的什么东西，我不知道，但是它能让画布的大小和屏幕的大小保持一致
     const scale = window.devicePixelRatio * (1 / appScale);
@@ -186,6 +190,7 @@ export namespace Renderer {
       `window: ${w}x${h}`,
       `node count: ${renderedNodes} / ${NodeManager.nodes.length}`,
       `edge count: ${renderedEdges} / ${NodeManager.edges.length}`,
+      // `pressingKeys: ${Controller.pressingKeysString}`
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(

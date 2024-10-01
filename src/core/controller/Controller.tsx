@@ -7,11 +7,13 @@ import { Stage } from "../stage/Stage";
 import { TextRiseEffect } from "../effect/concrete/textRiseEffect";
 import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";
-import { Node } from "../Node";
 
 export class Controller {
   // 检测正在按下的键
-  private pressingKeySet: Set<string> = new Set();
+  public pressingKeySet: Set<string> = new Set();
+  public pressingKeysString(): string {
+    return Array.from(this.pressingKeySet).join(",");
+  }
   // 按键映射
   private keyMap: { [key: string]: Vector } = {
     w: new Vector(0, -1),
@@ -19,6 +21,16 @@ export class Controller {
     a: new Vector(-1, 0),
     d: new Vector(1, 0),
   };
+
+  /**
+   * 存放鼠标 左 中 右 键上次 "按下" 时候的位置
+   */
+  private lastMousePressLocation: Vector[] = [
+    Vector.getZero(),
+    Vector.getZero(),
+    Vector.getZero(),
+  ];
+
   private touchStartLocation = Vector.getZero();
   private touchStartDistance = 0;
   private touchDelta = Vector.getZero();
@@ -48,19 +60,23 @@ export class Controller {
 
     this.isMouseDown = true;
 
+    // 如果当前有按下空格
+    if (this.pressingKeySet.has(" ")) {
+      console.log("空格按下的同时按下了鼠标左键");
+    }
+
     const pressLocation = Renderer.transformView2World(
       new Vector(e.clientX, e.clientY),
     );
+    const clickedNode = NodeManager.findNodeByLocation(pressLocation);
 
     // 获取左右中键
     const button = e.button;
+    this.lastMousePressLocation[button] = pressLocation;
     if (button === 0) {
       // 左键按下
-      for (const node of NodeManager.nodes) {
-        if (node.rectangle.isPointInside(pressLocation)) {
-          Stage.effects.push(new TextRiseEffect("按到了节点"));
-          break;
-        }
+      if (clickedNode !== null) {
+        // 点击到节点
       }
     } else if (button === 1) {
       // 中键按下
@@ -123,14 +139,12 @@ export class Controller {
     const pressLocation = Renderer.transformView2World(
       new Vector(e.clientX, e.clientY),
     );
+    let clickedNode = NodeManager.findNodeByLocation(pressLocation);
     // 如果是左键
     if (e.button === 0) {
-      let isHasNode = false;
-      let clickedNode: Node | null = null;
       for (const node of NodeManager.nodes) {
         if (node.rectangle.isPointInside(pressLocation)) {
           Stage.effects.push(new TextRiseEffect("Node clicked: " + node.uuid));
-          isHasNode = true;
           clickedNode = node;
           break;
         }

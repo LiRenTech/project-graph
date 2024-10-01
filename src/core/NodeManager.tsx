@@ -55,15 +55,15 @@ export namespace NodeManager {
     });
     // 将node本身向左上角移动，使其居中
     node.rectangle.location = node.rectangle.location.subtract(
-      node.rectangle.size.divide(2)
+      node.rectangle.size.divide(2),
     );
     NodeManager.addNode(node);
   }
 
   /**
    * 重命名节点
-   * @param node 
-   * @param text 
+   * @param node
+   * @param text
    */
   export function renameNode(node: Node, text: string) {
     node.rename(text);
@@ -97,6 +97,20 @@ export namespace NodeManager {
       }
     }
     return size;
+  }
+
+  /**
+   * 根据位置查找节点，常用于点击事件
+   * @param location
+   * @returns
+   */
+  export function findNodeByLocation(location: Vector): Node | null {
+    for (const node of nodes) {
+      if (node.rectangle.isPointInside(location)) {
+        return node;
+      }
+    }
+    return null;
   }
 
   /**
