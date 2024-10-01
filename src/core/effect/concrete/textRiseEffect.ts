@@ -7,7 +7,7 @@ import Effect from "../effect";
 export default class TextRiseEffect extends Effect {
   constructor(
     public text: string,
-    public override timeProgress: ProgressNumber = new ProgressNumber(0, 50),
+    public override timeProgress: ProgressNumber = new ProgressNumber(0, 100),
   ) {
     super(timeProgress);
   }

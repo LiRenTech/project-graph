@@ -3,7 +3,7 @@ import CircleFlameEffect from "../../effect/concrete/circleFlameEffect";
 import { Vector } from "../../Vector";
 import { Stage } from "../../stage/Stage";
 import { RenderUtils } from "./RenderUtils";
-import { EffectRenderer } from "./RenderEffect";
+import { EffectRenderer } from "./EffectRenderer";
 import { Canvas } from "../../Canvas";
 import TextRiseEffect from "../../effect/concrete/textRiseEffect";
 import { NodeManager } from "../../NodeManager";
@@ -146,6 +146,8 @@ export namespace Renderer {
       `location: ${Camera.location.x.toFixed(2)}, ${Camera.location.y.toFixed(2)}`,
       `window: ${w}x${h}`,
       `node count: ${NodeManager.nodes.length}`,
+      `accelerate: ${Camera.accelerateCommander}`,
+      `speed: ${Camera.speed}`,
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(

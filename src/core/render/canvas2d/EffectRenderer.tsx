@@ -2,6 +2,7 @@ import { Canvas } from "../../Canvas";
 import Color from "../../Color";
 import CircleFlameEffect from "../../effect/concrete/circleFlameEffect";
 import TextRiseEffect from "../../effect/concrete/textRiseEffect";
+import { easeInOutSine } from "../../effect/easings";
 import { Camera } from "../../stage/Camera";
 import { Vector } from "../../Vector";
 import { Renderer } from "./renderer";
@@ -45,10 +46,12 @@ export namespace EffectRenderer {
     Canvas.ctx.fillStyle = Color.White.toString();
     Canvas.ctx.textAlign = "center";
     Canvas.ctx.textBaseline = "middle";
+    Canvas.ctx.globalAlpha = 1 - easeInOutSine(effect.timeProgress.rate);
     Canvas.ctx.fillText(
       effect.text,
       centerLocation.x,
-      centerLocation.y - distance * effect.timeProgress.rate,
+      centerLocation.y - distance * easeInOutSine(effect.timeProgress.rate),
     );
+    Canvas.ctx.globalAlpha = 1;
   }
 }

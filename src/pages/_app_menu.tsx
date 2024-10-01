@@ -1,6 +1,7 @@
 import React from "react";
 import { cn } from "../utils/cn";
 import {
+  AppWindow,
   Cuboid,
   File,
   FilePlus,
@@ -9,6 +10,7 @@ import {
   Info,
   MoreHorizontal,
   Plus,
+  RefreshCcw,
   Save,
   Settings,
   TestTube2,
@@ -115,6 +117,11 @@ ${data.nodes.length} 个节点，${data.edges.length} 条边`,
         </Col>
         <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
           测试
+        </Col>
+      </Row>
+      <Row icon={<AppWindow />}>
+        <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>
+          刷新
         </Col>
       </Row>
     </div>

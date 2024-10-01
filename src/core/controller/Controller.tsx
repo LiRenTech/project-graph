@@ -20,15 +20,11 @@ export class Controller {
   };
   private touchStartLocation = new Vector(0, 0);
   private touchStartDistance = 0;
+  private touchDelta = new Vector(0, 0);
 
   private isMouseDown: boolean = false;
 
   constructor(public canvasElement: HTMLCanvasElement) {
-    if (import.meta.hot) {
-      import.meta.hot.on("vite:beforeUpdate", () => {
-        window.location.reload();
-      });
-    }
     // 绑定事件
     window.addEventListener("keydown", this.keydown.bind(this));
     window.addEventListener("keyup", this.keyup.bind(this));
@@ -187,7 +183,7 @@ export class Controller {
       const touch1 = Vector.fromTouch(e.touches[0]);
       const touch2 = Vector.fromTouch(e.touches[1]);
       const center = Vector.average(touch1, touch2);
-      const delta = center.subtract(this.touchStartLocation);
+      this.touchDelta = center.subtract(this.touchStartLocation);
 
       // 计算当前两指间的距离
       const currentDistance = touch1.distance(touch2);
@@ -202,13 +198,22 @@ export class Controller {
 
       // 移动画面
       Camera.location = Camera.location.subtract(
-        delta.multiply(1 / Camera.currentScale),
+        this.touchDelta.multiply(1 / Camera.currentScale),
       );
     }
   }
 
   touchend(e: TouchEvent) {
     e.preventDefault();
+    // 移动画面
+    Camera.accelerateCommander = this.touchDelta
+      .multiply(-1)
+      .multiply(Camera.currentScale)
+      .limitX(-1, 1)
+      .limitY(-1, 1);
+    setTimeout(() => {
+      Camera.accelerateCommander = Vector.getZero();
+    }, 100);
   }
 
   destroy() {

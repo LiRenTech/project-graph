@@ -1,3 +1,4 @@
+import TextRiseEffect from "../effect/concrete/textRiseEffect";
 import { Vector } from "../Vector";
 import { Stage } from "./Stage";
 
@@ -64,8 +65,11 @@ export namespace Camera {
       //   content: "前面的区域以后再来探索吧？",
       //   type: "error",
       // });
-      Stage;
+      Stage.effects.push(
+        new TextRiseEffect("派蒙：前面的区域以后再来探索吧？"),
+      );
       location = Vector.getZero();
+      speed = Vector.getZero();
       targetScale = 1;
       return;
     }
