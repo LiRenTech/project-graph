@@ -12,6 +12,7 @@ export default function Home() {
   const [fps, setFps] = React.useState(0);
 
   const dialog = useDialog();
+  const [cursorName, setCursorName] = React.useState("default");
 
   useEffect(() => {
     const handleResize = () => {
@@ -33,6 +34,7 @@ export default function Home() {
       Canvas.init(canvasElement);
       Renderer.resizeWindow(window.innerWidth, window.innerHeight);
       Controller.init(canvasElement);
+      Controller.setCursorName = setCursorName;
     } else {
       dialog.show({
         title: "错误",
@@ -44,6 +46,7 @@ export default function Home() {
     window.addEventListener("resize", handleResize);
     window.addEventListener("focus", handleFocus);
     window.addEventListener("blur", handleBlur);
+
     // 开启定时器
     let lastTime = performance.now();
     const loop = () => {
@@ -75,8 +78,15 @@ export default function Home() {
 
   return (
     <>
-      <span className="fixed left-0 top-0">FPS={fps.toFixed()}</span>
-      <canvas ref={canvasRef} />
+      <span className="fixed bottom-0 left-0 ring">FPS={fps.toFixed()}</span>
+      <canvas ref={canvasRef} className={`cursor-${cursorName}`} />
     </>
   );
+  // cursor-default
+  // cursor-pointer
+  // cursor-grab
+  // cursor-grabbing
+  // cursor-move
+
+  // cursor-${cursorName}
 }

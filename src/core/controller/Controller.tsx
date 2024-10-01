@@ -9,10 +9,19 @@ import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";
 
 export namespace Controller {
+  /**
+   * 在上层接收React提供的state修改函数
+   */
+  export let setCursorName: (_: string) => void = (_) => {};
+
   // 检测正在按下的键
   export const pressingKeySet: Set<string> = new Set();
   export function pressingKeysString(): string {
-    return Array.from(pressingKeySet).join(",");
+    let res = "";
+    for (const key of pressingKeySet) {
+      res += `[${key}]` + " ";
+    }
+    return res;
   }
   // 按键映射
   export const keyMap: { [key: string]: Vector } = {
@@ -67,14 +76,12 @@ export namespace Controller {
     canvasElement.addEventListener("touchend", touchend);
   }
 
-  function moveCameraByMousePress(e: MouseEvent) {}
-
-  function moveCameraByMouseMove(e: MouseEvent) {
+  function moveCameraByMouseMove(e: MouseEvent, mouseIndex: number) {
     const currentMouseMoveLocation = Renderer.transformView2World(
       new Vector(e.clientX, e.clientY),
     );
     const diffLocation = currentMouseMoveLocation.subtract(
-      lastMousePressLocation[1],
+      lastMousePressLocation[mouseIndex],
     );
     Camera.location = Camera.location.subtract(diffLocation);
   }
@@ -121,9 +128,10 @@ export namespace Controller {
 
   function mousemove(e: MouseEvent) {
     // 如果当前有按下空格
-    if (pressingKeySet.has(" ")) {
+    if (pressingKeySet.has(" ") && isMouseDown[0]) {
       console.log("空格按下的同时按下了鼠标左键");
-      moveCameraByMouseMove(e);
+      moveCameraByMouseMove(e, 0);
+      setCursorName("grabbing");
       return;
     }
     if (isMouseDown[0]) {
@@ -137,10 +145,13 @@ export namespace Controller {
       );
     } else if (isMouseDown[1]) {
       // 中键按下
-      moveCameraByMouseMove(e);
+      moveCameraByMouseMove(e, 1);
+      setCursorName("grabbing");
+      return;
     } else if (isMouseDown[2]) {
       // 右键按下
     }
+    // setCursorName("default");
   }
 
   function mouseup(e: MouseEvent) {
@@ -159,6 +170,7 @@ export namespace Controller {
       // 左键松开
     } else if (e.button === 1) {
       // 中键松开
+      setCursorName("default");
     } else if (e.button === 2) {
       // 右键松开
     }
@@ -225,6 +237,9 @@ export namespace Controller {
         .limitX(-1, 1)
         .limitY(-1, 1);
     }
+    if (key === " ") {
+      setCursorName("grab");
+    }
   }
 
   function keyup(event: KeyboardEvent) {
@@ -243,6 +258,7 @@ export namespace Controller {
         .limitX(-1, 1)
         .limitY(-1, 1);
     }
+    setCursorName("default");
   }
 
   function touchstart(e: TouchEvent) {
