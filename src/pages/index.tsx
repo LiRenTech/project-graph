@@ -13,11 +13,6 @@ export default function Home() {
 
   const dialog = useDialog();
 
-  /**
-   * 渲染器
-   */
-  let controller: Controller | null = null;
-
   useEffect(() => {
     const handleResize = () => {
       if (canvasElement) {
@@ -37,7 +32,7 @@ export default function Home() {
     if (canvasElement) {
       Canvas.init(canvasElement);
       Renderer.resizeWindow(window.innerWidth, window.innerHeight);
-      controller = new Controller(canvasElement);
+      Controller.init(canvasElement);
     } else {
       dialog.show({
         title: "错误",
@@ -72,7 +67,7 @@ export default function Home() {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("focus", handleFocus);
       window.removeEventListener("blur", handleBlur);
-      controller?.destroy();
+      Controller.destroy();
       cancelAnimationFrame(frameId);
       NodeManager.destroy();
     };

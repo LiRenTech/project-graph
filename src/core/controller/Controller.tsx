@@ -8,14 +8,14 @@ import { TextRiseEffect } from "../effect/concrete/textRiseEffect";
 import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";
 
-export class Controller {
+export namespace Controller {
   // 检测正在按下的键
-  public pressingKeySet: Set<string> = new Set();
-  public pressingKeysString(): string {
-    return Array.from(this.pressingKeySet).join(",");
+  export const pressingKeySet: Set<string> = new Set();
+  export function pressingKeysString(): string {
+    return Array.from(pressingKeySet).join(",");
   }
   // 按键映射
-  private keyMap: { [key: string]: Vector } = {
+  export const keyMap: { [key: string]: Vector } = {
     w: new Vector(0, -1),
     s: new Vector(0, 1),
     a: new Vector(-1, 0),
@@ -25,43 +25,42 @@ export class Controller {
   /**
    * 存放鼠标 左 中 右 键上次 "按下" 时候的位置
    */
-  private lastMousePressLocation: Vector[] = [
+  export const lastMousePressLocation: Vector[] = [
     Vector.getZero(),
     Vector.getZero(),
     Vector.getZero(),
   ];
 
-  private touchStartLocation = Vector.getZero();
-  private touchStartDistance = 0;
-  private touchDelta = Vector.getZero();
+  export let touchStartLocation = Vector.getZero();
+  export let touchStartDistance = 0;
+  export let touchDelta = Vector.getZero();
 
-  private isMouseDown: boolean = false;
+  export let isMouseDown: boolean = false;
+  export let canvasElement: HTMLCanvasElement;
 
-  constructor(public canvasElement: HTMLCanvasElement) {
+  export function init(canvasElement: HTMLCanvasElement) {
+    canvasElement = canvasElement;
     // 绑定事件
-    window.addEventListener("keydown", this.keydown.bind(this));
-    window.addEventListener("keyup", this.keyup.bind(this));
-    this.canvasElement.addEventListener("mousedown", this.mousedown.bind(this));
-    this.canvasElement.addEventListener("mousemove", this.mousemove.bind(this));
-    this.canvasElement.addEventListener("mouseup", this.mouseup.bind(this));
-    this.canvasElement.addEventListener("wheel", this.mousewheel.bind(this));
-    this.canvasElement.addEventListener("dblclick", this.dblclick.bind(this));
-    this.canvasElement.addEventListener(
-      "touchstart",
-      this.touchstart.bind(this),
-    );
-    this.canvasElement.addEventListener("touchmove", this.touchmove.bind(this));
-    this.canvasElement.addEventListener("touchend", this.touchend.bind(this));
+    window.addEventListener("keydown", keydown);
+    window.addEventListener("keyup", keyup);
+    canvasElement.addEventListener("mousedown", mousedown);
+    canvasElement.addEventListener("mousemove", mousemove);
+    canvasElement.addEventListener("mouseup", mouseup);
+    canvasElement.addEventListener("wheel", mousewheel);
+    canvasElement.addEventListener("dblclick", dblclick);
+    canvasElement.addEventListener("touchstart", touchstart);
+    canvasElement.addEventListener("touchmove", touchmove);
+    canvasElement.addEventListener("touchend", touchend);
   }
 
-  mousedown(e: MouseEvent) {
+  function mousedown(e: MouseEvent) {
     // 阻止默认行为，防止右键菜单弹出
     e.preventDefault();
 
-    this.isMouseDown = true;
+    isMouseDown = true;
 
     // 如果当前有按下空格
-    if (this.pressingKeySet.has(" ")) {
+    if (pressingKeySet.has(" ")) {
       console.log("空格按下的同时按下了鼠标左键");
     }
 
@@ -72,7 +71,7 @@ export class Controller {
 
     // 获取左右中键
     const button = e.button;
-    this.lastMousePressLocation[button] = pressLocation;
+    lastMousePressLocation[button] = pressLocation;
     if (button === 0) {
       // 左键按下
       if (clickedNode !== null) {
@@ -99,8 +98,8 @@ export class Controller {
     );
   }
 
-  mousemove(e: MouseEvent) {
-    if (this.isMouseDown) {
+  function mousemove(e: MouseEvent) {
+    if (isMouseDown) {
       Stage.effects.push(
         new CircleFlameEffect(
           new ProgressNumber(0, 5),
@@ -112,10 +111,10 @@ export class Controller {
     }
   }
 
-  mouseup(e: MouseEvent) {
+  function mouseup(e: MouseEvent) {
     // 阻止默认行为
     e.preventDefault();
-    this.isMouseDown = false;
+    isMouseDown = false;
     Stage.effects.push(
       new CircleFlameEffect(
         new ProgressNumber(0, 40),
@@ -127,7 +126,7 @@ export class Controller {
     // Stage.effects.push(new TextRiseEffect("mouse up"));
   }
 
-  mousewheel(e: WheelEvent) {
+  function mousewheel(e: WheelEvent) {
     if (e.deltaY > 0) {
       Camera.targetScale *= 0.8;
     } else {
@@ -135,7 +134,7 @@ export class Controller {
     }
   }
 
-  dblclick(e: MouseEvent) {
+  function dblclick(e: MouseEvent) {
     const pressLocation = Renderer.transformView2World(
       new Vector(e.clientX, e.clientY),
     );
@@ -173,91 +172,91 @@ export class Controller {
     );
   }
 
-  keydown(event: KeyboardEvent) {
+  function keydown(event: KeyboardEvent) {
     const key = event.key.toLowerCase();
-    this.pressingKeySet.add(key);
-    if (this.keyMap[key]) {
+    pressingKeySet.add(key);
+    if (keyMap[key]) {
       // 当按下某一个方向的时候,相当于朝着某个方向赋予一次加速度
       Camera.accelerateCommander = Camera.accelerateCommander
-        .add(this.keyMap[key])
+        .add(keyMap[key])
         .limitX(-1, 1)
         .limitY(-1, 1);
     }
   }
 
-  keyup(event: KeyboardEvent) {
+  function keyup(event: KeyboardEvent) {
     const key = event.key.toLowerCase();
-    if (!this.pressingKeySet.has(key)) {
+    if (!pressingKeySet.has(key)) {
       // FIXME: 但这里有个问题，在按下 ctrl+alt+a 时，会显示画面一直往右走。原因是按下a没有被检测到，但抬起a被检测到了
       // 所以松开某个移动的按键时，还要检测之前是否已经按下了这个按键
       return;
     } else {
-      this.pressingKeySet.delete(key);
+      pressingKeySet.delete(key);
     }
-    if (this.keyMap[key]) {
+    if (keyMap[key]) {
       // 当松开某一个方向的时候,相当于停止加速度
       Camera.accelerateCommander = Camera.accelerateCommander
-        .subtract(this.keyMap[key])
+        .subtract(keyMap[key])
         .limitX(-1, 1)
         .limitY(-1, 1);
     }
   }
 
-  touchstart(e: TouchEvent) {
+  function touchstart(e: TouchEvent) {
     e.preventDefault();
     if (e.touches.length === 2) {
       const touch1 = Vector.fromTouch(e.touches[0]);
       const touch2 = Vector.fromTouch(e.touches[1]);
       const center = Vector.average(touch1, touch2);
-      this.touchStartLocation = center;
+      touchStartLocation = center;
 
       // 计算初始两指间距离
-      this.touchStartDistance = touch1.distance(touch2);
+      touchStartDistance = touch1.distance(touch2);
     }
   }
 
-  touchmove(e: TouchEvent) {
+  function touchmove(e: TouchEvent) {
     e.preventDefault();
 
     if (e.touches.length === 2) {
       const touch1 = Vector.fromTouch(e.touches[0]);
       const touch2 = Vector.fromTouch(e.touches[1]);
       const center = Vector.average(touch1, touch2);
-      this.touchDelta = center.subtract(this.touchStartLocation);
+      touchDelta = center.subtract(touchStartLocation);
 
       // 计算当前两指间的距离
       const currentDistance = touch1.distance(touch2);
-      const scaleRatio = currentDistance / this.touchStartDistance;
+      const scaleRatio = currentDistance / touchStartDistance;
 
       // 缩放画面
       Camera.targetScale *= scaleRatio;
-      this.touchStartDistance = currentDistance; // 更新距离
+      touchStartDistance = currentDistance; // 更新距离
 
       // 更新中心点位置
-      this.touchStartLocation = center;
+      touchStartLocation = center;
 
       // 移动画面
       Camera.location = Camera.location.subtract(
-        this.touchDelta.multiply(1 / Camera.currentScale),
+        touchDelta.multiply(1 / Camera.currentScale),
       );
     }
   }
 
-  touchend(e: TouchEvent) {
+  function touchend(e: TouchEvent) {
     e.preventDefault();
     // 移动画面
-    Camera.accelerateCommander = this.touchDelta
+    Camera.accelerateCommander = touchDelta
       .multiply(-1)
       .multiply(Camera.currentScale)
       .limitX(-1, 1)
       .limitY(-1, 1);
-    this.touchDelta = Vector.getZero();
+    touchDelta = Vector.getZero();
     setTimeout(() => {
       Camera.accelerateCommander = Vector.getZero();
     }, 100);
   }
 
-  destroy() {
+  export function destroy() {
     console.log("Controller destroyed.");
   }
 }
