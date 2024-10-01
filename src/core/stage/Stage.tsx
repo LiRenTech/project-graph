@@ -1,25 +1,19 @@
 import Effect from "../effect/effect";
-import Camera from "./Camera";
-// import { NodeManager } from "../core/NodeManager";
 
 /**
  * 舞台对象
  */
-export class Stage {
-  public effects: Effect[];
-
-  constructor(public camera: Camera) {
-    this.effects = [];
-  }
+export namespace Stage {
+  export let effects: Effect[] = [];
 
   /**
    * 逻辑总入口
    */
-  logicTick() {
-    for (let effect of this.effects) {
+  export function logicTick() {
+    for (let effect of effects) {
       effect.tick();
     }
     // 清理过时特效
-    this.effects = this.effects.filter((effect) => !effect.timeProgress.isFull);
+    effects = effects.filter((effect) => !effect.timeProgress.isFull);
   }
 }

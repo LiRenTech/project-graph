@@ -21,6 +21,8 @@ import { useDialog } from "../utils/dialog";
 import { isDesktop } from "../utils/platform";
 import { NodeManager } from "../core/NodeManager";
 import { Node } from "../core/Node";
+import { useRecoilState } from "recoil";
+import { fileAtom } from "../state";
 
 export default function AppMenu({
   className = "",
@@ -31,6 +33,7 @@ export default function AppMenu({
 }) {
   const navigate = useNavigate();
   const dialog = useDialog();
+  const [, setFile] = useRecoilState(fileAtom);
 
   const onOpen = async () => {
     const path = await openFileDialog({
@@ -49,6 +52,7 @@ export default function AppMenu({
     if (!path) {
       return;
     }
+    setFile(path);
     if (isDesktop && !path.endsWith(".json")) {
       dialog.show({
         title: "请选择JSON文件",

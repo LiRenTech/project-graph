@@ -3,74 +3,65 @@ import CircleFlameEffect from "../../effect/concrete/circleFlameEffect";
 import { Vector } from "../../Vector";
 import { Stage } from "../../stage/Stage";
 import { RenderUtils } from "./RenderUtils";
-import { RenderEffect } from "./RenderEffect";
+import { EffectRenderer } from "./RenderEffect";
 import { Canvas } from "../../Canvas";
 import TextRiseEffect from "../../effect/concrete/textRiseEffect";
 import { NodeManager } from "../../NodeManager";
 import { appScale } from "../../../utils/platform";
 import { Rectangle } from "../../Rectangle";
+import { Camera } from "../../stage/Camera";
 
 /**
  * 渲染器
  */
-export class Renderer {
-  static readonly FONT_SIZE = 32;
-  static readonly NODE_PADDING = 12;
+export namespace Renderer {
+  export const FONT_SIZE = 32;
+  export const NODE_PADDING = 12;
+  export let w = 0;
+  export let h = 0;
 
-  constructor(
-    public canvas: Canvas,
-    public w: number,
-    public h: number,
-    public stage: Stage,
-  ) {
-    // 初始化操作
-    this.resizeWindow(w, h);
-  }
-
-  resizeWindow(w: number, h: number) {
+  export function resizeWindow(newW: number, newH: number) {
     // HACK: 这里写的什么东西，我不知道，但是它能让画布的大小和屏幕的大小保持一致
     const scale = window.devicePixelRatio * (1 / appScale);
-    this.w = w;
-    this.h = h;
-    this.canvas.element.width = w * scale;
-    this.canvas.element.height = h * scale;
-    this.canvas.element.style.width = `${w * (1 / appScale)}px`;
-    this.canvas.element.style.height = `${h * (1 / appScale)}px`;
-    this.canvas.ctx.scale(scale, scale);
+    w = newW;
+    h = newH;
+    Canvas.element.width = newW * scale;
+    Canvas.element.height = newH * scale;
+    Canvas.element.style.width = `${newW * (1 / appScale)}px`;
+    Canvas.element.style.height = `${newH * (1 / appScale)}px`;
+    Canvas.ctx.scale(scale, scale);
   }
 
   /**
    * 渲染总入口
    * @returns
    */
-  frameTick() {
-    this.stage.camera.frameTick();
+  export function frameTick() {
+    Camera.frameTick();
 
-    this.canvas.ctx.clearRect(0, 0, this.w, this.h);
+    Canvas.ctx.clearRect(0, 0, w, h);
 
     // 画一个2b2b2b的背景
-    this.canvas.ctx.fillStyle = "#2b2b2b";
-    this.canvas.ctx.fillRect(0, 0, this.w, this.h);
+    Canvas.ctx.fillStyle = "#2b2b2b";
+    Canvas.ctx.fillRect(0, 0, w, h);
     // 画网格
-    this.renderGrid();
+    renderGrid();
 
-    this.renderEntities();
+    renderEntities();
 
     // 画详细信息
-    this.renderDetails();
+    renderDetails();
 
     // 渲染所有特效
-    this.renderEffects();
+    renderEffects();
   }
 
-  renderEntities() {
+  export function renderEntities() {
     const canvasRect = new Rectangle(
-      this.stage.camera.location.subtract(
-        new Vector(this.w, this.h)
-          .divide(2)
-          .multiply(1 / this.stage.camera.currentScale),
+      Camera.location.subtract(
+        new Vector(w, h).divide(2).multiply(1 / Camera.currentScale),
       ),
-      new Vector(this.w, this.h).multiply(1 / this.stage.camera.currentScale),
+      new Vector(w, h).multiply(1 / Camera.currentScale),
     );
 
     for (const node of NodeManager.nodes) {
@@ -79,25 +70,25 @@ export class Renderer {
       }
 
       RenderUtils.renderRect(
-        this.canvas.ctx,
+        Canvas.ctx,
         new Rectangle(
-          this.transformWorld2View(node.rectangle.location),
+          transformWorld2View(node.rectangle.location),
           node.rectangle.size
-            .add(Vector.same(Renderer.NODE_PADDING).multiply(2))
-            .multiply(this.stage.camera.currentScale),
+            .add(Vector.same(NODE_PADDING).multiply(2))
+            .multiply(Camera.currentScale),
         ),
         new Color(0, 0, 0, 0.5),
         new Color(255, 255, 255, 0.5),
-        2 * this.stage.camera.currentScale,
+        2 * Camera.currentScale,
       );
 
       RenderUtils.renderText(
-        this.canvas.ctx,
+        Canvas.ctx,
         node.text,
-        this.transformWorld2View(
-          node.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
+        transformWorld2View(
+          node.rectangle.location.add(Vector.same(NODE_PADDING)),
         ),
-        Renderer.FONT_SIZE * this.stage.camera.currentScale,
+        FONT_SIZE * Camera.currentScale,
         new Color(255, 255, 255),
       );
     }
@@ -109,70 +100,62 @@ export class Renderer {
   //  * @returns
   //  */
   // private getTextRectSize(text: string): Vector {
-  //   const metrics = this.canvas.ctx.measureText(text);
+  //   const metrics = Canvas.ctx.measureText(text);
   //   const textWidth = metrics.width;
   //   const textHeight =
   //     metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
   //   return new Vector(textWidth, textHeight);
   // }
 
-  renderEffects() {
-    for (const effect of this.stage.effects) {
+  export function renderEffects() {
+    for (const effect of Stage.effects) {
       if (effect instanceof CircleFlameEffect) {
-        RenderEffect.rendCircleFlameEffect(this, effect);
+        EffectRenderer.renderCircleFlameEffect(effect);
       } else if (effect instanceof TextRiseEffect) {
-        RenderEffect.rendTextRiseEffect(this, effect);
+        EffectRenderer.renderTextRiseEffect(effect);
       }
     }
   }
-  renderGrid() {
+  export function renderGrid() {
     const gridSize = 100;
     for (let y = 0; y < 100; y++) {
       RenderUtils.rendSolidLine(
-        this.canvas.ctx,
-        this.transformWorld2View(new Vector(0, y * gridSize)),
-        this.transformWorld2View(new Vector(1000, y * gridSize)),
+        Canvas.ctx,
+        transformWorld2View(new Vector(0, y * gridSize)),
+        transformWorld2View(new Vector(1000, y * gridSize)),
         new Color(255, 255, 255, 0.1),
         1,
       );
     }
     for (let x = 0; x < 100; x++) {
       RenderUtils.rendSolidLine(
-        this.canvas.ctx,
-        this.transformWorld2View(new Vector(x * gridSize, 0)),
-        this.transformWorld2View(new Vector(x * gridSize, 1000)),
+        Canvas.ctx,
+        transformWorld2View(new Vector(x * gridSize, 0)),
+        transformWorld2View(new Vector(x * gridSize, 1000)),
         new Color(255, 255, 255, 0.1),
         1,
       );
     }
   }
 
-  renderDetails() {
+  export function renderDetails() {
     const detailsData = [
-      `scale: ${this.cameraCurrentScale.toFixed(2)}`,
-      `target: ${this.cameraTargetScale.toFixed(2)}`,
-      `shake: ${this.stage.camera.shakeLocation.toString()}`,
-      `location: ${this.stage.camera.location.x.toFixed(2)}, ${this.stage.camera.location.y.toFixed(2)}`,
-      `window: ${this.w}x${this.h}`,
+      `scale: ${Camera.currentScale.toFixed(2)}`,
+      `target: ${Camera.targetScale.toFixed(2)}`,
+      `shake: ${Camera.shakeLocation.toString()}`,
+      `location: ${Camera.location.x.toFixed(2)}, ${Camera.location.y.toFixed(2)}`,
+      `window: ${w}x${h}`,
       `node count: ${NodeManager.nodes.length}`,
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(
-        this.canvas.ctx,
+        Canvas.ctx,
         line,
         new Vector(10, 80 + detailsData.indexOf(line) * 12),
         10,
         new Color(255, 255, 255, 0.5),
       );
     }
-  }
-
-  get cameraCurrentScale(): number {
-    return this.stage.camera.currentScale;
-  }
-
-  get cameraTargetScale(): number {
-    return this.stage.camera.targetScale;
   }
 
   /**
@@ -185,12 +168,12 @@ export class Renderer {
    * @param worldLocation
    * @returns
    */
-  transformWorld2View(worldLocation: Vector): Vector {
+  export function transformWorld2View(worldLocation: Vector): Vector {
     return worldLocation
-      .subtract(this.stage.camera.location)
-      .multiply(this.stage.camera.currentScale)
-      .add(new Vector(this.w / 2, this.h / 2))
-      .add(this.stage.camera.shakeLocation);
+      .subtract(Camera.location)
+      .multiply(Camera.currentScale)
+      .add(new Vector(w / 2, h / 2))
+      .add(Camera.shakeLocation);
   }
 
   /**
@@ -200,11 +183,11 @@ export class Renderer {
    * @param viewLocation
    * @returns
    */
-  public transformView2World(viewLocation: Vector): Vector {
+  export function transformView2World(viewLocation: Vector): Vector {
     return viewLocation
-      .subtract(this.stage.camera.shakeLocation)
-      .subtract(new Vector(this.w / 2, this.h / 2))
-      .multiply(1 / this.stage.camera.currentScale)
-      .add(this.stage.camera.location);
+      .subtract(Camera.shakeLocation)
+      .subtract(new Vector(w / 2, h / 2))
+      .multiply(1 / Camera.currentScale)
+      .add(Camera.location);
   }
 }

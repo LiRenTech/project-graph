@@ -6,6 +6,7 @@ import { Renderer } from "../render/canvas2d/renderer";
 import { Stage } from "../stage/Stage";
 import TextRiseEffect from "../effect/concrete/textRiseEffect";
 import { NodeManager } from "../NodeManager";
+import { Camera } from "../stage/Camera";
 
 export class Controller {
   // 检测正在按下的键
@@ -22,11 +23,7 @@ export class Controller {
 
   private isMouseDown: boolean = false;
 
-  constructor(
-    public canvasElement: HTMLCanvasElement,
-    public stage: Stage,
-    public renderer: Renderer,
-  ) {
+  constructor(public canvasElement: HTMLCanvasElement) {
     if (import.meta.hot) {
       import.meta.hot.on("vite:beforeUpdate", () => {
         window.location.reload();
@@ -71,15 +68,15 @@ export class Controller {
       // 右键按下
     }
 
-    // this.stage.effects.push(
+    // Stage.effects.push(
     //   new TextRiseEffect(
     //     `鼠标按下 ${button === 0 ? "左键" : button === 1 ? "中键" : "右键"}`,
     //   ),
     // );
-    this.stage.effects.push(
+    Stage.effects.push(
       new CircleFlameEffect(
         new ProgressNumber(0, 40),
-        this.renderer.transformView2World(new Vector(e.clientX, e.clientY)),
+        Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
         50,
         new Color(255, 0, 0, 1),
       ),
@@ -88,10 +85,10 @@ export class Controller {
 
   mousemove(e: MouseEvent) {
     if (this.isMouseDown) {
-      this.stage.effects.push(
+      Stage.effects.push(
         new CircleFlameEffect(
           new ProgressNumber(0, 5),
-          this.renderer.transformView2World(new Vector(e.clientX, e.clientY)),
+          Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
           30,
           new Color(141, 198, 229, 1),
         ),
@@ -103,22 +100,22 @@ export class Controller {
     // 阻止默认行为
     e.preventDefault();
     this.isMouseDown = false;
-    this.stage.effects.push(
+    Stage.effects.push(
       new CircleFlameEffect(
         new ProgressNumber(0, 40),
-        this.renderer.transformView2World(new Vector(e.clientX, e.clientY)),
+        Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
         50,
         new Color(0, 0, 255, 1),
       ),
     );
-    this.stage.effects.push(new TextRiseEffect("mouse up"));
+    Stage.effects.push(new TextRiseEffect("mouse up"));
   }
 
   mousewheel(e: WheelEvent) {
     if (e.deltaY > 0) {
-      this.stage.camera.targetScale *= 0.8;
+      Camera.targetScale *= 0.8;
     } else {
-      this.stage.camera.targetScale *= 1.2;
+      Camera.targetScale *= 1.2;
     }
   }
 
@@ -126,18 +123,18 @@ export class Controller {
     // 如果是左键
     if (e.button === 0) {
       NodeManager.addNodeByClick(
-        this.renderer.transformView2World(new Vector(e.clientX, e.clientY)),
+        Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
       );
     }
-    this.stage.effects.push(
+    Stage.effects.push(
       new CircleFlameEffect(
         new ProgressNumber(0, 40),
-        this.renderer.transformView2World(new Vector(e.clientX, e.clientY)),
+        Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
         100,
         new Color(0, 255, 0, 1),
       ),
     );
-    this.stage.effects.push(new TextRiseEffect("mouse up"));
+    Stage.effects.push(new TextRiseEffect("mouse up"));
   }
 
   keydown(event: KeyboardEvent) {
@@ -145,11 +142,10 @@ export class Controller {
     this.pressingKeySet.add(key);
     if (this.keyMap[key]) {
       // 当按下某一个方向的时候,相当于朝着某个方向赋予一次加速度
-      this.stage.camera.accelerateCommander =
-        this.stage.camera.accelerateCommander
-          .add(this.keyMap[key])
-          .limitX(-1, 1)
-          .limitY(-1, 1);
+      Camera.accelerateCommander = Camera.accelerateCommander
+        .add(this.keyMap[key])
+        .limitX(-1, 1)
+        .limitY(-1, 1);
     }
   }
 
@@ -164,11 +160,10 @@ export class Controller {
     }
     if (this.keyMap[key]) {
       // 当松开某一个方向的时候,相当于停止加速度
-      this.stage.camera.accelerateCommander =
-        this.stage.camera.accelerateCommander
-          .subtract(this.keyMap[key])
-          .limitX(-1, 1)
-          .limitY(-1, 1);
+      Camera.accelerateCommander = Camera.accelerateCommander
+        .subtract(this.keyMap[key])
+        .limitX(-1, 1)
+        .limitY(-1, 1);
     }
   }
 
@@ -199,15 +194,15 @@ export class Controller {
       const scaleRatio = currentDistance / this.touchStartDistance;
 
       // 缩放画面
-      this.stage.camera.targetScale *= scaleRatio;
+      Camera.targetScale *= scaleRatio;
       this.touchStartDistance = currentDistance; // 更新距离
 
       // 更新中心点位置
       this.touchStartLocation = center;
 
       // 移动画面
-      this.stage.camera.location = this.stage.camera.location.subtract(
-        delta.multiply(1 / this.stage.camera.currentScale),
+      Camera.location = Camera.location.subtract(
+        delta.multiply(1 / Camera.currentScale),
       );
     }
   }

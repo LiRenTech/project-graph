@@ -3,7 +3,6 @@ import { Renderer } from "../core/render/canvas2d/renderer";
 import { useDialog } from "../utils/dialog";
 import { Stage } from "../core/stage/Stage";
 import { Controller } from "../core/controller/Controller";
-import Camera from "../core/stage/Camera";
 import { Canvas } from "../core/Canvas";
 import { NodeManager } from "../core/NodeManager";
 import React from "react";
@@ -17,13 +16,12 @@ export default function Home() {
   /**
    * 渲染器
    */
-  let render: Renderer | null = null;
   let controller: Controller | null = null;
 
   useEffect(() => {
     const handleResize = () => {
       if (canvasElement) {
-        render?.resizeWindow(window.innerWidth, window.innerHeight);
+        Renderer.resizeWindow(window.innerWidth, window.innerHeight);
       }
     };
     const handleFocus = () => {
@@ -34,19 +32,12 @@ export default function Home() {
     };
 
     const canvasElement = canvasRef.current;
-    const stage = new Stage(new Camera());
     let focus = true;
 
     if (canvasElement) {
-      const canvasObject = new Canvas(canvasElement);
-
-      render = new Renderer(
-        canvasObject,
-        window.innerWidth,
-        window.innerHeight,
-        stage,
-      );
-      controller = new Controller(canvasElement, stage, render);
+      Canvas.init(canvasElement);
+      Renderer.resizeWindow(window.innerWidth, window.innerHeight);
+      controller = new Controller(canvasElement);
     } else {
       dialog.show({
         title: "错误",
@@ -70,8 +61,8 @@ export default function Home() {
       const deltaTime = (now - lastTime) / 1000;
       lastTime = now;
       setFps(1 / deltaTime);
-      render?.frameTick();
-      stage.logicTick();
+      Renderer.frameTick();
+      Stage.logicTick();
     };
 
     let frameId = requestAnimationFrame(loop);

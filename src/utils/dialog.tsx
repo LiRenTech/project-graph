@@ -82,7 +82,7 @@ export const DialogProvider = ({ children }: React.PropsWithChildren) => {
 
 /**
  * 获取对话框上下文，dialog = useDialog()
- * @returns DialogContext 
+ * @returns DialogContext
  */
 export const useDialog = () => {
   return React.useContext(DialogContext);

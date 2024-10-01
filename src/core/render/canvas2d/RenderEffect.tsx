@@ -1,29 +1,28 @@
+import { Canvas } from "../../Canvas";
 import Color from "../../Color";
 import CircleFlameEffect from "../../effect/concrete/circleFlameEffect";
 import TextRiseEffect from "../../effect/concrete/textRiseEffect";
+import { Camera } from "../../stage/Camera";
 import { Vector } from "../../Vector";
 import { Renderer } from "./renderer";
 import { RenderUtils } from "./RenderUtils";
 
-export namespace RenderEffect {
+export namespace EffectRenderer {
   /**
    * 圆形火光特效
    * @param effect
    * @returns
    */
-  export function rendCircleFlameEffect(
-    render: Renderer,
-    effect: CircleFlameEffect,
-  ) {
+  export function renderCircleFlameEffect(effect: CircleFlameEffect) {
     if (effect.timeProgress.isFull) {
       return;
     }
     effect.color.a = 1 - effect.timeProgress.rate;
     const rendRadius = effect.radius * effect.timeProgress.rate;
     RenderUtils.rendCircleTransition(
-      render.canvas.ctx,
-      render.transformWorld2View(effect.location),
-      rendRadius * render.cameraCurrentScale,
+      Canvas.ctx,
+      Renderer.transformWorld2View(effect.location),
+      rendRadius * Camera.currentScale,
       effect.color,
     );
   }
@@ -34,19 +33,19 @@ export namespace RenderEffect {
    * @param effect
    * @returns
    */
-  export function rendTextRiseEffect(render: Renderer, effect: TextRiseEffect) {
+  export function renderTextRiseEffect(effect: TextRiseEffect) {
     if (effect.timeProgress.isFull) {
       return;
     }
     // 在画布中心缓缓升高一段距离
-    const centerLocation = new Vector(render.w / 2, render.h / 2);
-    const distance = 50 * render.cameraCurrentScale;
+    const centerLocation = new Vector(Renderer.w / 2, Renderer.h / 2);
+    const distance = 50 * Camera.currentScale;
 
-    render.canvas.ctx.font = `${20 * render.cameraCurrentScale}px Arial`;
-    render.canvas.ctx.fillStyle = Color.White.toString();
-    render.canvas.ctx.textAlign = "center";
-    render.canvas.ctx.textBaseline = "middle";
-    render.canvas.ctx.fillText(
+    Canvas.ctx.font = `${20 * Camera.currentScale}px Arial`;
+    Canvas.ctx.fillStyle = Color.White.toString();
+    Canvas.ctx.textAlign = "center";
+    Canvas.ctx.textBaseline = "middle";
+    Canvas.ctx.fillText(
       effect.text,
       centerLocation.x,
       centerLocation.y - distance * effect.timeProgress.rate,

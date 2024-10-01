@@ -1,4 +1,5 @@
 import { Vector } from "../Vector";
+import { Stage } from "./Stage";
 
 /**
  * 摄像机
@@ -8,82 +9,83 @@ import { Vector } from "../Vector";
  * 同时空气有空气阻力，会对速度的反方向产生阻力。
  * 但滚轮会控制摄像机的缩放镜头。同时缩放大小也会影响喷气动力的大小，越是观看细节，喷的动力越小，移动越慢。
  */
-export default class Camera {
+export namespace Camera {
   /**
    * 每个方向上的动力矢量大小
    */
-  static moveAmplitude = 2;
+  export const moveAmplitude = 2;
   /**
    * 空气摩擦力系数
    */
-  static frictionCoefficient = 0.1;
+  export const frictionCoefficient = 0.1;
   /**
    * 空气摩擦力速度指数
    * 指数=2，表示 f = -k * v^2
    * 指数=1，表示 f = -k * v
    * 指数越大，速度衰减越快
    */
-  static frictionExponent = 1.5;
+  export const frictionExponent = 1.5;
 
-  private currentLocation: Vector = Vector.getZero();
+  export let location: Vector = Vector.getZero();
   /** 当前的 画布/摄像机移动的速度矢量 */
-  speed: Vector = Vector.getZero();
+  export let speed: Vector = Vector.getZero();
 
   /** 当前的 移动加速度 */
-  accelerate: Vector = Vector.getZero();
+  export const accelerate: Vector = Vector.getZero();
 
   /**
    * 可以看成一个九宫格，主要用于处理 w s a d 按键移动，
    * 当同时按下w和s，这个值会是(-1,-1)，表示朝着左上移动
    */
-  accelerateCommander: Vector = Vector.getZero();
+  export let accelerateCommander: Vector = Vector.getZero();
 
   /**
    * 当前镜头缩放比例 >1放大 <1缩小
    * 会逐渐趋近于目标缩放比例
    */
-  public currentScale: number = 1;
+  export let currentScale: number = 1;
   /** 目标镜头缩放比例 */
-  public targetScale: number = 1;
+  export let targetScale: number = 1;
 
   /**
    * 震动特效导致的位置偏移
    * 也就是当有震动特效的时候，不是舞台在震动，而是摄像机在震动
    */
-  public shakeLocation: Vector = new Vector(0, 0);
+  export const shakeLocation: Vector = new Vector(0, 0);
 
-  /**
-   * 直接设置摄像头的位置
-   * 仅用于一开始初始化位置
-   */
-  public set location(value: Vector) {
-    this.currentLocation = value;
-  }
-
-  public get location() {
-    return this.currentLocation;
-  }
-
-  frameTick() {
+  export function frameTick() {
     // 计算摩擦力 与速度方向相反,固定值,但速度为0摩擦力就不存在
     // 获得速度的大小和方向
 
+    if (Number.isNaN(location.x) || Number.isNaN(location.y)) {
+      // const dialog = useDialog();
+      // dialog.show({
+      //   title: "派蒙",
+      //   content: "前面的区域以后再来探索吧？",
+      //   type: "error",
+      // });
+      Stage;
+      location = Vector.getZero();
+      targetScale = 1;
+      return;
+    }
+
     // 回弹效果
-    if (this.currentScale < 0.005) {
-      this.targetScale = 0.01;
+    if (currentScale < 0.005) {
+      targetScale = 0.01;
     }
     // 彩蛋
-    if (this.currentScale > 100) {
-      this.currentScale = 0.001;
-      this.targetScale = 0;
+    if (currentScale > 100) {
+      currentScale = 0.001;
+      targetScale = 0;
     }
 
     let friction = Vector.getZero();
 
-    if (!this.speed.isZero()) {
-      const speedSize = this.speed.magnitude();
+    if (!speed.isZero()) {
+      const speedSize = speed.magnitude();
       // 计算摩擦力
-      friction = this.speed
+      friction = speed
         .normalize()
         .multiply(-1)
         .multiply(
@@ -92,25 +94,25 @@ export default class Camera {
     }
 
     // 速度 = 速度 + 加速度（各个方向的力之和）
-    this.speed = this.speed
+    speed = speed
       .add(
-        this.accelerateCommander
+        accelerateCommander
           /** 摄像机 >1放大 <1缩小，为了让放大的时候移动速度慢，所以取倒数 */
-          .multiply(Camera.moveAmplitude * (1 / this.currentScale)),
+          .multiply(Camera.moveAmplitude * (1 / currentScale)),
       )
       .add(friction);
-    this.currentLocation = this.currentLocation.add(this.speed);
+    location = location.add(speed);
 
     // 处理缩放
-    if (this.currentScale < this.targetScale) {
-      this.currentScale = Math.min(
-        this.currentScale + (this.targetScale - this.currentScale) / 10,
-        this.targetScale,
+    if (currentScale < targetScale) {
+      currentScale = Math.min(
+        currentScale + (targetScale - currentScale) / 10,
+        targetScale,
       );
-    } else if (this.currentScale > this.targetScale) {
-      this.currentScale = Math.max(
-        this.currentScale - (this.currentScale - this.targetScale) / 10,
-        this.targetScale,
+    } else if (currentScale > targetScale) {
+      currentScale = Math.max(
+        currentScale - (currentScale - targetScale) / 10,
+        targetScale,
       );
     }
   }

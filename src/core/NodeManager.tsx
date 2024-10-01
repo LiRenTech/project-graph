@@ -3,8 +3,10 @@ import { Node } from "./Node";
 import { Vector } from "./Vector";
 import { v4 as uuidv4 } from "uuid";
 
-// 应该改成类，实例化的对象绑定到舞台上。这成单例模式了
+// littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
+// zty012:这个是存储数据的，和舞台无关，应该单独抽离出来
+// 并且会在舞台之外的地方操作，所以应该是namespace单例
 export namespace NodeManager {
   export const nodes: Node[] = [];
   export const edges: Edge[] = [];
