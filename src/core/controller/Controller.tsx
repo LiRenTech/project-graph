@@ -58,13 +58,29 @@ export class Controller {
     e.preventDefault();
 
     this.isMouseDown = true;
+    
+    const pressLocation = this.render.transformView2World(
+      new Vector(e.clientX, e.clientY),
+    );
+
     // 获取左右中键
     const button = e.button;
-    this.stage.effects.push(
-      new TextRiseEffect(
-        `鼠标按下 ${button === 0 ? "左键" : button === 1 ? "中键" : "右键"}`,
-      ),
-    );
+    if (button === 0) {
+      // 左键按下
+      for (const node of NodeManager.nodes) {
+        // TODO: Node的bodyShape应该用矩形表示，矩形有好多运算方法
+      }
+    } else if (button === 1) {
+      // 中键按下
+    } else if (button === 2) {
+      // 右键按下
+    }
+
+    // this.stage.effects.push(
+    //   new TextRiseEffect(
+    //     `鼠标按下 ${button === 0 ? "左键" : button === 1 ? "中键" : "右键"}`,
+    //   ),
+    // );
     this.stage.effects.push(
       new CircleFlameEffect(
         new ProgressNumber(0, 40),
