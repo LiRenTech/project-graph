@@ -25,7 +25,7 @@ export default function Dialog() {
         "fixed z-50 flex flex-col gap-4 overflow-auto text-wrap break-words p-8 text-white transition",
         {
           "pointer-events-none": !dialog.showDialog,
-          "bottom-0 right-0 top-0 w-1/3 duration-300": isMobile,
+          "bottom-0 right-0 top-0 w-1/4 duration-300": isMobile,
           "translate-x-full": isMobile && !dialog.showDialog,
           "left-1/2 top-1/2 max-h-[50vh] max-w-96 -translate-x-1/2 -translate-y-1/2 transform rounded-2xl":
             isDesktop,

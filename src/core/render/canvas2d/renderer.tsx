@@ -7,6 +7,7 @@ import { RenderEffect } from "./RenderEffect";
 import { Canvas } from "../../Canvas";
 import TextRiseEffect from "../../effect/concrete/textRiseEffect";
 import { NodeManager } from "../../NodeManager";
+import { appScale } from "../../../utils/platform";
 
 /**
  * 渲染器
@@ -23,14 +24,15 @@ export class Renderer {
   }
 
   resizeWindow(w: number, h: number) {
-    const pixelRatio = window.devicePixelRatio;
+    // HACK: 这里写的什么东西，我不知道，但是它能让画布的大小和屏幕的大小保持一致
+    const scale = window.devicePixelRatio * (1 / appScale);
     this.w = w;
     this.h = h;
-    this.canvas.element.width = w * window.devicePixelRatio;
-    this.canvas.element.height = h * window.devicePixelRatio;
-    this.canvas.element.style.width = `${w}px`;
-    this.canvas.element.style.height = `${h}px`;
-    this.canvas.ctx.scale(pixelRatio, pixelRatio);
+    this.canvas.element.width = w * scale;
+    this.canvas.element.height = h * scale;
+    this.canvas.element.style.width = `${w * (1 / appScale)}px`;
+    this.canvas.element.style.height = `${h * (1 / appScale)}px`;
+    this.canvas.ctx.scale(scale, scale);
   }
 
   /**

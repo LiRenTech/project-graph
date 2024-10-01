@@ -14,7 +14,7 @@ export function InputField({
   placeholder?: string;
 }) {
   return (
-    <div className="flex w-full items-center justify-between rounded-xl p-4 transition focus-within:bg-white/10">
+    <div className="flex w-full items-center justify-between rounded-xl p-4 transition focus-within:bg-white/10 xl:w-2/3 2xl:w-1/2">
       <div className="flex flex-col">
         <span>{title}</span>
         <span className="text-xs text-gray-500">{description}</span>

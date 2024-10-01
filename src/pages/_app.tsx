@@ -50,17 +50,20 @@ export default function App() {
 
   return (
     <DialogProvider>
-      <Dialog />
       <div
         className="relative h-full w-full rounded-xl bg-neutral-950 text-white shadow-2xl"
         style={{ zoom: appScale }}
         onClick={() => setOpenMenu(false)}
       >
+        <Dialog />
         {/* 叠加层，显示窗口控件 */}
         <div
-          className={cn("absolute left-0 top-0 z-40 flex w-full gap-2 p-4 hover:bg-neutral-950/50 transition-all", {
-            "p-8": isMobile,
-          })}
+          className={cn(
+            "absolute left-0 top-0 z-40 flex w-full gap-2 p-4 transition-all hover:bg-neutral-950/50",
+            {
+              "p-8": isMobile,
+            },
+          )}
         >
           {/* 菜单按钮 */}
           <div className="relative">

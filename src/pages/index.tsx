@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Renderer } from "../core/render/canvas2d/render";
+import { Renderer } from "../core/render/canvas2d/renderer";
 import { useDialog } from "../utils/dialog";
 import { Stage } from "../core/stage/Stage";
 import { Controller } from "../core/controller/Controller";
@@ -9,7 +9,6 @@ import { NodeManager } from "../core/NodeManager";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);
-  const canvasWrapperRef: React.RefObject<HTMLDivElement> = useRef(null);
 
   const dialog = useDialog();
 
@@ -21,11 +20,8 @@ export default function Home() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (canvasWrapperRef.current) {
-        const { width, height } =
-          canvasWrapperRef.current.getBoundingClientRect();
-        render?.resizeWindow(width, height);
-        console.log("resize", width, height);
+      if (canvasElement) {
+        render?.resizeWindow(window.innerWidth, window.innerHeight);
       }
     };
 
@@ -33,7 +29,7 @@ export default function Home() {
     const stage = new Stage(new Camera());
 
     if (canvasElement) {
-      const canvasObject = new Canvas(canvasElement!);
+      const canvasObject = new Canvas(canvasElement);
 
       render = new Renderer(
         canvasObject,
@@ -69,12 +65,5 @@ export default function Home() {
     };
   }, []);
 
-  return (
-    <div ref={canvasWrapperRef} className="h-full w-full bg-stone-900">
-      <canvas
-        ref={canvasRef}
-        className="absolute left-0 top-0 h-full w-full ring"
-      />
-    </div>
-  );
+  return <canvas ref={canvasRef} />;
 }

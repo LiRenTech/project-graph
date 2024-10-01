@@ -2,7 +2,7 @@ import Color from "../../Color";
 import CircleFlameEffect from "../../effect/concrete/circleFlameEffect";
 import TextRiseEffect from "../../effect/concrete/textRiseEffect";
 import { Vector } from "../../Vector";
-import { Renderer } from "./render";
+import { Renderer } from "./renderer";
 import { RenderUtils } from "./RenderUtils";
 
 export namespace RenderEffect {
