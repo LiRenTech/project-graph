@@ -31,6 +31,12 @@ export namespace Stage {
   export let warningNodes: Node[] = [];
 
   /**
+   * 用于多重连接
+   */
+  export let connectFromNodes: Node[] = [];
+  export let connectToNode: Node | null = null;
+
+  /**
    * 逻辑总入口
    */
   export function logicTick() {

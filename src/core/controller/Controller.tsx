@@ -183,6 +183,26 @@ export namespace Controller {
         Stage.isCutting = true;
       } else {
         // 连接线
+        Stage.isCutting = false;
+        // [node for node in NodeManager.nodes if node.isSelected]
+        Stage.connectFromNodes = [];
+        for (const node of NodeManager.nodes) {
+          if (node.isSelected) {
+            Stage.connectFromNodes.push(node);
+          }
+        }
+        if (Stage.connectFromNodes.includes(clickedNode)) {
+          // 多重连接
+          for (const node of NodeManager.nodes) {
+            if (node.isSelected) {
+              // 特效
+            }
+          }
+        } else {
+          // 不触发多重连接
+          Stage.connectFromNodes = [clickedNode];
+          // 特效
+        }
       }
     }
     lastMoveLocation = pressWorldLocation.clone();
@@ -250,6 +270,7 @@ export namespace Controller {
       // 右键按下
       lastMoveLocation = worldLocation.clone();
       if (Stage.isCutting) {
+        // 正在切断线
         Stage.cuttingLine = new Line(
           lastMousePressLocation[2],
           lastMoveLocation,
@@ -259,6 +280,19 @@ export namespace Controller {
           if (node.rectangle.isCollideWithLine(Stage.cuttingLine)) {
             Stage.warningNodes.push(node);
           }
+        }
+      } else {
+        // 连接线
+        let isFindConnectToNode = false;
+        for (const node of NodeManager.nodes) {
+          if (node.rectangle.isPointInside(worldLocation)) {
+            Stage.connectToNode = node;
+            isFindConnectToNode = true;
+            break;
+          }
+        }
+        if (!isFindConnectToNode) {
+          Stage.connectToNode = null;
         }
       }
     }
@@ -287,6 +321,24 @@ export namespace Controller {
       setCursorName("default");
     } else if (e.button === 2) {
       // 右键松开
+
+      // 结束连线
+      if (Stage.connectFromNodes.length > 0 && Stage.connectToNode !== null) {
+        let isHaveConnectResult = false; // 在多重链接的情况下，是否有连接成功
+        for (const node of Stage.connectFromNodes) {
+          const connectResult = NodeManager.connectNode(
+            node,
+            Stage.connectToNode,
+          );
+          if (connectResult) {
+            // 连接成功，特效
+            isHaveConnectResult = true;
+          }
+        }
+        if (isHaveConnectResult) {
+          // 给连向的那个节点加特效
+        }
+      }
       if (Stage.isCutting) {
         NodeManager.deleteNodes(Stage.warningNodes);
         Stage.warningNodes = [];
@@ -384,7 +436,9 @@ export namespace Controller {
     if (key === " ") {
       setCursorName("grab");
     } else if (key === "delete") {
-      NodeManager.deleteNodes(NodeManager.nodes.filter((node) => node.isSelected));
+      NodeManager.deleteNodes(
+        NodeManager.nodes.filter((node) => node.isSelected),
+      );
     }
   }
 

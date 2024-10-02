@@ -20,6 +20,9 @@ export namespace NodeManager {
     edges.push(edge);
   }
 
+  /**
+   * 更新节点的引用，将unknown的节点替换为真实的节点
+   */
   export function updateReferences() {
     for (const node of nodes) {
       for (const otherNode of nodes) {
@@ -145,6 +148,25 @@ export namespace NodeManager {
         visitedUUIDs.concat(currentNode.uuid),
       );
     }
+  }
+
+  export function connectNode(fromNode: Node, toNode: Node): boolean {
+    if (nodes.includes(fromNode) && nodes.includes(toNode)) {
+      const addResult = fromNode.addChild(toNode);
+      const newEdge = new Edge({
+        source: fromNode.uuid,
+        target: toNode.uuid,
+        text: "",
+      });
+
+      // TODO 双向线检测
+
+      edges.push(newEdge);
+
+      updateReferences();
+      return addResult;
+    }
+    return false;
   }
 
   /**

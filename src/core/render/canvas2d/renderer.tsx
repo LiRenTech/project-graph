@@ -101,6 +101,39 @@ export namespace Renderer {
         2,
       );
     }
+    // 手动连接线  BUG:
+    if (Stage.connectFromNodes.length > 0 && Controller.lastMoveLocation) {
+      // 如果鼠标位置没有和任何节点相交
+      let connectTargetNode = null;
+      for (const node of NodeManager.nodes) {
+        if (node.rectangle.isPointInside(Controller.lastMoveLocation)) {
+          connectTargetNode = node;
+          break;
+        }
+      }
+      if (connectTargetNode === null) {
+        for (const node of Stage.connectFromNodes) {
+          RenderUtils.renderGradientLine(
+            transformWorld2View(node.rectangle.getCenter()),
+            transformWorld2View(Controller.lastMoveLocation),
+            new Color(255, 255, 255, 0.5),
+            new Color(255, 255, 255, 0.5),
+            2,
+          );
+        }
+      } else {
+        // 画一条像吸住了的线
+        for (const node of Stage.connectFromNodes) {
+          RenderUtils.renderGradientLine(
+            transformWorld2View(node.rectangle.getCenter()),
+            transformWorld2View(connectTargetNode.rectangle.getCenter()),
+            new Color(255, 255, 255, 0.5),
+            new Color(255, 255, 255, 0.5),
+            2,
+          );
+        }
+      }
+    }
 
     // 画详细信息
     renderDetails();
@@ -248,8 +281,8 @@ export namespace Renderer {
       `location: ${Camera.location.x.toFixed(2)}, ${Camera.location.y.toFixed(2)}`,
       // `canvas rect: ${canvasRect.toString()}`,
       `window: ${w}x${h}`,
-      `node count: ${renderedNodes} / ${NodeManager.nodes.length}`,
-      `edge count: ${renderedEdges} / ${NodeManager.edges.length}`,
+      `node count: ${renderedNodes} , ${NodeManager.nodes.length}`,
+      `edge count: ${renderedEdges} , ${NodeManager.edges.length}`,
       `pressingKeys: ${Controller.pressingKeysString()}`,
       `鼠标按下情况: ${Controller.isMouseDown}`,
       `鼠标上次按下位置: ${Controller.lastMousePressLocationString()}`,
