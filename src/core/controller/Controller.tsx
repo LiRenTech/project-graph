@@ -457,16 +457,19 @@ export namespace Controller {
         NodeManager.addNodeByClick(
           Renderer.transformView2World(new Vector(x, y)),
         );
+        Stage.effects.push(
+          new CircleFlameEffect(
+            new ProgressNumber(0, 40),
+            Renderer.transformView2World(new Vector(x, y)),
+            100,
+            new Color(0, 255, 0, 1),
+          ),
+        );
       }
+    } else if (button === 1) {
+      // 中键双击
+      Camera.reset();
     }
-    Stage.effects.push(
-      new CircleFlameEffect(
-        new ProgressNumber(0, 40),
-        Renderer.transformView2World(new Vector(x, y)),
-        100,
-        new Color(0, 255, 0, 1),
-      ),
-    );
   }
 
   function keydown(event: KeyboardEvent) {
