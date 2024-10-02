@@ -30,4 +30,12 @@ export default defineConfig(async () => ({
       ignored: ["**/src-tauri/**"],
     },
   },
+  
+  // 2024年10月3日发现 pnpm build 会报错，
+  // Top-level await is not available in the configured target environment
+  // https://github.com/vitejs/vite/issues/6985
+  build: {
+    target: 'esnext'
+  }
+  // 添加上面的配置解决了
 }));
