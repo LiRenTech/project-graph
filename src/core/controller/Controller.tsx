@@ -177,7 +177,7 @@ export namespace Controller {
 
         if (isHaveNodeSelected) {
           // C
-          clickedNode.isSelected = true;
+
           if (clickedNode.isSelected) {
             // C1
           } else {
@@ -186,6 +186,7 @@ export namespace Controller {
               node.isSelected = false;
             });
           }
+          clickedNode.isSelected = true;
           isMovingNode = true;
         } else {
           // D
