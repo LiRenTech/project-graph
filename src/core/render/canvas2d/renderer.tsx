@@ -238,13 +238,30 @@ export namespace Renderer {
           new Color(255, 255, 255),
           2 * Camera.currentScale,
         );
-        RenderUtils.rendArrow_(
-          edge.target.rectangle
-            .getCenter()
-            .subtract(edge.source.rectangle.getCenter()),
-          transformWorld2View(endPoint),
+        // 画箭头
+        const size = 15;
+        const direction = edge.target.rectangle
+          .getCenter()
+          .subtract(edge.source.rectangle.getCenter())
+          .normalize();
+        const reDirection = direction.clone().multiply(-1);
+        const location2 = endPoint.add(
+          reDirection.multiply(size).rotateDegrees(15),
+        );
+        const location3 = endPoint.add(reDirection.multiply(size * 0.5));
+        const location4 = endPoint.add(
+          reDirection.multiply(size).rotateDegrees(-15),
+        );
+        RenderUtils.renderPolygonAndFill(
+          [
+            Renderer.transformWorld2View(endPoint),
+            Renderer.transformWorld2View(location2),
+            Renderer.transformWorld2View(location3),
+            Renderer.transformWorld2View(location4),
+          ],
           new Color(255, 255, 255),
-          30,
+          new Color(255, 255, 255),
+          2 * Camera.currentScale,
         );
       }
 
