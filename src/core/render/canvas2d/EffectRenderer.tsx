@@ -1,7 +1,7 @@
 import { Canvas } from "../../Canvas";
 import { Color } from "../../Color";
-import { CircleFlameEffect } from "../../effect/concrete/circleFlameEffect";
-import { TextRiseEffect } from "../../effect/concrete/textRiseEffect";
+import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
+import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
 import { easeInOutSine } from "../../effect/easings";
 import { Camera } from "../../stage/Camera";
 import { Vector } from "../../Vector";

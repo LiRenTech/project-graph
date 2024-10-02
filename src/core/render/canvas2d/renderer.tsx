@@ -1,16 +1,16 @@
 import { Color } from "../../Color";
-import { CircleFlameEffect } from "../../effect/concrete/circleFlameEffect";
 import { Vector } from "../../Vector";
 import { Stage } from "../../stage/Stage";
 import { RenderUtils } from "./RenderUtils";
 import { EffectRenderer } from "./EffectRenderer";
 import { Canvas } from "../../Canvas";
-import { TextRiseEffect } from "../../effect/concrete/textRiseEffect";
+import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
 import { NodeManager } from "../../NodeManager";
 import { appScale } from "../../../utils/platform";
 import { Rectangle } from "../../Rectangle";
 import { Camera } from "../../stage/Camera";
 import { Controller } from "../../controller/Controller";
+import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 
 /**
  * 渲染器

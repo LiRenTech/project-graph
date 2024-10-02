@@ -1,10 +1,10 @@
 import { Color } from "../Color";
-import { CircleFlameEffect } from "../effect/concrete/circleFlameEffect";
+import { CircleFlameEffect } from "../effect/concrete/CircleFlameEffect";
 import { ProgressNumber } from "../ProgressNumber";
 import { Vector } from "../Vector";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Stage } from "../stage/Stage";
-import { TextRiseEffect } from "../effect/concrete/textRiseEffect";
+import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
 import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";
 import { Rectangle } from "../Rectangle";

@@ -1,4 +1,4 @@
-import { TextRiseEffect } from "../effect/concrete/textRiseEffect";
+import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
 import { NodeManager } from "../NodeManager";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Vector } from "../Vector";

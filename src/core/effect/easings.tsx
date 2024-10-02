@@ -1,3 +1,12 @@
+/**
+ * 此模块定义了一些常见的缓动函数
+ */
+
+/**
+ *
+ * @param t
+ * @returns
+ */
 export const easeInSine = (t: number) => 1 - Math.cos((t * Math.PI) / 2);
 export const easeOutSine = (t: number) => Math.sin((t * Math.PI) / 2);
 export const easeInOutSine = (t: number) => -(Math.cos(Math.PI * t) - 1) / 2;
