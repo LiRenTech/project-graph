@@ -127,6 +127,9 @@ export namespace NodeManager {
 
   export function rotateNode(node: Node, angle: number) {
     rotateNodeDfs(node, node, angle, []);
+    updateReferences();
+    console.log(nodes);
+    console.log(edges);
   }
 
   /**
@@ -148,7 +151,7 @@ export namespace NodeManager {
     let centerToChildVector = currentNode.rectangle.center
       .subtract(rotateCenterLocation)
       .normalize();
-    centerToChildVector = centerToChildVector.rotate(degrees).multiply(radius);
+    centerToChildVector = centerToChildVector.rotateDegrees(degrees).multiply(radius);
     const newLocation = rotateCenterLocation.add(centerToChildVector);
     currentNode.moveTo(
       newLocation.subtract(currentNode.rectangle.size.divide(2)),

@@ -39,9 +39,21 @@ export class Vector {
     return Math.sqrt(this.x ** 2 + this.y ** 2);
   }
 
+  /**
+   * 获得向量的单位向量
+   * 如果向量的模长为0，则返回(0,0)
+   * @returns 
+   */
   normalize(): Vector {
     const mag = this.magnitude();
-    return new Vector(this.x / mag, this.y / mag);
+    const x = this.x / mag;
+    const y = this.y / mag;
+
+    if (Number.isNaN(x) || Number.isNaN(y)) {
+      return Vector.getZero();
+    }
+
+    return new Vector(x, y);
   }
 
   dot(vector: Vector): number {
@@ -93,6 +105,11 @@ export class Vector {
     return (this.angle(vector) * 180) / Math.PI;
   }
 
+  /**
+   * 从自己这个向量所指向的点到另一个向量所指向的点的距离
+   * @param vector
+   * @returns
+   */
   distance(vector: Vector): number {
     const dx = this.x - vector.x;
     const dy = this.y - vector.y;

@@ -424,11 +424,12 @@ export namespace Controller {
           NodeManager.rotateNode(hoverNode, -10);
         }
       }
-    }
-    if (e.deltaY > 0) {
-      Camera.targetScale *= 0.8;
     } else {
-      Camera.targetScale *= 1.2;
+      if (e.deltaY > 0) {
+        Camera.targetScale *= 0.8;
+      } else {
+        Camera.targetScale *= 1.2;
+      }
     }
   }
 
