@@ -72,6 +72,7 @@ export namespace Camera {
       Stage.effects.push(
         new TextRiseEffect("派蒙：前面的区域以后再来探索吧？"),
       );
+      speed = Vector.getZero();
       reset();
       return;
     }
