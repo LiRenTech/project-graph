@@ -22,7 +22,7 @@ export namespace Renderer {
   export const NODE_PADDING = 14;
   export let w = 0;
   export let h = 0;
-  let canvasRect: Rectangle;
+  // let canvasRect: Rectangle;
   export let renderedNodes: number = 0;
   export let renderedEdges: number = 0;
 
@@ -257,7 +257,7 @@ export namespace Renderer {
       `框选框: ${Stage.selectingRectangle}`,
       `正在移动节点: ${Controller.isMovingNode}`,
       `正在切割: ${Stage.isCutting}`,
-      `Stage.warningNodes: ${Stage.warningNodes.length}`
+      `Stage.warningNodes: ${Stage.warningNodes.length}`,
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(
