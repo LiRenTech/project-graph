@@ -348,11 +348,28 @@ export namespace Controller {
           if (connectResult) {
             // 连接成功，特效
             isHaveConnectResult = true;
+            Stage.effects.push(
+              new CircleFlameEffect(
+                new ProgressNumber(0, 15),
+                node.rectangle.center,
+                80,
+                new Color(0, 255, 0, 1),
+              ),
+            );
           }
         }
         if (isHaveConnectResult) {
           // 给连向的那个节点加特效
+          Stage.effects.push(
+            new CircleFlameEffect(
+              new ProgressNumber(0, 15),
+              Stage.connectToNode.rectangle.center,
+              80,
+              new Color(0, 255, 0, 1),
+            ),
+          );
         }
+        Stage.connectFromNodes = [];
       }
       if (Stage.isCutting) {
         NodeManager.deleteNodes(Stage.warningNodes);

@@ -113,10 +113,9 @@ export namespace Renderer {
       }
       if (connectTargetNode === null) {
         for (const node of Stage.connectFromNodes) {
-          RenderUtils.renderGradientLine(
+          RenderUtils.renderSolidLine(
             transformWorld2View(node.rectangle.getCenter()),
             transformWorld2View(Controller.lastMoveLocation),
-            new Color(255, 255, 255, 0.5),
             new Color(255, 255, 255, 0.5),
             2,
           );
@@ -124,10 +123,9 @@ export namespace Renderer {
       } else {
         // 画一条像吸住了的线
         for (const node of Stage.connectFromNodes) {
-          RenderUtils.renderGradientLine(
+          RenderUtils.renderSolidLine(
             transformWorld2View(node.rectangle.getCenter()),
             transformWorld2View(connectTargetNode.rectangle.getCenter()),
-            new Color(255, 255, 255, 0.5),
             new Color(255, 255, 255, 0.5),
             2,
           );
