@@ -22,7 +22,7 @@ export default function Dialog() {
   return (
     <div
       className={cn(
-        "fixed z-50 flex flex-col gap-4 overflow-auto text-wrap break-words p-8 text-white shadow-xl shadow-neutral-900 transition",
+        "fixed z-50 flex flex-col gap-4 overflow-auto text-wrap break-words p-8 text-white shadow-xl shadow-neutral-900 transition duration-500 ease-[cubic-bezier(.19,1,.22,1)]",
         {
           "pointer-events-none": !dialog.showDialog,
           "bottom-0 right-0 top-0 w-1/4 duration-300": isMobile,

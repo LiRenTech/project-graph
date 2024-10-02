@@ -54,12 +54,13 @@ export namespace Renderer {
     Canvas.ctx.fillStyle = "#2b2b2b";
     Canvas.ctx.fillRect(0, 0, w, h);
 
-    canvasRect = new Rectangle(
-      Camera.location.subtract(
-        new Vector(w / 2, h / 2).multiply(1 / Camera.currentScale),
-      ), // 计算左上角在世界坐标中的位置
-      new Vector(w, h).divide(Camera.currentScale), // 缩放后的大小
-    );
+    // TODO: 这里的计算应该是基于视野的，而不是整个画布的
+    // canvasRect = new Rectangle(
+    //   Camera.location.subtract(
+    //     new Vector(w / 2, h / 2).multiply(1 / Camera.currentScale),
+    //   ), // 计算左上角在世界坐标中的位置
+    //   new Vector(w, h).divide(Camera.currentScale), // 缩放后的大小
+    // );
 
     // 画网格
     renderGrid();
@@ -111,9 +112,9 @@ export namespace Renderer {
   export function renderEntities() {
     renderedNodes = 0;
     for (const node of NodeManager.nodes) {
-      if (!canvasRect.isCollideWith(node.rectangle)) {
-        continue;
-      }
+      // if (!canvasRect.isCollideWith(node.rectangle)) {
+      //   continue;
+      // }
 
       RenderUtils.renderRect(
         new Rectangle(
@@ -160,10 +161,10 @@ export namespace Renderer {
   export function renderEdges() {
     renderedEdges = 0;
     for (const edge of NodeManager.edges) {
-      const lineRect = Rectangle.fromPoints(
-        edge.source.rectangle.getCenter(),
-        edge.target.rectangle.getCenter(),
-      );
+      // const lineRect = Rectangle.fromPoints(
+      //   edge.source.rectangle.getCenter(),
+      //   edge.target.rectangle.getCenter(),
+      // );
 
       // RenderUtils.renderRect(
       //   lineRect,
@@ -171,9 +172,9 @@ export namespace Renderer {
       //   new Color(255, 255, 255, 0.5),
       //   2 * Camera.currentScale,
       // );
-      if (!canvasRect.isCollideWith(lineRect)) {
-        continue;
-      }
+      // if (!canvasRect.isCollideWith(lineRect)) {
+      //   continue;
+      // }
       RenderUtils.renderSolidLine(
         transformWorld2View(edge.source.rectangle.getCenter()),
         transformWorld2View(edge.target.rectangle.getCenter()),
