@@ -69,6 +69,9 @@ export namespace Controller {
   export let touchStartDistance = 0;
   export let touchDelta = Vector.getZero();
 
+  export let lastClickTime = 0;
+  export let lastClickLocation = Vector.getZero();
+
   export let isMouseDown: boolean[] = [false, false, false];
   export let canvasElement: HTMLCanvasElement;
 
@@ -81,15 +84,14 @@ export namespace Controller {
     canvasElement.addEventListener("mousemove", mousemove);
     canvasElement.addEventListener("mouseup", mouseup);
     canvasElement.addEventListener("wheel", mousewheel);
-    canvasElement.addEventListener("dblclick", dblclick);
-    canvasElement.addEventListener("touchstart", touchstart);
-    canvasElement.addEventListener("touchmove", touchmove);
-    canvasElement.addEventListener("touchend", touchend);
+    canvasElement.addEventListener("touchstart", touchstart, false);
+    canvasElement.addEventListener("touchmove", touchmove, false);
+    canvasElement.addEventListener("touchend", touchend, false);
   }
 
-  function moveCameraByMouseMove(e: MouseEvent, mouseIndex: number) {
+  function moveCameraByMouseMove(x: number, y: number, mouseIndex: number) {
     const currentMouseMoveLocation = Renderer.transformView2World(
-      new Vector(e.clientX, e.clientY),
+      new Vector(x, y),
     );
     const diffLocation = currentMouseMoveLocation.subtract(
       lastMousePressLocation[mouseIndex],
@@ -97,19 +99,36 @@ export namespace Controller {
     Camera.location = Camera.location.subtract(diffLocation);
   }
 
-  function mousedown(e: MouseEvent) {
-    // 阻止默认行为，防止右键菜单弹出
-    e.preventDefault();
+  function mousedown(event: MouseEvent) {
+    event.preventDefault();
+    handleMousedown(event.button, event.clientX, event.clientY);
+  }
 
-    isMouseDown[e.button] = true;
+  function mousemove(event: MouseEvent) {
+    event.preventDefault();
+    handleMousemove(event.clientX, event.clientY);
+  }
 
-    const pressWorldLocation = Renderer.transformView2World(
-      new Vector(e.clientX, e.clientY),
-    );
+  function mouseup(event: MouseEvent) {
+    event.preventDefault();
+    handleMouseup(event.button, event.clientX, event.clientY);
+  }
+
+  function handleMousedown(button: number, x: number, y: number) {
+    isMouseDown[button] = true;
+    if (
+      Date.now() - lastClickTime < 200 &&
+      lastClickLocation.distance(new Vector(x, y)) < 10
+    ) {
+      handleDblclick(button, x, y);
+    }
+    lastClickTime = Date.now();
+    lastClickLocation = new Vector(x, y);
+
+    const pressWorldLocation = Renderer.transformView2World(new Vector(x, y));
     const clickedNode = NodeManager.findNodeByLocation(pressWorldLocation);
 
     // 获取左右中键
-    const button = e.button;
     lastMousePressLocation[button] = pressWorldLocation;
     if (button === 0) {
       /**
@@ -150,7 +169,7 @@ export namespace Controller {
         Stage.effects.push(
           new CircleFlameEffect(
             new ProgressNumber(0, 40),
-            Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
+            Renderer.transformView2World(new Vector(x, y)),
             50,
             new Color(255, 0, 0, 1),
           ),
@@ -214,14 +233,12 @@ export namespace Controller {
     // );
   }
 
-  function mousemove(e: MouseEvent) {
-    const worldLocation = Renderer.transformView2World(
-      new Vector(e.clientX, e.clientY),
-    );
+  function handleMousemove(x: number, y: number) {
+    const worldLocation = Renderer.transformView2World(new Vector(x, y));
     // 如果当前有按下空格
     if (pressingKeySet.has(" ") && isMouseDown[0]) {
       console.log("空格按下的同时按下了鼠标左键");
-      moveCameraByMouseMove(e, 0);
+      moveCameraByMouseMove(x, y, 0);
       setCursorName("grabbing");
       return;
     }
@@ -263,7 +280,7 @@ export namespace Controller {
       lastMoveLocation = worldLocation.clone();
     } else if (isMouseDown[1]) {
       // 中键按下
-      moveCameraByMouseMove(e, 1);
+      moveCameraByMouseMove(x, y, 1);
       setCursorName("grabbing");
       return;
     } else if (isMouseDown[2]) {
@@ -299,13 +316,11 @@ export namespace Controller {
     // setCursorName("default");
   }
 
-  function mouseup(e: MouseEvent) {
-    // 阻止默认行为
-    e.preventDefault();
-    isMouseDown[e.button] = false;
+  function handleMouseup(button: number, x: number, y: number) {
+    isMouseDown[button] = false;
     // 记录松开位置
-    lastMouseReleaseLocation[e.button] = Renderer.transformView2World(
-      new Vector(e.clientX, e.clientY),
+    lastMouseReleaseLocation[button] = Renderer.transformView2World(
+      new Vector(x, y),
     );
 
     if (isMovingNode) {
@@ -313,13 +328,13 @@ export namespace Controller {
       isMovingNode = false;
     }
 
-    if (e.button === 0) {
+    if (button === 0) {
       // 左键松开
       Stage.isSelecting = false;
-    } else if (e.button === 1) {
+    } else if (button === 1) {
       // 中键松开
       setCursorName("default");
-    } else if (e.button === 2) {
+    } else if (button === 2) {
       // 右键松开
 
       // 结束连线
@@ -385,13 +400,11 @@ export namespace Controller {
     }
   }
 
-  function dblclick(e: MouseEvent) {
-    const pressLocation = Renderer.transformView2World(
-      new Vector(e.clientX, e.clientY),
-    );
+  function handleDblclick(button: number, x: number, y: number) {
+    const pressLocation = Renderer.transformView2World(new Vector(x, y));
     let clickedNode = NodeManager.findNodeByLocation(pressLocation);
     // 如果是左键
-    if (e.button === 0) {
+    if (button === 0) {
       for (const node of NodeManager.nodes) {
         if (node.rectangle.isPointInside(pressLocation)) {
           Stage.effects.push(new TextRiseEffect("Node clicked: " + node.uuid));
@@ -409,14 +422,14 @@ export namespace Controller {
       } else {
         // 新建节点
         NodeManager.addNodeByClick(
-          Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
+          Renderer.transformView2World(new Vector(x, y)),
         );
       }
     }
     Stage.effects.push(
       new CircleFlameEffect(
         new ProgressNumber(0, 40),
-        Renderer.transformView2World(new Vector(e.clientX, e.clientY)),
+        Renderer.transformView2World(new Vector(x, y)),
         100,
         new Color(0, 255, 0, 1),
       ),
@@ -463,6 +476,10 @@ export namespace Controller {
 
   function touchstart(e: TouchEvent) {
     e.preventDefault();
+
+    if (e.touches.length === 1) {
+      handleMousedown(0, e.touches[0].clientX, e.touches[0].clientY);
+    }
     if (e.touches.length === 2) {
       const touch1 = Vector.fromTouch(e.touches[0]);
       const touch2 = Vector.fromTouch(e.touches[1]);
@@ -477,6 +494,9 @@ export namespace Controller {
   function touchmove(e: TouchEvent) {
     e.preventDefault();
 
+    if (e.touches.length === 1) {
+      handleMousemove(e.touches[0].clientX, e.touches[0].clientY);
+    }
     if (e.touches.length === 2) {
       const touch1 = Vector.fromTouch(e.touches[0]);
       const touch2 = Vector.fromTouch(e.touches[1]);
@@ -503,6 +523,13 @@ export namespace Controller {
 
   function touchend(e: TouchEvent) {
     e.preventDefault();
+    if (e.changedTouches.length === 1) {
+      handleMouseup(
+        0,
+        e.changedTouches[0].clientX,
+        e.changedTouches[0].clientY,
+      );
+    }
     // 移动画面
     Camera.accelerateCommander = touchDelta
       .multiply(-1)
@@ -518,14 +545,13 @@ export namespace Controller {
   export function destroy() {
     window.removeEventListener("keydown", keydown);
     window.removeEventListener("keyup", keyup);
-    canvasElement.removeEventListener("mousedown", mousedown);
-    canvasElement.removeEventListener("mousemove", mousemove);
-    canvasElement.removeEventListener("mouseup", mouseup);
-    canvasElement.removeEventListener("wheel", mousewheel);
-    canvasElement.removeEventListener("dblclick", dblclick);
-    canvasElement.removeEventListener("touchstart", touchstart);
-    canvasElement.removeEventListener("touchmove", touchmove);
-    canvasElement.removeEventListener("touchend", touchend);
+    canvasElement?.removeEventListener("mousedown", mousedown);
+    canvasElement?.removeEventListener("mousemove", mousemove);
+    canvasElement?.removeEventListener("mouseup", mouseup);
+    canvasElement?.removeEventListener("wheel", mousewheel);
+    canvasElement?.removeEventListener("touchstart", touchstart);
+    canvasElement?.removeEventListener("touchmove", touchmove);
+    canvasElement?.removeEventListener("touchend", touchend);
     console.log("Controller destroyed.");
   }
 }
