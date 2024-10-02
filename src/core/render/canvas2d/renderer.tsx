@@ -99,6 +99,13 @@ export namespace Renderer {
           1,
         );
       }
+      RenderUtils.renderGradientLine(
+        transformWorld2View(Stage.selectStartLocation),
+        transformWorld2View(Stage.selectEndLocation),
+        new Color(255, 255, 255, 0  ),
+        new Color(255, 255, 255, 0.5),
+        2
+      )
     }
     // 切割线
     if (Stage.isCutting) {

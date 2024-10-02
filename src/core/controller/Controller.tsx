@@ -161,6 +161,8 @@ export namespace Controller {
           // B
         }
         Stage.isSelecting = true;
+        Stage.selectStartLocation = pressWorldLocation.clone();
+        Stage.selectEndLocation = pressWorldLocation.clone();
         Stage.selectingRectangle = new Rectangle(
           pressWorldLocation.clone(),
           Vector.getZero(),
@@ -247,12 +249,21 @@ export namespace Controller {
       // 左键按下
       if (Stage.isSelecting) {
         // 正在框选
+        Stage.selectEndLocation = worldLocation.clone();
 
         if (Stage.selectingRectangle) {
           // 更新选择框的大小
-          Stage.selectingRectangle.size = worldLocation.subtract(
-            lastMousePressLocation[0],
-          );
+          // 判断两个点谁在左上
+          let leftTop = Stage.selectStartLocation.clone();
+          let rightBottom = Stage.selectEndLocation.clone();
+          if (leftTop.x > rightBottom.x) {
+            [leftTop.x, rightBottom.x] = [rightBottom.x, leftTop.x];
+          }
+          if (leftTop.y > rightBottom.y) {
+            [leftTop.y, rightBottom.y] = [rightBottom.y, leftTop.y];
+          }
+          Stage.selectingRectangle.location = leftTop;
+          Stage.selectingRectangle.size = rightBottom.subtract(leftTop);
           // 先清空所有已经选择了的
           NodeManager.nodes.forEach((node) => {
             node.isSelected = false;

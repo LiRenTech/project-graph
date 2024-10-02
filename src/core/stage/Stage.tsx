@@ -18,8 +18,18 @@ export namespace Stage {
    * 框选框
    * 这里必须一开始为null，否则报错，can not asses "Rectangle"
    * 这个框选框是基于世界坐标的。
+   * 此变量会根据两个点的位置自动更新。
    */
   export let selectingRectangle: Rectangle | null = null;
+
+  /**
+   * 框选框的起点
+   */
+  export let selectStartLocation: Vector = Vector.getZero();
+  /**
+   * 框选框的终点
+   */
+  export let selectEndLocation: Vector = Vector.getZero();
 
   /**
    * 是否正在切断连线或切割
