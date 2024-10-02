@@ -80,6 +80,15 @@ export namespace Renderer {
         8 * Camera.currentScale,
       );
     }
+    // 待删除的边
+    for (const edge of Stage.warningEdges) {
+      RenderUtils.renderSolidLine(
+        transformWorld2View(edge.source.rectangle.getCenter()),
+        transformWorld2View(edge.target.rectangle.getCenter()),
+        new Color(255, 0, 0, 0.5),
+        2 * Camera.currentScale,
+      );
+    }
     // 框选框
     if (Stage.isSelecting) {
       if (Stage.selectingRectangle) {
@@ -299,6 +308,7 @@ export namespace Renderer {
       `正在移动节点: ${Controller.isMovingNode}`,
       `正在切割: ${Stage.isCutting}`,
       `Stage.warningNodes: ${Stage.warningNodes.length}`,
+      `Stage.warningEdges: ${Stage.warningEdges.length}`,
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(

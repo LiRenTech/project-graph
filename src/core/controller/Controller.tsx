@@ -298,6 +298,12 @@ export namespace Controller {
             Stage.warningNodes.push(node);
           }
         }
+        Stage.warningEdges = [];
+        for (const edge of NodeManager.edges) {
+          if (edge.bodyLine.isIntersecting(Stage.cuttingLine)) {
+            Stage.warningEdges.push(edge);
+          }
+        }
       } else {
         // 连接线
         let isFindConnectToNode = false;
@@ -374,6 +380,14 @@ export namespace Controller {
       if (Stage.isCutting) {
         NodeManager.deleteNodes(Stage.warningNodes);
         Stage.warningNodes = [];
+
+        for (const edge of NodeManager.edges) {
+          NodeManager.deleteEdge(edge);
+        }
+        NodeManager.updateReferences();
+
+        Stage.warningEdges = [];
+
         Stage.effects.push(
           new LineCuttingEffect(
             new ProgressNumber(0, 15),

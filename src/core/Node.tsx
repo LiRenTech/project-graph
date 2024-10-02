@@ -73,4 +73,13 @@ export class Node {
     this.children.push(child);
     return true;
   }
+
+  removeChild(child: Node): boolean {
+    if (this.children.some((c) => c.uuid === child.uuid)) {
+      const index = this.children.indexOf(child);
+      this.children.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
 }

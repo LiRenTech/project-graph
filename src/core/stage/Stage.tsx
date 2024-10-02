@@ -1,3 +1,4 @@
+import { Edge } from "../Edge";
 import { Effect } from "../effect/effect";
 import { Line } from "../Line";
 import { Node } from "../Node";
@@ -29,7 +30,10 @@ export namespace Stage {
    * 正在准备要删除的节点
    */
   export let warningNodes: Node[] = [];
-
+  /**
+   * 正在准备要删除的连线
+   */
+  export let warningEdges: Edge[] = [];
   /**
    * 用于多重连接
    */

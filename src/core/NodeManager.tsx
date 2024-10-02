@@ -109,6 +109,22 @@ export namespace NodeManager {
     updateReferences();
   }
 
+  export function deleteEdge(deleteEdge: Edge): boolean {
+    const fromNode = deleteEdge.source;
+    const toNode = deleteEdge.target;
+    // 先判断这两个节点是否在nodes里
+    if (nodes.includes(fromNode) && nodes.includes(toNode)) {
+      // 从数组中去除
+      const res = fromNode.removeChild(toNode);
+      // 删除边
+      edges.splice(edges.indexOf(deleteEdge), 1);
+      return res;
+    } else {
+      console.log("node not in nodes");
+      return false;
+    }
+  }
+
   export function rotateNode(node: Node, angle: number) {
     rotateNodeDfs(node, node, angle, []);
   }
