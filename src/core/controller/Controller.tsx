@@ -8,6 +8,7 @@ import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
 import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";
 import { Rectangle } from "../Rectangle";
+import { LineCuttingEffect } from "../effect/concrete/LineCuttingEffect";
 
 export namespace Controller {
   /**
@@ -181,7 +182,6 @@ export namespace Controller {
         Stage.isCutting = true;
       } else {
         // 连接线
-
       }
     }
     lastMoveLocation = pressWorldLocation.clone();
@@ -256,14 +256,16 @@ export namespace Controller {
     // 阻止默认行为
     e.preventDefault();
     isMouseDown[e.button] = false;
+    // 记录松开位置
+    lastMouseReleaseLocation[e.button] = Renderer.transformView2World(
+      new Vector(e.clientX, e.clientY),
+    );
+
     if (isMovingNode) {
       NodeManager.moveNodeFinished();
       isMovingNode = false;
     }
-    if (Stage.isCutting) {
-      // 结束切断线
-      Stage.isCutting = false;
-    }
+
     if (e.button === 0) {
       // 左键松开
       Stage.isSelecting = false;
@@ -272,11 +274,25 @@ export namespace Controller {
       setCursorName("default");
     } else if (e.button === 2) {
       // 右键松开
+      if (Stage.isCutting) {
+        Stage.effects.push(
+          new LineCuttingEffect(
+            new ProgressNumber(0, 15),
+            lastMousePressLocation[2],
+            lastMouseReleaseLocation[2],
+            new Color(255, 255, 0, 0),
+            new Color(255, 255, 0, 1),
+            lastMousePressLocation[2].distance(lastMouseReleaseLocation[2]) /
+              10,
+          ),
+        );
+      }
     }
-    // 记录松开位置
-    lastMouseReleaseLocation[e.button] = Renderer.transformView2World(
-      new Vector(e.clientX, e.clientY),
-    );
+
+    if (Stage.isCutting) {
+      // 结束切断线
+      Stage.isCutting = false;
+    }
     // Stage.effects.push(new TextRiseEffect("mouse up"));
   }
 

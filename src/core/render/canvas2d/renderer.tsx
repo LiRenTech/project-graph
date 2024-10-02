@@ -11,6 +11,8 @@ import { Rectangle } from "../../Rectangle";
 import { Camera } from "../../stage/Camera";
 import { Controller } from "../../controller/Controller";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
+import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
+import { LineEffect } from "../../effect/concrete/LineEffect";
 
 /**
  * 渲染器
@@ -196,6 +198,10 @@ export namespace Renderer {
         EffectRenderer.renderCircleFlameEffect(effect);
       } else if (effect instanceof TextRiseEffect) {
         EffectRenderer.renderTextRiseEffect(effect);
+      } else if (effect instanceof LineEffect) {
+        EffectRenderer.renderLineEffect(effect);
+      } else if (effect instanceof LineCuttingEffect) {
+        EffectRenderer.renderLineCuttingEffect(effect);
       }
     }
   }

@@ -72,3 +72,19 @@ export class Color {
     );
   }
 }
+
+/**
+ * 获取两个颜色的中间过渡色（线性混合）
+ * 根据两个颜色，以及一个 0~1 的权重，返回一个新的颜色
+ * 0 权重返回 color1，1 权重返回 color2
+ * @param color1 颜色1
+ * @param color2 颜色2
+ */
+export function mixColors(color1: Color, color2: Color, weight: number): Color {
+  const r = Math.round(color1.r * (1 - weight) + color2.r * weight);
+  const g = Math.round(color1.g * (1 - weight) + color2.g * weight);
+  const b = Math.round(color1.b * (1 - weight) + color2.b * weight);
+  const a = color1.a * (1 - weight) + color2.a * weight;
+  return new Color(r, g, b, a);
+}
+

@@ -1,6 +1,8 @@
 import { Canvas } from "../../Canvas";
-import { Color } from "../../Color";
+import { Color, mixColors } from "../../Color";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
+import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
+import { LineEffect } from "../../effect/concrete/LineEffect";
 import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
 import { easeInOutSine } from "../../effect/easings";
 import { Camera } from "../../stage/Camera";
@@ -52,5 +54,61 @@ export namespace EffectRenderer {
       centerLocation.y - distance * easeInOutSine(effect.timeProgress.rate),
     );
     Canvas.ctx.globalAlpha = 1;
+  }
+
+  export function renderLineEffect(effect: LineEffect) {
+    if (effect.timeProgress.isFull) {
+      return;
+    }
+    const fromLocation = Renderer.transformWorld2View(effect.fromLocation);
+    const toLocation = Renderer.transformWorld2View(effect.toLocation);
+    const fromColor = mixColors(
+      effect.fromColor,
+      effect.fromColor.toTransparent(),
+      effect.timeProgress.rate,
+    );
+    const toColor = mixColors(
+      effect.toColor,
+      effect.toColor.toTransparent(),
+      effect.timeProgress.rate,
+    );
+    RenderUtils.renderGradientLine(
+      fromLocation,
+      toLocation,
+      fromColor,
+      toColor,
+      effect.lineWidth * Camera.currentScale,
+    );
+  }
+  export function renderLineCuttingEffect(effect: LineCuttingEffect) {
+    if (effect.timeProgress.isFull) {
+      return;
+    }
+    const fromLocation = Renderer.transformWorld2View(
+      effect.fromLocation.add(
+        effect.toLocation
+          .subtract(effect.fromLocation)
+          .multiply(effect.timeProgress.rate),
+      ),
+    );
+
+    const toLocation = Renderer.transformWorld2View(effect.toLocation);
+    const fromColor = mixColors(
+      effect.fromColor,
+      effect.fromColor.toTransparent(),
+      effect.timeProgress.rate,
+    );
+    const toColor = mixColors(
+      effect.toColor,
+      effect.toColor.toTransparent(),
+      effect.timeProgress.rate,
+    );
+    RenderUtils.renderGradientLine(
+      fromLocation,
+      toLocation,
+      fromColor,
+      toColor,
+      effect.lineWidth * effect.timeProgress.rate,
+    );
   }
 }
