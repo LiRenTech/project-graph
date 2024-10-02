@@ -21,6 +21,9 @@ export default function About() {
           可以用来绘制但网页打开有点慢了
         </p>
         <p>所以做了这个小软件</p>
+        <h2 className="text-2xl font-bold mt-4">联系我们</h2>
+        <p>如果您想快速获得反馈和提供建议，欢迎加入我们的QQ群：1006956704</p>
+        <h2 className="text-2xl font-bold mt-4">团队简介</h2>
         <p>
           理刃科技是一个由Littlefean和Rutubet在2017年5月1日创立的小型团队，后续ZTY加入团队。
         </p>
