@@ -75,6 +75,16 @@ export namespace Renderer {
         );
       }
     }
+    // 切割线
+    if (Stage.isCutting) {
+      RenderUtils.renderGradientLine(
+        transformWorld2View(Controller.lastMousePressLocation[2]),
+        transformWorld2View(Controller.lastMoveLocation),
+        new Color(255, 0, 0, 0),
+        new Color(255, 0, 0, 1),
+        2,
+      );
+    }
 
     // 画详细信息
     renderDetails();
@@ -225,7 +235,8 @@ export namespace Renderer {
       `鼠标上次按下位置: ${Controller.lastMousePressLocationString()}`,
       `鼠标上次松开位置: ${Controller.lastMouseReleaseLocationString()}`,
       `框选框: ${Stage.selectingRectangle}`,
-      `正在移动节点: ${Controller.isMovingNode}`
+      `正在移动节点: ${Controller.isMovingNode}`,
+      `正在切割: ${Stage.isCutting}`,
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(

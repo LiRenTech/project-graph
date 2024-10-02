@@ -35,7 +35,7 @@ export namespace Controller {
   /**
    * 存放鼠标 左 中 右 键上次 "按下" 时候的world位置
    */
-  const lastMousePressLocation: Vector[] = [
+  export const lastMousePressLocation: Vector[] = [
     Vector.getZero(),
     Vector.getZero(),
     Vector.getZero(),
@@ -176,6 +176,13 @@ export namespace Controller {
       // 中键按下
     } else if (button === 2) {
       // 右键按下
+      if (clickedNode === null) {
+        // 开始绘制切断线
+        Stage.isCutting = true;
+      } else {
+        // 连接线
+
+      }
     }
     lastMoveLocation = pressWorldLocation.clone();
 
@@ -240,6 +247,7 @@ export namespace Controller {
       return;
     } else if (isMouseDown[2]) {
       // 右键按下
+      lastMoveLocation = worldLocation.clone();
     }
     // setCursorName("default");
   }
@@ -251,6 +259,10 @@ export namespace Controller {
     if (isMovingNode) {
       NodeManager.moveNodeFinished();
       isMovingNode = false;
+    }
+    if (Stage.isCutting) {
+      // 结束切断线
+      Stage.isCutting = false;
     }
     if (e.button === 0) {
       // 左键松开

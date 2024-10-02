@@ -18,6 +18,13 @@ export namespace Stage {
   export let selectingRectangle: Rectangle | null = null;
 
   /**
+   * 是否正在切断连线或切割
+   */
+  export let isCutting = false;
+
+  
+
+  /**
    * 逻辑总入口
    */
   export function logicTick() {
