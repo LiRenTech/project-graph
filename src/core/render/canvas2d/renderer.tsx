@@ -102,10 +102,10 @@ export namespace Renderer {
       RenderUtils.renderGradientLine(
         transformWorld2View(Stage.selectStartLocation),
         transformWorld2View(Stage.selectEndLocation),
-        new Color(255, 255, 255, 0  ),
+        new Color(255, 255, 255, 0),
         new Color(255, 255, 255, 0.5),
-        2
-      )
+        2,
+      );
     }
     // 切割线
     if (Stage.isCutting) {
@@ -129,9 +129,10 @@ export namespace Renderer {
       }
       if (connectTargetNode === null) {
         for (const node of Stage.connectFromNodes) {
-          RenderUtils.renderSolidLine(
+          RenderUtils.renderGradientLine(
             transformWorld2View(node.rectangle.getCenter()),
             transformWorld2View(Controller.lastMoveLocation),
+            new Color(255, 255, 255, 0),
             new Color(255, 255, 255, 0.5),
             2,
           );
@@ -139,9 +140,10 @@ export namespace Renderer {
       } else {
         // 画一条像吸住了的线
         for (const node of Stage.connectFromNodes) {
-          RenderUtils.renderSolidLine(
+          RenderUtils.renderGradientLine(
             transformWorld2View(node.rectangle.getCenter()),
             transformWorld2View(connectTargetNode.rectangle.getCenter()),
+            new Color(255, 255, 255, 0),
             new Color(255, 255, 255, 0.5),
             2,
           );
@@ -315,6 +317,7 @@ export namespace Renderer {
       `正在切割: ${Stage.isCutting}`,
       `Stage.warningNodes: ${Stage.warningNodes.length}`,
       `Stage.warningEdges: ${Stage.warningEdges.length}`,
+      `ConnectFromNodes: ${Stage.connectFromNodes}`,
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(

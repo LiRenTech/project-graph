@@ -8,6 +8,10 @@ import { v4 as uuidv4 } from "uuid";
 // 开发过程中会造成多开
 // zty012:这个是存储数据的，和舞台无关，应该单独抽离出来
 // 并且会在舞台之外的地方操作，所以应该是namespace单例
+
+/**
+ * 节点管理器
+ */
 export namespace NodeManager {
   export const nodes: Node[] = [];
   export const edges: Edge[] = [];
@@ -21,10 +25,13 @@ export namespace NodeManager {
   }
 
   /**
-   * 更新节点的引用，将unknown的节点替换为真实的节点
+   * 更新节点的引用，将unknown的节点替换为真实的节点，保证对象在内存中的唯一性
+   * 节点什么情况下会是unknown的？
+   * 
    */
   export function updateReferences() {
     for (const node of nodes) {
+
       for (const otherNode of nodes) {
         for (const child of otherNode.children) {
           if (child.unknown && child.uuid === node.uuid) {
@@ -41,6 +48,7 @@ export namespace NodeManager {
           edge.target = node;
         }
       }
+
     }
   }
 

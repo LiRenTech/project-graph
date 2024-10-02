@@ -387,8 +387,10 @@ export namespace Controller {
             ),
           );
         }
-        Stage.connectFromNodes = [];
       }
+      Stage.connectFromNodes = [];
+      Stage.connectToNode = null;
+
       if (Stage.isCutting) {
         NodeManager.deleteNodes(Stage.warningNodes);
         Stage.warningNodes = [];
