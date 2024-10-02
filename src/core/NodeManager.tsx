@@ -73,8 +73,8 @@ export namespace NodeManager {
     // 需要查看ts的装饰器怎么用
   }
 
-  export function deleteNodes(nodes: Node[]) {
-    for (const node of nodes) {
+  export function deleteNodes(deleteNodes: Node[]) {
+    for (const node of deleteNodes) {
       // 先判断这个node是否在nodes里
       if (nodes.includes(node)) {
         console.log("include node", node.uuid);
