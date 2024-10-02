@@ -105,6 +105,48 @@ export namespace NodeManager {
     }
   }
 
+  export function rotateNode(node: Node, angle: number) {
+    rotateNodeDfs(node, node, angle, []);
+  }
+
+  /**
+   *
+   * @param rotateCenterNode 递归开始的节点
+   * @param currentNode 当前递归遍历到的节点
+   * @param degrees 旋转角度
+   * @param visitedUUIDs 已经访问过的节点的uuid列表，用于避免死循环
+   */
+  function rotateNodeDfs(
+    rotateCenterNode: Node,
+    currentNode: Node,
+    degrees: number,
+    visitedUUIDs: string[],
+  ): void {
+    const rotateCenterLocation = rotateCenterNode.rectangle.center;
+    // 先旋转自己
+    const radius = currentNode.rectangle.center.distance(rotateCenterLocation);
+    let centerToChildVector = currentNode.rectangle.center
+      .subtract(rotateCenterLocation)
+      .normalize();
+    centerToChildVector = centerToChildVector.rotate(degrees).multiply(radius);
+    const newLocation = rotateCenterLocation.add(centerToChildVector);
+    currentNode.moveTo(
+      newLocation.subtract(currentNode.rectangle.size.divide(2)),
+    );
+    // 再旋转子节点
+    for (const child of currentNode.children) {
+      if (visitedUUIDs.includes(child.uuid)) {
+        continue;
+      }
+      rotateNodeDfs(
+        rotateCenterNode,
+        child,
+        degrees,
+        visitedUUIDs.concat(currentNode.uuid),
+      );
+    }
+  }
+
   /**
    * 重命名节点
    * @param node

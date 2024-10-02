@@ -312,6 +312,20 @@ export namespace Controller {
   }
 
   function mousewheel(e: WheelEvent) {
+    if (pressingKeySet.has("control")) {
+      const location = Renderer.transformView2World(
+        new Vector(e.clientX, e.clientY),
+      );
+      const hoverNode = NodeManager.findNodeByLocation(location);
+      if (hoverNode !== null) {
+        // 旋转节点
+        if (e.deltaY > 0) {
+          NodeManager.rotateNode(hoverNode, 10);
+        } else {
+          NodeManager.rotateNode(hoverNode, -10);
+        }
+      }
+    }
     if (e.deltaY > 0) {
       Camera.targetScale *= 0.8;
     } else {
