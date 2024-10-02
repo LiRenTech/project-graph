@@ -9,6 +9,7 @@ fn greet(name: &str) -> String {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_store::Builder::new().build())
         // .setup(|app| {
         //     #[cfg(debug_assertions)] // only include this code on debug builds
         //     {
