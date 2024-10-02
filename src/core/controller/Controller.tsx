@@ -395,7 +395,7 @@ export namespace Controller {
         NodeManager.deleteNodes(Stage.warningNodes);
         Stage.warningNodes = [];
 
-        for (const edge of NodeManager.edges) {
+        for (const edge of Stage.warningEdges) {
           NodeManager.deleteEdge(edge);
         }
         NodeManager.updateReferences();
