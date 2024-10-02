@@ -208,19 +208,29 @@ export namespace Renderer {
       // if (!canvasRect.isCollideWith(lineRect)) {
       //   continue;
       // }
-      RenderUtils.renderSolidLine(
-        transformWorld2View(edge.source.rectangle.getCenter()),
-        transformWorld2View(edge.target.rectangle.getCenter()),
-        new Color(255, 255, 255),
-        2 * Camera.currentScale,
-      );
-      // TODO: 这个没用
-      RenderUtils.renderArrow(
-        transformWorld2View(edge.source.rectangle.getCenter()),
-        transformWorld2View(edge.target.rectangle.getCenter()),
-        new Color(255, 255, 255),
-        2 * Camera.currentScale,
-      );
+      if (edge.source.uuid == edge.target.uuid) {
+        // 自环
+      } else {
+        const edgeCenterLine = edge.bodyLine;
+        const startPoint =
+          edge.source.rectangle.getLineIntersectionPoint(edgeCenterLine);
+        const endPoint =
+          edge.target.rectangle.getLineIntersectionPoint(edgeCenterLine);
+        RenderUtils.renderSolidLine(
+          transformWorld2View(startPoint),
+          transformWorld2View(endPoint),
+          new Color(255, 255, 255),
+          2 * Camera.currentScale,
+        );
+        RenderUtils.rendArrow_(
+          edge.target.rectangle
+            .getCenter()
+            .subtract(edge.source.rectangle.getCenter()),
+          transformWorld2View(endPoint),
+          new Color(255, 255, 255),
+          30,
+        );
+      }
 
       renderedEdges++;
     }

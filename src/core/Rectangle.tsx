@@ -143,12 +143,18 @@ export class Rectangle {
     if (this.isPointInside(line.start) || this.isPointInside(line.end)) {
       return true;
     }
-    const topLine = new Line(this.location, this.location.add(new Vector(0, this.size.x)));
+    const topLine = new Line(
+      this.location,
+      this.location.add(new Vector(0, this.size.x)),
+    );
     const bottomLine = new Line(
       this.location.add(new Vector(0, this.size.y)),
       this.location.add(this.size),
     );
-    const leftLine = new Line(this.location, this.location.add(new Vector(0, this.size.y)));
+    const leftLine = new Line(
+      this.location,
+      this.location.add(new Vector(0, this.size.y)),
+    );
     const rightLine = new Line(
       this.location.add(new Vector(this.size.x, 0)),
       this.location.add(this.size),
@@ -207,6 +213,46 @@ export class Rectangle {
     const location = p1.clone();
     const size = p2.clone().subtract(p1);
     return new Rectangle(location, size);
+  }
+
+  /**
+   * 返回一个线段和这个矩形的交点，如果没有交点，就返回这个矩形的中心点
+   * 请确保线段和矩形只有一个交点，出现两个交点的情况还未测试
+   */
+  public getLineIntersectionPoint(line: Line) {
+    const topLine = new Line(
+      this.location,
+      this.location.add(new Vector(this.size.x, 0)),
+    );
+    const topIntersection = topLine.getIntersection(line);
+    if (topIntersection) {
+      return topIntersection;
+    }
+    const bottomLine = new Line(
+      this.location.add(new Vector(0, this.size.y)),
+      this.location.add(this.size),
+    );
+    const bottomIntersection = bottomLine.getIntersection(line);
+    if (bottomIntersection) {
+      return bottomIntersection;
+    }
+    const leftLine = new Line(
+      this.location,
+      this.location.add(new Vector(0, this.size.y)),
+    );
+    const leftIntersection = leftLine.getIntersection(line);
+    if (leftIntersection) {
+      return leftIntersection;
+    }
+    const rightLine = new Line(
+      this.location.add(new Vector(this.size.x, 0)),
+      this.location.add(this.size),
+    );
+    const rightIntersection = rightLine.getIntersection(line);
+    if (rightIntersection) {
+      return rightIntersection;
+    }
+    return this.getCenter();
   }
 
   public transformWorld2View(): Rectangle {

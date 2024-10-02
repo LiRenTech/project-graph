@@ -1,4 +1,5 @@
 import { Serialized } from "../types/node";
+import { Line } from "./Line";
 import { Node } from "./Node";
 
 export class Edge {
@@ -25,5 +26,13 @@ export class Edge {
    */
   static fromToNode(source: Node, target: Node): Edge {
     return new Edge({ source: source.uuid, target: target.uuid, text: "" });
+  }
+
+  /**
+   * 获取身体的碰撞箱
+   * 这个碰撞箱是贯穿两个节点的线段
+   */
+  get bodyLine(): Line {
+    return new Line(this.source.rectangle.center, this.target.rectangle.center);
   }
 }

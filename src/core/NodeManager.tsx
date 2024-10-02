@@ -106,6 +106,7 @@ export namespace NodeManager {
       }
       console.log("delete node", node.uuid);
     }
+    updateReferences();
   }
 
   export function rotateNode(node: Node, angle: number) {

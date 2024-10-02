@@ -1,6 +1,7 @@
 import { Canvas } from "../../Canvas";
 import { Color } from "../../Color";
 import { Rectangle } from "../../Rectangle";
+import { Camera } from "../../stage/Camera";
 import { Vector } from "../../Vector";
 
 export namespace RenderUtils {
@@ -251,6 +252,43 @@ export namespace RenderUtils {
       centerLocation.y - height / 2,
       width,
       height,
+    );
+  }
+
+  /**
+   * 临时的画箭头方法 比较像鸡脚，不够好看
+   * @param direction 从起点到终点的方向向量，单位向量
+   * @param endPoint
+   * @param color
+   */
+  export function rendArrow_(
+    direction: Vector,
+    endPoint: Vector,
+    color: Color,
+    size: number,
+  ) {
+    direction = direction.normalize();
+    RenderUtils.renderSolidLine(
+      endPoint,
+      endPoint.add(
+        direction
+          .multiply(-size)
+          .rotateDegrees(15)
+          .multiply(Camera.currentScale),
+      ),
+      color,
+      2 * Camera.currentScale,
+    );
+    RenderUtils.renderSolidLine(
+      endPoint,
+      endPoint.add(
+        direction
+          .multiply(-size)
+          .rotateDegrees(-15)
+          .multiply(Camera.currentScale),
+      ),
+      color,
+      2 * Camera.currentScale,
     );
   }
 
