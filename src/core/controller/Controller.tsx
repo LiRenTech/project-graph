@@ -369,6 +369,8 @@ export namespace Controller {
     }
     if (key === " ") {
       setCursorName("grab");
+    } else if (key === "delete") {
+      NodeManager.deleteNodes(NodeManager.nodes.filter((node) => node.isSelected));
     }
   }
 
