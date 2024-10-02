@@ -13,7 +13,7 @@ export default function SettingsLayout() {
           <NavLink to="/settings/auto-namer">自动命名</NavLink>
           <NavLink to="/settings/ai">AI</NavLink>
         </div>
-        <div className="flex-1">
+        <div className="container mx-auto flex-1 overflow-auto">
           <Outlet />
         </div>
       </div>

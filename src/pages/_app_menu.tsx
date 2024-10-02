@@ -103,9 +103,9 @@ export default function AppMenu({
   return (
     <div
       className={cn(
-        "pointer-events-none flex origin-top-left scale-75 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800 p-3 opacity-0 transition",
+        "!pointer-events-none flex origin-top-left scale-75 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800 p-3 opacity-0 transition",
         {
-          "pointer-events-auto scale-100 opacity-100": open,
+          "!pointer-events-auto scale-100 opacity-100": open,
         },
         className,
       )}

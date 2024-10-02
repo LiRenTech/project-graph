@@ -106,7 +106,7 @@ export default function App() {
             {maxmized ? (
               <Diamond
                 onClick={() => setMaxmized(false)}
-                size={18}
+                size={16}
                 strokeWidth={3}
                 className="transition hover:opacity-80 active:scale-75"
               />
