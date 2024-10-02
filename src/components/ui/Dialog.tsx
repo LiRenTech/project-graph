@@ -38,11 +38,11 @@ export default function Dialog() {
       )}
     >
       <h1 className="text-2xl font-bold">{dialog.title}</h1>
-      <p className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto">
         {dialog.content.split("\n").map((line, i) => (
           <p key={i}>{line}</p>
         ))}
-      </p>
+      </div>
       {dialog.buttons.map((btn, i) => (
         <Button key={i} onClick={btn.onClick}>
           {btn.text}
