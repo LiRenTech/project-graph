@@ -19,7 +19,7 @@ export class Line {
     return this.end.subtract(this.start).magnitude();
   }
 
-  midpoint(): Vector {
+  midPoint(): Vector {
     return new Vector(
       (this.start.x + this.end.x) / 2,
       (this.start.y + this.end.y) / 2,

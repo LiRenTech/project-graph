@@ -168,14 +168,6 @@ export namespace Controller {
           Vector.getZero(),
         );
       } else {
-        Stage.effects.push(
-          new CircleFlameEffect(
-            new ProgressNumber(0, 40),
-            Renderer.transformView2World(new Vector(x, y)),
-            50,
-            new Color(255, 0, 0, 1),
-          ),
-        );
 
         if (isHaveNodeSelected) {
           // C
@@ -371,7 +363,17 @@ export namespace Controller {
                 new ProgressNumber(0, 15),
                 node.rectangle.center,
                 80,
-                new Color(0, 255, 0, 1),
+                new Color(83, 175, 29, 1),
+              ),
+            );
+            Stage.effects.push(
+              new LineCuttingEffect(
+                new ProgressNumber(0, 30),
+                node.rectangle.center,
+                Stage.connectToNode.rectangle.center,
+                new Color(78, 201, 176, 1),
+                new Color(83, 175, 29, 1),
+                20,
               ),
             );
           }
@@ -397,6 +399,37 @@ export namespace Controller {
 
         for (const edge of Stage.warningEdges) {
           NodeManager.deleteEdge(edge);
+          // 计算线段的中点
+          const midLocation = edge.bodyLine.midPoint();
+          // 特效
+          Stage.effects.push(
+            new LineCuttingEffect(
+              new ProgressNumber(0, 15),
+              midLocation,
+              edge.bodyLine.start,
+              new Color(255, 0, 0, 0),
+              new Color(255, 0, 0, 1),
+              20,
+            ),
+          );
+          Stage.effects.push(
+            new LineCuttingEffect(
+              new ProgressNumber(0, 15),
+              midLocation,
+              edge.bodyLine.end,
+              new Color(255, 0, 0, 0),
+              new Color(255, 0, 0, 1),
+              20,
+            ),
+          );
+          Stage.effects.push(
+            new CircleFlameEffect(
+              new ProgressNumber(0, 15),
+              edge.bodyLine.midPoint(),
+              50,
+              new Color(255, 0, 0, 1),
+            ),
+          );
         }
         NodeManager.updateReferences();
 
