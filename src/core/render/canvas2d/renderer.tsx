@@ -28,9 +28,9 @@ export namespace Renderer {
 
   /**
    * 解决Canvas模糊问题
+   * 它能让画布的大小和屏幕的大小保持一致
    */
   export function resizeWindow(newW: number, newH: number) {
-    // HACK: 这里写的什么东西，我不知道，但是它能让画布的大小和屏幕的大小保持一致
     const scale = window.devicePixelRatio * (1 / appScale);
     w = newW;
     h = newH;
@@ -117,7 +117,7 @@ export namespace Renderer {
         2,
       );
     }
-    // 手动连接线  BUG:
+    // 手动连接线
     if (Stage.connectFromNodes.length > 0 && Controller.lastMoveLocation) {
       // 如果鼠标位置没有和任何节点相交
       let connectTargetNode = null;
@@ -297,7 +297,6 @@ export namespace Renderer {
   }
 
   export function renderDetails() {
-    // BUG: 似乎点击左上角的时候会像被透明div挡住了一样
     const detailsData = [
       `scale: ${Camera.currentScale.toFixed(2)}`,
       `target: ${Camera.targetScale.toFixed(2)}`,

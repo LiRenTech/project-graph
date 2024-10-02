@@ -1,10 +1,8 @@
 import { Vector } from "./Vector";
-
+/**
+ * 线段类
+ */
 export class Line {
-  /**
-   * 线段类
-   */
-
   start: Vector;
   end: Vector;
 
