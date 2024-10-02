@@ -1,5 +1,13 @@
 import React from "react";
 
+/**
+ * 一个滑块组件，可以设置最小值、最大值、步长、当前值、值变化回调函数。
+ * 
+ * -------o---
+ * 
+ * @param param0 
+ * @returns 
+ */
 export default function Slider({
   value = 0,
   onChange = () => {},

@@ -7,6 +7,7 @@ type DialogOptions = {
   content: string;
   type: DialogType;
   buttons: DialogButton[];
+  code: string;
 };
 type DialogShowFunc = (options: Partial<DialogOptions>) => Promise<string>;
 
@@ -17,6 +18,8 @@ type DialogShowFunc = (options: Partial<DialogOptions>) => Promise<string>;
  * @param title 对话框标题
  * @param type 对话框类型 info | success | warning | error
  * @param content 对话框内容
+ * @param buttons 对话框按钮列表 [{ text: "确定", onClick: () => void }]
+ * @param code 代码
  */
 const DialogContext = React.createContext<
   {
@@ -30,6 +33,7 @@ const DialogContext = React.createContext<
   content: "",
   type: "info",
   buttons: [],
+  code: "",
 });
 
 export const DialogProvider = ({ children }: React.PropsWithChildren) => {
@@ -38,6 +42,7 @@ export const DialogProvider = ({ children }: React.PropsWithChildren) => {
   const [content, setContent] = React.useState("");
   const [type, setType] = React.useState<DialogType>("info");
   const [buttons, setButtons] = React.useState<DialogButton[]>([]);
+  const [code, setCode] = React.useState("");
 
   /**
    * 显示对话框
@@ -51,6 +56,7 @@ export const DialogProvider = ({ children }: React.PropsWithChildren) => {
     content = "",
     type = "info",
     buttons = [{ text: "确定" }],
+    code = "",
   }) =>
     new Promise((resolve) => {
       setShowDialog(true);
@@ -69,11 +75,12 @@ export const DialogProvider = ({ children }: React.PropsWithChildren) => {
           },
         })),
       );
+      setCode(code);
     });
 
   return (
     <DialogContext.Provider
-      value={{ show, showDialog, title, content, type, buttons }}
+      value={{ show, showDialog, title, content, type, buttons, code }}
     >
       {children}
     </DialogContext.Provider>

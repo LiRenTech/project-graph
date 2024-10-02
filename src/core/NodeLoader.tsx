@@ -1,5 +1,10 @@
 import { Serialized } from "../types/node";
 
+/**
+ * 这里命名不太严谨
+ * NodeLoader 以为只有节点，实际上是整个舞台的序列化转换。也包含了边
+ * 可能叫StageLoader更合适?
+ */
 export namespace NodeLoader {
   export function validate(data: Record<string, any>): Serialized.File {
     data = convertV1toV2(data);

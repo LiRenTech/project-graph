@@ -3,6 +3,19 @@ import { useDialog } from "../../utils/dialog";
 import Button from "./Button";
 import { isDesktop, isMobile } from "../../utils/platform";
 
+/**
+ * 中央小弹窗，只能点确定
+ * 
+ * 使用方法：
+ * const dialog = useDialog();
+ * 
+ * dialog.show({
+    title: "舞台序列化",
+    type: "info",
+    content: JSON.stringify(NodeDumper.dumpToV3()),
+   })
+ * @returns 
+ */
 export default function Dialog() {
   const dialog = useDialog();
 
@@ -43,6 +56,15 @@ export default function Dialog() {
           <p key={i}>{line}</p>
         ))}
       </div>
+      {dialog.code.trim() !== "" && (
+        <div className="flex flex-col gap-2">
+          <h2 className="text-lg font-bold">代码</h2>
+          <pre className="overflow-auto rounded-md bg-neutral-900 p-2 text-white text-sm">
+            {dialog.code}
+          </pre>
+        </div>
+      )}
+
       {dialog.buttons.map((btn, i) => (
         <Button key={i} onClick={btn.onClick}>
           {btn.text}

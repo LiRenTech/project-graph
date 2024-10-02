@@ -28,6 +28,7 @@ import { useRecoilState } from "recoil";
 import { fileAtom } from "../state";
 import { Camera } from "../core/stage/Camera";
 import { Edge } from "../core/Edge";
+import { NodeDumper } from "../core/NodeDumper";
 
 export default function AppMenu({
   className = "",
@@ -138,6 +139,24 @@ export default function AppMenu({
         </Col>
         <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
           测试
+        </Col>
+        <Col
+          icon={<TestTube2 />}
+          onClick={() =>
+            dialog.show({
+              title: "舞台序列化",
+              type: "info",
+              code: JSON.stringify(NodeDumper.dumpToV3(), null, 2),
+            })
+          }
+        >
+          查看舞台序列化信息
+        </Col>
+        <Col icon={<TestTube2 />} onClick={() => {
+          console.log(NodeManager.nodes);
+          console.log(NodeManager.edges);
+        }}>
+          NodeManager log查看
         </Col>
       </Row>
       <Row icon={<AppWindow />} title="窗口">
