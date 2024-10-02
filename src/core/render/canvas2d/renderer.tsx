@@ -66,6 +66,19 @@ export namespace Renderer {
 
     renderEdges();
     renderEntities();
+    // 待删除的节点
+    for (const node of Stage.warningNodes) {
+      RenderUtils.renderRect(
+        new Rectangle(
+          transformWorld2View(node.rectangle.location),
+          node.rectangle.size.multiply(Camera.currentScale),
+        ),
+        new Color(255, 0, 0, 0.5),
+        new Color(255, 0, 0, 0.5),
+        2 * Camera.currentScale,
+        8 * Camera.currentScale,
+      );
+    }
     // 框选框
     if (Stage.isSelecting) {
       if (Stage.selectingRectangle) {
@@ -243,6 +256,7 @@ export namespace Renderer {
       `框选框: ${Stage.selectingRectangle}`,
       `正在移动节点: ${Controller.isMovingNode}`,
       `正在切割: ${Stage.isCutting}`,
+      `Stage.warningNodes: ${Stage.warningNodes.length}`
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(

@@ -1,5 +1,8 @@
 import { Effect } from "../effect/effect";
+import { Line } from "../Line";
+import { Node } from "../Node";
 import { Rectangle } from "../Rectangle";
+import { Vector } from "../Vector";
 
 /**
  * 舞台对象
@@ -21,8 +24,11 @@ export namespace Stage {
    * 是否正在切断连线或切割
    */
   export let isCutting = false;
-
-  
+  export let cuttingLine: Line = new Line(Vector.getZero(), Vector.getZero());
+  /**
+   * 正在准备要删除的节点
+   */
+  export let warningNodes: Node[] = [];
 
   /**
    * 逻辑总入口

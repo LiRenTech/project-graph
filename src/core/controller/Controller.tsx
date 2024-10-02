@@ -9,6 +9,7 @@ import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";
 import { Rectangle } from "../Rectangle";
 import { LineCuttingEffect } from "../effect/concrete/LineCuttingEffect";
+import { Line } from "../Line";
 
 export namespace Controller {
   /**
@@ -248,6 +249,18 @@ export namespace Controller {
     } else if (isMouseDown[2]) {
       // 右键按下
       lastMoveLocation = worldLocation.clone();
+      if (Stage.isCutting) {
+        Stage.cuttingLine = new Line(
+          lastMousePressLocation[2],
+          lastMoveLocation,
+        );
+        Stage.warningNodes = [];
+        for (const node of NodeManager.nodes) {
+          if (node.rectangle.isCollideWithLine(Stage.cuttingLine)) {
+            Stage.warningNodes.push(node);
+          }
+        }
+      }
     }
     // setCursorName("default");
   }
@@ -275,6 +288,8 @@ export namespace Controller {
     } else if (e.button === 2) {
       // 右键松开
       if (Stage.isCutting) {
+        NodeManager.deleteNodes(Stage.warningNodes);
+        Stage.warningNodes = [];
         Stage.effects.push(
           new LineCuttingEffect(
             new ProgressNumber(0, 15),

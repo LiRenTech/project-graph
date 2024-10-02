@@ -99,6 +99,11 @@ export class Vector {
     return Math.sqrt(dx ** 2 + dy ** 2);
   }
 
+  // 计算两个向量的叉积
+  cross(other: Vector): number {
+    return this.x * other.y - this.y * other.x;
+  }
+
   /**
    * 根据角度构造一个单位向量
    * @param angle 单位：弧度
@@ -202,7 +207,7 @@ export class Vector {
   }
 
   toString(): string {
-      return `(${this.x.toFixed(2)}, ${this.y.toFixed(2)})`;
+    return `(${this.x.toFixed(2)}, ${this.y.toFixed(2)})`;
   }
 
   // /**

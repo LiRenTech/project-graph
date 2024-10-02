@@ -59,7 +59,7 @@ export namespace NodeManager {
     );
     NodeManager.addNode(node);
   }
-  
+
   export function moveNodes(delta: Vector) {
     for (const node of nodes) {
       if (node.isSelected) {
@@ -71,6 +71,38 @@ export namespace NodeManager {
   export function moveNodeFinished() {
     // 以后有历史记录了再说，这里什么都不用写
     // 需要查看ts的装饰器怎么用
+  }
+
+  export function deleteNodes(nodes: Node[]) {
+    for (const node of nodes) {
+      // 先判断这个node是否在nodes里
+      if (nodes.includes(node)) {
+        console.log("include node", node.uuid);
+        // 从数组中去除
+        nodes.splice(nodes.indexOf(node), 1);
+        console.log(nodes);
+      } else {
+        console.warn("node not in nodes", node.uuid);
+      }
+      // 不仅要删除节点本身，其他节点的child中也要删除该节点
+      for (const fatherNode of nodes) {
+        // if node in father_node.children
+        if (fatherNode.children.includes(node)) {
+          fatherNode.children.splice(fatherNode.children.indexOf(node), 1);
+        }
+      }
+      // 删除所有相关的边
+      const prepareDeleteEdges: Edge[] = [];
+      for (const edge of edges) {
+        if (edge.source === node || edge.target === node) {
+          prepareDeleteEdges.push(edge);
+        }
+      }
+      for (const edge of prepareDeleteEdges) {
+        edges.splice(edges.indexOf(edge), 1);
+      }
+      console.log("delete node", node.uuid);
+    }
   }
 
   /**
