@@ -6,20 +6,30 @@ export default function Button({
   children,
   className = "",
   onClick = () => {},
+  disabled = false,
   ...props
 }: React.PropsWithChildren<{
   className?: string;
   onClick?: (e: React.MouseEvent) => void;
+  disabled?: boolean;
   [key: string]: any;
 }>) {
   return (
     <Box
       as="button"
       className={cn(
-        "px-3 py-2 transition hover:opacity-80 active:scale-90",
+        "px-3 py-2 transition",
+        {
+          "hover:opacity-80 active:scale-90": !disabled,
+          "cursor-not-allowed opacity-50": disabled,
+        },
         className,
       )}
-      onClick={onClick}
+      onClick={(e) => {
+        if (!disabled) {
+          onClick(e);
+        }
+      }}
       {...props}
     >
       {children}

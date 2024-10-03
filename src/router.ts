@@ -9,6 +9,7 @@ export type Path =
   | `/settings/about`
   | `/settings/ai`
   | `/settings/auto-namer`
+  | `/settings/github`
   | `/settings/performance`
   | `/settings/physics`
   | `/settings/visual`

@@ -14,6 +14,8 @@ export namespace Settings {
     alwaysShowDetails: boolean;
     historySize: number;
     autoNamerTemplate: string;
+    githubToken: string;
+    githubUser: string;
   };
   const defaultSettings: Settings = {
     lineStyle: "stright",
@@ -27,6 +29,8 @@ export namespace Settings {
     alwaysShowDetails: false,
     historySize: 20,
     autoNamerTemplate: "...",
+    githubToken: "",
+    githubUser: "",
   };
 
   export async function init() {
