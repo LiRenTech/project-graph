@@ -28,6 +28,9 @@ import { useRecoilState } from "recoil";
 import { fileAtom } from "../state";
 import { Camera } from "../core/stage/Camera";
 import { Edge } from "../core/Edge";
+import { NodeDumper } from "../core/NodeDumper";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
+
 
 export default function AppMenu({
   className = "",
@@ -100,6 +103,41 @@ export default function AppMenu({
     }
   };
 
+  const onSave = async () => {
+    const path = await openFileDialog({
+      title: "保存文件",
+      directory: false,
+      multiple: false,
+      filters: [
+        {
+          name: "Project Graph",
+          extensions: ["json"],
+        },
+      ],
+    });
+    
+    if (!path) {
+      return;
+    }
+  
+    try {
+      const data = NodeDumper.dumpToV3(); // 获取当前节点和边的数据
+      await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
+      dialog.show({
+        title: "保存成功",
+        content: `文件已保存到 ${path}`,
+        type: "success",
+      });
+    } catch (e) {
+      dialog.show({
+        title: "保存失败",
+        content: String(e),
+        type: "error",
+      });
+    }
+  };
+  
+
   return (
     <div
       className={cn(
@@ -118,7 +156,9 @@ export default function AppMenu({
         <Col icon={<FileText />} onClick={onOpen}>
           打开
         </Col>
-        <Col icon={<Save />}>保存</Col>
+        <Col icon={<Save />} onClick={onSave}>
+          覆盖保存
+        </Col>
         <Col icon={<Save />}>另存为</Col>
       </Row>
       <Row icon={<Plus />} title="创建">

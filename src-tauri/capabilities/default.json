@@ -14,7 +14,10 @@
     "core:window:allow-start-dragging",
     "os:default",
     "dialog:default",
-    "fs:default",
+    "fs:allow-write-text-file",
+    "fs:allow-read-file",
+    "fs:allow-app-read",
+    "fs:allow-app-write",
     "shell:default",
     "store:default",
     {
