@@ -10,6 +10,7 @@ import { Camera } from "../stage/Camera";
 import { Rectangle } from "../Rectangle";
 import { LineCuttingEffect } from "../effect/concrete/LineCuttingEffect";
 import { Line } from "../Line";
+import { LineEffect } from "../effect/concrete/LineEffect";
 
 export namespace Controller {
   /**
@@ -137,6 +138,10 @@ export namespace Controller {
     // 获取左右中键
     lastMousePressLocation[button] = pressWorldLocation;
     if (button === 0) {
+      if (pressingKeySet.has("`")) {
+        lastMoveLocation = pressWorldLocation.clone();
+        return;
+      }
       /**
        * 可能的4种情况
        *  ------------ | 已有节点被选择 | 没有节点被选择
@@ -246,7 +251,21 @@ export namespace Controller {
       setCursorName("grabbing");
       return;
     }
+    
     if (isMouseDown[0]) {
+      if (pressingKeySet.has("`")) {
+        // 绘制临时激光笔特效
+        Stage.effects.push(
+          new LineEffect(
+            new ProgressNumber(0, 50),
+            lastMoveLocation,
+            worldLocation,
+            new Color(255, 255, 0, 1),
+            new Color(255, 255, 0, 1),
+            2,
+          ),
+        );
+      }
       // 左键按下
       if (Stage.isSelecting) {
         // 正在框选
@@ -342,6 +361,11 @@ export namespace Controller {
         }
       }
     }
+    if (pressingKeySet.has("`")) {
+      // 迭代笔位置
+      lastMoveLocation = worldLocation.clone();
+    }
+
     // setCursorName("default");
   }
 
