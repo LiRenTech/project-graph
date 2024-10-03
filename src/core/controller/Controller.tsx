@@ -12,6 +12,12 @@ import { LineCuttingEffect } from "../effect/concrete/LineCuttingEffect";
 import { Line } from "../Line";
 import { LineEffect } from "../effect/concrete/LineEffect";
 
+/**
+ * 控制器，控制鼠标、键盘事件
+ * 
+ * 想到一个点子：把每隔功能都功能拆成 mouse down,move,up 三个函数，
+ * 然后再统一集成到这里。
+ */
 export namespace Controller {
   /**
    * 在上层接收React提供的state修改函数

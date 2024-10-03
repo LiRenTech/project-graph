@@ -6,6 +6,11 @@ import { Serialized } from "../types/node";
  * 可能叫StageLoader更合适?
  */
 export namespace NodeLoader {
+  /**
+   * 将序列化数据逐步的，一级一级的转换为最新版本的格式
+   * @param data 
+   * @returns 
+   */
   export function validate(data: Record<string, any>): Serialized.File {
     data = convertV1toV2(data);
     data = convertV2toV3(data);
