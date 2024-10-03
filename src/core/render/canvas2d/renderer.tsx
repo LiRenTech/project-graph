@@ -335,6 +335,7 @@ export namespace Renderer {
       `Stage.warningNodes: ${Stage.warningNodes.length}`,
       `Stage.warningEdges: ${Stage.warningEdges.length}`,
       `ConnectFromNodes: ${Stage.connectFromNodes}`,
+      `lastSelectedNode: ${Controller.lastSelectedNode.size}`
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(

@@ -65,6 +65,12 @@ export namespace Controller {
    */
   export let lastMoveLocation = Vector.getZero();
 
+  /**
+   * 上次选中的节点
+   * 仅为 Ctrl交叉选择使用
+   */
+  export let lastSelectedNode: Set<string> = new Set();
+
   export let touchStartLocation = Vector.getZero();
   export let touchStartDistance = 0;
   export let touchDelta = Vector.getZero();
@@ -153,10 +159,14 @@ export namespace Controller {
       if (clickedNode === null) {
         if (isHaveNodeSelected) {
           // A
-          // 取消选择所有节点
-          NodeManager.nodes.forEach((node) => {
-            node.isSelected = false;
-          });
+          if (pressingKeySet.has("shift") || pressingKeySet.has("control")) {
+            // 不取消选择
+          } else {
+            // 取消选择所有节点
+            NodeManager.nodes.forEach((node) => {
+              node.isSelected = false;
+            });
+          }
         } else {
           // B
         }
@@ -168,7 +178,6 @@ export namespace Controller {
           Vector.getZero(),
         );
       } else {
-
         if (isHaveNodeSelected) {
           // C
 
@@ -244,26 +253,36 @@ export namespace Controller {
         Stage.selectEndLocation = worldLocation.clone();
 
         if (Stage.selectingRectangle) {
-          // 更新选择框的大小
-          // 判断两个点谁在左上
-          let leftTop = Stage.selectStartLocation.clone();
-          let rightBottom = Stage.selectEndLocation.clone();
-          if (leftTop.x > rightBottom.x) {
-            [leftTop.x, rightBottom.x] = [rightBottom.x, leftTop.x];
+          Stage.selectingRectangle = Rectangle.fromTwoPoints(
+            Stage.selectStartLocation,
+            Stage.selectEndLocation,
+          );
+
+          if (pressingKeySet.has("shift") || pressingKeySet.has("control")) {
+            // 移动过程中不先暴力清除
+          } else {
+            // 先清空所有已经选择了的
+            NodeManager.nodes.forEach((node) => {
+              node.isSelected = false;
+            });
           }
-          if (leftTop.y > rightBottom.y) {
-            [leftTop.y, rightBottom.y] = [rightBottom.y, leftTop.y];
-          }
-          Stage.selectingRectangle.location = leftTop;
-          Stage.selectingRectangle.size = rightBottom.subtract(leftTop);
-          // 先清空所有已经选择了的
-          NodeManager.nodes.forEach((node) => {
-            node.isSelected = false;
-          });
-          // 再开始选择
-          for (const node of NodeManager.nodes) {
-            if (Stage.selectingRectangle.isCollideWith(node.rectangle)) {
-              node.isSelected = true;
+
+          if (pressingKeySet.has("control")) {
+            // 交叉选择，没的变有，有的变没
+            for (const node of NodeManager.nodes) {
+              if (Stage.selectingRectangle.isCollideWith(node.rectangle)) {
+                if (lastSelectedNode.has(node.uuid)) {
+                  node.isSelected = false;
+                } else {
+                  node.isSelected = true;
+                }
+              }
+            }
+          } else {
+            for (const node of NodeManager.nodes) {
+              if (Stage.selectingRectangle.isCollideWith(node.rectangle)) {
+                node.isSelected = true;
+              }
             }
           }
         }
@@ -341,6 +360,13 @@ export namespace Controller {
     if (button === 0) {
       // 左键松开
       Stage.isSelecting = false;
+      // 将所有选择到的增加到上次选择的节点中
+      lastSelectedNode = new Set();
+      for (const node of NodeManager.nodes) {
+        if (node.isSelected) {
+          lastSelectedNode.add(node.uuid);
+        }
+      }
     } else if (button === 1) {
       // 中键松开
       setCursorName("default");
