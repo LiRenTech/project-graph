@@ -39,6 +39,9 @@ jobs:
           node-version: lts/*
           cache: "pnpm" # Set this to npm, yarn or pnpm.
 
+      - name: install pnpm
+        run: npm install -g pnpm
+
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
         with:
