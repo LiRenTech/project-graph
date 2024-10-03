@@ -584,6 +584,7 @@ export namespace Controller {
             color: "white",
             outline: "none",
             marginTop: -8 * Camera.currentScale + "px",
+            width: "100vw",
           },
         ).then(() => {
           clickedNode!.isEditing = false;
