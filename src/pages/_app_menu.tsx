@@ -28,7 +28,6 @@ import { useRecoilState } from "recoil";
 import { fileAtom } from "../state";
 import { Camera } from "../core/stage/Camera";
 import { Edge } from "../core/Edge";
-import { NodeDumper } from "../core/NodeDumper";
 
 export default function AppMenu({
   className = "",
@@ -120,6 +119,7 @@ export default function AppMenu({
           打开
         </Col>
         <Col icon={<Save />}>保存</Col>
+        <Col icon={<Save />}>另存为</Col>
       </Row>
       <Row icon={<Plus />} title="创建">
         <Col icon={<Cuboid />}>节点</Col>
@@ -140,7 +140,7 @@ export default function AppMenu({
         <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
           测试
         </Col>
-        <Col
+        {/* <Col
           icon={<TestTube2 />}
           onClick={() =>
             dialog.show({
@@ -157,7 +157,7 @@ export default function AppMenu({
           console.log(NodeManager.edges);
         }}>
           NodeManager log查看
-        </Col>
+        </Col> */}
       </Row>
       <Row icon={<AppWindow />} title="窗口">
         <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>
