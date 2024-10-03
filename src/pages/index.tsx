@@ -6,6 +6,7 @@ import { Controller } from "../core/controller/Controller";
 import { Canvas } from "../core/Canvas";
 import { NodeManager } from "../core/NodeManager";
 import React from "react";
+import Toolbar from "./_toolbar";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);
@@ -78,6 +79,7 @@ export default function Home() {
 
   return (
     <>
+      <Toolbar />
       <span className="fixed bottom-0 left-0 ring">FPS={fps.toFixed()}</span>
       <canvas ref={canvasRef} className={`cursor-${cursorName}`} />
     </>
