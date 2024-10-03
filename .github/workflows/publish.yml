@@ -37,7 +37,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: "pnpm" # Set this to npm, yarn or pnpm.
 
       - name: install pnpm
         run: npm install -g pnpm
