@@ -1,3 +1,4 @@
+import { Controller } from "./controller/Controller";
 import { Edge } from "./Edge";
 import { Node } from "./Node";
 import { Renderer } from "./render/canvas2d/renderer";
@@ -81,6 +82,33 @@ export namespace NodeManager {
     // 以后有历史记录了再说，这里什么都不用写
     // 需要查看ts的装饰器怎么用
   }
+  export function moveEdgeFinished() {
+    // 以后有历史记录了再说，这里什么都不用写
+    // 需要查看ts的装饰器怎么用
+  }
+  /**
+   * 
+   * @param lastMoveLocation 
+   * @param diffLocation 
+   */
+  export function moveEdges(lastMoveLocation: Vector, diffLocation: Vector) {
+    for (const edge of edges) {
+      if (edge.isSelected) {
+        const startMouseDragLocation = lastMoveLocation.clone();
+        const endMouseDragLocation = startMouseDragLocation.add(diffLocation);
+        const vectorStart = startMouseDragLocation.subtract(edge.source.rectangle.center);
+        const vectorEnd = endMouseDragLocation.subtract(edge.source.rectangle.center);
+        let degrees = vectorStart.angleToSigned(vectorEnd);
+        // degrees一直是正数
+        console.log(degrees);
+        if (Number.isNaN(degrees)) {
+          degrees = 0;
+        }
+        // rotateNode(edge.source, degrees);
+        rotateNodeDfs(edge.source, edge.target, degrees, [edge.source.uuid])
+      }
+    }
+  }
 
   export function deleteNodes(deleteNodes: Node[]) {
     for (const node of deleteNodes) {
@@ -134,8 +162,6 @@ export namespace NodeManager {
   export function rotateNode(node: Node, angle: number) {
     rotateNodeDfs(node, node, angle, []);
     updateReferences();
-    console.log(nodes);
-    console.log(edges);
   }
 
   /**
@@ -236,6 +262,15 @@ export namespace NodeManager {
     for (const node of nodes) {
       if (node.rectangle.isPointInside(location)) {
         return node;
+      }
+    }
+    return null;
+  }
+
+  export function findEdgeByLocation(location: Vector): Edge | null {
+    for (const edge of edges) {
+      if (edge.bodyLine.isPointNearLine(location, Controller.edgeHoverTolerance)) {
+        return edge;
       }
     }
     return null;

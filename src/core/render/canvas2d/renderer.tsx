@@ -90,12 +90,12 @@ export namespace Renderer {
         2 * Camera.currentScale,
       );
     }
-    // 悬浮的边
+    // 鼠标hover的边
     for (const edge of Stage.hoverEdges) {
       RenderUtils.renderSolidLine(
         transformWorld2View(edge.bodyLine.start),
         transformWorld2View(edge.bodyLine.end),
-        new Color(0, 255, 0, 0.5),
+        new Color(0, 255, 0, 0.1),
         Controller.edgeHoverTolerance * 2 * Camera.currentScale,
       );
     }
@@ -239,6 +239,7 @@ export namespace Renderer {
       if (edge.source.uuid == edge.target.uuid) {
         // 自环
       } else {
+        
         if (edge.text.trim() === "") {
           // 没有文字的边
           RenderUtils.renderSolidLine(
@@ -314,6 +315,15 @@ export namespace Renderer {
             new Color(255, 255, 255),
             new Color(255, 255, 255),
             2 * Camera.currentScale,
+          );
+        }
+
+        if (edge.isSelected) {
+          RenderUtils.renderSolidLine(
+            transformWorld2View(edge.bodyLine.start),
+            transformWorld2View(edge.bodyLine.end),
+            new Color(0, 255, 0, 0.5),
+            4 * Camera.currentScale,
           );
         }
       }

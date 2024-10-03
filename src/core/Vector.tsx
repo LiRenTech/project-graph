@@ -104,6 +104,21 @@ export class Vector {
   angleTo(vector: Vector): number {
     return (this.angle(vector) * 180) / Math.PI;
   }
+  /**
+   * 计算自己向量与另一个向量之间的夹角，但带正负号
+   * 如果另一个向量相对自己是顺时针，则返回正值，否则返回负值
+   * @param vector
+   * @returns 单位：度
+   */
+  angleToSigned(vector: Vector): number {
+    const angle = this.angleTo(vector);
+    const cross = this.cross(vector);
+    if (cross > 0) {
+      return angle;
+    } else {
+      return -angle;
+    }
+  }
 
   /**
    * 从自己这个向量所指向的点到另一个向量所指向的点的距离

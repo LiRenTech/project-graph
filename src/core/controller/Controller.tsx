@@ -62,6 +62,10 @@ export namespace Controller {
    */
   export let isMovingNode = false;
   /**
+   * 是否正在进行移动(拖拽旋转)连线的操作
+   */
+  export let isMovingEdge = false;
+  /**
    * 为移动节点做准备，移动时，记录每上一帧移动的位置
    */
   export let lastMoveLocation = Vector.getZero();
@@ -131,6 +135,7 @@ export namespace Controller {
 
     const pressWorldLocation = Renderer.transformView2World(new Vector(x, y));
     const clickedNode = NodeManager.findNodeByLocation(pressWorldLocation);
+    const clickedEdge = NodeManager.findEdgeByLocation(pressWorldLocation);
 
     // 获取左右中键
     lastMousePressLocation[button] = pressWorldLocation;
@@ -140,10 +145,11 @@ export namespace Controller {
         return;
       }
       /**
-       * 可能的4种情况
-       *  ------------ | 已有节点被选择 | 没有节点被选择
+       * 可能的情况
+       *  ------------ | 已有对象被选择 | 没有对象被选择
        *  在空白地方按下 |      A       |      B
        *  在节点身上按下 |    C1,C2     |      D
+       *  在连线身上按下 |    E1,E2     |      F
        *  ------------ |  ------------ |  ------------
        * A：取消选择那些节点，可能要重新开始框选
        * B：可能是想开始框选
@@ -157,6 +163,9 @@ export namespace Controller {
       const isHaveNodeSelected = NodeManager.nodes.some(
         (node) => node.isSelected,
       );
+      const isHaveEdgeSelected = NodeManager.edges.some(
+        (edge) => edge.isSelected,
+      );
       // 左键按下
       if (clickedNode === null) {
         if (isHaveNodeSelected) {
@@ -169,6 +178,12 @@ export namespace Controller {
               node.isSelected = false;
             });
           }
+        } else if (isHaveEdgeSelected) {
+          // A'
+          // 取消选择所有连线
+          NodeManager.edges.forEach((edge) => {
+            edge.isSelected = false;
+          });
         } else {
           // B
         }
@@ -197,6 +212,35 @@ export namespace Controller {
           // D
           clickedNode.isSelected = true;
           isMovingNode = true;
+        }
+      }
+      if (clickedEdge === null) {
+        // 和A一样了
+        console.log("没有连线被按下");
+      } else {
+        // 在连线身上按下
+        Stage.isSelecting = false;
+
+        if (isHaveEdgeSelected) {
+          if (clickedEdge.isSelected) {
+            // E1
+            NodeManager.edges.forEach((edge) => {
+              edge.isSelected = false;
+            });
+          } else {
+            // E2
+            NodeManager.edges.forEach((edge) => {
+              edge.isSelected = false;
+            });
+          }
+
+          clickedEdge.isSelected = true;
+          isMovingEdge = true;
+        } else {
+          // F
+          clickedEdge.isSelected = true;
+          isMovingEdge = true;
+          console.log("在连线身上按下");
         }
       }
     } else if (button === 1) {
@@ -303,17 +347,27 @@ export namespace Controller {
           }
         }
         isMovingNode = false;
+        isMovingEdge = false;
       } else {
-        // 非框选
+        // 非框选，要么是在移动节点，要么是在移动连线
+        // 判断依据就是是否有选中的节点
         const diffLocation = worldLocation.subtract(lastMoveLocation);
-        isMovingNode = true;
-        if (pressingKeySet.has("alt")) {
-        } else {
-          if (pressingKeySet.has("control")) {
+
+        if (NodeManager.nodes.some((node) => node.isSelected)) {
+          // 移动节点
+          isMovingNode = true;
+          if (pressingKeySet.has("alt")) {
           } else {
-            console.log(diffLocation.toString());
-            NodeManager.moveNodes(diffLocation);
+            if (pressingKeySet.has("control")) {
+            } else {
+              NodeManager.moveNodes(diffLocation);
+            }
           }
+        } else {
+          // 拖拽连线
+          isMovingEdge = true;
+          // HACK: 应该加一个条件限制，只能选中一条边，这里有可能会选中多个边
+          NodeManager.moveEdges(lastMoveLocation, diffLocation);
         }
       }
       lastMoveLocation = worldLocation.clone();
@@ -393,6 +447,10 @@ export namespace Controller {
     if (isMovingNode) {
       NodeManager.moveNodeFinished();
       isMovingNode = false;
+    }
+    if (isMovingEdge) {
+      NodeManager.moveEdgeFinished();
+      isMovingEdge = false;
     }
     // Stage.hoverEdges = [];
 

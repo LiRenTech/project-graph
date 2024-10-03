@@ -13,6 +13,11 @@ export class Edge {
    */
   text: string;
 
+  /**
+   * 是否被选中
+   */
+  isSelected: boolean = false;
+
   constructor(
     { source, target, text }: Serialized.Edge,
     /** true表示解析状态，false表示解析完毕 */
