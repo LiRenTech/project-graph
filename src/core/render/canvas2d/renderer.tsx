@@ -186,30 +186,32 @@ export namespace Renderer {
         8 * Camera.currentScale,
       );
 
-      RenderUtils.renderText(
-        node.text,
-        transformWorld2View(
-          node.rectangle.location.add(Vector.same(NODE_PADDING)),
-        ),
-        FONT_SIZE * Camera.currentScale,
-        new Color(255, 255, 255),
-      );
+      if (!node.isEditing) {
+        RenderUtils.renderText(
+          node.text,
+          transformWorld2View(
+            node.rectangle.location.add(Vector.same(NODE_PADDING)),
+          ),
+          FONT_SIZE * Camera.currentScale,
+          new Color(255, 255, 255),
+        );
+      }
 
       if (node.isSelected) {
         // 在外面增加一个框
         RenderUtils.renderRect(
           new Rectangle(
             transformWorld2View(
-              node.rectangle.location.subtract(Vector.same(5)),
+              node.rectangle.location.subtract(Vector.same(7.5)),
             ),
             node.rectangle.size
-              .add(Vector.same(10))
+              .add(Vector.same(15))
               .multiply(Camera.currentScale),
           ),
           new Color(0, 0, 0, 0),
           new Color(255, 255, 255, 0.5),
           2 * Camera.currentScale,
-          8 * Camera.currentScale,
+          16 * Camera.currentScale,
         );
       }
 
@@ -429,5 +431,64 @@ export namespace Renderer {
       .subtract(new Vector(w / 2, h / 2))
       .multiply(1 / Camera.currentScale)
       .add(Camera.location);
+  }
+
+  /**
+   * 创建一个输入框
+   */
+  export function input(
+    location: Vector,
+    defaultValue: string,
+    onChange: (value: string) => void = () => {},
+    style: Partial<CSSStyleDeclaration> = {},
+  ): Promise<string> {
+    return new Promise((resolve) => {
+      const inputElement = document.createElement("input");
+      inputElement.type = "text";
+      inputElement.value = defaultValue;
+      inputElement.style.position = "fixed";
+      inputElement.style.top = `${location.y}px`;
+      inputElement.style.left = `${location.x}px`;
+      Object.assign(inputElement.style, style);
+      document.body.appendChild(inputElement);
+      inputElement.focus();
+      inputElement.select();
+      const onOutsideClick = (event: MouseEvent) => {
+        if (!inputElement.contains(event.target as Node)) {
+          resolve(inputElement.value);
+          onChange(inputElement.value);
+          document.body.removeEventListener("click", onOutsideClick);
+          document.body.removeChild(inputElement);
+        }
+      };
+      const onOutsideWheel = () => {
+        resolve(inputElement.value);
+        onChange(inputElement.value);
+        document.body.removeEventListener("click", onOutsideClick);
+        document.body.removeChild(inputElement);
+      };
+      setTimeout(() => {
+        document.body.addEventListener("click", onOutsideClick);
+        document.body.addEventListener("wheel", onOutsideWheel);
+      }, 10);
+      inputElement.addEventListener("input", () => {
+        onChange(inputElement.value);
+      });
+      inputElement.addEventListener("blur", () => {
+        resolve(inputElement.value);
+        onChange(inputElement.value);
+        document.body.removeEventListener("click", onOutsideClick);
+        document.body.removeChild(inputElement);
+      });
+      inputElement.addEventListener("keydown", (event) => {
+        event.stopPropagation();
+        if (event.key === "Enter") {
+          resolve(inputElement.value);
+          onChange(inputElement.value);
+          document.body.removeEventListener("click", onOutsideClick);
+          document.body.removeChild(inputElement);
+        }
+      });
+    });
   }
 }

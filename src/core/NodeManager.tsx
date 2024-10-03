@@ -27,11 +27,10 @@ export namespace NodeManager {
   /**
    * 更新节点的引用，将unknown的节点替换为真实的节点，保证对象在内存中的唯一性
    * 节点什么情况下会是unknown的？
-   * 
+   *
    */
   export function updateReferences() {
     for (const node of nodes) {
-
       for (const otherNode of nodes) {
         for (const child of otherNode.children) {
           if (child.unknown && child.uuid === node.uuid) {
@@ -48,7 +47,6 @@ export namespace NodeManager {
           edge.target = node;
         }
       }
-
     }
   }
 
@@ -159,7 +157,9 @@ export namespace NodeManager {
     let centerToChildVector = currentNode.rectangle.center
       .subtract(rotateCenterLocation)
       .normalize();
-    centerToChildVector = centerToChildVector.rotateDegrees(degrees).multiply(radius);
+    centerToChildVector = centerToChildVector
+      .rotateDegrees(degrees)
+      .multiply(radius);
     const newLocation = rotateCenterLocation.add(centerToChildVector);
     currentNode.moveTo(
       newLocation.subtract(currentNode.rectangle.size.divide(2)),
@@ -195,19 +195,6 @@ export namespace NodeManager {
       return addResult;
     }
     return false;
-  }
-
-  /**
-   * 重命名节点
-   * @param node
-   * @param text
-   */
-  export function renameNode(node: Node, text: string) {
-    node.rename(text);
-  }
-
-  export function renameEdge(edge: Edge, text: string) {
-    edge.rename(text);
   }
 
   /**

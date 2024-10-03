@@ -16,6 +16,11 @@ export class Node {
    */
   isSelected: boolean = false;
 
+  /**
+   * 是否在编辑文字，编辑时不渲染文字
+   */
+  isEditing: boolean = false;
+
   constructor(
     {
       uuid,

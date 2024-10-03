@@ -128,14 +128,6 @@ export namespace Controller {
 
   function handleMousedown(button: number, x: number, y: number) {
     isMouseDown[button] = true;
-    if (
-      Date.now() - lastClickTime < 200 &&
-      lastClickLocation.distance(new Vector(x, y)) < 10
-    ) {
-      handleDblclick(button, x, y);
-    }
-    lastClickTime = Date.now();
-    lastClickLocation = new Vector(x, y);
 
     const pressWorldLocation = Renderer.transformView2World(new Vector(x, y));
     const clickedNode = NodeManager.findNodeByLocation(pressWorldLocation);
@@ -385,6 +377,14 @@ export namespace Controller {
 
   function handleMouseup(button: number, x: number, y: number) {
     isMouseDown[button] = false;
+    if (
+      Date.now() - lastClickTime < 200 &&
+      lastClickLocation.distance(new Vector(x, y)) < 10
+    ) {
+      handleDblclick(button, x, y);
+    }
+    lastClickTime = Date.now();
+    lastClickLocation = new Vector(x, y);
     // 记录松开位置
     lastMouseReleaseLocation[button] = Renderer.transformView2World(
       new Vector(x, y),
@@ -553,8 +553,8 @@ export namespace Controller {
         // 编辑边上的文字
         let user_input = prompt("请输入线上的文字", Stage.hoverEdges[0].text);
         if (user_input) {
-          for (const edge of Stage.hoverEdges) { 
-            NodeManager.renameEdge(edge, user_input);
+          for (const edge of Stage.hoverEdges) {
+            edge.rename(user_input);
           }
         }
         return;
@@ -569,10 +569,25 @@ export namespace Controller {
 
       if (clickedNode !== null) {
         // 编辑节点
-        let user_input = prompt("请输入节点名称", clickedNode.text);
-        if (user_input) {
-          NodeManager.renameNode(clickedNode, user_input);
-        }
+        clickedNode.isEditing = true;
+        Renderer.input(
+          Renderer.transformWorld2View(clickedNode.rectangle.location).add(
+            Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
+          ),
+          clickedNode.text,
+          (text) => {
+            clickedNode?.rename(text);
+          },
+          {
+            fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
+            backgroundColor: "transparent",
+            color: "white",
+            outline: "none",
+            marginTop: -8 * Camera.currentScale + "px",
+          },
+        ).then(() => {
+          clickedNode!.isEditing = false;
+        });
       } else {
         // 新建节点
         NodeManager.addNodeByClick(
