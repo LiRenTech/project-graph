@@ -51,6 +51,11 @@ export namespace Stage {
   export let connectToNode: Node | null = null;
 
   /**
+   * 鼠标悬浮的边
+   */
+  export let hoverEdges: Edge[] = [];
+
+  /**
    * 逻辑总入口
    */
   export function logicTick() {

@@ -82,6 +82,11 @@ export namespace Controller {
   export let isMouseDown: boolean[] = [false, false, false];
   export let canvasElement: HTMLCanvasElement;
 
+  /**
+   * 悬浮提示的边缘距离
+   */
+  export const edgeHoverTolerance = 10;
+
   export function init(canvasElement: HTMLCanvasElement) {
     canvasElement = canvasElement;
     // 绑定事件
@@ -251,7 +256,7 @@ export namespace Controller {
       setCursorName("grabbing");
       return;
     }
-    
+
     if (isMouseDown[0]) {
       if (pressingKeySet.has("`")) {
         // 绘制临时激光笔特效
@@ -360,6 +365,15 @@ export namespace Controller {
           Stage.connectToNode = null;
         }
       }
+    } else {
+      // 什么都没有按下的情况
+      // 看看鼠标当前的位置是否和线接近
+      Stage.hoverEdges = [];
+      for (const edge of NodeManager.edges) {
+        if (edge.bodyLine.isPointNearLine(worldLocation, edgeHoverTolerance)) {
+          Stage.hoverEdges.push(edge);
+        }
+      }
     }
     if (pressingKeySet.has("`")) {
       // 迭代笔位置
@@ -380,6 +394,7 @@ export namespace Controller {
       NodeManager.moveNodeFinished();
       isMovingNode = false;
     }
+    // Stage.hoverEdges = [];
 
     if (button === 0) {
       // 左键松开
@@ -534,6 +549,16 @@ export namespace Controller {
     let clickedNode = NodeManager.findNodeByLocation(pressLocation);
     // 如果是左键
     if (button === 0) {
+      if (Stage.hoverEdges.length > 0) {
+        // 编辑边上的文字
+        let user_input = prompt("请输入线上的文字", Stage.hoverEdges[0].text);
+        if (user_input) {
+          for (const edge of Stage.hoverEdges) { 
+            NodeManager.renameEdge(edge, user_input);
+          }
+        }
+        return;
+      }
       for (const node of NodeManager.nodes) {
         if (node.rectangle.isPointInside(pressLocation)) {
           Stage.effects.push(new TextRiseEffect("Node clicked: " + node.uuid));
@@ -584,6 +609,8 @@ export namespace Controller {
       NodeManager.deleteNodes(
         NodeManager.nodes.filter((node) => node.isSelected),
       );
+    } else if (key === "enter") {
+      // 开始编辑选中的连线
     }
   }
 

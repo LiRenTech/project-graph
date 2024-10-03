@@ -206,6 +206,10 @@ export namespace NodeManager {
     node.rename(text);
   }
 
+  export function renameEdge(edge: Edge, text: string) {
+    edge.rename(text);
+  }
+
   /**
    * 计算所有节点的中心点
    */

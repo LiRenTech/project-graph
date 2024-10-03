@@ -1,6 +1,9 @@
 import { Serialized } from "../types/node";
+import { getTextSize } from "../utils/font";
 import { Line } from "./Line";
 import { Node } from "./Node";
+import { Rectangle } from "./Rectangle";
+import { Renderer } from "./render/canvas2d/renderer";
 
 export class Edge {
   source: Node;
@@ -18,6 +21,7 @@ export class Edge {
     this.source = new Node({ uuid: source }, true);
     this.target = new Node({ uuid: target }, true);
     this.text = text;
+    this.adjustSizeByText();
   }
   /**
    * 用于鼠标右键创建线段
@@ -33,6 +37,33 @@ export class Edge {
    * 这个碰撞箱是贯穿两个节点的线段
    */
   get bodyLine(): Line {
-    return new Line(this.source.rectangle.center, this.target.rectangle.center);
+    const edgeCenterLine = new Line(
+      this.source.rectangle.center,
+      this.target.rectangle.center,
+    );
+    const startPoint =
+      this.source.rectangle.getLineIntersectionPoint(edgeCenterLine);
+    const endPoint =
+      this.target.rectangle.getLineIntersectionPoint(edgeCenterLine);
+    return new Line(startPoint, endPoint);
   }
+
+  public rename(text: string) {
+    this.text = text;
+    this.adjustSizeByText();
+  }
+
+  get textRectangle(): Rectangle {
+    const textSize = getTextSize(this.text, Renderer.FONT_SIZE);
+
+    return new Rectangle(
+      this.bodyLine.midPoint().subtract(textSize.divide(2)),
+      textSize,
+    );
+  }
+
+  /**
+   * 调整线段上的文字的外框矩形
+   */
+  adjustSizeByText() {}
 }

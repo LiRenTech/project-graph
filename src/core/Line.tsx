@@ -30,6 +30,40 @@ export class Line {
     return this.end.subtract(this.start);
   }
 
+  /**
+   * 判断点是否在线段附近
+   * @param point
+   * @param tolerance 附近容错度
+   */
+  isPointNearLine(point: Vector, tolerance: number = 5): boolean {
+    const lineVector = this.direction();
+    const pointVector = point.subtract(this.start);
+
+    const lineLengthSquared = lineVector.dot(lineVector);
+
+    if (lineLengthSquared === 0) {
+      // 线段的起点和终点重合
+      return this.start.subtract(point).magnitude() <= tolerance;
+    }
+
+    // 计算投影点在线段上的位置
+    const t = pointVector.dot(lineVector) / lineLengthSquared;
+
+    // 限制投影点在0到1的范围内
+    const nearestPoint =
+      t < 0
+        ? this.start
+        : t > 1
+          ? this.end
+          : new Vector(
+              this.start.x + t * lineVector.x,
+              this.start.y + t * lineVector.y,
+            );
+
+    // 检查该点到line的距离是否在容差范围内
+    return nearestPoint.subtract(point).magnitude() <= tolerance;
+  }
+
   isParallel(other: Line): boolean {
     /** 判断两条线段是否平行 */
     return this.direction().cross(other.direction()) === 0;

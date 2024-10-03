@@ -13,6 +13,7 @@ import { Controller } from "../../controller/Controller";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 import { LineEffect } from "../../effect/concrete/LineEffect";
+import { Line } from "../../Line";
 
 /**
  * 渲染器
@@ -87,6 +88,15 @@ export namespace Renderer {
         transformWorld2View(edge.target.rectangle.getCenter()),
         new Color(255, 0, 0, 0.5),
         2 * Camera.currentScale,
+      );
+    }
+    // 悬浮的边
+    for (const edge of Stage.hoverEdges) {
+      RenderUtils.renderSolidLine(
+        transformWorld2View(edge.bodyLine.start),
+        transformWorld2View(edge.bodyLine.end),
+        new Color(0, 255, 0, 0.5),
+        Controller.edgeHoverTolerance * 2 * Camera.currentScale,
       );
     }
     // 框选框
@@ -227,42 +237,83 @@ export namespace Renderer {
       if (edge.source.uuid == edge.target.uuid) {
         // 自环
       } else {
-        const edgeCenterLine = edge.bodyLine;
-        const startPoint =
-          edge.source.rectangle.getLineIntersectionPoint(edgeCenterLine);
-        const endPoint =
-          edge.target.rectangle.getLineIntersectionPoint(edgeCenterLine);
-        RenderUtils.renderSolidLine(
-          transformWorld2View(startPoint),
-          transformWorld2View(endPoint),
-          new Color(255, 255, 255),
-          2 * Camera.currentScale,
-        );
+        if (edge.text.trim() === "") {
+          // 没有文字的边
+          RenderUtils.renderSolidLine(
+            transformWorld2View(edge.bodyLine.start),
+            transformWorld2View(edge.bodyLine.end),
+            new Color(255, 255, 255),
+            2 * Camera.currentScale,
+          );
+        } else {
+          // 有文字的边
+          const midPoint = edge.bodyLine.midPoint();
+          const startHalf = new Line(edge.bodyLine.start, midPoint);
+          const endHalf = new Line(midPoint, edge.bodyLine.end);
+          RenderUtils.renderTextFromCenter(
+            edge.text,
+            transformWorld2View(midPoint),
+            FONT_SIZE * Camera.currentScale,
+          );
+          const edgeTextRectangle = edge.textRectangle;
+
+          RenderUtils.renderSolidLine(
+            transformWorld2View(edge.bodyLine.start),
+            transformWorld2View(
+              edgeTextRectangle.getLineIntersectionPoint(startHalf),
+            ),
+            new Color(255, 255, 255),
+            2 * Camera.currentScale,
+          );
+          RenderUtils.renderSolidLine(
+            transformWorld2View(edge.bodyLine.end),
+            transformWorld2View(
+              edgeTextRectangle.getLineIntersectionPoint(endHalf),
+            ),
+            new Color(255, 255, 255),
+            2 * Camera.currentScale,
+          );
+
+          // RenderUtils.renderRect(
+          //   new Rectangle(
+          //     transformWorld2View(edgeTextRectangle.location),
+          //     edgeTextRectangle.size.multiply(Camera.currentScale),
+          //   ),
+          //   Color.Transparent,
+          //   Color.White,
+          //   2 * Camera.currentScale,
+          // );
+        }
+
         // 画箭头
-        const size = 15;
-        const direction = edge.target.rectangle
-          .getCenter()
-          .subtract(edge.source.rectangle.getCenter())
-          .normalize();
-        const reDirection = direction.clone().multiply(-1);
-        const location2 = endPoint.add(
-          reDirection.multiply(size).rotateDegrees(15),
-        );
-        const location3 = endPoint.add(reDirection.multiply(size * 0.5));
-        const location4 = endPoint.add(
-          reDirection.multiply(size).rotateDegrees(-15),
-        );
-        RenderUtils.renderPolygonAndFill(
-          [
-            Renderer.transformWorld2View(endPoint),
-            Renderer.transformWorld2View(location2),
-            Renderer.transformWorld2View(location3),
-            Renderer.transformWorld2View(location4),
-          ],
-          new Color(255, 255, 255),
-          new Color(255, 255, 255),
-          2 * Camera.currentScale,
-        );
+        {
+          const size = 15;
+          const direction = edge.target.rectangle
+            .getCenter()
+            .subtract(edge.source.rectangle.getCenter())
+            .normalize();
+          const reDirection = direction.clone().multiply(-1);
+          const location2 = edge.bodyLine.end.add(
+            reDirection.multiply(size).rotateDegrees(15),
+          );
+          const location3 = edge.bodyLine.end.add(
+            reDirection.multiply(size * 0.5),
+          );
+          const location4 = edge.bodyLine.end.add(
+            reDirection.multiply(size).rotateDegrees(-15),
+          );
+          RenderUtils.renderPolygonAndFill(
+            [
+              Renderer.transformWorld2View(edge.bodyLine.end),
+              Renderer.transformWorld2View(location2),
+              Renderer.transformWorld2View(location3),
+              Renderer.transformWorld2View(location4),
+            ],
+            new Color(255, 255, 255),
+            new Color(255, 255, 255),
+            2 * Camera.currentScale,
+          );
+        }
       }
 
       renderedEdges++;
@@ -335,7 +386,7 @@ export namespace Renderer {
       `Stage.warningNodes: ${Stage.warningNodes.length}`,
       `Stage.warningEdges: ${Stage.warningEdges.length}`,
       `ConnectFromNodes: ${Stage.connectFromNodes}`,
-      `lastSelectedNode: ${Controller.lastSelectedNode.size}`
+      `lastSelectedNode: ${Controller.lastSelectedNode.size}`,
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(
