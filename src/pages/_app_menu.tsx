@@ -17,7 +17,10 @@ import {
   View,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
+import {
+  open as openFileDialog,
+  save as saveFileDialog,
+} from "@tauri-apps/plugin-dialog";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 import { NodeLoader } from "../core/NodeLoader";
 import { useDialog } from "../utils/dialog";
@@ -30,7 +33,6 @@ import { Camera } from "../core/stage/Camera";
 import { Edge } from "../core/Edge";
 import { NodeDumper } from "../core/NodeDumper";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
-
 
 export default function AppMenu({
   className = "",
@@ -115,11 +117,11 @@ export default function AppMenu({
         },
       ],
     });
-    
+
     if (!path) {
       return;
     }
-  
+
     try {
       const data = NodeDumper.dumpToV3(); // 获取当前节点和边的数据
       await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
@@ -136,7 +138,39 @@ export default function AppMenu({
       });
     }
   };
-  
+
+  const onSaveNew = async () => {
+    const path = await saveFileDialog({
+      title: "另存为",
+      defaultPath: "新文件.json", // 提供一个默认的文件名
+      filters: [
+        {
+          name: "Project Graph",
+          extensions: ["json"],
+        },
+      ],
+    });
+
+    if (!path) {
+      return;
+    }
+
+    try {
+      const data = NodeDumper.dumpToV3(); // 获取当前节点和边的数据
+      await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
+      dialog.show({
+        title: "保存成功",
+        content: `文件已另存为 ${path}`,
+        type: "success",
+      });
+    } catch (e) {
+      dialog.show({
+        title: "保存失败",
+        content: String(e),
+        type: "error",
+      });
+    }
+  };
 
   return (
     <div
@@ -159,7 +193,9 @@ export default function AppMenu({
         <Col icon={<Save />} onClick={onSave}>
           覆盖保存
         </Col>
-        <Col icon={<Save />}>另存为</Col>
+        <Col icon={<Save />} onClick={onSaveNew}>
+          另存为
+        </Col>
       </Row>
       <Row icon={<Plus />} title="创建">
         <Col icon={<Cuboid />}>节点</Col>
