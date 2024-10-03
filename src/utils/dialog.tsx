@@ -1,6 +1,6 @@
 import React from "react";
 
-type DialogButton = { text: string; onClick?: () => void };
+type DialogButton = { text: string; onClick?: (value?: string) => void };
 type DialogType = "info" | "success" | "warning" | "error";
 type DialogOptions = {
   title: string;
@@ -8,8 +8,12 @@ type DialogOptions = {
   type: DialogType;
   buttons: DialogButton[];
   code: string;
+  input: boolean;
 };
-type DialogShowFunc = (options: Partial<DialogOptions>) => Promise<string>;
+type DialogShowFunc = (options: Partial<DialogOptions>) => Promise<{
+  button: string;
+  value?: string;
+}>;
 
 /**
  * 对话框上下文
@@ -22,18 +26,19 @@ type DialogShowFunc = (options: Partial<DialogOptions>) => Promise<string>;
  * @param code 代码
  */
 const DialogContext = React.createContext<
-  {
+  DialogOptions & {
     show: DialogShowFunc;
     showDialog: boolean;
-  } & DialogOptions
+  }
 >({
-  show: async () => "",
+  show: async () => ({ button: "" }),
   showDialog: false,
   title: "",
   content: "",
   type: "info",
   buttons: [],
   code: "",
+  input: false,
 });
 
 export const DialogProvider = ({ children }: React.PropsWithChildren) => {
@@ -43,6 +48,7 @@ export const DialogProvider = ({ children }: React.PropsWithChildren) => {
   const [type, setType] = React.useState<DialogType>("info");
   const [buttons, setButtons] = React.useState<DialogButton[]>([]);
   const [code, setCode] = React.useState("");
+  const [input, setInput] = React.useState(false);
 
   /**
    * 显示对话框
@@ -57,20 +63,21 @@ export const DialogProvider = ({ children }: React.PropsWithChildren) => {
     type = "info",
     buttons = [{ text: "确定" }],
     code = "",
+    input = false,
   }) =>
     new Promise((resolve) => {
       setShowDialog(true);
       setTitle(title);
       setContent(content || "");
       setType(type);
+      setInput(input);
       setButtons(
         buttons.map((button) => ({
           ...button,
-          onClick: () => {
+          onClick: (value) => {
             setShowDialog(false);
-            button.onClick?.();
             setTimeout(() => {
-              resolve(button.text);
+              resolve({ button: button.text, value });
             }, 301);
           },
         })),
@@ -80,7 +87,7 @@ export const DialogProvider = ({ children }: React.PropsWithChildren) => {
 
   return (
     <DialogContext.Provider
-      value={{ show, showDialog, title, content, type, buttons, code }}
+      value={{ show, showDialog, title, content, type, buttons, code, input }}
     >
       {children}
     </DialogContext.Provider>

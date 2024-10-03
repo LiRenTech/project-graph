@@ -2,6 +2,8 @@ import { cn } from "../../utils/cn";
 import { useDialog } from "../../utils/dialog";
 import Button from "./Button";
 import { isDesktop, isMobile } from "../../utils/platform";
+import Input from "./Input";
+import React from "react";
 
 /**
  * 中央小弹窗，只能点确定
@@ -18,6 +20,8 @@ import { isDesktop, isMobile } from "../../utils/platform";
  */
 export default function Dialog() {
   const dialog = useDialog();
+
+  const [inputValue, setInputValue] = React.useState("");
 
   // React.useEffect(() => {
   //   window.addEventListener("keydown", (e) => {
@@ -59,14 +63,27 @@ export default function Dialog() {
       {dialog.code.trim() !== "" && (
         <div className="flex flex-col gap-2">
           <h2 className="text-lg font-bold">代码</h2>
-          <pre className="overflow-auto rounded-md bg-neutral-900 p-2 text-white text-sm">
+          <pre className="overflow-auto rounded-md bg-neutral-900 p-2 text-sm text-white">
             {dialog.code}
           </pre>
         </div>
       )}
+      {dialog.input && (
+        <Input
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="请输入"
+        />
+      )}
 
       {dialog.buttons.map((btn, i) => (
-        <Button key={i} onClick={btn.onClick}>
+        <Button
+          key={i}
+          onClick={() => {
+            btn.onClick?.(inputValue);
+            setInputValue("");
+          }}
+        >
           {btn.text}
         </Button>
       ))}

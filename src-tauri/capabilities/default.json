@@ -16,6 +16,10 @@
     "dialog:default",
     "fs:default",
     "shell:default",
-    "store:default"
+    "store:default",
+    {
+      "identifier": "http:default",
+      "allow": ["https://github.com", "https://api.github.com"]
+    }
   ]
 }
