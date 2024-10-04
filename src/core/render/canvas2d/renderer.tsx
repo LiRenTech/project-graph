@@ -14,6 +14,7 @@ import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 import { LineEffect } from "../../effect/concrete/LineEffect";
 import { Line } from "../../Line";
+import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
 
 /**
  * 渲染器
@@ -378,6 +379,8 @@ export namespace Renderer {
         EffectRenderer.renderLineEffect(effect);
       } else if (effect instanceof LineCuttingEffect) {
         EffectRenderer.renderLineCuttingEffect(effect);
+      } else if (effect instanceof ViewFlashEffect) {
+        EffectRenderer.renderViewFlashEffect(effect);
       }
     }
   }

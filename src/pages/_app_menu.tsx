@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { cn } from "../utils/cn";
 import {
   AppWindow,
@@ -33,6 +33,9 @@ import { Camera } from "../core/stage/Camera";
 import { Edge } from "../core/Edge";
 import { NodeDumper } from "../core/NodeDumper";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
+import { Stage } from "../core/stage/Stage";
+import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
+import { Color } from "../core/Color";
 
 export default function AppMenu({
   className = "",
@@ -43,7 +46,7 @@ export default function AppMenu({
 }) {
   const navigate = useNavigate();
   const dialog = useDialog();
-  const [, setFile] = useRecoilState(fileAtom);
+  const [file, setFile] = useRecoilState(fileAtom);
 
   const onNew = () => {
     NodeManager.destroy();
@@ -107,30 +110,21 @@ export default function AppMenu({
   };
 
   const onSave = async () => {
-    const path = await openFileDialog({
-      title: "保存文件",
-      directory: false,
-      multiple: false,
-      filters: [
-        {
-          name: "Project Graph",
-          extensions: ["json"],
-        },
-      ],
-    });
+    let path: string | null = file;
+    console.log("准备保存，当前路径是", path);
 
-    if (!path) {
+    if (file === "Project Graph") {
+      // 如果文件名为 "Project Graph" 则说明是新建文件。
+      // 要走另存为流程
+      console.log("要走另存为流程");
+      onSaveNew();
       return;
     }
 
     try {
       const data = NodeDumper.dumpToV3(); // 获取当前节点和边的数据
       await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
-      dialog.show({
-        title: "保存成功",
-        content: `文件已保存到 ${path}`,
-        type: "success",
-      });
+      Stage.effects.push(new ViewFlashEffect(Color.Black));
     } catch (e) {
       dialog.show({
         title: "保存失败",
@@ -173,6 +167,23 @@ export default function AppMenu({
     }
   };
 
+  useEffect(() => {
+    // 绑定快捷键
+    const keyDownFunction = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === "n") {
+        onNew();
+      } else if (e.ctrlKey && e.key === "o") {
+        onOpen();
+      } else if (e.ctrlKey && e.key === "s") {
+        onSave();
+      }
+    };
+    document.addEventListener("keydown", keyDownFunction);
+    return () => {
+      document.removeEventListener("keydown", keyDownFunction);
+    };
+  }, []);
+
   return (
     <div
       className={cn(
@@ -192,7 +203,7 @@ export default function AppMenu({
           打开
         </Col>
         <Col icon={<Save />} onClick={onSave}>
-          覆盖保存
+          保存
         </Col>
         <Col icon={<Save />} onClick={onSaveNew}>
           另存为
@@ -217,7 +228,7 @@ export default function AppMenu({
         <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
           测试
         </Col>
-        {/* <Col
+        <Col
           icon={<TestTube2 />}
           onClick={() =>
             dialog.show({
@@ -227,14 +238,18 @@ export default function AppMenu({
             })
           }
         >
-          查看舞台序列化信息
+          json
         </Col>
-        <Col icon={<TestTube2 />} onClick={() => {
-          console.log(NodeManager.nodes);
-          console.log(NodeManager.edges);
-        }}>
-          NodeManager log查看
-        </Col> */}
+        <Col
+          icon={<TestTube2 />}
+          onClick={() => {
+            console.log(NodeManager.nodes);
+            console.log(NodeManager.edges);
+            console.log(file);
+          }}
+        >
+          print
+        </Col>
       </Row>
       <Row icon={<AppWindow />} title="窗口">
         <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>

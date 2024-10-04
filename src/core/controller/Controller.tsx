@@ -676,6 +676,10 @@ export namespace Controller {
   function keydown(event: KeyboardEvent) {
     const key = event.key.toLowerCase();
     pressingKeySet.add(key);
+    if (key === "s" && pressingKeySet.has("control")) {
+      // 保存
+      console.log("Save");
+    }
     if (keyMap[key]) {
       // 当按下某一个方向的时候,相当于朝着某个方向赋予一次加速度
       Camera.accelerateCommander = Camera.accelerateCommander
@@ -692,6 +696,7 @@ export namespace Controller {
     } else if (key === "enter") {
       // 开始编辑选中的连线
     }
+    
   }
 
   function keyup(event: KeyboardEvent) {
@@ -711,6 +716,7 @@ export namespace Controller {
         .limitY(-1, 1);
     }
     setCursorName("default");
+    
   }
 
   function touchstart(e: TouchEvent) {

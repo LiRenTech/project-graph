@@ -4,7 +4,9 @@ import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 import { LineEffect } from "../../effect/concrete/LineEffect";
 import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
+import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
 import { easeInOutSine } from "../../effect/easings";
+import { Rectangle } from "../../Rectangle";
 import { Camera } from "../../stage/Camera";
 import { Vector } from "../../Vector";
 import { Renderer } from "./renderer";
@@ -109,6 +111,21 @@ export namespace EffectRenderer {
       fromColor,
       toColor,
       effect.lineWidth * effect.timeProgress.rate,
+    );
+  }
+  export function renderViewFlashEffect(effect: ViewFlashEffect) {
+    if (effect.timeProgress.isFull) {
+      return;
+    }
+    RenderUtils.renderRect(
+      new Rectangle(new Vector(-10000, -10000), new Vector(20000, 20000)),
+      mixColors(
+        effect.color,
+        new Color(0, 0, 0, 0),
+        effect.timeProgress.rate,
+      ),
+      Color.Transparent,
+      0,
     );
   }
 }
