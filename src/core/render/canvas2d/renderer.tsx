@@ -218,8 +218,8 @@ export namespace Renderer {
           transformWorld2View(node.rectangle.location),
           node.rectangle.size.multiply(Camera.currentScale),
         ),
-        node.isColorSetByUser ? node.userColor : new Color(0, 0, 0, 0.5),
-        new Color(255, 255, 255, 0.5),
+        node.isColorSetByUser ? node.userColor : new Color(33, 33, 33, 1),
+        new Color(204, 204, 204, 1),
         2 * Camera.currentScale,
         8 * Camera.currentScale,
       );
@@ -233,7 +233,7 @@ export namespace Renderer {
           FONT_SIZE * Camera.currentScale,
           node.isColorSetByUser
             ? colorInvert(node.userColor)
-            : new Color(255, 255, 255),
+            : new Color(204, 204, 204),
         );
       }
 
@@ -284,7 +284,7 @@ export namespace Renderer {
           RenderUtils.renderSolidLine(
             transformWorld2View(edge.bodyLine.start),
             transformWorld2View(edge.bodyLine.end),
-            new Color(255, 255, 255),
+            new Color(204, 204, 204),
             2 * Camera.currentScale,
           );
         } else {
@@ -304,7 +304,7 @@ export namespace Renderer {
             transformWorld2View(
               edgeTextRectangle.getLineIntersectionPoint(startHalf),
             ),
-            new Color(255, 255, 255),
+            new Color(204, 204, 204),
             2 * Camera.currentScale,
           );
           RenderUtils.renderSolidLine(
@@ -312,7 +312,7 @@ export namespace Renderer {
             transformWorld2View(
               edgeTextRectangle.getLineIntersectionPoint(endHalf),
             ),
-            new Color(255, 255, 255),
+            new Color(204, 204, 204),
             2 * Camera.currentScale,
           );
 
