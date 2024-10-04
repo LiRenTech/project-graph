@@ -1,5 +1,6 @@
 import { Serialized } from "../types/node";
 import { getTextSize } from "../utils/font";
+import { Color } from "./Color";
 import { Rectangle } from "./Rectangle";
 import { Renderer } from "./render/canvas2d/renderer";
 import { Vector } from "./Vector";
@@ -21,6 +22,9 @@ export class Node {
    */
   isEditing: boolean = false;
 
+  isColorSetByUser: boolean = false;
+  userColor: Color = Color.Black;
+
   constructor(
     {
       uuid,
@@ -28,6 +32,8 @@ export class Node {
       details = "",
       children = [],
       shape = { type: "Rectangle", location: [0, 0], size: [0, 0] },
+      isColorSetByUser = false,
+      userColor = [0, 0, 0],
     }: Partial<Serialized.Node> & { uuid: string },
     public unknown = false,
   ) {
@@ -41,6 +47,8 @@ export class Node {
       new Vector(...shape.location),
       new Vector(...shape.size),
     );
+    this.isColorSetByUser = isColorSetByUser;
+    this.userColor = new Color(userColor[0], userColor[1], userColor[2]);
     this.adjustSizeByText();
   }
 

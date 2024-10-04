@@ -68,6 +68,10 @@ export namespace NodeLoader {
       delete node.shape.height;
       node.text = node.inner_text;
       delete node.inner_text;
+      node.isColorSetByUser = node.is_color_set_by_user;
+      delete node.is_color_set_by_user;
+      node.userColor = node.user_color;
+      delete node.user_color;
     }
     data.edges = data.links;
     delete data.links;

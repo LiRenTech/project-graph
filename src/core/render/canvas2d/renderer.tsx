@@ -168,6 +168,27 @@ export namespace Renderer {
     renderEffects();
   }
 
+  function colorInvert(color: Color): Color {
+    /**
+     * 计算背景色的亮度 更精确的人眼感知亮度公式
+     * 0.2126 * R + 0.7152 * G + 0.0722 * B，
+     * 如果亮度较高，则使用黑色文字，
+     * 如果亮度较低，则使用白色文字。
+     * 这种方法能够确保无论背景色如何变化，文字都能保持足够的对比度。
+     */
+
+    const r = color.r;
+    const g = color.g;
+    const b = color.b;
+    const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+    if (brightness > 128) {
+      return Color.Black; // 返回黑色
+    } else {
+      return Color.White; // 返回白色
+    }
+  }
+
   export function renderEntities() {
     renderedNodes = 0;
     for (const node of NodeManager.nodes) {
@@ -175,12 +196,13 @@ export namespace Renderer {
       //   continue;
       // }
 
+      // 节点身体矩形
       RenderUtils.renderRect(
         new Rectangle(
           transformWorld2View(node.rectangle.location),
           node.rectangle.size.multiply(Camera.currentScale),
         ),
-        new Color(0, 0, 0, 0.5),
+        node.isColorSetByUser ? node.userColor : new Color(0, 0, 0, 0.5),
         new Color(255, 255, 255, 0.5),
         2 * Camera.currentScale,
         8 * Camera.currentScale,
@@ -193,7 +215,9 @@ export namespace Renderer {
             node.rectangle.location.add(Vector.same(NODE_PADDING)),
           ),
           FONT_SIZE * Camera.currentScale,
-          new Color(255, 255, 255),
+          node.isColorSetByUser
+            ? colorInvert(node.userColor)
+            : new Color(255, 255, 255),
         );
       }
 
@@ -239,7 +263,6 @@ export namespace Renderer {
       if (edge.source.uuid == edge.target.uuid) {
         // 自环
       } else {
-        
         if (edge.text.trim() === "") {
           // 没有文字的边
           RenderUtils.renderSolidLine(

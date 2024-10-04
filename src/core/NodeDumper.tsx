@@ -22,6 +22,8 @@ export namespace NodeDumper {
       uuid: node.uuid,
       details: node.details,
       children: node.children.map((child) => child.uuid),
+      isColorSetByUser: node.isColorSetByUser,
+      userColor: [node.userColor.r, node.userColor.g, node.userColor.b],
     };
   }
 

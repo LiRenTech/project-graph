@@ -11,6 +11,8 @@ export namespace Serialized {
     details: string;
     uuid: string;
     children: string[];
+    isColorSetByUser: boolean;
+    userColor: number[];
   };
   export type Edge = {
     source: string;
