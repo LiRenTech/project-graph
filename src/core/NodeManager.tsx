@@ -87,6 +87,13 @@ export namespace NodeManager {
       }
     }
   }
+  export function clearNodeColor() {
+    for (const node of nodes) {
+      if (node.isSelected) {
+        node.isColorSetByUser = false;
+      }
+    }
+  }
 
   export function moveNodeFinished() {
     // 以后有历史记录了再说，这里什么都不用写
@@ -97,17 +104,21 @@ export namespace NodeManager {
     // 需要查看ts的装饰器怎么用
   }
   /**
-   * 
-   * @param lastMoveLocation 
-   * @param diffLocation 
+   *
+   * @param lastMoveLocation
+   * @param diffLocation
    */
   export function moveEdges(lastMoveLocation: Vector, diffLocation: Vector) {
     for (const edge of edges) {
       if (edge.isSelected) {
         const startMouseDragLocation = lastMoveLocation.clone();
         const endMouseDragLocation = startMouseDragLocation.add(diffLocation);
-        const vectorStart = startMouseDragLocation.subtract(edge.source.rectangle.center);
-        const vectorEnd = endMouseDragLocation.subtract(edge.source.rectangle.center);
+        const vectorStart = startMouseDragLocation.subtract(
+          edge.source.rectangle.center,
+        );
+        const vectorEnd = endMouseDragLocation.subtract(
+          edge.source.rectangle.center,
+        );
         let degrees = vectorStart.angleToSigned(vectorEnd);
         // degrees一直是正数
         console.log(degrees);
@@ -115,7 +126,7 @@ export namespace NodeManager {
           degrees = 0;
         }
         // rotateNode(edge.source, degrees);
-        rotateNodeDfs(edge.source, edge.target, degrees, [edge.source.uuid])
+        rotateNodeDfs(edge.source, edge.target, degrees, [edge.source.uuid]);
       }
     }
   }
@@ -279,7 +290,9 @@ export namespace NodeManager {
 
   export function findEdgeByLocation(location: Vector): Edge | null {
     for (const edge of edges) {
-      if (edge.bodyLine.isPointNearLine(location, Controller.edgeHoverTolerance)) {
+      if (
+        edge.bodyLine.isPointNearLine(location, Controller.edgeHoverTolerance)
+      ) {
         return edge;
       }
     }

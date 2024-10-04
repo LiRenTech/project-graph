@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Color } from "../core/Color";
 import { NodeManager } from "../core/NodeManager";
 import { cn } from "../utils/cn";
@@ -36,6 +37,12 @@ function ToolbarItem({ icon, handleFunction, noteTitle }: ToolbarItemProps) {
 }
 
 export default function Toolbar({ className = "" }) {
+  const [isColorPanelOpen, setColorPanelOpen] = useState(false); // 控制颜色面板的状态
+
+  const toggleColorPanel = () => {
+    setColorPanelOpen(!isColorPanelOpen); // 切换面板的显示状态
+  };
+
   // 一个竖向的工具栏，在页面顶部，右侧显示
   return (
     <div
@@ -63,33 +70,61 @@ export default function Toolbar({ className = "" }) {
       />
 
       {/* 颜色面板 */}
-      <div className="absolute right-0 h-32 w-32 bg-black/50 ring">
-        <div className="flex ring">
-          <div className="m-2 h-4 w-4 rounded-full bg-green-600"></div>
-          <div className="m-2 h-4 w-4 rounded-full bg-yellow-500"></div>
-          <div
-            className="m-2 h-4 w-4 rounded-full bg-blue-500"
-            onClick={() => {
-              NodeManager.setNodeColor(new Color(59, 130, 246));
-            }}
-          ></div>
-          <div className="m-2 h-4 w-4 rounded-full bg-red-500"></div>
+      {isColorPanelOpen && (
+        <div className="absolute right-0 flex h-32 w-32 flex-col items-center justify-center rounded-lg bg-black">
+          <div className="flex flex-wrap items-center justify-center">
+            <div
+              className="m-1 h-5 w-5 cursor-pointer rounded-full bg-red-500 transition-all hover:scale-125"
+              onClick={() => {
+                NodeManager.setNodeColor(new Color(239, 68, 68));
+              }}
+            />
+            <div
+              className="m-1 h-5 w-5 cursor-pointer rounded-full bg-yellow-500 transition-all hover:scale-125"
+              onClick={() => {
+                NodeManager.setNodeColor(new Color(234, 179, 8));
+              }}
+            />
+            <div
+              className="m-1 h-5 w-5 cursor-pointer rounded-full bg-green-600 transition-all hover:scale-125"
+              onClick={() => {
+                NodeManager.setNodeColor(new Color(22, 163, 74));
+              }}
+            />
+            <div
+              className="m-1 h-5 w-5 cursor-pointer rounded-full bg-blue-500 transition-all hover:scale-125"
+              onClick={() => {
+                NodeManager.setNodeColor(new Color(59, 130, 246));
+              }}
+            />
+            <div
+              className="m-1 h-5 w-5 cursor-pointer rounded-full bg-purple-500 transition-all hover:scale-125"
+              onClick={() => {
+                NodeManager.setNodeColor(new Color(239, 68, 68));
+              }}
+            />
+            <div
+              className="m-1 h-5 w-5 animate-pulse cursor-pointer rounded-full bg-gray-500 text-center text-sm transition-all hover:scale-125"
+              onClick={() => {
+                NodeManager.clearNodeColor();
+              }}
+            >
+              <span>x</span>
+            </div>
+          </div>
+
+          <button
+            className="absolute right-0 top-0 rounded-lg bg-red-700 px-2"
+            onClick={toggleColorPanel}
+          >
+            X
+          </button>
         </div>
-        <button
-          className="rounded-lg bg-neutral-900/25 ring"
-          onClick={() => {
-            // 关闭颜色面板
-          }}
-        >
-          close
-        </button>
-      </div>
+      )}
       <ToolbarItem
         noteTitle="设置节点颜色"
         icon={<PaintBucket />}
-        handleFunction={() => {
-          // 弹出颜色面板
-        }}
+        handleFunction={toggleColorPanel}
       />
       <ToolbarItem
         noteTitle="左对齐"
