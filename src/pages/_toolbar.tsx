@@ -1,3 +1,4 @@
+import { Color } from "../core/Color";
 import { NodeManager } from "../core/NodeManager";
 import { cn } from "../utils/cn";
 // https://lucide.dev/icons
@@ -60,10 +61,35 @@ export default function Toolbar({ className = "" }) {
         icon={<Repeat />}
         handleFunction={() => {}}
       />
+
+      {/* 颜色面板 */}
+      <div className="absolute right-0 h-32 w-32 bg-black/50 ring">
+        <div className="flex ring">
+          <div className="m-2 h-4 w-4 rounded-full bg-green-600"></div>
+          <div className="m-2 h-4 w-4 rounded-full bg-yellow-500"></div>
+          <div
+            className="m-2 h-4 w-4 rounded-full bg-blue-500"
+            onClick={() => {
+              NodeManager.setNodeColor(new Color(59, 130, 246));
+            }}
+          ></div>
+          <div className="m-2 h-4 w-4 rounded-full bg-red-500"></div>
+        </div>
+        <button
+          className="rounded-lg bg-neutral-900/25 ring"
+          onClick={() => {
+            // 关闭颜色面板
+          }}
+        >
+          close
+        </button>
+      </div>
       <ToolbarItem
         noteTitle="设置节点颜色"
         icon={<PaintBucket />}
-        handleFunction={() => {}}
+        handleFunction={() => {
+          // 弹出颜色面板
+        }}
       />
       <ToolbarItem
         noteTitle="左对齐"

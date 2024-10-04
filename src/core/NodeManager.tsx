@@ -1,3 +1,4 @@
+import { Color } from "./Color";
 import { Controller } from "./controller/Controller";
 import { Edge } from "./Edge";
 import { Node } from "./Node";
@@ -74,6 +75,15 @@ export namespace NodeManager {
     for (const node of nodes) {
       if (node.isSelected) {
         node.move(delta);
+      }
+    }
+  }
+
+  export function setNodeColor(color: Color) {
+    for (const node of nodes) {
+      if (node.isSelected) {
+        node.isColorSetByUser = true;
+        node.userColor = color;
       }
     }
   }
