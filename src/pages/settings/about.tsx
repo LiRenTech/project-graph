@@ -8,7 +8,7 @@ export default function About() {
       <div className="flex h-20 gap-4">
         <img src={icon} alt="icon" className="h-20 w-20 rounded-xl" />
         <div className="flex flex-col gap-2">
-          <span className="text-3xl font-bold">Project Graph</span>
+          <span className="text-3xl font-bold">Project Graph 计划投射</span>
           <span className="text-gray-500">By LiRen Tech</span>
         </div>
       </div>
@@ -22,7 +22,8 @@ export default function About() {
         </p>
         <p>所以做了这个小软件</p>
         <h2 className="text-2xl font-bold mt-4">联系我们</h2>
-        <p>如果您想快速获得反馈和提供建议，欢迎加入我们的QQ群：1006956704</p>
+        <p>我们致力于为 “图论” 设计一个最快速方便的绘制方法论，同时也在可视化思考、拓扑型todo list等方向进行探索创新。</p>
+        <p>如果您想快速获得反馈和提供建议，或者有任何想法、疑问，欢迎加入我们的QQ群：1006956704</p>
         <h2 className="text-2xl font-bold mt-4">团队简介</h2>
         <p>
           理刃科技是一个由Littlefean和Rutubet在2017年5月1日创立的小型团队，后续ZTY加入团队。

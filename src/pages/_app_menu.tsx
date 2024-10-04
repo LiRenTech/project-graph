@@ -79,6 +79,7 @@ export default function AppMenu({
     try {
       const content = await readTextFile(path);
       const data = NodeLoader.validate(JSON.parse(content));
+      console.log(data);
       // const startTime = performance.now();
       for (const node of data.nodes) {
         NodeManager.addNode(new Node(node));
