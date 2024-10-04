@@ -351,9 +351,9 @@ export namespace Renderer {
               Renderer.transformWorld2View(location3),
               Renderer.transformWorld2View(location4),
             ],
-            new Color(255, 255, 255),
-            new Color(255, 255, 255),
-            2 * Camera.currentScale,
+            new Color(204, 204, 204),
+            new Color(204, 204, 204),
+            0,
           );
         }
 
