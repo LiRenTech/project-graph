@@ -15,6 +15,7 @@ import {
   AlignHorizontalSpaceBetween,
   AlignVerticalSpaceBetween,
 } from "lucide-react";
+import React from "react";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
