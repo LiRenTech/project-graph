@@ -58,6 +58,8 @@ export namespace Camera {
    */
   export const shakeLocation: Vector = Vector.getZero();
 
+  
+
   export function frameTick() {
     // 计算摩擦力 与速度方向相反,固定值,但速度为0摩擦力就不存在
     // 获得速度的大小和方向

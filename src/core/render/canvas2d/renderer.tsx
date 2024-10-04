@@ -167,6 +167,21 @@ export namespace Renderer {
 
     // 渲染所有特效
     renderEffects();
+
+    // 测试渲染
+    // const rect = getCoverWorldRectangle();
+    // RenderUtils.renderSolidLine(
+    //   transformWorld2View(rect.location),
+    //   transformWorld2View(rect.location.add(rect.size)),
+    //   new Color(255, 255, 255, 0.5),
+    //   2,
+    // );
+    // RenderUtils.renderSolidLine(
+    //   transformWorld2View(rect.location.add(new Vector(rect.size.x, 0))),
+    //   transformWorld2View(rect.location.add(new Vector(0, rect.size.y))),
+    //   new Color(255, 255, 255, 0.5),
+    //   2,
+    // );
   }
 
   function colorInvert(color: Color): Color {
@@ -385,22 +400,35 @@ export namespace Renderer {
     }
   }
   export function renderGrid() {
-    const gridSize = 100;
-    for (let y = 0; y < 100; y++) {
-      RenderUtils.renderSolidLine(
-        transformWorld2View(new Vector(0, y * gridSize)),
-        transformWorld2View(new Vector(1000, y * gridSize)),
-        new Color(255, 255, 255, 0.1),
-        1,
-      );
+    let gap = 50;
+    if (Camera.currentScale < 1) {
+      while (gap * Camera.currentScale < 49) {
+        gap *= 2;
+      }
     }
-    for (let x = 0; x < 100; x++) {
+    const gridColor = new Color(255, 255, 255, 0.1);
+    const mainColor = new Color(255, 255, 255, 0.5);
+
+    const viewRect = getCoverWorldRectangle();
+    let yStart = viewRect.location.y - (viewRect.location.y % gap);
+    while (yStart < viewRect.bottom) {
       RenderUtils.renderSolidLine(
-        transformWorld2View(new Vector(x * gridSize, 0)),
-        transformWorld2View(new Vector(x * gridSize, 1000)),
-        new Color(255, 255, 255, 0.1),
+        transformWorld2View(new Vector(viewRect.left, yStart)),
+        transformWorld2View(new Vector(viewRect.right, yStart)),
+        yStart === 0 ? mainColor : gridColor,
         1,
       );
+      yStart += gap;
+    }
+    let xStart = viewRect.location.x - (viewRect.location.x % gap);
+    while (xStart < viewRect.right) {
+      RenderUtils.renderSolidLine(
+        transformWorld2View(new Vector(xStart, viewRect.top)),
+        transformWorld2View(new Vector(xStart, viewRect.bottom)),
+        xStart === 0 ? mainColor : gridColor,
+        1,
+      );
+      xStart += gap;
     }
   }
 
@@ -467,6 +495,15 @@ export namespace Renderer {
       .subtract(new Vector(w / 2, h / 2))
       .multiply(1 / Camera.currentScale)
       .add(Camera.location);
+  }
+
+  /**
+   * 获取摄像机视野范围内所覆盖住的世界范围矩形
+   * 返回的矩形是世界坐标下的矩形
+   */
+  export function getCoverWorldRectangle(): Rectangle {
+    const size = new Vector(w / Camera.currentScale, h / Camera.currentScale);
+    return new Rectangle(Camera.location.subtract(size.divide(2)), size);
   }
 
   /**

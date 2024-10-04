@@ -246,6 +246,9 @@ export default function AppMenu({
             console.log(NodeManager.nodes);
             console.log(NodeManager.edges);
             console.log(file);
+            // localStorage测试
+            // 尽量不要用这个，端口号一变就没了
+            localStorage.setItem("_test", "123");
           }}
         >
           print
