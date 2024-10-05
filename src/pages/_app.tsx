@@ -18,6 +18,7 @@ import { appScale, isDesktop, isMobile } from "../utils/platform";
 import { useRecoilState } from "recoil";
 import { fileAtom } from "../state";
 import RecentFilesPanel from "./_recent_files_panel";
+import { Settings } from "../core/Settings";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -25,6 +26,7 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [file] = useRecoilState(fileAtom);
+  const [backgroundOpacity, setBackgroundOpacity] = React.useState(0.5);
 
   React.useEffect(() => {
     getCurrentWindow().onResized(() => {
@@ -45,6 +47,11 @@ export default function App() {
     window.addEventListener("pointerdown", () => {
       setOpenMenu(false);
     });
+    Settings.get("windowBackgroundAlpha").then((alpha) => {
+      if (alpha) {
+        setBackgroundOpacity(alpha);
+      }
+    });
   }, []);
   React.useEffect(() => {
     if (maxmized) {
@@ -56,7 +63,9 @@ export default function App() {
 
   return (
     <div
-      className="relative h-full w-full rounded-xl bg-neutral-950 text-white shadow-2xl"
+      className={cn("relative h-full w-full rounded-xl text-white shadow-2xl", {
+        "bg-neutral-950": isMobile || location.pathname !== "/",
+      })}
       style={{ zoom: appScale }}
       onClick={() => setOpenMenu(false)}
       onContextMenu={(e) => e.preventDefault()}
@@ -126,6 +135,15 @@ export default function App() {
         )}
       </div>
       <Outlet />
+      {isDesktop && (
+        <div
+          className={cn("absolute left-0 top-0 -z-10 h-full w-full")}
+          style={{
+            backgroundColor: "#2b2b2b",
+            opacity: `${backgroundOpacity * 100}%`,
+          }}
+        ></div>
+      )}
     </div>
   );
 }

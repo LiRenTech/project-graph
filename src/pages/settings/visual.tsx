@@ -13,6 +13,14 @@ export default function Visual() {
         ]}
       />
       <SettingField settingKey="showGrid" title="显示网格" type="switch" />
+      <SettingField
+        settingKey="windowBackgroundAlpha"
+        title="背景alpha不透明度"
+        type="slider"
+        min={0}
+        max={1}
+        step={0.01}
+      />
       <SettingField settingKey="showDebug" title="显示调试信息" type="switch" />
       <SettingField
         settingKey="scaleExponent"

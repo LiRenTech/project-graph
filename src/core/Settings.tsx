@@ -6,6 +6,7 @@ export namespace Settings {
     lineStyle: "stright" | "bezier";
     theme: "";
     showGrid: boolean;
+    windowBackgroundAlpha: number;
     showDebug: boolean;
     enableCollision: boolean;
     scaleExponent: number;
@@ -21,6 +22,7 @@ export namespace Settings {
     lineStyle: "stright",
     theme: "",
     showGrid: true,
+    windowBackgroundAlpha: 0.8,
     showDebug: true,
     enableCollision: true,
     scaleExponent: 1.1,

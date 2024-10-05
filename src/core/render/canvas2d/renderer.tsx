@@ -53,8 +53,8 @@ export namespace Renderer {
     Canvas.ctx.clearRect(0, 0, w, h);
 
     // 画一个2b2b2b的背景
-    Canvas.ctx.fillStyle = "#2b2b2b";
-    Canvas.ctx.fillRect(0, 0, w, h);
+    // Canvas.ctx.fillStyle = "#2b2b2b";
+    // Canvas.ctx.fillRect(0, 0, w, h);
 
     // TODO: 这里的计算应该是基于视野的，而不是整个画布的
     // canvasRect = new Rectangle(
