@@ -28,11 +28,12 @@ import { useRecoilState } from "recoil";
 import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
 import { Camera } from "../core/stage/Camera";
 import { NodeDumper } from "../core/NodeDumper";
-import { writeTextFile } from "@tauri-apps/plugin-fs";
+// import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { Stage } from "../core/stage/Stage";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { Color } from "../core/Color";
 import { RecentFileManager } from "../core/RecentFileManager";
+import { invoke } from "@tauri-apps/api/core";
 
 export default function AppMenu({
   className = "",
@@ -68,7 +69,7 @@ export default function AppMenu({
     if (!path) {
       return;
     }
-    
+
     setFile(decodeURIComponent(path));
     if (isDesktop && !path.endsWith(".json")) {
       dialog.show({
@@ -78,8 +79,10 @@ export default function AppMenu({
       return;
     }
     try {
-      console.log("正在打开文件", `<${path}>`, typeof path) ;
+      console.log("正在打开文件", `<${path}>`, typeof path);
       RecentFileManager.openFileByPath(path);
+      // 更改file
+      setFile(path);
     } catch (e) {
       dialog.show({
         title: "请选择正确的JSON文件",
@@ -103,8 +106,24 @@ export default function AppMenu({
 
     try {
       const data = NodeDumper.dumpToV3(); // 获取当前节点和边的数据
-      await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
-      Stage.effects.push(new ViewFlashEffect(Color.Black));
+      // 2024年10月6日发现保存文件也开始变得没有权限了，可能是tauri-plugin-fs的bug
+      // await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
+
+      invoke<string>("save_json_by_path", {
+        path,
+        content: JSON.stringify(data, null, 2),
+      })
+        .then((res) => {
+          console.log("保存成功", res);
+          Stage.effects.push(new ViewFlashEffect(Color.Black));
+        })
+        .catch((err) => {
+          dialog.show({
+            title: "保存失败",
+            content: String(err),
+            type: "error",
+          });
+        });
     } catch (e) {
       dialog.show({
         title: "保存失败",
@@ -132,12 +151,21 @@ export default function AppMenu({
 
     try {
       const data = NodeDumper.dumpToV3(); // 获取当前节点和边的数据
-      await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
-      dialog.show({
-        title: "保存成功",
-        content: `文件已另存为 ${path}`,
-        type: "success",
-      });
+      invoke<string>("save_json_by_path", {
+        path,
+        content: JSON.stringify(data, null, 2),
+      })
+        .then((res) => {
+          console.log("保存成功", res);
+          Stage.effects.push(new ViewFlashEffect(Color.Black));
+        })
+        .catch((err) => {
+          dialog.show({
+            title: "保存失败",
+            content: String(err),
+            type: "error",
+          });
+        });
     } catch (e) {
       dialog.show({
         title: "保存失败",

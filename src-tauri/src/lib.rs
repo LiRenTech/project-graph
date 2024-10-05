@@ -1,6 +1,7 @@
 // use tauri::Manager;
 
 use std::io::Read;
+use std::io::Write;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -14,6 +15,14 @@ fn open_json_by_path(path: String) -> String {
     let mut contents = String::new();
     file.read_to_string(&mut contents).unwrap();
     contents
+}
+
+/// 保存json字符串到指定路径
+#[tauri::command]
+fn save_json_by_path(path: String, content: String) -> Result<bool, String> {
+    let mut file = std::fs::File::create(path).unwrap();
+    file.write_all(content.as_bytes()).unwrap();
+    Ok(true)
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -33,7 +42,11 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![greet, open_json_by_path])
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            open_json_by_path,
+            save_json_by_path
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
