@@ -94,7 +94,6 @@ export default function AppMenu({
   const onSave = () => {
     const path_ = file;
     console.log("准备保存，当前路径是", path_);  
-    // 2024年10月6日发现：路径总是一开始的 "Project Graph"，原因未知
 
     if (path_ === "Project Graph") {
       // 如果文件名为 "Project Graph" 则说明是新建文件。
@@ -192,7 +191,7 @@ export default function AppMenu({
     return () => {
       document.removeEventListener("keydown", keyDownFunction);
     };
-  }, []);
+  }, [file]);  // 不能填空数组，否则绑定的函数里面的 file 值不会更新
 
   return (
     <div
