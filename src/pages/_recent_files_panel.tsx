@@ -1,13 +1,26 @@
+// import { readTextFile } from "@tauri-apps/plugin-fs";
 import React, { useEffect } from "react";
-import { RecentFileManager } from "../core/RecentFileManager";
 import { cn } from "../utils/cn";
-import { isRecentFilePanelOpenAtom } from "../state";
+import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
 import { useRecoilState } from "recoil";
+// import { NodeManager } from "../core/NodeManager";
+// import { NodeLoader } from "../core/NodeLoader";
+// import { Edge } from "../core/Edge";
+// import { Camera } from "../core/stage/Camera";
+// import { Stage } from "../core/stage/Stage";
+// import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
+// import { Color } from "../core/Color";
+// import { Node } from "../core/Node";
+import { RecentFileManager } from "../core/RecentFileManager";
+import { useDialog } from "../utils/dialog";
+import { isDesktop } from "../utils/platform";
 
 export default function RecentFilesPanel() {
   const [recentFiles, setRecentFiles] = React.useState<
     RecentFileManager.RecentFile[]
   >([]);
+  const dialog = useDialog();
+  const [_, setFile] = useRecoilState(fileAtom);
 
   const [isRecentFilePanelOpen, setRecentFilePanelOpen] = useRecoilState(
     isRecentFilePanelOpenAtom,
@@ -17,10 +30,8 @@ export default function RecentFilesPanel() {
    * 用于刷新页面显示
    */
   const updateRecentFiles = () => {
-    RecentFileManager.refreshRecentFiles().then(() => {
-      RecentFileManager.getRecentFiles().then((files) => {
-        setRecentFiles(files);
-      });
+    RecentFileManager.getRecentFiles().then((files) => {
+      setRecentFiles(files);
     });
   };
 
@@ -34,6 +45,31 @@ export default function RecentFilesPanel() {
       console.log("Recent Files Panel unmounted");
     };
   }, []);
+
+  const onClickFile = (file: RecentFileManager.RecentFile) => {
+    return () => {
+      try {
+        const path = file.path;
+        setFile(decodeURIComponent(path));
+        if (isDesktop && !path.endsWith(".json")) {
+          dialog.show({
+            title: "请选择一个JSON文件",
+            type: "error",
+          });
+          return;
+        }
+        console.log("正在打开文件", `<${path}>`, typeof path);
+        RecentFileManager.openFileByPath(path);
+        setRecentFilePanelOpen(false);
+      } catch (error) {
+        dialog.show({
+          title: "请选择正确的JSON文件",
+          content: String(error),
+          type: "error",
+        });
+      }
+    };
+  };
 
   return (
     <div
@@ -57,10 +93,7 @@ export default function RecentFilesPanel() {
             <tr key={index} className="hover:bg-gray-600">
               <td
                 className="cursor-pointer border-b border-gray-600 p-2 text-gray-200"
-                onClick={() => {
-                  RecentFileManager.openFileByPath(file.path);
-                  setRecentFilePanelOpen(false);
-                }}
+                onClick={onClickFile(file)}
               >
                 {file.path}
               </td>

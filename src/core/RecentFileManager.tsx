@@ -30,6 +30,7 @@ export namespace RecentFileManager {
 
   export async function init() {
     store = await createStore("recent-files.json");
+    await store.load(); // 加载缓存
   }
 
   /**
@@ -62,23 +63,34 @@ export namespace RecentFileManager {
    * 刷新最近打开的文件列表
    * 从缓存中读取每个文件的路径，检查文件是否存在
    * 如果不存在，则删除该条记录
-   *
-   * 最终按时间戳排序，最近的在最前面
    */
-  export async function refreshRecentFiles() {
+  export async function validAndRefreshRecentFiles() {
     const recentFiles = await getRecentFiles();
     const validFiles: RecentFile[] = [];
 
     for (const file of recentFiles) {
-      const isExists = await exists(file.path); // 检查文件是否存在
-      if (isExists) {
-        validFiles.push(file); // 存在则保留
+      try {
+        const isExists = await exists(file.path); // 检查文件是否存在
+        if (isExists) {
+          validFiles.push(file); // 存在则保留
+        } else {
+          console.log("文件不存在，删除记录", file.path);
+        }
+      } catch (e) {
+        console.error("无法检测文件是否存在：", file.path);
+        console.error(e);
       }
     }
+  }
 
+  /**
+   * 最终按时间戳排序，最近的在最前面
+   */
+  export async function sortTimeRecentFiles() {
     // 按时间戳降序排序
-    validFiles.sort((a, b) => b.time - a.time);
-    await store.set("recentFiles", validFiles); // 更新存储
+    const recentFiles = await getRecentFiles();
+    recentFiles.sort((a, b) => b.time - a.time);
+    await store.set("recentFiles", recentFiles); // 更新存储
     store.save();
   }
 
@@ -97,7 +109,15 @@ export namespace RecentFileManager {
    */
   export async function openFileByPath(path: string) {
     NodeManager.destroy();
-    const content = await readTextFile(path);
+    let content: string;
+    try {
+      content = await readTextFile(path);
+    } catch (e) {
+      console.error("打开文件失败：", path);
+      console.error(e);
+      return;
+    }
+
     const data = NodeLoader.validate(JSON.parse(content));
     console.log(data);
 

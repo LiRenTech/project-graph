@@ -78,7 +78,7 @@ export default function AppMenu({
       return;
     }
     try {
-      
+      console.log("正在打开文件", `<${path}>`, typeof path) ;
       RecentFileManager.openFileByPath(path);
     } catch (e) {
       dialog.show({
