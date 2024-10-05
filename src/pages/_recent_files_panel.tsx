@@ -29,10 +29,11 @@ export default function RecentFilesPanel() {
   /**
    * 用于刷新页面显示
    */
-  const updateRecentFiles = () => {
-    RecentFileManager.getRecentFiles().then((files) => {
-      setRecentFiles(files);
-    });
+  const updateRecentFiles = async () => {
+    await RecentFileManager.validAndRefreshRecentFiles();
+    await RecentFileManager.sortTimeRecentFiles();
+    const files = await RecentFileManager.getRecentFiles();
+    setRecentFiles(files);
   };
 
   useEffect(() => {

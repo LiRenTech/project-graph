@@ -4,7 +4,7 @@
  */
 
 import { createStore, Store } from "@tauri-apps/plugin-store";
-import { exists, readTextFile } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
+import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
 import { NodeLoader } from "./NodeLoader";
 import { NodeManager } from "./NodeManager";
 import { Edge } from "./Edge";
@@ -13,6 +13,7 @@ import { Stage } from "./stage/Stage";
 import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
 import { Color } from "./Color";
 import { Node } from "./Node";
+import { invoke } from '@tauri-apps/api/core';
 
 export namespace RecentFileManager {
   let store: Store;
@@ -87,8 +88,8 @@ export namespace RecentFileManager {
    * 最终按时间戳排序，最近的在最前面
    */
   export async function sortTimeRecentFiles() {
-    // 按时间戳降序排序
     const recentFiles = await getRecentFiles();
+    // 新的在前面
     recentFiles.sort((a, b) => b.time - a.time);
     await store.set("recentFiles", recentFiles); // 更新存储
     store.save();
@@ -111,7 +112,8 @@ export namespace RecentFileManager {
     NodeManager.destroy();
     let content: string;
     try {
-      content = await readTextFile(path);
+      // content = await readTextFile(path);
+      content = await invoke<string>('open_json_by_path', { path });
     } catch (e) {
       console.error("打开文件失败：", path);
       console.error(e);
