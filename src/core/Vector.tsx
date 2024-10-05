@@ -259,7 +259,7 @@ export class Vector {
   }
 
   /**
-   * 创建x和y相同的向量
+   * 创建x和y相同的向量 (其实就是正方形，从左上到右下)
    */
   static same(value: number): Vector {
     return new Vector(value, value);
