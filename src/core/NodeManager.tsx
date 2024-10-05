@@ -125,8 +125,14 @@ export namespace NodeManager {
         if (Number.isNaN(degrees)) {
           degrees = 0;
         }
-        // rotateNode(edge.source, degrees);
-        rotateNodeDfs(edge.source, edge.target, degrees, [edge.source.uuid]);
+        // 2024年10月6日：发现打开文件后，旋转节点无法带动子树，只能传递一层。
+        // rotateNodeDfs(edge.source, edge.target, degrees, [edge.source.uuid]);
+        rotateNodeDfs(
+          getNodeByUUID(edge.source.uuid)!,
+          getNodeByUUID(edge.target.uuid)!,
+          degrees,
+          [edge.source.uuid],
+        );
       }
     }
   }
@@ -218,7 +224,9 @@ export namespace NodeManager {
       }
       rotateNodeDfs(
         rotateCenterNode,
-        child,
+        // 2024年10月6日：发现打开文件后，旋转节点无法带动子树，只能传递一层。
+        // child,
+        getNodeByUUID(child.uuid)!,
         degrees,
         visitedUUIDs.concat(currentNode.uuid),
       );
@@ -272,6 +280,15 @@ export namespace NodeManager {
       }
     }
     return size;
+  }
+
+  export function getNodeByUUID(uuid: string): Node | null {
+    for (const node of nodes) {
+      if (node.uuid === uuid) {
+        return node;
+      }
+    }
+    return null;
   }
 
   /**
