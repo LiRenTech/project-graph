@@ -45,7 +45,9 @@ export namespace RecentFileManager {
     }
 
     existingFiles.push(file); // 添加新文件
+
     await store.set("recentFiles", existingFiles); // 更新存储
+    store.save();
   }
 
   /**
@@ -77,6 +79,7 @@ export namespace RecentFileManager {
     // 按时间戳降序排序
     validFiles.sort((a, b) => b.time - a.time);
     await store.set("recentFiles", validFiles); // 更新存储
+    store.save();
   }
 
   /**
@@ -84,6 +87,7 @@ export namespace RecentFileManager {
    */
   export async function clearRecentFiles() {
     await store.set("recentFiles", []); // 清空列表
+    store.save();
   }
 
   /**
