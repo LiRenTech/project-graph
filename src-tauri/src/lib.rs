@@ -24,6 +24,12 @@ fn save_json_by_path(path: String, content: String) -> Result<bool, String> {
     file.write_all(content.as_bytes()).unwrap();
     Ok(true)
 }
+/// 检查json文件是否存在
+/// 返回true表示存在，false表示不存在
+#[tauri::command]
+fn check_json_exist(path: String) -> bool {
+    std::path::Path::new(&path).exists()
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -45,7 +51,8 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             greet,
             open_json_by_path,
-            save_json_by_path
+            save_json_by_path,
+            check_json_exist
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

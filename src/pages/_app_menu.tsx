@@ -69,8 +69,6 @@ export default function AppMenu({
     if (!path) {
       return;
     }
-
-    setFile(decodeURIComponent(path));
     if (isDesktop && !path.endsWith(".json")) {
       dialog.show({
         title: "请选择一个JSON文件",
@@ -94,7 +92,7 @@ export default function AppMenu({
 
   const onSave = async () => {
     let path: string | null = file;
-    console.log("准备保存，当前路径是", path);
+    console.log("准备保存，当前路径是", path);  // BUG: 路径总是一开始的 "Project Graph"
 
     if (file === "Project Graph") {
       // 如果文件名为 "Project Graph" 则说明是新建文件。

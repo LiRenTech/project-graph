@@ -4,7 +4,7 @@
  */
 
 import { createStore, Store } from "@tauri-apps/plugin-store";
-import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
+// import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
 import { NodeLoader } from "./NodeLoader";
 import { NodeManager } from "./NodeManager";
 import { Edge } from "./Edge";
@@ -13,7 +13,7 @@ import { Stage } from "./stage/Stage";
 import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
 import { Color } from "./Color";
 import { Node } from "./Node";
-import { invoke } from '@tauri-apps/api/core';
+import { invoke } from "@tauri-apps/api/core";
 
 export namespace RecentFileManager {
   let store: Store;
@@ -71,7 +71,10 @@ export namespace RecentFileManager {
 
     for (const file of recentFiles) {
       try {
-        const isExists = await exists(file.path); // 检查文件是否存在
+        // const isExists = await exists(file.path); // 检查文件是否存在
+        const isExists = await invoke<string>("check_json_exist", {
+          path: file.path,
+        });
         if (isExists) {
           validFiles.push(file); // 存在则保留
         } else {
@@ -113,7 +116,7 @@ export namespace RecentFileManager {
     let content: string;
     try {
       // content = await readTextFile(path);
-      content = await invoke<string>('open_json_by_path', { path });
+      content = await invoke<string>("open_json_by_path", { path });
     } catch (e) {
       console.error("打开文件失败：", path);
       console.error(e);
