@@ -21,16 +21,12 @@ import {
   open as openFileDialog,
   save as saveFileDialog,
 } from "@tauri-apps/plugin-dialog";
-import { readTextFile } from "@tauri-apps/plugin-fs";
-import { NodeLoader } from "../core/NodeLoader";
 import { useDialog } from "../utils/dialog";
 import { isDesktop } from "../utils/platform";
 import { NodeManager } from "../core/NodeManager";
-import { Node } from "../core/Node";
 import { useRecoilState } from "recoil";
 import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
 import { Camera } from "../core/stage/Camera";
-import { Edge } from "../core/Edge";
 import { NodeDumper } from "../core/NodeDumper";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { Stage } from "../core/stage/Stage";
@@ -72,7 +68,7 @@ export default function AppMenu({
     if (!path) {
       return;
     }
-    NodeManager.destroy();
+    
     setFile(decodeURIComponent(path));
     if (isDesktop && !path.endsWith(".json")) {
       dialog.show({
@@ -82,33 +78,8 @@ export default function AppMenu({
       return;
     }
     try {
-      const content = await readTextFile(path);
-      const data = NodeLoader.validate(JSON.parse(content));
-      console.log(data);
-      // const startTime = performance.now();
-      for (const node of data.nodes) {
-        NodeManager.addNode(new Node(node));
-      }
-      for (const edge of data.edges) {
-        NodeManager.addEdge(new Edge(edge));
-      }
-      NodeManager.updateReferences();
-      // const endTime = performance.now();
-      //       dialog.show({
-      //         title: "导入成功",
-      //         content: `\
-      // 解析耗时: ${(endTime - startTime).toFixed(2)} ms
-      // ${data.nodes.length} 个节点，${data.edges.length} 条边`,
-      //         type: "success",
-      //       });
-      Camera.reset();
-      Stage.effects.push(new ViewFlashEffect(Color.Black));
-      RecentFileManager.addRecentFile({
-        path: path,
-        time: new Date().getTime(),
-      }).then(() => {
-        console.log("添加到最近文件列表成功", path);
-      });
+      
+      RecentFileManager.openFileByPath(path);
     } catch (e) {
       dialog.show({
         title: "请选择正确的JSON文件",

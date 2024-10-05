@@ -55,7 +55,13 @@ export default function RecentFilesPanel() {
         <tbody>
           {recentFiles.map((file, index) => (
             <tr key={index} className="hover:bg-gray-600">
-              <td className="cursor-pointer border-b border-gray-600 p-2 text-gray-200">
+              <td
+                className="cursor-pointer border-b border-gray-600 p-2 text-gray-200"
+                onClick={() => {
+                  RecentFileManager.openFileByPath(file.path);
+                  setRecentFilePanelOpen(false);
+                }}
+              >
                 {file.path}
               </td>
               <td className="cursor-pointer border-b border-gray-600 p-2 text-gray-200">
