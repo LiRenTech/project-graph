@@ -44,7 +44,8 @@ export default function AppMenu({
 }) {
   const navigate = useNavigate();
   const dialog = useDialog();
-  const [file, setFile] = useRecoilState(fileAtom);
+  let [file, setFile] = useRecoilState(fileAtom);
+
   const [_, setRecentFilePanelOpen] = useRecoilState(isRecentFilePanelOpenAtom);
 
   const onNew = () => {
@@ -78,7 +79,7 @@ export default function AppMenu({
     }
     try {
       console.log("正在打开文件", `<${path}>`, typeof path);
-      RecentFileManager.openFileByPath(path);
+      await RecentFileManager.openFileByPath(path);
       // 更改file
       setFile(path);
     } catch (e) {
@@ -90,11 +91,12 @@ export default function AppMenu({
     }
   };
 
-  const onSave = async () => {
-    let path: string | null = file;
-    console.log("准备保存，当前路径是", path);  // BUG: 路径总是一开始的 "Project Graph"
+  const onSave = () => {
+    const path_ = file;
+    console.log("准备保存，当前路径是", path_);  
+    // 2024年10月6日发现：路径总是一开始的 "Project Graph"，原因未知
 
-    if (file === "Project Graph") {
+    if (path_ === "Project Graph") {
       // 如果文件名为 "Project Graph" 则说明是新建文件。
       // 要走另存为流程
       console.log("要走另存为流程");
@@ -108,7 +110,7 @@ export default function AppMenu({
       // await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
 
       invoke<string>("save_json_by_path", {
-        path,
+        path: path_,
         content: JSON.stringify(data, null, 2),
       })
         .then((res) => {
@@ -181,10 +183,12 @@ export default function AppMenu({
       } else if (e.ctrlKey && e.key === "o") {
         onOpen();
       } else if (e.ctrlKey && e.key === "s") {
+        console.log("按下了Ctrl+S，当前文件名是", file);
         onSave();
       }
     };
     document.addEventListener("keydown", keyDownFunction);
+    
     return () => {
       document.removeEventListener("keydown", keyDownFunction);
     };
