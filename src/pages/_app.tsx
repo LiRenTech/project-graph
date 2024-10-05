@@ -17,6 +17,7 @@ import Dialog from "../components/ui/Dialog";
 import { appScale, isDesktop, isMobile } from "../utils/platform";
 import { useRecoilState } from "recoil";
 import { fileAtom } from "../state";
+import RecentFilesPanel from "./_recent_files_panel";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -84,6 +85,7 @@ export default function App() {
           {location.pathname === "/" ? <Menu /> : <ChevronLeft />}
         </IconButton>
         <AppMenu className="absolute top-20" open={openMenu} />
+        <RecentFilesPanel />
         {/* 左上角标题 */}
         <Button
           data-tauri-drag-region

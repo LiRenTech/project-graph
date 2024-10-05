@@ -6,7 +6,7 @@
 import { createStore, Store } from "@tauri-apps/plugin-store";
 import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
 
-// TODO: AI写的，待验证
+
 export namespace RecentFileManager {
   let store: Store;
 
@@ -45,8 +45,8 @@ export namespace RecentFileManager {
    * 获取最近打开的文件列表
    */
   export async function getRecentFiles(): Promise<RecentFile[]> {
-    const data = await store.get("recentFiles") || [];
-    return data as RecentFile[]; // 返回最近文件列表
+    const data = await store.get("recentFiles")  as RecentFile[] || [];
+    return data; // 返回最近文件列表
   }
 
   /**

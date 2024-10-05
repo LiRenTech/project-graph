@@ -28,7 +28,7 @@ import { isDesktop } from "../utils/platform";
 import { NodeManager } from "../core/NodeManager";
 import { Node } from "../core/Node";
 import { useRecoilState } from "recoil";
-import { fileAtom } from "../state";
+import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
 import { Camera } from "../core/stage/Camera";
 import { Edge } from "../core/Edge";
 import { NodeDumper } from "../core/NodeDumper";
@@ -36,6 +36,7 @@ import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { Stage } from "../core/stage/Stage";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { Color } from "../core/Color";
+import { RecentFileManager } from "../core/RecentFileManager";
 
 export default function AppMenu({
   className = "",
@@ -47,6 +48,7 @@ export default function AppMenu({
   const navigate = useNavigate();
   const dialog = useDialog();
   const [file, setFile] = useRecoilState(fileAtom);
+  const [_, setRecentFilePanelOpen] = useRecoilState(isRecentFilePanelOpenAtom);
 
   const onNew = () => {
     NodeManager.destroy();
@@ -100,6 +102,13 @@ export default function AppMenu({
       //         type: "success",
       //       });
       Camera.reset();
+      Stage.effects.push(new ViewFlashEffect(Color.Black));
+      RecentFileManager.addRecentFile({
+        path: path,
+        time: new Date().getTime(),
+      }).then(() => {
+        console.log("添加到最近文件列表成功", path);
+      });
     } catch (e) {
       dialog.show({
         title: "请选择正确的JSON文件",
@@ -201,6 +210,9 @@ export default function AppMenu({
         </Col>
         <Col icon={<FileText />} onClick={onOpen}>
           打开
+        </Col>
+        <Col icon={<FileText />} onClick={() => setRecentFilePanelOpen(true)}>
+          最近
         </Col>
         <Col icon={<Save />} onClick={onSave}>
           保存
