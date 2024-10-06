@@ -15,8 +15,12 @@ import { ControllerClass } from "../ControllerClass";
 export const ControllerCamera = new ControllerClass();
 
 ControllerCamera.keydown = (event: KeyboardEvent) => {
+  if (Controller.isCameraLocked) {
+    return;
+  }
   const key = event.key.toLowerCase();
   if (Controller.keyMap[key]) {
+    
     // 当按下某一个方向的时候,相当于朝着某个方向赋予一次加速度
     Camera.accelerateCommander = Camera.accelerateCommander
       .add(Controller.keyMap[key])
@@ -29,6 +33,9 @@ ControllerCamera.keydown = (event: KeyboardEvent) => {
 };
 
 ControllerCamera.keyup = (event: KeyboardEvent) => {
+  if (Controller.isCameraLocked) {
+    return;
+  }
   const key = event.key.toLowerCase();
   if (Controller.keyMap[key]) {
     // 当松开某一个方向的时候,相当于停止加速度
@@ -55,6 +62,9 @@ function moveCameraByMouseMove(x: number, y: number, mouseIndex: number) {
 
 
 ControllerCamera.mousemove = (event: MouseEvent) => {
+  if (Controller.isCameraLocked) {
+    return;
+  }
   if (Controller.pressingKeySet.has(" ") && Controller.isMouseDown[0]) {
     console.log("空格按下的同时按下了鼠标左键");
     moveCameraByMouseMove(event.clientX, event.clientY, 0);
@@ -69,6 +79,9 @@ ControllerCamera.mousemove = (event: MouseEvent) => {
 
 
 ControllerCamera.mouseup = (event: MouseEvent) => {
+  if (Controller.isCameraLocked) {
+    return;
+  }
   if (event.button === 1) {
     // 中键松开
     Controller.setCursorName("default");
@@ -77,6 +90,9 @@ ControllerCamera.mouseup = (event: MouseEvent) => {
 
 
 ControllerCamera.mousewheel = (event: WheelEvent) => {
+  if (Controller.isCameraLocked) {
+    return;
+  }
   if (Controller.pressingKeySet.has("control")) {
     return;
   }

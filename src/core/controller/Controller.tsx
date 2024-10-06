@@ -15,6 +15,7 @@ import { ControllerCutting } from "./concrete/ControllerCutting";
 import { ControllerNodeMove } from "./concrete/ControllerNodeMove";
 import { Canvas } from "../Canvas";
 import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect";
+import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -81,6 +82,11 @@ export namespace Controller {
   export let lastMoveLocation = Vector.getZero();
 
   /**
+   * 有时需要锁定相机，比如 编辑节点时
+   */
+  export let isCameraLocked = false;
+
+  /**
    * 上次选中的节点
    * 仅为 Ctrl交叉选择使用
    */
@@ -120,6 +126,7 @@ export namespace Controller {
     ControllerCutting.init();
     ControllerNodeMove.init();
     ControllerRectangleSelect.init();
+    ControllerNodeEdit.init();
   }
 
   function mousedown(event: MouseEvent) {
@@ -141,7 +148,6 @@ export namespace Controller {
     isMouseDown[button] = true;
 
     const pressWorldLocation = Renderer.transformView2World(new Vector(x, y));
-
     // 获取左右中键
     lastMousePressLocation[button] = pressWorldLocation;
     if (button === 0) {
@@ -155,7 +161,6 @@ export namespace Controller {
 
   function handleMousemove(x: number, y: number) {
     const worldLocation = Renderer.transformView2World(new Vector(x, y));
-
     if (isMouseDown[0]) {
       if (pressingKeySet.has("`")) {
         // 绘制临时激光笔特效
@@ -170,15 +175,8 @@ export namespace Controller {
           ),
         );
       }
-      lastMoveLocation = worldLocation.clone();
-    } else if (isMouseDown[2]) {
-      // 右键按下
-      lastMoveLocation = worldLocation.clone();
     }
-    if (pressingKeySet.has("`")) {
-      // 迭代笔位置
-      lastMoveLocation = worldLocation.clone();
-    }
+    lastMoveLocation = worldLocation.clone();
   }
 
   function handleMouseup(button: number, x: number, y: number) {
@@ -221,27 +219,7 @@ export namespace Controller {
       }
 
       if (clickedNode !== null) {
-        // 编辑节点
-        clickedNode.isEditing = true;
-        Renderer.input(
-          Renderer.transformWorld2View(clickedNode.rectangle.location).add(
-            Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
-          ),
-          clickedNode.text,
-          (text) => {
-            clickedNode?.rename(text);
-          },
-          {
-            fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
-            backgroundColor: "transparent",
-            color: "white",
-            outline: "none",
-            marginTop: -8 * Camera.currentScale + "px",
-            width: "100vw",
-          },
-        ).then(() => {
-          clickedNode!.isEditing = false;
-        });
+        
       } else {
         // 新建节点
         NodeManager.addNodeByClick(
@@ -364,6 +342,7 @@ export namespace Controller {
     ControllerCutting.destroy();
     ControllerNodeMove.destroy();
     ControllerRectangleSelect.destroy();
+    ControllerNodeEdit.destroy();
     console.log("Controller destroyed.");
   }
 }
