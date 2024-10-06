@@ -1,14 +1,14 @@
-import { Color } from "../../Color";
+import { Color } from "../../dataStruct/Color";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
-import { Line } from "../../Line";
 import { NodeManager } from "../../NodeManager";
-import { ProgressNumber } from "../../ProgressNumber";
+import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
-import { Vector } from "../../Vector";
+import { Vector } from "../../dataStruct/Vector";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { Line } from "../../dataStruct/Line";
 
 export const ControllerCutting = new ControllerClass();
 
@@ -53,6 +53,8 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
   ControllerCutting.lastMoveLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY), // 鼠标位置
   );
+  // 渲染器需要
+  Controller.lastMoveLocation = ControllerCutting.lastMoveLocation.clone();
 };
 
 ControllerCutting.mouseup = (event: MouseEvent) => {
@@ -63,7 +65,7 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
     return;
   }
   Stage.isCutting = false;
-  
+
   NodeManager.deleteNodes(Stage.warningNodes);
   Stage.warningNodes = [];
 

@@ -1,8 +1,8 @@
 import { NodeManager } from "../../NodeManager";
-import { Rectangle } from "../../Rectangle";
+import { Rectangle } from "../../dataStruct/Rectangle";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
-import { Vector } from "../../Vector";
+import { Vector } from "../../dataStruct/Vector";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 /**

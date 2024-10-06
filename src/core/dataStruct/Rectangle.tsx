@@ -1,6 +1,6 @@
 import { Line } from "./Line";
-import { Renderer } from "./render/canvas2d/renderer";
-import { Camera } from "./stage/Camera";
+import { Renderer } from "../render/canvas2d/renderer";
+import { Camera } from "../stage/Camera";
 import { Vector } from "./Vector";
 
 export class Rectangle {

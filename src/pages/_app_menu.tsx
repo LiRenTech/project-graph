@@ -31,7 +31,7 @@ import { NodeDumper } from "../core/NodeDumper";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { Stage } from "../core/stage/Stage";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
-import { Color } from "../core/Color";
+import { Color } from "../core/dataStruct/Color";
 import { RecentFileManager } from "../core/RecentFileManager";
 import { invoke } from "@tauri-apps/api/core";
 

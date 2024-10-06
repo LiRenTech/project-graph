@@ -1,14 +1,14 @@
 import { Canvas } from "../../Canvas";
-import { Color, mixColors } from "../../Color";
+import { Color, mixColors } from "../../dataStruct/Color";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 import { LineEffect } from "../../effect/concrete/LineEffect";
 import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
 import { easeInOutSine } from "../../effect/easings";
-import { Rectangle } from "../../Rectangle";
+import { Rectangle } from "../../dataStruct/Rectangle";
 import { Camera } from "../../stage/Camera";
-import { Vector } from "../../Vector";
+import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "./renderer";
 import { RenderUtils } from "./RenderUtils";
 

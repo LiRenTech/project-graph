@@ -1,4 +1,5 @@
 import { Vector } from "./Vector";
+
 /**
  * 线段类
  */

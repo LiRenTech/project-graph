@@ -11,7 +11,7 @@ import { Edge } from "./Edge";
 import { Camera } from "./stage/Camera";
 import { Stage } from "./stage/Stage";
 import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
-import { Color } from "./Color";
+import { Color } from "./dataStruct/Color";
 import { Node } from "./Node";
 import { invoke } from "@tauri-apps/api/core";
 

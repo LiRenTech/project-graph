@@ -1,9 +1,9 @@
 import { Edge } from "../Edge";
 import { Effect } from "../effect/effect";
-import { Line } from "../Line";
 import { Node } from "../Node";
-import { Rectangle } from "../Rectangle";
-import { Vector } from "../Vector";
+import { Rectangle } from "../dataStruct/Rectangle";
+import { Vector } from "../dataStruct/Vector";
+import { Line } from "../dataStruct/Line";
 
 /**
  * 舞台对象

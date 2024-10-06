@@ -1,6 +1,6 @@
-import { Color } from "../../Color";
-import { ProgressNumber } from "../../ProgressNumber";
-import { Vector } from "../../Vector";
+import { Color } from "../../dataStruct/Color";
+import { ProgressNumber } from "../../dataStruct/ProgressNumber";
+import { Vector } from "../../dataStruct/Vector";
 import { Effect } from "../effect";
 
 /**

@@ -1,5 +1,5 @@
 import { Canvas } from "../Canvas";
-import { Vector } from "../Vector";
+import { Vector } from "../dataStruct/Vector";
 
 /**
  * 抽象的控制器类，用于处理事件绑定和解绑

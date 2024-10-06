@@ -1,4 +1,4 @@
-import { Vector } from "../Vector";
+import { Vector } from "../dataStruct/Vector";
 import { Renderer } from "../render/canvas2d/renderer";
 import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";

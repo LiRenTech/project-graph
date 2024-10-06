@@ -1,12 +1,13 @@
-import { Color } from "../../Color";
+import { Color } from "../../dataStruct/Color";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 import { NodeManager } from "../../NodeManager";
-import { ProgressNumber } from "../../ProgressNumber";
+import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
-import { Vector } from "../../Vector";
+import { Vector } from "../../dataStruct/Vector";
 import { ControllerClass } from "../ControllerClass";
+import { Controller } from "../Controller";
 
 export const ControllerNodeConnection = new ControllerClass();
 
@@ -21,7 +22,7 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
 
   if (clickedNode) {
     // 右键点击了某个节点
-    Stage.isCutting = false;
+    // Stage.isCutting = false;
     Stage.connectFromNodes = [];
     for (const node of NodeManager.nodes) {
       if (node.isSelected) {
@@ -41,7 +42,6 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
       // 特效
     }
   } else {
-    // 变成切割线了
   }
 };
 
@@ -64,6 +64,8 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
   if (!isFindConnectToNode) {
     Stage.connectToNode = null;
   }
+  // 由于连接线要被渲染器绘制，所以需要更新总控制里的lastMoveLocation
+  Controller.lastMoveLocation = worldLocation.clone();
 };
 
 ControllerNodeConnection.mouseup = (event: MouseEvent) => {

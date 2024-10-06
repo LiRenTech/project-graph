@@ -1,9 +1,9 @@
-import { Color } from "./Color";
+import { Color } from "./dataStruct/Color";
 import { Controller } from "./controller/Controller";
 import { Edge } from "./Edge";
 import { Node } from "./Node";
 import { Renderer } from "./render/canvas2d/renderer";
-import { Vector } from "./Vector";
+import { Vector } from "./dataStruct/Vector";
 import { v4 as uuidv4 } from "uuid";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了

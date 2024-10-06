@@ -1,7 +1,7 @@
 import { Canvas } from "../../Canvas";
-import { Color } from "../../Color";
-import { Rectangle } from "../../Rectangle";
-import { Vector } from "../../Vector";
+import { Color } from "../../dataStruct/Color";
+import { Rectangle } from "../../dataStruct/Rectangle";
+import { Vector } from "../../dataStruct/Vector";
 
 export namespace RenderUtils {
   /**

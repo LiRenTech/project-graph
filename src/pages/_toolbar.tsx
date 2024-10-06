@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Color } from "../core/Color";
+import { Color } from "../core/dataStruct/Color";
 import { NodeManager } from "../core/NodeManager";
 import { cn } from "../utils/cn";
 // https://lucide.dev/icons

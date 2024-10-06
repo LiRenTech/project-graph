@@ -1,4 +1,4 @@
-import { ProgressNumber } from "../ProgressNumber";
+import { ProgressNumber } from "../dataStruct/ProgressNumber";
 
 /**
  * 特效类

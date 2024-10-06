@@ -1,5 +1,5 @@
-import { Color } from "../../Color";
-import { Vector } from "../../Vector";
+import { Color } from "../../dataStruct/Color";
+import { Vector } from "../../dataStruct/Vector";
 import { Stage } from "../../stage/Stage";
 import { RenderUtils } from "./RenderUtils";
 import { EffectRenderer } from "./EffectRenderer";
@@ -7,14 +7,14 @@ import { Canvas } from "../../Canvas";
 import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
 import { NodeManager } from "../../NodeManager";
 import { appScale } from "../../../utils/platform";
-import { Rectangle } from "../../Rectangle";
+import { Rectangle } from "../../dataStruct/Rectangle";
 import { Camera } from "../../stage/Camera";
 import { Controller } from "../../controller/Controller";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 import { LineEffect } from "../../effect/concrete/LineEffect";
-import { Line } from "../../Line";
 import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
+import { Line } from "../../dataStruct/Line";
 
 /**
  * 渲染器

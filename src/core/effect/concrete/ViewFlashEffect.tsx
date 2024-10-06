@@ -1,5 +1,5 @@
-import { Color } from "../../Color";
-import { ProgressNumber } from "../../ProgressNumber";
+import { Color } from "../../dataStruct/Color";
+import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Effect } from "../effect";
 
 /**

@@ -1,4 +1,4 @@
-import { Vector } from "../core/Vector";
+import { Vector } from "../core/dataStruct/Vector";
 
 /**
  * 测量文本的宽度（高度不测量）
