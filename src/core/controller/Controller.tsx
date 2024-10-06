@@ -1,12 +1,7 @@
-import { Color } from "../Color";
-import { ProgressNumber } from "../ProgressNumber";
 import { Vector } from "../Vector";
 import { Renderer } from "../render/canvas2d/renderer";
-import { Stage } from "../stage/Stage";
-// import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
 import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";
-import { LineEffect } from "../effect/concrete/LineEffect";
 import { ControllerCamera } from "./concrete/ControllerCamera";
 import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
 import { ControllerNodeConnection } from "./concrete/ControllerNodeConnection";
@@ -17,6 +12,7 @@ import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect"
 import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
 import { ControllerNodeCreate } from "./concrete/ControllerNodeCreate";
 import { ControllerEdgeEdit } from "./concrete/ControllerEdgeEdit";
+import { ControllerDrawing } from "./concrete/ControllerDrawing";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -130,6 +126,7 @@ export namespace Controller {
     ControllerNodeEdit.init();
     ControllerNodeCreate.init();
     ControllerEdgeEdit.init();
+    ControllerDrawing.init();
   }
 
   function mousedown(event: MouseEvent) {
@@ -154,10 +151,7 @@ export namespace Controller {
     // 获取左右中键
     lastMousePressLocation[button] = pressWorldLocation;
     if (button === 0) {
-      if (pressingKeySet.has("`")) {
-        lastMoveLocation = pressWorldLocation.clone();
-        return;
-      }
+      
     }
     lastMoveLocation = pressWorldLocation.clone();
   }
@@ -165,19 +159,7 @@ export namespace Controller {
   function handleMousemove(x: number, y: number) {
     const worldLocation = Renderer.transformView2World(new Vector(x, y));
     if (isMouseDown[0]) {
-      if (pressingKeySet.has("`")) {
-        // 绘制临时激光笔特效
-        Stage.effects.push(
-          new LineEffect(
-            new ProgressNumber(0, 50),
-            lastMoveLocation,
-            worldLocation,
-            new Color(255, 255, 0, 1),
-            new Color(255, 255, 0, 1),
-            2,
-          ),
-        );
-      }
+      
     }
     lastMoveLocation = worldLocation.clone();
   }
@@ -307,6 +289,7 @@ export namespace Controller {
     ControllerNodeEdit.destroy();
     ControllerNodeCreate.destroy();
     ControllerEdgeEdit.destroy();
+    ControllerDrawing.destroy();
     console.log("Controller destroyed.");
   }
 }
