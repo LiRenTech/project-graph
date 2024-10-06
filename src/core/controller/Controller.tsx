@@ -11,6 +11,7 @@ import { Rectangle } from "../Rectangle";
 import { LineCuttingEffect } from "../effect/concrete/LineCuttingEffect";
 import { Line } from "../Line";
 import { LineEffect } from "../effect/concrete/LineEffect";
+import { ControllerCamera } from "./ControllerConcrete";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -113,16 +114,7 @@ export namespace Controller {
     canvasElement.addEventListener("touchstart", touchstart, false);
     canvasElement.addEventListener("touchmove", touchmove, false);
     canvasElement.addEventListener("touchend", touchend, false);
-  }
-
-  function moveCameraByMouseMove(x: number, y: number, mouseIndex: number) {
-    const currentMouseMoveLocation = Renderer.transformView2World(
-      new Vector(x, y),
-    );
-    const diffLocation = currentMouseMoveLocation.subtract(
-      lastMousePressLocation[mouseIndex],
-    );
-    Camera.location = Camera.location.subtract(diffLocation);
+    ControllerCamera.init(canvasElement);
   }
 
   function mousedown(event: MouseEvent) {
@@ -286,22 +278,10 @@ export namespace Controller {
     }
     lastMoveLocation = pressWorldLocation.clone();
 
-    // Stage.effects.push(
-    //   new TextRiseEffect(
-    //     `鼠标按下 ${button === 0 ? "左键" : button === 1 ? "中键" : "右键"}`,
-    //   ),
-    // );
   }
 
   function handleMousemove(x: number, y: number) {
     const worldLocation = Renderer.transformView2World(new Vector(x, y));
-    // 如果当前有按下空格
-    if (pressingKeySet.has(" ") && isMouseDown[0]) {
-      console.log("空格按下的同时按下了鼠标左键");
-      moveCameraByMouseMove(x, y, 0);
-      setCursorName("grabbing");
-      return;
-    }
 
     if (isMouseDown[0]) {
       if (pressingKeySet.has("`")) {
@@ -381,11 +361,6 @@ export namespace Controller {
         }
       }
       lastMoveLocation = worldLocation.clone();
-    } else if (isMouseDown[1]) {
-      // 中键按下
-      moveCameraByMouseMove(x, y, 1);
-      setCursorName("grabbing");
-      return;
     } else if (isMouseDown[2]) {
       // 右键按下
       lastMoveLocation = worldLocation.clone();
@@ -474,9 +449,6 @@ export namespace Controller {
           lastSelectedNode.add(node.uuid);
         }
       }
-    } else if (button === 1) {
-      // 中键松开
-      setCursorName("default");
     } else if (button === 2) {
       // 右键松开
 
@@ -602,12 +574,6 @@ export namespace Controller {
         } else {
           NodeManager.rotateNode(hoverNode, -10);
         }
-      }
-    } else {
-      if (e.deltaY > 0) {
-        Camera.targetScale *= 0.8;
-      } else {
-        Camera.targetScale *= 1.2;
       }
     }
   }
@@ -785,6 +751,7 @@ export namespace Controller {
     canvasElement?.removeEventListener("touchstart", touchstart);
     canvasElement?.removeEventListener("touchmove", touchmove);
     canvasElement?.removeEventListener("touchend", touchend);
+    ControllerCamera.destroy(canvasElement!);
     console.log("Controller destroyed.");
   }
 }

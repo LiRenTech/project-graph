@@ -4,29 +4,29 @@
  * 每一个对象都是一个具体的功能
  */
 export class ControllerClass {
-  constructor(public canvasElement: HTMLCanvasElement) {}
+  constructor() {}
 
   public keydown: (event: KeyboardEvent) => void = (_: KeyboardEvent) => {};
   public keyup: (event: KeyboardEvent) => void = (_: KeyboardEvent) => {};
   public mousedown: (event: MouseEvent) => void = (_: MouseEvent) => {};
   public mouseup: (event: MouseEvent) => void = (_: MouseEvent) => {};
   public mousemove: (event: MouseEvent) => void = (_: MouseEvent) => {};
-  public wheel: (event: WheelEvent) => void = (_: WheelEvent) => {};
+  public mousewheel: (event: WheelEvent) => void = (_: WheelEvent) => {};
 
-  bind() {
+  public init(canvasElement: HTMLCanvasElement) {
     window.addEventListener("keydown", this.keydown);
     window.addEventListener("keyup", this.keyup);
-    this.canvasElement.addEventListener("mousedown", this.mousedown);
-    this.canvasElement.addEventListener("mouseup", this.mouseup);
-    this.canvasElement.addEventListener("mousemove", this.mousemove);
-    this.canvasElement.addEventListener("wheel", this.wheel);
+    canvasElement.addEventListener("mousedown", this.mousedown);
+    canvasElement.addEventListener("mouseup", this.mouseup);
+    canvasElement.addEventListener("mousemove", this.mousemove);
+    canvasElement.addEventListener("wheel", this.mousewheel);
   }
-  destroy() {
+  public destroy(canvasElement: HTMLCanvasElement) {
     window.removeEventListener("keydown", this.keydown);
     window.removeEventListener("keyup", this.keyup);
-    this.canvasElement.removeEventListener("mousedown", this.mousedown);
-    this.canvasElement.removeEventListener("mouseup", this.mouseup);
-    this.canvasElement.removeEventListener("mousemove", this.mousemove);
-    this.canvasElement.removeEventListener("wheel", this.wheel);
+    canvasElement.removeEventListener("mousedown", this.mousedown);
+    canvasElement.removeEventListener("mouseup", this.mouseup);
+    canvasElement.removeEventListener("mousemove", this.mousemove);
+    canvasElement.removeEventListener("wheel", this.mousewheel);
   }
 }
