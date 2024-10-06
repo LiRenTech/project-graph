@@ -71,7 +71,7 @@ export default function Dialog() {
       {dialog.input && (
         <Input
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={setInputValue}
           placeholder="请输入"
         />
       )}

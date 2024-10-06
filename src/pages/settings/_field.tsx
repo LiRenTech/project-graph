@@ -40,16 +40,8 @@ export function SettingField({
         <span>{title}</span>
         <span className="text-xs text-gray-500">{settingKey}</span>
       </div>
-      {type === "text" && (
-        <Input value={value} onChange={(e) => setValue(e.target.value)} />
-      )}
-      {type === "number" && (
-        <Input
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          number
-        />
-      )}
+      {type === "text" && <Input value={value} onChange={setValue} />}
+      {type === "number" && <Input value={value} onChange={setValue} number />}
       {type === "slider" && (
         <Slider
           value={value}

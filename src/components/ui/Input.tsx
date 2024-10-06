@@ -13,7 +13,7 @@ export default function Input({
 }: React.PropsWithChildren<{
   className?: string;
   value?: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: string) => void;
   placeholder?: string;
   number?: boolean;
   [key: string]: any;
@@ -26,7 +26,7 @@ export default function Input({
         className,
       )}
       value={value}
-      onChange={onChange}
+      onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       pattern={number ? "[0-9]*" : undefined}
       {...props}
