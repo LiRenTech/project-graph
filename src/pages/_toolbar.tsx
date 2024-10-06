@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Color } from "../core/dataStruct/Color";
-import { NodeManager } from "../core/NodeManager";
+import { StageManager } from "../core/stage/StageManager";
 import { cn } from "../utils/cn";
 // https://lucide.dev/icons
 import {
@@ -78,37 +78,37 @@ export default function Toolbar({ className = "" }) {
             <div
               className="m-1 h-5 w-5 cursor-pointer rounded-full bg-red-500 transition-all hover:scale-125"
               onClick={() => {
-                NodeManager.setNodeColor(new Color(239, 68, 68));
+                StageManager.setNodeColor(new Color(239, 68, 68));
               }}
             />
             <div
               className="m-1 h-5 w-5 cursor-pointer rounded-full bg-yellow-500 transition-all hover:scale-125"
               onClick={() => {
-                NodeManager.setNodeColor(new Color(234, 179, 8));
+                StageManager.setNodeColor(new Color(234, 179, 8));
               }}
             />
             <div
               className="m-1 h-5 w-5 cursor-pointer rounded-full bg-green-600 transition-all hover:scale-125"
               onClick={() => {
-                NodeManager.setNodeColor(new Color(22, 163, 74));
+                StageManager.setNodeColor(new Color(22, 163, 74));
               }}
             />
             <div
               className="m-1 h-5 w-5 cursor-pointer rounded-full bg-blue-500 transition-all hover:scale-125"
               onClick={() => {
-                NodeManager.setNodeColor(new Color(59, 130, 246));
+                StageManager.setNodeColor(new Color(59, 130, 246));
               }}
             />
             <div
               className="m-1 h-5 w-5 cursor-pointer rounded-full bg-purple-500 transition-all hover:scale-125"
               onClick={() => {
-                NodeManager.setNodeColor(new Color(239, 68, 68));
+                StageManager.setNodeColor(new Color(239, 68, 68));
               }}
             />
             <div
               className="m-1 h-5 w-5 animate-pulse cursor-pointer rounded-full bg-gray-500 text-center text-sm transition-all hover:scale-125"
               onClick={() => {
-                NodeManager.clearNodeColor();
+                StageManager.clearNodeColor();
               }}
             >
               <span>x</span>
@@ -163,10 +163,10 @@ export default function Toolbar({ className = "" }) {
 }
 
 function deleteSelectedObjects() {
-  NodeManager.deleteNodes(NodeManager.nodes.filter((node) => node.isSelected));
-  for (const edge of NodeManager.edges) {
+  StageManager.deleteNodes(StageManager.nodes.filter((node) => node.isSelected));
+  for (const edge of StageManager.edges) {
     if (edge.isSelected) {
-      NodeManager.deleteEdge(edge);
+      StageManager.deleteEdge(edge);
     }
   }
 }

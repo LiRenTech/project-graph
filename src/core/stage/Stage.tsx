@@ -7,6 +7,7 @@ import { Line } from "../dataStruct/Line";
 
 /**
  * 舞台对象
+ * 更广义的舞台，舞台实体全部存在manager里，但这个里面主要存一些动态的属性
  */
 export namespace Stage {
   export let effects: Effect[] = [];

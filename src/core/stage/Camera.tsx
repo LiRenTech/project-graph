@@ -1,5 +1,5 @@
 import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
-import { NodeManager } from "../NodeManager";
+import { StageManager } from "./StageManager";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Vector } from "../dataStruct/Vector";
 import { Stage } from "./Stage";
@@ -127,9 +127,9 @@ export namespace Camera {
   }
 
   export function reset() {
-    Camera.location = NodeManager.getCenter();
+    Camera.location = StageManager.getCenter();
     Camera.targetScale = 0.01;
     Camera.currentScale = 0.01;
-    Camera.targetScale = NodeManager.getSize().y / Renderer.h;
+    Camera.targetScale = StageManager.getSize().y / Renderer.h;
   }
 }

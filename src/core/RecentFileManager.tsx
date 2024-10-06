@@ -5,8 +5,8 @@
 
 import { createStore, Store } from "@tauri-apps/plugin-store";
 // import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
-import { NodeLoader } from "./NodeLoader";
-import { NodeManager } from "./NodeManager";
+import { StageLoader } from "./stage/StageLoader";
+import { StageManager } from "./stage/StageManager";
 import { Edge } from "./Edge";
 import { Camera } from "./stage/Camera";
 import { Stage } from "./stage/Stage";
@@ -112,7 +112,7 @@ export namespace RecentFileManager {
    * @param path 打开的文件路径
    */
   export async function openFileByPath(path: string) {
-    NodeManager.destroy();
+    StageManager.destroy();
     let content: string;
     try {
       // content = await readTextFile(path);
@@ -123,16 +123,16 @@ export namespace RecentFileManager {
       return;
     }
 
-    const data = NodeLoader.validate(JSON.parse(content));
+    const data = StageLoader.validate(JSON.parse(content));
     console.log(data);
 
     for (const node of data.nodes) {
-      NodeManager.addNode(new Node(node));
+      StageManager.addNode(new Node(node));
     }
     for (const edge of data.edges) {
-      NodeManager.addEdge(new Edge(edge));
+      StageManager.addEdge(new Edge(edge));
     }
-    NodeManager.updateReferences();
+    StageManager.updateReferences();
 
     Camera.reset();
     Stage.effects.push(new ViewFlashEffect(Color.Black));

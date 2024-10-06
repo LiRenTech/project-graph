@@ -1,4 +1,4 @@
-import { Canvas } from "../../Canvas";
+import { Canvas } from "../../stage/Canvas";
 import { Color } from "../../dataStruct/Color";
 import { Rectangle } from "../../dataStruct/Rectangle";
 import { Vector } from "../../dataStruct/Vector";

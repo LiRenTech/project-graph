@@ -1,4 +1,4 @@
-import { NodeManager } from "../../NodeManager";
+import { StageManager } from "../../stage/StageManager";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
 import { Vector } from "../../dataStruct/Vector";
@@ -16,11 +16,11 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const isHaveNodeSelected = NodeManager.nodes.some(
+  const isHaveNodeSelected = StageManager.nodes.some(
     (node) => node.isSelected,
   );
   ControllerNodeMove.lastMoveLocation = pressWorldLocation.clone();
-  const clickedNode = NodeManager.findNodeByLocation(pressWorldLocation);
+  const clickedNode = StageManager.findNodeByLocation(pressWorldLocation);
   
   if (clickedNode) {
     Controller.isMovingNode = true;
@@ -30,7 +30,7 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
         // C1
       } else {
         // C2
-        NodeManager.nodes.forEach((node) => {
+        StageManager.nodes.forEach((node) => {
           node.isSelected = false;
         });
       }
@@ -56,14 +56,14 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
   );
   const diffLocation = worldLocation.subtract(ControllerNodeMove.lastMoveLocation);
 
-  if (NodeManager.nodes.some((node) => node.isSelected)) {
+  if (StageManager.nodes.some((node) => node.isSelected)) {
     // 移动节点
     Controller.isMovingNode = true;
     if (Controller.pressingKeySet.has("alt")) {
     } else {
       if (Controller.pressingKeySet.has("control")) {
       } else {
-        NodeManager.moveNodes(diffLocation);
+        StageManager.moveNodes(diffLocation);
       }
     }
     ControllerNodeMove.lastMoveLocation = worldLocation.clone();
@@ -76,7 +76,7 @@ ControllerNodeMove.mouseup = (event: MouseEvent) => {
     return;
   }
   if (Controller.isMovingNode) {
-    NodeManager.moveNodeFinished();
+    StageManager.moveNodeFinished();
   }
   Controller.isMovingNode = false;
 };

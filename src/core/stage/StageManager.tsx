@@ -1,9 +1,9 @@
-import { Color } from "./dataStruct/Color";
-import { Controller } from "./controller/Controller";
-import { Edge } from "./Edge";
-import { Node } from "./Node";
-import { Renderer } from "./render/canvas2d/renderer";
-import { Vector } from "./dataStruct/Vector";
+import { Color } from "../dataStruct/Color";
+import { Controller } from "../controller/Controller";
+import { Edge } from "../Edge";
+import { Node } from "../Node";
+import { Renderer } from "../render/canvas2d/renderer";
+import { Vector } from "../dataStruct/Vector";
 import { v4 as uuidv4 } from "uuid";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
@@ -12,9 +12,10 @@ import { v4 as uuidv4 } from "uuid";
 // 并且会在舞台之外的地方操作，所以应该是namespace单例
 
 /**
- * 节点管理器
+ * 舞台管理器，也可以看成包含了很多操作方法的《舞台实体容器》
+ * 管理节点、边的关系等，内部包含了舞台上的所有实体
  */
-export namespace NodeManager {
+export namespace StageManager {
   export const nodes: Node[] = [];
   export const edges: Edge[] = [];
 
@@ -68,7 +69,7 @@ export namespace NodeManager {
     node.rectangle.location = node.rectangle.location.subtract(
       node.rectangle.size.divide(2),
     );
-    NodeManager.addNode(node);
+    StageManager.addNode(node);
   }
 
   export function moveNodes(delta: Vector) {
@@ -321,7 +322,7 @@ export namespace NodeManager {
    * 以防开发过程中造成多开
    */
   export function destroy() {
-    NodeManager.nodes.splice(0, NodeManager.nodes.length);
-    NodeManager.edges.splice(0, NodeManager.edges.length);
+    StageManager.nodes.splice(0, StageManager.nodes.length);
+    StageManager.edges.splice(0, StageManager.edges.length);
   }
 }

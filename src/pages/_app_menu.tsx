@@ -23,11 +23,11 @@ import {
 } from "@tauri-apps/plugin-dialog";
 import { useDialog } from "../utils/dialog";
 import { isDesktop } from "../utils/platform";
-import { NodeManager } from "../core/NodeManager";
+import { StageManager } from "../core/stage/StageManager";
 import { useRecoilState } from "recoil";
 import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
 import { Camera } from "../core/stage/Camera";
-import { NodeDumper } from "../core/NodeDumper";
+import { StageDumper } from "../core/stage/StageDumper";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { Stage } from "../core/stage/Stage";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
@@ -49,7 +49,7 @@ export default function AppMenu({
   const [_, setRecentFilePanelOpen] = useRecoilState(isRecentFilePanelOpenAtom);
 
   const onNew = () => {
-    NodeManager.destroy();
+    StageManager.destroy();
     setFile("Project Graph");
   };
 
@@ -104,7 +104,7 @@ export default function AppMenu({
     }
 
     try {
-      const data = NodeDumper.dumpToV3(); // 获取当前节点和边的数据
+      const data = StageDumper.dumpToV3(); // 获取当前节点和边的数据
       // 2024年10月6日发现保存文件也开始变得没有权限了，可能是tauri-plugin-fs的bug
       // await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
 
@@ -149,7 +149,7 @@ export default function AppMenu({
     }
 
     try {
-      const data = NodeDumper.dumpToV3(); // 获取当前节点和边的数据
+      const data = StageDumper.dumpToV3(); // 获取当前节点和边的数据
       invoke<string>("save_json_by_path", {
         path,
         content: JSON.stringify(data, null, 2),
@@ -246,7 +246,7 @@ export default function AppMenu({
             dialog.show({
               title: "舞台序列化",
               type: "info",
-              code: JSON.stringify(NodeDumper.dumpToV3(), null, 2),
+              code: JSON.stringify(StageDumper.dumpToV3(), null, 2),
             })
           }
         >
@@ -255,8 +255,8 @@ export default function AppMenu({
         <Col
           icon={<TestTube2 />}
           onClick={() => {
-            console.log(NodeManager.nodes);
-            console.log(NodeManager.edges);
+            console.log(StageManager.nodes);
+            console.log(StageManager.edges);
             console.log(file);
             // localStorage测试
             // 尽量不要用这个，端口号一变就没了

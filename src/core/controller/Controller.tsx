@@ -1,13 +1,13 @@
 import { Vector } from "../dataStruct/Vector";
 import { Renderer } from "../render/canvas2d/renderer";
-import { NodeManager } from "../NodeManager";
+import { StageManager } from "../stage/StageManager";
 import { Camera } from "../stage/Camera";
 import { ControllerCamera } from "./concrete/ControllerCamera";
 import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
 import { ControllerNodeConnection } from "./concrete/ControllerNodeConnection";
 import { ControllerCutting } from "./concrete/ControllerCutting";
 import { ControllerNodeMove } from "./concrete/ControllerNodeMove";
-import { Canvas } from "../Canvas";
+import { Canvas } from "../stage/Canvas";
 import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect";
 import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
 import { ControllerNodeCreate } from "./concrete/ControllerNodeCreate";
@@ -170,8 +170,8 @@ export namespace Controller {
     pressingKeySet.add(key);
     // 删除功能代码量太小了，暂时先直接写在这里
     if (key === "delete") {
-      NodeManager.deleteNodes(
-        NodeManager.nodes.filter((node) => node.isSelected),
+      StageManager.deleteNodes(
+        StageManager.nodes.filter((node) => node.isSelected),
       );
     }
   }

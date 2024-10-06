@@ -1,4 +1,4 @@
-import { NodeManager } from "../../NodeManager";
+import { StageManager } from "../../stage/StageManager";
 import { Rectangle } from "../../dataStruct/Rectangle";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
@@ -35,13 +35,13 @@ ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const clickedNode = NodeManager.findNodeByLocation(pressWorldLocation);
-  const clickedEdge = NodeManager.findEdgeByLocation(pressWorldLocation);
+  const clickedNode = StageManager.findNodeByLocation(pressWorldLocation);
+  const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
   if (clickedNode !== null) {
     // 在空白地方按下，才能触发框选
     return;
   }
-  const isHaveNodeSelected = NodeManager.nodes.some((node) => node.isSelected);
+  const isHaveNodeSelected = StageManager.nodes.some((node) => node.isSelected);
 
   // 现在的情况：在空白的地方按下左键
 
@@ -54,7 +54,7 @@ ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
       // 不取消选择
     } else {
       // 取消选择所有节点
-      NodeManager.nodes.forEach((node) => {
+      StageManager.nodes.forEach((node) => {
         node.isSelected = false;
       });
     }
@@ -102,14 +102,14 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
     // 移动过程中不先暴力清除
   } else {
     // 先清空所有已经选择了的
-    NodeManager.nodes.forEach((node) => {
+    StageManager.nodes.forEach((node) => {
       node.isSelected = false;
     });
   }
 
   if (Controller.pressingKeySet.has("control")) {
     // 交叉选择，没的变有，有的变没
-    for (const node of NodeManager.nodes) {
+    for (const node of StageManager.nodes) {
       if (Stage.selectingRectangle.isCollideWith(node.rectangle)) {
         if (Controller.lastSelectedNode.has(node.uuid)) {
           node.isSelected = false;
@@ -119,7 +119,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
       }
     }
   } else {
-    for (const node of NodeManager.nodes) {
+    for (const node of StageManager.nodes) {
       if (Stage.selectingRectangle.isCollideWith(node.rectangle)) {
         node.isSelected = true;
       }
@@ -138,7 +138,7 @@ ControllerRectangleSelect.mouseup = (event: MouseEvent) => {
   Stage.isSelecting = false;
   // 将所有选择到的增加到上次选择的节点中
   Controller.lastSelectedNode = new Set();
-  for (const node of NodeManager.nodes) {
+  for (const node of StageManager.nodes) {
     if (node.isSelected) {
       Controller.lastSelectedNode.add(node.uuid);
     }

@@ -1,4 +1,4 @@
-import { NodeManager } from "../../NodeManager";
+import { StageManager } from "../../stage/StageManager";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Camera } from "../../stage/Camera";
 import { Vector } from "../../dataStruct/Vector";
@@ -19,7 +19,7 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
   const pressLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  let clickedNode = NodeManager.findNodeByLocation(pressLocation);
+  let clickedNode = StageManager.findNodeByLocation(pressLocation);
   if (clickedNode === null) {
     return;
   }

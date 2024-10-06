@@ -1,7 +1,7 @@
 import { Color } from "../../dataStruct/Color";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
-import { NodeManager } from "../../NodeManager";
+import { StageManager } from "../../stage/StageManager";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
@@ -19,7 +19,7 @@ ControllerCutting.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const clickedNode = NodeManager.findNodeByLocation(pressWorldLocation);
+  const clickedNode = StageManager.findNodeByLocation(pressWorldLocation);
   if (clickedNode === null) {
     // 开始绘制切断线
     Stage.isCutting = true;
@@ -39,13 +39,13 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
     ControllerCutting.lastMoveLocation,
   );
   Stage.warningNodes = [];
-  for (const node of NodeManager.nodes) {
+  for (const node of StageManager.nodes) {
     if (node.rectangle.isCollideWithLine(Stage.cuttingLine)) {
       Stage.warningNodes.push(node);
     }
   }
   Stage.warningEdges = [];
-  for (const edge of NodeManager.edges) {
+  for (const edge of StageManager.edges) {
     if (edge.bodyLine.isIntersecting(Stage.cuttingLine)) {
       Stage.warningEdges.push(edge);
     }
@@ -66,11 +66,11 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
   }
   Stage.isCutting = false;
 
-  NodeManager.deleteNodes(Stage.warningNodes);
+  StageManager.deleteNodes(Stage.warningNodes);
   Stage.warningNodes = [];
 
   for (const edge of Stage.warningEdges) {
-    NodeManager.deleteEdge(edge);
+    StageManager.deleteEdge(edge);
     // 计算线段的中点
     const midLocation = edge.bodyLine.midPoint();
     // 特效
@@ -103,7 +103,7 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
       ),
     );
   }
-  NodeManager.updateReferences();
+  StageManager.updateReferences();
 
   Stage.warningEdges = [];
 

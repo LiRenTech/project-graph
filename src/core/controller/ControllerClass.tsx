@@ -1,4 +1,4 @@
-import { Canvas } from "../Canvas";
+import { Canvas } from "../stage/Canvas";
 import { Vector } from "../dataStruct/Vector";
 
 /**

@@ -1,7 +1,7 @@
 import { Color } from "../../dataStruct/Color";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
-import { NodeManager } from "../../NodeManager";
+import { StageManager } from "../../stage/StageManager";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
@@ -18,20 +18,20 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const clickedNode = NodeManager.findNodeByLocation(pressWorldLocation);
+  const clickedNode = StageManager.findNodeByLocation(pressWorldLocation);
 
   if (clickedNode) {
     // 右键点击了某个节点
     // Stage.isCutting = false;
     Stage.connectFromNodes = [];
-    for (const node of NodeManager.nodes) {
+    for (const node of StageManager.nodes) {
       if (node.isSelected) {
         Stage.connectFromNodes.push(node);
       }
     }
     if (Stage.connectFromNodes.includes(clickedNode)) {
       // 多重连接
-      for (const node of NodeManager.nodes) {
+      for (const node of StageManager.nodes) {
         if (node.isSelected) {
           // 特效
         }
@@ -54,7 +54,7 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
   );
   // 连接线
   let isFindConnectToNode = false;
-  for (const node of NodeManager.nodes) {
+  for (const node of StageManager.nodes) {
     if (node.rectangle.isPointInside(worldLocation)) {
       Stage.connectToNode = node;
       isFindConnectToNode = true;
@@ -76,7 +76,7 @@ ControllerNodeConnection.mouseup = (event: MouseEvent) => {
   if (Stage.connectFromNodes.length > 0 && Stage.connectToNode !== null) {
     let isHaveConnectResult = false; // 在多重链接的情况下，是否有连接成功
     for (const node of Stage.connectFromNodes) {
-      const connectResult = NodeManager.connectNode(node, Stage.connectToNode);
+      const connectResult = StageManager.connectNode(node, Stage.connectToNode);
       if (connectResult) {
         // 连接成功，特效
         isHaveConnectResult = true;

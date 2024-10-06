@@ -3,9 +3,9 @@ import { Vector } from "../../dataStruct/Vector";
 import { Stage } from "../../stage/Stage";
 import { RenderUtils } from "./RenderUtils";
 import { EffectRenderer } from "./EffectRenderer";
-import { Canvas } from "../../Canvas";
+import { Canvas } from "../../stage/Canvas";
 import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
-import { NodeManager } from "../../NodeManager";
+import { StageManager } from "../../stage/StageManager";
 import { appScale } from "../../../utils/platform";
 import { Rectangle } from "../../dataStruct/Rectangle";
 import { Camera } from "../../stage/Camera";
@@ -135,7 +135,7 @@ export namespace Renderer {
     if (Stage.connectFromNodes.length > 0 && Controller.lastMoveLocation) {
       // 如果鼠标位置没有和任何节点相交
       let connectTargetNode = null;
-      for (const node of NodeManager.nodes) {
+      for (const node of StageManager.nodes) {
         if (node.rectangle.isPointInside(Controller.lastMoveLocation)) {
           connectTargetNode = node;
           break;
@@ -210,7 +210,7 @@ export namespace Renderer {
 
   export function renderEntities() {
     renderedNodes = 0;
-    for (const node of NodeManager.nodes) {
+    for (const node of StageManager.nodes) {
       // if (!canvasRect.isCollideWith(node.rectangle)) {
       //   continue;
       // }
@@ -264,7 +264,7 @@ export namespace Renderer {
 
   export function renderEdges() {
     renderedEdges = 0;
-    for (const edge of NodeManager.edges) {
+    for (const edge of StageManager.edges) {
       // const lineRect = Rectangle.fromPoints(
       //   edge.source.rectangle.getCenter(),
       //   edge.target.rectangle.getCenter(),
@@ -443,8 +443,8 @@ export namespace Renderer {
       `location: ${Camera.location.x.toFixed(2)}, ${Camera.location.y.toFixed(2)}`,
       // `canvas rect: ${canvasRect.toString()}`,
       `window: ${w}x${h}`,
-      `node count: ${renderedNodes} , ${NodeManager.nodes.length}`,
-      `edge count: ${renderedEdges} , ${NodeManager.edges.length}`,
+      `node count: ${renderedNodes} , ${StageManager.nodes.length}`,
+      `edge count: ${renderedEdges} , ${StageManager.edges.length}`,
       `pressingKeys: ${Controller.pressingKeysString()}`,
       `鼠标按下情况: ${Controller.isMouseDown}`,
       `鼠标上次按下位置: ${Controller.lastMousePressLocationString()}`,

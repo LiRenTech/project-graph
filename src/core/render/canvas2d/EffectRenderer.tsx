@@ -1,4 +1,4 @@
-import { Canvas } from "../../Canvas";
+import { Canvas } from "../../stage/Canvas";
 import { Color, mixColors } from "../../dataStruct/Color";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";

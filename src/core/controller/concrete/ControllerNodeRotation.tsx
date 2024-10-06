@@ -1,4 +1,4 @@
-import { NodeManager } from "../../NodeManager";
+import { StageManager } from "../../stage/StageManager";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
 import { Vector } from "../../dataStruct/Vector";
@@ -13,13 +13,13 @@ ControllerNodeRotation.mousewheel = (event: WheelEvent) => {
     const location = Renderer.transformView2World(
       new Vector(event.clientX, event.clientY),
     );
-    const hoverNode = NodeManager.findNodeByLocation(location);
+    const hoverNode = StageManager.findNodeByLocation(location);
     if (hoverNode !== null) {
       // 旋转节点
       if (event.deltaY > 0) {
-        NodeManager.rotateNode(hoverNode, 10);
+        StageManager.rotateNode(hoverNode, 10);
       } else {
-        NodeManager.rotateNode(hoverNode, -10);
+        StageManager.rotateNode(hoverNode, -10);
       }
     }
   }
@@ -32,10 +32,10 @@ ControllerNodeRotation.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const clickedEdge = NodeManager.findEdgeByLocation(pressWorldLocation);
-  const isHaveEdgeSelected = NodeManager.edges.some((edge) => edge.isSelected);
+  const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
+  const isHaveEdgeSelected = StageManager.edges.some((edge) => edge.isSelected);
   // 取消选择所有连线
-  NodeManager.edges.forEach((edge) => {
+  StageManager.edges.forEach((edge) => {
     edge.isSelected = false;
   });
   if (clickedEdge === null) {
@@ -48,12 +48,12 @@ ControllerNodeRotation.mousedown = (event: MouseEvent) => {
 
     if (clickedEdge.isSelected) {
       // E1
-      NodeManager.edges.forEach((edge) => {
+      StageManager.edges.forEach((edge) => {
         edge.isSelected = false;
       });
     } else {
       // E2
-      NodeManager.edges.forEach((edge) => {
+      StageManager.edges.forEach((edge) => {
         edge.isSelected = false;
       });
     }
@@ -81,7 +81,7 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
     // 拖拽连线
     Controller.isMovingEdge = true;
     // HACK: 应该加一个条件限制，只能选中一条边，这里有可能会选中多个边
-    NodeManager.moveEdges(
+    StageManager.moveEdges(
       ControllerNodeRotation.lastMoveLocation,
       diffLocation,
     );
@@ -92,7 +92,7 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
     // 什么都没有按下的情况
     // 看看鼠标当前的位置是否和线接近
     Stage.hoverEdges = [];
-    for (const edge of NodeManager.edges) {
+    for (const edge of StageManager.edges) {
       if (
         edge.bodyLine.isPointNearLine(
           worldLocation,
@@ -110,7 +110,7 @@ ControllerNodeRotation.mouseup = (event: MouseEvent) => {
     return;
   }
   if (Controller.isMovingEdge) {
-    NodeManager.moveEdgeFinished();
+    StageManager.moveEdgeFinished();
     Controller.isMovingEdge = false;
   }
 };

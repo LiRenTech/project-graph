@@ -1,17 +1,11 @@
-import { Edge } from "./Edge";
-import { Node } from "./Node";
-import { NodeManager } from "./NodeManager";
+import { Edge } from "../Edge";
+import { Node } from "../Node";
+import { StageManager } from "./StageManager";
 
 /**
- * 把Node对象转化为序列化JSON对象
- *
- * 为什么Node转序列化的功能不放在Node类中？
- * 可能是因为它和NodeLoader恰好是相反的，而NodeLoader又有版本转换功能
- * 所以这里相当于是一个镜像
- *
- * 或许应该叫 StageDumper ?
+ * 转化为序列化JSON对象
  */
-export namespace NodeDumper {
+export namespace StageDumper {
   export function dumpNodeToV3(node: Node): Record<string, any> {
     return {
       shape: {
@@ -38,8 +32,8 @@ export namespace NodeDumper {
   export function dumpToV3(): Record<string, any> {
     return {
       version: 3,
-      nodes: NodeManager.nodes.map((node) => dumpNodeToV3(node)),
-      edges: NodeManager.edges.map((edge) => dumpEdgeToV3(edge)),
+      nodes: StageManager.nodes.map((node) => dumpNodeToV3(node)),
+      edges: StageManager.edges.map((edge) => dumpEdgeToV3(edge)),
     };
   }
 }

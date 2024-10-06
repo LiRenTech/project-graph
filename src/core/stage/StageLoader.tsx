@@ -1,11 +1,9 @@
-import { Serialized } from "../types/node";
+import { Serialized } from "../../types/node";
 
 /**
- * 这里命名不太严谨
- * NodeLoader 以为只有节点，实际上是整个舞台的序列化转换。也包含了边
- * 可能叫StageLoader更合适?
+ * 舞台加载
  */
-export namespace NodeLoader {
+export namespace StageLoader {
   /**
    * 将序列化数据逐步的，一级一级的转换为最新版本的格式
    * @param data 

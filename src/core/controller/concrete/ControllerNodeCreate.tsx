@@ -1,6 +1,6 @@
 import { Color } from "../../dataStruct/Color";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
-import { NodeManager } from "../../NodeManager";
+import { StageManager } from "../../stage/StageManager";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
@@ -19,14 +19,14 @@ ControllerNodeCreate.mouseDoubleClick = (event: MouseEvent) => {
   const pressLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  let clickedNode = NodeManager.findNodeByLocation(pressLocation);
-  let clickedEdge = NodeManager.findEdgeByLocation(pressLocation);
+  let clickedNode = StageManager.findNodeByLocation(pressLocation);
+  let clickedEdge = StageManager.findEdgeByLocation(pressLocation);
 
   if (clickedNode !== null || clickedEdge!== null) {
     return;
   }
   // 新建节点
-  NodeManager.addNodeByClick(
+  StageManager.addNodeByClick(
     Renderer.transformView2World(new Vector(event.clientX, event.clientY)),
   );
   Stage.effects.push(
