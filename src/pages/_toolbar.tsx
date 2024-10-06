@@ -102,9 +102,10 @@ export default function Toolbar({ className = "" }) {
             <div
               className="m-1 h-5 w-5 cursor-pointer rounded-full bg-purple-500 transition-all hover:scale-125"
               onClick={() => {
-                StageManager.setNodeColor(new Color(239, 68, 68));
+                StageManager.setNodeColor(new Color(168, 85, 247));
               }}
             />
+            {/* 清除颜色 */}
             <div
               className="m-1 h-5 w-5 animate-pulse cursor-pointer rounded-full bg-gray-500 text-center text-sm transition-all hover:scale-125"
               onClick={() => {
@@ -113,6 +114,19 @@ export default function Toolbar({ className = "" }) {
             >
               <span>x</span>
             </div>
+            {/* 自定义 */}
+            <input
+              type="color"
+              id="colorPicker"
+              value="#ff0000"
+              onChange={(e) => {
+                const color = e.target.value;
+                const r = parseInt(color.slice(1, 3), 16);
+                const g = parseInt(color.slice(3, 5), 16);
+                const b = parseInt(color.slice(5, 7), 16);
+                StageManager.setNodeColor(new Color(r, g, b));
+              }}
+            ></input>
           </div>
 
           <button
@@ -163,7 +177,9 @@ export default function Toolbar({ className = "" }) {
 }
 
 function deleteSelectedObjects() {
-  StageManager.deleteNodes(StageManager.nodes.filter((node) => node.isSelected));
+  StageManager.deleteNodes(
+    StageManager.nodes.filter((node) => node.isSelected),
+  );
   for (const edge of StageManager.edges) {
     if (edge.isSelected) {
       StageManager.deleteEdge(edge);
