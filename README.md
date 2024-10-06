@@ -1,5 +1,20 @@
 # Project Graph
 
+## 下载
+
+tauri版本（用新的框架重写了，功能还在完善中，但还未发布视频）
+
+```
+https://liren.zty012.de/project-graph/v2/
+```
+
+PyQt5版本（两期视频中的版本）
+
+```
+https://liren.zty012.de/project-graph/v1/
+```
+
+
 ## 启动方式
 
 ```bash
