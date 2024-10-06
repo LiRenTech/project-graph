@@ -81,3 +81,10 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
   }
 };
 
+ControllerCamera.mouseDoubleClick = (event: MouseEvent) => {
+  if (event.button === 1) {
+    // 中键双击
+    Camera.reset();
+  }
+}
+

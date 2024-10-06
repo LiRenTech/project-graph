@@ -8,12 +8,13 @@ import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
 import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";
 import { Rectangle } from "../Rectangle";
-import { LineCuttingEffect } from "../effect/concrete/LineCuttingEffect";
-import { Line } from "../Line";
+// import { LineCuttingEffect } from "../effect/concrete/LineCuttingEffect";
+// import { Line } from "../Line";
 import { LineEffect } from "../effect/concrete/LineEffect";
 import { ControllerCamera } from "./concrete/ControllerCamera";
 import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
 import { ControllerNodeConnection } from "./concrete/ControllerNodeConnection";
+import { ControllerCutting } from "./concrete/ControllerCutting";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -119,6 +120,7 @@ export namespace Controller {
     ControllerCamera.init(canvasElement);
     ControllerNodeRotation.init(canvasElement);
     ControllerNodeConnection.init(canvasElement);
+    ControllerCutting.init(canvasElement);
   }
 
   function mousedown(event: MouseEvent) {
@@ -223,13 +225,6 @@ export namespace Controller {
       // 中键按下
     } else if (button === 2) {
       // 右键按下
-      if (clickedNode === null) {
-        // 开始绘制切断线
-        Stage.isCutting = true;
-      } else {
-        // 连接线
-        Stage.isCutting = false;
-      }
     }
     lastMoveLocation = pressWorldLocation.clone();
 
@@ -315,23 +310,7 @@ export namespace Controller {
       // 右键按下
       lastMoveLocation = worldLocation.clone();
       if (Stage.isCutting) {
-        // 正在切断线
-        Stage.cuttingLine = new Line(
-          lastMousePressLocation[2],
-          lastMoveLocation,
-        );
-        Stage.warningNodes = [];
-        for (const node of NodeManager.nodes) {
-          if (node.rectangle.isCollideWithLine(Stage.cuttingLine)) {
-            Stage.warningNodes.push(node);
-          }
-        }
-        Stage.warningEdges = [];
-        for (const edge of NodeManager.edges) {
-          if (edge.bodyLine.isIntersecting(Stage.cuttingLine)) {
-            Stage.warningEdges.push(edge);
-          }
-        }
+
       } else {
         
       }
@@ -376,58 +355,7 @@ export namespace Controller {
       // 右键松开
 
       if (Stage.isCutting) {
-        NodeManager.deleteNodes(Stage.warningNodes);
-        Stage.warningNodes = [];
 
-        for (const edge of Stage.warningEdges) {
-          NodeManager.deleteEdge(edge);
-          // 计算线段的中点
-          const midLocation = edge.bodyLine.midPoint();
-          // 特效
-          Stage.effects.push(
-            new LineCuttingEffect(
-              new ProgressNumber(0, 15),
-              midLocation,
-              edge.bodyLine.start,
-              new Color(255, 0, 0, 0),
-              new Color(255, 0, 0, 1),
-              20,
-            ),
-          );
-          Stage.effects.push(
-            new LineCuttingEffect(
-              new ProgressNumber(0, 15),
-              midLocation,
-              edge.bodyLine.end,
-              new Color(255, 0, 0, 0),
-              new Color(255, 0, 0, 1),
-              20,
-            ),
-          );
-          Stage.effects.push(
-            new CircleFlameEffect(
-              new ProgressNumber(0, 15),
-              edge.bodyLine.midPoint(),
-              50,
-              new Color(255, 0, 0, 1),
-            ),
-          );
-        }
-        NodeManager.updateReferences();
-
-        Stage.warningEdges = [];
-
-        Stage.effects.push(
-          new LineCuttingEffect(
-            new ProgressNumber(0, 15),
-            lastMousePressLocation[2],
-            lastMouseReleaseLocation[2],
-            new Color(255, 255, 0, 0),
-            new Color(255, 255, 0, 1),
-            lastMousePressLocation[2].distance(lastMouseReleaseLocation[2]) /
-              10,
-          ),
-        );
       }
     }
 
@@ -499,9 +427,6 @@ export namespace Controller {
           ),
         );
       }
-    } else if (button === 1) {
-      // 中键双击
-      Camera.reset();
     }
   }
 
@@ -616,6 +541,7 @@ export namespace Controller {
     ControllerCamera.destroy(canvasElement!);
     ControllerNodeRotation.destroy(canvasElement!);
     ControllerNodeConnection.destroy(canvasElement!);
+    ControllerCutting.destroy(canvasElement!);
     console.log("Controller destroyed.");
   }
 }

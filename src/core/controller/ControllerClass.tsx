@@ -15,6 +15,7 @@ export class ControllerClass {
   public mouseup: (event: MouseEvent) => void = (_: MouseEvent) => {};
   public mousemove: (event: MouseEvent) => void = (_: MouseEvent) => {};
   public mousewheel: (event: WheelEvent) => void = (_: WheelEvent) => {};
+  public mouseDoubleClick: (event: MouseEvent) => void = (_: MouseEvent) => {};
 
   public init(canvasElement: HTMLCanvasElement) {
     window.addEventListener("keydown", this.keydown);
@@ -23,6 +24,7 @@ export class ControllerClass {
     canvasElement.addEventListener("mouseup", this.mouseup);
     canvasElement.addEventListener("mousemove", this.mousemove);
     canvasElement.addEventListener("wheel", this.mousewheel);
+    canvasElement.addEventListener("dblclick", this.mouseDoubleClick);
   }
   public destroy(canvasElement: HTMLCanvasElement) {
     window.removeEventListener("keydown", this.keydown);
@@ -31,6 +33,7 @@ export class ControllerClass {
     canvasElement.removeEventListener("mouseup", this.mouseup);
     canvasElement.removeEventListener("mousemove", this.mousemove);
     canvasElement.removeEventListener("wheel", this.mousewheel);
+    canvasElement.removeEventListener("dblclick", this.mouseDoubleClick);
     console.log(this.lastMoveLocation);
     this.lastMoveLocation = Vector.getZero();
   }
