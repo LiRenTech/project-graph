@@ -26,7 +26,9 @@ export default function Input({
         className,
       )}
       value={value}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+        onChange(e.target.value)
+      }
       placeholder={placeholder}
       pattern={number ? "[0-9]*" : undefined}
       {...props}
