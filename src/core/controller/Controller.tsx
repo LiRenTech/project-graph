@@ -97,6 +97,10 @@ export namespace Controller {
    */
   export const edgeHoverTolerance = 10;
 
+  /**
+   * 初始化函数在页面挂在的时候调用
+   * @param canvasElement 
+   */
   export function init(canvasElement: HTMLCanvasElement) {
     canvasElement = canvasElement;
     // 绑定事件
@@ -680,13 +684,6 @@ export namespace Controller {
       // 保存
       console.log("Save");
     }
-    if (keyMap[key]) {
-      // 当按下某一个方向的时候,相当于朝着某个方向赋予一次加速度
-      Camera.accelerateCommander = Camera.accelerateCommander
-        .add(keyMap[key])
-        .limitX(-1, 1)
-        .limitY(-1, 1);
-    }
     if (key === " ") {
       setCursorName("grab");
     } else if (key === "delete") {
@@ -702,18 +699,9 @@ export namespace Controller {
   function keyup(event: KeyboardEvent) {
     const key = event.key.toLowerCase();
     if (!pressingKeySet.has(key)) {
-      // FIXME: 但这里有个问题，在按下 ctrl+alt+a 时，会显示画面一直往右走。原因是按下a没有被检测到，但抬起a被检测到了
-      // 所以松开某个移动的按键时，还要检测之前是否已经按下了这个按键
       return;
     } else {
       pressingKeySet.delete(key);
-    }
-    if (keyMap[key]) {
-      // 当松开某一个方向的时候,相当于停止加速度
-      Camera.accelerateCommander = Camera.accelerateCommander
-        .subtract(keyMap[key])
-        .limitX(-1, 1)
-        .limitY(-1, 1);
     }
     setCursorName("default");
     
