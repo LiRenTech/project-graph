@@ -112,11 +112,12 @@ export namespace Controller {
     window.addEventListener("keydown", keydown);
     window.addEventListener("keyup", keyup);
     Canvas.element.addEventListener("mousedown", mousedown);
-    Canvas.element.addEventListener("mousemove", mousemove);
     Canvas.element.addEventListener("mouseup", mouseup);
     Canvas.element.addEventListener("touchstart", touchstart, false);
     Canvas.element.addEventListener("touchmove", touchmove, false);
     Canvas.element.addEventListener("touchend", touchend, false);
+    // 所有的具体的功能逻辑封装成控制器对象
+    // 当有新功能时新建控制器对象，并在这里初始化
     ControllerCamera.init();
     ControllerNodeRotation.init();
     ControllerNodeConnection.init();
@@ -129,14 +130,11 @@ export namespace Controller {
     ControllerDrawing.init();
   }
 
+  // 以下事件处理函数仅为Controller总控制器修改重要属性使用。不涉及具体的功能逻辑。
+
   function mousedown(event: MouseEvent) {
     event.preventDefault();
     handleMousedown(event.button, event.clientX, event.clientY);
-  }
-
-  function mousemove(event: MouseEvent) {
-    event.preventDefault();
-    handleMousemove(event.clientX, event.clientY);
   }
 
   function mouseup(event: MouseEvent) {
@@ -146,22 +144,9 @@ export namespace Controller {
 
   function handleMousedown(button: number, x: number, y: number) {
     isMouseDown[button] = true;
-
     const pressWorldLocation = Renderer.transformView2World(new Vector(x, y));
     // 获取左右中键
     lastMousePressLocation[button] = pressWorldLocation;
-    if (button === 0) {
-      
-    }
-    lastMoveLocation = pressWorldLocation.clone();
-  }
-
-  function handleMousemove(x: number, y: number) {
-    const worldLocation = Renderer.transformView2World(new Vector(x, y));
-    if (isMouseDown[0]) {
-      
-    }
-    lastMoveLocation = worldLocation.clone();
   }
 
   function handleMouseup(button: number, x: number, y: number) {
@@ -180,7 +165,6 @@ export namespace Controller {
     );
   }
 
-
   function keydown(event: KeyboardEvent) {
     const key = event.key.toLowerCase();
     pressingKeySet.add(key);
@@ -194,12 +178,12 @@ export namespace Controller {
 
   function keyup(event: KeyboardEvent) {
     const key = event.key.toLowerCase();
-    if (!pressingKeySet.has(key)) {
-      return;
-    } else {
+    if (pressingKeySet.has(key)) {
       pressingKeySet.delete(key);
     }
   }
+
+  // touch相关的事件有待重构到具体的功能逻辑中
 
   function touchstart(e: TouchEvent) {
     e.preventDefault();
@@ -223,7 +207,6 @@ export namespace Controller {
 
     if (e.touches.length === 1) {
       // HACK: 重构后这里就有问题了
-      handleMousemove(e.touches[0].clientX, e.touches[0].clientY);
     }
     if (e.touches.length === 2) {
       const touch1 = Vector.fromTouch(e.touches[0]);
@@ -275,7 +258,6 @@ export namespace Controller {
     window.removeEventListener("keydown", keydown);
     window.removeEventListener("keyup", keyup);
     Canvas.element.removeEventListener("mousedown", mousedown);
-    Canvas.element.removeEventListener("mousemove", mousemove);
     Canvas.element.removeEventListener("mouseup", mouseup);
     Canvas.element.removeEventListener("touchstart", touchstart);
     Canvas.element.removeEventListener("touchmove", touchmove);
