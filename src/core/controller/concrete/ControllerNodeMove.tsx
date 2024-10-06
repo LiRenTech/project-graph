@@ -21,10 +21,11 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
   );
   ControllerNodeMove.lastMoveLocation = pressWorldLocation.clone();
   const clickedNode = NodeManager.findNodeByLocation(pressWorldLocation);
+  
   if (clickedNode) {
+    Controller.isMovingNode = true;
     if (isHaveNodeSelected) {
       // C
-
       if (clickedNode.isSelected) {
         // C1
       } else {
@@ -34,18 +35,20 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
         });
       }
       clickedNode.isSelected = true;
-      Controller.isMovingNode = true;
     } else {
       // D
       clickedNode.isSelected = true;
-      Controller.isMovingNode = true;
     }
   }
+
 
 };
 
 ControllerNodeMove.mousemove = (event: MouseEvent) => {
   if (Stage.isSelecting || Stage.isCutting) {
+    return;
+  }
+  if (!Controller.isMovingNode) {
     return;
   }
   const worldLocation = Renderer.transformView2World(
@@ -63,8 +66,9 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
         NodeManager.moveNodes(diffLocation);
       }
     }
+    ControllerNodeMove.lastMoveLocation = worldLocation.clone();
   }
-  ControllerNodeMove.lastMoveLocation = worldLocation.clone();
+  
 };
 
 ControllerNodeMove.mouseup = (event: MouseEvent) => {
@@ -73,6 +77,6 @@ ControllerNodeMove.mouseup = (event: MouseEvent) => {
   }
   if (Controller.isMovingNode) {
     NodeManager.moveNodeFinished();
-    Controller.isMovingNode = false;
   }
+  Controller.isMovingNode = false;
 };
