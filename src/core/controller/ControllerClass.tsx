@@ -1,3 +1,4 @@
+import { Vector } from "../Vector";
 
 /**
  * 抽象的控制器类，用于处理事件绑定和解绑
@@ -5,6 +6,8 @@
  */
 export class ControllerClass {
   constructor() {}
+
+  public lastMoveLocation: Vector = Vector.getZero();
 
   public keydown: (event: KeyboardEvent) => void = (_: KeyboardEvent) => {};
   public keyup: (event: KeyboardEvent) => void = (_: KeyboardEvent) => {};
@@ -28,5 +31,7 @@ export class ControllerClass {
     canvasElement.removeEventListener("mouseup", this.mouseup);
     canvasElement.removeEventListener("mousemove", this.mousemove);
     canvasElement.removeEventListener("wheel", this.mousewheel);
+    console.log(this.lastMoveLocation);
+    this.lastMoveLocation = Vector.getZero();
   }
 }

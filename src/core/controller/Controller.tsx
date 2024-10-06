@@ -11,7 +11,7 @@ import { Rectangle } from "../Rectangle";
 import { LineCuttingEffect } from "../effect/concrete/LineCuttingEffect";
 import { Line } from "../Line";
 import { LineEffect } from "../effect/concrete/LineEffect";
-import { ControllerCamera } from "./ControllerConcrete";
+import { ControllerCamera, ControllerNodeRotation } from "./ControllerConcrete";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -115,6 +115,7 @@ export namespace Controller {
     canvasElement.addEventListener("touchmove", touchmove, false);
     canvasElement.addEventListener("touchend", touchend, false);
     ControllerCamera.init(canvasElement);
+    ControllerNodeRotation.init(canvasElement);
   }
 
   function mousedown(event: MouseEvent) {
@@ -165,9 +166,9 @@ export namespace Controller {
       const isHaveNodeSelected = NodeManager.nodes.some(
         (node) => node.isSelected,
       );
-      const isHaveEdgeSelected = NodeManager.edges.some(
-        (edge) => edge.isSelected,
-      );
+      // const isHaveEdgeSelected = NodeManager.edges.some(
+      //   (edge) => edge.isSelected,
+      // );
       // 左键按下
       if (clickedNode === null) {
         if (isHaveNodeSelected) {
@@ -180,14 +181,6 @@ export namespace Controller {
               node.isSelected = false;
             });
           }
-        } else if (isHaveEdgeSelected) {
-          // A'
-          // 取消选择所有连线
-          NodeManager.edges.forEach((edge) => {
-            edge.isSelected = false;
-          });
-        } else {
-          // B
         }
         Stage.isSelecting = true;
         Stage.selectStartLocation = pressWorldLocation.clone();
@@ -222,28 +215,6 @@ export namespace Controller {
       } else {
         // 在连线身上按下
         Stage.isSelecting = false;
-
-        if (isHaveEdgeSelected) {
-          if (clickedEdge.isSelected) {
-            // E1
-            NodeManager.edges.forEach((edge) => {
-              edge.isSelected = false;
-            });
-          } else {
-            // E2
-            NodeManager.edges.forEach((edge) => {
-              edge.isSelected = false;
-            });
-          }
-
-          clickedEdge.isSelected = true;
-          isMovingEdge = true;
-        } else {
-          // F
-          clickedEdge.isSelected = true;
-          isMovingEdge = true;
-          console.log("在连线身上按下");
-        }
       }
     } else if (button === 1) {
       // 中键按下
@@ -353,11 +324,6 @@ export namespace Controller {
               NodeManager.moveNodes(diffLocation);
             }
           }
-        } else {
-          // 拖拽连线
-          isMovingEdge = true;
-          // HACK: 应该加一个条件限制，只能选中一条边，这里有可能会选中多个边
-          NodeManager.moveEdges(lastMoveLocation, diffLocation);
         }
       }
       lastMoveLocation = worldLocation.clone();
@@ -396,22 +362,11 @@ export namespace Controller {
           Stage.connectToNode = null;
         }
       }
-    } else {
-      // 什么都没有按下的情况
-      // 看看鼠标当前的位置是否和线接近
-      Stage.hoverEdges = [];
-      for (const edge of NodeManager.edges) {
-        if (edge.bodyLine.isPointNearLine(worldLocation, edgeHoverTolerance)) {
-          Stage.hoverEdges.push(edge);
-        }
-      }
     }
     if (pressingKeySet.has("`")) {
       // 迭代笔位置
       lastMoveLocation = worldLocation.clone();
     }
-
-    // setCursorName("default");
   }
 
   function handleMouseup(button: number, x: number, y: number) {
@@ -433,11 +388,6 @@ export namespace Controller {
       NodeManager.moveNodeFinished();
       isMovingNode = false;
     }
-    if (isMovingEdge) {
-      NodeManager.moveEdgeFinished();
-      isMovingEdge = false;
-    }
-    // Stage.hoverEdges = [];
 
     if (button === 0) {
       // 左键松开
@@ -561,21 +511,7 @@ export namespace Controller {
     // Stage.effects.push(new TextRiseEffect("mouse up"));
   }
 
-  function mousewheel(e: WheelEvent) {
-    if (pressingKeySet.has("control")) {
-      const location = Renderer.transformView2World(
-        new Vector(e.clientX, e.clientY),
-      );
-      const hoverNode = NodeManager.findNodeByLocation(location);
-      if (hoverNode !== null) {
-        // 旋转节点
-        if (e.deltaY > 0) {
-          NodeManager.rotateNode(hoverNode, 10);
-        } else {
-          NodeManager.rotateNode(hoverNode, -10);
-        }
-      }
-    }
+  function mousewheel(_: WheelEvent) {
   }
 
   function handleDblclick(button: number, x: number, y: number) {
@@ -752,6 +688,7 @@ export namespace Controller {
     canvasElement?.removeEventListener("touchmove", touchmove);
     canvasElement?.removeEventListener("touchend", touchend);
     ControllerCamera.destroy(canvasElement!);
+    ControllerNodeRotation.destroy(canvasElement!);
     console.log("Controller destroyed.");
   }
 }
