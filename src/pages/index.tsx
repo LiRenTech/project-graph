@@ -7,6 +7,7 @@ import { Canvas } from "../core/Canvas";
 import { NodeManager } from "../core/NodeManager";
 import React from "react";
 import Toolbar from "./_toolbar";
+import { Settings } from "../core/Settings";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);
@@ -34,7 +35,7 @@ export default function Home() {
     if (canvasElement) {
       Canvas.init(canvasElement);
       Renderer.resizeWindow(window.innerWidth, window.innerHeight);
-      Controller.init(canvasElement);
+      Controller.init();
       Controller.setCursorName = setCursorName;
     } else {
       dialog.show({
@@ -47,6 +48,10 @@ export default function Home() {
     window.addEventListener("resize", handleResize);
     window.addEventListener("focus", handleFocus);
     window.addEventListener("blur", handleBlur);
+
+    Settings.get("windowBackgroundAlpha").then((value) => {
+      Renderer.backgroundAlpha = value;
+    });
 
     // 开启定时器
     let lastTime = performance.now();

@@ -27,6 +27,7 @@ export namespace Renderer {
   // let canvasRect: Rectangle;
   export let renderedNodes: number = 0;
   export let renderedEdges: number = 0;
+  export let backgroundAlpha = 1;
 
   /**
    * 解决Canvas模糊问题
@@ -52,9 +53,11 @@ export namespace Renderer {
 
     Canvas.ctx.clearRect(0, 0, w, h);
 
-    // 画一个2b2b2b的背景
-    // Canvas.ctx.fillStyle = "#2b2b2b";
-    // Canvas.ctx.fillRect(0, 0, w, h);
+    // 画一个背景
+    Canvas.ctx.fillStyle = "#111";
+    Canvas.ctx.globalAlpha = backgroundAlpha;
+    Canvas.ctx.fillRect(0, 0, w, h);
+    Canvas.ctx.globalAlpha = 1;
 
     // TODO: 这里的计算应该是基于视野的，而不是整个画布的
     // canvasRect = new Rectangle(
