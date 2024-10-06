@@ -16,10 +16,11 @@ import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
 import { ControllerNodeConnection } from "./concrete/ControllerNodeConnection";
 import { ControllerCutting } from "./concrete/ControllerCutting";
 import { ControllerNodeMove } from "./concrete/ControllerNodeMove";
+import { Canvas } from "../Canvas";
 
 /**
  * 控制器，控制鼠标、键盘事件
- * 
+ *
  * 想到一个点子：把每隔功能都功能拆成 mouse down,move,up 三个函数，
  * 然后再统一集成到这里。
  */
@@ -95,7 +96,6 @@ export namespace Controller {
   export let lastClickLocation = Vector.getZero();
 
   export let isMouseDown: boolean[] = [false, false, false];
-  export let canvasElement: HTMLCanvasElement;
 
   /**
    * 悬浮提示的边缘距离
@@ -104,24 +104,23 @@ export namespace Controller {
 
   /**
    * 初始化函数在页面挂在的时候调用
-   * @param canvasElement 
+   * @param Canvas.element
    */
-  export function init(canvasElement: HTMLCanvasElement) {
-    canvasElement = canvasElement;
+  export function init() {
     // 绑定事件
     window.addEventListener("keydown", keydown);
     window.addEventListener("keyup", keyup);
-    canvasElement.addEventListener("mousedown", mousedown);
-    canvasElement.addEventListener("mousemove", mousemove);
-    canvasElement.addEventListener("mouseup", mouseup);
-    canvasElement.addEventListener("touchstart", touchstart, false);
-    canvasElement.addEventListener("touchmove", touchmove, false);
-    canvasElement.addEventListener("touchend", touchend, false);
-    ControllerCamera.init(canvasElement);
-    ControllerNodeRotation.init(canvasElement);
-    ControllerNodeConnection.init(canvasElement);
-    ControllerCutting.init(canvasElement);
-    ControllerNodeMove.init(canvasElement);
+    Canvas.element.addEventListener("mousedown", mousedown);
+    Canvas.element.addEventListener("mousemove", mousemove);
+    Canvas.element.addEventListener("mouseup", mouseup);
+    Canvas.element.addEventListener("touchstart", touchstart, false);
+    Canvas.element.addEventListener("touchmove", touchmove, false);
+    Canvas.element.addEventListener("touchend", touchend, false);
+    ControllerCamera.init();
+    ControllerNodeRotation.init();
+    ControllerNodeConnection.init();
+    ControllerCutting.init();
+    ControllerNodeMove.init();
   }
 
   function mousedown(event: MouseEvent) {
@@ -205,7 +204,6 @@ export namespace Controller {
       }
     }
     lastMoveLocation = pressWorldLocation.clone();
-
   }
 
   function handleMousemove(x: number, y: number) {
@@ -392,7 +390,6 @@ export namespace Controller {
       pressingKeySet.delete(key);
     }
     setCursorName("default");
-    
   }
 
   function touchstart(e: TouchEvent) {
@@ -468,17 +465,17 @@ export namespace Controller {
   export function destroy() {
     window.removeEventListener("keydown", keydown);
     window.removeEventListener("keyup", keyup);
-    canvasElement?.removeEventListener("mousedown", mousedown);
-    canvasElement?.removeEventListener("mousemove", mousemove);
-    canvasElement?.removeEventListener("mouseup", mouseup);
-    canvasElement?.removeEventListener("touchstart", touchstart);
-    canvasElement?.removeEventListener("touchmove", touchmove);
-    canvasElement?.removeEventListener("touchend", touchend);
-    ControllerCamera.destroy(canvasElement!);
-    ControllerNodeRotation.destroy(canvasElement!);
-    ControllerNodeConnection.destroy(canvasElement!);
-    ControllerCutting.destroy(canvasElement!);
-    ControllerNodeMove.destroy(canvasElement!);
+    Canvas.element.removeEventListener("mousedown", mousedown);
+    Canvas.element.removeEventListener("mousemove", mousemove);
+    Canvas.element.removeEventListener("mouseup", mouseup);
+    Canvas.element.removeEventListener("touchstart", touchstart);
+    Canvas.element.removeEventListener("touchmove", touchmove);
+    Canvas.element.removeEventListener("touchend", touchend);
+    ControllerCamera.destroy();
+    ControllerNodeRotation.destroy();
+    ControllerNodeConnection.destroy();
+    ControllerCutting.destroy();
+    ControllerNodeMove.destroy();
     console.log("Controller destroyed.");
   }
 }

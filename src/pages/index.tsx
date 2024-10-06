@@ -34,7 +34,7 @@ export default function Home() {
     if (canvasElement) {
       Canvas.init(canvasElement);
       Renderer.resizeWindow(window.innerWidth, window.innerHeight);
-      Controller.init(canvasElement);
+      Controller.init();
       Controller.setCursorName = setCursorName;
     } else {
       dialog.show({

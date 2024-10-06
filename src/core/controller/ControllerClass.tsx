@@ -1,3 +1,4 @@
+import { Canvas } from "../Canvas";
 import { Vector } from "../Vector";
 
 /**
@@ -17,23 +18,23 @@ export class ControllerClass {
   public mousewheel: (event: WheelEvent) => void = (_: WheelEvent) => {};
   public mouseDoubleClick: (event: MouseEvent) => void = (_: MouseEvent) => {};
 
-  public init(canvasElement: HTMLCanvasElement) {
+  public init() {
     window.addEventListener("keydown", this.keydown);
     window.addEventListener("keyup", this.keyup);
-    canvasElement.addEventListener("mousedown", this.mousedown);
-    canvasElement.addEventListener("mouseup", this.mouseup);
-    canvasElement.addEventListener("mousemove", this.mousemove);
-    canvasElement.addEventListener("wheel", this.mousewheel);
-    canvasElement.addEventListener("dblclick", this.mouseDoubleClick);
+    Canvas.element.addEventListener("mousedown", this.mousedown);
+    Canvas.element.addEventListener("mouseup", this.mouseup);
+    Canvas.element.addEventListener("mousemove", this.mousemove);
+    Canvas.element.addEventListener("wheel", this.mousewheel);
+    Canvas.element.addEventListener("dblclick", this.mouseDoubleClick);
   }
-  public destroy(canvasElement: HTMLCanvasElement) {
+  public destroy() {
     window.removeEventListener("keydown", this.keydown);
     window.removeEventListener("keyup", this.keyup);
-    canvasElement.removeEventListener("mousedown", this.mousedown);
-    canvasElement.removeEventListener("mouseup", this.mouseup);
-    canvasElement.removeEventListener("mousemove", this.mousemove);
-    canvasElement.removeEventListener("wheel", this.mousewheel);
-    canvasElement.removeEventListener("dblclick", this.mouseDoubleClick);
+    Canvas.element.removeEventListener("mousedown", this.mousedown);
+    Canvas.element.removeEventListener("mouseup", this.mouseup);
+    Canvas.element.removeEventListener("mousemove", this.mousemove);
+    Canvas.element.removeEventListener("wheel", this.mousewheel);
+    Canvas.element.removeEventListener("dblclick", this.mouseDoubleClick);
     console.log(this.lastMoveLocation);
     this.lastMoveLocation = Vector.getZero();
   }
