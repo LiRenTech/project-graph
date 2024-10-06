@@ -8,6 +8,8 @@ import { StageNodeRotate } from "./concreteMethods/stageNodeRotate";
 import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
+import { StageNodeMoveManager } from "./concreteMethods/StageNodeMoveManager";
+import { StageNodeColorManager } from "./concreteMethods/StageNodeColorManager";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -140,28 +142,15 @@ export namespace StageManager {
    * @param delta
    */
   export function moveNodes(delta: Vector) {
-    for (const node of nodes) {
-      if (node.isSelected) {
-        node.move(delta);
-      }
-    }
+    StageNodeMoveManager.moveNodes(delta);
   }
 
   export function setNodeColor(color: Color) {
-    for (const node of nodes) {
-      if (node.isSelected) {
-        node.isColorSetByUser = true;
-        node.userColor = color;
-      }
-    }
+    StageNodeColorManager.setNodeColor(color);
   }
 
   export function clearNodeColor() {
-    for (const node of nodes) {
-      if (node.isSelected) {
-        node.isColorSetByUser = false;
-      }
-    }
+    StageNodeColorManager.clearNodeColor();
   }
 
   export function moveNodeFinished() {
