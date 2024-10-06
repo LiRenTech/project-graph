@@ -7,7 +7,6 @@ import { Stage } from "../stage/Stage";
 import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
 import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";
-import { Rectangle } from "../Rectangle";
 import { LineEffect } from "../effect/concrete/LineEffect";
 import { ControllerCamera } from "./concrete/ControllerCamera";
 import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
@@ -15,6 +14,7 @@ import { ControllerNodeConnection } from "./concrete/ControllerNodeConnection";
 import { ControllerCutting } from "./concrete/ControllerCutting";
 import { ControllerNodeMove } from "./concrete/ControllerNodeMove";
 import { Canvas } from "../Canvas";
+import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -119,6 +119,7 @@ export namespace Controller {
     ControllerNodeConnection.init();
     ControllerCutting.init();
     ControllerNodeMove.init();
+    ControllerRectangleSelect.init();
   }
 
   function mousedown(event: MouseEvent) {
@@ -140,8 +141,6 @@ export namespace Controller {
     isMouseDown[button] = true;
 
     const pressWorldLocation = Renderer.transformView2World(new Vector(x, y));
-    const clickedNode = NodeManager.findNodeByLocation(pressWorldLocation);
-    const clickedEdge = NodeManager.findEdgeByLocation(pressWorldLocation);
 
     // 获取左右中键
     lastMousePressLocation[button] = pressWorldLocation;
@@ -149,53 +148,6 @@ export namespace Controller {
       if (pressingKeySet.has("`")) {
         lastMoveLocation = pressWorldLocation.clone();
         return;
-      }
-      /**
-       * 可能的情况
-       *  ------------ | 已有对象被选择 | 没有对象被选择
-       *  在空白地方按下 |      A       |      B
-       *  在节点身上按下 |    C1,C2     |      D
-       *  在连线身上按下 |    E1,E2     |      F
-       *  ------------ |  ------------ |  ------------
-       * A：取消选择那些节点，可能要重新开始框选
-       * B：可能是想开始框选
-       * C：
-       *    C1: 如果点击的节点属于被上次选中的节点中，那么整体移动，（如果还按下了Alt键，开始整体复制）
-       *    C2: 如果点击的节点不属于被上次选中的节点中，那么单击选择，并取消上一次框选的所有节点
-       * D：只想单击这一个节点，或者按下Alt键的时候，想复制这个节点
-       *
-       * 更新被选中的节点，如果没有选中节点就开始框选
-       */
-      const isHaveNodeSelected = NodeManager.nodes.some(
-        (node) => node.isSelected,
-      );
-      // 左键按下
-      if (clickedNode === null) {
-        if (isHaveNodeSelected) {
-          // A
-          if (pressingKeySet.has("shift") || pressingKeySet.has("control")) {
-            // 不取消选择
-          } else {
-            // 取消选择所有节点
-            NodeManager.nodes.forEach((node) => {
-              node.isSelected = false;
-            });
-          }
-        }
-        Stage.isSelecting = true;
-        Stage.selectStartLocation = pressWorldLocation.clone();
-        Stage.selectEndLocation = pressWorldLocation.clone();
-        Stage.selectingRectangle = new Rectangle(
-          pressWorldLocation.clone(),
-          Vector.getZero(),
-        );
-      }
-      if (clickedEdge === null) {
-        // 和A一样了
-        console.log("没有连线被按下");
-      } else {
-        // 在连线身上按下
-        Stage.isSelecting = false;
       }
     }
     lastMoveLocation = pressWorldLocation.clone();
@@ -217,48 +169,6 @@ export namespace Controller {
             2,
           ),
         );
-      }
-      // 左键按下
-      if (Stage.isSelecting) {
-        // 正在框选
-        Stage.selectEndLocation = worldLocation.clone();
-
-        if (Stage.selectingRectangle) {
-          Stage.selectingRectangle = Rectangle.fromTwoPoints(
-            Stage.selectStartLocation,
-            Stage.selectEndLocation,
-          );
-
-          if (pressingKeySet.has("shift") || pressingKeySet.has("control")) {
-            // 移动过程中不先暴力清除
-          } else {
-            // 先清空所有已经选择了的
-            NodeManager.nodes.forEach((node) => {
-              node.isSelected = false;
-            });
-          }
-
-          if (pressingKeySet.has("control")) {
-            // 交叉选择，没的变有，有的变没
-            for (const node of NodeManager.nodes) {
-              if (Stage.selectingRectangle.isCollideWith(node.rectangle)) {
-                if (lastSelectedNode.has(node.uuid)) {
-                  node.isSelected = false;
-                } else {
-                  node.isSelected = true;
-                }
-              }
-            }
-          } else {
-            for (const node of NodeManager.nodes) {
-              if (Stage.selectingRectangle.isCollideWith(node.rectangle)) {
-                node.isSelected = true;
-              }
-            }
-          }
-        }
-        isMovingNode = false;
-        isMovingEdge = false;
       }
       lastMoveLocation = worldLocation.clone();
     } else if (isMouseDown[2]) {
@@ -285,18 +195,6 @@ export namespace Controller {
     lastMouseReleaseLocation[button] = Renderer.transformView2World(
       new Vector(x, y),
     );
-
-    if (button === 0) {
-      // 左键松开
-      Stage.isSelecting = false;
-      // 将所有选择到的增加到上次选择的节点中
-      lastSelectedNode = new Set();
-      for (const node of NodeManager.nodes) {
-        if (node.isSelected) {
-          lastSelectedNode.add(node.uuid);
-        }
-      }
-    }
   }
 
   function handleDblclick(button: number, x: number, y: number) {
@@ -465,6 +363,7 @@ export namespace Controller {
     ControllerNodeConnection.destroy();
     ControllerCutting.destroy();
     ControllerNodeMove.destroy();
+    ControllerRectangleSelect.destroy();
     console.log("Controller destroyed.");
   }
 }
