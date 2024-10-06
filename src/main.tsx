@@ -27,14 +27,26 @@ const Routes = () => <RouterProvider router={router} />;
 //   RecentFileManager.init();
 // }
 
-Settings.init().then(() => {
-  RecentFileManager.init().then(() => {
-    createRoot(document.getElementById("root")!).render(
-      <RecoilRoot>
-        <DialogProvider>
-          <Routes />
-        </DialogProvider>
-      </RecoilRoot>,
-    );
-  });
-});
+// Settings.init().then(() => {
+//   RecentFileManager.init().then(() => {
+//     createRoot(document.getElementById("root")!).render(
+//       <RecoilRoot>
+//         <DialogProvider>
+//           <Routes />
+//         </DialogProvider>
+//       </RecoilRoot>,
+//     );
+//   });
+// });
+
+(async () => {
+  await Settings.init();
+  await RecentFileManager.init();
+  createRoot(document.getElementById("root")!).render(
+    <RecoilRoot>
+      <DialogProvider>
+        <Routes />
+      </DialogProvider>
+    </RecoilRoot>,
+  );
+})();
