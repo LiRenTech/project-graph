@@ -3,7 +3,7 @@ import { ProgressNumber } from "../ProgressNumber";
 import { Vector } from "../Vector";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Stage } from "../stage/Stage";
-import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
+// import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
 import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";
 import { LineEffect } from "../effect/concrete/LineEffect";
@@ -16,6 +16,7 @@ import { Canvas } from "../Canvas";
 import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect";
 import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
 import { ControllerNodeCreate } from "./concrete/ControllerNodeCreate";
+import { ControllerEdgeEdit } from "./concrete/ControllerEdgeEdit";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -128,6 +129,7 @@ export namespace Controller {
     ControllerRectangleSelect.init();
     ControllerNodeEdit.init();
     ControllerNodeCreate.init();
+    ControllerEdgeEdit.init();
   }
 
   function mousedown(event: MouseEvent) {
@@ -186,7 +188,7 @@ export namespace Controller {
       Date.now() - lastClickTime < 200 &&
       lastClickLocation.distance(new Vector(x, y)) < 10
     ) {
-      handleDblclick(button, x, y);
+      //
     }
     lastClickTime = Date.now();
     lastClickLocation = new Vector(x, y);
@@ -196,36 +198,6 @@ export namespace Controller {
     );
   }
 
-  function handleDblclick(button: number, x: number, y: number) {
-    const pressLocation = Renderer.transformView2World(new Vector(x, y));
-    let clickedNode = NodeManager.findNodeByLocation(pressLocation);
-    // 如果是左键
-    if (button === 0) {
-      if (Stage.hoverEdges.length > 0) {
-        // 编辑边上的文字
-        let user_input = prompt("请输入线上的文字", Stage.hoverEdges[0].text);
-        if (user_input) {
-          for (const edge of Stage.hoverEdges) {
-            edge.rename(user_input);
-          }
-        }
-        return;
-      }
-      for (const node of NodeManager.nodes) {
-        if (node.rectangle.isPointInside(pressLocation)) {
-          Stage.effects.push(new TextRiseEffect("Node clicked: " + node.uuid));
-          clickedNode = node;
-          break;
-        }
-      }
-
-      if (clickedNode !== null) {
-        
-      } else {
-        
-      }
-    }
-  }
 
   function keydown(event: KeyboardEvent) {
     const key = event.key.toLowerCase();
@@ -334,6 +306,7 @@ export namespace Controller {
     ControllerRectangleSelect.destroy();
     ControllerNodeEdit.destroy();
     ControllerNodeCreate.destroy();
+    ControllerEdgeEdit.destroy();
     console.log("Controller destroyed.");
   }
 }
