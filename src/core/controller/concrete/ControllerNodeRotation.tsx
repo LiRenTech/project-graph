@@ -1,82 +1,9 @@
-/**
- * 存放具体的控制器实例
- */
-
-import { NodeManager } from "../NodeManager";
-import { Renderer } from "../render/canvas2d/renderer";
-import { Camera } from "../stage/Camera";
-import { Stage } from "../stage/Stage";
-import { Vector } from "../Vector";
-import { Controller } from "./Controller";
-import { ControllerClass } from "./ControllerClass";
-
-// region 摄像机
-/**
- * 摄像机控制器
- */
-export const ControllerCamera = new ControllerClass();
-
-ControllerCamera.keydown = (event: KeyboardEvent) => {
-  const key = event.key.toLowerCase();
-  if (Controller.keyMap[key]) {
-    // 当按下某一个方向的时候,相当于朝着某个方向赋予一次加速度
-    Camera.accelerateCommander = Camera.accelerateCommander
-      .add(Controller.keyMap[key])
-      .limitX(-1, 1)
-      .limitY(-1, 1);
-  }
-};
-
-ControllerCamera.keyup = (event: KeyboardEvent) => {
-  const key = event.key.toLowerCase();
-  if (Controller.keyMap[key]) {
-    // 当松开某一个方向的时候,相当于停止加速度
-    Camera.accelerateCommander = Camera.accelerateCommander
-      .subtract(Controller.keyMap[key])
-      .limitX(-1, 1)
-      .limitY(-1, 1);
-  }
-};
-function moveCameraByMouseMove(x: number, y: number, mouseIndex: number) {
-  const currentMouseMoveLocation = Renderer.transformView2World(
-    new Vector(x, y),
-  );
-  const diffLocation = currentMouseMoveLocation.subtract(
-    Controller.lastMousePressLocation[mouseIndex],
-  );
-  Camera.location = Camera.location.subtract(diffLocation);
-}
-
-// ControllerCamera.mousedown = (event: MouseEvent) => {};
-ControllerCamera.mousemove = (event: MouseEvent) => {
-  if (Controller.pressingKeySet.has(" ") && Controller.isMouseDown[0]) {
-    console.log("空格按下的同时按下了鼠标左键");
-    moveCameraByMouseMove(event.clientX, event.clientY, 0);
-    Controller.setCursorName("grabbing");
-    return;
-  }
-  if (Controller.isMouseDown[1]) {
-    moveCameraByMouseMove(event.clientX, event.clientY, 1);
-    Controller.setCursorName("grabbing");
-  }
-};
-
-ControllerCamera.mouseup = (event: MouseEvent) => {
-  if (event.button === 1) {
-    // 中键松开
-    Controller.setCursorName("default");
-  }
-};
-ControllerCamera.mousewheel = (event: WheelEvent) => {
-  if (Controller.pressingKeySet.has("control")) {
-    return;
-  }
-  if (event.deltaY > 0) {
-    Camera.targetScale *= 0.8;
-  } else {
-    Camera.targetScale *= 1.2;
-  }
-};
+import { NodeManager } from "../../NodeManager";
+import { Renderer } from "../../render/canvas2d/renderer";
+import { Stage } from "../../stage/Stage";
+import { Vector } from "../../Vector";
+import { Controller } from "../Controller";
+import { ControllerClass } from "../ControllerClass";
 
 // region 旋转节点
 export const ControllerNodeRotation = new ControllerClass();
@@ -166,7 +93,12 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
     // 看看鼠标当前的位置是否和线接近
     Stage.hoverEdges = [];
     for (const edge of NodeManager.edges) {
-      if (edge.bodyLine.isPointNearLine(worldLocation, Controller.edgeHoverTolerance)) {
+      if (
+        edge.bodyLine.isPointNearLine(
+          worldLocation,
+          Controller.edgeHoverTolerance,
+        )
+      ) {
         Stage.hoverEdges.push(edge);
       }
     }

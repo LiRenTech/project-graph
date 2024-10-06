@@ -11,7 +11,8 @@ import { Rectangle } from "../Rectangle";
 import { LineCuttingEffect } from "../effect/concrete/LineCuttingEffect";
 import { Line } from "../Line";
 import { LineEffect } from "../effect/concrete/LineEffect";
-import { ControllerCamera, ControllerNodeRotation } from "./ControllerConcrete";
+import { ControllerCamera } from "./concrete/ControllerCamera";
+import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
 
 /**
  * 控制器，控制鼠标、键盘事件
