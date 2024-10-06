@@ -3,7 +3,7 @@ import { Node } from "../Node";
 import { StageManager } from "./stageManager/StageManager";
 
 /**
- * 转化为序列化JSON对象
+ * 将舞台信息转化为序列化JSON对象
  */
 export namespace StageDumper {
   export function dumpNodeToV3(node: Node): Record<string, any> {

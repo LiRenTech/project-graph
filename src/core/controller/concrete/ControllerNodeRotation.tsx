@@ -5,7 +5,11 @@ import { Vector } from "../../dataStruct/Vector";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
-// region 旋转节点
+/**
+ * 旋转图的节点控制器
+ * 鼠标按住Ctrl旋转节点
+ * 或者拖拽连线旋转
+ */
 export const ControllerNodeRotation = new ControllerClass();
 
 ControllerNodeRotation.mousewheel = (event: WheelEvent) => {

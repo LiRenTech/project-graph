@@ -5,7 +5,9 @@ import { Vector } from "../../dataStruct/Vector";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
-
+/**
+ * 拖拽节点使其移动的控制器
+ */
 export const ControllerNodeMove = new ControllerClass();
 
 ControllerNodeMove.mousedown = (event: MouseEvent) => {

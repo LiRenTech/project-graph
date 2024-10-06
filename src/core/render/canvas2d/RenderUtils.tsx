@@ -3,6 +3,10 @@ import { Color } from "../../dataStruct/Color";
 import { Rectangle } from "../../dataStruct/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
 
+/**
+ * 一些基础的渲染图形
+ * 注意：这些渲染的参数都是View坐标系下的。
+ */
 export namespace RenderUtils {
   /**
    * 画一个圆

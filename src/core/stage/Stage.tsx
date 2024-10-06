@@ -7,7 +7,12 @@ import { Line } from "../dataStruct/Line";
 
 /**
  * 舞台对象
- * 更广义的舞台，舞台实体全部存在manager里，但这个里面主要存一些动态的属性
+ * 更广义的舞台，
+ * 
+ * 舞台实体数据、以及舞台实体的操作方法全部存在StageManager里
+ * 由于普遍采用全局的单例模式，所以StageManager也是一个单例，它不必在这里创建
+ * 
+ * 但这个里面主要存一些动态的属性，以及特效交互等信息
  */
 export namespace Stage {
   export let effects: Effect[] = [];

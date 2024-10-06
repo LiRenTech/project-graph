@@ -119,6 +119,11 @@ export namespace StageManager {
     return null;
   }
 
+  /**
+   * 用于鼠标悬停时查找边
+   * @param location 
+   * @returns 
+   */
   export function findEdgeByLocation(location: Vector): Edge | null {
     for (const edge of edges) {
       if (
@@ -159,12 +164,12 @@ export namespace StageManager {
   }
 
   export function moveNodeFinished() {
-    // 以后有历史记录了再说，这里什么都不用写
+    // 以后有历史记录和撤销功能了再说，这里什么都不用写
     // 需要查看ts的装饰器怎么用
   }
 
   export function moveEdgeFinished() {
-    // 以后有历史记录了再说，这里什么都不用写
+    // 以后有历史记录和撤销功能了再说，这里什么都不用写
     // 需要查看ts的装饰器怎么用
   }
 

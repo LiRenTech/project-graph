@@ -5,25 +5,12 @@ import { Stage } from "../../stage/Stage";
 import { Vector } from "../../dataStruct/Vector";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-/**
- * 可能的情况
- *  ------------ | 已有对象被选择 | 没有对象被选择
- *  在空白地方按下 |      A       |      B
- *  在节点身上按下 |    C1,C2     |      D
- *  在连线身上按下 |    E1,E2     |      F
- *  ------------ |  ------------ |  ------------
- * A：取消选择那些节点，可能要重新开始框选
- * B：可能是想开始框选
- * C：
- *    C1: 如果点击的节点属于被上次选中的节点中，那么整体移动，（如果还按下了Alt键，开始整体复制）
- *    C2: 如果点击的节点不属于被上次选中的节点中，那么单击选择，并取消上一次框选的所有节点
- * D：只想单击这一个节点，或者按下Alt键的时候，想复制这个节点
- *
- * 更新被选中的节点，如果没有选中节点就开始框选
- */
+
 
 /**
  * 框选控制器
+ * 
+ * 目前只能框选节点
  */
 export const ControllerRectangleSelect = new ControllerClass();
 

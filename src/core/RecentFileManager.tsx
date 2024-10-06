@@ -9,9 +9,10 @@ import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
 import { Color } from "./dataStruct/Color";
 import { Node } from "./Node";
 import { invoke } from "@tauri-apps/api/core";
+
 /**
  * 管理最近打开的文件列表
- * 有缓存机制
+ * 有数据持久化机制
  */
 export namespace RecentFileManager {
   let store: Store;

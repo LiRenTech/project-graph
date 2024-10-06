@@ -2,7 +2,7 @@ import { Canvas } from "../stage/Canvas";
 import { Vector } from "../dataStruct/Vector";
 
 /**
- * 抽象的控制器类，用于处理事件绑定和解绑
+ * 控制器类，用于处理事件绑定和解绑
  * 每一个对象都是一个具体的功能
  */
 export class ControllerClass {

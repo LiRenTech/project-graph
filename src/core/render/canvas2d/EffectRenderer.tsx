@@ -12,6 +12,9 @@ import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "./renderer";
 import { RenderUtils } from "./RenderUtils";
 
+/**
+ * 专门编写所有的特效渲染
+ */
 export namespace EffectRenderer {
   /**
    * 圆形火光特效

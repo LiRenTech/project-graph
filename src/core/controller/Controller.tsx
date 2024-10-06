@@ -18,9 +18,8 @@ import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
 
 /**
  * 控制器，控制鼠标、键盘事件
- *
- * 想到一个点子：把每隔功能都功能拆成 mouse down,move,up 三个函数，
- * 然后再统一集成到这里。
+ * 
+ * 所有具体的控制功能逻辑都封装在控制器对象中
  */
 export namespace Controller {
   /**
@@ -106,7 +105,7 @@ export namespace Controller {
   export const edgeHoverTolerance = 10;
 
   /**
-   * 初始化函数在页面挂在的时候调用
+   * 初始化函数在页面挂在的时候调用，将事件绑定到Canvas上
    * @param Canvas.element
    */
   export function init() {

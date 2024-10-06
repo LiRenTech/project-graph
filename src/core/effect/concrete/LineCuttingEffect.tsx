@@ -6,8 +6,12 @@ import { Effect } from "../effect";
 /**
  * 线段特效
  * 直接显示全部，随着时间推移逐渐透明，但会有一个从开始到结束点的划过的特效
+ * 
+ * 0%
  * ------------------->
+ * 50%
  *          ---------->
+ * 100%
  *                   ->
  */
 export class LineCuttingEffect extends Effect {

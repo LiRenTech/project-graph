@@ -1,5 +1,10 @@
 import { createStore, Store } from "@tauri-apps/plugin-store";
 
+
+/**
+ * 设置相关的操作
+ * 有数据持久化机制
+ */
 export namespace Settings {
   let store: Store;
   export type Settings = {

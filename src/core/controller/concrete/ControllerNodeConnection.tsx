@@ -9,8 +9,19 @@ import { Vector } from "../../dataStruct/Vector";
 import { ControllerClass } from "../ControllerClass";
 import { Controller } from "../Controller";
 
+
+/**
+ * 右键连线功能 的控制器
+ * 有两节点连线，还可以触发多重连接
+ */
 export const ControllerNodeConnection = new ControllerClass();
 
+
+/**
+ * 
+ * @param event 
+ * @returns 
+ */
 ControllerNodeConnection.mousedown = (event: MouseEvent) => {
   if (event.button !== 2) {
     return;

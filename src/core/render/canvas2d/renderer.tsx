@@ -188,6 +188,10 @@ export namespace Renderer {
     //   2,
     // );
   }
+
+  /**
+   * 渲染和纯键盘操作相关的功能
+   */
   function renderKeyboardOnly() {
     if (Stage.isVirtualNewNodeShow) {
       for (const node of StageManager.nodes) {

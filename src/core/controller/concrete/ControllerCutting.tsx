@@ -10,6 +10,10 @@ import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { Line } from "../../dataStruct/Line";
 
+/**
+ * 关于斩断线的控制器
+ * 可以删除节点 也可以切断边
+ */
 export const ControllerCutting = new ControllerClass();
 
 ControllerCutting.mousedown = (event: MouseEvent) => {

@@ -8,7 +8,7 @@ import { Vector } from "../../dataStruct/Vector";
 import { ControllerClass } from "../ControllerClass";
 
 /**
- * 创建节点
+ * 创建节点的控制器
  */
 export const ControllerNodeCreate = new ControllerClass();
 

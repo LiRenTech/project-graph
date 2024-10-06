@@ -13,31 +13,7 @@ console.log("Hello, world!");
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
 
-// const currentPlatform = await platform();
-// console.log(currentPlatform);
-
-// if (currentPlatform === "windows") {
-//   await Settings.init();
-//   await RecentFileManager.init();
-// } else {
-//   // 2024/10/5 发现这里Linux 系统下，await会导致整个页面无法渲染，原因未知
-//   // Linux
-//   // Android, iOS 也可能是这样的
-//   Settings.init();
-//   RecentFileManager.init();
-// }
-
-// Settings.init().then(() => {
-//   RecentFileManager.init().then(() => {
-//     createRoot(document.getElementById("root")!).render(
-//       <RecoilRoot>
-//         <DialogProvider>
-//           <Routes />
-//         </DialogProvider>
-//       </RecoilRoot>,
-//     );
-//   });
-// });
+// 2024/10/5 发现这里Linux 系统下，await不能直接写在最外层，会导致整个页面无法渲染，原因未知
 
 (async () => {
   await Settings.init();
