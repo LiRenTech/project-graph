@@ -49,8 +49,10 @@ export namespace Settings {
     store = await createStore("settings.json");
   }
 
-  export function get<K extends keyof Settings>(key: K) {
-    return store.get<Settings[K]>(key) || defaultSettings[key];
+  export async function get<K extends keyof Settings>(
+    key: K,
+  ): Promise<Settings[K]> {
+    return (await store.get<Settings[K]>(key)) || defaultSettings[key];
   }
 
   export function set<K extends keyof Settings>(key: K, value: Settings[K]) {
