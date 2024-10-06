@@ -13,6 +13,7 @@ import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
 import { ControllerNodeCreate } from "./concrete/ControllerNodeCreate";
 import { ControllerEdgeEdit } from "./concrete/ControllerEdgeEdit";
 import { ControllerDrawing } from "./concrete/ControllerDrawing";
+import { ControllerDragFile } from "./concrete/ControllerDragFile";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -128,6 +129,7 @@ export namespace Controller {
     ControllerNodeCreate.init();
     ControllerEdgeEdit.init();
     ControllerDrawing.init();
+    ControllerDragFile.init();
   }
 
   // 以下事件处理函数仅为Controller总控制器修改重要属性使用。不涉及具体的功能逻辑。
@@ -272,6 +274,7 @@ export namespace Controller {
     ControllerNodeCreate.destroy();
     ControllerEdgeEdit.destroy();
     ControllerDrawing.destroy();
+    ControllerDragFile.destroy();
     console.log("Controller destroyed.");
   }
 }

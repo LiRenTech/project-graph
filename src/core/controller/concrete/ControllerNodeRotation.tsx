@@ -70,7 +70,6 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
   if (Stage.isSelecting || Stage.isCutting) {
     return;
   }
-  console.log("在连线身上移动");
   const worldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
