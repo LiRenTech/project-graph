@@ -1,6 +1,6 @@
 import { Vector } from "../dataStruct/Vector";
 import { Renderer } from "../render/canvas2d/renderer";
-import { StageManager } from "../stage/StageManager";
+import { StageManager } from "../stage/stageManager/StageManager";
 import { Camera } from "../stage/Camera";
 import { ControllerCamera } from "./concrete/ControllerCamera";
 import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";

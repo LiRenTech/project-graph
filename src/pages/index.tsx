@@ -4,7 +4,7 @@ import { useDialog } from "../utils/dialog";
 import { Stage } from "../core/stage/Stage";
 import { Controller } from "../core/controller/Controller";
 import { Canvas } from "../core/stage/Canvas";
-import { StageManager } from "../core/stage/StageManager";
+import { StageManager } from "../core/stage/stageManager/StageManager";
 import React from "react";
 import Toolbar from "./_toolbar";
 import { Settings } from "../core/Settings";

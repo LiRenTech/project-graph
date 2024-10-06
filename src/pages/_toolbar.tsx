@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Color } from "../core/dataStruct/Color";
-import { StageManager } from "../core/stage/StageManager";
+import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
 // https://lucide.dev/icons
 import {

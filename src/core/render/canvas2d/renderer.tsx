@@ -5,7 +5,7 @@ import { RenderUtils } from "./RenderUtils";
 import { EffectRenderer } from "./EffectRenderer";
 import { Canvas } from "../../stage/Canvas";
 import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
-import { StageManager } from "../../stage/StageManager";
+import { StageManager } from "../../stage/stageManager/StageManager";
 import { appScale } from "../../../utils/platform";
 import { Rectangle } from "../../dataStruct/Rectangle";
 import { Camera } from "../../stage/Camera";

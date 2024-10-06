@@ -1,5 +1,5 @@
 import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
-import { StageManager } from "./StageManager";
+import { StageManager } from "./stageManager/StageManager";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Vector } from "../dataStruct/Vector";
 import { Stage } from "./Stage";

@@ -23,7 +23,7 @@ import {
 } from "@tauri-apps/plugin-dialog";
 import { useDialog } from "../utils/dialog";
 import { isDesktop } from "../utils/platform";
-import { StageManager } from "../core/stage/StageManager";
+import { StageManager } from "../core/stage/stageManager/StageManager";
 import { useRecoilState } from "recoil";
 import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
 import { Camera } from "../core/stage/Camera";

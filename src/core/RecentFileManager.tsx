@@ -1,12 +1,7 @@
-/**
- * 管理最近打开的文件列表
- * 有缓存机制
- */
-
 import { createStore, Store } from "@tauri-apps/plugin-store";
 // import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
 import { StageLoader } from "./stage/StageLoader";
-import { StageManager } from "./stage/StageManager";
+import { StageManager } from "./stage/stageManager/StageManager";
 import { Edge } from "./Edge";
 import { Camera } from "./stage/Camera";
 import { Stage } from "./stage/Stage";
@@ -14,7 +9,10 @@ import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
 import { Color } from "./dataStruct/Color";
 import { Node } from "./Node";
 import { invoke } from "@tauri-apps/api/core";
-
+/**
+ * 管理最近打开的文件列表
+ * 有缓存机制
+ */
 export namespace RecentFileManager {
   let store: Store;
 

@@ -1,4 +1,4 @@
-import { StageManager } from "../../stage/StageManager";
+import { StageManager } from "../../stage/stageManager/StageManager";
 import { Rectangle } from "../../dataStruct/Rectangle";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";

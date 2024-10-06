@@ -1,6 +1,6 @@
 import { Edge } from "../Edge";
 import { Node } from "../Node";
-import { StageManager } from "./StageManager";
+import { StageManager } from "./stageManager/StageManager";
 
 /**
  * 转化为序列化JSON对象
