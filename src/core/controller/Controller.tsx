@@ -8,8 +8,6 @@ import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
 import { NodeManager } from "../NodeManager";
 import { Camera } from "../stage/Camera";
 import { Rectangle } from "../Rectangle";
-// import { LineCuttingEffect } from "../effect/concrete/LineCuttingEffect";
-// import { Line } from "../Line";
 import { LineEffect } from "../effect/concrete/LineEffect";
 import { ControllerCamera } from "./concrete/ControllerCamera";
 import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
@@ -171,9 +169,6 @@ export namespace Controller {
       const isHaveNodeSelected = NodeManager.nodes.some(
         (node) => node.isSelected,
       );
-      // const isHaveEdgeSelected = NodeManager.edges.some(
-      //   (edge) => edge.isSelected,
-      // );
       // 左键按下
       if (clickedNode === null) {
         if (isHaveNodeSelected) {
