@@ -1,5 +1,4 @@
 import { Color } from "../Color";
-import { CircleFlameEffect } from "../effect/concrete/CircleFlameEffect";
 import { ProgressNumber } from "../ProgressNumber";
 import { Vector } from "../Vector";
 import { Renderer } from "../render/canvas2d/renderer";
@@ -16,6 +15,7 @@ import { ControllerNodeMove } from "./concrete/ControllerNodeMove";
 import { Canvas } from "../Canvas";
 import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect";
 import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
+import { ControllerNodeCreate } from "./concrete/ControllerNodeCreate";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -127,6 +127,7 @@ export namespace Controller {
     ControllerNodeMove.init();
     ControllerRectangleSelect.init();
     ControllerNodeEdit.init();
+    ControllerNodeCreate.init();
   }
 
   function mousedown(event: MouseEvent) {
@@ -221,18 +222,7 @@ export namespace Controller {
       if (clickedNode !== null) {
         
       } else {
-        // 新建节点
-        NodeManager.addNodeByClick(
-          Renderer.transformView2World(new Vector(x, y)),
-        );
-        Stage.effects.push(
-          new CircleFlameEffect(
-            new ProgressNumber(0, 40),
-            Renderer.transformView2World(new Vector(x, y)),
-            100,
-            new Color(0, 255, 0, 1),
-          ),
-        );
+        
       }
     }
   }
@@ -343,6 +333,7 @@ export namespace Controller {
     ControllerNodeMove.destroy();
     ControllerRectangleSelect.destroy();
     ControllerNodeEdit.destroy();
+    ControllerNodeCreate.destroy();
     console.log("Controller destroyed.");
   }
 }
