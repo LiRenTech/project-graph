@@ -31,6 +31,7 @@ fn check_json_exist(path: String) -> bool {
     std::path::Path::new(&path).exists()
 }
 
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()

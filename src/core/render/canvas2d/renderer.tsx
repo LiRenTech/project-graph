@@ -164,6 +164,8 @@ export namespace Renderer {
         }
       }
     }
+    // 纯键盘操作相关的
+    renderKeyboardOnly();
 
     // 画详细信息
     renderDetails();
@@ -185,6 +187,20 @@ export namespace Renderer {
     //   new Color(255, 255, 255, 0.5),
     //   2,
     // );
+  }
+  function renderKeyboardOnly() {
+    if (Stage.isVirtualNewNodeShow) {
+      for (const node of StageManager.nodes) {
+        if (node.isSelected) {
+          RenderUtils.renderSolidLine(
+            transformWorld2View(node.rectangle.center),
+            transformWorld2View(Stage.keyOnlyVirtualNewLocation),
+            Color.White,
+            2,
+          );
+        }
+      }
+    }
   }
 
   function colorInvert(color: Color): Color {

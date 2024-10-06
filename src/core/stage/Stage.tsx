@@ -57,6 +57,15 @@ export namespace Stage {
   export let hoverEdges: Edge[] = [];
 
   /**
+   * 键盘操作的生长新节点是否显示
+   */
+  export let isVirtualNewNodeShow = false;
+  /**
+   * 键盘操作的生长新节点的位置
+   */
+  export let keyOnlyVirtualNewLocation = Vector.getZero();
+
+  /**
    * 逻辑总入口
    */
   export function logicTick() {

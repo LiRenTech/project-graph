@@ -85,7 +85,14 @@ export default function Home() {
   return (
     <>
       <Toolbar />
-      <span className="fixed bottom-0 left-0 ring">FPS={fps.toFixed()}</span>
+      <span
+        className="fixed bottom-0 left-0 ring cursor-pointer"
+        onClick={() => {
+          window.location.reload();
+        }}
+      >
+        FPS={fps.toFixed()}
+      </span>
       <canvas ref={canvasRef} className={`cursor-${cursorName}`} />
     </>
   );

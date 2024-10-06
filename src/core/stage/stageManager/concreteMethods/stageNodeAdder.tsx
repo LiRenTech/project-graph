@@ -9,9 +9,10 @@ import { v4 as uuidv4 } from "uuid";
  * 也有可能是用键盘增加，涉及快捷键和自动寻找空地
  */
 export namespace StageNodeAdder {
-  export function addNodeByClick(clickWorldLocation: Vector) {
+  export function addNodeByClick(clickWorldLocation: Vector): string {
+    const newUUID = uuidv4();
     const node = new Node({
-      uuid: uuidv4(),
+      uuid: newUUID,
       text: "...",
       details: "",
       children: [],
@@ -26,5 +27,6 @@ export namespace StageNodeAdder {
       node.rectangle.size.divide(2),
     );
     StageManager.addNode(node);
+    return newUUID;
   }
 }

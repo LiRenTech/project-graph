@@ -133,8 +133,13 @@ export namespace StageManager {
   // region 以下为舞台操作相关的函数
   // 建议不同的功能分类到具体的文件中，然后最后集中到这里调用，使得下面的显示简短一些
 
-  export function addNodeByClick(clickWorldLocation: Vector) {
-    StageNodeAdder.addNodeByClick(clickWorldLocation);
+  /**
+   * 
+   * @param clickWorldLocation 
+   * @returns 返回新创建节点的uuid
+   */
+  export function addNodeByClick(clickWorldLocation: Vector): string {
+    return StageNodeAdder.addNodeByClick(clickWorldLocation);
   }
 
   /**
