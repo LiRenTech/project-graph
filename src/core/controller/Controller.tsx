@@ -15,6 +15,7 @@ import { ControllerCamera } from "./concrete/ControllerCamera";
 import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
 import { ControllerNodeConnection } from "./concrete/ControllerNodeConnection";
 import { ControllerCutting } from "./concrete/ControllerCutting";
+import { ControllerNodeMove } from "./concrete/ControllerNodeMove";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -113,7 +114,6 @@ export namespace Controller {
     canvasElement.addEventListener("mousedown", mousedown);
     canvasElement.addEventListener("mousemove", mousemove);
     canvasElement.addEventListener("mouseup", mouseup);
-    canvasElement.addEventListener("wheel", mousewheel);
     canvasElement.addEventListener("touchstart", touchstart, false);
     canvasElement.addEventListener("touchmove", touchmove, false);
     canvasElement.addEventListener("touchend", touchend, false);
@@ -121,6 +121,7 @@ export namespace Controller {
     ControllerNodeRotation.init(canvasElement);
     ControllerNodeConnection.init(canvasElement);
     ControllerCutting.init(canvasElement);
+    ControllerNodeMove.init(canvasElement);
   }
 
   function mousedown(event: MouseEvent) {
@@ -194,25 +195,6 @@ export namespace Controller {
           pressWorldLocation.clone(),
           Vector.getZero(),
         );
-      } else {
-        if (isHaveNodeSelected) {
-          // C
-
-          if (clickedNode.isSelected) {
-            // C1
-          } else {
-            // C2
-            NodeManager.nodes.forEach((node) => {
-              node.isSelected = false;
-            });
-          }
-          clickedNode.isSelected = true;
-          isMovingNode = true;
-        } else {
-          // D
-          clickedNode.isSelected = true;
-          isMovingNode = true;
-        }
       }
       if (clickedEdge === null) {
         // 和A一样了
@@ -221,10 +203,6 @@ export namespace Controller {
         // 在连线身上按下
         Stage.isSelecting = false;
       }
-    } else if (button === 1) {
-      // 中键按下
-    } else if (button === 2) {
-      // 右键按下
     }
     lastMoveLocation = pressWorldLocation.clone();
 
@@ -288,32 +266,11 @@ export namespace Controller {
         }
         isMovingNode = false;
         isMovingEdge = false;
-      } else {
-        // 非框选，要么是在移动节点，要么是在移动连线
-        // 判断依据就是是否有选中的节点
-        const diffLocation = worldLocation.subtract(lastMoveLocation);
-
-        if (NodeManager.nodes.some((node) => node.isSelected)) {
-          // 移动节点
-          isMovingNode = true;
-          if (pressingKeySet.has("alt")) {
-          } else {
-            if (pressingKeySet.has("control")) {
-            } else {
-              NodeManager.moveNodes(diffLocation);
-            }
-          }
-        }
       }
       lastMoveLocation = worldLocation.clone();
     } else if (isMouseDown[2]) {
       // 右键按下
       lastMoveLocation = worldLocation.clone();
-      if (Stage.isCutting) {
-
-      } else {
-        
-      }
     }
     if (pressingKeySet.has("`")) {
       // 迭代笔位置
@@ -336,11 +293,6 @@ export namespace Controller {
       new Vector(x, y),
     );
 
-    if (isMovingNode) {
-      NodeManager.moveNodeFinished();
-      isMovingNode = false;
-    }
-
     if (button === 0) {
       // 左键松开
       Stage.isSelecting = false;
@@ -351,21 +303,7 @@ export namespace Controller {
           lastSelectedNode.add(node.uuid);
         }
       }
-    } else if (button === 2) {
-      // 右键松开
-
-      if (Stage.isCutting) {
-
-      }
     }
-
-    if (Stage.isCutting) {
-      // 结束切断线
-      Stage.isCutting = false;
-    }
-  }
-
-  function mousewheel(_: WheelEvent) {
   }
 
   function handleDblclick(button: number, x: number, y: number) {
@@ -443,10 +381,7 @@ export namespace Controller {
       NodeManager.deleteNodes(
         NodeManager.nodes.filter((node) => node.isSelected),
       );
-    } else if (key === "enter") {
-      // 开始编辑选中的连线
     }
-    
   }
 
   function keyup(event: KeyboardEvent) {
@@ -481,6 +416,7 @@ export namespace Controller {
     e.preventDefault();
 
     if (e.touches.length === 1) {
+      // HACK: 重构后这里就有问题了
       handleMousemove(e.touches[0].clientX, e.touches[0].clientY);
     }
     if (e.touches.length === 2) {
@@ -510,6 +446,7 @@ export namespace Controller {
   function touchend(e: TouchEvent) {
     e.preventDefault();
     if (e.changedTouches.length === 1) {
+      // HACK: 重构后这里就有问题了
       handleMouseup(
         0,
         e.changedTouches[0].clientX,
@@ -534,7 +471,6 @@ export namespace Controller {
     canvasElement?.removeEventListener("mousedown", mousedown);
     canvasElement?.removeEventListener("mousemove", mousemove);
     canvasElement?.removeEventListener("mouseup", mouseup);
-    canvasElement?.removeEventListener("wheel", mousewheel);
     canvasElement?.removeEventListener("touchstart", touchstart);
     canvasElement?.removeEventListener("touchmove", touchmove);
     canvasElement?.removeEventListener("touchend", touchend);
@@ -542,6 +478,7 @@ export namespace Controller {
     ControllerNodeRotation.destroy(canvasElement!);
     ControllerNodeConnection.destroy(canvasElement!);
     ControllerCutting.destroy(canvasElement!);
+    ControllerNodeMove.destroy(canvasElement!);
     console.log("Controller destroyed.");
   }
 }

@@ -59,6 +59,11 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
   if (event.button !== 2) {
     return;
   }
+  if (!Stage.isCutting) {
+    return;
+  }
+  Stage.isCutting = false;
+  
   NodeManager.deleteNodes(Stage.warningNodes);
   Stage.warningNodes = [];
 
