@@ -369,13 +369,8 @@ export namespace Controller {
   function keydown(event: KeyboardEvent) {
     const key = event.key.toLowerCase();
     pressingKeySet.add(key);
-    if (key === "s" && pressingKeySet.has("control")) {
-      // 保存
-      console.log("Save");
-    }
-    if (key === " ") {
-      setCursorName("grab");
-    } else if (key === "delete") {
+    // 删除功能代码量太小了，暂时先直接写在这里
+    if (key === "delete") {
       NodeManager.deleteNodes(
         NodeManager.nodes.filter((node) => node.isSelected),
       );
@@ -389,7 +384,6 @@ export namespace Controller {
     } else {
       pressingKeySet.delete(key);
     }
-    setCursorName("default");
   }
 
   function touchstart(e: TouchEvent) {

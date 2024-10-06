@@ -23,6 +23,9 @@ ControllerCamera.keydown = (event: KeyboardEvent) => {
       .limitX(-1, 1)
       .limitY(-1, 1);
   }
+  if (key === " ") {
+    Controller.setCursorName("grab");
+  }
 };
 
 ControllerCamera.keyup = (event: KeyboardEvent) => {
@@ -33,6 +36,9 @@ ControllerCamera.keyup = (event: KeyboardEvent) => {
       .subtract(Controller.keyMap[key])
       .limitX(-1, 1)
       .limitY(-1, 1);
+  }
+  if (key === " ") {
+    Controller.setCursorName("default");
   }
 };
 
