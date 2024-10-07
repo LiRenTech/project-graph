@@ -155,6 +155,10 @@ export namespace StageManager {
     StageNodeMoveManager.moveNodes(delta);
   }
 
+  export function moveNodesWithChildren(delta: Vector) {
+    StageNodeMoveManager.moveNodesWithChildren(delta);
+  }
+
   export function setNodeColor(color: Color) {
     StageNodeColorManager.setNodeColor(color);
   }

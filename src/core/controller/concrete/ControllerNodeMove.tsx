@@ -18,12 +18,10 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const isHaveNodeSelected = StageManager.nodes.some(
-    (node) => node.isSelected,
-  );
+  const isHaveNodeSelected = StageManager.nodes.some((node) => node.isSelected);
   ControllerNodeMove.lastMoveLocation = pressWorldLocation.clone();
   const clickedNode = StageManager.findNodeByLocation(pressWorldLocation);
-  
+
   if (clickedNode) {
     Controller.isMovingNode = true;
     if (isHaveNodeSelected) {
@@ -42,8 +40,6 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
       clickedNode.isSelected = true;
     }
   }
-
-
 };
 
 ControllerNodeMove.mousemove = (event: MouseEvent) => {
@@ -56,7 +52,9 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
   const worldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const diffLocation = worldLocation.subtract(ControllerNodeMove.lastMoveLocation);
+  const diffLocation = worldLocation.subtract(
+    ControllerNodeMove.lastMoveLocation,
+  );
 
   if (StageManager.nodes.some((node) => node.isSelected)) {
     // 移动节点
@@ -64,13 +62,14 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
     if (Controller.pressingKeySet.has("alt")) {
     } else {
       if (Controller.pressingKeySet.has("control")) {
+        // 和子节点一起移动
+        StageManager.moveNodesWithChildren(diffLocation);
       } else {
         StageManager.moveNodes(diffLocation);
       }
     }
     ControllerNodeMove.lastMoveLocation = worldLocation.clone();
   }
-  
 };
 
 ControllerNodeMove.mouseup = (event: MouseEvent) => {

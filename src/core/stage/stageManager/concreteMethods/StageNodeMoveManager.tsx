@@ -19,5 +19,13 @@ export namespace StageNodeMoveManager {
     }
   }
 
+  export function moveNodesWithChildren(delta: Vector) {
+    for (const node of StageManager.nodes) {
+      if (node.isSelected) {
+        node.moveWithChildren(delta);
+      }
+    }
+  }
+
   // 按住shift键移动
 }

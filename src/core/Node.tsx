@@ -70,6 +70,21 @@ export class Node {
     this.rectangle.location = this.rectangle.location.add(delta);
   }
 
+  moveWithChildren(delta: Vector) {
+    this.moveWithChildrenDfs(this, delta, [this.uuid]);
+  }
+
+  private moveWithChildrenDfs(node: Node, delta: Vector, visitedUUIDs: string[]) {
+    node.move(delta);
+    for (const child of node.children) {
+      if (visitedUUIDs.includes(child.uuid)) {
+        continue;
+      }
+      visitedUUIDs.push(child.uuid);
+      this.moveWithChildrenDfs(child, delta, visitedUUIDs);
+    }
+  }
+
   moveTo(location: Vector) {
     this.rectangle.location = location.clone();
   }
