@@ -8,6 +8,7 @@ import { StageManager } from "../core/stage/stageManager/StageManager";
 import React from "react";
 import Toolbar from "./_toolbar";
 import { Settings } from "../core/Settings";
+import { invoke } from "@tauri-apps/api/core";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);
@@ -86,9 +87,10 @@ export default function Home() {
     <>
       <Toolbar />
       <span
-        className="fixed bottom-0 left-0 ring cursor-pointer"
+        className="fixed bottom-0 left-0 cursor-pointer ring"
         onClick={() => {
           window.location.reload();
+          invoke<string>("save_json_by_path");
         }}
       >
         FPS={fps.toFixed()}

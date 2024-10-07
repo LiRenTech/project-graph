@@ -4,15 +4,24 @@ import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { ControllerClass } from "../ControllerClass";
 import { Node } from "../../Node";
+import { editNode } from "./utilsControl";
 
 /**
  * 纯键盘操作的控制器
  *
- * 这个功能的理想是：解决右手不停的在键盘和鼠标上来回切换的麻烦，只用键盘操作就能完成所有操作。
+ * 这个功能的理想是：解决右手不停的在键盘和鼠标上来回切换的麻烦，只用键盘操作就能完成几乎所有操作。
  */
 export const ControllerKeyboardOnly = new ControllerClass();
 
-const validKeys = ["tab", "arrowup", "arrowdown", "arrowleft", "arrowright"];
+const validKeys = [
+  "tab",
+  "arrowup",
+  "arrowdown",
+  "arrowleft",
+  "arrowright",
+  "enter",
+  "escape",
+];
 
 ControllerKeyboardOnly.keydown = (event: KeyboardEvent) => {
   const key = event.key.toLowerCase();
@@ -71,8 +80,48 @@ ControllerKeyboardOnly.keydown = (event: KeyboardEvent) => {
         }
       }
     }
+  } else if (key === "escape") {
+    if (Stage.isVirtualNewNodeShow) {
+      Stage.isVirtualNewNodeShow = false;
+    }
+  } else if (key === "enter") {
+    // 编辑节点
+    if (selectCount === 0) {
+      // 没有选中节点
+    } else if (selectCount > 1) {
+      // 多选中节点
+      // 只选中选中节点中的其中一个节点
+    } else {
+      const selectedNode = StageManager.nodes.find((node) => node.isSelected);
+      if (!selectedNode) return;
+      // 编辑节点
+      editNode(selectedNode);
+    }
   } else {
     // 移动框
+    if (Stage.isVirtualNewNodeShow) {
+      // 在正在准备按Tab的地方按了移动
+      // Stage.isVirtualNewNodeShow = false;
+      // 改变准备生长的方向
+      if (key === "arrowup") {
+        Stage.keyOnlyVirtualNewLocation = Stage.keyOnlyVirtualNewLocation.add(
+          new Vector(0, -100),
+        );
+      } else if (key === "arrowdown") {
+        Stage.keyOnlyVirtualNewLocation = Stage.keyOnlyVirtualNewLocation.add(
+          new Vector(0, 100),
+        );
+      } else if (key === "arrowleft") {
+        Stage.keyOnlyVirtualNewLocation = Stage.keyOnlyVirtualNewLocation.add(
+          new Vector(-100, 0),
+        );
+      } else if (key === "arrowright") {
+        Stage.keyOnlyVirtualNewLocation = Stage.keyOnlyVirtualNewLocation.add(
+          new Vector(100, 0),
+        );
+      }
+      return;
+    }
 
     if (selectCount === 0) {
       // 没有选中节点
@@ -94,56 +143,61 @@ ControllerKeyboardOnly.keydown = (event: KeyboardEvent) => {
     } else {
       // 单选中节点
       // 开始移动框选框
+      // （总是有反直觉的地方）
       const selectedNode = StageManager.nodes.find((node) => node.isSelected);
       if (!selectedNode) return;
 
       if (key === "arrowup") {
         // 在节点上方查找所有节点，并选中距离上方最近的一个
-        const nodes = StageManager.nodes
-          .filter(
+        const newSelectedNode = getMostBottomNode(
+          getRelatedNodes(selectedNode).filter(
             (node: Node) =>
               node.rectangle.center.y < selectedNode.rectangle.center.y,
-          )
-          .sort((a, b) => b.rectangle.center.y - a.rectangle.center.y);
-        if (nodes.length > 0) {
+          ),
+        );
+
+        if (newSelectedNode) {
           selectedNode.isSelected = false;
-          nodes[0].isSelected = true;
+          newSelectedNode.isSelected = true;
         }
       } else if (key === "arrowdown") {
         // 在节点下方查找所有节点，并选中距离下方最近的一个
-        const nodes = StageManager.nodes
-          .filter(
+        const newSelectedNode = getMostTopNode(
+          getRelatedNodes(selectedNode).filter(
             (node: Node) =>
               node.rectangle.center.y > selectedNode.rectangle.center.y,
-          )
-          .sort((a, b) => a.rectangle.center.y - b.rectangle.center.y);
-        if (nodes.length > 0) {
+          ),
+        );
+
+        if (newSelectedNode) {
           selectedNode.isSelected = false;
-          nodes[0].isSelected = true;
+          newSelectedNode.isSelected = true;
         }
       } else if (key === "arrowleft") {
         // 在节点左侧查找所有节点，并选中距离左侧最近的一个
-        const nodes = StageManager.nodes
-          .filter(
+        const newSelectedNode = getMostRightNode(
+          getRelatedNodes(selectedNode).filter(
             (node: Node) =>
               node.rectangle.center.x < selectedNode.rectangle.center.x,
-          )
-          .sort((a, b) => b.rectangle.center.x - a.rectangle.center.x);
-        if (nodes.length > 0) {
+          ),
+        );
+
+        if (newSelectedNode) {
           selectedNode.isSelected = false;
-          nodes[0].isSelected = true;
+          newSelectedNode.isSelected = true;
         }
       } else if (key === "arrowright") {
         // 在节点右侧查找所有节点，并选中距离右侧最近的一个
-        const nodes = StageManager.nodes
-          .filter(
+        const newSelectedNode = getMostLeftNode(
+          getRelatedNodes(selectedNode).filter(
             (node: Node) =>
               node.rectangle.center.x > selectedNode.rectangle.center.x,
-          )
-          .sort((a, b) => a.rectangle.center.x - b.rectangle.center.x);
-        if (nodes.length > 0) {
+          ),
+        );
+
+        if (newSelectedNode) {
           selectedNode.isSelected = false;
-          nodes[0].isSelected = true;
+          newSelectedNode.isSelected = true;
         }
       }
     }
@@ -154,3 +208,87 @@ ControllerKeyboardOnly.keyup = (event: KeyboardEvent) => {
   const key = event.key.toLowerCase();
   console.log(key);
 };
+
+/**
+ * 根据一个节点，获取其连线相关的所有节点
+ * 包括所有第一层孩子节点和第一层父亲节点
+ */
+function getRelatedNodes(node: Node): Node[] {
+  const relatedNodes: Node[] = [];
+  // 获取所有孩子节点
+  for (const edge of StageManager.edges) {
+    if (edge.source.uuid === node.uuid) {
+      const childNode = StageManager.getNodeByUUID(edge.target.uuid);
+      if (childNode) relatedNodes.push(childNode);
+    }
+  }
+
+  // 获取所有连向它的
+  for (const edge of StageManager.edges) {
+    if (edge.target.uuid === node.uuid) {
+      const fatherNode = StageManager.getNodeByUUID(edge.source.uuid);
+      if (fatherNode) relatedNodes.push(fatherNode);
+    }
+  }
+  return relatedNodes;
+}
+
+/**
+ * 获取一堆节点中，最左边的节点
+ * @param nodes
+ */
+function getMostLeftNode(nodes: Node[]): Node | null {
+  if (nodes.length === 0) return null;
+  let mostLeftNode = nodes[0];
+  for (let i = 1; i < nodes.length; i++) {
+    if (nodes[i].rectangle.center.x < mostLeftNode.rectangle.center.x) {
+      mostLeftNode = nodes[i];
+    }
+  }
+  return mostLeftNode;
+}
+
+/**
+ * 获取一堆节点中，最右边的节点
+ * @param nodes
+ */
+function getMostRightNode(nodes: Node[]): Node | null {
+  if (nodes.length === 0) return null;
+  let mostRightNode = nodes[0];
+  for (let i = 1; i < nodes.length; i++) {
+    if (nodes[i].rectangle.center.x > mostRightNode.rectangle.center.x) {
+      mostRightNode = nodes[i];
+    }
+  }
+  return mostRightNode;
+}
+
+/**
+ * 获取一堆节点中，最上边的节点
+ * @param nodes
+ */
+function getMostTopNode(nodes: Node[]): Node | null {
+  if (nodes.length === 0) return null;
+  let mostTopNode = nodes[0];
+  for (let i = 1; i < nodes.length; i++) {
+    if (nodes[i].rectangle.center.y < mostTopNode.rectangle.center.y) {
+      mostTopNode = nodes[i];
+    }
+  }
+  return mostTopNode;
+}
+
+/**
+ * 获取一堆节点中，最下边的节点
+ * @param nodes
+ */
+function getMostBottomNode(nodes: Node[]): Node | null {
+  if (nodes.length === 0) return null;
+  let mostBottomNode = nodes[0];
+  for (let i = 1; i < nodes.length; i++) {
+    if (nodes[i].rectangle.center.y > mostBottomNode.rectangle.center.y) {
+      mostBottomNode = nodes[i];
+    }
+  }
+  return mostBottomNode;
+}

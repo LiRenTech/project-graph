@@ -1,4 +1,4 @@
-// use tauri::Manager;
+use tauri::Manager;
 
 use std::io::Read;
 use std::io::Write;
@@ -31,20 +31,26 @@ fn check_json_exist(path: String) -> bool {
     std::path::Path::new(&path).exists()
 }
 
+// #[tauri::command]
+// fn open_dev_tools() {
+//     let window = app.get_webview_window("main").unwrap();
+//     window.open_devtools();
+// }
+
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_store::Builder::new().build())
-        // .setup(|app| {
-        //     #[cfg(debug_assertions)] // only include this code on debug builds
-        //     {
-        //         let window = app.get_webview_window("main").unwrap();
-        //         window.open_devtools();
-        //     }
-        //     Ok(())
-        // })
+        .setup(|app| {
+            #[cfg(debug_assertions)] // only include this code on debug builds
+            {
+                let window = app.get_webview_window("main").unwrap();
+                window.open_devtools();
+            }
+            Ok(())
+        })
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_os::init())
@@ -53,7 +59,8 @@ pub fn run() {
             greet,
             open_json_by_path,
             save_json_by_path,
-            check_json_exist
+            check_json_exist,
+            // open_dev_tools
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

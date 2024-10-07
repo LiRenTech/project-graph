@@ -169,6 +169,7 @@ export namespace Controller {
   }
 
   function keydown(event: KeyboardEvent) {
+    event.preventDefault();
     const key = event.key.toLowerCase();
     pressingKeySet.add(key);
     // 删除功能代码量太小了，暂时先直接写在这里
@@ -180,6 +181,7 @@ export namespace Controller {
   }
 
   function keyup(event: KeyboardEvent) {
+    event.preventDefault();
     const key = event.key.toLowerCase();
     if (pressingKeySet.has(key)) {
       pressingKeySet.delete(key);

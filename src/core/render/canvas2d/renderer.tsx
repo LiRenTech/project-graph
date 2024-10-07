@@ -196,12 +196,23 @@ export namespace Renderer {
     if (Stage.isVirtualNewNodeShow) {
       for (const node of StageManager.nodes) {
         if (node.isSelected) {
-          RenderUtils.renderSolidLine(
+          // 连线
+          RenderUtils.renderGradientLine(
             transformWorld2View(node.rectangle.center),
             transformWorld2View(Stage.keyOnlyVirtualNewLocation),
-            Color.White,
-            2,
+            new Color(255, 255, 255, 0),
+            new Color(255, 255, 255, 0.5),
+            1,
           );
+
+          RenderUtils.renderCircle(
+            transformWorld2View(Stage.keyOnlyVirtualNewLocation),
+            25 * Camera.currentScale,
+            Color.Transparent,
+            Color.White,
+            1
+          )
+
         }
       }
     }
