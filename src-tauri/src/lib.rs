@@ -1,4 +1,4 @@
-use tauri::Manager;
+// use tauri::Manager;
 
 use std::io::Read;
 use std::io::Write;
@@ -43,14 +43,14 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_store::Builder::new().build())
-        .setup(|app| {
-            #[cfg(debug_assertions)] // only include this code on debug builds
-            {
-                let window = app.get_webview_window("main").unwrap();
-                window.open_devtools();
-            }
-            Ok(())
-        })
+        // .setup(|app| {
+        //     #[cfg(debug_assertions)] // only include this code on debug builds
+        //     {
+        //         let window = app.get_webview_window("main").unwrap();
+        //         window.open_devtools();
+        //     }
+        //     Ok(())
+        // })
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_os::init())
