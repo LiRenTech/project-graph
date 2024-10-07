@@ -12,6 +12,8 @@ PyQt5版本（两期视频中的版本）
 
 ```
 https://liren.zty012.de/project-graph/v1/
+或者（release页面中的早期内容）
+https://github.com/LiRenTech/project-graph/releases/tag/pyqt-2024-10-3
 ```
 
 
@@ -20,8 +22,6 @@ https://liren.zty012.de/project-graph/v1/
 ```bash
 # 安装依赖
 pnpm i
-# windows环境使用cmd时，需要设置此环境变量
-# set RUST_BACKTRACE=1
 # 启动项目
 pnpm tauri dev
 # 在adb设备上启动
