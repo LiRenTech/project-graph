@@ -178,6 +178,10 @@ export namespace Controller {
         StageManager.nodes.filter((node) => node.isSelected),
       );
     }
+    // 检测按下 ctrl + F 搜索
+    if (event.ctrlKey && key === "f") {
+      
+    }
   }
 
   function keyup(event: KeyboardEvent) {

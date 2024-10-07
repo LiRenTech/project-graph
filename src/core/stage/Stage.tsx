@@ -71,6 +71,14 @@ export namespace Stage {
   export let keyOnlyVirtualNewLocation = Vector.getZero();
 
   /**
+   * 搜索结果
+   */
+  export let searchResultNodes: Node[] = [];
+  /**
+   * 搜索结果的索引
+   */
+  export let currentSearchResultIndex = 0;
+  /**
    * 逻辑总入口
    */
   export function logicTick() {
