@@ -121,8 +121,8 @@ export namespace StageManager {
 
   /**
    * 用于鼠标悬停时查找边
-   * @param location 
-   * @returns 
+   * @param location
+   * @returns
    */
   export function findEdgeByLocation(location: Vector): Edge | null {
     for (const edge of edges) {
@@ -139,8 +139,8 @@ export namespace StageManager {
   // 建议不同的功能分类到具体的文件中，然后最后集中到这里调用，使得下面的显示简短一些
 
   /**
-   * 
-   * @param clickWorldLocation 
+   *
+   * @param clickWorldLocation
    * @returns 返回新创建节点的uuid
    */
   export function addNodeByClick(clickWorldLocation: Vector): string {
@@ -157,6 +157,33 @@ export namespace StageManager {
 
   export function moveNodesWithChildren(delta: Vector) {
     StageNodeMoveManager.moveNodesWithChildren(delta);
+  }
+
+  export function alignLeft() {
+    StageNodeMoveManager.alignLeft();
+  }
+
+  export function alignRight() {
+    StageNodeMoveManager.alignRight();
+  }
+
+  export function alignTop() {
+    StageNodeMoveManager.alignTop();
+  }
+  export function alignBottom() {
+    StageNodeMoveManager.alignBottom();
+  }
+  export function alignCenterHorizontal() {
+    StageNodeMoveManager.alignCenterHorizontal();
+  }
+  export function alignCenterVertical() {
+    StageNodeMoveManager.alignCenterVertical();
+  }
+  export function alignHorizontalSpaceBetween() {
+    StageNodeMoveManager.alignHorizontalSpaceBetween();
+  }
+  export function alignVerticalSpaceBetween() {
+    StageNodeMoveManager.alignVerticalSpaceBetween();
   }
 
   export function setNodeColor(color: Color) {

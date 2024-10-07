@@ -145,32 +145,44 @@ export default function Toolbar({ className = "" }) {
       <ToolbarItem
         description="左对齐"
         icon={<AlignStartVertical />}
-        handleFunction={() => {}}
+        handleFunction={() => {
+          StageManager.alignLeft();
+        }}
       />
       <ToolbarItem
         description="右对齐"
         icon={<AlignEndVertical />}
-        handleFunction={() => {}}
+        handleFunction={() => {
+          StageManager.alignRight();
+        }}
       />
       <ToolbarItem
         description="中心水平对齐"
         icon={<AlignCenterHorizontal />}
-        handleFunction={() => {}}
+        handleFunction={() => {
+          StageManager.alignCenterHorizontal();
+        }}
       />
       <ToolbarItem
         description="中心垂直对齐"
         icon={<AlignCenterVertical />}
-        handleFunction={() => {}}
+        handleFunction={() => {
+          StageManager.alignCenterVertical();
+        }}
       />
       <ToolbarItem
         description="相等间距水平对齐"
         icon={<AlignHorizontalSpaceBetween />}
-        handleFunction={() => {}}
+        handleFunction={() => {
+          StageManager.alignHorizontalSpaceBetween();
+        }}
       />
       <ToolbarItem
         description="相等间距垂直对齐"
         icon={<AlignVerticalSpaceBetween />}
-        handleFunction={() => {}}
+        handleFunction={() => {
+          StageManager.alignVerticalSpaceBetween();
+        }}
       />
     </Box>
   );
