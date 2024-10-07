@@ -80,40 +80,36 @@ export namespace StageNodeMoveManager {
   }
 
   export function alignCenterHorizontal() {
-    const nodes = Array.from(StageManager.nodes).filter(
-      (node) => node.isSelected,
-    );
-    const centerY =
-      Math.min(...nodes.map((node) => node.rectangle.location.y)) +
-      Math.max(
-        ...nodes.map(
-          (node) =>
-            node.rectangle.location.y +
-            node.rectangle.size.y -
-            node.rectangle.size.y / 2,
-        ),
-      );
+    const nodes = Array.from(StageManager.nodes).filter(node => node.isSelected);
+    if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
+  
+    // 计算所有选中节点的总高度和最小 y 坐标
+    const minY = Math.min(...nodes.map(node => node.rectangle.location.y));
+    const maxY = Math.max(...nodes.map(node => node.rectangle.location.y + node.rectangle.size.y));
+    const totalHeight = maxY - minY;
+    const centerY = minY + totalHeight / 2;
+  
     for (const node of nodes) {
-      node.rectangle.location.y = centerY - node.rectangle.size.y / 2;
+      const nodeCenterY = node.rectangle.location.y + node.rectangle.size.y / 2;
+      const newY = centerY - (nodeCenterY - node.rectangle.location.y);
+      node.rectangle.location.y = newY;
     }
   }
 
   export function alignCenterVertical() {
-    const nodes = Array.from(StageManager.nodes).filter(
-      (node) => node.isSelected,
-    );
-    const centerX =
-      Math.min(...nodes.map((node) => node.rectangle.location.x)) +
-      Math.max(
-        ...nodes.map(
-          (node) =>
-            node.rectangle.location.x +
-            node.rectangle.size.x -
-            node.rectangle.size.x / 2,
-        ),
-      );
+    const nodes = Array.from(StageManager.nodes).filter(node => node.isSelected);
+    if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
+  
+    // 计算所有选中节点的总宽度和最小 x 坐标
+    const minX = Math.min(...nodes.map(node => node.rectangle.location.x));
+    const maxX = Math.max(...nodes.map(node => node.rectangle.location.x + node.rectangle.size.x));
+    const totalWidth = maxX - minX;
+    const centerX = minX + totalWidth / 2;
+  
     for (const node of nodes) {
-      node.rectangle.location.x = centerX - node.rectangle.size.x / 2;
+      const nodeCenterX = node.rectangle.location.x + node.rectangle.size.x / 2;
+      const newX = centerX - (nodeCenterX - node.rectangle.location.x);
+      node.rectangle.location.x = newX;
     }
   }
 
