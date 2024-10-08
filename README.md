@@ -16,6 +16,29 @@ https://liren.zty012.de/project-graph/v1/
 https://github.com/LiRenTech/project-graph/releases/tag/pyqt-2024-10-3
 ```
 
+## 下载安装运行后BUG解决
+
+windows版：
+
+下载安装后，运行后出现一个透明窗口，无法显示内容，解决方法如下：
+```
+C:\Users\(你的用户名)\AppData\Roaming\
+```
+在Roaming文件夹内新建一个“liren.project-graph”文件夹，然后进入
+在内部创建两个文件：recent-files.json 和 settings.json，内容分别如下：
+```
+{
+  "recentFiles": []
+}
+```
+
+```
+{"moveFriction":0.2,"windowBackgroundAlpha":1,"alwaysShowDetails":false,"showDebug":true,"scaleExponent":1.3,"lineStyle":"stright","showGrid":true,"moveAmplitude":2,"renderFont":"\"Times New Roman\", \"sans-serif\""}
+```
+然后再打开，就可以正常显示了。
+
+（以上是临时解决方案，后续版本将会修复）
+
 
 ## 启动方式
 
