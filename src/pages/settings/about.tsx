@@ -1,15 +1,32 @@
 import { open } from "@tauri-apps/plugin-shell";
 import icon from "../../assets/icon.png";
 import Button from "../../components/ui/Button";
+import React from "react";
+import { getVersion } from "@tauri-apps/api/app";
 
 export default function About() {
+  const [version, setVersion] = React.useState("");
+
+  React.useEffect(() => {
+    getVersion().then((version) => {
+      const nightlyMatch = version.match(/-nightly.([a-z0-9]+)$/);
+      if (version.match(/-dev$/)) {
+        setVersion("Development Build");
+      } else if (nightlyMatch) {
+        setVersion(`Nightly Build ${nightlyMatch[1]}`);
+      } else {
+        setVersion(`v${version}`);
+      }
+    });
+  }, []);
+
   return (
     <div className="flex h-full flex-col gap-4">
       <div className="flex h-20 gap-4">
         <img src={icon} alt="icon" className="h-20 w-20 rounded-xl" />
         <div className="flex flex-col gap-2">
           <span className="text-3xl font-bold">Project Graph 计划投射</span>
-          <span className="text-gray-500">By LiRen Tech</span>
+          <span className="text-gray-500">{version}</span>
         </div>
       </div>
       <div className="flex-1 overflow-auto leading-7">
@@ -21,10 +38,16 @@ export default function About() {
           可以用来绘制但网页打开有点慢了
         </p>
         <p>所以做了这个小软件</p>
-        <h2 className="text-2xl font-bold mt-4">联系我们</h2>
-        <p>我们致力于为 “图论” 设计一个最快速方便的绘制方法论，同时也在可视化思考、拓扑型todo list等方向进行探索创新。</p>
-        <p>如果您想快速获得反馈和提供建议，或者有任何想法、疑问，欢迎加入我们的QQ群：1006956704</p>
-        <h2 className="text-2xl font-bold mt-4">团队简介</h2>
+        <h2 className="mt-4 text-2xl font-bold">联系我们</h2>
+        <p>
+          我们致力于为 “图论”
+          设计一个最快速方便的绘制方法论，同时也在可视化思考、拓扑型todo
+          list等方向进行探索创新。
+        </p>
+        <p>
+          如果您想快速获得反馈和提供建议，或者有任何想法、疑问，欢迎加入我们的QQ群：1006956704
+        </p>
+        <h2 className="mt-4 text-2xl font-bold">团队简介</h2>
         <p>
           理刃科技是一个由Littlefean和Rutubet在2017年5月1日创立的小型团队，后续ZTY加入团队。
         </p>

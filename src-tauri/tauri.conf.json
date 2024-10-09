@@ -1,6 +1,6 @@
 {
   "productName": "Project Graph",
-  "version": "0.3.0",
+  "version": "0.0.0-dev",
   "identifier": "liren.project-graph",
   "build": {
     "beforeDevCommand": "pnpm dev",
