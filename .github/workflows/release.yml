@@ -58,10 +58,20 @@ jobs:
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: pnpm install # change this to npm or pnpm depending on which one you use.
 
-      - name: edit version
+      - name: edit version (linux only)
+        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
-          # 修改src-tauri/tauri.conf.json中的version字段，修改为发布的版本号
-          sed -i "" "s/\"version\": \"[^\"]*\"/\"version\": \"${{ github.event.inputs.version }}\"/" src-tauri/tauri.conf.json
+          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"${{ github.event.inputs.version }}\"/" src-tauri/tauri.conf.json
+
+      - name: edit version (macos only)
+        if: matrix.platform == 'macos-latest' # This must match the platform value defined above.
+        run: |
+          sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"${{ github.event.inputs.version }}\"/" src-tauri/tauri.conf.json
+
+      - name: edit version (windows only)
+        if: matrix.platform == 'windows-latest' # This must match the platform value defined above.
+        run: |
+          (Get-Content src-tauri\tauri.conf.json).replace('"version": ".*"', '"version": "${{ github.event.inputs.version }}"') | Set-Content src-tauri\tauri.conf.json
 
       - uses: tauri-apps/tauri-action@v0
         env:
