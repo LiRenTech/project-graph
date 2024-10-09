@@ -1,10 +1,12 @@
-name: "publish"
+name: "Release"
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - release
+  workflow_dispatch: # 手动触发
+    inputs:
+      # 必填版本号（x.x.x）
+      version:
+        description: "The version number to release"
+        required: true
 
 jobs:
   publish-tauri:
@@ -56,12 +58,17 @@ jobs:
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: pnpm install # change this to npm or pnpm depending on which one you use.
 
+      - name: edit version
+        run: |
+          # 修改src-tauri/tauri.conf.json中的version字段，修改为发布的版本号
+          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"${{ github.event.inputs.version }}\"/" src-tauri/tauri.conf.json
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
-          releaseName: "v__VERSION__"
+          tagName: "v${{ github.event.inputs.version }}"
+          releaseName: "Release v${{ github.event.inputs.version }}"
           releaseBody: ""
           releaseDraft: false
           prerelease: false
