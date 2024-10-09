@@ -58,7 +58,7 @@ jobs:
       - name: edit version
         run: |
           # 修改src-tauri/tauri.conf.json中的version字段，修改为0.0.0-nightly.<commit>
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.${{ github.sha }}\"/" src-tauri/tauri.conf.json
+          sed -i "" "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.${{ github.sha }}\"/" src-tauri/tauri.conf.json
 
       - uses: tauri-apps/tauri-action@v0
         env:
