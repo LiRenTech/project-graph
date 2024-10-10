@@ -59,41 +59,15 @@ export namespace Renderer {
     Canvas.ctx.fillRect(0, 0, w, h);
     Canvas.ctx.globalAlpha = 1;
 
-    // TODO: 这里的计算应该是基于视野的，而不是整个画布的
-    // canvasRect = new Rectangle(
-    //   Camera.location.subtract(
-    //     new Vector(w / 2, h / 2).multiply(1 / Camera.currentScale),
-    //   ), // 计算左上角在世界坐标中的位置
-    //   new Vector(w, h).divide(Camera.currentScale), // 缩放后的大小
-    // );
-
     // 画网格
     renderGrid();
+    const viewRectangle = getCoverWorldRectangle();
 
-    renderEdges();
-    renderEntities();
-    // 待删除的节点
-    for (const node of Stage.warningNodes) {
-      RenderUtils.renderRect(
-        new Rectangle(
-          transformWorld2View(node.rectangle.location),
-          node.rectangle.size.multiply(Camera.currentScale),
-        ),
-        new Color(255, 0, 0, 0.5),
-        new Color(255, 0, 0, 0.5),
-        2 * Camera.currentScale,
-        8 * Camera.currentScale,
-      );
-    }
-    // 待删除的边
-    for (const edge of Stage.warningEdges) {
-      RenderUtils.renderSolidLine(
-        transformWorld2View(edge.source.rectangle.getCenter()),
-        transformWorld2View(edge.target.rectangle.getCenter()),
-        new Color(255, 0, 0, 0.5),
-        2 * Camera.currentScale,
-      );
-    }
+    renderEdges(viewRectangle);
+    renderEntities(viewRectangle);
+    // 待删除的节点和边
+    renderWarningEntities();
+
     // 鼠标hover的边
     for (const edge of Stage.hoverEdges) {
       RenderUtils.renderSolidLine(
@@ -172,23 +146,31 @@ export namespace Renderer {
 
     // 渲染所有特效
     renderEffects();
-
-    // 测试渲染
-    // const rect = getCoverWorldRectangle();
-    // RenderUtils.renderSolidLine(
-    //   transformWorld2View(rect.location),
-    //   transformWorld2View(rect.location.add(rect.size)),
-    //   new Color(255, 255, 255, 0.5),
-    //   2,
-    // );
-    // RenderUtils.renderSolidLine(
-    //   transformWorld2View(rect.location.add(new Vector(rect.size.x, 0))),
-    //   transformWorld2View(rect.location.add(new Vector(0, rect.size.y))),
-    //   new Color(255, 255, 255, 0.5),
-    //   2,
-    // );
   }
-
+  function renderWarningEntities() {
+    // 待删除的节点
+    for (const node of Stage.warningNodes) {
+      RenderUtils.renderRect(
+        new Rectangle(
+          transformWorld2View(node.rectangle.location),
+          node.rectangle.size.multiply(Camera.currentScale),
+        ),
+        new Color(255, 0, 0, 0.5),
+        new Color(255, 0, 0, 0.5),
+        2 * Camera.currentScale,
+        8 * Camera.currentScale,
+      );
+    }
+    // 待删除的边
+    for (const edge of Stage.warningEdges) {
+      RenderUtils.renderSolidLine(
+        transformWorld2View(edge.source.rectangle.getCenter()),
+        transformWorld2View(edge.target.rectangle.getCenter()),
+        new Color(255, 0, 0, 0.5),
+        2 * Camera.currentScale,
+      );
+    }
+  }
   /**
    * 渲染和纯键盘操作相关的功能
    */
@@ -210,9 +192,8 @@ export namespace Renderer {
             25 * Camera.currentScale,
             Color.Transparent,
             Color.White,
-            1
-          )
-
+            1,
+          );
         }
       }
     }
@@ -239,12 +220,13 @@ export namespace Renderer {
     }
   }
 
-  export function renderEntities() {
+  export function renderEntities(viewRectangle: Rectangle) {
     renderedNodes = 0;
     for (const node of StageManager.nodes) {
-      // if (!canvasRect.isCollideWith(node.rectangle)) {
-      //   continue;
-      // }
+      // 过滤掉超出视野的节点
+      if (!viewRectangle.isCollideWith(node.rectangle)) {
+        continue;
+      }
 
       // 节点身体矩形
       RenderUtils.renderRect(
@@ -293,23 +275,12 @@ export namespace Renderer {
     }
   }
 
-  export function renderEdges() {
+  export function renderEdges(viewRectangle: Rectangle) {
     renderedEdges = 0;
     for (const edge of StageManager.edges) {
-      // const lineRect = Rectangle.fromPoints(
-      //   edge.source.rectangle.getCenter(),
-      //   edge.target.rectangle.getCenter(),
-      // );
-
-      // RenderUtils.renderRect(
-      //   lineRect,
-      //   new Color(255, 255, 255, 0.5),
-      //   new Color(255, 255, 255, 0.5),
-      //   2 * Camera.currentScale,
-      // );
-      // if (!canvasRect.isCollideWith(lineRect)) {
-      //   continue;
-      // }
+      if (!viewRectangle.isCollideWithLine(edge.bodyLine)) {
+        continue;
+      }
       if (edge.source.uuid == edge.target.uuid) {
         // 自环
       } else {
