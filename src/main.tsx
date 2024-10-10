@@ -8,16 +8,18 @@ import { Settings } from "./core/Settings";
 import { RecentFileManager } from "./core/RecentFileManager";
 // import { platform } from "@tauri-apps/plugin-os";
 
-console.log("Hello, world!");
-
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
+// 0.2ms
 
 // 2024/10/5 发现这里Linux 系统下，await不能直接写在最外层，会导致整个页面无法渲染，原因未知
 
 (async () => {
+  // 这段代码用时
   await Settings.init();
   await RecentFileManager.init();
+  // 15~20ms 左右
+
   createRoot(document.getElementById("root")!).render(
     <RecoilRoot>
       <DialogProvider>
@@ -25,4 +27,5 @@ const Routes = () => <RouterProvider router={router} />;
       </DialogProvider>
     </RecoilRoot>,
   );
+  // 渲染，2ms左右
 })();

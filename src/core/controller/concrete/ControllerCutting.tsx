@@ -16,6 +16,11 @@ import { Line } from "../../dataStruct/Line";
  */
 export const ControllerCutting = new ControllerClass();
 
+/**
+ * 开始绘制斩断线的起点位置
+ */
+let cuttingStartLocation = Vector.getZero();
+
 ControllerCutting.mousedown = (event: MouseEvent) => {
   if (event.button !== 2) {
     return;
@@ -27,6 +32,7 @@ ControllerCutting.mousedown = (event: MouseEvent) => {
   if (clickedNode === null) {
     // 开始绘制切断线
     Stage.isCutting = true;
+    cuttingStartLocation = pressWorldLocation.clone();
   } else {
     Stage.isCutting = false;
   }
@@ -39,7 +45,7 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
   }
   // 正在切断线
   Stage.cuttingLine = new Line(
-    Controller.lastMousePressLocation[2],
+    cuttingStartLocation,
     ControllerCutting.lastMoveLocation,
   );
   Stage.warningNodes = [];
@@ -114,11 +120,11 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
   Stage.effects.push(
     new LineCuttingEffect(
       new ProgressNumber(0, 15),
-      Controller.lastMousePressLocation[2],
+      cuttingStartLocation,
       ControllerCutting.lastMoveLocation,
       new Color(255, 255, 0, 0),
       new Color(255, 255, 0, 1),
-      Controller.lastMousePressLocation[2].distance(
+      cuttingStartLocation.distance(
         ControllerCutting.lastMoveLocation,
       ) / 10,
     ),
