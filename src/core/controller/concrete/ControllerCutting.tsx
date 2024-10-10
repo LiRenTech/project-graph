@@ -50,9 +50,25 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
   );
   Stage.warningNodes = [];
   for (const node of StageManager.nodes) {
-    if (node.rectangle.isCollideWithLine(Stage.cuttingLine)) {
+    const collidePoints = node.rectangle.getCollidePointsWithLine(
+      Stage.cuttingLine,
+    );
+    if (collidePoints.length > 0) {
       Stage.warningNodes.push(node);
+      for (const collidePoint of collidePoints) {
+        Stage.effects.push(
+          new CircleFlameEffect(
+            new ProgressNumber(0, 5),
+            collidePoint,
+            10,
+            new Color(255, 255, 255, 1),
+          ),
+        );
+      }
     }
+    // if (node.rectangle.isCollideWithLine(Stage.cuttingLine)) {
+    //   Stage.warningNodes.push(node);
+    // }
   }
   Stage.warningEdges = [];
   for (const edge of StageManager.edges) {
@@ -124,9 +140,7 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
       ControllerCutting.lastMoveLocation,
       new Color(255, 255, 0, 0),
       new Color(255, 255, 0, 1),
-      cuttingStartLocation.distance(
-        ControllerCutting.lastMoveLocation,
-      ) / 10,
+      cuttingStartLocation.distance(ControllerCutting.lastMoveLocation) / 10,
     ),
   );
 };

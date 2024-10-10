@@ -190,6 +190,53 @@ export class Rectangle {
   }
 
   /**
+   * 获取线段和矩形的交点
+   * @param line
+   */
+  public getCollidePointsWithLine(line: Line): Vector[] {
+    const result: Vector[] = [];
+    if (this.isPointInside(line.start)) {
+      result.push(line.start);
+    }
+    if (this.isPointInside(line.end)) {
+      result.push(line.end);
+    }
+    const topResult = line.getIntersectingWithHorizontalLine(
+      this.location.y,
+      this.left,
+      this.right,
+    );
+    if (topResult.intersects) {
+      result.push(topResult.point!);
+    }
+    const bottomResult = line.getIntersectingWithHorizontalLine(
+      this.location.y + this.size.y,
+      this.left,
+      this.right,
+    );
+    if (bottomResult.intersects) {
+      result.push(bottomResult.point!);
+    }
+    const leftResult = line.getIntersectingWithVerticalLine(
+      this.location.x,
+      this.bottom,
+      this.top,
+    );
+    if (leftResult.intersects) {
+      result.push(leftResult.point!);
+    }
+    const rightResult = line.getIntersectingWithVerticalLine(
+      this.location.x + this.size.x,
+      this.bottom,
+      this.top,
+    );
+    if (rightResult.intersects) {
+      result.push(rightResult.point!);
+    }
+
+    return result;
+  }
+  /**
    * 是否完全在另一个矩形内
    * AI写的，有待测试
    * @param other

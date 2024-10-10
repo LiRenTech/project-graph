@@ -1,5 +1,10 @@
 import { Vector } from "./Vector";
 
+export interface IntersectionResult {
+  intersects: boolean;
+  point?: Vector; // 使用可选属性来表示当没有交点时的情况
+}
+
 /**
  * 线段类
  */
@@ -111,7 +116,7 @@ export class Line {
       intersectionX <= Math.max(xLeft, xRight)
     );
   }
-  
+
   /**
    * 判断该线段是否和一个垂直的线段相交
    * @param x 垂直线段的x坐标
@@ -146,7 +151,72 @@ export class Line {
       intersectionY <= Math.max(yBottom, yTop)
     );
   }
+  // 更新 isIntersectingWithHorizontalLine 方法
+  getIntersectingWithHorizontalLine(
+    y: number,
+    xLeft: number,
+    xRight: number,
+  ): IntersectionResult {
+    // 如果线段两端点的y坐标都在水平线的同一侧，则不可能相交
+    if ((this.start.y - y) * (this.end.y - y) > 0) {
+      return { intersects: false };
+    }
 
+    // 如果线段的一个端点恰好位于水平线上，则视为相交
+    if (this.start.y === y || this.end.y === y) {
+      return { intersects: true, point: new Vector(this.start.x, y) };
+    }
+
+    // 计算线段在y轴方向上的变化率（斜率）
+    const slope = (this.end.x - this.start.x) / (this.end.y - this.start.y);
+
+    // 计算线段与水平线的交点的x坐标
+    const intersectionX = this.start.x + slope * (y - this.start.y);
+
+    // 检查交点的x坐标是否在水平线段的范围内
+    if (
+      intersectionX >= Math.min(xLeft, xRight) &&
+      intersectionX <= Math.max(xLeft, xRight)
+    ) {
+      return { intersects: true, point: new Vector(intersectionX, y) };
+    }
+
+    return { intersects: false };
+  }
+
+  // 更新 isIntersectingWithVerticalLine 方法
+  getIntersectingWithVerticalLine(
+    x: number,
+    yBottom: number,
+    yTop: number,
+  ): IntersectionResult {
+    // 如果线段两端点的x坐标都在垂直线的同一侧，则不可能相交
+    if ((this.start.x - x) * (this.end.x - x) > 0) {
+      return { intersects: false };
+    }
+
+    // 如果线段的一个端点恰好位于垂直线上，则视为相交
+    if (this.start.x === x || this.end.x === x) {
+      return { intersects: true, point: new Vector(x, this.start.y) };
+    }
+
+    // 计算线段在x轴方向上的变化率（倒数斜率）
+    const inverseSlope =
+      (this.end.y - this.start.y) / (this.end.x - this.start.x);
+
+    // 计算线段与垂直线的交点的y坐标
+    const intersectionY = this.start.y + inverseSlope * (x - this.start.x);
+
+    // 检查交点的y坐标是否在垂直线段的范围内
+    if (
+      intersectionY >= Math.min(yBottom, yTop) &&
+      intersectionY <= Math.max(yBottom, yTop)
+    ) {
+      return { intersects: true, point: new Vector(x, intersectionY) };
+    }
+
+    return { intersects: false };
+  }
   /**
    * 判断两条线段是否相交
    */
