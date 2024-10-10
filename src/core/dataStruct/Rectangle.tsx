@@ -137,57 +137,56 @@ export class Rectangle {
   /**
    * 自己这个矩形是否和线段有交点
    * 用于节点切割检测
-   * 
+   *
    * @param line
    */
-  public isCollideWithLine(line: Line) {
+  public isCollideWithLine(line: Line): boolean {
     if (this.isPointInside(line.start) || this.isPointInside(line.end)) {
       // 当用于切割线的时候，两个端点必定都在矩形外
       // 这个实际上是不可能的，但是为了保险起见，还是加上判断
-      console.log("isPointInside");
       return true;
     }
 
-    // BUG: 这里碰撞检测有问题
-    const topLine = new Line(
-      this.location,
-      this.location.add(new Vector(0, this.size.x)),
-    );
-    if (line.isIntersecting(topLine)) {
-      console.log("topLine");
+    if (
+      line.isIntersectingWithHorizontalLine(
+        this.location.y,
+        this.left,
+        this.right,
+      )
+    ) {
       return true;
     }
-    const bottomLine = new Line(
-      this.location.add(new Vector(0, this.size.y)),
-      this.location.add(this.size),
-    );
-    if (line.isIntersecting(bottomLine)) {
-      console.log("bottomLine");
+
+    if (
+      line.isIntersectingWithHorizontalLine(
+        this.location.y + this.size.y,
+        this.left,
+        this.right,
+      )
+    ) {
       return true;
     }
-    const leftLine = new Line(
-      this.location,
-      this.location.add(new Vector(0, this.size.y)),
-    );
-    if (line.isIntersecting(leftLine)) {
-      console.log("leftLine");
+
+    if (
+      line.isIntersectingWithVerticalLine(
+        this.location.x,
+        this.bottom,
+        this.top,
+      )
+    ) {
       return true;
     }
-    const rightLine = new Line(
-      this.location.add(new Vector(this.size.x, 0)),
-      this.location.add(this.size),
-    );
-    if (line.isIntersecting(rightLine)) {
-      console.log("rightLine");
+
+    if (
+      line.isIntersectingWithVerticalLine(
+        this.location.x + this.size.x,
+        this.bottom,
+        this.top,
+      )
+    ) {
       return true;
     }
     return false;
-    // return (
-    //   line.isIntersecting(topLine) ||
-    //   line.isIntersecting(bottomLine) ||
-    //   line.isIntersecting(leftLine) ||
-    //   line.isIntersecting(rightLine)
-    // );
   }
 
   /**

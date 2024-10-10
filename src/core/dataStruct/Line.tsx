@@ -78,8 +78,79 @@ export class Line {
     );
   }
 
+  /**
+   * 判断该线段是否和一个水平的线段相交
+   * @param y 水平线段的y坐标
+   * @param xLeft 水平线段的左端点
+   * @param xRight 水平线段的右端点
+   */
+  isIntersectingWithHorizontalLine(
+    y: number,
+    xLeft: number,
+    xRight: number,
+  ): boolean {
+    // 如果线段两端点的y坐标都在水平线的同一侧，则不可能相交
+    if ((this.start.y - y) * (this.end.y - y) > 0) {
+      return false;
+    }
+
+    // 如果线段的一个端点恰好位于水平线上，则视为相交
+    if (this.start.y === y || this.end.y === y) {
+      return true;
+    }
+
+    // 计算线段在y轴方向上的变化率（斜率）
+    const slope = (this.end.x - this.start.x) / (this.end.y - this.start.y);
+
+    // 计算线段与水平线的交点的x坐标
+    const intersectionX = this.start.x + slope * (y - this.start.y);
+
+    // 检查交点的x坐标是否在水平线段的范围内
+    return (
+      intersectionX >= Math.min(xLeft, xRight) &&
+      intersectionX <= Math.max(xLeft, xRight)
+    );
+  }
+  
+  /**
+   * 判断该线段是否和一个垂直的线段相交
+   * @param x 垂直线段的x坐标
+   * @param yBottom 垂直线段的下端点
+   * @param yTop 垂直线段的上端点
+   */
+  isIntersectingWithVerticalLine(
+    x: number,
+    yBottom: number,
+    yTop: number,
+  ): boolean {
+    // 如果线段两端点的x坐标都在垂直线的同一侧，则不可能相交
+    if ((this.start.x - x) * (this.end.x - x) > 0) {
+      return false;
+    }
+
+    // 如果线段的一个端点恰好位于垂直线上，则视为相交
+    if (this.start.x === x || this.end.x === x) {
+      return true;
+    }
+
+    // 计算线段在x轴方向上的变化率（倒数斜率）
+    const inverseSlope =
+      (this.end.y - this.start.y) / (this.end.x - this.start.x);
+
+    // 计算线段与垂直线的交点的y坐标
+    const intersectionY = this.start.y + inverseSlope * (x - this.start.x);
+
+    // 检查交点的y坐标是否在垂直线段的范围内
+    return (
+      intersectionY >= Math.min(yBottom, yTop) &&
+      intersectionY <= Math.max(yBottom, yTop)
+    );
+  }
+
+  /**
+   * 判断两条线段是否相交
+   */
   isIntersecting(other: Line): boolean {
-    /** 判断两条线段是否相交 */
     if (this.isCollinear(other)) {
       return false;
     }
