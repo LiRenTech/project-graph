@@ -6,6 +6,16 @@ on:
   workflow_dispatch: # 手动触发
 
 jobs:
+  delete-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete a Release
+        uses: liudonghua123/delete-release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_name: "Nightly Build"
+          suppress_errors: true
   publish-tauri:
     permissions:
       contents: write
@@ -69,14 +79,6 @@ jobs:
         if: matrix.platform == 'windows-latest' # This must match the platform value defined above.
         run: |
           (Get-Content src-tauri\tauri.conf.json).replace('"version": ".*"', '"version": "0.0.0-nightly.${{ github.sha }}"') | Set-Content src-tauri\tauri.conf.json
-
-      - name: Delete a Release
-        uses: liudonghua123/delete-release-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          release_name: "Nightly Build"
-          suppress_errors: true
 
       - uses: tauri-apps/tauri-action@v0
         env:
