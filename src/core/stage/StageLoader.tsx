@@ -6,12 +6,13 @@ import { Serialized } from "../../types/node";
 export namespace StageLoader {
   /**
    * 将序列化数据逐步的，一级一级的转换为最新版本的格式
-   * @param data 
-   * @returns 
+   * @param data
+   * @returns
    */
   export function validate(data: Record<string, any>): Serialized.File {
     data = convertV1toV2(data);
     data = convertV2toV3(data);
+    data = convertV3toV4(data);
     return data as Serialized.File;
   }
 
@@ -66,10 +67,6 @@ export namespace StageLoader {
       delete node.shape.height;
       node.text = node.inner_text;
       delete node.inner_text;
-      node.isColorSetByUser = node.is_color_set_by_user;
-      delete node.is_color_set_by_user;
-      node.userColor = node.user_color;
-      delete node.user_color;
     }
     data.edges = data.links;
     delete data.links;
@@ -80,6 +77,16 @@ export namespace StageLoader {
       delete edge.target_node;
       edge.text = edge.inner_text;
       delete edge.inner_text;
+    }
+    return data;
+  }
+  function convertV3toV4(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 4) {
+      return data;
+    }
+    data.version = 4;
+    for (const node of data.nodes) {
+      node.color = [0, 0, 0, 0];
     }
     return data;
   }

@@ -1,18 +1,14 @@
 export namespace Serialized {
   export type Vector = [number, number];
-  export type Shape = {
-    type: "Rectangle";
+  export type Color = [number, number, number, number];
+  export type Node = {
     location: Vector;
     size: Vector;
-  };
-  export type Node = {
-    shape: Shape;
     text: string;
     details: string;
     uuid: string;
     children: string[];
-    isColorSetByUser: boolean;
-    userColor: number[];
+    color: Color | null;
   };
   export type Edge = {
     source: string;
@@ -20,7 +16,7 @@ export namespace Serialized {
     text: string;
   };
   export type File = {
-    version: 3;
+    version: 4;
     nodes: Node[];
     edges: Edge[];
   };

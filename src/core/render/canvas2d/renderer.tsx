@@ -234,7 +234,7 @@ export namespace Renderer {
           transformWorld2View(node.rectangle.location),
           node.rectangle.size.multiply(Camera.currentScale),
         ),
-        node.isColorSetByUser ? node.userColor : new Color(33, 33, 33, 1),
+        node.color ?? new Color(33, 33, 33, 1),
         new Color(204, 204, 204, 1),
         2 * Camera.currentScale,
         8 * Camera.currentScale,
@@ -247,9 +247,7 @@ export namespace Renderer {
             node.rectangle.location.add(Vector.same(NODE_PADDING)),
           ),
           FONT_SIZE * Camera.currentScale,
-          node.isColorSetByUser
-            ? colorInvert(node.userColor)
-            : new Color(204, 204, 204),
+          node.color ? colorInvert(node.color) : new Color(204, 204, 204),
         );
       }
 

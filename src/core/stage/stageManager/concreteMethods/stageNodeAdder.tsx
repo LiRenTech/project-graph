@@ -16,11 +16,8 @@ export namespace StageNodeAdder {
       text: "...",
       details: "",
       children: [],
-      shape: {
-        type: "Rectangle",
-        location: [clickWorldLocation.x, clickWorldLocation.y],
-        size: [100, 100],
-      },
+      location: [clickWorldLocation.x, clickWorldLocation.y],
+      size: [100, 100],
     });
     // 将node本身向左上角移动，使其居中
     node.rectangle.location = node.rectangle.location.subtract(

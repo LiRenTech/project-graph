@@ -1,3 +1,5 @@
+import { Serialized } from "../../types/node";
+
 /**
  * 颜色对象
  * 不透明度最大值为1，最小值为0
@@ -71,6 +73,10 @@ export class Color {
       this.a === color.a
     );
   }
+
+  toArray(): Serialized.Color {
+    return [this.r, this.g, this.b, this.a];
+  }
 }
 
 /**
@@ -87,4 +93,3 @@ export function mixColors(color1: Color, color2: Color, weight: number): Color {
   const a = color1.a * (1 - weight) + color2.a * weight;
   return new Color(r, g, b, a);
 }
-

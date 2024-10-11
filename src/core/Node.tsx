@@ -22,8 +22,7 @@ export class Node {
    */
   isEditing: boolean = false;
 
-  isColorSetByUser: boolean = false;
-  userColor: Color = Color.Black;
+  color: Color | null = Color.Black;
 
   constructor(
     {
@@ -31,9 +30,9 @@ export class Node {
       text = "",
       details = "",
       children = [],
-      shape = { type: "Rectangle", location: [0, 0], size: [0, 0] },
-      isColorSetByUser = false,
-      userColor = [0, 0, 0],
+      location = [0, 0],
+      size = [0, 0],
+      color = [0, 0, 0, 0],
     }: Partial<Serialized.Node> & { uuid: string },
     public unknown = false,
   ) {
@@ -44,11 +43,10 @@ export class Node {
       (childUUID) => new Node({ uuid: childUUID }, true),
     );
     this.rectangle = new Rectangle(
-      new Vector(...shape.location),
-      new Vector(...shape.size),
+      new Vector(...location),
+      new Vector(...size),
     );
-    this.isColorSetByUser = isColorSetByUser;
-    this.userColor = new Color(userColor[0], userColor[1], userColor[2]);
+    this.color = color && new Color(...color);
     this.adjustSizeByText();
   }
 
@@ -74,7 +72,11 @@ export class Node {
     this.moveWithChildrenDfs(this, delta, [this.uuid]);
   }
 
-  private moveWithChildrenDfs(node: Node, delta: Vector, visitedUUIDs: string[]) {
+  private moveWithChildrenDfs(
+    node: Node,
+    delta: Vector,
+    visitedUUIDs: string[],
+  ) {
     node.move(delta);
     for (const child of node.children) {
       if (visitedUUIDs.includes(child.uuid)) {

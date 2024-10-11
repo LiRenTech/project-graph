@@ -93,7 +93,7 @@ export default function AppMenu({
 
   const onSave = () => {
     const path_ = file;
-    console.log("准备保存，当前路径是", path_);  
+    console.log("准备保存，当前路径是", path_);
 
     if (path_ === "Project Graph") {
       // 如果文件名为 "Project Graph" 则说明是新建文件。
@@ -104,7 +104,7 @@ export default function AppMenu({
     }
 
     try {
-      const data = StageDumper.dumpToV3(); // 获取当前节点和边的数据
+      const data = StageDumper.dump(); // 获取当前节点和边的数据
       // 2024年10月6日发现保存文件也开始变得没有权限了，可能是tauri-plugin-fs的bug
       // await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
 
@@ -149,7 +149,7 @@ export default function AppMenu({
     }
 
     try {
-      const data = StageDumper.dumpToV3(); // 获取当前节点和边的数据
+      const data = StageDumper.dump(); // 获取当前节点和边的数据
       invoke<string>("save_json_by_path", {
         path,
         content: JSON.stringify(data, null, 2),
@@ -187,11 +187,11 @@ export default function AppMenu({
       }
     };
     document.addEventListener("keydown", keyDownFunction);
-    
+
     return () => {
       document.removeEventListener("keydown", keyDownFunction);
     };
-  }, [file]);  // 不能填空数组，否则绑定的函数里面的 file 值不会更新
+  }, [file]); // 不能填空数组，否则绑定的函数里面的 file 值不会更新
 
   return (
     <div
@@ -246,7 +246,7 @@ export default function AppMenu({
             dialog.show({
               title: "舞台序列化",
               type: "info",
-              code: JSON.stringify(StageDumper.dumpToV3(), null, 2),
+              code: JSON.stringify(StageDumper.dump(), null, 2),
             })
           }
         >
