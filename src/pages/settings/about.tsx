@@ -3,19 +3,23 @@ import icon from "../../assets/icon.png";
 import Button from "../../components/ui/Button";
 import React from "react";
 import { getVersion } from "@tauri-apps/api/app";
+import versions from "../../assets/versions.json";
 
 export default function About() {
   const [version, setVersion] = React.useState("");
+  const [versionName, setVersionName] = React.useState("");
+  const [versionNameEn, setVersionNameEn] = React.useState("");
 
   React.useEffect(() => {
     getVersion().then((version) => {
-      const nightlyMatch = version.match(/-nightly.([a-z0-9]+)$/);
-      if (version.match(/-dev$/)) {
-        setVersion("Development Build");
-      } else if (nightlyMatch) {
-        setVersion(`Nightly Build ${nightlyMatch[1]}`);
+      setVersion(version);
+      const ver = versions.find((v) => v.version.startsWith(version));
+      if (ver) {
+        setVersionName(ver.name);
+        setVersionNameEn(ver.name_en);
       } else {
-        setVersion(`v${version}`);
+        setVersionName("神秘序章");
+        setVersionNameEn("Unknown Version");
       }
     });
   }, []);
@@ -26,7 +30,9 @@ export default function About() {
         <img src={icon} alt="icon" className="h-20 w-20 rounded-xl" />
         <div className="flex flex-col gap-2">
           <span className="text-3xl font-bold">Project Graph 计划投射</span>
-          <span className="text-gray-500">{version}</span>
+          <span className="text-gray-500">
+            {versionName} {versionNameEn} ({version})
+          </span>
         </div>
       </div>
       <div className="flex-1 overflow-auto leading-7">
