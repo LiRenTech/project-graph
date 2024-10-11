@@ -87,6 +87,10 @@ export namespace StageLoader {
     data.version = 4;
     for (const node of data.nodes) {
       node.color = [0, 0, 0, 0];
+      node.location = node.shape.location;
+      delete node.shape.location;
+      node.size = node.shape.size;
+      delete node.shape.size;
     }
     return data;
   }
