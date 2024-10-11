@@ -103,7 +103,7 @@ export namespace RenderUtils {
   ): void {
     Canvas.ctx.textBaseline = "middle"; //alphabetic, top, hanging, middle, ideographic, bottom
     Canvas.ctx.textAlign = "left";
-    Canvas.ctx.font = `${size}px system-ui`;
+    Canvas.ctx.font = `${size}px MiSans`;
     Canvas.ctx.fillStyle = color.toString();
     Canvas.ctx.fillText(text, location.x, location.y + size / 2);
   }
@@ -116,7 +116,7 @@ export namespace RenderUtils {
   ): void {
     Canvas.ctx.textBaseline = "middle";
     Canvas.ctx.textAlign = "center";
-    Canvas.ctx.font = `${size}px system-ui`;
+    Canvas.ctx.font = `${size}px MiSans`;
     Canvas.ctx.fillStyle = color.toString();
     Canvas.ctx.fillText(text, centerLocation.x, centerLocation.y);
   }
