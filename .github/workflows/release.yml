@@ -71,7 +71,7 @@ jobs:
       - name: edit version (windows only)
         if: matrix.platform == 'windows-latest' # This must match the platform value defined above.
         run: |
-          (Get-Content src-tauri\tauri.conf.json).replace('"version": ".*"', '"version": "${{ github.event.inputs.version }}"') | Set-Content src-tauri\tauri.conf.json
+          (Get-Content -Path "src-tauri/tauri.conf.json" -Raw) -replace '"version": "([^"]*)"', '"version": "0.0.0-nightly.${{ github.sha }}"' | Set-Content -Path "src-tauri/tauri.conf.json"
 
       - uses: tauri-apps/tauri-action@v0
         env:
