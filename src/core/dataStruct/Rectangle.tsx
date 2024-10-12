@@ -96,6 +96,11 @@ export class Rectangle {
     return Rectangle.fromEdges(left, top, right, bottom);
   }
 
+  /**
+   * 获取多个矩形的最小外接矩形
+   * @param rectangles 
+   * @returns 
+   */
   public static getBoundingRectangle(rectangles: Rectangle[]): Rectangle {
     if (rectangles.length === 0) {
       // 抛出异常

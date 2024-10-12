@@ -149,6 +149,9 @@ export namespace Renderer {
     // 纯键盘操作相关的
     renderKeyboardOnly();
 
+    // 画粘贴板上的信息
+    // renderClipboard();
+
     // 画详细信息
     renderDetails();
 
@@ -392,6 +395,26 @@ export namespace Renderer {
 
       renderedEdges++;
     }
+  }
+
+  export function renderClipboard() {
+    if (Stage.copyBoardData.nodes.length === 0) {
+      return;
+    }
+    // 粘贴板有内容
+    // 获取粘贴板中所有节点的外接矩形
+    const clipboardRect = Rectangle.getBoundingRectangle(
+      Stage.copyBoardData.nodes.map(
+        (node) =>
+          new Rectangle(new Vector(...node.location), new Vector(...node.size)),
+      ),
+    );
+    RenderUtils.renderRect(
+      clipboardRect.transformWorld2View(),
+      Color.Transparent,
+      new Color(255, 255, 255, 0.5),
+      1,
+    );
   }
 
   // /**
