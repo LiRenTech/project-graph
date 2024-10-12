@@ -40,6 +40,11 @@ export namespace StageDeleteManager {
     StageManager.updateReferences();
   }
 
+  /**
+   * 注意不要在遍历edges数组中调用这个方法，否则会导致数组长度变化，导致索引错误
+   * @param deleteEdge 要删除的边
+   * @returns 
+   */
   export function deleteEdge(deleteEdge: Edge): boolean {
     const fromNode = deleteEdge.source;
     const toNode = deleteEdge.target;
@@ -52,6 +57,7 @@ export namespace StageDeleteManager {
       const res = fromNode.removeChild(toNode);
       // 删除边
       StageManager.edges.splice(StageManager.edges.indexOf(deleteEdge), 1);
+      StageManager.updateReferences();
       return res;
     } else {
       console.log("node not in nodes");

@@ -234,4 +234,8 @@ export namespace StageManager {
   export function connectNode(fromNode: Node, toNode: Node): boolean {
     return StageNodeConnector.connectNode(fromNode, toNode);
   }
+
+  export function reverseEdges(edges: Edge[]) {
+    StageNodeConnector.reverseEdges(edges);
+  }
 }

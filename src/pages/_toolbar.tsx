@@ -5,7 +5,7 @@ import { cn } from "../utils/cn";
 // https://lucide.dev/icons
 import {
   Trash2,
-  ChevronsRightLeft,
+  // ChevronsRightLeft,
   Repeat,
   PaintBucket,
   AlignStartVertical,
@@ -60,15 +60,23 @@ export default function Toolbar({ className = "" }) {
           deleteSelectedObjects();
         }}
       />
-      <ToolbarItem
+      {/* <ToolbarItem
         description="折叠节点"
         icon={<ChevronsRightLeft />}
-        handleFunction={() => {}}
-      />
+        handleFunction={() => {
+          // 弹窗提示还未实现
+
+        }}
+      /> */}
       <ToolbarItem
         description="反转选中连线方向"
         icon={<Repeat />}
-        handleFunction={() => {}}
+        handleFunction={() => {
+          const selectedEdges = StageManager.edges.filter(
+            (edge) => edge.isSelected,
+          );
+          StageManager.reverseEdges(selectedEdges);
+        }}
       />
 
       {/* 颜色面板 */}
