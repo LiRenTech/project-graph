@@ -95,6 +95,13 @@ export namespace RenderUtils {
     Canvas.ctx.stroke();
   }
 
+  /**
+   * 从左上角画文本
+   * @param text
+   * @param location
+   * @param size
+   * @param color
+   */
   export function renderText(
     text: string,
     location: Vector,
@@ -119,6 +126,56 @@ export namespace RenderUtils {
     Canvas.ctx.font = `${size}px MiSans`;
     Canvas.ctx.fillStyle = color.toString();
     Canvas.ctx.fillText(text, centerLocation.x, centerLocation.y);
+  }
+
+  /**
+   * 渲染多行文本
+   * @param text
+   * @param location
+   * @param size
+   * @param color
+   * @param lineHeight
+   */
+  export function renderMultiLineText(
+    text: string,
+    location: Vector,
+    size: number,
+    limitWidth: number,
+    color: Color = Color.White,
+    lineHeight: number = 1.2,
+  ): void {
+    // 一个一个字符遍历，然后一次渲染一行
+    let currentLine = "";
+    let currentY = 0; // 顶部偏移量
+
+    for (const char of text) {
+      // 新来字符的宽度
+
+      // 先判断是否溢出
+      if (Canvas.ctx.measureText(currentLine + char).width > limitWidth) {
+        renderText(
+          currentLine,
+          location.add(new Vector(0, currentY)),
+          size,
+          color,
+        );
+        currentLine = char;
+        currentY += size * lineHeight;
+      } else {
+        // 未溢出，继续添加字符
+        // 当前行更新
+        currentLine += char;
+      }
+    }
+    // 最后一行
+    if (currentLine) {
+      renderText(
+        currentLine,
+        location.add(new Vector(0, currentY)),
+        size,
+        color,
+      );
+    }
   }
 
   /**

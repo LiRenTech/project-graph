@@ -111,6 +111,7 @@ export default function Home() {
 
     // 开启定时器
     let lastTime = performance.now();
+    // let i = 0;
     const loop = () => {
       frameId = requestAnimationFrame(loop);
       if (!focus) {
@@ -123,6 +124,7 @@ export default function Home() {
       setFps(1 / deltaTime);
       Renderer.frameTick();
       Stage.logicTick();
+      // i++;
     };
 
     let frameId = requestAnimationFrame(loop);

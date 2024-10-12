@@ -9,11 +9,9 @@ import { Controller } from "../Controller";
  * 这里专门存放代码相同的地方
  */
 
-
-
 /**
  * 编辑节点
- * @param clickedNode 
+ * @param clickedNode
  */
 export function editNode(clickedNode: Node) {
   Controller.isCameraLocked = true;
@@ -38,6 +36,30 @@ export function editNode(clickedNode: Node) {
     },
   ).then(() => {
     clickedNode!.isEditing = false;
+    Controller.isCameraLocked = false;
+  });
+}
+
+export function editNodeDetails(clickedNode: Node) {
+  Controller.isCameraLocked = true;
+  // 有待把input换成textarea
+  Renderer.input(
+    Renderer.transformWorld2View(clickedNode.rectangle.location).add(
+      Vector.same(clickedNode.rectangle.size.y * Camera.currentScale),
+    ),
+    clickedNode.details,
+    (text) => {
+      clickedNode?.changeDetails(text);
+    },
+    {
+      fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
+      backgroundColor: "transparent",
+      color: "white",
+      outline: "solid 1px white",
+      marginTop: -8 * Camera.currentScale + "px",
+      width: Renderer.NODE_DETAILS_WIDTH * Camera.currentScale + "px",
+    },
+  ).then(() => {
     Controller.isCameraLocked = false;
   });
 }

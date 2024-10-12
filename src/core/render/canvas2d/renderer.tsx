@@ -20,8 +20,16 @@ import { Line } from "../../dataStruct/Line";
  * 渲染器
  */
 export namespace Renderer {
+  /**
+   * 节点上的文字大小
+   */
   export const FONT_SIZE = 32;
   export const NODE_PADDING = 14;
+  /**
+   * 节点详细信息最大宽度
+   */
+  export const NODE_DETAILS_WIDTH = 200;
+
   export let w = 0;
   export let h = 0;
   // let canvasRect: Rectangle;
@@ -146,6 +154,7 @@ export namespace Renderer {
 
     // 渲染所有特效
     renderEffects();
+    // test
   }
   function renderWarningEntities() {
     // 待删除的节点
@@ -266,6 +275,17 @@ export namespace Renderer {
           new Color(255, 255, 255, 0.5),
           2 * Camera.currentScale,
           16 * Camera.currentScale,
+        );
+      }
+
+      if (node.details) {
+        RenderUtils.renderMultiLineText(
+          node.details,
+          transformWorld2View(
+            node.rectangle.location.add(new Vector(0, node.rectangle.size.y)),
+          ),
+          FONT_SIZE * Camera.currentScale,
+          NODE_DETAILS_WIDTH * Camera.currentScale,
         );
       }
 

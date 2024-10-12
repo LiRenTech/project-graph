@@ -64,6 +64,10 @@ export class Node {
     this.adjustSizeByText();
   }
 
+  changeDetails(details: string) {
+    this.details = details;
+  }
+
   move(delta: Vector) {
     this.rectangle.location = this.rectangle.location.add(delta);
   }
