@@ -15,10 +15,11 @@ import { ControllerEdgeEdit } from "./concrete/ControllerEdgeEdit";
 import { ControllerDrawing } from "./concrete/ControllerDrawing";
 import { ControllerDragFile } from "./concrete/ControllerDragFile";
 import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
+import { ControllerCopy } from "./concrete/ControllerCopy";
 
 /**
  * 控制器，控制鼠标、键盘事件
- * 
+ *
  * 所有具体的控制功能逻辑都封装在控制器对象中
  */
 export namespace Controller {
@@ -132,6 +133,7 @@ export namespace Controller {
     ControllerDrawing.init();
     ControllerDragFile.init();
     ControllerKeyboardOnly.init();
+    ControllerCopy.init();
   }
 
   // 以下事件处理函数仅为Controller总控制器修改重要属性使用。不涉及具体的功能逻辑。
@@ -181,7 +183,6 @@ export namespace Controller {
     }
     // 检测按下 ctrl + F 搜索
     if (event.ctrlKey && key === "f") {
-      
     }
   }
 
@@ -284,6 +285,7 @@ export namespace Controller {
     ControllerDrawing.destroy();
     ControllerDragFile.destroy();
     ControllerKeyboardOnly.destroy();
+    ControllerCopy.destroy();
     console.log("Controller destroyed.");
   }
 }

@@ -4,14 +4,15 @@ import { Node } from "../Node";
 import { Rectangle } from "../dataStruct/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { Line } from "../dataStruct/Line";
+import { Serialized } from "../../types/node";
 
 /**
  * 舞台对象
  * 更广义的舞台，
- * 
+ *
  * 舞台实体数据、以及舞台实体的操作方法全部存在StageManager里
  * 由于普遍采用全局的单例模式，所以StageManager也是一个单例，它不必在这里创建
- * 
+ *
  * 但这个里面主要存一些动态的属性，以及特效交互等信息
  */
 export namespace Stage {
@@ -78,6 +79,16 @@ export namespace Stage {
    * 搜索结果的索引
    */
   export let currentSearchResultIndex = 0;
+
+  /**
+   * 粘贴板数据
+   */
+  export let copyBoardData: Serialized.File = {
+    version: 4,
+    nodes: [],
+    edges: [],
+  };
+  
   /**
    * 逻辑总入口
    */

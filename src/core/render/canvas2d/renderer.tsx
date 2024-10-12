@@ -476,6 +476,7 @@ export namespace Renderer {
       `Stage.warningEdges: ${Stage.warningEdges.length}`,
       `ConnectFromNodes: ${Stage.connectFromNodes}`,
       `lastSelectedNode: ${Controller.lastSelectedNode.size}`,
+      `粘贴板: ${JSON.stringify(Stage.copyBoardData)}`,
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(

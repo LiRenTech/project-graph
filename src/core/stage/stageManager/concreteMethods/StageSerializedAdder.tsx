@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 export namespace StageSerializedAdder {
   /**
    * 将一个序列化信息加入舞台中
+   * 会自动刷新新增部分的uuid
    * @param serializedData
    */
   export function addSerializedData(serializedData: Serialized.File) {
@@ -38,6 +39,16 @@ export namespace StageSerializedAdder {
           edge.target = newUUID;
         }
       }
+      // 假设刷新的节点有父节点，那么找到父节点的子列表并更新
+      for (const parent of result.nodes) {
+        if (parent.children.includes(oldUUID)) {
+          const index = parent.children.indexOf(oldUUID);
+          parent.children[index] = newUUID;
+        }
+      }
+
+      // 刷新节点本身的UUID
+      node.uuid = newUUID;
     }
     return result;
   }
