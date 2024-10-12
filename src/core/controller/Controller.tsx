@@ -16,6 +16,7 @@ import { ControllerDrawing } from "./concrete/ControllerDrawing";
 import { ControllerDragFile } from "./concrete/ControllerDragFile";
 import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
 import { ControllerCopy } from "./concrete/ControllerCopy";
+import { StageHistoryManager } from "../stage/stageManager/concreteMethods/StageHistoryManager";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -183,6 +184,14 @@ export namespace Controller {
     }
     // 检测按下 ctrl + F 搜索
     if (event.ctrlKey && key === "f") {
+    }
+    // ctrl + z 撤销
+    if (event.ctrlKey && key === "z") {
+      StageHistoryManager.undo();
+    }
+    // ctrl + y 恢复
+    if (event.ctrlKey && key === "y") {
+      StageHistoryManager.redo();
     }
   }
 

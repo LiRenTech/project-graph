@@ -9,6 +9,8 @@ import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
 import { Color } from "./dataStruct/Color";
 import { Node } from "./Node";
 import { invoke } from "@tauri-apps/api/core";
+import { Serialized } from "../types/node";
+import { StageHistoryManager } from "./stage/stageManager/concreteMethods/StageHistoryManager";
 
 /**
  * 管理最近打开的文件列表
@@ -125,13 +127,8 @@ export namespace RecentFileManager {
     const data = StageLoader.validate(JSON.parse(content));
     console.log(data);
 
-    for (const node of data.nodes) {
-      StageManager.addNode(new Node(node));
-    }
-    for (const edge of data.edges) {
-      StageManager.addEdge(new Edge(edge));
-    }
-    StageManager.updateReferences();
+    loadStageByData(data);
+    StageHistoryManager.init(data);
 
     Camera.reset();
     Stage.effects.push(new ViewFlashEffect(Color.Black));
@@ -139,5 +136,15 @@ export namespace RecentFileManager {
       path: path,
       time: new Date().getTime(),
     });
+  }
+
+  export function loadStageByData(data: Serialized.File) {
+    for (const node of data.nodes) {
+      StageManager.addNode(new Node(node));
+    }
+    for (const edge of data.edges) {
+      StageManager.addEdge(new Edge(edge));
+    }
+    StageManager.updateReferences();
   }
 }

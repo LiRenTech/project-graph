@@ -12,6 +12,7 @@ import { StageNodeMoveManager } from "./concreteMethods/StageNodeMoveManager";
 import { StageNodeColorManager } from "./concreteMethods/StageNodeColorManager";
 import { Serialized } from "../../../types/node";
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
+import { StageHistoryManager } from "./concreteMethods/StageHistoryManager";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -139,6 +140,7 @@ export namespace StageManager {
 
   // region 以下为舞台操作相关的函数
   // 建议不同的功能分类到具体的文件中，然后最后集中到这里调用，使得下面的显示简短一些
+  // 每个操作函数尾部都要加一个记录历史的操作
 
   /**
    *
@@ -146,7 +148,9 @@ export namespace StageManager {
    * @returns 返回新创建节点的uuid
    */
   export function addNodeByClick(clickWorldLocation: Vector): string {
-    return StageNodeAdder.addNodeByClick(clickWorldLocation);
+    const res = StageNodeAdder.addNodeByClick(clickWorldLocation);
+    StageHistoryManager.recordStep();
+    return res;
   }
 
   /**
@@ -154,56 +158,68 @@ export namespace StageManager {
    * @param delta
    */
   export function moveNodes(delta: Vector) {
-    StageNodeMoveManager.moveNodes(delta);
+    StageNodeMoveManager.moveNodes(delta);  // 连续过程，不记录历史，只在结束时记录
   }
 
   export function moveNodesWithChildren(delta: Vector) {
-    StageNodeMoveManager.moveNodesWithChildren(delta);
+    StageNodeMoveManager.moveNodesWithChildren(delta);  // 连续过程，不记录历史，只在结束时记录
   }
 
   export function alignLeft() {
     StageNodeMoveManager.alignLeft();
+    StageHistoryManager.recordStep();
   }
 
   export function alignRight() {
     StageNodeMoveManager.alignRight();
+    StageHistoryManager.recordStep();
   }
 
   export function alignTop() {
     StageNodeMoveManager.alignTop();
+    StageHistoryManager.recordStep();
   }
   export function alignBottom() {
     StageNodeMoveManager.alignBottom();
+    StageHistoryManager.recordStep();
   }
   export function alignCenterHorizontal() {
     StageNodeMoveManager.alignCenterHorizontal();
+    StageHistoryManager.recordStep();
   }
   export function alignCenterVertical() {
     StageNodeMoveManager.alignCenterVertical();
+    StageHistoryManager.recordStep();
   }
   export function alignHorizontalSpaceBetween() {
     StageNodeMoveManager.alignHorizontalSpaceBetween();
+    StageHistoryManager.recordStep();
   }
   export function alignVerticalSpaceBetween() {
     StageNodeMoveManager.alignVerticalSpaceBetween();
+    StageHistoryManager.recordStep();
   }
 
   export function setNodeColor(color: Color) {
     StageNodeColorManager.setNodeColor(color);
+    StageHistoryManager.recordStep();
   }
 
   export function clearNodeColor() {
     StageNodeColorManager.clearNodeColor();
+    StageHistoryManager.recordStep();
   }
 
   export function moveNodeFinished() {
     // 以后有历史记录和撤销功能了再说，这里什么都不用写
     // 需要查看ts的装饰器怎么用
+    StageHistoryManager.recordStep();
   }
 
   export function moveEdgeFinished() {
     // 以后有历史记录和撤销功能了再说，这里什么都不用写
     // 需要查看ts的装饰器怎么用
+    StageHistoryManager.recordStep();
   }
 
   /**
@@ -212,7 +228,7 @@ export namespace StageManager {
    * @param diffLocation
    */
   export function moveEdges(lastMoveLocation: Vector, diffLocation: Vector) {
-    StageNodeRotate.moveEdges(lastMoveLocation, diffLocation);
+    StageNodeRotate.moveEdges(lastMoveLocation, diffLocation);  // 连续过程，不记录历史，只在结束时记录
   }
 
   /**
@@ -221,27 +237,34 @@ export namespace StageManager {
    * @param angle
    */
   export function rotateNode(node: Node, angle: number) {
-    StageNodeRotate.rotateNodeDfs(node, node, angle, []);
+    StageNodeRotate.rotateNodeDfs(node, node, angle, []);  // 连续过程，不记录历史，只在结束时记录
     updateReferences();
   }
 
   export function deleteNodes(deleteNodes: Node[]) {
     StageDeleteManager.deleteNodes(deleteNodes);
+    StageHistoryManager.recordStep();
   }
 
   export function deleteEdge(deleteEdge: Edge): boolean {
-    return StageDeleteManager.deleteEdge(deleteEdge);
+    const res = StageDeleteManager.deleteEdge(deleteEdge);
+    StageHistoryManager.recordStep();
+    return res;
   }
 
   export function connectNode(fromNode: Node, toNode: Node): boolean {
-    return StageNodeConnector.connectNode(fromNode, toNode);
+    const res = StageNodeConnector.connectNode(fromNode, toNode);
+    StageHistoryManager.recordStep();
+    return res;
   }
 
   export function reverseEdges(edges: Edge[]) {
     StageNodeConnector.reverseEdges(edges);
+    StageHistoryManager.recordStep();
   }
 
   export function addSerializedData(serializedData: Serialized.File) {
     StageSerializedAdder.addSerializedData(serializedData);
+    StageHistoryManager.recordStep();
   }
 }

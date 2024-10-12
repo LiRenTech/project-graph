@@ -16,6 +16,7 @@ import { LineEffect } from "../../effect/concrete/LineEffect";
 import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
 import { Line } from "../../dataStruct/Line";
 import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
+import { StageHistoryManager } from "../../stage/stageManager/concreteMethods/StageHistoryManager";
 
 /**
  * 渲染器
@@ -558,6 +559,7 @@ export namespace Renderer {
       `ConnectFromNodes: ${Stage.connectFromNodes}`,
       `lastSelectedNode: ${Controller.lastSelectedNode.size}`,
       `粘贴板: ${JSON.stringify(Stage.copyBoardData)}`,
+      `历史: ${StageHistoryManager.statusText()}`,
     ];
     for (const line of detailsData) {
       RenderUtils.renderText(
