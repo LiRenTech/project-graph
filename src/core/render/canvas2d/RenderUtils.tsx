@@ -201,6 +201,32 @@ export namespace RenderUtils {
   }
 
   /**
+   * 绘制一条虚线
+   * @param start
+   * @param end
+   * @param color
+   * @param width
+   * @param dashLength
+   */
+  export function renderDashedLine(
+    start: Vector,
+    end: Vector,
+    color: Color,
+    width: number,
+    dashLength: number,
+  ): void {
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(start.x, start.y);
+    Canvas.ctx.lineTo(end.x, end.y);
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.setLineDash([dashLength, dashLength]);
+    Canvas.ctx.stroke();
+    // 重置线型
+    Canvas.ctx.setLineDash([]);
+  }
+
+  /**
    * 绘制一个多边形并填充
    */
   export function renderPolygonAndFill(

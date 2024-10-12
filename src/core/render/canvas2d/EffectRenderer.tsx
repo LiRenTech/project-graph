@@ -5,12 +5,14 @@ import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 import { LineEffect } from "../../effect/concrete/LineEffect";
 import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
-import { easeInOutSine } from "../../effect/easings";
+import { easeInOutSine, easeOutQuint } from "../../effect/easings";
 import { Rectangle } from "../../dataStruct/Rectangle";
 import { Camera } from "../../stage/Camera";
 import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "./renderer";
 import { RenderUtils } from "./RenderUtils";
+import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
+import { reverseAnimate } from "../../effect/animateFunctions";
 
 /**
  * 专门编写所有的特效渲染
@@ -122,13 +124,42 @@ export namespace EffectRenderer {
     }
     RenderUtils.renderRect(
       new Rectangle(new Vector(-10000, -10000), new Vector(20000, 20000)),
-      mixColors(
-        effect.color,
-        new Color(0, 0, 0, 0),
-        effect.timeProgress.rate,
-      ),
+      mixColors(effect.color, new Color(0, 0, 0, 0), effect.timeProgress.rate),
       Color.Transparent,
       0,
+    );
+  }
+
+  export function renderRectangleNoteEffect(effect: RectangleNoteEffect) {
+    if (effect.timeProgress.isFull) {
+      return;
+    }
+    const startRect = Renderer.getCoverWorldRectangle();
+    const currentRect = new Rectangle(
+      startRect.location.add(
+        effect.targetRectangle.location
+          .subtract(startRect.location)
+          .multiply(easeOutQuint(effect.timeProgress.rate)),
+      ),
+      new Vector(
+        startRect.size.x +
+          (effect.targetRectangle.size.x - startRect.size.x) *
+            easeOutQuint(effect.timeProgress.rate),
+        startRect.size.y +
+          (effect.targetRectangle.size.y - startRect.size.y) *
+            easeOutQuint(effect.timeProgress.rate),
+      ),
+    );
+    RenderUtils.renderRect(
+      currentRect.transformWorld2View(),
+      Color.Transparent,
+      mixColors(
+        Color.Transparent,
+        effect.strokeColor,
+        reverseAnimate(effect.timeProgress.rate),
+      ),
+      2,
+      5
     );
   }
 }

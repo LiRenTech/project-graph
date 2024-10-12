@@ -15,6 +15,7 @@ import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 import { LineEffect } from "../../effect/concrete/LineEffect";
 import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
 import { Line } from "../../dataStruct/Line";
+import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
 
 /**
  * 渲染器
@@ -132,6 +133,13 @@ export namespace Renderer {
             new Color(255, 255, 255, 0.5),
             2,
           );
+          RenderUtils.renderDashedLine(
+            transformWorld2View(node.rectangle.getCenter()),
+            transformWorld2View(Controller.lastMoveLocation),
+            new Color(255, 255, 255, 0),
+            2,
+            2,
+          );
         }
       } else {
         // 画一条像吸住了的线
@@ -139,8 +147,8 @@ export namespace Renderer {
           RenderUtils.renderGradientLine(
             transformWorld2View(node.rectangle.getCenter()),
             transformWorld2View(connectTargetNode.rectangle.getCenter()),
-            new Color(255, 255, 255, 0),
-            new Color(255, 255, 255, 0.5),
+            new Color(0, 255, 0, 0),
+            new Color(0, 255, 0, 0.5),
             2,
           );
         }
@@ -442,6 +450,8 @@ export namespace Renderer {
         EffectRenderer.renderLineCuttingEffect(effect);
       } else if (effect instanceof ViewFlashEffect) {
         EffectRenderer.renderViewFlashEffect(effect);
+      } else if (effect instanceof RectangleNoteEffect) {
+        EffectRenderer.renderRectangleNoteEffect(effect);
       }
     }
   }

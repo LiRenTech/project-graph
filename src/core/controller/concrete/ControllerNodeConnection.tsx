@@ -8,7 +8,7 @@ import { Stage } from "../../stage/Stage";
 import { Vector } from "../../dataStruct/Vector";
 import { ControllerClass } from "../ControllerClass";
 import { Controller } from "../Controller";
-
+import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
 
 /**
  * 右键连线功能 的控制器
@@ -16,11 +16,10 @@ import { Controller } from "../Controller";
  */
 export const ControllerNodeConnection = new ControllerClass();
 
-
 /**
- * 
- * @param event 
- * @returns 
+ *
+ * @param event
+ * @returns
  */
 ControllerNodeConnection.mousedown = (event: MouseEvent) => {
   if (event.button !== 2) {
@@ -45,12 +44,26 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
       for (const node of StageManager.nodes) {
         if (node.isSelected) {
           // 特效
+          Stage.effects.push(
+            new RectangleNoteEffect(
+              new ProgressNumber(0, 15),
+              node.rectangle.clone(),
+              new Color(0, 255, 0, 1),
+            ),
+          );
         }
       }
     } else {
       // 不触发多重连接
       Stage.connectFromNodes = [clickedNode];
       // 特效
+      Stage.effects.push(
+        new RectangleNoteEffect(
+          new ProgressNumber(0, 15),
+          clickedNode.rectangle.clone(),
+          new Color(0, 255, 0, 1),
+        ),
+      );
     }
   } else {
   }
@@ -60,6 +73,9 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
   if (Stage.isSelecting || Stage.isCutting) {
     return;
   }
+  if (!Controller.isMouseDown[2]) {
+    return;
+  }
   const worldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
@@ -67,8 +83,19 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
   let isFindConnectToNode = false;
   for (const node of StageManager.nodes) {
     if (node.rectangle.isPointInside(worldLocation)) {
+      if (Stage.connectToNode === null) {
+        // 特效
+        // Stage.effects.push(
+        //   new RectangleNoteEffect(
+        //     new ProgressNumber(0, 30),
+        //     node.rectangle.clone(),
+        //     new Color(0, 255, 0, 1),
+        //   ),
+        // );
+      }
       Stage.connectToNode = node;
       isFindConnectToNode = true;
+
       break;
     }
   }
