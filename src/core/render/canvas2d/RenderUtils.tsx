@@ -215,12 +215,13 @@ export namespace RenderUtils {
     width: number,
     dashLength: number,
   ): void {
+    // TODO: 待排查为何不生效
+    Canvas.ctx.setLineDash([dashLength, dashLength]);
     Canvas.ctx.beginPath();
     Canvas.ctx.moveTo(start.x, start.y);
     Canvas.ctx.lineTo(end.x, end.y);
     Canvas.ctx.lineWidth = width;
     Canvas.ctx.strokeStyle = color.toString();
-    Canvas.ctx.setLineDash([dashLength, dashLength]);
     Canvas.ctx.stroke();
     // 重置线型
     Canvas.ctx.setLineDash([]);

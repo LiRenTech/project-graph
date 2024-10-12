@@ -133,13 +133,13 @@ export namespace Renderer {
             new Color(255, 255, 255, 0.5),
             2,
           );
-          RenderUtils.renderDashedLine(
-            transformWorld2View(node.rectangle.getCenter()),
-            transformWorld2View(Controller.lastMoveLocation),
-            new Color(255, 255, 255, 0),
-            2,
-            2,
-          );
+          // RenderUtils.renderDashedLine(
+          //   transformWorld2View(node.rectangle.getCenter()),
+          //   transformWorld2View(Controller.lastMoveLocation),
+          //   new Color(255, 255, 255, 0),
+          //   2,
+          //   2,
+          // );
         }
       } else {
         // 画一条像吸住了的线
@@ -411,18 +411,66 @@ export namespace Renderer {
     }
     // 粘贴板有内容
     // 获取粘贴板中所有节点的外接矩形
-    const clipboardRect = Rectangle.getBoundingRectangle(
-      Stage.copyBoardData.nodes.map(
-        (node) =>
-          new Rectangle(new Vector(...node.location), new Vector(...node.size)),
-      ),
-    );
-    RenderUtils.renderRect(
-      clipboardRect.transformWorld2View(),
-      Color.Transparent,
-      new Color(255, 255, 255, 0.5),
-      1,
-    );
+    if (Stage.copyBoardDataRectangle) {
+      // 画一个原位置
+      RenderUtils.renderRect(
+        Stage.copyBoardDataRectangle.transformWorld2View(),
+        Color.Transparent,
+        new Color(255, 255, 255, 0.5),
+        1,
+      );
+      // 在原位置下写标注
+      RenderUtils.renderText(
+        "ctrl+shift+v 原位置叠加粘贴",
+        transformWorld2View(
+          new Vector(
+            Stage.copyBoardDataRectangle.location.x,
+            Stage.copyBoardDataRectangle.location.y +
+              Stage.copyBoardDataRectangle.size.y +
+              20,
+          ),
+        ),
+        12 * Camera.currentScale,
+        new Color(255, 255, 255, 0.5),
+      );
+      // 画一个鼠标位置
+      RenderUtils.renderRect(
+        new Rectangle(
+          Stage.copyBoardDataRectangle.location.add(Stage.copyBoardMouseVector),
+          Stage.copyBoardDataRectangle.size,
+        ).transformWorld2View(),
+        Color.Transparent,
+        new Color(156, 220, 254, 0.5),
+        1,
+      );
+      // 写下标注
+      RenderUtils.renderText(
+        "ctrl+v 粘贴到鼠标位置，在没有选择节点时ctrl+c清空粘贴板",
+        transformWorld2View(
+          new Vector(
+            Stage.copyBoardDataRectangle.location.x +
+              Stage.copyBoardMouseVector.x,
+            Stage.copyBoardDataRectangle.location.y +
+              Stage.copyBoardDataRectangle.size.y +
+              Stage.copyBoardMouseVector.y +
+              20,
+          ),
+        ),
+        12 * Camera.currentScale,
+        new Color(156, 220, 254, 0.5),
+      );
+      for (const node of Stage.copyBoardData.nodes) {
+        RenderUtils.renderRect(
+          new Rectangle(
+            new Vector(...node.location).add(Stage.copyBoardMouseVector),
+            new Vector(...node.size),
+          ).transformWorld2View(),
+          Color.Transparent,
+          new Color(156, 220, 254, 0.5),
+          2 * Camera.currentScale,
+        );
+      }
+    }
   }
 
   // /**

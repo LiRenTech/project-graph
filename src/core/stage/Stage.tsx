@@ -89,7 +89,17 @@ export namespace Stage {
     nodes: [],
     edges: [],
   };
-  
+  /**
+   * 粘贴板内容上的外接矩形
+   * 当他为null时，表示没有粘贴板数据
+   */
+  export let copyBoardDataRectangle: Rectangle | null = null;
+  /**
+   * 表示从粘贴板外接矩形的矩形中心，到鼠标当前位置的向量
+   * 用于计算即将粘贴的位置
+   */
+  export let copyBoardMouseVector: Vector = Vector.getZero();
+
   /**
    * 逻辑总入口
    */

@@ -1,4 +1,5 @@
 import { Serialized } from "../../../../types/node";
+import { Vector } from "../../../dataStruct/Vector";
 import { Edge } from "../../../Edge";
 import { Node } from "../../../Node";
 import { StageManager } from "../StageManager";
@@ -13,10 +14,12 @@ export namespace StageSerializedAdder {
    * 会自动刷新新增部分的uuid
    * @param serializedData
    */
-  export function addSerializedData(serializedData: Serialized.File) {
+  export function addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
     const updatedSerializedData = refreshUUID(serializedData);
     for (const node of updatedSerializedData.nodes) {
-      StageManager.addNode(new Node(node));
+      const newNode = new Node(node);
+      newNode.rectangle.location = newNode.rectangle.location.add(diffLocation);
+      StageManager.addNode(newNode);
     }
     for (const edge of updatedSerializedData.edges) {
       StageManager.addEdge(new Edge(edge));
