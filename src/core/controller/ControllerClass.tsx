@@ -18,14 +18,35 @@ export class ControllerClass {
   public mousewheel: (event: WheelEvent) => void = (_: WheelEvent) => {};
   public mouseDoubleClick: (event: MouseEvent) => void = (_: MouseEvent) => {};
 
+  /**
+   * 这个函数将在总控制器初始化是统一调用。
+   * 调用之前，确保实例控制器的事件函数已经被赋值
+   * 如果没有赋值被自动过滤，
+   * 一旦绑定，后期就一定不要再换绑！
+   */
   public init() {
-    window.addEventListener("keydown", this.keydown);
-    window.addEventListener("keyup", this.keyup);
-    Canvas.element.addEventListener("mousedown", this.mousedown);
-    Canvas.element.addEventListener("mouseup", this.mouseup);
-    Canvas.element.addEventListener("mousemove", this.mousemove);
-    Canvas.element.addEventListener("wheel", this.mousewheel);
-    Canvas.element.addEventListener("dblclick", this.mouseDoubleClick);
+    if (this.keydown.toString().length > 12) {
+      window.addEventListener("keydown", this.keydown);
+    }
+    if (this.keyup.toString().length > 12) {
+      window.addEventListener("keyup", this.keyup);
+    }
+    if (this.mousedown.toString().length > 12) {
+      Canvas.element.addEventListener("mousedown", this.mousedown);
+    }
+    if (this.mouseup.toString().length > 12) {
+      Canvas.element.addEventListener("mouseup", this.mouseup);
+    }
+    if (this.mousemove.toString().length > 12) {
+      Canvas.element.addEventListener("mousemove", this.mousemove);
+    }
+    if (this.mousewheel.toString().length > 12) {
+      Canvas.element.addEventListener("wheel", this.mousewheel);
+    }
+    if (this.mouseDoubleClick.toString().length > 12) {
+      Canvas.element.addEventListener("dblclick", this.mouseDoubleClick);
+    }
+    // 有待优雅
   }
   public destroy() {
     window.removeEventListener("keydown", this.keydown);
