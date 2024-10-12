@@ -56,9 +56,7 @@ pnpm tauri dev
 https://littlefean.github.io/2024/09/28/tauri%E9%A1%B9%E7%9B%AE%E5%9C%A8windows%E4%B8%8A%E7%9A%84%E5%BC%80%E5%8F%91%E8%B8%A9%E5%9D%91/
 ```
 
-若发现修改代码后无法热更新，用 Ctrl+Shift+R 刷新。
-
-若重构代码，移动一些文件的位置并且解决导入路径问题，IDE中不报错后但发现启动后出现一个透明窗口，可以ctrl+shift+i查看控制台，看看报错信息，发现报错信息还是曾经的路径，在控制台中用 Ctrl+Shift+R 刷新。
+若发现修改代码后无法热更新或者出现诡异bug，用ctrl+shift+i进入DevTools控制台后，在控制台窗口激活的情况下，按 Ctrl+Shift+R 刷新（因为窗口屏蔽了Ctrl+Shift+R快捷键，但无法屏蔽F5刷新和ctrl+shift+i等特殊的快捷键）注：F5刷新和Ctrl+Shift+R刷新不一样，F5不会刷掉缓存，Ctrl+Shift+R会刷掉缓存。
 
 打包可执行文件
 
