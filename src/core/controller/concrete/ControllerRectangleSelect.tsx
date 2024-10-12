@@ -6,11 +6,8 @@ import { Vector } from "../../dataStruct/Vector";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
-
 /**
  * 框选控制器
- * 
- * 目前只能框选节点
  */
 export const ControllerRectangleSelect = new ControllerClass();
 
@@ -24,26 +21,33 @@ ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
   );
   const clickedNode = StageManager.findNodeByLocation(pressWorldLocation);
   const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
-  if (clickedNode !== null) {
+  if (clickedNode !== null || clickedEdge !== null) {
     // 在空白地方按下，才能触发框选
     return;
   }
   const isHaveNodeSelected = StageManager.nodes.some((node) => node.isSelected);
-
+  const isHaveEdgeSelected = StageManager.edges.some((edge) => edge.isSelected);
+  console.log(isHaveNodeSelected, isHaveEdgeSelected);
   // 现在的情况：在空白的地方按下左键
 
-  if (isHaveNodeSelected) {
+  if (isHaveNodeSelected || isHaveEdgeSelected) {
     // A
     if (
       Controller.pressingKeySet.has("shift") ||
       Controller.pressingKeySet.has("control")
     ) {
       // 不取消选择
+      console.log("A");
     } else {
       // 取消选择所有节点
       StageManager.nodes.forEach((node) => {
         node.isSelected = false;
       });
+      // 取消选择所有边
+      StageManager.edges.forEach((edge) => {
+        edge.isSelected = false;
+      });
+      console.log("取消选择所有节点和边");
     }
   }
   Stage.isSelecting = true;
@@ -56,7 +60,6 @@ ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
 
   if (clickedEdge === null) {
     // 和A一样了
-    console.log("没有连线被按下");
   } else {
     // 在连线身上按下
     Stage.isSelecting = false;
@@ -92,6 +95,9 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
     StageManager.nodes.forEach((node) => {
       node.isSelected = false;
     });
+    StageManager.edges.forEach((edge) => {
+      edge.isSelected = false;
+    });
   }
 
   if (Controller.pressingKeySet.has("control")) {
@@ -105,10 +111,33 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
         }
       }
     }
+    for (const edge of StageManager.edges) {
+      if (Stage.selectingRectangle.isCollideWithLine(edge.bodyLine)) {
+        if (
+          Controller.lastSelectedEdge.has(
+            edge.target.uuid + "&" + edge.source.uuid,
+          )
+        ) {
+          edge.isSelected = false;
+        } else {
+          edge.isSelected = true;
+        }
+      }
+    }
   } else {
+    let isHaveNode = false;
     for (const node of StageManager.nodes) {
       if (Stage.selectingRectangle.isCollideWith(node.rectangle)) {
         node.isSelected = true;
+        isHaveNode = true;
+      }
+    }
+    if (!isHaveNode) {
+      // 如果已经有节点被选择了，则不能再选择边了
+      for (const edge of StageManager.edges) {
+        if (Stage.selectingRectangle.isCollideWithLine(edge.bodyLine)) {
+          edge.isSelected = true;
+        }
       }
     }
   }
@@ -128,6 +157,14 @@ ControllerRectangleSelect.mouseup = (event: MouseEvent) => {
   for (const node of StageManager.nodes) {
     if (node.isSelected) {
       Controller.lastSelectedNode.add(node.uuid);
+    }
+  }
+  Controller.lastSelectedEdge = new Set();
+  for (const edge of StageManager.edges) {
+    if (edge.isSelected) {
+      Controller.lastSelectedEdge.add(
+        edge.target.uuid + "&" + edge.source.uuid,
+      );
     }
   }
 };

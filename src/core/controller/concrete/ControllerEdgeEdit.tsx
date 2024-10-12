@@ -1,4 +1,5 @@
 import { Stage } from "../../stage/Stage";
+import { StageManager } from "../../stage/stageManager/StageManager";
 
 import { ControllerClass } from "../ControllerClass";
 
@@ -22,5 +23,25 @@ ControllerEdgeEdit.mouseDoubleClick = (event: MouseEvent) => {
       }
     }
     return;
+  }
+};
+
+ControllerEdgeEdit.keydown = (event: KeyboardEvent) => {
+  if (event.key === "Enter") {
+    console.log("Edge Edit Enter");
+    // 先检测是否有选择了的边
+    const isHaveEdgeSelected = StageManager.edges.some(
+      (edge) => edge.isSelected,
+    );
+    if (!isHaveEdgeSelected) {
+      return;
+    }
+
+    let user_input = prompt("请输入线上的文字", "");
+    if (user_input) {
+      for (const edge of StageManager.edges) {
+        edge.rename(user_input);
+      }
+    }
   }
 };

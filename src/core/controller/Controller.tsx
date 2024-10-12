@@ -89,6 +89,7 @@ export namespace Controller {
    * 仅为 Ctrl交叉选择使用
    */
   export let lastSelectedNode: Set<string> = new Set();
+  export let lastSelectedEdge: Set<string> = new Set();
 
   export let touchStartLocation = Vector.getZero();
   export let touchStartDistance = 0;

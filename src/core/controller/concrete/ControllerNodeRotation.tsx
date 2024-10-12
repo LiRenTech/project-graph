@@ -38,10 +38,6 @@ ControllerNodeRotation.mousedown = (event: MouseEvent) => {
   );
   const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
   const isHaveEdgeSelected = StageManager.edges.some((edge) => edge.isSelected);
-  // 取消选择所有连线
-  StageManager.edges.forEach((edge) => {
-    edge.isSelected = false;
-  });
   if (clickedEdge === null) {
     return;
   }
