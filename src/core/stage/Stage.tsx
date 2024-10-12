@@ -5,6 +5,7 @@ import { Rectangle } from "../dataStruct/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { Line } from "../dataStruct/Line";
 import { Serialized } from "../../types/node";
+import { StageDumper } from "./StageDumper";
 
 /**
  * 舞台对象
@@ -84,7 +85,7 @@ export namespace Stage {
    * 粘贴板数据
    */
   export let copyBoardData: Serialized.File = {
-    version: 4,
+    version: StageDumper.latestVersion,
     nodes: [],
     edges: [],
   };

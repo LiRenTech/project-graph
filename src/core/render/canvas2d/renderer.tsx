@@ -150,7 +150,7 @@ export namespace Renderer {
     renderKeyboardOnly();
 
     // 画粘贴板上的信息
-    // renderClipboard();
+    renderClipboard();
 
     // 画详细信息
     renderDetails();

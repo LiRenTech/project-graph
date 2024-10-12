@@ -7,6 +7,13 @@ import { StageManager } from "./stageManager/StageManager";
  * 将舞台信息转化为序列化JSON对象
  */
 export namespace StageDumper {
+
+  /**
+   * 最新版本
+   */
+  export const latestVersion = 4;
+
+
   export function dumpNode(node: Node): Serialized.Node {
     return {
       location: [node.rectangle.location.x, node.rectangle.location.y],
@@ -33,7 +40,7 @@ export namespace StageDumper {
    */
   export function dump(): Serialized.File {
     return {
-      version: 4,
+      version: latestVersion,
       nodes: StageManager.nodes.map((node) => dumpNode(node)),
       edges: StageManager.edges.map((edge) => dumpEdge(edge)),
     };
@@ -55,7 +62,7 @@ export namespace StageDumper {
     }
 
     return {
-      version: 4,
+      version: latestVersion,
       nodes: selectedNodes,
       edges: selectedEdges,
     };
