@@ -10,6 +10,8 @@ import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
 import { StageNodeMoveManager } from "./concreteMethods/StageNodeMoveManager";
 import { StageNodeColorManager } from "./concreteMethods/StageNodeColorManager";
+import { Serialized } from "../../../types/node";
+import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -237,5 +239,9 @@ export namespace StageManager {
 
   export function reverseEdges(edges: Edge[]) {
     StageNodeConnector.reverseEdges(edges);
+  }
+
+  export function addSerializedData(serializedData: Serialized.File) {
+    StageSerializedAdder.addSerializedData(serializedData);
   }
 }

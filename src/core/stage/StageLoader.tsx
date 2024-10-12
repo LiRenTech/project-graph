@@ -4,10 +4,12 @@ import { Serialized } from "../../types/node";
  * 舞台加载
  */
 export namespace StageLoader {
+  
   /**
    * 将序列化数据逐步的，一级一级的转换为最新版本的格式
-   * @param data
-   * @returns
+   * 函数中将自动检测数据版本，并进行相应的转换
+   * @param data json格式的序列化数据
+   * @returns 最新版本的序列化数据
    */
   export function validate(data: Record<string, any>): Serialized.File {
     data = convertV1toV2(data);
