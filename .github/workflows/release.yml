@@ -73,7 +73,7 @@ jobs:
         run: |
           $jsonContent = Get-Content -Path "src-tauri/tauri.conf.json" -Raw
           $jsonObject = $jsonContent | ConvertFrom-Json
-          $jsonObject.version = "0.0.0-nightly.${{ github.sha }}"
+          $jsonObject.version = "${{ github.event.inputs.version }}"
           $jsonObject | ConvertTo-Json -Depth 10 | Set-Content -Path "src-tauri/tauri.conf.json"
 
       - uses: tauri-apps/tauri-action@v0
