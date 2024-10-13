@@ -9,13 +9,12 @@ jobs:
   delete-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Delete a Release
-        uses: liudonghua123/delete-release-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Delete Release
+        uses: larryjoelane/delete-release-action@v1.0.24
         with:
-          release_name: "Nightly Build"
-          suppress_errors: true
+          release-name: "Nightly Build"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
   publish-tauri:
     permissions:
       contents: write
