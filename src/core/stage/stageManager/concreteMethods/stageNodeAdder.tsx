@@ -1,5 +1,6 @@
 import { Vector } from "../../../dataStruct/Vector";
 import { Node } from "../../../Node";
+import { Settings } from "../../../Settings";
 import { StageManager } from "../StageManager";
 import { v4 as uuidv4 } from "uuid";
 
@@ -14,11 +15,11 @@ export namespace StageNodeAdder {
    * @param clickWorldLocation
    * @returns
    */
-  export function addNodeByClick(clickWorldLocation: Vector): string {
+  export async function addNodeByClick(clickWorldLocation: Vector) : Promise<string> {
     const newUUID = uuidv4();
     const node = new Node({
       uuid: newUUID,
-      text: "...",
+      text: await getAutoName(),
       details: "",
       children: [],
       location: [clickWorldLocation.x, clickWorldLocation.y],
@@ -30,6 +31,30 @@ export namespace StageNodeAdder {
     );
     StageManager.addNode(node);
     return newUUID;
+  }
+
+  async function getAutoName() : Promise<string> {
+    const template = await Settings.get("autoNamerTemplate")
+    if (template.includes("{{i}}")) {
+      let i = 0;
+      while (true) {
+        const name = template.replace("{{i}}", i.toString());
+        let isConflict = false;
+        for (const node of StageManager.nodes) {
+          if (node.text === name) {
+            i++;
+            isConflict = true;
+            continue;
+          }
+        }
+        if (!isConflict) {
+          break;
+        }
+      }
+      let name = template.replace("{{i}}", i.toString());
+      return name;
+    }
+    return template;
   }
 
   /**

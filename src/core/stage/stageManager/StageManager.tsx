@@ -149,8 +149,8 @@ export namespace StageManager {
    * @param clickWorldLocation
    * @returns 返回新创建节点的uuid
    */
-  export function addNodeByClick(clickWorldLocation: Vector): string {
-    const res = StageNodeAdder.addNodeByClick(clickWorldLocation);
+  export async function addNodeByClick(clickWorldLocation: Vector): Promise<string> {
+    const res = await StageNodeAdder.addNodeByClick(clickWorldLocation);
     StageHistoryManager.recordStep();
     return res;
   }
