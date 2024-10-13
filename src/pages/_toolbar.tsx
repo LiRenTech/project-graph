@@ -40,6 +40,87 @@ function ToolbarItem({ icon, handleFunction, description }: ToolbarItemProps) {
   );
 }
 
+interface ColorPanelProps {
+  onClickClose: () => void;
+}
+/**
+ * 调色盘面板
+ * @param param0 
+ * @returns 
+ */
+function ColorPanel({ onClickClose }: ColorPanelProps) {
+  return (
+    <div className="absolute right-0 flex h-32 w-32 flex-col items-center justify-center rounded-lg bg-black">
+      <div className="flex flex-wrap items-center justify-center">
+        <div
+          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-red-500 transition-all hover:scale-125"
+          onClick={() => {
+            StageManager.setNodeColor(new Color(239, 68, 68));
+          }}
+        />
+        <div
+          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-yellow-500 transition-all hover:scale-125"
+          onClick={() => {
+            StageManager.setNodeColor(new Color(234, 179, 8));
+          }}
+        />
+        <div
+          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-green-600 transition-all hover:scale-125"
+          onClick={() => {
+            StageManager.setNodeColor(new Color(22, 163, 74));
+          }}
+        />
+        <div
+          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-blue-500 transition-all hover:scale-125"
+          onClick={() => {
+            StageManager.setNodeColor(new Color(59, 130, 246));
+          }}
+        />
+        <div
+          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-purple-500 transition-all hover:scale-125"
+          onClick={() => {
+            StageManager.setNodeColor(new Color(168, 85, 247));
+          }}
+        />
+        {/* 清除颜色 */}
+        <div
+          className="m-1 h-5 w-5 animate-pulse cursor-pointer rounded-full bg-gray-500 text-center text-sm transition-all hover:scale-125"
+          onClick={() => {
+            StageManager.clearNodeColor();
+          }}
+        >
+          <span>x</span>
+        </div>
+        {/* 自定义 */}
+        <input
+          type="color"
+          id="colorPicker"
+          value="#ff0000"
+          onChange={(e) => {
+            const color = e.target.value;
+            const r = parseInt(color.slice(1, 3), 16);
+            const g = parseInt(color.slice(3, 5), 16);
+            const b = parseInt(color.slice(5, 7), 16);
+            StageManager.setNodeColor(new Color(r, g, b));
+          }}
+        ></input>
+      </div>
+
+      <button
+        className="absolute right-0 top-0 rounded-lg bg-red-700 px-2"
+        onClick={onClickClose}
+      >
+        X
+      </button>
+    </div>
+  );
+}
+
+/**
+ * 工具栏
+ * @param param0 
+ * @returns 
+ */
 export default function Toolbar({ className = "" }) {
   const [isColorPanelOpen, setColorPanelOpen] = useState(false); // 控制颜色面板的状态
 
@@ -88,71 +169,7 @@ export default function Toolbar({ className = "" }) {
       />
 
       {/* 颜色面板 */}
-      {isColorPanelOpen && (
-        <div className="absolute right-0 flex h-32 w-32 flex-col items-center justify-center rounded-lg bg-black">
-          <div className="flex flex-wrap items-center justify-center">
-            <div
-              className="m-1 h-5 w-5 cursor-pointer rounded-full bg-red-500 transition-all hover:scale-125"
-              onClick={() => {
-                StageManager.setNodeColor(new Color(239, 68, 68));
-              }}
-            />
-            <div
-              className="m-1 h-5 w-5 cursor-pointer rounded-full bg-yellow-500 transition-all hover:scale-125"
-              onClick={() => {
-                StageManager.setNodeColor(new Color(234, 179, 8));
-              }}
-            />
-            <div
-              className="m-1 h-5 w-5 cursor-pointer rounded-full bg-green-600 transition-all hover:scale-125"
-              onClick={() => {
-                StageManager.setNodeColor(new Color(22, 163, 74));
-              }}
-            />
-            <div
-              className="m-1 h-5 w-5 cursor-pointer rounded-full bg-blue-500 transition-all hover:scale-125"
-              onClick={() => {
-                StageManager.setNodeColor(new Color(59, 130, 246));
-              }}
-            />
-            <div
-              className="m-1 h-5 w-5 cursor-pointer rounded-full bg-purple-500 transition-all hover:scale-125"
-              onClick={() => {
-                StageManager.setNodeColor(new Color(168, 85, 247));
-              }}
-            />
-            {/* 清除颜色 */}
-            <div
-              className="m-1 h-5 w-5 animate-pulse cursor-pointer rounded-full bg-gray-500 text-center text-sm transition-all hover:scale-125"
-              onClick={() => {
-                StageManager.clearNodeColor();
-              }}
-            >
-              <span>x</span>
-            </div>
-            {/* 自定义 */}
-            <input
-              type="color"
-              id="colorPicker"
-              value="#ff0000"
-              onChange={(e) => {
-                const color = e.target.value;
-                const r = parseInt(color.slice(1, 3), 16);
-                const g = parseInt(color.slice(3, 5), 16);
-                const b = parseInt(color.slice(5, 7), 16);
-                StageManager.setNodeColor(new Color(r, g, b));
-              }}
-            ></input>
-          </div>
-
-          <button
-            className="absolute right-0 top-0 rounded-lg bg-red-700 px-2"
-            onClick={toggleColorPanel}
-          >
-            X
-          </button>
-        </div>
-      )}
+      {isColorPanelOpen && <ColorPanel onClickClose={toggleColorPanel} />}
       <ToolbarItem
         description="设置节点颜色"
         icon={<PaintBucket />}
