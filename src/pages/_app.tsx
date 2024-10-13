@@ -19,6 +19,7 @@ import { useRecoilState } from "recoil";
 import { fileAtom } from "../state";
 import RecentFilesPanel from "./_recent_files_panel";
 import { Settings } from "../core/Settings";
+import ErrorHandler from "./_error_handler";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -43,6 +44,9 @@ export default function App() {
       if (event.key === "Escape") {
         setOpenMenu(false);
       }
+      (() => {
+        throw new TypeError("test error");
+      })();
     });
     window.addEventListener("pointerdown", () => {
       setOpenMenu(false);
@@ -71,6 +75,7 @@ export default function App() {
       onContextMenu={(e) => e.preventDefault()}
     >
       <Dialog />
+      <ErrorHandler />
       {/* 叠加层，显示窗口控件 */}
       <div
         className={cn(
