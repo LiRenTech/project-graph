@@ -17,6 +17,7 @@ import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
 import { Line } from "../../dataStruct/Line";
 import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
 import { StageHistoryManager } from "../../stage/stageManager/concreteMethods/StageHistoryManager";
+import { SymmetryCurve } from "../../dataStruct/Curve";
 
 /**
  * 渲染器
@@ -352,6 +353,45 @@ export namespace Renderer {
           renderArrowHead(endPoint, direction, size);
         }
       } else {
+        // 贝塞尔曲线绘制
+        // {
+        //   // 绘制曲线本体
+        //   const start = transformWorld2View(edge.bodyLine.start);
+        //   const end = transformWorld2View(edge.bodyLine.end);
+        //   const direction = end.subtract(start);
+        //   const startDirection = new Vector(
+        //     Math.abs(direction.x) >= Math.abs(direction.y) ? direction.x : 0, 
+        //     Math.abs(direction.x) >= Math.abs(direction.y) ? 0 : direction.y
+        //   ).normalize();
+        //   const size = 15; // 箭头大小
+        //   const curve = new SymmetryCurve(
+        //     start,
+        //     startDirection,
+        //     end.subtract(startDirection.multiply(size / 2 * Camera.currentScale)),
+        //     startDirection.multiply(-1),
+        //     Math.abs(direction.magnitude()) / 2,
+        //   );
+        //   RenderUtils.renderSymmetryCurve(
+        //     curve,
+        //     new Color(204, 204, 204),
+        //     2 * Camera.currentScale,
+        //   );
+        //   // 画箭头
+          
+        //   const endPoint = edge.bodyLine.end.clone().subtract(
+        //     startDirection.multiply(4.75));
+        //   renderArrowHead(endPoint, startDirection, size);
+        // };
+        // // 如果有文字，绘制文字
+        // if (edge.text.trim() !== "") {
+        //   const midPoint = edge.bodyLine.midPoint();
+        //   RenderUtils.renderTextFromCenter(
+        //     edge.text,
+        //     transformWorld2View(midPoint),
+        //     FONT_SIZE * Camera.currentScale,
+        //   );
+        // }
+        // 直线绘制
         if (edge.text.trim() === "") {
           // 没有文字的边
           RenderUtils.renderSolidLine(
@@ -389,7 +429,6 @@ export namespace Renderer {
             2 * Camera.currentScale,
           );
         }
-
         // 画箭头
         {
           const size = 15;
@@ -457,8 +496,8 @@ export namespace Renderer {
           new Vector(
             Stage.copyBoardDataRectangle.location.x,
             Stage.copyBoardDataRectangle.location.y +
-              Stage.copyBoardDataRectangle.size.y +
-              20,
+            Stage.copyBoardDataRectangle.size.y +
+            20,
           ),
         ),
         12 * Camera.currentScale,
@@ -480,11 +519,11 @@ export namespace Renderer {
         transformWorld2View(
           new Vector(
             Stage.copyBoardDataRectangle.location.x +
-              Stage.copyBoardMouseVector.x,
+            Stage.copyBoardMouseVector.x,
             Stage.copyBoardDataRectangle.location.y +
-              Stage.copyBoardDataRectangle.size.y +
-              Stage.copyBoardMouseVector.y +
-              20,
+            Stage.copyBoardDataRectangle.size.y +
+            Stage.copyBoardMouseVector.y +
+            20,
           ),
         ),
         12 * Camera.currentScale,
@@ -654,7 +693,7 @@ export namespace Renderer {
   export function input(
     location: Vector,
     defaultValue: string,
-    onChange: (value: string) => void = () => {},
+    onChange: (value: string) => void = () => { },
     style: Partial<CSSStyleDeclaration> = {},
   ): Promise<string> {
     return new Promise((resolve) => {
