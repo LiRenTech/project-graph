@@ -9,6 +9,9 @@ jobs:
   # 先删除掉之前的 Nightly Release
   delete-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      statuses: write
     steps:
       - uses: actions/checkout@v4
       - run: gh release delete nightly --yes
