@@ -49,13 +49,27 @@ export class ControllerClass {
     // 有待优雅
   }
   public destroy() {
-    window.removeEventListener("keydown", this.keydown);
-    window.removeEventListener("keyup", this.keyup);
-    Canvas.element.removeEventListener("mousedown", this.mousedown);
-    Canvas.element.removeEventListener("mouseup", this.mouseup);
-    Canvas.element.removeEventListener("mousemove", this.mousemove);
-    Canvas.element.removeEventListener("wheel", this.mousewheel);
-    Canvas.element.removeEventListener("dblclick", this.mouseDoubleClick);
+    if (this.keydown.toString().length > 12) {
+      window.removeEventListener("keydown", this.keydown);
+    }
+    if (this.keyup.toString().length > 12) {
+      window.removeEventListener("keyup", this.keyup);
+    }
+    if (this.mousedown.toString().length > 12) {
+      Canvas.element.removeEventListener("mousedown", this.mousedown);
+    }
+    if (this.mouseup.toString().length > 12) {
+      Canvas.element.removeEventListener("mouseup", this.mouseup);
+    }
+    if (this.mousemove.toString().length > 12) {
+      Canvas.element.removeEventListener("mousemove", this.mousemove);
+    }
+    if (this.mousewheel.toString().length > 12) {
+      Canvas.element.removeEventListener("wheel", this.mousewheel);
+    }
+    if (this.mouseDoubleClick.toString().length > 12) {
+      Canvas.element.removeEventListener("dblclick", this.mouseDoubleClick);
+    }
     console.log(this.lastMoveLocation);
     this.lastMoveLocation = Vector.getZero();
   }
