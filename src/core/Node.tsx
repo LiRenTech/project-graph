@@ -97,9 +97,9 @@ export class Node {
 
   addChild(child: Node): boolean {
     // 不能添加自己
-    if (child.uuid === this.uuid) {
-      return false;
-    }
+    // if (child.uuid === this.uuid) {
+    //   return false;
+    // }
     // 不能重复添加
     if (this.children.some((c) => c.uuid === child.uuid)) {
       return false;

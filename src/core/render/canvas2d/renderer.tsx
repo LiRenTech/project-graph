@@ -336,6 +336,21 @@ export namespace Renderer {
       }
       if (edge.source.uuid == edge.target.uuid) {
         // 自环
+        RenderUtils.renderArc(
+          transformWorld2View(edge.target.rectangle.location),
+          (edge.target.rectangle.size.y / 2) * Camera.currentScale,
+          Math.PI / 2,
+          0,
+          new Color(204, 204, 204),
+          2 * Camera.currentScale,
+        );
+        // 画箭头
+        {
+          const size = 15;
+          const direction = new Vector(1, 0).rotateDegrees(15);
+          const endPoint = edge.target.rectangle.leftCenter;
+          renderArrowHead(endPoint, direction, size);
+        }
       } else {
         if (edge.text.trim() === "") {
           // 没有文字的边
@@ -373,16 +388,6 @@ export namespace Renderer {
             new Color(204, 204, 204),
             2 * Camera.currentScale,
           );
-
-          // RenderUtils.renderRect(
-          //   new Rectangle(
-          //     transformWorld2View(edgeTextRectangle.location),
-          //     edgeTextRectangle.size.multiply(Camera.currentScale),
-          //   ),
-          //   Color.Transparent,
-          //   Color.White,
-          //   2 * Camera.currentScale,
-          // );
         }
 
         // 画箭头
@@ -392,27 +397,8 @@ export namespace Renderer {
             .getCenter()
             .subtract(edge.source.rectangle.getCenter())
             .normalize();
-          const reDirection = direction.clone().multiply(-1);
-          const location2 = edge.bodyLine.end.add(
-            reDirection.multiply(size).rotateDegrees(15),
-          );
-          const location3 = edge.bodyLine.end.add(
-            reDirection.multiply(size * 0.5),
-          );
-          const location4 = edge.bodyLine.end.add(
-            reDirection.multiply(size).rotateDegrees(-15),
-          );
-          RenderUtils.renderPolygonAndFill(
-            [
-              Renderer.transformWorld2View(edge.bodyLine.end),
-              Renderer.transformWorld2View(location2),
-              Renderer.transformWorld2View(location3),
-              Renderer.transformWorld2View(location4),
-            ],
-            new Color(204, 204, 204),
-            new Color(204, 204, 204),
-            0,
-          );
+          const endPoint = edge.bodyLine.end.clone();
+          renderArrowHead(endPoint, direction, size);
         }
 
         if (edge.isSelected) {
@@ -427,6 +413,27 @@ export namespace Renderer {
 
       renderedEdges++;
     }
+  }
+  function renderArrowHead(endPoint: Vector, direction: Vector, size: number) {
+    const reDirection = direction.clone().multiply(-1);
+    const location2 = endPoint.add(
+      reDirection.multiply(size).rotateDegrees(15),
+    );
+    const location3 = endPoint.add(reDirection.multiply(size * 0.5));
+    const location4 = endPoint.add(
+      reDirection.multiply(size).rotateDegrees(-15),
+    );
+    RenderUtils.renderPolygonAndFill(
+      [
+        Renderer.transformWorld2View(endPoint),
+        Renderer.transformWorld2View(location2),
+        Renderer.transformWorld2View(location3),
+        Renderer.transformWorld2View(location4),
+      ],
+      new Color(204, 204, 204),
+      new Color(204, 204, 204),
+      0,
+    );
   }
 
   export function renderClipboard() {
