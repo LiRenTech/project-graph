@@ -10,7 +10,8 @@ jobs:
   delete-release:
     runs-on: ubuntu-latest
     steps:
-      - run: gh release delete nightly --yes || true # 删除 nightly 版本，忽略错误
+      - uses: actions/checkout@v4
+      - run: gh release delete nightly --yes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
