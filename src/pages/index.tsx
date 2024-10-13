@@ -10,6 +10,9 @@ import Toolbar from "./_toolbar";
 import { Settings } from "../core/Settings";
 import { cn } from "../utils/cn";
 import { Camera } from "../core/stage/Camera";
+import { RectangleNoteEffect } from "../core/effect/concrete/RectangleNoteEffect";
+import { ProgressNumber } from "../core/dataStruct/ProgressNumber";
+import { Color } from "../core/dataStruct/Color";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);
@@ -69,7 +72,14 @@ export default function Home() {
             // 选择第一个搜索结果节点
             const currentNode =
               Stage.searchResultNodes[Stage.currentSearchResultIndex];
-            currentNode.isSelected = true;
+            // currentNode.isSelected = true;
+            Stage.effects.push(
+              new RectangleNoteEffect(
+                new ProgressNumber(0, 50),
+                currentNode.rectangle,
+                Color.Green,
+              ),
+            );
             // 摄像机对准现在的节点
             Camera.location = currentNode.rectangle.center.clone();
           } else {
@@ -145,10 +155,9 @@ export default function Home() {
       <Toolbar />
       {isSearchingShow && (
         <div
-          className={cn(
-            "fixed right-32 top-32 z-10 flex transform items-center rounded p-4 ring",
-            isSearchingShow,
-          )}
+          className={
+            "fixed right-32 top-32 z-10 flex transform items-center rounded p-4 ring"
+          }
         >
           <span>
             {currentSearchResultIndex + 1}/{searchResultCount}
@@ -166,12 +175,18 @@ export default function Home() {
               // 选择当前搜索结果节点
               const currentNode =
                 Stage.searchResultNodes[Stage.currentSearchResultIndex];
-              currentNode.isSelected = true;
+              Stage.effects.push(
+                new RectangleNoteEffect(
+                  new ProgressNumber(0, 50),
+                  currentNode.rectangle,
+                  Color.Green,
+                ),
+              );
               // 摄像机对准现在的节点
               Camera.location = currentNode.rectangle.center.clone();
             }}
           >
-            Previous
+            上一项
           </button>
           <button
             className="m-2 rounded-md bg-gray-500 text-white"
@@ -186,12 +201,18 @@ export default function Home() {
               // 选择当前搜索结果节点
               const currentNode =
                 Stage.searchResultNodes[Stage.currentSearchResultIndex];
-              currentNode.isSelected = true;
+              Stage.effects.push(
+                new RectangleNoteEffect(
+                  new ProgressNumber(0, 50),
+                  currentNode.rectangle,
+                  Color.Green,
+                ),
+              );
               // 摄像机对准现在的节点
               Camera.location = currentNode.rectangle.center.clone();
             }}
           >
-            Next
+            下一项
           </button>
           <button
             className="m-2 rounded-md bg-gray-500 text-white"
