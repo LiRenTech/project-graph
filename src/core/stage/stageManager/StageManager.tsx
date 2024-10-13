@@ -13,6 +13,8 @@ import { StageNodeColorManager } from "./concreteMethods/StageNodeColorManager";
 import { Serialized } from "../../../types/node";
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageHistoryManager } from "./concreteMethods/StageHistoryManager";
+import { Stage } from "../Stage";
+import { StageDumper } from "../StageDumper";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -158,11 +160,11 @@ export namespace StageManager {
    * @param delta
    */
   export function moveNodes(delta: Vector) {
-    StageNodeMoveManager.moveNodes(delta);  // 连续过程，不记录历史，只在结束时记录
+    StageNodeMoveManager.moveNodes(delta); // 连续过程，不记录历史，只在结束时记录
   }
 
   export function moveNodesWithChildren(delta: Vector) {
-    StageNodeMoveManager.moveNodesWithChildren(delta);  // 连续过程，不记录历史，只在结束时记录
+    StageNodeMoveManager.moveNodesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录
   }
 
   export function alignLeft() {
@@ -228,7 +230,7 @@ export namespace StageManager {
    * @param diffLocation
    */
   export function moveEdges(lastMoveLocation: Vector, diffLocation: Vector) {
-    StageNodeRotate.moveEdges(lastMoveLocation, diffLocation);  // 连续过程，不记录历史，只在结束时记录
+    StageNodeRotate.moveEdges(lastMoveLocation, diffLocation); // 连续过程，不记录历史，只在结束时记录
   }
 
   /**
@@ -237,7 +239,7 @@ export namespace StageManager {
    * @param angle
    */
   export function rotateNode(node: Node, angle: number) {
-    StageNodeRotate.rotateNodeDfs(node, node, angle, []);  // 连续过程，不记录历史，只在结束时记录
+    StageNodeRotate.rotateNodeDfs(node, node, angle, []); // 连续过程，不记录历史，只在结束时记录
     updateReferences();
   }
 
@@ -266,5 +268,13 @@ export namespace StageManager {
   export function addSerializedData(serializedData: Serialized.File) {
     StageSerializedAdder.addSerializedData(serializedData);
     StageHistoryManager.recordStep();
+  }
+
+  export function clearClipboard() {
+    Stage.copyBoardData = {
+      version: StageDumper.latestVersion,
+      nodes: [],
+      edges: [],
+    };
   }
 }

@@ -6,6 +6,7 @@ import { cn } from "../utils/cn";
 import {
   Trash2,
   // ChevronsRightLeft,
+  ClipboardX,
   Repeat,
   PaintBucket,
   AlignStartVertical,
@@ -190,6 +191,13 @@ export default function Toolbar({ className = "" }) {
         icon={<AlignVerticalSpaceBetween />}
         handleFunction={() => {
           StageManager.alignVerticalSpaceBetween();
+        }}
+      />
+      <ToolbarItem
+        description="清空粘贴板内容"
+        icon={<ClipboardX />}
+        handleFunction={() => {
+          StageManager.clearClipboard();
         }}
       />
     </Box>
