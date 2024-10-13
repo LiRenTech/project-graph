@@ -6,23 +6,13 @@ on:
   workflow_dispatch: # 手动触发
 
 jobs:
+  # 先删除掉之前的 Nightly Release
   delete-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: sgpublic/delete-release-action@v1.1
-        with:
-          # repo: '<owner>/<repoName>' # you can input a another repo here, defaults to current repo
-          release-drop: false
-          release-keep-count: 0
-          release-drop-tag: false
-          pre-release-drop: true
-          pre-release-keep-count: -1
-          pre-release-drop-tag: true
-          draft-drop: false
-          draft-drop-count: -1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: gh release delete nightly --yes || true # 删除 nightly 版本，忽略错误
 
+  # 开始构建并发布 Nightly Release
   publish-tauri:
     permissions:
       contents: write
