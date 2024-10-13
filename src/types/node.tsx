@@ -16,7 +16,7 @@ export namespace Serialized {
     text: string;
   };
   export type File = {
-    version: 5;
+    version: 5;  // 最新版本 src\core\stage\StageDumper.tsx latestVersion
     nodes: Node[];
     edges: Edge[];
   };

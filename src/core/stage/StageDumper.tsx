@@ -11,7 +11,7 @@ export namespace StageDumper {
   /**
    * 最新版本
    */
-  export const latestVersion = 4;
+  export const latestVersion = 5;
 
 
   export function dumpNode(node: Node): Serialized.Node {
