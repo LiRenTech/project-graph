@@ -111,13 +111,18 @@ function ColorPanel() {
 
 function GenerateNodePanel() {
   const [value, setValue] = useState("");
+  const [indention, setIndention] = useState(4);
 
   return (
     <>
       <Input value={value} onChange={setValue} multiline />
+      <div>
+        <span>缩进</span>
+        <Input value={indention.toString()} onChange={setIndention} number />
+      </div>
       <Button
         onClick={() => {
-          StageManager.generateNodeByText(value);
+          StageManager.generateNodeByText(value, indention);
           setValue("");
         }}
       >

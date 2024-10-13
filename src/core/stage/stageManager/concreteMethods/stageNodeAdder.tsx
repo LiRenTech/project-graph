@@ -15,7 +15,9 @@ export namespace StageNodeAdder {
    * @param clickWorldLocation
    * @returns
    */
-  export async function addNodeByClick(clickWorldLocation: Vector) : Promise<string> {
+  export async function addNodeByClick(
+    clickWorldLocation: Vector,
+  ): Promise<string> {
     const newUUID = uuidv4();
     const node = new Node({
       uuid: newUUID,
@@ -33,8 +35,8 @@ export namespace StageNodeAdder {
     return newUUID;
   }
 
-  async function getAutoName() : Promise<string> {
-    const template = await Settings.get("autoNamerTemplate")
+  async function getAutoName(): Promise<string> {
+    const template = await Settings.get("autoNamerTemplate");
     if (template.includes("{{i}}")) {
       let i = 0;
       while (true) {
@@ -60,7 +62,7 @@ export namespace StageNodeAdder {
   /**
    * 通过带有缩进格式的文本来增加节点
    */
-  export function addNodeByText(text: string) {
+  export function addNodeByText(text: string, indention: number) {
     // 将本文转换成字符串数组，按换行符分割
     const lines = text.split("\n");
     for (let i = 0; i < lines.length; i++) {
@@ -70,10 +72,10 @@ export namespace StageNodeAdder {
         continue;
       }
       // 解析缩进格式
-      const indent = getIndentLevel(line);
+      const indent = getIndentLevel(line, indention);
       // 解析文本内容
       const textContent = line.trim();
-      
+
       const newUUID = uuidv4();
       const node = new Node({
         uuid: newUUID,
@@ -93,17 +95,17 @@ export namespace StageNodeAdder {
    * '    a' -> 1
    * '\t\ta' -> 2
    */
-  function getIndentLevel(line: string): number {
+  function getIndentLevel(line: string, indention: number): number {
     let indent = 0;
     for (let i = 0; i < line.length; i++) {
       if (line[i] === " ") {
         indent++;
       } else if (line[i] === "\t") {
-        indent += 4;
+        indent += indention;
       } else {
         break;
       }
     }
-    return Math.floor(indent / 4);
+    return Math.floor(indent / indention);
   }
 }

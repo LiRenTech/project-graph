@@ -2,24 +2,37 @@ import React from "react";
 import { cn } from "../../utils/cn";
 import Box from "./Box";
 
-export default function Input({
+type InputProps<T extends boolean = false> = {
+  className?: string;
+  value?: string;
+  placeholder?: string;
+  multiline?: boolean;
+  onChange: (value: T extends true ? number : string) => void; // 使用条件类型来定义 onChange 的参数
+  number?: T;
+  [key: string]: any;
+};
+
+export default function Input<T extends boolean = false>({
   children,
   className = "",
   value = "",
-  onChange = () => {},
+  onChange,
   placeholder = "",
-  number = false,
+  number = false as T,
   multiline = false,
   ...props
-}: React.PropsWithChildren<{
-  className?: string;
-  value?: string;
-  onChange?: (event: string) => void;
-  placeholder?: string;
-  number?: boolean;
-  multiline?: boolean;
-  [key: string]: any;
-}>) {
+}: React.PropsWithChildren<InputProps<T>>) {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    // 根据 number 的值决定传递的参数类型
+    if (number) {
+      onChange(parseInt(e.target.value || "0") as any); // 强制转换为 number
+    } else {
+      onChange(e.target.value as any); // 强制转换为 string
+    }
+  };
+
   return (
     <Box
       as={multiline ? "textarea" : "input"}
@@ -28,9 +41,7 @@ export default function Input({
         className,
       )}
       value={value}
-      onChange={(
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-      ) => onChange(e.target.value)}
+      onChange={handleChange}
       onKeyDown={(
         e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
       ) => e.stopPropagation()}
