@@ -44,9 +44,6 @@ export default function App() {
       if (event.key === "Escape") {
         setOpenMenu(false);
       }
-      (() => {
-        throw new TypeError("test error");
-      })();
     });
     window.addEventListener("pointerdown", () => {
       setOpenMenu(false);
