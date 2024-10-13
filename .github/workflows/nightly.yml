@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: gh release delete nightly --yes || true # 删除 nightly 版本，忽略错误
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # 开始构建并发布 Nightly Release
   publish-tauri:
