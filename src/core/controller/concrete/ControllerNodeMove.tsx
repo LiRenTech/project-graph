@@ -7,7 +7,7 @@ import { ControllerClass } from "../ControllerClass";
 
 /**
  * 拖拽节点使其移动的控制器
- * 
+ *
  */
 export const ControllerNodeMove = new ControllerClass();
 
@@ -60,14 +60,12 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
   if (StageManager.nodes.some((node) => node.isSelected)) {
     // 移动节点
     Controller.isMovingNode = true;
-    if (Controller.pressingKeySet.has("alt")) {
+    // 暂不监听alt键。因为windows下切换窗口时，alt键释放监听不到
+    if (Controller.pressingKeySet.has("control")) {
+      // 和子节点一起移动
+      StageManager.moveNodesWithChildren(diffLocation);
     } else {
-      if (Controller.pressingKeySet.has("control")) {
-        // 和子节点一起移动
-        StageManager.moveNodesWithChildren(diffLocation);
-      } else {
-        StageManager.moveNodes(diffLocation);
-      }
+      StageManager.moveNodes(diffLocation);
     }
     ControllerNodeMove.lastMoveLocation = worldLocation.clone();
   }

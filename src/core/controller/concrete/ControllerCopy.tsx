@@ -14,7 +14,7 @@ import { ControllerClass } from "../ControllerClass";
  */
 export const ControllerCopy = new ControllerClass();
 
-const validKeys = ["ctrl", "shift", "alt", "c", "v", "x", "y"];
+const validKeys = ["ctrl", "shift", "c", "v", "x", "y"];
 ControllerCopy.mousemove = (event: MouseEvent) => {
   // 移动时候
   if (Stage.copyBoardDataRectangle) {
