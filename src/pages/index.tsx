@@ -8,7 +8,6 @@ import { StageManager } from "../core/stage/stageManager/StageManager";
 import React from "react";
 import Toolbar from "./_toolbar";
 import { Settings } from "../core/Settings";
-import { cn } from "../utils/cn";
 import { Camera } from "../core/stage/Camera";
 import { RectangleNoteEffect } from "../core/effect/concrete/RectangleNoteEffect";
 import { ProgressNumber } from "../core/dataStruct/ProgressNumber";

@@ -1,5 +1,10 @@
 import { cn } from "../../utils/cn";
 
+/**
+ * 手机上那种 滑动圆球的 小开关按钮
+ * @param param0 
+ * @returns 
+ */
 export default function Switch({
   value = false,
   onChange = () => {},

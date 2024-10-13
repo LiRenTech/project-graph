@@ -277,4 +277,8 @@ export namespace StageManager {
       edges: [],
     };
   }
+
+  export function generateNodeByText(text: string) {
+    StageNodeAdder.addNodeByText(text);
+  }
 }

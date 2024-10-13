@@ -42,7 +42,7 @@ export function editNode(clickedNode: Node) {
 
 export function editNodeDetails(clickedNode: Node) {
   Controller.isCameraLocked = true;
-  // 有待把input换成textarea
+  // 有待把input换成 
   Renderer.input(
     Renderer.transformWorld2View(clickedNode.rectangle.location).add(
       Vector.same(clickedNode.rectangle.size.y * Camera.currentScale),

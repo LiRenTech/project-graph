@@ -7,6 +7,7 @@ import {
   Trash2,
   // ChevronsRightLeft,
   ClipboardX,
+  ClipboardPaste,
   Repeat,
   PaintBucket,
   AlignStartVertical,
@@ -45,6 +46,12 @@ export default function Toolbar({ className = "" }) {
   const toggleColorPanel = () => {
     setColorPanelOpen(!isColorPanelOpen); // 切换面板的显示状态
   };
+
+  const [isGenerateNodePanelOpen, setGenerateNodePanelOpen] = useState(false); // 控制生成节点面板的状态
+  const toggleGenerateNodePanel = () => {
+    setGenerateNodePanelOpen(!isGenerateNodePanelOpen); // 切换面板的显示状态
+  };
+  const [inputGenerateNodeText, setInputGenerateNodeText] = useState(""); // 输入生成节点的文本内容
 
   // 一个竖向的工具栏，在页面顶部，右侧显示
   return (
@@ -150,6 +157,47 @@ export default function Toolbar({ className = "" }) {
         description="设置节点颜色"
         icon={<PaintBucket />}
         handleFunction={toggleColorPanel}
+      />
+      {isGenerateNodePanelOpen && (
+        <div className="absolute right-0 flex h-32 w-32 flex-col items-center justify-center rounded-lg bg-black">
+          <textarea
+            className="h-16 w-full p-2 text-sm"
+            placeholder="直接将带有缩进格式的内容粘贴进来即可生成节点"
+            onChange={(e) => {
+              console.log(e.target.value);
+              const text = e.target.value;
+              setInputGenerateNodeText(text);
+            }}
+            value={inputGenerateNodeText}
+          />
+          <button
+            className="mt-2 h-8 w-full rounded-lg bg-blue-500 text-white"
+            onClick={() => {
+              toggleGenerateNodePanel();
+              const text = inputGenerateNodeText.trim();
+              if (text) {
+                // 生成节点 TODO
+                StageManager.generateNodeByText(text);
+                setInputGenerateNodeText("");
+              }
+            }}
+          >
+            生成
+          </button>
+          <button
+            className="mt-2 h-8 w-full rounded-lg bg-red-500 text-white"
+            onClick={() => {
+              toggleGenerateNodePanel();
+            }}
+          >
+            取消
+          </button>
+        </div>
+      )}
+      <ToolbarItem
+        description="通过文本生成节点"
+        icon={<ClipboardPaste />}
+        handleFunction={toggleGenerateNodePanel}
       />
       <ToolbarItem
         description="左对齐"
