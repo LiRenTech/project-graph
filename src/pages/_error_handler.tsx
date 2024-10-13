@@ -4,7 +4,7 @@ import { Bug, FileWarning, MessageCircleCode, X } from "lucide-react";
 
 export default function ErrorHandler() {
   const [error, setError] = React.useState<Error | null>(null);
-  const [show, setShow] = React.useState(true);
+  const [show, setShow] = React.useState(false);
 
   React.useEffect(() => {
     const onError = (event: ErrorEvent) => {
