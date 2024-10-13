@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      statuses: write
     steps:
       - uses: actions/checkout@v4
       - run: gh release delete nightly --yes
