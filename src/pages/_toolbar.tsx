@@ -36,7 +36,7 @@ function ToolbarItem({ icon, handleFunction, description }: ToolbarItemProps) {
       onClick={handleFunction}
     >
       {icon}
-      <span className="absolute right-10 z-10 w-auto origin-right scale-90 whitespace-nowrap rounded bg-gray-700 p-1 text-xs text-white opacity-0 transition group-hover:scale-100 group-hover:opacity-100">
+      <span className="pointer-events-none absolute right-10 z-10 w-auto origin-right scale-90 whitespace-nowrap rounded bg-gray-700 p-1 text-xs text-white opacity-0 transition group-hover:pointer-events-auto group-hover:scale-100 group-hover:opacity-100">
         {description}
       </span>
     </div>
