@@ -20,9 +20,9 @@ export default function ErrorHandler() {
   return (
     <div
       className={cn(
-        "fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 scale-90 rounded-lg bg-red-950 p-8 opacity-0 shadow-2xl shadow-red-500/30 transition",
+        "pointer-events-none fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 scale-90 rounded-lg bg-red-950 p-8 opacity-0 shadow-2xl shadow-red-500/30 transition",
         {
-          "scale-100 opacity-100": show,
+          "pointer-events-auto scale-100 opacity-100": show,
         },
       )}
     >
