@@ -23,7 +23,7 @@ const validKeys = [
   "escape",
 ];
 
-ControllerKeyboardOnly.keydown = (event: KeyboardEvent) => {
+ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
   const key = event.key.toLowerCase();
   // 首先判断是否是合法的按键
   if (!validKeys.includes(key)) return;
@@ -61,7 +61,7 @@ ControllerKeyboardOnly.keydown = (event: KeyboardEvent) => {
         if (Stage.isVirtualNewNodeShow) {
           // 将虚拟变成现实
           const location = Stage.keyOnlyVirtualNewLocation;
-          const newNodeUUID = StageManager.addNodeByClick(location);
+          const newNodeUUID = await StageManager.addNodeByClick(location);
 
           const newNode = StageManager.getNodeByUUID(newNodeUUID);
           if (!newNode) return;
