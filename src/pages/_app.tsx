@@ -20,6 +20,7 @@ import { fileAtom } from "../state";
 import RecentFilesPanel from "./_recent_files_panel";
 import { Settings } from "../core/Settings";
 import ErrorHandler from "./_error_handler";
+import PopupDialog from "../components/ui/PopupDialog";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -72,6 +73,7 @@ export default function App() {
       onContextMenu={(e) => e.preventDefault()}
     >
       <Dialog />
+      <PopupDialog />
       <ErrorHandler />
       {/* 叠加层，显示窗口控件 */}
       <div

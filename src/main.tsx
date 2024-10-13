@@ -6,6 +6,7 @@ import { RecoilRoot } from "recoil";
 import { DialogProvider } from "./utils/dialog";
 import { Settings } from "./core/Settings";
 import { RecentFileManager } from "./core/RecentFileManager";
+import { PopupDialogProvider } from "./utils/popupDialog";
 // import { platform } from "@tauri-apps/plugin-os";
 
 const router = createMemoryRouter(routes);
@@ -23,7 +24,9 @@ const Routes = () => <RouterProvider router={router} />;
   createRoot(document.getElementById("root")!).render(
     <RecoilRoot>
       <DialogProvider>
-        <Routes />
+        <PopupDialogProvider>
+          <Routes />
+        </PopupDialogProvider>
       </DialogProvider>
     </RecoilRoot>,
   );
