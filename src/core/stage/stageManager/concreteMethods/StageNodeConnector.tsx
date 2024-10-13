@@ -18,6 +18,12 @@ export namespace StageNodeConnector {
       StageManager.nodes.includes(toNode)
     ) {
       const addResult = fromNode.addChild(toNode);
+      
+      if (!addResult) {
+        // 重复添加了，添加失败
+        return false;
+      }
+
       const newEdge = new Edge({
         source: fromNode.uuid,
         target: toNode.uuid,
