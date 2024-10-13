@@ -16,7 +16,7 @@ export namespace Serialized {
     text: string;
   };
   export type File = {
-    version: 4;
+    version: 5;
     nodes: Node[];
     edges: Edge[];
   };
