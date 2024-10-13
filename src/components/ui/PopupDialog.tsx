@@ -46,7 +46,7 @@ export default function PopupDialog() {
       ref={ref}
       style={{ position: "fixed", top: location[1], left: location[0] }}
       className={cn(
-        "pointer-events-none z-50 scale-90 p-2 opacity-0 transition",
+        "pointer-events-none z-[999] scale-90 p-2 opacity-0 transition",
         {
           "pointer-events-auto scale-100 opacity-100": popupDialog.showPopup,
         },

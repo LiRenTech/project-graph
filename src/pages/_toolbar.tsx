@@ -19,6 +19,9 @@ import {
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
+import { usePopupDialog } from "../utils/popupDialog";
+import Input from "../components/ui/Input";
+import Button from "../components/ui/Button";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -40,17 +43,14 @@ function ToolbarItem({ icon, handleFunction, description }: ToolbarItemProps) {
   );
 }
 
-interface ColorPanelProps {
-  onClickClose: () => void;
-}
 /**
  * 调色盘面板
- * @param param0 
- * @returns 
+ * @param param0
+ * @returns
  */
-function ColorPanel({ onClickClose }: ColorPanelProps) {
+function ColorPanel() {
   return (
-    <div className="absolute right-0 flex h-32 w-32 flex-col items-center justify-center rounded-lg bg-black">
+    <>
       <div className="flex flex-wrap items-center justify-center">
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-red-500 transition-all hover:scale-125"
@@ -105,34 +105,35 @@ function ColorPanel({ onClickClose }: ColorPanelProps) {
           }}
         ></input>
       </div>
+    </>
+  );
+}
 
-      <button
-        className="absolute right-0 top-0 rounded-lg bg-red-700 px-2"
-        onClick={onClickClose}
+function GenerateNodePanel() {
+  const [value, setValue] = useState("");
+
+  return (
+    <>
+      <Input value={value} onChange={setValue} multiline />
+      <Button
+        onClick={() => {
+          StageManager.generateNodeByText(value);
+          setValue("");
+        }}
       >
-        X
-      </button>
-    </div>
+        生成
+      </Button>
+    </>
   );
 }
 
 /**
  * 工具栏
- * @param param0 
- * @returns 
+ * @param param0
+ * @returns
  */
 export default function Toolbar({ className = "" }) {
-  const [isColorPanelOpen, setColorPanelOpen] = useState(false); // 控制颜色面板的状态
-
-  const toggleColorPanel = () => {
-    setColorPanelOpen(!isColorPanelOpen); // 切换面板的显示状态
-  };
-
-  const [isGenerateNodePanelOpen, setGenerateNodePanelOpen] = useState(false); // 控制生成节点面板的状态
-  const toggleGenerateNodePanel = () => {
-    setGenerateNodePanelOpen(!isGenerateNodePanelOpen); // 切换面板的显示状态
-  };
-  const [inputGenerateNodeText, setInputGenerateNodeText] = useState(""); // 输入生成节点的文本内容
+  const popupDialog = usePopupDialog();
 
   // 一个竖向的工具栏，在页面顶部，右侧显示
   return (
@@ -169,52 +170,15 @@ export default function Toolbar({ className = "" }) {
       />
 
       {/* 颜色面板 */}
-      {isColorPanelOpen && <ColorPanel onClickClose={toggleColorPanel} />}
       <ToolbarItem
         description="设置节点颜色"
         icon={<PaintBucket />}
-        handleFunction={toggleColorPanel}
+        handleFunction={() => popupDialog.show(<ColorPanel />)}
       />
-      {isGenerateNodePanelOpen && (
-        <div className="absolute right-0 flex h-32 w-32 flex-col items-center justify-center rounded-lg bg-black">
-          <textarea
-            className="h-16 w-full p-2 text-sm"
-            placeholder="直接将带有缩进格式的内容粘贴进来即可生成节点"
-            onChange={(e) => {
-              console.log(e.target.value);
-              const text = e.target.value;
-              setInputGenerateNodeText(text);
-            }}
-            value={inputGenerateNodeText}
-          />
-          <button
-            className="mt-2 h-8 w-full rounded-lg bg-blue-500 text-white"
-            onClick={() => {
-              toggleGenerateNodePanel();
-              const text = inputGenerateNodeText.trim();
-              if (text) {
-                // 生成节点 TODO
-                StageManager.generateNodeByText(text);
-                setInputGenerateNodeText("");
-              }
-            }}
-          >
-            生成
-          </button>
-          <button
-            className="mt-2 h-8 w-full rounded-lg bg-red-500 text-white"
-            onClick={() => {
-              toggleGenerateNodePanel();
-            }}
-          >
-            取消
-          </button>
-        </div>
-      )}
       <ToolbarItem
         description="通过文本生成节点"
         icon={<ClipboardPaste />}
-        handleFunction={toggleGenerateNodePanel}
+        handleFunction={() => popupDialog.show(<GenerateNodePanel />)}
       />
       <ToolbarItem
         description="左对齐"

@@ -9,6 +9,7 @@ export default function Input({
   onChange = () => {},
   placeholder = "",
   number = false,
+  multiline = false,
   ...props
 }: React.PropsWithChildren<{
   className?: string;
@@ -16,19 +17,26 @@ export default function Input({
   onChange?: (event: string) => void;
   placeholder?: string;
   number?: boolean;
+  multiline?: boolean;
   [key: string]: any;
 }>) {
   return (
     <Box
-      as="input"
+      as={multiline ? "textarea" : "input"}
       className={cn(
         "px-3 py-2 outline-none transition hover:opacity-80 focus:opacity-80",
         className,
       )}
       value={value}
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-        onChange(e.target.value)
-      }
+      onChange={(
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      ) => onChange(e.target.value)}
+      onKeyDown={(
+        e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
+      ) => e.stopPropagation()}
+      onKeyUp={(
+        e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
+      ) => e.stopPropagation()}
       placeholder={placeholder}
       pattern={number ? "[0-9]*" : undefined}
       {...props}

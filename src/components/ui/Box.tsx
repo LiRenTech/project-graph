@@ -17,7 +17,6 @@ const Box = forwardRef<React.ElementRef<E>, BoxProps<E>>(
     {
       children,
       className = "",
-      onClick = () => {},
       as: Component = "div", // 默认值设置为 "div"
       ...props
     },
@@ -30,7 +29,6 @@ const Box = forwardRef<React.ElementRef<E>, BoxProps<E>>(
           "rounded-md border border-neutral-700 bg-neutral-800 text-white",
           className,
         )}
-        onClick={onClick}
         {...props}
       >
         {children}

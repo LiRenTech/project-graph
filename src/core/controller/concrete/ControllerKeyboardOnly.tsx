@@ -204,11 +204,6 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
   }
 };
 
-ControllerKeyboardOnly.keyup = (event: KeyboardEvent) => {
-  const key = event.key.toLowerCase();
-  console.log(key);
-};
-
 /**
  * 根据一个节点，获取其连线相关的所有节点
  * 包括所有第一层孩子节点和第一层父亲节点
