@@ -4,7 +4,17 @@
 
 @font-face {
   font-family: "MiSans";
-  src: url("./assets/MiSans-Medium.woff2") format("woff2");
+  font-weight: normal;
+  src:
+    local("MiSans VF"),
+    url("./assets/MiSans-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "MiSans";
+  font-weight: bold;
+  src:
+    local("MiSans VF"),
+    url("./assets/MiSans-Bold.woff2") format("woff2");
 }
 
 @layer base {
@@ -15,5 +25,8 @@
   * {
     @apply box-border cursor-default select-none [-webkit-user-drag:none] [color-scheme:dark];
     font-family: "MiSans";
+    font-antialiasing: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
