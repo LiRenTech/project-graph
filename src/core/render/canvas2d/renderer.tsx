@@ -40,6 +40,14 @@ export namespace Renderer {
   export let backgroundAlpha = 1;
 
   /**
+   * {
+   *   xxx: ms
+   * }
+   */
+  let timings: { [key: string]: number } = {};
+  export let deltaTime = 0;
+
+  /**
    * 解决Canvas模糊问题
    * 它能让画布的大小和屏幕的大小保持一致
    */
@@ -59,25 +67,35 @@ export namespace Renderer {
    * @returns
    */
   export function frameTick() {
+    timings = {};
+    let start = performance.now();
     Camera.frameTick();
+    timings.camera = performance.now() - start;
 
+    start = performance.now();
     Canvas.ctx.clearRect(0, 0, w, h);
-
     // 画一个背景
     Canvas.ctx.fillStyle = "#111";
     Canvas.ctx.globalAlpha = backgroundAlpha;
     Canvas.ctx.fillRect(0, 0, w, h);
     Canvas.ctx.globalAlpha = 1;
+    timings.background = performance.now() - start;
 
     // 画网格
+    start = performance.now();
     renderGrid();
-    const viewRectangle = getCoverWorldRectangle();
+    timings.grid = performance.now() - start;
 
+    const viewRectangle = getCoverWorldRectangle();
+    // 画节点和边
+    start = performance.now();
     renderEdges(viewRectangle);
+    timings.edges = performance.now() - start;
+
+    start = performance.now();
     renderEntities(viewRectangle);
     // 待删除的节点和边
     renderWarningEntities();
-
     // 鼠标hover的边
     for (const edge of Stage.hoverEdges) {
       RenderUtils.renderSolidLine(
@@ -87,6 +105,9 @@ export namespace Renderer {
         Controller.edgeHoverTolerance * 2 * Camera.currentScale,
       );
     }
+    timings.entities = performance.now() - start;
+
+    start = performance.now();
     // 框选框
     if (Stage.isSelecting) {
       if (Stage.selectingRectangle) {
@@ -167,6 +188,8 @@ export namespace Renderer {
     // 渲染所有特效
     renderEffects();
     // test
+
+    timings.others = performance.now() - start;
   }
   function renderWarningEntities() {
     // 待删除的节点
@@ -255,7 +278,7 @@ export namespace Renderer {
           transformWorld2View(node.rectangle.location),
           node.rectangle.size.multiply(Camera.currentScale),
         ),
-        node.color ?? new Color(33, 33, 33, 1),
+        node.color,
         new Color(204, 204, 204, 1),
         2 * Camera.currentScale,
         8 * Camera.currentScale,
@@ -268,7 +291,7 @@ export namespace Renderer {
             node.rectangle.location.add(Vector.same(NODE_PADDING)),
           ),
           FONT_SIZE * Camera.currentScale,
-          node.color ? colorInvert(node.color) : new Color(204, 204, 204),
+          colorInvert(node.color),
         );
       }
 
@@ -560,11 +583,16 @@ export namespace Renderer {
       `lastSelectedNode: ${Controller.lastSelectedNode.size}`,
       `粘贴板: ${JSON.stringify(Stage.copyBoardData)}`,
       `历史: ${StageHistoryManager.statusText()}`,
+      `fps: ${(1 / deltaTime).toFixed()}`,
+      `delta: ${deltaTime.toFixed(2)}`,
     ];
+    for (const [k, v] of Object.entries(timings)) {
+      detailsData.push(`time:${k}: ${v.toFixed(2)}`);
+    }
     for (const line of detailsData) {
       RenderUtils.renderText(
         line,
-        new Vector(10, 48 + detailsData.indexOf(line) * 12),
+        new Vector(10, 80 + detailsData.indexOf(line) * 12),
         10,
         new Color(255, 255, 255, 0.5),
       );

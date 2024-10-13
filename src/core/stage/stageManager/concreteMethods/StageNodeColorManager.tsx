@@ -17,7 +17,7 @@ export namespace StageNodeColorManager {
   export function clearNodeColor() {
     for (const node of StageManager.nodes) {
       if (node.isSelected) {
-        node.color = null;
+        node.color = Color.Transparent;
       }
     }
   }

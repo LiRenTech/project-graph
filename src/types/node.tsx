@@ -8,7 +8,7 @@ export namespace Serialized {
     details: string;
     uuid: string;
     children: string[];
-    color: Color | null;
+    color: Color;
   };
   export type Edge = {
     source: string;

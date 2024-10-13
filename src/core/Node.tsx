@@ -22,7 +22,7 @@ export class Node {
    */
   isEditing: boolean = false;
 
-  color: Color | null = Color.Black;
+  color: Color = Color.Transparent;
 
   constructor(
     {
@@ -46,7 +46,7 @@ export class Node {
       new Vector(...location),
       new Vector(...size),
     );
-    this.color = color && new Color(...color);
+    this.color = new Color(...color);
     this.adjustSizeByText();
   }
 

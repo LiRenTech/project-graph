@@ -15,7 +15,6 @@ import { Color } from "../core/dataStruct/Color";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);
-  const [fps, setFps] = React.useState(0);
 
   const dialog = useDialog();
   const [cursorName, setCursorName] = React.useState("default");
@@ -130,7 +129,7 @@ export default function Home() {
       const now = performance.now();
       const deltaTime = (now - lastTime) / 1000;
       lastTime = now;
-      setFps(1 / deltaTime);
+      Renderer.deltaTime = deltaTime;
       Renderer.frameTick();
       Stage.logicTick();
       // i++;
@@ -223,14 +222,6 @@ export default function Home() {
           </button>
         </div>
       )}
-      <span
-        className="fixed bottom-0 left-0 cursor-pointer ring"
-        onClick={() => {
-          window.location.reload();
-        }}
-      >
-        FPS={fps.toFixed()}
-      </span>
       <canvas ref={canvasRef} className={`cursor-${cursorName}`} />
     </>
   );

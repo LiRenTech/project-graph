@@ -4,7 +4,6 @@ import { Serialized } from "../../types/node";
  * 舞台加载
  */
 export namespace StageLoader {
-  
   /**
    * 将序列化数据逐步的，一级一级的转换为最新版本的格式
    * 函数中将自动检测数据版本，并进行相应的转换
@@ -15,6 +14,7 @@ export namespace StageLoader {
     data = convertV1toV2(data);
     data = convertV2toV3(data);
     data = convertV3toV4(data);
+    data = convertV4toV5(data);
     return data as Serialized.File;
   }
 
@@ -93,6 +93,18 @@ export namespace StageLoader {
       delete node.shape.location;
       node.size = node.shape.size;
       delete node.shape.size;
+    }
+    return data;
+  }
+  function convertV4toV5(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 5) {
+      return data;
+    }
+    data.version = 5;
+    for (const node of data.nodes) {
+      if (!node.color) {
+        node.color = [0, 0, 0, 0];
+      }
     }
     return data;
   }
