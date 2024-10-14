@@ -9,6 +9,7 @@ import { Vector } from "../../dataStruct/Vector";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { Line } from "../../dataStruct/Line";
+import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 
 /**
  * 关于斩断线的控制器
@@ -97,37 +98,9 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
 
   for (const edge of Stage.warningEdges) {
     StageManager.deleteEdge(edge);
-    // 计算线段的中点
-    const midLocation = edge.bodyLine.midPoint();
-    // 特效
-    Stage.effects.push(
-      new LineCuttingEffect(
-        new ProgressNumber(0, 15),
-        midLocation,
-        edge.bodyLine.start,
-        new Color(255, 0, 0, 0),
-        new Color(255, 0, 0, 1),
-        20,
-      ),
-    );
-    Stage.effects.push(
-      new LineCuttingEffect(
-        new ProgressNumber(0, 15),
-        midLocation,
-        edge.bodyLine.end,
-        new Color(255, 0, 0, 0),
-        new Color(255, 0, 0, 1),
-        20,
-      ),
-    );
-    Stage.effects.push(
-      new CircleFlameEffect(
-        new ProgressNumber(0, 15),
-        edge.bodyLine.midPoint(),
-        50,
-        new Color(255, 0, 0, 1),
-      ),
-    );
+    for (const effect of EdgeRenderer.getCuttingEffects(edge)) {
+      Stage.effects.push(effect);
+    }
   }
   StageManager.updateReferences();
 

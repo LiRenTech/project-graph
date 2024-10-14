@@ -2,6 +2,7 @@ import { Canvas } from "../../stage/Canvas";
 import { Color } from "../../dataStruct/Color";
 import { Rectangle } from "../../dataStruct/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
+import { CubicBezierCurve, SymmetryCurve } from "../../dataStruct/Curve";
 
 /**
  * 一些基础的渲染图形
@@ -225,6 +226,39 @@ export namespace RenderUtils {
     Canvas.ctx.stroke();
     // 重置线型
     Canvas.ctx.setLineDash([]);
+  }
+
+  /**
+   * 绘制一条贝塞尔曲线
+   * @param curve 
+   */
+  export function renderBezierCurve(
+    curve: CubicBezierCurve,
+    color: Color,
+    width: number,
+  ): void {
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(curve.start.x, curve.start.y);
+    Canvas.ctx.bezierCurveTo(
+      curve.ctrlPt1.x, curve.ctrlPt1.y, 
+      curve.ctrlPt2.x, curve.ctrlPt2.y, 
+      curve.end.x, curve.end.y
+    );
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.stroke();
+  }
+
+  /**
+   * 绘制一条对称曲线
+   * @param curve 
+   */
+  export function renderSymmetryCurve(
+    curve: SymmetryCurve,
+    color: Color,
+    width: number,
+  ): void {
+    renderBezierCurve(curve.bezier, color, width);
   }
 
   /**

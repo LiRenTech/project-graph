@@ -14,9 +14,10 @@ import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 import { LineEffect } from "../../effect/concrete/LineEffect";
 import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
-import { Line } from "../../dataStruct/Line";
 import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
 import { StageHistoryManager } from "../../stage/stageManager/concreteMethods/StageHistoryManager";
+import { NodeRenderer } from "./entityRenderer/NodeRenderer";
+import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
 
 /**
  * 渲染器
@@ -93,17 +94,13 @@ export namespace Renderer {
     timings.edges = performance.now() - start;
 
     start = performance.now();
+    
     renderEntities(viewRectangle);
     // 待删除的节点和边
     renderWarningEntities();
     // 鼠标hover的边
     for (const edge of Stage.hoverEdges) {
-      RenderUtils.renderSolidLine(
-        transformWorld2View(edge.bodyLine.start),
-        transformWorld2View(edge.bodyLine.end),
-        new Color(0, 255, 0, 0.1),
-        Controller.edgeHoverTolerance * 2 * Camera.currentScale,
-      );
+      EdgeRenderer.renderHoverShadow(edge);
     }
     timings.entities = performance.now() - start;
 
@@ -148,31 +145,12 @@ export namespace Renderer {
       }
       if (connectTargetNode === null) {
         for (const node of Stage.connectFromNodes) {
-          RenderUtils.renderGradientLine(
-            transformWorld2View(node.rectangle.getCenter()),
-            transformWorld2View(Controller.lastMoveLocation),
-            new Color(255, 255, 255, 0),
-            new Color(255, 255, 255, 0.5),
-            2,
-          );
-          // RenderUtils.renderDashedLine(
-          //   transformWorld2View(node.rectangle.getCenter()),
-          //   transformWorld2View(Controller.lastMoveLocation),
-          //   new Color(255, 255, 255, 0),
-          //   2,
-          //   2,
-          // );
+          EdgeRenderer.renderVirtualEdge(node, Controller.lastMoveLocation);
         }
       } else {
         // 画一条像吸住了的线
         for (const node of Stage.connectFromNodes) {
-          RenderUtils.renderGradientLine(
-            transformWorld2View(node.rectangle.getCenter()),
-            transformWorld2View(connectTargetNode.rectangle.getCenter()),
-            new Color(0, 255, 0, 0),
-            new Color(0, 255, 0, 0.5),
-            2,
-          );
+          EdgeRenderer.renderVirtualConfirmedEdge(node, connectTargetNode);
         }
       }
     }
@@ -207,12 +185,7 @@ export namespace Renderer {
     }
     // 待删除的边
     for (const edge of Stage.warningEdges) {
-      RenderUtils.renderSolidLine(
-        transformWorld2View(edge.source.rectangle.getCenter()),
-        transformWorld2View(edge.target.rectangle.getCenter()),
-        new Color(255, 0, 0, 0.5),
-        2 * Camera.currentScale,
-      );
+      EdgeRenderer.renderWarningShadow(edge);
     }
   }
   /**
@@ -243,27 +216,6 @@ export namespace Renderer {
     }
   }
 
-  function colorInvert(color: Color): Color {
-    /**
-     * 计算背景色的亮度 更精确的人眼感知亮度公式
-     * 0.2126 * R + 0.7152 * G + 0.0722 * B，
-     * 如果亮度较高，则使用黑色文字，
-     * 如果亮度较低，则使用白色文字。
-     * 这种方法能够确保无论背景色如何变化，文字都能保持足够的对比度。
-     */
-
-    const r = color.r;
-    const g = color.g;
-    const b = color.b;
-    const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-
-    if (brightness > 128) {
-      return Color.Black; // 返回黑色
-    } else {
-      return Color.White; // 返回白色
-    }
-  }
-
   export function renderEntities(viewRectangle: Rectangle) {
     renderedNodes = 0;
     for (const node of StageManager.nodes) {
@@ -271,59 +223,7 @@ export namespace Renderer {
       if (!viewRectangle.isCollideWith(node.rectangle)) {
         continue;
       }
-
-      // 节点身体矩形
-      RenderUtils.renderRect(
-        new Rectangle(
-          transformWorld2View(node.rectangle.location),
-          node.rectangle.size.multiply(Camera.currentScale),
-        ),
-        node.color,
-        new Color(204, 204, 204, 1),
-        2 * Camera.currentScale,
-        8 * Camera.currentScale,
-      );
-
-      if (!node.isEditing) {
-        RenderUtils.renderText(
-          node.text,
-          transformWorld2View(
-            node.rectangle.location.add(Vector.same(NODE_PADDING)),
-          ),
-          FONT_SIZE * Camera.currentScale,
-          colorInvert(node.color),
-        );
-      }
-
-      if (node.isSelected) {
-        // 在外面增加一个框
-        RenderUtils.renderRect(
-          new Rectangle(
-            transformWorld2View(
-              node.rectangle.location.subtract(Vector.same(7.5)),
-            ),
-            node.rectangle.size
-              .add(Vector.same(15))
-              .multiply(Camera.currentScale),
-          ),
-          new Color(0, 0, 0, 0),
-          new Color(255, 255, 255, 0.5),
-          2 * Camera.currentScale,
-          16 * Camera.currentScale,
-        );
-      }
-
-      if (node.details) {
-        RenderUtils.renderMultiLineText(
-          node.details,
-          transformWorld2View(
-            node.rectangle.location.add(new Vector(0, node.rectangle.size.y)),
-          ),
-          FONT_SIZE * Camera.currentScale,
-          NODE_DETAILS_WIDTH * Camera.currentScale,
-        );
-      }
-
+      NodeRenderer.renderNode(node);
       renderedNodes++;
     }
   }
@@ -334,106 +234,9 @@ export namespace Renderer {
       if (!viewRectangle.isCollideWithLine(edge.bodyLine)) {
         continue;
       }
-      if (edge.source.uuid == edge.target.uuid) {
-        // 自环
-        RenderUtils.renderArc(
-          transformWorld2View(edge.target.rectangle.location),
-          (edge.target.rectangle.size.y / 2) * Camera.currentScale,
-          Math.PI / 2,
-          0,
-          new Color(204, 204, 204),
-          2 * Camera.currentScale,
-        );
-        // 画箭头
-        {
-          const size = 15;
-          const direction = new Vector(1, 0).rotateDegrees(15);
-          const endPoint = edge.target.rectangle.leftCenter;
-          renderArrowHead(endPoint, direction, size);
-        }
-      } else {
-        if (edge.text.trim() === "") {
-          // 没有文字的边
-          RenderUtils.renderSolidLine(
-            transformWorld2View(edge.bodyLine.start),
-            transformWorld2View(edge.bodyLine.end),
-            new Color(204, 204, 204),
-            2 * Camera.currentScale,
-          );
-        } else {
-          // 有文字的边
-          const midPoint = edge.bodyLine.midPoint();
-          const startHalf = new Line(edge.bodyLine.start, midPoint);
-          const endHalf = new Line(midPoint, edge.bodyLine.end);
-          RenderUtils.renderTextFromCenter(
-            edge.text,
-            transformWorld2View(midPoint),
-            FONT_SIZE * Camera.currentScale,
-          );
-          const edgeTextRectangle = edge.textRectangle;
-
-          RenderUtils.renderSolidLine(
-            transformWorld2View(edge.bodyLine.start),
-            transformWorld2View(
-              edgeTextRectangle.getLineIntersectionPoint(startHalf),
-            ),
-            new Color(204, 204, 204),
-            2 * Camera.currentScale,
-          );
-          RenderUtils.renderSolidLine(
-            transformWorld2View(edge.bodyLine.end),
-            transformWorld2View(
-              edgeTextRectangle.getLineIntersectionPoint(endHalf),
-            ),
-            new Color(204, 204, 204),
-            2 * Camera.currentScale,
-          );
-        }
-
-        // 画箭头
-        {
-          const size = 15;
-          const direction = edge.target.rectangle
-            .getCenter()
-            .subtract(edge.source.rectangle.getCenter())
-            .normalize();
-          const endPoint = edge.bodyLine.end.clone();
-          renderArrowHead(endPoint, direction, size);
-        }
-
-        if (edge.isSelected) {
-          RenderUtils.renderSolidLine(
-            transformWorld2View(edge.bodyLine.start),
-            transformWorld2View(edge.bodyLine.end),
-            new Color(0, 255, 0, 0.5),
-            4 * Camera.currentScale,
-          );
-        }
-      }
-
+      EdgeRenderer.renderEdge(edge);
       renderedEdges++;
     }
-  }
-  function renderArrowHead(endPoint: Vector, direction: Vector, size: number) {
-    const reDirection = direction.clone().multiply(-1);
-    const location2 = endPoint.add(
-      reDirection.multiply(size).rotateDegrees(15),
-    );
-    const location3 = endPoint.add(reDirection.multiply(size * 0.5));
-    const location4 = endPoint.add(
-      reDirection.multiply(size).rotateDegrees(-15),
-    );
-    RenderUtils.renderPolygonAndFill(
-      [
-        Renderer.transformWorld2View(endPoint),
-        Renderer.transformWorld2View(location2),
-        Renderer.transformWorld2View(location3),
-        Renderer.transformWorld2View(location4),
-      ],
-      new Color(204, 204, 204),
-      new Color(204, 204, 204),
-      0,
-    );
   }
 
   export function renderClipboard() {
