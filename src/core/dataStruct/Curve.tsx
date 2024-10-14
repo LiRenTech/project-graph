@@ -1,6 +1,9 @@
 import { Vector } from "./Vector";
 
 
+/**
+ * 贝塞尔曲线
+ */
 export class CubicBezierCurve {
   constructor(
     public start: Vector,
@@ -14,6 +17,9 @@ export class CubicBezierCurve {
   }
 };
 
+/**
+ * 对称曲线
+ */
 export class SymmetryCurve {
 
   constructor(
