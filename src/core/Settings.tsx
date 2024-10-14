@@ -8,7 +8,7 @@ export namespace Settings {
   let store: Store;
   export type Settings = {
     // 视觉相关
-    lineStyle: "stright" | "bezier";
+    lineStyle: "stright" | "bezier" | "vertical";
     theme: "";
     showGrid: boolean;
     windowBackgroundAlpha: number;

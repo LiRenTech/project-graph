@@ -1,7 +1,7 @@
 /**
  * 高斯函数
  */
-class Gaussian {
+export class Gaussian {
   // 偏移量（均值）
   private mu: number;
   // 标准差

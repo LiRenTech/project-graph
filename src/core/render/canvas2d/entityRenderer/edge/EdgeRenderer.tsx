@@ -9,6 +9,7 @@ import { Renderer } from "../../renderer";
 import { RenderUtils } from "../../RenderUtils";
 import { StraightEdgeRenderer } from "./concrete/StraightEdgeRenderer";
 import { SymmetryCurveEdgeRenderer } from "./concrete/SymmetryCurveEdgeRenderer";
+import { VerticalPolyEdgeRenderer } from "./concrete/VerticalPolyEdgeRenderer";
 
 /**
  * 边的总渲染器单例
@@ -41,6 +42,11 @@ export namespace EdgeRenderer {
       !(currentRenderer instanceof SymmetryCurveEdgeRenderer)
     ) {
       currentRenderer = new SymmetryCurveEdgeRenderer();
+    } else if (
+      style === "vertical" &&
+      !(currentRenderer instanceof VerticalPolyEdgeRenderer) 
+    ) {
+      currentRenderer = new VerticalPolyEdgeRenderer();
     }
   }
   Settings.watch("lineStyle", updateRenderer);
@@ -82,7 +88,7 @@ export namespace EdgeRenderer {
 
   /**
    * 绘制箭头
-   * @param endPoint
+   * @param endPoint 世界坐标
    * @param direction
    * @param size
    */

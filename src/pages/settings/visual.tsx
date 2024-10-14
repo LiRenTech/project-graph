@@ -10,6 +10,7 @@ export default function Visual() {
         options={[
           { label: "直线", value: "stright" },
           { label: "贝塞尔曲线", value: "bezier" },
+          { label: "垂直折线", value: "vertical" },
         ]}
       />
       <SettingField settingKey="showGrid" title="显示网格" type="switch" />

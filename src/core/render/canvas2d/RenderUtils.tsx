@@ -201,6 +201,21 @@ export namespace RenderUtils {
     Canvas.ctx.stroke();
   }
 
+  export function renderSolidLineMultiple(
+    locations: Vector[],
+    color: Color,
+    width: number,
+  ): void {
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(locations[0].x, locations[0].y);
+    for (let i = 1; i < locations.length; i++) {
+      Canvas.ctx.lineTo(locations[i].x, locations[i].y);
+    }
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.stroke();
+  }
+
   /**
    * 绘制一条虚线
    * @param start
@@ -230,7 +245,7 @@ export namespace RenderUtils {
 
   /**
    * 绘制一条贝塞尔曲线
-   * @param curve 
+   * @param curve
    */
   export function renderBezierCurve(
     curve: CubicBezierCurve,
@@ -240,9 +255,12 @@ export namespace RenderUtils {
     Canvas.ctx.beginPath();
     Canvas.ctx.moveTo(curve.start.x, curve.start.y);
     Canvas.ctx.bezierCurveTo(
-      curve.ctrlPt1.x, curve.ctrlPt1.y, 
-      curve.ctrlPt2.x, curve.ctrlPt2.y, 
-      curve.end.x, curve.end.y
+      curve.ctrlPt1.x,
+      curve.ctrlPt1.y,
+      curve.ctrlPt2.x,
+      curve.ctrlPt2.y,
+      curve.end.x,
+      curve.end.y,
     );
     Canvas.ctx.lineWidth = width;
     Canvas.ctx.strokeStyle = color.toString();
@@ -251,7 +269,7 @@ export namespace RenderUtils {
 
   /**
    * 绘制一条对称曲线
-   * @param curve 
+   * @param curve
    */
   export function renderSymmetryCurve(
     curve: SymmetryCurve,
