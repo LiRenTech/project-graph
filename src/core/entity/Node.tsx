@@ -50,7 +50,7 @@ export class Node {
     this.adjustSizeByText();
   }
 
-  adjustSizeByText() {
+  private adjustSizeByText() {
     this.rectangle = new Rectangle(
       this.rectangle.location.clone(),
       getTextSize(this.text, Renderer.FONT_SIZE).add(
