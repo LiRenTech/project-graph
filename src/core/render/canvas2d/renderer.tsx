@@ -17,7 +17,7 @@ import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
 import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
 import { StageHistoryManager } from "../../stage/stageManager/concreteMethods/StageHistoryManager";
 import { NodeRenderer } from "./entityRenderer/NodeRenderer";
-import { EdgeRenderer } from "./entityRenderer/EdgeRenderer";
+import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
 
 /**
  * 渲染器
@@ -94,17 +94,13 @@ export namespace Renderer {
     timings.edges = performance.now() - start;
 
     start = performance.now();
+    
     renderEntities(viewRectangle);
     // 待删除的节点和边
     renderWarningEntities();
     // 鼠标hover的边
     for (const edge of Stage.hoverEdges) {
-      RenderUtils.renderSolidLine(
-        transformWorld2View(edge.bodyLine.start),
-        transformWorld2View(edge.bodyLine.end),
-        new Color(0, 255, 0, 0.1),
-        Controller.edgeHoverTolerance * 2 * Camera.currentScale,
-      );
+      EdgeRenderer.renderHoverShadow(edge);
     }
     timings.entities = performance.now() - start;
 
@@ -149,31 +145,12 @@ export namespace Renderer {
       }
       if (connectTargetNode === null) {
         for (const node of Stage.connectFromNodes) {
-          RenderUtils.renderGradientLine(
-            transformWorld2View(node.rectangle.getCenter()),
-            transformWorld2View(Controller.lastMoveLocation),
-            new Color(255, 255, 255, 0),
-            new Color(255, 255, 255, 0.5),
-            2,
-          );
-          // RenderUtils.renderDashedLine(
-          //   transformWorld2View(node.rectangle.getCenter()),
-          //   transformWorld2View(Controller.lastMoveLocation),
-          //   new Color(255, 255, 255, 0),
-          //   2,
-          //   2,
-          // );
+          EdgeRenderer.renderVirtualEdge(node, Controller.lastMoveLocation);
         }
       } else {
         // 画一条像吸住了的线
         for (const node of Stage.connectFromNodes) {
-          RenderUtils.renderGradientLine(
-            transformWorld2View(node.rectangle.getCenter()),
-            transformWorld2View(connectTargetNode.rectangle.getCenter()),
-            new Color(0, 255, 0, 0),
-            new Color(0, 255, 0, 0.5),
-            2,
-          );
+          EdgeRenderer.renderVirtualConfirmedEdge(node, connectTargetNode);
         }
       }
     }
@@ -208,12 +185,7 @@ export namespace Renderer {
     }
     // 待删除的边
     for (const edge of Stage.warningEdges) {
-      RenderUtils.renderSolidLine(
-        transformWorld2View(edge.source.rectangle.getCenter()),
-        transformWorld2View(edge.target.rectangle.getCenter()),
-        new Color(255, 0, 0, 0.5),
-        2 * Camera.currentScale,
-      );
+      EdgeRenderer.renderWarningShadow(edge);
     }
   }
   /**

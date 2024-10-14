@@ -1,6 +1,5 @@
 import { Color } from "../../dataStruct/Color";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
-import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Renderer } from "../../render/canvas2d/renderer";
@@ -9,6 +8,7 @@ import { Vector } from "../../dataStruct/Vector";
 import { ControllerClass } from "../ControllerClass";
 import { Controller } from "../Controller";
 import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
+import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 
 /**
  * 右键连线功能 的控制器
@@ -118,24 +118,9 @@ ControllerNodeConnection.mouseup = (event: MouseEvent) => {
       if (connectResult) {
         // 连接成功，特效
         isHaveConnectResult = true;
-        Stage.effects.push(
-          new CircleFlameEffect(
-            new ProgressNumber(0, 15),
-            node.rectangle.center,
-            80,
-            new Color(83, 175, 29, 1),
-          ),
-        );
-        Stage.effects.push(
-          new LineCuttingEffect(
-            new ProgressNumber(0, 30),
-            node.rectangle.center,
-            Stage.connectToNode.rectangle.center,
-            new Color(78, 201, 176, 1),
-            new Color(83, 175, 29, 1),
-            20,
-          ),
-        );
+        for (const effect of EdgeRenderer.getConnectedEffects(node, Stage.connectToNode)) {
+          Stage.effects.push(effect);
+        }
       }
     }
     if (isHaveConnectResult) {

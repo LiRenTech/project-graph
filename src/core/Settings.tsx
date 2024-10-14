@@ -1,5 +1,6 @@
 import { createStore, Store } from "@tauri-apps/plugin-store";
-
+import { EdgeRenderer } from "./render/canvas2d/entityRenderer/edge/EdgeRenderer";
+// import { EdgeRenderer } from "./render/canvas2d/entityRenderer/edge/EdgeRenderer";
 
 /**
  * 设置相关的操作
@@ -63,5 +64,8 @@ export namespace Settings {
   export function set<K extends keyof Settings>(key: K, value: Settings[K]) {
     store.set(key, value);
     store.save();
+
+    // 只要改了一个key就监听一下
+    EdgeRenderer.updateRenderer();
   }
 }
