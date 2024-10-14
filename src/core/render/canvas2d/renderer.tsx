@@ -28,6 +28,8 @@ export namespace Renderer {
    */
   export const FONT_SIZE = 32;
   export const NODE_PADDING = 14;
+  /// 节点的圆角半径
+  export const NODE_ROUNDED_RADIUS = 8;
   /**
    * 节点详细信息最大宽度
    */

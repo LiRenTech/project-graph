@@ -17,7 +17,7 @@ fn open_json_by_path(path: String) -> String {
     contents
 }
 
-/// 保存json字符串到指定路径
+/// 保存json字符串到指定路径 (应该叫save_file_by_path更合适)
 #[tauri::command]
 fn save_json_by_path(path: String, content: String) -> Result<bool, String> {
     let mut file = std::fs::File::create(path).unwrap();

@@ -20,7 +20,7 @@ export namespace NodeRenderer {
       node.color,
       new Color(204, 204, 204, 1),
       2 * Camera.currentScale,
-      8 * Camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
 
     if (!node.isEditing) {
@@ -63,7 +63,7 @@ export namespace NodeRenderer {
       );
     }
   }
-  function colorInvert(color: Color): Color {
+  export function colorInvert(color: Color): Color {
     /**
      * 计算背景色的亮度 更精确的人眼感知亮度公式
      * 0.2126 * R + 0.7152 * G + 0.0722 * B，
