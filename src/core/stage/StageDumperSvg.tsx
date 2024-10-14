@@ -28,8 +28,8 @@ export namespace StageDumperSvg {
           strokeWidth={2}
         />
         <text
-          x={node.rectangle.location.x + Renderer.NODE_PADDING}
-          y={node.rectangle.location.y + Renderer.NODE_PADDING}
+          x={node.rectangle.center.x}
+          y={node.rectangle.center.y + Renderer.NODE_PADDING}
           key={node.uuid + "-text"}
           fill={Color.Black.toString()}
           fontSize={Renderer.FONT_SIZE}
