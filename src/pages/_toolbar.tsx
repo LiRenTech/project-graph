@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Color } from "../core/dataStruct/Color";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
+import { open } from "@tauri-apps/plugin-shell";
 // https://lucide.dev/icons
 import {
   Trash2,
@@ -16,6 +17,7 @@ import {
   AlignCenterVertical,
   AlignHorizontalSpaceBetween,
   AlignVerticalSpaceBetween,
+  Globe,
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
@@ -234,8 +236,23 @@ export default function Toolbar({ className = "" }) {
           StageManager.clearClipboard();
         }}
       />
+      <ToolbarItem
+        description="将选中的节点的内容作为网页链接打开"
+        icon={<Globe />}
+        handleFunction={() => {
+          openBrowser();
+        }}
+      />
     </Box>
   );
+}
+
+function openBrowser() {
+  for (const node of StageManager.nodes) {
+    if (node.isSelected) {
+      open(node.text);
+    }
+  }
 }
 
 function deleteSelectedObjects() {
