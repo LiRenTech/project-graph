@@ -471,19 +471,30 @@ export namespace Renderer {
       document.body.appendChild(inputElement);
       inputElement.focus();
       inputElement.select();
+      const removeElement = () => {
+        if (document.body.contains(inputElement)) {
+          try {
+            // 暂时关闭频繁弹窗报错。
+            document.body.removeChild(inputElement);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      };
+
       const onOutsideClick = (event: MouseEvent) => {
         if (!inputElement.contains(event.target as Node)) {
           resolve(inputElement.value);
           onChange(inputElement.value);
           document.body.removeEventListener("click", onOutsideClick);
-          document.body.removeChild(inputElement);
+          removeElement();
         }
       };
       const onOutsideWheel = () => {
         resolve(inputElement.value);
         onChange(inputElement.value);
         document.body.removeEventListener("click", onOutsideClick);
-        document.body.removeChild(inputElement);
+        removeElement();
       };
       setTimeout(() => {
         document.body.addEventListener("click", onOutsideClick);
@@ -496,7 +507,7 @@ export namespace Renderer {
         resolve(inputElement.value);
         onChange(inputElement.value);
         document.body.removeEventListener("click", onOutsideClick);
-        document.body.removeChild(inputElement);
+        removeElement();
       });
       inputElement.addEventListener("keydown", (event) => {
         event.stopPropagation();
@@ -504,7 +515,7 @@ export namespace Renderer {
           resolve(inputElement.value);
           onChange(inputElement.value);
           document.body.removeEventListener("click", onOutsideClick);
-          document.body.removeChild(inputElement);
+          removeElement();
         }
       });
     });
