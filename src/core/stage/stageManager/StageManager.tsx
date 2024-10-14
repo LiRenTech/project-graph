@@ -1,5 +1,4 @@
 import { Color } from "../../dataStruct/Color";
-import { Controller } from "../../controller/Controller";
 import { Edge } from "../../entity/Edge";
 import { Node } from "../../entity/Node";
 import { Renderer } from "../../render/canvas2d/renderer";
@@ -131,9 +130,7 @@ export namespace StageManager {
    */
   export function findEdgeByLocation(location: Vector): Edge | null {
     for (const edge of edges) {
-      if (
-        edge.bodyLine.isPointNearLine(location, Controller.edgeHoverTolerance)
-      ) {
+      if (edge.isBodyLineIntersectWithLocation(location)) {
         return edge;
       }
     }

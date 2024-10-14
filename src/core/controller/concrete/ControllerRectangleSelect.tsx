@@ -112,7 +112,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
       }
     }
     for (const edge of StageManager.edges) {
-      if (Stage.selectingRectangle.isCollideWithLine(edge.bodyLine)) {
+      if (edge.isBodyLineIntersectWithRectangle(Stage.selectingRectangle)) {
         if (
           Controller.lastSelectedEdge.has(
             edge.target.uuid + "&" + edge.source.uuid,
@@ -135,7 +135,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
     if (!isHaveNode) {
       // 如果已经有节点被选择了，则不能再选择边了
       for (const edge of StageManager.edges) {
-        if (Stage.selectingRectangle.isCollideWithLine(edge.bodyLine)) {
+        if (edge.isBodyLineIntersectWithRectangle(Stage.selectingRectangle)) {
           edge.isSelected = true;
         }
       }

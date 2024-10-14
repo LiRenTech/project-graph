@@ -4,6 +4,8 @@ import { Line } from "../dataStruct/Line";
 import { Node } from "./Node";
 import { Rectangle } from "../dataStruct/Rectangle";
 import { Renderer } from "../render/canvas2d/renderer";
+import { Vector } from "../dataStruct/Vector";
+import { Controller } from "../controller/Controller";
 
 export class Edge {
   source: Node;
@@ -51,6 +53,35 @@ export class Edge {
     const endPoint =
       this.target.rectangle.getLineIntersectionPoint(edgeCenterLine);
     return new Line(startPoint, endPoint);
+  }
+
+  /**
+   * 用于碰撞箱框选
+   * @param rectangle
+   */
+  isBodyLineIntersectWithRectangle(rectangle: Rectangle): boolean {
+    return rectangle.isCollideWithLine(this.bodyLine);
+  }
+
+  /**
+   * 用于鼠标悬浮在线上的时候
+   * @param location
+   * @returns
+   */
+  isBodyLineIntersectWithLocation(location: Vector): boolean {
+    return this.bodyLine.isPointNearLine(
+      location,
+      Controller.edgeHoverTolerance,
+    );
+  }
+
+  /**
+   * 用于线段框选
+   * @param line
+   * @returns
+   */
+  isBodyLineIntersectWithLine(line: Line): boolean {
+    return this.bodyLine.isIntersecting(line);
   }
 
   public rename(text: string) {

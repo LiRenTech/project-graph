@@ -94,7 +94,7 @@ export namespace Renderer {
     timings.edges = performance.now() - start;
 
     start = performance.now();
-    
+
     renderEntities(viewRectangle);
     // 待删除的节点和边
     renderWarningEntities();
@@ -231,7 +231,7 @@ export namespace Renderer {
   export function renderEdges(viewRectangle: Rectangle) {
     renderedEdges = 0;
     for (const edge of StageManager.edges) {
-      if (!viewRectangle.isCollideWithLine(edge.bodyLine)) {
+      if (!edge.isBodyLineIntersectWithRectangle(viewRectangle)) {
         continue;
       }
       EdgeRenderer.renderEdge(edge);
