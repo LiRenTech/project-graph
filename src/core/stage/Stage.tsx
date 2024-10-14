@@ -1,6 +1,6 @@
-import { Edge } from "../Edge";
+import { Edge } from "../entity/Edge";
 import { Effect } from "../effect/effect";
-import { Node } from "../Node";
+import { Node } from "../entity/Node";
 import { Rectangle } from "../dataStruct/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { Line } from "../dataStruct/Line";

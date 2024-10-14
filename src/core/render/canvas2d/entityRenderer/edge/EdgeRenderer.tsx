@@ -1,8 +1,8 @@
 import { Color } from "../../../../dataStruct/Color";
 
 import { Vector } from "../../../../dataStruct/Vector";
-import { Edge } from "../../../../Edge";
-import { Node } from "../../../../Node";
+import { Edge } from "../../../../entity/Edge";
+import { Node } from "../../../../entity/Node";
 import { Settings } from "../../../../Settings";
 
 import { Renderer } from "../../renderer";

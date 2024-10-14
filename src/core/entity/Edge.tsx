@@ -1,9 +1,9 @@
-import { Serialized } from "../types/node";
-import { getTextSize } from "../utils/font";
-import { Line } from "./dataStruct/Line";
+import { Serialized } from "../../types/node";
+import { getTextSize } from "../../utils/font";
+import { Line } from "../dataStruct/Line";
 import { Node } from "./Node";
-import { Rectangle } from "./dataStruct/Rectangle";
-import { Renderer } from "./render/canvas2d/renderer";
+import { Rectangle } from "../dataStruct/Rectangle";
+import { Renderer } from "../render/canvas2d/renderer";
 
 export class Edge {
   source: Node;

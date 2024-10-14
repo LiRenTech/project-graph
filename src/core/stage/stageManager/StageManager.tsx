@@ -1,7 +1,7 @@
 import { Color } from "../../dataStruct/Color";
 import { Controller } from "../../controller/Controller";
-import { Edge } from "../../Edge";
-import { Node } from "../../Node";
+import { Edge } from "../../entity/Edge";
+import { Node } from "../../entity/Node";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Vector } from "../../dataStruct/Vector";
 import { StageNodeRotate } from "./concreteMethods/stageNodeRotate";

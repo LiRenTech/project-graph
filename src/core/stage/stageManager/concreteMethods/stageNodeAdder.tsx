@@ -1,5 +1,5 @@
 import { Vector } from "../../../dataStruct/Vector";
-import { Node } from "../../../Node";
+import { Node } from "../../../entity/Node";
 import { Settings } from "../../../Settings";
 import { StageManager } from "../StageManager";
 import { v4 as uuidv4 } from "uuid";

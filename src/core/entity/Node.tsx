@@ -1,9 +1,9 @@
-import { Serialized } from "../types/node";
-import { getTextSize } from "../utils/font";
-import { Color } from "./dataStruct/Color";
-import { Rectangle } from "./dataStruct/Rectangle";
-import { Renderer } from "./render/canvas2d/renderer";
-import { Vector } from "./dataStruct/Vector";
+import { Serialized } from "../../types/node";
+import { getTextSize } from "../../utils/font";
+import { Color } from "../dataStruct/Color";
+import { Rectangle } from "../dataStruct/Rectangle";
+import { Renderer } from "../render/canvas2d/renderer";
+import { Vector } from "../dataStruct/Vector";
 
 export class Node {
   uuid: string;

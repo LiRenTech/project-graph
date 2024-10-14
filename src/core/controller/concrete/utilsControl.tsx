@@ -1,5 +1,5 @@
 import { Vector } from "../../dataStruct/Vector";
-import { Node } from "../../Node";
+import { Node } from "../../entity/Node";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Camera } from "../../stage/Camera";
 import { Controller } from "../Controller";

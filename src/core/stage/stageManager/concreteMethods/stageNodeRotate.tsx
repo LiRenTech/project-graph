@@ -1,6 +1,6 @@
 import { Vector } from "../../../dataStruct/Vector";
 import { StageManager } from "../StageManager";
-import { Node } from "../../../Node";
+import { Node } from "../../../entity/Node";
 
 
 /**

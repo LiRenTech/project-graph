@@ -1,7 +1,7 @@
 import { Vector } from "../../../../dataStruct/Vector";
-import { Edge } from "../../../../Edge";
+import { Edge } from "../../../../entity/Edge";
 import { Effect } from "../../../../effect/effect";
-import { Node } from "../../../../Node";
+import { Node } from "../../../../entity/Node";
 
 /**
  * 不同类型的边的渲染器 基类
