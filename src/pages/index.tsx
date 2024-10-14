@@ -13,6 +13,8 @@ import { RectangleNoteEffect } from "../core/effect/concrete/RectangleNoteEffect
 import { ProgressNumber } from "../core/dataStruct/ProgressNumber";
 import { Color } from "../core/dataStruct/Color";
 
+
+
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);
 
@@ -139,12 +141,14 @@ export default function Home() {
 
     // 清理事件监听器
     return () => {
+      
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("focus", handleFocus);
       window.removeEventListener("blur", handleBlur);
       Controller.destroy();
       cancelAnimationFrame(frameId);
-      StageManager.destroy();
+      // 实际上不应该清理，因为跳转到设置界面再回来就没了
+      // StageManager.destroy();
     };
   }, []);
 
