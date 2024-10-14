@@ -29,12 +29,8 @@ export namespace EdgeRenderer {
 
   /**
    * 更新渲染器
-   * 不确定是否会非常影响性能 在主渲染循环中调用不能用await
    */
-  export async function updateRenderer() {
-
-    // 从设置里拿样式的速度是5ms左右
-    const style = await Settings.get("lineStyle");
+  export async function updateRenderer(style: Settings.Settings["lineStyle"]) {
     if (
       style === "stright" &&
       !(currentRenderer instanceof StraightEdgeRenderer)
@@ -46,8 +42,8 @@ export namespace EdgeRenderer {
     ) {
       currentRenderer = new SymmetryCurveEdgeRenderer();
     }
-
   }
+  Settings.watch("lineStyle", updateRenderer);
 
   export function renderEdge(edge: Edge) {
     if (edge.source.uuid == edge.target.uuid) {

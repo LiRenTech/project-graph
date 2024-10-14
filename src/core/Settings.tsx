@@ -1,6 +1,4 @@
 import { createStore, Store } from "@tauri-apps/plugin-store";
-import { EdgeRenderer } from "./render/canvas2d/entityRenderer/edge/EdgeRenderer";
-// import { EdgeRenderer } from "./render/canvas2d/entityRenderer/edge/EdgeRenderer";
 
 /**
  * 设置相关的操作
@@ -61,11 +59,33 @@ export namespace Settings {
     return (await store.get<Settings[K]>(key)) || defaultSettings[key];
   }
 
+  const callbacks: {
+    [key: string]: Array<(value: any) => void>;
+  } = {};
+
   export function set<K extends keyof Settings>(key: K, value: Settings[K]) {
     store.set(key, value);
     store.save();
 
-    // 只要改了一个key就监听一下
-    EdgeRenderer.updateRenderer();
+    // 调用所有监听该键的回调函数
+    if (callbacks[key]) {
+      callbacks[key].forEach((callback) => callback(value));
+    }
+  }
+
+  /**
+   * 监听某个设置的变化，监听后会调用一次回调函数
+   * @param key 要监听的设置键
+   * @param callback 设置变化时的回调函数
+   */
+  export function watch<K extends keyof Settings>(
+    key: K,
+    callback: (value: Settings[K]) => void,
+  ) {
+    if (!callbacks[key]) {
+      callbacks[key] = [];
+    }
+    callbacks[key].push(callback);
+    get(key).then((value) => callback(value));
   }
 }
