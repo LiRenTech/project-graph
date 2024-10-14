@@ -1,7 +1,7 @@
-use tauri::Manager;
-
 use std::io::Read;
 use std::io::Write;
+
+use tauri::Manager;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -58,8 +58,7 @@ pub fn run() {
             greet,
             open_json_by_path,
             save_json_by_path,
-            check_json_exist,
-            // open_dev_tools
+            check_json_exist // open_dev_tools
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

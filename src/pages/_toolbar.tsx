@@ -237,20 +237,28 @@ export default function Toolbar({ className = "" }) {
         }}
       />
       <ToolbarItem
-        description="将选中的节点的内容作为网页链接打开"
+        description="将选中的节点的内容作为网页链接或本地文件路径打开（小心，路径错误导致崩溃）"
         icon={<Globe />}
         handleFunction={() => {
-          openBrowser();
+          openBrowserOrFile();
         }}
       />
     </Box>
   );
 }
 
-function openBrowser() {
+function openBrowserOrFile() {
   for (const node of StageManager.nodes) {
     if (node.isSelected) {
-      open(node.text);
+      open(node.text)
+        .then((value) => {
+
+          console.log("open browser success", value);
+        })
+        .catch((e) => {
+          // 依然会导致程序崩溃，具体原因未知
+          console.error(e);
+        });
     }
   }
 }
