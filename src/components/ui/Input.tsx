@@ -7,7 +7,7 @@ type InputProps<T extends boolean = false> = {
   value?: string;
   placeholder?: string;
   multiline?: boolean;
-  onChange: (value: T extends true ? number : string) => void; // 使用条件类型来定义 onChange 的参数
+  onChange?: (value: T extends true ? number : string) => void; // 使用条件类型来定义 onChange 的参数
   number?: T;
   [key: string]: any;
 };
@@ -27,9 +27,9 @@ export default function Input<T extends boolean = false>({
   ) => {
     // 根据 number 的值决定传递的参数类型
     if (number) {
-      onChange(parseInt(e.target.value || "0") as any); // 强制转换为 number
+      onChange?.(parseInt(e.target.value || "0") as any); // 强制转换为 number
     } else {
-      onChange(e.target.value as any); // 强制转换为 string
+      onChange?.(e.target.value as any); // 强制转换为 string
     }
   };
 

@@ -25,7 +25,7 @@ export default function Button({
         },
         className,
       )}
-      onClick={(e) => {
+      onClick={(e: React.MouseEvent) => {
         if (!disabled) {
           onClick(e);
         }
