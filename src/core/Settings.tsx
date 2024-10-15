@@ -23,8 +23,9 @@ export namespace Settings {
     moveFriction: number;
     // 性能相关
     historySize: number;
-    // 自动命名相关
+    // 自动命名相关，快捷操作相关
     autoNamerTemplate: string;
+    autoOpenPath: string;
     // github 相关
     githubToken: string;
     githubUser: string;
@@ -46,6 +47,7 @@ export namespace Settings {
     historySize: 20,
     // 自动命名相关
     autoNamerTemplate: "...",
+    autoOpenPath: "",
     // github 相关
     githubToken: "",
     githubUser: "",

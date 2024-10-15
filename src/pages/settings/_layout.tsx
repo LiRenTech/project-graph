@@ -10,7 +10,7 @@ export default function SettingsLayout() {
           <NavLink to="/settings/visual">显示</NavLink>
           <NavLink to="/settings/physics">物理</NavLink>
           <NavLink to="/settings/performance">性能</NavLink>
-          <NavLink to="/settings/auto-namer">自动命名</NavLink>
+          <NavLink to="/settings/auto-namer">自动化</NavLink>
           <NavLink to="/settings/ai">AI</NavLink>
           <NavLink to="/settings/github">Github</NavLink>
         </div>

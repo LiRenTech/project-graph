@@ -14,6 +14,7 @@ export function SettingField({
   min = 0,
   max = 100,
   step = 1,
+  placeholder = "",
 }: {
   settingKey: keyof Settings.Settings;
   title?: string;
@@ -22,6 +23,7 @@ export function SettingField({
   min?: number;
   max?: number;
   step?: number;
+  placeholder?: string;
 }) {
   const [value, setValue] = React.useState<any>();
 
@@ -44,7 +46,7 @@ export function SettingField({
         <span>{title}</span>
         <span className="text-xs text-gray-500">{settingKey}</span>
       </div>
-      {type === "text" && <Input value={value} onChange={setValue} />}
+      {type === "text" && <Input value={value} onChange={setValue} placeholder={placeholder} />}
       {type === "number" && <Input value={value} onChange={setValue} number />}
       {type === "slider" && (
         <Slider
