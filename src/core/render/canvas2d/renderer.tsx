@@ -43,8 +43,9 @@ export namespace Renderer {
   export let backgroundAlpha = 1;
 
   /**
+   * 记录每一项渲染的耗时
    * {
-   *   xxx: ms
+   *   [渲染项的名字]: ?ms
    * }
    */
   let timings: { [key: string]: number } = {};
