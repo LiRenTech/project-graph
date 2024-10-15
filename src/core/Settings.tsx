@@ -3,6 +3,8 @@ import { createStore, Store } from "@tauri-apps/plugin-store";
 /**
  * 设置相关的操作
  * 有数据持久化机制
+ *
+ * windows 在路径 %APPDATA% 下
  */
 export namespace Settings {
   let store: Store;
@@ -56,7 +58,15 @@ export namespace Settings {
   export async function get<K extends keyof Settings>(
     key: K,
   ): Promise<Settings[K]> {
-    return (await store.get<Settings[K]>(key)) || defaultSettings[key];
+    const res = await store.get<Settings[K]>(key);
+    if (res === null) {
+      console.log(
+        `settings.${key} not found, use default value ${defaultSettings[key]}`,
+      );
+      return defaultSettings[key];
+    } else {
+      return res;
+    }
   }
 
   const callbacks: {

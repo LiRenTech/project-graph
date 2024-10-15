@@ -27,11 +27,15 @@ export function SettingField({
 
   React.useEffect(() => {
     Settings.get(settingKey).then((v) => {
+      // console.log("Setting loaded", settingKey, v);
       setValue(v);
     });
   }, []);
   React.useEffect(() => {
-    Settings.set(settingKey, value);
+    if (value!== undefined) {
+      Settings.set(settingKey, value);
+      // console.log("Setting saved", settingKey, value);
+    }
   }, [value]);
 
   return (
