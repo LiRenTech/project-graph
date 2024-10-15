@@ -18,6 +18,13 @@ export namespace EdgeRenderer {
   // let currentRenderer = new StraightEdgeRenderer();
   let currentRenderer = new SymmetryCurveEdgeRenderer();
 
+  /**
+   * 初始化边的渲染器
+   */
+  export function init() {
+    Settings.watch("lineStyle", updateRenderer);
+  }
+
   export function checkRendererBySettings(
     lineStyle: Settings.Settings["lineStyle"],
   ) {
@@ -44,12 +51,11 @@ export namespace EdgeRenderer {
       currentRenderer = new SymmetryCurveEdgeRenderer();
     } else if (
       style === "vertical" &&
-      !(currentRenderer instanceof VerticalPolyEdgeRenderer) 
+      !(currentRenderer instanceof VerticalPolyEdgeRenderer)
     ) {
       currentRenderer = new VerticalPolyEdgeRenderer();
     }
   }
-  Settings.watch("lineStyle", updateRenderer);
 
   export function renderEdge(edge: Edge) {
     if (edge.source.uuid == edge.target.uuid) {
