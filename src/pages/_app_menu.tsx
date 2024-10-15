@@ -12,7 +12,7 @@ import {
   Plus,
   RefreshCcw,
   Save,
-  Settings,
+  Settings as SettingsIcon,
   TestTube2,
   View,
 } from "lucide-react";
@@ -35,6 +35,7 @@ import { Color } from "../core/dataStruct/Color";
 import { RecentFileManager } from "../core/RecentFileManager";
 import { invoke } from "@tauri-apps/api/core";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
+import { Settings } from "../core/Settings";
 
 export default function AppMenu({
   className = "",
@@ -217,6 +218,18 @@ export default function AppMenu({
   };
 
   useEffect(() => {
+    RecentFileManager.startHookFunction = () => {
+      if (RecentFileManager.isOpenByPathWhenAppStart()) {
+        Settings.get("autoOpenPath").then((autoOpenPath) => {
+          setFile(autoOpenPath);
+        });
+      } else {
+        console.log("没有打开过文件");
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     // 绑定快捷键
     const keyDownFunction = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key === "n") {
@@ -224,7 +237,6 @@ export default function AppMenu({
       } else if (e.ctrlKey && e.key === "o") {
         onOpen();
       } else if (e.ctrlKey && e.key === "s") {
-        console.log("按下了Ctrl+S，当前文件名是", file);
         onSave();
       }
     };
@@ -276,7 +288,10 @@ export default function AppMenu({
         </Col>
       </Row>
       <Row icon={<MoreHorizontal />} title="更多">
-        <Col icon={<Settings />} onClick={() => navigate("/settings/visual")}>
+        <Col
+          icon={<SettingsIcon />}
+          onClick={() => navigate("/settings/visual")}
+        >
           设置
         </Col>
         <Col icon={<Info />} onClick={() => navigate("/settings/about")}>

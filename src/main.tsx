@@ -27,6 +27,7 @@ const Routes = () => <RouterProvider router={router} />;
   // 15~20ms 左右
   EdgeRenderer.init();
   Renderer.init();
+
   // 启动时加载用户自定义的工程文件
   Settings.get("autoOpenPath").then((path) => {
     if (path === "") {
@@ -39,7 +40,10 @@ const Routes = () => <RouterProvider router={router} />;
         .then((isExists) => {
           console.log(isExists);
           if (isExists) {
+            // 打开自定义的工程文件
             RecentFileManager.openFileByPath(path);
+            RecentFileManager.openFileByPathWhenAppStart();
+            console.log("自动打开了工程文件：" + path);
           } else {
             // 自动打开路径不存在
             Stage.effects.push(
@@ -52,8 +56,6 @@ const Routes = () => <RouterProvider router={router} />;
         });
     }
   });
-
-  // 思考应该把用户自定义路径字符串放在哪个里面
 
   createRoot(document.getElementById("root")!).render(
     <RecoilRoot>
