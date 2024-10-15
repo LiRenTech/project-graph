@@ -37,13 +37,14 @@ export default function About() {
       </div>
       <div className="flex-1 overflow-auto leading-7">
         <p>
-          这是一个快速绘制节点图的工具，可以用于项目拓扑图绘制、快速头脑风暴草稿
+          这是一个基于tauri框架的快速绘制节点图的工具，可以用于项目拓扑图绘制、快速头脑风暴草稿
         </p>
         <p>
           Xmind 只能用来绘制树形结构图，FigJam 和 draw.io
           可以用来绘制但网页打开有点慢了
         </p>
         <p>所以做了这个小软件</p>
+
         <h2 className="mt-4 text-2xl font-bold">联系我们</h2>
         <p>
           我们致力于为 “图论”
@@ -71,21 +72,21 @@ export default function About() {
         </p>
       </div>
       <div className="flex gap-4">
+        <Button onClick={() => open("https://liren.zty012.de/project-graph")}>
+          使用文档
+        </Button>
         <Button
           onClick={() => open("https://github.com/LiRenTech/project-graph")}
         >
-          GitHub
+          GitHub开源地址
         </Button>
         <Button
           onClick={() => open("https://www.bilibili.com/video/BV1hmHKeDE9D")}
         >
-          Bilibili
-        </Button>
-        <Button onClick={() => open("https://liren.zty012.de/project-graph")}>
-          Website
+          Bilibili视频教程
         </Button>
         <Button onClick={() => open("https://qm.qq.com/cgi-bin/qm/qr?k=1Wskf2Y2KJz3ARpCgzi04y_p95a78Wku&jump_from=webapi&authKey=EkjB+oWihwZIfyqVsIv2dGrNv7bhSGSIULM3+ZLU2R5AVxOUKaIRwi6TKOHlT04/")}>
-          QQ群
+          QQ讨论群
         </Button>
       </div>
     </div>
