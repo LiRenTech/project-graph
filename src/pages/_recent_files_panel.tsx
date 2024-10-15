@@ -75,7 +75,7 @@ export default function RecentFilesPanel() {
   return (
     <div
       className={cn(
-        "fixed left-1/2 top-1/2 z-10 flex h-64 w-3/4 -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center rounded-md bg-gray-800 p-2",
+        "fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-y-scroll rounded-md bg-gray-800 px-2 py-6",
         {
           hidden: !isRecentFilePanelOpen,
         },
