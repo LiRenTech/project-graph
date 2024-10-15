@@ -102,7 +102,7 @@ export default function App() {
         {/* 左上角标题 */}
         <Button
           data-tauri-drag-region
-          className="flex-1 hover:cursor-grab active:cursor-grabbing"
+          className="flex-1 hover:cursor-move active:scale-100 active:cursor-grabbing"
         >
           {file
             .split("/")
@@ -111,7 +111,7 @@ export default function App() {
         </Button>
         {/* 右上角窗口控制按钮 */}
         {isDesktop && (
-          <Button className="right-4 top-4 flex items-center gap-1">
+          <Button className="right-4 top-4 flex items-center gap-1 active:scale-100">
             <ChevronDown
               onClick={() => getCurrentWindow().minimize()}
               className="transition hover:opacity-80 active:scale-75"
