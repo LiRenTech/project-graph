@@ -288,6 +288,8 @@ export namespace RenderUtils {
     strokeColor: Color,
     strokeWidth: number,
   ): void {
+    Canvas.ctx.lineJoin = "round"; // 圆角
+    // bevel，斜角
     Canvas.ctx.beginPath();
     Canvas.ctx.moveTo(points[0].x, points[0].y);
     for (let i = 1; i < points.length; i++) {
