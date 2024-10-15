@@ -347,7 +347,7 @@ export namespace Renderer {
       }
     }
     const gridColor = new Color(255, 255, 255, 0.1);
-    const mainColor = new Color(255, 255, 255, 0.5);
+    const mainColor = new Color(255, 255, 255, 0.2);
 
     const viewRect = getCoverWorldRectangle();
     let yStart = viewRect.location.y - (viewRect.location.y % gap);
