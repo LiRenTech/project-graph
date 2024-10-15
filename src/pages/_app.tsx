@@ -102,15 +102,13 @@ export default function App() {
         {/* 左上角标题 */}
         <Button
           data-tauri-drag-region
-          className="hover:cursor-grab active:cursor-grabbing"
+          className="flex-1 hover:cursor-grab active:cursor-grabbing"
         >
           {file
             .split("/")
             .at(-1)
             ?.replace(/\.json/, "")}
         </Button>
-        {/* 中间空白 */}
-        <div className="flex-1" />
         {/* 右上角窗口控制按钮 */}
         {isDesktop && (
           <Button className="right-4 top-4 flex items-center gap-1">
