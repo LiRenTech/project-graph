@@ -168,6 +168,21 @@ export namespace Renderer {
         }
       }
     }
+    if (Stage.isDraggingFile) {
+      RenderUtils.renderRect(
+        Renderer.getCoverWorldRectangle().transformWorld2View(),
+        new Color(0, 0, 0, 0.5),
+        Color.Transparent,
+        1,
+      );
+      RenderUtils.renderCircle(
+        transformWorld2View(Stage.draggingLocation),
+        100,
+        Color.Transparent,
+        Color.White,
+        2,
+      );
+    }
     // 纯键盘操作相关的
     renderKeyboardOnly();
 

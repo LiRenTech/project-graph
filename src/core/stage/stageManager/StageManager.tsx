@@ -264,8 +264,11 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
-  export function addSerializedData(serializedData: Serialized.File) {
-    StageSerializedAdder.addSerializedData(serializedData);
+  export function addSerializedData(
+    serializedData: Serialized.File,
+    diffLocation = new Vector(0, 0),
+  ) {
+    StageSerializedAdder.addSerializedData(serializedData, diffLocation);
     StageHistoryManager.recordStep();
   }
 

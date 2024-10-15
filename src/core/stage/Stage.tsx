@@ -101,6 +101,16 @@ export namespace Stage {
   export let copyBoardMouseVector: Vector = Vector.getZero();
 
   /**
+   * 当前是否是拖拽文件入窗口的状态
+   */
+  export let isDraggingFile = false;
+
+  /**
+   * 当前鼠标所在的世界坐标
+   */
+  export let draggingLocation = Vector.getZero();
+
+  /**
    * 逻辑总入口
    */
   export function logicTick() {
