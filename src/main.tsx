@@ -8,6 +8,7 @@ import { Settings } from "./core/Settings";
 import { RecentFileManager } from "./core/RecentFileManager";
 import { PopupDialogProvider } from "./utils/popupDialog";
 import { EdgeRenderer } from "./core/render/canvas2d/entityRenderer/edge/EdgeRenderer";
+import { Renderer } from "./core/render/canvas2d/renderer";
 // import { platform } from "@tauri-apps/plugin-os";
 
 const router = createMemoryRouter(routes);
@@ -22,6 +23,7 @@ const Routes = () => <RouterProvider router={router} />;
   await RecentFileManager.init();
   // 15~20ms 左右
   EdgeRenderer.init();
+  Renderer.init();
 
   createRoot(document.getElementById("root")!).render(
     <RecoilRoot>

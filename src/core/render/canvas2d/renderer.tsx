@@ -18,6 +18,7 @@ import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
 import { StageHistoryManager } from "../../stage/stageManager/concreteMethods/StageHistoryManager";
 import { NodeRenderer } from "./entityRenderer/NodeRenderer";
 import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
+import { Settings } from "../../Settings";
 
 /**
  * 渲染器
@@ -66,6 +67,14 @@ export namespace Renderer {
     Canvas.ctx.scale(scale, scale);
   }
 
+  let isShowDebug = true;
+  let isShowGrid = true;
+  // 确保这个函数在软件打开的那一次调用
+  export function init() {
+    Settings.watch("showDebug", (value) => (isShowDebug = value));
+    Settings.watch("showGrid", (value) => (isShowGrid = value));
+  }
+
   /**
    * 渲染总入口
    * @returns
@@ -87,7 +96,9 @@ export namespace Renderer {
 
     // 画网格
     start = performance.now();
-    renderGrid();
+    if (isShowGrid) {
+      renderGrid();
+    }
     timings.grid = performance.now() - start;
 
     const viewRectangle = getCoverWorldRectangle();
@@ -164,7 +175,9 @@ export namespace Renderer {
     renderClipboard();
 
     // 画详细信息
-    renderDetails();
+    if (isShowDebug) {
+      renderDetails();
+    }
 
     // 渲染所有特效
     renderEffects();
