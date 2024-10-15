@@ -24,6 +24,9 @@ const Routes = () => <RouterProvider router={router} />;
   // 15~20ms 左右
   EdgeRenderer.init();
   Renderer.init();
+  // 启动时加载用户自定义的工程文件
+  // RecentFileManager.openFileByPath();
+  // 思考应该把用户自定义路径字符串放在哪个里面
 
   createRoot(document.getElementById("root")!).render(
     <RecoilRoot>
