@@ -7,7 +7,6 @@ import Bilibili from "../assets/bilibili.svg?react";
 import QQ from "../assets/qq.svg?react";
 import TauriIcon from "../assets/tauri.svg?react";
 import ReactIcon from "../assets/react.svg?react";
-import { StageManager } from "../core/stage/stageManager/StageManager";
 import { Camera } from "../core/stage/Camera";
 
 export default function Welcome() {
