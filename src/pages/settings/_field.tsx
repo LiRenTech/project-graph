@@ -15,6 +15,7 @@ export function SettingField({
   max = 100,
   step = 1,
   placeholder = "",
+  icon = <></>,
 }: {
   settingKey: keyof Settings.Settings;
   title?: string;
@@ -24,6 +25,7 @@ export function SettingField({
   max?: number;
   step?: number;
   placeholder?: string;
+  icon?: React.ReactNode;
 }) {
   const [value, setValue] = React.useState<any>();
 
@@ -34,7 +36,7 @@ export function SettingField({
     });
   }, []);
   React.useEffect(() => {
-    if (value!== undefined) {
+    if (value !== undefined) {
       Settings.set(settingKey, value);
       // console.log("Setting saved", settingKey, value);
     }
@@ -42,11 +44,16 @@ export function SettingField({
 
   return (
     <div className="flex w-full items-center justify-between rounded-xl p-4 transition hover:bg-white/10">
-      <div className="flex flex-col">
-        <span>{title}</span>
-        <span className="text-xs text-gray-500">{settingKey}</span>
+      <div className="flex items-center gap-2">
+        {icon}
+        <div className="flex flex-col">
+          <span>{title}</span>
+          <span className="text-xs text-gray-500">{settingKey}</span>
+        </div>
       </div>
-      {type === "text" && <Input value={value} onChange={setValue} placeholder={placeholder} />}
+      {type === "text" && (
+        <Input value={value} onChange={setValue} placeholder={placeholder} />
+      )}
       {type === "number" && <Input value={value} onChange={setValue} number />}
       {type === "slider" && (
         <Slider
@@ -70,18 +77,23 @@ export function ButtonField({
   label = "",
   disabled = false,
   onClick = () => {},
+  icon = <></>,
 }: {
   title: string;
   description?: string;
   label?: string;
   disabled?: boolean;
   onClick?: () => void;
+  icon?: React.ReactNode;
 }) {
   return (
     <div className="flex w-full items-center justify-between rounded-xl p-4 transition hover:bg-white/10">
-      <div className="flex flex-col">
-        <span>{title}</span>
-        <span className="text-xs text-gray-500">{description}</span>
+      <div className="flex items-center gap-2">
+        {icon}
+        <div className="flex flex-col">
+          <span>{title}</span>
+          <span className="text-xs text-gray-500">{description}</span>
+        </div>
       </div>
       <Button onClick={onClick} disabled={disabled}>
         {label}

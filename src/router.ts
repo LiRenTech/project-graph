@@ -13,7 +13,8 @@ export type Path =
   | `/settings/performance`
   | `/settings/physics`
   | `/settings/visual`
-  | `/test`;
+  | `/test`
+  | `/welcome`;
 
 export type Params = {};
 

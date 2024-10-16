@@ -9,6 +9,7 @@ import {
   Image,
   Info,
   MoreHorizontal,
+  PartyPopper,
   Plus,
   RefreshCcw,
   Save,
@@ -324,6 +325,14 @@ export default function AppMenu({
           }}
         >
           print
+        </Col>
+        <Col
+          icon={<PartyPopper />}
+          onClick={() => {
+            navigate("/welcome");
+          }}
+        >
+          welcome
         </Col>
       </Row>
       <Row icon={<AppWindow />} title="窗口">
