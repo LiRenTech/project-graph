@@ -6,7 +6,7 @@ import { isMobile } from "../../utils/platform";
 import { fetch } from "@tauri-apps/plugin-http";
 import { Octokit } from "@octokit/rest";
 import { Settings } from "../../core/Settings";
-import { LogIn } from "lucide-react";
+import { LogIn, User } from "lucide-react";
 
 export default function GithubPage() {
   const dialog = useDialog();
@@ -117,7 +117,7 @@ export default function GithubPage() {
         disabled={logining}
         onClick={login}
       />
-      <ButtonField title="状态" label={user} disabled />
+      <ButtonField icon={<User />} title="状态" label={user} disabled />
     </>
   );
 }

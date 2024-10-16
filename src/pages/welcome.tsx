@@ -7,6 +7,8 @@ import Bilibili from "../assets/bilibili.svg?react";
 import QQ from "../assets/qq.svg?react";
 import TauriIcon from "../assets/tauri.svg?react";
 import ReactIcon from "../assets/react.svg?react";
+import { StageManager } from "../core/stage/stageManager/StageManager";
+import { Camera } from "../core/stage/Camera";
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -15,8 +17,10 @@ export default function Welcome() {
     <div className="flex h-full items-center justify-center bg-gradient-to-br from-blue-950 to-green-950">
       <main className="flex h-4/5 w-1/3 flex-col justify-center">
         <div className="mb-8">
-          <span className="text-2xl">Welcome to</span>
-          <h1 className="text-5xl font-bold">Project Graph</h1>
+          <span className="text-2xl text-gray-500">Welcome to</span>
+          <h1 className="bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-5xl font-bold leading-tight text-transparent">
+            Project Graph
+          </h1>
         </div>
         {/* 设置语言 */}
         <SettingField
@@ -35,7 +39,10 @@ export default function Welcome() {
           icon={<ArrowRight />}
           title="Finish / 完成"
           label="Go!"
-          onClick={() => navigate("/")}
+          onClick={() => {
+            navigate("/");
+            Camera.reset();
+          }}
         />
         {/* 其他链接 */}
         <ButtonField
