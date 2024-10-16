@@ -158,12 +158,23 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   }
 
   public renderHoverShadow(edge: Edge): void {
-    RenderUtils.renderSolidLine(
-      Renderer.transformWorld2View(edge.bodyLine.start),
-      Renderer.transformWorld2View(edge.bodyLine.end),
-      new Color(0, 255, 0, 0.1),
-      Controller.edgeHoverTolerance * 2 * Camera.currentScale,
-    );
+    if (this.isCycleState(edge)) {
+      RenderUtils.renderArc(
+        Renderer.transformWorld2View(edge.target.rectangle.location),
+        (edge.source.rectangle.size.y / 2) * Camera.currentScale,
+        Math.PI / 2,
+        0,
+        new Color(0, 255, 0, 0.5),
+        2 * Camera.currentScale,
+      );
+    } else {
+      RenderUtils.renderSolidLine(
+        Renderer.transformWorld2View(edge.bodyLine.start),
+        Renderer.transformWorld2View(edge.bodyLine.end),
+        new Color(0, 255, 0, 0.1),
+        Controller.edgeHoverTolerance * 2 * Camera.currentScale,
+      );
+    }
   }
 
   public renderSelectedShadow(edge: Edge): void {
@@ -176,11 +187,22 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   }
 
   public renderWarningShadow(edge: Edge): void {
-    RenderUtils.renderSolidLine(
-      Renderer.transformWorld2View(edge.source.rectangle.getCenter()),
-      Renderer.transformWorld2View(edge.target.rectangle.getCenter()),
-      new Color(255, 0, 0, 0.5),
-      2 * Camera.currentScale,
-    );
+    if (this.isCycleState(edge)) {
+      RenderUtils.renderArc(
+        Renderer.transformWorld2View(edge.target.rectangle.location),
+        (edge.source.rectangle.size.y / 2) * Camera.currentScale,
+        Math.PI / 2,
+        0,
+        new Color(255, 0, 0, 0.5),
+        2 * Camera.currentScale,
+      );
+    } else {
+      RenderUtils.renderSolidLine(
+        Renderer.transformWorld2View(edge.source.rectangle.getCenter()),
+        Renderer.transformWorld2View(edge.target.rectangle.getCenter()),
+        new Color(255, 0, 0, 0.5),
+        2 * Camera.currentScale,
+      );
+    }
   }
 }

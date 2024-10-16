@@ -6,6 +6,7 @@ import { Rectangle } from "../dataStruct/Rectangle";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Vector } from "../dataStruct/Vector";
 import { Controller } from "../controller/Controller";
+import { Circle } from "../dataStruct/Circle";
 
 export class Edge {
   source: Node;
@@ -69,10 +70,17 @@ export class Edge {
    * @returns
    */
   isBodyLineIntersectWithLocation(location: Vector): boolean {
-    return this.bodyLine.isPointNearLine(
-      location,
-      Controller.edgeHoverTolerance,
-    );
+    if (this.source.uuid === this.target.uuid) {
+      return new Circle(
+        this.source.rectangle.location,
+        this.source.rectangle.size.y / 2,
+      ).isPointIn(location);
+    } else {
+      return this.bodyLine.isPointNearLine(
+        location,
+        Controller.edgeHoverTolerance,
+      );
+    }
   }
 
   /**
@@ -81,7 +89,16 @@ export class Edge {
    * @returns
    */
   isBodyLineIntersectWithLine(line: Line): boolean {
-    return this.bodyLine.isIntersecting(line);
+    if (this.source.uuid === this.target.uuid) {
+      // 是一个自环
+      const circle = new Circle(
+        this.source.rectangle.location,
+        this.source.rectangle.size.y / 2,
+      );
+      return circle.isPointIn(line.start) || circle.isPointIn(line.end);
+    } else {
+      return this.bodyLine.isIntersecting(line);
+    }
   }
 
   public rename(text: string) {

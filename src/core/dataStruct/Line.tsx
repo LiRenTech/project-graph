@@ -1,3 +1,4 @@
+import { Circle } from "./Circle";
 import { Vector } from "./Vector";
 
 export interface IntersectionResult {
@@ -216,6 +217,28 @@ export class Line {
     }
 
     return { intersects: false };
+  }
+
+  isIntersectingWithCircle(circle: Circle): boolean {
+    let A = this.start.y - this.end.y;
+    let B = this.end.x - this.start.x;
+    let C = this.start.x * this.end.y - this.end.x * this.start.y;
+    // 使用距离公式判断圆心到直线ax+by+c=0的距离是否大于半径
+    let dist1 = A * circle.location.x + B * circle.location.y + C;
+    dist1 *= dist1;
+    let dist2 = (A * A + B * B) * circle.radius * circle.radius;
+    if (dist1 > dist2) {
+      // 圆心到直线p1p2的距离大于半径，不相交
+      return false;
+    }
+    let angle1 =
+      (circle.location.x - this.start.x) * (this.end.x - this.start.x) +
+      (circle.location.y - this.start.y) * (this.end.y - this.start.y);
+    let angle2 =
+      (circle.location.x - this.end.x) * (this.start.x - this.end.x) +
+      (circle.location.y - this.end.y) * (this.start.y - this.end.y);
+    // 余弦为正，则是锐角，一定相交
+    return angle1 > 0 && angle2 > 0;
   }
   /**
    * 判断两条线段是否相交
