@@ -490,6 +490,8 @@ export namespace Renderer {
       inputElement.style.position = "fixed";
       inputElement.style.top = `${location.y}px`;
       inputElement.style.left = `${location.x}px`;
+      // inputElement.style.outline = "solid 1px red";
+      // inputElement.style.border = "solid 1px green";
       Object.assign(inputElement.style, style);
       document.body.appendChild(inputElement);
       inputElement.focus();

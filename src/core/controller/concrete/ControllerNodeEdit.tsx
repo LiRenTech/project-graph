@@ -21,8 +21,10 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
   );
   let clickedNode = StageManager.findNodeByLocation(pressLocation);
   if (clickedNode === null) {
+    console.log("没有编辑节点");
     return;
   }
+  console.log("编辑节点");
   if (Controller.pressingKeySet.has("control")) {
     editNodeDetails(clickedNode);
   } else {
