@@ -17,6 +17,9 @@ import {
   AlignCenterVertical,
   AlignHorizontalSpaceBetween,
   AlignVerticalSpaceBetween,
+  LayoutDashboard,
+  AlignStartHorizontal,
+  AlignEndHorizontal,
   Globe,
 } from "lucide-react";
 import React from "react";
@@ -24,6 +27,8 @@ import Box from "../components/ui/Box";
 import { usePopupDialog } from "../utils/popupDialog";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
+import { Stage } from "../core/stage/Stage";
+import { TextRiseEffect } from "../core/effect/concrete/TextRiseEffect";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -134,6 +139,69 @@ function GenerateNodePanel() {
   );
 }
 
+function AlignNodePanel() {
+  return (
+    <div className="grid grid-cols-3 grid-rows-3">
+      <ToolbarItem
+        description="左对齐"
+        icon={<AlignStartVertical />}
+        handleFunction={() => {
+          StageManager.alignLeft();
+        }}
+      />
+      <ToolbarItem
+        description="中心垂直对齐"
+        icon={<AlignCenterVertical />}
+        handleFunction={() => {
+          StageManager.alignCenterVertical();
+        }}
+      />
+      <ToolbarItem
+        description="右对齐"
+        icon={<AlignEndVertical />}
+        handleFunction={() => {
+          StageManager.alignRight();
+        }}
+      />
+      <ToolbarItem
+        description="顶对齐"
+        icon={<AlignStartHorizontal />}
+        handleFunction={() => {
+          Stage.effects.push(new TextRiseEffect("该功能还未实现"));
+        }}
+      />
+      <ToolbarItem
+        description="中心水平对齐"
+        icon={<AlignCenterHorizontal />}
+        handleFunction={() => {
+          StageManager.alignCenterHorizontal();
+        }}
+      />
+      <ToolbarItem
+        description="底对齐"
+        icon={<AlignEndHorizontal />}
+        handleFunction={() => {
+          Stage.effects.push(new TextRiseEffect("该功能还未实现"));
+        }}
+      />
+      <ToolbarItem
+        description="相等间距水平对齐"
+        icon={<AlignHorizontalSpaceBetween />}
+        handleFunction={() => {
+          StageManager.alignHorizontalSpaceBetween();
+        }}
+      />
+      <ToolbarItem
+        description="相等间距垂直对齐"
+        icon={<AlignVerticalSpaceBetween />}
+        handleFunction={() => {
+          StageManager.alignVerticalSpaceBetween();
+        }}
+      />
+    </div>
+  );
+}
+
 /**
  * 工具栏
  * @param param0
@@ -188,46 +256,9 @@ export default function Toolbar({ className = "" }) {
         handleFunction={() => popupDialog.show(<GenerateNodePanel />)}
       />
       <ToolbarItem
-        description="左对齐"
-        icon={<AlignStartVertical />}
-        handleFunction={() => {
-          StageManager.alignLeft();
-        }}
-      />
-      <ToolbarItem
-        description="右对齐"
-        icon={<AlignEndVertical />}
-        handleFunction={() => {
-          StageManager.alignRight();
-        }}
-      />
-      <ToolbarItem
-        description="中心水平对齐"
-        icon={<AlignCenterHorizontal />}
-        handleFunction={() => {
-          StageManager.alignCenterHorizontal();
-        }}
-      />
-      <ToolbarItem
-        description="中心垂直对齐"
-        icon={<AlignCenterVertical />}
-        handleFunction={() => {
-          StageManager.alignCenterVertical();
-        }}
-      />
-      <ToolbarItem
-        description="相等间距水平对齐"
-        icon={<AlignHorizontalSpaceBetween />}
-        handleFunction={() => {
-          StageManager.alignHorizontalSpaceBetween();
-        }}
-      />
-      <ToolbarItem
-        description="相等间距垂直对齐"
-        icon={<AlignVerticalSpaceBetween />}
-        handleFunction={() => {
-          StageManager.alignVerticalSpaceBetween();
-        }}
+        description="节点对齐相关"
+        icon={<LayoutDashboard />}
+        handleFunction={() => popupDialog.show(<AlignNodePanel />)}
       />
       <ToolbarItem
         description="清空粘贴板内容"
@@ -252,7 +283,6 @@ function openBrowserOrFile() {
     if (node.isSelected) {
       open(node.text)
         .then((value) => {
-
           console.log("open browser success", value);
         })
         .catch((e) => {
