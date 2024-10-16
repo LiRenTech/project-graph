@@ -89,6 +89,12 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       .clone()
       .subtract(startDirection.multiply(4.75));
     EdgeRenderer.renderArrowHead(endPoint, startDirection, size);
+    
+    RenderUtils.renderTextFromCenter(
+      edge.text,
+      Renderer.transformWorld2View(edge.bodyLine.midPoint()),
+      Renderer.FONT_SIZE * Camera.currentScale,
+    );
   }
 
   public renderCycleState(edge: Edge): void {
