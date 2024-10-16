@@ -13,13 +13,12 @@ import { RectangleNoteEffect } from "../core/effect/concrete/RectangleNoteEffect
 import { ProgressNumber } from "../core/dataStruct/ProgressNumber";
 import { Color } from "../core/dataStruct/Color";
 
-
-
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);
 
   const dialog = useDialog();
   const [cursorName, setCursorName] = React.useState("default");
+  const [bgAlpha, setBgAlpha] = React.useState(1);
 
   const [isSearchingShow, setIsSearchingShow] = React.useState(false);
 
@@ -116,7 +115,7 @@ export default function Home() {
     window.addEventListener("keydown", handleKeyDown);
 
     Settings.get("windowBackgroundAlpha").then((value) => {
-      Renderer.backgroundAlpha = value;
+      setBgAlpha(value);
     });
 
     // 开启定时器
@@ -141,7 +140,6 @@ export default function Home() {
 
     // 清理事件监听器
     return () => {
-      
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("focus", handleFocus);
       window.removeEventListener("blur", handleBlur);
@@ -226,7 +224,13 @@ export default function Home() {
           </button>
         </div>
       )}
-      <canvas ref={canvasRef} className={`cursor-${cursorName}`} />
+      <div
+        style={{
+          background: `rgba(0,0,0,${bgAlpha})`,
+        }}
+      >
+        <canvas ref={canvasRef} className={`cursor-${cursorName}`} />
+      </div>
     </>
   );
   // cursor-default

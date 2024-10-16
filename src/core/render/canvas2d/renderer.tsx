@@ -41,7 +41,6 @@ export namespace Renderer {
   // let canvasRect: Rectangle;
   export let renderedNodes: number = 0;
   export let renderedEdges: number = 0;
-  export let backgroundAlpha = 1;
 
   /**
    * 记录每一项渲染的耗时
@@ -85,14 +84,7 @@ export namespace Renderer {
     Camera.frameTick();
     timings.camera = performance.now() - start;
 
-    start = performance.now();
     Canvas.ctx.clearRect(0, 0, w, h);
-    // 画一个背景
-    Canvas.ctx.fillStyle = "#111";
-    Canvas.ctx.globalAlpha = backgroundAlpha;
-    Canvas.ctx.fillRect(0, 0, w, h);
-    Canvas.ctx.globalAlpha = 1;
-    timings.background = performance.now() - start;
 
     // 画网格
     start = performance.now();
