@@ -43,6 +43,10 @@ export namespace StageManager {
   export function addEdge(edge: Edge) {
     edges.push(edge);
   }
+  
+  // 用于UI层监测
+  export let selectedNodeCount = 0;
+  export let selectedEdgeCount = 0;
 
   /**
    * 更新节点的引用，将unknown的节点替换为真实的节点，保证对象在内存中的唯一性
@@ -245,11 +249,26 @@ export namespace StageManager {
   export function deleteNodes(deleteNodes: Node[]) {
     StageDeleteManager.deleteNodes(deleteNodes);
     StageHistoryManager.recordStep();
+    // 更新选中节点计数
+    selectedNodeCount = 0;
+    for (const node of nodes) {
+      if (node.isSelected) {
+        selectedNodeCount++;
+      }
+    }
+    
   }
 
   export function deleteEdge(deleteEdge: Edge): boolean {
     const res = StageDeleteManager.deleteEdge(deleteEdge);
     StageHistoryManager.recordStep();
+    // 更新选中边计数
+    selectedEdgeCount = 0;
+    for (const edge of edges) {
+      if (edge.isSelected) {
+        selectedEdgeCount++;
+      }
+    }
     return res;
   }
 

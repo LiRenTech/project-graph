@@ -4,6 +4,7 @@ import { Color } from "../dataStruct/Color";
 import { Rectangle } from "../dataStruct/Rectangle";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Vector } from "../dataStruct/Vector";
+import { StageManager } from "../stage/stageManager/StageManager";
 
 export class Node {
   uuid: string;
@@ -15,7 +16,25 @@ export class Node {
   /**
    * 节点是否被选中
    */
-  isSelected: boolean = false;
+  _isSelected: boolean = false;
+
+  public get isSelected() {
+    return this._isSelected;
+  }
+
+  public set isSelected(value: boolean) {
+    const oldValue = this._isSelected;
+    this._isSelected = value;
+    if (oldValue!== value) {
+      if (oldValue === true) {
+        // 减少了一个选中节点
+        StageManager.selectedNodeCount--;
+      } else {
+        // 增加了一个选中节点
+        StageManager.selectedNodeCount++;
+      }
+    }
+  }
 
   /**
    * 是否在编辑文字，编辑时不渲染文字

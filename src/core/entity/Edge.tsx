@@ -7,6 +7,7 @@ import { Renderer } from "../render/canvas2d/renderer";
 import { Vector } from "../dataStruct/Vector";
 import { Controller } from "../controller/Controller";
 import { Circle } from "../dataStruct/Circle";
+import { StageManager } from "../stage/stageManager/StageManager";
 
 export class Edge {
   source: Node;
@@ -19,7 +20,24 @@ export class Edge {
   /**
    * 是否被选中
    */
-  isSelected: boolean = false;
+  _isSelected: boolean = false;
+
+  public get isSelected(): boolean {
+    return this._isSelected;
+  }
+  public set isSelected(value: boolean) {
+    const oldValue = this._isSelected;
+    this._isSelected = value;
+    if (oldValue !== value) {
+      if (oldValue === true) {
+        // 减少了一个选中节点
+        StageManager.selectedEdgeCount--;
+      } else {
+        // 增加了一个选中节点
+        StageManager.selectedEdgeCount++;
+      }
+    }
+  }
 
   constructor(
     { source, target, text }: Serialized.Edge,

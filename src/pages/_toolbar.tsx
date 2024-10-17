@@ -218,13 +218,23 @@ export default function Toolbar({ className = "" }) {
   const [isCopyClearShow, setIsCopyClearShow] = useState(false);
 
   useEffect(() => {
-    console.log("copyBoardData", Stage.copyBoardData);
-    if (Stage.copyBoardData.nodes.length > 0) {
-      setIsCopyClearShow(true);
-    } else {
-      setIsCopyClearShow(false);
-    }
+    setIsCopyClearShow(Stage.copyBoardData.nodes.length > 0);
   }, [Stage.copyBoardData]);
+
+  const [isHaveSelectedNode, setSsHaveSelectedNode] = useState(false);
+  const [isHaveSelectedNodeOverTwo, setSsHaveSelectedNodeOverTwo] =
+    useState(false);
+
+  useEffect(() => {
+    setSsHaveSelectedNode(StageManager.selectedNodeCount > 0);
+    setSsHaveSelectedNodeOverTwo(StageManager.selectedNodeCount > 1);
+  }, [StageManager.selectedNodeCount]);
+
+  const [isHaveSelectedEdge, setSsHaveSelectedEdge] = useState(false);
+
+  useEffect(() => {
+    setSsHaveSelectedEdge(StageManager.selectedEdgeCount > 0);
+  }, [StageManager.selectedEdgeCount]);
 
   // 一个竖向的工具栏，在页面顶部，右侧显示
   return (
@@ -235,39 +245,47 @@ export default function Toolbar({ className = "" }) {
       )}
     >
       <ToolbarItem
-        description="删除选中对象"
-        icon={<Trash2 />}
-        handleFunction={() => {
-          deleteSelectedObjects();
-        }}
-      />
-      <ToolbarItem
-        description="反转选中连线方向"
-        icon={<Repeat />}
-        handleFunction={() => {
-          const selectedEdges = StageManager.edges.filter(
-            (edge) => edge.isSelected,
-          );
-          StageManager.reverseEdges(selectedEdges);
-        }}
-      />
-
-      {/* 颜色面板 */}
-      <ToolbarItem
-        description="设置节点颜色"
-        icon={<PaintBucket />}
-        handleFunction={() => popupDialog.show(<ColorPanel />)}
-      />
-      <ToolbarItem
         description="通过文本生成节点"
         icon={<ClipboardPaste />}
         handleFunction={() => popupDialog.show(<GenerateNodePanel />)}
       />
-      <ToolbarItem
-        description="节点对齐相关"
-        icon={<LayoutDashboard />}
-        handleFunction={() => popupDialog.show(<AlignNodePanel />)}
-      />
+      {isHaveSelectedNode && (
+        <ToolbarItem
+          description="删除选中对象"
+          icon={<Trash2 />}
+          handleFunction={() => {
+            deleteSelectedObjects();
+          }}
+        />
+      )}
+      {isHaveSelectedEdge && (
+        <ToolbarItem
+          description="反转选中连线方向"
+          icon={<Repeat />}
+          handleFunction={() => {
+            const selectedEdges = StageManager.edges.filter(
+              (edge) => edge.isSelected,
+            );
+            StageManager.reverseEdges(selectedEdges);
+          }}
+        />
+      )}
+
+      {isHaveSelectedNode && (
+        <ToolbarItem
+          description="设置节点颜色"
+          icon={<PaintBucket />}
+          handleFunction={() => popupDialog.show(<ColorPanel />)}
+        />
+      )}
+
+      {isHaveSelectedNodeOverTwo && (
+        <ToolbarItem
+          description="节点对齐相关"
+          icon={<LayoutDashboard />}
+          handleFunction={() => popupDialog.show(<AlignNodePanel />)}
+        />
+      )}
       {isCopyClearShow && (
         <ToolbarItem
           description="清空粘贴板内容"
@@ -277,20 +295,24 @@ export default function Toolbar({ className = "" }) {
           }}
         />
       )}
-      <ToolbarItem
-        description="将选中的节点的内容作为网页链接或本地文件路径打开（小心，路径错误导致崩溃）"
-        icon={<Globe />}
-        handleFunction={() => {
-          openBrowserOrFile();
-        }}
-      />
-      <ToolbarItem
-        description="将选中的节点导出SVG文件"
-        icon={<ImageDown />}
-        handleFunction={() => {
-          onSaveSelectedNew();
-        }}
-      />
+      {isHaveSelectedNode && (
+        <ToolbarItem
+          description="将选中的节点的内容作为网页链接或本地文件路径打开（小心，路径错误导致崩溃）"
+          icon={<Globe />}
+          handleFunction={() => {
+            openBrowserOrFile();
+          }}
+        />
+      )}
+      {isHaveSelectedNode && (
+        <ToolbarItem
+          description="将选中的节点导出SVG文件"
+          icon={<ImageDown />}
+          handleFunction={() => {
+            onSaveSelectedNew();
+          }}
+        />
+      )}
     </Box>
   );
 }

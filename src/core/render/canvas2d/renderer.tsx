@@ -403,6 +403,8 @@ export namespace Renderer {
       `window: ${w}x${h}`,
       `node count: ${renderedNodes} , ${StageManager.nodes.length}`,
       `edge count: ${renderedEdges} , ${StageManager.edges.length}`,
+      `selected nodeCount: ${StageManager.selectedNodeCount}`,
+      `selected edgeCount: ${StageManager.selectedEdgeCount}`,
       `pressingKeys: ${Controller.pressingKeysString()}`,
       `鼠标按下情况: ${Controller.isMouseDown}`,
       `鼠标上次按下位置: ${Controller.lastMousePressLocationString()}`,
