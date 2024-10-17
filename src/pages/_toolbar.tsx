@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Color } from "../core/dataStruct/Color";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
@@ -21,7 +21,7 @@ import {
   AlignStartHorizontal,
   AlignEndHorizontal,
   Globe,
-  ImageDown
+  ImageDown,
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
@@ -33,9 +33,7 @@ import { TextRiseEffect } from "../core/effect/concrete/TextRiseEffect";
 import { StageDumper } from "../core/stage/StageDumper";
 import { invoke } from "@tauri-apps/api/core";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
-import {
-  save as saveFileDialog,
-} from "@tauri-apps/plugin-dialog";
+import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -217,6 +215,17 @@ function AlignNodePanel() {
 export default function Toolbar({ className = "" }) {
   const popupDialog = usePopupDialog();
 
+  const [isCopyClearShow, setIsCopyClearShow] = useState(false);
+
+  useEffect(() => {
+    console.log("copyBoardData", Stage.copyBoardData);
+    if (Stage.copyBoardData.nodes.length > 0) {
+      setIsCopyClearShow(true);
+    } else {
+      setIsCopyClearShow(false);
+    }
+  }, [Stage.copyBoardData]);
+
   // 一个竖向的工具栏，在页面顶部，右侧显示
   return (
     <Box
@@ -232,14 +241,6 @@ export default function Toolbar({ className = "" }) {
           deleteSelectedObjects();
         }}
       />
-      {/* <ToolbarItem
-        description="折叠节点"
-        icon={<ChevronsRightLeft />}
-        handleFunction={() => {
-          // 弹窗提示还未实现
-
-        }}
-      /> */}
       <ToolbarItem
         description="反转选中连线方向"
         icon={<Repeat />}
@@ -267,13 +268,15 @@ export default function Toolbar({ className = "" }) {
         icon={<LayoutDashboard />}
         handleFunction={() => popupDialog.show(<AlignNodePanel />)}
       />
-      <ToolbarItem
-        description="清空粘贴板内容"
-        icon={<ClipboardX />}
-        handleFunction={() => {
-          StageManager.clearClipboard();
-        }}
-      />
+      {isCopyClearShow && (
+        <ToolbarItem
+          description="清空粘贴板内容"
+          icon={<ClipboardX />}
+          handleFunction={() => {
+            StageManager.clearClipboard();
+          }}
+        />
+      )}
       <ToolbarItem
         description="将选中的节点的内容作为网页链接或本地文件路径打开（小心，路径错误导致崩溃）"
         icon={<Globe />}
@@ -290,7 +293,6 @@ export default function Toolbar({ className = "" }) {
       />
     </Box>
   );
-
 }
 
 const onSaveSelectedNew = async () => {
