@@ -35,7 +35,6 @@ import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { Color } from "../core/dataStruct/Color";
 import { RecentFileManager } from "../core/RecentFileManager";
 import { invoke } from "@tauri-apps/api/core";
-import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 import { Settings } from "../core/Settings";
 
 export default function AppMenu({
@@ -224,47 +223,6 @@ export default function AppMenu({
     }
   };
 
-  const onDumpSvg = async () => {
-    const path = await saveFileDialog({
-      title: "另存为",
-      defaultPath: "新文件.svg", // 提供一个默认的文件名
-      filters: [
-        {
-          name: "Project Graph",
-          extensions: ["svg"],
-        },
-      ],
-    });
-
-    if (!path) {
-      return;
-    }
-    try {
-      const svgString = StageDumperSvg.dumpStageToSVGString();
-      invoke<string>("save_json_by_path", {
-        path,
-        content: svgString,
-      })
-        .then((res) => {
-          console.log("保存成功", res);
-          Stage.effects.push(new ViewFlashEffect(Color.Black));
-        })
-        .catch((err) => {
-          dialog.show({
-            title: "保存失败",
-            content: String(err),
-            type: "error",
-          });
-        });
-    } catch (e) {
-      dialog.show({
-        title: "保存失败",
-        content: String(e),
-        type: "error",
-      });
-    }
-  };
-
   useEffect(() => {
     RecentFileManager.startHookFunction = () => {
       if (RecentFileManager.isOpenByPathWhenAppStart()) {
@@ -324,9 +282,6 @@ export default function AppMenu({
         </Col>
         <Col icon={<Save />} onClick={onSaveSelectedNew}>
           将选中部分另存为
-        </Col>
-        <Col icon={<Save />} onClick={onDumpSvg}>
-          导出SVG
         </Col>
       </Row>
       <Row icon={<Plus />} title="创建">

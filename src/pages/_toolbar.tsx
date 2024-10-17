@@ -21,6 +21,7 @@ import {
   AlignStartHorizontal,
   AlignEndHorizontal,
   Globe,
+  ImageDown
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
@@ -29,6 +30,12 @@ import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { Stage } from "../core/stage/Stage";
 import { TextRiseEffect } from "../core/effect/concrete/TextRiseEffect";
+import { StageDumper } from "../core/stage/StageDumper";
+import { invoke } from "@tauri-apps/api/core";
+import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
+import {
+  save as saveFileDialog,
+} from "@tauri-apps/plugin-dialog";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -274,9 +281,57 @@ export default function Toolbar({ className = "" }) {
           openBrowserOrFile();
         }}
       />
+      <ToolbarItem
+        description="将选中的节点导出SVG文件"
+        icon={<ImageDown />}
+        handleFunction={() => {
+          onSaveSelectedNew();
+        }}
+      />
     </Box>
   );
+
 }
+
+const onSaveSelectedNew = async () => {
+  const path = await saveFileDialog({
+    title: "另存为",
+    defaultPath: "新文件.json", // 提供一个默认的文件名
+    filters: [
+      {
+        name: "Project Graph",
+        extensions: ["json"],
+      },
+    ],
+  });
+
+  if (!path) {
+    return;
+  }
+
+  try {
+    const selectedNodes = [];
+    for (const node of StageManager.nodes) {
+      if (node.isSelected) {
+        selectedNodes.push(node);
+      }
+    }
+    const data = StageDumper.dumpSelected(selectedNodes);
+    invoke<string>("save_json_by_path", {
+      path,
+      content: JSON.stringify(data, null, 2),
+    })
+      .then((res) => {
+        console.log("保存成功", res);
+        Stage.effects.push(new ViewFlashEffect(Color.Black));
+      })
+      .catch((err) => {
+        Stage.effects.push(new TextRiseEffect("保存失败" + err));
+      });
+  } catch (e) {
+    Stage.effects.push(new TextRiseEffect("保存失败" + e));
+  }
+};
 
 function openBrowserOrFile() {
   for (const node of StageManager.nodes) {
