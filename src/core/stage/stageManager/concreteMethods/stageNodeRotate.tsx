@@ -68,7 +68,7 @@ export namespace StageNodeRotate {
       newLocation.subtract(currentNode.rectangle.size.divide(2)),
     );
     // 再旋转子节点
-    for (const child of currentNode.children) {
+    for (const child of StageManager.nodeChildrenArray(currentNode)) {
       if (visitedUUIDs.includes(child.uuid)) {
         continue;
       }

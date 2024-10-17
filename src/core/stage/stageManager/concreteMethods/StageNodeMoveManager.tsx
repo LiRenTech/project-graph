@@ -1,4 +1,5 @@
 import { Vector } from "../../../dataStruct/Vector";
+import { Node } from "../../../entity/Node";
 import { StageManager } from "../StageManager";
 
 /**
@@ -22,8 +23,26 @@ export namespace StageNodeMoveManager {
   export function moveNodesWithChildren(delta: Vector) {
     for (const node of StageManager.nodes) {
       if (node.isSelected) {
-        node.moveWithChildren(delta);
+        moveWithChildren(node, delta);
       }
+    }
+  }
+  function moveWithChildren(node: Node, delta: Vector) {
+    moveWithChildrenDfs(node, delta, [node.uuid]);
+  }
+
+  function moveWithChildrenDfs(
+    node: Node,
+    delta: Vector,
+    visitedUUIDs: string[],
+  ) {
+    node.move(delta);
+    for (const child of StageManager.nodeChildrenArray(node)) {
+      if (visitedUUIDs.includes(child.uuid)) {
+        continue;
+      }
+      visitedUUIDs.push(child.uuid);
+      moveWithChildrenDfs(child, delta, visitedUUIDs);
     }
   }
 

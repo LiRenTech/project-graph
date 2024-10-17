@@ -48,6 +48,17 @@ export namespace StageManager {
   export let selectedNodeCount = 0;
   export let selectedEdgeCount = 0;
 
+  /** 获取节点连接的子节点数组 */
+  export function nodeChildrenArray(node: Node): Node[] {
+    const res: Node[] = [];
+    for (const edge of edges) {
+      if (edge.source === node) {
+        res.push(edge.target);
+      }
+    }
+    return res;
+  }
+
   /**
    * 更新节点的引用，将unknown的节点替换为真实的节点，保证对象在内存中的唯一性
    * 节点什么情况下会是unknown的？
