@@ -52,13 +52,13 @@ export namespace NodeRenderer {
       );
     }
 
-    if (node.details) {
+    if (node.details && !node.isEditingDetails) {
       RenderUtils.renderMultiLineText(
         node.details,
         Renderer.transformWorld2View(
           node.rectangle.location.add(new Vector(0, node.rectangle.size.y)),
         ),
-        Renderer.FONT_SIZE * Camera.currentScale,
+        Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
         Renderer.NODE_DETAILS_WIDTH * Camera.currentScale,
       );
     }

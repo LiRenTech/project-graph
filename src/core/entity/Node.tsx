@@ -41,6 +41,8 @@ export class Node {
    */
   isEditing: boolean = false;
 
+  isEditingDetails: boolean = false;
+
   color: Color = Color.Transparent;
 
   constructor(

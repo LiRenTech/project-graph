@@ -28,6 +28,10 @@ export namespace Renderer {
    * 节点上的文字大小
    */
   export const FONT_SIZE = 32;
+  /**
+   * 节点详细信息的文字大小
+   */
+  export const FONT_SIZE_DETAILS = 18;
   export const NODE_PADDING = 14;
   /// 节点的圆角半径
   export const NODE_ROUNDED_RADIUS = 8;
@@ -492,8 +496,6 @@ export namespace Renderer {
       inputElement.style.position = "fixed";
       inputElement.style.top = `${location.y}px`;
       inputElement.style.left = `${location.x}px`;
-      // inputElement.style.outline = "solid 1px red";
-      // inputElement.style.border = "solid 1px green";
       Object.assign(inputElement.style, style);
       document.body.appendChild(inputElement);
       inputElement.focus();
@@ -545,6 +547,81 @@ export namespace Renderer {
           removeElement();
         }
       });
+    });
+  }
+  /**
+   * 创建一个输入框
+   */
+  export function textarea(
+    location: Vector,
+    defaultValue: string,
+    onChange: (value: string) => void = () => {},
+    style: Partial<CSSStyleDeclaration> = {},
+  ): Promise<string> {
+    return new Promise((resolve) => {
+      const inputElement = document.createElement("textarea");
+      // inputElement.type = "text";
+      inputElement.value = defaultValue;
+      inputElement.style.position = "fixed";
+      inputElement.style.top = `${location.y}px`;
+      inputElement.style.left = `${location.x}px`;
+      inputElement.style.fontSize = `${Renderer.FONT_SIZE_DETAILS}px`;
+      Object.assign(inputElement.style, style);
+      document.body.appendChild(inputElement);
+      inputElement.focus();
+      inputElement.select();
+      const removeElement = () => {
+        if (document.body.contains(inputElement)) {
+          try {
+            // 暂时关闭频繁弹窗报错。
+            document.body.removeChild(inputElement);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      };
+
+      const onOutsideClick = (event: MouseEvent) => {
+        if (!inputElement.contains(event.target as Node)) {
+          resolve(inputElement.value);
+          onChange(inputElement.value);
+          document.body.removeEventListener("click", onOutsideClick);
+          removeElement();
+        }
+      };
+      const onOutsideWheel = () => {
+        resolve(inputElement.value);
+        onChange(inputElement.value);
+        document.body.removeEventListener("click", onOutsideClick);
+        removeElement();
+      };
+
+      setTimeout(() => {
+        // 延迟10毫秒，防止鼠标点击事件先触发
+        document.body.addEventListener("click", onOutsideClick);
+        document.body.addEventListener("wheel", onOutsideWheel);
+      }, 10);
+
+      inputElement.addEventListener("input", () => {
+        onChange(inputElement.value);
+      });
+
+      inputElement.addEventListener("blur", () => {
+        // 失去交点
+        resolve(inputElement.value);
+        onChange(inputElement.value);
+        document.body.removeEventListener("click", onOutsideClick);
+        removeElement();
+      });
+      // inputElement.addEventListener("keydown", (event) => {
+      //   event.stopPropagation();
+      //   if (event.key === "Enter") {
+      //     resolve(inputElement.value);
+      //     onChange(inputElement.value);
+      //     document.body.removeEventListener("click", onOutsideClick);
+      //     removeElement();
+      //   }
+      // });
     });
   }
 }
