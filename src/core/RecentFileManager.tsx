@@ -50,6 +50,7 @@ export namespace RecentFileManager {
 
   export async function init() {
     store = await createStore("recent-files.json");
+    store.save();
     await store.load(); // 加载缓存
   }
 
