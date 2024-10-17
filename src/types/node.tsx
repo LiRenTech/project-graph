@@ -7,7 +7,7 @@ export namespace Serialized {
     text: string;
     details: string;
     uuid: string;
-    children: string[];
+    // children: string[];
     color: Color;
   };
   export type Edge = {
@@ -16,7 +16,7 @@ export namespace Serialized {
     text: string;
   };
   export type File = {
-    version: 5;  // 最新版本 src\core\stage\StageDumper.tsx latestVersion
+    version: 6;  // 最新版本 src\core\stage\StageDumper.tsx latestVersion
     nodes: Node[];
     edges: Edge[];
   };

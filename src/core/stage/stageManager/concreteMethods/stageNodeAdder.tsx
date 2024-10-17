@@ -23,7 +23,7 @@ export namespace StageNodeAdder {
       uuid: newUUID,
       text: await getAutoName(),
       details: "",
-      children: [],
+      // children: [],
       location: [clickWorldLocation.x, clickWorldLocation.y],
       size: [100, 100],
     });
@@ -81,7 +81,7 @@ export namespace StageNodeAdder {
         uuid: newUUID,
         text: textContent,
         details: "",
-        children: [],
+        // children: [],
         location: [indent * 50, i * 100],
         size: [100, 100],
       });

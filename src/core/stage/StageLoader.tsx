@@ -15,6 +15,7 @@ export namespace StageLoader {
     data = convertV2toV3(data);
     data = convertV3toV4(data);
     data = convertV4toV5(data);
+    data = convertV5toV6(data);
     return data as Serialized.File;
   }
 
@@ -104,6 +105,18 @@ export namespace StageLoader {
     for (const node of data.nodes) {
       if (!node.color) {
         node.color = [0, 0, 0, 0];
+      }
+    }
+    return data;
+  }
+  function convertV5toV6(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 6) {
+      return data;
+    }
+    data.version = 6;
+    for (const node of data.nodes) {
+      if (typeof node.children !== "undefined") {
+        delete node.children;
       }
     }
     return data;

@@ -11,7 +11,7 @@ export namespace StageDumper {
   /**
    * 最新版本
    */
-  export const latestVersion = 5;
+  export const latestVersion = 6;
 
 
   export function dumpNode(node: Node): Serialized.Node {
@@ -21,7 +21,6 @@ export namespace StageDumper {
       text: node.text,
       uuid: node.uuid,
       details: node.details,
-      children: node.children.map((child) => child.uuid),
       color: node.color && node.color.toArray(),
     };
   }

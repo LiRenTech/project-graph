@@ -10,7 +10,6 @@ export class Node {
   uuid: string;
   text: string;
   details: string;
-  children: Node[];
   rectangle: Rectangle;
 
   /**
@@ -25,7 +24,7 @@ export class Node {
   public set isSelected(value: boolean) {
     const oldValue = this._isSelected;
     this._isSelected = value;
-    if (oldValue!== value) {
+    if (oldValue !== value) {
       if (oldValue === true) {
         // 减少了一个选中节点
         StageManager.selectedNodeCount--;
@@ -50,7 +49,6 @@ export class Node {
       uuid,
       text = "",
       details = "",
-      children = [],
       location = [0, 0],
       size = [0, 0],
       color = [0, 0, 0, 0],
@@ -60,9 +58,6 @@ export class Node {
     this.uuid = uuid;
     this.text = text;
     this.details = details;
-    this.children = children.map(
-      (childUUID) => new Node({ uuid: childUUID }, true),
-    );
     this.rectangle = new Rectangle(
       new Vector(...location),
       new Vector(...size),
@@ -93,31 +88,7 @@ export class Node {
     this.rectangle.location = this.rectangle.location.add(delta);
   }
 
-  
-
   moveTo(location: Vector) {
     this.rectangle.location = location.clone();
-  }
-
-  addChild(child: Node): boolean {
-    // 不能添加自己
-    // if (child.uuid === this.uuid) {
-    //   return false;
-    // }
-    // 不能重复添加
-    if (this.children.some((c) => c.uuid === child.uuid)) {
-      return false;
-    }
-    this.children.push(child);
-    return true;
-  }
-
-  removeChild(child: Node): boolean {
-    if (this.children.some((c) => c.uuid === child.uuid)) {
-      const index = this.children.indexOf(child);
-      this.children.splice(index, 1);
-      return true;
-    }
-    return false;
   }
 }

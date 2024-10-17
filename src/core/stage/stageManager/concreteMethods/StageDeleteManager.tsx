@@ -18,13 +18,6 @@ export namespace StageDeleteManager {
       } else {
         console.warn("node not in nodes", node.uuid);
       }
-      // 不仅要删除节点本身，其他节点的child中也要删除该节点
-      for (const fatherNode of StageManager.nodes) {
-        // if node in father_node.children
-        if (fatherNode.children.includes(node)) {
-          fatherNode.children.splice(fatherNode.children.indexOf(node), 1);
-        }
-      }
       // 删除所有相关的边
       const prepareDeleteEdges: Edge[] = [];
       for (const edge of StageManager.edges) {
@@ -53,12 +46,10 @@ export namespace StageDeleteManager {
       StageManager.nodes.includes(fromNode) &&
       StageManager.nodes.includes(toNode)
     ) {
-      // 从数组中去除
-      const res = fromNode.removeChild(toNode);
       // 删除边
       StageManager.edges.splice(StageManager.edges.indexOf(deleteEdge), 1);
       StageManager.updateReferences();
-      return res;
+      return true;
     } else {
       console.log("node not in nodes");
       return false;

@@ -58,6 +58,14 @@ export namespace StageManager {
     }
     return res;
   }
+  function isConnected(node: Node, target: Node): boolean {
+    for (const edge of edges) {
+      if (edge.source === node && edge.target === target) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   /**
    * 更新节点的引用，将unknown的节点替换为真实的节点，保证对象在内存中的唯一性
@@ -66,14 +74,14 @@ export namespace StageManager {
    */
   export function updateReferences() {
     for (const node of nodes) {
-      for (const otherNode of nodes) {
-        for (const child of otherNode.children) {
-          if (child.unknown && child.uuid === node.uuid) {
-            otherNode.children.splice(otherNode.children.indexOf(child), 1);
-            otherNode.children.push(child);
-          }
-        }
-      }
+      // for (const otherNode of nodes) {
+      //   for (const child of otherNode.children) {
+      //     if (child.unknown && child.uuid === node.uuid) {
+      //       otherNode.children.splice(otherNode.children.indexOf(child), 1);
+      //       otherNode.children.push(child);
+      //     }
+      //   }
+      // }
       for (const edge of edges) {
         if (edge.source.unknown && edge.source.uuid === node.uuid) {
           edge.source = node;
@@ -283,10 +291,10 @@ export namespace StageManager {
     return res;
   }
 
-  export function connectNode(fromNode: Node, toNode: Node): boolean {
-    const res = StageNodeConnector.connectNode(fromNode, toNode);
+  export function connectNode(fromNode: Node, toNode: Node) {
+    StageNodeConnector.connectNode(fromNode, toNode);
     StageHistoryManager.recordStep();
-    return res;
+    return isConnected(fromNode, toNode);
   }
 
   export function reverseEdges(edges: Edge[]) {

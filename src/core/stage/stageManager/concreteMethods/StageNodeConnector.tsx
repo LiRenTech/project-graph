@@ -12,17 +12,17 @@ export namespace StageNodeConnector {
     fromNode: Node,
     toNode: Node,
     text: string = "",
-  ): boolean {
+  ): void {
     if (
       StageManager.nodes.includes(fromNode) &&
       StageManager.nodes.includes(toNode)
     ) {
-      const addResult = fromNode.addChild(toNode);
+      // const addResult = fromNode.addChild(toNode);
       
-      if (!addResult) {
-        // 重复添加了，添加失败
-        return false;
-      }
+      // if (!addResult) {
+      //   // 重复添加了，添加失败
+      //   return false;
+      // }
 
       const newEdge = new Edge({
         source: fromNode.uuid,
@@ -35,9 +35,9 @@ export namespace StageNodeConnector {
       StageManager.edges.push(newEdge);
 
       StageManager.updateReferences();
-      return addResult;
+      // return addResult;
     }
-    return false;
+    // return false;
   }
 
   // 将多个节点之间全连接
