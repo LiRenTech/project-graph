@@ -176,6 +176,53 @@ export default function AppMenu({
       });
     }
   };
+  const onSaveSelectedNew = async () => {
+    const path = await saveFileDialog({
+      title: "另存为",
+      defaultPath: "新文件.json", // 提供一个默认的文件名
+      filters: [
+        {
+          name: "Project Graph",
+          extensions: ["json"],
+        },
+      ],
+    });
+
+    if (!path) {
+      return;
+    }
+
+    try {
+      const selectedNodes = [];
+      for (const node of StageManager.nodes) {
+        if (node.isSelected) {
+          selectedNodes.push(node);
+        }
+      }
+      const data = StageDumper.dumpSelected(selectedNodes);
+      invoke<string>("save_json_by_path", {
+        path,
+        content: JSON.stringify(data, null, 2),
+      })
+        .then((res) => {
+          console.log("保存成功", res);
+          Stage.effects.push(new ViewFlashEffect(Color.Black));
+        })
+        .catch((err) => {
+          dialog.show({
+            title: "保存失败",
+            content: String(err),
+            type: "error",
+          });
+        });
+    } catch (e) {
+      dialog.show({
+        title: "保存失败",
+        content: String(e),
+        type: "error",
+      });
+    }
+  };
 
   const onDumpSvg = async () => {
     const path = await saveFileDialog({
@@ -274,6 +321,9 @@ export default function AppMenu({
         </Col>
         <Col icon={<Save />} onClick={onSaveNew}>
           另存为
+        </Col>
+        <Col icon={<Save />} onClick={onSaveSelectedNew}>
+          将选中部分另存为
         </Col>
         <Col icon={<Save />} onClick={onDumpSvg}>
           导出SVG
