@@ -13,6 +13,7 @@ import { Renderer } from "./renderer";
 import { RenderUtils } from "./RenderUtils";
 import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
 import { reverseAnimate } from "../../effect/animateFunctions";
+import { ExplodeAshEffect } from "../../effect/concrete/ExplodeDashEffect";
 
 /**
  * 专门编写所有的特效渲染
@@ -159,7 +160,29 @@ export namespace EffectRenderer {
         reverseAnimate(effect.timeProgress.rate),
       ),
       2,
-      5
+      5,
     );
+  }
+
+  export function renderExplodeAshEffect(effect: ExplodeAshEffect) {
+    if (effect.timeProgress.isFull) {
+      return;
+    }
+    for (const ashLocation of effect.ashLocationArray) {
+      const viewLocation = Renderer.transformWorld2View(ashLocation);
+      const color = mixColors(
+        Color.White,
+        Color.Transparent,
+        effect.timeProgress.rate,
+      );
+
+      RenderUtils.renderCircle(
+        viewLocation,
+        5 * Camera.currentScale,
+        color,
+        Color.Transparent,
+        0,
+      );
+    }
   }
 }

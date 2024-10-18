@@ -19,6 +19,7 @@ import { StageHistoryManager } from "../../stage/stageManager/concreteMethods/St
 import { NodeRenderer } from "./entityRenderer/NodeRenderer";
 import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
 import { Settings } from "../../Settings";
+import { ExplodeAshEffect } from "../../effect/concrete/ExplodeDashEffect";
 
 /**
  * 渲染器
@@ -361,6 +362,8 @@ export namespace Renderer {
         EffectRenderer.renderViewFlashEffect(effect);
       } else if (effect instanceof RectangleNoteEffect) {
         EffectRenderer.renderRectangleNoteEffect(effect);
+      } else if (effect instanceof ExplodeAshEffect) {
+        EffectRenderer.renderExplodeAshEffect(effect);
       }
     }
   }
