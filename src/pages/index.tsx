@@ -226,7 +226,7 @@ export default function Home() {
       )}
       <div
         style={{
-          background: `rgba(0,0,0,${bgAlpha})`,
+          background: `rgba(31,31,31,${bgAlpha})`,
         }}
       >
         <canvas ref={canvasRef} className={`cursor-${cursorName}`} />

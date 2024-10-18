@@ -368,35 +368,31 @@ export namespace Renderer {
     }
   }
   export function renderGrid() {
-    let gap = 50;
+    const gap = 50;
+    let currentGap = gap;
     if (Camera.currentScale < 1) {
-      while (gap * Camera.currentScale < 49) {
-        gap *= 2;
+      while (currentGap * Camera.currentScale < gap - 1) {
+        currentGap *= 2;
       }
     }
-    const gridColor = new Color(255, 255, 255, 0.1);
-    const mainColor = new Color(255, 255, 255, 0.2);
+    const gridColor = new Color(255, 255, 255, 0.2);
+    const mainColor = new Color(255, 255, 255, 0.3);
 
     const viewRect = getCoverWorldRectangle();
-    let yStart = viewRect.location.y - (viewRect.location.y % gap);
+    let yStart = viewRect.location.y - (viewRect.location.y % currentGap);
     while (yStart < viewRect.bottom) {
-      RenderUtils.renderSolidLine(
-        transformWorld2View(new Vector(viewRect.left, yStart)),
-        transformWorld2View(new Vector(viewRect.right, yStart)),
-        yStart === 0 ? mainColor : gridColor,
-        1,
-      );
-      yStart += gap;
-    }
-    let xStart = viewRect.location.x - (viewRect.location.x % gap);
-    while (xStart < viewRect.right) {
-      RenderUtils.renderSolidLine(
-        transformWorld2View(new Vector(xStart, viewRect.top)),
-        transformWorld2View(new Vector(xStart, viewRect.bottom)),
-        xStart === 0 ? mainColor : gridColor,
-        1,
-      );
-      xStart += gap;
+      let xStart = viewRect.location.x - (viewRect.location.x % currentGap);
+      while (xStart < viewRect.right) {
+        RenderUtils.renderCircle(
+          transformWorld2View(new Vector(xStart, yStart)),
+          1,
+          xStart === 0 || yStart === 0? mainColor : gridColor,
+          Color.Transparent,
+          0,
+        );
+        xStart += currentGap;
+      }
+      yStart += currentGap;
     }
   }
 
