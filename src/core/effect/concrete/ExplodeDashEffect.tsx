@@ -8,14 +8,15 @@ import { Effect } from "../effect";
  * 方块的爆炸粉尘效果
  */
 export class ExplodeAshEffect extends Effect {
+  ashLocationArray: Vector[] = [];
+  ashSpeedArray: Vector[] = [];
+
   constructor(
     /**
      * 一开始为0，每tick + 1
      */
     public override timeProgress: ProgressNumber,
     public rectangle: Rectangle,
-    public ashLocationArray: Vector[],
-    public ashSpeedArray: Vector[],
   ) {
     super(timeProgress);
     for (let i = 0; i < 50; i++) {
@@ -26,17 +27,22 @@ export class ExplodeAshEffect extends Effect {
         ),
       );
       this.ashSpeedArray.push(
-        new Vector(1, 0)
-          .rotate(Random.randomFloat(0, 2 * Math.PI))
-          .multiply(Random.randomFloat(0.5, 1.5)),
+        this.ashLocationArray[i]
+          .subtract(this.rectangle.center)
+          .normalize()
+          .multiply(Random.randomFloat(0.5, 10)),
       );
     }
+    console.log(this.ashSpeedArray);
   }
 
   override tick() {
     super.tick();
     for (let i = 0; i < this.ashLocationArray.length; i++) {
-      this.ashLocationArray[i].add(this.ashSpeedArray[i]);
+      this.ashLocationArray[i] = this.ashLocationArray[i].add(
+        this.ashSpeedArray[i],
+      );
     }
+    // console.log(this.ashLocationArray);
   }
 }
