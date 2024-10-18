@@ -5,6 +5,9 @@ import { Rectangle } from "../dataStruct/Rectangle";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Vector } from "../dataStruct/Vector";
 import { StageManager } from "../stage/stageManager/StageManager";
+import { Stage } from "../stage/Stage";
+import { NodeMoveShadowEffect } from "../effect/concrete/NodeMoveShadowEffect";
+import { ProgressNumber } from "../dataStruct/ProgressNumber";
 
 export class Node {
   uuid: string;
@@ -86,6 +89,13 @@ export class Node {
 
   move(delta: Vector) {
     this.rectangle.location = this.rectangle.location.add(delta);
+    Stage.effects.push(
+      new NodeMoveShadowEffect(
+        new ProgressNumber(0, 30),
+        this.rectangle,
+        delta,
+      ),
+    );
   }
 
   moveTo(location: Vector) {

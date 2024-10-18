@@ -20,6 +20,7 @@ import { NodeRenderer } from "./entityRenderer/NodeRenderer";
 import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
 import { Settings } from "../../Settings";
 import { ExplodeAshEffect } from "../../effect/concrete/ExplodeDashEffect";
+import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
 
 /**
  * 渲染器
@@ -364,6 +365,8 @@ export namespace Renderer {
         EffectRenderer.renderRectangleNoteEffect(effect);
       } else if (effect instanceof ExplodeAshEffect) {
         EffectRenderer.renderExplodeAshEffect(effect);
+      } else if (effect instanceof NodeMoveShadowEffect) {
+        EffectRenderer.renderNodeMoveShadowEffect(effect);
       }
     }
   }

@@ -14,6 +14,7 @@ import { RenderUtils } from "./RenderUtils";
 import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
 import { reverseAnimate } from "../../effect/animateFunctions";
 import { ExplodeAshEffect } from "../../effect/concrete/ExplodeDashEffect";
+import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
 
 /**
  * 专门编写所有的特效渲染
@@ -173,6 +174,22 @@ export namespace EffectRenderer {
       const color = mixColors(
         effect.color,
         effect.color.toTransparent(),
+        effect.timeProgress.rate,
+      );
+
+      RenderUtils.renderPixel(viewLocation, color);
+    }
+  }
+  
+  export function renderNodeMoveShadowEffect(effect: NodeMoveShadowEffect) {
+    if (effect.timeProgress.isFull) {
+      return;
+    }
+    for (const point of effect.pointList) {
+      const viewLocation = Renderer.transformWorld2View(point);
+      const color = mixColors(
+        Color.White,
+        Color.White.toTransparent(),
         effect.timeProgress.rate,
       );
 
