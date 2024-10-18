@@ -1,7 +1,10 @@
 import { Vector } from "../../../dataStruct/Vector";
 import { StageManager } from "../StageManager";
 import { Node } from "../../../entity/Node";
-
+import { Stage } from "../../Stage";
+import { LineEffect } from "../../../effect/concrete/LineEffect";
+import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
+import { Color } from "../../../dataStruct/Color";
 
 /**
  * 所有和旋转相关的操作
@@ -25,12 +28,9 @@ export namespace StageNodeRotate {
         );
         let degrees = vectorStart.angleToSigned(vectorEnd);
         // degrees一直是正数
-        console.log(degrees);
         if (Number.isNaN(degrees)) {
           degrees = 0;
         }
-        // 2024年10月6日：发现打开文件后，旋转节点无法带动子树，只能传递一层。
-        // rotateNodeDfs(edge.source, edge.target, degrees, [edge.source.uuid]);
         rotateNodeDfs(
           StageManager.getNodeByUUID(edge.source.uuid)!,
           StageManager.getNodeByUUID(edge.target.uuid)!,
@@ -57,6 +57,7 @@ export namespace StageNodeRotate {
     const rotateCenterLocation = rotateCenterNode.rectangle.center;
     // 先旋转自己
     const radius = currentNode.rectangle.center.distance(rotateCenterLocation);
+    
     let centerToChildVector = currentNode.rectangle.center
       .subtract(rotateCenterLocation)
       .normalize();
@@ -72,11 +73,23 @@ export namespace StageNodeRotate {
       if (visitedUUIDs.includes(child.uuid)) {
         continue;
       }
+      const childNode = StageManager.getNodeByUUID(child.uuid)!
+      Stage.effects.push(
+        new LineEffect(
+          new ProgressNumber(0, 5),
+          currentNode.rectangle.center,
+          childNode.rectangle.center,
+          new Color(255, 255, 255, 0),
+          new Color(255, 255, 255, 0.5),
+          5
+        ),
+      );
+
       rotateNodeDfs(
         rotateCenterNode,
         // 2024年10月6日：发现打开文件后，旋转节点无法带动子树，只能传递一层。
         // child,
-        StageManager.getNodeByUUID(child.uuid)!,
+        childNode,
         degrees,
         visitedUUIDs.concat(currentNode.uuid),
       );
