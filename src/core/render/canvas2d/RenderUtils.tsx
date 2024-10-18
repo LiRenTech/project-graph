@@ -395,6 +395,15 @@ export namespace RenderUtils {
       height,
     );
   }
+  /**
+   * 绘制一个像素点
+   * @param location
+   * @param color
+   */
+  export function renderPixel(location: Vector, color: Color) {
+    Canvas.ctx.fillStyle = color.toString();
+    Canvas.ctx.fillRect(location.x, location.y, 1, 1);
+  }
 
   /**
    * 画箭头（只画头，不画线）

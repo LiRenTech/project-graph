@@ -1,4 +1,5 @@
 import { Random } from "../../algorithm/random";
+import { Color } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
@@ -17,9 +18,10 @@ export class ExplodeAshEffect extends Effect {
      */
     public override timeProgress: ProgressNumber,
     public rectangle: Rectangle,
+    public color: Color
   ) {
     super(timeProgress);
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 1000; i++) {
       this.ashLocationArray.push(
         new Vector(
           Random.randomFloat(rectangle.left, rectangle.right),
@@ -33,7 +35,6 @@ export class ExplodeAshEffect extends Effect {
           .multiply(Random.randomFloat(0.5, 10)),
       );
     }
-    console.log(this.ashSpeedArray);
   }
 
   override tick() {

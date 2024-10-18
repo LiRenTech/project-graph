@@ -1,3 +1,4 @@
+import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { ExplodeAshEffect } from "../../../effect/concrete/ExplodeDashEffect";
 import { Edge } from "../../../entity/Edge";
@@ -22,6 +23,7 @@ export namespace StageDeleteManager {
           new ExplodeAshEffect(
             new ProgressNumber(0, 30),
             node.rectangle.clone(),
+            node.color.a === 0 ? Color.White : node.color.clone(),
           ),
         );
       } else {

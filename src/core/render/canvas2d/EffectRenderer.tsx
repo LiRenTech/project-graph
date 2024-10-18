@@ -171,18 +171,12 @@ export namespace EffectRenderer {
     for (const ashLocation of effect.ashLocationArray) {
       const viewLocation = Renderer.transformWorld2View(ashLocation);
       const color = mixColors(
-        Color.White,
-        Color.Transparent,
+        effect.color,
+        effect.color.toTransparent(),
         effect.timeProgress.rate,
       );
 
-      RenderUtils.renderCircle(
-        viewLocation,
-        5 * Camera.currentScale,
-        color,
-        Color.Transparent,
-        0,
-      );
+      RenderUtils.renderPixel(viewLocation, color);
     }
   }
 }
