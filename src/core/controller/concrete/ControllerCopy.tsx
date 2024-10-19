@@ -75,5 +75,53 @@ ControllerCopy.keydown = (event: KeyboardEvent) => {
         Stage.copyBoardMouseVector,
       );
     }
+
+    readClipboardImage();
   }
 };
+
+async function readClipboardImage() {
+  // test
+  try {
+    navigator.clipboard.read().then(async (items) => {
+      for (const item of items) {
+        if (
+          item.types.includes("image/png") ||
+          item.types.includes("image/jpeg")
+        ) {
+          const blob = await item.getType(item.types[0]); // 获取 Blob 对象
+          const base64String = await convertBlobToBase64(blob); // 转换为 Base64 字符串
+          console.log("Base64 String:", base64String);
+
+          // 显示图像
+          // const url = `data:${blob.type};base64,${base64String}`;
+          // const imageElement = document.getElementById(
+          //   "clipboardImage",
+          // ) as HTMLImageElement;
+          // imageElement.src = url;
+          // imageElement.style.display = "block";
+          break;
+        }
+      }
+      console.log("read clipboard contents");
+    });
+  } catch (err) {
+    console.error("Failed to read clipboard contents: ", err);
+  }
+}
+
+// 将 Blob 转换为 Base64 字符串
+async function convertBlobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === "string") {
+        resolve(reader.result.split(",")[1]); // 去掉"data:image/png;base64,"前缀
+      } else {
+        reject(new Error("Invalid result type"));
+      }
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
