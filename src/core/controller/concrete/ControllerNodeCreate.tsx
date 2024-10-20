@@ -27,7 +27,7 @@ ControllerNodeCreate.mouseDoubleClick = (event: MouseEvent) => {
     return;
   }
   // 新建节点
-  StageManager.addNodeByClick(
+  StageManager.addTextNodeByClick(
     Renderer.transformView2World(new Vector(event.clientX, event.clientY)),
   ).then((uuid) => {
     const createNode = StageManager.getNodeByUUID(uuid);

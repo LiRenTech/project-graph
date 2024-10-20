@@ -15,7 +15,7 @@ export namespace StageNodeAdder {
    * @param clickWorldLocation
    * @returns
    */
-  export async function addNodeByClick(
+  export async function addTextNodeByClick(
     clickWorldLocation: Vector,
   ): Promise<string> {
     const newUUID = uuidv4();

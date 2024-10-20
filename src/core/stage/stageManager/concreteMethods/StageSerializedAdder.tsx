@@ -42,13 +42,6 @@ export namespace StageSerializedAdder {
           edge.target = newUUID;
         }
       }
-      // 假设刷新的节点有父节点，那么找到父节点的子列表并更新
-      // for (const parent of result.nodes) {
-      //   if (parent.children.includes(oldUUID)) {
-      //     const index = parent.children.indexOf(oldUUID);
-      //     parent.children[index] = newUUID;
-      //   }
-      // }
 
       // 刷新节点本身的UUID
       node.uuid = newUUID;
