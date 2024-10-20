@@ -27,6 +27,12 @@ import { StageDumper } from "../StageDumper";
 export namespace StageManager {
   export const nodes: TextNode[] = [];
   export const edges: Edge[] = [];
+
+  export function getTextNodes(): TextNode[] {
+    // 重构准备：TODO: 准备将nodes数组对外封闭，只开放特定类型的访问函数
+    return nodes.filter(node => node instanceof TextNode);
+  }
+
   /**
    * 销毁函数
    * 以防开发过程中造成多开
@@ -36,7 +42,7 @@ export namespace StageManager {
     StageManager.edges.splice(0, StageManager.edges.length);
   }
 
-  export function addNode(node: TextNode) {
+  export function addTextNode(node: TextNode) {
     nodes.push(node);
   }
 
@@ -58,6 +64,7 @@ export namespace StageManager {
     }
     return res;
   }
+
   function isConnected(node: TextNode, target: TextNode): boolean {
     for (const edge of edges) {
       if (edge.source === node && edge.target === target) {

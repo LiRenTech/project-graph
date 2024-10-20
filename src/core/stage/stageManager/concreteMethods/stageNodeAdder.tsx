@@ -31,7 +31,7 @@ export namespace StageNodeAdder {
     node.moveTo(node.rectangle.location.subtract(
       node.rectangle.size.divide(2),
     ));
-    StageManager.addNode(node);
+    StageManager.addTextNode(node);
     return newUUID;
   }
 
@@ -86,7 +86,7 @@ export namespace StageNodeAdder {
         size: [100, 100],
       });
 
-      StageManager.addNode(node);
+      StageManager.addTextNode(node);
     }
   }
 

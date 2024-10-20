@@ -159,7 +159,7 @@ export namespace RecentFileManager {
 
   export function loadStageByData(data: Serialized.File) {
     for (const node of data.nodes) {
-      StageManager.addNode(new TextNode(node));
+      StageManager.addTextNode(new TextNode(node));
     }
     for (const edge of data.edges) {
       StageManager.addEdge(new Edge(edge));

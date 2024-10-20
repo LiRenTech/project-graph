@@ -19,7 +19,7 @@ export namespace StageSerializedAdder {
     for (const node of updatedSerializedData.nodes) {
       const newNode = new TextNode(node);
       newNode.moveTo(newNode.rectangle.location.add(diffLocation));
-      StageManager.addNode(newNode);
+      StageManager.addTextNode(newNode);
     }
     for (const edge of updatedSerializedData.edges) {
       StageManager.addEdge(new Edge(edge));
