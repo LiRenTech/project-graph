@@ -1,6 +1,7 @@
 import { Circle } from "./Circle";
 import { Shape } from "./Shape";
 import { Vector } from "../Vector";
+import { Rectangle } from "./Rectangle";
 
 export interface IntersectionResult {
   intersects: boolean;
@@ -71,6 +72,18 @@ export class Line extends Shape {
 
     // 检查该点到line的距离是否在容差范围内
     return nearestPoint.subtract(point).magnitude() <= tolerance;
+  }
+
+  isPointIn(point: Vector): boolean {
+    return this.isPointNearLine(point);
+  }
+
+  isCollideWithRectangle(rectangle: Rectangle): boolean {
+    return rectangle.isCollideWithLine(this);
+  }
+
+  isCollideWithLine(line: Line): boolean {
+    return this.isIntersecting(line);
   }
 
   isParallel(other: Line): boolean {

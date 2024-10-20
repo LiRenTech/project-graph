@@ -82,7 +82,7 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
   // 连接线
   let isFindConnectToNode = false;
   for (const node of StageManager.nodes) {
-    if (node.rectangle.isPointInside(worldLocation)) {
+    if (node.rectangle.isPointIn(worldLocation)) {
       if (Stage.connectToNode === null) {
         // 特效
         // Stage.effects.push(

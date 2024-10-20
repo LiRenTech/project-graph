@@ -101,8 +101,8 @@ export class Rectangle extends Shape {
 
   /**
    * 获取多个矩形的最小外接矩形
-   * @param rectangles 
-   * @returns 
+   * @param rectangles
+   * @returns
    */
   public static getBoundingRectangle(rectangles: Rectangle[]): Rectangle {
     if (rectangles.length === 0) {
@@ -141,6 +141,9 @@ export class Rectangle extends Shape {
     const collision_y = this.bottom > other.top && this.top < other.bottom;
     return collision_x && collision_y;
   }
+  isCollideWithRectangle(rectangle: Rectangle): boolean {
+    return this.isCollideWith(rectangle);
+  }
 
   /**
    * 自己这个矩形是否和线段有交点
@@ -149,7 +152,7 @@ export class Rectangle extends Shape {
    * @param line
    */
   public isCollideWithLine(line: Line): boolean {
-    if (this.isPointInside(line.start) || this.isPointInside(line.end)) {
+    if (this.isPointIn(line.start) || this.isPointIn(line.end)) {
       // 当用于切割线的时候，两个端点必定都在矩形外
       // 这个实际上是不可能的，但是为了保险起见，还是加上判断
       return true;
@@ -203,10 +206,10 @@ export class Rectangle extends Shape {
    */
   public getCollidePointsWithLine(line: Line): Vector[] {
     const result: Vector[] = [];
-    if (this.isPointInside(line.start)) {
+    if (this.isPointIn(line.start)) {
       result.push(line.start);
     }
-    if (this.isPointInside(line.end)) {
+    if (this.isPointIn(line.end)) {
       result.push(line.end);
     }
     const topResult = line.getIntersectingWithHorizontalLine(
@@ -259,7 +262,7 @@ export class Rectangle extends Shape {
   /**
    * 判断点是否在矩形内
    */
-  public isPointInside(point: Vector): boolean {
+  public isPointIn(point: Vector): boolean {
     const collision_x = this.left <= point.x && this.right >= point.x;
     const collision_y = this.top <= point.y && this.bottom >= point.y;
     return collision_x && collision_y;

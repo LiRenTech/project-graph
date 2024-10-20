@@ -139,7 +139,7 @@ export namespace StageManager {
    */
   export function findNodeByLocation(location: Vector): TextNode | null {
     for (const node of nodes) {
-      if (node.rectangle.isPointInside(location)) {
+      if (node.rectangle.isPointIn(location)) {
         return node;
       }
     }

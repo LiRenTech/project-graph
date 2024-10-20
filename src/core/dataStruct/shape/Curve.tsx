@@ -1,5 +1,7 @@
 import { Shape } from "./Shape";
 import { Vector } from "../Vector";
+import { Rectangle } from "./Rectangle";
+import { Line } from "./Line";
 
 /**
  * 贝塞尔曲线
@@ -16,6 +18,16 @@ export class CubicBezierCurve extends Shape {
 
   toString(): string {
     return `SymmetryCurve(start:${this.start}, ctrlPt1:${this.ctrlPt1}, ctrlPt2:${this.ctrlPt2}, end:${this.end})`;
+  }
+
+  isPointIn(point: Vector): boolean {
+    return false;
+  }
+  isCollideWithRectangle(rectangle: Rectangle): boolean {
+    return false;
+  }
+  isCollideWithLine(line: Line): boolean {
+    return false;
   }
 }
 
@@ -40,6 +52,16 @@ export class SymmetryCurve extends Shape {
       this.endDirection.normalize().multiply(this.bending).add(this.end),
       this.end,
     );
+  }
+
+  isPointIn(point: Vector): boolean {
+    return false;
+  }
+  isCollideWithRectangle(rectangle: Rectangle): boolean {
+    return false;
+  }
+  isCollideWithLine(line: Line): boolean {
+    return false;
   }
 
   toString(): string {

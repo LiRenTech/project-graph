@@ -150,7 +150,7 @@ export namespace Renderer {
       // 如果鼠标位置没有和任何节点相交
       let connectTargetNode = null;
       for (const node of StageManager.nodes) {
-        if (node.rectangle.isPointInside(Controller.lastMoveLocation)) {
+        if (node.rectangle.isPointIn(Controller.lastMoveLocation)) {
           connectTargetNode = node;
           break;
         }

@@ -1,4 +1,5 @@
 import { Vector } from "../dataStruct/Vector";
+import { CollisionBox } from "./collisionBox/collisionBox";
 
 /**
  * 一切舞台上的东西
@@ -8,14 +9,16 @@ export abstract class StageObject implements Disposable {
   [Symbol.dispose](): void {
     throw new Error("Method not implemented.");
   }
-  
-  public collisionBox: any;
+
+  public abstract collisionBox: CollisionBox;
   // public uuid: string;
-  
+
   _isSelected: boolean = false;
+
   public get isSelected(): boolean {
     return this._isSelected;
   }
+
   public set isSelected(value: boolean) {
     this._isSelected = value;
   }
