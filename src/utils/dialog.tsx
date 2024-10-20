@@ -75,6 +75,7 @@ export const DialogProvider = ({ children }: React.PropsWithChildren) => {
         buttons.map((button) => ({
           ...button,
           onClick: (value) => {
+            button.onClick?.(value);
             setShowDialog(false);
             setTimeout(() => {
               resolve({ button: button.text, value });

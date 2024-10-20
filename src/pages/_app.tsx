@@ -21,6 +21,7 @@ import RecentFilesPanel from "./_recent_files_panel";
 import { Settings } from "../core/Settings";
 import ErrorHandler from "./_error_handler";
 import PopupDialog from "../components/ui/PopupDialog";
+import { useDialog } from "../utils/dialog";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -29,6 +30,7 @@ export default function App() {
   const location = useLocation();
   const [file] = useRecoilState(fileAtom);
   const [backgroundOpacity, setBackgroundOpacity] = React.useState(0.5);
+  const dialog = useDialog();
 
   React.useEffect(() => {
     getCurrentWindow().onResized(() => {
@@ -88,7 +90,24 @@ export default function App() {
         <IconButton
           onClick={(e) => {
             if (location.pathname !== "/") {
-              navigate("/");
+              if (location.pathname.startsWith("/welcome")) {
+                dialog.show({
+                  title: "Skip Setup?",
+                  content: "Are you sure you want to skip the setup process?",
+                  buttons: [
+                    {
+                      text: "Yes",
+                      onClick: () => navigate("/"),
+                    },
+                    {
+                      text: "No",
+                      onClick: () => {},
+                    },
+                  ],
+                });
+              } else {
+                navigate("/");
+              }
             } else {
               e.stopPropagation();
               setOpenMenu(!openMenu);

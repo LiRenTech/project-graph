@@ -9,6 +9,7 @@ import Button from "../../components/ui/Button";
 export function SettingField({
   settingKey,
   title = settingKey,
+  showKey = true,
   type = "text",
   options = [],
   min = 0,
@@ -19,6 +20,7 @@ export function SettingField({
 }: {
   settingKey: keyof Settings.Settings;
   title?: string;
+  showKey?: boolean;
   type?: "text" | "number" | "slider" | "switch" | "select";
   options?: { label: string; value: string }[];
   min?: number;
@@ -48,7 +50,9 @@ export function SettingField({
         {icon}
         <div className="flex flex-col">
           <span>{title}</span>
-          <span className="text-xs text-gray-500">{settingKey}</span>
+          {showKey && (
+            <span className="text-xs text-gray-500">{settingKey}</span>
+          )}
         </div>
       </div>
       {type === "text" && (
