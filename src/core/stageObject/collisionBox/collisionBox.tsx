@@ -14,7 +14,7 @@ export class CollisionBox {
   }
 
   /**
-   * 
+   *
    * @param shapeList 更新碰撞箱的形状列表
    */
   updateShapeList(shapeList: Shape[]): void {
@@ -46,5 +46,41 @@ export class CollisionBox {
       }
     }
     return false;
+  }
+
+  /**
+   * 获取碰撞箱们的最小外接矩形
+   */
+  getRectangle(): Rectangle {
+    if (this.shapeList.length === 0) {
+      // 报错
+      throw new Error("CollisionBox is empty!");
+    }
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+    for (const shape of this.shapeList) {
+      const rectangle = shape.getRectangle();
+      const x = rectangle.location.x,
+        y = rectangle.location.y;
+      const width = rectangle.size.x,
+        height = rectangle.size.y;
+      if (x < minX) {
+        minX = x;
+      }
+      if (y < minY) {
+        minY = y;
+      }
+      if (x + width > maxX) {
+        maxX = x + width;
+      }
+      if (y + height > maxY) {
+        maxY = y + height;
+      }
+    }
+    const leftTopLocation = new Vector(minX, minY);
+    const sizeVector = new Vector(maxX - minX, maxY - minY);
+    return new Rectangle(leftTopLocation, sizeVector);
   }
 }

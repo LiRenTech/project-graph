@@ -55,9 +55,11 @@ export namespace StageNodeMoveManager {
     const nodes = Array.from(StageManager.nodes).filter(
       (node) => node.isSelected,
     );
-    const minX = Math.min(...nodes.map((node) => node.rectangle.location.x));
+    const minX = Math.min(
+      ...nodes.map((node) => node.collisionBox.getRectangle().left),
+    );
     for (const node of nodes) {
-      node.moveTo(new Vector(minX, node.rectangle.location.y))
+      node.move(new Vector(minX - node.collisionBox.getRectangle().left, 0));
     }
   }
 
@@ -67,10 +69,10 @@ export namespace StageNodeMoveManager {
       (node) => node.isSelected,
     );
     const maxX = Math.max(
-      ...nodes.map((node) => node.rectangle.location.x + node.rectangle.size.x),
+      ...nodes.map((node) => node.collisionBox.getRectangle().right),
     );
     for (const node of nodes) {
-      node.moveTo(new Vector(maxX - node.rectangle.size.x, node.rectangle.location.y))
+      node.move(new Vector(maxX - node.collisionBox.getRectangle().right, 0));
     }
   }
 
@@ -79,9 +81,11 @@ export namespace StageNodeMoveManager {
     const nodes = Array.from(StageManager.nodes).filter(
       (node) => node.isSelected,
     );
-    const minY = Math.min(...nodes.map((node) => node.rectangle.location.y));
+    const minY = Math.min(
+      ...nodes.map((node) => node.collisionBox.getRectangle().top),
+    );
     for (const node of nodes) {
-      node.moveTo(new Vector(node.rectangle.location.x, minY))
+      node.move(new Vector(0, minY - node.collisionBox.getRectangle().top));
     }
   }
 
@@ -91,81 +95,119 @@ export namespace StageNodeMoveManager {
       (node) => node.isSelected,
     );
     const maxY = Math.max(
-      ...nodes.map((node) => node.rectangle.location.y + node.rectangle.size.y),
+      ...nodes.map((node) => node.collisionBox.getRectangle().bottom),
     );
     for (const node of nodes) {
-      node.moveTo(new Vector(node.rectangle.location.x, maxY - node.rectangle.size.y))
+      node.move(new Vector(0, maxY - node.collisionBox.getRectangle().bottom));
     }
   }
 
   export function alignCenterHorizontal() {
-    const nodes = Array.from(StageManager.nodes).filter(node => node.isSelected);
+    const nodes = Array.from(StageManager.nodes).filter(
+      (node) => node.isSelected,
+    );
     if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
-  
+
     // 计算所有选中节点的总高度和最小 y 坐标
-    const minY = Math.min(...nodes.map(node => node.rectangle.location.y));
-    const maxY = Math.max(...nodes.map(node => node.rectangle.location.y + node.rectangle.size.y));
+    const minY = Math.min(
+      ...nodes.map((node) => node.collisionBox.getRectangle().top),
+    );
+    const maxY = Math.max(
+      ...nodes.map((node) => node.collisionBox.getRectangle().bottom),
+    );
     const totalHeight = maxY - minY;
     const centerY = minY + totalHeight / 2;
-  
+
     for (const node of nodes) {
       const nodeCenterY = node.rectangle.location.y + node.rectangle.size.y / 2;
       const newY = centerY - (nodeCenterY - node.rectangle.location.y);
-      node.moveTo(new Vector(node.rectangle.location.x, newY))
+      node.moveTo(new Vector(node.rectangle.location.x, newY));
     }
   }
 
   export function alignCenterVertical() {
-    const nodes = Array.from(StageManager.nodes).filter(node => node.isSelected);
+    const nodes = Array.from(StageManager.nodes).filter(
+      (node) => node.isSelected,
+    );
     if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
-  
+
     // 计算所有选中节点的总宽度和最小 x 坐标
-    const minX = Math.min(...nodes.map(node => node.rectangle.location.x));
-    const maxX = Math.max(...nodes.map(node => node.rectangle.location.x + node.rectangle.size.x));
+    const minX = Math.min(
+      ...nodes.map((node) => node.collisionBox.getRectangle().left),
+    );
+    const maxX = Math.max(
+      ...nodes.map((node) => node.collisionBox.getRectangle().right),
+    );
     const totalWidth = maxX - minX;
     const centerX = minX + totalWidth / 2;
-  
+
     for (const node of nodes) {
       const nodeCenterX = node.rectangle.location.x + node.rectangle.size.x / 2;
       const newX = centerX - (nodeCenterX - node.rectangle.location.x);
-      node.moveTo(new Vector(newX, node.rectangle.location.y))
+      node.moveTo(new Vector(newX, node.rectangle.location.y));
     }
   }
 
   // 相等间距水平分布对齐
   export function alignHorizontalSpaceBetween() {
-    const nodes = Array.from(StageManager.nodes).filter(node => node.isSelected);
+    const nodes = Array.from(StageManager.nodes).filter(
+      (node) => node.isSelected,
+    );
     if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
-  
-    const minX = Math.min(...nodes.map(node => node.rectangle.location.x));
-    const maxX = Math.max(...nodes.map(node => node.rectangle.location.x + node.rectangle.size.x));
+
+    const minX = Math.min(
+      ...nodes.map((node) => node.collisionBox.getRectangle().left),
+    );
+    const maxX = Math.max(
+      ...nodes.map((node) => node.collisionBox.getRectangle().right),
+    );
     const totalWidth = maxX - minX;
-    const totalNodesWidth = nodes.reduce((sum, node) => sum + node.rectangle.size.x, 0);
+    const totalNodesWidth = nodes.reduce(
+      (sum, node) => sum + node.collisionBox.getRectangle().size.x,
+      0,
+    );
     const availableSpace = totalWidth - totalNodesWidth;
-    const spaceBetween = nodes.length > 1 ? availableSpace / (nodes.length - 1) : 0;
-  
+    const spaceBetween =
+      nodes.length > 1 ? availableSpace / (nodes.length - 1) : 0;
+
     let startX = minX;
-    for (const node of nodes.sort((a, b) => a.rectangle.location.x - b.rectangle.location.x)) {
-      node.moveTo(new Vector(startX, node.rectangle.location.y))
+    for (const node of nodes.sort(
+      (a, b) =>
+        a.collisionBox.getRectangle().left - b.collisionBox.getRectangle().left,
+    )) {
+      node.moveTo(new Vector(startX, node.rectangle.location.y));
       startX += node.rectangle.size.x + spaceBetween;
     }
   }
 
   // 相等间距垂直分布对齐
   export function alignVerticalSpaceBetween() {
-    const nodes = Array.from(StageManager.nodes).filter(node => node.isSelected);
+    const nodes = Array.from(StageManager.nodes).filter(
+      (node) => node.isSelected,
+    );
     if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
-  
-    const minY = Math.min(...nodes.map(node => node.rectangle.location.y));
-    const maxY = Math.max(...nodes.map(node => node.rectangle.location.y + node.rectangle.size.y));
+
+    const minY = Math.min(
+      ...nodes.map((node) => node.collisionBox.getRectangle().top),
+    );
+    const maxY = Math.max(
+      ...nodes.map((node) => node.collisionBox.getRectangle().bottom),
+    );
     const totalHeight = maxY - minY;
-    const totalNodesHeight = nodes.reduce((sum, node) => sum + node.rectangle.size.y, 0);
+    const totalNodesHeight = nodes.reduce(
+      (sum, node) => sum + node.collisionBox.getRectangle().size.y,
+      0,
+    );
     const availableSpace = totalHeight - totalNodesHeight;
-    const spaceBetween = nodes.length > 1 ? availableSpace / (nodes.length - 1) : 0;
-  
+    const spaceBetween =
+      nodes.length > 1 ? availableSpace / (nodes.length - 1) : 0;
+
     let startY = minY;
-    for (const node of nodes.sort((a, b) => a.rectangle.location.y - b.rectangle.location.y)) {
-      node.moveTo(new Vector(node.rectangle.location.x, startY))
+    for (const node of nodes.sort(
+      (a, b) =>
+        a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top,
+    )) {
+      node.moveTo(new Vector(node.rectangle.location.x, startY));
       startY += node.rectangle.size.y + spaceBetween;
     }
   }

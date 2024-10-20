@@ -47,6 +47,9 @@ export class Rectangle extends Shape {
   public get bottomCenter(): Vector {
     return new Vector(this.center.x, this.bottom);
   }
+  getRectangle(): Rectangle {
+    return this.clone();
+  }
 
   /**
    * 以中心点为中心，扩展矩形

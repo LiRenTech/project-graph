@@ -133,6 +133,16 @@ export class Line extends Shape {
     );
   }
 
+  getRectangle(): Rectangle {
+    const minX = Math.min(this.start.x, this.end.x);
+    const maxX = Math.max(this.start.x, this.end.x);
+    const minY = Math.min(this.start.y, this.end.y);
+    const maxY = Math.max(this.start.y, this.end.y);
+    const location = new Vector(minX, minY);
+    const size = new Vector(maxX - minX, maxY - minY);
+    return new Rectangle(location, size);
+  }
+
   /**
    * 判断该线段是否和一个垂直的线段相交
    * @param x 垂直线段的x坐标
