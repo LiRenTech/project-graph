@@ -1,6 +1,6 @@
 import { Vector } from "../../../dataStruct/Vector";
 import { StageManager } from "../StageManager";
-import { TextNode } from "../../../stageObject/TextNode";
+import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Stage } from "../../Stage";
 import { LineEffect } from "../../../effect/concrete/LineEffect";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";

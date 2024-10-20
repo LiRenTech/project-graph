@@ -1,10 +1,10 @@
 import React from "react";
-import { TextNode } from "../stageObject/TextNode";
+import { TextNode } from "../stageObject/entity/TextNode";
 import { Renderer } from "../render/canvas2d/renderer";
 import { StageManager } from "./stageManager/StageManager";
 import ReactDOMServer from "react-dom/server";
 import { Color } from "../dataStruct/Color";
-import { Edge } from "../stageObject/Edge";
+import { Edge } from "../stageObject/association/Edge";
 
 /**
  * 将舞台当前内容导出为SVG

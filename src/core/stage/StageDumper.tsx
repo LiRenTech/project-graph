@@ -1,6 +1,6 @@
 import { Serialized } from "../../types/node";
-import { Edge } from "../stageObject/Edge";
-import { TextNode } from "../stageObject/TextNode";
+import { Edge } from "../stageObject/association/Edge";
+import { TextNode } from "../stageObject/entity/TextNode";
 import { StageManager } from "./stageManager/StageManager";
 
 /**

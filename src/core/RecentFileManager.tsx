@@ -2,12 +2,12 @@ import { createStore, Store } from "@tauri-apps/plugin-store";
 // import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
 import { StageLoader } from "./stage/StageLoader";
 import { StageManager } from "./stage/stageManager/StageManager";
-import { Edge } from "./stageObject/Edge";
+import { Edge } from "./stageObject/association/Edge";
 import { Camera } from "./stage/Camera";
 import { Stage } from "./stage/Stage";
 import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
 import { Color } from "./dataStruct/Color";
-import { TextNode } from "./stageObject/TextNode";
+import { TextNode } from "./stageObject/entity/TextNode";
 import { invoke } from "@tauri-apps/api/core";
 import { Serialized } from "../types/node";
 import { StageHistoryManager } from "./stage/stageManager/concreteMethods/StageHistoryManager";

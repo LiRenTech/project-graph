@@ -1,7 +1,7 @@
 import { Serialized } from "../../../../types/node";
 import { Vector } from "../../../dataStruct/Vector";
-import { Edge } from "../../../stageObject/Edge";
-import { TextNode } from "../../../stageObject/TextNode";
+import { Edge } from "../../../stageObject/association/Edge";
+import { TextNode } from "../../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";
 import { v4 as uuidv4 } from "uuid";
 /**

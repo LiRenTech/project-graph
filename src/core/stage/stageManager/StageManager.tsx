@@ -1,6 +1,6 @@
 import { Color } from "../../dataStruct/Color";
-import { Edge } from "../../stageObject/Edge";
-import { TextNode } from "../../stageObject/TextNode";
+import { Edge } from "../../stageObject/association/Edge";
+import { TextNode } from "../../stageObject/entity/TextNode";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Vector } from "../../dataStruct/Vector";
 import { StageNodeRotate } from "./concreteMethods/stageNodeRotate";

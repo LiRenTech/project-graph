@@ -1,7 +1,7 @@
 import { Color } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { TextNode } from "../../../stageObject/TextNode";
+import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Camera } from "../../../stage/Camera";
 import { Renderer } from "../renderer";
 import { RenderUtils } from "../RenderUtils";

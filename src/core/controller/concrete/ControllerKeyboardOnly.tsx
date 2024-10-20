@@ -3,7 +3,7 @@ import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { ControllerClass } from "../ControllerClass";
-import { TextNode } from "../../stageObject/TextNode";
+import { TextNode } from "../../stageObject/entity/TextNode";
 import { editNode } from "./utilsControl";
 
 /**

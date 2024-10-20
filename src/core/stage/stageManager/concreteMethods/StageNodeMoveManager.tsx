@@ -1,5 +1,5 @@
 import { Vector } from "../../../dataStruct/Vector";
-import { TextNode } from "../../../stageObject/TextNode";
+import { TextNode } from "../../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";
 
 /**

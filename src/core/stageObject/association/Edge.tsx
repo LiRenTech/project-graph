@@ -1,13 +1,13 @@
-import { Serialized } from "../../types/node";
-import { getTextSize } from "../../utils/font";
-import { Line } from "../dataStruct/shape/Line";
-import { TextNode } from "./TextNode";
-import { Rectangle } from "../dataStruct/shape/Rectangle";
-import { Renderer } from "../render/canvas2d/renderer";
-import { Vector } from "../dataStruct/Vector";
-import { Controller } from "../controller/Controller";
-import { Circle } from "../dataStruct/shape/Circle";
-import { StageManager } from "../stage/stageManager/StageManager";
+import { Serialized } from "../../../types/node";
+import { getTextSize } from "../../../utils/font";
+import { Line } from "../../dataStruct/shape/Line";
+import { TextNode } from "../entity/TextNode";
+import { Rectangle } from "../../dataStruct/shape/Rectangle";
+import { Renderer } from "../../render/canvas2d/renderer";
+import { Vector } from "../../dataStruct/Vector";
+import { Controller } from "../../controller/Controller";
+import { Circle } from "../../dataStruct/shape/Circle";
+import { StageManager } from "../../stage/stageManager/StageManager";
 
 export class Edge {
   source: TextNode;
