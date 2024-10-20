@@ -28,9 +28,9 @@ export namespace StageNodeAdder {
       size: [100, 100],
     });
     // 将node本身向左上角移动，使其居中
-    node.rectangle.location = node.rectangle.location.subtract(
+    node.moveTo(node.rectangle.location.subtract(
       node.rectangle.size.divide(2),
-    );
+    ));
     StageManager.addNode(node);
     return newUUID;
   }

@@ -57,7 +57,7 @@ export namespace StageNodeMoveManager {
     );
     const minX = Math.min(...nodes.map((node) => node.rectangle.location.x));
     for (const node of nodes) {
-      node.rectangle.location.x = minX;
+      node.moveTo(new Vector(minX, node.rectangle.location.y))
     }
   }
 
@@ -70,7 +70,7 @@ export namespace StageNodeMoveManager {
       ...nodes.map((node) => node.rectangle.location.x + node.rectangle.size.x),
     );
     for (const node of nodes) {
-      node.rectangle.location.x = maxX - node.rectangle.size.x;
+      node.moveTo(new Vector(maxX - node.rectangle.size.x, node.rectangle.location.y))
     }
   }
 
@@ -81,7 +81,7 @@ export namespace StageNodeMoveManager {
     );
     const minY = Math.min(...nodes.map((node) => node.rectangle.location.y));
     for (const node of nodes) {
-      node.rectangle.location.y = minY;
+      node.moveTo(new Vector(node.rectangle.location.x, minY))
     }
   }
 
@@ -94,7 +94,7 @@ export namespace StageNodeMoveManager {
       ...nodes.map((node) => node.rectangle.location.y + node.rectangle.size.y),
     );
     for (const node of nodes) {
-      node.rectangle.location.y = maxY - node.rectangle.size.y;
+      node.moveTo(new Vector(node.rectangle.location.x, maxY - node.rectangle.size.y))
     }
   }
 
@@ -111,7 +111,7 @@ export namespace StageNodeMoveManager {
     for (const node of nodes) {
       const nodeCenterY = node.rectangle.location.y + node.rectangle.size.y / 2;
       const newY = centerY - (nodeCenterY - node.rectangle.location.y);
-      node.rectangle.location.y = newY;
+      node.moveTo(new Vector(node.rectangle.location.x, newY))
     }
   }
 
@@ -128,7 +128,7 @@ export namespace StageNodeMoveManager {
     for (const node of nodes) {
       const nodeCenterX = node.rectangle.location.x + node.rectangle.size.x / 2;
       const newX = centerX - (nodeCenterX - node.rectangle.location.x);
-      node.rectangle.location.x = newX;
+      node.moveTo(new Vector(newX, node.rectangle.location.y))
     }
   }
 
@@ -146,7 +146,7 @@ export namespace StageNodeMoveManager {
   
     let startX = minX;
     for (const node of nodes.sort((a, b) => a.rectangle.location.x - b.rectangle.location.x)) {
-      node.rectangle.location.x = startX;
+      node.moveTo(new Vector(startX, node.rectangle.location.y))
       startX += node.rectangle.size.x + spaceBetween;
     }
   }
@@ -165,7 +165,7 @@ export namespace StageNodeMoveManager {
   
     let startY = minY;
     for (const node of nodes.sort((a, b) => a.rectangle.location.y - b.rectangle.location.y)) {
-      node.rectangle.location.y = startY;
+      node.moveTo(new Vector(node.rectangle.location.x, startY))
       startY += node.rectangle.size.y + spaceBetween;
     }
   }

@@ -8,25 +8,39 @@ import { StageManager } from "../../stage/stageManager/StageManager";
 import { Stage } from "../../stage/Stage";
 import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
+import { ConnectableEntity } from "../StageObject";
+import { CollisionBox } from "../collisionBox/collisionBox";
 
 /**
- * 
+ *
  * 文字节点类
  * 2024年10月20日：Node 改名为 TextNode，防止与 原生 Node 类冲突
  */
-export class TextNode {
+export class TextNode extends ConnectableEntity {
   uuid: string;
   text: string;
   details: string;
-  rectangle: Rectangle;
+
+  public collisionBox: CollisionBox;
 
   /**
    * 节点是否被选中
    */
   _isSelected: boolean = false;
 
+  /**
+   * 获取节点的选中状态
+   */
   public get isSelected() {
     return this._isSelected;
+  }
+
+  /**
+   * 只读，获取节点的矩形
+   * 若要修改节点的矩形，请使用 moveTo等 方法
+   */
+  public get rectangle(): Rectangle {
+    return this.collisionBox.shapeList[0] as Rectangle;
   }
 
   public set isSelected(value: boolean) {
@@ -63,19 +77,19 @@ export class TextNode {
     }: Partial<Serialized.Node> & { uuid: string },
     public unknown = false,
   ) {
+    super();
     this.uuid = uuid;
     this.text = text;
     this.details = details;
-    this.rectangle = new Rectangle(
-      new Vector(...location),
-      new Vector(...size),
-    );
+    this.collisionBox = new CollisionBox([
+      new Rectangle(new Vector(...location), new Vector(...size)),
+    ]);
     this.color = new Color(...color);
     this.adjustSizeByText();
   }
 
   private adjustSizeByText() {
-    this.rectangle = new Rectangle(
+    this.collisionBox.shapeList[0] = new Rectangle(
       this.rectangle.location.clone(),
       getTextSize(this.text, Renderer.FONT_SIZE).add(
         Vector.same(Renderer.NODE_PADDING).multiply(2),
@@ -93,7 +107,11 @@ export class TextNode {
   }
 
   move(delta: Vector) {
-    this.rectangle.location = this.rectangle.location.add(delta);
+    const newRectangle = this.rectangle.clone();
+    newRectangle.location = newRectangle.location.add(delta);
+    this.collisionBox.shapeList[0] = newRectangle;
+
+    // 移动雪花特效
     Stage.effects.push(
       new NodeMoveShadowEffect(
         new ProgressNumber(0, 30),
@@ -104,6 +122,8 @@ export class TextNode {
   }
 
   moveTo(location: Vector) {
-    this.rectangle.location = location.clone();
+    const newRectangle = this.rectangle.clone();
+    newRectangle.location = location.clone();
+    this.collisionBox.shapeList[0] = newRectangle;
   }
 }

@@ -17,8 +17,9 @@ export abstract class StageObject implements Disposable {
     throw new Error("Method not implemented.");
   }
 
+  public abstract uuid: string;
+
   public abstract collisionBox: CollisionBox;
-  // public uuid: string;
 
   _isSelected: boolean = false;
 

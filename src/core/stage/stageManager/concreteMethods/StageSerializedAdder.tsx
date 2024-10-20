@@ -18,7 +18,7 @@ export namespace StageSerializedAdder {
     const updatedSerializedData = refreshUUID(serializedData);
     for (const node of updatedSerializedData.nodes) {
       const newNode = new TextNode(node);
-      newNode.rectangle.location = newNode.rectangle.location.add(diffLocation);
+      newNode.moveTo(newNode.rectangle.location.add(diffLocation));
       StageManager.addNode(newNode);
     }
     for (const edge of updatedSerializedData.edges) {
