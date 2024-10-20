@@ -5,7 +5,6 @@ import { TextNode } from "../entity/TextNode";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Vector } from "../../dataStruct/Vector";
-import { Controller } from "../../controller/Controller";
 import { Circle } from "../../dataStruct/shape/Circle";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { ConnectableAssociation } from "../StageObject";
@@ -60,8 +59,8 @@ export class Edge extends ConnectableAssociation {
       // 是一个自环，碰撞箱是圆形
       return new CollisionBox([
         new Circle(
-          this.source.rectangle.center,
-          this.source.rectangle.size.y / 2,
+          this.source.collisionBox.getRectangle().location,
+          this.source.collisionBox.getRectangle().size.y / 2,
         ),
       ]);
     } else {
@@ -113,7 +112,7 @@ export class Edge extends ConnectableAssociation {
    * @param rectangle
    */
   isBodyLineIntersectWithRectangle(rectangle: Rectangle): boolean {
-    return rectangle.isCollideWithLine(this.bodyLine);
+    return this.collisionBox.isRectangleInCollisionBox(rectangle);
   }
 
   /**
@@ -122,17 +121,7 @@ export class Edge extends ConnectableAssociation {
    * @returns
    */
   isBodyLineIntersectWithLocation(location: Vector): boolean {
-    if (this.source.uuid === this.target.uuid) {
-      return new Circle(
-        this.source.rectangle.location,
-        this.source.rectangle.size.y / 2,
-      ).isPointIn(location);
-    } else {
-      return this.bodyLine.isPointNearLine(
-        location,
-        Controller.edgeHoverTolerance,
-      );
-    }
+    return this.collisionBox.isPointInCollisionBox(location);
   }
 
   /**
@@ -141,16 +130,7 @@ export class Edge extends ConnectableAssociation {
    * @returns
    */
   isBodyLineIntersectWithLine(line: Line): boolean {
-    if (this.source.uuid === this.target.uuid) {
-      // 是一个自环
-      const circle = new Circle(
-        this.source.rectangle.location,
-        this.source.rectangle.size.y / 2,
-      );
-      return circle.isPointIn(line.start) || circle.isPointIn(line.end);
-    } else {
-      return this.bodyLine.isIntersecting(line);
-    }
+    return this.collisionBox.isLineInCollisionBox(line);
   }
 
   public rename(text: string) {
