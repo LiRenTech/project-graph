@@ -1,6 +1,6 @@
 import { Rectangle } from "../../dataStruct/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
-import { TextNode } from "../../entity/TextNode";
+import { TextNode } from "../../stageObject/TextNode";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
 import { StageDumper } from "../../stage/StageDumper";

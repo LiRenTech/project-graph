@@ -1,8 +1,8 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { ExplodeAshEffect } from "../../../effect/concrete/ExplodeDashEffect";
-import { Edge } from "../../../entity/Edge";
-import { TextNode } from "../../../entity/TextNode";
+import { Edge } from "../../../stageObject/Edge";
+import { TextNode } from "../../../stageObject/TextNode";
 import { Stage } from "../../Stage";
 import { StageManager } from "../StageManager";
 

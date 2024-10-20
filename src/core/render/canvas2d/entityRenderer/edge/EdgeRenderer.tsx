@@ -1,8 +1,8 @@
 import { Color } from "../../../../dataStruct/Color";
 
 import { Vector } from "../../../../dataStruct/Vector";
-import { Edge } from "../../../../entity/Edge";
-import { TextNode } from "../../../../entity/TextNode";
+import { Edge } from "../../../../stageObject/Edge";
+import { TextNode } from "../../../../stageObject/TextNode";
 import { Settings } from "../../../../Settings";
 
 import { Renderer } from "../../renderer";

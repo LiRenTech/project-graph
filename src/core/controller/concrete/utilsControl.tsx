@@ -1,5 +1,5 @@
 import { Vector } from "../../dataStruct/Vector";
-import { TextNode } from "../../entity/TextNode";
+import { TextNode } from "../../stageObject/TextNode";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Camera } from "../../stage/Camera";
 import { Controller } from "../Controller";

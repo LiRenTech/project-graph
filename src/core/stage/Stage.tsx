@@ -1,6 +1,6 @@
-import { Edge } from "../entity/Edge";
+import { Edge } from "../stageObject/Edge";
 import { Effect } from "../effect/effect";
-import { TextNode } from "../entity/TextNode";
+import { TextNode } from "../stageObject/TextNode";
 import { Rectangle } from "../dataStruct/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { Line } from "../dataStruct/Line";
