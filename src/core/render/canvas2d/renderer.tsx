@@ -7,7 +7,7 @@ import { Canvas } from "../../stage/Canvas";
 import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { appScale } from "../../../utils/platform";
-import { Rectangle } from "../../dataStruct/Rectangle";
+import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Camera } from "../../stage/Camera";
 import { Controller } from "../../controller/Controller";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";

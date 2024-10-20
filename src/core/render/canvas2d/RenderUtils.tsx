@@ -1,8 +1,8 @@
 import { Canvas } from "../../stage/Canvas";
 import { Color } from "../../dataStruct/Color";
-import { Rectangle } from "../../dataStruct/Rectangle";
+import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
-import { CubicBezierCurve, SymmetryCurve } from "../../dataStruct/Curve";
+import { CubicBezierCurve, SymmetryCurve } from "../../dataStruct/shape/Curve";
 
 /**
  * 一些基础的渲染图形

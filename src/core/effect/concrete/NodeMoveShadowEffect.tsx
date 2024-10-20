@@ -1,6 +1,6 @@
 import { Random } from "../../algorithm/random";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
-import { Rectangle } from "../../dataStruct/Rectangle";
+import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
 import { Effect } from "../effect";
 

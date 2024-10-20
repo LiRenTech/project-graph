@@ -1,5 +1,6 @@
 import { Circle } from "./Circle";
-import { Vector } from "./Vector";
+import { Shape } from "./Shape";
+import { Vector } from "../Vector";
 
 export interface IntersectionResult {
   intersects: boolean;
@@ -9,11 +10,12 @@ export interface IntersectionResult {
 /**
  * 线段类
  */
-export class Line {
+export class Line extends Shape {
   start: Vector;
   end: Vector;
 
   constructor(start: Vector, end: Vector) {
+    super();
     this.start = start;
     this.end = end;
   }

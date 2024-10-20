@@ -1,4 +1,4 @@
-import { Rectangle } from "../../dataStruct/Rectangle";
+import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
 import { TextNode } from "../../stageObject/TextNode";
 import { Renderer } from "../../render/canvas2d/renderer";

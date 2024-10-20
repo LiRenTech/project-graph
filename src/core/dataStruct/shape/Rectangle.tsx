@@ -1,13 +1,16 @@
 import { Line } from "./Line";
-import { Renderer } from "../render/canvas2d/renderer";
-import { Camera } from "../stage/Camera";
-import { Vector } from "./Vector";
+import { Renderer } from "../../render/canvas2d/renderer";
+import { Camera } from "../../stage/Camera";
+import { Vector } from "../Vector";
+import { Shape } from "./Shape";
 
-export class Rectangle {
+export class Rectangle extends Shape {
   constructor(
     public location: Vector,
     public size: Vector,
-  ) {}
+  ) {
+    super();
+  }
 
   public get left(): number {
     return this.location.x;

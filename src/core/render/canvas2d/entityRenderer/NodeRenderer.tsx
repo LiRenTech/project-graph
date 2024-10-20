@@ -1,5 +1,5 @@
 import { Color } from "../../../dataStruct/Color";
-import { Rectangle } from "../../../dataStruct/Rectangle";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { TextNode } from "../../../stageObject/TextNode";
 import { Camera } from "../../../stage/Camera";

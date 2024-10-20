@@ -8,7 +8,7 @@ import { Stage } from "../../stage/Stage";
 import { Vector } from "../../dataStruct/Vector";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-import { Line } from "../../dataStruct/Line";
+import { Line } from "../../dataStruct/shape/Line";
 import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 
 /**

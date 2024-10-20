@@ -1,6 +1,6 @@
 import { Controller } from "../../../../../controller/Controller";
 import { Color } from "../../../../../dataStruct/Color";
-import { SymmetryCurve } from "../../../../../dataStruct/Curve";
+import { SymmetryCurve } from "../../../../../dataStruct/shape/Curve";
 import { ProgressNumber } from "../../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../../dataStruct/Vector";
 import { Edge } from "../../../../../stageObject/Edge";

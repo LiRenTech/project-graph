@@ -1,9 +1,9 @@
 import { Edge } from "../stageObject/Edge";
 import { Effect } from "../effect/effect";
 import { TextNode } from "../stageObject/TextNode";
-import { Rectangle } from "../dataStruct/Rectangle";
+import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
-import { Line } from "../dataStruct/Line";
+import { Line } from "../dataStruct/shape/Line";
 import { Serialized } from "../../types/node";
 import { StageDumper } from "./StageDumper";
 

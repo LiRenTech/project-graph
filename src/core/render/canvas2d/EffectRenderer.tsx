@@ -6,7 +6,7 @@ import { LineEffect } from "../../effect/concrete/LineEffect";
 import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
 import { easeInOutSine, easeOutQuint } from "../../effect/easings";
-import { Rectangle } from "../../dataStruct/Rectangle";
+import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Camera } from "../../stage/Camera";
 import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "./renderer";
