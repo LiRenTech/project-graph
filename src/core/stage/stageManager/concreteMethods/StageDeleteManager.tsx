@@ -22,7 +22,7 @@ export namespace StageDeleteManager {
         Stage.effects.push(
           new ExplodeAshEffect(
             new ProgressNumber(0, 30),
-            node.rectangle.clone(),
+            node.collisionBox.getRectangle(),
             node.color.a === 0 ? Color.White : node.color.clone(),
           ),
         );
