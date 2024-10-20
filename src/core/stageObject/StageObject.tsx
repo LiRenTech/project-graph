@@ -2,6 +2,13 @@ import { Vector } from "../dataStruct/Vector";
 import { CollisionBox } from "./collisionBox/collisionBox";
 
 /**
+ * 注：关于舞台上的东西的这一部分的
+ * 继承体系是 Rutubet 和 Littlefean 的讨论结果
+ * 
+ */
+
+
+/**
  * 一切舞台上的东西
  * 都具有碰撞箱，uuid
  */
@@ -49,5 +56,26 @@ export abstract class Association extends StageObject {
  * 一切可被连接的关联
  */
 export abstract class ConnectableAssociation extends Association {
-  public associationList: ConnectableEntity[] = [];
+  public override associationList: ConnectableEntity[] = [];
+
+  public reverse() {
+    const temp = this.associationList[0];
+    this.associationList[0] = this.associationList[1];
+    this.associationList[1] = temp;
+  }
+
+  get target(): ConnectableEntity {
+    return this.associationList[0];
+  }
+
+  set target(value: ConnectableEntity) {
+    this.associationList[0] = value;
+  }
+
+  get source(): ConnectableEntity {
+    return this.associationList[1];
+  }
+  set source(value: ConnectableEntity) {
+    this.associationList[1] = value;
+  }
 }
