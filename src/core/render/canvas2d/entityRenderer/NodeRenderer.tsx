@@ -1,7 +1,7 @@
 import { Color } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { Node } from "../../../entity/Node";
+import { TextNode } from "../../../entity/TextNode";
 import { Camera } from "../../../stage/Camera";
 import { Renderer } from "../renderer";
 import { RenderUtils } from "../RenderUtils";
@@ -10,7 +10,7 @@ import { RenderUtils } from "../RenderUtils";
  * 处理节点相关的绘制
  */
 export namespace NodeRenderer {
-  export function renderNode(node: Node) {
+  export function renderNode(node: TextNode) {
     // 节点身体矩形
     RenderUtils.renderRect(
       new Rectangle(

@@ -3,7 +3,7 @@ import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { ControllerClass } from "../ControllerClass";
-import { Node } from "../../entity/Node";
+import { TextNode } from "../../entity/TextNode";
 import { editNode } from "./utilsControl";
 
 /**
@@ -151,7 +151,7 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
         // 在节点上方查找所有节点，并选中距离上方最近的一个
         const newSelectedNode = getMostBottomNode(
           getRelatedNodes(selectedNode).filter(
-            (node: Node) =>
+            (node: TextNode) =>
               node.rectangle.center.y < selectedNode.rectangle.center.y,
           ),
         );
@@ -164,7 +164,7 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
         // 在节点下方查找所有节点，并选中距离下方最近的一个
         const newSelectedNode = getMostTopNode(
           getRelatedNodes(selectedNode).filter(
-            (node: Node) =>
+            (node: TextNode) =>
               node.rectangle.center.y > selectedNode.rectangle.center.y,
           ),
         );
@@ -177,7 +177,7 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
         // 在节点左侧查找所有节点，并选中距离左侧最近的一个
         const newSelectedNode = getMostRightNode(
           getRelatedNodes(selectedNode).filter(
-            (node: Node) =>
+            (node: TextNode) =>
               node.rectangle.center.x < selectedNode.rectangle.center.x,
           ),
         );
@@ -190,7 +190,7 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
         // 在节点右侧查找所有节点，并选中距离右侧最近的一个
         const newSelectedNode = getMostLeftNode(
           getRelatedNodes(selectedNode).filter(
-            (node: Node) =>
+            (node: TextNode) =>
               node.rectangle.center.x > selectedNode.rectangle.center.x,
           ),
         );
@@ -208,8 +208,8 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
  * 根据一个节点，获取其连线相关的所有节点
  * 包括所有第一层孩子节点和第一层父亲节点
  */
-function getRelatedNodes(node: Node): Node[] {
-  const relatedNodes: Node[] = [];
+function getRelatedNodes(node: TextNode): TextNode[] {
+  const relatedNodes: TextNode[] = [];
   // 获取所有孩子节点
   for (const edge of StageManager.edges) {
     if (edge.source.uuid === node.uuid) {
@@ -232,7 +232,7 @@ function getRelatedNodes(node: Node): Node[] {
  * 获取一堆节点中，最左边的节点
  * @param nodes
  */
-function getMostLeftNode(nodes: Node[]): Node | null {
+function getMostLeftNode(nodes: TextNode[]): TextNode | null {
   if (nodes.length === 0) return null;
   let mostLeftNode = nodes[0];
   for (let i = 1; i < nodes.length; i++) {
@@ -247,7 +247,7 @@ function getMostLeftNode(nodes: Node[]): Node | null {
  * 获取一堆节点中，最右边的节点
  * @param nodes
  */
-function getMostRightNode(nodes: Node[]): Node | null {
+function getMostRightNode(nodes: TextNode[]): TextNode | null {
   if (nodes.length === 0) return null;
   let mostRightNode = nodes[0];
   for (let i = 1; i < nodes.length; i++) {
@@ -262,7 +262,7 @@ function getMostRightNode(nodes: Node[]): Node | null {
  * 获取一堆节点中，最上边的节点
  * @param nodes
  */
-function getMostTopNode(nodes: Node[]): Node | null {
+function getMostTopNode(nodes: TextNode[]): TextNode | null {
   if (nodes.length === 0) return null;
   let mostTopNode = nodes[0];
   for (let i = 1; i < nodes.length; i++) {
@@ -277,7 +277,7 @@ function getMostTopNode(nodes: Node[]): Node | null {
  * 获取一堆节点中，最下边的节点
  * @param nodes
  */
-function getMostBottomNode(nodes: Node[]): Node | null {
+function getMostBottomNode(nodes: TextNode[]): TextNode | null {
   if (nodes.length === 0) return null;
   let mostBottomNode = nodes[0];
   for (let i = 1; i < nodes.length; i++) {

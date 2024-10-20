@@ -1,6 +1,6 @@
 import { Vector } from "../../../dataStruct/Vector";
 import { StageManager } from "../StageManager";
-import { Node } from "../../../entity/Node";
+import { TextNode } from "../../../entity/TextNode";
 import { Stage } from "../../Stage";
 import { LineEffect } from "../../../effect/concrete/LineEffect";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
@@ -49,8 +49,8 @@ export namespace StageNodeRotate {
    * @param visitedUUIDs 已经访问过的节点的uuid列表，用于避免死循环
    */
   export function rotateNodeDfs(
-    rotateCenterNode: Node,
-    currentNode: Node,
+    rotateCenterNode: TextNode,
+    currentNode: TextNode,
     degrees: number,
     visitedUUIDs: string[],
   ): void {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Node } from "../entity/Node";
+import { TextNode } from "../entity/TextNode";
 import { Renderer } from "../render/canvas2d/renderer";
 import { StageManager } from "./stageManager/StageManager";
 import ReactDOMServer from "react-dom/server";
@@ -12,7 +12,7 @@ import { Edge } from "../entity/Edge";
  *
  */
 export namespace StageDumperSvg {
-  export function dumpNode(node: Node) {
+  export function dumpNode(node: TextNode) {
     return (
       <>
         <rect

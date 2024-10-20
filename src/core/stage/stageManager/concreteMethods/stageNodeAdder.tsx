@@ -1,5 +1,5 @@
 import { Vector } from "../../../dataStruct/Vector";
-import { Node } from "../../../entity/Node";
+import { TextNode } from "../../../entity/TextNode";
 import { Settings } from "../../../Settings";
 import { StageManager } from "../StageManager";
 import { v4 as uuidv4 } from "uuid";
@@ -19,7 +19,7 @@ export namespace StageNodeAdder {
     clickWorldLocation: Vector,
   ): Promise<string> {
     const newUUID = uuidv4();
-    const node = new Node({
+    const node = new TextNode({
       uuid: newUUID,
       text: await getAutoName(),
       details: "",
@@ -77,7 +77,7 @@ export namespace StageNodeAdder {
       const textContent = line.trim();
 
       const newUUID = uuidv4();
-      const node = new Node({
+      const node = new TextNode({
         uuid: newUUID,
         text: textContent,
         details: "",

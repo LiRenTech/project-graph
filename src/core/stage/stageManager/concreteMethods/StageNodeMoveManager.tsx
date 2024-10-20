@@ -1,5 +1,5 @@
 import { Vector } from "../../../dataStruct/Vector";
-import { Node } from "../../../entity/Node";
+import { TextNode } from "../../../entity/TextNode";
 import { StageManager } from "../StageManager";
 
 /**
@@ -27,12 +27,12 @@ export namespace StageNodeMoveManager {
       }
     }
   }
-  function moveWithChildren(node: Node, delta: Vector) {
+  function moveWithChildren(node: TextNode, delta: Vector) {
     moveWithChildrenDfs(node, delta, [node.uuid]);
   }
 
   function moveWithChildrenDfs(
-    node: Node,
+    node: TextNode,
     delta: Vector,
     visitedUUIDs: string[],
   ) {

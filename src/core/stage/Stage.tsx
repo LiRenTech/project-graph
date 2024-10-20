@@ -1,6 +1,6 @@
 import { Edge } from "../entity/Edge";
 import { Effect } from "../effect/effect";
-import { Node } from "../entity/Node";
+import { TextNode } from "../entity/TextNode";
 import { Rectangle } from "../dataStruct/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { Line } from "../dataStruct/Line";
@@ -47,7 +47,7 @@ export namespace Stage {
   /**
    * 正在准备要删除的节点
    */
-  export let warningNodes: Node[] = [];
+  export let warningNodes: TextNode[] = [];
   /**
    * 正在准备要删除的连线
    */
@@ -55,8 +55,8 @@ export namespace Stage {
   /**
    * 用于多重连接
    */
-  export let connectFromNodes: Node[] = [];
-  export let connectToNode: Node | null = null;
+  export let connectFromNodes: TextNode[] = [];
+  export let connectToNode: TextNode | null = null;
 
   /**
    * 鼠标悬浮的边
@@ -75,7 +75,7 @@ export namespace Stage {
   /**
    * 搜索结果
    */
-  export let searchResultNodes: Node[] = [];
+  export let searchResultNodes: TextNode[] = [];
   /**
    * 搜索结果的索引
    */

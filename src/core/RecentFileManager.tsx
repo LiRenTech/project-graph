@@ -7,7 +7,7 @@ import { Camera } from "./stage/Camera";
 import { Stage } from "./stage/Stage";
 import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
 import { Color } from "./dataStruct/Color";
-import { Node } from "./entity/Node";
+import { TextNode } from "./entity/TextNode";
 import { invoke } from "@tauri-apps/api/core";
 import { Serialized } from "../types/node";
 import { StageHistoryManager } from "./stage/stageManager/concreteMethods/StageHistoryManager";
@@ -159,7 +159,7 @@ export namespace RecentFileManager {
 
   export function loadStageByData(data: Serialized.File) {
     for (const node of data.nodes) {
-      StageManager.addNode(new Node(node));
+      StageManager.addNode(new TextNode(node));
     }
     for (const edge of data.edges) {
       StageManager.addEdge(new Edge(edge));

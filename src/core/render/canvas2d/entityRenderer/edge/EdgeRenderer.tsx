@@ -2,7 +2,7 @@ import { Color } from "../../../../dataStruct/Color";
 
 import { Vector } from "../../../../dataStruct/Vector";
 import { Edge } from "../../../../entity/Edge";
-import { Node } from "../../../../entity/Node";
+import { TextNode } from "../../../../entity/TextNode";
 import { Settings } from "../../../../Settings";
 
 import { Renderer } from "../../renderer";
@@ -71,10 +71,10 @@ export namespace EdgeRenderer {
     }
   }
 
-  export function renderVirtualEdge(startNode: Node, mouseLocation: Vector) {
+  export function renderVirtualEdge(startNode: TextNode, mouseLocation: Vector) {
     currentRenderer.renderVirtualEdge(startNode, mouseLocation);
   }
-  export function renderVirtualConfirmedEdge(startNode: Node, endNode: Node) {
+  export function renderVirtualConfirmedEdge(startNode: TextNode, endNode: TextNode) {
     currentRenderer.renderVirtualConfirmedEdge(startNode, endNode);
   }
   export function renderHoverShadow(edge: Edge) {
@@ -88,7 +88,7 @@ export namespace EdgeRenderer {
   export function getCuttingEffects(edge: Edge) {
     return currentRenderer.getCuttingEffects(edge);
   }
-  export function getConnectedEffects(startNode: Node, toNode: Node) {
+  export function getConnectedEffects(startNode: TextNode, toNode: TextNode) {
     return currentRenderer.getConnectedEffects(startNode, toNode);
   }
 

@@ -7,7 +7,7 @@ import { Edge } from "../../../../../entity/Edge";
 import { CircleFlameEffect } from "../../../../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../effect/concrete/LineCuttingEffect";
 import { Effect } from "../../../../../effect/effect";
-import { Node } from "../../../../../entity/Node";
+import { TextNode } from "../../../../../entity/TextNode";
 import { Camera } from "../../../../../stage/Camera";
 import { Renderer } from "../../../renderer";
 import { RenderUtils } from "../../../RenderUtils";
@@ -42,7 +42,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       ),
     ];
   }
-  getConnectedEffects(startNode: Node, toNode: Node): Effect[] {
+  getConnectedEffects(startNode: TextNode, toNode: TextNode): Effect[] {
     return [
       new CircleFlameEffect(
         new ProgressNumber(0, 15),
@@ -116,7 +116,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     }
   }
 
-  public renderVirtualEdge(startNode: Node, mouseLocation: Vector): void {
+  public renderVirtualEdge(startNode: TextNode, mouseLocation: Vector): void {
     // 绘制曲线本体
     const start = Renderer.transformWorld2View(startNode.rectangle.center);
     const end = Renderer.transformWorld2View(mouseLocation);
@@ -140,7 +140,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     );
   }
 
-  public renderVirtualConfirmedEdge(startNode: Node, endNode: Node): void {
+  public renderVirtualConfirmedEdge(startNode: TextNode, endNode: TextNode): void {
     const start = Renderer.transformWorld2View(startNode.rectangle.center);
     const end = Renderer.transformWorld2View(endNode.rectangle.center);
     const direction = end.subtract(start);

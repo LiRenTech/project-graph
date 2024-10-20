@@ -1,5 +1,5 @@
 import { Edge } from "../../../entity/Edge";
-import { Node } from "../../../entity/Node";
+import { TextNode } from "../../../entity/TextNode";
 import { StageManager } from "../StageManager";
 import { StageDeleteManager } from "./StageDeleteManager";
 
@@ -9,8 +9,8 @@ import { StageDeleteManager } from "./StageDeleteManager";
 export namespace StageNodeConnector {
   // 连接两两节点
   export function connectNode(
-    fromNode: Node,
-    toNode: Node,
+    fromNode: TextNode,
+    toNode: TextNode,
     text: string = "",
   ): void {
     if (

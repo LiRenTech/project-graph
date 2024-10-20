@@ -9,7 +9,12 @@ import { Stage } from "../stage/Stage";
 import { NodeMoveShadowEffect } from "../effect/concrete/NodeMoveShadowEffect";
 import { ProgressNumber } from "../dataStruct/ProgressNumber";
 
-export class Node {
+/**
+ * 
+ * 文字节点类
+ * 2024年10月20日：Node 改名为 TextNode，防止与 原生 Node 类冲突
+ */
+export class TextNode {
   uuid: string;
   text: string;
   details: string;

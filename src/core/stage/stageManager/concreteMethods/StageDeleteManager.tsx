@@ -2,7 +2,7 @@ import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { ExplodeAshEffect } from "../../../effect/concrete/ExplodeDashEffect";
 import { Edge } from "../../../entity/Edge";
-import { Node } from "../../../entity/Node";
+import { TextNode } from "../../../entity/TextNode";
 import { Stage } from "../../Stage";
 import { StageManager } from "../StageManager";
 
@@ -10,7 +10,7 @@ import { StageManager } from "../StageManager";
  * 包含一切删除舞台上的元素的方法
  */
 export namespace StageDeleteManager {
-  export function deleteNodes(deleteNodes: Node[]) {
+  export function deleteNodes(deleteNodes: TextNode[]) {
     for (const node of deleteNodes) {
       // 先判断这个node是否在nodes里
       if (StageManager.nodes.includes(node)) {

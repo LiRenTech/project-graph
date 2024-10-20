@@ -1,6 +1,6 @@
 import { Serialized } from "../../types/node";
 import { Edge } from "../entity/Edge";
-import { Node } from "../entity/Node";
+import { TextNode } from "../entity/TextNode";
 import { StageManager } from "./stageManager/StageManager";
 
 /**
@@ -14,7 +14,7 @@ export namespace StageDumper {
   export const latestVersion = 6;
 
 
-  export function dumpNode(node: Node): Serialized.Node {
+  export function dumpNode(node: TextNode): Serialized.Node {
     return {
       location: [node.rectangle.location.x, node.rectangle.location.y],
       size: [node.rectangle.size.x, node.rectangle.size.y],
@@ -50,7 +50,7 @@ export namespace StageDumper {
    * @param nodes 选中的节点
    * @returns
    */
-  export function dumpSelected(nodes: Node[]): Serialized.File {
+  export function dumpSelected(nodes: TextNode[]): Serialized.File {
     const selectedNodes = nodes.map((node) => dumpNode(node));
     const selectedEdges: Serialized.Edge[] = [];
     

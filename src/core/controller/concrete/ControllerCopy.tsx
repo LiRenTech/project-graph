@@ -1,6 +1,6 @@
 import { Rectangle } from "../../dataStruct/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
-import { Node } from "../../entity/Node";
+import { TextNode } from "../../entity/TextNode";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
 import { StageDumper } from "../../stage/StageDumper";
@@ -36,7 +36,7 @@ ControllerCopy.keydown = (event: KeyboardEvent) => {
 
   if (key === "c" && Controller.pressingKeySet.has("control")) {
     // 复制
-    const nodes: Node[] = [];
+    const nodes: TextNode[] = [];
     for (const node of StageManager.nodes) {
       if (node.isSelected) {
         nodes.push(node);

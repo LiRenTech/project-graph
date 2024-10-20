@@ -1,7 +1,7 @@
 import { Serialized } from "../../types/node";
 import { getTextSize } from "../../utils/font";
 import { Line } from "../dataStruct/Line";
-import { Node } from "./Node";
+import { TextNode } from "./TextNode";
 import { Rectangle } from "../dataStruct/Rectangle";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Vector } from "../dataStruct/Vector";
@@ -10,8 +10,8 @@ import { Circle } from "../dataStruct/Circle";
 import { StageManager } from "../stage/stageManager/StageManager";
 
 export class Edge {
-  source: Node;
-  target: Node;
+  source: TextNode;
+  target: TextNode;
   /**
    * 线段上的文字
    */
@@ -44,8 +44,8 @@ export class Edge {
     /** true表示解析状态，false表示解析完毕 */
     public unknown = false,
   ) {
-    this.source = new Node({ uuid: source }, true);
-    this.target = new Node({ uuid: target }, true);
+    this.source = new TextNode({ uuid: source }, true);
+    this.target = new TextNode({ uuid: target }, true);
     this.text = text;
     this.adjustSizeByText();
   }
@@ -54,7 +54,7 @@ export class Edge {
    * @param source
    * @param target
    */
-  static fromToNode(source: Node, target: Node): Edge {
+  static fromToNode(source: TextNode, target: TextNode): Edge {
     return new Edge({ source: source.uuid, target: target.uuid, text: "" });
   }
 

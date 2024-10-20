@@ -1,7 +1,7 @@
 import { Serialized } from "../../../../types/node";
 import { Vector } from "../../../dataStruct/Vector";
 import { Edge } from "../../../entity/Edge";
-import { Node } from "../../../entity/Node";
+import { TextNode } from "../../../entity/TextNode";
 import { StageManager } from "../StageManager";
 import { v4 as uuidv4 } from "uuid";
 /**
@@ -17,7 +17,7 @@ export namespace StageSerializedAdder {
   export function addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
     const updatedSerializedData = refreshUUID(serializedData);
     for (const node of updatedSerializedData.nodes) {
-      const newNode = new Node(node);
+      const newNode = new TextNode(node);
       newNode.rectangle.location = newNode.rectangle.location.add(diffLocation);
       StageManager.addNode(newNode);
     }

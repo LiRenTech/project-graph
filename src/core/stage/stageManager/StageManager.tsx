@@ -1,6 +1,6 @@
 import { Color } from "../../dataStruct/Color";
 import { Edge } from "../../entity/Edge";
-import { Node } from "../../entity/Node";
+import { TextNode } from "../../entity/TextNode";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Vector } from "../../dataStruct/Vector";
 import { StageNodeRotate } from "./concreteMethods/stageNodeRotate";
@@ -25,7 +25,7 @@ import { StageDumper } from "../StageDumper";
  * 管理节点、边的关系等，内部包含了舞台上的所有实体
  */
 export namespace StageManager {
-  export const nodes: Node[] = [];
+  export const nodes: TextNode[] = [];
   export const edges: Edge[] = [];
   /**
    * 销毁函数
@@ -36,7 +36,7 @@ export namespace StageManager {
     StageManager.edges.splice(0, StageManager.edges.length);
   }
 
-  export function addNode(node: Node) {
+  export function addNode(node: TextNode) {
     nodes.push(node);
   }
 
@@ -49,8 +49,8 @@ export namespace StageManager {
   export let selectedEdgeCount = 0;
 
   /** 获取节点连接的子节点数组 */
-  export function nodeChildrenArray(node: Node): Node[] {
-    const res: Node[] = [];
+  export function nodeChildrenArray(node: TextNode): TextNode[] {
+    const res: TextNode[] = [];
     for (const edge of edges) {
       if (edge.source === node) {
         res.push(edge.target);
@@ -58,7 +58,7 @@ export namespace StageManager {
     }
     return res;
   }
-  function isConnected(node: Node, target: Node): boolean {
+  function isConnected(node: TextNode, target: TextNode): boolean {
     for (const edge of edges) {
       if (edge.source === node && edge.target === target) {
         return true;
@@ -93,7 +93,7 @@ export namespace StageManager {
     }
   }
 
-  export function getNodeByUUID(uuid: string): Node | null {
+  export function getNodeByUUID(uuid: string): TextNode | null {
     for (const node of nodes) {
       if (node.uuid === uuid) {
         return node;
@@ -137,7 +137,7 @@ export namespace StageManager {
    * @param location
    * @returns
    */
-  export function findNodeByLocation(location: Vector): Node | null {
+  export function findNodeByLocation(location: Vector): TextNode | null {
     for (const node of nodes) {
       if (node.rectangle.isPointInside(location)) {
         return node;
@@ -260,12 +260,12 @@ export namespace StageManager {
    * @param node
    * @param angle
    */
-  export function rotateNode(node: Node, angle: number) {
+  export function rotateNode(node: TextNode, angle: number) {
     StageNodeRotate.rotateNodeDfs(node, node, angle, []); // 连续过程，不记录历史，只在结束时记录
     updateReferences();
   }
 
-  export function deleteNodes(deleteNodes: Node[]) {
+  export function deleteNodes(deleteNodes: TextNode[]) {
     StageDeleteManager.deleteNodes(deleteNodes);
     StageHistoryManager.recordStep();
     // 更新选中节点计数
@@ -291,7 +291,7 @@ export namespace StageManager {
     return res;
   }
 
-  export function connectNode(fromNode: Node, toNode: Node) {
+  export function connectNode(fromNode: TextNode, toNode: TextNode) {
     StageNodeConnector.connectNode(fromNode, toNode);
     StageHistoryManager.recordStep();
     return isConnected(fromNode, toNode);

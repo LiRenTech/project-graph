@@ -1,5 +1,5 @@
 import { Vector } from "../../dataStruct/Vector";
-import { Node } from "../../entity/Node";
+import { TextNode } from "../../entity/TextNode";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Camera } from "../../stage/Camera";
 import { Controller } from "../Controller";
@@ -13,7 +13,7 @@ import { Controller } from "../Controller";
  * 编辑节点
  * @param clickedNode
  */
-export function editNode(clickedNode: Node) {
+export function editNode(clickedNode: TextNode) {
   Controller.isCameraLocked = true;
 
   // 编辑节点
@@ -40,7 +40,7 @@ export function editNode(clickedNode: Node) {
   });
 }
 
-export function editNodeDetails(clickedNode: Node) {
+export function editNodeDetails(clickedNode: TextNode) {
   Controller.isCameraLocked = true;
 
   clickedNode.isEditingDetails = true;
