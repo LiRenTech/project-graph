@@ -74,14 +74,6 @@ export namespace StageManager {
    */
   export function updateReferences() {
     for (const node of nodes) {
-      // for (const otherNode of nodes) {
-      //   for (const child of otherNode.children) {
-      //     if (child.unknown && child.uuid === node.uuid) {
-      //       otherNode.children.splice(otherNode.children.indexOf(child), 1);
-      //       otherNode.children.push(child);
-      //     }
-      //   }
-      // }
       for (const edge of edges) {
         if (edge.source.unknown && edge.source.uuid === node.uuid) {
           edge.source = node;

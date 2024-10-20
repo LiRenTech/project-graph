@@ -8,10 +8,12 @@ import { Vector } from "../../dataStruct/Vector";
 import { Controller } from "../../controller/Controller";
 import { Circle } from "../../dataStruct/shape/Circle";
 import { StageManager } from "../../stage/stageManager/StageManager";
+import { ConnectableAssociation } from "../StageObject";
+import { CollisionBox } from "../collisionBox/collisionBox";
 
-export class Edge {
-  source: TextNode;
-  target: TextNode;
+export class Edge extends ConnectableAssociation {
+  public uuid: string = "???"; // TODO:
+
   /**
    * 线段上的文字
    */
@@ -39,13 +41,45 @@ export class Edge {
     }
   }
 
+  get source(): TextNode {
+    return this._source;
+  }
+  set source(value: TextNode) {
+    this._source = value;
+  }
+
+  get target(): TextNode {
+    return this._target;
+  }
+  set target(value: TextNode) {
+    this._target = value;
+  }
+
+  get collisionBox(): CollisionBox {
+    if (this.source.uuid === this.target.uuid) {
+      // 是一个自环，碰撞箱是圆形
+      return new CollisionBox([
+        new Circle(
+          this.source.rectangle.center,
+          this.source.rectangle.size.y / 2,
+        ),
+      ]);
+    } else {
+      return new CollisionBox([this.bodyLine]);
+    }
+  }
+
+  private _source: TextNode;
+  private _target: TextNode;
+
   constructor(
     { source, target, text }: Serialized.Edge,
     /** true表示解析状态，false表示解析完毕 */
     public unknown = false,
   ) {
-    this.source = new TextNode({ uuid: source }, true);
-    this.target = new TextNode({ uuid: target }, true);
+    super();
+    this._source = new TextNode({ uuid: source }, true);
+    this._target = new TextNode({ uuid: target }, true);
     this.text = text;
     this.adjustSizeByText();
   }
