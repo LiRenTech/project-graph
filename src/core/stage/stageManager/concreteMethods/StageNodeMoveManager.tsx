@@ -119,9 +119,12 @@ export namespace StageNodeMoveManager {
     const centerY = minY + totalHeight / 2;
 
     for (const node of nodes) {
-      const nodeCenterY = node.rectangle.location.y + node.rectangle.size.y / 2;
-      const newY = centerY - (nodeCenterY - node.rectangle.location.y);
-      node.moveTo(new Vector(node.rectangle.location.x, newY));
+      const nodeCenterY =
+        node.collisionBox.getRectangle().top +
+        node.collisionBox.getRectangle().size.y / 2;
+      const newY =
+        centerY - (nodeCenterY - node.collisionBox.getRectangle().top);
+      node.moveTo(new Vector(node.collisionBox.getRectangle().left, newY));
     }
   }
 
@@ -142,9 +145,12 @@ export namespace StageNodeMoveManager {
     const centerX = minX + totalWidth / 2;
 
     for (const node of nodes) {
-      const nodeCenterX = node.rectangle.location.x + node.rectangle.size.x / 2;
-      const newX = centerX - (nodeCenterX - node.rectangle.location.x);
-      node.moveTo(new Vector(newX, node.rectangle.location.y));
+      const nodeCenterX =
+        node.collisionBox.getRectangle().left +
+        node.collisionBox.getRectangle().size.x / 2;
+      const newX =
+        centerX - (nodeCenterX - node.collisionBox.getRectangle().left);
+      node.moveTo(new Vector(newX, node.collisionBox.getRectangle().top));
     }
   }
 
@@ -175,8 +181,8 @@ export namespace StageNodeMoveManager {
       (a, b) =>
         a.collisionBox.getRectangle().left - b.collisionBox.getRectangle().left,
     )) {
-      node.moveTo(new Vector(startX, node.rectangle.location.y));
-      startX += node.rectangle.size.x + spaceBetween;
+      node.moveTo(new Vector(startX, node.collisionBox.getRectangle().top));
+      startX += node.collisionBox.getRectangle().size.x + spaceBetween;
     }
   }
 
@@ -207,8 +213,8 @@ export namespace StageNodeMoveManager {
       (a, b) =>
         a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top,
     )) {
-      node.moveTo(new Vector(node.rectangle.location.x, startY));
-      startY += node.rectangle.size.y + spaceBetween;
+      node.moveTo(new Vector(node.collisionBox.getRectangle().left, startY));
+      startY += node.collisionBox.getRectangle().size.y + spaceBetween;
     }
   }
 }
