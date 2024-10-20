@@ -43,6 +43,12 @@ export class TextNode extends ConnectableEntity {
     return this.collisionBox.shapeList[0] as Rectangle;
   }
 
+  public get geometryCenter() {
+    return this.rectangle.location
+      .clone()
+      .add(this.rectangle.size.clone().multiply(0.5));
+  }
+
   public set isSelected(value: boolean) {
     const oldValue = this._isSelected;
     this._isSelected = value;

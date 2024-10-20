@@ -21,10 +21,10 @@ export namespace StageNodeRotate {
         const startMouseDragLocation = lastMoveLocation.clone();
         const endMouseDragLocation = startMouseDragLocation.add(diffLocation);
         const vectorStart = startMouseDragLocation.subtract(
-          edge.source.rectangle.center,
+          edge.source.geometryCenter,
         );
         const vectorEnd = endMouseDragLocation.subtract(
-          edge.source.rectangle.center,
+          edge.source.geometryCenter,
         );
         let degrees = vectorStart.angleToSigned(vectorEnd);
         // degrees一直是正数
@@ -49,39 +49,34 @@ export namespace StageNodeRotate {
    * @param visitedUUIDs 已经访问过的节点的uuid列表，用于避免死循环
    */
   export function rotateNodeDfs(
-    rotateCenterNode: TextNode,
+    rotateCenterNode: TextNode,  // 待改成ConnectedAbleEntity
     currentNode: TextNode,
     degrees: number,
     visitedUUIDs: string[],
   ): void {
-    const rotateCenterLocation = rotateCenterNode.rectangle.center;
+    const rotateCenterLocation = rotateCenterNode.geometryCenter;
     // 先旋转自己
-    const radius = currentNode.rectangle.center.distance(rotateCenterLocation);
-    
-    let centerToChildVector = currentNode.rectangle.center
-      .subtract(rotateCenterLocation)
-      .normalize();
-    centerToChildVector = centerToChildVector
-      .rotateDegrees(degrees)
-      .multiply(radius);
-    const newLocation = rotateCenterLocation.add(centerToChildVector);
-    currentNode.moveTo(
-      newLocation.subtract(currentNode.rectangle.size.divide(2)),
-    );
+
+    let centerToChildVector =
+      currentNode.geometryCenter.subtract(rotateCenterLocation);
+
+    let centerToChildVectorRotated = centerToChildVector.rotateDegrees(degrees);
+
+    currentNode.move(centerToChildVectorRotated.subtract(centerToChildVector));
     // 再旋转子节点
     for (const child of StageManager.nodeChildrenArray(currentNode)) {
       if (visitedUUIDs.includes(child.uuid)) {
         continue;
       }
-      const childNode = StageManager.getNodeByUUID(child.uuid)!
+      const childNode = StageManager.getNodeByUUID(child.uuid)!;
       Stage.effects.push(
         new LineEffect(
           new ProgressNumber(0, 5),
-          currentNode.rectangle.center,
-          childNode.rectangle.center,
+          currentNode.geometryCenter,
+          childNode.geometryCenter,
           new Color(255, 255, 255, 0),
           new Color(255, 255, 255, 0.5),
-          5
+          5,
         ),
       );
 
