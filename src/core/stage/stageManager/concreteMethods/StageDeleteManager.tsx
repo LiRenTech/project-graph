@@ -17,7 +17,7 @@ export namespace StageDeleteManager {
       if (StageManager.getTextNodes().includes(node)) {
         console.log("include node", node.uuid);
         // 从数组中去除
-        StageManager.nodes.splice(StageManager.nodes.indexOf(node), 1);
+        StageManager.deleteOneTextNode(node);
         // 增加特效
         Stage.effects.push(
           new ExplodeAshEffect(

@@ -15,6 +15,7 @@ import { StageHistoryManager } from "./concreteMethods/StageHistoryManager";
 import { Stage } from "../Stage";
 import { StageDumper } from "../StageDumper";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
+import { StringDict } from "../../dataStruct/StringDict";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -26,18 +27,20 @@ import { Rectangle } from "../../dataStruct/shape/Rectangle";
  * 管理节点、边的关系等，内部包含了舞台上的所有实体
  */
 export namespace StageManager {
-  export const nodes: TextNode[] = [];
+  export const nodes: StringDict<TextNode> = StringDict.create();
   export const edges: Edge[] = [];
 
   export function getTextNodes(): TextNode[] {
-    // 重构准备：TODO: 准备将nodes数组对外封闭，只开放特定类型的访问函数
-    return nodes.filter((node) => node instanceof TextNode);
+    return nodes.valuesToArray().filter((node) => node instanceof TextNode);
   }
   export function getEntities(): TextNode[] {
-    return nodes;
+    return nodes.valuesToArray();
   }
   export function isNoEntity(): boolean {
     return nodes.length === 0;
+  }
+  export function deleteOneTextNode(node: TextNode) {
+    nodes.deleteValue(node);
   }
 
   export function getEdges(): Edge[] {
@@ -50,12 +53,12 @@ export namespace StageManager {
    * 以防开发过程中造成多开
    */
   export function destroy() {
-    StageManager.nodes.splice(0, StageManager.nodes.length);
+    StageManager.nodes.clear();
     StageManager.edges.splice(0, StageManager.edges.length);
   }
 
   export function addTextNode(node: TextNode) {
-    nodes.push(node);
+    nodes.addValue(node, node.uuid);
   }
 
   export function addEdge(edge: Edge) {
@@ -121,7 +124,7 @@ export namespace StageManager {
       return Vector.getZero();
     }
     const allNodesRectangle = Rectangle.getBoundingRectangle(
-      nodes.map((node) => node.collisionBox.getRectangle()),
+      nodes.valuesToArray().map((node) => node.collisionBox.getRectangle()),
     );
     return allNodesRectangle.center
   }
@@ -283,7 +286,7 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
     // 更新选中节点计数
     selectedNodeCount = 0;
-    for (const node of nodes) {
+    for (const node of nodes.valuesToArray()) {
       if (node.isSelected) {
         selectedNodeCount++;
       }

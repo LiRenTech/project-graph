@@ -3,6 +3,10 @@
  * value: 可变类型
  */
 export class StringDict<T> {
+  static create<T>(): StringDict<T> {
+    return new StringDict<T>();
+  }
+
   private data: { [key: string]: T } = {};
 
   setById(key: string, value: T): void {
@@ -11,6 +15,15 @@ export class StringDict<T> {
 
   getById(key: string): T | undefined {
     return this.data[key];
+  }
+
+  addValue(value: T, key: string): string {
+    this.data[key] = value;
+    return key;
+  }
+
+  get length(): number {
+    return Object.keys(this.data).length;
   }
 
   hasId(key: string): boolean {
