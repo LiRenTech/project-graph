@@ -21,12 +21,15 @@ export class CubicBezierCurve extends Shape {
   }
 
   isPointIn(point: Vector): boolean {
+    console.log(point);
     return false;
   }
   isCollideWithRectangle(rectangle: Rectangle): boolean {
+    console.log(rectangle);
     return false;
   }
   isCollideWithLine(line: Line): boolean {
+    console.log(line);
     return false;
   }
   getRectangle(): Rectangle {
@@ -84,12 +87,15 @@ export class SymmetryCurve extends Shape {
   }
 
   isPointIn(point: Vector): boolean {
+    console.log(point);
     return false;
   }
   isCollideWithRectangle(rectangle: Rectangle): boolean {
+    console.log(rectangle);
     return false;
   }
   isCollideWithLine(line: Line): boolean {
+    console.log(line);
     return false;
   }
 
