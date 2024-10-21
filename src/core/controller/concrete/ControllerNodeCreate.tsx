@@ -20,7 +20,7 @@ ControllerNodeCreate.mouseDoubleClick = (event: MouseEvent) => {
   const pressLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  let clickedNode = StageManager.findNodeByLocation(pressLocation);
+  let clickedNode = StageManager.findTextNodeByLocation(pressLocation);
   let clickedEdge = StageManager.findEdgeByLocation(pressLocation);
 
   if (clickedNode !== null || clickedEdge!== null) {
@@ -30,7 +30,7 @@ ControllerNodeCreate.mouseDoubleClick = (event: MouseEvent) => {
   StageManager.addTextNodeByClick(
     Renderer.transformView2World(new Vector(event.clientX, event.clientY)),
   ).then((uuid) => {
-    const createNode = StageManager.getNodeByUUID(uuid);
+    const createNode = StageManager.getTextNodeByUUID(uuid);
     if (createNode === null) {
       // 说明 创建了立刻删掉了
       return;

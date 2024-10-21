@@ -21,7 +21,7 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
   );
   const isHaveNodeSelected = StageManager.nodes.some((node) => node.isSelected);
   ControllerNodeMove.lastMoveLocation = pressWorldLocation.clone();
-  const clickedNode = StageManager.findNodeByLocation(pressWorldLocation);
+  const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
 
   if (clickedNode) {
     Controller.isMovingNode = true;

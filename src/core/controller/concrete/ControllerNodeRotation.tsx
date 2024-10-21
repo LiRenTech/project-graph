@@ -17,7 +17,7 @@ ControllerNodeRotation.mousewheel = (event: WheelEvent) => {
     const location = Renderer.transformView2World(
       new Vector(event.clientX, event.clientY),
     );
-    const hoverNode = StageManager.findNodeByLocation(location);
+    const hoverNode = StageManager.findTextNodeByLocation(location);
     if (hoverNode !== null) {
       // 旋转节点
       if (event.deltaY > 0) {

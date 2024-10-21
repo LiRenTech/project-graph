@@ -14,6 +14,7 @@ import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageHistoryManager } from "./concreteMethods/StageHistoryManager";
 import { Stage } from "../Stage";
 import { StageDumper } from "../StageDumper";
+import { Rectangle } from "../../dataStruct/shape/Rectangle";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -30,7 +31,7 @@ export namespace StageManager {
 
   export function getTextNodes(): TextNode[] {
     // 重构准备：TODO: 准备将nodes数组对外封闭，只开放特定类型的访问函数
-    return nodes.filter(node => node instanceof TextNode);
+    return nodes.filter((node) => node instanceof TextNode);
   }
 
   /**
@@ -49,7 +50,7 @@ export namespace StageManager {
   export function addEdge(edge: Edge) {
     edges.push(edge);
   }
-  
+
   // 用于UI层监测
   export let selectedNodeCount = 0;
   export let selectedEdgeCount = 0;
@@ -92,7 +93,7 @@ export namespace StageManager {
     }
   }
 
-  export function getNodeByUUID(uuid: string): TextNode | null {
+  export function getTextNodeByUUID(uuid: string): TextNode | null {
     for (const node of nodes) {
       if (node.uuid === uuid) {
         return node;
@@ -105,11 +106,13 @@ export namespace StageManager {
    * 计算所有节点的中心点
    */
   export function getCenter(): Vector {
-    let center = Vector.getZero();
-    for (const node of nodes) {
-      center = center.add(node.rectangle.location);
+    if (nodes.length === 0) {
+      return Vector.getZero();
     }
-    return center.divide(nodes.length);
+    const allNodesRectangle = Rectangle.getBoundingRectangle(
+      nodes.map((node) => node.collisionBox.getRectangle()),
+    );
+    return allNodesRectangle.center
   }
 
   /**
@@ -121,11 +124,11 @@ export namespace StageManager {
     }
     let size = Vector.getZero();
     for (const node of nodes) {
-      if (node.rectangle.size.x > size.x) {
-        size.x = node.rectangle.size.x;
+      if (node.collisionBox.getRectangle().size.x > size.x) {
+        size.x = node.collisionBox.getRectangle().size.x;
       }
-      if (node.rectangle.size.y > size.y) {
-        size.y = node.rectangle.size.y;
+      if (node.collisionBox.getRectangle().size.y > size.y) {
+        size.y = node.collisionBox.getRectangle().size.y;
       }
     }
     return size;
@@ -136,9 +139,9 @@ export namespace StageManager {
    * @param location
    * @returns
    */
-  export function findNodeByLocation(location: Vector): TextNode | null {
+  export function findTextNodeByLocation(location: Vector): TextNode | null {
     for (const node of nodes) {
-      if (node.rectangle.isPointIn(location)) {
+      if (node instanceof TextNode && node.rectangle.isPointIn(location)) {
         return node;
       }
     }
@@ -152,7 +155,7 @@ export namespace StageManager {
    */
   export function findEdgeByLocation(location: Vector): Edge | null {
     for (const edge of edges) {
-      if (edge.isBodyLineIntersectWithLocation(location)) {
+      if (edge instanceof Edge && edge.isBodyLineIntersectWithLocation(location)) {
         return edge;
       }
     }
@@ -274,7 +277,6 @@ export namespace StageManager {
         selectedNodeCount++;
       }
     }
-    
   }
 
   export function deleteEdge(deleteEdge: Edge): boolean {

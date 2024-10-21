@@ -19,7 +19,7 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
   const pressLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  let clickedNode = StageManager.findNodeByLocation(pressLocation);
+  let clickedNode = StageManager.findTextNodeByLocation(pressLocation);
   if (clickedNode === null) {
     console.log("没有编辑节点");
     return;

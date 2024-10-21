@@ -28,7 +28,7 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const clickedNode = StageManager.findNodeByLocation(pressWorldLocation);
+  const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
 
   if (clickedNode) {
     // 右键点击了某个节点

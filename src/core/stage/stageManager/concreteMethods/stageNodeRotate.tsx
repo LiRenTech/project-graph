@@ -32,8 +32,8 @@ export namespace StageNodeRotate {
           degrees = 0;
         }
         rotateNodeDfs(
-          StageManager.getNodeByUUID(edge.source.uuid)!,
-          StageManager.getNodeByUUID(edge.target.uuid)!,
+          StageManager.getTextNodeByUUID(edge.source.uuid)!,
+          StageManager.getTextNodeByUUID(edge.target.uuid)!,
           degrees,
           [edge.source.uuid],
         );
@@ -68,7 +68,7 @@ export namespace StageNodeRotate {
       if (visitedUUIDs.includes(child.uuid)) {
         continue;
       }
-      const childNode = StageManager.getNodeByUUID(child.uuid)!;
+      const childNode = StageManager.getTextNodeByUUID(child.uuid)!;
       Stage.effects.push(
         new LineEffect(
           new ProgressNumber(0, 5),

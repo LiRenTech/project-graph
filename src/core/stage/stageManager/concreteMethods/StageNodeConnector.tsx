@@ -50,8 +50,8 @@ export namespace StageNodeConnector {
     });
     // 再重新连接
     edges.forEach((edge) => {
-      const sourceNode = StageManager.getNodeByUUID(edge.source.uuid);
-      const targetNode = StageManager.getNodeByUUID(edge.target.uuid);
+      const sourceNode = StageManager.getTextNodeByUUID(edge.source.uuid);
+      const targetNode = StageManager.getTextNodeByUUID(edge.target.uuid);
       if (sourceNode && targetNode) {
         connectNode(targetNode, sourceNode, edge.text);
       }

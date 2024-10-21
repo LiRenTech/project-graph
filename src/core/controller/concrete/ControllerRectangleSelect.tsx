@@ -19,7 +19,7 @@ ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const clickedNode = StageManager.findNodeByLocation(pressWorldLocation);
+  const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
   const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
   if (clickedNode !== null || clickedEdge !== null) {
     // 在空白地方按下，才能触发框选

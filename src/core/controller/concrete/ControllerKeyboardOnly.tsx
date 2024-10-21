@@ -63,7 +63,7 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
           const location = Stage.keyOnlyVirtualNewLocation;
           const newNodeUUID = await StageManager.addTextNodeByClick(location);
 
-          const newNode = StageManager.getNodeByUUID(newNodeUUID);
+          const newNode = StageManager.getTextNodeByUUID(newNodeUUID);
           if (!newNode) return;
 
           StageManager.connectNode(selectedNode, newNode);
@@ -213,7 +213,7 @@ function getRelatedNodes(node: TextNode): TextNode[] {
   // 获取所有孩子节点
   for (const edge of StageManager.edges) {
     if (edge.source.uuid === node.uuid) {
-      const childNode = StageManager.getNodeByUUID(edge.target.uuid);
+      const childNode = StageManager.getTextNodeByUUID(edge.target.uuid);
       if (childNode) relatedNodes.push(childNode);
     }
   }
@@ -221,7 +221,7 @@ function getRelatedNodes(node: TextNode): TextNode[] {
   // 获取所有连向它的
   for (const edge of StageManager.edges) {
     if (edge.target.uuid === node.uuid) {
-      const fatherNode = StageManager.getNodeByUUID(edge.source.uuid);
+      const fatherNode = StageManager.getTextNodeByUUID(edge.source.uuid);
       if (fatherNode) relatedNodes.push(fatherNode);
     }
   }
