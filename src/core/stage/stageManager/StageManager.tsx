@@ -34,6 +34,11 @@ export namespace StageManager {
     return nodes.filter((node) => node instanceof TextNode);
   }
 
+  export function getEdges(): Edge[] {
+    // 重构准备：TODO: 准备将edges数组对外封闭，只开放特定类型的访问函数
+    return edges.filter((edge) => edge instanceof Edge);
+  }
+
   /**
    * 销毁函数
    * 以防开发过程中造成多开

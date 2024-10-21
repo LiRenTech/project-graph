@@ -12,8 +12,9 @@ import { StageManager } from "../StageManager";
 export namespace StageDeleteManager {
   export function deleteNodes(deleteNodes: TextNode[]) {
     for (const node of deleteNodes) {
+
       // 先判断这个node是否在nodes里
-      if (StageManager.nodes.includes(node)) {
+      if (StageManager.getTextNodes().includes(node)) {
         console.log("include node", node.uuid);
         // 从数组中去除
         StageManager.nodes.splice(StageManager.nodes.indexOf(node), 1);
@@ -31,7 +32,7 @@ export namespace StageDeleteManager {
       }
       // 删除所有相关的边
       const prepareDeleteEdges: Edge[] = [];
-      for (const edge of StageManager.edges) {
+      for (const edge of StageManager.getEdges()) {
         if (edge.source === node || edge.target === node) {
           prepareDeleteEdges.push(edge);
         }
