@@ -219,7 +219,7 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
 function getRelatedNodes(node: TextNode): TextNode[] {
   const relatedNodes: TextNode[] = [];
   // 获取所有孩子节点
-  for (const edge of StageManager.edges) {
+  for (const edge of StageManager.getEdges()) {
     if (edge.source.uuid === node.uuid) {
       const childNode = StageManager.getTextNodeByUUID(edge.target.uuid);
       if (childNode) relatedNodes.push(childNode);
@@ -227,7 +227,7 @@ function getRelatedNodes(node: TextNode): TextNode[] {
   }
 
   // 获取所有连向它的
-  for (const edge of StageManager.edges) {
+  for (const edge of StageManager.getEdges()) {
     if (edge.target.uuid === node.uuid) {
       const fatherNode = StageManager.getTextNodeByUUID(edge.source.uuid);
       if (fatherNode) relatedNodes.push(fatherNode);

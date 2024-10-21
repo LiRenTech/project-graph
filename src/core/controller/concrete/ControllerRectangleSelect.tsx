@@ -26,7 +26,7 @@ ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
     return;
   }
   const isHaveNodeSelected = StageManager.getTextNodes().some((node) => node.isSelected);
-  const isHaveEdgeSelected = StageManager.edges.some((edge) => edge.isSelected);
+  const isHaveEdgeSelected = StageManager.getEdges().some((edge) => edge.isSelected);
   console.log(isHaveNodeSelected, isHaveEdgeSelected);
   // 现在的情况：在空白的地方按下左键
 
@@ -44,7 +44,7 @@ ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
         node.isSelected = false;
       });
       // 取消选择所有边
-      StageManager.edges.forEach((edge) => {
+      StageManager.getEdges().forEach((edge) => {
         edge.isSelected = false;
       });
       console.log("取消选择所有节点和边");
@@ -95,7 +95,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
     StageManager.getTextNodes().forEach((node) => {
       node.isSelected = false;
     });
-    StageManager.edges.forEach((edge) => {
+    StageManager.getEdges().forEach((edge) => {
       edge.isSelected = false;
     });
   }
@@ -111,7 +111,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
         }
       }
     }
-    for (const edge of StageManager.edges) {
+    for (const edge of StageManager.getEdges()) {
       if (edge.isBodyLineIntersectWithRectangle(Stage.selectingRectangle)) {
         if (
           Controller.lastSelectedEdge.has(
@@ -134,7 +134,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
     }
     if (!isHaveNode) {
       // 如果已经有节点被选择了，则不能再选择边了
-      for (const edge of StageManager.edges) {
+      for (const edge of StageManager.getEdges()) {
         if (edge.isBodyLineIntersectWithRectangle(Stage.selectingRectangle)) {
           edge.isSelected = true;
         }
@@ -160,7 +160,7 @@ ControllerRectangleSelect.mouseup = (event: MouseEvent) => {
     }
   }
   Controller.lastSelectedEdge = new Set();
-  for (const edge of StageManager.edges) {
+  for (const edge of StageManager.getEdges()) {
     if (edge.isSelected) {
       Controller.lastSelectedEdge.add(
         edge.target.uuid + "&" + edge.source.uuid,

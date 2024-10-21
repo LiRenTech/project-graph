@@ -33,6 +33,7 @@ export namespace StageManager {
   export function getTextNodes(): TextNode[] {
     return nodes.valuesToArray().filter((node) => node instanceof TextNode);
   }
+
   export function getEntities(): TextNode[] {
     return nodes.valuesToArray();
   }

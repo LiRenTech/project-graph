@@ -259,7 +259,7 @@ export namespace Renderer {
 
   export function renderEdges(viewRectangle: Rectangle) {
     renderedEdges = 0;
-    for (const edge of StageManager.edges) {
+    for (const edge of StageManager.getEdges()) {
       if (!edge.isBodyLineIntersectWithRectangle(viewRectangle)) {
         continue;
       }
@@ -408,7 +408,7 @@ export namespace Renderer {
       // `canvas rect: ${canvasRect.toString()}`,
       `window: ${w}x${h}`,
       `node count: ${renderedNodes} , ${StageManager.getTextNodes().length}`,
-      `edge count: ${renderedEdges} , ${StageManager.edges.length}`,
+      `edge count: ${renderedEdges} , ${StageManager.getEdges().length}`,
       `selected nodeCount: ${StageManager.selectedNodeCount}`,
       `selected edgeCount: ${StageManager.selectedEdgeCount}`,
       `pressingKeys: ${Controller.pressingKeysString()}`,

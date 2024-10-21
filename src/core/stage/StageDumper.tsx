@@ -41,7 +41,7 @@ export namespace StageDumper {
     return {
       version: latestVersion,
       nodes: StageManager.getTextNodes().map((node) => dumpNode(node)),
-      edges: StageManager.edges.map((edge) => dumpEdge(edge)),
+      edges: StageManager.getEdges().map((edge) => dumpEdge(edge)),
     };
   }
 
@@ -54,7 +54,7 @@ export namespace StageDumper {
     const selectedNodes = nodes.map((node) => dumpNode(node));
     const selectedEdges: Serialized.Edge[] = [];
     
-    for (const edge of StageManager.edges) {
+    for (const edge of StageManager.getEdges()) {
       if (nodes.includes(edge.source) && nodes.includes(edge.target)) {
         selectedEdges.push(dumpEdge(edge));
       }

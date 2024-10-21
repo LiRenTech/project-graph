@@ -16,7 +16,7 @@ export namespace StageNodeRotate {
    * @param diffLocation
    */
   export function moveEdges(lastMoveLocation: Vector, diffLocation: Vector) {
-    for (const edge of StageManager.edges) {
+    for (const edge of StageManager.getEdges()) {
       if (edge.isSelected) {
         const startMouseDragLocation = lastMoveLocation.clone();
         const endMouseDragLocation = startMouseDragLocation.add(diffLocation);

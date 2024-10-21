@@ -37,7 +37,7 @@ ControllerNodeRotation.mousedown = (event: MouseEvent) => {
     new Vector(event.clientX, event.clientY),
   );
   const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
-  const isHaveEdgeSelected = StageManager.edges.some((edge) => edge.isSelected);
+  const isHaveEdgeSelected = StageManager.getEdges().some((edge) => edge.isSelected);
   if (clickedEdge === null) {
     return;
   }
@@ -48,12 +48,12 @@ ControllerNodeRotation.mousedown = (event: MouseEvent) => {
 
     if (clickedEdge.isSelected) {
       // E1
-      StageManager.edges.forEach((edge) => {
+      StageManager.getEdges().forEach((edge) => {
         edge.isSelected = false;
       });
     } else {
       // E2
-      StageManager.edges.forEach((edge) => {
+      StageManager.getEdges().forEach((edge) => {
         edge.isSelected = false;
       });
     }
@@ -91,7 +91,7 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
     // 什么都没有按下的情况
     // 看看鼠标当前的位置是否和线接近
     Stage.hoverEdges = [];
-    for (const edge of StageManager.edges) {
+    for (const edge of StageManager.getEdges()) {
       if (edge.isBodyLineIntersectWithLocation(worldLocation)) {
         Stage.hoverEdges.push(edge);
       }
