@@ -27,7 +27,7 @@ import { StringDict } from "../../dataStruct/StringDict";
  * 管理节点、边的关系等，内部包含了舞台上的所有实体
  */
 export namespace StageManager {
-  export const nodes: StringDict<TextNode> = StringDict.create();
+  const nodes: StringDict<TextNode> = StringDict.create();
   export const edges: Edge[] = [];
 
   export function getTextNodes(): TextNode[] {
@@ -53,7 +53,7 @@ export namespace StageManager {
    * 以防开发过程中造成多开
    */
   export function destroy() {
-    StageManager.nodes.clear();
+    nodes.clear();
     StageManager.edges.splice(0, StageManager.edges.length);
   }
 
