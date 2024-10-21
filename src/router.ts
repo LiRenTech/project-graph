@@ -8,10 +8,10 @@ export type Path =
   | `/settings`
   | `/settings/about`
   | `/settings/ai`
-  | `/settings/auto-namer`
+  | `/settings/automation`
   | `/settings/github`
   | `/settings/performance`
-  | `/settings/physics`
+  | `/settings/physical`
   | `/settings/visual`
   | `/test`
   | `/welcome`;

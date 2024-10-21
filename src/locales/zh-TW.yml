@@ -1,0 +1,47 @@
+welcome:
+  language: 語言
+  next: 下一步
+  website: 網站
+  github: GitHub
+  bilibili: 哔哩哔哩
+  qq: QQ 群組
+# TODO: 翻译settingsAbout
+settingsAbout:
+  title: Project Graph 计划投射
+  intro:
+    - 这是一个基于tauri框架的快速绘制节点图的工具，可以用于项目拓扑图绘制、快速头脑风暴草稿
+    - Xmind 只能用来绘制树形结构图，FigJam 和 draw.io 可以用来绘制但网页打开有点慢了
+    - 所以做了这个小软件
+  contact:
+    - 联系我们
+    - 我们致力于为“图论”设计一个最快速方便的绘制方法论，同时也在可视化思考、拓扑型 todo list 等方向进行探索创新。
+    - 如果您想快速获得反馈和提供建议，或者有任何想法、疑问，欢迎加入我们的 QQ 群：1006956704
+  team:
+    - 团队简介
+    - 理刃科技是一个由Littlefean和Rutubet在2017年5月1日创立的小型团队，后续ZTY加入团队。
+    - 以其年轻化的团队氛围、对创新创意的重视、以及理性思维与文化包容的特点，在软件开发领域独树一帜。
+    - 不仅专注于开发工具软件和游戏，还涉足Minecraft游戏插件开发、游戏服务器运营以及网站建设等多元化业务。
+    - 理刃科技的代表作品包括CannonWar这个内容丰富的塔防游戏、BitMountain算法竞赛网站、Watch小桌面软件，以及MinecraftPvP职业战争服务器。
+    - 团队以浅蓝色和代码绿为代表颜色，象征着逻辑合理与整活幽默并存的团队文化。
+settingsTabs:
+  about: 关于
+  visual: 显示
+  physical: 物理
+  performance: 性能
+  automation: 自动化
+  ai: AI
+  github: GitHub
+settingsVisual:
+  language: 語言
+  lineStyle: 線條樣式
+  lineStyles:
+    straight: 直線
+    bezier: 貝茲曲線
+    vertical: 垂直折線
+  showGrid: 顯示網格
+  windowBackgroundAlpha: 視窗背景不透明度
+  showDebug: 顯示除錯資訊
+  scaleExponent: 視角縮放速度
+  moveAmplitude: 視角移動加速度
+  moveFriction: 視角移動摩擦力系數
+  alwaysShowDetails: 始終顯示節點詳細資訊

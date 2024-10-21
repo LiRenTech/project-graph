@@ -13,12 +13,14 @@ import { invoke } from "@tauri-apps/api/core";
 import { Stage } from "./core/stage/Stage";
 import { TextRiseEffect } from "./core/effect/concrete/TextRiseEffect";
 // import { platform } from "@tauri-apps/plugin-os";
+import i18next from "i18next";
+import { initReactI18next } from "react-i18next";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
 // 0.2ms
 
-// 2024/10/5 发现这里Linux 系统下，await不能直接写在最外层，会导致整个页面无法渲染，原因未知
+// 2024/10/5 发现这里Linux 系统下，await不能直接写在最外层，会导致整个页面无法渲染，原因：webkit目前不支持顶层await
 
 (async () => {
   // 这段代码用时
@@ -56,6 +58,23 @@ const Routes = () => <RouterProvider router={router} />;
         });
     }
   });
+
+  i18next.use(initReactI18next).init({
+    lng: "zh-CN",
+    debug: import.meta.env.DEV,
+    defaultNS: "",
+    resources: {
+      en: await import("./locales/en.yml").then((m) => m.default),
+      "zh-CN": await import("./locales/zh-CN.yml").then((m) => m.default),
+      "zh-TW": await import("./locales/zh-TW.yml").then((m) => m.default),
+    },
+  });
+  // 热重载时更新语言包
+  // import.meta.hot?.on("vite:afterUpdate", (ev) => {
+  //   if (ev.updates.find((u) => u.path.endsWith(".yml"))) {
+  //     i18next.reloadResources();
+  //   }
+  // });
 
   createRoot(document.getElementById("root")!).render(
     <RecoilRoot>

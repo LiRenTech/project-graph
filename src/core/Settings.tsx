@@ -11,7 +11,7 @@ export namespace Settings {
   export type Settings = {
     language: "zh-CN" | "en";
     // 视觉相关
-    lineStyle: "stright" | "bezier" | "vertical";
+    lineStyle: "straight" | "bezier" | "vertical";
     theme: "";
     showGrid: boolean;
     windowBackgroundAlpha: number;
@@ -34,7 +34,7 @@ export namespace Settings {
   const defaultSettings: Settings = {
     language: "en",
     // 视觉相关
-    lineStyle: "stright",
+    lineStyle: "straight",
     theme: "",
     showGrid: true,
     windowBackgroundAlpha: 0.8,

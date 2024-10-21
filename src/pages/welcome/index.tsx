@@ -8,30 +8,29 @@ import QQ from "../../assets/qq.svg?react";
 import TauriIcon from "../../assets/tauri.svg?react";
 import ReactIcon from "../../assets/react.svg?react";
 import { Camera } from "../../core/stage/Camera";
+import { useTranslation } from "react-i18next";
+import { languages } from "../settings/_languages";
 
 export default function Welcome() {
   const navigate = useNavigate();
+  const { t } = useTranslation("welcome");
 
   return (
     <>
       {/* 设置语言 */}
       <SettingField
         icon={<Languages />}
-        title="Language"
+        title={t("language")}
         showKey={false}
         settingKey="language"
         type="select"
-        options={[
-          { value: "en", label: "English" },
-          { value: "zh-CN", label: "简体中文" },
-          { value: "zh-TW", label: "繁體中文 (台灣)" },
-        ]}
+        options={languages}
       />
       {/* next按钮 */}
       <ButtonField
         icon={<ArrowRight />}
-        title="Next"
-        label="Next"
+        title={t("next")}
+        label={t("next")}
         onClick={() => {
           navigate("/welcome");
           Camera.reset();
@@ -40,25 +39,25 @@ export default function Welcome() {
       {/* 其他链接 */}
       <ButtonField
         icon={<Globe />}
-        title="Website"
+        title={t("website")}
         label="liren.zty012.de/project-graph"
         onClick={() => open("https://liren.zty012.de/project-graph")}
       />
       <ButtonField
         icon={<Github />}
-        title="Github"
+        title={t("github")}
         label="LiRenTech/project-graph"
         onClick={() => open("https://github.com/LiRenTech/project-graph")}
       />
       <ButtonField
         icon={<Bilibili />}
-        title="Bilibili"
+        title={t("bilibili")}
         label="@__阿岳__"
         onClick={() => open("https://space.bilibili.com/480804525")}
       />
       <ButtonField
         icon={<QQ />}
-        title="QQ Group"
+        title={t("qq")}
         label="1006956704"
         onClick={() =>
           open(

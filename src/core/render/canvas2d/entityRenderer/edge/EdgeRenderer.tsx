@@ -28,7 +28,7 @@ export namespace EdgeRenderer {
   export function checkRendererBySettings(
     lineStyle: Settings.Settings["lineStyle"],
   ) {
-    if (lineStyle === "stright") {
+    if (lineStyle === "straight") {
       currentRenderer = new StraightEdgeRenderer();
     } else if (lineStyle === "bezier") {
       currentRenderer = new SymmetryCurveEdgeRenderer();
@@ -40,7 +40,7 @@ export namespace EdgeRenderer {
    */
   export async function updateRenderer(style: Settings.Settings["lineStyle"]) {
     if (
-      style === "stright" &&
+      style === "straight" &&
       !(currentRenderer instanceof StraightEdgeRenderer)
     ) {
       currentRenderer = new StraightEdgeRenderer();
@@ -71,10 +71,16 @@ export namespace EdgeRenderer {
     }
   }
 
-  export function renderVirtualEdge(startNode: TextNode, mouseLocation: Vector) {
+  export function renderVirtualEdge(
+    startNode: TextNode,
+    mouseLocation: Vector,
+  ) {
     currentRenderer.renderVirtualEdge(startNode, mouseLocation);
   }
-  export function renderVirtualConfirmedEdge(startNode: TextNode, endNode: TextNode) {
+  export function renderVirtualConfirmedEdge(
+    startNode: TextNode,
+    endNode: TextNode,
+  ) {
     currentRenderer.renderVirtualConfirmedEdge(startNode, endNode);
   }
   export function renderHoverShadow(edge: Edge) {

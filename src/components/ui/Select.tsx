@@ -3,19 +3,18 @@ import { cn } from "../../utils/cn";
 import Box from "./Box";
 
 export default function Select({
-  children,
   className = "",
   value = "",
   onChange = () => {},
   options = [],
   ...props
-}: React.PropsWithChildren<{
+}: {
   className?: string;
   value?: string;
   onChange?: (value: string) => void;
   options?: { label: string; value: string }[];
   [key: string]: any;
-}>) {
+}) {
   return (
     <Box
       as="select"
@@ -29,13 +28,11 @@ export default function Select({
       }
       {...props}
     >
-      <optgroup label={String(children || "请选择")}>
-        {options.map((option, index) => (
-          <option key={index} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </optgroup>
+      {options.map((option, index) => (
+        <option key={index} value={option.value}>
+          {option.label}
+        </option>
+      ))}
     </Box>
   );
 }

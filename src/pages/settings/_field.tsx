@@ -5,6 +5,7 @@ import Switch from "../../components/ui/Switch";
 import Slider from "../../components/ui/Slider";
 import Select from "../../components/ui/Select";
 import Button from "../../components/ui/Button";
+import { getI18n } from "react-i18next";
 
 export function SettingField({
   settingKey,
@@ -41,6 +42,9 @@ export function SettingField({
     if (value !== undefined) {
       Settings.set(settingKey, value);
       // console.log("Setting saved", settingKey, value);
+      if (settingKey === "language") {
+        getI18n().changeLanguage(value);
+      }
     }
   }, [value]);
 

@@ -5,10 +5,12 @@ import Input from "../components/ui/Input";
 import Switch from "../components/ui/Switch";
 import React from "react";
 import { usePopupDialog } from "../utils/popupDialog";
+import { useTranslation } from "react-i18next";
 
 export default function TestPage() {
   const [switchValue, setSwitchValue] = React.useState(false);
   const popupDialog = usePopupDialog();
+  const { t } = useTranslation();
 
   const popup = () => {
     popupDialog.show(<>test</>);
@@ -22,6 +24,7 @@ export default function TestPage() {
       </IconButton>
       <Input placeholder="placeholder" />
       <Switch value={switchValue} onChange={(e) => setSwitchValue(e)} />
+      {t("test")}
     </div>
   );
 }
