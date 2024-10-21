@@ -19,9 +19,9 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const isHaveNodeSelected = StageManager.nodes.some((node) => node.isSelected);
+  const isHaveNodeSelected = StageManager.getTextNodes().some((node) => node.isSelected);
   ControllerNodeMove.lastMoveLocation = pressWorldLocation.clone();
-  const clickedNode = StageManager.findNodeByLocation(pressWorldLocation);
+  const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
 
   if (clickedNode) {
     Controller.isMovingNode = true;
@@ -31,7 +31,7 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
         // C1
       } else {
         // C2
-        StageManager.nodes.forEach((node) => {
+        StageManager.getTextNodes().forEach((node) => {
           node.isSelected = false;
         });
       }
@@ -57,7 +57,7 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
     ControllerNodeMove.lastMoveLocation,
   );
 
-  if (StageManager.nodes.some((node) => node.isSelected)) {
+  if (StageManager.getTextNodes().some((node) => node.isSelected)) {
     // 移动节点
     Controller.isMovingNode = true;
     // 暂不监听alt键。因为windows下切换窗口时，alt键释放监听不到

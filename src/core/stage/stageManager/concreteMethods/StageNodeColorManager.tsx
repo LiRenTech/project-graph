@@ -7,7 +7,7 @@ import { StageManager } from "../StageManager";
  */
 export namespace StageNodeColorManager {
   export function setNodeColor(color: Color) {
-    for (const node of StageManager.nodes) {
+    for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
         node.color = color;
       }
@@ -15,7 +15,7 @@ export namespace StageNodeColorManager {
   }
 
   export function clearNodeColor() {
-    for (const node of StageManager.nodes) {
+    for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
         node.color = Color.Transparent;
       }
@@ -23,7 +23,7 @@ export namespace StageNodeColorManager {
   }
 
   export function darkenNodeColor() {
-    for (const node of StageManager.nodes) {
+    for (const node of StageManager.getTextNodes()) {
       if (node.isSelected && node.color) {
         const darkenedColor = node.color.clone();
         darkenedColor.r = Math.max(darkenedColor.r - 20, 0);
@@ -35,7 +35,7 @@ export namespace StageNodeColorManager {
   }
 
   export function lightenNodeColor() {
-    for (const node of StageManager.nodes) {
+    for (const node of StageManager.getTextNodes()) {
       if (node.isSelected && node.color) {
         const lightenedColor = node.color.clone();
         lightenedColor.r = Math.min(lightenedColor.r + 20, 255);

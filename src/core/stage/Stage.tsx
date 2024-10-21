@@ -3,9 +3,9 @@ import { Effect } from "../effect/effect";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
-import { Line } from "../dataStruct/shape/Line";
 import { Serialized } from "../../types/node";
 import { StageDumper } from "./StageDumper";
+import { Line } from "../dataStruct/shape/Line";
 
 /**
  * 舞台对象
@@ -43,7 +43,7 @@ export namespace Stage {
    * 是否正在切断连线或切割
    */
   export let isCutting = false;
-  export let cuttingLine: Line = new Line(Vector.getZero(), Vector.getZero());
+  export let cuttingLine: Line | null = null;
   /**
    * 正在准备要删除的节点
    */

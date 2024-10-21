@@ -28,20 +28,20 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const clickedNode = StageManager.findNodeByLocation(pressWorldLocation);
+  const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
 
   if (clickedNode) {
     // 右键点击了某个节点
     // Stage.isCutting = false;
     Stage.connectFromNodes = [];
-    for (const node of StageManager.nodes) {
+    for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
         Stage.connectFromNodes.push(node);
       }
     }
     if (Stage.connectFromNodes.includes(clickedNode)) {
       // 多重连接
-      for (const node of StageManager.nodes) {
+      for (const node of StageManager.getTextNodes()) {
         if (node.isSelected) {
           // 特效
           Stage.effects.push(
@@ -81,7 +81,7 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
   );
   // 连接线
   let isFindConnectToNode = false;
-  for (const node of StageManager.nodes) {
+  for (const node of StageManager.getTextNodes()) {
     if (node.rectangle.isPointIn(worldLocation)) {
       if (Stage.connectToNode === null) {
         // 特效

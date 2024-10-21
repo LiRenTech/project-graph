@@ -1,4 +1,5 @@
 import { Serialized } from "../../types/node";
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * 舞台加载
@@ -16,6 +17,7 @@ export namespace StageLoader {
     data = convertV3toV4(data);
     data = convertV4toV5(data);
     data = convertV5toV6(data);
+    data = convertV6toV7(data);
     return data as Serialized.File;
   }
 
@@ -109,6 +111,8 @@ export namespace StageLoader {
     }
     return data;
   }
+
+  // 继承体系重构，移除节点的 children字段
   function convertV5toV6(data: Record<string, any>): Record<string, any> {
     if (data.version >= 6) {
       return data;
@@ -117,6 +121,20 @@ export namespace StageLoader {
     for (const node of data.nodes) {
       if (typeof node.children !== "undefined") {
         delete node.children;
+      }
+    }
+    return data;
+  }
+
+  // 继承体系重构，Edge增加uuid字段
+  function convertV6toV7(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 7) {
+      return data;
+    }
+    data.version = 7;
+    for (const edge of data.edges) {
+      if (typeof edge.uuid === "undefined") {
+        edge.uuid = uuidv4();
       }
     }
     return data;

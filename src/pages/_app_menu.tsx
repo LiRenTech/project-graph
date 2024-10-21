@@ -193,7 +193,7 @@ export default function AppMenu({
 
     try {
       const selectedNodes = [];
-      for (const node of StageManager.nodes) {
+      for (const node of StageManager.getEntities()) {
         if (node.isSelected) {
           selectedNodes.push(node);
         }
@@ -321,8 +321,8 @@ export default function AppMenu({
         <Col
           icon={<TestTube2 />}
           onClick={() => {
-            console.log(StageManager.nodes);
-            console.log(StageManager.edges);
+            console.log(StageManager.getTextNodes());
+            console.log(StageManager.getEdges());
             console.log(file);
             // localStorage测试
             // 尽量不要用这个，端口号一变就没了

@@ -11,7 +11,7 @@ export namespace StageDumper {
   /**
    * 最新版本
    */
-  export const latestVersion = 6;
+  export const latestVersion = 7;
 
 
   export function dumpNode(node: TextNode): Serialized.Node {
@@ -30,6 +30,7 @@ export namespace StageDumper {
       source: edge.source.uuid,
       target: edge.target.uuid,
       text: edge.text,
+      uuid: edge.uuid,
     };
   }
 
@@ -40,8 +41,8 @@ export namespace StageDumper {
   export function dump(): Serialized.File {
     return {
       version: latestVersion,
-      nodes: StageManager.nodes.map((node) => dumpNode(node)),
-      edges: StageManager.edges.map((edge) => dumpEdge(edge)),
+      nodes: StageManager.getTextNodes().map((node) => dumpNode(node)),
+      edges: StageManager.getEdges().map((edge) => dumpEdge(edge)),
     };
   }
 
@@ -54,7 +55,7 @@ export namespace StageDumper {
     const selectedNodes = nodes.map((node) => dumpNode(node));
     const selectedEdges: Serialized.Edge[] = [];
     
-    for (const edge of StageManager.edges) {
+    for (const edge of StageManager.getEdges()) {
       if (nodes.includes(edge.source) && nodes.includes(edge.target)) {
         selectedEdges.push(dumpEdge(edge));
       }

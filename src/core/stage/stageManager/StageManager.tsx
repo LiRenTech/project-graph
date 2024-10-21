@@ -14,6 +14,8 @@ import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageHistoryManager } from "./concreteMethods/StageHistoryManager";
 import { Stage } from "../Stage";
 import { StageDumper } from "../StageDumper";
+import { Rectangle } from "../../dataStruct/shape/Rectangle";
+import { StringDict } from "../../dataStruct/StringDict";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -25,12 +27,28 @@ import { StageDumper } from "../StageDumper";
  * 管理节点、边的关系等，内部包含了舞台上的所有实体
  */
 export namespace StageManager {
-  export const nodes: TextNode[] = [];
-  export const edges: Edge[] = [];
+  const nodes: StringDict<TextNode> = StringDict.create();
+  const edges: StringDict<Edge> = StringDict.create();
 
   export function getTextNodes(): TextNode[] {
-    // 重构准备：TODO: 准备将nodes数组对外封闭，只开放特定类型的访问函数
-    return nodes.filter(node => node instanceof TextNode);
+    return nodes.valuesToArray().filter((node) => node instanceof TextNode);
+  }
+
+  export function getEntities(): TextNode[] {
+    return nodes.valuesToArray();
+  }
+  export function isNoEntity(): boolean {
+    return nodes.length === 0;
+  }
+  export function deleteOneTextNode(node: TextNode) {
+    nodes.deleteValue(node);
+  }
+  export function deleteOneEdge(edge: Edge) {
+    edges.deleteValue(edge);
+  }
+
+  export function getEdges(): Edge[] {
+    return edges.valuesToArray().filter((edge) => edge instanceof Edge);
   }
 
   /**
@@ -38,18 +56,18 @@ export namespace StageManager {
    * 以防开发过程中造成多开
    */
   export function destroy() {
-    StageManager.nodes.splice(0, StageManager.nodes.length);
-    StageManager.edges.splice(0, StageManager.edges.length);
+    nodes.clear();
+    edges.clear();
   }
 
   export function addTextNode(node: TextNode) {
-    nodes.push(node);
+    nodes.addValue(node, node.uuid);
   }
 
   export function addEdge(edge: Edge) {
-    edges.push(edge);
+    edges.addValue(edge, edge.uuid);
   }
-  
+
   // 用于UI层监测
   export let selectedNodeCount = 0;
   export let selectedEdgeCount = 0;
@@ -57,7 +75,7 @@ export namespace StageManager {
   /** 获取节点连接的子节点数组 */
   export function nodeChildrenArray(node: TextNode): TextNode[] {
     const res: TextNode[] = [];
-    for (const edge of edges) {
+    for (const edge of getEdges()) {
       if (edge.source === node) {
         res.push(edge.target);
       }
@@ -66,7 +84,7 @@ export namespace StageManager {
   }
 
   function isConnected(node: TextNode, target: TextNode): boolean {
-    for (const edge of edges) {
+    for (const edge of getEdges()) {
       if (edge.source === node && edge.target === target) {
         return true;
       }
@@ -80,8 +98,8 @@ export namespace StageManager {
    *
    */
   export function updateReferences() {
-    for (const node of nodes) {
-      for (const edge of edges) {
+    for (const node of getEntities()) {
+      for (const edge of edges.valuesToArray()) {
         if (edge.source.unknown && edge.source.uuid === node.uuid) {
           edge.source = node;
         }
@@ -92,8 +110,8 @@ export namespace StageManager {
     }
   }
 
-  export function getNodeByUUID(uuid: string): TextNode | null {
-    for (const node of nodes) {
+  export function getTextNodeByUUID(uuid: string): TextNode | null {
+    for (const node of getTextNodes()) {
       if (node.uuid === uuid) {
         return node;
       }
@@ -105,11 +123,13 @@ export namespace StageManager {
    * 计算所有节点的中心点
    */
   export function getCenter(): Vector {
-    let center = Vector.getZero();
-    for (const node of nodes) {
-      center = center.add(node.rectangle.location);
+    if (nodes.length === 0) {
+      return Vector.getZero();
     }
-    return center.divide(nodes.length);
+    const allNodesRectangle = Rectangle.getBoundingRectangle(
+      nodes.valuesToArray().map((node) => node.collisionBox.getRectangle()),
+    );
+    return allNodesRectangle.center;
   }
 
   /**
@@ -120,12 +140,12 @@ export namespace StageManager {
       return new Vector(Renderer.w, Renderer.h);
     }
     let size = Vector.getZero();
-    for (const node of nodes) {
-      if (node.rectangle.size.x > size.x) {
-        size.x = node.rectangle.size.x;
+    for (const node of getEntities()) {
+      if (node.collisionBox.getRectangle().size.x > size.x) {
+        size.x = node.collisionBox.getRectangle().size.x;
       }
-      if (node.rectangle.size.y > size.y) {
-        size.y = node.rectangle.size.y;
+      if (node.collisionBox.getRectangle().size.y > size.y) {
+        size.y = node.collisionBox.getRectangle().size.y;
       }
     }
     return size;
@@ -136,9 +156,9 @@ export namespace StageManager {
    * @param location
    * @returns
    */
-  export function findNodeByLocation(location: Vector): TextNode | null {
-    for (const node of nodes) {
-      if (node.rectangle.isPointIn(location)) {
+  export function findTextNodeByLocation(location: Vector): TextNode | null {
+    for (const node of getTextNodes()) {
+      if (node instanceof TextNode && node.rectangle.isPointIn(location)) {
         return node;
       }
     }
@@ -151,8 +171,11 @@ export namespace StageManager {
    * @returns
    */
   export function findEdgeByLocation(location: Vector): Edge | null {
-    for (const edge of edges) {
-      if (edge.isBodyLineIntersectWithLocation(location)) {
+    for (const edge of getEdges()) {
+      if (
+        edge instanceof Edge &&
+        edge.isBodyLineIntersectWithLocation(location)
+      ) {
         return edge;
       }
     }
@@ -269,12 +292,11 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
     // 更新选中节点计数
     selectedNodeCount = 0;
-    for (const node of nodes) {
+    for (const node of nodes.valuesToArray()) {
       if (node.isSelected) {
         selectedNodeCount++;
       }
     }
-    
   }
 
   export function deleteEdge(deleteEdge: Edge): boolean {
@@ -282,7 +304,7 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
     // 更新选中边计数
     selectedEdgeCount = 0;
-    for (const edge of edges) {
+    for (const edge of edges.valuesToArray()) {
       if (edge.isSelected) {
         selectedEdgeCount++;
       }

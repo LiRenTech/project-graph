@@ -263,7 +263,7 @@ export default function Toolbar({ className = "" }) {
           description="反转选中连线方向"
           icon={<Repeat />}
           handleFunction={() => {
-            const selectedEdges = StageManager.edges.filter(
+            const selectedEdges = StageManager.getEdges().filter(
               (edge) => edge.isSelected,
             );
             StageManager.reverseEdges(selectedEdges);
@@ -335,7 +335,7 @@ const onSaveSelectedNew = async () => {
 
   try {
     const selectedNodes = [];
-    for (const node of StageManager.nodes) {
+    for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
         selectedNodes.push(node);
       }
@@ -358,7 +358,7 @@ const onSaveSelectedNew = async () => {
 };
 
 function openBrowserOrFile() {
-  for (const node of StageManager.nodes) {
+  for (const node of StageManager.getTextNodes()) {
     if (node.isSelected) {
       open(node.text)
         .then((value) => {
@@ -374,9 +374,9 @@ function openBrowserOrFile() {
 
 function deleteSelectedObjects() {
   StageManager.deleteNodes(
-    StageManager.nodes.filter((node) => node.isSelected),
+    StageManager.getTextNodes().filter((node) => node.isSelected),
   );
-  for (const edge of StageManager.edges) {
+  for (const edge of StageManager.getEdges()) {
     if (edge.isSelected) {
       StageManager.deleteEdge(edge);
     }

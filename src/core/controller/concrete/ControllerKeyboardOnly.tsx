@@ -29,19 +29,19 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
   if (!validKeys.includes(key)) return;
 
   // 确保只有一个节点被选中
-  const selectCount = StageManager.nodes.filter(
+  const selectCount = StageManager.getTextNodes().filter(
     (node) => node.isSelected,
   ).length;
 
   if (key === "tab") {
-    if (StageManager.nodes.length === 0) {
+    if (StageManager.getTextNodes().length === 0) {
       StageManager.addTextNodeByClick(Vector.getZero());
-      StageManager.nodes[0].isSelected = true;
+      StageManager.getTextNodes()[0].isSelected = true;
     } else {
       // 开始生长节点
 
       // 确保只有一个节点被选中
-      const selectCount = StageManager.nodes.filter(
+      const selectCount = StageManager.getTextNodes().filter(
         (node) => node.isSelected,
       ).length;
 
@@ -55,7 +55,9 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
         );
       } else {
         // 连线
-        const selectedNode = StageManager.nodes.find((node) => node.isSelected);
+        const selectedNode = StageManager.getTextNodes().find(
+          (node) => node.isSelected,
+        );
         if (!selectedNode) return;
 
         if (Stage.isVirtualNewNodeShow) {
@@ -63,7 +65,7 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
           const location = Stage.keyOnlyVirtualNewLocation;
           const newNodeUUID = await StageManager.addTextNodeByClick(location);
 
-          const newNode = StageManager.getNodeByUUID(newNodeUUID);
+          const newNode = StageManager.getTextNodeByUUID(newNodeUUID);
           if (!newNode) return;
 
           StageManager.connectNode(selectedNode, newNode);
@@ -92,7 +94,9 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
       // 多选中节点
       // 只选中选中节点中的其中一个节点
     } else {
-      const selectedNode = StageManager.nodes.find((node) => node.isSelected);
+      const selectedNode = StageManager.getTextNodes().find(
+        (node) => node.isSelected,
+      );
       if (!selectedNode) return;
       // 编辑节点
       editNode(selectedNode);
@@ -126,8 +130,8 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
     if (selectCount === 0) {
       // 没有选中节点
       // 随便选中一个节点
-      if (StageManager.nodes.length > 0) {
-        StageManager.nodes[0].isSelected = true;
+      if (StageManager.getTextNodes().length > 0) {
+        StageManager.getTextNodes()[0].isSelected = true;
       } else {
         Stage.effects.push(new TextRiseEffect("请先添加节点"));
       }
@@ -135,7 +139,9 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
     } else if (selectCount > 1) {
       // 多选中节点
       // 只选中选中节点中的其中一个节点
-      const nodes = StageManager.nodes.filter((node) => node.isSelected);
+      const nodes = StageManager.getTextNodes().filter(
+        (node) => node.isSelected,
+      );
       for (let i = 0; i < nodes.length; i++) {
         nodes[i].isSelected = false;
       }
@@ -144,7 +150,9 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
       // 单选中节点
       // 开始移动框选框
       // （总是有反直觉的地方）
-      const selectedNode = StageManager.nodes.find((node) => node.isSelected);
+      const selectedNode = StageManager.getTextNodes().find(
+        (node) => node.isSelected,
+      );
       if (!selectedNode) return;
 
       if (key === "arrowup") {
@@ -211,17 +219,17 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
 function getRelatedNodes(node: TextNode): TextNode[] {
   const relatedNodes: TextNode[] = [];
   // 获取所有孩子节点
-  for (const edge of StageManager.edges) {
+  for (const edge of StageManager.getEdges()) {
     if (edge.source.uuid === node.uuid) {
-      const childNode = StageManager.getNodeByUUID(edge.target.uuid);
+      const childNode = StageManager.getTextNodeByUUID(edge.target.uuid);
       if (childNode) relatedNodes.push(childNode);
     }
   }
 
   // 获取所有连向它的
-  for (const edge of StageManager.edges) {
+  for (const edge of StageManager.getEdges()) {
     if (edge.target.uuid === node.uuid) {
-      const fatherNode = StageManager.getNodeByUUID(edge.source.uuid);
+      const fatherNode = StageManager.getTextNodeByUUID(edge.source.uuid);
       if (fatherNode) relatedNodes.push(fatherNode);
     }
   }

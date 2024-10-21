@@ -29,7 +29,7 @@ ControllerCutting.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const clickedNode = StageManager.findNodeByLocation(pressWorldLocation);
+  const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
   if (clickedNode === null) {
     // 开始绘制切断线
     Stage.isCutting = true;
@@ -50,7 +50,7 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
     ControllerCutting.lastMoveLocation,
   );
   Stage.warningNodes = [];
-  for (const node of StageManager.nodes) {
+  for (const node of StageManager.getTextNodes()) {
     const collidePoints = node.rectangle.getCollidePointsWithLine(
       Stage.cuttingLine,
     );
@@ -72,7 +72,7 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
     // }
   }
   Stage.warningEdges = [];
-  for (const edge of StageManager.edges) {
+  for (const edge of StageManager.getEdges()) {
     if (edge.isBodyLineIntersectWithLine(Stage.cuttingLine)) {
       Stage.warningEdges.push(edge);
     }

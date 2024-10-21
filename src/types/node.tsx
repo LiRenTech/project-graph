@@ -14,9 +14,10 @@ export namespace Serialized {
     source: string;
     target: string;
     text: string;
+    uuid: string;
   };
   export type File = {
-    version: 6;  // 最新版本 src\core\stage\StageDumper.tsx latestVersion
+    version: 7;  // 最新版本 src\core\stage\StageDumper.tsx latestVersion
     nodes: Node[];
     edges: Edge[];
   };

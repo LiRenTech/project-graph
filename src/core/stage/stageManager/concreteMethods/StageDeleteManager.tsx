@@ -12,12 +12,12 @@ import { StageManager } from "../StageManager";
 export namespace StageDeleteManager {
   export function deleteNodes(deleteNodes: TextNode[]) {
     for (const node of deleteNodes) {
+
       // 先判断这个node是否在nodes里
-      if (StageManager.nodes.includes(node)) {
+      if (StageManager.getTextNodes().includes(node)) {
         console.log("include node", node.uuid);
         // 从数组中去除
-        StageManager.nodes.splice(StageManager.nodes.indexOf(node), 1);
-        console.log(StageManager.nodes);
+        StageManager.deleteOneTextNode(node);
         // 增加特效
         Stage.effects.push(
           new ExplodeAshEffect(
@@ -31,13 +31,13 @@ export namespace StageDeleteManager {
       }
       // 删除所有相关的边
       const prepareDeleteEdges: Edge[] = [];
-      for (const edge of StageManager.edges) {
+      for (const edge of StageManager.getEdges()) {
         if (edge.source === node || edge.target === node) {
           prepareDeleteEdges.push(edge);
         }
       }
       for (const edge of prepareDeleteEdges) {
-        StageManager.edges.splice(StageManager.edges.indexOf(edge), 1);
+        StageManager.deleteOneEdge(edge);
       }
       console.log("delete node", node.uuid);
     }
@@ -54,11 +54,11 @@ export namespace StageDeleteManager {
     const toNode = deleteEdge.target;
     // 先判断这两个节点是否在nodes里
     if (
-      StageManager.nodes.includes(fromNode) &&
-      StageManager.nodes.includes(toNode)
+      StageManager.getTextNodes().includes(fromNode) &&
+      StageManager.getTextNodes().includes(toNode)
     ) {
       // 删除边
-      StageManager.edges.splice(StageManager.edges.indexOf(deleteEdge), 1);
+      StageManager.deleteOneEdge(deleteEdge);
       StageManager.updateReferences();
       return true;
     } else {
