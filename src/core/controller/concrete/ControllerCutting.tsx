@@ -50,7 +50,7 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
     ControllerCutting.lastMoveLocation,
   );
   Stage.warningNodes = [];
-  for (const node of StageManager.nodes) {
+  for (const node of StageManager.getTextNodes()) {
     const collidePoints = node.rectangle.getCollidePointsWithLine(
       Stage.cuttingLine,
     );

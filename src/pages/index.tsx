@@ -59,7 +59,7 @@ export default function Home() {
         if (searchString) {
           // 开始搜索
           Stage.searchResultNodes = [];
-          for (const node of StageManager.nodes) {
+          for (const node of StageManager.getTextNodes()) {
             if (node.text.includes(searchString)) {
               Stage.searchResultNodes.push(node);
             }
@@ -169,7 +169,7 @@ export default function Home() {
                 Stage.currentSearchResultIndex--;
               }
               // 取消选择所有节点
-              for (const node of StageManager.nodes) {
+              for (const node of StageManager.getTextNodes()) {
                 node.isSelected = false;
               }
               // 选择当前搜索结果节点
@@ -195,7 +195,7 @@ export default function Home() {
                 Stage.currentSearchResultIndex++;
               }
               // 取消选择所有节点
-              for (const node of StageManager.nodes) {
+              for (const node of StageManager.getTextNodes()) {
                 node.isSelected = false;
               }
               // 选择当前搜索结果节点

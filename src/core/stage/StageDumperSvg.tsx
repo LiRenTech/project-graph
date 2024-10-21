@@ -57,7 +57,7 @@ export namespace StageDumperSvg {
 
   export function dumpStage(): React.ReactNode {
     // 如果没有任何节点，则抛出一个异常
-    if (StageManager.nodes.length === 0) {
+    if (StageManager.isNoEntity()) {
       throw new Error("No nodes in stage.");
     }
     // 寻找最左侧的边缘，最上的边缘，最下和最右侧
@@ -66,7 +66,7 @@ export namespace StageDumperSvg {
     let maxX = -Infinity;
     let maxY = -Infinity;
     const padding = 30; // 留白
-    for (const node of StageManager.nodes) {
+    for (const node of StageManager.getTextNodes()) {
       if (node.rectangle.location.x < minX) {
         minX = node.rectangle.location.x - padding;
       }
@@ -93,8 +93,8 @@ export namespace StageDumperSvg {
         height={height}
         viewBox={viewBox}
       >
-        {StageManager.nodes.map((node) => dumpNode(node))}
-        {StageManager.edges.map((edge) => dumpEdge(edge))}
+        {StageManager.getTextNodes().map((node) => dumpNode(node))}
+        {StageManager.getEdges().map((edge) => dumpEdge(edge))}
       </svg>
     );
   }

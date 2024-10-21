@@ -149,7 +149,7 @@ export namespace Renderer {
     if (Stage.connectFromNodes.length > 0 && Controller.lastMoveLocation) {
       // 如果鼠标位置没有和任何节点相交
       let connectTargetNode = null;
-      for (const node of StageManager.nodes) {
+      for (const node of StageManager.getTextNodes()) {
         if (node.rectangle.isPointIn(Controller.lastMoveLocation)) {
           connectTargetNode = node;
           break;
@@ -222,7 +222,7 @@ export namespace Renderer {
    */
   function renderKeyboardOnly() {
     if (Stage.isVirtualNewNodeShow) {
-      for (const node of StageManager.nodes) {
+      for (const node of StageManager.getTextNodes()) {
         if (node.isSelected) {
           // 连线
           RenderUtils.renderGradientLine(
@@ -247,7 +247,7 @@ export namespace Renderer {
 
   export function renderEntities(viewRectangle: Rectangle) {
     renderedNodes = 0;
-    for (const node of StageManager.nodes) {
+    for (const node of StageManager.getTextNodes()) {
       // 过滤掉超出视野的节点
       if (!viewRectangle.isCollideWith(node.rectangle)) {
         continue;
@@ -407,7 +407,7 @@ export namespace Renderer {
       `location: ${Camera.location.x.toFixed(2)}, ${Camera.location.y.toFixed(2)}`,
       // `canvas rect: ${canvasRect.toString()}`,
       `window: ${w}x${h}`,
-      `node count: ${renderedNodes} , ${StageManager.nodes.length}`,
+      `node count: ${renderedNodes} , ${StageManager.getTextNodes().length}`,
       `edge count: ${renderedEdges} , ${StageManager.edges.length}`,
       `selected nodeCount: ${StageManager.selectedNodeCount}`,
       `selected edgeCount: ${StageManager.selectedEdgeCount}`,

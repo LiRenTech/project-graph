@@ -37,7 +37,7 @@ ControllerCopy.keydown = (event: KeyboardEvent) => {
   if (key === "c" && Controller.pressingKeySet.has("control")) {
     // 复制
     const nodes: TextNode[] = [];
-    for (const node of StageManager.nodes) {
+    for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
         nodes.push(node);
       }

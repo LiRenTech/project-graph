@@ -18,7 +18,6 @@ export namespace StageDeleteManager {
         console.log("include node", node.uuid);
         // 从数组中去除
         StageManager.nodes.splice(StageManager.nodes.indexOf(node), 1);
-        console.log(StageManager.nodes);
         // 增加特效
         Stage.effects.push(
           new ExplodeAshEffect(
@@ -55,8 +54,8 @@ export namespace StageDeleteManager {
     const toNode = deleteEdge.target;
     // 先判断这两个节点是否在nodes里
     if (
-      StageManager.nodes.includes(fromNode) &&
-      StageManager.nodes.includes(toNode)
+      StageManager.getTextNodes().includes(fromNode) &&
+      StageManager.getTextNodes().includes(toNode)
     ) {
       // 删除边
       StageManager.edges.splice(StageManager.edges.indexOf(deleteEdge), 1);

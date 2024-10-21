@@ -33,6 +33,12 @@ export namespace StageManager {
     // 重构准备：TODO: 准备将nodes数组对外封闭，只开放特定类型的访问函数
     return nodes.filter((node) => node instanceof TextNode);
   }
+  export function getEntities(): TextNode[] {
+    return nodes;
+  }
+  export function isNoEntity(): boolean {
+    return nodes.length === 0;
+  }
 
   export function getEdges(): Edge[] {
     // 重构准备：TODO: 准备将edges数组对外封闭，只开放特定类型的访问函数

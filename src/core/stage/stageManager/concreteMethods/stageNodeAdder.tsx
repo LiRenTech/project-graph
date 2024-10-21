@@ -42,7 +42,7 @@ export namespace StageNodeAdder {
       while (true) {
         const name = template.replace("{{i}}", i.toString());
         let isConflict = false;
-        for (const node of StageManager.nodes) {
+        for (const node of StageManager.getTextNodes()) {
           if (node.text === name) {
             i++;
             isConflict = true;

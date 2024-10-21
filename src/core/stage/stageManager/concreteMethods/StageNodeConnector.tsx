@@ -14,8 +14,8 @@ export namespace StageNodeConnector {
     text: string = "",
   ): void {
     if (
-      StageManager.nodes.includes(fromNode) &&
-      StageManager.nodes.includes(toNode)
+      StageManager.getTextNodes().includes(fromNode) &&
+      StageManager.getTextNodes().includes(toNode)
     ) {
       // const addResult = fromNode.addChild(toNode);
       

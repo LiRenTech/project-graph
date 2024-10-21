@@ -335,7 +335,7 @@ const onSaveSelectedNew = async () => {
 
   try {
     const selectedNodes = [];
-    for (const node of StageManager.nodes) {
+    for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
         selectedNodes.push(node);
       }
@@ -358,7 +358,7 @@ const onSaveSelectedNew = async () => {
 };
 
 function openBrowserOrFile() {
-  for (const node of StageManager.nodes) {
+  for (const node of StageManager.getTextNodes()) {
     if (node.isSelected) {
       open(node.text)
         .then((value) => {
@@ -374,7 +374,7 @@ function openBrowserOrFile() {
 
 function deleteSelectedObjects() {
   StageManager.deleteNodes(
-    StageManager.nodes.filter((node) => node.isSelected),
+    StageManager.getTextNodes().filter((node) => node.isSelected),
   );
   for (const edge of StageManager.edges) {
     if (edge.isSelected) {

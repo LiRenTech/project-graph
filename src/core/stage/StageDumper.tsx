@@ -40,7 +40,7 @@ export namespace StageDumper {
   export function dump(): Serialized.File {
     return {
       version: latestVersion,
-      nodes: StageManager.nodes.map((node) => dumpNode(node)),
+      nodes: StageManager.getTextNodes().map((node) => dumpNode(node)),
       edges: StageManager.edges.map((edge) => dumpEdge(edge)),
     };
   }
