@@ -48,11 +48,11 @@ export class StringDict<T> {
     this.data = {};
   }
 
-  ids(): string[] {
+  idsToArray(): string[] {
     return Object.keys(this.data);
   }
 
-  values(): T[] {
+  valuesToArray(): T[] {
     return Object.values(this.data);
   }
 

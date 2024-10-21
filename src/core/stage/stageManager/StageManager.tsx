@@ -69,7 +69,7 @@ export namespace StageManager {
   /** 获取节点连接的子节点数组 */
   export function nodeChildrenArray(node: TextNode): TextNode[] {
     const res: TextNode[] = [];
-    for (const edge of edges) {
+    for (const edge of getEdges()) {
       if (edge.source === node) {
         res.push(edge.target);
       }
@@ -78,7 +78,7 @@ export namespace StageManager {
   }
 
   function isConnected(node: TextNode, target: TextNode): boolean {
-    for (const edge of edges) {
+    for (const edge of getEdges()) {
       if (edge.source === node && edge.target === target) {
         return true;
       }
@@ -92,7 +92,7 @@ export namespace StageManager {
    *
    */
   export function updateReferences() {
-    for (const node of nodes) {
+    for (const node of getEntities()) {
       for (const edge of edges) {
         if (edge.source.unknown && edge.source.uuid === node.uuid) {
           edge.source = node;
@@ -105,7 +105,7 @@ export namespace StageManager {
   }
 
   export function getTextNodeByUUID(uuid: string): TextNode | null {
-    for (const node of nodes) {
+    for (const node of getTextNodes()) {
       if (node.uuid === uuid) {
         return node;
       }
@@ -134,7 +134,7 @@ export namespace StageManager {
       return new Vector(Renderer.w, Renderer.h);
     }
     let size = Vector.getZero();
-    for (const node of nodes) {
+    for (const node of getEntities()) {
       if (node.collisionBox.getRectangle().size.x > size.x) {
         size.x = node.collisionBox.getRectangle().size.x;
       }
@@ -151,7 +151,7 @@ export namespace StageManager {
    * @returns
    */
   export function findTextNodeByLocation(location: Vector): TextNode | null {
-    for (const node of nodes) {
+    for (const node of getTextNodes()) {
       if (node instanceof TextNode && node.rectangle.isPointIn(location)) {
         return node;
       }
@@ -165,7 +165,7 @@ export namespace StageManager {
    * @returns
    */
   export function findEdgeByLocation(location: Vector): Edge | null {
-    for (const edge of edges) {
+    for (const edge of getEdges()) {
       if (edge instanceof Edge && edge.isBodyLineIntersectWithLocation(location)) {
         return edge;
       }
