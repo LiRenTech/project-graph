@@ -9,6 +9,7 @@ import { Circle } from "../../dataStruct/shape/Circle";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { ConnectableAssociation } from "../StageObject";
 import { CollisionBox } from "../collisionBox/collisionBox";
+import { v4 as uuidv4 } from "uuid";
 
 export class Edge extends ConnectableAssociation {
   public uuid: string = "???"; // TODO:
@@ -72,7 +73,7 @@ export class Edge extends ConnectableAssociation {
   private _target: TextNode;
 
   constructor(
-    { source, target, text }: Serialized.Edge,
+    { source, target, text, uuid }: Serialized.Edge,
     /** true表示解析状态，false表示解析完毕 */
     public unknown = false,
   ) {
@@ -80,6 +81,7 @@ export class Edge extends ConnectableAssociation {
     this._source = new TextNode({ uuid: source }, true);
     this._target = new TextNode({ uuid: target }, true);
     this.text = text;
+    this.uuid = uuid;
     this.adjustSizeByText();
   }
   /**
@@ -88,7 +90,7 @@ export class Edge extends ConnectableAssociation {
    * @param target
    */
   static fromToNode(source: TextNode, target: TextNode): Edge {
-    return new Edge({ source: source.uuid, target: target.uuid, text: "" });
+    return new Edge({ source: source.uuid, target: target.uuid, text: "", uuid: uuidv4() });
   }
 
   /**

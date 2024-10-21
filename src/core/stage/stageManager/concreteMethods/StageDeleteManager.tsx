@@ -37,7 +37,7 @@ export namespace StageDeleteManager {
         }
       }
       for (const edge of prepareDeleteEdges) {
-        StageManager.edges.splice(StageManager.edges.indexOf(edge), 1);
+        StageManager.deleteOneEdge(edge);
       }
       console.log("delete node", node.uuid);
     }
@@ -58,7 +58,7 @@ export namespace StageDeleteManager {
       StageManager.getTextNodes().includes(toNode)
     ) {
       // 删除边
-      StageManager.edges.splice(StageManager.edges.indexOf(deleteEdge), 1);
+      StageManager.deleteOneEdge(deleteEdge);
       StageManager.updateReferences();
       return true;
     } else {

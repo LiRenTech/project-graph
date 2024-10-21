@@ -2,6 +2,7 @@ import { Edge } from "../../../stageObject/association/Edge";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";
 import { StageDeleteManager } from "./StageDeleteManager";
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * 集成所有连线相关的功能
@@ -18,21 +19,24 @@ export namespace StageNodeConnector {
       StageManager.getTextNodes().includes(toNode)
     ) {
       // const addResult = fromNode.addChild(toNode);
-      
+
       // if (!addResult) {
       //   // 重复添加了，添加失败
       //   return false;
       // }
+      
+      // HACK: 容易出现重复的线段
 
       const newEdge = new Edge({
         source: fromNode.uuid,
         target: toNode.uuid,
         text,
+        uuid: uuidv4(),
       });
 
       // TODO 双向线检测
 
-      StageManager.edges.push(newEdge);
+      StageManager.addEdge(newEdge);
 
       StageManager.updateReferences();
       // return addResult;

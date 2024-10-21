@@ -28,7 +28,7 @@ import { StringDict } from "../../dataStruct/StringDict";
  */
 export namespace StageManager {
   const nodes: StringDict<TextNode> = StringDict.create();
-  export const edges: Edge[] = [];
+  const edges: StringDict<Edge> = StringDict.create();
 
   export function getTextNodes(): TextNode[] {
     return nodes.valuesToArray().filter((node) => node instanceof TextNode);
@@ -43,10 +43,12 @@ export namespace StageManager {
   export function deleteOneTextNode(node: TextNode) {
     nodes.deleteValue(node);
   }
+  export function deleteOneEdge(edge: Edge) {
+    edges.deleteValue(edge);
+  }
 
   export function getEdges(): Edge[] {
-    // 重构准备：TODO: 准备将edges数组对外封闭，只开放特定类型的访问函数
-    return edges.filter((edge) => edge instanceof Edge);
+    return edges.valuesToArray().filter((edge) => edge instanceof Edge);
   }
 
   /**
@@ -55,7 +57,7 @@ export namespace StageManager {
    */
   export function destroy() {
     nodes.clear();
-    StageManager.edges.splice(0, StageManager.edges.length);
+    edges.clear();
   }
 
   export function addTextNode(node: TextNode) {
@@ -63,7 +65,7 @@ export namespace StageManager {
   }
 
   export function addEdge(edge: Edge) {
-    edges.push(edge);
+    edges.addValue(edge, edge.uuid);
   }
 
   // 用于UI层监测
@@ -97,7 +99,7 @@ export namespace StageManager {
    */
   export function updateReferences() {
     for (const node of getEntities()) {
-      for (const edge of edges) {
+      for (const edge of edges.valuesToArray()) {
         if (edge.source.unknown && edge.source.uuid === node.uuid) {
           edge.source = node;
         }
@@ -127,7 +129,7 @@ export namespace StageManager {
     const allNodesRectangle = Rectangle.getBoundingRectangle(
       nodes.valuesToArray().map((node) => node.collisionBox.getRectangle()),
     );
-    return allNodesRectangle.center
+    return allNodesRectangle.center;
   }
 
   /**
@@ -170,7 +172,10 @@ export namespace StageManager {
    */
   export function findEdgeByLocation(location: Vector): Edge | null {
     for (const edge of getEdges()) {
-      if (edge instanceof Edge && edge.isBodyLineIntersectWithLocation(location)) {
+      if (
+        edge instanceof Edge &&
+        edge.isBodyLineIntersectWithLocation(location)
+      ) {
         return edge;
       }
     }
@@ -299,7 +304,7 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
     // 更新选中边计数
     selectedEdgeCount = 0;
-    for (const edge of edges) {
+    for (const edge of edges.valuesToArray()) {
       if (edge.isSelected) {
         selectedEdgeCount++;
       }

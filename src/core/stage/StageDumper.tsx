@@ -11,7 +11,7 @@ export namespace StageDumper {
   /**
    * 最新版本
    */
-  export const latestVersion = 6;
+  export const latestVersion = 7;
 
 
   export function dumpNode(node: TextNode): Serialized.Node {
@@ -30,6 +30,7 @@ export namespace StageDumper {
       source: edge.source.uuid,
       target: edge.target.uuid,
       text: edge.text,
+      uuid: edge.uuid,
     };
   }
 
