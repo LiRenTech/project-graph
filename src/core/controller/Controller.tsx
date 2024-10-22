@@ -17,6 +17,7 @@ import { ControllerDragFile } from "./concrete/ControllerDragFile";
 import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
 import { ControllerCopy } from "./concrete/ControllerCopy";
 import { StageHistoryManager } from "../stage/stageManager/concreteMethods/StageHistoryManager";
+import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -135,6 +136,7 @@ export namespace Controller {
     ControllerDragFile.init();
     ControllerKeyboardOnly.init();
     ControllerCopy.init();
+    ControllerSectionEdit.init();
   }
 
   // 以下事件处理函数仅为Controller总控制器修改重要属性使用。不涉及具体的功能逻辑。
@@ -295,6 +297,7 @@ export namespace Controller {
     ControllerDragFile.destroy();
     ControllerKeyboardOnly.destroy();
     ControllerCopy.destroy();
+    ControllerSectionEdit.destroy();
     console.log("Controller destroyed.");
   }
 }

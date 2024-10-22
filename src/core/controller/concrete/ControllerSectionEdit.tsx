@@ -1,3 +1,5 @@
+import { Vector } from "../../dataStruct/Vector";
+import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
 
@@ -23,6 +25,20 @@ ControllerSectionEdit.mouseDoubleClick = (event: MouseEvent) => {
       }
     }
     return;
+  }
+};
+
+ControllerSectionEdit.mousemove = (event: MouseEvent) => {
+  const worldLocation = Renderer.transformView2World(
+    new Vector(event.clientX, event.clientY),
+  );
+  Stage.hoverSections = [];
+  const sections = StageManager.getSections();
+
+  for (const section of sections) {
+    if (section.collisionBox.isPointInCollisionBox(worldLocation)) {
+      Stage.hoverSections.push(section);
+    }
   }
 };
 
