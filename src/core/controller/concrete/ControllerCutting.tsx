@@ -30,7 +30,9 @@ ControllerCutting.mousedown = (event: MouseEvent) => {
     new Vector(event.clientX, event.clientY),
   );
   const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
-  if (clickedNode === null) {
+  const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
+  const clickedSection = StageManager.findSectionByLocation(pressWorldLocation);
+  if (clickedNode === null && clickedEdge === null && clickedSection === null) {
     // 开始绘制切断线
     Stage.isCutting = true;
     cuttingStartLocation = pressWorldLocation.clone();
@@ -49,6 +51,7 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
     cuttingStartLocation,
     ControllerCutting.lastMoveLocation,
   );
+
   Stage.warningNodes = [];
   for (const node of StageManager.getTextNodes()) {
     const collidePoints = node.rectangle.getCollidePointsWithLine(
@@ -71,9 +74,17 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
     //   Stage.warningNodes.push(node);
     // }
   }
+
+  Stage.warningSections = [];
+  for (const section of StageManager.getSections()) {
+    if (section.collisionBox.isLineInCollisionBox(Stage.cuttingLine)) {
+      Stage.warningSections.push(section);
+    }
+  }
+
   Stage.warningEdges = [];
   for (const edge of StageManager.getEdges()) {
-    if (edge.isBodyLineIntersectWithLine(Stage.cuttingLine)) {
+    if (edge.collisionBox.isLineInCollisionBox(Stage.cuttingLine)) {
       Stage.warningEdges.push(edge);
     }
   }
@@ -93,7 +104,7 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
   }
   Stage.isCutting = false;
 
-  StageManager.deleteNodes(Stage.warningNodes);
+  StageManager.deleteEntities(Stage.warningNodes);
   Stage.warningNodes = [];
 
   for (const edge of Stage.warningEdges) {
@@ -102,6 +113,12 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
       Stage.effects.push(effect);
     }
   }
+  for (const section of Stage.warningSections) {
+    StageManager.deleteSection(section);
+  }
+  
+  Stage.warningSections = [];
+  
   StageManager.updateReferences();
 
   Stage.warningEdges = [];

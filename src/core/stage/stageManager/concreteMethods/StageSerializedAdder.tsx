@@ -17,9 +17,13 @@ export namespace StageSerializedAdder {
   export function addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
     const updatedSerializedData = refreshUUID(serializedData);
     for (const node of updatedSerializedData.nodes) {
-      const newNode = new TextNode(node);
-      newNode.moveTo(newNode.rectangle.location.add(diffLocation));
-      StageManager.addTextNode(newNode);
+      if (node.type === "core:text_node") {
+        const newNode = new TextNode(node);
+        newNode.moveTo(newNode.rectangle.location.add(diffLocation));
+        StageManager.addTextNode(newNode);
+      } else if (node.type === "core:section") {
+        // TODO: 处理section节点
+      }
     }
     for (const edge of updatedSerializedData.edges) {
       StageManager.addEdge(new Edge(edge));

@@ -17,6 +17,7 @@ import { ControllerDragFile } from "./concrete/ControllerDragFile";
 import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
 import { ControllerCopy } from "./concrete/ControllerCopy";
 import { StageHistoryManager } from "../stage/stageManager/concreteMethods/StageHistoryManager";
+import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -71,7 +72,7 @@ export namespace Controller {
   /**
    * 是否正在进行移动节点的操作
    */
-  export let isMovingNode = false;
+  export let isMovingEntity = false;
   /**
    * 是否正在进行移动(拖拽旋转)连线的操作
    */
@@ -135,6 +136,7 @@ export namespace Controller {
     ControllerDragFile.init();
     ControllerKeyboardOnly.init();
     ControllerCopy.init();
+    ControllerSectionEdit.init();
   }
 
   // 以下事件处理函数仅为Controller总控制器修改重要属性使用。不涉及具体的功能逻辑。
@@ -178,7 +180,7 @@ export namespace Controller {
     pressingKeySet.add(key);
     // 删除功能代码量太小了，暂时先直接写在这里
     if (key === "delete") {
-      StageManager.deleteNodes(
+      StageManager.deleteEntities(
         StageManager.getEntities().filter((node) => node.isSelected),
       );
     }
@@ -295,6 +297,7 @@ export namespace Controller {
     ControllerDragFile.destroy();
     ControllerKeyboardOnly.destroy();
     ControllerCopy.destroy();
+    ControllerSectionEdit.destroy();
     console.log("Controller destroyed.");
   }
 }

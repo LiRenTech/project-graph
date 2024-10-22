@@ -19,27 +19,34 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const isHaveNodeSelected = StageManager.getTextNodes().some((node) => node.isSelected);
+  const isHaveNodeSelected = StageManager.getTextNodes().some(
+    (node) => node.isSelected,
+  );
+  const isHaveSectionSelected = StageManager.getSections().some(
+    (section) => section.isSelected,
+  );
   ControllerNodeMove.lastMoveLocation = pressWorldLocation.clone();
   const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
+  const clickedSection = StageManager.findSectionByLocation(pressWorldLocation);
 
-  if (clickedNode) {
-    Controller.isMovingNode = true;
-    if (isHaveNodeSelected) {
-      // C
-      if (clickedNode.isSelected) {
-        // C1
-      } else {
-        // C2
-        StageManager.getTextNodes().forEach((node) => {
-          node.isSelected = false;
-        });
-      }
-      clickedNode.isSelected = true;
-    } else {
-      // D
-      clickedNode.isSelected = true;
+  if (clickedSection !== null) {
+    Controller.isMovingEntity = true;
+    if (isHaveSectionSelected && !clickedSection.isSelected) {
+      StageManager.getSections().forEach((section) => {
+        section.isSelected = false;
+      });
     }
+    clickedSection.isSelected = true;
+  }
+
+  if (clickedNode !== null) {
+    Controller.isMovingEntity = true;
+    if (isHaveNodeSelected && !clickedNode.isSelected) {
+      StageManager.getTextNodes().forEach((node) => {
+        node.isSelected = false;
+      });
+    }
+    clickedNode.isSelected = true;
   }
 };
 
@@ -47,7 +54,7 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
   if (Stage.isSelecting || Stage.isCutting) {
     return;
   }
-  if (!Controller.isMovingNode) {
+  if (!Controller.isMovingEntity) {
     return;
   }
   const worldLocation = Renderer.transformView2World(
@@ -57,9 +64,12 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
     ControllerNodeMove.lastMoveLocation,
   );
 
-  if (StageManager.getTextNodes().some((node) => node.isSelected)) {
+  if (
+    StageManager.getTextNodes().some((node) => node.isSelected) ||
+    StageManager.getSections().some((section) => section.isSelected)
+  ) {
     // 移动节点
-    Controller.isMovingNode = true;
+    Controller.isMovingEntity = true;
     // 暂不监听alt键。因为windows下切换窗口时，alt键释放监听不到
     if (Controller.pressingKeySet.has("control")) {
       // 和子节点一起移动
@@ -67,6 +77,7 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
     } else {
       StageManager.moveNodes(diffLocation);
     }
+    StageManager.moveSections(diffLocation);
     ControllerNodeMove.lastMoveLocation = worldLocation.clone();
   }
 };
@@ -75,8 +86,8 @@ ControllerNodeMove.mouseup = (event: MouseEvent) => {
   if (event.button !== 0) {
     return;
   }
-  if (Controller.isMovingNode) {
+  if (Controller.isMovingEntity) {
     StageManager.moveNodeFinished();
   }
-  Controller.isMovingNode = false;
+  Controller.isMovingEntity = false;
 };

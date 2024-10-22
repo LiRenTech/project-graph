@@ -32,6 +32,7 @@ export namespace StageNodeConnector {
         target: toNode.uuid,
         text,
         uuid: uuidv4(),
+        type: "core:edge",
       });
 
       // TODO 双向线检测

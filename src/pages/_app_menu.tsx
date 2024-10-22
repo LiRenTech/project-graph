@@ -321,7 +321,7 @@ export default function AppMenu({
         <Col
           icon={<TestTube2 />}
           onClick={() => {
-            console.log(StageManager.getTextNodes());
+            console.log(StageManager.getEntities());
             console.log(StageManager.getEdges());
             console.log(file);
             // localStorage测试

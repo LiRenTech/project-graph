@@ -107,7 +107,7 @@ export class Rectangle extends Shape {
    * @param rectangles
    * @returns
    */
-  public static getBoundingRectangle(rectangles: Rectangle[]): Rectangle {
+  public static getBoundingRectangle(rectangles: Rectangle[], padding: number = 0): Rectangle {
     if (rectangles.length === 0) {
       // 抛出异常
       throw new Error("rectangles is empty");
@@ -118,12 +118,43 @@ export class Rectangle extends Shape {
     let right = -Infinity;
     let bottom = -Infinity;
     for (const rect of rectangles) {
-      left = Math.min(left, rect.left);
-      top = Math.min(top, rect.top);
-      right = Math.max(right, rect.right);
-      bottom = Math.max(bottom, rect.bottom);
+      left = Math.min(left, rect.left - padding);
+      top = Math.min(top, rect.top - padding);
+      right = Math.max(right, rect.right + padding);
+      bottom = Math.max(bottom, rect.bottom + padding);
     }
     return Rectangle.fromEdges(left, top, right, bottom);
+  }
+
+  /**
+   * 按照 上右下左 的顺序返回四条边
+   * @returns 
+   */
+  public getBoundingLines(): Line[] {
+    const lines: Line[] = [
+      // top line
+      new Line(
+        new Vector(this.left, this.top),
+        new Vector(this.right, this.top),
+      ),
+      // right line
+      new Line(
+        new Vector(this.right, this.top),
+        new Vector(this.right, this.bottom),
+      ),
+      // bottom line
+      new Line(
+        new Vector(this.right, this.bottom),
+        new Vector(this.left, this.bottom),
+      ),
+      // left line
+      new Line(
+        new Vector(this.left, this.bottom),
+        new Vector(this.left, this.top),
+      ),
+    ];
+
+    return lines;
   }
 
   getFroePoints(): Vector[] {

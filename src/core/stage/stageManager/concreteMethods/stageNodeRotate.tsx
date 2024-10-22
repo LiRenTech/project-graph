@@ -5,6 +5,7 @@ import { Stage } from "../../Stage";
 import { LineEffect } from "../../../effect/concrete/LineEffect";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Color } from "../../../dataStruct/Color";
+import { StageNodeTextMoveManager } from "./StageNodeMoveManager";
 
 /**
  * 所有和旋转相关的操作
@@ -49,7 +50,7 @@ export namespace StageNodeRotate {
    * @param visitedUUIDs 已经访问过的节点的uuid列表，用于避免死循环
    */
   export function rotateNodeDfs(
-    rotateCenterNode: TextNode,  // 待改成ConnectedAbleEntity
+    rotateCenterNode: TextNode, // 待改成ConnectedAbleEntity
     currentNode: TextNode,
     degrees: number,
     visitedUUIDs: string[],
@@ -62,7 +63,10 @@ export namespace StageNodeRotate {
 
     let centerToChildVectorRotated = centerToChildVector.rotateDegrees(degrees);
 
-    currentNode.move(centerToChildVectorRotated.subtract(centerToChildVector));
+    StageNodeTextMoveManager.moveEntityUtils(
+      currentNode,
+      centerToChildVectorRotated.subtract(centerToChildVector),
+    );
     // 再旋转子节点
     for (const child of StageManager.nodeChildrenArray(currentNode)) {
       if (visitedUUIDs.includes(child.uuid)) {

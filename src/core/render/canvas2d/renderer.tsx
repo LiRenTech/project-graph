@@ -16,11 +16,12 @@ import { LineEffect } from "../../effect/concrete/LineEffect";
 import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
 import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
 import { StageHistoryManager } from "../../stage/stageManager/concreteMethods/StageHistoryManager";
-import { NodeRenderer } from "./entityRenderer/NodeRenderer";
+import { EntityRenderer } from "./entityRenderer/EntityRenderer";
 import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
 import { Settings } from "../../Settings";
 import { ExplodeAshEffect } from "../../effect/concrete/ExplodeDashEffect";
 import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
+import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
 
 /**
  * 渲染器
@@ -112,7 +113,10 @@ export namespace Renderer {
     renderWarningEntities();
     // 鼠标hover的边
     for (const edge of Stage.hoverEdges) {
-      EdgeRenderer.renderHoverShadow(edge);
+      CollisionBoxRenderer.render(edge.collisionBox, new Color(0, 255, 0, 0.5));
+    }
+    for (const section of Stage.hoverSections) {
+      CollisionBoxRenderer.render(section.collisionBox, new Color(0, 255, 0, 0.5));
     }
     timings.entities = performance.now() - start;
 
@@ -201,20 +205,14 @@ export namespace Renderer {
   function renderWarningEntities() {
     // 待删除的节点
     for (const node of Stage.warningNodes) {
-      RenderUtils.renderRect(
-        new Rectangle(
-          transformWorld2View(node.rectangle.location),
-          node.rectangle.size.multiply(Camera.currentScale),
-        ),
-        new Color(255, 0, 0, 0.5),
-        new Color(255, 0, 0, 0.5),
-        2 * Camera.currentScale,
-        8 * Camera.currentScale,
-      );
+      CollisionBoxRenderer.render(node.collisionBox, new Color(255, 0, 0, 0.5));
     }
     // 待删除的边
     for (const edge of Stage.warningEdges) {
-      EdgeRenderer.renderWarningShadow(edge);
+      CollisionBoxRenderer.render(edge.collisionBox, new Color(255, 0, 0, 0.5));
+    }
+    for (const section of Stage.warningSections) {
+      CollisionBoxRenderer.render(section.collisionBox, new Color(255, 0, 0, 0.5));
     }
   }
   /**
@@ -252,8 +250,14 @@ export namespace Renderer {
       if (!viewRectangle.isCollideWith(node.rectangle)) {
         continue;
       }
-      NodeRenderer.renderNode(node);
+      EntityRenderer.renderNode(node);
       renderedNodes++;
+    }
+    for (const section of StageManager.getSections()) {
+      if (!viewRectangle.isCollideWith(section.rectangle)) {
+        continue;
+      }
+      EntityRenderer.renderSection(section);
     }
   }
 
@@ -389,7 +393,7 @@ export namespace Renderer {
         RenderUtils.renderCircle(
           transformWorld2View(new Vector(xStart, yStart)),
           1,
-          xStart === 0 || yStart === 0? mainColor : gridColor,
+          xStart === 0 || yStart === 0 ? mainColor : gridColor,
           Color.Transparent,
           0,
         );
@@ -409,6 +413,7 @@ export namespace Renderer {
       `window: ${w}x${h}`,
       `node count: ${renderedNodes} , ${StageManager.getTextNodes().length}`,
       `edge count: ${renderedEdges} , ${StageManager.getEdges().length}`,
+      `section count: ${StageManager.getSections().length}`,
       `selected nodeCount: ${StageManager.selectedNodeCount}`,
       `selected edgeCount: ${StageManager.selectedEdgeCount}`,
       `pressingKeys: ${Controller.pressingKeysString()}`,
@@ -416,7 +421,7 @@ export namespace Renderer {
       `鼠标上次按下位置: ${Controller.lastMousePressLocationString()}`,
       `鼠标上次松开位置: ${Controller.lastMouseReleaseLocationString()}`,
       `框选框: ${Stage.selectingRectangle}`,
-      `正在移动节点: ${Controller.isMovingNode}`,
+      `正在移动节点: ${Controller.isMovingEntity}`,
       `正在切割: ${Stage.isCutting}`,
       `Stage.warningNodes: ${Stage.warningNodes.length}`,
       `Stage.warningEdges: ${Stage.warningEdges.length}`,

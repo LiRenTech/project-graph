@@ -7,10 +7,18 @@ import { Vector } from "../../dataStruct/Vector";
  * 碰撞箱类
  */
 export class CollisionBox {
-  shapeList: Shape[] = [];
+  private _shapeList: Shape[] = [];
 
   constructor(shapeList: Shape[]) {
-    this.shapeList = shapeList;
+    this._shapeList = shapeList;
+  }
+
+  get shapeList(): Shape[] {
+    return this._shapeList;
+  }
+
+  set shapeList(shapeList: Shape[]) {
+    this._shapeList = shapeList;
   }
 
   /**

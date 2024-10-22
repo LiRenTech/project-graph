@@ -6,6 +6,7 @@ import { Vector } from "../dataStruct/Vector";
 import { Serialized } from "../../types/node";
 import { StageDumper } from "./StageDumper";
 import { Line } from "../dataStruct/shape/Line";
+import { Section } from "../stageObject/entity/Section";
 
 /**
  * 舞台对象
@@ -52,6 +53,7 @@ export namespace Stage {
    * 正在准备要删除的连线
    */
   export let warningEdges: Edge[] = [];
+  export let warningSections: Section[] = [];
   /**
    * 用于多重连接
    */
@@ -62,6 +64,8 @@ export namespace Stage {
    * 鼠标悬浮的边
    */
   export let hoverEdges: Edge[] = [];
+  /** 鼠标悬浮的框 */
+  export let hoverSections: Section[] = [];
 
   /**
    * 键盘操作的生长新节点是否显示

@@ -5,11 +5,35 @@ import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Camera } from "../../../stage/Camera";
 import { Renderer } from "../renderer";
 import { RenderUtils } from "../RenderUtils";
+import { Section } from "../../../stageObject/entity/Section";
+import { CollisionBoxRenderer } from "./CollisionBoxRenderer";
 
 /**
  * 处理节点相关的绘制
  */
-export namespace NodeRenderer {
+export namespace EntityRenderer {
+  export function renderSection(section: Section) {
+    RenderUtils.renderRect(
+      new Rectangle(
+        Renderer.transformWorld2View(section.rectangle.location),
+        section.rectangle.size.multiply(Camera.currentScale),
+      ),
+      section.color,
+      new Color(204, 204, 204, 1),
+      2 * Camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+    );
+
+    RenderUtils.renderText(
+      section.text,
+      Renderer.transformWorld2View(
+        section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
+      ),
+      Renderer.FONT_SIZE * Camera.currentScale,
+      colorInvert(section.color),
+    );
+  }
+
   export function renderNode(node: TextNode) {
     // 节点身体矩形
     RenderUtils.renderRect(
@@ -36,20 +60,7 @@ export namespace NodeRenderer {
 
     if (node.isSelected) {
       // 在外面增加一个框
-      RenderUtils.renderRect(
-        new Rectangle(
-          Renderer.transformWorld2View(
-            node.rectangle.location.subtract(Vector.same(7.5)),
-          ),
-          node.rectangle.size
-            .add(Vector.same(15))
-            .multiply(Camera.currentScale),
-        ),
-        new Color(0, 0, 0, 0),
-        new Color(255, 255, 255, 0.5),
-        2 * Camera.currentScale,
-        16 * Camera.currentScale,
-      );
+      CollisionBoxRenderer.render(node.collisionBox, new Color(0, 255, 0, 0.5));
     }
 
     if (node.details && !node.isEditingDetails) {
