@@ -415,6 +415,7 @@ export namespace Renderer {
       `window: ${w}x${h}`,
       `node count: ${renderedNodes} , ${StageManager.getTextNodes().length}`,
       `edge count: ${renderedEdges} , ${StageManager.getEdges().length}`,
+      `section count: ${StageManager.getSections().length}`,
       `selected nodeCount: ${StageManager.selectedNodeCount}`,
       `selected edgeCount: ${StageManager.selectedEdgeCount}`,
       `pressingKeys: ${Controller.pressingKeysString()}`,

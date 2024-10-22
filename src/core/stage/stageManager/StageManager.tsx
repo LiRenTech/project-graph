@@ -41,6 +41,16 @@ export namespace StageManager {
   export function getEntities(): Entity[] {
     return entities.valuesToArray();
   }
+  export function getEntitiesByUUIDs(uuids: string[]): Entity[] {
+    const result = [];
+    for (const uuid of uuids) {
+      const entity = entities.getById(uuid);
+      if (entity) {
+        result.push(entity);
+      }
+    }
+    return result;
+  }
   export function isNoEntity(): boolean {
     return entities.length === 0;
   }
@@ -107,7 +117,6 @@ export namespace StageManager {
    */
   export function updateReferences() {
     for (const node of getEntities()) {
-      
       if (node instanceof TextNode) {
         for (const edge of getEdges()) {
           if (edge.source.unknown && edge.source.uuid === node.uuid) {
@@ -118,7 +127,6 @@ export namespace StageManager {
           }
         }
       }
-      
     }
   }
 
@@ -353,5 +361,13 @@ export namespace StageManager {
 
   export function generateNodeByText(text: string, indention: number = 4) {
     StageNodeAdder.addNodeByText(text, indention);
+    StageHistoryManager.recordStep();
+  }
+
+  /** 将多个实体打包成一个section，并添加到舞台中 */
+  export function packEntityToSection(addEntities: Entity[]) {
+    const section = Section.fromEntities(addEntities);
+    entities.addValue(section, section.uuid);
+    StageHistoryManager.recordStep();
   }
 }

@@ -22,6 +22,7 @@ import {
   AlignEndHorizontal,
   Globe,
   ImageDown,
+  Square,
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
@@ -313,8 +314,24 @@ export default function Toolbar({ className = "" }) {
           }}
         />
       )}
+      {isHaveSelectedNodeOverTwo && (
+        <ToolbarItem
+          description="将选中节点打包Section"
+          icon={<Square />}
+          handleFunction={() => {
+            onPackNodeToSection();
+          }}
+        />
+      )}
     </Box>
   );
+}
+function onPackNodeToSection() {
+  const selectedNodes = StageManager.getTextNodes().filter(node => node.isSelected);
+  if (selectedNodes.length < 2) {
+    return;
+  }
+  StageManager.packEntityToSection(selectedNodes);
 }
 
 const onSaveSelectedNew = async () => {

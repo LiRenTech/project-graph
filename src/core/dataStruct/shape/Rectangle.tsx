@@ -126,6 +126,37 @@ export class Rectangle extends Shape {
     return Rectangle.fromEdges(left, top, right, bottom);
   }
 
+  /**
+   * 按照 上右下左 的顺序返回四条边
+   * @returns 
+   */
+  public getBoundingLines(): Line[] {
+    const lines: Line[] = [
+      // top line
+      new Line(
+        new Vector(this.left, this.top),
+        new Vector(this.right, this.top),
+      ),
+      // right line
+      new Line(
+        new Vector(this.right, this.top),
+        new Vector(this.right, this.bottom),
+      ),
+      // bottom line
+      new Line(
+        new Vector(this.right, this.bottom),
+        new Vector(this.left, this.bottom),
+      ),
+      // left line
+      new Line(
+        new Vector(this.left, this.bottom),
+        new Vector(this.left, this.top),
+      ),
+    ];
+
+    return lines;
+  }
+
   getFroePoints(): Vector[] {
     const points = [
       new Vector(this.left, this.top),
