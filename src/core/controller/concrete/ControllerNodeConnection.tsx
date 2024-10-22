@@ -82,7 +82,7 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
   // 连接线
   let isFindConnectToNode = false;
   for (const node of StageManager.getTextNodes()) {
-    if (node.rectangle.isPointIn(worldLocation)) {
+    if (node.collisionBox.isPointInCollisionBox(worldLocation)) {
       if (Stage.connectToNode === null) {
         // 特效
         // Stage.effects.push(

@@ -178,7 +178,7 @@ export namespace StageManager {
    */
   export function findTextNodeByLocation(location: Vector): TextNode | null {
     for (const node of getTextNodes()) {
-      if (node instanceof TextNode && node.rectangle.isPointIn(location)) {
+      if (node.collisionBox.isPointInCollisionBox(location)) {
         return node;
       }
     }
@@ -192,10 +192,7 @@ export namespace StageManager {
    */
   export function findEdgeByLocation(location: Vector): Edge | null {
     for (const edge of getEdges()) {
-      if (
-        edge instanceof Edge &&
-        edge.isBodyLineIntersectWithLocation(location)
-      ) {
+      if (edge.collisionBox.isPointInCollisionBox(location)) {
         return edge;
       }
     }

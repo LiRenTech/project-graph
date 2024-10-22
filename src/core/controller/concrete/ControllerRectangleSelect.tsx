@@ -103,7 +103,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
   if (Controller.pressingKeySet.has("control")) {
     // 交叉选择，没的变有，有的变没
     for (const node of StageManager.getTextNodes()) {
-      if (Stage.selectingRectangle.isCollideWith(node.rectangle)) {
+      if (node.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)) {
         if (Controller.lastSelectedNode.has(node.uuid)) {
           node.isSelected = false;
         } else {
@@ -112,7 +112,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
       }
     }
     for (const edge of StageManager.getEdges()) {
-      if (edge.isBodyLineIntersectWithRectangle(Stage.selectingRectangle)) {
+      if (edge.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)) {
         if (
           Controller.lastSelectedEdge.has(
             edge.target.uuid + "&" + edge.source.uuid,
@@ -127,7 +127,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
   } else {
     let isHaveNode = false;
     for (const node of StageManager.getTextNodes()) {
-      if (Stage.selectingRectangle.isCollideWith(node.rectangle)) {
+      if (node.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)) {
         node.isSelected = true;
         isHaveNode = true;
       }
@@ -135,7 +135,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
     if (!isHaveNode) {
       // 如果已经有节点被选择了，则不能再选择边了
       for (const edge of StageManager.getEdges()) {
-        if (edge.isBodyLineIntersectWithRectangle(Stage.selectingRectangle)) {
+        if (edge.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)) {
           edge.isSelected = true;
         }
       }
@@ -161,6 +161,8 @@ ControllerRectangleSelect.mouseup = (event: MouseEvent) => {
   }
   Controller.lastSelectedEdge = new Set();
   for (const edge of StageManager.getEdges()) {
+    // TODO: 该改了，edge已经有uuid了
+
     if (edge.isSelected) {
       Controller.lastSelectedEdge.add(
         edge.target.uuid + "&" + edge.source.uuid,

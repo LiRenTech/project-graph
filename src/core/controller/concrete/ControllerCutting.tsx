@@ -73,7 +73,7 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
   }
   Stage.warningEdges = [];
   for (const edge of StageManager.getEdges()) {
-    if (edge.isBodyLineIntersectWithLine(Stage.cuttingLine)) {
+    if (edge.collisionBox.isLineInCollisionBox(Stage.cuttingLine)) {
       Stage.warningEdges.push(edge);
     }
   }
