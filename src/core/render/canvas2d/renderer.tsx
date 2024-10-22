@@ -115,6 +115,9 @@ export namespace Renderer {
     for (const edge of Stage.hoverEdges) {
       CollisionBoxRenderer.render(edge.collisionBox, new Color(0, 255, 0, 0.5));
     }
+    for (const section of Stage.hoverSections) {
+      CollisionBoxRenderer.render(section.collisionBox, new Color(0, 255, 0, 0.5));
+    }
     timings.entities = performance.now() - start;
 
     start = performance.now();

@@ -220,6 +220,15 @@ export namespace StageManager {
     return null;
   }
 
+  export function findSectionByLocation(location: Vector): Section | null {
+    for (const section of getSections()) {
+      if (section.collisionBox.isPointInCollisionBox(location)) {
+        return section;
+      }
+    }
+    return null;
+  }
+
   // region 以下为舞台操作相关的函数
   // 建议不同的功能分类到具体的文件中，然后最后集中到这里调用，使得下面的显示简短一些
   // 每个操作函数尾部都要加一个记录历史的操作

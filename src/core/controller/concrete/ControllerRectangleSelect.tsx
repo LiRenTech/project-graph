@@ -21,13 +21,18 @@ ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
   );
   const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
   const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
-  if (clickedNode !== null || clickedEdge !== null) {
+  const clickedSection = StageManager.findSectionByLocation(pressWorldLocation);
+  if (clickedNode !== null || clickedEdge !== null || clickedSection!== null) {
     // 在空白地方按下，才能触发框选
     return;
   }
   const isHaveNodeSelected = StageManager.getTextNodes().some((node) => node.isSelected);
   const isHaveEdgeSelected = StageManager.getEdges().some((edge) => edge.isSelected);
-  console.log(isHaveNodeSelected, isHaveEdgeSelected);
+  const isHaveSectionSelected = StageManager.getSections().some(
+    (section) => section.isSelected,
+  );
+  
+  console.log(isHaveNodeSelected, isHaveEdgeSelected, isHaveSectionSelected);
   // 现在的情况：在空白的地方按下左键
 
   if (isHaveNodeSelected || isHaveEdgeSelected) {

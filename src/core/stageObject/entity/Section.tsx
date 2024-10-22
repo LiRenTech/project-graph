@@ -64,7 +64,7 @@ export class Section extends ConnectableEntity {
   static fromEntities(entities: Entity[]): Section {
     const section = new Section({
       uuid: uuidv4(),
-      text: "xxx",
+      text: "section",
       location: [0, 0],
       size: [0, 0],
       color: [0, 0, 0, 0],
@@ -75,15 +75,22 @@ export class Section extends ConnectableEntity {
     return section;
   }
 
+  rename(newName: string) {
+    this.text = newName;
+  }
+
   adjustLocationAndSize() {
     if (this.children.length === 0) {
       return;
     }
-
-    this.collisionBox.shapeList = Rectangle.getBoundingRectangle(
+    const rectangle = Rectangle.getBoundingRectangle(
       this.children.map((child) => child.collisionBox.getRectangle()),
       15,
-    ).getBoundingLines();
+    );
+    rectangle.location = rectangle.location.subtract(new Vector(0, 50));
+    rectangle.size = rectangle.size.add(new Vector(0, 50));
+
+    this.collisionBox.shapeList = rectangle.getBoundingLines();
   }
 
   /**
