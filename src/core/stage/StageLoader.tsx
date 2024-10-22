@@ -18,6 +18,7 @@ export namespace StageLoader {
     data = convertV4toV5(data);
     data = convertV5toV6(data);
     data = convertV6toV7(data);
+    data = convertV7toV8(data);
     return data as Serialized.File;
   }
 
@@ -136,6 +137,21 @@ export namespace StageLoader {
       if (typeof edge.uuid === "undefined") {
         edge.uuid = uuidv4();
       }
+    }
+    return data;
+  }
+  
+  // 继承体系重构，增加type
+  function convertV7toV8(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 8) {
+      return data;
+    }
+    data.version = 8;
+    for (const node of data.nodes) {
+      node.type = "core:text_node";
+    }
+    for (const edge of data.edges) {
+      edge.type = "core:edge";
     }
     return data;
   }

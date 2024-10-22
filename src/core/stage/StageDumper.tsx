@@ -11,7 +11,7 @@ export namespace StageDumper {
   /**
    * 最新版本
    */
-  export const latestVersion = 7;
+  export const latestVersion = 8;
 
   export function dumpTextNode(textNode: TextNode): Serialized.Node {
     return {
@@ -21,6 +21,7 @@ export namespace StageDumper {
       uuid: textNode.uuid,
       details: textNode.details,
       color: textNode.color && textNode.color.toArray(),
+      type: "core:text_node"
     };
   }
 
@@ -30,6 +31,7 @@ export namespace StageDumper {
       target: edge.target.uuid,
       text: edge.text,
       uuid: edge.uuid,
+      type: "core:edge"
     };
   }
 
@@ -38,6 +40,7 @@ export namespace StageDumper {
    * @returns
    */
   export function dump(): Serialized.File {
+    
     return {
       version: latestVersion,
       nodes: StageManager.getTextNodes().map((node) => dumpTextNode(node)),

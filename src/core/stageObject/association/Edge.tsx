@@ -12,7 +12,7 @@ import { CollisionBox } from "../collisionBox/collisionBox";
 import { v4 as uuidv4 } from "uuid";
 
 export class Edge extends ConnectableAssociation {
-  public uuid: string = "???"; // TODO:
+  public uuid: string;
 
   /**
    * 线段上的文字
@@ -90,7 +90,13 @@ export class Edge extends ConnectableAssociation {
    * @param target
    */
   static fromToNode(source: TextNode, target: TextNode): Edge {
-    return new Edge({ source: source.uuid, target: target.uuid, text: "", uuid: uuidv4() });
+    return new Edge({
+      source: source.uuid,
+      target: target.uuid,
+      text: "",
+      uuid: uuidv4(),
+      type: "core:edge",
+    });
   }
 
   /**
