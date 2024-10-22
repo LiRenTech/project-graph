@@ -99,6 +99,9 @@ export class Section extends ConnectableEntity {
   public get isSelected() {
     return this._isSelected;
   }
+  public set isSelected(value: boolean) {
+    this._isSelected = value;
+  }
 
   /**
    * 只读，获取节点的矩形
@@ -125,10 +128,11 @@ export class Section extends ConnectableEntity {
   }
 
   move(delta: Vector): void {
+    // 让自己移动
     for (const line of this.collisionBox.shapeList) {
       if (line instanceof Line) {
-        line.start.add(delta);
-        line.end.add(delta);
+        line.start = line.start.add(delta);
+        line.end = line.end.add(delta);
       }
     }
 

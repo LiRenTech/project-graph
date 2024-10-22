@@ -31,7 +31,7 @@ ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
   const isHaveSectionSelected = StageManager.getSections().some(
     (section) => section.isSelected,
   );
-  
+
   console.log(isHaveNodeSelected, isHaveEdgeSelected, isHaveSectionSelected);
   // 现在的情况：在空白的地方按下左键
 
@@ -146,7 +146,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
       }
     }
   }
-  Controller.isMovingNode = false;
+  Controller.isMovingEntity = false;
   Controller.isMovingEdge = false;
   ControllerRectangleSelect.lastMoveLocation = worldLocation.clone();
 };

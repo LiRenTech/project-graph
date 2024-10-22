@@ -162,6 +162,16 @@ export namespace StageManager {
     }
     return null;
   }
+  export function isSectionByUUID(uuid: string): boolean {
+    return entities.getById(uuid) instanceof Section;
+  }
+  export function getSectionByUUID(uuid: string): Section | null {
+    const entity = entities.getById(uuid);
+    if (entity instanceof Section) {
+      return entity;
+    }
+    return null;
+  }
 
   /**
    * 计算所有节点的中心点
@@ -255,6 +265,10 @@ export namespace StageManager {
    */
   export function moveNodes(delta: Vector) {
     StageNodeTextMoveManager.moveNodes(delta); // 连续过程，不记录历史，只在结束时记录
+  }
+
+  export function moveSections(delta: Vector) {
+    StageNodeTextMoveManager.moveSections(delta); // 连续过程，不记录历史，只在结束时记录
   }
 
   export function moveNodesWithChildren(delta: Vector) {

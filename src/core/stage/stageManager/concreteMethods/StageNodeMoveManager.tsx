@@ -1,5 +1,6 @@
 import { Vector } from "../../../dataStruct/Vector";
 import { TextNode } from "../../../stageObject/entity/TextNode";
+import { Entity } from "../../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 
 /**
@@ -9,9 +10,21 @@ import { StageManager } from "../StageManager";
  * 以后还可能有自动布局的功能
  */
 export namespace StageNodeTextMoveManager {
-  export function moveNodeUtils(node: TextNode, delta: Vector) {
+  export function moveEntityUtils(node: Entity, delta: Vector) {
+    // 让自己移动
     node.move(delta);
+
     const nodeUUID = node.uuid;
+
+    if (StageManager.isSectionByUUID(nodeUUID)) {
+      // 如果是Section，则需要带动孩子一起移动
+      const section = StageManager.getSectionByUUID(nodeUUID);
+      if (section) {
+        for (const child of section.children) {
+          moveEntityUtils(child, delta);
+        }
+      }
+    }
     for (const section of StageManager.getSections()) {
       if (section.isHaveChildrenByUUID(nodeUUID)) {
         section.adjustLocationAndSize();
@@ -19,7 +32,7 @@ export namespace StageNodeTextMoveManager {
     }
   }
 
-  function moveNodeToUtils(node: TextNode, location: Vector) {
+  function moveNodeToUtils(node: Entity, location: Vector) {
     node.moveTo(location);
     const nodeUUID = node.uuid;
     for (const section of StageManager.getSections()) {
@@ -36,7 +49,14 @@ export namespace StageNodeTextMoveManager {
   export function moveNodes(delta: Vector) {
     for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
-        moveNodeUtils(node, delta);
+        moveEntityUtils(node, delta);
+      }
+    }
+  }
+  export function moveSections(delta: Vector) {
+    for (const section of StageManager.getSections()) {
+      if (section.isSelected) {
+        moveEntityUtils(section, delta);
       }
     }
   }
@@ -57,7 +77,7 @@ export namespace StageNodeTextMoveManager {
     delta: Vector,
     visitedUUIDs: string[],
   ) {
-    moveNodeUtils(node, delta);
+    moveEntityUtils(node, delta);
     for (const child of StageManager.nodeChildrenArray(node)) {
       if (visitedUUIDs.includes(child.uuid)) {
         continue;
@@ -80,7 +100,7 @@ export namespace StageNodeTextMoveManager {
       ...nodes.map((node) => node.collisionBox.getRectangle().left),
     );
     for (const node of nodes) {
-      moveNodeUtils(
+      moveEntityUtils(
         node,
         new Vector(minX - node.collisionBox.getRectangle().left, 0),
       );
@@ -96,7 +116,7 @@ export namespace StageNodeTextMoveManager {
       ...nodes.map((node) => node.collisionBox.getRectangle().right),
     );
     for (const node of nodes) {
-      moveNodeUtils(
+      moveEntityUtils(
         node,
         new Vector(maxX - node.collisionBox.getRectangle().right, 0),
       );
@@ -112,7 +132,7 @@ export namespace StageNodeTextMoveManager {
       ...nodes.map((node) => node.collisionBox.getRectangle().top),
     );
     for (const node of nodes) {
-      moveNodeUtils(
+      moveEntityUtils(
         node,
         new Vector(0, minY - node.collisionBox.getRectangle().top),
       );
@@ -128,7 +148,7 @@ export namespace StageNodeTextMoveManager {
       ...nodes.map((node) => node.collisionBox.getRectangle().bottom),
     );
     for (const node of nodes) {
-      moveNodeUtils(
+      moveEntityUtils(
         node,
         new Vector(0, maxY - node.collisionBox.getRectangle().bottom),
       );

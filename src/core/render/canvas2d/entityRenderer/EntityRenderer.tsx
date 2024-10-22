@@ -23,16 +23,15 @@ export namespace EntityRenderer {
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
-    if (!section.isSelected) {
-      RenderUtils.renderText(
-        section.text,
-        Renderer.transformWorld2View(
-          section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
-        ),
-        Renderer.FONT_SIZE * Camera.currentScale,
-        colorInvert(section.color),
-      );
-    }
+
+    RenderUtils.renderText(
+      section.text,
+      Renderer.transformWorld2View(
+        section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
+      ),
+      Renderer.FONT_SIZE * Camera.currentScale,
+      colorInvert(section.color),
+    );
   }
 
   export function renderNode(node: TextNode) {

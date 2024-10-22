@@ -72,7 +72,7 @@ export namespace Controller {
   /**
    * 是否正在进行移动节点的操作
    */
-  export let isMovingNode = false;
+  export let isMovingEntity = false;
   /**
    * 是否正在进行移动(拖拽旋转)连线的操作
    */

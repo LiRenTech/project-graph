@@ -63,7 +63,7 @@ export namespace StageNodeRotate {
 
     let centerToChildVectorRotated = centerToChildVector.rotateDegrees(degrees);
 
-    StageNodeTextMoveManager.moveNodeUtils(
+    StageNodeTextMoveManager.moveEntityUtils(
       currentNode,
       centerToChildVectorRotated.subtract(centerToChildVector),
     );
