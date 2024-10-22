@@ -16,6 +16,7 @@ import { Stage } from "../Stage";
 import { StageDumper } from "../StageDumper";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { StringDict } from "../../dataStruct/StringDict";
+import { Entity } from "../../stageObject/StageObject";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -27,14 +28,14 @@ import { StringDict } from "../../dataStruct/StringDict";
  * 管理节点、边的关系等，内部包含了舞台上的所有实体
  */
 export namespace StageManager {
-  const entities: StringDict<TextNode> = StringDict.create();
+  const entities: StringDict<Entity> = StringDict.create();
   const edges: StringDict<Edge> = StringDict.create();
 
   export function getTextNodes(): TextNode[] {
     return entities.valuesToArray().filter((node) => node instanceof TextNode);
   }
 
-  export function getEntities(): TextNode[] {
+  export function getEntities(): Entity[] {
     return entities.valuesToArray();
   }
   export function isNoEntity(): boolean {
@@ -99,14 +100,21 @@ export namespace StageManager {
    */
   export function updateReferences() {
     for (const node of getEntities()) {
-      for (const edge of edges.valuesToArray()) {
-        if (edge.source.unknown && edge.source.uuid === node.uuid) {
-          edge.source = node;
-        }
-        if (edge.target.unknown && edge.target.uuid === node.uuid) {
-          edge.target = node;
+      // if (node instanceof ConnectableEntity) {
+
+      // }
+      if (node instanceof TextNode) {
+        for (const edge of edges.valuesToArray()) {
+          if (edge.source.unknown && edge.source.uuid === node.uuid) {
+            edge.source = node;
+          }
+          if (edge.target.unknown && edge.target.uuid === node.uuid) {
+            edge.target = node;
+          }
         }
       }
+
+      
     }
   }
 
@@ -287,7 +295,7 @@ export namespace StageManager {
     updateReferences();
   }
 
-  export function deleteNodes(deleteNodes: TextNode[]) {
+  export function deleteNodes(deleteNodes: Entity[]) {
     StageDeleteManager.deleteNodes(deleteNodes);
     StageHistoryManager.recordStep();
     // 更新选中节点计数
