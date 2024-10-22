@@ -30,13 +30,13 @@ export namespace StageDeleteManager {
     }
 
     // 先删除所有内部的东西
-    for (const child of entity.children) {
-      if (child instanceof TextNode) {
-        deleteTextNode(child);
-      } else if (child instanceof Section) {
-        deleteSection(child);
-      }
-    }
+    // for (const child of entity.children) {
+    //   if (child instanceof TextNode) {
+    //     deleteTextNode(child);
+    //   } else if (child instanceof Section) {
+    //     deleteSection(child);
+    //   }
+    // }
 
     // 再删除自己
     StageManager.deleteOneSection(entity);

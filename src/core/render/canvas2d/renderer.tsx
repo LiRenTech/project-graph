@@ -211,6 +211,9 @@ export namespace Renderer {
     for (const edge of Stage.warningEdges) {
       CollisionBoxRenderer.render(edge.collisionBox, new Color(255, 0, 0, 0.5));
     }
+    for (const section of Stage.warningSections) {
+      CollisionBoxRenderer.render(section.collisionBox, new Color(255, 0, 0, 0.5));
+    }
   }
   /**
    * 渲染和纯键盘操作相关的功能

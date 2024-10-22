@@ -359,6 +359,11 @@ export namespace StageManager {
     return res;
   }
 
+  export function deleteSection(section: Section) {
+    StageDeleteManager.deleteEntities([section]);
+    StageHistoryManager.recordStep();
+  }
+
   export function connectNode(fromNode: TextNode, toNode: TextNode) {
     StageNodeConnector.connectNode(fromNode, toNode);
     StageHistoryManager.recordStep();

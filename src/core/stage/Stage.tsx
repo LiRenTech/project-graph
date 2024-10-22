@@ -53,6 +53,7 @@ export namespace Stage {
    * 正在准备要删除的连线
    */
   export let warningEdges: Edge[] = [];
+  export let warningSections: Section[] = [];
   /**
    * 用于多重连接
    */
