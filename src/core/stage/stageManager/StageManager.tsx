@@ -27,21 +27,21 @@ import { StringDict } from "../../dataStruct/StringDict";
  * 管理节点、边的关系等，内部包含了舞台上的所有实体
  */
 export namespace StageManager {
-  const nodes: StringDict<TextNode> = StringDict.create();
+  const entities: StringDict<TextNode> = StringDict.create();
   const edges: StringDict<Edge> = StringDict.create();
 
   export function getTextNodes(): TextNode[] {
-    return nodes.valuesToArray().filter((node) => node instanceof TextNode);
+    return entities.valuesToArray().filter((node) => node instanceof TextNode);
   }
 
   export function getEntities(): TextNode[] {
-    return nodes.valuesToArray();
+    return entities.valuesToArray();
   }
   export function isNoEntity(): boolean {
-    return nodes.length === 0;
+    return entities.length === 0;
   }
   export function deleteOneTextNode(node: TextNode) {
-    nodes.deleteValue(node);
+    entities.deleteValue(node);
   }
   export function deleteOneEdge(edge: Edge) {
     edges.deleteValue(edge);
@@ -56,12 +56,12 @@ export namespace StageManager {
    * 以防开发过程中造成多开
    */
   export function destroy() {
-    nodes.clear();
+    entities.clear();
     edges.clear();
   }
 
   export function addTextNode(node: TextNode) {
-    nodes.addValue(node, node.uuid);
+    entities.addValue(node, node.uuid);
   }
 
   export function addEdge(edge: Edge) {
@@ -123,11 +123,11 @@ export namespace StageManager {
    * 计算所有节点的中心点
    */
   export function getCenter(): Vector {
-    if (nodes.length === 0) {
+    if (entities.length === 0) {
       return Vector.getZero();
     }
     const allNodesRectangle = Rectangle.getBoundingRectangle(
-      nodes.valuesToArray().map((node) => node.collisionBox.getRectangle()),
+      entities.valuesToArray().map((node) => node.collisionBox.getRectangle()),
     );
     return allNodesRectangle.center;
   }
@@ -136,7 +136,7 @@ export namespace StageManager {
    * 计算所有节点的大小
    */
   export function getSize(): Vector {
-    if (nodes.length === 0) {
+    if (entities.length === 0) {
       return new Vector(Renderer.w, Renderer.h);
     }
     let size = Vector.getZero();
@@ -292,7 +292,7 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
     // 更新选中节点计数
     selectedNodeCount = 0;
-    for (const node of nodes.valuesToArray()) {
+    for (const node of entities.valuesToArray()) {
       if (node.isSelected) {
         selectedNodeCount++;
       }
