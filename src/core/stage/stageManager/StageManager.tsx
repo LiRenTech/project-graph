@@ -16,7 +16,7 @@ import { Stage } from "../Stage";
 import { StageDumper } from "../StageDumper";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { StringDict } from "../../dataStruct/StringDict";
-import { Entity } from "../../stageObject/StageObject";
+import { Association, Entity } from "../../stageObject/StageObject";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -29,7 +29,7 @@ import { Entity } from "../../stageObject/StageObject";
  */
 export namespace StageManager {
   const entities: StringDict<Entity> = StringDict.create();
-  const edges: StringDict<Edge> = StringDict.create();
+  const associations: StringDict<Association> = StringDict.create();
 
   export function getTextNodes(): TextNode[] {
     return entities.valuesToArray().filter((node) => node instanceof TextNode);
@@ -45,11 +45,15 @@ export namespace StageManager {
     entities.deleteValue(node);
   }
   export function deleteOneEdge(edge: Edge) {
-    edges.deleteValue(edge);
+    associations.deleteValue(edge);
+  }
+
+  export function getAssociations(): Association[] {
+    return associations.valuesToArray();
   }
 
   export function getEdges(): Edge[] {
-    return edges.valuesToArray().filter((edge) => edge instanceof Edge);
+    return associations.valuesToArray().filter((edge) => edge instanceof Edge);
   }
 
   /**
@@ -58,7 +62,7 @@ export namespace StageManager {
    */
   export function destroy() {
     entities.clear();
-    edges.clear();
+    associations.clear();
   }
 
   export function addTextNode(node: TextNode) {
@@ -66,7 +70,7 @@ export namespace StageManager {
   }
 
   export function addEdge(edge: Edge) {
-    edges.addValue(edge, edge.uuid);
+    associations.addValue(edge, edge.uuid);
   }
 
   // 用于UI层监测
@@ -100,11 +104,9 @@ export namespace StageManager {
    */
   export function updateReferences() {
     for (const node of getEntities()) {
-      // if (node instanceof ConnectableEntity) {
-
-      // }
+      
       if (node instanceof TextNode) {
-        for (const edge of edges.valuesToArray()) {
+        for (const edge of getEdges()) {
           if (edge.source.unknown && edge.source.uuid === node.uuid) {
             edge.source = node;
           }
@@ -113,7 +115,6 @@ export namespace StageManager {
           }
         }
       }
-
       
     }
   }
@@ -312,7 +313,7 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
     // 更新选中边计数
     selectedEdgeCount = 0;
-    for (const edge of edges.valuesToArray()) {
+    for (const edge of associations.valuesToArray()) {
       if (edge.isSelected) {
         selectedEdgeCount++;
       }
