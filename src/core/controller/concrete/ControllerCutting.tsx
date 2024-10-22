@@ -93,7 +93,7 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
   }
   Stage.isCutting = false;
 
-  StageManager.deleteNodes(Stage.warningNodes);
+  StageManager.deleteEntities(Stage.warningNodes);
   Stage.warningNodes = [];
 
   for (const edge of Stage.warningEdges) {

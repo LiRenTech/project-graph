@@ -57,6 +57,9 @@ export namespace StageManager {
   export function deleteOneTextNode(node: TextNode) {
     entities.deleteValue(node);
   }
+  export function deleteOneSection(section: Section) {
+    entities.deleteValue(section);
+  }
   export function deleteOneEdge(edge: Edge) {
     associations.deleteValue(edge);
   }
@@ -114,20 +117,38 @@ export namespace StageManager {
    * 更新节点的引用，将unknown的节点替换为真实的节点，保证对象在内存中的唯一性
    * 节点什么情况下会是unknown的？
    *
+   * 包含了对Section框的更新
+   * 
    */
   export function updateReferences() {
-    for (const node of getEntities()) {
-      if (node instanceof TextNode) {
+    for (const entity of getEntities()) {
+      if (entity instanceof TextNode) {
         for (const edge of getEdges()) {
-          if (edge.source.unknown && edge.source.uuid === node.uuid) {
-            edge.source = node;
+          if (edge.source.unknown && edge.source.uuid === entity.uuid) {
+            edge.source = entity;
           }
-          if (edge.target.unknown && edge.target.uuid === node.uuid) {
-            edge.target = node;
+          if (edge.target.unknown && edge.target.uuid === entity.uuid) {
+            edge.target = entity;
           }
         }
       }
+
+      if (entity instanceof Section) {
+        const newChildList = [];
+
+        for (const child of entity.children) {
+          if (entities.hasId(child.uuid)) {
+            const childObject = entities.getById(child.uuid)
+            if (childObject) {
+              newChildList.push(childObject);
+            }
+          }
+        }
+        entity.children = newChildList;
+        entity.adjustLocationAndSize();
+      }
     }
+
   }
 
   export function getTextNodeByUUID(uuid: string): TextNode | null {
@@ -304,8 +325,8 @@ export namespace StageManager {
     updateReferences();
   }
 
-  export function deleteNodes(deleteNodes: Entity[]) {
-    StageDeleteManager.deleteNodes(deleteNodes);
+  export function deleteEntities(deleteNodes: Entity[]) {
+    StageDeleteManager.deleteEntities(deleteNodes);
     StageHistoryManager.recordStep();
     // 更新选中节点计数
     selectedNodeCount = 0;

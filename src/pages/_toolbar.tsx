@@ -390,7 +390,7 @@ function openBrowserOrFile() {
 }
 
 function deleteSelectedObjects() {
-  StageManager.deleteNodes(
+  StageManager.deleteEntities(
     StageManager.getTextNodes().filter((node) => node.isSelected),
   );
   for (const edge of StageManager.getEdges()) {

@@ -178,7 +178,7 @@ export namespace Controller {
     pressingKeySet.add(key);
     // 删除功能代码量太小了，暂时先直接写在这里
     if (key === "delete") {
-      StageManager.deleteNodes(
+      StageManager.deleteEntities(
         StageManager.getEntities().filter((node) => node.isSelected),
       );
     }
