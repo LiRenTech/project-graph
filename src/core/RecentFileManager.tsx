@@ -158,8 +158,12 @@ export namespace RecentFileManager {
   }
 
   export function loadStageByData(data: Serialized.File) {
-    for (const node of data.nodes) {
-      StageManager.addTextNode(new TextNode(node));
+    for (const entity of data.nodes) {
+      if (entity.type === "core:text_node") {
+        StageManager.addTextNode(new TextNode(entity));
+      } else if (entity.type === "core:section") {
+        // TODO: 处理section
+      }
     }
     for (const edge of data.edges) {
       StageManager.addEdge(new Edge(edge));

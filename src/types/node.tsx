@@ -12,26 +12,30 @@ export namespace Serialized {
   }
 
   export type Node = Entity & {
+    type: "core:text_node";
     size: Vector;
     text: string;
-    details: string;
     color: Color;
-    type: "core:text_node";
+
+    details: string;
   };
 
   export type Section = Entity & {
+    type: "core:section";
     size: Vector;
     text: string;
     color: Color;
-    type: "core:section";
+
+    children: string[];  // uuid[]
+    isHidden: boolean;
+    isCollapsed: boolean;
   };
 
   export type Edge = StageObject & {
+    type: "core:edge";
     source: string;
     target: string;
     text: string;
-    uuid: string;
-    type: "core:edge";
   };
   export type File = {
     version: 8;  // 最新版本 src\core\stage\StageDumper.tsx latestVersion

@@ -17,6 +17,7 @@ import { StageDumper } from "../StageDumper";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { StringDict } from "../../dataStruct/StringDict";
 import { Association, Entity } from "../../stageObject/StageObject";
+import { Section } from "../../stageObject/entity/Section";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -34,7 +35,9 @@ export namespace StageManager {
   export function getTextNodes(): TextNode[] {
     return entities.valuesToArray().filter((node) => node instanceof TextNode);
   }
-
+  export function getSections(): Section[] {
+    return entities.valuesToArray().filter((node) => node instanceof Section);
+  }
   export function getEntities(): Entity[] {
     return entities.valuesToArray();
   }

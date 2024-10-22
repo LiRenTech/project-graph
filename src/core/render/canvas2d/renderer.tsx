@@ -16,7 +16,7 @@ import { LineEffect } from "../../effect/concrete/LineEffect";
 import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
 import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
 import { StageHistoryManager } from "../../stage/stageManager/concreteMethods/StageHistoryManager";
-import { NodeRenderer } from "./entityRenderer/NodeRenderer";
+import { EntityRenderer } from "./entityRenderer/EntityRenderer";
 import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
 import { Settings } from "../../Settings";
 import { ExplodeAshEffect } from "../../effect/concrete/ExplodeDashEffect";
@@ -252,8 +252,14 @@ export namespace Renderer {
       if (!viewRectangle.isCollideWith(node.rectangle)) {
         continue;
       }
-      NodeRenderer.renderNode(node);
+      EntityRenderer.renderNode(node);
       renderedNodes++;
+    }
+    for (const section of StageManager.getSections()) {
+      if (!viewRectangle.isCollideWith(section.rectangle)) {
+        continue;
+      }
+      EntityRenderer.renderSection(section);
     }
   }
 

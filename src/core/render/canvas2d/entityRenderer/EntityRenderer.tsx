@@ -5,11 +5,26 @@ import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Camera } from "../../../stage/Camera";
 import { Renderer } from "../renderer";
 import { RenderUtils } from "../RenderUtils";
+import { Section } from "../../../stageObject/entity/Section";
 
 /**
  * 处理节点相关的绘制
  */
-export namespace NodeRenderer {
+export namespace EntityRenderer {
+  
+  export function renderSection(section: Section) {
+    RenderUtils.renderRect(
+      new Rectangle(
+        Renderer.transformWorld2View(section.rectangle.location),
+        section.rectangle.size.multiply(Camera.currentScale),
+      ),
+      section.color,
+      new Color(204, 204, 204, 1),
+      2 * Camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+    );
+  }
+
   export function renderNode(node: TextNode) {
     // 节点身体矩形
     RenderUtils.renderRect(

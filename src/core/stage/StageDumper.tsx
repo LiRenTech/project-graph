@@ -1,5 +1,6 @@
 import { Serialized } from "../../types/node";
 import { Edge } from "../stageObject/association/Edge";
+import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { Entity } from "../stageObject/StageObject";
 import { StageManager } from "./stageManager/StageManager";
@@ -33,6 +34,20 @@ export namespace StageDumper {
       uuid: edge.uuid,
       type: "core:edge"
     };
+  }
+
+  export function dumpSection(section: Section) : Serialized.Section {
+    return {
+      location: [section.rectangle.location.x, section.rectangle.location.y],
+      size: [section.rectangle.size.x, section.rectangle.size.y],
+      uuid: section.uuid,
+      text: section.text,
+      color: section.color && section.color.toArray(),
+      type: "core:section",
+      isCollapsed: section.isCollapsed,
+      isHidden: section.isHidden,
+      children: section.children.map((child) => child.uuid)
+    }
   }
 
   /**
