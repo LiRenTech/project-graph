@@ -5,9 +5,30 @@ import { StageManager } from "../StageManager";
 /**
  * 管理节点的位置移动
  * 不仅仅有鼠标拖动的移动，还有对齐造成的移动
+ * 还要处理节点移动后，对Section大小造成的影响
  * 以后还可能有自动布局的功能
  */
-export namespace StageNodeMoveManager {
+export namespace StageNodeTextMoveManager {
+  export function moveNodeUtils(node: TextNode, delta: Vector) {
+    node.move(delta);
+    const nodeUUID = node.uuid;
+    for (const section of StageManager.getSections()) {
+      if (section.isHaveChildrenByUUID(nodeUUID)) {
+        section.adjustLocationAndSize();
+      }
+    }
+  }
+
+  function moveNodeToUtils(node: TextNode, location: Vector) {
+    node.moveTo(location);
+    const nodeUUID = node.uuid;
+    for (const section of StageManager.getSections()) {
+      if (section.isHaveChildrenByUUID(nodeUUID)) {
+        section.adjustLocationAndSize();
+      }
+    }
+  }
+
   /**
    * 拖动所有选中的节点一起移动
    * @param delta
@@ -15,7 +36,7 @@ export namespace StageNodeMoveManager {
   export function moveNodes(delta: Vector) {
     for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
-        node.move(delta);
+        moveNodeUtils(node, delta);
       }
     }
   }
@@ -36,7 +57,7 @@ export namespace StageNodeMoveManager {
     delta: Vector,
     visitedUUIDs: string[],
   ) {
-    node.move(delta);
+    moveNodeUtils(node, delta);
     for (const child of StageManager.nodeChildrenArray(node)) {
       if (visitedUUIDs.includes(child.uuid)) {
         continue;
@@ -59,7 +80,10 @@ export namespace StageNodeMoveManager {
       ...nodes.map((node) => node.collisionBox.getRectangle().left),
     );
     for (const node of nodes) {
-      node.move(new Vector(minX - node.collisionBox.getRectangle().left, 0));
+      moveNodeUtils(
+        node,
+        new Vector(minX - node.collisionBox.getRectangle().left, 0),
+      );
     }
   }
 
@@ -72,7 +96,10 @@ export namespace StageNodeMoveManager {
       ...nodes.map((node) => node.collisionBox.getRectangle().right),
     );
     for (const node of nodes) {
-      node.move(new Vector(maxX - node.collisionBox.getRectangle().right, 0));
+      moveNodeUtils(
+        node,
+        new Vector(maxX - node.collisionBox.getRectangle().right, 0),
+      );
     }
   }
 
@@ -85,7 +112,10 @@ export namespace StageNodeMoveManager {
       ...nodes.map((node) => node.collisionBox.getRectangle().top),
     );
     for (const node of nodes) {
-      node.move(new Vector(0, minY - node.collisionBox.getRectangle().top));
+      moveNodeUtils(
+        node,
+        new Vector(0, minY - node.collisionBox.getRectangle().top),
+      );
     }
   }
 
@@ -98,7 +128,10 @@ export namespace StageNodeMoveManager {
       ...nodes.map((node) => node.collisionBox.getRectangle().bottom),
     );
     for (const node of nodes) {
-      node.move(new Vector(0, maxY - node.collisionBox.getRectangle().bottom));
+      moveNodeUtils(
+        node,
+        new Vector(0, maxY - node.collisionBox.getRectangle().bottom),
+      );
     }
   }
 
@@ -124,7 +157,10 @@ export namespace StageNodeMoveManager {
         node.collisionBox.getRectangle().size.y / 2;
       const newY =
         centerY - (nodeCenterY - node.collisionBox.getRectangle().top);
-      node.moveTo(new Vector(node.collisionBox.getRectangle().left, newY));
+      moveNodeToUtils(
+        node,
+        new Vector(node.collisionBox.getRectangle().left, newY),
+      );
     }
   }
 
@@ -150,7 +186,10 @@ export namespace StageNodeMoveManager {
         node.collisionBox.getRectangle().size.x / 2;
       const newX =
         centerX - (nodeCenterX - node.collisionBox.getRectangle().left);
-      node.moveTo(new Vector(newX, node.collisionBox.getRectangle().top));
+      moveNodeToUtils(
+        node,
+        new Vector(newX, node.collisionBox.getRectangle().top),
+      );
     }
   }
 
@@ -181,7 +220,10 @@ export namespace StageNodeMoveManager {
       (a, b) =>
         a.collisionBox.getRectangle().left - b.collisionBox.getRectangle().left,
     )) {
-      node.moveTo(new Vector(startX, node.collisionBox.getRectangle().top));
+      moveNodeToUtils(
+        node,
+        new Vector(startX, node.collisionBox.getRectangle().top),
+      );
       startX += node.collisionBox.getRectangle().size.x + spaceBetween;
     }
   }
@@ -213,7 +255,10 @@ export namespace StageNodeMoveManager {
       (a, b) =>
         a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top,
     )) {
-      node.moveTo(new Vector(node.collisionBox.getRectangle().left, startY));
+      moveNodeToUtils(
+        node,
+        new Vector(node.collisionBox.getRectangle().left, startY),
+      );
       startY += node.collisionBox.getRectangle().size.y + spaceBetween;
     }
   }

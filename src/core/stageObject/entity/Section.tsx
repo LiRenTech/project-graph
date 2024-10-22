@@ -52,6 +52,10 @@ export class Section extends ConnectableEntity {
     // 一定要放在最后
     this.adjustLocationAndSize();
   }
+  
+  isHaveChildrenByUUID(uuid: string): boolean {
+    return this.children.some((child) => child.uuid === uuid);
+  }
 
   /**
    * 根据多个实体创建节点

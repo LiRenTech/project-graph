@@ -7,7 +7,7 @@ import { StageNodeRotate } from "./concreteMethods/stageNodeRotate";
 import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
-import { StageNodeMoveManager } from "./concreteMethods/StageNodeMoveManager";
+import { StageNodeTextMoveManager } from "./concreteMethods/StageNodeMoveManager";
 import { StageNodeColorManager } from "./concreteMethods/StageNodeColorManager";
 import { Serialized } from "../../../types/node";
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
@@ -224,45 +224,45 @@ export namespace StageManager {
    * @param delta
    */
   export function moveNodes(delta: Vector) {
-    StageNodeMoveManager.moveNodes(delta); // 连续过程，不记录历史，只在结束时记录
+    StageNodeTextMoveManager.moveNodes(delta); // 连续过程，不记录历史，只在结束时记录
   }
 
   export function moveNodesWithChildren(delta: Vector) {
-    StageNodeMoveManager.moveNodesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录
+    StageNodeTextMoveManager.moveNodesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录
   }
 
   export function alignLeft() {
-    StageNodeMoveManager.alignLeft();
+    StageNodeTextMoveManager.alignLeft();
     StageHistoryManager.recordStep();
   }
 
   export function alignRight() {
-    StageNodeMoveManager.alignRight();
+    StageNodeTextMoveManager.alignRight();
     StageHistoryManager.recordStep();
   }
 
   export function alignTop() {
-    StageNodeMoveManager.alignTop();
+    StageNodeTextMoveManager.alignTop();
     StageHistoryManager.recordStep();
   }
   export function alignBottom() {
-    StageNodeMoveManager.alignBottom();
+    StageNodeTextMoveManager.alignBottom();
     StageHistoryManager.recordStep();
   }
   export function alignCenterHorizontal() {
-    StageNodeMoveManager.alignCenterHorizontal();
+    StageNodeTextMoveManager.alignCenterHorizontal();
     StageHistoryManager.recordStep();
   }
   export function alignCenterVertical() {
-    StageNodeMoveManager.alignCenterVertical();
+    StageNodeTextMoveManager.alignCenterVertical();
     StageHistoryManager.recordStep();
   }
   export function alignHorizontalSpaceBetween() {
-    StageNodeMoveManager.alignHorizontalSpaceBetween();
+    StageNodeTextMoveManager.alignHorizontalSpaceBetween();
     StageHistoryManager.recordStep();
   }
   export function alignVerticalSpaceBetween() {
-    StageNodeMoveManager.alignVerticalSpaceBetween();
+    StageNodeTextMoveManager.alignVerticalSpaceBetween();
     StageHistoryManager.recordStep();
   }
 
