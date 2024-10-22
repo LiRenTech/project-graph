@@ -107,7 +107,7 @@ export class Rectangle extends Shape {
    * @param rectangles
    * @returns
    */
-  public static getBoundingRectangle(rectangles: Rectangle[]): Rectangle {
+  public static getBoundingRectangle(rectangles: Rectangle[], padding: number = 0): Rectangle {
     if (rectangles.length === 0) {
       // 抛出异常
       throw new Error("rectangles is empty");
@@ -118,10 +118,10 @@ export class Rectangle extends Shape {
     let right = -Infinity;
     let bottom = -Infinity;
     for (const rect of rectangles) {
-      left = Math.min(left, rect.left);
-      top = Math.min(top, rect.top);
-      right = Math.max(right, rect.right);
-      bottom = Math.max(bottom, rect.bottom);
+      left = Math.min(left, rect.left - padding);
+      top = Math.min(top, rect.top - padding);
+      right = Math.max(right, rect.right + padding);
+      bottom = Math.max(bottom, rect.bottom + padding);
     }
     return Rectangle.fromEdges(left, top, right, bottom);
   }

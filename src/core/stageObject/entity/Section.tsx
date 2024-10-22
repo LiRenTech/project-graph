@@ -52,7 +52,7 @@ export class Section extends ConnectableEntity {
     // 一定要放在最后
     this.adjustLocationAndSize();
   }
-  
+
   isHaveChildrenByUUID(uuid: string): boolean {
     return this.children.some((child) => child.uuid === uuid);
   }
@@ -82,6 +82,7 @@ export class Section extends ConnectableEntity {
 
     this.collisionBox.shapeList = Rectangle.getBoundingRectangle(
       this.children.map((child) => child.collisionBox.getRectangle()),
+      15,
     ).getBoundingLines();
   }
 
