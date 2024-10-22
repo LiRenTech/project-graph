@@ -10,6 +10,7 @@ import { RenderUtils } from "../../RenderUtils";
 import { StraightEdgeRenderer } from "./concrete/StraightEdgeRenderer";
 import { SymmetryCurveEdgeRenderer } from "./concrete/SymmetryCurveEdgeRenderer";
 import { VerticalPolyEdgeRenderer } from "./concrete/VerticalPolyEdgeRenderer";
+import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 
 /**
  * 边的总渲染器单例
@@ -67,7 +68,7 @@ export namespace EdgeRenderer {
 
     // 选中的高亮效果
     if (edge.isSelected) {
-      currentRenderer.renderSelectedShadow(edge);
+      CollisionBoxRenderer.render(edge.collisionBox, new Color(255, 255, 0, 0.5))
     }
   }
 
@@ -82,13 +83,6 @@ export namespace EdgeRenderer {
     endNode: TextNode,
   ) {
     currentRenderer.renderVirtualConfirmedEdge(startNode, endNode);
-  }
-  export function renderHoverShadow(edge: Edge) {
-    currentRenderer.renderHoverShadow(edge);
-  }
-
-  export function renderWarningShadow(edge: Edge) {
-    currentRenderer.renderWarningShadow(edge);
   }
 
   export function getCuttingEffects(edge: Edge) {

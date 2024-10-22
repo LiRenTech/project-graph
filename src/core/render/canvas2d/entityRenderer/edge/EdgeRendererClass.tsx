@@ -45,22 +45,6 @@ export abstract class EdgeRendererClass {
   public abstract renderCycleState(edge: Edge): void;
 
   /**
-   * 绘制鼠标hover时的额外的阴影效果
-   * 实现时需要自行判断是什么形态
-   */
-  public abstract renderHoverShadow(edge: Edge): void;
-
-  /**
-   * 绘制选中状态下的额外阴影效果
-   */
-  public abstract renderSelectedShadow(edge: Edge): void;
-
-  /**
-   * 绘制在准备删除的警告状态下的额外阴影效果
-   */
-  public abstract renderWarningShadow(edge: Edge): void;
-
-  /**
    * 绘制鼠标连线移动时的虚拟连线效果
    * @param startNode 
    * @param mouseLocation 世界坐标系

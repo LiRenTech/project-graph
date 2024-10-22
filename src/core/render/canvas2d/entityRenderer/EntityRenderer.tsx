@@ -6,12 +6,12 @@ import { Camera } from "../../../stage/Camera";
 import { Renderer } from "../renderer";
 import { RenderUtils } from "../RenderUtils";
 import { Section } from "../../../stageObject/entity/Section";
+import { CollisionBoxRenderer } from "./CollisionBoxRenderer";
 
 /**
  * 处理节点相关的绘制
  */
 export namespace EntityRenderer {
-  
   export function renderSection(section: Section) {
     RenderUtils.renderRect(
       new Rectangle(
@@ -51,20 +51,7 @@ export namespace EntityRenderer {
 
     if (node.isSelected) {
       // 在外面增加一个框
-      RenderUtils.renderRect(
-        new Rectangle(
-          Renderer.transformWorld2View(
-            node.rectangle.location.subtract(Vector.same(7.5)),
-          ),
-          node.rectangle.size
-            .add(Vector.same(15))
-            .multiply(Camera.currentScale),
-        ),
-        new Color(0, 0, 0, 0),
-        new Color(255, 255, 255, 0.5),
-        2 * Camera.currentScale,
-        16 * Camera.currentScale,
-      );
+      CollisionBoxRenderer.render(node.collisionBox, new Color(0, 255, 0, 0.5));
     }
 
     if (node.details && !node.isEditingDetails) {

@@ -1,4 +1,3 @@
-import { Controller } from "../../../../../controller/Controller";
 import { Color } from "../../../../../dataStruct/Color";
 import { SymmetryCurve } from "../../../../../dataStruct/shape/Curve";
 import { ProgressNumber } from "../../../../../dataStruct/ProgressNumber";
@@ -161,54 +160,5 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       new Color(0, 204, 0),
       2 * Camera.currentScale,
     );
-  }
-
-  public renderHoverShadow(edge: Edge): void {
-    if (this.isCycleState(edge)) {
-      RenderUtils.renderArc(
-        Renderer.transformWorld2View(edge.target.rectangle.location),
-        (edge.source.rectangle.size.y / 2) * Camera.currentScale,
-        Math.PI / 2,
-        0,
-        new Color(0, 255, 0, 0.5),
-        2 * Camera.currentScale,
-      );
-    } else {
-      RenderUtils.renderSolidLine(
-        Renderer.transformWorld2View(edge.bodyLine.start),
-        Renderer.transformWorld2View(edge.bodyLine.end),
-        new Color(0, 255, 0, 0.1),
-        Controller.edgeHoverTolerance * 2 * Camera.currentScale,
-      );
-    }
-  }
-
-  public renderSelectedShadow(edge: Edge): void {
-    RenderUtils.renderSolidLine(
-      Renderer.transformWorld2View(edge.bodyLine.start),
-      Renderer.transformWorld2View(edge.bodyLine.end),
-      new Color(0, 255, 0, 0.5),
-      4 * Camera.currentScale,
-    );
-  }
-
-  public renderWarningShadow(edge: Edge): void {
-    if (this.isCycleState(edge)) {
-      RenderUtils.renderArc(
-        Renderer.transformWorld2View(edge.target.rectangle.location),
-        (edge.source.rectangle.size.y / 2) * Camera.currentScale,
-        Math.PI / 2,
-        0,
-        new Color(255, 0, 0, 0.5),
-        2 * Camera.currentScale,
-      );
-    } else {
-      RenderUtils.renderSolidLine(
-        Renderer.transformWorld2View(edge.source.rectangle.getCenter()),
-        Renderer.transformWorld2View(edge.target.rectangle.getCenter()),
-        new Color(255, 0, 0, 0.5),
-        2 * Camera.currentScale,
-      );
-    }
   }
 }

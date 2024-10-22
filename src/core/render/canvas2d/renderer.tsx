@@ -21,6 +21,7 @@ import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
 import { Settings } from "../../Settings";
 import { ExplodeAshEffect } from "../../effect/concrete/ExplodeDashEffect";
 import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
+import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
 
 /**
  * 渲染器
@@ -112,7 +113,7 @@ export namespace Renderer {
     renderWarningEntities();
     // 鼠标hover的边
     for (const edge of Stage.hoverEdges) {
-      EdgeRenderer.renderHoverShadow(edge);
+      CollisionBoxRenderer.render(edge.collisionBox, new Color(0, 255, 0, 0.5));
     }
     timings.entities = performance.now() - start;
 
@@ -201,20 +202,11 @@ export namespace Renderer {
   function renderWarningEntities() {
     // 待删除的节点
     for (const node of Stage.warningNodes) {
-      RenderUtils.renderRect(
-        new Rectangle(
-          transformWorld2View(node.rectangle.location),
-          node.rectangle.size.multiply(Camera.currentScale),
-        ),
-        new Color(255, 0, 0, 0.5),
-        new Color(255, 0, 0, 0.5),
-        2 * Camera.currentScale,
-        8 * Camera.currentScale,
-      );
+      CollisionBoxRenderer.render(node.collisionBox, new Color(255, 0, 0, 0.5));
     }
     // 待删除的边
     for (const edge of Stage.warningEdges) {
-      EdgeRenderer.renderWarningShadow(edge);
+      CollisionBoxRenderer.render(edge.collisionBox, new Color(255, 0, 0, 0.5));
     }
   }
   /**
@@ -395,7 +387,7 @@ export namespace Renderer {
         RenderUtils.renderCircle(
           transformWorld2View(new Vector(xStart, yStart)),
           1,
-          xStart === 0 || yStart === 0? mainColor : gridColor,
+          xStart === 0 || yStart === 0 ? mainColor : gridColor,
           Color.Transparent,
           0,
         );
