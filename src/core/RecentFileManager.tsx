@@ -11,6 +11,7 @@ import { TextNode } from "./stageObject/entity/TextNode";
 import { invoke } from "@tauri-apps/api/core";
 import { Serialized } from "../types/node";
 import { StageHistoryManager } from "./stage/stageManager/concreteMethods/StageHistoryManager";
+import { Section } from "./stageObject/entity/Section";
 
 /**
  * 管理最近打开的文件列表
@@ -162,7 +163,7 @@ export namespace RecentFileManager {
       if (entity.type === "core:text_node") {
         StageManager.addTextNode(new TextNode(entity));
       } else if (entity.type === "core:section") {
-        // TODO: 处理section
+        StageManager.addSection(new Section(entity));
       }
     }
     for (const edge of data.edges) {

@@ -84,6 +84,9 @@ export namespace StageManager {
   export function addTextNode(node: TextNode) {
     entities.addValue(node, node.uuid);
   }
+  export function addSection(section: Section) {
+    entities.addValue(section, section.uuid);
+  }
 
   export function addEdge(edge: Edge) {
     associations.addValue(edge, edge.uuid);

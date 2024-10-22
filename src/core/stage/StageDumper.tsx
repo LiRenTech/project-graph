@@ -22,7 +22,7 @@ export namespace StageDumper {
       uuid: textNode.uuid,
       details: textNode.details,
       color: textNode.color && textNode.color.toArray(),
-      type: "core:text_node"
+      type: "core:text_node",
     };
   }
 
@@ -32,11 +32,11 @@ export namespace StageDumper {
       target: edge.target.uuid,
       text: edge.text,
       uuid: edge.uuid,
-      type: "core:edge"
+      type: "core:edge",
     };
   }
 
-  export function dumpSection(section: Section) : Serialized.Section {
+  export function dumpSection(section: Section): Serialized.Section {
     return {
       location: [section.rectangle.location.x, section.rectangle.location.y],
       size: [section.rectangle.size.x, section.rectangle.size.y],
@@ -46,8 +46,8 @@ export namespace StageDumper {
       type: "core:section",
       isCollapsed: section.isCollapsed,
       isHidden: section.isHidden,
-      children: section.children.map((child) => child.uuid)
-    }
+      children: section.children.map((child) => child.uuid),
+    };
   }
 
   /**
@@ -55,10 +55,15 @@ export namespace StageDumper {
    * @returns
    */
   export function dump(): Serialized.File {
-    
+    const nodes: (Serialized.Section | Serialized.Node)[] =
+      StageManager.getTextNodes().map((node) => dumpTextNode(node));
+
+    nodes.push(
+      ...StageManager.getSections().map((section) => dumpSection(section)),
+    );
     return {
       version: latestVersion,
-      nodes: StageManager.getTextNodes().map((node) => dumpTextNode(node)),
+      nodes,
       edges: StageManager.getEdges().map((edge) => dumpEdge(edge)),
     };
   }
