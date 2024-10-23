@@ -71,10 +71,10 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     //   Math.abs(direction.x) >= Math.abs(direction.y) ? 0 : direction.y,
     // ).normalize();
     const size = 15; // 箭头大小
-    const endNormal = edge.target.rectangle.getNormalVectorAt(end);
+    const endNormal = edge.target.collisionBox.getRectangle().getNormalVectorAt(end);
     const curve = new SymmetryCurve(
       start,
-      edge.source.rectangle.getNormalVectorAt(start),
+      edge.source.collisionBox.getRectangle().getNormalVectorAt(start),
       end.subtract(endNormal.multiply(size / -2)),
       endNormal,
       Math.abs(direction.magnitude()) / 2,
