@@ -7,6 +7,7 @@ import { Line } from "./Line";
  * 贝塞尔曲线
  */
 export class CubicBezierCurve extends Shape {
+
   constructor(
     public start: Vector,
     public ctrlPt1: Vector,
@@ -17,20 +18,18 @@ export class CubicBezierCurve extends Shape {
   }
 
   toString(): string {
-    return `SymmetryCurve(start:${this.start}, ctrlPt1:${this.ctrlPt1}, ctrlPt2:${this.ctrlPt2}, end:${this.end})`;
+    return `CubicBezierCurve(start:${this.start}, ctrlPt1:${this.ctrlPt1}, ctrlPt2:${this.ctrlPt2}, end:${this.end})`;
   }
 
+  // TODO 更改成真正的贝塞尔曲线形式
   isPointIn(point: Vector): boolean {
-    console.log(point);
-    return false;
+    return new Line(this.start, this.end).isPointIn(point);
   }
   isCollideWithRectangle(rectangle: Rectangle): boolean {
-    console.log(rectangle);
-    return false;
+    return new Line(this.start, this.end).isCollideWithRectangle(rectangle);
   }
   isCollideWithLine(line: Line): boolean {
-    console.log(line);
-    return false;
+    return new Line(this.start, this.end).isCollideWithLine(line);
   }
   getRectangle(): Rectangle {
     let minX = Math.min(
@@ -87,16 +86,13 @@ export class SymmetryCurve extends Shape {
   }
 
   isPointIn(point: Vector): boolean {
-    console.log(point);
-    return false;
+    return this.bezier.isPointIn(point);
   }
   isCollideWithRectangle(rectangle: Rectangle): boolean {
-    console.log(rectangle);
-    return false;
+    return this.bezier.isCollideWithRectangle(rectangle);
   }
   isCollideWithLine(line: Line): boolean {
-    console.log(line);
-    return false;
+    return this.bezier.isCollideWithLine(line);
   }
 
   toString(): string {

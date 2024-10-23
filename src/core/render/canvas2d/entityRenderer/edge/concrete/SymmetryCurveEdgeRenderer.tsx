@@ -12,6 +12,7 @@ import { Renderer } from "../../../renderer";
 import { RenderUtils } from "../../../RenderUtils";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
+import { WorldRenderUtils } from "../../../WorldRenderUtils";
 
 export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   getCuttingEffects(edge: Edge): Effect[] {
@@ -62,8 +63,8 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
 
   public renderNormalState(edge: Edge): void {
     // 绘制曲线本体
-    const start = Renderer.transformWorld2View(edge.bodyLine.start);
-    const end = Renderer.transformWorld2View(edge.bodyLine.end);
+    const start = edge.bodyLine.start;
+    const end = edge.bodyLine.end;
     const direction = end.subtract(start);
     const startDirection = new Vector(
       Math.abs(direction.x) >= Math.abs(direction.y) ? direction.x : 0,
@@ -73,22 +74,21 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     const curve = new SymmetryCurve(
       start,
       startDirection,
-      end.subtract(startDirection.multiply((size / 2) * Camera.currentScale)),
+      end.subtract(startDirection.multiply(size / 2)),
       startDirection.multiply(-1),
       Math.abs(direction.magnitude()) / 2,
     );
-    RenderUtils.renderSymmetryCurve(
+    WorldRenderUtils.renderSymmetryCurve(
       curve,
       new Color(204, 204, 204),
-      2 * Camera.currentScale,
+      2,
     );
     // 画箭头
-
     const endPoint = edge.bodyLine.end
       .clone()
-      .subtract(startDirection.multiply(4.75));
+      .subtract(startDirection.multiply(2));
     EdgeRenderer.renderArrowHead(endPoint, startDirection, size);
-    
+    // 画文本
     RenderUtils.renderTextFromCenter(
       edge.text,
       Renderer.transformWorld2View(edge.bodyLine.midPoint()),
