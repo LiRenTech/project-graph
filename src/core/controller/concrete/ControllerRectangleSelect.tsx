@@ -145,11 +145,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
       if (
         edge.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
       ) {
-        if (
-          Controller.lastSelectedEdge.has(
-            edge.target.uuid + "&" + edge.source.uuid,
-          )
-        ) {
+        if (Controller.lastSelectedEdge.has(edge.uuid)) {
           edge.isSelected = false;
         } else {
           edge.isSelected = true;
@@ -207,12 +203,9 @@ ControllerRectangleSelect.mouseup = (event: MouseEvent) => {
   }
   Controller.lastSelectedEdge = new Set();
   for (const edge of StageManager.getEdges()) {
-    // TODO: 该改了，edge已经有uuid了
 
     if (edge.isSelected) {
-      Controller.lastSelectedEdge.add(
-        edge.target.uuid + "&" + edge.source.uuid,
-      );
+      Controller.lastSelectedEdge.add(edge.uuid);
     }
   }
 };
