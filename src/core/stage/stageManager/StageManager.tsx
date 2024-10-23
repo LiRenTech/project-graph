@@ -16,7 +16,7 @@ import { Stage } from "../Stage";
 import { StageDumper } from "../StageDumper";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { StringDict } from "../../dataStruct/StringDict";
-import { Association, Entity } from "../../stageObject/StageObject";
+import { Association, ConnectableEntity, Entity } from "../../stageObject/StageObject";
 import { Section } from "../../stageObject/entity/Section";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
 
@@ -35,6 +35,9 @@ export namespace StageManager {
 
   export function getTextNodes(): TextNode[] {
     return entities.valuesToArray().filter((node) => node instanceof TextNode);
+  }
+  export function isEntityExists(uuid: string): boolean {
+    return entities.hasId(uuid);
   }
   export function getSections(): Section[] {
     return entities.valuesToArray().filter((node) => node instanceof Section);
@@ -98,10 +101,10 @@ export namespace StageManager {
   export let selectedEdgeCount = 0;
 
   /** 获取节点连接的子节点数组 */
-  export function nodeChildrenArray(node: TextNode): TextNode[] {
-    const res: TextNode[] = [];
+  export function nodeChildrenArray(node: ConnectableEntity): ConnectableEntity[] {
+    const res: ConnectableEntity[] = [];
     for (const edge of getEdges()) {
-      if (edge.source === node) {
+      if (edge.source.uuid === node.uuid) {
         res.push(edge.target);
       }
     }

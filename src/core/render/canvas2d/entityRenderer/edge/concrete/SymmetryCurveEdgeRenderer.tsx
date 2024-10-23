@@ -99,8 +99,8 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   public renderCycleState(edge: Edge): void {
     // 自环
     RenderUtils.renderArc(
-      Renderer.transformWorld2View(edge.target.rectangle.location),
-      (edge.target.rectangle.size.y / 2) * Camera.currentScale,
+      Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
+      (edge.target.collisionBox.getRectangle().size.y / 2) * Camera.currentScale,
       Math.PI / 2,
       0,
       new Color(204, 204, 204),
@@ -110,7 +110,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     {
       const size = 15;
       const direction = new Vector(1, 0).rotateDegrees(15);
-      const endPoint = edge.target.rectangle.leftCenter;
+      const endPoint = edge.target.collisionBox.getRectangle().leftCenter;
       EdgeRenderer.renderArrowHead(endPoint, direction, size);
     }
   }

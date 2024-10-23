@@ -26,16 +26,19 @@ export class Section extends ConnectableEntity {
   /** 是否是隐藏状态 */
   isHidden: boolean;
 
-  constructor({
-    uuid,
-    text = "",
-    location = [0, 0],
-    size = [0, 0],
-    color = [0, 0, 0, 0],
-    isHidden = false,
-    isCollapsed = false,
-    children = [],
-  }: Partial<Serialized.Section> & { uuid: string }) {
+  constructor(
+    {
+      uuid,
+      text = "",
+      location = [0, 0],
+      size = [0, 0],
+      color = [0, 0, 0, 0],
+      isHidden = false,
+      isCollapsed = false,
+      children = [],
+    }: Partial<Serialized.Section> & { uuid: string },
+    public unknown = false,
+  ) {
     super();
     this.uuid = uuid;
     this.collisionBox = new CollisionBox(
