@@ -28,7 +28,7 @@ export namespace Controller {
   /**
    * 在上层接收React提供的state修改函数
    */
-  export const setCursorName: (_: string) => void = () => {};
+  export let setCursorName: (_: string) => void = () => {};
 
   // 检测正在按下的键
   export const pressingKeySet: Set<string> = new Set();
@@ -72,7 +72,8 @@ export namespace Controller {
   /**
    * 是否正在进行移动节点的操作
    */
-  export const isMovingEntity = false;
+  // eslint-disable-next-line prefer-const
+  export let isMovingEntity = false;
   /**
    * 是否正在进行移动(拖拽旋转)连线的操作
    */
@@ -87,7 +88,7 @@ export namespace Controller {
   /**
    * 有时需要锁定相机，比如 编辑节点时
    */
-  export const isCameraLocked = false;
+  export let isCameraLocked = false;
 
   /**
    * 上次选中的节点

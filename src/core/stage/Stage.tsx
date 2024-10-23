@@ -23,38 +23,43 @@ export namespace Stage {
   /**
    * 是否正在框选
    */
-  export const isSelecting = false;
+  export let isSelecting = false;
   /**
    * 框选框
    * 这里必须一开始为null，否则报错，can not asses "Rectangle"
    * 这个框选框是基于世界坐标的。
    * 此变量会根据两个点的位置自动更新。
    */
-  export const selectingRectangle: Rectangle | null = null;
+  export let selectingRectangle: Rectangle | null = null;
 
   /**
    * 框选框的起点
    */
-  export const selectStartLocation: Vector = Vector.getZero();
+  export let selectStartLocation: Vector = Vector.getZero();
   /**
    * 框选框的终点
    */
-  export const selectEndLocation: Vector = Vector.getZero();
+  export let selectEndLocation: Vector = Vector.getZero();
 
   /**
    * 是否正在切断连线或切割
    */
-  export const isCutting = false;
-  export const cuttingLine: Line | null = null;
+  // eslint-disable-next-line prefer-const
+  export let isCutting = false;
+  // eslint-disable-next-line prefer-const
+  export let cuttingLine: Line | null = null;
   /**
    * 正在准备要删除的节点
    */
-  export const warningEntity: Entity[] = [];
+  // eslint-disable-next-line prefer-const
+  export let warningEntity: Entity[] = [];
   /**
    * 正在准备要删除的连线
    */
-  export const warningEdges: Edge[] = [];
-  export const warningSections: Section[] = [];
+  // eslint-disable-next-line prefer-const
+  export let warningEdges: Edge[] = [];
+  // eslint-disable-next-line prefer-const
+  export let warningSections: Section[] = [];
   /**
    * 用于多重连接
    */
@@ -69,30 +74,36 @@ export namespace Stage {
   // eslint-disable-next-line prefer-const
   export let hoverEdges: Edge[] = [];
   /** 鼠标悬浮的框 */
-  export const hoverSections: Section[] = [];
+  // eslint-disable-next-line prefer-const
+  export let hoverSections: Section[] = [];
 
   /**
    * 键盘操作的生长新节点是否显示
    */
-  export const isVirtualNewNodeShow = false;
+  // eslint-disable-next-line prefer-const
+  export let isVirtualNewNodeShow = false;
   /**
    * 键盘操作的生长新节点的位置
    */
-  export const keyOnlyVirtualNewLocation = Vector.getZero();
+  // eslint-disable-next-line prefer-const
+  export let keyOnlyVirtualNewLocation = Vector.getZero();
 
   /**
    * 搜索结果
    */
-  export const searchResultNodes: TextNode[] = [];
+  // eslint-disable-next-line prefer-const
+  export let searchResultNodes: TextNode[] = [];
   /**
    * 搜索结果的索引
    */
-  export const currentSearchResultIndex = 0;
+  // eslint-disable-next-line prefer-const
+  export let currentSearchResultIndex = 0;
 
   /**
    * 粘贴板数据
    */
-  export const copyBoardData: Serialized.File = {
+  // eslint-disable-next-line prefer-const
+  export let copyBoardData: Serialized.File = {
     version: StageDumper.latestVersion,
     nodes: [],
     edges: [],
@@ -101,22 +112,26 @@ export namespace Stage {
    * 粘贴板内容上的外接矩形
    * 当他为null时，表示没有粘贴板数据
    */
-  export const copyBoardDataRectangle: Rectangle | null = null;
+  // eslint-disable-next-line prefer-const
+  export let copyBoardDataRectangle: Rectangle | null = null;
   /**
    * 表示从粘贴板外接矩形的矩形中心，到鼠标当前位置的向量
    * 用于计算即将粘贴的位置
    */
-  export const copyBoardMouseVector: Vector = Vector.getZero();
+  // eslint-disable-next-line prefer-const
+  export let copyBoardMouseVector: Vector = Vector.getZero();
 
   /**
    * 当前是否是拖拽文件入窗口的状态
    */
-  export const isDraggingFile = false;
+  // eslint-disable-next-line prefer-const
+  export let isDraggingFile = false;
 
   /**
    * 当前鼠标所在的世界坐标
    */
-  export const draggingLocation = Vector.getZero();
+  // eslint-disable-next-line prefer-const
+  export let draggingLocation = Vector.getZero();
 
   /**
    * 逻辑总入口

@@ -56,7 +56,7 @@ export namespace Renderer {
    * }
    */
   let timings: { [key: string]: number } = {};
-  export const deltaTime = 0;
+  export let deltaTime = 0;
 
   /**
    * 解决Canvas模糊问题

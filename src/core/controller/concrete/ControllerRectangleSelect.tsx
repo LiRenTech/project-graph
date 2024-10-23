@@ -195,13 +195,13 @@ ControllerRectangleSelect.mouseup = (event: MouseEvent) => {
   // 左键松开
   Stage.isSelecting = false;
   // 将所有选择到的增加到上次选择的节点中
-  Controller.lastSelectedEntity = new Set();
+  Controller.lastSelectedEntity.clear();
   for (const node of StageManager.getTextNodes()) {
     if (node.isSelected) {
       Controller.lastSelectedEntity.add(node.uuid);
     }
   }
-  Controller.lastSelectedEdge = new Set();
+  Controller.lastSelectedEdge.clear();
   for (const edge of StageManager.getEdges()) {
 
     if (edge.isSelected) {
