@@ -13,6 +13,7 @@ import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 import { WorldRenderUtils } from "../../../WorldRenderUtils";
 import { ConnectableEntity } from "../../../../../stageObject/StageObject";
+import { Line } from "../../../../../dataStruct/shape/Line";
 
 export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   getCuttingEffects(edge: Edge): Effect[] {
@@ -62,33 +63,15 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   }
 
   public renderNormalState(edge: Edge): void {
-    // 绘制曲线本体
     const start = edge.bodyLine.start;
     const end = edge.bodyLine.end;
-    const direction = end.subtract(start);
-    // const startDirection = new Vector(
-    //   Math.abs(direction.x) >= Math.abs(direction.y) ? direction.x : 0,
-    //   Math.abs(direction.x) >= Math.abs(direction.y) ? 0 : direction.y,
-    // ).normalize();
-    const size = 15; // 箭头大小
-    const endNormal = edge.target.collisionBox.getRectangle().getNormalVectorAt(end);
-    const curve = new SymmetryCurve(
-      start,
+    this.renderArrowCurve(new SymmetryCurve(
+      start, 
       edge.source.collisionBox.getRectangle().getNormalVectorAt(start),
-      end.subtract(endNormal.multiply(size / -2)),
-      endNormal,
-      Math.abs(direction.magnitude()) / 2,
-    );
-    WorldRenderUtils.renderSymmetryCurve(
-      curve,
-      new Color(204, 204, 204),
-      2,
-    );
-    // 画箭头
-    const endPoint = edge.bodyLine.end
-      .clone()
-      .add(endNormal.multiply(2));
-    EdgeRenderer.renderArrowHead(endPoint, endNormal.multiply(-1), size);
+      end,
+      edge.target.collisionBox.getRectangle().getNormalVectorAt(end),
+      Math.abs(end.subtract(start).magnitude()) / 2
+    ));
     // 画文本
     RenderUtils.renderTextFromCenter(
       edge.text,
@@ -117,49 +100,59 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   }
 
   public renderVirtualEdge(startNode: ConnectableEntity, mouseLocation: Vector): void {
-    // 绘制曲线本体
-    const start = Renderer.transformWorld2View(startNode.collisionBox.getRectangle().center);
-    const end = Renderer.transformWorld2View(mouseLocation);
+    const rect = startNode.collisionBox.getRectangle();
+    const start = rect.getLineIntersectionPoint(new Line(rect.center, mouseLocation));
+    const end = mouseLocation;
     const direction = end.subtract(start);
-    const startDirection = new Vector(
+    const endDirection = new Vector(
       Math.abs(direction.x) >= Math.abs(direction.y) ? direction.x : 0,
       Math.abs(direction.x) >= Math.abs(direction.y) ? 0 : direction.y,
-    ).normalize();
-    const size = 15; // 箭头大小
-    const curve = new SymmetryCurve(
-      start,
-      startDirection,
-      end.subtract(startDirection.multiply((size / 2) * Camera.currentScale)),
-      startDirection.multiply(-1),
-      Math.abs(direction.magnitude()) / 2,
-    );
-    RenderUtils.renderSymmetryCurve(
-      curve,
-      new Color(204, 204, 204),
-      2 * Camera.currentScale,
-    );
+    ).normalize().multiply(-1);
+    this.renderArrowCurve(new SymmetryCurve(
+      start, 
+      rect.getNormalVectorAt(start),
+      end,
+      endDirection,
+      Math.abs(end.subtract(start).magnitude()) / 2
+    ));
   }
 
   public renderVirtualConfirmedEdge(startNode: ConnectableEntity, endNode: ConnectableEntity): void {
-    const start = Renderer.transformWorld2View(startNode.collisionBox.getRectangle().center);
-    const end = Renderer.transformWorld2View(endNode.collisionBox.getRectangle().center);
-    const direction = end.subtract(start);
-    const startDirection = new Vector(
-      Math.abs(direction.x) >= Math.abs(direction.y) ? direction.x : 0,
-      Math.abs(direction.x) >= Math.abs(direction.y) ? 0 : direction.y,
-    ).normalize();
-    const size = 15; // 箭头大小
-    const curve = new SymmetryCurve(
-      start,
-      startDirection,
-      end.subtract(startDirection.multiply((size / 2) * Camera.currentScale)),
-      startDirection.multiply(-1),
-      Math.abs(direction.magnitude()) / 2,
+    const startRect = startNode.collisionBox.getRectangle();
+    const endRect = endNode.collisionBox.getRectangle()
+    const line = new Line(
+      startRect.center, 
+      endRect.center
     );
-    RenderUtils.renderSymmetryCurve(
-      curve,
-      new Color(0, 204, 0),
-      2 * Camera.currentScale,
-    );
+    const start = startRect.getLineIntersectionPoint(line);
+    const end = endRect.getLineIntersectionPoint(line);
+    this.renderArrowCurve(new SymmetryCurve(
+      start, 
+      startRect.getNormalVectorAt(start),
+      end,
+      endRect.getNormalVectorAt(end),
+      Math.abs(end.subtract(start).magnitude()) / 2
+    ));
   }
+
+  /**
+   * 渲染curve及箭头,curve.end即箭头头部
+   * @param curve 
+   */
+  private renderArrowCurve(curve: SymmetryCurve): void {
+    // 绘制曲线本体
+    curve.endDirection = curve.endDirection.normalize();
+    const end = curve.end.clone();
+    const size = 15; // 箭头大小
+    curve.end = curve.end.subtract(curve.endDirection.multiply(size / -2));
+    WorldRenderUtils.renderSymmetryCurve(
+      curve,
+      new Color(204, 204, 204),
+      2,
+    );
+    // 画箭头
+    const endPoint = end.add(curve.endDirection.multiply(2));
+    EdgeRenderer.renderArrowHead(endPoint, curve.endDirection.multiply(-1), size);
+  }
+
 }
