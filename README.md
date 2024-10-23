@@ -6,6 +6,7 @@ tauri版本（用新的框架重写了，功能还在完善中，但还未发布
 
 ```
 https://liren.zty012.de/project-graph/v2/
+（目前建议选择开发版，稳定版是透明窗口bug）
 ```
 
 PyQt5版本（两期视频中的版本）
