@@ -17,12 +17,16 @@ export class CubicBezierCurve extends Shape {
     super();
   }
 
+  toString(): string {
+    return `CubicBezierCurve(start:${this.start}, ctrlPt1:${this.ctrlPt1}, ctrlPt2:${this.ctrlPt2}, end:${this.end})`;
+  }
+
   /**
    * 根据参数t（范围[0, 1]）获取贝塞尔曲线上的点
    * @param t 
    * @returns 
    */
-  private getPointByT(t: number): Vector {
+  getPointByT(t: number): Vector {
     return this.start.multiply(Math.pow(1 - t, 3)).add(
       this.ctrlPt1.multiply(3 * t * Math.pow(1 - t, 2))).add(
         this.ctrlPt2.multiply(3 * Math.pow(t, 2) * (1 - t)).add(
@@ -31,16 +35,67 @@ export class CubicBezierCurve extends Shape {
       );
   }
 
-  toString(): string {
-    return `CubicBezierCurve(start:${this.start}, ctrlPt1:${this.ctrlPt1}, ctrlPt2:${this.ctrlPt2}, end:${this.end})`;
+  /**
+   * 根据参数t（范围[0, 1]）获取贝塞尔曲线上的导数
+   * @param t 
+   * @returns 
+   */
+  private derivative(t: number): Vector {
+    return this.start.multiply(-3 * Math.pow(1 - t, 2)).add(
+      this.ctrlPt1.multiply(3 * (3 * Math.pow(t, 2) - 4 * t + 1)).add(
+        this.ctrlPt2.multiply(3 * (2 * t - 3 * Math.pow(t, 2))).add(
+          this.end.multiply(3 * Math.pow(t, 2))
+        )
+      )
+    );
   }
+
+  /**
+   * 根据参数t（范围[0, 1]）获取贝塞尔曲线上的二阶导数
+   * @param t 
+   * @returns 
+   */
+  private secondDerivative(t: number): Vector {
+    return this.start.multiply(6 * (1 - t)).add(
+      this.ctrlPt1.multiply(3 * (6 * t - 4)).add(
+        this.ctrlPt2.multiply(3 * (2 - 6 * t)).add(
+          this.end.multiply(6 * t)
+        )
+      )
+    );
+  }
+
+  // private newtonIteration(last: number) {
+    
+  // }
+
+  // private findMaxMinValue() {
+  //   const b = this.start.multiply(6).subtract(
+  //     this.ctrlPt1.multiply(12)).add(this.ctrlPt2.multiply(6));
+  //   const delta = b.componentMultiply(b).subtract(
+  //     this.ctrlPt1.multiply(3).subtract(this.start.multiply(3)).multiply(4).componentMultiply(
+  //       this.start.multiply(-3).add(this.ctrlPt1.multiply(9)).subtract(
+  //         this.ctrlPt2.multiply(9)).add(this.end.multiply(3))
+  //     ));
+  //   let minX, maxX;
+  //   if (delta.x < 0) {
+  //     minX = Math.min(this.start.x, this.end.x);
+  //     maxX = Math.max(this.start.x, this.end.x);
+  //   } else {
+
+  //   }
+  // }
+
+  // computeAabb(start: number, end: number): Rectangle {
+
+  // }
 
   // TODO 更改成真正的贝塞尔曲线形式
   isPointIn(point: Vector): boolean {
     console.log("executed");
-    const segment = 5;
+    const segment = 40;
     let lastPoint = this.start;
-    for (let i = 1; i < segment; i++) {
+    for (let i = 1; i <= segment; i++) {
       const line = new Line(lastPoint, this.getPointByT(i / segment));
       if (line.isPointIn(point)) {
         return true;

@@ -109,7 +109,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       Math.abs(direction.x) >= Math.abs(direction.y) ? 0 : direction.y,
     ).normalize().multiply(-1);
     this.renderArrowCurve(new SymmetryCurve(
-      start, 
+      start,
       rect.getNormalVectorAt(start),
       end,
       endDirection,
@@ -121,13 +121,13 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     const startRect = startNode.collisionBox.getRectangle();
     const endRect = endNode.collisionBox.getRectangle()
     const line = new Line(
-      startRect.center, 
+      startRect.center,
       endRect.center
     );
     const start = startRect.getLineIntersectionPoint(line);
     const end = endRect.getLineIntersectionPoint(line);
     this.renderArrowCurve(new SymmetryCurve(
-      start, 
+      start,
       startRect.getNormalVectorAt(start),
       end,
       endRect.getNormalVectorAt(end),
@@ -145,6 +145,19 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     const end = curve.end.clone();
     const size = 15; // 箭头大小
     curve.end = curve.end.subtract(curve.endDirection.multiply(size / -2));
+    // 绘制碰撞箱
+    // const segment = 40;
+    // let lastPoint = curve.start;
+    // for (let i = 1; i <= segment; i++) {
+    //   const line = new Line(lastPoint, curve.bezier.getPointByT(i / segment));
+    //   RenderUtils.renderSolidLine(
+    //     Renderer.transformWorld2View(line.start),
+    //     Renderer.transformWorld2View(line.end),
+    //     new Color(0, 104, 0),
+    //     10 * Camera.currentScale
+    //   )
+    //   lastPoint = line.end;
+    // }
     WorldRenderUtils.renderSymmetryCurve(
       curve,
       new Color(204, 204, 204),

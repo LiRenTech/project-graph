@@ -47,13 +47,13 @@ export namespace EdgeCollisionBoxGetter {
   function getBezierCollisionBox(edge: Edge): CollisionBox {
     const start = edge.bodyLine.start;
     const end = edge.bodyLine.end;
-    
+    const endNormal = edge.target.collisionBox.getRectangle().getNormalVectorAt(end);
     return new CollisionBox([
       new SymmetryCurve(
         start,
         edge.source.collisionBox.getRectangle().getNormalVectorAt(start),
-        end,
-        edge.target.collisionBox.getRectangle().getNormalVectorAt(end),
+        end.add(endNormal.multiply(15 / 2)),
+        endNormal,
         Math.abs(end.subtract(start).magnitude()) / 2,
       ),
     ]);
