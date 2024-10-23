@@ -18,6 +18,7 @@ import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { StringDict } from "../../dataStruct/StringDict";
 import { Association, Entity } from "../../stageObject/StageObject";
 import { Section } from "../../stageObject/entity/Section";
+import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -417,6 +418,16 @@ export namespace StageManager {
   export function packEntityToSection(addEntities: Entity[]) {
     const section = Section.fromEntities(addEntities);
     entities.addValue(section, section.uuid);
+    StageHistoryManager.recordStep();
+  }
+
+  export function goInSection(entities: Entity[], section: Section) {
+    StageSectionInOutManager.goInSection(entities, section);
+    StageHistoryManager.recordStep();
+  }
+  
+  export function goOutSection(entities: Entity[], section: Section) {
+    StageSectionInOutManager.goOutSection(entities, section);
     StageHistoryManager.recordStep();
   }
 }

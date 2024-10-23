@@ -426,7 +426,7 @@ export namespace Renderer {
       `Stage.warningNodes: ${Stage.warningNodes.length}`,
       `Stage.warningEdges: ${Stage.warningEdges.length}`,
       `ConnectFromNodes: ${Stage.connectFromNodes}`,
-      `lastSelectedNode: ${Controller.lastSelectedNode.size}`,
+      `lastSelectedNode: ${Controller.lastSelectedEntity.size}`,
       `粘贴板: ${JSON.stringify(Stage.copyBoardData)}`,
       `历史: ${StageHistoryManager.statusText()}`,
       `fps: ${(1 / deltaTime).toFixed()}`,

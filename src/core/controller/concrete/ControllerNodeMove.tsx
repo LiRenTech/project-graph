@@ -4,6 +4,7 @@ import { Stage } from "../../stage/Stage";
 import { Vector } from "../../dataStruct/Vector";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { Entity } from "../../stageObject/StageObject";
 
 /**
  * 拖拽节点使其移动的控制器
@@ -87,6 +88,14 @@ ControllerNodeMove.mouseup = (event: MouseEvent) => {
     return;
   }
   if (Controller.isMovingEntity) {
+    // 如果是在SectionHover状态下松开鼠标的，将选中的东西放入Section
+    const entityList: Entity[] = [
+      ...StageManager.getTextNodes().filter((entity) => entity.isSelected),
+      ...StageManager.getSections().filter((entity) => entity.isSelected),
+    ];
+    for (const section of Stage.hoverSections) {
+      StageManager.goInSection(entityList, section);
+    }
     StageManager.moveNodeFinished();
   }
   Controller.isMovingEntity = false;

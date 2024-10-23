@@ -91,7 +91,7 @@ export namespace Controller {
    * 上次选中的节点
    * 仅为 Ctrl交叉选择使用
    */
-  export let lastSelectedNode: Set<string> = new Set();
+  export let lastSelectedEntity: Set<string> = new Set();
   export let lastSelectedEdge: Set<string> = new Set();
 
   export let touchStartLocation = Vector.getZero();
