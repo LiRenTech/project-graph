@@ -7,7 +7,7 @@ import { Renderer } from "../../render/canvas2d/renderer";
 import { Vector } from "../../dataStruct/Vector";
 import { Circle } from "../../dataStruct/shape/Circle";
 import { StageManager } from "../../stage/stageManager/StageManager";
-import { ConnectableAssociation } from "../StageObject";
+import { ConnectableAssociation, ConnectableEntity } from "../StageObject";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { v4 as uuidv4 } from "uuid";
 
@@ -41,17 +41,17 @@ export class Edge extends ConnectableAssociation {
     }
   }
 
-  get source(): TextNode {
+  get source(): ConnectableEntity {
     return this._source;
   }
-  set source(value: TextNode) {
+  set source(value: ConnectableEntity) {
     this._source = value;
   }
 
-  get target(): TextNode {
+  get target(): ConnectableEntity {
     return this._target;
   }
-  set target(value: TextNode) {
+  set target(value: ConnectableEntity) {
     this._target = value;
   }
 
@@ -69,8 +69,8 @@ export class Edge extends ConnectableAssociation {
     }
   }
 
-  private _source: TextNode;
-  private _target: TextNode;
+  private _source: ConnectableEntity;
+  private _target: ConnectableEntity;
 
   constructor(
     { source, target, text, uuid }: Serialized.Edge,
@@ -105,13 +105,13 @@ export class Edge extends ConnectableAssociation {
    */
   get bodyLine(): Line {
     const edgeCenterLine = new Line(
-      this.source.rectangle.center,
-      this.target.rectangle.center,
+      this.source.collisionBox.getRectangle().center,
+      this.target.collisionBox.getRectangle().center,
     );
     const startPoint =
-      this.source.rectangle.getLineIntersectionPoint(edgeCenterLine);
+      this.source.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
     const endPoint =
-      this.target.rectangle.getLineIntersectionPoint(edgeCenterLine);
+      this.target.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
     return new Line(startPoint, endPoint);
   }
 

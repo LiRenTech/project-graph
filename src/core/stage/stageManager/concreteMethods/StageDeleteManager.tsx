@@ -82,8 +82,8 @@ export namespace StageDeleteManager {
     const toNode = deleteEdge.target;
     // 先判断这两个节点是否在nodes里
     if (
-      StageManager.getTextNodes().includes(fromNode) &&
-      StageManager.getTextNodes().includes(toNode)
+      StageManager.isEntityExists(fromNode.uuid) &&
+      StageManager.isEntityExists(toNode.uuid)
     ) {
       // 删除边
       StageManager.deleteOneEdge(deleteEdge);

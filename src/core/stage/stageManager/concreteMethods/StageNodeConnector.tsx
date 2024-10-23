@@ -1,5 +1,5 @@
 import { Edge } from "../../../stageObject/association/Edge";
-import { TextNode } from "../../../stageObject/entity/TextNode";
+import { ConnectableEntity } from "../../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 import { StageDeleteManager } from "./StageDeleteManager";
 import { v4 as uuidv4 } from "uuid";
@@ -10,13 +10,13 @@ import { v4 as uuidv4 } from "uuid";
 export namespace StageNodeConnector {
   // 连接两两节点
   export function connectNode(
-    fromNode: TextNode,
-    toNode: TextNode,
+    fromNode: ConnectableEntity,
+    toNode: ConnectableEntity,
     text: string = "",
   ): void {
     if (
-      StageManager.getTextNodes().includes(fromNode) &&
-      StageManager.getTextNodes().includes(toNode)
+      StageManager.isEntityExists(fromNode.uuid) &&
+      StageManager.isEntityExists(toNode.uuid)
     ) {
       // const addResult = fromNode.addChild(toNode);
 

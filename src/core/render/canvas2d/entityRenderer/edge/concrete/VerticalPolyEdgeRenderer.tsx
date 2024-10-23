@@ -6,12 +6,12 @@ import { Edge } from "../../../../../stageObject/association/Edge";
 import { CircleFlameEffect } from "../../../../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../effect/concrete/LineCuttingEffect";
 import { Effect } from "../../../../../effect/effect";
-import { TextNode } from "../../../../../stageObject/entity/TextNode";
 import { Camera } from "../../../../../stage/Camera";
 import { Renderer } from "../../../renderer";
 import { RenderUtils } from "../../../RenderUtils";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
+import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 
 /**
  * 折线渲染器
@@ -45,18 +45,18 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     ];
   }
 
-  getConnectedEffects(startNode: TextNode, toNode: TextNode): Effect[] {
+  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): Effect[] {
     return [
       new CircleFlameEffect(
         new ProgressNumber(0, 15),
-        startNode.rectangle.center,
+        startNode.collisionBox.getRectangle().center,
         80,
         new Color(83, 175, 29, 1),
       ),
       new LineCuttingEffect(
         new ProgressNumber(0, 30),
-        startNode.rectangle.center,
-        toNode.rectangle.center,
+        startNode.collisionBox.getRectangle().center,
+        toNode.collisionBox.getRectangle().center,
         new Color(78, 201, 176, 1),
         new Color(83, 175, 29, 1),
         20,
@@ -74,8 +74,8 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
    * @returns
    */
   getVerticalDirection(edge: Edge): Vector {
-    const startLocation = edge.source.rectangle.center;
-    const endLocation = edge.target.rectangle.center;
+    const startLocation = edge.source.collisionBox.getRectangle().center;
+    const endLocation = edge.target.collisionBox.getRectangle().center;
     const startToEnd = endLocation.subtract(startLocation);
     if (startLocation.x < endLocation.x) {
       // |左侧
@@ -131,11 +131,13 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
   renderTest(edge: Edge) {
     for (let i = 0; i < 4; i++) {
       RenderUtils.renderSolidLine(
-        Renderer.transformWorld2View(edge.target.rectangle.center),
         Renderer.transformWorld2View(
-          edge.target.rectangle.center.add(
-            new Vector(100, 0).rotateDegrees(45 + 90 * i),
-          ),
+          edge.target.collisionBox.getRectangle().center,
+        ),
+        Renderer.transformWorld2View(
+          edge.target.collisionBox
+            .getRectangle()
+            .center.add(new Vector(100, 0).rotateDegrees(45 + 90 * i)),
         ),
         Color.Green,
         1,
@@ -158,32 +160,36 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
         const rate =
           1 -
           this.gaussianFunction(
-            edge.target.rectangle.center.x - edge.source.rectangle.center.x,
+            edge.target.collisionBox.getRectangle().center.x -
+              edge.source.collisionBox.getRectangle().center.x,
           );
         // 左右偏离距离 恒正
-        const distance = (rate * edge.target.rectangle.size.x) / 2;
+        const distance =
+          (rate * edge.target.collisionBox.getRectangle().size.x) / 2;
         // 根据偏移距离计算附加高度  恒正
-        const h = (edge.target.rectangle.size.x / 2) * (1 - rate);
+        const h =
+          (edge.target.collisionBox.getRectangle().size.x / 2) * (1 - rate);
         // 终点
         const p1 = new Vector(
-          edge.target.rectangle.center.x +
+          edge.target.collisionBox.getRectangle().center.x +
             distance *
-              (edge.source.rectangle.center.x > edge.target.rectangle.center.x
+              (edge.source.collisionBox.getRectangle().center.x >
+              edge.target.collisionBox.getRectangle().center.x
                 ? 1
                 : -1),
           verticalDirection.y > 0
-            ? edge.target.rectangle.top
-            : edge.target.rectangle.bottom,
+            ? edge.target.collisionBox.getRectangle().top
+            : edge.target.collisionBox.getRectangle().bottom,
         );
         const length =
           (this.fixedLength + h) * (verticalDirection.y > 0 ? -1 : 1);
         const p2 = p1.add(new Vector(0, length));
 
         const p4 = new Vector(
-          edge.source.rectangle.center.x,
+          edge.source.collisionBox.getRectangle().center.x,
           verticalDirection.y > 0
-            ? edge.source.rectangle.bottom
-            : edge.source.rectangle.top,
+            ? edge.source.collisionBox.getRectangle().bottom
+            : edge.source.collisionBox.getRectangle().top,
         );
 
         const p3 = new Vector(p4.x, p2.y);
@@ -203,20 +209,24 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
         const rate =
           1 -
           this.gaussianFunction(
-            edge.target.rectangle.center.y - edge.source.rectangle.center.y,
+            edge.target.collisionBox.getRectangle().center.y -
+              edge.source.collisionBox.getRectangle().center.y,
           );
         // 偏离距离 恒正
-        const distance = (rate * edge.target.rectangle.size.y) / 2;
+        const distance =
+          (rate * edge.target.collisionBox.getRectangle().size.y) / 2;
         // 根据偏移距离计算附加高度
-        const h = (edge.target.rectangle.size.y / 2) * (1 - rate);
+        const h =
+          (edge.target.collisionBox.getRectangle().size.y / 2) * (1 - rate);
         // 终点
         const p1 = new Vector(
           verticalDirection.x > 0
-            ? edge.target.rectangle.left
-            : edge.target.rectangle.right,
-          edge.target.rectangle.center.y +
+            ? edge.target.collisionBox.getRectangle().left
+            : edge.target.collisionBox.getRectangle().right,
+          edge.target.collisionBox.getRectangle().center.y +
             distance *
-              (edge.source.rectangle.center.y > edge.target.rectangle.center.y
+              (edge.source.collisionBox.getRectangle().center.y >
+              edge.target.collisionBox.getRectangle().center.y
                 ? 1
                 : -1),
         );
@@ -227,9 +237,9 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
 
         const p4 = new Vector(
           verticalDirection.x > 0
-            ? edge.source.rectangle.right
-            : edge.source.rectangle.left,
-          edge.source.rectangle.center.y,
+            ? edge.source.collisionBox.getRectangle().right
+            : edge.source.collisionBox.getRectangle().left,
+          edge.source.collisionBox.getRectangle().center.y,
         );
 
         const p3 = new Vector(p2.x, p4.y);
@@ -287,9 +297,10 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
       // 画箭头
       {
         const size = 15;
-        const direction = edge.target.rectangle
+        const direction = edge.target.collisionBox
+          .getRectangle()
           .getCenter()
-          .subtract(edge.source.rectangle.getCenter())
+          .subtract(edge.source.collisionBox.getRectangle().getCenter())
           .normalize();
         const endPoint = edge.bodyLine.end.clone();
         EdgeRenderer.renderArrowHead(endPoint, direction, size);
@@ -300,8 +311,11 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
   public renderCycleState(edge: Edge): void {
     // 自环
     RenderUtils.renderArc(
-      Renderer.transformWorld2View(edge.target.rectangle.location),
-      (edge.target.rectangle.size.y / 2) * Camera.currentScale,
+      Renderer.transformWorld2View(
+        edge.target.collisionBox.getRectangle().location,
+      ),
+      (edge.target.collisionBox.getRectangle().size.y / 2) *
+        Camera.currentScale,
       Math.PI / 2,
       0,
       new Color(204, 204, 204),
@@ -311,14 +325,16 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     {
       const size = 15;
       const direction = new Vector(1, 0).rotateDegrees(15);
-      const endPoint = edge.target.rectangle.leftCenter;
+      const endPoint = edge.target.collisionBox.getRectangle().leftCenter;
       EdgeRenderer.renderArrowHead(endPoint, direction, size);
     }
   }
 
-  public renderVirtualEdge(startNode: TextNode, mouseLocation: Vector): void {
+  public renderVirtualEdge(startNode: ConnectableEntity, mouseLocation: Vector): void {
     RenderUtils.renderGradientLine(
-      Renderer.transformWorld2View(startNode.rectangle.getCenter()),
+      Renderer.transformWorld2View(
+        startNode.collisionBox.getRectangle().getCenter(),
+      ),
       Renderer.transformWorld2View(mouseLocation),
       new Color(255, 255, 255, 0),
       new Color(255, 255, 255, 0.5),
@@ -326,10 +342,17 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     );
   }
 
-  public renderVirtualConfirmedEdge(startNode: TextNode, endNode: TextNode): void {
+  public renderVirtualConfirmedEdge(
+    startNode: ConnectableEntity,
+    endNode: ConnectableEntity,
+  ): void {
     RenderUtils.renderGradientLine(
-      Renderer.transformWorld2View(startNode.rectangle.getCenter()),
-      Renderer.transformWorld2View(endNode.rectangle.getCenter()),
+      Renderer.transformWorld2View(
+        startNode.collisionBox.getRectangle().getCenter(),
+      ),
+      Renderer.transformWorld2View(
+        endNode.collisionBox.getRectangle().getCenter(),
+      ),
       new Color(0, 255, 0, 0),
       new Color(0, 255, 0, 0.5),
       2,

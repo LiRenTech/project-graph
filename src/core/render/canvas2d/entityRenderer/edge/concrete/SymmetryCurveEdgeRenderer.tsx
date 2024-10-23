@@ -6,13 +6,13 @@ import { Edge } from "../../../../../stageObject/association/Edge";
 import { CircleFlameEffect } from "../../../../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../effect/concrete/LineCuttingEffect";
 import { Effect } from "../../../../../effect/effect";
-import { TextNode } from "../../../../../stageObject/entity/TextNode";
 import { Camera } from "../../../../../stage/Camera";
 import { Renderer } from "../../../renderer";
 import { RenderUtils } from "../../../RenderUtils";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 import { WorldRenderUtils } from "../../../WorldRenderUtils";
+import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 
 export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   getCuttingEffects(edge: Edge): Effect[] {
@@ -42,18 +42,18 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       ),
     ];
   }
-  getConnectedEffects(startNode: TextNode, toNode: TextNode): Effect[] {
+  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): Effect[] {
     return [
       new CircleFlameEffect(
         new ProgressNumber(0, 15),
-        startNode.rectangle.center,
+        startNode.collisionBox.getRectangle().center,
         80,
         new Color(83, 175, 29, 1),
       ),
       new LineCuttingEffect(
         new ProgressNumber(0, 30),
-        startNode.rectangle.center,
-        toNode.rectangle.center,
+        startNode.collisionBox.getRectangle().center,
+        toNode.collisionBox.getRectangle().center,
         new Color(78, 201, 176, 1),
         new Color(83, 175, 29, 1),
         20,
@@ -99,8 +99,8 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   public renderCycleState(edge: Edge): void {
     // 自环
     RenderUtils.renderArc(
-      Renderer.transformWorld2View(edge.target.rectangle.location),
-      (edge.target.rectangle.size.y / 2) * Camera.currentScale,
+      Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
+      (edge.target.collisionBox.getRectangle().size.y / 2) * Camera.currentScale,
       Math.PI / 2,
       0,
       new Color(204, 204, 204),
@@ -110,14 +110,14 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     {
       const size = 15;
       const direction = new Vector(1, 0).rotateDegrees(15);
-      const endPoint = edge.target.rectangle.leftCenter;
+      const endPoint = edge.target.collisionBox.getRectangle().leftCenter;
       EdgeRenderer.renderArrowHead(endPoint, direction, size);
     }
   }
 
-  public renderVirtualEdge(startNode: TextNode, mouseLocation: Vector): void {
+  public renderVirtualEdge(startNode: ConnectableEntity, mouseLocation: Vector): void {
     // 绘制曲线本体
-    const start = Renderer.transformWorld2View(startNode.rectangle.center);
+    const start = Renderer.transformWorld2View(startNode.collisionBox.getRectangle().center);
     const end = Renderer.transformWorld2View(mouseLocation);
     const direction = end.subtract(start);
     const startDirection = new Vector(
@@ -139,9 +139,9 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     );
   }
 
-  public renderVirtualConfirmedEdge(startNode: TextNode, endNode: TextNode): void {
-    const start = Renderer.transformWorld2View(startNode.rectangle.center);
-    const end = Renderer.transformWorld2View(endNode.rectangle.center);
+  public renderVirtualConfirmedEdge(startNode: ConnectableEntity, endNode: ConnectableEntity): void {
+    const start = Renderer.transformWorld2View(startNode.collisionBox.getRectangle().center);
+    const end = Renderer.transformWorld2View(endNode.collisionBox.getRectangle().center);
     const direction = end.subtract(start);
     const startDirection = new Vector(
       Math.abs(direction.x) >= Math.abs(direction.y) ? direction.x : 0,
