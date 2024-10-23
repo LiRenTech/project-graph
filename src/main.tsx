@@ -15,6 +15,7 @@ import { TextRiseEffect } from "./core/effect/concrete/TextRiseEffect";
 // import { platform } from "@tauri-apps/plugin-os";
 import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
+import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeCollisionBoxGetter";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -27,6 +28,7 @@ const Routes = () => <RouterProvider router={router} />;
   await Settings.init();
   await RecentFileManager.init();
   // 15~20ms 左右
+  EdgeCollisionBoxGetter.init();
   EdgeRenderer.init();
   Renderer.init();
 

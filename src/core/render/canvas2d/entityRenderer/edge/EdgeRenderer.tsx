@@ -40,7 +40,7 @@ export namespace EdgeRenderer {
   /**
    * 更新渲染器
    */
-  export async function updateRenderer(style: Settings.Settings["lineStyle"]) {
+  async function updateRenderer(style: Settings.Settings["lineStyle"]) {
     if (
       style === "straight" &&
       !(currentRenderer instanceof StraightEdgeRenderer)
