@@ -32,6 +32,14 @@ export namespace EntityRenderer {
       Renderer.FONT_SIZE * Camera.currentScale,
       colorInvert(section.color),
     );
+
+    if (section.isSelected) {
+      // 在外面增加一个框
+      CollisionBoxRenderer.render(
+        section.collisionBox,
+        new Color(0, 255, 0, 0.5),
+      );
+    }
   }
 
   export function renderNode(node: TextNode) {
