@@ -17,13 +17,37 @@ export class CubicBezierCurve extends Shape {
     super();
   }
 
+  /**
+   * 根据参数t（范围[0, 1]）获取贝塞尔曲线上的点
+   * @param t 
+   * @returns 
+   */
+  private getPointByT(t: number): Vector {
+    return this.start.multiply(Math.pow(1 - t, 3)).add(
+      this.ctrlPt1.multiply(3 * t * Math.pow(1 - t, 2))).add(
+        this.ctrlPt2.multiply(3 * Math.pow(t, 2) * (1 - t)).add(
+          this.end.multiply(Math.pow(t, 3))
+        )
+      );
+  }
+
   toString(): string {
     return `CubicBezierCurve(start:${this.start}, ctrlPt1:${this.ctrlPt1}, ctrlPt2:${this.ctrlPt2}, end:${this.end})`;
   }
 
   // TODO 更改成真正的贝塞尔曲线形式
   isPointIn(point: Vector): boolean {
-    return new Line(this.start, this.end).isPointIn(point);
+    console.log("executed");
+    const segment = 5;
+    let lastPoint = this.start;
+    for (let i = 1; i < segment; i++) {
+      const line = new Line(lastPoint, this.getPointByT(i / segment));
+      if (line.isPointIn(point)) {
+        return true;
+      }
+      lastPoint = line.end;
+    }
+    return false;
   }
   isCollideWithRectangle(rectangle: Rectangle): boolean {
     return new Line(this.start, this.end).isCollideWithRectangle(rectangle);
