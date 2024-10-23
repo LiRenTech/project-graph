@@ -1,6 +1,8 @@
 import { Color } from "../../dataStruct/Color";
 import { CubicBezierCurve, SymmetryCurve } from "../../dataStruct/shape/Curve";
+import { Vector } from "../../dataStruct/Vector";
 import { Camera } from "../../stage/Camera";
+import { Canvas } from "../../stage/Canvas";
 import { Renderer } from "./renderer";
 import { RenderUtils } from "./RenderUtils";
 
@@ -35,6 +37,19 @@ export namespace WorldRenderUtils {
     width: number,
   ): void {
     renderBezierCurve(curve.bezier, color, width);
+  }
+
+  export function renderLaser(
+    start: Vector, end: Vector, width: number): void {
+    Canvas.ctx.shadowColor = "red";
+    Canvas.ctx.shadowBlur = 15;
+    RenderUtils.renderSolidLine(
+      Renderer.transformWorld2View(start),
+      Renderer.transformWorld2View(end),
+      new Color(255, 255, 255),
+      width * Camera.currentScale
+    );
+    Canvas.ctx.shadowBlur = 0;
   }
 
 }
