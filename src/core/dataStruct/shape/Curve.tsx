@@ -35,38 +35,38 @@ export class CubicBezierCurve extends Shape {
       );
   }
 
-  /**
-   * 根据参数t（范围[0, 1]）获取贝塞尔曲线上的导数
-   * @param t 
-   * @returns 
-   */
-  private derivative(t: number): Vector {
-    return this.start.multiply(-3 * Math.pow(1 - t, 2)).add(
-      this.ctrlPt1.multiply(3 * (3 * Math.pow(t, 2) - 4 * t + 1)).add(
-        this.ctrlPt2.multiply(3 * (2 * t - 3 * Math.pow(t, 2))).add(
-          this.end.multiply(3 * Math.pow(t, 2))
-        )
-      )
-    );
-  }
+  // /**
+  //  * 根据参数t（范围[0, 1]）获取贝塞尔曲线上的导数
+  //  * @param t 
+  //  * @returns 
+  //  */
+  // private derivative(t: number): Vector {
+  //   return this.start.multiply(-3 * Math.pow(1 - t, 2)).add(
+  //     this.ctrlPt1.multiply(3 * (3 * Math.pow(t, 2) - 4 * t + 1)).add(
+  //       this.ctrlPt2.multiply(3 * (2 * t - 3 * Math.pow(t, 2))).add(
+  //         this.end.multiply(3 * Math.pow(t, 2))
+  //       )
+  //     )
+  //   );
+  // }
 
-  /**
-   * 根据参数t（范围[0, 1]）获取贝塞尔曲线上的二阶导数
-   * @param t 
-   * @returns 
-   */
-  private secondDerivative(t: number): Vector {
-    return this.start.multiply(6 * (1 - t)).add(
-      this.ctrlPt1.multiply(3 * (6 * t - 4)).add(
-        this.ctrlPt2.multiply(3 * (2 - 6 * t)).add(
-          this.end.multiply(6 * t)
-        )
-      )
-    );
-  }
+  // /**
+  //  * 根据参数t（范围[0, 1]）获取贝塞尔曲线上的二阶导数
+  //  * @param t 
+  //  * @returns 
+  //  */
+  // private secondDerivative(t: number): Vector {
+  //   return this.start.multiply(6 * (1 - t)).add(
+  //     this.ctrlPt1.multiply(3 * (6 * t - 4)).add(
+  //       this.ctrlPt2.multiply(3 * (2 - 6 * t)).add(
+  //         this.end.multiply(6 * t)
+  //       )
+  //     )
+  //   );
+  // }
 
   // private newtonIteration(last: number) {
-    
+
   // }
 
   // private findMaxMinValue() {
@@ -90,13 +90,12 @@ export class CubicBezierCurve extends Shape {
 
   // }
 
-  // TODO 更改成真正的贝塞尔曲线形式
+  private static segment = 40;
+
   isPointIn(point: Vector): boolean {
-    console.log("executed");
-    const segment = 40;
     let lastPoint = this.start;
-    for (let i = 1; i <= segment; i++) {
-      const line = new Line(lastPoint, this.getPointByT(i / segment));
+    for (let i = 1; i <= CubicBezierCurve.segment; i++) {
+      const line = new Line(lastPoint, this.getPointByT(i / CubicBezierCurve.segment));
       if (line.isPointIn(point)) {
         return true;
       }
@@ -105,10 +104,26 @@ export class CubicBezierCurve extends Shape {
     return false;
   }
   isCollideWithRectangle(rectangle: Rectangle): boolean {
-    return new Line(this.start, this.end).isCollideWithRectangle(rectangle);
+    let lastPoint = this.start;
+    for (let i = 1; i <= CubicBezierCurve.segment; i++) {
+      const line = new Line(lastPoint, this.getPointByT(i / CubicBezierCurve.segment));
+      if (line.isCollideWithRectangle(rectangle)) {
+        return true;
+      }
+      lastPoint = line.end;
+    }
+    return false;
   }
-  isCollideWithLine(line: Line): boolean {
-    return new Line(this.start, this.end).isCollideWithLine(line);
+  isCollideWithLine(l: Line): boolean {
+    let lastPoint = this.start;
+    for (let i = 1; i <= CubicBezierCurve.segment; i++) {
+      const line = new Line(lastPoint, this.getPointByT(i / CubicBezierCurve.segment));
+      if (line.isCollideWithLine(l)) {
+        return true;
+      }
+      lastPoint = line.end;
+    }
+    return false;
   }
   getRectangle(): Rectangle {
     let minX = Math.min(
