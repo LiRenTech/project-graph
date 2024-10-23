@@ -21,8 +21,8 @@ import {
   AlignStartHorizontal,
   AlignEndHorizontal,
   Globe,
-  ImageDown,
   Square,
+  SaveAll
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
@@ -307,8 +307,8 @@ export default function Toolbar({ className = "" }) {
       )}
       {isHaveSelectedNode && (
         <ToolbarItem
-          description="将选中的节点导出SVG文件"
-          icon={<ImageDown />}
+          description="将选中的节点保存为新文件"
+          icon={<SaveAll />}
           handleFunction={() => {
             onSaveSelectedNew();
           }}
