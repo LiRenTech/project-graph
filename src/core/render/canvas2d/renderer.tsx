@@ -150,7 +150,7 @@ export namespace Renderer {
       );
     }
     // 手动连接线
-    if (Stage.connectFromNodes.length > 0 && Controller.lastMoveLocation) {
+    if (Stage.connectFromEntities.length > 0 && Controller.lastMoveLocation) {
       // 如果鼠标位置没有和任何节点相交
       let connectTargetNode = null;
       for (const node of StageManager.getTextNodes()) {
@@ -160,12 +160,12 @@ export namespace Renderer {
         }
       }
       if (connectTargetNode === null) {
-        for (const node of Stage.connectFromNodes) {
+        for (const node of Stage.connectFromEntities) {
           EdgeRenderer.renderVirtualEdge(node, Controller.lastMoveLocation);
         }
       } else {
         // 画一条像吸住了的线
-        for (const node of Stage.connectFromNodes) {
+        for (const node of Stage.connectFromEntities) {
           EdgeRenderer.renderVirtualConfirmedEdge(node, connectTargetNode);
         }
       }
@@ -204,7 +204,7 @@ export namespace Renderer {
   }
   function renderWarningEntities() {
     // 待删除的节点
-    for (const node of Stage.warningNodes) {
+    for (const node of Stage.warningEntity) {
       CollisionBoxRenderer.render(node.collisionBox, new Color(255, 0, 0, 0.5));
     }
     // 待删除的边
@@ -423,9 +423,9 @@ export namespace Renderer {
       `框选框: ${Stage.selectingRectangle}`,
       `正在移动节点: ${Controller.isMovingEntity}`,
       `正在切割: ${Stage.isCutting}`,
-      `Stage.warningNodes: ${Stage.warningNodes.length}`,
+      `Stage.warningNodes: ${Stage.warningEntity.length}`,
       `Stage.warningEdges: ${Stage.warningEdges.length}`,
-      `ConnectFromNodes: ${Stage.connectFromNodes}`,
+      `ConnectFromNodes: ${Stage.connectFromEntities}`,
       `lastSelectedNode: ${Controller.lastSelectedEntity.size}`,
       `粘贴板: ${JSON.stringify(Stage.copyBoardData)}`,
       `历史: ${StageHistoryManager.statusText()}`,

@@ -135,7 +135,6 @@ export default function AppMenu({
   };
 
   const onSaveNew = async () => {
-    // TODO: 
     const path = await saveFileDialog({
       title: "另存为",
       defaultPath: "新文件.json", // 提供一个默认的文件名

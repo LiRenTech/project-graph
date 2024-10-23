@@ -1,6 +1,5 @@
 import { Vector } from "../../../dataStruct/Vector";
-import { TextNode } from "../../../stageObject/entity/TextNode";
-import { Entity } from "../../../stageObject/StageObject";
+import { ConnectableEntity, Entity } from "../../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 
 /**
@@ -67,13 +66,18 @@ export namespace StageNodeTextMoveManager {
         moveWithChildren(node, delta);
       }
     }
+    for (const section of StageManager.getSections()) {
+      if (section.isSelected) {
+        moveWithChildren(section, delta);
+      }
+    }
   }
-  function moveWithChildren(node: TextNode, delta: Vector) {
+  function moveWithChildren(node: ConnectableEntity, delta: Vector) {
     moveWithChildrenDfs(node, delta, [node.uuid]);
   }
 
   function moveWithChildrenDfs(
-    node: TextNode,
+    node: ConnectableEntity,
     delta: Vector,
     visitedUUIDs: string[],
   ) {

@@ -7,6 +7,7 @@ import { Serialized } from "../../types/node";
 import { StageDumper } from "./StageDumper";
 import { Line } from "../dataStruct/shape/Line";
 import { Section } from "../stageObject/entity/Section";
+import { ConnectableEntity, Entity } from "../stageObject/StageObject";
 
 /**
  * 舞台对象
@@ -48,7 +49,7 @@ export namespace Stage {
   /**
    * 正在准备要删除的节点
    */
-  export let warningNodes: TextNode[] = [];
+  export let warningEntity: Entity[] = [];
   /**
    * 正在准备要删除的连线
    */
@@ -57,8 +58,8 @@ export namespace Stage {
   /**
    * 用于多重连接
    */
-  export let connectFromNodes: TextNode[] = [];
-  export let connectToNode: TextNode | null = null;
+  export let connectFromEntities: ConnectableEntity[] = [];
+  export let connectToEntity: ConnectableEntity | null = null;
 
   /**
    * 鼠标悬浮的边

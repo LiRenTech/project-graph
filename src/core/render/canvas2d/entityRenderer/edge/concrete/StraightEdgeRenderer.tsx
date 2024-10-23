@@ -6,12 +6,12 @@ import { Edge } from "../../../../../stageObject/association/Edge";
 import { CircleFlameEffect } from "../../../../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../effect/concrete/LineCuttingEffect";
 import { Effect } from "../../../../../effect/effect";
-import { TextNode } from "../../../../../stageObject/entity/TextNode";
 import { Camera } from "../../../../../stage/Camera";
 import { Renderer } from "../../../renderer";
 import { RenderUtils } from "../../../RenderUtils";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
+import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 
 /**
  * 直线渲染器
@@ -45,18 +45,18 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     ];
   }
 
-  getConnectedEffects(startNode: TextNode, toNode: TextNode): Effect[] {
+  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): Effect[] {
     return [
       new CircleFlameEffect(
         new ProgressNumber(0, 15),
-        startNode.rectangle.center,
+        startNode.collisionBox.getRectangle().center,
         80,
         new Color(83, 175, 29, 1),
       ),
       new LineCuttingEffect(
         new ProgressNumber(0, 30),
-        startNode.rectangle.center,
-        toNode.rectangle.center,
+        startNode.collisionBox.getRectangle().center,
+        toNode.collisionBox.getRectangle().center,
         new Color(78, 201, 176, 1),
         new Color(83, 175, 29, 1),
         20,
@@ -106,9 +106,9 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     // 画箭头
     {
       const size = 15;
-      const direction = edge.target.rectangle
+      const direction = edge.target.collisionBox.getRectangle()
         .getCenter()
-        .subtract(edge.source.rectangle.getCenter())
+        .subtract(edge.source.collisionBox.getRectangle().getCenter())
         .normalize();
       const endPoint = edge.bodyLine.end.clone();
       EdgeRenderer.renderArrowHead(endPoint, direction, size);
@@ -118,8 +118,8 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
   public renderCycleState(edge: Edge): void {
     // 自环
     RenderUtils.renderArc(
-      Renderer.transformWorld2View(edge.target.rectangle.location),
-      (edge.target.rectangle.size.y / 2) * Camera.currentScale,
+      Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
+      (edge.target.collisionBox.getRectangle().size.y / 2) * Camera.currentScale,
       Math.PI / 2,
       0,
       new Color(204, 204, 204),
@@ -129,14 +129,14 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     {
       const size = 15;
       const direction = new Vector(1, 0).rotateDegrees(15);
-      const endPoint = edge.target.rectangle.leftCenter;
+      const endPoint = edge.target.collisionBox.getRectangle().leftCenter;
       EdgeRenderer.renderArrowHead(endPoint, direction, size);
     }
   }
 
-  public renderVirtualEdge(startNode: TextNode, mouseLocation: Vector): void {
+  public renderVirtualEdge(startNode: ConnectableEntity, mouseLocation: Vector): void {
     RenderUtils.renderGradientLine(
-      Renderer.transformWorld2View(startNode.rectangle.getCenter()),
+      Renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
       Renderer.transformWorld2View(mouseLocation),
       new Color(255, 255, 255, 0),
       new Color(255, 255, 255, 0.5),
@@ -144,10 +144,10 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     );
   }
 
-  public renderVirtualConfirmedEdge(startNode: TextNode, endNode: TextNode): void {
+  public renderVirtualConfirmedEdge(startNode: ConnectableEntity, endNode: ConnectableEntity): void {
     RenderUtils.renderGradientLine(
-      Renderer.transformWorld2View(startNode.rectangle.getCenter()),
-      Renderer.transformWorld2View(endNode.rectangle.getCenter()),
+      Renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
+      Renderer.transformWorld2View(endNode.collisionBox.getRectangle().getCenter()),
       new Color(0, 255, 0, 0),
       new Color(0, 255, 0, 0.5),
       2,
