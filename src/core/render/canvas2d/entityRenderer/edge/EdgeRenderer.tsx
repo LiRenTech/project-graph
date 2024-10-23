@@ -2,7 +2,6 @@ import { Color } from "../../../../dataStruct/Color";
 
 import { Vector } from "../../../../dataStruct/Vector";
 import { Edge } from "../../../../stageObject/association/Edge";
-import { TextNode } from "../../../../stageObject/entity/TextNode";
 import { Settings } from "../../../../Settings";
 
 import { Renderer } from "../../renderer";
@@ -11,6 +10,7 @@ import { StraightEdgeRenderer } from "./concrete/StraightEdgeRenderer";
 import { SymmetryCurveEdgeRenderer } from "./concrete/SymmetryCurveEdgeRenderer";
 import { VerticalPolyEdgeRenderer } from "./concrete/VerticalPolyEdgeRenderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
+import { ConnectableEntity } from "../../../../stageObject/StageObject";
 
 /**
  * 边的总渲染器单例
@@ -73,14 +73,14 @@ export namespace EdgeRenderer {
   }
 
   export function renderVirtualEdge(
-    startNode: TextNode,
+    startNode: ConnectableEntity,
     mouseLocation: Vector,
   ) {
     currentRenderer.renderVirtualEdge(startNode, mouseLocation);
   }
   export function renderVirtualConfirmedEdge(
-    startNode: TextNode,
-    endNode: TextNode,
+    startNode: ConnectableEntity,
+    endNode: ConnectableEntity,
   ) {
     currentRenderer.renderVirtualConfirmedEdge(startNode, endNode);
   }
@@ -88,7 +88,7 @@ export namespace EdgeRenderer {
   export function getCuttingEffects(edge: Edge) {
     return currentRenderer.getCuttingEffects(edge);
   }
-  export function getConnectedEffects(startNode: TextNode, toNode: TextNode) {
+  export function getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity) {
     return currentRenderer.getConnectedEffects(startNode, toNode);
   }
 

@@ -33,13 +33,13 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
   if (clickedNode) {
     // 右键点击了某个节点
     // Stage.isCutting = false;
-    Stage.connectFromNodes = [];
+    Stage.connectFromEntities = [];
     for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
-        Stage.connectFromNodes.push(node);
+        Stage.connectFromEntities.push(node);
       }
     }
-    if (Stage.connectFromNodes.includes(clickedNode)) {
+    if (Stage.connectFromEntities.includes(clickedNode)) {
       // 多重连接
       for (const node of StageManager.getTextNodes()) {
         if (node.isSelected) {
@@ -55,7 +55,7 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
       }
     } else {
       // 不触发多重连接
-      Stage.connectFromNodes = [clickedNode];
+      Stage.connectFromEntities = [clickedNode];
       // 特效
       Stage.effects.push(
         new RectangleNoteEffect(
@@ -83,7 +83,7 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
   let isFindConnectToNode = false;
   for (const node of StageManager.getTextNodes()) {
     if (node.collisionBox.isPointInCollisionBox(worldLocation)) {
-      if (Stage.connectToNode === null) {
+      if (Stage.connectToEntity === null) {
         // 特效
         // Stage.effects.push(
         //   new RectangleNoteEffect(
@@ -93,14 +93,14 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
         //   ),
         // );
       }
-      Stage.connectToNode = node;
+      Stage.connectToEntity = node;
       isFindConnectToNode = true;
 
       break;
     }
   }
   if (!isFindConnectToNode) {
-    Stage.connectToNode = null;
+    Stage.connectToEntity = null;
   }
   // 由于连接线要被渲染器绘制，所以需要更新总控制里的lastMoveLocation
   Controller.lastMoveLocation = worldLocation.clone();
@@ -111,14 +111,14 @@ ControllerNodeConnection.mouseup = (event: MouseEvent) => {
     return;
   }
   // 结束连线
-  if (Stage.connectFromNodes.length > 0 && Stage.connectToNode !== null) {
+  if (Stage.connectFromEntities.length > 0 && Stage.connectToEntity !== null) {
     let isHaveConnectResult = false; // 在多重链接的情况下，是否有连接成功
-    for (const node of Stage.connectFromNodes) {
-      const connectResult = StageManager.connectNode(node, Stage.connectToNode);
+    for (const node of Stage.connectFromEntities) {
+      const connectResult = StageManager.connectNode(node, Stage.connectToEntity);
       if (connectResult) {
         // 连接成功，特效
         isHaveConnectResult = true;
-        for (const effect of EdgeRenderer.getConnectedEffects(node, Stage.connectToNode)) {
+        for (const effect of EdgeRenderer.getConnectedEffects(node, Stage.connectToEntity)) {
           Stage.effects.push(effect);
         }
       }
@@ -128,13 +128,13 @@ ControllerNodeConnection.mouseup = (event: MouseEvent) => {
       Stage.effects.push(
         new CircleFlameEffect(
           new ProgressNumber(0, 15),
-          Stage.connectToNode.rectangle.center,
+          Stage.connectToEntity.collisionBox.getRectangle().center,
           80,
           new Color(0, 255, 0, 1),
         ),
       );
     }
   }
-  Stage.connectFromNodes = [];
-  Stage.connectToNode = null;
+  Stage.connectFromEntities = [];
+  Stage.connectToEntity = null;
 };

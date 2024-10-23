@@ -6,12 +6,12 @@ import { Edge } from "../../../../../stageObject/association/Edge";
 import { CircleFlameEffect } from "../../../../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../effect/concrete/LineCuttingEffect";
 import { Effect } from "../../../../../effect/effect";
-import { TextNode } from "../../../../../stageObject/entity/TextNode";
 import { Camera } from "../../../../../stage/Camera";
 import { Renderer } from "../../../renderer";
 import { RenderUtils } from "../../../RenderUtils";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
+import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 
 /**
  * 折线渲染器
@@ -45,7 +45,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     ];
   }
 
-  getConnectedEffects(startNode: TextNode, toNode: TextNode): Effect[] {
+  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): Effect[] {
     return [
       new CircleFlameEffect(
         new ProgressNumber(0, 15),
@@ -330,7 +330,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     }
   }
 
-  public renderVirtualEdge(startNode: TextNode, mouseLocation: Vector): void {
+  public renderVirtualEdge(startNode: ConnectableEntity, mouseLocation: Vector): void {
     RenderUtils.renderGradientLine(
       Renderer.transformWorld2View(
         startNode.collisionBox.getRectangle().getCenter(),
@@ -343,8 +343,8 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
   }
 
   public renderVirtualConfirmedEdge(
-    startNode: TextNode,
-    endNode: TextNode,
+    startNode: ConnectableEntity,
+    endNode: ConnectableEntity,
   ): void {
     RenderUtils.renderGradientLine(
       Renderer.transformWorld2View(

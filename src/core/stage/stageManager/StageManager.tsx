@@ -16,7 +16,11 @@ import { Stage } from "../Stage";
 import { StageDumper } from "../StageDumper";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { StringDict } from "../../dataStruct/StringDict";
-import { Association, ConnectableEntity, Entity } from "../../stageObject/StageObject";
+import {
+  Association,
+  ConnectableEntity,
+  Entity,
+} from "../../stageObject/StageObject";
 import { Section } from "../../stageObject/entity/Section";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
 
@@ -35,6 +39,11 @@ export namespace StageManager {
 
   export function getTextNodes(): TextNode[] {
     return entities.valuesToArray().filter((node) => node instanceof TextNode);
+  }
+  export function getConnectableEntity(): ConnectableEntity[] {
+    return entities
+      .valuesToArray()
+      .filter((node) => node instanceof ConnectableEntity);
   }
   export function isEntityExists(uuid: string): boolean {
     return entities.hasId(uuid);
@@ -101,7 +110,9 @@ export namespace StageManager {
   export let selectedEdgeCount = 0;
 
   /** 获取节点连接的子节点数组 */
-  export function nodeChildrenArray(node: ConnectableEntity): ConnectableEntity[] {
+  export function nodeChildrenArray(
+    node: ConnectableEntity,
+  ): ConnectableEntity[] {
     const res: ConnectableEntity[] = [];
     for (const edge of getEdges()) {
       if (edge.source.uuid === node.uuid) {
@@ -111,7 +122,7 @@ export namespace StageManager {
     return res;
   }
 
-  function isConnected(node: TextNode, target: TextNode): boolean {
+  function isConnected(node: ConnectableEntity, target: ConnectableEntity): boolean {
     for (const edge of getEdges()) {
       if (edge.source === node && edge.target === target) {
         return true;
@@ -125,7 +136,7 @@ export namespace StageManager {
    * 节点什么情况下会是unknown的？
    *
    * 包含了对Section框的更新
-   * 
+   *
    */
   export function updateReferences() {
     for (const entity of getEntities()) {
@@ -145,7 +156,7 @@ export namespace StageManager {
 
         for (const child of entity.children) {
           if (entities.hasId(child.uuid)) {
-            const childObject = entities.getById(child.uuid)
+            const childObject = entities.getById(child.uuid);
             if (childObject) {
               newChildList.push(childObject);
             }
@@ -155,7 +166,6 @@ export namespace StageManager {
         entity.adjustLocationAndSize();
       }
     }
-
   }
 
   export function getTextNodeByUUID(uuid: string): TextNode | null {
@@ -385,7 +395,7 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
-  export function connectNode(fromNode: TextNode, toNode: TextNode) {
+  export function connectNode(fromNode: ConnectableEntity, toNode: ConnectableEntity) {
     StageNodeConnector.connectNode(fromNode, toNode);
     StageHistoryManager.recordStep();
     return isConnected(fromNode, toNode);
@@ -428,7 +438,7 @@ export namespace StageManager {
     StageSectionInOutManager.goInSection(entities, section);
     StageHistoryManager.recordStep();
   }
-  
+
   export function goOutSection(entities: Entity[], section: Section) {
     StageSectionInOutManager.goOutSection(entities, section);
     StageHistoryManager.recordStep();
