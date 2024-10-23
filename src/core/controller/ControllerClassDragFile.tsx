@@ -8,10 +8,10 @@ export class ControllerClassDragFile {
 
   public lastMoveLocation: Vector = Vector.getZero();
 
-  public dragEnter = (_: DragEvent) => {};
-  public dragOver = (_: DragEvent) => {};
-  public dragLeave = (_: DragEvent) => {};
-  public drop = (_: DragEvent) => {};
+  public dragEnter = () => {};
+  public dragOver = () => {};
+  public dragLeave = () => {};
+  public drop = () => {};
 
   public init() {
     window.addEventListener("dragenter", this.dragEnter, false);

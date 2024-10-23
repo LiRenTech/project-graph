@@ -20,7 +20,7 @@ export default function RecentFilesPanel() {
     RecentFileManager.RecentFile[]
   >([]);
   const dialog = useDialog();
-  const [_, setFile] = useRecoilState(fileAtom);
+  const [, setFile] = useRecoilState(fileAtom);
 
   const [isRecentFilePanelOpen, setRecentFilePanelOpen] = useRecoilState(
     isRecentFilePanelOpenAtom,

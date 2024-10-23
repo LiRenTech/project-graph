@@ -23,73 +23,76 @@ export namespace Stage {
   /**
    * 是否正在框选
    */
-  export let isSelecting = false;
+  export const isSelecting = false;
   /**
    * 框选框
    * 这里必须一开始为null，否则报错，can not asses "Rectangle"
    * 这个框选框是基于世界坐标的。
    * 此变量会根据两个点的位置自动更新。
    */
-  export let selectingRectangle: Rectangle | null = null;
+  export const selectingRectangle: Rectangle | null = null;
 
   /**
    * 框选框的起点
    */
-  export let selectStartLocation: Vector = Vector.getZero();
+  export const selectStartLocation: Vector = Vector.getZero();
   /**
    * 框选框的终点
    */
-  export let selectEndLocation: Vector = Vector.getZero();
+  export const selectEndLocation: Vector = Vector.getZero();
 
   /**
    * 是否正在切断连线或切割
    */
-  export let isCutting = false;
-  export let cuttingLine: Line | null = null;
+  export const isCutting = false;
+  export const cuttingLine: Line | null = null;
   /**
    * 正在准备要删除的节点
    */
-  export let warningEntity: Entity[] = [];
+  export const warningEntity: Entity[] = [];
   /**
    * 正在准备要删除的连线
    */
-  export let warningEdges: Edge[] = [];
-  export let warningSections: Section[] = [];
+  export const warningEdges: Edge[] = [];
+  export const warningSections: Section[] = [];
   /**
    * 用于多重连接
    */
+  // eslint-disable-next-line prefer-const
   export let connectFromEntities: ConnectableEntity[] = [];
+  // eslint-disable-next-line prefer-const
   export let connectToEntity: ConnectableEntity | null = null;
 
   /**
    * 鼠标悬浮的边
    */
+  // eslint-disable-next-line prefer-const
   export let hoverEdges: Edge[] = [];
   /** 鼠标悬浮的框 */
-  export let hoverSections: Section[] = [];
+  export const hoverSections: Section[] = [];
 
   /**
    * 键盘操作的生长新节点是否显示
    */
-  export let isVirtualNewNodeShow = false;
+  export const isVirtualNewNodeShow = false;
   /**
    * 键盘操作的生长新节点的位置
    */
-  export let keyOnlyVirtualNewLocation = Vector.getZero();
+  export const keyOnlyVirtualNewLocation = Vector.getZero();
 
   /**
    * 搜索结果
    */
-  export let searchResultNodes: TextNode[] = [];
+  export const searchResultNodes: TextNode[] = [];
   /**
    * 搜索结果的索引
    */
-  export let currentSearchResultIndex = 0;
+  export const currentSearchResultIndex = 0;
 
   /**
    * 粘贴板数据
    */
-  export let copyBoardData: Serialized.File = {
+  export const copyBoardData: Serialized.File = {
     version: StageDumper.latestVersion,
     nodes: [],
     edges: [],
@@ -98,28 +101,28 @@ export namespace Stage {
    * 粘贴板内容上的外接矩形
    * 当他为null时，表示没有粘贴板数据
    */
-  export let copyBoardDataRectangle: Rectangle | null = null;
+  export const copyBoardDataRectangle: Rectangle | null = null;
   /**
    * 表示从粘贴板外接矩形的矩形中心，到鼠标当前位置的向量
    * 用于计算即将粘贴的位置
    */
-  export let copyBoardMouseVector: Vector = Vector.getZero();
+  export const copyBoardMouseVector: Vector = Vector.getZero();
 
   /**
    * 当前是否是拖拽文件入窗口的状态
    */
-  export let isDraggingFile = false;
+  export const isDraggingFile = false;
 
   /**
    * 当前鼠标所在的世界坐标
    */
-  export let draggingLocation = Vector.getZero();
+  export const draggingLocation = Vector.getZero();
 
   /**
    * 逻辑总入口
    */
   export function logicTick() {
-    for (let effect of effects) {
+    for (const effect of effects) {
       effect.tick();
     }
     // 清理过时特效

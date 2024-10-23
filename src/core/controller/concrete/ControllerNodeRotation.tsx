@@ -37,7 +37,9 @@ ControllerNodeRotation.mousedown = (event: MouseEvent) => {
     new Vector(event.clientX, event.clientY),
   );
   const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
-  const isHaveEdgeSelected = StageManager.getEdges().some((edge) => edge.isSelected);
+  const isHaveEdgeSelected = StageManager.getEdges().some(
+    (edge) => edge.isSelected,
+  );
   if (clickedEdge === null) {
     return;
   }
@@ -85,8 +87,8 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
       diffLocation,
     );
     ControllerNodeRotation.lastMoveLocation = worldLocation.clone();
-  } else if (Controller.isMouseDown[1]) {
-  } else if (Controller.isMouseDown[2]) {
+    // } else if (Controller.isMouseDown[1]) {
+    // } else if (Controller.isMouseDown[2]) {
   } else {
     // 什么都没有按下的情况
     // 看看鼠标当前的位置是否和线接近

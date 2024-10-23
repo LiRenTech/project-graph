@@ -10,13 +10,13 @@ export class ControllerClass {
 
   public lastMoveLocation: Vector = Vector.getZero();
 
-  public keydown: (event: KeyboardEvent) => void = (_: KeyboardEvent) => {};
-  public keyup: (event: KeyboardEvent) => void = (_: KeyboardEvent) => {};
-  public mousedown: (event: MouseEvent) => void = (_: MouseEvent) => {};
-  public mouseup: (event: MouseEvent) => void = (_: MouseEvent) => {};
-  public mousemove: (event: MouseEvent) => void = (_: MouseEvent) => {};
-  public mousewheel: (event: WheelEvent) => void = (_: WheelEvent) => {};
-  public mouseDoubleClick: (event: MouseEvent) => void = (_: MouseEvent) => {};
+  public keydown: (event: KeyboardEvent) => void = () => {};
+  public keyup: (event: KeyboardEvent) => void = () => {};
+  public mousedown: (event: MouseEvent) => void = () => {};
+  public mouseup: (event: MouseEvent) => void = () => {};
+  public mousemove: (event: MouseEvent) => void = () => {};
+  public mousewheel: (event: WheelEvent) => void = () => {};
+  public mouseDoubleClick: (event: MouseEvent) => void = () => {};
 
   /**
    * 这个函数将在总控制器初始化是统一调用。

@@ -53,7 +53,7 @@ export namespace StageNodeAdder {
           break;
         }
       }
-      let name = template.replace("{{i}}", i.toString());
+      const name = template.replace("{{i}}", i.toString());
       return name;
     }
     return template;

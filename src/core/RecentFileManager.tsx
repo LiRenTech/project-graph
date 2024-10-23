@@ -36,6 +36,7 @@ export namespace RecentFileManager {
   /**
    * 软件启动时，注册一个回调函数，在回调函数中触发打开用户自定以得工程文件事件
    */
+  // eslint-disable-next-line prefer-const
   export let startHookFunction = () => {};
 
   export type RecentFile = {

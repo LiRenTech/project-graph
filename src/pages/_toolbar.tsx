@@ -22,7 +22,7 @@ import {
   AlignEndHorizontal,
   Globe,
   Square,
-  SaveAll
+  SaveAll,
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
@@ -213,7 +213,7 @@ function AlignNodePanel() {
  * @param param0
  * @returns
  */
-export default function Toolbar({ className = "" }) {
+export default function Toolbar({ className = "" }: { className?: string }) {
   const popupDialog = usePopupDialog();
 
   const [isCopyClearShow, setIsCopyClearShow] = useState(false);
@@ -327,7 +327,9 @@ export default function Toolbar({ className = "" }) {
   );
 }
 function onPackNodeToSection() {
-  const selectedNodes = StageManager.getTextNodes().filter(node => node.isSelected);
+  const selectedNodes = StageManager.getTextNodes().filter(
+    (node) => node.isSelected,
+  );
   if (selectedNodes.length < 2) {
     return;
   }

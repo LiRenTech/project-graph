@@ -46,9 +46,9 @@ export default function AppMenu({
 }) {
   const navigate = useNavigate();
   const dialog = useDialog();
-  let [file, setFile] = useRecoilState(fileAtom);
+  const [file, setFile] = useRecoilState(fileAtom);
 
-  const [_, setRecentFilePanelOpen] = useRecoilState(isRecentFilePanelOpenAtom);
+  const [, setRecentFilePanelOpen] = useRecoilState(isRecentFilePanelOpenAtom);
 
   const onNew = () => {
     StageManager.destroy();
@@ -161,7 +161,6 @@ export default function AppMenu({
           Stage.effects.push(new ViewFlashEffect(Color.Black));
           // 成功后改path
           setFile(path);
-        
         })
         .catch((err) => {
           dialog.show({

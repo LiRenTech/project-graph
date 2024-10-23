@@ -313,7 +313,7 @@ export namespace RenderUtils {
     endColor: Color,
     width: number,
   ): void {
-    let gradient = Canvas.ctx.createLinearGradient(
+    const gradient = Canvas.ctx.createLinearGradient(
       start.x,
       start.y,
       end.x,
@@ -338,7 +338,7 @@ export namespace RenderUtils {
     radius: number,
     centerColor: Color,
   ) {
-    let gradient = Canvas.ctx.createRadialGradient(
+    const gradient = Canvas.ctx.createRadialGradient(
       viewLocation.x,
       viewLocation.y,
       0,
@@ -372,8 +372,8 @@ export namespace RenderUtils {
     width: number,
     height: number,
   ): void {
-    let data = svg;
-    let img = new Image();
+    const data = svg;
+    const img = new Image();
     img.src = "data:image/svg+xml;base64," + btoa(data);
     Canvas.ctx.drawImage(img, location.x, location.y, width, height);
   }
@@ -384,8 +384,8 @@ export namespace RenderUtils {
     width: number,
     height: number,
   ): void {
-    let data = svg;
-    let img = new Image();
+    const data = svg;
+    const img = new Image();
     img.src = "data:image/svg+xml;base64," + btoa(data);
     Canvas.ctx.drawImage(
       img,
@@ -423,8 +423,8 @@ export namespace RenderUtils {
         self.path.lineTo((point_at - nor.rotate(-20) * arrow_size).to_qt())
         self.path.closeSubpath()
     */
-    let nor = direction.normalize();
-    let arrow_size = size / 2;
+    const nor = direction.normalize();
+    const arrow_size = size / 2;
     Canvas.ctx.beginPath();
     Canvas.ctx.moveTo(location.x, location.y);
     Canvas.ctx.lineTo(

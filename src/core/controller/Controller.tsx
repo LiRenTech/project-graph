@@ -28,7 +28,7 @@ export namespace Controller {
   /**
    * 在上层接收React提供的state修改函数
    */
-  export let setCursorName: (_: string) => void = (_) => {};
+  export const setCursorName: (_: string) => void = () => {};
 
   // 检测正在按下的键
   export const pressingKeySet: Set<string> = new Set();
@@ -72,27 +72,29 @@ export namespace Controller {
   /**
    * 是否正在进行移动节点的操作
    */
-  export let isMovingEntity = false;
+  export const isMovingEntity = false;
   /**
    * 是否正在进行移动(拖拽旋转)连线的操作
    */
+  // eslint-disable-next-line prefer-const
   export let isMovingEdge = false;
   /**
    * 为移动节点做准备，移动时，记录每上一帧移动的位置
    */
+  // eslint-disable-next-line prefer-const
   export let lastMoveLocation = Vector.getZero();
 
   /**
    * 有时需要锁定相机，比如 编辑节点时
    */
-  export let isCameraLocked = false;
+  export const isCameraLocked = false;
 
   /**
    * 上次选中的节点
    * 仅为 Ctrl交叉选择使用
    */
-  export let lastSelectedEntity: Set<string> = new Set();
-  export let lastSelectedEdge: Set<string> = new Set();
+  export const lastSelectedEntity: Set<string> = new Set();
+  export const lastSelectedEdge: Set<string> = new Set();
 
   export let touchStartLocation = Vector.getZero();
   export let touchStartDistance = 0;
@@ -101,7 +103,7 @@ export namespace Controller {
   export let lastClickTime = 0;
   export let lastClickLocation = Vector.getZero();
 
-  export let isMouseDown: boolean[] = [false, false, false];
+  export const isMouseDown: boolean[] = [false, false, false];
 
   /**
    * 悬浮提示的边缘距离
@@ -185,8 +187,8 @@ export namespace Controller {
       );
     }
     // 检测按下 ctrl + F 搜索
-    if (event.ctrlKey && key === "f") {
-    }
+    // if (event.ctrlKey && key === "f") {
+    // }
     // ctrl + z 撤销
     if (event.ctrlKey && key === "z") {
       StageHistoryManager.undo();

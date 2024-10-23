@@ -32,7 +32,7 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
   const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
   const clickedSection = StageManager.findSectionByLocation(pressWorldLocation);
   let clickedConnectableEntity: ConnectableEntity | null = null;
-  
+
   if (clickedNode) {
     clickedConnectableEntity = clickedNode;
   }
@@ -74,7 +74,6 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
         ),
       );
     }
-  } else {
   }
 };
 
@@ -123,11 +122,17 @@ ControllerNodeConnection.mouseup = (event: MouseEvent) => {
   if (Stage.connectFromEntities.length > 0 && Stage.connectToEntity !== null) {
     let isHaveConnectResult = false; // 在多重链接的情况下，是否有连接成功
     for (const entity of Stage.connectFromEntities) {
-      const connectResult = StageManager.connectNode(entity, Stage.connectToEntity);
+      const connectResult = StageManager.connectNode(
+        entity,
+        Stage.connectToEntity,
+      );
       if (connectResult) {
         // 连接成功，特效
         isHaveConnectResult = true;
-        for (const effect of EdgeRenderer.getConnectedEffects(entity, Stage.connectToEntity)) {
+        for (const effect of EdgeRenderer.getConnectedEffects(
+          entity,
+          Stage.connectToEntity,
+        )) {
           Stage.effects.push(effect);
         }
       } else {

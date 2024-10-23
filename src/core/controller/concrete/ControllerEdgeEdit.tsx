@@ -16,7 +16,7 @@ ControllerEdgeEdit.mouseDoubleClick = (event: MouseEvent) => {
   }
   if (Stage.hoverEdges.length > 0) {
     // 编辑边上的文字
-    let user_input = prompt("请输入线上的文字", Stage.hoverEdges[0].text);
+    const user_input = prompt("请输入线上的文字", Stage.hoverEdges[0].text);
     if (user_input) {
       for (const edge of Stage.hoverEdges) {
         edge.rename(user_input);
@@ -37,7 +37,7 @@ ControllerEdgeEdit.keydown = (event: KeyboardEvent) => {
       return;
     }
 
-    let user_input = prompt("请输入线上的文字", "");
+    const user_input = prompt("请输入线上的文字", "");
     if (user_input) {
       for (const edge of StageManager.getEdges()) {
         edge.rename(user_input);

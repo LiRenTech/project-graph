@@ -20,8 +20,8 @@ ControllerNodeCreate.mouseDoubleClick = (event: MouseEvent) => {
   const pressLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  let clickedNode = StageManager.findTextNodeByLocation(pressLocation);
-  let clickedEdge = StageManager.findEdgeByLocation(pressLocation);
+  const clickedNode = StageManager.findTextNodeByLocation(pressLocation);
+  const clickedEdge = StageManager.findEdgeByLocation(pressLocation);
 
   if (clickedNode !== null || clickedEdge!== null) {
     return;

@@ -13,7 +13,7 @@ export default function PopupDialog() {
       console.log(ref.current);
       const [mouseX, mouseY] = popupDialog.location;
       const { width: popupWidth, height: popupHeight } =
-        ref.current?.getBoundingClientRect()!;
+        ref.current!.getBoundingClientRect()!;
       const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
 

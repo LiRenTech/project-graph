@@ -217,7 +217,7 @@ export namespace StageManager {
     if (entities.length === 0) {
       return new Vector(Renderer.w, Renderer.h);
     }
-    let size = Vector.getZero();
+    const size = Vector.getZero();
     for (const node of getEntities()) {
       if (node.collisionBox.getRectangle().size.x > size.x) {
         size.x = node.collisionBox.getRectangle().size.x;

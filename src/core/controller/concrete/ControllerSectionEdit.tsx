@@ -18,7 +18,7 @@ ControllerSectionEdit.mouseDoubleClick = (event: MouseEvent) => {
   }
   if (Stage.hoverSections.length > 0) {
     // 编辑文字
-    let user_input = prompt("请输入文字", Stage.hoverSections[0].text);
+    const user_input = prompt("请输入文字", Stage.hoverSections[0].text);
     if (user_input) {
       for (const section of Stage.hoverSections) {
         section.rename(user_input);
@@ -53,7 +53,7 @@ ControllerSectionEdit.keydown = (event: KeyboardEvent) => {
       return;
     }
 
-    let user_input = prompt("请输入线上的文字", "");
+    const user_input = prompt("请输入线上的文字", "");
     if (user_input) {
       for (const section of StageManager.getSections()) {
         section.rename(user_input);

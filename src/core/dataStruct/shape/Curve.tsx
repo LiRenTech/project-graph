@@ -32,25 +32,25 @@ export class CubicBezierCurve extends Shape {
     return new Line(this.start, this.end).isCollideWithLine(line);
   }
   getRectangle(): Rectangle {
-    let minX = Math.min(
+    const minX = Math.min(
       this.start.x,
       this.ctrlPt1.x,
       this.ctrlPt2.x,
       this.end.x,
     );
-    let maxX = Math.max(
+    const maxX = Math.max(
       this.start.x,
       this.ctrlPt1.x,
       this.ctrlPt2.x,
       this.end.x,
     );
-    let minY = Math.min(
+    const minY = Math.min(
       this.start.y,
       this.ctrlPt1.y,
       this.ctrlPt2.y,
       this.end.y,
     );
-    let maxY = Math.max(
+    const maxY = Math.max(
       this.start.y,
       this.ctrlPt1.y,
       this.ctrlPt2.y,
@@ -99,10 +99,10 @@ export class SymmetryCurve extends Shape {
     return `SymmetryCurve(start:${this.start}, startDirection:${this.startDirection}, end:${this.end}, endDirection:${this.endDirection}, bending:${this.bending})`;
   }
   getRectangle(): Rectangle {
-    let minX = Math.min(this.start.x, this.end.x);
-    let maxX = Math.max(this.start.x, this.end.x);
-    let minY = Math.min(this.start.y, this.end.y);
-    let maxY = Math.max(this.start.y, this.end.y);
+    const minX = Math.min(this.start.x, this.end.x);
+    const maxX = Math.max(this.start.x, this.end.x);
+    const minY = Math.min(this.start.y, this.end.y);
+    const maxY = Math.max(this.start.y, this.end.y);
     const leftTop = new Vector(minX, minY);
     const size = new Vector(maxX - minX, maxY - minY);
     return new Rectangle(leftTop, size);
