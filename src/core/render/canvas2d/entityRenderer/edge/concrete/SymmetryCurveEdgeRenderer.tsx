@@ -66,16 +66,17 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     const start = edge.bodyLine.start;
     const end = edge.bodyLine.end;
     const direction = end.subtract(start);
-    const startDirection = new Vector(
-      Math.abs(direction.x) >= Math.abs(direction.y) ? direction.x : 0,
-      Math.abs(direction.x) >= Math.abs(direction.y) ? 0 : direction.y,
-    ).normalize();
+    // const startDirection = new Vector(
+    //   Math.abs(direction.x) >= Math.abs(direction.y) ? direction.x : 0,
+    //   Math.abs(direction.x) >= Math.abs(direction.y) ? 0 : direction.y,
+    // ).normalize();
     const size = 15; // 箭头大小
+    const endNormal = edge.target.rectangle.getNormalVectorAt(end);
     const curve = new SymmetryCurve(
       start,
-      startDirection,
-      end.subtract(startDirection.multiply(size / 2)),
-      startDirection.multiply(-1),
+      edge.source.rectangle.getNormalVectorAt(start),
+      end.subtract(endNormal.multiply(size / -2)),
+      endNormal,
       Math.abs(direction.magnitude()) / 2,
     );
     WorldRenderUtils.renderSymmetryCurve(
@@ -86,8 +87,8 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     // 画箭头
     const endPoint = edge.bodyLine.end
       .clone()
-      .subtract(startDirection.multiply(2));
-    EdgeRenderer.renderArrowHead(endPoint, startDirection, size);
+      .add(endNormal.multiply(2));
+    EdgeRenderer.renderArrowHead(endPoint, endNormal.multiply(-1), size);
     // 画文本
     RenderUtils.renderTextFromCenter(
       edge.text,

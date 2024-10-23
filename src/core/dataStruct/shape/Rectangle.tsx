@@ -369,6 +369,22 @@ export class Rectangle extends Shape {
     return this.getCenter();
   }
 
+  /**
+   * 获取在this矩形边上的point的单位法向量,若point不在this矩形边上，则该函数可能返回任意向量。
+   * @param point 
+   */
+  public getNormalVectorAt(point: Vector): Vector {
+    if (point.x === this.left) {
+      return new Vector(-1, 0);
+    } else if (point.x === this.right) {
+      return new Vector(1, 0);
+    } else if (point.y === this.top) {
+      return new Vector(0, -1);
+    } else {
+      return new Vector(0, 1);
+    }
+  }
+
   public transformWorld2View(): Rectangle {
     return new Rectangle(
       Renderer.transformWorld2View(this.location),
