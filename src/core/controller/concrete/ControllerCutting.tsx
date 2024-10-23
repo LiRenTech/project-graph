@@ -10,6 +10,7 @@ import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { Line } from "../../dataStruct/shape/Line";
 import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
+import { Section } from "../../stageObject/entity/Section";
 
 /**
  * 关于斩断线的控制器
@@ -52,13 +53,16 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
     ControllerCutting.lastMoveLocation,
   );
 
-  Stage.warningNodes = [];
-  for (const node of StageManager.getTextNodes()) {
-    const collidePoints = node.rectangle.getCollidePointsWithLine(
-      Stage.cuttingLine,
-    );
+  Stage.warningEntity = [];
+  for (const entity of StageManager.getEntities()) {
+    if (entity instanceof Section) {
+      continue;  // Section的碰撞箱比较特殊
+    }
+    const collidePoints = entity.collisionBox
+      .getRectangle()
+      .getCollidePointsWithLine(Stage.cuttingLine);
     if (collidePoints.length > 0) {
-      Stage.warningNodes.push(node);
+      Stage.warningEntity.push(entity);
       for (const collidePoint of collidePoints) {
         Stage.effects.push(
           new CircleFlameEffect(
@@ -104,8 +108,8 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
   }
   Stage.isCutting = false;
 
-  StageManager.deleteEntities(Stage.warningNodes);
-  Stage.warningNodes = [];
+  StageManager.deleteEntities(Stage.warningEntity);
+  Stage.warningEntity = [];
 
   for (const edge of Stage.warningEdges) {
     StageManager.deleteEdge(edge);
@@ -116,9 +120,9 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
   for (const section of Stage.warningSections) {
     StageManager.deleteSection(section);
   }
-  
+
   Stage.warningSections = [];
-  
+
   StageManager.updateReferences();
 
   Stage.warningEdges = [];

@@ -140,7 +140,7 @@ export namespace StageManager {
    */
   export function updateReferences() {
     for (const entity of getEntities()) {
-      if (entity instanceof TextNode) {
+      if (entity instanceof ConnectableEntity) {
         for (const edge of getEdges()) {
           if (edge.source.unknown && edge.source.uuid === entity.uuid) {
             edge.source = entity;
@@ -170,6 +170,16 @@ export namespace StageManager {
 
   export function getTextNodeByUUID(uuid: string): TextNode | null {
     for (const node of getTextNodes()) {
+      if (node.uuid === uuid) {
+        return node;
+      }
+    }
+    return null;
+  }
+  export function getConnectableEntityByUUID(
+    uuid: string,
+  ): ConnectableEntity | null {
+    for (const node of getConnectableEntity()) {
       if (node.uuid === uuid) {
         return node;
       }

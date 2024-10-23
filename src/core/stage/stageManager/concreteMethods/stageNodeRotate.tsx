@@ -1,11 +1,11 @@
 import { Vector } from "../../../dataStruct/Vector";
 import { StageManager } from "../StageManager";
-import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Stage } from "../../Stage";
 import { LineEffect } from "../../../effect/concrete/LineEffect";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Color } from "../../../dataStruct/Color";
 import { StageNodeTextMoveManager } from "./StageNodeMoveManager";
+import { ConnectableEntity } from "../../../stageObject/StageObject";
 
 /**
  * 所有和旋转相关的操作
@@ -33,8 +33,8 @@ export namespace StageNodeRotate {
           degrees = 0;
         }
         rotateNodeDfs(
-          StageManager.getTextNodeByUUID(edge.source.uuid)!,
-          StageManager.getTextNodeByUUID(edge.target.uuid)!,
+          StageManager.getConnectableEntityByUUID(edge.source.uuid)!,
+          StageManager.getConnectableEntityByUUID(edge.target.uuid)!,
           degrees,
           [edge.source.uuid],
         );
@@ -50,8 +50,8 @@ export namespace StageNodeRotate {
    * @param visitedUUIDs 已经访问过的节点的uuid列表，用于避免死循环
    */
   export function rotateNodeDfs(
-    rotateCenterNode: TextNode, // 待改成ConnectedAbleEntity
-    currentNode: TextNode,
+    rotateCenterNode: ConnectableEntity,
+    currentNode: ConnectableEntity,
     degrees: number,
     visitedUUIDs: string[],
   ): void {

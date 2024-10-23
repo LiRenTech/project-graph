@@ -7,7 +7,7 @@ import { Serialized } from "../../types/node";
 import { StageDumper } from "./StageDumper";
 import { Line } from "../dataStruct/shape/Line";
 import { Section } from "../stageObject/entity/Section";
-import { ConnectableEntity } from "../stageObject/StageObject";
+import { ConnectableEntity, Entity } from "../stageObject/StageObject";
 
 /**
  * 舞台对象
@@ -49,7 +49,7 @@ export namespace Stage {
   /**
    * 正在准备要删除的节点
    */
-  export let warningNodes: TextNode[] = [];
+  export let warningEntity: Entity[] = [];
   /**
    * 正在准备要删除的连线
    */

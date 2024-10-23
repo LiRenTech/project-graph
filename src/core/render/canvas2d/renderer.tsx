@@ -204,7 +204,7 @@ export namespace Renderer {
   }
   function renderWarningEntities() {
     // 待删除的节点
-    for (const node of Stage.warningNodes) {
+    for (const node of Stage.warningEntity) {
       CollisionBoxRenderer.render(node.collisionBox, new Color(255, 0, 0, 0.5));
     }
     // 待删除的边
@@ -423,7 +423,7 @@ export namespace Renderer {
       `框选框: ${Stage.selectingRectangle}`,
       `正在移动节点: ${Controller.isMovingEntity}`,
       `正在切割: ${Stage.isCutting}`,
-      `Stage.warningNodes: ${Stage.warningNodes.length}`,
+      `Stage.warningNodes: ${Stage.warningEntity.length}`,
       `Stage.warningEdges: ${Stage.warningEdges.length}`,
       `ConnectFromNodes: ${Stage.connectFromEntities}`,
       `lastSelectedNode: ${Controller.lastSelectedEntity.size}`,
