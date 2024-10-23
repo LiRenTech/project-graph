@@ -11,13 +11,14 @@ import { SymmetryCurveEdgeRenderer } from "./concrete/SymmetryCurveEdgeRenderer"
 import { VerticalPolyEdgeRenderer } from "./concrete/VerticalPolyEdgeRenderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { ConnectableEntity } from "../../../../stageObject/StageObject";
+import { EdgeRendererClass } from "./EdgeRendererClass";
 
 /**
  * 边的总渲染器单例
  */
 export namespace EdgeRenderer {
   // let currentRenderer = new StraightEdgeRenderer();
-  let currentRenderer = new SymmetryCurveEdgeRenderer();
+  let currentRenderer: EdgeRendererClass = new SymmetryCurveEdgeRenderer();
 
   /**
    * 初始化边的渲染器
