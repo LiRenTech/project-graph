@@ -41,12 +41,12 @@ export namespace EntityRenderer {
       );
     }
     // debug
-    RenderUtils.renderRect(
-      section.collisionBox.getRectangle().transformWorld2View(),
-      section.color,
-      new Color(0, 2, 255, 1),
-      0.5 * Camera.currentScale
-    )
+    // RenderUtils.renderRect(
+    //   section.collisionBox.getRectangle().transformWorld2View(),
+    //   section.color,
+    //   new Color(0, 2, 255, 1),
+    //   0.5 * Camera.currentScale
+    // )
   }
 
   export function renderNode(node: TextNode) {
