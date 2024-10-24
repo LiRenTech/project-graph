@@ -543,7 +543,9 @@ export namespace Renderer {
         document.body.addEventListener("wheel", onOutsideWheel);
       }, 10);
       inputElement.addEventListener("input", () => {
+
         onChange(inputElement.value);
+        // console.log("input input: ", inputElement.value);
       });
       inputElement.addEventListener("blur", () => {
         resolve(inputElement.value);
@@ -616,6 +618,7 @@ export namespace Renderer {
       }, 10);
 
       inputElement.addEventListener("input", () => {
+        // console.log("textarea input: ", inputElement.value);
         onChange(inputElement.value);
       });
 

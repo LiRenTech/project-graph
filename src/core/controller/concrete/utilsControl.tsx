@@ -40,33 +40,46 @@ export function editNode(clickedNode: TextNode) {
   });
 }
 
+/**
+ * 一个全局对象，用于编辑节点的钩子函数
+ */
+export const editTextNodeHookGlobal = {
+  hookFunctionStart(_: TextNode) {
+    // 在外部将被修改
+  },
+  hookFunctionEnd(_: TextNode) {
+    // 在外部将被修改
+  },
+};
+
 export function editNodeDetails(clickedNode: TextNode) {
   Controller.isCameraLocked = true;
 
   clickedNode.isEditingDetails = true;
+  editTextNodeHookGlobal.hookFunctionStart(clickedNode);
   // 有待把input换成
-  Renderer.textarea(
-    Renderer.transformWorld2View(
-      clickedNode.rectangle.location.add(
-        new Vector(0, clickedNode.rectangle.size.y),
-      ),
-    ),
-    clickedNode.details,
-    (text) => {
-      clickedNode?.changeDetails(text);
-      console.log(text);
-      // BUG: 空格，回车，方向键都被屏蔽了
-    },
-    {
-      fontSize: Renderer.FONT_SIZE_DETAILS * Camera.currentScale + "px",
-      backgroundColor: "transparent",
-      color: "white",
-      outline: "solid 1px white",
-      // marginTop: -8 * Camera.currentScale + "px",
-      width: Renderer.NODE_DETAILS_WIDTH * Camera.currentScale + "px",
-    },
-  ).then(() => {
-    Controller.isCameraLocked = false;
-    clickedNode.isEditingDetails = false;
-  });
+  // Renderer.textarea(
+  //   Renderer.transformWorld2View(
+  //     clickedNode.rectangle.location.add(
+  //       new Vector(0, clickedNode.rectangle.size.y),
+  //     ),
+  //   ),
+  //   clickedNode.details,
+  //   (text) => {
+  //     clickedNode?.changeDetails(text);
+  //     console.log(text);
+  //     // BUG: 空格，回车，方向键都被屏蔽了
+  //   },
+  //   {
+  //     fontSize: Renderer.FONT_SIZE_DETAILS * Camera.currentScale + "px",
+  //     backgroundColor: "transparent",
+  //     color: "white",
+  //     outline: "solid 1px white",
+  //     // marginTop: -8 * Camera.currentScale + "px",
+  //     width: Renderer.NODE_DETAILS_WIDTH * Camera.currentScale + "px",
+  //   },
+  // ).then(() => {
+  //   clickedNode.isEditingDetails = false;
+  //   Controller.isCameraLocked = false;
+  // });
 }

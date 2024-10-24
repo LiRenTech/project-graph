@@ -24,6 +24,7 @@ export namespace Stage {
    * 是否正在框选
    */
   export let isSelecting = false;
+
   /**
    * 框选框
    * 这里必须一开始为null，否则报错，can not asses "Rectangle"
