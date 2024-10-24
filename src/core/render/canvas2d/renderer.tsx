@@ -22,6 +22,7 @@ import { Settings } from "../../Settings";
 import { ExplodeAshEffect } from "../../effect/concrete/ExplodeDashEffect";
 import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
 import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
+import { WorldRenderUtils } from "./WorldRenderUtils";
 
 /**
  * 渲染器
@@ -141,13 +142,18 @@ export namespace Renderer {
     }
     // 切割线
     if (Stage.isCutting) {
-      RenderUtils.renderGradientLine(
-        transformWorld2View(Controller.lastMousePressLocation[2]),
-        transformWorld2View(Controller.lastMoveLocation),
-        new Color(255, 0, 0, 0),
-        new Color(255, 0, 0, 1),
-        2,
+      WorldRenderUtils.renderLaser(
+        Controller.lastMousePressLocation[2],
+        Controller.lastMoveLocation,
+        2
       );
+      // RenderUtils.renderGradientLine(
+      //   transformWorld2View(Controller.lastMousePressLocation[2]),
+      //   transformWorld2View(Controller.lastMoveLocation),
+      //   new Color(255, 0, 0, 0),
+      //   new Color(255, 0, 0, 1),
+      //   2,
+      // );
     }
     // 手动连接线
     if (Stage.connectFromEntities.length > 0 && Controller.lastMoveLocation) {
