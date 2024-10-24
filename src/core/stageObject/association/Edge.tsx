@@ -5,11 +5,11 @@ import { TextNode } from "../entity/TextNode";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Vector } from "../../dataStruct/Vector";
-import { Circle } from "../../dataStruct/shape/Circle";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { ConnectableAssociation, ConnectableEntity } from "../StageObject";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { v4 as uuidv4 } from "uuid";
+import { EdgeCollisionBoxGetter } from "./EdgeCollisionBoxGetter";
 
 export class Edge extends ConnectableAssociation {
   public uuid: string;
@@ -56,17 +56,18 @@ export class Edge extends ConnectableAssociation {
   }
 
   get collisionBox(): CollisionBox {
-    if (this.source.uuid === this.target.uuid) {
-      // 是一个自环，碰撞箱是圆形
-      return new CollisionBox([
-        new Circle(
-          this.source.collisionBox.getRectangle().location,
-          this.source.collisionBox.getRectangle().size.y / 2,
-        ),
-      ]);
-    } else {
-      return new CollisionBox([this.bodyLine]);
-    }
+    // if (this.source.uuid === this.target.uuid) {
+    //   // 是一个自环，碰撞箱是圆形
+    //   return new CollisionBox([
+    //     new Circle(
+    //       this.source.collisionBox.getRectangle().location,
+    //       this.source.collisionBox.getRectangle().size.y / 2,
+    //     ),
+    //   ]);
+    // } else {
+    //   return new CollisionBox([this.bodyLine]);
+    // }
+    return EdgeCollisionBoxGetter.getCollisionBox(this);
   }
 
   private _source: ConnectableEntity;

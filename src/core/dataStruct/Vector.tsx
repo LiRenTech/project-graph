@@ -137,6 +137,14 @@ export class Vector {
   }
 
   /**
+   * 向量之间的分量分别相乘
+   * @param other 
+   */
+  componentMultiply(other: Vector): Vector {
+    return new Vector(this.x * other.x, this.y * other.y);
+  }
+
+  /**
    * 根据角度构造一个单位向量
    * @param angle 单位：弧度
    */
