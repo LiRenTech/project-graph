@@ -35,7 +35,6 @@ import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { Color } from "../core/dataStruct/Color";
 import { RecentFileManager } from "../core/RecentFileManager";
 import { invoke } from "@tauri-apps/api/core";
-import { Settings } from "../core/Settings";
 
 export default function AppMenu({
   className = "",
@@ -226,13 +225,13 @@ export default function AppMenu({
   };
 
   useEffect(() => {
-    RecentFileManager.startHookFunction = () => {
+    RecentFileManager.startHookFunction = (autoOpenPath: string) => {
       if (RecentFileManager.isOpenByPathWhenAppStart()) {
-        Settings.get("autoOpenPath").then((autoOpenPath) => {
-          setFile(autoOpenPath);
-        });
+        // 触发用户打开自定义工程文件
+        setFile(autoOpenPath);
       } else {
-        console.log("没有打开过文件");
+        // 没有触发用户打开自定义工程文件
+        setFile("Project Graph");
       }
     };
   }, []);

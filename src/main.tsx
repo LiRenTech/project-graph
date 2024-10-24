@@ -46,7 +46,9 @@ const Routes = () => <RouterProvider router={router} />;
           if (isExists) {
             // 打开自定义的工程文件
             RecentFileManager.openFileByPath(path);
-            RecentFileManager.openFileByPathWhenAppStart();
+            setTimeout(() => {
+              RecentFileManager.openFileByPathWhenAppStart(path);
+            }, 1000);
             console.log("自动打开了工程文件：" + path);
           } else {
             // 自动打开路径不存在
