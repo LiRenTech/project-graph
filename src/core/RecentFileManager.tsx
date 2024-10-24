@@ -89,7 +89,10 @@ export namespace RecentFileManager {
    */
   export async function validAndRefreshRecentFiles() {
     const recentFiles = await getRecentFiles();
-    const validFiles: RecentFile[] = [];
+    const recentFilesValid: RecentFile[] = [];
+    
+    // 是否存在文件丢失情况
+    let isFileLost = false;
 
     for (const file of recentFiles) {
       try {
@@ -98,14 +101,20 @@ export namespace RecentFileManager {
           path: file.path,
         });
         if (isExists) {
-          validFiles.push(file); // 存在则保留
+          recentFilesValid.push(file); // 存在则保留
         } else {
           console.log("文件不存在，删除记录", file.path);
+          isFileLost = true;
         }
+        
+
       } catch (e) {
         console.error("无法检测文件是否存在：", file.path);
         console.error(e);
       }
+    }
+    if (isFileLost) {
+      await store.set("recentFiles", recentFilesValid); // 更新存储
     }
   }
 
