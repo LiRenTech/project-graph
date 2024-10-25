@@ -40,6 +40,7 @@ export namespace EffectRenderer {
 
   /**
    * 屏幕中央的上升文字特效
+   * 不应该随着屏幕的缩放而缩小
    * @param render
    * @param effect
    * @returns
@@ -50,9 +51,9 @@ export namespace EffectRenderer {
     }
     // 在画布中心缓缓升高一段距离
     const centerLocation = new Vector(Renderer.w / 2, Renderer.h / 2);
-    const distance = 50 * Camera.currentScale;
+    const distance = 100;
 
-    Canvas.ctx.font = `${20 * Camera.currentScale}px Arial`;
+    Canvas.ctx.font = `20px Arial`;
     Canvas.ctx.fillStyle = Color.White.toString();
     Canvas.ctx.textAlign = "center";
     Canvas.ctx.textBaseline = "middle";

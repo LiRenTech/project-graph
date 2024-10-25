@@ -16,6 +16,10 @@ import { TextRiseEffect } from "./core/effect/concrete/TextRiseEffect";
 import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeCollisionBoxGetter";
+import { ProgressNumber } from "./core/dataStruct/ProgressNumber";
+
+// 计时开始
+const t1 = performance.now();
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -50,6 +54,14 @@ const Routes = () => <RouterProvider router={router} />;
               RecentFileManager.openFileByPathWhenAppStart(path);
             }, 1000);
             console.log("自动打开了工程文件：" + path);
+            const t2 = performance.now();
+            // 打开工程文件后，显示欢迎信息
+            Stage.effects.push(
+              new TextRiseEffect(
+                "加载耗时：" + (t2 - t1).toFixed(2) + "ms",
+                new ProgressNumber(0, 100),
+              ),
+            );
           } else {
             // 自动打开路径不存在
             Stage.effects.push(
