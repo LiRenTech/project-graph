@@ -1694,10 +1694,10 @@
       "uuid": "d1c324eb-fe86-4c63-b442-5efd72642ffc",
       "details": "没复制连线的uuid",
       "color": [
-        0,
-        0,
-        0,
-        0
+        22,
+        163,
+        74,
+        1
       ],
       "type": "core:text_node"
     },
@@ -1734,10 +1734,10 @@
       "uuid": "eced03af-5acf-4337-ae16-eb765f462b44",
       "details": "",
       "color": [
-        0,
-        0,
-        0,
-        0
+        22,
+        163,
+        74,
+        1
       ],
       "type": "core:text_node"
     },

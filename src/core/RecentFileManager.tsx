@@ -6,7 +6,6 @@ import { Edge } from "./stageObject/association/Edge";
 import { Camera } from "./stage/Camera";
 import { Stage } from "./stage/Stage";
 import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
-import { Color } from "./dataStruct/Color";
 import { TextNode } from "./stageObject/entity/TextNode";
 import { invoke } from "@tauri-apps/api/core";
 import { Serialized } from "../types/node";
@@ -161,7 +160,7 @@ export namespace RecentFileManager {
     StageHistoryManager.init(data);
 
     Camera.reset();
-    Stage.effects.push(new ViewFlashEffect(Color.Black));
+    Stage.effects.push(ViewFlashEffect.SaveFile());
     RecentFileManager.addRecentFile({
       path: path,
       time: new Date().getTime(),

@@ -12,4 +12,8 @@ export class ViewFlashEffect extends Effect {
   ) {
     super(timeProgress);
   }
+
+  static SaveFile() {
+    return new ViewFlashEffect(Color.Black, new ProgressNumber(0, 10));
+  }
 }

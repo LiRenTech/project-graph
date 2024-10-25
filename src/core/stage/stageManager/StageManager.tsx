@@ -122,7 +122,10 @@ export namespace StageManager {
     return res;
   }
 
-  function isConnected(node: ConnectableEntity, target: ConnectableEntity): boolean {
+  function isConnected(
+    node: ConnectableEntity,
+    target: ConnectableEntity,
+  ): boolean {
     for (const edge of getEdges()) {
       if (edge.source === node && edge.target === target) {
         return true;
@@ -215,17 +218,25 @@ export namespace StageManager {
    */
   export function getSize(): Vector {
     if (entities.length === 0) {
+      console.log("获取所有节点大小时没有节点");
       return new Vector(Renderer.w, Renderer.h);
     }
-    const size = Vector.getZero();
-    for (const node of getEntities()) {
-      if (node.collisionBox.getRectangle().size.x > size.x) {
-        size.x = node.collisionBox.getRectangle().size.x;
-      }
-      if (node.collisionBox.getRectangle().size.y > size.y) {
-        size.y = node.collisionBox.getRectangle().size.y;
-      }
-    }
+    // const size = Vector.getZero();
+    // for (const node of getEntities()) {
+    //   if (node.collisionBox.getRectangle().size.x > size.x) {
+    //     size.x = node.collisionBox.getRectangle().size.x;
+    //   }
+    //   if (node.collisionBox.getRectangle().size.y > size.y) {
+    //     size.y = node.collisionBox.getRectangle().size.y;
+    //   }
+    // }
+    // return size;
+    const size = Rectangle.getBoundingRectangle(
+      Array.from(entities.valuesToArray()).map((node) =>
+        node.collisionBox.getRectangle(),
+      ),
+    ).size;
+    console.log(size, "getSize");
     return size;
   }
 
@@ -405,7 +416,10 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
-  export function connectNode(fromNode: ConnectableEntity, toNode: ConnectableEntity) {
+  export function connectNode(
+    fromNode: ConnectableEntity,
+    toNode: ConnectableEntity,
+  ) {
     StageNodeConnector.connectNode(fromNode, toNode);
     StageHistoryManager.recordStep();
     return isConnected(fromNode, toNode);

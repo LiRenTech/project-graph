@@ -125,11 +125,18 @@ export namespace Camera {
     }
   }
 
+  /**
+   * 重置摄像机的缩放，让其画面刚好能容下舞台上所有内容的外接矩形
+   * 还是不要有缩放了，因为缩放会带来一点卡顿（2024年10月25日）
+   */
   export function reset() {
     Camera.location = StageManager.getCenter();
-    Camera.targetScale = 0.01;
-    Camera.currentScale = 0.01;
-    Camera.targetScale =
-      StageManager.getSize().y / (Renderer.h * Camera.currentScale);
+    // Camera.currentScale = 0.01;
+
+    Camera.currentScale = Math.min(
+      Renderer.h / StageManager.getSize().y,
+      Renderer.w / StageManager.getSize().x,
+    );
+    Camera.targetScale = Camera.currentScale;
   }
 }

@@ -32,7 +32,6 @@ import { StageDumper } from "../core/stage/StageDumper";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { Stage } from "../core/stage/Stage";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
-import { Color } from "../core/dataStruct/Color";
 import { RecentFileManager } from "../core/RecentFileManager";
 import { invoke } from "@tauri-apps/api/core";
 
@@ -115,7 +114,7 @@ export default function AppMenu({
       })
         .then((res) => {
           console.log("保存成功", res);
-          Stage.effects.push(new ViewFlashEffect(Color.Black));
+          Stage.effects.push(ViewFlashEffect.SaveFile());
         })
         .catch((err) => {
           dialog.show({
@@ -157,7 +156,7 @@ export default function AppMenu({
       })
         .then((res) => {
           console.log("保存成功", res);
-          Stage.effects.push(new ViewFlashEffect(Color.Black));
+          Stage.effects.push(ViewFlashEffect.SaveFile());
           // 成功后改path
           setFile(path);
         })
@@ -206,7 +205,7 @@ export default function AppMenu({
       })
         .then((res) => {
           console.log("保存成功", res);
-          Stage.effects.push(new ViewFlashEffect(Color.Black));
+          Stage.effects.push(ViewFlashEffect.SaveFile());
         })
         .catch((err) => {
           dialog.show({

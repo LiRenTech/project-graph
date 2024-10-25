@@ -40,6 +40,13 @@ const Routes = () => <RouterProvider router={router} />;
   Settings.get("autoOpenPath").then((path) => {
     if (path === "") {
       // 还没有设置自动打开路径
+      const t2 = performance.now();
+      Stage.effects.push(
+        new TextRiseEffect(
+          "加载耗时：" + (t2 - t1).toFixed(2) + "ms",
+          new ProgressNumber(0, 100),
+        ),
+      );
       return;
     } else {
       invoke<string>("check_json_exist", {
@@ -51,6 +58,7 @@ const Routes = () => <RouterProvider router={router} />;
             // 打开自定义的工程文件
             RecentFileManager.openFileByPath(path);
             setTimeout(() => {
+              // 更改顶部路径名称
               RecentFileManager.openFileByPathWhenAppStart(path);
             }, 1000);
             console.log("自动打开了工程文件：" + path);

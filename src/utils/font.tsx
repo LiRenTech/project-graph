@@ -11,7 +11,7 @@ const _context = _canvas.getContext("2d");
  * @returns
  */
 export function getTextSize(text: string, size: number): Vector {
-  const t1 = performance.now();
+  // const t1 = performance.now();
 
   if (!_context) {
     throw new Error("Failed to get canvas context");
@@ -19,8 +19,8 @@ export function getTextSize(text: string, size: number): Vector {
   
   _context.font = `${size}px MiSans`;
   const metrics = _context.measureText(text);
-  const t2 = performance.now();
+  // const t2 = performance.now();
 
-  console.log(t2 - t1);
+  // console.log(t2 - t1);
   return new Vector(metrics.width, size);
 }
