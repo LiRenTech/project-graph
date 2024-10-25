@@ -9,6 +9,7 @@ import Toolbar from "./_toolbar";
 import { Settings } from "../core/Settings";
 import DetailsEditPanel from "./_details_edit_panel";
 import SearchingNodePanel from "./_searching_node_panel";
+import HintText from "./_hint_text";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);
@@ -91,6 +92,7 @@ export default function Home() {
       <Toolbar />
       <SearchingNodePanel />
       <DetailsEditPanel />
+      <HintText />
 
       <div
         style={{
