@@ -50,6 +50,10 @@ export namespace StageSerializedAdder {
       // 刷新节点本身的UUID
       node.uuid = newUUID;
     }
+    for (const edge of result.edges) {
+      edge.uuid = uuidv4();
+      // HACK: 以后出了关系的关系，就要再分类了
+    }
     return result;
   }
 }
