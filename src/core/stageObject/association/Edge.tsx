@@ -56,17 +56,6 @@ export class Edge extends ConnectableAssociation {
   }
 
   get collisionBox(): CollisionBox {
-    // if (this.source.uuid === this.target.uuid) {
-    //   // 是一个自环，碰撞箱是圆形
-    //   return new CollisionBox([
-    //     new Circle(
-    //       this.source.collisionBox.getRectangle().location,
-    //       this.source.collisionBox.getRectangle().size.y / 2,
-    //     ),
-    //   ]);
-    // } else {
-    //   return new CollisionBox([this.bodyLine]);
-    // }
     return EdgeCollisionBoxGetter.getCollisionBox(this);
   }
 
@@ -83,6 +72,7 @@ export class Edge extends ConnectableAssociation {
     this._target = new TextNode({ uuid: target }, true);
     this.text = text;
     this.uuid = uuid;
+    console.log("创建了一个Edge");
     this.adjustSizeByText();
   }
   /**
@@ -146,18 +136,29 @@ export class Edge extends ConnectableAssociation {
     this.text = text;
     this.adjustSizeByText();
   }
+  
+  // private _textRectangle: Rectangle = new Rectangle(Vector.getZero(), Vector.getZero());
 
   get textRectangle(): Rectangle {
+    // HACK: 这里会造成频繁渲染，频繁计算文字宽度进而可能出现性能问题
     const textSize = getTextSize(this.text, Renderer.FONT_SIZE);
 
     return new Rectangle(
       this.bodyLine.midPoint().subtract(textSize.divide(2)),
       textSize,
     );
+    // return this._textRectangle;
   }
 
   /**
    * 调整线段上的文字的外框矩形
    */
-  adjustSizeByText() {}
+  adjustSizeByText() {
+    // const textSize = getTextSize(this.text, Renderer.FONT_SIZE);
+
+    // this._textRectangle = new Rectangle(
+    //   this.bodyLine.midPoint().subtract(textSize.divide(2)),
+    //   textSize,
+    // );
+  }
 }
