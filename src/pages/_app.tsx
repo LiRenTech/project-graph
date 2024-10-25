@@ -25,7 +25,7 @@ import { useDialog } from "../utils/dialog";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
-  const [openMenu, setOpenMenu] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [file] = useRecoilState(fileAtom);
@@ -45,12 +45,12 @@ export default function App() {
         window.location.reload();
       }
       if (event.key === "Escape") {
-        setOpenMenu(false);
+        setIsMenuOpen(false);
       }
     });
-    window.addEventListener("pointerdown", () => {
-      setOpenMenu(false);
-    });
+    // window.addEventListener("pointerdown", () => {
+    //   setIsMenuOpen(false);
+    // });
     Settings.get("windowBackgroundAlpha").then((alpha) => {
       if (alpha) {
         setBackgroundOpacity(alpha);
@@ -67,11 +67,13 @@ export default function App() {
 
   return (
     <div
-      className={cn("relative h-full w-full rounded-xl text-white shadow-2xl", {
+      className={cn("relative h-full w-full rounded-xl text-white shadow-2xl ring", {
         "bg-neutral-950": isMobile || location.pathname !== "/",
       })}
       style={{ zoom: appScale }}
-      onClick={() => setOpenMenu(false)}
+      onClick={() => {
+        setIsMenuOpen(false);
+      }}
       onContextMenu={(e) => e.preventDefault()}
     >
       <Dialog />
@@ -110,13 +112,13 @@ export default function App() {
               }
             } else {
               e.stopPropagation();
-              setOpenMenu(!openMenu);
+              setIsMenuOpen(!isMenuOpen);
             }
           }}
         >
           {location.pathname === "/" ? <Menu /> : <ChevronLeft />}
         </IconButton>
-        <AppMenu className="absolute top-20" open={openMenu} />
+        <AppMenu className="absolute top-20" open={isMenuOpen} />
         <RecentFilesPanel />
         {/* 左上角标题 */}
         <Button
