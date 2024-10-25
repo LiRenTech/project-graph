@@ -65,17 +65,24 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   public renderNormalState(edge: Edge): void {
     const start = edge.bodyLine.start;
     const end = edge.bodyLine.end;
-    this.renderArrowCurve(new SymmetryCurve(
-      start, 
+    const curve = new SymmetryCurve(
+      start,
       edge.source.collisionBox.getRectangle().getNormalVectorAt(start),
       end,
       edge.target.collisionBox.getRectangle().getNormalVectorAt(end),
       Math.abs(end.subtract(start).magnitude()) / 2
-    ));
+    );
+    this.renderArrowCurve(curve);
     // 画文本
+    RenderUtils.renderRect(
+      edge.textRectangle.transformWorld2View(), 
+      new Color(31, 31, 31, 0.5), 
+      new Color(31, 31, 31, 0.5), 
+      1
+    );
     RenderUtils.renderTextFromCenter(
       edge.text,
-      Renderer.transformWorld2View(edge.bodyLine.midPoint()),
+      Renderer.transformWorld2View(curve.bezier.getPointByT(0.5)),
       Renderer.FONT_SIZE * Camera.currentScale,
     );
   }
