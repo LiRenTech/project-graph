@@ -22,6 +22,7 @@ import { Settings } from "../core/Settings";
 import ErrorHandler from "./_error_handler";
 import PopupDialog from "../components/ui/PopupDialog";
 import { useDialog } from "../utils/dialog";
+import { StageSaveManager } from "../core/stage/StageSaveManager";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -63,7 +64,18 @@ export default function App() {
         setBackgroundOpacity(alpha);
       }
     });
+
+    const saveInterval = setInterval(() => {
+      setIsSaved(StageSaveManager.isSaved());
+    });
+
+    return () => {
+      clearInterval(saveInterval);
+    };
   }, []);
+
+  const [isSaved, setIsSaved] = React.useState(false);
+
   React.useEffect(() => {
     if (maxmized) {
       getCurrentWindow().maximize();
@@ -133,7 +145,10 @@ export default function App() {
         {/* 左上角标题 */}
         <Button
           data-tauri-drag-region
-          className="flex-1 hover:cursor-move active:scale-100 active:cursor-grabbing"
+          className={cn(
+            "flex-1 hover:cursor-move active:scale-100 active:cursor-grabbing",
+            isSaved ? "" : "text-yellow-500",
+          )}
         >
           {file
             .split("/")

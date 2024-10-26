@@ -139,6 +139,7 @@ export namespace RecentFileManager {
   /**
    * 打开一个文件
    * 先销毁所有节点，然后读取文件内容，解析出节点和边，添加到管理器中
+   * 自动带有历史记录恢复功能
    * @param path 打开的文件路径
    */
   export async function openFileByPath(path: string) {

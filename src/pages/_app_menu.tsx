@@ -31,11 +31,9 @@ import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
 import { Camera } from "../core/stage/Camera";
 import { StageDumper } from "../core/stage/StageDumper";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
-import { Stage } from "../core/stage/Stage";
-import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { RecentFileManager } from "../core/RecentFileManager";
-import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { StageSaveManager } from "../core/stage/StageSaveManager";
 
 export default function AppMenu({
   className = "",
@@ -81,7 +79,7 @@ export default function AppMenu({
     }
     try {
       console.log("正在打开文件", `<${path}>`, typeof path);
-      await RecentFileManager.openFileByPath(path);
+      await RecentFileManager.openFileByPath(path); // 已经包含历史记录重置功能
       // 更改file
       setFile(path);
     } catch (e) {
@@ -100,38 +98,26 @@ export default function AppMenu({
     if (path_ === "Project Graph") {
       // 如果文件名为 "Project Graph" 则说明是新建文件。
       // 要走另存为流程
-      console.log("要走另存为流程");
       onSaveNew();
       return;
     }
-
-    try {
-      const data = StageDumper.dump(); // 获取当前节点和边的数据
-      // 2024年10月6日发现保存文件也开始变得没有权限了，可能是tauri-plugin-fs的bug
-      // await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
-
-      invoke<string>("save_json_by_path", {
-        path: path_,
-        content: JSON.stringify(data, null, 2),
-      })
-        .then((res) => {
-          console.log("保存成功", res);
-          Stage.effects.push(ViewFlashEffect.SaveFile());
-        })
-        .catch((err) => {
-          dialog.show({
-            title: "保存失败",
-            content: String(err),
-            type: "error",
-          });
+    const data = StageDumper.dump(); // 获取当前节点和边的数据
+    // 2024年10月6日发现保存文件也开始变得没有权限了，可能是tauri-plugin-fs的bug
+    // await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
+    StageSaveManager.saveHandle(
+      path_,
+      data,
+      () => {
+        console.log("保存成功");
+      },
+      (err) => {
+        dialog.show({
+          title: "保存失败",
+          content: String(err),
+          type: "error",
         });
-    } catch (e) {
-      dialog.show({
-        title: "保存失败",
-        content: String(e),
-        type: "error",
-      });
-    }
+      },
+    );
   };
 
   const onSaveNew = async () => {
@@ -150,32 +136,21 @@ export default function AppMenu({
       return;
     }
 
-    try {
-      const data = StageDumper.dump(); // 获取当前节点和边的数据
-      invoke<string>("save_json_by_path", {
-        path,
-        content: JSON.stringify(data, null, 2),
-      })
-        .then((res) => {
-          console.log("保存成功", res);
-          Stage.effects.push(ViewFlashEffect.SaveFile());
-          // 成功后改path
-          setFile(path);
-        })
-        .catch((err) => {
-          dialog.show({
-            title: "保存失败",
-            content: String(err),
-            type: "error",
-          });
+    const data = StageDumper.dump(); // 获取当前节点和边的数据
+    StageSaveManager.saveHandle(
+      path,
+      data,
+      () => {
+        setFile(path);
+      },
+      (err) => {
+        dialog.show({
+          title: "保存失败",
+          content: String(err),
+          type: "error",
         });
-    } catch (e) {
-      dialog.show({
-        title: "保存失败",
-        content: String(e),
-        type: "error",
-      });
-    }
+      },
+    );
   };
   const onSaveSelectedNew = async () => {
     const path = await saveFileDialog({
@@ -193,36 +168,28 @@ export default function AppMenu({
       return;
     }
 
-    try {
-      const selectedNodes = [];
-      for (const node of StageManager.getEntities()) {
-        if (node.isSelected) {
-          selectedNodes.push(node);
-        }
+    const selectedEntities = [];
+    for (const node of StageManager.getEntities()) {
+      if (node.isSelected) {
+        selectedEntities.push(node);
       }
-      const data = StageDumper.dumpSelected(selectedNodes);
-      invoke<string>("save_json_by_path", {
-        path,
-        content: JSON.stringify(data, null, 2),
-      })
-        .then((res) => {
-          console.log("保存成功", res);
-          Stage.effects.push(ViewFlashEffect.SaveFile());
-        })
-        .catch((err) => {
-          dialog.show({
-            title: "保存失败",
-            content: String(err),
-            type: "error",
-          });
-        });
-    } catch (e) {
-      dialog.show({
-        title: "保存失败",
-        content: String(e),
-        type: "error",
-      });
     }
+
+    const data = StageDumper.dumpSelected(selectedEntities);
+    StageSaveManager.saveHandle(
+      path,
+      data,
+      () => {
+        console.log("保存成功");
+      },
+      (err) => {
+        dialog.show({
+          title: "保存失败",
+          content: String(err),
+          type: "error",
+        });
+      },
+    );
   };
 
   useEffect(() => {
@@ -346,7 +313,14 @@ export default function AppMenu({
         <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>
           刷新
         </Col>
-        <Col icon={<Fullscreen />} onClick={() => getCurrentWindow().isFullscreen().then((res) => getCurrentWindow().setFullscreen(!res))}>
+        <Col
+          icon={<Fullscreen />}
+          onClick={() =>
+            getCurrentWindow()
+              .isFullscreen()
+              .then((res) => getCurrentWindow().setFullscreen(!res))
+          }
+        >
           全屏
         </Col>
       </Row>
