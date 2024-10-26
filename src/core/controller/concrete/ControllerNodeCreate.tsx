@@ -22,8 +22,9 @@ ControllerNodeCreate.mouseDoubleClick = (event: MouseEvent) => {
   );
   const clickedNode = StageManager.findTextNodeByLocation(pressLocation);
   const clickedEdge = StageManager.findEdgeByLocation(pressLocation);
+  const clickedSection = StageManager.findSectionByLocation(pressLocation);
 
-  if (clickedNode !== null || clickedEdge!== null) {
+  if (clickedNode !== null || clickedEdge!== null || clickedSection!== null) {
     return;
   }
   // 新建节点
