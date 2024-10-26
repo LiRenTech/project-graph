@@ -54,3 +54,5 @@ https://github.com/tauri-apps/tauri/issues/7338
 由于 PyQt5 绘制类Canvas的性能问题，已被抛弃，目前采用了Tauri作为GUI框架，并使用TypeScript (React) 和Rust语言编写。
 
 —— 2024年10月2日
+
+项目的 docs/ 文件夹下有一些示例json文件，下载软件后您可以尝试导入看看。其中记录和沉淀了项目的一些开发信息。
