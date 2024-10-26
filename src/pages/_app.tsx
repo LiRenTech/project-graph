@@ -47,6 +47,13 @@ export default function App() {
       if (event.key === "Escape") {
         setIsMenuOpen(false);
       }
+      if (event.key === "F11") {
+        getCurrentWindow()
+          .isFullscreen()
+          .then((isFullscreen) => {
+            getCurrentWindow().setFullscreen(!isFullscreen);
+          });
+      }
     });
     // window.addEventListener("pointerdown", () => {
     //   setIsMenuOpen(false);
@@ -67,9 +74,12 @@ export default function App() {
 
   return (
     <div
-      className={cn("relative h-full w-full rounded-xl text-white shadow-2xl ring", {
-        "bg-neutral-950": isMobile || location.pathname !== "/",
-      })}
+      className={cn(
+        "relative h-full w-full rounded-xl text-white shadow-2xl ring",
+        {
+          "bg-neutral-950": isMobile || location.pathname !== "/",
+        },
+      )}
       style={{ zoom: appScale }}
       onClick={() => {
         setIsMenuOpen(false);
