@@ -12,6 +12,8 @@
     "core:window:allow-unmaximize",
     "core:window:allow-maximize",
     "core:window:allow-start-dragging",
+    "core:window:allow-is-fullscreen",
+    "core:window:allow-set-fullscreen",
     "os:default",
     "dialog:default",
     "fs:allow-write-text-file",

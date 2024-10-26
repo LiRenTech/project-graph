@@ -6,6 +6,7 @@ import {
   File,
   FilePlus,
   FileText,
+  Fullscreen,
   Image,
   Info,
   MoreHorizontal,
@@ -34,6 +35,7 @@ import { Stage } from "../core/stage/Stage";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { RecentFileManager } from "../core/RecentFileManager";
 import { invoke } from "@tauri-apps/api/core";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 
 export default function AppMenu({
   className = "",
@@ -343,6 +345,9 @@ export default function AppMenu({
       <Row icon={<AppWindow />} title="窗口">
         <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>
           刷新
+        </Col>
+        <Col icon={<Fullscreen />} onClick={() => getCurrentWindow().isFullscreen().then((res) => getCurrentWindow().setFullscreen(!res))}>
+          全屏
         </Col>
       </Row>
     </div>
