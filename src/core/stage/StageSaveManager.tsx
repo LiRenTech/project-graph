@@ -36,6 +36,26 @@ export namespace StageSaveManager {
         errorCallback(err);
       });
   }
+
+  export function saveSvgHandle(
+    path: string,
+    string: string,
+    successCallback: () => void,
+    errorCallback: (err: any) => void,
+  ) {
+    invoke<string>("save_json_by_path", {
+      path,
+      content: string,
+    })
+      .then((res) => {
+        console.log(res);
+        successCallback();
+        isCurrentSaved = true;
+      })
+      .catch((err) => {
+        errorCallback(err);
+      });
+  }
   
   let isCurrentSaved = true;
 

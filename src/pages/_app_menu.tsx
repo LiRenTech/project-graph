@@ -34,6 +34,7 @@ import { StageDumper } from "../core/stage/StageDumper";
 import { RecentFileManager } from "../core/RecentFileManager";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
+import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 
 export default function AppMenu({
   className = "",
@@ -152,14 +153,14 @@ export default function AppMenu({
       },
     );
   };
-  const onSaveSelectedNew = async () => {
+  const onSaveSVGNew = async () => {
     const path = await saveFileDialog({
       title: "另存为",
-      defaultPath: "新文件.json", // 提供一个默认的文件名
+      defaultPath: "新文件.svg", // 提供一个默认的文件名
       filters: [
         {
           name: "Project Graph",
-          extensions: ["json"],
+          extensions: ["svg"],
         },
       ],
     });
@@ -168,15 +169,8 @@ export default function AppMenu({
       return;
     }
 
-    const selectedEntities = [];
-    for (const node of StageManager.getEntities()) {
-      if (node.isSelected) {
-        selectedEntities.push(node);
-      }
-    }
-
-    const data = StageDumper.dumpSelected(selectedEntities);
-    StageSaveManager.saveHandle(
+    const data = StageDumperSvg.dumpStageToSVGString();
+    StageSaveManager.saveSvgHandle(
       path,
       data,
       () => {
@@ -249,8 +243,8 @@ export default function AppMenu({
         <Col icon={<Save />} onClick={onSaveNew}>
           另存为
         </Col>
-        <Col icon={<Save />} onClick={onSaveSelectedNew}>
-          将选中部分另存为
+        <Col icon={<Save />} onClick={onSaveSVGNew}>
+          另存为SVG
         </Col>
       </Row>
       <Row icon={<Plus />} title="创建">
