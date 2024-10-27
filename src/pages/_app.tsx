@@ -23,6 +23,7 @@ import ErrorHandler from "./_error_handler";
 import PopupDialog from "../components/ui/PopupDialog";
 import { useDialog } from "../utils/dialog";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
+import { StageDumper } from "../core/stage/StageDumper";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -83,6 +84,68 @@ export default function App() {
       getCurrentWindow().unmaximize();
     }
   }, [maxmized]);
+
+  const handleClose = () => {
+    if (file === "Project Graph") {
+      dialog.show({
+        title: "真的要关闭吗？",
+        content: "您现在的新建草稿没有保存，是否要关闭项目？",
+        buttons: [
+          {
+            text: "直接关闭，这个草稿不值得保存",
+            onClick: () => {
+              getCurrentWindow().close();
+            },
+          },
+          {
+            text: "啊不不不，我要另存为",
+            onClick: () => {},
+          },
+        ],
+      });
+    } else {
+      if (StageSaveManager.isSaved()) {
+        getCurrentWindow().close();
+      } else {
+        dialog.show({
+          title: "真的要关闭吗？",
+          content: "您现在的没有保存，是否要关闭项目？",
+          buttons: [
+            {
+              text: "保存并关闭",
+              onClick: () => {
+                StageSaveManager.saveHandle(
+                  file,
+                  StageDumper.dump(),
+                  () => {
+                    // 成功
+                    getCurrentWindow().close();
+                  },
+                  () => {
+                    // 失败
+                    dialog.show({
+                      title: "保存失败",
+                      content: "保存失败，请重试",
+                      buttons: [
+                        {
+                          text: "确定",
+                          onClick: () => {},
+                        },
+                      ],
+                    });
+                  },
+                );
+              },
+            },
+            {
+              text: "取消关闭",
+              onClick: () => {},
+            },
+          ],
+        });
+      }
+    }
+  };
 
   return (
     <div
@@ -176,7 +239,7 @@ export default function App() {
               />
             )}
             <X
-              onClick={() => getCurrentWindow().close()}
+              onClick={() => handleClose()}
               className="transition hover:opacity-80 active:scale-75"
             />
           </Button>
