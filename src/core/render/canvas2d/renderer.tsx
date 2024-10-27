@@ -23,6 +23,8 @@ import { ExplodeAshEffect } from "../../effect/concrete/ExplodeDashEffect";
 import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
 import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
 import { WorldRenderUtils } from "./WorldRenderUtils";
+import { getTextSize } from "../../../utils/font";
+import { Random } from "../../algorithm/random";
 
 /**
  * 渲染器
@@ -117,7 +119,10 @@ export namespace Renderer {
       CollisionBoxRenderer.render(edge.collisionBox, new Color(0, 255, 0, 0.5));
     }
     for (const section of Stage.hoverSections) {
-      CollisionBoxRenderer.render(section.collisionBox, new Color(0, 255, 0, 0.5));
+      CollisionBoxRenderer.render(
+        section.collisionBox,
+        new Color(0, 255, 0, 0.5),
+      );
     }
     timings.entities = performance.now() - start;
 
@@ -145,7 +150,7 @@ export namespace Renderer {
       WorldRenderUtils.renderLaser(
         Controller.lastMousePressLocation[2],
         Controller.lastMoveLocation,
-        2
+        2,
       );
       // RenderUtils.renderGradientLine(
       //   transformWorld2View(Controller.lastMousePressLocation[2]),
@@ -201,6 +206,7 @@ export namespace Renderer {
     if (isShowDebug) {
       renderDetails();
     }
+    renderSpecialKeys();
 
     // 渲染所有特效
     renderEffects();
@@ -218,7 +224,10 @@ export namespace Renderer {
       CollisionBoxRenderer.render(edge.collisionBox, new Color(255, 0, 0, 0.5));
     }
     for (const section of Stage.warningSections) {
-      CollisionBoxRenderer.render(section.collisionBox, new Color(255, 0, 0, 0.5));
+      CollisionBoxRenderer.render(
+        section.collisionBox,
+        new Color(255, 0, 0, 0.5),
+      );
     }
   }
   /**
@@ -409,7 +418,7 @@ export namespace Renderer {
     }
   }
 
-  export function renderDetails() {
+  function renderDetails() {
     const detailsData = [
       `scale: ${Camera.currentScale.toFixed(2)}`,
       `target: ${Camera.targetScale.toFixed(2)}`,
@@ -448,6 +457,26 @@ export namespace Renderer {
         10,
         new Color(255, 255, 255, 0.5),
       );
+    }
+  }
+
+  function renderSpecialKeys() {
+    if (Controller.pressingKeySet.size === 0) {
+      return;
+    }
+
+    const margin = 10;
+    let x = margin;
+    const fontSize = 30;
+
+    for (const key of Controller.pressingKeySet) {
+      const textLocation = new Vector(x, Renderer.h - 100).add(
+        new Vector(Random.randomFloat(-5, 2), Random.randomFloat(-5, 2)),
+      );
+
+      RenderUtils.renderText(key, textLocation, fontSize);
+      const textSize = getTextSize(key, fontSize);
+      x += textSize.x + margin;
     }
   }
 
@@ -543,7 +572,6 @@ export namespace Renderer {
         document.body.addEventListener("wheel", onOutsideWheel);
       }, 10);
       inputElement.addEventListener("input", () => {
-
         onChange(inputElement.value);
         // console.log("input input: ", inputElement.value);
       });
