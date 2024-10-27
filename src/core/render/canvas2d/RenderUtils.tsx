@@ -153,14 +153,18 @@ export namespace RenderUtils {
       // 新来字符的宽度
 
       // 先判断是否溢出
-      if (Canvas.ctx.measureText(currentLine + char).width > limitWidth) {
+      if (Canvas.ctx.measureText(currentLine + char).width > limitWidth || char === "\n") {
         renderText(
           currentLine,
           location.add(new Vector(0, currentY)),
           size,
           color,
         );
-        currentLine = char;
+        if (char !== "\n") {
+          currentLine = char;
+        } else  {
+          currentLine = "";
+        }
         currentY += size * lineHeight;
       } else {
         // 未溢出，继续添加字符
