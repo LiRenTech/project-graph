@@ -28,9 +28,9 @@ export namespace StageNodeAdder {
       size: [100, 100],
     });
     // 将node本身向左上角移动，使其居中
-    node.moveTo(node.rectangle.location.subtract(
-      node.rectangle.size.divide(2),
-    ));
+    node.moveTo(
+      node.rectangle.location.subtract(node.rectangle.size.divide(2)),
+    );
     StageManager.addTextNode(node);
     return newUUID;
   }
@@ -62,11 +62,15 @@ export namespace StageNodeAdder {
   /**
    * 通过带有缩进格式的文本来增加节点
    */
-  export function addNodeByText(text: string, indention: number) {
+  export function addNodeByText(
+    text: string,
+    indention: number,
+    diffLocation: Vector = Vector.getZero(),
+  ) {
     // 将本文转换成字符串数组，按换行符分割
     const lines = text.split("\n");
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
+    for (let yIndex = 0; yIndex < lines.length; yIndex++) {
+      const line = lines[yIndex];
       // 跳过空行
       if (line.trim() === "") {
         continue;
@@ -81,8 +85,7 @@ export namespace StageNodeAdder {
         uuid: newUUID,
         text: textContent,
         details: "",
-        // children: [],
-        location: [indent * 50, i * 100],
+        location: [indent * 50 + diffLocation.x, yIndex * 100 + diffLocation.y],
         size: [100, 100],
       });
 

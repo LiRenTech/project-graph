@@ -23,6 +23,7 @@ import {
 } from "../../stageObject/StageObject";
 import { Section } from "../../stageObject/entity/Section";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
+import { Camera } from "../Camera";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -447,7 +448,7 @@ export namespace StageManager {
   }
 
   export function generateNodeByText(text: string, indention: number = 4) {
-    StageNodeAdder.addNodeByText(text, indention);
+    StageNodeAdder.addNodeByText(text, indention, Camera.location);
     StageHistoryManager.recordStep();
   }
 
