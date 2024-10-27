@@ -148,12 +148,19 @@ export namespace RenderUtils {
     // 一个一个字符遍历，然后一次渲染一行
     let currentLine = "";
     let currentY = 0; // 顶部偏移量
+    // 先空渲染一下
+    renderText(
+      currentLine,
+      location.add(new Vector(0, currentY)),
+      size,
+      color,
+    );
 
     for (const char of text) {
       // 新来字符的宽度
-
+      const measureSize = Canvas.ctx.measureText(currentLine + char);
       // 先判断是否溢出
-      if (Canvas.ctx.measureText(currentLine + char).width > limitWidth || char === "\n") {
+      if (measureSize.width > limitWidth || char === "\n") {
         renderText(
           currentLine,
           location.add(new Vector(0, currentY)),
@@ -162,7 +169,7 @@ export namespace RenderUtils {
         );
         if (char !== "\n") {
           currentLine = char;
-        } else  {
+        } else {
           currentLine = "";
         }
         currentY += size * lineHeight;

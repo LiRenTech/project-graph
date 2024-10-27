@@ -30,6 +30,8 @@ ControllerCutting.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
+  Controller.lastMousePressLocation[2] = pressWorldLocation.clone();
+  console.log("update!");
   const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
   const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
   const clickedSection = StageManager.findSectionByLocation(pressWorldLocation);

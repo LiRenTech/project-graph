@@ -78,6 +78,7 @@ export namespace Renderer {
 
   let isShowDebug = true;
   let isShowGrid = true;
+
   // 确保这个函数在软件打开的那一次调用
   export function init() {
     Settings.watch("showDebug", (value) => (isShowDebug = value));
@@ -148,7 +149,7 @@ export namespace Renderer {
     // 切割线
     if (Stage.isCutting) {
       WorldRenderUtils.renderLaser(
-        Controller.lastMousePressLocation[2],
+        Controller.lastMousePressLocation[2].clone(),
         Controller.lastMoveLocation,
         2,
       );
@@ -435,6 +436,7 @@ export namespace Renderer {
       `鼠标按下情况: ${Controller.isMouseDown}`,
       `鼠标上次按下位置: ${Controller.lastMousePressLocationString()}`,
       `鼠标上次松开位置: ${Controller.lastMouseReleaseLocationString()}`,
+      `lastMousePressLocation Right: ${Controller.lastMousePressLocation[2].toString()}`,
       `框选框: ${Stage.selectingRectangle}`,
       `正在移动节点: ${Controller.isMovingEntity}`,
       `正在切割: ${Stage.isCutting}`,
