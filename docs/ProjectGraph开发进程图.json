@@ -2214,10 +2214,10 @@
       "uuid": "c40fa637-3581-48f6-97fc-1efc4de6ab60",
       "details": "",
       "color": [
-        0,
-        0,
-        0,
-        0
+        22,
+        163,
+        74,
+        1
       ],
       "type": "core:text_node"
     },
