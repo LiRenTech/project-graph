@@ -447,8 +447,12 @@ export namespace StageManager {
     };
   }
 
-  export function generateNodeByText(text: string, indention: number = 4) {
-    StageNodeAdder.addNodeByText(text, indention, Camera.location);
+  export function generateNodeByText(
+    text: string,
+    indention: number = 4,
+    location = Camera.location,
+  ) {
+    StageNodeAdder.addNodeByText(text, indention, location);
     StageHistoryManager.recordStep();
   }
 
