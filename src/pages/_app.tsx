@@ -104,46 +104,75 @@ export default function App() {
         ],
       });
     } else {
-      if (StageSaveManager.isSaved()) {
-        getCurrentWindow().close();
-      } else {
-        dialog.show({
-          title: "真的要关闭吗？",
-          content: "您现在的没有保存，是否要关闭项目？",
-          buttons: [
-            {
-              text: "保存并关闭",
-              onClick: () => {
-                StageSaveManager.saveHandle(
-                  file,
-                  StageDumper.dump(),
-                  () => {
-                    // 成功
-                    getCurrentWindow().close();
-                  },
-                  () => {
-                    // 失败
-                    dialog.show({
-                      title: "保存失败",
-                      content: "保存失败，请重试",
-                      buttons: [
-                        {
-                          text: "确定",
-                          onClick: () => {},
-                        },
-                      ],
-                    });
-                  },
-                );
-              },
+      // 先检查下是否开启了自动保存
+      Settings.get("autoSaveWhenClose").then((isAutoSave) => {
+        if (isAutoSave) {
+          // 开启了自动保存，不弹窗
+          StageSaveManager.saveHandle(
+            file,
+            StageDumper.dump(),
+            () => {
+              // 成功
+              getCurrentWindow().close();
             },
-            {
-              text: "取消关闭",
-              onClick: () => {},
+            () => {
+              // 失败
+              dialog.show({
+                title: "保存失败",
+                content: "保存失败，请重试",
+                buttons: [
+                  {
+                    text: "确定",
+                    onClick: () => {},
+                  },
+                ],
+              });
             },
-          ],
-        });
-      }
+          );
+        } else {
+          // 没开启自动保存，逐步确认
+          if (StageSaveManager.isSaved()) {
+            getCurrentWindow().close();
+          } else {
+            dialog.show({
+              title: "真的要关闭吗？",
+              content: "您现在的没有保存，是否要关闭项目？",
+              buttons: [
+                {
+                  text: "保存并关闭",
+                  onClick: () => {
+                    StageSaveManager.saveHandle(
+                      file,
+                      StageDumper.dump(),
+                      () => {
+                        // 成功
+                        getCurrentWindow().close();
+                      },
+                      () => {
+                        // 失败
+                        dialog.show({
+                          title: "保存失败",
+                          content: "保存失败，请重试",
+                          buttons: [
+                            {
+                              text: "确定",
+                              onClick: () => {},
+                            },
+                          ],
+                        });
+                      },
+                    );
+                  },
+                },
+                {
+                  text: "取消关闭",
+                  onClick: () => {},
+                },
+              ],
+            });
+          }
+        }
+      });
     }
   };
 
