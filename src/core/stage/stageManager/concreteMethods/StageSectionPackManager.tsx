@@ -1,5 +1,6 @@
 // import { Section } from "../../../stageObject/entity/Section";
 // import { Entity } from "../../../stageObject/StageObject";
+import { Section } from "../../../stageObject/entity/Section";
 import { StageManager } from "../StageManager";
 
 /**
@@ -11,7 +12,17 @@ export namespace StageSectionPackManager {
       if (!section.isSelected) {
         continue;
       }
-      section.isCollapsed = true;
+      modifyHiddenDfs(section, true);
+    }
+  }
+  function modifyHiddenDfs(section: Section, isCollapsed: boolean) {
+    section.isCollapsed = isCollapsed;
+    for (const childEntity of section.children) {
+      if (childEntity instanceof Section) {
+        modifyHiddenDfs(childEntity, isCollapsed);
+      } else {
+        childEntity.isHiddenBySectionCollapse = isCollapsed;
+      }
     }
   }
 
@@ -20,7 +31,7 @@ export namespace StageSectionPackManager {
       if (!section.isSelected) {
         continue;
       }
-      section.isCollapsed = false;
+      modifyHiddenDfs(section, false);
     }
   }
 }

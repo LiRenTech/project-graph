@@ -39,6 +39,11 @@ export abstract class StageObject implements Disposable {
 export abstract class Entity extends StageObject {
   abstract move(delta: Vector): void;
   abstract moveTo(location: Vector): void;
+
+  /**
+   * 是不是因为所在的Section被折叠而隐藏了
+   */
+  abstract isHiddenBySectionCollapse: boolean;
 }
 
 /**

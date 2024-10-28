@@ -13,6 +13,9 @@ import { CollisionBoxRenderer } from "./CollisionBoxRenderer";
  */
 export namespace EntityRenderer {
   export function renderSection(section: Section) {
+    if (section.isHiddenBySectionCollapse) {
+      return;
+    }
     if (section.isCollapsed) {
       RenderUtils.renderRect(
         new Rectangle(
@@ -72,6 +75,9 @@ export namespace EntityRenderer {
   }
 
   export function renderNode(node: TextNode) {
+    if (node.isHiddenBySectionCollapse) {
+      return;
+    }
     // 节点身体矩形
     RenderUtils.renderRect(
       new Rectangle(

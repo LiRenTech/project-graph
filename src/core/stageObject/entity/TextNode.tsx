@@ -69,9 +69,9 @@ export class TextNode extends ConnectableEntity {
   isEditing: boolean = false;
 
   isEditingDetails: boolean = false;
+  isHiddenBySectionCollapse = false;
 
   color: Color = Color.Transparent;
-
   constructor(
     {
       uuid,

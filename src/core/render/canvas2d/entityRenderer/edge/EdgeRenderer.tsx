@@ -60,6 +60,11 @@ export namespace EdgeRenderer {
   }
 
   export function renderEdge(edge: Edge) {
+    
+    if (edge.source.isHiddenBySectionCollapse || edge.target.isHiddenBySectionCollapse) {
+      return;
+    }
+
     if (edge.source.uuid == edge.target.uuid) {
       currentRenderer.renderCycleState(edge);
     } else {

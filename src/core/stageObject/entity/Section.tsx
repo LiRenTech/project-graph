@@ -52,6 +52,7 @@ export class Section extends ConnectableEntity {
   isCollapsed: boolean;
   /** 是否是隐藏状态 */
   isHidden: boolean;
+  isHiddenBySectionCollapse = false;
 
   constructor(
     {
@@ -156,14 +157,10 @@ export class Section extends ConnectableEntity {
     if (this.isCollapsed) {
       return this._collisionBoxWhenCollapsed.getRectangle();
     } else {
-      const topLine: Line = this._collisionBoxNormal
-        .shapeList[0] as Line;
-      const rightLine: Line = this._collisionBoxNormal
-        .shapeList[1] as Line;
-      const bottomLine: Line = this._collisionBoxNormal
-        .shapeList[2] as Line;
-      const leftLine: Line = this._collisionBoxNormal
-        .shapeList[3] as Line;
+      const topLine: Line = this._collisionBoxNormal.shapeList[0] as Line;
+      const rightLine: Line = this._collisionBoxNormal.shapeList[1] as Line;
+      const bottomLine: Line = this._collisionBoxNormal.shapeList[2] as Line;
+      const leftLine: Line = this._collisionBoxNormal.shapeList[3] as Line;
       return new Rectangle(
         new Vector(leftLine.start.x, topLine.start.y),
         new Vector(
