@@ -13,25 +13,47 @@ import { CollisionBoxRenderer } from "./CollisionBoxRenderer";
  */
 export namespace EntityRenderer {
   export function renderSection(section: Section) {
-    RenderUtils.renderRect(
-      new Rectangle(
-        Renderer.transformWorld2View(section.rectangle.location),
-        section.rectangle.size.multiply(Camera.currentScale),
-      ),
-      section.color,
-      new Color(204, 204, 204, 1),
-      2 * Camera.currentScale,
-      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
-    );
+    if (section.isCollapsed) {
+      RenderUtils.renderRect(
+        new Rectangle(
+          Renderer.transformWorld2View(section.rectangle.location),
+          section.rectangle.size.multiply(Camera.currentScale),
+        ),
+        section.color,
+        new Color(204, 204, 204, 1),
+        2 * Camera.currentScale,
+        Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+      );
 
-    RenderUtils.renderText(
-      section.text,
-      Renderer.transformWorld2View(
-        section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
-      ),
-      Renderer.FONT_SIZE * Camera.currentScale,
-      colorInvert(section.color),
-    );
+      RenderUtils.renderText(
+        section.text,
+        Renderer.transformWorld2View(
+          section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
+        ),
+        Renderer.FONT_SIZE * Camera.currentScale,
+        colorInvert(section.color),
+      );
+    } else {
+      RenderUtils.renderRect(
+        new Rectangle(
+          Renderer.transformWorld2View(section.rectangle.location),
+          section.rectangle.size.multiply(Camera.currentScale),
+        ),
+        section.color,
+        new Color(204, 204, 204, 1),
+        2 * Camera.currentScale,
+        Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+      );
+
+      RenderUtils.renderText(
+        section.text,
+        Renderer.transformWorld2View(
+          section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
+        ),
+        Renderer.FONT_SIZE * Camera.currentScale,
+        colorInvert(section.color),
+      );
+    }
 
     if (section.isSelected) {
       // 在外面增加一个框

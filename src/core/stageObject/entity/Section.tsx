@@ -1,10 +1,12 @@
 import { Serialized } from "../../../types/node";
+import { getTextSize } from "../../../utils/font";
 import { Color } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Line } from "../../dataStruct/shape/Line";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
 import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
+import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { CollisionBox } from "../collisionBox/collisionBox";
@@ -17,7 +19,32 @@ export class Section extends ConnectableEntity {
    */
   _isSelected: boolean = false;
   public uuid: string;
-  public collisionBox: CollisionBox;
+
+  private _collisionBoxWhenCollapsed: CollisionBox;
+  private _collisionBoxNormal: CollisionBox;
+
+  public get collisionBox(): CollisionBox {
+    if (this.isCollapsed) {
+      return this._collisionBoxWhenCollapsed;
+    } else {
+      return this._collisionBoxNormal;
+    }
+  }
+
+  /** 获取折叠状态下的碰撞箱 */
+  private collapsedCollisionBox(): CollisionBox {
+    const centerLocation = this._collisionBoxNormal.getRectangle().center;
+    const collapsedRectangleSize = getTextSize(
+      this.text,
+      Renderer.FONT_SIZE,
+    ).add(Vector.same(Renderer.NODE_PADDING).multiply(2));
+    const collapsedRectangle = new Rectangle(
+      centerLocation.clone().subtract(collapsedRectangleSize.multiply(0.5)),
+      collapsedRectangleSize,
+    );
+    return new CollisionBox([collapsedRectangle]);
+  }
+
   color: Color = Color.Transparent;
   text: string;
   children: Entity[];
@@ -41,12 +68,22 @@ export class Section extends ConnectableEntity {
   ) {
     super();
     this.uuid = uuid;
-    this.collisionBox = new CollisionBox(
+
+    // TODO: 应该把collisionBox写成一个访问属性。然后有两个状态下的碰撞箱，分别在isCollapsed和!isCollapsed时生成。
+    this._collisionBoxWhenCollapsed = new CollisionBox([
+      new Rectangle(new Vector(...location), new Vector(...size)),
+    ]);
+    console.log(
+      "this._collisionBoxWhenCollapsed",
+      this._collisionBoxWhenCollapsed,
+    );
+    this._collisionBoxNormal = new CollisionBox(
       new Rectangle(
         new Vector(...location),
         new Vector(...size),
       ).getBoundingLines(),
     );
+
     this.color = new Color(...color);
     this.text = text;
     this.isHidden = isHidden;
@@ -65,6 +102,7 @@ export class Section extends ConnectableEntity {
    * @param entities
    */
   static fromEntities(entities: Entity[]): Section {
+    console.log("开始根据实体创建");
     const section = new Section({
       uuid: uuidv4(),
       text: "section",
@@ -75,6 +113,7 @@ export class Section extends ConnectableEntity {
       isCollapsed: false,
       children: entities.map((entity) => entity.uuid),
     });
+    console.log("创建完毕");
     return section;
   }
 
@@ -86,6 +125,7 @@ export class Section extends ConnectableEntity {
     if (this.children.length === 0) {
       return;
     }
+    // 调整展开状态
     const rectangle = Rectangle.getBoundingRectangle(
       this.children.map((child) => child.collisionBox.getRectangle()),
       15,
@@ -93,7 +133,9 @@ export class Section extends ConnectableEntity {
     rectangle.location = rectangle.location.subtract(new Vector(0, 50));
     rectangle.size = rectangle.size.add(new Vector(0, 50));
 
-    this.collisionBox.shapeList = rectangle.getBoundingLines();
+    this._collisionBoxNormal.shapeList = rectangle.getBoundingLines();
+    // 调整折叠状态
+    this._collisionBoxWhenCollapsed = this.collapsedCollisionBox();
   }
 
   /**
@@ -111,17 +153,25 @@ export class Section extends ConnectableEntity {
    * 若要修改节点的矩形，请使用 moveTo等 方法
    */
   public get rectangle(): Rectangle {
-    const topLine: Line = this.collisionBox.shapeList[0] as Line;
-    const rightLine: Line = this.collisionBox.shapeList[1] as Line;
-    const bottomLine: Line = this.collisionBox.shapeList[2] as Line;
-    const leftLine: Line = this.collisionBox.shapeList[3] as Line;
-    return new Rectangle(
-      new Vector(leftLine.start.x, topLine.start.y),
-      new Vector(
-        rightLine.end.x - leftLine.start.x,
-        bottomLine.end.y - topLine.start.y,
-      ),
-    );
+    if (this.isCollapsed) {
+      return this._collisionBoxWhenCollapsed.getRectangle();
+    } else {
+      const topLine: Line = this._collisionBoxNormal
+        .shapeList[0] as Line;
+      const rightLine: Line = this._collisionBoxNormal
+        .shapeList[1] as Line;
+      const bottomLine: Line = this._collisionBoxNormal
+        .shapeList[2] as Line;
+      const leftLine: Line = this._collisionBoxNormal
+        .shapeList[3] as Line;
+      return new Rectangle(
+        new Vector(leftLine.start.x, topLine.start.y),
+        new Vector(
+          rightLine.end.x - leftLine.start.x,
+          bottomLine.end.y - topLine.start.y,
+        ),
+      );
+    }
   }
 
   public get geometryCenter() {
@@ -136,6 +186,8 @@ export class Section extends ConnectableEntity {
       if (line instanceof Line) {
         line.start = line.start.add(delta);
         line.end = line.end.add(delta);
+      } else if (line instanceof Rectangle) {
+        line.location = line.location.add(delta);
       }
     }
 

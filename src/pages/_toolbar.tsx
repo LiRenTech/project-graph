@@ -23,6 +23,8 @@ import {
   Globe,
   Square,
   SaveAll,
+  Package,
+  PackageOpen,
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
@@ -323,6 +325,20 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           }}
         />
       )}
+      <ToolbarItem
+        description="将选中的Section折叠起来"
+        icon={<Package />}
+        handleFunction={() => {
+          StageManager.packSelectedSection();
+        }}
+      />
+      <ToolbarItem
+        description="将选中的Section展开"
+        icon={<PackageOpen />}
+        handleFunction={() => {
+          StageManager.unpackSelectedSection();
+        }}
+      />
     </Box>
   );
 }
@@ -335,6 +351,7 @@ function onPackNodeToSection() {
   }
   StageManager.packEntityToSection(selectedNodes);
 }
+
 
 const onSaveSelectedNew = async () => {
   const path = await saveFileDialog({
