@@ -25,6 +25,7 @@ import {
   SaveAll,
   Package,
   PackageOpen,
+  Calculator,
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
@@ -339,6 +340,15 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           StageManager.unpackSelectedSection();
         }}
       />
+      {isHaveSelectedNode && (
+        <ToolbarItem
+          description="计算文字"
+          icon={<Calculator />}
+          handleFunction={() => {
+            StageManager.calculateSelectedNode()
+          }}
+        />
+      )}
     </Box>
   );
 }
@@ -351,7 +361,6 @@ function onPackNodeToSection() {
   }
   StageManager.packEntityToSection(selectedNodes);
 }
-
 
 const onSaveSelectedNew = async () => {
   const path = await saveFileDialog({

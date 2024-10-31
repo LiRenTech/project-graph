@@ -25,6 +25,7 @@ import { Section } from "../../stageObject/entity/Section";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
 import { Camera } from "../Camera";
 import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManager";
+import { StageNodeTextTransfer } from "./concreteMethods/StageNodeTextTransfer";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -482,6 +483,11 @@ export namespace StageManager {
   /** 将所有选中的Section收起 */
   export function unpackSelectedSection() {
     StageSectionPackManager.unpackSection();
+    StageHistoryManager.recordStep();
+  }
+
+  export function calculateSelectedNode() {
+    StageNodeTextTransfer.calculateAllSelected();
     StageHistoryManager.recordStep();
   }
 }
