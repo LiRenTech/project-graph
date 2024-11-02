@@ -104,15 +104,10 @@ export default function StartFilePanel() {
     return function () {
       StartFilesManager.removeStartFile(path).then((res) => {
         if (res) {
-          dialog.show({
-            title: "文件删除成功",
-            content: `已删除文件：${path}`,
-            type: "success",
-          });
           updateStartFiles();
         } else {
           dialog.show({
-            title: "文件删除失败",
+            title: "从列表中移除失败",
             content: `文件不存在：${path}`,
             type: "error",
           });
@@ -161,7 +156,7 @@ export default function StartFilePanel() {
                 })}
               </td>
               <td className="border-b border-gray-600 p-2 text-gray-200">
-                <Button onClick={onRemoveFile(file.path)}>删除</Button>
+                <Button onClick={onRemoveFile(file.path)}>移除</Button>
                 <Button onClick={onSetCurrentStartFile(file.path)}>选择</Button>
                 {/* <Button onClick={onSetCurrentStartFile(file.path)}>加载</Button> */}
               </td>
@@ -172,7 +167,7 @@ export default function StartFilePanel() {
       <div className="mt-3 text-sm text-gray-500">
         <p>说明：启动时自动加载的工程文件会在打开时自动加载到舞台，无需手动打开。</p>
         <p>选择：切换当前的启动文件，左侧状态中的图标代表当前的启动文件。</p>
-        <p>删除：仅从列表中移除文件，不会影响文件本身。</p>
+        <p>移除：仅从列表中移除文件，不会影响文件本身。</p>
       </div>
     </div>
   );
