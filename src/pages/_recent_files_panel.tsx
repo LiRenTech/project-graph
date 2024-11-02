@@ -21,12 +21,11 @@ export default function RecentFilesPanel() {
     RecentFileManager.RecentFile[]
   >([]);
   const dialog = useDialog();
-  const [, setFile] = useRecoilState(fileAtom);
 
   const [isRecentFilePanelOpen, setRecentFilePanelOpen] = useRecoilState(
     isRecentFilePanelOpenAtom,
   );
-  const [currentFile] = useRecoilState(fileAtom);
+  const [currentFile, setFile] = useRecoilState(fileAtom);
 
   /**
    * 用于刷新页面显示

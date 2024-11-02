@@ -5,6 +5,10 @@ import { useDialog } from "../utils/dialog";
 import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
 import { StartFilesManager } from "../core/StartFilesManager";
 import React from "react";
+import { useRecoilState } from "recoil";
+import { fileAtom } from "../state";
+import { RecentFileManager } from "../core/RecentFileManager";
+import { StageSaveManager } from "../core/stage/StageSaveManager";
 
 export default function StartFilePanel() {
   const dialog = useDialog();
@@ -13,6 +17,7 @@ export default function StartFilePanel() {
   >([]);
 
   const [currentStartFile, setCurrentStartFile] = React.useState<string>("");
+  const [currentFile, setFile] = useRecoilState(fileAtom);
 
   useEffect(() => {
     updateStartFiles();
@@ -99,6 +104,57 @@ export default function StartFilePanel() {
       });
     };
   };
+  const onLoadCurrentStartFile = (path: string) => {
+    return function () {
+      if (currentFile === "Project Graph") {
+        dialog.show({
+          title: "真的要切换吗？",
+          content: "您现在的新建草稿没有保存，是否要切换项目？",
+          buttons: [
+            {
+              text: "取消",
+              onClick: () => {},
+            },
+            {
+              text: "切换",
+              onClick: () => {
+                checkoutFile(path);
+              },
+            },
+          ],
+        });
+      } else {
+        if (StageSaveManager.isSaved()) {
+          checkoutFile(path);
+        } else {
+          dialog.show({
+            title: "切换失败",
+            content: "由于您当前的文件没有保存，请先保存后再切换文件",
+            type: "error",
+          });
+        }
+      }
+    }
+  }
+  const checkoutFile = (path: string) => {
+    try {
+      setFile(decodeURIComponent(path));
+      if (isDesktop && !path.endsWith(".json")) {
+        dialog.show({
+          title: "请选择一个JSON文件",
+          type: "error",
+        });
+        return;
+      }
+      RecentFileManager.openFileByPath(path);
+    } catch (error) {
+      dialog.show({
+        title: "请选择正确的JSON文件",
+        content: String(error),
+        type: "error",
+      });
+    }
+  };
 
   const onRemoveFile = (path: string) => {
     return function () {
@@ -158,7 +214,7 @@ export default function StartFilePanel() {
               <td className="border-b border-gray-600 p-2 text-gray-200">
                 <Button onClick={onRemoveFile(file.path)}>移除</Button>
                 <Button onClick={onSetCurrentStartFile(file.path)}>选择</Button>
-                {/* <Button onClick={onSetCurrentStartFile(file.path)}>加载</Button> */}
+                <Button onClick={onLoadCurrentStartFile(file.path)}>加载</Button>
               </td>
             </tr>
           ))}
@@ -168,6 +224,7 @@ export default function StartFilePanel() {
         <p>说明：启动时自动加载的工程文件会在打开时自动加载到舞台，无需手动打开。</p>
         <p>选择：切换当前的启动文件，左侧状态中的图标代表当前的启动文件。</p>
         <p>移除：仅从列表中移除文件，不会影响文件本身。</p>
+        <p>加载：仅将这个文件加载到舞台</p>
       </div>
     </div>
   );
