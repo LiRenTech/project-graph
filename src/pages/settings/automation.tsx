@@ -1,4 +1,4 @@
-import { HardDriveDownload, HardDriveUpload, Tag } from "lucide-react";
+import { HardDriveDownload, Tag } from "lucide-react";
 import { SettingField } from "./_field";
 
 // 其实应该改成快捷操作相关
@@ -14,13 +14,13 @@ export default function AutoNamer() {
         placeholder="例如：p{{i}}"
       />
 
-      <SettingField
+      {/* <SettingField
         icon={<HardDriveUpload />}
         settingKey="autoOpenPath"
         title="软件启动后自动打开的工程"
         type="text"
         placeholder="注意是绝对路径"
-      />
+      /> */}
 
       <SettingField
         icon={<HardDriveDownload />}

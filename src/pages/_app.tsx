@@ -6,7 +6,7 @@ import {
   Diamond,
   Menu,
   X,
-  Pin,
+  Zap,
   RectangleEllipsis,
 } from "lucide-react";
 import React from "react";
@@ -192,7 +192,7 @@ export default function App() {
       style={{ zoom: appScale }}
       onClick={() => {
         setIsMenuOpen(false);
-        setIsStartFilePanelOpen(false);
+        // setIsStartFilePanelOpen(false);
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
@@ -266,7 +266,7 @@ export default function App() {
         <IconButton
           onClick={() => setIsStartFilePanelOpen(!isStartFilePanelOpen)}
         >
-          <Pin
+          <Zap
             className={cn(
               "cursor-pointer transition",
               isStartFilePanelOpen ? "rotate-45 scale-125" : "",

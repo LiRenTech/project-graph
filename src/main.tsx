@@ -17,6 +17,7 @@ import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeCollisionBoxGetter";
 import { ProgressNumber } from "./core/dataStruct/ProgressNumber";
+import { StartFilesManager } from "./core/StartFilesManager";
 
 // 计时开始
 const t1 = performance.now();
@@ -31,13 +32,14 @@ const Routes = () => <RouterProvider router={router} />;
   // 这段代码用时
   await Settings.init();
   await RecentFileManager.init();
+  await StartFilesManager.init();
   // 15~20ms 左右
   EdgeCollisionBoxGetter.init();
   EdgeRenderer.init();
   Renderer.init();
 
   // 启动时加载用户自定义的工程文件
-  Settings.get("autoOpenPath").then((path) => {
+  StartFilesManager.getCurrentStartFile().then((path) => {
     if (path === "") {
       // 还没有设置自动打开路径
       const t2 = performance.now();
