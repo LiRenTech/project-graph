@@ -6,6 +6,8 @@ import {
   Diamond,
   Menu,
   X,
+  Pin,
+  RectangleEllipsis,
 } from "lucide-react";
 import React from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -24,10 +26,12 @@ import PopupDialog from "../components/ui/PopupDialog";
 import { useDialog } from "../utils/dialog";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { StageDumper } from "../core/stage/StageDumper";
+import StartFilePanel from "./_start_file_panel";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isStartFilePanelOpen, setIsStartFilePanelOpen] = React.useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [file] = useRecoilState(fileAtom);
@@ -48,6 +52,7 @@ export default function App() {
       }
       if (event.key === "Escape") {
         setIsMenuOpen(false);
+        setIsStartFilePanelOpen(false);
       }
       if (event.key === "F11") {
         getCurrentWindow()
@@ -187,6 +192,7 @@ export default function App() {
       style={{ zoom: appScale }}
       onClick={() => {
         setIsMenuOpen(false);
+        setIsStartFilePanelOpen(false);
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
@@ -230,10 +236,19 @@ export default function App() {
             }
           }}
         >
-          {location.pathname === "/" ? <Menu /> : <ChevronLeft />}
+          {location.pathname === "/" ? (
+            isMenuOpen ? (
+              <RectangleEllipsis />
+            ) : (
+              <Menu />
+            )
+          ) : (
+            <ChevronLeft />
+          )}
         </IconButton>
         <AppMenu className="absolute top-20" open={isMenuOpen} />
         <RecentFilesPanel />
+        {isStartFilePanelOpen && <StartFilePanel />}
         {/* 左上角标题 */}
         <Button
           data-tauri-drag-region
@@ -247,6 +262,17 @@ export default function App() {
             .at(-1)
             ?.replace(/\.json/, "")}
         </Button>
+        {/* 右上角图钉按钮 */}
+        <IconButton
+          onClick={() => setIsStartFilePanelOpen(!isStartFilePanelOpen)}
+        >
+          <Pin
+            className={cn(
+              "cursor-pointer transition",
+              isStartFilePanelOpen ? "rotate-45 scale-125" : "",
+            )}
+          />
+        </IconButton>
         {/* 右上角窗口控制按钮 */}
         {isDesktop && (
           <Button className="right-4 top-4 flex items-center gap-1 active:scale-100">
