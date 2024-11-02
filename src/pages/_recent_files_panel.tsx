@@ -14,6 +14,7 @@ import { useRecoilState } from "recoil";
 import { RecentFileManager } from "../core/RecentFileManager";
 import { useDialog } from "../utils/dialog";
 import { isDesktop } from "../utils/platform";
+import { StageSaveManager } from "../core/stage/StageSaveManager";
 
 export default function RecentFilesPanel() {
   const [recentFiles, setRecentFiles] = React.useState<
@@ -25,6 +26,7 @@ export default function RecentFilesPanel() {
   const [isRecentFilePanelOpen, setRecentFilePanelOpen] = useRecoilState(
     isRecentFilePanelOpenAtom,
   );
+  const [currentFile] = useRecoilState(fileAtom);
 
   /**
    * 用于刷新页面显示
@@ -49,27 +51,56 @@ export default function RecentFilesPanel() {
 
   const onClickFile = (file: RecentFileManager.RecentFile) => {
     return () => {
-      try {
-        const path = file.path;
-        setFile(decodeURIComponent(path));
-        if (isDesktop && !path.endsWith(".json")) {
+      if (currentFile === "Project Graph") {
+        dialog.show({
+          title: "真的要切换吗？",
+          content: "您现在的新建草稿没有保存，是否要切换项目？",
+          buttons: [
+            {
+              text: "取消",
+              onClick: () => {},
+            },
+            {
+              text: "切换",
+              onClick: () => {
+                checkoutFile(file);
+              },
+            },
+          ],
+        });
+      } else {
+        if (StageSaveManager.isSaved()) {
+          checkoutFile(file);
+        } else {
           dialog.show({
-            title: "请选择一个JSON文件",
+            title: "切换失败",
+            content: "由于您当前的文件没有保存，请先保存后再切换文件",
             type: "error",
           });
-          return;
         }
-        console.log("正在打开文件", `<${path}>`, typeof path);
-        RecentFileManager.openFileByPath(path);
-        setRecentFilePanelOpen(false);
-      } catch (error) {
-        dialog.show({
-          title: "请选择正确的JSON文件",
-          content: String(error),
-          type: "error",
-        });
       }
     };
+  };
+  const checkoutFile = (file: RecentFileManager.RecentFile) => {
+    try {
+      const path = file.path;
+      setFile(decodeURIComponent(path));
+      if (isDesktop && !path.endsWith(".json")) {
+        dialog.show({
+          title: "请选择一个JSON文件",
+          type: "error",
+        });
+        return;
+      }
+      RecentFileManager.openFileByPath(path);
+      setRecentFilePanelOpen(false);
+    } catch (error) {
+      dialog.show({
+        title: "请选择正确的JSON文件",
+        content: String(error),
+        type: "error",
+      });
+    }
   };
 
   return (
