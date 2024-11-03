@@ -28,7 +28,8 @@ settingsAbout:
     - 理刃科技是一个由Littlefean和Rutubet在2017年5月1日创立的小型团队，后续ZTY加入团队。
     - 以其年轻化的团队氛围、对创新创意的重视、以及理性思维与文化包容的特点，在软件开发领域独树一帜。
     - 不仅专注于开发工具软件和游戏，还涉足Minecraft游戏插件开发、游戏服务器运营以及网站建设等多元化业务。
-    - 理刃科技的代表作品包括CannonWar这个内容丰富的塔防游戏、BitMountain算法竞赛网站、Watch小桌面软件，以及MinecraftPvP职业战争服务器。
+    - >-
+      理刃科技的代表作品包括CannonWar这个内容丰富的塔防游戏、BitMountain算法竞赛网站、Watch小桌面软件，以及MinecraftPvP职业战争服务器。
     - 团队以浅蓝色和代码绿为代表颜色，象征着逻辑合理与整活幽默并存的团队文化。
 settingsVisual:
   language: 语言
@@ -44,3 +45,4 @@ settingsVisual:
   moveAmplitude: 视角移动加速度
   moveFriction: 视角移动摩擦力系数
   alwaysShowDetails: 始终显示节点详细信息
+  useNativeTitleBar: 使用原生标题栏（需要重启应用）

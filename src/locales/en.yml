@@ -8,20 +8,44 @@ welcome:
 settingsAbout:
   title: Project Graph Visualization Tool
   intro:
-    - This is a tool for quickly drawing node graphs based on the Tauri framework, suitable for project topology diagram drawing and quick brainstorming drafts.
-    - Xmind can only be used for drawing tree-structured diagrams, while FigJam and draw.io can be used for drawing but they are a bit slow to open in the web.
+    - >-
+      This is a tool for quickly drawing node graphs based on the Tauri
+      framework, suitable for project topology diagram drawing and quick
+      brainstorming drafts.
+    - >-
+      Xmind can only be used for drawing tree-structured diagrams, while FigJam
+      and draw.io can be used for drawing but they are a bit slow to open in the
+      web.
     - Therefore, we developed this small software.
   contact:
     - Contact Us
-    - We are committed to designing the fastest and most convenient drawing methodology for "graph theory" and are also exploring and innovating in the direction of visual thinking and topological todo lists.
-    - "If you want to get feedback quickly and provide suggestions, or have any ideas or questions, you are welcome to join our QQ group: 1006956704."
+    - >-
+      We are committed to designing the fastest and most convenient drawing
+      methodology for "graph theory" and are also exploring and innovating in
+      the direction of visual thinking and topological todo lists.
+    - >-
+      If you want to get feedback quickly and provide suggestions, or have any
+      ideas or questions, you are welcome to join our QQ group: 1006956704.
   team:
     - Team Introduction
-    - LiRen Technology is a small team founded by Littlefean and Rutubet on May 1, 2017, with ZTY joining the team later.
-    - With its youthful team atmosphere, emphasis on innovation and creativity, as well as rational thinking and cultural inclusiveness, it stands out in the field of software development.
-    - Not only focuses on developing tool software and games but also engages in Minecraft game plugin development, game server operation, and website construction with a diverse range of businesses.
-    - LiRen Technology's representative works include the rich content tower defense game CannonWar, the BitMountain algorithm competition website, the Watch desktop software, and the Minecraft PvP Professional War server.
-    - The team takes light blue and code green as its representative colors, symbolizing a team culture where logical rationality and humor coexist.
+    - >-
+      LiRen Technology is a small team founded by Littlefean and Rutubet on May
+      1, 2017, with ZTY joining the team later.
+    - >-
+      With its youthful team atmosphere, emphasis on innovation and creativity,
+      as well as rational thinking and cultural inclusiveness, it stands out in
+      the field of software development.
+    - >-
+      Not only focuses on developing tool software and games but also engages in
+      Minecraft game plugin development, game server operation, and website
+      construction with a diverse range of businesses.
+    - >-
+      LiRen Technology's representative works include the rich content tower
+      defense game CannonWar, the BitMountain algorithm competition website, the
+      Watch desktop software, and the Minecraft PvP Professional War server.
+    - >-
+      The team takes light blue and code green as its representative colors,
+      symbolizing a team culture where logical rationality and humor coexist.
 settingsTabs:
   about: About
   visual: Visual
@@ -44,3 +68,4 @@ settingsVisual:
   moveAmplitude: Perspective Movement Amplitude
   moveFriction: Perspective Movement Friction Coefficient
   alwaysShowDetails: Always Show Node Details
+  useNativeTitleBar: Use native title bar (requires restart)

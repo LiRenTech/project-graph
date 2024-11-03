@@ -36,6 +36,7 @@ export default function App() {
   const location = useLocation();
   const [file] = useRecoilState(fileAtom);
   const dialog = useDialog();
+  const [useNativeTitleBar, setUseNativeTitleBar] = React.useState(false);
 
   React.useEffect(() => {
     getCurrentWindow().onResized(() => {
@@ -61,6 +62,12 @@ export default function App() {
           });
       }
     });
+    Settings.get("useNativeTitleBar").then((useNativeTitleBar) => {
+      setUseNativeTitleBar(useNativeTitleBar);
+      if (useNativeTitleBar) {
+        getCurrentWindow().setDecorations(true);
+      }
+    });
 
     const saveInterval = setInterval(() => {
       setIsSaved(StageSaveManager.isSaved());
@@ -70,6 +77,14 @@ export default function App() {
       clearInterval(saveInterval);
     };
   }, []);
+
+  React.useEffect(() => {
+    if (file === "Project Graph") {
+      getCurrentWindow().setTitle("Project Graph");
+    } else {
+      getCurrentWindow().setTitle(`${file} - Project Graph`);
+    }
+  }, [file]);
 
   const [isSaved, setIsSaved] = React.useState(false);
 
@@ -240,19 +255,23 @@ export default function App() {
         <AppMenu className="absolute top-20" open={isMenuOpen} />
         <RecentFilesPanel />
         {isStartFilePanelOpen && <StartFilePanel />}
-        {/* 左上角标题 */}
-        <Button
-          data-tauri-drag-region
-          className={cn(
-            "flex-1 hover:cursor-move active:scale-100 active:cursor-grabbing",
-            isSaved ? "" : "text-yellow-500",
-          )}
-        >
-          {file
-            .split("/")
-            .at(-1)
-            ?.replace(/\.json/, "")}
-        </Button>
+        {/* 中间标题 */}
+        {useNativeTitleBar ? (
+          <div className="flex-1"></div>
+        ) : (
+          <Button
+            data-tauri-drag-region
+            className={cn(
+              "flex-1 hover:cursor-move active:scale-100 active:cursor-grabbing",
+              isSaved ? "" : "text-yellow-500",
+            )}
+          >
+            {file
+              .split("/")
+              .at(-1)
+              ?.replace(/\.json/, "")}
+          </Button>
+        )}
         {/* 右上角图钉按钮 */}
         <IconButton
           onClick={() => setIsStartFilePanelOpen(!isStartFilePanelOpen)}
@@ -265,7 +284,7 @@ export default function App() {
           />
         </IconButton>
         {/* 右上角窗口控制按钮 */}
-        {isDesktop && (
+        {isDesktop && !useNativeTitleBar && (
           <Button className="right-4 top-4 flex items-center gap-1 active:scale-100">
             <ChevronDown
               onClick={() => getCurrentWindow().minimize()}

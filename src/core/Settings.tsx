@@ -31,6 +31,8 @@ export namespace Settings {
     // github 相关
     githubToken: string;
     githubUser: string;
+    // linux 相关
+    useNativeTitleBar: boolean;
   };
   const defaultSettings: Settings = {
     language: "en",
@@ -55,6 +57,8 @@ export namespace Settings {
     // github 相关
     githubToken: "",
     githubUser: "",
+    // linux 相关
+    useNativeTitleBar: false,
   };
 
   export async function init() {

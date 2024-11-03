@@ -1,4 +1,5 @@
 import {
+  AppWindowMac,
   Blend,
   Bug,
   Grid,
@@ -87,6 +88,12 @@ export default function Visual() {
         icon={<ListCollapse />}
         settingKey="alwaysShowDetails"
         title={t("alwaysShowDetails")}
+        type="switch"
+      />
+      <SettingField
+        icon={<AppWindowMac />}
+        settingKey="useNativeTitleBar"
+        title={t("useNativeTitleBar")}
         type="switch"
       />
     </>
