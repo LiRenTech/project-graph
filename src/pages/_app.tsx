@@ -35,7 +35,6 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [file] = useRecoilState(fileAtom);
-  const [backgroundOpacity, setBackgroundOpacity] = React.useState(0.5);
   const dialog = useDialog();
 
   React.useEffect(() => {
@@ -60,14 +59,6 @@ export default function App() {
           .then((isFullscreen) => {
             getCurrentWindow().setFullscreen(!isFullscreen);
           });
-      }
-    });
-    // window.addEventListener("pointerdown", () => {
-    //   setIsMenuOpen(false);
-    // });
-    Settings.get("windowBackgroundAlpha").then((alpha) => {
-      if (alpha) {
-        setBackgroundOpacity(alpha);
       }
     });
 
@@ -301,15 +292,6 @@ export default function App() {
         )}
       </div>
       <Outlet />
-      {isDesktop && (
-        <div
-          className={cn("absolute left-0 top-0 -z-10 h-full w-full")}
-          style={{
-            backgroundColor: "#2b2b2b",
-            opacity: `${backgroundOpacity * 100}%`,
-          }}
-        ></div>
-      )}
     </div>
   );
 }
