@@ -38,6 +38,7 @@ import { StageDumper } from "../core/stage/StageDumper";
 import { invoke } from "@tauri-apps/api/core";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
+import { StageSaveManager } from "../core/stage/StageSaveManager";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -301,10 +302,14 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       )}
       {isHaveSelectedNode && (
         <ToolbarItem
-          description="将选中的节点的内容作为网页链接或本地文件路径打开（小心，路径错误导致崩溃）"
+          description="将选中的节点的内容作为网页链接或本地文件路径打开"
           icon={<Globe />}
           handleFunction={() => {
-            openBrowserOrFile();
+            if (StageSaveManager.isSaved()) {
+              openBrowserOrFile();
+            } else {
+              Stage.effects.push(new TextRiseEffect("请先保存文件"));
+            }
           }}
         />
       )}
@@ -345,7 +350,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           description="计算文字"
           icon={<Calculator />}
           handleFunction={() => {
-            StageManager.calculateSelectedNode()
+            StageManager.calculateSelectedNode();
           }}
         />
       )}
@@ -402,19 +407,43 @@ const onSaveSelectedNew = async () => {
   }
 };
 
-function openBrowserOrFile() {
+async function openBrowserOrFile() {
   for (const node of StageManager.getTextNodes()) {
     if (node.isSelected) {
-      open(node.text)
-        .then((value) => {
-          console.log("open browser success", value);
-        })
-        .catch((e) => {
-          // 依然会导致程序崩溃，具体原因未知
-          console.error(e);
+      if (isValidURL(node.text)) {
+        // 是网址
+        myOpen(node.text);
+      } else {
+        const isExists = await invoke<string>("check_json_exist", {
+          path: node.text,
         });
+        if (isExists) {
+          // 是文件
+          myOpen(node.text);
+        } else {
+          // 不是网址也不是文件，不做处理
+          Stage.effects.push(new TextRiseEffect("非法路径: " + node.text));
+        }
+      }
     }
   }
+}
+
+function myOpen(url: string) {
+  open(url)
+    .then((value) => {
+      console.log("open browser success", value);
+    })
+    .catch((e) => {
+      // 依然会导致程序崩溃，具体原因未知
+      console.error(e);
+    });
+}
+
+function isValidURL(url: string): boolean {
+  const urlPattern =
+    /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(:\d{1,5})?(\/[^\s]*)?$/i;
+  return urlPattern.test(url);
 }
 
 function deleteSelectedObjects() {

@@ -65,7 +65,7 @@ export namespace StageSaveManager {
   }
 
   /**
-   * 当前是否有自动保存
+   * 当前是否有保存
    * @returns
    */
   export function isSaved() {
