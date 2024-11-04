@@ -1,6 +1,8 @@
 import { Serialized } from "../../../types/node";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
+import { CircleChangeRadiusEffect } from "../../effect/concrete/CircleChangeRadiusEffect";
+import { Stage } from "../../stage/Stage";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { ConnectableEntity } from "../StageObject";
 
@@ -28,7 +30,9 @@ export class ConnectPoint extends ConnectableEntity {
     const rectangle = this._collisionBox.shapeList[0];
     if (rectangle instanceof Rectangle) {
       rectangle.size = new Vector(value * 2, value * 2);
-      rectangle.location = this.geometryCenter.subtract(new Vector(value, value));
+      rectangle.location = this.geometryCenter.subtract(
+        new Vector(value, value),
+      );
     }
   }
 
@@ -45,13 +49,29 @@ export class ConnectPoint extends ConnectableEntity {
   }
 
   public set isSelected(value: boolean) {
+    const oldValue = this._isSelected;
+    if (oldValue === value) {
+      return;
+    }
     this._isSelected = value;
     if (value) {
       // 设定选中
       this.radius = 30;
+      // Stage.effects.push(
+      //   CircleChangeRadiusEffect.fromConnectPointExpand(
+      //     this.geometryCenter.clone(),
+      //     30,
+      //   ),
+      // );
     } else {
       // 取消选中
       this.radius = 1;
+      Stage.effects.push(
+        CircleChangeRadiusEffect.fromConnectPointShrink(
+          this.geometryCenter.clone(),
+          30,
+        ),
+      );
     }
   }
 

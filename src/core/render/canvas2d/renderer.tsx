@@ -25,6 +25,7 @@ import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
 import { WorldRenderUtils } from "./WorldRenderUtils";
 import { getTextSize } from "../../../utils/font";
 import { Random } from "../../algorithm/random";
+import { CircleChangeRadiusEffect } from "../../effect/concrete/CircleChangeRadiusEffect";
 
 /**
  * 渲染器
@@ -409,6 +410,8 @@ export namespace Renderer {
         EffectRenderer.renderExplodeAshEffect(effect);
       } else if (effect instanceof NodeMoveShadowEffect) {
         EffectRenderer.renderNodeMoveShadowEffect(effect);
+      } else if (effect instanceof CircleChangeRadiusEffect) {
+        EffectRenderer.renderCircleChangeRadiusEffect(effect);
       }
     }
   }

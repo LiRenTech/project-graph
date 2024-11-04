@@ -15,6 +15,7 @@ import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
 import { reverseAnimate } from "../../effect/animateFunctions";
 import { ExplodeAshEffect } from "../../effect/concrete/ExplodeDashEffect";
 import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
+import { CircleChangeRadiusEffect } from "../../effect/concrete/CircleChangeRadiusEffect";
 
 /**
  * 专门编写所有的特效渲染
@@ -35,6 +36,20 @@ export namespace EffectRenderer {
       Renderer.transformWorld2View(effect.location),
       rendRadius * Camera.currentScale,
       effect.color,
+    );
+  }
+
+  export function renderCircleChangeRadiusEffect(effect: CircleChangeRadiusEffect) {
+    if (effect.timeProgress.isFull) {
+      return;
+    }
+    effect.color.a = 1 - effect.timeProgress.rate;
+    RenderUtils.renderCircle(
+      Renderer.transformWorld2View(effect.location),
+      effect.radius * Camera.currentScale,
+      Color.Transparent,
+      effect.color,
+      2 * Camera.currentScale,
     );
   }
 
@@ -181,7 +196,7 @@ export namespace EffectRenderer {
       RenderUtils.renderPixel(viewLocation, color);
     }
   }
-  
+
   export function renderNodeMoveShadowEffect(effect: NodeMoveShadowEffect) {
     if (effect.timeProgress.isFull) {
       return;
