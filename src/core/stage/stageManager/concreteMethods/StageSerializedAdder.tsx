@@ -26,7 +26,7 @@ export namespace StageSerializedAdder {
         // TODO: 处理section节点
       } else if (node.type === "core:connect_point") {
         const point = new ConnectPoint(node);
-        point.moveTo(point.location.add(diffLocation));
+        point.moveTo(point.geometryCenter.add(diffLocation));
         StageManager.addConnectPoint(point);
       }
     }

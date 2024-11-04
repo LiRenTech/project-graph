@@ -40,7 +40,7 @@ export namespace StageDumper {
     connectPoint: ConnectPoint,
   ): Serialized.ConnectPoint {
     return {
-      location: [connectPoint.location.x, connectPoint.location.y],
+      location: [connectPoint.geometryCenter.x, connectPoint.geometryCenter.y],
       uuid: connectPoint.uuid,
       type: "core:connect_point",
     };

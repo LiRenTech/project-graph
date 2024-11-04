@@ -148,8 +148,8 @@ export namespace EntityRenderer {
       );
     }
     RenderUtils.renderCircle(
-      Renderer.transformWorld2View(connectPoint.location),
-      10 * Camera.currentScale,
+      Renderer.transformWorld2View(connectPoint.geometryCenter),
+      connectPoint.radius * Camera.currentScale,
       Color.Transparent,
       Color.White,
       2 * Camera.currentScale,

@@ -17,7 +17,20 @@ export class ConnectPoint extends ConnectableEntity {
     return this._collisionBox;
   }
   uuid: string;
-  location: Vector;
+  private location: Vector;
+
+  private _radius = 10;
+  get radius(): number {
+    return this._radius;
+  }
+  set radius(value: number) {
+    this._radius = value;
+    const rectangle = this._collisionBox.shapeList[0];
+    if (rectangle instanceof Rectangle) {
+      rectangle.size = new Vector(value * 2, value * 2);
+      rectangle.location = this.geometryCenter.subtract(new Vector(value, value));
+    }
+  }
 
   /**
    * 节点是否被选中
@@ -33,6 +46,13 @@ export class ConnectPoint extends ConnectableEntity {
 
   public set isSelected(value: boolean) {
     this._isSelected = value;
+    if (value) {
+      // 设定选中
+      this.radius = 10;
+    } else {
+      // 取消选中
+      this.radius = 1;
+    }
   }
 
   constructor(
@@ -51,6 +71,7 @@ export class ConnectPoint extends ConnectableEntity {
         new Vector(20, 20),
       ),
     ]);
+    this.radius = 1;
   }
 
   move(delta: Vector): void {
