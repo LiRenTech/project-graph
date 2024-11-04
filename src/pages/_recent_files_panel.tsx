@@ -115,6 +115,7 @@ export default function RecentFilesPanel() {
       <table className="min-w-full overflow-hidden rounded-lg border border-gray-600 bg-gray-700 shadow-lg">
         <thead>
           <tr className="bg-gray-800 text-white">
+            <th className="px-4 py-2 text-left"></th>
             <th className="px-4 py-2 text-left">路径</th>
             <th className="px-4 py-2 text-left">时间</th>
           </tr>
@@ -122,6 +123,9 @@ export default function RecentFilesPanel() {
         <tbody>
           {recentFiles.map((file, index) => (
             <tr key={index} className="hover:bg-gray-600">
+              <td className="border-b border-gray-600 p-2 text-gray-200 text-right">
+                {index + 1}
+              </td>
               <td
                 className="cursor-pointer border-b border-gray-600 p-2 text-gray-200"
                 onClick={onClickFile(file)}
