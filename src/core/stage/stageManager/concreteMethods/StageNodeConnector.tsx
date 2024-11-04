@@ -1,4 +1,5 @@
 import { Edge } from "../../../stageObject/association/Edge";
+import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { ConnectableEntity } from "../../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 import { StageDeleteManager } from "./StageDeleteManager";
@@ -9,6 +10,7 @@ import { v4 as uuidv4 } from "uuid";
  */
 export namespace StageNodeConnector {
   // 连接两两节点
+  // 如果两个节点都是同一个 ConnectPoint类型，则不能连接，因为没有必要
   export function connectConnectableEntity(
     fromNode: ConnectableEntity,
     toNode: ConnectableEntity,
@@ -18,13 +20,16 @@ export namespace StageNodeConnector {
       StageManager.isEntityExists(fromNode.uuid) &&
       StageManager.isEntityExists(toNode.uuid)
     ) {
+      if (fromNode.uuid === toNode.uuid && fromNode instanceof ConnectPoint) {
+        return;
+      }
       // const addResult = fromNode.addChild(toNode);
 
       // if (!addResult) {
       //   // 重复添加了，添加失败
       //   return false;
       // }
-      
+
       // HACK: 容易出现重复的线段
 
       const newEdge = new Edge({

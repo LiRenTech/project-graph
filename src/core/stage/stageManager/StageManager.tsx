@@ -491,7 +491,7 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
-  export function connectNode(
+  export function connectEntity(
     fromNode: ConnectableEntity,
     toNode: ConnectableEntity,
   ) {

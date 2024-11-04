@@ -105,7 +105,7 @@ export namespace StageEntityMoveManager {
 
   // 左侧对齐
   export function alignLeft() {
-    const nodes = Array.from(StageManager.getTextNodes()).filter(
+    const nodes = Array.from(StageManager.getEntities()).filter(
       (node) => node.isSelected,
     );
     const minX = Math.min(
@@ -121,7 +121,7 @@ export namespace StageEntityMoveManager {
 
   // 右侧对齐
   export function alignRight() {
-    const nodes = Array.from(StageManager.getTextNodes()).filter(
+    const nodes = Array.from(StageManager.getEntities()).filter(
       (node) => node.isSelected,
     );
     const maxX = Math.max(
@@ -137,7 +137,7 @@ export namespace StageEntityMoveManager {
 
   // 上侧对齐
   export function alignTop() {
-    const nodes = Array.from(StageManager.getTextNodes()).filter(
+    const nodes = Array.from(StageManager.getEntities()).filter(
       (node) => node.isSelected,
     );
     const minY = Math.min(
@@ -153,7 +153,7 @@ export namespace StageEntityMoveManager {
 
   // 下侧对齐
   export function alignBottom() {
-    const nodes = Array.from(StageManager.getTextNodes()).filter(
+    const nodes = Array.from(StageManager.getEntities()).filter(
       (node) => node.isSelected,
     );
     const maxY = Math.max(
@@ -168,7 +168,7 @@ export namespace StageEntityMoveManager {
   }
 
   export function alignCenterHorizontal() {
-    const nodes = Array.from(StageManager.getTextNodes()).filter(
+    const nodes = Array.from(StageManager.getEntities()).filter(
       (node) => node.isSelected,
     );
     if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
@@ -197,7 +197,7 @@ export namespace StageEntityMoveManager {
   }
 
   export function alignCenterVertical() {
-    const nodes = Array.from(StageManager.getTextNodes()).filter(
+    const nodes = Array.from(StageManager.getEntities()).filter(
       (node) => node.isSelected,
     );
     if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
@@ -227,7 +227,7 @@ export namespace StageEntityMoveManager {
 
   // 相等间距水平分布对齐
   export function alignHorizontalSpaceBetween() {
-    const nodes = Array.from(StageManager.getTextNodes()).filter(
+    const nodes = Array.from(StageManager.getEntities()).filter(
       (node) => node.isSelected,
     );
     if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
@@ -262,7 +262,7 @@ export namespace StageEntityMoveManager {
 
   // 相等间距垂直分布对齐
   export function alignVerticalSpaceBetween() {
-    const nodes = Array.from(StageManager.getTextNodes()).filter(
+    const nodes = Array.from(StageManager.getEntities()).filter(
       (node) => node.isSelected,
     );
     if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列

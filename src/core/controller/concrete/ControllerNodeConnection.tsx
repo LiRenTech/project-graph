@@ -87,13 +87,13 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
     if (entity.collisionBox.isPointInCollisionBox(worldLocation)) {
       if (Stage.connectToEntity === null) {
         // 特效
-        Stage.effects.push(
-          new RectangleNoteEffect(
-            new ProgressNumber(0, 30),
-            entity.collisionBox.getRectangle().clone(),
-            new Color(0, 255, 0, 1),
-          ),
-        );
+        // Stage.effects.push(
+        //   new RectangleNoteEffect(
+        //     new ProgressNumber(0, 30),
+        //     entity.collisionBox.getRectangle().clone(),
+        //     new Color(0, 255, 0, 1),
+        //   ),
+        // );
       }
       Stage.connectToEntity = entity;
       isFindConnectToNode = true;
@@ -116,7 +116,7 @@ ControllerNodeConnection.mouseup = (event: MouseEvent) => {
   if (Stage.connectFromEntities.length > 0 && Stage.connectToEntity !== null) {
     let isHaveConnectResult = false; // 在多重链接的情况下，是否有连接成功
     for (const entity of Stage.connectFromEntities) {
-      const connectResult = StageManager.connectNode(
+      const connectResult = StageManager.connectEntity(
         entity,
         Stage.connectToEntity,
       );

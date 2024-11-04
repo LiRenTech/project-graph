@@ -68,7 +68,7 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
           const newNode = StageManager.getTextNodeByUUID(newNodeUUID);
           if (!newNode) return;
 
-          StageManager.connectNode(selectedNode, newNode);
+          StageManager.connectEntity(selectedNode, newNode);
           Stage.isVirtualNewNodeShow = false;
           return;
         } else {

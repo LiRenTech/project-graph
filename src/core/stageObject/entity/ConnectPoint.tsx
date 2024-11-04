@@ -48,7 +48,7 @@ export class ConnectPoint extends ConnectableEntity {
     this._isSelected = value;
     if (value) {
       // 设定选中
-      this.radius = 10;
+      this.radius = 30;
     } else {
       // 取消选中
       this.radius = 1;
