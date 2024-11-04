@@ -212,9 +212,9 @@ export default function StartFilePanel() {
                 })}
               </td>
               <td className="border-b border-gray-600 p-2 text-gray-200">
-                <Button onClick={onRemoveFile(file.path)}>移除</Button>
-                <Button onClick={onSetCurrentStartFile(file.path)}>选择</Button>
                 <Button onClick={onLoadCurrentStartFile(file.path)}>加载</Button>
+                <Button onClick={onSetCurrentStartFile(file.path)}>选择</Button>
+                <Button onClick={onRemoveFile(file.path)}>移除</Button>
               </td>
             </tr>
           ))}
