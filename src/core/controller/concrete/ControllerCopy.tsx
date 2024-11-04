@@ -71,21 +71,54 @@ ControllerCopy.keydown = (event: KeyboardEvent) => {
     }
   } else if (key === "v" && Controller.pressingKeySet.has("control")) {
     // 粘贴
-
-    if (Controller.pressingKeySet.has("shift")) {
-      // 原位置粘贴
-      StageSerializedAdder.addSerializedData(Stage.copyBoardData);
+    if (Stage.copyBoardData.nodes.length === 0) {
+      readClipboardItems(mouseLocation);
     } else {
-      // 鼠标位置粘贴
-      StageSerializedAdder.addSerializedData(
-        Stage.copyBoardData,
-        Stage.copyBoardMouseVector,
-      );
+      if (Controller.pressingKeySet.has("shift")) {
+        // 原位置粘贴
+        StageSerializedAdder.addSerializedData(Stage.copyBoardData);
+      } else {
+        // 鼠标位置粘贴
+        StageSerializedAdder.addSerializedData(
+          Stage.copyBoardData,
+          Stage.copyBoardMouseVector,
+        );
+      }
     }
-
-    readClipboardItems(mouseLocation);
   }
 };
+// async function isClipboardContainsImage(): Promise<boolean> {
+//   try {
+//     const items = await navigator.clipboard.read();
+//     for (const item of items) {
+//       if (
+//         item.types.includes("image/png") ||
+//         item.types.includes("image/jpeg")
+//       ) {
+//         return true;
+//       }
+//     }
+//     return false;
+//   } catch (err) {
+//     console.error("Failed to read clipboard contents: ", err);
+//     return false;
+//   }
+// }
+
+// async function isClipboardContainsText(): Promise<boolean> {
+//   try {
+//     const items = await navigator.clipboard.read();
+//     for (const item of items) {
+//       if (item.types.includes("text/plain")) {
+//         return true;
+//       }
+//     }
+//     return false;
+//   } catch (err) {
+//     console.error("Failed to read clipboard contents: ", err);
+//     return false;
+//   }
+// }
 
 async function readClipboardItems(mouseLocation: Vector) {
   // test
