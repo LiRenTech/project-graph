@@ -11,6 +11,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { Serialized } from "../types/node";
 import { StageHistoryManager } from "./stage/stageManager/concreteMethods/StageHistoryManager";
 import { Section } from "./stageObject/entity/Section";
+import { ConnectPoint } from "./stageObject/entity/ConnectPoint";
 
 /**
  * 管理最近打开的文件列表
@@ -174,6 +175,10 @@ export namespace RecentFileManager {
         StageManager.addTextNode(new TextNode(entity));
       } else if (entity.type === "core:section") {
         StageManager.addSection(new Section(entity));
+      } else if (entity.type === "core:connect_point") {
+        StageManager.addConnectPoint(new ConnectPoint(entity));
+      } else {
+        console.warn("加载文件时，出现未知的实体类型：" + entity);
       }
     }
     for (const edge of data.edges) {

@@ -1,5 +1,6 @@
 import { Serialized } from "../../types/node";
 import { Edge } from "../stageObject/association/Edge";
+import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
 import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { Entity } from "../stageObject/StageObject";
@@ -12,7 +13,7 @@ export namespace StageDumper {
   /**
    * 最新版本
    */
-  export const latestVersion = 8;
+  export const latestVersion = 9;
 
   export function dumpTextNode(textNode: TextNode): Serialized.Node {
     return {
@@ -35,6 +36,15 @@ export namespace StageDumper {
       type: "core:edge",
     };
   }
+  export function dumpConnectPoint(
+    connectPoint: ConnectPoint,
+  ): Serialized.ConnectPoint {
+    return {
+      location: [connectPoint.location.x, connectPoint.location.y],
+      uuid: connectPoint.uuid,
+      type: "core:connect_point",
+    };
+  }
 
   export function dumpSection(section: Section): Serialized.Section {
     return {
@@ -55,12 +65,21 @@ export namespace StageDumper {
    * @returns
    */
   export function dump(): Serialized.File {
-    const nodes: (Serialized.Section | Serialized.Node)[] =
-      StageManager.getTextNodes().map((node) => dumpTextNode(node));
+    const nodes: (
+      | Serialized.Section
+      | Serialized.Node
+      | Serialized.ConnectPoint
+    )[] = StageManager.getTextNodes().map((node) => dumpTextNode(node));
 
     nodes.push(
       ...StageManager.getSections().map((section) => dumpSection(section)),
     );
+    nodes.push(
+      ...StageManager.getConnectPoints().map((connectPoint) =>
+        dumpConnectPoint(connectPoint),
+      ),
+    );
+
     return {
       version: latestVersion,
       nodes,

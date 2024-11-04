@@ -29,6 +29,8 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
   ControllerNodeMove.lastMoveLocation = pressWorldLocation.clone();
   const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
   const clickedSection = StageManager.findSectionByLocation(pressWorldLocation);
+  const clickedConnectPoint =
+    StageManager.findConnectPointByLocation(pressWorldLocation);
 
   if (clickedSection !== null) {
     Controller.isMovingEntity = true;
@@ -38,6 +40,16 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
       });
     }
     clickedSection.isSelected = true;
+  }
+
+  if (clickedConnectPoint !== null) {
+    Controller.isMovingEntity = true;
+    if (clickedConnectPoint && !clickedConnectPoint.isSelected) {
+      StageManager.getConnectPoints().forEach((point) => {
+        point.isSelected = false;
+      });
+    }
+    clickedConnectPoint.isSelected = true;
   }
 
   if (clickedNode !== null) {
@@ -65,10 +77,7 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
     ControllerNodeMove.lastMoveLocation,
   );
 
-  if (
-    StageManager.getTextNodes().some((node) => node.isSelected) ||
-    StageManager.getSections().some((section) => section.isSelected)
-  ) {
+  if (StageManager.isHaveEntitySelected()) {
     // 移动节点
     Controller.isMovingEntity = true;
     // 暂不监听alt键。因为windows下切换窗口时，alt键释放监听不到
@@ -79,6 +88,8 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
       StageManager.moveNodes(diffLocation);
     }
     StageManager.moveSections(diffLocation);
+    StageManager.moveConnectPoints(diffLocation);
+
     ControllerNodeMove.lastMoveLocation = worldLocation.clone();
   }
 };
@@ -89,14 +100,11 @@ ControllerNodeMove.mouseup = (event: MouseEvent) => {
   }
   if (Controller.isMovingEntity) {
     // 如果是在SectionHover状态下松开鼠标的，将选中的东西放入Section
-    const entityList: Entity[] = [
-      ...StageManager.getTextNodes().filter((entity) => entity.isSelected),
-      ...StageManager.getSections().filter((entity) => entity.isSelected),
-    ];
+    const entityList: Entity[] = StageManager.getSelectedEntities();
     for (const section of Stage.hoverSections) {
       StageManager.goInSection(entityList, section);
     }
-    StageManager.moveNodeFinished();
+    StageManager.moveEntityFinished();
   }
   Controller.isMovingEntity = false;
 };

@@ -7,7 +7,7 @@ import { StageNodeRotate } from "./concreteMethods/stageNodeRotate";
 import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
-import { StageNodeTextMoveManager } from "./concreteMethods/StageNodeMoveManager";
+import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager";
 import { StageNodeColorManager } from "./concreteMethods/StageNodeColorManager";
 import { Serialized } from "../../../types/node";
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
@@ -20,12 +20,14 @@ import {
   Association,
   ConnectableEntity,
   Entity,
+  StageObject,
 } from "../../stageObject/StageObject";
 import { Section } from "../../stageObject/entity/Section";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
 import { Camera } from "../Camera";
 import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManager";
 import { StageNodeTextTransfer } from "./concreteMethods/StageNodeTextTransfer";
+import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -54,6 +56,19 @@ export namespace StageManager {
   export function getSections(): Section[] {
     return entities.valuesToArray().filter((node) => node instanceof Section);
   }
+  export function getConnectPoints(): ConnectPoint[] {
+    return entities
+      .valuesToArray()
+      .filter((node) => node instanceof ConnectPoint);
+  }
+
+  export function getStageObject(): StageObject[] {
+    const result: StageObject[] = [];
+    result.push(...entities.valuesToArray());
+    result.push(...associations.valuesToArray());
+    return result;
+  }
+
   export function getEntities(): Entity[] {
     return entities.valuesToArray();
   }
@@ -75,6 +90,9 @@ export namespace StageManager {
   }
   export function deleteOneSection(section: Section) {
     entities.deleteValue(section);
+  }
+  export function deleteOneConnectPoint(point: ConnectPoint) {
+    entities.deleteValue(point);
   }
   export function deleteOneEdge(edge: Edge) {
     associations.deleteValue(edge);
@@ -103,7 +121,9 @@ export namespace StageManager {
   export function addSection(section: Section) {
     entities.addValue(section, section.uuid);
   }
-
+  export function addConnectPoint(point: ConnectPoint) {
+    entities.addValue(point, point.uuid);
+  }
   export function addEdge(edge: Edge) {
     associations.addValue(edge, edge.uuid);
   }
@@ -280,6 +300,56 @@ export namespace StageManager {
     return null;
   }
 
+  export function findConnectableEntityByLocation(
+    location: Vector,
+  ): ConnectableEntity | null {
+    for (const entity of getConnectableEntity()) {
+      if (entity.collisionBox.isPointInCollisionBox(location)) {
+        return entity;
+      }
+    }
+    return null;
+  }
+
+  export function findConnectPointByLocation(
+    location: Vector,
+  ): ConnectPoint | null {
+    for (const point of getConnectPoints()) {
+      if (point.collisionBox.isPointInCollisionBox(location)) {
+        return point;
+      }
+    }
+    return null;
+  }
+  export function isHaveEntitySelected(): boolean {
+    for (const entity of getEntities()) {
+      if (entity.isSelected) {
+        return true;
+      }
+    }
+    return false;
+  }
+  export function getSelectedEntities(): Entity[] {
+    return entities.valuesToArray().filter((entity) => entity.isSelected);
+  }
+
+  export function isEntityOnLocation(location: Vector): boolean {
+    for (const entity of getEntities()) {
+      if (entity.collisionBox.isPointInCollisionBox(location)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  export function isAssociationOnLocation(location: Vector): boolean {
+    for (const association of getAssociations()) {
+      if (association.collisionBox.isPointInCollisionBox(location)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   // region 以下为舞台操作相关的函数
   // 建议不同的功能分类到具体的文件中，然后最后集中到这里调用，使得下面的显示简短一些
   // 每个操作函数尾部都要加一个记录历史的操作
@@ -302,49 +372,51 @@ export namespace StageManager {
    * @param delta
    */
   export function moveNodes(delta: Vector) {
-    StageNodeTextMoveManager.moveNodes(delta); // 连续过程，不记录历史，只在结束时记录
+    StageEntityMoveManager.moveNodes(delta); // 连续过程，不记录历史，只在结束时记录
   }
 
   export function moveSections(delta: Vector) {
-    StageNodeTextMoveManager.moveSections(delta); // 连续过程，不记录历史，只在结束时记录
+    StageEntityMoveManager.moveSections(delta); // 连续过程，不记录历史，只在结束时记录
   }
-
+  export function moveConnectPoints(delta: Vector) {
+    StageEntityMoveManager.moveConnectPoints(delta); // 连续过程，不记录历史，只在结束时记录
+  }
   export function moveNodesWithChildren(delta: Vector) {
-    StageNodeTextMoveManager.moveNodesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录
+    StageEntityMoveManager.moveNodesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录
   }
 
   export function alignLeft() {
-    StageNodeTextMoveManager.alignLeft();
+    StageEntityMoveManager.alignLeft();
     StageHistoryManager.recordStep();
   }
 
   export function alignRight() {
-    StageNodeTextMoveManager.alignRight();
+    StageEntityMoveManager.alignRight();
     StageHistoryManager.recordStep();
   }
 
   export function alignTop() {
-    StageNodeTextMoveManager.alignTop();
+    StageEntityMoveManager.alignTop();
     StageHistoryManager.recordStep();
   }
   export function alignBottom() {
-    StageNodeTextMoveManager.alignBottom();
+    StageEntityMoveManager.alignBottom();
     StageHistoryManager.recordStep();
   }
   export function alignCenterHorizontal() {
-    StageNodeTextMoveManager.alignCenterHorizontal();
+    StageEntityMoveManager.alignCenterHorizontal();
     StageHistoryManager.recordStep();
   }
   export function alignCenterVertical() {
-    StageNodeTextMoveManager.alignCenterVertical();
+    StageEntityMoveManager.alignCenterVertical();
     StageHistoryManager.recordStep();
   }
   export function alignHorizontalSpaceBetween() {
-    StageNodeTextMoveManager.alignHorizontalSpaceBetween();
+    StageEntityMoveManager.alignHorizontalSpaceBetween();
     StageHistoryManager.recordStep();
   }
   export function alignVerticalSpaceBetween() {
-    StageNodeTextMoveManager.alignVerticalSpaceBetween();
+    StageEntityMoveManager.alignVerticalSpaceBetween();
     StageHistoryManager.recordStep();
   }
 
@@ -358,7 +430,7 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
-  export function moveNodeFinished() {
+  export function moveEntityFinished() {
     // 以后有历史记录和撤销功能了再说，这里什么都不用写
     // 需要查看ts的装饰器怎么用
     StageHistoryManager.recordStep();
@@ -423,7 +495,7 @@ export namespace StageManager {
     fromNode: ConnectableEntity,
     toNode: ConnectableEntity,
   ) {
-    StageNodeConnector.connectNode(fromNode, toNode);
+    StageNodeConnector.connectConnectableEntity(fromNode, toNode);
     StageHistoryManager.recordStep();
     return isConnected(fromNode, toNode);
   }
@@ -488,6 +560,11 @@ export namespace StageManager {
 
   export function calculateSelectedNode() {
     StageNodeTextTransfer.calculateAllSelected();
+    StageHistoryManager.recordStep();
+  }
+
+  export function addConnectPointByClick(location: Vector) {
+    StageNodeAdder.addConnectPoint(location);
     StageHistoryManager.recordStep();
   }
 }

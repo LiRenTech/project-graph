@@ -165,8 +165,10 @@ export namespace Renderer {
     if (Stage.connectFromEntities.length > 0 && Controller.lastMoveLocation) {
       // 如果鼠标位置没有和任何节点相交
       let connectTargetNode = null;
-      for (const node of StageManager.getTextNodes()) {
-        if (node.rectangle.isPointIn(Controller.lastMoveLocation)) {
+      for (const node of StageManager.getConnectableEntity()) {
+        if (
+          node.collisionBox.isPointInCollisionBox(Controller.lastMoveLocation)
+        ) {
           connectTargetNode = node;
           break;
         }
@@ -275,6 +277,14 @@ export namespace Renderer {
       }
       EntityRenderer.renderSection(section);
     }
+    for (const connectPoint of StageManager.getConnectPoints()) {
+      if (
+        !viewRectangle.isCollideWith(connectPoint.collisionBox.getRectangle())
+      ) {
+        continue;
+      }
+      EntityRenderer.renderConnectPoint(connectPoint);
+    }
   }
 
   export function renderEdges(viewRectangle: Rectangle) {
@@ -292,6 +302,8 @@ export namespace Renderer {
     if (Stage.copyBoardData.nodes.length === 0) {
       return;
     }
+    const clipboardBlue = new Color(156, 220, 254, 0.5);
+
     // 粘贴板有内容
     // 获取粘贴板中所有节点的外接矩形
     if (Stage.copyBoardDataRectangle) {
@@ -323,7 +335,7 @@ export namespace Renderer {
           Stage.copyBoardDataRectangle.size,
         ).transformWorld2View(),
         Color.Transparent,
-        new Color(156, 220, 254, 0.5),
+        clipboardBlue,
         1,
       );
       // 写下标注
@@ -340,18 +352,28 @@ export namespace Renderer {
           ),
         ),
         12 * Camera.currentScale,
-        new Color(156, 220, 254, 0.5),
+        clipboardBlue,
       );
-      for (const node of Stage.copyBoardData.nodes) {
-        RenderUtils.renderRect(
-          new Rectangle(
-            new Vector(...node.location).add(Stage.copyBoardMouseVector),
-            new Vector(...node.size),
-          ).transformWorld2View(),
-          Color.Transparent,
-          new Color(156, 220, 254, 0.5),
-          2 * Camera.currentScale,
-        );
+      for (const entity of Stage.copyBoardData.nodes) {
+        if (entity.type === "core:connect_point") {
+          RenderUtils.renderCircle(
+            transformWorld2View(new Vector(...entity.location)),
+            10 * Camera.currentScale,
+            Color.Transparent,
+            Color.White,
+            2 * Camera.currentScale,
+          );
+        } else {
+          RenderUtils.renderRect(
+            new Rectangle(
+              new Vector(...entity.location).add(Stage.copyBoardMouseVector),
+              new Vector(...entity.size),
+            ).transformWorld2View(),
+            Color.Transparent,
+            clipboardBlue,
+            2 * Camera.currentScale,
+          );
+        }
       }
     }
   }
@@ -443,7 +465,7 @@ export namespace Renderer {
       `Stage.warningNodes: ${Stage.warningEntity.length}`,
       `Stage.warningEdges: ${Stage.warningEdges.length}`,
       `ConnectFromNodes: ${Stage.connectFromEntities}`,
-      `lastSelectedNode: ${Controller.lastSelectedEntity.size}`,
+      `lastSelectedNode: ${Controller.lastSelectedEntityUUID.size}`,
       `粘贴板: ${JSON.stringify(Stage.copyBoardData)}`,
       `历史: ${StageHistoryManager.statusText()}`,
       `fps: ${(1 / deltaTime).toFixed()}`,

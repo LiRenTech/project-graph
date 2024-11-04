@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
  */
 export namespace StageNodeConnector {
   // 连接两两节点
-  export function connectNode(
+  export function connectConnectableEntity(
     fromNode: ConnectableEntity,
     toNode: ConnectableEntity,
     text: string = "",
@@ -58,7 +58,7 @@ export namespace StageNodeConnector {
       const sourceNode = StageManager.getTextNodeByUUID(edge.source.uuid);
       const targetNode = StageManager.getTextNodeByUUID(edge.target.uuid);
       if (sourceNode && targetNode) {
-        connectNode(targetNode, sourceNode, edge.text);
+        connectConnectableEntity(targetNode, sourceNode, edge.text);
       }
     });
   }

@@ -8,7 +8,7 @@ import { StageManager } from "../StageManager";
  * 还要处理节点移动后，对Section大小造成的影响
  * 以后还可能有自动布局的功能
  */
-export namespace StageNodeTextMoveManager {
+export namespace StageEntityMoveManager {
   export function moveEntityUtils(node: Entity, delta: Vector) {
     // 让自己移动
     node.move(delta);
@@ -56,6 +56,14 @@ export namespace StageNodeTextMoveManager {
     for (const section of StageManager.getSections()) {
       if (section.isSelected) {
         moveEntityUtils(section, delta);
+      }
+    }
+  }
+  export function moveConnectPoints(delta: Vector) {
+    console.log("moveConnectPoints");
+    for (const point of StageManager.getConnectPoints()) {
+      if (point.isSelected) {
+        moveEntityUtils(point, delta);
       }
     }
   }

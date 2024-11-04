@@ -32,10 +32,12 @@ ControllerCutting.mousedown = (event: MouseEvent) => {
   );
   Controller.lastMousePressLocation[2] = pressWorldLocation.clone();
   console.log("update!");
-  const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
-  const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
-  const clickedSection = StageManager.findSectionByLocation(pressWorldLocation);
-  if (clickedNode === null && clickedEdge === null && clickedSection === null) {
+
+  const isClickedEntity = StageManager.isEntityOnLocation(pressWorldLocation);
+  const isClickedAssociation =
+    StageManager.isAssociationOnLocation(pressWorldLocation);
+
+  if (!isClickedEntity && !isClickedAssociation) {
     // 开始绘制切断线
     Stage.isCutting = true;
     cuttingStartLocation = pressWorldLocation.clone();
@@ -58,7 +60,7 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
   Stage.warningEntity = [];
   for (const entity of StageManager.getEntities()) {
     if (entity instanceof Section) {
-      continue;  // Section的碰撞箱比较特殊
+      continue; // Section的碰撞箱比较特殊
     }
     const collidePoints = entity.collisionBox
       .getRectangle()

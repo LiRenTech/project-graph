@@ -3,6 +3,7 @@ import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Settings } from "../../../Settings";
 import { StageManager } from "../StageManager";
 import { v4 as uuidv4 } from "uuid";
+import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 
 /**
  * 包含增加节点的方法
@@ -57,6 +58,16 @@ export namespace StageNodeAdder {
       return name;
     }
     return template;
+  }
+
+  export function addConnectPoint(clickWorldLocation: Vector): string {
+    const newUUID = uuidv4();
+    const connectPoint = new ConnectPoint({
+      uuid: newUUID,
+      location: [clickWorldLocation.x, clickWorldLocation.y],
+    });
+    StageManager.addConnectPoint(connectPoint);
+    return newUUID;
   }
 
   /**

@@ -29,16 +29,10 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
-  const clickedSection = StageManager.findSectionByLocation(pressWorldLocation);
-  let clickedConnectableEntity: ConnectableEntity | null = null;
 
-  if (clickedNode) {
-    clickedConnectableEntity = clickedNode;
-  }
-  if (clickedSection) {
-    clickedConnectableEntity = clickedSection;
-  }
+  let clickedConnectableEntity: ConnectableEntity | null =
+    StageManager.findConnectableEntityByLocation(pressWorldLocation);
+
 
   if (clickedConnectableEntity) {
     // 右键点击了某个节点
@@ -93,13 +87,13 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
     if (entity.collisionBox.isPointInCollisionBox(worldLocation)) {
       if (Stage.connectToEntity === null) {
         // 特效
-        // Stage.effects.push(
-        //   new RectangleNoteEffect(
-        //     new ProgressNumber(0, 30),
-        //     node.rectangle.clone(),
-        //     new Color(0, 255, 0, 1),
-        //   ),
-        // );
+        Stage.effects.push(
+          new RectangleNoteEffect(
+            new ProgressNumber(0, 30),
+            entity.collisionBox.getRectangle().clone(),
+            new Color(0, 255, 0, 1),
+          ),
+        );
       }
       Stage.connectToEntity = entity;
       isFindConnectToNode = true;

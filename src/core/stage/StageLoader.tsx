@@ -19,6 +19,7 @@ export namespace StageLoader {
     data = convertV5toV6(data);
     data = convertV6toV7(data);
     data = convertV7toV8(data);
+    data = convertV8toV9(data);
     return data as Serialized.File;
   }
 
@@ -153,6 +154,15 @@ export namespace StageLoader {
     for (const edge of data.edges) {
       edge.type = "core:edge";
     }
+    return data;
+  }
+  
+  // 增加连接点 ConnectionPoint
+  function convertV8toV9(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 9) {
+      return data;
+    }
+    data.version = 9;    
     return data;
   }
 }

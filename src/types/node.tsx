@@ -31,15 +31,20 @@ export namespace Serialized {
     isCollapsed: boolean;
   };
 
+  export type ConnectPoint = Entity & {
+    type: "core:connect_point";
+  }
+
   export type Edge = StageObject & {
     type: "core:edge";
     source: string;
     target: string;
     text: string;
   };
+
   export type File = {
-    version: 8;  // 最新版本 src\core\stage\StageDumper.tsx latestVersion
-    nodes: (Node | Section)[];
+    version: 9;  // 最新版本 src\core\stage\StageDumper.tsx latestVersion
+    nodes: (Node | Section | ConnectPoint)[];
     edges: Edge[];
   };
 }

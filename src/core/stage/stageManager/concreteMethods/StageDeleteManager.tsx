@@ -2,6 +2,7 @@ import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { ExplodeAshEffect } from "../../../effect/concrete/ExplodeDashEffect";
 import { Edge } from "../../../stageObject/association/Edge";
+import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { Section } from "../../../stageObject/entity/Section";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Entity } from "../../../stageObject/StageObject";
@@ -18,6 +19,8 @@ export namespace StageDeleteManager {
         deleteTextNode(entity);
       } else if (entity instanceof Section) {
         deleteSection(entity);
+      } else if (entity instanceof ConnectPoint) {
+        deleteConnectPoint(entity);
       }
     }
     StageManager.updateReferences();
@@ -42,6 +45,26 @@ export namespace StageDeleteManager {
     StageManager.deleteOneSection(entity);
   }
 
+  function deleteConnectPoint(entity: ConnectPoint) {
+    // 先判断这个node是否在nodes里
+    if (StageManager.getConnectPoints().includes(entity)) {
+      console.log("include connect point", entity.uuid);
+      // 从数组中去除
+      StageManager.deleteOneConnectPoint(entity);
+      Stage.effects.push(
+        new ExplodeAshEffect(
+          new ProgressNumber(0, 30),
+          entity.collisionBox.getRectangle(),
+          Color.White,
+        ),
+      );
+      // 删除所有相关的边
+      deleteEntityAfterClearEdges(entity);
+    } else {
+      console.warn("connect point not in connect points", entity.uuid);
+    }
+  }
+
   function deleteTextNode(entity: TextNode) {
     // 先判断这个node是否在nodes里
     if (StageManager.getTextNodes().includes(entity)) {
@@ -59,6 +82,11 @@ export namespace StageDeleteManager {
     } else {
       console.warn("node not in nodes", entity.uuid);
     }
+    // 删除所有相关的边
+    deleteEntityAfterClearEdges(entity);
+  }
+
+  function deleteEntityAfterClearEdges(entity: Entity) {
     // 删除所有相关的边
     const prepareDeleteEdges: Edge[] = [];
     for (const edge of StageManager.getEdges()) {

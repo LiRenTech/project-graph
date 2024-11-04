@@ -9,6 +9,7 @@ import { StageManager } from "../../stage/stageManager/StageManager";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { v4 as uuidv4 } from "uuid";
+import { Entity } from "../../stageObject/StageObject";
 
 /**
  * 关于复制相关的功能
@@ -43,30 +44,38 @@ ControllerCopy.keydown = (event: KeyboardEvent) => {
 
   if (key === "c" && Controller.pressingKeySet.has("control")) {
     // 复制
-    const nodes: TextNode[] = [];
-    for (const node of StageManager.getTextNodes()) {
-      if (node.isSelected) {
-        nodes.push(node);
+    const entities: Entity[] = [];
+    for (const entity of StageManager.getEntities()) {
+      if (entity.isSelected) {
+        entities.push(entity);
       }
     }
 
-    const serialized = StageDumper.dumpSelected(nodes);
+    const serialized = StageDumper.dumpSelected(entities);
     // 复制到剪贴板
     Stage.copyBoardData = serialized;
-    if (nodes.length === 0) {
+    if (entities.length === 0) {
       // 如果没有选中东西
       Stage.copyBoardDataRectangle = null;
     } else {
       // 复制的那一刹那，还要记录一下整个外接矩形
-      const clipboardRect = Rectangle.getBoundingRectangle(
-        Stage.copyBoardData.nodes.map(
-          (node) =>
+      const rectangles = [];
+      for (const node of Stage.copyBoardData.nodes) {
+        if (node.type === "core:connect_point") {
+          rectangles.push(
+            new Rectangle(new Vector(...node.location), new Vector(1, 1)),
+          );
+        } else {
+          rectangles.push(
             new Rectangle(
               new Vector(...node.location),
               new Vector(...node.size),
             ),
-        ),
-      );
+          );
+        }
+      }
+
+      const clipboardRect = Rectangle.getBoundingRectangle(rectangles);
       Stage.copyBoardDataRectangle = clipboardRect;
     }
   } else if (key === "v" && Controller.pressingKeySet.has("control")) {

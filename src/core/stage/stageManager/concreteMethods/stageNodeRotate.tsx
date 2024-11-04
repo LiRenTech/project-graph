@@ -4,7 +4,7 @@ import { Stage } from "../../Stage";
 import { LineEffect } from "../../../effect/concrete/LineEffect";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Color } from "../../../dataStruct/Color";
-import { StageNodeTextMoveManager } from "./StageNodeMoveManager";
+import { StageEntityMoveManager } from "./StageEntityMoveManager";
 import { ConnectableEntity } from "../../../stageObject/StageObject";
 
 /**
@@ -32,12 +32,23 @@ export namespace StageNodeRotate {
         if (Number.isNaN(degrees)) {
           degrees = 0;
         }
-        rotateNodeDfs(
-          StageManager.getConnectableEntityByUUID(edge.source.uuid)!,
-          StageManager.getConnectableEntityByUUID(edge.target.uuid)!,
-          degrees,
-          [edge.source.uuid],
+        const sourceEntity = StageManager.getConnectableEntityByUUID(
+          edge.source.uuid,
         );
+        const targetEntity = StageManager.getConnectableEntityByUUID(
+          edge.target.uuid,
+        );
+
+        if (sourceEntity && targetEntity) {
+          rotateNodeDfs(
+            StageManager.getConnectableEntityByUUID(edge.source.uuid)!,
+            StageManager.getConnectableEntityByUUID(edge.target.uuid)!,
+            degrees,
+            [edge.source.uuid],
+          );
+        } else {
+          console.error("source or target entity not found");
+        }
       }
     }
   }
@@ -61,9 +72,10 @@ export namespace StageNodeRotate {
     const centerToChildVector =
       currentNode.geometryCenter.subtract(rotateCenterLocation);
 
-    const centerToChildVectorRotated = centerToChildVector.rotateDegrees(degrees);
+    const centerToChildVectorRotated =
+      centerToChildVector.rotateDegrees(degrees);
 
-    StageNodeTextMoveManager.moveEntityUtils(
+    StageEntityMoveManager.moveEntityUtils(
       currentNode,
       centerToChildVectorRotated.subtract(centerToChildVector),
     );
@@ -72,7 +84,11 @@ export namespace StageNodeRotate {
       if (visitedUUIDs.includes(child.uuid)) {
         continue;
       }
-      const childNode = StageManager.getTextNodeByUUID(child.uuid)!;
+      const childNode = StageManager.getConnectableEntityByUUID(child.uuid);
+      if (!childNode) {
+        console.error("child node not found");
+        continue;
+      }
       Stage.effects.push(
         new LineEffect(
           new ProgressNumber(0, 5),

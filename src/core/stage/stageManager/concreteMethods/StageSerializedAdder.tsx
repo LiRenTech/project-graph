@@ -1,6 +1,7 @@
 import { Serialized } from "../../../../types/node";
 import { Vector } from "../../../dataStruct/Vector";
 import { Edge } from "../../../stageObject/association/Edge";
+import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";
 import { v4 as uuidv4 } from "uuid";
@@ -23,6 +24,10 @@ export namespace StageSerializedAdder {
         StageManager.addTextNode(newNode);
       } else if (node.type === "core:section") {
         // TODO: 处理section节点
+      } else if (node.type === "core:connect_point") {
+        const point = new ConnectPoint(node);
+        point.moveTo(point.location.add(diffLocation));
+        StageManager.addConnectPoint(point);
       }
     }
     for (const edge of updatedSerializedData.edges) {

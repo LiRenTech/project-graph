@@ -7,30 +7,39 @@ import { Stage } from "../../stage/Stage";
 import { Vector } from "../../dataStruct/Vector";
 import { ControllerClass } from "../ControllerClass";
 import { editNode } from "./utilsControl";
+import { Controller } from "../Controller";
 
 /**
  * 创建节点的控制器
  */
-export const ControllerNodeCreate = new ControllerClass();
+export const ControllerEntityCreate = new ControllerClass();
 
-ControllerNodeCreate.mouseDoubleClick = (event: MouseEvent) => {
-  if (event.button !== 0) {
+ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
+  console.log(event.button);// 双击只能在左键
+  if (!(event.button === 0 || event.button === 1)) {
     return;
   }
   const pressLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const clickedNode = StageManager.findTextNodeByLocation(pressLocation);
-  const clickedEdge = StageManager.findEdgeByLocation(pressLocation);
-  const clickedSection = StageManager.findSectionByLocation(pressLocation);
-
-  if (clickedNode !== null || clickedEdge!== null || clickedSection!== null) {
+  if (StageManager.isEntityOnLocation(pressLocation)) {
     return;
   }
+
+  if (Controller.pressingKeySet.has("`")) {
+    createConnectPoint(pressLocation);
+  } else {
+    createNode(pressLocation);
+  }
+};
+function createConnectPoint(pressLocation: Vector) {
+  console.log("create connect point");
+  StageManager.addConnectPointByClick(pressLocation);
+}
+
+function createNode(pressLocation: Vector) {
   // 新建节点
-  StageManager.addTextNodeByClick(
-    Renderer.transformView2World(new Vector(event.clientX, event.clientY)),
-  ).then((uuid) => {
+  StageManager.addTextNodeByClick(pressLocation).then((uuid) => {
     const createNode = StageManager.getTextNodeByUUID(uuid);
     if (createNode === null) {
       // 说明 创建了立刻删掉了
@@ -42,9 +51,9 @@ ControllerNodeCreate.mouseDoubleClick = (event: MouseEvent) => {
   Stage.effects.push(
     new CircleFlameEffect(
       new ProgressNumber(0, 20),
-      Renderer.transformView2World(new Vector(event.clientX, event.clientY + 20)),
+      pressLocation.clone(),
       20,
       new Color(255, 255, 0, 1),
     ),
   );
-};
+}

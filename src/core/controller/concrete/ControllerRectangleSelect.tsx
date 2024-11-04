@@ -5,6 +5,7 @@ import { Stage } from "../../stage/Stage";
 import { Vector } from "../../dataStruct/Vector";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { Section } from "../../stageObject/entity/Section";
 
 /**
  * 框选控制器
@@ -19,50 +20,41 @@ ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
-  const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
-  const clickedSection = StageManager.findSectionByLocation(pressWorldLocation);
-  if (clickedNode !== null || clickedEdge !== null || clickedSection !== null) {
-    // 在空白地方按下，才能触发框选
+
+  if (
+    StageManager.isEntityOnLocation(pressWorldLocation) ||
+    StageManager.isAssociationOnLocation(pressWorldLocation)
+  ) {
+    // 不是点击在空白处
     return;
   }
-  const isHaveNodeSelected = StageManager.getTextNodes().some(
-    (node) => node.isSelected,
-  );
+
   const isHaveEdgeSelected = StageManager.getEdges().some(
     (edge) => edge.isSelected,
   );
-  const isHaveSectionSelected = StageManager.getSections().some(
-    (section) => section.isSelected,
+  const isHaveEntitySelected = StageManager.getEntities().some(
+    (entity) => entity.isSelected,
   );
 
-  console.log(isHaveNodeSelected, isHaveEdgeSelected, isHaveSectionSelected);
+  console.log(isHaveEdgeSelected, isHaveEntitySelected);
   // 现在的情况：在空白的地方按下左键
 
-  if (isHaveNodeSelected || isHaveEdgeSelected || isHaveSectionSelected) {
+  if (isHaveEntitySelected || isHaveEdgeSelected) {
     // A
     if (
       Controller.pressingKeySet.has("shift") ||
       Controller.pressingKeySet.has("control")
     ) {
       // 不取消选择
-      console.log("A");
     } else {
-      // 取消选择所有节点
-      StageManager.getTextNodes().forEach((node) => {
-        node.isSelected = false;
+      // 取消选择所
+      StageManager.getStageObject().forEach((stageObject) => {
+        stageObject.isSelected = false;
       });
-      // 取消选择所有边
-      StageManager.getEdges().forEach((edge) => {
-        edge.isSelected = false;
-      });
-      // 取消选择所有section
-      StageManager.getSections().forEach((section) => {
-        section.isSelected = false;
-      });
-      console.log("取消选择所有节点和边");
     }
   }
+
+  // 更新框选框状态
   Stage.isSelecting = true;
   Stage.selectStartLocation = pressWorldLocation.clone();
   Stage.selectEndLocation = pressWorldLocation.clone();
@@ -71,9 +63,8 @@ ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
     Vector.getZero(),
   );
 
-  if (clickedEdge === null) {
-    // 和A一样了
-  } else {
+  const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
+  if (clickedEdge !== null) {
     // 在连线身上按下
     Stage.isSelecting = false;
   }
@@ -106,38 +97,21 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
     // 移动过程中不先暴力清除
   } else {
     // 先清空所有已经选择了的
-    StageManager.getTextNodes().forEach((node) => {
-      node.isSelected = false;
-    });
-    StageManager.getEdges().forEach((edge) => {
-      edge.isSelected = false;
-    });
-    StageManager.getSections().forEach((section) => {
-      section.isSelected = false;
+    StageManager.getStageObject().forEach((stageObject) => {
+      stageObject.isSelected = false;
     });
   }
 
   if (Controller.pressingKeySet.has("control")) {
     // 交叉选择，没的变有，有的变没
-    for (const section of StageManager.getSections()) {
+    for (const entity of StageManager.getEntities()) {
       if (
-        section.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
+        entity.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
       ) {
-        if (Controller.lastSelectedEntity.has(section.uuid)) {
-          section.isSelected = false;
+        if (Controller.lastSelectedEntityUUID.has(entity.uuid)) {
+          entity.isSelected = false;
         } else {
-          section.isSelected = true;
-        }
-      }
-    }
-    for (const node of StageManager.getTextNodes()) {
-      if (
-        node.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
-      ) {
-        if (Controller.lastSelectedEntity.has(node.uuid)) {
-          node.isSelected = false;
-        } else {
-          node.isSelected = true;
+          entity.isSelected = true;
         }
       }
     }
@@ -145,7 +119,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
       if (
         edge.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
       ) {
-        if (Controller.lastSelectedEdge.has(edge.uuid)) {
+        if (Controller.lastSelectedEdgeUUID.has(edge.uuid)) {
           edge.isSelected = false;
         } else {
           edge.isSelected = true;
@@ -153,26 +127,40 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
       }
     }
   } else {
-    let isHaveNode = false;
+    let isHaveEntity = false;
+    // 框选逻辑优先级：
+    // 框 > 其他Entity > Edge
+
+    // 1 框
     for (const section of StageManager.getSections()) {
       if (
         section.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
       ) {
         section.isSelected = true;
-        isHaveNode = true;
+        isHaveEntity = true;
       }
     }
-    if (!isHaveNode) {
-      for (const node of StageManager.getTextNodes()) {
+
+    // 2 其他Entity
+    if (!isHaveEntity) {
+      for (const otherEntities of StageManager.getEntities()) {
+        if (otherEntities instanceof Section) {
+          continue;
+        }
+
         if (
-          node.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
+          otherEntities.collisionBox.isRectangleInCollisionBox(
+            Stage.selectingRectangle,
+          )
         ) {
-          node.isSelected = true;
-          isHaveNode = true;
+          otherEntities.isSelected = true;
+          isHaveEntity = true;
         }
       }
     }
-    if (!isHaveNode) {
+
+    // 3 Edge
+    if (!isHaveEntity) {
       // 如果已经有节点被选择了，则不能再选择边了
       for (const edge of StageManager.getEdges()) {
         if (
@@ -195,17 +183,17 @@ ControllerRectangleSelect.mouseup = (event: MouseEvent) => {
   // 左键松开
   Stage.isSelecting = false;
   // 将所有选择到的增加到上次选择的节点中
-  Controller.lastSelectedEntity.clear();
-  for (const node of StageManager.getTextNodes()) {
+  Controller.lastSelectedEntityUUID.clear();
+  for (const node of StageManager.getEntities()) {
     if (node.isSelected) {
-      Controller.lastSelectedEntity.add(node.uuid);
+      Controller.lastSelectedEntityUUID.add(node.uuid);
     }
   }
-  Controller.lastSelectedEdge.clear();
-  for (const edge of StageManager.getEdges()) {
 
+  Controller.lastSelectedEdgeUUID.clear();
+  for (const edge of StageManager.getEdges()) {
     if (edge.isSelected) {
-      Controller.lastSelectedEdge.add(edge.uuid);
+      Controller.lastSelectedEdgeUUID.add(edge.uuid);
     }
   }
 };

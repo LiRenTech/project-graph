@@ -10,7 +10,7 @@ import { ControllerNodeMove } from "./concrete/ControllerNodeMove";
 import { Canvas } from "../stage/Canvas";
 import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect";
 import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
-import { ControllerNodeCreate } from "./concrete/ControllerNodeCreate";
+import { ControllerEntityCreate } from "./concrete/ControllerEntityCreate";
 import { ControllerEdgeEdit } from "./concrete/ControllerEdgeEdit";
 import { ControllerDrawing } from "./concrete/ControllerDrawing";
 import { ControllerDragFile } from "./concrete/ControllerDragFile";
@@ -94,8 +94,8 @@ export namespace Controller {
    * 上次选中的节点
    * 仅为 Ctrl交叉选择使用
    */
-  export const lastSelectedEntity: Set<string> = new Set();
-  export const lastSelectedEdge: Set<string> = new Set();
+  export const lastSelectedEntityUUID: Set<string> = new Set();
+  export const lastSelectedEdgeUUID: Set<string> = new Set();
 
   export let touchStartLocation = Vector.getZero();
   export let touchStartDistance = 0;
@@ -133,7 +133,7 @@ export namespace Controller {
     ControllerNodeMove.init();
     ControllerRectangleSelect.init();
     ControllerNodeEdit.init();
-    ControllerNodeCreate.init();
+    ControllerEntityCreate.init();
     ControllerEdgeEdit.init();
     ControllerDrawing.init();
     ControllerDragFile.init();
@@ -294,7 +294,7 @@ export namespace Controller {
     ControllerNodeMove.destroy();
     ControllerRectangleSelect.destroy();
     ControllerNodeEdit.destroy();
-    ControllerNodeCreate.destroy();
+    ControllerEntityCreate.destroy();
     ControllerEdgeEdit.destroy();
     ControllerDrawing.destroy();
     ControllerDragFile.destroy();

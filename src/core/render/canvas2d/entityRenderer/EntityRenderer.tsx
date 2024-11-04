@@ -7,6 +7,7 @@ import { Renderer } from "../renderer";
 import { RenderUtils } from "../RenderUtils";
 import { Section } from "../../../stageObject/entity/Section";
 import { CollisionBoxRenderer } from "./CollisionBoxRenderer";
+import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 
 /**
  * 处理节点相关的绘制
@@ -136,5 +137,22 @@ export namespace EntityRenderer {
     } else {
       return Color.White; // 返回白色
     }
+  }
+
+  export function renderConnectPoint(connectPoint: ConnectPoint) {
+    if (connectPoint.isSelected) {
+      // 在外面增加一个框
+      CollisionBoxRenderer.render(
+        connectPoint.collisionBox,
+        new Color(0, 255, 0, 0.5),
+      );
+    }
+    RenderUtils.renderCircle(
+      Renderer.transformWorld2View(connectPoint.location),
+      10 * Camera.currentScale,
+      Color.Transparent,
+      Color.White,
+      2 * Camera.currentScale,
+    )
   }
 }
