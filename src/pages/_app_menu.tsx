@@ -16,7 +16,7 @@ import {
   View,
   Dock,
   SquareDashedKanbanIcon,
-  SquareDashedMousePointer
+  SquareDashedMousePointer,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -255,7 +255,10 @@ export default function AppMenu({
         <Col icon={<SquareDashedKanbanIcon />} onClick={() => Camera.reset()}>
           根据全部节点重置视野
         </Col>
-        <Col icon={<SquareDashedMousePointer />} onClick={() => Camera.resetBySelected()}>
+        <Col
+          icon={<SquareDashedMousePointer />}
+          onClick={() => Camera.resetBySelected()}
+        >
           根据选中节点重置视野
         </Col>
       </Row>
