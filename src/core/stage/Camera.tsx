@@ -3,6 +3,8 @@ import { StageManager } from "./stageManager/StageManager";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Vector } from "../dataStruct/Vector";
 import { Stage } from "./Stage";
+import { Entity } from "../stageObject/StageObject";
+import { Rectangle } from "../dataStruct/shape/Rectangle";
 
 /**
  * 摄像机
@@ -136,6 +138,24 @@ export namespace Camera {
     Camera.currentScale = Math.min(
       Renderer.h / StageManager.getSize().y,
       Renderer.w / StageManager.getSize().x,
+    );
+    Camera.targetScale = Camera.currentScale;
+  }
+
+  export function resetBySelected() {
+    const selectedEntity: Entity[] = StageManager.getSelectedEntities();
+    if (selectedEntity.length === 0) {
+      reset();
+      return;
+    }
+    const viewRectangle = Rectangle.getBoundingRectangle(
+      selectedEntity.map((e) => e.collisionBox.getRectangle()),
+    );
+    const center = viewRectangle.center;
+    Camera.location = center;
+    Camera.currentScale = Math.min(
+      Renderer.h / viewRectangle.size.y,
+      Renderer.w / viewRectangle.size.x,
     );
     Camera.targetScale = Camera.currentScale;
   }

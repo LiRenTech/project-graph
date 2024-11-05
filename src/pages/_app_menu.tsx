@@ -2,21 +2,21 @@ import React, { useEffect } from "react";
 import { cn } from "../utils/cn";
 import {
   AppWindow,
-  Cuboid,
   File,
   FilePlus,
   FileText,
   Fullscreen,
-  Image,
   Info,
   MoreHorizontal,
   PartyPopper,
-  Plus,
   RefreshCcw,
   Save,
   Settings as SettingsIcon,
   TestTube2,
   View,
+  Dock,
+  SquareDashedKanbanIcon,
+  SquareDashedMousePointer
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -247,13 +247,16 @@ export default function AppMenu({
           另存为SVG
         </Col>
       </Row>
-      <Row icon={<Plus />} title="创建">
+      {/* <Row icon={<Plus />} title="创建">
         <Col icon={<Cuboid />}>节点</Col>
         <Col icon={<Image />}>图片</Col>
-      </Row>
+      </Row> */}
       <Row icon={<View />} title="视图">
-        <Col icon={<RefreshCcw />} onClick={() => Camera.reset()}>
-          重置
+        <Col icon={<SquareDashedKanbanIcon />} onClick={() => Camera.reset()}>
+          根据全部节点重置视野
+        </Col>
+        <Col icon={<SquareDashedMousePointer />} onClick={() => Camera.resetBySelected()}>
+          根据选中节点重置视野
         </Col>
       </Row>
       <Row icon={<MoreHorizontal />} title="更多">
@@ -266,34 +269,7 @@ export default function AppMenu({
         <Col icon={<Info />} onClick={() => navigate("/settings/about")}>
           关于
         </Col>
-        <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
-          测试
-        </Col>
-        <Col
-          icon={<TestTube2 />}
-          onClick={() =>
-            dialog.show({
-              title: "舞台序列化",
-              type: "info",
-              code: JSON.stringify(StageDumper.dump(), null, 2),
-            })
-          }
-        >
-          json
-        </Col>
-        <Col
-          icon={<TestTube2 />}
-          onClick={() => {
-            console.log(StageManager.getEntities());
-            console.log(StageManager.getEdges());
-            console.log(file);
-            // localStorage测试
-            // 尽量不要用这个，端口号一变就没了
-            localStorage.setItem("_test", "123");
-          }}
-        >
-          print
-        </Col>
+
         <Col
           icon={<PartyPopper />}
           onClick={() => {
@@ -316,6 +292,36 @@ export default function AppMenu({
           }
         >
           全屏
+        </Col>
+      </Row>
+      <Row icon={<Dock />} title="测试">
+        <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
+          测试页面
+        </Col>
+        <Col
+          icon={<TestTube2 />}
+          onClick={() =>
+            dialog.show({
+              title: "舞台序列化",
+              type: "info",
+              code: JSON.stringify(StageDumper.dump(), null, 2),
+            })
+          }
+        >
+          查看json
+        </Col>
+        <Col
+          icon={<TestTube2 />}
+          onClick={() => {
+            console.log(StageManager.getEntities());
+            console.log(StageManager.getEdges());
+            console.log(file);
+            // localStorage测试
+            // 尽量不要用这个，端口号一变就没了
+            localStorage.setItem("_test", "123");
+          }}
+        >
+          控制台输出
         </Col>
       </Row>
     </div>
