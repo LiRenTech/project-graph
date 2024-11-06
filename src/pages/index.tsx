@@ -93,7 +93,6 @@ export default function Home() {
       <SearchingNodePanel />
       <DetailsEditPanel />
       <HintText />
-
       <div
         style={{
           background: `rgba(31,31,31,${bgAlpha})`,

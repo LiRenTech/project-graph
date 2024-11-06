@@ -89,14 +89,29 @@ export namespace StageNodeRotate {
         console.error("child node not found");
         continue;
       }
+      const midPoint = Vector.fromTwoPointsCenter(
+        currentNode.geometryCenter,
+        childNode.geometryCenter,
+      );
+
       Stage.effects.push(
         new LineEffect(
-          new ProgressNumber(0, 5),
+          new ProgressNumber(0, 20),
           currentNode.geometryCenter,
-          childNode.geometryCenter,
+          midPoint,
           new Color(255, 255, 255, 0),
           new Color(255, 255, 255, 0.5),
-          5,
+          Math.abs(degrees),
+        ),
+      );
+      Stage.effects.push(
+        new LineEffect(
+          new ProgressNumber(0, 20),
+          midPoint,
+          childNode.geometryCenter,
+          new Color(255, 255, 255, 0.5),
+          new Color(255, 255, 255, 0),
+          Math.abs(degrees),
         ),
       );
 
