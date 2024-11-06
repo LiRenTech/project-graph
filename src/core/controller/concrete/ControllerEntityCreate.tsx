@@ -23,7 +23,10 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
   const pressLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  if (StageManager.isEntityOnLocation(pressLocation)) {
+  if (
+    StageManager.isEntityOnLocation(pressLocation) ||
+    StageManager.isAssociationOnLocation(pressLocation)
+  ) {
     return;
   }
 
