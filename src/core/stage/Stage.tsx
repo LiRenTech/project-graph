@@ -8,6 +8,9 @@ import { StageDumper } from "./StageDumper";
 import { Line } from "../dataStruct/shape/Line";
 import { Section } from "../stageObject/entity/Section";
 import { ConnectableEntity, Entity } from "../stageObject/StageObject";
+import { Controller } from "../controller/Controller";
+import { StageManager } from "./stageManager/StageManager";
+import { PointDashEffect } from "../effect/concrete/PointDashEffect";
 
 /**
  * 舞台对象
@@ -138,6 +141,26 @@ export namespace Stage {
    * 逻辑总入口
    */
   export function logicTick() {
+    if (Stage.connectFromEntities.length > 0 && Controller.lastMoveLocation) {
+      let connectTargetNode = null;
+      for (const node of StageManager.getConnectableEntity()) {
+        if (
+          node.collisionBox.isPointInCollisionBox(Controller.lastMoveLocation)
+        ) {
+          connectTargetNode = node;
+          break;
+        }
+      }
+      if (connectTargetNode === null) {
+        // 如果鼠标位置没有和任何节点相交
+        effects.push(
+          PointDashEffect.fromMouseEffect(Controller.lastMoveLocation, connectFromEntities.length * 5),
+        );
+      } else {
+        // 画一条像吸住了的线
+      }
+    }
+
     for (const effect of effects) {
       effect.tick();
     }

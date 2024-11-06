@@ -18,6 +18,7 @@ import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect
 import { CircleChangeRadiusEffect } from "../../effect/concrete/CircleChangeRadiusEffect";
 import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEffect";
 import { RateFunctions } from "../../algorithm/rateFunctions";
+import { PointDashEffect } from "../../effect/concrete/PointDashEffect";
 
 /**
  * 专门编写所有的特效渲染
@@ -261,6 +262,21 @@ export namespace EffectRenderer {
       );
 
       RenderUtils.renderPixel(viewLocation, color);
+    }
+  }
+  export function renderPointDashEffect(effect: PointDashEffect) {
+    if (effect.timeProgress.isFull) {
+      return;
+    }
+    for (const p of effect.particleList) {
+      const viewLocation = Renderer.transformWorld2View(p.location);
+      // const color = mixColors(
+      //   p.color,
+      //   p.color.toTransparent(),
+      //   effect.timeProgress.rate,
+      // );
+
+      RenderUtils.renderPixel(viewLocation, p.color);
     }
   }
 }
