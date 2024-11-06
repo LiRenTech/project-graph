@@ -3,6 +3,7 @@ import { Color } from "../../dataStruct/Color";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
 import { CubicBezierCurve, SymmetryCurve } from "../../dataStruct/shape/Curve";
+import { Camera } from "../../stage/Camera";
 
 /**
  * 一些基础的渲染图形
@@ -413,7 +414,7 @@ export namespace RenderUtils {
    */
   export function renderPixel(location: Vector, color: Color) {
     Canvas.ctx.fillStyle = color.toString();
-    Canvas.ctx.fillRect(location.x, location.y, 1, 1);
+    Canvas.ctx.fillRect(location.x, location.y, 1 * Camera.currentScale, 1 * Camera.currentScale);
   }
 
   /**
