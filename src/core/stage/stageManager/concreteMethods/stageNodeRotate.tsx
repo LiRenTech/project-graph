@@ -84,6 +84,7 @@ export namespace StageNodeRotate {
       if (visitedUUIDs.includes(child.uuid)) {
         continue;
       }
+      visitedUUIDs.push(child.uuid);
       const childNode = StageManager.getConnectableEntityByUUID(child.uuid);
       if (!childNode) {
         console.error("child node not found");
@@ -121,7 +122,8 @@ export namespace StageNodeRotate {
         // child,
         childNode,
         degrees,
-        visitedUUIDs.concat(currentNode.uuid),
+        // visitedUUIDs.concat(currentNode.uuid),
+        visitedUUIDs,
       );
     }
   }
