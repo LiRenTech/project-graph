@@ -60,6 +60,10 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
       });
     }
     clickedNode.isSelected = true;
+    // 同时清空所有边的选中状态
+    StageManager.getAssociations().forEach((edge) => {
+      edge.isSelected = false;
+    });
   }
 };
 
