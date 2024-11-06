@@ -13,6 +13,8 @@ import { ControllerClass } from "../ControllerClass";
  */
 export const ControllerCamera = new ControllerClass();
 
+let isPressingCtrl = false;
+
 /**
  * 处理键盘按下事件
  * @param event - 键盘事件
@@ -23,6 +25,12 @@ ControllerCamera.keydown = (event: KeyboardEvent) => {
   }
   const key = event.key.toLowerCase();
   if (Controller.keyMap[key]) {
+
+    if (Controller.pressingKeySet.has("control")) {
+      // ctrl按下时，可能在按 ctrl+s 保存，防止出现冲突
+      isPressingCtrl = true;
+      return;
+    }
     
     // 当按下某一个方向的时候,相当于朝着某个方向赋予一次加速度
     Camera.accelerateCommander = Camera.accelerateCommander
@@ -48,7 +56,22 @@ ControllerCamera.keyup = (event: KeyboardEvent) => {
     return;
   }
   const key = event.key.toLowerCase();
+  
+  // 解决ctrl+s 冲突
+  if (key === "control") {
+    setTimeout(() => {
+      isPressingCtrl = false;
+    }, 500);
+  }
+  // ------
+
   if (Controller.keyMap[key]) {
+
+    if (isPressingCtrl) {
+      // ctrl按下时，可能在按 ctrl+s 保存，防止出现冲突
+      return;
+    }
+
     // 当松开某一个方向的时候,相当于停止加速度
     Camera.accelerateCommander = Camera.accelerateCommander
       .subtract(Controller.keyMap[key])
