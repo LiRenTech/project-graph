@@ -16,6 +16,8 @@ import { reverseAnimate } from "../../effect/animateFunctions";
 import { ExplodeAshEffect } from "../../effect/concrete/ExplodeDashEffect";
 import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
 import { CircleChangeRadiusEffect } from "../../effect/concrete/CircleChangeRadiusEffect";
+import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEffect";
+import { RateFunctions } from "../../algorithm/rateFunctions";
 
 /**
  * 专门编写所有的特效渲染
@@ -39,7 +41,9 @@ export namespace EffectRenderer {
     );
   }
 
-  export function renderCircleChangeRadiusEffect(effect: CircleChangeRadiusEffect) {
+  export function renderCircleChangeRadiusEffect(
+    effect: CircleChangeRadiusEffect,
+  ) {
     if (effect.timeProgress.isFull) {
       return;
     }
@@ -207,6 +211,53 @@ export namespace EffectRenderer {
         Color.White,
         Color.White.toTransparent(),
         effect.timeProgress.rate,
+      );
+
+      RenderUtils.renderPixel(viewLocation, color);
+    }
+  }
+  export function renderEntityCreateDashEffect(effect: EntityCreateDashEffect) {
+    if (effect.timeProgress.isFull) {
+      return;
+    }
+    for (const p of effect.currentLocationArrayTop) {
+      const viewLocation = Renderer.transformWorld2View(p);
+      const color = mixColors(
+        Color.White.toTransparent(),
+        Color.White,
+        RateFunctions.doorFunction(effect.timeProgress.rate),
+      );
+
+      RenderUtils.renderPixel(viewLocation, color);
+    }
+    for (const p of effect.currentLocationArrayBottom) {
+      const viewLocation = Renderer.transformWorld2View(p);
+      const color = mixColors(
+        Color.White.toTransparent(),
+        Color.White,
+        RateFunctions.doorFunction(effect.timeProgress.rate),
+      );
+
+      RenderUtils.renderPixel(viewLocation, color);
+    }
+
+    for (const p of effect.currentLocationArrayLeft) {
+      const viewLocation = Renderer.transformWorld2View(p);
+      const color = mixColors(
+        Color.White.toTransparent(),
+        Color.White,
+        RateFunctions.doorFunction(effect.timeProgress.rate),
+      );
+
+      RenderUtils.renderPixel(viewLocation, color);
+    }
+
+    for (const p of effect.currentLocationArrayRight) {
+      const viewLocation = Renderer.transformWorld2View(p);
+      const color = mixColors(
+        Color.White.toTransparent(),
+        Color.White,
+        RateFunctions.doorFunction(effect.timeProgress.rate),
       );
 
       RenderUtils.renderPixel(viewLocation, color);

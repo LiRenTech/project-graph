@@ -26,6 +26,7 @@ import { WorldRenderUtils } from "./WorldRenderUtils";
 import { getTextSize } from "../../../utils/font";
 import { Random } from "../../algorithm/random";
 import { CircleChangeRadiusEffect } from "../../effect/concrete/CircleChangeRadiusEffect";
+import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEffect";
 
 /**
  * 渲染器
@@ -412,6 +413,8 @@ export namespace Renderer {
         EffectRenderer.renderNodeMoveShadowEffect(effect);
       } else if (effect instanceof CircleChangeRadiusEffect) {
         EffectRenderer.renderCircleChangeRadiusEffect(effect);
+      } else if (effect instanceof EntityCreateDashEffect) {
+        EffectRenderer.renderEntityCreateDashEffect(effect);
       }
     }
   }

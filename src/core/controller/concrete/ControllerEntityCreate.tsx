@@ -8,6 +8,7 @@ import { Vector } from "../../dataStruct/Vector";
 import { ControllerClass } from "../ControllerClass";
 import { editNode } from "./utilsControl";
 import { Controller } from "../Controller";
+import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEffect";
 
 /**
  * 创建节点的控制器
@@ -15,7 +16,7 @@ import { Controller } from "../Controller";
 export const ControllerEntityCreate = new ControllerClass();
 
 ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
-  console.log(event.button);// 双击只能在左键
+  console.log(event.button); // 双击只能在左键
   if (!(event.button === 0 || event.button === 1)) {
     return;
   }
@@ -45,6 +46,11 @@ function createNode(pressLocation: Vector) {
       // 说明 创建了立刻删掉了
       return;
     }
+    Stage.effects.push(
+      EntityCreateDashEffect.fromRectangle(
+        createNode.collisionBox.getRectangle(),
+      ),
+    );
     editNode(createNode);
   });
   // 更改节点 editNode(clickedNode);
