@@ -2,7 +2,6 @@ import { Random } from "../../algorithm/random";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
-import { easeOutCubic } from "../easings";
 import { Effect } from "../effect";
 
 /**
@@ -59,7 +58,7 @@ export class EntityCreateDashEffect extends Effect {
         ).add(new Vector(Random.poissonRandom(lambda) * rate, 0)),
       );
 
-      this.speedArray.push(Random.randomFloat(1, 15));
+      this.speedArray.push(Random.randomFloat(1, 5));
     }
 
     this.currentLocationArrayTop = this.initLocationArrayTop.map((v) =>
@@ -75,20 +74,23 @@ export class EntityCreateDashEffect extends Effect {
       v.clone(),
     );
   }
+  private getShakeRandom() {
+    return Random.randomFloat(-1, 1) * 3;
+  }
 
   override tick() {
     super.tick();
     // 更新每个边上的当前粉尘位置
     for (let i = 0; i < EntityCreateDashEffect.DASH_NUMBER_PRE_EDGE; i++) {
       this.currentLocationArrayTop[i] = new Vector(
-        this.initLocationArrayTop[i].x,
+        this.currentLocationArrayTop[i].x + this.getShakeRandom(),
         Math.min(
           this.currentLocationArrayTop[i].y + this.speedArray[i],
           this.rectangle.top,
         ),
       );
       this.currentLocationArrayBottom[i] = new Vector(
-        this.initLocationArrayBottom[i].x,
+        this.currentLocationArrayBottom[i].x + this.getShakeRandom(),
         Math.max(
           this.currentLocationArrayBottom[i].y - this.speedArray[i],
           this.rectangle.bottom,
@@ -99,14 +101,14 @@ export class EntityCreateDashEffect extends Effect {
           this.currentLocationArrayLeft[i].x + this.speedArray[i],
           this.rectangle.left,
         ),
-        this.initLocationArrayLeft[i].y,
+        this.currentLocationArrayLeft[i].y + this.getShakeRandom(),
       );
       this.currentLocationArrayRight[i] = new Vector(
         Math.max(
           this.currentLocationArrayRight[i].x - this.speedArray[i],
           this.rectangle.right,
         ),
-        this.initLocationArrayRight[i].y,
+        this.currentLocationArrayRight[i].y + this.getShakeRandom(),
       );
     }
   }
@@ -116,9 +118,5 @@ export class EntityCreateDashEffect extends Effect {
     time = 30,
   ): EntityCreateDashEffect {
     return new EntityCreateDashEffect(new ProgressNumber(0, time), rectangle);
-  }
-
-  private rateNumber(a: number, b: number, rate: number): number {
-    return a + (b - a) * rate;
   }
 }
