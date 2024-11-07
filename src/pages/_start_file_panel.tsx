@@ -9,6 +9,9 @@ import { useRecoilState } from "recoil";
 import { fileAtom } from "../state";
 import { RecentFileManager } from "../core/RecentFileManager";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
+import { PathString } from "../utils/pathString";
+import Switch from "../components/ui/Switch";
+import { cn } from "../utils/cn";
 
 export default function StartFilePanel() {
   const dialog = useDialog();
@@ -18,6 +21,8 @@ export default function StartFilePanel() {
 
   const [currentStartFile, setCurrentStartFile] = React.useState<string>("");
   const [currentFile, setFile] = useRecoilState(fileAtom);
+  const [isShowAbsolutePath, setIsShowAbsolutePath] = React.useState(false);
+  const [isShowTime, setIsShowTime] = React.useState(false);
 
   useEffect(() => {
     updateStartFiles();
@@ -134,8 +139,8 @@ export default function StartFilePanel() {
           });
         }
       }
-    }
-  }
+    };
+  };
   const checkoutFile = (path: string) => {
     try {
       setFile(decodeURIComponent(path));
@@ -184,36 +189,55 @@ export default function StartFilePanel() {
       <table className="min-w-full overflow-hidden rounded-lg border border-gray-600 bg-gray-700 shadow-lg">
         <thead>
           <tr className="bg-gray-800 text-white">
-            <th className="px-4 py-2 text-left">状态</th>
-            <th className="px-4 py-2 text-left">路径</th>
-            <th className="px-4 py-2 text-left">时间</th>
-            <th className="px-4 py-2 text-left">操作</th>
+            <th className="mx-4 py-2 text-left">状态</th>
+            <th className="mx-4 py-2 text-left">路径</th>
+            {isShowTime && <th className="mx-4 py-2 text-left">时间</th>}
+            <th className="mx-4 py-2 text-left">操作</th>
           </tr>
         </thead>
         <tbody>
           {startFiles.map((file) => (
-            <tr key={file.path}>
-              <td className="border-b border-gray-600 p-2 text-gray-200">
-                <div className="animate-bounce inline-block">{currentStartFile === file.path ? "📌" : ""}</div>
+            <tr
+              key={file.path}
+              className={cn(
+                "border-b border-gray-600 p-2 text-gray-200",
+                currentFile === file.path ? "bg-gray-600" : "bg-transparent",
+              )}
+            >
+              <td className="w-10 text-center">
+                <div className="inline-block animate-bounce">
+                  {currentStartFile === file.path ? "📌" : ""}
+                </div>
               </td>
-              <td className="border-b border-gray-600 p-2 text-gray-200 ">
-                {file.path}
+              <td>
+                <td>
+                  <div className="flex flex-col">
+                    <span>{PathString.absolute2file(file.path)}</span>
+                    {isShowAbsolutePath && (
+                      <span className="text-xs text-gray-500">{file.path}</span>
+                    )}
+                  </div>
+                </td>
               </td>
-              <td className="border-b border-gray-600 p-2 text-gray-200">
-                {new Date(file.time).toLocaleString("zh-CN", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  weekday: "long",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                  hour12: false,
-                })}
-              </td>
-              <td className="border-b border-gray-600 p-2 text-gray-200">
-                <Button onClick={onLoadCurrentStartFile(file.path)}>加载</Button>
-                <Button onClick={onSetCurrentStartFile(file.path)}>选择</Button>
+              {isShowTime && (
+                <td>
+                  {new Date(file.time).toLocaleString("zh-CN", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    weekday: "long",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: false,
+                  })}
+                </td>
+              )}
+              <td>
+                <Button onClick={onLoadCurrentStartFile(file.path)}>
+                  加载
+                </Button>
+                <Button onClick={onSetCurrentStartFile(file.path)}>钉选</Button>
                 <Button onClick={onRemoveFile(file.path)}>移除</Button>
               </td>
             </tr>
@@ -221,10 +245,25 @@ export default function StartFilePanel() {
         </tbody>
       </table>
       <div className="mt-3 text-sm text-gray-500">
-        <p>说明：启动时自动加载的工程文件会在打开时自动加载到舞台，无需手动打开。</p>
-        <p>选择：切换当前的启动文件，左侧状态中的图标代表当前的启动文件。</p>
+        <p>
+          说明：启动时自动加载的工程文件会在打开时自动加载到舞台，无需手动打开。
+        </p>
+        <p>钉选：切换当前的启动文件，左侧状态中的图标代表当前的启动文件。</p>
         <p>移除：仅从列表中移除文件，不会影响文件本身。</p>
         <p>加载：仅将这个文件加载到舞台</p>
+      </div>
+      <div>
+        <div className="flex flex-nowrap items-center justify-center">
+          <span className="mr-2">显示绝对路径</span>
+          <Switch
+            value={isShowAbsolutePath}
+            onChange={(v) => setIsShowAbsolutePath(v)}
+          />
+        </div>
+        <div className="flex flex-nowrap items-center justify-center">
+          <span className="mr-2">显示时间</span>
+          <Switch value={isShowTime} onChange={(v) => setIsShowTime(v)} />
+        </div>
       </div>
     </div>
   );
