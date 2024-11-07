@@ -118,6 +118,10 @@ ControllerCamera.mousemove = (event: MouseEvent) => {
     moveCameraByMouseMove(event.clientX, event.clientY, 1);
     Controller.setCursorName("grabbing");
   }
+  if (Controller.isMouseDown[4]) {
+    moveCameraByMouseMove(event.clientX, event.clientY, 4);
+    Controller.setCursorName("grabbing");
+  }
 };
 
 
@@ -131,6 +135,9 @@ ControllerCamera.mouseup = (event: MouseEvent) => {
   }
   if (event.button === 1) {
     // 中键松开
+    Controller.setCursorName("default");
+  }
+  if (event.button === 4) {
     Controller.setCursorName("default");
   }
 };
