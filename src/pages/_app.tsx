@@ -46,7 +46,7 @@ export default function App() {
           setMaxmized(isMaximized);
         });
     });
-    window.addEventListener("keyup", (event) => {
+    window.addEventListener("keyup", async (event) => {
       if (event.key === "F5") {
         window.location.reload();
       }
@@ -55,6 +55,10 @@ export default function App() {
         setIsStartFilePanelOpen(false);
       }
       if (event.key === "F11") {
+        // 如果当前已经是最大化的状态
+        if (await getCurrentWindow().isMaximized()) {
+          setMaxmized(false);
+        } 
         getCurrentWindow()
           .isFullscreen()
           .then((isFullscreen) => {
