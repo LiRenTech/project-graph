@@ -12,7 +12,6 @@ import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { PathString } from "../utils/pathString";
 import Switch from "../components/ui/Switch";
 import { cn } from "../utils/cn";
-import IconButton from "../components/ui/IconButton";
 
 export default function StartFilePanel() {
   const dialog = useDialog();
