@@ -39,6 +39,8 @@ import { invoke } from "@tauri-apps/api/core";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
+import { useRecoilState } from "recoil";
+import { fileAtom } from "../state";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -219,7 +221,7 @@ function AlignNodePanel() {
  */
 export default function Toolbar({ className = "" }: { className?: string }) {
   const popupDialog = usePopupDialog();
-
+  const [file] = useRecoilState(fileAtom);
   const [isCopyClearShow, setIsCopyClearShow] = useState(false);
 
   useEffect(() => {
@@ -308,7 +310,17 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             if (StageSaveManager.isSaved()) {
               openBrowserOrFile();
             } else {
-              Stage.effects.push(new TextRiseEffect("请先保存文件"));
+              // Stage.effects.push(new TextRiseEffect("请先保存文件"));
+              StageSaveManager.saveHandle(
+                file,
+                StageDumper.dump(),
+                () => {
+                  openBrowserOrFile();
+                },
+                (err) => {
+                  Stage.effects.push(new TextRiseEffect("保存失败" + err));
+                },
+              );
             }
           }}
         />
@@ -410,19 +422,24 @@ const onSaveSelectedNew = async () => {
 async function openBrowserOrFile() {
   for (const node of StageManager.getTextNodes()) {
     if (node.isSelected) {
-      if (isValidURL(node.text)) {
+      let nodeText = node.text;
+      if (node.text.startsWith('"') && node.text.endsWith('"')) {
+        // 去除前后的引号
+        nodeText = nodeText.slice(1, -1);
+      }
+      if (isValidURL(nodeText)) {
         // 是网址
-        myOpen(node.text);
+        myOpen(nodeText);
       } else {
         const isExists = await invoke<string>("check_json_exist", {
-          path: node.text,
+          path: nodeText,
         });
         if (isExists) {
           // 是文件
-          myOpen(node.text);
+          myOpen(nodeText);
         } else {
           // 不是网址也不是文件，不做处理
-          Stage.effects.push(new TextRiseEffect("非法路径: " + node.text));
+          Stage.effects.push(new TextRiseEffect("非法路径: " + nodeText));
         }
       }
     }

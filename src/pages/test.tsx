@@ -7,6 +7,7 @@ import React from "react";
 import { usePopupDialog } from "../utils/popupDialog";
 import { useTranslation } from "react-i18next";
 import { XML } from "../utils/xml";
+import { StageDumper } from "../core/stage/StageDumper";
 
 export default function TestPage() {
   const [switchValue, setSwitchValue] = React.useState(false);
@@ -36,6 +37,11 @@ export default function TestPage() {
         .up()
         .add("body")
         .toString()}
+      <br />
+      <div className="h-64 overflow-auto p-2">
+        <h2>序列化信息</h2>
+        <pre className="text-xs">{JSON.stringify(StageDumper.dump(), null, 2)}</pre>
+      </div>
     </div>
   );
 }
