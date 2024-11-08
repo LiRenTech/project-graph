@@ -17,6 +17,8 @@ import {
   Dock,
   SquareDashedKanbanIcon,
   SquareDashedMousePointer,
+  FileCode,
+  FileType,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -35,6 +37,7 @@ import { RecentFileManager } from "../core/RecentFileManager";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
+import { TextNode } from "../core/stageObject/entity/TextNode";
 
 export default function AppMenu({
   className = "",
@@ -186,6 +189,65 @@ export default function AppMenu({
     );
   };
 
+  const onSaveMarkdownNew = async () => {
+    const selectedNodes = StageManager.getSelectedEntities().filter(
+      (entity) => entity instanceof TextNode,
+    );
+    if (selectedNodes.length === 0) {
+      dialog.show({
+        title: "没有选中节点",
+        content:
+          "请先选中一个根节点再使用此功能，并且根节点所形成的结构必须为树状结构",
+        type: "error",
+      });
+      return;
+    } else if (selectedNodes.length > 1) {
+      dialog.show({
+        title: "选中节点数量过多",
+        content: "只能选中一个根节点，并且根节点所形成的结构必须为树状结构",
+        type: "error",
+      });
+      return;
+    }
+    if (!StageManager.isTree(selectedNodes[0])) {
+      dialog.show({
+        title: "结构错误",
+        content: "根节点所形成的结构必须为树状结构",
+        type: "error",
+      });
+      return;
+    }
+
+    const path = await saveFileDialog({
+      title: "另存为",
+      defaultPath: "新文件.md", // 提供一个默认的文件名
+      filters: [
+        {
+          name: "Project Graph",
+          extensions: ["svg"],
+        },
+      ],
+    });
+
+    if (!path) {
+      return;
+    }
+    StageSaveManager.saveMarkdownHandle(
+      path,
+      selectedNodes[0],
+      () => {
+        console.log("保存成功");
+      },
+      (err) => {
+        dialog.show({
+          title: "保存失败",
+          content: String(err),
+          type: "error",
+        });
+      },
+    );
+  };
+
   useEffect(() => {
     RecentFileManager.startHookFunction = (autoOpenPath: string) => {
       if (RecentFileManager.isOpenByPathWhenAppStart()) {
@@ -243,14 +305,19 @@ export default function AppMenu({
         <Col icon={<Save />} onClick={onSaveNew}>
           另存为
         </Col>
-        <Col icon={<Save />} onClick={onSaveSVGNew}>
-          另存为SVG
-        </Col>
       </Row>
       {/* <Row icon={<Plus />} title="创建">
         <Col icon={<Cuboid />}>节点</Col>
         <Col icon={<Image />}>图片</Col>
       </Row> */}
+      <Row icon={<File />} title="导出">
+        <Col icon={<FileCode />} onClick={onSaveSVGNew}>
+          全部舞台导出SVG
+        </Col>
+        <Col icon={<FileType />} onClick={onSaveMarkdownNew}>
+          选中的根节点导出markdown
+        </Col>
+      </Row>
       <Row icon={<View />} title="视图">
         <Col icon={<SquareDashedKanbanIcon />} onClick={() => Camera.reset()}>
           根据全部节点重置视野

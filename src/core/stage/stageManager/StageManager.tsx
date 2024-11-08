@@ -192,7 +192,6 @@ export namespace StageManager {
         entity.children = newChildList;
         entity.adjustLocationAndSize();
       }
-      
     }
     // 以下是Edge双向线偏移状态的更新
     for (const edge of getEdges()) {
@@ -364,6 +363,26 @@ export namespace StageManager {
       }
     }
     return false;
+  }
+  // region 以下为算法相关的函数
+  export function isTree(node: ConnectableEntity): boolean {
+    const dfs = (
+      node: ConnectableEntity,
+      visited: ConnectableEntity[],
+    ): boolean => {
+      if (visited.includes(node)) {
+        return false;
+      }
+      visited.push(node);
+      for (const child of nodeChildrenArray(node)) {
+        if (!dfs(child, visited)) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    return dfs(node, []);
   }
 
   // region 以下为舞台操作相关的函数
