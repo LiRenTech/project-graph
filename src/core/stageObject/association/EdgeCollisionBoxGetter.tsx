@@ -1,5 +1,6 @@
 import { Circle } from "../../dataStruct/shape/Circle";
 import { SymmetryCurve } from "../../dataStruct/shape/Curve";
+import { Line } from "../../dataStruct/shape/Line";
 import { Settings } from "../../Settings";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { Edge } from "./Edge";
@@ -35,7 +36,7 @@ export namespace EdgeCollisionBoxGetter {
       if (currentStyle === "bezier") {
         return getBezierCollisionBox(edge);
       } else if (currentStyle === "straight") {
-        return new CollisionBox([edge.bodyLine]);
+        return getStraightCollisionBox(edge);
       } else if (currentStyle === "vertical") {
         return new CollisionBox([edge.bodyLine]);
       } else {
@@ -45,17 +46,42 @@ export namespace EdgeCollisionBoxGetter {
   }
 
   function getBezierCollisionBox(edge: Edge): CollisionBox {
-    const start = edge.bodyLine.start;
-    const end = edge.bodyLine.end;
-    const endNormal = edge.target.collisionBox.getRectangle().getNormalVectorAt(end);
-    return new CollisionBox([
-      new SymmetryCurve(
-        start,
-        edge.source.collisionBox.getRectangle().getNormalVectorAt(start),
-        end.add(endNormal.multiply(15 / 2)),
-        endNormal,
-        Math.abs(end.subtract(start).magnitude()) / 2,
-      ),
-    ]);
+    if (edge.isShifting) {
+      // 简单做做。
+      return getStraightCollisionBox(edge);
+    } else {
+      const start = edge.bodyLine.start;
+      const end = edge.bodyLine.end;
+      const endNormal = edge.target.collisionBox
+        .getRectangle()
+        .getNormalVectorAt(end);
+      return new CollisionBox([
+        new SymmetryCurve(
+          start,
+          edge.source.collisionBox.getRectangle().getNormalVectorAt(start),
+          end.add(endNormal.multiply(15 / 2)),
+          endNormal,
+          Math.abs(end.subtract(start).magnitude()) / 2,
+        ),
+      ]);
+    }
+  }
+
+  function getStraightCollisionBox(edge: Edge): CollisionBox {
+    if (edge.isShifting) {
+      const shiftingMidPoint = edge.shiftingMidPoint;
+      // 从source.Center到shiftingMidPoint的线
+      const startLine = new Line(
+        edge.source.collisionBox.getRectangle().center,
+        shiftingMidPoint,
+      );
+      const endLine = new Line(
+        shiftingMidPoint,
+        edge.target.collisionBox.getRectangle().center,
+      );
+      return new CollisionBox([startLine, endLine]);
+    } else {
+      return new CollisionBox([edge.bodyLine]);
+    }
   }
 }

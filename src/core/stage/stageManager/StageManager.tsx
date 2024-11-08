@@ -162,7 +162,7 @@ export namespace StageManager {
    * 节点什么情况下会是unknown的？
    *
    * 包含了对Section框的更新
-   *
+   * 包含了对Edge双向线偏移状态的更新
    */
   export function updateReferences() {
     for (const entity of getEntities()) {
@@ -177,6 +177,7 @@ export namespace StageManager {
         }
       }
 
+      // 以下是Section框的更新
       if (entity instanceof Section) {
         const newChildList = [];
 
@@ -191,6 +192,21 @@ export namespace StageManager {
         entity.children = newChildList;
         entity.adjustLocationAndSize();
       }
+      
+    }
+    // 以下是Edge双向线偏移状态的更新
+    for (const edge of getEdges()) {
+      let isShifting = false;
+      for (const otherEdge of getEdges()) {
+        if (
+          edge.source === otherEdge.target &&
+          edge.target === otherEdge.source
+        ) {
+          isShifting = true;
+          break;
+        }
+      }
+      edge.isShifting = isShifting;
     }
   }
 

@@ -68,8 +68,11 @@ export namespace EdgeRenderer {
     if (edge.source.uuid == edge.target.uuid) {
       currentRenderer.renderCycleState(edge);
     } else {
-      currentRenderer.renderNormalState(edge);
-      // 将来还可能会有双向线的偏移状态
+      if (edge.isShifting) {
+        currentRenderer.renderShiftingState(edge);
+      } else {
+        currentRenderer.renderNormalState(edge);
+      }
     }
 
     // 选中的高亮效果

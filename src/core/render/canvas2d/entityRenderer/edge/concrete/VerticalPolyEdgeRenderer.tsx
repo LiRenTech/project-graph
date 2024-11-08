@@ -45,7 +45,10 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     ];
   }
 
-  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): Effect[] {
+  getConnectedEffects(
+    startNode: ConnectableEntity,
+    toNode: ConnectableEntity,
+  ): Effect[] {
     return [
       new CircleFlameEffect(
         new ProgressNumber(0, 15),
@@ -307,6 +310,80 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
       }
     }
   }
+  public renderShiftingState(edge: Edge): void {
+    const shiftingMidPoint = edge.shiftingMidPoint;
+    // 从source.Center到shiftingMidPoint的线
+    const startLine = new Line(
+      edge.source.collisionBox.getRectangle().center,
+      shiftingMidPoint,
+    );
+    const endLine = new Line(
+      shiftingMidPoint,
+      edge.target.collisionBox.getRectangle().center,
+    );
+    const startPoint = edge.source.collisionBox
+      .getRectangle()
+      .getLineIntersectionPoint(startLine);
+    const endPoint = edge.target.collisionBox
+      .getRectangle()
+      .getLineIntersectionPoint(endLine);
+
+    if (edge.text.trim() === "") {
+      // 没有文字的边
+      RenderUtils.renderSolidLine(
+        Renderer.transformWorld2View(startPoint),
+        Renderer.transformWorld2View(shiftingMidPoint),
+        new Color(204, 204, 204),
+        2 * Camera.currentScale,
+      );
+      RenderUtils.renderSolidLine(
+        Renderer.transformWorld2View(shiftingMidPoint),
+        Renderer.transformWorld2View(endPoint),
+        new Color(204, 204, 204),
+        2 * Camera.currentScale,
+      );
+    } else {
+      // 有文字的边
+      RenderUtils.renderTextFromCenter(
+        edge.text,
+        Renderer.transformWorld2View(shiftingMidPoint),
+        Renderer.FONT_SIZE * Camera.currentScale,
+      );
+      const edgeTextRectangle = edge.textRectangle;
+      const start2MidPoint =
+        edgeTextRectangle.getLineIntersectionPoint(startLine);
+      const mid2EndPoint = edgeTextRectangle.getLineIntersectionPoint(endLine);
+      RenderUtils.renderSolidLine(
+        Renderer.transformWorld2View(startPoint),
+        Renderer.transformWorld2View(start2MidPoint),
+        new Color(204, 204, 204),
+        2 * Camera.currentScale,
+      );
+      RenderUtils.renderSolidLine(
+        Renderer.transformWorld2View(mid2EndPoint),
+        Renderer.transformWorld2View(endPoint),
+        new Color(204, 204, 204),
+        2 * Camera.currentScale,
+      );
+    }
+    this.renderArrowHead(
+      edge,
+      edge.target.collisionBox
+        .getRectangle()
+        .getCenter()
+        .subtract(shiftingMidPoint)
+        .normalize(),
+      endPoint,
+    );
+  }
+  private renderArrowHead(
+    edge: Edge,
+    direction: Vector,
+    endPoint = edge.bodyLine.end.clone(),
+  ) {
+    const size = 15;
+    EdgeRenderer.renderArrowHead(endPoint, direction, size);
+  }
 
   public renderCycleState(edge: Edge): void {
     // 自环
@@ -330,7 +407,10 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     }
   }
 
-  public renderVirtualEdge(startNode: ConnectableEntity, mouseLocation: Vector): void {
+  public renderVirtualEdge(
+    startNode: ConnectableEntity,
+    mouseLocation: Vector,
+  ): void {
     RenderUtils.renderGradientLine(
       Renderer.transformWorld2View(
         startNode.collisionBox.getRectangle().getCenter(),

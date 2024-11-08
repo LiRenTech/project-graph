@@ -39,6 +39,8 @@ export abstract class EdgeRendererClass {
    */
   public abstract renderNormalState(edge: Edge): void;
 
+  public abstract renderShiftingState(edge: Edge): void;
+
   /**
    * 绘制自环状态
    */
