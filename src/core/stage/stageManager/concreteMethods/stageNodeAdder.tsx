@@ -37,7 +37,7 @@ export namespace StageNodeAdder {
   }
 
   async function getAutoName(): Promise<string> {
-    const template = await Settings.get("autoNamerTemplate");
+    let template = await Settings.get("autoNamerTemplate");
     if (template.includes("{{i}}")) {
       let i = 0;
       while (true) {
@@ -54,8 +54,21 @@ export namespace StageNodeAdder {
           break;
         }
       }
-      const name = template.replace("{{i}}", i.toString());
-      return name;
+      template = template.replaceAll("{{i}}", i.toString());
+    }
+    if (template.includes("{{date}}")) {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      template = template.replaceAll("{{date}}", `${year}-${month}-${date}`);
+    }
+    if (template.includes("{{time}}")) {
+      const now = new Date();
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+      const second = now.getSeconds();
+      template = template.replaceAll("{{time}}", `${hour}:${minute}:${second}`);
     }
     return template;
   }
