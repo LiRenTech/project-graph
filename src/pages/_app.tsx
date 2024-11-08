@@ -273,8 +273,13 @@ export default function App() {
                 isSaved ? "" : "text-yellow-500",
               )}
             ></Button>
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              {filename}
+            <span
+              className={cn(
+                isSaved ? "" : "text-yellow-500",
+                "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+              )}
+            >
+              {filename + (isSaved ? "" : "😨未保存")}
             </span>
           </>
         )}
