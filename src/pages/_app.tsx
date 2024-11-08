@@ -27,6 +27,7 @@ import { useDialog } from "../utils/dialog";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { StageDumper } from "../core/stage/StageDumper";
 import StartFilePanel from "./_start_file_panel";
+import { PathString } from "../utils/pathString";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -35,6 +36,7 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [file] = useRecoilState(fileAtom);
+  const filename = React.useMemo(() => PathString.absolute2file(file), [file]);
   const dialog = useDialog();
   const [useNativeTitleBar, setUseNativeTitleBar] = React.useState(false);
 
@@ -58,7 +60,7 @@ export default function App() {
         // 如果当前已经是最大化的状态
         if (await getCurrentWindow().isMaximized()) {
           setMaxmized(false);
-        } 
+        }
         getCurrentWindow()
           .isFullscreen()
           .then((isFullscreen) => {
@@ -86,7 +88,7 @@ export default function App() {
     if (file === "Project Graph") {
       getCurrentWindow().setTitle("Project Graph");
     } else {
-      getCurrentWindow().setTitle(`${file} - Project Graph`);
+      getCurrentWindow().setTitle(`${filename} - Project Graph`);
     }
   }, [file]);
 
@@ -263,18 +265,18 @@ export default function App() {
         {useNativeTitleBar ? (
           <div className="flex-1"></div>
         ) : (
-          <Button
-            data-tauri-drag-region
-            className={cn(
-              "flex-1 hover:cursor-move active:scale-100 active:cursor-grabbing",
-              isSaved ? "" : "text-yellow-500",
-            )}
-          >
-            {file
-              .split("/")
-              .at(-1)
-              ?.replace(/\.json/, "")}
-          </Button>
+          <>
+            <Button
+              data-tauri-drag-region
+              className={cn(
+                "flex-1 hover:cursor-move active:scale-100 active:cursor-grabbing",
+                isSaved ? "" : "text-yellow-500",
+              )}
+            ></Button>
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              {filename}
+            </span>
+          </>
         )}
         {/* 右上角图钉按钮 */}
         <IconButton
