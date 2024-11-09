@@ -2,7 +2,9 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "core:default",
     "shell:allow-open",
@@ -25,7 +27,13 @@
     "store:default",
     {
       "identifier": "http:default",
-      "allow": ["https://github.com", "https://api.github.com"]
-    }
+      "allow": [
+        "https://github.com",
+        "https://api.github.com",
+        "http://www.baidu.com",
+        "https://ark.cn-beijing.volces.com"
+      ]
+    },
+    "http:default"
   ]
 }
