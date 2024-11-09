@@ -1,36 +1,36 @@
 import { useEffect, useState } from "react";
 
+// 常规阶段提示文字
+const normalStage = [
+  "框选物体：鼠标左键框选",
+  "创建节点：鼠标左键双击",
+  "创建连线：右键拖拽物体",
+  "缩放画布：滚轮或中括号键",
+  "移动画布：WSAD，鼠标中键拖动，按住空格+左键拖动",
+];
+
+// 按下左键提示文字
+const whenPressLeftMouse = [
+  "移动节点：左键拖拽或",
+  "整体移动节点：拖拽同时按下Ctrl",
+  "旋转子树：悬浮节点后ctrl+鼠标滚轮",
+  "旋转连线：左键拖拽线",
+  "编辑节点：双击节点",
+  "编辑节点详情：Ctrl+双击节点",
+  "编辑连线：双击连线",
+];
+
+const whenPressRightMouse = [
+  "删除连线：右键空白地方划线切断连线",
+  "添加连线：右键拖拽物体",
+  "删除物体：右键空白地方划线或框选Delete",
+];
+
 /**
  * 底部提示文字
  */
 export default function HintText() {
   // 这里暂时是切分成不同状态下显示多个提示。后续可以根据实际情况调整
-
-  // 常规阶段提示文字
-  const normalStage = [
-    "框选物体：鼠标左键框选",
-    "创建节点：鼠标左键双击",
-    "创建连线：右键拖拽物体",
-    "缩放画布：滚轮或中括号键",
-    "移动画布：WSAD，鼠标中键拖动，按住空格+左键拖动",
-  ];
-
-  // 按下左键提示文字
-  const whenPressLeftMouse = [
-    "移动节点：左键拖拽或",
-    "整体移动节点：拖拽同时按下Ctrl",
-    "旋转子树：悬浮节点后ctrl+鼠标滚轮",
-    "旋转连线：左键拖拽线",
-    "编辑节点：双击节点",
-    "编辑节点详情：Ctrl+双击节点",
-    "编辑连线：双击连线",
-  ];
-
-  const whenPressRightMouse = [
-    "删除连线：右键空白地方划线切断连线",
-    "添加连线：右键拖拽物体",
-    "删除物体：右键空白地方划线或框选Delete",
-  ];
 
   const [hintTextList, setHintTextList] = useState(normalStage);
   useEffect(() => {
