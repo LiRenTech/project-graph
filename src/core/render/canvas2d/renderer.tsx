@@ -202,19 +202,29 @@ export namespace Renderer {
       );
     }
     // 纯键盘操作相关的
+    start = performance.now();
     renderKeyboardOnly();
+    timings.keyboard = performance.now() - start;
 
     // 画粘贴板上的信息
+    start = performance.now();
     renderClipboard();
+    timings.clipboard = performance.now() - start;
 
     // 画详细信息
     if (isShowDebug) {
+      start = performance.now();
       renderDetails();
+      timings.details = performance.now() - start;
     }
+    start = performance.now();
     renderSpecialKeys();
+    timings.specialKeys = performance.now() - start;
 
     // 渲染所有特效
+    start = performance.now();
     renderEffects();
+    timings.effects = performance.now() - start;
     // test
 
     timings.others = performance.now() - start;
