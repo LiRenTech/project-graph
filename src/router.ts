@@ -9,6 +9,7 @@ export type Path =
   | `/settings/about`
   | `/settings/ai`
   | `/settings/automation`
+  | `/settings/control`
   | `/settings/github`
   | `/settings/performance`
   | `/settings/physical`

@@ -14,6 +14,7 @@ export default function SettingsLayout() {
           <NavLink to="/settings/physical">{t("physical")}</NavLink>
           <NavLink to="/settings/performance">{t("performance")}</NavLink>
           <NavLink to="/settings/automation">{t("automation")}</NavLink>
+          <NavLink to="/settings/control">{t("control")}</NavLink>
           <NavLink to="/settings/ai">{t("ai")}</NavLink>
           <NavLink to="/settings/github">{t("github")}</NavLink>
         </div>

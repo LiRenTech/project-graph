@@ -33,6 +33,8 @@ export namespace Settings {
     githubUser: string;
     // linux 相关
     useNativeTitleBar: boolean;
+    // 手柄相关
+    gamepadDeadzone: number;
   };
   const defaultSettings: Settings = {
     language: "en",
@@ -59,6 +61,8 @@ export namespace Settings {
     githubUser: "",
     // linux 相关
     useNativeTitleBar: false,
+    // 手柄相关
+    gamepadDeadzone: 0.1,
   };
 
   export async function init() {

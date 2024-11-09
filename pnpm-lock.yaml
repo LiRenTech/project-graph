@@ -53,6 +53,9 @@ importers:
       react-router-dom:
         specifier: ^6.26.2
         version: 6.26.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      tauri-plugin-gamepad-api:
+        specifier: ^0.0.4
+        version: 0.0.4
     devDependencies:
       '@eslint/js':
         specifier: ^9.13.0
@@ -2091,6 +2094,9 @@ packages:
     resolution: {integrity: sha512-KqjHOJKogOUt5Bs752ykCeiwvi0fKVkr5oqsFNt/8px/tA8scFPIlkygsf6jXrfCqGHz7VflA6+yytWuM+XhFw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
+
+  tauri-plugin-gamepad-api@0.0.4:
+    resolution: {integrity: sha512-1dzdj2/F2Z3tuOOAvak7IiwOPk/Pny6pBfpQGdaQ7BWfM3PK7/zE23w9mW8/5xtySfMu5nftzjDCmDHziTOJow==}
 
   text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
@@ -4303,6 +4309,11 @@ snapshots:
       sucrase: 3.35.0
     transitivePeerDependencies:
       - ts-node
+
+  tauri-plugin-gamepad-api@0.0.4:
+    dependencies:
+      '@tauri-apps/api': 2.0.2
+      tslib: 2.8.0
 
   text-table@0.2.0: {}
 

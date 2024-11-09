@@ -24,4 +24,5 @@ tauri-plugin-dialog = "2.0.0-rc"
 tauri-plugin-fs = "2.0.0-rc"
 tauri-plugin-store = "2.0.0-rc"
 tauri-plugin-http = "2.0.0-rc"
+tauri-plugin-gamepad = "0.0.4"
 

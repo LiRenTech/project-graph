@@ -11,6 +11,7 @@ import { ConnectableEntity, Entity } from "../stageObject/StageObject";
 import { Controller } from "../controller/Controller";
 import { StageManager } from "./stageManager/StageManager";
 import { PointDashEffect } from "../effect/concrete/PointDashEffect";
+import { ControllerGamepad } from "../controller/ControllerGamepad";
 
 /**
  * 舞台对象
@@ -137,6 +138,8 @@ export namespace Stage {
   // eslint-disable-next-line prefer-const
   export let draggingLocation = Vector.getZero();
 
+  const controllerGamepad = new ControllerGamepad();
+
   /**
    * 逻辑总入口
    */
@@ -154,7 +157,10 @@ export namespace Stage {
       if (connectTargetNode === null) {
         // 如果鼠标位置没有和任何节点相交
         effects.push(
-          PointDashEffect.fromMouseEffect(Controller.lastMoveLocation, connectFromEntities.length * 5),
+          PointDashEffect.fromMouseEffect(
+            Controller.lastMoveLocation,
+            connectFromEntities.length * 5,
+          ),
         );
       } else {
         // 画一条像吸住了的线
@@ -166,5 +172,7 @@ export namespace Stage {
     }
     // 清理过时特效
     effects = effects.filter((effect) => !effect.timeProgress.isFull);
+
+    controllerGamepad.tick();
   }
 }
