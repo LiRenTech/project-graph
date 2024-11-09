@@ -41,7 +41,9 @@
     "windows": {
       "nsis": {
         "displayLanguageSelector": true,
-        "languages": ["SimpChinese", "TradChinese", "English"]
+        "languages": ["SimpChinese", "TradChinese", "English"],
+        "sidebarImage": "nsis/left.bmp",
+        "headerImage": "nsis/install.bmp"
       }
     }
   }
