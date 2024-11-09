@@ -24,7 +24,6 @@ import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect
 import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
 import { WorldRenderUtils } from "./WorldRenderUtils";
 import { getTextSize } from "../../../utils/font";
-import { Random } from "../../algorithm/random";
 import { CircleChangeRadiusEffect } from "../../effect/concrete/CircleChangeRadiusEffect";
 import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEffect";
 import { PointDashEffect } from "../../effect/concrete/PointDashEffect";
@@ -503,9 +502,7 @@ export namespace Renderer {
     const fontSize = 30;
 
     for (const key of Controller.pressingKeySet) {
-      const textLocation = new Vector(x, Renderer.h - 100).add(
-        new Vector(Random.randomFloat(-5, 2), Random.randomFloat(-5, 2)),
-      );
+      const textLocation = new Vector(x, Renderer.h - 100);
 
       RenderUtils.renderText(key, textLocation, fontSize);
       const textSize = getTextSize(key, fontSize);
