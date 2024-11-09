@@ -28,6 +28,7 @@ import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { StageDumper } from "../core/stage/StageDumper";
 import StartFilePanel from "./_start_file_panel";
 import { PathString } from "../utils/pathString";
+import { useTranslation } from "react-i18next";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -39,6 +40,7 @@ export default function App() {
   const filename = React.useMemo(() => PathString.absolute2file(file), [file]);
   const dialog = useDialog();
   const [useNativeTitleBar, setUseNativeTitleBar] = React.useState(false);
+  const { t } = useTranslation("app");
 
   React.useEffect(() => {
     getCurrentWindow().onResized(() => {
@@ -279,7 +281,7 @@ export default function App() {
                 "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
               )}
             >
-              {filename + (isSaved ? "" : "😨未保存")}
+              {filename + (isSaved ? "" : t("unsaved"))}
             </span>
           </>
         )}

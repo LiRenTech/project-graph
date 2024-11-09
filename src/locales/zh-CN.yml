@@ -46,3 +46,5 @@ settingsVisual:
   moveFriction: 视角移动摩擦力系数
   alwaysShowDetails: 始终显示节点详细信息
   useNativeTitleBar: 使用原生标题栏（需要重启应用）
+app:
+  unsaved: "*"

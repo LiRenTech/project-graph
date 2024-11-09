@@ -69,3 +69,5 @@ settingsVisual:
   moveFriction: Perspective Movement Friction Coefficient
   alwaysShowDetails: Always Show Node Details
   useNativeTitleBar: Use native title bar (requires restart)
+app:
+  unsaved: "*"
