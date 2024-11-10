@@ -8,6 +8,7 @@ import { RenderUtils } from "../RenderUtils";
 import { Section } from "../../../stageObject/entity/Section";
 import { CollisionBoxRenderer } from "./CollisionBoxRenderer";
 import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
+import { replaceTextWhenProtect } from "../../../../utils/font";
 
 /**
  * 处理节点相关的绘制
@@ -93,7 +94,7 @@ export namespace EntityRenderer {
 
     if (!node.isEditing) {
       RenderUtils.renderText(
-        node.text,
+        Renderer.isProtectingPrivacy ? replaceTextWhenProtect(node.text) : node.text,
         Renderer.transformWorld2View(
           node.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
         ),

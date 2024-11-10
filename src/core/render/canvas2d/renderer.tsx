@@ -55,6 +55,10 @@ export namespace Renderer {
   export let renderedEdges: number = 0;
 
   /**
+   * 隐私保护模式
+   */
+  export let isProtectingPrivacy = false;
+  /**
    * 记录每一项渲染的耗时
    * {
    *   [渲染项的名字]: ?ms
@@ -107,6 +111,16 @@ export namespace Renderer {
     timings.grid = performance.now() - start;
 
     const viewRectangle = getCoverWorldRectangle();
+    // 画隐私保护边
+    
+    if (isProtectingPrivacy) {
+      RenderUtils.renderRect(
+        viewRectangle.transformWorld2View(),
+        Color.Transparent,
+        new Color(33, 54, 167, 0.5),
+        50,
+      );
+    }
     // 画节点和边
     start = performance.now();
     renderEdges(viewRectangle);

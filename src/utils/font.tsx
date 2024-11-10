@@ -26,13 +26,21 @@ export function getTextSize(text: string, size: number): Vector {
   if (!_context) {
     throw new Error("Failed to get canvas context");
   }
-  
+
   _context.font = `${size}px MiSans`;
   const metrics = _context.measureText(text);
   // const t2 = performance.now();
   if (useCache) {
-    _cache.set(`${text}-${size}`, metrics.width)
+    _cache.set(`${text}-${size}`, metrics.width);
   }
   // console.log(t2 - t1);
   return new Vector(metrics.width, size);
+}
+
+/**
+ * 所有的汉字替换成“好”
+ * @param text
+ */
+export function replaceTextWhenProtect(text: string) {
+  return text.replace(/[\u4e00-\u9fa5]/g, "好");
 }

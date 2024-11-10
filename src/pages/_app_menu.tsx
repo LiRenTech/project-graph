@@ -19,6 +19,7 @@ import {
   SquareDashedMousePointer,
   FileCode,
   FileType,
+  VenetianMask
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -38,6 +39,7 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 import { TextNode } from "../core/stageObject/entity/TextNode";
+import { Renderer } from "../core/render/canvas2d/renderer";
 
 export default function AppMenu({
   className = "",
@@ -347,6 +349,14 @@ export default function AppMenu({
           }}
         >
           welcome
+        </Col>
+        <Col
+          icon={<VenetianMask />}
+          onClick={() => {
+            Renderer.isProtectingPrivacy = !Renderer.isProtectingPrivacy;
+          }}
+        >
+           {Renderer.isProtectingPrivacy ? "关闭" : "开启"}隐私保护
         </Col>
       </Row>
       <Row icon={<AppWindow />} title="窗口">
