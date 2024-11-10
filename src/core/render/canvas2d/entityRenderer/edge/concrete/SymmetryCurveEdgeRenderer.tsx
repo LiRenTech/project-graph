@@ -90,22 +90,28 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       shiftingMidPoint,
       edge.target.collisionBox.getRectangle().center,
     );
-    const startPoint = edge.source.collisionBox
+    let startPoint = edge.source.collisionBox
       .getRectangle()
       .getLineIntersectionPoint(startLine);
-    const endPoint = edge.target.collisionBox
+    if (startPoint.equals(edge.source.collisionBox.getRectangle().center)) {
+      startPoint = edge.source.collisionBox
+        .getRectangle()
+        .getLineIntersectionPoint(endLine);
+    }
+    let endPoint = edge.target.collisionBox
       .getRectangle()
       .getLineIntersectionPoint(endLine);
-
+    if (endPoint.equals(edge.target.collisionBox.getRectangle().center)) {
+      endPoint = edge.target.collisionBox
+        .getRectangle()
+        .getLineIntersectionPoint(startLine);
+    }
     const curve = new SymmetryCurve(
       startPoint,
       startLine.direction(),
       endPoint,
       endLine.direction().multiply(-1),
-      Math.min(
-        shiftingMidPoint.subtract(startPoint).magnitude(),
-        shiftingMidPoint.subtract(endPoint).magnitude()
-      )
+      Math.abs(endPoint.subtract(startPoint).magnitude()) / 2
     );
     this.renderArrowCurve(curve);
     this.renderText(curve, edge);
