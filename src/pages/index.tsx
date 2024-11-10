@@ -26,9 +26,13 @@ export default function Home() {
     };
     const handleFocus = () => {
       focus = true;
+      // 解决alt+tab切换窗口后还在监听alt按下的问题
+      Controller.pressingKeySet.clear();
     };
     const handleBlur = () => {
       focus = false;
+      // 解决alt+tab切换窗口后还在监听alt按下的问题
+      Controller.pressingKeySet.clear();
     };
 
     const canvasElement = canvasRef.current;
