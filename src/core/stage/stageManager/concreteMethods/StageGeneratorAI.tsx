@@ -1,7 +1,9 @@
 import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
 import { Random } from "../../../algorithm/random";
 import { Vector } from "../../../dataStruct/Vector";
+import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { TextNode } from "../../../stageObject/entity/TextNode";
+import { Stage } from "../../Stage";
 import { StageManager } from "../StageManager";
 import { v4 as uuidv4 } from "uuid";
 
@@ -102,6 +104,8 @@ export namespace StageGeneratorAI {
       StageManager.addTextNode(newNode);
       // 连线
       StageManager.connectEntity(parent, newNode);
+      // 特效
+      Stage.effects.push(...EdgeRenderer.getConnectedEffects(parent, newNode));
     }
   }
 
