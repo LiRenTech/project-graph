@@ -222,7 +222,7 @@ export default function App() {
           },
         )}
       >
-        {/* 菜单按钮 */}
+        {/* 左上角菜单按钮 */}
         <IconButton
           onClick={(e) => {
             if (location.pathname !== "/") {
@@ -265,7 +265,8 @@ export default function App() {
         {isStartFilePanelOpen && <StartFilePanel />}
         {/* 中间标题 */}
         {useNativeTitleBar ? (
-          <div className="flex-1"></div>
+          // h-0 才能完全摆脱划线时经过此区域的卡顿问题
+          <div className="pointer-events-none h-0 flex-1"></div>
         ) : (
           <>
             <Button
