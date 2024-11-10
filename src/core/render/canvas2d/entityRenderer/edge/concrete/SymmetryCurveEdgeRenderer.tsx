@@ -76,22 +76,9 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       Math.abs(end.subtract(start).magnitude()) / 2,
     );
     this.renderArrowCurve(curve);
-    if (edge.text.trim() === "") {
-      return;
-    }
-    // 画文本
-    RenderUtils.renderRect(
-      edge.textRectangle.transformWorld2View(),
-      new Color(31, 31, 31, 0.5),
-      new Color(31, 31, 31, 0.5),
-      1,
-    );
-    RenderUtils.renderTextFromCenter(
-      edge.text,
-      Renderer.transformWorld2View(curve.bezier.getPointByT(0.5)),
-      Renderer.FONT_SIZE * Camera.currentScale,
-    );
+    this.renderText(curve, edge);
   }
+
   public renderShiftingState(edge: Edge): void {
     const shiftingMidPoint = edge.shiftingMidPoint;
     // 从source.Center到shiftingMidPoint的线
@@ -110,53 +97,18 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       .getRectangle()
       .getLineIntersectionPoint(endLine);
 
-    if (edge.text.trim() === "") {
-      // 没有文字的边
-      RenderUtils.renderSolidLine(
-        Renderer.transformWorld2View(startPoint),
-        Renderer.transformWorld2View(shiftingMidPoint),
-        new Color(204, 204, 204),
-        2 * Camera.currentScale,
-      );
-      RenderUtils.renderSolidLine(
-        Renderer.transformWorld2View(shiftingMidPoint),
-        Renderer.transformWorld2View(endPoint),
-        new Color(204, 204, 204),
-        2 * Camera.currentScale,
-      );
-    } else {
-      // 有文字的边
-      RenderUtils.renderTextFromCenter(
-        edge.text,
-        Renderer.transformWorld2View(shiftingMidPoint),
-        Renderer.FONT_SIZE * Camera.currentScale,
-      );
-      const edgeTextRectangle = edge.textRectangle;
-      const start2MidPoint =
-        edgeTextRectangle.getLineIntersectionPoint(startLine);
-      const mid2EndPoint = edgeTextRectangle.getLineIntersectionPoint(endLine);
-      RenderUtils.renderSolidLine(
-        Renderer.transformWorld2View(startPoint),
-        Renderer.transformWorld2View(start2MidPoint),
-        new Color(204, 204, 204),
-        2 * Camera.currentScale,
-      );
-      RenderUtils.renderSolidLine(
-        Renderer.transformWorld2View(mid2EndPoint),
-        Renderer.transformWorld2View(endPoint),
-        new Color(204, 204, 204),
-        2 * Camera.currentScale,
-      );
-    }
-    EdgeRenderer.renderArrowHead(
+    const curve = new SymmetryCurve(
+      startPoint,
+      startLine.direction(),
       endPoint,
-      edge.target.collisionBox
-        .getRectangle()
-        .getCenter()
-        .subtract(shiftingMidPoint)
-        .normalize(),
-      15,
+      endLine.direction().multiply(-1),
+      Math.min(
+        shiftingMidPoint.subtract(startPoint).magnitude(),
+        shiftingMidPoint.subtract(endPoint).magnitude()
+      )
     );
+    this.renderArrowCurve(curve);
+    this.renderText(curve, edge);
   }
 
   public renderCycleState(edge: Edge): void {
@@ -166,7 +118,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
         edge.target.collisionBox.getRectangle().location,
       ),
       (edge.target.collisionBox.getRectangle().size.y / 2) *
-        Camera.currentScale,
+      Camera.currentScale,
       Math.PI / 2,
       0,
       new Color(204, 204, 204),
@@ -260,4 +212,23 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       size,
     );
   }
+
+  private renderText(curve: SymmetryCurve, edge: Edge): void {
+    if (edge.text.trim() === "") {
+      return;
+    }
+    // 画文本
+    RenderUtils.renderRect(
+      edge.textRectangle.transformWorld2View(),
+      new Color(31, 31, 31, 0.5),
+      new Color(31, 31, 31, 0.5),
+      1,
+    );
+    RenderUtils.renderTextFromCenter(
+      edge.text,
+      Renderer.transformWorld2View(curve.bezier.getPointByT(0.5)),
+      Renderer.FONT_SIZE * Camera.currentScale,
+    );
+  }
+
 }
