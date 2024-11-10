@@ -70,7 +70,6 @@ export class Section extends ConnectableEntity {
     super();
     this.uuid = uuid;
 
-    // TODO: 应该把collisionBox写成一个访问属性。然后有两个状态下的碰撞箱，分别在isCollapsed和!isCollapsed时生成。
     this._collisionBoxWhenCollapsed = new CollisionBox([
       new Rectangle(new Vector(...location), new Vector(...size)),
     ]);
