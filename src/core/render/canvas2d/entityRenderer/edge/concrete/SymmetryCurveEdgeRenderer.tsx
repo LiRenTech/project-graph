@@ -76,6 +76,9 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       Math.abs(end.subtract(start).magnitude()) / 2,
     );
     this.renderArrowCurve(curve);
+    if (edge.text.trim() === "") {
+      return;
+    }
     // 画文本
     RenderUtils.renderRect(
       edge.textRectangle.transformWorld2View(),
