@@ -81,14 +81,11 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
     );
     // 拖拽连线
     Controller.isMovingEdge = true;
-    // HACK: 应该加一个条件限制，只能选中一条边，这里有可能会选中多个边
     StageManager.moveEdges(
       ControllerNodeRotation.lastMoveLocation,
       diffLocation,
     );
     ControllerNodeRotation.lastMoveLocation = worldLocation.clone();
-    // } else if (Controller.isMouseDown[1]) {
-    // } else if (Controller.isMouseDown[2]) {
   } else {
     // 什么都没有按下的情况
     // 看看鼠标当前的位置是否和线接近

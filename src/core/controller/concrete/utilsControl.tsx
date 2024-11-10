@@ -57,29 +57,5 @@ export function editNodeDetails(clickedNode: TextNode) {
 
   clickedNode.isEditingDetails = true;
   editTextNodeHookGlobal.hookFunctionStart(clickedNode);
-  // 有待把input换成
-  // Renderer.textarea(
-  //   Renderer.transformWorld2View(
-  //     clickedNode.rectangle.location.add(
-  //       new Vector(0, clickedNode.rectangle.size.y),
-  //     ),
-  //   ),
-  //   clickedNode.details,
-  //   (text) => {
-  //     clickedNode?.changeDetails(text);
-  //     console.log(text);
-  //     // BUG: 空格，回车，方向键都被屏蔽了
-  //   },
-  //   {
-  //     fontSize: Renderer.FONT_SIZE_DETAILS * Camera.currentScale + "px",
-  //     backgroundColor: "transparent",
-  //     color: "white",
-  //     outline: "solid 1px white",
-  //     // marginTop: -8 * Camera.currentScale + "px",
-  //     width: Renderer.NODE_DETAILS_WIDTH * Camera.currentScale + "px",
-  //   },
-  // ).then(() => {
-  //   clickedNode.isEditingDetails = false;
-  //   Controller.isCameraLocked = false;
-  // });
+  // TODO: 有待把input换成 textarea，解决换行问题
 }

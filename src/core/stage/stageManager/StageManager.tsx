@@ -145,7 +145,7 @@ export namespace StageManager {
     return res;
   }
 
-  function isConnected(
+  export function isConnected(
     node: ConnectableEntity,
     target: ConnectableEntity,
   ): boolean {

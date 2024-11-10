@@ -13,6 +13,7 @@ import { ConnectableEntity } from "../../../stageObject/StageObject";
 export namespace StageNodeRotate {
   /**
    * 通过拖拽边的方式来旋转节点
+   * 会查找所有选中的边，但只能旋转一个边
    * @param lastMoveLocation
    * @param diffLocation
    */
@@ -49,6 +50,7 @@ export namespace StageNodeRotate {
         } else {
           console.error("source or target entity not found");
         }
+        break;  // 只旋转一个边
       }
     }
   }

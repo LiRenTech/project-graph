@@ -243,7 +243,7 @@ export namespace RenderUtils {
     width: number,
     dashLength: number,
   ): void {
-    // TODO: 待排查为何不生效
+    // TODO: 待排查为何虚线渲染不生效
     Canvas.ctx.setLineDash([dashLength, dashLength]);
     Canvas.ctx.beginPath();
     Canvas.ctx.moveTo(start.x, start.y);

@@ -125,6 +125,9 @@ export namespace Camera {
         targetScale,
       );
     }
+    // 性能优化之，将缩放小数点保留四位
+    currentScale = parseFloat(currentScale.toFixed(4));
+
   }
 
   /**

@@ -231,7 +231,7 @@ export namespace Controller {
     e.preventDefault();
 
     if (e.touches.length === 1) {
-      // HACK: 重构后这里就有问题了
+      // HACK: 重构后touch方法就有问题了
     }
     if (e.touches.length === 2) {
       const touch1 = Vector.fromTouch(e.touches[0]);
@@ -260,7 +260,7 @@ export namespace Controller {
   function touchend(e: TouchEvent) {
     e.preventDefault();
     if (e.changedTouches.length === 1) {
-      // HACK: 重构后这里就有问题了
+      // HACK: 重构后touch方法就有问题了
       handleMouseup(
         0,
         e.changedTouches[0].clientX,

@@ -461,7 +461,7 @@ export namespace Renderer {
 
   function renderDetails() {
     const detailsData = [
-      `scale: ${Camera.currentScale.toFixed(2)}`,
+      `scale: ${Camera.currentScale}`,
       `target: ${Camera.targetScale.toFixed(2)}`,
       `shake: ${Camera.shakeLocation.toString()}`,
       `location: ${Camera.location.x.toFixed(2)}, ${Camera.location.y.toFixed(2)}`,

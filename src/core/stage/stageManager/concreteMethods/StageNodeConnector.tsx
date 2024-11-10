@@ -23,15 +23,11 @@ export namespace StageNodeConnector {
       if (fromNode.uuid === toNode.uuid && fromNode instanceof ConnectPoint) {
         return;
       }
-      // const addResult = fromNode.addChild(toNode);
 
-      // if (!addResult) {
-      //   // 重复添加了，添加失败
-      //   return false;
-      // }
-
-      // HACK: 容易出现重复的线段
-
+      if (StageManager.isConnected(fromNode, toNode)) {
+        // 已经连接过了，不需要再次连接
+        return;
+      }
       const newEdge = new Edge({
         source: fromNode.uuid,
         target: toNode.uuid,
@@ -39,8 +35,6 @@ export namespace StageNodeConnector {
         uuid: uuidv4(),
         type: "core:edge",
       });
-
-      // TODO 双向线检测
 
       StageManager.addEdge(newEdge);
 
