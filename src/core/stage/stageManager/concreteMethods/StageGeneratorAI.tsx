@@ -11,7 +11,7 @@ export namespace StageGeneratorAI {
   /**
    * 扩展所有选中的节点
    */
-  export function generateNewTextNodeBySelected() {
+  export async function generateNewTextNodeBySelected() {
     const selectedTextNodes = StageManager.getSelectedEntities().filter(
       (entity) => entity instanceof TextNode,
     );
@@ -21,12 +21,29 @@ export namespace StageGeneratorAI {
 
     // 遍历所有选中节点
     for (const selectedTextNode of selectedTextNodes) {
-      const expandArrayList: string[] = [];
-      for (let i = 0; i < Random.randomInt(3, 10); i++) {
-        expandArrayList.push("expand" + "_".repeat(Random.randomInt(3, 20)));
-      }
+      selectedTextNode.isAiGenerating = true;
+      const expandArrayList = await virtualGenerateTextList();
+      selectedTextNode.isAiGenerating = false;
       generateChildNodes(selectedTextNode, expandArrayList);
     }
+  }
+
+  function virtualGenerateTextList() {
+    // 使用 Promise 来实现延迟
+    return new Promise<string[]>((resolve) => {
+      setTimeout(
+        () => {
+          const expandArrayList: string[] = [];
+          for (let i = 0; i < Random.randomInt(3, 10); i++) {
+            expandArrayList.push(
+              "expand" + "_".repeat(Random.randomInt(3, 20)),
+            );
+          }
+          resolve(expandArrayList); // 1秒后返回数组
+        },
+        Random.randomInt(500, 4000),
+      );
+    });
   }
 
   function generateChildNodes(parent: TextNode, childTextList: string[]) {
