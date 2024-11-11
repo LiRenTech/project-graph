@@ -163,19 +163,12 @@ export namespace Renderer {
       );
     }
     // 切割线
-    if (Stage.isCutting) {
+    if (Stage.isCutting && Stage.cuttingLine) {
       WorldRenderUtils.renderLaser(
-        Controller.lastMousePressLocation[2].clone(),
-        Controller.lastMoveLocation,
+        Stage.cuttingLine.start,
+        Stage.cuttingLine.end,
         2,
       );
-      // RenderUtils.renderGradientLine(
-      //   transformWorld2View(Controller.lastMousePressLocation[2]),
-      //   transformWorld2View(Controller.lastMoveLocation),
-      //   new Color(255, 0, 0, 0),
-      //   new Color(255, 0, 0, 1),
-      //   2,
-      // );
     }
     // 手动连接线
     if (Stage.connectFromEntities.length > 0 && Controller.lastMoveLocation) {

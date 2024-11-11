@@ -20,11 +20,11 @@ export namespace WorldRenderUtils {
     color: Color,
     width: number,
   ): void {
-    curve.start = Renderer.transformWorld2View(curve.start)
-    curve.end = Renderer.transformWorld2View(curve.end)
-    curve.ctrlPt1 = Renderer.transformWorld2View(curve.ctrlPt1)
-    curve.ctrlPt2 = Renderer.transformWorld2View(curve.ctrlPt2)
-    RenderUtils.renderBezierCurve(curve, color, width * Camera.currentScale)
+    curve.start = Renderer.transformWorld2View(curve.start);
+    curve.end = Renderer.transformWorld2View(curve.end);
+    curve.ctrlPt1 = Renderer.transformWorld2View(curve.ctrlPt1);
+    curve.ctrlPt2 = Renderer.transformWorld2View(curve.ctrlPt2);
+    RenderUtils.renderBezierCurve(curve, color, width * Camera.currentScale);
   }
 
   /**
@@ -39,17 +39,43 @@ export namespace WorldRenderUtils {
     renderBezierCurve(curve.bezier, color, width);
   }
 
-  export function renderLaser(
-    start: Vector, end: Vector, width: number): void {
+  export function renderLaser(start: Vector, end: Vector, width: number): void {
     Canvas.ctx.shadowColor = "red";
     Canvas.ctx.shadowBlur = 15;
-    RenderUtils.renderSolidLine(
-      Renderer.transformWorld2View(start),
-      Renderer.transformWorld2View(end),
-      new Color(255, 255, 255),
-      width * Camera.currentScale
-    );
+
+    if (start.distance(end) === 0) {
+      RenderUtils.renderCircle(
+        Renderer.transformWorld2View(start),
+        4 * Camera.currentScale,
+        Color.Transparent,
+        Color.White,
+        2 * Camera.currentScale,
+      );
+    } else {
+      RenderUtils.renderSolidLine(
+        Renderer.transformWorld2View(start),
+        Renderer.transformWorld2View(end),
+        new Color(255, 255, 255),
+        width * Camera.currentScale,
+      );
+    }
+
+    // debug
+
+    // RenderUtils.renderCircle(
+    //   Renderer.transformWorld2View(start),
+    //   10 * Camera.currentScale,
+    //   Color.Transparent,
+    //   new Color(255, 0, 0),
+    //   2 * Camera.currentScale
+    // )
+    // RenderUtils.renderCircle(
+    //   Renderer.transformWorld2View(end),
+    //   10 * Camera.currentScale,
+    //   Color.Transparent,
+    //   Color.White,
+    //   2 * Camera.currentScale
+    // )
     Canvas.ctx.shadowBlur = 0;
   }
-
 }

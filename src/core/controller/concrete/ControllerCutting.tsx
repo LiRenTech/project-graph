@@ -30,7 +30,8 @@ ControllerCutting.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  Controller.lastMousePressLocation[2] = pressWorldLocation.clone();
+  // Controller.lastMousePressLocation[2] = pressWorldLocation.clone();
+  ControllerCutting.lastMoveLocation = pressWorldLocation.clone();
   console.log("update!");
 
   const isClickedEntity = StageManager.isEntityOnLocation(pressWorldLocation);
@@ -41,10 +42,14 @@ ControllerCutting.mousedown = (event: MouseEvent) => {
     // 开始绘制切断线
     Stage.isCutting = true;
     cuttingStartLocation = pressWorldLocation.clone();
+    Stage.cuttingLine = new Line(
+      cuttingStartLocation,
+      cuttingStartLocation.clone(),
+    );
   } else {
     Stage.isCutting = false;
   }
-  ControllerCutting.lastMoveLocation = pressWorldLocation.clone();
+  
 };
 
 ControllerCutting.mousemove = (event: MouseEvent) => {
