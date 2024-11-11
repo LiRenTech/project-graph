@@ -18,6 +18,12 @@ import { ConnectableEntity } from "../../stageObject/StageObject";
 export const ControllerNodeConnection = new ControllerClass();
 
 /**
+ * 仅限在当前文件中使用的记录
+ * 右键点击的位置，仅用于连接检测按下位置和抬起位置是否重叠
+ */
+let _lastRightMouseClickLocation: Vector = new Vector(0, 0);
+
+/**
  *
  * @param event
  * @returns
@@ -30,9 +36,10 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
     new Vector(event.clientX, event.clientY),
   );
 
+  _lastRightMouseClickLocation = pressWorldLocation.clone();
+
   let clickedConnectableEntity: ConnectableEntity | null =
     StageManager.findConnectableEntityByLocation(pressWorldLocation);
-
 
   if (clickedConnectableEntity) {
     // 右键点击了某个节点
@@ -85,16 +92,6 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
   let isFindConnectToNode = false;
   for (const entity of StageManager.getConnectableEntity()) {
     if (entity.collisionBox.isPointInCollisionBox(worldLocation)) {
-      if (Stage.connectToEntity === null) {
-        // 特效
-        // Stage.effects.push(
-        //   new RectangleNoteEffect(
-        //     new ProgressNumber(0, 30),
-        //     entity.collisionBox.getRectangle().clone(),
-        //     new Color(0, 255, 0, 1),
-        //   ),
-        // );
-      }
       Stage.connectToEntity = entity;
       isFindConnectToNode = true;
 
@@ -145,6 +142,47 @@ ControllerNodeConnection.mouseup = (event: MouseEvent) => {
       );
     }
   }
+
+  // issue #135
+  // 一种更快捷的连接方法: 节点在选中状态下右键其它节点直接连接，不必拖动
+  const releaseWorldLocation = Renderer.transformView2World(
+    new Vector(event.clientX, event.clientY),
+  );
+  if (
+    releaseWorldLocation.x === _lastRightMouseClickLocation.x &&
+    releaseWorldLocation.y === _lastRightMouseClickLocation.y
+  ) {
+    // 右键点击位置和抬起位置重叠，说明是右键单击事件，没有发生拖拽现象
+    const releaseTargetEntity =
+      StageManager.findConnectableEntityByLocation(releaseWorldLocation);
+    if (releaseTargetEntity) {
+      const selectedEntities = StageManager.getConnectableEntity().filter(
+        (entity) => entity.isSelected,
+      );
+      // 还要保证当前舞台有节点被选中
+      if (selectedEntities.length > 0) {
+        for (const selectedEntity of selectedEntities) {
+          const connectResult = StageManager.connectEntity(
+            selectedEntity,
+            releaseTargetEntity,
+          );
+          if (connectResult) {
+            // 连接成功，特效
+            for (const effect of EdgeRenderer.getConnectedEffects(
+              selectedEntity,
+              releaseTargetEntity,
+            )) {
+              Stage.effects.push(effect);
+            }
+          } else {
+            console.warn("连接失败！", selectedEntity, releaseTargetEntity);
+          }
+        }
+      }
+    }
+  }
+
+  // 重置状态
   Stage.connectFromEntities = [];
   Stage.connectToEntity = null;
 };
