@@ -184,11 +184,14 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
         <div
           className={cn(
             {
-              "!pointer-events-auto scale-100 opacity-100": open,
+              "scale-100 opacity-100": open,
             },
             isPanelTransparent ? "bg-gray-800/20" : "bg-gray-800",
-            "!pointer-events-none fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-y-scroll rounded-md px-2 py-6 transition-all",
+            "fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-y-scroll rounded-md px-2 py-6 transition-all",
           )}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
         >
           <h2
             className={cn(
