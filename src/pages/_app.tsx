@@ -206,7 +206,7 @@ export default function App() {
       style={{ zoom: appScale }}
       onClick={() => {
         setIsMenuOpen(false);
-        // setIsStartFilePanelOpen(false);
+        setIsStartFilePanelOpen(false);
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
@@ -245,7 +245,7 @@ export default function App() {
                 navigate("/");
               }
             } else {
-              e.stopPropagation();
+              e.stopPropagation();  // 避免又触发了关闭
               setIsMenuOpen(!isMenuOpen);
             }
           }}
@@ -262,7 +262,7 @@ export default function App() {
         </IconButton>
         <AppMenu className="absolute top-20" open={isMenuOpen} />
         <RecentFilesPanel />
-        {isStartFilePanelOpen && <StartFilePanel />}
+        <StartFilePanel open={isStartFilePanelOpen} />
         {/* 中间标题 */}
         {useNativeTitleBar ? (
           // h-0 才能完全摆脱划线时经过此区域的卡顿问题
@@ -289,7 +289,11 @@ export default function App() {
         )}
         {/* 右上角图钉按钮 */}
         <IconButton
-          onClick={() => setIsStartFilePanelOpen(!isStartFilePanelOpen)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsStartFilePanelOpen(!isStartFilePanelOpen);
+            console.log("clicked", isStartFilePanelOpen);
+          }}
         >
           <Zap
             className={cn(
