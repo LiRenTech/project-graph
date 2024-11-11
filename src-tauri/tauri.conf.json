@@ -43,7 +43,8 @@
         "displayLanguageSelector": true,
         "languages": ["SimpChinese", "TradChinese", "English"],
         "sidebarImage": "nsis/left.bmp",
-        "headerImage": "nsis/install.bmp"
+        "headerImage": "nsis/project-graph-install.bmp",
+        "installerHooks": "nsis/installer.nsh"
       }
     }
   }
