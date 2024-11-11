@@ -66,7 +66,7 @@ export default function Welcome() {
         }
       />
       {/* 页脚信息 */}
-      <blockquote className="mt-8 border-l-4 border-gray-500 pl-4 text-gray-500">
+      <blockquote className="lg:mt-8 md:mt-4 border-l-4 border-gray-500 pl-4 text-gray-500">
         Made by LiRenTech with ❤️
         <br />
         Powered by <TauriIcon className="inline-block h-6 w-6" /> and{" "}
