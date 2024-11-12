@@ -20,7 +20,7 @@ export namespace Camera {
   /**
    * 每个方向上的动力矢量大小
    */
-  export const moveAmplitude = 2;
+  export let moveAmplitude = 2;
   /**
    * 空气摩擦力系数
    */
@@ -141,8 +141,10 @@ export namespace Camera {
   export function init() {
     Settings.watch("scaleExponent", (value) => {
       scaleExponent = value;
-      console.log(value, "scaleExponent");
     });
+    Settings.watch("moveAmplitude", (value) => {
+      moveAmplitude = value;
+    })
   }
 
   /**
