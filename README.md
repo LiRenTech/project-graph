@@ -35,23 +35,21 @@ pnpm tauri dev
 https://littlefean.github.io/2024/09/28/tauri%E9%A1%B9%E7%9B%AE%E5%9C%A8windows%E4%B8%8A%E7%9A%84%E5%BC%80%E5%8F%91%E8%B8%A9%E5%9D%91/
 ```
 
-一键配置开发环境
-
 ### 一键安装配置环境
 
-1.下载xlings工具
-
-在powershell中运行一键安装命令
+如果感觉配置过程过于麻烦，可以下载xlings工具，使用xlings一键配置环境，在powershell中运行一键安装命令
 
 ```
 Invoke-Expression (Invoke-Webrequest 'https://d2learn.org/xlings-install.ps1.txt' -UseBasicParsing).Content
 ```
 
-在项目根目录即config.xlings配置文件所在目录
+然后运行指令
 
 ```
 xlings install
 ```
+
+这个过程中可能会有弹窗，点击确认即可
 
 ## 开发注意事项
 
