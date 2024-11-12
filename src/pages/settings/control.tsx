@@ -21,9 +21,9 @@ export default function Control() {
         settingKey="scaleExponent"
         title={t("scaleExponent")}
         type="slider"
-        min={1}
-        max={2}
-        step={0.1}
+        min={0.01}
+        max={1}
+        step={0.01}
       />
       <SettingField
         icon={<Move />}

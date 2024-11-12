@@ -5,6 +5,7 @@ import { Vector } from "../dataStruct/Vector";
 import { Stage } from "./Stage";
 import { Entity } from "../stageObject/StageObject";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
+import { Settings } from "../Settings";
 
 /**
  * 摄像机
@@ -55,6 +56,12 @@ export namespace Camera {
   export let currentScale: number = 1;
   /** 目标镜头缩放比例 */
   export let targetScale: number = 1;
+  /**
+   * 逐渐逼近的速度倍率。
+   * 1表示瞬间就到达目标缩放比例，
+   * 0.5表示不断的以一半逼近目标
+   */
+  export let scaleExponent: number = 0.11;
 
   /**
    * 震动特效导致的位置偏移
@@ -117,18 +124,25 @@ export namespace Camera {
     // 处理缩放
     if (currentScale < targetScale) {
       currentScale = Math.min(
-        currentScale + (targetScale - currentScale) / 10,
+        currentScale + (targetScale - currentScale) * scaleExponent,
         targetScale,
       );
     } else if (currentScale > targetScale) {
       currentScale = Math.max(
-        currentScale - (currentScale - targetScale) / 10,
+        currentScale - (currentScale - targetScale) * scaleExponent,
         targetScale,
       );
     }
     // 性能优化之，将缩放小数点保留四位
     currentScale = parseFloat(currentScale.toFixed(4));
+  }
 
+  // 确保这个函数在软件打开的那一次调用
+  export function init() {
+    Settings.watch("scaleExponent", (value) => {
+      scaleExponent = value;
+      console.log(value, "scaleExponent");
+    });
   }
 
   /**

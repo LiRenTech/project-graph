@@ -47,7 +47,7 @@ export namespace Settings {
     alwaysShowDetails: false,
     // 物理相关
     enableCollision: true,
-    scaleExponent: 1.1,
+    scaleExponent: 0.11,
     moveAmplitude: 2,
     moveFriction: 0.1,
     // 性能相关

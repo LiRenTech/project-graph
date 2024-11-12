@@ -18,6 +18,7 @@ import { initReactI18next } from "react-i18next";
 import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeCollisionBoxGetter";
 import { ProgressNumber } from "./core/dataStruct/ProgressNumber";
 import { StartFilesManager } from "./core/StartFilesManager";
+import { Camera } from "./core/stage/Camera";
 
 // 计时开始
 const t1 = performance.now();
@@ -37,6 +38,7 @@ const Routes = () => <RouterProvider router={router} />;
   EdgeCollisionBoxGetter.init();
   EdgeRenderer.init();
   Renderer.init();
+  Camera.init();
 
   // 启动时加载用户自定义的工程文件
   StartFilesManager.getCurrentStartFile().then((path) => {
