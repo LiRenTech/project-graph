@@ -12,31 +12,31 @@ export namespace Settings {
     language: "zh-CN" | "en";
     // 视觉相关
     lineStyle: "straight" | "bezier" | "vertical";
-    theme: "";
+    theme: "";   // 暂无
     showGrid: boolean;
     windowBackgroundAlpha: number;
     showDebug: boolean;
     alwaysShowDetails: boolean;
     protectingPrivacy: boolean;
-    // 物理相关
-    enableCollision: boolean;
-    scaleExponent: number;
-    moveAmplitude: number;
-    moveFriction: number;
+    useNativeTitleBar: boolean;
     // 性能相关
-    historySize: number;
+    historySize: number;  // 暂无
     renderEffect: boolean;
     // 自动化相关
     autoNamerTemplate: string;
-    autoOpenPath: string;
+    autoOpenPath: string;  // 废弃
     autoSaveWhenClose: boolean;
+    // 控制相关
+    enableCollision: boolean; // 暂无
+    scaleExponent: number;
+    moveAmplitude: number;
+    moveFriction: number;
+    gamepadDeadzone: number;
+    
     // github 相关
     githubToken: string;
     githubUser: string;
-    // linux 相关
-    useNativeTitleBar: boolean;
-    // 手柄相关
-    gamepadDeadzone: number;
+    
   };
   const defaultSettings: Settings = {
     language: "en",
@@ -48,25 +48,24 @@ export namespace Settings {
     showDebug: true,
     alwaysShowDetails: false,
     protectingPrivacy: false,
-    // 物理相关
-    enableCollision: true,
-    scaleExponent: 0.11,
-    moveAmplitude: 2,
-    moveFriction: 0.1,
+    useNativeTitleBar: false,
     // 性能相关
     historySize: 20,
     renderEffect: true,
     // 自动命名相关
     autoNamerTemplate: "...",
-    autoOpenPath: "",
+    autoOpenPath: "",  // 废弃
     autoSaveWhenClose: false,
+    // 控制相关
+    enableCollision: true,
+    scaleExponent: 0.11,
+    moveAmplitude: 2,
+    moveFriction: 0.1,
+    gamepadDeadzone: 0.1,    
+    
     // github 相关
     githubToken: "",
     githubUser: "",
-    // linux 相关
-    useNativeTitleBar: false,
-    // 手柄相关
-    gamepadDeadzone: 0.1,
   };
 
   export async function init() {
