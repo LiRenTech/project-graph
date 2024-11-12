@@ -84,11 +84,16 @@ export namespace Renderer {
 
   let isShowDebug = true;
   let isShowGrid = true;
+  export let isAlwaysShowDetails = false;
 
   // 确保这个函数在软件打开的那一次调用
   export function init() {
     Settings.watch("showDebug", (value) => (isShowDebug = value));
     Settings.watch("showGrid", (value) => (isShowGrid = value));
+    Settings.watch(
+      "alwaysShowDetails",
+      (value) => (isAlwaysShowDetails = value),
+    );
   }
 
   /**
@@ -112,7 +117,7 @@ export namespace Renderer {
 
     const viewRectangle = getCoverWorldRectangle();
     // 画隐私保护边
-    
+
     if (isProtectingPrivacy) {
       RenderUtils.renderRect(
         viewRectangle.transformWorld2View(),

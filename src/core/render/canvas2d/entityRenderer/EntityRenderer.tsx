@@ -95,7 +95,9 @@ export namespace EntityRenderer {
 
     if (!node.isEditing) {
       RenderUtils.renderText(
-        Renderer.isProtectingPrivacy ? replaceTextWhenProtect(node.text) : node.text,
+        Renderer.isProtectingPrivacy
+          ? replaceTextWhenProtect(node.text)
+          : node.text,
         Renderer.transformWorld2View(
           node.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
         ),
@@ -123,15 +125,24 @@ export namespace EntityRenderer {
     }
 
     if (node.details && !node.isEditingDetails) {
-      RenderUtils.renderMultiLineText(
-        node.details,
-        Renderer.transformWorld2View(
-          node.rectangle.location.add(new Vector(0, node.rectangle.size.y)),
-        ),
-        Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
-        Renderer.NODE_DETAILS_WIDTH * Camera.currentScale,
-      );
+      if (Renderer.isAlwaysShowDetails) {
+        renderNodeDetails(node);
+      } else {
+        if (node.isMouseHover) {
+          renderNodeDetails(node);
+        }
+      }
     }
+  }
+  function renderNodeDetails(node: TextNode) {
+    RenderUtils.renderMultiLineText(
+      node.details,
+      Renderer.transformWorld2View(
+        node.rectangle.location.add(new Vector(0, node.rectangle.size.y)),
+      ),
+      Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
+      Renderer.NODE_DETAILS_WIDTH * Camera.currentScale,
+    );
   }
   export function colorInvert(color: Color): Color {
     /**

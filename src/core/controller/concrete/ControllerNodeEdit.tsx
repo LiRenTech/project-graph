@@ -32,3 +32,22 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
     editNode(clickedNode);
   }
 };
+
+ControllerNodeEdit.mousemove = (event: MouseEvent) => {
+  /**
+   * 如果一直显示详细信息，则不显示鼠标悬停效果
+   */
+  if (Renderer.isAlwaysShowDetails) {
+    return;
+  }
+
+  const location = Renderer.transformView2World(
+    new Vector(event.clientX, event.clientY),
+  );
+  for (const node of StageManager.getTextNodes()) {
+    node.isMouseHover = false;
+    if (node.collisionBox.isPointInCollisionBox(location)) {
+      node.isMouseHover = true;
+    }
+  }
+}

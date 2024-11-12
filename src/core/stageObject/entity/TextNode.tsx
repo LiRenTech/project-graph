@@ -20,6 +20,8 @@ export class TextNode extends ConnectableEntity {
   uuid: string;
   text: string;
   details: string;
+  /** 用于交互使用，比如鼠标悬浮显示details */
+  isMouseHover: boolean = false;
 
   public collisionBox: CollisionBox;
   /**
