@@ -65,10 +65,12 @@ settingsVisual:
   showGrid: Show Grid
   windowBackgroundAlpha: Window Background Opacity
   showDebug: Show Debug Information
+  alwaysShowDetails: Always Show Node Details
+  useNativeTitleBar: Use native title bar (requires restart)
+settingsControl:
+  gamepadDeadzone: Gamepad Deadzone
   scaleExponent: Perspective Zoom Speed
   moveAmplitude: Perspective Movement Amplitude
   moveFriction: Perspective Movement Friction Coefficient
-  alwaysShowDetails: Always Show Node Details
-  useNativeTitleBar: Use native title bar (requires restart)
 app:
   unsaved: "*"

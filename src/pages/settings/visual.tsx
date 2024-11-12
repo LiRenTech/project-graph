@@ -5,8 +5,6 @@ import {
   Grid,
   Languages,
   ListCollapse,
-  Move,
-  ScanEye,
   Spline,
 } from "lucide-react";
 import { SettingField } from "./_field";
@@ -57,33 +55,7 @@ export default function Visual() {
         title={t("showDebug")}
         type="switch"
       />
-      <SettingField
-        icon={<ScanEye />}
-        settingKey="scaleExponent"
-        title={t("scaleExponent")}
-        type="slider"
-        min={1}
-        max={2}
-        step={0.1}
-      />
-      <SettingField
-        icon={<Move />}
-        settingKey="moveAmplitude"
-        title={t("moveAmplitude")}
-        type="slider"
-        min={0}
-        max={10}
-        step={0.1}
-      />
-      <SettingField
-        icon={<Move />}
-        settingKey="moveFriction"
-        title={t("moveFriction")}
-        type="slider"
-        min={0}
-        max={1}
-        step={0.1}
-      />
+
       <SettingField
         icon={<ListCollapse />}
         settingKey="alwaysShowDetails"

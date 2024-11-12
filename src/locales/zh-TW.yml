@@ -41,7 +41,10 @@ settingsVisual:
   showGrid: 顯示網格
   windowBackgroundAlpha: 視窗背景不透明度
   showDebug: 顯示除錯資訊
+  alwaysShowDetails: 始終顯示節點詳細資訊
+  useNativeTitleBar: 使用原生标题栏（需要重启应用）
+settingsControl:
+  gamepadDeadzone: 游戏手柄死区
   scaleExponent: 視角縮放速度
   moveAmplitude: 視角移動加速度
   moveFriction: 視角移動摩擦力系數
-  alwaysShowDetails: 始終顯示節點詳細資訊
