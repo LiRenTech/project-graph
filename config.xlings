@@ -1,0 +1,15 @@
+-- step1: install xlings tools: https://github.com/d2learn/xlings
+-- step2: run [xlings install], auto config project dev-environment
+
+xname = "Project Graph"
+xdeps = {
+    vs = "2022",
+    rust = "1.81.0",
+    nodejs = "20.17.0",
+    pnpm = "9.8.0",
+    xppcmds = {
+        "pnpm install",
+        --"pnpm install --registry=https://registry.npmmirror.com",
+        "pnpm tauri dev",
+    }
+}
