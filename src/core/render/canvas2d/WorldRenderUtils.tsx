@@ -78,4 +78,37 @@ export namespace WorldRenderUtils {
     // )
     Canvas.ctx.shadowBlur = 0;
   }
+
+  export function renderCuttingFlash(
+    start: Vector,
+    end: Vector,
+    width: number,
+    shadowColor: Color,
+  ): void {
+    Canvas.ctx.shadowColor = shadowColor.toString();
+    Canvas.ctx.shadowBlur = 15;
+
+    const direction = end.subtract(start).normalize();
+    const headShiftBack = end.subtract(direction.multiply(20));
+    const headLeft = headShiftBack.add(
+      direction.rotateDegrees(90).multiply(width / 2),
+    );
+    const headRight = headShiftBack.add(
+      direction.rotateDegrees(-90).multiply(width / 2),
+    );
+
+    RenderUtils.renderPolygonAndFill(
+      [
+        Renderer.transformWorld2View(start),
+        Renderer.transformWorld2View(headLeft),
+        Renderer.transformWorld2View(end),
+        Renderer.transformWorld2View(headRight),
+      ],
+      Color.White,
+      Color.Transparent,
+      0,
+    );
+    // 恢复
+    Canvas.ctx.shadowBlur = 0;
+  }
 }

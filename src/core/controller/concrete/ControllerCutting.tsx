@@ -141,8 +141,8 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
       new ProgressNumber(0, 15),
       cuttingStartLocation,
       ControllerCutting.lastMoveLocation,
-      new Color(255, 255, 0, 0),
-      new Color(255, 255, 0, 1),
+      new Color(255, 0, 0, 1),
+      new Color(255, 0, 0, 1),
       cuttingStartLocation.distance(ControllerCutting.lastMoveLocation) / 10,
     ),
   );

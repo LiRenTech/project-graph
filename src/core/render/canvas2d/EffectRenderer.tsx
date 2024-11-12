@@ -19,6 +19,7 @@ import { CircleChangeRadiusEffect } from "../../effect/concrete/CircleChangeRadi
 import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEffect";
 import { RateFunctions } from "../../algorithm/rateFunctions";
 import { PointDashEffect } from "../../effect/concrete/PointDashEffect";
+import { WorldRenderUtils } from "./WorldRenderUtils";
 
 /**
  * 专门编写所有的特效渲染
@@ -114,31 +115,18 @@ export namespace EffectRenderer {
     if (effect.timeProgress.isFull) {
       return;
     }
-    const fromLocation = Renderer.transformWorld2View(
-      effect.fromLocation.add(
-        effect.toLocation
-          .subtract(effect.fromLocation)
-          .multiply(effect.timeProgress.rate),
-      ),
+    const fromLocation = effect.fromLocation.add(
+      effect.toLocation
+        .subtract(effect.fromLocation)
+        .multiply(effect.timeProgress.rate),
     );
 
-    const toLocation = Renderer.transformWorld2View(effect.toLocation);
-    const fromColor = mixColors(
-      effect.fromColor,
-      effect.fromColor.toTransparent(),
-      effect.timeProgress.rate,
-    );
-    const toColor = mixColors(
-      effect.toColor,
-      effect.toColor.toTransparent(),
-      effect.timeProgress.rate,
-    );
-    RenderUtils.renderGradientLine(
+    const toLocation = effect.toLocation;
+    WorldRenderUtils.renderCuttingFlash(
       fromLocation,
       toLocation,
-      fromColor,
-      toColor,
-      effect.lineWidth * effect.timeProgress.rate,
+      25 * (1 - effect.timeProgress.rate),
+      mixColors(effect.fromColor, effect.toColor, effect.timeProgress.rate),
     );
   }
   export function renderViewFlashEffect(effect: ViewFlashEffect) {
