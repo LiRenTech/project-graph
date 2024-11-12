@@ -33,21 +33,45 @@ settingsTabs:
   github: GitHub
 settingsVisual:
   language: 語言
-  lineStyle: 線條樣式
+  lineStyle: 線段樣式
   lineStyles:
     straight: 直線
-    bezier: 貝茲曲線
+    bezier: 貝塞爾曲線
     vertical: 垂直折線
   showGrid: 顯示網格
-  windowBackgroundAlpha: 視窗背景不透明度
-  showDebug: 顯示除錯資訊
-  alwaysShowDetails: 始終顯示節點詳細資訊
-  useNativeTitleBar: 使用原生标题栏（需要重启应用）
-  protectingPrivacy: 保護隱私
-settingsControl:
-  gamepadDeadzone: 游戏手柄死区
-  scaleExponent: 視角縮放速度
-  moveAmplitude: 視角移動加速度
-  moveFriction: 視角移動摩擦力系數
+  windowBackgroundAlpha: 窗口不透明度
+  showDebug: 
+    title: 顯示調試信息
+    description: "通常為開發者使用\n開啟後，畫布左上角將會顯示調試信息。\n若您遇到bug截圖反饋時，建議開啟此選項。"
+  alwaysShowDetails: 
+    title: 始終顯示節點詳細信息
+    description: "開啟後，無需鼠標移動到節點上時，才顯示節點的詳細信息。"
+  useNativeTitleBar: 
+    title: 使用原生標題欄（需要重啟應用）
+    description: "開啟後，窗口頂部將會出現原生的標題欄，而不是模擬的標題欄。"
+  protectingPrivacy:
+    title: 隱私保護
+    description: "用於反饋問題截圖時，開啟此項之後將漢字全部替換成《好》，以保護隱私。\n僅作顯示層面的替換，不會影響真實數據\n反饋完畢後可再關閉，復原"
 settingsPerformance:
-  renderEffect: 渲染特技
+  renderEffect: 渲染特效
+settingsAutomation:
+  autoNamerTemplate:
+    title: 自動命名模板
+    description: "輸入`{{i}}` 代表節點名稱會自動替換為編號，雙擊創建時可以自動累加數字。\n例如`n{{i}}` 會自動替換為`n1`, `n2`, `n3`...\n輸入`{{date}}` 會自動替換為當前日期，雙擊創建時可以自動更新日期。\n輸入`{{time}}` 會自動替換為當前時間，雙擊創建時可以自動更新時間。\n可以組合使用，例如`{{i}}-{{date}}-{{time}}\n"
+  autoSaveWhenClose:
+    title: 點擊窗口右上角關閉按鈕時自動保存工程文件
+    description: "關閉軟件時，如果有未保存的工程文件，會彈出提示框詢問是否保存。\n開啟此選項後，關閉軟件時會自動保存工程文件。\n所以，建議開啟此選項。"
+settingsControl:
+  scaleExponent:
+    title: 視角縮放速度
+    description: "《當前縮放倍數》會不斷的以一定倍率無限逼近《目標縮放倍數》\n當逼近的足夠近時（小於0.0001），會自動停止縮放\n值為1代表縮放會立刻完成，沒有中間的過渡效果\n值為0代表縮放永遠都不會完成，可模擬鎖死效果"
+  moveAmplitude:
+    title: 視角移動加速度
+    description: "此設置項用於 使用W S A D按鍵來上下左右移動視角時的情景\n可將攝像機看成一個能朝四個方向噴氣的 懸浮飛機\n此加速度值代表著噴氣的動力大小，需要結合下面的摩擦力設置來調整速度"
+  moveFriction:
+    title: 視角移動摩擦力系數
+    description: "此設置項用於 使用W S A D按鍵來上下左右移動視角時的情景\n摩擦系數越大，滑動的距離越小，摩擦系數越小，滑動的距離越遠\n此值=0時代表 絕對光滑"
+  gamepadDeadzone: 遊戲手柄死區
+
+app:
+  unsaved: '*'

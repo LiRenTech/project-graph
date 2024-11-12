@@ -53,18 +53,18 @@ export default function Visual() {
       <SettingField
         icon={<Bug />}
         settingKey="showDebug"
-        title={t("showDebug")}
+        title={t("showDebug.title")}
         details={
-          "通常为开发者使用\n开启后，画布左上角将会显示调试信息。\n若您遇到bug截图反馈时，建议开启此选项。"
+          t("showDebug.description")
         }
         type="switch"
       />
       <SettingField
         icon={<VenetianMask />}
         settingKey="protectingPrivacy"
-        title={t("protectingPrivacy")}
+        title={t("protectingPrivacy.title")}
         details={
-          "用于反馈问题截图时，开启此项之后将文字全部替换成《好》，以保护隐私。\n仅作显示层面的替换，不会影响真实数据\n反馈完毕后可再关闭，复原"
+          t("protectingPrivacy.description")
         }
         type="switch"
       />
@@ -72,15 +72,15 @@ export default function Visual() {
       <SettingField
         icon={<ListCollapse />}
         settingKey="alwaysShowDetails"
-        title={t("alwaysShowDetails")}
-        details={"开启后，无需鼠标移动到节点上时，才显示节点的详细信息。"}
+        title={t("alwaysShowDetails.title")}
+        details={t("alwaysShowDetails.description")}
         type="switch"
       />
       <SettingField
         icon={<AppWindowMac />}
         settingKey="useNativeTitleBar"
-        title={t("useNativeTitleBar")}
-        details={"开启后，窗口顶部将会出现原生的标题栏，而不是模拟的标题栏。"}
+        title={t("useNativeTitleBar.title")}
+        details={t("useNativeTitleBar.description")}
         type="switch"
       />
     </>

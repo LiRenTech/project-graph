@@ -41,16 +41,37 @@ settingsVisual:
     vertical: 垂直折线
   showGrid: 显示网格
   windowBackgroundAlpha: 窗口不透明度
-  showDebug: 显示调试信息
-  alwaysShowDetails: 始终显示节点详细信息
-  useNativeTitleBar: 使用原生标题栏（需要重启应用）
-  protectingPrivacy: 隐私保护
-settingsControl:
-  gamepadDeadzone: 游戏手柄死区
-  scaleExponent: 视角缩放速度
-  moveAmplitude: 视角移动加速度
-  moveFriction: 视角移动摩擦力系数
+  showDebug: 
+    title: 显示调试信息
+    description: "通常为开发者使用\n开启后，画布左上角将会显示调试信息。\n若您遇到bug截图反馈时，建议开启此选项。"
+  alwaysShowDetails: 
+    title: 始终显示节点详细信息
+    description: "开启后，无需鼠标移动到节点上时，才显示节点的详细信息。"
+  useNativeTitleBar: 
+    title: 使用原生标题栏（需要重启应用）
+    description: "开启后，窗口顶部将会出现原生的标题栏，而不是模拟的标题栏。"
+  protectingPrivacy:
+    title: 隐私保护
+    description: "用于反馈问题截图时，开启此项之后将汉字全部替换成《好》，以保护隐私。\n仅作显示层面的替换，不会影响真实数据\n反馈完毕后可再关闭，复原"
 settingsPerformance:
   renderEffect: 渲染特效
+settingsAutomation:
+  autoNamerTemplate:
+    title: 自动命名模板
+    description: "输入`{{i}}` 代表节点名称会自动替换为编号，双击创建时可以自动累加数字。\n例如`n{{i}}` 会自动替换为`n1`, `n2`, `n3`...\n输入`{{date}}` 会自动替换为当前日期，双击创建时可以自动更新日期。\n输入`{{time}}` 会自动替换为当前时间，双击创建时可以自动更新时间。\n可以组合使用，例如`{{i}}-{{date}}-{{time}}\n"
+  autoSaveWhenClose:
+    title: 点击窗口右上角关闭按钮时自动保存工程文件
+    description: "关闭软件时，如果有未保存的工程文件，会弹出提示框询问是否保存。\n开启此选项后，关闭软件时会自动保存工程文件。\n所以，建议开启此选项。"
+settingsControl:
+  scaleExponent:
+    title: 视角缩放速度
+    description: "《当前缩放倍数》会不断的以一定倍率无限逼近《目标缩放倍数》\n当逼近的足够近时（小于0.0001），会自动停止缩放\n值为1代表缩放会立刻完成，没有中间的过渡效果\n值为0代表缩放永远都不会完成，可模拟锁死效果"
+  moveAmplitude:
+    title: 视角移动加速度
+    description: "此设置项用于 使用W S A D按键来上下左右移动视角时的情景\n可将摄像机看成一个能朝四个方向喷气的 悬浮飞机\n此加速度值代表着喷气的动力大小，需要结合下面的摩擦力设置来调整速度"
+  moveFriction:
+    title: 视角移动摩擦力系数
+    description: "此设置项用于 使用W S A D按键来上下左右移动视角时的情景\n摩擦系数越大，滑动的距离越小，摩擦系数越小，滑动的距离越远\n此值=0时代表 绝对光滑"
+  gamepadDeadzone: 游戏手柄死区
 app:
   unsaved: '*'

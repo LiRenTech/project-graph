@@ -59,21 +59,42 @@ settingsVisual:
   language: Language
   lineStyle: Line Style
   lineStyles:
-    straight: Straight
+    straight: Straight Line
     bezier: Bezier Curve
     vertical: Vertical Line
   showGrid: Show Grid
-  windowBackgroundAlpha: Window Background Opacity
-  showDebug: Show Debug Information
-  alwaysShowDetails: Always Show Node Details
-  useNativeTitleBar: Use native title bar (requires restart)
-  protectingPrivacy: Protecting Privacy
-settingsControl:
-  gamepadDeadzone: Gamepad Deadzone
-  scaleExponent: Perspective Zoom Speed
-  moveAmplitude: Perspective Movement Amplitude
-  moveFriction: Perspective Movement Friction Coefficient
+  windowBackgroundAlpha: Window Opacity
+  showDebug: 
+    title: Show Debug Information
+    description: "Typically used by developers\nEnabling this will show debug information in the top left corner of the canvas.\nIt is recommended to enable this option when you encounter a bug and need to take a screenshot for feedback."
+  alwaysShowDetails: 
+    title: Always Show Node Details
+    description: "When enabled, node details will be displayed without needing to move the mouse over the node."
+  useNativeTitleBar: 
+    title: Use Native Title Bar (requires application restart)
+    description: "When enabled, a native title bar will appear at the top of the window instead of a simulated title bar."
+  protectingPrivacy:
+    title: Privacy Protection
+    description: "When enabling this option for issue feedback screenshots, all Chinese characters will be replaced with 'Good' to protect privacy.\nThis replacement is only for display purposes and will not affect the actual data.\nIt can be turned off after feedback is completed to restore."
 settingsPerformance:
-  renderEffect: Render Effect
+  renderEffect: Rendering Effects
+settingsAutomation:
+  autoNamerTemplate:
+    title: Auto Naming Template
+    description: "Input `{{i}}` to automatically replace the node name with a number that can increment when double-clicking to create.\nFor example, `n{{i}}` will automatically replace with `n1`, `n2`, `n3`...\nInput `{{date}}` will automatically replace with the current date when double-clicking to create.\nInput `{{time}}` will automatically replace with the current time when double-clicking to create.\nThey can be combined, for example, `{{i}}-{{date}}-{{time}}`\n"
+  autoSaveWhenClose:
+    title: Automatically Save Project File When Clicking Close Button
+    description: "When closing the software, if there are unsaved project files, a prompt will pop up asking whether to save.\nEnabling this option will automatically save the project files when closing the software.\nTherefore, it is recommended to enable this option."
+settingsControl:
+  scaleExponent:
+    title: View Scaling Speed
+    description: "The 'Current Scaling Factor' will continuously approach the 'Target Scaling Factor' by a certain multiplier.\nWhen it gets sufficiently close (less than 0.0001), it will automatically stop scaling.\nA value of 1 means scaling will complete immediately without any transition effect.\nA value of 0 means scaling will never complete, simulating a locked effect."
+  moveAmplitude:
+    title: View Movement Acceleration
+    description: "This setting is for moving the view up, down, left, and right using the W A S D keys.\nYou can think of the camera as a hovering aircraft that can jet in four directions.\nThis acceleration value represents the power of the jets and needs to be adjusted in conjunction with the friction settings below."
+  moveFriction:
+    title: View Movement Friction Coefficient
+    description: "This setting is for moving the view up, down, left, and right using the W A S D keys.\nThe greater the friction coefficient, the smaller the sliding distance; the smaller the friction coefficient, the further the sliding distance.\nA value of 0 represents absolute smoothness."
+  gamepadDeadzone: Gamepad Deadzone
 app:
-  unsaved: "*"
+  unsaved: '*'
