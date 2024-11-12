@@ -53,6 +53,7 @@ export default function Visual() {
         icon={<Bug />}
         settingKey="showDebug"
         title={t("showDebug")}
+        details={["通常为开发者使用", "开启后，画布左上角将会显示调试信息。", "若您遇到bug截图反馈时，建议开启此选项。"]}
         type="switch"
       />
 
@@ -60,12 +61,14 @@ export default function Visual() {
         icon={<ListCollapse />}
         settingKey="alwaysShowDetails"
         title={t("alwaysShowDetails")}
+        details={["开启后，无需鼠标移动到节点上时，才显示节点的详细信息。"]}
         type="switch"
       />
       <SettingField
         icon={<AppWindowMac />}
         settingKey="useNativeTitleBar"
         title={t("useNativeTitleBar")}
+        details={["开启后，窗口顶部将会出现原生的标题栏，而不是模拟的标题栏。"]}
         type="switch"
       />
     </>
