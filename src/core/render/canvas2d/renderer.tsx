@@ -55,10 +55,6 @@ export namespace Renderer {
   export let renderedEdges: number = 0;
 
   /**
-   * 隐私保护模式
-   */
-  export let isProtectingPrivacy = false;
-  /**
    * 记录每一项渲染的耗时
    * {
    *   [渲染项的名字]: ?ms
@@ -86,6 +82,7 @@ export namespace Renderer {
   let isShowGrid = true;
   export let isAlwaysShowDetails = false;
   let isRenderEffect = true;
+  export let protectingPrivacy = false;
 
   // 确保这个函数在软件打开的那一次调用
   export function init() {
@@ -96,6 +93,10 @@ export namespace Renderer {
       (value) => (isAlwaysShowDetails = value),
     );
     Settings.watch("renderEffect", (value) => (isRenderEffect = value));
+    Settings.watch(
+      "protectingPrivacy",
+      (value) => (protectingPrivacy = value),
+    );
   }
 
   /**
@@ -120,7 +121,7 @@ export namespace Renderer {
     const viewRectangle = getCoverWorldRectangle();
     // 画隐私保护边
 
-    if (isProtectingPrivacy) {
+    if (protectingPrivacy) {
       RenderUtils.renderRect(
         viewRectangle.transformWorld2View(),
         Color.Transparent,

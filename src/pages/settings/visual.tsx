@@ -6,6 +6,7 @@ import {
   Languages,
   ListCollapse,
   Spline,
+  VenetianMask,
 } from "lucide-react";
 import { SettingField } from "./_field";
 import { useTranslation } from "react-i18next";
@@ -53,7 +54,22 @@ export default function Visual() {
         icon={<Bug />}
         settingKey="showDebug"
         title={t("showDebug")}
-        details={["通常为开发者使用", "开启后，画布左上角将会显示调试信息。", "若您遇到bug截图反馈时，建议开启此选项。"]}
+        details={[
+          "通常为开发者使用",
+          "开启后，画布左上角将会显示调试信息。",
+          "若您遇到bug截图反馈时，建议开启此选项。",
+        ]}
+        type="switch"
+      />
+      <SettingField
+        icon={<VenetianMask />}
+        settingKey="protectingPrivacy"
+        title={t("protectingPrivacy")}
+        details={[
+          "用于反馈问题截图时，开启此项之后将文字全部替换成《好》，以保护隐私。",
+          "仅作显示层面的替换，不会影响真实数据",
+          "反馈完毕后可再关闭，复原"
+        ]}
         type="switch"
       />
 

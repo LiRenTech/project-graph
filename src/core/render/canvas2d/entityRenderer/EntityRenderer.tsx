@@ -95,7 +95,7 @@ export namespace EntityRenderer {
 
     if (!node.isEditing) {
       RenderUtils.renderText(
-        Renderer.isProtectingPrivacy
+        Renderer.protectingPrivacy
           ? replaceTextWhenProtect(node.text)
           : node.text,
         Renderer.transformWorld2View(

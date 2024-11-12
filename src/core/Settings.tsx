@@ -17,6 +17,7 @@ export namespace Settings {
     windowBackgroundAlpha: number;
     showDebug: boolean;
     alwaysShowDetails: boolean;
+    protectingPrivacy: boolean;
     // 物理相关
     enableCollision: boolean;
     scaleExponent: number;
@@ -46,6 +47,7 @@ export namespace Settings {
     windowBackgroundAlpha: 0.8,
     showDebug: true,
     alwaysShowDetails: false,
+    protectingPrivacy: false,
     // 物理相关
     enableCollision: true,
     scaleExponent: 0.11,

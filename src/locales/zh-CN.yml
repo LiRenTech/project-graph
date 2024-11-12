@@ -44,6 +44,7 @@ settingsVisual:
   showDebug: 显示调试信息
   alwaysShowDetails: 始终显示节点详细信息
   useNativeTitleBar: 使用原生标题栏（需要重启应用）
+  protectingPrivacy: 隐私保护
 settingsControl:
   gamepadDeadzone: 游戏手柄死区
   scaleExponent: 视角缩放速度
@@ -52,4 +53,4 @@ settingsControl:
 settingsPerformance:
   renderEffect: 渲染特效
 app:
-  unsaved: "*"
+  unsaved: '*'

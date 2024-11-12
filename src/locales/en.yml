@@ -67,6 +67,7 @@ settingsVisual:
   showDebug: Show Debug Information
   alwaysShowDetails: Always Show Node Details
   useNativeTitleBar: Use native title bar (requires restart)
+  protectingPrivacy: Protecting Privacy
 settingsControl:
   gamepadDeadzone: Gamepad Deadzone
   scaleExponent: Perspective Zoom Speed
