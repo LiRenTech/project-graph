@@ -24,6 +24,7 @@ export namespace Settings {
     moveFriction: number;
     // 性能相关
     historySize: number;
+    renderEffect: boolean;
     // 自动化相关
     autoNamerTemplate: string;
     autoOpenPath: string;
@@ -52,6 +53,7 @@ export namespace Settings {
     moveFriction: 0.1,
     // 性能相关
     historySize: 20,
+    renderEffect: true,
     // 自动命名相关
     autoNamerTemplate: "...",
     autoOpenPath: "",

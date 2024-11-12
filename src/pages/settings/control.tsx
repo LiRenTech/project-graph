@@ -8,15 +8,6 @@ export default function Control() {
   return (
     <>
       <SettingField
-        icon={<Skull />}
-        settingKey="gamepadDeadzone"
-        title={t("gamepadDeadzone")}
-        type="slider"
-        min={0}
-        max={1}
-        step={0.01}
-      />
-      <SettingField
         icon={<ScanEye />}
         settingKey="scaleExponent"
         title={t("scaleExponent")}
@@ -40,6 +31,15 @@ export default function Control() {
         title={t("moveFriction")}
         type="slider"
         min={0.01}
+        max={1}
+        step={0.01}
+      />
+      <SettingField
+        icon={<Skull />}
+        settingKey="gamepadDeadzone"
+        title={t("gamepadDeadzone")}
+        type="slider"
+        min={0}
         max={1}
         step={0.01}
       />

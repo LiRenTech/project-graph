@@ -11,7 +11,7 @@ export default function SettingsLayout() {
         <div className="flex flex-col gap-2 *:cursor-pointer *:rounded-full *:px-3 *:py-2 *:transition hover:*:bg-neutral-800 active:*:scale-90 page:*:bg-white/10">
           <NavLink to="/settings/about">{t("about")}</NavLink>
           <NavLink to="/settings/visual">{t("visual")}</NavLink>
-          <NavLink to="/settings/physical">{t("physical")}</NavLink>
+          {/* <NavLink to="/settings/physical">{t("physical")}</NavLink> */}
           <NavLink to="/settings/performance">{t("performance")}</NavLink>
           <NavLink to="/settings/automation">{t("automation")}</NavLink>
           <NavLink to="/settings/control">{t("control")}</NavLink>

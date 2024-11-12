@@ -49,6 +49,7 @@ settingsControl:
   scaleExponent: 视角缩放速度
   moveAmplitude: 视角移动加速度
   moveFriction: 视角移动摩擦力系数
-
+settingsPerformance:
+  renderEffect: 渲染特效
 app:
   unsaved: "*"

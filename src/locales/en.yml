@@ -72,5 +72,7 @@ settingsControl:
   scaleExponent: Perspective Zoom Speed
   moveAmplitude: Perspective Movement Amplitude
   moveFriction: Perspective Movement Friction Coefficient
+settingsPerformance:
+  renderEffect: Render Effect
 app:
   unsaved: "*"

@@ -48,3 +48,5 @@ settingsControl:
   scaleExponent: 視角縮放速度
   moveAmplitude: 視角移動加速度
   moveFriction: 視角移動摩擦力系數
+settingsPerformance:
+  renderEffect: 渲染特技

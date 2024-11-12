@@ -85,6 +85,7 @@ export namespace Renderer {
   let isShowDebug = true;
   let isShowGrid = true;
   export let isAlwaysShowDetails = false;
+  let isRenderEffect = true;
 
   // 确保这个函数在软件打开的那一次调用
   export function init() {
@@ -94,6 +95,7 @@ export namespace Renderer {
       "alwaysShowDetails",
       (value) => (isAlwaysShowDetails = value),
     );
+    Settings.watch("renderEffect", (value) => (isRenderEffect = value));
   }
 
   /**
@@ -235,7 +237,9 @@ export namespace Renderer {
 
     // 渲染所有特效
     start = performance.now();
-    renderEffects();
+    if (isRenderEffect) {
+      renderEffects();
+    }
     timings.effects = performance.now() - start;
     // test
 
