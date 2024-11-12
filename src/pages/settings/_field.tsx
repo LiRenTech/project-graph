@@ -10,7 +10,7 @@ import { getI18n } from "react-i18next";
 export function SettingField({
   settingKey,
   title = settingKey,
-  details = [],
+  details = "",
   showKey = true,
   type = "text",
   options = [],
@@ -22,7 +22,7 @@ export function SettingField({
 }: {
   settingKey: keyof Settings.Settings;
   title?: string;
-  details?: string[];
+  details?: string;
   showKey?: boolean;
   type?: "text" | "number" | "slider" | "switch" | "select";
   options?: { label: string; value: string }[];
@@ -57,9 +57,9 @@ export function SettingField({
         <div className="flex flex-col">
           <span>{title}</span>
           <div>
-            {details.map((d, i) => (
-              <p key={i} className="text-xs text-gray-500">
-                {d}
+            {details.split("\n").map((dd, ii) => (
+              <p key={`${ii}`} className="text-xs text-gray-500">
+                {dd}
               </p>
             ))}
           </div>
