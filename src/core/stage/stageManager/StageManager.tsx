@@ -28,6 +28,7 @@ import { Camera } from "../Camera";
 import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManager";
 import { StageNodeTextTransfer } from "./concreteMethods/StageNodeTextTransfer";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
+import { StageGeneratorAI } from "./concreteMethods/StageGeneratorAI";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -600,6 +601,11 @@ export namespace StageManager {
 
   export function addConnectPointByClick(location: Vector) {
     StageNodeAdder.addConnectPoint(location);
+    StageHistoryManager.recordStep();
+  }
+
+  export function expandTextNodeByAI() {
+    StageGeneratorAI.generateNewTextNodeBySelected();
     StageHistoryManager.recordStep();
   }
 }

@@ -9,6 +9,7 @@ import { Section } from "../../../stageObject/entity/Section";
 import { CollisionBoxRenderer } from "./CollisionBoxRenderer";
 import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { replaceTextWhenProtect } from "../../../../utils/font";
+import { Random } from "../../../algorithm/random";
 
 /**
  * 处理节点相关的绘制
@@ -107,6 +108,19 @@ export namespace EntityRenderer {
       // 在外面增加一个框
       CollisionBoxRenderer.render(node.collisionBox, new Color(0, 255, 0, 0.5));
     }
+    if (node.isAiGenerating) {
+      // 在外面增加一个框
+      RenderUtils.renderRect(
+        new Rectangle(
+          Renderer.transformWorld2View(node.rectangle.location),
+          node.rectangle.size.multiply(Camera.currentScale),
+        ),
+        node.color,
+        new Color(0, 255, 0, Random.randomFloat(0.2, 1)),
+        Random.randomFloat(1, 10) * Camera.currentScale,
+        Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+      );
+    }
 
     if (node.details && !node.isEditingDetails) {
       RenderUtils.renderMultiLineText(
@@ -154,6 +168,6 @@ export namespace EntityRenderer {
       Color.Transparent,
       Color.White,
       2 * Camera.currentScale,
-    )
+    );
   }
 }

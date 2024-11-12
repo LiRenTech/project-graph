@@ -26,6 +26,7 @@ import {
   Package,
   PackageOpen,
   Calculator,
+  BrainCircuit
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
@@ -363,6 +364,15 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           icon={<Calculator />}
           handleFunction={() => {
             StageManager.calculateSelectedNode();
+          }}
+        />
+      )}
+      {isHaveSelectedNode && (
+        <ToolbarItem
+          description="AI扩展节点"
+          icon={<BrainCircuit />}
+          handleFunction={() => {
+            StageManager.expandTextNodeByAI();
           }}
         />
       )}

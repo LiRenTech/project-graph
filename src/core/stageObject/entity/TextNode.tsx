@@ -22,6 +22,10 @@ export class TextNode extends ConnectableEntity {
   details: string;
 
   public collisionBox: CollisionBox;
+  /**
+   * 是否正在使用AI生成
+   */
+  public isAiGenerating: boolean = false;
 
   /**
    * 节点是否被选中
