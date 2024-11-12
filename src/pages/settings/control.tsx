@@ -39,9 +39,9 @@ export default function Control() {
         settingKey="moveFriction"
         title={t("moveFriction")}
         type="slider"
-        min={0}
+        min={0.01}
         max={1}
-        step={0.1}
+        step={0.01}
       />
     </>
   );

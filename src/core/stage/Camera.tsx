@@ -24,7 +24,7 @@ export namespace Camera {
   /**
    * 空气摩擦力系数
    */
-  export const frictionCoefficient = 0.1;
+  export let frictionCoefficient = 0.1;
   /**
    * 空气摩擦力速度指数
    * 指数=2，表示 f = -k * v^2
@@ -144,6 +144,9 @@ export namespace Camera {
     });
     Settings.watch("moveAmplitude", (value) => {
       moveAmplitude = value;
+    });
+    Settings.watch("moveFriction", value => {
+      frictionCoefficient = value;
     })
   }
 
