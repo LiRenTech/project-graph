@@ -11,6 +11,7 @@ settingsTabs:
   physical: 物理
   performance: 性能
   automation: 自动化
+  control: 控制
   ai: AI
   github: GitHub
 settingsAbout:

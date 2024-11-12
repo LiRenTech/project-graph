@@ -52,6 +52,7 @@ settingsTabs:
   physical: Physical
   performance: Performance
   automation: Automation
+  control: Control
   ai: AI
   github: GitHub
 settingsVisual:
