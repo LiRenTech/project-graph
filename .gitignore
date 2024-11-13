@@ -35,3 +35,4 @@ build/
 __pycache__/
 
 keystore.properties
+.xlings # xlings tools
