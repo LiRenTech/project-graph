@@ -98,3 +98,38 @@ settingsControl:
   gamepadDeadzone: Gamepad Deadzone
 app:
   unsaved: '*'
+appMenu:
+  file:
+    title: File
+    items:
+      new: New
+      open: Open
+      save: Save
+      saveAs: Save As
+      recent: Recent Files
+  location:
+    title: Location
+    items:
+      openDataFolder: Open Data Folder
+      openProjectFolder: Open Project Folder
+  export:
+    title: Export
+    items:
+      exportAsSVGByAll: Export as SVG (All)
+      exportAsMarkdownBySelected: Export as Markdown (Selected)
+  view:
+    title: View
+    items:
+      resetByAll: Reset View by All Content
+      resetBySelect: Reset View by Selected Content
+  more:
+    title: More
+    items:
+      settings: Settings
+      about: About
+      welcome: Welcome Screen
+  window:
+    title: Window
+    items:
+      refresh: Refresh
+      fullscreen: Full Screen

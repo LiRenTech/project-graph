@@ -75,3 +75,38 @@ settingsControl:
 
 app:
   unsaved: '*'
+appMenu:
+  file:
+    title: 檔案
+    items:
+      new: 新建
+      open: 打開
+      save: 保存
+      saveAs: 另存為
+      recent: 最近打開
+  location:
+    title: 位置
+    items:
+      openDataFolder: 打開數據資料夾
+      openProjectFolder: 打開工程資料夾
+  export:
+    title: 匯出
+    items:
+      exportAsSVGByAll: 匯出為SVG（全部）
+      exportAsMarkdownBySelected: 匯出為Markdown（選中）
+  view:
+    title: 視圖
+    items:
+      resetByAll: 根據全部內容重置視野
+      resetBySelect: 根據選中內容重置視野
+  more:
+    title: 更多
+    items:
+      settings: 設定
+      about: 關於
+      welcome: 歡迎畫面
+  window:
+    title: 窗口
+    items:
+      refresh: 刷新
+      fullscreen: 全螢幕

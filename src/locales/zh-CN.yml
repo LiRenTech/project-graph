@@ -41,13 +41,13 @@ settingsVisual:
     vertical: 垂直折线
   showGrid: 显示网格
   windowBackgroundAlpha: 窗口不透明度
-  showDebug: 
+  showDebug:
     title: 显示调试信息
     description: "通常为开发者使用\n开启后，画布左上角将会显示调试信息。\n若您遇到bug截图反馈时，建议开启此选项。"
-  alwaysShowDetails: 
+  alwaysShowDetails:
     title: 始终显示节点详细信息
     description: "开启后，无需鼠标移动到节点上时，才显示节点的详细信息。"
-  useNativeTitleBar: 
+  useNativeTitleBar:
     title: 使用原生标题栏（需要重启应用）
     description: "开启后，窗口顶部将会出现原生的标题栏，而不是模拟的标题栏。"
   protectingPrivacy:
@@ -74,4 +74,39 @@ settingsControl:
     description: "此设置项用于 使用W S A D按键来上下左右移动视角时的情景\n摩擦系数越大，滑动的距离越小，摩擦系数越小，滑动的距离越远\n此值=0时代表 绝对光滑"
   gamepadDeadzone: 游戏手柄死区
 app:
-  unsaved: '*'
+  unsaved: "*"
+appMenu:
+  file:
+    title: 文件
+    items:
+      new: 新建
+      open: 打开
+      save: 保存
+      saveAs: 另存为
+      recent: 最近打开
+  location:
+    title: 位置
+    items:
+      openDataFolder: 打开数据文件夹
+      openProjectFolder: 打开工程文件夹
+  export:
+    title: 导出
+    items:
+      exportAsSVGByAll: 导出为SVG（全部）
+      exportAsMarkdownBySelected: 导出为Markdown（选中）
+  view:
+    title: 视图
+    items:
+      resetByAll: 根据全部内容重置视野
+      resetBySelect: 根据选中内容重置视野
+  more:
+    title: 更多
+    items:
+      settings: 设置
+      about: 关于
+      welcome: 欢迎界面
+  window:
+    title: 窗口
+    items:
+      refresh: 刷新
+      fullscreen: 全屏

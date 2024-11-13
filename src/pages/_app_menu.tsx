@@ -41,7 +41,7 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 import { TextNode } from "../core/stageObject/entity/TextNode";
-
+import { useTranslation } from "react-i18next";
 
 export default function AppMenu({
   className = "",
@@ -53,7 +53,7 @@ export default function AppMenu({
   const navigate = useNavigate();
   const dialog = useDialog();
   const [file, setFile] = useRecoilState(fileAtom);
-
+  const { t } = useTranslation("appMenu");
   const [, setRecentFilePanelOpen] = useRecoilState(isRecentFilePanelOpenAtom);
 
   const onNew = () => {
@@ -293,24 +293,24 @@ export default function AppMenu({
       )}
       onPointerDown={(e) => e.stopPropagation()}
     >
-      <Row icon={<File />} title="文件">
+      <Row icon={<File />} title={t("file.title")}>
         <Col icon={<FilePlus />} onClick={onNew}>
-          新建
+          {t("file.items.new")}
         </Col>
         <Col icon={<FileText />} onClick={onOpen}>
-          打开
+          {t("file.items.open")}
         </Col>
         <Col icon={<FileText />} onClick={() => setRecentFilePanelOpen(true)}>
-          最近
+          {t("file.items.recent")}
         </Col>
         <Col icon={<Save />} onClick={onSave}>
-          保存
+          {t("file.items.save")}
         </Col>
         <Col icon={<Save />} onClick={onSaveNew}>
-          另存为
+          {t("file.items.saveAs")}
         </Col>
       </Row>
-      <Row icon={<Folder />} title="位置">
+      <Row icon={<Folder />} title={t("location.title")}>
         <Col
           icon={<FolderCog />}
           onClick={() => {
@@ -322,7 +322,7 @@ export default function AppMenu({
             });
           }}
         >
-          打开软件数据文件夹
+          {t("location.items.openDataFolder")}
         </Col>
         <Col
           icon={<FolderOpen />}
@@ -335,37 +335,37 @@ export default function AppMenu({
             });
           }}
         >
-          打开此文档所在文件夹
+          {t("location.items.openProjectFolder")}
         </Col>
       </Row>
-      <Row icon={<File />} title="导出">
+      <Row icon={<File />} title={t("export.title")}>
         <Col icon={<FileCode />} onClick={onSaveSVGNew}>
-          全部舞台导出SVG
+          {t("export.items.exportAsSVGByAll")}
         </Col>
         <Col icon={<FileType />} onClick={onSaveMarkdownNew}>
-          选中的根节点导出markdown
+          {t("export.items.exportAsMarkdownBySelected")}
         </Col>
       </Row>
-      <Row icon={<View />} title="视图">
+      <Row icon={<View />} title={t("view.title")}>
         <Col icon={<SquareDashedKanbanIcon />} onClick={() => Camera.reset()}>
-          根据全部节点重置视野
+          {t("view.items.resetByAll")}
         </Col>
         <Col
           icon={<SquareDashedMousePointer />}
           onClick={() => Camera.resetBySelected()}
         >
-          根据选中节点重置视野
+          {t("view.items.resetBySelect")}
         </Col>
       </Row>
-      <Row icon={<MoreHorizontal />} title="更多">
+      <Row icon={<MoreHorizontal />} title={t("more.title")}>
         <Col
           icon={<SettingsIcon />}
           onClick={() => navigate("/settings/visual")}
         >
-          设置
+          {t("more.items.settings")}
         </Col>
         <Col icon={<Info />} onClick={() => navigate("/settings/about")}>
-          关于
+          {t("more.items.about")}
         </Col>
 
         <Col
@@ -374,12 +374,12 @@ export default function AppMenu({
             navigate("/welcome");
           }}
         >
-          welcome
+          {t("more.items.welcome")}
         </Col>
       </Row>
-      <Row icon={<AppWindow />} title="窗口">
+      <Row icon={<AppWindow />} title={t("window.title")}>
         <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>
-          刷新
+          {t("window.items.refresh")}
         </Col>
         <Col
           icon={<Fullscreen />}
@@ -389,7 +389,7 @@ export default function AppMenu({
               .then((res) => getCurrentWindow().setFullscreen(!res))
           }
         >
-          全屏
+          {t("window.items.fullscreen")}
         </Col>
       </Row>
       <Row icon={<Dock />} title="测试">
