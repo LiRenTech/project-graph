@@ -19,6 +19,9 @@ import {
   SquareDashedMousePointer,
   FileCode,
   FileType,
+  Folder,
+  FolderCog,
+  FolderOpen,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -307,10 +310,34 @@ export default function AppMenu({
           另存为
         </Col>
       </Row>
-      {/* <Row icon={<Plus />} title="创建">
-        <Col icon={<Cuboid />}>节点</Col>
-        <Col icon={<Image />}>图片</Col>
-      </Row> */}
+      <Row icon={<Folder />} title="位置">
+        <Col
+          icon={<FolderCog />}
+          onClick={() => {
+            dialog.show({
+              title: "数据文件夹位置",
+              type: "info",
+              code: "%APPDATA%/liren.project-graph",
+              content: "软件数据文件夹位置",
+            });
+          }}
+        >
+          打开软件数据文件夹
+        </Col>
+        <Col
+          icon={<FolderOpen />}
+          onClick={() => {
+            dialog.show({
+              title: "数据文件夹位置",
+              type: "info",
+              code: file,
+              content: "软件数据文件夹位置",
+            });
+          }}
+        >
+          打开此文档所在文件夹
+        </Col>
+      </Row>
       <Row icon={<File />} title="导出">
         <Col icon={<FileCode />} onClick={onSaveSVGNew}>
           全部舞台导出SVG
@@ -422,7 +449,7 @@ function Col({
 }: React.PropsWithChildren<{ icon: React.ReactNode; onClick?: () => void }>) {
   return (
     <div
-      className="flex w-max items-center gap-1 transition hover:opacity-80 active:scale-90"
+      className="flex w-max cursor-pointer items-center gap-1 transition hover:opacity-80 active:scale-90"
       onClick={onClick}
     >
       {icon}

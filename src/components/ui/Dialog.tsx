@@ -35,7 +35,7 @@ export default function Dialog() {
   //     }
   //   });
   // }, []);
-
+  const [isCopied, setIsCopied] = React.useState(false);
   return (
     <div
       className={cn(
@@ -63,10 +63,26 @@ export default function Dialog() {
       </div>
       {dialog.code.trim() !== "" && (
         <div className="flex flex-col gap-2">
-          <h2 className="text-lg font-bold">代码</h2>
-          <pre className="overflow-auto rounded-md bg-neutral-900 p-2 text-sm text-white">
+          {/* <h2 className="text-lg font-bold">代码</h2> */}
+          <pre
+            className="cursor-copy select-text overflow-auto rounded-md bg-neutral-900 p-2 text-sm text-white"
+            onClick={() => {
+              navigator.clipboard
+                .writeText(dialog.code)
+                .then(() => {
+                  setIsCopied(true);
+                  setTimeout(() => {
+                    setIsCopied(false);
+                  }, 1000);
+                })
+                .catch((err) => {
+                  console.error("复制失败：", err);
+                });
+            }}
+          >
             {dialog.code}
           </pre>
+          {isCopied && <span>已复制</span>}
         </div>
       )}
       {dialog.input && (
