@@ -37,19 +37,15 @@ https://littlefean.github.io/2024/09/28/tauri%E9%A1%B9%E7%9B%AE%E5%9C%A8windows%
 
 ### 一键安装配置环境
 
-如果感觉配置过程过于麻烦，可以下载xlings工具，使用xlings一键配置环境，在powershell中运行一键安装命令
-
-```
-Invoke-Expression (Invoke-Webrequest 'https://d2learn.org/xlings-install.ps1.txt' -UseBasicParsing).Content
-```
-
-然后运行指令
+如果感觉配置过程过于麻烦，可以使用xlings工具一键安装并配置环境
 
 ```
 xlings install
 ```
 
-这个过程中可能会有弹窗，点击确认即可
+> 注:
+> - 目前已测试系统: [windows](https://github.com/LiRenTech/project-graph/issues/139#issuecomment-2470110723)、[ubuntu](https://github.com/LiRenTech/project-graph/issues/139#issuecomment-2474507140)
+> - [更多一键环境配置讨论](https://github.com/LiRenTech/project-graph/issues/139)
 
 ## 开发注意事项
 
