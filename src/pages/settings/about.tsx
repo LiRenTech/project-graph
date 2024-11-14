@@ -37,7 +37,9 @@ export default function About() {
           </span>
         </div>
       </div>
+
       <div className="flex-1 overflow-auto leading-7">
+        <h2 className="mt-4 text-2xl font-bold">软件介绍</h2>
         <p>{t("intro.0")}</p>
         <p>{t("intro.1")}</p>
         <p>{t("intro.2")}</p>
@@ -45,6 +47,44 @@ export default function About() {
         <h2 className="mt-4 text-2xl font-bold">{t("contact.0")}</h2>
         <p>{t("contact.1")}</p>
         <p>{t("contact.2")}</p>
+
+        <h2 className="mt-4 text-2xl font-bold">技术支持与生态环境</h2>
+        <div className="flex w-full gap-2">
+          <span>React</span>
+          <span>TypeScript</span>
+          <span>Tauri</span>
+          <span>TailwindCSS</span>
+          <span>i18n</span>
+          <span>eslint</span>
+          <span>vite</span>
+          <span>vitest</span>
+          <span>recoil</span>
+          <span>lucide</span>
+          <span>xlings</span>
+        </div>
+        <h2 className="mt-4 text-2xl font-bold">开发者名单</h2>
+        <p>项目提出者：Rutubet</p>
+        <p>概念设计：Littlefean</p>
+        <p>功能设计：Littlefean、ZTY、Rutubet、广大的反馈者们</p>
+        <p>Logo设计：Rutubet</p>
+        <p>UI设计：ZTY</p>
+        <p>软件架构与体系设计：Rutubet、Littlefean、ZTY</p>
+        <p>贝塞尔曲线设计：Rutubet</p>
+        <p>动画特效设计：Littlefean</p>
+        <p>自动化构建发布：ZTY</p>
+        <p>自动化环境搭建：SunriseSpeak</p>
+        <p>文档网站维护：ZTY</p>
+        <p>性能督导：ZTY、广大的反馈者们</p>
+        <p>视频宣发：Littlefean</p>
+        <p>翻译官：Artificial Intelligence</p>
+        <p>测试：Vitest（?）、all developer、all user</p>
+        <p>程序员鼓励师：null（?）</p>
+        <p>音效师：undefined（?）</p>
+        <p>吉祥物：yuxiaoQAQ</p>
+        <h2 className="mt-4 text-2xl font-bold">灵感来源</h2>
+        <p>没有黑夜风格的FigJamBoard</p>
+        <p>所长林超的画分析框架的详解视频</p>
+        <p>《数据结构与算法》中的拓扑排序、图论</p>
         <h2 className="mt-4 text-2xl font-bold">{t("team.0")}</h2>
         <p>{t("team.1")}</p>
         <p>{t("team.2")}</p>
