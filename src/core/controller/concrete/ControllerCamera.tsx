@@ -108,16 +108,19 @@ ControllerCamera.mousemove = (event: MouseEvent) => {
   if (Controller.isCameraLocked) {
     return;
   }
+  // 空格+左键 拖动视野
   if (Controller.pressingKeySet.has(" ") && Controller.isMouseDown[0]) {
     console.log("空格按下的同时按下了鼠标左键");
     moveCameraByMouseMove(event.clientX, event.clientY, 0);
     Controller.setCursorName("grabbing");
     return;
   }
+  // 中键按下拖动视野
   if (Controller.isMouseDown[1]) {
     moveCameraByMouseMove(event.clientX, event.clientY, 1);
     Controller.setCursorName("grabbing");
   }
+  // 侧键按下拖动视野
   if (Controller.isMouseDown[4]) {
     moveCameraByMouseMove(event.clientX, event.clientY, 4);
     Controller.setCursorName("grabbing");
@@ -154,10 +157,21 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
   if (Controller.pressingKeySet.has("control")) {
     return;
   }
+  
   if (event.deltaY > 0) {
     Camera.targetScale *= 0.8;
-  } else {
+  } else if (event.deltaY < 0) {
     Camera.targetScale *= 1.2;
+  }
+
+  if (event.deltaX > 0) {
+    Camera.accelerateCommander = Camera.accelerateCommander
+    .add(Controller.keyMap["a"])
+    .limitX(-1, 1)
+  } else if (event.deltaX < 0) {
+    Camera.accelerateCommander = Camera.accelerateCommander
+    .add(Controller.keyMap["d"])
+    .limitX(-1, 1)
   }
 };
 
