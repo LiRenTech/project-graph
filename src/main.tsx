@@ -20,6 +20,7 @@ import { ProgressNumber } from "./core/dataStruct/ProgressNumber";
 import { StartFilesManager } from "./core/StartFilesManager";
 import { Camera } from "./core/stage/Camera";
 import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManager";
+import { StageStyleManager } from "./core/stageStyle/StageStyleManager";
 
 // 计时开始
 const t1 = performance.now();
@@ -41,6 +42,7 @@ const Routes = () => <RouterProvider router={router} />;
   Renderer.init();
   Camera.init();
   StageHistoryManager.init();
+  StageStyleManager.init();
 
   // 启动时加载用户自定义的工程文件
   StartFilesManager.getCurrentStartFile().then((path) => {

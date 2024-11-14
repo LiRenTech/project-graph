@@ -33,6 +33,10 @@ settingsTabs:
   github: GitHub
 settingsVisual:
   language: 語言
+  theme: 主題
+  themes:
+    black: 黑色
+    white: 白色
   lineStyle: 線段樣式
   lineStyles:
     straight: 直線

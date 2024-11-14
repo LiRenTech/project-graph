@@ -12,6 +12,7 @@ import { VerticalPolyEdgeRenderer } from "./concrete/VerticalPolyEdgeRenderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { ConnectableEntity } from "../../../../stageObject/StageObject";
 import { EdgeRendererClass } from "./EdgeRendererClass";
+import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
 
 /**
  * 边的总渲染器单例
@@ -127,8 +128,8 @@ export namespace EdgeRenderer {
         Renderer.transformWorld2View(location3),
         Renderer.transformWorld2View(location4),
       ],
-      new Color(204, 204, 204),
-      new Color(204, 204, 204),
+      StageStyleManager.currentStyle.NodeBorderColor,
+      StageStyleManager.currentStyle.NodeBorderColor,
       0,
     );
   }

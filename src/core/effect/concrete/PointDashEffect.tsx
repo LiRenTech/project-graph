@@ -2,6 +2,7 @@ import { Color, mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Vector } from "../../dataStruct/Vector";
 import { StageManager } from "../../stage/stageManager/StageManager";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effect";
 import { EffectParticle } from "../effectParticle";
 
@@ -24,7 +25,7 @@ export class PointDashEffect extends Effect {
           this.location.clone(),
           Vector.fromDegrees(Math.random() * 360).multiply(Math.random() * 1),
           Vector.getZero(),
-          Color.White,
+          StageStyleManager.currentStyle.NodeBorderColor,
           1,
         ),
       );
@@ -59,8 +60,8 @@ export class PointDashEffect extends Effect {
         particle.color = Color.Green;
       } else {
         particle.color = mixColors(
-          Color.White,
-          Color.White.toTransparent(),
+          StageStyleManager.currentStyle.NodeBorderColor,
+          StageStyleManager.currentStyle.NodeBorderColor.toTransparent(),
           this.timeProgress.rate,
         );
       }

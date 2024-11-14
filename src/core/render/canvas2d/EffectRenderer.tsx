@@ -20,6 +20,7 @@ import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEf
 import { RateFunctions } from "../../algorithm/rateFunctions";
 import { PointDashEffect } from "../../effect/concrete/PointDashEffect";
 import { WorldRenderUtils } from "./WorldRenderUtils";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 
 /**
  * 专门编写所有的特效渲染
@@ -181,8 +182,8 @@ export namespace EffectRenderer {
     for (const ashLocation of effect.ashLocationArray) {
       const viewLocation = Renderer.transformWorld2View(ashLocation);
       const color = mixColors(
-        effect.color,
-        effect.color.toTransparent(),
+        StageStyleManager.currentStyle.NodeBorderColor,
+        StageStyleManager.currentStyle.NodeBorderColor.toTransparent(),
         effect.timeProgress.rate,
       );
 
@@ -212,8 +213,8 @@ export namespace EffectRenderer {
     for (const p of effect.currentLocationArrayTop) {
       const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        Color.White.toTransparent(),
-        Color.White,
+        StageStyleManager.currentStyle.NodeBorderColor.toTransparent(),
+        StageStyleManager.currentStyle.NodeBorderColor,
         RateFunctions.doorFunction(effect.timeProgress.rate),
       );
 
@@ -222,8 +223,8 @@ export namespace EffectRenderer {
     for (const p of effect.currentLocationArrayBottom) {
       const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        Color.White.toTransparent(),
-        Color.White,
+        StageStyleManager.currentStyle.NodeBorderColor.toTransparent(),
+        StageStyleManager.currentStyle.NodeBorderColor,
         RateFunctions.doorFunction(effect.timeProgress.rate),
       );
 
@@ -233,8 +234,8 @@ export namespace EffectRenderer {
     for (const p of effect.currentLocationArrayLeft) {
       const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        Color.White.toTransparent(),
-        Color.White,
+        StageStyleManager.currentStyle.NodeBorderColor.toTransparent(),
+        StageStyleManager.currentStyle.NodeBorderColor,
         RateFunctions.doorFunction(effect.timeProgress.rate),
       );
 
@@ -244,8 +245,8 @@ export namespace EffectRenderer {
     for (const p of effect.currentLocationArrayRight) {
       const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        Color.White.toTransparent(),
-        Color.White,
+        StageStyleManager.currentStyle.NodeBorderColor.toTransparent(),
+        StageStyleManager.currentStyle.NodeBorderColor,
         RateFunctions.doorFunction(effect.timeProgress.rate),
       );
 

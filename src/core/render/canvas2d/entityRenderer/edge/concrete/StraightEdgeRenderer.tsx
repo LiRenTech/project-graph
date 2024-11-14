@@ -12,6 +12,7 @@ import { RenderUtils } from "../../../RenderUtils";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 import { ConnectableEntity } from "../../../../../stageObject/StageObject";
+import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
 
 /**
  * 直线渲染器
@@ -74,7 +75,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       RenderUtils.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.start),
         Renderer.transformWorld2View(edge.bodyLine.end),
-        new Color(204, 204, 204),
+        StageStyleManager.currentStyle.NodeBorderColor,
         2 * Camera.currentScale,
       );
     } else {
@@ -86,6 +87,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         edge.text,
         Renderer.transformWorld2View(midPoint),
         Renderer.FONT_SIZE * Camera.currentScale,
+        StageStyleManager.currentStyle.NodeBorderColor
       );
       const edgeTextRectangle = edge.textRectangle;
 
@@ -94,15 +96,16 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         Renderer.transformWorld2View(
           edgeTextRectangle.getLineIntersectionPoint(startHalf),
         ),
-        new Color(204, 204, 204),
+        StageStyleManager.currentStyle.NodeBorderColor,
         2 * Camera.currentScale,
+        
       );
       RenderUtils.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.end),
         Renderer.transformWorld2View(
           edgeTextRectangle.getLineIntersectionPoint(endHalf),
         ),
-        new Color(204, 204, 204),
+        StageStyleManager.currentStyle.NodeBorderColor,
         2 * Camera.currentScale,
       );
     }

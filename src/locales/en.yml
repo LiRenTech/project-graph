@@ -57,6 +57,10 @@ settingsTabs:
   github: GitHub
 settingsVisual:
   language: Language
+  theme: Theme
+  themes:
+    black: Black
+    white: White
   lineStyle: Line Style
   lineStyles:
     straight: Straight Line

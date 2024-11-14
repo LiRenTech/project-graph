@@ -28,6 +28,7 @@ import { CircleChangeRadiusEffect } from "../../effect/concrete/CircleChangeRadi
 import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEffect";
 import { PointDashEffect } from "../../effect/concrete/PointDashEffect";
 import { sine } from "../../effect/animateFunctions";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 
 /**
  * 渲染器
@@ -174,18 +175,11 @@ export namespace Renderer {
       if (Stage.selectingRectangle) {
         RenderUtils.renderRect(
           Stage.selectingRectangle.transformWorld2View(),
-          new Color(255, 255, 255, 0.1),
-          new Color(255, 255, 255, 0.5),
+          StageStyleManager.currentStyle.SelectRectangleFillColor,
+          StageStyleManager.currentStyle.SelectRectangleBorderColor,
           1,
         );
       }
-      RenderUtils.renderGradientLine(
-        transformWorld2View(Stage.selectStartLocation),
-        transformWorld2View(Stage.selectEndLocation),
-        new Color(255, 255, 255, 0),
-        new Color(255, 255, 255, 0.5),
-        2,
-      );
     }
     // 切割线
     if (Stage.isCutting && Stage.cuttingLine) {
@@ -472,8 +466,8 @@ export namespace Renderer {
         currentGap *= 2;
       }
     }
-    const gridColor = new Color(255, 255, 255, 0.2);
-    const mainColor = new Color(255, 255, 255, 0.3);
+    const gridColor = StageStyleManager.currentStyle.GridNormalColor;
+    const mainColor = StageStyleManager.currentStyle.GridHeavyColor;
 
     const viewRect = getCoverWorldRectangle();
     let yStart = viewRect.location.y - (viewRect.location.y % currentGap);
@@ -532,7 +526,7 @@ export namespace Renderer {
         line,
         new Vector(10, 80 + detailsData.indexOf(line) * 12),
         10,
-        new Color(255, 255, 255, 0.5),
+        StageStyleManager.currentStyle.DetailsDebugTextColor,
       );
     }
   }

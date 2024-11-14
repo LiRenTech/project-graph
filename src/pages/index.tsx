@@ -10,6 +10,7 @@ import { Settings } from "../core/Settings";
 import DetailsEditPanel from "./_details_edit_panel";
 import SearchingNodePanel from "./_searching_node_panel";
 import HintText from "./_hint_text";
+import { StageStyleManager } from "../core/stageStyle/StageStyleManager";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);
@@ -97,9 +98,10 @@ export default function Home() {
       <SearchingNodePanel />
       <DetailsEditPanel />
       <HintText />
+      {/* TODO: 下面这个写法有点奇怪 */}
       <div
         style={{
-          background: `rgba(31,31,31,${bgAlpha})`,
+          background: `rgba(${StageStyleManager.currentStyle.BackgroundColor.r},${StageStyleManager.currentStyle.BackgroundColor.g},${StageStyleManager.currentStyle.BackgroundColor.b},${bgAlpha})`,
         }}
       >
         <canvas ref={canvasRef} className={`cursor-${cursorName}`} />

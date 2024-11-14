@@ -7,6 +7,7 @@ import {
   ListCollapse,
   Spline,
   VenetianMask,
+  Palette
 } from "lucide-react";
 import { SettingField } from "./_field";
 import { useTranslation } from "react-i18next";
@@ -23,6 +24,16 @@ export default function Visual() {
         title={t("language")}
         type="select"
         options={languages}
+      />
+      <SettingField
+        icon={<Palette />}
+        settingKey="theme"
+        title={t("theme")}
+        type="select"
+        options={[
+          { label: t("themes.black"), value: "black" },
+          { label: t("themes.white"), value: "white" },
+        ]}
       />
       <SettingField
         icon={<Spline />}
