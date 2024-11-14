@@ -77,10 +77,14 @@ export default function About() {
         <p>性能督导：ZTY、广大的反馈者们</p>
         <p>视频宣发：Littlefean</p>
         <p>翻译官：Artificial Intelligence</p>
-        <p>测试：Vitest（?）、all developer、all user</p>
-        <p>程序员鼓励师：null（?）</p>
-        <p>音效师：undefined（?）</p>
+        <p>测试：Vitest、all developer、all user</p>
+        <p>程序员鼓励师：null</p>
+        <p>程序员鼓励师的鼓励师：maximum recursion depth exceeded</p>
+        <p>音效师：undefined</p>
         <p>吉祥物：yuxiaoQAQ</p>
+        <p>...</p>
+        <p>软件在github上开源，欢迎交流与贡献</p>
+
         <h2 className="mt-4 text-2xl font-bold">灵感来源</h2>
         <p>没有黑夜风格的FigJamBoard</p>
         <p>所长林超的画分析框架的详解视频</p>
