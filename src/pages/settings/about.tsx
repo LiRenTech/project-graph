@@ -66,7 +66,7 @@ export default function About() {
         <p>项目提出者：Rutubet</p>
         <p>概念设计：Littlefean</p>
         <p>功能设计：Littlefean、ZTY、Rutubet、广大的反馈者们</p>
-        <p>Logo设计：Rutubet</p>
+        <p>Logo设计：Littlefean、ZTY、Rutubet</p>
         <p>UI设计：ZTY</p>
         <p>软件架构与体系设计：Rutubet、Littlefean、ZTY</p>
         <p>贝塞尔曲线设计：Rutubet</p>
@@ -81,9 +81,9 @@ export default function About() {
         <p>程序员鼓励师：null</p>
         <p>程序员鼓励师的鼓励师：maximum recursion depth exceeded</p>
         <p>音效师：undefined</p>
-        <p>吉祥物：yuxiaoQAQ</p>
+        <p>气氛调节师：yuxiaoQAQ</p>
         <p>...</p>
-        <p>软件在github上开源，欢迎交流与贡献</p>
+        <p>软件在github上开源，欢迎提issue与贡献代码</p>
 
         <h2 className="mt-4 text-2xl font-bold">灵感来源</h2>
         <p>没有黑夜风格的FigJamBoard</p>
