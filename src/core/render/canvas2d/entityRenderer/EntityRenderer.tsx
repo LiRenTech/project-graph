@@ -27,7 +27,7 @@ export namespace EntityRenderer {
           section.rectangle.size.multiply(Camera.currentScale),
         ),
         section.color,
-        StageStyleManager.currentStyle.NodeBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
         Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
       );
@@ -47,7 +47,7 @@ export namespace EntityRenderer {
           section.rectangle.size.multiply(Camera.currentScale),
         ),
         section.color,
-        StageStyleManager.currentStyle.NodeBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
         Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
       );
@@ -89,7 +89,7 @@ export namespace EntityRenderer {
         node.rectangle.size.multiply(Camera.currentScale),
       ),
       node.color,
-      StageStyleManager.currentStyle.NodeBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorderColor,
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );

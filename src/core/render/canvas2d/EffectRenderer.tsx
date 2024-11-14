@@ -182,8 +182,8 @@ export namespace EffectRenderer {
     for (const ashLocation of effect.ashLocationArray) {
       const viewLocation = Renderer.transformWorld2View(ashLocation);
       const color = mixColors(
-        StageStyleManager.currentStyle.NodeBorderColor,
-        StageStyleManager.currentStyle.NodeBorderColor.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
         effect.timeProgress.rate,
       );
 
@@ -213,8 +213,8 @@ export namespace EffectRenderer {
     for (const p of effect.currentLocationArrayTop) {
       const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        StageStyleManager.currentStyle.NodeBorderColor.toTransparent(),
-        StageStyleManager.currentStyle.NodeBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
         RateFunctions.doorFunction(effect.timeProgress.rate),
       );
 
@@ -223,8 +223,8 @@ export namespace EffectRenderer {
     for (const p of effect.currentLocationArrayBottom) {
       const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        StageStyleManager.currentStyle.NodeBorderColor.toTransparent(),
-        StageStyleManager.currentStyle.NodeBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
         RateFunctions.doorFunction(effect.timeProgress.rate),
       );
 
@@ -234,8 +234,8 @@ export namespace EffectRenderer {
     for (const p of effect.currentLocationArrayLeft) {
       const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        StageStyleManager.currentStyle.NodeBorderColor.toTransparent(),
-        StageStyleManager.currentStyle.NodeBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
         RateFunctions.doorFunction(effect.timeProgress.rate),
       );
 
@@ -245,8 +245,8 @@ export namespace EffectRenderer {
     for (const p of effect.currentLocationArrayRight) {
       const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        StageStyleManager.currentStyle.NodeBorderColor.toTransparent(),
-        StageStyleManager.currentStyle.NodeBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
         RateFunctions.doorFunction(effect.timeProgress.rate),
       );
 

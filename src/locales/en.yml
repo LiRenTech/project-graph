@@ -57,10 +57,10 @@ settingsTabs:
   github: GitHub
 settingsVisual:
   language: Language
-  theme: Theme
+  theme: Stage Theme Color
   themes:
-    black: Black
-    white: White
+    black: Dracula Dark Theme
+    white: Academic White Theme
   lineStyle: Line Style
   lineStyles:
     straight: Straight Line

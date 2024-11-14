@@ -34,10 +34,10 @@ settingsAbout:
     - 团队以浅蓝色和代码绿为代表颜色，象征着逻辑合理与整活幽默并存的团队文化。
 settingsVisual:
   language: 语言
-  theme: 主题
+  theme: 舞台主题颜色
   themes:
-    black: 黑色
-    white: 白色
+    black: 德古拉暗黑主题
+    white: 论文白色主题
   lineStyle: 线段样式
   lineStyles:
     straight: 直线

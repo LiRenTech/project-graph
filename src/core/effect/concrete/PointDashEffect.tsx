@@ -25,7 +25,7 @@ export class PointDashEffect extends Effect {
           this.location.clone(),
           Vector.fromDegrees(Math.random() * 360).multiply(Math.random() * 1),
           Vector.getZero(),
-          StageStyleManager.currentStyle.NodeBorderColor,
+          StageStyleManager.currentStyle.StageObjectBorderColor,
           1,
         ),
       );
@@ -60,8 +60,8 @@ export class PointDashEffect extends Effect {
         particle.color = Color.Green;
       } else {
         particle.color = mixColors(
-          StageStyleManager.currentStyle.NodeBorderColor,
-          StageStyleManager.currentStyle.NodeBorderColor.toTransparent(),
+          StageStyleManager.currentStyle.StageObjectBorderColor,
+          StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
           this.timeProgress.rate,
         );
       }

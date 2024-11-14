@@ -75,7 +75,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       RenderUtils.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.start),
         Renderer.transformWorld2View(edge.bodyLine.end),
-        StageStyleManager.currentStyle.NodeBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
       );
     } else {
@@ -87,7 +87,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         edge.text,
         Renderer.transformWorld2View(midPoint),
         Renderer.FONT_SIZE * Camera.currentScale,
-        StageStyleManager.currentStyle.NodeBorderColor
+        StageStyleManager.currentStyle.StageObjectBorderColor
       );
       const edgeTextRectangle = edge.textRectangle;
 
@@ -96,7 +96,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         Renderer.transformWorld2View(
           edgeTextRectangle.getLineIntersectionPoint(startHalf),
         ),
-        StageStyleManager.currentStyle.NodeBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
         
       );
@@ -105,7 +105,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         Renderer.transformWorld2View(
           edgeTextRectangle.getLineIntersectionPoint(endHalf),
         ),
-        StageStyleManager.currentStyle.NodeBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
       );
     }

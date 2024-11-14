@@ -128,8 +128,8 @@ export namespace EdgeRenderer {
         Renderer.transformWorld2View(location3),
         Renderer.transformWorld2View(location4),
       ],
-      StageStyleManager.currentStyle.NodeBorderColor,
-      StageStyleManager.currentStyle.NodeBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorderColor,
       0,
     );
   }
