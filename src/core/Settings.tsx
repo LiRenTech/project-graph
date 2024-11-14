@@ -12,7 +12,7 @@ export namespace Settings {
     language: "zh-CN" | "en";
     // 视觉相关
     lineStyle: "straight" | "bezier" | "vertical";
-    theme: "";   // 暂无
+    theme: "black" | "white";   // 暂无
     showGrid: boolean;
     windowBackgroundAlpha: number;
     showDebug: boolean;
@@ -42,7 +42,7 @@ export namespace Settings {
     language: "en",
     // 视觉相关
     lineStyle: "straight",
-    theme: "",
+    theme: "black",
     showGrid: true,
     windowBackgroundAlpha: 0.8,
     showDebug: true,
