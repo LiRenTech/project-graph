@@ -159,7 +159,7 @@ export namespace RecentFileManager {
     console.log(data);
 
     loadStageByData(data);
-    StageHistoryManager.init(data);
+    StageHistoryManager.reset(data);
 
     Camera.reset();
     Stage.effects.push(ViewFlashEffect.SaveFile());

@@ -55,6 +55,9 @@ settingsVisual:
     description: "用于反馈问题截图时，开启此项之后将汉字全部替换成《好》，以保护隐私。\n仅作显示层面的替换，不会影响真实数据\n反馈完毕后可再关闭，复原"
 settingsPerformance:
   renderEffect: 渲染特效
+  historySize:
+    title: 历史记录大小
+    description: "这个数值决定了您最多ctrl+z撤销的次数\n如果您的电脑内存非常少，可以适当调小这个值"
 settingsAutomation:
   autoNamerTemplate:
     title: 自动命名模板

@@ -30,7 +30,7 @@ export namespace StageSaveManager {
       .then((res) => {
         console.log(res);
         Stage.effects.push(ViewFlashEffect.SaveFile());
-        StageHistoryManager.init(data); // 重置历史
+        StageHistoryManager.reset(data); // 重置历史
         successCallback();
         isCurrentSaved = true;
       })

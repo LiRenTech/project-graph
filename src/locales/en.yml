@@ -78,6 +78,9 @@ settingsVisual:
     description: "When enabling this option for issue feedback screenshots, all Chinese characters will be replaced with 'Good' to protect privacy.\nThis replacement is only for display purposes and will not affect the actual data.\nIt can be turned off after feedback is completed to restore."
 settingsPerformance:
   renderEffect: Rendering Effects
+  historySize:
+    title: History Size
+    description: "This value determines the maximum number of times you can undo with ctrl+z.\nIf your computer has very little memory, you can appropriately lower this value."
 settingsAutomation:
   autoNamerTemplate:
     title: Auto Naming Template

@@ -19,6 +19,7 @@ import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeColli
 import { ProgressNumber } from "./core/dataStruct/ProgressNumber";
 import { StartFilesManager } from "./core/StartFilesManager";
 import { Camera } from "./core/stage/Camera";
+import { StageHistoryManager } from "./core/stage/stageManager/concreteMethods/StageHistoryManager";
 
 // 计时开始
 const t1 = performance.now();
@@ -39,6 +40,7 @@ const Routes = () => <RouterProvider router={router} />;
   EdgeRenderer.init();
   Renderer.init();
   Camera.init();
+  StageHistoryManager.init();
 
   // 启动时加载用户自定义的工程文件
   StartFilesManager.getCurrentStartFile().then((path) => {
