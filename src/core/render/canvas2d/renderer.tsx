@@ -27,7 +27,6 @@ import { getTextSize } from "../../../utils/font";
 import { CircleChangeRadiusEffect } from "../../effect/concrete/CircleChangeRadiusEffect";
 import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEffect";
 import { PointDashEffect } from "../../effect/concrete/PointDashEffect";
-import { Random } from "../../algorithm/random";
 import { sine } from "../../effect/animateFunctions";
 
 /**
