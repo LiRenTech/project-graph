@@ -2,7 +2,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { Serialized } from "../../types/node";
 import { ViewFlashEffect } from "../effect/concrete/ViewFlashEffect";
 import { Stage } from "./Stage";
-import { StageHistoryManager } from "./stageManager/concreteMethods/StageHistoryManager";
+import { StageHistoryManager } from "./stageManager/StageHistoryManager";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { StageManager } from "./stageManager/StageManager";
 

@@ -1,9 +1,9 @@
-import { Serialized } from "../../../../types/node";
-import { RecentFileManager } from "../../../RecentFileManager";
-import { Settings } from "../../../Settings";
-import { StageDumper } from "../../StageDumper";
-import { StageSaveManager } from "../../StageSaveManager";
-import { StageManager } from "../StageManager";
+import { Serialized } from "../../../types/node";
+import { RecentFileManager } from "../../RecentFileManager";
+import { Settings } from "../../Settings";
+import { StageDumper } from "../StageDumper";
+import { StageSaveManager } from "../StageSaveManager";
+import { StageManager } from "./StageManager";
 
 /**
  * 专门管理历史记录

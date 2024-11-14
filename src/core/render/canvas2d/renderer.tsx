@@ -15,7 +15,7 @@ import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 import { LineEffect } from "../../effect/concrete/LineEffect";
 import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
 import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
-import { StageHistoryManager } from "../../stage/stageManager/concreteMethods/StageHistoryManager";
+import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { EntityRenderer } from "./entityRenderer/EntityRenderer";
 import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
 import { Settings } from "../../Settings";

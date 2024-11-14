@@ -16,7 +16,7 @@ import { ControllerDrawing } from "./concrete/ControllerDrawing";
 import { ControllerDragFile } from "./concrete/ControllerDragFile";
 import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
 import { ControllerCopy } from "./concrete/ControllerCopy";
-import { StageHistoryManager } from "../stage/stageManager/concreteMethods/StageHistoryManager";
+import { StageHistoryManager } from "../stage/stageManager/StageHistoryManager";
 import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
 
 /**

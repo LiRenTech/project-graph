@@ -19,7 +19,7 @@ import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeColli
 import { ProgressNumber } from "./core/dataStruct/ProgressNumber";
 import { StartFilesManager } from "./core/StartFilesManager";
 import { Camera } from "./core/stage/Camera";
-import { StageHistoryManager } from "./core/stage/stageManager/concreteMethods/StageHistoryManager";
+import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManager";
 
 // 计时开始
 const t1 = performance.now();

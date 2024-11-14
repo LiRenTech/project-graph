@@ -11,7 +11,7 @@ import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager
 import { StageNodeColorManager } from "./concreteMethods/StageNodeColorManager";
 import { Serialized } from "../../../types/node";
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
-import { StageHistoryManager } from "./concreteMethods/StageHistoryManager";
+import { StageHistoryManager } from "./StageHistoryManager";
 import { Stage } from "../Stage";
 import { StageDumper } from "../StageDumper";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";

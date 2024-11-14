@@ -9,7 +9,7 @@ import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
 import { TextNode } from "./stageObject/entity/TextNode";
 import { invoke } from "@tauri-apps/api/core";
 import { Serialized } from "../types/node";
-import { StageHistoryManager } from "./stage/stageManager/concreteMethods/StageHistoryManager";
+import { StageHistoryManager } from "./stage/stageManager/StageHistoryManager";
 import { Section } from "./stageObject/entity/Section";
 import { ConnectPoint } from "./stageObject/entity/ConnectPoint";
 
