@@ -42,7 +42,7 @@ export class Vector {
   /**
    * 获得向量的单位向量
    * 如果向量的模长为0，则返回(0,0)
-   * @returns 
+   * @returns
    */
   normalize(): Vector {
     const mag = this.magnitude();
@@ -138,7 +138,7 @@ export class Vector {
 
   /**
    * 向量之间的分量分别相乘
-   * @param other 
+   * @param other
    */
   componentMultiply(other: Vector): Vector {
     return new Vector(this.x * other.x, this.y * other.y);
@@ -244,6 +244,12 @@ export class Vector {
   }
   equals(vector: Vector): boolean {
     return this.x === vector.x && this.y === vector.y;
+  }
+  nearlyEqual(vector: Vector, radius: number): boolean {
+    return (
+      Math.abs(this.x - vector.x) <= radius &&
+      Math.abs(this.y - vector.y) <= radius
+    );
   }
 
   toString(): string {

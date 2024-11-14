@@ -27,6 +27,8 @@ import { getTextSize } from "../../../utils/font";
 import { CircleChangeRadiusEffect } from "../../effect/concrete/CircleChangeRadiusEffect";
 import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEffect";
 import { PointDashEffect } from "../../effect/concrete/PointDashEffect";
+import { Random } from "../../algorithm/random";
+import { sine } from "../../effect/animateFunctions";
 
 /**
  * 渲染器
@@ -128,6 +130,22 @@ export namespace Renderer {
         new Color(33, 54, 167, 0.5),
         50,
       );
+    }
+    // 中键吸附拖动框
+    if (Controller.isViewMoveByClickMiddle) {
+      const color = new Color(23, 159, 255, sine(start, 0.2, 0.1, 0.01))
+      RenderUtils.renderRect(
+        viewRectangle.transformWorld2View(),
+        Color.Transparent,
+        color,
+        50,
+      );
+      RenderUtils.renderText(
+        "再次中键取消视野吸附,或移动到窗口边缘",
+        new Vector(25, Renderer.h - 25 - 20),
+        20,
+        new Color(23, 159, 255, sine(start, 0.9, 0.7, 0.01)),
+      )
     }
     // 画节点和边
     start = performance.now();
@@ -505,6 +523,7 @@ export namespace Renderer {
       `历史: ${StageHistoryManager.statusText()}`,
       `fps: ${(1 / deltaTime).toFixed()}`,
       `delta: ${deltaTime.toFixed(2)}`,
+      `Controller.isViewMoveByClickMiddle: ${Controller.isViewMoveByClickMiddle}`
     ];
     for (const [k, v] of Object.entries(timings)) {
       detailsData.push(`time:${k}: ${v.toFixed(2)}`);
