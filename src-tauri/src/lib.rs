@@ -3,6 +3,8 @@ use std::io::Write;
 
 use std::env;
 use tauri::Manager;
+use std::fs::read; // 引入 read 函数用于读取文件
+use base64::encode; // 引入 base64 编码函数
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -58,6 +60,17 @@ fn check_json_exist(path: String) -> bool {
 //     window.open_devtools();
 // }
 
+#[tauri::command]
+fn convert_image_to_base64(image_path: String) -> Result<String, String> {
+    match read(&image_path) {
+        Ok(image_data) => {
+            let base64_str = encode(&image_data);
+            Ok(base64_str)
+        },
+        Err(e) => Err(format!("无法读取文件: {}", e)),
+    }
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     println!("程序运行了！");
@@ -85,6 +98,7 @@ pub fn run() {
             set_env_value,
             open_json_by_path,
             save_json_by_path,
+            convert_image_to_base64,
             check_json_exist // open_dev_tools
         ])
         .run(tauri::generate_context!())
