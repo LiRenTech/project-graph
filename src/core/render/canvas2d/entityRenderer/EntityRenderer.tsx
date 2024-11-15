@@ -38,7 +38,9 @@ export namespace EntityRenderer {
           section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
         ),
         Renderer.FONT_SIZE * Camera.currentScale,
-        section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor)
+        section.color.a === 1
+          ? colorInvert(section.color)
+          : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
       );
     } else {
       RenderUtils.renderRect(
@@ -58,7 +60,9 @@ export namespace EntityRenderer {
           section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
         ),
         Renderer.FONT_SIZE * Camera.currentScale,
-        section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+        section.color.a === 1
+          ? colorInvert(section.color)
+          : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
       );
     }
 
@@ -103,17 +107,23 @@ export namespace EntityRenderer {
           node.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
         ),
         Renderer.FONT_SIZE * Camera.currentScale,
-        node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+        node.color.a === 1
+          ? colorInvert(node.color)
+          : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
       );
     }
 
     if (node.isSelected) {
       // 在外面增加一个框
-      CollisionBoxRenderer.render(node.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
+      CollisionBoxRenderer.render(
+        node.collisionBox,
+        StageStyleManager.currentStyle.CollideBoxSelectedColor,
+      );
     }
     if (node.isAiGenerating) {
-      const borderColor = StageStyleManager.currentStyle.CollideBoxSelectedColor.clone();
-      borderColor.a =  Random.randomFloat(0.2, 1);
+      const borderColor =
+        StageStyleManager.currentStyle.CollideBoxSelectedColor.clone();
+      borderColor.a = Random.randomFloat(0.2, 1);
       // 在外面增加一个框
       RenderUtils.renderRect(
         new Rectangle(
@@ -144,8 +154,11 @@ export namespace EntityRenderer {
         node.rectangle.location.add(new Vector(0, node.rectangle.size.y)),
       ),
       Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
-      Renderer.NODE_DETAILS_WIDTH * Camera.currentScale,
-      StageStyleManager.currentStyle.NodeDetailsTextColor
+      Math.max(
+        Renderer.NODE_DETAILS_WIDTH * Camera.currentScale,
+        node.rectangle.size.x * Camera.currentScale,
+      ),
+      StageStyleManager.currentStyle.NodeDetailsTextColor,
     );
   }
   export function colorInvert(color: Color): Color {
