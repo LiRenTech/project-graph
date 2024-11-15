@@ -34,7 +34,10 @@ export namespace Serialized {
   export type ConnectPoint = Entity & {
     type: "core:connect_point";
   }
-
+  export type ImageNode = Entity & {
+    path: string;
+    type: "core:image_node";
+  }
   export type Edge = StageObject & {
     type: "core:edge";
     source: string;
