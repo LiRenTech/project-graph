@@ -21,7 +21,7 @@ export class LineCuttingEffect extends Effect {
     public toLocation: Vector,
     public fromColor: Color,
     public toColor: Color,
-    public lineWidth: number,
+    public lineWidth: number = 25,
   ) {
     super(timeProgress);
   }

@@ -1,5 +1,4 @@
 import { Color } from "../../dataStruct/Color";
-import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Renderer } from "../../render/canvas2d/renderer";
@@ -8,7 +7,7 @@ import { Vector } from "../../dataStruct/Vector";
 import { ControllerClass } from "../ControllerClass";
 import { editNode } from "./utilsControl";
 import { Controller } from "../Controller";
-import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEffect";
+import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 
 /**
  * 创建节点的控制器
@@ -49,20 +48,47 @@ function createNode(pressLocation: Vector) {
       // 说明 创建了立刻删掉了
       return;
     }
+    const rect = createNode.collisionBox.getRectangle();
+    const fromColor = new Color(100, 100, 100, 0);
+    const toColor = new Color(255, 255, 255, 1);
+    const effectTime = 30;
+    const shiftingLength = 0;
+    // 闪烁效果
+    // 创建四条线
     Stage.effects.push(
-      EntityCreateDashEffect.fromRectangle(
-        createNode.collisionBox.getRectangle(),
+      new LineCuttingEffect(
+        new ProgressNumber(0, effectTime),
+        rect.leftTop.add(new Vector(-shiftingLength, -shiftingLength)),
+        rect.rightTop,
+        fromColor.clone(),
+        toColor.clone(),
+        10,
+      ),
+      new LineCuttingEffect(
+        new ProgressNumber(0, effectTime),
+        rect.rightTop.add(new Vector(shiftingLength, -shiftingLength)),
+        rect.rightBottom,
+        fromColor.clone(),
+        toColor.clone(),
+        10,
+      ),
+      new LineCuttingEffect(
+        new ProgressNumber(0, effectTime),
+        rect.rightBottom.add(new Vector(shiftingLength, shiftingLength)),
+        rect.leftBottom,
+        fromColor.clone(),
+        toColor.clone(),
+        10,
+      ),
+      new LineCuttingEffect(
+        new ProgressNumber(0, effectTime),
+        rect.leftBottom.add(new Vector(-shiftingLength, shiftingLength)),
+        rect.leftTop,
+        fromColor,
+        toColor,
+        10,
       ),
     );
     editNode(createNode);
   });
-  // 更改节点 editNode(clickedNode);
-  Stage.effects.push(
-    new CircleFlameEffect(
-      new ProgressNumber(0, 20),
-      pressLocation.clone(),
-      20,
-      new Color(255, 255, 0, 1),
-    ),
-  );
 }

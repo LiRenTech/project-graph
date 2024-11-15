@@ -150,12 +150,7 @@ export namespace RenderUtils {
     let currentLine = "";
     let currentY = 0; // 顶部偏移量
     // 先空渲染一下
-    renderText(
-      currentLine,
-      location.add(new Vector(0, currentY)),
-      size,
-      color,
-    );
+    renderText(currentLine, location.add(new Vector(0, currentY)), size, color);
 
     for (const char of text) {
       // 新来字符的宽度
@@ -414,7 +409,12 @@ export namespace RenderUtils {
    */
   export function renderPixel(location: Vector, color: Color) {
     Canvas.ctx.fillStyle = color.toString();
-    Canvas.ctx.fillRect(location.x, location.y, 1 * Camera.currentScale, 1 * Camera.currentScale);
+    Canvas.ctx.fillRect(
+      location.x,
+      location.y,
+      1 * Camera.currentScale,
+      1 * Camera.currentScale,
+    );
   }
 
   /**

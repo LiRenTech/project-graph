@@ -47,6 +47,18 @@ export class Rectangle extends Shape {
   public get bottomCenter(): Vector {
     return new Vector(this.center.x, this.bottom);
   }
+  public get leftTop(): Vector {
+    return new Vector(this.left, this.top);
+  }
+  public get rightTop(): Vector {
+    return new Vector(this.right, this.top);
+  }
+  public get leftBottom(): Vector {
+    return new Vector(this.left, this.bottom);
+  }
+  public get rightBottom(): Vector {
+    return new Vector(this.right, this.bottom);
+  }
   getRectangle(): Rectangle {
     return this.clone();
   }

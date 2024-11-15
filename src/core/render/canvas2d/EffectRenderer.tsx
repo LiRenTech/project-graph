@@ -21,6 +21,7 @@ import { RateFunctions } from "../../algorithm/rateFunctions";
 import { PointDashEffect } from "../../effect/concrete/PointDashEffect";
 import { WorldRenderUtils } from "./WorldRenderUtils";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { EntityCreateFlashEffect } from "../../effect/concrete/EntityCreateFlashEffect";
 
 /**
  * 专门编写所有的特效渲染
@@ -126,7 +127,7 @@ export namespace EffectRenderer {
     WorldRenderUtils.renderCuttingFlash(
       fromLocation,
       toLocation,
-      25 * (1 - effect.timeProgress.rate),
+      effect.lineWidth * (1 - effect.timeProgress.rate),
       mixColors(effect.fromColor, effect.toColor, effect.timeProgress.rate),
     );
   }
@@ -267,5 +268,15 @@ export namespace EffectRenderer {
 
       RenderUtils.renderPixel(viewLocation, p.color);
     }
+  }
+  export function renderEntityCreateFleshEffect(effect: EntityCreateFlashEffect) {
+    if (effect.timeProgress.isFull) {
+      return;
+    }
+    WorldRenderUtils.renderRectangleFlash(
+      effect.rectangle,
+      Color.White,
+      50 * (1 - effect.timeProgress.rate)
+    )
   }
 }

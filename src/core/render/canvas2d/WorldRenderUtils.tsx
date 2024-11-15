@@ -1,5 +1,6 @@
 import { Color } from "../../dataStruct/Color";
 import { CubicBezierCurve, SymmetryCurve } from "../../dataStruct/shape/Curve";
+import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
 import { Camera } from "../../stage/Camera";
 import { Canvas } from "../../stage/Canvas";
@@ -76,6 +77,32 @@ export namespace WorldRenderUtils {
     //   Color.White,
     //   2 * Camera.currentScale
     // )
+    Canvas.ctx.shadowBlur = 0;
+  }
+
+  // BUG
+  export function renderRectangleFlash(
+    rectangle: Rectangle,
+    shadowColor: Color,
+    shadowBlur: number,
+  ) {
+    Canvas.ctx.shadowColor = shadowColor.toString();
+    Canvas.ctx.shadowBlur = shadowBlur;
+    // 绘制矩形
+    Canvas.ctx.beginPath();
+    Canvas.ctx.roundRect(
+      rectangle.location.x,
+      rectangle.location.y,
+      rectangle.size.x,
+      rectangle.size.y,
+      0,
+    );
+    Canvas.ctx.fillStyle = "red";
+    Canvas.ctx.fill();
+    Canvas.ctx.lineWidth = 1;
+    Canvas.ctx.strokeStyle = "white";
+    Canvas.ctx.stroke();
+    // 恢复
     Canvas.ctx.shadowBlur = 0;
   }
 

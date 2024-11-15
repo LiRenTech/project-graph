@@ -29,6 +29,7 @@ import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEf
 import { PointDashEffect } from "../../effect/concrete/PointDashEffect";
 import { sine } from "../../effect/animateFunctions";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { EntityCreateFlashEffect } from "../../effect/concrete/EntityCreateFlashEffect";
 
 /**
  * 渲染器
@@ -455,6 +456,8 @@ export namespace Renderer {
         EffectRenderer.renderEntityCreateDashEffect(effect);
       } else if (effect instanceof PointDashEffect) {
         EffectRenderer.renderPointDashEffect(effect);
+      } else if (effect instanceof EntityCreateFlashEffect) {
+        EffectRenderer.renderEntityCreateFleshEffect(effect);
       }
     }
   }
@@ -495,6 +498,7 @@ export namespace Renderer {
       `location: ${Camera.location.x.toFixed(2)}, ${Camera.location.y.toFixed(2)}`,
       // `canvas rect: ${canvasRect.toString()}`,
       `window: ${w}x${h}`,
+      `effect count: ${Stage.effects.length}`,
       `node count: ${renderedNodes} , ${StageManager.getTextNodes().length}`,
       `edge count: ${renderedEdges} , ${StageManager.getEdges().length}`,
       `section count: ${StageManager.getSections().length}`,
