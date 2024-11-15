@@ -39,7 +39,7 @@ export default function About() {
       </div>
 
       <div className="flex-1 overflow-auto leading-7">
-        <h2 className="mt-4 text-2xl font-bold">软件介绍</h2>
+        <h2 className="mt-4 text-2xl font-bold">{t("introTitle")}</h2>
         <p>{t("intro.0")}</p>
         <p>{t("intro.1")}</p>
         <p>{t("intro.2")}</p>
@@ -48,7 +48,7 @@ export default function About() {
         <p>{t("contact.1")}</p>
         <p>{t("contact.2")}</p>
 
-        <h2 className="mt-4 text-2xl font-bold">技术支持与生态环境</h2>
+        <h2 className="mt-4 text-2xl font-bold">{t("techEnvironment")}</h2>
         <div className="flex w-full gap-2">
           <span>React</span>
           <span>TypeScript</span>
@@ -62,7 +62,7 @@ export default function About() {
           <span>lucide</span>
           <span>xlings</span>
         </div>
-        <h2 className="mt-4 text-2xl font-bold">开发者名单</h2>
+        <h2 className="mt-4 text-2xl font-bold">{t("developer.title")}</h2>
         <p>项目提出者：Rutubet</p>
         <p>概念设计：Littlefean</p>
         <p>功能设计：Littlefean、ZTY、Rutubet、广大的反馈者们</p>
@@ -83,9 +83,9 @@ export default function About() {
         <p>音效师：undefined</p>
         <p>气氛调节师：yuxiaoQAQ</p>
         <p>...</p>
-        <p>软件在github上开源，欢迎提issue与贡献代码</p>
+        <p>{t("developer.tips")}</p>
 
-        <h2 className="mt-4 text-2xl font-bold">灵感来源</h2>
+        <h2 className="mt-4 text-2xl font-bold">{t("ideaSource.title")}</h2>
         <p>没有黑夜风格的FigJamBoard</p>
         <p>所长林超的画分析框架的详解视频</p>
         <p>《数据结构与算法》中的拓扑排序、图论</p>

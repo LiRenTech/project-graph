@@ -7,6 +7,7 @@ welcome:
   qq: QQ Group
 settingsAbout:
   title: Project Graph Visualization Tool
+  introTitle: Introduction
   intro:
     - >-
       This is a tool for quickly drawing node graphs based on the Tauri
@@ -26,6 +27,16 @@ settingsAbout:
     - >-
       If you want to get feedback quickly and provide suggestions, or have any
       ideas or questions, you are welcome to join our QQ group: 1006956704.
+  techEnvironment: Technical Support and Ecological Environment
+  developer:
+    title: Developer List
+    tips: The software is open-sourced on GitHub, feel free to raise issues and contribute code
+  ideaSource: 
+    title: Source of Inspiration
+    list:
+      - FigJamBoard with a night mode style
+      - Detailed analysis video of Director Lin Chao's painting framework
+      - Topological sorting and graph theory from "Data Structures and Algorithms"
   team:
     - Team Introduction
     - >-

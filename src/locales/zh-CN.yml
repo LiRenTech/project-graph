@@ -16,6 +16,7 @@ settingsTabs:
   github: GitHub
 settingsAbout:
   title: Project Graph 计划投射
+  introTitle: 软件介绍
   intro:
     - 这是一个基于tauri框架的快速绘制节点图的工具，可以用于项目拓扑图绘制、快速头脑风暴草稿
     - Xmind 只能用来绘制树形结构图，FigJam 和 draw.io 可以用来绘制但网页打开有点慢了
@@ -24,6 +25,17 @@ settingsAbout:
     - 联系我们
     - 我们致力于为“图论”设计一个最快速方便的绘制方法论，同时也在可视化思考、拓扑型 todo list 等方向进行探索创新。
     - 如果您想快速获得反馈和提供建议，或者有任何想法、疑问，欢迎加入我们的 QQ 群：1006956704
+  techEnvironment: 技术支持与生态环境
+  developer:
+    title: 开发者名单
+    tips: 软件在github上开源，欢迎提issue与贡献代码
+  ideaSource: 
+    title: 灵感来源
+    list:
+      - 没有黑夜风格的FigJamBoard
+      - 所长林超的画分析框架的详解视频
+      - 《数据结构与算法》中的拓扑排序、图论
+
   team:
     - 团队简介
     - 理刃科技是一个由Littlefean和Rutubet在2017年5月1日创立的小型团队，后续ZTY加入团队。
