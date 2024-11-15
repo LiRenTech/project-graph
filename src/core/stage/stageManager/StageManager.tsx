@@ -133,7 +133,7 @@ export namespace StageManager {
   export let selectedNodeCount = 0;
   export let selectedEdgeCount = 0;
 
-  /** 获取节点连接的子节点数组 */
+  /** 获取节点连接的子节点数组，未排除自环 */
   export function nodeChildrenArray(
     node: ConnectableEntity,
   ): ConnectableEntity[] {

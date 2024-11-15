@@ -91,13 +91,12 @@ export namespace StageSaveManager {
       }
       visitedUUID.add(node.uuid);
       content += getNodeMarkdown(node, level);
-      const children = StageManager.nodeChildrenArray(textNode).filter(
+      const children = StageManager.nodeChildrenArray(node).filter(
         (v) => v instanceof TextNode,
       );
-      console.log(node.text, children);  // BUG: 这里的children有问题，不全
-      children.forEach((child) => {
+      for (const child of children) {
         dfs(child, level + 1);
-      });
+      }
     };
 
     dfs(textNode, 1);
