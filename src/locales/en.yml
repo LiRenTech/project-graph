@@ -151,3 +151,16 @@ appMenu:
     items:
       refresh: Refresh
       fullscreen: Full Screen
+
+startFilePanel:
+  title: Select the project file to be automatically loaded on startup
+  tips:
+    - "Note: The project file that is automatically loaded at startup will be loaded onto the stage when opened, no manual opening is required."
+    - "Load: Only load this file onto the stage (you can hover transparently to see if the switched file is the one you want)"
+    - "Pin: Switch the current startup file; the icon in the left status represents the current startup file."
+    - "Remove: Only remove the file from the list, it will not affect the file itself."
+  buttons:
+    addFile: Add File
+    clearList: Clear List
+    showAbsolutePath: Show Absolute Path
+    showFileTime: Show File Time

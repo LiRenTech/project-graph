@@ -12,12 +12,24 @@ import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { PathString } from "../utils/pathString";
 import Switch from "../components/ui/Switch";
 import { cn } from "../utils/cn";
+import {
+  Delete,
+  FileClock,
+  FilePlus2,
+  FolderTree,
+  HardDriveDownload,
+  Pin,
+  Trash2,
+} from "lucide-react";
+import IconButton from "../components/ui/IconButton";
+import { useTranslation } from "react-i18next";
 
 export default function StartFilePanel({ open = false }: { open: boolean }) {
   const dialog = useDialog();
   const [startFiles, setStartFiles] = React.useState<
     StartFilesManager.StartFile[]
   >([]);
+  const { t } = useTranslation("startFilePanel");
 
   const [currentStartFile, setCurrentStartFile] = React.useState<string>("");
   const [currentFile, setFile] = useRecoilState(fileAtom);
@@ -199,7 +211,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
               "mb-3 text-xl font-bold text-white transition-opacity",
             )}
           >
-            选择启动时自动加载的工程文件
+            {t("title")}
           </h2>
           <div
             className={cn(
@@ -207,8 +219,18 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
               "mb-3 flex justify-between transition-opacity",
             )}
           >
-            <Button onClick={onAddFile}>添加文件</Button>
-            <Button onClick={onClearList}>清空列表</Button>
+            <Button onClick={onAddFile}>
+              <span className="flex">
+                <FilePlus2 />
+                {t("buttons.addFile")}
+              </span>
+            </Button>
+            <IconButton onClick={onClearList}>
+              <span className="flex">
+                <Trash2 />
+                {t("buttons.clearList")}
+              </span>
+            </IconButton>
           </div>
           <table
             className={cn(
@@ -268,26 +290,26 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
                     </td>
                   )}
                   <td>
-                    <Button
+                    <IconButton
                       className="mx-0.5 px-2 py-1"
                       onClick={onLoadCurrentStartFile(file.path)}
                       onMouseEnter={() => setIsPanelTransparent(true)}
                       onMouseLeave={() => setIsPanelTransparent(false)}
                     >
-                      加载
-                    </Button>
-                    <Button
+                      <HardDriveDownload />
+                    </IconButton>
+                    <IconButton
                       className="mx-0.5 px-2 py-1"
                       onClick={onSetCurrentStartFile(file.path)}
                     >
-                      钉选
-                    </Button>
-                    <Button
+                      <Pin />
+                    </IconButton>
+                    <IconButton
                       className="mx-0.5 px-2 py-1"
                       onClick={onRemoveFile(file.path)}
                     >
-                      移除
-                    </Button>
+                      <Delete />
+                    </IconButton>
                   </td>
                 </tr>
               ))}
@@ -300,27 +322,27 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
             )}
           >
             <div className="mt-3 text-sm text-gray-500">
-              <p>
-                说明：启动时自动加载的工程文件会在打开时自动加载到舞台，无需手动打开。
-              </p>
-              <p>
-                钉选：切换当前的启动文件，左侧状态中的图标代表当前的启动文件。
-              </p>
-              <p>移除：仅从列表中移除文件，不会影响文件本身。</p>
-              <p>
-                加载：仅将这个文件加载到舞台（您可以通过悬浮透明来查看切换后是否是您想要的文件）
-              </p>
+              <p>{t("tips.0")}</p>
+              <p>{t("tips.1")}</p>
+              <p>{t("tips.2")}</p>
+              <p>{t("tips.3")}</p>
             </div>
             <div>
               <div className="flex flex-nowrap items-center justify-center">
-                <span className="mr-2">显示绝对路径</span>
+                <span className="mr-2 flex">
+                  <FolderTree />
+                  {t("buttons.showAbsolutePath")}
+                </span>
                 <Switch
                   value={isShowAbsolutePath}
                   onChange={(v) => setIsShowAbsolutePath(v)}
                 />
               </div>
               <div className="flex flex-nowrap items-center justify-center">
-                <span className="mr-2">显示时间</span>
+                <span className="mr-2 flex">
+                  <FileClock />
+                  {t("buttons.showFileTime")}
+                </span>
                 <Switch value={isShowTime} onChange={(v) => setIsShowTime(v)} />
               </div>
             </div>

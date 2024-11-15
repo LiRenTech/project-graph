@@ -128,3 +128,16 @@ appMenu:
     items:
       refresh: 刷新
       fullscreen: 全螢幕
+
+startFilePanel:
+  title: 選擇啟動時自動加載的工程檔案
+  tips:
+    - 說明：啟動時自動加載的工程檔案會在打開時自動加載到舞台，無需手動打開。
+    - 加載：僅將這個檔案加載到舞台（您可以透過懸浮透明來查看切換後是否是您想要的檔案）
+    - 鉛選：切換當前的啟動檔案，左側狀態中的圖示代表當前的啟動檔案。
+    - 移除：僅從列表中移除檔案，不會影響檔案本身。
+  buttons:
+    addFile: 添加檔案
+    clearList: 清空列表
+    showAbsolutePath: 顯示絕對路徑
+    showFileTime: 顯示檔案時間
