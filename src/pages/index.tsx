@@ -1,16 +1,15 @@
-import { useEffect, useRef } from "react";
-import { Renderer } from "../core/render/canvas2d/renderer";
-import { useDialog } from "../utils/dialog";
-import { Stage } from "../core/stage/Stage";
+import React, { useEffect, useRef } from "react";
 import { Controller } from "../core/controller/Controller";
-import { Canvas } from "../core/stage/Canvas";
-import React from "react";
-import Toolbar from "./_toolbar";
+import { Renderer } from "../core/render/canvas2d/renderer";
 import { Settings } from "../core/Settings";
-import DetailsEditPanel from "./_details_edit_panel";
-import SearchingNodePanel from "./_searching_node_panel";
-import HintText from "./_hint_text";
+import { Canvas } from "../core/stage/Canvas";
+import { Stage } from "../core/stage/Stage";
 import { StageStyleManager } from "../core/stageStyle/StageStyleManager";
+import { useDialog } from "../utils/dialog";
+import DetailsEditPanel from "./_details_edit_panel";
+import HintText from "./_hint_text";
+import SearchingNodePanel from "./_searching_node_panel";
+import Toolbar from "./_toolbar";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);

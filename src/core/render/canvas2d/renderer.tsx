@@ -1,35 +1,35 @@
+import { getTextSize } from "../../../utils/font";
+import { appScale } from "../../../utils/platform";
+import { Settings } from "../../Settings";
+import { Controller } from "../../controller/Controller";
 import { Color } from "../../dataStruct/Color";
 import { Vector } from "../../dataStruct/Vector";
-import { Stage } from "../../stage/Stage";
-import { RenderUtils } from "./RenderUtils";
-import { EffectRenderer } from "./EffectRenderer";
-import { Canvas } from "../../stage/Canvas";
-import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
-import { StageManager } from "../../stage/stageManager/StageManager";
-import { appScale } from "../../../utils/platform";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { Camera } from "../../stage/Camera";
-import { Controller } from "../../controller/Controller";
+import { sine } from "../../effect/animateFunctions";
+import { CircleChangeRadiusEffect } from "../../effect/concrete/CircleChangeRadiusEffect";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
+import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEffect";
+import { EntityCreateFlashEffect } from "../../effect/concrete/EntityCreateFlashEffect";
+import { ExplodeAshEffect } from "../../effect/concrete/ExplodeDashEffect";
 import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 import { LineEffect } from "../../effect/concrete/LineEffect";
-import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
+import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
+import { PointDashEffect } from "../../effect/concrete/PointDashEffect";
 import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
+import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
+import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
+import { Camera } from "../../stage/Camera";
+import { Canvas } from "../../stage/Canvas";
+import { Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
+import { StageManager } from "../../stage/stageManager/StageManager";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { EffectRenderer } from "./EffectRenderer";
+import { RenderUtils } from "./RenderUtils";
+import { WorldRenderUtils } from "./WorldRenderUtils";
+import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
 import { EntityRenderer } from "./entityRenderer/EntityRenderer";
 import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
-import { Settings } from "../../Settings";
-import { ExplodeAshEffect } from "../../effect/concrete/ExplodeDashEffect";
-import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
-import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
-import { WorldRenderUtils } from "./WorldRenderUtils";
-import { getTextSize } from "../../../utils/font";
-import { CircleChangeRadiusEffect } from "../../effect/concrete/CircleChangeRadiusEffect";
-import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEffect";
-import { PointDashEffect } from "../../effect/concrete/PointDashEffect";
-import { sine } from "../../effect/animateFunctions";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EntityCreateFlashEffect } from "../../effect/concrete/EntityCreateFlashEffect";
 
 /**
  * 渲染器
@@ -96,10 +96,7 @@ export namespace Renderer {
       (value) => (isAlwaysShowDetails = value),
     );
     Settings.watch("renderEffect", (value) => (isRenderEffect = value));
-    Settings.watch(
-      "protectingPrivacy",
-      (value) => (protectingPrivacy = value),
-    );
+    Settings.watch("protectingPrivacy", (value) => (protectingPrivacy = value));
   }
 
   /**
@@ -134,7 +131,7 @@ export namespace Renderer {
     }
     // 中键吸附拖动框
     if (Controller.isViewMoveByClickMiddle) {
-      const color = new Color(23, 159, 255, sine(start, 0.2, 0.1, 0.01))
+      const color = new Color(23, 159, 255, sine(start, 0.2, 0.1, 0.01));
       RenderUtils.renderRect(
         viewRectangle.transformWorld2View(),
         Color.Transparent,
@@ -146,7 +143,7 @@ export namespace Renderer {
         new Vector(25, Renderer.h - 25 - 20),
         20,
         new Color(23, 159, 255, sine(start, 0.9, 0.7, 0.01)),
-      )
+      );
     }
     // 画节点和边
     start = performance.now();
@@ -527,7 +524,7 @@ export namespace Renderer {
       `fps: ${(1 / deltaTime).toFixed()}`,
       `delta: ${deltaTime.toFixed(2)}`,
       `Controller.isViewMoveByClickMiddle: ${Controller.isViewMoveByClickMiddle}`,
-      `path: ${Stage.Path.getFilePath()}`
+      `path: ${Stage.Path.getFilePath()}`,
     ];
     for (const [k, v] of Object.entries(timings)) {
       detailsData.push(`time:${k}: ${v.toFixed(2)}`);

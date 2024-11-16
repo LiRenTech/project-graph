@@ -1,18 +1,18 @@
-import { createStore, Store } from "@tauri-apps/plugin-store";
+import { load, Store } from "@tauri-apps/plugin-store";
 // import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
-import { StageLoader } from "./stage/StageLoader";
-import { StageManager } from "./stage/stageManager/StageManager";
-import { Edge } from "./stageObject/association/Edge";
-import { Camera } from "./stage/Camera";
-import { Stage } from "./stage/Stage";
-import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
-import { TextNode } from "./stageObject/entity/TextNode";
 import { invoke } from "@tauri-apps/api/core";
 import { Serialized } from "../types/node";
+import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
+import { Camera } from "./stage/Camera";
+import { Stage } from "./stage/Stage";
+import { StageLoader } from "./stage/StageLoader";
 import { StageHistoryManager } from "./stage/stageManager/StageHistoryManager";
-import { Section } from "./stageObject/entity/Section";
+import { StageManager } from "./stage/stageManager/StageManager";
+import { Edge } from "./stageObject/association/Edge";
 import { ConnectPoint } from "./stageObject/entity/ConnectPoint";
 import { ImageNode } from "./stageObject/entity/ImageNode";
+import { Section } from "./stageObject/entity/Section";
+import { TextNode } from "./stageObject/entity/TextNode";
 
 /**
  * 管理最近打开的文件列表
@@ -52,9 +52,8 @@ export namespace RecentFileManager {
   };
 
   export async function init() {
-    store = await createStore("recent-files.json");
+    store = await load("recent-files.json");
     store.save();
-    await store.load(); // 加载缓存
   }
 
   /**

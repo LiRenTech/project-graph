@@ -1,4 +1,4 @@
-import { createStore, Store } from "@tauri-apps/plugin-store";
+import { load, Store } from "@tauri-apps/plugin-store";
 
 export namespace StartFilesManager {
   let store: Store;
@@ -15,9 +15,8 @@ export namespace StartFilesManager {
   };
 
   export async function init() {
-    store = await createStore("start-files.json");
+    store = await load("start-files.json");
     store.save();
-    await store.load(); // 加载缓存
   }
 
   export async function clearStartFiles() {

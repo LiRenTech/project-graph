@@ -1,26 +1,26 @@
-import { createRoot } from "react-dom/client";
-import { RouterProvider, createMemoryRouter } from "react-router-dom";
 import { routes } from "@generouted/react-router";
-import "./index.pcss";
-import { RecoilRoot } from "recoil";
-import { DialogProvider } from "./utils/dialog";
-import { Settings } from "./core/Settings";
+import { invoke } from "@tauri-apps/api/core";
+import { RouterProvider, createMemoryRouter } from "react-router-dom";
+import { TextRiseEffect } from "./core/effect/concrete/TextRiseEffect";
 import { RecentFileManager } from "./core/RecentFileManager";
-import { PopupDialogProvider } from "./utils/popupDialog";
 import { EdgeRenderer } from "./core/render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "./core/render/canvas2d/renderer";
-import { invoke } from "@tauri-apps/api/core";
+import { Settings } from "./core/Settings";
 import { Stage } from "./core/stage/Stage";
-import { TextRiseEffect } from "./core/effect/concrete/TextRiseEffect";
+import "./index.pcss";
 // import { platform } from "@tauri-apps/plugin-os";
 import i18next from "i18next";
+import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
-import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeCollisionBoxGetter";
+import { RecoilRoot } from "recoil";
 import { ProgressNumber } from "./core/dataStruct/ProgressNumber";
-import { StartFilesManager } from "./core/StartFilesManager";
 import { Camera } from "./core/stage/Camera";
 import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManager";
+import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeCollisionBoxGetter";
 import { StageStyleManager } from "./core/stageStyle/StageStyleManager";
+import { StartFilesManager } from "./core/StartFilesManager";
+import { DialogProvider } from "./utils/dialog";
+import { PopupDialogProvider } from "./utils/popupDialog";
 
 // 计时开始
 const t1 = performance.now();
@@ -28,6 +28,8 @@ const t1 = performance.now();
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
 // 0.2ms
+
+const el = document.getElementById("root")!;
 
 // 2024/10/5 发现这里Linux 系统下，await不能直接写在最外层，会导致整个页面无法渲染，原因：webkit目前不支持顶层await
 
@@ -101,14 +103,8 @@ const Routes = () => <RouterProvider router={router} />;
       "zh-TW": await import("./locales/zh-TW.yml").then((m) => m.default),
     },
   });
-  // 热重载时更新语言包
-  // import.meta.hot?.on("vite:afterUpdate", (ev) => {
-  //   if (ev.updates.find((u) => u.path.endsWith(".yml"))) {
-  //     i18next.reloadResources();
-  //   }
-  // });
 
-  createRoot(document.getElementById("root")!).render(
+  createRoot(el).render(
     <RecoilRoot>
       <DialogProvider>
         <PopupDialogProvider>

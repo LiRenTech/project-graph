@@ -1,4 +1,4 @@
-import { createStore, Store } from "@tauri-apps/plugin-store";
+import { load, Store } from "@tauri-apps/plugin-store";
 
 /**
  * 设置相关的操作
@@ -12,7 +12,7 @@ export namespace Settings {
     language: "zh-CN" | "en";
     // 视觉相关
     lineStyle: "straight" | "bezier" | "vertical";
-    theme: "black" | "white";   // 暂无
+    theme: "black" | "white"; // 暂无
     showGrid: boolean;
     windowBackgroundAlpha: number;
     showDebug: boolean;
@@ -20,11 +20,11 @@ export namespace Settings {
     protectingPrivacy: boolean;
     useNativeTitleBar: boolean;
     // 性能相关
-    historySize: number;  // 暂无
+    historySize: number; // 暂无
     renderEffect: boolean;
     // 自动化相关
     autoNamerTemplate: string;
-    autoOpenPath: string;  // 废弃
+    autoOpenPath: string; // 废弃
     autoSaveWhenClose: boolean;
     // 控制相关
     enableCollision: boolean; // 暂无
@@ -32,11 +32,10 @@ export namespace Settings {
     moveAmplitude: number;
     moveFriction: number;
     gamepadDeadzone: number;
-    
+
     // github 相关
     githubToken: string;
     githubUser: string;
-    
   };
   const defaultSettings: Settings = {
     language: "en",
@@ -54,22 +53,22 @@ export namespace Settings {
     renderEffect: true,
     // 自动命名相关
     autoNamerTemplate: "...",
-    autoOpenPath: "",  // 废弃
+    autoOpenPath: "", // 废弃
     autoSaveWhenClose: false,
     // 控制相关
     enableCollision: true,
     scaleExponent: 0.11,
     moveAmplitude: 2,
     moveFriction: 0.1,
-    gamepadDeadzone: 0.1,    
-    
+    gamepadDeadzone: 0.1,
+
     // github 相关
     githubToken: "",
     githubUser: "",
   };
 
   export async function init() {
-    store = await createStore("settings.json");
+    store = await load("settings.json");
     store.save();
   }
 
@@ -77,7 +76,7 @@ export namespace Settings {
     key: K,
   ): Promise<Settings[K]> {
     const res = await store.get<Settings[K]>(key);
-    if (res === null) {
+    if (typeof res === "undefined") {
       console.log(
         `settings.${key} not found, use default value ${defaultSettings[key]}`,
       );
