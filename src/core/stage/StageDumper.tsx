@@ -1,6 +1,7 @@
 import { Serialized } from "../../types/node";
 import { Edge } from "../stageObject/association/Edge";
 import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
+import { ImageNode } from "../stageObject/entity/ImageNode";
 import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { Entity } from "../stageObject/StageObject";
@@ -46,6 +47,19 @@ export namespace StageDumper {
     };
   }
 
+  export function dumpImageNode(imageNode: ImageNode): Serialized.ImageNode {
+    return {
+      location: [
+        imageNode.rectangle.location.x,
+        imageNode.rectangle.location.y,
+      ],
+      size: [imageNode.rectangle.size.x, imageNode.rectangle.size.y],
+      path: imageNode.path,
+      uuid: imageNode.uuid,
+      type: "core:image_node",
+    };
+  }
+
   export function dumpSection(section: Section): Serialized.Section {
     return {
       location: [section.rectangle.location.x, section.rectangle.location.y],
@@ -69,6 +83,7 @@ export namespace StageDumper {
       | Serialized.Section
       | Serialized.Node
       | Serialized.ConnectPoint
+      | Serialized.ImageNode
     )[] = StageManager.getTextNodes().map((node) => dumpTextNode(node));
 
     nodes.push(
@@ -78,6 +93,9 @@ export namespace StageDumper {
       ...StageManager.getConnectPoints().map((connectPoint) =>
         dumpConnectPoint(connectPoint),
       ),
+    );
+    nodes.push(
+      ...StageManager.getImageNodes().map((node) => dumpImageNode(node)),
     );
 
     return {

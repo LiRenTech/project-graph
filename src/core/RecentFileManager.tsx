@@ -12,6 +12,7 @@ import { Serialized } from "../types/node";
 import { StageHistoryManager } from "./stage/stageManager/StageHistoryManager";
 import { Section } from "./stageObject/entity/Section";
 import { ConnectPoint } from "./stageObject/entity/ConnectPoint";
+import { ImageNode } from "./stageObject/entity/ImageNode";
 
 /**
  * 管理最近打开的文件列表
@@ -90,7 +91,7 @@ export namespace RecentFileManager {
   export async function validAndRefreshRecentFiles() {
     const recentFiles = await getRecentFiles();
     const recentFilesValid: RecentFile[] = [];
-    
+
     // 是否存在文件丢失情况
     let isFileLost = false;
 
@@ -106,8 +107,6 @@ export namespace RecentFileManager {
           console.log("文件不存在，删除记录", file.path);
           isFileLost = true;
         }
-        
-
       } catch (e) {
         console.error("无法检测文件是否存在：", file.path);
         console.error(e);
@@ -177,6 +176,8 @@ export namespace RecentFileManager {
         StageManager.addSection(new Section(entity));
       } else if (entity.type === "core:connect_point") {
         StageManager.addConnectPoint(new ConnectPoint(entity));
+      } else if (entity.type === "core:image_node") {
+        StageManager.addImageNode(new ImageNode(entity));
       } else {
         console.warn("加载文件时，出现未知的实体类型：" + entity);
       }

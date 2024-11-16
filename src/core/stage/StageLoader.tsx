@@ -165,4 +165,5 @@ export namespace StageLoader {
     data.version = 9;    
     return data;
   }
+  // 增加了ImageNode
 }

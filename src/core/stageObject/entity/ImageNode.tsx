@@ -49,7 +49,6 @@ export class ImageNode extends ConnectableEntity {
 
   private _base64String: string = "";
 
-
   /**
    * 图片的三种状态
    */
@@ -65,6 +64,7 @@ export class ImageNode extends ConnectableEntity {
     {
       uuid,
       location = [0, 0],
+      size = [100, 100],
       path = "",
     }: Partial<Serialized.ImageNode> & { uuid: string },
     public unknown = false,
@@ -73,11 +73,24 @@ export class ImageNode extends ConnectableEntity {
     this.uuid = uuid;
     this.path = path;
     this.collisionBox = new CollisionBox([
-      new Rectangle(new Vector(...location), new Vector(...[100, 100])),
+      new Rectangle(new Vector(...location), new Vector(...size)),
     ]);
     this.state = "loading";
     // 初始化创建的时候，开始获取base64String
-    this.updateBase64StringByPath(PathString.dirPath(Stage.Path.getFilePath()));
+    if (!Stage.Path.isDraft()) {
+      this.updateBase64StringByPath(
+        PathString.dirPath(Stage.Path.getFilePath()),
+      );
+    } else {
+      // 一般只有在粘贴板粘贴时和初次打开文件时才调用这里
+      // 所以这里只可能时初次打开文件时还是草稿的状态
+      
+      setTimeout(() => {
+        this.updateBase64StringByPath(
+          PathString.dirPath(Stage.Path.getFilePath()),
+        );
+      }, 1000);
+    }
   }
 
   /**

@@ -36,6 +36,7 @@ export namespace Serialized {
   }
   export type ImageNode = Entity & {
     path: string;
+    size: Vector;
     type: "core:image_node";
   }
   export type Edge = StageObject & {
@@ -47,7 +48,7 @@ export namespace Serialized {
 
   export type File = {
     version: 9;  // 最新版本 src\core\stage\StageDumper.tsx latestVersion
-    nodes: (Node | Section | ConnectPoint)[];
+    nodes: (Node | Section | ConnectPoint | ImageNode)[];
     edges: Edge[];
   };
 }
