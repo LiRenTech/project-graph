@@ -1,3 +1,5 @@
+![宣传图](src/assets/poster.png)
+
 # Project Graph
 
 ## 下载地址
