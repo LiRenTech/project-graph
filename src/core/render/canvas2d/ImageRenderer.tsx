@@ -59,8 +59,8 @@ export namespace ImageRenderer {
       imageElement,
       location.x,
       location.y,
-      imageElement.width * Camera.currentScale,
-      imageElement.height * Camera.currentScale,
+      (imageElement.width / (window.devicePixelRatio || 1)) * Camera.currentScale,
+      (imageElement.height / (window.devicePixelRatio || 1)) * Camera.currentScale,
     );
   }
 }

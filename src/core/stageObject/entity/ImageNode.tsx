@@ -116,10 +116,12 @@ export class ImageNode extends ConnectableEntity {
         imageElement.onload = () => {
           // 图片加载成功
           console.log("图片加载成功");
+
           // 调整碰撞箱大小
+
           this.rectangle.size = new Vector(
-            imageElement.width,
-            imageElement.height,
+            imageElement.width / (window.devicePixelRatio || 1),
+            imageElement.height / (window.devicePixelRatio || 1),
           );
           this.state = "success";
         };
