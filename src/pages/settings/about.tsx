@@ -14,11 +14,17 @@ export default function About() {
 
   React.useEffect(() => {
     getVersion().then((version) => {
+      // version: string 是tauri.conf.json中填写的值
+
+      // versions.json 列表中的每一个version字段都必须是tauri.conf.json中填写的值的前缀
+      
       setVersion(version);
-      const ver = versions.find((v) => version.startsWith(v.version));
-      if (ver) {
-        setVersionName(ver.name);
-        setVersionNameEn(ver.name_en);
+      const versionObject = versions.find((vo) =>
+        version.startsWith(vo.version),
+      );
+      if (versionObject) {
+        setVersionName(versionObject.name);
+        setVersionNameEn(versionObject.name_en);
       } else {
         setVersionName("神秘序章");
         setVersionNameEn("Unknown Version");
