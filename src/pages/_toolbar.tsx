@@ -25,7 +25,6 @@ import {
   SaveAll,
   Package,
   PackageOpen,
-  Calculator,
   BrainCircuit
 } from "lucide-react";
 import React from "react";
@@ -354,7 +353,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           StageManager.unpackSelectedSection();
         }}
       />
-      {isHaveSelectedNode && (
+      {/* {isHaveSelectedNode && (
         <ToolbarItem
           description="计算文字"
           icon={<Calculator />}
@@ -362,7 +361,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             StageManager.calculateSelectedNode();
           }}
         />
-      )}
+      )} */}
       {isHaveSelectedNode && (
         <ToolbarItem
           description="AI扩展节点"
