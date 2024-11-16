@@ -93,6 +93,9 @@ export namespace StageManager {
   export function deleteOneTextNode(node: TextNode) {
     entities.deleteValue(node);
   }
+  export function deleteOneImage(node: ImageNode) {
+    entities.deleteValue(node);
+  }
   export function deleteOneSection(section: Section) {
     entities.deleteValue(section);
   }
