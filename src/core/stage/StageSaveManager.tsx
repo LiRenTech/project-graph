@@ -56,7 +56,7 @@ export namespace StageSaveManager {
       return;
     }
     invoke<string>("save_json_by_path", {
-      path: Stage.Path.getPath(),
+      path: Stage.Path.getFilePath(),
       content: JSON.stringify(data, null, 2),
     })
       .then((res) => {

@@ -30,7 +30,7 @@ export namespace Stage {
   export namespace Path {
     let currentPath = "Project Graph";
     export const draftName = "Project Graph";
-    
+
     /**
      * 是否是草稿
      * @returns 
@@ -52,7 +52,7 @@ export namespace Stage {
      * 提供一个函数供外部调用，获取当前路径
      * @returns 
      */
-    export function getPath() {
+    export function getFilePath() {
       return currentPath;
     }
   }

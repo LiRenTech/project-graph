@@ -527,7 +527,7 @@ export namespace Renderer {
       `fps: ${(1 / deltaTime).toFixed()}`,
       `delta: ${deltaTime.toFixed(2)}`,
       `Controller.isViewMoveByClickMiddle: ${Controller.isViewMoveByClickMiddle}`,
-      `path: ${Stage.Path.getPath()}`
+      `path: ${Stage.Path.getFilePath()}`
     ];
     for (const [k, v] of Object.entries(timings)) {
       detailsData.push(`time:${k}: ${v.toFixed(2)}`);
