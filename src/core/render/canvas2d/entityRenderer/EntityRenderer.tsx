@@ -156,7 +156,10 @@ export namespace EntityRenderer {
         node.rectangle.location.add(new Vector(0, node.rectangle.size.y)),
       ),
       Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
-      Renderer.NODE_DETAILS_WIDTH * Camera.currentScale,
+      Math.max(
+        Renderer.NODE_DETAILS_WIDTH * Camera.currentScale,
+        node.rectangle.size.x * Camera.currentScale,
+      ),
       StageStyleManager.currentStyle.NodeDetailsTextColor,
     );
   }
