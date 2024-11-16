@@ -49,15 +49,6 @@ export class ImageNode extends ConnectableEntity {
 
   private _base64String: string = "";
 
-  public get base64String(): string {
-    if (this._base64String !== "") {
-      return this._base64String;
-    } else {
-      // 需要通过path获取base64String
-
-      return "";
-    }
-  }
 
   /**
    * 图片的三种状态
@@ -108,7 +99,7 @@ export class ImageNode extends ConnectableEntity {
         this._base64String = res;
         const imageElement = new Image();
         this._imageElement = imageElement;
-        imageElement.src = `data:image/png;base64,${this.base64String}`;
+        imageElement.src = `data:image/png;base64,${this._base64String}`;
         imageElement.onload = () => {
           // 图片加载成功
           console.log("图片加载成功");
