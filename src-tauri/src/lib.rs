@@ -68,7 +68,7 @@ fn convert_image_to_base64(image_path: String) -> Result<String, String> {
             let base64_str = encode(&image_data);
             Ok(base64_str)
         }
-        Err(e) => Err(format!("无法读取文件: {}", e)),
+        Err(e) => Err(format!("无法读取文件: {}, {}", e, image_path)),
     }
 }
 

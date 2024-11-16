@@ -217,11 +217,25 @@ export namespace EntityRenderer {
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
-    if (imageNode.isLoaded) {
+    if (imageNode.state === "loading") {
+      RenderUtils.renderTextFromCenter(
+        "loading...",
+        Renderer.transformWorld2View(imageNode.rectangle.center),
+        20 * Camera.currentScale,
+        Color.White,
+      );
+    } else if (imageNode.state === "success") {
       ImageRenderer.renderImageElement(
         imageNode.imageElement,
         Renderer.transformWorld2View(imageNode.rectangle.location),
-      )
+      );
+    } else if (imageNode.state === "error") {
+      RenderUtils.renderTextFromCenter(
+        "Error",
+        Renderer.transformWorld2View(imageNode.rectangle.center),
+        20 * Camera.currentScale,
+        Color.Red,
+      );
     }
   }
 }
