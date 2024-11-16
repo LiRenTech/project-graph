@@ -413,7 +413,6 @@ export default function AppMenu({
           onClick={() => {
             console.log(StageManager.getEntities());
             console.log(StageManager.getEdges());
-            console.log(file);
             // localStorage测试
             // 尽量不要用这个，端口号一变就没了
             localStorage.setItem("_test", "123");

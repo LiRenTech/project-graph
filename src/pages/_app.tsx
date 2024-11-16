@@ -29,6 +29,7 @@ import { StageDumper } from "../core/stage/StageDumper";
 import StartFilePanel from "./_start_file_panel";
 import { PathString } from "../utils/pathString";
 import { useTranslation } from "react-i18next";
+import { Stage } from "../core/stage/Stage";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -86,11 +87,16 @@ export default function App() {
     };
   }, []);
 
+  /**
+   * 监控路径变化的地方
+   */
   React.useEffect(() => {
-    if (file === "Project Graph") {
-      getCurrentWindow().setTitle("Project Graph");
+    if (file === Stage.Path.draftName) {
+      getCurrentWindow().setTitle(Stage.Path.draftName);
+      Stage.Path.setPathInEffect(Stage.Path.draftName)
     } else {
       getCurrentWindow().setTitle(`${filename} - Project Graph`);
+      Stage.Path.setPathInEffect(file);
     }
   }, [file]);
 
@@ -105,7 +111,7 @@ export default function App() {
   }, [maxmized]);
 
   const handleClose = () => {
-    if (file === "Project Graph") {
+    if (file === Stage.Path.draftName) {
       dialog.show({
         title: "真的要关闭吗？",
         content: "您现在的新建草稿没有保存，是否要关闭项目？",

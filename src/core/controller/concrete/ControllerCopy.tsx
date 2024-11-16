@@ -132,9 +132,6 @@ ControllerCopy.keydown = (event: KeyboardEvent) => {
 // }
 
 async function readClipboardItems(mouseLocation: Vector) {
-  // const [file] = useRecoilState(fileAtom);
-  // console.log(file);
-  // 必须在组件函数里。
 
   // test
   try {

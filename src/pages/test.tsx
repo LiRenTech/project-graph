@@ -67,4 +67,5 @@ function handleTestImageBase64() {
   }).then((res) => {
     console.log(res);
   });
+
 }

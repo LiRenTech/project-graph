@@ -156,7 +156,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
   };
   const checkoutFile = (path: string) => {
     try {
-      setFile(decodeURIComponent(path));
+      setFile(decodeURIComponent(path));      
       if (isDesktop && !path.endsWith(".json")) {
         dialog.show({
           title: "请选择一个JSON文件",
