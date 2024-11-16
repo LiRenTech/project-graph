@@ -22,6 +22,7 @@ import {
   Folder,
   FolderCog,
   FolderOpen,
+  Scaling,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -355,6 +356,12 @@ export default function AppMenu({
           onClick={() => Camera.resetBySelected()}
         >
           {t("view.items.resetBySelect")}
+        </Col>
+        <Col
+          icon={<Scaling />}
+          onClick={() => Camera.resetScale()}
+        >
+          {t("view.items.resetScale")}
         </Col>
       </Row>
       <Row icon={<MoreHorizontal />} title={t("more.title")}>

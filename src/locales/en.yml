@@ -140,6 +140,7 @@ appMenu:
     items:
       resetByAll: Reset View by All Content
       resetBySelect: Reset View by Selected Content
+      resetScale: Reset the scale to the standard size
   more:
     title: More
     items:
