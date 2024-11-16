@@ -43,8 +43,8 @@ export namespace StageHistoryManager {
     });
   }
 
-  export function reset(file: Serialized.File) {
-    historyList = [file];
+  export function reset(serializedFile: Serialized.File) {
+    historyList = [serializedFile];
     currentIndex = 0;
     StageSaveManager.setIsCurrentSaved(true);
   }

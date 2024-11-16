@@ -1,8 +1,15 @@
 import { family } from "@tauri-apps/plugin-os";
 
 export namespace PathString {
+  /**
+   * 将绝对路径转换为文件名
+   * @param path
+   * @returns
+   */
   export function absolute2file(path: string): string {
     const fam = family();
+    // const fam = "windows"; // vitest 测试时打开此行注释
+
     if (fam === "windows") {
       path = path.replace(/\\/g, "/");
     }
@@ -16,5 +23,36 @@ export namespace PathString {
     } else {
       return file;
     }
+  }
+
+  /**
+   * 根据文件的绝对路径，获取当前文件所在目录的路径
+   * @param path 必须是一个文件的路径，不能是文件夹的路径
+   * @returns
+   */
+  export function dirPath(path: string): string {
+    const fam = family();
+    // const fam = "windows"; // vitest 测试时打开此行注释
+
+    if (fam === "windows") {
+      path = path.replace(/\\/g, "/"); // 将反斜杠替换为正斜杠
+    }
+
+    const file = path.split("/").pop(); // 获取文件名
+    if (!file) {
+      throw new Error("Invalid path");
+    }
+
+    let directory = path.substring(0, path.length - file.length); // 获取目录路径
+    if (directory.endsWith("/")) {
+      directory = directory.slice(0, -1); // 如果目录路径以斜杠结尾，去掉最后的斜杠
+    }
+
+    if (fam === "windows") {
+      // 再换回反斜杠
+      return directory.replace(/\//g, "\\");
+    }
+
+    return directory; // 返回目录路径
   }
 }

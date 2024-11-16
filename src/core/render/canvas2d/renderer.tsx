@@ -326,6 +326,12 @@ export namespace Renderer {
       }
       EntityRenderer.renderConnectPoint(connectPoint);
     }
+    for (const imageNode of StageManager.getImageNodes()) {
+      if (!viewRectangle.isCollideWith(imageNode.rectangle)) {
+        continue;
+      }
+      EntityRenderer.renderImageNode(imageNode);
+    }
   }
 
   export function renderEdges(viewRectangle: Rectangle) {
@@ -520,7 +526,8 @@ export namespace Renderer {
       `历史: ${StageHistoryManager.statusText()}`,
       `fps: ${(1 / deltaTime).toFixed()}`,
       `delta: ${deltaTime.toFixed(2)}`,
-      `Controller.isViewMoveByClickMiddle: ${Controller.isViewMoveByClickMiddle}`
+      `Controller.isViewMoveByClickMiddle: ${Controller.isViewMoveByClickMiddle}`,
+      `path: ${Stage.Path.getFilePath()}`
     ];
     for (const [k, v] of Object.entries(timings)) {
       detailsData.push(`time:${k}: ${v.toFixed(2)}`);

@@ -26,3 +26,4 @@ tauri-plugin-store = "2.0.0-rc"
 tauri-plugin-http = "2"
 tauri-plugin-gamepad = "0.0.4"
 
+base64 = "0.13"

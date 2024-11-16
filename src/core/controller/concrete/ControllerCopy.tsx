@@ -10,6 +10,9 @@ import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { v4 as uuidv4 } from "uuid";
 import { Entity } from "../../stageObject/StageObject";
+import { ImageNode } from "../../stageObject/entity/ImageNode";
+import { invoke } from "@tauri-apps/api/core";
+import { PathString } from "../../../utils/pathString";
 
 /**
  * 关于复制相关的功能
@@ -134,22 +137,34 @@ async function readClipboardItems(mouseLocation: Vector) {
   try {
     navigator.clipboard.read().then(async (items) => {
       for (const item of items) {
-        if (
-          item.types.includes("image/png") ||
-          item.types.includes("image/jpeg")
-        ) {
+        if (item.types.includes("image/png")) {
           const blob = await item.getType(item.types[0]); // 获取 Blob 对象
           const base64String = await convertBlobToBase64(blob); // 转换为 Base64 字符串
-          console.log("Base64 String:", base64String);
+          const imageUUID = uuidv4();
+          const folder = PathString.dirPath(Stage.Path.getFilePath());
+          const imagePath = `${folder}${Stage.Path.getSep()}${imageUUID}.png`;
 
-          // 显示图像
-          // const url = `data:${blob.type};base64,${base64String}`;
-          // const imageElement = document.getElementById(
-          //   "clipboardImage",
-          // ) as HTMLImageElement;
-          // imageElement.src = url;
-          // imageElement.style.display = "block";
-          break;
+          invoke<string>("save_base64_to_image", {
+            base64Str: base64String,
+            fileName: imagePath,
+          })
+            .then(() => {
+              console.log("save image to file success");
+
+              // 要延迟一下，等待保存完毕
+              setTimeout(() => {
+                const imageNode = new ImageNode({
+                  uuid: imageUUID,
+                  location: [mouseLocation.x, mouseLocation.y],
+                  path: `${imageUUID}.png`,
+                });
+                // imageNode.setBase64StringForced(base64String);
+                StageManager.addImageNode(imageNode);
+              }, 100);
+            })
+            .catch((error) => {
+              console.error("save image to file error", error);
+            });
         }
         if (item.types.includes("text/plain")) {
           const blob = await item.getType("text/plain"); // 获取文本内容

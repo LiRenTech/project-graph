@@ -117,6 +117,7 @@ appMenu:
     items:
       resetByAll: 根據全部內容重置視野
       resetBySelect: 根據選中內容重置視野
+      resetScale: 將縮放重置為標準大小
   more:
     title: 更多
     items:

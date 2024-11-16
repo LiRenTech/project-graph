@@ -29,6 +29,7 @@ import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManag
 import { StageNodeTextTransfer } from "./concreteMethods/StageNodeTextTransfer";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { StageGeneratorAI } from "./concreteMethods/StageGeneratorAI";
+import { ImageNode } from "../../stageObject/entity/ImageNode";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -56,6 +57,9 @@ export namespace StageManager {
   }
   export function getSections(): Section[] {
     return entities.valuesToArray().filter((node) => node instanceof Section);
+  }
+  export function getImageNodes(): ImageNode[] {
+    return entities.valuesToArray().filter((node) => node instanceof ImageNode);
   }
   export function getConnectPoints(): ConnectPoint[] {
     return entities
@@ -89,6 +93,9 @@ export namespace StageManager {
   export function deleteOneTextNode(node: TextNode) {
     entities.deleteValue(node);
   }
+  export function deleteOneImage(node: ImageNode) {
+    entities.deleteValue(node);
+  }
   export function deleteOneSection(section: Section) {
     entities.deleteValue(section);
   }
@@ -117,6 +124,9 @@ export namespace StageManager {
   }
 
   export function addTextNode(node: TextNode) {
+    entities.addValue(node, node.uuid);
+  }
+  export function addImageNode(node: ImageNode) {
     entities.addValue(node, node.uuid);
   }
   export function addSection(section: Section) {
@@ -316,6 +326,15 @@ export namespace StageManager {
     return null;
   }
 
+  export function findImageNodeByLocation(location: Vector): ImageNode | null {
+    for (const node of getImageNodes()) {
+      if (node.collisionBox.isPointInCollisionBox(location)) {
+        return node;
+      }
+    }
+    return null;
+  }
+
   export function findConnectableEntityByLocation(
     location: Vector,
   ): ConnectableEntity | null {
@@ -416,6 +435,9 @@ export namespace StageManager {
   }
   export function moveConnectPoints(delta: Vector) {
     StageEntityMoveManager.moveConnectPoints(delta); // 连续过程，不记录历史，只在结束时记录
+  }
+  export function moveImageNodes(delta: Vector) {
+    StageEntityMoveManager.moveImageNodes(delta); // 连续过程，不记录历史，只在结束时记录
   }
   export function moveNodesWithChildren(delta: Vector) {
     StageEntityMoveManager.moveNodesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录

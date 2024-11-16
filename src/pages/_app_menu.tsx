@@ -22,6 +22,7 @@ import {
   Folder,
   FolderCog,
   FolderOpen,
+  Scaling,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -356,6 +357,12 @@ export default function AppMenu({
         >
           {t("view.items.resetBySelect")}
         </Col>
+        <Col
+          icon={<Scaling />}
+          onClick={() => Camera.resetScale()}
+        >
+          {t("view.items.resetScale")}
+        </Col>
       </Row>
       <Row icon={<MoreHorizontal />} title={t("more.title")}>
         <Col
@@ -413,7 +420,6 @@ export default function AppMenu({
           onClick={() => {
             console.log(StageManager.getEntities());
             console.log(StageManager.getEdges());
-            console.log(file);
             // localStorage测试
             // 尽量不要用这个，端口号一变就没了
             localStorage.setItem("_test", "123");

@@ -60,10 +60,16 @@ export namespace StageEntityMoveManager {
     }
   }
   export function moveConnectPoints(delta: Vector) {
-    console.log("moveConnectPoints");
     for (const point of StageManager.getConnectPoints()) {
       if (point.isSelected) {
         moveEntityUtils(point, delta);
+      }
+    }
+  }
+  export function moveImageNodes(delta: Vector) {
+    for (const node of StageManager.getImageNodes()) {
+      if (node.isSelected) {
+        moveEntityUtils(node, delta);
       }
     }
   }

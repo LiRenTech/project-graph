@@ -11,6 +11,8 @@ import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { replaceTextWhenProtect } from "../../../../utils/font";
 import { Random } from "../../../algorithm/random";
 import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
+import { ImageNode } from "../../../stageObject/entity/ImageNode";
+import { ImageRenderer } from "../ImageRenderer";
 
 /**
  * 处理节点相关的绘制
@@ -197,5 +199,46 @@ export namespace EntityRenderer {
       Color.White,
       2 * Camera.currentScale,
     );
+  }
+
+  export function renderImageNode(imageNode: ImageNode) {
+    if (imageNode.isSelected) {
+      // 在外面增加一个框
+      CollisionBoxRenderer.render(
+        imageNode.collisionBox,
+        StageStyleManager.currentStyle.CollideBoxSelectedColor,
+      );
+    }
+    // 节点身体矩形
+    RenderUtils.renderRect(
+      new Rectangle(
+        Renderer.transformWorld2View(imageNode.rectangle.location),
+        imageNode.rectangle.size.multiply(Camera.currentScale),
+      ),
+      Color.Transparent,
+      StageStyleManager.currentStyle.StageObjectBorderColor,
+      2 * Camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+    );
+    if (imageNode.state === "loading") {
+      RenderUtils.renderTextFromCenter(
+        "loading...",
+        Renderer.transformWorld2View(imageNode.rectangle.center),
+        20 * Camera.currentScale,
+        Color.White,
+      );
+    } else if (imageNode.state === "success") {
+      ImageRenderer.renderImageElement(
+        imageNode.imageElement,
+        Renderer.transformWorld2View(imageNode.rectangle.location),
+      );
+    } else if (imageNode.state === "error") {
+      RenderUtils.renderTextFromCenter(
+        "Error",
+        Renderer.transformWorld2View(imageNode.rectangle.center),
+        20 * Camera.currentScale,
+        Color.Red,
+      );
+    }
   }
 }

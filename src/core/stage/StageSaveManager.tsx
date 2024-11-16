@@ -39,6 +39,38 @@ export namespace StageSaveManager {
       });
   }
 
+  /**
+   * 
+   * without path 意思是不需要传入path，直接使用当前的path
+   * @param data 
+   * @param successCallback 
+   * @param errorCallback 
+   */
+  export function saveHandleWithoutCurrentPath(
+    data: Serialized.File,
+    successCallback: () => void,
+    errorCallback: (err: any) => void,
+  ) {
+    if (Stage.Path.isDraft()) {
+      errorCallback("当前文档的状态为草稿，请您先保存为文件");
+      return;
+    }
+    invoke<string>("save_json_by_path", {
+      path: Stage.Path.getFilePath(),
+      content: JSON.stringify(data, null, 2),
+    })
+      .then((res) => {
+        console.log(res);
+        Stage.effects.push(ViewFlashEffect.SaveFile());
+        StageHistoryManager.reset(data); // 重置历史
+        successCallback();
+        isCurrentSaved = true;
+      })
+      .catch((err) => {
+        errorCallback(err);
+      });
+  }
+
   export function saveSvgHandle(
     path: string,
     string: string,

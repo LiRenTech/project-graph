@@ -12,6 +12,7 @@ import { Controller } from "../controller/Controller";
 import { StageManager } from "./stageManager/StageManager";
 import { PointDashEffect } from "../effect/concrete/PointDashEffect";
 import { ControllerGamepad } from "../controller/ControllerGamepad";
+import { family } from "@tauri-apps/plugin-os";
 
 /**
  * 舞台对象
@@ -23,6 +24,48 @@ import { ControllerGamepad } from "../controller/ControllerGamepad";
  * 但这个里面主要存一些动态的属性，以及特效交互等信息
  */
 export namespace Stage {
+  /**
+   * 此Path存在的意义为摆脱状态管理只能在组件函数中的限制
+   */
+  export namespace Path {
+    let currentPath = "Project Graph";
+    export const draftName = "Project Graph";
+
+    export function getSep(): string {
+      const fam = family();
+      if (fam === "windows") {
+        return "\\";
+      } else {
+        return "/";
+      }
+    }
+
+    /**
+     * 是否是草稿
+     * @returns
+     */
+    export function isDraft() {
+      return currentPath === "Project Graph";
+    }
+
+    /**
+     * 此函数唯一的调用：只能在app.tsx的useEffect检测函数中调用
+     * 为了同步状态管理中的路径。
+     * @param path
+     */
+    export function setPathInEffect(path: string) {
+      currentPath = path;
+    }
+
+    /**
+     * 提供一个函数供外部调用，获取当前路径
+     * @returns
+     */
+    export function getFilePath() {
+      return currentPath;
+    }
+  }
+
   export let effects: Effect[] = [];
   /**
    * 是否正在框选

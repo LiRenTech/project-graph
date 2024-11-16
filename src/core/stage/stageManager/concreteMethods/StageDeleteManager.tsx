@@ -3,6 +3,7 @@ import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { ExplodeAshEffect } from "../../../effect/concrete/ExplodeDashEffect";
 import { Edge } from "../../../stageObject/association/Edge";
 import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
+import { ImageNode } from "../../../stageObject/entity/ImageNode";
 import { Section } from "../../../stageObject/entity/Section";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Entity } from "../../../stageObject/StageObject";
@@ -21,6 +22,8 @@ export namespace StageDeleteManager {
         deleteSection(entity);
       } else if (entity instanceof ConnectPoint) {
         deleteConnectPoint(entity);
+      } else if (entity instanceof ImageNode) {
+        deleteImageNode(entity);
       }
     }
     StageManager.updateReferences();
@@ -44,7 +47,20 @@ export namespace StageDeleteManager {
     // 再删除自己
     StageManager.deleteOneSection(entity);
   }
-
+  function deleteImageNode(entity: ImageNode) {
+    if (StageManager.getImageNodes().includes(entity)) {
+      StageManager.deleteOneImage(entity);
+      Stage.effects.push(
+        new ExplodeAshEffect(
+          new ProgressNumber(0, 30),
+          entity.collisionBox.getRectangle(),
+          Color.White,
+        ),
+      );
+      // 删除所有相关的边
+      deleteEntityAfterClearEdges(entity);
+    }
+  }
   function deleteConnectPoint(entity: ConnectPoint) {
     // 先判断这个node是否在nodes里
     if (StageManager.getConnectPoints().includes(entity)) {

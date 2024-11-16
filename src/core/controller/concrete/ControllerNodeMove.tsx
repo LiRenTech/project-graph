@@ -20,46 +20,17 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const isHaveNodeSelected = StageManager.getTextNodes().some(
-    (node) => node.isSelected,
-  );
-  const isHaveSectionSelected = StageManager.getSections().some(
-    (section) => section.isSelected,
-  );
   ControllerNodeMove.lastMoveLocation = pressWorldLocation.clone();
-  const clickedNode = StageManager.findTextNodeByLocation(pressWorldLocation);
-  const clickedSection = StageManager.findSectionByLocation(pressWorldLocation);
-  const clickedConnectPoint =
-    StageManager.findConnectPointByLocation(pressWorldLocation);
-
-  if (clickedSection !== null) {
+  const clickedEntity =
+    StageManager.findConnectableEntityByLocation(pressWorldLocation);
+  if (clickedEntity !== null) {
     Controller.isMovingEntity = true;
-    if (isHaveSectionSelected && !clickedSection.isSelected) {
-      StageManager.getSections().forEach((section) => {
-        section.isSelected = false;
+    if (clickedEntity && !clickedEntity.isSelected) {
+      StageManager.getEntities().forEach((entity) => {
+        entity.isSelected = false;
       });
+      clickedEntity.isSelected = true;
     }
-    clickedSection.isSelected = true;
-  }
-
-  if (clickedConnectPoint !== null) {
-    Controller.isMovingEntity = true;
-    if (clickedConnectPoint && !clickedConnectPoint.isSelected) {
-      StageManager.getConnectPoints().forEach((point) => {
-        point.isSelected = false;
-      });
-    }
-    clickedConnectPoint.isSelected = true;
-  }
-
-  if (clickedNode !== null) {
-    Controller.isMovingEntity = true;
-    if (isHaveNodeSelected && !clickedNode.isSelected) {
-      StageManager.getTextNodes().forEach((node) => {
-        node.isSelected = false;
-      });
-    }
-    clickedNode.isSelected = true;
     // 同时清空所有边的选中状态
     StageManager.getAssociations().forEach((edge) => {
       edge.isSelected = false;
@@ -77,6 +48,7 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
   const worldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
+  console.log(worldLocation.toString());
   const diffLocation = worldLocation.subtract(
     ControllerNodeMove.lastMoveLocation,
   );
@@ -93,6 +65,7 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
     }
     StageManager.moveSections(diffLocation);
     StageManager.moveConnectPoints(diffLocation);
+    StageManager.moveImageNodes(diffLocation);
 
     ControllerNodeMove.lastMoveLocation = worldLocation.clone();
   }

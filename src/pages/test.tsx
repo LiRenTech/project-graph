@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { XML } from "../utils/xml";
 import { StageDumper } from "../core/stage/StageDumper";
 import { fetch } from "@tauri-apps/plugin-http";
+import { invoke } from "@tauri-apps/api/core";
 
 export default function TestPage() {
   const [switchValue, setSwitchValue] = React.useState(false);
@@ -55,6 +56,16 @@ export default function TestPage() {
         </pre>
       </div>
       <Button onClick={handleTestHttp}>test http</Button>
+      <Button onClick={handleTestImageBase64}>getImageBase64</Button>
     </div>
   );
+}
+
+function handleTestImageBase64() {
+  invoke<string>("convert_image_to_base64", {
+    imagePath: "D:\\Projects\\Project-Tools\\project-graph\\src\\assets\\icon.png"
+  }).then((res) => {
+    console.log(res);
+  });
+
 }

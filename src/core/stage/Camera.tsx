@@ -145,9 +145,9 @@ export namespace Camera {
     Settings.watch("moveAmplitude", (value) => {
       moveAmplitude = value;
     });
-    Settings.watch("moveFriction", value => {
+    Settings.watch("moveFriction", (value) => {
       frictionCoefficient = value;
-    })
+    });
   }
 
   /**
@@ -181,5 +181,10 @@ export namespace Camera {
       Renderer.w / viewRectangle.size.x,
     );
     Camera.targetScale = Camera.currentScale;
+  }
+
+  export function resetScale() {
+    Camera.currentScale = 1;
+    Camera.targetScale = 1;
   }
 }

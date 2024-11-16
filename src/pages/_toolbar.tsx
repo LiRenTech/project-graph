@@ -40,8 +40,6 @@ import { invoke } from "@tauri-apps/api/core";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
-import { useRecoilState } from "recoil";
-import { fileAtom } from "../state";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -222,7 +220,6 @@ function AlignNodePanel() {
  */
 export default function Toolbar({ className = "" }: { className?: string }) {
   const popupDialog = usePopupDialog();
-  const [file] = useRecoilState(fileAtom);
   const [isCopyClearShow, setIsCopyClearShow] = useState(false);
 
   useEffect(() => {
@@ -312,8 +309,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               openBrowserOrFile();
             } else {
               // Stage.effects.push(new TextRiseEffect("请先保存文件"));
-              StageSaveManager.saveHandle(
-                file,
+              StageSaveManager.saveHandleWithoutCurrentPath(
                 StageDumper.dump(),
                 () => {
                   openBrowserOrFile();

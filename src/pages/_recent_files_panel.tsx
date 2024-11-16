@@ -15,6 +15,7 @@ import { RecentFileManager } from "../core/RecentFileManager";
 import { useDialog } from "../utils/dialog";
 import { isDesktop } from "../utils/platform";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
+import { Stage } from "../core/stage/Stage";
 
 export default function RecentFilesPanel() {
   const [recentFiles, setRecentFiles] = React.useState<
@@ -50,7 +51,7 @@ export default function RecentFilesPanel() {
 
   const onClickFile = (file: RecentFileManager.RecentFile) => {
     return () => {
-      if (currentFile === "Project Graph") {
+      if (currentFile === Stage.Path.draftName) {
         dialog.show({
           title: "真的要切换吗？",
           content: "您现在的新建草稿没有保存，是否要切换项目？",
@@ -83,7 +84,7 @@ export default function RecentFilesPanel() {
   const checkoutFile = (file: RecentFileManager.RecentFile) => {
     try {
       const path = file.path;
-      setFile(decodeURIComponent(path));
+      setFile(decodeURIComponent(path));      
       if (isDesktop && !path.endsWith(".json")) {
         dialog.show({
           title: "请选择一个JSON文件",
