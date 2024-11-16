@@ -326,6 +326,12 @@ export namespace Renderer {
       }
       EntityRenderer.renderConnectPoint(connectPoint);
     }
+    for (const imageNode of StageManager.getImageNodes()) {
+      if (!viewRectangle.isCollideWith(imageNode.rectangle)) {
+        continue;
+      }
+      EntityRenderer.renderImageNode(imageNode);
+    }
   }
 
   export function renderEdges(viewRectangle: Rectangle) {

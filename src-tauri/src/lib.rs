@@ -1,10 +1,11 @@
+use std::fs::File;
 use std::io::Read;
 use std::io::Write;
 
+use base64::{decode, encode};
 use std::env;
-use tauri::Manager;
 use std::fs::read; // 引入 read 函数用于读取文件
-use base64::encode; // 引入 base64 编码函数
+use tauri::Manager; // 引入 base64 编码函数
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -66,10 +67,27 @@ fn convert_image_to_base64(image_path: String) -> Result<String, String> {
         Ok(image_data) => {
             let base64_str = encode(&image_data);
             Ok(base64_str)
-        },
+        }
         Err(e) => Err(format!("无法读取文件: {}", e)),
     }
 }
+
+/// 将base64编码字符串保存为图片文件
+#[tauri::command]
+fn save_base64_to_image(base64_str: &str, file_name: &str) -> Result<(), String> {
+    // 进行解码
+    match decode(base64_str) {
+        Ok(image_data) => {
+            // 创建文件并写入数据
+            let mut file = File::create(file_name).map_err(|e| format!("无法创建文件: {}", e))?;
+            file.write_all(&image_data)
+                .map_err(|e| format!("无法写入文件: {}", e))?;
+            Ok(())
+        }
+        Err(e) => Err(format!("解码失败: {}", e)),
+    }
+}
+
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -99,6 +117,7 @@ pub fn run() {
             open_json_by_path,
             save_json_by_path,
             convert_image_to_base64,
+            save_base64_to_image,
             check_json_exist // open_dev_tools
         ])
         .run(tauri::generate_context!())

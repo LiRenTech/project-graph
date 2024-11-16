@@ -12,6 +12,7 @@ import { replaceTextWhenProtect } from "../../../../utils/font";
 import { Random } from "../../../algorithm/random";
 import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
 import { ImageNode } from "../../../stageObject/entity/ImageNode";
+import { ImageRenderer } from "../ImageRenderer";
 
 /**
  * 处理节点相关的绘制
@@ -39,7 +40,9 @@ export namespace EntityRenderer {
           section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
         ),
         Renderer.FONT_SIZE * Camera.currentScale,
-        section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor)
+        section.color.a === 1
+          ? colorInvert(section.color)
+          : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
       );
     } else {
       RenderUtils.renderRect(
@@ -59,7 +62,9 @@ export namespace EntityRenderer {
           section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
         ),
         Renderer.FONT_SIZE * Camera.currentScale,
-        section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+        section.color.a === 1
+          ? colorInvert(section.color)
+          : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
       );
     }
 
@@ -104,17 +109,23 @@ export namespace EntityRenderer {
           node.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
         ),
         Renderer.FONT_SIZE * Camera.currentScale,
-        node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+        node.color.a === 1
+          ? colorInvert(node.color)
+          : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
       );
     }
 
     if (node.isSelected) {
       // 在外面增加一个框
-      CollisionBoxRenderer.render(node.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
+      CollisionBoxRenderer.render(
+        node.collisionBox,
+        StageStyleManager.currentStyle.CollideBoxSelectedColor,
+      );
     }
     if (node.isAiGenerating) {
-      const borderColor = StageStyleManager.currentStyle.CollideBoxSelectedColor.clone();
-      borderColor.a =  Random.randomFloat(0.2, 1);
+      const borderColor =
+        StageStyleManager.currentStyle.CollideBoxSelectedColor.clone();
+      borderColor.a = Random.randomFloat(0.2, 1);
       // 在外面增加一个框
       RenderUtils.renderRect(
         new Rectangle(
@@ -146,7 +157,7 @@ export namespace EntityRenderer {
       ),
       Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
       Renderer.NODE_DETAILS_WIDTH * Camera.currentScale,
-      StageStyleManager.currentStyle.NodeDetailsTextColor
+      StageStyleManager.currentStyle.NodeDetailsTextColor,
     );
   }
   export function colorInvert(color: Color): Color {
@@ -206,5 +217,11 @@ export namespace EntityRenderer {
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
+    if (imageNode.isLoaded) {
+      ImageRenderer.renderImageElement(
+        imageNode.imageElement,
+        Renderer.transformWorld2View(imageNode.rectangle.location),
+      )
+    }
   }
 }
