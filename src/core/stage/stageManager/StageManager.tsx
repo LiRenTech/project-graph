@@ -323,6 +323,15 @@ export namespace StageManager {
     return null;
   }
 
+  export function findImageNodeByLocation(location: Vector): ImageNode | null {
+    for (const node of getImageNodes()) {
+      if (node.collisionBox.isPointInCollisionBox(location)) {
+        return node;
+      }
+    }
+    return null;
+  }
+
   export function findConnectableEntityByLocation(
     location: Vector,
   ): ConnectableEntity | null {
@@ -423,6 +432,9 @@ export namespace StageManager {
   }
   export function moveConnectPoints(delta: Vector) {
     StageEntityMoveManager.moveConnectPoints(delta); // 连续过程，不记录历史，只在结束时记录
+  }
+  export function moveImageNodes(delta: Vector) {
+    StageEntityMoveManager.moveImageNodes(delta); // 连续过程，不记录历史，只在结束时记录
   }
   export function moveNodesWithChildren(delta: Vector) {
     StageEntityMoveManager.moveNodesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录
