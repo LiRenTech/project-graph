@@ -1,44 +1,46 @@
+import { open } from "@tauri-apps/plugin-shell";
 import { useEffect, useState } from "react";
 import { Color } from "../core/dataStruct/Color";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
-import { open } from "@tauri-apps/plugin-shell";
 // https://lucide.dev/icons
+import { invoke } from "@tauri-apps/api/core";
+import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 import {
-  Trash2,
-  // ChevronsRightLeft,
-  ClipboardX,
-  ClipboardPaste,
-  Repeat,
-  PaintBucket,
-  AlignStartVertical,
-  AlignEndVertical,
   AlignCenterHorizontal,
   AlignCenterVertical,
-  AlignHorizontalSpaceBetween,
-  AlignVerticalSpaceBetween,
-  LayoutDashboard,
-  AlignStartHorizontal,
   AlignEndHorizontal,
+  AlignEndVertical,
+  AlignHorizontalSpaceBetween,
+  AlignStartHorizontal,
+  AlignStartVertical,
+  AlignVerticalSpaceBetween,
+  BrainCircuit,
+  ClipboardPaste,
+  // ChevronsRightLeft,
+  ClipboardX,
   Globe,
-  Square,
-  SaveAll,
+  LayoutDashboard,
   Package,
   PackageOpen,
-  BrainCircuit
+  PaintBucket,
+  Repeat,
+  SaveAll,
+  Square,
+  Trash2,
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
-import { usePopupDialog } from "../utils/popupDialog";
-import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
-import { Stage } from "../core/stage/Stage";
+import Input from "../components/ui/Input";
+import { ApiKeyManager } from "../core/ai/ApiKeyManager";
 import { TextRiseEffect } from "../core/effect/concrete/TextRiseEffect";
-import { StageDumper } from "../core/stage/StageDumper";
-import { invoke } from "@tauri-apps/api/core";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
-import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
+import { Stage } from "../core/stage/Stage";
+import { StageDumper } from "../core/stage/StageDumper";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
+import { useDialog } from "../utils/dialog";
+import { usePopupDialog } from "../utils/popupDialog";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -219,6 +221,7 @@ function AlignNodePanel() {
  */
 export default function Toolbar({ className = "" }: { className?: string }) {
   const popupDialog = usePopupDialog();
+  const dialog = useDialog();
   const [isCopyClearShow, setIsCopyClearShow] = useState(false);
 
   useEffect(() => {
@@ -367,6 +370,14 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           description="AI扩展节点"
           icon={<BrainCircuit />}
           handleFunction={() => {
+            if (ApiKeyManager.getKey().length === 0) {
+              dialog.show({
+                title: "提示",
+                content: "当前为非官方构建，请使用官方构建方可使用AI功能。",
+                type: "info",
+              });
+              return;
+            }
             StageManager.expandTextNodeByAI();
           }}
         />

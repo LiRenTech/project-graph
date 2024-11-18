@@ -1,30 +1,22 @@
+import { fetch } from "@tauri-apps/plugin-http";
+import { v4 as uuidv4 } from "uuid";
+import { ApiKeyManager } from "../../../ai/ApiKeyManager";
 import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
 import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Stage } from "../../Stage";
 import { StageManager } from "../StageManager";
-import { v4 as uuidv4 } from "uuid";
-import { fetch } from "@tauri-apps/plugin-http";
 
 export namespace StageGeneratorAI {
-
-  export let fetchUrl = "https://ark.cn-beijing.volces.com/api/v3/chat/completions";
-  export let authorization = "";
+  export let fetchUrl =
+    "https://ark.cn-beijing.volces.com/api/v3/chat/completions";
   export let model = "ep-20240826150107-wkr2r";
 
   /**
    * 扩展所有选中的节点
    */
   export async function generateNewTextNodeBySelected() {
-    if (authorization === "") {
-      const authorizationStr = prompt("请先设置AI生成的authorizationString");
-      if (authorizationStr === null) {
-        return;
-      } else {
-        authorization = authorizationStr;
-      }
-    }
     const selectedTextNodes = StageManager.getSelectedEntities().filter(
       (entity) => entity instanceof TextNode,
     );
@@ -61,43 +53,41 @@ export namespace StageGeneratorAI {
 
   async function realGenerateTextList(selectedTextNode: TextNode) {
     try {
-      const response = await fetch(
-        fetchUrl,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authorization,
-          },
-          body: JSON.stringify({
-            model: model,
-            messages: [
-              {
-                role: "system",
-                content:
-                  "你是一个具有发散式思维的人，我给你一个词之后，你会扩展出5~10个新的词。你需要以每行一个词的形式回答我，每个词之间用换行符分隔，不要有任何其他多余文字",
-              },
-              {
-                role: "user",
-                content: `我的词是：${selectedTextNode.text}，你会扩展出5~10个新的词。每个词之间用换行符分隔`,
-              },
-            ],
-          }),
+      const response = await fetch(fetchUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + ApiKeyManager.getKey(),
         },
-      );
+        body: JSON.stringify({
+          model: model,
+          messages: [
+            {
+              role: "system",
+              content:
+                "你是一个具有发散式思维的人，我给你一个词之后，你会扩展出5~10个新的词。你需要以每行一个词的形式回答我，每个词之间用换行符分隔，不要有任何其他多余文字",
+            },
+            {
+              role: "user",
+              content: `我的词是：${selectedTextNode.text}，你会扩展出5~10个新的词。每个词之间用换行符分隔`,
+            },
+          ],
+        }),
+      });
       const data = await response.json();
       const responseContent: string = data.choices[0].message.content;
-      let expandArrayList: string[] = []
+      let expandArrayList: string[] = [];
       if (responseContent.includes("\n")) {
         // 多行
         expandArrayList = responseContent
-        .split("\n")
-        .map((line) => line.trim());
+          .split("\n")
+          .map((line) => line.trim());
       } else {
         // 按照顿号分割
-        expandArrayList = responseContent.split("、").map((line) => line.trim());
+        expandArrayList = responseContent
+          .split("、")
+          .map((line) => line.trim());
       }
-      
 
       return expandArrayList; // 返回扩展的字符串数组
     } catch (error) {
