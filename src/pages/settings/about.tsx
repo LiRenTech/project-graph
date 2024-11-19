@@ -17,7 +17,7 @@ export default function About() {
       // version: string 是tauri.conf.json中填写的值
 
       // versions.json 列表中的每一个version字段都必须是tauri.conf.json中填写的值的前缀
-      
+
       setVersion(version);
       const versionObject = versions.find((vo) =>
         version.startsWith(vo.version),
@@ -92,9 +92,17 @@ export default function About() {
         <p>{t("developer.tips")}</p>
 
         <h2 className="mt-4 text-2xl font-bold">{t("ideaSource.title")}</h2>
-        <p>没有黑夜风格的FigJamBoard</p>
-        <p>所长林超的画分析框架的详解视频</p>
+        <p>未支持深色风格的FigJamBoard</p>
+        <p>b站的所长林超的画分析框架详解视频</p>
         <p>《数据结构与算法》中的拓扑排序、图论</p>
+        <p>大学时期一次UI设计课中老师展示的“头脑风暴法”</p>
+        <p>
+          游戏《Minecraft》中的“命令方块”（一键打开bat文件并直接运行的功能）
+        </p>
+        <p>游戏《水果忍者》中挥刀的动画效果（右键删除节点的方法灵感来源）</p>
+        <h2 className="mt-4 text-2xl font-bold">彩蛋</h2>
+        {/* <p>游戏《原神》中派蒙对玩家区域越界的提醒（摄像机移动超过边界）</p> */}
+        <p>...</p>
         <h2 className="mt-4 text-2xl font-bold">{t("team.0")}</h2>
         <p>{t("team.1")}</p>
         <p>{t("team.2")}</p>
