@@ -69,10 +69,12 @@ export namespace Camera {
    */
   export const shakeLocation: Vector = Vector.getZero();
 
+  export let allowMoveCameraByWSAD = false;
   // IDEA: 突然有一个好点子
   // 把wsad移动的逻辑改成瞬间爆炸的冲刺一小段距离，而不是改成直接赋予永久的作用力方向然后再撤销
   // 这样可以避免好多潜在bug
   // 但这样估计就又不流畅了
+
 
   export function frameTick() {
     // 计算摩擦力 与速度方向相反,固定值,但速度为0摩擦力就不存在
@@ -152,6 +154,9 @@ export namespace Camera {
     });
     Settings.watch("moveFriction", (value) => {
       frictionCoefficient = value;
+    });
+    Settings.watch("allowMoveCameraByWSAD", (value) => {
+      allowMoveCameraByWSAD = value;
     });
   }
 

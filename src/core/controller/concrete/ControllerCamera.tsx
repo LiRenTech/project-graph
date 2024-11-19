@@ -24,7 +24,7 @@ ControllerCamera.keydown = (event: KeyboardEvent) => {
     return;
   }
   const key = event.key.toLowerCase();
-  if (Controller.keyMap[key]) {
+  if (Controller.keyMap[key] && Camera.allowMoveCameraByWSAD) {
     if (Controller.pressingKeySet.has("control")) {
       // ctrl按下时，可能在按 ctrl+s 保存，防止出现冲突
       isPressingCtrl = true;
@@ -64,7 +64,7 @@ ControllerCamera.keyup = (event: KeyboardEvent) => {
   }
   // ------
 
-  if (Controller.keyMap[key]) {
+  if (Controller.keyMap[key] && Camera.allowMoveCameraByWSAD) {
     if (isPressingCtrl) {
       // ctrl按下时，可能在按 ctrl+s 保存，防止出现冲突
       return;
@@ -205,15 +205,9 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
   // 滚轮横向滚动是水平移动
   if (event.deltaX > 0) {
     // 左移动
-    // Camera.accelerateCommander = Camera.accelerateCommander
-    //   .add(Controller.keyMap["a"])
-    //   .limitX(-1, 1);
     Camera.location = Camera.location.add(new Vector(-Camera.moveAmplitude * 100 / Camera.currentScale, 0));
   } else if (event.deltaX < 0) {
     // 右移动
-    // Camera.accelerateCommander = Camera.accelerateCommander
-    //   .add(Controller.keyMap["d"])
-    //   .limitX(-1, 1);
     Camera.location = Camera.location.add(new Vector(Camera.moveAmplitude * 100 / Camera.currentScale, 0));
   }
 };

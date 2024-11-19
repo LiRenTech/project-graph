@@ -29,6 +29,7 @@ export namespace Settings {
     // 控制相关
     enableCollision: boolean; // 暂无
     scaleExponent: number;
+    allowMoveCameraByWSAD: boolean;
     moveAmplitude: number;
     moveFriction: number;
     gamepadDeadzone: number;
@@ -58,6 +59,7 @@ export namespace Settings {
     // 控制相关
     enableCollision: true,
     scaleExponent: 0.11,
+    allowMoveCameraByWSAD: false,
     moveAmplitude: 2,
     moveFriction: 0.1,
     gamepadDeadzone: 0.1,

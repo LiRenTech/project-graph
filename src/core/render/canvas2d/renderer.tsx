@@ -539,6 +539,10 @@ export namespace Renderer {
     }
   }
 
+  /**
+   * 渲染左下角的文字
+   * @returns
+   */
   function renderSpecialKeys() {
     if (Controller.pressingKeySet.size === 0) {
       return;
@@ -550,10 +554,22 @@ export namespace Renderer {
 
     for (const key of Controller.pressingKeySet) {
       const textLocation = new Vector(x, Renderer.h - 100);
-
       RenderUtils.renderText(key, textLocation, fontSize);
       const textSize = getTextSize(key, fontSize);
       x += textSize.x + margin;
+    }
+    if (
+      !Camera.allowMoveCameraByWSAD &&
+      (Controller.pressingKeySet.has("w") ||
+        Controller.pressingKeySet.has("s") ||
+        Controller.pressingKeySet.has("a") ||
+        Controller.pressingKeySet.has("d"))
+    ) {
+      RenderUtils.renderText(
+        "🔒方向键移动视野被禁止，可设置🔧更改",
+        new Vector(margin, Renderer.h - 60),
+        15,
+      );
     }
   }
 
