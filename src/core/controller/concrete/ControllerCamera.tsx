@@ -195,20 +195,26 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
     return;
   }
 
+  // 滚轮纵向滚动是缩放
   if (event.deltaY > 0) {
     Camera.targetScale *= 0.8;
   } else if (event.deltaY < 0) {
     Camera.targetScale *= 1.2;
   }
 
+  // 滚轮横向滚动是水平移动
   if (event.deltaX > 0) {
-    Camera.accelerateCommander = Camera.accelerateCommander
-      .add(Controller.keyMap["a"])
-      .limitX(-1, 1);
+    // 左移动
+    // Camera.accelerateCommander = Camera.accelerateCommander
+    //   .add(Controller.keyMap["a"])
+    //   .limitX(-1, 1);
+    Camera.location = Camera.location.add(new Vector(-Camera.moveAmplitude * 100 / Camera.currentScale, 0));
   } else if (event.deltaX < 0) {
-    Camera.accelerateCommander = Camera.accelerateCommander
-      .add(Controller.keyMap["d"])
-      .limitX(-1, 1);
+    // 右移动
+    // Camera.accelerateCommander = Camera.accelerateCommander
+    //   .add(Controller.keyMap["d"])
+    //   .limitX(-1, 1);
+    Camera.location = Camera.location.add(new Vector(Camera.moveAmplitude * 100 / Camera.currentScale, 0));
   }
 };
 
