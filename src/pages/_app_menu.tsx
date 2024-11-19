@@ -9,7 +9,6 @@ import {
   Info,
   MoreHorizontal,
   PartyPopper,
-  RefreshCcw,
   Save,
   Settings as SettingsIcon,
   TestTube2,
@@ -357,10 +356,7 @@ export default function AppMenu({
         >
           {t("view.items.resetBySelect")}
         </Col>
-        <Col
-          icon={<Scaling />}
-          onClick={() => Camera.resetScale()}
-        >
+        <Col icon={<Scaling />} onClick={() => Camera.resetScale()}>
           {t("view.items.resetScale")}
         </Col>
       </Row>
@@ -385,9 +381,7 @@ export default function AppMenu({
         </Col>
       </Row>
       <Row icon={<AppWindow />} title={t("window.title")}>
-        <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>
-          {t("window.items.refresh")}
-        </Col>
+        {/* 2024年11月19日 去掉了刷新按钮，因为容易误操作导致工程文件进度丢失，开发中刷新建议ctrl+shift+r */}
         <Col
           icon={<Fullscreen />}
           onClick={() =>
