@@ -57,11 +57,45 @@ export default function AppMenu({
   const [, setRecentFilePanelOpen] = useRecoilState(isRecentFilePanelOpenAtom);
 
   const onNew = () => {
-    StageManager.destroy();
-    setFile("Project Graph");
+    if (StageSaveManager.isSaved()) {
+      StageManager.destroy();
+      setFile("Project Graph");
+    } else {
+      dialog.show({
+        title: "未保存",
+        content: "是否保存当前文件？",
+        buttons: [
+          {
+            text: "保存",
+            onClick: () => {
+              onSave();
+              onNew();
+            },
+          },
+          { text: "取消" },
+        ],
+      });
+    }
   };
 
   const onOpen = async () => {
+    if (!StageSaveManager.isSaved()) {
+      dialog.show({
+        title: "未保存",
+        content: "是否保存当前文件？",
+        buttons: [
+          {
+            text: "保存",
+            onClick: () => {
+              onSave();
+              onNew();
+            },
+          },
+          { text: "取消" },
+        ],
+      });
+      return;
+    }
     const path = await openFileDialog({
       title: "打开文件",
       directory: false,

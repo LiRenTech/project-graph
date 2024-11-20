@@ -129,7 +129,7 @@ export default function App() {
         ],
       });
     } else {
-      // 先检查下是否开启了自动保存
+      // 先检查下是否开启了关闭自动保存
       Settings.get("autoSaveWhenClose").then((isAutoSave) => {
         if (isAutoSave) {
           // 开启了自动保存，不弹窗
