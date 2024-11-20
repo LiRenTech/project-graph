@@ -27,14 +27,14 @@ export default function AutoNamer() {
         icon={<HardDriveDownload />}
         settingKey="autoSave"
         title={"开启自动保存"}
-        details={"自动保存当前文件，此功能仅对已有路径的文件有效，不对草稿文件生效！"}
+        details={"自动保存当前文件\n此功能目前仅对已有路径的文件有效，不对草稿文件生效！"}
         type="switch"
       />
       <SettingField
         icon={<HardDriveDownload />}
         settingKey="autoSaveInterval"
         title={"开启自动保存间隔（秒）"}
-        details={"自动保存过于频繁可能会对机械磁盘造成压力"}
+        details={"自动保存过于频繁可能会对机械型硬盘造成压力\n进而降低硬盘寿命"}
         type="slider"
         min={1}
         max={60}
