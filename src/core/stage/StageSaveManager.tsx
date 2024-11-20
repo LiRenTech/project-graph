@@ -40,16 +40,18 @@ export namespace StageSaveManager {
   }
 
   /**
-   * 
+   *
    * without path 意思是不需要传入path，直接使用当前的path
-   * @param data 
-   * @param successCallback 
-   * @param errorCallback 
+   * @param data
+   * @param successCallback
+   * @param errorCallback
    */
   export function saveHandleWithoutCurrentPath(
     data: Serialized.File,
     successCallback: () => void,
     errorCallback: (err: any) => void,
+    resetHistory = true,
+    addFlashEffect = true,
   ) {
     if (Stage.Path.isDraft()) {
       errorCallback("当前文档的状态为草稿，请您先保存为文件");
@@ -61,8 +63,12 @@ export namespace StageSaveManager {
     })
       .then((res) => {
         console.log(res);
-        Stage.effects.push(ViewFlashEffect.SaveFile());
-        StageHistoryManager.reset(data); // 重置历史
+        if (addFlashEffect) {
+          Stage.effects.push(ViewFlashEffect.SaveFile());
+        }
+        if (resetHistory) {
+          StageHistoryManager.reset(data); // 重置历史
+        }
         successCallback();
         isCurrentSaved = true;
       })

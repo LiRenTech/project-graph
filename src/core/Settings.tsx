@@ -26,6 +26,8 @@ export namespace Settings {
     autoNamerTemplate: string;
     autoOpenPath: string; // 废弃
     autoSaveWhenClose: boolean;
+    autoSave: boolean;
+    autoSaveInterval: number;
     // 控制相关
     enableCollision: boolean; // 暂无
     scaleExponent: number;
@@ -52,10 +54,12 @@ export namespace Settings {
     // 性能相关
     historySize: 20,
     renderEffect: true,
-    // 自动命名相关
+    // 自动相关
     autoNamerTemplate: "...",
     autoOpenPath: "", // 废弃
     autoSaveWhenClose: false,
+    autoSave: false,
+    autoSaveInterval: 10,
     // 控制相关
     enableCollision: true,
     scaleExponent: 0.11,

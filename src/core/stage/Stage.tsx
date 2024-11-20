@@ -13,6 +13,12 @@ import { StageManager } from "./stageManager/StageManager";
 import { PointDashEffect } from "../effect/concrete/PointDashEffect";
 import { ControllerGamepad } from "../controller/ControllerGamepad";
 import { family } from "@tauri-apps/plugin-os";
+import { LineCuttingEffect } from "../effect/concrete/LineCuttingEffect";
+import { ProgressNumber } from "../dataStruct/ProgressNumber";
+import { Renderer } from "../render/canvas2d/renderer";
+import { Color } from "../dataStruct/Color";
+import { StageSaveManager } from "./StageSaveManager";
+import { Settings } from "../Settings";
 
 /**
  * 舞台对象
@@ -183,8 +189,10 @@ export namespace Stage {
 
   const controllerGamepad = new ControllerGamepad();
 
+
   /**
    * 逻辑总入口
+   * 该函数在上游被频繁调用
    */
   export function logicTick() {
     if (Stage.connectFromEntities.length > 0 && Controller.lastMoveLocation) {
@@ -217,5 +225,63 @@ export namespace Stage {
     effects = effects.filter((effect) => !effect.timeProgress.isFull);
 
     controllerGamepad.tick();
+
+    // 自动保存功能
+    autoSaveTick();
+    // 自动备份功能
+  }
+
+  let lastAutoSaveTime = performance.now();
+  let autoSave = false;
+  let autoSaveInterval = 60_000;  // ms
+
+  export function init() {
+    Settings.watch("autoSave", (value) => {
+      autoSave = value;
+    })
+    Settings.watch("autoSaveInterval", (value) => {
+      autoSaveInterval = value * 1000;  // s to ms
+    })
+  }
+
+  // private
+  function autoSaveTick() {
+    if (!autoSave) {
+      return;
+    }
+    // 自动保存功能
+    const now = performance.now();
+    if (now - lastAutoSaveTime > autoSaveInterval) {
+      if (Stage.Path.isDraft()) {
+        // 自动保存无法对草稿进行，因为草稿没有路径
+      } else {
+        // 特殊情况，如果没有节点，则不保存
+
+        if (StageManager.getTextNodes().length === 0) {
+          // 没有节点，不保存
+        } else {
+          const rect = Renderer.getCoverWorldRectangle();
+          console.log("auto save");
+          Stage.effects.push(
+            new LineCuttingEffect(
+              new ProgressNumber(0, 10),
+              rect.leftTop,
+              rect.rightTop,
+              Color.Black,
+              Color.Black,
+            ),
+          );
+          StageSaveManager.saveHandleWithoutCurrentPath(
+            StageDumper.dump(),
+            () => {},
+            () => {},
+            false,
+            false,
+          );
+          // 更新时间
+          lastAutoSaveTime = now;
+        }
+      }
+    }
   }
 }

@@ -23,6 +23,23 @@ export default function AutoNamer() {
         details={t("autoSaveWhenClose.description")}
         type="switch"
       />
+      <SettingField
+        icon={<HardDriveDownload />}
+        settingKey="autoSave"
+        title={"开启自动保存"}
+        details={"自动保存当前文件"}
+        type="switch"
+      />
+      <SettingField
+        icon={<HardDriveDownload />}
+        settingKey="autoSaveInterval"
+        title={"开启自动保存间隔（秒）"}
+        details={"自动保存过于频繁可能会对机械磁盘造成压力"}
+        type="slider"
+        min={1}
+        max={60}
+        step={1}
+      />
     </>
   );
 }

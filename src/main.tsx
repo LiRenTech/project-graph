@@ -43,6 +43,7 @@ const el = document.getElementById("root")!;
   EdgeRenderer.init();
   Renderer.init();
   Camera.init();
+  Stage.init();
   StageHistoryManager.init();
   StageStyleManager.init();
 
