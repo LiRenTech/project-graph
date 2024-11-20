@@ -34,8 +34,15 @@ export namespace Camera {
   export const frictionExponent = 1.5;
   /**
    * 摄像机的位置（世界坐标）
+   * 实际上代表的是 currentLocation
    */
   export let location: Vector = Vector.getZero();
+  /**
+   * 上次鼠标缩放滚轮交互位置
+   * 世界坐标
+   */
+  export let targetLocationByScale: Vector = Vector.getZero();
+
   /** 当前的 画布/摄像机移动的速度矢量 */
   export let speed: Vector = Vector.getZero();
 
@@ -74,7 +81,6 @@ export namespace Camera {
   // 把wsad移动的逻辑改成瞬间爆炸的冲刺一小段距离，而不是改成直接赋予永久的作用力方向然后再撤销
   // 这样可以避免好多潜在bug
   // 但这样估计就又不流畅了
-
 
   export function frameTick() {
     // 计算摩擦力 与速度方向相反,固定值,但速度为0摩擦力就不存在
@@ -129,19 +135,54 @@ export namespace Camera {
     location = location.add(speed);
 
     // 处理缩放
+    // 缩放的过程中应该维持摄像机中心点和鼠标滚轮交互位置的相对视野坐标的 不变性
+
+    /** 鼠标交互位置的view坐标系相对于画面左上角的坐标 */
+    const diffViewVector = Renderer.transformWorld2View(targetLocationByScale);
+    dealCameraScale();
+    setLocationByOtherLocation(targetLocationByScale, diffViewVector);
+  }
+
+
+  /**
+   * 修改摄像机位置，但是通过一种奇特的方式来修改
+   * 将某个世界坐标位置对准当前的某个视野坐标位置，来修改摄像机位置
+   * @param otherWorldLocation 
+   * @param viewLocation 
+   */
+  function setLocationByOtherLocation(otherWorldLocation: Vector, viewLocation: Vector) {
+    const otherLocationView = Renderer.transformWorld2View(otherWorldLocation);
+    const leftTopLocationWorld = Renderer.transformView2World(
+      otherLocationView.subtract(viewLocation),
+    )
+    const rect = Renderer.getCoverWorldRectangle();
+    location = leftTopLocationWorld.add(rect.size.divide(2));
+  }
+
+  /**
+   *
+   * @returns 缩放前后变化的比值
+   */
+  function dealCameraScale() {
+    let newCurrentScale = currentScale;
+
     if (currentScale < targetScale) {
-      currentScale = Math.min(
+      newCurrentScale = Math.min(
         currentScale + (targetScale - currentScale) * scaleExponent,
         targetScale,
       );
     } else if (currentScale > targetScale) {
-      currentScale = Math.max(
+      newCurrentScale = Math.max(
         currentScale - (currentScale - targetScale) * scaleExponent,
         targetScale,
       );
     }
     // 性能优化之，将缩放小数点保留四位
-    currentScale = parseFloat(currentScale.toFixed(4));
+    newCurrentScale = parseFloat(newCurrentScale.toFixed(4));
+    const diff = newCurrentScale / currentScale;
+    currentScale = newCurrentScale;
+
+    return diff;
   }
 
   // 确保这个函数在软件打开的那一次调用
@@ -166,6 +207,7 @@ export namespace Camera {
    */
   export function reset() {
     Camera.location = StageManager.getCenter();
+    Camera.targetLocationByScale = Camera.location.clone();
     // Camera.currentScale = 0.01;
 
     Camera.currentScale = Math.min(
@@ -186,6 +228,8 @@ export namespace Camera {
     );
     const center = viewRectangle.center;
     Camera.location = center;
+    Camera.targetLocationByScale = center.clone();
+
     Camera.currentScale = Math.min(
       Renderer.h / viewRectangle.size.y,
       Renderer.w / viewRectangle.size.x,

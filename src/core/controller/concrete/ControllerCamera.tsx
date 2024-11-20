@@ -114,7 +114,6 @@ ControllerCamera.mousedown = (event: MouseEvent) => {
   }
 };
 
-
 /**
  * 处理鼠标移动事件
  * @param event - 鼠标事件
@@ -194,6 +193,11 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
   if (Controller.pressingKeySet.has("control")) {
     return;
   }
+  // 获取触发滚轮的鼠标位置
+  const mouseLocation = new Vector(event.clientX, event.clientY);
+  // 计算鼠标位置在视野中的位置
+  const worldLocation = Renderer.transformView2World(mouseLocation);
+  Camera.targetLocationByScale = worldLocation;
 
   // 滚轮纵向滚动是缩放
   if (event.deltaY > 0) {
@@ -205,10 +209,14 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
   // 滚轮横向滚动是水平移动
   if (event.deltaX > 0) {
     // 左移动
-    Camera.location = Camera.location.add(new Vector(-Camera.moveAmplitude * 100 / Camera.currentScale, 0));
+    Camera.location = Camera.location.add(
+      new Vector((-Camera.moveAmplitude * 100) / Camera.currentScale, 0),
+    );
   } else if (event.deltaX < 0) {
     // 右移动
-    Camera.location = Camera.location.add(new Vector(Camera.moveAmplitude * 100 / Camera.currentScale, 0));
+    Camera.location = Camera.location.add(
+      new Vector((Camera.moveAmplitude * 100) / Camera.currentScale, 0),
+    );
   }
 };
 
