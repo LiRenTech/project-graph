@@ -40,7 +40,9 @@ ControllerEdgeEdit.keydown = (event: KeyboardEvent) => {
     const user_input = prompt("请输入线上的文字", "");
     if (user_input) {
       for (const edge of StageManager.getEdges()) {
-        edge.rename(user_input);
+        if (edge.isSelected) {
+          edge.rename(user_input);
+        }
       }
     }
   }
