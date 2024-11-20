@@ -110,7 +110,7 @@ export default function About() {
         <p>{t("team.4")}</p>
         <p>{t("team.5")}</p>
       </div>
-      <div className="flex gap-4">
+      <div className="flex gap-2">
         <Button onClick={() => open("https://liren.zty012.de/project-graph")}>
           使用文档
         </Button>
@@ -132,6 +132,15 @@ export default function About() {
           }
         >
           QQ讨论群
+        </Button>
+        <Button
+          onClick={() =>
+            open(
+              "https://forum.d2learn.org/category/16/project-graph",
+            )
+          }
+        >
+          论坛
         </Button>
       </div>
     </div>
