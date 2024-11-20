@@ -335,7 +335,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       )}
       {isHaveSelectedNodeOverTwo && (
         <ToolbarItem
-          description="将选中节点打包Section"
+          description="将选中节点打包Section（Section目前bug较多，还在开发中，暂时不推荐使用）"
           icon={<Square />}
           handleFunction={() => {
             onPackNodeToSection();
