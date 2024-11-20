@@ -27,7 +27,7 @@ export default function AutoNamer() {
         icon={<HardDriveDownload />}
         settingKey="autoSave"
         title={"开启自动保存"}
-        details={"自动保存当前文件"}
+        details={"自动保存当前文件，此功能仅对已有路径的文件有效，不对草稿文件生效！"}
         type="switch"
       />
       <SettingField

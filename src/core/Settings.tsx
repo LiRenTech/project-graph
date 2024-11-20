@@ -58,7 +58,7 @@ export namespace Settings {
     autoNamerTemplate: "...",
     autoOpenPath: "", // 废弃
     autoSaveWhenClose: false,
-    autoSave: false,
+    autoSave: true,
     autoSaveInterval: 10,
     // 控制相关
     enableCollision: true,
