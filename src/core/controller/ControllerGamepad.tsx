@@ -97,7 +97,7 @@ export class ControllerGamepad implements Tickable, Disposable {
     this.initGamepad(gamepad);
   };
 
-  private initGamepad(gamepad: Gamepad) {}
+  private initGamepad(_gamepad: Gamepad) {}
 
   on<K extends keyof EventMap>(event: K, listener: EventMap[K]) {
     if (!this.listeners[event]) {

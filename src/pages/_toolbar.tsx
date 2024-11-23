@@ -423,7 +423,7 @@ const onSaveSelectedNew = async () => {
       path,
       content: JSON.stringify(data, null, 2),
     })
-      .then((res) => {
+      .then((_) => {
         Stage.effects.push(new ViewFlashEffect(Color.Black));
       })
       .catch((err) => {
@@ -463,7 +463,7 @@ async function openBrowserOrFile() {
 
 function myOpen(url: string) {
   open(url)
-    .then((value) => {})
+    .then((_) => {})
     .catch((e) => {
       // 依然会导致程序崩溃，具体原因未知
       console.error(e);

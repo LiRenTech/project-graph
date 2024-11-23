@@ -57,5 +57,5 @@ function handleTestImageBase64() {
   invoke<string>("convert_image_to_base64", {
     imagePath:
       "D:\\Projects\\Project-Tools\\project-graph\\src\\assets\\icon.png",
-  }).then((res) => {});
+  }).then((_res) => {});
 }

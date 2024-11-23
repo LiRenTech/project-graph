@@ -27,7 +27,7 @@ export namespace StageSaveManager {
       path,
       content: JSON.stringify(data, null, 2),
     })
-      .then((res) => {
+      .then((_) => {
         Stage.effects.push(ViewFlashEffect.SaveFile());
         StageHistoryManager.reset(data); // 重置历史
         successCallback();
@@ -60,7 +60,7 @@ export namespace StageSaveManager {
       path: Stage.Path.getFilePath(),
       content: JSON.stringify(data, null, 2),
     })
-      .then((res) => {
+      .then((_) => {
         if (addFlashEffect) {
           Stage.effects.push(ViewFlashEffect.SaveFile());
         }
@@ -85,7 +85,7 @@ export namespace StageSaveManager {
       path,
       content: string,
     })
-      .then((res) => {
+      .then((_) => {
         successCallback();
         isCurrentSaved = true;
       })
@@ -140,7 +140,7 @@ export namespace StageSaveManager {
       path,
       content,
     })
-      .then((res) => {
+      .then((_) => {
         successCallback();
       })
       .catch((err) => {

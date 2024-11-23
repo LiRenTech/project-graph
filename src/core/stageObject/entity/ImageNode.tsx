@@ -128,9 +128,9 @@ export class ImageNode extends ConnectableEntity {
           this.state = "error";
         };
       })
-      .catch((err) => {
+      .catch((_err) => {
         // 获取base64String失败
-
+        // TODO: 图片上显示ErrorDetails信息
         this.state = "error";
       });
   }
