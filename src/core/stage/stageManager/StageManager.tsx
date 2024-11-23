@@ -1,35 +1,35 @@
-import { Color } from "../../dataStruct/Color";
-import { Edge } from "../../stageObject/association/Edge";
-import { TextNode } from "../../stageObject/entity/TextNode";
-import { Renderer } from "../../render/canvas2d/renderer";
-import { Vector } from "../../dataStruct/Vector";
-import { StageNodeRotate } from "./concreteMethods/stageNodeRotate";
-import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
-import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
-import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
-import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager";
-import { StageNodeColorManager } from "./concreteMethods/StageNodeColorManager";
 import { Serialized } from "../../../types/node";
-import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
-import { StageHistoryManager } from "./StageHistoryManager";
-import { Stage } from "../Stage";
-import { StageDumper } from "../StageDumper";
+import { Color } from "../../dataStruct/Color";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { StringDict } from "../../dataStruct/StringDict";
+import { Vector } from "../../dataStruct/Vector";
+import { Renderer } from "../../render/canvas2d/renderer";
+import { Edge } from "../../stageObject/association/Edge";
+import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
+import { ImageNode } from "../../stageObject/entity/ImageNode";
+import { Section } from "../../stageObject/entity/Section";
+import { TextNode } from "../../stageObject/entity/TextNode";
 import {
   Association,
   ConnectableEntity,
   Entity,
   StageObject,
 } from "../../stageObject/StageObject";
-import { Section } from "../../stageObject/entity/Section";
-import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
 import { Camera } from "../Camera";
-import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManager";
-import { StageNodeTextTransfer } from "./concreteMethods/StageNodeTextTransfer";
-import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
+import { Stage } from "../Stage";
+import { StageDumper } from "../StageDumper";
+import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
+import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager";
 import { StageGeneratorAI } from "./concreteMethods/StageGeneratorAI";
-import { ImageNode } from "../../stageObject/entity/ImageNode";
+import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
+import { StageNodeColorManager } from "./concreteMethods/StageNodeColorManager";
+import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
+import { StageNodeRotate } from "./concreteMethods/stageNodeRotate";
+import { StageNodeTextTransfer } from "./concreteMethods/StageNodeTextTransfer";
+import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
+import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManager";
+import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
+import { StageHistoryManager } from "./StageHistoryManager";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -267,7 +267,6 @@ export namespace StageManager {
    */
   export function getSize(): Vector {
     if (entities.length === 0) {
-      console.log("获取所有节点大小时没有节点");
       return new Vector(Renderer.w, Renderer.h);
     }
     // const size = Vector.getZero();
@@ -285,7 +284,7 @@ export namespace StageManager {
         node.collisionBox.getRectangle(),
       ),
     ).size;
-    console.log(size, "getSize");
+
     return size;
   }
 

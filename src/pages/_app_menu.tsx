@@ -1,47 +1,47 @@
-import React, { useEffect } from "react";
-import { cn } from "../utils/cn";
+import {
+  open as openFileDialog,
+  save as saveFileDialog,
+} from "@tauri-apps/plugin-dialog";
 import {
   AppWindow,
+  Dock,
   File,
+  FileCode,
   FilePlus,
   FileText,
+  FileType,
+  Folder,
+  FolderCog,
+  FolderOpen,
   Fullscreen,
   Info,
   MoreHorizontal,
   PartyPopper,
   Save,
+  Scaling,
   Settings as SettingsIcon,
-  TestTube2,
-  View,
-  Dock,
   SquareDashedKanbanIcon,
   SquareDashedMousePointer,
-  FileCode,
-  FileType,
-  Folder,
-  FolderCog,
-  FolderOpen,
-  Scaling,
+  TestTube2,
+  View,
 } from "lucide-react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  open as openFileDialog,
-  save as saveFileDialog,
-} from "@tauri-apps/plugin-dialog";
-import { useDialog } from "../utils/dialog";
-import { isDesktop } from "../utils/platform";
-import { StageManager } from "../core/stage/stageManager/StageManager";
 import { useRecoilState } from "recoil";
-import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
 import { Camera } from "../core/stage/Camera";
 import { StageDumper } from "../core/stage/StageDumper";
+import { StageManager } from "../core/stage/stageManager/StageManager";
+import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
+import { cn } from "../utils/cn";
+import { useDialog } from "../utils/dialog";
+import { isDesktop } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
-import { RecentFileManager } from "../core/RecentFileManager";
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { StageSaveManager } from "../core/stage/StageSaveManager";
-import { StageDumperSvg } from "../core/stage/StageDumperSvg";
-import { TextNode } from "../core/stageObject/entity/TextNode";
 import { useTranslation } from "react-i18next";
+import { RecentFileManager } from "../core/RecentFileManager";
+import { StageDumperSvg } from "../core/stage/StageDumperSvg";
+import { StageSaveManager } from "../core/stage/StageSaveManager";
+import { TextNode } from "../core/stageObject/entity/TextNode";
 
 export default function AppMenu({
   className = "",
@@ -120,7 +120,6 @@ export default function AppMenu({
       return;
     }
     try {
-      console.log("正在打开文件", `<${path}>`, typeof path);
       await RecentFileManager.openFileByPath(path); // 已经包含历史记录重置功能
       // 更改file
       setFile(path);
@@ -135,7 +134,6 @@ export default function AppMenu({
 
   const onSave = () => {
     const path_ = file;
-    console.log("准备保存，当前路径是", path_);
 
     if (path_ === "Project Graph") {
       // 如果文件名为 "Project Graph" 则说明是新建文件。
@@ -149,9 +147,7 @@ export default function AppMenu({
     StageSaveManager.saveHandle(
       path_,
       data,
-      () => {
-        console.log("保存成功");
-      },
+      () => {},
       (err) => {
         dialog.show({
           title: "保存失败",
@@ -214,9 +210,7 @@ export default function AppMenu({
     StageSaveManager.saveSvgHandle(
       path,
       data,
-      () => {
-        console.log("保存成功");
-      },
+      () => {},
       (err) => {
         dialog.show({
           title: "保存失败",
@@ -273,9 +267,7 @@ export default function AppMenu({
     StageSaveManager.saveMarkdownHandle(
       path,
       selectedNodes[0],
-      () => {
-        console.log("保存成功");
-      },
+      () => {},
       (err) => {
         dialog.show({
           title: "保存失败",
@@ -443,16 +435,7 @@ export default function AppMenu({
         >
           查看json
         </Col>
-        <Col
-          icon={<TestTube2 />}
-          onClick={() => {
-            console.log(StageManager.getEntities());
-            console.log(StageManager.getEdges());
-            // localStorage测试
-            // 尽量不要用这个，端口号一变就没了
-            localStorage.setItem("_test", "123");
-          }}
-        >
+        <Col icon={<TestTube2 />} onClick={() => {}}>
           控制台输出
         </Col>
       </Row>

@@ -1,15 +1,14 @@
+import { invoke } from "@tauri-apps/api/core";
 import { TestTube2 } from "lucide-react";
+import React from "react";
+import { useTranslation } from "react-i18next";
 import Button from "../components/ui/Button";
 import IconButton from "../components/ui/IconButton";
 import Input from "../components/ui/Input";
 import Switch from "../components/ui/Switch";
-import React from "react";
-import { usePopupDialog } from "../utils/popupDialog";
-import { useTranslation } from "react-i18next";
-import { XML } from "../utils/xml";
 import { StageDumper } from "../core/stage/StageDumper";
-import { fetch } from "@tauri-apps/plugin-http";
-import { invoke } from "@tauri-apps/api/core";
+import { usePopupDialog } from "../utils/popupDialog";
+import { XML } from "../utils/xml";
 
 export default function TestPage() {
   const [switchValue, setSwitchValue] = React.useState(false);
@@ -20,14 +19,7 @@ export default function TestPage() {
     popupDialog.show(<>test</>);
   };
 
-  const handleTestHttp = async () => {
-    const response = await fetch("http://www.baidu.com", {
-      method: "GET",
-    });
-
-    console.log(response);
-    console.log(await response.text());
-  };
+  const handleTestHttp = async () => {};
 
   return (
     <div className="pt-20">
@@ -63,9 +55,7 @@ export default function TestPage() {
 
 function handleTestImageBase64() {
   invoke<string>("convert_image_to_base64", {
-    imagePath: "D:\\Projects\\Project-Tools\\project-graph\\src\\assets\\icon.png"
-  }).then((res) => {
-    console.log(res);
-  });
-
+    imagePath:
+      "D:\\Projects\\Project-Tools\\project-graph\\src\\assets\\icon.png",
+  }).then((res) => {});
 }

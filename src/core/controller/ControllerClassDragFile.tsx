@@ -24,7 +24,7 @@ export class ControllerClassDragFile {
     window.removeEventListener("dragover", this.dragOver);
     window.removeEventListener("dragleave", this.dragLeave);
     window.removeEventListener("drop", this.drop);
-    console.log(this.lastMoveLocation);
+
     this.lastMoveLocation = Vector.getZero();
   }
 }

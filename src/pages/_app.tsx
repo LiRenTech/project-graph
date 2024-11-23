@@ -11,27 +11,27 @@ import {
   BrainCircuit,
 } from "lucide-react";
 import React from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import AppMenu from "./_app_menu";
-import IconButton from "../components/ui/IconButton";
-import Button from "../components/ui/Button";
-import { cn } from "../utils/cn";
-import Dialog from "../components/ui/Dialog";
-import { appScale, isDesktop, isMobile } from "../utils/platform";
-import { useRecoilState } from "recoil";
-import { fileAtom } from "../state";
-import RecentFilesPanel from "./_recent_files_panel";
-import { Settings } from "../core/Settings";
-import ErrorHandler from "./_error_handler";
-import PopupDialog from "../components/ui/PopupDialog";
-import { useDialog } from "../utils/dialog";
-import { StageSaveManager } from "../core/stage/StageSaveManager";
-import { StageDumper } from "../core/stage/StageDumper";
-import StartFilePanel from "./_start_file_panel";
-import { PathString } from "../utils/pathString";
 import { useTranslation } from "react-i18next";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import Button from "../components/ui/Button";
+import Dialog from "../components/ui/Dialog";
+import IconButton from "../components/ui/IconButton";
+import PopupDialog from "../components/ui/PopupDialog";
+import { Settings } from "../core/Settings";
 import { Stage } from "../core/stage/Stage";
 import AiPanel from "./_ai_panel";
+import { StageDumper } from "../core/stage/StageDumper";
+import { StageSaveManager } from "../core/stage/StageSaveManager";
+import { fileAtom } from "../state";
+import { cn } from "../utils/cn";
+import { useDialog } from "../utils/dialog";
+import { PathString } from "../utils/pathString";
+import { appScale, isDesktop, isMobile } from "../utils/platform";
+import AppMenu from "./_app_menu";
+import ErrorHandler from "./_error_handler";
+import RecentFilesPanel from "./_recent_files_panel";
+import StartFilePanel from "./_start_file_panel";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);

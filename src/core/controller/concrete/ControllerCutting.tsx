@@ -1,16 +1,16 @@
 import { Color } from "../../dataStruct/Color";
+import { ProgressNumber } from "../../dataStruct/ProgressNumber";
+import { Line } from "../../dataStruct/shape/Line";
+import { Vector } from "../../dataStruct/Vector";
 import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
-import { StageManager } from "../../stage/stageManager/StageManager";
-import { ProgressNumber } from "../../dataStruct/ProgressNumber";
+import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
-import { Vector } from "../../dataStruct/Vector";
+import { StageManager } from "../../stage/stageManager/StageManager";
+import { Section } from "../../stageObject/entity/Section";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-import { Line } from "../../dataStruct/shape/Line";
-import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
-import { Section } from "../../stageObject/entity/Section";
 
 /**
  * 关于斩断线的控制器
@@ -32,7 +32,6 @@ ControllerCutting.mousedown = (event: MouseEvent) => {
   );
   // Controller.lastMousePressLocation[2] = pressWorldLocation.clone();
   ControllerCutting.lastMoveLocation = pressWorldLocation.clone();
-  console.log("update!");
 
   const isClickedEntity = StageManager.isEntityOnLocation(pressWorldLocation);
   const isClickedAssociation =
@@ -49,7 +48,6 @@ ControllerCutting.mousedown = (event: MouseEvent) => {
   } else {
     Stage.isCutting = false;
   }
-  
 };
 
 ControllerCutting.mousemove = (event: MouseEvent) => {

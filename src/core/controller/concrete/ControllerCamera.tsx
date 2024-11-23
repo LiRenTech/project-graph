@@ -2,9 +2,9 @@
  * 存放具体的控制器实例
  */
 
+import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Camera } from "../../stage/Camera";
-import { Vector } from "../../dataStruct/Vector";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -123,7 +123,6 @@ ControllerCamera.mousemove = (event: MouseEvent) => {
     return;
   }
   if (Controller.isViewMoveByClickMiddle) {
-    console.log("点击中键拖动视野");
     moveCameraByMouseMove(event.clientX, event.clientY, 1);
     // 检测是否移动到视野边缘
     const viewLocation = new Vector(event.clientX, event.clientY);
@@ -141,7 +140,6 @@ ControllerCamera.mousemove = (event: MouseEvent) => {
   }
   // 空格+左键 拖动视野
   if (Controller.pressingKeySet.has(" ") && Controller.isMouseDown[0]) {
-    console.log("空格按下的同时按下了鼠标左键");
     moveCameraByMouseMove(event.clientX, event.clientY, 0);
     Controller.setCursorName("grabbing");
     return;

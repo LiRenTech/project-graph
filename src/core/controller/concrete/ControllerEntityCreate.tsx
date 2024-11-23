@@ -1,13 +1,13 @@
 import { Color } from "../../dataStruct/Color";
-import { StageManager } from "../../stage/stageManager/StageManager";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
+import { Vector } from "../../dataStruct/Vector";
+import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
-import { Vector } from "../../dataStruct/Vector";
+import { StageManager } from "../../stage/stageManager/StageManager";
+import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { editNode } from "./utilsControl";
-import { Controller } from "../Controller";
-import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 
 /**
  * 创建节点的控制器
@@ -15,7 +15,7 @@ import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 export const ControllerEntityCreate = new ControllerClass();
 
 ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
-  console.log(event.button); // 双击只能在左键
+  // 双击只能在左键
   if (!(event.button === 0 || event.button === 1)) {
     return;
   }
@@ -36,7 +36,6 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
   }
 };
 function createConnectPoint(pressLocation: Vector) {
-  console.log("create connect point");
   StageManager.addConnectPointByClick(pressLocation);
 }
 

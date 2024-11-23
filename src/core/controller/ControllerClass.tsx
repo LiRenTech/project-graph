@@ -1,5 +1,5 @@
-import { Canvas } from "../stage/Canvas";
 import { Vector } from "../dataStruct/Vector";
+import { Canvas } from "../stage/Canvas";
 
 /**
  * 控制器类，用于处理事件绑定和解绑
@@ -70,7 +70,7 @@ export class ControllerClass {
     if (this.mouseDoubleClick.toString().length > 12) {
       Canvas.element.removeEventListener("dblclick", this.mouseDoubleClick);
     }
-    console.log(this.lastMoveLocation);
+
     this.lastMoveLocation = Vector.getZero();
   }
 }

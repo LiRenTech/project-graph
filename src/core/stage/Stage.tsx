@@ -1,24 +1,24 @@
-import { Edge } from "../stageObject/association/Edge";
-import { Effect } from "../effect/effect";
-import { TextNode } from "../stageObject/entity/TextNode";
+import { family } from "@tauri-apps/plugin-os";
+import { Serialized } from "../../types/node";
+import { Controller } from "../controller/Controller";
+import { ControllerGamepad } from "../controller/ControllerGamepad";
+import { Color } from "../dataStruct/Color";
+import { ProgressNumber } from "../dataStruct/ProgressNumber";
+import { Line } from "../dataStruct/shape/Line";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
-import { Serialized } from "../../types/node";
-import { StageDumper } from "./StageDumper";
-import { Line } from "../dataStruct/shape/Line";
-import { Section } from "../stageObject/entity/Section";
-import { ConnectableEntity, Entity } from "../stageObject/StageObject";
-import { Controller } from "../controller/Controller";
-import { StageManager } from "./stageManager/StageManager";
-import { PointDashEffect } from "../effect/concrete/PointDashEffect";
-import { ControllerGamepad } from "../controller/ControllerGamepad";
-import { family } from "@tauri-apps/plugin-os";
 import { LineCuttingEffect } from "../effect/concrete/LineCuttingEffect";
-import { ProgressNumber } from "../dataStruct/ProgressNumber";
+import { PointDashEffect } from "../effect/concrete/PointDashEffect";
+import { Effect } from "../effect/effect";
 import { Renderer } from "../render/canvas2d/renderer";
-import { Color } from "../dataStruct/Color";
-import { StageSaveManager } from "./StageSaveManager";
 import { Settings } from "../Settings";
+import { Edge } from "../stageObject/association/Edge";
+import { Section } from "../stageObject/entity/Section";
+import { TextNode } from "../stageObject/entity/TextNode";
+import { ConnectableEntity, Entity } from "../stageObject/StageObject";
+import { StageDumper } from "./StageDumper";
+import { StageManager } from "./stageManager/StageManager";
+import { StageSaveManager } from "./StageSaveManager";
 
 /**
  * 舞台对象
@@ -189,7 +189,6 @@ export namespace Stage {
 
   const controllerGamepad = new ControllerGamepad();
 
-
   /**
    * 逻辑总入口
    * 该函数在上游被频繁调用
@@ -233,15 +232,15 @@ export namespace Stage {
 
   let lastAutoSaveTime = performance.now();
   let autoSave = false;
-  let autoSaveInterval = 60_000;  // ms
+  let autoSaveInterval = 60_000; // ms
 
   export function init() {
     Settings.watch("autoSave", (value) => {
       autoSave = value;
-    })
+    });
     Settings.watch("autoSaveInterval", (value) => {
-      autoSaveInterval = value * 1000;  // s to ms
-    })
+      autoSaveInterval = value * 1000; // s to ms
+    });
   }
 
   // private
@@ -261,7 +260,7 @@ export namespace Stage {
           // 没有节点，不保存
         } else {
           const rect = Renderer.getCoverWorldRectangle();
-          console.log("auto save");
+
           Stage.effects.push(
             new LineCuttingEffect(
               new ProgressNumber(0, 10),

@@ -1,15 +1,14 @@
-import React from "react";
-import { useEffect } from "react";
-import { Stage } from "../core/stage/Stage";
-import { Controller } from "../core/controller/Controller";
-import { StageManager } from "../core/stage/stageManager/StageManager";
-import { RectangleNoteEffect } from "../core/effect/concrete/RectangleNoteEffect";
-import { ProgressNumber } from "../core/dataStruct/ProgressNumber";
-import { Color } from "../core/dataStruct/Color";
-import { Camera } from "../core/stage/Camera";
-import { useDialog } from "../utils/dialog";
-import Button from "../components/ui/Button";
+import React, { useEffect } from "react";
 import Box from "../components/ui/Box";
+import Button from "../components/ui/Button";
+import { Controller } from "../core/controller/Controller";
+import { Color } from "../core/dataStruct/Color";
+import { ProgressNumber } from "../core/dataStruct/ProgressNumber";
+import { RectangleNoteEffect } from "../core/effect/concrete/RectangleNoteEffect";
+import { Camera } from "../core/stage/Camera";
+import { Stage } from "../core/stage/Stage";
+import { StageManager } from "../core/stage/stageManager/StageManager";
+import { useDialog } from "../utils/dialog";
 
 export default function SearchingNodePanel() {
   const dialog = useDialog();
@@ -19,7 +18,6 @@ export default function SearchingNodePanel() {
     React.useState(0);
 
   useEffect(() => {
-    console.log("监听到搜索结果变化", Stage.currentSearchResultIndex);
     if (Stage.searchResultNodes.length == 0) {
       setCurrentSearchResultIndex(-1);
     } else {

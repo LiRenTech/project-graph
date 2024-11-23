@@ -1,9 +1,9 @@
 import { invoke } from "@tauri-apps/api/core";
 import { Serialized } from "../../types/node";
 import { ViewFlashEffect } from "../effect/concrete/ViewFlashEffect";
+import { TextNode } from "../stageObject/entity/TextNode";
 import { Stage } from "./Stage";
 import { StageHistoryManager } from "./stageManager/StageHistoryManager";
-import { TextNode } from "../stageObject/entity/TextNode";
 import { StageManager } from "./stageManager/StageManager";
 
 /**
@@ -28,7 +28,6 @@ export namespace StageSaveManager {
       content: JSON.stringify(data, null, 2),
     })
       .then((res) => {
-        console.log(res);
         Stage.effects.push(ViewFlashEffect.SaveFile());
         StageHistoryManager.reset(data); // 重置历史
         successCallback();
@@ -62,7 +61,6 @@ export namespace StageSaveManager {
       content: JSON.stringify(data, null, 2),
     })
       .then((res) => {
-        console.log(res);
         if (addFlashEffect) {
           Stage.effects.push(ViewFlashEffect.SaveFile());
         }
@@ -88,7 +86,6 @@ export namespace StageSaveManager {
       content: string,
     })
       .then((res) => {
-        console.log(res);
         successCallback();
         isCurrentSaved = true;
       })
@@ -144,7 +141,6 @@ export namespace StageSaveManager {
       content,
     })
       .then((res) => {
-        console.log(res);
         successCallback();
       })
       .catch((err) => {

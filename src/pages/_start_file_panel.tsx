@@ -1,17 +1,4 @@
-import { useEffect } from "react";
-import Button from "../components/ui/Button";
-import { isDesktop } from "../utils/platform";
-import { useDialog } from "../utils/dialog";
 import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
-import { StartFilesManager } from "../core/StartFilesManager";
-import React from "react";
-import { useRecoilState } from "recoil";
-import { fileAtom } from "../state";
-import { RecentFileManager } from "../core/RecentFileManager";
-import { StageSaveManager } from "../core/stage/StageSaveManager";
-import { PathString } from "../utils/pathString";
-import Switch from "../components/ui/Switch";
-import { cn } from "../utils/cn";
 import {
   Delete,
   FileClock,
@@ -21,8 +8,20 @@ import {
   Pin,
   Trash2,
 } from "lucide-react";
-import IconButton from "../components/ui/IconButton";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useRecoilState } from "recoil";
+import Button from "../components/ui/Button";
+import IconButton from "../components/ui/IconButton";
+import Switch from "../components/ui/Switch";
+import { RecentFileManager } from "../core/RecentFileManager";
+import { StageSaveManager } from "../core/stage/StageSaveManager";
+import { StartFilesManager } from "../core/StartFilesManager";
+import { fileAtom } from "../state";
+import { cn } from "../utils/cn";
+import { useDialog } from "../utils/dialog";
+import { PathString } from "../utils/pathString";
+import { isDesktop } from "../utils/platform";
 
 export default function StartFilePanel({ open = false }: { open: boolean }) {
   const dialog = useDialog();
@@ -39,7 +38,6 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
 
   useEffect(() => {
     updateStartFiles();
-    console.log("StartFilePanel mounted");
   }, []);
 
   const updateStartFiles = async () => {
@@ -156,7 +154,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
   };
   const checkoutFile = (path: string) => {
     try {
-      setFile(decodeURIComponent(path));      
+      setFile(decodeURIComponent(path));
       if (isDesktop && !path.endsWith(".json")) {
         dialog.show({
           title: "请选择一个JSON文件",

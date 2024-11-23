@@ -82,9 +82,6 @@ export namespace Settings {
   ): Promise<Settings[K]> {
     const res = await store.get<Settings[K]>(key);
     if (typeof res === "undefined") {
-      console.log(
-        `settings.${key} not found, use default value ${defaultSettings[key]}`,
-      );
       return defaultSettings[key];
     } else {
       return res;

@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../types/node";
 import { getTextSize } from "../../../utils/font";
 import { Color } from "../../dataStruct/Color";
@@ -11,7 +12,6 @@ import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { ConnectableEntity, Entity } from "../StageObject";
-import { v4 as uuidv4 } from "uuid";
 
 export class Section extends ConnectableEntity {
   /**
@@ -73,10 +73,7 @@ export class Section extends ConnectableEntity {
     this._collisionBoxWhenCollapsed = new CollisionBox([
       new Rectangle(new Vector(...location), new Vector(...size)),
     ]);
-    console.log(
-      "this._collisionBoxWhenCollapsed",
-      this._collisionBoxWhenCollapsed,
-    );
+
     this._collisionBoxNormal = new CollisionBox(
       new Rectangle(
         new Vector(...location),
@@ -102,7 +99,6 @@ export class Section extends ConnectableEntity {
    * @param entities
    */
   static fromEntities(entities: Entity[]): Section {
-    console.log("开始根据实体创建");
     const section = new Section({
       uuid: uuidv4(),
       text: "section",
@@ -113,7 +109,7 @@ export class Section extends ConnectableEntity {
       isCollapsed: false,
       children: entities.map((entity) => entity.uuid),
     });
-    console.log("创建完毕");
+
     return section;
   }
 

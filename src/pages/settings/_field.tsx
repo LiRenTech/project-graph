@@ -1,11 +1,11 @@
 import React from "react";
-import Input from "../../components/ui/Input";
-import { Settings } from "../../core/Settings";
-import Switch from "../../components/ui/Switch";
-import Slider from "../../components/ui/Slider";
-import Select from "../../components/ui/Select";
-import Button from "../../components/ui/Button";
 import { getI18n } from "react-i18next";
+import Button from "../../components/ui/Button";
+import Input from "../../components/ui/Input";
+import Select from "../../components/ui/Select";
+import Slider from "../../components/ui/Slider";
+import Switch from "../../components/ui/Switch";
+import { Settings } from "../../core/Settings";
 
 export function SettingField({
   settingKey,
@@ -36,14 +36,13 @@ export function SettingField({
 
   React.useEffect(() => {
     Settings.get(settingKey).then((v) => {
-      // console.log("Setting loaded", settingKey, v);
       setValue(v);
     });
   }, []);
   React.useEffect(() => {
     if (value !== undefined) {
       Settings.set(settingKey, value);
-      // console.log("Setting saved", settingKey, value);
+
       if (settingKey === "language") {
         getI18n().changeLanguage(value);
       }

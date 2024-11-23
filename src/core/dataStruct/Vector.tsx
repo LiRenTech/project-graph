@@ -93,7 +93,7 @@ export class Vector {
     const dot = this.dot(vector);
     const mag1 = this.magnitude();
     const mag2 = vector.magnitude();
-    // console.log('dot:', dot, 'mag1:', mag1, 'mag2:', mag2)
+
     return Math.acos(dot / (mag1 * mag2));
   }
   /**
