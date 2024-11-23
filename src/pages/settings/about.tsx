@@ -68,6 +68,7 @@ export default function About() {
           <span>lucide</span>
           <span>xlings</span>
         </div>
+        {/* 此程序基于MIT协议开源，你可以在任何地方使用，无论是个人还是商业用途，但请保留作者信息和版权信息。 */}
         <h2 className="mt-4 text-2xl font-bold">{t("developer.title")}</h2>
         <p>项目提出者：Rutubet</p>
         <p>概念设计：Littlefean</p>
@@ -82,13 +83,17 @@ export default function About() {
         <p>文档网站维护：ZTY</p>
         <p>性能督导：ZTY、广大的反馈者们</p>
         <p>视频宣发：Littlefean</p>
-        <p>翻译官：Artificial Intelligence</p>
-        <p>测试：Vitest、all developer、all user</p>
-        <p>程序员鼓励师：null</p>
-        <p>程序员鼓励师的鼓励师：maximum recursion depth exceeded</p>
-        <p>音效师：undefined</p>
-        <p>气氛调节师：yuxiaoQAQ</p>
-        <p>...</p>
+        <p className="text-sm text-gray-600">翻译官：Artificial Intelligence</p>
+        <p className="text-sm text-gray-600">
+          测试：Vitest、all developer、all user
+        </p>
+        <p className="text-sm text-gray-600">程序员鼓励师：null</p>
+        <p className="text-sm text-gray-600">
+          程序员鼓励师的鼓励师：maximum recursion depth exceeded
+        </p>
+        <p className="text-sm text-gray-600">音效师：undefined</p>
+        <p className="text-sm text-gray-600">气氛调节师：yuxiaoQAQ</p>
+        <p className="text-sm text-gray-600">...</p>
         <p>{t("developer.tips")}</p>
 
         <h2 className="mt-4 text-2xl font-bold">{t("ideaSource.title")}</h2>
@@ -135,9 +140,7 @@ export default function About() {
         </Button>
         <Button
           onClick={() =>
-            open(
-              "https://forum.d2learn.org/category/16/project-graph",
-            )
+            open("https://forum.d2learn.org/category/16/project-graph")
           }
         >
           论坛
