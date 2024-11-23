@@ -1,8 +1,8 @@
 // import { readTextFile } from "@tauri-apps/plugin-fs";
 import React, { useEffect } from "react";
-import { cn } from "../utils/cn";
-import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
 import { useRecoilState } from "recoil";
+import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
+import { cn } from "../utils/cn";
 // import { NodeManager } from "../core/NodeManager";
 // import { NodeLoader } from "../core/NodeLoader";
 // import { Edge } from "../core/Edge";
@@ -12,10 +12,10 @@ import { useRecoilState } from "recoil";
 // import { Color } from "../core/Color";
 // import { Node } from "../core/Node";
 import { RecentFileManager } from "../core/RecentFileManager";
+import { Stage } from "../core/stage/Stage";
+import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { useDialog } from "../utils/dialog";
 import { isDesktop } from "../utils/platform";
-import { StageSaveManager } from "../core/stage/StageSaveManager";
-import { Stage } from "../core/stage/Stage";
 
 export default function RecentFilesPanel() {
   const [recentFiles, setRecentFiles] = React.useState<
@@ -44,9 +44,7 @@ export default function RecentFilesPanel() {
 
   useEffect(() => {
     updateRecentFiles();
-    return () => {
-      console.log("Recent Files Panel unmounted");
-    };
+    return () => {};
   }, []);
 
   const onClickFile = (file: RecentFileManager.RecentFile) => {
@@ -84,7 +82,7 @@ export default function RecentFilesPanel() {
   const checkoutFile = (file: RecentFileManager.RecentFile) => {
     try {
       const path = file.path;
-      setFile(decodeURIComponent(path));      
+      setFile(decodeURIComponent(path));
       if (isDesktop && !path.endsWith(".json")) {
         dialog.show({
           title: "请选择一个JSON文件",
@@ -124,7 +122,7 @@ export default function RecentFilesPanel() {
         <tbody>
           {recentFiles.map((file, index) => (
             <tr key={index} className="hover:bg-gray-600">
-              <td className="border-b border-gray-600 p-2 text-gray-200 text-right">
+              <td className="border-b border-gray-600 p-2 text-right text-gray-200">
                 {index + 1}
               </td>
               <td

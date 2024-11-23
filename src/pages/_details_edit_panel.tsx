@@ -1,12 +1,11 @@
 import React from "react";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
-import { TextNode } from "../core/stageObject/entity/TextNode";
 import { editTextNodeHookGlobal } from "../core/controller/concrete/utilsControl";
 import { Controller } from "../core/controller/Controller";
 import { Renderer } from "../core/render/canvas2d/renderer";
-import { Canvas } from "../core/stage/Canvas";
 import { Camera } from "../core/stage/Camera";
+import { TextNode } from "../core/stageObject/entity/TextNode";
 
 export default function DetailsEditPanel() {
   const [inputCurrentDetails, setInputCurrentDetails] = React.useState("");
@@ -29,9 +28,8 @@ export default function DetailsEditPanel() {
     if (clickedNode) {
       clickedNode.isEditingDetails = false;
     }
-  }
+  };
   editTextNodeHookGlobal.hookFunctionStart = (textNode: TextNode) => {
-    console.log("开始编辑节点：" + textNode.text);
     setInputCurrentDetails(textNode.details);
     setClickedNode(textNode);
     setIsNodeTextEditing(true);
@@ -50,7 +48,7 @@ export default function DetailsEditPanel() {
     }
     const collisionBoxRectangle = clickedNode.collisionBox.getRectangle();
     const heightViewSize = collisionBoxRectangle.size.y * Camera.currentScale;
-    console.log(Canvas.element.width, Canvas.element.height);
+
     return {
       left: `${Renderer.transformWorld2View(collisionBoxRectangle.location).x}px`,
       top: `${Renderer.transformWorld2View(collisionBoxRectangle.location).y + heightViewSize}px`,

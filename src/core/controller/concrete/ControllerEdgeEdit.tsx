@@ -28,7 +28,6 @@ ControllerEdgeEdit.mouseDoubleClick = (event: MouseEvent) => {
 
 ControllerEdgeEdit.keydown = (event: KeyboardEvent) => {
   if (event.key === "Enter") {
-    console.log("Edge Edit Enter");
     // 先检测是否有选择了的边
     const isHaveEdgeSelected = StageManager.getEdges().some(
       (edge) => edge.isSelected,

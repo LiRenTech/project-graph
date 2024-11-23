@@ -1,18 +1,18 @@
+import { invoke } from "@tauri-apps/api/core";
+import { v4 as uuidv4 } from "uuid";
+import { PathString } from "../../../utils/pathString";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
-import { TextNode } from "../../stageObject/entity/TextNode";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
 import { StageDumper } from "../../stage/StageDumper";
 import { StageSerializedAdder } from "../../stage/stageManager/concreteMethods/StageSerializedAdder";
 import { StageManager } from "../../stage/stageManager/StageManager";
+import { ImageNode } from "../../stageObject/entity/ImageNode";
+import { TextNode } from "../../stageObject/entity/TextNode";
+import { Entity } from "../../stageObject/StageObject";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-import { v4 as uuidv4 } from "uuid";
-import { Entity } from "../../stageObject/StageObject";
-import { ImageNode } from "../../stageObject/entity/ImageNode";
-import { invoke } from "@tauri-apps/api/core";
-import { PathString } from "../../../utils/pathString";
 
 /**
  * 关于复制相关的功能
@@ -149,8 +149,6 @@ async function readClipboardItems(mouseLocation: Vector) {
             fileName: imagePath,
           })
             .then(() => {
-              console.log("save image to file success");
-
               // 要延迟一下，等待保存完毕
               setTimeout(() => {
                 const imageNode = new ImageNode({
@@ -170,7 +168,7 @@ async function readClipboardItems(mouseLocation: Vector) {
           const blob = await item.getType("text/plain"); // 获取文本内容
           // const text = await blob.text();
           const text = await blobToText(blob); // 将 Blob 转换为文本
-          console.log("Text:", text);
+
           const textNode = new TextNode({
             uuid: uuidv4(),
             text: text,
@@ -187,7 +185,6 @@ async function readClipboardItems(mouseLocation: Vector) {
           StageManager.addTextNode(textNode);
         }
       }
-      console.log("read clipboard contents");
     });
   } catch (err) {
     console.error("Failed to read clipboard contents: ", err);

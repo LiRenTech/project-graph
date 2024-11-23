@@ -64,7 +64,6 @@ export namespace StageDeleteManager {
   function deleteConnectPoint(entity: ConnectPoint) {
     // 先判断这个node是否在nodes里
     if (StageManager.getConnectPoints().includes(entity)) {
-      console.log("include connect point", entity.uuid);
       // 从数组中去除
       StageManager.deleteOneConnectPoint(entity);
       Stage.effects.push(
@@ -84,7 +83,6 @@ export namespace StageDeleteManager {
   function deleteTextNode(entity: TextNode) {
     // 先判断这个node是否在nodes里
     if (StageManager.getTextNodes().includes(entity)) {
-      console.log("include node", entity.uuid);
       // 从数组中去除
       StageManager.deleteOneTextNode(entity);
       // 增加特效
@@ -113,7 +111,6 @@ export namespace StageDeleteManager {
     for (const edge of prepareDeleteEdges) {
       StageManager.deleteOneEdge(edge);
     }
-    console.log("delete node", entity.uuid);
   }
 
   /**
@@ -134,7 +131,6 @@ export namespace StageDeleteManager {
       StageManager.updateReferences();
       return true;
     } else {
-      console.log("node not in nodes");
       return false;
     }
   }

@@ -116,13 +116,13 @@ export namespace StageGeneratorAI {
         );
       }
     }
-    console.log("toParentDegrees", toParentDegrees);
+
     if (toParentDegrees.length === 1) {
       startRotateDegrees += toParentDegrees[0];
     } else if (toParentDegrees.length > 1) {
       // 求平均值
       const avgToParentDegrees = ArrayFunctions.average(toParentDegrees);
-      console.log("avgToParentDegrees", avgToParentDegrees);
+
       startRotateDegrees += avgToParentDegrees;
     }
 

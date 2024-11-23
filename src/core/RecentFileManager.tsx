@@ -103,7 +103,6 @@ export namespace RecentFileManager {
         if (isExists) {
           recentFilesValid.push(file); // 存在则保留
         } else {
-          console.log("文件不存在，删除记录", file.path);
           isFileLost = true;
         }
       } catch (e) {
@@ -154,7 +153,6 @@ export namespace RecentFileManager {
     }
 
     const data = StageLoader.validate(JSON.parse(content));
-    console.log(data);
 
     loadStageByData(data);
     StageHistoryManager.reset(data);

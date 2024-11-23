@@ -1,22 +1,22 @@
 import { Vector } from "../dataStruct/Vector";
 import { Renderer } from "../render/canvas2d/renderer";
-import { StageManager } from "../stage/stageManager/StageManager";
 import { Camera } from "../stage/Camera";
-import { ControllerCamera } from "./concrete/ControllerCamera";
-import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
-import { ControllerNodeConnection } from "./concrete/ControllerNodeConnection";
-import { ControllerCutting } from "./concrete/ControllerCutting";
-import { ControllerNodeMove } from "./concrete/ControllerNodeMove";
 import { Canvas } from "../stage/Canvas";
-import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect";
-import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
-import { ControllerEntityCreate } from "./concrete/ControllerEntityCreate";
-import { ControllerEdgeEdit } from "./concrete/ControllerEdgeEdit";
-import { ControllerDrawing } from "./concrete/ControllerDrawing";
-import { ControllerDragFile } from "./concrete/ControllerDragFile";
-import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
-import { ControllerCopy } from "./concrete/ControllerCopy";
 import { StageHistoryManager } from "../stage/stageManager/StageHistoryManager";
+import { StageManager } from "../stage/stageManager/StageManager";
+import { ControllerCamera } from "./concrete/ControllerCamera";
+import { ControllerCopy } from "./concrete/ControllerCopy";
+import { ControllerCutting } from "./concrete/ControllerCutting";
+import { ControllerDragFile } from "./concrete/ControllerDragFile";
+import { ControllerDrawing } from "./concrete/ControllerDrawing";
+import { ControllerEdgeEdit } from "./concrete/ControllerEdgeEdit";
+import { ControllerEntityCreate } from "./concrete/ControllerEntityCreate";
+import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
+import { ControllerNodeConnection } from "./concrete/ControllerNodeConnection";
+import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
+import { ControllerNodeMove } from "./concrete/ControllerNodeMove";
+import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
+import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect";
 import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
 
 /**
@@ -308,6 +308,5 @@ export namespace Controller {
     ControllerKeyboardOnly.destroy();
     ControllerCopy.destroy();
     ControllerSectionEdit.destroy();
-    console.log("Controller destroyed.");
   }
 }

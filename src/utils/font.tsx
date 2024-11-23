@@ -33,7 +33,7 @@ export function getTextSize(text: string, size: number): Vector {
   if (useCache) {
     _cache.set(`${text}-${size}`, metrics.width);
   }
-  // console.log(t2 - t1);
+
   return new Vector(metrics.width, size);
 }
 

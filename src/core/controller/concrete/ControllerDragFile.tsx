@@ -11,7 +11,7 @@ import { ControllerClassDragFile } from "../ControllerClassDragFile";
 
 // listen("tauri://file-drop", (event) => {
 //   const files = event.payload;
-//   console.log(files);
+//
 // });
 
 /**
@@ -65,7 +65,7 @@ ControllerDragFile.drop = (event: DragEvent) => {
 
     reader.onload = (e) => {
       const fileContent = e.target?.result; // 读取的文件内容
-      console.log(fileContent);
+
       // 在这里处理读取到的内容
       const dataString = fileContent?.toString();
       if (dataString === undefined) {

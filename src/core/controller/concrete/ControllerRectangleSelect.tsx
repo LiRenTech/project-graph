@@ -1,11 +1,11 @@
-import { StageManager } from "../../stage/stageManager/StageManager";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
+import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
-import { Vector } from "../../dataStruct/Vector";
+import { StageManager } from "../../stage/stageManager/StageManager";
+import { Section } from "../../stageObject/entity/Section";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-import { Section } from "../../stageObject/entity/Section";
 
 /**
  * 框选控制器
@@ -36,7 +36,6 @@ ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
     (entity) => entity.isSelected,
   );
 
-  console.log(isHaveEdgeSelected, isHaveEntitySelected);
   // 现在的情况：在空白的地方按下左键
 
   if (isHaveEntitySelected || isHaveEdgeSelected) {

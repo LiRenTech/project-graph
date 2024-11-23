@@ -1,14 +1,14 @@
+import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../types/node";
 import { getTextSize } from "../../../utils/font";
+import { Vector } from "../../dataStruct/Vector";
 import { Line } from "../../dataStruct/shape/Line";
-import { TextNode } from "../entity/TextNode";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../render/canvas2d/renderer";
-import { Vector } from "../../dataStruct/Vector";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { ConnectableAssociation, ConnectableEntity } from "../StageObject";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { v4 as uuidv4 } from "uuid";
+import { TextNode } from "../entity/TextNode";
 import { EdgeCollisionBoxGetter } from "./EdgeCollisionBoxGetter";
 
 export class Edge extends ConnectableAssociation {
@@ -84,7 +84,7 @@ export class Edge extends ConnectableAssociation {
     this._target = new TextNode({ uuid: target }, true);
     this.text = text;
     this.uuid = uuid;
-    console.log("创建了一个Edge");
+
     this.adjustSizeByText();
   }
   /**

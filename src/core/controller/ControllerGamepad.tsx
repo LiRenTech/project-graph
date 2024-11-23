@@ -39,7 +39,6 @@ export class ControllerGamepad implements Tickable, Disposable {
   private deadzone = 0;
 
   constructor() {
-    console.log("ControllerGamepad init");
     window.addEventListener("gamepadconnected", this.onGamepadConnected);
     Settings.watch("gamepadDeadzone", (value) => {
       this.deadzone = value;
@@ -98,9 +97,7 @@ export class ControllerGamepad implements Tickable, Disposable {
     this.initGamepad(gamepad);
   };
 
-  private initGamepad(gamepad: Gamepad) {
-    console.log("Gamepad connected:", gamepad.id);
-  }
+  private initGamepad(gamepad: Gamepad) {}
 
   on<K extends keyof EventMap>(event: K, listener: EventMap[K]) {
     if (!this.listeners[event]) {
@@ -113,7 +110,6 @@ export class ControllerGamepad implements Tickable, Disposable {
     event: K,
     ...args: Parameters<EventMap[K]>
   ) {
-    console.log("Trigger event:", event, args);
     const listeners = this.listeners[event];
     if (listeners) {
       for (const listener of listeners) {

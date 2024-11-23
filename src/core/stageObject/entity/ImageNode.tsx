@@ -1,11 +1,11 @@
 import { invoke } from "@tauri-apps/api/core";
 import { Serialized } from "../../../types/node";
+import { PathString } from "../../../utils/pathString";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
+import { Stage } from "../../stage/Stage";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { ConnectableEntity } from "../StageObject";
-import { Stage } from "../../stage/Stage";
-import { PathString } from "../../../utils/pathString";
 
 /**
  * 一个图片节点
@@ -84,7 +84,7 @@ export class ImageNode extends ConnectableEntity {
     } else {
       // 一般只有在粘贴板粘贴时和初次打开文件时才调用这里
       // 所以这里只可能时初次打开文件时还是草稿的状态
-      
+
       setTimeout(() => {
         this.updateBase64StringByPath(
           PathString.dirPath(Stage.Path.getFilePath()),
@@ -115,7 +115,6 @@ export class ImageNode extends ConnectableEntity {
         imageElement.src = `data:image/png;base64,${this._base64String}`;
         imageElement.onload = () => {
           // 图片加载成功
-          console.log("图片加载成功");
 
           // 调整碰撞箱大小
 
@@ -126,13 +125,12 @@ export class ImageNode extends ConnectableEntity {
           this.state = "success";
         };
         imageElement.onerror = () => {
-          console.log("图片加载失败");
           this.state = "error";
         };
       })
       .catch((err) => {
         // 获取base64String失败
-        console.log("图片可能不存在？", err);
+
         this.state = "error";
       });
   }

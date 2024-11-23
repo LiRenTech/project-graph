@@ -1,10 +1,10 @@
-import { StageManager } from "../../stage/stageManager/StageManager";
+import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
-import { Vector } from "../../dataStruct/Vector";
+import { StageManager } from "../../stage/stageManager/StageManager";
+import { Entity } from "../../stageObject/StageObject";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-import { Entity } from "../../stageObject/StageObject";
 
 /**
  * 拖拽节点使其移动的控制器
@@ -48,7 +48,6 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
   const worldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  console.log(worldLocation.toString());
   const diffLocation = worldLocation.subtract(
     ControllerNodeMove.lastMoveLocation,
   );

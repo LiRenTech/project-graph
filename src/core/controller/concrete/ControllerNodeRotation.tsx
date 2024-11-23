@@ -1,7 +1,7 @@
-import { StageManager } from "../../stage/stageManager/StageManager";
+import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
-import { Vector } from "../../dataStruct/Vector";
+import { StageManager } from "../../stage/stageManager/StageManager";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -63,8 +63,6 @@ ControllerNodeRotation.mousedown = (event: MouseEvent) => {
   } else {
     // F
     clickedEdge.isSelected = true;
-
-    console.log("在连线身上按下");
   }
 };
 

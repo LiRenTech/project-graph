@@ -18,7 +18,7 @@ export class ExplodeAshEffect extends Effect {
      */
     public override timeProgress: ProgressNumber,
     public rectangle: Rectangle,
-    public color: Color
+    public color: Color,
   ) {
     super(timeProgress);
     for (let i = 0; i < 1000; i++) {
@@ -44,6 +44,5 @@ export class ExplodeAshEffect extends Effect {
         this.ashSpeedArray[i],
       );
     }
-    // console.log(this.ashLocationArray);
   }
 }

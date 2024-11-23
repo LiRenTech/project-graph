@@ -1,7 +1,7 @@
-import { Circle } from "./Circle";
-import { Shape } from "./Shape";
 import { Vector } from "../Vector";
+import { Circle } from "./Circle";
 import { Rectangle } from "./Rectangle";
+import { Shape } from "./Shape";
 
 export interface IntersectionResult {
   intersects: boolean;
@@ -354,7 +354,6 @@ export class Line extends Shape {
         return null;
       }
     } catch (e) {
-      console.log(e);
       return null;
     }
   }

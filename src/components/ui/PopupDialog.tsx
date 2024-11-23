@@ -1,6 +1,6 @@
 import React from "react";
-import { usePopupDialog } from "../../utils/popupDialog";
 import { cn } from "../../utils/cn";
+import { usePopupDialog } from "../../utils/popupDialog";
 import Box from "./Box";
 
 export default function PopupDialog() {
@@ -10,7 +10,6 @@ export default function PopupDialog() {
 
   React.useEffect(() => {
     if (popupDialog.showPopup) {
-      console.log(ref.current);
       const [mouseX, mouseY] = popupDialog.location;
       const { width: popupWidth, height: popupHeight } =
         ref.current!.getBoundingClientRect()!;

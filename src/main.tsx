@@ -60,7 +60,6 @@ const el = document.getElementById("root")!;
         path,
       })
         .then((isExists) => {
-          console.log(isExists);
           if (isExists) {
             // 打开自定义的工程文件
             RecentFileManager.openFileByPath(path);
@@ -68,7 +67,6 @@ const el = document.getElementById("root")!;
               // 更改顶部路径名称
               RecentFileManager.openFileByPathWhenAppStart(path);
             }, 1000);
-            console.log("自动打开了工程文件：" + path);
           } else {
             // 自动打开路径不存在
             Stage.effects.push(
