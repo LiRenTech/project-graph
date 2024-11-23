@@ -1,8 +1,8 @@
-import globals from "globals";
 import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 import pluginReact from "eslint-plugin-react";
-import eslintPluginPrettier from "eslint-plugin-prettier";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 
 export default [
   {
@@ -18,7 +18,7 @@ export default [
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   pluginReact.configs.flat["jsx-runtime"],
-  eslintPluginPrettier.configs.recommended,
+  eslintPluginPrettierRecommended,
   // 2024/10/23 这里的rules不能写在上面，否则会被覆盖
   {
     rules: {
