@@ -75,7 +75,6 @@ export namespace Settings {
 
   export async function init() {
     store = await load("settings.json");
-    store.save();
   }
 
   export async function get<K extends keyof Settings>(
