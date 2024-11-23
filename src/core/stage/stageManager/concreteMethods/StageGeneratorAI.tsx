@@ -7,6 +7,7 @@ import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeR
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Stage } from "../../Stage";
 import { StageManager } from "../StageManager";
+import { PromptManager } from "../../../ai/PromptManager";
 
 export namespace StageGeneratorAI {
   export let fetchUrl =
@@ -52,6 +53,9 @@ export namespace StageGeneratorAI {
   // }
 
   async function realGenerateTextList(selectedTextNode: TextNode) {
+    let userContent = await PromptManager.getCurrentUserPrompt();
+    userContent = userContent.replaceAll("{{nodeText}}", selectedTextNode.text);
+
     try {
       const response = await fetch(fetchUrl, {
         method: "POST",
@@ -69,7 +73,7 @@ export namespace StageGeneratorAI {
             },
             {
               role: "user",
-              content: `我的词是：${selectedTextNode.text}，你会扩展出5~10个新的词。每个词之间用换行符分隔`,
+              content: userContent,
             },
           ],
         }),

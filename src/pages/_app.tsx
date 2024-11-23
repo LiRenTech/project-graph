@@ -8,6 +8,7 @@ import {
   X,
   Zap,
   RectangleEllipsis,
+  BrainCircuit,
 } from "lucide-react";
 import React from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -30,11 +31,14 @@ import StartFilePanel from "./_start_file_panel";
 import { PathString } from "../utils/pathString";
 import { useTranslation } from "react-i18next";
 import { Stage } from "../core/stage/Stage";
+import AiPanel from "./_ai_panel";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isStartFilePanelOpen, setIsStartFilePanelOpen] = React.useState(false);
+  const [isAiPanelOpen, setIsAiPanelOpen] = React.useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
   const [file] = useRecoilState(fileAtom);
@@ -93,7 +97,7 @@ export default function App() {
   React.useEffect(() => {
     if (file === Stage.Path.draftName) {
       getCurrentWindow().setTitle(Stage.Path.draftName);
-      Stage.Path.setPathInEffect(Stage.Path.draftName)
+      Stage.Path.setPathInEffect(Stage.Path.draftName);
     } else {
       getCurrentWindow().setTitle(`${filename} - Project Graph`);
       Stage.Path.setPathInEffect(file);
@@ -251,7 +255,7 @@ export default function App() {
                 navigate("/");
               }
             } else {
-              e.stopPropagation();  // 避免又触发了关闭
+              e.stopPropagation(); // 避免又触发了关闭
               setIsMenuOpen(!isMenuOpen);
             }
           }}
@@ -269,6 +273,7 @@ export default function App() {
         <AppMenu className="absolute top-20" open={isMenuOpen} />
         <RecentFilesPanel />
         <StartFilePanel open={isStartFilePanelOpen} />
+        <AiPanel open={isAiPanelOpen}/>
         {/* 中间标题 */}
         {useNativeTitleBar ? (
           // h-0 才能完全摆脱划线时经过此区域的卡顿问题
@@ -293,12 +298,23 @@ export default function App() {
             </span>
           </>
         )}
+        {/* 右上角AI按钮 */}
+        <IconButton onClick={(e) => {
+          e.stopPropagation();
+          setIsAiPanelOpen(!isAiPanelOpen);
+        }}>
+          <BrainCircuit
+            className={cn(
+              "cursor-pointer transition",
+              isAiPanelOpen ? "rotate-90" : "",
+            )}
+          />
+        </IconButton>
         {/* 右上角图钉按钮 */}
         <IconButton
           onClick={(e) => {
             e.stopPropagation();
             setIsStartFilePanelOpen(!isStartFilePanelOpen);
-            console.log("clicked", isStartFilePanelOpen);
           }}
         >
           <Zap

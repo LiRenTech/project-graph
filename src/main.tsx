@@ -21,6 +21,7 @@ import { StageStyleManager } from "./core/stageStyle/StageStyleManager";
 import { StartFilesManager } from "./core/StartFilesManager";
 import { DialogProvider } from "./utils/dialog";
 import { PopupDialogProvider } from "./utils/popupDialog";
+import { PromptManager } from "./core/ai/PromptManager";
 
 // 计时开始
 const t1 = performance.now();
@@ -38,6 +39,7 @@ const el = document.getElementById("root")!;
   await Settings.init();
   await RecentFileManager.init();
   await StartFilesManager.init();
+  await PromptManager.init();
   // 15~20ms 左右
   EdgeCollisionBoxGetter.init();
   EdgeRenderer.init();

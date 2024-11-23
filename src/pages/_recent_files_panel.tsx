@@ -84,7 +84,7 @@ export default function RecentFilesPanel() {
   const checkoutFile = (file: RecentFileManager.RecentFile) => {
     try {
       const path = file.path;
-      setFile(decodeURIComponent(path));      
+      setFile(decodeURIComponent(path));
       if (isDesktop && !path.endsWith(".json")) {
         dialog.show({
           title: "请选择一个JSON文件",
@@ -124,7 +124,7 @@ export default function RecentFilesPanel() {
         <tbody>
           {recentFiles.map((file, index) => (
             <tr key={index} className="hover:bg-gray-600">
-              <td className="border-b border-gray-600 p-2 text-gray-200 text-right">
+              <td className="border-b border-gray-600 p-2 text-right text-gray-200">
                 {index + 1}
               </td>
               <td
