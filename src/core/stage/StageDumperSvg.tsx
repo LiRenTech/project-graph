@@ -3,8 +3,8 @@ import { TextNode } from "../stageObject/entity/TextNode";
 import { Renderer } from "../render/canvas2d/renderer";
 import { StageManager } from "./stageManager/StageManager";
 import ReactDOMServer from "react-dom/server";
-import { Color } from "../dataStruct/Color";
 import { Edge } from "../stageObject/association/Edge";
+import { StageStyleManager } from "../stageStyle/StageStyleManager";
 
 /**
  * 将舞台当前内容导出为SVG
@@ -24,14 +24,14 @@ export namespace StageDumperSvg {
           rx={Renderer.NODE_ROUNDED_RADIUS}
           ry={Renderer.NODE_ROUNDED_RADIUS}
           fill={node.color.toString()}
-          stroke={Color.Black.toString()}
+          stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
           strokeWidth={2}
         />
         <text
           x={node.rectangle.center.x}
           y={node.rectangle.center.y + Renderer.NODE_PADDING}
           key={node.uuid + "-text"}
-          fill={Color.Black.toString()}
+          fill={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
           fontSize={Renderer.FONT_SIZE}
           textAnchor="middle"
           fontFamily="MiSans"
@@ -49,7 +49,7 @@ export namespace StageDumperSvg {
         y1={edge.bodyLine.start.y}
         x2={edge.bodyLine.end.x}
         y2={edge.bodyLine.end.y}
-        stroke={Color.Black.toString()}
+        stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
         strokeWidth={2}
       />
     );
@@ -92,6 +92,10 @@ export namespace StageDumperSvg {
         width={width}
         height={height}
         viewBox={viewBox}
+        style={{
+          backgroundColor:
+            StageStyleManager.currentStyle.BackgroundColor.toString(),
+        }}
       >
         {StageManager.getTextNodes().map((node) => dumpNode(node))}
         {StageManager.getEdges().map((edge) => dumpEdge(edge))}
