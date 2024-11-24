@@ -84,7 +84,7 @@ settingsAutomation:
     description: "自動保存當前檔案\n此功能目前僅對已有路徑的檔案有效，不對草稿檔案生效！"
   autoSaveInterval:
     title: 開啟自動保存間隔（秒）
-    description: "自動保存過於頻繁可能會對機械型硬碟造成壓力\n進而降低硬碟壽命\n注意：目前計時時間僅在軟體視窗啟用時計時，軟體最小化後不會計時。"
+    description: "注意：目前計時時間僅在軟體視窗啟用時計時，軟體最小化後不會計時。"
   autoBackup:
     title: 開啟自動備份
     description: "自動備份當前檔案\n自動備份會在工程檔案旁邊生成一個副本\n如果是草稿，則會存儲在指定的路徑"

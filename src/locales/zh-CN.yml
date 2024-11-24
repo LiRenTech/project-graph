@@ -87,7 +87,7 @@ settingsAutomation:
     description: "自动保存当前文件\n此功能目前仅对已有路径的文件有效，不对草稿文件生效！"
   autoSaveInterval:
     title: 开启自动保存间隔（秒）
-    description: "自动保存过于频繁可能会对机械型硬盘造成压力\n进而降低硬盘寿命\n注意：目前计时时间仅在软件窗口激活时计时，软件最小化后不会计时。"
+    description: "注意：目前计时时间仅在软件窗口激活时计时，软件最小化后不会计时。"
   autoBackup:
     title: 开启自动备份
     description: "自动备份当前文件\n自动备份会在工程文件旁边生成一个副本\n如果是草稿，则会存储在指定的路径"

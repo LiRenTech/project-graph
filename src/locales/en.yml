@@ -108,7 +108,7 @@ settingsAutomation:
     description: "Automatically save the current file\nThis feature is currently only effective for files with an existing path and does not apply to draft files!"
   autoSaveInterval:
     title: Enable Auto Save Interval (seconds)
-    description: "Saving too frequently may put stress on mechanical hard drives\nThereby reducing the drive's lifespan\nNote: The current timer only counts when the software window is active; it will not count when the software is minimized."
+    description: "Note: The current timer only counts when the software window is active; it will not count when the software is minimized."
   autoBackup:
     title: Enable Auto Backup
     description: "Automatically back up the current file\nAutomatic backups will create a copy next to the project file\nIf it is a draft, it will be stored at the specified path."
