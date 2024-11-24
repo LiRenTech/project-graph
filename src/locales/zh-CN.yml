@@ -44,6 +44,7 @@ settingsAbout:
     - >-
       理刃科技的代表作品包括CannonWar这个内容丰富的塔防游戏、BitMountain算法竞赛网站、Watch小桌面软件，以及MinecraftPvP职业战争服务器。
     - 团队以浅蓝色和代码绿为代表颜色，象征着逻辑合理与整活幽默并存的团队文化。
+
 settingsVisual:
   language: 语言
   theme: 舞台主题颜色
@@ -81,6 +82,21 @@ settingsAutomation:
   autoSaveWhenClose:
     title: 点击窗口右上角关闭按钮时自动保存工程文件
     description: "关闭软件时，如果有未保存的工程文件，会弹出提示框询问是否保存。\n开启此选项后，关闭软件时会自动保存工程文件。\n所以，建议开启此选项。"
+  autoSave:
+    title: 开启自动保存
+    description: "自动保存当前文件\n此功能目前仅对已有路径的文件有效，不对草稿文件生效！"
+  autoSaveInterval:
+    title: 开启自动保存间隔（秒）
+    description: "自动保存过于频繁可能会对机械型硬盘造成压力\n进而降低硬盘寿命\n注意：目前计时时间仅在软件窗口激活时计时，软件最小化后不会计时。"
+  autoBackup:
+    title: 开启自动备份
+    description: "自动备份当前文件\n自动备份会在工程文件旁边生成一个副本\n如果是草稿，则会存储在指定的路径"
+  autoBackupInterval:
+    title: 自动备份间隔（秒）
+    description: "自动备份过于频繁可能会产生大量的备份文件\n进而占用磁盘空间"
+  autoBackupDraftPath:
+    title: 草稿的自动备份文件夹路径
+    description: "请填写绝对路径，草稿将统一备份到此文件夹下\n留空或路径错误时不进行备份\nwindows系统注意使用反斜杠\n例如：C:\\Users\\username\\Documents\\DraftBackup\n结尾不要带路径分隔符"
 settingsControl:
   scaleExponent:
     title: 视角缩放速度

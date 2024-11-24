@@ -79,6 +79,22 @@ settingsAutomation:
   autoSaveWhenClose:
     title: 點擊窗口右上角關閉按鈕時自動保存工程文件
     description: "關閉軟件時，如果有未保存的工程文件，會彈出提示框詢問是否保存。\n開啟此選項後，關閉軟件時會自動保存工程文件。\n所以，建議開啟此選項。"
+  autoSave:
+    title: 開啟自動保存
+    description: "自動保存當前檔案\n此功能目前僅對已有路徑的檔案有效，不對草稿檔案生效！"
+  autoSaveInterval:
+    title: 開啟自動保存間隔（秒）
+    description: "自動保存過於頻繁可能會對機械型硬碟造成壓力\n進而降低硬碟壽命\n注意：目前計時時間僅在軟體視窗啟用時計時，軟體最小化後不會計時。"
+  autoBackup:
+    title: 開啟自動備份
+    description: "自動備份當前檔案\n自動備份會在工程檔案旁邊生成一個副本\n如果是草稿，則會存儲在指定的路徑"
+  autoBackupInterval:
+    title: 自動備份間隔（秒）
+    description: "自動備份過於頻繁可能會產生大量的備份檔案\n進而占用磁碟空間"
+  autoBackupDraftPath:
+    title: 草稿的自動備份檔案夾路徑
+    description: "請填寫絕對路徑，草稿將統一備份到此檔案夾下\n留空或路徑錯誤時不進行備份\nwindows系統注意使用反斜線\n例如：C:\\Users\\username\\Documents\\DraftBackup\n結尾不要帶路徑分隔符"
+
 settingsControl:
   scaleExponent:
     title: 視角縮放速度

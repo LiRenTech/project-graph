@@ -4,7 +4,7 @@ import {
   Database,
   Hourglass,
   HardDrive,
-  Folder
+  Folder,
 } from "lucide-react";
 import { SettingField } from "./_field";
 import { useTranslation } from "react-i18next";
@@ -33,17 +33,15 @@ export default function AutoNamer() {
       <SettingField
         icon={<HardDrive />}
         settingKey="autoSave"
-        title={"开启自动保存"}
-        details={
-          "自动保存当前文件\n此功能目前仅对已有路径的文件有效，不对草稿文件生效！"
-        }
+        title={t("autoSave.title")}
+        details={t("autoSave.description")}
         type="switch"
       />
       <SettingField
         icon={<Hourglass />}
         settingKey="autoSaveInterval"
-        title={"开启自动保存间隔（秒）"}
-        details={"自动保存过于频繁可能会对机械型硬盘造成压力\n进而降低硬盘寿命"}
+        title={t("autoSaveInterval.title")}
+        details={t("autoSaveInterval.description")}
         type="slider"
         min={1}
         max={60}
@@ -52,17 +50,15 @@ export default function AutoNamer() {
       <SettingField
         icon={<Database />}
         settingKey="autoBackup"
-        title={"开启自动备份"}
-        details={
-          "自动备份当前文件\n自动备份会在工程文件旁边生成一个副本\n如果是草稿，则会存储在指定的路径"
-        }
+        title={t("autoBackup.title")}
+        details={t("autoBackup.description")}
         type="switch"
       />
       <SettingField
         icon={<Hourglass />}
         settingKey="autoBackupInterval"
-        title={"开启自动备份间隔（秒）"}
-        details={"自动备份过于频繁可能会产生大量的备份文件\n进而占用磁盘空间"}
+        title={t("autoBackupInterval.title")}
+        details={t("autoBackupInterval.description")}
         type="slider"
         min={60}
         max={6000}
@@ -71,10 +67,8 @@ export default function AutoNamer() {
       <SettingField
         icon={<Folder />}
         settingKey="autoBackupDraftPath"
-        title={"草稿的自动备份文件夹路径"}
-        details={
-          "请填写绝对路径，草稿将统一备份到此文件夹下\n留空或路径错误时不进行备份\nwindows系统注意使用反斜杠\n例如：C:\\Users\\username\\Documents\\DraftBackup\n结尾不要带路径分隔符"
-        }
+        title={t("autoBackupDraftPath.title")}
+        details={t("autoBackupDraftPath.description")}
         type="text"
       />
     </>

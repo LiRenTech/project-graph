@@ -103,6 +103,22 @@ settingsAutomation:
   autoSaveWhenClose:
     title: Automatically Save Project File When Clicking Close Button
     description: "When closing the software, if there are unsaved project files, a prompt will pop up asking whether to save.\nEnabling this option will automatically save the project files when closing the software.\nTherefore, it is recommended to enable this option."
+  autoSave:
+    title: Enable Auto Save
+    description: "Automatically save the current file\nThis feature is currently only effective for files with an existing path and does not apply to draft files!"
+  autoSaveInterval:
+    title: Enable Auto Save Interval (seconds)
+    description: "Saving too frequently may put stress on mechanical hard drives\nThereby reducing the drive's lifespan\nNote: The current timer only counts when the software window is active; it will not count when the software is minimized."
+  autoBackup:
+    title: Enable Auto Backup
+    description: "Automatically back up the current file\nAutomatic backups will create a copy next to the project file\nIf it is a draft, it will be stored at the specified path."
+  autoBackupInterval:
+    title: Auto Backup Interval (seconds)
+    description: "Backing up too frequently may generate a large number of backup files\nThereby occupying disk space."
+  autoBackupDraftPath:
+    title: Path for Automatic Backup of Drafts
+    description: "Please provide an absolute path; drafts will be uniformly backed up to this folder\nLeave it blank or if the path is incorrect, no backup will occur\nFor Windows systems, remember to use backslashes\nExample: C:\\Users\\username\\Documents\\DraftBackup\nDo not include a trailing path separator."
+
 settingsControl:
   scaleExponent:
     title: View Scaling Speed
