@@ -2,7 +2,9 @@ use std::fs::File;
 use std::io::Read;
 use std::io::Write;
 
-use base64::{decode, encode};
+use base64::engine::general_purpose;
+use base64::Engine;
+
 use std::env;
 use std::fs::read; // 引入 read 函数用于读取文件
 use tauri::Manager; // 引入 base64 编码函数
@@ -11,22 +13,6 @@ use tauri::Manager; // 引入 base64 编码函数
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
-#[tauri::command]
-fn is_env_exist(env_name: &str) -> bool {
-    env::var_os(env_name).is_some()
-}
-
-#[tauri::command]
-fn get_env_value(env_name: &str) -> Option<String> {
-    env::var_os(env_name).map(|v| v.to_string_lossy().to_string())
-}
-
-#[tauri::command]
-fn set_env_value(env_name: &str, env_value: &str) -> Result<bool, String> {
-    env::set_var(env_name, env_value);
-    Ok(true)
 }
 
 /// 通过路径打开json文件，返回json字符串
@@ -66,7 +52,8 @@ fn check_json_exist(path: String) -> bool {
 fn convert_image_to_base64(image_path: String) -> Result<String, String> {
     match read(&image_path) {
         Ok(image_data) => {
-            let base64_str = encode(&image_data);
+            // let base64_str = Engine::encode(&image_data);
+            let base64_str = general_purpose::STANDARD.encode(&image_data);
             Ok(base64_str)
         }
         Err(e) => Err(format!("无法读取文件: {}, {}", e, image_path)),
@@ -77,7 +64,7 @@ fn convert_image_to_base64(image_path: String) -> Result<String, String> {
 #[tauri::command]
 fn save_base64_to_image(base64_str: &str, file_name: &str) -> Result<(), String> {
     // 进行解码
-    match decode(base64_str) {
+    match general_purpose::STANDARD.decode(base64_str) {
         Ok(image_data) => {
             // 创建文件并写入数据
             let mut file = File::create(file_name).map_err(|e| format!("无法创建文件: {}", e))?;
@@ -105,9 +92,6 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             greet,
-            is_env_exist,
-            get_env_value,
-            set_env_value,
             open_json_by_path,
             save_json_by_path,
             convert_image_to_base64,
