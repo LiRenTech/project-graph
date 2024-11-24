@@ -384,7 +384,7 @@ export default function AppMenu({
         </Col>
 
         <Col icon={<Database />} onClick={onBackup}>
-          备份
+        {t("file.items.backup")}
         </Col>
       </Row>
       <Row icon={<Folder />} title={t("location.title")}>

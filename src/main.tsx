@@ -30,7 +30,7 @@ const el = document.getElementById("root")!;
 // 在这里看着清爽一些，像一个列表清单一样。也方便调整顺序
 
 (async () => {
-  loadLanguageFiles();
+  await loadLanguageFiles();
   // 初始化应用
   await Settings.init();
   await RecentFileManager.init();

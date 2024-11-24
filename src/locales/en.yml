@@ -141,6 +141,7 @@ appMenu:
       save: Save
       saveAs: Save As
       recent: Recent Files
+      backup: backup
   location:
     title: Location
     items:

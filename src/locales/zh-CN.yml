@@ -119,6 +119,7 @@ appMenu:
       save: 保存
       saveAs: 另存为
       recent: 最近打开
+      backup: 备份
   location:
     title: 位置
     items:
