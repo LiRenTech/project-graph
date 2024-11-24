@@ -192,6 +192,11 @@ export namespace Stage {
   let controllerGamepad: ControllerGamepad | null = null;
 
   /**
+   * 自动保存是否处于暂停状态
+   * 主要用于防止自动保存出bug，产生覆盖文件的问题
+   */
+  export let isAutoSavePaused = false;
+  /**
    * 逻辑总入口
    * 该函数在上游被频繁调用
    */
@@ -265,6 +270,9 @@ export namespace Stage {
   // private
   function autoSaveTick() {
     if (!autoSave) {
+      return;
+    }
+    if (isAutoSavePaused) {
       return;
     }
     // 自动保存功能

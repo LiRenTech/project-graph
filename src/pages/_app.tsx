@@ -114,6 +114,14 @@ export default function App() {
     }
   }, [maxmized]);
 
+  React.useEffect(() => {
+    Stage.isAutoSavePaused = isStartFilePanelOpen;
+  }, [isStartFilePanelOpen]);
+
+  React.useEffect(() => {
+    Stage.isAutoSavePaused = isAiPanelOpen;
+  }, [isAiPanelOpen]);
+
   const handleClose = () => {
     if (file === Stage.Path.draftName) {
       dialog.show({
@@ -273,7 +281,7 @@ export default function App() {
         <AppMenu className="absolute top-20" open={isMenuOpen} />
         <RecentFilesPanel />
         <StartFilePanel open={isStartFilePanelOpen} />
-        <AiPanel open={isAiPanelOpen}/>
+        <AiPanel open={isAiPanelOpen} />
         {/* 中间标题 */}
         {useNativeTitleBar ? (
           // h-0 才能完全摆脱划线时经过此区域的卡顿问题
@@ -299,10 +307,12 @@ export default function App() {
           </>
         )}
         {/* 右上角AI按钮 */}
-        <IconButton onClick={(e) => {
-          e.stopPropagation();
-          setIsAiPanelOpen(!isAiPanelOpen);
-        }}>
+        <IconButton
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsAiPanelOpen(!isAiPanelOpen);
+          }}
+        >
           <BrainCircuit
             className={cn(
               "cursor-pointer transition",

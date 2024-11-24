@@ -11,7 +11,6 @@ import {
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
-import Button from "../components/ui/Button";
 import IconButton from "../components/ui/IconButton";
 import Switch from "../components/ui/Switch";
 import { RecentFileManager } from "../core/RecentFileManager";
@@ -217,12 +216,12 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
               "mb-3 flex justify-between transition-opacity",
             )}
           >
-            <Button onClick={onAddFile}>
+            <IconButton onClick={onAddFile}>
               <span className="flex">
                 <FilePlus2 />
                 {t("buttons.addFile")}
               </span>
-            </Button>
+            </IconButton>
             <IconButton onClick={onClearList}>
               <span className="flex">
                 <Trash2 />

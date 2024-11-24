@@ -525,6 +525,7 @@ export namespace Renderer {
       `delta: ${deltaTime.toFixed(2)}`,
       `Controller.isViewMoveByClickMiddle: ${Controller.isViewMoveByClickMiddle}`,
       `path: ${Stage.Path.getFilePath()}`,
+      `autoSavePaused: ${Stage.isAutoSavePaused}`
     ];
     for (const [k, v] of Object.entries(timings)) {
       detailsData.push(`time:${k}: ${v.toFixed(2)}`);
