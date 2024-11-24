@@ -8,6 +8,7 @@ use base64::Engine;
 use std::env;
 use std::fs::read; // 引入 read 函数用于读取文件
 use tauri::Manager; // 引入 base64 编码函数
+use tauri::Runtime;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -74,6 +75,13 @@ fn save_base64_to_image(base64_str: &str, file_name: &str) -> Result<(), String>
     }
 }
 
+#[tauri::command]
+async fn devtools<R: Runtime>(app: tauri::AppHandle<R>) -> Result<(), String> {
+  let window = app.get_webview_window("main").unwrap();
+  window.open_devtools();
+  Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     println!("程序运行了！");
@@ -94,7 +102,8 @@ pub fn run() {
             save_file_by_path,
             convert_image_to_base64,
             save_base64_to_image,
-            check_json_exist // open_dev_tools
+            check_json_exist,
+            devtools
         ])
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_fs::init())
