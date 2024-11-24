@@ -189,7 +189,7 @@ export namespace Stage {
   // eslint-disable-next-line prefer-const
   export let draggingLocation = Vector.getZero();
 
-  const controllerGamepad = new ControllerGamepad();
+  let controllerGamepad: ControllerGamepad | null = null;
 
   /**
    * 逻辑总入口
@@ -225,7 +225,9 @@ export namespace Stage {
     // 清理过时特效
     effects = effects.filter((effect) => !effect.timeProgress.isFull);
 
-    controllerGamepad.tick();
+    if (controllerGamepad) {
+      controllerGamepad.tick();
+    }
 
     // 自动保存功能
     autoSaveTick();
@@ -256,6 +258,8 @@ export namespace Stage {
     Settings.watch("autoBackupDraftPath", (value) => {
       autoBackupDraftPath = value;
     });
+
+    controllerGamepad = new ControllerGamepad()
   }
 
   // private
