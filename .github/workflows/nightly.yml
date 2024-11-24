@@ -13,7 +13,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - run: gh release delete nightly --yes || true # 忽略错误
+      - run: gh release delete nightly --yes --cleanup-tag || true # 忽略错误
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
