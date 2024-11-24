@@ -1,4 +1,10 @@
-import { HardDriveDownload, Tag, Database, Hourglass, HardDrive } from "lucide-react";
+import {
+  HardDriveDownload,
+  Tag,
+  Database,
+  Hourglass,
+  HardDrive,
+} from "lucide-react";
 import { SettingField } from "./_field";
 import { useTranslation } from "react-i18next";
 
@@ -27,7 +33,9 @@ export default function AutoNamer() {
         icon={<HardDrive />}
         settingKey="autoSave"
         title={"开启自动保存"}
-        details={"自动保存当前文件\n此功能目前仅对已有路径的文件有效，不对草稿文件生效！"}
+        details={
+          "自动保存当前文件\n此功能目前仅对已有路径的文件有效，不对草稿文件生效！"
+        }
         type="switch"
       />
       <SettingField
@@ -44,7 +52,9 @@ export default function AutoNamer() {
         icon={<Database />}
         settingKey="autoBackup"
         title={"开启自动备份"}
-        details={"自动备份当前文件\n自动备份会在工程文件旁边生成一个副本\n此功能目前仅对已有路径的文件有效，不对草稿文件生效！"}
+        details={
+          "自动备份当前文件\n自动备份会在工程文件旁边生成一个副本\n此功能目前仅对已有路径的文件有效，不对草稿文件生效！"
+        }
         type="switch"
       />
       <SettingField
@@ -61,10 +71,11 @@ export default function AutoNamer() {
         icon={<Hourglass />}
         settingKey="autoBackupDraftPath"
         title={"草稿的自动备份路径"}
-        details={"请填写绝对路径，草稿将统一备份到此路径\n留空或路径错误时不进行备份"}
+        details={
+          "请填写绝对路径，草稿将统一备份到此路径\n留空或路径错误时不进行备份\nwindows系统注意使用反斜杠\n例如：C:\\Users\\username\\Documents\\DraftBackup\n结尾不要带路径分隔符"
+        }
         type="text"
       />
-      
     </>
   );
 }
