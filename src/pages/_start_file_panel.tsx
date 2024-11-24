@@ -238,20 +238,18 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
                 </div>
               </td>
               <td>
-                <td>
-                  <div className="flex flex-col">
-                    <span
-                      className={
-                        currentFile === file.path ? "text-green-400" : ""
-                      }
-                    >
-                      {PathString.absolute2file(file.path)}
-                    </span>
-                    {isShowAbsolutePath && (
-                      <span className="text-xs text-gray-500">{file.path}</span>
-                    )}
-                  </div>
-                </td>
+                <div className="flex flex-col">
+                  <span
+                    className={
+                      currentFile === file.path ? "text-green-400" : ""
+                    }
+                  >
+                    {PathString.absolute2file(file.path)}
+                  </span>
+                  {isShowAbsolutePath && (
+                    <span className="text-xs text-gray-500">{file.path}</span>
+                  )}
+                </div>
               </td>
               {isShowTime && (
                 <td className="text-gray-500">

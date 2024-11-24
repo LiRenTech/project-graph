@@ -73,6 +73,7 @@ export function SettingField({
         onClick={() => {
           setValue(Settings.defaultSettings[settingKey]);
         }}
+        className="transition-transform hover:rotate-180 hover:cursor-pointer"
       >
         <RotateCw size={16} className="text-gray-500" />
       </button>

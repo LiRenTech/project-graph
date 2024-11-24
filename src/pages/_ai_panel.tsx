@@ -75,13 +75,6 @@ export default function AiPanel({ open = false }: { open: boolean }) {
       <h2 className="text-lg font-bold text-gray-400">AI 面板</h2>
       <p>user prompts</p>
       <table className="my-4">
-        {/* <thead>
-              <tr>
-                <th className="text-left">序号</th>
-                <th className="text-left">内容</th>
-                <th className="text-left">操作</th>
-              </tr>
-            </thead> */}
         <tbody>
           {userPrompts.map((prompt, index) => {
             return (
