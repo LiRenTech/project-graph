@@ -4,6 +4,7 @@ import {
   Database,
   Hourglass,
   HardDrive,
+  Folder
 } from "lucide-react";
 import { SettingField } from "./_field";
 import { useTranslation } from "react-i18next";
@@ -68,11 +69,11 @@ export default function AutoNamer() {
         step={60}
       />
       <SettingField
-        icon={<Hourglass />}
+        icon={<Folder />}
         settingKey="autoBackupDraftPath"
-        title={"草稿的自动备份路径"}
+        title={"草稿的自动备份文件夹路径"}
         details={
-          "请填写绝对路径，草稿将统一备份到此路径\n留空或路径错误时不进行备份\nwindows系统注意使用反斜杠\n例如：C:\\Users\\username\\Documents\\DraftBackup\n结尾不要带路径分隔符"
+          "请填写绝对路径，草稿将统一备份到此文件夹下\n留空或路径错误时不进行备份\nwindows系统注意使用反斜杠\n例如：C:\\Users\\username\\Documents\\DraftBackup\n结尾不要带路径分隔符"
         }
         type="text"
       />
