@@ -43,6 +43,8 @@ import { RecentFileManager } from "../core/RecentFileManager";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { TextNode } from "../core/stageObject/entity/TextNode";
+import { Stage } from "../core/stage/Stage";
+import { Settings } from "../core/Settings";
 
 export default function AppMenu({
   className = "",
@@ -192,6 +194,28 @@ export default function AppMenu({
     );
   };
   const onBackup = async () => {
+    if (Stage.Path.isDraft()) {
+      const autoBackupDraftPath = await Settings.get("autoBackupDraftPath");
+      StageSaveManager.backupHandle(
+        autoBackupDraftPath,
+        StageDumper.dump(),
+        () => {
+          dialog.show({
+            title: "备份成功",
+            content: "已备份在您设置的备份目录下",
+            type: "success",
+          });
+        },
+        (err) => {
+          dialog.show({
+            title: "备份失败",
+            content: String(err),
+            type: "error",
+          });
+        }
+      )
+      return;
+    }
     StageSaveManager.backupHandleWithoutCurrentPath(
       StageDumper.dump(),
       () => {
