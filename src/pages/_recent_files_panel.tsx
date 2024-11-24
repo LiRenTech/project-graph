@@ -16,6 +16,10 @@ import { Stage } from "../core/stage/Stage";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { useDialog } from "../utils/dialog";
 import { isDesktop } from "../utils/platform";
+import { PathString } from "../utils/pathString";
+import { Zap } from "lucide-react";
+import IconButton from "../components/ui/IconButton";
+import { StartFilesManager } from "../core/StartFilesManager";
 
 export default function RecentFilesPanel() {
   const [recentFiles, setRecentFiles] = React.useState<
@@ -48,7 +52,7 @@ export default function RecentFilesPanel() {
     return () => {};
   }, []);
 
-  const onClickFile = (file: RecentFileManager.RecentFile) => {
+  const onCheckoutFile = (file: RecentFileManager.RecentFile) => {
     return () => {
       if (currentFile === Stage.Path.draftName) {
         dialog.show({
@@ -101,6 +105,24 @@ export default function RecentFilesPanel() {
       });
     }
   };
+  const addToStartFiles = (path: string) => {
+    return async () => {
+      const addSuccess = await StartFilesManager.addStartFile(path);
+      if (!addSuccess) {
+        dialog.show({
+          title: "文件添加失败",
+          content: `可能是重复了：${path}`,
+          type: "error",
+        });
+      } else {
+        dialog.show({
+          title: "添加成功",
+          content: `已经成功添加到快速启动界面的列表：${path}`,
+          type: "success",
+        });
+      }
+    }
+  }
 
   return (
     <div
@@ -118,36 +140,44 @@ export default function RecentFilesPanel() {
             <th className="px-4 py-2 text-left"></th>
             <th className="px-4 py-2 text-left">路径</th>
             <th className="px-4 py-2 text-left">时间</th>
+            <th className="px-4 py-2 text-left">操作</th>
           </tr>
         </thead>
         <tbody>
           {recentFiles.map((file, index) => (
-            <tr key={index} className="hover:bg-gray-600">
-              <td className="border-b border-gray-600 p-2 text-right text-gray-200">
-                {index + 1}
+            <tr key={index} className="text-gray-200 hover:bg-gray-600">
+              {/* 标号列 */}
+              <td className="text-center">{index + 1}</td>
+              {/* 路径列 */}
+              <td className="flex flex-col" onClick={onCheckoutFile(file)}>
+                <span>{PathString.absolute2file(file.path)}</span>
+                <span className="text-xs text-gray-500">{file.path}</span>
               </td>
-              <td
-                className="cursor-pointer border-b border-gray-600 p-2 text-gray-200"
-                onClick={onClickFile(file)}
-              >
-                {file.path}
+              {/* 时间列 */}
+              <td className="">
+                <span className="text-xs">
+                  {new Date(file.time).toLocaleString("zh-CN", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    weekday: "long",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: false,
+                  })}
+                </span>
               </td>
-              <td className="cursor-pointer border-b border-gray-600 p-2 text-gray-200">
-                {new Date(file.time).toLocaleString("zh-CN", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  weekday: "long",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                  hour12: false,
-                })}
+              <td>
+                <IconButton onClick={addToStartFiles(file.path)}>
+                  <Zap />
+                </IconButton>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <p>提示：点击文件可以快速切换</p>
       <button
         className="absolute right-0 top-0 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
         onClick={() => setRecentFilePanelOpen(false)}

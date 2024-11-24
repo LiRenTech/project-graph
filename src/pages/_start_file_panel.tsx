@@ -6,6 +6,7 @@ import {
   FolderTree,
   HardDriveDownload,
   Pin,
+  RefreshCw,
   Trash2,
 } from "lucide-react";
 import React, { useEffect } from "react";
@@ -214,6 +215,11 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
           <span className="flex">
             <Trash2 />
             {t("buttons.clearList")}
+          </span>
+        </IconButton>
+        <IconButton onClick={updateStartFiles}>
+          <span className="flex">
+            <RefreshCw />
           </span>
         </IconButton>
       </div>
