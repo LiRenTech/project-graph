@@ -55,4 +55,16 @@ export namespace PathString {
 
     return directory; // 返回目录路径
   }
+
+  /**
+   * 获取符合路径文件名规则的时间字符串
+   */
+  export function getTime(): string {
+    const dateTime = new Date()
+      .toLocaleString()
+      .replaceAll(/\//g, "-")
+      .replaceAll(" ", "_")
+      .replaceAll(":", "-");
+    return dateTime;
+  }
 }

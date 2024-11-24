@@ -45,6 +45,7 @@ import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { TextNode } from "../core/stageObject/entity/TextNode";
 import { Stage } from "../core/stage/Stage";
 import { Settings } from "../core/Settings";
+import { PathString } from "../utils/pathString";
 
 export default function AppMenu({
   className = "",
@@ -196,8 +197,9 @@ export default function AppMenu({
   const onBackup = async () => {
     if (Stage.Path.isDraft()) {
       const autoBackupDraftPath = await Settings.get("autoBackupDraftPath");
+      const backupPath = `${autoBackupDraftPath}${Stage.Path.getSep()}${PathString.getTime()}.json`;
       StageSaveManager.backupHandle(
-        autoBackupDraftPath,
+        backupPath,
         StageDumper.dump(),
         () => {
           dialog.show({

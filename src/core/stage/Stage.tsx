@@ -20,6 +20,7 @@ import { StageDumper } from "./StageDumper";
 import { StageManager } from "./stageManager/StageManager";
 import { StageSaveManager } from "./StageSaveManager";
 import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
+import { PathString } from "../../utils/pathString";
 
 /**
  * 舞台对象
@@ -310,9 +311,11 @@ export namespace Stage {
     // 自动备份功能
     const now = performance.now();
     if (now - lastAutoBackupTime > autoBackupInterval) {
+
       if (Stage.Path.isDraft()) {
+        const backupPath = `${autoBackupDraftPath}${Stage.Path.getSep()}${PathString.getTime()}.json`;
         StageSaveManager.backupHandle(
-          autoBackupDraftPath,
+          backupPath,
           StageDumper.dump(),
           () => {},
           (err) => {

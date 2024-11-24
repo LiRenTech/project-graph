@@ -5,6 +5,7 @@ import { TextNode } from "../stageObject/entity/TextNode";
 import { Stage } from "./Stage";
 import { StageHistoryManager } from "./stageManager/StageHistoryManager";
 import { StageManager } from "./stageManager/StageManager";
+import { PathString } from "../../utils/pathString";
 
 /**
  * 管理所有和保存相关的内容
@@ -75,20 +76,29 @@ export namespace StageSaveManager {
       });
   }
 
+  /**
+   * 
+   * @param path 备份文件夹/xxx.json
+   * @param data 
+   * @param successCallback 
+   * @param errorCallback 
+   * @returns 
+   */
   export async function backupHandle(
     path: string,
     data: Serialized.File,
     successCallback: () => void,
     errorCallback: (err: any) => void,
   ) {
+    const backupFolderPath = PathString.dirPath(path);
     const isExists = await invoke<string>("check_json_exist", {
-      path: path,
+      path: backupFolderPath,
     });
     if (!isExists) {
-      errorCallback("备份文件路径错误:" + path);
+      errorCallback("备份文件路径错误:" + backupFolderPath);
       return;
     }
-    
+
     invoke<string>("save_json_by_path", {
       path,
       content: JSON.stringify(data, null, 2),
@@ -121,11 +131,7 @@ export namespace StageSaveManager {
       return;
     }
     // 不能有冒号，空格，斜杠
-    const dateTime = new Date()
-      .toLocaleString()
-      .replaceAll(/\//g, "-")
-      .replaceAll(" ", "_")
-      .replaceAll(":", "-");
+    const dateTime = PathString.getTime();
 
     const backupPath = `${Stage.Path.getFilePath()}.${dateTime}.backup`;
 
