@@ -419,7 +419,7 @@ const onSaveSelectedNew = async () => {
       }
     }
     const data = StageDumper.dumpSelected(selectedNodes);
-    invoke<string>("save_json_by_path", {
+    invoke<string>("save_file_by_path", {
       path,
       content: JSON.stringify(data, null, 2),
     })

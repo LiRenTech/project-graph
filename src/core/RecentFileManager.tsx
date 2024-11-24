@@ -145,7 +145,7 @@ export namespace RecentFileManager {
     let content: string;
     try {
       // content = await readTextFile(path);
-      content = await invoke<string>("open_json_by_path", { path });
+      content = await invoke<string>("open_file_by_path", { path });
     } catch (e) {
       console.error("打开文件失败：", path);
       console.error(e);

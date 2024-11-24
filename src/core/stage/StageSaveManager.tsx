@@ -1,11 +1,11 @@
 import { invoke } from "@tauri-apps/api/core";
 import { Serialized } from "../../types/node";
+import { PathString } from "../../utils/pathString";
 import { ViewFlashEffect } from "../effect/concrete/ViewFlashEffect";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { Stage } from "./Stage";
 import { StageHistoryManager } from "./stageManager/StageHistoryManager";
 import { StageManager } from "./stageManager/StageManager";
-import { PathString } from "../../utils/pathString";
 
 /**
  * 管理所有和保存相关的内容
@@ -24,7 +24,7 @@ export namespace StageSaveManager {
     successCallback: () => void,
     errorCallback: (err: any) => void,
   ) {
-    invoke<string>("save_json_by_path", {
+    invoke<string>("save_file_by_path", {
       path,
       content: JSON.stringify(data, null, 2),
     })
@@ -57,7 +57,7 @@ export namespace StageSaveManager {
       errorCallback("当前文档的状态为草稿，请您先保存为文件");
       return;
     }
-    invoke<string>("save_json_by_path", {
+    invoke<string>("save_file_by_path", {
       path: Stage.Path.getFilePath(),
       content: JSON.stringify(data, null, 2),
     })
@@ -99,7 +99,7 @@ export namespace StageSaveManager {
       return;
     }
 
-    invoke<string>("save_json_by_path", {
+    invoke<string>("save_file_by_path", {
       path,
       content: JSON.stringify(data, null, 2),
     })
@@ -135,7 +135,7 @@ export namespace StageSaveManager {
 
     const backupPath = `${Stage.Path.getFilePath()}.${dateTime}.backup`;
 
-    invoke<string>("save_json_by_path", {
+    invoke<string>("save_file_by_path", {
       path: backupPath,
       content: JSON.stringify(data, null, 2),
     })
@@ -156,7 +156,7 @@ export namespace StageSaveManager {
     successCallback: () => void,
     errorCallback: (err: any) => void,
   ) {
-    invoke<string>("save_json_by_path", {
+    invoke<string>("save_file_by_path", {
       path,
       content: string,
     })
@@ -211,7 +211,7 @@ export namespace StageSaveManager {
 
     dfs(textNode, 1);
 
-    invoke<string>("save_json_by_path", {
+    invoke<string>("save_file_by_path", {
       path,
       content,
     })

@@ -16,19 +16,17 @@ fn greet(name: &str) -> String {
 }
 
 /// 通过路径打开json文件，返回json字符串
-/// (应该叫save_json_by_path更合适)
 #[tauri::command]
-fn open_json_by_path(path: String) -> String {
+fn open_file_by_path(path: String) -> String {
     let mut file = std::fs::File::open(path).unwrap();
     let mut contents = String::new();
     file.read_to_string(&mut contents).unwrap();
     contents
 }
 
-/// 保存json字符串到指定路径
-///  (应该叫save_file_by_path更合适)
+/// 保存字符串到指定路径
 #[tauri::command]
-fn save_json_by_path(path: String, content: String) -> Result<bool, String> {
+fn save_file_by_path(path: String, content: String) -> Result<bool, String> {
     let mut file = std::fs::File::create(&path).map_err(|e| e.to_string())?;
     file.write_all(content.as_bytes())
         .map_err(|e| e.to_string())?;
@@ -92,8 +90,8 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             greet,
-            open_json_by_path,
-            save_json_by_path,
+            open_file_by_path,
+            save_file_by_path,
             convert_image_to_base64,
             save_base64_to_image,
             check_json_exist // open_dev_tools
