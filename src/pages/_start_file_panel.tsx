@@ -188,164 +188,138 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
   };
 
   return (
-    <>
-      {open && (
-        <div
-          className={cn(
-            {
-              "scale-100 opacity-100": open,
-            },
-            isPanelTransparent ? "bg-gray-800/20" : "bg-gray-800",
-            "fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-y-scroll rounded-md px-2 py-6 transition-all",
-          )}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <h2
-            className={cn(
-              isPanelTransparent ? "opacity-0" : "",
-              "mb-3 text-xl font-bold text-white transition-opacity",
-            )}
-          >
-            {t("title")}
-          </h2>
-          <div
-            className={cn(
-              isPanelTransparent ? "opacity-0" : "",
-              "mb-3 flex justify-between transition-opacity",
-            )}
-          >
-            <IconButton onClick={onAddFile}>
-              <span className="flex">
-                <FilePlus2 />
-                {t("buttons.addFile")}
-              </span>
-            </IconButton>
-            <IconButton onClick={onClearList}>
-              <span className="flex">
-                <Trash2 />
-                {t("buttons.clearList")}
-              </span>
-            </IconButton>
-          </div>
-          <table
-            className={cn(
-              isPanelTransparent ? "bg-gray-700/20" : "bg-gray-700",
-              "overflow-hidden rounded-lg border border-gray-600 shadow-lg transition-all",
-            )}
-          >
-            <thead>
-              {/* <tr className="text-white">
+    <div
+      className={cn(
+        "pointer-events-none fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 scale-75 transform flex-col items-center overflow-y-scroll rounded-md bg-neutral-900 px-2 py-6 opacity-0",
+        {
+          "pointer-events-auto scale-100 opacity-100": open,
+          "opacity-20": isPanelTransparent,
+        },
+      )}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
+      <h2 className="mb-3 text-xl font-bold text-white transition-opacity">
+        {t("title")}
+      </h2>
+      <div className="mb-3 flex justify-between transition-opacity">
+        <IconButton onClick={onAddFile}>
+          <span className="flex">
+            <FilePlus2 />
+            {t("buttons.addFile")}
+          </span>
+        </IconButton>
+        <IconButton onClick={onClearList}>
+          <span className="flex">
+            <Trash2 />
+            {t("buttons.clearList")}
+          </span>
+        </IconButton>
+      </div>
+      <table className="overflow-hidden rounded-lg border border-gray-600 shadow-lg transition-all">
+        <thead>
+          {/* <tr className="text-white">
             <th className="mx-4 py-2 text-left">状态</th>
             <th className="mx-4 py-2 text-left">路径</th>
             {isShowTime && <th className="mx-4 py-2 text-left">时间</th>}
             <th className="mx-4 py-2 text-left">操作</th>
           </tr> */}
-            </thead>
-            <tbody>
-              {startFiles.map((file) => (
-                <tr
-                  key={file.path}
-                  className={cn("border-b border-gray-600 p-2 text-gray-200")}
+        </thead>
+        <tbody>
+          {startFiles.map((file) => (
+            <tr
+              key={file.path}
+              className={cn("border-b border-gray-600 p-2 text-gray-200")}
+            >
+              <td className="w-10 text-center">
+                <div className="inline-block animate-bounce">
+                  {currentStartFile === file.path ? "📌" : ""}
+                </div>
+              </td>
+              <td>
+                <td>
+                  <div className="flex flex-col">
+                    <span
+                      className={
+                        currentFile === file.path ? "text-green-400" : ""
+                      }
+                    >
+                      {PathString.absolute2file(file.path)}
+                    </span>
+                    {isShowAbsolutePath && (
+                      <span className="text-xs text-gray-500">{file.path}</span>
+                    )}
+                  </div>
+                </td>
+              </td>
+              {isShowTime && (
+                <td className="text-gray-500">
+                  {new Date(file.time).toLocaleString("zh-CN", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    weekday: "long",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: false,
+                  })}
+                </td>
+              )}
+              <td>
+                <IconButton
+                  className="mx-0.5 px-2 py-1"
+                  onClick={onLoadCurrentStartFile(file.path)}
+                  onMouseEnter={() => setIsPanelTransparent(true)}
+                  onMouseLeave={() => setIsPanelTransparent(false)}
                 >
-                  <td className="w-10 text-center">
-                    <div className="inline-block animate-bounce">
-                      {currentStartFile === file.path ? "📌" : ""}
-                    </div>
-                  </td>
-                  <td>
-                    <td>
-                      <div className="flex flex-col">
-                        <span
-                          className={
-                            currentFile === file.path ? "text-green-400" : ""
-                          }
-                        >
-                          {PathString.absolute2file(file.path)}
-                        </span>
-                        {isShowAbsolutePath && (
-                          <span className="text-xs text-gray-500">
-                            {file.path}
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                  </td>
-                  {isShowTime && (
-                    <td className="text-gray-500">
-                      {new Date(file.time).toLocaleString("zh-CN", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                        weekday: "long",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        second: "2-digit",
-                        hour12: false,
-                      })}
-                    </td>
-                  )}
-                  <td>
-                    <IconButton
-                      className="mx-0.5 px-2 py-1"
-                      onClick={onLoadCurrentStartFile(file.path)}
-                      onMouseEnter={() => setIsPanelTransparent(true)}
-                      onMouseLeave={() => setIsPanelTransparent(false)}
-                    >
-                      <HardDriveDownload />
-                    </IconButton>
-                    <IconButton
-                      className="mx-0.5 px-2 py-1"
-                      onClick={onSetCurrentStartFile(file.path)}
-                    >
-                      <Pin />
-                    </IconButton>
-                    <IconButton
-                      className="mx-0.5 px-2 py-1"
-                      onClick={onRemoveFile(file.path)}
-                    >
-                      <Delete />
-                    </IconButton>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div
-            className={cn(
-              isPanelTransparent ? "opacity-0" : "",
-              "transition-opacity",
-            )}
-          >
-            <div className="mt-3 text-sm text-gray-500">
-              <p>{t("tips.0")}</p>
-              <p>{t("tips.1")}</p>
-              <p>{t("tips.2")}</p>
-              <p>{t("tips.3")}</p>
-            </div>
-            <div>
-              <div className="flex flex-nowrap items-center justify-center">
-                <span className="mr-2 flex">
-                  <FolderTree />
-                  {t("buttons.showAbsolutePath")}
-                </span>
-                <Switch
-                  value={isShowAbsolutePath}
-                  onChange={(v) => setIsShowAbsolutePath(v)}
-                />
-              </div>
-              <div className="flex flex-nowrap items-center justify-center">
-                <span className="mr-2 flex">
-                  <FileClock />
-                  {t("buttons.showFileTime")}
-                </span>
-                <Switch value={isShowTime} onChange={(v) => setIsShowTime(v)} />
-              </div>
-            </div>
+                  <HardDriveDownload />
+                </IconButton>
+                <IconButton
+                  className="mx-0.5 px-2 py-1"
+                  onClick={onSetCurrentStartFile(file.path)}
+                >
+                  <Pin />
+                </IconButton>
+                <IconButton
+                  className="mx-0.5 px-2 py-1"
+                  onClick={onRemoveFile(file.path)}
+                >
+                  <Delete />
+                </IconButton>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div>
+        <div className="mt-3 text-sm text-gray-500">
+          <p>{t("tips.0")}</p>
+          <p>{t("tips.1")}</p>
+          <p>{t("tips.2")}</p>
+          <p>{t("tips.3")}</p>
+        </div>
+        <div>
+          <div className="flex flex-nowrap items-center justify-center">
+            <span className="mr-2 flex">
+              <FolderTree />
+              {t("buttons.showAbsolutePath")}
+            </span>
+            <Switch
+              value={isShowAbsolutePath}
+              onChange={(v) => setIsShowAbsolutePath(v)}
+            />
+          </div>
+          <div className="flex flex-nowrap items-center justify-center">
+            <span className="mr-2 flex">
+              <FileClock />
+              {t("buttons.showFileTime")}
+            </span>
+            <Switch value={isShowTime} onChange={(v) => setIsShowTime(v)} />
           </div>
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 }

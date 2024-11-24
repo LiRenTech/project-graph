@@ -1,8 +1,8 @@
+import { Delete, Pencil, Pin } from "lucide-react";
 import { useEffect, useState } from "react";
-import { PromptManager } from "../core/ai/PromptManager";
 import Button from "../components/ui/Button";
 import IconButton from "../components/ui/IconButton";
-import { Delete, Pencil, Pin } from "lucide-react";
+import { PromptManager } from "../core/ai/PromptManager";
 import { cn } from "../utils/cn";
 
 /**
@@ -44,7 +44,7 @@ export default function AiPanel({ open = false }: { open: boolean }) {
   const onSetCurrentUserPrompt = (index: number) => {
     const promptString = userPrompts[index];
     if (promptString === currentUserPrompt) {
-      setCurrentUserPrompt("")
+      setCurrentUserPrompt("");
       PromptManager.setCurrentUserPrompt("").then(() => {
         updateUserPrompts();
       });
@@ -64,70 +64,73 @@ export default function AiPanel({ open = false }: { open: boolean }) {
   };
 
   return (
-    <>
-      {open && (
-        <div className="fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-y-scroll rounded-md bg-gray-800 px-2 py-6 transition-all">
-          <h2 className="text-lg font-bold text-gray-400">AI 面板</h2>
-          <p>user prompts</p>
-          <table className="my-4">
-            {/* <thead>
+    <div
+      className={cn(
+        "pointer-events-none fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 scale-75 transform flex-col items-center overflow-y-scroll rounded-md bg-neutral-900 px-2 py-6 opacity-0",
+        {
+          "pointer-events-auto scale-100 opacity-100": open,
+        },
+      )}
+    >
+      <h2 className="text-lg font-bold text-gray-400">AI 面板</h2>
+      <p>user prompts</p>
+      <table className="my-4">
+        {/* <thead>
               <tr>
                 <th className="text-left">序号</th>
                 <th className="text-left">内容</th>
                 <th className="text-left">操作</th>
               </tr>
             </thead> */}
-            <tbody>
-              {userPrompts.map((prompt, index) => {
-                return (
-                  <tr key={prompt} className="my-2 border-b border-gray-700">
-                    <td>
-                      <span className="rounded-md bg-neutral-900 px-2 py-1 text-gray-400">
-                        {index + 1}
-                      </span>
-                    </td>
-                    <td className="max-w-lg">
-                      <p
-                        className={cn(
-                          "cursor-text select-text px-2 text-gray-500",
-                          currentUserPrompt === prompt && "text-gray-200",
-                        )}
-                      >
-                        {prompt}
-                      </p>
-                    </td>
-                    <td>
-                      <IconButton onClick={() => onSetCurrentUserPrompt(index)}>
-                        <Pin
-                          className={cn(
-                            "cursor-pointer transition-all",
-                            currentUserPrompt === prompt &&
-                              "rotate-90 text-red-500",
-                          )}
-                        />
-                      </IconButton>
-                      <IconButton onClick={() => onEditUserPrompt(index)}>
-                        <Pencil />
-                      </IconButton>
-                      <IconButton onClick={() => onDeleteUserPrompt(index)}>
-                        <Delete />
-                      </IconButton>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          <Button onClick={onAddUserPrompt}>增加</Button>
-          {currentUserPrompt === "" && (
-            <p className="text-red-400">
-              当前没有提示词，请添加并钉选一个提示词，或钉选已有的提示词。
-            </p>
-          )}
-          <p>提示：输入{nodeText}表示当前选中的节点文本内容</p>
-        </div>
+        <tbody>
+          {userPrompts.map((prompt, index) => {
+            return (
+              <tr key={prompt} className="my-2 border-b border-gray-700">
+                <td>
+                  <span className="rounded-md bg-neutral-900 px-2 py-1 text-gray-400">
+                    {index + 1}
+                  </span>
+                </td>
+                <td className="max-w-lg">
+                  <p
+                    className={cn(
+                      "cursor-text select-text px-2 text-gray-500",
+                      currentUserPrompt === prompt && "text-gray-200",
+                    )}
+                  >
+                    {prompt}
+                  </p>
+                </td>
+                <td>
+                  <IconButton onClick={() => onSetCurrentUserPrompt(index)}>
+                    <Pin
+                      className={cn(
+                        "cursor-pointer transition-all",
+                        currentUserPrompt === prompt &&
+                          "rotate-90 text-red-500",
+                      )}
+                    />
+                  </IconButton>
+                  <IconButton onClick={() => onEditUserPrompt(index)}>
+                    <Pencil />
+                  </IconButton>
+                  <IconButton onClick={() => onDeleteUserPrompt(index)}>
+                    <Delete />
+                  </IconButton>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <Button onClick={onAddUserPrompt}>增加</Button>
+      {currentUserPrompt === "" && (
+        <p className="text-red-400">
+          当前没有提示词，请添加并钉选一个提示词，或钉选已有的提示词。
+        </p>
       )}
-    </>
+      <p>提示：输入{nodeText}表示当前选中的节点文本内容</p>
+    </div>
   );
 }
 

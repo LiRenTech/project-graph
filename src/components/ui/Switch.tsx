@@ -2,8 +2,8 @@ import { cn } from "../../utils/cn";
 
 /**
  * 手机上那种 滑动圆球的 小开关按钮
- * @param param0 
- * @returns 
+ * @param param0
+ * @returns
  */
 export default function Switch({
   value = false,
@@ -24,7 +24,7 @@ export default function Switch({
     >
       <div
         className={cn(
-          "absolute left-1 top-1 h-6 w-6 translate-x-0 transform rounded-full bg-white transition duration-200 ease-in-out",
+          "absolute left-1 top-1 h-6 w-6 translate-x-0 transform rounded-full bg-white",
           {
             "translate-x-6": value,
           },

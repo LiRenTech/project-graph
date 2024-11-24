@@ -1,14 +1,14 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import {
+  BrainCircuit,
   ChevronDown,
   ChevronLeft,
   ChevronUp,
   Diamond,
   Menu,
+  RectangleEllipsis,
   X,
   Zap,
-  RectangleEllipsis,
-  BrainCircuit,
 } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -20,7 +20,6 @@ import IconButton from "../components/ui/IconButton";
 import PopupDialog from "../components/ui/PopupDialog";
 import { Settings } from "../core/Settings";
 import { Stage } from "../core/stage/Stage";
-import AiPanel from "./_ai_panel";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { fileAtom } from "../state";
@@ -28,6 +27,7 @@ import { cn } from "../utils/cn";
 import { useDialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
 import { appScale, isDesktop, isMobile } from "../utils/platform";
+import AiPanel from "./_ai_panel";
 import AppMenu from "./_app_menu";
 import ErrorHandler from "./_error_handler";
 import RecentFilesPanel from "./_recent_files_panel";
@@ -278,10 +278,6 @@ export default function App() {
             <ChevronLeft />
           )}
         </IconButton>
-        <AppMenu className="absolute top-20" open={isMenuOpen} />
-        <RecentFilesPanel />
-        <StartFilePanel open={isStartFilePanelOpen} />
-        <AiPanel open={isAiPanelOpen} />
         {/* 中间标题 */}
         {useNativeTitleBar ? (
           // h-0 才能完全摆脱划线时经过此区域的卡顿问题
@@ -361,6 +357,10 @@ export default function App() {
           </Button>
         )}
       </div>
+      <AppMenu className="absolute left-4 top-16" open={isMenuOpen} />
+      <RecentFilesPanel />
+      <StartFilePanel open={isStartFilePanelOpen} />
+      <AiPanel open={isAiPanelOpen} />
       <Outlet />
     </div>
   );

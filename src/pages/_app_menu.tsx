@@ -40,11 +40,11 @@ import { isDesktop } from "../utils/platform";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useTranslation } from "react-i18next";
 import { RecentFileManager } from "../core/RecentFileManager";
+import { Settings } from "../core/Settings";
+import { Stage } from "../core/stage/Stage";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { TextNode } from "../core/stageObject/entity/TextNode";
-import { Stage } from "../core/stage/Stage";
-import { Settings } from "../core/Settings";
 import { PathString } from "../utils/pathString";
 
 export default function AppMenu({
@@ -214,8 +214,8 @@ export default function AppMenu({
             content: String(err),
             type: "error",
           });
-        }
-      )
+        },
+      );
       return;
     }
     StageSaveManager.backupHandleWithoutCurrentPath(
@@ -358,7 +358,7 @@ export default function AppMenu({
   return (
     <div
       className={cn(
-        "!pointer-events-none flex origin-top-left scale-75 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800 p-3 opacity-0 transition",
+        "!pointer-events-none flex origin-top-left scale-0 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800 p-3 opacity-0",
         {
           "!pointer-events-auto scale-100 opacity-100": open,
         },
@@ -384,7 +384,7 @@ export default function AppMenu({
         </Col>
 
         <Col icon={<Database />} onClick={onBackup}>
-        {t("file.items.backup")}
+          {t("file.items.backup")}
         </Col>
       </Row>
       <Row icon={<Folder />} title={t("location.title")}>
