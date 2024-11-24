@@ -30,7 +30,7 @@ export namespace Settings {
     autoSaveInterval: number;
     autoBackup: boolean;
     autoBackupInterval: number;
-    autoBackupDraftPath: string,
+    autoBackupDraftPath: string;
     // 控制相关
     enableCollision: boolean; // 暂无
     scaleExponent: number;
@@ -43,7 +43,7 @@ export namespace Settings {
     githubToken: string;
     githubUser: string;
   };
-  const defaultSettings: Settings = {
+  export const defaultSettings: Settings = {
     language: "en",
     // 视觉相关
     lineStyle: "straight",

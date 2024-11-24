@@ -1,3 +1,4 @@
+import { RotateCw } from "lucide-react";
 import React from "react";
 import { getI18n } from "react-i18next";
 import Button from "../../components/ui/Button";
@@ -50,7 +51,7 @@ export function SettingField({
   }, [value]);
 
   return (
-    <div className="flex w-full items-center justify-between rounded-xl p-4 transition hover:bg-white/10">
+    <div className="flex w-full items-center gap-2 rounded-xl p-4 transition hover:bg-white/10">
       <div className="flex items-center gap-2">
         {icon}
         <div className="flex flex-col">
@@ -67,6 +68,14 @@ export function SettingField({
           )}
         </div>
       </div>
+      <div className="flex-1"></div>
+      <button
+        onClick={() => {
+          setValue(Settings.defaultSettings[settingKey]);
+        }}
+      >
+        <RotateCw size={16} className="text-gray-500" />
+      </button>
       {type === "text" && (
         <Input value={value} onChange={setValue} placeholder={placeholder} />
       )}
