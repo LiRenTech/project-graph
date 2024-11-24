@@ -4,6 +4,7 @@ import {
 } from "@tauri-apps/plugin-dialog";
 import {
   AppWindow,
+  Database,
   Dock,
   File,
   FileCode,
@@ -190,6 +191,26 @@ export default function AppMenu({
       },
     );
   };
+  const onBackup = async () => {
+    StageSaveManager.backupHandleWithoutCurrentPath(
+      StageDumper.dump(),
+      () => {
+        dialog.show({
+          title: "备份成功",
+          content: "已备份在项目相同目录下",
+          type: "success",
+        });
+      },
+      (err) => {
+        dialog.show({
+          title: "备份失败",
+          content: String(err),
+          type: "error",
+        });
+      },
+      true,
+    );
+  };
   const onSaveSVGNew = async () => {
     const path = await saveFileDialog({
       title: "另存为",
@@ -334,6 +355,10 @@ export default function AppMenu({
         </Col>
         <Col icon={<Save />} onClick={onSaveNew}>
           {t("file.items.saveAs")}
+        </Col>
+
+        <Col icon={<Database />} onClick={onBackup}>
+          备份
         </Col>
       </Row>
       <Row icon={<Folder />} title={t("location.title")}>

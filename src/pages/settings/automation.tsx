@@ -1,4 +1,4 @@
-import { HardDriveDownload, Tag } from "lucide-react";
+import { HardDriveDownload, Tag, Database, Hourglass, HardDrive } from "lucide-react";
 import { SettingField } from "./_field";
 import { useTranslation } from "react-i18next";
 
@@ -24,14 +24,14 @@ export default function AutoNamer() {
         type="switch"
       />
       <SettingField
-        icon={<HardDriveDownload />}
+        icon={<HardDrive />}
         settingKey="autoSave"
         title={"开启自动保存"}
         details={"自动保存当前文件\n此功能目前仅对已有路径的文件有效，不对草稿文件生效！"}
         type="switch"
       />
       <SettingField
-        icon={<HardDriveDownload />}
+        icon={<Hourglass />}
         settingKey="autoSaveInterval"
         title={"开启自动保存间隔（秒）"}
         details={"自动保存过于频繁可能会对机械型硬盘造成压力\n进而降低硬盘寿命"}
@@ -39,6 +39,23 @@ export default function AutoNamer() {
         min={1}
         max={60}
         step={1}
+      />
+      <SettingField
+        icon={<Database />}
+        settingKey="autoBackup"
+        title={"开启自动备份"}
+        details={"自动备份当前文件\n自动备份会在工程文件旁边生成一个副本\n此功能目前仅对已有路径的文件有效，不对草稿文件生效！"}
+        type="switch"
+      />
+      <SettingField
+        icon={<Hourglass />}
+        settingKey="autoBackupInterval"
+        title={"开启自动备份间隔（秒）"}
+        details={"自动备份过于频繁可能会产生大量的备份文件\n进而占用磁盘空间"}
+        type="slider"
+        min={60}
+        max={6000}
+        step={60}
       />
     </>
   );

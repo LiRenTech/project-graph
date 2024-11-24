@@ -75,6 +75,49 @@ export namespace StageSaveManager {
       });
   }
 
+  /**
+   * 备份，会在工程文件夹旁白生成一个类似的json文件
+   * 可以用于手动触发，也可以自动触发
+   * @param data
+   * @param successCallback
+   * @param errorCallback
+   * @param addFlashEffect
+   * @returns
+   */
+  export function backupHandleWithoutCurrentPath(
+    data: Serialized.File,
+    successCallback: () => void,
+    errorCallback: (err: any) => void,
+    addFlashEffect = true,
+  ) {
+    if (Stage.Path.isDraft()) {
+      errorCallback("当前文档的状态为草稿，无法备份");
+      return;
+    }
+    // 不能有冒号，空格，斜杠
+    const dateTime = new Date()
+    .toLocaleString()
+    .replaceAll(/\//g, "-")
+    .replaceAll(" ", "_")
+    .replaceAll(":", "-");
+
+    const backupPath = `${Stage.Path.getFilePath()}.${dateTime}.backup`;
+
+    invoke<string>("save_json_by_path", {
+      path: backupPath,
+      content: JSON.stringify(data, null, 2),
+    })
+      .then((_) => {
+        if (addFlashEffect) {
+          Stage.effects.push(ViewFlashEffect.SaveFile());
+        }
+        successCallback();
+      })
+      .catch((err) => {
+        errorCallback(err);
+      });
+  }
+
   export function saveSvgHandle(
     path: string,
     string: string,

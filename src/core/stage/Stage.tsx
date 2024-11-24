@@ -228,6 +228,7 @@ export namespace Stage {
     // 自动保存功能
     autoSaveTick();
     // 自动备份功能
+    autoBackupTick();
   }
 
   let lastAutoSaveTime = performance.now();
@@ -240,6 +241,12 @@ export namespace Stage {
     });
     Settings.watch("autoSaveInterval", (value) => {
       autoSaveInterval = value * 1000; // s to ms
+    });
+    Settings.watch("autoBackup", (value) => {
+      autoBackup = value;
+    });
+    Settings.watch("autoBackupInterval", (value) => {
+      autoBackupInterval = value * 1000; // s to ms
     });
   }
 
@@ -281,6 +288,25 @@ export namespace Stage {
           lastAutoSaveTime = now;
         }
       }
+    }
+  }
+
+  let lastAutoBackupTime = performance.now();
+  let autoBackup = false;
+  let autoBackupInterval = 60_000; // ms
+
+  function autoBackupTick() {
+    // 自动备份功能
+    const now = performance.now();
+    if (now - lastAutoBackupTime > autoBackupInterval) {
+      StageSaveManager.backupHandleWithoutCurrentPath(
+        StageDumper.dump(),
+        () => {},
+        () => {},
+        false,
+      );
+      // 更新时间
+      lastAutoBackupTime = now;
     }
   }
 }

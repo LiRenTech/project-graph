@@ -28,6 +28,8 @@ export namespace Settings {
     autoSaveWhenClose: boolean;
     autoSave: boolean;
     autoSaveInterval: number;
+    autoBackup: boolean;
+    autoBackupInterval: number;
     // 控制相关
     enableCollision: boolean; // 暂无
     scaleExponent: number;
@@ -60,6 +62,8 @@ export namespace Settings {
     autoSaveWhenClose: false,
     autoSave: true,
     autoSaveInterval: 10,
+    autoBackup: true,
+    autoBackupInterval: 600,
     // 控制相关
     enableCollision: true,
     scaleExponent: 0.11,
