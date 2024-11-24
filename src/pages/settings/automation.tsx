@@ -57,6 +57,14 @@ export default function AutoNamer() {
         max={6000}
         step={60}
       />
+      <SettingField
+        icon={<Hourglass />}
+        settingKey="autoBackupDraftPath"
+        title={"草稿的自动备份路径"}
+        details={"请填写绝对路径，草稿将统一备份到此路径\n留空或路径错误时不进行备份"}
+        type="text"
+      />
+      
     </>
   );
 }

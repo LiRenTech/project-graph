@@ -30,6 +30,7 @@ export namespace Settings {
     autoSaveInterval: number;
     autoBackup: boolean;
     autoBackupInterval: number;
+    autoBackupDraftPath: string,
     // 控制相关
     enableCollision: boolean; // 暂无
     scaleExponent: number;
@@ -64,6 +65,7 @@ export namespace Settings {
     autoSaveInterval: 10,
     autoBackup: true,
     autoBackupInterval: 600,
+    autoBackupDraftPath: "",
     // 控制相关
     enableCollision: true,
     scaleExponent: 0.11,

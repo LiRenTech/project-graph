@@ -75,6 +75,32 @@ export namespace StageSaveManager {
       });
   }
 
+  export async function backupHandle(
+    path: string,
+    data: Serialized.File,
+    successCallback: () => void,
+    errorCallback: (err: any) => void,
+  ) {
+    const isExists = await invoke<string>("check_json_exist", {
+      path: path,
+    });
+    if (!isExists) {
+      errorCallback("备份文件路径错误:" + path);
+      return;
+    }
+    
+    invoke<string>("save_json_by_path", {
+      path,
+      content: JSON.stringify(data, null, 2),
+    })
+      .then((_) => {
+        Stage.effects.push(ViewFlashEffect.SaveFile());
+        successCallback();
+      })
+      .catch((err) => {
+        errorCallback(err);
+      });
+  }
   /**
    * 备份，会在工程文件夹旁白生成一个类似的json文件
    * 可以用于手动触发，也可以自动触发
@@ -96,10 +122,10 @@ export namespace StageSaveManager {
     }
     // 不能有冒号，空格，斜杠
     const dateTime = new Date()
-    .toLocaleString()
-    .replaceAll(/\//g, "-")
-    .replaceAll(" ", "_")
-    .replaceAll(":", "-");
+      .toLocaleString()
+      .replaceAll(/\//g, "-")
+      .replaceAll(" ", "_")
+      .replaceAll(":", "-");
 
     const backupPath = `${Stage.Path.getFilePath()}.${dateTime}.backup`;
 

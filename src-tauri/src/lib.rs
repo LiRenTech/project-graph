@@ -43,8 +43,9 @@ fn open_json_by_path(path: String) -> String {
 ///  (应该叫save_file_by_path更合适)
 #[tauri::command]
 fn save_json_by_path(path: String, content: String) -> Result<bool, String> {
-    let mut file = std::fs::File::create(path).unwrap();
-    file.write_all(content.as_bytes()).unwrap();
+    let mut file = std::fs::File::create(&path).map_err(|e| e.to_string())?;
+    file.write_all(content.as_bytes())
+        .map_err(|e| e.to_string())?;
     Ok(true)
 }
 
@@ -87,7 +88,6 @@ fn save_base64_to_image(base64_str: &str, file_name: &str) -> Result<(), String>
         Err(e) => Err(format!("解码失败: {}", e)),
     }
 }
-
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {

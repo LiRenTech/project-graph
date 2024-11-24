@@ -19,6 +19,7 @@ import { ConnectableEntity, Entity } from "../stageObject/StageObject";
 import { StageDumper } from "./StageDumper";
 import { StageManager } from "./stageManager/StageManager";
 import { StageSaveManager } from "./StageSaveManager";
+import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
 
 /**
  * 舞台对象
@@ -248,6 +249,12 @@ export namespace Stage {
     Settings.watch("autoBackupInterval", (value) => {
       autoBackupInterval = value * 1000; // s to ms
     });
+    Settings.watch("autoBackup", (value) => {
+      autoBackup = value;
+    });
+    Settings.watch("autoBackupDraftPath", (value) => {
+      autoBackupDraftPath = value;
+    });
   }
 
   // private
@@ -285,26 +292,48 @@ export namespace Stage {
             false,
           );
           // 更新时间
-          lastAutoSaveTime = now;
         }
       }
+      lastAutoSaveTime = now;
     }
   }
 
   let lastAutoBackupTime = performance.now();
   let autoBackup = false;
   let autoBackupInterval = 60_000; // ms
+  let autoBackupDraftPath = "";
 
   function autoBackupTick() {
+    if (!autoBackup) {
+      return;
+    }
     // 自动备份功能
     const now = performance.now();
     if (now - lastAutoBackupTime > autoBackupInterval) {
-      StageSaveManager.backupHandleWithoutCurrentPath(
-        StageDumper.dump(),
-        () => {},
-        () => {},
-        false,
-      );
+      if (Stage.Path.isDraft()) {
+        StageSaveManager.backupHandle(
+          autoBackupDraftPath,
+          StageDumper.dump(),
+          () => {},
+          (err) => {
+            console.warn(err);
+            // 备份失败
+            effects.push(
+              new TextRiseEffect(
+                "自动备份失败" + String(err),
+                new ProgressNumber(0, 100),
+              ),
+            );
+          },
+        );
+      } else {
+        StageSaveManager.backupHandleWithoutCurrentPath(
+          StageDumper.dump(),
+          () => {},
+          () => {},
+          false,
+        );
+      }
       // 更新时间
       lastAutoBackupTime = now;
     }
