@@ -1,4 +1,5 @@
 ![宣传图](src/assets/poster.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FLiRenTech%2Fproject-graph.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FLiRenTech%2Fproject-graph?ref=badge_shield)
 
 # Project Graph
 
@@ -74,3 +75,6 @@ https://github.com/tauri-apps/tauri/issues/7338
 —— 2024年10月2日
 
 项目的 docs/ 文件夹下有一些示例json文件，下载软件后您可以尝试导入看看。其中记录和沉淀了项目的一些开发信息。
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FLiRenTech%2Fproject-graph.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FLiRenTech%2Fproject-graph?ref=badge_large)
