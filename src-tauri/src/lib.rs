@@ -75,13 +75,6 @@ fn save_base64_to_image(base64_str: &str, file_name: &str) -> Result<(), String>
     }
 }
 
-#[tauri::command]
-async fn devtools<R: Runtime>(app: tauri::AppHandle<R>) -> Result<(), String> {
-  let window = app.get_webview_window("main").unwrap();
-  window.open_devtools();
-  Ok(())
-}
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     println!("程序运行了！");
@@ -102,8 +95,7 @@ pub fn run() {
             save_file_by_path,
             convert_image_to_base64,
             save_base64_to_image,
-            check_json_exist,
-            devtools
+            check_json_exist
         ])
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_fs::init())

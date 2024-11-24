@@ -52,7 +52,7 @@ const el = document.getElementById("root")!;
     document.body.style.backgroundColor = "black";
     document.body.style.color = "white";
     document.body.style.userSelect = "auto";
-    document.body.innerHTML = `应用初始化失败，请截图此窗口，然后加入QQ群1006956704反馈或在GitHub上提交issue(https://github.com/LiRenTech/project-graph/issues)`;
+    document.body.innerHTML = `应用初始化失败，请截图此窗口，然后加入QQ群1006956704反馈或在GitHub上提交issue(https://github.com/LiRenTech/project-graph/issues) ${String(e)}`;
     return;
   }
 })();
