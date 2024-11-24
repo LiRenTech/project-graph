@@ -53,7 +53,7 @@ export default function AutoNamer() {
         settingKey="autoBackup"
         title={"开启自动备份"}
         details={
-          "自动备份当前文件\n自动备份会在工程文件旁边生成一个副本\n此功能目前仅对已有路径的文件有效，不对草稿文件生效！"
+          "自动备份当前文件\n自动备份会在工程文件旁边生成一个副本\n如果是草稿，则会存储在指定的路径"
         }
         type="switch"
       />
