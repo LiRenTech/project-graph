@@ -3,7 +3,7 @@ import { load, Store } from "@tauri-apps/plugin-store";
 
 export namespace LastLaunch {
   let store: Store;
-  let version: string;
+  export let version: string;
 
   export async function init() {
     store = await load("last_launch");

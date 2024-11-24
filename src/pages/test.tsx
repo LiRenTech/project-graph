@@ -6,6 +6,7 @@ import Button from "../components/ui/Button";
 import IconButton from "../components/ui/IconButton";
 import Input from "../components/ui/Input";
 import Switch from "../components/ui/Switch";
+import { LastLaunch } from "../core/LastLaunch";
 import { StageDumper } from "../core/stage/StageDumper";
 import { usePopupDialog } from "../utils/popupDialog";
 import { XML } from "../utils/xml";
@@ -49,6 +50,7 @@ export default function TestPage() {
       </div>
       <Button onClick={handleTestHttp}>test http</Button>
       <Button onClick={handleTestImageBase64}>getImageBase64</Button>
+      last launch: {LastLaunch.version}
     </div>
   );
 }
