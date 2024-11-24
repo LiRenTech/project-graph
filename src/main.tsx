@@ -26,19 +26,11 @@ const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
 const el = document.getElementById("root")!;
 
-(async () => {
-  // 加载语言文件
-  i18next.use(initReactI18next).init({
-    lng: "zh-CN",
-    debug: import.meta.env.DEV,
-    defaultNS: "",
-    resources: {
-      en: await import("./locales/en.yml").then((m) => m.default),
-      "zh-CN": await import("./locales/zh-CN.yml").then((m) => m.default),
-      "zh-TW": await import("./locales/zh-TW.yml").then((m) => m.default),
-    },
-  });
+// 建议挂载根节点前的一系列操作统一写成函数，
+// 在这里看着清爽一些，像一个列表清单一样。也方便调整顺序
 
+(async () => {
+  loadLanguageFiles();
   // 初始化应用
   await Settings.init();
   await RecentFileManager.init();
@@ -53,8 +45,37 @@ const el = document.getElementById("root")!;
   Stage.init();
   StageHistoryManager.init();
   StageStyleManager.init();
+  // 加载默认工程文件
+  loadStartFile();
 
-  // 加载用户自定义的工程文件
+  // 启动应用
+  createRoot(el).render(
+    <RecoilRoot>
+      <DialogProvider>
+        <PopupDialogProvider>
+          <Routes />
+        </PopupDialogProvider>
+      </DialogProvider>
+    </RecoilRoot>,
+  );
+})();
+
+/** 加载语言文件 */
+async function loadLanguageFiles() {
+  i18next.use(initReactI18next).init({
+    lng: "zh-CN",
+    debug: import.meta.env.DEV,
+    defaultNS: "",
+    resources: {
+      en: await import("./locales/en.yml").then((m) => m.default),
+      "zh-CN": await import("./locales/zh-CN.yml").then((m) => m.default),
+      "zh-TW": await import("./locales/zh-TW.yml").then((m) => m.default),
+    },
+  });
+}
+
+/** 加载用户自定义的工程文件 */
+function loadStartFile() {
   StartFilesManager.getCurrentStartFile().then((path) => {
     if (path === "") {
       return;
@@ -82,15 +103,4 @@ const el = document.getElementById("root")!;
         });
     }
   });
-
-  // 启动应用
-  createRoot(el).render(
-    <RecoilRoot>
-      <DialogProvider>
-        <PopupDialogProvider>
-          <Routes />
-        </PopupDialogProvider>
-      </DialogProvider>
-    </RecoilRoot>,
-  );
-})();
+}
