@@ -201,10 +201,8 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
         e.stopPropagation();
       }}
     >
-      <h2 className="mb-3 text-xl font-bold text-white transition-opacity">
-        {t("title")}
-      </h2>
-      <div className="mb-3 flex justify-between transition-opacity">
+      <h2 className="mb-3 text-xl font-bold text-white">{t("title")}</h2>
+      <div className="mb-3 flex justify-between">
         <IconButton onClick={onAddFile}>
           <span className="flex">
             <FilePlus2 />
@@ -223,7 +221,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
           </span>
         </IconButton>
       </div>
-      <table className="overflow-hidden rounded-lg border border-gray-600 shadow-lg transition-all">
+      <table className="overflow-hidden rounded-lg border border-gray-600 shadow-lg">
         <thead>
           {/* <tr className="text-white">
             <th className="mx-4 py-2 text-left">状态</th>

@@ -51,7 +51,7 @@ export function SettingField({
   }, [value]);
 
   return (
-    <div className="flex w-full items-center gap-2 rounded-xl p-4 transition hover:bg-white/10">
+    <div className="flex w-full items-center gap-2 rounded-xl p-4 hover:bg-white/10">
       <div className="flex items-center gap-2">
         {icon}
         <div className="flex flex-col">
@@ -113,7 +113,7 @@ export function ButtonField({
   icon?: React.ReactNode;
 }) {
   return (
-    <div className="flex w-full items-center justify-between rounded-xl p-4 transition hover:bg-white/10">
+    <div className="flex w-full items-center justify-between rounded-xl p-4 hover:bg-white/10">
       <div className="flex items-center gap-2">
         {icon}
         <div className="flex flex-col">

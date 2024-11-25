@@ -98,7 +98,7 @@ export default function AiPanel({ open = false }: { open: boolean }) {
                   <IconButton onClick={() => onSetCurrentUserPrompt(index)}>
                     <Pin
                       className={cn(
-                        "cursor-pointer transition-all",
+                        "cursor-pointer",
                         currentUserPrompt === prompt &&
                           "rotate-90 text-red-500",
                       )}

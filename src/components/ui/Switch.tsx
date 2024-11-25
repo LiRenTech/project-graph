@@ -14,12 +14,9 @@ export default function Switch({
 }) {
   return (
     <div
-      className={cn(
-        "relative h-8 w-14 rounded-full bg-neutral-800 transition",
-        {
-          "bg-blue-500": value,
-        },
-      )}
+      className={cn("relative h-8 w-14 rounded-full bg-neutral-800", {
+        "bg-blue-500": value,
+      })}
       onClick={() => onChange(!value)}
     >
       <div

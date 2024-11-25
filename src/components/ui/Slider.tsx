@@ -2,11 +2,11 @@ import React from "react";
 
 /**
  * 一个滑块组件，可以设置最小值、最大值、步长、当前值、值变化回调函数。
- * 
+ *
  * -------o---
- * 
- * @param param0 
- * @returns 
+ *
+ * @param param0
+ * @returns
  */
 export default function Slider({
   value = 0,
@@ -108,7 +108,7 @@ export default function Slider({
       >
         <div className="absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full bg-neutral-700"></div>
         <div
-          className="absolute top-0 h-4 w-4 -translate-x-2 rounded-full bg-blue-400 transition-all duration-75"
+          className="absolute top-0 h-4 w-4 -translate-x-2 rounded-full bg-blue-400"
           style={{ left: `${((sliderValue - min) / (max - min)) * 100}%` }} // 根据当前值计算滑块的位置
         ></div>
       </div>

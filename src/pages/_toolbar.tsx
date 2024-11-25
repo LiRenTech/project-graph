@@ -51,11 +51,11 @@ interface ToolbarItemProps {
 function ToolbarItem({ icon, handleFunction, description }: ToolbarItemProps) {
   return (
     <div
-      className="group relative flex h-8 w-8 items-center justify-center rounded-md transition-all hover:bg-white/20 active:scale-90"
+      className="group relative flex h-8 w-8 items-center justify-center rounded-md hover:bg-white/20 active:scale-90"
       onClick={handleFunction}
     >
       {icon}
-      <span className="pointer-events-none absolute right-10 z-10 w-auto origin-right scale-90 whitespace-nowrap rounded bg-gray-700 p-1 text-xs text-white opacity-0 transition group-hover:pointer-events-auto group-hover:scale-100 group-hover:opacity-100">
+      <span className="pointer-events-none absolute right-10 z-10 w-auto origin-right scale-90 whitespace-nowrap rounded bg-gray-700 p-1 text-xs text-white opacity-0 group-hover:pointer-events-auto group-hover:scale-100 group-hover:opacity-100">
         {description}
       </span>
     </div>
@@ -72,38 +72,38 @@ function ColorPanel() {
     <>
       <div className="flex flex-wrap items-center justify-center">
         <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-red-500 transition-all hover:scale-125"
+          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-red-500 hover:scale-125"
           onClick={() => {
             StageManager.setNodeColor(new Color(239, 68, 68));
           }}
         />
         <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-yellow-500 transition-all hover:scale-125"
+          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-yellow-500 hover:scale-125"
           onClick={() => {
             StageManager.setNodeColor(new Color(234, 179, 8));
           }}
         />
         <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-green-600 transition-all hover:scale-125"
+          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-green-600 hover:scale-125"
           onClick={() => {
             StageManager.setNodeColor(new Color(22, 163, 74));
           }}
         />
         <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-blue-500 transition-all hover:scale-125"
+          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-blue-500 hover:scale-125"
           onClick={() => {
             StageManager.setNodeColor(new Color(59, 130, 246));
           }}
         />
         <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-purple-500 transition-all hover:scale-125"
+          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-purple-500 hover:scale-125"
           onClick={() => {
             StageManager.setNodeColor(new Color(168, 85, 247));
           }}
         />
         {/* 清除颜色 */}
         <div
-          className="m-1 h-5 w-5 animate-pulse cursor-pointer rounded-full bg-gray-500 text-center text-sm transition-all hover:scale-125"
+          className="m-1 h-5 w-5 animate-pulse cursor-pointer rounded-full bg-gray-500 text-center text-sm hover:scale-125"
           onClick={() => {
             StageManager.clearNodeColor();
           }}
@@ -247,7 +247,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   return (
     <Box
       className={cn(
-        "fixed right-16 top-1/2 z-50 flex w-10 -translate-y-1/2 flex-col items-center gap-4 rounded-full px-8 py-6 opacity-50 transition duration-200 hover:opacity-100",
+        "fixed right-16 top-1/2 z-50 flex w-10 -translate-y-1/2 flex-col items-center gap-4 rounded-full px-8 py-6 opacity-50 hover:opacity-100",
         className,
       )}
     >

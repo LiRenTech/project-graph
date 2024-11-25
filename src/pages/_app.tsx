@@ -234,7 +234,7 @@ export default function App() {
       {/* 叠加层，显示窗口控件 */}
       <div
         className={cn(
-          "pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 p-4 transition-all *:pointer-events-auto",
+          "pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 p-4 *:pointer-events-auto",
           {
             "p-8": isMobile,
           },
@@ -310,10 +310,7 @@ export default function App() {
           }}
         >
           <BrainCircuit
-            className={cn(
-              "cursor-pointer transition",
-              isAiPanelOpen ? "rotate-90" : "",
-            )}
+            className={cn("cursor-pointer", isAiPanelOpen ? "rotate-90" : "")}
           />
         </IconButton>
         {/* 右上角图钉按钮 */}
@@ -325,7 +322,7 @@ export default function App() {
         >
           <Zap
             className={cn(
-              "cursor-pointer transition",
+              "cursor-pointer",
               isStartFilePanelOpen ? "rotate-45 scale-125" : "",
             )}
           />

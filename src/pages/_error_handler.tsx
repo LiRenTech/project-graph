@@ -1,6 +1,6 @@
+import { Bug, FileWarning, MessageCircleCode, X } from "lucide-react";
 import React from "react";
 import { cn } from "../utils/cn";
-import { Bug, FileWarning, MessageCircleCode, X } from "lucide-react";
 
 export default function ErrorHandler() {
   const [error, setError] = React.useState<Error | null>(null);
@@ -20,7 +20,7 @@ export default function ErrorHandler() {
   return (
     <div
       className={cn(
-        "pointer-events-none fixed left-1/2 top-1/2 z-50 max-h-screen -translate-x-1/2 -translate-y-1/2 scale-90 overflow-y-auto rounded-lg bg-red-950 p-8 opacity-0 shadow-2xl shadow-red-500/30 transition",
+        "pointer-events-none fixed left-1/2 top-1/2 z-50 max-h-screen -translate-x-1/2 -translate-y-1/2 scale-90 overflow-y-auto rounded-lg bg-red-950 p-8 opacity-0 shadow-2xl shadow-red-500/30",
         {
           "pointer-events-auto scale-100 opacity-100": show,
         },

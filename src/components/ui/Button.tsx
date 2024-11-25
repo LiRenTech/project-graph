@@ -18,7 +18,7 @@ export default function Button({
     <Box
       as="button"
       className={cn(
-        "px-3 py-2 transition",
+        "px-3 py-2",
         {
           "hover:opacity-80 active:scale-90": !disabled,
           "cursor-not-allowed opacity-50": disabled,

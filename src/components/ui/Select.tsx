@@ -19,7 +19,7 @@ export default function Select({
     <Box
       as="select"
       className={cn(
-        "appearance-none px-3 py-2 transition hover:opacity-80 active:scale-90",
+        "appearance-none px-3 py-2 hover:opacity-80 active:scale-90",
         className,
       )}
       value={value || ""}
