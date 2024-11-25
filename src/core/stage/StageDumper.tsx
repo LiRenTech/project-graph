@@ -111,9 +111,28 @@ export namespace StageDumper {
    * @returns
    */
   export function dumpSelected(nodes: Entity[]): Serialized.File {
-    const selectedNodes = nodes
-      .filter((node) => node instanceof TextNode)
+    let selectedNodes: (
+      | Serialized.Section
+      | Serialized.Node
+      | Serialized.ConnectPoint
+      | Serialized.ImageNode
+    )[] = nodes
+      .filter((entity) => entity instanceof TextNode)
       .map((node) => dumpTextNode(node));
+
+    selectedNodes = selectedNodes.concat(
+      ...nodes
+        .filter((entity) => entity instanceof Section)
+        .map((section) => dumpSection(section)),
+    );
+
+    selectedNodes = selectedNodes.concat(
+      ...nodes
+        .filter((entity) => entity instanceof ConnectPoint)
+        .map((connectPoint) => dumpConnectPoint(connectPoint)),
+    );
+
+    // 根据选中的实体，找到涉及的边
     const selectedEdges: Serialized.Edge[] = [];
 
     for (const edge of StageManager.getEdges()) {
