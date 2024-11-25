@@ -20,6 +20,7 @@ export namespace StageLoader {
     data = convertV6toV7(data);
     data = convertV7toV8(data);
     data = convertV8toV9(data);
+    data = convertV9toV10(data);
     return data as Serialized.File;
   }
 
@@ -165,5 +166,14 @@ export namespace StageLoader {
     data.version = 9;    
     return data;
   }
-  // 增加了ImageNode
+  
+  // 增加tags
+  function convertV9toV10(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 10) {
+      return data;
+    }
+    data.version = 10;
+    data.tags = [];
+    return data;
+  }
 }

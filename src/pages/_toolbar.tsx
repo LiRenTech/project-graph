@@ -27,6 +27,7 @@ import {
   Repeat,
   SaveAll,
   Square,
+  Tag,
   Trash2,
 } from "lucide-react";
 import React from "react";
@@ -365,6 +366,15 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           }}
         />
       )} */}
+      {isHaveSelectedNode && (
+        <ToolbarItem
+          description="添加标签，如果已添加则去除标签"
+          icon={<Tag />}
+          handleFunction={() => {
+            StageManager.addTagBySelected();
+          }}
+        />
+      )}
       {isHaveSelectedNode && (
         <ToolbarItem
           description="AI扩展节点"

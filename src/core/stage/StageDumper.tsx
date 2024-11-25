@@ -14,7 +14,7 @@ export namespace StageDumper {
   /**
    * 最新版本
    */
-  export const latestVersion = 9;
+  export const latestVersion = 10;
 
   export function dumpTextNode(textNode: TextNode): Serialized.Node {
     return {
@@ -102,6 +102,7 @@ export namespace StageDumper {
       version: latestVersion,
       nodes,
       edges: StageManager.getEdges().map((edge) => dumpEdge(edge)),
+      tags: StageManager.TagOptions.getTagUUIDs(),
     };
   }
 
@@ -145,6 +146,7 @@ export namespace StageDumper {
       version: latestVersion,
       nodes: selectedNodes,
       edges: selectedEdges,
+      tags: []
     };
   }
 }

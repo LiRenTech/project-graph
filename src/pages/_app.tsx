@@ -7,6 +7,7 @@ import {
   Diamond,
   Menu,
   RectangleEllipsis,
+  Tag,
   X,
   Zap,
 } from "lucide-react";
@@ -32,12 +33,16 @@ import AppMenu from "./_app_menu";
 import ErrorHandler from "./_error_handler";
 import RecentFilesPanel from "./_recent_files_panel";
 import StartFilePanel from "./_start_file_panel";
+import TagPanel from "./_tag_panel";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
+
+  // 面板状态
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isStartFilePanelOpen, setIsStartFilePanelOpen] = React.useState(false);
   const [isAiPanelOpen, setIsAiPanelOpen] = React.useState(false);
+  const [isTagPanelOpen, setIsTagPanelOpen] = React.useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -278,6 +283,16 @@ export default function App() {
             <ChevronLeft />
           )}
         </IconButton>
+        <IconButton
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsTagPanelOpen(!isTagPanelOpen);
+          }}
+        >
+          <Tag
+            className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")}
+          />
+        </IconButton>
         {/* 中间标题 */}
         {useNativeTitleBar ? (
           // h-0 才能完全摆脱划线时经过此区域的卡顿问题
@@ -354,10 +369,15 @@ export default function App() {
           </Button>
         )}
       </div>
+
+      {/* 面板列表 */}
       <AppMenu className="absolute left-4 top-16" open={isMenuOpen} />
       <RecentFilesPanel />
       <StartFilePanel open={isStartFilePanelOpen} />
       <AiPanel open={isAiPanelOpen} />
+      <TagPanel open={isTagPanelOpen} />
+      {/* ======= */}
+
       <Outlet />
     </div>
   );

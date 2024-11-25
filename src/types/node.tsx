@@ -47,8 +47,9 @@ export namespace Serialized {
   };
 
   export type File = {
-    version: 9;  // 最新版本 src\core\stage\StageDumper.tsx latestVersion
+    version: 10;  // 最新版本 src\core\stage\StageDumper.tsx latestVersion
     nodes: (Node | Section | ConnectPoint | ImageNode)[];
     edges: Edge[];
+    tags: string[];
   };
 }

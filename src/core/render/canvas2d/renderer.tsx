@@ -23,6 +23,7 @@ import { Canvas } from "../../stage/Canvas";
 import { Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../stage/stageManager/StageManager";
+import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectRenderer } from "./EffectRenderer";
 import { RenderUtils } from "./RenderUtils";
@@ -153,6 +154,8 @@ export namespace Renderer {
     start = performance.now();
 
     renderEntities(viewRectangle);
+    // 画tags
+    renderTags();
     // 待删除的节点和边
     renderWarningEntities();
     // 鼠标hover的边
@@ -269,6 +272,44 @@ export namespace Renderer {
         section.collisionBox,
         new Color(255, 0, 0, 0.5),
       );
+    }
+  }
+
+  function renderTags() {
+    for (const tagString of StageManager.TagOptions.getTagUUIDs()) {
+      const tagObject = StageManager.getEntitiesByUUIDs([tagString])[0];
+      const rect = tagObject.collisionBox.getRectangle();
+      RenderUtils.renderPolygonAndFill(
+        [
+          transformWorld2View(rect.leftTop.add(new Vector(0, 8))),
+          transformWorld2View(rect.leftCenter.add(new Vector(-15, 0))),
+          transformWorld2View(rect.leftBottom.add(new Vector(0, -8))),
+        ],
+        new Color(255, 0, 0, 0.5),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+        2 * Camera.currentScale,
+      );
+      if (Camera.currentScale < 0.25 && tagObject instanceof TextNode) {
+        const backRect = rect.clone();
+        backRect.location = transformWorld2View(rect.center).add(
+          new Vector(-rect.size.x / 2, -rect.size.y / 2),
+        );
+        const rectBgc = StageStyleManager.currentStyle.BackgroundColor.clone();
+        rectBgc.a = 0.5;
+        RenderUtils.renderRect(
+          backRect,
+          rectBgc,
+          StageStyleManager.currentStyle.StageObjectBorderColor,
+          1,
+          NODE_ROUNDED_RADIUS
+        );
+        RenderUtils.renderTextFromCenter(
+          tagObject.text,
+          transformWorld2View(rect.center),
+          FONT_SIZE,
+          StageStyleManager.currentStyle.StageObjectBorderColor,
+        );
+      }
     }
   }
   /**
@@ -525,7 +566,8 @@ export namespace Renderer {
       `delta: ${deltaTime.toFixed(2)}`,
       `Controller.isViewMoveByClickMiddle: ${Controller.isViewMoveByClickMiddle}`,
       `path: ${Stage.Path.getFilePath()}`,
-      `autoSavePaused: ${Stage.isAutoSavePaused}`
+      `autoSavePaused: ${Stage.isAutoSavePaused}`,
+      // `tags: ${StageManager.TagOptions.getTagUUIDs().toString()}`,
     ];
     for (const [k, v] of Object.entries(timings)) {
       detailsData.push(`time:${k}: ${v.toFixed(2)}`);

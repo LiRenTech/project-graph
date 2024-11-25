@@ -1,0 +1,75 @@
+import React from "react";
+import Button from "../components/ui/Button";
+import { StageManager } from "../core/stage/stageManager/StageManager";
+import { cn } from "../utils/cn";
+import { useDialog } from "../utils/dialog";
+
+/**
+ * 标签相关面板
+ * @param param0
+ */
+export default function TagPanel({ open = false }: { open: boolean }) {
+  const dialog = useDialog();
+  const [tagNameList, setTagNameList] = React.useState<
+    { tagName: string; uuid: string }[]
+  >([]);
+
+  function updateTagNameList() {
+    setTagNameList(StageManager.getTagNames());
+  }
+
+  React.useEffect(() => {
+    updateTagNameList();
+  }, [open]);
+
+  const handleClickTag = (tagUUID: string) => {
+    return () => {
+      // 跳转到对应位置
+      StageManager.moveToTag(tagUUID);
+    };
+  };
+
+  const handleClickAddTag = () => {
+    if (StageManager.selectedNodeCount === 0) {
+      dialog.show({
+        title: "没选择节点",
+        content: "请先在舞台上选中一个或多个节点",
+        type: "error",
+      });
+    } else {
+      StageManager.addTagBySelected();
+      updateTagNameList();
+    }
+  };
+
+  return (
+    <div
+      className={cn(
+        "fixed -left-64 top-16 flex h-96 w-64 flex-col rounded-md bg-neutral-900 p-2 transition-all",
+        {
+          "left-0": open,
+        },
+      )}
+    >
+      <div>
+        <Button onClick={handleClickAddTag}>将选中节点添加标签</Button>
+        <Button onClick={updateTagNameList}>刷新</Button>
+      </div>
+
+      {/* 标签列表 */}
+      <div className="flex-1 overflow-y-auto">
+        {tagNameList.map((tag) => {
+          return (
+            <div
+              key={tag.uuid}
+              className="cursor-pointer hover:bg-neutral-600"
+              onClick={handleClickTag(tag.uuid)}
+            >
+              {tag.tagName}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

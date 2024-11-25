@@ -163,6 +163,7 @@ export namespace Stage {
     version: StageDumper.latestVersion,
     nodes: [],
     edges: [],
+    tags: [],
   };
   /**
    * 粘贴板内容上的外接矩形

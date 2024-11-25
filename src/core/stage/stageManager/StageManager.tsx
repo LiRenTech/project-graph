@@ -29,6 +29,7 @@ import { StageNodeTextTransfer } from "./concreteMethods/StageNodeTextTransfer";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
 import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManager";
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
+import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
@@ -43,6 +44,7 @@ import { StageHistoryManager } from "./StageHistoryManager";
 export namespace StageManager {
   const entities: StringDict<Entity> = StringDict.create();
   const associations: StringDict<Association> = StringDict.create();
+  const tags: StringDict<string> = StringDict.create();
 
   export function getTextNodes(): TextNode[] {
     return entities.valuesToArray().filter((node) => node instanceof TextNode);
@@ -112,6 +114,28 @@ export namespace StageManager {
 
   export function getEdges(): Edge[] {
     return associations.valuesToArray().filter((edge) => edge instanceof Edge);
+  }
+
+  /** 关于标签的相关操作 */
+  export namespace TagOptions {
+    export function reset(uuids: string[]) {
+      tags.clear();
+      for (const uuid of uuids) {
+        tags.addValue(uuid, uuid);
+      }
+    }
+    export function addTag(uuid: string) {
+      tags.addValue(uuid, uuid);
+    }
+    export function removeTag(uuid: string) {
+      tags.deleteValue(uuid);
+    }
+    export function hasTag(uuid: string): boolean {
+      return tags.hasId(uuid);
+    }
+    export function getTagUUIDs(): string[] {
+      return tags.valuesToArray();
+    }
   }
 
   /**
@@ -575,6 +599,7 @@ export namespace StageManager {
       version: StageDumper.latestVersion,
       nodes: [],
       edges: [],
+      tags: [],
     };
   }
 
@@ -628,5 +653,17 @@ export namespace StageManager {
   export function expandTextNodeByAI() {
     StageGeneratorAI.generateNewTextNodeBySelected();
     StageHistoryManager.recordStep();
+  }
+
+  export function addTagBySelected() {
+    StageTagManager.changeTagBySelected();
+  }
+
+  export function getTagNames() {
+    return StageTagManager.getTagNames();
+  }
+
+  export function moveToTag(tag: string) {
+    StageTagManager.moveToTag(tag);
   }
 }

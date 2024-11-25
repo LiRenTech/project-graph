@@ -182,6 +182,7 @@ export namespace RecentFileManager {
     for (const edge of data.edges) {
       StageManager.addEdge(new Edge(edge));
     }
+    StageManager.TagOptions.reset(data.tags);
     StageManager.updateReferences();
   }
 }
