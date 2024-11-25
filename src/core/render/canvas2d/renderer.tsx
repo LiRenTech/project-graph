@@ -102,26 +102,55 @@ export namespace Renderer {
 
   /**
    * 渲染总入口
+   * 建议此函数内部的调用就像一个清单一样，全是函数（这些函数都不是export的）。
    * @returns
    */
   export function frameTick() {
-    timings = {};
+    timings = {};  // idea：或许可以尝试全都是函数之后，来个反射拿到函数名？
     let start = performance.now();
+    const viewRectangle = getCoverWorldRectangle();
     Camera.frameTick();
     timings.camera = performance.now() - start;
-
     Canvas.ctx.clearRect(0, 0, w, h);
-
-    // 画网格
     start = performance.now();
-    if (isShowGrid) {
-      renderGrid();
-    }
+    renderGrid();
     timings.grid = performance.now() - start;
+    renderPrivacyBoard(viewRectangle);
+    renderViewMoveByClickMiddle(viewRectangle, start);
+    start = performance.now();
+    renderEdges(viewRectangle);
+    timings.edges = performance.now() - start;
+    start = performance.now();
+    renderEntities(viewRectangle);
+    renderTags();
+    renderWarningEntities();
+    renderHoverCollisionBox();
+    timings.entities = performance.now() - start;
+    start = performance.now();
+    renderSelectingRectangle();
+    renderCuttingLine();
+    renderConnectingLine();
+    renderDraggingFileTips();
+    start = performance.now();
+    renderKeyboardOnly();
+    timings.keyboard = performance.now() - start;
+    start = performance.now();
+    renderClipboard();
+    timings.clipboard = performance.now() - start;
+    start = performance.now();
+    renderDebugDetails();
+    timings.details = performance.now() - start;
+    start = performance.now();
+    renderSpecialKeys();
+    timings.specialKeys = performance.now() - start;
+    start = performance.now();
+    renderEffects();
+    timings.effects = performance.now() - start;
+    timings.others = performance.now() - start;
+  }
 
-    const viewRectangle = getCoverWorldRectangle();
+  function renderPrivacyBoard(viewRectangle: Rectangle) {
     // 画隐私保护边
-
     if (protectingPrivacy) {
       RenderUtils.renderRect(
         viewRectangle.transformWorld2View(),
@@ -130,9 +159,23 @@ export namespace Renderer {
         50,
       );
     }
-    // 中键吸附拖动框
+  }
+  /** 鼠标hover的边 */
+  function renderHoverCollisionBox() {
+    for (const edge of Stage.hoverEdges) {
+      CollisionBoxRenderer.render(edge.collisionBox, new Color(0, 255, 0, 0.5));
+    }
+    for (const section of Stage.hoverSections) {
+      CollisionBoxRenderer.render(
+        section.collisionBox,
+        new Color(0, 255, 0, 0.5),
+      );
+    }
+  }
+  /** 中键吸附拖动框 */
+  function renderViewMoveByClickMiddle(viewRectangle: Rectangle, tMs: number) {
     if (Controller.isViewMoveByClickMiddle) {
-      const color = new Color(23, 159, 255, sine(start, 0.2, 0.1, 0.01));
+      const color = new Color(23, 159, 255, sine(tMs, 0.2, 0.1, 0.01));
       RenderUtils.renderRect(
         viewRectangle.transformWorld2View(),
         Color.Transparent,
@@ -143,35 +186,12 @@ export namespace Renderer {
         "再次中键取消视野吸附,或移动到窗口边缘",
         new Vector(25, Renderer.h - 25 - 20),
         20,
-        new Color(23, 159, 255, sine(start, 0.9, 0.7, 0.01)),
+        new Color(23, 159, 255, sine(tMs, 0.9, 0.7, 0.01)),
       );
     }
-    // 画节点和边
-    start = performance.now();
-    renderEdges(viewRectangle);
-    timings.edges = performance.now() - start;
-
-    start = performance.now();
-
-    renderEntities(viewRectangle);
-    // 画tags
-    renderTags();
-    // 待删除的节点和边
-    renderWarningEntities();
-    // 鼠标hover的边
-    for (const edge of Stage.hoverEdges) {
-      CollisionBoxRenderer.render(edge.collisionBox, new Color(0, 255, 0, 0.5));
-    }
-    for (const section of Stage.hoverSections) {
-      CollisionBoxRenderer.render(
-        section.collisionBox,
-        new Color(0, 255, 0, 0.5),
-      );
-    }
-    timings.entities = performance.now() - start;
-
-    start = performance.now();
-    // 框选框
+  }
+  /** 框选框 */
+  function renderSelectingRectangle() {
     if (Stage.isSelecting) {
       if (Stage.selectingRectangle) {
         RenderUtils.renderRect(
@@ -182,7 +202,9 @@ export namespace Renderer {
         );
       }
     }
-    // 切割线
+  }
+  /** 切割线 */
+  function renderCuttingLine() {
     if (Stage.isCutting && Stage.cuttingLine) {
       WorldRenderUtils.renderLaser(
         Stage.cuttingLine.start,
@@ -190,7 +212,10 @@ export namespace Renderer {
         2,
       );
     }
-    // 手动连接线
+  }
+
+  /** 手动连接线 */
+  function renderConnectingLine() {
     if (Stage.connectFromEntities.length > 0 && Controller.lastMoveLocation) {
       // 如果鼠标位置没有和任何节点相交
       let connectTargetNode = null;
@@ -213,6 +238,10 @@ export namespace Renderer {
         }
       }
     }
+  }
+
+  /** 拖拽文件进入窗口时的提示效果 */
+  function renderDraggingFileTips() {
     if (Stage.isDraggingFile) {
       RenderUtils.renderRect(
         Renderer.getCoverWorldRectangle().transformWorld2View(),
@@ -228,36 +257,13 @@ export namespace Renderer {
         2,
       );
     }
-    // 纯键盘操作相关的
-    start = performance.now();
-    renderKeyboardOnly();
-    timings.keyboard = performance.now() - start;
-
-    // 画粘贴板上的信息
-    start = performance.now();
-    renderClipboard();
-    timings.clipboard = performance.now() - start;
-
-    // 画详细信息
-    if (isShowDebug) {
-      start = performance.now();
-      renderDetails();
-      timings.details = performance.now() - start;
-    }
-    start = performance.now();
-    renderSpecialKeys();
-    timings.specialKeys = performance.now() - start;
-
-    // 渲染所有特效
-    start = performance.now();
-    if (isRenderEffect) {
-      renderEffects();
-    }
-    timings.effects = performance.now() - start;
-    // test
-
-    timings.others = performance.now() - start;
   }
+
+  // function renderGrid() {
+
+  // }
+
+  /** 待删除的节点和边 */
   function renderWarningEntities() {
     // 待删除的节点
     for (const node of Stage.warningEntity) {
@@ -275,6 +281,7 @@ export namespace Renderer {
     }
   }
 
+  /** 画所有被标签了的节点的特殊装饰物和缩小视野时的直观显示 */
   function renderTags() {
     for (const tagString of StageManager.TagOptions.getTagUUIDs()) {
       const tagObject = StageManager.getEntitiesByUUIDs([tagString])[0];
@@ -304,7 +311,7 @@ export namespace Renderer {
           rectBgc,
           StageStyleManager.currentStyle.StageObjectBorderColor,
           1,
-          NODE_ROUNDED_RADIUS
+          NODE_ROUNDED_RADIUS,
         );
         RenderUtils.renderTextFromCenter(
           tagObject.text,
@@ -343,7 +350,7 @@ export namespace Renderer {
     }
   }
 
-  export function renderEntities(viewRectangle: Rectangle) {
+  function renderEntities(viewRectangle: Rectangle) {
     renderedNodes = 0;
     for (const node of StageManager.getTextNodes()) {
       // 过滤掉超出视野的节点
@@ -375,7 +382,7 @@ export namespace Renderer {
     }
   }
 
-  export function renderEdges(viewRectangle: Rectangle) {
+  function renderEdges(viewRectangle: Rectangle) {
     renderedEdges = 0;
     for (const edge of StageManager.getEdges()) {
       if (!edge.isBodyLineIntersectWithRectangle(viewRectangle)) {
@@ -386,7 +393,8 @@ export namespace Renderer {
     }
   }
 
-  export function renderClipboard() {
+  /** 画粘贴板上的信息 */
+  function renderClipboard() {
     if (Stage.copyBoardData.nodes.length === 0) {
       return;
     }
@@ -479,7 +487,11 @@ export namespace Renderer {
   //   return new Vector(textWidth, textHeight);
   // }
 
-  export function renderEffects() {
+  /** 渲染所有特效 */
+  function renderEffects() {
+    if (!isRenderEffect) {
+      return;
+    }
     for (const effect of Stage.effects) {
       if (effect instanceof CircleFlameEffect) {
         EffectRenderer.renderCircleFlameEffect(effect);
@@ -508,7 +520,12 @@ export namespace Renderer {
       }
     }
   }
-  export function renderGrid() {
+
+  /** 画网格 */
+  function renderGrid() {
+    if (!isShowGrid) {
+      return;
+    }
     const gap = 50;
     let currentGap = gap;
     if (Camera.currentScale < 1) {
@@ -537,7 +554,11 @@ export namespace Renderer {
     }
   }
 
-  function renderDetails() {
+  /** 画debug信息 */
+  function renderDebugDetails() {
+    if (!isShowDebug) {
+      return;
+    }
     const detailsData = [
       `scale: ${Camera.currentScale}`,
       `target: ${Camera.targetScale.toFixed(2)}`,
