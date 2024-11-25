@@ -278,6 +278,9 @@ export namespace Renderer {
   function renderTags() {
     for (const tagString of StageManager.TagOptions.getTagUUIDs()) {
       const tagObject = StageManager.getEntitiesByUUIDs([tagString])[0];
+      if (!tagObject) {
+        continue;
+      }
       const rect = tagObject.collisionBox.getRectangle();
       RenderUtils.renderPolygonAndFill(
         [
