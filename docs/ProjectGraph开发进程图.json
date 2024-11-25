@@ -2254,10 +2254,10 @@
       "uuid": "3fb815ee-e5b5-417a-9af8-900a7d6f9c05",
       "details": "",
       "color": [
-        0,
-        0,
-        0,
-        0
+        22,
+        163,
+        74,
+        1
       ],
       "type": "core:text_node"
     },
