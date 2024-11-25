@@ -10,6 +10,8 @@ import { Controller } from "../Controller";
 import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
 import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { ConnectableEntity } from "../../stageObject/StageObject";
+import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
+import { v4 } from "uuid";
 
 /**
  * 右键连线功能 的控制器
@@ -23,12 +25,44 @@ export const ControllerNodeConnection = new ControllerClass();
  */
 let _lastRightMouseClickLocation: Vector = new Vector(0, 0);
 
+function isConnecting() {
+  return Stage.connectFromEntities.length > 0;
+}
+
+function addConnectEffect(from: ConnectableEntity, to: ConnectableEntity) {
+  for (const effect of EdgeRenderer.getConnectedEffects(from, to)) {
+    Stage.effects.push(effect);
+  }
+}
 /**
  *
  * @param event
  * @returns
  */
 ControllerNodeConnection.mousedown = (event: MouseEvent) => {
+  if (event.button === 0) {
+    // 如果是左键，则检查是否在连接的过程中按下
+    if (isConnecting()) {
+      const pressWorldLocation = Renderer.transformView2World(
+        new Vector(event.clientX, event.clientY),
+      );
+      let clickedConnectableEntity: ConnectableEntity | null =
+        StageManager.findConnectableEntityByLocation(pressWorldLocation);
+      if (clickedConnectableEntity === null) {
+        // 在这里创建一个质点
+        const connectPoint = new ConnectPoint({
+          uuid: v4(),
+          location: [pressWorldLocation.x, pressWorldLocation.y],
+        });
+        StageManager.addConnectPoint(connectPoint);
+        for (const fromEntity of Stage.connectFromEntities) {
+          StageManager.connectEntity(fromEntity, connectPoint);
+          addConnectEffect(fromEntity, connectPoint);
+        }
+        Stage.connectFromEntities = [connectPoint];
+      }
+    }
+  }
   if (event.button !== 2) {
     return;
   }
@@ -110,7 +144,7 @@ ControllerNodeConnection.mouseup = (event: MouseEvent) => {
     return;
   }
   // 结束连线
-  if (Stage.connectFromEntities.length > 0 && Stage.connectToEntity !== null) {
+  if (isConnecting() && Stage.connectToEntity !== null) {
     let isHaveConnectResult = false; // 在多重链接的情况下，是否有连接成功
     for (const entity of Stage.connectFromEntities) {
       const connectResult = StageManager.connectEntity(
@@ -120,12 +154,7 @@ ControllerNodeConnection.mouseup = (event: MouseEvent) => {
       if (connectResult) {
         // 连接成功，特效
         isHaveConnectResult = true;
-        for (const effect of EdgeRenderer.getConnectedEffects(
-          entity,
-          Stage.connectToEntity,
-        )) {
-          Stage.effects.push(effect);
-        }
+        addConnectEffect(entity, Stage.connectToEntity);
       } else {
         console.warn("连接失败！", entity, Stage.connectToEntity);
       }
@@ -168,12 +197,7 @@ ControllerNodeConnection.mouseup = (event: MouseEvent) => {
           );
           if (connectResult) {
             // 连接成功，特效
-            for (const effect of EdgeRenderer.getConnectedEffects(
-              selectedEntity,
-              releaseTargetEntity,
-            )) {
-              Stage.effects.push(effect);
-            }
+            addConnectEffect(selectedEntity, releaseTargetEntity);
           } else {
             console.warn("连接失败！", selectedEntity, releaseTargetEntity);
           }
