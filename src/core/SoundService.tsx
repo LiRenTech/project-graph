@@ -1,23 +1,51 @@
-
 // 实测发现 不可行:
 // @tauri-apps/plugin-fs 只能读取文本文件，不能强行读取流文件并强转为ArrayBuffer
 // import { readTextFile } from "@tauri-apps/plugin-fs";
 
 import { invoke } from "@tauri-apps/api/core";
 import { StringDict } from "./dataStruct/StringDict";
+import { Settings } from "./Settings";
 
 /**
  * 播放音效的服务
+ * 这个音效播放服务是用户自定义的
  */
 export namespace SoundService {
-  export function testPlay() {
-    loadAndPlaySound("");
+
+  let cuttingLineStartSoundFile = "";
+
+  export function init() {
+    Settings.watch("cuttingLineStartSoundFile", (value) => {
+      cuttingLineStartSoundFile = value;
+    });
+  }
+
+  export namespace play {
+    // 开始切断
+    export function cuttingLineStart() {
+      loadAndPlaySound(cuttingLineStartSoundFile);
+    }
+    
+    // 开始连接
+    // 连接吸附到目标点
+
+    // 自动保存执行特效
+    // 自动备份执行特效
+    
+    // 框选增加物体音效
+
+    // 切断特效声音
+    // 连接成功
   }
 
   const audioContext = new window.AudioContext();
 
-  
   async function loadAndPlaySound(filePath: string) {
+    if (filePath.trim() === "") {
+      console.log("filePath is empty");
+      return;
+    }
+
     // 解码音频数据
     const audioBuffer = await getAudioBufferByFilePath(filePath);
     const source = audioContext.createBufferSource();
@@ -29,7 +57,6 @@ export namespace SoundService {
   const pathAudioBufferMap = new StringDict<AudioBuffer>();
 
   async function getAudioBufferByFilePath(filePath: string) {
-    
     // 先从缓存中获取音频数据
     if (pathAudioBufferMap.hasId(filePath)) {
       const result = pathAudioBufferMap.getById(filePath);

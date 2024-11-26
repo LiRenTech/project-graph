@@ -51,7 +51,7 @@ export default function TestPage() {
       </div>
       <Button onClick={handleTestHttp}>test http</Button>
       <Button onClick={handleTestImageBase64}>getImageBase64</Button>
-      <Button onClick={SoundService.testPlay}>test sound</Button>
+      <Button onClick={SoundService.play.cuttingLineStart}>test sound</Button>
       last launch: {LastLaunch.version}
     </div>
   );

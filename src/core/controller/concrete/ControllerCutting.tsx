@@ -6,6 +6,7 @@ import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
 import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../render/canvas2d/renderer";
+import { SoundService } from "../../SoundService";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { Section } from "../../stageObject/entity/Section";
@@ -45,6 +46,8 @@ ControllerCutting.mousedown = (event: MouseEvent) => {
       cuttingStartLocation,
       cuttingStartLocation.clone(),
     );
+    // 添加音效提示
+    SoundService.play.cuttingLineStart();
   } else {
     Stage.isCutting = false;
   }
