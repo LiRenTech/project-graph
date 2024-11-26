@@ -75,6 +75,20 @@ fn save_base64_to_image(base64_str: &str, file_name: &str) -> Result<(), String>
     }
 }
 
+/// 读取 MP3 文件并返回其 Base64 编码字符串
+#[tauri::command]
+fn read_mp3_file(path: String) -> Result<String, String> {
+    let mut file = File::open(&path).map_err(|e| format!("无法打开文件: {}", e))?;
+    let mut buffer = Vec::new();
+    file.read_to_end(&mut buffer).map_err(|e| format!("读取文件时出错: {}", e))?;
+    
+    // 将文件内容编码为 Base64
+    let base64_str = general_purpose::STANDARD.encode(&buffer);
+    Ok(base64_str)
+}
+
+
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     println!("程序运行了！");
@@ -95,7 +109,8 @@ pub fn run() {
             save_file_by_path,
             convert_image_to_base64,
             save_base64_to_image,
-            check_json_exist
+            check_json_exist,
+            read_mp3_file
         ])
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_fs::init())

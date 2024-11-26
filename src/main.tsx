@@ -22,6 +22,7 @@ import { StartFilesManager } from "./core/StartFilesManager";
 import "./index.pcss";
 import { DialogProvider } from "./utils/dialog";
 import { PopupDialogProvider } from "./utils/popupDialog";
+import { SoundService } from "./core/SoundService";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -66,6 +67,7 @@ async function loadSyncModules() {
   Stage.init();
   StageHistoryManager.init();
   StageStyleManager.init();
+  SoundService.init();
 }
 
 /** 加载语言文件 */
