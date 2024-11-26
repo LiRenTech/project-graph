@@ -14,13 +14,11 @@
         "title": "Project Graph",
         "width": 1200,
         "height": 800,
-        "decorations": true,
-        "transparent": false,
-        "visible": false,
+        "decorations": false,
+        "transparent": true,
         "dragDropEnabled": false
       }
     ],
-    "macOSPrivateApi": true,
     "security": {
       "csp": null,
       "capabilities": []
