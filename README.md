@@ -38,6 +38,31 @@ pnpm tauri dev
 https://littlefean.github.io/2024/09/28/tauri%E9%A1%B9%E7%9B%AE%E5%9C%A8windows%E4%B8%8A%E7%9A%84%E5%BC%80%E5%8F%91%E8%B8%A9%E5%9D%91/
 ```
 
+### MacOs
+
+目前由于开发者无MacOs设备，无法测试，如果您是mac用户，可以将 `src-tauri/tauri.conf.json` 中的项进行以下修改后再打包：
+
+```js
+  "app": {
+    "windows": [
+      {
+        "title": "Project Graph",
+        "width": 1200,
+        "height": 800,
+        "decorations": true,  // 修改
+        "transparent": false,  // 修改
+        "visible": false,  // 添加此项
+        "dragDropEnabled": false
+      }
+    ],
+    "macOSPrivateApi": true,  // 添加此项
+    "security": {
+      "csp": null,
+      "capabilities": []
+    }
+  },
+```
+
 ### 一键安装配置环境
 
 如果感觉配置过程过于麻烦，可以使用xlings工具一键安装并配置环境
