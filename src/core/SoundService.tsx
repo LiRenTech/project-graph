@@ -13,10 +13,22 @@ import { Settings } from "./Settings";
 export namespace SoundService {
 
   let cuttingLineStartSoundFile = "";
+  let connectLineStartSoundFile = "";
+  let connectFindTargetSoundFile = "";
+  let cuttingLineReleaseSoundFile = "";
 
   export function init() {
     Settings.watch("cuttingLineStartSoundFile", (value) => {
       cuttingLineStartSoundFile = value;
+    });
+    Settings.watch("connectLineStartSoundFile", (value) => {
+      connectLineStartSoundFile = value;
+    });
+    Settings.watch("connectFindTargetSoundFile", (value) => {
+      connectFindTargetSoundFile = value;
+    });
+    Settings.watch("cuttingLineReleaseSoundFile", (value) => {
+      cuttingLineReleaseSoundFile = value;
     });
   }
 
@@ -27,7 +39,14 @@ export namespace SoundService {
     }
     
     // 开始连接
+    export function connectLineStart() {
+      loadAndPlaySound(connectLineStartSoundFile);
+    }
+
     // 连接吸附到目标点
+    export function connectFindTarget() {
+      loadAndPlaySound(connectFindTargetSoundFile);
+    }
 
     // 自动保存执行特效
     // 自动备份执行特效
@@ -35,6 +54,9 @@ export namespace SoundService {
     // 框选增加物体音效
 
     // 切断特效声音
+    export function cuttingLineRelease() {
+      loadAndPlaySound(cuttingLineReleaseSoundFile);
+    }
     // 连接成功
   }
 

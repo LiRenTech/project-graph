@@ -147,4 +147,5 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
       cuttingStartLocation.distance(ControllerCutting.lastMoveLocation) / 10,
     ),
   );
+  SoundService.play.cuttingLineRelease();
 };

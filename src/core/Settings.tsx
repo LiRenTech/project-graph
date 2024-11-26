@@ -41,6 +41,9 @@ export namespace Settings {
     // 音效相关
     soundEnabled: boolean;
     cuttingLineStartSoundFile: string;
+    connectLineStartSoundFile: string;
+    connectFindTargetSoundFile: string;
+    cuttingLineReleaseSoundFile: string;
     // github 相关
     githubToken: string;
     githubUser: string;
@@ -78,7 +81,9 @@ export namespace Settings {
     // 音效相关
     soundEnabled: true,
     cuttingLineStartSoundFile: "",
-
+    connectLineStartSoundFile: "",
+    connectFindTargetSoundFile: "",
+    cuttingLineReleaseSoundFile: "",
     // github 相关
     githubToken: "",
     githubUser: "",

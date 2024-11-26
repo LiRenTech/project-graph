@@ -12,6 +12,7 @@ import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRend
 import { ConnectableEntity } from "../../stageObject/StageObject";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { v4 } from "uuid";
+import { SoundService } from "../../SoundService";
 
 /**
  * 右键连线功能 的控制器
@@ -109,6 +110,8 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
         ),
       );
     }
+    // 播放音效
+    SoundService.play.connectLineStart();
   }
 };
 
@@ -126,9 +129,10 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
   let isFindConnectToNode = false;
   for (const entity of StageManager.getConnectableEntity()) {
     if (entity.collisionBox.isPointInCollisionBox(worldLocation)) {
+      // 找到了连接的节点，吸附上去
       Stage.connectToEntity = entity;
       isFindConnectToNode = true;
-
+      SoundService.play.connectFindTarget();
       break;
     }
   }
