@@ -38,6 +38,10 @@ export namespace EdgeRenderer {
     }
   }
 
+  export function isCurrentRendererCurve(): boolean {
+    return currentRenderer instanceof SymmetryCurveEdgeRenderer;
+  }
+
   /**
    * 更新渲染器
    */

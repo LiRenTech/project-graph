@@ -1,5 +1,6 @@
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
+import { Controller } from "../Controller";
 
 import { ControllerClass } from "../ControllerClass";
 
@@ -11,7 +12,7 @@ import { ControllerClass } from "../ControllerClass";
 export const ControllerEdgeEdit = new ControllerClass();
 
 ControllerEdgeEdit.mouseDoubleClick = (event: MouseEvent) => {
-  if (event.button !== 0) {
+  if (Controller.pressingKeySet.has("control") || event.button !== 0) {
     return;
   }
   if (Stage.hoverEdges.length > 0) {

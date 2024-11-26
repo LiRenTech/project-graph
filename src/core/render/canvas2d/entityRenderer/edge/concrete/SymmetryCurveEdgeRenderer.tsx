@@ -75,7 +75,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       edge.target.collisionBox.getRectangle().getNormalVectorAt(end),
       Math.abs(end.subtract(start).magnitude()) / 2,
     );
-    this.renderArrowCurve(curve);
+    this.renderArrowCurve(curve, edge.isEditingStructure);
     this.renderText(curve, edge);
   }
 
@@ -113,7 +113,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       endLine.direction().multiply(-1),
       Math.abs(endPoint.subtract(startPoint).magnitude()) / 2
     );
-    this.renderArrowCurve(curve);
+    this.renderArrowCurve(curve, edge.isEditingStructure);
     this.renderText(curve, edge);
   }
 
@@ -182,7 +182,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
         end,
         endRect.getNormalVectorAt(end),
         Math.abs(end.subtract(start).magnitude()) / 2,
-      ),
+      )
     );
   }
 
@@ -190,7 +190,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
    * 渲染curve及箭头,curve.end即箭头头部
    * @param curve
    */
-  private renderArrowCurve(curve: SymmetryCurve): void {
+  private renderArrowCurve(curve: SymmetryCurve, drawCtrl: boolean = false): void {
     // 绘制曲线本体
     curve.endDirection = curve.endDirection.normalize();
     const end = curve.end.clone();
@@ -209,7 +209,8 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     //   )
     //   lastPoint = line.end;
     // }
-    WorldRenderUtils.renderSymmetryCurve(curve, new Color(204, 204, 204), 2);
+    WorldRenderUtils.renderSymmetryCurve(
+      curve, new Color(204, 204, 204), 2, drawCtrl);
     // 画箭头
     const endPoint = end.add(curve.endDirection.multiply(2));
     EdgeRenderer.renderArrowHead(

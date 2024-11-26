@@ -6,6 +6,7 @@ import { StageHistoryManager } from "../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../stage/stageManager/StageManager";
 import { ControllerCamera } from "./concrete/ControllerCamera";
 import { ControllerCopy } from "./concrete/ControllerCopy";
+import { ControllerCurveEdit } from "./concrete/ControllerCurveEdit";
 import { ControllerCutting } from "./concrete/ControllerCutting";
 import { ControllerDragFile } from "./concrete/ControllerDragFile";
 import { ControllerDrawing } from "./concrete/ControllerDrawing";
@@ -147,6 +148,7 @@ export namespace Controller {
     ControllerKeyboardOnly.init();
     ControllerCopy.init();
     ControllerSectionEdit.init();
+    ControllerCurveEdit.init();
     // 
   }
 
@@ -309,5 +311,6 @@ export namespace Controller {
     ControllerKeyboardOnly.destroy();
     ControllerCopy.destroy();
     ControllerSectionEdit.destroy();
+    ControllerCurveEdit.destroy();
   }
 }

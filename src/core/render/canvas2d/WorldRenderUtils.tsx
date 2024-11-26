@@ -14,30 +14,38 @@ import { RenderUtils } from "./RenderUtils";
 export namespace WorldRenderUtils {
   /**
    * 绘制一条贝塞尔曲线
-   * @param curve
+   * @param drawCtrl 是否绘制控制点，默认false
    */
   export function renderBezierCurve(
     curve: CubicBezierCurve,
     color: Color,
     width: number,
+    drawCtrl: boolean = false,
   ): void {
     curve.start = Renderer.transformWorld2View(curve.start);
     curve.end = Renderer.transformWorld2View(curve.end);
     curve.ctrlPt1 = Renderer.transformWorld2View(curve.ctrlPt1);
     curve.ctrlPt2 = Renderer.transformWorld2View(curve.ctrlPt2);
     RenderUtils.renderBezierCurve(curve, color, width * Camera.currentScale);
+    if (drawCtrl) {
+      RenderUtils.renderSolidLine(
+        curve.start, curve.ctrlPt1, color, width * Camera.currentScale);
+      RenderUtils.renderSolidLine(
+        curve.end, curve.ctrlPt2, color, width * Camera.currentScale);
+    }
   }
 
   /**
    * 绘制一条对称曲线
-   * @param curve
+   * @param drawCtrl 是否绘制控制点，默认false
    */
   export function renderSymmetryCurve(
     curve: SymmetryCurve,
     color: Color,
     width: number,
+    drawCtrl: boolean = false,
   ): void {
-    renderBezierCurve(curve.bezier, color, width);
+    renderBezierCurve(curve.bezier, color, width, drawCtrl);
   }
 
   export function renderLaser(start: Vector, end: Vector, width: number): void {

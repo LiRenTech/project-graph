@@ -22,11 +22,21 @@ export class Edge extends ConnectableAssociation {
   /**
    * 是否被选中
    */
-  _isSelected: boolean = false;
+  protected _isSelected: boolean = false;
+
+  /**
+   * 是否正在编辑边的结构
+   */
+  private _isEditingStructure: boolean = false;
+
+  private _startDirection: Vector | null = null;
+  private _endDirection: Vector | null = null;
+  private _bending: number | null = null;
 
   public get isSelected(): boolean {
     return this._isSelected;
   }
+  
   public set isSelected(value: boolean) {
     const oldValue = this._isSelected;
     this._isSelected = value;
@@ -39,6 +49,50 @@ export class Edge extends ConnectableAssociation {
         StageManager.selectedEdgeCount++;
       }
     }
+  }
+
+  public get startDirection(): Vector {
+    if (this._startDirection === null) {
+      return this.source.collisionBox.getRectangle().getNormalVectorAt(
+        this.bodyLine.start)
+    }
+    return this._startDirection;
+  }
+
+  public set startDirection(value: Vector) {
+    this._startDirection = value;
+  }
+
+  public get endDirection(): Vector {
+    if (this._endDirection === null) {
+      return this.target.collisionBox.getRectangle().getNormalVectorAt(
+        this.bodyLine.end)
+    }
+    return this._endDirection;
+  }
+
+  public set endDirection(value: Vector) {
+    this._endDirection = value;
+  }
+
+  public get bending(): number {
+    if (this._bending === null) {
+      return Math.abs(
+        this.bodyLine.end.subtract(this.bodyLine.start).magnitude()) / 2
+    }
+    return this._bending;
+  }
+
+  public set bending(value: number) {
+    this._bending = value;
+  }
+
+  public get isEditingStructure(): boolean {
+    return this._isEditingStructure;
+  }
+
+  public set isEditingStructure(value: boolean) {
+    this._isEditingStructure = value;
   }
 
   get source(): ConnectableEntity {

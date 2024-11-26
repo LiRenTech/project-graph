@@ -21,7 +21,7 @@ export abstract class StageObject implements Disposable {
 
   public abstract collisionBox: CollisionBox;
 
-  _isSelected: boolean = false;
+  protected _isSelected: boolean = false;
 
   public get isSelected(): boolean {
     return this._isSelected;
