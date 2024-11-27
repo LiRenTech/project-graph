@@ -18,6 +18,7 @@ import {
   Info,
   MoreHorizontal,
   PartyPopper,
+  RefreshCcw,
   Save,
   Scaling,
   Settings as SettingsIcon,
@@ -458,7 +459,11 @@ export default function AppMenu({
         </Col>
       </Row>
       <Row icon={<AppWindow />} title={t("window.title")}>
-        {/* 2024年11月19日 去掉了刷新按钮，因为容易误操作导致工程文件进度丢失，开发中刷新建议ctrl+shift+r */}
+        {import.meta.env.DEV && (
+          <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>
+            重载
+          </Col>
+        )}
         <Col
           icon={<Fullscreen />}
           onClick={() =>
