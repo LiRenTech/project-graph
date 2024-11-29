@@ -136,6 +136,15 @@ export namespace StageManager {
     export function getTagUUIDs(): string[] {
       return tags.valuesToArray();
     }
+    // 清理未引用的标签
+    export function updateTags() {
+      const uuids = tags.valuesToArray();
+      for (const uuid of uuids) {
+        if (!entities.hasId(uuid)) {
+          tags.deleteValue(uuid);
+        }
+      }
+    }
   }
 
   /**
@@ -242,6 +251,8 @@ export namespace StageManager {
       }
       edge.isShifting = isShifting;
     }
+    // 对tags进行更新
+    TagOptions.updateTags();
   }
 
   export function getTextNodeByUUID(uuid: string): TextNode | null {
