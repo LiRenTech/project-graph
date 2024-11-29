@@ -61,9 +61,10 @@ export default function About() {
           <Card title="开发者名单" className="bg-blue-500/20">
             <Code2 />
           </Card>
-          <Card title="项目提出者">Littlefean</Card>
-          <Card title="概念设计">Littlefean</Card>
+          <Card title="项目提出者">Rutubet</Card>
+          <Card title="理念设计">Littlefean</Card>
           <Card title="功能设计">Littlefean, ZTY, Rutubet, 广大的反馈者们</Card>
+          <Card title="反馈管理">Littlefean, ZTY</Card>
           <Card title="Logo设计">Littlefean, ZTY, Rutubet</Card>
           <Card title="UI设计">ZTY</Card>
           <Card title="软件架构与体系设计">Rutubet, Littlefean, ZTY</Card>
@@ -80,7 +81,6 @@ export default function About() {
           <Card title="程序员鼓励师的鼓励师">
             maximum recursion depth exceeded
           </Card>
-          <Card title="音效师">undefined</Card>
           <Card title="气氛调节师">yuxiaoQAQ</Card>
         </div>
 
