@@ -1,0 +1,44 @@
+name: Bug 报告
+description: 报告一个 Bug 或者漏洞
+title: "Bug: "
+labels: ["bug"]
+projects: []
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        在报告 Bug 之前，请先阅读 [FAQ](https://liren.zty012.de/project-graph/v2/faq)
+
+        如果 FAQ 无法解决你的问题，请下载 [Nightly Build](https://github.com/LiRenTech/project-graph/releases/nightly)，这可能会解决你的问题。
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 发生了什么？
+      description: 请详细描述一下你遇到的问题。
+      placeholder: ...
+      value: ""
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: 系统版本
+      description: 请选择你使用的系统版本。
+      options:
+        - Windows
+        - macOS
+        - Debian based Linux (Debian, Ubuntu, Kali Linux, ...)
+        - Arch based Linux (Arch Linux, Manjaro, ...)
+      default: 0
+    validations:
+      required: true
+  - type: textarea
+    id: attachments
+    attributes:
+      label: 附件
+      description: 如果可以的话，请附上出现问题的项目 json 文件或者截图。
+      placeholder: 拖拽文件到此处
+      value: ""
+    validations:
+      required: false
