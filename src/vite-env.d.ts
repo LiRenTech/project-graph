@@ -5,4 +5,5 @@
 interface ImportMetaEnv {
   LR_GITHUB_CLIENT_SECRET?: string;
   LR_ARK_API_KEY?: string;
+  LR_CF_API_KEY?: string;
 }

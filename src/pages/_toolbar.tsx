@@ -7,28 +7,28 @@ import { cn } from "../utils/cn";
 import { invoke } from "@tauri-apps/api/core";
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 import {
-  AlignCenterHorizontal,
-  AlignCenterVertical,
-  AlignEndHorizontal,
-  AlignEndVertical,
-  AlignHorizontalSpaceBetween,
-  AlignStartHorizontal,
-  AlignStartVertical,
-  AlignVerticalSpaceBetween,
-  BrainCircuit,
-  ClipboardPaste,
-  // ChevronsRightLeft,
-  ClipboardX,
-  Globe,
-  LayoutDashboard,
-  Package,
-  PackageOpen,
-  PaintBucket,
-  Repeat,
-  SaveAll,
-  Square,
-  Tag,
-  Trash2,
+    AlignCenterHorizontal,
+    AlignCenterVertical,
+    AlignEndHorizontal,
+    AlignEndVertical,
+    AlignHorizontalSpaceBetween,
+    AlignStartHorizontal,
+    AlignStartVertical,
+    AlignVerticalSpaceBetween,
+    BrainCircuit,
+    ClipboardPaste,
+    // ChevronsRightLeft,
+    ClipboardX,
+    Globe,
+    LayoutDashboard,
+    Package,
+    PackageOpen,
+    PaintBucket,
+    Repeat,
+    SaveAll,
+    Square,
+    Tag,
+    Trash2,
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
@@ -380,7 +380,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           description="AI扩展节点"
           icon={<BrainCircuit />}
           handleFunction={() => {
-            if (ApiKeyManager.getKey().length === 0) {
+            if (ApiKeyManager.getKeyArk().length === 0) {
               dialog.show({
                 title: "提示",
                 content: "当前为非官方构建，请使用官方构建方可使用AI功能。",

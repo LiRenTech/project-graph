@@ -1,13 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
+import { AiFetcherOneShotCloudFlare } from "../../../ai/AiFetcher";
 import { ApiKeyManager } from "../../../ai/ApiKeyManager";
+import { PromptManager } from "../../../ai/PromptManager";
 import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
 import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Stage } from "../../Stage";
 import { StageManager } from "../StageManager";
-import { PromptManager } from "../../../ai/PromptManager";
-import { AiFetcherOneShotCloudFlare } from "../../../ai/AiFetcher";
 
 export namespace StageGeneratorAI {
   const systemPrompt =
@@ -61,7 +61,7 @@ export namespace StageGeneratorAI {
           system: systemPrompt,
           user: userContent,
         })
-        .setApiKey(ApiKeyManager.getKey())
+        .setApiKey(ApiKeyManager.getKeyCF())
         .fetch();
       let expandArrayList: string[] = [];
       if (responseContent.includes("\n")) {
