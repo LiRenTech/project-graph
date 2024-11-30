@@ -30,7 +30,8 @@
         "https://github.com",
         "https://api.github.com",
         "http://www.baidu.com",
-        "https://ark.cn-beijing.volces.com"
+        "https://ark.cn-beijing.volces.com",
+        "https://api.cloudflare.com"
       ]
     },
     "http:default"
