@@ -147,7 +147,7 @@ export namespace Controller {
     ControllerKeyboardOnly.init();
     ControllerCopy.init();
     ControllerSectionEdit.init();
-    // 
+    //
   }
 
   // 以下事件处理函数仅为Controller总控制器修改重要属性使用。不涉及具体的功能逻辑。

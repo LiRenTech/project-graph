@@ -7,28 +7,28 @@ import { cn } from "../utils/cn";
 import { invoke } from "@tauri-apps/api/core";
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 import {
-    AlignCenterHorizontal,
-    AlignCenterVertical,
-    AlignEndHorizontal,
-    AlignEndVertical,
-    AlignHorizontalSpaceBetween,
-    AlignStartHorizontal,
-    AlignStartVertical,
-    AlignVerticalSpaceBetween,
-    BrainCircuit,
-    ClipboardPaste,
-    // ChevronsRightLeft,
-    ClipboardX,
-    Globe,
-    LayoutDashboard,
-    Package,
-    PackageOpen,
-    PaintBucket,
-    Repeat,
-    SaveAll,
-    Square,
-    Tag,
-    Trash2,
+  AlignCenterHorizontal,
+  AlignCenterVertical,
+  AlignEndHorizontal,
+  AlignEndVertical,
+  AlignHorizontalSpaceBetween,
+  AlignStartHorizontal,
+  AlignStartVertical,
+  AlignVerticalSpaceBetween,
+  BrainCircuit,
+  ClipboardPaste,
+  // ChevronsRightLeft,
+  ClipboardX,
+  Globe,
+  LayoutDashboard,
+  Package,
+  PackageOpen,
+  PaintBucket,
+  Repeat,
+  SaveAll,
+  Square,
+  Tag,
+  Trash2,
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
@@ -224,25 +224,26 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   const popupDialog = usePopupDialog();
   const dialog = useDialog();
   const [isCopyClearShow, setIsCopyClearShow] = useState(false);
-
-  useEffect(() => {
-    setIsCopyClearShow(Stage.copyBoardData.nodes.length > 0);
-  }, [Stage.copyBoardData]);
-
   const [isHaveSelectedNode, setSsHaveSelectedNode] = useState(false);
   const [isHaveSelectedNodeOverTwo, setSsHaveSelectedNodeOverTwo] =
     useState(false);
-
-  useEffect(() => {
-    setSsHaveSelectedNode(StageManager.selectedNodeCount > 0);
-    setSsHaveSelectedNodeOverTwo(StageManager.selectedNodeCount > 1);
-  }, [StageManager.selectedNodeCount]);
-
   const [isHaveSelectedEdge, setSsHaveSelectedEdge] = useState(false);
 
-  useEffect(() => {
+  const update = () => {
+    setSsHaveSelectedNode(StageManager.selectedNodeCount > 0);
+    setSsHaveSelectedNodeOverTwo(StageManager.selectedNodeCount > 1);
     setSsHaveSelectedEdge(StageManager.selectedEdgeCount > 0);
-  }, [StageManager.selectedEdgeCount]);
+    setIsCopyClearShow(Stage.copyBoardData.nodes.length > 0);
+  };
+  useEffect(() => {
+    update();
+    const intervalId = setInterval(() => {
+      update();
+    }, 100);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   // 一个竖向的工具栏，在页面顶部，右侧显示
   return (

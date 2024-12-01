@@ -38,6 +38,7 @@ import { cn } from "../utils/cn";
 import { useDialog } from "../utils/dialog";
 import { isDesktop } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
+import { dataDir } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useTranslation } from "react-i18next";
 import { RecentFileManager } from "../core/RecentFileManager";
@@ -423,11 +424,11 @@ export default function AppMenu({
       <Row icon={<Folder />} title={t("location.title")}>
         <Col
           icon={<FolderCog />}
-          onClick={() => {
+          onClick={async () => {
             dialog.show({
               title: "数据文件夹位置",
               type: "info",
-              code: "%APPDATA%/liren.project-graph",
+              code: await dataDir(),
               content: "软件数据文件夹位置",
             });
           }}

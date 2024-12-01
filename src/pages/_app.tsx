@@ -238,14 +238,7 @@ export default function App() {
       <PopupDialog />
       <ErrorHandler />
       {/* 叠加层，显示窗口控件 */}
-      <div
-        className={cn(
-          "pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 p-4 *:pointer-events-auto",
-          {
-            "p-8": isMobile,
-          },
-        )}
-      >
+      <div className="pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 p-4 *:pointer-events-auto">
         {/* 左上角菜单按钮 */}
         <IconButton
           onClick={(e) => {
@@ -303,19 +296,27 @@ export default function App() {
             <Button
               data-tauri-drag-region
               className={cn(
-                "flex-1 hover:cursor-move active:scale-100 active:cursor-grabbing",
-                isSaved ? "" : "text-yellow-500",
-              )}
-            ></Button>
-            <span
-              data-tauri-drag-region
-              className={cn(
-                isSaved ? "" : "text-yellow-500",
-                "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+                "hover:cursor-move active:scale-100 active:cursor-grabbing",
+                {
+                  "text-yellow-500": isSaved,
+                  "flex-1": isDesktop,
+                },
               )}
             >
-              {filename + (isSaved ? "" : t("unsaved"))}
-            </span>
+              {isMobile && filename + (isSaved ? "" : t("unsaved"))}
+            </Button>
+            {isMobile && <div className="flex-1"></div>}
+            {isDesktop && (
+              <span
+                data-tauri-drag-region
+                className={cn(
+                  isSaved ? "" : "text-yellow-500",
+                  "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+                )}
+              >
+                {filename + (isSaved ? "" : t("unsaved"))}
+              </span>
+            )}
           </>
         )}
         {/* 右上角AI按钮 */}

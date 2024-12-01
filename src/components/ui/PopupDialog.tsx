@@ -1,5 +1,6 @@
 import React from "react";
 import { cn } from "../../utils/cn";
+import { appScale } from "../../utils/platform";
 import { usePopupDialog } from "../../utils/popupDialog";
 import Box from "./Box";
 
@@ -43,7 +44,11 @@ export default function PopupDialog() {
   return (
     <Box
       ref={ref}
-      style={{ position: "fixed", top: location[1], left: location[0] }}
+      style={{
+        position: "fixed",
+        top: location[1] / appScale,
+        left: location[0] / appScale,
+      }}
       className={cn("pointer-events-none z-[999] scale-75 p-2 opacity-0", {
         "pointer-events-auto scale-100 opacity-100": popupDialog.showPopup,
       })}

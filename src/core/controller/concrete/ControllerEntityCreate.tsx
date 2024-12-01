@@ -1,3 +1,4 @@
+import { isDesktop } from "../../../utils/platform";
 import { Color } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Vector } from "../../dataStruct/Vector";
@@ -88,6 +89,8 @@ function createNode(pressLocation: Vector) {
         10,
       ),
     );
-    editNode(createNode);
+    if (isDesktop) {
+      editNode(createNode);
+    }
   });
 }
