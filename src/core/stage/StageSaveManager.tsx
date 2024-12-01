@@ -26,7 +26,7 @@ export namespace StageSaveManager {
   ) {
     invoke<string>("save_file_by_path", {
       path,
-      content: JSON.stringify(data, null, 2),
+      content: JSON.stringify(data),
     })
       .then((_) => {
         Stage.effects.push(ViewFlashEffect.SaveFile());
@@ -59,7 +59,7 @@ export namespace StageSaveManager {
     }
     invoke<string>("save_file_by_path", {
       path: Stage.Path.getFilePath(),
-      content: JSON.stringify(data, null, 2),
+      content: JSON.stringify(data),
     })
       .then((_) => {
         if (addFlashEffect) {
@@ -77,12 +77,12 @@ export namespace StageSaveManager {
   }
 
   /**
-   * 
+   *
    * @param path 备份文件夹/xxx.json
-   * @param data 
-   * @param successCallback 
-   * @param errorCallback 
-   * @returns 
+   * @param data
+   * @param successCallback
+   * @param errorCallback
+   * @returns
    */
   export async function backupHandle(
     path: string,
@@ -101,7 +101,7 @@ export namespace StageSaveManager {
 
     invoke<string>("save_file_by_path", {
       path,
-      content: JSON.stringify(data, null, 2),
+      content: JSON.stringify(data),
     })
       .then((_) => {
         Stage.effects.push(ViewFlashEffect.SaveFile());
@@ -137,7 +137,7 @@ export namespace StageSaveManager {
 
     invoke<string>("save_file_by_path", {
       path: backupPath,
-      content: JSON.stringify(data, null, 2),
+      content: JSON.stringify(data),
     })
       .then((_) => {
         if (addFlashEffect) {
