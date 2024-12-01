@@ -1,6 +1,9 @@
-import { Color } from "../../dataStruct/Color";
+import { Color, mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Vector } from "../../dataStruct/Vector";
+import { Renderer } from "../../render/canvas2d/renderer";
+import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { Camera } from "../../stage/Camera";
 import { Effect } from "../effect";
 
 /**
@@ -17,5 +20,30 @@ export class LineEffect extends Effect {
     public lineWidth: number,
   ) {
     super(timeProgress);
+  }
+
+  render(): void {
+    if (this.timeProgress.isFull) {
+      return;
+    }
+    const fromLocation = Renderer.transformWorld2View(this.fromLocation);
+    const toLocation = Renderer.transformWorld2View(this.toLocation);
+    const fromColor = mixColors(
+      this.fromColor,
+      this.fromColor.toTransparent(),
+      this.timeProgress.rate,
+    );
+    const toColor = mixColors(
+      this.toColor,
+      this.toColor.toTransparent(),
+      this.timeProgress.rate,
+    );
+    RenderUtils.renderGradientLine(
+      fromLocation,
+      toLocation,
+      fromColor,
+      toColor,
+      this.lineWidth * Camera.currentScale,
+    );
   }
 }

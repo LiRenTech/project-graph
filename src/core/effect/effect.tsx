@@ -17,4 +17,9 @@ export abstract class Effect {
     // 自动+1帧
     this.timeProgress.add(1);
   }
+
+  /**
+   * 渲染方法
+   */
+  abstract render(): void;
 }

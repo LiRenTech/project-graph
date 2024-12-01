@@ -1,12 +1,13 @@
-import { Color } from "../../dataStruct/Color";
+import { Color, mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Vector } from "../../dataStruct/Vector";
+import { WorldRenderUtils } from "../../render/canvas2d/WorldRenderUtils";
 import { Effect } from "../effect";
 
 /**
  * 线段特效
  * 直接显示全部，随着时间推移逐渐透明，但会有一个从开始到结束点的划过的特效
- * 
+ *
  * 0%
  * ------------------->
  * 50%
@@ -24,5 +25,24 @@ export class LineCuttingEffect extends Effect {
     public lineWidth: number = 25,
   ) {
     super(timeProgress);
+  }
+
+  render() {
+    if (this.timeProgress.isFull) {
+      return;
+    }
+    const fromLocation = this.fromLocation.add(
+      this.toLocation
+        .subtract(this.fromLocation)
+        .multiply(this.timeProgress.rate),
+    );
+
+    const toLocation = this.toLocation;
+    WorldRenderUtils.renderCuttingFlash(
+      fromLocation,
+      toLocation,
+      this.lineWidth * (1 - this.timeProgress.rate),
+      mixColors(this.fromColor, this.toColor, this.timeProgress.rate),
+    );
   }
 }

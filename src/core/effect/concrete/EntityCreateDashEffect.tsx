@@ -1,7 +1,12 @@
 import { Random } from "../../algorithm/random";
+import { RateFunctions } from "../../algorithm/rateFunctions";
+import { mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
+import { Renderer } from "../../render/canvas2d/renderer";
+import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effect";
 
 /**
@@ -118,5 +123,54 @@ export class EntityCreateDashEffect extends Effect {
     time = 30,
   ): EntityCreateDashEffect {
     return new EntityCreateDashEffect(new ProgressNumber(0, time), rectangle);
+  }
+
+
+  render(): void {
+    if (this.timeProgress.isFull) {
+      return;
+    }
+    for (const p of this.currentLocationArrayTop) {
+      const viewLocation = Renderer.transformWorld2View(p);
+      const color = mixColors(
+        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+        RateFunctions.doorFunction(this.timeProgress.rate),
+      );
+
+      RenderUtils.renderPixel(viewLocation, color);
+    }
+    for (const p of this.currentLocationArrayBottom) {
+      const viewLocation = Renderer.transformWorld2View(p);
+      const color = mixColors(
+        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+        RateFunctions.doorFunction(this.timeProgress.rate),
+      );
+
+      RenderUtils.renderPixel(viewLocation, color);
+    }
+
+    for (const p of this.currentLocationArrayLeft) {
+      const viewLocation = Renderer.transformWorld2View(p);
+      const color = mixColors(
+        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+        RateFunctions.doorFunction(this.timeProgress.rate),
+      );
+
+      RenderUtils.renderPixel(viewLocation, color);
+    }
+
+    for (const p of this.currentLocationArrayRight) {
+      const viewLocation = Renderer.transformWorld2View(p);
+      const color = mixColors(
+        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+        RateFunctions.doorFunction(this.timeProgress.rate),
+      );
+
+      RenderUtils.renderPixel(viewLocation, color);
+    }
   }
 }

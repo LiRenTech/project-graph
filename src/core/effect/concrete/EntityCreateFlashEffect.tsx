@@ -1,5 +1,7 @@
+import { Color } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
+import { WorldRenderUtils } from "../../render/canvas2d/WorldRenderUtils";
 import { Effect } from "../effect";
 
 /**
@@ -22,5 +24,16 @@ export class EntityCreateFlashEffect extends Effect {
 
   static fromRectangle(rectangle: Rectangle) {
     return new EntityCreateFlashEffect(new ProgressNumber(0, 1000), rectangle);
+  }
+
+  render(): void {
+    if (this.timeProgress.isFull) {
+      return;
+    }
+    WorldRenderUtils.renderRectangleFlash(
+      this.rectangle,
+      Color.White,
+      50 * (1 - this.timeProgress.rate)
+    )
   }
 }

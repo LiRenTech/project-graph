@@ -1,6 +1,11 @@
-import { Color } from "../../dataStruct/Color";
+import { Color, mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
+import { Vector } from "../../dataStruct/Vector";
+import { Renderer } from "../../render/canvas2d/renderer";
+import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { reverseAnimate } from "../animateFunctions";
+import { easeOutQuint } from "../easings";
 import { Effect } from "../effect";
 
 /**
@@ -19,5 +24,38 @@ export class RectangleNoteEffect extends Effect {
     public strokeColor: Color,
   ) {
     super(timeProgress);
+  }
+
+  render(): void {
+    if (this.timeProgress.isFull) {
+      return;
+    }
+    const startRect = Renderer.getCoverWorldRectangle();
+    const currentRect = new Rectangle(
+      startRect.location.add(
+        this.targetRectangle.location
+          .subtract(startRect.location)
+          .multiply(easeOutQuint(this.timeProgress.rate)),
+      ),
+      new Vector(
+        startRect.size.x +
+          (this.targetRectangle.size.x - startRect.size.x) *
+            easeOutQuint(this.timeProgress.rate),
+        startRect.size.y +
+          (this.targetRectangle.size.y - startRect.size.y) *
+            easeOutQuint(this.timeProgress.rate),
+      ),
+    );
+    RenderUtils.renderRect(
+      currentRect.transformWorld2View(),
+      Color.Transparent,
+      mixColors(
+        Color.Transparent,
+        this.strokeColor,
+        reverseAnimate(this.timeProgress.rate),
+      ),
+      2,
+      5,
+    );
   }
 }

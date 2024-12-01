@@ -1,7 +1,10 @@
 import { Random } from "../../algorithm/random";
+import { Color, mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
+import { Renderer } from "../../render/canvas2d/renderer";
+import { RenderUtils } from "../../render/canvas2d/RenderUtils";
 import { Effect } from "../effect";
 
 /**
@@ -81,5 +84,21 @@ export class NodeMoveShadowEffect extends Effect {
     }
     // 不可能走到这里
     return "top";
+  }
+
+  render(): void {
+    if (this.timeProgress.isFull) {
+      return;
+    }
+    for (const point of this.pointList) {
+      const viewLocation = Renderer.transformWorld2View(point);
+      const color = mixColors(
+        Color.White,
+        Color.White.toTransparent(),
+        this.timeProgress.rate,
+      );
+
+      RenderUtils.renderPixel(viewLocation, color);
+    }
   }
 }

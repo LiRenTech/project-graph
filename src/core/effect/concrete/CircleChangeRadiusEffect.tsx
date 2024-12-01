@@ -1,6 +1,9 @@
 import { Color } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Vector } from "../../dataStruct/Vector";
+import { Renderer } from "../../render/canvas2d/renderer";
+import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { Camera } from "../../stage/Camera";
 import { Effect } from "../effect";
 
 /**
@@ -43,10 +46,24 @@ export class CircleChangeRadiusEffect extends Effect {
   static fromConnectPointShrink(location: Vector, currentRadius: number) {
     return new CircleChangeRadiusEffect(
       new ProgressNumber(0, 10),
-      location, 
+      location,
       currentRadius,
       0.1,
       new Color(255, 255, 255),
+    );
+  }
+
+  render(): void {
+    if (this.timeProgress.isFull) {
+      return;
+    }
+    this.color.a = 1 - this.timeProgress.rate;
+    RenderUtils.renderCircle(
+      Renderer.transformWorld2View(this.location),
+      this.radius * Camera.currentScale,
+      Color.Transparent,
+      this.color,
+      2 * Camera.currentScale,
     );
   }
 }
