@@ -1,0 +1,985 @@
+{
+  "version": 10,
+  "nodes": [
+    {
+      "location": [
+        -287.4060392401745,
+        -200.53875126706174
+      ],
+      "size": [
+        183.91111755371094,
+        60
+      ],
+      "text": "class Core",
+      "uuid": "4b9be933-ac94-49e0-8ad1-5271baf147b9",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        43.64964758055487,
+        -324.22454752734245
+      ],
+      "size": [
+        229,
+        60
+      ],
+      "text": "disposables[]",
+      "uuid": "9f4aaa0d-e726-42f1-b61a-ce883cf020f9",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        48.53801622772971,
+        -229.80638763840895
+      ],
+      "size": [
+        183.66961669921875,
+        60
+      ],
+      "text": "tickables[]",
+      "uuid": "8a084019-71c9-4da4-8070-02f35bbc5294",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        305.56254244862873,
+        -384.93753453536357
+      ],
+      "size": [
+        338.0970458984375,
+        60
+      ],
+      "text": "interface Disposable",
+      "uuid": "41855f81-5d1b-4ad9-a7f3-df704ede99f9",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        321.8689639519411,
+        -290.61956464434763
+      ],
+      "size": [
+        296.76666259765625,
+        60
+      ],
+      "text": "interface Tickable",
+      "uuid": "2b824f3a-6419-4c26-9dbb-3b941622f7f3",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        711.8569254643257,
+        -376.93366335618396
+      ],
+      "size": [
+        245.46896362304688,
+        60
+      ],
+      "text": "dispose(): void",
+      "uuid": "e10b10bf-8dbc-4f4a-a586-6a2ab2a891bc",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        700.3783631751711,
+        -282.13259731693836
+      ],
+      "size": [
+        182.46896362304688,
+        60
+      ],
+      "text": "tick(): void",
+      "uuid": "22876b8f-5359-4eff-87d6-7aa043a0bc61",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        48.6672313874775,
+        -130.30724962636515
+      ],
+      "size": [
+        160.1997833251953,
+        60
+      ],
+      "text": "plugins[]",
+      "uuid": "094be541-0518-431a-a753-bfb48267865c",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        347.44149083589423,
+        -114.98549273157457
+      ],
+      "size": [
+        207.2715606689453,
+        60
+      ],
+      "text": "class Plugin",
+      "uuid": "4b3e7525-3723-463f-96b7-1e8a58fc55f2",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        666.6447594773651,
+        -210.74647332401582
+      ],
+      "size": [
+        161,
+        60
+      ],
+      "text": "id: string",
+      "uuid": "1ca9874c-a475-4b95-907a-d817b0d9ae66",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        652.5998156571404,
+        -120.09274502983807
+      ],
+      "size": [
+        217,
+        60
+      ],
+      "text": "name: string",
+      "uuid": "b68ded35-556b-4fb3-8506-cbe6dd6c143c",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        652.5998156571404,
+        -35.82308210848976
+      ],
+      "size": [
+        259.0328063964844,
+        60
+      ],
+      "text": "worker: Worker",
+      "uuid": "e99098a8-975b-447e-9069-d5e45dc79d6b",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -387.4591228812088,
+        -516.1293967487534
+      ],
+      "size": [
+        112,
+        60
+      ],
+      "text": "stage",
+      "uuid": "928d667b-c765-45a4-a992-eba81325a192",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -387.4591228812088,
+        -411.06223356215946
+      ],
+      "size": [
+        159.0953369140625,
+        60
+      ],
+      "text": "renderer",
+      "uuid": "b5dbfe83-1e5a-406f-a0e7-1498c6de989a",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -520.5465430669503,
+        -289.4833036706898
+      ],
+      "size": [
+        173.1256103515625,
+        60
+      ],
+      "text": "controller",
+      "uuid": "8bcefcbf-5b85-4a30-bf88-3c3f9777f535",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -534.0462848352149,
+        -137.9368123434751
+      ],
+      "size": [
+        139.88949584960938,
+        60
+      ],
+      "text": "camera",
+      "uuid": "7f4f5e8b-8e15-43dc-ac98-893a1c6c72a2",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -515.9386028696049,
+        16.838875713466734
+      ],
+      "size": [
+        149,
+        60
+      ],
+      "text": "settings",
+      "uuid": "34a3273e-1453-4fb4-b97d-bbe8264e3d9b",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -673.2068862910555,
+        -412.3398261885711
+      ],
+      "size": [
+        250.9794464111328,
+        60
+      ],
+      "text": "class Renderer",
+      "uuid": "b70ea90d-24f1-4bd6-8d9b-8490adb1ee2b",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -1196.1556703630517,
+        -468.02916995738497
+      ],
+      "size": [
+        517.0250244140625,
+        60
+      ],
+      "text": "ctx: CanvasRenderingContext2D",
+      "uuid": "434ba9ee-8b4b-4039-90d6-e85646de0529",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -810.8506030835235,
+        -277.97897711030413
+      ],
+      "size": [
+        262.91111755371094,
+        60
+      ],
+      "text": "class Controller",
+      "uuid": "27f5bed0-ee2e-4516-8e9a-8a3f43e151b4",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -1178.0157468190966,
+        -344.55860721465626
+      ],
+      "size": [
+        269.7943572998047,
+        60
+      ],
+      "text": "register(...): void",
+      "uuid": "3072d354-fa4b-407d-a433-d60471a2886e",
+      "details": "id: string\nbind: Bind\nonDown: () => void\nonUp: () => void",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -1219.556553005472,
+        -180.6482539518508
+      ],
+      "size": [
+        374.33636474609375,
+        60
+      ],
+      "text": "mouseLocation: Vector",
+      "uuid": "19165ae4-26ea-42bb-b78a-71edd301a330",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -843.2772032160993,
+        -87.33097520410844
+      ],
+      "size": [
+        229.87911987304688,
+        60
+      ],
+      "text": "class Camera",
+      "uuid": "62e75f2c-7b66-465a-b5f9-464baf094744",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -990.7787083334515,
+        -64.75421421675144
+      ],
+      "size": [
+        52,
+        60
+      ],
+      "text": "...",
+      "uuid": "6bc76cbb-ac87-4853-b216-16b5d822efda",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -570.8509539685755,
+        -609.606712711634
+      ],
+      "size": [
+        200.07177734375,
+        60
+      ],
+      "text": "class Stage",
+      "uuid": "31434a0c-d551-4510-8009-36bd697aac96",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -721.362693884259,
+        -632.1834736989911
+      ],
+      "size": [
+        52,
+        60
+      ],
+      "text": "...",
+      "uuid": "337c8260-21b7-4124-ab7d-b963e6f7bf25",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -906.4921339804579,
+        27.057947131833743
+      ],
+      "size": [
+        314.85467529296875,
+        60
+      ],
+      "text": "async get<T>(...): T",
+      "uuid": "0e0640ea-02f7-49df-af22-f294f310fce4",
+      "details": "namespace: string\nkey: string",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -873.8616751182336,
+        141.44686946777597
+      ],
+      "size": [
+        294.32366943359375,
+        60
+      ],
+      "text": "async set(...): void",
+      "uuid": "a1265b8a-b1dc-4e2f-8c90-8637ecbf813c",
+      "details": "namespace: string\nkey: string\nvalue: any",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -518.925991813182,
+        454.5453795315183
+      ],
+      "size": [
+        182.54766845703125,
+        60
+      ],
+      "text": "project.pg",
+      "uuid": "81157c3e-4628-42ee-8577-7cf48e8ce9aa",
+      "details": "application/zip",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -247.22932496314095,
+        318.5988912897217
+      ],
+      "size": [
+        137.13858032226562,
+        60
+      ],
+      "text": "version",
+      "uuid": "811083e8-ab11-4f78-b4fc-0f6cad695750",
+      "details": "text/plain",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        23.431008908859013,
+        347.2760857574792
+      ],
+      "size": [
+        42,
+        60
+      ],
+      "text": "1",
+      "uuid": "531b9612-2e29-4959-ba9d-386afca8f040",
+      "details": "application/json",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        22.143282551005456,
+        444.1070716731199
+      ],
+      "size": [
+        47,
+        60
+      ],
+      "text": "2",
+      "uuid": "57ec3c5b-0ae0-43ab-b9ba-c2d8bfe27684",
+      "details": "application/json",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        20.885737279381345,
+        542.1956028602455
+      ],
+      "size": [
+        47,
+        60
+      ],
+      "text": "3",
+      "uuid": "a52675e9-6954-4f6b-9f9e-36d8df38db7b",
+      "details": "application/json",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        18.370646736137672,
+        637.7690435041167
+      ],
+      "size": [
+        52,
+        60
+      ],
+      "text": "...",
+      "uuid": "9e42dd05-c6f1-45b1-be29-b6fcbfcd0005",
+      "details": "application/json",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -233.1082265032566,
+        469.2579771057474
+      ],
+      "size": [
+        152,
+        60
+      ],
+      "text": "entities/",
+      "uuid": "91b58bcc-7995-4937-825c-d33807e12cfd",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -332.4543029618683,
+        598.785140083685
+      ],
+      "size": [
+        136.79588317871094,
+        60
+      ],
+      "text": "assets/",
+      "uuid": "5a2bcdef-8c9e-4c95-8bae-423332b54e8b",
+      "details": "",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -243.16858867610148,
+        713.2217598020212
+      ],
+      "size": [
+        183,
+        60
+      ],
+      "text": "[uuid].png",
+      "uuid": "e6b0d7d5-63b2-4564-8130-ec199cbb9416",
+      "details": "image/png",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    },
+    {
+      "location": [
+        -257.88066510402587,
+        830.3032405824084
+      ],
+      "size": [
+        172,
+        60
+      ],
+      "text": "[uuid].jpg",
+      "uuid": "053c3015-8d33-47d2-8bfa-41d45d857af4",
+      "details": "image/jpeg",
+      "color": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "type": "core:text_node"
+    }
+  ],
+  "edges": [
+    {
+      "source": "4b9be933-ac94-49e0-8ad1-5271baf147b9",
+      "target": "9f4aaa0d-e726-42f1-b61a-ce883cf020f9",
+      "text": "",
+      "uuid": "e6e0172c-e7d9-492a-9067-704e7a7d7200",
+      "type": "core:edge"
+    },
+    {
+      "source": "4b9be933-ac94-49e0-8ad1-5271baf147b9",
+      "target": "8a084019-71c9-4da4-8070-02f35bbc5294",
+      "text": "",
+      "uuid": "3622a2ec-6df3-47e4-98d9-8e990679894b",
+      "type": "core:edge"
+    },
+    {
+      "source": "41855f81-5d1b-4ad9-a7f3-df704ede99f9",
+      "target": "e10b10bf-8dbc-4f4a-a586-6a2ab2a891bc",
+      "text": "",
+      "uuid": "37bbc304-3130-460c-969a-d9db351abe6c",
+      "type": "core:edge"
+    },
+    {
+      "source": "2b824f3a-6419-4c26-9dbb-3b941622f7f3",
+      "target": "22876b8f-5359-4eff-87d6-7aa043a0bc61",
+      "text": "",
+      "uuid": "9dff0ca7-0cb0-43bb-80b2-83f0fbe52d94",
+      "type": "core:edge"
+    },
+    {
+      "source": "9f4aaa0d-e726-42f1-b61a-ce883cf020f9",
+      "target": "41855f81-5d1b-4ad9-a7f3-df704ede99f9",
+      "text": "",
+      "uuid": "31ace868-2f81-4b22-897c-bc89f89a9ac2",
+      "type": "core:edge"
+    },
+    {
+      "source": "8a084019-71c9-4da4-8070-02f35bbc5294",
+      "target": "2b824f3a-6419-4c26-9dbb-3b941622f7f3",
+      "text": "",
+      "uuid": "fdd3c63d-519e-4c56-aff5-95c1f6e0c5c5",
+      "type": "core:edge"
+    },
+    {
+      "source": "094be541-0518-431a-a753-bfb48267865c",
+      "target": "4b3e7525-3723-463f-96b7-1e8a58fc55f2",
+      "text": "",
+      "uuid": "efd7e4cd-35e2-4f65-ae38-d52398afc7e6",
+      "type": "core:edge"
+    },
+    {
+      "source": "4b3e7525-3723-463f-96b7-1e8a58fc55f2",
+      "target": "1ca9874c-a475-4b95-907a-d817b0d9ae66",
+      "text": "",
+      "uuid": "4b800f10-fbd5-4db3-b6b4-cfad539dbdcc",
+      "type": "core:edge"
+    },
+    {
+      "source": "4b3e7525-3723-463f-96b7-1e8a58fc55f2",
+      "target": "b68ded35-556b-4fb3-8506-cbe6dd6c143c",
+      "text": "",
+      "uuid": "9483a522-9c2b-41a5-9b45-2f5496cad19e",
+      "type": "core:edge"
+    },
+    {
+      "source": "4b3e7525-3723-463f-96b7-1e8a58fc55f2",
+      "target": "e99098a8-975b-447e-9069-d5e45dc79d6b",
+      "text": "",
+      "uuid": "6abb5c81-f3e7-4d26-a230-1e2835afc07e",
+      "type": "core:edge"
+    },
+    {
+      "source": "4b9be933-ac94-49e0-8ad1-5271baf147b9",
+      "target": "928d667b-c765-45a4-a992-eba81325a192",
+      "text": "",
+      "uuid": "12a31811-ce1b-482c-9d79-3613285afff0",
+      "type": "core:edge"
+    },
+    {
+      "source": "4b9be933-ac94-49e0-8ad1-5271baf147b9",
+      "target": "b5dbfe83-1e5a-406f-a0e7-1498c6de989a",
+      "text": "",
+      "uuid": "fcb25620-9c5b-4e15-9e39-d4ee941c4e6b",
+      "type": "core:edge"
+    },
+    {
+      "source": "b70ea90d-24f1-4bd6-8d9b-8490adb1ee2b",
+      "target": "434ba9ee-8b4b-4039-90d6-e85646de0529",
+      "text": "",
+      "uuid": "2643fae7-4608-47d2-a34a-4803d0231b8b",
+      "type": "core:edge"
+    },
+    {
+      "source": "4b9be933-ac94-49e0-8ad1-5271baf147b9",
+      "target": "8bcefcbf-5b85-4a30-bf88-3c3f9777f535",
+      "text": "",
+      "uuid": "80dd5067-1f48-4caf-aa6f-e6b0920c224c",
+      "type": "core:edge"
+    },
+    {
+      "source": "4b9be933-ac94-49e0-8ad1-5271baf147b9",
+      "target": "7f4f5e8b-8e15-43dc-ac98-893a1c6c72a2",
+      "text": "",
+      "uuid": "e8acda24-a59c-4be1-a11b-810af6138c0d",
+      "type": "core:edge"
+    },
+    {
+      "source": "4b9be933-ac94-49e0-8ad1-5271baf147b9",
+      "target": "34a3273e-1453-4fb4-b97d-bbe8264e3d9b",
+      "text": "",
+      "uuid": "f9df8f25-5a4d-4eb6-be17-d3d91f34ef5a",
+      "type": "core:edge"
+    },
+    {
+      "source": "8bcefcbf-5b85-4a30-bf88-3c3f9777f535",
+      "target": "27f5bed0-ee2e-4516-8e9a-8a3f43e151b4",
+      "text": "",
+      "uuid": "05b2a00e-8861-4cfa-979d-876cf1622395",
+      "type": "core:edge"
+    },
+    {
+      "source": "27f5bed0-ee2e-4516-8e9a-8a3f43e151b4",
+      "target": "19165ae4-26ea-42bb-b78a-71edd301a330",
+      "text": "",
+      "uuid": "8f21c987-4e14-4e81-96c9-56d0de3e12f8",
+      "type": "core:edge"
+    },
+    {
+      "source": "7f4f5e8b-8e15-43dc-ac98-893a1c6c72a2",
+      "target": "62e75f2c-7b66-465a-b5f9-464baf094744",
+      "text": "",
+      "uuid": "95c01e67-5556-4dd4-8c0f-502feac82b9d",
+      "type": "core:edge"
+    },
+    {
+      "source": "62e75f2c-7b66-465a-b5f9-464baf094744",
+      "target": "6bc76cbb-ac87-4853-b216-16b5d822efda",
+      "text": "",
+      "uuid": "ad94aa20-952d-4e82-abaf-158370ee904d",
+      "type": "core:edge"
+    },
+    {
+      "source": "31434a0c-d551-4510-8009-36bd697aac96",
+      "target": "337c8260-21b7-4124-ab7d-b963e6f7bf25",
+      "text": "",
+      "uuid": "4ddee042-bfb5-42f8-8461-7884e9eb1517",
+      "type": "core:edge"
+    },
+    {
+      "source": "34a3273e-1453-4fb4-b97d-bbe8264e3d9b",
+      "target": "0e0640ea-02f7-49df-af22-f294f310fce4",
+      "text": "",
+      "uuid": "c563e687-23ce-48d1-894b-30d00dad758e",
+      "type": "core:edge"
+    },
+    {
+      "source": "34a3273e-1453-4fb4-b97d-bbe8264e3d9b",
+      "target": "a1265b8a-b1dc-4e2f-8c90-8637ecbf813c",
+      "text": "",
+      "uuid": "143ffee2-bf5a-47db-a540-0f50419d3f4a",
+      "type": "core:edge"
+    },
+    {
+      "source": "81157c3e-4628-42ee-8577-7cf48e8ce9aa",
+      "target": "811083e8-ab11-4f78-b4fc-0f6cad695750",
+      "text": "",
+      "uuid": "4241bf83-e4b7-487c-8e8c-4e3571868646",
+      "type": "core:edge"
+    },
+    {
+      "source": "81157c3e-4628-42ee-8577-7cf48e8ce9aa",
+      "target": "91b58bcc-7995-4937-825c-d33807e12cfd",
+      "text": "",
+      "uuid": "3beb6f01-f9b8-40cf-bb86-370bf65b1b32",
+      "type": "core:edge"
+    },
+    {
+      "source": "91b58bcc-7995-4937-825c-d33807e12cfd",
+      "target": "531b9612-2e29-4959-ba9d-386afca8f040",
+      "text": "",
+      "uuid": "eb7cf965-df07-44c2-917e-426d190a3bf0",
+      "type": "core:edge"
+    },
+    {
+      "source": "91b58bcc-7995-4937-825c-d33807e12cfd",
+      "target": "57ec3c5b-0ae0-43ab-b9ba-c2d8bfe27684",
+      "text": "",
+      "uuid": "8af28fac-f044-4012-8af2-200399a766e2",
+      "type": "core:edge"
+    },
+    {
+      "source": "91b58bcc-7995-4937-825c-d33807e12cfd",
+      "target": "a52675e9-6954-4f6b-9f9e-36d8df38db7b",
+      "text": "",
+      "uuid": "5a39a8a7-9f11-4622-9a94-a91cff65c75a",
+      "type": "core:edge"
+    },
+    {
+      "source": "91b58bcc-7995-4937-825c-d33807e12cfd",
+      "target": "9e42dd05-c6f1-45b1-be29-b6fcbfcd0005",
+      "text": "",
+      "uuid": "1dccc6bf-d0b2-473e-b7ec-1a598601a18e",
+      "type": "core:edge"
+    },
+    {
+      "source": "81157c3e-4628-42ee-8577-7cf48e8ce9aa",
+      "target": "5a2bcdef-8c9e-4c95-8bae-423332b54e8b",
+      "text": "",
+      "uuid": "cac5ee05-ed66-49c4-8b20-11a8f6b52a10",
+      "type": "core:edge"
+    },
+    {
+      "source": "5a2bcdef-8c9e-4c95-8bae-423332b54e8b",
+      "target": "e6b0d7d5-63b2-4564-8130-ec199cbb9416",
+      "text": "",
+      "uuid": "6c24c0aa-7f09-4957-8fc1-fa5e8c8e4c8b",
+      "type": "core:edge"
+    }
+  ],
+  "tags": []
+}
