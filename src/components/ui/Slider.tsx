@@ -1,4 +1,5 @@
 import React from "react";
+import Input from "./Input";
 
 /**
  * 一个滑块组件，可以设置最小值、最大值、步长、当前值、值变化回调函数。
@@ -112,7 +113,21 @@ export default function Slider({
           style={{ left: `${((sliderValue - min) / (max - min)) * 100}%` }} // 根据当前值计算滑块的位置
         ></div>
       </div>
-      <span>{sliderValue?.toFixed(decimalPlaces)}</span>{" "}
+      <Input
+        value={sliderValue.toString()}
+        onChange={(e) => {
+          if (e.endsWith(".")) {
+            // @ts-expect-error 防止无法输入小数点
+            setSliderValue(e);
+          } else {
+            setSliderValue(
+              // 确保值在 min 和 max 之间
+              Math.max(min, Math.min(max, parseFloat(e || "0"))),
+            );
+          }
+        }}
+        className="w-16"
+      />
       {/* 格式化显示的小数位数 */}
     </div>
   );
