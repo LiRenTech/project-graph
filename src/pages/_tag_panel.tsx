@@ -8,7 +8,13 @@ import { useDialog } from "../utils/dialog";
  * 标签相关面板
  * @param param0
  */
-export default function TagPanel({ open = false }: { open: boolean }) {
+export default function TagPanel({
+  open = false,
+  className = "",
+}: {
+  open: boolean;
+  className: string;
+}) {
   const dialog = useDialog();
   const [tagNameList, setTagNameList] = React.useState<
     { tagName: string; uuid: string }[]
@@ -49,6 +55,7 @@ export default function TagPanel({ open = false }: { open: boolean }) {
         {
           "left-0": open,
         },
+        className,
       )}
     >
       <div>

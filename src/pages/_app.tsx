@@ -371,11 +371,11 @@ export default function App() {
       </div>
 
       {/* 面板列表 */}
-      <AppMenu className="absolute left-4 top-16" open={isMenuOpen} />
+      <TagPanel open={isTagPanelOpen} className="z-10"/>
+      <AppMenu className="absolute left-4 top-16 z-20" open={isMenuOpen} />
       <RecentFilesPanel />
       <StartFilePanel open={isStartFilePanelOpen} />
       <AiPanel open={isAiPanelOpen} />
-      <TagPanel open={isTagPanelOpen} />
       {/* ======= */}
 
       <Outlet />
