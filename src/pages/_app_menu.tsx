@@ -33,7 +33,7 @@ import { useRecoilState } from "recoil";
 import { Camera } from "../core/stage/Camera";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageManager } from "../core/stage/stageManager/StageManager";
-import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
+import { fileAtom, isExportTreeTextPanelOpenAtom, isRecentFilePanelOpenAtom } from "../state";
 import { cn } from "../utils/cn";
 import { useDialog } from "../utils/dialog";
 import { isDesktop } from "../utils/platform";
@@ -60,6 +60,7 @@ export default function AppMenu({
   const [file, setFile] = useRecoilState(fileAtom);
   const { t } = useTranslation("appMenu");
   const [, setRecentFilePanelOpen] = useRecoilState(isRecentFilePanelOpenAtom);
+  const [, setExportTreeTextPanelOpen] = useRecoilState(isExportTreeTextPanelOpenAtom);
 
   const onNew = () => {
     if (StageSaveManager.isSaved()) {
@@ -269,6 +270,37 @@ export default function AppMenu({
     );
   };
 
+  const onExportTreeText = async () => {
+    const selectedNodes = StageManager.getSelectedEntities().filter(
+      (entity) => entity instanceof TextNode,
+    );
+    if (selectedNodes.length === 0) {
+      dialog.show({
+        title: "没有选中节点",
+        content:
+          "请先选中一个根节点再使用此功能，并且根节点所形成的结构必须为树状结构",
+        type: "error",
+      });
+      return;
+    } else if (selectedNodes.length > 1) {
+      dialog.show({
+        title: "选中节点数量过多",
+        content: "只能选中一个根节点，并且根节点所形成的结构必须为树状结构",
+        type: "error",
+      });
+      return;
+    }
+    if (!StageManager.isTree(selectedNodes[0])) {
+      dialog.show({
+        title: "结构错误",
+        content: "根节点所形成的结构必须为树状结构",
+        type: "error",
+      });
+      return;
+    }
+    setExportTreeTextPanelOpen(true);
+  }
+
   const onSaveMarkdownNew = async () => {
     const selectedNodes = StageManager.getSelectedEntities().filter(
       (entity) => entity instanceof TextNode,
@@ -422,6 +454,9 @@ export default function AppMenu({
         </Col>
         <Col icon={<FileType />} onClick={onSaveMarkdownNew}>
           {t("export.items.exportAsMarkdownBySelected")}
+        </Col>
+        <Col icon={<FileCode />} onClick={onExportTreeText}>
+          导出纯文本
         </Col>
       </Row>
       <Row icon={<View />} title={t("view.title")}>

@@ -34,6 +34,7 @@ import ErrorHandler from "./_error_handler";
 import RecentFilesPanel from "./_recent_files_panel";
 import StartFilePanel from "./_start_file_panel";
 import TagPanel from "./_tag_panel";
+import ExportTreeTextPanel from "./_export_text_panel";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -371,11 +372,12 @@ export default function App() {
       </div>
 
       {/* 面板列表 */}
-      <TagPanel open={isTagPanelOpen} className="z-10"/>
       <AppMenu className="absolute left-4 top-16 z-20" open={isMenuOpen} />
-      <RecentFilesPanel />
+      <TagPanel open={isTagPanelOpen} className="z-10" />
       <StartFilePanel open={isStartFilePanelOpen} />
       <AiPanel open={isAiPanelOpen} />
+      <RecentFilesPanel />
+      <ExportTreeTextPanel/>
       {/* ======= */}
 
       <Outlet />
