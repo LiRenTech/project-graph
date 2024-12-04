@@ -18,6 +18,9 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
   if (!(event.button === 0 || event.button === 1)) {
     return;
   }
+
+  Stage.isSelecting = false;
+
   const pressLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
@@ -34,6 +37,7 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
     createNode(pressLocation);
   }
 };
+
 function createConnectPoint(pressLocation: Vector) {
   StageManager.addConnectPointByClick(pressLocation);
 }

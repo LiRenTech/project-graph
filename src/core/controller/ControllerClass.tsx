@@ -33,29 +33,62 @@ export class ControllerClass {
   public init() {
     window.addEventListener("keydown", this.keydown);
     window.addEventListener("keyup", this.keyup);
-    Canvas.element.addEventListener("mousedown", this._mousedown);
-    Canvas.element.addEventListener("mouseup", this.mouseup);
+    Canvas.element.addEventListener("mousedown", this.mousedown);
+    Canvas.element.addEventListener("mouseup", this._mouseup);
     Canvas.element.addEventListener("mousemove", this.mousemove);
     Canvas.element.addEventListener("wheel", this.mousewheel);
     Canvas.element.addEventListener("touchstart", this._touchstart);
     Canvas.element.addEventListener("touchmove", this._touchmove);
     Canvas.element.addEventListener("touchend", this._touchend);
+
     // 有待优雅
   }
   public destroy() {
     window.removeEventListener("keydown", this.keydown);
     window.removeEventListener("keyup", this.keyup);
-    Canvas.element.removeEventListener("mousedown", this._mousedown);
-    Canvas.element.removeEventListener("mouseup", this.mouseup);
+    Canvas.element.removeEventListener("mousedown", this.mousedown);
+    Canvas.element.removeEventListener("mouseup", this._mouseup);
     Canvas.element.removeEventListener("mousemove", this.mousemove);
     Canvas.element.removeEventListener("wheel", this.mousewheel);
     Canvas.element.removeEventListener("touchstart", this._touchstart);
+    Canvas.element.removeEventListener("touchmove", this._touchmove);
+    Canvas.element.removeEventListener("touchend", this._touchend);
 
     this.lastMoveLocation = Vector.getZero();
   }
 
-  private _mousedown = (event: MouseEvent) => {
-    this.mousedown(event);
+  // private _mousedown = (event: MouseEvent) => {
+  //   this.mousedown(event);
+  //   // 检测双击
+  //   const now = new Date().getTime();
+  //   if (
+  //     now - this.lastClickTime < 300 &&
+  //     this.lastClickLocation.distance(
+  //       new Vector(event.clientX, event.clientY),
+  //     ) < 5
+  //   ) {
+  //     this.mouseDoubleClick(event);
+  //   }
+  //   this.lastClickTime = now;
+  //   this.lastClickLocation = new Vector(event.clientX, event.clientY);
+  // };
+
+  /**
+   * tips:
+   * 如果把双击函数写在mousedown里
+   * 双击的函数写在mousedown里了之后，双击的过程有四步骤：
+   *  1按下，2抬起，3按下，4抬起
+   *  结果在3按下的时候，瞬间创建了一个Input输入框透明的element
+   *  挡在了canvas上面。导致第四步抬起释放没有监听到了
+   *  进而导致：
+   *  双击创建节点后会有一个框选框吸附在鼠标上
+   *  双击编辑节点之后节点会进入编辑状态后一瞬间回到正常状态，然后节点吸附在了鼠标上
+   * 所以，双击的函数应该写在mouseup里，pc上就没有这个问题了。
+   * ——2024年12月5日
+   * @param event 鼠标事件对象
+   */
+  private _mouseup = (event: MouseEvent) => {
+    this.mouseup(event);
     // 检测双击
     const now = new Date().getTime();
     if (
@@ -68,7 +101,8 @@ export class ControllerClass {
     }
     this.lastClickTime = now;
     this.lastClickLocation = new Vector(event.clientX, event.clientY);
-  };
+  }
+
   private _touchstart = (event: TouchEvent) => {
     event.preventDefault();
     const touch = event.touches[event.touches.length - 1] as any as MouseEvent;
@@ -77,8 +111,9 @@ export class ControllerClass {
     if (event.touches.length > 1) {
       Stage.isSelecting = false;
     }
-    this._mousedown(touch);
+    this.mousedown(touch);
   };
+
   private _touchmove = (event: TouchEvent) => {
     event.preventDefault();
     const touch = event.touches[event.touches.length - 1] as any as MouseEvent;
@@ -86,6 +121,7 @@ export class ControllerClass {
     touch.button = 0;
     this.mousemove(touch);
   };
+
   private _touchend = (event: TouchEvent) => {
     event.preventDefault();
     const touch = event.changedTouches[
@@ -93,6 +129,6 @@ export class ControllerClass {
     ] as any as MouseEvent;
     // @ts-expect-error 必须给他来一个button属性
     touch.button = 0;
-    this.mouseup(touch);
+    this._mouseup(touch);
   };
 }
