@@ -1,6 +1,8 @@
 import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
 import {
   Delete,
+  Eye,
+  EyeClosed,
   FileClock,
   FilePlus2,
   FolderTree,
@@ -220,6 +222,9 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
             <RefreshCw />
           </span>
         </IconButton>
+        <IconButton onClick={() => setIsPanelTransparent(!isPanelTransparent)}>
+          {isPanelTransparent ? <Eye /> : <EyeClosed />}
+        </IconButton>
       </div>
       <table className="overflow-hidden rounded-lg border border-gray-600 shadow-lg">
         <thead>
@@ -273,8 +278,6 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
                 <IconButton
                   className="mx-0.5 px-2 py-1"
                   onClick={onLoadCurrentStartFile(file.path)}
-                  onMouseEnter={() => setIsPanelTransparent(true)}
-                  onMouseLeave={() => setIsPanelTransparent(false)}
                 >
                   <HardDriveDownload />
                 </IconButton>
