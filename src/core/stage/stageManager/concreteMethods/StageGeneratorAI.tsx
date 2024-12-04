@@ -1,18 +1,17 @@
-import { fetch } from "@tauri-apps/plugin-http";
 import { v4 as uuidv4 } from "uuid";
+import { AiFetcherOneShotCloudFlare } from "../../../ai/AiFetcher";
 import { ApiKeyManager } from "../../../ai/ApiKeyManager";
+import { PromptManager } from "../../../ai/PromptManager";
 import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
 import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Stage } from "../../Stage";
 import { StageManager } from "../StageManager";
-import { PromptManager } from "../../../ai/PromptManager";
 
 export namespace StageGeneratorAI {
-  export let fetchUrl =
-    "https://ark.cn-beijing.volces.com/api/v3/chat/completions";
-  export let model = "ep-20240826150107-wkr2r";
+  const systemPrompt =
+    "你是一个具有发散式思维的人，我给你一个词之后，你会扩展出5~10个新的词。你需要以每行一个词的形式回答我，每个词之间用换行符分隔，不要有任何其他多余文字";
 
   /**
    * 扩展所有选中的节点
@@ -57,29 +56,13 @@ export namespace StageGeneratorAI {
     userContent = userContent.replaceAll("{{nodeText}}", selectedTextNode.text);
 
     try {
-      const response = await fetch(fetchUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + ApiKeyManager.getKey(),
-        },
-        body: JSON.stringify({
-          model: model,
-          messages: [
-            {
-              role: "system",
-              content:
-                "你是一个具有发散式思维的人，我给你一个词之后，你会扩展出5~10个新的词。你需要以每行一个词的形式回答我，每个词之间用换行符分隔，不要有任何其他多余文字",
-            },
-            {
-              role: "user",
-              content: userContent,
-            },
-          ],
-        }),
-      });
-      const data = await response.json();
-      const responseContent: string = data.choices[0].message.content;
+      const responseContent: string = await AiFetcherOneShotCloudFlare.create()
+        .setPrompt({
+          system: systemPrompt,
+          user: userContent,
+        })
+        .setApiKey(ApiKeyManager.getKeyCF())
+        .fetch();
       let expandArrayList: string[] = [];
       if (responseContent.includes("\n")) {
         // 多行
@@ -95,6 +78,7 @@ export namespace StageGeneratorAI {
 
       return expandArrayList; // 返回扩展的字符串数组
     } catch (error) {
+      console.log("AiFetcherOneShotCloudFlare error", error);
       return ["error"];
     }
   }

@@ -1,8 +1,11 @@
 import { Random } from "../../algorithm/random";
-import { Color } from "../../dataStruct/Color";
+import { Color, mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
+import { Renderer } from "../../render/canvas2d/renderer";
+import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effect";
 
 /**
@@ -43,6 +46,22 @@ export class ExplodeAshEffect extends Effect {
       this.ashLocationArray[i] = this.ashLocationArray[i].add(
         this.ashSpeedArray[i],
       );
+    }
+  }
+
+  render(): void {
+    if (this.timeProgress.isFull) {
+      return;
+    }
+    for (const ashLocation of this.ashLocationArray) {
+      const viewLocation = Renderer.transformWorld2View(ashLocation);
+      const color = mixColors(
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
+        this.timeProgress.rate,
+      );
+
+      RenderUtils.renderPixel(viewLocation, color);
     }
   }
 }

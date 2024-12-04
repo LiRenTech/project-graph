@@ -26,7 +26,7 @@ export namespace StageSaveManager {
   ) {
     invoke<string>("save_file_by_path", {
       path,
-      content: JSON.stringify(data, null, 2),
+      content: JSON.stringify(data),
     })
       .then((_) => {
         Stage.effects.push(ViewFlashEffect.SaveFile());
@@ -59,7 +59,7 @@ export namespace StageSaveManager {
     }
     invoke<string>("save_file_by_path", {
       path: Stage.Path.getFilePath(),
-      content: JSON.stringify(data, null, 2),
+      content: JSON.stringify(data),
     })
       .then((_) => {
         if (addFlashEffect) {
@@ -77,12 +77,12 @@ export namespace StageSaveManager {
   }
 
   /**
-   * 
+   *
    * @param path 备份文件夹/xxx.json
-   * @param data 
-   * @param successCallback 
-   * @param errorCallback 
-   * @returns 
+   * @param data
+   * @param successCallback
+   * @param errorCallback
+   * @returns
    */
   export async function backupHandle(
     path: string,
@@ -101,7 +101,7 @@ export namespace StageSaveManager {
 
     invoke<string>("save_file_by_path", {
       path,
-      content: JSON.stringify(data, null, 2),
+      content: JSON.stringify(data),
     })
       .then((_) => {
         Stage.effects.push(ViewFlashEffect.SaveFile());
@@ -137,7 +137,7 @@ export namespace StageSaveManager {
 
     invoke<string>("save_file_by_path", {
       path: backupPath,
-      content: JSON.stringify(data, null, 2),
+      content: JSON.stringify(data),
     })
       .then((_) => {
         if (addFlashEffect) {
@@ -181,36 +181,7 @@ export namespace StageSaveManager {
     successCallback: () => void,
     errorCallback: (err: any) => void,
   ) {
-    let content = "";
-    const visitedUUID = new Set<string>();
-
-    const getNodeMarkdown = (node: TextNode, level: number) => {
-      let stringResult = "";
-      if (level < 6) {
-        stringResult += `${"#".repeat(level)} ${node.text}\n\n`;
-      } else {
-        stringResult += `**${node.text}**\n\n`;
-      }
-      stringResult += `${node.details}\n\n`;
-      return stringResult;
-    };
-
-    const dfs = (node: TextNode, level: number) => {
-      if (visitedUUID.has(node.uuid)) {
-        return;
-      }
-      visitedUUID.add(node.uuid);
-      content += getNodeMarkdown(node, level);
-      const children = StageManager.nodeChildrenArray(node).filter(
-        (v) => v instanceof TextNode,
-      );
-      for (const child of children) {
-        dfs(child, level + 1);
-      }
-    };
-
-    dfs(textNode, 1);
-
+    const content = getMarkdownStringByTextNode(textNode);
     invoke<string>("save_file_by_path", {
       path,
       content,
@@ -221,6 +192,61 @@ export namespace StageSaveManager {
       .catch((err) => {
         errorCallback(err);
       });
+  }
+
+  export function getMarkdownStringByTextNode(textNode: TextNode) {
+    return getTreeTypeString(textNode, getNodeMarkdown);
+  }
+
+  export function getTabStringByTextNode(textNode: TextNode) {
+    return getTreeTypeString(textNode, getTabText);
+  }
+
+  function getTreeTypeString(
+    textNode: TextNode,
+    nodeToStringFunc: (node: TextNode, level: number) => string,
+  ) {
+    let content = "";
+    const visitedUUID = new Set<string>();
+
+    const dfs = (node: TextNode, level: number) => {
+      if (visitedUUID.has(node.uuid)) {
+        return;
+      }
+      visitedUUID.add(node.uuid);
+      content += nodeToStringFunc(node, level);
+      const children = StageManager.nodeChildrenArray(node).filter(
+        (v) => v instanceof TextNode,
+      );
+      for (const child of children) {
+        dfs(child, level + 1);
+      }
+    };
+
+    dfs(textNode, 1);
+    return content;
+  }
+
+  function getNodeMarkdown(node: TextNode, level: number): string {
+    let stringResult = "";
+    if (level < 6) {
+      stringResult += `${"#".repeat(level)} ${node.text}\n\n`;
+    } else {
+      stringResult += `**${node.text}**\n\n`;
+    }
+    if (node.details.trim()) {
+      stringResult += `${node.details}\n\n`;
+    }
+    return stringResult;
+  }
+
+  function getTabText(node: TextNode, level: number): string {
+    let stringResult = "";
+    stringResult += `${"\t".repeat(Math.max(level - 1, 0))}${node.text}\n`;
+    if (node.details.trim()) {
+      stringResult += `${"\t".repeat(level)}${node.details}\n`;
+    }
+    return stringResult;
   }
 
   // region 自动保存相关

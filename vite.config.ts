@@ -1,8 +1,8 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 import generouted from "@generouted/react-router/plugin";
-import svgr from "vite-plugin-svgr";
 import ViteYaml from "@modyfi/vite-plugin-yaml";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import svgr from "vite-plugin-svgr";
 
 // @ts-expect-error process is a nodejs global
 const host = process.env.TAURI_DEV_HOST;

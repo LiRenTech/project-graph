@@ -18,6 +18,7 @@ import {
   Info,
   MoreHorizontal,
   PartyPopper,
+  RefreshCcw,
   Save,
   Scaling,
   Settings as SettingsIcon,
@@ -32,11 +33,12 @@ import { useRecoilState } from "recoil";
 import { Camera } from "../core/stage/Camera";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageManager } from "../core/stage/stageManager/StageManager";
-import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
+import { fileAtom, isExportTreeTextPanelOpenAtom, isRecentFilePanelOpenAtom } from "../state";
 import { cn } from "../utils/cn";
 import { useDialog } from "../utils/dialog";
 import { isDesktop } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
+import { dataDir } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useTranslation } from "react-i18next";
 import { RecentFileManager } from "../core/RecentFileManager";
@@ -59,6 +61,7 @@ export default function AppMenu({
   const [file, setFile] = useRecoilState(fileAtom);
   const { t } = useTranslation("appMenu");
   const [, setRecentFilePanelOpen] = useRecoilState(isRecentFilePanelOpenAtom);
+  const [, setExportTreeTextPanelOpen] = useRecoilState(isExportTreeTextPanelOpenAtom);
 
   const onNew = () => {
     if (StageSaveManager.isSaved()) {
@@ -268,6 +271,37 @@ export default function AppMenu({
     );
   };
 
+  const onExportTreeText = async () => {
+    const selectedNodes = StageManager.getSelectedEntities().filter(
+      (entity) => entity instanceof TextNode,
+    );
+    if (selectedNodes.length === 0) {
+      dialog.show({
+        title: "没有选中节点",
+        content:
+          "请先选中一个根节点再使用此功能，并且根节点所形成的结构必须为树状结构",
+        type: "error",
+      });
+      return;
+    } else if (selectedNodes.length > 1) {
+      dialog.show({
+        title: "选中节点数量过多",
+        content: "只能选中一个根节点，并且根节点所形成的结构必须为树状结构",
+        type: "error",
+      });
+      return;
+    }
+    if (!StageManager.isTree(selectedNodes[0])) {
+      dialog.show({
+        title: "结构错误",
+        content: "根节点所形成的结构必须为树状结构",
+        type: "error",
+      });
+      return;
+    }
+    setExportTreeTextPanelOpen(true);
+  }
+
   const onSaveMarkdownNew = async () => {
     const selectedNodes = StageManager.getSelectedEntities().filter(
       (entity) => entity instanceof TextNode,
@@ -390,11 +424,11 @@ export default function AppMenu({
       <Row icon={<Folder />} title={t("location.title")}>
         <Col
           icon={<FolderCog />}
-          onClick={() => {
+          onClick={async () => {
             dialog.show({
               title: "数据文件夹位置",
               type: "info",
-              code: "%APPDATA%/liren.project-graph",
+              code: await dataDir(),
               content: "软件数据文件夹位置",
             });
           }}
@@ -421,6 +455,9 @@ export default function AppMenu({
         </Col>
         <Col icon={<FileType />} onClick={onSaveMarkdownNew}>
           {t("export.items.exportAsMarkdownBySelected")}
+        </Col>
+        <Col icon={<FileCode />} onClick={onExportTreeText}>
+          导出纯文本
         </Col>
       </Row>
       <Row icon={<View />} title={t("view.title")}>
@@ -458,7 +495,11 @@ export default function AppMenu({
         </Col>
       </Row>
       <Row icon={<AppWindow />} title={t("window.title")}>
-        {/* 2024年11月19日 去掉了刷新按钮，因为容易误操作导致工程文件进度丢失，开发中刷新建议ctrl+shift+r */}
+        {import.meta.env.DEV && (
+          <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>
+            重载
+          </Col>
+        )}
         <Col
           icon={<Fullscreen />}
           onClick={() =>

@@ -10,6 +10,7 @@ import { LastLaunch } from "../core/LastLaunch";
 import { StageDumper } from "../core/stage/StageDumper";
 import { usePopupDialog } from "../utils/popupDialog";
 import { XML } from "../utils/xml";
+import { SoundService } from "../core/SoundService";
 
 export default function TestPage() {
   const [switchValue, setSwitchValue] = React.useState(false);
@@ -50,6 +51,7 @@ export default function TestPage() {
       </div>
       <Button onClick={handleTestHttp}>test http</Button>
       <Button onClick={handleTestImageBase64}>getImageBase64</Button>
+      <Button onClick={SoundService.play.cuttingLineStart}>test sound</Button>
       last launch: {LastLaunch.version}
     </div>
   );

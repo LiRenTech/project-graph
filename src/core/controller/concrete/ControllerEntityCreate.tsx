@@ -1,7 +1,6 @@
-import { Color } from "../../dataStruct/Color";
-import { ProgressNumber } from "../../dataStruct/ProgressNumber";
+import { isDesktop } from "../../../utils/platform";
 import { Vector } from "../../dataStruct/Vector";
-import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
+import { EntityCreateLineEffect } from "../../effect/concrete/EntityCreateLineEffect";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
@@ -19,6 +18,9 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
   if (!(event.button === 0 || event.button === 1)) {
     return;
   }
+
+  Stage.isSelecting = false;
+
   const pressLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
@@ -35,6 +37,7 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
     createNode(pressLocation);
   }
 };
+
 function createConnectPoint(pressLocation: Vector) {
   StageManager.addConnectPointByClick(pressLocation);
 }
@@ -48,46 +51,9 @@ function createNode(pressLocation: Vector) {
       return;
     }
     const rect = createNode.collisionBox.getRectangle();
-    const fromColor = new Color(100, 100, 100, 0);
-    const toColor = new Color(255, 255, 255, 1);
-    const effectTime = 30;
-    const shiftingLength = 0;
-    // 闪烁效果
-    // 创建四条线
-    Stage.effects.push(
-      new LineCuttingEffect(
-        new ProgressNumber(0, effectTime),
-        rect.leftTop.add(new Vector(-shiftingLength, -shiftingLength)),
-        rect.rightTop,
-        fromColor.clone(),
-        toColor.clone(),
-        10,
-      ),
-      new LineCuttingEffect(
-        new ProgressNumber(0, effectTime),
-        rect.rightTop.add(new Vector(shiftingLength, -shiftingLength)),
-        rect.rightBottom,
-        fromColor.clone(),
-        toColor.clone(),
-        10,
-      ),
-      new LineCuttingEffect(
-        new ProgressNumber(0, effectTime),
-        rect.rightBottom.add(new Vector(shiftingLength, shiftingLength)),
-        rect.leftBottom,
-        fromColor.clone(),
-        toColor.clone(),
-        10,
-      ),
-      new LineCuttingEffect(
-        new ProgressNumber(0, effectTime),
-        rect.leftBottom.add(new Vector(-shiftingLength, shiftingLength)),
-        rect.leftTop,
-        fromColor,
-        toColor,
-        10,
-      ),
-    );
-    editNode(createNode);
+    Stage.effects.push(EntityCreateLineEffect.from(rect));
+    if (isDesktop) {
+      editNode(createNode);
+    }
   });
 }

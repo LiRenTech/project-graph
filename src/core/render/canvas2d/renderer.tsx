@@ -6,18 +6,6 @@ import { Color } from "../../dataStruct/Color";
 import { Vector } from "../../dataStruct/Vector";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { sine } from "../../effect/animateFunctions";
-import { CircleChangeRadiusEffect } from "../../effect/concrete/CircleChangeRadiusEffect";
-import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
-import { EntityCreateDashEffect } from "../../effect/concrete/EntityCreateDashEffect";
-import { EntityCreateFlashEffect } from "../../effect/concrete/EntityCreateFlashEffect";
-import { ExplodeAshEffect } from "../../effect/concrete/ExplodeDashEffect";
-import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
-import { LineEffect } from "../../effect/concrete/LineEffect";
-import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
-import { PointDashEffect } from "../../effect/concrete/PointDashEffect";
-import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
-import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
-import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
 import { Camera } from "../../stage/Camera";
 import { Canvas } from "../../stage/Canvas";
 import { Stage } from "../../stage/Stage";
@@ -25,7 +13,6 @@ import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManage
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectRenderer } from "./EffectRenderer";
 import { RenderUtils } from "./RenderUtils";
 import { WorldRenderUtils } from "./WorldRenderUtils";
 import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
@@ -106,7 +93,7 @@ export namespace Renderer {
    * @returns
    */
   export function frameTick() {
-    timings = {};  // idea：或许可以尝试全都是函数之后，来个反射拿到函数名？
+    timings = {}; // idea：或许可以尝试全都是函数之后，来个反射拿到函数名？
     let start = performance.now();
     const viewRectangle = getCoverWorldRectangle();
     Camera.frameTick();
@@ -493,31 +480,7 @@ export namespace Renderer {
       return;
     }
     for (const effect of Stage.effects) {
-      if (effect instanceof CircleFlameEffect) {
-        EffectRenderer.renderCircleFlameEffect(effect);
-      } else if (effect instanceof TextRiseEffect) {
-        EffectRenderer.renderTextRiseEffect(effect);
-      } else if (effect instanceof LineEffect) {
-        EffectRenderer.renderLineEffect(effect);
-      } else if (effect instanceof LineCuttingEffect) {
-        EffectRenderer.renderLineCuttingEffect(effect);
-      } else if (effect instanceof ViewFlashEffect) {
-        EffectRenderer.renderViewFlashEffect(effect);
-      } else if (effect instanceof RectangleNoteEffect) {
-        EffectRenderer.renderRectangleNoteEffect(effect);
-      } else if (effect instanceof ExplodeAshEffect) {
-        EffectRenderer.renderExplodeAshEffect(effect);
-      } else if (effect instanceof NodeMoveShadowEffect) {
-        EffectRenderer.renderNodeMoveShadowEffect(effect);
-      } else if (effect instanceof CircleChangeRadiusEffect) {
-        EffectRenderer.renderCircleChangeRadiusEffect(effect);
-      } else if (effect instanceof EntityCreateDashEffect) {
-        EffectRenderer.renderEntityCreateDashEffect(effect);
-      } else if (effect instanceof PointDashEffect) {
-        EffectRenderer.renderPointDashEffect(effect);
-      } else if (effect instanceof EntityCreateFlashEffect) {
-        EffectRenderer.renderEntityCreateFleshEffect(effect);
-      }
+      effect.render();
     }
   }
 
@@ -713,7 +676,7 @@ export namespace Renderer {
         }
       };
 
-      const onOutsideClick = (event: MouseEvent) => {
+      const onOutsideClick = (event: Event) => {
         if (!inputElement.contains(event.target as Node)) {
           resolve(inputElement.value);
           onChange(inputElement.value);
@@ -729,6 +692,7 @@ export namespace Renderer {
       };
       setTimeout(() => {
         document.body.addEventListener("click", onOutsideClick);
+        document.body.addEventListener("touchstart", onOutsideClick);
         document.body.addEventListener("wheel", onOutsideWheel);
       }, 10);
       inputElement.addEventListener("input", () => {

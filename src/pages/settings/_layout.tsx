@@ -17,6 +17,7 @@ export default function SettingsLayout() {
           <NavLink to="/settings/control">{t("control")}</NavLink>
           <NavLink to="/settings/ai">{t("ai")}</NavLink>
           <NavLink to="/settings/github">{t("github")}</NavLink>
+          <NavLink to="/settings/sounds">sounds</NavLink>
         </div>
         <div className="container mx-auto flex-1 overflow-auto">
           <Outlet />

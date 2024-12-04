@@ -1,6 +1,8 @@
 import { Color, mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Vector } from "../../dataStruct/Vector";
+import { Renderer } from "../../render/canvas2d/renderer";
+import { RenderUtils } from "../../render/canvas2d/RenderUtils";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effect";
@@ -80,5 +82,21 @@ export class PointDashEffect extends Effect {
       mouseWorldLocation,
       count,
     );
+  }
+
+  render(): void {
+    if (this.timeProgress.isFull) {
+      return;
+    }
+    for (const p of this.particleList) {
+      const viewLocation = Renderer.transformWorld2View(p.location);
+      // const color = mixColors(
+      //   p.color,
+      //   p.color.toTransparent(),
+      //   this.timeProgress.rate,
+      // );
+
+      RenderUtils.renderPixel(viewLocation, p.color);
+    }
   }
 }

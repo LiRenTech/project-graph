@@ -226,6 +226,9 @@ export namespace RenderUtils {
 
   /**
    * 绘制一条虚线
+   * 
+   * 2024年11月10日 发现虚线渲染不生效，也很难排查到原因
+   * 2024年12月5日 突然发现又没有问题了，也不知道为什么。
    * @param start
    * @param end
    * @param color
@@ -239,7 +242,6 @@ export namespace RenderUtils {
     width: number,
     dashLength: number,
   ): void {
-    // TODO: 待排查为何虚线渲染不生效
     Canvas.ctx.setLineDash([dashLength, dashLength]);
     Canvas.ctx.beginPath();
     Canvas.ctx.moveTo(start.x, start.y);

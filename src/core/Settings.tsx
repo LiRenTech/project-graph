@@ -38,7 +38,12 @@ export namespace Settings {
     moveAmplitude: number;
     moveFriction: number;
     gamepadDeadzone: number;
-
+    // 音效相关
+    soundEnabled: boolean;
+    cuttingLineStartSoundFile: string;
+    connectLineStartSoundFile: string;
+    connectFindTargetSoundFile: string;
+    cuttingLineReleaseSoundFile: string;
     // github 相关
     githubToken: string;
     githubUser: string;
@@ -73,7 +78,12 @@ export namespace Settings {
     moveAmplitude: 2,
     moveFriction: 0.1,
     gamepadDeadzone: 0.1,
-
+    // 音效相关
+    soundEnabled: true,
+    cuttingLineStartSoundFile: "",
+    connectLineStartSoundFile: "",
+    connectFindTargetSoundFile: "",
+    cuttingLineReleaseSoundFile: "",
     // github 相关
     githubToken: "",
     githubUser: "",

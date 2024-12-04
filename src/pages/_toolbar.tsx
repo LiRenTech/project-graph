@@ -224,25 +224,26 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   const popupDialog = usePopupDialog();
   const dialog = useDialog();
   const [isCopyClearShow, setIsCopyClearShow] = useState(false);
-
-  useEffect(() => {
-    setIsCopyClearShow(Stage.copyBoardData.nodes.length > 0);
-  }, [Stage.copyBoardData]);
-
   const [isHaveSelectedNode, setSsHaveSelectedNode] = useState(false);
   const [isHaveSelectedNodeOverTwo, setSsHaveSelectedNodeOverTwo] =
     useState(false);
-
-  useEffect(() => {
-    setSsHaveSelectedNode(StageManager.selectedNodeCount > 0);
-    setSsHaveSelectedNodeOverTwo(StageManager.selectedNodeCount > 1);
-  }, [StageManager.selectedNodeCount]);
-
   const [isHaveSelectedEdge, setSsHaveSelectedEdge] = useState(false);
 
-  useEffect(() => {
+  const update = () => {
+    setSsHaveSelectedNode(StageManager.selectedNodeCount > 0);
+    setSsHaveSelectedNodeOverTwo(StageManager.selectedNodeCount > 1);
     setSsHaveSelectedEdge(StageManager.selectedEdgeCount > 0);
-  }, [StageManager.selectedEdgeCount]);
+    setIsCopyClearShow(Stage.copyBoardData.nodes.length > 0);
+  };
+  useEffect(() => {
+    update();
+    const intervalId = setInterval(() => {
+      update();
+    }, 100);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   // 一个竖向的工具栏，在页面顶部，右侧显示
   return (
@@ -380,7 +381,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           description="AI扩展节点"
           icon={<BrainCircuit />}
           handleFunction={() => {
-            if (ApiKeyManager.getKey().length === 0) {
+            if (ApiKeyManager.getKeyArk().length === 0) {
               dialog.show({
                 title: "提示",
                 content: "当前为非官方构建，请使用官方构建方可使用AI功能。",

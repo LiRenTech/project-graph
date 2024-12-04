@@ -97,7 +97,7 @@ export default function Home() {
       <SearchingNodePanel />
       <DetailsEditPanel />
       <HintText />
-      {/* TODO: 下面这个写法有点奇怪 */}
+      {/* TODO: 下面这个写法有点奇怪 rgba值太长了 */}
       <div
         style={{
           background: `rgba(${StageStyleManager.currentStyle.BackgroundColor.r},${StageStyleManager.currentStyle.BackgroundColor.g},${StageStyleManager.currentStyle.BackgroundColor.b},${bgAlpha})`,

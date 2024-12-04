@@ -1,6 +1,9 @@
 import { Color } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Vector } from "../../dataStruct/Vector";
+import { Renderer } from "../../render/canvas2d/renderer";
+import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { Camera } from "../../stage/Camera";
 import { Effect } from "../effect";
 
 /**
@@ -22,5 +25,18 @@ export class CircleFlameEffect extends Effect {
 
   override tick() {
     super.tick();
+  }
+
+  render(): void {
+    if (this.timeProgress.isFull) {
+      return;
+    }
+    this.color.a = 1 - this.timeProgress.rate;
+    const rendRadius = this.radius * this.timeProgress.rate;
+    RenderUtils.renderCircleTransition(
+      Renderer.transformWorld2View(this.location),
+      rendRadius * Camera.currentScale,
+      this.color,
+    );
   }
 }
