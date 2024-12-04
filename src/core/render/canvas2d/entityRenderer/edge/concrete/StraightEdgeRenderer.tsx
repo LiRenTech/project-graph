@@ -87,7 +87,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         edge.text,
         Renderer.transformWorld2View(midPoint),
         Renderer.FONT_SIZE * Camera.currentScale,
-        StageStyleManager.currentStyle.StageObjectBorderColor
+        StageStyleManager.currentStyle.StageObjectBorderColor,
       );
       const edgeTextRectangle = edge.textRectangle;
 
@@ -98,7 +98,6 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         ),
         StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
-        
       );
       RenderUtils.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.end),
