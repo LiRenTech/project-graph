@@ -13,9 +13,16 @@ export abstract class Effect {
     public delay: number = 0,
   ) {}
 
+  /** 子特效（构成树形组合模式） */
+  protected subEffects: Effect[] = [];
+
   tick(): void {
     // 自动+1帧
     this.timeProgress.add(1);
+    // 子特效tick
+    for (const subEffect of this.subEffects) {
+      subEffect.tick();
+    }
   }
 
   /**
