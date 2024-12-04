@@ -17,19 +17,39 @@ export default function ExportTreeTextPanel() {
 
   const [markdownText, setMarkdownText] = useState("");
   const [tabText, setTabText] = useState("");
+  const [plainText, setPlainText] = useState("");
 
   useEffect(() => {
     if (!isExportTreeTextPanelOpen) {
       return;
     }
-    // 当前选择的节点通常来说是一个节点，且在上游已经确定了是树形结构
-    const selectedNode = StageManager.getSelectedEntities()[0];
-    if (!(selectedNode instanceof TextNode)) {
-      return;
+    const selectedEntities = StageManager.getSelectedEntities();
+    if (selectedEntities.length === 0) {
+      // 没有选中节点
+      setMarkdownText("请选择一个节点\n且必须是树形结构的根节点");
+      setTabText("请选择一个节点\n且必须是树形结构的根节点");
+      setPlainText("请选择多个节点");
+    } else if (selectedEntities.length === 1) {
+      // 单个节点
+      const selectedFirstNode = selectedEntities[0];
+      if (selectedFirstNode instanceof TextNode) {
+        if (StageManager.isTree(selectedFirstNode)) {
+          setMarkdownText(
+            StageSaveManager.getMarkdownStringByTextNode(selectedFirstNode),
+          );
+          setTabText(StageSaveManager.getTabStringByTextNode(selectedFirstNode));
+        } else {
+          setMarkdownText("选择的根节点必须符合树形结构");
+          setTabText("选择的根节点必须符合树形结构");
+        }
+      }
+      setPlainText("请选择多个节点");
+    } else {
+      // 多个节点
+      setMarkdownText("只能选择一个节点\n且必须是树形结构的根节点");
+      setTabText("只能选择一个节点\n且必须是树形结构的根节点");
+      setPlainText(StageSaveManager.getPlainTextByEntities(selectedEntities));
     }
-
-    setMarkdownText(StageSaveManager.getMarkdownStringByTextNode(selectedNode));
-    setTabText(StageSaveManager.getTabStringByTextNode(selectedNode));
   }, [isExportTreeTextPanelOpen]);
 
   return (
@@ -48,6 +68,7 @@ export default function ExportTreeTextPanel() {
       <div className="flex gap-2">
         <CodePre text={tabText} title="纯缩进类型" />
         <CodePre text={markdownText} title="markdown类型" />
+        <CodePre text={plainText} title="纯文本图类型" />
       </div>
       <button
         className="absolute right-0 top-0 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"

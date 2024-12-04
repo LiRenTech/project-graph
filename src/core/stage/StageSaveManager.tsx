@@ -6,6 +6,7 @@ import { TextNode } from "../stageObject/entity/TextNode";
 import { Stage } from "./Stage";
 import { StageHistoryManager } from "./stageManager/StageHistoryManager";
 import { StageManager } from "./stageManager/StageManager";
+import { Entity } from "../stageObject/StageObject";
 
 /**
  * 管理所有和保存相关的内容
@@ -192,6 +193,42 @@ export namespace StageSaveManager {
       .catch((err) => {
         errorCallback(err);
       });
+  }
+
+  // region 以下可能要拆出去
+
+  /**
+   * 格式：
+   * 节点A
+   * 节点B
+   * 节点C
+   *
+   * A -> B
+   * A -> C
+   * B -> C
+   *
+   * @param nodes
+   * @returns
+   */
+  export function getPlainTextByEntities(nodes: Entity[]) {
+    let nodesContent = "";
+    let linksContent = "";
+    for (const node of nodes) {
+      if (!(node instanceof TextNode)) {
+        continue;
+      }
+      nodesContent += node.text + "\n";
+      if (node.details.trim()) {
+        nodesContent += "\t" + node.details + "\n";
+      }
+      StageManager.nodeChildrenArray(node)
+        .filter((node) => node instanceof TextNode)
+        .filter(node => nodes.includes(node))
+        .forEach((child) => {
+          linksContent += `${node.text} -> ${child.text}\n`;
+        });
+    }
+    return nodesContent + "\n" + linksContent;
   }
 
   export function getMarkdownStringByTextNode(textNode: TextNode) {

@@ -279,22 +279,7 @@ export default function AppMenu({
       dialog.show({
         title: "没有选中节点",
         content:
-          "请先选中一个根节点再使用此功能，并且根节点所形成的结构必须为树状结构",
-        type: "error",
-      });
-      return;
-    } else if (selectedNodes.length > 1) {
-      dialog.show({
-        title: "选中节点数量过多",
-        content: "只能选中一个根节点，并且根节点所形成的结构必须为树状结构",
-        type: "error",
-      });
-      return;
-    }
-    if (!StageManager.isTree(selectedNodes[0])) {
-      dialog.show({
-        title: "结构错误",
-        content: "根节点所形成的结构必须为树状结构",
+          "请先至少选择一个节点再使用此功能",
         type: "error",
       });
       return;
