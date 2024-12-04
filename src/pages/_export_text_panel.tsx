@@ -5,6 +5,7 @@ import { cn } from "../utils/cn";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { TextNode } from "../core/stageObject/entity/TextNode";
+import Button from "../components/ui/Button";
 
 /**
  * 导出节点纯文本相关的面板
@@ -59,9 +60,21 @@ export default function ExportTreeTextPanel() {
 }
 
 function CodePre({ text, title }: { text: string; title: string }) {
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        alert("内容已复制到剪贴板！");
+      })
+      .catch((err) => {
+        alert("复制失败:" + err.toString());
+      });
+  };
+
   return (
     <div>
       <h4 className="text-sm font-bold">{title}</h4>
+      <Button onClick={handleCopy}>点击复制</Button>
       <pre className="select-text rounded-md bg-black p-2 text-xs text-slate-400">
         {text}
       </pre>
