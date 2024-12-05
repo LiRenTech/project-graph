@@ -1,6 +1,6 @@
 import { RotateCw } from "lucide-react";
 import React from "react";
-import { getI18n } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import Select from "../../components/ui/Select";
@@ -10,11 +10,7 @@ import { Settings } from "../../core/Settings";
 
 export function SettingField({
   settingKey,
-  title = settingKey,
-  details = "",
-  showKey = true,
   type = "text",
-  options = [],
   min = 0,
   max = 100,
   step = 1,
@@ -22,11 +18,7 @@ export function SettingField({
   icon = <></>,
 }: {
   settingKey: keyof Settings.Settings;
-  title?: string;
-  details?: string;
-  showKey?: boolean;
   type?: "text" | "number" | "slider" | "switch" | "select";
-  options?: { label: string; value: string }[];
   min?: number;
   max?: number;
   step?: number;
@@ -34,6 +26,7 @@ export function SettingField({
   icon?: React.ReactNode;
 }) {
   const [value, setValue] = React.useState<any>();
+  const { t, i18n } = useTranslation("settings");
 
   React.useEffect(() => {
     Settings.get(settingKey).then((v) => {
@@ -45,7 +38,7 @@ export function SettingField({
       Settings.set(settingKey, value);
 
       if (settingKey === "language") {
-        getI18n().changeLanguage(value);
+        i18n.changeLanguage(value);
       }
     }
   }, [value]);
@@ -55,17 +48,17 @@ export function SettingField({
       <div className="flex items-center gap-2">
         {icon}
         <div className="flex flex-col">
-          <span>{title}</span>
+          <span>{t(`${settingKey}.title`)}</span>
           <div>
-            {details.split("\n").map((dd, ii) => (
-              <p key={`${ii}`} className="text-xs text-gray-500">
-                {dd}
-              </p>
-            ))}
+            {t(`${settingKey}.description`, { defaultValue: "" })
+              .split("\n")
+              .map((dd, ii) => (
+                <p key={ii} className="text-xs text-gray-500">
+                  {dd}
+                </p>
+              ))}
           </div>
-          {showKey && (
-            <span className="text-xs text-gray-500">{settingKey}</span>
-          )}
+          <span className="text-xs text-gray-500">{settingKey}</span>
         </div>
       </div>
       <div className="flex-1"></div>
@@ -92,7 +85,19 @@ export function SettingField({
       )}
       {type === "switch" && <Switch value={value} onChange={setValue} />}
       {type === "select" && (
-        <Select value={value} onChange={setValue} options={options}></Select>
+        <Select
+          value={value}
+          onChange={setValue}
+          options={Object.entries(
+            t(`${settingKey}.options`, {
+              returnObjects: true,
+              defaultValue: { error: "Error: options not found" },
+            }),
+          ).map(([k, v]) => ({
+            label: v as string,
+            value: k,
+          }))}
+        ></Select>
       )}
     </div>
   );

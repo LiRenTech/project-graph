@@ -5,15 +5,6 @@ welcome:
   github: GitHub
   bilibili: 哔哩哔哩
   qq: QQ 群
-settingsTabs:
-  about: 关于
-  visual: 显示
-  physical: 物理
-  performance: 性能
-  automation: 自动化
-  control: 控制
-  ai: AI
-  github: GitHub
 settingsAbout:
   title: Project Graph 计划投射
   introTitle: 软件介绍
@@ -29,7 +20,7 @@ settingsAbout:
   developer:
     title: 开发者名单
     tips: 软件在github上开源，欢迎提issue与贡献代码
-  ideaSource: 
+  ideaSource:
     title: 灵感来源
     list:
       - 没有黑夜风格的FigJamBoard
@@ -41,73 +32,137 @@ settingsAbout:
     - 理刃科技是一个由Littlefean和Rutubet在2017年5月1日创立的小型团队，后续ZTY加入团队。
     - 以其年轻化的团队氛围、对创新创意的重视、以及理性思维与文化包容的特点，在软件开发领域独树一帜。
     - 不仅专注于开发工具软件和游戏，还涉足Minecraft游戏插件开发、游戏服务器运营以及网站建设等多元化业务。
-    - >-
-      理刃科技的代表作品包括CannonWar这个内容丰富的塔防游戏、BitMountain算法竞赛网站、Watch小桌面软件，以及MinecraftPvP职业战争服务器。
+    - 理刃科技的代表作品包括CannonWar这个内容丰富的塔防游戏、BitMountain算法竞赛网站、Watch小桌面软件，以及MinecraftPvP职业战争服务器。
     - 团队以浅蓝色和代码绿为代表颜色，象征着逻辑合理与整活幽默并存的团队文化。
 
-settingsVisual:
-  language: 语言
-  theme: 舞台主题颜色
-  themes:
-    black: 德古拉暗黑主题
-    white: 论文白色主题
-  lineStyle: 线段样式
-  lineStyles:
-    straight: 直线
-    bezier: 贝塞尔曲线
-    vertical: 垂直折线
-  showGrid: 显示网格
-  windowBackgroundAlpha: 窗口不透明度
+settings:
+  tabs:
+    about: 关于
+    visual: 显示
+    physical: 物理
+    performance: 性能
+    automation: 自动化
+    control: 控制
+    ai: AI
+    github: GitHub
+  language:
+    title: 语言
+    options:
+      en: English
+      zh-CN: 简体中文
+      zh-TW: 繁體中文
+  theme:
+    title: 舞台主题颜色
+    options:
+      black: 德古拉暗黑主题
+      white: 论文白色主题
+  lineStyle:
+    title: 连线样式
+    options:
+      straight: 直线
+      bezier: 贝塞尔曲线
+      vertical: 垂直折线
+  showGrid:
+    title: 显示网格
+  windowBackgroundAlpha:
+    title: 窗口背景透明度
   showDebug:
     title: 显示调试信息
-    description: "通常为开发者使用\n开启后，画布左上角将会显示调试信息。\n若您遇到bug截图反馈时，建议开启此选项。"
+    description: |
+      通常为开发者使用
+      开启后，画布左上角将会显示调试信息。
+      若您遇到bug截图反馈时，建议开启此选项。
   alwaysShowDetails:
     title: 始终显示节点详细信息
-    description: "开启后，无需鼠标移动到节点上时，才显示节点的详细信息。"
+    description: |
+      开启后，无需鼠标移动到节点上时，才显示节点的详细信息。
   useNativeTitleBar:
     title: 使用原生标题栏（需要重启应用）
-    description: "开启后，窗口顶部将会出现原生的标题栏，而不是模拟的标题栏。"
+    description: |
+      开启后，窗口顶部将会出现原生的标题栏，而不是模拟的标题栏。
   protectingPrivacy:
     title: 隐私保护
-    description: "用于反馈问题截图时，开启此项之后将汉字全部替换成《好》，以保护隐私。\n仅作显示层面的替换，不会影响真实数据\n反馈完毕后可再关闭，复原"
-settingsPerformance:
-  renderEffect: 渲染特效
+    description: |
+      用于反馈问题截图时，开启此项之后将汉字全部替换成《好》，以保护隐私。
+      仅作显示层面的替换，不会影响真实数据
+      反馈完毕后可再关闭，复原
+  renderEffect:
+    title: 渲染特效
+    description: 是否渲染特效，如果卡顿可以关闭
   historySize:
     title: 历史记录大小
-    description: "这个数值决定了您最多ctrl+z撤销的次数\n如果您的电脑内存非常少，可以适当调小这个值"
-settingsAutomation:
+    description: |
+      这个数值决定了您最多ctrl+z撤销的次数
+      如果您的电脑内存非常少，可以适当调小这个值
   autoNamerTemplate:
     title: 自动命名模板
-    description: "输入`{{i}}` 代表节点名称会自动替换为编号，双击创建时可以自动累加数字。\n例如`n{{i}}` 会自动替换为`n1`, `n2`, `n3`...\n输入`{{date}}` 会自动替换为当前日期，双击创建时可以自动更新日期。\n输入`{{time}}` 会自动替换为当前时间，双击创建时可以自动更新时间。\n可以组合使用，例如`{{i}}-{{date}}-{{time}}\n"
+    description: |
+      输入`{{i}}` 代表节点名称会自动替换为编号，双击创建时可以自动累加数字。
+      例如`n{{i}}` 会自动替换为`n1`, `n2`, `n3`...
+      输入`{{date}}` 会自动替换为当前日期，双击创建时可以自动更新日期。
+      输入`{{time}}` 会自动替换为当前时间，双击创建时可以自动更新时间。
+      可以组合使用，例如`{{i}}-{{date}}-{{time}}`
   autoSaveWhenClose:
     title: 点击窗口右上角关闭按钮时自动保存工程文件
-    description: "关闭软件时，如果有未保存的工程文件，会弹出提示框询问是否保存。\n开启此选项后，关闭软件时会自动保存工程文件。\n所以，建议开启此选项。"
+    description: |
+      关闭软件时，如果有未保存的工程文件，会弹出提示框询问是否保存。
+      开启此选项后，关闭软件时会自动保存工程文件。
+      所以，建议开启此选项。
   autoSave:
     title: 开启自动保存
-    description: "自动保存当前文件\n此功能目前仅对已有路径的文件有效，不对草稿文件生效！"
+    description: |
+      自动保存当前文件
+      此功能目前仅对已有路径的文件有效，不对草稿文件生效！
   autoSaveInterval:
     title: 开启自动保存间隔（秒）
-    description: "注意：目前计时时间仅在软件窗口激活时计时，软件最小化后不会计时。"
+    description: |
+      注意：目前计时时间仅在软件窗口激活时计时，软件最小化后不会计时。
   autoBackup:
     title: 开启自动备份
-    description: "自动备份当前文件\n自动备份会在工程文件旁边生成一个副本\n如果是草稿，则会存储在指定的路径"
+    description: |
+      自动备份当前文件
+      自动备份会在工程文件旁边生成一个副本
+      如果是草稿，则会存储在指定的路径
   autoBackupInterval:
     title: 自动备份间隔（秒）
-    description: "自动备份过于频繁可能会产生大量的备份文件\n进而占用磁盘空间"
+    description: |
+      自动备份过于频繁可能会产生大量的备份文件
+      进而占用磁盘空间
   autoBackupDraftPath:
     title: 草稿的自动备份文件夹路径
-    description: "请填写绝对路径，草稿将统一备份到此文件夹下\n留空或路径错误时不进行备份\nwindows系统注意使用反斜杠\n例如：C:\\Users\\username\\Documents\\DraftBackup\n结尾不要带路径分隔符"
-settingsControl:
+    description: |
+      请填写绝对路径，草稿将统一备份到此文件夹下
+      留空或路径错误时不进行备份
+      windows系统注意使用反斜杠
+      例如：C:\\Users\\username\\Documents\\DraftBackup
+      结尾不要带路径分隔符
   scaleExponent:
     title: 视角缩放速度
-    description: "《当前缩放倍数》会不断的以一定倍率无限逼近《目标缩放倍数》\n当逼近的足够近时（小于0.0001），会自动停止缩放\n值为1代表缩放会立刻完成，没有中间的过渡效果\n值为0代表缩放永远都不会完成，可模拟锁死效果"
+    description: |
+      《当前缩放倍数》会不断的以一定倍率无限逼近《目标缩放倍数》
+      当逼近的足够近时（小于0.0001），会自动停止缩放
+      值为1代表缩放会立刻完成，没有中间的过渡效果
+      值为0代表缩放永远都不会完成，可模拟锁死效果
   moveAmplitude:
     title: 视角移动加速度
-    description: "此设置项用于 使用W S A D按键来上下左右移动视角时的情景\n可将摄像机看成一个能朝四个方向喷气的 悬浮飞机\n此加速度值代表着喷气的动力大小，需要结合下面的摩擦力设置来调整速度"
+    description: |
+      此设置项用于 使用W S A D按键来上下左右移动视角时的情景
+      可将摄像机看成一个能朝四个方向喷气的 悬浮飞机
+      此加速度值代表着喷气的动力大小，需要结合下面的摩擦力设置来调整速度
   moveFriction:
     title: 视角移动摩擦力系数
-    description: "此设置项用于 使用W S A D按键来上下左右移动视角时的情景\n摩擦系数越大，滑动的距离越小，摩擦系数越小，滑动的距离越远\n此值=0时代表 绝对光滑"
-  gamepadDeadzone: 游戏手柄死区
+    description: |
+      此设置项用于 使用W S A D按键来上下左右移动视角时的情景
+      摩擦系数越大，滑动的距离越小，摩擦系数越小，滑动的距离越远
+      此值=0时代表 绝对光滑
+  gamepadDeadzone:
+    title: 游戏手柄死区
+    description: |
+      此设置项用于 游戏手柄控制视角时的情景
+      手柄的输入值在0-1之间，此值越小，手柄的输入越敏感
+      死区越大，手柄的输入越趋于0或1，不会产生太大的变化
+      死区越小，手柄的输入越趋于中间值，会产生较大的变化
+
 app:
   unsaved: "*"
 appMenu:

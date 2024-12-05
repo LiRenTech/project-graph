@@ -5,110 +5,137 @@ welcome:
   github: GitHub
   bilibili: 哔哩哔哩
   qq: QQ 群組
-settingsAbout:
-  title: Project Graph 計畫投射
-  introTitle: 軟體介紹
-  intro:
-    - 這是一個基於tauri框架的快速繪製節點圖的工具，可以用於項目拓撲圖繪製、快速頭腦風暴草稿
-    - Xmind 只能用來繪製樹形結構圖，FigJam 和 draw.io 可以用來繪製但網頁打開有點慢了
-    - 所以做了這個小軟體
-  contact:
-    - 聯繫我們
-    - 我們致力於為“圖論”設計一個最快速方便的繪製方法論，同時也在可視化思考、拓撲型 todo list 等方向進行探索創新。
-    - 如果您想快速獲得反饋和提供建議，或者有任何想法、疑問，歡迎加入我們的 QQ 群：1006956704
-  techEnvironment: 技術支持與生態環境
-  developer:
-    title: 開發者名單
-    tips: 軟體在GitHub上開源，歡迎提issue與貢獻代碼
-  ideaSource: 
-    title: 靈感來源
-    list:
-      - 沒有黑夜風格的FigJamBoard
-      - 所長林超的畫分析框架的詳解影片
-      - 《資料結構與演算法》中的拓撲排序、圖論
-  team:
-    - 團隊簡介
-    - 理刃科技是一個由Littlefean和Rutubet在2017年5月1日創立的小型團隊，後續ZTY加入團隊。
-    - 以其年輕化的團隊氛圍、對創新創意的重視、以及理性思維與文化包容的特點，在軟體開發領域獨樹一幟。
-    - 不僅專注於開發工具軟體和遊戲，還涉足Minecraft遊戲插件開發、遊戲伺服器運營以及網站建設等多元化業務。
-    - 理刃科技的代表作品包括CannonWar這個內容豐富的塔防遊戲、BitMountain算法競賽網站、Watch小桌面軟體，以及MinecraftPvP職業戰爭伺服器。
-    - 團隊以淺藍色和代碼綠為代表顏色，象徵著邏輯合理與整活幽默並存的團隊文化。
-settingsTabs:
-  about: 关于
-  visual: 显示
-  physical: 物理
-  performance: 性能
-  automation: 自动化
-  control: 控制
-  ai: AI
-  github: GitHub
-settingsVisual:
-  language: 語言
-  theme: 舞台主題顏色
-  themes:
-    black: 德古拉暗黑主題
-    white: 論文白色主題
-  lineStyle: 線段樣式
-  lineStyles:
-    straight: 直線
-    bezier: 貝塞爾曲線
-    vertical: 垂直折線
-  showGrid: 顯示網格
-  windowBackgroundAlpha: 窗口不透明度
-  showDebug: 
-    title: 顯示調試信息
-    description: "通常為開發者使用\n開啟後，畫布左上角將會顯示調試信息。\n若您遇到bug截圖反饋時，建議開啟此選項。"
-  alwaysShowDetails: 
-    title: 始終顯示節點詳細信息
-    description: "開啟後，無需鼠標移動到節點上時，才顯示節點的詳細信息。"
-  useNativeTitleBar: 
-    title: 使用原生標題欄（需要重啟應用）
-    description: "開啟後，窗口頂部將會出現原生的標題欄，而不是模擬的標題欄。"
+
+settings:
+  tabs:
+    about: 關於
+    visual: 顯示
+    physical: 物理
+    performance: 性能
+    automation: 自動化
+    control: 控制
+    ai: AI
+    github: GitHub
+  language:
+    title: 語言
+    options:
+      en: 英文
+      zh-CN: 简体中文
+      zh-TW: 繁體中文
+  theme:
+    title: 主題顏色
+    options:
+      black: 德古拉暗黑主題
+      white: 論文白色主題
+  lineStyle:
+    title: 連線樣式
+    options:
+      straight: 直線
+      bezier: 貝塞爾曲線
+      vertical: 垂直折線
+  showGrid:
+    title: 顯示網格
+  windowBackgroundAlpha:
+    title: 視窗背景透明度
+  showDebug:
+    title: 顯示除錯資訊
+    description: |
+      通常為開發者使用
+      開啟後，畫布左上角將會顯示除錯資訊。
+      若您遇到bug截圖回饋時，建議開啟此選項。
+  alwaysShowDetails:
+    title: 始終顯示節點詳細資訊
+    description: |
+      開啟後，無需滑鼠移動到節點上時，才顯示節點的詳細資訊。
+  useNativeTitleBar:
+    title: 使用原生標題列（需要重新啟動應用程式）
+    description: |
+      開啟後，視窗頂部將會出現原生的標題列，而不是模擬的標題列。
   protectingPrivacy:
     title: 隱私保護
-    description: "用於反饋問題截圖時，開啟此項之後將漢字全部替換成《好》，以保護隱私。\n僅作顯示層面的替換，不會影響真實數據\n反饋完畢後可再關閉，復原"
-settingsPerformance:
-  renderEffect: 渲染特效
+    description: |
+      用於回饋問題截圖時，開啟此項之後將漢字全部替換成《好》，以保護隱私。
+      僅作顯示層面的替換，不會影響真實數據
+      回饋完畢後可再關閉，復原
+  renderEffect:
+    title: 渲染特效
+    description: 是否渲染特效，如果卡頓可以關閉
   historySize:
     title: 歷史記錄大小
-    description: "這個數值決定了您最多 ctrl+z 撤銷的次數\n如果您的電腦內存非常少，可以適當調小這個值"
-settingsAutomation:
+    description: |
+      這個數值決定了您最多ctrl+z撤銷的次數
+      如果您的電腦記憶體非常少，可以適當調小這個值
   autoNamerTemplate:
     title: 自動命名模板
-    description: "輸入`{{i}}` 代表節點名稱會自動替換為編號，雙擊創建時可以自動累加數字。\n例如`n{{i}}` 會自動替換為`n1`, `n2`, `n3`...\n輸入`{{date}}` 會自動替換為當前日期，雙擊創建時可以自動更新日期。\n輸入`{{time}}` 會自動替換為當前時間，雙擊創建時可以自動更新時間。\n可以組合使用，例如`{{i}}-{{date}}-{{time}}\n"
+    description: |
+      輸入`{{i}}` 代表節點名稱會自動替換為編號，雙擊創建時可以自動累加數字。
+      例如`n{{i}}` 會自動替換為`n1`, `n2`, `n3`...
+      輸入`{{date}}` 會自動替換為目前日期，雙擊創建時可以自動更新日期。
+      輸入`{{time}}` 會自動替換為目前時間，雙擊創建時可以自動更新時間。
+      可以組合使用，例如`{{i}}-{{date}}-{{time}}`
   autoSaveWhenClose:
-    title: 點擊窗口右上角關閉按鈕時自動保存工程文件
-    description: "關閉軟件時，如果有未保存的工程文件，會彈出提示框詢問是否保存。\n開啟此選項後，關閉軟件時會自動保存工程文件。\n所以，建議開啟此選項。"
+    title: 點擊視窗右上角關閉按鈕時自動儲存工程檔案
+    description: |
+      關閉軟體時，如果有未儲存的工程檔案，會彈出提示框詢問是否儲存。
+      開啟此選項後，關閉軟體時會自動儲存工程檔案。
+      所以，建議開啟此選項。
   autoSave:
-    title: 開啟自動保存
-    description: "自動保存當前檔案\n此功能目前僅對已有路徑的檔案有效，不對草稿檔案生效！"
+    title: 開啟自動儲存
+    description: |
+      自動儲存目前檔案
+      此功能目前僅對已有路徑的檔案有效，對草稿檔案不生效！
   autoSaveInterval:
-    title: 開啟自動保存間隔（秒）
-    description: "注意：目前計時時間僅在軟體視窗啟用時計時，軟體最小化後不會計時。"
+    title: 開啟自動儲存間隔（秒）
+    description: |
+      注意：目前計時時間僅在軟體視窗啟用時計時，軟體最小化後不會計時。
   autoBackup:
     title: 開啟自動備份
-    description: "自動備份當前檔案\n自動備份會在工程檔案旁邊生成一個副本\n如果是草稿，則會存儲在指定的路徑"
+    description: |
+      自動備份目前檔案
+      自動備份會在工程檔案旁邊生成一個副本
+      如果是草稿，則會儲存到指定的路徑
   autoBackupInterval:
     title: 自動備份間隔（秒）
-    description: "自動備份過於頻繁可能會產生大量的備份檔案\n進而占用磁碟空間"
+    description: |
+      自動備份過於頻繁可能會產生大量的備份檔案
+      進而佔用磁碟空間
   autoBackupDraftPath:
-    title: 草稿的自動備份檔案夾路徑
-    description: "請填寫絕對路徑，草稿將統一備份到此檔案夾下\n留空或路徑錯誤時不進行備份\nwindows系統注意使用反斜線\n例如：C:\\Users\\username\\Documents\\DraftBackup\n結尾不要帶路徑分隔符"
-
-settingsControl:
+    title: 草稿的自動備份資料夾路徑
+    description: |
+      請填寫絕對路徑，草稿將統一備份到此資料夾下
+      留空或路徑錯誤時不進行備份
+      windows系統注意使用反斜杠
+      例如：C:\\Users\\username\\Documents\\DraftBackup
+      結尾不要帶路徑分隔符
   scaleExponent:
     title: 視角縮放速度
-    description: "《當前縮放倍數》會不斷的以一定倍率無限逼近《目標縮放倍數》\n當逼近的足夠近時（小於0.0001），會自動停止縮放\n值為1代表縮放會立刻完成，沒有中間的過渡效果\n值為0代表縮放永遠都不會完成，可模擬鎖死效果"
+    description: |
+      《目前縮放倍數》會不斷的以一定倍率無限逼近《目標縮放倍數》
+      當逼近的足夠近時（小於0.0001），會自動停止縮放
+      值为1代表縮放會立刻完成，没有中间的过渡效果
+      值为0代表縮放永遠都不会完成，可模拟锁死效果
   moveAmplitude:
     title: 視角移動加速度
-    description: "此設置項用於 使用W S A D按鍵來上下左右移動視角時的情景\n可將攝像機看成一個能朝四個方向噴氣的 懸浮飛機\n此加速度值代表著噴氣的動力大小，需要結合下面的摩擦力設置來調整速度"
+    description: |
+      此設定項用於 使用W S A D鍵來上下左右移動視角時的情景
+      可將攝影機看成一個能朝四个方向噴气的 懸浮飛機
+      此加速度值代表著噴气的動力大小，需要結合下面的摩擦力設定來調整速度
   moveFriction:
-    title: 視角移動摩擦力系數
-    description: "此設置項用於 使用W S A D按鍵來上下左右移動視角時的情景\n摩擦系數越大，滑動的距離越小，摩擦系數越小，滑動的距離越遠\n此值=0時代表 絕對光滑"
-  gamepadDeadzone: 遊戲手柄死區
+    title: 視角移動摩擦力係數
+    description: |
+      此設定項用於 使用W S A D鍵來上下左右移動視角時的情景
+      摩擦係數越大，滑动的距离越小，摩擦係數越小，滑动的距离越遠
+      此值=0時代表 絕對光滑
+  gamepadDeadzone:
+    title: 遊戲手柄死區
+    description: |
+      此設定項用於 遊戲手柄控制視角時的情景
+      手柄的輸入值在0-1之間，此值越小，手柄的輸入越敏感
+      死區越大，手柄的輸入越趨於0或1，不會產生太大的變化
+      死區越小，手柄的輸入越趨於中間值，會產生較大的變化
 
 app:
-  unsaved: '*'
+  unsaved: "*"
 appMenu:
   file:
     title: 檔案
