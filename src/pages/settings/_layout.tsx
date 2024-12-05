@@ -1,10 +1,10 @@
 import {
   Bot,
+  Brain,
   Eye,
   Info,
   Keyboard,
   Plug,
-  Server,
   Sparkles,
   Speaker,
 } from "lucide-react";
@@ -47,7 +47,7 @@ export default function SettingsLayout() {
             {t("tabs.control")}
           </NavLink>
           <NavLink to="/settings/ai" className="flex items-center gap-2">
-            <Server />
+            <Brain />
             {t("tabs.ai")}
           </NavLink>
           <NavLink to="/settings/github" className="flex items-center gap-2">
