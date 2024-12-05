@@ -7,18 +7,20 @@ export default function Button({
   className = "",
   onClick = () => {},
   disabled = false,
+  icon = null,
   ...props
 }: React.PropsWithChildren<{
   className?: string;
   onClick?: (e: React.MouseEvent) => void;
   disabled?: boolean;
+  icon?: React.ReactNode;
   [key: string]: any;
 }>) {
   return (
     <Box
       as="button"
       className={cn(
-        "px-3 py-2",
+        "flex items-center justify-center gap-1 px-3 py-2",
         {
           "hover:opacity-80 active:scale-90": !disabled,
           "cursor-not-allowed opacity-50": disabled,
@@ -32,6 +34,7 @@ export default function Button({
       }}
       {...props}
     >
+      {icon}
       {children}
     </Box>
   );
