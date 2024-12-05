@@ -118,7 +118,27 @@ export function ButtonField({
   icon?: React.ReactNode;
 }) {
   return (
-    <div className="flex w-full items-center justify-between rounded-xl p-4 hover:bg-white/10">
+    <Field title={title} description={description} icon={icon}>
+      <Button disabled={disabled} onClick={onClick}>
+        {label}
+      </Button>
+    </Field>
+  );
+}
+
+export function Field({
+  title,
+  description = "",
+  children,
+  icon = <></>,
+}: {
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+  icon?: React.ReactNode;
+}) {
+  return (
+    <div className="flex w-full items-center justify-between gap-2 rounded-xl p-4 hover:bg-white/10">
       <div className="flex items-center gap-2">
         {icon}
         <div className="flex flex-col">
@@ -126,9 +146,8 @@ export function ButtonField({
           <span className="text-xs text-gray-500">{description}</span>
         </div>
       </div>
-      <Button onClick={onClick} disabled={disabled}>
-        {label}
-      </Button>
+      <div className="flex-1"></div>
+      {children}
     </div>
   );
 }
