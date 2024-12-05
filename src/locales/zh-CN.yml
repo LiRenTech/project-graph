@@ -45,6 +45,8 @@ settings:
     control: 控制
     ai: AI
     github: GitHub
+    sounds: 声音
+    plugins: 插件
   language:
     title: 语言
     options:
@@ -165,6 +167,7 @@ settings:
 
 app:
   unsaved: "*"
+  comingSoon: "即将到来……"
 appMenu:
   file:
     title: 文件

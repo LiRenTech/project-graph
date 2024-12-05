@@ -13,6 +13,7 @@ export type Path =
   | `/settings/github`
   | `/settings/performance`
   | `/settings/physical`
+  | `/settings/plugins`
   | `/settings/sounds`
   | `/settings/visual`
   | `/test`
