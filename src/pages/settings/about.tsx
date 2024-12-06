@@ -1,9 +1,12 @@
 import { getVersion } from "@tauri-apps/api/app";
 import { open } from "@tauri-apps/plugin-shell";
-import { Code2, Lightbulb } from "lucide-react";
+import { BookOpen, Code2, Lightbulb, MessageCircleCode } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import Bilibili from "../../assets/bilibili.svg?react";
+import Github from "../../assets/github.svg?react";
 import icon from "../../assets/icon.png";
+import QQ from "../../assets/qq.svg?react";
 import versions from "../../assets/versions.json";
 import Button from "../../components/ui/Button";
 import { cn } from "../../utils/cn";
@@ -117,17 +120,20 @@ export default function About() {
       </div>
       <div className="flex gap-2">
         <Button onClick={() => open("https://liren.zty012.de/project-graph")}>
-          使用文档
+          <BookOpen />
+          文档
         </Button>
         <Button
           onClick={() => open("https://github.com/LiRenTech/project-graph")}
         >
-          GitHub开源地址
+          <Github />
+          开源
         </Button>
         <Button
           onClick={() => open("https://www.bilibili.com/video/BV1hmHKeDE9D")}
         >
-          Bilibili视频教程
+          <Bilibili />
+          视频教程
         </Button>
         <Button
           onClick={() =>
@@ -136,13 +142,15 @@ export default function About() {
             )
           }
         >
-          QQ讨论群
+          <QQ />
+          讨论群
         </Button>
         <Button
           onClick={() =>
             open("https://forum.d2learn.org/category/16/project-graph")
           }
         >
+          <MessageCircleCode />
           论坛
         </Button>
       </div>
