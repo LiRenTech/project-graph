@@ -13,6 +13,7 @@ import { RecentFileManager } from "./core/RecentFileManager";
 import { EdgeRenderer } from "./core/render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "./core/render/canvas2d/renderer";
 import { Settings } from "./core/Settings";
+import { SoundService } from "./core/SoundService";
 import { Camera } from "./core/stage/Camera";
 import { Stage } from "./core/stage/Stage";
 import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManager";
@@ -22,7 +23,6 @@ import { StartFilesManager } from "./core/StartFilesManager";
 import "./index.pcss";
 import { DialogProvider } from "./utils/dialog";
 import { PopupDialogProvider } from "./utils/popupDialog";
-import { SoundService } from "./core/SoundService";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -76,6 +76,7 @@ async function loadLanguageFiles() {
     lng: "zh-CN",
     debug: import.meta.env.DEV,
     defaultNS: "",
+    fallbackLng: "zh-CN",
     resources: {
       en: await import("./locales/en.yml").then((m) => m.default),
       "zh-CN": await import("./locales/zh-CN.yml").then((m) => m.default),

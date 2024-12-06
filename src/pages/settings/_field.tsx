@@ -7,6 +7,7 @@ import Select from "../../components/ui/Select";
 import Slider from "../../components/ui/Slider";
 import Switch from "../../components/ui/Switch";
 import { Settings } from "../../core/Settings";
+import { cn } from "../../utils/cn";
 
 export function SettingField({
   settingKey,
@@ -126,24 +127,45 @@ export function ButtonField({
   );
 }
 
+const fieldColors = {
+  default: "hover:bg-white/10",
+  green: "bg-green-500/20 hover:bg-green-500/25",
+  red: "bg-red-500/20 hover:bg-red-500/25",
+  yellow: "bg-yellow-500/20 hover:bg-yellow-500/25",
+  blue: "bg-blue-500/20 hover:bg-blue-500/25",
+  purple: "bg-purple-500/20 hover:bg-purple-500/25",
+};
 export function Field({
-  title,
+  title = "",
   description = "",
-  children,
+  children = <></>,
+  color = "default",
   icon = <></>,
 }: {
-  title: string;
+  title?: string;
   description?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  color?: "default" | "green" | "red" | "yellow" | "blue" | "purple";
   icon?: React.ReactNode;
 }) {
   return (
-    <div className="flex w-full items-center justify-between gap-2 rounded-xl p-4 hover:bg-white/10">
+    <div
+      className={cn(
+        "flex w-full items-center justify-between gap-2 rounded-xl p-4",
+        fieldColors[color],
+      )}
+    >
       <div className="flex items-center gap-2">
         {icon}
         <div className="flex flex-col">
           <span>{title}</span>
-          <span className="text-xs text-gray-500">{description}</span>
+          <span className="text-xs text-gray-500">
+            {description.split("\n").map((dd, ii) => (
+              <p key={ii} className="text-xs text-gray-500">
+                {dd}
+              </p>
+            ))}
+          </span>
         </div>
       </div>
       <div className="flex-1"></div>

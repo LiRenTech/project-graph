@@ -5,10 +5,11 @@ welcome:
   github: GitHub
   bilibili: 哔哩哔哩
   qq: QQ 群
-settingsAbout:
+
+about:
   title: Project Graph 计划投射
-  introTitle: 软件介绍
   intro:
+    - 软件介绍
     - 这是一个基于tauri框架的快速绘制节点图的工具，可以用于项目拓扑图绘制、快速头脑风暴草稿
     - Xmind 只能用来绘制树形结构图，FigJam 和 draw.io 可以用来绘制但网页打开有点慢了
     - 所以做了这个小软件
@@ -17,19 +18,38 @@ settingsAbout:
     - 我们致力于为“图论”设计一个最快速方便的绘制方法论，同时也在可视化思考、拓扑型 todo list 等方向进行探索创新。
     - 如果您想快速获得反馈和提供建议，或者有任何想法、疑问，欢迎加入我们的 QQ 群：1006956704
   techEnvironment: 技术支持与生态环境
-  developer:
+  developers:
     title: 开发者名单
-    tips: 软件在github上开源，欢迎提issue与贡献代码
-  ideaSource:
-    title: 灵感来源
-    list:
-      - 没有黑夜风格的FigJamBoard
-      - 所长林超的画分析框架的详解视频
-      - 《数据结构与算法》中的拓扑排序、图论
-
+    proposer: 项目提出
+    conceptDesigner: 概念设计
+    featureDesigner: 功能设计
+    feedbackManager: 反馈管理
+    logoDesigner: 图标设计
+    uiDesigner: UI 设计
+    softwareArchitect: 软件架构
+    bezierCurveDesigner: 贝塞尔曲线设计
+    animationEffectDesigner: 动画特效设计
+    automationBuilder: 自动化构建
+    xlings: 自动化环境搭建
+    websiteMaintainer: 网站维护
+    performanceSupervisor: 性能督导
+    videoPromoter: 视频推广
+    translator: 翻译
+    tester: 测试
+    encourager: 程序员鼓励师
+    encouragerEncourager: 鼓励师的鼓励师
+    atmosphereAdjuster: 气氛调节
+  ideaSources:
+    - 灵感来源
+    - 未支持深色风格的 FigJam
+    - 所长林超的画分析框架详解视频
+    - 《数据结构与算法》中的拓扑排序、图论
+    - “头脑风暴法”
+    - 游戏《Minecraft》中的“命令方块”
+    - 游戏《水果忍者》中挥刀的动画效果
   team:
     - 团队简介
-    - 理刃科技是一个由Littlefean和Rutubet在2017年5月1日创立的小型团队，后续ZTY加入团队。
+    - 理刃科技(LiRen Tech)是一个由Littlefean和Rutubet在2017年5月1日创立的小型团队，后续ZTY加入团队。
     - 以其年轻化的团队氛围、对创新创意的重视、以及理性思维与文化包容的特点，在软件开发领域独树一帜。
     - 不仅专注于开发工具软件和游戏，还涉足Minecraft游戏插件开发、游戏服务器运营以及网站建设等多元化业务。
     - 理刃科技的代表作品包括CannonWar这个内容丰富的塔防游戏、BitMountain算法竞赛网站、Watch小桌面软件，以及MinecraftPvP职业战争服务器。
@@ -164,6 +184,17 @@ settings:
       手柄的输入值在0-1之间，此值越小，手柄的输入越敏感
       死区越大，手柄的输入越趋于0或1，不会产生太大的变化
       死区越小，手柄的输入越趋于中间值，会产生较大的变化
+
+plugins:
+  welcome:
+    title: 欢迎使用插件系统
+    description: |
+      插件系统是 Project Graph v2 的计划之一，开发者可以使用 JavaScript 开发插件以扩展应用的功能。
+      目前插件系统还未开发完成，敬请期待。
+  title: 插件管理
+  install: 安装插件
+  uninstall: 卸载
+  documentation: 文档
 
 app:
   unsaved: "*"
