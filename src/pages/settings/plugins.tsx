@@ -10,11 +10,12 @@ export default function PluginsPage() {
   return (
     <>
       <Field icon={<Plug />} title={t("plugins.title")}>
-        <Button icon={<Box />}>{t("plugins.install")}</Button>
-        <Button
-          icon={<BookOpen />}
-          onClick={() => open("https://liren.zty012.de/project-graph")}
-        >
+        <Button>
+          <Box />
+          {t("plugins.install")}
+        </Button>
+        <Button onClick={() => open("https://liren.zty012.de/project-graph")}>
+          <BookOpen />
           {t("plugins.documentation")}
         </Button>
       </Field>
@@ -23,7 +24,10 @@ export default function PluginsPage() {
         title="plugin name"
         description="plugin description"
       >
-        <Button icon={<X />}>{t("plugins.uninstall")}</Button>
+        <Button>
+          <X />
+          {t("plugins.uninstall")}
+        </Button>
       </Field>
     </>
   );

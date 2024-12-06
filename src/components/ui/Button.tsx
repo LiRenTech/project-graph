@@ -7,13 +7,11 @@ export default function Button({
   className = "",
   onClick = () => {},
   disabled = false,
-  icon = null,
   ...props
 }: React.PropsWithChildren<{
   className?: string;
   onClick?: (e: React.MouseEvent) => void;
   disabled?: boolean;
-  icon?: React.ReactNode;
   [key: string]: any;
 }>) {
   return (
@@ -34,7 +32,6 @@ export default function Button({
       }}
       {...props}
     >
-      {icon}
       {children}
     </Box>
   );
