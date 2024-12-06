@@ -1,7 +1,7 @@
-import { RotateCw } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Button from "../../components/ui/Button";
+import FileChooser from "../../components/ui/FileChooser";
 import Input from "../../components/ui/Input";
 import Select from "../../components/ui/Select";
 import Slider from "../../components/ui/Slider";
@@ -17,14 +17,16 @@ export function SettingField({
   step = 1,
   placeholder = "",
   icon = <></>,
+  kind = "file",
 }: {
   settingKey: keyof Settings.Settings;
-  type?: "text" | "number" | "slider" | "switch" | "select";
+  type?: "text" | "number" | "slider" | "switch" | "select" | "file";
   min?: number;
   max?: number;
   step?: number;
   placeholder?: string;
   icon?: React.ReactNode;
+  kind?: "file" | "directory";
 }) {
   const [value, setValue] = React.useState<any>();
   const { t, i18n } = useTranslation("settings");
@@ -45,32 +47,11 @@ export function SettingField({
   }, [value]);
 
   return (
-    <div className="flex w-full items-center gap-2 rounded-xl p-4 hover:bg-white/10">
-      <div className="flex items-center gap-2">
-        {icon}
-        <div className="flex flex-col">
-          <span>{t(`${settingKey}.title`)}</span>
-          <div>
-            {t(`${settingKey}.description`, { defaultValue: "" })
-              .split("\n")
-              .map((dd, ii) => (
-                <p key={ii} className="text-xs text-gray-500">
-                  {dd}
-                </p>
-              ))}
-          </div>
-          <span className="text-xs text-gray-500">{settingKey}</span>
-        </div>
-      </div>
-      <div className="flex-1"></div>
-      <button
-        onClick={() => {
-          setValue(Settings.defaultSettings[settingKey]);
-        }}
-        className="transition-transform hover:rotate-180 hover:cursor-pointer"
-      >
-        <RotateCw size={16} className="text-gray-500" />
-      </button>
+    <Field
+      title={t(`${settingKey}.title`)}
+      description={t(`${settingKey}.description`, { defaultValue: "" })}
+      icon={icon}
+    >
       {type === "text" && (
         <Input value={value} onChange={setValue} placeholder={placeholder} />
       )}
@@ -100,7 +81,10 @@ export function SettingField({
           }))}
         ></Select>
       )}
-    </div>
+      {type === "file" && (
+        <FileChooser kind={kind} value={value} onChange={setValue} />
+      )}
+    </Field>
   );
 }
 export function ButtonField({

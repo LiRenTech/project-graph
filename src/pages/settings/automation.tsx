@@ -18,30 +18,22 @@ export default function AutoNamer() {
       <SettingField
         icon={<Tag />}
         settingKey="autoNamerTemplate"
-        title={t("autoNamerTemplate.title")}
-        details={t("autoNamerTemplate.description")}
         type="text"
         placeholder="例如：p{{i}}"
       />
       <SettingField
         icon={<HardDriveDownload />}
         settingKey="autoSaveWhenClose"
-        title={t("autoSaveWhenClose.title")}
-        details={t("autoSaveWhenClose.description")}
         type="switch"
       />
       <SettingField
         icon={<HardDrive />}
         settingKey="autoSave"
-        title={t("autoSave.title")}
-        details={t("autoSave.description")}
         type="switch"
       />
       <SettingField
         icon={<Hourglass />}
         settingKey="autoSaveInterval"
-        title={t("autoSaveInterval.title")}
-        details={t("autoSaveInterval.description")}
         type="slider"
         min={1}
         max={60}
@@ -50,15 +42,11 @@ export default function AutoNamer() {
       <SettingField
         icon={<Database />}
         settingKey="autoBackup"
-        title={t("autoBackup.title")}
-        details={t("autoBackup.description")}
         type="switch"
       />
       <SettingField
         icon={<Hourglass />}
         settingKey="autoBackupInterval"
-        title={t("autoBackupInterval.title")}
-        details={t("autoBackupInterval.description")}
         type="slider"
         min={60}
         max={6000}
@@ -67,8 +55,6 @@ export default function AutoNamer() {
       <SettingField
         icon={<Folder />}
         settingKey="autoBackupDraftPath"
-        title={t("autoBackupDraftPath.title")}
-        details={t("autoBackupDraftPath.description")}
         type="text"
       />
     </>
