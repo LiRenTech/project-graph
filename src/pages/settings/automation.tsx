@@ -1,18 +1,15 @@
 import {
-  HardDriveDownload,
-  Tag,
   Database,
-  Hourglass,
-  HardDrive,
   Folder,
+  HardDrive,
+  HardDriveDownload,
+  Hourglass,
+  Tag,
 } from "lucide-react";
 import { SettingField } from "./_field";
-import { useTranslation } from "react-i18next";
 
 // 其实应该改成快捷操作相关
 export default function AutoNamer() {
-  const { t } = useTranslation("settingsAutomation");
-
   return (
     <>
       <SettingField
@@ -26,11 +23,7 @@ export default function AutoNamer() {
         settingKey="autoSaveWhenClose"
         type="switch"
       />
-      <SettingField
-        icon={<HardDrive />}
-        settingKey="autoSave"
-        type="switch"
-      />
+      <SettingField icon={<HardDrive />} settingKey="autoSave" type="switch" />
       <SettingField
         icon={<Hourglass />}
         settingKey="autoSaveInterval"
@@ -39,11 +32,7 @@ export default function AutoNamer() {
         max={60}
         step={1}
       />
-      <SettingField
-        icon={<Database />}
-        settingKey="autoBackup"
-        type="switch"
-      />
+      <SettingField icon={<Database />} settingKey="autoBackup" type="switch" />
       <SettingField
         icon={<Hourglass />}
         settingKey="autoBackupInterval"

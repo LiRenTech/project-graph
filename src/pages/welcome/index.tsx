@@ -1,15 +1,14 @@
-import { ArrowRight, Globe, Languages } from "lucide-react";
-import { ButtonField, SettingField } from "../settings/_field";
-import { useNavigate } from "../../router";
 import { open } from "@tauri-apps/plugin-shell";
-import Github from "../../assets/github.svg?react";
-import Bilibili from "../../assets/bilibili.svg?react";
-import QQ from "../../assets/qq.svg?react";
-import TauriIcon from "../../assets/tauri.svg?react";
-import ReactIcon from "../../assets/react.svg?react";
-import { Camera } from "../../core/stage/Camera";
+import { ArrowRight, Globe, Languages } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { languages } from "../settings/_languages";
+import Bilibili from "../../assets/bilibili.svg?react";
+import Github from "../../assets/github.svg?react";
+import QQ from "../../assets/qq.svg?react";
+import ReactIcon from "../../assets/react.svg?react";
+import TauriIcon from "../../assets/tauri.svg?react";
+import { Camera } from "../../core/stage/Camera";
+import { useNavigate } from "../../router";
+import { ButtonField, SettingField } from "../settings/_field";
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -18,14 +17,7 @@ export default function Welcome() {
   return (
     <>
       {/* 设置语言 */}
-      <SettingField
-        icon={<Languages />}
-        title={t("language")}
-        showKey={false}
-        settingKey="language"
-        type="select"
-        options={languages}
-      />
+      <SettingField icon={<Languages />} settingKey="language" type="select" />
       {/* next按钮 */}
       <ButtonField
         icon={<ArrowRight />}
@@ -66,7 +58,7 @@ export default function Welcome() {
         }
       />
       {/* 页脚信息 */}
-      <blockquote className="lg:mt-8 md:mt-4 border-l-4 border-gray-500 pl-4 text-gray-500">
+      <blockquote className="border-l-4 border-gray-500 pl-4 text-gray-500 md:mt-4 lg:mt-8">
         Made by LiRenTech with ❤️
         <br />
         Powered by <TauriIcon className="inline-block h-6 w-6" /> and{" "}
