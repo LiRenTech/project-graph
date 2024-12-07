@@ -1,4 +1,5 @@
 import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
+import { useAtom } from "jotai";
 import {
   Delete,
   Eye,
@@ -13,7 +14,6 @@ import {
 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState } from "recoil";
 import IconButton from "../components/ui/IconButton";
 import Switch from "../components/ui/Switch";
 import { RecentFileManager } from "../core/RecentFileManager";
@@ -33,7 +33,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
   const { t } = useTranslation("startFilePanel");
 
   const [currentStartFile, setCurrentStartFile] = React.useState<string>("");
-  const [currentFile, setFile] = useRecoilState(fileAtom);
+  const [currentFile, setFile] = useAtom(fileAtom);
   const [isShowAbsolutePath, setIsShowAbsolutePath] = React.useState(false);
   const [isShowTime, setIsShowTime] = React.useState(false);
   const [isPanelTransparent, setIsPanelTransparent] = React.useState(false);

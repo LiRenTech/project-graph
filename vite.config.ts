@@ -1,6 +1,6 @@
 import generouted from "@generouted/react-router/plugin";
 import ViteYaml from "@modyfi/vite-plugin-yaml";
-import react from "@vitejs/plugin-react";
+import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 
@@ -40,10 +40,6 @@ export default defineConfig(async () => ({
   // build: {
   //   target: "esnext",
   // },
-
-  build: {
-    target: "es2015",
-  },
 
   envPrefix: "LR_",
 }));

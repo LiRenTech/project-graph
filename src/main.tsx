@@ -5,7 +5,6 @@ import i18next from "i18next";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
-import { RecoilRoot } from "recoil";
 import { PromptManager } from "./core/ai/PromptManager";
 import { TextRiseEffect } from "./core/effect/concrete/TextRiseEffect";
 import { LastLaunch } from "./core/LastLaunch";
@@ -110,12 +109,10 @@ async function loadStartFile() {
 /** 渲染应用 */
 async function renderApp() {
   createRoot(el).render(
-    <RecoilRoot>
-      <DialogProvider>
-        <PopupDialogProvider>
-          <Routes />
-        </PopupDialogProvider>
-      </DialogProvider>
-    </RecoilRoot>,
+    <DialogProvider>
+      <PopupDialogProvider>
+        <Routes />
+      </PopupDialogProvider>
+    </DialogProvider>,
   );
 }

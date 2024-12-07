@@ -1,4 +1,5 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { useAtom } from "jotai";
 import {
   BrainCircuit,
   ChevronDown,
@@ -14,7 +15,6 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import Button from "../components/ui/Button";
 import Dialog from "../components/ui/Dialog";
 import IconButton from "../components/ui/IconButton";
@@ -31,10 +31,10 @@ import { appScale, isDesktop, isMobile } from "../utils/platform";
 import AiPanel from "./_ai_panel";
 import AppMenu from "./_app_menu";
 import ErrorHandler from "./_error_handler";
+import ExportTreeTextPanel from "./_export_text_panel";
 import RecentFilesPanel from "./_recent_files_panel";
 import StartFilePanel from "./_start_file_panel";
 import TagPanel from "./_tag_panel";
-import ExportTreeTextPanel from "./_export_text_panel";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -47,7 +47,7 @@ export default function App() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const [file] = useRecoilState(fileAtom);
+  const [file] = useAtom(fileAtom);
   const filename = React.useMemo(() => PathString.absolute2file(file), [file]);
   const dialog = useDialog();
   const [useNativeTitleBar, setUseNativeTitleBar] = React.useState(false);
@@ -378,7 +378,7 @@ export default function App() {
       <StartFilePanel open={isStartFilePanelOpen} />
       <AiPanel open={isAiPanelOpen} />
       <RecentFilesPanel />
-      <ExportTreeTextPanel/>
+      <ExportTreeTextPanel />
       {/* ======= */}
 
       <Outlet />
