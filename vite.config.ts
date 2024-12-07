@@ -41,5 +41,9 @@ export default defineConfig(async () => ({
   //   target: "esnext",
   // },
 
+  build: {
+    target: "es2015",
+  },
+
   envPrefix: "LR_",
 }));
