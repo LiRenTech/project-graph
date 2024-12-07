@@ -1,6 +1,6 @@
 // import { readTextFile } from "@tauri-apps/plugin-fs";
+import { useAtom } from "jotai";
 import React, { useEffect } from "react";
-import { useRecoilState } from "recoil";
 import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
 import { cn } from "../utils/cn";
 // import { NodeManager } from "../core/NodeManager";
@@ -11,15 +11,15 @@ import { cn } from "../utils/cn";
 // import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 // import { Color } from "../core/Color";
 // import { Node } from "../core/Node";
+import { Zap } from "lucide-react";
+import IconButton from "../components/ui/IconButton";
 import { RecentFileManager } from "../core/RecentFileManager";
 import { Stage } from "../core/stage/Stage";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
-import { useDialog } from "../utils/dialog";
-import { isDesktop } from "../utils/platform";
-import { PathString } from "../utils/pathString";
-import { Zap } from "lucide-react";
-import IconButton from "../components/ui/IconButton";
 import { StartFilesManager } from "../core/StartFilesManager";
+import { useDialog } from "../utils/dialog";
+import { PathString } from "../utils/pathString";
+import { isDesktop } from "../utils/platform";
 
 export default function RecentFilesPanel() {
   const [recentFiles, setRecentFiles] = React.useState<
@@ -27,10 +27,10 @@ export default function RecentFilesPanel() {
   >([]);
   const dialog = useDialog();
 
-  const [isRecentFilePanelOpen, setRecentFilePanelOpen] = useRecoilState(
+  const [isRecentFilePanelOpen, setRecentFilePanelOpen] = useAtom(
     isRecentFilePanelOpenAtom,
   );
-  const [currentFile, setFile] = useRecoilState(fileAtom);
+  const [currentFile, setFile] = useAtom(fileAtom);
 
   /**
    * 用于刷新页面显示
@@ -121,8 +121,8 @@ export default function RecentFilesPanel() {
           type: "success",
         });
       }
-    }
-  }
+    };
+  };
 
   return (
     <div

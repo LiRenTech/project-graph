@@ -1,19 +1,20 @@
+import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { isExportTreeTextPanelOpenAtom } from "../state";
-import { cn } from "../utils/cn";
+import Button from "../components/ui/Button";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { TextNode } from "../core/stageObject/entity/TextNode";
-import Button from "../components/ui/Button";
+import { isExportTreeTextPanelOpenAtom } from "../state";
+import { cn } from "../utils/cn";
 
 /**
  * 导出节点纯文本相关的面板
  * 树形的
  */
 export default function ExportTreeTextPanel() {
-  const [isExportTreeTextPanelOpen, setIsExportTreeTextPanelOpen] =
-    useRecoilState(isExportTreeTextPanelOpenAtom);
+  const [isExportTreeTextPanelOpen, setIsExportTreeTextPanelOpen] = useAtom(
+    isExportTreeTextPanelOpenAtom,
+  );
 
   const [markdownText, setMarkdownText] = useState("");
   const [tabText, setTabText] = useState("");
@@ -37,7 +38,9 @@ export default function ExportTreeTextPanel() {
           setMarkdownText(
             StageSaveManager.getMarkdownStringByTextNode(selectedFirstNode),
           );
-          setTabText(StageSaveManager.getTabStringByTextNode(selectedFirstNode));
+          setTabText(
+            StageSaveManager.getTabStringByTextNode(selectedFirstNode),
+          );
         } else {
           setMarkdownText("选择的根节点必须符合树形结构");
           setTabText("选择的根节点必须符合树形结构");

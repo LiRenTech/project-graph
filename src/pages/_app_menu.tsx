@@ -2,6 +2,7 @@ import {
   open as openFileDialog,
   save as saveFileDialog,
 } from "@tauri-apps/plugin-dialog";
+import { useAtom } from "jotai";
 import {
   AppWindow,
   Database,
@@ -29,11 +30,14 @@ import {
 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import { Camera } from "../core/stage/Camera";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageManager } from "../core/stage/stageManager/StageManager";
-import { fileAtom, isExportTreeTextPanelOpenAtom, isRecentFilePanelOpenAtom } from "../state";
+import {
+  fileAtom,
+  isExportTreeTextPanelOpenAtom,
+  isRecentFilePanelOpenAtom,
+} from "../state";
 import { cn } from "../utils/cn";
 import { useDialog } from "../utils/dialog";
 import { isDesktop } from "../utils/platform";
@@ -58,10 +62,10 @@ export default function AppMenu({
 }) {
   const navigate = useNavigate();
   const dialog = useDialog();
-  const [file, setFile] = useRecoilState(fileAtom);
+  const [file, setFile] = useAtom(fileAtom);
   const { t } = useTranslation("appMenu");
-  const [, setRecentFilePanelOpen] = useRecoilState(isRecentFilePanelOpenAtom);
-  const [, setExportTreeTextPanelOpen] = useRecoilState(isExportTreeTextPanelOpenAtom);
+  const [, setRecentFilePanelOpen] = useAtom(isRecentFilePanelOpenAtom);
+  const [, setExportTreeTextPanelOpen] = useAtom(isExportTreeTextPanelOpenAtom);
 
   const onNew = () => {
     if (StageSaveManager.isSaved()) {
@@ -278,14 +282,13 @@ export default function AppMenu({
     if (selectedNodes.length === 0) {
       dialog.show({
         title: "没有选中节点",
-        content:
-          "请先至少选择一个节点再使用此功能",
+        content: "请先至少选择一个节点再使用此功能",
         type: "error",
       });
       return;
     }
     setExportTreeTextPanelOpen(true);
-  }
+  };
 
   const onSaveMarkdownNew = async () => {
     const selectedNodes = StageManager.getSelectedEntities().filter(

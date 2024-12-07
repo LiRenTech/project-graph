@@ -12,7 +12,7 @@ import SearchingNodePanel from "./_searching_node_panel";
 import Toolbar from "./_toolbar";
 
 export default function Home() {
-  const canvasRef: React.RefObject<HTMLCanvasElement> = useRef(null);
+  const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
 
   const dialog = useDialog();
   const [cursorName, setCursorName] = React.useState("default");
