@@ -33,11 +33,11 @@ export default function PluginsPage() {
           "Provides the core functionality of the app\nAuthor: Project Graph Developers"
         }
       >
-        <Button>
+        <Button disabled>
           <X />
           {t("uninstall")}
         </Button>
-        <Switch value={true} onChange={() => {}} />
+        <Switch value={true} onChange={() => {}} disabled />
       </Field>
     </>
   );
