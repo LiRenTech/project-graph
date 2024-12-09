@@ -20,10 +20,9 @@ import { ControllerClassDragFile } from "../ControllerClassDragFile";
 export const ControllerDragFile = new ControllerClassDragFile();
 
 /**
- *
+ * 处理文件拖入窗口事件
  * @param event
  */
-
 ControllerDragFile.dragEnter = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
@@ -34,6 +33,11 @@ ControllerDragFile.dragEnter = (event: DragEvent) => {
   );
 };
 
+/**
+ * 处理文件拖入后 在窗口内**移动**的事件
+ * 这个会频繁触发
+ * @param event
+ */
 ControllerDragFile.dragOver = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
@@ -42,6 +46,11 @@ ControllerDragFile.dragOver = (event: DragEvent) => {
   );
 };
 
+/**
+ * 处理文件拖入后丢入到窗口内的事件
+ * @param event
+ * @returns
+ */
 ControllerDragFile.drop = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
