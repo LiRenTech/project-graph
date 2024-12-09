@@ -8,9 +8,13 @@ export class ControllerClassDragFile {
 
   public lastMoveLocation: Vector = Vector.getZero();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public dragEnter = (_: DragEvent) => {};
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public dragOver = (_: DragEvent) => {};
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public dragLeave = (_: DragEvent) => {};
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public drop = (_: DragEvent) => {};
 
   public init() {

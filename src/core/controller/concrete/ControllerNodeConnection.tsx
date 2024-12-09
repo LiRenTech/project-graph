@@ -47,7 +47,7 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
       const pressWorldLocation = Renderer.transformView2World(
         new Vector(event.clientX, event.clientY),
       );
-      let clickedConnectableEntity: ConnectableEntity | null =
+      const clickedConnectableEntity: ConnectableEntity | null =
         StageManager.findConnectableEntityByLocation(pressWorldLocation);
       if (clickedConnectableEntity === null) {
         // 在这里创建一个质点
@@ -73,7 +73,7 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
 
   _lastRightMouseClickLocation = pressWorldLocation.clone();
 
-  let clickedConnectableEntity: ConnectableEntity | null =
+  const clickedConnectableEntity: ConnectableEntity | null =
     StageManager.findConnectableEntityByLocation(pressWorldLocation);
 
   if (clickedConnectableEntity) {

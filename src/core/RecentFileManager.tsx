@@ -29,7 +29,9 @@ export namespace RecentFileManager {
   }
   let isThisOpenByPathFlag = false;
 
-  /** 仅在软件启动时调用一次 */
+  /**
+   * 仅在软件启动时调用一次
+   */
   export function openFileByPathWhenAppStart(autoOpenPath: string) {
     isThisOpenByPathFlag = true;
     startHookFunction(autoOpenPath);
@@ -37,7 +39,7 @@ export namespace RecentFileManager {
   /**
    * 软件启动时，注册一个回调函数，在回调函数中触发打开用户自定以得工程文件事件
    */
-  // eslint-disable-next-line prefer-const
+  // eslint-disable-next-line prefer-const, @typescript-eslint/no-unused-vars
   export let startHookFunction = (_: string) => {};
 
   export type RecentFile = {

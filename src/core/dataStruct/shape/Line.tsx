@@ -354,6 +354,7 @@ export class Line extends Shape {
         return null;
       }
     } catch (e) {
+      console.error(e);
       return null;
     }
   }

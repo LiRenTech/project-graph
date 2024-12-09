@@ -78,6 +78,7 @@ export namespace Stage {
   /**
    * 是否正在框选
    */
+  // eslint-disable-next-line prefer-const
   export let isSelecting = false;
 
   /**
@@ -86,15 +87,18 @@ export namespace Stage {
    * 这个框选框是基于世界坐标的。
    * 此变量会根据两个点的位置自动更新。
    */
+  // eslint-disable-next-line prefer-const
   export let selectingRectangle: Rectangle | null = null;
 
   /**
    * 框选框的起点
    */
+  // eslint-disable-next-line prefer-const
   export let selectStartLocation: Vector = Vector.getZero();
   /**
    * 框选框的终点
    */
+  // eslint-disable-next-line prefer-const
   export let selectEndLocation: Vector = Vector.getZero();
 
   /**
@@ -196,6 +200,7 @@ export namespace Stage {
    * 自动保存是否处于暂停状态
    * 主要用于防止自动保存出bug，产生覆盖文件的问题
    */
+  // eslint-disable-next-line prefer-const
   export let isAutoSavePaused = false;
   /**
    * 逻辑总入口

@@ -29,6 +29,7 @@ export namespace StageSaveManager {
       path,
       content: JSON.stringify(data),
     })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .then((_) => {
         Stage.effects.push(ViewFlashEffect.SaveFile());
         StageHistoryManager.reset(data); // 重置历史
@@ -62,6 +63,7 @@ export namespace StageSaveManager {
       path: Stage.Path.getFilePath(),
       content: JSON.stringify(data),
     })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .then((_) => {
         if (addFlashEffect) {
           Stage.effects.push(ViewFlashEffect.SaveFile());
@@ -104,6 +106,7 @@ export namespace StageSaveManager {
       path,
       content: JSON.stringify(data),
     })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .then((_) => {
         Stage.effects.push(ViewFlashEffect.SaveFile());
         successCallback();
@@ -140,6 +143,7 @@ export namespace StageSaveManager {
       path: backupPath,
       content: JSON.stringify(data),
     })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .then((_) => {
         if (addFlashEffect) {
           Stage.effects.push(ViewFlashEffect.SaveFile());
@@ -161,6 +165,7 @@ export namespace StageSaveManager {
       path,
       content: string,
     })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .then((_) => {
         successCallback();
         isCurrentSaved = true;
@@ -187,6 +192,7 @@ export namespace StageSaveManager {
       path,
       content,
     })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .then((_) => {
         successCallback();
       })

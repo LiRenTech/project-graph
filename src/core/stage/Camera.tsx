@@ -41,6 +41,7 @@ export namespace Camera {
    * 上次鼠标缩放滚轮交互位置
    * 世界坐标
    */
+  // eslint-disable-next-line prefer-const
   export let targetLocationByScale: Vector = Vector.getZero();
 
   /** 当前的 画布/摄像机移动的速度矢量 */

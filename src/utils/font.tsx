@@ -6,6 +6,7 @@ const _context = _canvas.getContext("2d");
 
 const _cache = new MaxSizeCache<string, number>(10000);
 
+// eslint-disable-next-line prefer-const
 let useCache = false;
 /**
  * 测量文本的宽度（高度不测量）

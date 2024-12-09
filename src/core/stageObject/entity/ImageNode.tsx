@@ -128,6 +128,7 @@ export class ImageNode extends ConnectableEntity {
           this.state = "error";
         };
       })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .catch((_err) => {
         // 获取base64String失败
         // TODO: 图片上显示ErrorDetails信息

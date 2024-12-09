@@ -52,6 +52,8 @@ export namespace Renderer {
    * }
    */
   let timings: { [key: string]: number } = {};
+
+  // eslint-disable-next-line prefer-const
   export let deltaTime = 0;
 
   /**

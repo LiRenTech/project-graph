@@ -28,6 +28,7 @@ export namespace Controller {
   /**
    * 在上层接收React提供的state修改函数
    */
+  // eslint-disable-next-line prefer-const
   export let setCursorName: (_: string) => void = () => {};
 
   // 检测正在按下的键
@@ -88,6 +89,7 @@ export namespace Controller {
   /**
    * 有时需要锁定相机，比如 编辑节点时
    */
+  // eslint-disable-next-line prefer-const
   export let isCameraLocked = false;
 
   /**
@@ -95,6 +97,7 @@ export namespace Controller {
    * 再按一次鼠标中键，取消视野吸附
    * issues/143
    */
+  // eslint-disable-next-line prefer-const
   export let isViewMoveByClickMiddle = false;
 
   /**
