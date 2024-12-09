@@ -189,6 +189,22 @@ export namespace StageManager {
     return res;
   }
 
+  /**
+   * 获取一个节点的所有父亲节点，未排除自环
+   * 性能有待优化！！
+   */
+  export function nodeParentArray(
+    node: ConnectableEntity,
+  ): ConnectableEntity[] {
+    const res: ConnectableEntity[] = [];
+    for (const edge of getEdges()) {
+      if (edge.target.uuid === node.uuid) {
+        res.push(edge.source);
+      }
+    }
+    return res;
+  }
+
   export function isConnected(
     node: ConnectableEntity,
     target: ConnectableEntity,
