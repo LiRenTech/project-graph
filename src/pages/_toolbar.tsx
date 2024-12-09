@@ -434,6 +434,7 @@ const onSaveSelectedNew = async () => {
       path,
       content: JSON.stringify(data, null, 2),
     })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .then((_) => {
         Stage.effects.push(new ViewFlashEffect(Color.Black));
       })
@@ -474,6 +475,7 @@ async function openBrowserOrFile() {
 
 function myOpen(url: string) {
   open(url)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     .then((_) => {})
     .catch((e) => {
       // 依然会导致程序崩溃，具体原因未知

@@ -20,7 +20,7 @@ export namespace Random {
    * @param lambda 泊松分布参数
    */
   export function poissonRandom(lambda: number): number {
-    let L = Math.exp(-lambda);
+    const L = Math.exp(-lambda);
     let p = 1.0;
     let k = 0;
     do {

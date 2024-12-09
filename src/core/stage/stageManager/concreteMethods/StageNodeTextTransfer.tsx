@@ -11,6 +11,7 @@ export namespace StageNodeTextTransfer {
           }, 1000);
         } catch (e) {
           node.rename("Error");
+          console.error(e);
         }
       }
     }
