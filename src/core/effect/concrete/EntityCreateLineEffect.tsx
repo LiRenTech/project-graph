@@ -50,7 +50,7 @@ export class EntityCreateLineEffect extends Effect {
       ),
     ];
   }
-  
+
   static from(rectangle: Rectangle): EntityCreateLineEffect {
     return new EntityCreateLineEffect(new ProgressNumber(0, 30), rectangle);
   }

@@ -25,7 +25,7 @@ export namespace StageHistoryManager {
    * 数组最大长度
    */
   export let historySize = 20;
-  
+
   // 在软件启动时调用
   export function init() {
     Settings.watch("historySize", (value) => {
@@ -58,7 +58,7 @@ export namespace StageHistoryManager {
    * @param file
    */
   export function recordStep() {
-    historyList.splice(currentIndex + 1);  
+    historyList.splice(currentIndex + 1);
     // 上面一行的含义：删除从 currentIndex + 1 开始的所有元素。
     // 也就是撤回了好几步之后再做修改，后面的曾经历史就都删掉了，相当于重开了一个分支。
     historyList.push(StageDumper.dump());

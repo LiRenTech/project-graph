@@ -142,7 +142,7 @@ export namespace StageLoader {
     }
     return data;
   }
-  
+
   // 继承体系重构，增加type
   function convertV7toV8(data: Record<string, any>): Record<string, any> {
     if (data.version >= 8) {
@@ -157,16 +157,16 @@ export namespace StageLoader {
     }
     return data;
   }
-  
+
   // 增加连接点 ConnectionPoint
   function convertV8toV9(data: Record<string, any>): Record<string, any> {
     if (data.version >= 9) {
       return data;
     }
-    data.version = 9;    
+    data.version = 9;
     return data;
   }
-  
+
   // 增加tags
   function convertV9toV10(data: Record<string, any>): Record<string, any> {
     if (data.version >= 10) {

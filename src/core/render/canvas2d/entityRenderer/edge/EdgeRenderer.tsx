@@ -61,8 +61,10 @@ export namespace EdgeRenderer {
   }
 
   export function renderEdge(edge: Edge) {
-    
-    if (edge.source.isHiddenBySectionCollapse || edge.target.isHiddenBySectionCollapse) {
+    if (
+      edge.source.isHiddenBySectionCollapse ||
+      edge.target.isHiddenBySectionCollapse
+    ) {
       return;
     }
 
@@ -78,7 +80,10 @@ export namespace EdgeRenderer {
 
     // 选中的高亮效果
     if (edge.isSelected) {
-      CollisionBoxRenderer.render(edge.collisionBox, new Color(255, 255, 0, 0.5))
+      CollisionBoxRenderer.render(
+        edge.collisionBox,
+        new Color(255, 255, 0, 0.5),
+      );
     }
   }
 
@@ -98,7 +103,10 @@ export namespace EdgeRenderer {
   export function getCuttingEffects(edge: Edge) {
     return currentRenderer.getCuttingEffects(edge);
   }
-  export function getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity) {
+  export function getConnectedEffects(
+    startNode: ConnectableEntity,
+    toNode: ConnectableEntity,
+  ) {
     return currentRenderer.getConnectedEffects(startNode, toNode);
   }
 

@@ -111,7 +111,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       startLine.direction(),
       endPoint,
       endLine.direction().multiply(-1),
-      Math.abs(endPoint.subtract(startPoint).magnitude()) / 2
+      Math.abs(endPoint.subtract(startPoint).magnitude()) / 2,
     );
     this.renderArrowCurve(curve);
     this.renderText(curve, edge);
@@ -124,7 +124,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
         edge.target.collisionBox.getRectangle().location,
       ),
       (edge.target.collisionBox.getRectangle().size.y / 2) *
-      Camera.currentScale,
+        Camera.currentScale,
       Math.PI / 2,
       0,
       new Color(204, 204, 204),
@@ -236,5 +236,4 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       Renderer.FONT_SIZE * Camera.currentScale,
     );
   }
-
 }

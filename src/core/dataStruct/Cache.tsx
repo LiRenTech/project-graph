@@ -18,13 +18,14 @@ export class LruCache<K, V> {
   set(key: K, value: V): void {
     if (this.cache.size >= this.capacity) {
       const firstKey = this.cache.keys().next().value;
-      if (firstKey !== undefined) {  // 检查 firstKey 是否为 undefined
+      if (firstKey !== undefined) {
+        // 检查 firstKey 是否为 undefined
         this.cache.delete(firstKey);
       }
     }
     this.cache.set(key, value);
   }
-  
+
   has(key: K): boolean {
     return this.cache.has(key);
   }
@@ -55,7 +56,7 @@ export class MaxSizeCache<K, V> {
     }
     this.cache.set(key, value);
   }
-  
+
   has(key: K): boolean {
     return this.cache.has(key);
   }

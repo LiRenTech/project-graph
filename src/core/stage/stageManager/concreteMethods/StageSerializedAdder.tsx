@@ -15,7 +15,10 @@ export namespace StageSerializedAdder {
    * 会自动刷新新增部分的uuid
    * @param serializedData
    */
-  export function addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
+  export function addSerializedData(
+    serializedData: Serialized.File,
+    diffLocation = new Vector(0, 0),
+  ) {
     const updatedSerializedData = refreshUUID(serializedData);
     for (const node of updatedSerializedData.nodes) {
       if (node.type === "core:text_node") {

@@ -143,18 +143,20 @@ export namespace Camera {
     setLocationByOtherLocation(targetLocationByScale, diffViewVector);
   }
 
-
   /**
    * 修改摄像机位置，但是通过一种奇特的方式来修改
    * 将某个世界坐标位置对准当前的某个视野坐标位置，来修改摄像机位置
-   * @param otherWorldLocation 
-   * @param viewLocation 
+   * @param otherWorldLocation
+   * @param viewLocation
    */
-  function setLocationByOtherLocation(otherWorldLocation: Vector, viewLocation: Vector) {
+  function setLocationByOtherLocation(
+    otherWorldLocation: Vector,
+    viewLocation: Vector,
+  ) {
     const otherLocationView = Renderer.transformWorld2View(otherWorldLocation);
     const leftTopLocationWorld = Renderer.transformView2World(
       otherLocationView.subtract(viewLocation),
-    )
+    );
     const rect = Renderer.getCoverWorldRectangle();
     location = leftTopLocationWorld.add(rect.size.divide(2));
   }

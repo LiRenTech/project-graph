@@ -40,7 +40,7 @@ export class ControllerGamepad implements Tickable, Disposable {
 
   constructor() {
     window.addEventListener("gamepadconnected", this.onGamepadConnected);
-    
+
     // 下面此行在控制台报错
     Settings.watch("gamepadDeadzone", (value) => {
       this.deadzone = value;

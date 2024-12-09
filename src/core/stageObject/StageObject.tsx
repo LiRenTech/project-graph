@@ -4,9 +4,8 @@ import { CollisionBox } from "./collisionBox/collisionBox";
 /**
  * 注：关于舞台上的东西的这一部分的
  * 继承体系是 Rutubet 和 Littlefean 的讨论结果
- * 
+ *
  */
-
 
 /**
  * 一切舞台上的东西
@@ -55,12 +54,11 @@ export abstract class ConnectableEntity extends Entity {
    * 用于联动旋转等算法
    */
   abstract geometryCenter: Vector;
-  
+
   /**
    * 当该实体被连线识别时，会改成false
    */
   public unknown = true;
-
 }
 
 /**

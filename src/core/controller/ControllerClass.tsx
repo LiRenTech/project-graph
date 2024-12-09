@@ -101,7 +101,7 @@ export class ControllerClass {
     }
     this.lastClickTime = now;
     this.lastClickLocation = new Vector(event.clientX, event.clientY);
-  }
+  };
 
   private _touchstart = (event: TouchEvent) => {
     event.preventDefault();

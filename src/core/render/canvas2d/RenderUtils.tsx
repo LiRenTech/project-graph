@@ -5,7 +5,6 @@ import { Vector } from "../../dataStruct/Vector";
 import { CubicBezierCurve, SymmetryCurve } from "../../dataStruct/shape/Curve";
 import { Camera } from "../../stage/Camera";
 
-
 /**
  * 一些基础的渲染图形
  * 注意：这些渲染的参数都是View坐标系下的。
@@ -226,7 +225,7 @@ export namespace RenderUtils {
 
   /**
    * 绘制一条虚线
-   * 
+   *
    * 2024年11月10日 发现虚线渲染不生效，也很难排查到原因
    * 2024年12月5日 突然发现又没有问题了，也不知道为什么。
    * @param start
@@ -459,7 +458,4 @@ export namespace RenderUtils {
     Canvas.ctx.fillStyle = color.toString();
     Canvas.ctx.fill();
   }
-
-
-  
 }

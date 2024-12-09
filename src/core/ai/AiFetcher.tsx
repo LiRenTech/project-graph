@@ -1,4 +1,3 @@
-
 // vitest 测试时注释掉下面一行
 import { fetch } from "@tauri-apps/plugin-http";
 
@@ -6,7 +5,7 @@ type prompt = { system: string; user: string };
 
 /**
  * 失败的情况
- * 
+ *
  * 没网络了
  * apiKey失效了
  * 服务器挂了
@@ -14,7 +13,6 @@ type prompt = { system: string; user: string };
  * 发送json格式不对
  * 内容数量太多
  */
-
 
 /**
  * 一次性的，无上下文的，key已经在初始化的时候传入的AI请求
@@ -52,7 +50,7 @@ export abstract class AiFetcherOneShot {
  */
 export class AiFetcherOneShotDoubao extends AiFetcherOneShot {
   override readonly name = "Doubao";
-  
+
   static create(): AiFetcherOneShotDoubao {
     return new AiFetcherOneShotDoubao(
       "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
@@ -105,27 +103,24 @@ export class AiFetcherOneShotCloudFlare extends AiFetcherOneShot {
   }
 
   async fetch(): Promise<string> {
-    const response = await fetch(
-      `${this.fetchUrl}${this.model}`,
-      {
-        headers: {
-          Authorization: "Bearer " + this.apiKey,
-        },
-        method: "POST",
-        body: JSON.stringify({
-          messages: [
-            {
-              role: "system",
-              content: this.prompt.system,
-            },
-            {
-              role: "user",
-              content: this.prompt.user,
-            },
-          ],
-        }),
+    const response = await fetch(`${this.fetchUrl}${this.model}`, {
+      headers: {
+        Authorization: "Bearer " + this.apiKey,
       },
-    );
+      method: "POST",
+      body: JSON.stringify({
+        messages: [
+          {
+            role: "system",
+            content: this.prompt.system,
+          },
+          {
+            role: "user",
+            content: this.prompt.user,
+          },
+        ],
+      }),
+    });
     const result = await response.json();
     const responseContent: string = result.result.response;
     return responseContent;

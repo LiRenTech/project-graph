@@ -8,7 +8,6 @@ import { StageManager } from "../StageManager";
 export namespace StageSectionInOutManager {
   export function goInSection(entities: Entity[], section: Section) {
     for (const entity of entities) {
-      
       if (section.children.includes(entity)) {
         // 已经在section里面了，不用再次进入
         continue;

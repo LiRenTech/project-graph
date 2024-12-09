@@ -33,17 +33,13 @@ describe("测试路径函数", () => {
       PathString.dirPath("C:\\Users\\Administrator\\Desktop\\test.txt"),
     ).toBe("C:\\Users\\Administrator\\Desktop");
 
-    expect(
-      PathString.dirPath("C:\\Users\\Administrator\\Desktop\\file"),
-    ).toBe("C:\\Users\\Administrator\\Desktop");
+    expect(PathString.dirPath("C:\\Users\\Administrator\\Desktop\\file")).toBe(
+      "C:\\Users\\Administrator\\Desktop",
+    );
 
-    expect(
-      PathString.dirPath("D:\\test.json"),
-    ).toBe("D:");
+    expect(PathString.dirPath("D:\\test.json")).toBe("D:");
 
-    expect(
-      PathString.dirPath("user/test.json"),
-    ).toBe("user");
+    expect(PathString.dirPath("user/test.json")).toBe("user");
 
     // expect(
     //   PathString.dirPath("/user/test.json"),

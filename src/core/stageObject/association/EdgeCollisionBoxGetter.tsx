@@ -78,11 +78,12 @@ export namespace EdgeCollisionBoxGetter {
         startLine.direction(),
         endPoint,
         endLine.direction().multiply(-1),
-        Math.abs(endPoint.subtract(startPoint).magnitude()) / 2
+        Math.abs(endPoint.subtract(startPoint).magnitude()) / 2,
       );
       const size = 15; // 箭头大小
       curve.end = curve.end.subtract(
-        curve.endDirection.normalize().multiply(size / -2));
+        curve.endDirection.normalize().multiply(size / -2),
+      );
       return new CollisionBox([curve]);
     } else {
       const start = edge.bodyLine.start;

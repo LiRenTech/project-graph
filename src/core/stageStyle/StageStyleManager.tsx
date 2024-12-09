@@ -11,6 +11,6 @@ export namespace StageStyleManager {
   export function init() {
     Settings.watch("theme", (value) => {
       currentStyle = StageStyle.styleFromTheme(value);
-    })
+    });
   }
 }

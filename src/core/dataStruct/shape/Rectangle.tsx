@@ -119,7 +119,10 @@ export class Rectangle extends Shape {
    * @param rectangles
    * @returns
    */
-  public static getBoundingRectangle(rectangles: Rectangle[], padding: number = 0): Rectangle {
+  public static getBoundingRectangle(
+    rectangles: Rectangle[],
+    padding: number = 0,
+  ): Rectangle {
     if (rectangles.length === 0) {
       // 抛出异常
       throw new Error("rectangles is empty");
@@ -140,7 +143,7 @@ export class Rectangle extends Shape {
 
   /**
    * 按照 上右下左 的顺序返回四条边
-   * @returns 
+   * @returns
    */
   public getBoundingLines(): Line[] {
     const lines: Line[] = [
@@ -383,7 +386,7 @@ export class Rectangle extends Shape {
 
   /**
    * 获取在this矩形边上的point的单位法向量,若point不在this矩形边上，则该函数可能返回任意向量。
-   * @param point 
+   * @param point
    */
   public getNormalVectorAt(point: Vector): Vector {
     if (point.x === this.left) {

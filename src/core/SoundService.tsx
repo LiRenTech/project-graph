@@ -11,7 +11,6 @@ import { Settings } from "./Settings";
  * 这个音效播放服务是用户自定义的
  */
 export namespace SoundService {
-
   let cuttingLineStartSoundFile = "";
   let connectLineStartSoundFile = "";
   let connectFindTargetSoundFile = "";
@@ -37,7 +36,7 @@ export namespace SoundService {
     export function cuttingLineStart() {
       loadAndPlaySound(cuttingLineStartSoundFile);
     }
-    
+
     // 开始连接
     export function connectLineStart() {
       loadAndPlaySound(connectLineStartSoundFile);
@@ -50,7 +49,7 @@ export namespace SoundService {
 
     // 自动保存执行特效
     // 自动备份执行特效
-    
+
     // 框选增加物体音效
 
     // 切断特效声音

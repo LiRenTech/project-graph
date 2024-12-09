@@ -50,7 +50,7 @@ export namespace StageNodeRotate {
         } else {
           console.error("source or target entity not found");
         }
-        break;  // 只旋转一个边
+        break; // 只旋转一个边
       }
     }
   }

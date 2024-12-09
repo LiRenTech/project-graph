@@ -25,10 +25,10 @@ export class Circle extends Shape {
   }
 
   getRectangle(): Rectangle {
-      const left = this.location.x - this.radius;
-      const top = this.location.y - this.radius;
-      const right = this.location.x + this.radius;
-      const bottom = this.location.y + this.radius;
-      return new Rectangle(new Vector(left, top), new Vector(right, bottom));
+    const left = this.location.x - this.radius;
+    const top = this.location.y - this.radius;
+    const right = this.location.x + this.radius;
+    const bottom = this.location.y + this.radius;
+    return new Rectangle(new Vector(left, top), new Vector(right, bottom));
   }
 }

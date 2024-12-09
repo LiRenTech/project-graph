@@ -223,7 +223,7 @@ export namespace StageSaveManager {
       }
       StageManager.nodeChildrenArray(node)
         .filter((node) => node instanceof TextNode)
-        .filter(node => nodes.includes(node))
+        .filter((node) => nodes.includes(node))
         .forEach((child) => {
           linksContent += `${node.text} -> ${child.text}\n`;
         });

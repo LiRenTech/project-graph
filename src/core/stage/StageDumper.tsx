@@ -146,7 +146,7 @@ export namespace StageDumper {
       version: latestVersion,
       nodes: selectedNodes,
       edges: selectedEdges,
-      tags: []
+      tags: [],
     };
   }
 }

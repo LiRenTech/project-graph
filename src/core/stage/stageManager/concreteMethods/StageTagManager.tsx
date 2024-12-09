@@ -25,13 +25,13 @@ export namespace StageTagManager {
    * @returns 所有标签对应的名字
    */
   export function getTagNames() {
-    const res: {tagName: string, uuid: string}[] = [];
+    const res: { tagName: string; uuid: string }[] = [];
     for (const tagUUID of StageManager.TagOptions.getTagUUIDs()) {
       const tagObject = StageManager.getEntitiesByUUIDs([tagUUID])[0];
       if (tagObject instanceof TextNode) {
-        res.push({tagName: tagObject.text, uuid: tagUUID});
+        res.push({ tagName: tagObject.text, uuid: tagUUID });
       } else {
-        res.push({tagName: tagUUID, uuid: tagUUID});
+        res.push({ tagName: tagUUID, uuid: tagUUID });
       }
     }
     return res;

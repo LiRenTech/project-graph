@@ -125,7 +125,6 @@ export class EntityCreateDashEffect extends Effect {
     return new EntityCreateDashEffect(new ProgressNumber(0, time), rectangle);
   }
 
-
   render(): void {
     if (this.timeProgress.isFull) {
       return;

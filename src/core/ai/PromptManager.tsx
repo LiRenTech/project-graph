@@ -11,7 +11,9 @@ export namespace PromptManager {
     const oldList = ((await store.get("user-prompts")) as string[]) || [];
     if (oldList.length === 0) {
       // 给用户一些默认的提示词
-      await addUserPrompt("我的词是：{{nodeText}}，你会扩展出5~10个新的词。每个词之间用换行符分隔");
+      await addUserPrompt(
+        "我的词是：{{nodeText}}，你会扩展出5~10个新的词。每个词之间用换行符分隔",
+      );
     }
     store.save();
   }
@@ -27,7 +29,7 @@ export namespace PromptManager {
 
   export async function getUserPromptList(): Promise<string[]> {
     const data = ((await store.get("user-prompts")) as string[]) || [];
-    return data
+    return data;
   }
 
   export async function addUserPrompt(prompt: string) {

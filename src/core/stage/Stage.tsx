@@ -265,7 +265,7 @@ export namespace Stage {
       autoBackupDraftPath = value;
     });
 
-    controllerGamepad = new ControllerGamepad()
+    controllerGamepad = new ControllerGamepad();
   }
 
   // private
@@ -324,7 +324,6 @@ export namespace Stage {
     // 自动备份功能
     const now = performance.now();
     if (now - lastAutoBackupTime > autoBackupInterval) {
-
       if (Stage.Path.isDraft()) {
         const backupPath = `${autoBackupDraftPath}${Stage.Path.getSep()}${PathString.getTime()}.json`;
         StageSaveManager.backupHandle(

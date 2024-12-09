@@ -1,5 +1,8 @@
 import { describe, it } from "vitest";
-import { AiFetcherOneShotCloudFlare, AiFetcherOneShotDoubao } from "../../core/ai/AiFetcher";
+import {
+  AiFetcherOneShotCloudFlare,
+  AiFetcherOneShotDoubao,
+} from "../../core/ai/AiFetcher";
 
 describe("aiFetcher", () => {
   it("豆包", async () => {

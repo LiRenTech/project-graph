@@ -9,7 +9,7 @@ import { ControllerClass } from "../ControllerClass";
 
 /**
  * 涂鸦功能，用于绘制临时激光笔特效，教学、录视频、屏幕分享等场景中使用
- * 
+ *
  * BUG: 每次画新的笔画时会突然出现一个很长的直线
  */
 export const ControllerDrawing = new ControllerClass();

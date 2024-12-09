@@ -1,6 +1,6 @@
 /**
  * 此模块定义了一些常见的缓动函数
- * 
+ *
  * https://easings.net/zh-cn
  */
 
@@ -93,5 +93,3 @@ export const easeInOutBack = (t: number) =>
 const c1 = 1.70158;
 const c2 = c1 * 1.525;
 const c3 = c1 + 1;
-
-
