@@ -99,6 +99,7 @@ export class ControllerGamepad implements Tickable, Disposable {
     this.initGamepad(gamepad);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private initGamepad(_gamepad: Gamepad) {}
 
   on<K extends keyof EventMap>(event: K, listener: EventMap[K]) {

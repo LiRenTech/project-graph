@@ -1,5 +1,7 @@
 import { family } from "@tauri-apps/plugin-os";
+import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../types/node";
+import { PathString } from "../../utils/pathString";
 import { Controller } from "../controller/Controller";
 import { ControllerGamepad } from "../controller/ControllerGamepad";
 import { Color } from "../dataStruct/Color";
@@ -9,6 +11,7 @@ import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { LineCuttingEffect } from "../effect/concrete/LineCuttingEffect";
 import { PointDashEffect } from "../effect/concrete/PointDashEffect";
+import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
 import { Effect } from "../effect/effect";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Settings } from "../Settings";
@@ -19,9 +22,6 @@ import { ConnectableEntity, Entity } from "../stageObject/StageObject";
 import { StageDumper } from "./StageDumper";
 import { StageManager } from "./stageManager/StageManager";
 import { StageSaveManager } from "./StageSaveManager";
-import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
-import { PathString } from "../../utils/pathString";
-
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -240,6 +240,9 @@ export namespace Stage {
       controllerGamepad.tick();
     }
 
+    // 计算引擎
+    autoComputeEngineTick();
+
     // 自动保存功能
     autoSaveTick();
     // 自动备份功能
@@ -357,5 +360,232 @@ export namespace Stage {
       // 更新时间
       lastAutoBackupTime = now;
     }
+  }
+
+  function autoComputeEngineTick() {
+    // debug 只有在按下x键才会触发
+    if (!Controller.pressingKeySet.has("x")) {
+      return;
+    }
+    // 自动计算引擎功能
+    for (const node of StageManager.getTextNodes()) {
+      if (node.text === "#TEST#") {
+        node.rename("Hello World!!");
+      }
+      if (node.text === "#ADD#") {
+        const parents = getParentTextNodes(node);
+        let sumResult = 0;
+        for (const parent of parents) {
+          sumResult += stringToNumber(parent.text);
+        }
+        const resultText = String(sumResult);
+        getNodeResult(node, resultText);
+      } else if (node.text === "#MUL#") {
+        const parents = getParentTextNodes(node);
+        let productResult = 1;
+        for (const parent of parents) {
+          productResult *= stringToNumber(parent.text);
+        }
+        const resultText = String(productResult);
+        getNodeResult(node, resultText);
+      } else if (node.text === "#AND#") {
+        const parents = getParentTextNodes(node);
+        let result = 1;
+        for (const parent of parents) {
+          result = result && stringToNumber(parent.text);
+        }
+        const resultText = String(result);
+        getNodeResult(node, resultText);
+      } else if (node.text === "#OR#") {
+        const parents = getParentTextNodes(node);
+        let result = 0;
+        for (const parent of parents) {
+          result = result || stringToNumber(parent.text);
+        }
+        const resultText = String(result);
+        getNodeResult(node, resultText);
+      } else if (node.text === "#NOT#") {
+        const parents = getParentTextNodes(node);
+        if (parents.length === 1) {
+          const parent = parents[0];
+          const resultText = String(stringToNumber(parent.text) === 0 ? 1 : 0);
+          getNodeResult(node, resultText);
+        }
+      } else if (node.text === "#RANDOM#") {
+        const randomNumber = Math.random();
+        const resultText = String(randomNumber);
+        getNodeResult(node, resultText);
+      } else if (node.text === "#FLOOR#") {
+        const parents = getParentTextNodes(node);
+        if (parents.length === 1) {
+          const parent = parents[0];
+          const resultText = String(Math.floor(stringToNumber(parent.text)));
+          getNodeResult(node, resultText);
+        }
+      } else if (node.text === "#CEIL#") {
+        const parents = getParentTextNodes(node);
+        if (parents.length === 1) {
+          const parent = parents[0];
+          const resultText = String(Math.ceil(stringToNumber(parent.text)));
+          getNodeResult(node, resultText);
+        }
+      } else if (node.text === "#MOD#") {
+        const parents = getParentTextNodes(node);
+        if (parents.length === 2) {
+          const parent1 = parents[0];
+          const parent2 = parents[1];
+          const resultText = String(
+            stringToNumber(parent1.text) % stringToNumber(parent2.text),
+          );
+          getNodeResult(node, resultText);
+        }
+      } else if (node.text === "#SUB#") {
+        const parents = getParentTextNodes(node);
+        if (parents.length === 2) {
+          const parent1 = parents[0];
+          const parent2 = parents[1];
+          const resultText = String(
+            stringToNumber(parent1.text) - stringToNumber(parent2.text),
+          );
+          getNodeResult(node, resultText);
+        }
+      } else if (node.text === "#DIV#") {
+        const parents = getParentTextNodes(node);
+        if (parents.length === 2) {
+          const parent1 = parents[0];
+          const parent2 = parents[1];
+          const resultText = String(
+            stringToNumber(parent1.text) / stringToNumber(parent2.text),
+          );
+          getNodeResult(node, resultText);
+        }
+      } else if (node.text === "#ABS#") {
+        const parents = getParentTextNodes(node);
+        if (parents.length === 1) {
+          const parent = parents[0];
+          const resultText = String(Math.abs(stringToNumber(parent.text)));
+          getNodeResult(node, resultText);
+        }
+      } else if (node.text === "#COPY#") {
+        const parents = getParentTextNodes(node);
+        if (parents.length === 1) {
+          const parent = parents[0];
+          const resultText = parent.text;
+          getNodeResult(node, resultText);
+        }
+      } else if (node.text === "#LEN#") {
+        const parents = getParentTextNodes(node);
+        if (parents.length === 1) {
+          const parent = parents[0];
+          const resultText = String(parent.text.length);
+          getNodeResult(node, resultText);
+        }
+      } else if (node.text === "#UPPER#") {
+        const parents = getParentTextNodes(node);
+        if (parents.length === 1) {
+          const parent = parents[0];
+          const resultText = parent.text.toUpperCase();
+          getNodeResult(node, resultText);
+        }
+      } else if (node.text === "#LOWER#") {
+        const parents = getParentTextNodes(node);
+        if (parents.length === 1) {
+          const parent = parents[0];
+          const resultText = parent.text.toLowerCase();
+          getNodeResult(node, resultText);
+        }
+      } else if (node.text === "#SPLIT#") {
+        const parents = getParentTextNodes(node);
+        if (parents.length === 2) {
+          const parent1 = parents[0];
+          const parent2 = parents[1];
+          const resultText = parent1.text.split(parent2.text)[0];
+          getNodeResult(node, resultText);
+        }
+      } else if (node.text === "#REPLACE#") {
+        const parents = getParentTextNodes(node);
+        if (parents.length === 3) {
+          const parent1 = parents[0];
+          const parent2 = parents[1];
+          const parent3 = parents[2];
+          const resultText = parent1.text.replace(parent2.text, parent3.text);
+          getNodeResult(node, resultText);
+        }
+      } else if (node.text === "#CONNECT#") {
+        const parents = getParentTextNodes(node);
+        let result = "";
+        for (const parent of parents) {
+          result += parent.text;
+        }
+        getNodeResult(node, result);
+      } else if (node.text === "#MAX#") {
+        const parents = getParentTextNodes(node);
+        let maxResult = -Infinity;
+        for (const parent of parents) {
+          const parentNumber = stringToNumber(parent.text);
+          if (parentNumber > maxResult) {
+            maxResult = parentNumber;
+          }
+        }
+        const resultText = String(maxResult);
+        getNodeResult(node, resultText);
+      } else if (node.text === "#MIN#") {
+        const parents = getParentTextNodes(node);
+        let minResult = Infinity;
+        for (const parent of parents) {
+          const parentNumber = stringToNumber(parent.text);
+          if (parentNumber < minResult) {
+            minResult = parentNumber;
+          }
+          const resultText = String(minResult);
+          getNodeResult(node, resultText);
+        }
+      } else if (node.text === "#COUNT#") {
+        const parents = getParentTextNodes(node);
+        const resultText = String(parents.length);
+        getNodeResult(node, resultText);
+      }
+    }
+  }
+  function getParentTextNodes(node: TextNode): TextNode[] {
+    const parents = StageManager.nodeParentArray(node).filter(
+      (node) => node instanceof TextNode,
+    );
+    // 将parents按x的坐标排序，小的在前面
+    parents.sort((a, b) => {
+      return (
+        a.collisionBox.getRectangle().location.x -
+        b.collisionBox.getRectangle().location.x
+      );
+    });
+    return parents;
+  }
+  function getNodeResult(node: TextNode, resultText: string) {
+    const childrenList = StageManager.nodeChildrenArray(node).filter(
+      (node) => node instanceof TextNode,
+    );
+    if (childrenList.length > 0) {
+      for (const child of childrenList) {
+        child.rename(resultText);
+      }
+    } else {
+      // 新建一个节点生长出去
+      const newNode = new TextNode({
+        uuid: uuidv4(),
+        text: resultText,
+        location: [
+          node.collisionBox.getRectangle().location.x,
+          node.collisionBox.getRectangle().location.y + 100,
+        ],
+        size: [100, 100],
+        color: [0, 0, 0, 0],
+      });
+      StageManager.addTextNode(newNode);
+      StageManager.connectEntity(node, newNode);
+    }
+  }
+
+  function stringToNumber(str: string) {
+    return parseFloat(str);
   }
 }
