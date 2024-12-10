@@ -9,7 +9,7 @@ import { load, Store } from "@tauri-apps/plugin-store";
 export namespace Settings {
   let store: Store;
   export type Settings = {
-    language: "zh-CN" | "en";
+    language: "zh-CN" | "zh-TW" | "en";
     // 视觉相关
     lineStyle: "straight" | "bezier" | "vertical";
     theme: "black" | "white"; // 暂无
@@ -49,7 +49,7 @@ export namespace Settings {
     githubUser: string;
   };
   export const defaultSettings: Settings = {
-    language: "en",
+    language: "zh-CN",
     // 视觉相关
     lineStyle: "straight",
     theme: "black",

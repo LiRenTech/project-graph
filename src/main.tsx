@@ -34,15 +34,18 @@ const el = document.getElementById("root")!;
   try {
     const t1 = performance.now();
     await Promise.all([
-      loadLanguageFiles(),
       Settings.init(),
       RecentFileManager.init(),
       LastLaunch.init(),
       StartFilesManager.init(),
       PromptManager.init(),
     ]);
-    // 这两个东西依赖上面的东西，所以单独一个Promise.all
-    await Promise.all([loadSyncModules(), loadStartFile()]);
+    // 这些东西依赖上面的东西，所以单独一个Promise.all
+    await Promise.all([
+      loadLanguageFiles(),
+      loadSyncModules(),
+      loadStartFile(),
+    ]);
     await renderApp();
     console.log(`应用初始化耗时：${performance.now() - t1}ms`);
   } catch (e) {
@@ -72,7 +75,7 @@ async function loadSyncModules() {
 /** 加载语言文件 */
 async function loadLanguageFiles() {
   i18next.use(initReactI18next).init({
-    lng: "zh-CN",
+    lng: await Settings.get("language"),
     debug: import.meta.env.DEV,
     defaultNS: "",
     fallbackLng: "zh-CN",

@@ -1,9 +1,9 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
     // 配置测试环境
-    environment: 'jsdom',  // 环境, node 或 jsdom
+    environment: "jsdom", // 用jsdom模拟浏览器环境
     // 全局设置
     globals: true,
     include: ["src/__tests__/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
@@ -13,5 +13,5 @@ export default defineConfig({
     //   reporter: ['text', 'json', 'html']
     // },
     // 其他配置选项
-  }
+  },
 });
