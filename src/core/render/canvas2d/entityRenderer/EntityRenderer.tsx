@@ -13,6 +13,7 @@ import { Random } from "../../../algorithm/random";
 import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
 import { ImageNode } from "../../../stageObject/entity/ImageNode";
 import { ImageRenderer } from "../ImageRenderer";
+import { Entity } from "../../../stageObject/StageObject";
 
 /**
  * 处理节点相关的绘制
@@ -82,6 +83,7 @@ export namespace EntityRenderer {
     //   new Color(0, 2, 255, 1),
     //   0.5 * Camera.currentScale
     // )
+    renderEntityDetails(section);
   }
 
   export function renderNode(node: TextNode) {
@@ -139,26 +141,34 @@ export namespace EntityRenderer {
       );
     }
 
-    if (node.details && !node.isEditingDetails) {
+    renderEntityDetails(node);
+  }
+
+  function renderEntityDetails(entity: Entity) {
+    if (entity.details && !entity.isEditingDetails) {
       if (Renderer.isAlwaysShowDetails) {
-        renderNodeDetails(node);
+        _renderEntityDetails(entity);
       } else {
-        if (node.isMouseHover) {
-          renderNodeDetails(node);
+        if (entity.isMouseHover) {
+          _renderEntityDetails(entity);
         }
       }
     }
   }
-  function renderNodeDetails(node: TextNode) {
+  function _renderEntityDetails(entity: Entity) {
     RenderUtils.renderMultiLineText(
-      node.details,
+      entity.details,
       Renderer.transformWorld2View(
-        node.rectangle.location.add(new Vector(0, node.rectangle.size.y)),
+        entity.collisionBox
+          .getRectangle()
+          .location.add(
+            new Vector(0, entity.collisionBox.getRectangle().size.y),
+          ),
       ),
       Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
       Math.max(
         Renderer.NODE_DETAILS_WIDTH * Camera.currentScale,
-        node.rectangle.size.x * Camera.currentScale,
+        entity.collisionBox.getRectangle().size.x * Camera.currentScale,
       ),
       StageStyleManager.currentStyle.NodeDetailsTextColor,
     );
@@ -199,6 +209,7 @@ export namespace EntityRenderer {
       Color.White,
       2 * Camera.currentScale,
     );
+    renderEntityDetails(connectPoint);
   }
 
   export function renderImageNode(imageNode: ImageNode) {
@@ -240,5 +251,6 @@ export namespace EntityRenderer {
         Color.Red,
       );
     }
+    renderEntityDetails(imageNode);
   }
 }

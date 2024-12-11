@@ -3,6 +3,7 @@ import { TextNode } from "../../stageObject/entity/TextNode";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Camera } from "../../stage/Camera";
 import { Controller } from "../Controller";
+import { Entity } from "../../stageObject/StageObject";
 
 /**
  * 可能有多个控制器公用同一个代码，
@@ -45,19 +46,18 @@ export function editNode(clickedNode: TextNode) {
  */
 export const editTextNodeHookGlobal = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  hookFunctionStart(_: TextNode) {
+  hookFunctionStart(_: Entity) {
     // 在外部将被修改
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  hookFunctionEnd(_: TextNode) {
+  hookFunctionEnd(_: Entity) {
     // 在外部将被修改
   },
 };
 
-export function editNodeDetails(clickedNode: TextNode) {
+export function editNodeDetails(clickedNode: Entity) {
   Controller.isCameraLocked = true;
 
   clickedNode.isEditingDetails = true;
   editTextNodeHookGlobal.hookFunctionStart(clickedNode);
-  // TODO: 有待把input换成 textarea，解决换行问题
 }

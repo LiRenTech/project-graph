@@ -14,7 +14,7 @@ export namespace StageDumper {
   /**
    * 最新版本
    */
-  export const latestVersion = 10;
+  export const latestVersion = 11;
 
   export function dumpTextNode(textNode: TextNode): Serialized.Node {
     return {
@@ -44,6 +44,7 @@ export namespace StageDumper {
       location: [connectPoint.geometryCenter.x, connectPoint.geometryCenter.y],
       uuid: connectPoint.uuid,
       type: "core:connect_point",
+      details: connectPoint.details,
     };
   }
 
@@ -57,6 +58,7 @@ export namespace StageDumper {
       path: imageNode.path,
       uuid: imageNode.uuid,
       type: "core:image_node",
+      details: imageNode.details,
     };
   }
 
@@ -71,6 +73,7 @@ export namespace StageDumper {
       isCollapsed: section.isCollapsed,
       isHidden: section.isHidden,
       children: section.children.map((child) => child.uuid),
+      details: section.details,
     };
   }
 

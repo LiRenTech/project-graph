@@ -64,6 +64,7 @@ export class Section extends ConnectableEntity {
       isHidden = false,
       isCollapsed = false,
       children = [],
+      details = "",
     }: Partial<Serialized.Section> & { uuid: string },
     public unknown = false,
   ) {
@@ -85,6 +86,7 @@ export class Section extends ConnectableEntity {
     this.text = text;
     this.isHidden = isHidden;
     this.isCollapsed = isCollapsed;
+    this.details = details;
     this.children = StageManager.getEntitiesByUUIDs(children);
     // 一定要放在最后
     this.adjustLocationAndSize();

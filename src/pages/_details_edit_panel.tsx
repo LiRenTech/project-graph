@@ -5,16 +5,16 @@ import { editTextNodeHookGlobal } from "../core/controller/concrete/utilsControl
 import { Controller } from "../core/controller/Controller";
 import { Renderer } from "../core/render/canvas2d/renderer";
 import { Camera } from "../core/stage/Camera";
-import { TextNode } from "../core/stageObject/entity/TextNode";
+import { Entity } from "../core/stageObject/StageObject";
 
 export default function DetailsEditPanel() {
   const [inputCurrentDetails, setInputCurrentDetails] = React.useState("");
   const [isNodeTextEditing, setIsNodeTextEditing] = React.useState(false);
-  const [clickedNode, setClickedNode] = React.useState<TextNode>();
+  const [clickedNode, setClickedNode] = React.useState<Entity>();
   const setInputCurrentDetailsHandler = (value: string) => {
     setInputCurrentDetails(value);
   };
-  const handleConfirmNodeTextEdit = () => {
+  const handleConfirmDetailsEdit = () => {
     setIsNodeTextEditing(false);
     if (clickedNode) {
       editTextNodeHookGlobal.hookFunctionEnd(clickedNode);
@@ -22,22 +22,22 @@ export default function DetailsEditPanel() {
       console.warn("没有点击节点");
     }
   };
-  const handleCancelNodeTextEdit = () => {
+  const handleCancelDetailsEdit = () => {
     setIsNodeTextEditing(false);
     Controller.isCameraLocked = false;
     if (clickedNode) {
       clickedNode.isEditingDetails = false;
     }
   };
-  editTextNodeHookGlobal.hookFunctionStart = (textNode: TextNode) => {
-    setInputCurrentDetails(textNode.details);
-    setClickedNode(textNode);
+  editTextNodeHookGlobal.hookFunctionStart = (entity: Entity) => {
+    setInputCurrentDetails(entity.details);
+    setClickedNode(entity);
     setIsNodeTextEditing(true);
   };
-  editTextNodeHookGlobal.hookFunctionEnd = (textNode: TextNode) => {
-    textNode.changeDetails(inputCurrentDetails);
+  editTextNodeHookGlobal.hookFunctionEnd = (entity: Entity) => {
+    entity.changeDetails(inputCurrentDetails);
     Controller.isCameraLocked = false;
-    textNode.isEditingDetails = false;
+    entity.isEditingDetails = false;
   };
   const getClickedNodeStyle = () => {
     if (!clickedNode) {
@@ -69,10 +69,10 @@ export default function DetailsEditPanel() {
             className="mb-2 flex-1"
           />
           <div className="flex justify-around">
-            <Button onClick={handleConfirmNodeTextEdit} className="mr-1 flex-1">
+            <Button onClick={handleConfirmDetailsEdit} className="mr-1 flex-1">
               确定
             </Button>
-            <Button onClick={handleCancelNodeTextEdit} className="ml-1 flex-1">
+            <Button onClick={handleCancelDetailsEdit} className="ml-1 flex-1">
               取消
             </Button>
           </div>

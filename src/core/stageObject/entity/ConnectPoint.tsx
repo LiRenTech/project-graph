@@ -79,12 +79,14 @@ export class ConnectPoint extends ConnectableEntity {
     {
       uuid,
       location = [0, 0],
+      details = "",
     }: Partial<Serialized.ConnectPoint> & { uuid: string },
     public unknown = false,
   ) {
     super();
     this.uuid = uuid;
     this.location = new Vector(...location);
+    this.details = details;
     this._collisionBox = new CollisionBox([
       new Rectangle(
         this.location.subtract(new Vector(10, 10)),

@@ -396,6 +396,15 @@ export namespace StageManager {
     return null;
   }
 
+  export function findEntityByLocation(location: Vector): Entity | null {
+    for (const entity of getEntities()) {
+      if (entity.collisionBox.isPointInCollisionBox(location)) {
+        return entity;
+      }
+    }
+    return null;
+  }
+
   export function findConnectPointByLocation(
     location: Vector,
   ): ConnectPoint | null {

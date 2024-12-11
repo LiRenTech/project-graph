@@ -20,8 +20,6 @@ export class TextNode extends ConnectableEntity {
   uuid: string;
   text: string;
   details: string;
-  /** 用于交互使用，比如鼠标悬浮显示details */
-  isMouseHover: boolean = false;
 
   public collisionBox: CollisionBox;
   /**
@@ -74,7 +72,6 @@ export class TextNode extends ConnectableEntity {
    */
   isEditing: boolean = false;
 
-  isEditingDetails: boolean = false;
   isHiddenBySectionCollapse = false;
 
   color: Color = Color.Transparent;
@@ -112,10 +109,6 @@ export class TextNode extends ConnectableEntity {
   rename(text: string) {
     this.text = text;
     this.adjustSizeByText();
-  }
-
-  changeDetails(details: string) {
-    this.details = details;
   }
 
   move(delta: Vector) {

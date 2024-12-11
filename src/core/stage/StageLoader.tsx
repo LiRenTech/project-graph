@@ -21,6 +21,7 @@ export namespace StageLoader {
     data = convertV7toV8(data);
     data = convertV8toV9(data);
     data = convertV9toV10(data);
+    data = convertV10toV11(data);
     return data as Serialized.File;
   }
 
@@ -174,6 +175,32 @@ export namespace StageLoader {
     }
     data.version = 10;
     data.tags = [];
+    return data;
+  }
+
+  // 所有实体都支持 details，不再仅仅是TextNode支持
+  function convertV10toV11(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 11) {
+      return data;
+    }
+    data.version = 11;
+    for (const node of data.nodes) {
+      if (node.type === "core:section") {
+        // bug
+        if (typeof node.details === "undefined") {
+          node.details = "";
+        }
+      } else if (node.type === "core:connect_point") {
+        // bug
+        if (typeof node.details === "undefined") {
+          node.details = "";
+        }
+      } else if (node.type === "core:image_node") {
+        if (typeof node.details === "undefined") {
+          node.details = "";
+        }
+      }
+    }
     return data;
   }
 }

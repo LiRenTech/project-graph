@@ -39,6 +39,14 @@ export abstract class Entity extends StageObject {
   abstract move(delta: Vector): void;
   abstract moveTo(location: Vector): void;
 
+  public details: string = "";
+  public isEditingDetails: boolean = false;
+  /** 用于交互使用，比如鼠标悬浮显示details */
+  public isMouseHover: boolean = false;
+
+  changeDetails(details: string) {
+    this.details = details;
+  }
   /**
    * 是不是因为所在的Section被折叠而隐藏了
    */

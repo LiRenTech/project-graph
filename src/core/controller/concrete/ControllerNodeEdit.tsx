@@ -1,6 +1,7 @@
 import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { StageManager } from "../../stage/stageManager/StageManager";
+import { TextNode } from "../../stageObject/entity/TextNode";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { editNode, editNodeDetails } from "./utilsControl";
@@ -20,15 +21,18 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
   const pressLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const clickedNode = StageManager.findTextNodeByLocation(pressLocation);
-  if (clickedNode === null) {
+  const clickedEntity = StageManager.findEntityByLocation(pressLocation);
+
+  if (clickedEntity === null) {
     return;
   }
 
   if (Controller.pressingKeySet.has("control")) {
-    editNodeDetails(clickedNode);
+    editNodeDetails(clickedEntity);
   } else {
-    editNode(clickedNode);
+    if (clickedEntity instanceof TextNode) {
+      editNode(clickedEntity);
+    }
   }
 };
 

@@ -25,7 +25,7 @@ export class ImageNode extends ConnectableEntity {
   isHiddenBySectionCollapse: boolean = false;
   public uuid: string;
   public collisionBox: CollisionBox;
-
+  details: string;
   /**
    * 这里的path是相对于工程文件的相对路径
    * 例如："example.png"
@@ -66,12 +66,14 @@ export class ImageNode extends ConnectableEntity {
       location = [0, 0],
       size = [100, 100],
       path = "",
+      details = "",
     }: Partial<Serialized.ImageNode> & { uuid: string },
     public unknown = false,
   ) {
     super();
     this.uuid = uuid;
     this.path = path;
+    this.details = details;
     this.collisionBox = new CollisionBox([
       new Rectangle(new Vector(...location), new Vector(...size)),
     ]);

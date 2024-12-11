@@ -11,6 +11,7 @@ export namespace Serialized {
 
   export type Entity = StageObject & {
     location: Vector;
+    details: string;
   };
 
   export type Node = Entity & {
@@ -18,8 +19,6 @@ export namespace Serialized {
     size: Vector;
     text: string;
     color: Color;
-
-    details: string;
   };
 
   export type Section = Entity & {
