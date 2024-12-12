@@ -71,7 +71,7 @@ export namespace Renderer {
     Canvas.ctx.scale(scale, scale);
   }
 
-  let isShowDebug = true;
+  export let isShowDebug = true;
   let isShowGrid = true;
   export let isAlwaysShowDetails = false;
   let isRenderEffect = true;

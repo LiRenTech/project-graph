@@ -99,12 +99,19 @@ export namespace EntityRenderer {
       );
     }
     // debug
-    // RenderUtils.renderRect(
-    //   section.collisionBox.getRectangle().transformWorld2View(),
-    //   section.color,
-    //   new Color(0, 2, 255, 1),
-    //   0.5 * Camera.currentScale
-    // )
+    if (Renderer.isShowDebug) {
+      for (const child of section.children) {
+        RenderUtils.renderDashedLine(
+          Renderer.transformWorld2View(section.rectangle.leftTop),
+          Renderer.transformWorld2View(
+            child.collisionBox.getRectangle().leftTop,
+          ),
+          Color.Green,
+          0.2 * Camera.currentScale,
+          5 * Camera.currentScale,
+        );
+      }
+    }
     renderEntityDetails(section);
   }
 
