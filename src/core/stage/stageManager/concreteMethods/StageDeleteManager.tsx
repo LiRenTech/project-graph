@@ -26,7 +26,7 @@ export namespace StageDeleteManager {
         deleteImageNode(entity);
       }
     }
-    StageManager.updateReferences();
+    // StageManager.updateReferences();
   }
 
   function deleteSection(entity: Section) {
@@ -46,6 +46,7 @@ export namespace StageDeleteManager {
 
     // 再删除自己
     StageManager.deleteOneSection(entity);
+    deleteEntityAfterClearEdges(entity);
   }
   function deleteImageNode(entity: ImageNode) {
     if (StageManager.getImageNodes().includes(entity)) {
@@ -100,8 +101,11 @@ export namespace StageDeleteManager {
     deleteEntityAfterClearEdges(entity);
   }
 
+  /**
+   * 删除所有相关的边
+   * @param entity
+   */
   function deleteEntityAfterClearEdges(entity: Entity) {
-    // 删除所有相关的边
     const prepareDeleteEdges: Edge[] = [];
     for (const edge of StageManager.getEdges()) {
       if (edge.source === entity || edge.target === entity) {

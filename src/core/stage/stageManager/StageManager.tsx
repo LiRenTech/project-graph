@@ -225,6 +225,7 @@ export namespace StageManager {
    * 包含了对Edge双向线偏移状态的更新
    */
   export function updateReferences() {
+    console.log("updateReferences");
     for (const entity of getEntities()) {
       if (entity instanceof ConnectableEntity) {
         for (const edge of getEdges()) {
@@ -786,10 +787,10 @@ export namespace StageManager {
     return res;
   }
 
-  export function deleteSection(section: Section) {
-    StageDeleteManager.deleteEntities([section]);
-    StageHistoryManager.recordStep();
-  }
+  // export function deleteSection(section: Section) {
+  //   StageDeleteManager.deleteEntities([section]);
+  //   StageHistoryManager.recordStep();
+  // }
 
   export function connectEntity(
     fromNode: ConnectableEntity,

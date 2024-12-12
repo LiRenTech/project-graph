@@ -9,7 +9,6 @@ import { Renderer } from "../../render/canvas2d/renderer";
 import { SoundService } from "../../SoundService";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
-import { Section } from "../../stageObject/entity/Section";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -65,31 +64,31 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
 
   Stage.warningEntity = [];
   for (const entity of StageManager.getEntities()) {
-    if (entity instanceof Section) {
-      continue; // Section的碰撞箱比较特殊
-    }
+    // if (entity instanceof Section) {
+    //   continue; // Section的碰撞箱比较特殊
+    // }
     if (entity.isHiddenBySectionCollapse) {
       continue; // 隐藏的节点不参与碰撞检测
     }
+    if (entity.collisionBox.isLineInCollisionBox(Stage.cuttingLine)) {
+      Stage.warningEntity.push(entity);
+    }
+
+    // 特效
     const collidePoints = entity.collisionBox
       .getRectangle()
       .getCollidePointsWithLine(Stage.cuttingLine);
-    if (collidePoints.length > 0) {
-      Stage.warningEntity.push(entity);
-      for (const collidePoint of collidePoints) {
-        Stage.effects.push(
-          new CircleFlameEffect(
-            new ProgressNumber(0, 5),
-            collidePoint,
-            10,
-            new Color(255, 255, 255, 1),
-          ),
-        );
-      }
+    // 增加两点特效
+    for (const collidePoint of collidePoints) {
+      Stage.effects.push(
+        new CircleFlameEffect(
+          new ProgressNumber(0, 5),
+          collidePoint,
+          10,
+          new Color(255, 255, 255, 1),
+        ),
+      );
     }
-    // if (node.rectangle.isCollideWithLine(Stage.cuttingLine)) {
-    //   Stage.warningNodes.push(node);
-    // }
   }
 
   Stage.warningSections = [];
@@ -127,18 +126,14 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
   }
   Stage.isCutting = false;
 
-  StageManager.deleteEntities(Stage.warningEntity);
-  Stage.warningEntity = [];
-
   for (const edge of Stage.warningEdges) {
     StageManager.deleteEdge(edge);
     for (const effect of EdgeRenderer.getCuttingEffects(edge)) {
       Stage.effects.push(effect);
     }
   }
-  for (const section of Stage.warningSections) {
-    StageManager.deleteSection(section);
-  }
+  StageManager.deleteEntities(Stage.warningEntity);
+  Stage.warningEntity = [];
 
   Stage.warningSections = [];
 
