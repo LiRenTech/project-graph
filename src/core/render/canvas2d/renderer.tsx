@@ -120,6 +120,7 @@ export namespace Renderer {
     renderCuttingLine();
     renderConnectingLine();
     renderDraggingFileTips();
+    renderSectionInLines();
     start = performance.now();
     renderKeyboardOnly();
     timings.keyboard = performance.now() - start;
@@ -199,6 +200,7 @@ export namespace Renderer {
         Stage.cuttingLine.start,
         Stage.cuttingLine.end,
         2,
+        Color.Red,
       );
     }
   }
@@ -224,6 +226,40 @@ export namespace Renderer {
         // 画一条像吸住了的线
         for (const node of Stage.connectFromEntities) {
           EdgeRenderer.renderVirtualConfirmedEdge(node, connectTargetNode);
+        }
+      }
+    }
+  }
+
+  /**  */
+  function renderSectionInLines() {
+    if (Stage.hoverSections.length > 0) {
+      for (const section of Stage.hoverSections) {
+        for (const node of StageManager.getSelectedEntities()) {
+          WorldRenderUtils.renderLaser(
+            node.collisionBox.getRectangle().leftTop,
+            section.collisionBox.getRectangle().leftTop,
+            2,
+            Color.Green,
+          );
+          WorldRenderUtils.renderLaser(
+            node.collisionBox.getRectangle().rightTop,
+            section.collisionBox.getRectangle().rightTop,
+            2,
+            Color.Green,
+          );
+          WorldRenderUtils.renderLaser(
+            node.collisionBox.getRectangle().leftBottom,
+            section.collisionBox.getRectangle().leftBottom,
+            2,
+            Color.Green,
+          );
+          WorldRenderUtils.renderLaser(
+            node.collisionBox.getRectangle().rightBottom,
+            section.collisionBox.getRectangle().rightBottom,
+            2,
+            Color.Green,
+          );
         }
       }
     }

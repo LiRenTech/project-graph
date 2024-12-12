@@ -1,4 +1,5 @@
 import { Vector } from "../../dataStruct/Vector";
+import { RectanglePushInEffect } from "../../effect/concrete/RectanglePushInEffect";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
@@ -65,6 +66,19 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
     StageManager.moveSections(diffLocation);
     StageManager.moveConnectPoints(diffLocation);
     StageManager.moveImageNodes(diffLocation);
+
+    if (Stage.hoverSections.length > 0) {
+      for (const section of Stage.hoverSections) {
+        for (const node of StageManager.getSelectedEntities()) {
+          Stage.effects.push(
+            new RectanglePushInEffect(
+              node.collisionBox.getRectangle(),
+              section.collisionBox.getRectangle(),
+            ),
+          );
+        }
+      }
+    }
 
     ControllerNodeMove.lastMoveLocation = worldLocation.clone();
   }

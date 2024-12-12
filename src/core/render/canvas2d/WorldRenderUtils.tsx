@@ -40,8 +40,13 @@ export namespace WorldRenderUtils {
     renderBezierCurve(curve.bezier, color, width);
   }
 
-  export function renderLaser(start: Vector, end: Vector, width: number): void {
-    Canvas.ctx.shadowColor = "red";
+  export function renderLaser(
+    start: Vector,
+    end: Vector,
+    width: number,
+    color: Color,
+  ): void {
+    Canvas.ctx.shadowColor = color.toString();
     Canvas.ctx.shadowBlur = 15;
 
     if (start.distance(end) === 0) {
