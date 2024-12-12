@@ -4,6 +4,7 @@ import { EntityCreateLineEffect } from "../../effect/concrete/EntityCreateLineEf
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
+import { Section } from "../../stageObject/entity/Section";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { editNode } from "./utilsControl";
@@ -24,6 +25,8 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
   const pressLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
+
+  // 排除：在实体上双击或者在线上双击
   if (
     StageManager.isEntityOnLocation(pressLocation) ||
     StageManager.isAssociationOnLocation(pressLocation)
@@ -31,20 +34,24 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
     return;
   }
 
+  // 是否是在Section内部双击
+  const sections =
+    StageManager.SectionOptions.getSectionsByInnerLocation(pressLocation);
+
   if (Controller.pressingKeySet.has("`")) {
-    createConnectPoint(pressLocation);
+    createConnectPoint(pressLocation, sections);
   } else {
-    createNode(pressLocation);
+    createNode(pressLocation, sections);
   }
 };
 
-function createConnectPoint(pressLocation: Vector) {
-  StageManager.addConnectPointByClick(pressLocation);
+function createConnectPoint(pressLocation: Vector, addToSections: Section[]) {
+  StageManager.addConnectPointByClick(pressLocation, addToSections);
 }
 
-function createNode(pressLocation: Vector) {
+function createNode(pressLocation: Vector, addToSections: Section[]) {
   // 新建节点
-  StageManager.addTextNodeByClick(pressLocation).then((uuid) => {
+  StageManager.addTextNodeByClick(pressLocation, addToSections).then((uuid) => {
     const createNode = StageManager.getTextNodeByUUID(uuid);
     if (createNode === null) {
       // 说明 创建了立刻删掉了

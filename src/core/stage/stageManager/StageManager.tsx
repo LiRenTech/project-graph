@@ -491,6 +491,40 @@ export namespace StageManager {
     return dfs(node, []);
   }
 
+  /**
+   * 定义一系列Section集合操作函数
+   */
+  export namespace SectionOptions {
+    /**
+     * 根据一个点，获取包含这个点的所有集合
+     * （小集合会覆盖大集合）
+     * 也就是 SectionA ∈ SectionB，
+     * 点击发生在 SectionA 中时，会返回 [SectionA]，不含有 SectionB
+     * @returns
+     */
+    export function getSectionsByInnerLocation(location: Vector): Section[] {
+      const sections: Section[] = [];
+      for (const section of getSections()) {
+        if (section.isCollapsed || section.isHiddenBySectionCollapse) {
+          continue;
+        }
+        if (section.collisionBox.getRectangle().isPointIn(location)) {
+          sections.push(section);
+        }
+      }
+      return deeperSections(sections);
+    }
+
+    /**
+     * 用于去除重叠集合，当有完全包含的集合时，返回最小的集合
+     * @param sections
+     */
+    function deeperSections(sections: Section[]): Section[] {
+      // todo
+      return sections;
+    }
+  }
+
   // region 以下为舞台操作相关的函数
   // 建议不同的功能分类到具体的文件中，然后最后集中到这里调用，使得下面的显示简短一些
   // 每个操作函数尾部都要加一个记录历史的操作
@@ -502,8 +536,12 @@ export namespace StageManager {
    */
   export async function addTextNodeByClick(
     clickWorldLocation: Vector,
+    addToSections: Section[],
   ): Promise<string> {
-    const res = await StageNodeAdder.addTextNodeByClick(clickWorldLocation);
+    const res = await StageNodeAdder.addTextNodeByClick(
+      clickWorldLocation,
+      addToSections,
+    );
     StageHistoryManager.recordStep();
     return res;
   }
@@ -708,8 +746,11 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
-  export function addConnectPointByClick(location: Vector) {
-    StageNodeAdder.addConnectPoint(location);
+  export function addConnectPointByClick(
+    location: Vector,
+    addToSections: Section[],
+  ) {
+    StageNodeAdder.addConnectPoint(location, addToSections);
     StageHistoryManager.recordStep();
   }
 

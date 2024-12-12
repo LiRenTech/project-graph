@@ -62,7 +62,7 @@ export namespace EdgeRenderer {
 
   export function renderEdge(edge: Edge) {
     if (
-      edge.source.isHiddenBySectionCollapse ||
+      edge.source.isHiddenBySectionCollapse &&
       edge.target.isHiddenBySectionCollapse
     ) {
       return;

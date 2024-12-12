@@ -4,6 +4,10 @@ import { Settings } from "../../../Settings";
 import { StageManager } from "../StageManager";
 import { v4 as uuidv4 } from "uuid";
 import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
+import { Section } from "../../../stageObject/entity/Section";
+import { Stage } from "../../Stage";
+import { RectanglePushInEffect } from "../../../effect/concrete/RectanglePushInEffect";
+import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 
 /**
  * 包含增加节点的方法
@@ -18,6 +22,7 @@ export namespace StageNodeAdder {
    */
   export async function addTextNodeByClick(
     clickWorldLocation: Vector,
+    addToSections: Section[],
   ): Promise<string> {
     const newUUID = uuidv4();
     const node = new TextNode({
@@ -33,6 +38,18 @@ export namespace StageNodeAdder {
       node.rectangle.location.subtract(node.rectangle.size.divide(2)),
     );
     StageManager.addTextNode(node);
+
+    for (const section of addToSections) {
+      section.children.push(node);
+      section.adjustLocationAndSize();
+      Stage.effects.push(
+        new RectanglePushInEffect(
+          node.rectangle.clone(),
+          section.rectangle.clone(),
+          new ProgressNumber(0, 100),
+        ),
+      );
+    }
     return newUUID;
   }
 
@@ -73,13 +90,27 @@ export namespace StageNodeAdder {
     return template;
   }
 
-  export function addConnectPoint(clickWorldLocation: Vector): string {
+  export function addConnectPoint(
+    clickWorldLocation: Vector,
+    addToSections: Section[],
+  ): string {
     const newUUID = uuidv4();
     const connectPoint = new ConnectPoint({
       uuid: newUUID,
       location: [clickWorldLocation.x, clickWorldLocation.y],
     });
     StageManager.addConnectPoint(connectPoint);
+    for (const section of addToSections) {
+      section.children.push(connectPoint);
+      section.adjustLocationAndSize();
+      Stage.effects.push(
+        new RectanglePushInEffect(
+          connectPoint.collisionBox.getRectangle(),
+          section.rectangle.clone(),
+          new ProgressNumber(0, 100),
+        ),
+      );
+    }
     return newUUID;
   }
 
