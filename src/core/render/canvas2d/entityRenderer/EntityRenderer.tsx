@@ -1,4 +1,4 @@
-import { Color } from "../../../dataStruct/Color";
+import { Color, mixColors } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { TextNode } from "../../../stageObject/entity/TextNode";
@@ -24,15 +24,36 @@ export namespace EntityRenderer {
       return;
     }
     if (section.isCollapsed) {
+      // 折叠状态
+      const renderRectangle = new Rectangle(
+        Renderer.transformWorld2View(section.rectangle.location),
+        section.rectangle.size.multiply(Camera.currentScale),
+      );
+      RenderUtils.renderRect(
+        renderRectangle,
+        section.color,
+        mixColors(
+          StageStyleManager.currentStyle.StageObjectBorderColor,
+          Color.Black,
+          0.5,
+        ),
+        2 * Camera.currentScale,
+        Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+      );
+      // 外框
       RenderUtils.renderRect(
         new Rectangle(
-          Renderer.transformWorld2View(section.rectangle.location),
-          section.rectangle.size.multiply(Camera.currentScale),
+          Renderer.transformWorld2View(
+            section.rectangle.location.subtract(Vector.same(4)),
+          ),
+          section.rectangle.size
+            .add(Vector.same(4 * 2))
+            .multiply(Camera.currentScale),
         ),
         section.color,
         StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
-        Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+        Renderer.NODE_ROUNDED_RADIUS * 1.5 * Camera.currentScale,
       );
 
       RenderUtils.renderText(
@@ -46,6 +67,7 @@ export namespace EntityRenderer {
           : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
       );
     } else {
+      // 非折叠状态
       RenderUtils.renderRect(
         new Rectangle(
           Renderer.transformWorld2View(section.rectangle.location),
