@@ -171,6 +171,9 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
     if (!isHaveEntity) {
       // 如果已经有节点被选择了，则不能再选择边了
       for (const edge of StageManager.getEdges()) {
+        if (edge.isHiddenBySectionCollapse) {
+          continue;
+        }
         if (
           edge.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
         ) {
