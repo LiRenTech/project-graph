@@ -36,17 +36,19 @@ export namespace StageDeleteManager {
     }
 
     // 先删除所有内部的东西
-    // for (const child of entity.children) {
-    //   if (child instanceof TextNode) {
-    //     deleteTextNode(child);
-    //   } else if (child instanceof Section) {
-    //     deleteSection(child);
-    //   }
-    // }
+    if (entity.isCollapsed) {
+      deleteEntities(entity.children);
+    }
 
     // 再删除自己
     StageManager.deleteOneSection(entity);
     deleteEntityAfterClearEdges(entity);
+    // 将自己所有的父级Section的children添加自己的children
+    const fatherSections =
+      StageManager.SectionOptions.getFatherSections(entity);
+    for (const fatherSection of fatherSections) {
+      StageManager.goInSection(entity.children, fatherSection);
+    }
   }
   function deleteImageNode(entity: ImageNode) {
     if (StageManager.getImageNodes().includes(entity)) {

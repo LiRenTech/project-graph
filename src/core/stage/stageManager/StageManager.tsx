@@ -495,7 +495,7 @@ export namespace StageManager {
   // region Section集合操作函数
   export namespace SectionOptions {
     /**
-     * 获取一个实体的第一层父亲Section
+     * 获取一个实体的第一层所有父亲Sections
      * @param entity
      */
     export function getFatherSections(entity: Entity): Section[] {
