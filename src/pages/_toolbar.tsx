@@ -335,15 +335,13 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           }}
         />
       )}
-      {isHaveSelectedNodeOverTwo && (
-        <ToolbarItem
-          description="将选中节点打包Section（Section目前bug较多，还在开发中，暂时不推荐使用）"
-          icon={<Square />}
-          handleFunction={() => {
-            onPackNodeToSection();
-          }}
-        />
-      )}
+      <ToolbarItem
+        description="将选中节点打包Section（Section目前bug较多，还在开发中，暂时不推荐使用）"
+        icon={<Square />}
+        handleFunction={() => {
+          onPackNodeToSection();
+        }}
+      />
       <ToolbarItem
         description="将选中的Section折叠起来"
         icon={<Package />}
@@ -397,10 +395,8 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   );
 }
 function onPackNodeToSection() {
-  const selectedNodes = StageManager.getTextNodes().filter(
-    (node) => node.isSelected,
-  );
-  if (selectedNodes.length < 2) {
+  const selectedNodes = StageManager.getSelectedEntities();
+  if (selectedNodes.length === 0) {
     return;
   }
   StageManager.packEntityToSection(selectedNodes);
