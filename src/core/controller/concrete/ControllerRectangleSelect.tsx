@@ -152,22 +152,9 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
   } else {
     let isHaveEntity = false;
     // 框选逻辑优先级：
-    // 框 > 其他Entity > Edge
+    // Entity > Edge
 
-    // 1 框
-    // for (const section of StageManager.getSections()) {
-    //   if (section.isHiddenBySectionCollapse) {
-    //     continue;
-    //   }
-    //   if (
-    //     section.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
-    //   ) {
-    //     section.isSelected = true;
-    //     isHaveEntity = true;
-    //   }
-    // }
-
-    // 2 其他Entity
+    // Entity
     if (!isHaveEntity) {
       for (const otherEntities of StageManager.getEntities()) {
         // if (otherEntities instanceof Section) {
@@ -188,7 +175,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
       }
     }
 
-    // 3 Edge
+    // Edge
     if (!isHaveEntity) {
       // 如果已经有节点被选择了，则不能再选择边了
       for (const edge of StageManager.getEdges()) {
@@ -203,10 +190,41 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
       }
     }
   }
+  selectedEntityNormalizing();
+
   Controller.isMovingEntity = false;
   Controller.isMovingEdge = false;
   ControllerRectangleSelect.lastMoveLocation = worldLocation.clone();
 };
+
+/**
+ * 规范化选择的实体
+ *  法则：永远不能同时框选一个东西和它包含在内部的东西。
+ */
+function selectedEntityNormalizing() {
+  const entities = StageManager.getSelectedEntities();
+  const selectedSections = entities.filter(
+    (entity) => entity instanceof Section,
+  );
+  const shallowerSections =
+    StageManager.SectionOptions.shallowerSection(selectedSections);
+  for (const section of selectedSections) {
+    if (!shallowerSections.includes(section)) {
+      section.isSelected = false;
+    }
+  }
+  for (const entity of entities) {
+    if (entity instanceof Section) {
+      continue;
+    }
+    // 如果这个东西被包含在其他的section里，则取消选择
+    for (const section of shallowerSections) {
+      if (StageManager.SectionOptions.isEntityInSection(entity, section)) {
+        entity.isSelected = false;
+      }
+    }
+  }
+}
 
 ControllerRectangleSelect.mouseup = (event: MouseEvent) => {
   if (event.button !== 0) {

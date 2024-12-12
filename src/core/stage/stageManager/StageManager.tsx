@@ -547,11 +547,42 @@ export namespace StageManager {
     }
 
     /**
+     * 通过多个Section，获取最外层的Section（即没有父亲的Section）
+     * @param sections
+     * @returns
+     */
+    export function shallowerSection(sections: Section[]): Section[] {
+      const rootSections: Section[] = [];
+      const sectionMap = new Map<string, Section>();
+      // 首先将所有section放入map，方便快速查找
+      for (const section of sections) {
+        sectionMap.set(section.uuid, section);
+      }
+      // 遍历所有section，检查是否有父亲节点
+      for (const section of sections) {
+        for (const child of section.children) {
+          sectionMap.delete(child.uuid);
+        }
+      }
+      for (const section of sectionMap.keys()) {
+        const result = sectionMap.get(section);
+        if (result) {
+          rootSections.push(result);
+        }
+      }
+
+      return rootSections;
+    }
+
+    /**
      * 检测某个实体是否在某个集合内，跨级也算
      * @param entity
      * @param section
      */
-    function isEntityInSection(entity: Entity, section: Section): boolean {
+    export function isEntityInSection(
+      entity: Entity,
+      section: Section,
+    ): boolean {
       return _isEntityInSection(entity, section, 0);
     }
 
