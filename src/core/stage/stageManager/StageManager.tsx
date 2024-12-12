@@ -594,10 +594,14 @@ export namespace StageManager {
       // 遍历所有非section实体，如果是任何一个section的子节点，则删除
       const result: Entity[] = [];
       for (const entity of nonSections) {
+        let isAnyChild = false;
         for (const section of sections) {
-          if (!SectionOptions.isEntityInSection(entity, section)) {
-            result.push(entity);
+          if (SectionOptions.isEntityInSection(entity, section)) {
+            isAnyChild = true;
           }
+        }
+        if (!isAnyChild) {
+          result.push(entity);
         }
       }
       result.push(...sections);
