@@ -456,6 +456,14 @@ export namespace StageManager {
   }
   export function isAssociationOnLocation(location: Vector): boolean {
     for (const association of getAssociations()) {
+      if (association instanceof Edge) {
+        if (
+          association.target.isHiddenBySectionCollapse &&
+          association.source.isHiddenBySectionCollapse
+        ) {
+          continue;
+        }
+      }
       if (association.collisionBox.isPointInCollisionBox(location)) {
         return true;
       }

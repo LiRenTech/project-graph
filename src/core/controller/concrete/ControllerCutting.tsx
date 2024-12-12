@@ -104,6 +104,12 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
 
   Stage.warningEdges = [];
   for (const edge of StageManager.getEdges()) {
+    if (
+      edge.target.isHiddenBySectionCollapse &&
+      edge.source.isHiddenBySectionCollapse
+    ) {
+      continue; // 连线被隐藏了
+    }
     if (edge.collisionBox.isLineInCollisionBox(Stage.cuttingLine)) {
       Stage.warningEdges.push(edge);
     }

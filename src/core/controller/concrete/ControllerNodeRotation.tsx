@@ -89,6 +89,12 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
     // 看看鼠标当前的位置是否和线接近
     Stage.hoverEdges = [];
     for (const edge of StageManager.getEdges()) {
+      if (
+        edge.target.isHiddenBySectionCollapse &&
+        edge.source.isHiddenBySectionCollapse
+      ) {
+        continue;
+      }
       if (edge.collisionBox.isPointInCollisionBox(worldLocation)) {
         Stage.hoverEdges.push(edge);
       }
