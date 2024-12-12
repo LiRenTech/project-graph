@@ -191,9 +191,10 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
   };
 
   return (
+    // 群友joe说蓝色一点更好看
     <div
       className={cn(
-        "pointer-events-none fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 scale-75 transform flex-col items-center overflow-y-scroll rounded-md bg-neutral-900 px-2 py-6 opacity-0",
+        "pointer-events-none fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 scale-75 transform flex-col items-center overflow-y-scroll rounded-md bg-gray-800 px-2 py-6 opacity-0",
         {
           "pointer-events-auto scale-100 opacity-100": open,
           "opacity-20": isPanelTransparent,
@@ -226,7 +227,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
           {isPanelTransparent ? <Eye /> : <EyeClosed />}
         </IconButton>
       </div>
-      <table className="overflow-hidden rounded-lg border border-gray-600 shadow-lg">
+      <table className="overflow-hidden rounded-lg border border-gray-600 bg-gray-700 shadow-lg">
         <thead>
           {/* <tr className="text-white">
             <th className="mx-4 py-2 text-left">状态</th>
@@ -274,7 +275,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
                   })}
                 </td>
               )}
-              <td>
+              <td className="flex justify-center">
                 <IconButton
                   className="mx-0.5 px-2 py-1"
                   onClick={onLoadCurrentStartFile(file.path)}
