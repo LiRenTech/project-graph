@@ -585,6 +585,25 @@ export namespace StageManager {
       return rootSections;
     }
 
+    export function shallowerEntities(entities: Entity[]): Entity[] {
+      // shallowerSection + 所有非Section的实体
+      const sections = entities.filter((entity) => entity instanceof Section);
+      const nonSections = entities.filter(
+        (entity) => !(entity instanceof Section),
+      );
+      // 遍历所有非section实体，如果是任何一个section的子节点，则删除
+      const result: Entity[] = [];
+      for (const entity of nonSections) {
+        for (const section of sections) {
+          if (!SectionOptions.isEntityInSection(entity, section)) {
+            result.push(entity);
+          }
+        }
+      }
+      result.push(...sections);
+      return result;
+    }
+
     /**
      * 检测某个实体是否在某个集合内，跨级也算
      * @param entity
@@ -810,7 +829,9 @@ export namespace StageManager {
 
   /** 将多个实体打包成一个section，并添加到舞台中 */
   export function packEntityToSection(addEntities: Entity[]) {
-    const section = Section.fromEntities(addEntities);
+    const section = Section.fromEntities(
+      SectionOptions.shallowerEntities(addEntities),
+    );
     entities.addValue(section, section.uuid);
     StageHistoryManager.recordStep();
   }
