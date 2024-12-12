@@ -68,6 +68,9 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
     if (entity instanceof Section) {
       continue; // Section的碰撞箱比较特殊
     }
+    if (entity.isHiddenBySectionCollapse) {
+      continue; // 隐藏的节点不参与碰撞检测
+    }
     const collidePoints = entity.collisionBox
       .getRectangle()
       .getCollidePointsWithLine(Stage.cuttingLine);
@@ -91,6 +94,9 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
 
   Stage.warningSections = [];
   for (const section of StageManager.getSections()) {
+    if (section.isHiddenBySectionCollapse) {
+      continue; // 隐藏的节点不参与碰撞检测
+    }
     if (section.collisionBox.isLineInCollisionBox(Stage.cuttingLine)) {
       Stage.warningSections.push(section);
     }

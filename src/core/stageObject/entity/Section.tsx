@@ -135,6 +135,20 @@ export class Section extends ConnectableEntity {
     // 调整折叠状态
     this._collisionBoxWhenCollapsed = this.collapsedCollisionBox();
   }
+  /**
+   * 根据自身的折叠状态调整子节点的状态
+   * 以屏蔽触碰和显示
+   */
+  adjustChildrenStateByCollapse() {
+    if (this.isCollapsed) {
+      this.children.forEach((child) => {
+        if (child instanceof Section) {
+          child.adjustChildrenStateByCollapse();
+        }
+        child.isHiddenBySectionCollapse = true;
+      });
+    }
+  }
 
   /**
    * 获取节点的选中状态

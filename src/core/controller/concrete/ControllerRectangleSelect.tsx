@@ -104,6 +104,9 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
   if (Controller.pressingKeySet.has("control")) {
     // 交叉选择，没的变有，有的变没
     for (const entity of StageManager.getEntities()) {
+      if (entity.isHiddenBySectionCollapse) {
+        continue;
+      }
       if (
         entity.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
       ) {
@@ -132,6 +135,9 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
 
     // 1 框
     for (const section of StageManager.getSections()) {
+      if (section.isHiddenBySectionCollapse) {
+        continue;
+      }
       if (
         section.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
       ) {
@@ -144,6 +150,9 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
     if (!isHaveEntity) {
       for (const otherEntities of StageManager.getEntities()) {
         if (otherEntities instanceof Section) {
+          continue;
+        }
+        if (otherEntities.isHiddenBySectionCollapse) {
           continue;
         }
 

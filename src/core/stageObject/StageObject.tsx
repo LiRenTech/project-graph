@@ -49,6 +49,7 @@ export abstract class Entity extends StageObject {
   }
   /**
    * 是不是因为所在的Section被折叠而隐藏了
+   * 因为任何Entity都可以放入Section
    */
   abstract isHiddenBySectionCollapse: boolean;
 }

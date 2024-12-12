@@ -239,6 +239,7 @@ export namespace StageManager {
 
       // 以下是Section框的更新
       if (entity instanceof Section) {
+        // 更新孩子数组，并调整位置和大小
         const newChildList = [];
 
         for (const child of entity.children) {
@@ -251,6 +252,7 @@ export namespace StageManager {
         }
         entity.children = newChildList;
         entity.adjustLocationAndSize();
+        entity.adjustChildrenStateByCollapse();
       }
     }
     // 以下是Edge双向线偏移状态的更新
@@ -389,6 +391,9 @@ export namespace StageManager {
     location: Vector,
   ): ConnectableEntity | null {
     for (const entity of getConnectableEntity()) {
+      if (entity.isHiddenBySectionCollapse) {
+        continue;
+      }
       if (entity.collisionBox.isPointInCollisionBox(location)) {
         return entity;
       }
@@ -398,6 +403,9 @@ export namespace StageManager {
 
   export function findEntityByLocation(location: Vector): Entity | null {
     for (const entity of getEntities()) {
+      if (entity.isHiddenBySectionCollapse) {
+        continue;
+      }
       if (entity.collisionBox.isPointInCollisionBox(location)) {
         return entity;
       }
@@ -409,6 +417,9 @@ export namespace StageManager {
     location: Vector,
   ): ConnectPoint | null {
     for (const point of getConnectPoints()) {
+      if (point.isHiddenBySectionCollapse) {
+        continue;
+      }
       if (point.collisionBox.isPointInCollisionBox(location)) {
         return point;
       }
@@ -427,8 +438,16 @@ export namespace StageManager {
     return entities.valuesToArray().filter((entity) => entity.isSelected);
   }
 
+  /**
+   * 判断某一点是否有实体存在（排除实体的被Section折叠）
+   * @param location
+   * @returns
+   */
   export function isEntityOnLocation(location: Vector): boolean {
     for (const entity of getEntities()) {
+      if (entity.isHiddenBySectionCollapse) {
+        continue;
+      }
       if (entity.collisionBox.isPointInCollisionBox(location)) {
         return true;
       }
