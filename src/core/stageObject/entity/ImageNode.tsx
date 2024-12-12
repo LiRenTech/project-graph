@@ -156,10 +156,12 @@ export class ImageNode extends ConnectableEntity {
     const newRectangle = this.rectangle.clone();
     newRectangle.location = newRectangle.location.add(delta);
     this.collisionBox.shapeList[0] = newRectangle;
+    this.updateFatherSectionByMove();
   }
   moveTo(location: Vector): void {
     const newRectangle = this.rectangle.clone();
     newRectangle.location = location.clone();
     this.collisionBox.shapeList[0] = newRectangle;
+    this.updateFatherSectionByMove();
   }
 }

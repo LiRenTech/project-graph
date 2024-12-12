@@ -207,11 +207,13 @@ export class Section extends ConnectableEntity {
         delta,
       ),
     );
+    this.updateFatherSectionByMove();
   }
 
   moveTo(location: Vector): void {
     const currentLeftTop = this.rectangle.location;
     const delta = location.clone().subtract(currentLeftTop);
     this.move(delta);
+    this.updateFatherSectionByMove();
   }
 }

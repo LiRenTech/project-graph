@@ -103,6 +103,7 @@ export class ConnectPoint extends ConnectableEntity {
     if (rectangle instanceof Rectangle) {
       rectangle.location = rectangle.location.add(delta);
     }
+    this.updateFatherSectionByMove();
   }
 
   moveTo(location: Vector): void {
@@ -112,5 +113,6 @@ export class ConnectPoint extends ConnectableEntity {
     if (rectangle instanceof Rectangle) {
       rectangle.location = location.subtract(new Vector(10, 10));
     }
+    this.updateFatherSectionByMove();
   }
 }

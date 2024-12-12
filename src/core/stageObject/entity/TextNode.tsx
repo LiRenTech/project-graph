@@ -124,11 +124,13 @@ export class TextNode extends ConnectableEntity {
         delta,
       ),
     );
+    this.updateFatherSectionByMove();
   }
 
   moveTo(location: Vector) {
     const newRectangle = this.rectangle.clone();
     newRectangle.location = location.clone();
     this.collisionBox.shapeList[0] = newRectangle;
+    this.updateFatherSectionByMove();
   }
 }

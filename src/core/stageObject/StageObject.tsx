@@ -1,4 +1,5 @@
 import { Vector } from "../dataStruct/Vector";
+import { StageManager } from "../stage/stageManager/StageManager";
 import { CollisionBox } from "./collisionBox/collisionBox";
 
 /**
@@ -46,6 +47,16 @@ export abstract class Entity extends StageObject {
 
   changeDetails(details: string) {
     this.details = details;
+  }
+  /**
+   * 由于自身位置的移动，递归的更新所有父级Section的位置和大小
+   */
+  protected updateFatherSectionByMove() {
+    const fatherSections = StageManager.SectionOptions.getFatherSections(this);
+    for (const section of fatherSections) {
+      section.adjustLocationAndSize();
+      section.updateFatherSectionByMove();
+    }
   }
   /**
    * 是不是因为所在的Section被折叠而隐藏了

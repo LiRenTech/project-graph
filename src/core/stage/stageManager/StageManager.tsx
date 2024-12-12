@@ -491,10 +491,21 @@ export namespace StageManager {
     return dfs(node, []);
   }
 
-  /**
-   * 定义一系列Section集合操作函数
-   */
+  // region Section集合操作函数
   export namespace SectionOptions {
+    /**
+     * 获取一个实体的第一层父亲Section
+     * @param entity
+     */
+    export function getFatherSections(entity: Entity): Section[] {
+      const result = [];
+      for (const section of getSections()) {
+        if (section.children.includes(entity)) {
+          result.push(section);
+        }
+      }
+      return result;
+    }
     /**
      * 根据一个点，获取包含这个点的所有集合（深集合优先）
      * （小集合会覆盖大集合）
