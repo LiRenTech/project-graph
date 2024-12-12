@@ -12,6 +12,11 @@ import { ControllerClass } from "../ControllerClass";
  */
 export const ControllerRectangleSelect = new ControllerClass();
 
+/**
+ * 框选按下时在哪个section里按下
+ */
+let mouseDownSection: Section | null = null;
+
 ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
   const button = event.button;
   if (button !== 0) {
@@ -37,6 +42,15 @@ ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
   );
 
   // 现在的情况：在空白的地方按下左键
+
+  const sections =
+    StageManager.SectionOptions.getSectionsByInnerLocation(pressWorldLocation);
+  if (sections.length === 0) {
+    // 没有在任何section里按下
+    mouseDownSection = null;
+  } else {
+    mouseDownSection = sections[0];
+  }
 
   if (isHaveEntitySelected || isHaveEdgeSelected) {
     // A
@@ -88,6 +102,13 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
     Stage.selectStartLocation,
     Stage.selectEndLocation,
   );
+  // 框选框在 section框中的限制情况
+  if (mouseDownSection !== null) {
+    Stage.selectingRectangle = Rectangle.getIntersectionRectangle(
+      Stage.selectingRectangle,
+      mouseDownSection.rectangle.expandFromCenter(-10),
+    );
+  }
 
   if (
     Controller.pressingKeySet.has("shift") ||
@@ -134,24 +155,24 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
     // 框 > 其他Entity > Edge
 
     // 1 框
-    for (const section of StageManager.getSections()) {
-      if (section.isHiddenBySectionCollapse) {
-        continue;
-      }
-      if (
-        section.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
-      ) {
-        section.isSelected = true;
-        isHaveEntity = true;
-      }
-    }
+    // for (const section of StageManager.getSections()) {
+    //   if (section.isHiddenBySectionCollapse) {
+    //     continue;
+    //   }
+    //   if (
+    //     section.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
+    //   ) {
+    //     section.isSelected = true;
+    //     isHaveEntity = true;
+    //   }
+    // }
 
     // 2 其他Entity
     if (!isHaveEntity) {
       for (const otherEntities of StageManager.getEntities()) {
-        if (otherEntities instanceof Section) {
-          continue;
-        }
+        // if (otherEntities instanceof Section) {
+        //   continue;
+        // }
         if (otherEntities.isHiddenBySectionCollapse) {
           continue;
         }

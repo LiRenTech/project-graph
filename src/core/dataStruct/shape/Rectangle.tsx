@@ -69,12 +69,18 @@ export class Rectangle extends Shape {
    * @returns
    */
   public expandFromCenter(amount: number): Rectangle {
-    const halfAmount = amount / 2;
-    const newSize = this.size.add(new Vector(amount, amount));
-    const newLocation = this.center
-      .subtract(newSize.divide(2))
-      .subtract(new Vector(halfAmount, halfAmount));
-    return new Rectangle(newLocation, newSize);
+    // const halfAmount = amount / 2;
+    // const newSize = this.size.add(new Vector(amount, amount));
+    // const newLocation = this.center
+    //   .subtract(newSize.divide(2))
+    //   .subtract(new Vector(halfAmount, halfAmount));
+    // return new Rectangle(newLocation, newSize);
+    return Rectangle.fromEdges(
+      this.left - amount,
+      this.top - amount,
+      this.right + amount,
+      this.bottom + amount,
+    );
   }
 
   public clone(): Rectangle {
@@ -192,6 +198,20 @@ export class Rectangle extends Shape {
   }
   isCollideWithRectangle(rectangle: Rectangle): boolean {
     return this.isCollideWith(rectangle);
+  }
+
+  /**
+   * 已知两个矩形必定相交，返回重叠部分的矩形区域
+   */
+  static getIntersectionRectangle(rect1: Rectangle, rect2: Rectangle) {
+    // 计算重叠部分的左上角和右下角坐标
+    const left = Math.max(rect1.left, rect2.left);
+    const top = Math.max(rect1.top, rect2.top);
+    const right = Math.min(rect1.right, rect2.right);
+    const bottom = Math.min(rect1.bottom, rect2.bottom);
+
+    // 返回新的矩形对象表示重叠区域
+    return Rectangle.fromEdges(left, top, right, bottom);
   }
 
   /**

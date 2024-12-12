@@ -496,7 +496,7 @@ export namespace StageManager {
    */
   export namespace SectionOptions {
     /**
-     * 根据一个点，获取包含这个点的所有集合
+     * 根据一个点，获取包含这个点的所有集合（深集合优先）
      * （小集合会覆盖大集合）
      * 也就是 SectionA ∈ SectionB，
      * 点击发生在 SectionA 中时，会返回 [SectionA]，不含有 SectionB
@@ -521,7 +521,60 @@ export namespace StageManager {
      */
     function deeperSections(sections: Section[]): Section[] {
       // todo
-      return sections;
+      const outerSections: Section[] = []; // 要被排除的Section
+
+      for (const sectionI of sections) {
+        for (const sectionJ of sections) {
+          if (sectionI === sectionJ) {
+            continue;
+          }
+          if (
+            isEntityInSection(sectionI, sectionJ) &&
+            !isEntityInSection(sectionJ, sectionI)
+          ) {
+            // I 在 J 中，J不在I中，J大，排除J
+            outerSections.push(sectionJ);
+          }
+        }
+      }
+      const result: Section[] = [];
+      for (const section of sections) {
+        if (!outerSections.includes(section)) {
+          result.push(section);
+        }
+      }
+      return result;
+    }
+
+    /**
+     * 检测某个实体是否在某个集合内，跨级也算
+     * @param entity
+     * @param section
+     */
+    function isEntityInSection(entity: Entity, section: Section): boolean {
+      return _isEntityInSection(entity, section, 0);
+    }
+
+    function _isEntityInSection(
+      entity: Entity,
+      section: Section,
+      deep = 0,
+    ): boolean {
+      if (deep > 996) {
+        return false;
+      }
+      // 直接先检测一级
+      if (section.children.includes(entity)) {
+        return true;
+      } else {
+        // 涉及跨级检测
+        for (const child of section.children) {
+          if (child instanceof Section) {
+            return _isEntityInSection(entity, child, deep + 1);
+          }
+        }
+        return false;
+      }
     }
   }
 
