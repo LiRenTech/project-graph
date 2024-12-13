@@ -11,21 +11,21 @@ import { ControllerClass } from "../ControllerClass";
  */
 export const ControllerLayerMoving = new ControllerClass();
 
-ControllerLayerMoving.keydown = (event: KeyboardEvent) => {
-  if (event.key === "Alt") {
-    // 按下Alt键，开始移动节点层级
-    Stage.isLayerMovingMode = true;
-  }
-};
-ControllerLayerMoving.keyup = (event: KeyboardEvent) => {
-  if (event.key === "Alt") {
-    // 松开Alt键，结束移动节点层级
-    Stage.isLayerMovingMode = false;
-  }
-};
+// ControllerLayerMoving.keydown = (event: KeyboardEvent) => {
+//   if (event.key === "Alt") {
+//     // 按下Alt键，开始移动节点层级
+//     Stage.isLayerMovingMode = true;
+//   }
+// };
+// ControllerLayerMoving.keyup = (event: KeyboardEvent) => {
+//   if (event.key === "Alt") {
+//     // 松开Alt键，结束移动节点层级
+//     Stage.isLayerMovingMode = false;
+//   }
+// };
 
 ControllerLayerMoving.mousemove = (event: MouseEvent) => {
-  if (!Stage.isLayerMovingMode) {
+  if (!Controller.pressingKeySet.has("alt")) {
     return;
   }
   Controller.mouseLocation = Renderer.transformView2World(
@@ -34,7 +34,7 @@ ControllerLayerMoving.mousemove = (event: MouseEvent) => {
 };
 
 ControllerLayerMoving.mouseup = (event: MouseEvent) => {
-  if (!Stage.isLayerMovingMode) {
+  if (!Controller.pressingKeySet.has("alt")) {
     return;
   }
   const mouseLocation = Renderer.transformView2World(
@@ -42,7 +42,7 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
   );
   const sections =
     StageManager.SectionOptions.getSectionsByInnerLocation(mouseLocation);
-
+  console.log(sections);
   const selectedEntities = StageManager.getSelectedEntities();
   if (sections.length === 0) {
     // 代表想要走出当前section
@@ -55,6 +55,7 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
       StageManager.goOutSection([entity], currentFatherSections[0]);
     }
   } else {
+    console.log("go in section");
     for (const section of sections) {
       StageManager.goInSection(selectedEntities, section);
       for (const entity of selectedEntities) {

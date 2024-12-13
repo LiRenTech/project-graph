@@ -18,7 +18,8 @@ export const ControllerRectangleSelect = new ControllerClass();
 let mouseDownSection: Section | null = null;
 
 ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
-  if (Stage.isLayerMovingMode) {
+  if (Controller.pressingKeySet.has("alt")) {
+    // layer moving mode
     return;
   }
   const button = event.button;

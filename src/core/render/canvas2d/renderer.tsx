@@ -233,7 +233,7 @@ export namespace Renderer {
 
   /** 层级移动时，渲染移动指向线 */
   function rendererLayerMovingLine() {
-    if (!Stage.isLayerMovingMode) {
+    if (!Controller.pressingKeySet.has("alt")) {
       return;
     }
     const selectedEntities = StageManager.getSelectedEntities();
