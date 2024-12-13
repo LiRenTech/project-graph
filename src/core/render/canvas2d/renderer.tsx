@@ -248,6 +248,12 @@ export namespace Renderer {
         4 * Camera.currentScale,
       );
     }
+    RenderUtils.renderTextFromCenter(
+      "Jump To",
+      transformWorld2View(Controller.mouseLocation).subtract(new Vector(0, 30)),
+      16,
+      Color.Green,
+    );
   }
 
   /** 拖拽文件进入窗口时的提示效果 */

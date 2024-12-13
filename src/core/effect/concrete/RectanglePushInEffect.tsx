@@ -8,7 +8,7 @@ export class RectanglePushInEffect extends Effect {
   constructor(
     public smallRectangle: Rectangle,
     public bigRectangle: Rectangle,
-    public override timeProgress: ProgressNumber = new ProgressNumber(0, 10),
+    public override timeProgress: ProgressNumber = new ProgressNumber(0, 50),
   ) {
     super(timeProgress);
     this.subEffects = [
