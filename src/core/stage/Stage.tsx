@@ -380,7 +380,7 @@ export namespace Stage {
           sumResult += stringToNumber(parent.text);
         }
         const resultText = String(sumResult);
-        getNodeResult(node, resultText);
+        getNodeOneResult(node, resultText);
       } else if (node.text === "#MUL#") {
         const parents = getParentTextNodes(node);
         let productResult = 1;
@@ -388,7 +388,7 @@ export namespace Stage {
           productResult *= stringToNumber(parent.text);
         }
         const resultText = String(productResult);
-        getNodeResult(node, resultText);
+        getNodeOneResult(node, resultText);
       } else if (node.text === "#AND#") {
         const parents = getParentTextNodes(node);
         let result = 1;
@@ -396,7 +396,7 @@ export namespace Stage {
           result = result && stringToNumber(parent.text);
         }
         const resultText = String(result);
-        getNodeResult(node, resultText);
+        getNodeOneResult(node, resultText);
       } else if (node.text === "#OR#") {
         const parents = getParentTextNodes(node);
         let result = 0;
@@ -404,31 +404,31 @@ export namespace Stage {
           result = result || stringToNumber(parent.text);
         }
         const resultText = String(result);
-        getNodeResult(node, resultText);
+        getNodeOneResult(node, resultText);
       } else if (node.text === "#NOT#") {
         const parents = getParentTextNodes(node);
         if (parents.length === 1) {
           const parent = parents[0];
           const resultText = String(stringToNumber(parent.text) === 0 ? 1 : 0);
-          getNodeResult(node, resultText);
+          getNodeOneResult(node, resultText);
         }
       } else if (node.text === "#RANDOM#") {
         const randomNumber = Math.random();
         const resultText = String(randomNumber);
-        getNodeResult(node, resultText);
+        getNodeOneResult(node, resultText);
       } else if (node.text === "#FLOOR#") {
         const parents = getParentTextNodes(node);
         if (parents.length === 1) {
           const parent = parents[0];
           const resultText = String(Math.floor(stringToNumber(parent.text)));
-          getNodeResult(node, resultText);
+          getNodeOneResult(node, resultText);
         }
       } else if (node.text === "#CEIL#") {
         const parents = getParentTextNodes(node);
         if (parents.length === 1) {
           const parent = parents[0];
           const resultText = String(Math.ceil(stringToNumber(parent.text)));
-          getNodeResult(node, resultText);
+          getNodeOneResult(node, resultText);
         }
       } else if (node.text === "#MOD#") {
         const parents = getParentTextNodes(node);
@@ -438,7 +438,7 @@ export namespace Stage {
           const resultText = String(
             stringToNumber(parent1.text) % stringToNumber(parent2.text),
           );
-          getNodeResult(node, resultText);
+          getNodeOneResult(node, resultText);
         }
       } else if (node.text === "#SUB#") {
         const parents = getParentTextNodes(node);
@@ -448,7 +448,7 @@ export namespace Stage {
           const resultText = String(
             stringToNumber(parent1.text) - stringToNumber(parent2.text),
           );
-          getNodeResult(node, resultText);
+          getNodeOneResult(node, resultText);
         }
       } else if (node.text === "#DIV#") {
         const parents = getParentTextNodes(node);
@@ -458,50 +458,50 @@ export namespace Stage {
           const resultText = String(
             stringToNumber(parent1.text) / stringToNumber(parent2.text),
           );
-          getNodeResult(node, resultText);
+          getNodeOneResult(node, resultText);
         }
       } else if (node.text === "#ABS#") {
         const parents = getParentTextNodes(node);
         if (parents.length === 1) {
           const parent = parents[0];
           const resultText = String(Math.abs(stringToNumber(parent.text)));
-          getNodeResult(node, resultText);
+          getNodeOneResult(node, resultText);
         }
       } else if (node.text === "#COPY#") {
         const parents = getParentTextNodes(node);
         if (parents.length === 1) {
           const parent = parents[0];
           const resultText = parent.text;
-          getNodeResult(node, resultText);
+          getNodeOneResult(node, resultText);
         }
       } else if (node.text === "#LEN#") {
         const parents = getParentTextNodes(node);
         if (parents.length === 1) {
           const parent = parents[0];
           const resultText = String(parent.text.length);
-          getNodeResult(node, resultText);
+          getNodeOneResult(node, resultText);
         }
       } else if (node.text === "#UPPER#") {
         const parents = getParentTextNodes(node);
         if (parents.length === 1) {
           const parent = parents[0];
           const resultText = parent.text.toUpperCase();
-          getNodeResult(node, resultText);
+          getNodeOneResult(node, resultText);
         }
       } else if (node.text === "#LOWER#") {
         const parents = getParentTextNodes(node);
         if (parents.length === 1) {
           const parent = parents[0];
           const resultText = parent.text.toLowerCase();
-          getNodeResult(node, resultText);
+          getNodeOneResult(node, resultText);
         }
       } else if (node.text === "#SPLIT#") {
         const parents = getParentTextNodes(node);
         if (parents.length === 2) {
           const parent1 = parents[0];
           const parent2 = parents[1];
-          const resultText = parent1.text.split(parent2.text)[0];
-          getNodeResult(node, resultText);
+          const resultTextList = parent1.text.split(parent2.text);
+          getMultiResult(node, resultTextList);
         }
       } else if (node.text === "#REPLACE#") {
         const parents = getParentTextNodes(node);
@@ -510,7 +510,7 @@ export namespace Stage {
           const parent2 = parents[1];
           const parent3 = parents[2];
           const resultText = parent1.text.replace(parent2.text, parent3.text);
-          getNodeResult(node, resultText);
+          getNodeOneResult(node, resultText);
         }
       } else if (node.text === "#CONNECT#") {
         const parents = getParentTextNodes(node);
@@ -518,7 +518,7 @@ export namespace Stage {
         for (const parent of parents) {
           result += parent.text;
         }
-        getNodeResult(node, result);
+        getNodeOneResult(node, result);
       } else if (node.text === "#MAX#") {
         const parents = getParentTextNodes(node);
         let maxResult = -Infinity;
@@ -529,7 +529,7 @@ export namespace Stage {
           }
         }
         const resultText = String(maxResult);
-        getNodeResult(node, resultText);
+        getNodeOneResult(node, resultText);
       } else if (node.text === "#MIN#") {
         const parents = getParentTextNodes(node);
         let minResult = Infinity;
@@ -539,12 +539,12 @@ export namespace Stage {
             minResult = parentNumber;
           }
           const resultText = String(minResult);
-          getNodeResult(node, resultText);
+          getNodeOneResult(node, resultText);
         }
       } else if (node.text === "#COUNT#") {
         const parents = getParentTextNodes(node);
         const resultText = String(parents.length);
-        getNodeResult(node, resultText);
+        getNodeOneResult(node, resultText);
       }
     }
   }
@@ -561,7 +561,8 @@ export namespace Stage {
     });
     return parents;
   }
-  function getNodeResult(node: TextNode, resultText: string) {
+
+  function getNodeOneResult(node: TextNode, resultText: string) {
     const childrenList = StageManager.nodeChildrenArray(node).filter(
       (node) => node instanceof TextNode,
     );
@@ -583,6 +584,44 @@ export namespace Stage {
       });
       StageManager.addTextNode(newNode);
       StageManager.connectEntity(node, newNode);
+    }
+  }
+
+  function getMultiResult(node: TextNode, resultTextList: string[]) {
+    // 先把子节点数量凑够
+    let childrenList = StageManager.nodeChildrenArray(node).filter(
+      (node) => node instanceof TextNode,
+    );
+    if (childrenList.length < resultTextList.length) {
+      // 子节点数量不够，需要新建节点
+      const needCount = resultTextList.length - childrenList.length;
+      for (let j = 0; j < needCount; j++) {
+        const newNode = new TextNode({
+          uuid: uuidv4(),
+          text: "",
+          location: [
+            node.collisionBox.getRectangle().location.x,
+            node.collisionBox.getRectangle().location.y + 100 + j * 100,
+          ],
+          size: [100, 100],
+          color: [0, 0, 0, 0],
+        });
+        StageManager.addTextNode(newNode);
+        StageManager.connectEntity(node, newNode);
+      }
+    }
+    // 子节点数量够了，直接修改，顺序是从上到下
+    childrenList = StageManager.nodeChildrenArray(node)
+      .filter((node) => node instanceof TextNode)
+      .sort(
+        (node1, node2) =>
+          node1.collisionBox.getRectangle().location.y -
+          node2.collisionBox.getRectangle().location.y,
+      );
+    // 开始修改
+    let i = -1;
+    for (const child of childrenList) {
+      child.rename(resultTextList[++i]);
     }
   }
 
