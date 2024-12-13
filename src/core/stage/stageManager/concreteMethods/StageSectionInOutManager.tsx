@@ -23,9 +23,15 @@ export namespace StageSectionInOutManager {
   }
 
   export function goOutSection(entities: Entity[], section: Section) {
-    const newChildren = section.children.filter(
-      (child) => !entities.includes(child),
-    );
+    // const newChildren = section.children.filter(
+    //   (child) => !entities.includes(child),
+    // );
+    const newChildren = [];
+    for (const child of section.children) {
+      if (!entities.includes(child)) {
+        newChildren.push(child);
+      }
+    }
     section.children = newChildren;
     StageManager.updateReferences();
   }
