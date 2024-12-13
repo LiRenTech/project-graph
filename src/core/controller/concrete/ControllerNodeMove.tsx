@@ -1,9 +1,7 @@
 import { Vector } from "../../dataStruct/Vector";
-import { RectanglePushInEffect } from "../../effect/concrete/RectanglePushInEffect";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
-import { Entity } from "../../stageObject/StageObject";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -67,19 +65,6 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
     StageManager.moveConnectPoints(diffLocation);
     StageManager.moveImageNodes(diffLocation);
 
-    if (Stage.hoverSections.length > 0) {
-      for (const section of Stage.hoverSections) {
-        for (const node of StageManager.getSelectedEntities()) {
-          Stage.effects.push(
-            new RectanglePushInEffect(
-              node.collisionBox.getRectangle(),
-              section.collisionBox.getRectangle(),
-            ),
-          );
-        }
-      }
-    }
-
     ControllerNodeMove.lastMoveLocation = worldLocation.clone();
   }
 };
@@ -89,11 +74,6 @@ ControllerNodeMove.mouseup = (event: MouseEvent) => {
     return;
   }
   if (Controller.isMovingEntity) {
-    // 如果是在SectionHover状态下松开鼠标的，将选中的东西放入Section
-    const entityList: Entity[] = StageManager.getSelectedEntities();
-    for (const section of Stage.hoverSections) {
-      StageManager.goInSection(entityList, section);
-    }
     StageManager.moveEntityFinished();
   }
   Controller.isMovingEntity = false;
