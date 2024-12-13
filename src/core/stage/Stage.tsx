@@ -106,6 +106,14 @@ export namespace Stage {
    */
   // eslint-disable-next-line prefer-const
   export let isCutting = false;
+
+  /**
+   * 是否正在进行层级移动
+   * 即从选中一些实体，改变他们从属的Section
+   */
+  // eslint-disable-next-line prefer-const
+  export let isLayerMovingMode = false;
+
   // eslint-disable-next-line prefer-const
   export let cuttingLine: Line | null = null;
   /**

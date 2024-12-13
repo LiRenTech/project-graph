@@ -18,6 +18,9 @@ export const ControllerRectangleSelect = new ControllerClass();
 let mouseDownSection: Section | null = null;
 
 ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
+  if (Stage.isLayerMovingMode) {
+    return;
+  }
   const button = event.button;
   if (button !== 0) {
     return;

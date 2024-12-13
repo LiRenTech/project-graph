@@ -38,7 +38,7 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
 };
 
 ControllerNodeMove.mousemove = (event: MouseEvent) => {
-  if (Stage.isSelecting || Stage.isCutting) {
+  if (Stage.isSelecting || Stage.isCutting || Stage.isLayerMovingMode) {
     return;
   }
   if (!Controller.isMovingEntity) {

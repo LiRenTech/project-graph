@@ -119,6 +119,7 @@ export namespace Renderer {
     renderSelectingRectangle();
     renderCuttingLine();
     renderConnectingLine();
+    rendererLayerMovingLine();
     renderDraggingFileTips();
     start = performance.now();
     renderKeyboardOnly();
@@ -227,6 +228,25 @@ export namespace Renderer {
           EdgeRenderer.renderVirtualConfirmedEdge(node, connectTargetNode);
         }
       }
+    }
+  }
+
+  /** 层级移动时，渲染移动指向线 */
+  function rendererLayerMovingLine() {
+    if (!Stage.isLayerMovingMode) {
+      return;
+    }
+    const selectedEntities = StageManager.getSelectedEntities();
+    for (const selectedEntity of selectedEntities) {
+      const startLocation = selectedEntity.collisionBox.getRectangle().center;
+      const endLocation = Controller.mouseLocation;
+      RenderUtils.renderGradientLine(
+        transformWorld2View(startLocation),
+        transformWorld2View(endLocation),
+        Color.Transparent,
+        Color.Green,
+        4 * Camera.currentScale,
+      );
     }
   }
 

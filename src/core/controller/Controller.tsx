@@ -11,6 +11,7 @@ import { ControllerDragFile } from "./concrete/ControllerDragFile";
 import { ControllerDrawing } from "./concrete/ControllerDrawing";
 import { ControllerEdgeEdit } from "./concrete/ControllerEdgeEdit";
 import { ControllerEntityCreate } from "./concrete/ControllerEntityCreate";
+import { ControllerLayerMoving } from "./concrete/ControllerEntityLayerMoving";
 import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
 import { ControllerNodeConnection } from "./concrete/ControllerNodeConnection";
 import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
@@ -85,6 +86,11 @@ export namespace Controller {
    */
   // eslint-disable-next-line prefer-const
   export let lastMoveLocation = Vector.getZero();
+  /**
+   * 当前的鼠标的位置
+   */
+  // eslint-disable-next-line prefer-const
+  export let mouseLocation = Vector.getZero();
 
   /**
    * 有时需要锁定相机，比如 编辑节点时
@@ -150,6 +156,7 @@ export namespace Controller {
     ControllerKeyboardOnly.init();
     ControllerCopy.init();
     ControllerSectionEdit.init();
+    ControllerLayerMoving.init();
     //
   }
 
@@ -312,5 +319,6 @@ export namespace Controller {
     ControllerKeyboardOnly.destroy();
     ControllerCopy.destroy();
     ControllerSectionEdit.destroy();
+    ControllerLayerMoving.destroy();
   }
 }
