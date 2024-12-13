@@ -35,7 +35,7 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
 
   if (key === "tab") {
     if (StageManager.getTextNodes().length === 0) {
-      StageManager.addTextNodeByClick(Vector.getZero());
+      StageManager.addTextNodeByClick(Vector.getZero(), []);
       StageManager.getTextNodes()[0].isSelected = true;
     } else {
       // 开始生长节点
@@ -63,7 +63,10 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
         if (Stage.isVirtualNewNodeShow) {
           // 将虚拟变成现实
           const location = Stage.keyOnlyVirtualNewLocation;
-          const newNodeUUID = await StageManager.addTextNodeByClick(location);
+          const newNodeUUID = await StageManager.addTextNodeByClick(
+            location,
+            [],
+          );
 
           const newNode = StageManager.getTextNodeByUUID(newNodeUUID);
           if (!newNode) return;
