@@ -889,13 +889,13 @@ export namespace StageManager {
     StageSectionInOutManager.goOutSection(entities, section);
     StageHistoryManager.recordStep();
   }
-  /** 将所有选中的Section展开 */
+  /** 将所有选中的Section折叠起来 */
   export function packSelectedSection() {
     StageSectionPackManager.packSection();
     StageHistoryManager.recordStep();
   }
 
-  /** 将所有选中的Section收起 */
+  /** 将所有选中的Section展开 */
   export function unpackSelectedSection() {
     StageSectionPackManager.unpackSection();
     StageHistoryManager.recordStep();

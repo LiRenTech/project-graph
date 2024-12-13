@@ -518,6 +518,14 @@ export default function AppMenu({
         <Col icon={<TestTube2 />} onClick={() => {}}>
           控制台输出
         </Col>
+        <Col
+          icon={<TestTube2 />}
+          onClick={() => {
+            StageManager.destroy();
+          }}
+        >
+          废档了，清空
+        </Col>
       </Row>
     </div>
   );
