@@ -163,7 +163,7 @@ jobs:
           storeFile=upload.jks
           EOF
           # create upload.jks
-          echo "${{ secrets.ANDROID_RELEASE_KEYSTORE }}" | base64 --decode > upload.jks
+          echo "${{ secrets.ANDROID_RELEASE_KEYSTORE }}" | base64 --decode > app/upload.jks
 
       - name: build
         run: pnpm tauri android build -v
