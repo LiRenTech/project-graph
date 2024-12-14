@@ -31,6 +31,7 @@ jobs:
 
   # 开始构建并发布 Nightly Release
   publish-tauri:
+    needs: create-release
     permissions:
       contents: write
     strategy:
@@ -97,7 +98,7 @@ jobs:
           $jsonObject.version = "0.0.0-nightly.${{ github.sha }}"
           $jsonObject | ConvertTo-Json -Depth 10 | Set-Content -Path "src-tauri/tauri.conf.json"
 
-      - uses: tauri-apps/tauri-action@v0
+      - uses: tauri-apps/tauri-action@dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
@@ -108,6 +109,7 @@ jobs:
           args: ${{ matrix.args }}
 
   publish-tauri-android:
+    needs: create-release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -136,7 +138,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
         with:
           # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
-          targets: "aarch64-linux-android,x86_64-linux-android"
+          targets: "armv7-linux-androideabi,i686-linux-android,x86_64-linux-android"
 
       - name: Rust cache
         uses: swatinem/rust-cache@v2
