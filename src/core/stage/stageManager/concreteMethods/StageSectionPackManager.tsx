@@ -45,4 +45,17 @@ export namespace StageSectionPackManager {
     }
     StageManager.updateReferences();
   }
+
+  export function switchCollapse(): void {
+    for (const section of StageManager.getSections()) {
+      if (!section.isSelected) {
+        continue;
+      }
+      if (section.isCollapsed) {
+        unpackSection();
+      } else {
+        packSection();
+      }
+    }
+  }
 }

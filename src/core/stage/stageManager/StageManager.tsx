@@ -901,6 +901,14 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
+  /**
+   * 切换选中的Section的折叠状态
+   */
+  export function sectionSwitchCollapse() {
+    StageSectionPackManager.switchCollapse();
+    StageHistoryManager.recordStep();
+  }
+
   export function calculateSelectedNode() {
     StageNodeTextTransfer.calculateAllSelected();
     StageHistoryManager.recordStep();

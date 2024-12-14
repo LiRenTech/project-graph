@@ -22,7 +22,6 @@ import {
   Globe,
   LayoutDashboard,
   Package,
-  PackageOpen,
   PaintBucket,
   Repeat,
   SaveAll,
@@ -42,6 +41,7 @@ import { StageDumper } from "../core/stage/StageDumper";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { useDialog } from "../utils/dialog";
 import { usePopupDialog } from "../utils/popupDialog";
+import { Controller } from "../core/controller/Controller";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -240,8 +240,25 @@ export default function Toolbar({ className = "" }: { className?: string }) {
     const intervalId = setInterval(() => {
       update();
     }, 100);
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // 绑定一些快捷键
+      if (Controller.pressingKeySet.has("control") && event.key === "g") {
+        onPackNodeToSection();
+      }
+      if (Controller.pressingKeySet.has("control") && event.key === "t") {
+        StageManager.sectionSwitchCollapse();
+        const selectedEdges = StageManager.getEdges().filter(
+          (edge) => edge.isSelected,
+        );
+        StageManager.reverseEdges(selectedEdges);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
       clearInterval(intervalId);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
@@ -336,24 +353,17 @@ export default function Toolbar({ className = "" }: { className?: string }) {
         />
       )}
       <ToolbarItem
-        description="将选中节点打包Section（Section目前bug较多，还在开发中，暂时不推荐使用）"
+        description="将选中节点打包Section（Ctrl+G）（Section目前bug较多，还在开发中，暂时不推荐使用）"
         icon={<Square />}
         handleFunction={() => {
           onPackNodeToSection();
         }}
       />
       <ToolbarItem
-        description="将选中的Section折叠起来"
+        description="切换Section的折叠状态（Ctrl+T）"
         icon={<Package />}
         handleFunction={() => {
-          StageManager.packSelectedSection();
-        }}
-      />
-      <ToolbarItem
-        description="将选中的Section展开"
-        icon={<PackageOpen />}
-        handleFunction={() => {
-          StageManager.unpackSelectedSection();
+          StageManager.sectionSwitchCollapse();
         }}
       />
       {/* {isHaveSelectedNode && (
