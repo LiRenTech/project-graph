@@ -4,7 +4,7 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 import i18next from "i18next";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
-import { RouterProvider, createMemoryRouter } from "react-router-dom";
+import { RouterProvider, createHashRouter } from "react-router-dom";
 import { PromptManager } from "./core/ai/PromptManager";
 import { TextRiseEffect } from "./core/effect/concrete/TextRiseEffect";
 import { LastLaunch } from "./core/LastLaunch";
@@ -23,7 +23,7 @@ import "./index.pcss";
 import { DialogProvider } from "./utils/dialog";
 import { PopupDialogProvider } from "./utils/popupDialog";
 
-const router = createMemoryRouter(routes);
+const router = createHashRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
 const el = document.getElementById("root")!;
 
