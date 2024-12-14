@@ -25,7 +25,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - run: gh release create nightly --title "Nightly Build" --notes "如果下面没有可下载的文件，说明构建失败，请联系开发者" --prerelease
+      - run: gh release create nightly --title "Nightly Build" --prerelease
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
