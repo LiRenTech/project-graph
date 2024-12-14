@@ -19,6 +19,7 @@ jobs:
 
   # 创建一个release
   create-release:
+    needs: delete-release
     runs-on: ubuntu-latest
     permissions:
       contents: write
