@@ -665,6 +665,10 @@ export namespace StageManager {
     return res;
   }
 
+  export function moveEntities(delta: Vector) {
+    StageEntityMoveManager.moveEntities(delta); // 连续过程，不记录历史，只在结束时记录
+  }
+
   /**
    * 拖动所有选中的节点一起移动
    * @param delta

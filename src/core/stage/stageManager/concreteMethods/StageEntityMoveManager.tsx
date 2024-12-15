@@ -40,7 +40,13 @@ export namespace StageEntityMoveManager {
       }
     }
   }
-
+  export function moveEntities(delta: Vector) {
+    for (const node of StageManager.getEntities()) {
+      if (node.isSelected) {
+        moveEntityUtils(node, delta);
+      }
+    }
+  }
   /**
    * 拖动所有选中的节点一起移动
    * @param delta

@@ -28,9 +28,11 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
   const mouseLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  const sections =
+
+  // 即将跳入的sections区域
+  const targetSections =
     StageManager.SectionOptions.getSectionsByInnerLocation(mouseLocation);
-  console.log(sections);
+  console.log(targetSections);
   const selectedEntities = StageManager.getSelectedEntities();
   // 移动位置
 
@@ -43,10 +45,10 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
     Rectangle.getBoundingRectangle(rectangles).center,
   );
   // 3 移动所有选中的实体
-  StageManager.moveNodes(delta);
+  StageManager.moveEntities(delta);
 
   // 改变层级
-  if (sections.length === 0) {
+  if (targetSections.length === 0) {
     // 代表想要走出当前section
     for (const entity of selectedEntities) {
       const currentFatherSections =
@@ -57,7 +59,7 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
       StageManager.goOutSection([entity], currentFatherSections[0]);
     }
   } else {
-    for (const section of sections) {
+    for (const section of targetSections) {
       StageManager.goInSection(selectedEntities, section);
       // 特效
       for (const entity of selectedEntities) {
