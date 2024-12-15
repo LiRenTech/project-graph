@@ -19,7 +19,30 @@ import { Entity } from "../../../stageObject/StageObject";
  * 处理节点相关的绘制
  */
 export namespace EntityRenderer {
-  export function renderSection(section: Section) {
+  /**
+   * 父渲染函数
+   * @param entity
+   */
+  export function renderEntity(entity: Entity, viewRectangle: Rectangle) {
+    // 视线之外不画
+    if (!viewRectangle.isCollideWith(entity.collisionBox.getRectangle())) {
+      return;
+    }
+    // section 折叠不画
+    if (entity.isHiddenBySectionCollapse) {
+      return;
+    }
+    if (entity instanceof Section) {
+      renderSection(entity);
+    } else if (entity instanceof TextNode) {
+      renderNode(entity);
+    } else if (entity instanceof ConnectPoint) {
+      renderConnectPoint(entity);
+    } else if (entity instanceof ImageNode) {
+      renderImageNode(entity);
+    }
+  }
+  function renderSection(section: Section) {
     if (section.isHiddenBySectionCollapse) {
       return;
     }
@@ -115,10 +138,7 @@ export namespace EntityRenderer {
     renderEntityDetails(section);
   }
 
-  export function renderNode(node: TextNode) {
-    if (node.isHiddenBySectionCollapse) {
-      return;
-    }
+  function renderNode(node: TextNode) {
     // 节点身体矩形
     RenderUtils.renderRect(
       new Rectangle(
@@ -223,7 +243,7 @@ export namespace EntityRenderer {
     }
   }
 
-  export function renderConnectPoint(connectPoint: ConnectPoint) {
+  function renderConnectPoint(connectPoint: ConnectPoint) {
     if (connectPoint.isSelected) {
       // 在外面增加一个框
       CollisionBoxRenderer.render(
@@ -241,7 +261,7 @@ export namespace EntityRenderer {
     renderEntityDetails(connectPoint);
   }
 
-  export function renderImageNode(imageNode: ImageNode) {
+  function renderImageNode(imageNode: ImageNode) {
     if (imageNode.isSelected) {
       // 在外面增加一个框
       CollisionBoxRenderer.render(

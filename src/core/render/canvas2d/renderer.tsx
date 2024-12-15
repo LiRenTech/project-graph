@@ -368,33 +368,9 @@ export namespace Renderer {
 
   function renderEntities(viewRectangle: Rectangle) {
     renderedNodes = 0;
-    for (const node of StageManager.getTextNodes()) {
-      // 过滤掉超出视野的节点
-      if (!viewRectangle.isCollideWith(node.rectangle)) {
-        continue;
-      }
-      EntityRenderer.renderNode(node);
+    for (const entity of StageManager.getEntities()) {
+      EntityRenderer.renderEntity(entity, viewRectangle);
       renderedNodes++;
-    }
-    for (const section of StageManager.getSections()) {
-      if (!viewRectangle.isCollideWith(section.rectangle)) {
-        continue;
-      }
-      EntityRenderer.renderSection(section);
-    }
-    for (const connectPoint of StageManager.getConnectPoints()) {
-      if (
-        !viewRectangle.isCollideWith(connectPoint.collisionBox.getRectangle())
-      ) {
-        continue;
-      }
-      EntityRenderer.renderConnectPoint(connectPoint);
-    }
-    for (const imageNode of StageManager.getImageNodes()) {
-      if (!viewRectangle.isCollideWith(imageNode.rectangle)) {
-        continue;
-      }
-      EntityRenderer.renderImageNode(imageNode);
     }
   }
 
