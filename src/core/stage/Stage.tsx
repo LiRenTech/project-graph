@@ -4,16 +4,13 @@ import { Serialized } from "../../types/node";
 import { PathString } from "../../utils/pathString";
 import { Controller } from "../controller/Controller";
 import { ControllerGamepad } from "../controller/ControllerGamepad";
-import { Color } from "../dataStruct/Color";
 import { ProgressNumber } from "../dataStruct/ProgressNumber";
 import { Line } from "../dataStruct/shape/Line";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
-import { LineCuttingEffect } from "../effect/concrete/LineCuttingEffect";
 import { PointDashEffect } from "../effect/concrete/PointDashEffect";
 import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
 import { Effect } from "../effect/effect";
-import { Renderer } from "../render/canvas2d/renderer";
 import { Settings } from "../Settings";
 import { Edge } from "../stageObject/association/Edge";
 import { Section } from "../stageObject/entity/Section";
@@ -296,17 +293,19 @@ export namespace Stage {
         if (StageManager.getTextNodes().length === 0) {
           // 没有节点，不保存
         } else {
-          const rect = Renderer.getCoverWorldRectangle();
+          // 不要顶部白线提醒了。——joe以为是bug
 
-          Stage.effects.push(
-            new LineCuttingEffect(
-              new ProgressNumber(0, 10),
-              rect.leftTop,
-              rect.rightTop,
-              Color.Black,
-              Color.Black,
-            ),
-          );
+          // const rect = Renderer.getCoverWorldRectangle();
+
+          // Stage.effects.push(
+          //   new LineCuttingEffect(
+          //     new ProgressNumber(0, 10),
+          //     rect.leftTop,
+          //     rect.rightTop,
+          //     Color.Black,
+          //     Color.Black,
+          //   ),
+          // );
           StageSaveManager.saveHandleWithoutCurrentPath(
             StageDumper.dump(),
             () => {},
