@@ -55,7 +55,9 @@ ControllerSectionEdit.keydown = (event: KeyboardEvent) => {
     const user_input = prompt("请输入线上的文字", "");
     if (user_input) {
       for (const section of StageManager.getSections()) {
-        section.rename(user_input);
+        if (section.isSelected) {
+          section.rename(user_input);
+        }
       }
     }
   }
