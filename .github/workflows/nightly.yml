@@ -103,6 +103,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
           LR_ARK_API_KEY: ${{ secrets.ENV_ARK_API_KEY }}
+          LR_CF_API_KEY: ${{ secrets.LR_CF_API_KEY }}
         with:
           # upload to release
           tagName: "nightly"
@@ -171,6 +172,7 @@ jobs:
           NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.11902837
           LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
           LR_ARK_API_KEY: ${{ secrets.ENV_ARK_API_KEY }}
+          LR_CF_API_KEY: ${{ secrets.LR_CF_API_KEY }}
 
       - name: rename apk file
         run: |
