@@ -112,6 +112,8 @@ jobs:
   publish-tauri-android:
     needs: create-release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 

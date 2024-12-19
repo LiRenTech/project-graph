@@ -5,7 +5,7 @@ on:
     inputs:
       # 必填版本号（x.x.x）
       version:
-        description: "The version number to release"
+        description: "版本号（x.x.x）"
         required: true
 
 jobs:
@@ -97,3 +97,80 @@ jobs:
         with:
           tagName: "v${{ github.event.inputs.version }}"
           args: ${{ matrix.args }}
+
+  publish-tauri-android:
+    needs: create-release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install NDK
+        run: sdkmanager "ndk;27.0.11902837"
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: install pnpm
+        run: npm install -g pnpm
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
+        with:
+          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
+          targets: "armv7-linux-androideabi,i686-linux-android,x86_64-linux-android,aarch64-linux-android"
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
+
+      - name: install frontend dependencies
+        # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
+        run: pnpm install # change this to npm or pnpm depending on which one you use.
+
+      - name: edit version
+        run: |
+          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"${{ github.event.inputs.version }}\"/" src-tauri/tauri.conf.json
+
+      - name: setup sign
+        run: |
+          cd src-tauri/gen/android
+          # create keystore.properties
+          cat > keystore.properties <<EOF
+          password=${{ secrets.ANDROID_RELEASE_PASSWORD }}
+          keyAlias=upload
+          storeFile=upload.jks
+          EOF
+          # create upload.jks
+          echo "${{ secrets.ANDROID_RELEASE_KEYSTORE }}" | base64 --decode > app/upload.jks
+
+      - name: build
+        run: pnpm tauri android build -v
+        env:
+          NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.11902837
+          LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
+          LR_ARK_API_KEY: ${{ secrets.ENV_ARK_API_KEY }}
+          LR_CF_API_KEY: ${{ secrets.LR_CF_API_KEY }}
+
+      - name: rename apk file
+        run: |
+          cd src-tauri/gen/android/app/build/outputs/apk/universal/release
+          mv app-universal-release.apk Project.Graph_${{ github.event.inputs.version }}_universal-signed.apk
+
+      - name: upload
+        run: gh release upload nightly src-tauri/gen/android/app/build/outputs/apk/universal/release/Project.Graph_${{ github.event.inputs.version }}_universal-signed.apk --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
