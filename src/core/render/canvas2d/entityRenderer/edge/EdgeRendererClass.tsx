@@ -39,12 +39,19 @@ export abstract class EdgeRendererClass {
    */
   public abstract renderNormalState(edge: Edge): void;
 
+  /**
+   * 绘制双向线的偏移状态
+   */
   public abstract renderShiftingState(edge: Edge): void;
 
   /**
    * 绘制自环状态
    */
   public abstract renderCycleState(edge: Edge): void;
+
+  public abstract getNormalStageSvg(edge: Edge): React.ReactNode;
+  public abstract getShiftingStageSvg(edge: Edge): React.ReactNode;
+  public abstract getCycleStageSvg(edge: Edge): React.ReactNode;
 
   /**
    * 绘制鼠标连线移动时的虚拟连线效果

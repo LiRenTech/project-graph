@@ -14,6 +14,7 @@ import { EdgeRendererClass } from "../EdgeRendererClass";
 import { WorldRenderUtils } from "../../../WorldRenderUtils";
 import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 import { Line } from "../../../../../dataStruct/shape/Line";
+import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
 
 export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   getCuttingEffects(edge: Edge): Effect[] {
@@ -138,7 +139,89 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       EdgeRenderer.renderArrowHead(endPoint, direction, size);
     }
   }
-
+  public getNormalStageSvg(edge: Edge): React.ReactNode {
+    let lineBody = <></>;
+    let textNode = <></>;
+    if (edge.text.trim() === "") {
+      // 没有文字的边
+      lineBody = (
+        <line
+          key={edge.source.uuid + "-" + edge.target.uuid}
+          x1={edge.bodyLine.start.x}
+          y1={edge.bodyLine.start.y}
+          x2={edge.bodyLine.end.x}
+          y2={edge.bodyLine.end.y}
+          stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
+          strokeWidth={2}
+        />
+      );
+    } else {
+      // 有文字的边
+      const midPoint = edge.bodyLine.midPoint();
+      const startHalf = new Line(edge.bodyLine.start, midPoint);
+      const endHalf = new Line(midPoint, edge.bodyLine.end);
+      textNode = (
+        <text
+          x={midPoint.x}
+          y={midPoint.y}
+          key={edge.uuid + "-text"}
+          fill={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
+          fontSize={Renderer.FONT_SIZE}
+          textAnchor="middle"
+          fontFamily="MiSans"
+        >
+          {edge.text}
+        </text>
+      );
+      lineBody = (
+        <>
+          <line
+            key={edge.source.uuid + "-" + edge.target.uuid + "1"}
+            x1={edge.bodyLine.start.x}
+            y1={edge.bodyLine.start.y}
+            x2={startHalf.end.x}
+            y2={startHalf.end.y}
+            stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
+            strokeWidth={2}
+          />
+          <line
+            key={edge.source.uuid + "-" + edge.target.uuid + "2"}
+            x1={endHalf.end.x}
+            y1={endHalf.end.y}
+            x2={edge.bodyLine.end.x}
+            y2={edge.bodyLine.end.y}
+            stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
+            strokeWidth={2}
+          />
+        </>
+      );
+    }
+    // 加箭头
+    const arrowHead = EdgeRenderer.generateArrowHeadSvg(
+      edge.bodyLine.end.clone(),
+      edge.target.collisionBox
+        .getRectangle()
+        .getCenter()
+        .subtract(edge.source.collisionBox.getRectangle().getCenter())
+        .normalize(),
+      15,
+    );
+    return (
+      <>
+        {lineBody}
+        {textNode}
+        {arrowHead}
+      </>
+    );
+  }
+  public getCycleStageSvg(edge: Edge): React.ReactNode {
+    console.log(edge);
+    return <></>;
+  }
+  public getShiftingStageSvg(edge: Edge): React.ReactNode {
+    console.log(edge);
+    return <></>;
+  }
   public renderVirtualEdge(
     startNode: ConnectableEntity,
     mouseLocation: Vector,

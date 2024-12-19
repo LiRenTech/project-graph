@@ -5,6 +5,7 @@ import { StageManager } from "./stageManager/StageManager";
 import ReactDOMServer from "react-dom/server";
 import { Edge } from "../stageObject/association/Edge";
 import { StageStyleManager } from "../stageStyle/StageStyleManager";
+import { EdgeRenderer } from "../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 
 /**
  * 将舞台当前内容导出为SVG
@@ -42,17 +43,7 @@ export namespace StageDumperSvg {
     );
   }
   export function dumpEdge(edge: Edge): React.ReactNode {
-    return (
-      <line
-        key={edge.source.uuid + "-" + edge.target.uuid}
-        x1={edge.bodyLine.start.x}
-        y1={edge.bodyLine.start.y}
-        x2={edge.bodyLine.end.x}
-        y2={edge.bodyLine.end.y}
-        stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
-        strokeWidth={2}
-      />
-    );
+    return EdgeRenderer.getEdgeSvg(edge);
   }
 
   export function dumpStage(): React.ReactNode {

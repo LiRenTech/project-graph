@@ -87,6 +87,26 @@ export namespace EdgeRenderer {
     }
   }
 
+  export function getEdgeSvg(edge: Edge): React.ReactNode {
+    if (
+      edge.source.isHiddenBySectionCollapse &&
+      edge.target.isHiddenBySectionCollapse
+    ) {
+      console.log("隐藏了");
+      return <></>;
+    }
+
+    if (edge.source.uuid == edge.target.uuid) {
+      return currentRenderer.getCycleStageSvg(edge);
+    } else {
+      if (edge.isShifting) {
+        return currentRenderer.getShiftingStageSvg(edge);
+      } else {
+        return currentRenderer.getNormalStageSvg(edge);
+      }
+    }
+  }
+
   export function renderVirtualEdge(
     startNode: ConnectableEntity,
     mouseLocation: Vector,
@@ -139,6 +159,42 @@ export namespace EdgeRenderer {
       StageStyleManager.currentStyle.StageObjectBorderColor,
       StageStyleManager.currentStyle.StageObjectBorderColor,
       0,
+    );
+  }
+
+  /**
+   * 生成箭头的SVG多边形
+   * @param endPoint 世界坐标
+   * @param direction
+   * @param size
+   * @returns SVG多边形字符串
+   */
+  export function generateArrowHeadSvg(
+    endPoint: Vector,
+    direction: Vector,
+    size: number,
+  ): React.ReactNode {
+    const reDirection = direction.clone().multiply(-1);
+    const location2 = endPoint.add(
+      reDirection.multiply(size).rotateDegrees(15),
+    );
+    const location3 = endPoint.add(reDirection.multiply(size * 0.5));
+    const location4 = endPoint.add(
+      reDirection.multiply(size).rotateDegrees(-15),
+    );
+
+    // 将计算得到的点转换为 SVG 坐标
+    const pointsString = [endPoint, location2, location3, location4]
+      .map((point) => `${point.x},${point.y}`)
+      .join(" ");
+
+    // 返回SVG多边形字符串
+    return (
+      <polygon
+        points={pointsString}
+        fill={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
+        stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
+      />
     );
   }
 }

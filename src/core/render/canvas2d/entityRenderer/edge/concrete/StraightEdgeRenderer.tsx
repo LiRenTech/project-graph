@@ -13,6 +13,7 @@ import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
+import { SvgUtils } from "../../../../svg/SvgUtils";
 
 /**
  * 直线渲染器
@@ -117,6 +118,74 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         .subtract(edge.source.collisionBox.getRectangle().getCenter())
         .normalize(),
     );
+  }
+
+  public getNormalStageSvg(edge: Edge): React.ReactNode {
+    let lineBody: React.ReactNode = <></>;
+    let textNode: React.ReactNode = <></>;
+    if (edge.text.trim() === "") {
+      // 没有文字的边
+      lineBody = SvgUtils.line(
+        edge.bodyLine.start,
+        edge.bodyLine.end,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+        2,
+      );
+    } else {
+      // 有文字的边
+      const midPoint = edge.bodyLine.midPoint();
+      const startHalf = new Line(edge.bodyLine.start, midPoint);
+      const endHalf = new Line(midPoint, edge.bodyLine.end);
+      const edgeTextRectangle = edge.textRectangle;
+
+      textNode = SvgUtils.textFromCenter(
+        edge.text,
+        midPoint,
+        Renderer.FONT_SIZE,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+      );
+      lineBody = (
+        <>
+          {SvgUtils.line(
+            edge.bodyLine.start,
+            edgeTextRectangle.getLineIntersectionPoint(startHalf),
+            StageStyleManager.currentStyle.StageObjectBorderColor,
+            2,
+          )}
+          {SvgUtils.line(
+            edge.bodyLine.end,
+            edgeTextRectangle.getLineIntersectionPoint(endHalf),
+            StageStyleManager.currentStyle.StageObjectBorderColor,
+            2,
+          )}
+        </>
+      );
+    }
+    // 加箭头
+    const arrowHead = EdgeRenderer.generateArrowHeadSvg(
+      edge.bodyLine.end.clone(),
+      edge.target.collisionBox
+        .getRectangle()
+        .getCenter()
+        .subtract(edge.source.collisionBox.getRectangle().getCenter())
+        .normalize(),
+      15,
+    );
+    return (
+      <>
+        {lineBody}
+        {textNode}
+        {arrowHead}
+      </>
+    );
+  }
+  public getCycleStageSvg(edge: Edge): React.ReactNode {
+    console.log(edge);
+    return <></>;
+  }
+  public getShiftingStageSvg(edge: Edge): React.ReactNode {
+    console.log(edge);
+    return <></>;
   }
 
   private renderArrowHead(
