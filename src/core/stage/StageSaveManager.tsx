@@ -3,10 +3,10 @@ import { Serialized } from "../../types/node";
 import { PathString } from "../../utils/pathString";
 import { ViewFlashEffect } from "../effect/concrete/ViewFlashEffect";
 import { TextNode } from "../stageObject/entity/TextNode";
+import { Entity } from "../stageObject/StageObject";
 import { Stage } from "./Stage";
 import { StageHistoryManager } from "./stageManager/StageHistoryManager";
 import { StageManager } from "./stageManager/StageManager";
-import { Entity } from "../stageObject/StageObject";
 
 /**
  * 管理所有和保存相关的内容
@@ -19,26 +19,14 @@ export namespace StageSaveManager {
    * @param data
    * @param errorCallback
    */
-  export function saveHandle(
-    path: string,
-    data: Serialized.File,
-    successCallback: () => void,
-    errorCallback: (err: any) => void,
-  ) {
+  export async function saveHandle(path: string, data: Serialized.File) {
     invoke<string>("save_file_by_path", {
       path,
       content: JSON.stringify(data),
-    })
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .then((_) => {
-        Stage.effects.push(ViewFlashEffect.SaveFile());
-        StageHistoryManager.reset(data); // 重置历史
-        successCallback();
-        isCurrentSaved = true;
-      })
-      .catch((err) => {
-        errorCallback(err);
-      });
+    });
+    Stage.effects.push(ViewFlashEffect.SaveFile());
+    StageHistoryManager.reset(data); // 重置历史
+    isCurrentSaved = true;
   }
 
   /**
@@ -48,35 +36,25 @@ export namespace StageSaveManager {
    * @param successCallback
    * @param errorCallback
    */
-  export function saveHandleWithoutCurrentPath(
+  export async function saveHandleWithoutCurrentPath(
     data: Serialized.File,
-    successCallback: () => void,
-    errorCallback: (err: any) => void,
     resetHistory = true,
     addFlashEffect = true,
   ) {
     if (Stage.Path.isDraft()) {
-      errorCallback("当前文档的状态为草稿，请您先保存为文件");
-      return;
+      throw new Error("当前文档的状态为草稿，请您先保存为文件");
     }
     invoke<string>("save_file_by_path", {
       path: Stage.Path.getFilePath(),
       content: JSON.stringify(data),
-    })
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .then((_) => {
-        if (addFlashEffect) {
-          Stage.effects.push(ViewFlashEffect.SaveFile());
-        }
-        if (resetHistory) {
-          StageHistoryManager.reset(data); // 重置历史
-        }
-        successCallback();
-        isCurrentSaved = true;
-      })
-      .catch((err) => {
-        errorCallback(err);
-      });
+    });
+    if (addFlashEffect) {
+      Stage.effects.push(ViewFlashEffect.SaveFile());
+    }
+    if (resetHistory) {
+      StageHistoryManager.reset(data); // 重置历史
+    }
+    isCurrentSaved = true;
   }
 
   /**
@@ -87,33 +65,20 @@ export namespace StageSaveManager {
    * @param errorCallback
    * @returns
    */
-  export async function backupHandle(
-    path: string,
-    data: Serialized.File,
-    successCallback: () => void,
-    errorCallback: (err: any) => void,
-  ) {
+  export async function backupHandle(path: string, data: Serialized.File) {
     const backupFolderPath = PathString.dirPath(path);
     const isExists = await invoke<string>("check_json_exist", {
       path: backupFolderPath,
     });
     if (!isExists) {
-      errorCallback("备份文件路径错误:" + backupFolderPath);
-      return;
+      throw new Error("备份文件路径错误:" + backupFolderPath);
     }
 
     invoke<string>("save_file_by_path", {
       path,
       content: JSON.stringify(data),
-    })
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .then((_) => {
-        Stage.effects.push(ViewFlashEffect.SaveFile());
-        successCallback();
-      })
-      .catch((err) => {
-        errorCallback(err);
-      });
+    });
+    Stage.effects.push(ViewFlashEffect.SaveFile());
   }
   /**
    * 备份，会在工程文件夹旁白生成一个类似的json文件
@@ -124,15 +89,12 @@ export namespace StageSaveManager {
    * @param addFlashEffect
    * @returns
    */
-  export function backupHandleWithoutCurrentPath(
+  export async function backupHandleWithoutCurrentPath(
     data: Serialized.File,
-    successCallback: () => void,
-    errorCallback: (err: any) => void,
     addFlashEffect = true,
   ) {
     if (Stage.Path.isDraft()) {
-      errorCallback("当前文档的状态为草稿，无法备份");
-      return;
+      throw new Error("当前文档的状态为草稿，无法备份");
     }
     // 不能有冒号，空格，斜杠
     const dateTime = PathString.getTime();
@@ -142,37 +104,18 @@ export namespace StageSaveManager {
     invoke<string>("save_file_by_path", {
       path: backupPath,
       content: JSON.stringify(data),
-    })
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .then((_) => {
-        if (addFlashEffect) {
-          Stage.effects.push(ViewFlashEffect.SaveFile());
-        }
-        successCallback();
-      })
-      .catch((err) => {
-        errorCallback(err);
-      });
+    });
+    if (addFlashEffect) {
+      Stage.effects.push(ViewFlashEffect.SaveFile());
+    }
   }
 
-  export function saveSvgHandle(
-    path: string,
-    string: string,
-    successCallback: () => void,
-    errorCallback: (err: any) => void,
-  ) {
+  export async function saveSvgHandle(path: string, string: string) {
     invoke<string>("save_file_by_path", {
       path,
       content: string,
-    })
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .then((_) => {
-        successCallback();
-        isCurrentSaved = true;
-      })
-      .catch((err) => {
-        errorCallback(err);
-      });
+    });
+    isCurrentSaved = true;
   }
 
   /**
@@ -181,24 +124,12 @@ export namespace StageSaveManager {
    * @param successCallback
    * @param errorCallback
    */
-  export function saveMarkdownHandle(
-    path: string,
-    textNode: TextNode,
-    successCallback: () => void,
-    errorCallback: (err: any) => void,
-  ) {
+  export async function saveMarkdownHandle(path: string, textNode: TextNode) {
     const content = getMarkdownStringByTextNode(textNode);
     invoke<string>("save_file_by_path", {
       path,
       content,
-    })
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .then((_) => {
-        successCallback();
-      })
-      .catch((err) => {
-        errorCallback(err);
-      });
+    });
   }
 
   // region 以下可能要拆出去

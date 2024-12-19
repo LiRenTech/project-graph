@@ -4,12 +4,10 @@ import { Serialized } from "../../types/node";
 import { PathString } from "../../utils/pathString";
 import { Controller } from "../controller/Controller";
 import { ControllerGamepad } from "../controller/ControllerGamepad";
-import { ProgressNumber } from "../dataStruct/ProgressNumber";
 import { Line } from "../dataStruct/shape/Line";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { PointDashEffect } from "../effect/concrete/PointDashEffect";
-import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
 import { Effect } from "../effect/effect";
 import { Settings } from "../Settings";
 import { Edge } from "../stageObject/association/Edge";
@@ -306,13 +304,7 @@ export namespace Stage {
           //     Color.Black,
           //   ),
           // );
-          StageSaveManager.saveHandleWithoutCurrentPath(
-            StageDumper.dump(),
-            () => {},
-            () => {},
-            false,
-            false,
-          );
+          StageSaveManager.saveHandleWithoutCurrentPath(StageDumper.dump());
           // 更新时间
         }
       }
@@ -334,26 +326,10 @@ export namespace Stage {
     if (now - lastAutoBackupTime > autoBackupInterval) {
       if (Stage.Path.isDraft()) {
         const backupPath = `${autoBackupDraftPath}${Stage.Path.getSep()}${PathString.getTime()}.json`;
-        StageSaveManager.backupHandle(
-          backupPath,
-          StageDumper.dump(),
-          () => {},
-          (err) => {
-            console.warn(err);
-            // 备份失败
-            effects.push(
-              new TextRiseEffect(
-                "自动备份失败" + String(err),
-                new ProgressNumber(0, 100),
-              ),
-            );
-          },
-        );
+        StageSaveManager.backupHandle(backupPath, StageDumper.dump());
       } else {
         StageSaveManager.backupHandleWithoutCurrentPath(
           StageDumper.dump(),
-          () => {},
-          () => {},
           false,
         );
       }

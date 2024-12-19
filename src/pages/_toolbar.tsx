@@ -34,6 +34,7 @@ import Box from "../components/ui/Box";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { ApiKeyManager } from "../core/ai/ApiKeyManager";
+import { Controller } from "../core/controller/Controller";
 import { TextRiseEffect } from "../core/effect/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { Stage } from "../core/stage/Stage";
@@ -41,7 +42,6 @@ import { StageDumper } from "../core/stage/StageDumper";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { useDialog } from "../utils/dialog";
 import { usePopupDialog } from "../utils/popupDialog";
-import { Controller } from "../core/controller/Controller";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -325,20 +325,15 @@ export default function Toolbar({ className = "" }: { className?: string }) {
         <ToolbarItem
           description="将选中的节点的内容作为网页链接或本地文件路径打开"
           icon={<Globe />}
-          handleFunction={() => {
+          handleFunction={async () => {
             if (StageSaveManager.isSaved()) {
               openBrowserOrFile();
             } else {
               // Stage.effects.push(new TextRiseEffect("请先保存文件"));
-              StageSaveManager.saveHandleWithoutCurrentPath(
+              await StageSaveManager.saveHandleWithoutCurrentPath(
                 StageDumper.dump(),
-                () => {
-                  openBrowserOrFile();
-                },
-                (err) => {
-                  Stage.effects.push(new TextRiseEffect("保存失败" + err));
-                },
               );
+              openBrowserOrFile();
             }
           }}
         />

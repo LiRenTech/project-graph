@@ -143,7 +143,7 @@ export default function AppMenu({
     }
   };
 
-  const onSave = () => {
+  const onSave = async () => {
     const path_ = file;
 
     if (path_ === "Project Graph") {
@@ -155,18 +155,14 @@ export default function AppMenu({
     const data = StageDumper.dump(); // 获取当前节点和边的数据
     // 2024年10月6日发现保存文件也开始变得没有权限了，可能是tauri-plugin-fs的bug
     // await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
-    StageSaveManager.saveHandle(
-      path_,
-      data,
-      () => {},
-      (err) => {
-        dialog.show({
-          title: "保存失败",
-          content: String(err),
-          type: "error",
-        });
-      },
-    );
+    try {
+      await StageSaveManager.saveHandle(path_, data);
+    } catch {
+      await dialog.show({
+        title: "保存失败",
+        content: "保存失败，请重试",
+      });
+    }
   };
 
   const onSaveNew = async () => {
@@ -186,63 +182,34 @@ export default function AppMenu({
     }
 
     const data = StageDumper.dump(); // 获取当前节点和边的数据
-    StageSaveManager.saveHandle(
-      path,
-      data,
-      () => {
-        setFile(path);
-      },
-      (err) => {
-        dialog.show({
-          title: "保存失败",
-          content: String(err),
-          type: "error",
-        });
-      },
-    );
+    try {
+      await StageSaveManager.saveHandle(path, data);
+      setFile(path);
+    } catch {
+      await dialog.show({
+        title: "保存失败",
+        content: "保存失败，请重试",
+      });
+    }
   };
   const onBackup = async () => {
-    if (Stage.Path.isDraft()) {
-      const autoBackupDraftPath = await Settings.get("autoBackupDraftPath");
-      const backupPath = `${autoBackupDraftPath}${Stage.Path.getSep()}${PathString.getTime()}.json`;
-      StageSaveManager.backupHandle(
-        backupPath,
+    try {
+      if (Stage.Path.isDraft()) {
+        const autoBackupDraftPath = await Settings.get("autoBackupDraftPath");
+        const backupPath = `${autoBackupDraftPath}${Stage.Path.getSep()}${PathString.getTime()}.json`;
+        await StageSaveManager.backupHandle(backupPath, StageDumper.dump());
+        return;
+      }
+      await StageSaveManager.backupHandleWithoutCurrentPath(
         StageDumper.dump(),
-        () => {
-          dialog.show({
-            title: "备份成功",
-            content: "已备份在您设置的备份目录下",
-            type: "success",
-          });
-        },
-        (err) => {
-          dialog.show({
-            title: "备份失败",
-            content: String(err),
-            type: "error",
-          });
-        },
+        true,
       );
-      return;
+    } catch {
+      await dialog.show({
+        title: "备份失败",
+        content: "备份失败，请重试",
+      });
     }
-    StageSaveManager.backupHandleWithoutCurrentPath(
-      StageDumper.dump(),
-      () => {
-        dialog.show({
-          title: "备份成功",
-          content: "已备份在项目相同目录下",
-          type: "success",
-        });
-      },
-      (err) => {
-        dialog.show({
-          title: "备份失败",
-          content: String(err),
-          type: "error",
-        });
-      },
-      true,
-    );
   };
   const onSaveSVGNew = async () => {
     const path = await saveFileDialog({
@@ -261,18 +228,14 @@ export default function AppMenu({
     }
 
     const data = StageDumperSvg.dumpStageToSVGString();
-    StageSaveManager.saveSvgHandle(
-      path,
-      data,
-      () => {},
-      (err) => {
-        dialog.show({
-          title: "保存失败",
-          content: String(err),
-          type: "error",
-        });
-      },
-    );
+    try {
+      await StageSaveManager.saveSvgHandle(path, data);
+    } catch {
+      await dialog.show({
+        title: "保存失败",
+        content: "保存失败，请重试",
+      });
+    }
   };
 
   const onExportTreeText = async () => {
@@ -333,18 +296,14 @@ export default function AppMenu({
     if (!path) {
       return;
     }
-    StageSaveManager.saveMarkdownHandle(
-      path,
-      selectedNodes[0],
-      () => {},
-      (err) => {
-        dialog.show({
-          title: "保存失败",
-          content: String(err),
-          type: "error",
-        });
-      },
-    );
+    try {
+      await StageSaveManager.saveMarkdownHandle(path, selectedNodes[0]);
+    } catch {
+      await dialog.show({
+        title: "保存失败",
+        content: "保存失败，请重试",
+      });
+    }
   };
 
   useEffect(() => {

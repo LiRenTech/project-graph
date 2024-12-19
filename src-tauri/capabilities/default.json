@@ -16,6 +16,7 @@
     "core:window:allow-set-fullscreen",
     "core:window:allow-set-title",
     "core:window:allow-set-decorations",
+    "core:window:allow-destroy",
     "os:default",
     "dialog:default",
     "fs:allow-write-text-file",

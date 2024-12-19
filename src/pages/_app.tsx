@@ -128,96 +128,65 @@ export default function App() {
     Stage.isAutoSavePaused = isAiPanelOpen;
   }, [isAiPanelOpen]);
 
-  const handleClose = () => {
-    if (file === Stage.Path.draftName) {
-      dialog.show({
-        title: "真的要关闭吗？",
-        content: "您现在的新建草稿没有保存，是否要关闭项目？",
-        buttons: [
-          {
-            text: "直接关闭，这个草稿不值得保存",
-            onClick: () => {
-              getCurrentWindow().close();
+  getCurrentWindow().onCloseRequested(async (e) => {
+    try {
+      if (file === Stage.Path.draftName) {
+        await dialog.show({
+          title: "真的要关闭吗？",
+          content: "您现在的新建草稿没有保存，是否要关闭项目？",
+          buttons: [
+            {
+              text: "直接关闭，这个草稿不值得保存",
             },
-          },
-          {
-            text: "啊不不不，我要另存为",
-            onClick: () => {},
-          },
-        ],
-      });
-    } else {
-      // 先检查下是否开启了关闭自动保存
-      Settings.get("autoSaveWhenClose").then((isAutoSave) => {
+            {
+              text: "啊不不不，我要另存为",
+              onClick: () => e.preventDefault(),
+            },
+          ],
+        });
+      } else {
+        // 先检查下是否开启了关闭自动保存
+        const isAutoSave = await Settings.get("autoSaveWhenClose");
         if (isAutoSave) {
           // 开启了自动保存，不弹窗
-          StageSaveManager.saveHandle(
-            file,
-            StageDumper.dump(),
-            () => {
-              // 成功
-              getCurrentWindow().close();
-            },
-            () => {
-              // 失败
-              dialog.show({
-                title: "保存失败",
-                content: "保存失败，请重试",
-                buttons: [
-                  {
-                    text: "确定",
-                    onClick: () => {},
-                  },
-                ],
-              });
-            },
-          );
+          await StageSaveManager.saveHandle(file, StageDumper.dump());
         } else {
           // 没开启自动保存，逐步确认
           if (StageSaveManager.isSaved()) {
             getCurrentWindow().close();
           } else {
-            dialog.show({
+            const res = await dialog.show({
               title: "真的要关闭吗？",
               content: "您现在的没有保存，是否要关闭项目？",
               buttons: [
                 {
                   text: "保存并关闭",
-                  onClick: () => {
-                    StageSaveManager.saveHandle(
-                      file,
-                      StageDumper.dump(),
-                      () => {
-                        // 成功
-                        getCurrentWindow().close();
-                      },
-                      () => {
-                        // 失败
-                        dialog.show({
-                          title: "保存失败",
-                          content: "保存失败，请重试",
-                          buttons: [
-                            {
-                              text: "确定",
-                              onClick: () => {},
-                            },
-                          ],
-                        });
-                      },
-                    );
-                  },
                 },
                 {
                   text: "取消关闭",
-                  onClick: () => {},
+                  onClick: () => e.preventDefault(),
                 },
               ],
             });
+            if (res.button === "保存并关闭") {
+              await StageSaveManager.saveHandle(file, StageDumper.dump());
+            }
           }
         }
+      }
+    } catch {
+      await dialog.show({
+        title: "保存失败",
+        content: "保存失败，请重试",
+        buttons: [
+          {
+            text: "确定",
+            onClick: () => e.preventDefault(),
+          },
+        ],
       });
     }
-  };
+  });
 
   return (
     <div
@@ -365,7 +334,7 @@ export default function App() {
               />
             )}
             <X
-              onClick={() => handleClose()}
+              onClick={() => getCurrentWindow().close()}
               className="transition hover:opacity-80 active:scale-75"
             />
           </Button>
