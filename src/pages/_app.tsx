@@ -92,6 +92,67 @@ export default function App() {
       setIsSaved(StageSaveManager.isSaved());
     });
 
+    getCurrentWindow().onCloseRequested(async (e) => {
+      console.log("close requested");
+      e.preventDefault();
+      try {
+        if (file === Stage.Path.draftName) {
+          await dialog.show({
+            title: "真的要关闭吗？",
+            content: "您现在的新建草稿没有保存，是否要关闭项目？",
+            buttons: [
+              {
+                text: "直接关闭，这个草稿不值得保存",
+                onClick: async () => {
+                  await getCurrentWindow().destroy();
+                },
+              },
+              {
+                text: "啊不不不，我要另存为",
+              },
+            ],
+          });
+        } else {
+          // 先检查下是否开启了关闭自动保存
+          const isAutoSave = await Settings.get("autoSaveWhenClose");
+          if (isAutoSave) {
+            // 开启了自动保存，不弹窗
+            await StageSaveManager.saveHandle(file, StageDumper.dump());
+          } else {
+            // 没开启自动保存，逐步确认
+            if (StageSaveManager.isSaved()) {
+              getCurrentWindow().destroy();
+            } else {
+              await dialog.show({
+                title: "真的要关闭吗？",
+                content: "您现在的没有保存，是否要关闭项目？",
+                buttons: [
+                  {
+                    text: "保存并关闭",
+                    onClick: async () => {
+                      await StageSaveManager.saveHandle(
+                        file,
+                        StageDumper.dump(),
+                      );
+                      await getCurrentWindow().destroy();
+                    },
+                  },
+                  {
+                    text: "取消关闭",
+                  },
+                ],
+              });
+            }
+          }
+        }
+      } catch {
+        await dialog.show({
+          title: "保存失败",
+          content: "保存失败，请重试",
+        });
+      }
+    });
+
     return () => {
       clearInterval(saveInterval);
     };
@@ -127,66 +188,6 @@ export default function App() {
   React.useEffect(() => {
     Stage.isAutoSavePaused = isAiPanelOpen;
   }, [isAiPanelOpen]);
-
-  getCurrentWindow().onCloseRequested(async (e) => {
-    try {
-      if (file === Stage.Path.draftName) {
-        await dialog.show({
-          title: "真的要关闭吗？",
-          content: "您现在的新建草稿没有保存，是否要关闭项目？",
-          buttons: [
-            {
-              text: "直接关闭，这个草稿不值得保存",
-            },
-            {
-              text: "啊不不不，我要另存为",
-              onClick: () => e.preventDefault(),
-            },
-          ],
-        });
-      } else {
-        // 先检查下是否开启了关闭自动保存
-        const isAutoSave = await Settings.get("autoSaveWhenClose");
-        if (isAutoSave) {
-          // 开启了自动保存，不弹窗
-          await StageSaveManager.saveHandle(file, StageDumper.dump());
-        } else {
-          // 没开启自动保存，逐步确认
-          if (StageSaveManager.isSaved()) {
-            getCurrentWindow().close();
-          } else {
-            const res = await dialog.show({
-              title: "真的要关闭吗？",
-              content: "您现在的没有保存，是否要关闭项目？",
-              buttons: [
-                {
-                  text: "保存并关闭",
-                },
-                {
-                  text: "取消关闭",
-                  onClick: () => e.preventDefault(),
-                },
-              ],
-            });
-            if (res.button === "保存并关闭") {
-              await StageSaveManager.saveHandle(file, StageDumper.dump());
-            }
-          }
-        }
-      }
-    } catch {
-      await dialog.show({
-        title: "保存失败",
-        content: "保存失败，请重试",
-        buttons: [
-          {
-            text: "确定",
-            onClick: () => e.preventDefault(),
-          },
-        ],
-      });
-    }
-  });
 
   return (
     <div
