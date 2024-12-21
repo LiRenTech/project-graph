@@ -196,10 +196,11 @@ jobs:
           ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts
       - name: Clone AUR repository
         run: git clone ssh://aur@aur.archlinux.org/project-graph-nightly.git
-      - name: Update version in PKGBUILD
+      - name: Update version in PKGBUILD and .SRCINFO
         run: |
           cd project-graph-nightly
           sed -i "s/pkgver=.*$/pkgver=0.0.0-nightly.${{ github.sha }}/" PKGBUILD
+          sed -i "s/pkgver = .*$/pkgver = 0.0.0-nightly.${{ github.sha }}/" .SRCINFO
       - name: Commit and push changes
         run: |
           cd project-graph-nightly
