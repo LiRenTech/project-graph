@@ -484,6 +484,9 @@ export namespace Renderer {
     if (!isRenderEffect) {
       return;
     }
+    while (Stage.effects.length > 30) {
+      Stage.effects.shift();
+    }
     for (const effect of Stage.effects) {
       effect.render();
     }
