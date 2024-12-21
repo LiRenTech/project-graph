@@ -1,6 +1,7 @@
 import { routes } from "@generouted/react-router";
 import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { getMatches } from "@tauri-apps/plugin-cli";
 import i18next from "i18next";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
@@ -87,9 +88,15 @@ async function loadLanguageFiles() {
   });
 }
 
-/** 加载用户自定义的工程文件 */
+/** 加载用户自定义的工程文件，或者从启动参数中获取 */
 async function loadStartFile() {
-  const path = await StartFilesManager.getCurrentStartFile();
+  const cliMatches = await getMatches();
+  let path = "";
+  if (cliMatches.args.path.value) {
+    path = cliMatches.args.path.value as string;
+  } else {
+    path = await StartFilesManager.getCurrentStartFile();
+  }
   if (path === "") {
     return;
   }
