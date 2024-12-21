@@ -264,104 +264,105 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
   // 一个竖向的工具栏，在页面顶部，右侧显示
   return (
-    <Box
-      className={cn(
-        "fixed right-16 top-1/2 z-50 flex w-10 -translate-y-1/2 flex-col items-center gap-4 rounded-full px-8 py-6 opacity-50 hover:opacity-100",
-        className,
-      )}
-    >
-      <ToolbarItem
-        description="通过文本生成节点"
-        icon={<ClipboardPaste />}
-        handleFunction={() => popupDialog.show(<GenerateNodePanel />)}
-      />
-      {isHaveSelectedNode && (
+    <div className="group/wrapper fixed right-0 top-1/2 z-50 -translate-y-1/2 p-8 pl-16">
+      <Box
+        className={cn(
+          "flex w-10 origin-right scale-[10%] flex-col items-center gap-4 rounded-full bg-white px-8 py-6 opacity-25 group-hover/wrapper:scale-100 group-hover/wrapper:bg-neutral-800 group-hover/wrapper:opacity-100",
+          className,
+        )}
+      >
         <ToolbarItem
-          description="删除选中对象"
-          icon={<Trash2 />}
-          handleFunction={() => {
-            deleteSelectedObjects();
-          }}
+          description="通过文本生成节点"
+          icon={<ClipboardPaste />}
+          handleFunction={() => popupDialog.show(<GenerateNodePanel />)}
         />
-      )}
-      {isHaveSelectedEdge && (
-        <ToolbarItem
-          description="反转选中连线方向"
-          icon={<Repeat />}
-          handleFunction={() => {
-            const selectedEdges = StageManager.getEdges().filter(
-              (edge) => edge.isSelected,
-            );
-            StageManager.reverseEdges(selectedEdges);
-          }}
-        />
-      )}
-
-      {isHaveSelectedNode && (
-        <ToolbarItem
-          description="设置节点颜色"
-          icon={<PaintBucket />}
-          handleFunction={() => popupDialog.show(<ColorPanel />)}
-        />
-      )}
-
-      {isHaveSelectedNodeOverTwo && (
-        <ToolbarItem
-          description="节点对齐相关"
-          icon={<LayoutDashboard />}
-          handleFunction={() => popupDialog.show(<AlignNodePanel />)}
-        />
-      )}
-      {isCopyClearShow && (
-        <ToolbarItem
-          description="清空粘贴板内容"
-          icon={<ClipboardX />}
-          handleFunction={() => {
-            StageManager.clearClipboard();
-          }}
-        />
-      )}
-      {isHaveSelectedNode && (
-        <ToolbarItem
-          description="将选中的节点的内容作为网页链接或本地文件路径打开"
-          icon={<Globe />}
-          handleFunction={async () => {
-            if (StageSaveManager.isSaved()) {
-              openBrowserOrFile();
-            } else {
-              // Stage.effects.push(new TextRiseEffect("请先保存文件"));
-              await StageSaveManager.saveHandleWithoutCurrentPath(
-                StageDumper.dump(),
+        {isHaveSelectedNode && (
+          <ToolbarItem
+            description="删除选中对象"
+            icon={<Trash2 />}
+            handleFunction={() => {
+              deleteSelectedObjects();
+            }}
+          />
+        )}
+        {isHaveSelectedEdge && (
+          <ToolbarItem
+            description="反转选中连线方向"
+            icon={<Repeat />}
+            handleFunction={() => {
+              const selectedEdges = StageManager.getEdges().filter(
+                (edge) => edge.isSelected,
               );
-              openBrowserOrFile();
-            }
-          }}
-        />
-      )}
-      {isHaveSelectedNode && (
+              StageManager.reverseEdges(selectedEdges);
+            }}
+          />
+        )}
+
+        {isHaveSelectedNode && (
+          <ToolbarItem
+            description="设置节点颜色"
+            icon={<PaintBucket />}
+            handleFunction={() => popupDialog.show(<ColorPanel />)}
+          />
+        )}
+
+        {isHaveSelectedNodeOverTwo && (
+          <ToolbarItem
+            description="节点对齐相关"
+            icon={<LayoutDashboard />}
+            handleFunction={() => popupDialog.show(<AlignNodePanel />)}
+          />
+        )}
+        {isCopyClearShow && (
+          <ToolbarItem
+            description="清空粘贴板内容"
+            icon={<ClipboardX />}
+            handleFunction={() => {
+              StageManager.clearClipboard();
+            }}
+          />
+        )}
+        {isHaveSelectedNode && (
+          <ToolbarItem
+            description="将选中的节点的内容作为网页链接或本地文件路径打开"
+            icon={<Globe />}
+            handleFunction={async () => {
+              if (StageSaveManager.isSaved()) {
+                openBrowserOrFile();
+              } else {
+                // Stage.effects.push(new TextRiseEffect("请先保存文件"));
+                await StageSaveManager.saveHandleWithoutCurrentPath(
+                  StageDumper.dump(),
+                );
+                openBrowserOrFile();
+              }
+            }}
+          />
+        )}
+        {isHaveSelectedNode && (
+          <ToolbarItem
+            description="将选中的节点保存为新文件"
+            icon={<SaveAll />}
+            handleFunction={() => {
+              onSaveSelectedNew();
+            }}
+          />
+        )}
         <ToolbarItem
-          description="将选中的节点保存为新文件"
-          icon={<SaveAll />}
+          description="将选中节点打包Section（Ctrl+G）（Section目前bug较多，还在开发中，暂时不推荐使用）"
+          icon={<Square />}
           handleFunction={() => {
-            onSaveSelectedNew();
+            onPackNodeToSection();
           }}
         />
-      )}
-      <ToolbarItem
-        description="将选中节点打包Section（Ctrl+G）（Section目前bug较多，还在开发中，暂时不推荐使用）"
-        icon={<Square />}
-        handleFunction={() => {
-          onPackNodeToSection();
-        }}
-      />
-      <ToolbarItem
-        description="切换Section的折叠状态（Ctrl+T）"
-        icon={<Package />}
-        handleFunction={() => {
-          StageManager.sectionSwitchCollapse();
-        }}
-      />
-      {/* {isHaveSelectedNode && (
+        <ToolbarItem
+          description="切换Section的折叠状态（Ctrl+T）"
+          icon={<Package />}
+          handleFunction={() => {
+            StageManager.sectionSwitchCollapse();
+          }}
+        />
+        {/* {isHaveSelectedNode && (
         <ToolbarItem
           description="计算文字"
           icon={<Calculator />}
@@ -370,33 +371,34 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           }}
         />
       )} */}
-      {isHaveSelectedNode && (
-        <ToolbarItem
-          description="添加标签，如果已添加则去除标签"
-          icon={<Tag />}
-          handleFunction={() => {
-            StageManager.addTagBySelected();
-          }}
-        />
-      )}
-      {isHaveSelectedNode && (
-        <ToolbarItem
-          description="AI扩展节点"
-          icon={<BrainCircuit />}
-          handleFunction={() => {
-            if (ApiKeyManager.getKeyArk().length === 0) {
-              dialog.show({
-                title: "提示",
-                content: "当前为非官方构建，请使用官方构建方可使用AI功能。",
-                type: "info",
-              });
-              return;
-            }
-            StageManager.expandTextNodeByAI();
-          }}
-        />
-      )}
-    </Box>
+        {isHaveSelectedNode && (
+          <ToolbarItem
+            description="添加标签，如果已添加则去除标签"
+            icon={<Tag />}
+            handleFunction={() => {
+              StageManager.addTagBySelected();
+            }}
+          />
+        )}
+        {isHaveSelectedNode && (
+          <ToolbarItem
+            description="AI扩展节点"
+            icon={<BrainCircuit />}
+            handleFunction={() => {
+              if (ApiKeyManager.getKeyArk().length === 0) {
+                dialog.show({
+                  title: "提示",
+                  content: "当前为非官方构建，请使用官方构建方可使用AI功能。",
+                  type: "info",
+                });
+                return;
+              }
+              StageManager.expandTextNodeByAI();
+            }}
+          />
+        )}
+      </Box>
+    </div>
   );
 }
 function onPackNodeToSection() {
