@@ -513,7 +513,7 @@ function Col({
 }: React.PropsWithChildren<{ icon: React.ReactNode; onClick?: () => void }>) {
   return (
     <div
-      className="flex w-max cursor-pointer items-center gap-1 hover:opacity-80 active:scale-90"
+      className="flex w-max cursor-pointer items-center gap-1 rounded-lg outline outline-0 outline-white/0 transition-all hover:bg-white/15 hover:outline-8 hover:outline-white/15 active:scale-90"
       onClick={onClick}
     >
       {icon}
