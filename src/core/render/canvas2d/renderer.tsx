@@ -484,9 +484,6 @@ export namespace Renderer {
     if (!isRenderEffect) {
       return;
     }
-    while (Stage.effects.length > 30) {
-      Stage.effects.shift();
-    }
     for (const effect of Stage.effects) {
       effect.render();
     }
@@ -654,17 +651,23 @@ export namespace Renderer {
   }
 
   /**
-   * 创建一个输入框
+   *
+   * @param location viewLocation
+   * @param defaultValue 文本框默认值
+   * @param onChange 文本框内容变化时的回调函数
+   * @param style css样式
+   * @param el input|textarea
+   * @returns
    */
   export function input(
     location: Vector,
     defaultValue: string,
     onChange: (value: string) => void = () => {},
     style: Partial<CSSStyleDeclaration> = {},
+    el: "input" | "textarea" = "input",
   ): Promise<string> {
     return new Promise((resolve) => {
-      const inputElement = document.createElement("input");
-      inputElement.type = "text";
+      const inputElement = document.createElement(el);
       inputElement.value = defaultValue;
       inputElement.style.position = "fixed";
       inputElement.style.top = `${location.y}px`;
@@ -684,23 +687,23 @@ export namespace Renderer {
         }
       };
 
-      const onOutsideClick = (event: Event) => {
+      const onMouseDown = (event: Event) => {
         if (!inputElement.contains(event.target as Node)) {
           resolve(inputElement.value);
           onChange(inputElement.value);
-          document.body.removeEventListener("click", onOutsideClick);
+          document.body.removeEventListener("mousedown", onMouseDown);
           removeElement();
         }
       };
       const onOutsideWheel = () => {
         resolve(inputElement.value);
         onChange(inputElement.value);
-        document.body.removeEventListener("click", onOutsideClick);
+        document.body.removeEventListener("mousedown", onMouseDown);
         removeElement();
       };
       setTimeout(() => {
-        document.body.addEventListener("click", onOutsideClick);
-        document.body.addEventListener("touchstart", onOutsideClick);
+        document.body.addEventListener("mousedown", onMouseDown);
+        document.body.addEventListener("touchstart", onMouseDown);
         document.body.addEventListener("wheel", onOutsideWheel);
       }, 10);
       inputElement.addEventListener("input", () => {
@@ -709,93 +712,9 @@ export namespace Renderer {
       inputElement.addEventListener("blur", () => {
         resolve(inputElement.value);
         onChange(inputElement.value);
-        document.body.removeEventListener("click", onOutsideClick);
+        document.body.removeEventListener("mousedown", onMouseDown);
         removeElement();
       });
-      inputElement.addEventListener("keydown", (event) => {
-        event.stopPropagation();
-        if (event.key === "Enter") {
-          resolve(inputElement.value);
-          onChange(inputElement.value);
-          document.body.removeEventListener("click", onOutsideClick);
-          removeElement();
-        }
-      });
-    });
-  }
-  /**
-   * 创建一个输入框
-   */
-  export function textarea(
-    location: Vector,
-    defaultValue: string,
-    onChange: (value: string) => void = () => {},
-    style: Partial<CSSStyleDeclaration> = {},
-  ): Promise<string> {
-    return new Promise((resolve) => {
-      const inputElement = document.createElement("textarea");
-      // inputElement.type = "text";
-      inputElement.value = defaultValue;
-      inputElement.style.position = "fixed";
-      inputElement.style.top = `${location.y}px`;
-      inputElement.style.left = `${location.x}px`;
-      inputElement.style.fontSize = `${Renderer.FONT_SIZE_DETAILS}px`;
-      Object.assign(inputElement.style, style);
-      document.body.appendChild(inputElement);
-      inputElement.focus();
-      inputElement.select();
-      const removeElement = () => {
-        if (document.body.contains(inputElement)) {
-          try {
-            // 暂时关闭频繁弹窗报错。
-            document.body.removeChild(inputElement);
-          } catch (error) {
-            console.error(error);
-          }
-        }
-      };
-
-      const onOutsideClick = (event: MouseEvent) => {
-        if (!inputElement.contains(event.target as Node)) {
-          resolve(inputElement.value);
-          onChange(inputElement.value);
-          document.body.removeEventListener("click", onOutsideClick);
-          removeElement();
-        }
-      };
-      const onOutsideWheel = () => {
-        resolve(inputElement.value);
-        onChange(inputElement.value);
-        document.body.removeEventListener("click", onOutsideClick);
-        removeElement();
-      };
-
-      setTimeout(() => {
-        // 延迟10毫秒，防止鼠标点击事件先触发
-        document.body.addEventListener("click", onOutsideClick);
-        document.body.addEventListener("wheel", onOutsideWheel);
-      }, 10);
-
-      inputElement.addEventListener("input", () => {
-        onChange(inputElement.value);
-      });
-
-      inputElement.addEventListener("blur", () => {
-        // 失去交点
-        resolve(inputElement.value);
-        onChange(inputElement.value);
-        document.body.removeEventListener("click", onOutsideClick);
-        removeElement();
-      });
-      // inputElement.addEventListener("keydown", (event) => {
-      //   event.stopPropagation();
-      //   if (event.key === "Enter") {
-      //     resolve(inputElement.value);
-      //     onChange(inputElement.value);
-      //     document.body.removeEventListener("click", onOutsideClick);
-      //     removeElement();
-      //   }
-      // });
     });
   }
 }
