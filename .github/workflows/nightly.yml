@@ -6,7 +6,6 @@ on:
   workflow_dispatch: # 手动触发
 
 jobs:
-  # 先删除掉之前的 Nightly Release
   delete-release:
     runs-on: ubuntu-latest
     permissions:
@@ -17,7 +16,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # 创建一个release
   create-release:
     needs: delete-release
     runs-on: ubuntu-latest
@@ -29,7 +27,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # 开始构建并发布 Nightly Release
   publish-tauri:
     needs: create-release
     permissions:
@@ -129,12 +126,12 @@ jobs:
       - name: Install NDK
         run: sdkmanager "ndk;27.0.11902837"
 
-      - name: setup node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
-      - name: install pnpm
+      - name: Install pnpm
         run: npm install -g pnpm
 
       - name: install Rust stable
@@ -152,7 +149,7 @@ jobs:
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: pnpm install # change this to npm or pnpm depending on which one you use.
 
-      - name: edit version
+      - name: Edit version
         run: |
           sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.1\"/" src-tauri/tauri.conf.json
 
@@ -185,3 +182,29 @@ jobs:
         run: gh release upload nightly src-tauri/gen/android/app/build/outputs/apk/universal/release/Project.Graph_0.0.0-nightly.${{ github.sha }}_universal-signed.apk --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  bump-aur-version:
+    needs: publish-tauri
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup AUR private key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts
+      - name: Clone AUR repository
+        run: git clone ssh://aur@aur.archlinux.org/project-graph-nightly.git
+      - name: Update version in PKGBUILD
+        run: |
+          cd project-graph-nightly
+          sed -i "s/pkgver=.*$/pkgver=0.0.0-nightly.${{ github.sha }}/" PKGBUILD
+      - name: Commit and push changes
+        run: |
+          cd project-graph-nightly
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PKGBUILD
+          git commit -m "Bump version to 0.0.0-nightly.${{ github.sha }}"
+          git push origin master
