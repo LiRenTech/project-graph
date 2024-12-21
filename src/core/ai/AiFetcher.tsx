@@ -1,7 +1,10 @@
 // vitest 测试时注释掉下面一行
 import { fetch } from "@tauri-apps/plugin-http";
 
-type prompt = { system: string; user: string };
+type Message = {
+  role: "system" | "user" | "assistant";
+  content: string;
+};
 
 /**
  * 失败的情况
@@ -24,17 +27,32 @@ export abstract class AiFetcherOneShot {
   fetchUrl: string;
   model: string;
   apiKey: string;
-  prompt: prompt;
+  messages: Message[];
 
-  constructor(fetchUrl: string, model: string, apiKey: string, prompt: prompt) {
+  constructor(
+    fetchUrl: string,
+    model: string,
+    apiKey: string,
+    messages: Message[],
+  ) {
     this.fetchUrl = fetchUrl;
     this.model = model;
     this.apiKey = apiKey;
-    this.prompt = prompt;
+    this.messages = messages;
   }
 
-  setPrompt(prompt: prompt) {
-    this.prompt = prompt;
+  system(content: string): AiFetcherOneShot {
+    this.messages.push({ role: "system", content });
+    return this;
+  }
+
+  user(content: string): AiFetcherOneShot {
+    this.messages.push({ role: "user", content });
+    return this;
+  }
+
+  assistant(content: string): AiFetcherOneShot {
+    this.messages.push({ role: "assistant", content });
     return this;
   }
 
@@ -56,7 +74,7 @@ export class AiFetcherOneShotDoubao extends AiFetcherOneShot {
       "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
       "ep-20240826150107-wkr2r",
       "",
-      { system: "", user: "" },
+      [],
     );
   }
 
@@ -69,16 +87,7 @@ export class AiFetcherOneShotDoubao extends AiFetcherOneShot {
       },
       body: JSON.stringify({
         model: this.model,
-        messages: [
-          {
-            role: "system",
-            content: this.prompt.system,
-          },
-          {
-            role: "user",
-            content: this.prompt.user,
-          },
-        ],
+        messages: this.messages,
       }),
     });
     const data = await response.json();
@@ -96,9 +105,9 @@ export class AiFetcherOneShotCloudFlare extends AiFetcherOneShot {
   static create(): AiFetcherOneShotCloudFlare {
     return new AiFetcherOneShotCloudFlare(
       "https://api.cloudflare.com/client/v4/accounts/4fe6f451cbc9a9ad60e5df732070bd69/ai/run/",
-      "@cf/meta/llama-3-8b-instruct",
+      "@cf/qwen/qwen1.5-14b-chat-awq",
       "",
-      { system: "", user: "" },
+      [],
     );
   }
 
@@ -109,16 +118,7 @@ export class AiFetcherOneShotCloudFlare extends AiFetcherOneShot {
       },
       method: "POST",
       body: JSON.stringify({
-        messages: [
-          {
-            role: "system",
-            content: this.prompt.system,
-          },
-          {
-            role: "user",
-            content: this.prompt.user,
-          },
-        ],
+        messages: this.messages,
       }),
     });
     const result = await response.json();

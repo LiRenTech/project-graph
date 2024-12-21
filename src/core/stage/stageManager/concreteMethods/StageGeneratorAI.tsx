@@ -11,7 +11,7 @@ import { StageManager } from "../StageManager";
 
 export namespace StageGeneratorAI {
   const systemPrompt =
-    "你是一个具有发散式思维的人，我给你一个词之后，你会扩展出5~10个新的词。你需要以每行一个词的形式回答我，每个词之间用换行符分隔，不要有任何其他多余文字";
+    "你好，我是一个具有发散式思维的人，请你告诉我一个主题，我会用中文扩展出5~10个新的词，我会以每行一个词的形式回答你，每个词之间用换行符分隔，没有任何其他多余文字，不会为词语标数字序号。";
 
   /**
    * 扩展所有选中的节点
@@ -33,35 +33,17 @@ export namespace StageGeneratorAI {
     }
   }
 
-  // function virtualGenerateTextList() {
-  //   // 使用 Promise 来实现延迟
-  //   return new Promise<string[]>((resolve) => {
-  //     setTimeout(
-  //       () => {
-  //         const expandArrayList: string[] = [];
-  //         for (let i = 0; i < Random.randomInt(3, 10); i++) {
-  //           expandArrayList.push(
-  //             "expand" + "_".repeat(Random.randomInt(3, 20)),
-  //           );
-  //         }
-  //         resolve(expandArrayList); // 1秒后返回数组
-  //       },
-  //       Random.randomInt(500, 4000),
-  //     );
-  //   });
-  // }
-
   async function realGenerateTextList(selectedTextNode: TextNode) {
     let userContent = await PromptManager.getCurrentUserPrompt();
     userContent = userContent.replaceAll("{{nodeText}}", selectedTextNode.text);
 
     try {
       const responseContent: string = await AiFetcherOneShotCloudFlare.create()
-        .setPrompt({
-          system: systemPrompt,
-          user: userContent,
-        })
         .setApiKey(ApiKeyManager.getKeyCF())
+        .system(systemPrompt)
+        .user("Linux发行版")
+        .assistant("Arch Linux\nUbuntu\nFedora\nDebian\nLinux Mint")
+        .user(userContent)
         .fetch();
       let expandArrayList: string[] = [];
       if (responseContent.includes("\n")) {
