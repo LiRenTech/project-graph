@@ -677,6 +677,7 @@ export namespace Renderer {
       inputElement.focus();
       inputElement.select();
       const removeElement = () => {
+        onChange(inputElement.value);
         if (document.body.contains(inputElement)) {
           try {
             // 暂时关闭频繁弹窗报错。
@@ -685,34 +686,27 @@ export namespace Renderer {
             console.error(error);
           }
         }
+        resolve(inputElement.value);
       };
 
       const onMouseDown = (event: Event) => {
         if (!inputElement.contains(event.target as Node)) {
-          resolve(inputElement.value);
-          onChange(inputElement.value);
-          document.body.removeEventListener("mousedown", onMouseDown);
           removeElement();
         }
       };
       const onOutsideWheel = () => {
-        resolve(inputElement.value);
-        onChange(inputElement.value);
-        document.body.removeEventListener("mousedown", onMouseDown);
         removeElement();
       };
       setTimeout(() => {
         document.body.addEventListener("mousedown", onMouseDown);
         document.body.addEventListener("touchstart", onMouseDown);
         document.body.addEventListener("wheel", onOutsideWheel);
+        document.body.addEventListener("touchmove", onOutsideWheel);
       }, 10);
-      inputElement.addEventListener("input", () => {
+      inputElement.addEventListener("change", () => {
         onChange(inputElement.value);
       });
       inputElement.addEventListener("blur", () => {
-        resolve(inputElement.value);
-        onChange(inputElement.value);
-        document.body.removeEventListener("mousedown", onMouseDown);
         removeElement();
       });
     });
