@@ -44,6 +44,7 @@ export default function App() {
   const [isStartFilePanelOpen, setIsStartFilePanelOpen] = React.useState(false);
   const [isAiPanelOpen, setIsAiPanelOpen] = React.useState(false);
   const [isTagPanelOpen, setIsTagPanelOpen] = React.useState(false);
+  const [ignoreMouse, setIgnoreMouse] = React.useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -153,6 +154,13 @@ export default function App() {
       }
     });
 
+    document
+      .querySelector("canvas")
+      ?.addEventListener("mousedown", () => setIgnoreMouse(true));
+    document
+      .querySelector("canvas")
+      ?.addEventListener("mouseup", () => setIgnoreMouse(false));
+
     return () => {
       clearInterval(saveInterval);
     };
@@ -208,7 +216,14 @@ export default function App() {
       <PopupDialog />
       <ErrorHandler />
       {/* 叠加层，显示窗口控件 */}
-      <div className="pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 p-4 *:pointer-events-auto">
+      <div
+        className={cn(
+          "pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 p-4 *:pointer-events-auto",
+          {
+            "*:!pointer-events-none": ignoreMouse,
+          },
+        )}
+      >
         {/* 左上角菜单按钮 */}
         <IconButton
           onClick={(e) => {

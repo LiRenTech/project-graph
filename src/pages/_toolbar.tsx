@@ -228,6 +228,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   const [isHaveSelectedNodeOverTwo, setSsHaveSelectedNodeOverTwo] =
     useState(false);
   const [isHaveSelectedEdge, setSsHaveSelectedEdge] = useState(false);
+  const [ignoreMouse, setIgnoreMouse] = useState(false);
 
   const update = () => {
     setSsHaveSelectedNode(StageManager.selectedNodeCount > 0);
@@ -254,17 +255,42 @@ export default function Toolbar({ className = "" }: { className?: string }) {
         StageManager.reverseEdges(selectedEdges);
       }
     };
+    const handleMouseDown = () => {
+      setIgnoreMouse(true);
+    };
+    const handleMouseUp = () => {
+      setIgnoreMouse(false);
+    };
 
     window.addEventListener("keydown", handleKeyDown);
+    document
+      .querySelector("canvas")
+      ?.addEventListener("mousedown", handleMouseDown);
+    document
+      .querySelector("canvas")
+      ?.addEventListener("mouseup", handleMouseUp);
     return () => {
       clearInterval(intervalId);
       window.removeEventListener("keydown", handleKeyDown);
+      document
+        .querySelector("canvas")
+        ?.removeEventListener("mousedown", handleMouseDown);
+      document
+        .querySelector("canvas")
+        ?.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);
 
   // 一个竖向的工具栏，在页面顶部，右侧显示
   return (
-    <div className="group/wrapper fixed right-0 top-1/2 z-50 -translate-y-1/2 p-8 pl-16">
+    <div
+      className={cn(
+        "group/wrapper fixed right-0 top-1/2 z-50 -translate-y-1/2 p-8 pl-16",
+        {
+          "pointer-events-none": ignoreMouse,
+        },
+      )}
+    >
       <Box
         className={cn(
           "flex w-10 origin-right scale-[10%] flex-col items-center gap-4 rounded-full bg-white px-8 py-6 opacity-25 group-hover/wrapper:scale-100 group-hover/wrapper:bg-neutral-800 group-hover/wrapper:opacity-100",
