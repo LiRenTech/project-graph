@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../components/ui/Button";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
-import { useDialog } from "../utils/dialog";
+import { Dialog } from "../utils/dialog";
 
 /**
  * 标签相关面板
@@ -15,7 +15,6 @@ export default function TagPanel({
   open: boolean;
   className: string;
 }) {
-  const dialog = useDialog();
   const [tagNameList, setTagNameList] = React.useState<
     { tagName: string; uuid: string }[]
   >([]);
@@ -37,7 +36,7 @@ export default function TagPanel({
 
   const handleClickAddTag = () => {
     if (StageManager.selectedNodeCount === 0) {
-      dialog.show({
+      Dialog.show({
         title: "没选择节点",
         content: "请先在舞台上选中一个或多个节点",
         type: "error",

@@ -8,10 +8,9 @@ import { RectangleNoteEffect } from "../core/effect/concrete/RectangleNoteEffect
 import { Camera } from "../core/stage/Camera";
 import { Stage } from "../core/stage/Stage";
 import { StageManager } from "../core/stage/stageManager/StageManager";
-import { useDialog } from "../utils/dialog";
+import { Dialog } from "../utils/dialog";
 
 export default function SearchingNodePanel() {
-  const dialog = useDialog();
   // region 搜索相关
   const [isSearchingShow, setIsSearchingShow] = React.useState(false);
   const [currentSearchResultIndex, setCurrentSearchResultIndex] =
@@ -61,7 +60,7 @@ export default function SearchingNodePanel() {
             // 摄像机对准现在的节点
             Camera.location = currentNode.rectangle.center.clone();
           } else {
-            dialog.show({
+            Dialog.show({
               title: "提示",
               type: "info",
               content: "没有找到匹配的节点",

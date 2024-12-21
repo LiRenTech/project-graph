@@ -17,7 +17,7 @@ import { RecentFileManager } from "../core/RecentFileManager";
 import { Stage } from "../core/stage/Stage";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { StartFilesManager } from "../core/StartFilesManager";
-import { useDialog } from "../utils/dialog";
+import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
 import { isDesktop } from "../utils/platform";
 
@@ -25,7 +25,6 @@ export default function RecentFilesPanel() {
   const [recentFiles, setRecentFiles] = React.useState<
     RecentFileManager.RecentFile[]
   >([]);
-  const dialog = useDialog();
 
   const [isRecentFilePanelOpen, setRecentFilePanelOpen] = useAtom(
     isRecentFilePanelOpenAtom,
@@ -55,7 +54,7 @@ export default function RecentFilesPanel() {
   const onCheckoutFile = (file: RecentFileManager.RecentFile) => {
     return () => {
       if (currentFile === Stage.Path.draftName) {
-        dialog.show({
+        Dialog.show({
           title: "真的要切换吗？",
           content: "您现在的新建草稿没有保存，是否要切换项目？",
           buttons: [
@@ -75,7 +74,7 @@ export default function RecentFilesPanel() {
         if (StageSaveManager.isSaved()) {
           checkoutFile(file);
         } else {
-          dialog.show({
+          Dialog.show({
             title: "切换失败",
             content: "由于您当前的文件没有保存，请先保存后再切换文件",
             type: "error",
@@ -89,7 +88,7 @@ export default function RecentFilesPanel() {
       const path = file.path;
       setFile(decodeURIComponent(path));
       if (isDesktop && !path.endsWith(".json")) {
-        dialog.show({
+        Dialog.show({
           title: "请选择一个JSON文件",
           type: "error",
         });
@@ -98,7 +97,7 @@ export default function RecentFilesPanel() {
       RecentFileManager.openFileByPath(path);
       setRecentFilePanelOpen(false);
     } catch (error) {
-      dialog.show({
+      Dialog.show({
         title: "请选择正确的JSON文件",
         content: String(error),
         type: "error",
@@ -109,13 +108,13 @@ export default function RecentFilesPanel() {
     return async () => {
       const addSuccess = await StartFilesManager.addStartFile(path);
       if (!addSuccess) {
-        dialog.show({
+        Dialog.show({
           title: "文件添加失败",
           content: `可能是重复了：${path}`,
           type: "error",
         });
       } else {
-        dialog.show({
+        Dialog.show({
           title: "添加成功",
           content: `已经成功添加到快速启动界面的列表：${path}`,
           type: "success",

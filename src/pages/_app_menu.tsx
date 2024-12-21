@@ -39,7 +39,6 @@ import {
   isRecentFilePanelOpenAtom,
 } from "../state";
 import { cn } from "../utils/cn";
-import { useDialog } from "../utils/dialog";
 import { isDesktop } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { dataDir } from "@tauri-apps/api/path";
@@ -51,6 +50,7 @@ import { Stage } from "../core/stage/Stage";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { TextNode } from "../core/stageObject/entity/TextNode";
+import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
 
 export default function AppMenu({
@@ -61,7 +61,6 @@ export default function AppMenu({
   open: boolean;
 }) {
   const navigate = useNavigate();
-  const dialog = useDialog();
   const [file, setFile] = useAtom(fileAtom);
   const { t } = useTranslation("appMenu");
   const [, setRecentFilePanelOpen] = useAtom(isRecentFilePanelOpenAtom);
@@ -72,7 +71,7 @@ export default function AppMenu({
       StageManager.destroy();
       setFile("Project Graph");
     } else {
-      dialog.show({
+      Dialog.show({
         title: "未保存",
         content: "是否保存当前文件？",
         buttons: [
@@ -91,7 +90,7 @@ export default function AppMenu({
 
   const onOpen = async () => {
     if (!StageSaveManager.isSaved()) {
-      dialog.show({
+      Dialog.show({
         title: "未保存",
         content: "是否保存当前文件？",
         buttons: [
@@ -124,7 +123,7 @@ export default function AppMenu({
       return;
     }
     if (isDesktop && !path.endsWith(".json")) {
-      dialog.show({
+      Dialog.show({
         title: "请选择一个JSON文件",
         type: "error",
       });
@@ -135,7 +134,7 @@ export default function AppMenu({
       // 更改file
       setFile(path);
     } catch (e) {
-      dialog.show({
+      Dialog.show({
         title: "请选择正确的JSON文件",
         content: String(e),
         type: "error",
@@ -158,7 +157,7 @@ export default function AppMenu({
     try {
       await StageSaveManager.saveHandle(path_, data);
     } catch {
-      await dialog.show({
+      await Dialog.show({
         title: "保存失败",
         content: "保存失败，请重试",
       });
@@ -186,7 +185,7 @@ export default function AppMenu({
       await StageSaveManager.saveHandle(path, data);
       setFile(path);
     } catch {
-      await dialog.show({
+      await Dialog.show({
         title: "保存失败",
         content: "保存失败，请重试",
       });
@@ -205,7 +204,7 @@ export default function AppMenu({
         true,
       );
     } catch {
-      await dialog.show({
+      await Dialog.show({
         title: "备份失败",
         content: "备份失败，请重试",
       });
@@ -231,7 +230,7 @@ export default function AppMenu({
     try {
       await StageSaveManager.saveSvgHandle(path, data);
     } catch {
-      await dialog.show({
+      await Dialog.show({
         title: "保存失败",
         content: "保存失败，请重试",
       });
@@ -243,7 +242,7 @@ export default function AppMenu({
       (entity) => entity instanceof TextNode,
     );
     if (selectedNodes.length === 0) {
-      dialog.show({
+      Dialog.show({
         title: "没有选中节点",
         content: "请先至少选择一个节点再使用此功能",
         type: "error",
@@ -258,7 +257,7 @@ export default function AppMenu({
       (entity) => entity instanceof TextNode,
     );
     if (selectedNodes.length === 0) {
-      dialog.show({
+      Dialog.show({
         title: "没有选中节点",
         content:
           "请先选中一个根节点再使用此功能，并且根节点所形成的结构必须为树状结构",
@@ -266,7 +265,7 @@ export default function AppMenu({
       });
       return;
     } else if (selectedNodes.length > 1) {
-      dialog.show({
+      Dialog.show({
         title: "选中节点数量过多",
         content: "只能选中一个根节点，并且根节点所形成的结构必须为树状结构",
         type: "error",
@@ -274,7 +273,7 @@ export default function AppMenu({
       return;
     }
     if (!StageManager.isTree(selectedNodes[0])) {
-      dialog.show({
+      Dialog.show({
         title: "结构错误",
         content: "根节点所形成的结构必须为树状结构",
         type: "error",
@@ -299,7 +298,7 @@ export default function AppMenu({
     try {
       await StageSaveManager.saveMarkdownHandle(path, selectedNodes[0]);
     } catch {
-      await dialog.show({
+      await Dialog.show({
         title: "保存失败",
         content: "保存失败，请重试",
       });
@@ -372,7 +371,7 @@ export default function AppMenu({
         <Col
           icon={<FolderCog />}
           onClick={async () => {
-            dialog.show({
+            Dialog.show({
               title: "数据文件夹位置",
               type: "info",
               code: await dataDir(),
@@ -385,7 +384,7 @@ export default function AppMenu({
         <Col
           icon={<FolderOpen />}
           onClick={() => {
-            dialog.show({
+            Dialog.show({
               title: "数据文件夹位置",
               type: "info",
               code: file,
@@ -465,7 +464,7 @@ export default function AppMenu({
         <Col
           icon={<TestTube2 />}
           onClick={() =>
-            dialog.show({
+            Dialog.show({
               title: "舞台序列化",
               type: "info",
               code: JSON.stringify(StageDumper.dump(), null, 2),

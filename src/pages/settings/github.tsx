@@ -1,15 +1,14 @@
-import React from "react";
-import { useDialog } from "../../utils/dialog";
-import { ButtonField } from "./_field";
-import { open } from "@tauri-apps/plugin-shell";
-import { isMobile } from "../../utils/platform";
-import { fetch } from "@tauri-apps/plugin-http";
 import { Octokit } from "@octokit/rest";
-import { Settings } from "../../core/Settings";
+import { fetch } from "@tauri-apps/plugin-http";
+import { open } from "@tauri-apps/plugin-shell";
 import { LogIn, User } from "lucide-react";
+import React from "react";
+import { Settings } from "../../core/Settings";
+import { Dialog } from "../../utils/dialog";
+import { isMobile } from "../../utils/platform";
+import { ButtonField } from "./_field";
 
 export default function GithubPage() {
-  const dialog = useDialog();
   const [logining, setLogining] = React.useState(false);
   const [user, setUser] = React.useState("");
 
@@ -19,7 +18,7 @@ export default function GithubPage() {
 
   const login = async () => {
     if (!import.meta.env.LR_GITHUB_CLIENT_SECRET) {
-      await dialog.show({
+      await Dialog.show({
         title: "登录 Github",
         content: "此环境不支持 Github 登录",
         type: "error",
@@ -27,7 +26,7 @@ export default function GithubPage() {
       return;
     }
     if (isMobile) {
-      await dialog.show({
+      await Dialog.show({
         title: "登录 Github",
         content:
           "Android 暂不支持 Github 登录，具体请见 https://v2.tauri.app/plugin/http-client/",
@@ -37,7 +36,7 @@ export default function GithubPage() {
     }
     setLogining(true);
     try {
-      const dialog1 = await dialog.show({
+      const dialog1 = await Dialog.show({
         title: "登录 Github",
         content:
           "点击继续后，将会打开一个浏览器窗口，请在浏览器中登录 Github，然后复制网页中显示的授权码，返回到本页面粘贴授权码。",
@@ -55,7 +54,7 @@ export default function GithubPage() {
       );
       url1.searchParams.set("scope", "read:user repo");
       await open(url1.href);
-      const dialog2 = await dialog.show({
+      const dialog2 = await Dialog.show({
         title: "登录 Github",
         content: "请输入授权码",
         input: true,
@@ -90,13 +89,13 @@ export default function GithubPage() {
       Settings.set("githubToken", token.access_token);
       Settings.set("githubUser", user.data.login);
       setUser(user.data.login);
-      await dialog.show({
+      await Dialog.show({
         title: "登录 Github",
         content: `登录成功，${user.data.login}`,
         type: "success",
       });
     } catch (e) {
-      await dialog.show({
+      await Dialog.show({
         title: "登录 Github",
         content:
           "发生错误，请检查网络连接或稍后再试，这不是 bug，不要反馈到 Issues！！！" +

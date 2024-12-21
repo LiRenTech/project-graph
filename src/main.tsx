@@ -9,6 +9,7 @@ import { RouterProvider, createMemoryRouter } from "react-router-dom";
 import { PromptManager } from "./core/ai/PromptManager";
 import { TextRiseEffect } from "./core/effect/concrete/TextRiseEffect";
 import { LastLaunch } from "./core/LastLaunch";
+import { MouseLocation } from "./core/MouseLocation";
 import { RecentFileManager } from "./core/RecentFileManager";
 import { EdgeRenderer } from "./core/render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "./core/render/canvas2d/renderer";
@@ -21,7 +22,6 @@ import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeColli
 import { StageStyleManager } from "./core/stageStyle/StageStyleManager";
 import { StartFilesManager } from "./core/StartFilesManager";
 import "./index.pcss";
-import { DialogProvider } from "./utils/dialog";
 import { PopupDialogProvider } from "./utils/popupDialog";
 
 const router = createMemoryRouter(routes);
@@ -71,6 +71,7 @@ async function loadSyncModules() {
   StageHistoryManager.init();
   StageStyleManager.init();
   SoundService.init();
+  MouseLocation.init();
 }
 
 /** 加载语言文件 */
@@ -119,10 +120,8 @@ async function loadStartFile() {
 /** 渲染应用 */
 async function renderApp() {
   createRoot(el).render(
-    <DialogProvider>
-      <PopupDialogProvider>
-        <Routes />
-      </PopupDialogProvider>
-    </DialogProvider>,
+    <PopupDialogProvider>
+      <Routes />
+    </PopupDialogProvider>,
   );
 }

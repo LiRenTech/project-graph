@@ -5,7 +5,7 @@ import { Settings } from "../core/Settings";
 import { Canvas } from "../core/stage/Canvas";
 import { Stage } from "../core/stage/Stage";
 import { StageStyleManager } from "../core/stageStyle/StageStyleManager";
-import { useDialog } from "../utils/dialog";
+import { Dialog } from "../utils/dialog";
 import DetailsEditPanel from "./_details_edit_panel";
 import HintText from "./_hint_text";
 import SearchingNodePanel from "./_searching_node_panel";
@@ -14,7 +14,6 @@ import Toolbar from "./_toolbar";
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
 
-  const dialog = useDialog();
   const [cursorName, setCursorName] = React.useState("default");
   const [bgAlpha, setBgAlpha] = React.useState(1);
 
@@ -44,7 +43,7 @@ export default function Home() {
       Controller.init();
       Controller.setCursorName = setCursorName;
     } else {
-      dialog.show({
+      Dialog.show({
         title: "错误",
         type: "error",
         content: "canvas元素不存在",

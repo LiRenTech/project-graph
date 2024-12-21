@@ -40,7 +40,7 @@ import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
-import { useDialog } from "../utils/dialog";
+import { Dialog } from "../utils/dialog";
 import { usePopupDialog } from "../utils/popupDialog";
 
 interface ToolbarItemProps {
@@ -222,7 +222,6 @@ function AlignNodePanel() {
  */
 export default function Toolbar({ className = "" }: { className?: string }) {
   const popupDialog = usePopupDialog();
-  const dialog = useDialog();
   const [isCopyClearShow, setIsCopyClearShow] = useState(false);
   const [isHaveSelectedNode, setSsHaveSelectedNode] = useState(false);
   const [isHaveSelectedNodeOverTwo, setSsHaveSelectedNodeOverTwo] =
@@ -412,7 +411,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<BrainCircuit />}
             handleFunction={() => {
               if (ApiKeyManager.getKeyArk().length === 0) {
-                dialog.show({
+                Dialog.show({
                   title: "提示",
                   content: "当前为非官方构建，请使用官方构建方可使用AI功能。",
                   type: "info",

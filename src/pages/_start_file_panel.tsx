@@ -21,12 +21,11 @@ import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { StartFilesManager } from "../core/StartFilesManager";
 import { fileAtom } from "../state";
 import { cn } from "../utils/cn";
-import { useDialog } from "../utils/dialog";
+import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
 import { isDesktop } from "../utils/platform";
 
 export default function StartFilePanel({ open = false }: { open: boolean }) {
-  const dialog = useDialog();
   const [startFiles, setStartFiles] = React.useState<
     StartFilesManager.StartFile[]
   >([]);
@@ -51,14 +50,14 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
   const onClearList = async () => {
     const clearSuccess = await StartFilesManager.clearStartFiles();
     if (clearSuccess) {
-      dialog.show({
+      Dialog.show({
         title: "清空成功",
         content: "已清空启动文件列表",
         type: "success",
       });
       updateStartFiles();
     } else {
-      dialog.show({
+      Dialog.show({
         title: "清空失败",
         content: "启动文件列表为空",
         type: "error",
@@ -83,7 +82,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
       return;
     }
     if (isDesktop && !path.endsWith(".json")) {
-      dialog.show({
+      Dialog.show({
         title: "请选择一个JSON文件",
         type: "error",
       });
@@ -92,7 +91,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
     try {
       const addSuccess = await StartFilesManager.addStartFile(path);
       if (!addSuccess) {
-        dialog.show({
+        Dialog.show({
           title: "文件添加失败",
           content: `可能是重复了：${path}`,
           type: "error",
@@ -100,7 +99,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
       }
       updateStartFiles();
     } catch (e) {
-      dialog.show({
+      Dialog.show({
         title: "请选择正确的JSON文件",
         content: String(e),
         type: "error",
@@ -113,7 +112,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
         if (res) {
           setCurrentStartFile(path);
         } else {
-          dialog.show({
+          Dialog.show({
             title: "文件切换失败",
             content: `文件不存在：${path}`,
             type: "error",
@@ -125,7 +124,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
   const onLoadCurrentStartFile = (path: string) => {
     return function () {
       if (currentFile === "Project Graph") {
-        dialog.show({
+        Dialog.show({
           title: "真的要切换吗？",
           content: "您现在的新建草稿没有保存，是否要切换项目？",
           buttons: [
@@ -145,7 +144,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
         if (StageSaveManager.isSaved()) {
           checkoutFile(path);
         } else {
-          dialog.show({
+          Dialog.show({
             title: "切换失败",
             content: "由于您当前的文件没有保存，请先保存后再切换文件",
             type: "error",
@@ -158,7 +157,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
     try {
       setFile(decodeURIComponent(path));
       if (isDesktop && !path.endsWith(".json")) {
-        dialog.show({
+        Dialog.show({
           title: "请选择一个JSON文件",
           type: "error",
         });
@@ -166,7 +165,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
       }
       RecentFileManager.openFileByPath(path);
     } catch (error) {
-      dialog.show({
+      Dialog.show({
         title: "请选择正确的JSON文件",
         content: String(error),
         type: "error",
@@ -180,7 +179,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
         if (res) {
           updateStartFiles();
         } else {
-          dialog.show({
+          Dialog.show({
             title: "从列表中移除失败",
             content: `文件不存在：${path}`,
             type: "error",

@@ -4,12 +4,11 @@ import { BookOpen, Box, PartyPopper, Plug, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Button from "../../components/ui/Button";
 import Switch from "../../components/ui/Switch";
-import { useDialog } from "../../utils/dialog";
+import { Dialog } from "../../utils/dialog";
 import { Field } from "./_field";
 
 export default function PluginsPage() {
   const { t } = useTranslation("plugins");
-  const dialog = useDialog();
 
   const install = async () => {
     const path = await openFile({
@@ -21,7 +20,7 @@ export default function PluginsPage() {
       ],
     });
     if (!path) return;
-    await dialog.show({
+    await Dialog.show({
       title: t("install.warning.title"),
       content: t("install.warning.content", {
         name: "plugin name",

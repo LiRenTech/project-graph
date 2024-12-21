@@ -1,11 +1,11 @@
-import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
-import { StageManager } from "./stageManager/StageManager";
-import { Renderer } from "../render/canvas2d/renderer";
-import { Vector } from "../dataStruct/Vector";
-import { Stage } from "./Stage";
-import { Entity } from "../stageObject/StageObject";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
+import { Vector } from "../dataStruct/Vector";
+import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
+import { Renderer } from "../render/canvas2d/renderer";
 import { Settings } from "../Settings";
+import { Entity } from "../stageObject/StageObject";
+import { Stage } from "./Stage";
+import { StageManager } from "./stageManager/StageManager";
 
 /**
  * 摄像机
@@ -88,8 +88,7 @@ export namespace Camera {
     // 获得速度的大小和方向
 
     if (Number.isNaN(location.x) || Number.isNaN(location.y)) {
-      // const dialog = useDialog();
-      // dialog.show({
+      //       // Dialog.show({
       //   title: "派蒙",
       //   content: "前面的区域以后再来探索吧？",
       //   type: "error",

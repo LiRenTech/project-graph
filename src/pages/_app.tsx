@@ -16,7 +16,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "../components/ui/Button";
-import Dialog from "../components/ui/Dialog";
 import IconButton from "../components/ui/IconButton";
 import PopupDialog from "../components/ui/PopupDialog";
 import { Settings } from "../core/Settings";
@@ -25,7 +24,7 @@ import { StageDumper } from "../core/stage/StageDumper";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { fileAtom } from "../state";
 import { cn } from "../utils/cn";
-import { useDialog } from "../utils/dialog";
+import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
 import { appScale, isDesktop, isMobile } from "../utils/platform";
 import AiPanel from "./_ai_panel";
@@ -50,7 +49,6 @@ export default function App() {
   const location = useLocation();
   const [file] = useAtom(fileAtom);
   const filename = React.useMemo(() => PathString.absolute2file(file), [file]);
-  const dialog = useDialog();
   const [useNativeTitleBar, setUseNativeTitleBar] = React.useState(false);
   const { t } = useTranslation("app");
 
@@ -98,7 +96,7 @@ export default function App() {
       e.preventDefault();
       try {
         if (file === Stage.Path.draftName) {
-          await dialog.show({
+          await Dialog.show({
             title: "真的要关闭吗？",
             content: "您现在的新建草稿没有保存，是否要关闭项目？",
             buttons: [
@@ -124,7 +122,7 @@ export default function App() {
             if (StageSaveManager.isSaved()) {
               getCurrentWindow().destroy();
             } else {
-              await dialog.show({
+              await Dialog.show({
                 title: "真的要关闭吗？",
                 content: "您现在的没有保存，是否要关闭项目？",
                 buttons: [
@@ -147,7 +145,7 @@ export default function App() {
           }
         }
       } catch {
-        await dialog.show({
+        await Dialog.show({
           title: "保存失败",
           content: "保存失败，请重试",
         });
@@ -212,7 +210,6 @@ export default function App() {
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
-      <Dialog />
       <PopupDialog />
       <ErrorHandler />
       {/* 叠加层，显示窗口控件 */}
@@ -229,7 +226,7 @@ export default function App() {
           onClick={(e) => {
             if (location.pathname !== "/") {
               if (location.pathname.startsWith("/welcome")) {
-                dialog.show({
+                Dialog.show({
                   title: "Skip Setup?",
                   content: "Are you sure you want to skip the setup process?",
                   buttons: [
