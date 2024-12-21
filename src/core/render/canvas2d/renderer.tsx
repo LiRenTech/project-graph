@@ -651,23 +651,17 @@ export namespace Renderer {
   }
 
   /**
-   *
-   * @param location viewLocation
-   * @param defaultValue 文本框默认值
-   * @param onChange 文本框内容变化时的回调函数
-   * @param style css样式
-   * @param el input|textarea
-   * @returns
+   * 创建一个输入框
    */
   export function input(
     location: Vector,
     defaultValue: string,
     onChange: (value: string) => void = () => {},
     style: Partial<CSSStyleDeclaration> = {},
-    el: "input" | "textarea" = "input",
   ): Promise<string> {
     return new Promise((resolve) => {
-      const inputElement = document.createElement(el);
+      const inputElement = document.createElement("input");
+      inputElement.type = "text";
       inputElement.value = defaultValue;
       inputElement.style.position = "fixed";
       inputElement.style.top = `${location.y}px`;
@@ -677,7 +671,6 @@ export namespace Renderer {
       inputElement.focus();
       inputElement.select();
       const removeElement = () => {
-        onChange(inputElement.value);
         if (document.body.contains(inputElement)) {
           try {
             // 暂时关闭频繁弹窗报错。
@@ -686,28 +679,44 @@ export namespace Renderer {
             console.error(error);
           }
         }
-        resolve(inputElement.value);
       };
 
-      const onMouseDown = (event: Event) => {
+      const onOutsideClick = (event: Event) => {
         if (!inputElement.contains(event.target as Node)) {
+          resolve(inputElement.value);
+          onChange(inputElement.value);
+          document.body.removeEventListener("click", onOutsideClick);
           removeElement();
         }
       };
       const onOutsideWheel = () => {
+        resolve(inputElement.value);
+        onChange(inputElement.value);
+        document.body.removeEventListener("click", onOutsideClick);
         removeElement();
       };
       setTimeout(() => {
-        document.body.addEventListener("mousedown", onMouseDown);
-        document.body.addEventListener("touchstart", onMouseDown);
+        document.body.addEventListener("click", onOutsideClick);
+        document.body.addEventListener("touchstart", onOutsideClick);
         document.body.addEventListener("wheel", onOutsideWheel);
-        document.body.addEventListener("touchmove", onOutsideWheel);
       }, 10);
-      inputElement.addEventListener("change", () => {
+      inputElement.addEventListener("input", () => {
         onChange(inputElement.value);
       });
       inputElement.addEventListener("blur", () => {
+        resolve(inputElement.value);
+        onChange(inputElement.value);
+        document.body.removeEventListener("click", onOutsideClick);
         removeElement();
+      });
+      inputElement.addEventListener("keydown", (event) => {
+        event.stopPropagation();
+        if (event.key === "Enter") {
+          resolve(inputElement.value);
+          onChange(inputElement.value);
+          document.body.removeEventListener("click", onOutsideClick);
+          removeElement();
+        }
       });
     });
   }
