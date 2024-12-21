@@ -1,20 +1,21 @@
 import { Color } from "../../../../../dataStruct/Color";
-import { SymmetryCurve } from "../../../../../dataStruct/shape/Curve";
 import { ProgressNumber } from "../../../../../dataStruct/ProgressNumber";
+import { SymmetryCurve } from "../../../../../dataStruct/shape/Curve";
+import { Line } from "../../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../../dataStruct/Vector";
-import { Edge } from "../../../../../stageObject/association/Edge";
 import { CircleFlameEffect } from "../../../../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../effect/concrete/LineCuttingEffect";
 import { Effect } from "../../../../../effect/effect";
 import { Camera } from "../../../../../stage/Camera";
+import { Edge } from "../../../../../stageObject/association/Edge";
+import { ConnectPoint } from "../../../../../stageObject/entity/ConnectPoint";
+import { ConnectableEntity } from "../../../../../stageObject/StageObject";
+import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
 import { Renderer } from "../../../renderer";
 import { RenderUtils } from "../../../RenderUtils";
+import { WorldRenderUtils } from "../../../WorldRenderUtils";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
-import { WorldRenderUtils } from "../../../WorldRenderUtils";
-import { ConnectableEntity } from "../../../../../stageObject/StageObject";
-import { Line } from "../../../../../dataStruct/shape/Line";
-import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
 
 export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   getCuttingEffects(edge: Edge): Effect[] {
@@ -76,7 +77,9 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       edge.target.collisionBox.getRectangle().getNormalVectorAt(end),
       Math.abs(end.subtract(start).magnitude()) / 2,
     );
-    this.renderArrowCurve(curve);
+    if (!(edge.target instanceof ConnectPoint)) {
+      this.renderArrowCurve(curve);
+    }
     this.renderText(curve, edge);
   }
 

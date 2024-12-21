@@ -1,18 +1,19 @@
 import { Color } from "../../../../../dataStruct/Color";
-import { Line } from "../../../../../dataStruct/shape/Line";
 import { ProgressNumber } from "../../../../../dataStruct/ProgressNumber";
+import { Line } from "../../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../../dataStruct/Vector";
-import { Edge } from "../../../../../stageObject/association/Edge";
 import { CircleFlameEffect } from "../../../../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../effect/concrete/LineCuttingEffect";
 import { Effect } from "../../../../../effect/effect";
 import { Camera } from "../../../../../stage/Camera";
+import { Edge } from "../../../../../stageObject/association/Edge";
+import { ConnectPoint } from "../../../../../stageObject/entity/ConnectPoint";
+import { ConnectableEntity } from "../../../../../stageObject/StageObject";
+import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
 import { Renderer } from "../../../renderer";
 import { RenderUtils } from "../../../RenderUtils";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
-import { ConnectableEntity } from "../../../../../stageObject/StageObject";
-import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
 
 /**
  * 折线渲染器
@@ -207,7 +208,10 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
           new Color(204, 204, 204),
           2 * Camera.currentScale,
         );
-        EdgeRenderer.renderArrowHead(p1, verticalDirection, 15);
+
+        if (!(edge.target instanceof ConnectPoint)) {
+          EdgeRenderer.renderArrowHead(p1, verticalDirection, 15);
+        }
       } else if (verticalDirection.y === 0) {
         // 左右
         const rate =
@@ -258,7 +262,10 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
           new Color(204, 204, 204),
           2 * Camera.currentScale,
         );
-        EdgeRenderer.renderArrowHead(p1, verticalDirection, 15);
+
+        if (!(edge.target instanceof ConnectPoint)) {
+          EdgeRenderer.renderArrowHead(p1, verticalDirection, 15);
+        }
       } else {
         // 不会出现的情况
       }
@@ -299,7 +306,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
         2 * Camera.currentScale,
       );
       // 画箭头
-      {
+      if (!(edge.target instanceof ConnectPoint)) {
         const size = 15;
         const direction = edge.target.collisionBox
           .getRectangle()

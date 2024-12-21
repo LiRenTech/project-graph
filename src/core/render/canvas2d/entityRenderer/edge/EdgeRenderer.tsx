@@ -1,18 +1,18 @@
 import { Color } from "../../../../dataStruct/Color";
 
 import { Vector } from "../../../../dataStruct/Vector";
-import { Edge } from "../../../../stageObject/association/Edge";
 import { Settings } from "../../../../Settings";
+import { Edge } from "../../../../stageObject/association/Edge";
 
+import { ConnectableEntity } from "../../../../stageObject/StageObject";
+import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
 import { Renderer } from "../../renderer";
 import { RenderUtils } from "../../RenderUtils";
+import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { StraightEdgeRenderer } from "./concrete/StraightEdgeRenderer";
 import { SymmetryCurveEdgeRenderer } from "./concrete/SymmetryCurveEdgeRenderer";
 import { VerticalPolyEdgeRenderer } from "./concrete/VerticalPolyEdgeRenderer";
-import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
-import { ConnectableEntity } from "../../../../stageObject/StageObject";
 import { EdgeRendererClass } from "./EdgeRendererClass";
-import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
 
 /**
  * 边的总渲染器单例

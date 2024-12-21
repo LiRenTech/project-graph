@@ -1,19 +1,20 @@
 import { Color } from "../../../../../dataStruct/Color";
-import { Line } from "../../../../../dataStruct/shape/Line";
 import { ProgressNumber } from "../../../../../dataStruct/ProgressNumber";
+import { Line } from "../../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../../dataStruct/Vector";
-import { Edge } from "../../../../../stageObject/association/Edge";
 import { CircleFlameEffect } from "../../../../../effect/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../effect/concrete/LineCuttingEffect";
 import { Effect } from "../../../../../effect/effect";
 import { Camera } from "../../../../../stage/Camera";
+import { Edge } from "../../../../../stageObject/association/Edge";
+import { ConnectPoint } from "../../../../../stageObject/entity/ConnectPoint";
+import { ConnectableEntity } from "../../../../../stageObject/StageObject";
+import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
+import { SvgUtils } from "../../../../svg/SvgUtils";
 import { Renderer } from "../../../renderer";
 import { RenderUtils } from "../../../RenderUtils";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
-import { ConnectableEntity } from "../../../../../stageObject/StageObject";
-import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
-import { SvgUtils } from "../../../../svg/SvgUtils";
 
 /**
  * 直线渲染器
@@ -109,15 +110,17 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         2 * Camera.currentScale,
       );
     }
-    // 画箭头
-    this.renderArrowHead(
-      edge,
-      edge.target.collisionBox
-        .getRectangle()
-        .getCenter()
-        .subtract(edge.source.collisionBox.getRectangle().getCenter())
-        .normalize(),
-    );
+    if (!(edge.target instanceof ConnectPoint)) {
+      // 画箭头
+      this.renderArrowHead(
+        edge,
+        edge.target.collisionBox
+          .getRectangle()
+          .getCenter()
+          .subtract(edge.source.collisionBox.getRectangle().getCenter())
+          .normalize(),
+      );
+    }
   }
 
   public getNormalStageSvg(edge: Edge): React.ReactNode {
