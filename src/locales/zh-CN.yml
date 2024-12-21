@@ -249,3 +249,18 @@ startFilePanel:
     clearList: 清空列表
     showAbsolutePath: 显示绝对路径
     showFileTime: 显示文件时间
+
+keys:
+  none: 未绑定
+  mouse0: 鼠标左键
+  mouse1: 鼠标中键
+  mouse2: 鼠标右键
+  mouse3: 鼠标侧键1
+  mouse4: 鼠标侧键2
+  " ": 空格
+  arrowup: 向上箭头
+  arrowdown: 向下箭头
+  arrowleft: 向左箭头
+  arrowright: 向右箭头
+  scrollup: 滚轮向上
+  scrolldown: 滚轮向下
