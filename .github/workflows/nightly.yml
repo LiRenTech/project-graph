@@ -206,6 +206,6 @@ jobs:
           cd project-graph-nightly
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add PKGBUILD
+          git add PKGBUILD .SRCINFO
           git commit -m "Bump version to 0.0.0-nightly.${{ github.sha }}"
           git push origin master
