@@ -30,9 +30,9 @@ export default function DialogComponent({
       <div
         className={cn(
           // z-[999]是PopupDialog
-          "fixed z-[998] flex max-h-[50vh] max-w-96 -translate-x-1/2 -translate-y-1/2 scale-50 transform flex-col gap-4 overflow-auto text-wrap break-words rounded-2xl p-8 text-white opacity-0 shadow-xl shadow-neutral-900",
+          "fixed left-1/2 top-1/2 z-[998] flex max-h-[50vh] max-w-96 -translate-x-1/2 -translate-y-1/2 scale-50 transform flex-col gap-4 overflow-auto text-wrap break-words rounded-2xl p-8 text-white opacity-0 shadow-xl shadow-neutral-900",
           {
-            "left-1/2 top-1/2 scale-100 opacity-100": show,
+            "scale-100 opacity-100": show,
             "bg-blue-950": type === "info",
             "bg-green-950": type === "success",
             "bg-yellow-950": type === "warning",
