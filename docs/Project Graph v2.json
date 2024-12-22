@@ -1,765 +1,461 @@
 {
-  "version": 10,
+  "version": 11,
   "nodes": [
     {
-      "location": [
-        -256.1220179706863,
-        -203.4930308266472
-      ],
-      "size": [
-        182.65594482421875,
-        60
-      ],
+      "location": [-256.1220179706863, -203.4930308266472],
+      "size": [183.91111755371094, 60],
       "text": "class Core",
       "uuid": "4b9be933-ac94-49e0-8ad1-5271baf147b9",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        32.337387439067726,
-        -499.9915202968595
-      ],
-      "size": [
-        226.59190368652344,
-        60
-      ],
+      "location": [32.337387439067726, -499.9915202968595],
+      "size": [229, 60],
       "text": "disposables[]",
       "uuid": "9f4aaa0d-e726-42f1-b61a-ce883cf020f9",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        84.0674279156373,
-        -332.0916759905181
-      ],
-      "size": [
-        183.67991638183594,
-        60
-      ],
+      "location": [84.0674279156373, -332.0916759905181],
+      "size": [183.66961669921875, 60],
       "text": "tickables[]",
       "uuid": "8a084019-71c9-4da4-8070-02f35bbc5294",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        315.27693918459147,
-        -503.45317471410857
-      ],
-      "size": [
-        335.8078918457031,
-        60
-      ],
+      "location": [315.27693918459147, -503.45317471410857],
+      "size": [338.0970458984375, 60],
       "text": "interface Disposable",
       "uuid": "41855f81-5d1b-4ad9-a7f3-df704ede99f9",
       "details": "任何需要销毁函数的东西",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        352.2675228350651,
-        -333.40272159098134
-      ],
-      "size": [
-        295.9678955078125,
-        60
-      ],
+      "location": [352.2675228350651, -333.40272159098134],
+      "size": [296.76666259765625, 60],
       "text": "interface Tickable",
       "uuid": "2b824f3a-6419-4c26-9dbb-3b941622f7f3",
       "details": "任何能迭代循环的东西",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        721.5713222002887,
-        -495.44930353492913
-      ],
-      "size": [
-        244.09591674804688,
-        60
-      ],
+      "location": [721.5713222002887, -495.44930353492913],
+      "size": [245.46896362304688, 60],
       "text": "dispose(): void",
       "uuid": "e10b10bf-8dbc-4f4a-a586-6a2ab2a891bc",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        719.5181965460256,
-        -332.7968621221624
-      ],
-      "size": [
-        183.32794189453125,
-        60
-      ],
+      "location": [719.5181965460256, -332.7968621221624],
+      "size": [182.46896362304688, 60],
       "text": "tick(): void",
       "uuid": "22876b8f-5359-4eff-87d6-7aa043a0bc61",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        51.55295431005845,
-        -123.21787599481758
-      ],
-      "size": [
-        159.4559326171875,
-        60
-      ],
+      "location": [51.55295431005845, -123.21787599481758],
+      "size": [160.1997833251953, 60],
       "text": "plugins[]",
       "uuid": "094be541-0518-431a-a753-bfb48267865c",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        347.44149083589423,
-        -114.98549273157457
-      ],
-      "size": [
-        205.72792053222656,
-        60
-      ],
+      "location": [347.44149083589423, -114.98549273157457],
+      "size": [207.2715606689453, 60],
       "text": "class Plugin",
       "uuid": "4b3e7525-3723-463f-96b7-1e8a58fc55f2",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        659.991399530592,
-        -196.10908144111042
-      ],
-      "size": [
-        159.7439422607422,
-        60
-      ],
+      "location": [659.991399530592, -196.10908144111042],
+      "size": [161, 60],
       "text": "id: string",
       "uuid": "1ca9874c-a475-4b95-907a-d817b0d9ae66",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        652.5998156571404,
-        -120.09274502983807
-      ],
-      "size": [
-        215.13592529296875,
-        60
-      ],
+      "location": [652.5998156571404, -120.09274502983807],
+      "size": [217, 60],
       "text": "name: string",
       "uuid": "b68ded35-556b-4fb3-8506-cbe6dd6c143c",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        652.5998156571404,
-        -35.82308210848976
-      ],
-      "size": [
-        257.1519470214844,
-        60
-      ],
+      "location": [652.5998156571404, -35.82308210848976],
+      "size": [259.0328063964844, 60],
       "text": "worker: Worker",
       "uuid": "e99098a8-975b-447e-9069-d5e45dc79d6b",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -287.922499749185,
-        -687.3884001089243
-      ],
-      "size": [
-        110.62396240234375,
-        60
-      ],
+      "location": [-287.922499749185, -687.3884001089243],
+      "size": [112, 60],
       "text": "stage",
       "uuid": "928d667b-c765-45a4-a992-eba81325a192",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -418.77396151357266,
-        -566.9199649166181
-      ],
-      "size": [
-        157.53594970703125,
-        60
-      ],
+      "location": [-418.77396151357266, -566.9199649166181],
+      "size": [159.0953369140625, 60],
       "text": "renderer",
       "uuid": "b5dbfe83-1e5a-406f-a0e7-1498c6de989a",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -520.5465430669503,
-        -289.4833036706898
-      ],
-      "size": [
-        172.4479522705078,
-        60
-      ],
+      "location": [-520.5465430669503, -289.4833036706898],
+      "size": [173.1256103515625, 60],
       "text": "controller",
       "uuid": "8bcefcbf-5b85-4a30-bf88-3c3f9777f535",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -534.0462848352149,
-        -137.9368123434751
-      ],
-      "size": [
-        138.6239471435547,
-        60
-      ],
+      "location": [-534.0462848352149, -137.9368123434751],
+      "size": [139.88949584960938, 60],
       "text": "camera",
       "uuid": "7f4f5e8b-8e15-43dc-ac98-893a1c6c72a2",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -515.9386028696049,
-        16.838875713466734
-      ],
-      "size": [
-        147.55194091796875,
-        60
-      ],
+      "location": [-515.9386028696049, 16.838875713466734],
+      "size": [149, 60],
       "text": "settings",
       "uuid": "34a3273e-1453-4fb4-b97d-bbe8264e3d9b",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -710.456629781472,
-        -566.3777213282891
-      ],
-      "size": [
-        248.99191284179688,
-        60
-      ],
+      "location": [-710.456629781472, -566.3777213282891],
+      "size": [250.9794464111328, 60],
       "text": "class Renderer",
       "uuid": "b70ea90d-24f1-4bd6-8d9b-8490adb1ee2b",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -1270.8406077377385,
-        -567.2492678835921
-      ],
-      "size": [
-        512.31982421875,
-        60
-      ],
+      "location": [-1270.8406077377385, -567.2492678835921],
+      "size": [517.0250244140625, 60],
       "text": "ctx: CanvasRenderingContext2D",
       "uuid": "434ba9ee-8b4b-4039-90d6-e85646de0529",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -843.5078030390805,
-        -290.0694963824259
-      ],
-      "size": [
-        261.1839141845703,
-        60
-      ],
+      "location": [-843.5078030390805, -290.0694963824259],
+      "size": [262.91111755371094, 60],
       "text": "class Controller",
       "uuid": "27f5bed0-ee2e-4516-8e9a-8a3f43e151b4",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -1254.3499091865667,
-        -450.433770675688
-      ],
-      "size": [
-        269.5679016113281,
-        60
-      ],
+      "location": [-1254.3499091865667, -450.433770675688],
+      "size": [269.7943572998047, 60],
       "text": "register(...): void",
       "uuid": "3072d354-fa4b-407d-a433-d60471a2886e",
       "details": "id: string\nbind: Bind\nonDown: () => void\nonUp: () => void",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -1308.083229691768,
-        -287.9106889647124
-      ],
-      "size": [
-        372.09588623046875,
-        60
-      ],
+      "location": [-1308.083229691768, -287.9106889647124],
+      "size": [374.33636474609375, 60],
       "text": "mouseLocation: Vector",
       "uuid": "19165ae4-26ea-42bb-b78a-71edd301a330",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -879.5008844477045,
-        -133.74256678210259
-      ],
-      "size": [
-        227.55191040039062,
-        60
-      ],
+      "location": [-879.5008844477045, -133.74256678210259],
+      "size": [229.87911987304688, 60],
       "text": "class Camera",
       "uuid": "62e75f2c-7b66-465a-b5f9-464baf094744",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -1038.964671181249,
-        -134.63758076997345
-      ],
-      "size": [
-        52.6719970703125,
-        60
-      ],
+      "location": [-1038.964671181249, -134.63758076997345],
+      "size": [52, 60],
       "text": "...",
       "uuid": "6bc76cbb-ac87-4853-b216-16b5d822efda",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -577.8991637232975,
-        -689.9563039154683
-      ],
-      "size": [
-        198.367919921875,
-        60
-      ],
+      "location": [-577.8991637232975, -689.9563039154683],
+      "size": [200.07177734375, 60],
       "text": "class Stage",
       "uuid": "31434a0c-d551-4510-8009-36bd697aac96",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -701.627706571036,
-        -688.5691517367694
-      ],
-      "size": [
-        52.6719970703125,
-        60
-      ],
+      "location": [-701.627706571036, -688.5691517367694],
+      "size": [52, 60],
       "text": "...",
       "uuid": "337c8260-21b7-4124-ab7d-b963e6f7bf25",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -930.1850734844857,
-        23.898888531296706
-      ],
-      "size": [
-        314.78387451171875,
-        60
-      ],
+      "location": [-930.1850734844857, 23.898888531296706],
+      "size": [314.85467529296875, 60],
       "text": "async get<T>(...): T",
       "uuid": "0e0640ea-02f7-49df-af22-f294f310fce4",
       "details": "namespace: string\nkey: string",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -873.8616751182336,
-        141.44686946777597
-      ],
-      "size": [
-        294.9118957519531,
-        60
-      ],
+      "location": [-873.8616751182336, 141.44686946777597],
+      "size": [294.32366943359375, 60],
       "text": "async set(...): void",
       "uuid": "a1265b8a-b1dc-4e2f-8c90-8637ecbf813c",
       "details": "namespace: string\nkey: string\nvalue: any",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -542.3786948215264,
-        497.8514437585622
-      ],
-      "size": [
-        181.0559539794922,
-        60
-      ],
+      "location": [-542.3786948215264, 497.8514437585622],
+      "size": [182.54766845703125, 60],
       "text": "project.pg",
       "uuid": "81157c3e-4628-42ee-8577-7cf48e8ce9aa",
       "details": "application/zip",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -275.186947093806,
-        286.2269077700043
-      ],
-      "size": [
-        136.19195556640625,
-        60
-      ],
+      "location": [-225.56736389830485, 282.9174042382585],
+      "size": [137.13858032226562, 60],
       "text": "version",
       "uuid": "811083e8-ab11-4f78-b4fc-0f6cad695750",
       "details": "text/plain",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        23.431008908859013,
-        347.2760857574792
-      ],
-      "size": [
-        41.43998718261719,
-        60
-      ],
-      "text": "1",
-      "uuid": "531b9612-2e29-4959-ba9d-386afca8f040",
-      "details": "application/json",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "type": "core:text_node"
-    },
-    {
-      "location": [
-        22.143282551005456,
-        444.1070716731199
-      ],
-      "size": [
-        46.43199157714844,
-        60
-      ],
-      "text": "2",
-      "uuid": "57ec3c5b-0ae0-43ab-b9ba-c2d8bfe27684",
-      "details": "application/json",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "type": "core:text_node"
-    },
-    {
-      "location": [
-        20.885737279381345,
-        542.1956028602455
-      ],
-      "size": [
-        47.167999267578125,
-        60
-      ],
-      "text": "3",
-      "uuid": "a52675e9-6954-4f6b-9f9e-36d8df38db7b",
-      "details": "application/json",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "type": "core:text_node"
-    },
-    {
-      "location": [
-        18.370646736137672,
-        637.7690435041167
-      ],
-      "size": [
-        52.6719970703125,
-        60
-      ],
-      "text": "...",
-      "uuid": "9e42dd05-c6f1-45b1-be29-b6fcbfcd0005",
-      "details": "application/json",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "type": "core:text_node"
-    },
-    {
-      "location": [
-        -243.40840307771214,
-        472.200884698449
-      ],
-      "size": [
-        152.12794494628906,
-        60
-      ],
-      "text": "entities/",
+      "location": [-243.40840307771214, 472.200884698449],
+      "size": [209, 60],
+      "text": "entities.json",
       "uuid": "91b58bcc-7995-4937-825c-d33807e12cfd",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -304.9647195246187,
-        831.4477565114274
-      ],
-      "size": [
-        135.1359405517578,
-        60
-      ],
+      "location": [-476.9079553547695, 816.0585595218657],
+      "size": [136.79588317871094, 60],
       "text": "assets/",
       "uuid": "5a2bcdef-8c9e-4c95-8bae-423332b54e8b",
       "details": "",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -107.44484955405227,
-        775.1998925022139
-      ],
-      "size": [
-        181.9839324951172,
-        60
-      ],
-      "text": "[uuid].png",
+      "location": [-279.38808538420307, 759.8106955126522],
+      "size": [116, 60],
+      "text": "[uuid]",
       "uuid": "e6b0d7d5-63b2-4564-8130-ec199cbb9416",
-      "details": "image/png",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "details": "application/octet-stream",
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [
-        -108.03263219666584,
-        885.2192263899459
-      ],
-      "size": [
-        171.4559326171875,
-        60
-      ],
-      "text": "[uuid].jpg",
+      "location": [-277.76090273270177, 887.4790438397363],
+      "size": [116, 60],
+      "text": "[uuid]",
       "uuid": "053c3015-8d33-47d2-8bfa-41d45d857af4",
-      "details": "image/jpeg",
-      "color": [
-        0,
-        0,
-        0,
-        0
-      ],
+      "details": "application/octet-stream",
+      "color": [0, 0, 0, 0],
       "type": "core:text_node"
+    },
+    {
+      "location": [26.47831147231247, 306.8038239345931],
+      "size": [220, 60],
+      "text": "文档的版本号",
+      "uuid": "d62398ef-ad7d-4603-b10d-d0db9823002b",
+      "details": "",
+      "color": [168, 85, 247, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-187.4372249705147, 611.1115864809774],
+      "size": [401, 60],
+      "text": "JSON数组，存储所有节点",
+      "uuid": "8a28ed07-efa4-4067-9a4a-6b7d0129a3fc",
+      "details": "",
+      "color": [168, 85, 247, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [352.4162523068037, 346.8935417638242],
+      "size": [59, 60],
+      "text": "[ ]",
+      "uuid": "0a1fcafd-3260-4c36-8743-29065322702e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [426.2942983978832, 469.2767931862627],
+      "size": [61, 60],
+      "text": "{ }",
+      "uuid": "4d8e9416-9fb4-4882-9451-e06c66579912",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [567.4344461539753, 592.7693439356996],
+      "size": [95, 60],
+      "text": "type",
+      "uuid": "695ab1d8-4b46-4934-8804-7d3092802eb9",
+      "details": "string",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [719.6011679535119, 617.0094087708336],
+      "size": [251.2278594970703, 60],
+      "text": "core:text_node",
+      "uuid": "dcf31d1c-9459-4a30-87e7-11d7d9f20923",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [417.4730391631275, 645.1083147545552],
+      "size": [113, 60],
+      "text": "width",
+      "uuid": "a25b8ea6-601e-4aa6-afe4-5c3841675af5",
+      "details": "number",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [419.6783539718165, 743.2370168889009],
+      "size": [124, 60],
+      "text": "height",
+      "uuid": "879601c0-f7c3-4994-a291-72b9730ca9d3",
+      "details": "number",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [343.59499307204794, 652.8264412692716],
+      "size": [45, 60],
+      "text": "x",
+      "uuid": "0e58f1f1-f279-4c79-8bea-696e2ac91f9e",
+      "details": "number",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [348.0056226894258, 737.7234839672079],
+      "size": [45, 60],
+      "text": "y",
+      "uuid": "8fcdc80f-1735-42f0-ad1f-734cd63a8f1b",
+      "details": "number",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [556.4078721105303, 392.02672750847273],
+      "size": [138, 60],
+      "text": "data { }",
+      "uuid": "e6dc021d-fd5f-4846-96a6-3df38b4f16de",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [755.9888622968796, 403.0443518834461],
+      "size": [86.10224914550781, 60],
+      "text": "text",
+      "uuid": "c690aa9e-dba6-46dc-ac66-51c844cf01de",
+      "details": "string",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [699.7533346753115, 502.28225727991014],
+      "size": [52, 60],
+      "text": "...",
+      "uuid": "265ae47a-ab84-420c-93f1-2aee86142eeb",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-43.5469435460888, 882.47098708209],
+      "size": [403.769287109375, 60],
+      "text": "文档中的图片（raw格式）",
+      "uuid": "580cd42e-a1a3-432e-8ce1-9e3080307d82",
+      "details": "",
+      "color": [168, 85, 247, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [328.59499307204794, 281.8935417638242],
+      "size": [657.2340343785343, 536.3434751250768],
+      "uuid": "16a7755e-12c0-4db4-bd13-d25e7c40cb99",
+      "text": "JSON",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "0a1fcafd-3260-4c36-8743-29065322702e",
+        "4d8e9416-9fb4-4882-9451-e06c66579912",
+        "695ab1d8-4b46-4934-8804-7d3092802eb9",
+        "dcf31d1c-9459-4a30-87e7-11d7d9f20923",
+        "a25b8ea6-601e-4aa6-afe4-5c3841675af5",
+        "879601c0-f7c3-4994-a291-72b9730ca9d3",
+        "0e58f1f1-f279-4c79-8bea-696e2ac91f9e",
+        "8fcdc80f-1735-42f0-ad1f-734cd63a8f1b",
+        "e6dc021d-fd5f-4846-96a6-3df38b4f16de",
+        "c690aa9e-dba6-46dc-ac66-51c844cf01de",
+        "265ae47a-ab84-420c-93f1-2aee86142eeb"
+      ],
+      "details": ""
     }
   ],
   "edges": [
@@ -939,34 +635,6 @@
       "type": "core:edge"
     },
     {
-      "source": "91b58bcc-7995-4937-825c-d33807e12cfd",
-      "target": "531b9612-2e29-4959-ba9d-386afca8f040",
-      "text": "",
-      "uuid": "eb7cf965-df07-44c2-917e-426d190a3bf0",
-      "type": "core:edge"
-    },
-    {
-      "source": "91b58bcc-7995-4937-825c-d33807e12cfd",
-      "target": "57ec3c5b-0ae0-43ab-b9ba-c2d8bfe27684",
-      "text": "",
-      "uuid": "8af28fac-f044-4012-8af2-200399a766e2",
-      "type": "core:edge"
-    },
-    {
-      "source": "91b58bcc-7995-4937-825c-d33807e12cfd",
-      "target": "a52675e9-6954-4f6b-9f9e-36d8df38db7b",
-      "text": "",
-      "uuid": "5a39a8a7-9f11-4622-9a94-a91cff65c75a",
-      "type": "core:edge"
-    },
-    {
-      "source": "91b58bcc-7995-4937-825c-d33807e12cfd",
-      "target": "9e42dd05-c6f1-45b1-be29-b6fcbfcd0005",
-      "text": "",
-      "uuid": "1dccc6bf-d0b2-473e-b7ec-1a598601a18e",
-      "type": "core:edge"
-    },
-    {
       "source": "81157c3e-4628-42ee-8577-7cf48e8ce9aa",
       "target": "5a2bcdef-8c9e-4c95-8bae-423332b54e8b",
       "text": "",
@@ -1006,6 +674,111 @@
       "target": "094be541-0518-431a-a753-bfb48267865c",
       "text": "",
       "uuid": "cfc2fa96-6402-4410-bc78-39cf619a281d",
+      "type": "core:edge"
+    },
+    {
+      "source": "d62398ef-ad7d-4603-b10d-d0db9823002b",
+      "target": "811083e8-ab11-4f78-b4fc-0f6cad695750",
+      "text": "",
+      "uuid": "5c79648c-5882-4cf8-8c1d-d6fc27065cd4",
+      "type": "core:edge"
+    },
+    {
+      "source": "8a28ed07-efa4-4067-9a4a-6b7d0129a3fc",
+      "target": "91b58bcc-7995-4937-825c-d33807e12cfd",
+      "text": "",
+      "uuid": "7c8f7123-9d92-4789-8fd6-3b9326d5f5f8",
+      "type": "core:edge"
+    },
+    {
+      "source": "91b58bcc-7995-4937-825c-d33807e12cfd",
+      "target": "0a1fcafd-3260-4c36-8743-29065322702e",
+      "text": "",
+      "uuid": "acca432b-b452-4efa-a627-855ad005293d",
+      "type": "core:edge"
+    },
+    {
+      "source": "0a1fcafd-3260-4c36-8743-29065322702e",
+      "target": "4d8e9416-9fb4-4882-9451-e06c66579912",
+      "text": "",
+      "uuid": "f005dc4b-1a1a-44e2-88db-a349ac690988",
+      "type": "core:edge"
+    },
+    {
+      "source": "4d8e9416-9fb4-4882-9451-e06c66579912",
+      "target": "695ab1d8-4b46-4934-8804-7d3092802eb9",
+      "text": "",
+      "uuid": "4184232a-8f96-4e92-a433-a5f04dd04f1c",
+      "type": "core:edge"
+    },
+    {
+      "source": "695ab1d8-4b46-4934-8804-7d3092802eb9",
+      "target": "dcf31d1c-9459-4a30-87e7-11d7d9f20923",
+      "text": "",
+      "uuid": "f03ce828-3164-4197-9d5b-70309aec1f81",
+      "type": "core:edge"
+    },
+    {
+      "source": "4d8e9416-9fb4-4882-9451-e06c66579912",
+      "target": "0e58f1f1-f279-4c79-8bea-696e2ac91f9e",
+      "text": "",
+      "uuid": "c053deda-3be2-4867-97df-1faaef0a7309",
+      "type": "core:edge"
+    },
+    {
+      "source": "4d8e9416-9fb4-4882-9451-e06c66579912",
+      "target": "a25b8ea6-601e-4aa6-afe4-5c3841675af5",
+      "text": "",
+      "uuid": "00e55895-1e30-4ffb-a951-0307ef8927d1",
+      "type": "core:edge"
+    },
+    {
+      "source": "4d8e9416-9fb4-4882-9451-e06c66579912",
+      "target": "8fcdc80f-1735-42f0-ad1f-734cd63a8f1b",
+      "text": "",
+      "uuid": "456431e7-b241-4a03-8244-83d023d6fce7",
+      "type": "core:edge"
+    },
+    {
+      "source": "4d8e9416-9fb4-4882-9451-e06c66579912",
+      "target": "879601c0-f7c3-4994-a291-72b9730ca9d3",
+      "text": "",
+      "uuid": "3dfa87c6-f6fc-4f37-b903-3db6dd128d24",
+      "type": "core:edge"
+    },
+    {
+      "source": "4d8e9416-9fb4-4882-9451-e06c66579912",
+      "target": "e6dc021d-fd5f-4846-96a6-3df38b4f16de",
+      "text": "",
+      "uuid": "0203990f-8000-43e2-991a-7cbebae91617",
+      "type": "core:edge"
+    },
+    {
+      "source": "e6dc021d-fd5f-4846-96a6-3df38b4f16de",
+      "target": "c690aa9e-dba6-46dc-ac66-51c844cf01de",
+      "text": "",
+      "uuid": "ea3eb996-440d-4ead-ac6c-7df6bd4a5249",
+      "type": "core:edge"
+    },
+    {
+      "source": "e6dc021d-fd5f-4846-96a6-3df38b4f16de",
+      "target": "265ae47a-ab84-420c-93f1-2aee86142eeb",
+      "text": "",
+      "uuid": "2663d81f-2b67-42c7-897d-96de5da82df4",
+      "type": "core:edge"
+    },
+    {
+      "source": "580cd42e-a1a3-432e-8ce1-9e3080307d82",
+      "target": "053c3015-8d33-47d2-8bfa-41d45d857af4",
+      "text": "",
+      "uuid": "41e68161-f743-4710-bd13-51651c48cf47",
+      "type": "core:edge"
+    },
+    {
+      "source": "580cd42e-a1a3-432e-8ce1-9e3080307d82",
+      "target": "e6b0d7d5-63b2-4564-8130-ec199cbb9416",
+      "text": "",
+      "uuid": "5ffd4c3e-5428-4b74-8130-bc167f4a7475",
       "type": "core:edge"
     }
   ],

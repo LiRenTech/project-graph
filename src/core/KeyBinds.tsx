@@ -3,6 +3,9 @@ import { Vector } from "./dataStruct/Vector";
 
 /**
  * 用于管理快捷键绑定
+ * @example
+ * (await KeyBinds.create("move", "w", { control: true, shift: true }))
+ *   .down(() => console.log("move up"))
  */
 export namespace KeyBinds {
   export type KeyModifiers = {
@@ -68,8 +71,17 @@ export namespace KeyBinds {
   export async function create(
     id: string,
     defaultKey: string,
-    defaultModifiers: KeyModifiers,
+    defaultModifiers_: Partial<KeyModifiers> = {
+      control: false,
+      alt: false,
+      shift: false,
+    },
   ): Promise<_Bind> {
+    const defaultModifiers = {
+      control: defaultModifiers_.control || false,
+      alt: defaultModifiers_.alt || false,
+      shift: defaultModifiers_.shift || false,
+    };
     if (registered.has(id)) {
       throw new Error(`Keybind ${id} already registered.`);
     }
