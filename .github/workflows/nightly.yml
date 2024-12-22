@@ -29,6 +29,8 @@ jobs:
 
   publish-tauri:
     needs: create-release
+    outputs:
+      hash: ${{ steps.sha256sum.outputs.hash }}
     permissions:
       contents: write
     strategy:
@@ -94,6 +96,14 @@ jobs:
           $jsonObject = $jsonContent | ConvertFrom-Json
           $jsonObject.version = "0.0.0-nightly.${{ github.sha }}"
           $jsonObject | ConvertTo-Json -Depth 10 | Set-Content -Path "src-tauri/tauri.conf.json"
+
+      - id: sha256sum
+        name: calculate sha256sum (linux only)
+        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
+        run: |
+          cd src-tauri/target/release/bundle/deb
+          sha256sum Project.Graph_0.0.0-nightly.${{ github.sha }}_amd64.deb | awk '{print $1}' > sha256sum.txt
+          echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
 
       - uses: tauri-apps/tauri-action@dev
         env:
@@ -201,6 +211,9 @@ jobs:
           cd project-graph-nightly
           sed -i "s/pkgver=.*$/pkgver=r${{ github.run_number }}.${{ github.sha }}/" PKGBUILD
           sed -i "s/pkgver = .*$/pkgver = r${{ github.run_number }}.${{ github.sha }}/" .SRCINFO
+          sed -i "s/Project\.Graph_0\.0\.0-nightly\..*_amd64\.deb/Project.Graph_0.0.0-nightly.${{ github.sha }}_amd64.deb/" PKGBUILD .SRCINFO
+          sed -i "s/^sha256sums_x86_64=('.*')$/sha256sums_x86_64=('${{ needs.publish-tauri.outputs.hash }}')/" PKGBUILD
+          sed -i "s/sha256sums_x86_64 = .*$/sha256sums_x86_64 = ${{ needs.publish-tauri.outputs.hash }}/" .SRCINFO
       - name: Commit and push changes
         run: |
           cd project-graph-nightly
