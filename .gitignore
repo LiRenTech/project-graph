@@ -37,3 +37,6 @@ __pycache__/
 keystore.properties
 keystore.jks
 .xlings # xlings tools
+
+# 工程文件的备份文件
+*.backup
