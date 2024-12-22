@@ -51,7 +51,7 @@ export namespace Renderer {
    *   [渲染项的名字]: ?ms
    * }
    */
-  let timings: { [key: string]: number } = {};
+  const timings: { [key: string]: number } = {};
 
   // eslint-disable-next-line prefer-const
   export let deltaTime = 0;
@@ -95,48 +95,27 @@ export namespace Renderer {
    * @returns
    */
   export function frameTick() {
-    timings = {}; // idea：或许可以尝试全都是函数之后，来个反射拿到函数名？
-    let start = performance.now();
     const viewRectangle = getCoverWorldRectangle();
     Camera.frameTick();
-    timings.camera = performance.now() - start;
     Canvas.ctx.clearRect(0, 0, w, h);
-    start = performance.now();
     renderGrid();
-    timings.grid = performance.now() - start;
     renderPrivacyBoard(viewRectangle);
-    renderViewMoveByClickMiddle(viewRectangle, start);
-    start = performance.now();
+    renderViewMoveByClickMiddle(viewRectangle, performance.now());
     renderEdges(viewRectangle);
-    timings.edges = performance.now() - start;
-    start = performance.now();
     renderEntities(viewRectangle);
     renderTags();
     renderWarningEntities();
     renderHoverCollisionBox();
-    timings.entities = performance.now() - start;
-    start = performance.now();
     renderSelectingRectangle();
     renderCuttingLine();
     renderConnectingLine();
     rendererLayerMovingLine();
     renderDraggingFileTips();
-    start = performance.now();
     renderKeyboardOnly();
-    timings.keyboard = performance.now() - start;
-    start = performance.now();
     renderClipboard();
-    timings.clipboard = performance.now() - start;
-    start = performance.now();
     renderDebugDetails();
-    timings.details = performance.now() - start;
-    start = performance.now();
     renderSpecialKeys();
-    timings.specialKeys = performance.now() - start;
-    start = performance.now();
     renderEffects();
-    timings.effects = performance.now() - start;
-    timings.others = performance.now() - start;
   }
 
   function renderPrivacyBoard(viewRectangle: Rectangle) {

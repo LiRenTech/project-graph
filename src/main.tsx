@@ -86,9 +86,12 @@ async function loadSyncModules() {
 async function loadLanguageFiles() {
   i18next.use(initReactI18next).init({
     lng: await Settings.get("language"),
-    debug: import.meta.env.DEV,
+    // debug会影响性能，并且没什么用，所以关掉
+    // debug: import.meta.env.DEV,
+    debug: false,
     defaultNS: "",
     fallbackLng: "zh-CN",
+    saveMissing: false,
     resources: {
       en: await import("./locales/en.yml").then((m) => m.default),
       "zh-CN": await import("./locales/zh-CN.yml").then((m) => m.default),
