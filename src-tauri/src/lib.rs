@@ -91,7 +91,6 @@ fn read_mp3_file(path: String) -> Result<String, String> {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_cli::init())
         .plugin(tauri_plugin_store::Builder::new().build())
         .setup(|app| {
             #[cfg(debug_assertions)] // only include this code on debug builds
@@ -99,6 +98,8 @@ pub fn run() {
                 let window = app.get_webview_window("main").unwrap();
                 window.open_devtools();
             }
+            #[cfg(desktop)]
+            app.handle().plugin(tauri_plugin_cli::init())?;
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
