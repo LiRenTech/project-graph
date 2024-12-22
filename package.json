@@ -11,7 +11,8 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "test": "vitest",
-    "format": "prettier --write ./src"
+    "format": "prettier --write ./src",
+    "prepare": "husky"
   },
   "dependencies": {
     "@generouted/react-router": "^1.19.9",
@@ -47,8 +48,10 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.37.2",
     "globals": "^15.13.0",
+    "husky": "^9.1.7",
     "jotai": "^2.10.3",
     "jsdom": "^25.0.1",
+    "lint-staged": "^15.2.11",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
