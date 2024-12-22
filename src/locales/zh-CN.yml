@@ -262,5 +262,5 @@ keys:
   arrowdown: 向下箭头
   arrowleft: 向左箭头
   arrowright: 向右箭头
-  scrollup: 滚轮向上
-  scrolldown: 滚轮向下
+  wheelup: 滚轮向上
+  wheeldown: 滚轮向下

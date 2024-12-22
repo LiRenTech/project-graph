@@ -1,24 +1,15 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { KeyBinds } from "../../core/KeyBinds";
 import { cn } from "../../utils/cn";
 import Button from "./Button";
 
-export type KeyModifiers = {
-  control: boolean;
-  alt: boolean;
-  shift: boolean;
-};
-
 export default function KeyBind({
-  value: key,
-  modifiers,
-  onChangeKey,
-  onChangeModifiers,
+  value,
+  onChange,
 }: {
-  value: string;
-  modifiers: KeyModifiers;
-  onChangeKey: (key: string) => void;
-  onChangeModifiers: (modifiers: KeyModifiers) => void;
+  value: { key: string; modifiers: KeyBinds.KeyModifiers };
+  onChange: (value: { key: string; modifiers: KeyBinds.KeyModifiers }) => void;
 }) {
   const [choosing, setChoosing] = useState(false);
   const { t } = useTranslation("keys");
@@ -45,19 +36,29 @@ export default function KeyBind({
         end();
         return;
       }
-      onChangeKey(event.key.toLowerCase());
-      onChangeModifiers({
+      const modifiers = {
         control: event.ctrlKey,
         alt: event.altKey,
         shift: event.shiftKey,
-      });
+      };
+      onChange({ key: event.key, modifiers });
       end();
     };
     const handleMouseDown = (event: MouseEvent) => {
       event.preventDefault();
       event.stopPropagation();
-      onChangeKey(`mouse${event.button}`);
-      end();
+      const modifiers = {
+        control: event.ctrlKey,
+        alt: event.altKey,
+        shift: event.shiftKey,
+      };
+      if (event.button !== 0) {
+        onChange({
+          key: `mouse${event.button}`,
+          modifiers,
+        });
+        end();
+      }
     };
     const handleMouseUp = (event: MouseEvent) => {
       event.preventDefault();
@@ -66,10 +67,15 @@ export default function KeyBind({
     const handleWheel = (event: WheelEvent) => {
       event.preventDefault();
       event.stopPropagation();
+      const modifiers = {
+        control: event.ctrlKey,
+        alt: event.altKey,
+        shift: event.shiftKey,
+      };
       if (event.deltaY < 0) {
-        onChangeKey("scrollup");
+        onChange({ key: "wheelup", modifiers });
       } else {
-        onChangeKey("scrolldown");
+        onChange({ key: "wheeldown", modifiers });
       }
       end();
     };
@@ -79,11 +85,9 @@ export default function KeyBind({
     document.addEventListener("wheel", handleWheel);
 
     setChoosing(true);
-    onChangeKey("");
-    onChangeModifiers({
-      control: false,
-      alt: false,
-      shift: false,
+    onChange({
+      key: "",
+      modifiers: { control: false, alt: false, shift: false },
     });
   };
 
@@ -94,12 +98,12 @@ export default function KeyBind({
         "bg-blue-950 outline outline-4 outline-blue-500": choosing,
       })}
     >
-      {modifiers.control && "Ctrl + "}
-      {modifiers.alt && "Alt + "}
-      {modifiers.shift && "Shift + "}
-      {t(key, { defaultValue: key.toUpperCase() })}
-      {key.length === 0 && choosing && "..."}
-      {key.length === 0 && !choosing && t("none")}
+      {value.modifiers.control && "Ctrl + "}
+      {value.modifiers.alt && "Alt + "}
+      {value.modifiers.shift && "Shift + "}
+      {t(value.key, { defaultValue: value.key.toUpperCase() })}
+      {value.key.length === 0 && choosing && "..."}
+      {value.key.length === 0 && !choosing && t("none")}
     </Button>
   );
 }

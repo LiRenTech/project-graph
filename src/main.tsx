@@ -8,6 +8,7 @@ import { initReactI18next } from "react-i18next";
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
 import { PromptManager } from "./core/ai/PromptManager";
 import { TextRiseEffect } from "./core/effect/concrete/TextRiseEffect";
+import { KeyBinds } from "./core/KeyBinds";
 import { LastLaunch } from "./core/LastLaunch";
 import { MouseLocation } from "./core/MouseLocation";
 import { RecentFileManager } from "./core/RecentFileManager";
@@ -22,6 +23,7 @@ import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeColli
 import { StageStyleManager } from "./core/stageStyle/StageStyleManager";
 import { StartFilesManager } from "./core/StartFilesManager";
 import "./index.pcss";
+import { Dialog } from "./utils/dialog";
 import { PopupDialogProvider } from "./utils/popupDialog";
 
 const router = createMemoryRouter(routes);
@@ -40,6 +42,7 @@ const el = document.getElementById("root")!;
       LastLaunch.init(),
       StartFilesManager.init(),
       PromptManager.init(),
+      KeyBinds.init(),
     ]);
     // 这些东西依赖上面的东西，所以单独一个Promise.all
     await Promise.all([
@@ -49,6 +52,11 @@ const el = document.getElementById("root")!;
     ]);
     await renderApp();
     console.log(`应用初始化耗时：${performance.now() - t1}ms`);
+    KeyBinds.create("test", "t", {
+      control: true,
+      alt: true,
+      shift: true,
+    }).then((bind) => bind.down(() => Dialog.show({ title: "test" })));
   } catch (e) {
     console.error(e);
     await getCurrentWindow().setDecorations(true);
