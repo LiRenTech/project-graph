@@ -97,14 +97,6 @@ jobs:
           $jsonObject.version = "0.0.0-nightly.${{ github.sha }}"
           $jsonObject | ConvertTo-Json -Depth 10 | Set-Content -Path "src-tauri/tauri.conf.json"
 
-      - id: sha256sum
-        name: calculate sha256sum (linux only)
-        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
-        run: |
-          cd src-tauri/target/release/bundle/deb
-          sha256sum Project.Graph_0.0.0-nightly.${{ github.sha }}_amd64.deb | awk '{print $1}' > sha256sum.txt
-          echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
-
       - uses: tauri-apps/tauri-action@dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -115,6 +107,14 @@ jobs:
           # upload to release
           tagName: "nightly"
           args: ${{ matrix.args }}
+
+      - id: sha256sum
+        name: calculate sha256sum (linux only)
+        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
+        run: |
+          cd src-tauri/target/release/bundle/deb
+          sha256sum Project.Graph_0.0.0-nightly.${{ github.sha }}_amd64.deb | awk '{print $1}' > sha256sum.txt
+          echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
 
   publish-tauri-android:
     needs: create-release
