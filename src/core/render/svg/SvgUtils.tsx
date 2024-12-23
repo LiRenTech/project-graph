@@ -2,6 +2,7 @@ import { Color } from "../../dataStruct/Color";
 import { Vector } from "../../dataStruct/Vector";
 import { v4 } from "uuid";
 import { Renderer } from "../canvas2d/renderer";
+import { Rectangle } from "../../dataStruct/shape/Rectangle";
 
 /**
  * 专门存放生成svg的东西
@@ -45,6 +46,28 @@ export namespace SvgUtils {
       >
         {text}
       </text>
+    );
+  }
+
+  export function rectangle(
+    rectangle: Rectangle,
+    fillColor: Color,
+    strokeColor: Color,
+    strokeWidth: number,
+  ) {
+    return (
+      <rect
+        key={v4()}
+        x={rectangle.location.x}
+        y={rectangle.location.y}
+        width={rectangle.size.x}
+        height={rectangle.size.y}
+        rx={Renderer.NODE_ROUNDED_RADIUS}
+        ry={Renderer.NODE_ROUNDED_RADIUS}
+        fill={fillColor.toString()}
+        stroke={strokeColor.toString()}
+        strokeWidth={strokeWidth}
+      />
     );
   }
 }

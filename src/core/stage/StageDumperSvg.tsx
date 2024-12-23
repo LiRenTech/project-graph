@@ -6,6 +6,7 @@ import ReactDOMServer from "react-dom/server";
 import { Edge } from "../stageObject/association/Edge";
 import { StageStyleManager } from "../stageStyle/StageStyleManager";
 import { EdgeRenderer } from "../render/canvas2d/entityRenderer/edge/EdgeRenderer";
+import { SvgUtils } from "../render/svg/SvgUtils";
 
 /**
  * 将舞台当前内容导出为SVG
@@ -16,29 +17,18 @@ export namespace StageDumperSvg {
   export function dumpNode(node: TextNode) {
     return (
       <>
-        <rect
-          key={node.uuid}
-          x={node.rectangle.location.x}
-          y={node.rectangle.location.y}
-          width={node.rectangle.size.x}
-          height={node.rectangle.size.y}
-          rx={Renderer.NODE_ROUNDED_RADIUS}
-          ry={Renderer.NODE_ROUNDED_RADIUS}
-          fill={node.color.toString()}
-          stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
-          strokeWidth={2}
-        />
-        <text
-          x={node.rectangle.center.x}
-          y={node.rectangle.center.y + Renderer.NODE_PADDING}
-          key={node.uuid + "-text"}
-          fill={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
-          fontSize={Renderer.FONT_SIZE}
-          textAnchor="middle"
-          fontFamily="MiSans"
-        >
-          {node.text}
-        </text>
+        {SvgUtils.rectangle(
+          node.rectangle,
+          node.color,
+          StageStyleManager.currentStyle.StageObjectBorderColor,
+          2,
+        )}
+        {SvgUtils.textFromCenter(
+          node.text,
+          node.rectangle.center,
+          Renderer.FONT_SIZE,
+          StageStyleManager.currentStyle.StageObjectBorderColor,
+        )}
       </>
     );
   }
@@ -98,4 +88,9 @@ export namespace StageDumperSvg {
     // return ReactDOMServer.renderToString(dumpStage());
     return ReactDOMServer.renderToStaticMarkup(dumpStage());
   }
+
+  // export function dumpSelectedToSVGString(): string {
+  //   const selectedEntities = StageManager.getSelectedEntities();
+  //   return "";
+  // }
 }
