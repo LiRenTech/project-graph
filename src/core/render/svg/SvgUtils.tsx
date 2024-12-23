@@ -3,6 +3,7 @@ import { Vector } from "../../dataStruct/Vector";
 import { v4 } from "uuid";
 import { Renderer } from "../canvas2d/renderer";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
+import { getTextSize } from "../../../utils/font";
 
 /**
  * 专门存放生成svg的东西
@@ -42,6 +43,28 @@ export namespace SvgUtils {
         fill={color.toString()}
         fontSize={fontSize}
         textAnchor="middle"
+        fontFamily="MiSans"
+      >
+        {text}
+      </text>
+    );
+  }
+
+  export function textFromLeftTop(
+    text: string,
+    location: Vector,
+    fontSize: number,
+    color: Color,
+  ) {
+    const textSize = getTextSize(text, fontSize);
+    return (
+      <text
+        x={location.x + Renderer.NODE_PADDING}
+        y={location.y + textSize.y / 2 + Renderer.NODE_PADDING}
+        key={v4()}
+        fill={color.toString()}
+        fontSize={fontSize}
+        textAnchor="start"
         fontFamily="MiSans"
       >
         {text}

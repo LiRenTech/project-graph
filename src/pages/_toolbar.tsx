@@ -42,6 +42,7 @@ import { StageDumper } from "../core/stage/StageDumper";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { Dialog } from "../utils/dialog";
 import { usePopupDialog } from "../utils/popupDialog";
+import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -419,6 +420,20 @@ export default function Toolbar({ className = "" }: { className?: string }) {
                 return;
               }
               StageManager.expandTextNodeByAI();
+            }}
+          />
+        )}
+        {isHaveSelectedNode && (
+          <ToolbarItem
+            description="将选中内容导出SVG"
+            icon={<SaveAll />}
+            handleFunction={() => {
+              const svgString = StageDumperSvg.dumpSelectedToSVGString();
+              Dialog.show({
+                title: "导出SVG",
+                code: svgString,
+                type: "info",
+              });
             }}
           />
         )}
