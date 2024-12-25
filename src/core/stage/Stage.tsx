@@ -514,6 +514,18 @@ export namespace Stage {
         getNodeOneResult(node, resultText);
       }
     }
+    for (const section of StageManager.getSections()) {
+      if (section.text === "#ADD#") {
+        let result = 0;
+        for (const child of section.children) {
+          if (child instanceof TextNode) {
+            result += stringToNumber(child.text);
+          }
+        }
+        const resultText = String(result);
+        getSectionOneResult(section, resultText);
+      }
+    }
   }
   function getParentTextNodes(node: TextNode): TextNode[] {
     const parents = StageManager.nodeParentArray(node).filter(
@@ -551,6 +563,30 @@ export namespace Stage {
       });
       StageManager.addTextNode(newNode);
       StageManager.connectEntity(node, newNode);
+    }
+  }
+  function getSectionOneResult(section: Section, resultText: string) {
+    const childrenList = StageManager.nodeChildrenArray(section).filter(
+      (node) => node instanceof TextNode,
+    );
+    if (childrenList.length > 0) {
+      for (const child of childrenList) {
+        child.rename(resultText);
+      }
+    } else {
+      // 新建一个节点生长出去
+      const newNode = new TextNode({
+        uuid: uuidv4(),
+        text: resultText,
+        location: [
+          section.collisionBox.getRectangle().location.x,
+          section.collisionBox.getRectangle().bottom + 100,
+        ],
+        size: [100, 100],
+        color: [0, 0, 0, 0],
+      });
+      StageManager.addTextNode(newNode);
+      StageManager.connectEntity(section, newNode);
     }
   }
 
