@@ -82,6 +82,10 @@ export default defineConfig({
         ],
       },
       {
+        text: "贡献者",
+        link: "/contributors",
+      },
+      {
         text: "为什么重写",
         link: "/why-rewriting",
       },
