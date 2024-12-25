@@ -40,3 +40,7 @@ keystore.jks
 
 # 工程文件的备份文件
 *.backup
+
+# vitepress
+docs/.vitepress/dist
+docs/.vitepress/cache

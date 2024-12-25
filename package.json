@@ -12,7 +12,10 @@
     "lint:fix": "eslint --fix",
     "test": "vitest",
     "format": "prettier --write ./src",
-    "prepare": "husky"
+    "prepare": "husky",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "@generouted/react-router": "^1.19.9",
@@ -62,6 +65,7 @@
     "uuid": "^11.0.3",
     "vite": "^6.0.3",
     "vite-plugin-svgr": "^4.3.0",
+    "vitepress": "^1.5.0",
     "vitest": "^2.1.8"
   }
 }
