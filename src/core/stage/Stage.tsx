@@ -304,7 +304,11 @@ export namespace Stage {
           //     Color.Black,
           //   ),
           // );
-          StageSaveManager.saveHandleWithoutCurrentPath(StageDumper.dump());
+          StageSaveManager.saveHandleWithoutCurrentPath(
+            StageDumper.dump(),
+            false,
+            false,
+          );
           // 更新时间
         }
       }
