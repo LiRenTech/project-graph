@@ -292,18 +292,6 @@ export namespace Stage {
           // 没有节点，不保存
         } else {
           // 不要顶部白线提醒了。——joe以为是bug
-
-          // const rect = Renderer.getCoverWorldRectangle();
-
-          // Stage.effects.push(
-          //   new LineCuttingEffect(
-          //     new ProgressNumber(0, 10),
-          //     rect.leftTop,
-          //     rect.rightTop,
-          //     Color.Black,
-          //     Color.Black,
-          //   ),
-          // );
           StageSaveManager.saveHandleWithoutCurrentPath(
             StageDumper.dump(),
             false,
