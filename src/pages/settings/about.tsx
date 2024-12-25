@@ -119,7 +119,7 @@ export default function About() {
         </Card>
       </div>
       <div className="flex gap-2">
-        <Button onClick={() => open("https://liren.zty012.de/project-graph")}>
+        <Button onClick={() => open("https://project-graph.top")}>
           <BookOpen />
           文档
         </Button>

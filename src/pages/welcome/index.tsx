@@ -33,7 +33,7 @@ export default function Welcome() {
         icon={<Globe />}
         title={t("website")}
         label="liren.zty012.de/project-graph"
-        onClick={() => open("https://liren.zty012.de/project-graph")}
+        onClick={() => open("https://project-graph.top")}
       />
       <ButtonField
         icon={<Github />}

@@ -52,7 +52,7 @@ export default function PluginsPage() {
           <Box />
           {t("install")}
         </Button>
-        <Button onClick={() => open("https://liren.zty012.de/project-graph")}>
+        <Button onClick={() => open("https://project-graph.top")}>
           <BookOpen />
           {t("documentation")}
         </Button>

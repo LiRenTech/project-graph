@@ -5,22 +5,17 @@
 
 ## 下载地址
 
-tauri版本（用新的框架重写了，功能还在完善中，但还未发布视频）
+> [tauri版本](https://project-graph.top)
+>
+> （用新的框架重写了，功能还在完善中，但还未发布视频）
+>
+> 上述网页中有两个版本
+>
+> 开发版：每天早晨8点左右自动根据git上的最新情况打包构建发布
+>
+> 稳定版：手动发布的稳定版，不一定最新
 
-```
-https://liren.zty012.de/project-graph/v2/
-上述网页中有两个版本
-开发版：每天早晨8点左右自动根据git上的最新情况打包构建发布
-稳定版：手动发布的稳定版，不一定最新
-```
-
-PyQt5版本（两期视频中的版本）
-
-```
-https://liren.zty012.de/project-graph/v1/
-或者（release页面中的早期内容）
-https://github.com/LiRenTech/project-graph/releases/tag/pyqt-2024-10-3
-```
+> [PyQt5版本（两期视频中的版本）](https://github.com/LiRenTech/project-graph/releases/tag/pyqt-2024-10-3)
 
 ## 开发者启动方式
 
@@ -72,6 +67,7 @@ xlings install
 ```
 
 > 注:
+>
 > - 目前已测试系统: [windows](https://github.com/LiRenTech/project-graph/issues/139#issuecomment-2470110723)、[ubuntu](https://github.com/LiRenTech/project-graph/issues/139#issuecomment-2474507140)
 > - [更多一键环境配置讨论](https://github.com/LiRenTech/project-graph/issues/139)
 
@@ -102,4 +98,5 @@ https://github.com/tauri-apps/tauri/issues/7338
 项目的 docs/ 文件夹下有一些示例json文件，下载软件后您可以尝试导入看看。其中记录和沉淀了项目的一些开发信息。
 
 ## License
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FLiRenTech%2Fproject-graph.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FLiRenTech%2Fproject-graph?ref=badge_large)

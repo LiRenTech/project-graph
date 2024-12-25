@@ -1,1 +1,1 @@
-[请前往文档](https://liren.zty012.de/project-graph/v2/contributing.html)
+[请前往文档](https://project-graph.top/v2/contributing.html)
