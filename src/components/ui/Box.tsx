@@ -12,7 +12,7 @@ type BoxProps<E extends ElementType = "div"> = {
 } & Omit<React.ComponentProps<E>, "ref">; // 排除 'ref' 属性，以避免类型冲突
 
 // 使用 forwardRef 传递泛型参数 E
-const Box = forwardRef<React.ElementRef<E>, BoxProps<E>>(
+const Box = forwardRef<React.ComponentRef<E>, BoxProps<E>>(
   (
     {
       children,
