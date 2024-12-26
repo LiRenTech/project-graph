@@ -52,11 +52,62 @@ const el = document.getElementById("root")!;
     ]);
     await renderApp();
     console.log(`应用初始化耗时：${performance.now() - t1}ms`);
+
+    // 开始注册快捷键
     KeyBinds.create("test", "t", {
       control: true,
       alt: true,
       shift: true,
-    }).then((bind) => bind.down(() => Dialog.show({ title: "test" })));
+    }).then((bind) =>
+      bind.down(() =>
+        Dialog.show({
+          title: "自定义快捷键测试",
+          content:
+            "您按下了自定义的测试快捷键，这一功能是测试开发所用，可在设置中更改触发方式",
+        }),
+      ),
+    );
+    KeyBinds.create("undo", "z", {
+      control: true,
+      alt: false,
+      shift: false,
+    }).then((bind) =>
+      bind.down(() => {
+        StageHistoryManager.undo();
+      }),
+    );
+    KeyBinds.create("redo", "y", {
+      control: true,
+      alt: false,
+      shift: false,
+    }).then((bind) =>
+      bind.down(() => {
+        StageHistoryManager.redo();
+      }),
+    );
+    KeyBinds.create("reload", "F5", {
+      control: false,
+      alt: false,
+      shift: false,
+    }).then((bind) =>
+      bind.down(() => {
+        window.location.reload();
+      }),
+    );
+
+    // TODO: 下面的F快捷键 不确定id的格式是否是小驼峰，待确认
+    // littlefean 2024年12月27日
+    // ——issue #87
+
+    // KeyBinds.create("resetView", "F", {
+    //   control: false,
+    //   alt: false,
+    //   shift: false,
+    // }).then((bind) =>
+    //   bind.down(() => {
+    //     Camera.resetBySelected();
+    //   }),
+    // );
   } catch (e) {
     console.error(e);
     await getCurrentWindow().setDecorations(true);

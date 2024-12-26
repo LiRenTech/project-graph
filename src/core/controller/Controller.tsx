@@ -2,7 +2,6 @@ import { Vector } from "../dataStruct/Vector";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Camera } from "../stage/Camera";
 import { Canvas } from "../stage/Canvas";
-import { StageHistoryManager } from "../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../stage/stageManager/StageManager";
 import { ControllerCamera } from "./concrete/ControllerCamera";
 import { ControllerCopy } from "./concrete/ControllerCopy";
@@ -204,17 +203,6 @@ export namespace Controller {
       StageManager.deleteEntities(
         StageManager.getEntities().filter((node) => node.isSelected),
       );
-    }
-    // 检测按下 ctrl + F 搜索
-    // if (event.ctrlKey && key === "f") {
-    // }
-    // ctrl + z 撤销
-    if (event.ctrlKey && key === "z") {
-      StageHistoryManager.undo();
-    }
-    // ctrl + y 恢复
-    if (event.ctrlKey && key === "y") {
-      StageHistoryManager.redo();
     }
   }
 

@@ -60,10 +60,11 @@ export default function App() {
           setMaxmized(isMaximized);
         });
     });
+
     window.addEventListener("keyup", async (event) => {
-      if (event.key === "F5") {
-        window.location.reload();
-      }
+      // TODO: 自定义快捷键
+      // 这两个按键有待添加到自定义快捷键，但他们函数内部用到了useState，还不太清楚怎么改
+      // ——littlefean（2024年12月27日）
       if (event.key === "Escape") {
         setIsMenuOpen(false);
         setIsStartFilePanelOpen(false);

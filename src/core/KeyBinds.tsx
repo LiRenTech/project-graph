@@ -8,9 +8,13 @@ import { Vector } from "./dataStruct/Vector";
  *   .down(() => console.log("move up"))
  */
 export namespace KeyBinds {
+  /** ？ */
   export type KeyModifiers = {
+    /** 是否按下了Ctrl键 */
     control: boolean;
+    /** 是否按下了Alt键 */
     alt: boolean;
+    /** 是否按下了Shift键 */
     shift: boolean;
   };
 
@@ -19,6 +23,7 @@ export namespace KeyBinds {
   export async function init() {
     store = await load("keybinds.json");
   }
+
   export async function set(id: string, key: string, modifiers: KeyModifiers) {
     if (!store) {
       throw new Error("Store not initialized.");
@@ -28,6 +33,7 @@ export namespace KeyBinds {
       callbacks[id].forEach((cb) => cb(key, modifiers));
     }
   }
+
   export async function get(
     id: string,
   ): Promise<{ key: string; modifiers: KeyModifiers } | null> {
@@ -37,9 +43,11 @@ export namespace KeyBinds {
     const data = await store.get<{ key: string; modifiers: KeyModifiers }>(id);
     return data || null;
   }
+
   const callbacks: {
     [key: string]: Array<(key: string, modifiers: KeyModifiers) => void>;
   } = {};
+
   export async function watch(
     id: string,
     callback: (key: string, modifiers: KeyModifiers) => void,
@@ -59,6 +67,7 @@ export namespace KeyBinds {
       callbacks[id] = callbacks[id].filter((cb) => cb !== callback);
     };
   }
+
   export async function entries() {
     if (!store) {
       throw new Error("Store not initialized.");
