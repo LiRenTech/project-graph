@@ -15,15 +15,15 @@ export namespace StageEntityMoveManager {
 
     const nodeUUID = node.uuid;
 
-    if (StageManager.isSectionByUUID(nodeUUID)) {
-      // 如果是Section，则需要带动孩子一起移动
-      const section = StageManager.getSectionByUUID(nodeUUID);
-      if (section) {
-        for (const child of section.children) {
-          moveEntityUtils(child, delta);
-        }
-      }
-    }
+    // if (StageManager.isSectionByUUID(nodeUUID)) {
+    //   // 如果是Section，则需要带动孩子一起移动
+    //   const section = StageManager.getSectionByUUID(nodeUUID);
+    //   if (section) {
+    //     for (const child of section.children) {
+    //       moveEntityUtils(child, delta);
+    //     }
+    //   }
+    // }
     for (const section of StageManager.getSections()) {
       if (section.isHaveChildrenByUUID(nodeUUID)) {
         section.adjustLocationAndSize();
@@ -31,9 +31,9 @@ export namespace StageEntityMoveManager {
     }
   }
 
-  function moveNodeToUtils(node: Entity, location: Vector) {
-    node.moveTo(location);
-    const nodeUUID = node.uuid;
+  function moveEntityToUtils(entity: Entity, location: Vector) {
+    entity.moveTo(location);
+    const nodeUUID = entity.uuid;
     for (const section of StageManager.getSections()) {
       if (section.isHaveChildrenByUUID(nodeUUID)) {
         section.adjustLocationAndSize();
@@ -201,7 +201,7 @@ export namespace StageEntityMoveManager {
         node.collisionBox.getRectangle().size.y / 2;
       const newY =
         centerY - (nodeCenterY - node.collisionBox.getRectangle().top);
-      moveNodeToUtils(
+      moveEntityToUtils(
         node,
         new Vector(node.collisionBox.getRectangle().left, newY),
       );
@@ -230,7 +230,7 @@ export namespace StageEntityMoveManager {
         node.collisionBox.getRectangle().size.x / 2;
       const newX =
         centerX - (nodeCenterX - node.collisionBox.getRectangle().left);
-      moveNodeToUtils(
+      moveEntityToUtils(
         node,
         new Vector(newX, node.collisionBox.getRectangle().top),
       );
@@ -264,7 +264,7 @@ export namespace StageEntityMoveManager {
       (a, b) =>
         a.collisionBox.getRectangle().left - b.collisionBox.getRectangle().left,
     )) {
-      moveNodeToUtils(
+      moveEntityToUtils(
         node,
         new Vector(startX, node.collisionBox.getRectangle().top),
       );
@@ -299,7 +299,7 @@ export namespace StageEntityMoveManager {
       (a, b) =>
         a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top,
     )) {
-      moveNodeToUtils(
+      moveEntityToUtils(
         node,
         new Vector(node.collisionBox.getRectangle().left, startY),
       );

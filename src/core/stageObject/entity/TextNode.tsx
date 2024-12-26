@@ -8,8 +8,9 @@ import { StageManager } from "../../stage/stageManager/StageManager";
 import { Stage } from "../../stage/Stage";
 import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
-import { ConnectableEntity } from "../StageObject";
+import { ConnectableEntity, Entity } from "../StageObject";
 import { CollisionBox } from "../collisionBox/collisionBox";
+import { Section } from "./Section";
 
 /**
  *
@@ -125,6 +126,19 @@ export class TextNode extends ConnectableEntity {
       ),
     );
     this.updateFatherSectionByMove();
+    // 移动其他实体，递归碰撞
+    this.updateOtherEntityLocationByMove();
+  }
+
+  protected override collideWithOtherEntity(other: Entity): void {
+    if (other instanceof Section) {
+      // 如果碰撞的东西是一个section
+      // 如果自己是section的子节点，则不移动
+      if (StageManager.SectionOptions.isEntityInSection(this, other)) {
+        return;
+      }
+    }
+    super.collideWithOtherEntity(other);
   }
 
   moveTo(location: Vector) {

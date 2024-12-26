@@ -59,6 +59,48 @@ export abstract class Entity extends StageObject {
     }
   }
   /**
+   * 由于自身位置的更新，排开所有同级节点的位置
+   * 此函数在move函数中被调用，更新
+   */
+  protected updateOtherEntityLocationByMove() {
+    for (const entity of StageManager.getEntities()) {
+      if (entity === this) {
+        continue;
+      }
+      this.collideWithOtherEntity(entity);
+    }
+  }
+
+  /**
+   * 与其他实体碰撞，调整位置；能够递归传递
+   * @param other 其他实体
+   */
+  protected collideWithOtherEntity(other: Entity) {
+    const selfRectangle = this.collisionBox.getRectangle();
+    const otherRectangle = other.collisionBox.getRectangle();
+    if (!selfRectangle.isCollideWith(otherRectangle)) {
+      return;
+    }
+
+    // 两者相交，需要调整位置
+    const overlapSize = selfRectangle.getOverlapSize(otherRectangle);
+    let moveDelta;
+    if (Math.abs(overlapSize.x) < Math.abs(overlapSize.y)) {
+      moveDelta = new Vector(
+        overlapSize.x *
+          Math.sign(otherRectangle.center.x - selfRectangle.center.x),
+        0,
+      );
+    } else {
+      moveDelta = new Vector(
+        0,
+        overlapSize.y *
+          Math.sign(otherRectangle.center.y - selfRectangle.center.y),
+      );
+    }
+    other.move(moveDelta);
+  }
+  /**
    * 是不是因为所在的Section被折叠而隐藏了
    * 因为任何Entity都可以放入Section
    */

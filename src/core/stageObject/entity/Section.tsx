@@ -198,6 +198,10 @@ export class Section extends ConnectableEntity {
         line.location = line.location.add(delta);
       }
     }
+    // 让内部元素也移动
+    for (const child of this.children) {
+      child.move(delta);
+    }
 
     // 移动雪花特效
     Stage.effects.push(
@@ -208,6 +212,19 @@ export class Section extends ConnectableEntity {
       ),
     );
     this.updateFatherSectionByMove();
+    // 移动其他实体，递归碰撞
+    this.updateOtherEntityLocationByMove();
+  }
+  protected override collideWithOtherEntity(other: Entity): void {
+    if (other instanceof Section) {
+      if (StageManager.SectionOptions.isEntityInSection(this, other)) {
+        return;
+      }
+    }
+    if (StageManager.SectionOptions.isEntityInSection(other, this)) {
+      return;
+    }
+    super.collideWithOtherEntity(other);
   }
 
   moveTo(location: Vector): void {

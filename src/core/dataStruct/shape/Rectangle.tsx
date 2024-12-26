@@ -327,6 +327,23 @@ export class Rectangle extends Shape {
     const collision_y = this.top > other.top && this.bottom < other.bottom;
     return collision_x && collision_y;
   }
+  /**
+   * 获取两个矩形的重叠区域的矩形的宽度和高度
+   * 如果没有重叠区域，则宽度和高度都是0
+   * 返回的x,y 都大于零
+   */
+  public getOverlapSize(other: Rectangle): Vector {
+    if (!this.isCollideWith(other)) {
+      return new Vector(0, 0);
+    }
+    const left = Math.max(this.left, other.left);
+    const top = Math.max(this.top, other.top);
+    const right = Math.min(this.right, other.right);
+    const bottom = Math.min(this.bottom, other.bottom);
+    const width = right - left;
+    const height = bottom - top;
+    return new Vector(width, height);
+  }
 
   /**
    * 判断点是否在矩形内
