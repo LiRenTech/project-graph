@@ -16,7 +16,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - run: gh release create v${{ github.event.inputs.version }} --title "Release v${{ github.event.inputs.version }}" --body "如果下面没有可下载的文件，说明构建失败，请联系开发者"
+      - run: gh release create "v${{ github.event.inputs.version }}" --title "Release v${{ github.event.inputs.version }}" --body "如果下面没有可下载的文件，说明构建失败，请联系开发者"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -100,6 +100,8 @@ jobs:
 
   publish-tauri-android:
     needs: create-release
+    outputs:
+      hash: ${{ steps.sha256sum.outputs.hash }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -175,6 +177,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - id: sha256sum
+        name: calculate sha256sum (linux only)
+        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
+        run: |
+          cd src-tauri/target/release/bundle/deb
+          sha256sum "Project Graph_0.0.0-nightly.${{ github.sha }}_amd64.deb" | awk '{print $1}' > sha256sum.txt
+          echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
+
   bump-aur-version:
     needs: publish-tauri
     runs-on: ubuntu-latest
@@ -193,6 +203,9 @@ jobs:
           cd project-graph-nightly
           sed -i "s/pkgver=.*$/pkgver=${{ github.event.inputs.version }}/" PKGBUILD
           sed -i "s/pkgver = .*$/pkgver = ${{ github.event.inputs.version }}/" .SRCINFO
+          sed -i "s/Project\.Graph_.*_amd64\.deb/Project.Graph_${{ github.event.inputs.version }}_amd64.deb/" PKGBUILD .SRCINFO
+          sed -i "s/^sha256sums_x86_64=('.*')$/sha256sums_x86_64=('${{ needs.publish-tauri.outputs.hash }}')/" PKGBUILD
+          sed -i "s/sha256sums_x86_64 = .*$/sha256sums_x86_64 = ${{ needs.publish-tauri.outputs.hash }}/" .SRCINFO
       - name: Commit and push changes
         run: |
           cd project-graph-nightly
