@@ -16,7 +16,6 @@ import { StageManager } from "./stageManager/StageManager";
  * 但滚轮会控制摄像机的缩放镜头。同时缩放大小也会影响喷气动力的大小，越是观看细节，喷的动力越小，移动越慢。
  */
 export namespace Camera {
-  // TODO: 这些物理参数要和设置对接
   /**
    * 每个方向上的动力矢量大小
    */

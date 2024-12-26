@@ -532,7 +532,6 @@ export namespace StageManager {
      * @param sections
      */
     function deeperSections(sections: Section[]): Section[] {
-      // todo
       const outerSections: Section[] = []; // 要被排除的Section
 
       for (const sectionI of sections) {
