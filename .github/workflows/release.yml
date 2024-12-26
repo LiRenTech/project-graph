@@ -22,6 +22,8 @@ jobs:
 
   publish-tauri:
     needs: create-release
+    outputs:
+      hash: ${{ steps.sha256sum.outputs.hash }}
     permissions:
       contents: write
     strategy:
@@ -98,10 +100,16 @@ jobs:
           tagName: "v${{ github.event.inputs.version }}"
           args: ${{ matrix.args }}
 
+      - id: sha256sum
+        name: calculate sha256sum (linux only)
+        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
+        run: |
+          cd src-tauri/target/release/bundle/deb
+          sha256sum "Project Graph_${{ github.event.inputs.version }}_amd64.deb" | awk '{print $1}' > sha256sum.txt
+          echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
+
   publish-tauri-android:
     needs: create-release
-    outputs:
-      hash: ${{ steps.sha256sum.outputs.hash }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -177,14 +185,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - id: sha256sum
-        name: calculate sha256sum (linux only)
-        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
-        run: |
-          cd src-tauri/target/release/bundle/deb
-          sha256sum "Project Graph_0.0.0-nightly.${{ github.sha }}_amd64.deb" | awk '{print $1}' > sha256sum.txt
-          echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
-
   bump-aur-version:
     needs: publish-tauri
     runs-on: ubuntu-latest
@@ -197,10 +197,10 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts
       - name: Clone AUR repository
-        run: git clone ssh://aur@aur.archlinux.org/project-graph-nightly.git
+        run: git clone ssh://aur@aur.archlinux.org/project-graph.git
       - name: Update version in PKGBUILD and .SRCINFO
         run: |
-          cd project-graph-nightly
+          cd project-graph
           sed -i "s/pkgver=.*$/pkgver=${{ github.event.inputs.version }}/" PKGBUILD
           sed -i "s/pkgver = .*$/pkgver = ${{ github.event.inputs.version }}/" .SRCINFO
           sed -i "s/Project\.Graph_.*_amd64\.deb/Project.Graph_${{ github.event.inputs.version }}_amd64.deb/" PKGBUILD .SRCINFO
