@@ -16,6 +16,10 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+
+      - name: clippy check
+        run: cd src-tauri && cargo clippy --all-targets --all-features -- -D warnings && cd ..
+
       - run: gh release create "v${{ github.event.inputs.version }}" --title "Release v${{ github.event.inputs.version }}" --notes "如果下面没有可下载的文件，说明构建失败，请联系开发者"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
