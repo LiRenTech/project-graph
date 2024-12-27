@@ -8,7 +8,6 @@ use base64::Engine;
 use std::env;
 use std::fs::read; // 引入 read 函数用于读取文件
 use tauri::Manager; // 引入 base64 编码函数
-use tauri::Runtime;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
