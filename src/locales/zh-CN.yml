@@ -264,3 +264,9 @@ keys:
   arrowright: 向右箭头
   wheelup: 滚轮向上
   wheeldown: 滚轮向下
+
+keyBinds:
+  test: 测试
+  reload: 重载应用
+  undo: 撤销
+  redo: 重做

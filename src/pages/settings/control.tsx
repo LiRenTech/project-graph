@@ -58,7 +58,12 @@ export default function Control() {
         step={0.01}
       />
       {keyBinds.map(([id, bind]) => (
-        <Field key={id} icon={<Keyboard />} title={t(id)} description={id}>
+        <Field
+          key={id}
+          icon={<Keyboard />}
+          title={t(`${id}.title`, { defaultValue: id })}
+          description={t(`${id}.description`, { defaultValue: "" })}
+        >
           <KeyBind
             value={bind}
             onChange={(value) => {
