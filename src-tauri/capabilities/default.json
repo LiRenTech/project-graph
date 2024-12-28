@@ -19,22 +19,8 @@
     "core:window:allow-destroy",
     "os:default",
     "dialog:default",
-    "fs:allow-write-text-file",
-    "fs:allow-read-file",
-    "fs:allow-app-read",
-    "fs:allow-app-write",
     "shell:default",
     "store:default",
-    {
-      "identifier": "http:default",
-      "allow": [
-        "https://github.com",
-        "https://api.github.com",
-        "http://www.baidu.com",
-        "https://ark.cn-beijing.volces.com",
-        "https://api.cloudflare.com"
-      ]
-    },
     "http:default"
   ]
 }

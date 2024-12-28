@@ -4,7 +4,6 @@ import { Color } from "../core/dataStruct/Color";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
 // https://lucide.dev/icons
-import { invoke } from "@tauri-apps/api/core";
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 import {
   AlignCenterHorizontal,
@@ -39,10 +38,11 @@ import { TextRiseEffect } from "../core/effect/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
+import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { Dialog } from "../utils/dialog";
+import { exists, writeTextFile } from "../utils/fs";
 import { usePopupDialog } from "../utils/popupDialog";
-import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -473,10 +473,7 @@ const onSaveSelectedNew = async () => {
       }
     }
     const data = StageDumper.dumpSelected(selectedNodes);
-    invoke<string>("save_file_by_path", {
-      path,
-      content: JSON.stringify(data, null, 2),
-    })
+    writeTextFile(path, JSON.stringify(data))
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .then((_) => {
         Stage.effects.push(new ViewFlashEffect(Color.Black));
@@ -501,9 +498,7 @@ async function openBrowserOrFile() {
         // 是网址
         myOpen(nodeText);
       } else {
-        const isExists = await invoke<boolean>("check_json_exist", {
-          path: nodeText,
-        });
+        const isExists = await exists(nodeText);
         if (isExists) {
           // 是文件
           myOpen(nodeText);

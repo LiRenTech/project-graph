@@ -1,5 +1,5 @@
-import { invoke } from "@tauri-apps/api/core";
 import { Serialized } from "../../types/node";
+import { exists, writeTextFile } from "../../utils/fs";
 import { PathString } from "../../utils/pathString";
 import { ViewFlashEffect } from "../effect/concrete/ViewFlashEffect";
 import { TextNode } from "../stageObject/entity/TextNode";
@@ -20,10 +20,7 @@ export namespace StageSaveManager {
    * @param errorCallback
    */
   export async function saveHandle(path: string, data: Serialized.File) {
-    invoke<string>("save_file_by_path", {
-      path,
-      content: JSON.stringify(data),
-    });
+    await writeTextFile(path, JSON.stringify(data));
     Stage.effects.push(ViewFlashEffect.SaveFile());
     StageHistoryManager.reset(data); // 重置历史
     isCurrentSaved = true;
@@ -44,10 +41,7 @@ export namespace StageSaveManager {
     if (Stage.Path.isDraft()) {
       throw new Error("当前文档的状态为草稿，请您先保存为文件");
     }
-    invoke<string>("save_file_by_path", {
-      path: Stage.Path.getFilePath(),
-      content: JSON.stringify(data),
-    });
+    await writeTextFile(Stage.Path.getFilePath(), JSON.stringify(data));
     if (addFlashEffect) {
       Stage.effects.push(ViewFlashEffect.SaveFile());
     }
@@ -67,17 +61,12 @@ export namespace StageSaveManager {
    */
   export async function backupHandle(path: string, data: Serialized.File) {
     const backupFolderPath = PathString.dirPath(path);
-    const isExists = await invoke<boolean>("check_json_exist", {
-      path: backupFolderPath,
-    });
+    const isExists = await exists(backupFolderPath);
     if (!isExists) {
       throw new Error("备份文件路径错误:" + backupFolderPath);
     }
 
-    invoke<string>("save_file_by_path", {
-      path,
-      content: JSON.stringify(data),
-    });
+    await writeTextFile(path, JSON.stringify(data));
     Stage.effects.push(ViewFlashEffect.SaveFile());
   }
   /**
@@ -101,20 +90,14 @@ export namespace StageSaveManager {
 
     const backupPath = `${Stage.Path.getFilePath()}.${dateTime}.backup`;
 
-    invoke<string>("save_file_by_path", {
-      path: backupPath,
-      content: JSON.stringify(data),
-    });
+    await writeTextFile(backupPath, JSON.stringify(data));
     if (addFlashEffect) {
       Stage.effects.push(ViewFlashEffect.SaveFile());
     }
   }
 
   export async function saveSvgHandle(path: string, string: string) {
-    invoke<string>("save_file_by_path", {
-      path,
-      content: string,
-    });
+    await writeTextFile(path, JSON.stringify(string));
     isCurrentSaved = true;
   }
 
@@ -126,10 +109,7 @@ export namespace StageSaveManager {
    */
   export async function saveMarkdownHandle(path: string, textNode: TextNode) {
     const content = getMarkdownStringByTextNode(textNode);
-    invoke<string>("save_file_by_path", {
-      path,
-      content,
-    });
+    await writeTextFile(path, content);
   }
 
   // region 以下可能要拆出去

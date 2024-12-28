@@ -2903,7 +2903,6 @@ dependencies = [
  "tauri-build",
  "tauri-plugin-cli",
  "tauri-plugin-dialog",
- "tauri-plugin-fs",
  "tauri-plugin-http",
  "tauri-plugin-os",
  "tauri-plugin-shell",

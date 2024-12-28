@@ -1,5 +1,5 @@
-import { invoke } from "@tauri-apps/api/core";
 import { v4 as uuidv4 } from "uuid";
+import { writeFile } from "../../../utils/fs";
 import { PathString } from "../../../utils/pathString";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
@@ -139,30 +139,21 @@ async function readClipboardItems(mouseLocation: Vector) {
       for (const item of items) {
         if (item.types.includes("image/png")) {
           const blob = await item.getType(item.types[0]); // 获取 Blob 对象
-          const base64String = await convertBlobToBase64(blob); // 转换为 Base64 字符串
           const imageUUID = uuidv4();
           const folder = PathString.dirPath(Stage.Path.getFilePath());
           const imagePath = `${folder}${Stage.Path.getSep()}${imageUUID}.png`;
 
-          invoke<string>("save_base64_to_image", {
-            base64Str: base64String,
-            fileName: imagePath,
-          })
-            .then(() => {
-              // 要延迟一下，等待保存完毕
-              setTimeout(() => {
-                const imageNode = new ImageNode({
-                  uuid: imageUUID,
-                  location: [mouseLocation.x, mouseLocation.y],
-                  path: `${imageUUID}.png`,
-                });
-                // imageNode.setBase64StringForced(base64String);
-                StageManager.addImageNode(imageNode);
-              }, 100);
-            })
-            .catch((error) => {
-              console.error("save image to file error", error);
+          writeFile(imagePath, new Uint8Array(await blob.arrayBuffer()));
+          // 要延迟一下，等待保存完毕
+          setTimeout(() => {
+            const imageNode = new ImageNode({
+              uuid: imageUUID,
+              location: [mouseLocation.x, mouseLocation.y],
+              path: `${imageUUID}.png`,
             });
+            // imageNode.setBase64StringForced(base64String);
+            StageManager.addImageNode(imageNode);
+          }, 100);
         }
         if (item.types.includes("text/plain")) {
           const blob = await item.getType("text/plain"); // 获取文本内容
@@ -197,21 +188,5 @@ function blobToText(blob: Blob): Promise<string> {
     reader.onload = () => resolve(reader.result as string); // 读取完成时返回结果
     reader.onerror = () => reject(reader.error); // 读取出错时返回错误
     reader.readAsText(blob); // 读取 Blob 对象作为文本
-  });
-}
-
-// 将 Blob 转换为 Base64 字符串
-async function convertBlobToBase64(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      if (typeof reader.result === "string") {
-        resolve(reader.result.split(",")[1]); // 去掉"data:image/png;base64,"前缀
-      } else {
-        reject(new Error("Invalid result type"));
-      }
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
   });
 }

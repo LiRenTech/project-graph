@@ -5,68 +5,48 @@ use base64::engine::general_purpose;
 use base64::Engine;
 
 #[cfg(debug_assertions)]
-use tauri::Manager; // 引入 base64 编码函数
+use tauri::Manager;
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
+/// 判断文件是否存在
 #[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+fn exists(path: String) -> bool {
+    std::path::Path::new(&path).exists()
 }
 
-/// 通过路径打开json文件，返回json字符串
+/// 读取文件，返回字符串
 #[tauri::command]
-fn open_file_by_path(path: String) -> String {
+fn read_text_file(path: String) -> String {
     let mut file = std::fs::File::open(path).unwrap();
     let mut contents = String::new();
     file.read_to_string(&mut contents).unwrap();
     contents
 }
 
-/// 保存字符串到指定路径
+/// 读取文件，返回base64
 #[tauri::command]
-fn save_file_by_path(path: String, content: String) -> Result<bool, String> {
-    std::fs::write(path, content).map_err(|e| e.to_string())?;
-    Ok(true)
-}
-
-/// 检查json文件是否存在
-/// 返回true表示存在，false表示不存在
-#[tauri::command]
-fn check_json_exist(path: String) -> bool {
-    std::path::Path::new(&path).exists()
-}
-
-// #[tauri::command]
-// fn open_dev_tools() {
-//     let window = app.get_webview_window("main").unwrap();
-//     window.open_devtools();
-// }
-
-#[tauri::command]
-fn convert_image_to_base64(image_path: String) -> Result<String, String> {
+fn read_file_base64(path: String) -> Result<String, String> {
     Ok(general_purpose::STANDARD
-        .encode(&std::fs::read(image_path).map_err(|e| format!("无法读取文件: {}", e))?))
+        .encode(&std::fs::read(path).map_err(|e| format!("无法读取文件: {}", e))?))
 }
 
-/// 将base64编码字符串保存为图片文件
+/// 写入文件
 #[tauri::command]
-fn save_base64_to_image(base64_str: &str, file_name: &str) -> Result<(), String> {
+fn write_text_file(path: String, content: String) -> Result<(), String> {
+    std::fs::write(path, content).map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+/// 写入文件，base64字符串
+#[tauri::command]
+fn write_file_base64(content: String, path: String) -> Result<(), String> {
     std::fs::write(
-        file_name,
+        path,
         &general_purpose::STANDARD
-            .decode(base64_str)
+            .decode(content)
             .map_err(|e| format!("解码失败: {}", e))?,
     )
     .map_err(|e| e.to_string())?;
     Ok(())
-}
-
-/// 读取 MP3 文件并返回其 Base64 编码字符串
-#[tauri::command]
-fn read_mp3_file(path: String) -> Result<String, String> {
-    // 将文件内容编码为 Base64
-    Ok(general_purpose::STANDARD
-        .encode(&std::fs::read(path).map_err(|e| format!("读取文件时出错: {}", e))?))
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -80,6 +60,10 @@ pub fn run() {
 
     tauri::Builder::default()
         .plugin(tauri_plugin_store::Builder::new().build())
+        .plugin(tauri_plugin_http::init())
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_os::init())
+        .plugin(tauri_plugin_shell::init())
         .setup(|app| {
             #[cfg(debug_assertions)] // only include this code on debug builds
             {
@@ -91,19 +75,12 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            greet,
-            open_file_by_path,
-            save_file_by_path,
-            convert_image_to_base64,
-            save_base64_to_image,
-            check_json_exist,
-            read_mp3_file
+            read_text_file,
+            write_text_file,
+            exists,
+            read_file_base64,
+            write_file_base64,
         ])
-        .plugin(tauri_plugin_http::init())
-        .plugin(tauri_plugin_fs::init())
-        .plugin(tauri_plugin_dialog::init())
-        .plugin(tauri_plugin_os::init())
-        .plugin(tauri_plugin_shell::init())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

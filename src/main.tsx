@@ -24,6 +24,7 @@ import { StageStyleManager } from "./core/stageStyle/StageStyleManager";
 import { StartFilesManager } from "./core/StartFilesManager";
 import "./index.pcss";
 import { Dialog } from "./utils/dialog";
+import { exists } from "./utils/fs";
 import { PopupDialogProvider } from "./utils/popupDialog";
 
 const router = createMemoryRouter(routes);
@@ -163,9 +164,7 @@ async function loadStartFile() {
   if (path === "") {
     return;
   }
-  const isExists = await invoke<boolean>("check_json_exist", {
-    path,
-  });
+  const isExists = await exists(path);
   if (isExists) {
     // 打开自定义的工程文件
     RecentFileManager.openFileByPath(path);

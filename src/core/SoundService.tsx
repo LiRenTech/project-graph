@@ -2,7 +2,7 @@
 // @tauri-apps/plugin-fs 只能读取文本文件，不能强行读取流文件并强转为ArrayBuffer
 // import { readTextFile } from "@tauri-apps/plugin-fs";
 
-import { invoke } from "@tauri-apps/api/core";
+import { readFile } from "../utils/fs";
 import { StringDict } from "./dataStruct/StringDict";
 import { Settings } from "./Settings";
 
@@ -89,19 +89,10 @@ export namespace SoundService {
     // 缓存中没有
 
     // 读取文件为字符串
-    const base64Data: string = await invoke<string>("read_mp3_file", {
-      path: filePath,
-    });
-    // 解码 Base64 字符串
-    const byteCharacters = atob(base64Data); // 使用 atob 解码 Base64 字符串
-    const byteNumbers = new Uint8Array(byteCharacters.length);
-
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i); // 转换为字节数组
-    }
+    const uint8Array = await readFile(filePath);
 
     // 创建 ArrayBuffer
-    const arrayBuffer = byteNumbers.buffer;
+    const arrayBuffer = uint8Array.buffer as ArrayBuffer;
 
     // 解码音频数据
     const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);

@@ -1,7 +1,7 @@
 import { load, Store } from "@tauri-apps/plugin-store";
 // import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
-import { invoke } from "@tauri-apps/api/core";
 import { Serialized } from "../types/node";
+import { exists, readTextFile } from "../utils/fs";
 import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
 import { Camera } from "./stage/Camera";
 import { Stage } from "./stage/Stage";
@@ -98,10 +98,7 @@ export namespace RecentFileManager {
 
     for (const file of recentFiles) {
       try {
-        // const isExists = await exists(file.path); // 检查文件是否存在
-        const isExists = await invoke<boolean>("check_json_exist", {
-          path: file.path,
-        });
+        const isExists = await exists(file.path);
         if (isExists) {
           recentFilesValid.push(file); // 存在则保留
         } else {
@@ -146,8 +143,7 @@ export namespace RecentFileManager {
     StageManager.destroy();
     let content: string;
     try {
-      // content = await readTextFile(path);
-      content = await invoke<string>("open_file_by_path", { path });
+      content = await readTextFile(path);
     } catch (e) {
       console.error("打开文件失败：", path);
       console.error(e);

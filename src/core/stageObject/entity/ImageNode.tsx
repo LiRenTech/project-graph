@@ -1,5 +1,6 @@
-import { invoke } from "@tauri-apps/api/core";
+import { join } from "@tauri-apps/api/path";
 import { Serialized } from "../../../types/node";
+import { readFileBase64 } from "../../../utils/fs";
 import { PathString } from "../../../utils/pathString";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
@@ -105,9 +106,8 @@ export class ImageNode extends ConnectableEntity {
       return;
     }
 
-    invoke<string>("convert_image_to_base64", {
-      imagePath: `${folderPath}\\${this.path}`,
-    })
+    join(folderPath, this.path)
+      .then((path) => readFileBase64(path))
       .then((res) => {
         // 获取base64String成功
 
