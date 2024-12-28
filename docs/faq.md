@@ -24,7 +24,7 @@ WebKit 目前不支持 Canvas 中的子像素渲染。
 
 ## macOS
 
-### 显示“Project Graph 已损坏，无法打开”
+### 显示“Project Graph 已损坏，无法打开” {#macos-cannot-open}
 
 ![image](https://s2.loli.net/2024/12/14/1YmknvPljQyR98U.png)
 

@@ -8,6 +8,9 @@
 
 <GithubRelease repo="LiRenTech/project-graph" nightly />
 
+> [!IMPORTANT]
+> macOS 可能会提示“应用已损坏，无法打开”，请参考[常见问题](./faq#macos-cannot-open)中的解决方法。
+
 ## 🅰 AUR
 
 - [推荐，从 Nightly Release 安装] [project-graph-nightly ![AUR Version](https://img.shields.io/aur/version/project-graph-nightly?cacheSeconds=0)](https://aur.archlinux.org/packages/project-graph-nightly)
