@@ -26,7 +26,7 @@ import { fileAtom } from "../state";
 import { cn } from "../utils/cn";
 import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
-import { appScale, isDesktop, isMobile } from "../utils/platform";
+import { appScale, isDesktop, isMac, isMobile } from "../utils/platform";
 import AiPanel from "./_ai_panel";
 import AppMenu from "./_app_menu";
 import ErrorHandler from "./_error_handler";
@@ -222,6 +222,24 @@ export default function App() {
           },
         )}
       >
+        <Button className="right-4 top-4 flex items-center gap-2 active:scale-100">
+          <div
+            className="size-3 rounded-full bg-red-500 active:bg-red-800"
+            onClick={() => getCurrentWindow().close()}
+          ></div>
+          <div
+            className="size-3 rounded-full bg-yellow-500 active:bg-yellow-800"
+            onClick={() => getCurrentWindow().minimize()}
+          ></div>
+          <div
+            className="size-3 rounded-full bg-green-500 active:bg-green-800"
+            onClick={() =>
+              getCurrentWindow()
+                .isMaximized()
+                .then((isMaximized) => setMaxmized(!isMaximized))
+            }
+          ></div>
+        </Button>
         {/* 左上角菜单按钮 */}
         <IconButton
           onClick={(e) => {
@@ -328,7 +346,7 @@ export default function App() {
           />
         </IconButton>
         {/* 右上角窗口控制按钮 */}
-        {isDesktop && !useNativeTitleBar && (
+        {isDesktop && !useNativeTitleBar && !isMac && (
           <Button className="right-4 top-4 flex items-center gap-1 active:scale-100">
             <ChevronDown
               onClick={() => getCurrentWindow().minimize()}
