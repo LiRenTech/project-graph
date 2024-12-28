@@ -67,7 +67,7 @@ export namespace StageSaveManager {
    */
   export async function backupHandle(path: string, data: Serialized.File) {
     const backupFolderPath = PathString.dirPath(path);
-    const isExists = await invoke<string>("check_json_exist", {
+    const isExists = await invoke<boolean>("check_json_exist", {
       path: backupFolderPath,
     });
     if (!isExists) {

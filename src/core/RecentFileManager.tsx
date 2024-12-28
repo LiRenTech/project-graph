@@ -99,7 +99,7 @@ export namespace RecentFileManager {
     for (const file of recentFiles) {
       try {
         // const isExists = await exists(file.path); // 检查文件是否存在
-        const isExists = await invoke<string>("check_json_exist", {
+        const isExists = await invoke<boolean>("check_json_exist", {
           path: file.path,
         });
         if (isExists) {

@@ -3,9 +3,9 @@
   "version": "0.0.0-dev",
   "identifier": "liren.project-graph",
   "build": {
-    "beforeDevCommand": "pnpm dev",
+    "beforeDevCommand": "pnpm dev || bun run dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "pnpm build",
+    "beforeBuildCommand": "pnpm build || bun build",
     "frontendDist": "../dist"
   },
   "app": {
