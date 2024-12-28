@@ -5,7 +5,7 @@
   "build": {
     "beforeDevCommand": "pnpm dev || bun run dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "pnpm build || bun build",
+    "beforeBuildCommand": "pnpm build || bun build src/main.tsx --outdir dist",
     "frontendDist": "../dist"
   },
   "app": {
