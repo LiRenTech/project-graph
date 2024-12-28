@@ -4,6 +4,7 @@ use std::io::Read;
 use base64::engine::general_purpose;
 use base64::Engine;
 
+#[cfg(debug_assertions)]
 use tauri::Manager; // 引入 base64 编码函数
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
