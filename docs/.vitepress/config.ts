@@ -136,4 +136,14 @@ export default defineConfig({
   },
   lastUpdated: true,
   cleanUrls: true,
+  head: [
+    [
+      "link",
+      {
+        rel: "icon",
+        href: "/logo.svg",
+        type: "image/svg+xml",
+      },
+    ],
+  ],
 });
