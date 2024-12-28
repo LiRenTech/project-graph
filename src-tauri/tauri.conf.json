@@ -19,6 +19,7 @@
         "dragDropEnabled": false
       }
     ],
+    "macOSPrivateApi": true,
     "security": {
       "csp": null,
       "capabilities": []
