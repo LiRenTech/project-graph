@@ -163,7 +163,7 @@ async function loadStartFile() {
   if (path === "") {
     return;
   }
-  const isExists = await invoke<string>("check_json_exist", {
+  const isExists = await invoke<boolean>("check_json_exist", {
     path,
   });
   if (isExists) {

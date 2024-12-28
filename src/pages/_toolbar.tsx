@@ -501,7 +501,7 @@ async function openBrowserOrFile() {
         // 是网址
         myOpen(nodeText);
       } else {
-        const isExists = await invoke<string>("check_json_exist", {
+        const isExists = await invoke<boolean>("check_json_exist", {
           path: nodeText,
         });
         if (isExists) {
