@@ -17,6 +17,7 @@ import { ConnectableEntity, Entity } from "../stageObject/StageObject";
 import { StageDumper } from "./StageDumper";
 import { StageManager } from "./stageManager/StageManager";
 import { StageSaveManager } from "./StageSaveManager";
+import { Color } from "../dataStruct/Color";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -520,6 +521,42 @@ export namespace Stage {
         const parents = getParentTextNodes(node);
         const resultText = String(parents.length);
         getNodeOneResult(node, resultText);
+      } else if (node.text === "#RGB#") {
+        // 获取三个节点的颜色，并将子节点颜色更改为这个颜色
+        const parents = getParentTextNodes(node);
+        if (parents.length === 3) {
+          const parent1 = parents[0];
+          const parent2 = parents[1];
+          const parent3 = parents[2];
+          const r = stringToNumber(parent1.text);
+          const g = stringToNumber(parent2.text);
+          const b = stringToNumber(parent3.text);
+          const childrenList = StageManager.nodeChildrenArray(node).filter(
+            (node) => node instanceof TextNode,
+          );
+          for (const child of childrenList) {
+            child.color = new Color(r, g, b);
+          }
+        }
+      } else if (node.text === "#RGBA#") {
+        // 获取四个节点的颜色，并将子节点颜色更改为这个颜色
+        const parents = getParentTextNodes(node);
+        if (parents.length === 4) {
+          const parent1 = parents[0];
+          const parent2 = parents[1];
+          const parent3 = parents[2];
+          const parent4 = parents[3];
+          const r = stringToNumber(parent1.text);
+          const g = stringToNumber(parent2.text);
+          const b = stringToNumber(parent3.text);
+          const a = stringToNumber(parent4.text);
+          const childrenList = StageManager.nodeChildrenArray(node).filter(
+            (node) => node instanceof TextNode,
+          );
+          for (const child of childrenList) {
+            child.color = new Color(r, g, b, a);
+          }
+        }
       }
     }
     for (const section of StageManager.getSections()) {
