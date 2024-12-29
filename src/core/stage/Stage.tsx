@@ -486,6 +486,14 @@ export namespace Stage {
           result += parent.text;
         }
         getNodeOneResult(node, result);
+      } else if (node.text === "#REPEAT#") {
+        const parents = getParentTextNodes(node);
+        if (parents.length === 2) {
+          const parent1 = parents[0];
+          const parent2 = parents[1];
+          const resultText = parent1.text.repeat(stringToNumber(parent2.text));
+          getNodeOneResult(node, resultText);
+        }
       } else if (node.text === "#MAX#") {
         const parents = getParentTextNodes(node);
         let maxResult = -Infinity;
