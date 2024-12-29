@@ -24,5 +24,8 @@
     "experimentalDecorators": true // 开启装饰器
   },
   "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.docs.json" }
+  ]
 }

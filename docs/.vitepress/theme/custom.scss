@@ -1,3 +1,5 @@
+@import url("https://gcore.jsdelivr.net/npm/misans-webfont@1.0.4/misans-style.min.css");
+
 $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
 :root {
@@ -22,6 +24,9 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 :root {
+  // 字体
+  --vp-font-family-base: "Misans", -apple-system, system-ui, sans-serif;
+
   // 透明侧边栏
   --vp-sidebar-bg-color: transparent;
 
@@ -56,6 +61,10 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   &:active {
     transform: scale(0.9);
   }
+}
+
+.VPButton.brand {
+  box-shadow: 0 0 64px var(--vp-button-brand-bg);
 }
 
 .VPHomeHero .main {

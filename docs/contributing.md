@@ -2,7 +2,15 @@
 
 ::: details 一键配置开发环境
 
-![](https://d2learn.org/xlings/xlings-install.gif)
+```
+      _ _
+__  _| (_)_ __   __ _ ___
+\ \/ / | | '_ \ / _` / __|
+ >  <| | | | | | (_| \__ \
+/_/\_\_|_|_| |_|\__, |___/
+                |___/
+
+```
 
 如果感觉配置过程过于麻烦，可以使用 [`xlings`](https://github.com/d2learn/xlings) 工具一键安装并配置环境
 

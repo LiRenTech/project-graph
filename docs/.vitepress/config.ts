@@ -113,13 +113,19 @@ export default defineConfig({
     },
     editLink: {
       text: "编辑页面",
-      pattern: "https://github.com/LiRenTech/docs/edit/master/:path",
+      pattern:
+        "https://github.com/LiRenTech/project-graph/edit/master/docs/:path",
     },
     lastUpdated: {
       text: "上次更新",
     },
     outline: {
       label: "目录",
+    },
+    notFound: {
+      title: "页面未找到",
+      quote: "若不改航向，持续寻觅，终将抵达彼岸。",
+      linkText: "返回主页",
     },
   },
   sitemap: {
