@@ -23,6 +23,7 @@ import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeColli
 import { StageStyleManager } from "./core/stageStyle/StageStyleManager";
 import { StartFilesManager } from "./core/StartFilesManager";
 import "./index.pcss";
+import "./polyfills/roundRect";
 import { Dialog } from "./utils/dialog";
 import { exists } from "./utils/fs";
 import { PopupDialogProvider } from "./utils/popupDialog";

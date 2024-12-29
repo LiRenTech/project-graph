@@ -222,24 +222,26 @@ export default function App() {
           },
         )}
       >
-        <Button className="right-4 top-4 flex items-center gap-2 active:scale-100">
-          <div
-            className="size-3 rounded-full bg-red-500 active:bg-red-800"
-            onClick={() => getCurrentWindow().close()}
-          ></div>
-          <div
-            className="size-3 rounded-full bg-yellow-500 active:bg-yellow-800"
-            onClick={() => getCurrentWindow().minimize()}
-          ></div>
-          <div
-            className="size-3 rounded-full bg-green-500 active:bg-green-800"
-            onClick={() =>
-              getCurrentWindow()
-                .isMaximized()
-                .then((isMaximized) => setMaxmized(!isMaximized))
-            }
-          ></div>
-        </Button>
+        {isMac && (
+          <Button className="right-4 top-4 flex items-center gap-2 active:scale-100">
+            <div
+              className="size-3 rounded-full bg-red-500 active:bg-red-800"
+              onClick={() => getCurrentWindow().close()}
+            ></div>
+            <div
+              className="size-3 rounded-full bg-yellow-500 active:bg-yellow-800"
+              onClick={() => getCurrentWindow().minimize()}
+            ></div>
+            <div
+              className="size-3 rounded-full bg-green-500 active:bg-green-800"
+              onClick={() =>
+                getCurrentWindow()
+                  .isMaximized()
+                  .then((isMaximized) => setMaxmized(!isMaximized))
+              }
+            ></div>
+          </Button>
+        )}
         {/* 左上角菜单按钮 */}
         <IconButton
           onClick={(e) => {
