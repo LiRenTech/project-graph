@@ -1,8 +1,10 @@
 # 贡献指南
 
-## 一键配置开发环境
+::: details 一键配置开发环境
 
-如果感觉配置过程过于麻烦，可以使用 `xlings` 工具一键安装并配置环境
+![](https://d2learn.org/xlings/xlings-install.gif)
+
+如果感觉配置过程过于麻烦，可以使用 [`xlings`](https://github.com/d2learn/xlings) 工具一键安装并配置环境
 
 ```
 xlings install
@@ -12,6 +14,8 @@ xlings install
 >
 > - 目前已测试系统: [windows](https://github.com/LiRenTech/project-graph/issues/139#issuecomment-2470110723)、[ubuntu](https://github.com/LiRenTech/project-graph/issues/139#issuecomment-2474507140)
 > - [更多一键环境配置讨论](https://github.com/LiRenTech/project-graph/issues/139)
+
+:::
 
 ## 手动配置开发环境
 

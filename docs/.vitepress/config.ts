@@ -11,10 +11,6 @@ export default defineConfig({
     logo: "/logo.svg",
     sidebar: [
       {
-        text: "Project Graph",
-        link: "/",
-      },
-      {
         text: "安装",
         link: "/installation",
       },

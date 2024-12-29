@@ -19,7 +19,6 @@ hero:
 
   image:
     src: /logo.svg
-    alt: Logo
     width: 200
     height: 200
 
@@ -37,17 +36,3 @@ features:
     details: 基于图论的计算引擎，支持节点间的各种关系计算。
     link: /features/compute-engine
 ---
-
-## ⭐ Star History
-
-<a href="https://star-history.com/#LiRenTech/project-graph&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=LiRenTech/project-graph&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=LiRenTech/project-graph&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=LiRenTech/project-graph&type=Date" />
- </picture>
-</a>
-
-## 🔒 License
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FLiRenTech%2Fproject-graph.svg?type=large&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2FLiRenTech%2Fproject-graph?ref=badge_large&issueType=license)

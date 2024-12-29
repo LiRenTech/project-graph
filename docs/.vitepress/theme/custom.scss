@@ -1,0 +1,90 @@
+$ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #34a0fe 30%, #31ce39);
+
+  --vp-home-hero-image-background-image: linear-gradient(
+    120deg,
+    #34a0fe 50%,
+    #47ff50 50%
+  );
+  --vp-home-hero-image-filter: blur(44px);
+
+  --vp-sidebar-bg-color: transparent;
+
+  @media (min-width: 640px) {
+    --vp-home-hero-image-filter: blur(56px);
+  }
+
+  @media (min-width: 960px) {
+    --vp-home-hero-image-filter: blur(68px);
+  }
+}
+
+.VPButton {
+  transition: 0.5s $ease-out-expo !important;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+.VPHomeHero .main {
+  @for $i from 1 through 4 {
+    > :nth-child(#{$i}) {
+      animation: enter 0.5s $ease-out-expo forwards;
+      animation-delay: #{$i * 0.1}s;
+      transform: translateX(-300%);
+    }
+  }
+
+  @keyframes enter {
+    to {
+      transform: translateX(0);
+    }
+  }
+}
+.VPHomeFeatures .items {
+  @for $i from 1 through 10 {
+    > :nth-child(#{$i}) {
+      animation: enter 0.5s $ease-out-expo forwards;
+      animation-delay: #{0.5 + $i * 0.1}s;
+      transform: scale(0.5);
+      opacity: 0;
+    }
+  }
+
+  @keyframes enter {
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+
+.Layout:has(.is-home) {
+  animation: enter 0.5s $ease-out-expo forwards;
+  transform: scale(0.2);
+  opacity: 0;
+
+  @keyframes enter {
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+
+#VPSidebarNav,
+.VPDocAsideOutline {
+  opacity: 0.5;
+  transition: 0.5s $ease-out-expo !important;
+
+  &:hover {
+    opacity: 1;
+  }
+}
