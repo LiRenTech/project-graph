@@ -118,6 +118,11 @@ settings:
     description: |
       这个数值决定了您最多ctrl+z撤销的次数
       如果您的电脑内存非常少，可以适当调小这个值
+  isEnableEntityCollision:
+    title: 实体碰撞检测
+    description: |
+      开启后，实体之间会进行碰撞挤压移动，可能会影响性能。
+      建议关闭此项，目前实体碰撞挤压还不完善，可能导致爆栈
   autoNamerTemplate:
     title: 自动命名模板
     description: |

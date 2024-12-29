@@ -117,6 +117,11 @@ settings:
     description: |
       This value determines the maximum number of times you can undo using Ctrl+Z.
       If your computer has very little memory, you can reduce this value.
+  isEnableEntityCollision:
+    title: Entity Collision Detection
+    description: |
+      When enabled, entities will collide and push each other, which may affect performance.
+      It is recommended to turn off this option, as the current entity collision and pushing implementation is not perfect and may lead to stack overflow.
   autoNamerTemplate:
     title: Auto Naming Template
     description: |

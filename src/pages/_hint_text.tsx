@@ -41,6 +41,7 @@ export default function HintText() {
         setHintTextList(whenPressRightMouse);
       }
     };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleMouseUp = (_: MouseEvent) => {
       setHintTextList(normalStage);
     };
