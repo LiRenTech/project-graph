@@ -6,6 +6,57 @@ welcome:
   bilibili: 哔哩哔哩
   qq: QQ 群組
 
+about:
+  title: Project Graph 计划投射
+  intro:
+    - 軟體介紹
+    - 這是一個基於tauri框架的快速繪製節點圖的工具，可以用於專案拓撲圖繪製、快速頭腦風暴草稿
+    - Xmind 只能用來繪製樹形結構圖，FigJam 和 draw.io 可以用來繪製但網頁打開有點慢了
+    - 所以做了這個小軟體
+  contact:
+    - 聯絡我們
+    - 我們致力於為“圖論”設計一個最快速方便的繪製方法論，同時也在可視化思考、拓撲型 todo list 等方向進行探索創新。
+    - 如果您想快速獲得反饋和提供建議，或者有任何想法、疑問，歡迎加入我們的 QQ 群：1006956704
+  techEnvironment: 技術支持與生態環境
+  developers:
+    title: 開發者名單
+    proposer: 專案提出
+    conceptDesigner: 概念設計
+    featureDesigner: 功能設計
+    feedbackManager: 反饋管理
+    logoDesigner: 圖標設計
+    uiDesigner: UI 設計
+    softwareArchitect: 軟體架構
+    bezierCurveDesigner: 貝塞爾曲線設計
+    animationEffectDesigner: 動畫特效設計
+    automationBuilder: 自動化構建
+    xlings: 自動化環境搭建
+    websiteMaintainer: 網站維護
+    performanceSupervisor: 性能督導
+    videoPromoter: 視頻推廣
+    translator: 翻譯
+    tester: 測試
+    encourager: 程式設計師鼓勵師
+    encouragerEncourager: 鼓勵師的鼓勵師
+    atmosphereAdjuster: 氣氛調節
+  ideaSources:
+    - 靈感來源
+    - 未支持深色風格的 FigJam
+    - 所長林超的畫分析框架詳解視頻
+    - 《數據結構與演算法》中的拓撲排序、圖論
+    - “頭腦風暴法”
+    - 遊戲《Minecraft》中的“命令方塊”
+    - 遊戲《水果忍者》中揮刀的動畫效果
+    - 遊戲《Mindustry》中的工廠流水線設計成邏輯節點
+    - 狀態機的概念
+  team:
+    - 團隊簡介
+    - 理刃科技(LiRen Tech)是一個由Littlefean和Rutubet在2017年5月1日創立的小型團隊，後續ZTY加入團隊。
+    - 以其年輕化的團隊氛圍、對創新創意的重視、以及理性思維與文化包容的特點，在軟體開發領域獨樹一幟。
+    - 不僅專注於開發工具軟體和遊戲，還涉足Minecraft遊戲插件開發、遊戲伺服器運營以及網站建設等多元化業務。
+    - 理刃科技的代表作品包括CannonWar這個內容豐富的塔防遊戲、BitMountain算法競賽網站、Watch小桌面軟體，以及MinecraftPvP職業戰爭伺服器。
+    - 團隊以淺藍色和程式碼綠為代表顏色，象徵著邏輯合理與整活幽默並存的團隊文化。
+
 settings:
   tabs:
     about: 關於
