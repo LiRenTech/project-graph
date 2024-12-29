@@ -435,6 +435,11 @@ export namespace StageManager {
     }
     return false;
   }
+
+  /**
+   * O(n)
+   * @returns
+   */
   export function getSelectedEntities(): Entity[] {
     return entities.valuesToArray().filter((entity) => entity.isSelected);
   }

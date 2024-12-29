@@ -215,6 +215,9 @@ export namespace Renderer {
     if (!Controller.pressingKeySet.has("alt")) {
       return;
     }
+    if (StageManager.getSelectedEntities().length === 0) {
+      return;
+    }
     const selectedEntities = StageManager.getSelectedEntities();
     for (const selectedEntity of selectedEntities) {
       const startLocation = selectedEntity.collisionBox.getRectangle().center;

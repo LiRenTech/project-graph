@@ -16,6 +16,9 @@ ControllerLayerMoving.mousemove = (event: MouseEvent) => {
   if (!Controller.pressingKeySet.has("alt")) {
     return;
   }
+  if (StageManager.getSelectedEntities().length === 0) {
+    return;
+  }
   Controller.mouseLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
@@ -23,6 +26,9 @@ ControllerLayerMoving.mousemove = (event: MouseEvent) => {
 
 ControllerLayerMoving.mouseup = (event: MouseEvent) => {
   if (!Controller.pressingKeySet.has("alt")) {
+    return;
+  }
+  if (StageManager.getSelectedEntities().length === 0) {
     return;
   }
   const mouseLocation = Renderer.transformView2World(
