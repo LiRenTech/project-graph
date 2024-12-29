@@ -541,6 +541,7 @@ export namespace Renderer {
       `Controller.isViewMoveByClickMiddle: ${Controller.isViewMoveByClickMiddle}`,
       `path: ${Stage.Path.getFilePath()}`,
       `autoSavePaused: ${Stage.isAutoSavePaused}`,
+      `isEnableEntityCollision: ${StageManager.isEnableEntityCollision}`,
       // `tags: ${StageManager.TagOptions.getTagUUIDs().toString()}`,
     ];
     for (const [k, v] of Object.entries(timings)) {

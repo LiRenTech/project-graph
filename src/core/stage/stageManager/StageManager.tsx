@@ -4,6 +4,7 @@ import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { StringDict } from "../../dataStruct/StringDict";
 import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
+import { Settings } from "../../Settings";
 import { Edge } from "../../stageObject/association/Edge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
@@ -45,6 +46,14 @@ export namespace StageManager {
   const entities: StringDict<Entity> = StringDict.create();
   const associations: StringDict<Association> = StringDict.create();
   const tags: StringDict<string> = StringDict.create();
+
+  export let isEnableEntityCollision: boolean = false;
+
+  export function init() {
+    Settings.watch("isEnableEntityCollision", (value) => {
+      isEnableEntityCollision = value;
+    });
+  }
 
   export function getTextNodes(): TextNode[] {
     return entities.valuesToArray().filter((node) => node instanceof TextNode);

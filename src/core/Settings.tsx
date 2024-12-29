@@ -22,6 +22,7 @@ export namespace Settings {
     // 性能相关
     historySize: number; // 暂无
     renderEffect: boolean;
+    isEnableEntityCollision: boolean;
     // 自动化相关
     autoNamerTemplate: string;
     autoOpenPath: string; // 废弃
@@ -62,6 +63,7 @@ export namespace Settings {
     // 性能相关
     historySize: 20,
     renderEffect: true,
+    isEnableEntityCollision: false,
     // 自动相关
     autoNamerTemplate: "...",
     autoOpenPath: "", // 废弃

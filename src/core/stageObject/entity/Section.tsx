@@ -216,6 +216,9 @@ export class Section extends ConnectableEntity {
     this.updateOtherEntityLocationByMove();
   }
   protected override collideWithOtherEntity(other: Entity): void {
+    if (!StageManager.isEnableEntityCollision) {
+      return;
+    }
     if (other instanceof Section) {
       if (StageManager.SectionOptions.isEntityInSection(this, other)) {
         return;

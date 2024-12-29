@@ -131,6 +131,9 @@ export class TextNode extends ConnectableEntity {
   }
 
   protected override collideWithOtherEntity(other: Entity): void {
+    if (!StageManager.isEnableEntityCollision) {
+      return;
+    }
     if (other instanceof Section) {
       // 如果碰撞的东西是一个section
       // 如果自己是section的子节点，则不移动

@@ -27,6 +27,7 @@ import "./polyfills/roundRect";
 import { Dialog } from "./utils/dialog";
 import { exists } from "./utils/fs";
 import { PopupDialogProvider } from "./utils/popupDialog";
+import { StageManager } from "./core/stage/stageManager/StageManager";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -133,6 +134,7 @@ async function loadSyncModules() {
   StageStyleManager.init();
   SoundService.init();
   MouseLocation.init();
+  StageManager.init();
 }
 
 /** 加载语言文件 */
