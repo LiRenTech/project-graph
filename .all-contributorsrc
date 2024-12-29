@@ -1,7 +1,58 @@
 {
   "projectName": "project-graph",
   "projectOwner": "LiRenTech",
-  "files": ["docs/contributors.md"],
+  "files": [
+    "docs/contributors.md"
+  ],
   "commitConvention": "gitmoji",
-  "contributorsSortAlphabetically": true
+  "contributorsSortAlphabetically": true,
+  "repoType": "github",
+  "contributors": [
+    {
+      "login": "Littlefean",
+      "name": "Littlefean",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52772779?v=4",
+      "profile": "https://github.com/Littlefean",
+      "contributions": [
+        "code",
+        "ideas",
+        "projectManagement",
+        "tutorial",
+        "video"
+      ]
+    },
+    {
+      "login": "Rutubet",
+      "name": "Rutubet",
+      "avatar_url": "https://avatars.githubusercontent.com/u/42482513?v=4",
+      "profile": "https://github.com/Rutubet",
+      "contributions": [
+        "code",
+        "ideas"
+      ]
+    },
+    {
+      "login": "zty012",
+      "name": "ZTY",
+      "avatar_url": "https://avatars.githubusercontent.com/u/89395757?v=4",
+      "profile": "https://github.com/zty012",
+      "contributions": [
+        "code",
+        "design",
+        "doc",
+        "ideas",
+        "projectManagement",
+        "translation"
+      ]
+    },
+    {
+      "login": "Sunrisepeak",
+      "name": "SPeak",
+      "avatar_url": "https://avatars.githubusercontent.com/u/38786181?v=4",
+      "profile": "https://d2learn.org/",
+      "contributions": [
+        "tool"
+      ]
+    }
+  ]
 }
