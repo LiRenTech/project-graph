@@ -149,6 +149,9 @@ importers:
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(jsdom@25.0.1)(sass-embedded@1.83.0)
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.13(typescript@5.7.2)
 
 packages:
   "@algolia/autocomplete-core@1.17.7":

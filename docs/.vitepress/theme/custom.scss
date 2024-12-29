@@ -1,9 +1,11 @@
+@import url("https://gcore.jsdelivr.net/npm/misans-webfont@1.0.4/misans-style.min.css");
+
 $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
 :root {
+  // 首页图片特效
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: linear-gradient(120deg, #34a0fe 30%, #31ce39);
-
   --vp-home-hero-image-background-image: linear-gradient(
     120deg,
     #34a0fe 50%,
@@ -11,14 +13,42 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   );
   --vp-home-hero-image-filter: blur(44px);
 
-  --vp-sidebar-bg-color: transparent;
-
+  // 适配不同屏幕大小
   @media (min-width: 640px) {
     --vp-home-hero-image-filter: blur(56px);
   }
 
   @media (min-width: 960px) {
     --vp-home-hero-image-filter: blur(68px);
+  }
+}
+
+:root {
+  // 字体
+  --vp-font-family-base: "Misans", -apple-system, system-ui, sans-serif;
+
+  // 透明侧边栏
+  --vp-sidebar-bg-color: transparent;
+
+  // 自定义配色
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f6f6f7;
+  --vp-c-bg-elv: #ffffff;
+  --vp-c-bg-soft: #f6f6f7;
+  --vp-button-brand-bg: #2097ff;
+  --vp-button-alt-bg: #efefef;
+  --vp-button-brand-hover-bg: var(--vp-button-brand-bg);
+  --vp-button-brand-active-bg: var(--vp-button-brand-bg);
+  --vp-button-alt-hover-bg: var(--vp-button-alt-bg);
+  --vp-button-alt-active-bg: var(--vp-button-alt-bg);
+
+  &.dark {
+    --vp-c-bg: #000;
+    --vp-c-bg-alt: #090909;
+    --vp-c-bg-elv: #090909;
+    --vp-c-bg-soft: #090909;
+    --vp-button-brand-bg: #006bc8;
+    --vp-button-alt-bg: #121212;
   }
 }
 
@@ -31,6 +61,10 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   &:active {
     transform: scale(0.9);
   }
+}
+
+.VPButton.brand {
+  box-shadow: 0 0 64px var(--vp-button-brand-bg);
 }
 
 .VPHomeHero .main {
@@ -79,12 +113,21 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 
-#VPSidebarNav,
-.VPDocAsideOutline {
-  opacity: 0.5;
+.VPNavBar:not(.home.top) .content-body {
+  backdrop-filter: saturate(50%) blur(4px);
+  background-color: unset !important;
+  background-image: radial-gradient(
+    transparent 1px,
+    var(--vp-nav-bg-color) 1px
+  );
+  background-size: 4px 4px;
+}
+.DocSearch-Button {
+  background-color: transparent;
+  border-radius: 9999px;
   transition: 0.5s $ease-out-expo !important;
 
-  &:hover {
-    opacity: 1;
+  &:active {
+    transform: scale(0.9);
   }
 }
