@@ -15,14 +15,3 @@
 > 稳定版：手动发布的稳定版，不一定最新
 
 > [PyQt5版本（两期视频中的版本）](https://github.com/LiRenTech/project-graph/releases/tag/pyqt-2024-10-3)
-
-## 贡献者
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->

@@ -1,0 +1,7 @@
+{
+  "projectName": "project-graph",
+  "projectOwner": "LiRenTech",
+  "files": ["docs/contributors.md"],
+  "commitConvention": "gitmoji",
+  "contributorsSortAlphabetically": true
+}
