@@ -1,8 +1,62 @@
 import { Controller } from "../../controller/Controller";
 import { Color } from "../../dataStruct/Color";
+import { Vector } from "../../dataStruct/Vector";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageManager } from "../stageManager/StageManager";
-import { AutoComputeUtils } from "./autoComputeUtils";
+import { AutoComputeUtils } from "./AutoComputeUtils";
+import { MathFunctions } from "./functions/mathLogic";
+import { StringFunctions } from "./functions/stringLogic";
+import { LogicNodeNameEnum } from "./logicNodeNameEnum";
+
+type MathFunctionType = (args: number[]) => number[];
+type StringFunctionType = (args: string[]) => string[];
+type StringFunctionMap = Record<string, StringFunctionType>;
+
+/**
+ * 将 MathFunctionType 转换为 StringFunctionType
+ * @param mF
+ * @returns
+ */
+function mf2sf(mF: MathFunctionType): StringFunctionType {
+  return (args: string[]): string[] => {
+    const numbers = args.map((arg) => AutoComputeUtils.stringToNumber(arg));
+    const result = mF(numbers);
+    return result.map((num) => String(num));
+  };
+}
+
+const MapNameFunction: StringFunctionMap = {
+  // 数学计算
+  [LogicNodeNameEnum.ADD]: mf2sf(MathFunctions.add),
+  [LogicNodeNameEnum.SUBTRACT]: mf2sf(MathFunctions.subtract),
+  [LogicNodeNameEnum.MULTIPLY]: mf2sf(MathFunctions.multiply),
+  [LogicNodeNameEnum.DIVIDE]: mf2sf(MathFunctions.divide),
+  [LogicNodeNameEnum.MODULO]: mf2sf(MathFunctions.modulo),
+  [LogicNodeNameEnum.ABS]: mf2sf(MathFunctions.abs),
+  [LogicNodeNameEnum.MAX]: mf2sf(MathFunctions.max),
+  [LogicNodeNameEnum.MIN]: mf2sf(MathFunctions.min),
+  [LogicNodeNameEnum.FLOOR]: mf2sf(MathFunctions.floor),
+  [LogicNodeNameEnum.CEIL]: mf2sf(MathFunctions.ceil),
+  [LogicNodeNameEnum.ROUND]: mf2sf(MathFunctions.round),
+  [LogicNodeNameEnum.SQRT]: mf2sf(MathFunctions.sqrt),
+  // 概率论
+  [LogicNodeNameEnum.RANDOM]: mf2sf(MathFunctions.random),
+  // 逻辑门
+  [LogicNodeNameEnum.AND]: mf2sf(MathFunctions.and),
+  [LogicNodeNameEnum.OR]: mf2sf(MathFunctions.or),
+  [LogicNodeNameEnum.NOT]: mf2sf(MathFunctions.not),
+  [LogicNodeNameEnum.XOR]: mf2sf(MathFunctions.xor),
+  // 字符串类计算
+  [LogicNodeNameEnum.UPPER]: StringFunctions.upper,
+  [LogicNodeNameEnum.LOWER]: StringFunctions.lower,
+  [LogicNodeNameEnum.LEN]: StringFunctions.len,
+  [LogicNodeNameEnum.COPY]: StringFunctions.copy,
+  [LogicNodeNameEnum.SPLIT]: StringFunctions.split,
+  [LogicNodeNameEnum.REPLACE]: StringFunctions.replace,
+  [LogicNodeNameEnum.CONNECT]: StringFunctions.connect,
+  // 集合计算
+  [LogicNodeNameEnum.COUNT]: mf2sf(MathFunctions.count),
+};
 
 export function autoComputeEngineTick() {
   // debug 只有在按下x键才会触发
@@ -14,203 +68,23 @@ export function autoComputeEngineTick() {
     if (node.text === "#TEST#") {
       node.rename("Hello World!!");
     }
-    // region 数字类计算
-    if (node.text === "#ADD#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      let sumResult = 0;
-      for (const parent of parents) {
-        sumResult += AutoComputeUtils.stringToNumber(parent.text);
-      }
-      const resultText = String(sumResult);
-      AutoComputeUtils.getNodeOneResult(node, resultText);
-    } else if (node.text === "#MUL#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      let productResult = 1;
-      for (const parent of parents) {
-        productResult *= AutoComputeUtils.stringToNumber(parent.text);
-      }
-      const resultText = String(productResult);
-      AutoComputeUtils.getNodeOneResult(node, resultText);
-    } else if (node.text === "#AND#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      let result = 1;
-      for (const parent of parents) {
-        result = result && AutoComputeUtils.stringToNumber(parent.text);
-      }
-      const resultText = String(result);
-      AutoComputeUtils.getNodeOneResult(node, resultText);
-    } else if (node.text === "#OR#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      let result = 0;
-      for (const parent of parents) {
-        result = result || AutoComputeUtils.stringToNumber(parent.text);
-      }
-      const resultText = String(result);
-      AutoComputeUtils.getNodeOneResult(node, resultText);
-    } else if (node.text === "#NOT#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      if (parents.length === 1) {
-        const parent = parents[0];
-        const resultText = String(
-          AutoComputeUtils.stringToNumber(parent.text) === 0 ? 1 : 0,
+
+    for (const name of Object.keys(MapNameFunction)) {
+      if (node.text === name) {
+        const result = MapNameFunction[name](
+          AutoComputeUtils.getParentTextNodes(node)
+            .sort(
+              (a, b) =>
+                a.collisionBox.getRectangle().location.x -
+                b.collisionBox.getRectangle().location.x,
+            )
+            .map((p) => p.text),
         );
-        AutoComputeUtils.getNodeOneResult(node, resultText);
+        AutoComputeUtils.getMultiResult(node, result);
       }
-    } else if (node.text === "#RANDOM#") {
-      const randomNumber = Math.random();
-      const resultText = String(randomNumber);
-      AutoComputeUtils.getNodeOneResult(node, resultText);
-    } else if (node.text === "#FLOOR#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      if (parents.length === 1) {
-        const parent = parents[0];
-        const resultText = String(
-          Math.floor(AutoComputeUtils.stringToNumber(parent.text)),
-        );
-        AutoComputeUtils.getNodeOneResult(node, resultText);
-      }
-    } else if (node.text === "#CEIL#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      if (parents.length === 1) {
-        const parent = parents[0];
-        const resultText = String(
-          Math.ceil(AutoComputeUtils.stringToNumber(parent.text)),
-        );
-        AutoComputeUtils.getNodeOneResult(node, resultText);
-      }
-    } else if (node.text === "#MOD#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      if (parents.length === 2) {
-        const parent1 = parents[0];
-        const parent2 = parents[1];
-        const resultText = String(
-          AutoComputeUtils.stringToNumber(parent1.text) %
-            AutoComputeUtils.stringToNumber(parent2.text),
-        );
-        AutoComputeUtils.getNodeOneResult(node, resultText);
-      }
-    } else if (node.text === "#SUB#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      if (parents.length === 2) {
-        const parent1 = parents[0];
-        const parent2 = parents[1];
-        const resultText = String(
-          AutoComputeUtils.stringToNumber(parent1.text) -
-            AutoComputeUtils.stringToNumber(parent2.text),
-        );
-        AutoComputeUtils.getNodeOneResult(node, resultText);
-      }
-    } else if (node.text === "#DIV#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      if (parents.length === 2) {
-        const parent1 = parents[0];
-        const parent2 = parents[1];
-        const resultText = String(
-          AutoComputeUtils.stringToNumber(parent1.text) /
-            AutoComputeUtils.stringToNumber(parent2.text),
-        );
-        AutoComputeUtils.getNodeOneResult(node, resultText);
-      }
-    } else if (node.text === "#ABS#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      if (parents.length === 1) {
-        const parent = parents[0];
-        const resultText = String(
-          Math.abs(AutoComputeUtils.stringToNumber(parent.text)),
-        );
-        AutoComputeUtils.getNodeOneResult(node, resultText);
-      }
-    } else if (node.text === "#COPY#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      if (parents.length === 1) {
-        const parent = parents[0];
-        const resultText = parent.text;
-        AutoComputeUtils.getNodeOneResult(node, resultText);
-      }
-    } else if (node.text === "#LEN#") {
-      // region 字符串类计算
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      if (parents.length === 1) {
-        const parent = parents[0];
-        const resultText = String(parent.text.length);
-        AutoComputeUtils.getNodeOneResult(node, resultText);
-      }
-    } else if (node.text === "#UPPER#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      if (parents.length === 1) {
-        const parent = parents[0];
-        const resultText = parent.text.toUpperCase();
-        AutoComputeUtils.getNodeOneResult(node, resultText);
-      }
-    } else if (node.text === "#LOWER#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      if (parents.length === 1) {
-        const parent = parents[0];
-        const resultText = parent.text.toLowerCase();
-        AutoComputeUtils.getNodeOneResult(node, resultText);
-      }
-    } else if (node.text === "#SPLIT#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      if (parents.length === 2) {
-        const parent1 = parents[0];
-        const parent2 = parents[1];
-        const resultTextList = parent1.text.split(parent2.text);
-        AutoComputeUtils.getMultiResult(node, resultTextList);
-      }
-    } else if (node.text === "#REPLACE#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      if (parents.length === 3) {
-        const parent1 = parents[0];
-        const parent2 = parents[1];
-        const parent3 = parents[2];
-        const resultText = parent1.text.replace(parent2.text, parent3.text);
-        AutoComputeUtils.getNodeOneResult(node, resultText);
-      }
-    } else if (node.text === "#CONNECT#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      let result = "";
-      for (const parent of parents) {
-        result += parent.text;
-      }
-      AutoComputeUtils.getNodeOneResult(node, result);
-    } else if (node.text === "#REPEAT#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      if (parents.length === 2) {
-        const parent1 = parents[0];
-        const parent2 = parents[1];
-        const resultText = parent1.text.repeat(
-          AutoComputeUtils.stringToNumber(parent2.text),
-        );
-        AutoComputeUtils.getNodeOneResult(node, resultText);
-      }
-    } else if (node.text === "#MAX#") {
-      // region 集合类计算
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      let maxResult = -Infinity;
-      for (const parent of parents) {
-        const parentNumber = AutoComputeUtils.stringToNumber(parent.text);
-        if (parentNumber > maxResult) {
-          maxResult = parentNumber;
-        }
-      }
-      const resultText = String(maxResult);
-      AutoComputeUtils.getNodeOneResult(node, resultText);
-    } else if (node.text === "#MIN#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      let minResult = Infinity;
-      for (const parent of parents) {
-        const parentNumber = AutoComputeUtils.stringToNumber(parent.text);
-        if (parentNumber < minResult) {
-          minResult = parentNumber;
-        }
-        const resultText = String(minResult);
-        AutoComputeUtils.getNodeOneResult(node, resultText);
-      }
-    } else if (node.text === "#COUNT#") {
-      const parents = AutoComputeUtils.getParentTextNodes(node);
-      const resultText = String(parents.length);
-      AutoComputeUtils.getNodeOneResult(node, resultText);
-    } else if (node.text === "#RGB#") {
+    }
+    // 特殊类型计算
+    if (node.text === "#RGB#") {
       // region 颜色类计算
       // 获取三个节点的颜色，并将子节点颜色更改为这个颜色
       const parents = AutoComputeUtils.getParentTextNodes(node);
@@ -247,28 +121,51 @@ export function autoComputeEngineTick() {
           child.color = new Color(r, g, b, a);
         }
       }
+    } else if (node.text === "#GET_LOCATION#") {
+      // 获取节点的位置
+      const parents = AutoComputeUtils.getParentTextNodes(node);
+      if (parents.length === 1) {
+        const parent = parents[0];
+        AutoComputeUtils.getMultiResult(node, [
+          parent.collisionBox.getRectangle().location.x.toString(),
+          parent.collisionBox.getRectangle().location.y.toString(),
+        ]);
+      }
+    } else if (node.text === "#SET_LOCATION#") {
+      // 设置节点的位置
+      const parents = AutoComputeUtils.getParentTextNodes(node);
+      if (parents.length === 2) {
+        const parent1 = parents[0];
+        const parent2 = parents[1];
+        const x = AutoComputeUtils.stringToNumber(parent1.text);
+        const y = AutoComputeUtils.stringToNumber(parent2.text);
+        if (x && y) {
+          // 获取唯一子节点
+          const child = StageManager.nodeChildrenArray(node).find(
+            (node) => node instanceof TextNode,
+          );
+          if (child) {
+            child.moveTo(new Vector(x, y));
+          }
+        }
+      }
     }
   }
   // region 计算section
   for (const section of StageManager.getSections()) {
-    if (section.text === "#ADD#") {
-      let result = 0;
-      for (const child of section.children) {
+    for (const name of Object.keys(MapNameFunction)) {
+      const inputStringList: string[] = [];
+      for (const child of section.children.sort(
+        (a, b) =>
+          a.collisionBox.getRectangle().location.x -
+          b.collisionBox.getRectangle().location.x,
+      )) {
         if (child instanceof TextNode) {
-          result += AutoComputeUtils.stringToNumber(child.text);
+          inputStringList.push(child.text);
         }
       }
-      const resultText = String(result);
-      AutoComputeUtils.getSectionOneResult(section, resultText);
-    } else if (section.text === "COUNT") {
-      let result = 0;
-      for (const child of section.children) {
-        if (child instanceof TextNode) {
-          result++;
-        }
-      }
-      const resultText = String(result);
-      AutoComputeUtils.getSectionOneResult(section, resultText);
+      const result = MapNameFunction[name](inputStringList);
+      AutoComputeUtils.getSectionMultiResult(section, result);
     }
   }
 }

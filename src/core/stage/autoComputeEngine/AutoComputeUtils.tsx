@@ -87,6 +87,46 @@ export namespace AutoComputeUtils {
     }
   }
 
+  export function getSectionMultiResult(
+    section: Section,
+    resultTextList: string[],
+  ) {
+    let childrenList = StageManager.nodeChildrenArray(section).filter(
+      (node) => node instanceof TextNode,
+    );
+    if (childrenList.length < resultTextList.length) {
+      // 子节点数量不够，需要新建节点
+      const needCount = resultTextList.length - childrenList.length;
+      for (let j = 0; j < needCount; j++) {
+        const newNode = new TextNode({
+          uuid: uuidv4(),
+          text: "",
+          location: [
+            section.collisionBox.getRectangle().location.x,
+            section.collisionBox.getRectangle().bottom + 100 + j * 100,
+          ],
+          size: [100, 100],
+          color: [0, 0, 0, 0],
+        });
+        StageManager.addTextNode(newNode);
+        StageManager.connectEntity(section, newNode);
+      }
+    }
+    // 子节点数量够了，直接修改，顺序是从上到下
+    childrenList = StageManager.nodeChildrenArray(section)
+      .filter((node) => node instanceof TextNode)
+      .sort(
+        (node1, node2) =>
+          node1.collisionBox.getRectangle().location.y -
+          node2.collisionBox.getRectangle().location.y,
+      );
+    // 开始修改
+    let i = -1;
+    for (const child of childrenList) {
+      child.rename(resultTextList[++i]);
+    }
+  }
+
   /**
    * 生成一个节点的多个结果
    * 如果子节点数量不够，则新建节点
