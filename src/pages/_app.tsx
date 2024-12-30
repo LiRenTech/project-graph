@@ -17,7 +17,6 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "../components/ui/Button";
 import IconButton from "../components/ui/IconButton";
-import PopupDialog from "../components/ui/PopupDialog";
 import { Settings } from "../core/Settings";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
@@ -211,7 +210,6 @@ export default function App() {
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
-      <PopupDialog />
       <ErrorHandler />
       {/* 叠加层，显示窗口控件 */}
       <div
