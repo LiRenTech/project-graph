@@ -181,7 +181,7 @@ function AlignNodePanel() {
         description="顶对齐"
         icon={<AlignStartHorizontal />}
         handleFunction={() => {
-          Stage.effects.push(new TextRiseEffect("该功能还未实现"));
+          StageManager.alignTop();
         }}
       />
       <ToolbarItem
@@ -195,7 +195,7 @@ function AlignNodePanel() {
         description="底对齐"
         icon={<AlignEndHorizontal />}
         handleFunction={() => {
-          Stage.effects.push(new TextRiseEffect("该功能还未实现"));
+          StageManager.alignBottom();
         }}
       />
       <ToolbarItem
