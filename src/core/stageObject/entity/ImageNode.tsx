@@ -53,7 +53,10 @@ export class ImageNode extends ConnectableEntity {
   /**
    * 图片的三种状态
    */
-  public state: "loading" | "success" | "error" = "loading";
+  public state: "loading" | "success" | "unknownError" | "encodingError" =
+    "loading";
+
+  public errorDetails: string = "";
 
   private _imageElement: HTMLImageElement = new Image();
 
@@ -127,14 +130,16 @@ export class ImageNode extends ConnectableEntity {
           this.state = "success";
         };
         imageElement.onerror = () => {
-          this.state = "error";
+          this.state = "encodingError";
+          this.errorDetails = "图片编码错误";
         };
       })
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
       .catch((_err) => {
         // 获取base64String失败
         // TODO: 图片上显示ErrorDetails信息
-        this.state = "error";
+        this.state = "unknownError";
+        this.errorDetails = _err.toString();
       });
   }
 

@@ -292,11 +292,42 @@ export namespace EntityRenderer {
         imageNode.imageElement,
         Renderer.transformWorld2View(imageNode.rectangle.location),
       );
-    } else if (imageNode.state === "error") {
+    } else if (imageNode.state === "unknownError") {
       RenderUtils.renderTextFromCenter(
-        "Error",
+        "未知错误，建议反馈",
         Renderer.transformWorld2View(imageNode.rectangle.center),
         20 * Camera.currentScale,
+        Color.Red,
+      );
+      RenderUtils.renderTextFromCenter(
+        imageNode.uuid,
+        Renderer.transformWorld2View(imageNode.rectangle.topCenter),
+        10 * Camera.currentScale,
+        Color.Red,
+      );
+      RenderUtils.renderTextFromCenter(
+        imageNode.errorDetails,
+        Renderer.transformWorld2View(imageNode.rectangle.bottomCenter),
+        10 * Camera.currentScale,
+        Color.Red,
+      );
+    } else if (imageNode.state === "encodingError") {
+      RenderUtils.renderTextFromCenter(
+        "图片base64编码错误",
+        Renderer.transformWorld2View(imageNode.rectangle.center),
+        20 * Camera.currentScale,
+        Color.Red,
+      );
+      RenderUtils.renderTextFromCenter(
+        imageNode.uuid,
+        Renderer.transformWorld2View(imageNode.rectangle.topCenter),
+        10 * Camera.currentScale,
+        Color.Red,
+      );
+      RenderUtils.renderTextFromCenter(
+        imageNode.errorDetails,
+        Renderer.transformWorld2View(imageNode.rectangle.bottomCenter),
+        10 * Camera.currentScale,
         Color.Red,
       );
     }

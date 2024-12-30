@@ -40,12 +40,16 @@ fn write_text_file(path: String, content: String) -> Result<(), String> {
 #[tauri::command]
 fn write_file_base64(content: String, path: String) -> Result<(), String> {
     std::fs::write(
-        path,
+        &path,
         &general_purpose::STANDARD
             .decode(content)
             .map_err(|e| format!("解码失败: {}", e))?,
     )
-    .map_err(|e| e.to_string())?;
+    .map_err(|e| {
+        eprintln!("写入文件失败: {}", e);
+        return e.to_string();
+    })?;
+    println!("写入文件base64成功: {}", path);
     Ok(())
 }
 
