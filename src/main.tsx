@@ -19,6 +19,7 @@ import { SoundService } from "./core/SoundService";
 import { Camera } from "./core/stage/Camera";
 import { Stage } from "./core/stage/Stage";
 import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManager";
+import { StageManager } from "./core/stage/stageManager/StageManager";
 import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeCollisionBoxGetter";
 import { StageStyleManager } from "./core/stageStyle/StageStyleManager";
 import { StartFilesManager } from "./core/StartFilesManager";
@@ -26,8 +27,6 @@ import "./index.pcss";
 import "./polyfills/roundRect";
 import { Dialog } from "./utils/dialog";
 import { exists } from "./utils/fs";
-import { PopupDialogProvider } from "./utils/popupDialog";
-import { StageManager } from "./core/stage/stageManager/StageManager";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -183,9 +182,5 @@ async function loadStartFile() {
 
 /** 渲染应用 */
 async function renderApp() {
-  createRoot(el).render(
-    <PopupDialogProvider>
-      <Routes />
-    </PopupDialogProvider>,
-  );
+  createRoot(el).render(<Routes />);
 }

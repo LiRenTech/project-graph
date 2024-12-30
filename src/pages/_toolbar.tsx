@@ -42,7 +42,7 @@ import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { Dialog } from "../utils/dialog";
 import { exists, writeTextFile } from "../utils/fs";
-import { usePopupDialog } from "../utils/popupDialog";
+import { Popup } from "../utils/popup";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -222,7 +222,6 @@ function AlignNodePanel() {
  * @returns
  */
 export default function Toolbar({ className = "" }: { className?: string }) {
-  const popupDialog = usePopupDialog();
   const [isCopyClearShow, setIsCopyClearShow] = useState(false);
   const [isHaveSelectedNode, setSsHaveSelectedNode] = useState(false);
   const [isHaveSelectedNodeOverTwo, setSsHaveSelectedNodeOverTwo] =
@@ -300,7 +299,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
         <ToolbarItem
           description="通过文本生成节点"
           icon={<ClipboardPaste />}
-          handleFunction={() => popupDialog.show(<GenerateNodePanel />)}
+          handleFunction={() => Popup.show(<GenerateNodePanel />)}
         />
         {isHaveSelectedNode && (
           <ToolbarItem
@@ -328,7 +327,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           <ToolbarItem
             description="设置节点颜色"
             icon={<PaintBucket />}
-            handleFunction={() => popupDialog.show(<ColorPanel />)}
+            handleFunction={() => Popup.show(<ColorPanel />)}
           />
         )}
 
@@ -336,7 +335,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           <ToolbarItem
             description="节点对齐相关"
             icon={<LayoutDashboard />}
-            handleFunction={() => popupDialog.show(<AlignNodePanel />)}
+            handleFunction={() => Popup.show(<AlignNodePanel />)}
           />
         )}
         {isCopyClearShow && (
