@@ -15,6 +15,11 @@ import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { RenderUtils } from "./RenderUtils";
 import { WorldRenderUtils } from "./WorldRenderUtils";
+import {
+  renderDotBackground,
+  renderHorizonBackground,
+  renderVerticalBackground,
+} from "./backgroundRenderer";
 import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
 import { EntityRenderer } from "./entityRenderer/EntityRenderer";
 import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
@@ -75,7 +80,9 @@ export namespace Renderer {
    * 是否显示各种调试信息文字
    */
   export let isShowDebug = true;
-  let isShowGrid = true;
+  let isShowBackgroundHorizontalLines = false;
+  let isShowBackgroundVerticalLines = false;
+  let isShowBackgroundDots = false;
   export let isAlwaysShowDetails = false;
   let isRenderEffect = true;
   export let protectingPrivacy = false;
@@ -83,7 +90,16 @@ export namespace Renderer {
   // 确保这个函数在软件打开的那一次调用
   export function init() {
     Settings.watch("showDebug", (value) => (isShowDebug = value));
-    Settings.watch("showGrid", (value) => (isShowGrid = value));
+    Settings.watch("showBackgroundHorizontalLines", (value) => {
+      isShowBackgroundHorizontalLines = value;
+    });
+    Settings.watch("showBackgroundVerticalLines", (value) => {
+      isShowBackgroundVerticalLines = value;
+    });
+    Settings.watch("showBackgroundDots", (value) => {
+      isShowBackgroundDots = value;
+    });
+
     Settings.watch(
       "alwaysShowDetails",
       (value) => (isAlwaysShowDetails = value),
@@ -101,7 +117,7 @@ export namespace Renderer {
     const viewRectangle = getCoverWorldRectangle();
     Camera.frameTick();
     Canvas.ctx.clearRect(0, 0, w, h);
-    renderGrid();
+    renderBackground();
     renderPrivacyBoard(viewRectangle);
     renderViewMoveByClickMiddle(viewRectangle, performance.now());
     renderEdges(viewRectangle);
@@ -473,38 +489,17 @@ export namespace Renderer {
       effect.render();
     }
   }
-
-  /** 画网格 */
-  function renderGrid() {
-    if (!isShowGrid) {
-      return;
+  function renderBackground() {
+    if (isShowBackgroundDots) {
+      renderDotBackground(getCoverWorldRectangle());
     }
-    const gap = 50;
-    let currentGap = gap;
-    if (Camera.currentScale < 1) {
-      while (currentGap * Camera.currentScale < gap - 1) {
-        currentGap *= 2;
-      }
+    if (isShowBackgroundHorizontalLines) {
+      renderHorizonBackground(getCoverWorldRectangle());
     }
-    const gridColor = StageStyleManager.currentStyle.GridNormalColor;
-    const mainColor = StageStyleManager.currentStyle.GridHeavyColor;
-
-    const viewRect = getCoverWorldRectangle();
-    let yStart = viewRect.location.y - (viewRect.location.y % currentGap);
-    while (yStart < viewRect.bottom) {
-      let xStart = viewRect.location.x - (viewRect.location.x % currentGap);
-      while (xStart < viewRect.right) {
-        RenderUtils.renderCircle(
-          transformWorld2View(new Vector(xStart, yStart)),
-          1,
-          xStart === 0 || yStart === 0 ? mainColor : gridColor,
-          Color.Transparent,
-          0,
-        );
-        xStart += currentGap;
-      }
-      yStart += currentGap;
+    if (isShowBackgroundVerticalLines) {
+      renderVerticalBackground(getCoverWorldRectangle());
     }
+    // renderGridBackground(getCoverWorldRectangle());
   }
 
   /** 画debug信息 */

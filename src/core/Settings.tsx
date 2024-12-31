@@ -13,7 +13,10 @@ export namespace Settings {
     // 视觉相关
     lineStyle: "straight" | "bezier" | "vertical";
     theme: "black" | "white"; // 暂无
-    showGrid: boolean;
+    showGrid: boolean; // 废弃
+    showBackgroundHorizontalLines: boolean;
+    showBackgroundVerticalLines: boolean;
+    showBackgroundDots: boolean;
     windowBackgroundAlpha: number;
     showDebug: boolean;
     alwaysShowDetails: boolean;
@@ -56,6 +59,9 @@ export namespace Settings {
     lineStyle: "straight",
     theme: "black",
     showGrid: true,
+    showBackgroundHorizontalLines: false,
+    showBackgroundVerticalLines: false,
+    showBackgroundDots: true,
     windowBackgroundAlpha: 0.8,
     showDebug: true,
     alwaysShowDetails: false,
