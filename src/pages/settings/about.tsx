@@ -11,6 +11,45 @@ import versions from "../../assets/versions.json";
 import Button from "../../components/ui/Button";
 import { cn } from "../../utils/cn";
 
+interface AuthorLinkProps {
+  url: string;
+  name: string;
+}
+
+function AuthorLink({ url, name }: AuthorLinkProps) {
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="cursor-pointer text-blue-400 hover:text-blue-500"
+    >
+      {name}
+    </a>
+  );
+}
+
+const Rutubet = (
+  <AuthorLink url={"https://github.com/Rutubet"} name={"Rutubet"} />
+);
+const Littlefean = (
+  <AuthorLink url={"https://github.com/Littlefean"} name={"Littlefean"} />
+);
+const ZTY = <AuthorLink url={"https://github.com/zty012"} name={"ZTY"} />;
+const SunriseSpeak = (
+  <AuthorLink url={"https://github.com/Sunrisepeak"} name={"SunriseSpeak"} />
+);
+const FittenCode = (
+  <AuthorLink
+    url={"https://code.fittentech.com?ref=ay"}
+    name={"Artificial Intelligence"}
+  />
+);
+const Vitest = (
+  <AuthorLink url={"https://github.com/vitest-dev/vitest"} name={"Vitest"} />
+);
+const Lucide = <AuthorLink url={"https://lucide.dev/icons/"} name={"lucide"} />;
+
 export default function About() {
   const [version, setVersion] = React.useState("");
   const [versionName, setVersionName] = React.useState("");
@@ -66,39 +105,52 @@ export default function About() {
           <Card title={t("developers.title")} className="bg-blue-500/20">
             <Code2 />
           </Card>
-          <Card title={t("developers.proposer")}>Rutubet</Card>
-          <Card title={t("developers.conceptDesigner")}>Littlefean</Card>
+          <Card title={t("developers.proposer")}>
+            {Rutubet}, {Littlefean}
+          </Card>
+          <Card title={t("developers.conceptDesigner")}>{Littlefean}</Card>
           <Card title={t("developers.featureDesigner")}>
-            Littlefean, ZTY, Rutubet, feedbackers
+            {Littlefean}, {ZTY}, {Rutubet}, feedbackers
           </Card>
-          <Card title={t("developers.feedbackManager")}>Littlefean, ZTY</Card>
+          <Card title={t("developers.feedbackManager")}>
+            {Littlefean}, {ZTY}
+          </Card>
           <Card title={t("developers.logoDesigner")}>
-            Littlefean, ZTY, Rutubet
+            {Littlefean}, {ZTY}, {Rutubet}, {Lucide}
           </Card>
-          <Card title={t("developers.uiDesigner")}>ZTY</Card>
+          <Card title={t("developers.uiDesigner")}>{ZTY}</Card>
           <Card title={t("developers.softwareArchitect")}>
-            Rutubet, Littlefean, ZTY
+            {Rutubet}, {Littlefean}, {ZTY}
           </Card>
-          <Card title={t("developers.bezierCurveDesigner")}>Rutubet</Card>
+          <Card title={t("developers.bezierCurveDesigner")}>{Rutubet}</Card>
           <Card title={t("developers.animationEffectDesigner")}>
-            Littlefean
+            {Littlefean}
           </Card>
-          <Card title={t("developers.automationBuilder")}>ZTY</Card>
-          <Card title={t("developers.xlings")}>SunriseSpeak</Card>
-          <Card title={t("developers.websiteMaintainer")}>ZTY</Card>
+          <Card title={t("developers.automationBuilder")}>{ZTY}</Card>
+          <Card title={t("developers.xlings")}>{SunriseSpeak}</Card>
+          <Card title={t("developers.websiteMaintainer")}>{ZTY}</Card>
           <Card title={t("developers.performanceSupervisor")}>
-            ZTY, feedbackers
+            {ZTY}, feedbackers
           </Card>
-          <Card title={t("developers.videoPromoter")}>Littlefean</Card>
-          <Card title={t("developers.translator")}>
-            Artificial Intelligence
-          </Card>
+          <Card title={t("developers.videoPromoter")}>{Littlefean}</Card>
+          <Card title={t("developers.translator")}>{FittenCode}</Card>
           <Card title={t("developers.tester")}>
-            Vitest, all developer, all user
+            {Vitest}, all developer, all user
           </Card>
-          <Card title={t("developers.encourager")}>null</Card>
+          <Card title={t("developers.encourager")}>
+            <span className="animate-pulse text-xs text-neutral-500">
+              undefined
+            </span>
+          </Card>
           <Card title={t("developers.encouragerEncourager")}>
-            maximum recursion depth exceeded
+            <div className="relative">
+              <div className="absolute animate-ping text-xs text-red-700">
+                maximum recursion depth exceeded
+              </div>
+              <div className="absolute text-xs text-red-700">
+                maximum recursion depth exceeded
+              </div>
+            </div>
           </Card>
           <Card title={t("developers.atmosphereAdjuster")}>yuxiaoQAQ</Card>
         </div>
@@ -167,9 +219,9 @@ function Card({
   className?: string;
 }>) {
   return (
-    <div className={cn("rounded-xl bg-white/5 p-4", className)}>
-      <h1 className="text-xl font-bold">{title}</h1>
-      {children}
+    <div className={cn("relative rounded-xl bg-white/5 p-4", className)}>
+      <h1 className="text-xl font-bold text-neutral-50">{title}</h1>
+      <div className="text-neutral-300">{children}</div>
     </div>
   );
 }
