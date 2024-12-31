@@ -211,7 +211,11 @@ settings:
       手柄的输入值在0-1之间，此值越小，手柄的输入越敏感
       死区越大，手柄的输入越趋于0或1，不会产生太大的变化
       死区越小，手柄的输入越趋于中间值，会产生较大的变化
-
+  mouseRightDragBackground:
+    title: 右键拖动背景的操作
+    options:
+      cut: 斩断并删除物体
+      moveCamera: 移动视野
 plugins:
   welcome:
     title: 欢迎使用插件系统

@@ -27,6 +27,9 @@ ControllerCutting.mousedown = (event: MouseEvent) => {
   if (event.button !== 2) {
     return;
   }
+  if (Stage.mouseRightDragBackground !== "cut") {
+    return;
+  }
   const pressWorldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );

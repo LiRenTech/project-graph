@@ -1,4 +1,11 @@
-import { Keyboard, Move, RotateCw, ScanEye, Skull } from "lucide-react";
+import {
+  Keyboard,
+  MousePointerClick,
+  Move,
+  RotateCw,
+  ScanEye,
+  Skull,
+} from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import KeyBind from "../../components/ui/KeyBind";
@@ -20,6 +27,11 @@ export default function Control() {
 
   return (
     <>
+      <SettingField
+        icon={<MousePointerClick />}
+        settingKey="mouseRightDragBackground"
+        type="select"
+      />
       <SettingField
         icon={<ScanEye />}
         settingKey="scaleExponent"

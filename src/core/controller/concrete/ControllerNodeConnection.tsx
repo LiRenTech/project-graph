@@ -112,6 +112,7 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
     }
     // 播放音效
     SoundService.play.connectLineStart();
+    Stage.isConnecting = true;
   }
 };
 
@@ -147,6 +148,7 @@ ControllerNodeConnection.mouseup = (event: MouseEvent) => {
   if (event.button !== 2) {
     return;
   }
+  Stage.isConnecting = false;
   // 结束连线
   if (isConnecting() && Stage.connectToEntity !== null) {
     let isHaveConnectResult = false; // 在多重链接的情况下，是否有连接成功

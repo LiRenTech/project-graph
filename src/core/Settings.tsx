@@ -8,6 +8,7 @@ import { load, Store } from "@tauri-apps/plugin-store";
  */
 export namespace Settings {
   let store: Store;
+  // 注意：下拉菜单框必须要在语言包里面配置才能生效，否则菜单项是 Error: Option Not Found
   export type Settings = {
     language: "zh-CN" | "zh-TW" | "en";
     // 视觉相关
@@ -43,6 +44,7 @@ export namespace Settings {
     moveAmplitude: number;
     moveFriction: number;
     gamepadDeadzone: number;
+    mouseRightDragBackground: "cut" | "moveCamera";
     // 音效相关
     soundEnabled: boolean;
     cuttingLineStartSoundFile: string;
@@ -88,6 +90,7 @@ export namespace Settings {
     moveAmplitude: 2,
     moveFriction: 0.1,
     gamepadDeadzone: 0.1,
+    mouseRightDragBackground: "cut",
     // 音效相关
     soundEnabled: true,
     cuttingLineStartSoundFile: "",

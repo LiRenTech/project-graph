@@ -5,6 +5,8 @@
 import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Camera } from "../../stage/Camera";
+import { Stage } from "../../stage/Stage";
+import { StageManager } from "../../stage/stageManager/StageManager";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -152,6 +154,24 @@ ControllerCamera.mousemove = (event: MouseEvent) => {
   // 侧键按下拖动视野
   if (Controller.isMouseDown[4]) {
     moveCameraByMouseMove(event.clientX, event.clientY, 4);
+    Controller.setCursorName("grabbing");
+  }
+  if (
+    Stage.mouseRightDragBackground === "moveCamera" &&
+    Controller.isMouseDown[2]
+  ) {
+    // 还要保证这个鼠标位置没有悬浮在什么东西上
+    const mouseLocation = new Vector(event.clientX, event.clientY);
+    const worldLocation = Renderer.transformView2World(mouseLocation);
+    const entity = StageManager.findEntityByLocation(worldLocation);
+    if (Stage.isConnecting) {
+      return;
+    }
+    if (entity !== null) {
+      console.log("右键在实体上了");
+      return;
+    }
+    moveCameraByMouseMove(event.clientX, event.clientY, 2);
     Controller.setCursorName("grabbing");
   }
 };

@@ -211,6 +211,11 @@ settings:
       The input value of the gamepad is between 0 and 1. The smaller this value, the more sensitive the gamepad input.
       The larger the deadzone, the closer the gamepad input is to 0 or 1, and there will not be too much change.
       The smaller the deadzone, the closer the gamepad input is to the middle value, and there will be a larger change.
+  mouseRightDragBackground:
+    title: Right-click Dragging Background Operation
+    options:
+      cut: Cut and Delete Object
+      moveCamera: Move View
 
 app:
   unsaved: "*"

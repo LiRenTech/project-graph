@@ -104,6 +104,9 @@ export namespace Stage {
   export let isCutting = false;
 
   // eslint-disable-next-line prefer-const
+  export let isConnecting = false;
+
+  // eslint-disable-next-line prefer-const
   export let cuttingLine: Line | null = null;
   /**
    * 正在准备要删除的节点
@@ -248,6 +251,8 @@ export namespace Stage {
   let lastAutoSaveTime = performance.now();
   let autoSave = false;
   let autoSaveInterval = 60_000; // ms
+  /** 当前鼠标右键拖拽空白部分的操作 */
+  export let mouseRightDragBackground = "cut";
 
   export function init() {
     Settings.watch("autoSave", (value) => {
@@ -268,7 +273,9 @@ export namespace Stage {
     Settings.watch("autoBackupDraftPath", (value) => {
       autoBackupDraftPath = value;
     });
-
+    Settings.watch("mouseRightDragBackground", (value) => {
+      mouseRightDragBackground = value;
+    });
     controllerGamepad = new ControllerGamepad();
   }
 

@@ -211,6 +211,11 @@ settings:
       手柄的輸入值在0-1之間，此值越小，手柄的輸入越敏感
       死區越大，手柄的輸入越趨於0或1，不會產生太大的變化
       死區越小，手柄的輸入越趨於中間值，會產生較大的變化
+  mouseRightDragBackground:
+    title: 右鍵拖動背景的操作
+    options:
+      cut: 斬斷並刪除物體
+      moveCamera: 移動視野
 
 app:
   unsaved: "*"
