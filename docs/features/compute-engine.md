@@ -2,13 +2,25 @@
 
 当文本内容为特定的格式时，就会变成逻辑节点，例如 `#ADD#`
 
-逻辑节点可以看成一个**函数**，例如 `#ADD#` 节点会执行加法运算。它输入无穷多个参数，输出一个值。
+逻辑节点可以看成一个**函数**，一个有若干个输入值和若干个输出值的函数。
+
+输入值的顺序由节点摆放的x坐标位置，即从左到右排布。输出值的顺序由节点的输出端口位置，即从上到下排布。
+
+例如 `#ADD#` 节点会执行加法运算。它输入无穷多个参数，输出一个值。
 
 按住 x 键时，所有逻辑节点就会以屏幕刷新率的速度不停的执行。松开 x 键时，所有逻辑节点就会停止执行。
 
 <center>
-<svg xmlns="http://www.w3.org/2000/svg" width="242.24708807786283" height="322.4351721380481" viewBox="-5685.945267252739 1697.118910306965 242.24708807786283 322.4351721380481"><rect x="-5655.945267252739" y="1727.118910306965" width="60.95997619628906" height="60" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="-5625.465279154594" y="1771.118910306965" fill="rgba(204, 204, 204, 1)" font-size="32" text-anchor="middle" font-weight="500" font-family="system-ui">15</text><rect x="-5520.866178442454" y="1723.6797655051225" width="47.167999267578125" height="60" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="-5497.282178808665" y="1767.6797655051225" fill="rgba(204, 204, 204, 1)" font-size="32" text-anchor="middle" font-weight="500" font-family="system-ui">3</text><rect x="-5633.008738932295" y="1826.138781898565" width="143.8399658203125" height="60" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="-5561.088756022139" y="1870.138781898565" fill="rgba(204, 204, 204, 1)" font-size="32" text-anchor="middle" font-weight="500" font-family="system-ui">#ADD#</text><rect x="-5591.342072265628" y="1929.5540824450131" width="61.855987548828125" height="60" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="-5560.414078491214" y="1973.5540824450131" fill="rgba(204, 204, 204, 1)" font-size="32" text-anchor="middle" font-weight="500" font-family="system-ui">18</text><line x1="-5605.961156770562" y1="1787.118910306965" x2="-5580.592878406171" y2="1826.138781898565" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></line><line x1="-5515.96474461677" y1="1783.6797655051225" x2="-5542.406190214034" y2="1826.138781898565" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></line><line x1="-5560.893037150552" y1="1886.138781898565" x2="-5560.609797362801" y2="1929.5540824450131" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></line></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="205.28272267699867" height="297.47410376385596" viewBox="5568.973032631503 -3118.505267408721 205.28272267699867 297.47410376385596" style="background-color:rgba(31, 31, 31, 1)"><rect x="5598.973032631503" y="-3088.505267408721" width="47.519989013671875" height="60" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="5622.733027138339" y="-3044.505267408721" fill="rgba(204, 204, 204, 1)" font-size="32" text-anchor="middle" font-family="MiSans">5</text><rect x="5696.57576263272" y="-3086.5084800877767" width="47.67999267578125" height="60" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="5720.415758970611" y="-3042.5084800877767" fill="rgba(204, 204, 204, 1)" font-size="32" text-anchor="middle" font-family="MiSans">6</text><rect x="5599.119252985801" y="-3002.381726281242" width="143.8399658203125" height="60" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="5671.039235895957" y="-2958.381726281242" fill="rgba(204, 204, 204, 1)" font-size="32" text-anchor="middle" font-family="MiSans">#ADD#</text><rect x="5644.190722829665" y="-2911.031163644865" width="54.879974365234375" height="60" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="5671.630710012282" y="-2867.031163644865" fill="rgba(204, 204, 204, 1)" font-size="32" text-anchor="middle" font-family="MiSans">11</text></svg>
 </center>
+
+以上是一个加法的例子
+
+<center>
+<svg xmlns="http://www.w3.org/2000/svg" width="211.84471250787465" height="296.43438554695285" viewBox="5814.325530172405 -3108.723227440162 211.84471250787465 296.43438554695285" style="background-color:rgba(31, 31, 31, 1)"><rect x="5844.325530172405" y="-3078.723227440162" width="48.41600036621094" height="60" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="5868.53353035551" y="-3034.723227440162" fill="rgba(204, 204, 204, 1)" font-size="32" text-anchor="middle" font-family="MiSans">8</text><rect x="5949.002243412701" y="-3080.7085361556674" width="47.167999267578125" height="60" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="5972.58624304649" y="-3036.7085361556674" fill="rgba(204, 204, 204, 1)" font-size="32" text-anchor="middle" font-family="MiSans">3</text><rect x="5850.72946199519" y="-2990.376989600178" width="137.95196533203125" height="60" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="5919.705444661206" y="-2946.376989600178" fill="rgba(204, 204, 204, 1)" font-size="32" text-anchor="middle" font-family="MiSans">#SUB#</text><rect x="5897.384216809564" y="-2902.2888418932093" width="47.519989013671875" height="60" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="5921.1442113164" y="-2858.2888418932093" fill="rgba(204, 204, 204, 1)" font-size="32" text-anchor="middle" font-family="MiSans">5</text></svg>
+</center>
+
+以上是一个减法的例子
 
 ## 节点类型及功能
 
