@@ -1,3 +1,5 @@
+import { writeFileBase64 } from "../../../utils/fs";
+import { PathString } from "../../../utils/pathString";
 import { Color } from "../../dataStruct/Color";
 import { Vector } from "../../dataStruct/Vector";
 import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
@@ -6,6 +8,7 @@ import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
 import { StageLoader } from "../../stage/StageLoader";
 import { StageManager } from "../../stage/stageManager/StageManager";
+import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
 import { v4 as uuidv4 } from "uuid";
@@ -66,11 +69,15 @@ ControllerDragFile.drop = (event: DragEvent) => {
     // const firstFile = files[0]; // 获取第一个拖入的文件
     let i = -1;
     for (const file of files) {
+      console.log("filt type", file.type);
       i++;
       if (file.type.includes("json")) {
         dealJsonFileDrop(file, mouseWorldLocation);
       } else if (file.type.includes("text")) {
         dealTxtFileDrop(file, mouseWorldLocation);
+      } else if (file.type.includes("image/png")) {
+        console.log("是图片");
+        dealPngFileDrop(file, mouseWorldLocation);
       } else {
         dealUnknownFileDrop(file, mouseWorldLocation, i);
       }
@@ -166,6 +173,44 @@ function dealTxtFileDrop(file: File, mouseWorldLocation: Vector) {
       }
       Stage.effects.push(new ViewFlashEffect(Color.White));
     }
+  };
+  reader.onerror = (e) => {
+    console.error("文件读取错误:", e);
+    Stage.effects.push(new TextRiseEffect("文件读取错误:" + e));
+    Stage.effects.push(new ViewFlashEffect(Color.Red));
+  };
+}
+
+function dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
+  const reader = new FileReader();
+  reader.readAsDataURL(file); // 以文本格式读取文件内容
+  reader.onload = (e) => {
+    const fileContent = e.target?.result; // 读取的文件内容
+
+    if (typeof fileContent !== "string") {
+      console.error("文件内容为空");
+      Stage.effects.push(new TextRiseEffect("图片内容不是string类型"));
+      return;
+    }
+
+    console.log(fileContent);
+    // 正常情况下，fileContent打印出来是 string类型的东西：
+    // data:image/png;base64,iVBORw0KGgoAAAANS...
+    console.log(typeof fileContent);
+    // // 在这里处理读取到的内容
+    const imageUUID = uuidv4();
+    const folderPath = PathString.dirPath(Stage.Path.getFilePath());
+    console.log(folderPath); // D:\Desktop\xxx\xxx.json
+    writeFileBase64(
+      `${folderPath}${Stage.Path.getSep()}${imageUUID}.png`,
+      fileContent.split(",")[1],
+    );
+    const imageNode = new ImageNode({
+      uuid: imageUUID,
+      location: [mouseWorldLocation.x, mouseWorldLocation.y],
+      path: `${imageUUID}.png`,
+    });
+    StageManager.addImageNode(imageNode);
   };
   reader.onerror = (e) => {
     console.error("文件读取错误:", e);
