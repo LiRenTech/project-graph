@@ -86,6 +86,17 @@ settings:
       vertical: 垂直折線
   showGrid:
     title: 顯示網格
+  showBackgroundHorizontalLines:
+    title: 顯示水平背景線
+    description: |
+      水平線和垂直線可以同時打開，實現網格效果
+  showBackgroundVerticalLines:
+    title: 顯示垂直背景線
+  showBackgroundDots:
+    title: 顯示背景點
+    description: |
+      這些背景點是水平線和垂直線的交點，實現洞洞板的效果
+
   windowBackgroundAlpha:
     title: 視窗背景透明度
   showDebug:

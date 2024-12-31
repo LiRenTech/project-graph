@@ -87,6 +87,17 @@ settings:
       vertical: Vertical Line
   showGrid:
     title: Show Grid
+  showBackgroundHorizontalLines:
+    title: Show Horizontal Background Lines
+    description: |
+      Horizontal and vertical lines can be enabled simultaneously to achieve a grid effect.
+  showBackgroundVerticalLines:
+    title: Show Vertical Background Lines
+  showBackgroundDots:
+    title: Show Background Dots
+    description: |
+      These background dots are the intersection points of the horizontal and vertical lines, creating a perforated board effect.
+
   windowBackgroundAlpha:
     title: Window Background Transparency
   showDebug:
