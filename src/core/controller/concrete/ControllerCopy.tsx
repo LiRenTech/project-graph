@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { writeFile } from "../../../utils/fs";
+import { writeFileBase64 } from "../../../utils/fs";
 import { PathString } from "../../../utils/pathString";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
@@ -99,38 +99,6 @@ ControllerCopy.keydown = (event: KeyboardEvent) => {
     }
   }
 };
-// async function isClipboardContainsImage(): Promise<boolean> {
-//   try {
-//     const items = await navigator.clipboard.read();
-//     for (const item of items) {
-//       if (
-//         item.types.includes("image/png") ||
-//         item.types.includes("image/jpeg")
-//       ) {
-//         return true;
-//       }
-//     }
-//     return false;
-//   } catch (err) {
-//     console.error("Failed to read clipboard contents: ", err);
-//     return false;
-//   }
-// }
-
-// async function isClipboardContainsText(): Promise<boolean> {
-//   try {
-//     const items = await navigator.clipboard.read();
-//     for (const item of items) {
-//       if (item.types.includes("text/plain")) {
-//         return true;
-//       }
-//     }
-//     return false;
-//   } catch (err) {
-//     console.error("Failed to read clipboard contents: ", err);
-//     return false;
-//   }
-// }
 
 async function readClipboardItems(mouseLocation: Vector) {
   // test
@@ -143,7 +111,11 @@ async function readClipboardItems(mouseLocation: Vector) {
           const folder = PathString.dirPath(Stage.Path.getFilePath());
           const imagePath = `${folder}${Stage.Path.getSep()}${imageUUID}.png`;
 
-          writeFile(imagePath, new Uint8Array(await blob.arrayBuffer()));
+          // 2024.12.31 测试发现这样的写法会导致读取时base64解码失败
+          // writeFile(imagePath, new Uint8Array(await blob.arrayBuffer()));
+          // 下面这样的写法是没有问题的
+          writeFileBase64(imagePath, await convertBlobToBase64(blob));
+
           // 要延迟一下，等待保存完毕
           setTimeout(() => {
             const imageNode = new ImageNode({
@@ -188,5 +160,20 @@ function blobToText(blob: Blob): Promise<string> {
     reader.onload = () => resolve(reader.result as string); // 读取完成时返回结果
     reader.onerror = () => reject(reader.error); // 读取出错时返回错误
     reader.readAsText(blob); // 读取 Blob 对象作为文本
+  });
+}
+
+async function convertBlobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === "string") {
+        resolve(reader.result.split(",")[1]); // 去掉"data:image/png;base64,"前缀
+      } else {
+        reject(new Error("Invalid result type"));
+      }
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
   });
 }
