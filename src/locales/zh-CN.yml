@@ -172,6 +172,16 @@ settings:
       当逼近的足够近时（小于0.0001），会自动停止缩放
       值为1代表缩放会立刻完成，没有中间的过渡效果
       值为0代表缩放永远都不会完成，可模拟锁死效果
+  allowMoveCameraByWSAD:
+    title: 允许使用W S A D按键移动视角
+    description: |
+      开启后，可以使用W S A D按键来上下左右移动视角
+      关闭后，只能使用鼠标来移动视角，不会造成无限滚屏bug
+  allowAddCycleEdge:
+    title: 允许在节点之间添加自环
+    description: |
+      开启后，节点之间可以添加自环，即节点与自身相连，用于状态机绘制
+      默认关闭，因为不常用，容易误触发
   moveAmplitude:
     title: 视角移动加速度
     description: |

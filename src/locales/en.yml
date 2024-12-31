@@ -171,6 +171,16 @@ settings:
       When the approximation is close enough (less than 0.0001), the scaling will stop automatically.
       A value of 1 means the scaling will be completed immediately without any intermediate transition effect.
       A value of 0 means the scaling will never be completed, which can simulate a locked effect.
+  allowMoveCameraByWSAD:
+    title: Allow camera movement with W S A D keys
+    description: |
+      When enabled, you can use the W S A D keys to move the camera up, down, left, and right.
+      When disabled, you can only use the mouse to move the camera, avoiding the endless scroll bug.
+  allowAddCycleEdge:
+    title: Allow adding self-loops between nodes
+    description: |
+      When enabled, self-loops can be added between nodes, allowing a node to connect to itself, which is useful for state machine drawings.
+      Disabled by default, as it is rarely used and may easily trigger accidental actions.
   moveAmplitude:
     title: View Movement Acceleration
     description: |

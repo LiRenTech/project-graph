@@ -1,4 +1,4 @@
-import { Keyboard, Move, ScanEye, Skull } from "lucide-react";
+import { Keyboard, Move, RotateCw, ScanEye, Skull } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import KeyBind from "../../components/ui/KeyBind";
@@ -31,6 +31,11 @@ export default function Control() {
       <SettingField
         icon={<Keyboard />}
         settingKey="allowMoveCameraByWSAD"
+        type="switch"
+      />
+      <SettingField
+        icon={<RotateCw />}
+        settingKey="allowAddCycleEdge"
         type="switch"
       />
       <SettingField

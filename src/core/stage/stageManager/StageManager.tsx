@@ -48,10 +48,14 @@ export namespace StageManager {
   const tags: StringDict<string> = StringDict.create();
 
   export let isEnableEntityCollision: boolean = false;
+  export let isAllowAddCycleEdge: boolean = false;
 
   export function init() {
     Settings.watch("isEnableEntityCollision", (value) => {
       isEnableEntityCollision = value;
+    });
+    Settings.watch("allowAddCycleEdge", (value) => {
+      isAllowAddCycleEdge = value;
     });
   }
 
@@ -813,6 +817,9 @@ export namespace StageManager {
     fromNode: ConnectableEntity,
     toNode: ConnectableEntity,
   ) {
+    if (fromNode === toNode && !isAllowAddCycleEdge) {
+      return false;
+    }
     StageNodeConnector.connectConnectableEntity(fromNode, toNode);
     StageHistoryManager.recordStep();
     return isConnected(fromNode, toNode);

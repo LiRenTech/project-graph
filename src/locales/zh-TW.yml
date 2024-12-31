@@ -171,6 +171,16 @@ settings:
       當逼近的足夠近時（小於0.0001），會自動停止縮放
       值为1代表縮放會立刻完成，没有中间的过渡效果
       值为0代表縮放永遠都不会完成，可模拟锁死效果
+  allowMoveCameraByWSAD:
+    title: 允許使用W S A D按鍵移動視角
+    description: |
+      開啟後，可以使用W S A D按鍵來上下左右移動視角。
+      關閉後，只能使用鼠標來移動視角，不會造成無限滾屏的bug。
+  allowAddCycleEdge:
+    title: 允許在節點之間添加自迴圈
+    description: |
+      開啟後，節點之間可以添加自迴圈，即節點與自身相連，用於狀態機繪製。
+      預設關閉，因為不常用，容易誤觸發。
   moveAmplitude:
     title: 視角移動加速度
     description: |
