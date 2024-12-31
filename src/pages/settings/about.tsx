@@ -100,11 +100,15 @@ export default function About() {
             .split("\n")
             .map((v, i) => i > 0 && <p key={i}>{v}</p>)}
         </Card>
-
         <div className="grid grid-cols-4 gap-4">
           <Card title={t("developers.title")} className="bg-blue-500/20">
             <Code2 />
           </Card>
+        </div>
+        <div className="grid grid-cols-4 gap-4">
+          {/* <Card title={t("developers.title")} className="bg-blue-500/20">
+            <Code2 />
+          </Card> */}
           <Card title={t("developers.proposer")}>
             {Rutubet}, {Littlefean}
           </Card>
@@ -139,7 +143,7 @@ export default function About() {
           </Card>
           <Card title={t("developers.encourager")}>
             <span className="animate-pulse text-xs text-neutral-500">
-              undefined
+              just generate energy with love
             </span>
           </Card>
           <Card title={t("developers.encouragerEncourager")}>
@@ -154,11 +158,16 @@ export default function About() {
           </Card>
           <Card title={t("developers.atmosphereAdjuster")}>yuxiaoQAQ</Card>
         </div>
-
         <div className="grid grid-cols-4 gap-4">
           <Card title={t("ideaSources.0")} className="bg-blue-500/20">
             <Lightbulb />
           </Card>
+        </div>
+
+        <div className="grid grid-cols-4 gap-4">
+          {/* <Card title={t("ideaSources.0")} className="bg-blue-500/20">
+            <Lightbulb />
+          </Card> */}
           {t("ideaSources", { joinArrays: "\n" })
             .split("\n")
             .map((v, i) => i > 0 && <Card key={i}>{v}</Card>)}
