@@ -955,4 +955,16 @@ export namespace StageManager {
   export function moveToTag(tag: string) {
     StageTagManager.moveToTag(tag);
   }
+
+  /**
+   * 刷新选中内容
+   */
+  export function refreshSelected() {
+    const entities = getSelectedEntities();
+    for (const entity of entities) {
+      if (entity instanceof ImageNode) {
+        entity.refresh();
+      }
+    }
+  }
 }

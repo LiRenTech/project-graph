@@ -22,6 +22,7 @@ export namespace StageLoader {
     data = convertV8toV9(data);
     data = convertV9toV10(data);
     data = convertV10toV11(data);
+    data = convertV11toV12(data);
     return data as Serialized.File;
   }
 
@@ -198,6 +199,22 @@ export namespace StageLoader {
       } else if (node.type === "core:image_node") {
         if (typeof node.details === "undefined") {
           node.details = "";
+        }
+      }
+    }
+    return data;
+  }
+
+  // 图片支持自定义缩放大小
+  function convertV11toV12(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 12) {
+      return data;
+    }
+    data.version = 12;
+    for (const node of data.nodes) {
+      if (node.type === "core:image_node") {
+        if (typeof node.scale === "undefined") {
+          node.scale = 1 / (window.devicePixelRatio || 1);
         }
       }
     }

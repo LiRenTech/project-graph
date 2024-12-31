@@ -291,6 +291,7 @@ export namespace EntityRenderer {
       ImageRenderer.renderImageElement(
         imageNode.imageElement,
         Renderer.transformWorld2View(imageNode.rectangle.location),
+        imageNode.scaleNumber,
       );
     } else if (imageNode.state === "unknownError") {
       RenderUtils.renderTextFromCenter(
@@ -329,6 +330,25 @@ export namespace EntityRenderer {
         Renderer.transformWorld2View(imageNode.rectangle.bottomCenter),
         10 * Camera.currentScale,
         Color.Red,
+      );
+    }
+    // 调试，缩放信息和位置信息
+    if (Renderer.isShowDebug) {
+      RenderUtils.renderText(
+        "scale: " + imageNode.scaleNumber.toString(),
+        Renderer.transformWorld2View(
+          imageNode.rectangle.location.subtract(new Vector(0, 6)),
+        ),
+        3 * Camera.currentScale,
+        Color.Gray,
+      );
+      RenderUtils.renderText(
+        "origin size: " + imageNode.originImageSize.toString(),
+        Renderer.transformWorld2View(
+          imageNode.rectangle.location.subtract(new Vector(0, 3 + 6)),
+        ),
+        3 * Camera.currentScale,
+        Color.Gray,
       );
     }
     renderEntityDetails(imageNode);

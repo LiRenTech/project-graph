@@ -7,6 +7,7 @@ import { Serialized } from "../../types/node";
 export class Color {
   static White = new Color(255, 255, 255);
   static Black = new Color(0, 0, 0);
+  static Gray = new Color(128, 128, 128);
   static Red = new Color(255, 0, 0);
   static Green = new Color(0, 255, 0);
   static Blue = new Color(0, 0, 255);

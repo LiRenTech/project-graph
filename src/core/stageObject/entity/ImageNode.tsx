@@ -63,12 +63,19 @@ export class ImageNode extends ConnectableEntity {
   public get imageElement(): HTMLImageElement {
     return this._imageElement;
   }
+  public scaleNumber: number = 1 / (window.devicePixelRatio || 1);
+  public originImageSize: Vector = new Vector(0, 0);
+  /** 左上角位置 */
+  private get currentLocation() {
+    return this.rectangle.location.clone();
+  }
 
   constructor(
     {
       uuid,
       location = [0, 0],
       size = [100, 100],
+      scale = 1 / (window.devicePixelRatio || 1),
       path = "",
       details = "",
     }: Partial<Serialized.ImageNode> & { uuid: string },
@@ -78,8 +85,14 @@ export class ImageNode extends ConnectableEntity {
     this.uuid = uuid;
     this.path = path;
     this.details = details;
+    this.scaleNumber = scale;
+    this.originImageSize = new Vector(...size);
+
     this.collisionBox = new CollisionBox([
-      new Rectangle(new Vector(...location), new Vector(...size)),
+      new Rectangle(
+        new Vector(...location),
+        new Vector(...size).multiply(this.scaleNumber),
+      ),
     ]);
     this.state = "loading";
     // 初始化创建的时候，开始获取base64String
@@ -124,8 +137,12 @@ export class ImageNode extends ConnectableEntity {
           // 调整碰撞箱大小
 
           this.rectangle.size = new Vector(
-            imageElement.width / (window.devicePixelRatio || 1),
-            imageElement.height / (window.devicePixelRatio || 1),
+            imageElement.width * this.scaleNumber,
+            imageElement.height * this.scaleNumber,
+          );
+          this.originImageSize = new Vector(
+            imageElement.width,
+            imageElement.height,
           );
           this.state = "success";
         };
@@ -141,6 +158,31 @@ export class ImageNode extends ConnectableEntity {
         this.state = "unknownError";
         this.errorDetails = _err.toString();
       });
+  }
+
+  /**
+   * 刷新，这个方法用于重新从路径中加载图片
+   */
+  public refresh() {
+    this.updateBase64StringByPath(PathString.dirPath(Stage.Path.getFilePath()));
+  }
+
+  public scaleUpdate(scaleDiff: number) {
+    console.log("scaleUpdate");
+    this.scaleNumber += scaleDiff;
+    if (this.scaleNumber < 0.1) {
+      this.scaleNumber = 0.1;
+    }
+    if (this.scaleNumber > 10) {
+      this.scaleNumber = 10;
+    }
+
+    this.collisionBox = new CollisionBox([
+      new Rectangle(
+        this.currentLocation,
+        this.originImageSize.multiply(this.scaleNumber),
+      ),
+    ]);
   }
 
   /**

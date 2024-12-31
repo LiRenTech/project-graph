@@ -27,6 +27,7 @@ import {
   Square,
   Tag,
   Trash2,
+  RefreshCcw,
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
@@ -436,6 +437,13 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             }}
           />
         )}
+        <ToolbarItem
+          description="刷新选中内容"
+          icon={<RefreshCcw />}
+          handleFunction={() => {
+            StageManager.refreshSelected();
+          }}
+        />
       </Box>
     </div>
   );

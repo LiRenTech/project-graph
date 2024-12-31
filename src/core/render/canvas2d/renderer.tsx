@@ -71,6 +71,9 @@ export namespace Renderer {
     Canvas.ctx.scale(scale, scale);
   }
 
+  /**
+   * 是否显示各种调试信息文字
+   */
   export let isShowDebug = true;
   let isShowGrid = true;
   export let isAlwaysShowDetails = false;

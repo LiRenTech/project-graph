@@ -1,5 +1,6 @@
 import { StageDumper } from "../core/stage/StageDumper";
 
+// version 在 StageDumper里
 export namespace Serialized {
   export type Vector = [number, number];
   export type Color = [number, number, number, number];
@@ -38,6 +39,7 @@ export namespace Serialized {
   export type ImageNode = Entity & {
     path: string;
     size: Vector;
+    scale: number;
     type: "core:image_node";
   };
   export type Edge = StageObject & {

@@ -14,7 +14,7 @@ export namespace StageDumper {
   /**
    * 最新版本
    */
-  export const latestVersion = 11;
+  export const latestVersion = 12;
 
   export function dumpTextNode(textNode: TextNode): Serialized.Node {
     return {
@@ -55,6 +55,7 @@ export namespace StageDumper {
         imageNode.rectangle.location.y,
       ],
       size: [imageNode.rectangle.size.x, imageNode.rectangle.size.y],
+      scale: imageNode.scaleNumber,
       path: imageNode.path,
       uuid: imageNode.uuid,
       type: "core:image_node",
