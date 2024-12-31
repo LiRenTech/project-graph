@@ -1,7 +1,9 @@
 import { Vector } from "../dataStruct/Vector";
+import { EdgeRenderer } from "../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Camera } from "../stage/Camera";
 import { Canvas } from "../stage/Canvas";
+import { Stage } from "../stage/Stage";
 import { StageManager } from "../stage/stageManager/StageManager";
 import { ControllerCamera } from "./concrete/ControllerCamera";
 import { ControllerCopy } from "./concrete/ControllerCopy";
@@ -205,6 +207,12 @@ export namespace Controller {
       StageManager.deleteEntities(
         StageManager.getEntities().filter((node) => node.isSelected),
       );
+      for (const edge of StageManager.getEdges()) {
+        if (edge.isSelected) {
+          StageManager.deleteEdge(edge);
+          Stage.effects.push(...EdgeRenderer.getCuttingEffects(edge));
+        }
+      }
     }
   }
 
