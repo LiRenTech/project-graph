@@ -19,6 +19,9 @@ importers:
       "@tauri-apps/plugin-cli":
         specifier: ~2.2.0
         version: 2.2.0
+      "@tauri-apps/plugin-clipboard-manager":
+        specifier: ^2.2.0
+        version: 2.2.0
       "@tauri-apps/plugin-dialog":
         specifier: ^2.2.0
         version: 2.2.0
@@ -1241,6 +1244,7 @@ packages:
       }
     cpu: [arm]
     os: [linux]
+    libc: [glibc]
 
   "@rollup/rollup-linux-arm-musleabihf@4.29.1":
     resolution:
@@ -1249,6 +1253,7 @@ packages:
       }
     cpu: [arm]
     os: [linux]
+    libc: [musl]
 
   "@rollup/rollup-linux-arm64-gnu@4.29.1":
     resolution:
@@ -1257,6 +1262,7 @@ packages:
       }
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   "@rollup/rollup-linux-arm64-musl@4.29.1":
     resolution:
@@ -1265,6 +1271,7 @@ packages:
       }
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   "@rollup/rollup-linux-loongarch64-gnu@4.29.1":
     resolution:
@@ -1273,6 +1280,7 @@ packages:
       }
     cpu: [loong64]
     os: [linux]
+    libc: [glibc]
 
   "@rollup/rollup-linux-powerpc64le-gnu@4.29.1":
     resolution:
@@ -1281,6 +1289,7 @@ packages:
       }
     cpu: [ppc64]
     os: [linux]
+    libc: [glibc]
 
   "@rollup/rollup-linux-riscv64-gnu@4.29.1":
     resolution:
@@ -1289,6 +1298,7 @@ packages:
       }
     cpu: [riscv64]
     os: [linux]
+    libc: [glibc]
 
   "@rollup/rollup-linux-s390x-gnu@4.29.1":
     resolution:
@@ -1297,6 +1307,7 @@ packages:
       }
     cpu: [s390x]
     os: [linux]
+    libc: [glibc]
 
   "@rollup/rollup-linux-x64-gnu@4.29.1":
     resolution:
@@ -1305,6 +1316,7 @@ packages:
       }
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   "@rollup/rollup-linux-x64-musl@4.29.1":
     resolution:
@@ -1313,6 +1325,7 @@ packages:
       }
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   "@rollup/rollup-win32-arm64-msvc@4.29.1":
     resolution:
@@ -1513,6 +1526,7 @@ packages:
     engines: { node: ">=10" }
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   "@swc/core-linux-arm64-musl@1.10.1":
     resolution:
@@ -1522,6 +1536,7 @@ packages:
     engines: { node: ">=10" }
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   "@swc/core-linux-x64-gnu@1.10.1":
     resolution:
@@ -1531,6 +1546,7 @@ packages:
     engines: { node: ">=10" }
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   "@swc/core-linux-x64-musl@1.10.1":
     resolution:
@@ -1540,6 +1556,7 @@ packages:
     engines: { node: ">=10" }
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   "@swc/core-win32-arm64-msvc@1.10.1":
     resolution:
@@ -1633,6 +1650,7 @@ packages:
     engines: { node: ">= 10" }
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   "@tauri-apps/cli-linux-arm64-musl@2.1.0":
     resolution:
@@ -1642,6 +1660,7 @@ packages:
     engines: { node: ">= 10" }
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   "@tauri-apps/cli-linux-x64-gnu@2.1.0":
     resolution:
@@ -1651,6 +1670,7 @@ packages:
     engines: { node: ">= 10" }
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   "@tauri-apps/cli-linux-x64-musl@2.1.0":
     resolution:
@@ -1660,6 +1680,7 @@ packages:
     engines: { node: ">= 10" }
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   "@tauri-apps/cli-win32-arm64-msvc@2.1.0":
     resolution:
@@ -1700,6 +1721,12 @@ packages:
     resolution:
       {
         integrity: sha512-rvNhMog9rHr01Xk+trBFKJ0eZICIvPkm9GX6ogB89/0hROU/lf+a/sb4vC0wtSeR7zrJuCSxwxYuvHCZheaYFA==,
+      }
+
+  "@tauri-apps/plugin-clipboard-manager@2.2.0":
+    resolution:
+      {
+        integrity: sha512-sIBrW/HioKq2vqomwwcU/Y8ygAv3DlS32yKPBX5XijCc0IyQKiDxYpGqmvE9DC5Y0lNJ/G53dfS961B31wjJ1g==,
       }
 
   "@tauri-apps/plugin-dialog@2.2.0":
@@ -6606,6 +6633,10 @@ snapshots:
       "@tauri-apps/cli-win32-x64-msvc": 2.1.0
 
   "@tauri-apps/plugin-cli@2.2.0":
+    dependencies:
+      "@tauri-apps/api": 2.1.1
+
+  "@tauri-apps/plugin-clipboard-manager@2.2.0":
     dependencies:
       "@tauri-apps/api": 2.1.1
 
