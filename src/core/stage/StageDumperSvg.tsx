@@ -130,6 +130,7 @@ export namespace StageDumperSvg {
             StageStyleManager.currentStyle.BackgroundColor.toString(),
         }}
       >
+        {/* 选中的部分 */}
         {selectedEntities.map((entity) => {
           if (entity instanceof TextNode) {
             return dumpNode(entity);
@@ -139,6 +140,10 @@ export namespace StageDumperSvg {
             return dumpSection(entity);
           }
         })}
+        {/* 构建连线 */}
+        {StageManager.getEdges()
+          .filter((edge) => edge.target.isSelected && edge.source.isSelected)
+          .map((edge) => dumpEdge(edge))}
       </svg>
     );
   }
@@ -177,10 +182,18 @@ export namespace StageDumperSvg {
     );
   }
 
+  /**
+   * 将整个舞台导出为SVG字符串
+   * @returns
+   */
   export function dumpStageToSVGString(): string {
     return ReactDOMServer.renderToStaticMarkup(dumpStage());
   }
 
+  /**
+   * 将选中的节点导出为SVG字符串
+   * @returns
+   */
   export function dumpSelectedToSVGString(): string {
     return ReactDOMServer.renderToString(dumpSelected());
   }
