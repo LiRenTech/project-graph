@@ -30,6 +30,9 @@ export function renderDotBackground(viewRect: Rectangle) {
   }
 }
 
+/**
+ * 水平线条式的背景
+ */
 export function renderHorizonBackground(viewRect: Rectangle) {
   const currentGap = getCurrentGap();
   const gridColor = StageStyleManager.currentStyle.GridNormalColor;
@@ -49,6 +52,9 @@ export function renderHorizonBackground(viewRect: Rectangle) {
   }
 }
 
+/**
+ * 垂直线条式的背景
+ */
 export function renderVerticalBackground(viewRect: Rectangle) {
   const currentGap = getCurrentGap();
   const gridColor = StageStyleManager.currentStyle.GridNormalColor;
@@ -67,35 +73,6 @@ export function renderVerticalBackground(viewRect: Rectangle) {
   }
 }
 
-export function renderGridBackground(viewRect: Rectangle) {
-  const currentGap = getCurrentGap();
-  const gridColor = StageStyleManager.currentStyle.GridNormalColor;
-  const mainColor = StageStyleManager.currentStyle.GridHeavyColor;
-
-  // 画横线
-  for (const y of getLocationYIterator(viewRect, currentGap)) {
-    const lineStartLocation = new Vector(viewRect.left, y);
-    const lineEndLocation = new Vector(viewRect.right, y);
-
-    RenderUtils.renderSolidLine(
-      Renderer.transformWorld2View(lineStartLocation),
-      Renderer.transformWorld2View(lineEndLocation),
-      y === 0 ? mainColor : gridColor,
-      0.2,
-    );
-  }
-  // 画竖线
-  for (const x of getLocationXIterator(viewRect, currentGap)) {
-    const lineStartLocation = new Vector(x, viewRect.top);
-    const lineEndLocation = new Vector(x, viewRect.bottom);
-    RenderUtils.renderSolidLine(
-      Renderer.transformWorld2View(lineStartLocation),
-      Renderer.transformWorld2View(lineEndLocation),
-      x === 0 ? mainColor : gridColor,
-      0.2,
-    );
-  }
-}
 function getCurrentGap(): number {
   const gap = 50;
   let currentGap = gap;
