@@ -269,3 +269,23 @@ startFilePanel:
     clearList: 清空列表
     showAbsolutePath: 顯示絕對路徑
     showFileTime: 顯示檔案時間
+
+keyBinds:
+  test:
+    title: 測試
+    description: |
+      僅用於測試快捷鍵自定義綁定功能
+  reload:
+    title: 重載應用
+    description: 重載應用，重新加載當前工程文件
+  undo:
+    title: 撤銷
+    description: 撤銷上一次操作
+  redo:
+    title: 取消撤銷
+    description: 取消上一次撤銷操作
+  resetView:
+    title: 重置視野
+    description: |
+      如果沒有選擇任何內容，則根據全部內容重置視野；
+      如果有選擇內容，則根據選中內容重置視野

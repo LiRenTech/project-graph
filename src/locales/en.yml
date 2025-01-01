@@ -269,3 +269,23 @@ startFilePanel:
     clearList: Clear List
     showAbsolutePath: Show Absolute Path
     showFileTime: Show File Time
+
+keyBinds:
+  test:
+    title: Test
+    description: |
+      Only for testing the custom key binding functionality
+  reload:
+    title: Reload Application
+    description: Reload the application and reload the current project file
+  undo:
+    title: Undo
+    description: Undo the last operation
+  redo:
+    title: Redo
+    description: Redo the last undone operation
+  resetView:
+    title: Reset View
+    description: |
+      If no content is selected, reset the view based on all content;
+      If content is selected, reset the view based on the selected content
