@@ -368,14 +368,14 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           />
         )}
         <ToolbarItem
-          description="将选中节点打包Section（Ctrl+G）（Section目前bug较多，还在开发中，暂时不推荐使用）"
+          description="将选中节点打包Section（快捷键可自定义）（Section目前bug较多，还在开发中，暂时不推荐使用）"
           icon={<Square />}
           handleFunction={() => {
             onPackNodeToSection();
           }}
         />
         <ToolbarItem
-          description="切换Section的折叠状态（Ctrl+T）"
+          description="切换Section的折叠状态（快捷键可自定义）"
           icon={<Package />}
           handleFunction={() => {
             StageManager.sectionSwitchCollapse();
