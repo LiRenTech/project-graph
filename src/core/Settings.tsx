@@ -18,6 +18,7 @@ export namespace Settings {
     showBackgroundHorizontalLines: boolean;
     showBackgroundVerticalLines: boolean;
     showBackgroundDots: boolean;
+    showBackgroundCartesian: boolean;
     windowBackgroundAlpha: number;
     showDebug: boolean;
     alwaysShowDetails: boolean;
@@ -65,6 +66,7 @@ export namespace Settings {
     showBackgroundHorizontalLines: false,
     showBackgroundVerticalLines: false,
     showBackgroundDots: true,
+    showBackgroundCartesian: false,
     windowBackgroundAlpha: 0.9,
     showDebug: true,
     alwaysShowDetails: false,

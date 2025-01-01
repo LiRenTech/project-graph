@@ -35,6 +35,11 @@ export default function Visual() {
         type="switch"
       />
       <SettingField
+        icon={<Grip />}
+        settingKey="showBackgroundCartesian"
+        type="switch"
+      />
+      <SettingField
         icon={<Blend />}
         settingKey="windowBackgroundAlpha"
         type="slider"

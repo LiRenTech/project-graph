@@ -73,6 +73,46 @@ export function renderVerticalBackground(viewRect: Rectangle) {
   }
 }
 
+/**
+ * 平面直角坐标系背景
+ * 只画一个十字坐标
+ */
+export function renderCartesianBackground(viewRect: Rectangle) {
+  // x轴
+  RenderUtils.renderSolidLine(
+    Renderer.transformWorld2View(new Vector(viewRect.left, 0)),
+    Renderer.transformWorld2View(new Vector(viewRect.right, 0)),
+    StageStyleManager.currentStyle.GridNormalColor,
+    1,
+  );
+  // y轴
+  RenderUtils.renderSolidLine(
+    Renderer.transformWorld2View(new Vector(0, viewRect.top)),
+    Renderer.transformWorld2View(new Vector(0, viewRect.bottom)),
+    StageStyleManager.currentStyle.GridNormalColor,
+    1,
+  );
+  const currentGap = getCurrentGap();
+  // 画x轴上的刻度
+  for (const x of getLocationXIterator(viewRect, currentGap)) {
+    RenderUtils.renderText(
+      `${x}`,
+      Renderer.transformWorld2View(new Vector(x, 0)),
+      10,
+      StageStyleManager.currentStyle.GridNormalColor,
+    );
+  }
+  // 画y轴上的刻度
+  for (const y of getLocationYIterator(viewRect, currentGap)) {
+    RenderUtils.renderText(
+      `${y}`,
+      Renderer.transformWorld2View(new Vector(0, y)),
+      10,
+      StageStyleManager.currentStyle.GridNormalColor,
+    );
+  }
+}
+
 function getCurrentGap(): number {
   const gap = 50;
   let currentGap = gap;

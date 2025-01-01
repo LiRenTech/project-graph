@@ -16,6 +16,7 @@ import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { RenderUtils } from "./RenderUtils";
 import { WorldRenderUtils } from "./WorldRenderUtils";
 import {
+  renderCartesianBackground,
   renderDotBackground,
   renderHorizonBackground,
   renderVerticalBackground,
@@ -83,6 +84,7 @@ export namespace Renderer {
   let isShowBackgroundHorizontalLines = false;
   let isShowBackgroundVerticalLines = false;
   let isShowBackgroundDots = false;
+  let isShowBackgroundCartesian = false;
   export let isAlwaysShowDetails = false;
   let isRenderEffect = true;
   export let protectingPrivacy = false;
@@ -98,6 +100,9 @@ export namespace Renderer {
     });
     Settings.watch("showBackgroundDots", (value) => {
       isShowBackgroundDots = value;
+    });
+    Settings.watch("showBackgroundCartesian", (value) => {
+      isShowBackgroundCartesian = value;
     });
 
     Settings.watch(
@@ -498,6 +503,9 @@ export namespace Renderer {
     }
     if (isShowBackgroundVerticalLines) {
       renderVerticalBackground(getCoverWorldRectangle());
+    }
+    if (isShowBackgroundCartesian) {
+      renderCartesianBackground(getCoverWorldRectangle());
     }
     // renderGridBackground(getCoverWorldRectangle());
   }

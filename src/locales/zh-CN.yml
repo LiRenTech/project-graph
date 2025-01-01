@@ -98,6 +98,12 @@ settings:
     title: 显示背景点
     description: |
       这些背景点是水平线和垂直线的交点，实现洞洞板的效果
+  showBackgroundCartesian:
+    title: 显示背景直角坐标系
+    description: |
+      开启后，将会显示x轴、y轴和刻度数字
+      可以用于观测一些节点的绝对坐标位置
+      也能很直观的知道当前的视野缩放倍数
   windowBackgroundAlpha:
     title: 窗口背景透明度
   showDebug:

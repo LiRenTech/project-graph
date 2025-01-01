@@ -97,7 +97,12 @@ settings:
     title: Show Background Dots
     description: |
       These background dots are the intersection points of the horizontal and vertical lines, creating a perforated board effect.
-
+  showBackgroundCartesian:
+    title: 显示背景直角坐标系
+    description: |
+      开启后，将会显示x轴、y轴和刻度数字
+      可以用于观测一些节点的绝对坐标位置
+      也能很直观的知道当前的视野缩放倍数
   windowBackgroundAlpha:
     title: Window Background Transparency
   showDebug:
