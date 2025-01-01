@@ -6,6 +6,7 @@ import {
   Grip,
   Languages,
   ListCollapse,
+  Move3d,
   Palette,
   Rows4,
   Spline,
@@ -35,7 +36,7 @@ export default function Visual() {
         type="switch"
       />
       <SettingField
-        icon={<Grip />}
+        icon={<Move3d />}
         settingKey="showBackgroundCartesian"
         type="switch"
       />
