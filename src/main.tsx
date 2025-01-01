@@ -198,7 +198,7 @@ function loadKeyBinds() {
     shift: false,
   }).then((bind) =>
     bind.down(() => {
-      addTextNodeByLocation(Camera.location);
+      addTextNodeByLocation(Camera.location, true);
     }),
   );
 }

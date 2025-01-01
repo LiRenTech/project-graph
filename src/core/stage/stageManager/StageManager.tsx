@@ -674,10 +674,12 @@ export namespace StageManager {
   export async function addTextNodeByClick(
     clickWorldLocation: Vector,
     addToSections: Section[],
+    selectCurrent = false,
   ): Promise<string> {
     const res = await StageNodeAdder.addTextNodeByClick(
       clickWorldLocation,
       addToSections,
+      selectCurrent,
     );
     StageHistoryManager.recordStep();
     return res;

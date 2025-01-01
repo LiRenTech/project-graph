@@ -23,6 +23,7 @@ export namespace StageNodeAdder {
   export async function addTextNodeByClick(
     clickWorldLocation: Vector,
     addToSections: Section[],
+    selectCurrent = false,
   ): Promise<string> {
     const newUUID = uuidv4();
     const node = new TextNode({
@@ -49,6 +50,15 @@ export namespace StageNodeAdder {
           new ProgressNumber(0, 100),
         ),
       );
+    }
+    // 处理选中问题
+    if (selectCurrent) {
+      for (const otherNode of StageManager.getTextNodes()) {
+        if (otherNode.isSelected) {
+          otherNode.isSelected = false;
+        }
+      }
+      node.isSelected = true;
     }
     return newUUID;
   }
