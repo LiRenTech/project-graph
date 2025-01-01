@@ -4,6 +4,10 @@ import { Renderer } from "../../render/canvas2d/renderer";
 import { Camera } from "../../stage/Camera";
 import { Controller } from "../Controller";
 import { Entity } from "../../stageObject/StageObject";
+import { StageManager } from "../../stage/stageManager/StageManager";
+import { Stage } from "../../stage/Stage";
+import { EntityCreateLineEffect } from "../../effect/concrete/EntityCreateLineEffect";
+import { isDesktop } from "../../../utils/platform";
 
 /**
  * 可能有多个控制器公用同一个代码，
@@ -60,4 +64,23 @@ export function editNodeDetails(clickedNode: Entity) {
 
   clickedNode.isEditingDetails = true;
   editTextNodeHookGlobal.hookFunctionStart(clickedNode);
+}
+
+export function addTextNodeByLocation(location: Vector) {
+  const sections =
+    StageManager.SectionOptions.getSectionsByInnerLocation(location);
+  // 新建节点
+  StageManager.addTextNodeByClick(location, sections).then((uuid) => {
+    const createNode = StageManager.getTextNodeByUUID(uuid);
+    if (createNode === null) {
+      // 说明 创建了立刻删掉了
+      return;
+    }
+    const rect = createNode.collisionBox.getRectangle();
+    // 整特效
+    Stage.effects.push(EntityCreateLineEffect.from(rect));
+    if (isDesktop) {
+      editNode(createNode);
+    }
+  });
 }

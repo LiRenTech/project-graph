@@ -1,13 +1,11 @@
-import { isDesktop } from "../../../utils/platform";
 import { Vector } from "../../dataStruct/Vector";
-import { EntityCreateLineEffect } from "../../effect/concrete/EntityCreateLineEffect";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { Section } from "../../stageObject/entity/Section";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-import { editNode } from "./utilsControl";
+import { addTextNodeByLocation } from "./utilsControl";
 
 /**
  * 创建节点的控制器
@@ -41,26 +39,10 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
   if (Controller.pressingKeySet.has("`")) {
     createConnectPoint(pressLocation, sections);
   } else {
-    createNode(pressLocation, sections);
+    addTextNodeByLocation(pressLocation);
   }
 };
 
 function createConnectPoint(pressLocation: Vector, addToSections: Section[]) {
   StageManager.addConnectPointByClick(pressLocation, addToSections);
-}
-
-function createNode(pressLocation: Vector, addToSections: Section[]) {
-  // 新建节点
-  StageManager.addTextNodeByClick(pressLocation, addToSections).then((uuid) => {
-    const createNode = StageManager.getTextNodeByUUID(uuid);
-    if (createNode === null) {
-      // 说明 创建了立刻删掉了
-      return;
-    }
-    const rect = createNode.collisionBox.getRectangle();
-    Stage.effects.push(EntityCreateLineEffect.from(rect));
-    if (isDesktop) {
-      editNode(createNode);
-    }
-  });
 }
