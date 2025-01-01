@@ -216,6 +216,26 @@ settings:
     options:
       cut: Cut and Delete Object
       moveCamera: Move View
+  # Sounds
+  cuttingLineStartSoundFile:
+    title: Cutting Line Start Sound File
+    description: |
+      File path of the sound played when the cutting line is initiated by right-clicking.
+  connectLineStartSoundFile:
+    title: Connecting Line Start Sound File
+    description: |
+      File path of the sound played when the connecting line is initiated by right-clicking.
+      There is also an issue where sounds may overlap when moving the mouse over the starting node.
+  connectFindTargetSoundFile:
+    title: Connecting Line Snap to Target Sound File
+    description: |
+      File path of the sound played when the connecting line snaps to the target.
+      There are currently issues with the snapping sound,
+      as the sound may overlap significantly when moving the mouse after snapping to the target.
+  cuttingLineReleaseSoundFile:
+    title: Cutting Line Release Sound File
+    description: |
+      The moment of release is when the blade effect is visible.
 
 app:
   unsaved: "*"

@@ -216,6 +216,26 @@ settings:
     options:
       cut: 斩断并删除物体
       moveCamera: 移动视野
+  # 声音
+  cuttingLineStartSoundFile:
+    title: 斩断线开始的声音文件
+    description: |
+      斩断线右键按下开始时播放的声音文件路径
+  connectLineStartSoundFile:
+    title: 连接线开始的声音文件
+    description: |
+      连接线右键按下开始时播放的声音文件路径
+      还有问题，在开始节点上滑动鼠标时可能会重叠播放
+  connectFindTargetSoundFile:
+    title: 连接线吸附到目标上的声音文件
+    description: |
+      连接线吸附到目标上时播放的声音文件路径
+      当前吸附声音还有问题，
+      吸附到目标上并移动鼠标时，会重叠很多播放
+  cuttingLineReleaseSoundFile:
+    title: 斩断线释放的声音文件
+    description: |
+      释放的时候就是看到刀光刃特效的时候
 plugins:
   welcome:
     title: 欢迎使用插件系统

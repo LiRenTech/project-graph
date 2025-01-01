@@ -216,6 +216,26 @@ settings:
     options:
       cut: 斬斷並刪除物體
       moveCamera: 移動視野
+  # 聲音
+  cuttingLineStartSoundFile:
+    title: 斬斷線開始的聲音文件
+    description: |
+      斬斷線右鍵按下開始時播放的聲音文件路徑
+  connectLineStartSoundFile:
+    title: 連接線開始的聲音文件
+    description: |
+      連接線右鍵按下開始時播放的聲音文件路徑
+      還有問題，在開始節點上滑動滑鼠時可能會重疊播放
+  connectFindTargetSoundFile:
+    title: 連接線吸附到目標上的聲音文件
+    description: |
+      連接線吸附到目標上時播放的聲音文件路徑
+      當前吸附聲音還有問題，
+      吸附到目標上並移動滑鼠時，會重疊很多播放
+  cuttingLineReleaseSoundFile:
+    title: 斬斷線釋放的聲音文件
+    description: |
+      釋放的時候就是看到刀光刃特效的時候
 
 app:
   unsaved: "*"
