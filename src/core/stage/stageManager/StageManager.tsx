@@ -716,18 +716,18 @@ export namespace StageManager {
    * 拖动所有选中的节点一起移动
    * @param delta
    */
-  export function moveNodes(delta: Vector) {
-    StageEntityMoveManager.moveNodes(delta); // 连续过程，不记录历史，只在结束时记录
+  export function moveSelectedNodes(delta: Vector) {
+    StageEntityMoveManager.moveSelectedNodes(delta); // 连续过程，不记录历史，只在结束时记录
   }
 
-  export function moveSections(delta: Vector) {
-    StageEntityMoveManager.moveSections(delta); // 连续过程，不记录历史，只在结束时记录
+  export function moveSelectedSections(delta: Vector) {
+    StageEntityMoveManager.moveSelectedSections(delta); // 连续过程，不记录历史，只在结束时记录
   }
-  export function moveConnectPoints(delta: Vector) {
-    StageEntityMoveManager.moveConnectPoints(delta); // 连续过程，不记录历史，只在结束时记录
+  export function moveSelectedConnectPoints(delta: Vector) {
+    StageEntityMoveManager.moveSelectedConnectPoints(delta); // 连续过程，不记录历史，只在结束时记录
   }
-  export function moveImageNodes(delta: Vector) {
-    StageEntityMoveManager.moveImageNodes(delta); // 连续过程，不记录历史，只在结束时记录
+  export function moveSelectedImageNodes(delta: Vector) {
+    StageEntityMoveManager.moveSelectedImageNodes(delta); // 连续过程，不记录历史，只在结束时记录
   }
   export function moveNodesWithChildren(delta: Vector) {
     StageEntityMoveManager.moveNodesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录

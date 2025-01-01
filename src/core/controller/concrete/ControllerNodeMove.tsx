@@ -63,11 +63,11 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
       // 和子节点一起移动
       StageManager.moveNodesWithChildren(diffLocation);
     } else {
-      StageManager.moveNodes(diffLocation);
+      StageManager.moveSelectedNodes(diffLocation);
     }
-    StageManager.moveSections(diffLocation);
-    StageManager.moveConnectPoints(diffLocation);
-    StageManager.moveImageNodes(diffLocation);
+    StageManager.moveSelectedSections(diffLocation);
+    StageManager.moveSelectedConnectPoints(diffLocation);
+    StageManager.moveSelectedImageNodes(diffLocation);
 
     ControllerNodeMove.lastMoveLocation = worldLocation.clone();
   }

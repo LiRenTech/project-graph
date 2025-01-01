@@ -51,28 +51,28 @@ export namespace StageEntityMoveManager {
    * 拖动所有选中的节点一起移动
    * @param delta
    */
-  export function moveNodes(delta: Vector) {
+  export function moveSelectedNodes(delta: Vector) {
     for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
         moveEntityUtils(node, delta);
       }
     }
   }
-  export function moveSections(delta: Vector) {
+  export function moveSelectedSections(delta: Vector) {
     for (const section of StageManager.getSections()) {
       if (section.isSelected) {
         moveEntityUtils(section, delta);
       }
     }
   }
-  export function moveConnectPoints(delta: Vector) {
+  export function moveSelectedConnectPoints(delta: Vector) {
     for (const point of StageManager.getConnectPoints()) {
       if (point.isSelected) {
         moveEntityUtils(point, delta);
       }
     }
   }
-  export function moveImageNodes(delta: Vector) {
+  export function moveSelectedImageNodes(delta: Vector) {
     for (const node of StageManager.getImageNodes()) {
       if (node.isSelected) {
         moveEntityUtils(node, delta);
