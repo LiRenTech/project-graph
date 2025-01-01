@@ -27,6 +27,7 @@ import "./index.pcss";
 import "./polyfills/roundRect";
 import { Dialog } from "./utils/dialog";
 import { exists } from "./utils/fs";
+import { addTextNodeByLocation } from "./core/controller/concrete/utilsControl";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -189,6 +190,15 @@ function loadKeyBinds() {
   }).then((bind) =>
     bind.down(() => {
       StageManager.deleteSelectedStageObjects();
+    }),
+  );
+  KeyBinds.create("createTextNodeFromCameraLocation", "p", {
+    control: true,
+    alt: false,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      addTextNodeByLocation(Camera.location);
     }),
   );
 }

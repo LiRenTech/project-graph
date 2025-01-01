@@ -361,3 +361,8 @@ keyBinds:
       按下后，选中的舞台物体会被删除
       舞台物体包括实体（节点和Section等独立存在的东西）和关系（节点之间的连线）
       默认是delete键，您可以改成backspace键
+  createTextNodeFromCameraLocation:
+    title: 创建文本节点
+    description: |
+      按下后，在当前视野中心的位置创建一个文本节点
+      等同于鼠标双击创建节点的功能
