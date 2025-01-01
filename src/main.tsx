@@ -27,7 +27,10 @@ import "./index.pcss";
 import "./polyfills/roundRect";
 import { Dialog } from "./utils/dialog";
 import { exists } from "./utils/fs";
-import { addTextNodeByLocation } from "./core/controller/concrete/utilsControl";
+import {
+  addTextNodeByLocation,
+  addTextNodeFromCurrentSelectedNode,
+} from "./core/controller/concrete/utilsControl";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -218,6 +221,42 @@ function loadKeyBinds() {
   }).then((bind) =>
     bind.down(() => {
       addTextNodeByLocation(Camera.location, true);
+    }),
+  );
+  KeyBinds.create("createTextNodeFromSelectedTop", "arrowup", {
+    control: false,
+    alt: true,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      addTextNodeFromCurrentSelectedNode("up", true);
+    }),
+  );
+  KeyBinds.create("createTextNodeFromSelectedRight", "arrowright", {
+    control: false,
+    alt: true,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      addTextNodeFromCurrentSelectedNode("right", true);
+    }),
+  );
+  KeyBinds.create("createTextNodeFromSelectedLeft", "arrowleft", {
+    control: false,
+    alt: true,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      addTextNodeFromCurrentSelectedNode("left", true);
+    }),
+  );
+  KeyBinds.create("createTextNodeFromSelectedDown", "arrowdown", {
+    control: false,
+    alt: true,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      addTextNodeFromCurrentSelectedNode("down", true);
     }),
   );
 }

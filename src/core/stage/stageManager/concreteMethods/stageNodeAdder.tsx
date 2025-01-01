@@ -30,7 +30,6 @@ export namespace StageNodeAdder {
       uuid: newUUID,
       text: await getAutoName(),
       details: "",
-      // children: [],
       location: [clickWorldLocation.x, clickWorldLocation.y],
       size: [100, 100],
     });
@@ -61,6 +60,32 @@ export namespace StageNodeAdder {
       node.isSelected = true;
     }
     return newUUID;
+  }
+
+  /**
+   * 在当前已经选中的某个节点的情况下，增加节点
+   * 增加在某个选中的节点的上方，下方，左方，右方等位置
+   * @param selectCurrent
+   * @returns
+   */
+  export async function addTextNodeFromCurrentSelectedNode(
+    distanceLocation: Vector,
+    addToSections: Section[],
+    selectCurrent = false,
+  ): Promise<string> {
+    // 先检查当前是否有选中的唯一实体
+    const selectedEntities = StageManager.getSelectedEntities();
+    if (selectedEntities.length !== 1) {
+      // 未选中或选中多个
+      return "";
+    }
+    const selectedEntity = selectedEntities[0];
+    const entityRectangle = selectedEntity.collisionBox.getRectangle();
+    return await addTextNodeByClick(
+      entityRectangle.center.add(distanceLocation),
+      addToSections,
+      selectCurrent,
+    );
   }
 
   async function getAutoName(): Promise<string> {

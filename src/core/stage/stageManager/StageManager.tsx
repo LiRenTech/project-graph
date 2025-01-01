@@ -685,6 +685,29 @@ export namespace StageManager {
     return res;
   }
 
+  export async function addTextNodeFromCurrentSelectedNode(
+    direction: "up" | "down" | "left" | "right",
+    selectCurrent = false,
+  ): Promise<string> {
+    let directionVector = new Vector(0, 0);
+    if (direction === "up") {
+      directionVector = new Vector(0, -100);
+    } else if (direction === "down") {
+      directionVector = new Vector(0, 100);
+    } else if (direction === "left") {
+      directionVector = new Vector(-100, 0);
+    } else if (direction === "right") {
+      directionVector = new Vector(100, 0);
+    }
+    const res = await StageNodeAdder.addTextNodeFromCurrentSelectedNode(
+      directionVector,
+      [],
+      selectCurrent,
+    );
+    StageHistoryManager.recordStep();
+    return res;
+  }
+
   export function moveEntities(delta: Vector) {
     StageEntityMoveManager.moveEntities(delta); // 连续过程，不记录历史，只在结束时记录
   }

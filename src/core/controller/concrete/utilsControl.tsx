@@ -75,17 +75,33 @@ export function addTextNodeByLocation(
   // 新建节点
   StageManager.addTextNodeByClick(location, sections, selectCurrent).then(
     (uuid) => {
-      const createNode = StageManager.getTextNodeByUUID(uuid);
-      if (createNode === null) {
-        // 说明 创建了立刻删掉了
-        return;
-      }
-      const rect = createNode.collisionBox.getRectangle();
-      // 整特效
-      Stage.effects.push(EntityCreateLineEffect.from(rect));
-      if (isDesktop) {
-        editNode(createNode);
-      }
+      textNodeInEditModeByUUID(uuid);
     },
   );
+}
+
+export function addTextNodeFromCurrentSelectedNode(
+  direction: "up" | "down" | "left" | "right",
+  selectCurrent = false,
+) {
+  StageManager.addTextNodeFromCurrentSelectedNode(
+    direction,
+    selectCurrent,
+  ).then((uuid) => {
+    textNodeInEditModeByUUID(uuid);
+  });
+}
+
+function textNodeInEditModeByUUID(uuid: string) {
+  const createNode = StageManager.getTextNodeByUUID(uuid);
+  if (createNode === null) {
+    // 说明 创建了立刻删掉了
+    return;
+  }
+  const rect = createNode.collisionBox.getRectangle();
+  // 整特效
+  Stage.effects.push(EntityCreateLineEffect.from(rect));
+  if (isDesktop) {
+    editNode(createNode);
+  }
 }

@@ -342,6 +342,22 @@ keyBinds:
     description: |
       按下后，在当前视野中心的位置创建一个文本节点
       等同于鼠标双击创建节点的功能
+  createTextNodeFromSelectedTop:
+    title: 在当前选中的节点正上方创建文本节点
+    description: |
+      按下后，在当前选中的节点正上方创建一个文本节点
+  createTextNodeFromSelectedDown:
+    title: 在当前选中的节点正下方创建文本节点
+    description: |
+      按下后，在当前选中的节点正下方创建一个文本节点
+  createTextNodeFromSelectedLeft:
+    title: 在当前选中的节点左侧创建文本节点
+    description: |
+      按下后，在当前选中的节点左侧创建一个文本节点
+  createTextNodeFromSelectedRight:
+    title: 在当前选中的节点右侧创建文本节点
+    description: |
+      按下后，在当前选中的节点右侧创建一个文本节点
   CameraScaleZoomIn:
     title: 放大视野
     description: 按下后，视野放大
