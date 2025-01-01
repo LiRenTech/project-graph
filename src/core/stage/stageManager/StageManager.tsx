@@ -3,6 +3,7 @@ import { Color } from "../../dataStruct/Color";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { StringDict } from "../../dataStruct/StringDict";
 import { Vector } from "../../dataStruct/Vector";
+import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Settings } from "../../Settings";
 import { Edge } from "../../stageObject/association/Edge";
@@ -791,6 +792,21 @@ export namespace StageManager {
     for (const node of entities.valuesToArray()) {
       if (node.isSelected) {
         selectedNodeCount++;
+      }
+    }
+  }
+
+  /**
+   * 外部的交互层的delete键可以直接调用这个函数
+   */
+  export function deleteSelectedStageObjects() {
+    StageManager.deleteEntities(
+      StageManager.getEntities().filter((node) => node.isSelected),
+    );
+    for (const edge of StageManager.getEdges()) {
+      if (edge.isSelected) {
+        StageManager.deleteEdge(edge);
+        Stage.effects.push(...EdgeRenderer.getCuttingEffects(edge));
       }
     }
   }

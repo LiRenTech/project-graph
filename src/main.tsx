@@ -182,6 +182,15 @@ function loadKeyBinds() {
       StageManager.packEntityToSectionBySelected();
     }),
   );
+  KeyBinds.create("deleteSelectedStageObjects", "delete", {
+    control: false,
+    alt: false,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      StageManager.deleteSelectedStageObjects();
+    }),
+  );
 }
 
 /** 加载语言文件 */

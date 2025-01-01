@@ -1,10 +1,7 @@
 import { Vector } from "../dataStruct/Vector";
-import { EdgeRenderer } from "../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../render/canvas2d/renderer";
 import { Camera } from "../stage/Camera";
 import { Canvas } from "../stage/Canvas";
-import { Stage } from "../stage/Stage";
-import { StageManager } from "../stage/stageManager/StageManager";
 import { ControllerCamera } from "./concrete/ControllerCamera";
 import { ControllerCopy } from "./concrete/ControllerCopy";
 import { ControllerCutting } from "./concrete/ControllerCutting";
@@ -203,17 +200,9 @@ export namespace Controller {
     const key = event.key.toLowerCase();
     pressingKeySet.add(key);
     // 删除功能代码量太小了，暂时先直接写在这里
-    if (key === "delete") {
-      StageManager.deleteEntities(
-        StageManager.getEntities().filter((node) => node.isSelected),
-      );
-      for (const edge of StageManager.getEdges()) {
-        if (edge.isSelected) {
-          StageManager.deleteEdge(edge);
-          Stage.effects.push(...EdgeRenderer.getCuttingEffects(edge));
-        }
-      }
-    }
+    // if (key === "delete") {
+    //   StageManager.deleteSelectedStageObjects();
+    // }
   }
 
   function keyup(event: KeyboardEvent) {
