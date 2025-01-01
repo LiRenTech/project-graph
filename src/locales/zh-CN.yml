@@ -247,6 +247,10 @@ settings:
     title: 斩断线释放的声音文件
     description: |
       释放的时候就是看到刀光刃特效的时候
+  alignAndAttachSoundFile:
+    title: 对齐的声音文件
+    description: |
+      鼠标拖动时，对齐节点和时播放的声音文件路径
 plugins:
   welcome:
     title: 欢迎使用插件系统

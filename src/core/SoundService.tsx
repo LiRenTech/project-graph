@@ -15,6 +15,7 @@ export namespace SoundService {
   let connectLineStartSoundFile = "";
   let connectFindTargetSoundFile = "";
   let cuttingLineReleaseSoundFile = "";
+  let alignAndAttachSoundFile = "";
 
   export function init() {
     Settings.watch("cuttingLineStartSoundFile", (value) => {
@@ -28,6 +29,9 @@ export namespace SoundService {
     });
     Settings.watch("cuttingLineReleaseSoundFile", (value) => {
       cuttingLineReleaseSoundFile = value;
+    });
+    Settings.watch("alignAndAttachSoundFile", (value) => {
+      alignAndAttachSoundFile = value;
     });
   }
 
@@ -57,6 +61,11 @@ export namespace SoundService {
       loadAndPlaySound(cuttingLineReleaseSoundFile);
     }
     // 连接成功
+
+    // 对齐吸附音效
+    export function alignAndAttach() {
+      loadAndPlaySound(alignAndAttachSoundFile);
+    }
   }
 
   const audioContext = new window.AudioContext();

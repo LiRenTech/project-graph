@@ -53,6 +53,7 @@ export namespace Settings {
     connectLineStartSoundFile: string;
     connectFindTargetSoundFile: string;
     cuttingLineReleaseSoundFile: string;
+    alignAndAttachSoundFile: string;
     // github 相关
     githubToken: string;
     githubUser: string;
@@ -101,6 +102,7 @@ export namespace Settings {
     connectLineStartSoundFile: "",
     connectFindTargetSoundFile: "",
     cuttingLineReleaseSoundFile: "",
+    alignAndAttachSoundFile: "",
     // github 相关
     githubToken: "",
     githubUser: "",

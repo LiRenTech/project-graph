@@ -246,7 +246,10 @@ settings:
     title: 斬斷線釋放的聲音文件
     description: |
       釋放的時候就是看到刀光刃特效的時候
-
+  alignAndAttachSoundFile:
+    title: 对齐的声音文件
+    description: |
+      鼠标拖动时，对齐节点和时播放的声音文件路径
 app:
   unsaved: "*"
 appMenu:

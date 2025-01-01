@@ -1,7 +1,12 @@
+import { NumberFunctions } from "../../algorithm/numberFunctions";
 import { Vector } from "../../dataStruct/Vector";
+import { EntityAlignEffect } from "../../effect/concrete/EntityAlignEffect";
 import { Renderer } from "../../render/canvas2d/renderer";
+import { SoundService } from "../../SoundService";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
+import { TextNode } from "../../stageObject/entity/TextNode";
+import { Entity } from "../../stageObject/StageObject";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -78,7 +83,140 @@ ControllerNodeMove.mouseup = (event: MouseEvent) => {
     return;
   }
   if (Controller.isMovingEntity) {
+    // 这个时候可以触发对齐吸附事件
+    alignToOtherEntity();
+
     StageManager.moveEntityFinished();
   }
   Controller.isMovingEntity = false;
 };
+
+/**
+ * 吸附函数
+ */
+function alignToOtherEntity() {
+  const selectedEntities = StageManager.getSelectedEntities();
+  const otherEntities = StageManager.getEntities().filter(
+    (entity) => !entity.isSelected,
+  );
+  for (const selectedEntity of selectedEntities) {
+    if (!(selectedEntity instanceof TextNode)) {
+      continue;
+    }
+    // // 只能和一个节点对齐
+    // let isHaveAlignTarget = false;
+    // 按照与 selectedEntity 的距离排序
+    const sortedOtherEntities = otherEntities.sort((a, b) => {
+      const distanceA = calculateDistance(selectedEntity, a);
+      const distanceB = calculateDistance(selectedEntity, b);
+      return distanceA - distanceB; // 升序排序
+    });
+    let isAlign = false;
+    // 目前先只做节点吸附
+    for (const otherEntity of sortedOtherEntities) {
+      // 左侧x轴对齐
+      if (
+        NumberFunctions.isNumberNear(
+          selectedEntity.collisionBox.getRectangle().left,
+          otherEntity.collisionBox.getRectangle().left,
+          25,
+        )
+      ) {
+        selectedEntity.move(
+          new Vector(
+            otherEntity.collisionBox.getRectangle().left -
+              selectedEntity.collisionBox.getRectangle().left,
+            0,
+          ),
+        );
+        // 添加特效
+        Stage.effects.push(
+          EntityAlignEffect.fromEntity(selectedEntity, otherEntity),
+        );
+        isAlign = true;
+        break;
+      }
+      // 右侧x轴对齐
+      if (
+        NumberFunctions.isNumberNear(
+          selectedEntity.collisionBox.getRectangle().right,
+          otherEntity.collisionBox.getRectangle().right,
+          25,
+        )
+      ) {
+        selectedEntity.move(
+          new Vector(
+            otherEntity.collisionBox.getRectangle().right -
+              selectedEntity.collisionBox.getRectangle().right,
+            0,
+          ),
+        );
+        // 添加特效
+        Stage.effects.push(
+          EntityAlignEffect.fromEntity(selectedEntity, otherEntity),
+        );
+        isAlign = true;
+        break;
+      }
+      // 上侧y轴对齐
+      if (
+        NumberFunctions.isNumberNear(
+          selectedEntity.collisionBox.getRectangle().top,
+          otherEntity.collisionBox.getRectangle().top,
+          25,
+        )
+      ) {
+        selectedEntity.move(
+          new Vector(
+            0,
+            otherEntity.collisionBox.getRectangle().top -
+              selectedEntity.collisionBox.getRectangle().top,
+          ),
+        );
+        // 添加特效
+        Stage.effects.push(
+          EntityAlignEffect.fromEntity(selectedEntity, otherEntity),
+        );
+        isAlign = true;
+        break;
+      }
+      // 下侧y轴对齐
+      if (
+        NumberFunctions.isNumberNear(
+          selectedEntity.collisionBox.getRectangle().bottom,
+          otherEntity.collisionBox.getRectangle().bottom,
+          25,
+        )
+      ) {
+        selectedEntity.move(
+          new Vector(
+            0,
+            otherEntity.collisionBox.getRectangle().bottom -
+              selectedEntity.collisionBox.getRectangle().bottom,
+          ),
+        );
+        // 添加特效
+        Stage.effects.push(
+          EntityAlignEffect.fromEntity(selectedEntity, otherEntity),
+        );
+        isAlign = true;
+        break;
+      }
+    }
+    if (isAlign) {
+      SoundService.play.alignAndAttach();
+    }
+  }
+}
+
+// 假设你有一个方法可以计算两个节点之间的距离
+function calculateDistance(entityA: Entity, entityB: Entity) {
+  const rectA = entityA.collisionBox.getRectangle();
+  const rectB = entityB.collisionBox.getRectangle();
+
+  // 计算距离，可以根据需要选择合适的距离计算方式
+  const dx = rectA.center.x - rectB.center.x;
+  const dy = rectA.center.y - rectB.center.y;
+
+  return Math.sqrt(dx * dx + dy * dy); // 返回欧几里得距离
+}

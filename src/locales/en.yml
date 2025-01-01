@@ -246,7 +246,10 @@ settings:
     title: Cutting Line Release Sound File
     description: |
       The moment of release is when the blade effect is visible.
-
+  alignAndAttachSoundFile:
+    title: 对齐的声音文件
+    description: |
+      鼠标拖动时，对齐节点和时播放的声音文件路径
 app:
   unsaved: "*"
 appMenu:
