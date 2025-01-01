@@ -39,6 +39,7 @@ export namespace Settings {
     autoBackupDraftPath: string;
     // 控制相关
     enableCollision: boolean; // 暂无
+    enableDragAutoAlign: boolean;
     scaleExponent: number;
     allowMoveCameraByWSAD: boolean;
     scaleCameraByMouseLocation: boolean;
@@ -88,6 +89,7 @@ export namespace Settings {
     autoBackupDraftPath: "",
     // 控制相关
     enableCollision: true,
+    enableDragAutoAlign: true,
     scaleExponent: 0.11,
     allowMoveCameraByWSAD: false,
     scaleCameraByMouseLocation: true,

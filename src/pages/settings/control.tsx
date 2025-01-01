@@ -1,4 +1,5 @@
 import {
+  AlignStartVertical,
   Keyboard,
   MousePointerClick,
   Move,
@@ -31,6 +32,11 @@ export default function Control() {
         icon={<MousePointerClick />}
         settingKey="mouseRightDragBackground"
         type="select"
+      />
+      <SettingField
+        icon={<AlignStartVertical />}
+        settingKey="enableDragAutoAlign"
+        type="switch"
       />
       <SettingField
         icon={<ScanEye />}

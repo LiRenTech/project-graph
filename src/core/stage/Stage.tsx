@@ -253,6 +253,7 @@ export namespace Stage {
   let autoSaveInterval = 60_000; // ms
   /** 当前鼠标右键拖拽空白部分的操作 */
   export let mouseRightDragBackground = "cut";
+  export let enableDragAutoAlign = true;
 
   export function init() {
     Settings.watch("autoSave", (value) => {
@@ -275,6 +276,9 @@ export namespace Stage {
     });
     Settings.watch("mouseRightDragBackground", (value) => {
       mouseRightDragBackground = value;
+    });
+    Settings.watch("enableDragAutoAlign", (value) => {
+      enableDragAutoAlign = value;
     });
     controllerGamepad = new ControllerGamepad();
   }

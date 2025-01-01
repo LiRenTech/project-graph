@@ -84,7 +84,9 @@ ControllerNodeMove.mouseup = (event: MouseEvent) => {
   }
   if (Controller.isMovingEntity) {
     // 这个时候可以触发对齐吸附事件
-    alignToOtherEntity();
+    if (Stage.enableDragAutoAlign) {
+      alignToOtherEntity();
+    }
 
     StageManager.moveEntityFinished();
   }
