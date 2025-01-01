@@ -387,6 +387,22 @@ keyBinds:
     title: 在当前选中的节点右侧创建文本节点
     description: |
       按下后，在当前选中的节点右侧创建一个文本节点
+  moveUpSelectedEntities:
+    title: 向上移动所有选中的实体
+    description: |
+      按下后，所有选中的实体会向上移动一个固定距离
+  moveDownSelectedEntities:
+    title: 向下移动所有选中的实体
+    description: |
+      按下后，所有选中的实体会向下移动一个固定距离
+  moveLeftSelectedEntities:
+    title: 向左移动所有选中的实体
+    description: |
+      按下后，所有选中的实体会向左移动一个固定距离
+  moveRightSelectedEntities:
+    title: 向右移动所有选中的实体
+    description: |
+      按下后，所有选中的实体会向右移动一个固定距离
   CameraScaleZoomIn:
     title: 视野放大
     description: 按下后，视野放大

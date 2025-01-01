@@ -31,6 +31,7 @@ import {
   addTextNodeByLocation,
   addTextNodeFromCurrentSelectedNode,
 } from "./core/controller/concrete/utilsControl";
+import { Vector } from "./core/dataStruct/Vector";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -257,6 +258,42 @@ function loadKeyBinds() {
   }).then((bind) =>
     bind.down(() => {
       addTextNodeFromCurrentSelectedNode("down", true);
+    }),
+  );
+  KeyBinds.create("moveUpSelectedEntities", "arrowup", {
+    control: true,
+    alt: false,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      StageManager.moveSelectedNodes(new Vector(0, -100));
+    }),
+  );
+  KeyBinds.create("moveDownSelectedEntities", "arrowdown", {
+    control: true,
+    alt: false,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      StageManager.moveSelectedNodes(new Vector(0, 100));
+    }),
+  );
+  KeyBinds.create("moveLeftSelectedEntities", "arrowleft", {
+    control: true,
+    alt: false,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      StageManager.moveSelectedNodes(new Vector(-100, 0));
+    }),
+  );
+  KeyBinds.create("moveRightSelectedEntities", "arrowright", {
+    control: true,
+    alt: false,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      StageManager.moveSelectedNodes(new Vector(100, 0));
     }),
   );
 }
