@@ -154,6 +154,25 @@ function loadKeyBinds() {
     }),
   );
 
+  KeyBinds.create("CameraScaleZoomIn", "[", {
+    control: false,
+    alt: false,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      Camera.targetScale *= 1.2;
+    }),
+  );
+  KeyBinds.create("CameraScaleZoomOut", "]", {
+    control: false,
+    alt: false,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      Camera.targetScale *= 0.8;
+    }),
+  );
+
   KeyBinds.create("folderSection", "t", {
     control: true,
     alt: false,

@@ -337,3 +337,9 @@ keyBinds:
     description: |
       按下后，在当前视野中心的位置创建一个文本节点
       等同于鼠标双击创建节点的功能
+  CameraScaleZoomIn:
+    title: 放大视野
+    description: 按下后，视野放大
+  CameraScaleZoomOut:
+    title: 缩小视野
+    description: 按下后，视野缩小
