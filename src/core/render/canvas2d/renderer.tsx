@@ -429,7 +429,7 @@ export namespace Renderer {
       );
       // 写下标注
       RenderUtils.renderText(
-        "ctrl+v 粘贴到鼠标位置，在没有选择节点时ctrl+c清空粘贴板",
+        "ctrl+v 粘贴到鼠标位置，Esc键清空粘贴板",
         transformWorld2View(
           new Vector(
             Stage.copyBoardDataRectangle.location.x +

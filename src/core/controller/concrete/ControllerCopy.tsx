@@ -19,7 +19,7 @@ import { ControllerClass } from "../ControllerClass";
  */
 export const ControllerCopy = new ControllerClass();
 
-const validKeys = ["ctrl", "shift", "c", "v", "x", "y"];
+const validKeys = ["ctrl", "shift", "c", "v", "x", "y", "escape"];
 
 let mouseLocation = new Vector(0, 0);
 
@@ -44,7 +44,12 @@ ControllerCopy.keydown = (event: KeyboardEvent) => {
   const key = event.key.toLowerCase();
   // 首先判断是否是合法的按键
   if (!validKeys.includes(key)) return;
-
+  if (key === "escape") {
+    // 取消复制
+    Stage.copyBoardData = StageDumper.dumpSelected([]);
+    Stage.copyBoardDataRectangle = null;
+    return;
+  }
   if (key === "c" && Controller.pressingKeySet.has("control")) {
     // 复制
     const entities: Entity[] = [];
