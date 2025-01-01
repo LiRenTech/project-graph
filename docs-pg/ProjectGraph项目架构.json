@@ -11,7 +11,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [6789.199090369431, -3226.2656293005016],
+      "location": [5838.140430181997, -3139.490204100918],
       "size": [126.20797729492188, 60],
       "text": "Rust侧",
       "uuid": "2b2390ca-4916-41b7-b59c-563f981804d4",
@@ -74,7 +74,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [6437.618663006878, -3003.7113906254026],
+      "location": [5157.100738698756, -3090.31371625034],
       "size": [380, 60],
       "text": "实现一些文件读写的操作",
       "uuid": "ae976775-dd20-4304-81bf-ef4037440cf8",
@@ -83,7 +83,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [6963.675656513529, -3013.914274317772],
+      "location": [7245.711217519047, -2843.7732565372694],
       "size": [150.303955078125, 60],
       "text": "main.tsx",
       "uuid": "29ab97ae-c711-4df1-bf54-ed920afb3f17",
@@ -101,7 +101,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [7673.8076276969705, 167.19490233344922],
+      "location": [7686.050526815481, 12.934373440207338],
       "size": [92, 60],
       "text": "颜色",
       "uuid": "76ec107c-b99e-4c5a-927a-cb702156e9f3",
@@ -110,7 +110,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [7259.579860393495, 171.32940899257056],
+      "location": [7271.822759512006, 17.06888009932868],
       "size": [244.28793334960938, 60],
       "text": "StringDict对象",
       "uuid": "5dcf00a2-2746-4773-8666-768023787632",
@@ -137,29 +137,20 @@
       "type": "core:text_node"
     },
     {
-      "location": [7069.7676323679625, -1140.1870482052166],
-      "size": [229.43995666503906, 60],
-      "text": "Renderer渲染",
+      "location": [6994.111949785582, -1140.1870482052166],
+      "size": [293.43994140625, 60],
+      "text": "Renderer总渲染器",
       "uuid": "7e62a3f3-add1-47a6-a4cc-2fcdf3699e15",
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [6945.447090199098, -417.51396614039743],
+      "location": [7097.982968942783, -366.92399892194607],
       "size": [215.26393127441406, 60],
       "text": "StageObject",
       "uuid": "620b51eb-32a0-460d-910e-40f311532410",
       "details": "舞台对象的继承体系详见其他另一个继承体系文件",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [6812.861385994515, -976.2007382033729],
-      "size": [252, 60],
-      "text": "颜色风格切换器",
-      "uuid": "0734db3d-7bc8-4642-b79f-663155581584",
-      "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
@@ -173,7 +164,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [6030.628764891076, -2093.297199133554],
+      "location": [5728.01215510723, -2316.277858974282],
       "size": [151.7439422607422, 60],
       "text": "Settings",
       "uuid": "8494fba8-45ad-4afd-bbfd-f17d97753c46",
@@ -200,7 +191,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [7141.372470773343, -664.4199881924379],
+      "location": [7148.770325810117, -769.2808247928978],
       "size": [247.45591735839844, 60],
       "text": "StageManager",
       "uuid": "fe70cc22-32c9-4223-b1e8-ad838c0274f5",
@@ -227,7 +218,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [7164.929710547844, -3019.315969982131],
+      "location": [7562.783902011705, -2899.1026092788534],
       "size": [151.5839385986328, 60],
       "text": "state.tsx",
       "uuid": "c07937cc-0859-4616-9f6c-99056b6a2eb5",
@@ -551,7 +542,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [7664.17980792761, 431.5664330701968],
+      "location": [7676.422707046121, 277.3059041769549],
       "size": [156, 60],
       "text": "数据结构",
       "uuid": "e8592f9f-aaf5-43f7-b28e-903d12644fdb",
@@ -560,7 +551,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [8078.864959661614, 177.79766245007343],
+      "location": [8091.107858780125, 23.53713355683155],
       "size": [92, 60],
       "text": "形状",
       "uuid": "32163f54-72c4-4604-a146-52ac38f695fe",
@@ -569,7 +560,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [8012.32116738216, 8.097878696869941],
+      "location": [8024.56406650067, -146.16265019637194],
       "size": [92, 60],
       "text": "矩形",
       "uuid": "b83988ec-7e2c-4d57-ba54-fc887221a6e5",
@@ -578,7 +569,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [7553.227125950384, 173.04986892015054],
+      "location": [7565.470025068895, 18.78934002690866],
       "size": [92, 60],
       "text": "向量",
       "uuid": "9d86e0a3-ebad-40a7-928c-bd9a857a9a66",
@@ -587,7 +578,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [8178.707495621182, 13.887156139785077],
+      "location": [8190.950394739689, -140.3733727534568],
       "size": [92, 60],
       "text": "线段",
       "uuid": "8bbb7db9-3253-49a7-90e6-1cb40670da78",
@@ -596,7 +587,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [8357.425851123613, 15.62628260651519],
+      "location": [8369.66875024212, -138.6342462867267],
       "size": [92, 60],
       "text": "圆形",
       "uuid": "9e5a8aa8-34b0-4f6b-ba0e-24ee07cb6c64",
@@ -605,7 +596,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [7807.561073563253, 173.93501739759378],
+      "location": [7819.803972681763, 19.6744885043519],
       "size": [188, 60],
       "text": "进度条对象",
       "uuid": "30fb5084-68e6-4154-beac-3235a1185c4d",
@@ -623,20 +614,11 @@
       "type": "core:text_node"
     },
     {
-      "location": [7152.170667032454, -521.3453508519632],
+      "location": [7251.930825877779, -616.9422751140784],
       "size": [220, 60],
       "text": "实体实时管理",
       "uuid": "601a6497-e66d-4fe9-8e58-2445f34acbc3",
       "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [6802.587616920347, -772.2989172630809],
-      "size": [60, 60],
-      "text": "注",
-      "uuid": "d1539e80-d8ca-4cf7-a6a9-e39d6f28be6a",
-      "details": "逻辑上Stage比StageManager更大。\n但实际上他们都是全局单例，没有包含关系。只是StageManager负责的范围更小，仅限于实时的修改和维护当前舞台内部数据",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
@@ -834,6 +816,123 @@
       "size": [92, 60],
       "text": "保存",
       "uuid": "cfb5c88c-e796-4841-944a-767d01326776",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6730.72427622485, -647.234040184907],
+      "size": [444, 60],
+      "text": "有很多具体细分到功能的管理",
+      "uuid": "63940b12-4ddb-4e71-8456-b5a7b1b2bb18",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7004.294680861352, -478.758380267021],
+      "size": [92, 60],
+      "text": "颜色",
+      "uuid": "092a0673-a3ef-4cc6-ae20-613581eba257",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6899.206348674885, -485.21890400505725],
+      "size": [92, 60],
+      "text": "连线",
+      "uuid": "efd6a7fa-6854-44ab-a9d4-89c20d76c61a",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6785.266438446341, -483.9704110568672],
+      "size": [92, 60],
+      "text": "移动",
+      "uuid": "3a0ad229-f2ad-4d21-b2b0-6b42fb0ccf3d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6608.900536589444, -494.51413576991894],
+      "size": [156, 60],
+      "text": "内容修改",
+      "uuid": "6b6322d9-4317-4185-aa18-557b79ca5fb2",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7125.764747786985, -477.82946498296957],
+      "size": [92, 60],
+      "text": "……",
+      "uuid": "4cbefcd9-fa3f-4f74-adc8-e3cef4b1d827",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6708.863909648772, -995.5083560197284],
+      "size": [322.7198791503906, 60],
+      "text": "StageStyleManager",
+      "uuid": "711ebd73-2b20-46b7-beec-e472cf04f03c",
+      "details": "颜色风格切换器",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8101.09334321277, -1031.2464148371766],
+      "size": [135.51995849609375, 60],
+      "text": "Canvas",
+      "uuid": "9f7b5eec-5cec-4589-aa76-efc1069e1bbd",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6945.017290776697, -1880.4293304920675],
+      "size": [220, 60],
+      "text": "其他类型控制",
+      "uuid": "058201da-a91d-43c9-a642-733065968c8d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6803.184194513658, -2014.55473326389],
+      "size": [92, 60],
+      "text": "手柄",
+      "uuid": "7bf930b7-8fa0-4e1a-b956-32bc367f4bbd",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6936.997369244474, -2017.8152720141877],
+      "size": [220, 60],
+      "text": "拖拽文件控制",
+      "uuid": "8b895637-5266-4198-8557-068b65ca3bc1",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [10431.744262148788, -1542.079615577376],
+      "size": [636, 60],
+      "text": "这些工具函数在逻辑上可以散落在各个层级",
+      "uuid": "1202ea7b-4781-4bfe-885c-6db090ac10a6",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [5999.893278324886, -2702.471912388557],
+      "size": [239.67999267578125, 60],
+      "text": "前端侧6层架构",
+      "uuid": "22dc5661-5ad5-4c41-8b63-18ded44b5a91",
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
@@ -1190,13 +1289,6 @@
       "type": "core:edge"
     },
     {
-      "source": "7e62a3f3-add1-47a6-a4cc-2fcdf3699e15",
-      "target": "0734db3d-7bc8-4642-b79f-663155581584",
-      "text": "",
-      "uuid": "5989cbc7-4460-4c46-bb52-1cf2ae1267e3",
-      "type": "core:edge"
-    },
-    {
       "source": "da3a2de1-05d1-46d0-a9d8-fdddfd4fcd98",
       "target": "1529f8e4-4350-4644-bb01-949e735c6cf4",
       "text": "",
@@ -1530,6 +1622,76 @@
       "target": "cf4e4275-0250-42ad-a63c-51a5c57303e9",
       "text": "",
       "uuid": "4b00ea01-b892-466c-8935-1c5dbe31e8bd",
+      "type": "core:edge"
+    },
+    {
+      "source": "fe70cc22-32c9-4223-b1e8-ad838c0274f5",
+      "target": "63940b12-4ddb-4e71-8456-b5a7b1b2bb18",
+      "text": "",
+      "uuid": "9c5824b0-060b-476e-82fc-807a6a59c24f",
+      "type": "core:edge"
+    },
+    {
+      "source": "63940b12-4ddb-4e71-8456-b5a7b1b2bb18",
+      "target": "efd6a7fa-6854-44ab-a9d4-89c20d76c61a",
+      "text": "",
+      "uuid": "cee1c3a6-6425-45e8-b188-cdc2b5916b75",
+      "type": "core:edge"
+    },
+    {
+      "source": "63940b12-4ddb-4e71-8456-b5a7b1b2bb18",
+      "target": "092a0673-a3ef-4cc6-ae20-613581eba257",
+      "text": "",
+      "uuid": "44e6fc66-fccd-4a07-aad4-d8ee68b308bb",
+      "type": "core:edge"
+    },
+    {
+      "source": "63940b12-4ddb-4e71-8456-b5a7b1b2bb18",
+      "target": "3a0ad229-f2ad-4d21-b2b0-6b42fb0ccf3d",
+      "text": "",
+      "uuid": "7cacf65c-db06-4a9b-bb44-bec1c7ef46ab",
+      "type": "core:edge"
+    },
+    {
+      "source": "63940b12-4ddb-4e71-8456-b5a7b1b2bb18",
+      "target": "6b6322d9-4317-4185-aa18-557b79ca5fb2",
+      "text": "",
+      "uuid": "3bec8b2b-591c-4c7e-abcd-c13da2a87940",
+      "type": "core:edge"
+    },
+    {
+      "source": "63940b12-4ddb-4e71-8456-b5a7b1b2bb18",
+      "target": "4cbefcd9-fa3f-4f74-adc8-e3cef4b1d827",
+      "text": "",
+      "uuid": "64753549-03a8-45bb-95b2-7d73e6f85f0e",
+      "type": "core:edge"
+    },
+    {
+      "source": "711ebd73-2b20-46b7-beec-e472cf04f03c",
+      "target": "7e62a3f3-add1-47a6-a4cc-2fcdf3699e15",
+      "text": "",
+      "uuid": "033ce8c8-daa3-41ba-8a32-53dab920d7c3",
+      "type": "core:edge"
+    },
+    {
+      "source": "80d627a7-dfdd-44a6-b730-bb24093ec680",
+      "target": "058201da-a91d-43c9-a642-733065968c8d",
+      "text": "",
+      "uuid": "947e951e-3448-4b85-9bb7-e7fded7547d9",
+      "type": "core:edge"
+    },
+    {
+      "source": "058201da-a91d-43c9-a642-733065968c8d",
+      "target": "8b895637-5266-4198-8557-068b65ca3bc1",
+      "text": "",
+      "uuid": "dcffc9a9-35f9-4453-b03d-a4f13fb08abf",
+      "type": "core:edge"
+    },
+    {
+      "source": "058201da-a91d-43c9-a642-733065968c8d",
+      "target": "7bf930b7-8fa0-4e1a-b956-32bc367f4bbd",
+      "text": "",
+      "uuid": "677d049e-ea12-4166-b1a5-33ff7d99af35",
       "type": "core:edge"
     }
   ],
