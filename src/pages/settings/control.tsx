@@ -41,6 +41,11 @@ export default function Control() {
         step={0.01}
       />
       <SettingField
+        icon={<ScanEye />}
+        settingKey="scaleCameraByMouseLocation"
+        type="switch"
+      />
+      <SettingField
         icon={<Keyboard />}
         settingKey="allowMoveCameraByWSAD"
         type="switch"

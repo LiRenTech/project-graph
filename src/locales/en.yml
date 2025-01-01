@@ -182,6 +182,11 @@ settings:
       When the approximation is close enough (less than 0.0001), the scaling will stop automatically.
       A value of 1 means the scaling will be completed immediately without any intermediate transition effect.
       A value of 0 means the scaling will never be completed, which can simulate a locked effect.
+  scaleCameraByMouseLocation:
+    title: 视角缩放根据鼠标位置
+    description: |
+      开启后，缩放视角的中心点是鼠标的位置
+      关闭后，缩放视角的中心点是当前视野的中心
   allowMoveCameraByWSAD:
     title: Allow camera movement with W S A D keys
     description: |

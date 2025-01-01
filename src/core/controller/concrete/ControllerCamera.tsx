@@ -42,11 +42,6 @@ ControllerCamera.keydown = (event: KeyboardEvent) => {
   if (key === " ") {
     Controller.setCursorName("grab");
   }
-  // else if (key === "[") {
-  //   Camera.targetScale *= 1.2;
-  // } else if (key === "]") {
-  //   Camera.targetScale *= 0.8;
-  // }
 };
 
 /**

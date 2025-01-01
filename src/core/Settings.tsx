@@ -40,6 +40,7 @@ export namespace Settings {
     enableCollision: boolean; // 暂无
     scaleExponent: number;
     allowMoveCameraByWSAD: boolean;
+    scaleCameraByMouseLocation: boolean;
     allowAddCycleEdge: boolean;
     moveAmplitude: number;
     moveFriction: number;
@@ -86,6 +87,7 @@ export namespace Settings {
     enableCollision: true,
     scaleExponent: 0.11,
     allowMoveCameraByWSAD: false,
+    scaleCameraByMouseLocation: true,
     allowAddCycleEdge: false,
     moveAmplitude: 2,
     moveFriction: 0.1,

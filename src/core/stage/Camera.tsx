@@ -77,6 +77,10 @@ export namespace Camera {
   export const shakeLocation: Vector = Vector.getZero();
 
   export let allowMoveCameraByWSAD = false;
+
+  /** 是否缩放时根据鼠标位置缩放 */
+  export let scaleCameraByMouseLocation = true;
+
   // IDEA: 突然有一个好点子
   // 把wsad移动的逻辑改成瞬间爆炸的冲刺一小段距离，而不是改成直接赋予永久的作用力方向然后再撤销
   // 这样可以避免好多潜在bug
@@ -139,7 +143,9 @@ export namespace Camera {
     /** 鼠标交互位置的view坐标系相对于画面左上角的坐标 */
     const diffViewVector = Renderer.transformWorld2View(targetLocationByScale);
     dealCameraScale();
-    setLocationByOtherLocation(targetLocationByScale, diffViewVector);
+    if (scaleCameraByMouseLocation) {
+      setLocationByOtherLocation(targetLocationByScale, diffViewVector);
+    }
   }
 
   /**
@@ -161,7 +167,7 @@ export namespace Camera {
   }
 
   /**
-   *
+   * 单纯缩放镜头
    * @returns 缩放前后变化的比值
    */
   function dealCameraScale() {
@@ -199,6 +205,9 @@ export namespace Camera {
     });
     Settings.watch("allowMoveCameraByWSAD", (value) => {
       allowMoveCameraByWSAD = value;
+    });
+    Settings.watch("scaleCameraByMouseLocation", (value) => {
+      scaleCameraByMouseLocation = value;
     });
   }
 

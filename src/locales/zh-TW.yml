@@ -182,6 +182,11 @@ settings:
       當逼近的足夠近時（小於0.0001），會自動停止縮放
       值为1代表縮放會立刻完成，没有中间的过渡效果
       值为0代表縮放永遠都不会完成，可模拟锁死效果
+  scaleCameraByMouseLocation:
+    title: 视角缩放根据鼠标位置
+    description: |
+      开启后，缩放视角的中心点是鼠标的位置
+      关闭后，缩放视角的中心点是当前视野的中心
   allowMoveCameraByWSAD:
     title: 允許使用W S A D按鍵移動視角
     description: |
