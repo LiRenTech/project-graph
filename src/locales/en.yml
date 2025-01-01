@@ -309,3 +309,16 @@ keyBinds:
     description: |
       If no content is selected, reset the view based on all content;
       If content is selected, reset the view based on the selected content
+  resetCameraScale:
+    title: 重置缩放
+    description: 将视野缩放重置为标准大小
+  folderSection:
+    title: 折叠或展开Section框
+    description: 按下后选中的Section框会切换折叠或展开状态
+  reverseEdges:
+    title: 反转连线的方向
+    description: |
+      按下后，选中的连线的方向会变成相反方向
+      例如，原先是 A -> B，按下后变成 B -> A
+      此功能的意义在于快速创建一个节点连向多个节点的情况
+      因为目前的连线只能一次性做到多连一。

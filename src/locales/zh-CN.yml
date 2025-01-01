@@ -323,7 +323,10 @@ keyBinds:
       仅用于测试快捷键自定义绑定功能功能
   reload:
     title: 重载应用
-    description: 重载应用，重新加载当前工程文件
+    description: |
+      重载应用，重新加载当前工程文件
+      等同于浏览器刷新网页
+      这个功能很危险！会导致未保存的进度丢失！
   undo:
     title: 撤销
     description: 撤销上一次操作
@@ -335,3 +338,16 @@ keyBinds:
     description: |
       如果没有选择任何内容，则根据全部内容重置视野；
       如果有选择内容，则根据选中内容重置视野
+  resetCameraScale:
+    title: 重置缩放
+    description: 将视野缩放重置为标准大小
+  folderSection:
+    title: 折叠或展开Section框
+    description: 按下后选中的Section框会切换折叠或展开状态
+  reverseEdges:
+    title: 反转连线的方向
+    description: |
+      按下后，选中的连线的方向会变成相反方向
+      例如，原先是 A -> B，按下后变成 B -> A
+      此功能的意义在于快速创建一个节点连向多个节点的情况
+      因为目前的连线只能一次性做到多连一。

@@ -247,13 +247,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       if (Controller.pressingKeySet.has("control") && event.key === "g") {
         onPackNodeToSection();
       }
-      if (Controller.pressingKeySet.has("control") && event.key === "t") {
-        StageManager.sectionSwitchCollapse();
-        const selectedEdges = StageManager.getEdges().filter(
-          (edge) => edge.isSelected,
-        );
-        StageManager.reverseEdges(selectedEdges);
-      }
     };
     const handleMouseDown = () => {
       setIgnoreMouse(true);

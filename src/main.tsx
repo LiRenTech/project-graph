@@ -152,6 +152,26 @@ function loadKeyBinds() {
       Camera.resetScale();
     }),
   );
+
+  KeyBinds.create("folderSection", "t", {
+    control: true,
+    alt: false,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      StageManager.sectionSwitchCollapse();
+    }),
+  );
+
+  KeyBinds.create("reverseEdges", "t", {
+    control: true,
+    alt: false,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      StageManager.reverseSelectedEdges();
+    }),
+  );
 }
 
 /** 加载语言文件 */

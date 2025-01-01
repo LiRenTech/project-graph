@@ -830,6 +830,15 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
+  export function reverseSelectedEdges() {
+    const selectedEdges = getEdges().filter((edge) => edge.isSelected);
+    if (selectedEdges.length === 0) {
+      return;
+    }
+    reverseEdges(selectedEdges);
+    StageHistoryManager.recordStep();
+  }
+
   export function addSerializedData(
     serializedData: Serialized.File,
     diffLocation = new Vector(0, 0),
