@@ -79,24 +79,36 @@ export default function Control() {
         max={1}
         step={0.01}
       />
-      {keyBinds.map(([id, bind]) => (
-        <Field
-          key={id}
-          icon={<Keyboard />}
-          title={t(`${id}.title`, { defaultValue: id })}
-          description={t(`${id}.description`, { defaultValue: "" })}
-        >
-          <KeyBind
-            value={bind}
-            onChange={(value) => {
-              KeyBinds.set(id, value.key, value.modifiers);
-              setKeyBinds((prev) =>
-                prev.map((item) => (item[0] === id ? [item[0], value] : item)),
-              );
-            }}
-          />
-        </Field>
-      ))}
+      <div className="my-16">
+        <h2 className="text-center">以下为快捷键操作</h2>
+      </div>
+      {keyBinds
+        .map(([id, bind]) => (
+          <Field
+            key={id}
+            icon={<Keyboard />}
+            title={t(`${id}.title`, { defaultValue: id })}
+            description={t(`${id}.description`, { defaultValue: "" })}
+          >
+            <KeyBind
+              value={bind}
+              onChange={(value) => {
+                KeyBinds.set(id, value.key, value.modifiers);
+                setKeyBinds((prev) =>
+                  prev.map((item) =>
+                    item[0] === id ? [item[0], value] : item,
+                  ),
+                );
+              }}
+            />
+          </Field>
+        ))
+        .sort((a, b) => {
+          if (a.key === null && b.key === null) return 0; // 两者均为 null，相等
+          if (a.key === null) return 1; // a.key 为 null，把它排到后面
+          if (b.key === null) return -1; // b.key 为 null，把它排到后面
+          return a.key.localeCompare(b.key); // 正常比较
+        })}
     </>
   );
 }
