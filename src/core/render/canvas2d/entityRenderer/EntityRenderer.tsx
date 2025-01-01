@@ -278,7 +278,6 @@ export namespace EntityRenderer {
       Color.Transparent,
       StageStyleManager.currentStyle.StageObjectBorderColor,
       2 * Camera.currentScale,
-      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
     if (imageNode.state === "loading") {
       RenderUtils.renderTextFromCenter(
