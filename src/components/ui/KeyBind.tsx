@@ -4,6 +4,11 @@ import { KeyBinds } from "../../core/KeyBinds";
 import { cn } from "../../utils/cn";
 import Button from "./Button";
 
+/**
+ * 绑定快捷键的组件
+ * @param param0
+ * @returns
+ */
 export default function KeyBind({
   value,
   onChange,
@@ -101,9 +106,15 @@ export default function KeyBind({
       {value.modifiers.control && "Ctrl + "}
       {value.modifiers.alt && "Alt + "}
       {value.modifiers.shift && "Shift + "}
-      {t(value.key, { defaultValue: value.key.toUpperCase() })}
-      {value.key.length === 0 && choosing && "..."}
-      {value.key.length === 0 && !choosing && t("none")}
+      {value.key ? (
+        <>
+          {t(value.key, { defaultValue: value.key.toUpperCase() })}
+          {value.key.length === 0 && choosing && "..."}
+          {value.key.length === 0 && !choosing && t("none")}
+        </>
+      ) : (
+        <>未绑定快捷键，请绑定</>
+      )}
     </Button>
   );
 }

@@ -68,6 +68,10 @@ export namespace KeyBinds {
     };
   }
 
+  /**
+   * 获取所有快捷键绑定
+   * @returns
+   */
   export async function entries() {
     if (!store) {
       throw new Error("Store not initialized.");
@@ -77,6 +81,13 @@ export namespace KeyBinds {
 
   const registered: Set<string> = new Set();
 
+  /**
+   * 仅限在最开始的时候注册快捷键
+   * @param id 快捷键的英文字段名
+   * @param defaultKey 默认按下的字母
+   * @param defaultModifiers_ 配合字母的修饰键，比如{control: true, shift: true}
+   * @returns
+   */
   export async function create(
     id: string,
     defaultKey: string,
