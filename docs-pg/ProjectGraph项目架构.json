@@ -1,0 +1,1537 @@
+{
+  "version": 11,
+  "nodes": [
+    {
+      "location": [7467.543424173192, -4039.0725156542667],
+      "size": [322.3359375, 60],
+      "text": "ProjectGraph架构图",
+      "uuid": "082fda4d-d16d-4f57-b02e-049788ad2e52",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6789.199090369431, -3226.2656293005016],
+      "size": [126.20797729492188, 60],
+      "text": "Rust侧",
+      "uuid": "2b2390ca-4916-41b7-b59c-563f981804d4",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7131.745756130961, -3208.8681926417935],
+      "size": [433.21588134765625, 60],
+      "text": "TypeScript前端侧（React）",
+      "uuid": "35799bfd-b2e9-432b-8c16-75e34f8c4fae",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7159.973662025715, -3368.3100029970547],
+      "size": [156, 60],
+      "text": "代码组成",
+      "uuid": "0004f030-8692-4418-8d48-9dc554e1e0fb",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7963.378256103894, -3660.205958837592],
+      "size": [284, 60],
+      "text": "官网（说明文档）",
+      "uuid": "090349ee-b3eb-486c-808d-7874d0c1323e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8700.620454453503, -3612.2967632810128],
+      "size": [85.47198486328125, 60],
+      "text": "Vue",
+      "uuid": "c6d2a661-7a23-4b70-98ad-2fbc8b1243aa",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8330.493444246662, -3605.749047648404],
+      "size": [249.47195434570312, 60],
+      "text": "通过markdown",
+      "uuid": "495603a9-b147-4606-947a-f05182c9a2b5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8824.501992905365, -3614.869697413507],
+      "size": [220, 60],
+      "text": "自动部署网站",
+      "uuid": "8a7502ea-90a4-4e86-ac38-90ac4f07e043",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6437.618663006878, -3003.7113906254026],
+      "size": [380, 60],
+      "text": "实现一些文件读写的操作",
+      "uuid": "ae976775-dd20-4304-81bf-ef4037440cf8",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6963.675656513529, -3013.914274317772],
+      "size": [150.303955078125, 60],
+      "text": "main.tsx",
+      "uuid": "29ab97ae-c711-4df1-bf54-ed920afb3f17",
+      "details": "软件启动时，全部的注册流程都写在这里",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7192.94485476781, -1593.3326256344264],
+      "size": [121.98399353027344, 60],
+      "text": "AI模块",
+      "uuid": "d29a3da5-66dd-48c5-b855-12663dd0d326",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7673.8076276969705, 167.19490233344922],
+      "size": [92, 60],
+      "text": "颜色",
+      "uuid": "76ec107c-b99e-4c5a-927a-cb702156e9f3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7259.579860393495, 171.32940899257056],
+      "size": [244.28793334960938, 60],
+      "text": "StringDict对象",
+      "uuid": "5dcf00a2-2746-4773-8666-768023787632",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7669.998445475741, -1028.0621612382233],
+      "size": [124, 60],
+      "text": "特效类",
+      "uuid": "4faa6fa3-7485-4cc6-9d9b-15a370620c89",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7589.750895643758, -1858.2730705025033],
+      "size": [273.6319580078125, 60],
+      "text": "Controller交互层",
+      "uuid": "80d627a7-dfdd-44a6-b730-bb24093ec680",
+      "details": "指的是与Canvas画布的交互",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7069.7676323679625, -1140.1870482052166],
+      "size": [229.43995666503906, 60],
+      "text": "Renderer渲染",
+      "uuid": "7e62a3f3-add1-47a6-a4cc-2fcdf3699e15",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6945.447090199098, -417.51396614039743],
+      "size": [215.26393127441406, 60],
+      "text": "StageObject",
+      "uuid": "620b51eb-32a0-460d-910e-40f311532410",
+      "details": "舞台对象的继承体系详见其他另一个继承体系文件",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6812.861385994515, -976.2007382033729],
+      "size": [252, 60],
+      "text": "颜色风格切换器",
+      "uuid": "0734db3d-7bc8-4642-b79f-663155581584",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6829.5307168237805, -1591.492489649893],
+      "size": [317.919921875, 60],
+      "text": "RecentFileManager",
+      "uuid": "f7f2d625-04ed-4491-9ebb-b4b3f2b84fa0",
+      "details": "最近打开的文件管理",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6030.628764891076, -2093.297199133554],
+      "size": [151.7439422607422, 60],
+      "text": "Settings",
+      "uuid": "8494fba8-45ad-4afd-bbfd-f17d97753c46",
+      "details": "用户自定义的全局设置",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7151.006372406017, -1682.5891525558227],
+      "size": [362.8479309082031, 60],
+      "text": "SoundService音效服务",
+      "uuid": "8c4d858c-e0d9-4966-91db-7dc627d6e12f",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6793.019517492411, -1696.900340180611],
+      "size": [303.5518798828125, 60],
+      "text": "StartFilesManager",
+      "uuid": "ae51acd3-90f8-4bc1-97dc-0a3d9aa18646",
+      "details": "快速启动文件管理",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7141.372470773343, -664.4199881924379],
+      "size": [247.45591735839844, 60],
+      "text": "StageManager",
+      "uuid": "fe70cc22-32c9-4223-b1e8-ad838c0274f5",
+      "details": "全局单例",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7180.971045927922, -2466.9402178528458],
+      "size": [118.14396667480469, 60],
+      "text": "pages",
+      "uuid": "fac4102c-b6aa-481c-b694-226e6b3159cf",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7044.034806683988, -2340.5540279825314],
+      "size": [131.51995849609375, 60],
+      "text": "locales",
+      "uuid": "b2b1df69-cfb1-41d0-b981-2e4378eb71e3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7164.929710547844, -3019.315969982131],
+      "size": [151.5839385986328, 60],
+      "text": "state.tsx",
+      "uuid": "c07937cc-0859-4616-9f6c-99056b6a2eb5",
+      "details": "前端状态管理",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7367.334370163554, -2558.1490631499296],
+      "size": [156, 60],
+      "text": "设置界面",
+      "uuid": "aed097af-a775-4942-a7a9-1f96b4f3824a",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7386.746223066648, -2329.9383552069685],
+      "size": [124, 60],
+      "text": "主界面",
+      "uuid": "9f5115c7-0a20-463e-83a8-099acff696a5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7619.901651404409, -2445.700823788461],
+      "size": [198.97596740722656, 60],
+      "text": "右侧toolbar",
+      "uuid": "622c8477-1a37-42b4-bb76-b64d654fa7b7",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7645.75879426155, -2367.8436809313184],
+      "size": [208.3519744873047, 60],
+      "text": "左上角menu",
+      "uuid": "d979e016-7351-4ad5-8fa1-864ff8fb2173",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7637.773536816825, -2285.1569888853596],
+      "size": [156, 60],
+      "text": "闪电面板",
+      "uuid": "a6164a97-ff26-43c0-b34a-b78bb449ac2f",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7618.670294766449, -2207.5977263743853],
+      "size": [121.98399353027344, 60],
+      "text": "AI面板",
+      "uuid": "dd72ec8f-4273-492b-8fa7-f1a87406141b",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6424.211484453205, -2.2339691606406973],
+      "size": [201.1199951171875, 60],
+      "text": "工具/算法层",
+      "uuid": "814fd34e-8d0c-496e-ae11-d3bfd0fbe7aa",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [10288.32670759314, -1644.4714597888637],
+      "size": [148.79994201660156, 60],
+      "text": "src/utils",
+      "uuid": "12ff6bb8-8264-43a1-8f26-6df27b7b1865",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8645.32805990679, -2502.8468496834143],
+      "size": [354.8479309082031, 60],
+      "text": "合并tailwindcss的类名",
+      "uuid": "5a9bfee0-e11d-4278-bb50-d479354eb993",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [9009.78997756196, -2399.875319982968],
+      "size": [279.7439727783203, 60],
+      "text": "dialog自动对话框",
+      "uuid": "54be98a5-4350-477a-87c7-82217983022c",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [9907.343643334287, -2169.029229014481],
+      "size": [225.05593872070312, 60],
+      "text": "canvasUI工具",
+      "uuid": "89c3190b-7bde-4fd1-9ab7-0c53ab43a194",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [9602.886815565837, -2282.079975780453],
+      "size": [220, 60],
+      "text": "测量字体宽度",
+      "uuid": "c9a524bf-c873-46a1-a634-adbc09034782",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [10196.484634595374, -709.1301547906036],
+      "size": [220, 60],
+      "text": "文件路径工具",
+      "uuid": "a7fce2c3-897a-4e24-ab47-9cbe1d8b0f9f",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [10174.686840604047, -574.1471963720622],
+      "size": [284, 60],
+      "text": "检测系统平台工具",
+      "uuid": "12cdf74c-d403-4167-82c7-5e7c3a9def5c",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [9049.058238560405, -2288.8484057908754],
+      "size": [123.96797180175781, 60],
+      "text": "Popup",
+      "uuid": "d032caa6-803b-4974-ad72-737dd507b73c",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8739.462789970506, -2354.4094705868297],
+      "size": [124, 60],
+      "text": "小组件",
+      "uuid": "47337378-cfaa-4e46-9b8b-e59428d07370",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [10487.324606968541, -262.09690931139426],
+      "size": [223.99998474121094, 60],
+      "text": "XML生成工具",
+      "uuid": "d1851a93-e1fc-466b-814d-27a1388c89ab",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7866.171431803357, -1032.8534729108844],
+      "size": [143.9999542236328, 60],
+      "text": "Camera",
+      "uuid": "f7adeb85-b460-4447-8be4-46d0687ec0f1",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7908.31995882494, -1661.787140500705],
+      "size": [114.81596374511719, 60],
+      "text": "Stage",
+      "uuid": "6fc31dd8-e5a9-4771-8774-21358b990580",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8205.242940916578, -663.2679492009545],
+      "size": [219.1039276123047, 60],
+      "text": "StageLoader",
+      "uuid": "ed4246fc-8a27-4295-855e-ee0e4b0d6009",
+      "details": "读取json文件\n并一级一级转换版本\nV1->V2->....->V12",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7851.059262847641, -305.2046930401575],
+      "size": [355.42388916015625, 60],
+      "text": "StageHistoryManager",
+      "uuid": "cf4e4275-0250-42ad-a63c-51a5c57303e9",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8142.52320827816, -3769.6558101969663],
+      "size": [419.03997802734375, 60],
+      "text": "这部分全部在docs文件夹中",
+      "uuid": "d206b8fa-1f78-434a-8d02-5cfab73160cf",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6437.848292882879, -1972.4276364195696],
+      "size": [231.51995849609375, 60],
+      "text": "Canvas交互层",
+      "uuid": "e2043b7d-5057-4be9-9fb7-2a28933ec4f6",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6370.245467465199, -1086.7763488452597],
+      "size": [308.63995361328125, 60],
+      "text": "Canvas/数据渲染层",
+      "uuid": "da3a2de1-05d1-46d0-a9d8-fdddfd4fcd98",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6433.4031784592335, -1515.2585249894857],
+      "size": [124, 60],
+      "text": "业务层",
+      "uuid": "aeda3ea9-6e64-4b0a-812f-dfe61ba4dd70",
+      "details": "模块之间相对独立",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6394.517012479172, -545.6061490569381],
+      "size": [188, 60],
+      "text": "舞台数据层",
+      "uuid": "30984d28-b03c-4945-b170-b2f0e5263ce7",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7469.026512943606, -1319.3266045858638],
+      "size": [220, 60],
+      "text": "特效数组迭代",
+      "uuid": "c7c5a0dc-413e-48f5-a0b5-8b317ced8355",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7722.066160520698, -1325.424851122587],
+      "size": [220, 60],
+      "text": "自动计算引擎",
+      "uuid": "56c5bf1e-3ccc-4055-8002-5f6249034ad3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7243.442923030517, -2015.0479689640003],
+      "size": [220, 60],
+      "text": "复制粘贴操作",
+      "uuid": "bc18dddf-4280-46b2-8626-1e5287e1ea84",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7519.6708814675285, -2016.2380551074323],
+      "size": [220, 60],
+      "text": "移动实体操作",
+      "uuid": "764c8cd0-9f75-488d-8d52-09f080ea72d2",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7810.545839519777, -2009.9543102432426],
+      "size": [284, 60],
+      "text": "缩放移动视野操作",
+      "uuid": "b7e4b421-1e75-4867-a77f-d17fafe5377a",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6416.071912285041, -2346.406787420575],
+      "size": [207.87196350097656, 60],
+      "text": "React的UI层",
+      "uuid": "09ff1905-f191-41ce-b822-9d9fe49d0e14",
+      "details": "指的是写的任何React界面",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6925.955691623496, 112.685542729737],
+      "size": [92, 60],
+      "text": "算法",
+      "uuid": "110f7ef8-198b-4bee-9ae0-30bb60311876",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6753.511174255083, -70.97035866685047],
+      "size": [156, 60],
+      "text": "随机算法",
+      "uuid": "9b51b79f-6336-4359-982d-4a7f00856a11",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6969.101016937639, -20.65402554870974],
+      "size": [220, 60],
+      "text": "扩展数组算法",
+      "uuid": "31ffe28b-67d0-4ad0-ad1c-5480f0d8dcbc",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7664.17980792761, 431.5664330701968],
+      "size": [156, 60],
+      "text": "数据结构",
+      "uuid": "e8592f9f-aaf5-43f7-b28e-903d12644fdb",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8078.864959661614, 177.79766245007343],
+      "size": [92, 60],
+      "text": "形状",
+      "uuid": "32163f54-72c4-4604-a146-52ac38f695fe",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8012.32116738216, 8.097878696869941],
+      "size": [92, 60],
+      "text": "矩形",
+      "uuid": "b83988ec-7e2c-4d57-ba54-fc887221a6e5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7553.227125950384, 173.04986892015054],
+      "size": [92, 60],
+      "text": "向量",
+      "uuid": "9d86e0a3-ebad-40a7-928c-bd9a857a9a66",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8178.707495621182, 13.887156139785077],
+      "size": [92, 60],
+      "text": "线段",
+      "uuid": "8bbb7db9-3253-49a7-90e6-1cb40670da78",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8357.425851123613, 15.62628260651519],
+      "size": [92, 60],
+      "text": "圆形",
+      "uuid": "9e5a8aa8-34b0-4f6b-ba0e-24ee07cb6c64",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7807.561073563253, 173.93501739759378],
+      "size": [188, 60],
+      "text": "进度条对象",
+      "uuid": "30fb5084-68e6-4154-beac-3235a1185c4d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7964.116228279625, -1859.6694679238124],
+      "size": [442.71990966796875, 60],
+      "text": "详见ConcreteController……",
+      "uuid": "5c53199b-2a86-476a-b0f2-8f33902e1a7b",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7152.170667032454, -521.3453508519632],
+      "size": [220, 60],
+      "text": "实体实时管理",
+      "uuid": "601a6497-e66d-4fe9-8e58-2445f34acbc3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6802.587616920347, -772.2989172630809],
+      "size": [60, 60],
+      "text": "注",
+      "uuid": "d1539e80-d8ca-4cf7-a6a9-e39d6f28be6a",
+      "details": "逻辑上Stage比StageManager更大。\n但实际上他们都是全局单例，没有包含关系。只是StageManager负责的范围更小，仅限于实时的修改和维护当前舞台内部数据",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7918.9415440000375, -1553.236296609341],
+      "size": [92, 60],
+      "text": "功能",
+      "uuid": "090eb28b-57cc-4db0-baad-3bead84d26f3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7702.854533648112, -1441.8273619014374],
+      "size": [284, 60],
+      "text": "每帧迭代逻辑循环",
+      "uuid": "49c87557-b234-4531-ac50-d771c6bf9926",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8187.318131448994, -1409.9503796899764],
+      "size": [444, 60],
+      "text": "实时维护当前工程文件的路径",
+      "uuid": "5c65e090-66df-45cb-b540-51613d97746e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8540.393375558848, -1741.370065739553],
+      "size": [124, 60],
+      "text": "框选框",
+      "uuid": "7b12d157-9db2-4503-99ea-0ee05c740564",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8213.768295394806, -1634.7276856545495],
+      "size": [220, 60],
+      "text": "维护交互对象",
+      "uuid": "10a82385-5560-451a-8890-9f42c8d39508",
+      "details": "很多交互对象都绑定在了这个Stage上面……\n\n这些交互对象时鼠标实时交互的东西，不会被保存到json中去",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8539.208489687458, -1672.9160951882354],
+      "size": [124, 60],
+      "text": "斩断线",
+      "uuid": "708b2956-6b7b-4330-bac0-eb0411c9eb98",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8539.208489687458, -1610.0524067575366],
+      "size": [348, 60],
+      "text": "多重连线时的备选实体",
+      "uuid": "6feccaf2-16ce-48a3-89a4-d3ee85bbd01d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8535.565502437912, -1547.1887183268377],
+      "size": [412, 60],
+      "text": "鼠标连接释放时的目标实体",
+      "uuid": "5f49ba5f-eb7b-48ec-b610-ef117a965949",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8005.538207929209, -1317.7449332513286],
+      "size": [156, 60],
+      "text": "自动保存",
+      "uuid": "f7c69b73-28c2-4dc3-955d-1ea436573b57",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8208.107212804358, -1318.4990149578482],
+      "size": [156, 60],
+      "text": "自动备份",
+      "uuid": "97aea4fb-23e2-409f-b2ca-55e45e925099",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7424.873841264256, -1136.679959799252],
+      "size": [92, 60],
+      "text": "功能",
+      "uuid": "0f7b1434-ad3d-454d-a962-9603363796f4",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7331.054856716794, -1033.6630355902748],
+      "size": [284, 60],
+      "text": "每帧迭代渲染循环",
+      "uuid": "690f597f-ada6-4ccd-b1e7-dbdfc7716371",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8492.099586776272, -438.1017049174308],
+      "size": [249.3759765625, 60],
+      "text": "序列化json数据",
+      "uuid": "5eb6ac6f-9843-4dbe-bd28-f2647179bb5e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8596.25119223341, -664.0588656072674],
+      "size": [407.263916015625, 60],
+      "text": "各种StageObject类的对象",
+      "uuid": "d3893b79-32aa-4be3-9ef4-2fb5cd8f0b95",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8147.6102135547135, -443.52719920245045],
+      "size": [236.4479217529297, 60],
+      "text": "StageDumper",
+      "uuid": "ca5574f6-c239-4bc2-849e-2350e04c6965",
+      "details": "将各种StageObject转换成json格式",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7942.806723085975, -766.187445361575],
+      "size": [300.31988525390625, 60],
+      "text": "StageDumperSVG",
+      "uuid": "d27dc1fa-9cae-4b7d-9b19-13c19c4cbb64",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7979.900723700516, -669.870440925011],
+      "size": [143.32798767089844, 60],
+      "text": "转成svg",
+      "uuid": "9fb21a36-4990-4db1-b2f8-6a292c279b2c",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6280.115472508671, -817.8609590808818],
+      "size": [252, 60],
+      "text": "这两层可能同级",
+      "uuid": "70cfcbbf-34a8-4f77-98ee-4c044ba4f1a9",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7572.03208624051, -606.1510085793733],
+      "size": [318.9118957519531, 60],
+      "text": "StageSaveManager",
+      "uuid": "4181f957-f2cc-40b3-a583-68b43e1c35ae",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7627.957981878877, -436.64775781187893],
+      "size": [249.47195434570312, 60],
+      "text": "导出markdown",
+      "uuid": "71e09cbe-2f13-433e-a395-f1db9e6ea7c9",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7409.384467985559, -439.6859040009136],
+      "size": [188, 60],
+      "text": "导出纯文本",
+      "uuid": "ec9d0572-dadd-4cd1-8f41-2fc3ed695a4c",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7915.324759364602, -440.7723881382452],
+      "size": [92, 60],
+      "text": "保存",
+      "uuid": "cfb5c88c-e796-4841-944a-767d01326776",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8630.32805990679, -2567.8468496834143],
+      "size": [674.2058904334917, 353.99844389253894],
+      "uuid": "5dbffdbf-1e19-4aaf-b495-6ba8548e5bbb",
+      "text": "UI工具部分",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "5a9bfee0-e11d-4278-bb50-d479354eb993",
+        "54be98a5-4350-477a-87c7-82217983022c",
+        "d032caa6-803b-4974-ad72-737dd507b73c",
+        "47337378-cfaa-4e46-9b8b-e59428d07370"
+      ],
+      "details": ""
+    },
+    {
+      "location": [8477.099586776272, -729.0588656072674],
+      "size": [541.4155214727634, 365.9571606898366],
+      "uuid": "573569cc-7ce5-421a-af67-e42e7ac0970b",
+      "text": "概念关系",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "5eb6ac6f-9843-4dbe-bd28-f2647179bb5e",
+        "d3893b79-32aa-4be3-9ef4-2fb5cd8f0b95"
+      ],
+      "details": ""
+    },
+    {
+      "location": [8725.507581772876, -217.91831083526472],
+      "uuid": "78ed1f1e-3953-48d2-ac57-0fb4ad8c919e",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [6706.165410151014, -1748.288590499896],
+      "uuid": "8ef5e3d8-d0b3-404b-a72e-d153b5ebeb3f",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [8813.186573582385, -1758.4719039225324],
+      "uuid": "12dd00bb-2c9e-42a6-a156-4bf63517645d",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [6716.781240093822, -2124.6145985150733],
+      "uuid": "d126fe8e-8363-4032-bfd2-d1d30fc458a0",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [8571.163553724495, -2123.416267931478],
+      "uuid": "5e0a6e52-9346-4425-99d3-30d7ad7b40cc",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [6777.798194272728, -218.29512850782442],
+      "uuid": "23dd4475-bbb6-4fe6-baf6-71fdd894262d",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [6698.642056450733, -1221.0669005171326],
+      "uuid": "38266f5c-aac3-4dcf-9508-4bb6136fb426",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [8851.474645857617, -1218.546106642989],
+      "uuid": "64fac03c-5cd5-4061-b1be-d3491b506d59",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [6710.538664018791, -828.9535228307557],
+      "uuid": "1529f8e4-4350-4644-bb01-949e735c6cf4",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [8816.48782858625, -819.8916191558862],
+      "uuid": "37769640-baf6-40bf-9fdb-ec56f0875875",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [6752.854453112662, -2601.7106719930766],
+      "uuid": "fe60cdbd-94af-4078-986e-c700d867b64f",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [8412.104255566028, -2597.415499640396],
+      "uuid": "daf443bb-e619-41cb-a590-085e184f57a2",
+      "type": "core:connect_point",
+      "details": ""
+    }
+  ],
+  "edges": [
+    {
+      "source": "0004f030-8692-4418-8d48-9dc554e1e0fb",
+      "target": "35799bfd-b2e9-432b-8c16-75e34f8c4fae",
+      "text": "",
+      "uuid": "21603d53-5f0f-4b39-b3d9-fe1582276251",
+      "type": "core:edge"
+    },
+    {
+      "source": "0004f030-8692-4418-8d48-9dc554e1e0fb",
+      "target": "2b2390ca-4916-41b7-b59c-563f981804d4",
+      "text": "",
+      "uuid": "b6d3b282-252f-457a-ab84-1f2759ca7e17",
+      "type": "core:edge"
+    },
+    {
+      "source": "082fda4d-d16d-4f57-b02e-049788ad2e52",
+      "target": "0004f030-8692-4418-8d48-9dc554e1e0fb",
+      "text": "",
+      "uuid": "3209755c-027d-4c05-ad53-6a977eccc8c1",
+      "type": "core:edge"
+    },
+    {
+      "source": "082fda4d-d16d-4f57-b02e-049788ad2e52",
+      "target": "090349ee-b3eb-486c-808d-7874d0c1323e",
+      "text": "",
+      "uuid": "4161ef17-d285-48a4-bd24-e8fbba6795d4",
+      "type": "core:edge"
+    },
+    {
+      "source": "495603a9-b147-4606-947a-f05182c9a2b5",
+      "target": "c6d2a661-7a23-4b70-98ad-2fbc8b1243aa",
+      "text": "生成",
+      "uuid": "c97639f0-36da-4743-aa7b-af5359c7106c",
+      "type": "core:edge"
+    },
+    {
+      "source": "c6d2a661-7a23-4b70-98ad-2fbc8b1243aa",
+      "target": "8a7502ea-90a4-4e86-ac38-90ac4f07e043",
+      "text": "",
+      "uuid": "7e719b54-bd14-4104-861a-76b5134ea962",
+      "type": "core:edge"
+    },
+    {
+      "source": "090349ee-b3eb-486c-808d-7874d0c1323e",
+      "target": "495603a9-b147-4606-947a-f05182c9a2b5",
+      "text": "",
+      "uuid": "40b00b9c-ce3a-4dd7-9a4e-8a5d3da61e95",
+      "type": "core:edge"
+    },
+    {
+      "source": "2b2390ca-4916-41b7-b59c-563f981804d4",
+      "target": "ae976775-dd20-4304-81bf-ef4037440cf8",
+      "text": "",
+      "uuid": "a41b8ee7-f505-4614-a726-63a8b9e868bc",
+      "type": "core:edge"
+    },
+    {
+      "source": "35799bfd-b2e9-432b-8c16-75e34f8c4fae",
+      "target": "29ab97ae-c711-4df1-bf54-ed920afb3f17",
+      "text": "",
+      "uuid": "575bcb58-47af-4a81-ae21-12476d36ac6c",
+      "type": "core:edge"
+    },
+    {
+      "source": "35799bfd-b2e9-432b-8c16-75e34f8c4fae",
+      "target": "c07937cc-0859-4616-9f6c-99056b6a2eb5",
+      "text": "",
+      "uuid": "08f1e31d-b5a1-4491-90ee-dd59076575b4",
+      "type": "core:edge"
+    },
+    {
+      "source": "fac4102c-b6aa-481c-b694-226e6b3159cf",
+      "target": "aed097af-a775-4942-a7a9-1f96b4f3824a",
+      "text": "",
+      "uuid": "e37348c2-0413-4b7e-99b0-a606a3c6e62a",
+      "type": "core:edge"
+    },
+    {
+      "source": "fac4102c-b6aa-481c-b694-226e6b3159cf",
+      "target": "9f5115c7-0a20-463e-83a8-099acff696a5",
+      "text": "",
+      "uuid": "75e64fb8-10d3-466e-8cfa-b4b682b9043f",
+      "type": "core:edge"
+    },
+    {
+      "source": "9f5115c7-0a20-463e-83a8-099acff696a5",
+      "target": "622c8477-1a37-42b4-bb76-b64d654fa7b7",
+      "text": "",
+      "uuid": "fce00e12-655e-43bb-9463-ba1219bed89d",
+      "type": "core:edge"
+    },
+    {
+      "source": "9f5115c7-0a20-463e-83a8-099acff696a5",
+      "target": "d979e016-7351-4ad5-8fa1-864ff8fb2173",
+      "text": "",
+      "uuid": "51349804-00d5-42f9-b063-ce54f7b258ae",
+      "type": "core:edge"
+    },
+    {
+      "source": "9f5115c7-0a20-463e-83a8-099acff696a5",
+      "target": "a6164a97-ff26-43c0-b34a-b78bb449ac2f",
+      "text": "",
+      "uuid": "55430968-849f-44e5-8793-b22b5158bd31",
+      "type": "core:edge"
+    },
+    {
+      "source": "9f5115c7-0a20-463e-83a8-099acff696a5",
+      "target": "dd72ec8f-4273-492b-8fa7-f1a87406141b",
+      "text": "",
+      "uuid": "c73dcacb-72d4-46b6-872d-94579431523f",
+      "type": "core:edge"
+    },
+    {
+      "source": "89c3190b-7bde-4fd1-9ab7-0c53ab43a194",
+      "target": "c9a524bf-c873-46a1-a634-adbc09034782",
+      "text": "",
+      "uuid": "ca76d4f5-4470-4320-9f25-544599173b9f",
+      "type": "core:edge"
+    },
+    {
+      "source": "47337378-cfaa-4e46-9b8b-e59428d07370",
+      "target": "54be98a5-4350-477a-87c7-82217983022c",
+      "text": "",
+      "uuid": "1ae5f486-f87e-4764-8fc8-70e34c1b742f",
+      "type": "core:edge"
+    },
+    {
+      "source": "47337378-cfaa-4e46-9b8b-e59428d07370",
+      "target": "d032caa6-803b-4974-ad72-737dd507b73c",
+      "text": "",
+      "uuid": "fb198da8-f0fd-442f-b2e7-55e964437fd6",
+      "type": "core:edge"
+    },
+    {
+      "source": "12ff6bb8-8264-43a1-8f26-6df27b7b1865",
+      "target": "89c3190b-7bde-4fd1-9ab7-0c53ab43a194",
+      "text": "",
+      "uuid": "57a022e1-1f61-432f-954a-8336d0b162ee",
+      "type": "core:edge"
+    },
+    {
+      "source": "12ff6bb8-8264-43a1-8f26-6df27b7b1865",
+      "target": "a7fce2c3-897a-4e24-ab47-9cbe1d8b0f9f",
+      "text": "",
+      "uuid": "95352c57-2b89-4744-80cc-43c915ebbaf6",
+      "type": "core:edge"
+    },
+    {
+      "source": "12ff6bb8-8264-43a1-8f26-6df27b7b1865",
+      "target": "12cdf74c-d403-4167-82c7-5e7c3a9def5c",
+      "text": "",
+      "uuid": "4f76ba00-283a-4544-821e-d7cb88a4d76d",
+      "type": "core:edge"
+    },
+    {
+      "source": "12ff6bb8-8264-43a1-8f26-6df27b7b1865",
+      "target": "d1851a93-e1fc-466b-814d-27a1388c89ab",
+      "text": "",
+      "uuid": "e8d6f7ca-7d4c-41de-86a5-dca8c56eba79",
+      "type": "core:edge"
+    },
+    {
+      "source": "12ff6bb8-8264-43a1-8f26-6df27b7b1865",
+      "target": "5dbffdbf-1e19-4aaf-b495-6ba8548e5bbb",
+      "text": "",
+      "uuid": "96500f51-8636-4b4e-96c7-d7e78d905bf3",
+      "type": "core:edge"
+    },
+    {
+      "source": "090349ee-b3eb-486c-808d-7874d0c1323e",
+      "target": "d206b8fa-1f78-434a-8d02-5cfab73160cf",
+      "text": "",
+      "uuid": "131a5c28-3ab2-40a4-a061-455ea1a1a629",
+      "type": "core:edge"
+    },
+    {
+      "source": "e2043b7d-5057-4be9-9fb7-2a28933ec4f6",
+      "target": "8ef5e3d8-d0b3-404b-a72e-d153b5ebeb3f",
+      "text": "",
+      "uuid": "f473a793-227a-4bc0-8c36-78b5312f7607",
+      "type": "core:edge"
+    },
+    {
+      "source": "8ef5e3d8-d0b3-404b-a72e-d153b5ebeb3f",
+      "target": "12dd00bb-2c9e-42a6-a156-4bf63517645d",
+      "text": "",
+      "uuid": "ad56ee55-083f-43da-af4b-f5fa23a3952b",
+      "type": "core:edge"
+    },
+    {
+      "source": "e2043b7d-5057-4be9-9fb7-2a28933ec4f6",
+      "target": "d126fe8e-8363-4032-bfd2-d1d30fc458a0",
+      "text": "",
+      "uuid": "19dc98da-b5cf-4840-baa2-0a6c368af1e6",
+      "type": "core:edge"
+    },
+    {
+      "source": "d126fe8e-8363-4032-bfd2-d1d30fc458a0",
+      "target": "5e0a6e52-9346-4425-99d3-30d7ad7b40cc",
+      "text": "",
+      "uuid": "344f55c3-4fbf-4c33-b8c4-dd33f3e871de",
+      "type": "core:edge"
+    },
+    {
+      "source": "814fd34e-8d0c-496e-ae11-d3bfd0fbe7aa",
+      "target": "23dd4475-bbb6-4fe6-baf6-71fdd894262d",
+      "text": "",
+      "uuid": "622bb117-253a-493f-807c-3f4cdea5b99d",
+      "type": "core:edge"
+    },
+    {
+      "source": "23dd4475-bbb6-4fe6-baf6-71fdd894262d",
+      "target": "78ed1f1e-3953-48d2-ac57-0fb4ad8c919e",
+      "text": "",
+      "uuid": "365f52e4-0bae-4e72-a25b-5632f22869d5",
+      "type": "core:edge"
+    },
+    {
+      "source": "aeda3ea9-6e64-4b0a-812f-dfe61ba4dd70",
+      "target": "8ef5e3d8-d0b3-404b-a72e-d153b5ebeb3f",
+      "text": "",
+      "uuid": "39262051-5557-4842-9965-819f221da28c",
+      "type": "core:edge"
+    },
+    {
+      "source": "aeda3ea9-6e64-4b0a-812f-dfe61ba4dd70",
+      "target": "38266f5c-aac3-4dcf-9508-4bb6136fb426",
+      "text": "",
+      "uuid": "42d0cef3-5bdd-432c-b38e-09298fc78637",
+      "type": "core:edge"
+    },
+    {
+      "source": "38266f5c-aac3-4dcf-9508-4bb6136fb426",
+      "target": "64fac03c-5cd5-4061-b1be-d3491b506d59",
+      "text": "",
+      "uuid": "0f979c40-6664-4904-8c6a-33ffa923f44c",
+      "type": "core:edge"
+    },
+    {
+      "source": "da3a2de1-05d1-46d0-a9d8-fdddfd4fcd98",
+      "target": "38266f5c-aac3-4dcf-9508-4bb6136fb426",
+      "text": "",
+      "uuid": "1e0d727a-66f6-42e7-90ad-b7636c712bc2",
+      "type": "core:edge"
+    },
+    {
+      "source": "7e62a3f3-add1-47a6-a4cc-2fcdf3699e15",
+      "target": "0734db3d-7bc8-4642-b79f-663155581584",
+      "text": "",
+      "uuid": "5989cbc7-4460-4c46-bb52-1cf2ae1267e3",
+      "type": "core:edge"
+    },
+    {
+      "source": "da3a2de1-05d1-46d0-a9d8-fdddfd4fcd98",
+      "target": "1529f8e4-4350-4644-bb01-949e735c6cf4",
+      "text": "",
+      "uuid": "7435c49d-2448-4275-8d1d-15614bde5fba",
+      "type": "core:edge"
+    },
+    {
+      "source": "1529f8e4-4350-4644-bb01-949e735c6cf4",
+      "target": "37769640-baf6-40bf-9fdb-ec56f0875875",
+      "text": "",
+      "uuid": "bf655bb9-b5af-472f-99d3-5f0c2f93127d",
+      "type": "core:edge"
+    },
+    {
+      "source": "30984d28-b03c-4945-b170-b2f0e5263ce7",
+      "target": "1529f8e4-4350-4644-bb01-949e735c6cf4",
+      "text": "",
+      "uuid": "0f3ba9e1-30a6-4860-893c-d9742545f704",
+      "type": "core:edge"
+    },
+    {
+      "source": "30984d28-b03c-4945-b170-b2f0e5263ce7",
+      "target": "23dd4475-bbb6-4fe6-baf6-71fdd894262d",
+      "text": "",
+      "uuid": "242e78da-07d2-4589-98c7-70ead276f274",
+      "type": "core:edge"
+    },
+    {
+      "source": "09ff1905-f191-41ce-b822-9d9fe49d0e14",
+      "target": "d126fe8e-8363-4032-bfd2-d1d30fc458a0",
+      "text": "",
+      "uuid": "f2abdd2f-8600-4c7e-905c-7a7a7a51a769",
+      "type": "core:edge"
+    },
+    {
+      "source": "09ff1905-f191-41ce-b822-9d9fe49d0e14",
+      "target": "fe60cdbd-94af-4078-986e-c700d867b64f",
+      "text": "",
+      "uuid": "0ec54d1b-cddd-4029-bda9-fb588a00ffe1",
+      "type": "core:edge"
+    },
+    {
+      "source": "fe60cdbd-94af-4078-986e-c700d867b64f",
+      "target": "daf443bb-e619-41cb-a590-085e184f57a2",
+      "text": "",
+      "uuid": "f54bccdd-bf85-4bcb-b203-75da8790e318",
+      "type": "core:edge"
+    },
+    {
+      "source": "110f7ef8-198b-4bee-9ae0-30bb60311876",
+      "target": "9b51b79f-6336-4359-982d-4a7f00856a11",
+      "text": "",
+      "uuid": "413128b3-f388-4f57-be3d-74fc086c7bb1",
+      "type": "core:edge"
+    },
+    {
+      "source": "110f7ef8-198b-4bee-9ae0-30bb60311876",
+      "target": "31ffe28b-67d0-4ad0-ad1c-5480f0d8dcbc",
+      "text": "",
+      "uuid": "69543550-c976-4f93-b24a-3201566697ab",
+      "type": "core:edge"
+    },
+    {
+      "source": "e8592f9f-aaf5-43f7-b28e-903d12644fdb",
+      "target": "5dcf00a2-2746-4773-8666-768023787632",
+      "text": "",
+      "uuid": "a47c6985-c3f8-44e9-83b1-17d904b12e85",
+      "type": "core:edge"
+    },
+    {
+      "source": "e8592f9f-aaf5-43f7-b28e-903d12644fdb",
+      "target": "76ec107c-b99e-4c5a-927a-cb702156e9f3",
+      "text": "",
+      "uuid": "85a50ef6-a0e0-4db3-a7b1-8d8e338785b0",
+      "type": "core:edge"
+    },
+    {
+      "source": "e8592f9f-aaf5-43f7-b28e-903d12644fdb",
+      "target": "32163f54-72c4-4604-a146-52ac38f695fe",
+      "text": "",
+      "uuid": "46a84353-ea20-44f1-a46d-5f830536200c",
+      "type": "core:edge"
+    },
+    {
+      "source": "32163f54-72c4-4604-a146-52ac38f695fe",
+      "target": "b83988ec-7e2c-4d57-ba54-fc887221a6e5",
+      "text": "",
+      "uuid": "14640156-d531-4dcf-a898-9be2e0199aed",
+      "type": "core:edge"
+    },
+    {
+      "source": "e8592f9f-aaf5-43f7-b28e-903d12644fdb",
+      "target": "9d86e0a3-ebad-40a7-928c-bd9a857a9a66",
+      "text": "",
+      "uuid": "2d8581d2-e3c1-4a4f-991f-7310002ad8b5",
+      "type": "core:edge"
+    },
+    {
+      "source": "32163f54-72c4-4604-a146-52ac38f695fe",
+      "target": "8bbb7db9-3253-49a7-90e6-1cb40670da78",
+      "text": "",
+      "uuid": "f6109458-ba6a-4f7f-a535-ad82fc3db0eb",
+      "type": "core:edge"
+    },
+    {
+      "source": "32163f54-72c4-4604-a146-52ac38f695fe",
+      "target": "9e5a8aa8-34b0-4f6b-ba0e-24ee07cb6c64",
+      "text": "",
+      "uuid": "81e6be72-5b76-4101-b916-58a2d91949c2",
+      "type": "core:edge"
+    },
+    {
+      "source": "e8592f9f-aaf5-43f7-b28e-903d12644fdb",
+      "target": "30fb5084-68e6-4154-beac-3235a1185c4d",
+      "text": "",
+      "uuid": "40992f93-0bc4-4992-bd4b-227335a1e36a",
+      "type": "core:edge"
+    },
+    {
+      "source": "4faa6fa3-7485-4cc6-9d9b-15a370620c89",
+      "target": "c7c5a0dc-413e-48f5-a0b5-8b317ced8355",
+      "text": "",
+      "uuid": "c37f9411-67c8-4752-b4dd-0ecc942bed90",
+      "type": "core:edge"
+    },
+    {
+      "source": "80d627a7-dfdd-44a6-b730-bb24093ec680",
+      "target": "bc18dddf-4280-46b2-8626-1e5287e1ea84",
+      "text": "",
+      "uuid": "b1c60652-a401-4680-a933-dde202281027",
+      "type": "core:edge"
+    },
+    {
+      "source": "80d627a7-dfdd-44a6-b730-bb24093ec680",
+      "target": "764c8cd0-9f75-488d-8d52-09f080ea72d2",
+      "text": "",
+      "uuid": "f7a9b52d-88dd-4a1c-bd12-ab185d1735bf",
+      "type": "core:edge"
+    },
+    {
+      "source": "80d627a7-dfdd-44a6-b730-bb24093ec680",
+      "target": "b7e4b421-1e75-4867-a77f-d17fafe5377a",
+      "text": "",
+      "uuid": "ac8b7486-506c-4033-86ef-b1fe412ecbf6",
+      "type": "core:edge"
+    },
+    {
+      "source": "80d627a7-dfdd-44a6-b730-bb24093ec680",
+      "target": "5c53199b-2a86-476a-b0f2-8f33902e1a7b",
+      "text": "",
+      "uuid": "f8d54a2a-2950-4846-934e-7da8930cf8b8",
+      "type": "core:edge"
+    },
+    {
+      "source": "620b51eb-32a0-460d-910e-40f311532410",
+      "target": "601a6497-e66d-4fe9-8e58-2445f34acbc3",
+      "text": "",
+      "uuid": "02be4f33-b79a-420a-83ae-11163eb771ad",
+      "type": "core:edge"
+    },
+    {
+      "source": "5dcf00a2-2746-4773-8666-768023787632",
+      "target": "601a6497-e66d-4fe9-8e58-2445f34acbc3",
+      "text": "",
+      "uuid": "1f5898f0-3cc5-4ac5-8e8c-0f544238a798",
+      "type": "core:edge"
+    },
+    {
+      "source": "fe70cc22-32c9-4223-b1e8-ad838c0274f5",
+      "target": "601a6497-e66d-4fe9-8e58-2445f34acbc3",
+      "text": "",
+      "uuid": "0ab8f5f9-2aca-48b0-86f3-2013effb2dff",
+      "type": "core:edge"
+    },
+    {
+      "source": "6fc31dd8-e5a9-4771-8774-21358b990580",
+      "target": "090eb28b-57cc-4db0-baad-3bead84d26f3",
+      "text": "",
+      "uuid": "d11931e5-c461-4f23-96c6-8ba58b8eafaa",
+      "type": "core:edge"
+    },
+    {
+      "source": "090eb28b-57cc-4db0-baad-3bead84d26f3",
+      "target": "49c87557-b234-4531-ac50-d771c6bf9926",
+      "text": "",
+      "uuid": "ca3590f2-c5da-4f40-865d-e0876ae34e84",
+      "type": "core:edge"
+    },
+    {
+      "source": "49c87557-b234-4531-ac50-d771c6bf9926",
+      "target": "c7c5a0dc-413e-48f5-a0b5-8b317ced8355",
+      "text": "",
+      "uuid": "f856b0e0-38a4-4780-b957-1b1a2977ed5f",
+      "type": "core:edge"
+    },
+    {
+      "source": "49c87557-b234-4531-ac50-d771c6bf9926",
+      "target": "56c5bf1e-3ccc-4055-8002-5f6249034ad3",
+      "text": "",
+      "uuid": "bb4a705c-fa2d-415e-b51b-319ec2ab48b7",
+      "type": "core:edge"
+    },
+    {
+      "source": "090eb28b-57cc-4db0-baad-3bead84d26f3",
+      "target": "5c65e090-66df-45cb-b540-51613d97746e",
+      "text": "",
+      "uuid": "40bdcbc4-50df-4b78-ac2f-5d63285f6d20",
+      "type": "core:edge"
+    },
+    {
+      "source": "090eb28b-57cc-4db0-baad-3bead84d26f3",
+      "target": "10a82385-5560-451a-8890-9f42c8d39508",
+      "text": "",
+      "uuid": "660f6962-2d72-4164-9641-b47aea2652d0",
+      "type": "core:edge"
+    },
+    {
+      "source": "10a82385-5560-451a-8890-9f42c8d39508",
+      "target": "7b12d157-9db2-4503-99ea-0ee05c740564",
+      "text": "",
+      "uuid": "06480bd2-3e43-4d25-8b06-e1e95e79a100",
+      "type": "core:edge"
+    },
+    {
+      "source": "10a82385-5560-451a-8890-9f42c8d39508",
+      "target": "708b2956-6b7b-4330-bac0-eb0411c9eb98",
+      "text": "",
+      "uuid": "023dce2d-30e4-4c16-a270-91011747204b",
+      "type": "core:edge"
+    },
+    {
+      "source": "10a82385-5560-451a-8890-9f42c8d39508",
+      "target": "6feccaf2-16ce-48a3-89a4-d3ee85bbd01d",
+      "text": "",
+      "uuid": "7338e6a5-970f-4c21-b96b-ef2becb487e9",
+      "type": "core:edge"
+    },
+    {
+      "source": "10a82385-5560-451a-8890-9f42c8d39508",
+      "target": "5f49ba5f-eb7b-48ec-b610-ef117a965949",
+      "text": "",
+      "uuid": "dc89efab-226c-4a55-b262-314937ce1985",
+      "type": "core:edge"
+    },
+    {
+      "source": "49c87557-b234-4531-ac50-d771c6bf9926",
+      "target": "f7c69b73-28c2-4dc3-955d-1ea436573b57",
+      "text": "",
+      "uuid": "e753e4c9-b77b-4ded-9b7c-4ccb6dd65c6b",
+      "type": "core:edge"
+    },
+    {
+      "source": "49c87557-b234-4531-ac50-d771c6bf9926",
+      "target": "97aea4fb-23e2-409f-b2ca-55e45e925099",
+      "text": "",
+      "uuid": "cd8130b1-6ac6-487f-ad5a-19761411aa55",
+      "type": "core:edge"
+    },
+    {
+      "source": "7e62a3f3-add1-47a6-a4cc-2fcdf3699e15",
+      "target": "0f7b1434-ad3d-454d-a962-9603363796f4",
+      "text": "",
+      "uuid": "911044d9-2856-4a9f-abd7-fd3e1548db52",
+      "type": "core:edge"
+    },
+    {
+      "source": "0f7b1434-ad3d-454d-a962-9603363796f4",
+      "target": "690f597f-ada6-4ccd-b1e7-dbdfc7716371",
+      "text": "",
+      "uuid": "3404b050-7c1e-4d49-a770-c76cee0116b3",
+      "type": "core:edge"
+    },
+    {
+      "source": "5eb6ac6f-9843-4dbe-bd28-f2647179bb5e",
+      "target": "d3893b79-32aa-4be3-9ef4-2fb5cd8f0b95",
+      "text": "StageLoader",
+      "uuid": "9c284bb4-7257-47ec-8c53-9e66e81b14dd",
+      "type": "core:edge"
+    },
+    {
+      "source": "d3893b79-32aa-4be3-9ef4-2fb5cd8f0b95",
+      "target": "5eb6ac6f-9843-4dbe-bd28-f2647179bb5e",
+      "text": "StageDumper",
+      "uuid": "a830a392-2f60-40d0-91de-769dba26cebd",
+      "type": "core:edge"
+    },
+    {
+      "source": "d27dc1fa-9cae-4b7d-9b19-13c19c4cbb64",
+      "target": "9fb21a36-4990-4db1-b2f8-6a292c279b2c",
+      "text": "",
+      "uuid": "dcc5535b-b786-45f6-8af3-6a659d1f76cf",
+      "type": "core:edge"
+    },
+    {
+      "source": "70cfcbbf-34a8-4f77-98ee-4c044ba4f1a9",
+      "target": "da3a2de1-05d1-46d0-a9d8-fdddfd4fcd98",
+      "text": "",
+      "uuid": "b3b4472a-042e-41f0-afd6-68abc5eb7609",
+      "type": "core:edge"
+    },
+    {
+      "source": "70cfcbbf-34a8-4f77-98ee-4c044ba4f1a9",
+      "target": "30984d28-b03c-4945-b170-b2f0e5263ce7",
+      "text": "",
+      "uuid": "1578cb0c-00b5-4048-b54c-1e54931839a1",
+      "type": "core:edge"
+    },
+    {
+      "source": "4181f957-f2cc-40b3-a583-68b43e1c35ae",
+      "target": "71e09cbe-2f13-433e-a395-f1db9e6ea7c9",
+      "text": "",
+      "uuid": "c6c56f87-3a26-44e4-9fd6-70c17535638d",
+      "type": "core:edge"
+    },
+    {
+      "source": "4181f957-f2cc-40b3-a583-68b43e1c35ae",
+      "target": "ec9d0572-dadd-4cd1-8f41-2fc3ed695a4c",
+      "text": "",
+      "uuid": "990d3ebe-e368-4c71-9662-32f41b23f9e5",
+      "type": "core:edge"
+    },
+    {
+      "source": "4181f957-f2cc-40b3-a583-68b43e1c35ae",
+      "target": "cfb5c88c-e796-4841-944a-767d01326776",
+      "text": "",
+      "uuid": "ce40a545-6393-422b-9a18-48c2839ca34e",
+      "type": "core:edge"
+    },
+    {
+      "source": "cfb5c88c-e796-4841-944a-767d01326776",
+      "target": "cf4e4275-0250-42ad-a63c-51a5c57303e9",
+      "text": "",
+      "uuid": "4b00ea01-b892-466c-8935-1c5dbe31e8bd",
+      "type": "core:edge"
+    }
+  ],
+  "tags": []
+}
