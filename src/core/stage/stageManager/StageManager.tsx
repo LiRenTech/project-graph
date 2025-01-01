@@ -913,6 +913,15 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
+  /** 将选中的实体打包成一个section，并添加到舞台中 */
+  export function packEntityToSectionBySelected() {
+    const selectedNodes = StageManager.getSelectedEntities();
+    if (selectedNodes.length === 0) {
+      return;
+    }
+    StageManager.packEntityToSection(selectedNodes);
+  }
+
   export function goInSection(entities: Entity[], section: Section) {
     StageSectionInOutManager.goInSection(entities, section);
     StageHistoryManager.recordStep();

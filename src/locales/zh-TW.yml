@@ -322,3 +322,7 @@ keyBinds:
       例如，原先是 A -> B，按下后变成 B -> A
       此功能的意义在于快速创建一个节点连向多个节点的情况
       因为目前的连线只能一次性做到多连一。
+  packEntityToSection:
+    title: 将选中的实体打包到Section框中
+    description: |
+      按下后，选中的实体会自动包裹到新Section框中

@@ -34,7 +34,6 @@ import Box from "../components/ui/Box";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { ApiKeyManager } from "../core/ai/ApiKeyManager";
-import { Controller } from "../core/controller/Controller";
 import { TextRiseEffect } from "../core/effect/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { Stage } from "../core/stage/Stage";
@@ -242,12 +241,12 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       update();
     }, 100);
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      // 绑定一些快捷键
-      if (Controller.pressingKeySet.has("control") && event.key === "g") {
-        onPackNodeToSection();
-      }
-    };
+    // const handleKeyDown = (event: KeyboardEvent) => {
+    //   // // 绑定一些快捷键
+    //   // if (Controller.pressingKeySet.has("control") && event.key === "g") {
+    //   //   StageManager.packEntityToSectionBySelected();
+    //   // }
+    // };
     const handleMouseDown = () => {
       setIgnoreMouse(true);
     };
@@ -255,7 +254,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       setIgnoreMouse(false);
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    // window.addEventListener("keydown", handleKeyDown);
     document
       .querySelector("canvas")
       ?.addEventListener("mousedown", handleMouseDown);
@@ -264,7 +263,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       ?.addEventListener("mouseup", handleMouseUp);
     return () => {
       clearInterval(intervalId);
-      window.removeEventListener("keydown", handleKeyDown);
+      // window.removeEventListener("keydown", handleKeyDown);
       document
         .querySelector("canvas")
         ?.removeEventListener("mousedown", handleMouseDown);
@@ -371,7 +370,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           description="将选中节点打包Section（快捷键可自定义）（Section目前bug较多，还在开发中，暂时不推荐使用）"
           icon={<Square />}
           handleFunction={() => {
-            onPackNodeToSection();
+            StageManager.packEntityToSectionBySelected();
           }}
         />
         <ToolbarItem
@@ -440,13 +439,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       </Box>
     </div>
   );
-}
-function onPackNodeToSection() {
-  const selectedNodes = StageManager.getSelectedEntities();
-  if (selectedNodes.length === 0) {
-    return;
-  }
-  StageManager.packEntityToSection(selectedNodes);
 }
 
 const onSaveSelectedNew = async () => {

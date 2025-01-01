@@ -172,6 +172,16 @@ function loadKeyBinds() {
       StageManager.reverseSelectedEdges();
     }),
   );
+
+  KeyBinds.create("packEntityToSection", "g", {
+    control: true,
+    alt: false,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      StageManager.packEntityToSectionBySelected();
+    }),
+  );
 }
 
 /** 加载语言文件 */
