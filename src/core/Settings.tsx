@@ -64,7 +64,7 @@ export namespace Settings {
     showBackgroundHorizontalLines: false,
     showBackgroundVerticalLines: false,
     showBackgroundDots: true,
-    windowBackgroundAlpha: 0.8,
+    windowBackgroundAlpha: 0.9,
     showDebug: true,
     alwaysShowDetails: false,
     protectingPrivacy: false,
