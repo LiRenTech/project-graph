@@ -23,10 +23,20 @@ export enum LogicNodeNameEnum {
   LOG = "#LOG#",
   ABS = "#ABS#",
   RANDOM = "#RANDOM#",
+
+  SIN = "#SIN#",
+  COS = "#COS#",
+  TAN = "#TAN#",
   // 取值运算
   MAX = "#MAX#",
   MIN = "#MIN#",
   // 比较运算
+  LT = "#LT#",
+  GT = "#GT#",
+  LTE = "#LTE#",
+  GTE = "#GTE#",
+  EQ = "#EQ#",
+  NEQ = "#NEQ#",
 
   // 字符串
   UPPER = "#UPPER#",
