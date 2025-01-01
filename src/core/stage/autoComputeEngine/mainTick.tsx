@@ -1,7 +1,9 @@
 import { Controller } from "../../controller/Controller";
 import { Color } from "../../dataStruct/Color";
 import { Vector } from "../../dataStruct/Vector";
+import { RectangleLittleNoteEffect } from "../../effect/concrete/RectangleLittleNoteEffect";
 import { TextNode } from "../../stageObject/entity/TextNode";
+import { Stage } from "../Stage";
 import { StageManager } from "../stageManager/StageManager";
 import { AutoComputeUtils } from "./AutoComputeUtils";
 import { MathFunctions } from "./functions/mathLogic";
@@ -71,6 +73,9 @@ export function autoComputeEngineTick() {
 
     for (const name of Object.keys(MapNameFunction)) {
       if (node.text === name) {
+        // 发现了一个逻辑节点
+        Stage.effects.push(RectangleLittleNoteEffect.fromUtilsLittleNote(node));
+
         const result = MapNameFunction[name](
           AutoComputeUtils.getParentTextNodes(node)
             .sort(
