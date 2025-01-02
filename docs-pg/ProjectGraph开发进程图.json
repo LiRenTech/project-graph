@@ -1109,7 +1109,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-12562.18271621647, -986.97439118289],
+      "location": [-12143.553340552262, -989.1976014985858],
       "size": [380, 60],
       "text": "舞台上的图片可复制路径",
       "uuid": "973a47e9-c13d-4918-8a20-ce6ad98e49ef",
@@ -1235,7 +1235,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-12833.121939490984, -1450.4926741631955],
+      "location": [-12360.821254832279, -1449.0857904200839],
       "size": [584.7359619140625, 60],
       "text": "可以考虑把section框的大小改成自定义",
       "uuid": "150c64b0-8639-43b2-8a3b-25fde6856ee3",
@@ -1321,11 +1321,11 @@
       "text": "图片相关",
       "uuid": "c018c13c-82ca-402d-bbb0-91e6b3cf8603",
       "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {
-      "location": [-12065.107364678332, -985.2053253067457],
+      "location": [-11318.757048528834, -989.1976014985858],
       "size": [316, 60],
       "text": "支持斩断线切割图片",
       "uuid": "c811fa62-64c5-45b5-9440-bab0018ed920",
@@ -1356,6 +1356,51 @@
       "size": [156, 60],
       "text": "公式渲染",
       "uuid": "8ae18bb2-0725-461d-a08f-9cbefe1d6b22",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-11709.239231607797, -989.1976014985858],
+      "size": [348, 60],
+      "text": "图片下面增加一个标题",
+      "uuid": "087da532-0840-4c12-8d82-f177a9883702",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-12931.367996273319, -1449.0857904200839],
+      "size": [460.927978515625, 60],
+      "text": "Section名称部分也纳入碰撞箱",
+      "uuid": "db4d9e77-cd86-4f63-9d7b-bfa97ad32e40",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-12631.558906144766, -989.1976014985858],
+      "size": [444, 60],
+      "text": "做个图片不能在草稿里的提示",
+      "uuid": "a5683456-bfab-439f-934a-5f901d0933e3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-13869.743524622327, -507.60023452653274],
+      "size": [354.14398193359375, 60],
+      "text": "F5刷新改的难触发一点",
+      "uuid": "d993826c-ec58-4b5c-b00a-d52b94d13117",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-13869.743524622327, -408.79917359792086],
+      "size": [533.5359802246094, 60],
+      "text": "网页URL是ip地址的时候被过滤掉了",
+      "uuid": "ba2600dd-d275-4a92-8ded-10caae16baa3",
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
@@ -2076,13 +2121,6 @@
       "type": "core:edge"
     },
     {
-      "source": "13cc6803-18f1-4b4f-8425-db8c881ba478",
-      "target": "973a47e9-c13d-4918-8a20-ce6ad98e49ef",
-      "text": "",
-      "uuid": "38e21bd5-705b-4c63-9dce-b68a6a72b991",
-      "type": "core:edge"
-    },
-    {
       "source": "3811641a-a471-438f-a445-58d1a2db4aa2",
       "target": "66c3d7f1-56f5-455d-a3b3-e3f22f1b1224",
       "text": "",
@@ -2202,13 +2240,6 @@
       "type": "core:edge"
     },
     {
-      "source": "003195f4-df16-4f6d-b03f-f7666945521c",
-      "target": "150c64b0-8639-43b2-8a3b-25fde6856ee3",
-      "text": "",
-      "uuid": "d650ef69-584d-409c-b98e-08905ddf4173",
-      "type": "core:edge"
-    },
-    {
       "source": "3811641a-a471-438f-a445-58d1a2db4aa2",
       "target": "e931a7bf-c105-4104-91db-0044cf55713a",
       "text": "",
@@ -2286,13 +2317,6 @@
       "type": "core:edge"
     },
     {
-      "source": "973a47e9-c13d-4918-8a20-ce6ad98e49ef",
-      "target": "c811fa62-64c5-45b5-9440-bab0018ed920",
-      "text": "",
-      "uuid": "39d5687c-ffad-46b2-8cf5-24db26d92a81",
-      "type": "core:edge"
-    },
-    {
       "source": "53b7a372-2e6a-493a-98eb-6b0742c36b6b",
       "target": "55d5a658-d6a7-4bce-8b51-50b2bf67b119",
       "text": "",
@@ -2325,6 +2349,48 @@
       "target": "c1b46eff-45c3-4e98-b2c2-aef559b3ce10",
       "text": "",
       "uuid": "4ce82d89-8b67-42fd-89ae-1255a2c49731",
+      "type": "core:edge"
+    },
+    {
+      "source": "973a47e9-c13d-4918-8a20-ce6ad98e49ef",
+      "target": "087da532-0840-4c12-8d82-f177a9883702",
+      "text": "",
+      "uuid": "cb63939d-c2f4-4ba1-bb65-705526005f0a",
+      "type": "core:edge"
+    },
+    {
+      "source": "087da532-0840-4c12-8d82-f177a9883702",
+      "target": "c811fa62-64c5-45b5-9440-bab0018ed920",
+      "text": "",
+      "uuid": "4790a4ef-fed4-4520-aca6-e2a360878716",
+      "type": "core:edge"
+    },
+    {
+      "source": "003195f4-df16-4f6d-b03f-f7666945521c",
+      "target": "db4d9e77-cd86-4f63-9d7b-bfa97ad32e40",
+      "text": "",
+      "uuid": "7bd5bf65-f1b9-4381-bc3d-0dd38b7bc46a",
+      "type": "core:edge"
+    },
+    {
+      "source": "db4d9e77-cd86-4f63-9d7b-bfa97ad32e40",
+      "target": "150c64b0-8639-43b2-8a3b-25fde6856ee3",
+      "text": "",
+      "uuid": "152705cd-e2f8-490b-98d3-4c31c7f6a07c",
+      "type": "core:edge"
+    },
+    {
+      "source": "13cc6803-18f1-4b4f-8425-db8c881ba478",
+      "target": "a5683456-bfab-439f-934a-5f901d0933e3",
+      "text": "",
+      "uuid": "b3aa7ff1-8c78-45d6-9959-b81b20ece30a",
+      "type": "core:edge"
+    },
+    {
+      "source": "a5683456-bfab-439f-934a-5f901d0933e3",
+      "target": "973a47e9-c13d-4918-8a20-ce6ad98e49ef",
+      "text": "",
+      "uuid": "a0be5e32-bbba-49f4-a3cf-d7b458873c9e",
       "type": "core:edge"
     }
   ],
