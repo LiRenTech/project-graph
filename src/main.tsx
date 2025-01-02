@@ -30,6 +30,7 @@ import { exists } from "./utils/fs";
 import {
   addTextNodeByLocation,
   addTextNodeFromCurrentSelectedNode,
+  editNodeDetailsByKeyboard,
 } from "./core/controller/concrete/utilsControl";
 import { Vector } from "./core/dataStruct/Vector";
 
@@ -310,6 +311,15 @@ function loadKeyBinds() {
   }).then((bind) =>
     bind.down(() => {
       StageManager.moveSelectedNodes(new Vector(100, 0));
+    }),
+  );
+  KeyBinds.create("editEntityDetails", "enter", {
+    control: true,
+    alt: false,
+    shift: false,
+  }).then((bind) =>
+    bind.down(() => {
+      editNodeDetailsByKeyboard();
     }),
   );
 }

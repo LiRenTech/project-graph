@@ -380,6 +380,11 @@ keyBinds:
       按下后，选中的舞台物体会被删除
       舞台物体包括实体（节点和Section等独立存在的东西）和关系（节点之间的连线）
       默认是delete键，您可以改成backspace键
+  editEntityDetails:
+    title: 编辑选中的实体的详细信息
+    description: |
+      按下后，选中的实体的详细信息会被打开编辑
+      只有选中的物体数量为1时才有效
   createTextNodeFromCameraLocation:
     title: 创建文本节点
     description: |

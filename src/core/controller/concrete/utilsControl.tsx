@@ -59,6 +59,17 @@ export const editTextNodeHookGlobal = {
   },
 };
 
+/**
+ * 通过快捷键的方式来打开Entity的详细信息编辑
+ */
+export function editNodeDetailsByKeyboard() {
+  const nodes = StageManager.getEntities().filter((node) => node.isSelected);
+  if (nodes.length === 0) {
+    return;
+  }
+  editNodeDetails(nodes[0]);
+}
+
 export function editNodeDetails(clickedNode: Entity) {
   Controller.isCameraLocked = true;
 
