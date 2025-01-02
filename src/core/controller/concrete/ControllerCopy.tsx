@@ -13,6 +13,7 @@ import { TextNode } from "../../stageObject/entity/TextNode";
 import { Entity } from "../../stageObject/StageObject";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { Dialog } from "../../../utils/dialog";
 
 /**
  * 关于复制相关的功能
@@ -111,6 +112,15 @@ async function readClipboardItems(mouseLocation: Vector) {
     navigator.clipboard.read().then(async (items) => {
       for (const item of items) {
         if (item.types.includes("image/png")) {
+          // 图片在草稿情况下不能粘贴
+          if (Stage.Path.isDraft()) {
+            Dialog.show({
+              title: "草稿状态下不要粘贴图片",
+              content:
+                "请先另存为，再粘贴图片，因为粘贴的图片会和保存的工程文件在同一目录下，而草稿在内存中，没有路径",
+            });
+            return;
+          }
           const blob = await item.getType(item.types[0]); // 获取 Blob 对象
           const imageUUID = uuidv4();
           const folder = PathString.dirPath(Stage.Path.getFilePath());

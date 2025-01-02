@@ -1411,7 +1411,7 @@
       "text": "快捷键缩放视野太大了",
       "uuid": "cd8cd0cd-aa35-40a1-a249-7f09885e7d79",
       "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {
