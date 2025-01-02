@@ -129,7 +129,23 @@ function loadKeyBinds() {
     shift: false,
   }).then((bind) =>
     bind.down(() => {
-      window.location.reload();
+      Dialog.show({
+        title: "重新加载应用",
+        content:
+          "此快捷键用于在废档了或软件卡住了的情况下重启，您按下了重新加载应用快捷键，是否要重新加载应用？这会导致您丢失所有未保存的工作。",
+        buttons: [
+          {
+            text: "是",
+            onClick: () => {
+              window.location.reload();
+            },
+          },
+          {
+            text: "否",
+            onClick: () => {},
+          },
+        ],
+      });
     }),
   );
 
