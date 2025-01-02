@@ -213,21 +213,23 @@ export namespace Camera {
 
   /**
    * 重置摄像机的缩放，让其画面刚好能容下舞台上所有内容的外接矩形
-   * 还是不要有缩放了，因为缩放会带来一点卡顿（2024年10月25日）
+   * 还是不要有动画过度了，因为过度效果会带来一点卡顿（2024年10月25日）
    */
   export function reset() {
     Camera.location = StageManager.getCenter();
     Camera.targetLocationByScale = Camera.location.clone();
     // Camera.currentScale = 0.01;
-
+    const allEntitiesSize = StageManager.getSize();
+    allEntitiesSize.multiply(1.5);
     Camera.currentScale = Math.min(
-      Renderer.h / StageManager.getSize().y,
-      Renderer.w / StageManager.getSize().x,
+      Renderer.h / allEntitiesSize.y,
+      Renderer.w / allEntitiesSize.x,
     );
     Camera.targetScale = Camera.currentScale;
   }
 
   export function resetBySelected() {
+    console.log("resetBySelected");
     const selectedEntity: Entity[] = StageManager.getSelectedEntities();
     if (selectedEntity.length === 0) {
       reset();
@@ -240,10 +242,17 @@ export namespace Camera {
     Camera.location = center;
     Camera.targetLocationByScale = center.clone();
 
+    const selectedRectangleSize = viewRectangle.size.multiply(1.5);
+
+    // 再取max 1.5 是为了防止缩放过大
     Camera.currentScale = Math.min(
-      Renderer.h / viewRectangle.size.y,
-      Renderer.w / viewRectangle.size.x,
+      1.5,
+      Math.min(
+        Renderer.h / selectedRectangleSize.y,
+        Renderer.w / selectedRectangleSize.x,
+      ),
     );
+    console.log("currentScale", Camera.currentScale);
     Camera.targetScale = Camera.currentScale;
   }
 
