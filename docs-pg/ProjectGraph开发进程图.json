@@ -1384,7 +1384,7 @@
       "text": "做个图片不能在草稿里的提示",
       "uuid": "a5683456-bfab-439f-934a-5f901d0933e3",
       "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {

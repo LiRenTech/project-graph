@@ -6,7 +6,6 @@ import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { RenderUtils } from "../../render/canvas2d/RenderUtils";
 import { Camera } from "../../stage/Camera";
-import { Entity } from "../../stageObject/StageObject";
 import { Effect } from "../effect";
 
 /**
@@ -15,23 +14,24 @@ import { Effect } from "../effect";
 export class EntityAlignEffect extends Effect {
   private lines: Line[] = [];
   static fromEntity(
-    moveEntity: Entity,
-    targetEntity: Entity,
+    moveRectangle: Rectangle,
+    targetRectangle: Rectangle,
   ): EntityAlignEffect {
+    console.log("创建了特效");
     return new EntityAlignEffect(
       new ProgressNumber(0, 10),
-      moveEntity,
-      targetEntity,
+      moveRectangle,
+      targetRectangle,
     );
   }
   constructor(
     public override timeProgress: ProgressNumber,
-    moveEntity: Entity,
-    targetEntity: Entity,
+    moveRectangle: Rectangle,
+    targetRectangle: Rectangle,
   ) {
     super(timeProgress);
-    const moveEntityRectangle = moveEntity.collisionBox.getRectangle();
-    const targetEntityRectangle = targetEntity.collisionBox.getRectangle();
+    const moveEntityRectangle = moveRectangle;
+    const targetEntityRectangle = targetRectangle;
 
     // 两个矩形构成的最小外接矩形
     const twoRectangle = Rectangle.getBoundingRectangle([
@@ -80,6 +80,11 @@ export class EntityAlignEffect extends Effect {
         ),
       );
     }
+    console.log(this.lines, this.lines.length);
+    console.log(
+      moveEntityRectangle.toString(),
+      targetEntityRectangle.toString(),
+    );
   }
 
   render(): void {
