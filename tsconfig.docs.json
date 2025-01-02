@@ -2,8 +2,7 @@
   "include": ["./docs/**/*.ts", "./docs/**/*.vue", "./docs/**/*.md"],
   "compilerOptions": {
     "types": ["vitepress/client", "vite/client"],
-    "composite": true,
-    "rootDir": "./docs"
+    "composite": true
   },
   "vueCompilerOptions": {
     "vitePressExtensions": [".md"]
