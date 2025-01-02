@@ -67,4 +67,16 @@ export namespace PathString {
       .replaceAll(":", "-");
     return dateTime;
   }
+
+  /**
+   * 检测一个字符串是否是一个有效的url网址
+   * 用于判断是否可以打开浏览器
+   * @param url
+   * @returns
+   */
+  export function isValidURL(url: string): boolean {
+    const urlPattern =
+      /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(:\d{1,5})?(\/[^\s]*)?$/i;
+    return urlPattern.test(url);
+  }
 }

@@ -43,6 +43,7 @@ import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { Dialog } from "../utils/dialog";
 import { exists, writeTextFile } from "../utils/fs";
 import { Popup } from "../utils/popup";
+import { PathString } from "../utils/pathString";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -345,15 +346,14 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             description="将选中的节点的内容作为网页链接或本地文件路径打开"
             icon={<Globe />}
             handleFunction={async () => {
-              if (StageSaveManager.isSaved()) {
-                openBrowserOrFile();
-              } else {
-                // Stage.effects.push(new TextRiseEffect("请先保存文件"));
+              // 先保存一下
+              if (!StageSaveManager.isSaved()) {
                 await StageSaveManager.saveHandleWithoutCurrentPath(
                   StageDumper.dump(),
                 );
-                openBrowserOrFile();
               }
+              // 打开文件或网页
+              openBrowserOrFile();
             }}
           />
         )}
@@ -430,7 +430,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           />
         )}
         <ToolbarItem
-          description="刷新选中内容"
+          description="刷新选中内容(图片加载失败了可以选中图片然后点这个按钮)"
           icon={<RefreshCcw />}
           handleFunction={() => {
             StageManager.refreshSelected();
@@ -486,7 +486,7 @@ async function openBrowserOrFile() {
         // 去除前后的引号
         nodeText = nodeText.slice(1, -1);
       }
-      if (isValidURL(nodeText)) {
+      if (PathString.isValidURL(nodeText)) {
         // 是网址
         myOpen(nodeText);
       } else {
@@ -496,7 +496,7 @@ async function openBrowserOrFile() {
           myOpen(nodeText);
         } else {
           // 不是网址也不是文件，不做处理
-          Stage.effects.push(new TextRiseEffect("非法路径: " + nodeText));
+          Stage.effects.push(new TextRiseEffect("非法文件路径: " + nodeText));
         }
       }
     }
@@ -511,12 +511,6 @@ function myOpen(url: string) {
       // 依然会导致程序崩溃，具体原因未知
       console.error(e);
     });
-}
-
-function isValidURL(url: string): boolean {
-  const urlPattern =
-    /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(:\d{1,5})?(\/[^\s]*)?$/i;
-  return urlPattern.test(url);
 }
 
 function deleteSelectedObjects() {
