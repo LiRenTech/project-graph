@@ -423,6 +423,8 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               const svgString = StageDumperSvg.dumpSelectedToSVGString();
               Dialog.show({
                 title: "导出SVG",
+                content:
+                  "SVG的本质是一堆标签代码，如果您是在写markdown格式的博客，可以直接把下面的标签代码粘贴在您的文章中。如果您想保存成文件，可以把这段代码复制到txt中并改后缀名成svg",
                 code: svgString,
                 type: "info",
               });
