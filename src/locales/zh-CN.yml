@@ -120,7 +120,6 @@ settings:
     title: 使用原生标题栏（需要重启应用）
     description: |
       开启后，窗口顶部将会出现原生的标题栏，而不是模拟的标题栏。
-      这个问题有可能能解决win10系统下软件窗口右侧出现异常滚动栏，导致视野缩放时界面上下滑动的问题
   protectingPrivacy:
     title: 隐私保护
     description: |

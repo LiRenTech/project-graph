@@ -4,10 +4,11 @@ import { readText, readImage } from "@tauri-apps/plugin-clipboard-manager";
 export default function TestPage() {
   return (
     <>
-      <h1>Test Page</h1>
+      <h1 className="h-32">Test Page</h1>
       <p>This is a test page.</p>
       <div className="h-32">123</div>
       <button
+        className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
         onClick={async () => {
           const text = await readText();
           console.log("text: ", text);
@@ -16,6 +17,7 @@ export default function TestPage() {
         readText
       </button>
       <button
+        className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
         onClick={async () => {
           const image = await readImage();
           console.log("image: ", image);
@@ -35,6 +37,28 @@ export default function TestPage() {
       >
         readImage
       </button>
+      <button
+        className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+        onClick={async () => {
+          const userAgent = navigator.userAgent;
+          console.log("userAgent: ", userAgent);
+          // 判断用户使用的操作系统
+          if (userAgent.indexOf("Windows NT 10.0") !== -1) {
+            console.log("用户使用的是 Windows 10 或 Windows 11");
+          } else if (userAgent.indexOf("Windows NT 6.3") !== -1) {
+            console.log("用户使用的是 Windows 8.1");
+          } else if (userAgent.indexOf("Windows NT 6.2") !== -1) {
+            console.log("用户使用的是 Windows 8");
+          } else if (userAgent.indexOf("Windows NT 6.1") !== -1) {
+            console.log("用户使用的是 Windows 7");
+          } else {
+            console.log("用户使用的是其他操作系统");
+          }
+        }}
+      >
+        点击userAgent
+      </button>
+      <pre>{navigator.userAgent}</pre>
     </>
   );
 }
