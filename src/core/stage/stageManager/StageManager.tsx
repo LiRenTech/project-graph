@@ -20,6 +20,7 @@ import {
 import { Camera } from "../Camera";
 import { Stage } from "../Stage";
 import { StageDumper } from "../StageDumper";
+import { StageAutoAlignManager } from "./concreteMethods/StageAutoAlignManager";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager";
 import { StageGeneratorAI } from "./concreteMethods/StageGeneratorAI";
@@ -1032,5 +1033,9 @@ export namespace StageManager {
         entity.refresh();
       }
     }
+  }
+
+  export function alignAllSelected() {
+    StageAutoAlignManager.alignAllSelected();
   }
 }
