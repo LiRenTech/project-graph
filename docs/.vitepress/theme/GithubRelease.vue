@@ -101,7 +101,7 @@
     </div>
   </div>
   <div v-else>
-    下载链接加载失败，请前往
+    正在加载下载链接，若长时间未加载，请前往
     <a href="https://github.com/LiRenTech/project-graph/releases">Github</a>
     下载。
   </div>
@@ -127,7 +127,29 @@ const os = ref("");
 const isArm = ref(false);
 const notSupported = ref(false);
 
-onMounted(() => {
+onMounted(async () => {
+  const data = await (
+    await fetch(
+      `https://proxy.zty012.de/https://api.github.com/repos/${props.repo}/releases`,
+      {
+        headers: {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`,
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      },
+    )
+  ).json();
+  for (const item of data) {
+    if (
+      (item.prerelease && props.nightly) ||
+      (!item.prerelease && !props.nightly)
+    ) {
+      release.value = item;
+      console.log("found release", item.tag_name);
+      break;
+    }
+  }
   const platform = navigator.platform.toLowerCase();
   const userAgent = navigator.userAgent.toLowerCase();
   if (
@@ -149,29 +171,6 @@ onMounted(() => {
   }
   console.log("os", os.value, "isArm", isArm.value);
 });
-
-const data = await (
-  await fetch(
-    `https://proxy.zty012.de/https://api.github.com/repos/${props.repo}/releases`,
-    {
-      headers: {
-        Accept: "application/vnd.github+json",
-        Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`,
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-    },
-  )
-).json();
-for (const item of data) {
-  if (
-    (item.prerelease && props.nightly) ||
-    (!item.prerelease && !props.nightly)
-  ) {
-    release.value = item;
-    console.log("found release", item.tag_name);
-    break;
-  }
-}
 </script>
 
 <style scoped>
