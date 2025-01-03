@@ -4,12 +4,18 @@
 
 <Suspense>
   <GithubRelease repo="LiRenTech/project-graph" />
+  <template #fallback>
+    正在加载下载链接，若长时间未加载请刷新页面。
+  </template>
 </Suspense>
 
 ## ⚡ 开发版 (推荐)
 
 <Suspense>
   <GithubRelease repo="LiRenTech/project-graph" nightly />
+  <template #fallback>
+    正在加载下载链接，若长时间未加载请刷新页面。
+  </template>
 </Suspense>
 
 > [!IMPORTANT]
