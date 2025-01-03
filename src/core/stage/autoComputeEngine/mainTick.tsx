@@ -244,18 +244,21 @@ export function autoComputeEngineTick() {
   // region 计算section
   for (const section of StageManager.getSections()) {
     for (const name of Object.keys(MapNameFunction)) {
-      const inputStringList: string[] = [];
-      for (const child of section.children.sort(
-        (a, b) =>
-          a.collisionBox.getRectangle().location.x -
-          b.collisionBox.getRectangle().location.x,
-      )) {
-        if (child instanceof TextNode) {
-          inputStringList.push(child.text);
+      if (section.text === name) {
+        // 发现了一个逻辑Section
+        const inputStringList: string[] = [];
+        for (const child of section.children.sort(
+          (a, b) =>
+            a.collisionBox.getRectangle().location.x -
+            b.collisionBox.getRectangle().location.x,
+        )) {
+          if (child instanceof TextNode) {
+            inputStringList.push(child.text);
+          }
         }
+        const result = MapNameFunction[name](inputStringList);
+        AutoComputeUtils.getSectionMultiResult(section, result);
       }
-      const result = MapNameFunction[name](inputStringList);
-      AutoComputeUtils.getSectionMultiResult(section, result);
     }
   }
 }
