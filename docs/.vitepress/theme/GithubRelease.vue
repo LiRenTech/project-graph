@@ -1,5 +1,5 @@
 <template>
-  <span v-if="release">
+  <div v-if="release">
     <p>{{ release.name }}</p>
     <div class="container">
       <a
@@ -99,12 +99,12 @@
         </button>
       </a>
     </div>
-  </span>
-  <span v-else>
+  </div>
+  <div v-else>
     下载链接加载失败，请前往
     <a href="https://github.com/LiRenTech/project-graph/releases">Github</a>
     下载。
-  </span>
+  </div>
   <div class="warning custom-block github-alert" v-if="notSupported">
     <p class="custom-block-title">不支持的系统</p>
     <p>
@@ -126,29 +126,6 @@ const release = ref();
 const os = ref("");
 const isArm = ref(false);
 const notSupported = ref(false);
-
-const data = await (
-  await fetch(
-    `https://proxy.zty012.de/https://api.github.com/repos/${props.repo}/releases`,
-    {
-      headers: {
-        Accept: "application/vnd.github+json",
-        Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`,
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-    },
-  )
-).json();
-for (const item of data) {
-  if (
-    (item.prerelease && props.nightly) ||
-    (!item.prerelease && !props.nightly)
-  ) {
-    release.value = item;
-    console.log("found release", item.tag_name);
-    break;
-  }
-}
 
 onMounted(() => {
   const platform = navigator.platform.toLowerCase();
@@ -172,6 +149,29 @@ onMounted(() => {
   }
   console.log("os", os.value, "isArm", isArm.value);
 });
+
+const data = await (
+  await fetch(
+    `https://proxy.zty012.de/https://api.github.com/repos/${props.repo}/releases`,
+    {
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`,
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    },
+  )
+).json();
+for (const item of data) {
+  if (
+    (item.prerelease && props.nightly) ||
+    (!item.prerelease && !props.nightly)
+  ) {
+    release.value = item;
+    console.log("found release", item.tag_name);
+    break;
+  }
+}
 </script>
 
 <style scoped>

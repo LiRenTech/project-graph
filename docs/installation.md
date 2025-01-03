@@ -2,11 +2,15 @@
 
 ## 📦 稳定版
 
-<GithubRelease repo="LiRenTech/project-graph" />
+<Suspense>
+  <GithubRelease repo="LiRenTech/project-graph" />
+</Suspense>
 
 ## ⚡ 开发版 (推荐)
 
-<GithubRelease repo="LiRenTech/project-graph" nightly />
+<Suspense>
+  <GithubRelease repo="LiRenTech/project-graph" nightly />
+</Suspense>
 
 > [!IMPORTANT]
 > macOS 可能会提示“应用已损坏，无法打开”，请参考[常见问题](./faq#macos-cannot-open)中的解决方法。
