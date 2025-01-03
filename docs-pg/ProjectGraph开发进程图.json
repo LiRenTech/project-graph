@@ -1042,7 +1042,7 @@
       "text": "自动吸附功能完善",
       "uuid": "53b7a372-2e6a-493a-98eb-6b0742c36b6b",
       "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [234, 179, 8, 1],
       "type": "core:text_node"
     },
     {

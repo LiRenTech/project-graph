@@ -12,6 +12,7 @@ import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { ConnectableEntity, Entity } from "../StageObject";
+import { Shape } from "../../dataStruct/shape/Shape";
 
 export class Section extends ConnectableEntity {
   /**
@@ -75,12 +76,14 @@ export class Section extends ConnectableEntity {
       new Rectangle(new Vector(...location), new Vector(...size)),
     ]);
 
-    this._collisionBoxNormal = new CollisionBox(
-      new Rectangle(
-        new Vector(...location),
-        new Vector(...size),
-      ).getBoundingLines(),
-    );
+    const shapeList: Shape[] = new Rectangle(
+      new Vector(...location),
+      new Vector(...size),
+    ).getBoundingLines();
+    // shapeList.push(
+    //   new Rectangle(new Vector(...location), new Vector(size[0], 50)),
+    // );
+    this._collisionBoxNormal = new CollisionBox(shapeList);
 
     this.color = new Color(...color);
     this.text = text;
@@ -132,6 +135,13 @@ export class Section extends ConnectableEntity {
     rectangle.size = rectangle.size.add(new Vector(0, 50));
 
     this._collisionBoxNormal.shapeList = rectangle.getBoundingLines();
+    // 群友需求：希望Section框扩大交互范围，标题也能拖动
+    this._collisionBoxNormal.shapeList.push(
+      new Rectangle(
+        rectangle.location.clone(),
+        new Vector(rectangle.size.x, 50),
+      ),
+    );
     // 调整折叠状态
     this._collisionBoxWhenCollapsed = this.collapsedCollisionBox();
   }
@@ -190,12 +200,12 @@ export class Section extends ConnectableEntity {
 
   move(delta: Vector): void {
     // 让自己移动
-    for (const line of this.collisionBox.shapeList) {
-      if (line instanceof Line) {
-        line.start = line.start.add(delta);
-        line.end = line.end.add(delta);
-      } else if (line instanceof Rectangle) {
-        line.location = line.location.add(delta);
+    for (const shape of this.collisionBox.shapeList) {
+      if (shape instanceof Line) {
+        shape.start = shape.start.add(delta);
+        shape.end = shape.end.add(delta);
+      } else if (shape instanceof Rectangle) {
+        shape.location = shape.location.add(delta);
       }
     }
     // 让内部元素也移动
