@@ -22,7 +22,7 @@ export namespace RecentFileManager {
   let store: Store;
 
   /**
-   * 这次软件启动的时候是否成功触发了 打开用户自定以得工程文件 事件
+   * 这次软件启动的时候是否成功触发了 打开用户自定义的工程文件 事件
    */
   export function isOpenByPathWhenAppStart() {
     return isThisOpenByPathFlag;
@@ -37,7 +37,7 @@ export namespace RecentFileManager {
     startHookFunction(autoOpenPath);
   }
   /**
-   * 软件启动时，注册一个回调函数，在回调函数中触发打开用户自定以得工程文件事件
+   * 软件启动时，注册一个回调函数，在回调函数中触发打开用户自定义的工程文件事件
    */
   // eslint-disable-next-line prefer-const, @typescript-eslint/no-unused-vars
   export let startHookFunction = (_: string) => {};

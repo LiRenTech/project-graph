@@ -26,6 +26,9 @@ export class Color {
   toString() {
     return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
   }
+  toHexString(): string {
+    return `#${this.r.toString(16).padStart(2, "0")}${this.g.toString(16).padStart(2, "0")}${this.b.toString(16).padStart(2, "0")}${this.a.toString(16).padStart(2, "0")}`;
+  }
   clone() {
     return new Color(this.r, this.g, this.b, this.a);
   }
@@ -77,6 +80,13 @@ export class Color {
 
   toArray(): Serialized.Color {
     return [this.r, this.g, this.b, this.a];
+  }
+
+  static getRandom(): Color {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return new Color(r, g, b);
   }
 }
 

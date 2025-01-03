@@ -44,6 +44,8 @@ import { Dialog } from "../utils/dialog";
 import { exists, writeTextFile } from "../utils/fs";
 import { Popup } from "../utils/popup";
 import { PathString } from "../utils/pathString";
+import ColorManagerPanel from "./_color_manager_panel";
+import { ColorManager } from "../core/ColorManager";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -71,6 +73,12 @@ function ToolbarItem({ icon, handleFunction, description }: ToolbarItemProps) {
  * @returns
  */
 function ColorPanel() {
+  const [currentColors, setCurrentColors] = useState<Color[]>([]);
+  useEffect(() => {
+    ColorManager.getUserEntityFillColors().then((colors) => {
+      setCurrentColors(colors);
+    });
+  });
   return (
     <>
       <div className="flex flex-wrap items-center justify-center">
@@ -126,6 +134,29 @@ function ColorPanel() {
             StageManager.setNodeColor(new Color(r, g, b));
           }}
         ></input>
+        <Button
+          onClick={() => {
+            Popup.show(<ColorManagerPanel />);
+          }}
+        >
+          打开颜色管理
+        </Button>
+      </div>
+      <div className="flex flex-wrap items-center justify-center">
+        {currentColors.map((color) => {
+          return (
+            <div
+              className="m-1 h-5 w-5 cursor-pointer rounded-full hover:scale-125"
+              key={color.toString()}
+              style={{
+                backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`,
+              }}
+              onClick={() => {
+                StageManager.setNodeColor(color);
+              }}
+            />
+          );
+        })}
       </div>
     </>
   );
