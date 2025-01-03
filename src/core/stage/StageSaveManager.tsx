@@ -96,8 +96,13 @@ export namespace StageSaveManager {
     }
   }
 
+  /**
+   *
+   * @param path
+   * @param string 已经转换好了的Svg字符串
+   */
   export async function saveSvgHandle(path: string, string: string) {
-    await writeTextFile(path, JSON.stringify(string));
+    await writeTextFile(path, string);
     isCurrentSaved = true;
   }
 
