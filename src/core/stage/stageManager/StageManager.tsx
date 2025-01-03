@@ -1038,4 +1038,8 @@ export namespace StageManager {
   export function alignAllSelected() {
     StageAutoAlignManager.alignAllSelected();
   }
+
+  export function preAlignAllSelected() {
+    StageAutoAlignManager.preAlignAllSelected();
+  }
 }

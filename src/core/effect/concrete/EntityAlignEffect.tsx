@@ -17,7 +17,6 @@ export class EntityAlignEffect extends Effect {
     moveRectangle: Rectangle,
     targetRectangle: Rectangle,
   ): EntityAlignEffect {
-    console.log("创建了特效");
     return new EntityAlignEffect(
       new ProgressNumber(0, 10),
       moveRectangle,
@@ -80,11 +79,11 @@ export class EntityAlignEffect extends Effect {
         ),
       );
     }
-    console.log(this.lines, this.lines.length);
-    console.log(
-      moveEntityRectangle.toString(),
-      targetEntityRectangle.toString(),
-    );
+    // console.log(this.lines, this.lines.length);
+    // console.log(
+    //   moveEntityRectangle.toString(),
+    //   targetEntityRectangle.toString(),
+    // );
   }
 
   render(): void {

@@ -69,6 +69,9 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
     StageManager.moveSelectedConnectPoints(diffLocation);
     StageManager.moveSelectedImageNodes(diffLocation);
 
+    // 预瞄反馈
+    StageManager.preAlignAllSelected();
+
     ControllerNodeMove.lastMoveLocation = worldLocation.clone();
   }
 };
