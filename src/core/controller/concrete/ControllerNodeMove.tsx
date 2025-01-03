@@ -70,7 +70,9 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
     StageManager.moveSelectedImageNodes(diffLocation);
 
     // 预瞄反馈
-    StageManager.preAlignAllSelected();
+    if (Stage.enableDragAutoAlign) {
+      StageManager.preAlignAllSelected();
+    }
 
     ControllerNodeMove.lastMoveLocation = worldLocation.clone();
   }
