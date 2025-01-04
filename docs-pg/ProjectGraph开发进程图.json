@@ -1267,7 +1267,7 @@
       "text": "可以自定义的颜色管理面板",
       "uuid": "eed8a19b-962b-4387-91b7-45390c214a0d",
       "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {

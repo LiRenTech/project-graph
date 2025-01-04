@@ -39,11 +39,11 @@ import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
-import { StageSaveManager } from "../core/stage/StageSaveManager";
+// import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { Dialog } from "../utils/dialog";
-import { exists, writeTextFile } from "../utils/fs";
+import { writeTextFile } from "../utils/fs";
 import { Popup } from "../utils/popup";
-import { PathString } from "../utils/pathString";
+// import { PathString } from "../utils/pathString";
 import ColorManagerPanel from "./_color_manager_panel";
 import { ColorManager } from "../core/ColorManager";
 
@@ -378,11 +378,11 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<Globe />}
             handleFunction={async () => {
               // 先保存一下
-              if (!StageSaveManager.isSaved()) {
-                await StageSaveManager.saveHandleWithoutCurrentPath(
-                  StageDumper.dump(),
-                );
-              }
+              // if (!StageSaveManager.isSaved()) {
+              //   await StageSaveManager.saveHandleWithoutCurrentPath(
+              //     StageDumper.dump(),
+              //   );
+              // }
               // 打开文件或网页
               openBrowserOrFile();
             }}
@@ -519,19 +519,22 @@ async function openBrowserOrFile() {
         // 去除前后的引号
         nodeText = nodeText.slice(1, -1);
       }
-      if (PathString.isValidURL(nodeText)) {
-        // 是网址
-        myOpen(nodeText);
-      } else {
-        const isExists = await exists(nodeText);
-        if (isExists) {
-          // 是文件
-          myOpen(nodeText);
-        } else {
-          // 不是网址也不是文件，不做处理
-          Stage.effects.push(new TextRiseEffect("非法文件路径: " + nodeText));
-        }
-      }
+      myOpen(nodeText);
+      // 2025年1月4日——有自动备份功能了，好像不需要再加验证了
+
+      // if (PathString.isValidURL(nodeText)) {
+      //   // 是网址
+      //   myOpen(nodeText);
+      // } else {
+      //   const isExists = await exists(nodeText);
+      //   if (isExists) {
+      //     // 是文件
+      //     myOpen(nodeText);
+      //   } else {
+      //     // 不是网址也不是文件，不做处理
+      //     Stage.effects.push(new TextRiseEffect("非法文件路径: " + nodeText));
+      //   }
+      // }
     }
   }
 }
