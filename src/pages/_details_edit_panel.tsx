@@ -7,6 +7,10 @@ import { Renderer } from "../core/render/canvas2d/renderer";
 import { Camera } from "../core/stage/Camera";
 import { Entity } from "../core/stageObject/StageObject";
 
+/**
+ * 2025年1月4日，这个打算被侧边栏取代 ——littlefean
+ * @returns
+ */
 export default function DetailsEditPanel() {
   const [inputCurrentDetails, setInputCurrentDetails] = React.useState("");
   const [isNodeTextEditing, setIsNodeTextEditing] = React.useState(false);
