@@ -49,10 +49,18 @@ export function editNode(clickedNode: TextNode) {
  * 一个全局对象，用于编辑节点的钩子函数
  */
 export const editTextNodeHookGlobal = {
+  /**
+   * 编辑节点的钩子函数，用于开始编辑，弹窗触发
+   * @param _
+   */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   hookFunctionStart(_: Entity) {
     // 在外部将被修改
   },
+  /**
+   * 编辑节点的钩子函数，用于结束编辑，弹窗关闭
+   * @param _
+   */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   hookFunctionEnd(_: Entity) {
     // 在外部将被修改

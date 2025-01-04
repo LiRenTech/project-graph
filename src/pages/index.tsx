@@ -10,6 +10,7 @@ import DetailsEditPanel from "./_details_edit_panel";
 import HintText from "./_hint_text";
 import SearchingNodePanel from "./_searching_node_panel";
 import Toolbar from "./_toolbar";
+import DetailsEditSidePanel from "./_details_edit_side_panel";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
@@ -95,6 +96,7 @@ export default function Home() {
       <Toolbar />
       <SearchingNodePanel />
       <DetailsEditPanel />
+      <DetailsEditSidePanel />
       <HintText />
       {/* TODO: 下面这个写法有点奇怪 rgba值太长了 */}
       <div
