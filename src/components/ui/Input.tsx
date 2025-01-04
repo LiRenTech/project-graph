@@ -39,8 +39,8 @@ export default function Input<T extends boolean = false>({
     <Box
       as={multiline ? "textarea" : "input"}
       className={cn(
-        "px-3 py-2 outline-none hover:opacity-80",
-        enableFocusOpacity && "focus:opacity-80",
+        "px-3 py-2 outline-none",
+        enableFocusOpacity && "hover:opacity-80 focus:opacity-80",
         className,
       )}
       value={value}
