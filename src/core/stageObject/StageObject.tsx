@@ -1,3 +1,4 @@
+import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { StageManager } from "../stage/stageManager/StageManager";
 import { CollisionBox } from "./collisionBox/collisionBox";
@@ -48,6 +49,18 @@ export abstract class Entity extends StageObject {
   changeDetails(details: string) {
     this.details = details;
   }
+
+  public detailsButtonRectangle(): Rectangle {
+    const thisRectangle = this.collisionBox.getRectangle();
+    return new Rectangle(
+      thisRectangle.rightTop.subtract(new Vector(20, 20)),
+      new Vector(20, 20),
+    );
+  }
+  public isMouseInDetailsButton(mouseWorldLocation: Vector): boolean {
+    return this.detailsButtonRectangle().isPointIn(mouseWorldLocation);
+  }
+
   /**
    * 由于自身位置的移动，递归的更新所有父级Section的位置和大小
    */

@@ -36,6 +36,22 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
   }
 };
 
+ControllerNodeEdit.mouseup = (event: MouseEvent) => {
+  if (event.button !== 0) {
+    return;
+  }
+
+  const pressLocation = Renderer.transformView2World(
+    new Vector(event.clientX, event.clientY),
+  );
+  for (const entity of StageManager.getEntities()) {
+    if (entity.isMouseInDetailsButton(pressLocation)) {
+      editNodeDetails(entity);
+      return;
+    }
+  }
+};
+
 ControllerNodeEdit.mousemove = (event: MouseEvent) => {
   /**
    * 如果一直显示详细信息，则不显示鼠标悬停效果
