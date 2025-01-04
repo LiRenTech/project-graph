@@ -1411,7 +1411,7 @@
       "text": "解决win10系统无法打开地球仪的问题",
       "uuid": "7bde46b8-bc89-47fb-a375-8c3b87880015",
       "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {
@@ -1420,7 +1420,7 @@
       "text": "@较真小猫",
       "uuid": "284d3026-36da-436e-b656-1e0eb7b45fd3",
       "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {

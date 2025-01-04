@@ -14,6 +14,7 @@ import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
 import { ImageNode } from "../../../stageObject/entity/ImageNode";
 import { ImageRenderer } from "../ImageRenderer";
 import { Entity } from "../../../stageObject/StageObject";
+import { EntityDetailsButtonRenderer } from "./EntityDetailsButtonRenderer";
 
 /**
  * 处理节点相关的绘制
@@ -41,6 +42,8 @@ export namespace EntityRenderer {
     } else if (entity instanceof ImageNode) {
       renderImageNode(entity);
     }
+    // details右上角小按钮
+    EntityDetailsButtonRenderer(entity);
   }
   function renderSection(section: Section) {
     if (section.isHiddenBySectionCollapse) {
