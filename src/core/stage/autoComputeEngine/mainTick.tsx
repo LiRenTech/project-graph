@@ -10,7 +10,10 @@ import { AutoComputeUtils } from "./AutoComputeUtils";
 import { CompareFunctions } from "./functions/compareLogic";
 import { MathFunctions } from "./functions/mathLogic";
 import { StringFunctions } from "./functions/stringLogic";
-import { LogicNodeNameEnum } from "./logicNodeNameEnum";
+import {
+  LogicNodeNameEnum,
+  LogicNodeSimpleOperatorEnum,
+} from "./logicNodeNameEnum";
 
 type MathFunctionType = (args: number[]) => number[];
 type StringFunctionType = (args: string[]) => string[];
@@ -28,7 +31,26 @@ function mf2sf(mF: MathFunctionType): StringFunctionType {
     return result.map((num) => String(num));
   };
 }
-
+const MapOperationNameFunction: StringFunctionMap = {
+  [LogicNodeSimpleOperatorEnum.ADD]: mf2sf(MathFunctions.add),
+  [LogicNodeSimpleOperatorEnum.SUBTRACT]: mf2sf(MathFunctions.subtract),
+  [LogicNodeSimpleOperatorEnum.MULTIPLY]: mf2sf(MathFunctions.multiply),
+  [LogicNodeSimpleOperatorEnum.DIVIDE]: mf2sf(MathFunctions.divide),
+  [LogicNodeSimpleOperatorEnum.MODULO]: mf2sf(MathFunctions.modulo),
+  [LogicNodeSimpleOperatorEnum.POWER]: mf2sf(MathFunctions.power),
+  // 比较
+  [LogicNodeSimpleOperatorEnum.LT]: mf2sf(CompareFunctions.lessThan),
+  [LogicNodeSimpleOperatorEnum.GT]: mf2sf(CompareFunctions.greaterThan),
+  [LogicNodeSimpleOperatorEnum.LTE]: mf2sf(CompareFunctions.isIncreasing),
+  [LogicNodeSimpleOperatorEnum.GTE]: mf2sf(CompareFunctions.isDecreasing),
+  [LogicNodeSimpleOperatorEnum.EQ]: mf2sf(CompareFunctions.isSame),
+  [LogicNodeSimpleOperatorEnum.NEQ]: mf2sf(CompareFunctions.isDistinct),
+  // 逻辑门
+  [LogicNodeSimpleOperatorEnum.AND]: mf2sf(MathFunctions.and),
+  [LogicNodeSimpleOperatorEnum.OR]: mf2sf(MathFunctions.or),
+  [LogicNodeSimpleOperatorEnum.NOT]: mf2sf(MathFunctions.not),
+  [LogicNodeSimpleOperatorEnum.XOR]: mf2sf(MathFunctions.xor),
+};
 const MapNameFunction: StringFunctionMap = {
   // 数学计算
   [LogicNodeNameEnum.ADD]: mf2sf(MathFunctions.add),
@@ -258,6 +280,22 @@ export function autoComputeEngineTick() {
         }
         const result = MapNameFunction[name](inputStringList);
         AutoComputeUtils.getSectionMultiResult(section, result);
+      }
+    }
+  }
+  // region 根据Edge计算
+  for (const edge of StageManager.getEdges()) {
+    for (const name of Object.keys(MapOperationNameFunction)) {
+      if (edge.text === name) {
+        // 发现了一个逻辑Edge
+        const source = edge.source;
+        const target = edge.target;
+        if (source instanceof TextNode && target instanceof TextNode) {
+          const inputStringList: string[] = [source.text, target.text];
+
+          const result = MapOperationNameFunction[name](inputStringList);
+          AutoComputeUtils.getNodeOneResult(target, result[0]);
+        }
       }
     }
   }

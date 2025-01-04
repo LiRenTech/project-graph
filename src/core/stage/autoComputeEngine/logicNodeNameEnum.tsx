@@ -49,3 +49,24 @@ export enum LogicNodeNameEnum {
   // 统计
   COUNT = "#COUNT#",
 }
+
+export enum LogicNodeSimpleOperatorEnum {
+  ADD = "+",
+  SUBTRACT = "-",
+  MULTIPLY = "*",
+  DIVIDE = "/",
+  MODULO = "%",
+  POWER = "**",
+  // 比较
+  LT = "<",
+  GT = ">",
+  LTE = "<=",
+  GTE = ">=",
+  EQ = "==",
+  NEQ = "!=",
+  // 逻辑
+  AND = "&&",
+  OR = "||",
+  NOT = "!",
+  XOR = "^",
+}
