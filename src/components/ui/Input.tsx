@@ -9,6 +9,7 @@ type InputProps<T extends boolean = false> = {
   multiline?: boolean;
   onChange?: (value: T extends true ? number : string) => void; // 使用条件类型来定义 onChange 的参数
   number?: T;
+  enableFocusOpacity?: boolean;
   [key: string]: any;
 };
 
@@ -20,6 +21,7 @@ export default function Input<T extends boolean = false>({
   placeholder = "",
   number = false as T,
   multiline = false,
+  enableFocusOpacity = true,
   ...props
 }: React.PropsWithChildren<InputProps<T>>) {
   const handleChange = (
@@ -37,7 +39,8 @@ export default function Input<T extends boolean = false>({
     <Box
       as={multiline ? "textarea" : "input"}
       className={cn(
-        "px-3 py-2 outline-none hover:opacity-80 focus:opacity-80",
+        "px-3 py-2 outline-none hover:opacity-80",
+        enableFocusOpacity && "focus:opacity-80",
         className,
       )}
       value={value}
