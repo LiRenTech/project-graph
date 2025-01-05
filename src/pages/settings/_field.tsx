@@ -1,3 +1,4 @@
+import { RotateCw } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Button from "../../components/ui/Button";
@@ -52,6 +53,10 @@ export function SettingField({
       description={t(`${settingKey}.description`, { defaultValue: "" })}
       icon={icon}
     >
+      <RotateCw
+        className="h-4 w-4 cursor-pointer text-gray-500 hover:rotate-180"
+        onClick={() => setValue(Settings.defaultSettings[settingKey])}
+      />
       {type === "text" && (
         <Input value={value} onChange={setValue} placeholder={placeholder} />
       )}
