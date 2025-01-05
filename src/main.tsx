@@ -1,6 +1,4 @@
 import { routes } from "@generouted/react-router";
-import { invoke } from "@tauri-apps/api/core";
-import { getCurrentWindow } from "@tauri-apps/api/window";
 import { getMatches } from "@tauri-apps/plugin-cli";
 import i18next from "i18next";
 import { createRoot } from "react-dom/client";
@@ -34,6 +32,7 @@ import "./index.pcss";
 import "./polyfills/roundRect";
 import { Dialog } from "./utils/dialog";
 import { exists } from "./utils/fs";
+import { isDesktop } from "./utils/platform";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -43,36 +42,21 @@ const el = document.getElementById("root")!;
 // 在这里看着清爽一些，像一个列表清单一样。也方便调整顺序
 
 (async () => {
-  try {
-    const t1 = performance.now();
-    await Promise.all([
-      Settings.init(),
-      RecentFileManager.init(),
-      LastLaunch.init(),
-      StartFilesManager.init(),
-      PromptManager.init(),
-      KeyBinds.init(),
-      ColorManager.init(),
-      registerKeyBinds,
-    ]);
-    // 这些东西依赖上面的东西，所以单独一个Promise.all
-    await Promise.all([
-      loadLanguageFiles(),
-      loadSyncModules(),
-      loadStartFile(),
-    ]);
-    await renderApp();
-    console.log(`应用初始化耗时：${performance.now() - t1}ms`);
-  } catch (e) {
-    console.error(e);
-    await getCurrentWindow().setDecorations(true);
-    await invoke("devtools");
-    document.body.style.backgroundColor = "black";
-    document.body.style.color = "white";
-    document.body.style.userSelect = "auto";
-    document.body.innerHTML = `应用初始化失败，请截图此窗口，然后加入QQ群1006956704反馈或在GitHub上提交issue(https://github.com/LiRenTech/project-graph/issues) ${String(e)}`;
-    return;
-  }
+  const t1 = performance.now();
+  await Promise.all([
+    Settings.init(),
+    RecentFileManager.init(),
+    LastLaunch.init(),
+    StartFilesManager.init(),
+    PromptManager.init(),
+    KeyBinds.init(),
+    ColorManager.init(),
+    registerKeyBinds,
+  ]);
+  // 这些东西依赖上面的东西，所以单独一个Promise.all
+  await Promise.all([loadLanguageFiles(), loadSyncModules(), loadStartFile()]);
+  await renderApp();
+  console.log(`应用初始化耗时：${performance.now() - t1}ms`);
 })();
 
 /** 加载同步初始化的模块 */
@@ -355,10 +339,14 @@ async function loadLanguageFiles() {
 
 /** 加载用户自定义的工程文件，或者从启动参数中获取 */
 async function loadStartFile() {
-  const cliMatches = await getMatches();
   let path = "";
-  if (cliMatches.args.path.value) {
-    path = cliMatches.args.path.value as string;
+  if (isDesktop) {
+    const cliMatches = await getMatches();
+    if (cliMatches.args.path.value) {
+      path = cliMatches.args.path.value as string;
+    } else {
+      path = await StartFilesManager.getCurrentStartFile();
+    }
   } else {
     path = await StartFilesManager.getCurrentStartFile();
   }
