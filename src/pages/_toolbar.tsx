@@ -186,7 +186,15 @@ function GenerateNodePanel() {
           setInputValue("");
         }}
       >
-        生成
+        生成纯文本节点
+      </Button>
+      <Button
+        onClick={() => {
+          StageManager.generateNodeByMarkdown(inputValue);
+          setInputValue("");
+        }}
+      >
+        根据markdown生成节点
       </Button>
     </div>
   );

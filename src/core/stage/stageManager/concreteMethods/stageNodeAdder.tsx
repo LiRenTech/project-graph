@@ -9,6 +9,10 @@ import { Stage } from "../../Stage";
 import { RectanglePushInEffect } from "../../../effect/concrete/RectanglePushInEffect";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { MonoStack } from "../../../dataStruct/MonoStack";
+import {
+  MarkdownNode,
+  parseMarkdownToJSON,
+} from "../../../../utils/markdownParse";
 
 /**
  * 包含增加节点的方法
@@ -223,5 +227,56 @@ export namespace StageNodeAdder {
       }
     }
     return Math.floor(indent / indention);
+  }
+
+  export function addNodeByMarkdown(
+    markdownText: string,
+    diffLocation: Vector = Vector.getZero(),
+  ) {
+    const markdownJson = parseMarkdownToJSON(markdownText);
+    // 遍历markdownJson
+    const dfsMarkdownNode = (markdownNode: MarkdownNode, deepLevel: number) => {
+      // visit
+      visitFunction(markdownNode, deepLevel);
+      // visited
+      for (const child of markdownNode.children) {
+        dfsMarkdownNode(child, deepLevel + 1);
+      }
+    };
+    const monoStack = new MonoStack<TextNode>();
+    monoStack.push(
+      new TextNode({
+        uuid: uuidv4(),
+        text: "root",
+        details: "",
+        location: [diffLocation.x, diffLocation.y],
+        size: [100, 100],
+      }),
+      -1,
+    );
+
+    let visitedCount = 0;
+
+    const visitFunction = (markdownNode: MarkdownNode, deepLevel: number) => {
+      visitedCount++;
+      const newUUID = uuidv4();
+      const node = new TextNode({
+        uuid: newUUID,
+        text: markdownNode.title,
+        details: markdownNode.content,
+        location: [
+          diffLocation.x + deepLevel * 50,
+          diffLocation.y + visitedCount * 100,
+        ],
+        size: [100, 100],
+      });
+      StageManager.addTextNode(node);
+      monoStack.push(node, deepLevel);
+      // 连接父节点
+      const fatherNode = monoStack.unsafeGet(monoStack.length - 2);
+      StageManager.connectEntity(fatherNode, node);
+    };
+
+    dfsMarkdownNode(markdownJson[0], 0);
   }
 }

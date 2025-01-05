@@ -907,6 +907,14 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
+  export function generateNodeByMarkdown(
+    text: string,
+    location = Camera.location,
+  ) {
+    StageNodeAdder.addNodeByMarkdown(text, location);
+    StageHistoryManager.recordStep();
+  }
+
   /** 将多个实体打包成一个section，并添加到舞台中 */
   export function packEntityToSection(addEntities: Entity[]) {
     if (addEntities.length === 0) {
