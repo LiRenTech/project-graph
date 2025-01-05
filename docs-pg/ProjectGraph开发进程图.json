@@ -457,7 +457,7 @@
       "text": "增加内部物体移出的按钮",
       "uuid": "4447959a-d0a4-4040-8cc8-38f99fd720d6",
       "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {
@@ -465,15 +465,6 @@
       "size": [236.92796325683594, 60],
       "text": "Section的对齐",
       "uuid": "035be195-124c-462b-974f-3a10338fd86f",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-15761.648644630248, 840.0372788042697],
-      "size": [812.927978515625, 60],
-      "text": "创建节点时，若在框选框种双击，则自动添加入Section",
-      "uuid": "fafb183f-cf9a-46c9-9f10-07b8bfb36bd4",
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
@@ -587,7 +578,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-16111.068356539841, 462.0366286262407],
+      "location": [-15889.128593596415, 659.6940473668908],
       "size": [220, 60],
       "text": "增加碰撞检测",
       "uuid": "2991d01b-4055-4f43-8730-b492a8f6e736",
@@ -619,16 +610,7 @@
       "text": "移动框的时候太麻烦了",
       "uuid": "eaf7e3e7-6d0c-4e37-bc19-930274064ea0",
       "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-14726.973911295201, 847.9998322189198],
-      "size": [316, 60],
-      "text": "还是有点麻烦，改进",
-      "uuid": "f156aa81-23c2-4377-85f7-b64ee61c8f96",
-      "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {
@@ -785,12 +767,12 @@
       "type": "core:text_node"
     },
     {
-      "location": [-15381.190570537196, 988.0779308323291],
+      "location": [-15283.666189441921, 843.666828056635],
       "size": [492.927978515625, 60],
       "text": "增加Section内部物体移出的功能",
       "uuid": "7a9e7823-df18-4227-b52c-8dbe20381586",
       "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {
@@ -1424,6 +1406,105 @@
       "type": "core:text_node"
     },
     {
+      "location": [-11283.17246157808, -1073.9494052319046],
+      "size": [316, 60],
+      "text": "多软件文件联通计划",
+      "uuid": "77dc8060-6f90-4cf2-9534-0cce187220bd",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-11264.04764880599, -919.7836706367094],
+      "size": [252.03196716308594, 60],
+      "text": "支持Xmind文件",
+      "uuid": "b8e8f9ba-63db-49fb-b3c4-a5a7dbd7d645",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-10946.243239033183, -773.6743723137761],
+      "size": [92, 60],
+      "text": "导入",
+      "uuid": "69243e05-5415-403f-889f-78f1d134edce",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-11230.145361126488, -741.1824952830339],
+      "size": [185.43995666503906, 60],
+      "text": "Markdown",
+      "uuid": "3e29ff6c-df17-4550-b5c2-8115eb56c11a",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-10946.243239033185, -696.1937424712369],
+      "size": [92, 60],
+      "text": "导出",
+      "uuid": "05506e4f-e604-4247-b5aa-e7cd328fe5de",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-10949.992301767501, -939.8828202018041],
+      "size": [92, 60],
+      "text": "导入",
+      "uuid": "c9e3613f-1bc5-492f-be5c-f3c8608a8824",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-10949.733805688244, -863.6518779373702],
+      "size": [92, 60],
+      "text": "导出",
+      "uuid": "b0f227c0-eaec-43e4-8c91-9a777f3f2e92",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-11153.265940207795, -570.3819667017513],
+      "size": [68.31997680664062, 60],
+      "text": "txt",
+      "uuid": "be563a50-954a-4443-9b72-ce554ebfa5f5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-10960.654736106748, -606.5538984202466],
+      "size": [92, 60],
+      "text": "导入",
+      "uuid": "373f5db0-76df-4200-877a-283e82a97f9a",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-10960.65473610675, -529.0732685777074],
+      "size": [92, 60],
+      "text": "导出",
+      "uuid": "30f58676-4cc7-477f-9111-a70beaac3aee",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-12986.238650816616, -1487.7389999372497],
+      "size": [380, 60],
+      "text": "缩小状态下扩大标题显示",
+      "uuid": "88ee9705-5d19-412d-9a94-952e90a2b6a8",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
       "location": [-17902.51169020961, -1751.155982309175],
       "size": [360.4959411621094, 384.0587228006343],
       "uuid": "e2ef96ee-6659-4033-aadd-59bfb5063687",
@@ -1538,8 +1619,8 @@
       "details": ""
     },
     {
-      "location": [-16213.693458425714, 397.0366286262407],
-      "size": [1817.719547130513, 769.082164993525],
+      "location": [-16213.693458425714, 482.5101361485938],
+      "size": [1658.5071273944359, 683.6086574711719],
       "uuid": "45d2ac26-68e1-48ee-aa7a-f04ec0e73c7f",
       "text": "完善Section功能",
       "color": [0, 0, 0, 0],
@@ -1551,13 +1632,11 @@
         "61d12158-0fdb-46b9-b708-a23c922fada9",
         "4447959a-d0a4-4040-8cc8-38f99fd720d6",
         "035be195-124c-462b-974f-3a10338fd86f",
-        "fafb183f-cf9a-46c9-9f10-07b8bfb36bd4",
         "a7179367-2cf8-4ac9-a638-e652b81818a7",
         "2991d01b-4055-4f43-8730-b492a8f6e736",
         "c021f6ad-1058-47ba-ac25-508e48c7d6a7",
         "63e5e84d-fcc1-4321-a88c-6062be2eaeab",
         "eaf7e3e7-6d0c-4e37-bc19-930274064ea0",
-        "f156aa81-23c2-4377-85f7-b64ee61c8f96",
         "7a9e7823-df18-4227-b52c-8dbe20381586"
       ],
       "details": ""
@@ -1630,8 +1709,8 @@
       "details": ""
     },
     {
-      "location": [-13162.341116952475, -1456.5420032748675],
-      "size": [614.7359619140625, 246.2442324029248],
+      "location": [-13162.341116952475, -1552.7389999372497],
+      "size": [614.7359619140625, 342.44122906530697],
       "uuid": "bbfedb68-6a3c-435c-b468-2185f5aa48d5",
       "text": "Section功能完善",
       "color": [0, 0, 0, 0],
@@ -1640,7 +1719,8 @@
       "isHidden": false,
       "children": [
         "150c64b0-8639-43b2-8a3b-25fde6856ee3",
-        "db4d9e77-cd86-4f63-9d7b-bfa97ad32e40"
+        "db4d9e77-cd86-4f63-9d7b-bfa97ad32e40",
+        "88ee9705-5d19-412d-9a94-952e90a2b6a8"
       ],
       "details": ""
     },
@@ -1894,13 +1974,6 @@
       "type": "core:edge"
     },
     {
-      "source": "61d12158-0fdb-46b9-b708-a23c922fada9",
-      "target": "fafb183f-cf9a-46c9-9f10-07b8bfb36bd4",
-      "text": "",
-      "uuid": "50429ada-f89f-41de-abd9-f5676c1696e6",
-      "type": "core:edge"
-    },
-    {
       "source": "257bcc7b-48cc-4654-953c-3c33b978095a",
       "target": "da87b958-673a-4a0d-9fc8-a7fa89498d2e",
       "text": "",
@@ -1954,20 +2027,6 @@
       "target": "536b3eac-e6c9-4eca-b441-8a4d5f836a4b",
       "text": "",
       "uuid": "5616c596-d18e-446f-b5cd-86589e124c9a",
-      "type": "core:edge"
-    },
-    {
-      "source": "2991d01b-4055-4f43-8730-b492a8f6e736",
-      "target": "fafb183f-cf9a-46c9-9f10-07b8bfb36bd4",
-      "text": "",
-      "uuid": "ece83cd7-e95c-4c4d-9378-f90957c3c6bd",
-      "type": "core:edge"
-    },
-    {
-      "source": "61d12158-0fdb-46b9-b708-a23c922fada9",
-      "target": "f156aa81-23c2-4377-85f7-b64ee61c8f96",
-      "text": "",
-      "uuid": "14abda28-35e1-4484-b686-ff3193798663",
       "type": "core:edge"
     },
     {
@@ -2437,6 +2496,48 @@
       "target": "284d3026-36da-436e-b656-1e0eb7b45fd3",
       "text": "",
       "uuid": "59974beb-2e0b-4d0c-93ff-ac49b318ae9f",
+      "type": "core:edge"
+    },
+    {
+      "source": "3e29ff6c-df17-4550-b5c2-8115eb56c11a",
+      "target": "69243e05-5415-403f-889f-78f1d134edce",
+      "text": "",
+      "uuid": "37e00899-f46b-4b03-89fd-7fe201c2280d",
+      "type": "core:edge"
+    },
+    {
+      "source": "3e29ff6c-df17-4550-b5c2-8115eb56c11a",
+      "target": "05506e4f-e604-4247-b5aa-e7cd328fe5de",
+      "text": "",
+      "uuid": "707f8d16-03c7-4c41-b34b-830c08e9b53e",
+      "type": "core:edge"
+    },
+    {
+      "source": "b8e8f9ba-63db-49fb-b3c4-a5a7dbd7d645",
+      "target": "c9e3613f-1bc5-492f-be5c-f3c8608a8824",
+      "text": "",
+      "uuid": "d84ef5b4-00ca-465c-bc9c-275297fc2237",
+      "type": "core:edge"
+    },
+    {
+      "source": "b8e8f9ba-63db-49fb-b3c4-a5a7dbd7d645",
+      "target": "b0f227c0-eaec-43e4-8c91-9a777f3f2e92",
+      "text": "",
+      "uuid": "43dc69f0-ba97-4aef-92d5-c8a80ea48436",
+      "type": "core:edge"
+    },
+    {
+      "source": "be563a50-954a-4443-9b72-ce554ebfa5f5",
+      "target": "373f5db0-76df-4200-877a-283e82a97f9a",
+      "text": "",
+      "uuid": "badde1f2-8ea9-414b-8427-4c724cb5407a",
+      "type": "core:edge"
+    },
+    {
+      "source": "be563a50-954a-4443-9b72-ce554ebfa5f5",
+      "target": "30f58676-4cc7-477f-9111-a70beaac3aee",
+      "text": "",
+      "uuid": "7595ef70-82cf-4aaf-908a-0de7d17ec9ff",
       "type": "core:edge"
     }
   ],
