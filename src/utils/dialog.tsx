@@ -76,8 +76,7 @@ export namespace Dialog {
       <>
         <div
           className={cn(
-            // z-[999]是PopupDialog
-            "fixed left-1/2 top-1/2 z-[998] flex max-h-[50vh] max-w-96 -translate-x-1/2 -translate-y-1/2 scale-50 transform flex-col gap-4 overflow-auto text-wrap break-words rounded-2xl p-8 text-white opacity-0 shadow-xl shadow-neutral-900",
+            "fixed left-1/2 top-1/2 z-[101] flex max-h-[50vh] max-w-96 -translate-x-1/2 -translate-y-1/2 scale-50 transform flex-col gap-4 overflow-auto text-wrap break-words rounded-2xl p-8 text-white opacity-0 shadow-xl shadow-neutral-900",
             {
               "scale-100 opacity-100": show,
               "bg-blue-950": type === "info",
@@ -141,7 +140,7 @@ export namespace Dialog {
         </div>
         <div
           className={cn(
-            "fixed left-0 top-0 z-[997] h-full w-full bg-black opacity-0",
+            "fixed left-0 top-0 z-[100] h-full w-full bg-black opacity-0",
             {
               "opacity-50": show,
             },
