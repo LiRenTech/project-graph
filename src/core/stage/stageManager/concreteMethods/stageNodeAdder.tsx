@@ -8,6 +8,7 @@ import { Section } from "../../../stageObject/entity/Section";
 import { Stage } from "../../Stage";
 import { RectanglePushInEffect } from "../../../effect/concrete/RectanglePushInEffect";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
+import { Stack } from "../../../dataStruct/Stack";
 
 /**
  * 包含增加节点的方法
@@ -159,6 +160,31 @@ export namespace StageNodeAdder {
   ) {
     // 将本文转换成字符串数组，按换行符分割
     const lines = text.split("\n");
+
+    const rootUUID = uuidv4();
+
+    // 准备好栈和根节点
+    const rootNode = new TextNode({
+      uuid: rootUUID,
+      text: "root",
+      details: "",
+      location: [diffLocation.x, diffLocation.y],
+      size: [100, 100],
+    });
+    const nodeStack = new Stack<{ node: TextNode; indent: number }>();
+    nodeStack.push({ node: rootNode, indent: -1 });
+    StageManager.addTextNode(rootNode);
+    const connect = (currentNode: TextNode) => {
+      const topItem = nodeStack.peek();
+      if (topItem) {
+        const isConnectSuccess = StageManager.connectEntity(
+          topItem.node,
+          currentNode,
+        );
+        console.log("进行连接", isConnectSuccess);
+      }
+    };
+    // 遍历每一行
     for (let yIndex = 0; yIndex < lines.length; yIndex++) {
       const line = lines[yIndex];
       // 跳过空行
@@ -178,8 +204,33 @@ export namespace StageNodeAdder {
         location: [indent * 50 + diffLocation.x, yIndex * 100 + diffLocation.y],
         size: [100, 100],
       });
-
       StageManager.addTextNode(node);
+
+      // 检查栈
+      // 保持一个严格单调栈
+      if (!nodeStack.peek()) {
+        nodeStack.push({ node, indent });
+      } else {
+        const topItem = nodeStack.peek();
+        if (topItem && topItem.indent < indent) {
+          // 栈顶元素的缩进比当前元素的缩进小，说明栈顶元素是父节点，将当前元素作为其子节点
+          connect(node);
+          nodeStack.push({ node, indent });
+        } else {
+          // 栈顶元素的缩进等于当前元素的缩进，说明栈顶元素是兄弟节点
+          // 一直弹出栈，直到栈顶元素的缩进小于当前元素的缩进
+          const topItem = nodeStack.peek();
+          while (topItem && topItem.indent >= indent) {
+            if (nodeStack.size() > 1) {
+              nodeStack.pop();
+            } else {
+              break;
+            }
+          }
+          connect(node);
+          nodeStack.push({ node, indent });
+        }
+      }
     }
   }
 

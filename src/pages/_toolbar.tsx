@@ -162,16 +162,23 @@ function ColorPanel() {
   );
 }
 
+/**
+ * 通过文本来生成节点的面板
+ * @returns
+ */
 function GenerateNodePanel() {
   const [inputValue, setInputValue] = useState("");
   const [indention, setIndention] = useState(4);
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <Input value={inputValue} onChange={setInputValue} multiline />
       <div>
         <span>缩进</span>
         <Input value={indention.toString()} onChange={setIndention} number />
+        <p className="text-xs text-neutral-400">
+          会按照您的缩进等级来生成对应的节点结构
+        </p>
       </div>
       <Button
         onClick={() => {
@@ -181,7 +188,7 @@ function GenerateNodePanel() {
       >
         生成
       </Button>
-    </>
+    </div>
   );
 }
 
