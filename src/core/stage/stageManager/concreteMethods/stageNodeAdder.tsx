@@ -8,7 +8,7 @@ import { Section } from "../../../stageObject/entity/Section";
 import { Stage } from "../../Stage";
 import { RectanglePushInEffect } from "../../../effect/concrete/RectanglePushInEffect";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { Stack } from "../../../dataStruct/Stack";
+import { MonoStack } from "../../../dataStruct/MonoStack";
 
 /**
  * 包含增加节点的方法
@@ -171,19 +171,9 @@ export namespace StageNodeAdder {
       location: [diffLocation.x, diffLocation.y],
       size: [100, 100],
     });
-    const nodeStack = new Stack<{ node: TextNode; indent: number }>();
-    nodeStack.push({ node: rootNode, indent: -1 });
+    const nodeStack = new MonoStack<TextNode>();
+    nodeStack.push(rootNode, -1);
     StageManager.addTextNode(rootNode);
-    const connect = (currentNode: TextNode) => {
-      const topItem = nodeStack.peek();
-      if (topItem) {
-        const isConnectSuccess = StageManager.connectEntity(
-          topItem.node,
-          currentNode,
-        );
-        console.log("进行连接", isConnectSuccess);
-      }
-    };
     // 遍历每一行
     for (let yIndex = 0; yIndex < lines.length; yIndex++) {
       const line = lines[yIndex];
@@ -208,28 +198,10 @@ export namespace StageNodeAdder {
 
       // 检查栈
       // 保持一个严格单调栈
-      if (!nodeStack.peek()) {
-        nodeStack.push({ node, indent });
-      } else {
-        const topItem = nodeStack.peek();
-        if (topItem && topItem.indent < indent) {
-          // 栈顶元素的缩进比当前元素的缩进小，说明栈顶元素是父节点，将当前元素作为其子节点
-          connect(node);
-          nodeStack.push({ node, indent });
-        } else {
-          // 栈顶元素的缩进等于当前元素的缩进，说明栈顶元素是兄弟节点
-          // 一直弹出栈，直到栈顶元素的缩进小于当前元素的缩进
-          const topItem = nodeStack.peek();
-          while (topItem && topItem.indent >= indent) {
-            if (nodeStack.size() > 1) {
-              nodeStack.pop();
-            } else {
-              break;
-            }
-          }
-          connect(node);
-          nodeStack.push({ node, indent });
-        }
+      if (nodeStack.peek()) {
+        nodeStack.push(node, indent);
+        const fatherNode = nodeStack.unsafeGet(nodeStack.length - 2);
+        StageManager.connectEntity(fatherNode, node);
       }
     }
   }
