@@ -24,6 +24,7 @@ export default function Slider({
 }) {
   const [sliderValue, setSliderValue] = React.useState(value);
   const [isDragging, setIsDragging] = React.useState(false);
+  const sliderRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     setSliderValue(value);
@@ -36,30 +37,38 @@ export default function Slider({
 
   const decimalPlaces = getDecimalPlaces(step);
 
-  const calculateValueFromMouse = (x: number, left: number, width: number) => {
-    const offsetX = x - left; // 获取鼠标相对滑块左边界的位置
-    const percentage = offsetX / width; // 计算百分比
+  const calculateValueFromMouse = (x: number) => {
+    if (!sliderRef.current) return;
+
+    const rect = sliderRef.current.getBoundingClientRect();
+    const offsetX = x - rect.left; // 获取鼠标相对滑块左边界的位置
+    const percentage = offsetX / rect.width; // 计算百分比
 
     // 根据百分比计算新值，允许小数点
-    const newValue = percentage * (max - min) + min;
+    let newValue = percentage * (max - min) + min;
 
-    // 根据步长调整值
-    const adjustedValue = Math.round((newValue - min) / step) * step + min;
+    // 如果鼠标在最左侧，直接设置为 min
+    if (offsetX <= 0) {
+      newValue = min;
+    }
+    // 如果鼠标在最右侧，直接设置为 max
+    else if (offsetX >= rect.width) {
+      newValue = max;
+    } else {
+      // 根据步长调整值
+      newValue = Math.round((newValue - min) / step) * step + min;
+    }
 
     // 确保值在 min 和 max 之间
-    if (adjustedValue >= min && adjustedValue <= max) {
-      setSliderValue(parseFloat(adjustedValue.toFixed(decimalPlaces))); // 格式化值
-      onChange(parseFloat(adjustedValue.toFixed(decimalPlaces))); // 格式化值
+    if (newValue >= min && newValue <= max) {
+      setSliderValue(parseFloat(newValue.toFixed(decimalPlaces))); // 格式化值
+      onChange(parseFloat(newValue.toFixed(decimalPlaces))); // 格式化值
     }
   };
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (event: MouseEvent) => {
     if (isDragging) {
-      calculateValueFromMouse(
-        event.clientX,
-        event.currentTarget.getBoundingClientRect().left,
-        event.currentTarget.getBoundingClientRect().width,
-      );
+      calculateValueFromMouse(event.clientX);
     }
   };
 
@@ -73,11 +82,7 @@ export default function Slider({
 
   const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
     if (event.touches.length === 1) {
-      calculateValueFromMouse(
-        event.touches[0].clientX,
-        event.currentTarget.getBoundingClientRect().left,
-        event.currentTarget.getBoundingClientRect().width,
-      );
+      calculateValueFromMouse(event.touches[0].clientX);
     }
   };
 
@@ -89,27 +94,35 @@ export default function Slider({
     setIsDragging(false);
   };
 
+  // 处理轨道点击事件
+  const handleTrackClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    calculateValueFromMouse(event.clientX);
+  };
+
   React.useEffect(() => {
+    document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
+
     return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, []);
+  }, [isDragging]);
 
   return (
     <div className="flex items-center gap-4">
       <div
+        ref={sliderRef}
         className="relative h-4 w-36"
-        onMouseMove={handleMouseMove}
         onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
         onTouchMove={handleTouchMove}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
+        onClick={handleTrackClick} // 添加轨道点击事件
       >
         <div className="absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full bg-neutral-700"></div>
         <div
-          className="absolute top-0 h-4 w-4 -translate-x-2 rounded-full bg-blue-400"
+          className="absolute top-0 h-4 w-4 -translate-x-2 rounded-full bg-blue-400 hover:scale-125 active:scale-90"
           style={{ left: `${((sliderValue - min) / (max - min)) * 100}%` }} // 根据当前值计算滑块的位置
         ></div>
       </div>
