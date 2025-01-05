@@ -85,7 +85,7 @@ jobs:
       - name: edit version (linux only)
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.${{ github.sha }}\"/" src-tauri/tauri.conf.json
+          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.r${{ github.run_number }}\"/" src-tauri/tauri.conf.json
 
       - name: patch tauri.conf.json & edit version (macos only)
         if: matrix.platform == 'macos-latest' # This must match the platform value defined above.
@@ -134,14 +134,14 @@ jobs:
             }
           }
           EOF
-          sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.${{ github.sha }}\"/" src-tauri/tauri.conf.json
+          sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.r${{ github.run_number }}\"/" src-tauri/tauri.conf.json
 
       - name: edit version (windows only)
         if: matrix.platform == 'windows-latest' # This must match the platform value defined above.
         run: |
           $jsonContent = Get-Content -Path "src-tauri/tauri.conf.json" -Raw
           $jsonObject = $jsonContent | ConvertFrom-Json
-          $jsonObject.version = "0.0.0-nightly.${{ github.sha }}"
+          $jsonObject.version = "0.0.0-nightly.r${{ github.run_number }}"
           $jsonObject | ConvertTo-Json -Depth 10 | Set-Content -Path "src-tauri/tauri.conf.json"
 
       - uses: tauri-apps/tauri-action@dev
@@ -160,7 +160,7 @@ jobs:
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
           cd src-tauri/target/release/bundle/deb
-          sha256sum "Project Graph_0.0.0-nightly.${{ github.sha }}_amd64.deb" | awk '{print $1}' > sha256sum.txt
+          sha256sum "Project Graph_0.0.0-nightly.r${{ github.run_number }}_amd64.deb" | awk '{print $1}' > sha256sum.txt
           echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
 
   publish-tauri-android:
@@ -211,7 +211,7 @@ jobs:
 
       - name: Edit version
         run: |
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.1\"/" src-tauri/tauri.conf.json
+          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.${{ github.run_number }}\"/" src-tauri/tauri.conf.json
 
       - name: setup sign
         run: |
@@ -236,10 +236,10 @@ jobs:
       - name: rename apk file
         run: |
           cd src-tauri/gen/android/app/build/outputs/apk/universal/release
-          mv app-universal-release.apk Project.Graph_0.0.0-nightly.${{ github.sha }}_universal-signed.apk
+          mv app-universal-release.apk Project.Graph_0.0.0-nightly.r${{ github.run_number }}_universal-signed.apk
 
       - name: upload
-        run: gh release upload nightly src-tauri/gen/android/app/build/outputs/apk/universal/release/Project.Graph_0.0.0-nightly.${{ github.sha }}_universal-signed.apk --clobber
+        run: gh release upload nightly src-tauri/gen/android/app/build/outputs/apk/universal/release/Project.Graph_0.0.0-nightly.r${{ github.run_number }}_universal-signed.apk --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -259,9 +259,9 @@ jobs:
       - name: Update version in PKGBUILD and .SRCINFO
         run: |
           cd project-graph-nightly
-          sed -i "s/pkgver=.*$/pkgver=r${{ github.run_number }}.${{ github.sha }}/" PKGBUILD
-          sed -i "s/pkgver = .*$/pkgver = r${{ github.run_number }}.${{ github.sha }}/" .SRCINFO
-          sed -i "s/Project\.Graph_0\.0\.0-nightly\..*_amd64\.deb/Project.Graph_0.0.0-nightly.${{ github.sha }}_amd64.deb/" PKGBUILD .SRCINFO
+          sed -i "s/pkgver=.*$/pkgver=r${{ github.run_number }}/" PKGBUILD
+          sed -i "s/pkgver = .*$/pkgver = r${{ github.run_number }}/" .SRCINFO
+          sed -i "s/Project\.Graph_0\.0\.0-nightly\..*_amd64\.deb/Project.Graph_0.0.0-nightly.r${{ github.run_number }}_amd64.deb/" PKGBUILD .SRCINFO
           sed -i "s/^sha256sums_x86_64=('.*')$/sha256sums_x86_64=('${{ needs.publish-tauri.outputs.hash }}')/" PKGBUILD
           sed -i "s/sha256sums_x86_64 = .*$/sha256sums_x86_64 = ${{ needs.publish-tauri.outputs.hash }}/" .SRCINFO
       - name: Commit and push changes
@@ -270,5 +270,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add PKGBUILD .SRCINFO
-          git commit -m "Bump version to r${{ github.run_number }}.${{ github.sha }}"
+          git commit -m "Bump version to r${{ github.run_number }}"
           git push origin master
