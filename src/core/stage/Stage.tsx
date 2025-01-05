@@ -18,6 +18,7 @@ import { StageDumper } from "./StageDumper";
 import { StageManager } from "./stageManager/StageManager";
 import { StageSaveManager } from "./StageSaveManager";
 import { autoComputeEngineTick } from "./autoComputeEngine/mainTick";
+import { autoLayoutMainTick } from "./autoLayoutEngine/mainTick";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -242,6 +243,8 @@ export namespace Stage {
 
     // 计算引擎
     autoComputeEngineTick();
+    // 自动布局
+    autoLayoutMainTick();
     // 自动保存功能
     autoSaveTick();
     // 自动备份功能
