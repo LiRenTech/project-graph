@@ -51,10 +51,14 @@ const el = document.getElementById("root")!;
     PromptManager.init(),
     KeyBinds.init(),
     ColorManager.init(),
-    registerKeyBinds,
   ]);
   // 这些东西依赖上面的东西，所以单独一个Promise.all
-  await Promise.all([loadLanguageFiles(), loadSyncModules(), loadStartFile()]);
+  await Promise.all([
+    loadLanguageFiles(),
+    loadSyncModules(),
+    loadStartFile(),
+    registerKeyBinds(),
+  ]);
   await renderApp();
   console.log(`应用初始化耗时：${performance.now() - t1}ms`);
 })();
@@ -78,6 +82,7 @@ async function loadSyncModules() {
  */
 async function registerKeyBinds() {
   // 开始注册快捷键
+  console.log("注册快捷键");
   (
     await KeyBinds.create("test", "t", {
       control: true,
