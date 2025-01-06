@@ -30,11 +30,7 @@ export namespace EntityRenderer {
    * 父渲染函数
    * @param entity
    */
-  export function renderEntity(entity: Entity, viewRectangle: Rectangle) {
-    // 视线之外不画
-    if (!viewRectangle.isCollideWith(entity.collisionBox.getRectangle())) {
-      return;
-    }
+  export function renderEntity(entity: Entity) {
     // section 折叠不画
     if (entity.isHiddenBySectionCollapse) {
       return;

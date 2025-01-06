@@ -9,7 +9,9 @@ import {
   ListCollapse,
   Move3d,
   Palette,
+  Ratio,
   Rows4,
+  Scaling,
   Spline,
   VenetianMask,
 } from "lucide-react";
@@ -70,6 +72,27 @@ export default function Visual() {
         icon={<AppWindowMac />}
         settingKey="useNativeTitleBar"
         type="switch"
+      />
+      <SettingField
+        icon={<Ratio />}
+        settingKey="limitCameraInCycleSpace"
+        type="switch"
+      />
+      <SettingField
+        icon={<Scaling />}
+        settingKey="cameraCycleSpaceSizeX"
+        type="slider"
+        min={1000}
+        max={10000}
+        step={1000}
+      />
+      <SettingField
+        icon={<Scaling />}
+        settingKey="cameraCycleSpaceSizeY"
+        type="slider"
+        min={1000}
+        max={10000}
+        step={1000}
       />
     </>
   );

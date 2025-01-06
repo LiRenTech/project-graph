@@ -129,6 +129,22 @@ settings:
       When taking screenshots for feedback, enabling this option will replace all Chinese characters with "好" to protect privacy.
       This is only a visual replacement and will not affect the actual data.
       You can turn it off and restore it after providing feedback.
+  limitCameraInCycleSpace:
+    title: 开启循环空间限制摄像机移动
+    description: |
+      开启后，摄像机只能在一个矩形区域内移动
+      可以防止摄像机移动到很远的地方迷路
+      该矩形区域会形成一个循环空间，类似于无边贪吃蛇游戏中的地图
+      走到最上面会回到最下面，走到最左边会回到最右边
+      注意：该功能还在实验阶段
+  cameraCycleSpaceSizeX:
+    title: 循环空间宽度
+    description: |
+      循环空间的宽度，单位为像素
+  cameraCycleSpaceSizeY:
+    title: 循环空间高度
+    description: |
+      循环空间的高度，单位为像素
   renderEffect:
     title: Rendering Effect
     description: Whether to render special effects. If the application is lagging, you can turn this off.

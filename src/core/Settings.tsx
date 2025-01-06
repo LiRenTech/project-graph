@@ -25,6 +25,9 @@ export namespace Settings {
     alwaysShowDetails: boolean;
     protectingPrivacy: boolean;
     useNativeTitleBar: boolean;
+    limitCameraInCycleSpace: boolean;
+    cameraCycleSpaceSizeX: number;
+    cameraCycleSpaceSizeY: number;
     // 性能相关
     historySize: number; // 暂无
     renderEffect: boolean;
@@ -77,6 +80,9 @@ export namespace Settings {
     alwaysShowDetails: false,
     protectingPrivacy: false,
     useNativeTitleBar: false,
+    limitCameraInCycleSpace: false,
+    cameraCycleSpaceSizeX: 1000,
+    cameraCycleSpaceSizeY: 1000,
     // 性能相关
     historySize: 20,
     renderEffect: true,

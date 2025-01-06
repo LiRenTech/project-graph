@@ -128,8 +128,51 @@ export namespace Renderer {
     Camera.frameTick();
     Canvas.ctx.clearRect(0, 0, w, h);
     renderBackground();
+
+    // 渲染舞台要素
+    if (Camera.limitCameraInCycleSpace) {
+      const originCameraLocation = Camera.location.clone();
+      const LimitX = Camera.cameraCycleSpaceSizeX;
+      const LimitY = Camera.cameraCycleSpaceSizeY;
+      for (let yi = -1; yi <= 1; yi++) {
+        for (let xi = -1; xi <= 1; xi++) {
+          Camera.location.x = originCameraLocation.x + xi * LimitX;
+          Camera.location.y = originCameraLocation.y + yi * LimitY;
+          renderStageElements(viewRectangle);
+        }
+      }
+      Camera.location = originCameraLocation;
+      renderCycleSpaceBorder();
+    } else {
+      renderStageElements(viewRectangle);
+    }
+
+    // 不随摄像机移动的渲染要素
+    renderViewElements(viewRectangle);
+  }
+
+  function renderCycleSpaceBorder() {
+    RenderUtils.renderRect(
+      new Rectangle(
+        Vector.getZero(),
+        new Vector(Camera.cameraCycleSpaceSizeX, Camera.cameraCycleSpaceSizeY),
+      ).transformWorld2View(),
+      Color.Transparent,
+      StageStyleManager.currentStyle.SelectRectangleBorderColor,
+      2 * Camera.currentScale,
+    );
+  }
+
+  function renderViewElements(viewRectangle: Rectangle) {
+    renderDraggingFileTips();
+    renderSpecialKeys();
+    renderCenterPointer();
     renderPrivacyBoard(viewRectangle);
     renderViewMoveByClickMiddle(viewRectangle, performance.now());
+    renderDebugDetails();
+  }
+
+  function renderStageElements(viewRectangle: Rectangle) {
     renderEdges(viewRectangle);
     renderEntities(viewRectangle);
     renderTags();
@@ -139,20 +182,9 @@ export namespace Renderer {
     renderCuttingLine();
     renderConnectingLine();
     rendererLayerMovingLine();
-    renderDraggingFileTips();
     renderKeyboardOnly();
     renderClipboard();
-    renderDebugDetails();
-    renderSpecialKeys();
     renderEffects();
-    renderCenterPointer();
-    // debug:
-    // RenderUtils.renderText(
-    //   "好好好",
-    //   transformWorld2View(Vector.getZero()),
-    //   200 * Camera.currentScale,
-    //   Color.White,
-    // );
   }
   // 渲染中心准星
   function renderCenterPointer() {
@@ -417,7 +449,14 @@ export namespace Renderer {
   function renderEntities(viewRectangle: Rectangle) {
     renderedNodes = 0;
     for (const entity of StageManager.getEntities()) {
-      EntityRenderer.renderEntity(entity, viewRectangle);
+      // 视线之外不画
+      if (
+        !Camera.limitCameraInCycleSpace &&
+        !viewRectangle.isCollideWith(entity.collisionBox.getRectangle())
+      ) {
+        return;
+      }
+      EntityRenderer.renderEntity(entity);
       renderedNodes++;
     }
   }
@@ -425,7 +464,10 @@ export namespace Renderer {
   function renderEdges(viewRectangle: Rectangle) {
     renderedEdges = 0;
     for (const edge of StageManager.getEdges()) {
-      if (!edge.isBodyLineIntersectWithRectangle(viewRectangle)) {
+      if (
+        !Camera.limitCameraInCycleSpace &&
+        !edge.isBodyLineIntersectWithRectangle(viewRectangle)
+      ) {
         continue;
       }
       EdgeRenderer.renderEdge(edge);

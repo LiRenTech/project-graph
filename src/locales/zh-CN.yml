@@ -130,6 +130,22 @@ settings:
       用于反馈问题截图时，开启此项之后将汉字全部替换成《好》，以保护隐私。
       仅作显示层面的替换，不会影响真实数据
       反馈完毕后可再关闭，复原
+  limitCameraInCycleSpace:
+    title: 开启循环空间限制摄像机移动
+    description: |
+      开启后，摄像机只能在一个矩形区域内移动
+      可以防止摄像机移动到很远的地方迷路
+      该矩形区域会形成一个循环空间，类似于无边贪吃蛇游戏中的地图
+      走到最上面会回到最下面，走到最左边会回到最右边
+      注意：该功能还在实验阶段
+  cameraCycleSpaceSizeX:
+    title: 循环空间宽度
+    description: |
+      循环空间的宽度，单位为像素
+  cameraCycleSpaceSizeY:
+    title: 循环空间高度
+    description: |
+      循环空间的高度，单位为像素
   renderEffect:
     title: 渲染特效
     description: 是否渲染特效，如果卡顿可以关闭
