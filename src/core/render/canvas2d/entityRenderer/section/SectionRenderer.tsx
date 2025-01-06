@@ -1,4 +1,9 @@
-import { Color, colorInvert, mixColors } from "../../../../dataStruct/Color";
+import {
+  averageColors,
+  Color,
+  colorInvert,
+  mixColors,
+} from "../../../../dataStruct/Color";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Camera } from "../../../../stage/Camera";
@@ -9,6 +14,7 @@ import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
 import { EntityRenderer } from "../EntityRenderer";
 import { Canvas } from "../../../../stage/Canvas";
+import { TextNode } from "../../../../stageObject/entity/TextNode";
 
 export namespace SectionRenderer {
   /** 画折叠状态 */
@@ -59,14 +65,24 @@ export namespace SectionRenderer {
 
   // 非折叠状态
   function renderNoCollapse(section: Section) {
+    let fillColor = section.color;
+    if (Camera.currentScale < 0.2) {
+      const colors = [];
+      for (const child of section.children) {
+        if (child instanceof TextNode) {
+          colors.push(child.color);
+        }
+      }
+      fillColor = averageColors(colors);
+    }
     RenderUtils.renderRect(
       new Rectangle(
         Renderer.transformWorld2View(section.rectangle.location),
         section.rectangle.size.multiply(Camera.currentScale),
       ),
-      section.color,
+      Camera.currentScale > 0.2 ? section.color : fillColor,
       StageStyleManager.currentStyle.StageObjectBorderColor,
-      2 * Camera.currentScale,
+      Camera.currentScale > 0.2 ? 2 * Camera.currentScale : 2,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
     if (Camera.currentScale > 0.2) {
@@ -92,6 +108,10 @@ export namespace SectionRenderer {
         section.color.a === 1
           ? colorInvert(section.color)
           : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+        StageStyleManager.currentStyle.BackgroundColor,
+        100 * Camera.currentScale,
+        20 * Camera.currentScale,
+        20 * Camera.currentScale,
       );
     }
   }

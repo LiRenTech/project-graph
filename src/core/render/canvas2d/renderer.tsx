@@ -141,12 +141,12 @@ export namespace Renderer {
     renderSpecialKeys();
     renderEffects();
     // debug:
-    RenderUtils.renderText(
-      "好好好",
-      transformWorld2View(Vector.getZero()),
-      200 * Camera.currentScale,
-      Color.White,
-    );
+    // RenderUtils.renderText(
+    //   "好好好",
+    //   transformWorld2View(Vector.getZero()),
+    //   200 * Camera.currentScale,
+    //   Color.White,
+    // );
   }
 
   function renderPrivacyBoard(viewRectangle: Rectangle) {
