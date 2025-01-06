@@ -79,6 +79,10 @@ settings:
     options:
       black: Dracula Dark Theme
       white: Paper White Theme
+  isRenderCenterPointer:
+    title: 显示中心十字准星
+    description: |
+      开启后，画布中心会显示一个十字准星，用于用于指示快捷键创建节点的位置
   lineStyle:
     title: Line Style
     options:

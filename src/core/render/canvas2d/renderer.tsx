@@ -88,6 +88,7 @@ export namespace Renderer {
   export let isAlwaysShowDetails = false;
   let isRenderEffect = true;
   export let protectingPrivacy = false;
+  let isRenderCenterPointer = true;
 
   // 确保这个函数在软件打开的那一次调用
   export function init() {
@@ -111,6 +112,10 @@ export namespace Renderer {
     );
     Settings.watch("renderEffect", (value) => (isRenderEffect = value));
     Settings.watch("protectingPrivacy", (value) => (protectingPrivacy = value));
+    Settings.watch(
+      "isRenderCenterPointer",
+      (value) => (isRenderCenterPointer = value),
+    );
   }
 
   /**
@@ -140,6 +145,7 @@ export namespace Renderer {
     renderDebugDetails();
     renderSpecialKeys();
     renderEffects();
+    renderCenterPointer();
     // debug:
     // RenderUtils.renderText(
     //   "好好好",
@@ -147,6 +153,35 @@ export namespace Renderer {
     //   200 * Camera.currentScale,
     //   Color.White,
     // );
+  }
+  // 渲染中心准星
+  function renderCenterPointer() {
+    if (!isRenderCenterPointer) {
+      return;
+    }
+    const viewCenterLocation = transformWorld2View(Camera.location);
+    RenderUtils.renderCircle(
+      viewCenterLocation,
+      1,
+      StageStyleManager.currentStyle.GridHeavyColor,
+      Color.Transparent,
+      0,
+    );
+    for (let i = 0; i < 4; i++) {
+      const degrees = i * 90;
+      const shortLineStart = viewCenterLocation.add(
+        new Vector(10, 0).rotateDegrees(degrees),
+      );
+      const shortLineEnd = viewCenterLocation.add(
+        new Vector(20, 0).rotateDegrees(degrees),
+      );
+      RenderUtils.renderSolidLine(
+        shortLineStart,
+        shortLineEnd,
+        StageStyleManager.currentStyle.GridHeavyColor,
+        1,
+      );
+    }
   }
 
   function renderPrivacyBoard(viewRectangle: Rectangle) {

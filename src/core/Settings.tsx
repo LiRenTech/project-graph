@@ -14,6 +14,7 @@ export namespace Settings {
     // 视觉相关
     lineStyle: "straight" | "bezier" | "vertical";
     theme: "black" | "white"; // 暂无
+    isRenderCenterPointer: boolean;
     showGrid: boolean; // 废弃
     showBackgroundHorizontalLines: boolean;
     showBackgroundVerticalLines: boolean;
@@ -65,6 +66,7 @@ export namespace Settings {
     // 视觉相关
     lineStyle: "straight",
     theme: "black",
+    isRenderCenterPointer: true,
     showGrid: true,
     showBackgroundHorizontalLines: false,
     showBackgroundVerticalLines: false,

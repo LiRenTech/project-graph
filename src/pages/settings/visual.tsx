@@ -3,6 +3,7 @@ import {
   Blend,
   Bug,
   Columns4,
+  Crosshair,
   Grip,
   Languages,
   ListCollapse,
@@ -20,6 +21,11 @@ export default function Visual() {
       <SettingField icon={<Palette />} settingKey="theme" type="select" />
       <SettingField icon={<Spline />} settingKey="lineStyle" type="select" />
       {/* <SettingField icon={<Grid />} settingKey="showGrid" type="switch" /> */}
+      <SettingField
+        icon={<Crosshair />}
+        settingKey="isRenderCenterPointer"
+        type="switch"
+      />
       <SettingField
         icon={<Rows4 />}
         settingKey="showBackgroundHorizontalLines"

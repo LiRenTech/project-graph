@@ -84,6 +84,10 @@ settings:
       straight: 直線
       bezier: 貝塞爾曲線
       vertical: 垂直折線
+  isRenderCenterPointer:
+    title: 显示中心十字准星
+    description: |
+      开启后，画布中心会显示一个十字准星，用于用于指示快捷键创建节点的位置
   showGrid:
     title: 顯示網格
   showBackgroundHorizontalLines:

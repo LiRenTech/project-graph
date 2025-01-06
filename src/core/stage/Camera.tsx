@@ -146,6 +146,9 @@ export namespace Camera {
     if (scaleCameraByMouseLocation) {
       setLocationByOtherLocation(targetLocationByScale, diffViewVector);
     }
+    // 循环空间
+    // location.x = location.x % 1000;
+    // location.y = location.y % 1000;
   }
 
   /**
