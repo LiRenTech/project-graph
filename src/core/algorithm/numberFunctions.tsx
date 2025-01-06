@@ -35,4 +35,13 @@ export namespace NumberFunctions {
       minValue
     );
   }
+
+  /**
+   * 此函数为了解决js求余运算变成负数的问题
+   * 可以看成：把一个x值压缩映射到0-y范围内
+   * @param x
+   */
+  export function mod(x: number, y: number): number {
+    return ((x % y) + y) % y;
+  }
 }
