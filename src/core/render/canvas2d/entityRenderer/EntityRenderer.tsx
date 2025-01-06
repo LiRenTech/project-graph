@@ -16,6 +16,11 @@ import { ImageRenderer } from "../ImageRenderer";
 import { Entity } from "../../../stageObject/StageObject";
 import { EntityDetailsButtonRenderer } from "./EntityDetailsButtonRenderer";
 import { SectionRenderer } from "./section/SectionRenderer";
+import {
+  getLogicNodeRenderName,
+  LogicNodeNameEnum,
+  LogicNodeNameToRenderNameMap,
+} from "../../../stage/autoComputeEngine/logicNodeNameEnum";
 
 /**
  * 处理节点相关的绘制
@@ -61,18 +66,37 @@ export namespace EntityRenderer {
     );
 
     if (!node.isEditing) {
-      RenderUtils.renderText(
-        Renderer.protectingPrivacy
-          ? replaceTextWhenProtect(node.text)
-          : node.text,
-        Renderer.transformWorld2View(
-          node.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
-        ),
-        Renderer.FONT_SIZE * Camera.currentScale,
-        node.color.a === 1
-          ? colorInvert(node.color)
-          : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
-      );
+      if (node.text.startsWith("#") && node.text.endsWith("#")) {
+        // 检查下是不是逻辑节点
+        for (const key of Object.keys(LogicNodeNameToRenderNameMap)) {
+          if (node.text === key) {
+            const logicNodeName = key as LogicNodeNameEnum;
+            RenderUtils.renderTextFromCenter(
+              getLogicNodeRenderName(logicNodeName),
+              Renderer.transformWorld2View(node.rectangle.center),
+              Renderer.FONT_SIZE * Camera.currentScale,
+              node.color.a === 1
+                ? colorInvert(node.color)
+                : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+              Color.Green,
+              10 * Camera.currentScale,
+            );
+          }
+        }
+      } else {
+        RenderUtils.renderText(
+          Renderer.protectingPrivacy
+            ? replaceTextWhenProtect(node.text)
+            : node.text,
+          Renderer.transformWorld2View(
+            node.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
+          ),
+          Renderer.FONT_SIZE * Camera.currentScale,
+          node.color.a === 1
+            ? colorInvert(node.color)
+            : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+        );
+      }
     }
 
     if (node.isSelected) {
