@@ -51,13 +51,11 @@ export default function DetailsEditSidePanel() {
       {
         <div
           className={cn(
-            "fixed top-0 z-50 flex h-full flex-col transition-all",
+            "fixed top-16 z-50 flex h-full flex-col transition-all",
             isFullScreen ? "right-0 w-full" : "-right-96 w-96",
             isNodeTextEditing && "right-0",
           )}
         >
-          {/* 顶部空白 */}
-          <div className="h-16" />
           <div className="flex gap-2">
             <IconButton onClick={switchPanelSize}>
               {isFullScreen ? <ArrowRightFromLine /> : <ArrowLeftFromLine />}
@@ -75,7 +73,7 @@ export default function DetailsEditSidePanel() {
             enableFocusOpacity={false}
           />
           {/* 底部空白 */}
-          <div className="h-8" />
+          <div className="h-16" />
         </div>
       }
     </>
