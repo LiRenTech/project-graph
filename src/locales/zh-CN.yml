@@ -198,6 +198,12 @@ settings:
     description: |
       开启后，可以使用W S A D按键来上下左右移动视角
       关闭后，只能使用鼠标来移动视角，不会造成无限滚屏bug
+  cameraKeyboardMoveReverse:
+    title: 视角移动键盘反向
+    description: |
+      开启后，W S A D按键的移动视角方向会相反
+      原本的移动逻辑是移动悬浮在画面上的摄像机，但如果看成是移动画布，这样就反了
+      于是就有了这个选项
   allowAddCycleEdge:
     title: 允许在节点之间添加自环
     description: |

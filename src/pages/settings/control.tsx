@@ -57,6 +57,11 @@ export default function Control() {
         type="switch"
       />
       <SettingField
+        icon={<Keyboard />}
+        settingKey="cameraKeyboardMoveReverse"
+        type="switch"
+      />
+      <SettingField
         icon={<RotateCw />}
         settingKey="allowAddCycleEdge"
         type="switch"

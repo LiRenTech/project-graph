@@ -42,6 +42,7 @@ export namespace Settings {
     enableDragAutoAlign: boolean;
     scaleExponent: number;
     allowMoveCameraByWSAD: boolean;
+    cameraKeyboardMoveReverse: boolean;
     scaleCameraByMouseLocation: boolean;
     allowAddCycleEdge: boolean;
     moveAmplitude: number;
@@ -92,6 +93,7 @@ export namespace Settings {
     enableDragAutoAlign: true,
     scaleExponent: 0.11,
     allowMoveCameraByWSAD: false,
+    cameraKeyboardMoveReverse: false,
     scaleCameraByMouseLocation: true,
     allowAddCycleEdge: false,
     moveAmplitude: 2,

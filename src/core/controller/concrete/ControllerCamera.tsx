@@ -33,9 +33,13 @@ ControllerCamera.keydown = (event: KeyboardEvent) => {
       return;
     }
 
+    let addAccelerate = Controller.keyMap[key];
+    if (Camera.cameraKeyboardMoveReverse) {
+      addAccelerate = addAccelerate.multiply(-1);
+    }
     // 当按下某一个方向的时候,相当于朝着某个方向赋予一次加速度
     Camera.accelerateCommander = Camera.accelerateCommander
-      .add(Controller.keyMap[key])
+      .add(addAccelerate)
       .limitX(-1, 1)
       .limitY(-1, 1);
   }
@@ -67,10 +71,13 @@ ControllerCamera.keyup = (event: KeyboardEvent) => {
       // ctrl按下时，可能在按 ctrl+s 保存，防止出现冲突
       return;
     }
-
+    let addAccelerate = Controller.keyMap[key];
+    if (Camera.cameraKeyboardMoveReverse) {
+      addAccelerate = addAccelerate.multiply(-1);
+    }
     // 当松开某一个方向的时候,相当于停止加速度
     Camera.accelerateCommander = Camera.accelerateCommander
-      .subtract(Controller.keyMap[key])
+      .subtract(addAccelerate)
       .limitX(-1, 1)
       .limitY(-1, 1);
   }

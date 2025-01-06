@@ -197,6 +197,12 @@ settings:
     description: |
       When enabled, you can use the W S A D keys to move the camera up, down, left, and right.
       When disabled, you can only use the mouse to move the camera, avoiding the endless scroll bug.
+  cameraKeyboardMoveReverse:
+    title: 视角移动键盘反向
+    description: |
+      开启后，W S A D按键的移动视角方向会相反
+      原本的移动逻辑是移动悬浮在画面上的摄像机，但有人会认为是移动画布，这样就反了
+      于是就有了这个选项
   allowAddCycleEdge:
     title: Allow adding self-loops between nodes
     description: |
