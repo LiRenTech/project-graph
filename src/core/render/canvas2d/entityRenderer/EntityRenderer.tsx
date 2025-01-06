@@ -1,4 +1,4 @@
-import { Color, mixColors } from "../../../dataStruct/Color";
+import { Color, colorInvert } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { TextNode } from "../../../stageObject/entity/TextNode";
@@ -15,6 +15,7 @@ import { ImageNode } from "../../../stageObject/entity/ImageNode";
 import { ImageRenderer } from "../ImageRenderer";
 import { Entity } from "../../../stageObject/StageObject";
 import { EntityDetailsButtonRenderer } from "./EntityDetailsButtonRenderer";
+import { SectionRenderer } from "./section/SectionRenderer";
 
 /**
  * 处理节点相关的绘制
@@ -34,7 +35,7 @@ export namespace EntityRenderer {
       return;
     }
     if (entity instanceof Section) {
-      renderSection(entity);
+      SectionRenderer.render(entity);
     } else if (entity instanceof TextNode) {
       renderNode(entity);
     } else if (entity instanceof ConnectPoint) {
@@ -44,101 +45,6 @@ export namespace EntityRenderer {
     }
     // details右上角小按钮
     EntityDetailsButtonRenderer(entity);
-  }
-  function renderSection(section: Section) {
-    if (section.isHiddenBySectionCollapse) {
-      return;
-    }
-    if (section.isCollapsed) {
-      // 折叠状态
-      const renderRectangle = new Rectangle(
-        Renderer.transformWorld2View(section.rectangle.location),
-        section.rectangle.size.multiply(Camera.currentScale),
-      );
-      RenderUtils.renderRect(
-        renderRectangle,
-        section.color,
-        mixColors(
-          StageStyleManager.currentStyle.StageObjectBorderColor,
-          Color.Black,
-          0.5,
-        ),
-        2 * Camera.currentScale,
-        Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
-      );
-      // 外框
-      RenderUtils.renderRect(
-        new Rectangle(
-          Renderer.transformWorld2View(
-            section.rectangle.location.subtract(Vector.same(4)),
-          ),
-          section.rectangle.size
-            .add(Vector.same(4 * 2))
-            .multiply(Camera.currentScale),
-        ),
-        section.color,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
-        2 * Camera.currentScale,
-        Renderer.NODE_ROUNDED_RADIUS * 1.5 * Camera.currentScale,
-      );
-
-      RenderUtils.renderText(
-        section.text,
-        Renderer.transformWorld2View(
-          section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
-        ),
-        Renderer.FONT_SIZE * Camera.currentScale,
-        section.color.a === 1
-          ? colorInvert(section.color)
-          : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
-      );
-    } else {
-      // 非折叠状态
-      RenderUtils.renderRect(
-        new Rectangle(
-          Renderer.transformWorld2View(section.rectangle.location),
-          section.rectangle.size.multiply(Camera.currentScale),
-        ),
-        section.color,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
-        2 * Camera.currentScale,
-        Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
-      );
-
-      RenderUtils.renderText(
-        section.text,
-        Renderer.transformWorld2View(
-          section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
-        ),
-        Renderer.FONT_SIZE * Camera.currentScale,
-        section.color.a === 1
-          ? colorInvert(section.color)
-          : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
-      );
-    }
-
-    if (section.isSelected) {
-      // 在外面增加一个框
-      CollisionBoxRenderer.render(
-        section.collisionBox,
-        new Color(0, 255, 0, 0.5),
-      );
-    }
-    // debug
-    if (Renderer.isShowDebug) {
-      for (const child of section.children) {
-        RenderUtils.renderDashedLine(
-          Renderer.transformWorld2View(section.rectangle.leftTop),
-          Renderer.transformWorld2View(
-            child.collisionBox.getRectangle().leftTop,
-          ),
-          Color.Green,
-          0.2 * Camera.currentScale,
-          5 * Camera.currentScale,
-        );
-      }
-    }
-    renderEntityDetails(section);
   }
 
   function renderNode(node: TextNode) {
@@ -196,7 +102,7 @@ export namespace EntityRenderer {
     renderEntityDetails(node);
   }
 
-  function renderEntityDetails(entity: Entity) {
+  export function renderEntityDetails(entity: Entity) {
     if (entity.details && !entity.isEditingDetails) {
       if (Renderer.isAlwaysShowDetails) {
         _renderEntityDetails(entity);
@@ -224,26 +130,6 @@ export namespace EntityRenderer {
       ),
       StageStyleManager.currentStyle.NodeDetailsTextColor,
     );
-  }
-  export function colorInvert(color: Color): Color {
-    /**
-     * 计算背景色的亮度 更精确的人眼感知亮度公式
-     * 0.2126 * R + 0.7152 * G + 0.0722 * B，
-     * 如果亮度较高，则使用黑色文字，
-     * 如果亮度较低，则使用白色文字。
-     * 这种方法能够确保无论背景色如何变化，文字都能保持足够的对比度。
-     */
-
-    const r = color.r;
-    const g = color.g;
-    const b = color.b;
-    const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-
-    if (brightness > 128) {
-      return Color.Black; // 返回黑色
-    } else {
-      return Color.White; // 返回白色
-    }
   }
 
   function renderConnectPoint(connectPoint: ConnectPoint) {

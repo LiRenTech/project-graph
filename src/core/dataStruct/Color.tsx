@@ -89,7 +89,26 @@ export class Color {
     return new Color(r, g, b);
   }
 }
+export function colorInvert(color: Color): Color {
+  /**
+   * 计算背景色的亮度 更精确的人眼感知亮度公式
+   * 0.2126 * R + 0.7152 * G + 0.0722 * B，
+   * 如果亮度较高，则使用黑色文字，
+   * 如果亮度较低，则使用白色文字。
+   * 这种方法能够确保无论背景色如何变化，文字都能保持足够的对比度。
+   */
 
+  const r = color.r;
+  const g = color.g;
+  const b = color.b;
+  const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+  if (brightness > 128) {
+    return Color.Black; // 返回黑色
+  } else {
+    return Color.White; // 返回白色
+  }
+}
 /**
  * 获取两个颜色的中间过渡色（线性混合）
  * 根据两个颜色，以及一个 0~1 的权重，返回一个新的颜色
