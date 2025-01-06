@@ -119,6 +119,7 @@ export namespace WorldRenderUtils {
   ): void {
     Canvas.ctx.shadowColor = shadowColor.toString();
     Canvas.ctx.shadowBlur = 15;
+    width = Math.min(width, 20);
 
     const direction = end.subtract(start).normalize();
     const headShiftBack = end.subtract(direction.multiply(20));
