@@ -3,6 +3,7 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { EntityAlignEffect } from "../../../effect/concrete/EntityAlignEffect";
 import { RectangleRenderEffect } from "../../../effect/concrete/RectangleRenderEffect";
+import { Renderer } from "../../../render/canvas2d/renderer";
 import { SoundService } from "../../../SoundService";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Entity } from "../../../stageObject/StageObject";
@@ -16,9 +17,12 @@ export namespace StageAutoAlignManager {
    */
   export function alignAllSelected() {
     const selectedEntities = StageManager.getSelectedEntities();
-    const otherEntities = StageManager.getEntities().filter(
-      (entity) => !entity.isSelected,
-    );
+    const viewRectangle = Renderer.getCoverWorldRectangle();
+    const otherEntities = StageManager.getEntities()
+      .filter((entity) => !entity.isSelected)
+      .filter((entity) =>
+        entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle),
+      );
     for (const selectedEntity of selectedEntities) {
       if (!(selectedEntity instanceof TextNode)) {
         continue;
@@ -32,11 +36,13 @@ export namespace StageAutoAlignManager {
    * 用于鼠标移动的时候显示对齐的效果
    */
   export function preAlignAllSelected() {
-    console.log("preAlignAllSelected");
     const selectedEntities = StageManager.getSelectedEntities();
-    const otherEntities = StageManager.getEntities().filter(
-      (entity) => !entity.isSelected,
-    );
+    const viewRectangle = Renderer.getCoverWorldRectangle();
+    const otherEntities = StageManager.getEntities()
+      .filter((entity) => !entity.isSelected)
+      .filter((entity) =>
+        entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle),
+      );
     for (const selectedEntity of selectedEntities) {
       if (!(selectedEntity instanceof TextNode)) {
         continue;
@@ -58,11 +64,19 @@ export namespace StageAutoAlignManager {
     // // 只能和一个节点对齐
     // let isHaveAlignTarget = false;
     // 按照与 selectedEntity 的距离排序
-    const sortedOtherEntities = otherEntities.sort((a, b) => {
-      const distanceA = calculateDistance(selectedEntity, a);
-      const distanceB = calculateDistance(selectedEntity, b);
-      return distanceA - distanceB; // 升序排序
-    });
+    const sortedOtherEntities = otherEntities
+      .sort((a, b) => {
+        const distanceA = calculateDistance(selectedEntity, a);
+        const distanceB = calculateDistance(selectedEntity, b);
+        return distanceA - distanceB; // 升序排序
+      })
+      .filter((entity) => {
+        // 排除entity是selectedEntity的父亲Section框
+        // 可以偷个懒，如果检测两个entity具有位置重叠了，那么直接排除过滤掉
+        return !entity.collisionBox
+          .getRectangle()
+          .isCollideWithRectangle(selectedEntity.collisionBox.getRectangle());
+      });
     let isAlign = false;
     // 目前先只做节点吸附
     let xMoveDiff = 0;
