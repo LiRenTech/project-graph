@@ -66,7 +66,7 @@ export namespace Settings {
     // 视觉相关
     lineStyle: "straight",
     theme: "black",
-    isRenderCenterPointer: true,
+    isRenderCenterPointer: false,
     showGrid: true,
     showBackgroundHorizontalLines: false,
     showBackgroundVerticalLines: false,
