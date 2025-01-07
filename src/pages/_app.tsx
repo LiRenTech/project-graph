@@ -91,11 +91,13 @@ export default function App() {
       setIsSaved(StageSaveManager.isSaved());
     });
 
+    /**
+     * 关闭窗口时的事件监听
+     */
     getCurrentWindow().onCloseRequested(async (e) => {
-      console.log("close requested");
       e.preventDefault();
       try {
-        if (file === Stage.Path.draftName) {
+        if (Stage.Path.getFilePath() === Stage.Path.draftName) {
           await Dialog.show({
             title: "真的要关闭吗？",
             content: "您现在的新建草稿没有保存，是否要关闭项目？",
@@ -117,6 +119,7 @@ export default function App() {
           if (isAutoSave) {
             // 开启了自动保存，不弹窗
             await StageSaveManager.saveHandle(file, StageDumper.dump());
+            getCurrentWindow().destroy();
           } else {
             // 没开启自动保存，逐步确认
             if (StageSaveManager.isSaved()) {
