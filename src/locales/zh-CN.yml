@@ -7,7 +7,6 @@ welcome:
   qq: QQ 群
 
 about:
-  title: Project Graph 计划投射
   intro:
     - 软件介绍
     - 这是一个基于tauri框架的快速绘制节点图的工具，可以用于项目拓扑图绘制、快速头脑风暴草稿

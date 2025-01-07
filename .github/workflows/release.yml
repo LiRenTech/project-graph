@@ -146,6 +146,9 @@ jobs:
         with:
           tagName: "v${{ github.event.inputs.version }}"
           args: ${{ matrix.args }}
+          updaterJsonPreferNsis: true
+          includeUpdaterJson: true
+          retryAttempts: 3
 
       - id: sha256sum
         name: calculate sha256sum (linux only)
