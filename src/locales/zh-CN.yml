@@ -347,7 +347,7 @@ startFilePanel:
     showFileTime: 显示文件时间
 
 keys:
-  none: 未绑定
+  none: 未绑定快捷键，点击绑定
   mouse0: 鼠标左键
   mouse1: 鼠标中键
   mouse2: 鼠标右键
@@ -362,6 +362,7 @@ keys:
   wheeldown: 滚轮向下
 
 keyBinds:
+  title: 快捷键绑定
   test:
     title: 测试
     description: |

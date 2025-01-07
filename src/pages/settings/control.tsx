@@ -90,9 +90,7 @@ export default function Control() {
         max={1}
         step={0.01}
       />
-      <div className="my-16">
-        <h2 className="text-center">以下为快捷键操作</h2>
-      </div>
+      <Field icon={<Keyboard />} title={t("title")} color="blue" />
       {keyBinds
         .map(([id, bind]) => (
           <Field

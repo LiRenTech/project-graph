@@ -54,7 +54,7 @@ export function SettingField({
       icon={icon}
     >
       <RotateCw
-        className="h-4 w-4 cursor-pointer text-gray-500 hover:rotate-180"
+        className="h-4 w-4 cursor-pointer text-gray-500 opacity-0 hover:rotate-180 group-hover/field:opacity-100"
         onClick={() => setValue(Settings.defaultSettings[settingKey])}
       />
       {type === "text" && (
@@ -130,22 +130,25 @@ export function Field({
   children = <></>,
   color = "default",
   icon = <></>,
+  className = "",
 }: {
   title?: string;
   description?: string;
   children?: React.ReactNode;
   color?: "default" | "green" | "red" | "yellow" | "blue" | "purple";
   icon?: React.ReactNode;
+  className?: string;
 }) {
   return (
     <div
       className={cn(
-        "flex w-full items-center justify-between gap-2 rounded-xl p-4",
+        "group/field flex w-full items-center justify-between gap-2 rounded-xl p-4",
         fieldColors[color],
+        className,
       )}
     >
       <div className="flex items-center gap-2">
-        {icon}
+        <span>{icon}</span>
         <div className="flex flex-col">
           <span>{title}</span>
           <span className="text-xs text-gray-500">
