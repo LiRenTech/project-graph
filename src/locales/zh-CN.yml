@@ -127,7 +127,7 @@ settings:
   protectingPrivacy:
     title: 隐私保护
     description: |
-      用于反馈问题截图时，开启此项之后将汉字全部替换成《好》，以保护隐私。
+      用于反馈问题截图时，开启此项之后将汉字全部替换成《㊙》，以保护隐私。
       仅作显示层面的替换，不会影响真实数据
       反馈完毕后可再关闭，复原
   limitCameraInCycleSpace:

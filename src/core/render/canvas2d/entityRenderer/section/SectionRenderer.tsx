@@ -15,6 +15,7 @@ import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
 import { EntityRenderer } from "../EntityRenderer";
 import { Canvas } from "../../../../stage/Canvas";
 import { TextNode } from "../../../../stageObject/entity/TextNode";
+import { replaceTextWhenProtect } from "../../../../../utils/font";
 
 export namespace SectionRenderer {
   /** 画折叠状态 */
@@ -52,7 +53,9 @@ export namespace SectionRenderer {
     );
 
     RenderUtils.renderText(
-      section.text,
+      Renderer.protectingPrivacy
+        ? replaceTextWhenProtect(section.text)
+        : section.text,
       Renderer.transformWorld2View(
         section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
       ),
@@ -88,7 +91,9 @@ export namespace SectionRenderer {
     if (Camera.currentScale > 0.2) {
       // 正常显示标题
       RenderUtils.renderText(
-        section.text,
+        Renderer.protectingPrivacy
+          ? replaceTextWhenProtect(section.text)
+          : section.text,
         Renderer.transformWorld2View(
           section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
         ),
@@ -102,7 +107,9 @@ export namespace SectionRenderer {
       const fontHeight = fontSizeVector.y;
       // 缩放过小了，显示巨大化文字
       RenderUtils.renderTextFromCenter(
-        section.text,
+        Renderer.protectingPrivacy
+          ? replaceTextWhenProtect(section.text)
+          : section.text,
         Renderer.transformWorld2View(section.rectangle.center),
         fontHeight * Camera.currentScale,
         section.color.a === 1

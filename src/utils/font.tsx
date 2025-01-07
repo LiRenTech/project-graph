@@ -40,8 +40,14 @@ export function getTextSize(text: string, size: number): Vector {
 
 /**
  * 所有的汉字替换成“好”
+ * 所有小写字母替换成 a，大写字母替换成 A
+ * 所有数字全部替换成 6
  * @param text
  */
 export function replaceTextWhenProtect(text: string) {
-  return text.replace(/[\u4e00-\u9fa5]/g, "好");
+  return text
+    .replace(/[\u4e00-\u9fa5]/g, "㊙")
+    .replace(/[a-z]/g, "a")
+    .replace(/[A-Z]/g, "A")
+    .replace(/\d/g, "6");
 }
