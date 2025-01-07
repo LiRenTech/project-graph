@@ -24,19 +24,8 @@ export default function Input<T extends boolean = false>({
   enableFocusOpacity = true,
   ...props
 }: React.PropsWithChildren<InputProps<T>>) {
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    // 根据 number 的值决定传递的参数类型
-    if (number) {
-      onChange?.(parseInt(e.target.value || "0") as any); // 强制转换为 number
-    } else {
-      onChange?.(e.target.value as any); // 强制转换为 string
-    }
-  };
-
   return (
-    <Box
+    <Box<"input">
       as={multiline ? "textarea" : "input"}
       className={cn(
         "px-3 py-2 outline-none",
@@ -44,13 +33,18 @@ export default function Input<T extends boolean = false>({
         className,
       )}
       value={value}
-      onChange={handleChange}
-      onKeyDown={(
-        e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
-      ) => e.stopPropagation()}
-      onKeyUp={(
-        e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
-      ) => e.stopPropagation()}
+      onChange={(e) => {
+        // 根据 number 的值决定传递的参数类型
+        if (number) {
+          onChange?.(
+            parseInt((e.target as HTMLInputElement).value || "0") as any,
+          ); // 强制转换为 number
+        } else {
+          onChange?.((e.target as HTMLInputElement).value as any); // 强制转换为 string
+        }
+      }}
+      onKeyDown={(e) => e.stopPropagation()}
+      onKeyUp={(e) => e.stopPropagation()}
       placeholder={placeholder}
       pattern={number ? "[0-9]*" : undefined}
       {...props}

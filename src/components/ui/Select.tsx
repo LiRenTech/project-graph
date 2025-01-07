@@ -1,3 +1,4 @@
+import { ChevronDown } from "lucide-react";
 import React from "react";
 import { cn } from "../../utils/cn";
 import Box from "./Box";
@@ -23,9 +24,10 @@ export default function Select({
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    const { left, bottom } = ref.current!.getBoundingClientRect();
-    setDropdownX(left - 8);
-    setDropdownY(bottom);
+
+    const { left, width, bottom } = ref.current!.getBoundingClientRect();
+    setDropdownX(left + width / 2);
+    setDropdownY(bottom + 8);
     setShowDropdown(true);
 
     document.addEventListener("pointerdown", handleDocumentClick);
@@ -40,17 +42,26 @@ export default function Select({
   return (
     <>
       <Box
-        className={cn("appearance-none px-3 py-2 hover:opacity-80", className)}
+        className={cn(
+          "group/select flex appearance-none items-center gap-1 px-3 py-2 pl-4 hover:opacity-80",
+          className,
+        )}
         ref={ref}
         onClick={handleClick}
         {...props}
       >
         {options.find((option) => option.value === value)?.label}
+        <ChevronDown
+          className={cn("h-4 w-4 group-active/select:translate-y-1", {
+            "rotate-180": showDropdown,
+          })}
+        />
       </Box>
       {/* 展开的下拉框 */}
       <div
         className={cn(
-          "fixed z-[104] flex origin-top scale-0 flex-col rounded-2xl bg-neutral-900 p-2 opacity-0",
+          // w-max: 防止下拉框在页面右侧时，宽度不够而缩小
+          "fixed z-[104] flex w-max origin-top -translate-x-1/2 scale-0 flex-col rounded-lg border border-neutral-700 bg-neutral-900 p-2 opacity-0 shadow-lg shadow-slate-950",
           {
             "scale-100 opacity-100": showDropdown,
           },
@@ -64,7 +75,7 @@ export default function Select({
         {options.map((option) => (
           <button
             key={option.value}
-            className={cn("rounded-xl px-3 py-2 hover:bg-neutral-700", {
+            className={cn("rounded-lg px-3 py-2 hover:bg-neutral-700", {
               "bg-neutral-700": option.value === value,
               "active:scale-90": option.value !== value,
             })}
