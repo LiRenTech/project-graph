@@ -150,6 +150,8 @@ jobs:
           LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
           LR_ARK_API_KEY: ${{ secrets.ENV_ARK_API_KEY }}
           LR_CF_API_KEY: ${{ secrets.LR_CF_API_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           # upload to release
           tagName: "nightly"
@@ -232,6 +234,8 @@ jobs:
           LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
           LR_ARK_API_KEY: ${{ secrets.ENV_ARK_API_KEY }}
           LR_CF_API_KEY: ${{ secrets.LR_CF_API_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
 
       - name: rename apk file
         run: |
