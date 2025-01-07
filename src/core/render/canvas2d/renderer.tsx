@@ -185,6 +185,7 @@ export namespace Renderer {
     renderKeyboardOnly();
     renderClipboard();
     renderEffects();
+    // renderViewRectangle(viewRectangle);
   }
   // 渲染中心准星
   function renderCenterPointer() {
@@ -216,6 +217,14 @@ export namespace Renderer {
     }
   }
 
+  // function renderViewRectangle(viewRectangle: Rectangle) {
+  //   RenderUtils.renderRect(
+  //     viewRectangle.transformWorld2View(),
+  //     Color.Transparent,
+  //     StageStyleManager.currentStyle.SelectRectangleBorderColor,
+  //     50,
+  //   );
+  // }
   function renderPrivacyBoard(viewRectangle: Rectangle) {
     // 画隐私保护边
     if (protectingPrivacy) {
@@ -454,7 +463,9 @@ export namespace Renderer {
         !Camera.limitCameraInCycleSpace &&
         !viewRectangle.isCollideWith(entity.collisionBox.getRectangle())
       ) {
-        return;
+        continue;
+        // 这里littlefean居然曾经把continue写成return了，
+        // 不知道是一股脑通过代码补全补出来的还是什么原因。
       }
       EntityRenderer.renderEntity(entity);
       renderedNodes++;

@@ -151,7 +151,9 @@ export namespace Camera {
       setLocationByOtherLocation(targetLocationByScale, diffViewVector);
     }
     // 循环空间
-    dealCycleSpace();
+    if (limitCameraInCycleSpace) {
+      dealCycleSpace();
+    }
   }
 
   /**
