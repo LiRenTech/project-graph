@@ -487,6 +487,14 @@ export default function AppMenu({
         >
           废档了，清空
         </Col>
+        <Col
+          icon={<TestTube2 />}
+          onClick={() => {
+            throw new Error("手动报错");
+          }}
+        >
+          手动报错
+        </Col>
       </Row>
     </div>
   );

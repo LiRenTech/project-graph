@@ -213,7 +213,6 @@ export default function App() {
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
-      <ErrorHandler />
       {/* 叠加层，显示窗口控件 */}
       <div
         className={cn(
@@ -384,6 +383,7 @@ export default function App() {
       <RecentFilesPanel />
       <ExportTreeTextPanel />
       {/* ======= */}
+      <ErrorHandler />
 
       <Outlet />
     </div>

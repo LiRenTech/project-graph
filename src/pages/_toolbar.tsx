@@ -321,10 +321,12 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   }, []);
 
   // 一个竖向的工具栏，在页面顶部，右侧显示
+  // z-index: 40; 不写成最大的50，
+  // 因为报错窗口可能会被它遮挡住导致无法在右上角关闭报错窗口
   return (
     <div
       className={cn(
-        "group/wrapper fixed right-0 top-1/2 z-50 -translate-y-1/2 p-8 pl-16",
+        "group/wrapper fixed right-0 top-1/2 z-40 -translate-y-1/2 p-8 pl-16",
         {
           "pointer-events-none": ignoreMouse,
         },
