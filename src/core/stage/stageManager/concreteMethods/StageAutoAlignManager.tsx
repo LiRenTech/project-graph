@@ -1,3 +1,4 @@
+import { Dialog } from "../../../../utils/dialog";
 import { NumberFunctions } from "../../../algorithm/numberFunctions";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
@@ -6,10 +7,14 @@ import { RectangleRenderEffect } from "../../../effect/concrete/RectangleRenderE
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { SoundService } from "../../../SoundService";
 import { TextNode } from "../../../stageObject/entity/TextNode";
-import { Entity } from "../../../stageObject/StageObject";
+import { ConnectableEntity, Entity } from "../../../stageObject/StageObject";
+import { autoLayoutFastTreeMode } from "../../autoLayoutEngine/autoLayoutFastTreeMode";
 import { Stage } from "../../Stage";
 import { StageManager } from "../StageManager";
 
+/**
+ * 自动对齐和布局管理器
+ */
 export namespace StageAutoAlignManager {
   /**
    * 吸附函数
@@ -246,5 +251,24 @@ export namespace StageAutoAlignManager {
     const dy = rectA.center.y - rectB.center.y;
 
     return Math.sqrt(dx * dx + dy * dy); // 返回欧几里得距离
+  }
+
+  /**
+   * 自动布局树形结构
+   * @param selectedRootEntity
+   */
+  export function autoLayoutSelectedFastTreeMode(
+    selectedRootEntity: ConnectableEntity,
+  ) {
+    // 检测树形结构
+    if (!StageManager.isTree(selectedRootEntity)) {
+      // 不是树形结构，不做任何处理
+      Dialog.show({
+        title: "提示",
+        content: "选择的节点必须是树形结构的根节点",
+      });
+      return;
+    }
+    autoLayoutFastTreeMode(selectedRootEntity);
   }
 }

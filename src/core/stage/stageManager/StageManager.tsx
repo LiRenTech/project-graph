@@ -1050,4 +1050,14 @@ export namespace StageManager {
   export function preAlignAllSelected() {
     StageAutoAlignManager.preAlignAllSelected();
   }
+
+  export function autoLayoutFastTreeMode() {
+    const entities = getSelectedEntities();
+    for (const entity of entities) {
+      if (entity instanceof ConnectableEntity) {
+        StageAutoAlignManager.autoLayoutSelectedFastTreeMode(entity);
+        return;
+      }
+    }
+  }
 }

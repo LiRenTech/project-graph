@@ -28,6 +28,7 @@ import {
   Tag,
   Trash2,
   RefreshCcw,
+  Network,
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
@@ -484,6 +485,13 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           icon={<RefreshCcw />}
           handleFunction={() => {
             StageManager.refreshSelected();
+          }}
+        />
+        <ToolbarItem
+          description="自动布局（选中的唯一节点必须是树形结构的根节点）"
+          icon={<Network />}
+          handleFunction={() => {
+            StageManager.autoLayoutFastTreeMode();
           }}
         />
       </Box>
