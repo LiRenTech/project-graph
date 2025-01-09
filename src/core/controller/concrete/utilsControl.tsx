@@ -8,6 +8,7 @@ import { StageManager } from "../../stage/stageManager/StageManager";
 import { Stage } from "../../stage/Stage";
 import { EntityCreateLineEffect } from "../../effect/concrete/EntityCreateLineEffect";
 import { isDesktop } from "../../../utils/platform";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 
 /**
  * 可能有多个控制器公用同一个代码，
@@ -34,7 +35,7 @@ export function editNode(clickedNode: TextNode) {
     {
       fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
       backgroundColor: "transparent",
-      color: "white",
+      color: StageStyleManager.currentStyle.StageObjectBorderColor.toString(),
       outline: "none",
       marginTop: -8 * Camera.currentScale + "px",
       width: "100vw",

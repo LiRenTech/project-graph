@@ -750,6 +750,7 @@ export namespace Renderer {
       inputElement.style.position = "fixed";
       inputElement.style.top = `${location.y}px`;
       inputElement.style.left = `${location.x}px`;
+      inputElement.id = "input-element";
       Object.assign(inputElement.style, style);
       document.body.appendChild(inputElement);
       inputElement.focus();
