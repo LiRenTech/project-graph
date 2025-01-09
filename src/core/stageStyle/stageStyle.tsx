@@ -41,6 +41,7 @@ export class StageStyle {
     style.SelectRectangleBorderColor = new Color(255, 255, 255, 0.5);
     style.SelectRectangleFillColor = new Color(255, 255, 255, 0.08);
     style.StageObjectBorderColor = new Color(204, 204, 204);
+    style.CollideBoxPreSelectedColor = new Color(0, 255, 0, 0.2);
     style.CollideBoxSelectedColor = new Color(34, 217, 110);
     style.NodeDetailsTextColor = new Color(255, 255, 255);
 
@@ -56,6 +57,7 @@ export class StageStyle {
     style.SelectRectangleBorderColor = new Color(0, 0, 0, 0.5);
     style.SelectRectangleFillColor = new Color(0, 0, 0, 0.08);
     style.StageObjectBorderColor = new Color(0, 0, 0);
+    style.CollideBoxPreSelectedColor = new Color(0, 255, 0, 0.2);
     style.CollideBoxSelectedColor = new Color(34, 217, 110);
     style.NodeDetailsTextColor = new Color(0, 0, 0);
     return style;

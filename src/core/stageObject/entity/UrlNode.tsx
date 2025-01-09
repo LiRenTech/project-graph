@@ -1,9 +1,11 @@
 import { Serialized } from "../../../types/node";
+import { getTextSize } from "../../../utils/font";
 import { Color } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
 import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
+import { Renderer } from "../../render/canvas2d/renderer";
 import { Stage } from "../../stage/Stage";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { ConnectableEntity } from "../StageObject";
@@ -23,9 +25,34 @@ export class UrlNode extends ConnectableEntity {
 
   static width: number = 300;
   static height: number = 150;
+  /** 上半部分的高度 */
+  static titleHeight: number = 100;
+  /** 是否正在编辑标题 */
+  isEditingTitle: boolean = false;
+  /** 鼠标是否悬浮在标题上 */
+  isMouseHoverTitle: boolean = false;
+  /** 鼠标是否悬浮在url上 */
+  isMouseHoverUrl: boolean = false;
 
   get geometryCenter(): Vector {
     return this.collisionBox.getRectangle().center;
+  }
+  /**
+   * 获取上方标题部分的矩形区域
+   */
+  get titleRectangle(): Rectangle {
+    const rect = this.rectangle;
+    return new Rectangle(
+      rect.location,
+      new Vector(rect.size.x, UrlNode.titleHeight),
+    );
+  }
+  get urlRectangle(): Rectangle {
+    const rect = this.rectangle;
+    return new Rectangle(
+      rect.location.add(new Vector(0, UrlNode.titleHeight)),
+      new Vector(rect.size.x, UrlNode.height - UrlNode.titleHeight),
+    );
   }
   /**
    * 只读，获取节点的矩形
@@ -81,5 +108,18 @@ export class UrlNode extends ConnectableEntity {
 
   rename(title: string): void {
     this.title = title;
+    this.adjustSizeByText();
+  }
+
+  private adjustSizeByText() {
+    const newSize = getTextSize(this.title, Renderer.FONT_SIZE).add(
+      Vector.same(Renderer.NODE_PADDING).multiply(2),
+    );
+    newSize.x = Math.max(newSize.x, UrlNode.width);
+    newSize.y = Math.max(newSize.y, UrlNode.height);
+    this.collisionBox.shapeList[0] = new Rectangle(
+      this.rectangle.location.clone(),
+      newSize,
+    );
   }
 }

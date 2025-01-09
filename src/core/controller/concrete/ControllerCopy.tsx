@@ -150,6 +150,7 @@ async function readClipboardItems(mouseLocation: Vector) {
           if (PathString.isValidURL(text)) {
             // 是URL类型
             const urlNode = new UrlNode({
+              title: "链接",
               uuid: uuidv4(),
               url: text,
               location: [mouseLocation.x, mouseLocation.y],

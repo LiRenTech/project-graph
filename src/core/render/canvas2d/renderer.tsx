@@ -736,6 +736,11 @@ export namespace Renderer {
 
   /**
    * 创建一个输入框
+   * @param location 输入框的左上角位置
+   * @param defaultValue 一开始的默认文本
+   * @param onChange 输入框文本改变函数
+   * @param style 输入框样式
+   * @returns
    */
   export function input(
     location: Vector,

@@ -22,6 +22,7 @@ import {
   LogicNodeNameToRenderNameMap,
 } from "../../../stage/autoComputeEngine/logicNodeNameEnum";
 import { UrlNode } from "../../../stageObject/entity/UrlNode";
+import { UrlNodeRenderer } from "./urlNode/urlNodeRenderer";
 
 /**
  * 处理节点相关的绘制
@@ -45,7 +46,7 @@ export namespace EntityRenderer {
     } else if (entity instanceof ImageNode) {
       renderImageNode(entity);
     } else if (entity instanceof UrlNode) {
-      renderUrlNode(entity);
+      UrlNodeRenderer.render(entity);
     }
     // details右上角小按钮
     EntityDetailsButtonRenderer(entity);
@@ -256,45 +257,5 @@ export namespace EntityRenderer {
       );
     }
     renderEntityDetails(imageNode);
-  }
-
-  function renderUrlNode(urlNode: UrlNode) {
-    if (urlNode.isSelected) {
-      // 在外面增加一个框
-      CollisionBoxRenderer.render(
-        urlNode.collisionBox,
-        StageStyleManager.currentStyle.CollideBoxSelectedColor,
-      );
-    }
-    // 节点身体矩形
-    RenderUtils.renderRect(
-      new Rectangle(
-        Renderer.transformWorld2View(urlNode.rectangle.location),
-        urlNode.rectangle.size.multiply(Camera.currentScale),
-      ),
-      urlNode.color,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
-      2 * Camera.currentScale,
-      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
-    );
-    // 绘制标题
-    RenderUtils.renderText(
-      urlNode.title,
-      Renderer.transformWorld2View(
-        urlNode.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
-      ),
-      Renderer.FONT_SIZE * Camera.currentScale,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
-    );
-    // 绘制url
-    RenderUtils.renderText(
-      urlNode.url,
-      Renderer.transformWorld2View(
-        urlNode.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
-      ),
-      Renderer.FONT_SIZE * 0.5 * Camera.currentScale,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
-    );
-    renderEntityDetails(urlNode);
   }
 }

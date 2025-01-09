@@ -2,9 +2,9 @@ import { Vector } from "../../dataStruct/Vector";
 import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
-import { ControllerClass } from "../ControllerClass";
 import { TextNode } from "../../stageObject/entity/TextNode";
-import { editNode } from "./utilsControl";
+import { ControllerClass } from "../ControllerClass";
+import { editTextNode } from "./utilsControl";
 
 /**
  * 纯键盘操作的控制器
@@ -102,7 +102,7 @@ ControllerKeyboardOnly.keydown = async (event: KeyboardEvent) => {
       );
       if (!selectedNode) return;
       // 编辑节点
-      editNode(selectedNode);
+      editTextNode(selectedNode);
     }
   } else {
     // 移动框

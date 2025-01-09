@@ -1,14 +1,15 @@
+import { isDesktop } from "../../../utils/platform";
 import { Vector } from "../../dataStruct/Vector";
-import { TextNode } from "../../stageObject/entity/TextNode";
+import { EntityCreateLineEffect } from "../../effect/concrete/EntityCreateLineEffect";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Camera } from "../../stage/Camera";
-import { Controller } from "../Controller";
-import { Entity } from "../../stageObject/StageObject";
-import { StageManager } from "../../stage/stageManager/StageManager";
 import { Stage } from "../../stage/Stage";
-import { EntityCreateLineEffect } from "../../effect/concrete/EntityCreateLineEffect";
-import { isDesktop } from "../../../utils/platform";
+import { StageManager } from "../../stage/stageManager/StageManager";
+import { TextNode } from "../../stageObject/entity/TextNode";
+import { UrlNode } from "../../stageObject/entity/UrlNode";
+import { Entity } from "../../stageObject/StageObject";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { Controller } from "../Controller";
 
 /**
  * 可能有多个控制器公用同一个代码，
@@ -19,7 +20,7 @@ import { StageStyleManager } from "../../stageStyle/StageStyleManager";
  * 编辑节点
  * @param clickedNode
  */
-export function editNode(clickedNode: TextNode) {
+export function editTextNode(clickedNode: TextNode) {
   Controller.isCameraLocked = true;
 
   // 编辑节点
@@ -42,6 +43,32 @@ export function editNode(clickedNode: TextNode) {
     },
   ).then(() => {
     clickedNode!.isEditing = false;
+    Controller.isCameraLocked = false;
+  });
+}
+
+export function editUrlNodeTitle(clickedUrlNode: UrlNode) {
+  Controller.isCameraLocked = true;
+  // 编辑节点
+  clickedUrlNode.isEditingTitle = true;
+  Renderer.input(
+    Renderer.transformWorld2View(clickedUrlNode.rectangle.location).add(
+      Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
+    ),
+    clickedUrlNode.title,
+    (text) => {
+      clickedUrlNode?.rename(text);
+    },
+    {
+      fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
+      backgroundColor: "transparent",
+      color: StageStyleManager.currentStyle.StageObjectBorderColor.toString(),
+      outline: "none",
+      marginTop: -8 * Camera.currentScale + "px",
+      width: "100vw",
+    },
+  ).then(() => {
+    clickedUrlNode!.isEditingTitle = false;
     Controller.isCameraLocked = false;
   });
 }
@@ -122,6 +149,6 @@ function textNodeInEditModeByUUID(uuid: string) {
   // 整特效
   Stage.effects.push(EntityCreateLineEffect.from(rect));
   if (isDesktop) {
-    editNode(createNode);
+    editTextNode(createNode);
   }
 }
