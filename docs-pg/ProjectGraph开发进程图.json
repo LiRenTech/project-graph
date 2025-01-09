@@ -1591,7 +1591,7 @@
       "text": "section自动命名设置",
       "uuid": "de3e262d-03ed-4a5f-a52c-d3cc05c4d730",
       "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {

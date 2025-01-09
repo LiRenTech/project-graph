@@ -23,6 +23,7 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
   const clickedEntity =
     StageManager.findConnectableEntityByLocation(pressWorldLocation);
   if (clickedEntity !== null) {
+    console.log("clickedEntity", clickedEntity);
     Controller.isMovingEntity = true;
     if (clickedEntity && !clickedEntity.isSelected) {
       StageManager.getEntities().forEach((entity) => {
@@ -68,6 +69,7 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
     StageManager.moveSelectedSections(diffLocation);
     StageManager.moveSelectedConnectPoints(diffLocation);
     StageManager.moveSelectedImageNodes(diffLocation);
+    StageManager.moveSelectedUrlNodes(diffLocation);
 
     // 预瞄反馈
     if (Stage.enableDragAutoAlign) {

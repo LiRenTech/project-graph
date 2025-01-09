@@ -13,6 +13,7 @@ import { ConnectPoint } from "./stageObject/entity/ConnectPoint";
 import { ImageNode } from "./stageObject/entity/ImageNode";
 import { Section } from "./stageObject/entity/Section";
 import { TextNode } from "./stageObject/entity/TextNode";
+import { UrlNode } from "./stageObject/entity/UrlNode";
 
 /**
  * 管理最近打开的文件列表
@@ -173,6 +174,8 @@ export namespace RecentFileManager {
         StageManager.addConnectPoint(new ConnectPoint(entity));
       } else if (entity.type === "core:image_node") {
         StageManager.addImageNode(new ImageNode(entity));
+      } else if (entity.type === "core:url_node") {
+        StageManager.addUrlNode(new UrlNode(entity));
       } else {
         console.warn("加载文件时，出现未知的实体类型：" + entity);
       }

@@ -42,6 +42,13 @@ export namespace Serialized {
     scale: number;
     type: "core:image_node";
   };
+  export type UrlNode = Entity & {
+    url: string;
+    title: string;
+    size: Vector;
+    color: Color;
+    type: "core:url_node";
+  };
   export type Edge = StageObject & {
     type: "core:edge";
     source: string;
@@ -51,7 +58,7 @@ export namespace Serialized {
 
   export type File = {
     version: typeof StageDumper.latestVersion;
-    nodes: (Node | Section | ConnectPoint | ImageNode)[];
+    nodes: (Node | Section | ConnectPoint | ImageNode | UrlNode)[];
     edges: Edge[];
     tags: string[];
   };

@@ -11,6 +11,7 @@ import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
+import { UrlNode } from "../../stageObject/entity/UrlNode";
 import {
   Association,
   ConnectableEntity,
@@ -84,6 +85,9 @@ export namespace StageManager {
       .valuesToArray()
       .filter((node) => node instanceof ConnectPoint);
   }
+  export function getUrlNodes(): UrlNode[] {
+    return entities.valuesToArray().filter((node) => node instanceof UrlNode);
+  }
 
   export function getStageObject(): StageObject[] {
     const result: StageObject[] = [];
@@ -112,6 +116,9 @@ export namespace StageManager {
     entities.deleteValue(node);
   }
   export function deleteOneImage(node: ImageNode) {
+    entities.deleteValue(node);
+  }
+  export function deleteOneUrlNode(node: UrlNode) {
     entities.deleteValue(node);
   }
   export function deleteOneSection(section: Section) {
@@ -173,6 +180,9 @@ export namespace StageManager {
   }
 
   export function addTextNode(node: TextNode) {
+    entities.addValue(node, node.uuid);
+  }
+  export function addUrlNode(node: UrlNode) {
     entities.addValue(node, node.uuid);
   }
   export function addImageNode(node: ImageNode) {
@@ -731,6 +741,10 @@ export namespace StageManager {
   export function moveSelectedImageNodes(delta: Vector) {
     StageEntityMoveManager.moveSelectedImageNodes(delta); // 连续过程，不记录历史，只在结束时记录
   }
+  export function moveSelectedUrlNodes(delta: Vector) {
+    StageEntityMoveManager.moveSelectedUrlNodes(delta); // 连续过程，不记录历史，只在结束时记录
+  }
+
   export function moveNodesWithChildren(delta: Vector) {
     StageEntityMoveManager.moveNodesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录
   }

@@ -6,6 +6,7 @@ import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../../stageObject/entity/ImageNode";
 import { Section } from "../../../stageObject/entity/Section";
 import { TextNode } from "../../../stageObject/entity/TextNode";
+import { UrlNode } from "../../../stageObject/entity/UrlNode";
 import { Entity } from "../../../stageObject/StageObject";
 import { Stage } from "../../Stage";
 import { StageManager } from "../StageManager";
@@ -24,6 +25,8 @@ export namespace StageDeleteManager {
         deleteConnectPoint(entity);
       } else if (entity instanceof ImageNode) {
         deleteImageNode(entity);
+      } else if (entity instanceof UrlNode) {
+        deleteUrlNode(entity);
       }
     }
     // StageManager.updateReferences();
@@ -64,6 +67,14 @@ export namespace StageDeleteManager {
       deleteEntityAfterClearEdges(entity);
     }
   }
+  function deleteUrlNode(entity: UrlNode) {
+    if (StageManager.getUrlNodes().includes(entity)) {
+      StageManager.deleteOneUrlNode(entity);
+      // 删除所有相关的边
+      deleteEntityAfterClearEdges(entity);
+    }
+  }
+
   function deleteConnectPoint(entity: ConnectPoint) {
     // 先判断这个node是否在nodes里
     if (StageManager.getConnectPoints().includes(entity)) {

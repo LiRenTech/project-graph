@@ -4,6 +4,7 @@ import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../stageObject/entity/ImageNode";
 import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
+import { UrlNode } from "../stageObject/entity/UrlNode";
 import { Entity } from "../stageObject/StageObject";
 import { StageManager } from "./stageManager/StageManager";
 
@@ -78,6 +79,19 @@ export namespace StageDumper {
     };
   }
 
+  export function dumpUrlNode(urlNode: UrlNode): Serialized.UrlNode {
+    return {
+      location: [urlNode.rectangle.location.x, urlNode.rectangle.location.y],
+      size: [urlNode.rectangle.size.x, urlNode.rectangle.size.y],
+      url: urlNode.url,
+      title: urlNode.title,
+      uuid: urlNode.uuid,
+      type: "core:url_node",
+      details: urlNode.details,
+      color: urlNode.color && urlNode.color.toArray(),
+    };
+  }
+
   /**
    * 将整个舞台的全部信息转化为序列化JSON对象
    * @returns
@@ -88,6 +102,7 @@ export namespace StageDumper {
       | Serialized.Node
       | Serialized.ConnectPoint
       | Serialized.ImageNode
+      | Serialized.UrlNode
     )[] = StageManager.getTextNodes().map((node) => dumpTextNode(node));
 
     nodes.push(
@@ -101,6 +116,7 @@ export namespace StageDumper {
     nodes.push(
       ...StageManager.getImageNodes().map((node) => dumpImageNode(node)),
     );
+    nodes.push(...StageManager.getUrlNodes().map((node) => dumpUrlNode(node)));
 
     return {
       version: latestVersion,
@@ -121,6 +137,7 @@ export namespace StageDumper {
       | Serialized.Node
       | Serialized.ConnectPoint
       | Serialized.ImageNode
+      | Serialized.UrlNode
     )[] = nodes
       .filter((entity) => entity instanceof TextNode)
       .map((node) => dumpTextNode(node));
@@ -135,6 +152,16 @@ export namespace StageDumper {
       ...nodes
         .filter((entity) => entity instanceof ConnectPoint)
         .map((connectPoint) => dumpConnectPoint(connectPoint)),
+    );
+    selectedNodes = selectedNodes.concat(
+      ...nodes
+        .filter((entity) => entity instanceof ImageNode)
+        .map((node) => dumpImageNode(node)),
+    );
+    selectedNodes = selectedNodes.concat(
+      ...nodes
+        .filter((entity) => entity instanceof UrlNode)
+        .map((node) => dumpUrlNode(node)),
     );
 
     // 根据选中的实体，找到涉及的边
