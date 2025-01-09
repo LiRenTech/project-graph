@@ -28,7 +28,7 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --vp-font-family-base: "Misans", -apple-system, system-ui, sans-serif;
 
   // 透明侧边栏
-  --vp-sidebar-bg-color: transparent;
+  --vp-sidebar-bg-color: #fff;
 
   // 自定义配色
   --vp-c-bg: #ffffff;
@@ -43,6 +43,7 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --vp-button-alt-active-bg: var(--vp-button-alt-bg);
 
   &.dark {
+    --vp-sidebar-bg-color: #000;
     --vp-c-bg: #000;
     --vp-c-bg-alt: #090909;
     --vp-c-bg-elv: #090909;
