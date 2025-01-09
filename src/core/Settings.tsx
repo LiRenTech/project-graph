@@ -34,6 +34,7 @@ export namespace Settings {
     isEnableEntityCollision: boolean;
     // 自动化相关
     autoNamerTemplate: string;
+    autoNamerSectionTemplate: string;
     autoOpenPath: string; // 废弃
     autoSaveWhenClose: boolean;
     autoSave: boolean;
@@ -89,6 +90,7 @@ export namespace Settings {
     isEnableEntityCollision: false,
     // 自动相关
     autoNamerTemplate: "...",
+    autoNamerSectionTemplate: "Section_{{i}}",
     autoOpenPath: "", // 废弃
     autoSaveWhenClose: false,
     autoSave: true,

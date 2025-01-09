@@ -13,6 +13,7 @@ import {
   MarkdownNode,
   parseMarkdownToJSON,
 } from "../../../../utils/markdownParse";
+import { StageManagerUtils } from "./StageManagerUtils";
 
 /**
  * 包含增加节点的方法
@@ -95,38 +96,10 @@ export namespace StageNodeAdder {
 
   async function getAutoName(): Promise<string> {
     let template = await Settings.get("autoNamerTemplate");
-    if (template.includes("{{i}}")) {
-      let i = 0;
-      while (true) {
-        const name = template.replace("{{i}}", i.toString());
-        let isConflict = false;
-        for (const node of StageManager.getTextNodes()) {
-          if (node.text === name) {
-            i++;
-            isConflict = true;
-            continue;
-          }
-        }
-        if (!isConflict) {
-          break;
-        }
-      }
-      template = template.replaceAll("{{i}}", i.toString());
-    }
-    if (template.includes("{{date}}")) {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth() + 1;
-      const date = now.getDate();
-      template = template.replaceAll("{{date}}", `${year}-${month}-${date}`);
-    }
-    if (template.includes("{{time}}")) {
-      const now = new Date();
-      const hour = now.getHours();
-      const minute = now.getMinutes();
-      const second = now.getSeconds();
-      template = template.replaceAll("{{time}}", `${hour}:${minute}:${second}`);
-    }
+    template = StageManagerUtils.replaceAutoNameTemplate(
+      template,
+      StageManager.getTextNodes()[0],
+    );
     return template;
   }
 

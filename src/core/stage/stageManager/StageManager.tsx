@@ -24,6 +24,7 @@ import { StageAutoAlignManager } from "./concreteMethods/StageAutoAlignManager";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager";
 import { StageGeneratorAI } from "./concreteMethods/StageGeneratorAI";
+import { StageManagerUtils } from "./concreteMethods/StageManagerUtils";
 import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
 import { StageNodeColorManager } from "./concreteMethods/StageNodeColorManager";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
@@ -916,7 +917,7 @@ export namespace StageManager {
   }
 
   /** 将多个实体打包成一个section，并添加到舞台中 */
-  export function packEntityToSection(addEntities: Entity[]) {
+  export async function packEntityToSection(addEntities: Entity[]) {
     if (addEntities.length === 0) {
       return;
     }
@@ -956,6 +957,10 @@ export namespace StageManager {
       goOutSection(addEntities, fatherSection);
     }
     const section = Section.fromEntities(addEntities);
+    section.text = StageManagerUtils.replaceAutoNameTemplate(
+      await Settings.get("autoNamerSectionTemplate"),
+      section,
+    );
     entities.addValue(section, section.uuid);
     for (const fatherSection of firstParents) {
       goInSection([section], fatherSection);
@@ -964,7 +969,7 @@ export namespace StageManager {
   }
 
   /** 将选中的实体打包成一个section，并添加到舞台中 */
-  export function packEntityToSectionBySelected() {
+  export async function packEntityToSectionBySelected() {
     const selectedNodes = StageManager.getSelectedEntities();
     if (selectedNodes.length === 0) {
       return;

@@ -100,7 +100,7 @@ export class Section extends ConnectableEntity {
   }
 
   /**
-   * 根据多个实体创建节点
+   * 根据多个实体创建Section
    * @param entities
    */
   static fromEntities(entities: Entity[]): Section {

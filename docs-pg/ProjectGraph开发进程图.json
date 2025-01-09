@@ -1537,7 +1537,7 @@
       "text": "增加section留白范围",
       "uuid": "3e87a783-83fd-455d-821c-14c002c097cd",
       "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {
