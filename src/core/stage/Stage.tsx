@@ -3,7 +3,6 @@ import { family } from "@tauri-apps/plugin-os";
 import { Serialized } from "../../types/node";
 import { PathString } from "../../utils/pathString";
 import { Controller } from "../controller/Controller";
-import { ControllerGamepad } from "../controller/ControllerGamepad";
 import { Line } from "../dataStruct/shape/Line";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
@@ -14,11 +13,11 @@ import { Edge } from "../stageObject/association/Edge";
 import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { ConnectableEntity, Entity } from "../stageObject/StageObject";
+import { autoComputeEngineTick } from "./autoComputeEngine/mainTick";
+import { autoLayoutMainTick } from "./autoLayoutEngine/mainTick";
 import { StageDumper } from "./StageDumper";
 import { StageManager } from "./stageManager/StageManager";
 import { StageSaveManager } from "./StageSaveManager";
-import { autoComputeEngineTick } from "./autoComputeEngine/mainTick";
-import { autoLayoutMainTick } from "./autoLayoutEngine/mainTick";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -195,8 +194,6 @@ export namespace Stage {
   // eslint-disable-next-line prefer-const
   export let draggingLocation = Vector.getZero();
 
-  let controllerGamepad: ControllerGamepad | null = null;
-
   /**
    * 自动保存是否处于暂停状态
    * 主要用于防止自动保存出bug，产生覆盖文件的问题
@@ -236,10 +233,6 @@ export namespace Stage {
     }
     // 清理过时特效
     effects = effects.filter((effect) => !effect.timeProgress.isFull);
-
-    if (controllerGamepad) {
-      controllerGamepad.tick();
-    }
 
     // 计算引擎
     autoComputeEngineTick();
@@ -283,7 +276,6 @@ export namespace Stage {
     Settings.watch("enableDragAutoAlign", (value) => {
       enableDragAutoAlign = value;
     });
-    controllerGamepad = new ControllerGamepad();
   }
 
   // private
