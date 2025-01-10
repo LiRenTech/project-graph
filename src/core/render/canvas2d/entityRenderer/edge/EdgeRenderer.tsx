@@ -2,7 +2,9 @@ import { Color } from "../../../../dataStruct/Color";
 
 import { Vector } from "../../../../dataStruct/Vector";
 import { Settings } from "../../../../Settings";
+import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Edge } from "../../../../stageObject/association/Edge";
+import { Section } from "../../../../stageObject/entity/Section";
 
 import { ConnectableEntity } from "../../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
@@ -87,6 +89,28 @@ export namespace EdgeRenderer {
         edge.collisionBox,
         new Color(255, 255, 0, 0.5),
       );
+    }
+  }
+
+  /**
+   * 当一个内部可连接实体被外部连接但它的父级section折叠了
+   * 通过这个函数能获取它的最小非折叠父级
+   * 可以用于连线的某一端被折叠隐藏了的情况
+   * @param innerEntity
+   */
+  export function getMinNonCollapseParentSection(
+    innerEntity: ConnectableEntity,
+  ): Section {
+    const father = StageManager.SectionOptions.getFatherSections(innerEntity);
+    if (father.length === 0) {
+      // 直接抛出错误
+      throw new Error("Can't find parent section");
+    }
+    const minSection = father[0];
+    if (minSection.isHiddenBySectionCollapse) {
+      return getMinNonCollapseParentSection(minSection);
+    } else {
+      return minSection;
     }
   }
 
