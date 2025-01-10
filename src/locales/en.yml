@@ -79,6 +79,10 @@ settings:
     options:
       black: Dracula Dark Theme
       white: Paper White Theme
+  isRenderCenterPointer:
+    title: 显示中心十字准星
+    description: |
+      开启后，画布中心会显示一个十字准星，用于用于指示快捷键创建节点的位置
   lineStyle:
     title: Line Style
     options:
@@ -125,6 +129,22 @@ settings:
       When taking screenshots for feedback, enabling this option will replace all Chinese characters with "好" to protect privacy.
       This is only a visual replacement and will not affect the actual data.
       You can turn it off and restore it after providing feedback.
+  limitCameraInCycleSpace:
+    title: 开启循环空间限制摄像机移动
+    description: |
+      开启后，摄像机只能在一个矩形区域内移动
+      可以防止摄像机移动到很远的地方迷路
+      该矩形区域会形成一个循环空间，类似于无边贪吃蛇游戏中的地图
+      走到最上面会回到最下面，走到最左边会回到最右边
+      注意：该功能还在实验阶段
+  cameraCycleSpaceSizeX:
+    title: 循环空间宽度
+    description: |
+      循环空间的宽度，单位为像素
+  cameraCycleSpaceSizeY:
+    title: 循环空间高度
+    description: |
+      循环空间的高度，单位为像素
   renderEffect:
     title: Rendering Effect
     description: Whether to render special effects. If the application is lagging, you can turn this off.
@@ -146,6 +166,14 @@ settings:
       Enter `{{date}}` to automatically replace with the current date. The date will be updated automatically when you double-click to create a new node.
       Enter `{{time}}` to automatically replace with the current time. The time will be updated automatically when you double-click to create a new node.
       You can combine them, for example, `{{i}}-{{date}}-{{time}}`.
+  autoNamerSectionTemplate:
+    title: 自动命名分组模板
+    description: |
+      输入`{{i}}` 代表节点名称会自动替换为编号，双击创建时可以自动累加数字。
+      例如`n{{i}}` 会自动替换为`n1`, `n2`, `n3`...
+      输入`{{date}}` 会自动替换为当前日期，双击创建时可以自动更新日期。
+      输入`{{time}}` 会自动替换为当前时间，双击创建时可以自动更新时间。
+      可以组合使用，例如`{{i}}-{{date}}-{{time}}`
   autoSaveWhenClose:
     title: Automatically save the project file when clicking the close button in the upper right corner of the window
     description: |
@@ -197,6 +225,12 @@ settings:
     description: |
       When enabled, you can use the W S A D keys to move the camera up, down, left, and right.
       When disabled, you can only use the mouse to move the camera, avoiding the endless scroll bug.
+  cameraKeyboardMoveReverse:
+    title: 视角移动键盘反向
+    description: |
+      开启后，W S A D按键的移动视角方向会相反
+      原本的移动逻辑是移动悬浮在画面上的摄像机，但有人会认为是移动画布，这样就反了
+      于是就有了这个选项
   allowAddCycleEdge:
     title: Allow adding self-loops between nodes
     description: |

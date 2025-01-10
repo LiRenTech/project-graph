@@ -76,7 +76,12 @@ pub fn run() {
                 window.open_devtools();
             }
             #[cfg(desktop)]
-            app.handle().plugin(tauri_plugin_cli::init())?;
+            {
+                app.handle().plugin(tauri_plugin_cli::init())?;
+                app.handle().plugin(tauri_plugin_process::init())?;
+                app.handle()
+                    .plugin(tauri_plugin_updater::Builder::new().build())?;
+            }
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![

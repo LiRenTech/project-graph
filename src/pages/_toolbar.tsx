@@ -28,6 +28,7 @@ import {
   Tag,
   Trash2,
   RefreshCcw,
+  Network,
 } from "lucide-react";
 import React from "react";
 import Box from "../components/ui/Box";
@@ -39,11 +40,11 @@ import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
-import { StageSaveManager } from "../core/stage/StageSaveManager";
+// import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { Dialog } from "../utils/dialog";
-import { exists, writeTextFile } from "../utils/fs";
+import { writeTextFile } from "../utils/fs";
 import { Popup } from "../utils/popup";
-import { PathString } from "../utils/pathString";
+// import { PathString } from "../utils/pathString";
 import ColorManagerPanel from "./_color_manager_panel";
 import { ColorManager } from "../core/ColorManager";
 
@@ -162,16 +163,23 @@ function ColorPanel() {
   );
 }
 
+/**
+ * 通过文本来生成节点的面板
+ * @returns
+ */
 function GenerateNodePanel() {
   const [inputValue, setInputValue] = useState("");
   const [indention, setIndention] = useState(4);
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <Input value={inputValue} onChange={setInputValue} multiline />
       <div>
         <span>缩进</span>
         <Input value={indention.toString()} onChange={setIndention} number />
+        <p className="text-xs text-neutral-400">
+          会按照您的缩进等级来生成对应的节点结构
+        </p>
       </div>
       <Button
         onClick={() => {
@@ -179,9 +187,17 @@ function GenerateNodePanel() {
           setInputValue("");
         }}
       >
-        生成
+        生成纯文本节点
       </Button>
-    </>
+      <Button
+        onClick={() => {
+          StageManager.generateNodeByMarkdown(inputValue);
+          setInputValue("");
+        }}
+      >
+        根据markdown生成节点
+      </Button>
+    </div>
   );
 }
 
@@ -306,10 +322,12 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   }, []);
 
   // 一个竖向的工具栏，在页面顶部，右侧显示
+  // z-index: 40; 不写成最大的50，
+  // 因为报错窗口可能会被它遮挡住导致无法在右上角关闭报错窗口
   return (
     <div
       className={cn(
-        "group/wrapper fixed right-0 top-1/2 z-50 -translate-y-1/2 p-8 pl-16",
+        "group/wrapper fixed right-0 top-1/2 z-40 -translate-y-1/2 p-8 pl-16",
         {
           "pointer-events-none": ignoreMouse,
         },
@@ -378,11 +396,11 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<Globe />}
             handleFunction={async () => {
               // 先保存一下
-              if (!StageSaveManager.isSaved()) {
-                await StageSaveManager.saveHandleWithoutCurrentPath(
-                  StageDumper.dump(),
-                );
-              }
+              // if (!StageSaveManager.isSaved()) {
+              //   await StageSaveManager.saveHandleWithoutCurrentPath(
+              //     StageDumper.dump(),
+              //   );
+              // }
               // 打开文件或网页
               openBrowserOrFile();
             }}
@@ -469,6 +487,13 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             StageManager.refreshSelected();
           }}
         />
+        <ToolbarItem
+          description="自动布局（选中的唯一节点必须是树形结构的根节点）"
+          icon={<Network />}
+          handleFunction={() => {
+            StageManager.autoLayoutFastTreeMode();
+          }}
+        />
       </Box>
     </div>
   );
@@ -519,19 +544,22 @@ async function openBrowserOrFile() {
         // 去除前后的引号
         nodeText = nodeText.slice(1, -1);
       }
-      if (PathString.isValidURL(nodeText)) {
-        // 是网址
-        myOpen(nodeText);
-      } else {
-        const isExists = await exists(nodeText);
-        if (isExists) {
-          // 是文件
-          myOpen(nodeText);
-        } else {
-          // 不是网址也不是文件，不做处理
-          Stage.effects.push(new TextRiseEffect("非法文件路径: " + nodeText));
-        }
-      }
+      myOpen(nodeText);
+      // 2025年1月4日——有自动备份功能了，好像不需要再加验证了
+
+      // if (PathString.isValidURL(nodeText)) {
+      //   // 是网址
+      //   myOpen(nodeText);
+      // } else {
+      //   const isExists = await exists(nodeText);
+      //   if (isExists) {
+      //     // 是文件
+      //     myOpen(nodeText);
+      //   } else {
+      //     // 不是网址也不是文件，不做处理
+      //     Stage.effects.push(new TextRiseEffect("非法文件路径: " + nodeText));
+      //   }
+      // }
     }
   }
 }

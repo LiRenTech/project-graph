@@ -1,3 +1,4 @@
+import { NumberFunctions } from "../algorithm/numberFunctions";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
@@ -77,9 +78,12 @@ export namespace Camera {
   export const shakeLocation: Vector = Vector.getZero();
 
   export let allowMoveCameraByWSAD = false;
-
+  export let cameraKeyboardMoveReverse = false;
   /** 是否缩放时根据鼠标位置缩放 */
   export let scaleCameraByMouseLocation = true;
+  export let limitCameraInCycleSpace = false;
+  export let cameraCycleSpaceSizeX = 1000;
+  export let cameraCycleSpaceSizeY = 1000;
 
   // IDEA: 突然有一个好点子
   // 把wsad移动的逻辑改成瞬间爆炸的冲刺一小段距离，而不是改成直接赋予永久的作用力方向然后再撤销
@@ -146,6 +150,19 @@ export namespace Camera {
     if (scaleCameraByMouseLocation) {
       setLocationByOtherLocation(targetLocationByScale, diffViewVector);
     }
+    // 循环空间
+    if (limitCameraInCycleSpace) {
+      dealCycleSpace();
+    }
+  }
+
+  /**
+   * 处理循环空间
+   */
+  function dealCycleSpace() {
+    location.x = NumberFunctions.mod(location.x, cameraCycleSpaceSizeX);
+    location.y = NumberFunctions.mod(location.y, cameraCycleSpaceSizeY);
+    // 限制缩放不能超过循环空间大小
   }
 
   /**
@@ -208,6 +225,18 @@ export namespace Camera {
     });
     Settings.watch("scaleCameraByMouseLocation", (value) => {
       scaleCameraByMouseLocation = value;
+    });
+    Settings.watch("cameraKeyboardMoveReverse", (value) => {
+      cameraKeyboardMoveReverse = value;
+    });
+    Settings.watch("limitCameraInCycleSpace", (value) => {
+      limitCameraInCycleSpace = value;
+    });
+    Settings.watch("cameraCycleSpaceSizeX", (value) => {
+      cameraCycleSpaceSizeX = value;
+    });
+    Settings.watch("cameraCycleSpaceSizeY", (value) => {
+      cameraCycleSpaceSizeY = value;
     });
   }
 

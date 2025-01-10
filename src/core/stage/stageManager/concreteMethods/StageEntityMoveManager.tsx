@@ -79,6 +79,13 @@ export namespace StageEntityMoveManager {
       }
     }
   }
+  export function moveSelectedUrlNodes(delta: Vector) {
+    for (const node of StageManager.getUrlNodes()) {
+      if (node.isSelected) {
+        moveEntityUtils(node, delta);
+      }
+    }
+  }
 
   export function moveNodesWithChildren(delta: Vector) {
     for (const node of StageManager.getTextNodes()) {

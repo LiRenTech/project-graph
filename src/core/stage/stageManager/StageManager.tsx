@@ -11,6 +11,7 @@ import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
+import { UrlNode } from "../../stageObject/entity/UrlNode";
 import {
   Association,
   ConnectableEntity,
@@ -24,6 +25,7 @@ import { StageAutoAlignManager } from "./concreteMethods/StageAutoAlignManager";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager";
 import { StageGeneratorAI } from "./concreteMethods/StageGeneratorAI";
+import { StageManagerUtils } from "./concreteMethods/StageManagerUtils";
 import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
 import { StageNodeColorManager } from "./concreteMethods/StageNodeColorManager";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
@@ -83,6 +85,9 @@ export namespace StageManager {
       .valuesToArray()
       .filter((node) => node instanceof ConnectPoint);
   }
+  export function getUrlNodes(): UrlNode[] {
+    return entities.valuesToArray().filter((node) => node instanceof UrlNode);
+  }
 
   export function getStageObject(): StageObject[] {
     const result: StageObject[] = [];
@@ -111,6 +116,9 @@ export namespace StageManager {
     entities.deleteValue(node);
   }
   export function deleteOneImage(node: ImageNode) {
+    entities.deleteValue(node);
+  }
+  export function deleteOneUrlNode(node: UrlNode) {
     entities.deleteValue(node);
   }
   export function deleteOneSection(section: Section) {
@@ -172,6 +180,9 @@ export namespace StageManager {
   }
 
   export function addTextNode(node: TextNode) {
+    entities.addValue(node, node.uuid);
+  }
+  export function addUrlNode(node: UrlNode) {
     entities.addValue(node, node.uuid);
   }
   export function addImageNode(node: ImageNode) {
@@ -730,6 +741,10 @@ export namespace StageManager {
   export function moveSelectedImageNodes(delta: Vector) {
     StageEntityMoveManager.moveSelectedImageNodes(delta); // 连续过程，不记录历史，只在结束时记录
   }
+  export function moveSelectedUrlNodes(delta: Vector) {
+    StageEntityMoveManager.moveSelectedUrlNodes(delta); // 连续过程，不记录历史，只在结束时记录
+  }
+
   export function moveNodesWithChildren(delta: Vector) {
     StageEntityMoveManager.moveNodesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录
   }
@@ -907,8 +922,16 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
+  export function generateNodeByMarkdown(
+    text: string,
+    location = Camera.location,
+  ) {
+    StageNodeAdder.addNodeByMarkdown(text, location);
+    StageHistoryManager.recordStep();
+  }
+
   /** 将多个实体打包成一个section，并添加到舞台中 */
-  export function packEntityToSection(addEntities: Entity[]) {
+  export async function packEntityToSection(addEntities: Entity[]) {
     if (addEntities.length === 0) {
       return;
     }
@@ -948,6 +971,10 @@ export namespace StageManager {
       goOutSection(addEntities, fatherSection);
     }
     const section = Section.fromEntities(addEntities);
+    section.text = StageManagerUtils.replaceAutoNameTemplate(
+      await Settings.get("autoNamerSectionTemplate"),
+      section,
+    );
     entities.addValue(section, section.uuid);
     for (const fatherSection of firstParents) {
       goInSection([section], fatherSection);
@@ -956,7 +983,7 @@ export namespace StageManager {
   }
 
   /** 将选中的实体打包成一个section，并添加到舞台中 */
-  export function packEntityToSectionBySelected() {
+  export async function packEntityToSectionBySelected() {
     const selectedNodes = StageManager.getSelectedEntities();
     if (selectedNodes.length === 0) {
       return;
@@ -1041,5 +1068,15 @@ export namespace StageManager {
 
   export function preAlignAllSelected() {
     StageAutoAlignManager.preAlignAllSelected();
+  }
+
+  export function autoLayoutFastTreeMode() {
+    const entities = getSelectedEntities();
+    for (const entity of entities) {
+      if (entity instanceof ConnectableEntity) {
+        StageAutoAlignManager.autoLayoutSelectedFastTreeMode(entity);
+        return;
+      }
+    }
   }
 }

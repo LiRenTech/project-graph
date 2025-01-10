@@ -2,10 +2,15 @@ import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { TextNode } from "../../stageObject/entity/TextNode";
+import { UrlNode } from "../../stageObject/entity/UrlNode";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-import { editNode, editNodeDetails } from "./utilsControl";
-
+import {
+  editNodeDetails,
+  editTextNode,
+  editUrlNodeTitle,
+} from "./utilsControl";
+import { open } from "@tauri-apps/plugin-shell";
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
  *
@@ -31,7 +36,33 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
     editNodeDetails(clickedEntity);
   } else {
     if (clickedEntity instanceof TextNode) {
-      editNode(clickedEntity);
+      editTextNode(clickedEntity);
+    } else if (clickedEntity instanceof UrlNode) {
+      const diffNodeLeftTopLocation = pressLocation.subtract(
+        clickedEntity.rectangle.leftTop,
+      );
+      if (diffNodeLeftTopLocation.y < UrlNode.titleHeight) {
+        editUrlNodeTitle(clickedEntity);
+      } else {
+        // 跳转链接
+        open(clickedEntity.url);
+      }
+    }
+  }
+};
+
+ControllerNodeEdit.mouseup = (event: MouseEvent) => {
+  if (event.button !== 0) {
+    return;
+  }
+
+  const pressLocation = Renderer.transformView2World(
+    new Vector(event.clientX, event.clientY),
+  );
+  for (const entity of StageManager.getEntities()) {
+    if (entity.isMouseInDetailsButton(pressLocation)) {
+      editNodeDetails(entity);
+      return;
     }
   }
 };

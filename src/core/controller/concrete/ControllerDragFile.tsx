@@ -69,16 +69,29 @@ ControllerDragFile.drop = (event: DragEvent) => {
     // const firstFile = files[0]; // 获取第一个拖入的文件
     let i = -1;
     for (const file of files) {
-      console.log("filt type", file.type);
+      console.log("filt type:", file.type);
       i++;
       if (file.type.includes("json")) {
         dealJsonFileDrop(file, mouseWorldLocation);
       } else if (file.type.includes("text")) {
-        dealTxtFileDrop(file, mouseWorldLocation);
+        readFileText(file).then((dataString) => {
+          if (file.name.endsWith(".txt")) {
+            StageManager.generateNodeByText(dataString, 1, mouseWorldLocation);
+          } else if (file.name.endsWith(".md")) {
+            StageManager.generateNodeByMarkdown(dataString, mouseWorldLocation);
+          } else {
+            StageManager.generateNodeByText(dataString, 1, mouseWorldLocation);
+          }
+        });
       } else if (file.type.includes("image/png")) {
         console.log("是图片");
         dealPngFileDrop(file, mouseWorldLocation);
       } else {
+        if (file.name.endsWith(".md")) {
+          readFileText(file).then((dataString) => {
+            StageManager.generateNodeByMarkdown(dataString, mouseWorldLocation);
+          });
+        }
         dealUnknownFileDrop(file, mouseWorldLocation, i);
       }
     }
@@ -92,6 +105,24 @@ ControllerDragFile.dragLeave = (event: DragEvent) => {
   Stage.isDraggingFile = false;
 };
 
+function readFileText(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsText(file); // 以文本格式读取文件内容
+    reader.onload = (e) => {
+      const fileContent = e.target?.result; // 读取的文件内容
+      if (typeof fileContent === "string") {
+        resolve(fileContent);
+      } else {
+        reject("文件内容不是string类型");
+      }
+    };
+    reader.onerror = (e) => {
+      reject("文件读取错误:" + e);
+    };
+  });
+}
+
 function dealUnknownFileDrop(
   file: File,
   mouseWorldLocation: Vector,
@@ -104,6 +135,7 @@ function dealUnknownFileDrop(
     location: [mouseWorldLocation.x, mouseWorldLocation.y],
     size: [100, 100],
     color: [0, 0, 0, 0],
+    details: "unknown file type: " + file.type + "。",
   });
   textNode.move(
     new Vector(
@@ -140,40 +172,6 @@ function dealJsonFileDrop(file: File, mouseWorldLocation: Vector) {
     }
   };
 
-  reader.onerror = (e) => {
-    console.error("文件读取错误:", e);
-    Stage.effects.push(new TextRiseEffect("文件读取错误:" + e));
-    Stage.effects.push(new ViewFlashEffect(Color.Red));
-  };
-}
-
-function dealTxtFileDrop(file: File, mouseWorldLocation: Vector) {
-  const reader = new FileReader();
-  reader.readAsText(file); // 以文本格式读取文件内容
-  reader.onload = (e) => {
-    const fileContent = e.target?.result; // 读取的文件内容
-
-    // 在这里处理读取到的内容
-    const dataString = fileContent?.toString();
-    if (dataString === undefined) {
-      console.error("文件内容为空");
-      Stage.effects.push(new TextRiseEffect("文件内容为空"));
-    } else {
-      let yIndex = -1;
-      for (const line of dataString.split("\n")) {
-        yIndex++;
-        const textNode = new TextNode({
-          uuid: uuidv4(),
-          text: line,
-          location: [mouseWorldLocation.x, mouseWorldLocation.y + yIndex * 100],
-          size: [100, 100],
-          color: [0, 0, 0, 0],
-        });
-        StageManager.addTextNode(textNode);
-      }
-      Stage.effects.push(new ViewFlashEffect(Color.White));
-    }
-  };
   reader.onerror = (e) => {
     console.error("文件读取错误:", e);
     Stage.effects.push(new TextRiseEffect("文件读取错误:" + e));

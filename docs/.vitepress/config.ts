@@ -127,6 +127,12 @@ export default defineConfig({
       quote: "若不改航向，持续寻觅，终将抵达彼岸。",
       linkText: "返回主页",
     },
+    sidebarMenuLabel: "导航",
+    darkModeSwitchLabel: "主题",
+    docFooter: {
+      prev: "上一页",
+      next: "下一页",
+    },
   },
   sitemap: {
     hostname: "https://project-graph.top",
@@ -135,6 +141,8 @@ export default defineConfig({
     image: {
       lazyLoading: true,
     },
+    codeCopyButtonTitle: "复制",
+    linkify: true,
   },
   lastUpdated: true,
   cleanUrls: true,
@@ -148,4 +156,5 @@ export default defineConfig({
       },
     ],
   ],
+  lang: "zh-CN",
 });

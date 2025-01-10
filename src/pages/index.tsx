@@ -6,10 +6,11 @@ import { Canvas } from "../core/stage/Canvas";
 import { Stage } from "../core/stage/Stage";
 import { StageStyleManager } from "../core/stageStyle/StageStyleManager";
 import { Dialog } from "../utils/dialog";
-import DetailsEditPanel from "./_details_edit_panel";
+// import DetailsEditPanel from "./_details_edit_panel";
 import HintText from "./_hint_text";
 import SearchingNodePanel from "./_searching_node_panel";
 import Toolbar from "./_toolbar";
+import DetailsEditSidePanel from "./_details_edit_side_panel";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
@@ -94,7 +95,9 @@ export default function Home() {
     <>
       <Toolbar />
       <SearchingNodePanel />
-      <DetailsEditPanel />
+      {/* 这个打算被取代 */}
+      {/* <DetailsEditPanel /> */}
+      <DetailsEditSidePanel />
       <HintText />
       {/* TODO: 下面这个写法有点奇怪 rgba值太长了 */}
       <div

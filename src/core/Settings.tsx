@@ -14,6 +14,7 @@ export namespace Settings {
     // 视觉相关
     lineStyle: "straight" | "bezier" | "vertical";
     theme: "black" | "white"; // 暂无
+    isRenderCenterPointer: boolean;
     showGrid: boolean; // 废弃
     showBackgroundHorizontalLines: boolean;
     showBackgroundVerticalLines: boolean;
@@ -24,12 +25,16 @@ export namespace Settings {
     alwaysShowDetails: boolean;
     protectingPrivacy: boolean;
     useNativeTitleBar: boolean;
+    limitCameraInCycleSpace: boolean;
+    cameraCycleSpaceSizeX: number;
+    cameraCycleSpaceSizeY: number;
     // 性能相关
     historySize: number; // 暂无
     renderEffect: boolean;
     isEnableEntityCollision: boolean;
     // 自动化相关
     autoNamerTemplate: string;
+    autoNamerSectionTemplate: string;
     autoOpenPath: string; // 废弃
     autoSaveWhenClose: boolean;
     autoSave: boolean;
@@ -42,6 +47,7 @@ export namespace Settings {
     enableDragAutoAlign: boolean;
     scaleExponent: number;
     allowMoveCameraByWSAD: boolean;
+    cameraKeyboardMoveReverse: boolean;
     scaleCameraByMouseLocation: boolean;
     allowAddCycleEdge: boolean;
     moveAmplitude: number;
@@ -64,6 +70,7 @@ export namespace Settings {
     // 视觉相关
     lineStyle: "straight",
     theme: "black",
+    isRenderCenterPointer: false,
     showGrid: true,
     showBackgroundHorizontalLines: false,
     showBackgroundVerticalLines: false,
@@ -74,12 +81,16 @@ export namespace Settings {
     alwaysShowDetails: false,
     protectingPrivacy: false,
     useNativeTitleBar: false,
+    limitCameraInCycleSpace: false,
+    cameraCycleSpaceSizeX: 1000,
+    cameraCycleSpaceSizeY: 1000,
     // 性能相关
     historySize: 20,
     renderEffect: true,
     isEnableEntityCollision: false,
     // 自动相关
     autoNamerTemplate: "...",
+    autoNamerSectionTemplate: "Section_{{i}}",
     autoOpenPath: "", // 废弃
     autoSaveWhenClose: false,
     autoSave: true,
@@ -92,6 +103,7 @@ export namespace Settings {
     enableDragAutoAlign: true,
     scaleExponent: 0.11,
     allowMoveCameraByWSAD: false,
+    cameraKeyboardMoveReverse: false,
     scaleCameraByMouseLocation: true,
     allowAddCycleEdge: false,
     moveAmplitude: 2,

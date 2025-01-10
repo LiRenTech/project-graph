@@ -73,13 +73,20 @@ export default function AppMenu({
     } else {
       Dialog.show({
         title: "未保存",
-        content: "是否保存当前文件？",
+        content: "您打算新建一个文件，但当前文件未保存，请选择您的操作",
         buttons: [
           {
             text: "保存",
             onClick: () => {
               onSave();
               onNew();
+            },
+          },
+          {
+            text: "丢弃当前并直接新开",
+            onClick: () => {
+              StageManager.destroy();
+              setFile("Project Graph");
             },
           },
           { text: "取消" },
@@ -486,6 +493,14 @@ export default function AppMenu({
           }}
         >
           废档了，清空
+        </Col>
+        <Col
+          icon={<TestTube2 />}
+          onClick={() => {
+            throw new Error("手动报错");
+          }}
+        >
+          手动报错
         </Col>
       </Row>
     </div>

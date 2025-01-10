@@ -30,7 +30,7 @@ export default function ErrorHandler() {
         <h1 className="text-3xl font-bold text-red-500">未知错误</h1>
         <X
           size={24}
-          className="cursor-pointer text-red-500"
+          className="cursor-pointer text-red-500 hover:rotate-90"
           onClick={() => setShow(false)}
         />
       </div>
@@ -49,10 +49,18 @@ export default function ErrorHandler() {
           </p>
         </div>
         <div>
-          <p className="mt-4 text-lg text-red-300">
+          <div className="mt-4 text-xs text-red-300">
             <FileWarning />
-            {error?.stack}
-          </p>
+            {/* <pre className="cursor-text select-text">{}</pre> */}
+            {error?.stack &&
+              error?.stack.split("\n").map((line, index) => {
+                return (
+                  <p className="mt-1" key={index}>
+                    {line}
+                  </p>
+                );
+              })}
+          </div>
         </div>
       </div>
     </div>

@@ -19,6 +19,12 @@ export default function AutoNamer() {
         placeholder="例如：p{{i}}"
       />
       <SettingField
+        icon={<Tag />}
+        settingKey="autoNamerSectionTemplate"
+        type="text"
+        placeholder="例如：section{{i}}"
+      />
+      <SettingField
         icon={<HardDriveDownload />}
         settingKey="autoSaveWhenClose"
         type="switch"

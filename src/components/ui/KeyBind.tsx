@@ -113,7 +113,7 @@ export default function KeyBind({
           {value.key.length === 0 && !choosing && t("none")}
         </>
       ) : (
-        <>未绑定快捷键，请绑定</>
+        <>{t("none")}</>
       )}
     </Button>
   );

@@ -1,14 +1,20 @@
+import { Dialog } from "../../../../utils/dialog";
 import { NumberFunctions } from "../../../algorithm/numberFunctions";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { EntityAlignEffect } from "../../../effect/concrete/EntityAlignEffect";
 import { RectangleRenderEffect } from "../../../effect/concrete/RectangleRenderEffect";
+import { Renderer } from "../../../render/canvas2d/renderer";
 import { SoundService } from "../../../SoundService";
 import { TextNode } from "../../../stageObject/entity/TextNode";
-import { Entity } from "../../../stageObject/StageObject";
+import { ConnectableEntity, Entity } from "../../../stageObject/StageObject";
+import { autoLayoutFastTreeMode } from "../../autoLayoutEngine/autoLayoutFastTreeMode";
 import { Stage } from "../../Stage";
 import { StageManager } from "../StageManager";
 
+/**
+ * 自动对齐和布局管理器
+ */
 export namespace StageAutoAlignManager {
   /**
    * 吸附函数
@@ -16,9 +22,12 @@ export namespace StageAutoAlignManager {
    */
   export function alignAllSelected() {
     const selectedEntities = StageManager.getSelectedEntities();
-    const otherEntities = StageManager.getEntities().filter(
-      (entity) => !entity.isSelected,
-    );
+    const viewRectangle = Renderer.getCoverWorldRectangle();
+    const otherEntities = StageManager.getEntities()
+      .filter((entity) => !entity.isSelected)
+      .filter((entity) =>
+        entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle),
+      );
     for (const selectedEntity of selectedEntities) {
       if (!(selectedEntity instanceof TextNode)) {
         continue;
@@ -32,11 +41,13 @@ export namespace StageAutoAlignManager {
    * 用于鼠标移动的时候显示对齐的效果
    */
   export function preAlignAllSelected() {
-    console.log("preAlignAllSelected");
     const selectedEntities = StageManager.getSelectedEntities();
-    const otherEntities = StageManager.getEntities().filter(
-      (entity) => !entity.isSelected,
-    );
+    const viewRectangle = Renderer.getCoverWorldRectangle();
+    const otherEntities = StageManager.getEntities()
+      .filter((entity) => !entity.isSelected)
+      .filter((entity) =>
+        entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle),
+      );
     for (const selectedEntity of selectedEntities) {
       if (!(selectedEntity instanceof TextNode)) {
         continue;
@@ -58,11 +69,19 @@ export namespace StageAutoAlignManager {
     // // 只能和一个节点对齐
     // let isHaveAlignTarget = false;
     // 按照与 selectedEntity 的距离排序
-    const sortedOtherEntities = otherEntities.sort((a, b) => {
-      const distanceA = calculateDistance(selectedEntity, a);
-      const distanceB = calculateDistance(selectedEntity, b);
-      return distanceA - distanceB; // 升序排序
-    });
+    const sortedOtherEntities = otherEntities
+      .sort((a, b) => {
+        const distanceA = calculateDistance(selectedEntity, a);
+        const distanceB = calculateDistance(selectedEntity, b);
+        return distanceA - distanceB; // 升序排序
+      })
+      .filter((entity) => {
+        // 排除entity是selectedEntity的父亲Section框
+        // 可以偷个懒，如果检测两个entity具有位置重叠了，那么直接排除过滤掉
+        return !entity.collisionBox
+          .getRectangle()
+          .isCollideWithRectangle(selectedEntity.collisionBox.getRectangle());
+      });
     let isAlign = false;
     // 目前先只做节点吸附
     let xMoveDiff = 0;
@@ -232,5 +251,24 @@ export namespace StageAutoAlignManager {
     const dy = rectA.center.y - rectB.center.y;
 
     return Math.sqrt(dx * dx + dy * dy); // 返回欧几里得距离
+  }
+
+  /**
+   * 自动布局树形结构
+   * @param selectedRootEntity
+   */
+  export function autoLayoutSelectedFastTreeMode(
+    selectedRootEntity: ConnectableEntity,
+  ) {
+    // 检测树形结构
+    if (!StageManager.isTree(selectedRootEntity)) {
+      // 不是树形结构，不做任何处理
+      Dialog.show({
+        title: "提示",
+        content: "选择的节点必须是树形结构的根节点",
+      });
+      return;
+    }
+    autoLayoutFastTreeMode(selectedRootEntity);
   }
 }

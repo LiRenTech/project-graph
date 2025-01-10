@@ -16,4 +16,32 @@ export namespace NumberFunctions {
   ): boolean {
     return Math.abs(number1 - number2) <= tolerance;
   }
+
+  /**
+   * 此函数用于放在循环函数中，生成一个周期震荡的数字
+   * @param maxValue 震荡的最大值
+   * @param minValue 震荡的最小值
+   * @param cycleTime 周期时间，单位为秒
+   */
+  export function sinNumberByTime(
+    maxValue: number,
+    minValue: number,
+    cycleTime: number,
+  ) {
+    const t = performance.now() / 1000;
+    return (
+      Math.sin(((t % cycleTime) * (Math.PI * 2)) / cycleTime) *
+        (maxValue - minValue) +
+      minValue
+    );
+  }
+
+  /**
+   * 此函数为了解决js求余运算变成负数的问题
+   * 可以看成：把一个x值压缩映射到0-y范围内
+   * @param x
+   */
+  export function mod(x: number, y: number): number {
+    return ((x % y) + y) % y;
+  }
 }

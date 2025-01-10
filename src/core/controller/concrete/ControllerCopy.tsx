@@ -14,6 +14,7 @@ import { Entity } from "../../stageObject/StageObject";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { Dialog } from "../../../utils/dialog";
+import { UrlNode } from "../../stageObject/entity/UrlNode";
 
 /**
  * 关于复制相关的功能
@@ -146,21 +147,32 @@ async function readClipboardItems(mouseLocation: Vector) {
           const blob = await item.getType("text/plain"); // 获取文本内容
           // const text = await blob.text();
           const text = await blobToText(blob); // 将 Blob 转换为文本
-
-          const textNode = new TextNode({
-            uuid: uuidv4(),
-            text: text,
-            location: [mouseLocation.x, mouseLocation.y],
-            size: [100, 100],
-            color: [0, 0, 0, 0],
-          });
-          textNode.move(
-            new Vector(
-              -textNode.rectangle.size.x / 2,
-              -textNode.rectangle.size.y / 2,
-            ),
-          );
-          StageManager.addTextNode(textNode);
+          if (PathString.isValidURL(text)) {
+            // 是URL类型
+            const urlNode = new UrlNode({
+              title: "链接",
+              uuid: uuidv4(),
+              url: text,
+              location: [mouseLocation.x, mouseLocation.y],
+            });
+            StageManager.addUrlNode(urlNode);
+          } else {
+            // 只是普通的文本
+            const textNode = new TextNode({
+              uuid: uuidv4(),
+              text: text,
+              location: [mouseLocation.x, mouseLocation.y],
+              size: [100, 100],
+              color: [0, 0, 0, 0],
+            });
+            textNode.move(
+              new Vector(
+                -textNode.rectangle.size.x / 2,
+                -textNode.rectangle.size.y / 2,
+              ),
+            );
+            StageManager.addTextNode(textNode);
+          }
         }
       }
     });

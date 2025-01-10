@@ -100,7 +100,7 @@ export class Section extends ConnectableEntity {
   }
 
   /**
-   * 根据多个实体创建节点
+   * 根据多个实体创建Section
    * @param entities
    */
   static fromEntities(entities: Entity[]): Section {
@@ -129,8 +129,9 @@ export class Section extends ConnectableEntity {
     // 调整展开状态
     const rectangle = Rectangle.getBoundingRectangle(
       this.children.map((child) => child.collisionBox.getRectangle()),
-      15,
+      30,
     );
+    // 留白范围在上面调整
     rectangle.location = rectangle.location.subtract(new Vector(0, 50));
     rectangle.size = rectangle.size.add(new Vector(0, 50));
 
@@ -240,6 +241,10 @@ export class Section extends ConnectableEntity {
     super.collideWithOtherEntity(other);
   }
 
+  /**
+   * 将某个物体 的最小外接矩形的左上角位置 移动到某个位置
+   * @param location
+   */
   moveTo(location: Vector): void {
     const currentLeftTop = this.rectangle.location;
     const delta = location.clone().subtract(currentLeftTop);

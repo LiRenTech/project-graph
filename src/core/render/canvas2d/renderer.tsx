@@ -88,6 +88,7 @@ export namespace Renderer {
   export let isAlwaysShowDetails = false;
   let isRenderEffect = true;
   export let protectingPrivacy = false;
+  let isRenderCenterPointer = true;
 
   // 确保这个函数在软件打开的那一次调用
   export function init() {
@@ -111,6 +112,10 @@ export namespace Renderer {
     );
     Settings.watch("renderEffect", (value) => (isRenderEffect = value));
     Settings.watch("protectingPrivacy", (value) => (protectingPrivacy = value));
+    Settings.watch(
+      "isRenderCenterPointer",
+      (value) => (isRenderCenterPointer = value),
+    );
   }
 
   /**
@@ -123,8 +128,51 @@ export namespace Renderer {
     Camera.frameTick();
     Canvas.ctx.clearRect(0, 0, w, h);
     renderBackground();
+
+    // 渲染舞台要素
+    if (Camera.limitCameraInCycleSpace) {
+      const originCameraLocation = Camera.location.clone();
+      const LimitX = Camera.cameraCycleSpaceSizeX;
+      const LimitY = Camera.cameraCycleSpaceSizeY;
+      for (let yi = -1; yi <= 1; yi++) {
+        for (let xi = -1; xi <= 1; xi++) {
+          Camera.location.x = originCameraLocation.x + xi * LimitX;
+          Camera.location.y = originCameraLocation.y + yi * LimitY;
+          renderStageElements(viewRectangle);
+        }
+      }
+      Camera.location = originCameraLocation;
+      renderCycleSpaceBorder();
+    } else {
+      renderStageElements(viewRectangle);
+    }
+
+    // 不随摄像机移动的渲染要素
+    renderViewElements(viewRectangle);
+  }
+
+  function renderCycleSpaceBorder() {
+    RenderUtils.renderRect(
+      new Rectangle(
+        Vector.getZero(),
+        new Vector(Camera.cameraCycleSpaceSizeX, Camera.cameraCycleSpaceSizeY),
+      ).transformWorld2View(),
+      Color.Transparent,
+      StageStyleManager.currentStyle.SelectRectangleBorderColor,
+      2 * Camera.currentScale,
+    );
+  }
+
+  function renderViewElements(viewRectangle: Rectangle) {
+    renderDraggingFileTips();
+    renderSpecialKeys();
+    renderCenterPointer();
     renderPrivacyBoard(viewRectangle);
     renderViewMoveByClickMiddle(viewRectangle, performance.now());
+    renderDebugDetails();
+  }
+
+  function renderStageElements(viewRectangle: Rectangle) {
     renderEdges(viewRectangle);
     renderEntities(viewRectangle);
     renderTags();
@@ -134,14 +182,49 @@ export namespace Renderer {
     renderCuttingLine();
     renderConnectingLine();
     rendererLayerMovingLine();
-    renderDraggingFileTips();
     renderKeyboardOnly();
     renderClipboard();
-    renderDebugDetails();
-    renderSpecialKeys();
     renderEffects();
+    // renderViewRectangle(viewRectangle);
+  }
+  // 渲染中心准星
+  function renderCenterPointer() {
+    if (!isRenderCenterPointer) {
+      return;
+    }
+    const viewCenterLocation = transformWorld2View(Camera.location);
+    RenderUtils.renderCircle(
+      viewCenterLocation,
+      1,
+      StageStyleManager.currentStyle.GridHeavyColor,
+      Color.Transparent,
+      0,
+    );
+    for (let i = 0; i < 4; i++) {
+      const degrees = i * 90;
+      const shortLineStart = viewCenterLocation.add(
+        new Vector(10, 0).rotateDegrees(degrees),
+      );
+      const shortLineEnd = viewCenterLocation.add(
+        new Vector(20, 0).rotateDegrees(degrees),
+      );
+      RenderUtils.renderSolidLine(
+        shortLineStart,
+        shortLineEnd,
+        StageStyleManager.currentStyle.GridHeavyColor,
+        1,
+      );
+    }
   }
 
+  // function renderViewRectangle(viewRectangle: Rectangle) {
+  //   RenderUtils.renderRect(
+  //     viewRectangle.transformWorld2View(),
+  //     Color.Transparent,
+  //     StageStyleManager.currentStyle.SelectRectangleBorderColor,
+  //     50,
+  //   );
+  // }
   function renderPrivacyBoard(viewRectangle: Rectangle) {
     // 画隐私保护边
     if (protectingPrivacy) {
@@ -375,7 +458,16 @@ export namespace Renderer {
   function renderEntities(viewRectangle: Rectangle) {
     renderedNodes = 0;
     for (const entity of StageManager.getEntities()) {
-      EntityRenderer.renderEntity(entity, viewRectangle);
+      // 视线之外不画
+      if (
+        !Camera.limitCameraInCycleSpace &&
+        !viewRectangle.isCollideWith(entity.collisionBox.getRectangle())
+      ) {
+        continue;
+        // 这里littlefean居然曾经把continue写成return了，
+        // 不知道是一股脑通过代码补全补出来的还是什么原因。
+      }
+      EntityRenderer.renderEntity(entity);
       renderedNodes++;
     }
   }
@@ -383,7 +475,10 @@ export namespace Renderer {
   function renderEdges(viewRectangle: Rectangle) {
     renderedEdges = 0;
     for (const edge of StageManager.getEdges()) {
-      if (!edge.isBodyLineIntersectWithRectangle(viewRectangle)) {
+      if (
+        !Camera.limitCameraInCycleSpace &&
+        !edge.isBodyLineIntersectWithRectangle(viewRectangle)
+      ) {
         continue;
       }
       EdgeRenderer.renderEdge(edge);
@@ -641,6 +736,11 @@ export namespace Renderer {
 
   /**
    * 创建一个输入框
+   * @param location 输入框的左上角位置
+   * @param defaultValue 一开始的默认文本
+   * @param onChange 输入框文本改变函数
+   * @param style 输入框样式
+   * @returns
    */
   export function input(
     location: Vector,
@@ -655,6 +755,7 @@ export namespace Renderer {
       inputElement.style.position = "fixed";
       inputElement.style.top = `${location.y}px`;
       inputElement.style.left = `${location.x}px`;
+      inputElement.id = "input-element";
       Object.assign(inputElement.style, style);
       document.body.appendChild(inputElement);
       inputElement.focus();

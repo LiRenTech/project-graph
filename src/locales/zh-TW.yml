@@ -84,6 +84,10 @@ settings:
       straight: 直線
       bezier: 貝塞爾曲線
       vertical: 垂直折線
+  isRenderCenterPointer:
+    title: 显示中心十字准星
+    description: |
+      开启后，画布中心会显示一个十字准星，用于用于指示快捷键创建节点的位置
   showGrid:
     title: 顯示網格
   showBackgroundHorizontalLines:
@@ -124,6 +128,22 @@ settings:
       用於回饋問題截圖時，開啟此項之後將漢字全部替換成《好》，以保護隱私。
       僅作顯示層面的替換，不會影響真實數據
       回饋完畢後可再關閉，復原
+  limitCameraInCycleSpace:
+    title: 开启循环空间限制摄像机移动
+    description: |
+      开启后，摄像机只能在一个矩形区域内移动
+      可以防止摄像机移动到很远的地方迷路
+      该矩形区域会形成一个循环空间，类似于无边贪吃蛇游戏中的地图
+      走到最上面会回到最下面，走到最左边会回到最右边
+      注意：该功能还在实验阶段
+  cameraCycleSpaceSizeX:
+    title: 循环空间宽度
+    description: |
+      循环空间的宽度，单位为像素
+  cameraCycleSpaceSizeY:
+    title: 循环空间高度
+    description: |
+      循环空间的高度，单位为像素
   renderEffect:
     title: 渲染特效
     description: 是否渲染特效，如果卡頓可以關閉
@@ -146,6 +166,14 @@ settings:
       輸入`{{date}}` 會自動替換為目前日期，雙擊創建時可以自動更新日期。
       輸入`{{time}}` 會自動替換為目前時間，雙擊創建時可以自動更新時間。
       可以組合使用，例如`{{i}}-{{date}}-{{time}}`
+  autoNamerSectionTemplate:
+    title: 自动命名分组模板
+    description: |
+      输入`{{i}}` 代表节点名称会自动替换为编号，双击创建时可以自动累加数字。
+      例如`n{{i}}` 会自动替换为`n1`, `n2`, `n3`...
+      输入`{{date}}` 会自动替换为当前日期，双击创建时可以自动更新日期。
+      输入`{{time}}` 会自动替换为当前时间，双击创建时可以自动更新时间。
+      可以组合使用，例如`{{i}}-{{date}}-{{time}}`
   autoSaveWhenClose:
     title: 點擊視窗右上角關閉按鈕時自動儲存工程檔案
     description: |
@@ -197,6 +225,12 @@ settings:
     description: |
       開啟後，可以使用W S A D按鍵來上下左右移動視角。
       關閉後，只能使用鼠標來移動視角，不會造成無限滾屏的bug。
+  cameraKeyboardMoveReverse:
+    title: 视角移动键盘反向
+    description: |
+      开启后，W S A D按键的移动视角方向会相反
+      原本的移动逻辑是移动悬浮在画面上的摄像机，但有人会认为是移动画布，这样就反了
+      于是就有了这个选项
   allowAddCycleEdge:
     title: 允許在節點之間添加自迴圈
     description: |

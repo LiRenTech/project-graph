@@ -3,12 +3,15 @@ import {
   Blend,
   Bug,
   Columns4,
+  Crosshair,
   Grip,
   Languages,
   ListCollapse,
   Move3d,
   Palette,
+  Ratio,
   Rows4,
+  Scaling,
   Spline,
   VenetianMask,
 } from "lucide-react";
@@ -20,6 +23,11 @@ export default function Visual() {
       <SettingField icon={<Palette />} settingKey="theme" type="select" />
       <SettingField icon={<Spline />} settingKey="lineStyle" type="select" />
       {/* <SettingField icon={<Grid />} settingKey="showGrid" type="switch" /> */}
+      <SettingField
+        icon={<Crosshair />}
+        settingKey="isRenderCenterPointer"
+        type="switch"
+      />
       <SettingField
         icon={<Rows4 />}
         settingKey="showBackgroundHorizontalLines"
@@ -64,6 +72,27 @@ export default function Visual() {
         icon={<AppWindowMac />}
         settingKey="useNativeTitleBar"
         type="switch"
+      />
+      <SettingField
+        icon={<Ratio />}
+        settingKey="limitCameraInCycleSpace"
+        type="switch"
+      />
+      <SettingField
+        icon={<Scaling />}
+        settingKey="cameraCycleSpaceSizeX"
+        type="slider"
+        min={1000}
+        max={10000}
+        step={1000}
+      />
+      <SettingField
+        icon={<Scaling />}
+        settingKey="cameraCycleSpaceSizeY"
+        type="slider"
+        min={1000}
+        max={10000}
+        step={1000}
       />
     </>
   );

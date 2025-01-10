@@ -1,12 +1,17 @@
 import { routes } from "@generouted/react-router";
-import { invoke } from "@tauri-apps/api/core";
-import { getCurrentWindow } from "@tauri-apps/api/window";
 import { getMatches } from "@tauri-apps/plugin-cli";
 import i18next from "i18next";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
 import { PromptManager } from "./core/ai/PromptManager";
+import { ColorManager } from "./core/ColorManager";
+import {
+  addTextNodeByLocation,
+  addTextNodeFromCurrentSelectedNode,
+  editNodeDetailsByKeyboard,
+} from "./core/controller/concrete/utilsControl";
+import { Vector } from "./core/dataStruct/Vector";
 import { TextRiseEffect } from "./core/effect/concrete/TextRiseEffect";
 import { KeyBinds } from "./core/KeyBinds";
 import { LastLaunch } from "./core/LastLaunch";
@@ -27,13 +32,7 @@ import "./index.pcss";
 import "./polyfills/roundRect";
 import { Dialog } from "./utils/dialog";
 import { exists } from "./utils/fs";
-import {
-  addTextNodeByLocation,
-  addTextNodeFromCurrentSelectedNode,
-  editNodeDetailsByKeyboard,
-} from "./core/controller/concrete/utilsControl";
-import { Vector } from "./core/dataStruct/Vector";
-import { ColorManager } from "./core/ColorManager";
+import { isDesktop } from "./utils/platform";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -43,37 +42,25 @@ const el = document.getElementById("root")!;
 // 在这里看着清爽一些，像一个列表清单一样。也方便调整顺序
 
 (async () => {
-  try {
-    const t1 = performance.now();
-    await Promise.all([
-      Settings.init(),
-      RecentFileManager.init(),
-      LastLaunch.init(),
-      StartFilesManager.init(),
-      PromptManager.init(),
-      KeyBinds.init(),
-      ColorManager.init(),
-    ]);
-    // 这些东西依赖上面的东西，所以单独一个Promise.all
-    await Promise.all([
-      loadLanguageFiles(),
-      loadSyncModules(),
-      loadStartFile(),
-    ]);
-    await renderApp();
-    console.log(`应用初始化耗时：${performance.now() - t1}ms`);
-    // 开始注册快捷键
-    loadKeyBinds();
-  } catch (e) {
-    console.error(e);
-    await getCurrentWindow().setDecorations(true);
-    await invoke("devtools");
-    document.body.style.backgroundColor = "black";
-    document.body.style.color = "white";
-    document.body.style.userSelect = "auto";
-    document.body.innerHTML = `应用初始化失败，请截图此窗口，然后加入QQ群1006956704反馈或在GitHub上提交issue(https://github.com/LiRenTech/project-graph/issues) ${String(e)}`;
-    return;
-  }
+  const t1 = performance.now();
+  await Promise.all([
+    Settings.init(),
+    RecentFileManager.init(),
+    LastLaunch.init(),
+    StartFilesManager.init(),
+    PromptManager.init(),
+    KeyBinds.init(),
+    ColorManager.init(),
+  ]);
+  // 这些东西依赖上面的东西，所以单独一个Promise.all
+  await Promise.all([
+    loadLanguageFiles(),
+    loadSyncModules(),
+    loadStartFile(),
+    registerKeyBinds(),
+  ]);
+  await renderApp();
+  console.log(`应用初始化耗时：${performance.now() - t1}ms`);
 })();
 
 /** 加载同步初始化的模块 */
@@ -93,237 +80,248 @@ async function loadSyncModules() {
 /**
  * 注册所有快捷键
  */
-function loadKeyBinds() {
+async function registerKeyBinds() {
   // 开始注册快捷键
-  KeyBinds.create("test", "t", {
-    control: true,
-    alt: true,
-    shift: true,
-  }).then((bind) =>
-    bind.down(() =>
-      Dialog.show({
-        title: "自定义快捷键测试",
-        content:
-          "您按下了自定义的测试快捷键，这一功能是测试开发所用，可在设置中更改触发方式",
-      }),
-    ),
-  );
-  KeyBinds.create("undo", "z", {
-    control: true,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      StageHistoryManager.undo();
+  console.log("注册快捷键");
+  (
+    await KeyBinds.create("test", "t", {
+      control: true,
+      alt: true,
+      shift: true,
+    })
+  ).down(() =>
+    Dialog.show({
+      title: "自定义快捷键测试",
+      content:
+        "您按下了自定义的测试快捷键，这一功能是测试开发所用，可在设置中更改触发方式",
     }),
   );
-  KeyBinds.create("redo", "y", {
-    control: true,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      StageHistoryManager.redo();
-    }),
-  );
-  KeyBinds.create("reload", "F5", {
-    control: false,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      Dialog.show({
-        title: "重新加载应用",
-        content:
-          "此快捷键用于在废档了或软件卡住了的情况下重启，您按下了重新加载应用快捷键，是否要重新加载应用？这会导致您丢失所有未保存的工作。",
-        buttons: [
-          {
-            text: "是",
-            onClick: () => {
-              window.location.reload();
-            },
+
+  (
+    await KeyBinds.create("undo", "z", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    StageHistoryManager.undo();
+  });
+
+  (
+    await KeyBinds.create("redo", "y", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    StageHistoryManager.redo();
+  });
+
+  (
+    await KeyBinds.create("reload", "F5", {
+      control: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    Dialog.show({
+      title: "重新加载应用",
+      content:
+        "此快捷键用于在废档了或软件卡住了的情况下重启，您按下了重新加载应用快捷键，是否要重新加载应用？这会导致您丢失所有未保存的工作。",
+      buttons: [
+        {
+          text: "是",
+          onClick: () => {
+            window.location.reload();
           },
-          {
-            text: "否",
-            onClick: () => {},
-          },
-        ],
-      });
-    }),
-  );
+        },
+        {
+          text: "否",
+          onClick: () => {},
+        },
+      ],
+    });
+  });
 
-  // TODO: 下面的F快捷键 不确定id的格式是否是小驼峰，待确认
-  // littlefean 2024年12月27日
-  // ——issue #87
-  // littlefean 2025年1月1日 暂时就先小驼峰吧
+  (
+    await KeyBinds.create("resetView", "F", {
+      control: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    Camera.resetBySelected();
+  });
 
-  KeyBinds.create("resetView", "F", {
-    control: false,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      Camera.resetBySelected();
-    }),
-  );
+  (
+    await KeyBinds.create("resetCameraScale", "r", {
+      control: true,
+      alt: true,
+      shift: false,
+    })
+  ).down(() => {
+    Camera.resetScale();
+  });
 
-  KeyBinds.create("resetCameraScale", "r", {
-    control: true,
-    alt: true,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      Camera.resetScale();
-    }),
-  );
+  (
+    await KeyBinds.create("CameraScaleZoomIn", "[", {
+      control: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    Camera.targetScale *= 1.2;
+  });
 
-  KeyBinds.create("CameraScaleZoomIn", "[", {
-    control: false,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      Camera.targetScale *= 1.2;
-    }),
-  );
-  KeyBinds.create("CameraScaleZoomOut", "]", {
-    control: false,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      Camera.targetScale *= 0.8;
-    }),
-  );
+  (
+    await KeyBinds.create("CameraScaleZoomOut", "]", {
+      control: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    Camera.targetScale *= 0.8;
+  });
 
-  KeyBinds.create("folderSection", "t", {
-    control: true,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      StageManager.sectionSwitchCollapse();
-    }),
-  );
+  (
+    await KeyBinds.create("folderSection", "t", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.sectionSwitchCollapse();
+  });
 
-  KeyBinds.create("reverseEdges", "t", {
-    control: true,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      StageManager.reverseSelectedEdges();
-    }),
-  );
+  (
+    await KeyBinds.create("reverseEdges", "t", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.reverseSelectedEdges();
+  });
 
-  KeyBinds.create("packEntityToSection", "g", {
-    control: true,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      StageManager.packEntityToSectionBySelected();
-    }),
-  );
-  KeyBinds.create("deleteSelectedStageObjects", "delete", {
-    control: false,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      StageManager.deleteSelectedStageObjects();
-    }),
-  );
-  KeyBinds.create("createTextNodeFromCameraLocation", "p", {
-    control: true,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      addTextNodeByLocation(Camera.location, true);
-    }),
-  );
-  KeyBinds.create("createTextNodeFromSelectedTop", "arrowup", {
-    control: false,
-    alt: true,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      addTextNodeFromCurrentSelectedNode("up", true);
-    }),
-  );
-  KeyBinds.create("createTextNodeFromSelectedRight", "arrowright", {
-    control: false,
-    alt: true,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      addTextNodeFromCurrentSelectedNode("right", true);
-    }),
-  );
-  KeyBinds.create("createTextNodeFromSelectedLeft", "arrowleft", {
-    control: false,
-    alt: true,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      addTextNodeFromCurrentSelectedNode("left", true);
-    }),
-  );
-  KeyBinds.create("createTextNodeFromSelectedDown", "arrowdown", {
-    control: false,
-    alt: true,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      addTextNodeFromCurrentSelectedNode("down", true);
-    }),
-  );
-  KeyBinds.create("moveUpSelectedEntities", "arrowup", {
-    control: true,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      StageManager.moveSelectedNodes(new Vector(0, -100));
-    }),
-  );
-  KeyBinds.create("moveDownSelectedEntities", "arrowdown", {
-    control: true,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      StageManager.moveSelectedNodes(new Vector(0, 100));
-    }),
-  );
-  KeyBinds.create("moveLeftSelectedEntities", "arrowleft", {
-    control: true,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      StageManager.moveSelectedNodes(new Vector(-100, 0));
-    }),
-  );
-  KeyBinds.create("moveRightSelectedEntities", "arrowright", {
-    control: true,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      StageManager.moveSelectedNodes(new Vector(100, 0));
-    }),
-  );
-  KeyBinds.create("editEntityDetails", "enter", {
-    control: true,
-    alt: false,
-    shift: false,
-  }).then((bind) =>
-    bind.down(() => {
-      editNodeDetailsByKeyboard();
-    }),
-  );
+  (
+    await KeyBinds.create("packEntityToSection", "g", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.packEntityToSectionBySelected();
+  });
+
+  (
+    await KeyBinds.create("deleteSelectedStageObjects", "delete", {
+      control: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.deleteSelectedStageObjects();
+  });
+
+  (
+    await KeyBinds.create("createTextNodeFromCameraLocation", "p", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    addTextNodeByLocation(Camera.location, true);
+  });
+
+  (
+    await KeyBinds.create("createTextNodeFromSelectedTop", "arrowup", {
+      control: false,
+      alt: true,
+      shift: false,
+    })
+  ).down(() => {
+    addTextNodeFromCurrentSelectedNode("up", true);
+  });
+
+  (
+    await KeyBinds.create("createTextNodeFromSelectedRight", "arrowright", {
+      control: false,
+      alt: true,
+      shift: false,
+    })
+  ).down(() => {
+    addTextNodeFromCurrentSelectedNode("right", true);
+  });
+
+  (
+    await KeyBinds.create("createTextNodeFromSelectedLeft", "arrowleft", {
+      control: false,
+      alt: true,
+      shift: false,
+    })
+  ).down(() => {
+    addTextNodeFromCurrentSelectedNode("left", true);
+  });
+
+  (
+    await KeyBinds.create("createTextNodeFromSelectedDown", "arrowdown", {
+      control: false,
+      alt: true,
+      shift: false,
+    })
+  ).down(() => {
+    addTextNodeFromCurrentSelectedNode("down", true);
+  });
+
+  (
+    await KeyBinds.create("moveUpSelectedEntities", "arrowup", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.moveSelectedNodes(new Vector(0, -100));
+  });
+
+  (
+    await KeyBinds.create("moveDownSelectedEntities", "arrowdown", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.moveSelectedNodes(new Vector(0, 100));
+  });
+
+  (
+    await KeyBinds.create("moveLeftSelectedEntities", "arrowleft", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.moveSelectedNodes(new Vector(-100, 0));
+  });
+
+  (
+    await KeyBinds.create("moveRightSelectedEntities", "arrowright", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.moveSelectedNodes(new Vector(100, 0));
+  });
+
+  (
+    await KeyBinds.create("editEntityDetails", "enter", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    editNodeDetailsByKeyboard();
+  });
 }
 
 /** 加载语言文件 */
@@ -346,10 +344,14 @@ async function loadLanguageFiles() {
 
 /** 加载用户自定义的工程文件，或者从启动参数中获取 */
 async function loadStartFile() {
-  const cliMatches = await getMatches();
   let path = "";
-  if (cliMatches.args.path.value) {
-    path = cliMatches.args.path.value as string;
+  if (isDesktop) {
+    const cliMatches = await getMatches();
+    if (cliMatches.args.path.value) {
+      path = cliMatches.args.path.value as string;
+    } else {
+      path = await StartFilesManager.getCurrentStartFile();
+    }
   } else {
     path = await StartFilesManager.getCurrentStartFile();
   }

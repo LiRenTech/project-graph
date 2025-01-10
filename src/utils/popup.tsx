@@ -89,7 +89,7 @@ export namespace Popup {
     return (
       <Box
         ref={ref}
-        className={cn("fixed z-[999] scale-75 p-2 opacity-0", {
+        className={cn("fixed z-[102] scale-75 p-2 opacity-0", {
           "scale-100 opacity-100": show,
           "opacity-0 transition-none": adjusting,
         })}

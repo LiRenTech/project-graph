@@ -122,12 +122,29 @@ export namespace RenderUtils {
     centerLocation: Vector,
     size: number,
     color: Color = Color.White,
+    shadowColor: Color = Color.Transparent,
+    shadowBlurSize: number = 0,
+    shadowOffsetX: number = 0,
+    shadowOffsetY: number = 0,
   ): void {
     Canvas.ctx.textBaseline = "middle";
     Canvas.ctx.textAlign = "center";
     Canvas.ctx.font = `${size}px MiSans`;
+    // 文字阴影
+    if (!shadowColor.equals(Color.Transparent)) {
+      Canvas.ctx.shadowColor = shadowColor.toString();
+      Canvas.ctx.shadowBlur = shadowBlurSize; // 阴影模糊程度
+      Canvas.ctx.shadowOffsetX = shadowOffsetX; // 水平偏移
+      Canvas.ctx.shadowOffsetY = shadowOffsetY; // 垂直偏移
+    }
+
     Canvas.ctx.fillStyle = color.toString();
     Canvas.ctx.fillText(text, centerLocation.x, centerLocation.y);
+    // 重置阴影
+    Canvas.ctx.shadowBlur = 0; // 阴影模糊程度
+    Canvas.ctx.shadowOffsetX = 0; // 水平偏移
+    Canvas.ctx.shadowOffsetY = 0; // 垂直偏移
+    Canvas.ctx.shadowColor = "none";
   }
 
   /**

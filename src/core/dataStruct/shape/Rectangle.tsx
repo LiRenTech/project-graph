@@ -196,6 +196,19 @@ export class Rectangle extends Shape {
     const collision_y = this.bottom > other.top && this.top < other.bottom;
     return collision_x && collision_y;
   }
+
+  /**
+   * 判断一个矩形是否完全在某个矩形内部
+   * @param otherBig
+   */
+  public isAbsoluteIn(otherBig: Rectangle): boolean {
+    return (
+      this.left >= otherBig.left &&
+      this.right <= otherBig.right &&
+      this.top >= otherBig.top &&
+      this.bottom <= otherBig.bottom
+    );
+  }
   isCollideWithRectangle(rectangle: Rectangle): boolean {
     return this.isCollideWith(rectangle);
   }
