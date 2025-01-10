@@ -672,6 +672,27 @@ export namespace StageManager {
         return false;
       }
     }
+
+    /**
+     * 当一个内部可连接实体被外部连接但它的父级section折叠了
+     * 通过这个函数能获取它的最小非折叠父级
+     * @param innerEntity
+     */
+    export function getMinNonCollapseParentSection(
+      innerEntity: ConnectableEntity,
+    ): Section {
+      const father = getFatherSections(innerEntity);
+      if (father.length === 0) {
+        // 直接抛出错误
+        throw new Error("Can't find parent section");
+      }
+      const minSection = father[0];
+      if (minSection.isHiddenBySectionCollapse) {
+        return getMinNonCollapseParentSection(minSection);
+      } else {
+        return minSection;
+      }
+    }
   }
 
   // region 以下为舞台操作相关的函数

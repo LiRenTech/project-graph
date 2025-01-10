@@ -68,7 +68,10 @@ export namespace EdgeRenderer {
       return;
     }
 
-    if (edge.source.uuid == edge.target.uuid) {
+    const source = edge.source;
+    const target = edge.target;
+
+    if (source.uuid == target.uuid) {
       currentRenderer.renderCycleState(edge);
     } else {
       if (edge.isShifting) {
