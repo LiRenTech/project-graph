@@ -1,7 +1,15 @@
 import { readText, readImage } from "@tauri-apps/plugin-clipboard-manager";
+import { useState } from "react";
 // import { writeFileBase64 } from "../utils/fs";
+import MDEditor from "@uiw/react-md-editor";
 
 export default function TestPage() {
+  const [inputCurrentDetails, setInputCurrentDetails] = useState("");
+  const setInputCurrentDetailsHandler = (value?: string | undefined) => {
+    if (value !== undefined) {
+      setInputCurrentDetails(value);
+    }
+  };
   return (
     <>
       <h1 className="h-32">Test Page</h1>
@@ -59,6 +67,10 @@ export default function TestPage() {
         点击userAgent
       </button>
       <pre>{navigator.userAgent}</pre>
+      <MDEditor
+        value={inputCurrentDetails}
+        onChange={setInputCurrentDetailsHandler}
+      />
     </>
   );
 }

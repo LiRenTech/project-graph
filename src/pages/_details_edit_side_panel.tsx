@@ -7,13 +7,17 @@ import { Entity } from "../core/stageObject/StageObject";
 import { cn } from "../utils/cn";
 import IconButton from "../components/ui/IconButton";
 import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
+import MDEditor from "@uiw/react-md-editor";
 
 export default function DetailsEditSidePanel() {
   const [inputCurrentDetails, setInputCurrentDetails] = React.useState("");
   const [isNodeTextEditing, setIsNodeTextEditing] = React.useState(false);
+  const [isEditMode, setIsEditMode] = React.useState(true);
   const [clickedNode, setClickedNode] = React.useState<Entity>();
-  const setInputCurrentDetailsHandler = (value: string) => {
-    setInputCurrentDetails(value);
+  const setInputCurrentDetailsHandler = (value?: string | undefined) => {
+    if (value !== undefined) {
+      setInputCurrentDetails(value);
+    }
   };
   const handleConfirmDetailsEdit = () => {
     setIsNodeTextEditing(false);
@@ -60,18 +64,39 @@ export default function DetailsEditSidePanel() {
             <IconButton onClick={switchPanelSize}>
               {isFullScreen ? <ArrowRightFromLine /> : <ArrowLeftFromLine />}
             </IconButton>
-            <Button className="flex-1">编辑模式</Button>
+            <Button
+              className="flex-1"
+              onClick={() => setIsEditMode(!isEditMode)}
+            >
+              {isEditMode ? "切换到渲染模式" : "切换到编辑模式"}
+            </Button>
             <Button onClick={handleConfirmDetailsEdit}>确认修改</Button>
             {/* 取消，关闭 */}
             <Button onClick={handleCancelDetailsEdit}>取消修改</Button>
           </div>
-          <Input
-            multiline
-            onChange={setInputCurrentDetailsHandler}
-            value={inputCurrentDetails}
-            className="my-2 flex-1"
-            enableFocusOpacity={false}
-          />
+          <div className="my-2 flex flex-1">
+            {isEditMode ? (
+              <Input
+                multiline
+                onChange={setInputCurrentDetailsHandler}
+                value={inputCurrentDetails}
+                className="flex-1"
+                enableFocusOpacity={false}
+              />
+            ) : (
+              <div className="flex-1">
+                <MDEditor.Markdown
+                  source={inputCurrentDetails}
+                  style={{
+                    whiteSpace: "pre-wrap",
+                    height: "100%",
+                    overflowY: "scroll",
+                  }}
+                />
+              </div>
+            )}
+          </div>
+
           {/* 底部空白 */}
           <div className="h-16" />
         </div>
