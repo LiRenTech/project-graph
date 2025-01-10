@@ -89,8 +89,9 @@ export default function DetailsEditSidePanel() {
                   source={inputCurrentDetails}
                   style={{
                     whiteSpace: "pre-wrap",
-                    height: "100%",
-                    overflowY: "scroll",
+                    // height: "100%",
+                    padding: "10px",
+                    borderRadius: "5px",
                   }}
                 />
               </div>
