@@ -74,29 +74,27 @@ export default function DetailsEditSidePanel() {
             {/* 取消，关闭 */}
             <Button onClick={handleCancelDetailsEdit}>取消修改</Button>
           </div>
-          <div className="my-2 flex flex-1">
-            {isEditMode ? (
-              <Input
-                multiline
-                onChange={setInputCurrentDetailsHandler}
-                value={inputCurrentDetails}
-                className="flex-1"
-                enableFocusOpacity={false}
-              />
-            ) : (
-              <div className="flex-1">
-                <MDEditor.Markdown
-                  source={inputCurrentDetails}
-                  style={{
-                    whiteSpace: "pre-wrap",
-                    // height: "100%",
-                    padding: "10px",
-                    borderRadius: "5px",
-                  }}
-                />
-              </div>
-            )}
-          </div>
+          {isEditMode ? (
+            <Input
+              multiline
+              onChange={setInputCurrentDetailsHandler}
+              value={inputCurrentDetails}
+              className="my-2 flex flex-1"
+              enableFocusOpacity={false}
+            />
+          ) : (
+            <MDEditor.Markdown
+              source={inputCurrentDetails}
+              style={{
+                whiteSpace: "pre-wrap",
+                padding: "10px",
+                borderRadius: "5px",
+                flex: "1",
+                overflow: "auto",
+                margin: "8px 0",
+              }}
+            />
+          )}
 
           {/* 底部空白 */}
           <div className="h-16" />
