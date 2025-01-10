@@ -78,6 +78,10 @@ export class UrlNode extends ConnectableEntity {
     // 移动其他实体，递归碰撞
     this.updateOtherEntityLocationByMove();
   }
+  /**
+   * 将某个物体 的最小外接矩形的左上角位置 移动到某个位置
+   * @param location
+   */
   moveTo(location: Vector): void {
     const newRectangle = this.rectangle.clone();
     newRectangle.location = location.clone();

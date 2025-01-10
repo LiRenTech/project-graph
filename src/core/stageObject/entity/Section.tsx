@@ -241,6 +241,10 @@ export class Section extends ConnectableEntity {
     super.collideWithOtherEntity(other);
   }
 
+  /**
+   * 将某个物体 的最小外接矩形的左上角位置 移动到某个位置
+   * @param location
+   */
   moveTo(location: Vector): void {
     const currentLeftTop = this.rectangle.location;
     const delta = location.clone().subtract(currentLeftTop);

@@ -112,6 +112,10 @@ export class TextNode extends ConnectableEntity {
     this.adjustSizeByText();
   }
 
+  /**
+   * 将某个物体移动一小段距离
+   * @param delta
+   */
   move(delta: Vector) {
     const newRectangle = this.rectangle.clone();
     newRectangle.location = newRectangle.location.add(delta);
@@ -144,6 +148,10 @@ export class TextNode extends ConnectableEntity {
     super.collideWithOtherEntity(other);
   }
 
+  /**
+   * 将某个物体 的最小外接矩形的左上角位置 移动到某个位置
+   * @param location
+   */
   moveTo(location: Vector) {
     const newRectangle = this.rectangle.clone();
     newRectangle.location = location.clone();

@@ -38,7 +38,17 @@ export abstract class StageObject implements Disposable {
  * 实体
  */
 export abstract class Entity extends StageObject {
+  /**
+   * 将某个物体移动某个距离
+   * @param delta
+   */
   abstract move(delta: Vector): void;
+
+  /**
+   * 将某个物体移动到某个位置
+   * 注意：看的是最小外接矩形的左上角位置，不是中心位置
+   * @param location
+   */
   abstract moveTo(location: Vector): void;
 
   public details: string = "";

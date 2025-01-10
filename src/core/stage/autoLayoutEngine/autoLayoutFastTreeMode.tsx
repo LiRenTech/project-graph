@@ -19,8 +19,8 @@ export function autoLayoutFastTreeMode(rootNode: ConnectableEntity) {
     // 子节点所占空间的宽度
     let width =
       Math.max(0, StageManager.nodeChildrenArray(node).length - 1) * spaceX;
-    const widths = [];
-    const paddings = [];
+    const widths: number[] = [];
+    const paddings: number[] = [];
     let sumWidths = -width; // widths元素之和
     for (const child of StageManager.nodeChildrenArray(node)) {
       const childrenWidth = dfs(child);
