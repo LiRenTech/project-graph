@@ -67,11 +67,23 @@ export default function ExportTreeTextPanel() {
         e.stopPropagation();
       }}
     >
-      <h2 className="text-lg font-bold">导出节点纯文本</h2>
+      <h2 className="my-2 text-2xl font-bold">导出节点纯文本</h2>
       <div className="flex gap-2">
-        <CodePre text={tabText} title="纯缩进类型" />
-        <CodePre text={markdownText} title="markdown类型" />
-        <CodePre text={plainText} title="纯文本图类型" />
+        <CodePre
+          text={tabText}
+          title="纯缩进类型"
+          details="树形结构，以缩进方式展示节点内容"
+        />
+        <CodePre
+          text={markdownText}
+          title="markdown类型"
+          details="树形结构，以markdown方式展示节点内容"
+        />
+        <CodePre
+          text={plainText}
+          title="纯文本图类型"
+          details="图形结构，上面是节点，下面是连接关系"
+        />
       </div>
       <button
         className="absolute right-0 top-0 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
@@ -83,7 +95,15 @@ export default function ExportTreeTextPanel() {
   );
 }
 
-function CodePre({ text, title }: { text: string; title: string }) {
+function CodePre({
+  text,
+  title,
+  details,
+}: {
+  text: string;
+  title: string;
+  details: string;
+}) {
   const handleCopy = () => {
     navigator.clipboard
       .writeText(text)
@@ -97,9 +117,10 @@ function CodePre({ text, title }: { text: string; title: string }) {
 
   return (
     <div>
-      <h4 className="text-sm font-bold">{title}</h4>
+      <h4 className="text-center font-bold">{title}</h4>
+      <p className="text-center text-xs text-gray-500">{details}</p>
       <Button onClick={handleCopy}>点击复制</Button>
-      <pre className="select-text rounded-md bg-black p-2 text-xs text-slate-400">
+      <pre className="max-h-96 max-w-96 select-text overflow-x-auto rounded-md bg-black p-2 text-xs text-slate-400">
         {text}
       </pre>
     </div>
