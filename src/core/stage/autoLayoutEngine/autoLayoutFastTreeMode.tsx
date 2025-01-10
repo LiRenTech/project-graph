@@ -13,30 +13,38 @@ import { StageManager } from "../stageManager/StageManager";
  * @param rootNode
  */
 export function autoLayoutFastTreeMode(rootNode: ConnectableEntity) {
-  // 测试：将树形结构中的节点全部向右移动10px
   const dfs = (node: ConnectableEntity) => {
-    // move和moveTo方法都可以使用
-    node.move(new Vector(10, 0));
-
-    const rectangle = node.collisionBox.getRectangle();
-    console.log("检测到该实体的外接矩形：", rectangle);
-    console.log(
-      rectangle.left,
-      rectangle.right,
-      rectangle.top,
-      rectangle.bottom,
-      rectangle.center,
-      rectangle.size.x,
-      rectangle.size.y,
-    );
-
+    const spaceX = 20;
+    const spaceY = 150;
+    // 子节点所占空间的宽度
+    let width =
+      Math.max(0, StageManager.nodeChildrenArray(node).length - 1) * spaceX;
+    const widths = [];
+    const paddings = [];
+    let sumWidths = -width; // widths元素之和
     for (const child of StageManager.nodeChildrenArray(node)) {
-      // 直接连接检测
-      const t = StageManager.isConnected(node, child);
-      console.log(t, "必定为true");
-
-      dfs(child);
+      const childrenWidth = dfs(child);
+      const wd = child.collisionBox.getRectangle().size.x;
+      widths.push(Math.max(wd, childrenWidth));
+      paddings.push(widths[widths.length - 1] / 2 - wd / 2);
+      width += widths[widths.length - 1];
     }
+    sumWidths += width;
+    let currentX =
+      node.geometryCenter.x -
+      (sumWidths - paddings[0] - paddings[paddings.length - 1]) / 2 -
+      paddings[0];
+    for (let i = 0; i < widths.length; i++) {
+      const child = StageManager.nodeChildrenArray(node)[i];
+      child.moveTo(
+        new Vector(
+          currentX + paddings[i],
+          node.collisionBox.getRectangle().top + spaceY,
+        ),
+      );
+      currentX += widths[i] + spaceX;
+    }
+    return width;
   };
   dfs(rootNode);
 }
