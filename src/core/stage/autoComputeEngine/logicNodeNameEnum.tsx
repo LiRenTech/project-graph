@@ -61,6 +61,7 @@ export enum LogicNodeNameEnum {
   SET_CAMERA_SCALE = "#SET_CAMERA_SCALE#",
   IS_COLLISION = "#IS_COLLISION#",
   GET_TIME = "#GET_TIME#",
+  PLAY_SOUND = "#PLAY_SOUND#",
 }
 export const LogicNodeNameToRenderNameMap: {
   [key in LogicNodeNameEnum]: string;
@@ -114,6 +115,7 @@ export const LogicNodeNameToRenderNameMap: {
   [LogicNodeNameEnum.SET_CAMERA_SCALE]: "设置相机缩放",
   [LogicNodeNameEnum.IS_COLLISION]: "碰撞检测",
   [LogicNodeNameEnum.GET_TIME]: "获取时间",
+  [LogicNodeNameEnum.PLAY_SOUND]: "播放声音",
 };
 
 /**

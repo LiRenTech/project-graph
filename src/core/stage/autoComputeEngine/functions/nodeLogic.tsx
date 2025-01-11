@@ -1,6 +1,7 @@
 import { Color } from "../../../dataStruct/Color";
 import { Vector } from "../../../dataStruct/Vector";
 import { MouseLocation } from "../../../MouseLocation";
+import { SoundService } from "../../../SoundService";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { ConnectableEntity } from "../../../stageObject/StageObject";
 import { Camera } from "../../Camera";
@@ -219,5 +220,31 @@ export namespace NodeLogic {
   ): string[] {
     const time = new Date().getTime();
     return [time.toString()];
+  }
+
+  /**
+   * 播放音效
+   * 接收一个路径文件，以及一个布尔值数字，如果为1则播放一下。否则不播放
+   * @param fatherNodes
+   * @param _childNodes
+   */
+  export function playSound(
+    fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    if (fatherNodes.length < 1) {
+      return [];
+    }
+    const fatherNode = fatherNodes[0];
+    const fatherNode1 = fatherNodes[1];
+    if (fatherNode instanceof TextNode && fatherNode1 instanceof TextNode) {
+      const path = fatherNode.text;
+      const isPlay = parseInt(fatherNode1.text);
+      if (isPlay === 1) {
+        SoundService.playSoundByFilePath(path);
+      }
+    }
+    return [];
   }
 }

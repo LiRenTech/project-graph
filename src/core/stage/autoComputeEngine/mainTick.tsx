@@ -123,6 +123,7 @@ const MapOtherFunction: OtherFunctionMap = {
   [LogicNodeNameEnum.SET_CAMERA_SCALE]: NodeLogic.setCameraScale,
   [LogicNodeNameEnum.IS_COLLISION]: NodeLogic.isCollision,
   [LogicNodeNameEnum.GET_TIME]: NodeLogic.getTime,
+  [LogicNodeNameEnum.PLAY_SOUND]: NodeLogic.playSound,
 };
 export function autoComputeEngineTick() {
   // debug 只有在按下x键才会触发
