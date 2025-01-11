@@ -7,7 +7,8 @@ import { Entity } from "../core/stageObject/StageObject";
 import { cn } from "../utils/cn";
 import IconButton from "../components/ui/IconButton";
 import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
-import MDEditor from "@uiw/react-md-editor";
+// import "vditor/src/assets/scss/index.scss";
+import MarkdownEditor from "./_vditor_panel";
 
 export default function DetailsEditSidePanel() {
   const [inputCurrentDetails, setInputCurrentDetails] = React.useState("");
@@ -52,7 +53,7 @@ export default function DetailsEditSidePanel() {
   };
   return (
     <>
-      {
+      {isNodeTextEditing && (
         <div
           className={cn(
             "fixed top-16 z-50 flex h-full flex-col transition-all",
@@ -83,23 +84,16 @@ export default function DetailsEditSidePanel() {
               enableFocusOpacity={false}
             />
           ) : (
-            <MDEditor.Markdown
-              source={inputCurrentDetails}
-              style={{
-                whiteSpace: "pre-wrap",
-                padding: "10px",
-                borderRadius: "5px",
-                flex: "1",
-                overflow: "auto",
-                margin: "8px 0",
-              }}
+            <MarkdownEditor
+              onChange={setInputCurrentDetailsHandler}
+              initialValue={inputCurrentDetails}
             />
           )}
 
           {/* 底部空白 */}
           <div className="h-16" />
         </div>
-      }
+      )}
     </>
   );
 }
