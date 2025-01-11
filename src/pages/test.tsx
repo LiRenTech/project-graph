@@ -1,5 +1,5 @@
 import { readText, readImage } from "@tauri-apps/plugin-clipboard-manager";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MarkdownEditor from "./_vditor_panel";
 
 export default function TestPage() {
@@ -9,6 +9,17 @@ export default function TestPage() {
       setInputCurrentDetails(value);
     }
   };
+
+  useEffect(() => {
+    const keyDownEvent = (event: KeyboardEvent) => {
+      console.log(event);
+    };
+    window.addEventListener("keydown", keyDownEvent);
+    return () => {
+      window.removeEventListener("keydown", keyDownEvent);
+    };
+  }, []);
+
   return (
     <>
       <h1 className="h-32">Test Page</h1>
@@ -70,10 +81,12 @@ export default function TestPage() {
         value={inputCurrentDetails}
         onChange={setInputCurrentDetailsHandler}
       /> */}
-      <MarkdownEditor
-        initialValue={inputCurrentDetails}
-        onChange={setInputCurrentDetailsHandler}
-      />
+      <div className="flex h-full">
+        <MarkdownEditor
+          initialValue={inputCurrentDetails}
+          onChange={setInputCurrentDetailsHandler}
+        />
+      </div>
       <p>{inputCurrentDetails}</p>
     </>
   );
