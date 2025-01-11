@@ -70,6 +70,8 @@ export namespace EdgeRenderer {
       return;
     }
 
+    edge = EdgeRenderer.getEdgeView(edge);
+
     const source = edge.source;
     const target = edge.target;
 
@@ -112,6 +114,40 @@ export namespace EdgeRenderer {
     } else {
       return minSection;
     }
+  }
+
+  export function getEdgeView(edge: Edge): Edge {
+    if (
+      edge.source.isHiddenBySectionCollapse &&
+      edge.target.isHiddenBySectionCollapse
+    ) {
+      return edge;
+    } else if (
+      !edge.source.isHiddenBySectionCollapse &&
+      !edge.target.isHiddenBySectionCollapse
+    ) {
+      return edge;
+    }
+
+    if (edge.source.isHiddenBySectionCollapse) {
+      return new Edge({
+        source: getMinNonCollapseParentSection(edge.source).uuid,
+        target: edge.target.uuid,
+        text: edge.text,
+        uuid: edge.uuid,
+        type: "core:edge",
+      });
+    }
+    if (edge.target.isHiddenBySectionCollapse) {
+      return new Edge({
+        source: edge.source.uuid,
+        target: getMinNonCollapseParentSection(edge.target).uuid,
+        text: edge.text,
+        uuid: edge.uuid,
+        type: "core:edge",
+      });
+    }
+    return edge;
   }
 
   export function getEdgeSvg(edge: Edge): React.ReactNode {
