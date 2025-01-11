@@ -187,7 +187,11 @@ export function autoComputeEngineTick() {
     }
   }
   // region 根据Edge计算
-  for (const edge of StageManager.getEdges()) {
+  for (const edge of StageManager.getEdges().sort(
+    (a, b) =>
+      a.source.collisionBox.getRectangle().location.x -
+      b.source.collisionBox.getRectangle().location.x,
+  )) {
     for (const name of Object.keys(MapOperationNameFunction)) {
       if (edge.text === name) {
         // 发现了一个逻辑Edge
@@ -198,6 +202,20 @@ export function autoComputeEngineTick() {
 
           const result = MapOperationNameFunction[name](inputStringList);
           AutoComputeUtils.getNodeOneResult(target, result[0]);
+        }
+      }
+      // 更加简化的Edge计算
+      if (edge.text.includes(name)) {
+        // 检测 '+5' '/2' 这样的情况，提取后面的数字
+        const num = Number(edge.text.replace(name, ""));
+        if (num) {
+          const source = edge.source;
+          const target = edge.target;
+          if (source instanceof TextNode && target instanceof TextNode) {
+            const inputStringList: string[] = [source.text, num.toString()];
+            const result = MapOperationNameFunction[name](inputStringList);
+            target.rename(result[0]);
+          }
         }
       }
     }
