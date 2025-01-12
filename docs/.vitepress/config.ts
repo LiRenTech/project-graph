@@ -60,6 +60,10 @@ export default defineConfig({
             link: "/link-node",
           },
           {
+            text: "🌐 URL 节点",
+            link: "/url-node",
+          },
+          {
             text: "⚡ 快速操作",
             link: "/quick-action",
           },
@@ -74,6 +78,10 @@ export default defineConfig({
           {
             text: "🧠 AI",
             link: "/ai",
+          },
+          {
+            text: "⌨️ CLI",
+            link: "/cli",
           },
         ],
       },

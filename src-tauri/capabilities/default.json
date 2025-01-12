@@ -17,6 +17,8 @@
     "core:window:allow-set-title",
     "core:window:allow-set-decorations",
     "core:window:allow-destroy",
+    "core:window:allow-hide",
+    "core:window:allow-set-skip-taskbar",
     "clipboard-manager:allow-clear",
     "clipboard-manager:allow-read-image",
     "clipboard-manager:allow-write-text",

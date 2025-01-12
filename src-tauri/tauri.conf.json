@@ -57,6 +57,12 @@
           "name": "path",
           "index": 1,
           "takesValue": true
+        },
+        {
+          "name": "output",
+          "short": "o",
+          "takesValue": true,
+          "multiple": false
         }
       ]
     },
