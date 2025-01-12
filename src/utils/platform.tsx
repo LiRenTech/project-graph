@@ -4,7 +4,17 @@ import {
 } from "@tauri-apps/api/window";
 import { family as osFamily, platform } from "@tauri-apps/plugin-os";
 
-export const isWeb = !("__TAURI__" in window);
+// export const isWeb = !("__TAURI__" in window);
+export const isWeb = window.__TAURI_OS_PLUGIN_INTERNALS__ === undefined;
+// export const isWeb = false;
+// console.log(window.__TAURI_OS_PLUGIN_INTERNALS__);
+// console.log(Boolean(window.__TAURI_OS_PLUGIN_INTERNALS__));
+console.log(
+  "通过了判断",
+  "window.__TAURI_OS_PLUGIN_INTERNALS__ === undefined",
+  isWeb,
+);
+
 export const isMobile = isWeb
   ? navigator.userAgent.toLowerCase().includes("mobile")
   : platform() === "android";
