@@ -11,6 +11,9 @@ hero:
       text: 🚀 快速开始
       link: /installation
     - theme: alt
+      text: 🌍 在线使用
+      link: https://web.project-graph.top
+    - theme: alt
       text: GitHub
       link: https://github.com/LiRenTech/project-graph
     - theme: alt

@@ -1,4 +1,5 @@
-import { load, Store } from "@tauri-apps/plugin-store";
+import { Store } from "@tauri-apps/plugin-store";
+import { createStore } from "../utils/store";
 import { Color } from "./dataStruct/Color";
 
 export namespace ColorManager {
@@ -12,7 +13,7 @@ export namespace ColorManager {
   };
 
   export async function init() {
-    store = await load("colors.json");
+    store = await createStore("colors.json");
     store.save();
   }
 

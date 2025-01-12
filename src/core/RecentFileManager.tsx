@@ -1,7 +1,8 @@
-import { load, Store } from "@tauri-apps/plugin-store";
+import { Store } from "@tauri-apps/plugin-store";
 // import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
 import { Serialized } from "../types/node";
 import { exists, readTextFile } from "../utils/fs";
+import { createStore } from "../utils/store";
 import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
 import { Camera } from "./stage/Camera";
 import { Stage } from "./stage/Stage";
@@ -55,7 +56,7 @@ export namespace RecentFileManager {
   };
 
   export async function init() {
-    store = await load("recent-files.json");
+    store = await createStore("recent-files.json");
     store.save();
   }
 
