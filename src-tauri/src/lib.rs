@@ -4,7 +4,6 @@ use std::io::Read;
 use base64::engine::general_purpose;
 use base64::Engine;
 
-#[cfg(debug_assertions)]
 use tauri::Manager;
 use tauri::Runtime;
 

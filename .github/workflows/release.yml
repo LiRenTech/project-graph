@@ -16,7 +16,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - run: gh release create "v${{ github.event.inputs.version }}" --title "Release v${{ github.event.inputs.version }}" --notes "如果下面没有可下载的文件，说明构建失败，请联系开发者"
+      - run: gh release create "v${{ github.event.inputs.version }}" --title "Release v${{ github.event.inputs.version }}" --notes "如果下面没有可下载的文件，说明构建失败，请联系开发者" || true # 忽略错误，防止失败导致整个流程失败
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
