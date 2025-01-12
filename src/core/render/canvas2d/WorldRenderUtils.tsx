@@ -1,4 +1,5 @@
 import { Color } from "../../dataStruct/Color";
+import { CublicCatmullRomSpline } from "../../dataStruct/shape/CublicCatmullRomSpline";
 import { CubicBezierCurve, SymmetryCurve } from "../../dataStruct/shape/Curve";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
@@ -12,6 +13,63 @@ import { RenderUtils } from "./RenderUtils";
  * 注意：这些渲染的参数都是World坐标系下的。
  */
 export namespace WorldRenderUtils {
+  /**
+   * 绘制一条Catmull-Rom样条线
+   * @param curve
+   */
+  export function renderCublicCatmullRomSpline(
+    spline: CublicCatmullRomSpline,
+    color: Color,
+    width: number,
+  ): void {
+    const points = spline.computePath().map(Renderer.transformWorld2View);
+    width *= Camera.currentScale;
+    const start = Renderer.transformWorld2View(spline.controlPoints[1]);
+    const end = Renderer.transformWorld2View(
+      spline.controlPoints[spline.controlPoints.length - 2],
+    );
+    // 绘制首位控制点到曲线首尾的虚线
+    const dashedColor = color.clone();
+    dashedColor.a /= 2;
+    RenderUtils.renderDashedLine(
+      Renderer.transformWorld2View(spline.controlPoints[0]),
+      start,
+      dashedColor,
+      width,
+      width * 2,
+    );
+    RenderUtils.renderDashedLine(
+      end,
+      Renderer.transformWorld2View(
+        spline.controlPoints[spline.controlPoints.length - 1],
+      ),
+      dashedColor,
+      width,
+      width * 2,
+    );
+    // 绘制曲线
+    Canvas.ctx.beginPath();
+    Canvas.ctx.lineJoin = "bevel";
+    Canvas.ctx.moveTo(points[0].x, points[0].y);
+    Canvas.ctx.lineWidth = width;
+    for (let i = 1; i < points.length; i++) {
+      Canvas.ctx.lineTo(points[i].x, points[i].y);
+      RenderUtils.renderCircle(points[i], width, color, color, width);
+    }
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.stroke();
+    // 绘制控制点
+    // for (const p of spline.controlPoints) {
+    //   RenderUtils.renderCircle(
+    //     Renderer.transformWorld2View(p),
+    //     width * 2,
+    //     color,
+    //     mixColors(color, Color.Black, 0.5),
+    //     Camera.currentScale,
+    //   );
+    // }
+  }
+
   /**
    * 绘制一条贝塞尔曲线
    * @param curve
