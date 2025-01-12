@@ -1,4 +1,5 @@
-import { load, Store } from "@tauri-apps/plugin-store";
+import { Store } from "@tauri-apps/plugin-store";
+import { createStore } from "../utils/store";
 
 /**
  * 设置相关的操作
@@ -123,7 +124,7 @@ export namespace Settings {
   };
 
   export async function init() {
-    store = await load("settings.json");
+    store = await createStore("settings.json");
   }
 
   export async function get<K extends keyof Settings>(

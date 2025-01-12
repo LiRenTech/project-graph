@@ -1,4 +1,3 @@
-import { getVersion } from "@tauri-apps/api/app";
 import { check, Update } from "@tauri-apps/plugin-updater";
 import { BookOpen, Download, MessageCircleCode } from "lucide-react";
 import React from "react";
@@ -9,6 +8,7 @@ import icon from "../../assets/icon.png";
 import QQ from "../../assets/qq.svg?react";
 import versions from "../../assets/versions.json";
 import Button from "../../components/ui/Button";
+import { getVersion } from "../../utils/otherApi";
 
 export default function About() {
   const [version, setVersion] = React.useState("");
