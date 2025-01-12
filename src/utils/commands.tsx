@@ -12,6 +12,6 @@ export function openDevtools(): Promise<void> {
   return invoke("open_devtools");
 }
 
-export function exit(code: number): Promise<void> {
+export function exit(code: number = 0): Promise<void> {
   return invoke("exit", { code });
 }

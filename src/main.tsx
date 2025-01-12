@@ -70,6 +70,7 @@ const el = document.getElementById("root")!;
   if (isCliMode) {
     try {
       await runCli(matches);
+      exit();
     } catch (e) {
       writeStderr(String(e));
       exit(1);
