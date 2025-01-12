@@ -1,6 +1,14 @@
 import { Color } from "../dataStruct/Color";
 import { Settings } from "../Settings";
 
+interface EffectColors {
+  /** 闪光线，切割线等白光刃的白色 */
+  flash: Color;
+  /** 粒子效果的颜色 */
+  dash: Color;
+  windowFlash: Color;
+}
+
 export class StageStyle {
   /** 背景颜色 */
   BackgroundColor: Color = Color.Black;
@@ -28,6 +36,12 @@ export class StageStyle {
   /** 准备删除的红色 */
   CollideBoxPreDeleteColor: Color = Color.Black;
 
+  effects: EffectColors = {
+    flash: Color.White,
+    dash: Color.White,
+    windowFlash: Color.White,
+  };
+
   private constructor() {
     // 私有构造函数，防止外部实例化
   }
@@ -44,7 +58,11 @@ export class StageStyle {
     style.CollideBoxPreSelectedColor = new Color(0, 255, 0, 0.2);
     style.CollideBoxSelectedColor = new Color(34, 217, 110);
     style.NodeDetailsTextColor = new Color(255, 255, 255);
-
+    style.effects = {
+      flash: Color.White,
+      dash: Color.White,
+      windowFlash: Color.Black,
+    };
     return style;
   }
 
@@ -58,8 +76,13 @@ export class StageStyle {
     style.SelectRectangleFillColor = new Color(0, 0, 0, 0.08);
     style.StageObjectBorderColor = new Color(0, 0, 0);
     style.CollideBoxPreSelectedColor = new Color(0, 255, 0, 0.2);
-    style.CollideBoxSelectedColor = new Color(34, 217, 110);
+    style.CollideBoxSelectedColor = new Color(64, 209, 171);
     style.NodeDetailsTextColor = new Color(0, 0, 0);
+    style.effects = {
+      flash: Color.Black,
+      dash: Color.Black,
+      windowFlash: Color.White,
+    };
     return style;
   }
 

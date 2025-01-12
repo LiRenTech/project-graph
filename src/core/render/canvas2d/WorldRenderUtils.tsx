@@ -4,6 +4,7 @@ import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
 import { Camera } from "../../stage/Camera";
 import { Canvas } from "../../stage/Canvas";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Renderer } from "./renderer";
 import { RenderUtils } from "./RenderUtils";
 
@@ -54,14 +55,14 @@ export namespace WorldRenderUtils {
         Renderer.transformWorld2View(start),
         4 * Camera.currentScale,
         Color.Transparent,
-        Color.White,
+        StageStyleManager.currentStyle.effects.flash,
         2 * Camera.currentScale,
       );
     } else {
       RenderUtils.renderSolidLine(
         Renderer.transformWorld2View(start),
         Renderer.transformWorld2View(end),
-        new Color(255, 255, 255),
+        StageStyleManager.currentStyle.effects.flash,
         width * Camera.currentScale,
       );
     }
@@ -137,7 +138,7 @@ export namespace WorldRenderUtils {
         Renderer.transformWorld2View(end),
         Renderer.transformWorld2View(headRight),
       ],
-      Color.White,
+      StageStyleManager.currentStyle.effects.flash,
       Color.Transparent,
       0,
     );

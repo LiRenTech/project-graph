@@ -3,6 +3,7 @@ import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
 import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effect";
 
 /**
@@ -17,7 +18,10 @@ export class ViewFlashEffect extends Effect {
   }
 
   static SaveFile() {
-    return new ViewFlashEffect(Color.Black, new ProgressNumber(0, 10));
+    return new ViewFlashEffect(
+      StageStyleManager.currentStyle.effects.windowFlash,
+      new ProgressNumber(0, 10),
+    );
   }
 
   render(): void {
