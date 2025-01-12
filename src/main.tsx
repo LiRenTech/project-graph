@@ -1,5 +1,4 @@
 import { routes } from "@generouted/react-router";
-import { getCurrentWindow } from "@tauri-apps/api/window";
 import { getMatches } from "@tauri-apps/plugin-cli";
 import i18next from "i18next";
 import { createRoot } from "react-dom/client";
@@ -31,12 +30,11 @@ import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeColli
 import { StageStyleManager } from "./core/stageStyle/StageStyleManager";
 import { StartFilesManager } from "./core/StartFilesManager";
 import "./index.pcss";
-import "./polyfills/requestAnimationFrame";
 import "./polyfills/roundRect";
-import { exit, openDevtools, writeStderr, writeStdout } from "./utils/commands";
 import { Dialog } from "./utils/dialog";
 import { exists } from "./utils/fs";
-import { isDesktop } from "./utils/platform";
+import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
+import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -47,8 +45,8 @@ const el = document.getElementById("root")!;
 
 (async () => {
   const t1 = performance.now();
-  const matches = await getMatches();
-  const isCliMode = isDesktop && matches.args.output?.occurrences === 1;
+  const matches = !isWeb ? await getMatches() : null;
+  const isCliMode = isDesktop && matches?.args.output?.occurrences === 1;
   await Promise.all([
     Settings.init(),
     RecentFileManager.init(),
@@ -377,7 +375,7 @@ async function loadLanguageFiles() {
 /** 加载用户自定义的工程文件，或者从启动参数中获取 */
 async function loadStartFile() {
   let path = "";
-  if (isDesktop) {
+  if (isDesktop && !isWeb) {
     const cliMatches = await getMatches();
     if (cliMatches.args.path.value) {
       path = cliMatches.args.path.value as string;

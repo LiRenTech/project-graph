@@ -39,10 +39,9 @@ import {
   isRecentFilePanelOpenAtom,
 } from "../state";
 import { cn } from "../utils/cn";
-import { isDesktop } from "../utils/platform";
+import { getCurrentWindow, isDesktop, isWeb } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { dataDir } from "@tauri-apps/api/path";
-import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useTranslation } from "react-i18next";
 import { RecentFileManager } from "../core/RecentFileManager";
 import { Settings } from "../core/Settings";
@@ -113,19 +112,21 @@ export default function AppMenu({
       });
       return;
     }
-    const path = await openFileDialog({
-      title: "打开文件",
-      directory: false,
-      multiple: false,
-      filters: isDesktop
-        ? [
-            {
-              name: "Project Graph",
-              extensions: ["json"],
-            },
-          ]
-        : [],
-    });
+    const path = isWeb
+      ? "file.json"
+      : await openFileDialog({
+          title: "打开文件",
+          directory: false,
+          multiple: false,
+          filters: isDesktop
+            ? [
+                {
+                  name: "Project Graph",
+                  extensions: ["json"],
+                },
+              ]
+            : [],
+        });
     if (!path) {
       return;
     }
@@ -172,16 +173,18 @@ export default function AppMenu({
   };
 
   const onSaveNew = async () => {
-    const path = await saveFileDialog({
-      title: "另存为",
-      defaultPath: "新文件.json", // 提供一个默认的文件名
-      filters: [
-        {
-          name: "Project Graph",
-          extensions: ["json"],
-        },
-      ],
-    });
+    const path = isWeb
+      ? "file.json"
+      : await saveFileDialog({
+          title: "另存为",
+          defaultPath: "新文件.json", // 提供一个默认的文件名
+          filters: [
+            {
+              name: "Project Graph",
+              extensions: ["json"],
+            },
+          ],
+        });
 
     if (!path) {
       return;
@@ -218,16 +221,18 @@ export default function AppMenu({
     }
   };
   const onSaveSVGNew = async () => {
-    const path = await saveFileDialog({
-      title: "另存为",
-      defaultPath: "新文件.svg", // 提供一个默认的文件名
-      filters: [
-        {
-          name: "Project Graph",
-          extensions: ["svg"],
-        },
-      ],
-    });
+    const path = isWeb
+      ? "file.svg"
+      : await saveFileDialog({
+          title: "另存为",
+          defaultPath: "新文件.svg", // 提供一个默认的文件名
+          filters: [
+            {
+              name: "Project Graph",
+              extensions: ["svg"],
+            },
+          ],
+        });
 
     if (!path) {
       return;
@@ -288,16 +293,18 @@ export default function AppMenu({
       return;
     }
 
-    const path = await saveFileDialog({
-      title: "另存为",
-      defaultPath: "新文件.md", // 提供一个默认的文件名
-      filters: [
-        {
-          name: "Project Graph",
-          extensions: ["svg"],
-        },
-      ],
-    });
+    const path = isWeb
+      ? "file.md"
+      : await saveFileDialog({
+          title: "另存为",
+          defaultPath: "新文件.md", // 提供一个默认的文件名
+          filters: [
+            {
+              name: "Project Graph",
+              extensions: ["md"],
+            },
+          ],
+        });
 
     if (!path) {
       return;

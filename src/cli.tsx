@@ -1,7 +1,7 @@
 import { CliMatches } from "@tauri-apps/plugin-cli";
 import { StageDumperSvg } from "./core/stage/StageDumperSvg";
-import { writeStdout } from "./utils/commands";
 import { writeTextFile } from "./utils/fs";
+import { writeStdout } from "./utils/otherApi";
 
 export async function runCli(matches: CliMatches) {
   if (matches.args.output?.occurrences > 0) {
