@@ -1,5 +1,6 @@
 import { open } from "@tauri-apps/plugin-dialog";
 import { FolderOpen } from "lucide-react";
+import { isWeb } from "../../utils/platform";
 import Button from "./Button";
 import Input from "./Input";
 
@@ -12,7 +13,9 @@ export default function FileChooser({
   value?: string;
   onChange?: (value: string) => void;
 }) {
-  return (
+  return isWeb ? (
+    <div>网页版暂不支持文件选择</div>
+  ) : (
     <div className="flex items-center gap-2">
       <Input type="text" value={value} onChange={onChange} />
       <Button

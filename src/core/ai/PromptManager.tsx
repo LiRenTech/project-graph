@@ -1,4 +1,5 @@
-import { load, Store } from "@tauri-apps/plugin-store";
+import { Store } from "@tauri-apps/plugin-store";
+import { createStore } from "../../utils/store";
 
 /**
  * 管理用户提示词
@@ -7,7 +8,7 @@ export namespace PromptManager {
   let store: Store;
 
   export async function init() {
-    store = await load("prompt-manager.json");
+    store = await createStore("prompt-manager.json");
     const oldList = ((await store.get("user-prompts")) as string[]) || [];
     if (oldList.length === 0) {
       // 给用户一些默认的提示词
