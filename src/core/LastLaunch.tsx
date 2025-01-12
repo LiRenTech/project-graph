@@ -1,5 +1,5 @@
 import { Store } from "@tauri-apps/plugin-store";
-import { getVersion } from "../utils/otherApi";
+import { getAppVersion } from "../utils/otherApi";
 import { createStore } from "../utils/store";
 
 export namespace LastLaunch {
@@ -8,7 +8,7 @@ export namespace LastLaunch {
 
   export async function init() {
     store = await createStore("last_launch");
-    version = (await store.get<string>("version")) || (await getVersion());
-    await store.set("version", await getVersion());
+    version = (await store.get<string>("version")) || (await getAppVersion());
+    await store.set("version", await getAppVersion());
   }
 }
