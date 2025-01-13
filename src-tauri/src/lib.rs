@@ -5,8 +5,6 @@ use base64::engine::general_purpose;
 use base64::Engine;
 
 use tauri::Manager;
-#[cfg(debug_assertions)]
-use tauri::Runtime;
 
 /// 判断文件是否存在
 #[tauri::command]
