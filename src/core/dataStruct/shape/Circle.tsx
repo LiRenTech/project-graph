@@ -3,6 +3,10 @@ import { Line } from "./Line";
 import { Rectangle } from "./Rectangle";
 import { Shape } from "./Shape";
 
+/**
+ * 圆形，
+ * 注意：坐标点location属性是圆心属性
+ */
 export class Circle extends Shape {
   constructor(
     public location: Vector,
