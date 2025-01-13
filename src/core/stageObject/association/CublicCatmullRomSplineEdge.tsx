@@ -3,6 +3,10 @@ import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
 import { ConnectableAssociation } from "../StageObject";
 
+/**
+ * CR曲线连线
+ * 和早期的Edge一样，用于有向的连接两个实体，形成连接关系
+ */
 export class CublicCatmullRomSplineEdge extends ConnectableAssociation {
   public uuid: string;
   public text: string;

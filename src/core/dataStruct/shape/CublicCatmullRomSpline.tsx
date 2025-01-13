@@ -4,6 +4,9 @@ import { Line } from "./Line";
 import { Rectangle } from "./Rectangle";
 import { Shape } from "./Shape";
 
+/**
+ * CR曲线形状
+ */
 export class CublicCatmullRomSpline extends Shape {
   public controlPoints: Vector[];
   public alpha: number;
