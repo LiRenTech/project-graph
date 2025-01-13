@@ -123,7 +123,7 @@ export namespace StageDumper {
     return {
       version: latestVersion,
       entities,
-      associations: StageManager.getEdges().map((edge) => dumpEdge(edge)),
+      associations: StageManager.getLineEdges().map((edge) => dumpEdge(edge)),
       tags: StageManager.TagOptions.getTagUUIDs(),
     };
   }
@@ -172,7 +172,7 @@ export namespace StageDumper {
       | Serialized.CublicCatmullRomSplineEdge
     )[] = [];
 
-    for (const edge of StageManager.getEdges()) {
+    for (const edge of StageManager.getLineEdges()) {
       if (nodes.includes(edge.source) && nodes.includes(edge.target)) {
         selectedAssociations.push(dumpEdge(edge));
       }

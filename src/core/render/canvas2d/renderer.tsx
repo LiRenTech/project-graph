@@ -479,7 +479,7 @@ export namespace Renderer {
 
   function renderEdges(viewRectangle: Rectangle) {
     renderedEdges = 0;
-    for (const edge of StageManager.getEdges()) {
+    for (const edge of StageManager.getLineEdges()) {
       if (
         !Camera.limitCameraInCycleSpace &&
         !edge.isIntersectsWithRectangle(viewRectangle)
@@ -631,7 +631,7 @@ export namespace Renderer {
       `window: ${w}x${h}`,
       `effect count: ${Stage.effects.length}`,
       `node count: ${renderedNodes} , ${StageManager.getTextNodes().length}`,
-      `edge count: ${renderedEdges} , ${StageManager.getEdges().length}`,
+      `edge count: ${renderedEdges} , ${StageManager.getLineEdges().length}`,
       `section count: ${StageManager.getSections().length}`,
       `selected nodeCount: ${StageManager.selectedNodeCount}`,
       `selected edgeCount: ${StageManager.selectedEdgeCount}`,

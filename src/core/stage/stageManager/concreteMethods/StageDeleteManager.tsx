@@ -120,7 +120,7 @@ export namespace StageDeleteManager {
    */
   function deleteEntityAfterClearEdges(entity: Entity) {
     const prepareDeleteEdges: LineEdge[] = [];
-    for (const edge of StageManager.getEdges()) {
+    for (const edge of StageManager.getLineEdges()) {
       if (edge.source === entity || edge.target === entity) {
         prepareDeleteEdges.push(edge);
       }

@@ -9,6 +9,7 @@ import { TextNode } from "../entity/TextNode";
 import { EdgeCollisionBoxGetter } from "./EdgeCollisionBoxGetter";
 import { Edge } from "./Edge";
 import { ConnectableEntity } from "../StageObject";
+import { v4 as uuidv4 } from "uuid";
 
 export class LineEdge extends Edge {
   public uuid: string;
@@ -41,7 +42,7 @@ export class LineEdge extends Edge {
   private _isShifting: boolean = false;
 
   constructor(
-    { source, target, text, uuid }: Serialized.Edge,
+    { source, target, text, uuid }: Serialized.LineEdge,
     /** true表示解析状态，false表示解析完毕 */
     public unknown = false,
   ) {
@@ -52,6 +53,20 @@ export class LineEdge extends Edge {
     this.uuid = uuid;
 
     this.adjustSizeByText();
+  }
+
+  static fromTwoEntity(
+    source: ConnectableEntity,
+    target: ConnectableEntity,
+  ): LineEdge {
+    const result = new LineEdge({
+      source: source.uuid,
+      target: target.uuid,
+      text: "",
+      uuid: uuidv4(),
+      type: "core:line_edge",
+    });
+    return result;
   }
 
   /**

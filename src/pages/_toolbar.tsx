@@ -356,7 +356,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             description="反转选中连线方向"
             icon={<Repeat />}
             handleFunction={() => {
-              const selectedEdges = StageManager.getEdges().filter(
+              const selectedEdges = StageManager.getLineEdges().filter(
                 (edge) => edge.isSelected,
               );
               StageManager.reverseEdges(selectedEdges);
@@ -576,7 +576,7 @@ function deleteSelectedObjects() {
   StageManager.deleteEntities(
     StageManager.getTextNodes().filter((node) => node.isSelected),
   );
-  for (const edge of StageManager.getEdges()) {
+  for (const edge of StageManager.getLineEdges()) {
     if (edge.isSelected) {
       StageManager.deleteEdge(edge);
     }

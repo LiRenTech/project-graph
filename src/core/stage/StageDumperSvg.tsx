@@ -141,7 +141,7 @@ export namespace StageDumperSvg {
           }
         })}
         {/* 构建连线 */}
-        {StageManager.getEdges()
+        {StageManager.getLineEdges()
           .filter((edge) => edge.target.isSelected && edge.source.isSelected)
           .map((edge) => dumpEdge(edge))}
       </svg>
@@ -176,7 +176,7 @@ export namespace StageDumperSvg {
         }}
       >
         {StageManager.getTextNodes().map((node) => dumpNode(node))}
-        {StageManager.getEdges().map((edge) => dumpEdge(edge))}
+        {StageManager.getLineEdges().map((edge) => dumpEdge(edge))}
         {StageManager.getSections().map((section) => dumpSection(section))}
       </svg>
     );

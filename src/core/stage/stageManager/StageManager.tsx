@@ -135,7 +135,7 @@ export namespace StageManager {
     return associations.valuesToArray();
   }
 
-  export function getEdges(): LineEdge[] {
+  export function getLineEdges(): LineEdge[] {
     return associations
       .valuesToArray()
       .filter((edge) => edge instanceof LineEdge);
@@ -209,7 +209,7 @@ export namespace StageManager {
     node: ConnectableEntity,
   ): ConnectableEntity[] {
     const res: ConnectableEntity[] = [];
-    for (const edge of getEdges()) {
+    for (const edge of getLineEdges()) {
       if (edge.source.uuid === node.uuid) {
         res.push(edge.target);
       }
@@ -225,7 +225,7 @@ export namespace StageManager {
     node: ConnectableEntity,
   ): ConnectableEntity[] {
     const res: ConnectableEntity[] = [];
-    for (const edge of getEdges()) {
+    for (const edge of getLineEdges()) {
       if (edge.target.uuid === node.uuid) {
         res.push(edge.source);
       }
@@ -237,7 +237,7 @@ export namespace StageManager {
     node: ConnectableEntity,
     target: ConnectableEntity,
   ): boolean {
-    for (const edge of getEdges()) {
+    for (const edge of getLineEdges()) {
       if (edge.source === node && edge.target === target) {
         return true;
       }
@@ -256,7 +256,7 @@ export namespace StageManager {
     console.log("updateReferences");
     for (const entity of getEntities()) {
       if (entity instanceof ConnectableEntity) {
-        for (const edge of getEdges()) {
+        for (const edge of getLineEdges()) {
           if (edge.source.unknown && edge.source.uuid === entity.uuid) {
             edge.source = entity;
           }
@@ -285,9 +285,9 @@ export namespace StageManager {
       }
     }
     // 以下是Edge双向线偏移状态的更新
-    for (const edge of getEdges()) {
+    for (const edge of getLineEdges()) {
       let isShifting = false;
-      for (const otherEdge of getEdges()) {
+      for (const otherEdge of getLineEdges()) {
         if (
           edge.source === otherEdge.target &&
           edge.target === otherEdge.source
@@ -390,7 +390,7 @@ export namespace StageManager {
    * @returns
    */
   export function findEdgeByLocation(location: Vector): LineEdge | null {
-    for (const edge of getEdges()) {
+    for (const edge of getLineEdges()) {
       if (edge.collisionBox.isContainsPoint(location)) {
         return edge;
       }
@@ -846,7 +846,7 @@ export namespace StageManager {
     StageManager.deleteEntities(
       StageManager.getEntities().filter((node) => node.isSelected),
     );
-    for (const edge of StageManager.getEdges()) {
+    for (const edge of StageManager.getLineEdges()) {
       if (edge.isSelected) {
         StageManager.deleteEdge(edge);
         Stage.effects.push(...EdgeRenderer.getCuttingEffects(edge));
@@ -895,7 +895,7 @@ export namespace StageManager {
    */
   function reverseNodeEdges(connectEntity: ConnectableEntity) {
     const prepareReverseEdges = [];
-    for (const edge of getEdges()) {
+    for (const edge of getLineEdges()) {
       if (edge.target === connectEntity || edge.source === connectEntity) {
         prepareReverseEdges.push(edge);
       }
@@ -916,7 +916,7 @@ export namespace StageManager {
   }
 
   export function reverseSelectedEdges() {
-    const selectedEdges = getEdges().filter((edge) => edge.isSelected);
+    const selectedEdges = getLineEdges().filter((edge) => edge.isSelected);
     if (selectedEdges.length === 0) {
       return;
     }

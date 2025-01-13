@@ -188,7 +188,7 @@ export function autoComputeEngineTick() {
     }
   }
   // region 根据Edge计算
-  for (const edge of StageManager.getEdges().sort(
+  for (const edge of StageManager.getLineEdges().sort(
     (a, b) =>
       a.source.collisionBox.getRectangle().location.x -
       b.source.collisionBox.getRectangle().location.x,
