@@ -71,7 +71,7 @@ function ToolbarItem({ icon, handleFunction, description }: ToolbarItemProps) {
  * @param param0
  * @returns
  */
-function ColorPanel() {
+export function ColorPanel() {
   const [currentColors, setCurrentColors] = useState<Color[]>([]);
   useEffect(() => {
     ColorManager.getUserEntityFillColors().then((colors) => {
