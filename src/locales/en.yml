@@ -388,6 +388,10 @@ keyBinds:
     description: |
       按下后，选中的实体的详细信息会被打开编辑
       只有选中的物体数量为1时才有效
+  openColorPanel:
+    title: 打开颜色面板快捷键
+    description: |
+      按下后，打开颜色面板，可以用于快速切换节点颜色
   createTextNodeFromCameraLocation:
     title: 创建文本节点
     description: |

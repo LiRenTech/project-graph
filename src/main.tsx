@@ -35,6 +35,8 @@ import { Dialog } from "./utils/dialog";
 import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
+import { Popup } from "./utils/popup";
+import { ColorPanel } from "./pages/_toolbar";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -351,6 +353,16 @@ async function registerKeyBinds() {
     })
   ).down(() => {
     editNodeDetailsByKeyboard();
+  });
+
+  (
+    await KeyBinds.create("openColorPanel", "F6", {
+      control: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    Popup.show(<ColorPanel />);
   });
 }
 
