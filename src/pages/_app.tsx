@@ -179,9 +179,11 @@ export default function App() {
   React.useEffect(() => {
     if (file === Stage.Path.draftName) {
       getCurrentWindow().setTitle(Stage.Path.draftName);
+      document.title = Stage.Path.draftName;
       Stage.Path.setPathInEffect(Stage.Path.draftName);
     } else {
       getCurrentWindow().setTitle(`${filename} - Project Graph`);
+      document.title = `${filename} - Project Graph`;
       Stage.Path.setPathInEffect(file);
     }
   }, [file]);
@@ -297,7 +299,7 @@ export default function App() {
           />
         </IconButton>
         {/* 中间标题 */}
-        {useNativeTitleBar ? (
+        {useNativeTitleBar || isWeb ? (
           // h-0 才能完全摆脱划线时经过此区域的卡顿问题
           <div className="pointer-events-none h-0 flex-1"></div>
         ) : (

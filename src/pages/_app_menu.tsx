@@ -352,7 +352,7 @@ export default function AppMenu({
   return (
     <div
       className={cn(
-        "!pointer-events-none flex origin-top-left scale-0 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800 p-3 opacity-0",
+        "!pointer-events-none flex origin-top-left scale-0 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800/20 p-3 opacity-0 backdrop-blur-sm",
         {
           "!pointer-events-auto scale-100 opacity-100": open,
         },
@@ -367,48 +367,59 @@ export default function AppMenu({
         <Col icon={<FileText />} onClick={onOpen}>
           {t("file.items.open")}
         </Col>
-        <Col icon={<FileText />} onClick={() => setRecentFilePanelOpen(true)}>
-          {t("file.items.recent")}
-        </Col>
-        <Col icon={<Save />} onClick={onSave}>
-          {t("file.items.save")}
-        </Col>
+        {!isWeb && (
+          <>
+            <Col
+              icon={<FileText />}
+              onClick={() => setRecentFilePanelOpen(true)}
+            >
+              {t("file.items.recent")}
+            </Col>
+            <Col icon={<Save />} onClick={onSave}>
+              {t("file.items.save")}
+            </Col>
+          </>
+        )}
         <Col icon={<Save />} onClick={onSaveNew}>
           {t("file.items.saveAs")}
         </Col>
 
-        <Col icon={<Database />} onClick={onBackup}>
-          {t("file.items.backup")}
-        </Col>
+        {!isWeb && (
+          <Col icon={<Database />} onClick={onBackup}>
+            {t("file.items.backup")}
+          </Col>
+        )}
       </Row>
-      <Row icon={<Folder />} title={t("location.title")}>
-        <Col
-          icon={<FolderCog />}
-          onClick={async () => {
-            Dialog.show({
-              title: "数据文件夹位置",
-              type: "info",
-              code: await dataDir(),
-              content: "软件数据文件夹位置",
-            });
-          }}
-        >
-          {t("location.items.openDataFolder")}
-        </Col>
-        <Col
-          icon={<FolderOpen />}
-          onClick={() => {
-            Dialog.show({
-              title: "数据文件夹位置",
-              type: "info",
-              code: file,
-              content: "软件数据文件夹位置",
-            });
-          }}
-        >
-          {t("location.items.openProjectFolder")}
-        </Col>
-      </Row>
+      {!isWeb && (
+        <Row icon={<Folder />} title={t("location.title")}>
+          <Col
+            icon={<FolderCog />}
+            onClick={async () => {
+              Dialog.show({
+                title: "数据文件夹位置",
+                type: "info",
+                code: await dataDir(),
+                content: "软件数据文件夹位置",
+              });
+            }}
+          >
+            {t("location.items.openDataFolder")}
+          </Col>
+          <Col
+            icon={<FolderOpen />}
+            onClick={() => {
+              Dialog.show({
+                title: "数据文件夹位置",
+                type: "info",
+                code: file,
+                content: "软件数据文件夹位置",
+              });
+            }}
+          >
+            {t("location.items.openProjectFolder")}
+          </Col>
+        </Row>
+      )}
       <Row icon={<File />} title={t("export.title")}>
         <Col icon={<FileCode />} onClick={onSaveSVGNew}>
           {t("export.items.exportAsSVGByAll")}
@@ -454,23 +465,25 @@ export default function AppMenu({
           {t("more.items.welcome")}
         </Col>
       </Row>
-      <Row icon={<AppWindow />} title={t("window.title")}>
-        {import.meta.env.DEV && (
-          <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>
-            重载
+      {!isWeb && (
+        <Row icon={<AppWindow />} title={t("window.title")}>
+          {import.meta.env.DEV && (
+            <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>
+              重载
+            </Col>
+          )}
+          <Col
+            icon={<Fullscreen />}
+            onClick={() =>
+              getCurrentWindow()
+                .isFullscreen()
+                .then((res) => getCurrentWindow().setFullscreen(!res))
+            }
+          >
+            {t("window.items.fullscreen")}
           </Col>
-        )}
-        <Col
-          icon={<Fullscreen />}
-          onClick={() =>
-            getCurrentWindow()
-              .isFullscreen()
-              .then((res) => getCurrentWindow().setFullscreen(!res))
-          }
-        >
-          {t("window.items.fullscreen")}
-        </Col>
-      </Row>
+        </Row>
+      )}
       <Row icon={<Dock />} title="测试">
         <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
           测试页面
