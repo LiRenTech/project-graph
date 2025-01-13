@@ -1,11 +1,9 @@
 import { getTextSize } from "../../../utils/font";
 import { appScale } from "../../../utils/platform";
 import { Settings } from "../../Settings";
-import { Random } from "../../algorithm/random";
 import { Controller } from "../../controller/Controller";
 import { Color } from "../../dataStruct/Color";
 import { Vector } from "../../dataStruct/Vector";
-import { CublicCatmullRomSpline } from "../../dataStruct/shape/CublicCatmullRomSpline";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { sine } from "../../effect/animateFunctions";
 import { Camera } from "../../stage/Camera";
@@ -118,12 +116,7 @@ export namespace Renderer {
       "isRenderCenterPointer",
       (value) => (isRenderCenterPointer = value),
     );
-    for (let i = 0; i < 15; i++) {
-      points.push(Random.randomVector(Vector.getZero(), new Vector(400, 400)));
-    }
   }
-
-  const points: Vector[] = [];
 
   /**
    * 渲染总入口
@@ -156,12 +149,6 @@ export namespace Renderer {
 
     // 不随摄像机移动的渲染要素
     renderViewElements(viewRectangle);
-
-    WorldRenderUtils.renderCublicCatmullRomSpline(
-      new CublicCatmullRomSpline(points),
-      new Color(204, 204, 204),
-      2,
-    );
   }
 
   function renderCycleSpaceBorder() {
