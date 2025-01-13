@@ -1,59 +1,21 @@
-import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../types/node";
 import { getTextSize } from "../../../utils/font";
 import { Vector } from "../../dataStruct/Vector";
 import { Line } from "../../dataStruct/shape/Line";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../render/canvas2d/renderer";
-import { StageManager } from "../../stage/stageManager/StageManager";
-import { ConnectableAssociation, ConnectableEntity } from "../StageObject";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
 import { EdgeCollisionBoxGetter } from "./EdgeCollisionBoxGetter";
+import { Edge } from "./Edge";
+import { ConnectableEntity } from "../StageObject";
 
-export class LineEdge extends ConnectableAssociation {
+export class LineEdge extends Edge {
   public uuid: string;
+  public text: string;
 
-  /**
-   * 线段上的文字
-   */
-  text: string;
-
-  /**
-   * 是否被选中
-   */
-  _isSelected: boolean = false;
-
-  public get isSelected(): boolean {
-    return this._isSelected;
-  }
-  public set isSelected(value: boolean) {
-    const oldValue = this._isSelected;
-    this._isSelected = value;
-    if (oldValue !== value) {
-      if (oldValue === true) {
-        // 减少了一个选中节点
-        StageManager.selectedEdgeCount--;
-      } else {
-        // 增加了一个选中节点
-        StageManager.selectedEdgeCount++;
-      }
-    }
-  }
-
-  get source(): ConnectableEntity {
-    return this._source;
-  }
-  set source(value: ConnectableEntity) {
-    this._source = value;
-  }
-
-  get target(): ConnectableEntity {
-    return this._target;
-  }
-  set target(value: ConnectableEntity) {
-    this._target = value;
-  }
+  protected _source: ConnectableEntity;
+  protected _target: ConnectableEntity;
 
   get collisionBox(): CollisionBox {
     return EdgeCollisionBoxGetter.getCollisionBox(this);
@@ -78,9 +40,6 @@ export class LineEdge extends ConnectableAssociation {
   }
   private _isShifting: boolean = false;
 
-  private _source: ConnectableEntity;
-  private _target: ConnectableEntity;
-
   constructor(
     { source, target, text, uuid }: Serialized.Edge,
     /** true表示解析状态，false表示解析完毕 */
@@ -93,20 +52,6 @@ export class LineEdge extends ConnectableAssociation {
     this.uuid = uuid;
 
     this.adjustSizeByText();
-  }
-  /**
-   * 用于鼠标右键创建线段
-   * @param source
-   * @param target
-   */
-  static fromToNode(source: TextNode, target: TextNode): LineEdge {
-    return new LineEdge({
-      source: source.uuid,
-      target: target.uuid,
-      text: "",
-      uuid: uuidv4(),
-      type: "core:edge",
-    });
   }
 
   /**
@@ -125,32 +70,6 @@ export class LineEdge extends ConnectableAssociation {
       .getRectangle()
       .getLineIntersectionPoint(edgeCenterLine);
     return new Line(startPoint, endPoint);
-  }
-
-  /**
-   * 用于碰撞箱框选
-   * @param rectangle
-   */
-  isBodyLineIntersectWithRectangle(rectangle: Rectangle): boolean {
-    return this.collisionBox.isRectangleInCollisionBox(rectangle);
-  }
-
-  /**
-   * 用于鼠标悬浮在线上的时候
-   * @param location
-   * @returns
-   */
-  isBodyLineIntersectWithLocation(location: Vector): boolean {
-    return this.collisionBox.isPointInCollisionBox(location);
-  }
-
-  /**
-   * 用于线段框选
-   * @param line
-   * @returns
-   */
-  isBodyLineIntersectWithLine(line: Line): boolean {
-    return this.collisionBox.isLineInCollisionBox(line);
   }
 
   public rename(text: string) {
@@ -176,6 +95,7 @@ export class LineEdge extends ConnectableAssociation {
     }
     // return this._textRectangle;
   }
+
   get shiftingMidPoint(): Vector {
     const midPoint = Vector.average(
       this.source.collisionBox.getRectangle().center,
@@ -191,14 +111,6 @@ export class LineEdge extends ConnectableAssociation {
         .multiply(50),
     );
   }
-  /**
-   * 调整线段上的文字的外框矩形
-   */
-  adjustSizeByText() {
-    // const textSize = getTextSize(this.text, Renderer.FONT_SIZE);
-    // this._textRectangle = new Rectangle(
-    //   this.bodyLine.midPoint().subtract(textSize.divide(2)),
-    //   textSize,
-    // );
-  }
+
+  adjustSizeByText(): void {}
 }
