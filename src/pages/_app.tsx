@@ -1,4 +1,3 @@
-import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useAtom } from "jotai";
 import {
   BrainCircuit,
@@ -25,7 +24,14 @@ import { fileAtom } from "../state";
 import { cn } from "../utils/cn";
 import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
-import { appScale, isDesktop, isMac, isMobile } from "../utils/platform";
+import {
+  appScale,
+  getCurrentWindow,
+  isDesktop,
+  isMac,
+  isMobile,
+  isWeb,
+} from "../utils/platform";
 import AiPanel from "./_ai_panel";
 import AppMenu from "./_app_menu";
 import ErrorHandler from "./_error_handler";
@@ -173,9 +179,11 @@ export default function App() {
   React.useEffect(() => {
     if (file === Stage.Path.draftName) {
       getCurrentWindow().setTitle(Stage.Path.draftName);
+      document.title = Stage.Path.draftName;
       Stage.Path.setPathInEffect(Stage.Path.draftName);
     } else {
       getCurrentWindow().setTitle(`${filename} - Project Graph`);
+      document.title = `${filename} - Project Graph`;
       Stage.Path.setPathInEffect(file);
     }
   }, [file]);
@@ -291,7 +299,7 @@ export default function App() {
           />
         </IconButton>
         {/* 中间标题 */}
-        {useNativeTitleBar ? (
+        {useNativeTitleBar || isWeb ? (
           // h-0 才能完全摆脱划线时经过此区域的卡顿问题
           <div className="pointer-events-none h-0 flex-1"></div>
         ) : (
@@ -348,7 +356,7 @@ export default function App() {
           />
         </IconButton>
         {/* 右上角窗口控制按钮 */}
-        {isDesktop && !useNativeTitleBar && !isMac && (
+        {isDesktop && !useNativeTitleBar && !isMac && !isWeb && (
           <Button className="right-4 top-4 flex items-center gap-1 active:scale-100">
             <ChevronDown
               onClick={() => getCurrentWindow().minimize()}

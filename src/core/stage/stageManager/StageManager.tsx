@@ -887,6 +887,32 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
+  /**
+   * 反转一个节点与他相连的所有连线方向
+   * @param connectEntity
+   */
+  function reverseNodeEdges(connectEntity: ConnectableEntity) {
+    const prepareReverseEdges = [];
+    for (const edge of getEdges()) {
+      if (edge.target === connectEntity || edge.source === connectEntity) {
+        prepareReverseEdges.push(edge);
+      }
+    }
+    reverseEdges(prepareReverseEdges);
+  }
+
+  /**
+   * 反转所有选中的节点的每个节点的连线
+   */
+  export function reverseSelectedNodeEdge() {
+    const entities = getSelectedEntities().filter(
+      (entity) => entity instanceof ConnectableEntity,
+    );
+    for (const entity of entities) {
+      reverseNodeEdges(entity);
+    }
+  }
+
   export function reverseSelectedEdges() {
     const selectedEdges = getEdges().filter((edge) => edge.isSelected);
     if (selectedEdges.length === 0) {

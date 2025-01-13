@@ -1,4 +1,5 @@
-import { load, Store } from "@tauri-apps/plugin-store";
+import { Store } from "@tauri-apps/plugin-store";
+import { createStore } from "../utils/store";
 import { Vector } from "./dataStruct/Vector";
 
 /**
@@ -21,7 +22,7 @@ export namespace KeyBinds {
   let store: Store | null = null;
 
   export async function init() {
-    store = await load("keybinds.json");
+    store = await createStore("keybinds.json");
   }
 
   export async function set(id: string, key: string, modifiers: KeyModifiers) {

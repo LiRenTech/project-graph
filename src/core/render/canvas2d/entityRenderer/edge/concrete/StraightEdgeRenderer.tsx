@@ -223,13 +223,13 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       RenderUtils.renderSolidLine(
         Renderer.transformWorld2View(startPoint),
         Renderer.transformWorld2View(shiftingMidPoint),
-        new Color(204, 204, 204),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
       );
       RenderUtils.renderSolidLine(
         Renderer.transformWorld2View(shiftingMidPoint),
         Renderer.transformWorld2View(endPoint),
-        new Color(204, 204, 204),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
       );
     } else {
@@ -238,6 +238,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         edge.text,
         Renderer.transformWorld2View(shiftingMidPoint),
         Renderer.FONT_SIZE * Camera.currentScale,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
       );
       const edgeTextRectangle = edge.textRectangle;
       const start2MidPoint =
@@ -246,13 +247,13 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       RenderUtils.renderSolidLine(
         Renderer.transformWorld2View(startPoint),
         Renderer.transformWorld2View(start2MidPoint),
-        new Color(204, 204, 204),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
       );
       RenderUtils.renderSolidLine(
         Renderer.transformWorld2View(mid2EndPoint),
         Renderer.transformWorld2View(endPoint),
-        new Color(204, 204, 204),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
       );
     }
@@ -277,7 +278,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         Camera.currentScale,
       Math.PI / 2,
       0,
-      new Color(204, 204, 204),
+      StageStyleManager.currentStyle.StageObjectBorderColor,
       2 * Camera.currentScale,
     );
     // 画箭头
@@ -297,8 +298,8 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         startNode.collisionBox.getRectangle().getCenter(),
       ),
       Renderer.transformWorld2View(mouseLocation),
-      new Color(255, 255, 255, 0),
-      new Color(255, 255, 255, 0.5),
+      StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
+      StageStyleManager.currentStyle.StageObjectBorderColor,
       2,
     );
   }

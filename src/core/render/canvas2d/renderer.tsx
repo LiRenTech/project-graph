@@ -451,7 +451,7 @@ export namespace Renderer {
           RenderUtils.renderGradientLine(
             transformWorld2View(node.rectangle.center),
             transformWorld2View(Stage.keyOnlyVirtualNewLocation),
-            new Color(255, 255, 255, 0),
+            StageStyleManager.currentStyle.StageObjectBorderColor,
             new Color(255, 255, 255, 0.5),
             1,
           );
@@ -460,7 +460,7 @@ export namespace Renderer {
             transformWorld2View(Stage.keyOnlyVirtualNewLocation),
             25 * Camera.currentScale,
             Color.Transparent,
-            Color.White,
+            StageStyleManager.currentStyle.StageObjectBorderColor,
             1,
           );
         }
@@ -686,7 +686,12 @@ export namespace Renderer {
 
     for (const key of Controller.pressingKeySet) {
       const textLocation = new Vector(x, Renderer.h - 100);
-      RenderUtils.renderText(key, textLocation, fontSize);
+      RenderUtils.renderText(
+        key,
+        textLocation,
+        fontSize,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+      );
       const textSize = getTextSize(key, fontSize);
       x += textSize.x + margin;
     }
@@ -701,6 +706,7 @@ export namespace Renderer {
         "🔒方向键移动视野被禁止，可设置🔧更改",
         new Vector(margin, Renderer.h - 60),
         15,
+        StageStyleManager.currentStyle.effects.flash,
       );
     }
   }

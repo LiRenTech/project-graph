@@ -1,15 +1,25 @@
 import { readText, readImage } from "@tauri-apps/plugin-clipboard-manager";
-import { useState } from "react";
-// import { writeFileBase64 } from "../utils/fs";
-import MDEditor from "@uiw/react-md-editor";
+import { useEffect, useState } from "react";
+import MarkdownEditor from "./_vditor_panel";
 
 export default function TestPage() {
-  const [inputCurrentDetails, setInputCurrentDetails] = useState("");
+  const [inputCurrentDetails, setInputCurrentDetails] = useState("wowo");
   const setInputCurrentDetailsHandler = (value?: string | undefined) => {
     if (value !== undefined) {
       setInputCurrentDetails(value);
     }
   };
+
+  useEffect(() => {
+    const keyDownEvent = (event: KeyboardEvent) => {
+      console.log(event);
+    };
+    window.addEventListener("keydown", keyDownEvent);
+    return () => {
+      window.removeEventListener("keydown", keyDownEvent);
+    };
+  }, []);
+
   return (
     <>
       <h1 className="h-32">Test Page</h1>
@@ -67,10 +77,17 @@ export default function TestPage() {
         点击userAgent
       </button>
       <pre>{navigator.userAgent}</pre>
-      <MDEditor
+      {/* <MDEditor
         value={inputCurrentDetails}
         onChange={setInputCurrentDetailsHandler}
-      />
+      /> */}
+      <div className="flex h-full">
+        <MarkdownEditor
+          initialValue={inputCurrentDetails}
+          onChange={setInputCurrentDetailsHandler}
+        />
+      </div>
+      <p>{inputCurrentDetails}</p>
     </>
   );
 }

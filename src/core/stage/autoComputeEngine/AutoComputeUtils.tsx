@@ -28,6 +28,21 @@ export namespace AutoComputeUtils {
   }
 
   /**
+   * 获取一个节点的所有直接子节点，按x坐标排序
+   * @param node
+   * @returns
+   */
+  export function getChildTextNodes(node: TextNode): TextNode[] {
+    return StageManager.nodeChildrenArray(node)
+      .filter((node) => node instanceof TextNode)
+      .sort(
+        (a, b) =>
+          a.collisionBox.getRectangle().location.x -
+          b.collisionBox.getRectangle().location.x,
+      );
+  }
+
+  /**
    * 更改一个TextNode节点的所有子节点名字，如果没有子节点，则新建一个节点
    * @param node
    * @param resultText

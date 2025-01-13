@@ -1,10 +1,11 @@
 import { Random } from "../../algorithm/random";
-import { Color, mixColors } from "../../dataStruct/Color";
+import { mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effect";
 
 /**
@@ -93,8 +94,8 @@ export class NodeMoveShadowEffect extends Effect {
     for (const point of this.pointList) {
       const viewLocation = Renderer.transformWorld2View(point);
       const color = mixColors(
-        Color.White,
-        Color.White.toTransparent(),
+        StageStyleManager.currentStyle.effects.flash,
+        StageStyleManager.currentStyle.effects.flash.toTransparent(),
         this.timeProgress.rate,
       );
 

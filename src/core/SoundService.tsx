@@ -70,6 +70,10 @@ export namespace SoundService {
 
   const audioContext = new window.AudioContext();
 
+  export function playSoundByFilePath(filePath: string) {
+    loadAndPlaySound(filePath);
+  }
+
   async function loadAndPlaySound(filePath: string) {
     if (filePath.trim() === "") {
       console.log("filePath is empty");

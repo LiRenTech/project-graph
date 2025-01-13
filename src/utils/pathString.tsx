@@ -1,4 +1,4 @@
-import { family } from "@tauri-apps/plugin-os";
+import { family } from "./platform";
 
 export namespace PathString {
   /**

@@ -404,6 +404,12 @@ keyBinds:
       例如，原先是 A -> B，按下后变成 B -> A
       此功能的意义在于快速创建一个节点连向多个节点的情况
       因为目前的连线只能一次性做到多连一。
+  reverseSelectedNodeEdge:
+    title: 反转选中的节点的所有连线的方向
+    description: |
+      按下后，所有框选选中的节点中
+      每个节点的所有连线都会反转方向
+      进而实现更快捷的一连多
   packEntityToSection:
     title: 将选中的实体打包到Section框中
     description: |
@@ -419,6 +425,10 @@ keyBinds:
     description: |
       按下后，选中的实体的详细信息会被打开编辑
       只有选中的物体数量为1时才有效
+  openColorPanel:
+    title: 打开颜色面板快捷键
+    description: |
+      按下后，打开颜色面板，可以用于快速切换节点颜色
   createTextNodeFromCameraLocation:
     title: 创建文本节点
     description: |

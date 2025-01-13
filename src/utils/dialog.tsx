@@ -69,7 +69,7 @@ export namespace Dialog {
     React.useEffect(() => {
       setTimeout(() => {
         setShow(true);
-      }, 1);
+      }, 10);
     }, []);
 
     return (
