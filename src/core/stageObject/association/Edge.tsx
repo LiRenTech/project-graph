@@ -15,7 +15,6 @@ export abstract class Edge extends ConnectableAssociation {
    */
   public abstract text: string;
   abstract collisionBox: CollisionBox;
-
   /** 连接两个实体的部分 */
 
   protected abstract _source: ConnectableEntity;

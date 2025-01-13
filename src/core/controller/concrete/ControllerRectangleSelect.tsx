@@ -38,7 +38,7 @@ ControllerRectangleSelect.mousedown = (event: MouseEvent) => {
     return;
   }
 
-  const isHaveEdgeSelected = StageManager.getEdges().some(
+  const isHaveEdgeSelected = StageManager.getLineEdges().some(
     (edge) => edge.isSelected,
   );
   const isHaveEntitySelected = StageManager.getEntities().some(
@@ -142,7 +142,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
         }
       }
     }
-    for (const edge of StageManager.getEdges()) {
+    for (const edge of StageManager.getLineEdges()) {
       if (
         edge.collisionBox.isIntersectsWithRectangle(Stage.selectingRectangle)
       ) {
@@ -182,7 +182,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
     // Edge
     if (!isHaveEntity) {
       // 如果已经有节点被选择了，则不能再选择边了
-      for (const edge of StageManager.getEdges()) {
+      for (const edge of StageManager.getLineEdges()) {
         if (edge.isHiddenBySectionCollapse) {
           continue;
         }
@@ -245,7 +245,7 @@ ControllerRectangleSelect.mouseup = (event: MouseEvent) => {
   }
 
   Controller.lastSelectedEdgeUUID.clear();
-  for (const edge of StageManager.getEdges()) {
+  for (const edge of StageManager.getLineEdges()) {
     if (edge.isSelected) {
       Controller.lastSelectedEdgeUUID.add(edge.uuid);
     }

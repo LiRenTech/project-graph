@@ -33,7 +33,7 @@ export namespace StageNodeConnector {
         target: toNode.uuid,
         text,
         uuid: uuidv4(),
-        type: "core:edge",
+        type: "core:line_edge",
       });
 
       StageManager.addLineEdge(newEdge);

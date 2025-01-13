@@ -29,7 +29,7 @@ ControllerEdgeEdit.mouseDoubleClick = (event: MouseEvent) => {
 ControllerEdgeEdit.keydown = (event: KeyboardEvent) => {
   if (event.key === "Enter") {
     // 先检测是否有选择了的边
-    const isHaveEdgeSelected = StageManager.getEdges().some(
+    const isHaveEdgeSelected = StageManager.getLineEdges().some(
       (edge) => edge.isSelected,
     );
     if (!isHaveEdgeSelected) {
@@ -38,7 +38,7 @@ ControllerEdgeEdit.keydown = (event: KeyboardEvent) => {
 
     const user_input = prompt("请输入线上的文字", "");
     if (user_input) {
-      for (const edge of StageManager.getEdges()) {
+      for (const edge of StageManager.getLineEdges()) {
         if (edge.isSelected) {
           edge.rename(user_input);
         }

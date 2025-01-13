@@ -76,7 +76,7 @@ export namespace StageGeneratorAI {
     let startRotateDegrees = -(90 / 2);
 
     const toParentDegrees: number[] = [];
-    for (const edge of StageManager.getEdges()) {
+    for (const edge of StageManager.getLineEdges()) {
       if (edge.target === parent) {
         toParentDegrees.push(
           edge.target.collisionBox

@@ -1,11 +1,11 @@
-import { Vector } from "../../../dataStruct/Vector";
-import { StageManager } from "../StageManager";
-import { Stage } from "../../Stage";
-import { LineEffect } from "../../../effect/concrete/LineEffect";
-import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Color } from "../../../dataStruct/Color";
-import { StageEntityMoveManager } from "./StageEntityMoveManager";
+import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
+import { Vector } from "../../../dataStruct/Vector";
+import { LineEffect } from "../../../effect/concrete/LineEffect";
 import { ConnectableEntity } from "../../../stageObject/StageObject";
+import { Stage } from "../../Stage";
+import { StageManager } from "../StageManager";
+import { StageEntityMoveManager } from "./StageEntityMoveManager";
 
 /**
  * 所有和旋转相关的操作
@@ -18,7 +18,7 @@ export namespace StageNodeRotate {
    * @param diffLocation
    */
   export function moveEdges(lastMoveLocation: Vector, diffLocation: Vector) {
-    for (const edge of StageManager.getEdges()) {
+    for (const edge of StageManager.getLineEdges()) {
       if (edge.isSelected) {
         const startMouseDragLocation = lastMoveLocation.clone();
         const endMouseDragLocation = startMouseDragLocation.add(diffLocation);

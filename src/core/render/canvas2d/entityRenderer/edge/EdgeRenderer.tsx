@@ -135,7 +135,7 @@ export namespace EdgeRenderer {
         target: edge.target.uuid,
         text: edge.text,
         uuid: edge.uuid,
-        type: "core:edge",
+        type: "core:line_edge",
       });
     }
     if (edge.target.isHiddenBySectionCollapse) {
@@ -144,7 +144,7 @@ export namespace EdgeRenderer {
         target: getMinNonCollapseParentSection(edge.target).uuid,
         text: edge.text,
         uuid: edge.uuid,
-        type: "core:edge",
+        type: "core:line_edge",
       });
     }
     return edge;
