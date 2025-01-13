@@ -5,6 +5,7 @@ use base64::engine::general_purpose;
 use base64::Engine;
 
 use tauri::Manager;
+#[cfg(debug_assertions)]
 use tauri::Runtime;
 
 /// 判断文件是否存在
@@ -49,15 +50,6 @@ fn write_file_base64(content: String, path: String) -> Result<(), String> {
         eprintln!("写入文件失败: {}", e);
         return e.to_string();
     })?;
-    Ok(())
-}
-
-#[tauri::command]
-fn open_devtools<R: Runtime>(app: tauri::AppHandle<R>) -> Result<(), String> {
-    #[cfg(desktop)]
-    {
-        app.get_webview_window("main").unwrap().open_devtools();
-    }
     Ok(())
 }
 
@@ -113,7 +105,6 @@ pub fn run() {
             exists,
             read_file_base64,
             write_file_base64,
-            open_devtools,
             write_stdout,
             write_stderr,
             exit
