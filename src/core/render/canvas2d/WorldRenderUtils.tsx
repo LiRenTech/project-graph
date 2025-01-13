@@ -112,12 +112,12 @@ export namespace WorldRenderUtils {
     Canvas.ctx.shadowBlur = 15;
 
     if (start.distance(end) === 0) {
-      RenderUtils.renderCircle(
-        Renderer.transformWorld2View(start),
-        4 * Camera.currentScale,
+      WorldRenderUtils.renderPrismaticBlock(
+        start,
+        4,
         Color.Transparent,
         StageStyleManager.currentStyle.effects.flash,
-        2 * Camera.currentScale,
+        2,
       );
     } else {
       RenderUtils.renderSolidLine(
@@ -145,6 +145,32 @@ export namespace WorldRenderUtils {
     //   2 * Camera.currentScale
     // )
     Canvas.ctx.shadowBlur = 0;
+  }
+
+  export function renderPrismaticBlock(
+    centerLocation: Vector,
+    radius: number,
+    color: Color,
+    strokeColor: Color,
+    strokeWidth: number,
+  ): void {
+    const c = Renderer.transformWorld2View(centerLocation);
+    radius *= Camera.currentScale;
+    strokeWidth *= Camera.currentScale;
+    const originLineJoin = Canvas.ctx.lineJoin;
+    Canvas.ctx.lineJoin = "miter";
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(c.x + radius, c.y);
+    Canvas.ctx.lineTo(c.x, c.y - radius);
+    Canvas.ctx.lineTo(c.x - radius, c.y);
+    Canvas.ctx.lineTo(c.x, c.y + radius);
+    Canvas.ctx.closePath();
+    Canvas.ctx.fillStyle = color.toString();
+    Canvas.ctx.fill();
+    Canvas.ctx.lineWidth = strokeWidth;
+    Canvas.ctx.strokeStyle = strokeColor.toString();
+    Canvas.ctx.stroke();
+    Canvas.ctx.lineJoin = originLineJoin;
   }
 
   // BUG
