@@ -1,10 +1,5 @@
-import { open } from "@tauri-apps/plugin-shell";
-import { useEffect, useState } from "react";
-import { Color } from "../core/dataStruct/Color";
-import { StageManager } from "../core/stage/stageManager/StageManager";
-import { cn } from "../utils/cn";
-// https://lucide.dev/icons
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
+import { open } from "@tauri-apps/plugin-shell";
 import {
   AlignCenterHorizontal,
   AlignCenterVertical,
@@ -20,33 +15,36 @@ import {
   ClipboardX,
   Globe,
   LayoutDashboard,
+  Network,
   Package,
   PaintBucket,
+  RefreshCcw,
   Repeat,
   SaveAll,
   Square,
   Tag,
   Trash2,
-  RefreshCcw,
-  Network,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "../components/ui/Box";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { ApiKeyManager } from "../core/ai/ApiKeyManager";
+import { Color } from "../core/dataStruct/Color";
 import { TextRiseEffect } from "../core/effect/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
+import { StageManager } from "../core/stage/stageManager/StageManager";
+import { cn } from "../utils/cn";
 // import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { Dialog } from "../utils/dialog";
 import { writeTextFile } from "../utils/fs";
 import { Popup } from "../utils/popup";
 // import { PathString } from "../utils/pathString";
-import ColorManagerPanel from "./_color_manager_panel";
 import { ColorManager } from "../core/ColorManager";
+import ColorManagerPanel from "./_color_manager_panel";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -79,7 +77,7 @@ function ColorPanel() {
     ColorManager.getUserEntityFillColors().then((colors) => {
       setCurrentColors(colors);
     });
-  });
+  }, []);
   return (
     <>
       <div className="flex flex-wrap items-center justify-center">
@@ -335,7 +333,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
     >
       <Box
         className={cn(
-          "flex w-10 origin-right scale-[10%] flex-col items-center gap-4 rounded-full bg-white px-8 py-6 opacity-25 group-hover/wrapper:scale-100 group-hover/wrapper:bg-neutral-800 group-hover/wrapper:opacity-100",
+          "flex w-10 origin-right scale-[10%] flex-col items-center gap-4 rounded-full bg-white px-8 py-6 opacity-25 backdrop-blur-sm group-hover/wrapper:scale-100 group-hover/wrapper:bg-neutral-800/20 group-hover/wrapper:opacity-100",
           className,
         )}
       >
