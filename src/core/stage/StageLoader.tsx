@@ -23,6 +23,8 @@ export namespace StageLoader {
     data = convertV9toV10(data);
     data = convertV10toV11(data);
     data = convertV11toV12(data);
+    data = convertV12toV13(data);
+
     return data as Serialized.File;
   }
 
@@ -218,6 +220,32 @@ export namespace StageLoader {
         }
       }
     }
+    return data;
+  }
+
+  /**
+   * node -> entities
+   * edge -> associations
+   * @param data
+   * @returns
+   */
+  function convertV12toV13(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 13) {
+      return data;
+    }
+    data.version = 13;
+    if ("nodes" in data) {
+      data.entities = data.nodes;
+      delete data.nodes;
+    }
+    if ("edges" in data) {
+      for (const edge of data.edges) {
+        edge.type = "core:line_edge";
+      }
+      data.associations = data.edges;
+      delete data.edges;
+    }
+
     return data;
   }
 }

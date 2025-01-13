@@ -1,9 +1,9 @@
+import { v4 as uuidv4 } from "uuid";
 import { Edge } from "../../../stageObject/association/Edge";
 import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { ConnectableEntity } from "../../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 import { StageDeleteManager } from "./StageDeleteManager";
-import { v4 as uuidv4 } from "uuid";
 
 /**
  * 集成所有连线相关的功能
@@ -36,7 +36,7 @@ export namespace StageNodeConnector {
         type: "core:edge",
       });
 
-      StageManager.addEdge(newEdge);
+      StageManager.addLineEdge(newEdge);
 
       StageManager.updateReferences();
       // return addResult;

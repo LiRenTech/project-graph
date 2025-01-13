@@ -165,8 +165,8 @@ export namespace Stage {
   // eslint-disable-next-line prefer-const
   export let copyBoardData: Serialized.File = {
     version: StageDumper.latestVersion,
-    nodes: [],
-    edges: [],
+    entities: [],
+    associations: [],
     tags: [],
   };
   /**

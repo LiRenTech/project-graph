@@ -194,7 +194,7 @@ export namespace StageManager {
   export function addConnectPoint(point: ConnectPoint) {
     entities.addValue(point, point.uuid);
   }
-  export function addEdge(edge: Edge) {
+  export function addLineEdge(edge: Edge) {
     associations.addValue(edge, edge.uuid);
   }
 
@@ -933,8 +933,8 @@ export namespace StageManager {
   export function clearClipboard() {
     Stage.copyBoardData = {
       version: StageDumper.latestVersion,
-      nodes: [],
-      edges: [],
+      entities: [],
+      associations: [],
       tags: [],
     };
   }

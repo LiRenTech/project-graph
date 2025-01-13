@@ -279,7 +279,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
     setSsHaveSelectedNode(StageManager.selectedNodeCount > 0);
     setSsHaveSelectedNodeOverTwo(StageManager.selectedNodeCount > 1);
     setSsHaveSelectedEdge(StageManager.selectedEdgeCount > 0);
-    setIsCopyClearShow(Stage.copyBoardData.nodes.length > 0);
+    setIsCopyClearShow(Stage.copyBoardData.entities.length > 0);
   };
   useEffect(() => {
     update();

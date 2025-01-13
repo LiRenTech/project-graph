@@ -15,7 +15,7 @@ export namespace StageDumper {
   /**
    * 最新版本
    */
-  export const latestVersion = 12;
+  export const latestVersion = 13;
 
   export function dumpTextNode(textNode: TextNode): Serialized.Node {
     return {
@@ -29,13 +29,13 @@ export namespace StageDumper {
     };
   }
 
-  export function dumpEdge(edge: Edge): Serialized.Edge {
+  export function dumpEdge(edge: Edge): Serialized.LineEdge {
     return {
       source: edge.source.uuid,
       target: edge.target.uuid,
       text: edge.text,
       uuid: edge.uuid,
-      type: "core:edge",
+      type: "core:line_edge",
     };
   }
   export function dumpConnectPoint(
@@ -97,7 +97,7 @@ export namespace StageDumper {
    * @returns
    */
   export function dump(): Serialized.File {
-    const nodes: (
+    const entities: (
       | Serialized.Section
       | Serialized.Node
       | Serialized.ConnectPoint
@@ -105,23 +105,25 @@ export namespace StageDumper {
       | Serialized.UrlNode
     )[] = StageManager.getTextNodes().map((node) => dumpTextNode(node));
 
-    nodes.push(
+    entities.push(
       ...StageManager.getSections().map((section) => dumpSection(section)),
     );
-    nodes.push(
+    entities.push(
       ...StageManager.getConnectPoints().map((connectPoint) =>
         dumpConnectPoint(connectPoint),
       ),
     );
-    nodes.push(
+    entities.push(
       ...StageManager.getImageNodes().map((node) => dumpImageNode(node)),
     );
-    nodes.push(...StageManager.getUrlNodes().map((node) => dumpUrlNode(node)));
+    entities.push(
+      ...StageManager.getUrlNodes().map((node) => dumpUrlNode(node)),
+    );
 
     return {
       version: latestVersion,
-      nodes,
-      edges: StageManager.getEdges().map((edge) => dumpEdge(edge)),
+      entities,
+      associations: StageManager.getEdges().map((edge) => dumpEdge(edge)),
       tags: StageManager.TagOptions.getTagUUIDs(),
     };
   }
@@ -165,18 +167,21 @@ export namespace StageDumper {
     );
 
     // 根据选中的实体，找到涉及的边
-    const selectedEdges: Serialized.Edge[] = [];
+    const selectedAssociations: (
+      | Serialized.LineEdge
+      | Serialized.CublicCatmullRomSplineEdge
+    )[] = [];
 
     for (const edge of StageManager.getEdges()) {
       if (nodes.includes(edge.source) && nodes.includes(edge.target)) {
-        selectedEdges.push(dumpEdge(edge));
+        selectedAssociations.push(dumpEdge(edge));
       }
     }
 
     return {
       version: latestVersion,
-      nodes: selectedNodes,
-      edges: selectedEdges,
+      entities: selectedNodes,
+      associations: selectedAssociations,
       tags: [],
     };
   }

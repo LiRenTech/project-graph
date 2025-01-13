@@ -488,7 +488,7 @@ export namespace Renderer {
 
   /** 画粘贴板上的信息 */
   function renderClipboard() {
-    if (Stage.copyBoardData.nodes.length === 0) {
+    if (Stage.copyBoardData.entities.length === 0) {
       return;
     }
     const clipboardBlue = new Color(156, 220, 254, 0.5);
@@ -543,7 +543,7 @@ export namespace Renderer {
         12 * Camera.currentScale,
         clipboardBlue,
       );
-      for (const entity of Stage.copyBoardData.nodes) {
+      for (const entity of Stage.copyBoardData.entities) {
         if (entity.type === "core:connect_point") {
           RenderUtils.renderCircle(
             transformWorld2View(new Vector(...entity.location)),

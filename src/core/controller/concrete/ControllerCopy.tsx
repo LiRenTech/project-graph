@@ -70,7 +70,7 @@ ControllerCopy.keydown = (event: KeyboardEvent) => {
     } else {
       // 复制的那一刹那，还要记录一下整个外接矩形
       const rectangles = [];
-      for (const node of Stage.copyBoardData.nodes) {
+      for (const node of Stage.copyBoardData.entities) {
         if (node.type === "core:connect_point") {
           rectangles.push(
             new Rectangle(new Vector(...node.location), new Vector(1, 1)),
@@ -90,7 +90,7 @@ ControllerCopy.keydown = (event: KeyboardEvent) => {
     }
   } else if (key === "v" && Controller.pressingKeySet.has("control")) {
     // 粘贴
-    if (Stage.copyBoardData.nodes.length === 0) {
+    if (Stage.copyBoardData.entities.length === 0) {
       readClipboardItems(mouseLocation);
     } else {
       if (Controller.pressingKeySet.has("shift")) {
