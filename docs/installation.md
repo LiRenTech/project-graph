@@ -1,5 +1,8 @@
 # 安装
 
+> [!IMPORTANT]
+> macOS 可能会提示“应用已损坏，无法打开”，请参考[常见问题](./faq#macos-cannot-open)中的解决方法。
+
 ## 📦 稳定版
 
 <Suspense>
@@ -9,7 +12,10 @@
   </template>
 </Suspense>
 
-## ⚡ 开发版 (推荐)
+## ⚡ 开发版
+
+> [!WARNING]
+> 开发版可能有未知的 Bug。
 
 <Suspense>
   <GithubRelease repo="LiRenTech/project-graph" nightly />
@@ -17,9 +23,6 @@
     正在加载下载链接，若长时间未加载请刷新页面。
   </template>
 </Suspense>
-
-> [!IMPORTANT]
-> macOS 可能会提示“应用已损坏，无法打开”，请参考[常见问题](./faq#macos-cannot-open)中的解决方法。
 
 ## 🅰 AUR
 
