@@ -1,18 +1,18 @@
-import { Color } from "../../dataStruct/Color";
-import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
-import { StageManager } from "../../stage/stageManager/StageManager";
-import { ProgressNumber } from "../../dataStruct/ProgressNumber";
-import { Renderer } from "../../render/canvas2d/renderer";
-import { Stage } from "../../stage/Stage";
-import { Vector } from "../../dataStruct/Vector";
-import { ControllerClass } from "../ControllerClass";
-import { Controller } from "../Controller";
-import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
-import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
-import { ConnectableEntity } from "../../stageObject/StageObject";
-import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { v4 } from "uuid";
 import { SoundService } from "../../SoundService";
+import { Color } from "../../dataStruct/Color";
+import { ProgressNumber } from "../../dataStruct/ProgressNumber";
+import { Vector } from "../../dataStruct/Vector";
+import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
+import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
+import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
+import { Renderer } from "../../render/canvas2d/renderer";
+import { Stage } from "../../stage/Stage";
+import { StageManager } from "../../stage/stageManager/StageManager";
+import { ConnectableEntity } from "../../stageObject/StageObject";
+import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
+import { Controller } from "../Controller";
+import { ControllerClass } from "../ControllerClass";
 
 /**
  * 右键连线功能 的控制器
@@ -129,7 +129,7 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
   // 连接线
   let isFindConnectToNode = false;
   for (const entity of StageManager.getConnectableEntity()) {
-    if (entity.collisionBox.isPointInCollisionBox(worldLocation)) {
+    if (entity.collisionBox.isContainsPoint(worldLocation)) {
       // 找到了连接的节点，吸附上去
       Stage.connectToEntity = entity;
       isFindConnectToNode = true;

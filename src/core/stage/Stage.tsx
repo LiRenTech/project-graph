@@ -208,9 +208,7 @@ export namespace Stage {
     if (Stage.connectFromEntities.length > 0 && Controller.lastMoveLocation) {
       let connectTargetNode = null;
       for (const node of StageManager.getConnectableEntity()) {
-        if (
-          node.collisionBox.isPointInCollisionBox(Controller.lastMoveLocation)
-        ) {
+        if (node.collisionBox.isContainsPoint(Controller.lastMoveLocation)) {
           connectTargetNode = node;
           break;
         }

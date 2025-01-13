@@ -29,7 +29,7 @@ export class CollisionBox {
     this.shapeList = shapeList;
   }
 
-  isPointInCollisionBox(location: Vector): boolean {
+  public isContainsPoint(location: Vector): boolean {
     for (const shape of this.shapeList) {
       if (shape.isPointIn(location)) {
         return true;
@@ -38,7 +38,7 @@ export class CollisionBox {
     return false;
   }
 
-  isRectangleInCollisionBox(rectangle: Rectangle): boolean {
+  public isIntersectsWithRectangle(rectangle: Rectangle): boolean {
     for (const shape of this.shapeList) {
       if (shape.isCollideWithRectangle(rectangle)) {
         return true;
@@ -47,7 +47,7 @@ export class CollisionBox {
     return false;
   }
 
-  isLineInCollisionBox(line: Line): boolean {
+  public isIntersectsWithLine(line: Line): boolean {
     for (const shape of this.shapeList) {
       if (shape.isCollideWithLine(line)) {
         return true;
@@ -58,11 +58,11 @@ export class CollisionBox {
 
   /**
    * 获取碰撞箱们的最小外接矩形
+   * 如果形状数组为空，则返回00点的无大小矩形
    */
   getRectangle(): Rectangle {
     if (this.shapeList.length === 0) {
-      // 报错
-      throw new Error("CollisionBox is empty!");
+      return new Rectangle(Vector.getZero(), Vector.getZero());
     }
     let minX = Infinity;
     let minY = Infinity;

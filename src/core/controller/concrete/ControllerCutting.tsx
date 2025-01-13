@@ -73,7 +73,7 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
     if (entity.isHiddenBySectionCollapse) {
       continue; // 隐藏的节点不参与碰撞检测
     }
-    if (entity.collisionBox.isLineInCollisionBox(Stage.cuttingLine)) {
+    if (entity.collisionBox.isIntersectsWithLine(Stage.cuttingLine)) {
       Stage.warningEntity.push(entity);
     }
 
@@ -99,7 +99,7 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
     if (section.isHiddenBySectionCollapse) {
       continue; // 隐藏的节点不参与碰撞检测
     }
-    if (section.collisionBox.isLineInCollisionBox(Stage.cuttingLine)) {
+    if (section.collisionBox.isIntersectsWithLine(Stage.cuttingLine)) {
       Stage.warningSections.push(section);
     }
   }
@@ -109,7 +109,7 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
     if (edge.isHiddenBySectionCollapse) {
       continue; // 连线被隐藏了
     }
-    if (edge.collisionBox.isLineInCollisionBox(Stage.cuttingLine)) {
+    if (edge.collisionBox.isIntersectsWithLine(Stage.cuttingLine)) {
       Stage.warningEdges.push(edge);
     }
   }

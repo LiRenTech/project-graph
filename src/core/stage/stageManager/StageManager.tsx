@@ -377,7 +377,7 @@ export namespace StageManager {
    */
   export function findTextNodeByLocation(location: Vector): TextNode | null {
     for (const node of getTextNodes()) {
-      if (node.collisionBox.isPointInCollisionBox(location)) {
+      if (node.collisionBox.isContainsPoint(location)) {
         return node;
       }
     }
@@ -391,7 +391,7 @@ export namespace StageManager {
    */
   export function findEdgeByLocation(location: Vector): LineEdge | null {
     for (const edge of getEdges()) {
-      if (edge.collisionBox.isPointInCollisionBox(location)) {
+      if (edge.collisionBox.isContainsPoint(location)) {
         return edge;
       }
     }
@@ -400,7 +400,7 @@ export namespace StageManager {
 
   export function findSectionByLocation(location: Vector): Section | null {
     for (const section of getSections()) {
-      if (section.collisionBox.isPointInCollisionBox(location)) {
+      if (section.collisionBox.isContainsPoint(location)) {
         return section;
       }
     }
@@ -409,7 +409,7 @@ export namespace StageManager {
 
   export function findImageNodeByLocation(location: Vector): ImageNode | null {
     for (const node of getImageNodes()) {
-      if (node.collisionBox.isPointInCollisionBox(location)) {
+      if (node.collisionBox.isContainsPoint(location)) {
         return node;
       }
     }
@@ -423,7 +423,7 @@ export namespace StageManager {
       if (entity.isHiddenBySectionCollapse) {
         continue;
       }
-      if (entity.collisionBox.isPointInCollisionBox(location)) {
+      if (entity.collisionBox.isContainsPoint(location)) {
         return entity;
       }
     }
@@ -435,7 +435,7 @@ export namespace StageManager {
       if (entity.isHiddenBySectionCollapse) {
         continue;
       }
-      if (entity.collisionBox.isPointInCollisionBox(location)) {
+      if (entity.collisionBox.isContainsPoint(location)) {
         return entity;
       }
     }
@@ -449,7 +449,7 @@ export namespace StageManager {
       if (point.isHiddenBySectionCollapse) {
         continue;
       }
-      if (point.collisionBox.isPointInCollisionBox(location)) {
+      if (point.collisionBox.isContainsPoint(location)) {
         return point;
       }
     }
@@ -482,7 +482,7 @@ export namespace StageManager {
       if (entity.isHiddenBySectionCollapse) {
         continue;
       }
-      if (entity.collisionBox.isPointInCollisionBox(location)) {
+      if (entity.collisionBox.isContainsPoint(location)) {
         return true;
       }
     }
@@ -498,7 +498,7 @@ export namespace StageManager {
           continue;
         }
       }
-      if (association.collisionBox.isPointInCollisionBox(location)) {
+      if (association.collisionBox.isContainsPoint(location)) {
         return true;
       }
     }

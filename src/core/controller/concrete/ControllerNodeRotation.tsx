@@ -92,7 +92,7 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
       if (edge.isHiddenBySectionCollapse) {
         continue;
       }
-      if (edge.collisionBox.isPointInCollisionBox(worldLocation)) {
+      if (edge.collisionBox.isContainsPoint(worldLocation)) {
         Stage.hoverEdges.push(edge);
       }
     }
