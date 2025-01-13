@@ -54,17 +54,20 @@ export namespace WorldRenderUtils {
     Canvas.ctx.lineWidth = width;
     for (let i = 1; i < points.length; i++) {
       Canvas.ctx.lineTo(points[i].x, points[i].y);
-      RenderUtils.renderCircle(points[i], width, color, color, width);
     }
     Canvas.ctx.strokeStyle = color.toString();
     Canvas.ctx.stroke();
+    // 绘制曲线上的样点
+    // for (const p of points) {
+    //   RenderUtils.renderCircle(p, width, color, color, width);
+    // }
     // 绘制控制点
     // for (const p of spline.controlPoints) {
     //   RenderUtils.renderCircle(
     //     Renderer.transformWorld2View(p),
     //     width * 2,
-    //     color,
-    //     mixColors(color, Color.Black, 0.5),
+    //     Color.Red,
+    //     dashedColor,
     //     Camera.currentScale,
     //   );
     // }

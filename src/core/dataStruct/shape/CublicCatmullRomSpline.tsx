@@ -1,3 +1,4 @@
+import { NumericalIntegration } from "../../algorithm/numericalIntegration";
 import { Vector } from "../Vector";
 import { Line } from "./Line";
 import { Rectangle } from "./Rectangle";
@@ -24,6 +25,90 @@ export class CublicCatmullRomSpline extends Shape {
 
   computePath(): Vector[] {
     const result = [this.controlPoints[1]];
+    for (const funcs of this.computeFunction()) {
+      const s = NumericalIntegration.romberg(
+        (t) => funcs.derivative(t).magnitude(),
+        0.5,
+      );
+      const maxLength = 5; //每一小段的最大长度
+      let num = 1;
+      for (; s / num > maxLength; num++);
+      for (let i = 0, t0 = 0; i < num - 1; i++) {
+        for (let left = t0, right = 1; ; ) {
+          const t = left + (right - left) / 2;
+          const point = funcs.equation(t);
+          const requiredError = 0.5;
+          const dist = point.distance(result[result.length - 1]);
+          const diff = dist - s / num;
+          if (Math.abs(diff) < requiredError) {
+            result.push(point);
+            t0 = t;
+            break;
+          } else if (diff < 0) {
+            left = t;
+          } else {
+            right = t;
+          }
+        }
+      }
+      result.push(funcs.equation(1));
+    }
+    return result;
+  }
+
+  private computeLines(): Line[] {
+    const points = this.computePath();
+    const result = [];
+    for (let i = 1; i < points.length; i++) {
+      result.push(new Line(points[i - 1], points[i]));
+    }
+    return result;
+  }
+
+  isPointIn(point: Vector): boolean {
+    for (const line of this.computeLines()) {
+      if (line.isPointIn(point)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  isCollideWithRectangle(rectangle: Rectangle): boolean {
+    for (const line of this.computeLines()) {
+      if (line.isCollideWithRectangle(rectangle)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  isCollideWithLine(line: Line): boolean {
+    for (const l of this.computeLines()) {
+      if (l.isCollideWithLine(line)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  getRectangle(): Rectangle {
+    const min = this.controlPoints[1].clone();
+    const max = min.clone();
+    for (const p of this.computePath()) {
+      min.x = Math.min(min.x, p.x);
+      min.y = Math.min(min.y, p.y);
+      max.x = Math.max(max.x, p.x);
+      max.y = Math.max(max.y, p.y);
+    }
+    return new Rectangle(min, max.subtract(min));
+  }
+
+  /**
+   * 计算控制点所构成的曲线的参数方程和导数
+   */
+  private computeFunction(): Array<{
+    equation: (t: number) => Vector;
+    derivative: (t: number) => Vector;
+  }> {
+    const result = [];
     for (let i = 0; i + 4 <= this.controlPoints.length; i++) {
       const p0 = this.controlPoints[i];
       const p1 = this.controlPoints[i + 1];
@@ -64,43 +149,20 @@ export class CublicCatmullRomSpline extends Shape {
         .subtract(m2);
       const c = m1;
       const d = p1;
-
-      const num = 20;
-      const step = 1 / num;
-      // for (let i = 0, t0 = 0; i < num; i++) {
-      //   for (let left = t0, right = 1; ; ) {
-      //     const t = left + (right - left) / 2;
-      //     const point = a
-      //       .multiply(t * t * t)
-      //       .add(b.multiply(t * t))
-      //       .add(c.multiply(t))
-      //       .add(d);
-      //     const error =
-      //   }
-      // }
-      for (let t = step; t < 1; t += step) {
-        const point = a
-          .multiply(t * t * t)
-          .add(b.multiply(t * t))
-          .add(c.multiply(t))
-          .add(d);
-        result.push(point);
-      }
-      result.push(a.add(b).add(c).add(d));
+      result.push({
+        equation: (t: number) =>
+          a
+            .multiply(t * t * t)
+            .add(b.multiply(t * t))
+            .add(c.multiply(t))
+            .add(d),
+        derivative: (t: number) =>
+          a
+            .multiply(3 * t * t)
+            .add(b.multiply(2 * t))
+            .add(c),
+      });
     }
     return result;
-  }
-
-  isPointIn(point: Vector): boolean {
-    throw new Error("Method not implemented." + point);
-  }
-  isCollideWithRectangle(rectangle: Rectangle): boolean {
-    throw new Error("Method not implemented." + rectangle);
-  }
-  isCollideWithLine(line: Line): boolean {
-    throw new Error("Method not implemented." + line);
-  }
-  getRectangle(): Rectangle {
-    throw new Error("Method not implemented.");
   }
 }

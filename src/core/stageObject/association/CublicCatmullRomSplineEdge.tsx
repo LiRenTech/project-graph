@@ -3,7 +3,7 @@ import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
 import { ConnectableAssociation } from "../StageObject";
 
-export class BsplinesEdge extends ConnectableAssociation {
+export class CublicCatmullRomSplineEdge extends ConnectableAssociation {
   public uuid: string;
   public text: string;
 

@@ -4,4 +4,49 @@
 
 ## 计算
 
-曲线本质是一个参数方程，通过如下方法计算：
+CR曲线本质是一个参数方程，给定四个控制点$\boldsymbol{p_0},\boldsymbol{p_1},\boldsymbol{p_2},\boldsymbol{p_3}$以及$\alpha,\tau$通过如下方法计算：
+
+$$
+t_{01}=\lvert \boldsymbol{p_0}-\boldsymbol{p_1} \rvert ^\alpha \\
+t_{12}=\lvert \boldsymbol{p_1}-\boldsymbol{p_2} \rvert ^\alpha \\
+t_{23}=\lvert \boldsymbol{p_2}-\boldsymbol{p_3} \rvert ^\alpha
+$$
+
+$$
+\boldsymbol{m_1}=(1-\tau)
+    (\boldsymbol{p_2} - \boldsymbol{p_1} + t_{12} (
+      \frac{\boldsymbol{p_1} - \boldsymbol{p_0}}{t_{01}} - \frac{\boldsymbol{p_2} - \boldsymbol{p_0}}{t_{01} + t_{12}}
+    ))
+$$
+
+$$
+\boldsymbol{m_2}=(1-\tau)
+    (\boldsymbol{p_2} - \boldsymbol{p_1} + t_{12} (
+      \frac{\boldsymbol{p_3} - \boldsymbol{p_2}}{t_{23}} - \frac{\boldsymbol{p_3} - \boldsymbol{p_1}}{t_{12} + t_{23}}
+    ))
+$$
+
+$$
+\boldsymbol{a}=2(\boldsymbol{p_1}-\boldsymbol{p_2})+\boldsymbol{m_1}+\boldsymbol{m_2} \\
+\boldsymbol{b}=-3(\boldsymbol{p_1}-\boldsymbol{p_2})-\boldsymbol{m_1}-\boldsymbol{m_1}-\boldsymbol{m_2} \\
+\boldsymbol{c}=\boldsymbol{m_1} \\
+\boldsymbol{d}=\boldsymbol{p_1} \\
+$$
+
+$$
+\boldsymbol{p}(t)=\boldsymbol{a}t^3+\boldsymbol{b}t^2+\boldsymbol{c}t+\boldsymbol{d}
+$$
+
+## 弧长
+
+先求导
+
+$$
+{\boldsymbol{p}}^{'}=\frac{d\boldsymbol{p}(t)}{dt}=3t^2\boldsymbol{a}+2t\boldsymbol{b}+\boldsymbol{c}
+$$
+
+弧长:
+
+$$
+s=\int_0^1 \lvert {\boldsymbol{p}}^{'} \rvert dt
+$$
