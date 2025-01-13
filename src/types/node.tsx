@@ -49,17 +49,35 @@ export namespace Serialized {
     color: Color;
     type: "core:url_node";
   };
-  export type Edge = StageObject & {
-    type: "core:edge";
+  // export type Edge = StageObject & {
+  //   type: "core:edge";
+  //   source: string;
+  //   target: string;
+  //   text: string;
+  // };
+  export type Association = StageObject & {
+    text: string;
+  };
+  export type Edge = Association & {
     source: string;
     target: string;
+  };
+  export type LineEdge = Edge & {
+    type: "core:line_edge";
     text: string;
+  };
+  export type CublicCatmullRomSplineEdge = Edge & {
+    type: "core:cublic_catmull_rom_spline_edge";
+    text: string;
+    controlPoints: Vector[];
+    alpha: number;
+    tension: number;
   };
 
   export type File = {
     version: typeof StageDumper.latestVersion;
-    nodes: (Node | Section | ConnectPoint | ImageNode | UrlNode)[];
-    edges: Edge[];
+    entities: (Node | Section | ConnectPoint | ImageNode | UrlNode)[];
+    associations: (LineEdge | CublicCatmullRomSplineEdge)[];
     tags: string[];
   };
 }

@@ -166,7 +166,7 @@ export namespace RecentFileManager {
   }
 
   export function loadStageByData(data: Serialized.File) {
-    for (const entity of data.nodes) {
+    for (const entity of data.entities) {
       if (entity.type === "core:text_node") {
         StageManager.addTextNode(new TextNode(entity));
       } else if (entity.type === "core:section") {
@@ -181,8 +181,12 @@ export namespace RecentFileManager {
         console.warn("加载文件时，出现未知的实体类型：" + entity);
       }
     }
-    for (const edge of data.edges) {
-      StageManager.addEdge(new Edge(edge));
+    for (const edge of data.associations) {
+      if (edge.type === "core:line_edge") {
+        StageManager.addLineEdge(new Edge(edge));
+      } else if (edge.type === "core:cublic_catmull_rom_spline_edge") {
+        // TODO:
+      }
     }
     StageManager.TagOptions.reset(data.tags);
     StageManager.updateReferences();

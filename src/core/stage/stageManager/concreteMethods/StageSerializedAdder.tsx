@@ -1,10 +1,10 @@
+import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
 import { Vector } from "../../../dataStruct/Vector";
 import { Edge } from "../../../stageObject/association/Edge";
 import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";
-import { v4 as uuidv4 } from "uuid";
 /**
  * 直接向舞台中添加序列化数据
  * 用于向舞台中附加新文件图、或者用于复制粘贴、甚至撤销
@@ -20,7 +20,7 @@ export namespace StageSerializedAdder {
     diffLocation = new Vector(0, 0),
   ) {
     const updatedSerializedData = refreshUUID(serializedData);
-    for (const node of updatedSerializedData.nodes) {
+    for (const node of updatedSerializedData.entities) {
       if (node.type === "core:text_node") {
         const newNode = new TextNode(node);
         newNode.moveTo(newNode.rectangle.location.add(diffLocation));
@@ -33,8 +33,12 @@ export namespace StageSerializedAdder {
         StageManager.addConnectPoint(point);
       }
     }
-    for (const edge of updatedSerializedData.edges) {
-      StageManager.addEdge(new Edge(edge));
+    for (const edge of updatedSerializedData.associations) {
+      if (edge.type === "core:line_edge") {
+        StageManager.addLineEdge(new Edge(edge));
+      } else if (edge.type === "core:cublic_catmull_rom_spline_edge") {
+        // TODO:
+      }
     }
     StageManager.updateReferences();
   }
@@ -43,22 +47,27 @@ export namespace StageSerializedAdder {
     // 先深拷贝一份数据
     const result: Serialized.File = JSON.parse(JSON.stringify(serializedData));
     // 刷新UUID
-    for (const node of result.nodes) {
+    for (const node of result.entities) {
       const oldUUID = node.uuid;
       const newUUID = uuidv4();
-      for (const edge of result.edges) {
-        if (edge.source === oldUUID) {
-          edge.source = newUUID;
-        }
-        if (edge.target === oldUUID) {
-          edge.target = newUUID;
+      for (const edge of result.associations) {
+        if (
+          edge.type === "core:line_edge" ||
+          edge.type === "core:cublic_catmull_rom_spline_edge"
+        ) {
+          if (edge.source === oldUUID) {
+            edge.source = newUUID;
+          }
+          if (edge.target === oldUUID) {
+            edge.target = newUUID;
+          }
         }
       }
 
       // 刷新节点本身的UUID
       node.uuid = newUUID;
     }
-    for (const edge of result.edges) {
+    for (const edge of result.associations) {
       edge.uuid = uuidv4();
       // HACK: 以后出了关系的关系，就要再分类了
     }
