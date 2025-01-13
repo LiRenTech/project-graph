@@ -62,6 +62,13 @@ export namespace Renderer {
   // eslint-disable-next-line prefer-const
   export let deltaTime = 0;
 
+  // 上一次记录fps的时间
+  let lastTime = performance.now();
+  // 自上一次记录fps以来的帧数是几
+  let frameCount = 0;
+  // 上一次记录的fps数值
+  let fps = 0;
+
   /**
    * 解决Canvas模糊问题
    * 它能让画布的大小和屏幕的大小保持一致
@@ -610,6 +617,13 @@ export namespace Renderer {
     if (!isShowDebug) {
       return;
     }
+    const currentTime = performance.now();
+    frameCount++;
+    if (currentTime - lastTime > 1000) {
+      fps = frameCount;
+      frameCount = 0;
+      lastTime = currentTime;
+    }
     const detailsData = [
       `scale: ${Camera.currentScale}`,
       `target: ${Camera.targetScale.toFixed(2)}`,
@@ -637,7 +651,7 @@ export namespace Renderer {
       `lastSelectedNode: ${Controller.lastSelectedEntityUUID.size}`,
       `粘贴板: ${JSON.stringify(Stage.copyBoardData)}`,
       `历史: ${StageHistoryManager.statusText()}`,
-      `fps: ${(1 / deltaTime).toFixed()}`,
+      `fps: ${fps}`,
       `delta: ${deltaTime.toFixed(2)}`,
       `Controller.isViewMoveByClickMiddle: ${Controller.isViewMoveByClickMiddle}`,
       `path: ${Stage.Path.getFilePath()}`,
