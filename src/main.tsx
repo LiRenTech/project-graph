@@ -234,6 +234,15 @@ async function registerKeyBinds() {
   ).down(() => {
     StageManager.reverseSelectedEdges();
   });
+  (
+    await KeyBinds.create("reverseSelectedNodeEdge", "t", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.reverseSelectedNodeEdge();
+  });
 
   (
     await KeyBinds.create("packEntityToSection", "g", {
