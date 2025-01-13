@@ -1,16 +1,16 @@
 import React from "react";
-import { TextNode } from "../stageObject/entity/TextNode";
-import { Renderer } from "../render/canvas2d/renderer";
-import { StageManager } from "./stageManager/StageManager";
 import ReactDOMServer from "react-dom/server";
-import { Edge } from "../stageObject/association/Edge";
-import { StageStyleManager } from "../stageStyle/StageStyleManager";
-import { EdgeRenderer } from "../render/canvas2d/entityRenderer/edge/EdgeRenderer";
-import { SvgUtils } from "../render/svg/SvgUtils";
-import { Entity } from "../stageObject/StageObject";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
+import { EdgeRenderer } from "../render/canvas2d/entityRenderer/edge/EdgeRenderer";
+import { Renderer } from "../render/canvas2d/renderer";
+import { SvgUtils } from "../render/svg/SvgUtils";
+import { LineEdge } from "../stageObject/association/LineEdge";
 import { Section } from "../stageObject/entity/Section";
+import { TextNode } from "../stageObject/entity/TextNode";
+import { Entity } from "../stageObject/StageObject";
+import { StageStyleManager } from "../stageStyle/StageStyleManager";
+import { StageManager } from "./stageManager/StageManager";
 
 /**
  * 将舞台当前内容导出为SVG
@@ -60,7 +60,7 @@ export namespace StageDumperSvg {
       </>
     );
   }
-  export function dumpEdge(edge: Edge): React.ReactNode {
+  export function dumpEdge(edge: LineEdge): React.ReactNode {
     return EdgeRenderer.getEdgeSvg(edge);
   }
 
@@ -134,7 +134,7 @@ export namespace StageDumperSvg {
         {selectedEntities.map((entity) => {
           if (entity instanceof TextNode) {
             return dumpNode(entity);
-          } else if (entity instanceof Edge) {
+          } else if (entity instanceof LineEdge) {
             return dumpEdge(entity);
           } else if (entity instanceof Section) {
             return dumpSection(entity);

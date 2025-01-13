@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { Edge } from "../../../stageObject/association/Edge";
+import { LineEdge } from "../../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { ConnectableEntity } from "../../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
@@ -28,7 +28,7 @@ export namespace StageNodeConnector {
         // 已经连接过了，不需要再次连接
         return;
       }
-      const newEdge = new Edge({
+      const newEdge = new LineEdge({
         source: fromNode.uuid,
         target: toNode.uuid,
         text,
@@ -47,7 +47,7 @@ export namespace StageNodeConnector {
   // 将多个节点之间全连接
 
   // 反向连线
-  export function reverseEdges(edges: Edge[]) {
+  export function reverseEdges(edges: LineEdge[]) {
     // 先全部删除
     edges.forEach((edge) => {
       StageDeleteManager.deleteEdge(edge);

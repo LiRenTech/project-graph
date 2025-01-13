@@ -1,6 +1,6 @@
 import { Vector } from "../../../../dataStruct/Vector";
-import { Edge } from "../../../../stageObject/association/Edge";
 import { Effect } from "../../../../effect/effect";
+import { LineEdge } from "../../../../stageObject/association/LineEdge";
 import { ConnectableEntity } from "../../../../stageObject/StageObject";
 
 /**
@@ -27,31 +27,31 @@ import { ConnectableEntity } from "../../../../stageObject/StageObject";
 export abstract class EdgeRendererClass {
   constructor() {}
 
-  isCycleState(edge: Edge): boolean {
+  isCycleState(edge: LineEdge): boolean {
     return edge.target.uuid === edge.source.uuid;
   }
-  isNormalState(edge: Edge): boolean {
+  isNormalState(edge: LineEdge): boolean {
     return !this.isCycleState(edge);
   }
 
   /**
    * 绘制正常看到的状态
    */
-  public abstract renderNormalState(edge: Edge): void;
+  public abstract renderNormalState(edge: LineEdge): void;
 
   /**
    * 绘制双向线的偏移状态
    */
-  public abstract renderShiftingState(edge: Edge): void;
+  public abstract renderShiftingState(edge: LineEdge): void;
 
   /**
    * 绘制自环状态
    */
-  public abstract renderCycleState(edge: Edge): void;
+  public abstract renderCycleState(edge: LineEdge): void;
 
-  public abstract getNormalStageSvg(edge: Edge): React.ReactNode;
-  public abstract getShiftingStageSvg(edge: Edge): React.ReactNode;
-  public abstract getCycleStageSvg(edge: Edge): React.ReactNode;
+  public abstract getNormalStageSvg(edge: LineEdge): React.ReactNode;
+  public abstract getShiftingStageSvg(edge: LineEdge): React.ReactNode;
+  public abstract getCycleStageSvg(edge: LineEdge): React.ReactNode;
 
   /**
    * 绘制鼠标连线移动时的虚拟连线效果
@@ -76,7 +76,7 @@ export abstract class EdgeRendererClass {
    * 获取这个线在切断时的特效
    * 外层将在切断时根据此函数来获取特效并自动加入到渲染器中
    */
-  abstract getCuttingEffects(edge: Edge): Effect[];
+  abstract getCuttingEffects(edge: LineEdge): Effect[];
 
   /**
    * 获取这个线在连接成功时的特效

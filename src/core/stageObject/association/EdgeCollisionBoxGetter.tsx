@@ -3,7 +3,7 @@ import { SymmetryCurve } from "../../dataStruct/shape/Curve";
 import { Line } from "../../dataStruct/shape/Line";
 import { Settings } from "../../Settings";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { Edge } from "./Edge";
+import { LineEdge } from "./LineEdge";
 
 export namespace EdgeCollisionBoxGetter {
   /**
@@ -23,7 +23,7 @@ export namespace EdgeCollisionBoxGetter {
    * 根据不同的设置状态，以及edge，动态获取edge的碰撞箱
    * @param edge
    */
-  export function getCollisionBox(edge: Edge): CollisionBox {
+  export function getCollisionBox(edge: LineEdge): CollisionBox {
     if (edge.source.uuid === edge.target.uuid) {
       // 是一个自环，碰撞箱是圆形
       return new CollisionBox([
@@ -45,7 +45,7 @@ export namespace EdgeCollisionBoxGetter {
     }
   }
 
-  function getBezierCollisionBox(edge: Edge): CollisionBox {
+  function getBezierCollisionBox(edge: LineEdge): CollisionBox {
     if (edge.isShifting) {
       const shiftingMidPoint = edge.shiftingMidPoint;
       // 从source.Center到shiftingMidPoint的线
@@ -103,7 +103,7 @@ export namespace EdgeCollisionBoxGetter {
     }
   }
 
-  function getStraightCollisionBox(edge: Edge): CollisionBox {
+  function getStraightCollisionBox(edge: LineEdge): CollisionBox {
     if (edge.isShifting) {
       const shiftingMidPoint = edge.shiftingMidPoint;
       // 从source.Center到shiftingMidPoint的线

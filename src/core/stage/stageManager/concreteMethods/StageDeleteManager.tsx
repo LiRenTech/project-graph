@@ -1,7 +1,7 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { ExplodeAshEffect } from "../../../effect/concrete/ExplodeDashEffect";
-import { Edge } from "../../../stageObject/association/Edge";
+import { LineEdge } from "../../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../../stageObject/entity/ImageNode";
 import { Section } from "../../../stageObject/entity/Section";
@@ -119,7 +119,7 @@ export namespace StageDeleteManager {
    * @param entity
    */
   function deleteEntityAfterClearEdges(entity: Entity) {
-    const prepareDeleteEdges: Edge[] = [];
+    const prepareDeleteEdges: LineEdge[] = [];
     for (const edge of StageManager.getEdges()) {
       if (edge.source === entity || edge.target === entity) {
         prepareDeleteEdges.push(edge);
@@ -135,7 +135,7 @@ export namespace StageDeleteManager {
    * @param deleteEdge 要删除的边
    * @returns
    */
-  export function deleteEdge(deleteEdge: Edge): boolean {
+  export function deleteEdge(deleteEdge: LineEdge): boolean {
     const fromNode = deleteEdge.source;
     const toNode = deleteEdge.target;
     // 先判断这两个节点是否在nodes里
