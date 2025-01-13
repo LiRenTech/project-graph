@@ -7,7 +7,7 @@ import { CircleFlameEffect } from "../../../../../effect/concrete/CircleFlameEff
 import { LineCuttingEffect } from "../../../../../effect/concrete/LineCuttingEffect";
 import { Effect } from "../../../../../effect/effect";
 import { Camera } from "../../../../../stage/Camera";
-import { Edge } from "../../../../../stageObject/association/Edge";
+import { LineEdge } from "../../../../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../../../stageObject/entity/ConnectPoint";
 import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
@@ -18,7 +18,7 @@ import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 
 export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
-  getCuttingEffects(edge: Edge): Effect[] {
+  getCuttingEffects(edge: LineEdge): Effect[] {
     const midLocation = edge.bodyLine.midPoint();
     return [
       new LineCuttingEffect(
@@ -67,7 +67,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     ];
   }
 
-  public renderNormalState(edge: Edge): void {
+  public renderNormalState(edge: LineEdge): void {
     const start = edge.bodyLine.start;
     const end = edge.bodyLine.end;
     const curve = new SymmetryCurve(
@@ -83,7 +83,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     this.renderText(curve, edge);
   }
 
-  public renderShiftingState(edge: Edge): void {
+  public renderShiftingState(edge: LineEdge): void {
     const shiftingMidPoint = edge.shiftingMidPoint;
     // 从source.Center到shiftingMidPoint的线
     const startLine = new Line(
@@ -121,7 +121,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     this.renderText(curve, edge);
   }
 
-  public renderCycleState(edge: Edge): void {
+  public renderCycleState(edge: LineEdge): void {
     // 自环
     RenderUtils.renderArc(
       Renderer.transformWorld2View(
@@ -142,7 +142,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       EdgeRenderer.renderArrowHead(endPoint, direction, size);
     }
   }
-  public getNormalStageSvg(edge: Edge): React.ReactNode {
+  public getNormalStageSvg(edge: LineEdge): React.ReactNode {
     let lineBody = <></>;
     let textNode = <></>;
     if (edge.text.trim() === "") {
@@ -217,11 +217,11 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       </>
     );
   }
-  public getCycleStageSvg(edge: Edge): React.ReactNode {
+  public getCycleStageSvg(edge: LineEdge): React.ReactNode {
     console.log(edge);
     return <></>;
   }
-  public getShiftingStageSvg(edge: Edge): React.ReactNode {
+  public getShiftingStageSvg(edge: LineEdge): React.ReactNode {
     console.log(edge);
     return <></>;
   }
@@ -305,7 +305,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     );
   }
 
-  private renderText(curve: SymmetryCurve, edge: Edge): void {
+  private renderText(curve: SymmetryCurve, edge: LineEdge): void {
     if (edge.text.trim() === "") {
       return;
     }

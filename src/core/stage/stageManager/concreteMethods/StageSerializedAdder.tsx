@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
 import { Vector } from "../../../dataStruct/Vector";
-import { Edge } from "../../../stageObject/association/Edge";
+import { LineEdge } from "../../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";
@@ -35,7 +35,7 @@ export namespace StageSerializedAdder {
     }
     for (const edge of updatedSerializedData.associations) {
       if (edge.type === "core:line_edge") {
-        StageManager.addLineEdge(new Edge(edge));
+        StageManager.addLineEdge(new LineEdge(edge));
       } else if (edge.type === "core:cublic_catmull_rom_spline_edge") {
         // TODO:
       }

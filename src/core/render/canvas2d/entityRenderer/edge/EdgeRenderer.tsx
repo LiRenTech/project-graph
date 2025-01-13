@@ -3,7 +3,7 @@ import { Color } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Settings } from "../../../../Settings";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
-import { Edge } from "../../../../stageObject/association/Edge";
+import { LineEdge } from "../../../../stageObject/association/LineEdge";
 import { Section } from "../../../../stageObject/entity/Section";
 
 import { ConnectableEntity } from "../../../../stageObject/StageObject";
@@ -62,7 +62,7 @@ export namespace EdgeRenderer {
     }
   }
 
-  export function renderEdge(edge: Edge) {
+  export function renderEdge(edge: LineEdge) {
     if (
       edge.source.isHiddenBySectionCollapse &&
       edge.target.isHiddenBySectionCollapse
@@ -116,7 +116,7 @@ export namespace EdgeRenderer {
     }
   }
 
-  export function getEdgeView(edge: Edge): Edge {
+  export function getEdgeView(edge: LineEdge): LineEdge {
     if (
       edge.source.isHiddenBySectionCollapse &&
       edge.target.isHiddenBySectionCollapse
@@ -130,7 +130,7 @@ export namespace EdgeRenderer {
     }
 
     if (edge.source.isHiddenBySectionCollapse) {
-      return new Edge({
+      return new LineEdge({
         source: getMinNonCollapseParentSection(edge.source).uuid,
         target: edge.target.uuid,
         text: edge.text,
@@ -139,7 +139,7 @@ export namespace EdgeRenderer {
       });
     }
     if (edge.target.isHiddenBySectionCollapse) {
-      return new Edge({
+      return new LineEdge({
         source: edge.source.uuid,
         target: getMinNonCollapseParentSection(edge.target).uuid,
         text: edge.text,
@@ -150,7 +150,7 @@ export namespace EdgeRenderer {
     return edge;
   }
 
-  export function getEdgeSvg(edge: Edge): React.ReactNode {
+  export function getEdgeSvg(edge: LineEdge): React.ReactNode {
     if (
       edge.source.isHiddenBySectionCollapse &&
       edge.target.isHiddenBySectionCollapse
@@ -183,7 +183,7 @@ export namespace EdgeRenderer {
     currentRenderer.renderVirtualConfirmedEdge(startNode, endNode);
   }
 
-  export function getCuttingEffects(edge: Edge) {
+  export function getCuttingEffects(edge: LineEdge) {
     return currentRenderer.getCuttingEffects(edge);
   }
   export function getConnectedEffects(

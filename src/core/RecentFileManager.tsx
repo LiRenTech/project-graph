@@ -9,7 +9,7 @@ import { Stage } from "./stage/Stage";
 import { StageLoader } from "./stage/StageLoader";
 import { StageHistoryManager } from "./stage/stageManager/StageHistoryManager";
 import { StageManager } from "./stage/stageManager/StageManager";
-import { Edge } from "./stageObject/association/Edge";
+import { LineEdge } from "./stageObject/association/LineEdge";
 import { ConnectPoint } from "./stageObject/entity/ConnectPoint";
 import { ImageNode } from "./stageObject/entity/ImageNode";
 import { Section } from "./stageObject/entity/Section";
@@ -183,7 +183,7 @@ export namespace RecentFileManager {
     }
     for (const edge of data.associations) {
       if (edge.type === "core:line_edge") {
-        StageManager.addLineEdge(new Edge(edge));
+        StageManager.addLineEdge(new LineEdge(edge));
       } else if (edge.type === "core:cublic_catmull_rom_spline_edge") {
         // TODO:
       }

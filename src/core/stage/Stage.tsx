@@ -9,7 +9,7 @@ import { Vector } from "../dataStruct/Vector";
 import { PointDashEffect } from "../effect/concrete/PointDashEffect";
 import { Effect } from "../effect/effect";
 import { Settings } from "../Settings";
-import { Edge } from "../stageObject/association/Edge";
+import { LineEdge } from "../stageObject/association/LineEdge";
 import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { ConnectableEntity, Entity } from "../stageObject/StageObject";
@@ -117,7 +117,7 @@ export namespace Stage {
    * 正在准备要删除的连线
    */
   // eslint-disable-next-line prefer-const
-  export let warningEdges: Edge[] = [];
+  export let warningEdges: LineEdge[] = [];
   // eslint-disable-next-line prefer-const
   export let warningSections: Section[] = [];
   /**
@@ -132,7 +132,7 @@ export namespace Stage {
    * 鼠标悬浮的边
    */
   // eslint-disable-next-line prefer-const
-  export let hoverEdges: Edge[] = [];
+  export let hoverEdges: LineEdge[] = [];
   /** 鼠标悬浮的框 */
   // eslint-disable-next-line prefer-const
   export let hoverSections: Section[] = [];

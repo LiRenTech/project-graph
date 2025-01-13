@@ -6,7 +6,7 @@ import { CircleFlameEffect } from "../../../../../effect/concrete/CircleFlameEff
 import { LineCuttingEffect } from "../../../../../effect/concrete/LineCuttingEffect";
 import { Effect } from "../../../../../effect/effect";
 import { Camera } from "../../../../../stage/Camera";
-import { Edge } from "../../../../../stageObject/association/Edge";
+import { LineEdge } from "../../../../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../../../stageObject/entity/ConnectPoint";
 import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
@@ -19,7 +19,7 @@ import { EdgeRendererClass } from "../EdgeRendererClass";
  * 折线渲染器
  */
 export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
-  getCuttingEffects(edge: Edge): Effect[] {
+  getCuttingEffects(edge: LineEdge): Effect[] {
     const midLocation = edge.bodyLine.midPoint();
     return [
       new LineCuttingEffect(
@@ -78,7 +78,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
    * @param edge
    * @returns
    */
-  getVerticalDirection(edge: Edge): Vector {
+  getVerticalDirection(edge: LineEdge): Vector {
     const startLocation = edge.source.collisionBox.getRectangle().center;
     const endLocation = edge.target.collisionBox.getRectangle().center;
     const startToEnd = endLocation.subtract(startLocation);
@@ -133,7 +133,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
   fixedLength: number = 100;
 
   // debug 测试
-  renderTest(edge: Edge) {
+  renderTest(edge: LineEdge) {
     for (let i = 0; i < 4; i++) {
       RenderUtils.renderSolidLine(
         Renderer.transformWorld2View(
@@ -154,7 +154,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     return Math.exp(-(x * x) / 10000);
   }
 
-  public renderNormalState(edge: Edge): void {
+  public renderNormalState(edge: LineEdge): void {
     // this.renderTest(edge);
     // 直线绘制
     if (edge.text.trim() === "") {
@@ -318,7 +318,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
       }
     }
   }
-  public renderShiftingState(edge: Edge): void {
+  public renderShiftingState(edge: LineEdge): void {
     const shiftingMidPoint = edge.shiftingMidPoint;
     // 从source.Center到shiftingMidPoint的线
     const startLine = new Line(
@@ -385,7 +385,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     );
   }
   private renderArrowHead(
-    edge: Edge,
+    edge: LineEdge,
     direction: Vector,
     endPoint = edge.bodyLine.end.clone(),
   ) {
@@ -393,7 +393,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     EdgeRenderer.renderArrowHead(endPoint, direction, size);
   }
 
-  public renderCycleState(edge: Edge): void {
+  public renderCycleState(edge: LineEdge): void {
     // 自环
     RenderUtils.renderArc(
       Renderer.transformWorld2View(
@@ -414,7 +414,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
       EdgeRenderer.renderArrowHead(endPoint, direction, size);
     }
   }
-  public getNormalStageSvg(edge: Edge): React.ReactNode {
+  public getNormalStageSvg(edge: LineEdge): React.ReactNode {
     let lineBody = <></>;
     let textNode = <></>;
     if (edge.text.trim() === "") {
@@ -489,11 +489,11 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
       </>
     );
   }
-  public getCycleStageSvg(edge: Edge): React.ReactNode {
+  public getCycleStageSvg(edge: LineEdge): React.ReactNode {
     console.log(edge);
     return <></>;
   }
-  public getShiftingStageSvg(edge: Edge): React.ReactNode {
+  public getShiftingStageSvg(edge: LineEdge): React.ReactNode {
     console.log(edge);
     return <></>;
   }

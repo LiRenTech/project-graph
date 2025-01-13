@@ -6,7 +6,7 @@ import { Vector } from "../../dataStruct/Vector";
 import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Settings } from "../../Settings";
-import { Edge } from "../../stageObject/association/Edge";
+import { LineEdge } from "../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { Section } from "../../stageObject/entity/Section";
@@ -127,7 +127,7 @@ export namespace StageManager {
   export function deleteOneConnectPoint(point: ConnectPoint) {
     entities.deleteValue(point);
   }
-  export function deleteOneEdge(edge: Edge) {
+  export function deleteOneEdge(edge: LineEdge) {
     associations.deleteValue(edge);
   }
 
@@ -135,8 +135,10 @@ export namespace StageManager {
     return associations.valuesToArray();
   }
 
-  export function getEdges(): Edge[] {
-    return associations.valuesToArray().filter((edge) => edge instanceof Edge);
+  export function getEdges(): LineEdge[] {
+    return associations
+      .valuesToArray()
+      .filter((edge) => edge instanceof LineEdge);
   }
 
   /** 关于标签的相关操作 */
@@ -194,7 +196,7 @@ export namespace StageManager {
   export function addConnectPoint(point: ConnectPoint) {
     entities.addValue(point, point.uuid);
   }
-  export function addLineEdge(edge: Edge) {
+  export function addLineEdge(edge: LineEdge) {
     associations.addValue(edge, edge.uuid);
   }
 
@@ -387,7 +389,7 @@ export namespace StageManager {
    * @param location
    * @returns
    */
-  export function findEdgeByLocation(location: Vector): Edge | null {
+  export function findEdgeByLocation(location: Vector): LineEdge | null {
     for (const edge of getEdges()) {
       if (edge.collisionBox.isPointInCollisionBox(location)) {
         return edge;
@@ -488,7 +490,7 @@ export namespace StageManager {
   }
   export function isAssociationOnLocation(location: Vector): boolean {
     for (const association of getAssociations()) {
-      if (association instanceof Edge) {
+      if (association instanceof LineEdge) {
         if (
           association.target.isHiddenBySectionCollapse &&
           association.source.isHiddenBySectionCollapse
@@ -852,7 +854,7 @@ export namespace StageManager {
     }
   }
 
-  export function deleteEdge(deleteEdge: Edge): boolean {
+  export function deleteEdge(deleteEdge: LineEdge): boolean {
     const res = StageDeleteManager.deleteEdge(deleteEdge);
     StageHistoryManager.recordStep();
     // 更新选中边计数
@@ -882,7 +884,7 @@ export namespace StageManager {
     return isConnected(fromNode, toNode);
   }
 
-  export function reverseEdges(edges: Edge[]) {
+  export function reverseEdges(edges: LineEdge[]) {
     StageNodeConnector.reverseEdges(edges);
     StageHistoryManager.recordStep();
   }

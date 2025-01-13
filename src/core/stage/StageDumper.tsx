@@ -1,5 +1,5 @@
 import { Serialized } from "../../types/node";
-import { Edge } from "../stageObject/association/Edge";
+import { LineEdge } from "../stageObject/association/LineEdge";
 import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../stageObject/entity/ImageNode";
 import { Section } from "../stageObject/entity/Section";
@@ -29,7 +29,7 @@ export namespace StageDumper {
     };
   }
 
-  export function dumpEdge(edge: Edge): Serialized.LineEdge {
+  export function dumpEdge(edge: LineEdge): Serialized.LineEdge {
     return {
       source: edge.source.uuid,
       target: edge.target.uuid,

@@ -11,7 +11,7 @@ import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
 import { EdgeCollisionBoxGetter } from "./EdgeCollisionBoxGetter";
 
-export class Edge extends ConnectableAssociation {
+export class LineEdge extends ConnectableAssociation {
   public uuid: string;
 
   /**
@@ -99,8 +99,8 @@ export class Edge extends ConnectableAssociation {
    * @param source
    * @param target
    */
-  static fromToNode(source: TextNode, target: TextNode): Edge {
-    return new Edge({
+  static fromToNode(source: TextNode, target: TextNode): LineEdge {
+    return new LineEdge({
       source: source.uuid,
       target: target.uuid,
       text: "",
