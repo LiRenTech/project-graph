@@ -168,7 +168,7 @@ export namespace EntityRenderer {
       Renderer.transformWorld2View(connectPoint.geometryCenter),
       connectPoint.radius * Camera.currentScale,
       Color.Transparent,
-      Color.White,
+      StageStyleManager.currentStyle.StageObjectBorderColor,
       2 * Camera.currentScale,
     );
     renderEntityDetails(connectPoint);
@@ -197,7 +197,7 @@ export namespace EntityRenderer {
         "loading...",
         Renderer.transformWorld2View(imageNode.rectangle.center),
         20 * Camera.currentScale,
-        Color.White,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
       );
     } else if (imageNode.state === "success") {
       ImageRenderer.renderImageElement(

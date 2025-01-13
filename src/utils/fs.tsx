@@ -1,4 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
+import { PathString } from "./pathString";
+import { isWeb } from "./platform";
 
 /**
  * 检查一个文件是否存在
@@ -6,7 +8,11 @@ import { invoke } from "@tauri-apps/api/core";
  * @returns 是否存在
  */
 export async function exists(path: string): Promise<boolean> {
-  return invoke("exists", { path });
+  if (isWeb) {
+    return true;
+  } else {
+    return invoke("exists", { path });
+  }
 }
 
 /**
@@ -15,7 +21,27 @@ export async function exists(path: string): Promise<boolean> {
  * @returns 文件内容
  */
 export async function readTextFile(path: string): Promise<string> {
-  return invoke("read_text_file", { path });
+  if (isWeb) {
+    return new Promise((resolve, reject) => {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.onchange = () => {
+        const file = input.files?.item(0);
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const content = reader.result as string;
+            resolve(content);
+          };
+          reader.onerror = reject;
+          reader.readAsText(file);
+        }
+      };
+      input.click();
+    });
+  } else {
+    return invoke("read_text_file", { path });
+  }
 }
 
 /**
@@ -24,13 +50,34 @@ export async function readTextFile(path: string): Promise<string> {
  * @returns 文件的 Uint8Array 表示
  */
 export async function readFile(path: string): Promise<Uint8Array> {
-  const base64 = await invoke<string>("read_file_base64", { path });
-  const binary = atob(base64);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) {
-    bytes[i] = binary.charCodeAt(i);
+  if (isWeb) {
+    return new Promise((resolve, reject) => {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.onchange = () => {
+        const file = input.files?.item(0);
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const content = reader.result as ArrayBuffer;
+            const bytes = new Uint8Array(content);
+            resolve(bytes);
+          };
+          reader.onerror = reject;
+          reader.readAsArrayBuffer(file);
+        }
+      };
+      input.click();
+    });
+  } else {
+    const base64 = await invoke<string>("read_file_base64", { path });
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes;
   }
-  return bytes;
 }
 
 /**
@@ -39,7 +86,27 @@ export async function readFile(path: string): Promise<Uint8Array> {
  * @returns 文件的 base64 编码
  */
 export async function readFileBase64(path: string): Promise<string> {
-  return invoke("read_file_base64", { path });
+  if (isWeb) {
+    return new Promise((resolve, reject) => {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.onchange = () => {
+        const file = input.files?.item(0);
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const content = reader.result as string;
+            resolve(content);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        }
+      };
+      input.click();
+    });
+  } else {
+    return invoke("read_file_base64", { path });
+  }
 }
 
 /**
@@ -51,7 +118,17 @@ export async function writeTextFile(
   path: string,
   content: string,
 ): Promise<void> {
-  return invoke("write_text_file", { path, content });
+  if (isWeb) {
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = PathString.absolute2file(path);
+    a.click();
+    URL.revokeObjectURL(url);
+  } else {
+    return invoke("write_text_file", { path, content });
+  }
 }
 
 /**
@@ -63,16 +140,23 @@ export async function writeFile(
   path: string,
   content: Uint8Array,
 ): Promise<void> {
-  const base64url = await new Promise<string>((resolve) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.readAsDataURL(new Blob([content]));
-  });
-  const base64 = btoa(base64url.split(",")[1]);
-
-  // 转换base64 完成
-  console.log(base64);
-  return invoke("write_file_base64", { path, content: base64 });
+  if (isWeb) {
+    const blob = new Blob([content], { type: "application/octet-stream" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = PathString.absolute2file(path);
+    a.click();
+    URL.revokeObjectURL(url);
+  } else {
+    const base64url = await new Promise<string>((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.readAsDataURL(new Blob([content]));
+    });
+    const base64 = btoa(base64url.split(",")[1]);
+    return invoke("write_file_base64", { path, content: base64 });
+  }
 }
 
 /**
@@ -84,5 +168,15 @@ export async function writeFileBase64(
   path: string,
   content: string,
 ): Promise<void> {
-  return invoke("write_file_base64", { path, content });
+  if (isWeb) {
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = PathString.absolute2file(path);
+    a.click();
+    URL.revokeObjectURL(url);
+  } else {
+    return invoke("write_file_base64", { path, content });
+  }
 }

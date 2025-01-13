@@ -39,10 +39,9 @@ import {
   isRecentFilePanelOpenAtom,
 } from "../state";
 import { cn } from "../utils/cn";
-import { isDesktop } from "../utils/platform";
+import { getCurrentWindow, isDesktop, isWeb } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { dataDir } from "@tauri-apps/api/path";
-import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useTranslation } from "react-i18next";
 import { RecentFileManager } from "../core/RecentFileManager";
 import { Settings } from "../core/Settings";
@@ -113,19 +112,21 @@ export default function AppMenu({
       });
       return;
     }
-    const path = await openFileDialog({
-      title: "打开文件",
-      directory: false,
-      multiple: false,
-      filters: isDesktop
-        ? [
-            {
-              name: "Project Graph",
-              extensions: ["json"],
-            },
-          ]
-        : [],
-    });
+    const path = isWeb
+      ? "file.json"
+      : await openFileDialog({
+          title: "打开文件",
+          directory: false,
+          multiple: false,
+          filters: isDesktop
+            ? [
+                {
+                  name: "Project Graph",
+                  extensions: ["json"],
+                },
+              ]
+            : [],
+        });
     if (!path) {
       return;
     }
@@ -172,16 +173,18 @@ export default function AppMenu({
   };
 
   const onSaveNew = async () => {
-    const path = await saveFileDialog({
-      title: "另存为",
-      defaultPath: "新文件.json", // 提供一个默认的文件名
-      filters: [
-        {
-          name: "Project Graph",
-          extensions: ["json"],
-        },
-      ],
-    });
+    const path = isWeb
+      ? "file.json"
+      : await saveFileDialog({
+          title: "另存为",
+          defaultPath: "新文件.json", // 提供一个默认的文件名
+          filters: [
+            {
+              name: "Project Graph",
+              extensions: ["json"],
+            },
+          ],
+        });
 
     if (!path) {
       return;
@@ -218,16 +221,18 @@ export default function AppMenu({
     }
   };
   const onSaveSVGNew = async () => {
-    const path = await saveFileDialog({
-      title: "另存为",
-      defaultPath: "新文件.svg", // 提供一个默认的文件名
-      filters: [
-        {
-          name: "Project Graph",
-          extensions: ["svg"],
-        },
-      ],
-    });
+    const path = isWeb
+      ? "file.svg"
+      : await saveFileDialog({
+          title: "另存为",
+          defaultPath: "新文件.svg", // 提供一个默认的文件名
+          filters: [
+            {
+              name: "Project Graph",
+              extensions: ["svg"],
+            },
+          ],
+        });
 
     if (!path) {
       return;
@@ -288,16 +293,18 @@ export default function AppMenu({
       return;
     }
 
-    const path = await saveFileDialog({
-      title: "另存为",
-      defaultPath: "新文件.md", // 提供一个默认的文件名
-      filters: [
-        {
-          name: "Project Graph",
-          extensions: ["svg"],
-        },
-      ],
-    });
+    const path = isWeb
+      ? "file.md"
+      : await saveFileDialog({
+          title: "另存为",
+          defaultPath: "新文件.md", // 提供一个默认的文件名
+          filters: [
+            {
+              name: "Project Graph",
+              extensions: ["md"],
+            },
+          ],
+        });
 
     if (!path) {
       return;
@@ -345,7 +352,7 @@ export default function AppMenu({
   return (
     <div
       className={cn(
-        "!pointer-events-none flex origin-top-left scale-0 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800 p-3 opacity-0",
+        "!pointer-events-none flex origin-top-left scale-0 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800/20 p-3 opacity-0 backdrop-blur-sm",
         {
           "!pointer-events-auto scale-100 opacity-100": open,
         },
@@ -360,48 +367,59 @@ export default function AppMenu({
         <Col icon={<FileText />} onClick={onOpen}>
           {t("file.items.open")}
         </Col>
-        <Col icon={<FileText />} onClick={() => setRecentFilePanelOpen(true)}>
-          {t("file.items.recent")}
-        </Col>
-        <Col icon={<Save />} onClick={onSave}>
-          {t("file.items.save")}
-        </Col>
+        {!isWeb && (
+          <>
+            <Col
+              icon={<FileText />}
+              onClick={() => setRecentFilePanelOpen(true)}
+            >
+              {t("file.items.recent")}
+            </Col>
+            <Col icon={<Save />} onClick={onSave}>
+              {t("file.items.save")}
+            </Col>
+          </>
+        )}
         <Col icon={<Save />} onClick={onSaveNew}>
           {t("file.items.saveAs")}
         </Col>
 
-        <Col icon={<Database />} onClick={onBackup}>
-          {t("file.items.backup")}
-        </Col>
+        {!isWeb && (
+          <Col icon={<Database />} onClick={onBackup}>
+            {t("file.items.backup")}
+          </Col>
+        )}
       </Row>
-      <Row icon={<Folder />} title={t("location.title")}>
-        <Col
-          icon={<FolderCog />}
-          onClick={async () => {
-            Dialog.show({
-              title: "数据文件夹位置",
-              type: "info",
-              code: await dataDir(),
-              content: "软件数据文件夹位置",
-            });
-          }}
-        >
-          {t("location.items.openDataFolder")}
-        </Col>
-        <Col
-          icon={<FolderOpen />}
-          onClick={() => {
-            Dialog.show({
-              title: "数据文件夹位置",
-              type: "info",
-              code: file,
-              content: "软件数据文件夹位置",
-            });
-          }}
-        >
-          {t("location.items.openProjectFolder")}
-        </Col>
-      </Row>
+      {!isWeb && (
+        <Row icon={<Folder />} title={t("location.title")}>
+          <Col
+            icon={<FolderCog />}
+            onClick={async () => {
+              Dialog.show({
+                title: "数据文件夹位置",
+                type: "info",
+                code: await dataDir(),
+                content: "软件数据文件夹位置",
+              });
+            }}
+          >
+            {t("location.items.openDataFolder")}
+          </Col>
+          <Col
+            icon={<FolderOpen />}
+            onClick={() => {
+              Dialog.show({
+                title: "数据文件夹位置",
+                type: "info",
+                code: file,
+                content: "软件数据文件夹位置",
+              });
+            }}
+          >
+            {t("location.items.openProjectFolder")}
+          </Col>
+        </Row>
+      )}
       <Row icon={<File />} title={t("export.title")}>
         <Col icon={<FileCode />} onClick={onSaveSVGNew}>
           {t("export.items.exportAsSVGByAll")}
@@ -447,23 +465,25 @@ export default function AppMenu({
           {t("more.items.welcome")}
         </Col>
       </Row>
-      <Row icon={<AppWindow />} title={t("window.title")}>
-        {import.meta.env.DEV && (
-          <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>
-            重载
+      {!isWeb && (
+        <Row icon={<AppWindow />} title={t("window.title")}>
+          {import.meta.env.DEV && (
+            <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>
+              重载
+            </Col>
+          )}
+          <Col
+            icon={<Fullscreen />}
+            onClick={() =>
+              getCurrentWindow()
+                .isFullscreen()
+                .then((res) => getCurrentWindow().setFullscreen(!res))
+            }
+          >
+            {t("window.items.fullscreen")}
           </Col>
-        )}
-        <Col
-          icon={<Fullscreen />}
-          onClick={() =>
-            getCurrentWindow()
-              .isFullscreen()
-              .then((res) => getCurrentWindow().setFullscreen(!res))
-          }
-        >
-          {t("window.items.fullscreen")}
-        </Col>
-      </Row>
+        </Row>
+      )}
       <Row icon={<Dock />} title="测试">
         <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
           测试页面

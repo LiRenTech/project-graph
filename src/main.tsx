@@ -3,7 +3,8 @@ import { getMatches } from "@tauri-apps/plugin-cli";
 import i18next from "i18next";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
-import { RouterProvider, createMemoryRouter } from "react-router-dom";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import { runCli } from "./cli";
 import { PromptManager } from "./core/ai/PromptManager";
 import { ColorManager } from "./core/ColorManager";
 import {
@@ -32,7 +33,10 @@ import "./index.pcss";
 import "./polyfills/roundRect";
 import { Dialog } from "./utils/dialog";
 import { exists } from "./utils/fs";
-import { isDesktop } from "./utils/platform";
+import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
+import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
+import { Popup } from "./utils/popup";
+import { ColorPanel } from "./pages/_toolbar";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -43,6 +47,8 @@ const el = document.getElementById("root")!;
 
 (async () => {
   const t1 = performance.now();
+  const matches = !isWeb ? await getMatches() : null;
+  const isCliMode = isDesktop && matches?.args.output?.occurrences === 1;
   await Promise.all([
     Settings.init(),
     RecentFileManager.init(),
@@ -59,8 +65,17 @@ const el = document.getElementById("root")!;
     loadStartFile(),
     registerKeyBinds(),
   ]);
-  await renderApp();
+  await renderApp(isCliMode);
   console.log(`应用初始化耗时：${performance.now() - t1}ms`);
+  if (isCliMode) {
+    try {
+      await runCli(matches);
+      exit();
+    } catch (e) {
+      writeStderr(String(e));
+      exit(1);
+    }
+  }
 })();
 
 /** 加载同步初始化的模块 */
@@ -94,6 +109,23 @@ async function registerKeyBinds() {
       title: "自定义快捷键测试",
       content:
         "您按下了自定义的测试快捷键，这一功能是测试开发所用，可在设置中更改触发方式",
+      buttons: [
+        {
+          text: "ok",
+        },
+        {
+          text: "open devtools",
+          onClick: () => {
+            openDevtools();
+          },
+        },
+        {
+          text: "write stdout",
+          onClick: () => {
+            writeStdout("test");
+          },
+        },
+      ],
     }),
   );
 
@@ -201,6 +233,15 @@ async function registerKeyBinds() {
     })
   ).down(() => {
     StageManager.reverseSelectedEdges();
+  });
+  (
+    await KeyBinds.create("reverseSelectedNodeEdge", "t", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.reverseSelectedNodeEdge();
   });
 
   (
@@ -322,6 +363,16 @@ async function registerKeyBinds() {
   ).down(() => {
     editNodeDetailsByKeyboard();
   });
+
+  (
+    await KeyBinds.create("openColorPanel", "F6", {
+      control: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    Popup.show(<ColorPanel />);
+  });
 }
 
 /** 加载语言文件 */
@@ -345,7 +396,7 @@ async function loadLanguageFiles() {
 /** 加载用户自定义的工程文件，或者从启动参数中获取 */
 async function loadStartFile() {
   let path = "";
-  if (isDesktop) {
+  if (isDesktop && !isWeb) {
     const cliMatches = await getMatches();
     if (cliMatches.args.path.value) {
       path = cliMatches.args.path.value as string;
@@ -373,6 +424,13 @@ async function loadStartFile() {
 }
 
 /** 渲染应用 */
-async function renderApp() {
-  createRoot(el).render(<Routes />);
+async function renderApp(cli: boolean = false) {
+  const root = createRoot(el);
+  if (cli) {
+    await getCurrentWindow().hide();
+    await getCurrentWindow().setSkipTaskbar(true);
+    root.render(<></>);
+  } else {
+    root.render(<Routes />);
+  }
 }

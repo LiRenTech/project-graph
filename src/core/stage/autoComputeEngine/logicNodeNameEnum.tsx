@@ -48,6 +48,20 @@ export enum LogicNodeNameEnum {
   CONNECT = "#CONNECT#",
   // 统计
   COUNT = "#COUNT#",
+  // 其他
+  RGB = "#RGB#",
+  RGBA = "#RGBA#",
+  GET_LOCATION = "#GET_LOCATION#",
+  SET_LOCATION = "#SET_LOCATION#",
+  GET_SIZE = "#GET_SIZE#",
+  GET_MOUSE_LOCATION = "#GET_MOUSE_LOCATION#",
+  GET_CAMERA_LOCATION = "#GET_CAMERA_LOCATION#",
+  SET_CAMERA_LOCATION = "#SET_CAMERA_LOCATION#",
+  GET_CAMERA_SCALE = "#GET_CAMERA_SCALE#",
+  SET_CAMERA_SCALE = "#SET_CAMERA_SCALE#",
+  IS_COLLISION = "#IS_COLLISION#",
+  GET_TIME = "#GET_TIME#",
+  PLAY_SOUND = "#PLAY_SOUND#",
 }
 export const LogicNodeNameToRenderNameMap: {
   [key in LogicNodeNameEnum]: string;
@@ -89,6 +103,19 @@ export const LogicNodeNameToRenderNameMap: {
   [LogicNodeNameEnum.REPLACE]: "替换",
   [LogicNodeNameEnum.CONNECT]: "连接",
   [LogicNodeNameEnum.COUNT]: "count",
+  [LogicNodeNameEnum.RGB]: "rgb",
+  [LogicNodeNameEnum.RGBA]: "rgba",
+  [LogicNodeNameEnum.GET_LOCATION]: "获取节点位置",
+  [LogicNodeNameEnum.SET_LOCATION]: "设置节点位置",
+  [LogicNodeNameEnum.GET_SIZE]: "获取节点大小",
+  [LogicNodeNameEnum.GET_MOUSE_LOCATION]: "获取鼠标位置",
+  [LogicNodeNameEnum.GET_CAMERA_LOCATION]: "获取相机位置",
+  [LogicNodeNameEnum.SET_CAMERA_LOCATION]: "设置相机位置",
+  [LogicNodeNameEnum.GET_CAMERA_SCALE]: "获取相机缩放",
+  [LogicNodeNameEnum.SET_CAMERA_SCALE]: "设置相机缩放",
+  [LogicNodeNameEnum.IS_COLLISION]: "碰撞检测",
+  [LogicNodeNameEnum.GET_TIME]: "获取时间",
+  [LogicNodeNameEnum.PLAY_SOUND]: "播放声音",
 };
 
 /**

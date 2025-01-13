@@ -4,7 +4,6 @@ use std::io::Read;
 use base64::engine::general_purpose;
 use base64::Engine;
 
-#[cfg(debug_assertions)]
 use tauri::Manager;
 
 /// 判断文件是否存在
@@ -49,8 +48,22 @@ fn write_file_base64(content: String, path: String) -> Result<(), String> {
         eprintln!("写入文件失败: {}", e);
         return e.to_string();
     })?;
-    println!("写入文件base64成功: {}", path);
     Ok(())
+}
+
+#[tauri::command]
+fn write_stdout(content: String) {
+    println!("{}", content);
+}
+
+#[tauri::command]
+fn write_stderr(content: String) {
+    eprintln!("{}", content);
+}
+
+#[tauri::command]
+fn exit(code: i32) {
+    std::process::exit(code);
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -90,6 +103,9 @@ pub fn run() {
             exists,
             read_file_base64,
             write_file_base64,
+            write_stdout,
+            write_stderr,
+            exit
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -16,7 +16,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - run: gh release create "v${{ github.event.inputs.version }}" --title "Release v${{ github.event.inputs.version }}" --notes "如果下面没有可下载的文件，说明构建失败，请联系开发者"
+      - run: gh release create "v${{ github.event.inputs.version }}" --title "Release v${{ github.event.inputs.version }}" --notes "如果下面没有可下载的文件，说明构建失败，请联系开发者" || true # 忽略错误，防止失败导致整个流程失败
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -80,53 +80,9 @@ jobs:
         run: |
           sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"${{ github.event.inputs.version }}\"/" src-tauri/tauri.conf.json
 
-      - name: patch tauri.conf.json & edit version (macos only)
+      - name: edit version (macos only)
         if: matrix.platform == 'macos-latest' # This must match the platform value defined above.
         run: |
-          cat<<EOF > src-tauri/tauri.conf.json
-          {
-            "productName": "Project Graph",
-            "version": "0.0.0-dev",
-            "identifier": "liren.project-graph",
-            "build": {
-              "beforeDevCommand": "pnpm dev",
-              "devUrl": "http://localhost:1420",
-              "beforeBuildCommand": "pnpm build",
-              "frontendDist": "../dist"
-            },
-            "app": {
-              "macOSPrivateApi": true,
-              "windows": [
-                {
-                  "title": "Project Graph",
-                  "width": 1200,
-                  "height": 800,
-                  "decorations": true,
-                  "transparent": false,
-                  "dragDropEnabled": false
-                }
-              ],
-              "security": {
-                "csp": null,
-                "capabilities": []
-              }
-            },
-            "bundle": {
-              "active": true,
-              "targets": ["dmg"],
-              "category": "Productivity",
-              "longDescription": "A simple tool to create topology diagrams.",
-              "shortDescription": "Diagram creator",
-              "icon": [
-                "icons/32x32.png",
-                "icons/128x128.png",
-                "icons/128x128@2x.png",
-                "icons/icon.icns",
-                "icons/icon.ico"
-              ]
-            }
-          }
-          EOF
           sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"${{ github.event.inputs.version }}\"/" src-tauri/tauri.conf.json
 
       - name: edit version (windows only)
