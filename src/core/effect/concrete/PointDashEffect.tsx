@@ -51,9 +51,7 @@ export class PointDashEffect extends Effect {
           .multiply(20 / distance.magnitude() ** 1.2);
         acceleration = acceleration.add(normalizedDistance);
 
-        if (
-          connectEntity.collisionBox.isPointInCollisionBox(particle.location)
-        ) {
+        if (connectEntity.collisionBox.isContainsPoint(particle.location)) {
           // 粒子碰到实体
           isCollideWithEntity = true;
         }

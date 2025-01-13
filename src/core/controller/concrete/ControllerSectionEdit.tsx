@@ -36,7 +36,7 @@ ControllerSectionEdit.mousemove = (event: MouseEvent) => {
   const sections = StageManager.getSections();
 
   for (const section of sections) {
-    if (section.collisionBox.isPointInCollisionBox(worldLocation)) {
+    if (section.collisionBox.isContainsPoint(worldLocation)) {
       Stage.hoverSections.push(section);
     }
   }

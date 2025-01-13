@@ -133,7 +133,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
         continue;
       }
       if (
-        entity.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
+        entity.collisionBox.isIntersectsWithRectangle(Stage.selectingRectangle)
       ) {
         if (Controller.lastSelectedEntityUUID.has(entity.uuid)) {
           entity.isSelected = false;
@@ -144,7 +144,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
     }
     for (const edge of StageManager.getEdges()) {
       if (
-        edge.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
+        edge.collisionBox.isIntersectsWithRectangle(Stage.selectingRectangle)
       ) {
         if (Controller.lastSelectedEdgeUUID.has(edge.uuid)) {
           edge.isSelected = false;
@@ -169,7 +169,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
         }
 
         if (
-          otherEntities.collisionBox.isRectangleInCollisionBox(
+          otherEntities.collisionBox.isIntersectsWithRectangle(
             Stage.selectingRectangle,
           )
         ) {
@@ -187,7 +187,7 @@ ControllerRectangleSelect.mousemove = (event: MouseEvent) => {
           continue;
         }
         if (
-          edge.collisionBox.isRectangleInCollisionBox(Stage.selectingRectangle)
+          edge.collisionBox.isIntersectsWithRectangle(Stage.selectingRectangle)
         ) {
           edge.isSelected = true;
         }

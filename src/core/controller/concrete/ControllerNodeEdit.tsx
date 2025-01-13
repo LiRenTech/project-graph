@@ -1,3 +1,4 @@
+import { open } from "@tauri-apps/plugin-shell";
 import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { StageManager } from "../../stage/stageManager/StageManager";
@@ -10,7 +11,6 @@ import {
   editTextNode,
   editUrlNodeTitle,
 } from "./utilsControl";
-import { open } from "@tauri-apps/plugin-shell";
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
  *
@@ -80,7 +80,7 @@ ControllerNodeEdit.mousemove = (event: MouseEvent) => {
   );
   for (const node of StageManager.getTextNodes()) {
     node.isMouseHover = false;
-    if (node.collisionBox.isPointInCollisionBox(location)) {
+    if (node.collisionBox.isContainsPoint(location)) {
       node.isMouseHover = true;
     }
   }

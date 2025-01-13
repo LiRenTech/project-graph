@@ -72,8 +72,8 @@ export abstract class Edge extends ConnectableAssociation {
    * 用于碰撞箱框选
    * @param rectangle
    */
-  public isIntersectWithRectangle(rectangle: Rectangle): boolean {
-    return this.collisionBox.isRectangleInCollisionBox(rectangle);
+  public isIntersectsWithRectangle(rectangle: Rectangle): boolean {
+    return this.collisionBox.isIntersectsWithRectangle(rectangle);
   }
 
   /**
@@ -81,8 +81,8 @@ export abstract class Edge extends ConnectableAssociation {
    * @param location
    * @returns
    */
-  public isIntersectWithLocation(location: Vector): boolean {
-    return this.collisionBox.isPointInCollisionBox(location);
+  public isIntersectsWithLocation(location: Vector): boolean {
+    return this.collisionBox.isContainsPoint(location);
   }
 
   /**
@@ -90,7 +90,7 @@ export abstract class Edge extends ConnectableAssociation {
    * @param line
    * @returns
    */
-  public isIntersectWithLine(line: Line): boolean {
-    return this.collisionBox.isLineInCollisionBox(line);
+  public isIntersectsWithLine(line: Line): boolean {
+    return this.collisionBox.isIntersectsWithLine(line);
   }
 }

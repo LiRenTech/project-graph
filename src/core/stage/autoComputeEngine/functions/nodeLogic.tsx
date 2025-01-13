@@ -205,7 +205,7 @@ export namespace NodeLogic {
     }
     const fatherNode = fatherNodes[0];
     const isCollision = childNodes.some((node) => {
-      return node.collisionBox.isRectangleInCollisionBox(
+      return node.collisionBox.isIntersectsWithRectangle(
         fatherNode.collisionBox.getRectangle(),
       );
     });

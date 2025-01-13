@@ -304,9 +304,7 @@ export namespace Renderer {
       // 如果鼠标位置没有和任何节点相交
       let connectTargetNode = null;
       for (const node of StageManager.getConnectableEntity()) {
-        if (
-          node.collisionBox.isPointInCollisionBox(Controller.lastMoveLocation)
-        ) {
+        if (node.collisionBox.isContainsPoint(Controller.lastMoveLocation)) {
           connectTargetNode = node;
           break;
         }
@@ -484,7 +482,7 @@ export namespace Renderer {
     for (const edge of StageManager.getEdges()) {
       if (
         !Camera.limitCameraInCycleSpace &&
-        !edge.isIntersectWithRectangle(viewRectangle)
+        !edge.isIntersectsWithRectangle(viewRectangle)
       ) {
         continue;
       }

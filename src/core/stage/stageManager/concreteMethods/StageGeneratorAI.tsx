@@ -151,7 +151,7 @@ export namespace StageGeneratorAI {
       if (node.uuid === otherNode.uuid) {
         continue;
       }
-      if (otherNode.collisionBox.isRectangleInCollisionBox(rect)) {
+      if (otherNode.collisionBox.isIntersectsWithRectangle(rect)) {
         return true;
       }
     }
