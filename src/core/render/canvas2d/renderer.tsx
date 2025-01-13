@@ -484,7 +484,7 @@ export namespace Renderer {
     for (const edge of StageManager.getEdges()) {
       if (
         !Camera.limitCameraInCycleSpace &&
-        !edge.isBodyLineIntersectWithRectangle(viewRectangle)
+        !edge.isIntersectWithRectangle(viewRectangle)
       ) {
         continue;
       }
