@@ -522,6 +522,14 @@ export default function AppMenu({
         >
           手动报错
         </Col>
+        <Col
+          icon={<TestTube2 />}
+          onClick={() => {
+            StageManager.switchLineEdgeToCrEdge();
+          }}
+        >
+          切换Cr曲线
+        </Col>
       </Row>
     </div>
   );

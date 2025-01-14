@@ -77,6 +77,10 @@ export class CublicCatmullRomSplineEdge extends Edge {
     ]);
   }
 
+  public getShape(): CublicCatmullRomSpline {
+    return this._collisionBox.shapeList[0] as CublicCatmullRomSpline;
+  }
+
   private test() {
     console.log(this.alpha, this.tension, this.controlPoints);
   }

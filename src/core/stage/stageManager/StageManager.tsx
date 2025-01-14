@@ -6,6 +6,7 @@ import { Vector } from "../../dataStruct/Vector";
 import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Settings } from "../../Settings";
+import { CublicCatmullRomSplineEdge } from "../../stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
@@ -140,6 +141,11 @@ export namespace StageManager {
       .valuesToArray()
       .filter((edge) => edge instanceof LineEdge);
   }
+  export function getCrEdges(): CublicCatmullRomSplineEdge[] {
+    return associations
+      .valuesToArray()
+      .filter((edge) => edge instanceof CublicCatmullRomSplineEdge);
+  }
 
   /** 关于标签的相关操作 */
   export namespace TagOptions {
@@ -197,6 +203,9 @@ export namespace StageManager {
     entities.addValue(point, point.uuid);
   }
   export function addLineEdge(edge: LineEdge) {
+    associations.addValue(edge, edge.uuid);
+  }
+  export function addCrEdge(edge: CublicCatmullRomSplineEdge) {
     associations.addValue(edge, edge.uuid);
   }
 
@@ -1077,7 +1086,12 @@ export namespace StageManager {
   export function moveToTag(tag: string) {
     StageTagManager.moveToTag(tag);
   }
-
+  export function connectEntityByCrEdge(
+    fromNode: ConnectableEntity,
+    toNode: ConnectableEntity,
+  ) {
+    return StageNodeConnector.addCrEdge(fromNode, toNode);
+  }
   /**
    * 刷新选中内容
    */
@@ -1105,6 +1119,20 @@ export namespace StageManager {
         StageAutoAlignManager.autoLayoutSelectedFastTreeMode(entity);
         return;
       }
+    }
+  }
+
+  export function switchLineEdgeToCrEdge() {
+    const prepareDeleteLineEdge: LineEdge[] = [];
+    for (const edge of getLineEdges()) {
+      if (edge instanceof LineEdge && edge.isSelected) {
+        // 删除这个连线，并准备创建cr曲线
+        prepareDeleteLineEdge.push(edge);
+      }
+    }
+    for (const lineEdge of prepareDeleteLineEdge) {
+      deleteEdge(lineEdge);
+      connectEntityByCrEdge(lineEdge.source, lineEdge.target);
     }
   }
 }

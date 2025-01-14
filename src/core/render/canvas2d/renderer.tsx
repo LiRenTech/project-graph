@@ -489,6 +489,16 @@ export namespace Renderer {
       EdgeRenderer.renderEdge(edge);
       renderedEdges++;
     }
+    for (const edge of StageManager.getCrEdges()) {
+      if (
+        !Camera.limitCameraInCycleSpace &&
+        !edge.isIntersectsWithRectangle(viewRectangle)
+      ) {
+        continue;
+      }
+      EdgeRenderer.renderCrEdge(edge);
+      renderedEdges++;
+    }
   }
 
   /** 画粘贴板上的信息 */
