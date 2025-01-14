@@ -2,7 +2,9 @@
   "include": ["./docs/**/*.ts", "./docs/**/*.vue", "./docs/**/*.md"],
   "compilerOptions": {
     "types": ["vitepress/client", "vite/client"],
-    "composite": true
+    "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
   },
   "vueCompilerOptions": {
     "vitePressExtensions": [".md"]

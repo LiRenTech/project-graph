@@ -1,4 +1,4 @@
-# AI
+# 🧠 AI
 
 <Loading />
 

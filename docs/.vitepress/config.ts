@@ -1,3 +1,7 @@
+import {
+  PageProperties,
+  PagePropertiesMarkdownSection,
+} from "@nolebase/vitepress-plugin-page-properties/vite";
 import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
@@ -165,4 +169,24 @@ export default defineConfig({
     ],
   ],
   lang: "zh-CN",
+  vite: {
+    optimizeDeps: {
+      exclude: [
+        "@nolebase/vitepress-plugin-enhanced-readabilities/client",
+        "vitepress",
+        "@nolebase/ui",
+      ],
+    },
+    ssr: {
+      noExternal: ["@nolebase/*"],
+    },
+    plugins: [
+      // @ts-expect-error ???
+      PageProperties(),
+      // @ts-expect-error ???
+      PagePropertiesMarkdownSection({
+        excludes: ["index.md"],
+      }),
+    ],
+  },
 });

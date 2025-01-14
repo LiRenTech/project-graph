@@ -1,12 +1,12 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { cn } from "./cn";
 
 export namespace Dialog {
   export type DialogButton = {
     text: string;
+    color: string;
     onClick?: (value?: string) => void;
   };
   export type DialogType = "info" | "success" | "warning" | "error";
@@ -14,7 +14,7 @@ export namespace Dialog {
     title: string;
     content: string;
     type: DialogType;
-    buttons: DialogButton[];
+    buttons: Partial<DialogButton>[];
     code: string;
     input: boolean;
   };
@@ -58,7 +58,7 @@ export namespace Dialog {
     type = "info",
     content = "",
     code = "",
-    buttons = [{ text: "确定", onClick: () => {} }],
+    buttons = [{ text: "确定", color: "white", onClick: () => {} }],
     input = false,
     onClose = () => {},
   }: Partial<Dialog.DialogProps>) {
@@ -124,25 +124,28 @@ export namespace Dialog {
             />
           )}
 
-          {buttons.map((btn, i) => (
-            <Button
-              key={i}
-              onClick={() => {
-                btn.onClick?.(inputValue);
-                setInputValue("");
-                onClose(btn.text, inputValue);
-                setShow(false);
-              }}
-            >
-              {btn.text}
-            </Button>
-          ))}
+          <div className="flex justify-end">
+            {buttons.map((btn, i) => (
+              <div
+                key={i}
+                onClick={() => {
+                  btn.onClick?.(inputValue);
+                  setInputValue("");
+                  onClose(btn.text ?? "", inputValue);
+                  setShow(false);
+                }}
+                className={`px-4 py-2 hover:bg-${btn.color ?? "white"}/10 text-${btn.color ?? "white"} cursor-pointer rounded-full active:scale-90`}
+              >
+                {btn.text}
+              </div>
+            ))}
+          </div>
         </div>
         <div
           className={cn(
-            "fixed left-0 top-0 z-[100] h-full w-full bg-black opacity-0",
+            "fixed left-0 top-0 z-[100] h-full w-full bg-black/0 backdrop-blur-0",
             {
-              "opacity-50": show,
+              "bg-black/70 !backdrop-blur-lg": show,
             },
           )}
         ></div>

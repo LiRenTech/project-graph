@@ -42,6 +42,9 @@
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@modyfi/vite-plugin-yaml": "^1.1.0",
+    "@nolebase/vitepress-plugin-enhanced-readabilities": "^2.12.0",
+    "@nolebase/vitepress-plugin-highlight-targeted-heading": "^2.12.0",
+    "@nolebase/vitepress-plugin-page-properties": "^2.12.0",
     "@tauri-apps/cli": "^2.1.0",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
