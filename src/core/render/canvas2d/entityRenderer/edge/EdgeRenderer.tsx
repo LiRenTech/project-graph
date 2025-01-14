@@ -3,6 +3,7 @@ import { Color } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Settings } from "../../../../Settings";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
+import { CublicCatmullRomSplineEdge } from "../../../../stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "../../../../stageObject/association/LineEdge";
 import { Section } from "../../../../stageObject/entity/Section";
 
@@ -10,6 +11,7 @@ import { ConnectableEntity } from "../../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
 import { Renderer } from "../../renderer";
 import { RenderUtils } from "../../RenderUtils";
+import { WorldRenderUtils } from "../../WorldRenderUtils";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { StraightEdgeRenderer } from "./concrete/StraightEdgeRenderer";
 import { SymmetryCurveEdgeRenderer } from "./concrete/SymmetryCurveEdgeRenderer";
@@ -92,6 +94,20 @@ export namespace EdgeRenderer {
         new Color(255, 255, 0, 0.5),
       );
     }
+  }
+
+  export function renderCrEdge(edge: CublicCatmullRomSplineEdge) {
+    if (
+      edge.source.isHiddenBySectionCollapse &&
+      edge.target.isHiddenBySectionCollapse
+    ) {
+      return;
+    }
+    WorldRenderUtils.renderCublicCatmullRomSpline(
+      edge.getShape(),
+      StageStyleManager.currentStyle.StageObjectBorderColor,
+      2,
+    );
   }
 
   /**

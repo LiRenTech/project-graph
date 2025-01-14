@@ -4,11 +4,37 @@ import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { ConnectableEntity } from "../../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 import { StageDeleteManager } from "./StageDeleteManager";
+import { CublicCatmullRomSplineEdge } from "../../../stageObject/association/CublicCatmullRomSplineEdge";
 
 /**
  * 集成所有连线相关的功能
  */
 export namespace StageNodeConnector {
+  /**
+   * 检测是否可以连接两个节点
+   * @param fromNode
+   * @param toNode
+   */
+  function isConnectable(
+    fromNode: ConnectableEntity,
+    toNode: ConnectableEntity,
+  ): boolean {
+    if (
+      StageManager.isEntityExists(fromNode.uuid) &&
+      StageManager.isEntityExists(toNode.uuid)
+    ) {
+      if (fromNode.uuid === toNode.uuid && fromNode instanceof ConnectPoint) {
+        return false;
+      }
+      if (StageManager.isConnected(fromNode, toNode)) {
+        // 已经连接过了，不需要再次连接
+        return false;
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
   // 连接两两节点
   // 如果两个节点都是同一个 ConnectPoint类型，则不能连接，因为没有必要
   export function connectConnectableEntity(
@@ -16,32 +42,35 @@ export namespace StageNodeConnector {
     toNode: ConnectableEntity,
     text: string = "",
   ): void {
-    if (
-      StageManager.isEntityExists(fromNode.uuid) &&
-      StageManager.isEntityExists(toNode.uuid)
-    ) {
-      if (fromNode.uuid === toNode.uuid && fromNode instanceof ConnectPoint) {
-        return;
-      }
-
-      if (StageManager.isConnected(fromNode, toNode)) {
-        // 已经连接过了，不需要再次连接
-        return;
-      }
-      const newEdge = new LineEdge({
-        source: fromNode.uuid,
-        target: toNode.uuid,
-        text,
-        uuid: uuidv4(),
-        type: "core:line_edge",
-      });
-
-      StageManager.addLineEdge(newEdge);
-
-      StageManager.updateReferences();
-      // return addResult;
+    if (!isConnectable(fromNode, toNode)) {
+      return;
     }
+    const newEdge = new LineEdge({
+      source: fromNode.uuid,
+      target: toNode.uuid,
+      text,
+      uuid: uuidv4(),
+      type: "core:line_edge",
+    });
+
+    StageManager.addLineEdge(newEdge);
+
+    StageManager.updateReferences();
+    // return addResult;
+
     // return false;
+  }
+
+  export function addCrEdge(
+    fromNode: ConnectableEntity,
+    toNode: ConnectableEntity,
+  ): void {
+    if (!isConnectable(fromNode, toNode)) {
+      return;
+    }
+    const newEdge = CublicCatmullRomSplineEdge.fromTwoEntity(fromNode, toNode);
+    StageManager.addCrEdge(newEdge);
+    StageManager.updateReferences();
   }
 
   // 将多个节点之间全连接
