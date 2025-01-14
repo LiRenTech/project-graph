@@ -21,7 +21,7 @@ const _Box = <E extends ElementType = "div">(
     <Component
       ref={ref}
       className={cn(
-        "rounded-md border border-neutral-700 bg-neutral-800 text-white",
+        "rounded-md border border-neutral-700 bg-neutral-800/20 text-white backdrop-blur-md",
         className,
       )}
       {...props}

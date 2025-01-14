@@ -66,7 +66,7 @@ export default function AiPanel({ open = false }: { open: boolean }) {
   return (
     <div
       className={cn(
-        "pointer-events-none fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 scale-75 transform flex-col items-center overflow-y-scroll rounded-md bg-neutral-900 px-2 py-6 opacity-0",
+        "pointer-events-none fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 scale-75 transform flex-col items-center overflow-y-scroll rounded-md border border-neutral-700 bg-neutral-900/20 px-2 py-6 opacity-0 backdrop-blur-lg",
         {
           "pointer-events-auto scale-100 opacity-100": open,
         },
