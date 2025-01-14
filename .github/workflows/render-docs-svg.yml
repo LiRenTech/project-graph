@@ -20,6 +20,7 @@ jobs:
           gh release download -p "*.deb" -O project-graph.deb
           sudo apt-get update
           sudo apt-get install -y ./project-graph.deb
+          rm -rf ./project-graph.deb
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install xvfb

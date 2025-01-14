@@ -41,6 +41,10 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --vp-button-brand-active-bg: var(--vp-button-brand-bg);
   --vp-button-alt-hover-bg: var(--vp-button-alt-bg);
   --vp-button-alt-active-bg: var(--vp-button-alt-bg);
+  --vp-c-brand-1: var(--vp-c-green-1);
+  --vp-c-brand-2: var(--vp-c-green-2);
+  --vp-c-brand-3: var(--vp-c-green-3);
+  --vp-c-brand-soft: var(--vp-c-green-soft);
 
   &.dark {
     --vp-sidebar-bg-color: #000;

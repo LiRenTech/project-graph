@@ -1,4 +1,4 @@
-# URL节点
+# 🌐 URL 节点
 
 在浏览器中复制URL并切换到project-graph软件界面中，直接在舞台上按ctrl+v，就可以生成一个URL节点。
 
