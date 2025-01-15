@@ -138,8 +138,8 @@ export default defineConfig({
     sidebarMenuLabel: "导航",
     darkModeSwitchLabel: "主题",
     docFooter: {
-      prev: "上一页",
-      next: "下一页",
+      prev: "←",
+      next: "→",
     },
   },
   sitemap: {

@@ -25,7 +25,7 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
 :root {
   // 字体
-  --vp-font-family-base: "Misans", -apple-system, system-ui, sans-serif;
+  --vp-font-family-base: "MiSans", -apple-system, system-ui, sans-serif;
 
   // 透明侧边栏
   --vp-sidebar-bg-color: #fff;
@@ -45,6 +45,7 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --vp-c-brand-2: var(--vp-c-green-2);
   --vp-c-brand-3: var(--vp-c-green-3);
   --vp-c-brand-soft: var(--vp-c-green-soft);
+  --vp-c-divider: #e5e5e5;
 
   &.dark {
     --vp-sidebar-bg-color: #000;
@@ -54,6 +55,7 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     --vp-c-bg-soft: #090909;
     --vp-button-brand-bg: #006bc8;
     --vp-button-alt-bg: #121212;
+    --vp-c-divider: #121212;
   }
 }
 
@@ -134,5 +136,61 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
   &:active {
     transform: scale(0.9);
+  }
+}
+
+.custom-block {
+  border-radius: 16px;
+
+  &.info {
+    box-shadow: 0 0 64px var(--vp-custom-block-info-bg);
+  }
+  &.tip {
+    box-shadow: 0 0 64px var(--vp-custom-block-tip-bg);
+  }
+  &.warning {
+    box-shadow: 0 0 64px var(--vp-custom-block-warning-bg);
+  }
+  &.danger {
+    box-shadow: 0 0 64px var(--vp-custom-block-danger-bg);
+  }
+  &.note {
+    box-shadow: 0 0 64px var(--vp-custom-block-note-bg);
+  }
+  &.important {
+    box-shadow: 0 0 64px var(--vp-custom-block-important-bg);
+  }
+  &.caution {
+    box-shadow: 0 0 64px var(--vp-custom-block-caution-bg);
+  }
+  &.details {
+    box-shadow: 0 0 64px var(--vp-custom-block-details-bg);
+  }
+}
+
+a {
+  text-shadow: 0 0 16px transparent;
+  transition: 0.3s $ease-out-expo !important;
+  &:hover {
+    text-shadow: 0 0 16px var(--vp-c-brand-1);
+  }
+}
+
+.prev-next {
+  display: flex !important;
+  justify-content: space-between;
+
+  .pager-link {
+    display: flex;
+    gap: 4px;
+    border-radius: 9999px;
+
+    &.next {
+      flex-direction: row-reverse;
+    }
+
+    > * {
+      font-size: 14px;
+    }
   }
 }
