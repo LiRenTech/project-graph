@@ -62,6 +62,31 @@ export default defineConfig({
     },
   },
   locales: {
+    root: {
+      label: "English",
+      description: "Draw fast, think efficiently.",
+      lang: "en",
+      themeConfig: {
+        nav: [
+          { text: "Home", link: "/" },
+          { text: "Download", link: "/installation" },
+        ],
+        sidebar: [
+          {
+            text: "Installation",
+            link: "/installation",
+          },
+          {
+            text: "Contributing Guide",
+            link: "/contributing",
+          },
+          {
+            text: "Frequently Asked Questions",
+            link: "/faq",
+          },
+        ],
+      },
+    },
     zh: {
       label: "简体中文",
       description:
@@ -188,31 +213,6 @@ export default defineConfig({
         },
         sidebarMenuLabel: "导航",
         darkModeSwitchLabel: "主题",
-      },
-    },
-    en: {
-      label: "English",
-      description: "Draw fast, think efficiently.",
-      lang: "en",
-      themeConfig: {
-        nav: [
-          { text: "Home", link: "/en/" },
-          { text: "Download", link: "/en/installation" },
-        ],
-        sidebar: [
-          {
-            text: "Installation",
-            link: "/en/installation",
-          },
-          {
-            text: "Contributing Guide",
-            link: "/en/contributing",
-          },
-          {
-            text: "Frequently Asked Questions",
-            link: "/en/faq",
-          },
-        ],
       },
     },
   },

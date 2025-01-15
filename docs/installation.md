@@ -1,6 +1,7 @@
 # Installation
 
-> [!IMPORTANT] > **Android and macOS version is still in development, not for everyday use.**
+> [!IMPORTANT]
+> Android and macOS version is still in development, not for everyday use.
 >
 > If you are using macOS, you may encounter an error prompt. Please refer to the [FAQ](./faq#macos-cannot-open) for the solution.
 
