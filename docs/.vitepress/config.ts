@@ -105,6 +105,10 @@ export default defineConfig({
         text: "用户协议",
         link: "/terms",
       },
+      {
+        text: "隐私政策",
+        link: "/privacy-policy",
+      },
     ],
     socialLinks: [
       { icon: "github", link: "https://github.com/LiRenTech/project-graph" },
@@ -113,7 +117,7 @@ export default defineConfig({
       provider: "local",
     },
     footer: {
-      copyright: "Copyright © 2024 理刃科技",
+      copyright: "Copyright © 2025 理刃科技",
     },
     editLink: {
       text: "编辑页面",
