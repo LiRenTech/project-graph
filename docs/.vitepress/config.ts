@@ -1,7 +1,3 @@
-import {
-  PageProperties,
-  PagePropertiesMarkdownSection,
-} from "@nolebase/vitepress-plugin-page-properties/vite";
 import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
@@ -11,7 +7,11 @@ export default defineConfig({
     "快速绘制节点图的桌面工具，可以用于项目进程拓扑图绘制、快速头脑风暴草稿",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
-    nav: [{ text: "首页", link: "/" }],
+    nav: [
+      { text: "首页", link: "/" },
+      { text: "下载", link: "/installation" },
+      { text: "捐赠", link: "/donate" },
+    ],
     logo: "/logo.svg",
     sidebar: [
       {
@@ -94,16 +94,8 @@ export default defineConfig({
         link: "/contributors",
       },
       {
-        text: "为什么重写",
-        link: "/why-rewriting",
-      },
-      {
         text: "开发指南",
         link: "/contributing",
-      },
-      {
-        text: "JSON 文档格式",
-        link: "/json-format",
       },
       {
         text: "常见问题",
@@ -180,13 +172,5 @@ export default defineConfig({
     ssr: {
       noExternal: ["@nolebase/*"],
     },
-    plugins: [
-      // @ts-expect-error ???
-      PageProperties(),
-      // @ts-expect-error ???
-      PagePropertiesMarkdownSection({
-        excludes: ["index.md"],
-      }),
-    ],
   },
 });

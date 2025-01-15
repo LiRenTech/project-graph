@@ -14,8 +14,8 @@ hero:
       text: 🌍 在线使用
       link: https://web.project-graph.top
     - theme: alt
-      text: GitHub
-      link: https://github.com/LiRenTech/project-graph
+      text: 捐赠
+      link: /donate
     - theme: alt
       text: QQ 交流群
       link: https://qm.qq.com/cgi-bin/qm/qr?k=1Wskf2Y2KJz3ARpCgzi04y_p95a78Wku&jump_from=webapi&authKey=EkjB+oWihwZIfyqVsIv2dGrNv7bhSGSIULM3+ZLU2R5AVxOUKaIRwi6TKOHlT04/
