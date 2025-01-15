@@ -9,3 +9,8 @@
 ::: details 微信
 ![.png](https://s2.loli.net/2025/01/15/shUnmBdD2lZ36wN.png)
 :::
+
+## 目前支出
+
+- 域名：$4.88/年
+- QQ SVIP：￥25/月
