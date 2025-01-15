@@ -14,7 +14,7 @@
     "format": "prettier --write ./src",
     "prepare": "husky",
     "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
+    "docs:build": "git fetch --unshallow && vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {

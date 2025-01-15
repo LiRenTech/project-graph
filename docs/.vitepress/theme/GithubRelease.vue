@@ -9,11 +9,7 @@
         :href="'https://proxy.zty012.de/' + asset.browser_download_url"
         :download="asset.name"
       >
-        <button
-          class="VPButton"
-          :class="os === 'windows' && !isArm ? 'brand' : 'alt'"
-          v-if="asset.name.endsWith('.exe')"
-        >
+        <button class="VPButton alt" v-if="asset.name.endsWith('.exe')">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -28,8 +24,7 @@
           Windows
         </button>
         <button
-          class="VPButton"
-          :class="os === 'macos' && isArm ? 'brand' : 'alt'"
+          class="VPButton alt"
           v-else-if="asset.name.endsWith('aarch64.dmg')"
         >
           <svg
@@ -45,11 +40,7 @@
           </svg>
           Mac (Silicon)
         </button>
-        <button
-          class="VPButton"
-          :class="os === 'macos' && !isArm ? 'brand' : 'alt'"
-          v-else-if="asset.name.endsWith('x64.dmg')"
-        >
+        <button class="VPButton alt" v-else-if="asset.name.endsWith('x64.dmg')">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -63,11 +54,7 @@
           </svg>
           Mac (Intel)
         </button>
-        <button
-          class="VPButton"
-          :class="os === 'linux' && !isArm ? 'brand' : 'alt'"
-          v-else-if="asset.name.endsWith('.deb')"
-        >
+        <button class="VPButton alt" v-else-if="asset.name.endsWith('.deb')">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -82,8 +69,7 @@
           Linux (deb)
         </button>
         <button
-          class="VPButton"
-          :class="os === 'linux' && !isArm ? 'brand' : 'alt'"
+          class="VPButton alt"
           v-else-if="asset.name.endsWith('.AppImage')"
         >
           <svg
@@ -99,11 +85,7 @@
           </svg>
           Linux (AppImage)
         </button>
-        <button
-          class="VPButton"
-          :class="os === 'android' ? 'brand' : 'alt'"
-          v-else-if="asset.name.endsWith('.apk')"
-        >
+        <button class="VPButton alt" v-else-if="asset.name.endsWith('.apk')">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -120,18 +102,7 @@
       </a>
     </div>
   </div>
-  <div v-else>
-    正在加载下载链接，若长时间未加载，请前往
-    <a href="https://github.com/LiRenTech/project-graph/releases">Github</a>
-    下载。
-  </div>
-  <div class="warning custom-block github-alert" v-if="notSupported">
-    <p class="custom-block-title">不支持的系统</p>
-    <p>
-      根据浏览器平台信息 ({{ os }} {{ isArm ? "ARM" : "x86" }})，Project Graph
-      目前不支持你的系统。
-    </p>
-  </div>
+  <div v-else><Loading /></div>
 </template>
 
 <script lang="ts" setup>
@@ -143,9 +114,6 @@ const props = defineProps<{
 }>();
 
 const release = ref();
-const os = ref("");
-const isArm = ref(false);
-const notSupported = ref(false);
 
 onMounted(async () => {
   const data = await (
@@ -170,26 +138,6 @@ onMounted(async () => {
       break;
     }
   }
-  const platform = navigator.platform.toLowerCase();
-  const userAgent = navigator.userAgent.toLowerCase();
-  if (
-    userAgent.includes("arm64") ||
-    userAgent.includes("aarch64") ||
-    userAgent.includes("armv8")
-  ) {
-    isArm.value = true;
-  }
-  if (platform.includes("win")) {
-    os.value = "windows";
-  } else if (platform.includes("mac")) {
-    os.value = "macos";
-  } else if (platform.includes("linux")) {
-    os.value = "linux";
-  }
-  if (isArm.value && (os.value === "windows" || os.value === "linux")) {
-    notSupported.value = true;
-  }
-  console.log("os", os.value, "isArm", isArm.value);
 });
 </script>
 
