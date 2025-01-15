@@ -100,6 +100,17 @@ describe("PathString", () => {
       PathString.isValidURL("http://mrjokersince1997.github.io/My-Notes/#/"),
     ).toBe(true);
   });
+  // 一些别的协议的链接
+  it("obsidian链接", () => {
+    // expect(
+    //   PathString.isValidURL("obsidian://open?vault=MyVault&file=MyNote"),
+    // ).toBe(true);
+    expect(
+      PathString.isValidURL(
+        "obsidian://adv-uri?uid=s4w4w8-w4848w4-w48w48-w488w4-wefwaefw",
+      ),
+    ).toBe(true);
+  });
   it("不合法的链接", () => {
     expect(PathString.isValidURL("h t t p://a.com")).toBe(false);
     expect(PathString.isValidURL("http://")).toBe(false);

@@ -122,7 +122,11 @@ export namespace PathString {
       }
 
       // 检查主机名是否为 localhost 或者是有效的 IP 地址
-      if (parsedUrl.hostname === "localhost" || ipPattern.test(url)) {
+      if (
+        parsedUrl.hostname === "localhost" ||
+        parsedUrl.hostname === "obsidian" ||
+        ipPattern.test(url)
+      ) {
         return true;
       }
 
