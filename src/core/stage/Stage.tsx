@@ -18,6 +18,7 @@ import { autoLayoutMainTick } from "./autoLayoutEngine/mainTick";
 import { StageDumper } from "./StageDumper";
 import { StageManager } from "./stageManager/StageManager";
 import { StageSaveManager } from "./StageSaveManager";
+import { KeyboardOnlyEngine } from "./keyboardOnlyEngine/keyboardOnlyEngine";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -240,6 +241,8 @@ export namespace Stage {
     autoSaveTick();
     // 自动备份功能
     autoBackupTick();
+
+    KeyboardOnlyEngine.logicTick();
   }
 
   let lastAutoSaveTime = performance.now();

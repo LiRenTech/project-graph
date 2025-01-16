@@ -1,4 +1,3 @@
-import { Direction } from "../../../types/directions";
 import { Vector } from "../../dataStruct/Vector";
 import { Camera } from "../Camera";
 import { StageManager } from "../stageManager/StageManager";
@@ -6,16 +5,28 @@ import { ConnectableEntity } from "../../stageObject/StageObject";
 import { Dialog } from "../../../utils/dialog";
 import { editTextNode } from "../../controller/concrete/utilsControl";
 import { SelectChangeEngine } from "./selectChangeEngine";
+import { KeyboardOnlyDirectionController } from "./keyboardOnlyDirectionController";
 
+/**
+ * 纯键盘控制的相关引擎
+ */
 export namespace KeyboardOnlyEngine {
-  let currentVirtualTargetLocation = Vector.getZero();
+  /**
+   * 虚拟目标位置控制器
+   */
+  const targetLocationController = new KeyboardOnlyDirectionController();
 
   export function virtualTargetLocation(): Vector {
-    return currentVirtualTargetLocation;
+    return targetLocationController.location;
   }
 
   export function init() {
     bindKeyEvents();
+    targetLocationController.init();
+  }
+
+  export function logicTick() {
+    targetLocationController.logicTick();
   }
 
   /**
@@ -29,14 +40,6 @@ export namespace KeyboardOnlyEngine {
         if (isEnableVirtualCreate()) {
           createStart();
         }
-      } else if (event.key === "i") {
-        moveVirtualTargetByDirection(Direction.Up);
-      } else if (event.key === "k") {
-        moveVirtualTargetByDirection(Direction.Down);
-      } else if (event.key === "j") {
-        moveVirtualTargetByDirection(Direction.Left);
-      } else if (event.key === "l") {
-        moveVirtualTargetByDirection(Direction.Right);
       } else if (event.key === "Enter") {
         // 这个还必须在down的位置上，因为在up上会导致无限触发
         const selectedNode = StageManager.getTextNodes().find(
@@ -52,7 +55,7 @@ export namespace KeyboardOnlyEngine {
     window.addEventListener("keyup", (event) => {
       if (event.key === "Tab") {
         if (isCreating()) {
-          createEnd();
+          createFinished();
         }
       }
     });
@@ -96,9 +99,11 @@ export namespace KeyboardOnlyEngine {
 
     // 如果只有一个节点被选中，则生成到右边的位置
     if (selectConnectableEntities.length === 1) {
-      currentVirtualTargetLocation = selectConnectableEntities[0].collisionBox
-        .getRectangle()
-        .rightCenter.add(lastDiffLocation);
+      targetLocationController.resetLocation(
+        selectConnectableEntities[0].collisionBox
+          .getRectangle()
+          .rightCenter.add(lastDiffLocation),
+      );
     }
   }
   let lastPressTabTime = 0;
@@ -114,7 +119,7 @@ export namespace KeyboardOnlyEngine {
     return interval;
   }
 
-  async function createEnd() {
+  async function createFinished() {
     _isCreating = false;
     if (getPressTabTimeInterval() < 100) {
       Dialog.show({
@@ -130,9 +135,7 @@ export namespace KeyboardOnlyEngine {
       StageManager.getConnectableEntity().filter((node) => node.isSelected);
     if (isTargetLocationHaveEntity()) {
       // 连接到之前的节点
-      const entity = StageManager.findEntityByLocation(
-        currentVirtualTargetLocation,
-      );
+      const entity = StageManager.findEntityByLocation(virtualTargetLocation());
       if (entity && entity instanceof ConnectableEntity) {
         // 连接到之前的节点
         for (const selectedEntity of selectConnectableEntities) {
@@ -145,18 +148,18 @@ export namespace KeyboardOnlyEngine {
           selectedEntity.isSelected = false;
         }
         // 视野移动到新创建的节点
-        Camera.location = currentVirtualTargetLocation.clone();
+        Camera.location = virtualTargetLocation().clone();
       }
     } else {
       // 更新diffLocation
-      lastDiffLocation = currentVirtualTargetLocation
+      lastDiffLocation = virtualTargetLocation()
         .clone()
         .subtract(
           selectConnectableEntities[0].collisionBox.getRectangle().center,
         );
       // 创建一个新的节点
       const newNodeUUID = await StageManager.addTextNodeByClick(
-        currentVirtualTargetLocation,
+        virtualTargetLocation().clone(),
         [],
       );
       const newNode = StageManager.getTextNodeByUUID(newNodeUUID);
@@ -172,16 +175,19 @@ export namespace KeyboardOnlyEngine {
         entity.isSelected = false;
       }
       // 视野移动到新创建的节点
-      Camera.location = currentVirtualTargetLocation.clone();
+      Camera.location = virtualTargetLocation().clone();
       editTextNode(newNode);
     }
   }
 
   export function moveVirtualTarget(delta: Vector): void {
-    currentVirtualTargetLocation = currentVirtualTargetLocation.add(delta);
+    targetLocationController.resetLocation(virtualTargetLocation().add(delta));
   }
 
-  export function cancelCreate(): void {
+  /**
+   * 取消创建
+   */
+  export function createCancel(): void {
     // do nothing
     _isCreating = false;
   }
@@ -193,29 +199,10 @@ export namespace KeyboardOnlyEngine {
   export function isTargetLocationHaveEntity(): boolean {
     const entities = StageManager.getConnectableEntity();
     for (const entity of entities) {
-      if (entity.collisionBox.isContainsPoint(currentVirtualTargetLocation)) {
+      if (entity.collisionBox.isContainsPoint(virtualTargetLocation())) {
         return true;
       }
     }
     return false;
-  }
-
-  export function moveVirtualTargetByDirection(direction: Direction) {
-    switch (direction) {
-      case Direction.Up:
-        moveVirtualTarget(new Vector(0, -100));
-        break;
-      case Direction.Down:
-        moveVirtualTarget(new Vector(0, 100));
-        break;
-      case Direction.Left:
-        moveVirtualTarget(new Vector(-100, 0));
-        break;
-      case Direction.Right:
-        moveVirtualTarget(new Vector(100, 0));
-        break;
-      default:
-        break;
-    }
   }
 }
