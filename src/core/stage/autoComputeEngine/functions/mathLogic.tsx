@@ -143,7 +143,9 @@ export namespace MathFunctions {
     return [numbers[0] === 0 ? 1 : 0];
   }
   export function xor(numbers: number[]): number[] {
-    return [numbers.filter((n) => n === 1).length % 2 === 0 ? 1 : 0];
+    // 只要有不一样的，就返回1，如果全是一样的内容，就返回0
+    const set = new Set(numbers);
+    return [set.size === 1 ? 0 : 1];
   }
   // 统计
   export function count(numbers: number[]): number[] {
