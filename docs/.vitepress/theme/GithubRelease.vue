@@ -6,7 +6,9 @@
         v-for="asset of release.assets.filter(
           ({ name }) => !name.endsWith('.json'),
         )"
-        :href="'https://proxy.zty012.de/' + asset.browser_download_url"
+        :href="
+          (proxy ? 'https://proxy.zty012.de/' : '') + asset.browser_download_url
+        "
         :download="asset.name"
       >
         <button class="VPButton alt" v-if="asset.name.endsWith('.exe')">
@@ -111,6 +113,7 @@ import { onMounted, ref } from "vue";
 const props = defineProps<{
   repo: string;
   nightly: boolean;
+  proxy: boolean;
 }>();
 
 const release = ref();

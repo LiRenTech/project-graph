@@ -5,14 +5,14 @@
 
 ## 📦 稳定版
 
-<GithubRelease repo="LiRenTech/project-graph" />
+<GithubRelease repo="LiRenTech/project-graph" proxy />
 
 ## ⚡ 开发版
 
 > [!WARNING]
 > 开发版可能有未知的 Bug。
 
-<GithubRelease repo="LiRenTech/project-graph" nightly />
+<GithubRelease repo="LiRenTech/project-graph" nightly proxy />
 
 ## 🅰 AUR
 
