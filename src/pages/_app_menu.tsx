@@ -65,11 +65,16 @@ export default function AppMenu({
   const [, setRecentFilePanelOpen] = useAtom(isRecentFilePanelOpenAtom);
   const [, setExportTreeTextPanelOpen] = useAtom(isExportTreeTextPanelOpenAtom);
 
-  const onNew = () => {
+  /**
+   * 新建草稿
+   */
+  const onNewDraft = () => {
     if (StageSaveManager.isSaved()) {
       StageManager.destroy();
       setFile("Project Graph");
     } else {
+      // 当前文件未保存
+      // 但当前可能是草稿没有保存，也可能是曾经的文件改动了没有保存
       Dialog.show({
         title: "未保存",
         content: "您打算新建一个文件，但当前文件未保存，请选择您的操作",
@@ -77,8 +82,7 @@ export default function AppMenu({
           {
             text: "保存",
             onClick: () => {
-              onSave();
-              onNew();
+              onSave().then(onNewDraft);
             },
           },
           {
@@ -88,30 +92,50 @@ export default function AppMenu({
               setFile("Project Graph");
             },
           },
-          { text: "取消" },
+          { text: "我再想想" },
         ],
       });
     }
   };
 
   const onOpen = async () => {
-    if (!StageSaveManager.isSaved()) {
+    if (Stage.Path.isDraft() && !StageSaveManager.isSaved()) {
+      Dialog.show({
+        title: "草稿未保存",
+        content: "当前草稿未保存，是否保存？",
+        buttons: [
+          { text: "我再想想" },
+          { text: "保存草稿", onClick: onSave },
+          {
+            text: "丢弃并打开新文件",
+            onClick: () => {
+              StageManager.destroy();
+              openFileByDialogWindow();
+            },
+          },
+        ],
+      });
+    } else if (!StageSaveManager.isSaved()) {
       Dialog.show({
         title: "未保存",
         content: "是否保存当前文件？",
         buttons: [
           {
-            text: "保存",
+            text: "保存并打开新文件",
             onClick: () => {
-              onSave();
-              onNew();
+              onSave().then(openFileByDialogWindow);
             },
           },
-          { text: "取消" },
+          { text: "我再想想" },
         ],
       });
-      return;
+    } else {
+      // 直接打开文件
+      openFileByDialogWindow();
     }
+  };
+
+  const openFileByDialogWindow = async () => {
     const path = isWeb
       ? "file.json"
       : await openFileDialog({
@@ -156,7 +180,7 @@ export default function AppMenu({
     if (path_ === "Project Graph") {
       // 如果文件名为 "Project Graph" 则说明是新建文件。
       // 要走另存为流程
-      onSaveNew();
+      await onSaveNew();
       return;
     }
     const data = StageDumper.dump(); // 获取当前节点和边的数据
@@ -335,7 +359,7 @@ export default function AppMenu({
     // 绑定快捷键
     const keyDownFunction = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key === "n") {
-        onNew();
+        onNewDraft();
       } else if (e.ctrlKey && e.key === "o") {
         onOpen();
       } else if (e.ctrlKey && e.key === "s") {
@@ -361,7 +385,7 @@ export default function AppMenu({
       onPointerDown={(e) => e.stopPropagation()}
     >
       <Row icon={<File />} title={t("file.title")}>
-        <Col icon={<FilePlus />} onClick={onNew}>
+        <Col icon={<FilePlus />} onClick={onNewDraft}>
           {t("file.items.new")}
         </Col>
         <Col icon={<FileText />} onClick={onOpen}>
