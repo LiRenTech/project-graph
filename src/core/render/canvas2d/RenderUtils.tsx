@@ -60,13 +60,15 @@ export namespace RenderUtils {
     color: Color,
     strokeColor: Color,
     strokeWidth: number,
+    radius: number = 0,
   ): void {
     Canvas.ctx.beginPath();
-    Canvas.ctx.rect(
+    Canvas.ctx.roundRect(
       centerLocation.x - width / 2,
       centerLocation.y - height / 2,
       width,
       height,
+      radius,
     );
     Canvas.ctx.fillStyle = color.toString();
     Canvas.ctx.fill();

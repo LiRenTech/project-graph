@@ -2,7 +2,7 @@ import { getTextSize } from "../../../utils/font";
 import { appScale } from "../../../utils/platform";
 import { Settings } from "../../Settings";
 import { Controller } from "../../controller/Controller";
-import { Color } from "../../dataStruct/Color";
+import { Color, mixColors } from "../../dataStruct/Color";
 import { Vector } from "../../dataStruct/Vector";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { sine } from "../../effect/animateFunctions";
@@ -438,6 +438,7 @@ export namespace Renderer {
    */
   function renderKeyboardOnly() {
     if (KeyboardOnlyEngine.isCreating()) {
+      const isHaveEntity = KeyboardOnlyEngine.isTargetLocationHaveEntity();
       for (const node of StageManager.getTextNodes()) {
         if (node.isSelected) {
           {
@@ -452,20 +453,26 @@ export namespace Renderer {
               startLocation,
               currentLocation,
               2,
-              rate < 1 ? Color.Yellow : Color.Green,
+              rate < 1 ? Color.Yellow : isHaveEntity ? Color.Blue : Color.Green,
             );
-            if (rate === 1) {
-              RenderUtils.renderCircle(
+            if (rate === 1 && !isHaveEntity) {
+              RenderUtils.renderRectFromCenter(
                 transformWorld2View(KeyboardOnlyEngine.virtualTargetLocation()),
-                25 * Camera.currentScale,
+                120 * Camera.currentScale,
+                60 * Camera.currentScale,
                 Color.Transparent,
-                StageStyleManager.currentStyle.StageObjectBorderColor,
-                1 * Camera.currentScale,
+                mixColors(
+                  StageStyleManager.currentStyle.StageObjectBorderColor,
+                  Color.Transparent,
+                  0.5,
+                ),
+                2 * Camera.currentScale,
+                NODE_ROUNDED_RADIUS * Camera.currentScale,
               );
             }
           }
           let hintText = "松开Tab键完成新节点创建,IKJL键移动生成位置";
-          if (KeyboardOnlyEngine.isTargetLocationHaveEntity()) {
+          if (isHaveEntity) {
             hintText = "连接！";
           }
           // 在生成点下方写文字提示
