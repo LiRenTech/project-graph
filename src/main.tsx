@@ -37,6 +37,7 @@ import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 import { Popup } from "./utils/popup";
 import { ColorPanel } from "./pages/_toolbar";
+import { KeyboardOnlyEngine } from "./core/stage/keyboardOnlyEngine/keyboardOnlyEngine";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -90,6 +91,7 @@ async function loadSyncModules() {
   SoundService.init();
   MouseLocation.init();
   StageManager.init();
+  KeyboardOnlyEngine.init();
 }
 
 /**

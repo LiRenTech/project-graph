@@ -11,7 +11,7 @@ import { ControllerEdgeEdit } from "./concrete/ControllerEdgeEdit";
 import { ControllerEntityCreate } from "./concrete/ControllerEntityCreate";
 import { ControllerLayerMoving } from "./concrete/ControllerEntityLayerMoving";
 import { ControllerImageScale } from "./concrete/ControllerImageScale";
-import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
+// import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
 import { ControllerNodeConnection } from "./concrete/ControllerNodeConnection";
 import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
 import { ControllerNodeMove } from "./concrete/ControllerNodeMove";
@@ -152,7 +152,7 @@ export namespace Controller {
     ControllerEdgeEdit.init();
     ControllerDrawing.init();
     ControllerDragFile.init();
-    ControllerKeyboardOnly.init();
+    // ControllerKeyboardOnly.init();
     ControllerCopy.init();
     ControllerSectionEdit.init();
     ControllerLayerMoving.init();
@@ -303,7 +303,7 @@ export namespace Controller {
     ControllerEdgeEdit.destroy();
     ControllerDrawing.destroy();
     ControllerDragFile.destroy();
-    ControllerKeyboardOnly.destroy();
+    // ControllerKeyboardOnly.destroy();
     ControllerCopy.destroy();
     ControllerSectionEdit.destroy();
     ControllerLayerMoving.destroy();

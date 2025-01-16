@@ -10,6 +10,11 @@ import { editTextNode } from "./utilsControl";
  * 纯键盘操作的控制器
  *
  * 这个功能的理想是：解决右手不停的在键盘和鼠标上来回切换的麻烦，只用键盘操作就能完成几乎所有操作。
+ *
+ * 按下Tab键：
+ * 松开Tab键：
+ *
+ * 按下IKJL键：移动虚拟位置
  */
 export const ControllerKeyboardOnly = new ControllerClass();
 

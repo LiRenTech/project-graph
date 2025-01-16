@@ -9,6 +9,7 @@ import { sine } from "../../effect/animateFunctions";
 import { Camera } from "../../stage/Camera";
 import { Canvas } from "../../stage/Canvas";
 import { Stage } from "../../stage/Stage";
+import { KeyboardOnlyEngine } from "../../stage/keyboardOnlyEngine/keyboardOnlyEngine";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { TextNode } from "../../stageObject/entity/TextNode";
@@ -436,6 +437,51 @@ export namespace Renderer {
    * 渲染和纯键盘操作相关的功能
    */
   function renderKeyboardOnly() {
+    if (KeyboardOnlyEngine.isCreating()) {
+      for (const node of StageManager.getTextNodes()) {
+        if (node.isSelected) {
+          {
+            const startLocation = node.rectangle.center;
+            const endLocation = KeyboardOnlyEngine.virtualTargetLocation();
+            let rate = KeyboardOnlyEngine.getPressTabTimeInterval() / 100;
+            rate = Math.min(1, rate);
+            const currentLocation = startLocation.add(
+              endLocation.subtract(startLocation).multiply(rate),
+            );
+            WorldRenderUtils.renderLaser(
+              startLocation,
+              currentLocation,
+              2,
+              rate < 1 ? Color.Yellow : Color.Green,
+            );
+            if (rate === 1) {
+              RenderUtils.renderCircle(
+                transformWorld2View(KeyboardOnlyEngine.virtualTargetLocation()),
+                25 * Camera.currentScale,
+                Color.Transparent,
+                StageStyleManager.currentStyle.StageObjectBorderColor,
+                1 * Camera.currentScale,
+              );
+            }
+          }
+          let hintText = "松开Tab键完成新节点创建,IKJL键移动生成位置";
+          if (KeyboardOnlyEngine.isTargetLocationHaveEntity()) {
+            hintText = "连接！";
+          }
+          // 在生成点下方写文字提示
+          RenderUtils.renderText(
+            hintText,
+            transformWorld2View(
+              KeyboardOnlyEngine.virtualTargetLocation().add(new Vector(0, 50)),
+            ),
+            15 * Camera.currentScale,
+            StageStyleManager.currentStyle.StageObjectBorderColor,
+          );
+        }
+      }
+    }
+
+    // 过时代码：
     if (Stage.isVirtualNewNodeShow) {
       for (const node of StageManager.getTextNodes()) {
         if (node.isSelected) {
