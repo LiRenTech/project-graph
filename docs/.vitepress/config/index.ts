@@ -175,10 +175,6 @@ export default defineConfig({
             ],
           },
           {
-            text: "贡献者",
-            link: "/zh/contributors",
-          },
-          {
             text: "开发指南",
             link: "/zh/contributing",
           },
