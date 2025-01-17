@@ -8,6 +8,7 @@ import { SelectChangeEngine } from "./selectChangeEngine";
 import { KeyboardOnlyDirectionController } from "./keyboardOnlyDirectionController";
 import { Stage } from "../Stage";
 import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
+import { NewTargetLocationSelector } from "./newTargetLocationSelector";
 
 /**
  * 纯键盘控制的相关引擎
@@ -85,8 +86,6 @@ export namespace KeyboardOnlyEngine {
     return _isCreating;
   }
 
-  let lastDiffLocation = new Vector(200, 0);
-
   export function createStart(): void {
     if (isCreating()) {
       // 已经在创建状态，不要重复创建
@@ -104,8 +103,10 @@ export namespace KeyboardOnlyEngine {
       targetLocationController.resetLocation(
         selectConnectableEntities[0].collisionBox
           .getRectangle()
-          .rightCenter.add(lastDiffLocation),
+          .center.add(NewTargetLocationSelector.diffLocation),
       );
+      // 最后更新虚拟目标位置
+      NewTargetLocationSelector.onTabDown(selectConnectableEntities[0]);
     }
   }
   let lastPressTabTime = 0;
@@ -132,6 +133,7 @@ export namespace KeyboardOnlyEngine {
       });
       return;
     }
+
     // 获取当前选择的所有节点
     const selectConnectableEntities =
       StageManager.getConnectableEntity().filter((node) => node.isSelected);
@@ -157,11 +159,10 @@ export namespace KeyboardOnlyEngine {
       }
     } else {
       // 更新diffLocation
-      lastDiffLocation = virtualTargetLocation()
-        .clone()
-        .subtract(
-          selectConnectableEntities[0].collisionBox.getRectangle().center,
-        );
+      NewTargetLocationSelector.onTabUp(
+        selectConnectableEntities[0],
+        virtualTargetLocation(),
+      );
       // 创建一个新的节点
       const newNodeUUID = await StageManager.addTextNodeByClick(
         virtualTargetLocation().clone(),
