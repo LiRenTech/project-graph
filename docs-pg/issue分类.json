@@ -1,0 +1,459 @@
+{
+  "version": 13,
+  "entities": [
+    {
+      "location": [1710.9622714040183, 1208.6028691174477],
+      "size": [493, 60],
+      "text": "✨ 希望增加更多节点类型及设置",
+      "uuid": "38ee526f-a301-4cba-a514-be2b960d3ef4",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1464.6279579314003, 827.9211710270064],
+      "size": [781, 60],
+      "text": "✨ 希望使用逻辑节点时可以在旁添加可使用函数列表",
+      "uuid": "d21ee3f6-08a8-410b-bb85-a6e15e87d7fe",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [242.54881808838638, 635.7627064431869],
+      "size": [868, 60],
+      "text": "✨希望连接线可以分组，并提供基于连接线分组的管理功能",
+      "uuid": "eacf86ec-916c-481e-a4a4-1fbc47af7896",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1325.729716662259, 399.99996773499],
+      "size": [237, 60],
+      "text": "✨ 多文件联动",
+      "uuid": "2915cbb3-f663-43ec-973e-0acee5af2192",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [372.97009298818773, 450.1920614596671],
+      "size": [653, 60],
+      "text": "✨ 如果引入间隔重复系统，可能会很有价值",
+      "uuid": "f07854d7-df7e-4539-9a48-a70ea4bb4ff5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1401.1384894588032, 1505.889870670336],
+      "size": [813, 60],
+      "text": "✨ 利用方向鍵進行自由導航或依有向邊進行有向圖導航",
+      "uuid": "730776b5-1210-46c7-a474-b456d2509faa",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1325.7297255167114, 635.7627064431869],
+      "size": [300, 60],
+      "text": "✨ 导出为mermaid",
+      "uuid": "afa300ad-5307-4a30-8463-b8e32dc6c4d6",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [626.7590511087868, 986.5730737746928],
+      "size": [301, 60],
+      "text": "✨ 支持分支与合并",
+      "uuid": "315e93a1-a46e-4f68-a4d8-6bb99d8b7c3e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2320.073053658728, 1753.008955837645],
+      "size": [301, 60],
+      "text": "✨ 支持触控板操作",
+      "uuid": "76d2595b-3850-4820-b083-44c875af440d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1801.627979106864, 928.4333390575897],
+      "size": [444, 60],
+      "text": "✨ 针对Linux系统的性能优化",
+      "uuid": "c9b3c62b-91c8-448e-bde9-038760e7181f",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [562.7590511087868, 1150.832271963118],
+      "size": [365, 60],
+      "text": "✨ 节点和连线支持换行",
+      "uuid": "5c71ba10-f0ef-4579-899d-a4143d3695c3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2092.0596016587297, 1124.3436709290224],
+      "size": [429, 60],
+      "text": "✨ 连线支持自定义颜色设置",
+      "uuid": "7b703c06-7966-4fcc-b2c1-522c9aae0cb9",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1777.5713403539924, 1753.008955837645],
+      "size": [525, 60],
+      "text": "✨ 使用数字键来进行节点间的移动",
+      "uuid": "36a464f4-9b00-4217-bc58-ac298ed35852",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1389.3614761572007, 1124.3436709290224],
+      "size": [688.3680419921875, 60],
+      "text": "Feature:希望文件路径能够作为节点的属性设置",
+      "uuid": "1528e680-f5a0-4b2e-9813-9c888537f054",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [460.5488180883864, 1314.7377004097793],
+      "size": [650, 60],
+      "text": "✨ 新增指令系统，以便在未来更好的训练AI",
+      "uuid": "6cfc677f-337c-4b70-80da-b94abd06ced3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [457.1070757670633, 1425.889870670336],
+      "size": [717, 60],
+      "text": "✨ 增加快速窗口内容隐藏，只显示顶部窗口功能",
+      "uuid": "71e3c81b-5821-4164-9ebb-a50a313ca1e5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1362.0385607658643, 928.4333388927979],
+      "size": [397, 60],
+      "text": "✨ 降低删除线误触发概率",
+      "uuid": "91f6c805-1efc-4d6b-b59c-a2100e2dd745",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1389.3614761572007, 1208.6028691174477],
+      "size": [269, 60],
+      "text": "✨ 网页链接节点",
+      "uuid": "15d4e4b5-8624-46b0-9dfe-2a9c7c04a363",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2320.073053658728, 1505.889870670336],
+      "size": [268, 60],
+      "text": "✨ UI面板的优化",
+      "uuid": "0388946d-ee3e-466e-a05d-37f3736cc361",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [5.22850789139784, 1235.9795155125669],
+      "size": [541, 60],
+      "text": "✨ 支持“组合”与“隐藏”以及大纲面板",
+      "uuid": "fc121b9a-f77c-4dd6-91e2-068027d3bfba",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [43.83218534752666, 1347.6518472135256],
+      "size": [269, 60],
+      "text": "✨ 图论高亮功能",
+      "uuid": "a7e9ee15-ba9e-4e3b-bfef-8ecac16712c9",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [660.970092988188, 746.0794246781851],
+      "size": [365, 60],
+      "text": "✨ 更好的节点颜色管理",
+      "uuid": "4b17ac0f-82f2-436d-b43f-b5eff824d570",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1401.1387979467318, 1853.008945256966],
+      "size": [333, 60],
+      "text": "✨ 完善自环的碰撞箱",
+      "uuid": "a66ce8ab-4468-4e2d-b5e2-07b6d27e88e6",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-100.16781465247334, 1505.889870670336],
+      "size": [685, 60],
+      "text": "✨ 支持拖入其他类型文件进入程序窗口的功能",
+      "uuid": "2ac21894-fcfe-4276-87b1-5452569c9f16",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-105.18004527258665, 1595.9433964968703],
+      "size": [493, 60],
+      "text": "✨ 支持右键斩断线对图片的切分",
+      "uuid": "e1c774ea-2d9f-46d8-ad83-4aa575d6eacd",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-108.18004527258665, 1679.3690509755313],
+      "size": [461, 60],
+      "text": "✨ 支持将多个图片拖入舞台中",
+      "uuid": "a6da3cd5-8bb0-4021-9688-f1771cd51310",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1401.1387979467318, 1753.008955837645],
+      "size": [365, 60],
+      "text": "✨ 简化鼠标中键的操作",
+      "uuid": "8271f7aa-622e-4e9f-9a52-0da7934c74a3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [562.7590511087868, 1679.3690509755313],
+      "size": [586, 60],
+      "text": "✨ 导入 Git 仓库，可视化观看项目进展",
+      "uuid": "33705eb3-b94d-4ddb-b42c-092761476e85",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1752.0118593850025, 1853.008945256966],
+      "size": [380, 60],
+      "text": "补充鼠标连接节点的操作",
+      "uuid": "0dea254b-4650-4f8b-b636-4601c9ef973c",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [0, 3500],
+      "size": [269, 60],
+      "text": "✨ 窗口状态记忆",
+      "uuid": "d0f66b6e-d40f-494b-9e87-01bca8f4b8c0",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [242.54881808838638, 237.44520976831564],
+      "size": [429, 60],
+      "text": "✨ 加入貼上任意檔案的能力",
+      "uuid": "334516dd-9234-4c78-9cd7-9ae89931bb19",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [206.63744520976843, 319.99996773499],
+      "size": [556.2559814453125, 60],
+      "text": "✨ 增加shift锁定移动推移节点的功能",
+      "uuid": "87603fee-84db-429c-a1ac-8b92e03321d3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1389.3614894440118, 1293.7501126668965],
+      "size": [1047.719970703125, 60],
+      "text": "✨ 增加一个节点的截止日期设置，变成一个高级的拓扑型的TODO LIST",
+      "uuid": "2c929664-7701-4428-b6f5-e971de8445a9",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1401.1384894588032, 1679.3690509755313],
+      "size": [1133, 60],
+      "text": "✨ 对于上方菜单栏中一些常用功能提供快捷键，以及设置中快捷键自定义绑定",
+      "uuid": "0e09b1e2-9fb1-4aa6-b54b-df21c8c58aab",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1401.1384894588032, 1595.9433964968703],
+      "size": [1171, 60],
+      "text": "✨ 选中一个后，按tab增加连接的下一级，按回车增加并列的一格（参考xmind）",
+      "uuid": "dfb21da2-9356-42cb-802f-df034253c60c",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2159.073053658728, 1853.008945256966],
+      "size": [429, 60],
+      "text": "✨ 快速创建节点的快捷提升",
+      "uuid": "bd1dc6cf-5fc3-4a0f-a819-a475ee2d57a7",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [562.7590511087868, 1235.9795155125669],
+      "size": [493, 60],
+      "text": "✨ 增加节点框文本自动换行功能",
+      "uuid": "f0694709-c70e-4011-95c8-d9475febf91b",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1325.7297372409862, 483.81964051555923],
+      "size": [467.5199890136719, 60],
+      "text": "✨ 文字节点内渲染 LaTeX 公式",
+      "uuid": "0bdb7934-533c-423a-913d-4a370a4b713b",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-41.18004527258665, 815.1869598277583],
+      "size": [394, 60],
+      "text": "✨ 实现双箭头线 \"<---->\"",
+      "uuid": "18cbd446-6c07-44e6-a76c-0730c56b9c8b",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-41.18004527258665, 915.1869598277583],
+      "size": [429, 60],
+      "text": "✨ 实现更多的导入导出格式",
+      "uuid": "5a422549-5004-4cd3-8789-80df06e1a117",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-34.55999755859375, 1015.1869598277583],
+      "size": [495.55999755859375, 60],
+      "text": "✨ 导出成PNG，SVG等图片格式",
+      "uuid": "7e6cc545-869d-4667-b9a9-6f3e7ad626b8",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1325.729734071708, 564.6645928018881],
+      "size": [397, 60],
+      "text": "✨ 希望添加多标签页功能",
+      "uuid": "47f33f33-7456-4db5-885e-c32aacc9fdb4",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1359.3614761572007, 1044.3436709290224],
+      "size": [1191.698125501529, 339.40644173787405],
+      "uuid": "c709d320-b795-4d95-9952-7372fca045ef",
+      "text": "添加新的节点/修改已有节点的字段",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "38ee526f-a301-4cba-a514-be2b960d3ef4",
+        "1528e680-f5a0-4b2e-9813-9c888537f054",
+        "15d4e4b5-8624-46b0-9dfe-2a9c7c04a363",
+        "2c929664-7701-4428-b6f5-e971de8445a9",
+        "7b703c06-7966-4fcc-b2c1-522c9aae0cb9"
+      ],
+      "details": ""
+    },
+    {
+      "location": [1371.1384894588032, 1425.889870670336],
+      "size": [1279.9345641999248, 517.11907458663],
+      "uuid": "0004d9be-81a1-4336-b0f7-1f67bc792db4",
+      "text": "操作相关",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "730776b5-1210-46c7-a474-b456d2509faa",
+        "0388946d-ee3e-466e-a05d-37f3736cc361",
+        "a66ce8ab-4468-4e2d-b5e2-07b6d27e88e6",
+        "8271f7aa-622e-4e9f-9a52-0da7934c74a3",
+        "0dea254b-4650-4f8b-b636-4601c9ef973c",
+        "0e09b1e2-9fb1-4aa6-b54b-df21c8c58aab",
+        "dfb21da2-9356-42cb-802f-df034253c60c",
+        "bd1dc6cf-5fc3-4a0f-a819-a475ee2d57a7",
+        "36a464f4-9b00-4217-bc58-ac298ed35852",
+        "76d2595b-3850-4820-b083-44c875af440d"
+      ],
+      "details": ""
+    },
+    {
+      "location": [1295.729716662259, 319.99996773499],
+      "size": [527.520009592399, 405.7627387081969],
+      "uuid": "fb4f9cfd-2e85-4b9f-a2a3-233ecc7845b2",
+      "text": "双链笔记",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "2915cbb3-f663-43ec-973e-0acee5af2192",
+        "afa300ad-5307-4a30-8463-b8e32dc6c4d6",
+        "0bdb7934-533c-423a-913d-4a370a4b713b",
+        "47f33f33-7456-4db5-885e-c32aacc9fdb4"
+      ],
+      "details": ""
+    },
+    {
+      "location": [1332.0385607658643, 747.9211710270064],
+      "size": [943.5894183409994, 270.5121680305833],
+      "uuid": "d5f4700d-a827-41bd-99c2-24594361324c",
+      "text": "用户体验",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "d21ee3f6-08a8-410b-bb85-a6e15e87d7fe",
+        "c9b3c62b-91c8-448e-bde9-038760e7181f",
+        "91f6c805-1efc-4d6b-b59c-a2100e2dd745"
+      ],
+      "details": ""
+    }
+  ],
+  "associations": [],
+  "tags": []
+}
