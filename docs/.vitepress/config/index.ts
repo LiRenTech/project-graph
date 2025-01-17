@@ -1,4 +1,6 @@
 import { defineConfig } from "vitepress";
+import { sidebarEn } from "./sidebar/en";
+import { sidebarZh } from "./sidebar/zh";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -71,20 +73,7 @@ export default defineConfig({
           { text: "Home", link: "/" },
           { text: "Download", link: "/installation" },
         ],
-        sidebar: [
-          {
-            text: "Installation",
-            link: "/installation",
-          },
-          {
-            text: "Contributing Guide",
-            link: "/contributing",
-          },
-          {
-            text: "Frequently Asked Questions",
-            link: "/faq",
-          },
-        ],
+        sidebar: sidebarEn,
       },
     },
     zh: {
@@ -98,99 +87,7 @@ export default defineConfig({
           { text: "下载", link: "/zh/installation" },
           { text: "捐赠", link: "/zh/donate" },
         ],
-        sidebar: [
-          {
-            text: "安装",
-            link: "/zh/installation",
-          },
-          {
-            text: "快速上手",
-            link: "/zh/getting-started",
-          },
-          {
-            text: "特性",
-            base: "/zh/features",
-            collapsed: false,
-            items: [
-              {
-                text: "👀 视野",
-                link: "/camera",
-              },
-              {
-                text: "📦 节点",
-                link: "/node",
-              },
-              {
-                text: "↗️ 边",
-                link: "/edge",
-              },
-              {
-                text: "📷 图片",
-                link: "/image",
-              },
-              {
-                text: "🌲 节点树",
-                link: "/tree",
-              },
-              {
-                text: "⛰️ 质点",
-                link: "/connect-point",
-              },
-              {
-                text: "□ 框",
-                link: "/section",
-              },
-              {
-                text: "📄 导出",
-                link: "/export",
-              },
-              {
-                text: "🔗 链接节点",
-                link: "/link-node",
-              },
-              {
-                text: "🌐 URL 节点",
-                link: "/url-node",
-              },
-              {
-                text: "⚡ 快速操作",
-                link: "/quick-action",
-              },
-              {
-                text: "🧩 文件拆分和合并",
-                link: "/split-merge",
-              },
-              {
-                text: "🧮 自动计算引擎",
-                link: "/compute-engine",
-              },
-              {
-                text: "🧠 AI",
-                link: "/ai",
-              },
-              {
-                text: "⌨️ CLI",
-                link: "/cli",
-              },
-            ],
-          },
-          {
-            text: "开发指南",
-            link: "/zh/contributing",
-          },
-          {
-            text: "常见问题",
-            link: "/zh/faq",
-          },
-          {
-            text: "用户协议",
-            link: "/zh/terms",
-          },
-          {
-            text: "隐私政策",
-            link: "/zh/privacy-policy",
-          },
-        ],
+        sidebar: sidebarZh,
         editLink: {
           text: "编辑页面",
           pattern:
