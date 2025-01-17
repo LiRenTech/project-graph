@@ -11,6 +11,7 @@ import { TextNode } from "../stageObject/entity/TextNode";
 import { Entity } from "../stageObject/StageObject";
 import { StageStyleManager } from "../stageStyle/StageStyleManager";
 import { StageManager } from "./stageManager/StageManager";
+import { colorInvert } from "../dataStruct/Color";
 
 /**
  * 将舞台当前内容导出为SVG
@@ -34,7 +35,9 @@ export namespace StageDumperSvg {
           node.text,
           node.rectangle.center,
           Renderer.FONT_SIZE,
-          StageStyleManager.currentStyle.StageObjectBorderColor,
+          node.color.a === 1
+            ? colorInvert(node.color)
+            : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
         )}
       </>
     );
