@@ -458,7 +458,7 @@ export default function AppMenu({
           {t("export.items.exportAsMarkdownBySelected")}
         </Col>
         <Col icon={<FileCode />} onClick={onExportTreeText}>
-          导出纯文本
+          {t("export.items.exportAsPlainText")}
         </Col>
       </Row>
       <Row icon={<View />} title={t("view.title")}>
@@ -499,7 +499,7 @@ export default function AppMenu({
         <Row icon={<AppWindow />} title={t("window.title")}>
           {import.meta.env.DEV && (
             <Col icon={<RefreshCcw />} onClick={() => window.location.reload()}>
-              重载
+              {t("window.items.refresh")}
             </Col>
           )}
           <Col

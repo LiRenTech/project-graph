@@ -16,6 +16,7 @@ export default function About() {
   const [versionNameEn, setVersionNameEn] = React.useState("");
   const [update, setUpdate] = React.useState<Update | null>(null);
   const [updating, setUpdating] = React.useState(false);
+  const { t, i18n } = useTranslation("about");
 
   React.useEffect(() => {
     getAppVersion().then((version) => {
@@ -44,7 +45,8 @@ export default function About() {
         <img src={icon} alt="icon" className="h-32 w-32" />
         <h1 className="text-3xl font-bold">Project Graph</h1>
         <p className="text-center text-sm text-neutral-500">
-          {versionName} {versionNameEn}
+          {i18n.language === "zh-CN" ? versionName + " " : ""}
+          {versionNameEn}
           <br />
           {version}
         </p>
@@ -58,25 +60,27 @@ export default function About() {
             }}
           >
             <Download />
-            {updating ? "正在下载..." : `新版本: ${update.version}`}
+            {updating
+              ? t("updater.downloading")
+              : `${t("updater.available")}: ${update.version}`}
           </Button>
         )}
         <div className="flex flex-wrap justify-center gap-2">
           <Button onClick={() => open("https://project-graph.top")}>
             <BookOpen />
-            文档
+            {t("links.documentation")}
           </Button>
           <Button
             onClick={() => open("https://github.com/LiRenTech/project-graph")}
           >
             <Github />
-            开源
+            {t("links.github")}
           </Button>
           <Button
             onClick={() => open("https://www.bilibili.com/video/BV1hmHKeDE9D")}
           >
             <Bilibili />
-            视频教程
+            {t("links.video")}
           </Button>
           <Button
             onClick={() =>
@@ -86,7 +90,7 @@ export default function About() {
             }
           >
             <QQ />
-            讨论群
+            {t("links.qq")}
           </Button>
           <Button
             onClick={() =>
@@ -94,7 +98,7 @@ export default function About() {
             }
           >
             <MessageCircleCode />
-            论坛
+            {t("links.forum")}
           </Button>
         </div>
       </div>

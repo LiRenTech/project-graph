@@ -7,6 +7,15 @@ welcome:
   qq: QQ 群
 
 about:
+  updater:
+    available: 新版本
+    downloading: 下载中
+  links:
+    documentation: 文档
+    github: Github
+    video: 视频教程
+    qq: QQ 群
+    forum: 论坛
   intro:
     - 软件介绍
     - 这是一个基于tauri框架的快速绘制节点图的工具，可以用于项目拓扑图绘制、快速头脑风暴草稿
@@ -57,6 +66,7 @@ about:
     - 团队以浅蓝色和代码绿为代表颜色，象征着逻辑合理与整活幽默并存的团队文化。
 
 settings:
+  title: 设置
   tabs:
     about: 关于
     visual: 显示
@@ -322,6 +332,7 @@ appMenu:
     items:
       exportAsSVGByAll: 导出为SVG（全部）
       exportAsMarkdownBySelected: 导出为Markdown（选中）
+      exportAsPlainText: 导出为纯文本
   view:
     title: 视图
     items:

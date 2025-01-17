@@ -8,6 +8,15 @@ welcome:
 
 about:
   title: Project Graph
+  updater:
+    available: New version
+    downloading: Downloading
+  links:
+    documentation: Documentation
+    github: Github
+    video: Video (Bilibili)
+    qq: QQ
+    forum: Forum (d2learn)
   intro:
     - Software Introduction
     - This is a tool for quickly drawing topological graphs based on the Tauri framework, which can be used for project topology diagram drawing and rapid brainstorming drafts.
@@ -49,7 +58,6 @@ about:
     - The animation effect of slashing in Fruit Ninja
     - The factory assembly line design in the game "Mindustry" is turned into logical nodes
     - The concept of state machines
-
   team:
     - Team Introduction
     - LiRen Tech is a small team founded by Littlefean and Rutubet on May 1, 2017, with ZTY joining the team later.
@@ -59,6 +67,7 @@ about:
     - The team is represented by light blue and code green, symbolizing a team culture that coexists with logical rationality and humor.
 
 settings:
+  title: Settings
   tabs:
     about: About
     visual: Visual
@@ -68,6 +77,8 @@ settings:
     control: Control
     ai: AI
     github: GitHub
+    sounds: Sounds
+    plugins: Plugins
   language:
     title: Language
     options:
@@ -80,9 +91,9 @@ settings:
       black: Dracula Dark Theme
       white: Paper White Theme
   isRenderCenterPointer:
-    title: 显示中心十字准星
+    title: Show Center Crosshair
     description: |
-      开启后，画布中心会显示一个十字准星，用于用于指示快捷键创建节点的位置
+      When enabled, a crosshair will be displayed at the center of the canvas to indicate the position for creating nodes using shortcut keys
   lineStyle:
     title: Line Style
     options:
@@ -102,11 +113,11 @@ settings:
     description: |
       These background dots are the intersection points of the horizontal and vertical lines, creating a perforated board effect.
   showBackgroundCartesian:
-    title: 显示背景直角坐标系
+    title: Show Background Cartesian Coordinate System
     description: |
-      开启后，将会显示x轴、y轴和刻度数字
-      可以用于观测一些节点的绝对坐标位置
-      也能很直观的知道当前的视野缩放倍数
+      When enabled, the x-axis, y-axis, and scale numbers will be displayed
+      This can be used to observe the absolute coordinates of some nodes
+      It also provides a clear indication of the current zoom level
   windowBackgroundAlpha:
     title: Window Background Transparency
   showDebug:
@@ -130,21 +141,21 @@ settings:
       This is only a visual replacement and will not affect the actual data.
       You can turn it off and restore it after providing feedback.
   limitCameraInCycleSpace:
-    title: 开启循环空间限制摄像机移动
+    title: Enable Camera Movement Limitation in Cycle Space
     description: |
-      开启后，摄像机只能在一个矩形区域内移动
-      可以防止摄像机移动到很远的地方迷路
-      该矩形区域会形成一个循环空间，类似于无边贪吃蛇游戏中的地图
-      走到最上面会回到最下面，走到最左边会回到最右边
-      注意：该功能还在实验阶段
+      When enabled, the camera can only move within a rectangular area
+      This prevents the camera from moving too far away and getting lost
+      The rectangular area will form a cycle space, similar to the map in the classic Snake game
+      Moving to the top will return the camera to the bottom, and moving to the left will return it to the right
+      Note: This feature is still in the experimental stage
   cameraCycleSpaceSizeX:
-    title: 循环空间宽度
+    title: Cycle Space Width
     description: |
-      循环空间的宽度，单位为像素
+      The width of the cycle space, in pixels
   cameraCycleSpaceSizeY:
-    title: 循环空间高度
+    title: Cycle Space Height
     description: |
-      循环空间的高度，单位为像素
+      The height of the cycle space, in pixels
   renderEffect:
     title: Rendering Effect
     description: Whether to render special effects. If the application is lagging, you can turn this off.
@@ -167,13 +178,13 @@ settings:
       Enter `{{time}}` to automatically replace with the current time. The time will be updated automatically when you double-click to create a new node.
       You can combine them, for example, `{{i}}-{{date}}-{{time}}`.
   autoNamerSectionTemplate:
-    title: 自动命名分组模板
+    title: Auto Naming Section Template
     description: |
-      输入`{{i}}` 代表节点名称会自动替换为编号，双击创建时可以自动累加数字。
-      例如`n{{i}}` 会自动替换为`n1`, `n2`, `n3`...
-      输入`{{date}}` 会自动替换为当前日期，双击创建时可以自动更新日期。
-      输入`{{time}}` 会自动替换为当前时间，双击创建时可以自动更新时间。
-      可以组合使用，例如`{{i}}-{{date}}-{{time}}`
+      Enter `{{i}}` to automatically replace the node name with a number, which increments automatically when nodes are created by double-click.
+      For example, `n{{i}}` will be automatically replaced with `n1`, `n2`, `n3`...
+      Enter `{{date}}` to automatically replace it with the current date, which updates automatically when nodes are created by double-click.
+      Enter `{{time}}` to automatically replace it with the current time, which updates automatically when nodes are created by double-click.
+      These can be combined, for example `{{i}}-{{date}}-{{time}}`
   autoSaveWhenClose:
     title: Automatically save the project file when clicking the close button in the upper right corner of the window
     description: |
@@ -216,21 +227,21 @@ settings:
       A value of 1 means the scaling will be completed immediately without any intermediate transition effect.
       A value of 0 means the scaling will never be completed, which can simulate a locked effect.
   scaleCameraByMouseLocation:
-    title: 视角缩放根据鼠标位置
+    title: Scale Camera by Mouse Location
     description: |
-      开启后，缩放视角的中心点是鼠标的位置
-      关闭后，缩放视角的中心点是当前视野的中心
+      When enabled, the center of the camera scaling will be the position of the mouse
+      When disabled, the center of the camera scaling will be the center of the current view
   allowMoveCameraByWSAD:
     title: Allow camera movement with W S A D keys
     description: |
       When enabled, you can use the W S A D keys to move the camera up, down, left, and right.
       When disabled, you can only use the mouse to move the camera, avoiding the endless scroll bug.
   cameraKeyboardMoveReverse:
-    title: 视角移动键盘反向
+    title: Reverse Camera Movement with Keyboard
     description: |
-      开启后，W S A D按键的移动视角方向会相反
-      原本的移动逻辑是移动悬浮在画面上的摄像机，但有人会认为是移动画布，这样就反了
-      于是就有了这个选项
+      When enabled, the direction of camera movement using the W S A D keys will be reversed
+      The original movement logic was to move the camera floating on the screen, but some users interpreted it as moving the canvas, which caused confusion
+      Therefore, this option was introduced
   allowAddCycleEdge:
     title: Allow adding self-loops between nodes
     description: |
@@ -261,10 +272,9 @@ settings:
       cut: Cut and Delete Object
       moveCamera: Move View
   enableDragAutoAlign:
-    title: 鼠标拖动自动对齐节点
+    title: Enable Drag Auto Align Nodes
     description: |
-      开启后，拖动节点并松开时会与其他节点在x轴、y轴方向对齐
-  # Sounds
+      When enabled, nodes will automatically align with other nodes along the x-axis and y-axis when dragged and released
   cuttingLineStartSoundFile:
     title: Cutting Line Start Sound File
     description: |
@@ -285,9 +295,9 @@ settings:
     description: |
       The moment of release is when the blade effect is visible.
   alignAndAttachSoundFile:
-    title: 对齐的声音文件
+    title: Align and Attach Sound File
     description: |
-      鼠标拖动时，对齐节点和时播放的声音文件路径
+      The file path of the sound played when nodes are aligned and attached during mouse dragging
 app:
   unsaved: "*"
 appMenu:
@@ -298,34 +308,35 @@ appMenu:
       open: Open
       save: Save
       saveAs: Save As
-      recent: Recent Files
-      backup: backup
+      recent: Recents
+      backup: Backup
   location:
-    title: Location
+    title: Dirs
     items:
-      openDataFolder: Open Data Folder
-      openProjectFolder: Open Project Folder
+      openDataFolder: Data Folder
+      openProjectFolder: Project Folder
   export:
     title: Export
     items:
-      exportAsSVGByAll: Export as SVG (All)
-      exportAsMarkdownBySelected: Export as Markdown (Selected)
+      exportAsSVGByAll: Export all as SVG
+      exportAsMarkdownBySelected: Export selected as Markdown
+      exportAsPlainText: Export all as Plain Text
   view:
     title: View
     items:
-      resetByAll: Reset View by All Content
-      resetBySelect: Reset View by Selected Content
-      resetScale: Reset the scale to the standard size
+      resetByAll: Reset View
+      resetBySelect: Reset View by selected
+      resetScale: Scale to 100%
   more:
     title: More
     items:
       settings: Settings
       about: About
-      welcome: Welcome Screen
+      welcome: Welcome Page
   window:
     title: Window
     items:
-      refresh: Refresh
+      refresh: Reload app
       fullscreen: Full Screen
 
 startFilePanel:
@@ -361,67 +372,66 @@ keyBinds:
       If no content is selected, reset the view based on all content;
       If content is selected, reset the view based on the selected content
   resetCameraScale:
-    title: 重置缩放
-    description: 将视野缩放重置为标准大小
+    title: Reset Zoom Level
+    description: Reset the view zoom level to the standard size
   folderSection:
-    title: 折叠或展开Section框
-    description: 按下后选中的Section框会切换折叠或展开状态
+    title: Toggle Section Folder
+    description: Press to toggle the selected Section folder between collapsed and expanded states
   reverseEdges:
-    title: 反转连线的方向
+    title: Reverse Selected Edge Direction
     description: |
-      按下后，选中的连线的方向会变成相反方向
-      例如，原先是 A -> B，按下后变成 B -> A
-      此功能的意义在于快速创建一个节点连向多个节点的情况
-      因为目前的连线只能一次性做到多连一。
+      Press to reverse the direction of the selected edge
+      For example, if the original direction was A -> B, pressing will change it to B -> A
+      This feature is useful for quickly creating a node that connects to multiple nodes
+      Since the current edge creation only supports one-to-many connections
   reverseSelectedNodeEdge:
-    title: 反转选中的节点的所有连线的方向
+    title: Reverse All Edges of Selected Nodes
     description: |
-      按下后，所有框选选中的节点中
-      每个节点的所有连线都会反转方向
-      进而实现更快捷的一连多
+      Press to reverse the direction of all edges connected to the selected nodes
+      Each node's edges will be reversed, enabling faster one-to-many connections
   packEntityToSection:
-    title: 将选中的实体打包到Section框中
+    title: Pack Selected Entities into Section
     description: |
-      按下后，选中的实体会自动包裹到新Section框中
+      Press to automatically wrap the selected entities into a new Section folder
   deleteSelectedStageObjects:
-    title: 删除选中的舞台物体
+    title: Delete Selected Stage Objects
     description: |
-      按下后，选中的舞台物体会被删除
-      舞台物体包括实体（节点和Section等独立存在的东西）和关系（节点之间的连线）
-      默认是delete键，您可以改成backspace键
+      Press to delete the selected stage objects
+      Stage objects include entities (nodes and Sections) and relationships (lines between nodes)
+      The default key is the delete key, but you can change it to the backspace key
   editEntityDetails:
-    title: 编辑选中的实体的详细信息
+    title: Edit Selected Entity Details
     description: |
-      按下后，选中的实体的详细信息会被打开编辑
-      只有选中的物体数量为1时才有效
+      Press to open the details of the selected entity for editing
+      This option is only valid when exactly one object is selected
   openColorPanel:
-    title: 打开颜色面板快捷键
+    title: Open Color Panel Shortcut
     description: |
-      按下后，打开颜色面板，可以用于快速切换节点颜色
+      Press to open the color panel, which can be used to quickly change node colors
   createTextNodeFromCameraLocation:
-    title: 创建文本节点
+    title: Create Text Node
     description: |
-      按下后，在当前视野中心的位置创建一个文本节点
-      等同于鼠标双击创建节点的功能
+      Press to create a text node at the center of the current view
+      This is equivalent to the functionality of double-clicking to create a node
   createTextNodeFromSelectedTop:
-    title: 在当前选中的节点正上方创建文本节点
+    title: Create Text Node Above Selected Node
     description: |
-      按下后，在当前选中的节点正上方创建一个文本节点
+      Press to create a text node directly above the selected node
   createTextNodeFromSelectedDown:
-    title: 在当前选中的节点正下方创建文本节点
+    title: Create Text Node Below Selected Node
     description: |
-      按下后，在当前选中的节点正下方创建一个文本节点
+      Press to create a text node directly below the selected node
   createTextNodeFromSelectedLeft:
-    title: 在当前选中的节点左侧创建文本节点
+    title: Create Text Node to the Left of Selected Node
     description: |
-      按下后，在当前选中的节点左侧创建一个文本节点
+      Press to create a text node to the left of the selected node
   createTextNodeFromSelectedRight:
-    title: 在当前选中的节点右侧创建文本节点
+    title: Create Text Node to the Right of Selected Node
     description: |
-      按下后，在当前选中的节点右侧创建一个文本节点
+      Press to create a text node to the right of the selected node
   CameraScaleZoomIn:
-    title: 放大视野
-    description: 按下后，视野放大
+    title: Zoom In on View
+    description: Press to zoom in on the view
   CameraScaleZoomOut:
-    title: 缩小视野
-    description: 按下后，视野缩小
+    title: Zoom Out on View
+    description: Press to zoom out on the view

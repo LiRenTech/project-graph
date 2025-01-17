@@ -5,6 +5,7 @@ import {
   Info,
   Keyboard,
   Plug,
+  Settings,
   Sparkles,
   Speaker,
 } from "lucide-react";
@@ -17,7 +18,10 @@ export default function SettingsLayout() {
 
   return (
     <div className="fixed bottom-20 left-20 right-20 top-24">
-      <h1 className="text-3xl font-bold">设置</h1>
+      <h1 className="flex items-center gap-2 text-3xl font-bold">
+        <Settings className="h-8 w-8" />
+        {t("title")}
+      </h1>
       <div className="mt-4 flex h-full gap-8">
         <div className="flex flex-col gap-2 *:flex *:cursor-pointer *:items-center *:gap-2 *:rounded-full *:px-3 *:py-2 *:transition hover:*:bg-neutral-800 active:*:scale-90 page:*:bg-white/10">
           <NavLink to="/settings/about">
