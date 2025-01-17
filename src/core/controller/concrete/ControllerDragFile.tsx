@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { writeFileBase64 } from "../../../utils/fs";
 import { PathString } from "../../../utils/pathString";
 import { Color } from "../../dataStruct/Color";
@@ -11,7 +12,6 @@ import { StageManager } from "../../stage/stageManager/StageManager";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
-import { v4 as uuidv4 } from "uuid";
 // import { listen } from "@tauri-apps/api/event";
 
 // listen("tauri://file-drop", (event) => {
@@ -69,7 +69,6 @@ ControllerDragFile.drop = (event: DragEvent) => {
     // const firstFile = files[0]; // 获取第一个拖入的文件
     let i = -1;
     for (const file of files) {
-      console.log("filt type:", file.type);
       i++;
       if (file.type.includes("json")) {
         dealJsonFileDrop(file, mouseWorldLocation);
@@ -84,7 +83,6 @@ ControllerDragFile.drop = (event: DragEvent) => {
           }
         });
       } else if (file.type.includes("image/png")) {
-        console.log("是图片");
         dealPngFileDrop(file, mouseWorldLocation);
       } else {
         if (file.name.endsWith(".md")) {
@@ -191,14 +189,11 @@ function dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
       return;
     }
 
-    console.log(fileContent);
     // 正常情况下，fileContent打印出来是 string类型的东西：
     // data:image/png;base64,iVBORw0KGgoAAAANS...
-    console.log(typeof fileContent);
-    // // 在这里处理读取到的内容
+    // 在这里处理读取到的内容
     const imageUUID = uuidv4();
     const folderPath = PathString.dirPath(Stage.Path.getFilePath());
-    console.log(folderPath); // D:\Desktop\xxx\xxx.json
     writeFileBase64(
       `${folderPath}${Stage.Path.getSep()}${imageUUID}.png`,
       fileContent.split(",")[1],

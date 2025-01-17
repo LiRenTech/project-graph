@@ -23,6 +23,7 @@ import { Renderer } from "./core/render/canvas2d/renderer";
 import { Settings } from "./core/Settings";
 import { SoundService } from "./core/SoundService";
 import { Camera } from "./core/stage/Camera";
+import { KeyboardOnlyEngine } from "./core/stage/keyboardOnlyEngine/keyboardOnlyEngine";
 import { Stage } from "./core/stage/Stage";
 import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManager";
 import { StageManager } from "./core/stage/stageManager/StageManager";
@@ -30,14 +31,13 @@ import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeColli
 import { StageStyleManager } from "./core/stageStyle/StageStyleManager";
 import { StartFilesManager } from "./core/StartFilesManager";
 import "./index.pcss";
+import { ColorPanel } from "./pages/_toolbar";
 import "./polyfills/roundRect";
 import { Dialog } from "./utils/dialog";
 import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 import { Popup } from "./utils/popup";
-import { ColorPanel } from "./pages/_toolbar";
-import { KeyboardOnlyEngine } from "./core/stage/keyboardOnlyEngine/keyboardOnlyEngine";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -47,7 +47,6 @@ const el = document.getElementById("root")!;
 // 在这里看着清爽一些，像一个列表清单一样。也方便调整顺序
 
 (async () => {
-  const t1 = performance.now();
   const matches = !isWeb ? await getMatches() : null;
   const isCliMode = isDesktop && matches?.args.output?.occurrences === 1;
   await Promise.all([
@@ -67,7 +66,6 @@ const el = document.getElementById("root")!;
     registerKeyBinds(),
   ]);
   await renderApp(isCliMode);
-  console.log(`应用初始化耗时：${performance.now() - t1}ms`);
   if (isCliMode) {
     try {
       await runCli(matches);
@@ -99,7 +97,6 @@ async function loadSyncModules() {
  */
 async function registerKeyBinds() {
   // 开始注册快捷键
-  console.log("注册快捷键");
   (
     await KeyBinds.create("test", "t", {
       control: true,

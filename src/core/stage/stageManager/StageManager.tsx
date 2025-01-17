@@ -262,7 +262,6 @@ export namespace StageManager {
    * 包含了对Edge双向线偏移状态的更新
    */
   export function updateReferences() {
-    console.log("updateReferences");
     for (const entity of getEntities()) {
       if (entity instanceof ConnectableEntity) {
         for (const edge of getLineEdges()) {

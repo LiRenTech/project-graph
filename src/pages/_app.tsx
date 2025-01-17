@@ -109,13 +109,13 @@ export default function App() {
             content: "您现在的新建草稿没有保存，是否要关闭项目？",
             buttons: [
               {
-                text: "直接关闭，这个草稿不值得保存",
+                text: "不保存",
                 onClick: async () => {
                   await getCurrentWindow().destroy();
                 },
               },
               {
-                text: "啊不不不，我要另存为",
+                text: "取消",
               },
             ],
           });

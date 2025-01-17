@@ -115,7 +115,6 @@ export namespace StageAutoAlignManager {
       }
     }
     if (isAlign && isPreAlign) {
-      console.log("显示预先对齐效果");
       // 预先对齐显示反馈
       const rectangle = selectedEntity.collisionBox.getRectangle();
       const moveTargetRectangle = rectangle.clone();

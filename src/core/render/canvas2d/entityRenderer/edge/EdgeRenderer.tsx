@@ -184,7 +184,6 @@ export namespace EdgeRenderer {
       edge.source.isHiddenBySectionCollapse &&
       edge.target.isHiddenBySectionCollapse
     ) {
-      console.log("隐藏了");
       return <></>;
     }
 

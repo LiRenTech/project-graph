@@ -514,53 +514,55 @@ export default function AppMenu({
           </Col>
         </Row>
       )}
-      <Row icon={<Dock />} title="测试">
-        <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
-          测试页面
-        </Col>
-        <Col icon={<TestTube2 />} onClick={() => navigate("/info")}>
-          Info界面
-        </Col>
-        <Col
-          icon={<TestTube2 />}
-          onClick={() =>
-            Dialog.show({
-              title: "舞台序列化",
-              type: "info",
-              code: JSON.stringify(StageDumper.dump(), null, 2),
-            })
-          }
-        >
-          查看json
-        </Col>
-        <Col icon={<TestTube2 />} onClick={() => {}}>
-          控制台输出
-        </Col>
-        <Col
-          icon={<TestTube2 />}
-          onClick={() => {
-            StageManager.destroy();
-          }}
-        >
-          废档了，清空
-        </Col>
-        <Col
-          icon={<TestTube2 />}
-          onClick={() => {
-            throw new Error("手动报错");
-          }}
-        >
-          手动报错
-        </Col>
-        <Col
-          icon={<TestTube2 />}
-          onClick={() => {
-            StageManager.switchLineEdgeToCrEdge();
-          }}
-        >
-          切换Cr曲线
-        </Col>
-      </Row>
+      {import.meta.env.DEV && (
+        <Row icon={<Dock />} title="测试">
+          <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
+            测试页面
+          </Col>
+          <Col icon={<TestTube2 />} onClick={() => navigate("/info")}>
+            Info界面
+          </Col>
+          <Col
+            icon={<TestTube2 />}
+            onClick={() =>
+              Dialog.show({
+                title: "舞台序列化",
+                type: "info",
+                code: JSON.stringify(StageDumper.dump(), null, 2),
+              })
+            }
+          >
+            查看json
+          </Col>
+          <Col icon={<TestTube2 />} onClick={() => {}}>
+            控制台输出
+          </Col>
+          <Col
+            icon={<TestTube2 />}
+            onClick={() => {
+              StageManager.destroy();
+            }}
+          >
+            废档了，清空
+          </Col>
+          <Col
+            icon={<TestTube2 />}
+            onClick={() => {
+              throw new Error("手动报错");
+            }}
+          >
+            手动报错
+          </Col>
+          <Col
+            icon={<TestTube2 />}
+            onClick={() => {
+              StageManager.switchLineEdgeToCrEdge();
+            }}
+          >
+            切换Cr曲线
+          </Col>
+        </Row>
+      )}
     </div>
   );
 }

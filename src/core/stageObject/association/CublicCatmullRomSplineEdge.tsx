@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../types/node";
 import { CublicCatmullRomSpline } from "../../dataStruct/shape/CublicCatmullRomSpline";
 import { Vector } from "../../dataStruct/Vector";
@@ -5,7 +6,6 @@ import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
 import { ConnectableEntity } from "../StageObject";
 import { Edge } from "./Edge";
-import { v4 as uuidv4 } from "uuid";
 
 /**
  * CR曲线连线
@@ -77,7 +77,6 @@ export class CublicCatmullRomSplineEdge extends Edge {
     this._collisionBox = new CollisionBox([
       new CublicCatmullRomSpline(this.controlPoints, this.alpha, this.tension),
     ]);
-    console.log("构造函数执行了");
   }
 
   public getShape(): CublicCatmullRomSpline {
@@ -88,7 +87,6 @@ export class CublicCatmullRomSplineEdge extends Edge {
   }
 
   autoUpdateControlPoints() {
-    console.log("自动更新控制点");
     // 只更新起始点和结束点
     const startLocation = this._source.collisionBox.getRectangle().center;
     const endLocation = this._target.collisionBox.getRectangle().center;
@@ -100,11 +98,5 @@ export class CublicCatmullRomSplineEdge extends Edge {
     ];
   }
 
-  private test() {
-    console.log(this.alpha, this.tension, this.controlPoints);
-  }
-
-  adjustSizeByText(): void {
-    this.test();
-  }
+  adjustSizeByText(): void {}
 }

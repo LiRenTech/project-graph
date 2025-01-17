@@ -76,7 +76,6 @@ export namespace SoundService {
 
   async function loadAndPlaySound(filePath: string) {
     if (filePath.trim() === "") {
-      console.log("filePath is empty");
       return;
     }
 

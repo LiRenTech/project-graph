@@ -116,9 +116,6 @@ export namespace KeyBinds {
     const obj = new _Bind(id, data.key, data.modifiers);
     // 监听快捷键变化
     await watch(id, (key, modifiers) => {
-      console.log(
-        `Keybind ${id} changed to ${key} with modifiers ${modifiers}`,
-      );
       obj.key = key;
       obj.modifiers = modifiers;
     });

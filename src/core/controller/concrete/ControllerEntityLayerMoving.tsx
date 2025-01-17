@@ -38,7 +38,6 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
   // 即将跳入的sections区域
   const targetSections =
     StageManager.SectionOptions.getSectionsByInnerLocation(mouseLocation);
-  console.log(targetSections);
   const selectedEntities = StageManager.getSelectedEntities();
   // 移动位置
 

@@ -168,7 +168,6 @@ export class ImageNode extends ConnectableEntity {
   }
 
   public scaleUpdate(scaleDiff: number) {
-    console.log("scaleUpdate");
     this.scaleNumber += scaleDiff;
     if (this.scaleNumber < 0.1) {
       this.scaleNumber = 0.1;

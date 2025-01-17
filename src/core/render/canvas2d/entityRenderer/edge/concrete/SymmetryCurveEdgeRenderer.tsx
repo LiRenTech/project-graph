@@ -217,12 +217,10 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       </>
     );
   }
-  public getCycleStageSvg(edge: LineEdge): React.ReactNode {
-    console.log(edge);
+  public getCycleStageSvg(): React.ReactNode {
     return <></>;
   }
-  public getShiftingStageSvg(edge: LineEdge): React.ReactNode {
-    console.log(edge);
+  public getShiftingStageSvg(): React.ReactNode {
     return <></>;
   }
   public renderVirtualEdge(

@@ -23,7 +23,6 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
   const clickedEntity =
     StageManager.findConnectableEntityByLocation(pressWorldLocation);
   if (clickedEntity !== null) {
-    console.log("clickedEntity", clickedEntity);
     Controller.isMovingEntity = true;
     if (clickedEntity && !clickedEntity.isSelected) {
       StageManager.getEntities().forEach((entity) => {

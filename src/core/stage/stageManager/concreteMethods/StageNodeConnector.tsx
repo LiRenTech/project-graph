@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
+import { CublicCatmullRomSplineEdge } from "../../../stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "../../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { ConnectableEntity } from "../../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 import { StageDeleteManager } from "./StageDeleteManager";
-import { CublicCatmullRomSplineEdge } from "../../../stageObject/association/CublicCatmullRomSplineEdge";
 
 /**
  * 集成所有连线相关的功能
@@ -66,12 +66,10 @@ export namespace StageNodeConnector {
     toNode: ConnectableEntity,
   ): void {
     if (!isConnectable(fromNode, toNode)) {
-      console.log("这两个点无法连接");
       return;
     }
     const newEdge = CublicCatmullRomSplineEdge.fromTwoEntity(fromNode, toNode);
     StageManager.addCrEdge(newEdge);
-    console.log(newEdge);
     StageManager.updateReferences();
   }
 

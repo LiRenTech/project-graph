@@ -20,7 +20,6 @@ export default function MarkdownEditor({
         setVd(vditor);
       },
       input: (value: string) => {
-        console.log(value, "input");
         onChange(value);
       },
       // preview: {

@@ -1,14 +1,14 @@
-import { Vector } from "../../dataStruct/Vector";
-import { Camera } from "../Camera";
-import { StageManager } from "../stageManager/StageManager";
-import { ConnectableEntity } from "../../stageObject/StageObject";
 import { Dialog } from "../../../utils/dialog";
 import { editTextNode } from "../../controller/concrete/utilsControl";
-import { SelectChangeEngine } from "./selectChangeEngine";
-import { KeyboardOnlyDirectionController } from "./keyboardOnlyDirectionController";
-import { Stage } from "../Stage";
+import { Vector } from "../../dataStruct/Vector";
 import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
+import { ConnectableEntity } from "../../stageObject/StageObject";
+import { Camera } from "../Camera";
+import { Stage } from "../Stage";
+import { StageManager } from "../stageManager/StageManager";
+import { KeyboardOnlyDirectionController } from "./keyboardOnlyDirectionController";
 import { NewTargetLocationSelector } from "./newTargetLocationSelector";
+import { SelectChangeEngine } from "./selectChangeEngine";
 
 /**
  * 纯键盘控制的相关引擎
@@ -37,7 +37,6 @@ export namespace KeyboardOnlyEngine {
    * 仅在最开始调用一次
    */
   function bindKeyEvents() {
-    console.log("bindKeyEvents");
     window.addEventListener("keydown", (event) => {
       if (event.key === "Tab") {
         if (isEnableVirtualCreate()) {

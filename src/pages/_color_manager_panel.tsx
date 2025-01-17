@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Color } from "../core/dataStruct/Color";
-import { ColorManager } from "../core/ColorManager";
 import Button from "../components/ui/Button";
+import { ColorManager } from "../core/ColorManager";
+import { Color } from "../core/dataStruct/Color";
 import { Dialog } from "../utils/dialog";
 
 /**
@@ -77,9 +77,7 @@ function ColorDotElement({ color }: { color: Color }) {
       <Button
         className="absolute -right-2 -top-2 h-2 w-2 rounded-full text-xs"
         onClick={() => {
-          ColorManager.removeUserEntityFillColor(color).then((res) => {
-            console.log(res);
-          });
+          ColorManager.removeUserEntityFillColor(color);
         }}
       >
         x

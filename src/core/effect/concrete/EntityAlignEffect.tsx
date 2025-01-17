@@ -79,11 +79,6 @@ export class EntityAlignEffect extends Effect {
         ),
       );
     }
-    // console.log(this.lines, this.lines.length);
-    // console.log(
-    //   moveEntityRectangle.toString(),
-    //   targetEntityRectangle.toString(),
-    // );
   }
 
   render(): void {

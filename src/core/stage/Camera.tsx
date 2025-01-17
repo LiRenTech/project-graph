@@ -258,7 +258,6 @@ export namespace Camera {
   }
 
   export function resetBySelected() {
-    console.log("resetBySelected");
     const selectedEntity: Entity[] = StageManager.getSelectedEntities();
     if (selectedEntity.length === 0) {
       reset();
@@ -281,7 +280,6 @@ export namespace Camera {
         Renderer.w / selectedRectangleSize.x,
       ),
     );
-    console.log("currentScale", Camera.currentScale);
     Camera.targetScale = Camera.currentScale;
   }
 

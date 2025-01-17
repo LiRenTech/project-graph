@@ -59,8 +59,7 @@ export namespace StageGeneratorAI {
       }
 
       return expandArrayList; // 返回扩展的字符串数组
-    } catch (error) {
-      console.log("AiFetcherOneShotCloudFlare error", error);
+    } catch {
       return ["error"];
     }
   }

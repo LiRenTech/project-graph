@@ -69,11 +69,8 @@ export namespace ColorManager {
    * @param color
    */
   export async function removeUserEntityFillColor(color: Color) {
-    console.log("删除颜色：", color);
     const colors = await getUserEntityFillColors();
-    console.log("查询到的颜色：", colors);
     const colorData = colorToColorData(colors);
-    console.log("查询到的颜色数据：", colorData);
 
     let index = -1;
     for (let i = 0; i < colorData.length; i++) {
@@ -88,7 +85,6 @@ export namespace ColorManager {
         break;
       }
     }
-    console.log("查询到的颜色索引：", index);
 
     if (index >= 0) {
       colors.splice(index, 1);

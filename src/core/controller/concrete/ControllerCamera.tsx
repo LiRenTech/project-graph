@@ -171,7 +171,6 @@ ControllerCamera.mousemove = (event: MouseEvent) => {
       return;
     }
     if (entity !== null) {
-      console.log("右键在实体上了");
       return;
     }
     moveCameraByMouseMove(event.clientX, event.clientY, 2);
