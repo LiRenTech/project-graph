@@ -30,7 +30,7 @@ We strive to ensure the stability and reliability of this Application but provid
 
 ## Privacy Policy
 
-We value user privacy. Our [Privacy Policy](./privacy-policy) explains how we collect, use, and protect your personal information. By using this Application, you agree to our Privacy Policy.
+We value user privacy. Our [Privacy Policy](./privacy) explains how we collect, use, and protect your personal information. By using this Application, you agree to our Privacy Policy.
 
 ## Modification of Agreement
 
