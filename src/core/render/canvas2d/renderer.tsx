@@ -837,6 +837,7 @@ export namespace Renderer {
       inputElement.style.top = `${location.y}px`;
       inputElement.style.left = `${location.x}px`;
       inputElement.id = "input-element";
+      inputElement.autocomplete = "off";
       Object.assign(inputElement.style, style);
       document.body.appendChild(inputElement);
       inputElement.focus();
