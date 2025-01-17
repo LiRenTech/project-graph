@@ -44,7 +44,7 @@ The interpretation, validity, and enforcement of this Agreement shall be governe
 
 If you have any questions about this Agreement, please contact us at:
 
-[liren@zty012.de](mailto:liren@zty012.de)
+[support@project-graph.top](mailto:support@project-graph.top)
 
 ## Other
 

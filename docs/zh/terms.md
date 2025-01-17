@@ -44,7 +44,7 @@
 
 如果您对本协议有任何疑问，请通过以下方式联系我们：
 
-[liren@zty012.de](mailto:liren@zty012.de)
+[support@project-graph.top](mailto:support@project-graph.top)
 
 ## 其他
 
