@@ -364,6 +364,12 @@ export default function AppMenu({
         onOpen();
       } else if (e.ctrlKey && e.key === "s") {
         onSave();
+      } else if (e.altKey && e.key === "F4") {
+        if (StageSaveManager.isSaved()) {
+          getCurrentWindow().close();
+        } else {
+          onSave().then(() => getCurrentWindow().close());
+        }
       }
     };
     document.addEventListener("keydown", keyDownFunction);
