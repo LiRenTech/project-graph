@@ -55,6 +55,41 @@ export abstract class Edge extends ConnectableAssociation {
     }
   }
 
+  /**
+   * 获取两个实体之间的直线
+   * 此直线两端在两个实体外接矩形的边缘，延长后可过两个实体外接矩形的中心
+   */
+  get bodyLine(): Line {
+    const edgeCenterLine = new Line(
+      this.source.collisionBox.getRectangle().center,
+      this.target.collisionBox.getRectangle().center,
+    );
+    const startPoint = this.source.collisionBox
+      .getRectangle()
+      .getLineIntersectionPoint(edgeCenterLine);
+    const endPoint = this.target.collisionBox
+      .getRectangle()
+      .getLineIntersectionPoint(edgeCenterLine);
+    return new Line(startPoint, endPoint);
+  }
+
+  static getCenterLine(
+    source: ConnectableEntity,
+    target: ConnectableEntity,
+  ): Line {
+    const edgeCenterLine = new Line(
+      source.collisionBox.getRectangle().center,
+      target.collisionBox.getRectangle().center,
+    );
+    const startPoint = source.collisionBox
+      .getRectangle()
+      .getLineIntersectionPoint(edgeCenterLine);
+    const endPoint = target.collisionBox
+      .getRectangle()
+      .getLineIntersectionPoint(edgeCenterLine);
+    return new Line(startPoint, endPoint);
+  }
+
   /** 线段上的文字相关 */
   /**
    * 调整线段上的文字的外框矩形

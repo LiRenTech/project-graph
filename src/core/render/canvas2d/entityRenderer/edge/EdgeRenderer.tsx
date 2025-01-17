@@ -2,6 +2,7 @@ import { Color } from "../../../../dataStruct/Color";
 
 import { Vector } from "../../../../dataStruct/Vector";
 import { Settings } from "../../../../Settings";
+import { Camera } from "../../../../stage/Camera";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { CublicCatmullRomSplineEdge } from "../../../../stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "../../../../stageObject/association/LineEdge";
@@ -103,11 +104,23 @@ export namespace EdgeRenderer {
     ) {
       return;
     }
+    const crShape = edge.getShape();
+    // 画曲线
     WorldRenderUtils.renderCublicCatmullRomSpline(
-      edge.getShape(),
+      crShape,
       StageStyleManager.currentStyle.StageObjectBorderColor,
       2,
     );
+    // 画控制点们
+    for (const point of crShape.controlPoints) {
+      RenderUtils.renderCircle(
+        Renderer.transformWorld2View(point),
+        5 * Camera.currentScale,
+        Color.Transparent,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+        2 * Camera.currentScale,
+      );
+    }
   }
 
   /**

@@ -1,7 +1,6 @@
 import { Serialized } from "../../../types/node";
 import { getTextSize } from "../../../utils/font";
 import { Vector } from "../../dataStruct/Vector";
-import { Line } from "../../dataStruct/shape/Line";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { CollisionBox } from "../collisionBox/collisionBox";
@@ -10,6 +9,7 @@ import { EdgeCollisionBoxGetter } from "./EdgeCollisionBoxGetter";
 import { Edge } from "./Edge";
 import { ConnectableEntity } from "../StageObject";
 import { v4 as uuidv4 } from "uuid";
+import { Line } from "../../dataStruct/shape/Line";
 
 export class LineEdge extends Edge {
   public uuid: string;
@@ -70,8 +70,8 @@ export class LineEdge extends Edge {
   }
 
   /**
-   * 获取身体的碰撞箱
-   * 这个碰撞箱是贯穿两个节点的线段
+   * 获取两个实体之间的直线
+   * 此直线两端在两个实体外接矩形的边缘，延长后可过两个实体外接矩形的中心
    */
   get bodyLine(): Line {
     const edgeCenterLine = new Line(

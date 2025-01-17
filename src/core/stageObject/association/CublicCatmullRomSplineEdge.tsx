@@ -34,6 +34,7 @@ export class CublicCatmullRomSplineEdge extends Edge {
     // 处理控制点，控制点必须有四个，1 2 3 4，12可重叠，34可重叠
     const startLocation = source.geometryCenter.clone();
     const endLocation = target.geometryCenter.clone();
+    const line = Edge.getCenterLine(source, target);
 
     const result = new CublicCatmullRomSplineEdge({
       source: source.uuid,
@@ -45,8 +46,8 @@ export class CublicCatmullRomSplineEdge extends Edge {
       tension: 0,
       controlPoints: [
         [startLocation.x, startLocation.y],
-        [startLocation.x - 1, startLocation.y + 2],
-        [endLocation.x + 2, endLocation.y - 1],
+        [line.start.x, line.start.y],
+        [line.end.x, line.end.y],
         [endLocation.x, endLocation.y],
       ],
     });
@@ -72,13 +73,31 @@ export class CublicCatmullRomSplineEdge extends Edge {
     this.controlPoints = controlPoints.map(
       (item) => new Vector(item[0], item[1]),
     );
+
     this._collisionBox = new CollisionBox([
       new CublicCatmullRomSpline(this.controlPoints, this.alpha, this.tension),
     ]);
+    console.log("构造函数执行了");
   }
 
   public getShape(): CublicCatmullRomSpline {
-    return this._collisionBox.shapeList[0] as CublicCatmullRomSpline;
+    // 重新计算形状
+    const crShape = this._collisionBox.shapeList[0] as CublicCatmullRomSpline;
+    this.autoUpdateControlPoints(); // ?
+    return crShape;
+  }
+
+  autoUpdateControlPoints() {
+    console.log("自动更新控制点");
+    // 只更新起始点和结束点
+    const startLocation = this._source.collisionBox.getRectangle().center;
+    const endLocation = this._target.collisionBox.getRectangle().center;
+    const line = Edge.getCenterLine(this._source, this._target);
+    this.controlPoints = [startLocation, line.start, line.end, endLocation];
+    // 重新生成新的形状
+    this._collisionBox.shapeList = [
+      new CublicCatmullRomSpline(this.controlPoints, this.alpha, this.tension),
+    ];
   }
 
   private test() {

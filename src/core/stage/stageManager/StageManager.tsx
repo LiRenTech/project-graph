@@ -293,7 +293,7 @@ export namespace StageManager {
         entity.adjustChildrenStateByCollapse();
       }
     }
-    // 以下是Edge双向线偏移状态的更新
+    // 以下是LineEdge双向线偏移状态的更新
     for (const edge of getLineEdges()) {
       let isShifting = false;
       for (const otherEdge of getLineEdges()) {

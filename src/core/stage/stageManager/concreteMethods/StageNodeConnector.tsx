@@ -66,10 +66,12 @@ export namespace StageNodeConnector {
     toNode: ConnectableEntity,
   ): void {
     if (!isConnectable(fromNode, toNode)) {
+      console.log("这两个点无法连接");
       return;
     }
     const newEdge = CublicCatmullRomSplineEdge.fromTwoEntity(fromNode, toNode);
     StageManager.addCrEdge(newEdge);
+    console.log(newEdge);
     StageManager.updateReferences();
   }
 
