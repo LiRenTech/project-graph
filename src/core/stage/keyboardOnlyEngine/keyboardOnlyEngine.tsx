@@ -6,6 +6,8 @@ import { Dialog } from "../../../utils/dialog";
 import { editTextNode } from "../../controller/concrete/utilsControl";
 import { SelectChangeEngine } from "./selectChangeEngine";
 import { KeyboardOnlyDirectionController } from "./keyboardOnlyDirectionController";
+import { Stage } from "../Stage";
+import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 
 /**
  * 纯键盘控制的相关引擎
@@ -140,6 +142,9 @@ export namespace KeyboardOnlyEngine {
         // 连接到之前的节点
         for (const selectedEntity of selectConnectableEntities) {
           StageManager.connectEntity(selectedEntity, entity);
+          Stage.effects.push(
+            ...EdgeRenderer.getConnectedEffects(selectedEntity, entity),
+          );
         }
         // 选择到新创建的节点
         entity.isSelected = true;
@@ -167,6 +172,9 @@ export namespace KeyboardOnlyEngine {
       // 连接到之前的节点
       for (const entity of selectConnectableEntities) {
         StageManager.connectEntity(entity, newNode);
+        Stage.effects.push(
+          ...EdgeRenderer.getConnectedEffects(entity, newNode),
+        );
       }
       // 选择到新创建的节点
       newNode.isSelected = true;
