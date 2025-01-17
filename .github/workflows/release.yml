@@ -192,7 +192,7 @@ jobs:
           mv app-universal-release.apk Project.Graph_${{ github.event.inputs.version }}_universal-signed.apk
 
       - name: upload
-        run: gh release upload nightly src-tauri/gen/android/app/build/outputs/apk/universal/release/Project.Graph_${{ github.event.inputs.version }}_universal-signed.apk --clobber
+        run: gh release upload v${{ github.event.inputs.version }} src-tauri/gen/android/app/build/outputs/apk/universal/release/Project.Graph_${{ github.event.inputs.version }}_universal-signed.apk --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
