@@ -103,20 +103,20 @@ export namespace RenderUtils {
    * 从左上角画文本
    * @param text
    * @param location
-   * @param size
+   * @param fontSize
    * @param color
    */
   export function renderText(
     text: string,
     location: Vector,
-    size: number,
+    fontSize: number,
     color: Color = Color.White,
   ): void {
     Canvas.ctx.textBaseline = "middle"; //alphabetic, top, hanging, middle, ideographic, bottom
     Canvas.ctx.textAlign = "left";
-    Canvas.ctx.font = `${size}px MiSans`;
+    Canvas.ctx.font = `${fontSize}px MiSans`;
     Canvas.ctx.fillStyle = color.toString();
-    Canvas.ctx.fillText(text, location.x, location.y + size / 2);
+    Canvas.ctx.fillText(text, location.x, location.y + fontSize / 2);
   }
 
   export function renderTextFromCenter(
@@ -153,14 +153,14 @@ export namespace RenderUtils {
    * 渲染多行文本
    * @param text
    * @param location
-   * @param size
+   * @param fontSize
    * @param color
    * @param lineHeight
    */
   export function renderMultiLineText(
     text: string,
     location: Vector,
-    size: number,
+    fontSize: number,
     limitWidth: number,
     color: Color = Color.White,
     lineHeight: number = 1.2,
@@ -168,18 +168,24 @@ export namespace RenderUtils {
     // 一个一个字符遍历，然后一次渲染一行
     let currentLine = "";
     let currentY = 0; // 顶部偏移量
-    // 先空渲染一下
-    renderText(currentLine, location.add(new Vector(0, currentY)), size, color);
+    // 先渲染一下空字符串，否则长度大小可能不匹配，造成蜜汁bug
+    renderText(
+      currentLine,
+      location.add(new Vector(0, currentY)),
+      fontSize,
+      color,
+    );
 
     for (const char of text) {
       // 新来字符的宽度
       const measureSize = Canvas.ctx.measureText(currentLine + char);
       // 先判断是否溢出
       if (measureSize.width > limitWidth || char === "\n") {
+        // 溢出了，将这一整行渲染出来
         renderText(
           currentLine,
           location.add(new Vector(0, currentY)),
-          size,
+          fontSize,
           color,
         );
         if (char !== "\n") {
@@ -187,19 +193,18 @@ export namespace RenderUtils {
         } else {
           currentLine = "";
         }
-        currentY += size * lineHeight;
+        currentY += fontSize * lineHeight;
       } else {
         // 未溢出，继续添加字符
         // 当前行更新
         currentLine += char;
       }
     }
-    // 最后一行
     if (currentLine) {
       renderText(
         currentLine,
         location.add(new Vector(0, currentY)),
-        size,
+        fontSize,
         color,
       );
     }

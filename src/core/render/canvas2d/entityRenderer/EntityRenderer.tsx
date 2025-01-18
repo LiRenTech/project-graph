@@ -126,6 +126,10 @@ export namespace EntityRenderer {
     renderEntityDetails(node);
   }
 
+  /**
+   * 渲染实体下方的注释（详细信息）
+   * @param entity
+   */
   export function renderEntityDetails(entity: Entity) {
     if (entity.details && !entity.isEditingDetails) {
       if (Renderer.isAlwaysShowDetails) {
