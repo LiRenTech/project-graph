@@ -4,6 +4,7 @@ import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
 import { CubicBezierCurve, SymmetryCurve } from "../../dataStruct/shape/Curve";
 import { Camera } from "../../stage/Camera";
+import { LruCache } from "../../dataStruct/Cache";
 
 /**
  * 一些基础的渲染图形
@@ -166,11 +167,33 @@ export namespace RenderUtils {
     lineHeight: number = 1.2,
   ): void {
     let currentY = 0; // 顶部偏移量
-    const textLineArray = textToTextArray(text, fontSize, limitWidth);
+    const textLineArray = textToTextArrayWrapCache(text, fontSize, limitWidth);
     for (const line of textLineArray) {
       renderText(line, location.add(new Vector(0, currentY)), fontSize, color);
       currentY += fontSize * lineHeight;
     }
+  }
+
+  const textArrayCache: LruCache<string, string[]> = new LruCache(100);
+  /**
+   * 加了缓存后的多行文本渲染函数
+   * @param text
+   * @param fontSize
+   * @param limitWidth
+   */
+  function textToTextArrayWrapCache(
+    text: string,
+    fontSize: number,
+    limitWidth: number,
+  ): string[] {
+    const cacheKey = `${fontSize}_${limitWidth}_${text}`;
+    const cacheValue = textArrayCache.get(cacheKey);
+    if (cacheValue) {
+      return cacheValue;
+    }
+    const lines = textToTextArray(text, fontSize, limitWidth);
+    textArrayCache.set(cacheKey, lines);
+    return lines;
   }
 
   /**
