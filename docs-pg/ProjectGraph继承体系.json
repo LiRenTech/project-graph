@@ -1,6 +1,6 @@
 {
-  "version": 11,
-  "nodes": [
+  "version": 13,
+  "entities": [
     {
       "location": [-633.6925490033898, 1761.7426582045198],
       "size": [104.41596984863281, 60],
@@ -299,7 +299,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-2654.6206104962534, -708.0374416092338],
+      "location": [-2607.539154115926, -802.6557101258333],
       "size": [92, 60],
       "text": "接口",
       "uuid": "ca957d6b-5cde-4843-aaa5-f7307f95b8a6",
@@ -308,7 +308,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-2655.22775012036, -626.5899698378751],
+      "location": [-2607.53745709067, -724.9029976961134],
       "size": [124, 60],
       "text": "抽象类",
       "uuid": "fd258d11-f421-45c2-af6a-93c88c5b7165",
@@ -317,7 +317,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-2652.760159233819, -540.2238094691946],
+      "location": [-2607.5402434913412, -647.1000314877656],
       "size": [60, 60],
       "text": "类",
       "uuid": "85bda354-02a7-4a3f-902b-5f32c529098a",
@@ -380,7 +380,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-2680.3199164228727, -463.0949832889979],
+      "location": [-2607.539115157406, -569.3237395903324],
       "size": [271.8079376220703, 60],
       "text": "NameSpace单例",
       "uuid": "67571306-d9a4-4cdb-b69b-fe52067e3b57",
@@ -443,7 +443,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-2678.6473107156407, -396.93286242539597],
+      "location": [-2607.540891398488, -491.5186186274827],
       "size": [92, 60],
       "text": "对象",
       "uuid": "3c82b102-9c7a-4cf7-a0e7-a22b874b9818",
@@ -774,547 +774,565 @@
       "details": "对着这个东西使用Ctrl+滚轮\n",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
+    },
+    {
+      "location": [-2637.540891398488, -882.6557101258333],
+      "size": [331.8097138631524, 481.13709149835057],
+      "uuid": "b605fe5f-6909-4ff9-964d-81352a6b4b32",
+      "text": "颜色表示",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "ca957d6b-5cde-4843-aaa5-f7307f95b8a6",
+        "fd258d11-f421-45c2-af6a-93c88c5b7165",
+        "85bda354-02a7-4a3f-902b-5f32c529098a",
+        "67571306-d9a4-4cdb-b69b-fe52067e3b57",
+        "3c82b102-9c7a-4cf7-a0e7-a22b874b9818"
+      ],
+      "details": ""
     }
   ],
-  "edges": [
+  "associations": [
     {
       "source": "cde9d4e5-fda2-4578-b711-46cc88a8e279",
       "target": "fa49c7c9-ce2a-4b6c-806d-b32681f98e6d",
       "text": "",
       "uuid": "7ec03573-2c6b-456e-8116-0b36c4d15fd0",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "b2974a32-d46b-40a7-97f3-e6021001e8f7",
       "target": "b588b252-1a12-404a-9045-806d299ba0e0",
       "text": "",
       "uuid": "9e78f13a-654c-4377-9a74-0de9791eaea0",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "0cd2a022-265b-488d-8fea-498bd8551212",
       "target": "b588b252-1a12-404a-9045-806d299ba0e0",
       "text": "",
       "uuid": "365b6b42-e267-4a84-8556-6dae398218e5",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "13a10114-0490-44e5-bffd-7891e3565e7b",
       "target": "b588b252-1a12-404a-9045-806d299ba0e0",
       "text": "",
       "uuid": "1c59b25c-2548-4e0c-bedb-0406fe5fd154",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "4cf355e0-074c-4670-98cc-40f2c5796af8",
       "target": "b588b252-1a12-404a-9045-806d299ba0e0",
       "text": "",
       "uuid": "603a05bb-fcb5-4c9f-8c8f-7ee9c491937a",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "4012bfde-8e13-489f-b5bc-db32b1dec0c8",
       "target": "b588b252-1a12-404a-9045-806d299ba0e0",
       "text": "",
       "uuid": "90f638e5-4015-4374-ac6e-50e03b317111",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "d724bf18-5737-4e97-ad46-414a28702fa8",
       "target": "b588b252-1a12-404a-9045-806d299ba0e0",
       "text": "",
       "uuid": "e9c49e0c-8fa6-4e06-8212-e5b2713729ee",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "3e215928-c1d9-4e0c-8b4d-937d93918e24",
       "target": "b588b252-1a12-404a-9045-806d299ba0e0",
       "text": "",
       "uuid": "e5971533-33c0-48e7-bd7c-27c240a680ee",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "3e215928-c1d9-4e0c-8b4d-937d93918e24",
       "target": "cc7c9d29-ca48-42e8-a802-96e5c7195588",
       "text": "",
       "uuid": "02dc9c6d-3b42-448a-a9a7-2cfd52487f2c",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "6073bc30-0c2f-45c6-af8c-4f371fffa573",
       "target": "fa49c7c9-ce2a-4b6c-806d-b32681f98e6d",
       "text": "",
       "uuid": "6bc9b5ab-a851-4f75-8d9f-220bfc83de40",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "b588b252-1a12-404a-9045-806d299ba0e0",
       "target": "6073bc30-0c2f-45c6-af8c-4f371fffa573",
       "text": "",
       "uuid": "fe5e2e3b-62be-4bc8-856a-45d2d19f7be5",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "67b12ccd-ab07-47af-9f3d-5ab201fb7ec6",
       "target": "6073bc30-0c2f-45c6-af8c-4f371fffa573",
       "text": "",
       "uuid": "a2255b94-aad0-4423-b715-cc5ad89ea647",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "d0e281eb-f3dd-4392-a953-a92abbf140be",
       "target": "6073bc30-0c2f-45c6-af8c-4f371fffa573",
       "text": "",
       "uuid": "76d61fea-150f-4c53-9a1a-313d4ad59e3c",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "e6c6836d-a05e-489a-9c1b-36e95fd291fc",
       "target": "c31a38b0-8906-47c6-9710-c4d401dc187a",
       "text": "",
       "uuid": "beee721d-a879-46e7-b11c-c17133ddb84c",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "c31a38b0-8906-47c6-9710-c4d401dc187a",
       "target": "cc7a7572-5272-4411-80e9-6fd3553154cd",
       "text": "",
       "uuid": "0c25982c-584c-4246-a251-1697e86b1c48",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "c31a38b0-8906-47c6-9710-c4d401dc187a",
       "target": "df300c7c-5a80-422b-8e80-80ff67008e45",
       "text": "",
       "uuid": "3e604134-c083-43d8-a27d-c7fee78b9e55",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "c31a38b0-8906-47c6-9710-c4d401dc187a",
       "target": "a458fb52-45c8-42f4-98e6-5b14e5ec1bec",
       "text": "",
       "uuid": "a5b1b775-2f48-417d-a717-734c7dbf1bf5",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "ec983004-0785-47b3-9f2c-4cba9322144d",
       "target": "fa49c7c9-ce2a-4b6c-806d-b32681f98e6d",
       "text": "",
       "uuid": "9f0f95f9-40b5-4f7a-ad0c-d9e762baa166",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "bbacd288-c843-4ab2-b178-50afc52042f0",
       "target": "ec983004-0785-47b3-9f2c-4cba9322144d",
       "text": "",
       "uuid": "3883310c-695b-4c72-9eb8-579a1e3afcf0",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "08f41018-f75a-40c3-9924-056810a51fcd",
       "target": "ec983004-0785-47b3-9f2c-4cba9322144d",
       "text": "",
       "uuid": "71c2c0b2-e4eb-4677-a8a2-21a4507fc108",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "9f5a7b32-a04a-4749-9d2d-e2479791f7ad",
       "target": "d227089d-386b-40e3-8556-5cbc0c9ec49f",
       "text": "",
       "uuid": "320a46be-b070-4c71-a3c2-f637748d7c6c",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "3e55226c-22f9-4462-8f36-5e76fd22cd50",
       "target": "ec983004-0785-47b3-9f2c-4cba9322144d",
       "text": "",
       "uuid": "945076bf-4cf6-4fdf-a737-5c54b5fc01e8",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "7fa8aad7-828c-4c99-a3f7-51089ae49952",
       "target": "ec983004-0785-47b3-9f2c-4cba9322144d",
       "text": "",
       "uuid": "49267d7c-40b6-4daf-989b-5d2c28668544",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "b96b41c5-d5b9-4c37-a16b-519218e63ef6",
       "target": "3e55226c-22f9-4462-8f36-5e76fd22cd50",
       "text": "",
       "uuid": "800c1c93-8ffa-4365-aa23-58923a0f38fc",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "a91311cd-4090-40aa-af07-98e6e06d64a7",
       "target": "3e55226c-22f9-4462-8f36-5e76fd22cd50",
       "text": "",
       "uuid": "ad16e5d9-1057-44a7-b12d-3f99019f34b0",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "2ec6115f-af92-4074-9b10-79a4f2d0486d",
       "target": "6073bc30-0c2f-45c6-af8c-4f371fffa573",
       "text": "",
       "uuid": "592301c0-0ab1-4a77-94d2-1cb79daa7271",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "ba96dfe7-b9ea-448c-b719-a458f6664792",
       "target": "6073bc30-0c2f-45c6-af8c-4f371fffa573",
       "text": "",
       "uuid": "8118f334-16ca-4189-a8b2-0cf19984afb1",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "9f471776-6d77-4460-80a8-86dae3344514",
       "target": "6073bc30-0c2f-45c6-af8c-4f371fffa573",
       "text": "",
       "uuid": "f1853b92-dcbe-4588-b1c4-269753a78e85",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "9a0d5c8b-3f7e-4bbc-a8fe-03dc20ddfce3",
       "target": "ec983004-0785-47b3-9f2c-4cba9322144d",
       "text": "",
       "uuid": "cdc1f1cc-f938-409d-a5cc-ef01bfd6c93e",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "934adc68-e7d8-4523-9360-8e7fa61f1dfd",
       "target": "9f471776-6d77-4460-80a8-86dae3344514",
       "text": "",
       "uuid": "45a1cc41-859a-4a33-9e65-a8096d7a5ce2",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "6a2cfa0e-4776-4c10-9e15-6da621edb0b2",
       "target": "9f471776-6d77-4460-80a8-86dae3344514",
       "text": "",
       "uuid": "1a7b4e94-fd38-4aa5-8eb2-0eb4d4d9f4a3",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "e6c6836d-a05e-489a-9c1b-36e95fd291fc",
       "target": "fa49c7c9-ce2a-4b6c-806d-b32681f98e6d",
       "text": "",
       "uuid": "b39e7bf5-4f23-4c1f-ab9b-d625abaea142",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "c31a38b0-8906-47c6-9710-c4d401dc187a",
       "target": "3db06015-6775-42a4-ae7a-5a0d7b6a3d65",
       "text": "",
       "uuid": "989fd7bd-2fc0-4ed9-a34c-c73b16fda450",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "d227089d-386b-40e3-8556-5cbc0c9ec49f",
       "target": "ec983004-0785-47b3-9f2c-4cba9322144d",
       "text": "",
       "uuid": "ab52450b-8776-42af-a06d-75d9f396c57d",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "350dd1e1-c8b3-40a3-b9c0-6d7862850250",
       "target": "d227089d-386b-40e3-8556-5cbc0c9ec49f",
       "text": "",
       "uuid": "f255a289-6cb5-432a-ae15-b39bd430b0f8",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "ab4ff8a3-2e03-4b13-ab55-00f2ed13df48",
       "target": "9a0d5c8b-3f7e-4bbc-a8fe-03dc20ddfce3",
       "text": "",
       "uuid": "61ab1a95-f3d1-44ec-9d0d-a92480364ec4",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "77ca4c7a-d984-40ed-8bba-facb4dc12e3d",
       "target": "9a0d5c8b-3f7e-4bbc-a8fe-03dc20ddfce3",
       "text": "",
       "uuid": "4213f646-f294-4173-8841-5e8de1d8db9c",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "c5c7db9d-9bb1-4631-9fbb-311d5a175cb5",
       "target": "d0e281eb-f3dd-4392-a953-a92abbf140be",
       "text": "",
       "uuid": "78c8482e-5e07-4905-bf96-e80659c94ddd",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "61061fa1-a049-4b9a-9e1d-c2b6cf138e88",
       "target": "d0e281eb-f3dd-4392-a953-a92abbf140be",
       "text": "",
       "uuid": "b3518bed-5290-4d24-976e-9f342c5c4887",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "356f9da5-2a56-4669-a682-81e5ca9b89d9",
       "target": "ec983004-0785-47b3-9f2c-4cba9322144d",
       "text": "",
       "uuid": "961e6cc7-4bcc-4c1b-a40b-8186834d0b85",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "b1cdb14c-5ada-432a-94bb-88ff00b0d4cd",
       "target": "356f9da5-2a56-4669-a682-81e5ca9b89d9",
       "text": "",
       "uuid": "7b044297-fa28-4417-b838-2f8daf838199",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "dc52bfdd-5900-4c5c-aae3-0266a93747bd",
       "target": "95251ba5-ed15-4023-965f-817dde2d0b02",
       "text": "",
       "uuid": "451aa24c-5d8d-4db8-87a5-f81dfe8334ff",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "292c601f-191f-4931-87f6-7316f3054b27",
       "target": "95251ba5-ed15-4023-965f-817dde2d0b02",
       "text": "",
       "uuid": "4390ab71-5af8-4aa5-85ba-f1e64d5f92e8",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "f5e9a4ff-9f81-4683-8808-b8a48d556eb7",
       "target": "95251ba5-ed15-4023-965f-817dde2d0b02",
       "text": "",
       "uuid": "05bbee93-da8c-4b71-b139-c0d11fdc83dd",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "b41ae71c-b2fc-40ae-8d1d-072dbac60a7f",
       "target": "95251ba5-ed15-4023-965f-817dde2d0b02",
       "text": "",
       "uuid": "6ecfb5e4-e5f9-44c5-b80b-5209b7819ce4",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "ae52803b-022e-43ff-a8b5-14ad1d25ffaf",
       "target": "95251ba5-ed15-4023-965f-817dde2d0b02",
       "text": "",
       "uuid": "4e82a084-b83f-4d55-a8ce-c6dbea6843f1",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "fa49c7c9-ce2a-4b6c-806d-b32681f98e6d",
       "target": "bcba5d42-c24f-4206-b5ec-523add9234d0",
       "text": "",
       "uuid": "817e0ba5-c544-470f-b276-706b2abc8d4c",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "fa49c7c9-ce2a-4b6c-806d-b32681f98e6d",
       "target": "6bf5d93f-03e3-4702-bfd4-3bb64fd5f207",
       "text": "",
       "uuid": "3375d355-52ab-437f-8004-55546437bcb3",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "6bf5d93f-03e3-4702-bfd4-3bb64fd5f207",
       "target": "0aba43ea-9c9d-4431-af38-12f36a8c66d1",
       "text": "",
       "uuid": "3a1ad115-eb25-4203-932f-142e6e5dca5c",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "6bf5d93f-03e3-4702-bfd4-3bb64fd5f207",
       "target": "415c5c49-ae15-421d-8922-20b499802470",
       "text": "",
       "uuid": "8b689ff4-f322-4b6a-ae69-e410e4965c9d",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "bcba5d42-c24f-4206-b5ec-523add9234d0",
       "target": "b29ebefb-11e5-4170-92ab-427ac709f950",
       "text": "",
       "uuid": "53b6a38b-fcfc-442f-9985-5340a8f34ba9",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "b29ebefb-11e5-4170-92ab-427ac709f950",
       "target": "a8cc5794-9dda-4b44-bde4-21ee28720267",
       "text": "",
       "uuid": "f4e26eac-6317-4ec8-8e65-d60cda8007d7",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "a8cc5794-9dda-4b44-bde4-21ee28720267",
       "target": "da5acb36-d129-4e2f-81a3-de2b4762beca",
       "text": "",
       "uuid": "76e8f67c-0fff-4fa7-902d-fb1cd61b0d40",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "f4677fb0-ffbb-4dd3-a926-cb2eb7d72116",
       "target": "5c777ce0-57dd-46de-b0ac-19d750318c95",
       "text": "",
       "uuid": "6347496b-cb25-4cb6-9638-c204e360a7c6",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "5c777ce0-57dd-46de-b0ac-19d750318c95",
       "target": "4db8074b-e96b-4e68-b686-2bee543711b1",
       "text": "",
       "uuid": "b917e657-740f-4c33-8c51-619f248374f7",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "4db8074b-e96b-4e68-b686-2bee543711b1",
       "target": "95251ba5-ed15-4023-965f-817dde2d0b02",
       "text": "",
       "uuid": "7633ae04-a6ae-49d8-96de-c6a8366158db",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "5c777ce0-57dd-46de-b0ac-19d750318c95",
       "target": "64106e17-442a-4590-9a7c-6c2eef8abbef",
       "text": "",
       "uuid": "9b9c05c9-fe3e-42fb-a05d-c8da9a5ad047",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "5c777ce0-57dd-46de-b0ac-19d750318c95",
       "target": "d73a9508-f1de-4998-a2ee-76b6545bd5b7",
       "text": "",
       "uuid": "184a3ff8-268f-4ac7-877f-2926161d2fdd",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "5c777ce0-57dd-46de-b0ac-19d750318c95",
       "target": "cdb1e3e8-39cf-4d59-be70-8d9a0d95c176",
       "text": "",
       "uuid": "7e5db569-7ab4-4fe4-8c7f-ac495cab9021",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "5c777ce0-57dd-46de-b0ac-19d750318c95",
       "target": "bfcece66-7970-478a-bdbd-a07617f0523b",
       "text": "",
       "uuid": "1a167883-eeca-45dd-9c28-b81a3324679e",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "6e95c80e-150d-4c95-b2e0-2b11739c9e15",
       "target": "6073bc30-0c2f-45c6-af8c-4f371fffa573",
       "text": "",
       "uuid": "cfcd238b-eb1b-4f89-94bb-abdec90a95ac",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "fd794c28-9193-4107-833f-e2a41059ca62",
       "target": "ec983004-0785-47b3-9f2c-4cba9322144d",
       "text": "",
       "uuid": "31f148f7-9329-4bfa-88ae-fa511eaf32a2",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "fa49c7c9-ce2a-4b6c-806d-b32681f98e6d",
       "target": "a791f550-b886-4f60-9992-621536a61227",
       "text": "",
       "uuid": "eea3f426-6418-4550-8525-a18489d01bd1",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "a791f550-b886-4f60-9992-621536a61227",
       "target": "4e8b8c0c-82ba-4736-8fac-b88480576c0d",
       "text": "",
       "uuid": "9c3430ef-2ba9-4470-84ea-9b7403cbd6eb",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "a791f550-b886-4f60-9992-621536a61227",
       "target": "b180f2ee-013b-4d27-a1c2-938c229568e4",
       "text": "",
       "uuid": "3c12e67f-92b3-4e3a-9729-5b1b50e8f442",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "a791f550-b886-4f60-9992-621536a61227",
       "target": "3e80b28f-3b64-4a12-8cc9-7cc1ec73887f",
       "text": "",
       "uuid": "63fc2a0e-55f4-41e8-b856-2a99d47fac14",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "a791f550-b886-4f60-9992-621536a61227",
       "target": "29d1a804-3758-4648-86cc-d2be723dc3af",
       "text": "",
       "uuid": "af31b269-5610-4d71-aa4d-8280aef8b5e5",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "a791f550-b886-4f60-9992-621536a61227",
       "target": "5c7abad1-3249-46b5-bc37-e3b6a64c5978",
       "text": "",
       "uuid": "836b23ca-81d2-45cc-8924-1f3575f404d1",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "2587f315-433b-4fe4-836d-f5f8a33570bd",
       "target": "d19d0fd6-a693-46d2-ba6a-0b450ee06f59",
       "text": "",
       "uuid": "fbcb40be-f6bc-4732-a95b-bcfff59452d6",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "2587f315-433b-4fe4-836d-f5f8a33570bd",
       "target": "c29a3f55-d0c1-4464-bbb6-38cf28167eb1",
       "text": "",
       "uuid": "071c0b32-cdd5-4778-a321-5c48aed90e30",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "2587f315-433b-4fe4-836d-f5f8a33570bd",
       "target": "c2b871f8-ca83-43ff-add1-7ec588b9d179",
       "text": "",
       "uuid": "238d81eb-e7ec-4632-b422-959f0ad597c4",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "a791f550-b886-4f60-9992-621536a61227",
       "target": "2587f315-433b-4fe4-836d-f5f8a33570bd",
       "text": "",
       "uuid": "fe6c1255-e557-48e7-811a-f2d85d932b9f",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "05d3ec5c-0f55-45f1-a308-fa1c3fc0e1b6",
       "target": "e5e3d3fd-fa22-4ac7-ba0f-ec83875df58c",
       "text": "",
       "uuid": "54c689cc-d7c0-4124-a931-753ebba1a00f",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "05d3ec5c-0f55-45f1-a308-fa1c3fc0e1b6",
       "target": "198a47ca-507c-4811-8a39-ac03dbd514bd",
       "text": "",
       "uuid": "9e55591f-e0b9-426d-a98d-f60fec200acf",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "a791f550-b886-4f60-9992-621536a61227",
       "target": "05d3ec5c-0f55-45f1-a308-fa1c3fc0e1b6",
       "text": "",
       "uuid": "18822b26-afad-4bec-9d04-232a73a8d120",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "05d3ec5c-0f55-45f1-a308-fa1c3fc0e1b6",
       "target": "e2b352cf-26c8-4e0d-9263-525432e97835",
       "text": "",
       "uuid": "43484207-aebf-4d2d-b59c-828d227cea4d",
-      "type": "core:edge"
+      "type": "core:line_edge"
     },
     {
       "source": "a791f550-b886-4f60-9992-621536a61227",
       "target": "84f77e1d-d557-4a34-91ac-101064838c53",
       "text": "",
       "uuid": "959360b5-63ae-48cd-9980-5b1af1919887",
-      "type": "core:edge"
+      "type": "core:line_edge"
     }
   ],
   "tags": []
