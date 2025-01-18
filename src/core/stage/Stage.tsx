@@ -201,6 +201,8 @@ export namespace Stage {
    */
   // eslint-disable-next-line prefer-const
   export let isAutoSavePaused = false;
+
+  let tickNumber = 0;
   /**
    * 逻辑总入口
    * 该函数在上游被频繁调用
@@ -234,7 +236,7 @@ export namespace Stage {
     effects = effects.filter((effect) => !effect.timeProgress.isFull);
 
     // 计算引擎
-    autoComputeEngineTick();
+    autoComputeEngineTick(tickNumber);
     // 自动布局
     autoLayoutMainTick();
     // 自动保存功能
@@ -243,6 +245,7 @@ export namespace Stage {
     autoBackupTick();
 
     KeyboardOnlyEngine.logicTick();
+    tickNumber++;
   }
 
   let lastAutoSaveTime = performance.now();

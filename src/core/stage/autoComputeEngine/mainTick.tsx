@@ -125,19 +125,26 @@ const MapOtherFunction: OtherFunctionMap = {
   [LogicNodeNameEnum.GET_TIME]: NodeLogic.getTime,
   [LogicNodeNameEnum.PLAY_SOUND]: NodeLogic.playSound,
 };
-export function autoComputeEngineTick() {
+
+/**
+ *
+ * @param tickNumber 帧号
+ * @returns
+ */
+export function autoComputeEngineTick(tickNumber: number) {
   // debug 只有在按下x键才会触发
   if (!Controller.pressingKeySet.has("x")) {
     return;
+  }
+  if (Controller.pressingKeySet.has("shift")) {
+    if (tickNumber % 60 !== 0) {
+      return;
+    }
   }
   // 自动计算引擎功能
   for (const node of StageManager.getTextNodes().sort(
     (node) => node.collisionBox.getRectangle().location.y,
   )) {
-    if (node.text === "#TEST#") {
-      node.rename("Hello World!!");
-    }
-
     for (const name of Object.keys(MapNameFunction)) {
       if (node.text === name) {
         // 发现了一个逻辑节点
