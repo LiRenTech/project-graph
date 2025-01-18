@@ -133,15 +133,15 @@ export namespace EntityRenderer {
   export function renderEntityDetails(entity: Entity) {
     if (entity.details && !entity.isEditingDetails) {
       if (Renderer.isAlwaysShowDetails) {
-        _renderEntityDetails(entity);
+        _renderEntityDetails(entity, 4);
       } else {
         if (entity.isMouseHover) {
-          _renderEntityDetails(entity);
+          _renderEntityDetails(entity, 4);
         }
       }
     }
   }
-  function _renderEntityDetails(entity: Entity) {
+  function _renderEntityDetails(entity: Entity, limitLiens: number) {
     RenderUtils.renderMultiLineText(
       entity.details,
       Renderer.transformWorld2View(
@@ -157,6 +157,8 @@ export namespace EntityRenderer {
         entity.collisionBox.getRectangle().size.x * Camera.currentScale,
       ),
       StageStyleManager.currentStyle.NodeDetailsTextColor,
+      1.2,
+      limitLiens,
     );
   }
 

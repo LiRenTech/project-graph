@@ -165,9 +165,15 @@ export namespace RenderUtils {
     limitWidth: number,
     color: Color = Color.White,
     lineHeight: number = 1.2,
+    limitLines: number = Infinity,
   ): void {
     let currentY = 0; // 顶部偏移量
-    const textLineArray = textToTextArrayWrapCache(text, fontSize, limitWidth);
+    let textLineArray = textToTextArrayWrapCache(text, fontSize, limitWidth);
+    // 限制行数
+    if (limitLines < textLineArray.length) {
+      textLineArray = textLineArray.slice(0, limitLines);
+      textLineArray[limitLines - 1] += "..."; // 最后一行加省略号
+    }
     for (const line of textLineArray) {
       renderText(line, location.add(new Vector(0, currentY)), fontSize, color);
       currentY += fontSize * lineHeight;
