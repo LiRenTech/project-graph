@@ -1,5 +1,6 @@
 import { Controller } from "../../controller/Controller";
 import { RectangleLittleNoteEffect } from "../../effect/concrete/RectangleLittleNoteEffect";
+import { TextRaiseEffectLocated } from "../../effect/concrete/TextRaiseEffectLocated";
 import { LineEdge } from "../../stageObject/association/LineEdge";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
@@ -143,6 +144,8 @@ export function autoComputeEngineTick(tickNumber: number) {
       return;
     }
   }
+  let i = 0;
+
   let nodes = StageManager.getTextNodes().filter(
     (node) => isTextNodeLogic(node) && node.text.length > 0,
   );
@@ -152,6 +155,10 @@ export function autoComputeEngineTick(tickNumber: number) {
 
   for (const node of nodes) {
     computeTextNode(node);
+    Stage.effects.push(
+      TextRaiseEffectLocated.fromDebugLogicNode(i, node.geometryCenter),
+    );
+    i++;
   }
   // region 计算section
   let sections = StageManager.getSections().filter(

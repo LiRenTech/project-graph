@@ -50,7 +50,7 @@ export class RectangleLittleNoteEffect extends Effect {
         this.strokeColor,
         1 - this.timeProgress.rate,
       ),
-      5 * Camera.currentScale,
+      2 * Camera.currentScale,
       8 * Camera.currentScale,
     );
   }
