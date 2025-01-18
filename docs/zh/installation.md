@@ -16,9 +16,9 @@
 
 ## 🅰 AUR
 
-- [推荐，从 Nightly Release 安装] [project-graph-nightly ![AUR Version](https://img.shields.io/aur/version/project-graph-nightly?cacheSeconds=0)](https://aur.archlinux.org/packages/project-graph-nightly)
+- [推荐，从 Nightly Release 安装] [project-graph-nightly-bin ![AUR Version](https://img.shields.io/aur/version/project-graph-nightly-bin?cacheSeconds=0)](https://aur.archlinux.org/packages/project-graph-nightly-bin)
 - [从源码安装，需要 Rust 环境] [project-graph-git ![AUR Version](https://img.shields.io/aur/version/project-graph-git?cacheSeconds=0)](https://aur.archlinux.org/packages/project-graph-git)
-- [从 Release 安装，版本可能过时] [project-graph ![AUR Version](https://img.shields.io/aur/version/project-graph?cacheSeconds=0)](https://aur.archlinux.org/packages/project-graph)
+- [从 Release 安装，版本可能过时] [project-graph-bin ![AUR Version](https://img.shields.io/aur/version/project-graph-bin?cacheSeconds=0)](https://aur.archlinux.org/packages/project-graph-bin)
 
 ## 系统需求
 

@@ -215,10 +215,10 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts
       - name: Clone AUR repository
-        run: git clone ssh://aur@aur.archlinux.org/project-graph-nightly.git
+        run: git clone ssh://aur@aur.archlinux.org/project-graph-nightly-bin.git
       - name: Update version in PKGBUILD and .SRCINFO
         run: |
-          cd project-graph-nightly
+          cd project-graph-nightly-bin
           sed -i "s/pkgver=.*$/pkgver=r${{ github.run_number }}/" PKGBUILD
           sed -i "s/pkgver = .*$/pkgver = r${{ github.run_number }}/" .SRCINFO
           sed -i "s/Project\.Graph_0\.0\.0-nightly\..*_amd64\.deb/Project.Graph_0.0.0-nightly.r${{ github.run_number }}_amd64.deb/" PKGBUILD .SRCINFO
