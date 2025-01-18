@@ -1,5 +1,7 @@
 import { Controller } from "../../controller/Controller";
 import { RectangleLittleNoteEffect } from "../../effect/concrete/RectangleLittleNoteEffect";
+import { LineEdge } from "../../stageObject/association/LineEdge";
+import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { ConnectableEntity } from "../../stageObject/StageObject";
 import { Stage } from "../Stage";
@@ -141,58 +143,24 @@ export function autoComputeEngineTick(tickNumber: number) {
       return;
     }
   }
-  // 自动计算引擎功能
-  for (const node of StageManager.getTextNodes().sort(
-    (node) => node.collisionBox.getRectangle().location.y,
-  )) {
-    for (const name of Object.keys(MapNameFunction)) {
-      if (node.text === name) {
-        // 发现了一个逻辑节点
-        Stage.effects.push(RectangleLittleNoteEffect.fromUtilsLittleNote(node));
+  let nodes = StageManager.getTextNodes().filter(
+    (node) => isTextNodeLogic(node) && node.text.length > 0,
+  );
+  nodes = sortEntityByLocation(nodes) as TextNode[];
 
-        const result = MapNameFunction[name](
-          AutoComputeUtils.getParentTextNodes(node)
-            .sort(
-              (a, b) =>
-                a.collisionBox.getRectangle().location.x -
-                b.collisionBox.getRectangle().location.x,
-            )
-            .map((p) => p.text),
-        );
-        AutoComputeUtils.getMultiResult(node, result);
-      }
-    }
-    // 特殊类型计算
-    for (const name of Object.keys(MapOtherFunction)) {
-      if (node.text === name) {
-        // 发现了一个特殊节点
-        const result = MapOtherFunction[name](
-          AutoComputeUtils.getParentTextNodes(node),
-          AutoComputeUtils.getChildTextNodes(node),
-        );
-        AutoComputeUtils.getMultiResult(node, result);
-      }
-    }
+  // 自动计算引擎功能
+
+  for (const node of nodes) {
+    computeTextNode(node);
   }
   // region 计算section
-  for (const section of StageManager.getSections()) {
-    for (const name of Object.keys(MapNameFunction)) {
-      if (section.text === name) {
-        // 发现了一个逻辑Section
-        const inputStringList: string[] = [];
-        for (const child of section.children.sort(
-          (a, b) =>
-            a.collisionBox.getRectangle().location.x -
-            b.collisionBox.getRectangle().location.x,
-        )) {
-          if (child instanceof TextNode) {
-            inputStringList.push(child.text);
-          }
-        }
-        const result = MapNameFunction[name](inputStringList);
-        AutoComputeUtils.getSectionMultiResult(section, result);
-      }
-    }
+  let sections = StageManager.getSections().filter(
+    (section) => isSectionLogic(section) && section.text.length > 0,
+  );
+  sections = sortEntityByLocation(sections) as Section[];
+
+  for (const section of sections) {
+    computeSection(section);
   }
   // region 根据Edge计算
   for (const edge of StageManager.getLineEdges().sort(
@@ -200,30 +168,131 @@ export function autoComputeEngineTick(tickNumber: number) {
       a.source.collisionBox.getRectangle().location.x -
       b.source.collisionBox.getRectangle().location.x,
   )) {
-    for (const name of Object.keys(MapOperationNameFunction)) {
-      if (edge.text === name) {
-        // 发现了一个逻辑Edge
+    computeEdge(edge);
+  }
+}
+
+function isTextNodeLogic(node: TextNode): boolean {
+  for (const name of Object.keys(MapNameFunction)) {
+    if (node.text === name) {
+      return true;
+    }
+  }
+  for (const name of Object.keys(MapOtherFunction)) {
+    if (node.text === name) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function isSectionLogic(section: Section): boolean {
+  for (const name of Object.keys(MapNameFunction)) {
+    if (section.text === name) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * 按y轴从上到下排序，如果y轴相同，则按照x轴从左到右排序
+ * @param entities
+ * @returns
+ */
+function sortEntityByLocation(
+  entities: ConnectableEntity[],
+): ConnectableEntity[] {
+  // 按照y坐标排序
+  // 太草了，2025.1.18 周六晚上littlefean发现y轴排序不能只传递一个对象，要传递两个对象然后相互减
+  // 否则就拍了个寂寞……
+  return entities.sort((a, b) => {
+    const yDiff =
+      a.collisionBox.getRectangle().location.y -
+      b.collisionBox.getRectangle().location.y;
+    if (yDiff === 0) {
+      return (
+        a.collisionBox.getRectangle().location.x -
+        b.collisionBox.getRectangle().location.x
+      );
+    }
+    return yDiff;
+  });
+}
+
+/**
+ * 运行一个节点的计算
+ * @param node
+ */
+function computeTextNode(node: TextNode) {
+  for (const name of Object.keys(MapNameFunction)) {
+    if (node.text === name) {
+      // 发现了一个逻辑节点
+      Stage.effects.push(RectangleLittleNoteEffect.fromUtilsLittleNote(node));
+
+      const result = MapNameFunction[name](
+        AutoComputeUtils.getParentTextNodes(node).map((p) => p.text),
+      );
+      AutoComputeUtils.getMultiResult(node, result);
+    }
+  }
+  // 特殊类型计算
+  for (const name of Object.keys(MapOtherFunction)) {
+    if (node.text === name) {
+      // 发现了一个特殊节点
+      const result = MapOtherFunction[name](
+        AutoComputeUtils.getParentTextNodes(node),
+        AutoComputeUtils.getChildTextNodes(node),
+      );
+      AutoComputeUtils.getMultiResult(node, result);
+    }
+  }
+}
+
+function computeSection(section: Section) {
+  for (const name of Object.keys(MapNameFunction)) {
+    if (section.text === name) {
+      // 发现了一个逻辑Section
+      const inputStringList: string[] = [];
+      for (const child of section.children.sort(
+        (a, b) =>
+          a.collisionBox.getRectangle().location.x -
+          b.collisionBox.getRectangle().location.x,
+      )) {
+        if (child instanceof TextNode) {
+          inputStringList.push(child.text);
+        }
+      }
+      const result = MapNameFunction[name](inputStringList);
+      AutoComputeUtils.getSectionMultiResult(section, result);
+    }
+  }
+}
+
+function computeEdge(edge: LineEdge) {
+  for (const name of Object.keys(MapOperationNameFunction)) {
+    if (edge.text === name) {
+      // 发现了一个逻辑Edge
+      const source = edge.source;
+      const target = edge.target;
+      if (source instanceof TextNode && target instanceof TextNode) {
+        const inputStringList: string[] = [source.text, target.text];
+
+        const result = MapOperationNameFunction[name](inputStringList);
+        AutoComputeUtils.getNodeOneResult(target, result[0]);
+      }
+    }
+    // 更加简化的Edge计算
+    if (edge.text.includes(name)) {
+      // 检测 '+5' '/2' 这样的情况，提取后面的数字
+      const num = Number(edge.text.replace(name, ""));
+      if (num) {
         const source = edge.source;
         const target = edge.target;
         if (source instanceof TextNode && target instanceof TextNode) {
-          const inputStringList: string[] = [source.text, target.text];
-
+          const inputStringList: string[] = [source.text, num.toString()];
           const result = MapOperationNameFunction[name](inputStringList);
-          AutoComputeUtils.getNodeOneResult(target, result[0]);
-        }
-      }
-      // 更加简化的Edge计算
-      if (edge.text.includes(name)) {
-        // 检测 '+5' '/2' 这样的情况，提取后面的数字
-        const num = Number(edge.text.replace(name, ""));
-        if (num) {
-          const source = edge.source;
-          const target = edge.target;
-          if (source instanceof TextNode && target instanceof TextNode) {
-            const inputStringList: string[] = [source.text, num.toString()];
-            const result = MapOperationNameFunction[name](inputStringList);
-            target.rename(result[0]);
-          }
+          target.rename(result[0]);
         }
       }
     }
