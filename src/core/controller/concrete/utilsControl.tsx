@@ -2,6 +2,7 @@ import { isDesktop } from "../../../utils/platform";
 import { Vector } from "../../dataStruct/Vector";
 import { EntityCreateLineEffect } from "../../effect/concrete/EntityCreateLineEffect";
 import { Renderer } from "../../render/canvas2d/renderer";
+import { InputElement } from "../../render/domElement/inputElement";
 import { Camera } from "../../stage/Camera";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
@@ -25,7 +26,7 @@ export function editTextNode(clickedNode: TextNode) {
 
   // 编辑节点
   clickedNode.isEditing = true;
-  Renderer.input(
+  InputElement.input(
     Renderer.transformWorld2View(clickedNode.rectangle.location).add(
       Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
     ),
@@ -51,7 +52,7 @@ export function editUrlNodeTitle(clickedUrlNode: UrlNode) {
   Controller.isCameraLocked = true;
   // 编辑节点
   clickedUrlNode.isEditingTitle = true;
-  Renderer.input(
+  InputElement.input(
     Renderer.transformWorld2View(clickedUrlNode.rectangle.location).add(
       Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
     ),
