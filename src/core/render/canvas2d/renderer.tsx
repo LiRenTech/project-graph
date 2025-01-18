@@ -889,6 +889,10 @@ export namespace Renderer {
           document.body.removeEventListener("click", onOutsideClick);
           removeElement();
         }
+        if (event.key === "Tab") {
+          // 防止tab切换到其他按钮
+          event.preventDefault();
+        }
       });
     });
   }
