@@ -1,4 +1,5 @@
 import { Direction } from "../../../types/directions";
+import { Vector } from "../../dataStruct/Vector";
 import { DirectionKeyUtilsEngine } from "../DirectionKeyUtilsEngine/directionKeyUtilsEngine";
 
 /**
@@ -7,6 +8,12 @@ import { DirectionKeyUtilsEngine } from "../DirectionKeyUtilsEngine/directionKey
 export class KeyboardOnlyDirectionController extends DirectionKeyUtilsEngine {
   protected reset(): void {
     console.warn("重启位置");
+  }
+
+  public clearSpeedAndAcc(): void {
+    this.speed = Vector.getZero();
+    this.accelerate = Vector.getZero();
+    this.accelerateCommander = Vector.getZero();
   }
 
   override init(): void {

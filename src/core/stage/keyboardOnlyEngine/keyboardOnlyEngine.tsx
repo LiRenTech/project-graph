@@ -85,6 +85,10 @@ export namespace KeyboardOnlyEngine {
     return _isCreating;
   }
 
+  /**
+   * 按下Tab键开始创建
+   * @returns
+   */
   export function createStart(): void {
     if (isCreating()) {
       // 已经在创建状态，不要重复创建
@@ -99,11 +103,14 @@ export namespace KeyboardOnlyEngine {
 
     // 如果只有一个节点被选中，则生成到右边的位置
     if (selectConnectableEntities.length === 1) {
+      // 更新方向控制器的位置
       targetLocationController.resetLocation(
         selectConnectableEntities[0].collisionBox
           .getRectangle()
           .center.add(NewTargetLocationSelector.diffLocation),
       );
+      // 清空加速度和速度
+      targetLocationController.clearSpeedAndAcc();
       // 最后更新虚拟目标位置
       NewTargetLocationSelector.onTabDown(selectConnectableEntities[0]);
     }
