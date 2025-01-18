@@ -165,16 +165,29 @@ export namespace RenderUtils {
     color: Color = Color.White,
     lineHeight: number = 1.2,
   ): void {
-    // 一个一个字符遍历，然后一次渲染一行
-    let currentLine = "";
     let currentY = 0; // 顶部偏移量
+    const textLineArray = textToTextArray(text, fontSize, limitWidth);
+    for (const line of textLineArray) {
+      renderText(line, location.add(new Vector(0, currentY)), fontSize, color);
+      currentY += fontSize * lineHeight;
+    }
+  }
+
+  /**
+   * 渲染多行文本的辅助函数
+   * 给定宽度限制，以及字体大小，将文本分割成多行数组
+   * 应该加LRU缓存，避免重复计算
+   * @param text
+   */
+  function textToTextArray(
+    text: string,
+    fontSize: number,
+    limitWidth: number,
+  ): string[] {
+    let currentLine = "";
     // 先渲染一下空字符串，否则长度大小可能不匹配，造成蜜汁bug
-    renderText(
-      currentLine,
-      location.add(new Vector(0, currentY)),
-      fontSize,
-      color,
-    );
+    renderText("", Vector.getZero(), fontSize, Color.White);
+    const lines: string[] = [];
 
     for (const char of text) {
       // 新来字符的宽度
@@ -182,18 +195,12 @@ export namespace RenderUtils {
       // 先判断是否溢出
       if (measureSize.width > limitWidth || char === "\n") {
         // 溢出了，将这一整行渲染出来
-        renderText(
-          currentLine,
-          location.add(new Vector(0, currentY)),
-          fontSize,
-          color,
-        );
+        lines.push(currentLine);
         if (char !== "\n") {
           currentLine = char;
         } else {
           currentLine = "";
         }
-        currentY += fontSize * lineHeight;
       } else {
         // 未溢出，继续添加字符
         // 当前行更新
@@ -201,13 +208,9 @@ export namespace RenderUtils {
       }
     }
     if (currentLine) {
-      renderText(
-        currentLine,
-        location.add(new Vector(0, currentY)),
-        fontSize,
-        color,
-      );
+      lines.push(currentLine);
     }
+    return lines;
   }
 
   /**
