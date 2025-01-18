@@ -1,8 +1,15 @@
+/**
+ * 最近最少使用缓存
+ * 原理：当缓存满时，删除最早添加的缓存
+ */
 export class LruCache<K, V> {
   private cache: Map<K, V> = new Map();
   private readonly capacity: number;
 
   constructor(capacity: number) {
+    if (capacity <= 0) {
+      throw new Error("capacity must be greater than 0");
+    }
     this.capacity = capacity;
   }
 
@@ -32,6 +39,10 @@ export class LruCache<K, V> {
 
   clear(): void {
     this.cache.clear();
+  }
+
+  size(): number {
+    return this.cache.size;
   }
 }
 
