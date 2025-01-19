@@ -85,7 +85,6 @@ export namespace InputElement {
       });
     });
   }
-
   /**
    * 在指定位置创建一个多行输入框
    * @param location 输入框的左上角位置（相对于窗口左上角的位置）
@@ -110,6 +109,12 @@ export namespace InputElement {
       textareaElement.autocomplete = "off";
       textareaElement.style.resize = "none"; // 禁止用户手动调整大小
       textareaElement.style.overflow = "hidden"; // 隐藏滚动条
+      textareaElement.style.minHeight = "50px"; // 设置最小高度
+      textareaElement.style.height = "auto"; // 初始化高度为auto
+      textareaElement.style.width = "auto"; // 初始化宽度为auto
+      textareaElement.style.minWidth = "20px"; // 设置最小宽度
+      textareaElement.style.whiteSpace = "pre"; // 保持空白符不变
+      textareaElement.style.wordWrap = "break-word"; // 自动换行
       Object.assign(textareaElement.style, style);
       document.body.appendChild(textareaElement);
       textareaElement.focus();
@@ -145,14 +150,19 @@ export namespace InputElement {
         document.body.addEventListener("wheel", onOutsideWheel);
       }, 10);
 
-      // 自动调整textarea的高度
-      const adjustHeight = () => {
+      // 自动调整textarea的高度和宽度
+      const adjustSize = () => {
+        // 重置高度和宽度以获取正确的scrollHeight和scrollWidth
         textareaElement.style.height = "auto";
+        textareaElement.style.width = "auto";
+
+        // 设置新的高度和宽度
         textareaElement.style.height = `${textareaElement.scrollHeight}px`;
+        textareaElement.style.width = `${textareaElement.scrollWidth}px`;
       };
       textareaElement.addEventListener("input", () => {
         onChange(textareaElement.value);
-        adjustHeight();
+        adjustSize();
       });
       textareaElement.addEventListener("blur", () => {
         resolve(textareaElement.value);
@@ -167,7 +177,7 @@ export namespace InputElement {
           event.preventDefault();
         }
       });
-      adjustHeight(); // 初始化时调整高度
+      adjustSize(); // 初始化时调整大小
     });
   }
 }
