@@ -1,7 +1,7 @@
 import { Color, mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { ShapeRenderer } from "../../render/canvas2d/shapeRenderer";
+import { ShapeRenderer } from "../../render/canvas2d/basicRenderer/shapeRenderer";
 import { Camera } from "../../stage/Camera";
 import { Effect } from "../effect";
 

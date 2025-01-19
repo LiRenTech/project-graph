@@ -1,12 +1,12 @@
-import { Color } from "../../dataStruct/Color";
-import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { Vector } from "../../dataStruct/Vector";
-import { Camera } from "../../stage/Camera";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { CurveRenderer } from "./curveRenderer";
-import { Renderer } from "./renderer";
-import { ShapeRenderer } from "./shapeRenderer";
-import { TextRenderer } from "./textRenderer";
+import { Color } from "../../../dataStruct/Color";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../dataStruct/Vector";
+import { Camera } from "../../../stage/Camera";
+import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
+import { CurveRenderer } from "../basicRenderer/curveRenderer";
+import { ShapeRenderer } from "../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../basicRenderer/textRenderer";
+import { Renderer } from "../renderer";
 
 /**
  * 画洞洞板式的背景

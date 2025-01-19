@@ -1,7 +1,7 @@
 import { Color, mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Vector } from "../../dataStruct/Vector";
-import { WorldRenderUtils } from "../../render/canvas2d/WorldRenderUtils";
+import { WorldRenderUtils } from "../../render/canvas2d/utilsRenderer/WorldRenderUtils";
 import { Effect } from "../effect";
 
 /**

@@ -6,10 +6,10 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Camera } from "../../../stage/Camera";
 import { CollisionBox } from "../../../stageObject/collisionBox/collisionBox";
-import { CurveRenderer } from "../curveRenderer";
+import { CurveRenderer } from "../basicRenderer/curveRenderer";
+import { ShapeRenderer } from "../basicRenderer/shapeRenderer";
 import { Renderer } from "../renderer";
-import { ShapeRenderer } from "../shapeRenderer";
-import { WorldRenderUtils } from "../WorldRenderUtils";
+import { WorldRenderUtils } from "../utilsRenderer/WorldRenderUtils";
 
 /**
  * 碰撞箱渲染器

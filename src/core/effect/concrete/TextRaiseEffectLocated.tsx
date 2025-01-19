@@ -1,7 +1,7 @@
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Vector } from "../../dataStruct/Vector";
+import { TextRenderer } from "../../render/canvas2d/basicRenderer/textRenderer";
 import { Renderer } from "../../render/canvas2d/renderer";
-import { TextRenderer } from "../../render/canvas2d/textRenderer";
 import { Camera } from "../../stage/Camera";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effect";

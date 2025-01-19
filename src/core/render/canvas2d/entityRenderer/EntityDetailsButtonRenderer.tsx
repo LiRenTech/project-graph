@@ -4,8 +4,8 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Camera } from "../../../stage/Camera";
 import { Entity } from "../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
+import { TextRenderer } from "../basicRenderer/textRenderer";
 import { Renderer } from "../renderer";
-import { TextRenderer } from "../textRenderer";
 /**
  * 仅仅渲染一个节点右上角的按钮
  */

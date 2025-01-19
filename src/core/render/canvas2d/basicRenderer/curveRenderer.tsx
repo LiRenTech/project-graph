@@ -1,7 +1,10 @@
-import { Color } from "../../dataStruct/Color";
-import { CubicBezierCurve, SymmetryCurve } from "../../dataStruct/shape/Curve";
-import { Vector } from "../../dataStruct/Vector";
-import { Canvas } from "../../stage/Canvas";
+import { Color } from "../../../dataStruct/Color";
+import {
+  CubicBezierCurve,
+  SymmetryCurve,
+} from "../../../dataStruct/shape/Curve";
+import { Vector } from "../../../dataStruct/Vector";
+import { Canvas } from "../../../stage/Canvas";
 
 /**
  * 关于各种曲线和直线的渲染

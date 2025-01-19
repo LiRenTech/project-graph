@@ -14,19 +14,19 @@ import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManage
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { WorldRenderUtils } from "./WorldRenderUtils";
+import { CurveRenderer } from "./basicRenderer/curveRenderer";
+import { ShapeRenderer } from "./basicRenderer/shapeRenderer";
+import { TextRenderer } from "./basicRenderer/textRenderer";
+import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
+import { EntityRenderer } from "./entityRenderer/EntityRenderer";
+import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
+import { WorldRenderUtils } from "./utilsRenderer/WorldRenderUtils";
 import {
   renderCartesianBackground,
   renderDotBackground,
   renderHorizonBackground,
   renderVerticalBackground,
-} from "./backgroundRenderer";
-import { CurveRenderer } from "./curveRenderer";
-import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
-import { EntityRenderer } from "./entityRenderer/EntityRenderer";
-import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
-import { ShapeRenderer } from "./shapeRenderer";
-import { TextRenderer } from "./textRenderer";
+} from "./utilsRenderer/backgroundRenderer";
 
 /**
  * 渲染器

@@ -1,5 +1,5 @@
-import { Vector } from "../../dataStruct/Vector";
-import { Canvas } from "../../stage/Canvas";
+import { Vector } from "../../../dataStruct/Vector";
+import { Canvas } from "../../../stage/Canvas";
 
 export namespace SvgRenderer {
   export function renderSvgFromLeftTop(

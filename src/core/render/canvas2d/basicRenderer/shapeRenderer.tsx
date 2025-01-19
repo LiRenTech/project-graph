@@ -1,7 +1,7 @@
-import { Color } from "../../dataStruct/Color";
-import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { Vector } from "../../dataStruct/Vector";
-import { Canvas } from "../../stage/Canvas";
+import { Color } from "../../../dataStruct/Color";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../dataStruct/Vector";
+import { Canvas } from "../../../stage/Canvas";
 
 /**
  * 基础图形渲染器

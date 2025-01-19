@@ -11,10 +11,10 @@ import { LineEdge } from "../../../../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../../../stageObject/entity/ConnectPoint";
 import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
+import { ShapeRenderer } from "../../../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../../../basicRenderer/textRenderer";
 import { Renderer } from "../../../renderer";
-import { ShapeRenderer } from "../../../shapeRenderer";
-import { TextRenderer } from "../../../textRenderer";
-import { WorldRenderUtils } from "../../../WorldRenderUtils";
+import { WorldRenderUtils } from "../../../utilsRenderer/WorldRenderUtils";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 

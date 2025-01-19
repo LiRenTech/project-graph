@@ -2,7 +2,7 @@ import { Color, mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
-import { ShapeRenderer } from "../../render/canvas2d/shapeRenderer";
+import { ShapeRenderer } from "../../render/canvas2d/basicRenderer/shapeRenderer";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effect";
 

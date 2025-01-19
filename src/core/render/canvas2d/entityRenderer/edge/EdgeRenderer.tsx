@@ -10,9 +10,9 @@ import { Section } from "../../../../stageObject/entity/Section";
 
 import { ConnectableEntity } from "../../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
+import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
 import { Renderer } from "../../renderer";
-import { ShapeRenderer } from "../../shapeRenderer";
-import { WorldRenderUtils } from "../../WorldRenderUtils";
+import { WorldRenderUtils } from "../../utilsRenderer/WorldRenderUtils";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { StraightEdgeRenderer } from "./concrete/StraightEdgeRenderer";
 import { SymmetryCurveEdgeRenderer } from "./concrete/SymmetryCurveEdgeRenderer";

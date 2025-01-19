@@ -4,10 +4,10 @@ import { MouseLocation } from "../../../../MouseLocation";
 import { Camera } from "../../../../stage/Camera";
 import { UrlNode } from "../../../../stageObject/entity/UrlNode";
 import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
-import { CurveRenderer } from "../../curveRenderer";
+import { CurveRenderer } from "../../basicRenderer/curveRenderer";
 import { Renderer } from "../../renderer";
-import { ShapeRenderer } from "../../shapeRenderer";
-import { TextRenderer } from "../../textRenderer";
+import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../../basicRenderer/textRenderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { EntityRenderer } from "../EntityRenderer";
 

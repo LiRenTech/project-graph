@@ -11,10 +11,10 @@ import { ConnectPoint } from "../../../../../stageObject/entity/ConnectPoint";
 import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
 import { SvgUtils } from "../../../../svg/SvgUtils";
-import { CurveRenderer } from "../../../curveRenderer";
+import { CurveRenderer } from "../../../basicRenderer/curveRenderer";
 import { Renderer } from "../../../renderer";
-import { ShapeRenderer } from "../../../shapeRenderer";
-import { TextRenderer } from "../../../textRenderer";
+import { ShapeRenderer } from "../../../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../../../basicRenderer/textRenderer";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 

@@ -1,7 +1,7 @@
-import { Canvas } from "../../stage/Canvas";
-import { Color } from "../../dataStruct/Color";
-import { Vector } from "../../dataStruct/Vector";
-import { Camera } from "../../stage/Camera";
+import { Color } from "../../../dataStruct/Color";
+import { Vector } from "../../../dataStruct/Vector";
+import { Camera } from "../../../stage/Camera";
+import { Canvas } from "../../../stage/Canvas";
 
 /**
  * 一些基础的渲染图形

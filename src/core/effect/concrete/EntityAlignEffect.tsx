@@ -3,7 +3,7 @@ import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Line } from "../../dataStruct/shape/Line";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
-import { CurveRenderer } from "../../render/canvas2d/curveRenderer";
+import { CurveRenderer } from "../../render/canvas2d/basicRenderer/curveRenderer";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Camera } from "../../stage/Camera";
 import { Effect } from "../effect";

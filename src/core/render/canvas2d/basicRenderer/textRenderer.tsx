@@ -1,7 +1,7 @@
-import { LruCache } from "../../dataStruct/Cache";
-import { Color } from "../../dataStruct/Color";
-import { Vector } from "../../dataStruct/Vector";
-import { Canvas } from "../../stage/Canvas";
+import { LruCache } from "../../../dataStruct/Cache";
+import { Color } from "../../../dataStruct/Color";
+import { Vector } from "../../../dataStruct/Vector";
+import { Canvas } from "../../../stage/Canvas";
 
 /**
  * 专门用于在Canvas上渲染文字

@@ -12,10 +12,10 @@ import { Canvas } from "../../../../stage/Canvas";
 import { Section } from "../../../../stageObject/entity/Section";
 import { TextNode } from "../../../../stageObject/entity/TextNode";
 import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
-import { CurveRenderer } from "../../curveRenderer";
+import { CurveRenderer } from "../../basicRenderer/curveRenderer";
 import { Renderer } from "../../renderer";
-import { ShapeRenderer } from "../../shapeRenderer";
-import { TextRenderer } from "../../textRenderer";
+import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../../basicRenderer/textRenderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { EntityRenderer } from "../EntityRenderer";
 

@@ -1,7 +1,7 @@
 import { Color } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { WorldRenderUtils } from "../../render/canvas2d/WorldRenderUtils";
+import { WorldRenderUtils } from "../../render/canvas2d/utilsRenderer/WorldRenderUtils";
 import { Effect } from "../effect";
 
 /**

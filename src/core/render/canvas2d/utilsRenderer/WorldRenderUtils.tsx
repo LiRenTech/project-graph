@@ -1,14 +1,17 @@
-import { Color } from "../../dataStruct/Color";
-import { CublicCatmullRomSpline } from "../../dataStruct/shape/CublicCatmullRomSpline";
-import { CubicBezierCurve, SymmetryCurve } from "../../dataStruct/shape/Curve";
-import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { Vector } from "../../dataStruct/Vector";
-import { Camera } from "../../stage/Camera";
-import { Canvas } from "../../stage/Canvas";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { CurveRenderer } from "./curveRenderer";
-import { Renderer } from "./renderer";
-import { ShapeRenderer } from "./shapeRenderer";
+import { Color } from "../../../dataStruct/Color";
+import { CublicCatmullRomSpline } from "../../../dataStruct/shape/CublicCatmullRomSpline";
+import {
+  CubicBezierCurve,
+  SymmetryCurve,
+} from "../../../dataStruct/shape/Curve";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../dataStruct/Vector";
+import { Camera } from "../../../stage/Camera";
+import { Canvas } from "../../../stage/Canvas";
+import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
+import { CurveRenderer } from "../basicRenderer/curveRenderer";
+import { ShapeRenderer } from "../basicRenderer/shapeRenderer";
+import { Renderer } from "../renderer";
 
 /**
  * 一些基础的渲染图形

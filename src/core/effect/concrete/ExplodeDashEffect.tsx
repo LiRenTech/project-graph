@@ -4,7 +4,7 @@ import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
-import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { RenderUtils } from "../../render/canvas2d/utilsRenderer/RenderUtils";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effect";
 

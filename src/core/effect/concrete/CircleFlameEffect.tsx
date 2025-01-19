@@ -1,8 +1,8 @@
 import { Color } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Vector } from "../../dataStruct/Vector";
+import { ShapeRenderer } from "../../render/canvas2d/basicRenderer/shapeRenderer";
 import { Renderer } from "../../render/canvas2d/renderer";
-import { ShapeRenderer } from "../../render/canvas2d/shapeRenderer";
 import { Camera } from "../../stage/Camera";
 import { Effect } from "../effect";
 
