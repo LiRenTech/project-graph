@@ -1,4 +1,7 @@
+import { getMultiLineTextSize } from "../../../utils/font";
 import { Vector } from "../../dataStruct/Vector";
+import { Camera } from "../../stage/Camera";
+import { Renderer } from "../canvas2d/renderer";
 
 /**
  * 主要用于解决canvas上无法输入的问题，用临时生成的jsdom元素透明地贴在上面
@@ -109,14 +112,19 @@ export namespace InputElement {
       textareaElement.autocomplete = "off";
       textareaElement.style.resize = "none"; // 禁止用户手动调整大小
       textareaElement.style.overflow = "hidden"; // 隐藏滚动条
-      textareaElement.style.minHeight = "50px"; // 设置最小高度
       textareaElement.style.height = "auto"; // 初始化高度为auto
       textareaElement.style.width = "auto"; // 初始化宽度为auto
-      textareaElement.style.minWidth = "20px"; // 设置最小宽度
+      const initSize = getMultiLineTextSize(
+        defaultValue,
+        Renderer.FONT_SIZE,
+        1.5,
+      );
+      textareaElement.style.minHeight = `${initSize.y * Camera.currentScale}px`; // 设置最小高度
+      textareaElement.style.minWidth = `${initSize.x * Camera.currentScale}px`; // 设置最小宽度
       textareaElement.style.whiteSpace = "pre"; // 保持空白符不变
       textareaElement.style.wordWrap = "break-word"; // 自动换行
       Object.assign(textareaElement.style, style);
-      document.body.appendChild(textareaElement);
+
       textareaElement.focus();
       textareaElement.select();
       const removeElement = () => {
@@ -159,6 +167,7 @@ export namespace InputElement {
         // 设置新的高度和宽度
         textareaElement.style.height = `${textareaElement.scrollHeight}px`;
         textareaElement.style.width = `${textareaElement.scrollWidth}px`;
+        console.log("adjustSize");
       };
       textareaElement.addEventListener("input", () => {
         onChange(textareaElement.value);
@@ -175,9 +184,15 @@ export namespace InputElement {
         if (event.key === "Tab") {
           // 防止tab切换到其他按钮
           event.preventDefault();
+        } else if (event.key === "Escape") {
+          resolve(textareaElement.value);
+          onChange(textareaElement.value);
+          document.body.removeEventListener("click", onOutsideClick);
+          removeElement();
         }
       });
-      adjustSize(); // 初始化时调整大小
+      // adjustSize(); // 初始化时调整大小
+      document.body.appendChild(textareaElement);
     });
   }
 }
