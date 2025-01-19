@@ -12,8 +12,8 @@ import { ConnectPoint } from "../../../../../stageObject/entity/ConnectPoint";
 import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
 import { Renderer } from "../../../renderer";
-import { RenderUtils } from "../../../RenderUtils";
 import { ShapeRenderer } from "../../../shapeRenderer";
+import { TextRenderer } from "../../../textRenderer";
 import { WorldRenderUtils } from "../../../WorldRenderUtils";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
@@ -315,7 +315,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       new Color(31, 31, 31, 0.5),
       1,
     );
-    RenderUtils.renderTextFromCenter(
+    TextRenderer.renderTextFromCenter(
       edge.text,
       Renderer.transformWorld2View(curve.bezier.getPointByT(0.5)),
       Renderer.FONT_SIZE * Camera.currentScale,

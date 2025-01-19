@@ -15,6 +15,7 @@ import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
 import { Renderer } from "../../renderer";
 import { RenderUtils } from "../../RenderUtils";
 import { ShapeRenderer } from "../../shapeRenderer";
+import { TextRenderer } from "../../textRenderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { EntityRenderer } from "../EntityRenderer";
 
@@ -53,7 +54,7 @@ export namespace SectionRenderer {
       Renderer.NODE_ROUNDED_RADIUS * 1.5 * Camera.currentScale,
     );
 
-    RenderUtils.renderText(
+    TextRenderer.renderText(
       Renderer.protectingPrivacy
         ? replaceTextWhenProtect(section.text)
         : section.text,
@@ -91,7 +92,7 @@ export namespace SectionRenderer {
     );
     if (Camera.currentScale > 0.2) {
       // 正常显示标题
-      RenderUtils.renderText(
+      TextRenderer.renderText(
         Renderer.protectingPrivacy
           ? replaceTextWhenProtect(section.text)
           : section.text,
@@ -107,7 +108,7 @@ export namespace SectionRenderer {
       const fontSizeVector = getFontSizeBySectionSize(section);
       const fontHeight = fontSizeVector.y;
       // 缩放过小了，显示巨大化文字
-      RenderUtils.renderTextFromCenter(
+      TextRenderer.renderTextFromCenter(
         Renderer.protectingPrivacy
           ? replaceTextWhenProtect(section.text)
           : section.text,
@@ -126,7 +127,7 @@ export namespace SectionRenderer {
 
   function getFontSizeBySectionSize(section: Section): Vector {
     // 缩放过小了，显示巨大化文字
-    RenderUtils.renderText("", Vector.getZero(), 100);
+    TextRenderer.renderText("", Vector.getZero(), 100);
 
     const textSize = Canvas.ctx.measureText(section.text);
     const width = textSize.width;

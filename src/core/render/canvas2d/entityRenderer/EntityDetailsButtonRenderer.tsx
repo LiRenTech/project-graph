@@ -4,8 +4,8 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Camera } from "../../../stage/Camera";
 import { Entity } from "../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
-import { RenderUtils } from "../RenderUtils";
 import { Renderer } from "../renderer";
+import { TextRenderer } from "../textRenderer";
 /**
  * 仅仅渲染一个节点右上角的按钮
  */
@@ -30,7 +30,7 @@ export function EntityDetailsButtonRenderer(entity: Entity) {
     isMouseHovering = true;
     if (!entity.isEditingDetails)
       // 鼠标悬浮在这上面
-      RenderUtils.renderText(
+      TextRenderer.renderText(
         "点击展开或关闭节点注释详情",
         Renderer.transformWorld2View(
           entity.detailsButtonRectangle().topCenter.subtract(new Vector(0, 12)),
@@ -39,7 +39,7 @@ export function EntityDetailsButtonRenderer(entity: Entity) {
         StageStyleManager.currentStyle.DetailsDebugTextColor,
       );
   }
-  RenderUtils.renderText(
+  TextRenderer.renderText(
     entity.isEditingDetails ? "✏️" : "📃",
     Renderer.transformWorld2View(entity.detailsButtonRectangle().leftTop),
     isMouseHovering ? getFontSizeByTime() : 20 * Camera.currentScale,

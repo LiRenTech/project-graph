@@ -26,6 +26,7 @@ import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
 import { EntityRenderer } from "./entityRenderer/EntityRenderer";
 import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
 import { ShapeRenderer } from "./shapeRenderer";
+import { TextRenderer } from "./textRenderer";
 
 /**
  * 渲染器
@@ -267,7 +268,7 @@ export namespace Renderer {
         color,
         50,
       );
-      RenderUtils.renderText(
+      TextRenderer.renderText(
         "再次中键取消视野吸附,或移动到窗口边缘",
         new Vector(25, Renderer.h - 25 - 20),
         20,
@@ -344,7 +345,7 @@ export namespace Renderer {
         4 * Camera.currentScale,
       );
     }
-    RenderUtils.renderTextFromCenter(
+    TextRenderer.renderTextFromCenter(
       "Jump To",
       transformWorld2View(Controller.mouseLocation).subtract(new Vector(0, 30)),
       16,
@@ -425,7 +426,7 @@ export namespace Renderer {
           1,
           NODE_ROUNDED_RADIUS,
         );
-        RenderUtils.renderTextFromCenter(
+        TextRenderer.renderTextFromCenter(
           tagObject.text,
           transformWorld2View(rect.center),
           FONT_SIZE,
@@ -477,7 +478,7 @@ export namespace Renderer {
             hintText = "连接！";
           }
           // 在生成点下方写文字提示
-          RenderUtils.renderText(
+          TextRenderer.renderText(
             hintText,
             transformWorld2View(
               KeyboardOnlyEngine.virtualTargetLocation().add(new Vector(0, 50)),
@@ -573,7 +574,7 @@ export namespace Renderer {
         1,
       );
       // 在原位置下写标注
-      RenderUtils.renderText(
+      TextRenderer.renderText(
         "ctrl+shift+v 原位置叠加粘贴",
         transformWorld2View(
           new Vector(
@@ -597,7 +598,7 @@ export namespace Renderer {
         1,
       );
       // 写下标注
-      RenderUtils.renderText(
+      TextRenderer.renderText(
         "ctrl+v 粘贴到鼠标位置，Esc键清空粘贴板",
         transformWorld2View(
           new Vector(
@@ -725,7 +726,7 @@ export namespace Renderer {
       detailsData.push(`time:${k}: ${v.toFixed(2)}`);
     }
     for (const line of detailsData) {
-      RenderUtils.renderText(
+      TextRenderer.renderText(
         line,
         new Vector(10, 80 + detailsData.indexOf(line) * 12),
         10,
@@ -749,7 +750,7 @@ export namespace Renderer {
 
     for (const key of Controller.pressingKeySet) {
       const textLocation = new Vector(x, Renderer.h - 100);
-      RenderUtils.renderText(
+      TextRenderer.renderText(
         key,
         textLocation,
         fontSize,
@@ -765,7 +766,7 @@ export namespace Renderer {
         Controller.pressingKeySet.has("a") ||
         Controller.pressingKeySet.has("d"))
     ) {
-      RenderUtils.renderText(
+      TextRenderer.renderText(
         "🔒方向键移动视野被禁止，可设置🔧更改",
         new Vector(margin, Renderer.h - 60),
         15,

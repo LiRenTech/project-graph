@@ -1,7 +1,7 @@
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
-import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { TextRenderer } from "../../render/canvas2d/textRenderer";
 import { Camera } from "../../stage/Camera";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effect";
@@ -21,7 +21,7 @@ export class TextRaiseEffectLocated extends Effect {
     if (this.timeProgress.isFull) {
       return;
     }
-    RenderUtils.renderTextFromCenter(
+    TextRenderer.renderTextFromCenter(
       this.text,
       Renderer.transformWorld2View(
         this.location.add(

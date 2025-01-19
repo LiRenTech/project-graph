@@ -7,6 +7,7 @@ import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
 import { Renderer } from "../../renderer";
 import { RenderUtils } from "../../RenderUtils";
 import { ShapeRenderer } from "../../shapeRenderer";
+import { TextRenderer } from "../../textRenderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { EntityRenderer } from "../EntityRenderer";
 
@@ -32,7 +33,7 @@ export namespace UrlNodeRenderer {
     );
     // 绘制标题
     if (!urlNode.isEditingTitle) {
-      RenderUtils.renderText(
+      TextRenderer.renderText(
         urlNode.title,
         Renderer.transformWorld2View(
           urlNode.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
@@ -56,7 +57,7 @@ export namespace UrlNodeRenderer {
       4 * Camera.currentScale,
     );
     // 绘制url
-    RenderUtils.renderText(
+    TextRenderer.renderText(
       urlNode.url,
       Renderer.transformWorld2View(
         urlNode.rectangle.location.add(
@@ -95,7 +96,7 @@ export namespace UrlNodeRenderer {
         0,
       );
       // 绘制提示
-      RenderUtils.renderText(
+      TextRenderer.renderText(
         "双击打开链接",
         Renderer.transformWorld2View(
           urlNode.rectangle.leftBottom.add(new Vector(0, 20)),

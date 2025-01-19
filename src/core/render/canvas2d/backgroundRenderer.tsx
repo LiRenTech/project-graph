@@ -6,6 +6,7 @@ import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Renderer } from "./renderer";
 import { RenderUtils } from "./RenderUtils";
 import { ShapeRenderer } from "./shapeRenderer";
+import { TextRenderer } from "./textRenderer";
 
 /**
  * 画洞洞板式的背景
@@ -96,7 +97,7 @@ export function renderCartesianBackground(viewRect: Rectangle) {
   const currentGap = getCurrentGap();
   // 画x轴上的刻度
   for (const x of getLocationXIterator(viewRect, currentGap)) {
-    RenderUtils.renderText(
+    TextRenderer.renderText(
       `${x}`,
       Renderer.transformWorld2View(new Vector(x, 0)),
       10,
@@ -105,7 +106,7 @@ export function renderCartesianBackground(viewRect: Rectangle) {
   }
   // 画y轴上的刻度
   for (const y of getLocationYIterator(viewRect, currentGap)) {
-    RenderUtils.renderText(
+    TextRenderer.renderText(
       `${y}`,
       Renderer.transformWorld2View(new Vector(0, y)),
       10,

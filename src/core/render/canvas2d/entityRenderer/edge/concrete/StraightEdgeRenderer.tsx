@@ -14,6 +14,7 @@ import { SvgUtils } from "../../../../svg/SvgUtils";
 import { Renderer } from "../../../renderer";
 import { RenderUtils } from "../../../RenderUtils";
 import { ShapeRenderer } from "../../../shapeRenderer";
+import { TextRenderer } from "../../../textRenderer";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 
@@ -86,7 +87,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       const midPoint = edge.bodyLine.midPoint();
       const startHalf = new Line(edge.bodyLine.start, midPoint);
       const endHalf = new Line(midPoint, edge.bodyLine.end);
-      RenderUtils.renderTextFromCenter(
+      TextRenderer.renderTextFromCenter(
         edge.text,
         Renderer.transformWorld2View(midPoint),
         Renderer.FONT_SIZE * Camera.currentScale,
@@ -233,7 +234,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       );
     } else {
       // 有文字的边
-      RenderUtils.renderTextFromCenter(
+      TextRenderer.renderTextFromCenter(
         edge.text,
         Renderer.transformWorld2View(shiftingMidPoint),
         Renderer.FONT_SIZE * Camera.currentScale,
@@ -291,7 +292,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       // 没有文字的边
       return;
     }
-    RenderUtils.renderTextFromCenter(
+    TextRenderer.renderTextFromCenter(
       edge.text,
       Renderer.transformWorld2View(
         edge.target.collisionBox

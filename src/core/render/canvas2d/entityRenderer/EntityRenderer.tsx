@@ -18,8 +18,8 @@ import { Entity } from "../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
 import { ImageRenderer } from "../ImageRenderer";
 import { Renderer } from "../renderer";
-import { RenderUtils } from "../RenderUtils";
 import { ShapeRenderer } from "../shapeRenderer";
+import { TextRenderer } from "../textRenderer";
 import { CollisionBoxRenderer } from "./CollisionBoxRenderer";
 import { EntityDetailsButtonRenderer } from "./EntityDetailsButtonRenderer";
 import { SectionRenderer } from "./section/SectionRenderer";
@@ -72,7 +72,7 @@ export namespace EntityRenderer {
         for (const key of Object.keys(LogicNodeNameToRenderNameMap)) {
           if (node.text === key) {
             const logicNodeName = key as LogicNodeNameEnum;
-            RenderUtils.renderTextFromCenter(
+            TextRenderer.renderTextFromCenter(
               getLogicNodeRenderName(logicNodeName),
               Renderer.transformWorld2View(node.rectangle.center),
               Renderer.FONT_SIZE * Camera.currentScale,
@@ -85,7 +85,7 @@ export namespace EntityRenderer {
           }
         }
       } else {
-        RenderUtils.renderMultiLineText(
+        TextRenderer.renderMultiLineText(
           Renderer.protectingPrivacy
             ? replaceTextWhenProtect(node.text)
             : node.text,
@@ -147,7 +147,7 @@ export namespace EntityRenderer {
     }
   }
   function _renderEntityDetails(entity: Entity, limitLiens: number) {
-    RenderUtils.renderMultiLineText(
+    TextRenderer.renderMultiLineText(
       entity.details,
       Renderer.transformWorld2View(
         entity.collisionBox
@@ -204,7 +204,7 @@ export namespace EntityRenderer {
       2 * Camera.currentScale,
     );
     if (imageNode.state === "loading") {
-      RenderUtils.renderTextFromCenter(
+      TextRenderer.renderTextFromCenter(
         "loading...",
         Renderer.transformWorld2View(imageNode.rectangle.center),
         20 * Camera.currentScale,
@@ -220,27 +220,27 @@ export namespace EntityRenderer {
       imageNode.state === "encodingError" ||
       imageNode.state === "unknownError"
     ) {
-      RenderUtils.renderTextFromCenter(
+      TextRenderer.renderTextFromCenter(
         imageNode.uuid,
         Renderer.transformWorld2View(imageNode.rectangle.topCenter),
         10 * Camera.currentScale,
         Color.Red,
       );
-      RenderUtils.renderTextFromCenter(
+      TextRenderer.renderTextFromCenter(
         imageNode.errorDetails,
         Renderer.transformWorld2View(imageNode.rectangle.bottomCenter),
         10 * Camera.currentScale,
         Color.Red,
       );
       if (imageNode.state === "unknownError") {
-        RenderUtils.renderTextFromCenter(
+        TextRenderer.renderTextFromCenter(
           "未知错误，建议反馈",
           Renderer.transformWorld2View(imageNode.rectangle.center),
           20 * Camera.currentScale,
           Color.Red,
         );
       } else if (imageNode.state === "encodingError") {
-        RenderUtils.renderTextFromCenter(
+        TextRenderer.renderTextFromCenter(
           "图片base64编码错误",
           Renderer.transformWorld2View(imageNode.rectangle.center),
           20 * Camera.currentScale,
@@ -250,7 +250,7 @@ export namespace EntityRenderer {
     }
     // 调试，缩放信息和位置信息
     if (Renderer.isShowDebug) {
-      RenderUtils.renderText(
+      TextRenderer.renderText(
         "scale: " + imageNode.scaleNumber.toString(),
         Renderer.transformWorld2View(
           imageNode.rectangle.location.subtract(new Vector(0, 6)),
@@ -258,7 +258,7 @@ export namespace EntityRenderer {
         3 * Camera.currentScale,
         Color.Gray,
       );
-      RenderUtils.renderText(
+      TextRenderer.renderText(
         "origin size: " + imageNode.originImageSize.toString(),
         Renderer.transformWorld2View(
           imageNode.rectangle.location.subtract(new Vector(0, 3 + 6)),
