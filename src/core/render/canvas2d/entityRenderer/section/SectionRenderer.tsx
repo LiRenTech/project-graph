@@ -12,8 +12,8 @@ import { Canvas } from "../../../../stage/Canvas";
 import { Section } from "../../../../stageObject/entity/Section";
 import { TextNode } from "../../../../stageObject/entity/TextNode";
 import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
+import { CurveRenderer } from "../../curveRenderer";
 import { Renderer } from "../../renderer";
-import { RenderUtils } from "../../RenderUtils";
 import { ShapeRenderer } from "../../shapeRenderer";
 import { TextRenderer } from "../../textRenderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
@@ -170,7 +170,7 @@ export namespace SectionRenderer {
     // debug: 绿色虚线
     if (Renderer.isShowDebug) {
       for (const child of section.children) {
-        RenderUtils.renderDashedLine(
+        CurveRenderer.renderDashedLine(
           Renderer.transformWorld2View(section.rectangle.leftTop),
           Renderer.transformWorld2View(
             child.collisionBox.getRectangle().leftTop,

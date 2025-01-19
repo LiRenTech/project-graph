@@ -10,8 +10,8 @@ import { LineEdge } from "../../../../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../../../stageObject/entity/ConnectPoint";
 import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
+import { CurveRenderer } from "../../../curveRenderer";
 import { Renderer } from "../../../renderer";
-import { RenderUtils } from "../../../RenderUtils";
 import { ShapeRenderer } from "../../../shapeRenderer";
 import { TextRenderer } from "../../../textRenderer";
 import { EdgeRenderer } from "../EdgeRenderer";
@@ -137,7 +137,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
   // debug 测试
   renderTest(edge: LineEdge) {
     for (let i = 0; i < 4; i++) {
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(
           edge.target.collisionBox.getRectangle().center,
         ),
@@ -200,7 +200,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
         );
 
         const p3 = new Vector(p4.x, p2.y);
-        RenderUtils.renderSolidLineMultiple(
+        CurveRenderer.renderSolidLineMultiple(
           [
             Renderer.transformWorld2View(p1),
             Renderer.transformWorld2View(p2),
@@ -254,7 +254,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
 
         const p3 = new Vector(p2.x, p4.y);
 
-        RenderUtils.renderSolidLineMultiple(
+        CurveRenderer.renderSolidLineMultiple(
           [
             Renderer.transformWorld2View(p1),
             Renderer.transformWorld2View(p2),
@@ -273,7 +273,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
       }
 
       // 没有文字的边
-      // RenderUtils.renderSolidLine(
+      // CurveRenderer.renderSolidLine(
       //   Renderer.transformWorld2View(edge.bodyLine.start),
       //   Renderer.transformWorld2View(edge.bodyLine.end),
       //   new Color(204, 204, 204),
@@ -291,7 +291,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
       );
       const edgeTextRectangle = edge.textRectangle;
 
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.start),
         Renderer.transformWorld2View(
           edgeTextRectangle.getLineIntersectionPoint(startHalf),
@@ -299,7 +299,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
         new Color(204, 204, 204),
         2 * Camera.currentScale,
       );
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.end),
         Renderer.transformWorld2View(
           edgeTextRectangle.getLineIntersectionPoint(endHalf),
@@ -340,13 +340,13 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
 
     if (edge.text.trim() === "") {
       // 没有文字的边
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(startPoint),
         Renderer.transformWorld2View(shiftingMidPoint),
         new Color(204, 204, 204),
         2 * Camera.currentScale,
       );
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(shiftingMidPoint),
         Renderer.transformWorld2View(endPoint),
         new Color(204, 204, 204),
@@ -363,13 +363,13 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
       const start2MidPoint =
         edgeTextRectangle.getLineIntersectionPoint(startLine);
       const mid2EndPoint = edgeTextRectangle.getLineIntersectionPoint(endLine);
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(startPoint),
         Renderer.transformWorld2View(start2MidPoint),
         new Color(204, 204, 204),
         2 * Camera.currentScale,
       );
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(mid2EndPoint),
         Renderer.transformWorld2View(endPoint),
         new Color(204, 204, 204),
@@ -502,7 +502,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     startNode: ConnectableEntity,
     mouseLocation: Vector,
   ): void {
-    RenderUtils.renderGradientLine(
+    CurveRenderer.renderGradientLine(
       Renderer.transformWorld2View(
         startNode.collisionBox.getRectangle().getCenter(),
       ),
@@ -517,7 +517,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     startNode: ConnectableEntity,
     endNode: ConnectableEntity,
   ): void {
-    RenderUtils.renderGradientLine(
+    CurveRenderer.renderGradientLine(
       Renderer.transformWorld2View(
         startNode.collisionBox.getRectangle().getCenter(),
       ),

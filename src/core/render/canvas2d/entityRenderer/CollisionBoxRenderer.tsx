@@ -6,8 +6,8 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Camera } from "../../../stage/Camera";
 import { CollisionBox } from "../../../stageObject/collisionBox/collisionBox";
+import { CurveRenderer } from "../curveRenderer";
 import { Renderer } from "../renderer";
-import { RenderUtils } from "../RenderUtils";
 import { ShapeRenderer } from "../shapeRenderer";
 import { WorldRenderUtils } from "../WorldRenderUtils";
 
@@ -39,7 +39,7 @@ export namespace CollisionBoxRenderer {
           2 * Camera.currentScale,
         );
       } else if (shape instanceof Line) {
-        RenderUtils.renderSolidLine(
+        CurveRenderer.renderSolidLine(
           Renderer.transformWorld2View(shape.start),
           Renderer.transformWorld2View(shape.end),
           color,

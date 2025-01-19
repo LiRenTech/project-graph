@@ -286,7 +286,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     // let lastPoint = curve.start;
     // for (let i = 1; i <= segment; i++) {
     //   const line = new Line(lastPoint, curve.bezier.getPointByT(i / segment));
-    //   RenderUtils.renderSolidLine(
+    //   CurveRenderer.renderSolidLine(
     //     Renderer.transformWorld2View(line.start),
     //     Renderer.transformWorld2View(line.end),
     //     new Color(0, 104, 0),

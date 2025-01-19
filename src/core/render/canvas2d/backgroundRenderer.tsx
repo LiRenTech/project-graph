@@ -3,8 +3,8 @@ import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
 import { Camera } from "../../stage/Camera";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { CurveRenderer } from "./curveRenderer";
 import { Renderer } from "./renderer";
-import { RenderUtils } from "./RenderUtils";
 import { ShapeRenderer } from "./shapeRenderer";
 import { TextRenderer } from "./textRenderer";
 
@@ -45,7 +45,7 @@ export function renderHorizonBackground(viewRect: Rectangle) {
     const lineStartLocation = new Vector(viewRect.left, y);
     const lineEndLocation = new Vector(viewRect.right, y);
 
-    RenderUtils.renderSolidLine(
+    CurveRenderer.renderSolidLine(
       Renderer.transformWorld2View(lineStartLocation),
       Renderer.transformWorld2View(lineEndLocation),
       y === 0 ? mainColor : gridColor,
@@ -66,7 +66,7 @@ export function renderVerticalBackground(viewRect: Rectangle) {
   for (const x of getLocationXIterator(viewRect, currentGap)) {
     const lineStartLocation = new Vector(x, viewRect.top);
     const lineEndLocation = new Vector(x, viewRect.bottom);
-    RenderUtils.renderSolidLine(
+    CurveRenderer.renderSolidLine(
       Renderer.transformWorld2View(lineStartLocation),
       Renderer.transformWorld2View(lineEndLocation),
       x === 0 ? mainColor : gridColor,
@@ -81,14 +81,14 @@ export function renderVerticalBackground(viewRect: Rectangle) {
  */
 export function renderCartesianBackground(viewRect: Rectangle) {
   // x轴
-  RenderUtils.renderSolidLine(
+  CurveRenderer.renderSolidLine(
     Renderer.transformWorld2View(new Vector(viewRect.left, 0)),
     Renderer.transformWorld2View(new Vector(viewRect.right, 0)),
     StageStyleManager.currentStyle.GridNormalColor,
     1,
   );
   // y轴
-  RenderUtils.renderSolidLine(
+  CurveRenderer.renderSolidLine(
     Renderer.transformWorld2View(new Vector(0, viewRect.top)),
     Renderer.transformWorld2View(new Vector(0, viewRect.bottom)),
     StageStyleManager.currentStyle.GridNormalColor,

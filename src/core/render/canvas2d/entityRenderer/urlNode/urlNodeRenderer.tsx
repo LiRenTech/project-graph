@@ -4,8 +4,8 @@ import { MouseLocation } from "../../../../MouseLocation";
 import { Camera } from "../../../../stage/Camera";
 import { UrlNode } from "../../../../stageObject/entity/UrlNode";
 import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
+import { CurveRenderer } from "../../curveRenderer";
 import { Renderer } from "../../renderer";
-import { RenderUtils } from "../../RenderUtils";
 import { ShapeRenderer } from "../../shapeRenderer";
 import { TextRenderer } from "../../textRenderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
@@ -43,7 +43,7 @@ export namespace UrlNodeRenderer {
       );
     }
     // 绘制分界线
-    RenderUtils.renderDashedLine(
+    CurveRenderer.renderDashedLine(
       Renderer.transformWorld2View(
         urlNode.rectangle.location.add(new Vector(0, UrlNode.titleHeight)),
       ),

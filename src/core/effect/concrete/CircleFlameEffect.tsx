@@ -2,7 +2,7 @@ import { Color } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
-import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { ShapeRenderer } from "../../render/canvas2d/shapeRenderer";
 import { Camera } from "../../stage/Camera";
 import { Effect } from "../effect";
 
@@ -33,7 +33,7 @@ export class CircleFlameEffect extends Effect {
     }
     this.color.a = 1 - this.timeProgress.rate;
     const rendRadius = this.radius * this.timeProgress.rate;
-    RenderUtils.renderCircleTransition(
+    ShapeRenderer.renderCircleTransition(
       Renderer.transformWorld2View(this.location),
       rendRadius * Camera.currentScale,
       this.color,

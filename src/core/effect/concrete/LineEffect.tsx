@@ -1,8 +1,8 @@
 import { Color, mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Vector } from "../../dataStruct/Vector";
+import { CurveRenderer } from "../../render/canvas2d/curveRenderer";
 import { Renderer } from "../../render/canvas2d/renderer";
-import { RenderUtils } from "../../render/canvas2d/RenderUtils";
 import { Camera } from "../../stage/Camera";
 import { Effect } from "../effect";
 
@@ -38,7 +38,7 @@ export class LineEffect extends Effect {
       this.toColor.toTransparent(),
       this.timeProgress.rate,
     );
-    RenderUtils.renderGradientLine(
+    CurveRenderer.renderGradientLine(
       fromLocation,
       toLocation,
       fromColor,

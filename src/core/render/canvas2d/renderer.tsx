@@ -14,7 +14,6 @@ import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManage
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { RenderUtils } from "./RenderUtils";
 import { WorldRenderUtils } from "./WorldRenderUtils";
 import {
   renderCartesianBackground,
@@ -22,6 +21,7 @@ import {
   renderHorizonBackground,
   renderVerticalBackground,
 } from "./backgroundRenderer";
+import { CurveRenderer } from "./curveRenderer";
 import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
 import { EntityRenderer } from "./entityRenderer/EntityRenderer";
 import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
@@ -218,7 +218,7 @@ export namespace Renderer {
       const shortLineEnd = viewCenterLocation.add(
         new Vector(20, 0).rotateDegrees(degrees),
       );
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         shortLineStart,
         shortLineEnd,
         StageStyleManager.currentStyle.GridHeavyColor,
@@ -337,7 +337,7 @@ export namespace Renderer {
     for (const selectedEntity of selectedEntities) {
       const startLocation = selectedEntity.collisionBox.getRectangle().center;
       const endLocation = Controller.mouseLocation;
-      RenderUtils.renderGradientLine(
+      CurveRenderer.renderGradientLine(
         transformWorld2View(startLocation),
         transformWorld2View(endLocation),
         Color.Transparent,
@@ -495,7 +495,7 @@ export namespace Renderer {
       for (const node of StageManager.getTextNodes()) {
         if (node.isSelected) {
           // 连线
-          RenderUtils.renderGradientLine(
+          CurveRenderer.renderGradientLine(
             transformWorld2View(node.rectangle.center),
             transformWorld2View(Stage.keyOnlyVirtualNewLocation),
             StageStyleManager.currentStyle.StageObjectBorderColor,

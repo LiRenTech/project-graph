@@ -11,8 +11,8 @@ import { ConnectPoint } from "../../../../../stageObject/entity/ConnectPoint";
 import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
 import { SvgUtils } from "../../../../svg/SvgUtils";
+import { CurveRenderer } from "../../../curveRenderer";
 import { Renderer } from "../../../renderer";
-import { RenderUtils } from "../../../RenderUtils";
 import { ShapeRenderer } from "../../../shapeRenderer";
 import { TextRenderer } from "../../../textRenderer";
 import { EdgeRenderer } from "../EdgeRenderer";
@@ -76,7 +76,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     // 直线绘制
     if (edge.text.trim() === "") {
       // 没有文字的边
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.start),
         Renderer.transformWorld2View(edge.bodyLine.end),
         StageStyleManager.currentStyle.StageObjectBorderColor,
@@ -95,7 +95,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       );
       const edgeTextRectangle = edge.textRectangle;
 
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.start),
         Renderer.transformWorld2View(
           edgeTextRectangle.getLineIntersectionPoint(startHalf),
@@ -103,7 +103,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
       );
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.end),
         Renderer.transformWorld2View(
           edgeTextRectangle.getLineIntersectionPoint(endHalf),
@@ -220,13 +220,13 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
 
     if (edge.text.trim() === "") {
       // 没有文字的边
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(startPoint),
         Renderer.transformWorld2View(shiftingMidPoint),
         StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
       );
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(shiftingMidPoint),
         Renderer.transformWorld2View(endPoint),
         StageStyleManager.currentStyle.StageObjectBorderColor,
@@ -244,13 +244,13 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       const start2MidPoint =
         edgeTextRectangle.getLineIntersectionPoint(startLine);
       const mid2EndPoint = edgeTextRectangle.getLineIntersectionPoint(endLine);
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(startPoint),
         Renderer.transformWorld2View(start2MidPoint),
         StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
       );
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(mid2EndPoint),
         Renderer.transformWorld2View(endPoint),
         StageStyleManager.currentStyle.StageObjectBorderColor,
@@ -308,7 +308,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     startNode: ConnectableEntity,
     mouseLocation: Vector,
   ): void {
-    RenderUtils.renderGradientLine(
+    CurveRenderer.renderGradientLine(
       Renderer.transformWorld2View(
         startNode.collisionBox.getRectangle().getCenter(),
       ),
@@ -323,7 +323,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     startNode: ConnectableEntity,
     endNode: ConnectableEntity,
   ): void {
-    RenderUtils.renderGradientLine(
+    CurveRenderer.renderGradientLine(
       Renderer.transformWorld2View(
         startNode.collisionBox.getRectangle().getCenter(),
       ),

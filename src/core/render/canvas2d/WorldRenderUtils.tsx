@@ -6,8 +6,8 @@ import { Vector } from "../../dataStruct/Vector";
 import { Camera } from "../../stage/Camera";
 import { Canvas } from "../../stage/Canvas";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { CurveRenderer } from "./curveRenderer";
 import { Renderer } from "./renderer";
-import { RenderUtils } from "./RenderUtils";
 import { ShapeRenderer } from "./shapeRenderer";
 
 /**
@@ -33,14 +33,14 @@ export namespace WorldRenderUtils {
     // 绘制首位控制点到曲线首尾的虚线
     const dashedColor = color.clone();
     dashedColor.a /= 2;
-    RenderUtils.renderDashedLine(
+    CurveRenderer.renderDashedLine(
       Renderer.transformWorld2View(spline.controlPoints[0]),
       start,
       dashedColor,
       width,
       width * 2,
     );
-    RenderUtils.renderDashedLine(
+    CurveRenderer.renderDashedLine(
       end,
       Renderer.transformWorld2View(
         spline.controlPoints[spline.controlPoints.length - 1],
@@ -88,7 +88,7 @@ export namespace WorldRenderUtils {
     curve.end = Renderer.transformWorld2View(curve.end);
     curve.ctrlPt1 = Renderer.transformWorld2View(curve.ctrlPt1);
     curve.ctrlPt2 = Renderer.transformWorld2View(curve.ctrlPt2);
-    RenderUtils.renderBezierCurve(curve, color, width * Camera.currentScale);
+    CurveRenderer.renderBezierCurve(curve, color, width * Camera.currentScale);
   }
 
   /**
@@ -121,7 +121,7 @@ export namespace WorldRenderUtils {
         2,
       );
     } else {
-      RenderUtils.renderSolidLine(
+      CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(start),
         Renderer.transformWorld2View(end),
         StageStyleManager.currentStyle.effects.flash,
