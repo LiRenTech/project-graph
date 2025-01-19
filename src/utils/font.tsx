@@ -42,16 +42,21 @@ export function getTextSize(text: string, size: number): Vector {
  * 获取多行文本的宽度和高度
  * @param text
  * @param fontSize
+ * @param lineHeight 行高，是一个比率
  * @returns
  */
-export function getMultiLineTextSize(text: string, fontSize: number): Vector {
+export function getMultiLineTextSize(
+  text: string,
+  fontSize: number,
+  lineHeight: number,
+): Vector {
   const lines = text.split("\n");
   let width = 0;
   let height = 0;
   for (const line of lines) {
     const size = getTextSize(line, fontSize);
     width = Math.max(width, size.x);
-    height += size.y;
+    height += size.y * lineHeight;
   }
   return new Vector(width, height);
 }

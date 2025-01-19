@@ -96,7 +96,7 @@ export namespace EntityRenderer {
           node.color.a === 1
             ? colorInvert(node.color)
             : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
-          1.2,
+          1.5,
         );
       }
     }

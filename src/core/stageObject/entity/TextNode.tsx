@@ -101,7 +101,7 @@ export class TextNode extends ConnectableEntity {
   private adjustSizeByText() {
     this.collisionBox.shapeList[0] = new Rectangle(
       this.rectangle.location.clone(),
-      getMultiLineTextSize(this.text, Renderer.FONT_SIZE).add(
+      getMultiLineTextSize(this.text, Renderer.FONT_SIZE, 1.5).add(
         Vector.same(Renderer.NODE_PADDING).multiply(2),
       ),
     );
