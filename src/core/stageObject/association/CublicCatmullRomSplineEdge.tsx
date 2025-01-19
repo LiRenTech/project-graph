@@ -6,6 +6,7 @@ import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
 import { ConnectableEntity } from "../StageObject";
 import { Edge } from "./Edge";
+import { StageManager } from "../../stage/stageManager/StageManager";
 
 /**
  * CR曲线连线
@@ -64,8 +65,10 @@ export class CublicCatmullRomSplineEdge extends Edge {
     controlPoints,
   }: Serialized.CublicCatmullRomSplineEdge) {
     super();
-    this._source = new TextNode({ uuid: source }, true);
-    this._target = new TextNode({ uuid: target }, true);
+    // this._source = new TextNode({ uuid: source }, true);
+    // this._target = new TextNode({ uuid: target }, true);
+    this._source = StageManager.getTextNodeByUUID(source) as TextNode;
+    this._target = StageManager.getTextNodeByUUID(target) as TextNode;
     this.uuid = uuid;
     this.text = text;
     this.alpha = alpha;
