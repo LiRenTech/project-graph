@@ -1,28 +1,27 @@
 import { useEffect } from "react";
+import { InputElement } from "../core/render/domElement/inputElement";
+import { Vector } from "../core/dataStruct/Vector";
+import Button from "../components/ui/Button";
 
 export default function TestPage() {
   useEffect(() => {
-    // 在页面上创建一个textarea元素
-    const textarea = document.createElement("textarea");
-    // 设置textarea的样式
-    textarea.style.width = "400px";
-    textarea.style.height = "400px";
-    textarea.style.position = "fixed";
-    textarea.style.top = "200px";
-    textarea.style.left = "300px";
-    textarea.style.backgroundColor = "transparent";
-    textarea.autocomplete = "off";
-    textarea.style.border = "solid 1px white";
-    textarea.style.padding = "1px";
-
-    // 将textarea元素添加到页面上
-    document.body.appendChild(textarea);
+    // InputElement.textarea(new Vector(300, 300), "hello world");
   });
+
+  function testInput() {
+    InputElement.input(new Vector(300, 300), "hello world");
+  }
+
+  function testTextarea() {
+    InputElement.textarea(new Vector(300, 300), "hello world");
+  }
 
   return (
     <>
       <div className="p-4">
         <h1> Test Page </h1>
+        <Button onClick={testInput}>TestInput</Button>
+        <Button onClick={testTextarea}>TestTextarea</Button>
         <div className="h-16 bg-gray-800" />
       </div>
     </>
