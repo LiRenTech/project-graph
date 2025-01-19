@@ -1,27 +1,28 @@
+import { replaceTextWhenProtect } from "../../../../utils/font";
+import { Random } from "../../../algorithm/random";
 import { Color, colorInvert } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { TextNode } from "../../../stageObject/entity/TextNode";
-import { Camera } from "../../../stage/Camera";
-import { Renderer } from "../renderer";
-import { RenderUtils } from "../RenderUtils";
-import { Section } from "../../../stageObject/entity/Section";
-import { CollisionBoxRenderer } from "./CollisionBoxRenderer";
-import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
-import { replaceTextWhenProtect } from "../../../../utils/font";
-import { Random } from "../../../algorithm/random";
-import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
-import { ImageNode } from "../../../stageObject/entity/ImageNode";
-import { ImageRenderer } from "../ImageRenderer";
-import { Entity } from "../../../stageObject/StageObject";
-import { EntityDetailsButtonRenderer } from "./EntityDetailsButtonRenderer";
-import { SectionRenderer } from "./section/SectionRenderer";
 import {
   getLogicNodeRenderName,
   LogicNodeNameEnum,
   LogicNodeNameToRenderNameMap,
 } from "../../../stage/autoComputeEngine/logicNodeNameEnum";
+import { Camera } from "../../../stage/Camera";
+import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
+import { ImageNode } from "../../../stageObject/entity/ImageNode";
+import { Section } from "../../../stageObject/entity/Section";
+import { TextNode } from "../../../stageObject/entity/TextNode";
 import { UrlNode } from "../../../stageObject/entity/UrlNode";
+import { Entity } from "../../../stageObject/StageObject";
+import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
+import { ImageRenderer } from "../ImageRenderer";
+import { Renderer } from "../renderer";
+import { RenderUtils } from "../RenderUtils";
+import { ShapeRenderer } from "../shapeRenderer";
+import { CollisionBoxRenderer } from "./CollisionBoxRenderer";
+import { EntityDetailsButtonRenderer } from "./EntityDetailsButtonRenderer";
+import { SectionRenderer } from "./section/SectionRenderer";
 import { UrlNodeRenderer } from "./urlNode/urlNodeRenderer";
 
 /**
@@ -54,7 +55,7 @@ export namespace EntityRenderer {
 
   function renderNode(node: TextNode) {
     // 节点身体矩形
-    RenderUtils.renderRect(
+    ShapeRenderer.renderRect(
       new Rectangle(
         Renderer.transformWorld2View(node.rectangle.location),
         node.rectangle.size.multiply(Camera.currentScale),
@@ -115,7 +116,7 @@ export namespace EntityRenderer {
         StageStyleManager.currentStyle.CollideBoxSelectedColor.clone();
       borderColor.a = Random.randomFloat(0.2, 1);
       // 在外面增加一个框
-      RenderUtils.renderRect(
+      ShapeRenderer.renderRect(
         new Rectangle(
           Renderer.transformWorld2View(node.rectangle.location),
           node.rectangle.size.multiply(Camera.currentScale),
@@ -174,7 +175,7 @@ export namespace EntityRenderer {
         StageStyleManager.currentStyle.CollideBoxSelectedColor,
       );
     }
-    RenderUtils.renderCircle(
+    ShapeRenderer.renderCircle(
       Renderer.transformWorld2View(connectPoint.geometryCenter),
       connectPoint.radius * Camera.currentScale,
       Color.Transparent,
@@ -193,7 +194,7 @@ export namespace EntityRenderer {
       );
     }
     // 节点身体矩形
-    RenderUtils.renderRect(
+    ShapeRenderer.renderRect(
       new Rectangle(
         Renderer.transformWorld2View(imageNode.rectangle.location),
         imageNode.rectangle.size.multiply(Camera.currentScale),

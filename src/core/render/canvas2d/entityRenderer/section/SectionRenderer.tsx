@@ -1,3 +1,4 @@
+import { replaceTextWhenProtect } from "../../../../../utils/font";
 import {
   averageColors,
   Color,
@@ -7,15 +8,15 @@ import {
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Camera } from "../../../../stage/Camera";
+import { Canvas } from "../../../../stage/Canvas";
+import { Section } from "../../../../stageObject/entity/Section";
+import { TextNode } from "../../../../stageObject/entity/TextNode";
+import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
 import { Renderer } from "../../renderer";
 import { RenderUtils } from "../../RenderUtils";
-import { Section } from "../../../../stageObject/entity/Section";
+import { ShapeRenderer } from "../../shapeRenderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
-import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
 import { EntityRenderer } from "../EntityRenderer";
-import { Canvas } from "../../../../stage/Canvas";
-import { TextNode } from "../../../../stageObject/entity/TextNode";
-import { replaceTextWhenProtect } from "../../../../../utils/font";
 
 export namespace SectionRenderer {
   /** 画折叠状态 */
@@ -25,7 +26,7 @@ export namespace SectionRenderer {
       Renderer.transformWorld2View(section.rectangle.location),
       section.rectangle.size.multiply(Camera.currentScale),
     );
-    RenderUtils.renderRect(
+    ShapeRenderer.renderRect(
       renderRectangle,
       section.color,
       mixColors(
@@ -37,7 +38,7 @@ export namespace SectionRenderer {
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
     // 外框
-    RenderUtils.renderRect(
+    ShapeRenderer.renderRect(
       new Rectangle(
         Renderer.transformWorld2View(
           section.rectangle.location.subtract(Vector.same(4)),
@@ -78,7 +79,7 @@ export namespace SectionRenderer {
       }
       fillColor = averageColors(colors);
     }
-    RenderUtils.renderRect(
+    ShapeRenderer.renderRect(
       new Rectangle(
         Renderer.transformWorld2View(section.rectangle.location),
         section.rectangle.size.multiply(Camera.currentScale),

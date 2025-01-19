@@ -13,6 +13,7 @@ import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
 import { Renderer } from "../../../renderer";
 import { RenderUtils } from "../../../RenderUtils";
+import { ShapeRenderer } from "../../../shapeRenderer";
 import { WorldRenderUtils } from "../../../WorldRenderUtils";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
@@ -123,7 +124,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
 
   public renderCycleState(edge: LineEdge): void {
     // 自环
-    RenderUtils.renderArc(
+    ShapeRenderer.renderArc(
       Renderer.transformWorld2View(
         edge.target.collisionBox.getRectangle().location,
       ),
@@ -308,7 +309,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       return;
     }
     // 画文本
-    RenderUtils.renderRect(
+    ShapeRenderer.renderRect(
       edge.textRectangle.transformWorld2View(),
       new Color(31, 31, 31, 0.5),
       new Color(31, 31, 31, 0.5),

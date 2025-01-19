@@ -8,6 +8,7 @@ import { Canvas } from "../../stage/Canvas";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Renderer } from "./renderer";
 import { RenderUtils } from "./RenderUtils";
+import { ShapeRenderer } from "./shapeRenderer";
 
 /**
  * 一些基础的渲染图形
@@ -218,7 +219,7 @@ export namespace WorldRenderUtils {
       direction.rotateDegrees(-90).multiply(width / 2),
     );
 
-    RenderUtils.renderPolygonAndFill(
+    ShapeRenderer.renderPolygonAndFill(
       [
         Renderer.transformWorld2View(start),
         Renderer.transformWorld2View(headLeft),

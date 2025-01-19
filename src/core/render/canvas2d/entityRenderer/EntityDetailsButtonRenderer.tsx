@@ -13,7 +13,7 @@ export function EntityDetailsButtonRenderer(entity: Entity) {
   if (!entity.details) {
     return;
   }
-  // RenderUtils.renderRect(
+  // ShapeRenderer.renderRect(
   //   entity.detailsButtonRectangle().transformWorld2View(),
   //   StageStyleManager.currentStyle.DetailsDebugTextColor,
   //   StageStyleManager.currentStyle.DetailsDebugTextColor,

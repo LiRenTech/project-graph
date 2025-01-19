@@ -3,7 +3,7 @@ import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
 import { Renderer } from "../../render/canvas2d/renderer";
-import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { ShapeRenderer } from "../../render/canvas2d/shapeRenderer";
 import { reverseAnimate } from "../animateFunctions";
 import { easeOutQuint } from "../easings";
 import { Effect } from "../effect";
@@ -46,7 +46,7 @@ export class RectangleNoteEffect extends Effect {
             easeOutQuint(this.timeProgress.rate),
       ),
     );
-    RenderUtils.renderRect(
+    ShapeRenderer.renderRect(
       currentRect.transformWorld2View(),
       Color.Transparent,
       mixColors(

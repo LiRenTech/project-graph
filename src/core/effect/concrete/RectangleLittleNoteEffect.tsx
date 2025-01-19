@@ -2,7 +2,7 @@ import { Random } from "../../algorithm/random";
 import { Color, mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { ShapeRenderer } from "../../render/canvas2d/shapeRenderer";
 import { Camera } from "../../stage/Camera";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { Effect } from "../effect";
@@ -42,7 +42,7 @@ export class RectangleLittleNoteEffect extends Effect {
     if (this.timeProgress.isFull) {
       return;
     }
-    RenderUtils.renderRect(
+    ShapeRenderer.renderRect(
       this.currentRect.transformWorld2View(),
       Color.Transparent,
       mixColors(

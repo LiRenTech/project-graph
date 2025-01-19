@@ -2,7 +2,7 @@ import { Color, mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
-import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { ShapeRenderer } from "../../render/canvas2d/shapeRenderer";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effect";
 
@@ -28,7 +28,7 @@ export class ViewFlashEffect extends Effect {
     if (this.timeProgress.isFull) {
       return;
     }
-    RenderUtils.renderRect(
+    ShapeRenderer.renderRect(
       new Rectangle(new Vector(-10000, -10000), new Vector(20000, 20000)),
       mixColors(this.color, new Color(0, 0, 0, 0), this.timeProgress.rate),
       Color.Transparent,

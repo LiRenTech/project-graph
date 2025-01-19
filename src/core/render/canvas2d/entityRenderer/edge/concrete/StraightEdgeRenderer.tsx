@@ -13,6 +13,7 @@ import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
 import { SvgUtils } from "../../../../svg/SvgUtils";
 import { Renderer } from "../../../renderer";
 import { RenderUtils } from "../../../RenderUtils";
+import { ShapeRenderer } from "../../../shapeRenderer";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 
@@ -268,7 +269,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
 
   public renderCycleState(edge: LineEdge): void {
     // 自环
-    RenderUtils.renderArc(
+    ShapeRenderer.renderArc(
       Renderer.transformWorld2View(
         edge.target.collisionBox.getRectangle().location,
       ),

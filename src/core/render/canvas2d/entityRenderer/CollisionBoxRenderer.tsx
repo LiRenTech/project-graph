@@ -8,6 +8,7 @@ import { Camera } from "../../../stage/Camera";
 import { CollisionBox } from "../../../stageObject/collisionBox/collisionBox";
 import { Renderer } from "../renderer";
 import { RenderUtils } from "../RenderUtils";
+import { ShapeRenderer } from "../shapeRenderer";
 import { WorldRenderUtils } from "../WorldRenderUtils";
 
 /**
@@ -17,7 +18,7 @@ export namespace CollisionBoxRenderer {
   export function render(collideBox: CollisionBox, color: Color) {
     for (const shape of collideBox.shapeList) {
       if (shape instanceof Rectangle) {
-        RenderUtils.renderRect(
+        ShapeRenderer.renderRect(
           new Rectangle(
             Renderer.transformWorld2View(
               shape.location.subtract(Vector.same(7.5)),
@@ -30,7 +31,7 @@ export namespace CollisionBoxRenderer {
           16 * Camera.currentScale,
         );
       } else if (shape instanceof Circle) {
-        RenderUtils.renderCircle(
+        ShapeRenderer.renderCircle(
           Renderer.transformWorld2View(shape.location),
           (shape.radius + 7.5) * Camera.currentScale,
           Color.Transparent,

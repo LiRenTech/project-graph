@@ -1,7 +1,7 @@
 import { Color, mixColors } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { RenderUtils } from "../../render/canvas2d/RenderUtils";
+import { ShapeRenderer } from "../../render/canvas2d/shapeRenderer";
 import { Camera } from "../../stage/Camera";
 import { Effect } from "../effect";
 
@@ -17,7 +17,7 @@ export class RectangleRenderEffect extends Effect {
   }
 
   render() {
-    RenderUtils.renderRect(
+    ShapeRenderer.renderRect(
       this.rectangle.transformWorld2View(),
       this.fillColor,
       mixColors(this.strokeColor, Color.Transparent, this.timeProgress.rate),

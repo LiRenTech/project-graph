@@ -25,6 +25,7 @@ import {
 import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
 import { EntityRenderer } from "./entityRenderer/EntityRenderer";
 import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
+import { ShapeRenderer } from "./shapeRenderer";
 
 /**
  * 渲染器
@@ -160,7 +161,7 @@ export namespace Renderer {
   }
 
   function renderCycleSpaceBorder() {
-    RenderUtils.renderRect(
+    ShapeRenderer.renderRect(
       new Rectangle(
         Vector.getZero(),
         new Vector(Camera.cameraCycleSpaceSizeX, Camera.cameraCycleSpaceSizeY),
@@ -201,7 +202,7 @@ export namespace Renderer {
       return;
     }
     const viewCenterLocation = transformWorld2View(Camera.location);
-    RenderUtils.renderCircle(
+    ShapeRenderer.renderCircle(
       viewCenterLocation,
       1,
       StageStyleManager.currentStyle.GridHeavyColor,
@@ -226,7 +227,7 @@ export namespace Renderer {
   }
 
   // function renderViewRectangle(viewRectangle: Rectangle) {
-  //   RenderUtils.renderRect(
+  //   ShapeRenderer.renderRect(
   //     viewRectangle.transformWorld2View(),
   //     Color.Transparent,
   //     StageStyleManager.currentStyle.SelectRectangleBorderColor,
@@ -236,7 +237,7 @@ export namespace Renderer {
   function renderPrivacyBoard(viewRectangle: Rectangle) {
     // 画隐私保护边
     if (protectingPrivacy) {
-      RenderUtils.renderRect(
+      ShapeRenderer.renderRect(
         viewRectangle.transformWorld2View(),
         Color.Transparent,
         new Color(33, 54, 167, 0.5),
@@ -260,7 +261,7 @@ export namespace Renderer {
   function renderViewMoveByClickMiddle(viewRectangle: Rectangle, tMs: number) {
     if (Controller.isViewMoveByClickMiddle) {
       const color = new Color(23, 159, 255, sine(tMs, 0.2, 0.1, 0.01));
-      RenderUtils.renderRect(
+      ShapeRenderer.renderRect(
         viewRectangle.transformWorld2View(),
         Color.Transparent,
         color,
@@ -278,7 +279,7 @@ export namespace Renderer {
   function renderSelectingRectangle() {
     if (Stage.isSelecting) {
       if (Stage.selectingRectangle) {
-        RenderUtils.renderRect(
+        ShapeRenderer.renderRect(
           Stage.selectingRectangle.transformWorld2View(),
           StageStyleManager.currentStyle.SelectRectangleFillColor,
           StageStyleManager.currentStyle.SelectRectangleBorderColor,
@@ -354,13 +355,13 @@ export namespace Renderer {
   /** 拖拽文件进入窗口时的提示效果 */
   function renderDraggingFileTips() {
     if (Stage.isDraggingFile) {
-      RenderUtils.renderRect(
+      ShapeRenderer.renderRect(
         Renderer.getCoverWorldRectangle().transformWorld2View(),
         new Color(0, 0, 0, 0.5),
         Color.Transparent,
         1,
       );
-      RenderUtils.renderCircle(
+      ShapeRenderer.renderCircle(
         transformWorld2View(Stage.draggingLocation),
         100,
         Color.Transparent,
@@ -400,7 +401,7 @@ export namespace Renderer {
         continue;
       }
       const rect = tagObject.collisionBox.getRectangle();
-      RenderUtils.renderPolygonAndFill(
+      ShapeRenderer.renderPolygonAndFill(
         [
           transformWorld2View(rect.leftTop.add(new Vector(0, 8))),
           transformWorld2View(rect.leftCenter.add(new Vector(-15, 0))),
@@ -417,7 +418,7 @@ export namespace Renderer {
         );
         const rectBgc = StageStyleManager.currentStyle.BackgroundColor.clone();
         rectBgc.a = 0.5;
-        RenderUtils.renderRect(
+        ShapeRenderer.renderRect(
           backRect,
           rectBgc,
           StageStyleManager.currentStyle.StageObjectBorderColor,
@@ -456,7 +457,7 @@ export namespace Renderer {
               rate < 1 ? Color.Yellow : isHaveEntity ? Color.Blue : Color.Green,
             );
             if (rate === 1 && !isHaveEntity) {
-              RenderUtils.renderRectFromCenter(
+              ShapeRenderer.renderRectFromCenter(
                 transformWorld2View(KeyboardOnlyEngine.virtualTargetLocation()),
                 120 * Camera.currentScale,
                 60 * Camera.currentScale,
@@ -501,7 +502,7 @@ export namespace Renderer {
             1,
           );
 
-          RenderUtils.renderCircle(
+          ShapeRenderer.renderCircle(
             transformWorld2View(Stage.keyOnlyVirtualNewLocation),
             25 * Camera.currentScale,
             Color.Transparent,
@@ -565,7 +566,7 @@ export namespace Renderer {
     // 获取粘贴板中所有节点的外接矩形
     if (Stage.copyBoardDataRectangle) {
       // 画一个原位置
-      RenderUtils.renderRect(
+      ShapeRenderer.renderRect(
         Stage.copyBoardDataRectangle.transformWorld2View(),
         Color.Transparent,
         new Color(255, 255, 255, 0.5),
@@ -586,7 +587,7 @@ export namespace Renderer {
         new Color(255, 255, 255, 0.5),
       );
       // 画一个鼠标位置
-      RenderUtils.renderRect(
+      ShapeRenderer.renderRect(
         new Rectangle(
           Stage.copyBoardDataRectangle.location.add(Stage.copyBoardMouseVector),
           Stage.copyBoardDataRectangle.size,
@@ -613,7 +614,7 @@ export namespace Renderer {
       );
       for (const entity of Stage.copyBoardData.entities) {
         if (entity.type === "core:connect_point") {
-          RenderUtils.renderCircle(
+          ShapeRenderer.renderCircle(
             transformWorld2View(new Vector(...entity.location)),
             10 * Camera.currentScale,
             Color.Transparent,
@@ -621,7 +622,7 @@ export namespace Renderer {
             2 * Camera.currentScale,
           );
         } else {
-          RenderUtils.renderRect(
+          ShapeRenderer.renderRect(
             new Rectangle(
               new Vector(...entity.location).add(Stage.copyBoardMouseVector),
               new Vector(...entity.size),

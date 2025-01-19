@@ -6,6 +6,7 @@ import { UrlNode } from "../../../../stageObject/entity/UrlNode";
 import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
 import { Renderer } from "../../renderer";
 import { RenderUtils } from "../../RenderUtils";
+import { ShapeRenderer } from "../../shapeRenderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { EntityRenderer } from "../EntityRenderer";
 
@@ -19,7 +20,7 @@ export namespace UrlNodeRenderer {
       );
     }
     // 节点身体矩形
-    RenderUtils.renderRect(
+    ShapeRenderer.renderRect(
       new Rectangle(
         Renderer.transformWorld2View(urlNode.rectangle.location),
         urlNode.rectangle.size.multiply(Camera.currentScale),
@@ -77,7 +78,7 @@ export namespace UrlNodeRenderer {
     const mouseLocation = Renderer.transformView2World(MouseLocation.vector());
     if (urlNode.titleRectangle.isPointIn(mouseLocation)) {
       // 鼠标在标题上
-      RenderUtils.renderRect(
+      ShapeRenderer.renderRect(
         urlNode.titleRectangle.transformWorld2View(),
         StageStyleManager.currentStyle.CollideBoxPreSelectedColor,
         StageStyleManager.currentStyle.CollideBoxSelectedColor,
@@ -86,7 +87,7 @@ export namespace UrlNodeRenderer {
       );
     } else if (urlNode.urlRectangle.isPointIn(mouseLocation)) {
       // 鼠标在url上
-      RenderUtils.renderRect(
+      ShapeRenderer.renderRect(
         urlNode.urlRectangle.transformWorld2View(),
         StageStyleManager.currentStyle.CollideBoxPreSelectedColor,
         StageStyleManager.currentStyle.CollideBoxSelectedColor,

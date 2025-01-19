@@ -12,6 +12,7 @@ import { ConnectableEntity } from "../../../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
 import { Renderer } from "../../../renderer";
 import { RenderUtils } from "../../../RenderUtils";
+import { ShapeRenderer } from "../../../shapeRenderer";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 
@@ -395,7 +396,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
 
   public renderCycleState(edge: LineEdge): void {
     // 自环
-    RenderUtils.renderArc(
+    ShapeRenderer.renderArc(
       Renderer.transformWorld2View(
         edge.target.collisionBox.getRectangle().location,
       ),

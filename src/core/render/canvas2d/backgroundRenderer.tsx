@@ -5,6 +5,7 @@ import { Camera } from "../../stage/Camera";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Renderer } from "./renderer";
 import { RenderUtils } from "./RenderUtils";
+import { ShapeRenderer } from "./shapeRenderer";
 
 /**
  * 画洞洞板式的背景
@@ -19,7 +20,7 @@ export function renderDotBackground(viewRect: Rectangle) {
 
   for (const y of getLocationYIterator(viewRect, currentGap)) {
     for (const x of getLocationXIterator(viewRect, currentGap)) {
-      RenderUtils.renderCircle(
+      ShapeRenderer.renderCircle(
         Renderer.transformWorld2View(new Vector(x, y)),
         1,
         x === 0 || y === 0 ? mainColor : gridColor,

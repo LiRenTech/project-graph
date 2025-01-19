@@ -11,7 +11,7 @@ import { Section } from "../../../../stageObject/entity/Section";
 import { ConnectableEntity } from "../../../../stageObject/StageObject";
 import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
 import { Renderer } from "../../renderer";
-import { RenderUtils } from "../../RenderUtils";
+import { ShapeRenderer } from "../../shapeRenderer";
 import { WorldRenderUtils } from "../../WorldRenderUtils";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { StraightEdgeRenderer } from "./concrete/StraightEdgeRenderer";
@@ -113,7 +113,7 @@ export namespace EdgeRenderer {
     );
     // 画控制点们
     for (const point of crShape.controlPoints) {
-      RenderUtils.renderCircle(
+      ShapeRenderer.renderCircle(
         Renderer.transformWorld2View(point),
         5 * Camera.currentScale,
         Color.Transparent,
@@ -240,7 +240,7 @@ export namespace EdgeRenderer {
     const location4 = endPoint.add(
       reDirection.multiply(size).rotateDegrees(-15),
     );
-    RenderUtils.renderPolygonAndFill(
+    ShapeRenderer.renderPolygonAndFill(
       [
         Renderer.transformWorld2View(endPoint),
         Renderer.transformWorld2View(location2),
