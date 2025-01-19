@@ -489,30 +489,6 @@ export namespace Renderer {
         }
       }
     }
-
-    // 过时代码：
-    if (Stage.isVirtualNewNodeShow) {
-      for (const node of StageManager.getTextNodes()) {
-        if (node.isSelected) {
-          // 连线
-          CurveRenderer.renderGradientLine(
-            transformWorld2View(node.rectangle.center),
-            transformWorld2View(Stage.keyOnlyVirtualNewLocation),
-            StageStyleManager.currentStyle.StageObjectBorderColor,
-            new Color(255, 255, 255, 0.5),
-            1,
-          );
-
-          ShapeRenderer.renderCircle(
-            transformWorld2View(Stage.keyOnlyVirtualNewLocation),
-            25 * Camera.currentScale,
-            Color.Transparent,
-            StageStyleManager.currentStyle.StageObjectBorderColor,
-            1,
-          );
-        }
-      }
-    }
   }
 
   function renderEntities(viewRectangle: Rectangle) {

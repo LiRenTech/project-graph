@@ -139,17 +139,6 @@ export namespace Stage {
   export let hoverSections: Section[] = [];
 
   /**
-   * 键盘操作的生长新节点是否显示
-   */
-  // eslint-disable-next-line prefer-const
-  export let isVirtualNewNodeShow = false;
-  /**
-   * 键盘操作的生长新节点的位置
-   */
-  // eslint-disable-next-line prefer-const
-  export let keyOnlyVirtualNewLocation = Vector.getZero();
-
-  /**
    * 搜索结果
    */
   // eslint-disable-next-line prefer-const

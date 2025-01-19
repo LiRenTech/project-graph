@@ -8,11 +8,11 @@ import { Canvas } from "../../../stage/Canvas";
 
 /**
  * 关于各种曲线和直线的渲染
+ * 注意：这里全都是View坐标系
  */
 export namespace CurveRenderer {
   /**
-   * 绘制一条实现
-   * @param ctx
+   * 绘制一条直线实线
    * @param start
    * @param end
    * @param color
@@ -32,6 +32,12 @@ export namespace CurveRenderer {
     Canvas.ctx.stroke();
   }
 
+  /**
+   * 绘制折线实线
+   * @param locations 所有点构成的数组
+   * @param color
+   * @param width
+   */
   export function renderSolidLineMultiple(
     locations: Vector[],
     color: Color,
@@ -56,7 +62,7 @@ export namespace CurveRenderer {
    * @param end
    * @param color
    * @param width
-   * @param dashLength
+   * @param dashLength 虚线的长度，效果： =2: "--  --  --  --", =1: "- - - - -"
    */
   export function renderDashedLine(
     start: Vector,
@@ -113,7 +119,7 @@ export namespace CurveRenderer {
   }
 
   /**
-   * 绘制一条从颜色渐变到另一种颜色的线
+   * 绘制一条从颜色渐变到另一种颜色的实线
    */
   export function renderGradientLine(
     start: Vector,

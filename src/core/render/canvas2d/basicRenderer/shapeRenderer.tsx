@@ -34,7 +34,14 @@ export namespace ShapeRenderer {
   }
 
   /**
-   * 画一个圆弧线但不填充
+   * 画一个圆弧但不填充
+   * 从开始弧度到结束弧度，逆时针转过去。（因为y轴向下）
+   * @param centerLocation 圆弧的中心
+   * @param radius 半径
+   * @param angle1 开始弧度
+   * @param angle2 结束弧度
+   * @param strokeColor
+   * @param strokeWidth
    */
   export function renderArc(
     centerLocation: Vector,
@@ -51,6 +58,16 @@ export namespace ShapeRenderer {
     Canvas.ctx.stroke();
   }
 
+  /**
+   * 画一个矩形，但是坐标点是矩形的中心点
+   * @param centerLocation
+   * @param width
+   * @param height
+   * @param color
+   * @param strokeColor
+   * @param strokeWidth
+   * @param radius
+   */
   export function renderRectFromCenter(
     centerLocation: Vector,
     width: number,
@@ -75,6 +92,14 @@ export namespace ShapeRenderer {
     Canvas.ctx.stroke();
   }
 
+  /**
+   * 画矩形
+   * @param rect
+   * @param color
+   * @param strokeColor
+   * @param strokeWidth
+   * @param radius
+   */
   export function renderRect(
     rect: Rectangle,
     color: Color,
@@ -99,14 +124,20 @@ export namespace ShapeRenderer {
 
   /**
    * 绘制一个多边形并填充
+   * @param points 多边形的顶点数组，三角形就只需三个点，
+   * 不用考虑首尾点闭合。
+   * @param fillColor
+   * @param strokeColor
+   * @param strokeWidth
    */
   export function renderPolygonAndFill(
     points: Vector[],
     fillColor: Color,
     strokeColor: Color,
     strokeWidth: number,
+    lineJoin: "round" | "bevel" = "round",
   ): void {
-    Canvas.ctx.lineJoin = "round"; // 圆角
+    Canvas.ctx.lineJoin = lineJoin; // 圆角
     // bevel，斜角
     Canvas.ctx.beginPath();
     Canvas.ctx.moveTo(points[0].x, points[0].y);
@@ -123,6 +154,7 @@ export namespace ShapeRenderer {
 
   /**
    * 绘制中心过渡的圆形不加边框
+   * 常用于一些特效
    */
   export function renderCircleTransition(
     viewLocation: Vector,

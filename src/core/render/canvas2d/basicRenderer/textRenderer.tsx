@@ -21,13 +21,25 @@ export namespace TextRenderer {
     fontSize: number,
     color: Color = Color.White,
   ): void {
-    Canvas.ctx.textBaseline = "middle"; //alphabetic, top, hanging, middle, ideographic, bottom
+    // alphabetic, top, hanging, middle, ideographic, bottom
+    Canvas.ctx.textBaseline = "middle";
     Canvas.ctx.textAlign = "left";
     Canvas.ctx.font = `${fontSize}px MiSans`;
     Canvas.ctx.fillStyle = color.toString();
     Canvas.ctx.fillText(text, location.x, location.y + fontSize / 2);
   }
 
+  /**
+   * 从中心位置开始绘制文本
+   * @param text
+   * @param centerLocation
+   * @param size
+   * @param color
+   * @param shadowColor
+   * @param shadowBlurSize
+   * @param shadowOffsetX
+   * @param shadowOffsetY
+   */
   export function renderTextFromCenter(
     text: string,
     centerLocation: Vector,
@@ -89,6 +101,7 @@ export namespace TextRenderer {
   }
 
   const textArrayCache: LruCache<string, string[]> = new LruCache(100);
+
   /**
    * 加了缓存后的多行文本渲染函数
    * @param text
@@ -112,8 +125,7 @@ export namespace TextRenderer {
 
   /**
    * 渲染多行文本的辅助函数
-   * 给定宽度限制，以及字体大小，将文本分割成多行数组
-   * 应该加LRU缓存，避免重复计算
+   * 将一段字符串分割成多行数组，遇到宽度限制和换行符进行换行。
    * @param text
    */
   function textToTextArray(
