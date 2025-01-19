@@ -285,6 +285,21 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       new Vector(1, 0).rotateDegrees(15),
       edge.target.collisionBox.getRectangle().leftCenter,
     );
+    // 画文字
+    if (edge.text.trim() === "") {
+      // 没有文字的边
+      return;
+    }
+    RenderUtils.renderTextFromCenter(
+      edge.text,
+      Renderer.transformWorld2View(
+        edge.target.collisionBox
+          .getRectangle()
+          .location.add(new Vector(0, -50)),
+      ),
+      Renderer.FONT_SIZE * Camera.currentScale,
+      StageStyleManager.currentStyle.StageObjectBorderColor,
+    );
   }
 
   public renderVirtualEdge(
