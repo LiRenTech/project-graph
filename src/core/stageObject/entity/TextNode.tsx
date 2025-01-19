@@ -1,5 +1,5 @@
 import { Serialized } from "../../../types/node";
-import { getTextSize } from "../../../utils/font";
+import { getMultiLineTextSize } from "../../../utils/font";
 import { Color } from "../../dataStruct/Color";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../render/canvas2d/renderer";
@@ -101,7 +101,7 @@ export class TextNode extends ConnectableEntity {
   private adjustSizeByText() {
     this.collisionBox.shapeList[0] = new Rectangle(
       this.rectangle.location.clone(),
-      getTextSize(this.text, Renderer.FONT_SIZE).add(
+      getMultiLineTextSize(this.text, Renderer.FONT_SIZE).add(
         Vector.same(Renderer.NODE_PADDING).multiply(2),
       ),
     );

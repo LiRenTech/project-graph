@@ -26,7 +26,7 @@ export function editTextNode(clickedNode: TextNode) {
 
   // 编辑节点
   clickedNode.isEditing = true;
-  InputElement.input(
+  InputElement.textarea(
     Renderer.transformWorld2View(clickedNode.rectangle.location).add(
       Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
     ),

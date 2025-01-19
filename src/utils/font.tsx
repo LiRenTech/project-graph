@@ -39,6 +39,24 @@ export function getTextSize(text: string, size: number): Vector {
 }
 
 /**
+ * 获取多行文本的宽度和高度
+ * @param text
+ * @param fontSize
+ * @returns
+ */
+export function getMultiLineTextSize(text: string, fontSize: number): Vector {
+  const lines = text.split("\n");
+  let width = 0;
+  let height = 0;
+  for (const line of lines) {
+    const size = getTextSize(line, fontSize);
+    width = Math.max(width, size.x);
+    height += size.y;
+  }
+  return new Vector(width, height);
+}
+
+/**
  * 所有的汉字替换成“好”
  * 所有小写字母替换成 a，大写字母替换成 A
  * 所有数字全部替换成 6

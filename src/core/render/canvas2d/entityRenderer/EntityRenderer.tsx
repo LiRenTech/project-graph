@@ -84,7 +84,7 @@ export namespace EntityRenderer {
           }
         }
       } else {
-        RenderUtils.renderText(
+        RenderUtils.renderMultiLineText(
           Renderer.protectingPrivacy
             ? replaceTextWhenProtect(node.text)
             : node.text,
@@ -92,9 +92,11 @@ export namespace EntityRenderer {
             node.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
           ),
           Renderer.FONT_SIZE * Camera.currentScale,
+          Infinity,
           node.color.a === 1
             ? colorInvert(node.color)
             : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+          1.2,
         );
       }
     }
