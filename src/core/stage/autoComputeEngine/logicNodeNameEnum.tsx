@@ -63,6 +63,8 @@ export enum LogicNodeNameEnum {
   IS_COLLISION = "#IS_COLLISION#",
   GET_TIME = "#GET_TIME#",
   PLAY_SOUND = "#PLAY_SOUND#",
+  COLLECT_NODE_BY_RGBA = "#COLLECT_NODE_BY_RGBA#",
+  FPS = "#FPS#",
 }
 export const LogicNodeNameToRenderNameMap: {
   [key in LogicNodeNameEnum]: string;
@@ -118,6 +120,8 @@ export const LogicNodeNameToRenderNameMap: {
   [LogicNodeNameEnum.IS_COLLISION]: "碰撞检测",
   [LogicNodeNameEnum.GET_TIME]: "获取时间",
   [LogicNodeNameEnum.PLAY_SOUND]: "播放声音",
+  [LogicNodeNameEnum.COLLECT_NODE_BY_RGBA]: "根据颜色收集节点",
+  [LogicNodeNameEnum.FPS]: "FPS",
 };
 
 /**

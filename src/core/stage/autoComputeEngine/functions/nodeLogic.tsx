@@ -1,6 +1,7 @@
 import { Color } from "../../../dataStruct/Color";
 import { Vector } from "../../../dataStruct/Vector";
 import { MouseLocation } from "../../../MouseLocation";
+import { Renderer } from "../../../render/canvas2d/renderer";
 import { SoundService } from "../../../SoundService";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { ConnectableEntity } from "../../../stageObject/StageObject";
@@ -245,6 +246,33 @@ export namespace NodeLogic {
         SoundService.playSoundByFilePath(path);
       }
     }
+    return [];
+  }
+  export function getFps(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    return [Renderer.fps.toString()];
+  }
+  /**
+   * 通过RGBA四个数字来收集颜色匹配的节点
+   * 废弃
+   * @param fatherNodes
+   * @param childNodes
+   */
+  export function collectNodeByRGBA(
+    fatherNodes: ConnectableEntity[],
+    childNodes: ConnectableEntity[],
+  ): string[] {
+    if (fatherNodes.length < 4) {
+      return ["Error: input node contains less than 4 nodes"];
+    }
+    if (childNodes.length !== 0) {
+      return ["Error: output node should be empty"];
+    }
+    // TODO: 实现RGBA匹配
     return [];
   }
 }

@@ -131,6 +131,8 @@ const MapOtherFunction: OtherFunctionMap = {
   [LogicNodeNameEnum.IS_COLLISION]: NodeLogic.isCollision,
   [LogicNodeNameEnum.GET_TIME]: NodeLogic.getTime,
   [LogicNodeNameEnum.PLAY_SOUND]: NodeLogic.playSound,
+  [LogicNodeNameEnum.FPS]: NodeLogic.getFps,
+  [LogicNodeNameEnum.COLLECT_NODE_BY_RGBA]: NodeLogic.collectNodeByRGBA,
 };
 
 /**

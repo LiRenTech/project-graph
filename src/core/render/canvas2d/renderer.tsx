@@ -70,7 +70,7 @@ export namespace Renderer {
   // 自上一次记录fps以来的帧数是几
   let frameCount = 0;
   // 上一次记录的fps数值
-  let fps = 0;
+  export let fps = 0;
 
   /**
    * 解决Canvas模糊问题
