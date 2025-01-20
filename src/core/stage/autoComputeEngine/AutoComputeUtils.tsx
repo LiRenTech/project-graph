@@ -1,5 +1,6 @@
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
+import { ConnectableEntity } from "../../stageObject/StageObject";
 import { StageManager } from "../stageManager/StageManager";
 import { v4 as uuidv4 } from "uuid";
 
@@ -193,5 +194,34 @@ export namespace AutoComputeUtils {
    */
   export function stringToNumber(str: string) {
     return parseFloat(str);
+  }
+
+  /**
+   * 判断一个节点是否和逻辑节点直接相连
+   * 同时判断是否有逻辑节点的父节点或子节点
+   * @param node
+   */
+  export function isNodeConnectedWithLogicNode(
+    node: ConnectableEntity,
+  ): boolean {
+    for (const fatherNode of StageManager.nodeParentArray(node)) {
+      if (
+        fatherNode instanceof TextNode &&
+        fatherNode.text.startsWith("#") &&
+        fatherNode.text.endsWith("#")
+      ) {
+        return true;
+      }
+    }
+    for (const childNode of StageManager.nodeChildrenArray(node)) {
+      if (
+        childNode instanceof TextNode &&
+        childNode.text.startsWith("#") &&
+        childNode.text.endsWith("#")
+      ) {
+        return true;
+      }
+    }
+    return false;
   }
 }

@@ -65,6 +65,7 @@ export enum LogicNodeNameEnum {
   PLAY_SOUND = "#PLAY_SOUND#",
   GET_NODE_RGBA = "#GET_NODE_RGBA#",
   COLLECT_NODE_DETAILS_BY_RGBA = "#COLLECT_NODE_DETAILS_BY_RGBA#",
+  COLLECT_NODE_NAME_BY_RGBA = "#COLLECT_NODE_NAME_BY_RGBA#",
   FPS = "#FPS#",
 }
 export const LogicNodeNameToRenderNameMap: {
@@ -123,6 +124,7 @@ export const LogicNodeNameToRenderNameMap: {
   [LogicNodeNameEnum.PLAY_SOUND]: "播放声音",
   [LogicNodeNameEnum.GET_NODE_RGBA]: "获取节点颜色",
   [LogicNodeNameEnum.COLLECT_NODE_DETAILS_BY_RGBA]: "根据颜色收集节点详情",
+  [LogicNodeNameEnum.COLLECT_NODE_NAME_BY_RGBA]: "根据颜色收集节点名称",
   [LogicNodeNameEnum.FPS]: "FPS",
 };
 

@@ -7,6 +7,7 @@ import { TextNode } from "../../../stageObject/entity/TextNode";
 import { ConnectableEntity } from "../../../stageObject/StageObject";
 import { Camera } from "../../Camera";
 import { StageManager } from "../../stageManager/StageManager";
+import { AutoComputeUtils } from "../AutoComputeUtils";
 
 /**
  * 直接获取输入节点和下游输出节点
@@ -257,9 +258,47 @@ export namespace NodeLogic {
   ): string[] {
     return [Renderer.fps.toString()];
   }
+
+  export function collectNodeNameByRGBA(
+    fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    if (fatherNodes.length < 4) {
+      return ["Error: input node contains less than 4 nodes"];
+    }
+    if (
+      fatherNodes[0] instanceof TextNode &&
+      fatherNodes[1] instanceof TextNode &&
+      fatherNodes[2] instanceof TextNode &&
+      fatherNodes[3] instanceof TextNode
+    ) {
+      const r = parseInt(fatherNodes[0].text);
+      const g = parseInt(fatherNodes[1].text);
+      const b = parseInt(fatherNodes[2].text);
+      const a = parseFloat(fatherNodes[3].text);
+      const matchColor = new Color(r, g, b, a);
+      const matchNodes: TextNode[] = [];
+      for (const node of StageManager.getTextNodes()) {
+        // 避开与逻辑节点相连的节点
+        if (AutoComputeUtils.isNodeConnectedWithLogicNode(node)) {
+          continue;
+        }
+        // 匹配颜色
+        if (node.color.equals(matchColor)) {
+          matchNodes.push(node);
+        }
+      }
+      // 将这些节点的名字拿出来
+      return matchNodes.map((node) => {
+        return `${node.text}`;
+      });
+    }
+    return ["Error: input node is not valid"];
+  }
+
   /**
    * 通过RGBA四个数字来收集颜色匹配的节点
-   * 废弃
    * @param fatherNodes
    * @param childNodes
    */
@@ -285,13 +324,8 @@ export namespace NodeLogic {
       const matchNodes: TextNode[] = [];
       for (const node of StageManager.getTextNodes()) {
         // 避开与逻辑节点相连的节点
-        for (const fatherNode of StageManager.nodeParentArray(node)) {
-          if (
-            fatherNode instanceof TextNode &&
-            fatherNode.text.startsWith("#")
-          ) {
-            continue;
-          }
+        if (AutoComputeUtils.isNodeConnectedWithLogicNode(node)) {
+          continue;
         }
         // 匹配颜色
         if (node.color.equals(matchColor)) {
