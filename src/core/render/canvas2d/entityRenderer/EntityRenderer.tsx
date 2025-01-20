@@ -3,6 +3,7 @@ import { Random } from "../../../algorithm/random";
 import { Color, colorInvert } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
+import { AutoComputeUtils } from "../../../stage/autoComputeEngine/AutoComputeUtils";
 import {
   getLogicNodeRenderName,
   LogicNodeNameEnum,
@@ -69,19 +70,21 @@ export namespace EntityRenderer {
     if (!node.isEditing) {
       if (!node.text) {
         TextRenderer.renderTextFromCenter(
-          "空节点",
+          "undefined",
           Renderer.transformWorld2View(node.rectangle.center),
           Renderer.FONT_SIZE * Camera.currentScale,
           node.color.a === 1
             ? colorInvert(node.color)
             : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
-          Color.Green,
-          10 * Camera.currentScale,
+          Color.Red,
+          30 * Camera.currentScale,
         );
-      } else if (node.text.startsWith("#") && node.text.endsWith("#")) {
+      } else if (AutoComputeUtils.isNameIsLogicNode(node.text)) {
         // 检查下是不是逻辑节点
+        let isFindLogicName = false;
         for (const key of Object.keys(LogicNodeNameToRenderNameMap)) {
           if (node.text === key) {
+            isFindLogicName = true;
             const logicNodeName = key as LogicNodeNameEnum;
             TextRenderer.renderTextFromCenter(
               getLogicNodeRenderName(logicNodeName),
@@ -94,6 +97,35 @@ export namespace EntityRenderer {
               10 * Camera.currentScale,
             );
           }
+        }
+        if (!isFindLogicName) {
+          // 未知的逻辑节点，可能是版本过低
+          TextRenderer.renderTextFromCenter(
+            node.text,
+            Renderer.transformWorld2View(node.rectangle.center),
+            Renderer.FONT_SIZE * Camera.currentScale,
+            node.color.a === 1
+              ? colorInvert(node.color)
+              : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+            Color.Red,
+            10 * Camera.currentScale,
+            Random.randomInt(-5, 5) * Camera.currentScale,
+            Random.randomInt(-15, 15) * Camera.currentScale,
+          );
+          ShapeRenderer.renderRect(
+            new Rectangle(
+              Renderer.transformWorld2View(
+                node.rectangle.location.add(
+                  new Vector(Random.randomInt(-5, 5), Random.randomInt(-5, 5)),
+                ),
+              ),
+              node.rectangle.size.multiply(Camera.currentScale),
+            ),
+            node.color,
+            new Color(255, 0, 0, 0.5),
+            Random.randomFloat(1, 10) * Camera.currentScale,
+            Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+          );
         }
       } else {
         TextRenderer.renderMultiLineText(

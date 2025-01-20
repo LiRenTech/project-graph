@@ -207,21 +207,27 @@ export namespace AutoComputeUtils {
     for (const fatherNode of StageManager.nodeParentArray(node)) {
       if (
         fatherNode instanceof TextNode &&
-        fatherNode.text.startsWith("#") &&
-        fatherNode.text.endsWith("#")
+        isNameIsLogicNode(fatherNode.text)
       ) {
         return true;
       }
     }
     for (const childNode of StageManager.nodeChildrenArray(node)) {
-      if (
-        childNode instanceof TextNode &&
-        childNode.text.startsWith("#") &&
-        childNode.text.endsWith("#")
-      ) {
+      if (childNode instanceof TextNode && isNameIsLogicNode(childNode.text)) {
         return true;
       }
     }
     return false;
+  }
+
+  /**
+   * 判断一个节点的名字格式是否符合逻辑节点的格式
+   * 1：以#开头，以#结尾，总共只能有两个#
+   * 2：中间只有数字、大写字母、下划线
+   * @param name
+   */
+  export function isNameIsLogicNode(name: string): boolean {
+    const reg = /^#[a-zA-Z0-9_]+#$/;
+    return reg.test(name);
   }
 }
