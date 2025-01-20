@@ -67,7 +67,18 @@ export namespace EntityRenderer {
     );
 
     if (!node.isEditing) {
-      if (node.text.startsWith("#") && node.text.endsWith("#")) {
+      if (!node.text) {
+        TextRenderer.renderTextFromCenter(
+          "空节点",
+          Renderer.transformWorld2View(node.rectangle.center),
+          Renderer.FONT_SIZE * Camera.currentScale,
+          node.color.a === 1
+            ? colorInvert(node.color)
+            : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+          Color.Green,
+          10 * Camera.currentScale,
+        );
+      } else if (node.text.startsWith("#") && node.text.endsWith("#")) {
         // 检查下是不是逻辑节点
         for (const key of Object.keys(LogicNodeNameToRenderNameMap)) {
           if (node.text === key) {

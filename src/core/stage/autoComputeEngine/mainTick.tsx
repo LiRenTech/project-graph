@@ -132,7 +132,9 @@ const MapOtherFunction: OtherFunctionMap = {
   [LogicNodeNameEnum.GET_TIME]: NodeLogic.getTime,
   [LogicNodeNameEnum.PLAY_SOUND]: NodeLogic.playSound,
   [LogicNodeNameEnum.FPS]: NodeLogic.getFps,
-  [LogicNodeNameEnum.COLLECT_NODE_BY_RGBA]: NodeLogic.collectNodeByRGBA,
+  [LogicNodeNameEnum.GET_NODE_RGBA]: NodeLogic.getNodeRGBA,
+  [LogicNodeNameEnum.COLLECT_NODE_DETAILS_BY_RGBA]:
+    NodeLogic.collectNodeDetailsByRGBA,
 };
 
 /**
