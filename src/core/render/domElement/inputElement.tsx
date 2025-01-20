@@ -119,14 +119,18 @@ export namespace InputElement {
         Renderer.FONT_SIZE,
         1.5,
       );
+      const minWidth = initSize.x * Camera.currentScale;
+      console.log(minWidth, "minWidth");
       textareaElement.style.minHeight = `${initSize.y * Camera.currentScale}px`; // 设置最小高度
       textareaElement.style.minWidth = `${initSize.x * Camera.currentScale}px`; // 设置最小宽度
       textareaElement.style.whiteSpace = "pre"; // 保持空白符不变
       textareaElement.style.wordWrap = "break-word"; // 自动换行
       Object.assign(textareaElement.style, style);
+      document.body.appendChild(textareaElement);
 
       textareaElement.focus();
       textareaElement.select();
+      // 以上这两部必须在appendChild之后执行
       const removeElement = () => {
         if (document.body.contains(textareaElement)) {
           try {
@@ -169,6 +173,13 @@ export namespace InputElement {
         textareaElement.style.width = `${textareaElement.scrollWidth}px`;
         console.log("adjustSize");
       };
+      // setInterval(() => {
+      //   adjustSize();
+      // }, 1000);
+      setTimeout(() => {
+        adjustSize(); // 初始化时调整大小
+        console.log("初始化时调整大小");
+      }, 10);
       textareaElement.addEventListener("input", () => {
         onChange(textareaElement.value);
         adjustSize();
@@ -191,8 +202,6 @@ export namespace InputElement {
           removeElement();
         }
       });
-      // adjustSize(); // 初始化时调整大小
-      document.body.appendChild(textareaElement);
     });
   }
 }
