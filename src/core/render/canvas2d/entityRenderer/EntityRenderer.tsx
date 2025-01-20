@@ -110,7 +110,7 @@ export namespace EntityRenderer {
           node.rectangle.location.add(new Vector(0, -25)),
         ),
         20 * Camera.currentScale,
-        StageStyleManager.currentStyle.NodeDetailsTextColor,
+        StageStyleManager.currentStyle.GridHeavyColor,
       );
     }
 
