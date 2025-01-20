@@ -64,7 +64,7 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
       }
     }
   }
-  if (event.button !== 2) {
+  if (!(event.button == 2 || event.button == 3)) {
     return;
   }
   const pressWorldLocation = Renderer.transformView2World(
@@ -120,7 +120,7 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
   if (Stage.isSelecting || Stage.isCutting) {
     return;
   }
-  if (!Controller.isMouseDown[2]) {
+  if (!(Controller.isMouseDown[2] || Controller.isMouseDown[3])) {
     return;
   }
   const worldLocation = Renderer.transformView2World(
@@ -145,7 +145,7 @@ ControllerNodeConnection.mousemove = (event: MouseEvent) => {
 };
 
 ControllerNodeConnection.mouseup = (event: MouseEvent) => {
-  if (event.button !== 2) {
+  if (!(event.button == 2 || event.button == 3)) {
     return;
   }
   Stage.isConnecting = false;

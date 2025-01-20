@@ -24,7 +24,7 @@ export const ControllerCutting = new ControllerClass();
 let cuttingStartLocation = Vector.getZero();
 
 ControllerCutting.mousedown = (event: MouseEvent) => {
-  if (event.button !== 2) {
+  if (!(event.button == 2 || event.button == 3)) {
     return;
   }
   if (Stage.mouseRightDragBackground !== "cut") {
@@ -121,7 +121,7 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
 };
 
 ControllerCutting.mouseup = (event: MouseEvent) => {
-  if (event.button !== 2) {
+  if (!(event.button == 2 || event.button == 3)) {
     return;
   }
   if (!Stage.isCutting) {
