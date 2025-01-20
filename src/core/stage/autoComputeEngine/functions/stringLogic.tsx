@@ -126,4 +126,29 @@ export namespace StringFunctions {
     const suffix = strings[1];
     return [str.endsWith(suffix) ? "1" : "0"];
   }
+
+  /**
+   * 检查正则匹配
+   * 参数数量必须>=2, 最后一个参数为正则表达式
+   * 举例：
+   * 输入 ["hello world", "^[a-zA-Z]+$"]
+   * 输出 ["1"]
+   * 当输入多个待检查字符串参数时，分别检查每个参数是否匹配正则表达式
+   * 举例
+   * 输入 ["hello world", "world", "^[a-zA-Z]+$"]
+   * 输出 ["1", "0"]
+   * @param strings
+   */
+  export function checkRegexMatch(strings: string[]): string[] {
+    if (strings.length < 2) return ["0"];
+    try {
+      const regex = new RegExp(strings[strings.length - 1]);
+      const results = strings
+        .slice(0, -1)
+        .map((str) => (regex.test(str) ? "1" : "0"));
+      return results;
+    } catch (e: any) {
+      return [e.toString()];
+    }
+  }
 }

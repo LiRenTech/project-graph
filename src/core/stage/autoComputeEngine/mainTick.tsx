@@ -109,10 +109,14 @@ const MapNameFunction: StringFunctionMap = {
   [LogicNodeNameEnum.SPLIT]: StringFunctions.split,
   [LogicNodeNameEnum.REPLACE]: StringFunctions.replace,
   [LogicNodeNameEnum.CONNECT]: StringFunctions.connect,
+  [LogicNodeNameEnum.CHECK_REGEX_MATCH]: StringFunctions.checkRegexMatch,
   // 集合计算
   [LogicNodeNameEnum.COUNT]: funcTypeTrans(MathFunctions.count),
 };
 
+/**
+ * 其他特殊功能的函数
+ */
 const MapOtherFunction: OtherFunctionMap = {
   [LogicNodeNameEnum.RGB]: NodeLogic.rgb,
   [LogicNodeNameEnum.RGBA]: NodeLogic.rgba,

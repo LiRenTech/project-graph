@@ -46,6 +46,7 @@ export enum LogicNodeNameEnum {
   SPLIT = "#SPLIT#",
   REPLACE = "#REPLACE#",
   CONNECT = "#CONNECT#",
+  CHECK_REGEX_MATCH = "#CHECK_REGEX_MATCH#",
   // 统计
   COUNT = "#COUNT#",
   // 其他
@@ -102,6 +103,7 @@ export const LogicNodeNameToRenderNameMap: {
   [LogicNodeNameEnum.SPLIT]: "分割",
   [LogicNodeNameEnum.REPLACE]: "替换",
   [LogicNodeNameEnum.CONNECT]: "连接",
+  [LogicNodeNameEnum.CHECK_REGEX_MATCH]: "正则匹配",
   [LogicNodeNameEnum.COUNT]: "count",
   [LogicNodeNameEnum.RGB]: "rgb",
   [LogicNodeNameEnum.RGBA]: "rgba",
