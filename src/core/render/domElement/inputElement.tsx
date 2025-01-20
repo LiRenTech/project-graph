@@ -195,11 +195,28 @@ export namespace InputElement {
         if (event.key === "Tab") {
           // 防止tab切换到其他按钮
           event.preventDefault();
+          // 改成插入一个制表符
+          const start = textareaElement.selectionStart;
+          const end = textareaElement.selectionEnd;
+          textareaElement.value =
+            textareaElement.value.substring(0, start) +
+            "\t" +
+            textareaElement.value.substring(end);
+          textareaElement.selectionStart = start + 1;
+          textareaElement.selectionEnd = start + 1;
         } else if (event.key === "Escape") {
           resolve(textareaElement.value);
           onChange(textareaElement.value);
           document.body.removeEventListener("click", onOutsideClick);
           removeElement();
+        } else if (event.key === "Enter") {
+          // 如果按下了ctrl键
+          if (event.ctrlKey) {
+            resolve(textareaElement.value);
+            onChange(textareaElement.value);
+            document.body.removeEventListener("click", onOutsideClick);
+            removeElement();
+          }
         }
       });
     });

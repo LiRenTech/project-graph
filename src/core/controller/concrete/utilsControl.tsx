@@ -38,7 +38,7 @@ export function editTextNode(clickedNode: TextNode) {
       fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
       backgroundColor: "transparent",
       color: StageStyleManager.currentStyle.StageObjectBorderColor.toString(),
-      outline: "solid 1px rgba(255,255,255,0.5)",
+      outline: "solid 1px rgba(255,255,255,0.1)",
       // marginTop: -8 * Camera.currentScale + "px",
     },
   ).then(() => {
