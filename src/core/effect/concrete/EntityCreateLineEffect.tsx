@@ -1,9 +1,10 @@
-import { Color } from "../../dataStruct/Color";
+import { Random } from "../../algorithm/random";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effect";
-import { LineCuttingEffect } from "./LineCuttingEffect";
+import { ZapLineEffect } from "./ZapLineEffect";
 
 export class EntityCreateLineEffect extends Effect {
   constructor(
@@ -11,44 +12,92 @@ export class EntityCreateLineEffect extends Effect {
     public rect: Rectangle,
   ) {
     super(timeProgress);
-    const fromColor = new Color(100, 100, 100, 0);
-    const toColor = new Color(255, 255, 255, 1);
-    const shiftingLength = 0;
     // 子特效
-    this.subEffects = [
-      new LineCuttingEffect(
-        new ProgressNumber(0, timeProgress.maxValue),
-        rect.leftTop.add(new Vector(-shiftingLength, -shiftingLength)),
-        rect.rightTop,
-        fromColor.clone(),
-        toColor.clone(),
-        10,
-      ),
-      new LineCuttingEffect(
-        new ProgressNumber(0, timeProgress.maxValue),
-        rect.rightTop.add(new Vector(shiftingLength, -shiftingLength)),
-        rect.rightBottom,
-        fromColor.clone(),
-        toColor.clone(),
-        10,
-      ),
-      new LineCuttingEffect(
-        new ProgressNumber(0, timeProgress.maxValue),
-        rect.rightBottom.add(new Vector(shiftingLength, shiftingLength)),
-        rect.leftBottom,
-        fromColor.clone(),
-        toColor.clone(),
-        10,
-      ),
-      new LineCuttingEffect(
-        new ProgressNumber(0, timeProgress.maxValue),
-        rect.leftBottom.add(new Vector(-shiftingLength, shiftingLength)),
-        rect.leftTop,
-        fromColor,
-        toColor,
-        10,
-      ),
-    ];
+    this.subEffects = [];
+    // 顶部线
+    for (let i = 0; i < 10; i++) {
+      const topStartLocation = new Vector(
+        Random.randomFloat(this.rect.left, this.rect.right),
+        this.rect.top,
+      );
+      const topEndLocation = topStartLocation.add(
+        topStartLocation.subtract(this.rect.center).multiply(100),
+      );
+      const zapLineEffect = new ZapLineEffect(
+        topStartLocation,
+        topEndLocation,
+        50,
+        20,
+        45,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+        this.timeProgress.clone(),
+        2,
+      );
+      this.subEffects.push(zapLineEffect);
+    }
+    // 底部线
+    for (let i = 0; i < 10; i++) {
+      const bottomStartLocation = new Vector(
+        Random.randomFloat(this.rect.left, this.rect.right),
+        this.rect.bottom,
+      );
+      const bottomEndLocation = bottomStartLocation.add(
+        bottomStartLocation.subtract(this.rect.center).multiply(100),
+      );
+      const zapLineEffect = new ZapLineEffect(
+        bottomStartLocation,
+        bottomEndLocation,
+        50,
+        20,
+        45,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+        this.timeProgress.clone(),
+        2,
+      );
+      this.subEffects.push(zapLineEffect);
+    }
+    // 左侧线
+    for (let i = 0; i < 10; i++) {
+      const leftStartLocation = new Vector(
+        this.rect.left,
+        Random.randomFloat(this.rect.top, this.rect.bottom),
+      );
+      const leftEndLocation = leftStartLocation.add(
+        leftStartLocation.subtract(this.rect.center).multiply(100),
+      );
+      const zapLineEffect = new ZapLineEffect(
+        leftStartLocation,
+        leftEndLocation,
+        50,
+        20,
+        45,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+        this.timeProgress.clone(),
+        2,
+      );
+      this.subEffects.push(zapLineEffect);
+    }
+    // 右侧线
+    for (let i = 0; i < 10; i++) {
+      const rightStartLocation = new Vector(
+        this.rect.right,
+        Random.randomFloat(this.rect.top, this.rect.bottom),
+      );
+      const rightEndLocation = rightStartLocation.add(
+        rightStartLocation.subtract(this.rect.center).multiply(100),
+      );
+      const zapLineEffect = new ZapLineEffect(
+        rightStartLocation,
+        rightEndLocation,
+        50,
+        20,
+        45,
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+        this.timeProgress.clone(),
+        2,
+      );
+      this.subEffects.push(zapLineEffect);
+    }
   }
 
   static from(rectangle: Rectangle): EntityCreateLineEffect {

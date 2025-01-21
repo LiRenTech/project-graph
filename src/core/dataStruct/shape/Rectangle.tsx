@@ -59,6 +59,13 @@ export class Rectangle extends Shape {
   public get rightBottom(): Vector {
     return new Vector(this.right, this.bottom);
   }
+
+  public get width(): number {
+    return this.size.x;
+  }
+  public get height(): number {
+    return this.size.y;
+  }
   getRectangle(): Rectangle {
     return this.clone();
   }
