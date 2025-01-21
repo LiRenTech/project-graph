@@ -84,6 +84,7 @@ const MapNameFunction: StringFunctionMap = {
   [LogicNodeNameEnum.CEIL]: funcTypeTrans(MathFunctions.ceil),
   [LogicNodeNameEnum.ROUND]: funcTypeTrans(MathFunctions.round),
   [LogicNodeNameEnum.SQRT]: funcTypeTrans(MathFunctions.sqrt),
+  [LogicNodeNameEnum.POWER]: funcTypeTrans(MathFunctions.power),
   [LogicNodeNameEnum.SIN]: funcTypeTrans(MathFunctions.sin),
   [LogicNodeNameEnum.COS]: funcTypeTrans(MathFunctions.cos),
   [LogicNodeNameEnum.TAN]: funcTypeTrans(MathFunctions.tan),

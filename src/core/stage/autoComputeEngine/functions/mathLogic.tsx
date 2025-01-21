@@ -54,7 +54,17 @@ export namespace MathFunctions {
   }
 
   export function power(numbers: number[]): number[] {
-    return [numbers.reduce((acc, cur) => acc ** cur, 1)];
+    if (numbers.length === 0) {
+      return [1];
+    }
+    if (numbers.length === 1) {
+      return [Math.pow(numbers[0], 1)];
+    }
+    let result = numbers[0];
+    for (let i = 1; i < numbers.length; i++) {
+      result = Math.pow(result, numbers[i]);
+    }
+    return [result];
   }
 
   export function factorial(numbers: number[]): number[] {
