@@ -3,9 +3,9 @@ import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { ShapeRenderer } from "../../../render/canvas2d/basicRenderer/shapeRenderer";
 import { Camera } from "../../../stage/Camera";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
 
-export class RectangleRenderEffect extends Effect {
+export class RectangleRenderEffect extends EffectObject {
   constructor(
     public override timeProgress: ProgressNumber,
     private rectangle: Rectangle,

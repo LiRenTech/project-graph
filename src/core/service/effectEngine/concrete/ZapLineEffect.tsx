@@ -5,7 +5,7 @@ import { Vector } from "../../../dataStruct/Vector";
 import { CurveRenderer } from "../../../render/canvas2d/basicRenderer/curveRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Camera } from "../../../stage/Camera";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
 
 /**
  * 一条闪电线特效
@@ -13,7 +13,7 @@ import { Effect } from "../effect";
  * 经过n短折线，每段折线的长度为l，每次偏转角度为-maxRotateDegrees~maxRotateDegrees之间随机
  * 最终不一定到达end点，因为有随机偏移
  */
-export class ZapLineEffect extends Effect {
+export class ZapLineEffect extends EffectObject {
   constructor(
     start: Vector,
     private end: Vector,

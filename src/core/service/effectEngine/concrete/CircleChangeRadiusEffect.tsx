@@ -4,12 +4,12 @@ import { Vector } from "../../../dataStruct/Vector";
 import { ShapeRenderer } from "../../../render/canvas2d/basicRenderer/shapeRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Camera } from "../../../stage/Camera";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
 
 /**
  * 圆形光圈缩放特效
  */
-export class CircleChangeRadiusEffect extends Effect {
+export class CircleChangeRadiusEffect extends EffectObject {
   constructor(
     /**
      * 一开始为0，每tick + 1

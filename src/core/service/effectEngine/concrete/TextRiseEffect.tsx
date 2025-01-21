@@ -3,13 +3,13 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Canvas } from "../../../stage/Canvas";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { easeInOutSine } from "../easings";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
+import { easeInOutSine } from "../mathTools/easings";
 
 /**
  * 文字上浮特效
  */
-export class TextRiseEffect extends Effect {
+export class TextRiseEffect extends EffectObject {
   constructor(
     public text: string,
     public override timeProgress: ProgressNumber = new ProgressNumber(0, 100),

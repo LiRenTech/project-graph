@@ -5,13 +5,13 @@ import { Renderer } from "../../../render/canvas2d/renderer";
 import { RenderUtils } from "../../../render/canvas2d/utilsRenderer/RenderUtils";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { Effect } from "../effect";
-import { EffectParticle } from "../effectParticle";
+import { EffectParticle } from "../effectElements/effectParticle";
+import { EffectObject } from "../effectObject";
 
 /**
  * 在一个点迸发一些粒子效果
  */
-export class PointDashEffect extends Effect {
+export class PointDashEffect extends EffectObject {
   public particleList: EffectParticle[] = [];
 
   constructor(

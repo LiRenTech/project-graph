@@ -5,7 +5,7 @@ import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Vector } from "../../dataStruct/Vector";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../render/canvas2d/renderer";
-import { NodeMoveShadowEffect } from "../../service/effect/concrete/NodeMoveShadowEffect";
+import { NodeMoveShadowEffect } from "../../service/effectEngine/concrete/NodeMoveShadowEffect";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { ConnectableEntity, Entity } from "../StageObject";

@@ -4,9 +4,9 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { ShapeRenderer } from "../../../render/canvas2d/basicRenderer/shapeRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
-import { reverseAnimate } from "../animateFunctions";
-import { easeOutQuint } from "../easings";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
+import { reverseAnimate } from "../mathTools/animateFunctions";
+import { easeOutQuint } from "../mathTools/easings";
 
 /**
  * 用于提示某个矩形区域的效果
@@ -17,7 +17,7 @@ import { Effect } from "../effect";
  *
  * 目标矩形大小是世界坐标系
  */
-export class RectangleNoteEffect extends Effect {
+export class RectangleNoteEffect extends EffectObject {
   constructor(
     public override timeProgress: ProgressNumber,
     public targetRectangle: Rectangle,

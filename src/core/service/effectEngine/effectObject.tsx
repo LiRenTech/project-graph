@@ -1,10 +1,10 @@
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 
 /**
- * 特效类
+ * 一次性特效类
  * timeProgress 0~max 表示时间进度，0表示开始，单位：帧
  */
-export abstract class Effect {
+export abstract class EffectObject {
   constructor(
     /**
      * 注意这个进度条初始值应该是0
@@ -14,7 +14,7 @@ export abstract class Effect {
   ) {}
 
   /** 子特效（构成树形组合模式） */
-  protected subEffects: Effect[] = [];
+  protected subEffects: EffectObject[] = [];
 
   tick(): void {
     // 自动+1帧

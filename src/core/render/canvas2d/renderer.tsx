@@ -5,7 +5,7 @@ import { Vector } from "../../dataStruct/Vector";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Settings } from "../../service/Settings";
 import { Controller } from "../../service/controller/Controller";
-import { sine } from "../../service/effect/animateFunctions";
+import { sine } from "../../service/effectEngine/mathTools/animateFunctions";
 import { KeyboardOnlyEngine } from "../../service/keyboardOnlyEngine/keyboardOnlyEngine";
 import { StageStyleManager } from "../../service/stageStyle/StageStyleManager";
 import { Camera } from "../../stage/Camera";

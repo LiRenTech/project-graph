@@ -8,8 +8,8 @@ import { Vector } from "../dataStruct/Vector";
 import { autoComputeEngineTick } from "../service/autoComputeEngine/mainTick";
 import { autoLayoutMainTick } from "../service/autoLayoutEngine/mainTick";
 import { Controller } from "../service/controller/Controller";
-import { PointDashEffect } from "../service/effect/concrete/PointDashEffect";
-import { Effect } from "../service/effect/effect";
+import { PointDashEffect } from "../service/effectEngine/concrete/PointDashEffect";
+import { EffectObject } from "../service/effectEngine/effectObject";
 import { KeyboardOnlyEngine } from "../service/keyboardOnlyEngine/keyboardOnlyEngine";
 import { Settings } from "../service/Settings";
 import { LineEdge } from "../stageObject/association/LineEdge";
@@ -71,7 +71,7 @@ export namespace Stage {
     }
   }
 
-  export let effects: Effect[] = [];
+  export let effects: EffectObject[] = [];
   /**
    * 是否正在框选
    */

@@ -2,9 +2,9 @@ import { Color } from "../../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../../dataStruct/ProgressNumber";
 import { Line } from "../../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../../dataStruct/Vector";
-import { CircleFlameEffect } from "../../../../../service/effect/concrete/CircleFlameEffect";
-import { LineCuttingEffect } from "../../../../../service/effect/concrete/LineCuttingEffect";
-import { Effect } from "../../../../../service/effect/effect";
+import { CircleFlameEffect } from "../../../../../service/effectEngine/concrete/CircleFlameEffect";
+import { LineCuttingEffect } from "../../../../../service/effectEngine/concrete/LineCuttingEffect";
+import { EffectObject } from "../../../../../service/effectEngine/effectObject";
 import { StageStyleManager } from "../../../../../service/stageStyle/StageStyleManager";
 import { Camera } from "../../../../../stage/Camera";
 import { LineEdge } from "../../../../../stageObject/association/LineEdge";
@@ -22,7 +22,7 @@ import { EdgeRendererClass } from "../EdgeRendererClass";
  * 直线渲染器
  */
 export class StraightEdgeRenderer extends EdgeRendererClass {
-  getCuttingEffects(edge: LineEdge): Effect[] {
+  getCuttingEffects(edge: LineEdge): EffectObject[] {
     const midLocation = edge.bodyLine.midPoint();
     return [
       new LineCuttingEffect(
@@ -53,7 +53,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
   getConnectedEffects(
     startNode: ConnectableEntity,
     toNode: ConnectableEntity,
-  ): Effect[] {
+  ): EffectObject[] {
     return [
       new CircleFlameEffect(
         new ProgressNumber(0, 15),

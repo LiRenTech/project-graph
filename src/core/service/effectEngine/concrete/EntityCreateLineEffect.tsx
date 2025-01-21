@@ -3,10 +3,10 @@ import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
 import { ZapLineEffect } from "./ZapLineEffect";
 
-export class EntityCreateLineEffect extends Effect {
+export class EntityCreateLineEffect extends EffectObject {
   constructor(
     public override timeProgress: ProgressNumber,
     public rect: Rectangle,

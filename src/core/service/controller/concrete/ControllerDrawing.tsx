@@ -3,7 +3,7 @@ import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Stage } from "../../../stage/Stage";
-import { LineEffect } from "../../effect/concrete/LineEffect";
+import { LineEffect } from "../../effectEngine/concrete/LineEffect";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 

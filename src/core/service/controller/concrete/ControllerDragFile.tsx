@@ -9,8 +9,8 @@ import { StageLoader } from "../../../stage/StageLoader";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ImageNode } from "../../../stageObject/entity/ImageNode";
 import { TextNode } from "../../../stageObject/entity/TextNode";
-import { TextRiseEffect } from "../../effect/concrete/TextRiseEffect";
-import { ViewFlashEffect } from "../../effect/concrete/ViewFlashEffect";
+import { TextRiseEffect } from "../../effectEngine/concrete/TextRiseEffect";
+import { ViewFlashEffect } from "../../effectEngine/concrete/ViewFlashEffect";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
 // import { listen } from "@tauri-apps/api/event";
 

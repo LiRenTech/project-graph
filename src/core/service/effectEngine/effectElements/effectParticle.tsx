@@ -1,5 +1,5 @@
-import { Color } from "../../dataStruct/Color";
-import { Vector } from "../../dataStruct/Vector";
+import { Color } from "../../../dataStruct/Color";
+import { Vector } from "../../../dataStruct/Vector";
 
 /**
  * 粒子类

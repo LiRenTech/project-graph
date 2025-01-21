@@ -14,7 +14,7 @@ import { ImageNode } from "../stageObject/entity/ImageNode";
 import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
-import { ViewFlashEffect } from "./effect/concrete/ViewFlashEffect";
+import { ViewFlashEffect } from "./effectEngine/concrete/ViewFlashEffect";
 
 /**
  * 管理最近打开的文件列表

@@ -4,9 +4,9 @@ import { TextRenderer } from "../../../render/canvas2d/basicRenderer/textRendere
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Camera } from "../../../stage/Camera";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
 
-export class TextRaiseEffectLocated extends Effect {
+export class TextRaiseEffectLocated extends EffectObject {
   constructor(
     public text: string,
     public location: Vector,

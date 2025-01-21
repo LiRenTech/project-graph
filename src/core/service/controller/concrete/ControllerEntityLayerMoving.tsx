@@ -3,7 +3,7 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
-import { RectanglePushInEffect } from "../../effect/concrete/RectanglePushInEffect";
+import { RectanglePushInEffect } from "../../effectEngine/concrete/RectanglePushInEffect";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 

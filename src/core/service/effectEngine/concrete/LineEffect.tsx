@@ -4,13 +4,13 @@ import { Vector } from "../../../dataStruct/Vector";
 import { CurveRenderer } from "../../../render/canvas2d/basicRenderer/curveRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Camera } from "../../../stage/Camera";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
 
 /**
  * 线段特效
  * 直接显示全部，随着时间推移逐渐透明
  */
-export class LineEffect extends Effect {
+export class LineEffect extends EffectObject {
   constructor(
     public override timeProgress: ProgressNumber,
     public fromLocation: Vector,

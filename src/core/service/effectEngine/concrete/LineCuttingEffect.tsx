@@ -2,7 +2,7 @@ import { Color, mixColors } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
 import { WorldRenderUtils } from "../../../render/canvas2d/utilsRenderer/WorldRenderUtils";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
 
 /**
  * 线段特效
@@ -15,7 +15,7 @@ import { Effect } from "../effect";
  * 100%
  *                   ->
  */
-export class LineCuttingEffect extends Effect {
+export class LineCuttingEffect extends EffectObject {
   constructor(
     public override timeProgress: ProgressNumber,
     public fromLocation: Vector,

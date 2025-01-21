@@ -9,8 +9,8 @@ import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stageObject/StageObject";
 import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { SoundService } from "../../SoundService";
-import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
-import { RectangleNoteEffect } from "../../effect/concrete/RectangleNoteEffect";
+import { CircleFlameEffect } from "../../effectEngine/concrete/CircleFlameEffect";
+import { RectangleNoteEffect } from "../../effectEngine/concrete/RectangleNoteEffect";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 

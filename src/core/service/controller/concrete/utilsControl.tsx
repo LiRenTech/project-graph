@@ -8,7 +8,7 @@ import { StageManager } from "../../../stage/stageManager/StageManager";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { UrlNode } from "../../../stageObject/entity/UrlNode";
 import { Entity } from "../../../stageObject/StageObject";
-import { EntityCreateLineEffect } from "../../effect/concrete/EntityCreateLineEffect";
+import { EntityCreateLineEffect } from "../../effectEngine/concrete/EntityCreateLineEffect";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Controller } from "../Controller";
 

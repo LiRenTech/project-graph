@@ -6,12 +6,12 @@ import { Vector } from "../../../dataStruct/Vector";
 import { CurveRenderer } from "../../../render/canvas2d/basicRenderer/curveRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Camera } from "../../../stage/Camera";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
 
 /**
  * 实体对齐特效
  */
-export class EntityAlignEffect extends Effect {
+export class EntityAlignEffect extends EffectObject {
   private lines: Line[] = [];
   static fromEntity(
     moveRectangle: Rectangle,

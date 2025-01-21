@@ -16,8 +16,8 @@ import {
   addTextNodeFromCurrentSelectedNode,
   editNodeDetailsByKeyboard,
 } from "./core/service/controller/concrete/utilsControl";
-import { TextRiseEffect } from "./core/service/effect/concrete/TextRiseEffect";
-import { ViewOutlineFlashEffect } from "./core/service/effect/concrete/ViewOutlineFlashEffect";
+import { TextRiseEffect } from "./core/service/effectEngine/concrete/TextRiseEffect";
+import { ViewOutlineFlashEffect } from "./core/service/effectEngine/concrete/ViewOutlineFlashEffect";
 import { KeyBinds } from "./core/service/KeyBinds";
 import { KeyboardOnlyEngine } from "./core/service/keyboardOnlyEngine/keyboardOnlyEngine";
 import { LastLaunch } from "./core/service/LastLaunch";

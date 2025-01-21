@@ -2,12 +2,12 @@ import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { WorldRenderUtils } from "../../../render/canvas2d/utilsRenderer/WorldRenderUtils";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
 
 /**
  * 实体创建时闪光特效
  */
-export class EntityCreateFlashEffect extends Effect {
+export class EntityCreateFlashEffect extends EffectObject {
   constructor(
     /**
      * 一开始为0，每tick + 1

@@ -4,7 +4,7 @@ import Button from "../components/ui/Button";
 import { Color } from "../core/dataStruct/Color";
 import { ProgressNumber } from "../core/dataStruct/ProgressNumber";
 import { Controller } from "../core/service/controller/Controller";
-import { RectangleNoteEffect } from "../core/service/effect/concrete/RectangleNoteEffect";
+import { RectangleNoteEffect } from "../core/service/effectEngine/concrete/RectangleNoteEffect";
 import { Camera } from "../core/stage/Camera";
 import { Stage } from "../core/stage/Stage";
 import { StageManager } from "../core/stage/stageManager/StageManager";

@@ -1,5 +1,4 @@
 import { Random } from "../../../algorithm/random";
-import { RateFunctions } from "../../../algorithm/rateFunctions";
 import { mixColors } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
@@ -7,12 +6,13 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { RenderUtils } from "../../../render/canvas2d/utilsRenderer/RenderUtils";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
+import { RateFunctions } from "../mathTools/rateFunctions";
 
 /**
  * 实体创建时粉尘凝聚特效
  */
-export class EntityCreateDashEffect extends Effect {
+export class EntityCreateDashEffect extends EffectObject {
   static readonly DASH_NUMBER_PRE_EDGE = 250;
 
   private initLocationArrayTop: Vector[] = [];

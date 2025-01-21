@@ -1,7 +1,7 @@
 import { Serialized } from "../../../types/node";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Vector } from "../../dataStruct/Vector";
-import { CircleChangeRadiusEffect } from "../../service/effect/concrete/CircleChangeRadiusEffect";
+import { CircleChangeRadiusEffect } from "../../service/effectEngine/concrete/CircleChangeRadiusEffect";
 import { Stage } from "../../stage/Stage";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { ConnectableEntity } from "../StageObject";

@@ -5,13 +5,13 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { ShapeRenderer } from "../../../render/canvas2d/basicRenderer/shapeRenderer";
 import { Camera } from "../../../stage/Camera";
 import { TextNode } from "../../../stageObject/entity/TextNode";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
 
 /**
  * 用于逻辑节点执行了一次效果
  * 附着在矩形上，从中心向外扩散
  */
-export class RectangleLittleNoteEffect extends Effect {
+export class RectangleLittleNoteEffect extends EffectObject {
   private currentRect: Rectangle;
 
   constructor(

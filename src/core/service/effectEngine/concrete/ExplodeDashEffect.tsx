@@ -6,12 +6,12 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { RenderUtils } from "../../../render/canvas2d/utilsRenderer/RenderUtils";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
 
 /**
  * 方块的爆炸粉尘效果
  */
-export class ExplodeAshEffect extends Effect {
+export class ExplodeAshEffect extends EffectObject {
   ashLocationArray: Vector[] = [];
   ashSpeedArray: Vector[] = [];
 

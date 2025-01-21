@@ -6,8 +6,8 @@ import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeR
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
-import { CircleFlameEffect } from "../../effect/concrete/CircleFlameEffect";
-import { LineCuttingEffect } from "../../effect/concrete/LineCuttingEffect";
+import { CircleFlameEffect } from "../../effectEngine/concrete/CircleFlameEffect";
+import { LineCuttingEffect } from "../../effectEngine/concrete/LineCuttingEffect";
 import { SoundService } from "../../SoundService";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";

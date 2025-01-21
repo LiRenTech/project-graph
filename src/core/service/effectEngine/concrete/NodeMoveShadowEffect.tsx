@@ -6,12 +6,12 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { RenderUtils } from "../../../render/canvas2d/utilsRenderer/RenderUtils";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
 
 /**
  *
  */
-export class NodeMoveShadowEffect extends Effect {
+export class NodeMoveShadowEffect extends EffectObject {
   pointList: Vector[] = [];
   pointInitSpeedList: Vector[] = [];
 

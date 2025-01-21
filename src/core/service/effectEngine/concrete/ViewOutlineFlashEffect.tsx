@@ -4,12 +4,12 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { ShapeRenderer } from "../../../render/canvas2d/basicRenderer/shapeRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
-import { Effect } from "../effect";
+import { EffectObject } from "../effectObject";
 
 /**
  * 屏幕边缘闪颜色效果
  */
-export class ViewOutlineFlashEffect extends Effect {
+export class ViewOutlineFlashEffect extends EffectObject {
   constructor(
     public color: Color,
     public override timeProgress: ProgressNumber = new ProgressNumber(0, 100),
