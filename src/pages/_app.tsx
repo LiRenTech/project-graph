@@ -218,6 +218,7 @@ export default function App() {
       onClick={() => {
         setIsMenuOpen(false);
         setIsStartFilePanelOpen(false);
+        setIsAiPanelOpen(false);
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
