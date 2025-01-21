@@ -520,7 +520,7 @@ export default function AppMenu({
             测试页面
           </Col>
           <Col icon={<TestTube2 />} onClick={() => navigate("/info")}>
-            Info界面
+            Info
           </Col>
           <Col
             icon={<TestTube2 />}
@@ -532,10 +532,7 @@ export default function AppMenu({
               })
             }
           >
-            查看json
-          </Col>
-          <Col icon={<TestTube2 />} onClick={() => {}}>
-            控制台输出
+            看json
           </Col>
           <Col
             icon={<TestTube2 />}
@@ -543,7 +540,7 @@ export default function AppMenu({
               StageManager.destroy();
             }}
           >
-            废档了，清空
+            废了
           </Col>
           <Col
             icon={<TestTube2 />}
@@ -551,7 +548,7 @@ export default function AppMenu({
               throw new Error("手动报错");
             }}
           >
-            手动报错
+            报错
           </Col>
           <Col
             icon={<TestTube2 />}
@@ -559,7 +556,15 @@ export default function AppMenu({
               StageManager.switchLineEdgeToCrEdge();
             }}
           >
-            切换Cr曲线
+            Cr
+          </Col>
+          <Col
+            icon={<TestTube2 />}
+            onClick={() => {
+              StageManager.moveAllEntityToIntegerLocation();
+            }}
+          >
+            int
           </Col>
         </Row>
       )}

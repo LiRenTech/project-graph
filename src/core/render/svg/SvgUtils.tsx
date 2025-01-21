@@ -18,10 +18,10 @@ export namespace SvgUtils {
     return (
       <line
         key={v4()}
-        x1={start.x}
-        y1={start.y}
-        x2={end.x}
-        y2={end.y}
+        x1={start.x.toFixed(1)}
+        y1={start.y.toFixed(1)}
+        x2={end.x.toFixed(1)}
+        y2={end.y.toFixed(1)}
         stroke={strokeColor.toString()}
         strokeWidth={strokeWidth}
       />
@@ -37,8 +37,8 @@ export namespace SvgUtils {
     return (
       // 这里居中实际上还没完全居中，垂直方向有点问题
       <text
-        x={location.x}
-        y={location.y + Renderer.NODE_PADDING}
+        x={location.x.toFixed(1)}
+        y={location.y + Renderer.NODE_PADDING.toFixed(1)}
         key={v4()}
         fill={color.toString()}
         fontSize={fontSize}
@@ -59,8 +59,8 @@ export namespace SvgUtils {
     const textSize = getTextSize(text, fontSize);
     return (
       <text
-        x={location.x + Renderer.NODE_PADDING}
-        y={location.y + textSize.y / 2 + Renderer.NODE_PADDING}
+        x={(location.x + Renderer.NODE_PADDING).toFixed(1)}
+        y={(location.y + textSize.y / 2 + Renderer.NODE_PADDING).toFixed(1)}
         key={v4()}
         fill={color.toString()}
         fontSize={fontSize}
@@ -81,10 +81,10 @@ export namespace SvgUtils {
     return (
       <rect
         key={v4()}
-        x={rectangle.location.x}
-        y={rectangle.location.y}
-        width={rectangle.size.x}
-        height={rectangle.size.y}
+        x={rectangle.location.x.toFixed(1)}
+        y={rectangle.location.y.toFixed(1)}
+        width={rectangle.size.x.toFixed(1)}
+        height={rectangle.size.y.toFixed(1)}
         rx={Renderer.NODE_ROUNDED_RADIUS}
         ry={Renderer.NODE_ROUNDED_RADIUS}
         fill={fillColor.toString()}

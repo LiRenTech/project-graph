@@ -276,7 +276,7 @@ export namespace EdgeRenderer {
 
     // 将计算得到的点转换为 SVG 坐标
     const pointsString = [endPoint, location2, location3, location4]
-      .map((point) => `${point.x},${point.y}`)
+      .map((point) => `${point.x.toFixed(1)},${point.y.toFixed(1)}`)
       .join(" ");
 
     // 返回SVG多边形字符串

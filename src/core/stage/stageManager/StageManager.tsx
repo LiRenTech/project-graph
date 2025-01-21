@@ -1140,4 +1140,17 @@ export namespace StageManager {
       entity.isSelected = true;
     }
   }
+
+  /**
+   * 将所有实体移动到整数坐标位置
+   * 用以减小导出时的文本内容体积
+   */
+  export function moveAllEntityToIntegerLocation() {
+    for (const textNode of getTextNodes()) {
+      const currentLocation = textNode.collisionBox.getRectangle().location;
+      currentLocation.x = Math.round(currentLocation.x);
+      currentLocation.y = Math.round(currentLocation.y);
+      textNode.moveTo(currentLocation);
+    }
+  }
 }
