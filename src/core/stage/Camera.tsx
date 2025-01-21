@@ -100,7 +100,7 @@ export namespace Camera {
       //   content: "前面的区域以后再来探索吧？",
       //   type: "error",
       // });
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new TextRiseEffect("派蒙：前面的区域以后再来探索吧？"),
       );
       speed = Vector.getZero();

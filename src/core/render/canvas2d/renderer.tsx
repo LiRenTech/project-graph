@@ -631,9 +631,7 @@ export namespace Renderer {
     if (!isRenderEffect) {
       return;
     }
-    for (const effect of Stage.effects) {
-      effect.render();
-    }
+    Stage.effectMachine.renderTick();
   }
   function renderBackground() {
     if (isShowBackgroundDots) {
@@ -670,7 +668,7 @@ export namespace Renderer {
       `location: ${Camera.location.x.toFixed(2)}, ${Camera.location.y.toFixed(2)}`,
       // `canvas rect: ${canvasRect.toString()}`,
       `window: ${w}x${h}`,
-      `effect count: ${Stage.effects.length}`,
+      `effect count: ${Stage.effectMachine.effectsCount}`,
       `node count: ${renderedNodes} , ${StageManager.getTextNodes().length}`,
       `edge count: ${renderedEdges} , ${StageManager.getLineEdges().length}`,
       `section count: ${StageManager.getSections().length}`,

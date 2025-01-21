@@ -36,7 +36,7 @@ ControllerDrawing.mousemove = (event: MouseEvent) => {
       new Vector(event.clientX, event.clientY),
     );
     // 绘制临时激光笔特效
-    Stage.effects.push(
+    Stage.effectMachine.addEffect(
       new LineEffect(
         new ProgressNumber(0, 50),
         ControllerDrawing.lastMoveLocation,

@@ -121,13 +121,13 @@ export namespace StageAutoAlignManager {
       moveTargetRectangle.location.x += xMoveDiff;
       moveTargetRectangle.location.y += yMoveDiff;
 
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         RectangleRenderEffect.fromPreAlign(moveTargetRectangle),
       );
       for (const targetRectangle of xTargetRectangles.concat(
         yTargetRectangles,
       )) {
-        Stage.effects.push(
+        Stage.effectMachine.addEffect(
           EntityAlignEffect.fromEntity(moveTargetRectangle, targetRectangle),
         );
       }
@@ -138,7 +138,7 @@ export namespace StageAutoAlignManager {
   }
 
   function _addAlignEffect(selectedEntity: Entity, otherEntity: Entity) {
-    Stage.effects.push(
+    Stage.effectMachine.addEffect(
       EntityAlignEffect.fromEntity(
         selectedEntity.collisionBox.getRectangle(),
         otherEntity.collisionBox.getRectangle(),

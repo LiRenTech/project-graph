@@ -97,7 +97,7 @@ export namespace StageNodeRotate {
         childNode.geometryCenter,
       );
 
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new LineEffect(
           new ProgressNumber(0, 20),
           currentNode.geometryCenter,
@@ -107,7 +107,7 @@ export namespace StageNodeRotate {
           Math.abs(degrees),
         ),
       );
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new LineEffect(
           new ProgressNumber(0, 20),
           midPoint,

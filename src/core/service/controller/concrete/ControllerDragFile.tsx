@@ -32,7 +32,7 @@ ControllerDragFile.dragEnter = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
   Stage.isDraggingFile = true;
-  Stage.effects.push(new TextRiseEffect("正在拖入文件"));
+  Stage.effectMachine.addEffect(new TextRiseEffect("正在拖入文件"));
   Stage.draggingLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
@@ -160,20 +160,20 @@ function dealJsonFileDrop(file: File, mouseWorldLocation: Vector) {
     const dataString = fileContent?.toString();
     if (dataString === undefined) {
       console.error("文件内容为空");
-      Stage.effects.push(new TextRiseEffect("文件内容为空"));
+      Stage.effectMachine.addEffect(new TextRiseEffect("文件内容为空"));
     } else {
       StageManager.addSerializedData(
         StageLoader.validate(JSON.parse(dataString)),
         mouseWorldLocation,
       );
-      Stage.effects.push(new ViewFlashEffect(Color.White));
+      Stage.effectMachine.addEffect(new ViewFlashEffect(Color.White));
     }
   };
 
   reader.onerror = (e) => {
     console.error("文件读取错误:", e);
-    Stage.effects.push(new TextRiseEffect("文件读取错误:" + e));
-    Stage.effects.push(new ViewFlashEffect(Color.Red));
+    Stage.effectMachine.addEffect(new TextRiseEffect("文件读取错误:" + e));
+    Stage.effectMachine.addEffect(new ViewFlashEffect(Color.Red));
   };
 }
 
@@ -185,7 +185,9 @@ function dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
 
     if (typeof fileContent !== "string") {
       console.error("文件内容为空");
-      Stage.effects.push(new TextRiseEffect("图片内容不是string类型"));
+      Stage.effectMachine.addEffect(
+        new TextRiseEffect("图片内容不是string类型"),
+      );
       return;
     }
 
@@ -207,7 +209,7 @@ function dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
   };
   reader.onerror = (e) => {
     console.error("文件读取错误:", e);
-    Stage.effects.push(new TextRiseEffect("文件读取错误:" + e));
-    Stage.effects.push(new ViewFlashEffect(Color.Red));
+    Stage.effectMachine.addEffect(new TextRiseEffect("文件读取错误:" + e));
+    Stage.effectMachine.addEffect(new ViewFlashEffect(Color.Red));
   };
 }

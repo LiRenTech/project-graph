@@ -215,7 +215,7 @@ export class Section extends ConnectableEntity {
     }
 
     // 移动雪花特效
-    Stage.effects.push(
+    Stage.effectMachine.addEffect(
       new NodeMoveShadowEffect(
         new ProgressNumber(0, 30),
         this.rectangle,

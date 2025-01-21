@@ -158,7 +158,7 @@ export namespace RecentFileManager {
     StageHistoryManager.reset(data);
 
     Camera.reset();
-    Stage.effects.push(ViewFlashEffect.SaveFile());
+    Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
     RecentFileManager.addRecentFile({
       path: path,
       time: new Date().getTime(),

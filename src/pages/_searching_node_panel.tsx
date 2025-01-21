@@ -50,7 +50,7 @@ export default function SearchingNodePanel() {
             const currentNode =
               Stage.searchResultNodes[Stage.currentSearchResultIndex];
             // currentNode.isSelected = true;
-            Stage.effects.push(
+            Stage.effectMachine.addEffect(
               new RectangleNoteEffect(
                 new ProgressNumber(0, 50),
                 currentNode.rectangle,
@@ -96,7 +96,7 @@ export default function SearchingNodePanel() {
               // 选择当前搜索结果节点
               const currentNode =
                 Stage.searchResultNodes[Stage.currentSearchResultIndex];
-              Stage.effects.push(
+              Stage.effectMachine.addEffect(
                 new RectangleNoteEffect(
                   new ProgressNumber(0, 50),
                   currentNode.rectangle,
@@ -122,7 +122,7 @@ export default function SearchingNodePanel() {
               // 选择当前搜索结果节点
               const currentNode =
                 Stage.searchResultNodes[Stage.currentSearchResultIndex];
-              Stage.effects.push(
+              Stage.effectMachine.addEffect(
                 new RectangleNoteEffect(
                   new ProgressNumber(0, 50),
                   currentNode.rectangle,

@@ -150,8 +150,8 @@ export namespace KeyboardOnlyEngine {
         // 连接到之前的节点
         for (const selectedEntity of selectConnectableEntities) {
           StageManager.connectEntity(selectedEntity, entity);
-          Stage.effects.push(
-            ...EdgeRenderer.getConnectedEffects(selectedEntity, entity),
+          Stage.effectMachine.addEffects(
+            EdgeRenderer.getConnectedEffects(selectedEntity, entity),
           );
         }
         // 选择到新创建的节点
@@ -179,8 +179,8 @@ export namespace KeyboardOnlyEngine {
       // 连接到之前的节点
       for (const entity of selectConnectableEntities) {
         StageManager.connectEntity(entity, newNode);
-        Stage.effects.push(
-          ...EdgeRenderer.getConnectedEffects(entity, newNode),
+        Stage.effectMachine.addEffects(
+          EdgeRenderer.getConnectedEffects(entity, newNode),
         );
       }
       // 选择到新创建的节点

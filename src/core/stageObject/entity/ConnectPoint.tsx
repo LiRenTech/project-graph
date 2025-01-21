@@ -57,7 +57,7 @@ export class ConnectPoint extends ConnectableEntity {
     if (value) {
       // 设定选中
       this.radius = 30;
-      // Stage.effects.push(
+      // Stage.effectMachine.addEffect(
       //   CircleChangeRadiusEffect.fromConnectPointExpand(
       //     this.geometryCenter.clone(),
       //     30,
@@ -66,7 +66,7 @@ export class ConnectPoint extends ConnectableEntity {
     } else {
       // 取消选中
       this.radius = 1;
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         CircleChangeRadiusEffect.fromConnectPointShrink(
           this.geometryCenter.clone(),
           30,

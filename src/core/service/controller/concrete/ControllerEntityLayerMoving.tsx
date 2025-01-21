@@ -68,7 +68,7 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
       StageManager.goInSection(selectedEntities, section);
       // 特效
       for (const entity of selectedEntities) {
-        Stage.effects.push(
+        Stage.effectMachine.addEffect(
           new RectanglePushInEffect(
             entity.collisionBox.getRectangle(),
             section.collisionBox.getRectangle(),

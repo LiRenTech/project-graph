@@ -32,7 +32,7 @@ function isConnecting() {
 
 function addConnectEffect(from: ConnectableEntity, to: ConnectableEntity) {
   for (const effect of EdgeRenderer.getConnectedEffects(from, to)) {
-    Stage.effects.push(effect);
+    Stage.effectMachine.addEffect(effect);
   }
 }
 /**
@@ -89,7 +89,7 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
       for (const node of StageManager.getConnectableEntity()) {
         if (node.isSelected) {
           // 特效
-          Stage.effects.push(
+          Stage.effectMachine.addEffect(
             new RectangleNoteEffect(
               new ProgressNumber(0, 15),
               node.collisionBox.getRectangle().clone(),
@@ -102,7 +102,7 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
       // 不触发多重连接
       Stage.connectFromEntities = [clickedConnectableEntity];
       // 特效
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new RectangleNoteEffect(
           new ProgressNumber(0, 15),
           clickedConnectableEntity.collisionBox.getRectangle().clone(),
@@ -167,7 +167,7 @@ ControllerNodeConnection.mouseup = (event: MouseEvent) => {
     }
     if (isHaveConnectResult) {
       // 给连向的那个节点加特效
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new CircleFlameEffect(
           new ProgressNumber(0, 15),
           Stage.connectToEntity.collisionBox.getRectangle().center,

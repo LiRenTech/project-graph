@@ -166,7 +166,7 @@ export function autoComputeEngineTick(tickNumber: number) {
 
   for (const node of nodes) {
     computeTextNode(node);
-    Stage.effects.push(
+    Stage.effectMachine.addEffect(
       TextRaiseEffectLocated.fromDebugLogicNode(i, node.geometryCenter),
     );
     i++;
@@ -246,7 +246,9 @@ function computeTextNode(node: TextNode) {
   for (const name of Object.keys(MapNameFunction)) {
     if (node.text === name) {
       // 发现了一个逻辑节点
-      Stage.effects.push(RectangleLittleNoteEffect.fromUtilsLittleNote(node));
+      Stage.effectMachine.addEffect(
+        RectangleLittleNoteEffect.fromUtilsLittleNote(node),
+      );
 
       const result = MapNameFunction[name](
         AutoComputeUtils.getParentTextNodes(node).map((p) => p.text),

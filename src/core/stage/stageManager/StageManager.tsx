@@ -857,7 +857,7 @@ export namespace StageManager {
     for (const edge of StageManager.getLineEdges()) {
       if (edge.isSelected) {
         StageManager.deleteEdge(edge);
-        Stage.effects.push(...EdgeRenderer.getCuttingEffects(edge));
+        Stage.effectMachine.addEffects(EdgeRenderer.getCuttingEffects(edge));
       }
     }
   }

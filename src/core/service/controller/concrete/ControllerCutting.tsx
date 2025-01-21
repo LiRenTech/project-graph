@@ -83,7 +83,7 @@ ControllerCutting.mousemove = (event: MouseEvent) => {
       .getCollidePointsWithLine(Stage.cuttingLine);
     // 增加两点特效
     for (const collidePoint of collidePoints) {
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new CircleFlameEffect(
           new ProgressNumber(0, 5),
           collidePoint,
@@ -132,7 +132,7 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
   for (const edge of Stage.warningEdges) {
     StageManager.deleteEdge(edge);
     for (const effect of EdgeRenderer.getCuttingEffects(edge)) {
-      Stage.effects.push(effect);
+      Stage.effectMachine.addEffect(effect);
     }
   }
   StageManager.deleteEntities(Stage.warningEntity);
@@ -144,7 +144,7 @@ ControllerCutting.mouseup = (event: MouseEvent) => {
 
   Stage.warningEdges = [];
 
-  Stage.effects.push(
+  Stage.effectMachine.addEffect(
     new LineCuttingEffect(
       new ProgressNumber(0, 15),
       cuttingStartLocation,

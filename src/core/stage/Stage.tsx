@@ -9,7 +9,6 @@ import { autoComputeEngineTick } from "../service/autoComputeEngine/mainTick";
 import { autoLayoutMainTick } from "../service/autoLayoutEngine/mainTick";
 import { Controller } from "../service/controller/Controller";
 import { PointDashEffect } from "../service/effectEngine/concrete/PointDashEffect";
-import { EffectObject } from "../service/effectEngine/effectObject";
 import { KeyboardOnlyEngine } from "../service/keyboardOnlyEngine/keyboardOnlyEngine";
 import { Settings } from "../service/Settings";
 import { LineEdge } from "../stageObject/association/LineEdge";
@@ -19,6 +18,7 @@ import { ConnectableEntity, Entity } from "../stageObject/StageObject";
 import { StageDumper } from "./StageDumper";
 import { StageManager } from "./stageManager/StageManager";
 import { StageSaveManager } from "./StageSaveManager";
+import { EffectMachine } from "../service/effectEngine/effectMachine";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -71,7 +71,7 @@ export namespace Stage {
     }
   }
 
-  export let effects: EffectObject[] = [];
+  export const effectMachine = EffectMachine.default();
   /**
    * 是否正在框选
    */
@@ -207,7 +207,7 @@ export namespace Stage {
       }
       if (connectTargetNode === null) {
         // 如果鼠标位置没有和任何节点相交
-        effects.push(
+        effectMachine.addEffect(
           PointDashEffect.fromMouseEffect(
             Controller.lastMoveLocation,
             connectFromEntities.length * 5,
@@ -218,11 +218,8 @@ export namespace Stage {
       }
     }
 
-    for (const effect of effects) {
-      effect.tick();
-    }
-    // 清理过时特效
-    effects = effects.filter((effect) => !effect.timeProgress.isFull);
+    // 特效逻辑
+    effectMachine.logicTick();
 
     // 计算引擎
     autoComputeEngineTick(tickNumber);

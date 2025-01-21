@@ -48,7 +48,7 @@ export namespace StageNodeAdder {
     for (const section of addToSections) {
       section.children.push(node);
       section.adjustLocationAndSize();
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new RectanglePushInEffect(
           node.rectangle.clone(),
           section.rectangle.clone(),
@@ -116,7 +116,7 @@ export namespace StageNodeAdder {
     for (const section of addToSections) {
       section.children.push(connectPoint);
       section.adjustLocationAndSize();
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new RectanglePushInEffect(
           connectPoint.collisionBox.getRectangle(),
           section.rectangle.clone(),

@@ -147,7 +147,7 @@ function textNodeInEditModeByUUID(uuid: string) {
   }
   const rect = createNode.collisionBox.getRectangle();
   // 整特效
-  Stage.effects.push(EntityCreateLineEffect.from(rect));
+  Stage.effectMachine.addEffect(EntityCreateLineEffect.from(rect));
   if (isDesktop) {
     editTextNode(createNode);
   }

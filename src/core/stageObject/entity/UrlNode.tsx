@@ -67,7 +67,7 @@ export class UrlNode extends ConnectableEntity {
     this.collisionBox.shapeList[0] = newRectangle;
 
     // 移动雪花特效
-    Stage.effects.push(
+    Stage.effectMachine.addEffect(
       new NodeMoveShadowEffect(
         new ProgressNumber(0, 30),
         this.rectangle,

@@ -383,7 +383,7 @@ async function registerKeyBinds() {
     })
   ).down(() => {
     StageManager.selectAll();
-    Stage.effects.push(ViewOutlineFlashEffect.normal(Color.Green));
+    Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(Color.Green));
   });
 }
 
@@ -431,7 +431,9 @@ async function loadStartFile() {
     }, 1000);
   } else {
     // 自动打开路径不存在
-    Stage.effects.push(new TextRiseEffect(`打开工程失败，${path}不存在！`));
+    Stage.effectMachine.addEffect(
+      new TextRiseEffect(`打开工程失败，${path}不存在！`),
+    );
   }
 }
 

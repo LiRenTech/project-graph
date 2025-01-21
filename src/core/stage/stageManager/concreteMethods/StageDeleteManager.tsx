@@ -56,7 +56,7 @@ export namespace StageDeleteManager {
   function deleteImageNode(entity: ImageNode) {
     if (StageManager.getImageNodes().includes(entity)) {
       StageManager.deleteOneImage(entity);
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new ExplodeAshEffect(
           new ProgressNumber(0, 30),
           entity.collisionBox.getRectangle(),
@@ -80,7 +80,7 @@ export namespace StageDeleteManager {
     if (StageManager.getConnectPoints().includes(entity)) {
       // 从数组中去除
       StageManager.deleteOneConnectPoint(entity);
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new ExplodeAshEffect(
           new ProgressNumber(0, 30),
           entity.collisionBox.getRectangle(),
@@ -100,7 +100,7 @@ export namespace StageDeleteManager {
       // 从数组中去除
       StageManager.deleteOneTextNode(entity);
       // 增加特效
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new ExplodeAshEffect(
           new ProgressNumber(0, 30),
           entity.collisionBox.getRectangle(),

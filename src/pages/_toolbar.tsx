@@ -524,13 +524,13 @@ const onSaveSelectedNew = async () => {
     writeTextFile(path, JSON.stringify(data))
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .then((_) => {
-        Stage.effects.push(new ViewFlashEffect(Color.Black));
+        Stage.effectMachine.addEffect(new ViewFlashEffect(Color.Black));
       })
       .catch((err) => {
-        Stage.effects.push(new TextRiseEffect("保存失败" + err));
+        Stage.effectMachine.addEffect(new TextRiseEffect("保存失败" + err));
       });
   } catch (e) {
-    Stage.effects.push(new TextRiseEffect("保存失败" + e));
+    Stage.effectMachine.addEffect(new TextRiseEffect("保存失败" + e));
   }
 };
 
@@ -555,7 +555,7 @@ async function openBrowserOrFile() {
       //     myOpen(nodeText);
       //   } else {
       //     // 不是网址也不是文件，不做处理
-      //     Stage.effects.push(new TextRiseEffect("非法文件路径: " + nodeText));
+      //     Stage.effectMachine.addEffect(new TextRiseEffect("非法文件路径: " + nodeText));
       //   }
       // }
     }
