@@ -1,17 +1,17 @@
 import React from "react";
 import ReactDOMServer from "react-dom/server";
+import { colorInvert } from "../dataStruct/Color";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { EdgeRenderer } from "../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../render/canvas2d/renderer";
 import { SvgUtils } from "../render/svg/SvgUtils";
+import { StageStyleManager } from "../service/stageStyle/StageStyleManager";
 import { LineEdge } from "../stageObject/association/LineEdge";
 import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { Entity } from "../stageObject/StageObject";
-import { StageStyleManager } from "../stageStyle/StageStyleManager";
 import { StageManager } from "./stageManager/StageManager";
-import { colorInvert } from "../dataStruct/Color";
 
 /**
  * 将舞台当前内容导出为SVG

@@ -1,7 +1,7 @@
 import { Serialized } from "../../types/node";
 import { exists, writeTextFile } from "../../utils/fs";
 import { PathString } from "../../utils/pathString";
-import { ViewFlashEffect } from "../effect/concrete/ViewFlashEffect";
+import { ViewFlashEffect } from "../service/effect/concrete/ViewFlashEffect";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { Entity } from "../stageObject/StageObject";
 import { Stage } from "./Stage";

@@ -10,7 +10,7 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import KeyBind from "../../components/ui/KeyBind";
-import { KeyBinds } from "../../core/KeyBinds";
+import { KeyBinds } from "../../core/service/KeyBinds";
 import { Field, SettingField } from "./_field";
 
 export default function Control() {

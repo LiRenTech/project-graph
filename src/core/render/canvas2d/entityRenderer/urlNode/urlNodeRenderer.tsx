@@ -1,13 +1,13 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { MouseLocation } from "../../../../MouseLocation";
+import { MouseLocation } from "../../../../service/MouseLocation";
+import { StageStyleManager } from "../../../../service/stageStyle/StageStyleManager";
 import { Camera } from "../../../../stage/Camera";
 import { UrlNode } from "../../../../stageObject/entity/UrlNode";
-import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
 import { CurveRenderer } from "../../basicRenderer/curveRenderer";
-import { Renderer } from "../../renderer";
 import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../../basicRenderer/textRenderer";
+import { Renderer } from "../../renderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { EntityRenderer } from "../EntityRenderer";
 

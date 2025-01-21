@@ -2,13 +2,13 @@ import { Dialog } from "../../../../utils/dialog";
 import { NumberFunctions } from "../../../algorithm/numberFunctions";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { EntityAlignEffect } from "../../../effect/concrete/EntityAlignEffect";
-import { RectangleRenderEffect } from "../../../effect/concrete/RectangleRenderEffect";
 import { Renderer } from "../../../render/canvas2d/renderer";
-import { SoundService } from "../../../SoundService";
+import { autoLayoutFastTreeMode } from "../../../service/autoLayoutEngine/autoLayoutFastTreeMode";
+import { EntityAlignEffect } from "../../../service/effect/concrete/EntityAlignEffect";
+import { RectangleRenderEffect } from "../../../service/effect/concrete/RectangleRenderEffect";
+import { SoundService } from "../../../service/SoundService";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { ConnectableEntity, Entity } from "../../../stageObject/StageObject";
-import { autoLayoutFastTreeMode } from "../../autoLayoutEngine/autoLayoutFastTreeMode";
 import { Stage } from "../../Stage";
 import { StageManager } from "../StageManager";
 

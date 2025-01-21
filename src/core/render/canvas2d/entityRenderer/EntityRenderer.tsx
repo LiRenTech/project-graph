@@ -3,12 +3,13 @@ import { Random } from "../../../algorithm/random";
 import { Color, colorInvert } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { AutoComputeUtils } from "../../../stage/autoComputeEngine/AutoComputeUtils";
+import { AutoComputeUtils } from "../../../service/autoComputeEngine/AutoComputeUtils";
 import {
   getLogicNodeRenderName,
   LogicNodeNameEnum,
   LogicNodeNameToRenderNameMap,
-} from "../../../stage/autoComputeEngine/logicNodeNameEnum";
+} from "../../../service/autoComputeEngine/logicNodeNameEnum";
+import { StageStyleManager } from "../../../service/stageStyle/StageStyleManager";
 import { Camera } from "../../../stage/Camera";
 import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../../stageObject/entity/ImageNode";
@@ -16,7 +17,6 @@ import { Section } from "../../../stageObject/entity/Section";
 import { TextNode } from "../../../stageObject/entity/TextNode";
 import { UrlNode } from "../../../stageObject/entity/UrlNode";
 import { Entity } from "../../../stageObject/StageObject";
-import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
 import { ImageRenderer } from "../basicRenderer/ImageRenderer";
 import { ShapeRenderer } from "../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../basicRenderer/textRenderer";

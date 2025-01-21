@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { InputElement } from "../core/render/domElement/inputElement";
-import { Vector } from "../core/dataStruct/Vector";
 import Button from "../components/ui/Button";
+import { Vector } from "../core/dataStruct/Vector";
 import { Renderer } from "../core/render/canvas2d/renderer";
+import { InputElement } from "../core/render/domElement/inputElement";
+import { StageStyleManager } from "../core/service/stageStyle/StageStyleManager";
 import { Camera } from "../core/stage/Camera";
-import { StageStyleManager } from "../core/stageStyle/StageStyleManager";
 
 export default function TestPage() {
   useEffect(() => {

@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "../components/ui/Button";
 import IconButton from "../components/ui/IconButton";
-import { Settings } from "../core/Settings";
+import { Settings } from "../core/service/Settings";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageSaveManager } from "../core/stage/StageSaveManager";

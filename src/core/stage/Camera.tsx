@@ -1,9 +1,9 @@
 import { NumberFunctions } from "../algorithm/numberFunctions";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
-import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
 import { Renderer } from "../render/canvas2d/renderer";
-import { Settings } from "../Settings";
+import { TextRiseEffect } from "../service/effect/concrete/TextRiseEffect";
+import { Settings } from "../service/Settings";
 import { Entity } from "../stageObject/StageObject";
 import { Stage } from "./Stage";
 import { StageManager } from "./stageManager/StageManager";

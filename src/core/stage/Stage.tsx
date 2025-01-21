@@ -2,23 +2,23 @@ import { family } from "@tauri-apps/plugin-os";
 
 import { Serialized } from "../../types/node";
 import { PathString } from "../../utils/pathString";
-import { Controller } from "../controller/Controller";
 import { Line } from "../dataStruct/shape/Line";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
-import { PointDashEffect } from "../effect/concrete/PointDashEffect";
-import { Effect } from "../effect/effect";
-import { Settings } from "../Settings";
+import { autoComputeEngineTick } from "../service/autoComputeEngine/mainTick";
+import { autoLayoutMainTick } from "../service/autoLayoutEngine/mainTick";
+import { Controller } from "../service/controller/Controller";
+import { PointDashEffect } from "../service/effect/concrete/PointDashEffect";
+import { Effect } from "../service/effect/effect";
+import { KeyboardOnlyEngine } from "../service/keyboardOnlyEngine/keyboardOnlyEngine";
+import { Settings } from "../service/Settings";
 import { LineEdge } from "../stageObject/association/LineEdge";
 import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { ConnectableEntity, Entity } from "../stageObject/StageObject";
-import { autoComputeEngineTick } from "./autoComputeEngine/mainTick";
-import { autoLayoutMainTick } from "./autoLayoutEngine/mainTick";
 import { StageDumper } from "./StageDumper";
 import { StageManager } from "./stageManager/StageManager";
 import { StageSaveManager } from "./StageSaveManager";
-import { KeyboardOnlyEngine } from "./keyboardOnlyEngine/keyboardOnlyEngine";
 /**
  * 舞台对象
  * 更广义的舞台，

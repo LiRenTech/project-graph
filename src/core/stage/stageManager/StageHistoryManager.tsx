@@ -1,6 +1,6 @@
 import { Serialized } from "../../../types/node";
-import { RecentFileManager } from "../../RecentFileManager";
-import { Settings } from "../../Settings";
+import { RecentFileManager } from "../../service/RecentFileManager";
+import { Settings } from "../../service/Settings";
 import { StageDumper } from "../StageDumper";
 import { StageSaveManager } from "../StageSaveManager";
 import { StageManager } from "./StageManager";

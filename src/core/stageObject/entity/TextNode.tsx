@@ -1,13 +1,13 @@
 import { Serialized } from "../../../types/node";
 import { getMultiLineTextSize } from "../../../utils/font";
 import { Color } from "../../dataStruct/Color";
+import { ProgressNumber } from "../../dataStruct/ProgressNumber";
+import { Vector } from "../../dataStruct/Vector";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../render/canvas2d/renderer";
-import { Vector } from "../../dataStruct/Vector";
-import { StageManager } from "../../stage/stageManager/StageManager";
+import { NodeMoveShadowEffect } from "../../service/effect/concrete/NodeMoveShadowEffect";
 import { Stage } from "../../stage/Stage";
-import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
-import { ProgressNumber } from "../../dataStruct/ProgressNumber";
+import { StageManager } from "../../stage/stageManager/StageManager";
 import { ConnectableEntity, Entity } from "../StageObject";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { Section } from "./Section";

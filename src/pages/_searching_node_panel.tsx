@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import Box from "../components/ui/Box";
 import Button from "../components/ui/Button";
-import { Controller } from "../core/controller/Controller";
 import { Color } from "../core/dataStruct/Color";
 import { ProgressNumber } from "../core/dataStruct/ProgressNumber";
-import { RectangleNoteEffect } from "../core/effect/concrete/RectangleNoteEffect";
+import { Controller } from "../core/service/controller/Controller";
+import { RectangleNoteEffect } from "../core/service/effect/concrete/RectangleNoteEffect";
 import { Camera } from "../core/stage/Camera";
 import { Stage } from "../core/stage/Stage";
 import { StageManager } from "../core/stage/stageManager/StageManager";

@@ -5,31 +5,33 @@ import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { runCli } from "./cli";
-import { PromptManager } from "./core/ai/PromptManager";
-import { ColorManager } from "./core/ColorManager";
+import { Color } from "./core/dataStruct/Color";
+import { Vector } from "./core/dataStruct/Vector";
+import { EdgeRenderer } from "./core/render/canvas2d/entityRenderer/edge/EdgeRenderer";
+import { Renderer } from "./core/render/canvas2d/renderer";
+import { PromptManager } from "./core/service/ai/PromptManager";
+import { ColorManager } from "./core/service/ColorManager";
 import {
   addTextNodeByLocation,
   addTextNodeFromCurrentSelectedNode,
   editNodeDetailsByKeyboard,
-} from "./core/controller/concrete/utilsControl";
-import { Vector } from "./core/dataStruct/Vector";
-import { TextRiseEffect } from "./core/effect/concrete/TextRiseEffect";
-import { KeyBinds } from "./core/KeyBinds";
-import { LastLaunch } from "./core/LastLaunch";
-import { MouseLocation } from "./core/MouseLocation";
-import { RecentFileManager } from "./core/RecentFileManager";
-import { EdgeRenderer } from "./core/render/canvas2d/entityRenderer/edge/EdgeRenderer";
-import { Renderer } from "./core/render/canvas2d/renderer";
-import { Settings } from "./core/Settings";
-import { SoundService } from "./core/SoundService";
+} from "./core/service/controller/concrete/utilsControl";
+import { TextRiseEffect } from "./core/service/effect/concrete/TextRiseEffect";
+import { ViewOutlineFlashEffect } from "./core/service/effect/concrete/ViewOutlineFlashEffect";
+import { KeyBinds } from "./core/service/KeyBinds";
+import { KeyboardOnlyEngine } from "./core/service/keyboardOnlyEngine/keyboardOnlyEngine";
+import { LastLaunch } from "./core/service/LastLaunch";
+import { MouseLocation } from "./core/service/MouseLocation";
+import { RecentFileManager } from "./core/service/RecentFileManager";
+import { Settings } from "./core/service/Settings";
+import { SoundService } from "./core/service/SoundService";
+import { StageStyleManager } from "./core/service/stageStyle/StageStyleManager";
+import { StartFilesManager } from "./core/service/StartFilesManager";
 import { Camera } from "./core/stage/Camera";
-import { KeyboardOnlyEngine } from "./core/stage/keyboardOnlyEngine/keyboardOnlyEngine";
 import { Stage } from "./core/stage/Stage";
 import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManager";
 import { StageManager } from "./core/stage/stageManager/StageManager";
 import { EdgeCollisionBoxGetter } from "./core/stageObject/association/EdgeCollisionBoxGetter";
-import { StageStyleManager } from "./core/stageStyle/StageStyleManager";
-import { StartFilesManager } from "./core/StartFilesManager";
 import "./index.pcss";
 import { ColorPanel } from "./pages/_toolbar";
 import "./polyfills/roundRect";
@@ -38,8 +40,6 @@ import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 import { Popup } from "./utils/popup";
-import { ViewOutlineFlashEffect } from "./core/effect/concrete/ViewOutlineFlashEffect";
-import { Color } from "./core/dataStruct/Color";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;

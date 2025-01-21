@@ -1,7 +1,7 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
-import { LineEffect } from "../../../effect/concrete/LineEffect";
+import { LineEffect } from "../../../service/effect/concrete/LineEffect";
 import { ConnectableEntity } from "../../../stageObject/StageObject";
 import { Stage } from "../../Stage";
 import { StageManager } from "../StageManager";

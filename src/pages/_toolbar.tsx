@@ -29,10 +29,10 @@ import React, { useEffect, useState } from "react";
 import Box from "../components/ui/Box";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
-import { ApiKeyManager } from "../core/ai/ApiKeyManager";
 import { Color } from "../core/dataStruct/Color";
-import { TextRiseEffect } from "../core/effect/concrete/TextRiseEffect";
-import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
+import { ApiKeyManager } from "../core/service/ai/ApiKeyManager";
+import { TextRiseEffect } from "../core/service/effect/concrete/TextRiseEffect";
+import { ViewFlashEffect } from "../core/service/effect/concrete/ViewFlashEffect";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
@@ -43,7 +43,7 @@ import { Dialog } from "../utils/dialog";
 import { writeTextFile } from "../utils/fs";
 import { Popup } from "../utils/popup";
 // import { PathString } from "../utils/pathString";
-import { ColorManager } from "../core/ColorManager";
+import { ColorManager } from "../core/service/ColorManager";
 import ColorManagerPanel from "./_color_manager_panel";
 
 interface ToolbarItemProps {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Button from "../components/ui/Button";
-import { ColorManager } from "../core/ColorManager";
 import { Color } from "../core/dataStruct/Color";
+import { ColorManager } from "../core/service/ColorManager";
 import { Dialog } from "../utils/dialog";
 
 /**

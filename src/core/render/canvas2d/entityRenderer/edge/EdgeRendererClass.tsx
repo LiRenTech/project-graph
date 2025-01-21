@@ -1,5 +1,5 @@
 import { Vector } from "../../../../dataStruct/Vector";
-import { Effect } from "../../../../effect/effect";
+import { Effect } from "../../../../service/effect/effect";
 import { LineEdge } from "../../../../stageObject/association/LineEdge";
 import { ConnectableEntity } from "../../../../stageObject/StageObject";
 

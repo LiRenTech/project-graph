@@ -5,7 +5,7 @@ import { StringDict } from "../../dataStruct/StringDict";
 import { Vector } from "../../dataStruct/Vector";
 import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../render/canvas2d/renderer";
-import { Settings } from "../../Settings";
+import { Settings } from "../../service/Settings";
 import { CublicCatmullRomSplineEdge } from "../../stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";

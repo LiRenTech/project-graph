@@ -5,14 +5,14 @@ import { Color } from "../../dataStruct/Color";
 import { ProgressNumber } from "../../dataStruct/ProgressNumber";
 import { Line } from "../../dataStruct/shape/Line";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
+import { Shape } from "../../dataStruct/shape/Shape";
 import { Vector } from "../../dataStruct/Vector";
-import { NodeMoveShadowEffect } from "../../effect/concrete/NodeMoveShadowEffect";
 import { Renderer } from "../../render/canvas2d/renderer";
+import { NodeMoveShadowEffect } from "../../service/effect/concrete/NodeMoveShadowEffect";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { ConnectableEntity, Entity } from "../StageObject";
-import { Shape } from "../../dataStruct/shape/Shape";
 
 export class Section extends ConnectableEntity {
   /**

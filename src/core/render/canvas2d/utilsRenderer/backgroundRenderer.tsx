@@ -1,8 +1,8 @@
 import { Color } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
+import { StageStyleManager } from "../../../service/stageStyle/StageStyleManager";
 import { Camera } from "../../../stage/Camera";
-import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
 import { CurveRenderer } from "../basicRenderer/curveRenderer";
 import { ShapeRenderer } from "../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../basicRenderer/textRenderer";
