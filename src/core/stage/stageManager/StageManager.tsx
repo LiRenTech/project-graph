@@ -1134,4 +1134,10 @@ export namespace StageManager {
       connectEntityByCrEdge(lineEdge.source, lineEdge.target);
     }
   }
+
+  export function selectAll() {
+    for (const entity of entities.valuesToArray()) {
+      entity.isSelected = true;
+    }
+  }
 }

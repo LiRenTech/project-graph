@@ -372,6 +372,16 @@ async function registerKeyBinds() {
   ).down(() => {
     Popup.show(<ColorPanel />);
   });
+
+  (
+    await KeyBinds.create("selectAll", "a", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.selectAll();
+  });
 }
 
 /** 加载语言文件 */

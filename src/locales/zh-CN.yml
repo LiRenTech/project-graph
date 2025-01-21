@@ -440,6 +440,9 @@ keyBinds:
     title: 打开颜色面板快捷键
     description: |
       按下后，打开颜色面板，可以用于快速切换节点颜色
+  selectAll:
+    title: 全选
+    description: 按下后，所有节点和连线都会被选中
   createTextNodeFromCameraLocation:
     title: 创建文本节点
     description: |

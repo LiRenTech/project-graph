@@ -408,6 +408,9 @@ keyBinds:
     title: Open Color Panel Shortcut
     description: |
       Press to open the color panel, which can be used to quickly change node colors
+  selectAll:
+    title: selectAll
+    description: Press to select all objects on the canvas
   createTextNodeFromCameraLocation:
     title: Create Text Node
     description: |
