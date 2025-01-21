@@ -37,8 +37,8 @@ export namespace SvgUtils {
     return (
       // 这里居中实际上还没完全居中，垂直方向有点问题
       <text
-        x={location.x.toFixed(1)}
-        y={location.y + Renderer.NODE_PADDING.toFixed(1)}
+        x={location.x}
+        y={location.y + Renderer.NODE_PADDING}
         key={v4()}
         fill={color.toString()}
         fontSize={fontSize}
