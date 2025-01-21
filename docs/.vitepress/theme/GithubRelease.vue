@@ -1,6 +1,10 @@
 <template>
   <div v-if="release">
     <p>{{ release.name }}</p>
+    <details class="details custom-block" v-if="!nightly">
+      <summary>{{ changelogTitle }}</summary>
+      <div v-html="renderMarkdown(release.body)" class="markdown-body"></div>
+    </details>
     <div class="container">
       <a
         v-for="asset of release.assets.filter(
@@ -108,15 +112,30 @@
 </template>
 
 <script lang="ts" setup>
+import mdit from "markdown-it";
 import { onMounted, ref } from "vue";
 
-const props = defineProps<{
-  repo: string;
-  nightly: boolean;
-  proxy: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    repo: string;
+    nightly?: boolean;
+    proxy?: boolean;
+    changelogTitle?: string;
+  }>(),
+  {
+    nightly: false,
+    proxy: false,
+    changelogTitle: "Changelogs",
+  },
+);
 
 const release = ref();
+
+function renderMarkdown(text: string) {
+  return mdit({
+    breaks: true,
+  }).render(text);
+}
 
 onMounted(async () => {
   const data = await (
@@ -137,14 +156,14 @@ onMounted(async () => {
       (!item.prerelease && !props.nightly)
     ) {
       release.value = item;
-      console.log("found release", item.tag_name);
+      console.log("found release", item);
       break;
     }
   }
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 a {
   text-decoration: none;
 }
@@ -173,41 +192,53 @@ a {
   display: flex;
   gap: 4px;
   align-items: center;
+
+  &.alt {
+    border-color: var(--vp-button-alt-border);
+    color: var(--vp-button-alt-text);
+    background-color: var(--vp-button-alt-bg);
+
+    &:hover {
+      border-color: var(--vp-button-alt-hover-border);
+      color: var(--vp-button-alt-hover-text);
+      background-color: var(--vp-button-alt-hover-bg);
+    }
+
+    &:active {
+      border-color: var(--vp-button-alt-active-border);
+      color: var(--vp-button-alt-active-text);
+      background-color: var(--vp-button-alt-active-bg);
+    }
+  }
+
+  &.brand {
+    border-color: var(--vp-button-brand-border);
+    color: var(--vp-button-brand-text);
+    background-color: var(--vp-button-brand-bg);
+
+    &:hover {
+      border-color: var(--vp-button-brand-hover-border);
+      color: var(--vp-button-brand-hover-text);
+      background-color: var(--vp-button-brand-hover-bg);
+    }
+
+    &:active {
+      border-color: var(--vp-button-brand-active-border);
+      color: var(--vp-button-brand-active-text);
+      background-color: var(--vp-button-brand-active-bg);
+    }
+  }
 }
 
-.VPButton.alt {
-  border-color: var(--vp-button-alt-border);
-  color: var(--vp-button-alt-text);
-  background-color: var(--vp-button-alt-bg);
-}
-
-.VPButton.alt:hover {
-  border-color: var(--vp-button-alt-hover-border);
-  color: var(--vp-button-alt-hover-text);
-  background-color: var(--vp-button-alt-hover-bg);
-}
-
-.VPButton.alt:active {
-  border-color: var(--vp-button-alt-active-border);
-  color: var(--vp-button-alt-active-text);
-  background-color: var(--vp-button-alt-active-bg);
-}
-
-.VPButton.brand {
-  border-color: var(--vp-button-brand-border);
-  color: var(--vp-button-brand-text);
-  background-color: var(--vp-button-brand-bg);
-}
-
-.VPButton.brand:hover {
-  border-color: var(--vp-button-brand-hover-border);
-  color: var(--vp-button-brand-hover-text);
-  background-color: var(--vp-button-brand-hover-bg);
-}
-
-.VPButton.brand:active {
-  border-color: var(--vp-button-brand-active-border);
-  color: var(--vp-button-brand-active-text);
-  background-color: var(--vp-button-brand-active-bg);
+:deep(.markdown-body) {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: 1rem;
+    padding-top: 0;
+  }
 }
 </style>

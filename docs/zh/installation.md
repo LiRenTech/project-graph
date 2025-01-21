@@ -5,7 +5,7 @@
 
 ## 📦 稳定版
 
-<GithubRelease repo="LiRenTech/project-graph" proxy />
+<GithubRelease repo="LiRenTech/project-graph" proxy changelogTitle="更新日志" />
 
 ## ⚡ 开发版
 
