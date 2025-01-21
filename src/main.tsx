@@ -38,6 +38,8 @@ import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 import { Popup } from "./utils/popup";
+import { ViewOutlineFlashEffect } from "./core/effect/concrete/ViewOutlineFlashEffect";
+import { Color } from "./core/dataStruct/Color";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -381,6 +383,7 @@ async function registerKeyBinds() {
     })
   ).down(() => {
     StageManager.selectAll();
+    Stage.effects.push(ViewOutlineFlashEffect.normal(Color.Green));
   });
 }
 

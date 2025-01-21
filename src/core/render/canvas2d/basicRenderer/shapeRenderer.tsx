@@ -123,6 +123,44 @@ export namespace ShapeRenderer {
   }
 
   /**
+   * 画一个带阴影的矩形
+   * @param rect
+   */
+  export function renderRectWithShadow(
+    rect: Rectangle,
+    fillColor: Color,
+    strokeColor: Color,
+    strokeWidth: number,
+    shadowColor: Color,
+    shadowBlur: number,
+    shadowOffsetX: number = 0,
+    shadowOffsetY: number = 0,
+    radius: number = 0,
+  ) {
+    Canvas.ctx.shadowColor = shadowColor.toString();
+    Canvas.ctx.shadowBlur = shadowBlur;
+    Canvas.ctx.shadowOffsetX = shadowOffsetX;
+    Canvas.ctx.shadowOffsetY = shadowOffsetY;
+    Canvas.ctx.beginPath();
+    Canvas.ctx.roundRect(
+      rect.location.x,
+      rect.location.y,
+      rect.size.x,
+      rect.size.y,
+      radius,
+    );
+    Canvas.ctx.fillStyle = fillColor.toString();
+    Canvas.ctx.fill();
+    Canvas.ctx.lineWidth = strokeWidth;
+    Canvas.ctx.strokeStyle = strokeColor.toString();
+    Canvas.ctx.stroke();
+    Canvas.ctx.shadowColor = "transparent";
+    Canvas.ctx.shadowBlur = 0;
+    Canvas.ctx.shadowOffsetX = 0;
+    Canvas.ctx.shadowOffsetY = 0;
+  }
+
+  /**
    * 绘制一个多边形并填充
    * @param points 多边形的顶点数组，三角形就只需三个点，
    * 不用考虑首尾点闭合。
