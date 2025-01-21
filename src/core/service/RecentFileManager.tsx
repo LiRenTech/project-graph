@@ -8,12 +8,12 @@ import { Stage } from "../stage/Stage";
 import { StageLoader } from "../stage/StageLoader";
 import { StageHistoryManager } from "../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../stage/stageManager/StageManager";
-import { LineEdge } from "../stageObject/association/LineEdge";
-import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
-import { ImageNode } from "../stageObject/entity/ImageNode";
-import { Section } from "../stageObject/entity/Section";
-import { TextNode } from "../stageObject/entity/TextNode";
-import { UrlNode } from "../stageObject/entity/UrlNode";
+import { LineEdge } from "../stage/stageObject/association/LineEdge";
+import { ConnectPoint } from "../stage/stageObject/entity/ConnectPoint";
+import { ImageNode } from "../stage/stageObject/entity/ImageNode";
+import { Section } from "../stage/stageObject/entity/Section";
+import { TextNode } from "../stage/stageObject/entity/TextNode";
+import { UrlNode } from "../stage/stageObject/entity/UrlNode";
 import { ViewFlashEffect } from "./effectEngine/concrete/ViewFlashEffect";
 
 /**

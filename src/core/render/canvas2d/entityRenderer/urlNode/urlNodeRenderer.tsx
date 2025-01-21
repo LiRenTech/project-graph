@@ -3,7 +3,7 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { MouseLocation } from "../../../../service/MouseLocation";
 import { StageStyleManager } from "../../../../service/stageStyle/StageStyleManager";
 import { Camera } from "../../../../stage/Camera";
-import { UrlNode } from "../../../../stageObject/entity/UrlNode";
+import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
 import { CurveRenderer } from "../../basicRenderer/curveRenderer";
 import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../../basicRenderer/textRenderer";

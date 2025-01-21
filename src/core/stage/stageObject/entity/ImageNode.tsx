@@ -1,10 +1,10 @@
 import { join } from "@tauri-apps/api/path";
-import { Serialized } from "../../../types/node";
-import { readFileBase64 } from "../../../utils/fs";
-import { PathString } from "../../../utils/pathString";
-import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { Vector } from "../../dataStruct/Vector";
-import { Stage } from "../../stage/Stage";
+import { Serialized } from "../../../../types/node";
+import { readFileBase64 } from "../../../../utils/fs";
+import { PathString } from "../../../../utils/pathString";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../dataStruct/Vector";
+import { Stage } from "../../Stage";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { ConnectableEntity } from "../StageObject";
 

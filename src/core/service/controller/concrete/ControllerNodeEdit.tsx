@@ -2,8 +2,8 @@ import { open } from "@tauri-apps/plugin-shell";
 import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { StageManager } from "../../../stage/stageManager/StageManager";
-import { TextNode } from "../../../stageObject/entity/TextNode";
-import { UrlNode } from "../../../stageObject/entity/UrlNode";
+import { TextNode } from "../../../stage/stageObject/entity/TextNode";
+import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import {

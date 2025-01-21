@@ -3,7 +3,7 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
-import { Section } from "../../../stageObject/entity/Section";
+import { Section } from "../../../stage/stageObject/entity/Section";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 

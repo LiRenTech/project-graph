@@ -7,9 +7,9 @@ import { autoLayoutFastTreeMode } from "../../../service/autoLayoutEngine/autoLa
 import { EntityAlignEffect } from "../../../service/effectEngine/concrete/EntityAlignEffect";
 import { RectangleRenderEffect } from "../../../service/effectEngine/concrete/RectangleRenderEffect";
 import { SoundService } from "../../../service/SoundService";
-import { TextNode } from "../../../stageObject/entity/TextNode";
-import { ConnectableEntity, Entity } from "../../../stageObject/StageObject";
 import { Stage } from "../../Stage";
+import { TextNode } from "../../stageObject/entity/TextNode";
+import { ConnectableEntity, Entity } from "../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 
 /**

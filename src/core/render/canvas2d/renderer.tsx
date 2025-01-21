@@ -13,7 +13,7 @@ import { Canvas } from "../../stage/Canvas";
 import { Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../stage/stageManager/StageManager";
-import { TextNode } from "../../stageObject/entity/TextNode";
+import { TextNode } from "../../stage/stageObject/entity/TextNode";
 import { CurveRenderer } from "./basicRenderer/curveRenderer";
 import { ShapeRenderer } from "./basicRenderer/shapeRenderer";
 import { TextRenderer } from "./basicRenderer/textRenderer";

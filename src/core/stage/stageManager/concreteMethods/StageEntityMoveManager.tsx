@@ -1,5 +1,5 @@
 import { Vector } from "../../../dataStruct/Vector";
-import { ConnectableEntity, Entity } from "../../../stageObject/StageObject";
+import { ConnectableEntity, Entity } from "../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 
 /**

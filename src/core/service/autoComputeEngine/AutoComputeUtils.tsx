@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 import { StageManager } from "../../stage/stageManager/StageManager";
-import { Section } from "../../stageObject/entity/Section";
-import { TextNode } from "../../stageObject/entity/TextNode";
-import { ConnectableEntity } from "../../stageObject/StageObject";
+import { Section } from "../../stage/stageObject/entity/Section";
+import { TextNode } from "../../stage/stageObject/entity/TextNode";
+import { ConnectableEntity } from "../../stage/stageObject/StageObject";
 
 /**
  * 一些在自动计算引擎中

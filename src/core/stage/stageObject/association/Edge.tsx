@@ -1,7 +1,7 @@
-import { Line } from "../../dataStruct/shape/Line";
-import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { Vector } from "../../dataStruct/Vector";
-import { StageManager } from "../../stage/stageManager/StageManager";
+import { Line } from "../../../dataStruct/shape/Line";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../dataStruct/Vector";
+import { StageManager } from "../../stageManager/StageManager";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { ConnectableAssociation, ConnectableEntity } from "../StageObject";
 

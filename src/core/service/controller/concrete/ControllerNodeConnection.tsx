@@ -6,8 +6,8 @@ import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeR
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
-import { ConnectableEntity } from "../../../stageObject/StageObject";
-import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
+import { ConnectableEntity } from "../../../stage/stageObject/StageObject";
+import { ConnectPoint } from "../../../stage/stageObject/entity/ConnectPoint";
 import { SoundService } from "../../SoundService";
 import { CircleFlameEffect } from "../../effectEngine/concrete/CircleFlameEffect";
 import { RectangleNoteEffect } from "../../effectEngine/concrete/RectangleNoteEffect";

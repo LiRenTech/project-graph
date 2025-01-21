@@ -9,16 +9,16 @@ import { autoComputeEngineTick } from "../service/autoComputeEngine/mainTick";
 import { autoLayoutMainTick } from "../service/autoLayoutEngine/mainTick";
 import { Controller } from "../service/controller/Controller";
 import { PointDashEffect } from "../service/effectEngine/concrete/PointDashEffect";
+import { EffectMachine } from "../service/effectEngine/effectMachine";
 import { KeyboardOnlyEngine } from "../service/keyboardOnlyEngine/keyboardOnlyEngine";
 import { Settings } from "../service/Settings";
-import { LineEdge } from "../stageObject/association/LineEdge";
-import { Section } from "../stageObject/entity/Section";
-import { TextNode } from "../stageObject/entity/TextNode";
-import { ConnectableEntity, Entity } from "../stageObject/StageObject";
 import { StageDumper } from "./StageDumper";
 import { StageManager } from "./stageManager/StageManager";
+import { LineEdge } from "./stageObject/association/LineEdge";
+import { Section } from "./stageObject/entity/Section";
+import { TextNode } from "./stageObject/entity/TextNode";
+import { ConnectableEntity, Entity } from "./stageObject/StageObject";
 import { StageSaveManager } from "./StageSaveManager";
-import { EffectMachine } from "../service/effectEngine/effectMachine";
 /**
  * 舞台对象
  * 更广义的舞台，

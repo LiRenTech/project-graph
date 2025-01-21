@@ -7,11 +7,11 @@ import { EdgeRenderer } from "../render/canvas2d/entityRenderer/edge/EdgeRendere
 import { Renderer } from "../render/canvas2d/renderer";
 import { SvgUtils } from "../render/svg/SvgUtils";
 import { StageStyleManager } from "../service/stageStyle/StageStyleManager";
-import { LineEdge } from "../stageObject/association/LineEdge";
-import { Section } from "../stageObject/entity/Section";
-import { TextNode } from "../stageObject/entity/TextNode";
-import { Entity } from "../stageObject/StageObject";
 import { StageManager } from "./stageManager/StageManager";
+import { LineEdge } from "./stageObject/association/LineEdge";
+import { Section } from "./stageObject/entity/Section";
+import { TextNode } from "./stageObject/entity/TextNode";
+import { Entity } from "./stageObject/StageObject";
 
 /**
  * 将舞台当前内容导出为SVG

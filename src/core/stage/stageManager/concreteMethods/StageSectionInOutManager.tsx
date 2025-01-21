@@ -1,5 +1,5 @@
-import { Section } from "../../../stageObject/entity/Section";
-import { Entity } from "../../../stageObject/StageObject";
+import { Section } from "../../stageObject/entity/Section";
+import { Entity } from "../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 
 /**

@@ -4,7 +4,7 @@ import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { ShapeRenderer } from "../../../render/canvas2d/basicRenderer/shapeRenderer";
 import { Camera } from "../../../stage/Camera";
-import { TextNode } from "../../../stageObject/entity/TextNode";
+import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { EffectObject } from "../effectObject";
 
 /**

@@ -1,16 +1,16 @@
 import { v4 as uuidv4 } from "uuid";
-import { Serialized } from "../../../types/node";
-import { getTextSize } from "../../../utils/font";
-import { Color } from "../../dataStruct/Color";
-import { ProgressNumber } from "../../dataStruct/ProgressNumber";
-import { Line } from "../../dataStruct/shape/Line";
-import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { Shape } from "../../dataStruct/shape/Shape";
-import { Vector } from "../../dataStruct/Vector";
-import { Renderer } from "../../render/canvas2d/renderer";
-import { NodeMoveShadowEffect } from "../../service/effectEngine/concrete/NodeMoveShadowEffect";
-import { Stage } from "../../stage/Stage";
-import { StageManager } from "../../stage/stageManager/StageManager";
+import { Serialized } from "../../../../types/node";
+import { getTextSize } from "../../../../utils/font";
+import { Color } from "../../../dataStruct/Color";
+import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
+import { Line } from "../../../dataStruct/shape/Line";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Shape } from "../../../dataStruct/shape/Shape";
+import { Vector } from "../../../dataStruct/Vector";
+import { Renderer } from "../../../render/canvas2d/renderer";
+import { NodeMoveShadowEffect } from "../../../service/effectEngine/concrete/NodeMoveShadowEffect";
+import { Stage } from "../../Stage";
+import { StageManager } from "../../stageManager/StageManager";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { ConnectableEntity, Entity } from "../StageObject";
 

@@ -48,7 +48,7 @@ import { Settings } from "../core/service/Settings";
 import { Stage } from "../core/stage/Stage";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
-import { TextNode } from "../core/stageObject/entity/TextNode";
+import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
 

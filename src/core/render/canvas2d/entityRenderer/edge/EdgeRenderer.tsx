@@ -4,12 +4,12 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { Settings } from "../../../../service/Settings";
 import { Camera } from "../../../../stage/Camera";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
-import { CublicCatmullRomSplineEdge } from "../../../../stageObject/association/CublicCatmullRomSplineEdge";
-import { LineEdge } from "../../../../stageObject/association/LineEdge";
-import { Section } from "../../../../stageObject/entity/Section";
+import { CublicCatmullRomSplineEdge } from "../../../../stage/stageObject/association/CublicCatmullRomSplineEdge";
+import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
+import { Section } from "../../../../stage/stageObject/entity/Section";
 
 import { StageStyleManager } from "../../../../service/stageStyle/StageStyleManager";
-import { ConnectableEntity } from "../../../../stageObject/StageObject";
+import { ConnectableEntity } from "../../../../stage/stageObject/StageObject";
 import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
 import { Renderer } from "../../renderer";
 import { WorldRenderUtils } from "../../utilsRenderer/WorldRenderUtils";

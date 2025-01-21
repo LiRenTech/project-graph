@@ -5,8 +5,8 @@ import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeR
 import { AiFetcherOneShotCloudFlare } from "../../../service/ai/AiFetcher";
 import { ApiKeyManager } from "../../../service/ai/ApiKeyManager";
 import { PromptManager } from "../../../service/ai/PromptManager";
-import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Stage } from "../../Stage";
+import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";
 
 export namespace StageGeneratorAI {

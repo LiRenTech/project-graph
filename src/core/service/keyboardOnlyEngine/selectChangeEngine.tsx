@@ -1,5 +1,5 @@
 import { StageManager } from "../../stage/stageManager/StageManager";
-import { TextNode } from "../../stageObject/entity/TextNode";
+import { TextNode } from "../../stage/stageObject/entity/TextNode";
 
 /**
  * 仅在keyboardOnlyEngine中使用，用于处理select change事件

@@ -9,10 +9,10 @@ import { Stage } from "../../../stage/Stage";
 import { StageDumper } from "../../../stage/StageDumper";
 import { StageSerializedAdder } from "../../../stage/stageManager/concreteMethods/StageSerializedAdder";
 import { StageManager } from "../../../stage/stageManager/StageManager";
-import { ImageNode } from "../../../stageObject/entity/ImageNode";
-import { TextNode } from "../../../stageObject/entity/TextNode";
-import { UrlNode } from "../../../stageObject/entity/UrlNode";
-import { Entity } from "../../../stageObject/StageObject";
+import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
+import { TextNode } from "../../../stage/stageObject/entity/TextNode";
+import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
+import { Entity } from "../../../stage/stageObject/StageObject";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 

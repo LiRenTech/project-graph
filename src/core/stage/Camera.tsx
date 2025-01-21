@@ -4,9 +4,9 @@ import { Vector } from "../dataStruct/Vector";
 import { Renderer } from "../render/canvas2d/renderer";
 import { TextRiseEffect } from "../service/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../service/Settings";
-import { Entity } from "../stageObject/StageObject";
 import { Stage } from "./Stage";
 import { StageManager } from "./stageManager/StageManager";
+import { Entity } from "./stageObject/StageObject";
 
 /**
  * 摄像机

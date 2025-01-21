@@ -1,14 +1,14 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { ExplodeAshEffect } from "../../../service/effectEngine/concrete/ExplodeDashEffect";
-import { LineEdge } from "../../../stageObject/association/LineEdge";
-import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
-import { ImageNode } from "../../../stageObject/entity/ImageNode";
-import { Section } from "../../../stageObject/entity/Section";
-import { TextNode } from "../../../stageObject/entity/TextNode";
-import { UrlNode } from "../../../stageObject/entity/UrlNode";
-import { Entity } from "../../../stageObject/StageObject";
 import { Stage } from "../../Stage";
+import { LineEdge } from "../../stageObject/association/LineEdge";
+import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
+import { ImageNode } from "../../stageObject/entity/ImageNode";
+import { Section } from "../../stageObject/entity/Section";
+import { TextNode } from "../../stageObject/entity/TextNode";
+import { UrlNode } from "../../stageObject/entity/UrlNode";
+import { Entity } from "../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 
 /**

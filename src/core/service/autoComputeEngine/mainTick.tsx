@@ -1,9 +1,9 @@
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
-import { LineEdge } from "../../stageObject/association/LineEdge";
-import { Section } from "../../stageObject/entity/Section";
-import { TextNode } from "../../stageObject/entity/TextNode";
-import { ConnectableEntity } from "../../stageObject/StageObject";
+import { LineEdge } from "../../stage/stageObject/association/LineEdge";
+import { Section } from "../../stage/stageObject/entity/Section";
+import { TextNode } from "../../stage/stageObject/entity/TextNode";
+import { ConnectableEntity } from "../../stage/stageObject/StageObject";
 import { Controller } from "../controller/Controller";
 import { RectangleLittleNoteEffect } from "../effectEngine/concrete/RectangleLittleNoteEffect";
 import { TextRaiseEffectLocated } from "../effectEngine/concrete/TextRaiseEffectLocated";

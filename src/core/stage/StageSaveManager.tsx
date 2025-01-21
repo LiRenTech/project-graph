@@ -2,11 +2,11 @@ import { Serialized } from "../../types/node";
 import { exists, writeTextFile } from "../../utils/fs";
 import { PathString } from "../../utils/pathString";
 import { ViewFlashEffect } from "../service/effectEngine/concrete/ViewFlashEffect";
-import { TextNode } from "../stageObject/entity/TextNode";
-import { Entity } from "../stageObject/StageObject";
 import { Stage } from "./Stage";
 import { StageHistoryManager } from "./stageManager/StageHistoryManager";
 import { StageManager } from "./stageManager/StageManager";
+import { TextNode } from "./stageObject/entity/TextNode";
+import { Entity } from "./stageObject/StageObject";
 
 /**
  * 管理所有和保存相关的内容

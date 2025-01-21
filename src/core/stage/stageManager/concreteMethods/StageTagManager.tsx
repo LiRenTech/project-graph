@@ -1,5 +1,5 @@
-import { TextNode } from "../../../stageObject/entity/TextNode";
 import { Camera } from "../../Camera";
+import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";
 
 export namespace StageTagManager {

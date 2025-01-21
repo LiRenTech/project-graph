@@ -1,7 +1,7 @@
-import { Line } from "../../dataStruct/shape/Line";
-import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { Shape } from "../../dataStruct/shape/Shape";
-import { Vector } from "../../dataStruct/Vector";
+import { Line } from "../../../dataStruct/shape/Line";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Shape } from "../../../dataStruct/shape/Shape";
+import { Vector } from "../../../dataStruct/Vector";
 
 /**
  * 碰撞箱类

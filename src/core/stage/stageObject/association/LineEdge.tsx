@@ -1,15 +1,15 @@
-import { Serialized } from "../../../types/node";
-import { getTextSize } from "../../../utils/font";
-import { Vector } from "../../dataStruct/Vector";
-import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { Renderer } from "../../render/canvas2d/renderer";
+import { v4 as uuidv4 } from "uuid";
+import { Serialized } from "../../../../types/node";
+import { getTextSize } from "../../../../utils/font";
+import { Vector } from "../../../dataStruct/Vector";
+import { Line } from "../../../dataStruct/shape/Line";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Renderer } from "../../../render/canvas2d/renderer";
+import { ConnectableEntity } from "../StageObject";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
-import { EdgeCollisionBoxGetter } from "./EdgeCollisionBoxGetter";
 import { Edge } from "./Edge";
-import { ConnectableEntity } from "../StageObject";
-import { v4 as uuidv4 } from "uuid";
-import { Line } from "../../dataStruct/shape/Line";
+import { EdgeCollisionBoxGetter } from "./EdgeCollisionBoxGetter";
 
 export class LineEdge extends Edge {
   public uuid: string;

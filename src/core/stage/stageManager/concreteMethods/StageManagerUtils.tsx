@@ -1,6 +1,6 @@
-import { Section } from "../../../stageObject/entity/Section";
-import { TextNode } from "../../../stageObject/entity/TextNode";
-import { StageObject } from "../../../stageObject/StageObject";
+import { Section } from "../../stageObject/entity/Section";
+import { TextNode } from "../../stageObject/entity/TextNode";
+import { StageObject } from "../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 
 /**

@@ -6,17 +6,30 @@ import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeR
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
+import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
+import { Section } from "../../../stage/stageObject/entity/Section";
+import { Entity } from "../../../stage/stageObject/StageObject";
 import { CircleFlameEffect } from "../../effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../effectEngine/concrete/LineCuttingEffect";
 import { SoundService } from "../../SoundService";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
+class CuttingControllerClass extends ControllerClass {
+  // TODO: 减小Stage.tsx代码里的臃肿程度
+  public isCutting = false;
+  public cuttingLine: Line = new Line(Vector.getZero(), Vector.getZero());
+  public lastMoveLocation = Vector.getZero();
+  public warningEntity: Entity[] = [];
+  public warningSections: Section[] = [];
+  public warningEdges: LineEdge[] = [];
+}
+
 /**
  * 关于斩断线的控制器
  * 可以删除节点 也可以切断边
  */
-export const ControllerCutting = new ControllerClass();
+export const ControllerCutting = new CuttingControllerClass();
 
 /**
  * 开始绘制斩断线的起点位置

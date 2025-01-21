@@ -1,6 +1,6 @@
-import { Rectangle } from "../dataStruct/shape/Rectangle";
-import { Vector } from "../dataStruct/Vector";
-import { StageManager } from "../stage/stageManager/StageManager";
+import { Rectangle } from "../../dataStruct/shape/Rectangle";
+import { Vector } from "../../dataStruct/Vector";
+import { StageManager } from "../stageManager/StageManager";
 import { CollisionBox } from "./collisionBox/collisionBox";
 
 /**

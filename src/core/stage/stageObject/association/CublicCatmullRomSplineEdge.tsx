@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
-import { Serialized } from "../../../types/node";
-import { CublicCatmullRomSpline } from "../../dataStruct/shape/CublicCatmullRomSpline";
-import { Vector } from "../../dataStruct/Vector";
+import { Serialized } from "../../../../types/node";
+import { CublicCatmullRomSpline } from "../../../dataStruct/shape/CublicCatmullRomSpline";
+import { Vector } from "../../../dataStruct/Vector";
+import { StageManager } from "../../stageManager/StageManager";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
 import { ConnectableEntity } from "../StageObject";
 import { Edge } from "./Edge";
-import { StageManager } from "../../stage/stageManager/StageManager";
 
 /**
  * CR曲线连线

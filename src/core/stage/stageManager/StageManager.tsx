@@ -6,22 +6,22 @@ import { Vector } from "../../dataStruct/Vector";
 import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Settings } from "../../service/Settings";
-import { CublicCatmullRomSplineEdge } from "../../stageObject/association/CublicCatmullRomSplineEdge";
-import { LineEdge } from "../../stageObject/association/LineEdge";
-import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
-import { ImageNode } from "../../stageObject/entity/ImageNode";
-import { Section } from "../../stageObject/entity/Section";
-import { TextNode } from "../../stageObject/entity/TextNode";
-import { UrlNode } from "../../stageObject/entity/UrlNode";
+import { Camera } from "../Camera";
+import { Stage } from "../Stage";
+import { StageDumper } from "../StageDumper";
+import { CublicCatmullRomSplineEdge } from "../stageObject/association/CublicCatmullRomSplineEdge";
+import { LineEdge } from "../stageObject/association/LineEdge";
+import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
+import { ImageNode } from "../stageObject/entity/ImageNode";
+import { Section } from "../stageObject/entity/Section";
+import { TextNode } from "../stageObject/entity/TextNode";
+import { UrlNode } from "../stageObject/entity/UrlNode";
 import {
   Association,
   ConnectableEntity,
   Entity,
   StageObject,
-} from "../../stageObject/StageObject";
-import { Camera } from "../Camera";
-import { Stage } from "../Stage";
-import { StageDumper } from "../StageDumper";
+} from "../stageObject/StageObject";
 import { StageAutoAlignManager } from "./concreteMethods/StageAutoAlignManager";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager";

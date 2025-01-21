@@ -4,7 +4,7 @@ import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRend
 import { Camera } from "../../stage/Camera";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
-import { ConnectableEntity } from "../../stageObject/StageObject";
+import { ConnectableEntity } from "../../stage/stageObject/StageObject";
 import { editTextNode } from "../controller/concrete/utilsControl";
 import { KeyboardOnlyDirectionController } from "./keyboardOnlyDirectionController";
 import { NewTargetLocationSelector } from "./newTargetLocationSelector";
