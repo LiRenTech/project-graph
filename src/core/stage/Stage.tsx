@@ -15,11 +15,11 @@ import { StageDumper } from "./StageDumper";
 import { StageManager } from "./stageManager/StageManager";
 import { LineEdge } from "./stageObject/association/LineEdge";
 import { Section } from "./stageObject/entity/Section";
-import { TextNode } from "./stageObject/entity/TextNode";
 import { StageSaveManager } from "./StageSaveManager";
 import { ControllerCutting } from "../service/controller/concrete/ControllerCutting";
 import { ControllerRectangleSelect } from "../service/controller/concrete/ControllerRectangleSelect";
 import { ControllerNodeConnection } from "../service/controller/concrete/ControllerNodeConnection";
+import { ContentSearchEngine } from "../service/contentSearchEngine/contentSearchEngine";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -102,15 +102,9 @@ export namespace Stage {
   export let hoverSections: Section[] = [];
 
   /**
-   * 搜索结果
+   * 内容搜索引擎
    */
-  // eslint-disable-next-line prefer-const
-  export let searchResultNodes: TextNode[] = [];
-  /**
-   * 搜索结果的索引
-   */
-  // eslint-disable-next-line prefer-const
-  export let currentSearchResultIndex = 0;
+  export const contentSearchEngine = new ContentSearchEngine();
 
   /**
    * 粘贴板数据
