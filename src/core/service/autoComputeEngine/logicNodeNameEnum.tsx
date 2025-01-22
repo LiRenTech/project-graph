@@ -22,7 +22,14 @@ export enum LogicNodeNameEnum {
   POWER = "#POW#",
   LOG = "#LOG#",
   ABS = "#ABS#",
+  // 概率论
   RANDOM = "#RANDOM#",
+  RANDOM_INT = "#RANDOM_INT#",
+  RANDOM_FLOAT = "#RANDOM_FLOAT#",
+  RANDOM_ITEM = "#RANDOM_ITEM#",
+  RANDOM_ITEMS = "#RANDOM_ITEMS#",
+  RANDOM_POISSON = "#RANDOM_POISSON#",
+  // 数组
   // 数学一元函数
   SIN = "#SIN#",
   COS = "#COS#",
@@ -129,6 +136,12 @@ export const LogicNodeNameToRenderNameMap: {
   [LogicNodeNameEnum.MODE]: "众数",
   [LogicNodeNameEnum.VARIANCE]: "方差",
   [LogicNodeNameEnum.STANDARD_DEVIATION]: "标准差",
+  [LogicNodeNameEnum.RANDOM_FLOAT]: "随机浮点数",
+  [LogicNodeNameEnum.RANDOM_INT]: "随机整数",
+  [LogicNodeNameEnum.RANDOM_ITEM]: "随机选项",
+  [LogicNodeNameEnum.RANDOM_ITEMS]: "随机选项组",
+  [LogicNodeNameEnum.RANDOM_POISSON]: "泊松分布",
+
   [LogicNodeNameEnum.RGB]: "rgb",
   [LogicNodeNameEnum.RGBA]: "rgba",
   [LogicNodeNameEnum.GET_LOCATION]: "获取节点位置",

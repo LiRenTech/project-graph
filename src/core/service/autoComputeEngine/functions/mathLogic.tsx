@@ -1,4 +1,5 @@
 import { NumberFunctions } from "../../../algorithm/numberFunctions";
+import { Random } from "../../../algorithm/random";
 
 /**
  * 存放和数学逻辑有关的函数
@@ -145,6 +146,19 @@ export namespace MathFunctions {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   export function random(_: number[]): number[] {
     return [Math.random()];
+  }
+  export function randomInt(numbers: number[]): number[] {
+    return [Random.randomInt(numbers[0], numbers[1])];
+  }
+  export function randomFloat(numbers: number[]): number[] {
+    return [Random.randomFloat(numbers[0], numbers[1])];
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  export function randomBoolean(_: number[]): number[] {
+    return [Random.randomBoolean() ? 1 : 0];
+  }
+  export function randomPoisson(numbers: number[]): number[] {
+    return [Random.poissonRandom(numbers[0])];
   }
   export function round(numbers: number[]): number[] {
     return numbers.map((n) => Math.round(n));
