@@ -303,7 +303,10 @@ export namespace Renderer {
 
   /** 手动连接线 */
   function renderConnectingLine() {
-    if (Stage.connectFromEntities.length > 0 && Controller.lastMoveLocation) {
+    if (
+      Stage.connectMachine.connectFromEntities.length > 0 &&
+      Controller.lastMoveLocation
+    ) {
       // 如果鼠标位置没有和任何节点相交
       let connectTargetNode = null;
       for (const node of StageManager.getConnectableEntity()) {
@@ -313,12 +316,12 @@ export namespace Renderer {
         }
       }
       if (connectTargetNode === null) {
-        for (const node of Stage.connectFromEntities) {
+        for (const node of Stage.connectMachine.connectFromEntities) {
           EdgeRenderer.renderVirtualEdge(node, Controller.lastMoveLocation);
         }
       } else {
         // 画一条像吸住了的线
-        for (const node of Stage.connectFromEntities) {
+        for (const node of Stage.connectMachine.connectFromEntities) {
           EdgeRenderer.renderVirtualConfirmedEdge(node, connectTargetNode);
         }
       }
@@ -684,7 +687,7 @@ export namespace Renderer {
       `正在切割: ${Stage.cuttingMachine.isUsing}`,
       `Stage.warningNodes: ${Stage.cuttingMachine.warningEntity.length}`,
       `Stage.warningEdges: ${Stage.cuttingMachine.warningEdges.length}`,
-      `ConnectFromNodes: ${Stage.connectFromEntities}`,
+      `ConnectFromNodes: ${Stage.connectMachine.connectFromEntities}`,
       `lastSelectedNode: ${Controller.lastSelectedEntityUUID.size}`,
       `粘贴板: ${JSON.stringify(Stage.copyBoardData)}`,
       `历史: ${StageHistoryManager.statusText()}`,

@@ -16,10 +16,10 @@ import { StageManager } from "./stageManager/StageManager";
 import { LineEdge } from "./stageObject/association/LineEdge";
 import { Section } from "./stageObject/entity/Section";
 import { TextNode } from "./stageObject/entity/TextNode";
-import { ConnectableEntity } from "./stageObject/StageObject";
 import { StageSaveManager } from "./StageSaveManager";
 import { ControllerCutting } from "../service/controller/concrete/ControllerCutting";
 import { ControllerRectangleSelect } from "../service/controller/concrete/ControllerRectangleSelect";
+import { ControllerNodeConnection } from "../service/controller/concrete/ControllerNodeConnection";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -87,15 +87,10 @@ export namespace Stage {
    */
   export const selectMachine = ControllerRectangleSelect;
 
-  // eslint-disable-next-line prefer-const
-  export let isConnecting = false;
   /**
-   * 用于多重连接
+   * 鼠标连线控制器
    */
-  // eslint-disable-next-line prefer-const
-  export let connectFromEntities: ConnectableEntity[] = [];
-  // eslint-disable-next-line prefer-const
-  export let connectToEntity: ConnectableEntity | null = null;
+  export const connectMachine = ControllerNodeConnection;
 
   /**
    * 鼠标悬浮的边
@@ -165,7 +160,10 @@ export namespace Stage {
    * 该函数在上游被频繁调用
    */
   export function logicTick() {
-    if (Stage.connectFromEntities.length > 0 && Controller.lastMoveLocation) {
+    if (
+      Stage.connectMachine.connectFromEntities.length > 0 &&
+      Controller.lastMoveLocation
+    ) {
       let connectTargetNode = null;
       for (const node of StageManager.getConnectableEntity()) {
         if (node.collisionBox.isContainsPoint(Controller.lastMoveLocation)) {
@@ -178,7 +176,7 @@ export namespace Stage {
         effectMachine.addEffect(
           PointDashEffect.fromMouseEffect(
             Controller.lastMoveLocation,
-            connectFromEntities.length * 5,
+            connectMachine.connectFromEntities.length * 5,
           ),
         );
       } else {

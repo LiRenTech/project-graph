@@ -167,7 +167,7 @@ ControllerCamera.mousemove = (event: MouseEvent) => {
     const mouseLocation = new Vector(event.clientX, event.clientY);
     const worldLocation = Renderer.transformView2World(mouseLocation);
     const entity = StageManager.findEntityByLocation(worldLocation);
-    if (Stage.isConnecting) {
+    if (Stage.connectMachine.isUsing) {
       return;
     }
     if (entity !== null) {
