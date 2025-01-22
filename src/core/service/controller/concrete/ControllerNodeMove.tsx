@@ -40,7 +40,7 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
 ControllerNodeMove.mousemove = (event: MouseEvent) => {
   if (
     Stage.isSelecting ||
-    Stage.isCutting ||
+    Stage.cuttingMachine.isUsing ||
     Controller.pressingKeySet.has("alt")
   ) {
     return;

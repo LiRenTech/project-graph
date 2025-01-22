@@ -291,10 +291,10 @@ export namespace Renderer {
   }
   /** 切割线 */
   function renderCuttingLine() {
-    if (Stage.isCutting && Stage.cuttingLine) {
+    if (Stage.cuttingMachine.isUsing && Stage.cuttingMachine.cuttingLine) {
       WorldRenderUtils.renderLaser(
-        Stage.cuttingLine.start,
-        Stage.cuttingLine.end,
+        Stage.cuttingMachine.cuttingLine.start,
+        Stage.cuttingMachine.cuttingLine.end,
         2,
         Color.Red,
       );
@@ -379,14 +379,14 @@ export namespace Renderer {
   /** 待删除的节点和边 */
   function renderWarningEntities() {
     // 待删除的节点
-    for (const node of Stage.warningEntity) {
+    for (const node of Stage.cuttingMachine.warningEntity) {
       CollisionBoxRenderer.render(node.collisionBox, new Color(255, 0, 0, 0.5));
     }
     // 待删除的边
-    for (const edge of Stage.warningEdges) {
+    for (const edge of Stage.cuttingMachine.warningEdges) {
       CollisionBoxRenderer.render(edge.collisionBox, new Color(255, 0, 0, 0.5));
     }
-    for (const section of Stage.warningSections) {
+    for (const section of Stage.cuttingMachine.warningSections) {
       CollisionBoxRenderer.render(
         section.collisionBox,
         new Color(255, 0, 0, 0.5),
@@ -681,9 +681,9 @@ export namespace Renderer {
       `lastMousePressLocation Right: ${Controller.lastMousePressLocation[2].toString()}`,
       `框选框: ${Stage.selectingRectangle}`,
       `正在移动节点: ${Controller.isMovingEntity}`,
-      `正在切割: ${Stage.isCutting}`,
-      `Stage.warningNodes: ${Stage.warningEntity.length}`,
-      `Stage.warningEdges: ${Stage.warningEdges.length}`,
+      `正在切割: ${Stage.cuttingMachine.isUsing}`,
+      `Stage.warningNodes: ${Stage.cuttingMachine.warningEntity.length}`,
+      `Stage.warningEdges: ${Stage.cuttingMachine.warningEdges.length}`,
       `ConnectFromNodes: ${Stage.connectFromEntities}`,
       `lastSelectedNode: ${Controller.lastSelectedEntityUUID.size}`,
       `粘贴板: ${JSON.stringify(Stage.copyBoardData)}`,

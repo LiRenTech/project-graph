@@ -117,7 +117,7 @@ ControllerNodeConnection.mousedown = (event: MouseEvent) => {
 };
 
 ControllerNodeConnection.mousemove = (event: MouseEvent) => {
-  if (Stage.isSelecting || Stage.isCutting) {
+  if (Stage.isSelecting || Stage.cuttingMachine.isUsing) {
     return;
   }
   if (!(Controller.isMouseDown[2] || Controller.isMouseDown[3])) {

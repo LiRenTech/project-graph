@@ -2,7 +2,6 @@ import { family } from "@tauri-apps/plugin-os";
 
 import { Serialized } from "../../types/node";
 import { PathString } from "../../utils/pathString";
-import { Line } from "../dataStruct/shape/Line";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { autoComputeEngineTick } from "../service/autoComputeEngine/mainTick";
@@ -17,8 +16,9 @@ import { StageManager } from "./stageManager/StageManager";
 import { LineEdge } from "./stageObject/association/LineEdge";
 import { Section } from "./stageObject/entity/Section";
 import { TextNode } from "./stageObject/entity/TextNode";
-import { ConnectableEntity, Entity } from "./stageObject/StageObject";
+import { ConnectableEntity } from "./stageObject/StageObject";
 import { StageSaveManager } from "./StageSaveManager";
+import { ControllerCutting } from "../service/controller/concrete/ControllerCutting";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -71,7 +71,15 @@ export namespace Stage {
     }
   }
 
+  /**
+   * 特效机
+   */
   export const effectMachine = EffectMachine.default();
+
+  /**
+   * 切割机
+   */
+  export const cuttingMachine = ControllerCutting;
   /**
    * 是否正在框选
    */
@@ -98,29 +106,8 @@ export namespace Stage {
   // eslint-disable-next-line prefer-const
   export let selectEndLocation: Vector = Vector.getZero();
 
-  /**
-   * 是否正在切断连线或切割
-   */
-  // eslint-disable-next-line prefer-const
-  export let isCutting = false;
-
   // eslint-disable-next-line prefer-const
   export let isConnecting = false;
-
-  // eslint-disable-next-line prefer-const
-  export let cuttingLine: Line | null = null;
-  /**
-   * 正在准备要删除的节点
-   */
-  // eslint-disable-next-line prefer-const
-  export let warningEntity: Entity[] = [];
-  /**
-   * 正在准备要删除的连线
-   */
-  // eslint-disable-next-line prefer-const
-  export let warningEdges: LineEdge[] = [];
-  // eslint-disable-next-line prefer-const
-  export let warningSections: Section[] = [];
   /**
    * 用于多重连接
    */
