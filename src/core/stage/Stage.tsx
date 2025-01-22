@@ -86,25 +86,6 @@ export namespace Stage {
    * 鼠标框选控制器
    */
   export const selectMachine = ControllerRectangleSelect;
-  /**
-   * 框选框
-   * 这里必须一开始为null，否则报错，can not asses "Rectangle"
-   * 这个框选框是基于世界坐标的。
-   * 此变量会根据两个点的位置自动更新。
-   */
-  // eslint-disable-next-line prefer-const
-  export let selectingRectangle: Rectangle | null = null;
-
-  /**
-   * 框选框的起点
-   */
-  // eslint-disable-next-line prefer-const
-  export let selectStartLocation: Vector = Vector.getZero();
-  /**
-   * 框选框的终点
-   */
-  // eslint-disable-next-line prefer-const
-  export let selectEndLocation: Vector = Vector.getZero();
 
   // eslint-disable-next-line prefer-const
   export let isConnecting = false;

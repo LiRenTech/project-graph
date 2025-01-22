@@ -279,9 +279,9 @@ export namespace Renderer {
   /** 框选框 */
   function renderSelectingRectangle() {
     if (Stage.selectMachine.isUsing) {
-      if (Stage.selectingRectangle) {
+      if (Stage.selectMachine.selectingRectangle) {
         ShapeRenderer.renderRect(
-          Stage.selectingRectangle.transformWorld2View(),
+          Stage.selectMachine.selectingRectangle.transformWorld2View(),
           StageStyleManager.currentStyle.SelectRectangleFillColor,
           StageStyleManager.currentStyle.SelectRectangleBorderColor,
           1,
@@ -679,7 +679,7 @@ export namespace Renderer {
       `鼠标上次按下位置: ${Controller.lastMousePressLocationString()}`,
       `鼠标上次松开位置: ${Controller.lastMouseReleaseLocationString()}`,
       `lastMousePressLocation Right: ${Controller.lastMousePressLocation[2].toString()}`,
-      `框选框: ${Stage.selectingRectangle}`,
+      `框选框: ${Stage.selectMachine.selectingRectangle}`,
       `正在移动节点: ${Controller.isMovingEntity}`,
       `正在切割: ${Stage.cuttingMachine.isUsing}`,
       `Stage.warningNodes: ${Stage.cuttingMachine.warningEntity.length}`,

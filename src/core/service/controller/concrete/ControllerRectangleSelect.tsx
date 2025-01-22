@@ -1,7 +1,6 @@
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
-import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { Controller } from "../Controller";
@@ -14,6 +13,16 @@ class ControllerRectangleSelectClass extends ControllerClass {
   private mouseDownSection: Section | null = null;
 
   private _isUsing: boolean = false;
+  /**
+   * 框选框
+   * 这里必须一开始为null，否则报错，can not asses "Rectangle"
+   * 这个框选框是基于世界坐标的。
+   * 此变量会根据两个点的位置自动更新。
+   */
+  public selectingRectangle: Rectangle | null = null;
+
+  private selectStartLocation: Vector = Vector.getZero();
+  private selectEndLocation: Vector = Vector.getZero();
 
   public get isUsing() {
     return this._isUsing;
@@ -81,9 +90,9 @@ class ControllerRectangleSelectClass extends ControllerClass {
 
     // 更新框选框状态
     this._isUsing = true;
-    Stage.selectStartLocation = pressWorldLocation.clone();
-    Stage.selectEndLocation = pressWorldLocation.clone();
-    Stage.selectingRectangle = new Rectangle(
+    this.selectStartLocation = pressWorldLocation.clone();
+    this.selectEndLocation = pressWorldLocation.clone();
+    this.selectingRectangle = new Rectangle(
       pressWorldLocation.clone(),
       Vector.getZero(),
     );
@@ -107,17 +116,17 @@ class ControllerRectangleSelectClass extends ControllerClass {
       new Vector(event.clientX, event.clientY),
     );
     // 正在框选
-    Stage.selectEndLocation = worldLocation.clone();
+    this.selectEndLocation = worldLocation.clone();
 
     // 更新框选框
-    Stage.selectingRectangle = Rectangle.fromTwoPoints(
-      Stage.selectStartLocation,
-      Stage.selectEndLocation,
+    this.selectingRectangle = Rectangle.fromTwoPoints(
+      this.selectStartLocation,
+      this.selectEndLocation,
     );
     // 框选框在 section框中的限制情况
     if (this.mouseDownSection !== null) {
-      Stage.selectingRectangle = Rectangle.getIntersectionRectangle(
-        Stage.selectingRectangle,
+      this.selectingRectangle = Rectangle.getIntersectionRectangle(
+        this.selectingRectangle,
         this.mouseDownSection.rectangle.expandFromCenter(-10),
       );
     }
@@ -141,9 +150,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
           continue;
         }
         if (
-          entity.collisionBox.isIntersectsWithRectangle(
-            Stage.selectingRectangle,
-          )
+          entity.collisionBox.isIntersectsWithRectangle(this.selectingRectangle)
         ) {
           if (Controller.lastSelectedEntityUUID.has(entity.uuid)) {
             entity.isSelected = false;
@@ -154,7 +161,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
       }
       for (const edge of StageManager.getLineEdges()) {
         if (
-          edge.collisionBox.isIntersectsWithRectangle(Stage.selectingRectangle)
+          edge.collisionBox.isIntersectsWithRectangle(this.selectingRectangle)
         ) {
           if (Controller.lastSelectedEdgeUUID.has(edge.uuid)) {
             edge.isSelected = false;
@@ -180,7 +187,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
 
           if (
             otherEntities.collisionBox.isIntersectsWithRectangle(
-              Stage.selectingRectangle,
+              this.selectingRectangle,
             )
           ) {
             otherEntities.isSelected = true;
@@ -197,9 +204,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
             continue;
           }
           if (
-            edge.collisionBox.isIntersectsWithRectangle(
-              Stage.selectingRectangle,
-            )
+            edge.collisionBox.isIntersectsWithRectangle(this.selectingRectangle)
           ) {
             edge.isSelected = true;
           }
