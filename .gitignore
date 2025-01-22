@@ -45,3 +45,6 @@ keystore.jks
 docs/.vitepress/dist
 docs/.vitepress/cache
 docs/.vitepress/.temp/
+
+# 莫名其妙会出现的文件
+src-tauri/Project Graph
