@@ -103,8 +103,9 @@ const MapNameFunction: StringFunctionMap = {
   [LogicNodeNameEnum.GTE]: funcTypeTrans(CompareFunctions.isDecreasing),
   [LogicNodeNameEnum.EQ]: funcTypeTrans(CompareFunctions.isSame),
   [LogicNodeNameEnum.NEQ]: funcTypeTrans(CompareFunctions.isDistinct),
-  // 概率论
+  // 概率论与统计
   [LogicNodeNameEnum.RANDOM]: funcTypeTrans(MathFunctions.random),
+  [LogicNodeNameEnum.COUNT]: funcTypeTrans(MathFunctions.count),
   // 逻辑门
   [LogicNodeNameEnum.AND]: funcTypeTrans(MathFunctions.and),
   [LogicNodeNameEnum.OR]: funcTypeTrans(MathFunctions.or),
@@ -120,7 +121,6 @@ const MapNameFunction: StringFunctionMap = {
   [LogicNodeNameEnum.CONNECT]: StringFunctions.connect,
   [LogicNodeNameEnum.CHECK_REGEX_MATCH]: StringFunctions.checkRegexMatch,
   // 集合计算
-  [LogicNodeNameEnum.COUNT]: funcTypeTrans(MathFunctions.count),
 };
 
 /**
