@@ -4,7 +4,7 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
-import { ZapLineEffect } from "./ZapLineEffect";
+import { TechLineEffect } from "./TechLineEffect";
 
 export class EntityCreateLineEffect extends EffectObject {
   constructor(
@@ -14,85 +14,87 @@ export class EntityCreateLineEffect extends EffectObject {
     super(timeProgress);
     // 子特效
     this.subEffects = [];
+    const initLen = 20;
+    const segmentCount = 50;
+    const preChange = -1;
+    // const effectColor = StageStyleManager.currentStyle.CollideBoxSelectedColor;
+    const effectColor = StageStyleManager.currentStyle.StageObjectBorderColor;
+    const rotateDegrees = 90;
     // 顶部线
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       const topStartLocation = new Vector(
         Random.randomFloat(this.rect.left, this.rect.right),
         this.rect.top,
       );
-      const topEndLocation = topStartLocation.add(
-        topStartLocation.subtract(this.rect.center).multiply(100),
-      );
-      const zapLineEffect = new ZapLineEffect(
+      const topEndLocation = topStartLocation.add(new Vector(0, -1000));
+      const zapLineEffect = new TechLineEffect(
         topStartLocation,
         topEndLocation,
-        50,
-        20,
-        45,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        segmentCount,
+        initLen,
+        preChange,
+        rotateDegrees,
+        effectColor,
         this.timeProgress.clone(),
         2,
       );
       this.subEffects.push(zapLineEffect);
     }
     // 底部线
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       const bottomStartLocation = new Vector(
         Random.randomFloat(this.rect.left, this.rect.right),
         this.rect.bottom,
       );
-      const bottomEndLocation = bottomStartLocation.add(
-        bottomStartLocation.subtract(this.rect.center).multiply(100),
-      );
-      const zapLineEffect = new ZapLineEffect(
+      const bottomEndLocation = bottomStartLocation.add(new Vector(0, 1000));
+      const zapLineEffect = new TechLineEffect(
         bottomStartLocation,
         bottomEndLocation,
-        50,
-        20,
-        45,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        segmentCount,
+        initLen,
+        preChange,
+        rotateDegrees,
+        effectColor,
         this.timeProgress.clone(),
         2,
       );
       this.subEffects.push(zapLineEffect);
     }
     // 左侧线
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       const leftStartLocation = new Vector(
         this.rect.left,
         Random.randomFloat(this.rect.top, this.rect.bottom),
       );
-      const leftEndLocation = leftStartLocation.add(
-        leftStartLocation.subtract(this.rect.center).multiply(100),
-      );
-      const zapLineEffect = new ZapLineEffect(
+      const leftEndLocation = leftStartLocation.add(new Vector(-1000, 0));
+      const zapLineEffect = new TechLineEffect(
         leftStartLocation,
         leftEndLocation,
-        50,
-        20,
-        45,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        segmentCount,
+        initLen,
+        preChange,
+        rotateDegrees,
+        effectColor,
         this.timeProgress.clone(),
         2,
       );
       this.subEffects.push(zapLineEffect);
     }
     // 右侧线
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       const rightStartLocation = new Vector(
         this.rect.right,
         Random.randomFloat(this.rect.top, this.rect.bottom),
       );
-      const rightEndLocation = rightStartLocation.add(
-        rightStartLocation.subtract(this.rect.center).multiply(100),
-      );
-      const zapLineEffect = new ZapLineEffect(
+      const rightEndLocation = rightStartLocation.add(new Vector(1000, 0));
+      const zapLineEffect = new TechLineEffect(
         rightStartLocation,
         rightEndLocation,
-        50,
-        20,
-        45,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        segmentCount,
+        initLen,
+        preChange,
+        rotateDegrees,
+        effectColor,
         this.timeProgress.clone(),
         2,
       );
