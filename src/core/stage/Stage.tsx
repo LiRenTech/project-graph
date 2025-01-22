@@ -19,6 +19,7 @@ import { TextNode } from "./stageObject/entity/TextNode";
 import { ConnectableEntity } from "./stageObject/StageObject";
 import { StageSaveManager } from "./StageSaveManager";
 import { ControllerCutting } from "../service/controller/concrete/ControllerCutting";
+import { ControllerRectangleSelect } from "../service/controller/concrete/ControllerRectangleSelect";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -77,15 +78,14 @@ export namespace Stage {
   export const effectMachine = EffectMachine.default();
 
   /**
-   * 切割机
+   * 鼠标切割控制器
    */
   export const cuttingMachine = ControllerCutting;
-  /**
-   * 是否正在框选
-   */
-  // eslint-disable-next-line prefer-const
-  export let isSelecting = false;
 
+  /**
+   * 鼠标框选控制器
+   */
+  export const selectMachine = ControllerRectangleSelect;
   /**
    * 框选框
    * 这里必须一开始为null，否则报错，can not asses "Rectangle"

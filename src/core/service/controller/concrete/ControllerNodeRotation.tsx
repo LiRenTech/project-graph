@@ -67,7 +67,7 @@ ControllerNodeRotation.mousedown = (event: MouseEvent) => {
 };
 
 ControllerNodeRotation.mousemove = (event: MouseEvent) => {
-  if (Stage.isSelecting || Stage.cuttingMachine.isUsing) {
+  if (Stage.selectMachine.isUsing || Stage.cuttingMachine.isUsing) {
     return;
   }
   const worldLocation = Renderer.transformView2World(

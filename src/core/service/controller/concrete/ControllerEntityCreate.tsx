@@ -18,7 +18,7 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
     return;
   }
 
-  Stage.isSelecting = false;
+  Stage.selectMachine.shutDown();
 
   const pressLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),

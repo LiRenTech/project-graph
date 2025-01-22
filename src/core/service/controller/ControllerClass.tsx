@@ -109,7 +109,7 @@ export class ControllerClass {
     // @ts-expect-error 必须给他来一个button属性
     touch.button = 0;
     if (event.touches.length > 1) {
-      Stage.isSelecting = false;
+      Stage.selectMachine.shutDown();
     }
     this.mousedown(touch);
   };

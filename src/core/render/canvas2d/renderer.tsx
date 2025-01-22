@@ -278,7 +278,7 @@ export namespace Renderer {
   }
   /** 框选框 */
   function renderSelectingRectangle() {
-    if (Stage.isSelecting) {
+    if (Stage.selectMachine.isUsing) {
       if (Stage.selectingRectangle) {
         ShapeRenderer.renderRect(
           Stage.selectingRectangle.transformWorld2View(),
