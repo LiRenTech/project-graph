@@ -54,6 +54,11 @@ export enum LogicNodeNameEnum {
   CHECK_REGEX_MATCH = "#CHECK_REGEX_MATCH#",
   // 统计
   COUNT = "#COUNT#",
+  AVE = "#AVE#",
+  MEDIAN = "#MEDIAN#",
+  MODE = "#MODE#",
+  VARIANCE = "#VARIANCE#",
+  STANDARD_DEVIATION = "#STANDARD_DEVIATION#",
   // 其他
   RGB = "#RGB#",
   RGBA = "#RGBA#",
@@ -119,6 +124,11 @@ export const LogicNodeNameToRenderNameMap: {
   [LogicNodeNameEnum.CONNECT]: "连接",
   [LogicNodeNameEnum.CHECK_REGEX_MATCH]: "正则匹配",
   [LogicNodeNameEnum.COUNT]: "count",
+  [LogicNodeNameEnum.AVE]: "平均值",
+  [LogicNodeNameEnum.MEDIAN]: "中位数",
+  [LogicNodeNameEnum.MODE]: "众数",
+  [LogicNodeNameEnum.VARIANCE]: "方差",
+  [LogicNodeNameEnum.STANDARD_DEVIATION]: "标准差",
   [LogicNodeNameEnum.RGB]: "rgb",
   [LogicNodeNameEnum.RGBA]: "rgba",
   [LogicNodeNameEnum.GET_LOCATION]: "获取节点位置",

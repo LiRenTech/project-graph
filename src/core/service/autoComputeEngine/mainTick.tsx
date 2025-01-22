@@ -106,6 +106,13 @@ const MapNameFunction: StringFunctionMap = {
   // 概率论与统计
   [LogicNodeNameEnum.RANDOM]: funcTypeTrans(MathFunctions.random),
   [LogicNodeNameEnum.COUNT]: funcTypeTrans(MathFunctions.count),
+  [LogicNodeNameEnum.AVE]: funcTypeTrans(MathFunctions.average),
+  [LogicNodeNameEnum.MEDIAN]: funcTypeTrans(MathFunctions.median),
+  [LogicNodeNameEnum.MODE]: funcTypeTrans(MathFunctions.mode),
+  [LogicNodeNameEnum.VARIANCE]: funcTypeTrans(MathFunctions.variance),
+  [LogicNodeNameEnum.STANDARD_DEVIATION]: funcTypeTrans(
+    MathFunctions.standardDeviation,
+  ),
   // 逻辑门
   [LogicNodeNameEnum.AND]: funcTypeTrans(MathFunctions.and),
   [LogicNodeNameEnum.OR]: funcTypeTrans(MathFunctions.or),

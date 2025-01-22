@@ -177,9 +177,19 @@ export namespace MathFunctions {
   export function sum(numbers: number[]): number[] {
     return [numbers.reduce((acc, cur) => acc + cur, 0)];
   }
+  /**
+   * 平均值
+   * @param numbers
+   * @returns
+   */
   export function average(numbers: number[]): number[] {
     return [numbers.reduce((acc, cur) => acc + cur, 0) / numbers.length];
   }
+  /**
+   * 中位数
+   * @param numbers
+   * @returns
+   */
   export function median(numbers: number[]): number[] {
     const sorted = numbers.sort((a, b) => a - b);
     const mid = Math.floor(sorted.length / 2);
@@ -189,6 +199,61 @@ export namespace MathFunctions {
         : (sorted[mid - 1] + sorted[mid]) / 2,
     ];
   }
+
+  /**
+   * 众数
+   * 若没有众数，则只返回第一个数
+   * @param numbers
+   * @returns
+   */
+  export function mode(numbers: number[]): number[] {
+    const countMap = new Map<number, number>();
+    for (const num of numbers) {
+      if (countMap.has(num)) {
+        countMap.set(num, countMap.get(num)! + 1);
+      } else {
+        countMap.set(num, 1);
+      }
+    }
+    let maxCount = 0;
+    let modeNum = 0;
+    for (const [num, count] of countMap) {
+      if (count > maxCount) {
+        maxCount = count;
+        modeNum = num;
+      }
+    }
+    return [modeNum];
+  }
+
+  /**
+   * 方差
+   * @param numbers
+   * @returns
+   */
+  export function variance(numbers: number[]): number[] {
+    // 计算数组的平均值
+    const mean = (nums: number[]): number => {
+      return nums.reduce((acc, curr) => acc + curr, 0) / nums.length;
+    };
+
+    const varianceValue =
+      numbers
+        .map((n) => Math.pow(n - mean(numbers), 2))
+        .reduce((acc, curr) => acc + curr, 0) / numbers.length;
+    return [varianceValue];
+  }
+
+  /**
+   * 标准差
+   * @param n
+   * @returns
+   */
+  export function standardDeviation(numbers: number[]): number[] {
+    const results = variance(numbers);
+    return [Math.sqrt(results[0])];
+  }
+
   // 辅助函数
 
   function _factorial(n: number): number {
