@@ -1,3 +1,5 @@
+import { NumberFunctions } from "../../../algorithm/numberFunctions";
+
 /**
  * 存放和数学逻辑有关的函数
  */
@@ -80,6 +82,17 @@ export namespace MathFunctions {
   }
 
   export function log(numbers: number[]): number[] {
+    if (numbers.length === 0) {
+      return [0];
+    }
+    if (numbers.length === 1) {
+      return [Math.log(numbers[0])];
+    }
+
+    return [NumberFunctions.logBase(numbers[1], numbers[0])];
+  }
+
+  export function ln(numbers: number[]): number[] {
     return numbers.map((n) => Math.log(n));
   }
 

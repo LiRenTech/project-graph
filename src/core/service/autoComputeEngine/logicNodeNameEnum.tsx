@@ -23,10 +23,15 @@ export enum LogicNodeNameEnum {
   LOG = "#LOG#",
   ABS = "#ABS#",
   RANDOM = "#RANDOM#",
-
+  // 数学一元函数
   SIN = "#SIN#",
   COS = "#COS#",
   TAN = "#TAN#",
+  ASIN = "#ASIN#",
+  ACOS = "#ACOS#",
+  ATAN = "#ATAN#",
+  LN = "#LN#",
+  EXP = "#EXP#",
   // 取值运算
   MAX = "#MAX#",
   MIN = "#MIN#",
@@ -91,6 +96,11 @@ export const LogicNodeNameToRenderNameMap: {
   [LogicNodeNameEnum.RANDOM]: "Random",
   [LogicNodeNameEnum.SIN]: "sin",
   [LogicNodeNameEnum.COS]: "cos",
+  [LogicNodeNameEnum.ASIN]: "arcsin",
+  [LogicNodeNameEnum.ACOS]: "arccos",
+  [LogicNodeNameEnum.ATAN]: "arctan",
+  [LogicNodeNameEnum.LN]: "ln",
+  [LogicNodeNameEnum.EXP]: "exp",
   [LogicNodeNameEnum.TAN]: "tan",
   [LogicNodeNameEnum.MAX]: "Max",
   [LogicNodeNameEnum.MIN]: "Min",

@@ -71,23 +71,31 @@ const MapOperationNameFunction: StringFunctionMap = {
  * 双井号格式的名字与函数的映射
  */
 const MapNameFunction: StringFunctionMap = {
-  // 数学计算
+  // 数学一元运算
+  [LogicNodeNameEnum.ABS]: funcTypeTrans(MathFunctions.abs),
+  [LogicNodeNameEnum.FLOOR]: funcTypeTrans(MathFunctions.floor),
+  [LogicNodeNameEnum.CEIL]: funcTypeTrans(MathFunctions.ceil),
+  [LogicNodeNameEnum.ROUND]: funcTypeTrans(MathFunctions.round),
+  [LogicNodeNameEnum.SQRT]: funcTypeTrans(MathFunctions.sqrt),
+  // 数学二元运算
   [LogicNodeNameEnum.ADD]: funcTypeTrans(MathFunctions.add),
   [LogicNodeNameEnum.SUBTRACT]: funcTypeTrans(MathFunctions.subtract),
   [LogicNodeNameEnum.MULTIPLY]: funcTypeTrans(MathFunctions.multiply),
   [LogicNodeNameEnum.DIVIDE]: funcTypeTrans(MathFunctions.divide),
   [LogicNodeNameEnum.MODULO]: funcTypeTrans(MathFunctions.modulo),
-  [LogicNodeNameEnum.ABS]: funcTypeTrans(MathFunctions.abs),
   [LogicNodeNameEnum.MAX]: funcTypeTrans(MathFunctions.max),
   [LogicNodeNameEnum.MIN]: funcTypeTrans(MathFunctions.min),
-  [LogicNodeNameEnum.FLOOR]: funcTypeTrans(MathFunctions.floor),
-  [LogicNodeNameEnum.CEIL]: funcTypeTrans(MathFunctions.ceil),
-  [LogicNodeNameEnum.ROUND]: funcTypeTrans(MathFunctions.round),
-  [LogicNodeNameEnum.SQRT]: funcTypeTrans(MathFunctions.sqrt),
   [LogicNodeNameEnum.POWER]: funcTypeTrans(MathFunctions.power),
+  [LogicNodeNameEnum.LOG]: funcTypeTrans(MathFunctions.log),
+  // 数学一元函数
   [LogicNodeNameEnum.SIN]: funcTypeTrans(MathFunctions.sin),
   [LogicNodeNameEnum.COS]: funcTypeTrans(MathFunctions.cos),
   [LogicNodeNameEnum.TAN]: funcTypeTrans(MathFunctions.tan),
+  [LogicNodeNameEnum.ASIN]: funcTypeTrans(MathFunctions.asin),
+  [LogicNodeNameEnum.ACOS]: funcTypeTrans(MathFunctions.acos),
+  [LogicNodeNameEnum.ATAN]: funcTypeTrans(MathFunctions.atan),
+  [LogicNodeNameEnum.EXP]: funcTypeTrans(MathFunctions.exp),
+  [LogicNodeNameEnum.LN]: funcTypeTrans(MathFunctions.ln),
   // 比较
   [LogicNodeNameEnum.LT]: funcTypeTrans(CompareFunctions.lessThan),
   [LogicNodeNameEnum.GT]: funcTypeTrans(CompareFunctions.greaterThan),
