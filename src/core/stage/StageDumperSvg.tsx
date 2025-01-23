@@ -31,9 +31,14 @@ export namespace StageDumperSvg {
           StageStyleManager.currentStyle.StageObjectBorderColor,
           2,
         )}
-        {SvgUtils.textFromCenter(
+
+        {SvgUtils.multiLineTextFromLeftTop(
           node.text,
-          node.rectangle.center,
+          node.rectangle.leftTop.add(
+            // 2025年1月23日 晚上，对这个地方进行了微调，但还没弄懂原理，只是看上去像是加了点偏移
+            // 着急发布节点多行文本的功能，所以先这样吧
+            new Vector(0, Renderer.NODE_PADDING + Renderer.FONT_SIZE / 4),
+          ),
           Renderer.FONT_SIZE,
           node.color.a === 1
             ? colorInvert(node.color)

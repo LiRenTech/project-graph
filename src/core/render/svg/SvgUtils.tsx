@@ -72,6 +72,30 @@ export namespace SvgUtils {
     );
   }
 
+  export function multiLineTextFromLeftTop(
+    text: string,
+    location: Vector,
+    fontSize: number,
+    color: Color,
+    lineHeight: number = 1.5,
+  ) {
+    const textSizeHeight = getTextSize(text, fontSize).y;
+    const lines = text.split("\n");
+    const result: React.ReactNode[] = [];
+    for (let y = 0; y < lines.length; y++) {
+      const line = lines[y];
+      result.push(
+        textFromLeftTop(
+          line,
+          location.add(new Vector(0, y * textSizeHeight * lineHeight)),
+          fontSize,
+          color,
+        ),
+      );
+    }
+    return <>{result.map((item) => item)}</>;
+  }
+
   export function rectangle(
     rectangle: Rectangle,
     fillColor: Color,
