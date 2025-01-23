@@ -96,7 +96,7 @@ export class EntityAlignEffect extends EffectObject {
       this.lines.push(
         new Line(
           new Vector(twoRectangle.left, twoRectangle.center.y),
-          new Vector(twoRectangle.left, twoRectangle.center.y),
+          new Vector(twoRectangle.right, twoRectangle.center.y),
         ),
       );
     }

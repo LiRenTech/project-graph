@@ -32,4 +32,24 @@ export namespace ArrayFunctions {
   export function standardDeviation(arr: number[]): number {
     return Math.sqrt(variance(arr));
   }
+
+  /**
+   * 获取绝对值最小的那个值
+   * @param arr
+   */
+  export function getMinAbsValue(arr: number[]): number {
+    if (arr.length === 0) {
+      throw new Error("数组不能为空");
+    }
+
+    let minAbsValue = arr[0];
+
+    for (let i = 1; i < arr.length; i++) {
+      if (Math.abs(arr[i]) < Math.abs(minAbsValue)) {
+        minAbsValue = arr[i];
+      }
+    }
+
+    return minAbsValue;
+  }
 }
