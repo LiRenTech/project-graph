@@ -193,6 +193,24 @@ export namespace StageAutoAlignManager {
       _addAlignEffect(selectedEntity, otherEntity);
       return distance;
     }
+    // 中心对齐
+    if (
+      NumberFunctions.isNumberNear(
+        selectedEntity.collisionBox.getRectangle().center.x,
+        otherEntity.collisionBox.getRectangle().center.x,
+        25,
+      )
+    ) {
+      const distance =
+        otherEntity.collisionBox.getRectangle().center.x -
+        selectedEntity.collisionBox.getRectangle().center.x;
+      if (!isPreAlign) {
+        selectedEntity.move(new Vector(distance, 0));
+      }
+      // 添加特效
+      _addAlignEffect(selectedEntity, otherEntity);
+      return distance;
+    }
     return 0;
   }
 
@@ -230,6 +248,24 @@ export namespace StageAutoAlignManager {
       const distance =
         otherEntity.collisionBox.getRectangle().bottom -
         selectedEntity.collisionBox.getRectangle().bottom;
+      if (!isPreAlign) {
+        selectedEntity.move(new Vector(0, distance));
+      }
+      // 添加特效
+      _addAlignEffect(selectedEntity, otherEntity);
+      return distance;
+    }
+    // 中心对齐
+    if (
+      NumberFunctions.isNumberNear(
+        selectedEntity.collisionBox.getRectangle().center.y,
+        otherEntity.collisionBox.getRectangle().center.y,
+        25,
+      )
+    ) {
+      const distance =
+        otherEntity.collisionBox.getRectangle().center.y -
+        selectedEntity.collisionBox.getRectangle().center.y;
       if (!isPreAlign) {
         selectedEntity.move(new Vector(0, distance));
       }

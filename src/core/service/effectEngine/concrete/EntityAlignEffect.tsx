@@ -19,7 +19,7 @@ export class EntityAlignEffect extends EffectObject {
     targetRectangle: Rectangle,
   ): EntityAlignEffect {
     return new EntityAlignEffect(
-      new ProgressNumber(0, 10),
+      new ProgressNumber(0, 20),
       moveRectangle,
       targetRectangle,
     );
@@ -60,6 +60,16 @@ export class EntityAlignEffect extends EffectObject {
         ),
       );
     }
+    // 中心x轴对齐检测
+    if (moveEntityRectangle.center.x === targetEntityRectangle.center.x) {
+      // 中心x轴对齐，添加一个竖着的中心线
+      this.lines.push(
+        new Line(
+          new Vector(twoRectangle.center.x, twoRectangle.top),
+          new Vector(twoRectangle.center.x, twoRectangle.bottom),
+        ),
+      );
+    }
     // 上边缘y轴对齐检测
     if (moveEntityRectangle.top === targetEntityRectangle.top) {
       // 上边缘y轴对齐，添加一个上边缘线
@@ -80,19 +90,30 @@ export class EntityAlignEffect extends EffectObject {
         ),
       );
     }
+    // 中心y轴对齐检测
+    if (moveEntityRectangle.center.y === targetEntityRectangle.center.y) {
+      // 中心y轴对齐，添加一个横着的中心线
+      this.lines.push(
+        new Line(
+          new Vector(twoRectangle.left, twoRectangle.center.y),
+          new Vector(twoRectangle.left, twoRectangle.center.y),
+        ),
+      );
+    }
   }
 
   render(): void {
     for (const line of this.lines) {
-      CurveRenderer.renderSolidLine(
+      CurveRenderer.renderDashedLine(
         Renderer.transformWorld2View(line.start),
         Renderer.transformWorld2View(line.end),
         mixColors(
-          StageStyleManager.currentStyle.CollideBoxSelectedColor,
+          StageStyleManager.currentStyle.CollideBoxSelectedColor.toSolid(),
           StageStyleManager.currentStyle.CollideBoxSelectedColor.clone().toTransparent(),
           1 - this.timeProgress.rate,
         ),
-        2 * Camera.currentScale,
+        0.5 * Camera.currentScale,
+        8 * Camera.currentScale,
       );
     }
   }

@@ -66,6 +66,14 @@ export class Color {
   }
 
   /**
+   * 和toTransparent完全相反
+   * @returns
+   */
+  toSolid() {
+    return new Color(this.r, this.g, this.b, 1);
+  }
+
+  /**
    * 判断自己是否和另一个颜色相等
    */
 

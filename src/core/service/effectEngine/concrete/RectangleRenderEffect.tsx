@@ -38,7 +38,7 @@ export class RectangleRenderEffect extends EffectObject {
       rectangle,
       Color.Transparent,
       StageStyleManager.currentStyle.CollideBoxPreSelectedColor,
-      2,
+      4,
     );
   }
 }
