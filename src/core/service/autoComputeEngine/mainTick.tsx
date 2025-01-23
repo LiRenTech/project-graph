@@ -177,6 +177,8 @@ export function autoComputeEngineTick(tickNumber: number) {
       return;
     }
   }
+
+  // 用于显示逻辑节点执行顺序标号
   let i = 0;
 
   let nodes = StageManager.getTextNodes().filter(
