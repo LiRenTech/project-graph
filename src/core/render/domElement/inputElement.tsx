@@ -1,7 +1,11 @@
 import { getMultiLineTextSize } from "../../../utils/font";
 import { Vector } from "../../dataStruct/Vector";
+import { EntityShakeEffect } from "../../service/effectEngine/concrete/EntityShakeEffect";
+import { TextRiseEffect } from "../../service/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../service/Settings";
 import { Camera } from "../../stage/Camera";
+import { Stage } from "../../stage/Stage";
+import { StageManager } from "../../stage/stageManager/StageManager";
 import { Renderer } from "../canvas2d/renderer";
 
 /**
@@ -235,6 +239,9 @@ export namespace InputElement {
         };
 
         if (event.key === "Enter") {
+          /** 是否操作成功，如果操作失败则说明用户可能记错了快捷键 */
+          let controlSuccess = false;
+
           const isPressedCtrl = event.ctrlKey;
           const isPressedAlt = event.altKey;
           const isPressedShift = event.shiftKey;
@@ -242,18 +249,22 @@ export namespace InputElement {
           if (textNodeExitEditMode === "enter") {
             if (!isPressedCtrl && !isPressedAlt && !isPressedShift) {
               exitEditMode();
+              controlSuccess = true;
             }
           } else if (textNodeExitEditMode === "ctrlEnter") {
             if (isPressedCtrl && !isPressedAlt && !isPressedShift) {
               exitEditMode();
+              controlSuccess = true;
             }
           } else if (textNodeExitEditMode === "altEnter") {
             if (!isPressedCtrl && isPressedAlt && !isPressedShift) {
               exitEditMode();
+              controlSuccess = true;
             }
           } else if (textNodeExitEditMode === "shiftEnter") {
             if (!isPressedCtrl && !isPressedAlt && isPressedShift) {
               exitEditMode();
+              controlSuccess = true;
             }
           }
           // 再检测是否要换行
@@ -261,15 +272,34 @@ export namespace InputElement {
             if (!isPressedCtrl && !isPressedAlt && !isPressedShift) {
               // breakLine();
               // 这里什么都不用做，因为换行的功能已经在keydown中实现了
+              controlSuccess = true;
             }
           } else if (textNodeContentLineBreak === "ctrlEnter") {
             if (isPressedCtrl && !isPressedAlt && !isPressedShift) {
               breakLine();
+              controlSuccess = true;
             }
           } else if (textNodeContentLineBreak === "altEnter") {
             if (!isPressedCtrl && isPressedAlt && !isPressedShift) {
               breakLine();
+              controlSuccess = true;
             }
+          }
+
+          if (!controlSuccess) {
+            // 用户可能记错了快捷键
+            // 查找到当前正在编辑的TextNode
+            const textNodes = StageManager.getTextNodes().filter(
+              (textNode) => textNode.isEditing,
+            );
+            for (const textNode of textNodes) {
+              Stage.effectMachine.addEffect(
+                EntityShakeEffect.fromEntity(textNode),
+              );
+            }
+            Stage.effectMachine.addEffect(
+              TextRiseEffect.default("您可能记错了快捷键"),
+            );
           }
         }
       });

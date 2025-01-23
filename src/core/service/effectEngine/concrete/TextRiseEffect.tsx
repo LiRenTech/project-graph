@@ -17,6 +17,10 @@ export class TextRiseEffect extends EffectObject {
     super(timeProgress);
   }
 
+  static default(text: string): TextRiseEffect {
+    return new TextRiseEffect(text, new ProgressNumber(0, 100));
+  }
+
   render(): void {
     if (this.timeProgress.isFull) {
       return;
