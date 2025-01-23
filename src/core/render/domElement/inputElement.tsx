@@ -1,5 +1,6 @@
 import { getMultiLineTextSize } from "../../../utils/font";
 import { Vector } from "../../dataStruct/Vector";
+import { EntityDashTipEffect } from "../../service/effectEngine/concrete/EntityDashTipEffect";
 import { EntityShakeEffect } from "../../service/effectEngine/concrete/EntityShakeEffect";
 import { TextRiseEffect } from "../../service/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../service/Settings";
@@ -285,13 +286,13 @@ export namespace InputElement {
               controlSuccess = true;
             }
           }
-
+          const textNodes = StageManager.getTextNodes().filter(
+            (textNode) => textNode.isEditing,
+          );
           if (!controlSuccess) {
             // 用户可能记错了快捷键
             // 查找到当前正在编辑的TextNode
-            const textNodes = StageManager.getTextNodes().filter(
-              (textNode) => textNode.isEditing,
-            );
+
             for (const textNode of textNodes) {
               Stage.effectMachine.addEffect(
                 EntityShakeEffect.fromEntity(textNode),
@@ -300,6 +301,16 @@ export namespace InputElement {
             Stage.effectMachine.addEffect(
               TextRiseEffect.default("您可能记错了快捷键"),
             );
+          } else {
+            // 成功了
+            for (const textNode of textNodes) {
+              Stage.effectMachine.addEffect(
+                new EntityDashTipEffect(
+                  50,
+                  textNode.collisionBox.getRectangle(),
+                ),
+              );
+            }
           }
         }
       });
