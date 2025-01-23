@@ -84,6 +84,7 @@ export enum LogicNodeNameEnum {
   COLLECT_NODE_DETAILS_BY_RGBA = "#COLLECT_NODE_DETAILS_BY_RGBA#",
   COLLECT_NODE_NAME_BY_RGBA = "#COLLECT_NODE_NAME_BY_RGBA#",
   FPS = "#FPS#",
+  CREATE_TEXT_NODE_ON_LOCATION = "#CREATE_TEXT_NODE_ON_LOCATION#",
 }
 export const LogicNodeNameToRenderNameMap: {
   [key in LogicNodeNameEnum]: string;
@@ -159,6 +160,7 @@ export const LogicNodeNameToRenderNameMap: {
   [LogicNodeNameEnum.COLLECT_NODE_DETAILS_BY_RGBA]: "根据颜色收集节点详情",
   [LogicNodeNameEnum.COLLECT_NODE_NAME_BY_RGBA]: "根据颜色收集节点名称",
   [LogicNodeNameEnum.FPS]: "FPS",
+  [LogicNodeNameEnum.CREATE_TEXT_NODE_ON_LOCATION]: "在指定位置创建节点",
 };
 
 /**

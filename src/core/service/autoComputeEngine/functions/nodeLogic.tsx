@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { Color } from "../../../dataStruct/Color";
 import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
@@ -354,5 +355,47 @@ export namespace NodeLogic {
       return [`${color.r}`, `${color.g}`, `${color.b}`, `${color.a}`];
     }
     return ["Error: input node is not valid"];
+  }
+
+  /**
+   * 在固定的某点创建一个文本节点
+   * @param fatherNodes
+   * @param _childNodes
+   * @returns
+   */
+  export function createTextNodeOnLocation(
+    fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    if (fatherNodes.length < 4) {
+      return ["Error: input node contains less than 4 nodes"];
+    }
+    const fatherNode1 = fatherNodes[0];
+    const fatherNode2 = fatherNodes[1];
+    const fatherNode3 = fatherNodes[2];
+    const fatherNode4 = fatherNodes[3];
+    if (
+      fatherNode1 instanceof TextNode &&
+      fatherNode2 instanceof TextNode &&
+      fatherNode3 instanceof TextNode &&
+      fatherNode4 instanceof TextNode
+    ) {
+      const b = parseInt(fatherNode4.text);
+      if (b === 1) {
+        const x = parseFloat(fatherNode1.text);
+        const y = parseFloat(fatherNode2.text);
+        const textNode = new TextNode({
+          uuid: v4(),
+          details: "",
+          location: [x, y],
+          size: [100, 100],
+          color: [0, 0, 0, 0],
+          text: fatherNode3.text,
+        });
+        StageManager.addTextNode(textNode);
+      }
+    }
+    return [];
   }
 }
