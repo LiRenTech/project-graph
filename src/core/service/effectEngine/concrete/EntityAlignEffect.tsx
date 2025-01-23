@@ -1,4 +1,4 @@
-import { Color } from "../../../dataStruct/Color";
+import { mixColors } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
@@ -6,6 +6,7 @@ import { Vector } from "../../../dataStruct/Vector";
 import { CurveRenderer } from "../../../render/canvas2d/basicRenderer/curveRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Camera } from "../../../stage/Camera";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 
 /**
@@ -86,7 +87,11 @@ export class EntityAlignEffect extends EffectObject {
       CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(line.start),
         Renderer.transformWorld2View(line.end),
-        new Color(0, 255, 0, 1 - this.timeProgress.rate),
+        mixColors(
+          StageStyleManager.currentStyle.CollideBoxSelectedColor,
+          StageStyleManager.currentStyle.CollideBoxSelectedColor.clone().toTransparent(),
+          1 - this.timeProgress.rate,
+        ),
         2 * Camera.currentScale,
       );
     }
