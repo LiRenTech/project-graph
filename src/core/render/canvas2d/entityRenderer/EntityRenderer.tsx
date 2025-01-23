@@ -147,14 +147,14 @@ export namespace EntityRenderer {
       }
     } else {
       // 编辑状态下，显示一些提示信息
-      TextRenderer.renderText(
-        "Esc 或 Ctrl+Enter 退出编辑状态",
-        Renderer.transformWorld2View(
-          node.rectangle.location.add(new Vector(0, -25)),
-        ),
-        20 * Camera.currentScale,
-        StageStyleManager.currentStyle.GridHeavyColor,
-      );
+      // TextRenderer.renderText(
+      //   "Esc 或 Ctrl+Enter 退出编辑状态",
+      //   Renderer.transformWorld2View(
+      //     node.rectangle.location.add(new Vector(0, -25)),
+      //   ),
+      //   20 * Camera.currentScale,
+      //   StageStyleManager.currentStyle.GridHeavyColor,
+      // );
     }
 
     if (node.isSelected) {

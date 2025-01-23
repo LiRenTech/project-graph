@@ -1,6 +1,8 @@
 import {
   AlignStartVertical,
   Keyboard,
+  ListCheck,
+  ListEnd,
   MousePointerClick,
   Move,
   RotateCw,
@@ -31,6 +33,16 @@ export default function Control() {
       <SettingField
         icon={<MousePointerClick />}
         settingKey="mouseRightDragBackground"
+        type="select"
+      />
+      <SettingField
+        icon={<ListEnd />}
+        settingKey="textNodeContentLineBreak"
+        type="select"
+      />
+      <SettingField
+        icon={<ListCheck />}
+        settingKey="textNodeExitEditMode"
         type="select"
       />
       <SettingField

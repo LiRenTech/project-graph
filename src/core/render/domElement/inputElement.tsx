@@ -1,5 +1,6 @@
 import { getMultiLineTextSize } from "../../../utils/font";
 import { Vector } from "../../dataStruct/Vector";
+import { Settings } from "../../service/Settings";
 import { Camera } from "../../stage/Camera";
 import { Renderer } from "../canvas2d/renderer";
 
@@ -205,20 +206,88 @@ export namespace InputElement {
           textareaElement.selectionStart = start + 1;
           textareaElement.selectionEnd = start + 1;
         } else if (event.key === "Escape") {
+          // Escape 是通用的取消编辑的快捷键
           resolve(textareaElement.value);
           onChange(textareaElement.value);
           document.body.removeEventListener("click", onOutsideClick);
           removeElement();
-        } else if (event.key === "Enter") {
-          // 如果按下了ctrl键
-          if (event.ctrlKey) {
-            resolve(textareaElement.value);
-            onChange(textareaElement.value);
-            document.body.removeEventListener("click", onOutsideClick);
-            removeElement();
+        }
+
+        const breakLine = () => {
+          const start = textareaElement.selectionStart;
+          const end = textareaElement.selectionEnd;
+          textareaElement.value =
+            textareaElement.value.substring(0, start) +
+            "\n" +
+            textareaElement.value.substring(end);
+          textareaElement.selectionStart = start + 1;
+          textareaElement.selectionEnd = start + 1;
+          // 调整
+          adjustSize(); // 调整textarea
+          onChange(textareaElement.value); // 调整canvas渲染上去的框大小
+        };
+
+        const exitEditMode = () => {
+          resolve(textareaElement.value);
+          onChange(textareaElement.value);
+          document.body.removeEventListener("click", onOutsideClick);
+          removeElement();
+        };
+
+        if (event.key === "Enter") {
+          const isPressedCtrl = event.ctrlKey;
+          const isPressedAlt = event.altKey;
+          const isPressedShift = event.shiftKey;
+          // 先检测是否要退出编辑模式
+          if (textNodeExitEditMode === "enter") {
+            if (!isPressedCtrl && !isPressedAlt && !isPressedShift) {
+              exitEditMode();
+            }
+          } else if (textNodeExitEditMode === "ctrlEnter") {
+            if (isPressedCtrl && !isPressedAlt && !isPressedShift) {
+              exitEditMode();
+            }
+          } else if (textNodeExitEditMode === "altEnter") {
+            if (!isPressedCtrl && isPressedAlt && !isPressedShift) {
+              exitEditMode();
+            }
+          } else if (textNodeExitEditMode === "shiftEnter") {
+            if (!isPressedCtrl && !isPressedAlt && isPressedShift) {
+              exitEditMode();
+            }
+          }
+          // 再检测是否要换行
+          if (textNodeContentLineBreak === "enter") {
+            if (!isPressedCtrl && !isPressedAlt && !isPressedShift) {
+              // breakLine();
+              // 这里什么都不用做，因为换行的功能已经在keydown中实现了
+            }
+          } else if (textNodeContentLineBreak === "ctrlEnter") {
+            if (isPressedCtrl && !isPressedAlt && !isPressedShift) {
+              breakLine();
+            }
+          } else if (textNodeContentLineBreak === "altEnter") {
+            if (!isPressedCtrl && isPressedAlt && !isPressedShift) {
+              breakLine();
+            }
           }
         }
       });
+    });
+  }
+
+  let textNodeContentLineBreak: Settings.Settings["textNodeContentLineBreak"] =
+    "enter";
+
+  let textNodeExitEditMode: Settings.Settings["textNodeExitEditMode"] =
+    "ctrlEnter";
+
+  export function init() {
+    Settings.watch("textNodeContentLineBreak", (value) => {
+      textNodeContentLineBreak = value;
+    });
+    Settings.watch("textNodeExitEditMode", (value) => {
+      textNodeExitEditMode = value;
     });
   }
 }

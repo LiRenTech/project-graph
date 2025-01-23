@@ -55,6 +55,8 @@ export namespace Settings {
     moveFriction: number;
     gamepadDeadzone: number;
     mouseRightDragBackground: "cut" | "moveCamera";
+    textNodeContentLineBreak: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter";
+    textNodeExitEditMode: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter";
     // 音效相关
     soundEnabled: boolean;
     cuttingLineStartSoundFile: string;
@@ -111,6 +113,8 @@ export namespace Settings {
     moveFriction: 0.1,
     gamepadDeadzone: 0.1,
     mouseRightDragBackground: "cut",
+    textNodeContentLineBreak: "enter",
+    textNodeExitEditMode: "ctrlEnter",
     // 音效相关
     soundEnabled: true,
     cuttingLineStartSoundFile: "",

@@ -40,6 +40,7 @@ import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 import { Popup } from "./utils/popup";
+import { InputElement } from "./core/render/domElement/inputElement";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -88,10 +89,12 @@ async function loadSyncModules() {
   Stage.init();
   StageHistoryManager.init();
   StageStyleManager.init();
-  SoundService.init();
   MouseLocation.init();
   StageManager.init();
+  // 可以稍微晚几秒再初始化都没事的模块
+  SoundService.init();
   KeyboardOnlyEngine.init();
+  InputElement.init();
 }
 
 /**
