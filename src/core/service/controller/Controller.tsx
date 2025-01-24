@@ -177,6 +177,14 @@ export namespace Controller {
     const pressWorldLocation = Renderer.transformView2World(new Vector(x, y));
     // 获取左右中键
     lastMousePressLocation[button] = pressWorldLocation;
+
+    // 左右键按下时移除所有input焦点
+    if (button === 0 || button === 2) {
+      const activeElement = document.activeElement as HTMLElement;
+      if (activeElement && activeElement.blur) {
+        activeElement.blur();
+      }
+    }
   }
 
   function handleMouseup(button: number, x: number, y: number) {
