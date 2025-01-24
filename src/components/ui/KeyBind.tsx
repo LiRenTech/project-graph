@@ -10,11 +10,11 @@ import Button from "./Button";
  * @returns
  */
 export default function KeyBind({
-  value,
-  onChange,
+  value = { key: "", modifiers: { control: false, alt: false, shift: false } },
+  onChange = () => {},
 }: {
-  value: { key: string; modifiers: KeyBinds.KeyModifiers };
-  onChange: (value: { key: string; modifiers: KeyBinds.KeyModifiers }) => void;
+  value?: { key: string; modifiers: KeyBinds.KeyModifiers };
+  onChange?: (value: { key: string; modifiers: KeyBinds.KeyModifiers }) => void;
 }) {
   const [choosing, setChoosing] = useState(false);
   const { t } = useTranslation("keys");

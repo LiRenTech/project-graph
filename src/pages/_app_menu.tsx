@@ -519,6 +519,9 @@ export default function AppMenu({
           <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
             测试页面
           </Col>
+          <Col icon={<TestTube2 />} onClick={() => navigate("/ui_test")}>
+            ui
+          </Col>
           <Col icon={<TestTube2 />} onClick={() => navigate("/info")}>
             Info
           </Col>
