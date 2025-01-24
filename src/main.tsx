@@ -38,7 +38,7 @@ import "./polyfills/roundRect";
 import { Dialog } from "./utils/dialog";
 import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
-import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
+import { getCurrentWindow, isDesktop, isMobile, isWeb } from "./utils/platform";
 import { Popup } from "./utils/popup";
 import { InputElement } from "./core/render/domElement/inputElement";
 
@@ -50,7 +50,7 @@ const el = document.getElementById("root")!;
 // 在这里看着清爽一些，像一个列表清单一样。也方便调整顺序
 
 (async () => {
-  const matches = !isWeb ? await getMatches() : null;
+  const matches = !isWeb && !isMobile ? await getMatches() : null;
   const isCliMode = isDesktop && matches?.args.output?.occurrences === 1;
   await Promise.all([
     Settings.init(),
