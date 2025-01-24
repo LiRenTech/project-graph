@@ -19,6 +19,7 @@ import Switch from "../components/ui/Switch";
 import { RecentFileManager } from "../core/service/RecentFileManager";
 import { StartFilesManager } from "../core/service/StartFilesManager";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
+import { StageManager } from "../core/stage/stageManager/StageManager";
 import { fileAtom } from "../state";
 import { cn } from "../utils/cn";
 import { Dialog } from "../utils/dialog";
@@ -123,7 +124,9 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
   };
   const onLoadCurrentStartFile = (path: string) => {
     return function () {
-      if (currentFile === "Project Graph") {
+      if (StageManager.isEmpty()) {
+        checkoutFile(path);
+      } else if (currentFile === "Project Graph") {
         Dialog.show({
           title: "真的要切换吗？",
           content: "您现在的新建草稿没有保存，是否要切换项目？",
