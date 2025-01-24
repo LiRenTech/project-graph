@@ -2,6 +2,7 @@ import { v4 } from "uuid";
 import Button from "../components/ui/Button";
 import {
   LogicNodeNameEnum,
+  LogicNodeNameToArgsTipsMap,
   LogicNodeNameToRenderNameMap,
 } from "../core/service/autoComputeEngine/logicNodeNameEnum";
 import { StageManager } from "../core/stage/stageManager/StageManager";
@@ -35,6 +36,7 @@ export default function LogicNodePanel({
           <Button
             key={name}
             className="m-1 text-xs"
+            tooltip={LogicNodeNameToArgsTipsMap[name]}
             onClick={() => {
               StageManager.addTextNode(
                 new TextNode({
