@@ -69,7 +69,7 @@ export default function AppMenu({
    * 新建草稿
    */
   const onNewDraft = () => {
-    if (StageSaveManager.isSaved()) {
+    if (StageSaveManager.isSaved() || StageManager.isEmpty()) {
       StageManager.destroy();
       setFile("Project Graph");
     } else {
@@ -99,36 +99,42 @@ export default function AppMenu({
   };
 
   const onOpen = async () => {
-    if (Stage.Path.isDraft() && !StageSaveManager.isSaved()) {
-      Dialog.show({
-        title: "草稿未保存",
-        content: "当前草稿未保存，是否保存？",
-        buttons: [
-          { text: "我再想想" },
-          { text: "保存草稿", onClick: onSave },
-          {
-            text: "丢弃并打开新文件",
-            onClick: () => {
-              StageManager.destroy();
-              openFileByDialogWindow();
+    if (!StageSaveManager.isSaved()) {
+      if (StageManager.isEmpty()) {
+        //空项目不需要保存
+        StageManager.destroy();
+        openFileByDialogWindow();
+      } else if (Stage.Path.isDraft()) {
+        Dialog.show({
+          title: "草稿未保存",
+          content: "当前草稿未保存，是否保存？",
+          buttons: [
+            { text: "我再想想" },
+            { text: "保存草稿", onClick: onSave },
+            {
+              text: "丢弃并打开新文件",
+              onClick: () => {
+                StageManager.destroy();
+                openFileByDialogWindow();
+              },
             },
-          },
-        ],
-      });
-    } else if (!StageSaveManager.isSaved()) {
-      Dialog.show({
-        title: "未保存",
-        content: "是否保存当前文件？",
-        buttons: [
-          {
-            text: "保存并打开新文件",
-            onClick: () => {
-              onSave().then(openFileByDialogWindow);
+          ],
+        });
+      } else {
+        Dialog.show({
+          title: "未保存",
+          content: "是否保存当前文件？",
+          buttons: [
+            {
+              text: "保存并打开新文件",
+              onClick: () => {
+                onSave().then(openFileByDialogWindow);
+              },
             },
-          },
-          { text: "我再想想" },
-        ],
-      });
+            { text: "我再想想" },
+          ],
+        });
+      }
     } else {
       // 直接打开文件
       openFileByDialogWindow();

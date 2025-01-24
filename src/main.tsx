@@ -50,7 +50,7 @@ const el = document.getElementById("root")!;
 // 在这里看着清爽一些，像一个列表清单一样。也方便调整顺序
 
 (async () => {
-  const matches = !isWeb ? await getMatches() : null;
+  const matches = !isWeb && isDesktop ? await getMatches() : null;
   const isCliMode = isDesktop && matches?.args.output?.occurrences === 1;
   await Promise.all([
     Settings.init(),
