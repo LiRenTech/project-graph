@@ -43,7 +43,7 @@ export default function Select({
     <>
       <Box
         className={cn(
-          "group/select flex appearance-none items-center gap-1 px-3 py-2 pl-4 hover:opacity-80",
+          "group/select flex appearance-none items-center justify-between gap-1 px-3 py-2 pl-4 hover:opacity-80",
           className,
         )}
         ref={ref}

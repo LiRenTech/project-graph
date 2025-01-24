@@ -18,6 +18,7 @@ export type Path =
   | `/settings/sounds`
   | `/settings/visual`
   | `/test`
+  | `/ui_test`
   | `/welcome`;
 
 export type Params = {};
