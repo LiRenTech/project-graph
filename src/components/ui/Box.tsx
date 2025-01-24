@@ -61,7 +61,7 @@ const _Box = <E extends ElementType = "div">(
         className={cn(
           "pointer-events-none fixed z-[103] scale-75 rounded-md border border-neutral-700 bg-neutral-800/20 px-2 py-1 text-white opacity-0 backdrop-blur-md transition-all",
           {
-            "pointer-events-auto scale-100 opacity-100": showTooltip,
+            "pointer-events-auto scale-100 opacity-100": showTooltip && tooltip,
           },
         )}
         style={{
