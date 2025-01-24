@@ -64,6 +64,9 @@ export namespace StageManager {
     });
   }
 
+  export function isEmpty(): boolean {
+    return entities.length === 0;
+  }
   export function getTextNodes(): TextNode[] {
     return entities.valuesToArray().filter((node) => node instanceof TextNode);
   }
