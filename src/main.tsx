@@ -9,6 +9,7 @@ import { Color } from "./core/dataStruct/Color";
 import { Vector } from "./core/dataStruct/Vector";
 import { EdgeRenderer } from "./core/render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "./core/render/canvas2d/renderer";
+import { InputElement } from "./core/render/domElement/inputElement";
 import { PromptManager } from "./core/service/ai/PromptManager";
 import { ColorManager } from "./core/service/ColorManager";
 import {
@@ -40,7 +41,6 @@ import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 import { Popup } from "./utils/popup";
-import { InputElement } from "./core/render/domElement/inputElement";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
