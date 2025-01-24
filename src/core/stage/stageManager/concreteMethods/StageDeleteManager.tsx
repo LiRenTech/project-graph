@@ -1,14 +1,14 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { ExplodeAshEffect } from "../../../effect/concrete/ExplodeDashEffect";
-import { LineEdge } from "../../../stageObject/association/LineEdge";
-import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
-import { ImageNode } from "../../../stageObject/entity/ImageNode";
-import { Section } from "../../../stageObject/entity/Section";
-import { TextNode } from "../../../stageObject/entity/TextNode";
-import { UrlNode } from "../../../stageObject/entity/UrlNode";
-import { Entity } from "../../../stageObject/StageObject";
+import { ExplodeAshEffect } from "../../../service/effectEngine/concrete/ExplodeDashEffect";
 import { Stage } from "../../Stage";
+import { LineEdge } from "../../stageObject/association/LineEdge";
+import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
+import { ImageNode } from "../../stageObject/entity/ImageNode";
+import { Section } from "../../stageObject/entity/Section";
+import { TextNode } from "../../stageObject/entity/TextNode";
+import { UrlNode } from "../../stageObject/entity/UrlNode";
+import { Entity } from "../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 
 /**
@@ -56,7 +56,7 @@ export namespace StageDeleteManager {
   function deleteImageNode(entity: ImageNode) {
     if (StageManager.getImageNodes().includes(entity)) {
       StageManager.deleteOneImage(entity);
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new ExplodeAshEffect(
           new ProgressNumber(0, 30),
           entity.collisionBox.getRectangle(),
@@ -80,7 +80,7 @@ export namespace StageDeleteManager {
     if (StageManager.getConnectPoints().includes(entity)) {
       // 从数组中去除
       StageManager.deleteOneConnectPoint(entity);
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new ExplodeAshEffect(
           new ProgressNumber(0, 30),
           entity.collisionBox.getRectangle(),
@@ -100,7 +100,7 @@ export namespace StageDeleteManager {
       // 从数组中去除
       StageManager.deleteOneTextNode(entity);
       // 增加特效
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new ExplodeAshEffect(
           new ProgressNumber(0, 30),
           entity.collisionBox.getRectangle(),

@@ -4,6 +4,7 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronUp,
+  Cpu,
   Diamond,
   Menu,
   RectangleEllipsis,
@@ -16,7 +17,7 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "../components/ui/Button";
 import IconButton from "../components/ui/IconButton";
-import { Settings } from "../core/Settings";
+import { Settings } from "../core/service/Settings";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
@@ -39,6 +40,7 @@ import ExportTreeTextPanel from "./_export_text_panel";
 import RecentFilesPanel from "./_recent_files_panel";
 import StartFilePanel from "./_start_file_panel";
 import TagPanel from "./_tag_panel";
+import LogicNodePanel from "./_logic_node_panel";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -48,6 +50,7 @@ export default function App() {
   const [isStartFilePanelOpen, setIsStartFilePanelOpen] = React.useState(false);
   const [isAiPanelOpen, setIsAiPanelOpen] = React.useState(false);
   const [isTagPanelOpen, setIsTagPanelOpen] = React.useState(false);
+  const [isLogicNodePanelOpen, setIsLogicNodePanelOpen] = React.useState(false);
   const [ignoreMouse, setIgnoreMouse] = React.useState(false);
 
   const navigate = useNavigate();
@@ -85,6 +88,17 @@ export default function App() {
             getCurrentWindow().setFullscreen(!isFullscreen);
           });
       }
+    });
+    // 修复鼠标拖出窗口后触发上下文菜单的问题
+    window.addEventListener("contextmenu", (event) => {
+      console.log(event, window.screen);
+      if (
+        event.clientX < 0 ||
+        event.clientX > window.innerWidth ||
+        event.clientY < 0 ||
+        event.clientY > window.innerHeight
+      )
+        event.preventDefault();
     });
     Settings.get("useNativeTitleBar").then((useNativeTitleBar) => {
       setUseNativeTitleBar(useNativeTitleBar);
@@ -218,6 +232,7 @@ export default function App() {
       onClick={() => {
         setIsMenuOpen(false);
         setIsStartFilePanelOpen(false);
+        setIsAiPanelOpen(false);
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
@@ -298,6 +313,17 @@ export default function App() {
             className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")}
           />
         </IconButton>
+        {/* 逻辑节点按钮 */}
+        <IconButton
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsLogicNodePanelOpen(!isLogicNodePanelOpen);
+          }}
+        >
+          <Cpu
+            className={cn("cursor-pointer", isAiPanelOpen ? "rotate-90" : "")}
+          />
+        </IconButton>
         {/* 中间标题 */}
         {useNativeTitleBar || isWeb ? (
           // h-0 才能完全摆脱划线时经过此区域的卡顿问题
@@ -330,6 +356,7 @@ export default function App() {
             )}
           </>
         )}
+
         {/* 右上角AI按钮 */}
         <IconButton
           onClick={(e) => {
@@ -386,6 +413,7 @@ export default function App() {
       {/* 面板列表 */}
       <AppMenu className="absolute left-4 top-16 z-20" open={isMenuOpen} />
       <TagPanel open={isTagPanelOpen} className="z-10" />
+      <LogicNodePanel open={isLogicNodePanelOpen} className="z-10" />
       <StartFilePanel open={isStartFilePanelOpen} />
       <AiPanel open={isAiPanelOpen} />
       <RecentFilesPanel />

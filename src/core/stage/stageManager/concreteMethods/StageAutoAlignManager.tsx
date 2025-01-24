@@ -1,15 +1,15 @@
 import { Dialog } from "../../../../utils/dialog";
-import { NumberFunctions } from "../../../algorithm/numberFunctions";
+import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { EntityAlignEffect } from "../../../effect/concrete/EntityAlignEffect";
-import { RectangleRenderEffect } from "../../../effect/concrete/RectangleRenderEffect";
 import { Renderer } from "../../../render/canvas2d/renderer";
-import { SoundService } from "../../../SoundService";
-import { TextNode } from "../../../stageObject/entity/TextNode";
-import { ConnectableEntity, Entity } from "../../../stageObject/StageObject";
-import { autoLayoutFastTreeMode } from "../../autoLayoutEngine/autoLayoutFastTreeMode";
+import { autoLayoutFastTreeMode } from "../../../service/autoLayoutEngine/autoLayoutFastTreeMode";
+import { EntityAlignEffect } from "../../../service/effectEngine/concrete/EntityAlignEffect";
+import { RectangleRenderEffect } from "../../../service/effectEngine/concrete/RectangleRenderEffect";
+import { SoundService } from "../../../service/SoundService";
 import { Stage } from "../../Stage";
+import { TextNode } from "../../stageObject/entity/TextNode";
+import { ConnectableEntity, Entity } from "../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 
 /**
@@ -121,13 +121,13 @@ export namespace StageAutoAlignManager {
       moveTargetRectangle.location.x += xMoveDiff;
       moveTargetRectangle.location.y += yMoveDiff;
 
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         RectangleRenderEffect.fromPreAlign(moveTargetRectangle),
       );
       for (const targetRectangle of xTargetRectangles.concat(
         yTargetRectangles,
       )) {
-        Stage.effects.push(
+        Stage.effectMachine.addEffect(
           EntityAlignEffect.fromEntity(moveTargetRectangle, targetRectangle),
         );
       }
@@ -137,8 +137,13 @@ export namespace StageAutoAlignManager {
     }
   }
 
+  /**
+   * 添加对齐特效
+   * @param selectedEntity
+   * @param otherEntity
+   */
   function _addAlignEffect(selectedEntity: Entity, otherEntity: Entity) {
-    Stage.effects.push(
+    Stage.effectMachine.addEffect(
       EntityAlignEffect.fromEntity(
         selectedEntity.collisionBox.getRectangle(),
         otherEntity.collisionBox.getRectangle(),
@@ -150,50 +155,31 @@ export namespace StageAutoAlignManager {
    * 将一个节点对齐到另一个节点
    * @param selectedEntity
    * @param otherEntity
-   * @returns
+   * @returns 返回吸附距离
    */
   function onEntityMoveAlignToTargetEntityX(
     selectedEntity: Entity,
     otherEntity: Entity,
     isPreAlign = false,
   ): number {
-    // 左侧x轴对齐
-    if (
-      NumberFunctions.isNumberNear(
-        selectedEntity.collisionBox.getRectangle().left,
-        otherEntity.collisionBox.getRectangle().left,
-        25,
-      )
-    ) {
-      const distance =
-        otherEntity.collisionBox.getRectangle().left -
-        selectedEntity.collisionBox.getRectangle().left;
+    const selectedRect = selectedEntity.collisionBox.getRectangle();
+    const otherRect = otherEntity.collisionBox.getRectangle();
+    const distanceList = [
+      otherRect.left - selectedRect.left,
+      otherRect.center.x - selectedRect.center.x,
+      otherRect.right - selectedRect.right,
+    ];
+    const minDistance = ArrayFunctions.getMinAbsValue(distanceList);
+    if (Math.abs(minDistance) < 25) {
       if (!isPreAlign) {
-        selectedEntity.move(new Vector(distance, 0));
+        selectedEntity.move(new Vector(minDistance, 0));
       }
       // 添加特效
       _addAlignEffect(selectedEntity, otherEntity);
-      return distance;
+      return minDistance;
+    } else {
+      return 0;
     }
-    // 右侧x轴对齐
-    if (
-      NumberFunctions.isNumberNear(
-        selectedEntity.collisionBox.getRectangle().right,
-        otherEntity.collisionBox.getRectangle().right,
-        25,
-      )
-    ) {
-      const distance =
-        otherEntity.collisionBox.getRectangle().right -
-        selectedEntity.collisionBox.getRectangle().right;
-      if (!isPreAlign) {
-        selectedEntity.move(new Vector(distance, 0));
-      }
-      // 添加特效
-      _addAlignEffect(selectedEntity, otherEntity);
-      return distance;
-    }
-    return 0;
   }
 
   function onEntityMoveAlignToTargetEntityY(
@@ -201,43 +187,24 @@ export namespace StageAutoAlignManager {
     otherEntity: Entity,
     isPreAlign = false,
   ): number {
-    // 上侧y轴对齐
-    if (
-      NumberFunctions.isNumberNear(
-        selectedEntity.collisionBox.getRectangle().top,
-        otherEntity.collisionBox.getRectangle().top,
-        25,
-      )
-    ) {
-      const distance =
-        otherEntity.collisionBox.getRectangle().top -
-        selectedEntity.collisionBox.getRectangle().top;
+    const selectedRect = selectedEntity.collisionBox.getRectangle();
+    const otherRect = otherEntity.collisionBox.getRectangle();
+    const distanceList = [
+      otherRect.top - selectedRect.top,
+      otherRect.center.y - selectedRect.center.y,
+      otherRect.bottom - selectedRect.bottom,
+    ];
+    const minDistance = ArrayFunctions.getMinAbsValue(distanceList);
+    if (Math.abs(minDistance) < 25) {
       if (!isPreAlign) {
-        selectedEntity.move(new Vector(0, distance));
+        selectedEntity.move(new Vector(0, minDistance));
       }
       // 添加特效
       _addAlignEffect(selectedEntity, otherEntity);
-      return distance;
+      return minDistance;
+    } else {
+      return 0;
     }
-    // 下侧y轴对齐
-    if (
-      NumberFunctions.isNumberNear(
-        selectedEntity.collisionBox.getRectangle().bottom,
-        otherEntity.collisionBox.getRectangle().bottom,
-        25,
-      )
-    ) {
-      const distance =
-        otherEntity.collisionBox.getRectangle().bottom -
-        selectedEntity.collisionBox.getRectangle().bottom;
-      if (!isPreAlign) {
-        selectedEntity.move(new Vector(0, distance));
-      }
-      // 添加特效
-      _addAlignEffect(selectedEntity, otherEntity);
-      return distance;
-    }
-    return 0;
   }
 
   // 假设你有一个方法可以计算两个节点之间的距离

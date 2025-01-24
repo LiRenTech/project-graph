@@ -1,9 +1,9 @@
-import { MouseLocation } from "../../../MouseLocation";
 import { NumberFunctions } from "../../../algorithm/numberFunctions";
 import { Vector } from "../../../dataStruct/Vector";
+import { MouseLocation } from "../../../service/MouseLocation";
+import { StageStyleManager } from "../../../service/stageStyle/StageStyleManager";
 import { Camera } from "../../../stage/Camera";
-import { Entity } from "../../../stageObject/StageObject";
-import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
+import { Entity } from "../../../stage/stageObject/StageObject";
 import { TextRenderer } from "../basicRenderer/textRenderer";
 import { Renderer } from "../renderer";
 /**

@@ -1,7 +1,7 @@
 import { Vector } from "../../../../dataStruct/Vector";
-import { Effect } from "../../../../effect/effect";
-import { LineEdge } from "../../../../stageObject/association/LineEdge";
-import { ConnectableEntity } from "../../../../stageObject/StageObject";
+import { EffectObject } from "../../../../service/effectEngine/effectObject";
+import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
+import { ConnectableEntity } from "../../../../stage/stageObject/StageObject";
 
 /**
  * 不同类型的边的渲染器 基类
@@ -76,7 +76,7 @@ export abstract class EdgeRendererClass {
    * 获取这个线在切断时的特效
    * 外层将在切断时根据此函数来获取特效并自动加入到渲染器中
    */
-  abstract getCuttingEffects(edge: LineEdge): Effect[];
+  abstract getCuttingEffects(edge: LineEdge): EffectObject[];
 
   /**
    * 获取这个线在连接成功时的特效
@@ -84,5 +84,5 @@ export abstract class EdgeRendererClass {
   abstract getConnectedEffects(
     startNode: ConnectableEntity,
     toNode: ConnectableEntity,
-  ): Effect[];
+  ): EffectObject[];
 }

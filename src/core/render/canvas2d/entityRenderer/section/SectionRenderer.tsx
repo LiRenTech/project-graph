@@ -7,15 +7,15 @@ import {
 } from "../../../../dataStruct/Color";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
+import { StageStyleManager } from "../../../../service/stageStyle/StageStyleManager";
 import { Camera } from "../../../../stage/Camera";
 import { Canvas } from "../../../../stage/Canvas";
-import { Section } from "../../../../stageObject/entity/Section";
-import { TextNode } from "../../../../stageObject/entity/TextNode";
-import { StageStyleManager } from "../../../../stageStyle/StageStyleManager";
+import { Section } from "../../../../stage/stageObject/entity/Section";
+import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { CurveRenderer } from "../../basicRenderer/curveRenderer";
-import { Renderer } from "../../renderer";
 import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../../basicRenderer/textRenderer";
+import { Renderer } from "../../renderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { EntityRenderer } from "../EntityRenderer";
 

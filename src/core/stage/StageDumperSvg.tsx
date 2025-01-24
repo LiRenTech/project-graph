@@ -1,17 +1,17 @@
 import React from "react";
 import ReactDOMServer from "react-dom/server";
+import { colorInvert } from "../dataStruct/Color";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { EdgeRenderer } from "../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../render/canvas2d/renderer";
 import { SvgUtils } from "../render/svg/SvgUtils";
-import { LineEdge } from "../stageObject/association/LineEdge";
-import { Section } from "../stageObject/entity/Section";
-import { TextNode } from "../stageObject/entity/TextNode";
-import { Entity } from "../stageObject/StageObject";
-import { StageStyleManager } from "../stageStyle/StageStyleManager";
+import { StageStyleManager } from "../service/stageStyle/StageStyleManager";
 import { StageManager } from "./stageManager/StageManager";
-import { colorInvert } from "../dataStruct/Color";
+import { LineEdge } from "./stageObject/association/LineEdge";
+import { Section } from "./stageObject/entity/Section";
+import { TextNode } from "./stageObject/entity/TextNode";
+import { Entity } from "./stageObject/StageObject";
 
 /**
  * 将舞台当前内容导出为SVG
@@ -31,9 +31,14 @@ export namespace StageDumperSvg {
           StageStyleManager.currentStyle.StageObjectBorderColor,
           2,
         )}
-        {SvgUtils.textFromCenter(
+
+        {SvgUtils.multiLineTextFromLeftTop(
           node.text,
-          node.rectangle.center,
+          node.rectangle.leftTop.add(
+            // 2025年1月23日 晚上，对这个地方进行了微调，但还没弄懂原理，只是看上去像是加了点偏移
+            // 着急发布节点多行文本的功能，所以先这样吧
+            new Vector(0, Renderer.NODE_PADDING + Renderer.FONT_SIZE / 4),
+          ),
           Renderer.FONT_SIZE,
           node.color.a === 1
             ? colorInvert(node.color)

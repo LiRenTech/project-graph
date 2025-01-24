@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Button from "../components/ui/Button";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { StageManager } from "../core/stage/stageManager/StageManager";
-import { TextNode } from "../core/stageObject/entity/TextNode";
+import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { isExportTreeTextPanelOpenAtom } from "../state";
 import { cn } from "../utils/cn";
 

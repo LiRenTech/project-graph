@@ -1,12 +1,12 @@
 import { Serialized } from "../../types/node";
 import { exists, writeTextFile } from "../../utils/fs";
 import { PathString } from "../../utils/pathString";
-import { ViewFlashEffect } from "../effect/concrete/ViewFlashEffect";
-import { TextNode } from "../stageObject/entity/TextNode";
-import { Entity } from "../stageObject/StageObject";
+import { ViewFlashEffect } from "../service/effectEngine/concrete/ViewFlashEffect";
 import { Stage } from "./Stage";
 import { StageHistoryManager } from "./stageManager/StageHistoryManager";
 import { StageManager } from "./stageManager/StageManager";
+import { TextNode } from "./stageObject/entity/TextNode";
+import { Entity } from "./stageObject/StageObject";
 
 /**
  * 管理所有和保存相关的内容
@@ -21,7 +21,7 @@ export namespace StageSaveManager {
    */
   export async function saveHandle(path: string, data: Serialized.File) {
     await writeTextFile(path, JSON.stringify(data));
-    Stage.effects.push(ViewFlashEffect.SaveFile());
+    Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
     StageHistoryManager.reset(data); // 重置历史
     isCurrentSaved = true;
   }
@@ -43,7 +43,7 @@ export namespace StageSaveManager {
     }
     await writeTextFile(Stage.Path.getFilePath(), JSON.stringify(data));
     if (addFlashEffect) {
-      Stage.effects.push(ViewFlashEffect.SaveFile());
+      Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
     }
     if (resetHistory) {
       StageHistoryManager.reset(data); // 重置历史
@@ -67,7 +67,7 @@ export namespace StageSaveManager {
     }
 
     await writeTextFile(path, JSON.stringify(data));
-    Stage.effects.push(ViewFlashEffect.SaveFile());
+    Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
   }
   /**
    * 备份，会在工程文件夹旁白生成一个类似的json文件
@@ -92,7 +92,7 @@ export namespace StageSaveManager {
 
     await writeTextFile(backupPath, JSON.stringify(data));
     if (addFlashEffect) {
-      Stage.effects.push(ViewFlashEffect.SaveFile());
+      Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
     }
   }
 

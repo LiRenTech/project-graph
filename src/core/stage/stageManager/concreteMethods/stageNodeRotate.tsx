@@ -1,9 +1,9 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
-import { LineEffect } from "../../../effect/concrete/LineEffect";
-import { ConnectableEntity } from "../../../stageObject/StageObject";
+import { LineEffect } from "../../../service/effectEngine/concrete/LineEffect";
 import { Stage } from "../../Stage";
+import { ConnectableEntity } from "../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 import { StageEntityMoveManager } from "./StageEntityMoveManager";
 
@@ -97,7 +97,7 @@ export namespace StageNodeRotate {
         childNode.geometryCenter,
       );
 
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new LineEffect(
           new ProgressNumber(0, 20),
           currentNode.geometryCenter,
@@ -107,7 +107,7 @@ export namespace StageNodeRotate {
           Math.abs(degrees),
         ),
       );
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new LineEffect(
           new ProgressNumber(0, 20),
           midPoint,

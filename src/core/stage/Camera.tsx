@@ -1,12 +1,12 @@
 import { NumberFunctions } from "../algorithm/numberFunctions";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
-import { TextRiseEffect } from "../effect/concrete/TextRiseEffect";
 import { Renderer } from "../render/canvas2d/renderer";
-import { Settings } from "../Settings";
-import { Entity } from "../stageObject/StageObject";
+import { TextRiseEffect } from "../service/effectEngine/concrete/TextRiseEffect";
+import { Settings } from "../service/Settings";
 import { Stage } from "./Stage";
 import { StageManager } from "./stageManager/StageManager";
+import { Entity } from "./stageObject/StageObject";
 
 /**
  * 摄像机
@@ -100,7 +100,7 @@ export namespace Camera {
       //   content: "前面的区域以后再来探索吧？",
       //   type: "error",
       // });
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new TextRiseEffect("派蒙：前面的区域以后再来探索吧？"),
       );
       speed = Vector.getZero();

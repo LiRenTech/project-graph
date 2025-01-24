@@ -1,13 +1,8 @@
 import React, { useEffect } from "react";
 import Box from "../components/ui/Box";
 import Button from "../components/ui/Button";
-import { Controller } from "../core/controller/Controller";
-import { Color } from "../core/dataStruct/Color";
-import { ProgressNumber } from "../core/dataStruct/ProgressNumber";
-import { RectangleNoteEffect } from "../core/effect/concrete/RectangleNoteEffect";
-import { Camera } from "../core/stage/Camera";
+import { Controller } from "../core/service/controller/Controller";
 import { Stage } from "../core/stage/Stage";
-import { StageManager } from "../core/stage/stageManager/StageManager";
 import { Dialog } from "../utils/dialog";
 
 export default function SearchingNodePanel() {
@@ -17,17 +12,19 @@ export default function SearchingNodePanel() {
     React.useState(0);
 
   useEffect(() => {
-    if (Stage.searchResultNodes.length == 0) {
+    if (Stage.contentSearchEngine.searchResultNodes.length == 0) {
       setCurrentSearchResultIndex(-1);
     } else {
-      setCurrentSearchResultIndex(Stage.currentSearchResultIndex);
+      setCurrentSearchResultIndex(
+        Stage.contentSearchEngine.currentSearchResultIndex,
+      );
     }
-  }, [Stage.currentSearchResultIndex]);
+  }, [Stage.contentSearchEngine.currentSearchResultIndex]);
 
   const [searchResultCount, setSearchResultCount] = React.useState(0);
   useEffect(() => {
-    setSearchResultCount(Stage.searchResultNodes.length);
-  }, [Stage.searchResultNodes]);
+    setSearchResultCount(Stage.contentSearchEngine.searchResultNodes.length);
+  }, [Stage.contentSearchEngine.searchResultNodes]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -35,30 +32,12 @@ export default function SearchingNodePanel() {
         Controller.pressingKeySet.clear();
         const searchString = prompt("请输入要搜索的节点名称");
         if (searchString) {
-          // 开始搜索
-          Stage.searchResultNodes = [];
-          for (const node of StageManager.getTextNodes()) {
-            if (node.text.includes(searchString)) {
-              Stage.searchResultNodes.push(node);
-            }
-          }
-          Stage.currentSearchResultIndex = 0;
-          if (Stage.searchResultNodes.length > 0) {
+          const isHaveResult =
+            Stage.contentSearchEngine.startSearch(searchString);
+          // 搜索完毕
+          if (isHaveResult) {
             setIsSearchingShow(true);
             setCurrentSearchResultIndex(0);
-            // 选择第一个搜索结果节点
-            const currentNode =
-              Stage.searchResultNodes[Stage.currentSearchResultIndex];
-            // currentNode.isSelected = true;
-            Stage.effects.push(
-              new RectangleNoteEffect(
-                new ProgressNumber(0, 50),
-                currentNode.rectangle,
-                Color.Green,
-              ),
-            );
-            // 摄像机对准现在的节点
-            Camera.location = currentNode.rectangle.center.clone();
           } else {
             Dialog.show({
               title: "提示",
@@ -86,25 +65,7 @@ export default function SearchingNodePanel() {
           <Button
             className="m-2"
             onClick={() => {
-              if (Stage.currentSearchResultIndex > 0) {
-                Stage.currentSearchResultIndex--;
-              }
-              // 取消选择所有节点
-              for (const node of StageManager.getTextNodes()) {
-                node.isSelected = false;
-              }
-              // 选择当前搜索结果节点
-              const currentNode =
-                Stage.searchResultNodes[Stage.currentSearchResultIndex];
-              Stage.effects.push(
-                new RectangleNoteEffect(
-                  new ProgressNumber(0, 50),
-                  currentNode.rectangle,
-                  Color.Green,
-                ),
-              );
-              // 摄像机对准现在的节点
-              Camera.location = currentNode.rectangle.center.clone();
+              Stage.contentSearchEngine.previousSearchResult();
             }}
           >
             上一项
@@ -112,25 +73,7 @@ export default function SearchingNodePanel() {
           <Button
             className="m-2"
             onClick={() => {
-              if (Stage.currentSearchResultIndex < searchResultCount - 1) {
-                Stage.currentSearchResultIndex++;
-              }
-              // 取消选择所有节点
-              for (const node of StageManager.getTextNodes()) {
-                node.isSelected = false;
-              }
-              // 选择当前搜索结果节点
-              const currentNode =
-                Stage.searchResultNodes[Stage.currentSearchResultIndex];
-              Stage.effects.push(
-                new RectangleNoteEffect(
-                  new ProgressNumber(0, 50),
-                  currentNode.rectangle,
-                  Color.Green,
-                ),
-              );
-              // 摄像机对准现在的节点
-              Camera.location = currentNode.rectangle.center.clone();
+              Stage.contentSearchEngine.nextSearchResult();
             }}
           >
             下一项

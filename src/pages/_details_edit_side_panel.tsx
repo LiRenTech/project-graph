@@ -1,12 +1,12 @@
+import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
 import React from "react";
 import Button from "../components/ui/Button";
-import Input from "../components/ui/Input";
-import { editTextNodeHookGlobal } from "../core/controller/concrete/utilsControl";
-import { Controller } from "../core/controller/Controller";
-import { Entity } from "../core/stageObject/StageObject";
-import { cn } from "../utils/cn";
 import IconButton from "../components/ui/IconButton";
-import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
+import Input from "../components/ui/Input";
+import { editTextNodeHookGlobal } from "../core/service/controller/concrete/utilsControl";
+import { Controller } from "../core/service/controller/Controller";
+import { Entity } from "../core/stage/stageObject/StageObject";
+import { cn } from "../utils/cn";
 // import "vditor/src/assets/scss/index.scss";
 import MarkdownEditor from "./_vditor_panel";
 

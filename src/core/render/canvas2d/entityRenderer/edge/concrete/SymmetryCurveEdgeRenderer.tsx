@@ -3,14 +3,14 @@ import { ProgressNumber } from "../../../../../dataStruct/ProgressNumber";
 import { SymmetryCurve } from "../../../../../dataStruct/shape/Curve";
 import { Line } from "../../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../../dataStruct/Vector";
-import { CircleFlameEffect } from "../../../../../effect/concrete/CircleFlameEffect";
-import { LineCuttingEffect } from "../../../../../effect/concrete/LineCuttingEffect";
-import { Effect } from "../../../../../effect/effect";
+import { CircleFlameEffect } from "../../../../../service/effectEngine/concrete/CircleFlameEffect";
+import { LineCuttingEffect } from "../../../../../service/effectEngine/concrete/LineCuttingEffect";
+import { EffectObject } from "../../../../../service/effectEngine/effectObject";
+import { StageStyleManager } from "../../../../../service/stageStyle/StageStyleManager";
 import { Camera } from "../../../../../stage/Camera";
-import { LineEdge } from "../../../../../stageObject/association/LineEdge";
-import { ConnectPoint } from "../../../../../stageObject/entity/ConnectPoint";
-import { ConnectableEntity } from "../../../../../stageObject/StageObject";
-import { StageStyleManager } from "../../../../../stageStyle/StageStyleManager";
+import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
+import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
+import { ConnectableEntity } from "../../../../../stage/stageObject/StageObject";
 import { ShapeRenderer } from "../../../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../../../basicRenderer/textRenderer";
 import { Renderer } from "../../../renderer";
@@ -19,7 +19,7 @@ import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 
 export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
-  getCuttingEffects(edge: LineEdge): Effect[] {
+  getCuttingEffects(edge: LineEdge): EffectObject[] {
     const midLocation = edge.bodyLine.midPoint();
     return [
       new LineCuttingEffect(
@@ -49,7 +49,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   getConnectedEffects(
     startNode: ConnectableEntity,
     toNode: ConnectableEntity,
-  ): Effect[] {
+  ): EffectObject[] {
     return [
       new CircleFlameEffect(
         new ProgressNumber(0, 15),

@@ -7,7 +7,7 @@ import Input from "../../components/ui/Input";
 import Select from "../../components/ui/Select";
 import Slider from "../../components/ui/Slider";
 import Switch from "../../components/ui/Switch";
-import { Settings } from "../../core/Settings";
+import { Settings } from "../../core/service/Settings";
 import { cn } from "../../utils/cn";
 
 export function SettingField({

@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
-import { CublicCatmullRomSplineEdge } from "../../../stageObject/association/CublicCatmullRomSplineEdge";
-import { LineEdge } from "../../../stageObject/association/LineEdge";
-import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
-import { ConnectableEntity } from "../../../stageObject/StageObject";
+import { CublicCatmullRomSplineEdge } from "../../stageObject/association/CublicCatmullRomSplineEdge";
+import { LineEdge } from "../../stageObject/association/LineEdge";
+import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
+import { ConnectableEntity } from "../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 import { StageDeleteManager } from "./StageDeleteManager";
 

@@ -1,6 +1,8 @@
 import {
   AlignStartVertical,
   Keyboard,
+  ListCheck,
+  ListEnd,
   MousePointerClick,
   Move,
   RotateCw,
@@ -10,7 +12,7 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import KeyBind from "../../components/ui/KeyBind";
-import { KeyBinds } from "../../core/KeyBinds";
+import { KeyBinds } from "../../core/service/KeyBinds";
 import { Field, SettingField } from "./_field";
 
 export default function Control() {
@@ -31,6 +33,16 @@ export default function Control() {
       <SettingField
         icon={<MousePointerClick />}
         settingKey="mouseRightDragBackground"
+        type="select"
+      />
+      <SettingField
+        icon={<ListEnd />}
+        settingKey="textNodeContentLineBreak"
+        type="select"
+      />
+      <SettingField
+        icon={<ListCheck />}
+        settingKey="textNodeExitEditMode"
         type="select"
       />
       <SettingField

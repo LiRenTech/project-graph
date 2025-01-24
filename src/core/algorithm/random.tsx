@@ -25,6 +25,14 @@ export namespace Random {
   }
 
   /**
+   * 返回在单位圆上的随机点（落在圆周上）
+   */
+  export function randomVectorOnNormalCircle(): Vector {
+    const randomDegrees = randomFloat(0, 360);
+    return new Vector(1, 0).rotateDegrees(randomDegrees);
+  }
+
+  /**
    * 泊松分布随机数
    * @param lambda 泊松分布参数
    */

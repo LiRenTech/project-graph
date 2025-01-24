@@ -54,6 +54,34 @@ export namespace CurveRenderer {
   }
 
   /**
+   * 绘制折线实线，带有阴影
+   * @param locations
+   * @param color
+   * @param width
+   * @param shadowColor
+   * @param shadowBlur
+   */
+  export function renderSolidLineMultipleWithShadow(
+    locations: Vector[],
+    color: Color,
+    width: number,
+    shadowColor: Color,
+    shadowBlur: number,
+  ): void {
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(locations[0].x, locations[0].y);
+    for (let i = 1; i < locations.length; i++) {
+      Canvas.ctx.lineTo(locations[i].x, locations[i].y);
+    }
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.shadowColor = shadowColor.toString();
+    Canvas.ctx.shadowBlur = shadowBlur;
+    Canvas.ctx.stroke();
+    Canvas.ctx.shadowBlur = 0;
+  }
+
+  /**
    * 绘制一条虚线
    *
    * 2024年11月10日 发现虚线渲染不生效，也很难排查到原因

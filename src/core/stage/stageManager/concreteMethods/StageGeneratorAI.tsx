@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
-import { AiFetcherOneShotCloudFlare } from "../../../ai/AiFetcher";
-import { ApiKeyManager } from "../../../ai/ApiKeyManager";
-import { PromptManager } from "../../../ai/PromptManager";
 import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
 import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
-import { TextNode } from "../../../stageObject/entity/TextNode";
+import { AiFetcherOneShotCloudFlare } from "../../../service/ai/AiFetcher";
+import { ApiKeyManager } from "../../../service/ai/ApiKeyManager";
+import { PromptManager } from "../../../service/ai/PromptManager";
 import { Stage } from "../../Stage";
+import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";
 
 export namespace StageGeneratorAI {
@@ -140,7 +140,9 @@ export namespace StageGeneratorAI {
       // 连线
       StageManager.connectEntity(parent, newNode);
       // 特效
-      Stage.effects.push(...EdgeRenderer.getConnectedEffects(parent, newNode));
+      Stage.effectMachine.addEffects(
+        EdgeRenderer.getConnectedEffects(parent, newNode),
+      );
     }
   }
 

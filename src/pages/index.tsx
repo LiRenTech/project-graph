@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from "react";
-import { Controller } from "../core/controller/Controller";
 import { Renderer } from "../core/render/canvas2d/renderer";
-import { Settings } from "../core/Settings";
+import { Controller } from "../core/service/controller/Controller";
+import { Settings } from "../core/service/Settings";
+import { StageStyleManager } from "../core/service/stageStyle/StageStyleManager";
 import { Canvas } from "../core/stage/Canvas";
 import { Stage } from "../core/stage/Stage";
-import { StageStyleManager } from "../core/stageStyle/StageStyleManager";
 import { Dialog } from "../utils/dialog";
 // import DetailsEditPanel from "./_details_edit_panel";
+import DetailsEditSidePanel from "./_details_edit_side_panel";
 import HintText from "./_hint_text";
 import SearchingNodePanel from "./_searching_node_panel";
 import Toolbar from "./_toolbar";
-import DetailsEditSidePanel from "./_details_edit_side_panel";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);

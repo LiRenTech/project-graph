@@ -44,4 +44,17 @@ export namespace NumberFunctions {
   export function mod(x: number, y: number): number {
     return ((x % y) + y) % y;
   }
+
+  /**
+   * 自定义底数的对数运算
+   * @param x 被对数的数
+   * @param b 底数
+   * @returns
+   */
+  export function logBase(x: number, b: number) {
+    if (x <= 0 || b <= 0 || b === 1) {
+      throw new Error("x and b must be positive numbers, and b cannot be 1.");
+    }
+    return Math.log(x) / Math.log(b);
+  }
 }

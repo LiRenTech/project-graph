@@ -1,18 +1,18 @@
-import { Vector } from "../../../dataStruct/Vector";
-import { TextNode } from "../../../stageObject/entity/TextNode";
-import { Settings } from "../../../Settings";
-import { StageManager } from "../StageManager";
 import { v4 as uuidv4 } from "uuid";
-import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
-import { Section } from "../../../stageObject/entity/Section";
-import { Stage } from "../../Stage";
-import { RectanglePushInEffect } from "../../../effect/concrete/RectanglePushInEffect";
-import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { MonoStack } from "../../../dataStruct/MonoStack";
 import {
   MarkdownNode,
   parseMarkdownToJSON,
 } from "../../../../utils/markdownParse";
+import { MonoStack } from "../../../dataStruct/MonoStack";
+import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
+import { Vector } from "../../../dataStruct/Vector";
+import { RectanglePushInEffect } from "../../../service/effectEngine/concrete/RectanglePushInEffect";
+import { Settings } from "../../../service/Settings";
+import { Stage } from "../../Stage";
+import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
+import { Section } from "../../stageObject/entity/Section";
+import { TextNode } from "../../stageObject/entity/TextNode";
+import { StageManager } from "../StageManager";
 import { StageManagerUtils } from "./StageManagerUtils";
 
 /**
@@ -48,7 +48,7 @@ export namespace StageNodeAdder {
     for (const section of addToSections) {
       section.children.push(node);
       section.adjustLocationAndSize();
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new RectanglePushInEffect(
           node.rectangle.clone(),
           section.rectangle.clone(),
@@ -116,7 +116,7 @@ export namespace StageNodeAdder {
     for (const section of addToSections) {
       section.children.push(connectPoint);
       section.adjustLocationAndSize();
-      Stage.effects.push(
+      Stage.effectMachine.addEffect(
         new RectanglePushInEffect(
           connectPoint.collisionBox.getRectangle(),
           section.rectangle.clone(),

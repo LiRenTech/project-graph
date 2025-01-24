@@ -1,6 +1,12 @@
 import { getMultiLineTextSize } from "../../../utils/font";
 import { Vector } from "../../dataStruct/Vector";
+import { EntityDashTipEffect } from "../../service/effectEngine/concrete/EntityDashTipEffect";
+import { EntityShakeEffect } from "../../service/effectEngine/concrete/EntityShakeEffect";
+import { TextRiseEffect } from "../../service/effectEngine/concrete/TextRiseEffect";
+import { Settings } from "../../service/Settings";
 import { Camera } from "../../stage/Camera";
+import { Stage } from "../../stage/Stage";
+import { StageManager } from "../../stage/stageManager/StageManager";
 import { Renderer } from "../canvas2d/renderer";
 
 /**
@@ -205,20 +211,124 @@ export namespace InputElement {
           textareaElement.selectionStart = start + 1;
           textareaElement.selectionEnd = start + 1;
         } else if (event.key === "Escape") {
+          // Escape 是通用的取消编辑的快捷键
           resolve(textareaElement.value);
           onChange(textareaElement.value);
           document.body.removeEventListener("click", onOutsideClick);
           removeElement();
-        } else if (event.key === "Enter") {
-          // 如果按下了ctrl键
-          if (event.ctrlKey) {
-            resolve(textareaElement.value);
-            onChange(textareaElement.value);
-            document.body.removeEventListener("click", onOutsideClick);
-            removeElement();
+        }
+
+        const breakLine = () => {
+          const start = textareaElement.selectionStart;
+          const end = textareaElement.selectionEnd;
+          textareaElement.value =
+            textareaElement.value.substring(0, start) +
+            "\n" +
+            textareaElement.value.substring(end);
+          textareaElement.selectionStart = start + 1;
+          textareaElement.selectionEnd = start + 1;
+          // 调整
+          adjustSize(); // 调整textarea
+          onChange(textareaElement.value); // 调整canvas渲染上去的框大小
+        };
+
+        const exitEditMode = () => {
+          resolve(textareaElement.value);
+          onChange(textareaElement.value);
+          document.body.removeEventListener("click", onOutsideClick);
+          removeElement();
+        };
+
+        if (event.key === "Enter") {
+          /** 是否操作成功，如果操作失败则说明用户可能记错了快捷键 */
+          let controlSuccess = false;
+
+          const isPressedCtrl = event.ctrlKey;
+          const isPressedAlt = event.altKey;
+          const isPressedShift = event.shiftKey;
+          // 先检测是否要退出编辑模式
+          if (textNodeExitEditMode === "enter") {
+            if (!isPressedCtrl && !isPressedAlt && !isPressedShift) {
+              exitEditMode();
+              controlSuccess = true;
+            }
+          } else if (textNodeExitEditMode === "ctrlEnter") {
+            if (isPressedCtrl && !isPressedAlt && !isPressedShift) {
+              exitEditMode();
+              controlSuccess = true;
+            }
+          } else if (textNodeExitEditMode === "altEnter") {
+            if (!isPressedCtrl && isPressedAlt && !isPressedShift) {
+              exitEditMode();
+              controlSuccess = true;
+            }
+          } else if (textNodeExitEditMode === "shiftEnter") {
+            if (!isPressedCtrl && !isPressedAlt && isPressedShift) {
+              exitEditMode();
+              controlSuccess = true;
+            }
+          }
+          // 再检测是否要换行
+          if (textNodeContentLineBreak === "enter") {
+            if (!isPressedCtrl && !isPressedAlt && !isPressedShift) {
+              // breakLine();
+              // 这里什么都不用做，因为换行的功能已经在keydown中实现了
+              controlSuccess = true;
+            }
+          } else if (textNodeContentLineBreak === "ctrlEnter") {
+            if (isPressedCtrl && !isPressedAlt && !isPressedShift) {
+              breakLine();
+              controlSuccess = true;
+            }
+          } else if (textNodeContentLineBreak === "altEnter") {
+            if (!isPressedCtrl && isPressedAlt && !isPressedShift) {
+              breakLine();
+              controlSuccess = true;
+            }
+          }
+          const textNodes = StageManager.getTextNodes().filter(
+            (textNode) => textNode.isEditing,
+          );
+          if (!controlSuccess) {
+            // 用户可能记错了快捷键
+            // 查找到当前正在编辑的TextNode
+
+            for (const textNode of textNodes) {
+              Stage.effectMachine.addEffect(
+                EntityShakeEffect.fromEntity(textNode),
+              );
+            }
+            Stage.effectMachine.addEffect(
+              TextRiseEffect.default("您可能记错了快捷键"),
+            );
+          } else {
+            // 成功了
+            for (const textNode of textNodes) {
+              Stage.effectMachine.addEffect(
+                new EntityDashTipEffect(
+                  50,
+                  textNode.collisionBox.getRectangle(),
+                ),
+              );
+            }
           }
         }
       });
+    });
+  }
+
+  let textNodeContentLineBreak: Settings.Settings["textNodeContentLineBreak"] =
+    "enter";
+
+  let textNodeExitEditMode: Settings.Settings["textNodeExitEditMode"] =
+    "ctrlEnter";
+
+  export function init() {
+    Settings.watch("textNodeContentLineBreak", (value) => {
+      textNodeContentLineBreak = value;
+    });
+    Settings.watch("textNodeExitEditMode", (value) => {
+      textNodeExitEditMode = value;
     });
   }
 }

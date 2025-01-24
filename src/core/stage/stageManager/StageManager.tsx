@@ -5,23 +5,23 @@ import { StringDict } from "../../dataStruct/StringDict";
 import { Vector } from "../../dataStruct/Vector";
 import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../render/canvas2d/renderer";
-import { Settings } from "../../Settings";
-import { CublicCatmullRomSplineEdge } from "../../stageObject/association/CublicCatmullRomSplineEdge";
-import { LineEdge } from "../../stageObject/association/LineEdge";
-import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
-import { ImageNode } from "../../stageObject/entity/ImageNode";
-import { Section } from "../../stageObject/entity/Section";
-import { TextNode } from "../../stageObject/entity/TextNode";
-import { UrlNode } from "../../stageObject/entity/UrlNode";
+import { Settings } from "../../service/Settings";
+import { Camera } from "../Camera";
+import { Stage } from "../Stage";
+import { StageDumper } from "../StageDumper";
+import { CublicCatmullRomSplineEdge } from "../stageObject/association/CublicCatmullRomSplineEdge";
+import { LineEdge } from "../stageObject/association/LineEdge";
+import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
+import { ImageNode } from "../stageObject/entity/ImageNode";
+import { Section } from "../stageObject/entity/Section";
+import { TextNode } from "../stageObject/entity/TextNode";
+import { UrlNode } from "../stageObject/entity/UrlNode";
 import {
   Association,
   ConnectableEntity,
   Entity,
   StageObject,
-} from "../../stageObject/StageObject";
-import { Camera } from "../Camera";
-import { Stage } from "../Stage";
-import { StageDumper } from "../StageDumper";
+} from "../stageObject/StageObject";
 import { StageAutoAlignManager } from "./concreteMethods/StageAutoAlignManager";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager";
@@ -64,6 +64,9 @@ export namespace StageManager {
     });
   }
 
+  export function isEmpty(): boolean {
+    return entities.length === 0;
+  }
   export function getTextNodes(): TextNode[] {
     return entities.valuesToArray().filter((node) => node instanceof TextNode);
   }
@@ -857,7 +860,7 @@ export namespace StageManager {
     for (const edge of StageManager.getLineEdges()) {
       if (edge.isSelected) {
         StageManager.deleteEdge(edge);
-        Stage.effects.push(...EdgeRenderer.getCuttingEffects(edge));
+        Stage.effectMachine.addEffects(EdgeRenderer.getCuttingEffects(edge));
       }
     }
   }
@@ -1132,6 +1135,25 @@ export namespace StageManager {
     for (const lineEdge of prepareDeleteLineEdge) {
       deleteEdge(lineEdge);
       connectEntityByCrEdge(lineEdge.source, lineEdge.target);
+    }
+  }
+
+  export function selectAll() {
+    for (const entity of entities.valuesToArray()) {
+      entity.isSelected = true;
+    }
+  }
+
+  /**
+   * 将所有实体移动到整数坐标位置
+   * 用以减小导出时的文本内容体积
+   */
+  export function moveAllEntityToIntegerLocation() {
+    for (const textNode of getTextNodes()) {
+      const currentLocation = textNode.collisionBox.getRectangle().location;
+      currentLocation.x = Math.round(currentLocation.x);
+      currentLocation.y = Math.round(currentLocation.y);
+      textNode.moveTo(currentLocation);
     }
   }
 }

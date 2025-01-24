@@ -29,10 +29,10 @@ import React, { useEffect, useState } from "react";
 import Box from "../components/ui/Box";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
-import { ApiKeyManager } from "../core/ai/ApiKeyManager";
 import { Color } from "../core/dataStruct/Color";
-import { TextRiseEffect } from "../core/effect/concrete/TextRiseEffect";
-import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
+import { ApiKeyManager } from "../core/service/ai/ApiKeyManager";
+import { TextRiseEffect } from "../core/service/effectEngine/concrete/TextRiseEffect";
+import { ViewFlashEffect } from "../core/service/effectEngine/concrete/ViewFlashEffect";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
@@ -43,7 +43,7 @@ import { Dialog } from "../utils/dialog";
 import { writeTextFile } from "../utils/fs";
 import { Popup } from "../utils/popup";
 // import { PathString } from "../utils/pathString";
-import { ColorManager } from "../core/ColorManager";
+import { ColorManager } from "../core/service/ColorManager";
 import ColorManagerPanel from "./_color_manager_panel";
 
 interface ToolbarItemProps {
@@ -524,13 +524,13 @@ const onSaveSelectedNew = async () => {
     writeTextFile(path, JSON.stringify(data))
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .then((_) => {
-        Stage.effects.push(new ViewFlashEffect(Color.Black));
+        Stage.effectMachine.addEffect(new ViewFlashEffect(Color.Black));
       })
       .catch((err) => {
-        Stage.effects.push(new TextRiseEffect("保存失败" + err));
+        Stage.effectMachine.addEffect(new TextRiseEffect("保存失败" + err));
       });
   } catch (e) {
-    Stage.effects.push(new TextRiseEffect("保存失败" + e));
+    Stage.effectMachine.addEffect(new TextRiseEffect("保存失败" + e));
   }
 };
 
@@ -555,7 +555,7 @@ async function openBrowserOrFile() {
       //     myOpen(nodeText);
       //   } else {
       //     // 不是网址也不是文件，不做处理
-      //     Stage.effects.push(new TextRiseEffect("非法文件路径: " + nodeText));
+      //     Stage.effectMachine.addEffect(new TextRiseEffect("非法文件路径: " + nodeText));
       //   }
       // }
     }

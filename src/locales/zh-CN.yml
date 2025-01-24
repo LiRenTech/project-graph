@@ -270,6 +270,25 @@ settings:
     options:
       cut: 斩断并删除物体
       moveCamera: 移动视野
+  textNodeContentLineBreak:
+    title: 文本节点换行方案
+    options:
+      enter: enter
+      ctrlEnter: ctrlEnter
+      altEnter: altEnter
+      shiftEnter: shiftEnter
+    description: |
+      注意不要和文本节点退出编辑模式的按键一样了，这样会导致冲突
+      进而导致无法换行
+  textNodeExitEditMode:
+    title: 文本节点退出编辑模式
+    options:
+      enter: enter
+      ctrlEnter: ctrlEnter
+      altEnter: altEnter
+      shiftEnter: shiftEnter
+    description: |
+      实际上按Esc键也可以退出，这里还可以再加选一种
   enableDragAutoAlign:
     title: 鼠标拖动自动吸附对齐节点
     description: |
@@ -440,6 +459,9 @@ keyBinds:
     title: 打开颜色面板快捷键
     description: |
       按下后，打开颜色面板，可以用于快速切换节点颜色
+  selectAll:
+    title: 全选
+    description: 按下后，所有节点和连线都会被选中
   createTextNodeFromCameraLocation:
     title: 创建文本节点
     description: |

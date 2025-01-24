@@ -1,12 +1,15 @@
-import { Bug, FileWarning, MessageCircleCode, X } from "lucide-react";
+import { getVersion } from "@tauri-apps/api/app";
+import { Bug, FileWarning, MessageCircleCode, Tag, X } from "lucide-react";
 import React from "react";
 import { cn } from "../utils/cn";
 
 export default function ErrorHandler() {
   const [error, setError] = React.useState<Error | null>(null);
   const [show, setShow] = React.useState(false);
+  const [version, setVersion] = React.useState("");
 
   React.useEffect(() => {
+    getVersion().then((v) => setVersion(v));
     const onError = (event: ErrorEvent) => {
       setError(event.error);
       setShow(true);
@@ -46,6 +49,10 @@ export default function ErrorHandler() {
           <p className="mt-4 text-lg text-red-300">
             <MessageCircleCode />
             {error?.message}
+          </p>
+          <p className="mt-4 text-lg text-red-300">
+            <Tag />
+            {version}
           </p>
         </div>
         <div>

@@ -3,19 +3,20 @@ import { Random } from "../../../algorithm/random";
 import { Color, colorInvert } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
+import { AutoComputeUtils } from "../../../service/autoComputeEngine/AutoComputeUtils";
 import {
   getLogicNodeRenderName,
   LogicNodeNameEnum,
   LogicNodeNameToRenderNameMap,
-} from "../../../stage/autoComputeEngine/logicNodeNameEnum";
+} from "../../../service/autoComputeEngine/logicNodeNameEnum";
+import { StageStyleManager } from "../../../service/stageStyle/StageStyleManager";
 import { Camera } from "../../../stage/Camera";
-import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
-import { ImageNode } from "../../../stageObject/entity/ImageNode";
-import { Section } from "../../../stageObject/entity/Section";
-import { TextNode } from "../../../stageObject/entity/TextNode";
-import { UrlNode } from "../../../stageObject/entity/UrlNode";
-import { Entity } from "../../../stageObject/StageObject";
-import { StageStyleManager } from "../../../stageStyle/StageStyleManager";
+import { ConnectPoint } from "../../../stage/stageObject/entity/ConnectPoint";
+import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
+import { Section } from "../../../stage/stageObject/entity/Section";
+import { TextNode } from "../../../stage/stageObject/entity/TextNode";
+import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
+import { Entity } from "../../../stage/stageObject/StageObject";
 import { ImageRenderer } from "../basicRenderer/ImageRenderer";
 import { ShapeRenderer } from "../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../basicRenderer/textRenderer";
@@ -67,10 +68,23 @@ export namespace EntityRenderer {
     );
 
     if (!node.isEditing) {
-      if (node.text.startsWith("#") && node.text.endsWith("#")) {
+      if (!node.text) {
+        TextRenderer.renderTextFromCenter(
+          "undefined",
+          Renderer.transformWorld2View(node.rectangle.center),
+          Renderer.FONT_SIZE * Camera.currentScale,
+          node.color.a === 1
+            ? colorInvert(node.color)
+            : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+          Color.Red,
+          30 * Camera.currentScale,
+        );
+      } else if (AutoComputeUtils.isNameIsLogicNode(node.text)) {
         // 检查下是不是逻辑节点
+        let isFindLogicName = false;
         for (const key of Object.keys(LogicNodeNameToRenderNameMap)) {
           if (node.text === key) {
+            isFindLogicName = true;
             const logicNodeName = key as LogicNodeNameEnum;
             TextRenderer.renderTextFromCenter(
               getLogicNodeRenderName(logicNodeName),
@@ -83,6 +97,35 @@ export namespace EntityRenderer {
               10 * Camera.currentScale,
             );
           }
+        }
+        if (!isFindLogicName) {
+          // 未知的逻辑节点，可能是版本过低
+          TextRenderer.renderTextFromCenter(
+            node.text,
+            Renderer.transformWorld2View(node.rectangle.center),
+            Renderer.FONT_SIZE * Camera.currentScale,
+            node.color.a === 1
+              ? colorInvert(node.color)
+              : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+            Color.Red,
+            10 * Camera.currentScale,
+            Random.randomInt(-5, 5) * Camera.currentScale,
+            Random.randomInt(-15, 15) * Camera.currentScale,
+          );
+          ShapeRenderer.renderRect(
+            new Rectangle(
+              Renderer.transformWorld2View(
+                node.rectangle.location.add(
+                  new Vector(Random.randomInt(-5, 5), Random.randomInt(-5, 5)),
+                ),
+              ),
+              node.rectangle.size.multiply(Camera.currentScale),
+            ),
+            node.color,
+            new Color(255, 0, 0, 0.5),
+            Random.randomFloat(1, 10) * Camera.currentScale,
+            Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+          );
         }
       } else {
         TextRenderer.renderMultiLineText(
@@ -104,14 +147,14 @@ export namespace EntityRenderer {
       }
     } else {
       // 编辑状态下，显示一些提示信息
-      TextRenderer.renderText(
-        "Esc 或 Ctrl+Enter 退出编辑状态",
-        Renderer.transformWorld2View(
-          node.rectangle.location.add(new Vector(0, -25)),
-        ),
-        20 * Camera.currentScale,
-        StageStyleManager.currentStyle.GridHeavyColor,
-      );
+      // TextRenderer.renderText(
+      //   "Esc 或 Ctrl+Enter 退出编辑状态",
+      //   Renderer.transformWorld2View(
+      //     node.rectangle.location.add(new Vector(0, -25)),
+      //   ),
+      //   20 * Camera.currentScale,
+      //   StageStyleManager.currentStyle.GridHeavyColor,
+      // );
     }
 
     if (node.isSelected) {

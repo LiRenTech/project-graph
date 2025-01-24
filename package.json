@@ -32,6 +32,7 @@
     "@tauri-apps/plugin-updater": "~2",
     "i18next": "^24.2.0",
     "lucide-react": "^0.469.0",
+    "markdown-it": "^14.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-i18next": "^15.2.0",

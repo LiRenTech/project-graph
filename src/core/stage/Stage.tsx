@@ -2,23 +2,24 @@ import { family } from "@tauri-apps/plugin-os";
 
 import { Serialized } from "../../types/node";
 import { PathString } from "../../utils/pathString";
-import { Controller } from "../controller/Controller";
-import { Line } from "../dataStruct/shape/Line";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
-import { PointDashEffect } from "../effect/concrete/PointDashEffect";
-import { Effect } from "../effect/effect";
-import { Settings } from "../Settings";
-import { LineEdge } from "../stageObject/association/LineEdge";
-import { Section } from "../stageObject/entity/Section";
-import { TextNode } from "../stageObject/entity/TextNode";
-import { ConnectableEntity, Entity } from "../stageObject/StageObject";
-import { autoComputeEngineTick } from "./autoComputeEngine/mainTick";
-import { autoLayoutMainTick } from "./autoLayoutEngine/mainTick";
+import { autoComputeEngineTick } from "../service/autoComputeEngine/mainTick";
+import { autoLayoutMainTick } from "../service/autoLayoutEngine/mainTick";
+import { Controller } from "../service/controller/Controller";
+import { PointDashEffect } from "../service/effectEngine/concrete/PointDashEffect";
+import { EffectMachine } from "../service/effectEngine/effectMachine";
+import { KeyboardOnlyEngine } from "../service/keyboardOnlyEngine/keyboardOnlyEngine";
+import { Settings } from "../service/Settings";
 import { StageDumper } from "./StageDumper";
 import { StageManager } from "./stageManager/StageManager";
+import { LineEdge } from "./stageObject/association/LineEdge";
+import { Section } from "./stageObject/entity/Section";
 import { StageSaveManager } from "./StageSaveManager";
-import { KeyboardOnlyEngine } from "./keyboardOnlyEngine/keyboardOnlyEngine";
+import { ControllerCutting } from "../service/controller/concrete/ControllerCutting";
+import { ControllerRectangleSelect } from "../service/controller/concrete/ControllerRectangleSelect";
+import { ControllerNodeConnection } from "../service/controller/concrete/ControllerNodeConnection";
+import { ContentSearchEngine } from "../service/contentSearchEngine/contentSearchEngine";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -71,63 +72,25 @@ export namespace Stage {
     }
   }
 
-  export let effects: Effect[] = [];
   /**
-   * 是否正在框选
+   * 特效机
    */
-  // eslint-disable-next-line prefer-const
-  export let isSelecting = false;
+  export const effectMachine = EffectMachine.default();
 
   /**
-   * 框选框
-   * 这里必须一开始为null，否则报错，can not asses "Rectangle"
-   * 这个框选框是基于世界坐标的。
-   * 此变量会根据两个点的位置自动更新。
+   * 鼠标切割控制器
    */
-  // eslint-disable-next-line prefer-const
-  export let selectingRectangle: Rectangle | null = null;
+  export const cuttingMachine = ControllerCutting;
 
   /**
-   * 框选框的起点
+   * 鼠标框选控制器
    */
-  // eslint-disable-next-line prefer-const
-  export let selectStartLocation: Vector = Vector.getZero();
-  /**
-   * 框选框的终点
-   */
-  // eslint-disable-next-line prefer-const
-  export let selectEndLocation: Vector = Vector.getZero();
+  export const selectMachine = ControllerRectangleSelect;
 
   /**
-   * 是否正在切断连线或切割
+   * 鼠标连线控制器
    */
-  // eslint-disable-next-line prefer-const
-  export let isCutting = false;
-
-  // eslint-disable-next-line prefer-const
-  export let isConnecting = false;
-
-  // eslint-disable-next-line prefer-const
-  export let cuttingLine: Line | null = null;
-  /**
-   * 正在准备要删除的节点
-   */
-  // eslint-disable-next-line prefer-const
-  export let warningEntity: Entity[] = [];
-  /**
-   * 正在准备要删除的连线
-   */
-  // eslint-disable-next-line prefer-const
-  export let warningEdges: LineEdge[] = [];
-  // eslint-disable-next-line prefer-const
-  export let warningSections: Section[] = [];
-  /**
-   * 用于多重连接
-   */
-  // eslint-disable-next-line prefer-const
-  export let connectFromEntities: ConnectableEntity[] = [];
-  // eslint-disable-next-line prefer-const
-  export let connectToEntity: ConnectableEntity | null = null;
+  export const connectMachine = ControllerNodeConnection;
 
   /**
    * 鼠标悬浮的边
@@ -139,15 +102,9 @@ export namespace Stage {
   export let hoverSections: Section[] = [];
 
   /**
-   * 搜索结果
+   * 内容搜索引擎
    */
-  // eslint-disable-next-line prefer-const
-  export let searchResultNodes: TextNode[] = [];
-  /**
-   * 搜索结果的索引
-   */
-  // eslint-disable-next-line prefer-const
-  export let currentSearchResultIndex = 0;
+  export const contentSearchEngine = new ContentSearchEngine();
 
   /**
    * 粘贴板数据
@@ -197,7 +154,10 @@ export namespace Stage {
    * 该函数在上游被频繁调用
    */
   export function logicTick() {
-    if (Stage.connectFromEntities.length > 0 && Controller.lastMoveLocation) {
+    if (
+      Stage.connectMachine.connectFromEntities.length > 0 &&
+      Controller.lastMoveLocation
+    ) {
       let connectTargetNode = null;
       for (const node of StageManager.getConnectableEntity()) {
         if (node.collisionBox.isContainsPoint(Controller.lastMoveLocation)) {
@@ -207,10 +167,10 @@ export namespace Stage {
       }
       if (connectTargetNode === null) {
         // 如果鼠标位置没有和任何节点相交
-        effects.push(
+        effectMachine.addEffect(
           PointDashEffect.fromMouseEffect(
             Controller.lastMoveLocation,
-            connectFromEntities.length * 5,
+            connectMachine.connectFromEntities.length * 5,
           ),
         );
       } else {
@@ -218,11 +178,8 @@ export namespace Stage {
       }
     }
 
-    for (const effect of effects) {
-      effect.tick();
-    }
-    // 清理过时特效
-    effects = effects.filter((effect) => !effect.timeProgress.isFull);
+    // 特效逻辑
+    effectMachine.logicTick();
 
     // 计算引擎
     autoComputeEngineTick(tickNumber);

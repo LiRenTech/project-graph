@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
 import { Vector } from "../../../dataStruct/Vector";
-import { LineEdge } from "../../../stageObject/association/LineEdge";
-import { ConnectPoint } from "../../../stageObject/entity/ConnectPoint";
-import { TextNode } from "../../../stageObject/entity/TextNode";
+import { LineEdge } from "../../stageObject/association/LineEdge";
+import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
+import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";
 /**
  * 直接向舞台中添加序列化数据

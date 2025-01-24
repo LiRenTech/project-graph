@@ -1,19 +1,19 @@
 import { getTextSize } from "../../../utils/font";
 import { appScale } from "../../../utils/platform";
-import { Settings } from "../../Settings";
-import { Controller } from "../../controller/Controller";
 import { Color, mixColors } from "../../dataStruct/Color";
 import { Vector } from "../../dataStruct/Vector";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { sine } from "../../effect/animateFunctions";
+import { Settings } from "../../service/Settings";
+import { Controller } from "../../service/controller/Controller";
+import { sine } from "../../service/effectEngine/mathTools/animateFunctions";
+import { KeyboardOnlyEngine } from "../../service/keyboardOnlyEngine/keyboardOnlyEngine";
+import { StageStyleManager } from "../../service/stageStyle/StageStyleManager";
 import { Camera } from "../../stage/Camera";
 import { Canvas } from "../../stage/Canvas";
 import { Stage } from "../../stage/Stage";
-import { KeyboardOnlyEngine } from "../../stage/keyboardOnlyEngine/keyboardOnlyEngine";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../stage/stageManager/StageManager";
-import { TextNode } from "../../stageObject/entity/TextNode";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
+import { TextNode } from "../../stage/stageObject/entity/TextNode";
 import { CurveRenderer } from "./basicRenderer/curveRenderer";
 import { ShapeRenderer } from "./basicRenderer/shapeRenderer";
 import { TextRenderer } from "./basicRenderer/textRenderer";
@@ -70,7 +70,7 @@ export namespace Renderer {
   // 自上一次记录fps以来的帧数是几
   let frameCount = 0;
   // 上一次记录的fps数值
-  let fps = 0;
+  export let fps = 0;
 
   /**
    * 解决Canvas模糊问题
@@ -278,10 +278,10 @@ export namespace Renderer {
   }
   /** 框选框 */
   function renderSelectingRectangle() {
-    if (Stage.isSelecting) {
-      if (Stage.selectingRectangle) {
+    if (Stage.selectMachine.isUsing) {
+      if (Stage.selectMachine.selectingRectangle) {
         ShapeRenderer.renderRect(
-          Stage.selectingRectangle.transformWorld2View(),
+          Stage.selectMachine.selectingRectangle.transformWorld2View(),
           StageStyleManager.currentStyle.SelectRectangleFillColor,
           StageStyleManager.currentStyle.SelectRectangleBorderColor,
           1,
@@ -291,10 +291,10 @@ export namespace Renderer {
   }
   /** 切割线 */
   function renderCuttingLine() {
-    if (Stage.isCutting && Stage.cuttingLine) {
+    if (Stage.cuttingMachine.isUsing && Stage.cuttingMachine.cuttingLine) {
       WorldRenderUtils.renderLaser(
-        Stage.cuttingLine.start,
-        Stage.cuttingLine.end,
+        Stage.cuttingMachine.cuttingLine.start,
+        Stage.cuttingMachine.cuttingLine.end,
         2,
         Color.Red,
       );
@@ -303,7 +303,10 @@ export namespace Renderer {
 
   /** 手动连接线 */
   function renderConnectingLine() {
-    if (Stage.connectFromEntities.length > 0 && Controller.lastMoveLocation) {
+    if (
+      Stage.connectMachine.connectFromEntities.length > 0 &&
+      Controller.lastMoveLocation
+    ) {
       // 如果鼠标位置没有和任何节点相交
       let connectTargetNode = null;
       for (const node of StageManager.getConnectableEntity()) {
@@ -313,12 +316,12 @@ export namespace Renderer {
         }
       }
       if (connectTargetNode === null) {
-        for (const node of Stage.connectFromEntities) {
+        for (const node of Stage.connectMachine.connectFromEntities) {
           EdgeRenderer.renderVirtualEdge(node, Controller.lastMoveLocation);
         }
       } else {
         // 画一条像吸住了的线
-        for (const node of Stage.connectFromEntities) {
+        for (const node of Stage.connectMachine.connectFromEntities) {
           EdgeRenderer.renderVirtualConfirmedEdge(node, connectTargetNode);
         }
       }
@@ -379,14 +382,14 @@ export namespace Renderer {
   /** 待删除的节点和边 */
   function renderWarningEntities() {
     // 待删除的节点
-    for (const node of Stage.warningEntity) {
+    for (const node of Stage.cuttingMachine.warningEntity) {
       CollisionBoxRenderer.render(node.collisionBox, new Color(255, 0, 0, 0.5));
     }
     // 待删除的边
-    for (const edge of Stage.warningEdges) {
+    for (const edge of Stage.cuttingMachine.warningEdges) {
       CollisionBoxRenderer.render(edge.collisionBox, new Color(255, 0, 0, 0.5));
     }
-    for (const section of Stage.warningSections) {
+    for (const section of Stage.cuttingMachine.warningSections) {
       CollisionBoxRenderer.render(
         section.collisionBox,
         new Color(255, 0, 0, 0.5),
@@ -631,9 +634,7 @@ export namespace Renderer {
     if (!isRenderEffect) {
       return;
     }
-    for (const effect of Stage.effects) {
-      effect.render();
-    }
+    Stage.effectMachine.renderTick();
   }
   function renderBackground() {
     if (isShowBackgroundDots) {
@@ -670,7 +671,7 @@ export namespace Renderer {
       `location: ${Camera.location.x.toFixed(2)}, ${Camera.location.y.toFixed(2)}`,
       // `canvas rect: ${canvasRect.toString()}`,
       `window: ${w}x${h}`,
-      `effect count: ${Stage.effects.length}`,
+      `effect count: ${Stage.effectMachine.effectsCount}`,
       `node count: ${renderedNodes} , ${StageManager.getTextNodes().length}`,
       `edge count: ${renderedEdges} , ${StageManager.getLineEdges().length}`,
       `section count: ${StageManager.getSections().length}`,
@@ -681,12 +682,12 @@ export namespace Renderer {
       `鼠标上次按下位置: ${Controller.lastMousePressLocationString()}`,
       `鼠标上次松开位置: ${Controller.lastMouseReleaseLocationString()}`,
       `lastMousePressLocation Right: ${Controller.lastMousePressLocation[2].toString()}`,
-      `框选框: ${Stage.selectingRectangle}`,
+      `框选框: ${Stage.selectMachine.selectingRectangle}`,
       `正在移动节点: ${Controller.isMovingEntity}`,
-      `正在切割: ${Stage.isCutting}`,
-      `Stage.warningNodes: ${Stage.warningEntity.length}`,
-      `Stage.warningEdges: ${Stage.warningEdges.length}`,
-      `ConnectFromNodes: ${Stage.connectFromEntities}`,
+      `正在切割: ${Stage.cuttingMachine.isUsing}`,
+      `Stage.warningNodes: ${Stage.cuttingMachine.warningEntity.length}`,
+      `Stage.warningEdges: ${Stage.cuttingMachine.warningEdges.length}`,
+      `ConnectFromNodes: ${Stage.connectMachine.connectFromEntities}`,
       `lastSelectedNode: ${Controller.lastSelectedEntityUUID.size}`,
       `粘贴板: ${JSON.stringify(Stage.copyBoardData)}`,
       `历史: ${StageHistoryManager.statusText()}`,

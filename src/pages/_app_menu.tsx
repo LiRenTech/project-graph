@@ -43,12 +43,12 @@ import { getCurrentWindow, isDesktop, isWeb } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { dataDir } from "@tauri-apps/api/path";
 import { useTranslation } from "react-i18next";
-import { RecentFileManager } from "../core/RecentFileManager";
-import { Settings } from "../core/Settings";
+import { RecentFileManager } from "../core/service/RecentFileManager";
+import { Settings } from "../core/service/Settings";
 import { Stage } from "../core/stage/Stage";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
-import { TextNode } from "../core/stageObject/entity/TextNode";
+import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
 
@@ -69,7 +69,7 @@ export default function AppMenu({
    * 新建草稿
    */
   const onNewDraft = () => {
-    if (StageSaveManager.isSaved()) {
+    if (StageSaveManager.isSaved() || StageManager.isEmpty()) {
       StageManager.destroy();
       setFile("Project Graph");
     } else {
@@ -99,36 +99,42 @@ export default function AppMenu({
   };
 
   const onOpen = async () => {
-    if (Stage.Path.isDraft() && !StageSaveManager.isSaved()) {
-      Dialog.show({
-        title: "草稿未保存",
-        content: "当前草稿未保存，是否保存？",
-        buttons: [
-          { text: "我再想想" },
-          { text: "保存草稿", onClick: onSave },
-          {
-            text: "丢弃并打开新文件",
-            onClick: () => {
-              StageManager.destroy();
-              openFileByDialogWindow();
+    if (!StageSaveManager.isSaved()) {
+      if (StageManager.isEmpty()) {
+        //空项目不需要保存
+        StageManager.destroy();
+        openFileByDialogWindow();
+      } else if (Stage.Path.isDraft()) {
+        Dialog.show({
+          title: "草稿未保存",
+          content: "当前草稿未保存，是否保存？",
+          buttons: [
+            { text: "我再想想" },
+            { text: "保存草稿", onClick: onSave },
+            {
+              text: "丢弃并打开新文件",
+              onClick: () => {
+                StageManager.destroy();
+                openFileByDialogWindow();
+              },
             },
-          },
-        ],
-      });
-    } else if (!StageSaveManager.isSaved()) {
-      Dialog.show({
-        title: "未保存",
-        content: "是否保存当前文件？",
-        buttons: [
-          {
-            text: "保存并打开新文件",
-            onClick: () => {
-              onSave().then(openFileByDialogWindow);
+          ],
+        });
+      } else {
+        Dialog.show({
+          title: "未保存",
+          content: "是否保存当前文件？",
+          buttons: [
+            {
+              text: "保存并打开新文件",
+              onClick: () => {
+                onSave().then(openFileByDialogWindow);
+              },
             },
-          },
-          { text: "我再想想" },
-        ],
-      });
+            { text: "我再想想" },
+          ],
+        });
+      }
     } else {
       // 直接打开文件
       openFileByDialogWindow();
@@ -519,8 +525,11 @@ export default function AppMenu({
           <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
             测试页面
           </Col>
+          <Col icon={<TestTube2 />} onClick={() => navigate("/ui_test")}>
+            ui
+          </Col>
           <Col icon={<TestTube2 />} onClick={() => navigate("/info")}>
-            Info界面
+            Info
           </Col>
           <Col
             icon={<TestTube2 />}
@@ -532,10 +541,7 @@ export default function AppMenu({
               })
             }
           >
-            查看json
-          </Col>
-          <Col icon={<TestTube2 />} onClick={() => {}}>
-            控制台输出
+            看json
           </Col>
           <Col
             icon={<TestTube2 />}
@@ -543,7 +549,7 @@ export default function AppMenu({
               StageManager.destroy();
             }}
           >
-            废档了，清空
+            废了
           </Col>
           <Col
             icon={<TestTube2 />}
@@ -551,7 +557,7 @@ export default function AppMenu({
               throw new Error("手动报错");
             }}
           >
-            手动报错
+            报错
           </Col>
           <Col
             icon={<TestTube2 />}
@@ -559,7 +565,15 @@ export default function AppMenu({
               StageManager.switchLineEdgeToCrEdge();
             }}
           >
-            切换Cr曲线
+            Cr
+          </Col>
+          <Col
+            icon={<TestTube2 />}
+            onClick={() => {
+              StageManager.moveAllEntityToIntegerLocation();
+            }}
+          >
+            int
           </Col>
         </Row>
       )}
