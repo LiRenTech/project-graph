@@ -26,11 +26,16 @@
   },
   {
     "version": "1.3",
+    "name": "层峦叠嶂之绘",
+    "name_en": "Layered Peaks"
+  },
+  {
+    "version": "1.4",
     "name": "寰宇重塑之业",
     "name_en": "Cosmic Reform"
   },
   {
-    "version": "1.4",
+    "version": "1.5",
     "name": "星河跃迁之旅",
     "name_en": "Stellar Journey"
   }
