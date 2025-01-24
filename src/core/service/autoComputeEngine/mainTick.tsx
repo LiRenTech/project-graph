@@ -11,6 +11,7 @@ import { AutoComputeUtils } from "./AutoComputeUtils";
 import { CompareFunctions } from "./functions/compareLogic";
 import { MathFunctions } from "./functions/mathLogic";
 import { NodeLogic } from "./functions/nodeLogic";
+import { ProgramFunctions } from "./functions/programLogic";
 import { StringFunctions } from "./functions/stringLogic";
 import {
   LogicNodeNameEnum,
@@ -132,7 +133,9 @@ const MapNameFunction: StringFunctionMap = {
   [LogicNodeNameEnum.REPLACE]: StringFunctions.replace,
   [LogicNodeNameEnum.CONNECT]: StringFunctions.connect,
   [LogicNodeNameEnum.CHECK_REGEX_MATCH]: StringFunctions.checkRegexMatch,
-  // 集合计算
+  // 编程类功能
+  [LogicNodeNameEnum.SET_VAR]: ProgramFunctions.setVar,
+  [LogicNodeNameEnum.GET_VAR]: ProgramFunctions.getVar,
 };
 
 /**
@@ -181,8 +184,8 @@ export function autoComputeEngineTick(tickNumber: number) {
   // 用于显示逻辑节点执行顺序标号
   let i = 0;
 
-  let nodes = StageManager.getTextNodes().filter(
-    (node) => isTextNodeLogic(node) && node.text.length > 0,
+  let nodes = StageManager.getTextNodes().filter((node) =>
+    isTextNodeLogic(node),
   );
   nodes = sortEntityByLocation(nodes) as TextNode[];
 
@@ -214,7 +217,7 @@ export function autoComputeEngineTick(tickNumber: number) {
   }
 }
 
-function isTextNodeLogic(node: TextNode): boolean {
+export function isTextNodeLogic(node: TextNode): boolean {
   for (const name of Object.keys(MapNameFunction)) {
     if (node.text === name) {
       return true;

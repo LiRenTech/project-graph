@@ -3,6 +3,7 @@ import { StageManager } from "../../stage/stageManager/StageManager";
 import { Section } from "../../stage/stageObject/entity/Section";
 import { TextNode } from "../../stage/stageObject/entity/TextNode";
 import { ConnectableEntity } from "../../stage/stageObject/StageObject";
+import { ProgramFunctions } from "./functions/programLogic";
 
 /**
  * 一些在自动计算引擎中
@@ -193,6 +194,9 @@ export namespace AutoComputeUtils {
    * @returns
    */
   export function stringToNumber(str: string) {
+    if (ProgramFunctions.isHaveVar(str)) {
+      return parseFloat(ProgramFunctions.getVarInCore(str));
+    }
     return parseFloat(str);
   }
 

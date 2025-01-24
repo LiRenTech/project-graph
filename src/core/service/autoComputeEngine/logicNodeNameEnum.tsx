@@ -66,6 +66,9 @@ export enum LogicNodeNameEnum {
   MODE = "#MODE#",
   VARIANCE = "#VARIANCE#",
   STANDARD_DEVIATION = "#STANDARD_DEVIATION#",
+  // 编程类
+  SET_VAR = "#SET_VAR#",
+  GET_VAR = "#GET_VAR#",
   // 其他
   RGB = "#RGB#",
   RGBA = "#RGBA#",
@@ -161,6 +164,9 @@ export const LogicNodeNameToRenderNameMap: {
   [LogicNodeNameEnum.COLLECT_NODE_NAME_BY_RGBA]: "根据颜色收集节点名称",
   [LogicNodeNameEnum.FPS]: "FPS",
   [LogicNodeNameEnum.CREATE_TEXT_NODE_ON_LOCATION]: "在指定位置创建节点",
+
+  [LogicNodeNameEnum.SET_VAR]: "设置变量",
+  [LogicNodeNameEnum.GET_VAR]: "获取变量",
 };
 
 /**
@@ -243,6 +249,8 @@ export const LogicNodeNameToArgsTipsMap: {
   [LogicNodeNameEnum.FPS]: "无输入",
   [LogicNodeNameEnum.CREATE_TEXT_NODE_ON_LOCATION]:
     "a0: x, a1: y, a2: text, a3: 0/1",
+  [LogicNodeNameEnum.SET_VAR]: "a0: name, a1: value",
+  [LogicNodeNameEnum.GET_VAR]: "a0: name",
 };
 
 /**
