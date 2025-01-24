@@ -72,8 +72,10 @@ settings:
     visual: 显示
     physical: 物理
     performance: 性能
+    effects: 特效
     automation: 自动化
     control: 控制
+    keybinds: 快捷键
     ai: AI
     github: GitHub
     sounds: 声音

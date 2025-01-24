@@ -1,3 +1,4 @@
+import { Settings } from "../Settings";
 import { EffectObject } from "./effectObject";
 
 /**
@@ -7,7 +8,15 @@ import { EffectObject } from "./effectObject";
  * 如果有多页签多页面，则每个页面都有自己的唯一特效机器。
  */
 export class EffectMachine {
-  private constructor() {}
+  private effectsPerferences: Record<string, boolean> = {};
+
+  private constructor() {
+    setTimeout(() => {
+      Settings.watch("effectsPerferences", (value) => {
+        this.effectsPerferences = value;
+      });
+    }, 10);
+  }
 
   static default(): EffectMachine {
     return new EffectMachine();
@@ -16,6 +25,9 @@ export class EffectMachine {
   private effects: EffectObject[] = [];
 
   public addEffect(effect: EffectObject) {
+    if (!(this.effectsPerferences[effect.constructor.name] ?? true)) {
+      return;
+    }
     this.effects.push(effect);
   }
 
@@ -24,7 +36,11 @@ export class EffectMachine {
   }
 
   public addEffects(effects: EffectObject[]) {
-    this.effects.push(...effects);
+    this.effects.push(
+      ...effects.filter(
+        (effect) => this.effectsPerferences[effect.constructor.name] ?? true,
+      ),
+    );
   }
 
   /**

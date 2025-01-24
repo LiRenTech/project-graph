@@ -31,7 +31,7 @@ export namespace Settings {
     cameraCycleSpaceSizeY: number;
     // 性能相关
     historySize: number; // 暂无
-    renderEffect: boolean;
+    effectsPerferences: Record<string, boolean>;
     isEnableEntityCollision: boolean;
     // 自动化相关
     autoNamerTemplate: string;
@@ -89,7 +89,7 @@ export namespace Settings {
     cameraCycleSpaceSizeY: 1000,
     // 性能相关
     historySize: 20,
-    renderEffect: true,
+    effectsPerferences: {},
     isEnableEntityCollision: false,
     // 自动相关
     autoNamerTemplate: "...",
@@ -129,6 +129,7 @@ export namespace Settings {
 
   export async function init() {
     store = await createStore("settings.json");
+    console.log("settings init");
   }
 
   export async function get<K extends keyof Settings>(

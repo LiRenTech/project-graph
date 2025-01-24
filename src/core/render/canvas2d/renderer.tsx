@@ -96,7 +96,6 @@ export namespace Renderer {
   let isShowBackgroundDots = false;
   let isShowBackgroundCartesian = false;
   export let isAlwaysShowDetails = false;
-  let isRenderEffect = true;
   export let protectingPrivacy = false;
   let isRenderCenterPointer = true;
 
@@ -120,7 +119,6 @@ export namespace Renderer {
       "alwaysShowDetails",
       (value) => (isAlwaysShowDetails = value),
     );
-    Settings.watch("renderEffect", (value) => (isRenderEffect = value));
     Settings.watch("protectingPrivacy", (value) => (protectingPrivacy = value));
     Settings.watch(
       "isRenderCenterPointer",
@@ -631,9 +629,6 @@ export namespace Renderer {
 
   /** 渲染所有特效 */
   function renderEffects() {
-    if (!isRenderEffect) {
-      return;
-    }
     Stage.effectMachine.renderTick();
   }
   function renderBackground() {

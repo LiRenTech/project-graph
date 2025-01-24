@@ -1,6 +1,7 @@
 import {
   Bot,
   Brain,
+  Command,
   Eye,
   Info,
   Keyboard,
@@ -8,6 +9,7 @@ import {
   Settings,
   Sparkles,
   Speaker,
+  Zap,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { NavLink, Outlet } from "react-router-dom";
@@ -33,8 +35,12 @@ export default function SettingsLayout() {
             {t("tabs.visual")}
           </NavLink>
           <NavLink to="/settings/performance">
-            <Sparkles />
+            <Zap />
             {t("tabs.performance")}
+          </NavLink>
+          <NavLink to="/settings/effects">
+            <Sparkles />
+            {t("tabs.effects")}
           </NavLink>
           <NavLink to="/settings/automation">
             <Bot />
@@ -43,6 +49,10 @@ export default function SettingsLayout() {
           <NavLink to="/settings/control">
             <Keyboard />
             {t("tabs.control")}
+          </NavLink>
+          <NavLink to="/settings/keybinds">
+            <Command />
+            {t("tabs.keybinds")}
           </NavLink>
           <NavLink to="/settings/ai">
             <Brain />
@@ -61,7 +71,7 @@ export default function SettingsLayout() {
             {t("tabs.plugins")}
           </NavLink>
         </div>
-        <div className="container mx-auto flex-1 overflow-auto">
+        <div className="mx-auto w-[1024px] overflow-auto">
           <Outlet />
         </div>
       </div>

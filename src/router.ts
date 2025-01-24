@@ -11,7 +11,9 @@ export type Path =
   | `/settings/ai`
   | `/settings/automation`
   | `/settings/control`
+  | `/settings/effects`
   | `/settings/github`
+  | `/settings/keybinds`
   | `/settings/performance`
   | `/settings/physical`
   | `/settings/plugins`

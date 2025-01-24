@@ -1,14 +1,9 @@
-import { Sparkles, Undo, Ungroup } from "lucide-react";
+import { Undo, Ungroup } from "lucide-react";
 import { SettingField } from "./_field";
 
 export default function Performance() {
   return (
     <>
-      <SettingField
-        icon={<Sparkles />}
-        settingKey="renderEffect"
-        type="switch"
-      />
       <SettingField
         icon={<Undo />}
         settingKey="historySize"
