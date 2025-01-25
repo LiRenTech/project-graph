@@ -806,13 +806,13 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
-  export function setNodeColor(color: Color) {
-    StageNodeColorManager.setNodeColor(color);
+  export function setEntityColor(color: Color) {
+    StageNodeColorManager.setEntityColor(color);
     StageHistoryManager.recordStep();
   }
 
   export function clearNodeColor() {
-    StageNodeColorManager.clearNodeColor();
+    StageNodeColorManager.clearEntityColor();
     StageHistoryManager.recordStep();
   }
 

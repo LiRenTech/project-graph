@@ -125,6 +125,21 @@ export namespace SectionRenderer {
     }
   }
 
+  export function renderBackgroundColor(section: Section) {
+    const color = section.color;
+    color.a = Math.min(color.a, 0.2);
+    ShapeRenderer.renderRect(
+      new Rectangle(
+        Renderer.transformWorld2View(section.rectangle.location),
+        section.rectangle.size.multiply(Camera.currentScale),
+      ),
+      color,
+      Color.Transparent,
+      0,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+    );
+  }
+
   function getFontSizeBySectionSize(section: Section): Vector {
     // 缩放过小了，显示巨大化文字
     TextRenderer.renderText("", Vector.getZero(), 100);

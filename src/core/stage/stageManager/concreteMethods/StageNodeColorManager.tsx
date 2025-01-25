@@ -6,16 +6,26 @@ import { StageManager } from "../StageManager";
  * 不仅包括添加颜色和去除颜色，还包括让颜色变暗和变亮等
  */
 export namespace StageNodeColorManager {
-  export function setNodeColor(color: Color) {
+  export function setEntityColor(color: Color) {
     for (const node of StageManager.getTextNodes()) {
+      if (node.isSelected) {
+        node.color = color;
+      }
+    }
+    for (const node of StageManager.getSections()) {
       if (node.isSelected) {
         node.color = color;
       }
     }
   }
 
-  export function clearNodeColor() {
+  export function clearEntityColor() {
     for (const node of StageManager.getTextNodes()) {
+      if (node.isSelected) {
+        node.color = Color.Transparent;
+      }
+    }
+    for (const node of StageManager.getSections()) {
       if (node.isSelected) {
         node.color = Color.Transparent;
       }

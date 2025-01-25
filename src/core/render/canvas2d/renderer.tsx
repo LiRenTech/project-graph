@@ -21,6 +21,7 @@ import { TextRenderer } from "./basicRenderer/textRenderer";
 import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
 import { EntityRenderer } from "./entityRenderer/EntityRenderer";
 import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
+import { SectionRenderer } from "./entityRenderer/section/SectionRenderer";
 import { WorldRenderUtils } from "./utilsRenderer/WorldRenderUtils";
 import {
   renderCartesianBackground,
@@ -182,6 +183,7 @@ export namespace Renderer {
   }
 
   function renderStageElements(viewRectangle: Rectangle) {
+    renderSectionBackground(viewRectangle);
     renderEdges(viewRectangle);
     renderEntities(viewRectangle);
     renderTags();
@@ -492,7 +494,17 @@ export namespace Renderer {
       }
     }
   }
-
+  function renderSectionBackground(viewRectangle: Rectangle) {
+    for (const section of StageManager.getSections()) {
+      if (
+        !Camera.limitCameraInCycleSpace &&
+        !viewRectangle.isCollideWith(section.collisionBox.getRectangle())
+      ) {
+        continue;
+      }
+      SectionRenderer.renderBackgroundColor(section);
+    }
+  }
   function renderEntities(viewRectangle: Rectangle) {
     renderedNodes = 0;
     for (const entity of StageManager.getEntities()) {

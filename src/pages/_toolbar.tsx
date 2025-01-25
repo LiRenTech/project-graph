@@ -44,8 +44,8 @@ import { writeTextFile } from "../utils/fs";
 import { Popup } from "../utils/popup";
 // import { PathString } from "../utils/pathString";
 import { ColorManager } from "../core/service/ColorManager";
-import ColorManagerPanel from "./_color_manager_panel";
 import { CopyEngine } from "../core/service/copyEngine/copyEngine";
+import ColorManagerPanel from "./_color_manager_panel";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -85,31 +85,31 @@ export function ColorPanel() {
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-red-500 hover:scale-125"
           onClick={() => {
-            StageManager.setNodeColor(new Color(239, 68, 68));
+            StageManager.setEntityColor(new Color(239, 68, 68));
           }}
         />
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-yellow-500 hover:scale-125"
           onClick={() => {
-            StageManager.setNodeColor(new Color(234, 179, 8));
+            StageManager.setEntityColor(new Color(234, 179, 8));
           }}
         />
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-green-600 hover:scale-125"
           onClick={() => {
-            StageManager.setNodeColor(new Color(22, 163, 74));
+            StageManager.setEntityColor(new Color(22, 163, 74));
           }}
         />
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-blue-500 hover:scale-125"
           onClick={() => {
-            StageManager.setNodeColor(new Color(59, 130, 246));
+            StageManager.setEntityColor(new Color(59, 130, 246));
           }}
         />
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-purple-500 hover:scale-125"
           onClick={() => {
-            StageManager.setNodeColor(new Color(168, 85, 247));
+            StageManager.setEntityColor(new Color(168, 85, 247));
           }}
         />
         {/* 清除颜色 */}
@@ -131,7 +131,7 @@ export function ColorPanel() {
             const r = parseInt(color.slice(1, 3), 16);
             const g = parseInt(color.slice(3, 5), 16);
             const b = parseInt(color.slice(5, 7), 16);
-            StageManager.setNodeColor(new Color(r, g, b));
+            StageManager.setEntityColor(new Color(r, g, b));
           }}
         ></input>
         <Button
@@ -152,7 +152,7 @@ export function ColorPanel() {
                 backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`,
               }}
               onClick={() => {
-                StageManager.setNodeColor(color);
+                StageManager.setEntityColor(color);
               }}
             />
           );
@@ -288,12 +288,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       update();
     }, 100);
 
-    // const handleKeyDown = (event: KeyboardEvent) => {
-    //   // // 绑定一些快捷键
-    //   // if (Controller.pressingKeySet.has("control") && event.key === "g") {
-    //   //   StageManager.packEntityToSectionBySelected();
-    //   // }
-    // };
     const handleMouseDown = () => {
       setIgnoreMouse(true);
     };
@@ -301,7 +295,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       setIgnoreMouse(false);
     };
 
-    // window.addEventListener("keydown", handleKeyDown);
     document
       .querySelector("canvas")
       ?.addEventListener("mousedown", handleMouseDown);
