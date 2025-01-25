@@ -3,16 +3,9 @@ import { useAtom } from "jotai";
 import React, { useEffect } from "react";
 import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
 import { cn } from "../utils/cn";
-// import { NodeManager } from "../core/NodeManager";
-// import { NodeLoader } from "../core/NodeLoader";
-// import { Edge } from "../core/Edge";
-// import { Camera } from "../core/stage/Camera";
-// import { Stage } from "../core/stage/Stage";
-// import { ViewFlashEffect } from "../core/effect/concrete/ViewFlashEffect";
-// import { Color } from "../core/Color";
-// import { Node } from "../core/Node";
-import { Zap } from "lucide-react";
-import IconButton from "../components/ui/IconButton";
+
+// import { Zap } from "lucide-react";
+// import IconButton from "../components/ui/IconButton";
 import { RecentFileManager } from "../core/service/RecentFileManager";
 import { StartFilesManager } from "../core/service/StartFilesManager";
 import { Stage } from "../core/stage/Stage";
@@ -168,9 +161,13 @@ export default function RecentFilesPanel() {
                 </span>
               </td>
               <td>
-                <IconButton onClick={addToStartFiles(file.path)}>
-                  <Zap />
-                </IconButton>
+                <button
+                  onClick={addToStartFiles(file.path)}
+                  className="bg-neutral-700 text-xs hover:cursor-pointer"
+                >
+                  {/* <Zap /> */}
+                  添加到启动
+                </button>
               </td>
             </tr>
           ))}
