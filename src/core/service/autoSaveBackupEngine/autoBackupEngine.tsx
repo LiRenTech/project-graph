@@ -33,7 +33,7 @@ export class AutoBackupEngine {
     const now = performance.now();
     if (now - this.lastAutoBackupTime > this.autoBackupInterval) {
       if (Stage.Path.isDraft()) {
-        const backupPath = `${this.autoBackupDraftPath}${Stage.Path.getSep()}${PathString.getTime()}.json`;
+        const backupPath = `${this.autoBackupDraftPath}${PathString.getSep()}${PathString.getTime()}.json`;
         StageSaveManager.backupHandle(backupPath, StageDumper.dump());
       } else {
         StageSaveManager.backupHandleWithoutCurrentPath(

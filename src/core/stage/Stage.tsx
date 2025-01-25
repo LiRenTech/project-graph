@@ -1,5 +1,3 @@
-import { family } from "@tauri-apps/plugin-os";
-
 import { autoComputeEngineTick } from "../service/autoComputeEngine/mainTick";
 import { autoLayoutMainTick } from "../service/autoLayoutEngine/mainTick";
 import { EffectMachine } from "../service/effectEngine/effectMachine";
@@ -30,15 +28,6 @@ export namespace Stage {
   export namespace Path {
     let currentPath = "Project Graph";
     export const draftName = "Project Graph";
-
-    export function getSep(): string {
-      const fam = family();
-      if (fam === "windows") {
-        return "\\";
-      } else {
-        return "/";
-      }
-    }
 
     /**
      * 是否是草稿

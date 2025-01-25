@@ -191,7 +191,7 @@ function dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
     const imageUUID = uuidv4();
     const folderPath = PathString.dirPath(Stage.Path.getFilePath());
     writeFileBase64(
-      `${folderPath}${Stage.Path.getSep()}${imageUUID}.png`,
+      `${folderPath}${PathString.getSep()}${imageUUID}.png`,
       fileContent.split(",")[1],
     );
     const imageNode = new ImageNode({

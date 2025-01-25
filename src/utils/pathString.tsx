@@ -2,6 +2,19 @@ import { family } from "./platform";
 
 export namespace PathString {
   /**
+   * 获取当前平台的路径分隔符
+   * @returns
+   */
+  export function getSep(): string {
+    const fam = family();
+    if (fam === "windows") {
+      return "\\";
+    } else {
+      return "/";
+    }
+  }
+
+  /**
    * 将绝对路径转换为文件名
    * @param path
    * @returns

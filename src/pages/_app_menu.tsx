@@ -236,7 +236,7 @@ export default function AppMenu({
     try {
       if (Stage.Path.isDraft()) {
         const autoBackupDraftPath = await Settings.get("autoBackupDraftPath");
-        const backupPath = `${autoBackupDraftPath}${Stage.Path.getSep()}${PathString.getTime()}.json`;
+        const backupPath = `${autoBackupDraftPath}${PathString.getSep()}${PathString.getTime()}.json`;
         await StageSaveManager.backupHandle(backupPath, StageDumper.dump());
         return;
       }
