@@ -52,6 +52,20 @@ export namespace Dialog {
       );
     });
   }
+  export function BackDrop() {
+    return (
+      <div
+        data-tauri-drag-region
+        className={cn(
+          "hover:cursor-move active:scale-100 active:cursor-grabbing",
+          "fixed left-0 top-0 z-[100] h-full w-full bg-black/0 backdrop-blur-0",
+          {
+            "bg-black/70 !backdrop-blur-lg": show,
+          },
+        )}
+      ></div>
+    );
+  }
 
   function Component({
     title = "",
@@ -141,14 +155,7 @@ export namespace Dialog {
             ))}
           </div>
         </div>
-        <div
-          className={cn(
-            "fixed left-0 top-0 z-[100] h-full w-full bg-black/0 backdrop-blur-0",
-            {
-              "bg-black/70 !backdrop-blur-lg": show,
-            },
-          )}
-        ></div>
+        <BackDrop />
       </>
     );
   }
