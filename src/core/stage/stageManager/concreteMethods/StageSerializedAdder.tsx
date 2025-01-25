@@ -21,6 +21,7 @@ export namespace StageSerializedAdder {
     diffLocation = new Vector(0, 0),
   ) {
     const updatedSerializedData = refreshUUID(serializedData);
+    console.log("updatedSerializedData", updatedSerializedData);
     for (const entity of updatedSerializedData.entities) {
       if (entity.type === "core:text_node") {
         const newNode = new TextNode(entity);
@@ -28,7 +29,6 @@ export namespace StageSerializedAdder {
         StageManager.addTextNode(newNode);
       } else if (entity.type === "core:section") {
         const section = new Section(entity);
-        section.children = [];
         section.moveTo(section.rectangle.location.add(diffLocation));
         StageManager.addSection(section);
       } else if (entity.type === "core:connect_point") {
@@ -50,10 +50,11 @@ export namespace StageSerializedAdder {
   function refreshUUID(serializedData: Serialized.File): Serialized.File {
     // 先深拷贝一份数据
     const result: Serialized.File = JSON.parse(JSON.stringify(serializedData));
-    // 刷新UUID
+    // 刷新实体UUID
     for (const entity of result.entities) {
       const oldUUID = entity.uuid;
       const newUUID = uuidv4();
+      // 把这个实体所涉及的所有有向边对应的target和source的UUID也刷新
       for (const edge of result.associations) {
         if (
           edge.type === "core:line_edge" ||
@@ -67,10 +68,23 @@ export namespace StageSerializedAdder {
           }
         }
       }
+      // 把这个实体所涉及的所有Section父子关系的UUID也刷新
+      // 具体来说就是找到这个节点的父Section，把父Section的children数组中这个节点的UUID替换成新UUID
+      for (const section of result.entities) {
+        if (section.type === "core:section") {
+          if (section.children.includes(oldUUID)) {
+            section.children = section.children.map((child) =>
+              child === oldUUID ? newUUID : child,
+            );
+          }
+        }
+      }
 
       // 刷新节点本身的UUID
       entity.uuid = newUUID;
     }
+
+    // 刷新边的UUID
     for (const edge of result.associations) {
       edge.uuid = uuidv4();
       // HACK: 以后出了关系的关系，就要再分类了

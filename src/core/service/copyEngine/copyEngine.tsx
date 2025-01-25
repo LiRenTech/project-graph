@@ -87,7 +87,6 @@ export namespace CopyEngine {
     if (isClipboardEmpty()) {
       readClipboardItems(Renderer.transformView2World(MouseLocation.vector()));
     } else {
-      console.log(copyBoardMouseVector);
       StageSerializedAdder.addSerializedData(
         copyBoardData,
         copyBoardMouseVector,

@@ -9,6 +9,7 @@ import { Settings } from "../../service/Settings";
 import { Camera } from "../Camera";
 import { Stage } from "../Stage";
 import { CublicCatmullRomSplineEdge } from "../stageObject/association/CublicCatmullRomSplineEdge";
+import { Edge } from "../stageObject/association/Edge";
 import { LineEdge } from "../stageObject/association/LineEdge";
 import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../stageObject/entity/ImageNode";
@@ -270,12 +271,14 @@ export namespace StageManager {
   export function updateReferences() {
     for (const entity of getEntities()) {
       if (entity instanceof ConnectableEntity) {
-        for (const edge of getLineEdges()) {
-          if (edge.source.unknown && edge.source.uuid === entity.uuid) {
-            edge.source = entity;
-          }
-          if (edge.target.unknown && edge.target.uuid === entity.uuid) {
-            edge.target = entity;
+        for (const edge of getAssociations()) {
+          if (edge instanceof Edge) {
+            if (edge.source.unknown && edge.source.uuid === entity.uuid) {
+              edge.source = entity;
+            }
+            if (edge.target.unknown && edge.target.uuid === entity.uuid) {
+              edge.target = entity;
+            }
           }
         }
       }
@@ -285,9 +288,9 @@ export namespace StageManager {
         // 更新孩子数组，并调整位置和大小
         const newChildList = [];
 
-        for (const child of entity.children) {
-          if (entities.hasId(child.uuid)) {
-            const childObject = entities.getById(child.uuid);
+        for (const childEntity of entity.children) {
+          if (entities.hasId(childEntity.uuid)) {
+            const childObject = entities.getById(childEntity.uuid);
             if (childObject) {
               newChildList.push(childObject);
             }
@@ -298,6 +301,7 @@ export namespace StageManager {
         entity.adjustChildrenStateByCollapse();
       }
     }
+
     // 以下是LineEdge双向线偏移状态的更新
     for (const edge of getLineEdges()) {
       let isShifting = false;
@@ -312,6 +316,7 @@ export namespace StageManager {
       }
       edge.isShifting = isShifting;
     }
+
     // 对tags进行更新
     TagOptions.updateTags();
   }

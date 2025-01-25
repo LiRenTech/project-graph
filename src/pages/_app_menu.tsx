@@ -51,6 +51,7 @@ import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
+import { CopyEngine } from "../core/service/copyEngine/copyEngine";
 
 export default function AppMenu({
   className = "",
@@ -542,6 +543,18 @@ export default function AppMenu({
             }
           >
             看json
+          </Col>
+          <Col
+            icon={<TestTube2 />}
+            onClick={() =>
+              Dialog.show({
+                title: "舞台序列化",
+                type: "info",
+                code: JSON.stringify(CopyEngine.copyBoardData, null, 2),
+              })
+            }
+          >
+            clipboard json
           </Col>
           <Col
             icon={<TestTube2 />}

@@ -213,11 +213,6 @@ export namespace StageDumper {
       .filter((entity) => entity instanceof TextNode)
       .map((node) => dumpTextNode(node));
 
-    selectedEntities = selectedEntities.concat(
-      ...entities
-        .filter((entity) => entity instanceof Section)
-        .map((section) => dumpSection(section)),
-    );
     // 遍历所有section的时候，要把section的子节点递归的加入进来。
     const addSection = (section: Section) => {
       selectedEntities.push(dumpSection(section));
