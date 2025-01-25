@@ -11,7 +11,7 @@ export namespace Settings {
   let store: Store;
   // 注意：下拉菜单框必须要在语言包里面配置才能生效，否则菜单项是 Error: Option Not Found
   export type Settings = {
-    language: "zh-CN" | "zh-TW" | "en";
+    language: "zh_CN" | "zh_TW" | "en";
     // 视觉相关
     lineStyle: "straight" | "bezier" | "vertical";
     theme: "black" | "white"; // 暂无
@@ -69,7 +69,7 @@ export namespace Settings {
     githubUser: string;
   };
   export const defaultSettings: Settings = {
-    language: "zh-CN",
+    language: "zh_CN",
     // 视觉相关
     lineStyle: "straight",
     theme: "black",

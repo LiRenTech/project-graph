@@ -18,14 +18,20 @@ about:
     qq: QQ
     forum: Forum (d2learn)
   intro:
-    - Software Introduction
-    - This is a tool for quickly drawing topological graphs based on the Tauri framework, which can be used for project topology diagram drawing and rapid brainstorming drafts.
-    - Xmind can only be used to draw tree structure diagrams, while FigJam and draw.io can be used for drawing but they are a bit slow to open as web pages.
-    - Therefore, this small software was created.
+  - Software Introduction
+  - This is a tool for quickly drawing topological graphs based on the Tauri framework,
+    which can be used for project topology diagram drawing and rapid brainstorming
+    drafts.
+  - Xmind can only be used to draw tree structure diagrams, while FigJam and draw.io
+    can be used for drawing but they are a bit slow to open as web pages.
+  - Therefore, this small software was created.
   contact:
-    - Contact Us
-    - We are committed to designing the fastest and most convenient methodology for "graph theory" and are also exploring and innovating in the fields of visual thinking and topological todo lists.
-    - "If you want to get feedback quickly and provide suggestions, or if you have any ideas or questions, you are welcome to join our QQ group: 1006956704"
+  - Contact Us
+  - We are committed to designing the fastest and most convenient methodology for
+    "graph theory" and are also exploring and innovating in the fields of visual thinking
+    and topological todo lists.
+  - "If you want to get feedback quickly and provide suggestions, or if you have any
+    ideas or questions, you are welcome to join our QQ group: 1006956704"
   techEnvironment: Technical Support and Ecosystem
   developers:
     title: Developers List
@@ -49,22 +55,31 @@ about:
     encouragerEncourager: Encourager's Encourager
     atmosphereAdjuster: Atmosphere Adjuster
   ideaSources:
-    - Inspiration Sources
-    - FigJam not supporting dark mode
-    - Director Lin Chao's video on the detailed analysis of drawing analysis frameworks
-    - Topological sorting and graph theory in "Data Structures and Algorithms"
-    - "Brainstorming Method"
-    - Command Blocks in Minecraft
-    - The animation effect of slashing in Fruit Ninja
-    - The factory assembly line design in the game "Mindustry" is turned into logical nodes
-    - The concept of state machines
+  - Inspiration Sources
+  - FigJam not supporting dark mode
+  - Director Lin Chao's video on the detailed analysis of drawing analysis frameworks
+  - Topological sorting and graph theory in "Data Structures and Algorithms"
+  - "Brainstorming Method"
+  - Command Blocks in Minecraft
+  - The animation effect of slashing in Fruit Ninja
+  - The factory assembly line design in the game "Mindustry" is turned into logical
+    nodes
+  - The concept of state machines
   team:
-    - Team Introduction
-    - LiRen Tech is a small team founded by Littlefean and Rutubet on May 1, 2017, with ZTY joining the team later.
-    - With its youthful team atmosphere, emphasis on innovation and creativity, and characteristics of rational thinking and cultural inclusiveness, it stands out in the field of software development.
-    - Not only focuses on developing tool software and games but also engages in Minecraft game plugin development, game server operation, and website construction in a diversified business.
-    - LiRen Tech's representative works include the rich content tower defense game CannonWar, the BitMountain algorithm competition website, the Watch desktop software, and the Minecraft PvP Professional War server.
-    - The team is represented by light blue and code green, symbolizing a team culture that coexists with logical rationality and humor.
+  - Team Introduction
+  - LiRen Tech is a small team founded by Littlefean and Rutubet on May 1, 2017, with
+    ZTY joining the team later.
+  - With its youthful team atmosphere, emphasis on innovation and creativity, and
+    characteristics of rational thinking and cultural inclusiveness, it stands out
+    in the field of software development.
+  - Not only focuses on developing tool software and games but also engages in Minecraft
+    game plugin development, game server operation, and website construction in a
+    diversified business.
+  - LiRen Tech's representative works include the rich content tower defense game
+    CannonWar, the BitMountain algorithm competition website, the Watch desktop software,
+    and the Minecraft PvP Professional War server.
+  - The team is represented by light blue and code green, symbolizing a team culture
+    that coexists with logical rationality and humor.
 
 settings:
   title: Settings
@@ -79,12 +94,13 @@ settings:
     github: GitHub
     sounds: Sounds
     plugins: Plugins
+    effects: ''
   language:
     title: Language
     options:
       en: English
-      zh-CN: Simplified Chinese
-      zh-TW: Traditional Chinese
+      zh_CN: Simplified Chinese
+      zh_TW: Traditional Chinese
   theme:
     title: Theme
     options:
@@ -158,7 +174,8 @@ settings:
       The height of the cycle space, in pixels
   renderEffect:
     title: Rendering Effect
-    description: Whether to render special effects. If the application is lagging, you can turn this off.
+    description: Whether to render special effects. If the application is lagging,
+      you can turn this off.
   historySize:
     title: History Size
     description: |
@@ -186,7 +203,8 @@ settings:
       Enter `{{time}}` to automatically replace it with the current time, which updates automatically when nodes are created by double-click.
       These can be combined, for example `{{i}}-{{date}}-{{time}}`
   autoSaveWhenClose:
-    title: Automatically save the project file when clicking the close button in the upper right corner of the window
+    title: Automatically save the project file when clicking the close button in the
+      upper right corner of the window
     description: |
       When you close the software, if there are unsaved project files, a prompt will appear asking if you want to save.
       With this option enabled, the project file will be saved automatically when you close the software.
@@ -361,10 +379,13 @@ appMenu:
 startFilePanel:
   title: Select the project file to be automatically loaded on startup
   tips:
-    - "Note: The project file that is automatically loaded at startup will be loaded onto the stage when opened, no manual opening is required."
-    - "Load: Only load this file onto the stage (you can hover transparently to see if the switched file is the one you want)"
-    - "Pin: Switch the current startup file; the icon in the left status represents the current startup file."
-    - "Remove: Only remove the file from the list, it will not affect the file itself."
+  - "Note: The project file that is automatically loaded at startup will be loaded
+    onto the stage when opened, no manual opening is required."
+  - "Load: Only load this file onto the stage (you can hover transparently to see
+    if the switched file is the one you want)"
+  - "Pin: Switch the current startup file; the icon in the left status represents
+    the current startup file."
+  - "Remove: Only remove the file from the list, it will not affect the file itself."
   buttons:
     addFile: Add File
     clearList: Clear List
@@ -395,7 +416,8 @@ keyBinds:
     description: Reset the view zoom level to the standard size
   folderSection:
     title: Toggle Section Folder
-    description: Press to toggle the selected Section folder between collapsed and expanded states
+    description: Press to toggle the selected Section folder between collapsed and
+      expanded states
   reverseEdges:
     title: Reverse Selected Edge Direction
     description: |
