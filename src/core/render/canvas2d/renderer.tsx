@@ -5,6 +5,7 @@ import { Vector } from "../../dataStruct/Vector";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Settings } from "../../service/Settings";
 import { Controller } from "../../service/controller/Controller";
+import { CopyEngine } from "../../service/copyEngine/copyEngine";
 import { sine } from "../../service/effectEngine/mathTools/animateFunctions";
 import { KeyboardOnlyEngine } from "../../service/keyboardOnlyEngine/keyboardOnlyEngine";
 import { StageStyleManager } from "../../service/stageStyle/StageStyleManager";
@@ -535,17 +536,17 @@ export namespace Renderer {
 
   /** 画粘贴板上的信息 */
   function renderClipboard() {
-    if (Stage.copyBoardData.entities.length === 0) {
+    if (CopyEngine.isClipboardEmpty()) {
       return;
     }
     const clipboardBlue = new Color(156, 220, 254, 0.5);
 
     // 粘贴板有内容
     // 获取粘贴板中所有节点的外接矩形
-    if (Stage.copyBoardDataRectangle) {
+    if (CopyEngine.copyBoardDataRectangle) {
       // 画一个原位置
       ShapeRenderer.renderRect(
-        Stage.copyBoardDataRectangle.transformWorld2View(),
+        CopyEngine.copyBoardDataRectangle.transformWorld2View(),
         Color.Transparent,
         new Color(255, 255, 255, 0.5),
         1,
@@ -555,9 +556,9 @@ export namespace Renderer {
         "ctrl+shift+v 原位置叠加粘贴",
         transformWorld2View(
           new Vector(
-            Stage.copyBoardDataRectangle.location.x,
-            Stage.copyBoardDataRectangle.location.y +
-              Stage.copyBoardDataRectangle.size.y +
+            CopyEngine.copyBoardDataRectangle.location.x,
+            CopyEngine.copyBoardDataRectangle.location.y +
+              CopyEngine.copyBoardDataRectangle.size.y +
               20,
           ),
         ),
@@ -567,8 +568,10 @@ export namespace Renderer {
       // 画一个鼠标位置
       ShapeRenderer.renderRect(
         new Rectangle(
-          Stage.copyBoardDataRectangle.location.add(Stage.copyBoardMouseVector),
-          Stage.copyBoardDataRectangle.size,
+          CopyEngine.copyBoardDataRectangle.location.add(
+            CopyEngine.copyBoardMouseVector,
+          ),
+          CopyEngine.copyBoardDataRectangle.size,
         ).transformWorld2View(),
         Color.Transparent,
         clipboardBlue,
@@ -579,11 +582,11 @@ export namespace Renderer {
         "ctrl+v 粘贴到鼠标位置，Esc键清空粘贴板",
         transformWorld2View(
           new Vector(
-            Stage.copyBoardDataRectangle.location.x +
-              Stage.copyBoardMouseVector.x,
-            Stage.copyBoardDataRectangle.location.y +
-              Stage.copyBoardDataRectangle.size.y +
-              Stage.copyBoardMouseVector.y +
+            CopyEngine.copyBoardDataRectangle.location.x +
+              CopyEngine.copyBoardMouseVector.x,
+            CopyEngine.copyBoardDataRectangle.location.y +
+              CopyEngine.copyBoardDataRectangle.size.y +
+              CopyEngine.copyBoardMouseVector.y +
               20,
           ),
         ),
