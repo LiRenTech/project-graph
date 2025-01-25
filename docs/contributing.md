@@ -1,6 +1,12 @@
 # Contributing Guide
 
-## Configure development environment
+## Contribute to translations
+
+[![](https://hosted.weblate.org/widget/project-graph/287x66-black.png)](https://hosted.weblate.org/engage/project-graph/)
+
+[Go to Weblate](https://hosted.weblate.org/engage/project-graph/)
+
+## Contribute to app
 
 ### Install Rust and Node.js
 

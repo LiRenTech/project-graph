@@ -1,5 +1,13 @@
 # 贡献指南
 
+## 贡献翻译
+
+[![](https://hosted.weblate.org/widget/project-graph/287x66-black.png)](https://hosted.weblate.org/engage/project-graph/)
+
+[前往 Weblate 翻译页面](https://hosted.weblate.org/engage/project-graph/)
+
+## 贡献应用代码
+
 ::: details 一键配置开发环境
 
 ```
@@ -24,8 +32,6 @@ xlings install
 > - [更多一键环境配置讨论](https://github.com/LiRenTech/project-graph/issues/139)
 
 :::
-
-## 手动配置开发环境
 
 ### 安装 Rust 和 Node.js
 
