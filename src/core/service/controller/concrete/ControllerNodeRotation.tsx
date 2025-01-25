@@ -87,15 +87,7 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
   } else {
     // 什么都没有按下的情况
     // 看看鼠标当前的位置是否和线接近
-    Stage.hoverEdges = [];
-    for (const edge of StageManager.getLineEdges()) {
-      if (edge.isHiddenBySectionCollapse) {
-        continue;
-      }
-      if (edge.collisionBox.isContainsPoint(worldLocation)) {
-        Stage.hoverEdges.push(edge);
-      }
-    }
+    Stage.mouseInteractionCore.updateByMouseMove(worldLocation);
   }
 };
 

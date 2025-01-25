@@ -14,16 +14,18 @@ ControllerEdgeEdit.mouseDoubleClick = (event: MouseEvent) => {
   if (event.button !== 0) {
     return;
   }
-  if (Stage.hoverEdges.length > 0) {
-    // 编辑边上的文字
-    const user_input = prompt("请输入线上的文字", Stage.hoverEdges[0].text);
-    if (user_input) {
-      for (const edge of Stage.hoverEdges) {
-        edge.rename(user_input);
-      }
-    }
+  const firstHoverEdge = Stage.mouseInteractionCore.firstHoverEdge;
+  if (!firstHoverEdge) {
     return;
   }
+  // 编辑边上的文字
+  const user_input = prompt("请输入线上的文字", firstHoverEdge.text);
+  if (user_input) {
+    for (const edge of Stage.mouseInteractionCore.hoverEdges) {
+      edge.rename(user_input);
+    }
+  }
+  return;
 };
 
 ControllerEdgeEdit.keydown = (event: KeyboardEvent) => {

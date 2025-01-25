@@ -3,7 +3,6 @@ import { autoLayoutMainTick } from "../service/autoLayoutEngine/mainTick";
 import { EffectMachine } from "../service/effectEngine/effectMachine";
 import { KeyboardOnlyEngine } from "../service/keyboardOnlyEngine/keyboardOnlyEngine";
 import { Settings } from "../service/Settings";
-import { LineEdge } from "./stageObject/association/LineEdge";
 import { Section } from "./stageObject/entity/Section";
 import { ControllerCutting } from "../service/controller/concrete/ControllerCutting";
 import { ControllerRectangleSelect } from "../service/controller/concrete/ControllerRectangleSelect";
@@ -12,6 +11,7 @@ import { ContentSearchEngine } from "../service/contentSearchEngine/contentSearc
 import { ControllerDragFile } from "../service/controller/concrete/ControllerDragFile";
 import { AutoSaveEngine } from "../service/autoSaveBackupEngine/autoSaveEngine";
 import { AutoBackupEngine } from "../service/autoSaveBackupEngine/autoBackupEngine";
+import { StageMouseInteractionCore } from "../service/stageMouseInteractionCore/stageMouseInteractionCore";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -76,10 +76,10 @@ export namespace Stage {
   export const connectMachine = ControllerNodeConnection;
 
   /**
-   * 鼠标悬浮的边
+   * 鼠标交互管理器
+   * 用于辅助其他控制器使用
    */
-  // eslint-disable-next-line prefer-const
-  export let hoverEdges: LineEdge[] = [];
+  export const mouseInteractionCore = new StageMouseInteractionCore();
   /** 鼠标悬浮的框 */
   // eslint-disable-next-line prefer-const
   export let hoverSections: Section[] = [];

@@ -16,30 +16,26 @@ ControllerSectionEdit.mouseDoubleClick = (event: MouseEvent) => {
   if (event.button !== 0) {
     return;
   }
-  if (Stage.hoverSections.length > 0) {
-    // 编辑文字
-    const user_input = prompt("请输入文字", Stage.hoverSections[0].text);
-    if (user_input) {
-      for (const section of Stage.hoverSections) {
-        section.rename(user_input);
-      }
-    }
+  const firstHoverSection = Stage.mouseInteractionCore.firstHoverSection;
+  if (!firstHoverSection) {
     return;
   }
+
+  // 编辑文字
+  const user_input = prompt("请输入文字", firstHoverSection.text);
+  if (user_input) {
+    for (const section of Stage.mouseInteractionCore.hoverSections) {
+      section.rename(user_input);
+    }
+  }
+  return;
 };
 
 ControllerSectionEdit.mousemove = (event: MouseEvent) => {
   const worldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  Stage.hoverSections = [];
-  const sections = StageManager.getSections();
-
-  for (const section of sections) {
-    if (section.collisionBox.isContainsPoint(worldLocation)) {
-      Stage.hoverSections.push(section);
-    }
-  }
+  Stage.mouseInteractionCore.updateByMouseMove(worldLocation);
 };
 
 ControllerSectionEdit.keydown = (event: KeyboardEvent) => {
@@ -52,7 +48,7 @@ ControllerSectionEdit.keydown = (event: KeyboardEvent) => {
       return;
     }
 
-    const user_input = prompt("请输入线上的文字", "");
+    const user_input = prompt("请输入Section文字", "");
     if (user_input) {
       for (const section of StageManager.getSections()) {
         if (section.isSelected) {
