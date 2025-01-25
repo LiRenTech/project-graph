@@ -131,7 +131,7 @@ export namespace StageDumper {
     } else if (entity instanceof UrlNode) {
       return dumpUrlNode(entity);
     } else {
-      throw new Error(`Unknown entity type: ${entity}`);
+      throw new Error(`未知的实体类型: ${entity}`);
     }
   }
 

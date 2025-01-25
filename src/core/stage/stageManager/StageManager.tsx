@@ -270,6 +270,7 @@ export namespace StageManager {
    */
   export function updateReferences() {
     for (const entity of getEntities()) {
+      // 实体是可连接类型
       if (entity instanceof ConnectableEntity) {
         for (const edge of getAssociations()) {
           if (edge instanceof Edge) {
@@ -288,9 +289,9 @@ export namespace StageManager {
         // 更新孩子数组，并调整位置和大小
         const newChildList = [];
 
-        for (const childEntity of entity.children) {
-          if (entities.hasId(childEntity.uuid)) {
-            const childObject = entities.getById(childEntity.uuid);
+        for (const childUUID of entity.childrenUUIDs) {
+          if (entities.hasId(childUUID)) {
+            const childObject = entities.getById(childUUID);
             if (childObject) {
               newChildList.push(childObject);
             }

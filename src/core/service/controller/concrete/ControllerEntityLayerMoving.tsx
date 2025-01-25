@@ -49,7 +49,7 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
   const delta = mouseLocation.subtract(
     Rectangle.getBoundingRectangle(rectangles).center,
   );
-  // 3 移动所有选中的实体
+  // 3 移动所有选中的实体 的位置
   StageManager.moveEntities(delta);
 
   // 改变层级

@@ -16,16 +16,13 @@ export namespace StageSectionInOutManager {
         // 自己不能包自己
         continue;
       }
-
+      section.childrenUUIDs.push(entity.uuid);
       section.children.push(entity);
     }
     StageManager.updateReferences();
   }
 
   export function goOutSection(entities: Entity[], section: Section) {
-    // const newChildren = section.children.filter(
-    //   (child) => !entities.includes(child),
-    // );
     const newChildren = [];
     for (const child of section.children) {
       if (!entities.includes(child)) {
@@ -33,6 +30,13 @@ export namespace StageSectionInOutManager {
       }
     }
     section.children = newChildren;
+    const newChildrenUUIDs = [];
+    for (const childUUID of section.childrenUUIDs) {
+      if (!entities.some((entity) => entity.uuid === childUUID)) {
+        newChildrenUUIDs.push(childUUID);
+      }
+    }
+    section.childrenUUIDs = newChildrenUUIDs;
     StageManager.updateReferences();
   }
 }

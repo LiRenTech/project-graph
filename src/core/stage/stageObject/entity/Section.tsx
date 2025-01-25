@@ -48,7 +48,14 @@ export class Section extends ConnectableEntity {
 
   color: Color = Color.Transparent;
   text: string;
+
+  /**
+   * 此数组要跟随 childrenUUIDs 变化而变化
+   * 字符串数组才是老大
+   */
   children: Entity[];
+  childrenUUIDs: string[];
+
   /** 是否是折叠状态 */
   isCollapsed: boolean;
   /** 是否是隐藏状态 */
@@ -90,13 +97,15 @@ export class Section extends ConnectableEntity {
     this.isHidden = isHidden;
     this.isCollapsed = isCollapsed;
     this.details = details;
+    this.childrenUUIDs = children;
     this.children = StageManager.getEntitiesByUUIDs(children);
     // 一定要放在最后
     this.adjustLocationAndSize();
   }
 
   isHaveChildrenByUUID(uuid: string): boolean {
-    return this.children.some((child) => child.uuid === uuid);
+    return this.childrenUUIDs.includes(uuid);
+    // return this.children.some((child) => child.uuid === uuid);
   }
 
   /**
