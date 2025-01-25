@@ -84,7 +84,7 @@ settings:
     options:
       en: English
       zh_CN: Simplified Chinese
-      zh-TW: Traditional Chinese
+      zh_TW: Traditional Chinese
   theme:
     title: Theme
     options:

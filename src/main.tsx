@@ -398,12 +398,12 @@ async function loadLanguageFiles() {
     // debug: import.meta.env.DEV,
     debug: false,
     defaultNS: "",
-    fallbackLng: "zh-CN",
+    fallbackLng: "zh_CN",
     saveMissing: false,
     resources: {
       en: await import("./locales/en.yml").then((m) => m.default),
-      "zh-CN": await import("./locales/zh-CN.yml").then((m) => m.default),
-      "zh-TW": await import("./locales/zh-TW.yml").then((m) => m.default),
+      zh_CN: await import("./locales/zh_CN.yml").then((m) => m.default),
+      zh_TW: await import("./locales/zh_TW.yml").then((m) => m.default),
     },
   });
 }
