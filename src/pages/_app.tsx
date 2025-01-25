@@ -213,11 +213,11 @@ export default function App() {
   }, [maxmized]);
 
   React.useEffect(() => {
-    Stage.isAutoSavePaused = isStartFilePanelOpen;
+    Stage.autoSaveEngine.setAutoSavePaused(isStartFilePanelOpen);
   }, [isStartFilePanelOpen]);
 
   React.useEffect(() => {
-    Stage.isAutoSavePaused = isAiPanelOpen;
+    Stage.autoSaveEngine.setAutoSavePaused(isAiPanelOpen);
   }, [isAiPanelOpen]);
 
   return (

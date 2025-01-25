@@ -11,14 +11,18 @@ export class AutoSaveEngine {
   private lastAutoSaveTime = performance.now();
   private autoSaveInterval = 10 * 1000; // 10s
   private autoSave = true;
+  /**
+   * 自动保存是否处于暂停状态
+   * 主要用于防止自动保存出bug，产生覆盖文件的问题
+   */
   private isAutoSavePaused = false;
 
-  pauseAutoSave() {
-    this.isAutoSavePaused = true;
+  public setAutoSavePaused(isPaused: boolean) {
+    this.isAutoSavePaused = isPaused;
   }
 
-  resumeAutoSave() {
-    this.isAutoSavePaused = false;
+  public toString() {
+    return `isAutoSavePaused: ${this.isAutoSavePaused}, autoSaveInterval: ${this.autoSaveInterval}, autoSave: ${this.autoSave}`;
   }
 
   init() {

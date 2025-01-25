@@ -36,7 +36,7 @@ export default function RecentFilesPanel() {
 
   useEffect(() => {
     updateRecentFiles();
-    Stage.isAutoSavePaused = isRecentFilePanelOpen;
+    Stage.autoSaveEngine.setAutoSavePaused(isRecentFilePanelOpen);
   }, [isRecentFilePanelOpen]);
 
   useEffect(() => {

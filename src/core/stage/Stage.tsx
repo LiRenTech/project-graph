@@ -1,24 +1,19 @@
 import { family } from "@tauri-apps/plugin-os";
 
-import { PathString } from "../../utils/pathString";
 import { autoComputeEngineTick } from "../service/autoComputeEngine/mainTick";
 import { autoLayoutMainTick } from "../service/autoLayoutEngine/mainTick";
-import { Controller } from "../service/controller/Controller";
-import { PointDashEffect } from "../service/effectEngine/concrete/PointDashEffect";
 import { EffectMachine } from "../service/effectEngine/effectMachine";
 import { KeyboardOnlyEngine } from "../service/keyboardOnlyEngine/keyboardOnlyEngine";
 import { Settings } from "../service/Settings";
-import { StageDumper } from "./StageDumper";
-import { StageManager } from "./stageManager/StageManager";
 import { LineEdge } from "./stageObject/association/LineEdge";
 import { Section } from "./stageObject/entity/Section";
-import { StageSaveManager } from "./StageSaveManager";
 import { ControllerCutting } from "../service/controller/concrete/ControllerCutting";
 import { ControllerRectangleSelect } from "../service/controller/concrete/ControllerRectangleSelect";
 import { ControllerNodeConnection } from "../service/controller/concrete/ControllerNodeConnection";
 import { ContentSearchEngine } from "../service/contentSearchEngine/contentSearchEngine";
 import { ControllerDragFile } from "../service/controller/concrete/ControllerDragFile";
 import { AutoSaveEngine } from "../service/autoSaveBackupEngine/autoSaveEngine";
+import { AutoBackupEngine } from "../service/autoSaveBackupEngine/autoBackupEngine";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -110,44 +105,21 @@ export namespace Stage {
    */
   export const dragFileMachine = ControllerDragFile;
 
+  /**
+   * 自动保机
+   */
   export const autoSaveEngine = new AutoSaveEngine();
   /**
-   * 自动保存是否处于暂停状态
-   * 主要用于防止自动保存出bug，产生覆盖文件的问题
+   * 自动备份功能
    */
-  // eslint-disable-next-line prefer-const
-  export let isAutoSavePaused = false;
+  export const autoBackupEngine = new AutoBackupEngine();
 
-  let tickNumber = 0;
   /**
    * 逻辑总入口
    * 该函数在上游被频繁调用
    */
   export function logicTick() {
-    if (
-      Stage.connectMachine.connectFromEntities.length > 0 &&
-      Controller.lastMoveLocation
-    ) {
-      let connectTargetNode = null;
-      for (const node of StageManager.getConnectableEntity()) {
-        if (node.collisionBox.isContainsPoint(Controller.lastMoveLocation)) {
-          connectTargetNode = node;
-          break;
-        }
-      }
-      if (connectTargetNode === null) {
-        // 如果鼠标位置没有和任何节点相交
-        effectMachine.addEffect(
-          PointDashEffect.fromMouseEffect(
-            Controller.lastMoveLocation,
-            connectMachine.connectFromEntities.length * 5,
-          ),
-        );
-      } else {
-        // 画一条像吸住了的线
-      }
-    }
-
+    connectMachine.mainTick();
     // 特效逻辑
     effectMachine.logicTick();
 
@@ -158,11 +130,12 @@ export namespace Stage {
     // 自动保存功能
     autoSaveEngine.mainTick();
     // 自动备份功能
-    autoBackupTick();
+    autoBackupEngine.mainTick();
 
     KeyboardOnlyEngine.logicTick();
     tickNumber++;
   }
+  let tickNumber = 0;
 
   /** 当前鼠标右键拖拽空白部分的操作 */
   export let mouseRightDragBackground = "cut";
@@ -170,50 +143,12 @@ export namespace Stage {
 
   export function init() {
     autoSaveEngine.init();
-
-    Settings.watch("autoBackup", (value) => {
-      autoBackup = value;
-    });
-    Settings.watch("autoBackupInterval", (value) => {
-      autoBackupInterval = value * 1000; // s to ms
-    });
-    Settings.watch("autoBackup", (value) => {
-      autoBackup = value;
-    });
-    Settings.watch("autoBackupDraftPath", (value) => {
-      autoBackupDraftPath = value;
-    });
+    autoBackupEngine.init();
     Settings.watch("mouseRightDragBackground", (value) => {
       mouseRightDragBackground = value;
     });
     Settings.watch("enableDragAutoAlign", (value) => {
       enableDragAutoAlign = value;
     });
-  }
-
-  let lastAutoBackupTime = performance.now();
-  let autoBackup = false;
-  let autoBackupInterval = 60_000; // ms
-  let autoBackupDraftPath = "";
-
-  function autoBackupTick() {
-    if (!autoBackup) {
-      return;
-    }
-    // 自动备份功能
-    const now = performance.now();
-    if (now - lastAutoBackupTime > autoBackupInterval) {
-      if (Stage.Path.isDraft()) {
-        const backupPath = `${autoBackupDraftPath}${Stage.Path.getSep()}${PathString.getTime()}.json`;
-        StageSaveManager.backupHandle(backupPath, StageDumper.dump());
-      } else {
-        StageSaveManager.backupHandleWithoutCurrentPath(
-          StageDumper.dump(),
-          false,
-        );
-      }
-      // 更新时间
-      lastAutoBackupTime = now;
-    }
   }
 }

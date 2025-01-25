@@ -707,7 +707,7 @@ export namespace Renderer {
       `delta: ${deltaTime.toFixed(2)}`,
       `Controller.isViewMoveByClickMiddle: ${Controller.isViewMoveByClickMiddle}`,
       `path: ${Stage.Path.getFilePath()}`,
-      `autoSavePaused: ${Stage.isAutoSavePaused}`,
+      `autoSave: ${Stage.autoSaveEngine.toString()}`,
       `isEnableEntityCollision: ${StageManager.isEnableEntityCollision}`,
       // `tags: ${StageManager.TagOptions.getTagUUIDs().toString()}`,
     ];

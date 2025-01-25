@@ -13,6 +13,7 @@ import { CircleFlameEffect } from "../../effectEngine/concrete/CircleFlameEffect
 import { RectangleNoteEffect } from "../../effectEngine/concrete/RectangleNoteEffect";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { PointDashEffect } from "../../effectEngine/concrete/PointDashEffect";
 
 class ControllerNodeConnectionClass extends ControllerClass {
   /**
@@ -215,6 +216,28 @@ class ControllerNodeConnectionClass extends ControllerClass {
   private addConnectEffect(from: ConnectableEntity, to: ConnectableEntity) {
     for (const effect of EdgeRenderer.getConnectedEffects(from, to)) {
       Stage.effectMachine.addEffect(effect);
+    }
+  }
+
+  public mainTick() {
+    // 产生连接线端点的粒子特效
+    if (this.connectFromEntities.length > 0 && Controller.lastMoveLocation) {
+      let connectTargetNode = null;
+      for (const node of StageManager.getConnectableEntity()) {
+        if (node.collisionBox.isContainsPoint(Controller.lastMoveLocation)) {
+          connectTargetNode = node;
+          break;
+        }
+      }
+      if (connectTargetNode === null) {
+        // 如果鼠标位置没有和任何节点相交
+        Stage.effectMachine.addEffect(
+          PointDashEffect.fromMouseEffect(
+            Controller.lastMoveLocation,
+            this.connectFromEntities.length * 5,
+          ),
+        );
+      }
     }
   }
 }
