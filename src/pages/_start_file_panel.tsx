@@ -278,24 +278,24 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
                 </td>
               )}
               <td className="flex justify-center">
-                <IconButton
+                <button
                   className="mx-0.5 px-2 py-1"
                   onClick={onLoadCurrentStartFile(file.path)}
                 >
                   <HardDriveDownload />
-                </IconButton>
-                <IconButton
+                </button>
+                <button
                   className="mx-0.5 px-2 py-1"
                   onClick={onSetCurrentStartFile(file.path)}
                 >
                   <Pin />
-                </IconButton>
-                <IconButton
+                </button>
+                <button
                   className="mx-0.5 px-2 py-1"
                   onClick={onRemoveFile(file.path)}
                 >
                   <Delete />
-                </IconButton>
+                </button>
               </td>
             </tr>
           ))}
