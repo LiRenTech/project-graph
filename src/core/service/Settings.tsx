@@ -1,4 +1,5 @@
 import { Store } from "@tauri-apps/plugin-store";
+import { useEffect, useState } from "react";
 import { createStore } from "../../utils/store";
 
 /**
@@ -171,5 +172,24 @@ export namespace Settings {
     }
     callbacks[key].push(callback);
     get(key).then((value) => callback(value));
+  }
+
+  /**
+   * react hook
+   */
+  export function use<K extends keyof Settings>(
+    key: K,
+  ): [Settings[K], (value: Settings[K]) => void] {
+    const [value, setValue] = useState<Settings[K]>(defaultSettings[key]);
+
+    useEffect(() => {
+      get(key).then(setValue);
+    }, []);
+
+    useEffect(() => {
+      set(key, value);
+    }, [value]);
+
+    return [value, setValue];
   }
 }
