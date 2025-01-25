@@ -32,7 +32,7 @@ export class AutoBackupEngine {
     // 自动备份功能
     const now = performance.now();
     if (now - this.lastAutoBackupTime > this.autoBackupInterval) {
-      if (Stage.Path.isDraft()) {
+      if (Stage.path.isDraft()) {
         const backupPath = `${this.autoBackupDraftPath}${PathString.getSep()}${PathString.getTime()}.json`;
         StageSaveManager.backupHandle(backupPath, StageDumper.dump());
       } else {

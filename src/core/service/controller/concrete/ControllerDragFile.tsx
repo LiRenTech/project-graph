@@ -189,7 +189,7 @@ function dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
     // data:image/png;base64,iVBORw0KGgoAAAANS...
     // 在这里处理读取到的内容
     const imageUUID = uuidv4();
-    const folderPath = PathString.dirPath(Stage.Path.getFilePath());
+    const folderPath = PathString.dirPath(Stage.path.getFilePath());
     writeFileBase64(
       `${folderPath}${PathString.getSep()}${imageUUID}.png`,
       fileContent.split(",")[1],

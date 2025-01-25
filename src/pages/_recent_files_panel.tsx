@@ -46,7 +46,7 @@ export default function RecentFilesPanel() {
 
   const onCheckoutFile = (file: RecentFileManager.RecentFile) => {
     return () => {
-      if (currentFile === Stage.Path.draftName) {
+      if (currentFile === Stage.path.draftName) {
         Dialog.show({
           title: "真的要切换吗？",
           content: "您现在的新建草稿没有保存，是否要切换项目？",

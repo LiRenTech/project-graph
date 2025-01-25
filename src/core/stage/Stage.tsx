@@ -3,7 +3,6 @@ import { autoLayoutMainTick } from "../service/autoLayoutEngine/mainTick";
 import { EffectMachine } from "../service/effectEngine/effectMachine";
 import { KeyboardOnlyEngine } from "../service/keyboardOnlyEngine/keyboardOnlyEngine";
 import { Settings } from "../service/Settings";
-import { Section } from "./stageObject/entity/Section";
 import { ControllerCutting } from "../service/controller/concrete/ControllerCutting";
 import { ControllerRectangleSelect } from "../service/controller/concrete/ControllerRectangleSelect";
 import { ControllerNodeConnection } from "../service/controller/concrete/ControllerNodeConnection";
@@ -12,6 +11,7 @@ import { ControllerDragFile } from "../service/controller/concrete/ControllerDra
 import { AutoSaveEngine } from "../service/autoSaveBackupEngine/autoSaveEngine";
 import { AutoBackupEngine } from "../service/autoSaveBackupEngine/autoBackupEngine";
 import { StageMouseInteractionCore } from "../service/stageMouseInteractionCore/stageMouseInteractionCore";
+import { StageFilePathManager } from "../service/stageFilePathManager";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -23,38 +23,9 @@ import { StageMouseInteractionCore } from "../service/stageMouseInteractionCore/
  */
 export namespace Stage {
   /**
-   * 此Path存在的意义为摆脱状态管理只能在组件函数中的限制
+   * 路径管理器
    */
-  export namespace Path {
-    let currentPath = "Project Graph";
-    export const draftName = "Project Graph";
-
-    /**
-     * 是否是草稿
-     * @returns
-     */
-    export function isDraft() {
-      return currentPath === "Project Graph";
-    }
-
-    /**
-     * 此函数唯一的调用：只能在app.tsx的useEffect检测函数中调用
-     * 为了同步状态管理中的路径。
-     * @param path
-     */
-    export function setPathInEffect(path: string) {
-      currentPath = path;
-    }
-
-    /**
-     * 提供一个函数供外部调用，获取当前路径
-     * @returns
-     */
-    export function getFilePath() {
-      return currentPath;
-    }
-  }
-
+  export const path = new StageFilePathManager();
   /**
    * 特效机
    */
@@ -80,9 +51,6 @@ export namespace Stage {
    * 用于辅助其他控制器使用
    */
   export const mouseInteractionCore = new StageMouseInteractionCore();
-  /** 鼠标悬浮的框 */
-  // eslint-disable-next-line prefer-const
-  export let hoverSections: Section[] = [];
 
   /**
    * 内容搜索引擎

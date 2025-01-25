@@ -38,10 +38,10 @@ export namespace StageSaveManager {
     resetHistory = true,
     addFlashEffect = true,
   ) {
-    if (Stage.Path.isDraft()) {
+    if (Stage.path.isDraft()) {
       throw new Error("当前文档的状态为草稿，请您先保存为文件");
     }
-    await writeTextFile(Stage.Path.getFilePath(), JSON.stringify(data));
+    await writeTextFile(Stage.path.getFilePath(), JSON.stringify(data));
     if (addFlashEffect) {
       Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
     }
@@ -82,13 +82,13 @@ export namespace StageSaveManager {
     data: Serialized.File,
     addFlashEffect = true,
   ) {
-    if (Stage.Path.isDraft()) {
+    if (Stage.path.isDraft()) {
       throw new Error("当前文档的状态为草稿，无法备份");
     }
     // 不能有冒号，空格，斜杠
     const dateTime = PathString.getTime();
 
-    const backupPath = `${Stage.Path.getFilePath()}.${dateTime}.backup`;
+    const backupPath = `${Stage.path.getFilePath()}.${dateTime}.backup`;
 
     await writeTextFile(backupPath, JSON.stringify(data));
     if (addFlashEffect) {

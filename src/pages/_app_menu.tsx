@@ -105,7 +105,7 @@ export default function AppMenu({
         //空项目不需要保存
         StageManager.destroy();
         openFileByDialogWindow();
-      } else if (Stage.Path.isDraft()) {
+      } else if (Stage.path.isDraft()) {
         Dialog.show({
           title: "草稿未保存",
           content: "当前草稿未保存，是否保存？",
@@ -234,7 +234,7 @@ export default function AppMenu({
   };
   const onBackup = async () => {
     try {
-      if (Stage.Path.isDraft()) {
+      if (Stage.path.isDraft()) {
         const autoBackupDraftPath = await Settings.get("autoBackupDraftPath");
         const backupPath = `${autoBackupDraftPath}${PathString.getSep()}${PathString.getTime()}.json`;
         await StageSaveManager.backupHandle(backupPath, StageDumper.dump());

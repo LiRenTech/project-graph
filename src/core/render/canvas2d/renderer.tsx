@@ -706,7 +706,7 @@ export namespace Renderer {
       `fps: ${fps}`,
       `delta: ${deltaTime.toFixed(2)}`,
       `Controller.isViewMoveByClickMiddle: ${Controller.isViewMoveByClickMiddle}`,
-      `path: ${Stage.Path.getFilePath()}`,
+      `path: ${Stage.path.getFilePath()}`,
       `autoSave: ${Stage.autoSaveEngine.toString()}`,
       `isEnableEntityCollision: ${StageManager.isEnableEntityCollision}`,
       // `tags: ${StageManager.TagOptions.getTagUUIDs().toString()}`,

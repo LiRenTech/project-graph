@@ -117,7 +117,7 @@ export default function App() {
     getCurrentWindow().onCloseRequested(async (e) => {
       e.preventDefault();
       try {
-        if (Stage.Path.getFilePath() === Stage.Path.draftName) {
+        if (Stage.path.getFilePath() === Stage.path.draftName) {
           await Dialog.show({
             title: "真的要关闭吗？",
             content: "您现在的新建草稿没有保存，是否要关闭项目？",
@@ -191,14 +191,14 @@ export default function App() {
    * 监控路径变化的地方
    */
   React.useEffect(() => {
-    if (file === Stage.Path.draftName) {
-      getCurrentWindow().setTitle(Stage.Path.draftName);
-      document.title = Stage.Path.draftName;
-      Stage.Path.setPathInEffect(Stage.Path.draftName);
+    if (file === Stage.path.draftName) {
+      getCurrentWindow().setTitle(Stage.path.draftName);
+      document.title = Stage.path.draftName;
+      Stage.path.setPathInEffect(Stage.path.draftName);
     } else {
       getCurrentWindow().setTitle(`${filename} - Project Graph`);
       document.title = `${filename} - Project Graph`;
-      Stage.Path.setPathInEffect(file);
+      Stage.path.setPathInEffect(file);
     }
   }, [file]);
 

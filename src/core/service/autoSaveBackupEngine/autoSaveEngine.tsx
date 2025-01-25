@@ -45,7 +45,7 @@ export class AutoSaveEngine {
     // 自动保存功能
     const now = performance.now();
     if (now - this.lastAutoSaveTime > this.autoSaveInterval) {
-      if (Stage.Path.isDraft()) {
+      if (Stage.path.isDraft()) {
         // 自动保存无法对草稿进行，因为草稿没有路径
       } else {
         // 特殊情况，如果没有节点，则不保存

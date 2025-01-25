@@ -96,9 +96,9 @@ export class ImageNode extends ConnectableEntity {
     ]);
     this.state = "loading";
     // 初始化创建的时候，开始获取base64String
-    if (!Stage.Path.isDraft()) {
+    if (!Stage.path.isDraft()) {
       this.updateBase64StringByPath(
-        PathString.dirPath(Stage.Path.getFilePath()),
+        PathString.dirPath(Stage.path.getFilePath()),
       );
     } else {
       // 一般只有在粘贴板粘贴时和初次打开文件时才调用这里
@@ -106,7 +106,7 @@ export class ImageNode extends ConnectableEntity {
 
       setTimeout(() => {
         this.updateBase64StringByPath(
-          PathString.dirPath(Stage.Path.getFilePath()),
+          PathString.dirPath(Stage.path.getFilePath()),
         );
       }, 1000);
     }
@@ -164,7 +164,7 @@ export class ImageNode extends ConnectableEntity {
    * 刷新，这个方法用于重新从路径中加载图片
    */
   public refresh() {
-    this.updateBase64StringByPath(PathString.dirPath(Stage.Path.getFilePath()));
+    this.updateBase64StringByPath(PathString.dirPath(Stage.path.getFilePath()));
   }
 
   public scaleUpdate(scaleDiff: number) {
