@@ -83,7 +83,7 @@ settings:
     title: Language
     options:
       en: English
-      zh-CN: Simplified Chinese
+      zh_CN: Simplified Chinese
       zh-TW: Traditional Chinese
   theme:
     title: Theme

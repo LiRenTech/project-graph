@@ -71,7 +71,7 @@ settings:
     title: 語言
     options:
       en: 英文
-      zh-CN: 简体中文
+      zh_CN: 简体中文
       zh-TW: 繁體中文
   theme:
     title: 主題顏色
