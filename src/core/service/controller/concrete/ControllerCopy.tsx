@@ -43,7 +43,6 @@ ControllerCopy.keydown = (event: KeyboardEvent) => {
     if (Controller.pressingKeySet.has("shift")) {
       CopyEngine.pasteWithOriginLocation();
     } else {
-      console.log("paste");
       CopyEngine.paste();
     }
   }

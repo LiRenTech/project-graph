@@ -1,8 +1,6 @@
 import { family } from "@tauri-apps/plugin-os";
 
-import { Serialized } from "../../types/node";
 import { PathString } from "../../utils/pathString";
-import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { autoComputeEngineTick } from "../service/autoComputeEngine/mainTick";
 import { autoLayoutMainTick } from "../service/autoLayoutEngine/mainTick";
@@ -105,29 +103,6 @@ export namespace Stage {
    * 内容搜索引擎
    */
   export const contentSearchEngine = new ContentSearchEngine();
-
-  /**
-   * 粘贴板数据
-   */
-  // eslint-disable-next-line prefer-const
-  export let copyBoardData: Serialized.File = {
-    version: StageDumper.latestVersion,
-    entities: [],
-    associations: [],
-    tags: [],
-  };
-  /**
-   * 粘贴板内容上的外接矩形
-   * 当他为null时，表示没有粘贴板数据
-   */
-  // eslint-disable-next-line prefer-const
-  export let copyBoardDataRectangle: Rectangle | null = null;
-  /**
-   * 表示从粘贴板外接矩形的矩形中心，到鼠标当前位置的向量
-   * 用于计算即将粘贴的位置
-   */
-  // eslint-disable-next-line prefer-const
-  export let copyBoardMouseVector: Vector = Vector.getZero();
 
   /**
    * 当前是否是拖拽文件入窗口的状态

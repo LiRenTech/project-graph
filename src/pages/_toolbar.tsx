@@ -45,6 +45,7 @@ import { Popup } from "../utils/popup";
 // import { PathString } from "../utils/pathString";
 import { ColorManager } from "../core/service/ColorManager";
 import ColorManagerPanel from "./_color_manager_panel";
+import { CopyEngine } from "../core/service/copyEngine/copyEngine";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -279,7 +280,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
     setSsHaveSelectedNode(StageManager.selectedNodeCount > 0);
     setSsHaveSelectedNodeOverTwo(StageManager.selectedNodeCount > 1);
     setSsHaveSelectedEdge(StageManager.selectedEdgeCount > 0);
-    setIsCopyClearShow(Stage.copyBoardData.entities.length > 0);
+    setIsCopyClearShow(!CopyEngine.isClipboardEmpty());
   };
   useEffect(() => {
     update();
@@ -384,7 +385,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             description="清空粘贴板内容"
             icon={<ClipboardX />}
             handleFunction={() => {
-              StageManager.clearClipboard();
+              CopyEngine.clearCopyBoardData();
             }}
           />
         )}

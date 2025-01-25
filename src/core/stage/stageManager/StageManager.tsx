@@ -8,7 +8,6 @@ import { Renderer } from "../../render/canvas2d/renderer";
 import { Settings } from "../../service/Settings";
 import { Camera } from "../Camera";
 import { Stage } from "../Stage";
-import { StageDumper } from "../StageDumper";
 import { CublicCatmullRomSplineEdge } from "../stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "../stageObject/association/LineEdge";
 import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
@@ -945,15 +944,6 @@ export namespace StageManager {
   ) {
     StageSerializedAdder.addSerializedData(serializedData, diffLocation);
     StageHistoryManager.recordStep();
-  }
-
-  export function clearClipboard() {
-    Stage.copyBoardData = {
-      version: StageDumper.latestVersion,
-      entities: [],
-      associations: [],
-      tags: [],
-    };
   }
 
   export function generateNodeByText(

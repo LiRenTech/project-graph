@@ -593,7 +593,7 @@ export namespace Renderer {
         12 * Camera.currentScale,
         clipboardBlue,
       );
-      for (const entity of Stage.copyBoardData.entities) {
+      for (const entity of CopyEngine.copyBoardData.entities) {
         if (entity.type === "core:connect_point") {
           ShapeRenderer.renderCircle(
             transformWorld2View(new Vector(...entity.location)),
@@ -605,7 +605,9 @@ export namespace Renderer {
         } else {
           ShapeRenderer.renderRect(
             new Rectangle(
-              new Vector(...entity.location).add(Stage.copyBoardMouseVector),
+              new Vector(...entity.location).add(
+                CopyEngine.copyBoardMouseVector,
+              ),
               new Vector(...entity.size),
             ).transformWorld2View(),
             Color.Transparent,
@@ -687,7 +689,7 @@ export namespace Renderer {
       `Stage.warningEdges: ${Stage.cuttingMachine.warningEdges.length}`,
       `ConnectFromNodes: ${Stage.connectMachine.connectFromEntities}`,
       `lastSelectedNode: ${Controller.lastSelectedEntityUUID.size}`,
-      `粘贴板: ${JSON.stringify(Stage.copyBoardData)}`,
+      `粘贴板: ${JSON.stringify(CopyEngine.copyBoardData)}`,
       `历史: ${StageHistoryManager.statusText()}`,
       `fps: ${fps}`,
       `delta: ${deltaTime.toFixed(2)}`,
