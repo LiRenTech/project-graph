@@ -15,7 +15,6 @@ ControllerCopy.mousemove = (event: MouseEvent) => {
   const worldLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
-  // let mouseLocation = new Vector(0, 0);
 
   // 移动时候
   if (CopyEngine.copyBoardDataRectangle) {
@@ -41,6 +40,11 @@ ControllerCopy.keydown = (event: KeyboardEvent) => {
     CopyEngine.copy();
   } else if (key === "v" && Controller.pressingKeySet.has("control")) {
     // 粘贴
-    CopyEngine.pasteWithOriginLocation();
+    if (Controller.pressingKeySet.has("shift")) {
+      CopyEngine.pasteWithOriginLocation();
+    } else {
+      console.log("paste");
+      CopyEngine.paste();
+    }
   }
 };

@@ -100,6 +100,10 @@ export namespace StageManager {
     return result;
   }
 
+  /**
+   * 获取场上所有的实体
+   * @returns
+   */
   export function getEntities(): Entity[] {
     return entities.valuesToArray();
   }

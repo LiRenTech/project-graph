@@ -18,10 +18,12 @@ export class CublicCatmullRomSplineEdge extends Edge {
   protected _source: ConnectableEntity;
   protected _target: ConnectableEntity;
 
-  private alpha = 0.5;
-  private tension = 0;
+  public alpha = 0.5;
+  public tension = 0;
   private controlPoints: Vector[] = [];
-
+  public getControlPoints(): Vector[] {
+    return this.controlPoints;
+  }
   private _collisionBox: CollisionBox;
 
   get collisionBox(): CollisionBox {

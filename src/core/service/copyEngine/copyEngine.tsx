@@ -57,6 +57,7 @@ export namespace CopyEngine {
    * 用户按下了ctrl+c，将当前选中的节点复制到粘贴板
    */
   export function copy() {
+    // 获取所有选中的实体
     const entities: Entity[] = [];
     for (const entity of StageManager.getEntities()) {
       if (entity.isSelected) {
@@ -86,6 +87,7 @@ export namespace CopyEngine {
     if (isClipboardEmpty()) {
       readClipboardItems(Renderer.transformView2World(MouseLocation.vector()));
     } else {
+      console.log(copyBoardMouseVector);
       StageSerializedAdder.addSerializedData(
         copyBoardData,
         copyBoardMouseVector,
