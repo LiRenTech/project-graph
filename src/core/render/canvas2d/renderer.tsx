@@ -359,7 +359,7 @@ export namespace Renderer {
 
   /** 拖拽文件进入窗口时的提示效果 */
   function renderDraggingFileTips() {
-    if (Stage.isDraggingFile) {
+    if (Stage.dragFileMachine.isDraggingFile) {
       ShapeRenderer.renderRect(
         Renderer.getCoverWorldRectangle().transformWorld2View(),
         new Color(0, 0, 0, 0.5),
@@ -367,7 +367,7 @@ export namespace Renderer {
         1,
       );
       ShapeRenderer.renderCircle(
-        transformWorld2View(Stage.draggingLocation),
+        transformWorld2View(Stage.dragFileMachine.draggingLocation),
         100,
         Color.Transparent,
         Color.White,

@@ -5,6 +5,14 @@ import { Vector } from "../../dataStruct/Vector";
  */
 export class ControllerClassDragFile {
   constructor() {}
+  /**
+   * 当前是否是拖拽文件入窗口的状态
+   */
+  isDraggingFile = false;
+  /**
+   * 当前鼠标所在的世界坐标
+   */
+  draggingLocation = Vector.getZero();
 
   public lastMoveLocation: Vector = Vector.getZero();
 

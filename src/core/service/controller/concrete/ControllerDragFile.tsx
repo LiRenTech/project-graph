@@ -12,12 +12,6 @@ import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { TextRiseEffect } from "../../effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../effectEngine/concrete/ViewFlashEffect";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
-// import { listen } from "@tauri-apps/api/event";
-
-// listen("tauri://file-drop", (event) => {
-//   const files = event.payload;
-//
-// });
 
 /**
  * BUG: 始终无法触发文件拖入事件
@@ -31,9 +25,9 @@ export const ControllerDragFile = new ControllerClassDragFile();
 ControllerDragFile.dragEnter = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
-  Stage.isDraggingFile = true;
+  ControllerDragFile.isDraggingFile = true;
   Stage.effectMachine.addEffect(new TextRiseEffect("正在拖入文件"));
-  Stage.draggingLocation = Renderer.transformView2World(
+  ControllerDragFile.draggingLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
 };
@@ -46,7 +40,7 @@ ControllerDragFile.dragEnter = (event: DragEvent) => {
 ControllerDragFile.dragOver = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
-  Stage.draggingLocation = Renderer.transformView2World(
+  ControllerDragFile.draggingLocation = Renderer.transformView2World(
     new Vector(event.clientX, event.clientY),
   );
 };
@@ -94,13 +88,13 @@ ControllerDragFile.drop = (event: DragEvent) => {
       }
     }
   }
-  Stage.isDraggingFile = false;
+  ControllerDragFile.isDraggingFile = false;
 };
 
 ControllerDragFile.dragLeave = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
-  Stage.isDraggingFile = false;
+  ControllerDragFile.isDraggingFile = false;
 };
 
 function readFileText(file: File): Promise<string> {

@@ -1,7 +1,6 @@
 import { family } from "@tauri-apps/plugin-os";
 
 import { PathString } from "../../utils/pathString";
-import { Vector } from "../dataStruct/Vector";
 import { autoComputeEngineTick } from "../service/autoComputeEngine/mainTick";
 import { autoLayoutMainTick } from "../service/autoLayoutEngine/mainTick";
 import { Controller } from "../service/controller/Controller";
@@ -18,6 +17,7 @@ import { ControllerCutting } from "../service/controller/concrete/ControllerCutt
 import { ControllerRectangleSelect } from "../service/controller/concrete/ControllerRectangleSelect";
 import { ControllerNodeConnection } from "../service/controller/concrete/ControllerNodeConnection";
 import { ContentSearchEngine } from "../service/contentSearchEngine/contentSearchEngine";
+import { ControllerDragFile } from "../service/controller/concrete/ControllerDragFile";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -105,17 +105,9 @@ export namespace Stage {
   export const contentSearchEngine = new ContentSearchEngine();
 
   /**
-   * 当前是否是拖拽文件入窗口的状态
+   * 拖拽文件进入窗口控制器
    */
-  // eslint-disable-next-line prefer-const
-  export let isDraggingFile = false;
-
-  /**
-   * 当前鼠标所在的世界坐标
-   */
-  // eslint-disable-next-line prefer-const
-  export let draggingLocation = Vector.getZero();
-
+  export const dragFileMachine = ControllerDragFile;
   /**
    * 自动保存是否处于暂停状态
    * 主要用于防止自动保存出bug，产生覆盖文件的问题
