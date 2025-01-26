@@ -9,7 +9,7 @@ import { EffectObject } from "../../../../../service/effectEngine/effectObject";
 import { StageStyleManager } from "../../../../../service/stageStyle/StageStyleManager";
 import { Camera } from "../../../../../stage/Camera";
 import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
-import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
+// import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
 import { ConnectableEntity } from "../../../../../stage/stageObject/StageObject";
 import { ShapeRenderer } from "../../../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../../../basicRenderer/textRenderer";
@@ -78,9 +78,13 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       edge.target.collisionBox.getRectangle().getNormalVectorAt(end),
       Math.abs(end.subtract(start).magnitude()) / 2,
     );
-    if (!(edge.target instanceof ConnectPoint)) {
-      this.renderArrowCurve(curve);
-    }
+    // 曲线模式先不屏蔽箭头，有点不美观，空出来一段距离
+    this.renderArrowCurve(curve);
+    // if (!(edge.target instanceof ConnectPoint)) {
+    //   this.renderArrowCurve(curve);
+    // } else {
+    //   this.renderCurveOnly(curve);
+    // }
     this.renderText(curve, edge);
   }
 
@@ -303,6 +307,18 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       size,
     );
   }
+  // /**
+  //  * 仅仅绘制曲线
+  //  * @param curve
+  //  */
+  // private renderCurveOnly(curve: SymmetryCurve): void {
+  //   // 绘制曲线本体
+  //   curve.endDirection = curve.endDirection.normalize();
+  //   const end = curve.end.clone();
+  //   const size = 15; // 箭头大小
+  //   curve.end = curve.end.subtract(curve.endDirection.multiply(size / -2));
+  //   WorldRenderUtils.renderSymmetryCurve(curve, new Color(204, 204, 204), 2);
+  // }
 
   private renderText(curve: SymmetryCurve, edge: LineEdge): void {
     if (edge.text.trim() === "") {
