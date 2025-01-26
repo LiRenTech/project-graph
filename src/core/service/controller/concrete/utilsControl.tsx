@@ -116,6 +116,7 @@ export function editNodeDetails(clickedNode: Entity) {
 export function addTextNodeByLocation(
   location: Vector,
   selectCurrent: boolean = false,
+  successCallback?: (uuid: string) => void,
 ) {
   const sections =
     StageManager.SectionOptions.getSectionsByInnerLocation(location);
@@ -123,6 +124,9 @@ export function addTextNodeByLocation(
   StageManager.addTextNodeByClick(location, sections, selectCurrent).then(
     (uuid) => {
       textNodeInEditModeByUUID(uuid);
+      if (successCallback) {
+        successCallback(uuid);
+      }
     },
   );
 }

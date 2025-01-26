@@ -14,6 +14,7 @@ import { RectangleNoteEffect } from "../../effectEngine/concrete/RectangleNoteEf
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { PointDashEffect } from "../../effectEngine/concrete/PointDashEffect";
+import { addTextNodeByLocation } from "./utilsControl";
 
 class ControllerNodeConnectionClass extends ControllerClass {
   /**
@@ -142,34 +143,61 @@ class ControllerNodeConnectionClass extends ControllerClass {
     }
     this._isUsing = false;
     // 结束连线
-    if (this.isConnecting() && this.connectToEntity !== null) {
-      let isHaveConnectResult = false; // 在多重链接的情况下，是否有连接成功
-      for (const entity of this.connectFromEntities) {
-        const connectResult = StageManager.connectEntity(
-          entity,
-          this.connectToEntity,
+    if (this.isConnecting()) {
+      if (this.connectToEntity === null) {
+        // 鼠标在空白位置抬起
+        const pressLocation = Renderer.transformView2World(
+          new Vector(event.clientX, event.clientY),
         );
-        if (connectResult) {
-          // 连接成功，特效
-          isHaveConnectResult = true;
-          this.addConnectEffect(entity, this.connectToEntity);
-        } else {
-          console.warn("连接失败！", entity, this.connectToEntity);
+
+        // 额外复制一个数组，因为回调函数执行前，这个数组已经被清空了
+        const newConnectFromEntities = this.connectFromEntities;
+
+        addTextNodeByLocation(pressLocation, false, (uuid) => {
+          const createdNode = StageManager.getTextNodeByUUID(
+            uuid,
+          ) as ConnectableEntity;
+          for (const fromEntity of newConnectFromEntities) {
+            const connectResult = StageManager.connectEntity(
+              fromEntity,
+              createdNode,
+            );
+            if (connectResult) {
+              this.addConnectEffect(fromEntity, createdNode);
+            }
+          }
+        });
+      } else {
+        // 鼠标在待连接节点上抬起
+        let isHaveConnectResult = false; // 在多重链接的情况下，是否有连接成功
+        for (const entity of this.connectFromEntities) {
+          const connectResult = StageManager.connectEntity(
+            entity,
+            this.connectToEntity,
+          );
+          if (connectResult) {
+            // 连接成功，特效
+            isHaveConnectResult = true;
+            this.addConnectEffect(entity, this.connectToEntity);
+          } else {
+            console.warn("连接失败！", entity, this.connectToEntity);
+          }
         }
-      }
-      if (isHaveConnectResult) {
-        // 给连向的那个节点加特效
-        Stage.effectMachine.addEffect(
-          new CircleFlameEffect(
-            new ProgressNumber(0, 15),
-            this.connectToEntity.collisionBox.getRectangle().center,
-            80,
-            new Color(0, 255, 0, 1),
-          ),
-        );
+        if (isHaveConnectResult) {
+          // 给连向的那个节点加特效
+          Stage.effectMachine.addEffect(
+            new CircleFlameEffect(
+              new ProgressNumber(0, 15),
+              this.connectToEntity.collisionBox.getRectangle().center,
+              80,
+              new Color(0, 255, 0, 1),
+            ),
+          );
+        }
       }
     }
 
+    // 这个可能歪打误撞地被用户触发
     // issue #135
     // 一种更快捷的连接方法: 节点在选中状态下右键其它节点直接连接，不必拖动
     const releaseWorldLocation = Renderer.transformView2World(
