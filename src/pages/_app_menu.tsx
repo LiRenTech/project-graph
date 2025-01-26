@@ -45,13 +45,13 @@ import { dataDir } from "@tauri-apps/api/path";
 import { useTranslation } from "react-i18next";
 import { RecentFileManager } from "../core/service/RecentFileManager";
 import { Settings } from "../core/service/Settings";
+import { CopyEngine } from "../core/service/copyEngine/copyEngine";
 import { Stage } from "../core/stage/Stage";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
-import { CopyEngine } from "../core/service/copyEngine/copyEngine";
 
 export default function AppMenu({
   className = "",
@@ -389,7 +389,7 @@ export default function AppMenu({
   return (
     <div
       className={cn(
-        "!pointer-events-none flex origin-top-left scale-0 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800/20 p-3 opacity-0 backdrop-blur-sm",
+        "!pointer-events-none flex origin-top-left scale-0 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800/20 p-3 opacity-0 backdrop-blur-lg",
         {
           "!pointer-events-auto scale-100 opacity-100": open,
         },

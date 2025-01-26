@@ -61,7 +61,7 @@ export default function Select({
       <div
         className={cn(
           // w-max: 防止下拉框在页面右侧时，宽度不够而缩小
-          "fixed z-[104] flex w-max origin-top -translate-x-1/2 scale-0 flex-col rounded-lg border border-neutral-700 bg-neutral-900/20 p-2 opacity-0 shadow-lg shadow-slate-950 backdrop-blur-md",
+          "fixed z-[104] flex w-max origin-top -translate-x-1/2 scale-0 flex-col rounded-lg border border-neutral-700 bg-neutral-900/20 p-2 opacity-0 shadow-lg shadow-slate-950 backdrop-blur-lg",
           {
             "scale-100 opacity-100": showDropdown,
           },
@@ -76,9 +76,9 @@ export default function Select({
           <button
             key={option.value}
             className={cn(
-              "rounded-lg px-3 py-2 hover:bg-neutral-300/25 hover:backdrop-blur-md",
+              "rounded-lg px-3 py-2 hover:bg-neutral-300/25 hover:backdrop-blur-lg",
               {
-                "bg-neutral-300/25 backdrop-blur-md": option.value === value,
+                "bg-neutral-300/25 backdrop-blur-lg": option.value === value,
                 "active:scale-90": option.value !== value,
               },
             )}
