@@ -6,6 +6,7 @@ import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { isExportTreeTextPanelOpenAtom } from "../state";
 import { cn } from "../utils/cn";
 import { Stage } from "../core/stage/Stage";
+import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
 
 /**
  * 导出节点纯文本相关的面板
@@ -34,7 +35,7 @@ export default function ExportTreeTextPanel() {
       // 单个节点
       const selectedFirstNode = selectedEntities[0];
       if (selectedFirstNode instanceof TextNode) {
-        if (StageManager.isTree(selectedFirstNode)) {
+        if (GraphMethods.isTree(selectedFirstNode)) {
           setMarkdownText(
             Stage.exportEngine.getMarkdownStringByTextNode(selectedFirstNode),
           );

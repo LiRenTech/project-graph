@@ -12,6 +12,7 @@ import { TextNode } from "../../stageObject/entity/TextNode";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { StageManager } from "../StageManager";
+import { GraphMethods } from "../basicMethods/GraphMethods";
 
 /**
  * 自动对齐和布局管理器
@@ -228,7 +229,7 @@ export namespace StageAutoAlignManager {
     selectedRootEntity: ConnectableEntity,
   ) {
     // 检测树形结构
-    if (!StageManager.isTree(selectedRootEntity)) {
+    if (!GraphMethods.isTree(selectedRootEntity)) {
       // 不是树形结构，不做任何处理
       Dialog.show({
         title: "提示",

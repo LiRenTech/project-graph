@@ -52,6 +52,7 @@ import { Stage } from "../core/stage/Stage";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
+import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
 
 export default function AppMenu({
   className = "",
@@ -315,7 +316,7 @@ export default function AppMenu({
       });
       return;
     }
-    if (!StageManager.isTree(selectedNodes[0])) {
+    if (!GraphMethods.isTree(selectedNodes[0])) {
       Dialog.show({
         title: "结构错误",
         content: "根节点所形成的结构必须为树状结构",

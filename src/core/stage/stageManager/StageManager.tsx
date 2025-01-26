@@ -522,26 +522,6 @@ export namespace StageManager {
     }
     return false;
   }
-  // region 以下为算法相关的函数
-  export function isTree(node: ConnectableEntity): boolean {
-    const dfs = (
-      node: ConnectableEntity,
-      visited: ConnectableEntity[],
-    ): boolean => {
-      if (visited.includes(node)) {
-        return false;
-      }
-      visited.push(node);
-      for (const child of nodeChildrenArray(node)) {
-        if (!dfs(child, visited)) {
-          return false;
-        }
-      }
-      return true;
-    };
-
-    return dfs(node, []);
-  }
 
   // region Section集合操作函数
   export namespace SectionOptions {
