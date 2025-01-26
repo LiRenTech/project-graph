@@ -8,7 +8,7 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Shape } from "../../../dataStruct/shape/Shape";
 import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
-import { NodeMoveShadowEffect } from "../../../service/effectEngine/concrete/NodeMoveShadowEffect";
+import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
 import { Stage } from "../../Stage";
 import { StageManager } from "../../stageManager/StageManager";
 import { CollisionBox } from "../collisionBox/collisionBox";

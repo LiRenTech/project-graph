@@ -1,7 +1,7 @@
 import { NumberFunctions } from "../../../algorithm/numberFunctions";
 import { Vector } from "../../../dataStruct/Vector";
-import { MouseLocation } from "../../../service/MouseLocation";
-import { StageStyleManager } from "../../../service/stageStyle/StageStyleManager";
+import { MouseLocation } from "../../../service/controlService/MouseLocation";
+import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../../stage/Camera";
 import { Entity } from "../../../stage/stageObject/StageObject";
 import { TextRenderer } from "../basicRenderer/textRenderer";

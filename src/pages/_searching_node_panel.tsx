@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Box from "../components/ui/Box";
 import Button from "../components/ui/Button";
-import { Controller } from "../core/service/controller/Controller";
+import { Controller } from "../core/service/controlService/controller/Controller";
 import { Stage } from "../core/stage/Stage";
 import { Dialog } from "../utils/dialog";
 

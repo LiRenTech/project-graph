@@ -30,9 +30,9 @@ import Box from "../components/ui/Box";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { Color } from "../core/dataStruct/Color";
-import { ApiKeyManager } from "../core/service/ai/ApiKeyManager";
-import { TextRiseEffect } from "../core/service/effectEngine/concrete/TextRiseEffect";
-import { ViewFlashEffect } from "../core/service/effectEngine/concrete/ViewFlashEffect";
+import { ApiKeyManager } from "../core/service/dataGenerateService/ai/ApiKeyManager";
+import { TextRiseEffect } from "../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
+import { ViewFlashEffect } from "../core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageDumperSvg } from "../core/stage/StageDumperSvg";
@@ -43,8 +43,8 @@ import { Dialog } from "../utils/dialog";
 import { writeTextFile } from "../utils/fs";
 import { Popup } from "../utils/popup";
 // import { PathString } from "../utils/pathString";
-import { ColorManager } from "../core/service/ColorManager";
-import { CopyEngine } from "../core/service/copyEngine/copyEngine";
+import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
+import { ColorManager } from "../core/service/feedbackService/ColorManager";
 import ColorManagerPanel from "./_color_manager_panel";
 
 interface ToolbarItemProps {

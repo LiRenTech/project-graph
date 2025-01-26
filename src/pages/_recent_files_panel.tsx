@@ -6,8 +6,8 @@ import { cn } from "../utils/cn";
 
 // import { Zap } from "lucide-react";
 // import IconButton from "../components/ui/IconButton";
-import { RecentFileManager } from "../core/service/RecentFileManager";
-import { StartFilesManager } from "../core/service/StartFilesManager";
+import { RecentFileManager } from "../core/service/dataFileService/RecentFileManager";
+import { StartFilesManager } from "../core/service/dataFileService/StartFilesManager";
 import { Stage } from "../core/stage/Stage";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { Dialog } from "../utils/dialog";

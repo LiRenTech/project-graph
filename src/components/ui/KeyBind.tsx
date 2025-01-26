@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { KeyBinds } from "../../core/service/KeyBinds";
+import { KeyBinds } from "../../core/service/controlService/KeyBinds";
 import { cn } from "../../utils/cn";
 import Button from "./Button";
 

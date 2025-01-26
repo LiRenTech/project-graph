@@ -2,7 +2,7 @@ import { NumberFunctions } from "../algorithm/numberFunctions";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { Renderer } from "../render/canvas2d/renderer";
-import { TextRiseEffect } from "../service/effectEngine/concrete/TextRiseEffect";
+import { TextRiseEffect } from "../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../service/Settings";
 import { Stage } from "./Stage";
 import { StageManager } from "./stageManager/StageManager";

@@ -2,7 +2,7 @@ import { Keyboard } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import KeyBind from "../../components/ui/KeyBind";
-import { KeyBinds } from "../../core/service/KeyBinds";
+import { KeyBinds } from "../../core/service/controlService/KeyBinds";
 import { Field } from "./_field";
 
 export default function KeyBindsPage() {

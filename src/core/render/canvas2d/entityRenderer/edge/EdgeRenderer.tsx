@@ -8,7 +8,7 @@ import { CublicCatmullRomSplineEdge } from "../../../../stage/stageObject/associ
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 
-import { StageStyleManager } from "../../../../service/stageStyle/StageStyleManager";
+import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { ConnectableEntity } from "../../../../stage/stageObject/StageObject";
 import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
 import { Renderer } from "../../renderer";

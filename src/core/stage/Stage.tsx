@@ -1,18 +1,18 @@
-import { autoComputeEngineTick } from "../service/autoComputeEngine/mainTick";
-import { autoLayoutMainTick } from "../service/autoLayoutEngine/mainTick";
-import { EffectMachine } from "../service/effectEngine/effectMachine";
-import { KeyboardOnlyEngine } from "../service/keyboardOnlyEngine/keyboardOnlyEngine";
+import { autoLayoutMainTick } from "../service/controlService/autoLayoutEngine/mainTick";
+import { ControllerCutting } from "../service/controlService/controller/concrete/ControllerCutting";
+import { ControllerDragFile } from "../service/controlService/controller/concrete/ControllerDragFile";
+import { ControllerNodeConnection } from "../service/controlService/controller/concrete/ControllerNodeConnection";
+import { ControllerRectangleSelect } from "../service/controlService/controller/concrete/ControllerRectangleSelect";
+import { AutoBackupEngine } from "../service/dataFileService/autoSaveBackupEngine/autoBackupEngine";
+import { AutoSaveEngine } from "../service/dataFileService/autoSaveBackupEngine/autoSaveEngine";
+import { StageFilePathManager } from "../service/dataFileService/stageFilePathManager";
+import { autoComputeEngineTick } from "../service/dataGenerateService/autoComputeEngine/mainTick";
+import { StageExportEngine } from "../service/dataGenerateService/stageExportEngine/stageExportEngine";
+import { ContentSearchEngine } from "../service/dataManageService/contentSearchEngine/contentSearchEngine";
+import { EffectMachine } from "../service/feedbackService/effectEngine/effectMachine";
+import { KeyboardOnlyEngine } from "../service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
 import { Settings } from "../service/Settings";
-import { ControllerCutting } from "../service/controller/concrete/ControllerCutting";
-import { ControllerRectangleSelect } from "../service/controller/concrete/ControllerRectangleSelect";
-import { ControllerNodeConnection } from "../service/controller/concrete/ControllerNodeConnection";
-import { ContentSearchEngine } from "../service/contentSearchEngine/contentSearchEngine";
-import { ControllerDragFile } from "../service/controller/concrete/ControllerDragFile";
-import { AutoSaveEngine } from "../service/autoSaveBackupEngine/autoSaveEngine";
-import { AutoBackupEngine } from "../service/autoSaveBackupEngine/autoBackupEngine";
-import { StageMouseInteractionCore } from "../service/stageMouseInteractionCore/stageMouseInteractionCore";
-import { StageFilePathManager } from "../service/stageFilePathManager";
-import { StageExportEngine } from "../service/stageExportEngine/stageExportEngine";
+import { StageMouseInteractionCore } from "../service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
 /**
  * 舞台对象
  * 更广义的舞台，

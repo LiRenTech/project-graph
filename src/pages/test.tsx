@@ -3,7 +3,7 @@ import Button from "../components/ui/Button";
 import { Vector } from "../core/dataStruct/Vector";
 import { Renderer } from "../core/render/canvas2d/renderer";
 import { InputElement } from "../core/render/domElement/inputElement";
-import { StageStyleManager } from "../core/service/stageStyle/StageStyleManager";
+import { StageStyleManager } from "../core/service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../core/stage/Camera";
 
 export default function TestPage() {

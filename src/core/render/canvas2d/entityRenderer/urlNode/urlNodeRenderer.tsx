@@ -1,7 +1,7 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { MouseLocation } from "../../../../service/MouseLocation";
-import { StageStyleManager } from "../../../../service/stageStyle/StageStyleManager";
+import { MouseLocation } from "../../../../service/controlService/MouseLocation";
+import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../../../stage/Camera";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
 import { CurveRenderer } from "../../basicRenderer/curveRenderer";

@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import Box from "../components/ui/Box";
-import { MouseLocation } from "../core/service/MouseLocation";
+import { MouseLocation } from "../core/service/controlService/MouseLocation";
 import { cn } from "./cn";
 
 export namespace Popup {

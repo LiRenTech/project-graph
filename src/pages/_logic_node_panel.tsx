@@ -4,11 +4,11 @@ import {
   LogicNodeNameEnum,
   LogicNodeNameToArgsTipsMap,
   LogicNodeNameToRenderNameMap,
-} from "../core/service/autoComputeEngine/logicNodeNameEnum";
+} from "../core/service/dataGenerateService/autoComputeEngine/logicNodeNameEnum";
+import { Camera } from "../core/stage/Camera";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { cn } from "../utils/cn";
-import { Camera } from "../core/stage/Camera";
 
 /**
  *

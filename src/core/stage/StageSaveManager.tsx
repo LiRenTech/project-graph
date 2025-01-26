@@ -1,7 +1,7 @@
 import { Serialized } from "../../types/node";
 import { exists, writeTextFile } from "../../utils/fs";
 import { PathString } from "../../utils/pathString";
-import { ViewFlashEffect } from "../service/effectEngine/concrete/ViewFlashEffect";
+import { ViewFlashEffect } from "../service/feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { Stage } from "./Stage";
 import { StageHistoryManager } from "./stageManager/StageHistoryManager";
 

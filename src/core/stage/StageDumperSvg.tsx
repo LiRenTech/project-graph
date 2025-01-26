@@ -6,7 +6,7 @@ import { Vector } from "../dataStruct/Vector";
 import { EdgeRenderer } from "../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../render/canvas2d/renderer";
 import { SvgUtils } from "../render/svg/SvgUtils";
-import { StageStyleManager } from "../service/stageStyle/StageStyleManager";
+import { StageStyleManager } from "../service/feedbackService/stageStyle/StageStyleManager";
 import { StageManager } from "./stageManager/StageManager";
 import { LineEdge } from "./stageObject/association/LineEdge";
 import { Section } from "./stageObject/entity/Section";

@@ -2,7 +2,7 @@ import { Delete, Pencil, Pin } from "lucide-react";
 import { useEffect, useState } from "react";
 import Button from "../components/ui/Button";
 import IconButton from "../components/ui/IconButton";
-import { PromptManager } from "../core/service/ai/PromptManager";
+import { PromptManager } from "../core/service/dataGenerateService/ai/PromptManager";
 import { cn } from "../utils/cn";
 
 /**

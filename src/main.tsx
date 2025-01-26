@@ -10,24 +10,24 @@ import { Vector } from "./core/dataStruct/Vector";
 import { EdgeRenderer } from "./core/render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "./core/render/canvas2d/renderer";
 import { InputElement } from "./core/render/domElement/inputElement";
-import { PromptManager } from "./core/service/ai/PromptManager";
-import { ColorManager } from "./core/service/ColorManager";
 import {
   addTextNodeByLocation,
   addTextNodeFromCurrentSelectedNode,
   editNodeDetailsByKeyboard,
-} from "./core/service/controller/concrete/utilsControl";
-import { TextRiseEffect } from "./core/service/effectEngine/concrete/TextRiseEffect";
-import { ViewOutlineFlashEffect } from "./core/service/effectEngine/concrete/ViewOutlineFlashEffect";
-import { KeyBinds } from "./core/service/KeyBinds";
-import { KeyboardOnlyEngine } from "./core/service/keyboardOnlyEngine/keyboardOnlyEngine";
+} from "./core/service/controlService/controller/concrete/utilsControl";
+import { KeyBinds } from "./core/service/controlService/KeyBinds";
+import { KeyboardOnlyEngine } from "./core/service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
+import { MouseLocation } from "./core/service/controlService/MouseLocation";
+import { RecentFileManager } from "./core/service/dataFileService/RecentFileManager";
+import { StartFilesManager } from "./core/service/dataFileService/StartFilesManager";
+import { PromptManager } from "./core/service/dataGenerateService/ai/PromptManager";
+import { ColorManager } from "./core/service/feedbackService/ColorManager";
+import { TextRiseEffect } from "./core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
+import { ViewOutlineFlashEffect } from "./core/service/feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
+import { SoundService } from "./core/service/feedbackService/SoundService";
+import { StageStyleManager } from "./core/service/feedbackService/stageStyle/StageStyleManager";
 import { LastLaunch } from "./core/service/LastLaunch";
-import { MouseLocation } from "./core/service/MouseLocation";
-import { RecentFileManager } from "./core/service/RecentFileManager";
 import { Settings } from "./core/service/Settings";
-import { SoundService } from "./core/service/SoundService";
-import { StageStyleManager } from "./core/service/stageStyle/StageStyleManager";
-import { StartFilesManager } from "./core/service/StartFilesManager";
 import { Camera } from "./core/stage/Camera";
 import { Stage } from "./core/stage/Stage";
 import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManager";

@@ -1,6 +1,6 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { ExplodeAshEffect } from "../../../service/effectEngine/concrete/ExplodeDashEffect";
+import { ExplodeAshEffect } from "../../../service/feedbackService/effectEngine/concrete/ExplodeDashEffect";
 import { Stage } from "../../Stage";
 import { LineEdge } from "../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";

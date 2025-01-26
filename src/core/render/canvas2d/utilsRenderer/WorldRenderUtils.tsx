@@ -6,7 +6,7 @@ import {
 } from "../../../dataStruct/shape/Curve";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { StageStyleManager } from "../../../service/stageStyle/StageStyleManager";
+import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../../stage/Camera";
 import { Canvas } from "../../../stage/Canvas";
 import { CurveRenderer } from "../basicRenderer/curveRenderer";

@@ -3,13 +3,13 @@ import { Random } from "../../../algorithm/random";
 import { Color, colorInvert } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { AutoComputeUtils } from "../../../service/autoComputeEngine/AutoComputeUtils";
+import { AutoComputeUtils } from "../../../service/dataGenerateService/autoComputeEngine/AutoComputeUtils";
 import {
   getLogicNodeRenderName,
   LogicNodeNameEnum,
   LogicNodeNameToRenderNameMap,
-} from "../../../service/autoComputeEngine/logicNodeNameEnum";
-import { StageStyleManager } from "../../../service/stageStyle/StageStyleManager";
+} from "../../../service/dataGenerateService/autoComputeEngine/logicNodeNameEnum";
+import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../../stage/Camera";
 import { ConnectPoint } from "../../../stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
