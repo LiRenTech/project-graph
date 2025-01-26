@@ -3,7 +3,6 @@ import { Color } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Settings } from "../../../../service/Settings";
 import { Camera } from "../../../../stage/Camera";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { CublicCatmullRomSplineEdge } from "../../../../stage/stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { Section } from "../../../../stage/stageObject/entity/Section";
@@ -18,6 +17,7 @@ import { StraightEdgeRenderer } from "./concrete/StraightEdgeRenderer";
 import { SymmetryCurveEdgeRenderer } from "./concrete/SymmetryCurveEdgeRenderer";
 import { VerticalPolyEdgeRenderer } from "./concrete/VerticalPolyEdgeRenderer";
 import { EdgeRendererClass } from "./EdgeRendererClass";
+import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 
 /**
  * 边的总渲染器单例
@@ -132,7 +132,7 @@ export namespace EdgeRenderer {
   export function getMinNonCollapseParentSection(
     innerEntity: ConnectableEntity,
   ): Section {
-    const father = StageManager.SectionOptions.getFatherSections(innerEntity);
+    const father = SectionMethods.getFatherSections(innerEntity);
     if (father.length === 0) {
       // 直接抛出错误
       throw new Error("Can't find parent section");

@@ -9,6 +9,7 @@ import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
+import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageManager } from "../StageManager";
 
 /**
@@ -47,8 +48,7 @@ export namespace StageDeleteManager {
     StageManager.deleteOneSection(entity);
     deleteEntityAfterClearEdges(entity);
     // 将自己所有的父级Section的children添加自己的children
-    const fatherSections =
-      StageManager.SectionOptions.getFatherSections(entity);
+    const fatherSections = SectionMethods.getFatherSections(entity);
     for (const fatherSection of fatherSections) {
       StageManager.goInSection(entity.children, fatherSection);
     }

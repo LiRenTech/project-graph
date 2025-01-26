@@ -8,6 +8,7 @@ import { Renderer } from "../../../render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
 import { Stage } from "../../Stage";
 import { StageManager } from "../../stageManager/StageManager";
+import { SectionMethods } from "../../stageManager/basicMethods/SectionMethods";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { Entity } from "../abstract/StageEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
@@ -142,7 +143,7 @@ export class TextNode extends ConnectableEntity {
     if (other instanceof Section) {
       // 如果碰撞的东西是一个section
       // 如果自己是section的子节点，则不移动
-      if (StageManager.SectionOptions.isEntityInSection(this, other)) {
+      if (SectionMethods.isEntityInSection(this, other)) {
         return;
       }
     }

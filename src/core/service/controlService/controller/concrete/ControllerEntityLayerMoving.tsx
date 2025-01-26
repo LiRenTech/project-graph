@@ -2,6 +2,7 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
+import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { RectanglePushInEffect } from "../../../feedbackService/effectEngine/concrete/RectanglePushInEffect";
 import { Controller } from "../Controller";
@@ -37,7 +38,7 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
 
   // 即将跳入的sections区域
   const targetSections =
-    StageManager.SectionOptions.getSectionsByInnerLocation(mouseLocation);
+    SectionMethods.getSectionsByInnerLocation(mouseLocation);
   const selectedEntities = StageManager.getSelectedEntities();
   // 移动位置
 
@@ -56,8 +57,7 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
   if (targetSections.length === 0) {
     // 代表想要走出当前section
     for (const entity of selectedEntities) {
-      const currentFatherSections =
-        StageManager.SectionOptions.getFatherSections(entity);
+      const currentFatherSections = SectionMethods.getFatherSections(entity);
       if (currentFatherSections.length === 0) {
         continue;
       }

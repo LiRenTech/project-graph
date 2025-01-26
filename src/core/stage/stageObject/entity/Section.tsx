@@ -11,9 +11,10 @@ import { Renderer } from "../../../render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
 import { Stage } from "../../Stage";
 import { StageManager } from "../../stageManager/StageManager";
-import { CollisionBox } from "../collisionBox/collisionBox";
-import { Entity } from "../abstract/StageEntity";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
+import { Entity } from "../abstract/StageEntity";
+import { CollisionBox } from "../collisionBox/collisionBox";
+import { SectionMethods } from "../../stageManager/basicMethods/SectionMethods";
 
 export class Section extends ConnectableEntity {
   /**
@@ -241,11 +242,11 @@ export class Section extends ConnectableEntity {
       return;
     }
     if (other instanceof Section) {
-      if (StageManager.SectionOptions.isEntityInSection(this, other)) {
+      if (SectionMethods.isEntityInSection(this, other)) {
         return;
       }
     }
-    if (StageManager.SectionOptions.isEntityInSection(other, this)) {
+    if (SectionMethods.isEntityInSection(other, this)) {
       return;
     }
     super.collideWithOtherEntity(other);

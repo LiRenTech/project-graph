@@ -1,6 +1,7 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
+import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { Controller } from "../Controller";
@@ -63,9 +64,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
     // 现在的情况：在空白的地方按下左键
 
     const sections =
-      StageManager.SectionOptions.getSectionsByInnerLocation(
-        pressWorldLocation,
-      );
+      SectionMethods.getSectionsByInnerLocation(pressWorldLocation);
     if (sections.length === 0) {
       // 没有在任何section里按下
       this.mouseDownSection = null;
@@ -250,8 +249,7 @@ function selectedEntityNormalizing() {
   const selectedSections = entities.filter(
     (entity) => entity instanceof Section,
   );
-  const shallowerSections =
-    StageManager.SectionOptions.shallowerSection(selectedSections);
+  const shallowerSections = SectionMethods.shallowerSection(selectedSections);
   for (const section of selectedSections) {
     if (!shallowerSections.includes(section)) {
       section.isSelected = false;
@@ -263,7 +261,7 @@ function selectedEntityNormalizing() {
     }
     // 如果这个东西被包含在其他的section里，则取消选择
     for (const section of shallowerSections) {
-      if (StageManager.SectionOptions.isEntityInSection(entity, section)) {
+      if (SectionMethods.isEntityInSection(entity, section)) {
         entity.isSelected = false;
       }
     }

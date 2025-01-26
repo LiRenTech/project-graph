@@ -1,6 +1,7 @@
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
+import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { Controller } from "../Controller";
@@ -33,8 +34,7 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
   }
 
   // 是否是在Section内部双击
-  const sections =
-    StageManager.SectionOptions.getSectionsByInnerLocation(pressLocation);
+  const sections = SectionMethods.getSectionsByInnerLocation(pressLocation);
 
   if (Controller.pressingKeySet.has("`")) {
     createConnectPoint(pressLocation, sections);

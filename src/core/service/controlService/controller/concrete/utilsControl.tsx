@@ -4,6 +4,7 @@ import { Renderer } from "../../../../render/canvas2d/renderer";
 import { InputElement } from "../../../../render/domElement/inputElement";
 import { Camera } from "../../../../stage/Camera";
 import { Stage } from "../../../../stage/Stage";
+import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
@@ -118,8 +119,7 @@ export function addTextNodeByLocation(
   selectCurrent: boolean = false,
   successCallback?: (uuid: string) => void,
 ) {
-  const sections =
-    StageManager.SectionOptions.getSectionsByInnerLocation(location);
+  const sections = SectionMethods.getSectionsByInnerLocation(location);
   // 新建节点
   StageManager.addTextNodeByClick(location, sections, selectCurrent).then(
     (uuid) => {
