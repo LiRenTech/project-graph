@@ -1,4 +1,5 @@
 import { PathString } from "../../../utils/pathString";
+import { isWeb } from "../../../utils/platform";
 import { Stage } from "../../stage/Stage";
 import { StageDumper } from "../../stage/StageDumper";
 import { StageSaveManager } from "../../stage/StageSaveManager";
@@ -26,6 +27,10 @@ export class AutoBackupEngine {
   }
 
   public mainTick() {
+    // 如果当前是web版本，则禁止自动备份，因为会出现频繁下载文件。
+    if (isWeb) {
+      return;
+    }
     if (!this.autoBackup) {
       return;
     }

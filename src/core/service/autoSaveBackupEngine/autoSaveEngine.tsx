@@ -1,3 +1,4 @@
+import { isWeb } from "../../../utils/platform";
 import { Stage } from "../../stage/Stage";
 import { StageDumper } from "../../stage/StageDumper";
 import { StageManager } from "../../stage/stageManager/StageManager";
@@ -36,6 +37,10 @@ export class AutoSaveEngine {
   }
 
   mainTick() {
+    if (isWeb) {
+      // 自动保存功能暂时不支持web端
+      return;
+    }
     if (!this.autoSave) {
       return;
     }
