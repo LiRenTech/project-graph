@@ -134,6 +134,10 @@ export namespace InputElement {
       Object.assign(textareaElement.style, style);
       document.body.appendChild(textareaElement);
 
+      // web版在右键连线直接练到空白部分触发节点生成并编辑出现此元素时，防止触发右键菜单
+      textareaElement.addEventListener("contextmenu", (event) => {
+        event.preventDefault();
+      });
       textareaElement.focus();
       textareaElement.select();
       // 以上这两部必须在appendChild之后执行
