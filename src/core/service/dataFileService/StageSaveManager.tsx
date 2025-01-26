@@ -1,13 +1,12 @@
-import { Serialized } from "../../types/node";
-import { exists, writeTextFile } from "../../utils/fs";
-import { PathString } from "../../utils/pathString";
-import { ViewFlashEffect } from "../service/feedbackService/effectEngine/concrete/ViewFlashEffect";
-import { Stage } from "./Stage";
-import { StageHistoryManager } from "./stageManager/StageHistoryManager";
+import { Serialized } from "../../../types/node";
+import { exists, writeTextFile } from "../../../utils/fs";
+import { PathString } from "../../../utils/pathString";
+import { Stage } from "../../stage/Stage";
+import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
+import { ViewFlashEffect } from "../feedbackService/effectEngine/concrete/ViewFlashEffect";
 
 /**
  * 管理所有和保存相关的内容
- * 包括自动保存
  */
 export namespace StageSaveManager {
   /**

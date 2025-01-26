@@ -2,8 +2,8 @@ import { isWeb } from "../../../../utils/platform";
 import { Stage } from "../../../stage/Stage";
 import { StageDumper } from "../../../stage/StageDumper";
 import { StageManager } from "../../../stage/stageManager/StageManager";
-import { StageSaveManager } from "../../../stage/StageSaveManager";
 import { Settings } from "../../Settings";
+import { StageSaveManager } from "../StageSaveManager";
 
 /**
  * 自动保存功能

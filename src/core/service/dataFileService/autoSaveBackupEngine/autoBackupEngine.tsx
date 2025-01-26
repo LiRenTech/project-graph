@@ -2,8 +2,8 @@ import { PathString } from "../../../../utils/pathString";
 import { isWeb } from "../../../../utils/platform";
 import { Stage } from "../../../stage/Stage";
 import { StageDumper } from "../../../stage/StageDumper";
-import { StageSaveManager } from "../../../stage/StageSaveManager";
 import { Settings } from "../../Settings";
+import { StageSaveManager } from "../StageSaveManager";
 
 /**
  * 自动备份引擎

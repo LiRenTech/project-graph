@@ -17,10 +17,10 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "../components/ui/Button";
 import IconButton from "../components/ui/IconButton";
+import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
 import { Settings } from "../core/service/Settings";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
-import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { fileAtom } from "../state";
 import { cn } from "../utils/cn";
 import { Dialog } from "../utils/dialog";
@@ -37,10 +37,10 @@ import AiPanel from "./_ai_panel";
 import AppMenu from "./_app_menu";
 import ErrorHandler from "./_error_handler";
 import ExportTreeTextPanel from "./_export_text_panel";
+import LogicNodePanel from "./_logic_node_panel";
 import RecentFilesPanel from "./_recent_files_panel";
 import StartFilePanel from "./_start_file_panel";
 import TagPanel from "./_tag_panel";
-import LogicNodePanel from "./_logic_node_panel";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
