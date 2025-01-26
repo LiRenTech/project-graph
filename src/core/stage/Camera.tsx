@@ -6,7 +6,7 @@ import { TextRiseEffect } from "../service/feedbackService/effectEngine/concrete
 import { Settings } from "../service/Settings";
 import { Stage } from "./Stage";
 import { StageManager } from "./stageManager/StageManager";
-import { Entity } from "./stageObject/StageObject";
+import { Entity } from "./stageObject/abstract/StageEntity";
 
 /**
  * 摄像机

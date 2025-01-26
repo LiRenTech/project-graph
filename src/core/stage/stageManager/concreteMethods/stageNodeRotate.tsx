@@ -3,7 +3,7 @@ import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
 import { LineEffect } from "../../../service/feedbackService/effectEngine/concrete/LineEffect";
 import { Stage } from "../../Stage";
-import { ConnectableEntity } from "../../stageObject/StageObject";
+import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { StageManager } from "../StageManager";
 import { StageEntityMoveManager } from "./StageEntityMoveManager";
 

@@ -6,7 +6,7 @@
 
 import { Vector } from "../../../dataStruct/Vector";
 import { StageManager } from "../../../stage/stageManager/StageManager";
-import { ConnectableEntity } from "../../../stage/stageObject/StageObject";
+import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 
 /**
  * 树形节点的根节点

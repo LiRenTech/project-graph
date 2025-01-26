@@ -6,8 +6,8 @@ import { EdgeRenderer } from "../../../../render/canvas2d/entityRenderer/edge/Ed
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
+import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
-import { ConnectableEntity } from "../../../../stage/stageObject/StageObject";
 import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { PointDashEffect } from "../../../feedbackService/effectEngine/concrete/PointDashEffect";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";

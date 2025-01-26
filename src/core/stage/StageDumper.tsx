@@ -1,5 +1,6 @@
 import { Serialized } from "../../types/node";
 import { StageManager } from "./stageManager/StageManager";
+import { Entity } from "./stageObject/abstract/StageEntity";
 import { CublicCatmullRomSplineEdge } from "./stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "./stageObject/association/LineEdge";
 import { ConnectPoint } from "./stageObject/entity/ConnectPoint";
@@ -7,7 +8,6 @@ import { ImageNode } from "./stageObject/entity/ImageNode";
 import { Section } from "./stageObject/entity/Section";
 import { TextNode } from "./stageObject/entity/TextNode";
 import { UrlNode } from "./stageObject/entity/UrlNode";
-import { Entity } from "./stageObject/StageObject";
 
 /**
  * 将舞台信息转化为序列化JSON对象

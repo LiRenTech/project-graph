@@ -5,7 +5,7 @@ import IconButton from "../components/ui/IconButton";
 import Input from "../components/ui/Input";
 import { editTextNodeHookGlobal } from "../core/service/controlService/controller/concrete/utilsControl";
 import { Controller } from "../core/service/controlService/controller/Controller";
-import { Entity } from "../core/stage/stageObject/StageObject";
+import { Entity } from "../core/stage/stageObject/abstract/StageEntity";
 import { cn } from "../utils/cn";
 // import "vditor/src/assets/scss/index.scss";
 import MarkdownEditor from "./_vditor_panel";

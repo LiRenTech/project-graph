@@ -7,9 +7,9 @@ import { LineCuttingEffect } from "../../../../../service/feedbackService/effect
 import { EffectObject } from "../../../../../service/feedbackService/effectEngine/effectObject";
 import { StageStyleManager } from "../../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../../../../stage/Camera";
+import { ConnectableEntity } from "../../../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
-import { ConnectableEntity } from "../../../../../stage/stageObject/StageObject";
 import { CurveRenderer } from "../../../basicRenderer/curveRenderer";
 import { ShapeRenderer } from "../../../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../../../basicRenderer/textRenderer";

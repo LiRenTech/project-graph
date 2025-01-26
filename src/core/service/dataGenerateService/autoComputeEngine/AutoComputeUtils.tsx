@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 import { StageManager } from "../../../stage/stageManager/StageManager";
+import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
-import { ConnectableEntity } from "../../../stage/stageObject/StageObject";
 import { ProgramFunctions } from "./functions/programLogic";
 
 /**

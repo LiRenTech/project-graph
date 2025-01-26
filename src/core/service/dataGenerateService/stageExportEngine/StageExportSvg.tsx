@@ -7,10 +7,10 @@ import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeR
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { SvgUtils } from "../../../render/svg/SvgUtils";
 import { StageManager } from "../../../stage/stageManager/StageManager";
+import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
-import { Entity } from "../../../stage/stageObject/StageObject";
 import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
 
 /**

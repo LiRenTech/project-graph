@@ -5,8 +5,8 @@ import { PathString } from "../../../../utils/pathString";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Stage } from "../../Stage";
+import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { ConnectableEntity } from "../StageObject";
 
 /**
  * 一个图片节点

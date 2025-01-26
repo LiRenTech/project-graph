@@ -6,7 +6,7 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Camera } from "../../../../stage/Camera";
-import { Entity } from "../../../../stage/stageObject/StageObject";
+import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { EffectObject } from "../effectObject";
 
 /**

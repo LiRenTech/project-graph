@@ -3,7 +3,7 @@ import { Vector } from "../../../dataStruct/Vector";
 import { MouseLocation } from "../../../service/controlService/MouseLocation";
 import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../../stage/Camera";
-import { Entity } from "../../../stage/stageObject/StageObject";
+import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { TextRenderer } from "../basicRenderer/textRenderer";
 import { Renderer } from "../renderer";
 /**

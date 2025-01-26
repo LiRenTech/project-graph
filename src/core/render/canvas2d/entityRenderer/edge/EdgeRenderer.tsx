@@ -9,7 +9,7 @@ import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 
 import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
-import { ConnectableEntity } from "../../../../stage/stageObject/StageObject";
+import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
 import { Renderer } from "../../renderer";
 import { WorldRenderUtils } from "../../utilsRenderer/WorldRenderUtils";

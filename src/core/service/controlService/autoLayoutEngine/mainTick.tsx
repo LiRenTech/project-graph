@@ -1,5 +1,5 @@
 import { StageManager } from "../../../stage/stageManager/StageManager";
-import { ConnectableEntity } from "../../../stage/stageObject/StageObject";
+import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { Controller } from "../controller/Controller";
 
 /**

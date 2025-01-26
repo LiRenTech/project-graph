@@ -9,7 +9,8 @@ import { RectangleRenderEffect } from "../../../service/feedbackService/effectEn
 import { SoundService } from "../../../service/feedbackService/SoundService";
 import { Stage } from "../../Stage";
 import { TextNode } from "../../stageObject/entity/TextNode";
-import { ConnectableEntity, Entity } from "../../stageObject/StageObject";
+import { Entity } from "../../stageObject/abstract/StageEntity";
+import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { StageManager } from "../StageManager";
 
 /**

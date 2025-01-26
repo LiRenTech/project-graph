@@ -3,9 +3,9 @@ import { Serialized } from "../../../../types/node";
 import { CublicCatmullRomSpline } from "../../../dataStruct/shape/CublicCatmullRomSpline";
 import { Vector } from "../../../dataStruct/Vector";
 import { StageManager } from "../../stageManager/StageManager";
+import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
-import { ConnectableEntity } from "../StageObject";
 import { Edge } from "./Edge";
 
 /**

@@ -10,7 +10,7 @@ import { StageStyleManager } from "../../../../../service/feedbackService/stageS
 import { Camera } from "../../../../../stage/Camera";
 import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
 // import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
-import { ConnectableEntity } from "../../../../../stage/stageObject/StageObject";
+import { ConnectableEntity } from "../../../../../stage/stageObject/abstract/ConnectableEntity";
 import { ShapeRenderer } from "../../../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../../../basicRenderer/textRenderer";
 import { Renderer } from "../../../renderer";

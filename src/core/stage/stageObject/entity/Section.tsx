@@ -12,7 +12,8 @@ import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEng
 import { Stage } from "../../Stage";
 import { StageManager } from "../../stageManager/StageManager";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { ConnectableEntity, Entity } from "../StageObject";
+import { Entity } from "../abstract/StageEntity";
+import { ConnectableEntity } from "../abstract/ConnectableEntity";
 
 export class Section extends ConnectableEntity {
   /**

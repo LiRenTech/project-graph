@@ -1,7 +1,7 @@
 import { writeTextFile } from "../../../../utils/fs";
 import { StageManager } from "../../../stage/stageManager/StageManager";
+import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
-import { Entity } from "../../../stage/stageObject/StageObject";
 
 /**
  * 专注于导出各种格式内容的引擎

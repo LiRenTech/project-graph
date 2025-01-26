@@ -6,9 +6,9 @@ import { EdgeRenderer } from "../../../../render/canvas2d/entityRenderer/edge/Ed
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
+import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { Section } from "../../../../stage/stageObject/entity/Section";
-import { Entity } from "../../../../stage/stageObject/StageObject";
 import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { SoundService } from "../../../feedbackService/SoundService";

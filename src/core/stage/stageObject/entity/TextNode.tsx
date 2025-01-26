@@ -8,7 +8,8 @@ import { Renderer } from "../../../render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
 import { Stage } from "../../Stage";
 import { StageManager } from "../../stageManager/StageManager";
-import { ConnectableEntity, Entity } from "../StageObject";
+import { ConnectableEntity } from "../abstract/ConnectableEntity";
+import { Entity } from "../abstract/StageEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { Section } from "./Section";
 

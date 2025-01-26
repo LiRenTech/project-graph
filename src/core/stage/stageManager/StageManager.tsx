@@ -8,6 +8,10 @@ import { Renderer } from "../../render/canvas2d/renderer";
 import { Settings } from "../../service/Settings";
 import { Camera } from "../Camera";
 import { Stage } from "../Stage";
+import { Association } from "../stageObject/abstract/Association";
+import { ConnectableEntity } from "../stageObject/abstract/ConnectableEntity";
+import { Entity } from "../stageObject/abstract/StageEntity";
+import { StageObject } from "../stageObject/abstract/StageObject";
 import { CublicCatmullRomSplineEdge } from "../stageObject/association/CublicCatmullRomSplineEdge";
 import { Edge } from "../stageObject/association/Edge";
 import { LineEdge } from "../stageObject/association/LineEdge";
@@ -16,12 +20,6 @@ import { ImageNode } from "../stageObject/entity/ImageNode";
 import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
-import {
-  Association,
-  ConnectableEntity,
-  Entity,
-  StageObject,
-} from "../stageObject/StageObject";
 import { StageAutoAlignManager } from "./concreteMethods/StageAutoAlignManager";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager";

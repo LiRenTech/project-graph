@@ -1,5 +1,5 @@
 import { Vector } from "../../../dataStruct/Vector";
-import { ConnectableEntity } from "../../../stage/stageObject/StageObject";
+import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 
 /**
  * 仅在keyboardOnlyEngine模块中使用

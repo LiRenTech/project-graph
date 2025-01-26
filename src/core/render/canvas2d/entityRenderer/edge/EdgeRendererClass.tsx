@@ -1,7 +1,7 @@
 import { Vector } from "../../../../dataStruct/Vector";
 import { EffectObject } from "../../../../service/feedbackService/effectEngine/effectObject";
+import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
-import { ConnectableEntity } from "../../../../stage/stageObject/StageObject";
 
 /**
  * 不同类型的边的渲染器 基类

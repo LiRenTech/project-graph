@@ -11,12 +11,12 @@ import {
 } from "../../../service/dataGenerateService/autoComputeEngine/logicNodeNameEnum";
 import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../../stage/Camera";
+import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { ConnectPoint } from "../../../stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
-import { Entity } from "../../../stage/stageObject/StageObject";
 import { ImageRenderer } from "../basicRenderer/ImageRenderer";
 import { ShapeRenderer } from "../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../basicRenderer/textRenderer";

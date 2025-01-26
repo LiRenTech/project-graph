@@ -1,5 +1,5 @@
 // import { Section } from "../../../stageObject/entity/Section";
-// import { Entity } from "../../../stageObject/StageObject";
+// import { Entity } from "../../../stageObject/StageEntity";
 import { Section } from "../../stageObject/entity/Section";
 import { StageManager } from "../StageManager";
 

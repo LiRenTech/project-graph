@@ -2,8 +2,9 @@ import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { StageManager } from "../../stageManager/StageManager";
+import { ConnectableAssociation } from "../abstract/Association";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { ConnectableAssociation, ConnectableEntity } from "../StageObject";
+import { ConnectableEntity } from "../abstract/ConnectableEntity";
 
 /**
  * 连接两个实体的有向边
