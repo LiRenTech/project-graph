@@ -377,6 +377,16 @@ async function registerKeyBinds() {
   ).down(() => {
     Popup.show(<ColorPanel />);
   });
+  (
+    await KeyBinds.create("switchDebugShow", "F3", {
+      control: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    const currentValue = Renderer.isShowDebug;
+    Settings.set("showDebug", !currentValue);
+  });
 
   (
     await KeyBinds.create("selectAll", "a", {
