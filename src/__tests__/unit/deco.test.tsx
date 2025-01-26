@@ -36,6 +36,14 @@ export class TestClass {
   }
 }
 
+// namespace TestNameSpace {
+//   function add(a: number, b: number): number {
+//     return a + b;
+//   }
+// }
+// 在 TypeScript 中，装饰器（decorators）不能直接应用于命名空间（namespace）中的函数。
+// 装饰器通常用于类的方法、类本身、属性或参数上。
+
 describe("deco.test.tsx", () => {
   // it("should pass", () => {
   //   const testClass = new TestClass();
