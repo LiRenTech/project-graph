@@ -45,9 +45,9 @@ import { dataDir } from "@tauri-apps/api/path";
 import { useTranslation } from "react-i18next";
 import { Settings } from "../core/service/Settings";
 import { RecentFileManager } from "../core/service/dataFileService/RecentFileManager";
+import { StageExportSvg } from "../core/service/dataGenerateService/stageExportEngine/StageExportSvg";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { Stage } from "../core/stage/Stage";
-import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { Dialog } from "../utils/dialog";
@@ -269,7 +269,7 @@ export default function AppMenu({
       return;
     }
 
-    const data = StageDumperSvg.dumpStageToSVGString();
+    const data = StageExportSvg.dumpStageToSVGString();
     try {
       await Stage.exportEngine.saveSvgHandle(path, data);
     } catch {

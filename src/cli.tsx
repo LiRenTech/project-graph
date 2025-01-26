@@ -1,5 +1,5 @@
 import { CliMatches } from "@tauri-apps/plugin-cli";
-import { StageDumperSvg } from "./core/stage/StageDumperSvg";
+import { StageExportSvg } from "./core/service/dataGenerateService/stageExportEngine/StageExportSvg";
 import { writeTextFile } from "./utils/fs";
 import { writeStdout } from "./utils/otherApi";
 
@@ -9,7 +9,7 @@ export async function runCli(matches: CliMatches) {
     const outputFormat =
       outputPath.endsWith(".svg") || outputPath === "-" ? "svg" : "";
     if (outputFormat === "svg") {
-      const result = StageDumperSvg.dumpStageToSVGString();
+      const result = StageExportSvg.dumpStageToSVGString();
       if (outputPath === "-") {
         writeStdout(result);
       } else {

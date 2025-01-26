@@ -31,11 +31,11 @@ import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { Color } from "../core/dataStruct/Color";
 import { ApiKeyManager } from "../core/service/dataGenerateService/ai/ApiKeyManager";
+import { StageExportSvg } from "../core/service/dataGenerateService/stageExportEngine/StageExportSvg";
 import { TextRiseEffect } from "../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
-import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
 // import { StageSaveManager } from "../core/stage/StageSaveManager";
@@ -461,7 +461,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             description="将选中内容导出SVG"
             icon={<SaveAll />}
             handleFunction={() => {
-              const svgString = StageDumperSvg.dumpSelectedToSVGString();
+              const svgString = StageExportSvg.dumpSelectedToSVGString();
               Dialog.show({
                 title: "导出SVG",
                 content:
