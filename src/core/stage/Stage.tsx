@@ -12,6 +12,7 @@ import { AutoSaveEngine } from "../service/autoSaveBackupEngine/autoSaveEngine";
 import { AutoBackupEngine } from "../service/autoSaveBackupEngine/autoBackupEngine";
 import { StageMouseInteractionCore } from "../service/stageMouseInteractionCore/stageMouseInteractionCore";
 import { StageFilePathManager } from "../service/stageFilePathManager";
+import { StageExportEngine } from "../service/stageExportEngine/stageExportEngine";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -70,6 +71,8 @@ export namespace Stage {
    * 自动备份功能
    */
   export const autoBackupEngine = new AutoBackupEngine();
+
+  export const exportEngine = new StageExportEngine();
 
   /**
    * 逻辑总入口

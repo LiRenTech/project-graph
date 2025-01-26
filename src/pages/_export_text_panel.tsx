@@ -1,11 +1,11 @@
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import Button from "../components/ui/Button";
-import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { isExportTreeTextPanelOpenAtom } from "../state";
 import { cn } from "../utils/cn";
+import { Stage } from "../core/stage/Stage";
 
 /**
  * 导出节点纯文本相关的面板
@@ -36,10 +36,10 @@ export default function ExportTreeTextPanel() {
       if (selectedFirstNode instanceof TextNode) {
         if (StageManager.isTree(selectedFirstNode)) {
           setMarkdownText(
-            StageSaveManager.getMarkdownStringByTextNode(selectedFirstNode),
+            Stage.exportEngine.getMarkdownStringByTextNode(selectedFirstNode),
           );
           setTabText(
-            StageSaveManager.getTabStringByTextNode(selectedFirstNode),
+            Stage.exportEngine.getTabStringByTextNode(selectedFirstNode),
           );
         } else {
           setMarkdownText("选择的根节点必须符合树形结构");
@@ -51,7 +51,7 @@ export default function ExportTreeTextPanel() {
       // 多个节点
       setMarkdownText("只能选择一个节点\n且必须是树形结构的根节点");
       setTabText("只能选择一个节点\n且必须是树形结构的根节点");
-      setPlainText(StageSaveManager.getPlainTextByEntities(selectedEntities));
+      setPlainText(Stage.exportEngine.getPlainTextByEntities(selectedEntities));
     }
   }, [isExportTreeTextPanelOpen]);
 

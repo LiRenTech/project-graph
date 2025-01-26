@@ -271,7 +271,7 @@ export default function AppMenu({
 
     const data = StageDumperSvg.dumpStageToSVGString();
     try {
-      await StageSaveManager.saveSvgHandle(path, data);
+      await Stage.exportEngine.saveSvgHandle(path, data);
     } catch {
       await Dialog.show({
         title: "保存失败",
@@ -341,7 +341,7 @@ export default function AppMenu({
       return;
     }
     try {
-      await StageSaveManager.saveMarkdownHandle(path, selectedNodes[0]);
+      await Stage.exportEngine.saveMarkdownHandle(path, selectedNodes[0]);
     } catch {
       await Dialog.show({
         title: "保存失败",
