@@ -30,7 +30,6 @@ import Box from "../components/Box";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { Color } from "../core/dataStruct/Color";
-import { ApiKeyManager } from "../core/service/dataGenerateService/ai/ApiKeyManager";
 import { StageExportSvg } from "../core/service/dataGenerateService/stageExportEngine/StageExportSvg";
 import { TextRiseEffect } from "../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
@@ -444,14 +443,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             description="AI扩展节点"
             icon={<BrainCircuit />}
             handleFunction={() => {
-              if (ApiKeyManager.getKeyArk().length === 0) {
-                Dialog.show({
-                  title: "提示",
-                  content: "当前为非官方构建，请使用官方构建方可使用AI功能。",
-                  type: "info",
-                });
-                return;
-              }
               StageManager.expandTextNodeByAI();
             }}
           />
