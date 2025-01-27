@@ -59,7 +59,7 @@ const _Box = <E extends ElementType = "div">(
       </Component>
       <div
         className={cn(
-          "pointer-events-none fixed z-[103] scale-75 rounded-md border border-neutral-700 bg-neutral-800 px-2 py-1 text-white opacity-0 transition-all",
+          "pointer-events-none fixed z-[103] scale-75 rounded-md border border-neutral-700 bg-neutral-800 px-2 py-1 text-white opacity-0 transition",
           {
             "pointer-events-auto scale-100 opacity-100": showTooltip && tooltip,
           },
