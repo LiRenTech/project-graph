@@ -327,7 +327,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
     >
       <Box
         className={cn(
-          "flex w-10 origin-right scale-[10%] flex-col items-center gap-4 rounded-full bg-white px-8 py-6 opacity-25 backdrop-blur-lg group-hover/wrapper:scale-100 group-hover/wrapper:bg-neutral-800/20 group-hover/wrapper:opacity-100",
+          "flex w-10 origin-right scale-[10%] flex-col items-center gap-4 rounded-full bg-white px-8 py-6 opacity-25 group-hover/wrapper:scale-100 group-hover/wrapper:bg-neutral-800 group-hover/wrapper:opacity-100",
           className,
         )}
       >

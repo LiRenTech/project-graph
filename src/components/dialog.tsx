@@ -58,9 +58,9 @@ export namespace Dialog {
         data-tauri-drag-region
         className={cn(
           "hover:cursor-move active:scale-100 active:cursor-grabbing",
-          "fixed left-0 top-0 z-[100] h-full w-full bg-black/0 backdrop-blur-0",
+          "fixed left-0 top-0 z-[100] h-full w-full bg-black/0",
           {
-            "bg-black/70 !backdrop-blur-lg": show,
+            "bg-black/30": show,
           },
         )}
       ></div>

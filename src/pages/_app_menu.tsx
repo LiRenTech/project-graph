@@ -389,7 +389,7 @@ export default function AppMenu({
   return (
     <div
       className={cn(
-        "!pointer-events-none flex origin-top-left scale-0 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800/20 p-3 opacity-0 backdrop-blur-lg",
+        "!pointer-events-none flex origin-top-left scale-0 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800 p-3 opacity-0",
         {
           "!pointer-events-auto scale-100 opacity-100": open,
         },
