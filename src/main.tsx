@@ -1,5 +1,6 @@
 import { routes } from "@generouted/react-router";
 import { getMatches } from "@tauri-apps/plugin-cli";
+import "driver.js/dist/driver.css";
 import i18next from "i18next";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";

@@ -5,11 +5,13 @@ import "vditor/dist/index.css";
 export default function MarkdownEditor({
   defaultValue = "",
   onChange,
+  id = "",
   className = "",
   options = {},
 }: {
   defaultValue?: string;
   onChange: (value: string) => void;
+  id?: string;
   className?: string;
   options?: Omit<IOptions, "after" | "input">;
 }) {
@@ -46,6 +48,7 @@ export default function MarkdownEditor({
   return (
     <div
       ref={el}
+      id={id}
       className={className}
       onKeyDown={(e) => e.stopPropagation()}
     />
