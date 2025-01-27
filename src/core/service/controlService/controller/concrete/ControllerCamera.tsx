@@ -221,6 +221,9 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
   Camera.targetLocationByScale = worldLocation;
 
   if (!isUseMouse(event)) {
+    const vector = new Vector(event.deltaX, event.deltaY);
+    // debug:
+    console.log(vector.toString());
     return false;
   }
 
