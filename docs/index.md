@@ -18,7 +18,7 @@ hero:
       link: https://t.me/projectgraph
 
   image:
-    src: /logo.svg
+    src: /logo-animated.svg
     width: 200
     height: 200
 
