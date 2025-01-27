@@ -97,8 +97,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
-          LR_ARK_API_KEY: ${{ secrets.ENV_ARK_API_KEY }}
-          LR_CF_API_KEY: ${{ secrets.LR_CF_API_KEY }}
+          LR_API_BASE_URL: ${{ secrets.ENV_API_BASE_URL }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
@@ -183,8 +182,7 @@ jobs:
         env:
           NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.11902837
           LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
-          LR_ARK_API_KEY: ${{ secrets.ENV_ARK_API_KEY }}
-          LR_CF_API_KEY: ${{ secrets.LR_CF_API_KEY }}
+          LR_API_BASE_URL: ${{ secrets.ENV_API_BASE_URL }}
 
       - name: rename apk file
         run: |

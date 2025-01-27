@@ -1,6 +1,5 @@
 import { useAtom } from "jotai";
 import {
-  BrainCircuit,
   ChevronDown,
   ChevronLeft,
   ChevronUp,
@@ -33,7 +32,6 @@ import {
   isMobile,
   isWeb,
 } from "../utils/platform";
-import AiPanel from "./_ai_panel";
 import AppMenu from "./_app_menu";
 import ErrorHandler from "./_error_handler";
 import ExportTreeTextPanel from "./_export_text_panel";
@@ -48,7 +46,6 @@ export default function App() {
   // 面板状态
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isStartFilePanelOpen, setIsStartFilePanelOpen] = React.useState(false);
-  const [isAiPanelOpen, setIsAiPanelOpen] = React.useState(false);
   const [isTagPanelOpen, setIsTagPanelOpen] = React.useState(false);
   const [isLogicNodePanelOpen, setIsLogicNodePanelOpen] = React.useState(false);
   const [ignoreMouse, setIgnoreMouse] = React.useState(false);
@@ -216,10 +213,6 @@ export default function App() {
     Stage.autoSaveEngine.setAutoSavePaused(isStartFilePanelOpen);
   }, [isStartFilePanelOpen]);
 
-  React.useEffect(() => {
-    Stage.autoSaveEngine.setAutoSavePaused(isAiPanelOpen);
-  }, [isAiPanelOpen]);
-
   return (
     <div
       className={cn(
@@ -232,7 +225,6 @@ export default function App() {
       onClick={() => {
         setIsMenuOpen(false);
         setIsStartFilePanelOpen(false);
-        setIsAiPanelOpen(false);
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
@@ -321,7 +313,10 @@ export default function App() {
           }}
         >
           <Cpu
-            className={cn("cursor-pointer", isAiPanelOpen ? "rotate-90" : "")}
+            className={cn(
+              "cursor-pointer",
+              isLogicNodePanelOpen ? "rotate-90" : "",
+            )}
           />
         </IconButton>
         {/* 中间标题 */}
@@ -357,17 +352,6 @@ export default function App() {
           </>
         )}
 
-        {/* 右上角AI按钮 */}
-        <IconButton
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsAiPanelOpen(!isAiPanelOpen);
-          }}
-        >
-          <BrainCircuit
-            className={cn("cursor-pointer", isAiPanelOpen ? "rotate-90" : "")}
-          />
-        </IconButton>
         {/* 右上角图钉按钮 */}
         <IconButton
           onClick={(e) => {
@@ -415,7 +399,6 @@ export default function App() {
       <TagPanel open={isTagPanelOpen} className="z-10" />
       <LogicNodePanel open={isLogicNodePanelOpen} className="z-10" />
       <StartFilePanel open={isStartFilePanelOpen} />
-      <AiPanel open={isAiPanelOpen} />
       <RecentFilesPanel />
       <ExportTreeTextPanel />
       {/* ======= */}

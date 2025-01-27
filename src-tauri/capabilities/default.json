@@ -29,6 +29,13 @@
     "dialog:default",
     "shell:default",
     "store:default",
-    "http:default"
+    {
+      "identifier": "http:default",
+      "allow": [
+        {
+          "url": "https://api.project-graph.top"
+        }
+      ]
+    }
   ]
 }

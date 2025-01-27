@@ -23,7 +23,6 @@ import { KeyboardOnlyEngine } from "./core/service/controlService/keyboardOnlyEn
 import { MouseLocation } from "./core/service/controlService/MouseLocation";
 import { RecentFileManager } from "./core/service/dataFileService/RecentFileManager";
 import { StartFilesManager } from "./core/service/dataFileService/StartFilesManager";
-import { PromptManager } from "./core/service/dataGenerateService/ai/PromptManager";
 import { ColorManager } from "./core/service/feedbackService/ColorManager";
 import { TextRiseEffect } from "./core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewOutlineFlashEffect } from "./core/service/feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
@@ -58,7 +57,6 @@ const el = document.getElementById("root")!;
     RecentFileManager.init(),
     LastLaunch.init(),
     StartFilesManager.init(),
-    PromptManager.init(),
     KeyBinds.init(),
     ColorManager.init(),
   ]);

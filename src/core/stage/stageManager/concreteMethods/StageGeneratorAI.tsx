@@ -1,18 +1,14 @@
+import { fetch } from "@tauri-apps/plugin-http";
 import { v4 as uuidv4 } from "uuid";
 import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
 import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
-import { AiFetcherOneShotCloudFlare } from "../../../service/dataGenerateService/ai/AiFetcher";
-import { ApiKeyManager } from "../../../service/dataGenerateService/ai/ApiKeyManager";
-import { PromptManager } from "../../../service/dataGenerateService/ai/PromptManager";
+import { TextRiseEffect } from "../../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Stage } from "../../Stage";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";
 
 export namespace StageGeneratorAI {
-  const systemPrompt =
-    "你好，我是一个具有发散式思维的人，请你告诉我一个主题，我会用中文扩展出5~10个新的词，我会以每行一个词的形式回答你，每个词之间用换行符分隔，没有任何其他多余文字，不会为词语标数字序号。";
-
   /**
    * 扩展所有选中的节点
    */
@@ -34,32 +30,28 @@ export namespace StageGeneratorAI {
   }
 
   async function realGenerateTextList(selectedTextNode: TextNode) {
-    let userContent = await PromptManager.getCurrentUserPrompt();
-    userContent = userContent.replaceAll("{{nodeText}}", selectedTextNode.text);
-
     try {
-      const responseContent: string = await AiFetcherOneShotCloudFlare.create()
-        .setApiKey(ApiKeyManager.getKeyCF())
-        .system(systemPrompt)
-        .user("Linux发行版")
-        .assistant("Arch Linux\nUbuntu\nFedora\nDebian\nLinux Mint")
-        .user(userContent)
-        .fetch();
-      let expandArrayList: string[] = [];
-      if (responseContent.includes("\n")) {
-        // 多行
-        expandArrayList = responseContent
-          .split("\n")
-          .map((line) => line.trim());
-      } else {
-        // 按照顿号分割
-        expandArrayList = responseContent
-          .split("、")
-          .map((line) => line.trim());
-      }
-
-      return expandArrayList; // 返回扩展的字符串数组
-    } catch {
+      const { words, tokens } = await (
+        await fetch(
+          (import.meta.env.LR_API_BASE_URL ?? "http://localhost:8787") +
+            "/ai/extend_word",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              word: selectedTextNode.text,
+            }),
+          },
+        )
+      ).json();
+      Stage.effectMachine.addEffect(
+        new TextRiseEffect(`生成完成，消耗 ${tokens} Tokens`),
+      );
+      return words;
+    } catch (e) {
+      console.error(e);
       return ["error"];
     }
   }
