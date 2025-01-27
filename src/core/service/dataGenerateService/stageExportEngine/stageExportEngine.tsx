@@ -1,5 +1,6 @@
 import { writeTextFile } from "../../../../utils/fs";
 import { StageManager } from "../../../stage/stageManager/StageManager";
+import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 
@@ -69,6 +70,12 @@ export class StageExportEngine {
     return this.getTreeTypeString(textNode, this.getTabText);
   }
 
+  /**
+   * 树形遍历节点
+   * @param textNode
+   * @param nodeToStringFunc
+   * @returns
+   */
   getTreeTypeString(
     textNode: TextNode,
     nodeToStringFunc: (node: TextNode, level: number) => string,
@@ -82,7 +89,7 @@ export class StageExportEngine {
       }
       visitedUUID.add(node.uuid);
       content += nodeToStringFunc(node, level);
-      const children = StageManager.nodeChildrenArray(node).filter(
+      const children = this.getNodeChildrenArray(node).filter(
         (v) => v instanceof TextNode,
       );
       for (const child of children) {
@@ -92,6 +99,42 @@ export class StageExportEngine {
 
     dfs(textNode, 1);
     return content;
+  }
+
+  /**
+   * issue: #276 【细节优化】导出功能的排序逻辑，从连接顺序变为角度判断
+   * @param node
+   */
+  private getNodeChildrenArray(node: TextNode): ConnectableEntity[] {
+    const result = StageManager.nodeChildrenArray(node);
+    // 如果全都在右侧或者左侧
+    if (
+      result.every((v) => v.geometryCenter.x > node.geometryCenter.x) ||
+      result.every((v) => v.geometryCenter.x < node.geometryCenter.x)
+    ) {
+      // 则按从上到下的顺序排序
+      return result.sort((a, b) => a.geometryCenter.y - b.geometryCenter.y);
+    }
+    // 如果全都在上侧或者下侧
+    if (
+      result.every((v) => v.geometryCenter.y > node.geometryCenter.y) ||
+      result.every((v) => v.geometryCenter.y < node.geometryCenter.y)
+    ) {
+      // 则按从左到右的顺序排序
+      return result.sort((a, b) => a.geometryCenter.x - b.geometryCenter.x);
+    }
+    // 按角度排序
+    return result.sort((a, b) => {
+      const angleA = Math.atan2(
+        a.geometryCenter.y - node.geometryCenter.y,
+        a.geometryCenter.x - node.geometryCenter.x,
+      );
+      const angleB = Math.atan2(
+        b.geometryCenter.y - node.geometryCenter.y,
+        b.geometryCenter.x - node.geometryCenter.x,
+      );
+      return angleA - angleB;
+    });
   }
 
   private getNodeMarkdown(node: TextNode, level: number): string {
