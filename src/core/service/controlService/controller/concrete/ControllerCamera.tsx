@@ -220,12 +220,12 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
   const worldLocation = Renderer.transformView2World(mouseLocation);
   Camera.targetLocationByScale = worldLocation;
 
-  if (!isUseMouse(event)) {
-    const vector = new Vector(event.deltaX, event.deltaY);
-    // debug:
-    console.log(vector.toString());
-    return false;
-  }
+  // if (!isUseMouse(event)) {
+  //   const vector = new Vector(event.deltaX, event.deltaY);
+  //   // debug:
+  //   console.log(vector.toString());
+  //   // return false;
+  // }
 
   // 滚轮纵向滚动是缩放
   if (event.deltaY > 0) {
@@ -252,15 +252,17 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
  * 如果使用了鼠标滚轮，则x或y的滚动必有一个接近100
  * @param event
  */
-function isUseMouse(event: WheelEvent) {
-  if (
-    Math.round(Math.abs(event.deltaX)) === 100 ||
-    Math.round(Math.abs(event.deltaY)) === 100
-  ) {
-    return true;
-  }
-  return false;
-}
+// 实测并不是这样，实际上web有可能是133不一定是100
+// 触控板最慢速移动可能是1.3，也不一定是1
+// function isUseMouse(event: WheelEvent) {
+//   if (
+//     Math.round(Math.abs(event.deltaX)) === 100 ||
+//     Math.round(Math.abs(event.deltaY)) === 100
+//   ) {
+//     return true;
+//   }
+//   return false;
+// }
 
 /**
  * 处理鼠标双击事件
