@@ -1,7 +1,7 @@
 import { Delete, Pencil, Pin } from "lucide-react";
 import { useEffect, useState } from "react";
-import Button from "../components/ui/Button";
-import IconButton from "../components/ui/IconButton";
+import Button from "../components/Button";
+import IconButton from "../components/IconButton";
 import { PromptManager } from "../core/service/dataGenerateService/ai/PromptManager";
 import { cn } from "../utils/cn";
 
@@ -66,7 +66,7 @@ export default function AiPanel({ open = false }: { open: boolean }) {
   return (
     <div
       className={cn(
-        "pointer-events-none fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 scale-75 transform flex-col items-center overflow-y-scroll rounded-md border border-neutral-700 bg-neutral-900/20 px-2 py-6 opacity-0 backdrop-blur-lg",
+        "pointer-events-none fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 scale-75 transform flex-col items-center overflow-y-scroll rounded-md border border-neutral-700 bg-neutral-900 px-2 py-6 opacity-0",
         {
           "pointer-events-auto scale-100 opacity-100": open,
         },

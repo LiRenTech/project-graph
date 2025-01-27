@@ -1,13 +1,13 @@
 import { Search } from "lucide-react";
-import Box from "../components/ui/Box";
-import Button from "../components/ui/Button";
-import FileChooser from "../components/ui/FileChooser";
-import IconButton from "../components/ui/IconButton";
-import Input from "../components/ui/Input";
-import KeyBind from "../components/ui/KeyBind";
-import Select from "../components/ui/Select";
-import Slider from "../components/ui/Slider";
-import Switch from "../components/ui/Switch";
+import Box from "../components/Box";
+import Button from "../components/Button";
+import FileChooser from "../components/FileChooser";
+import IconButton from "../components/IconButton";
+import Input from "../components/Input";
+import KeyBind from "../components/KeyBind";
+import Select from "../components/Select";
+import Slider from "../components/Slider";
+import Switch from "../components/Switch";
 
 export default function UITestPage() {
   return (

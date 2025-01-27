@@ -1,6 +1,6 @@
 import { Stars } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import Switch from "../../components/ui/Switch";
+import Switch from "../../components/Switch";
 import { Settings } from "../../core/service/Settings";
 import { Field } from "./_field";
 

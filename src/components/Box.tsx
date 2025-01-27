@@ -1,5 +1,5 @@
 import React, { ElementType, forwardRef } from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../utils/cn";
 
 // 定义 Box 组件的 props 类型
 type BoxProps<E extends ElementType> = {
@@ -47,7 +47,7 @@ const _Box = <E extends ElementType = "div">(
       <Component
         ref={ref}
         className={cn(
-          "rounded-md border border-neutral-700 bg-neutral-800/20 text-white backdrop-blur-lg",
+          "rounded-md border border-neutral-700 bg-neutral-800 text-white",
           className,
         )}
         onMouseEnter={handleMouseEnter}
@@ -59,7 +59,7 @@ const _Box = <E extends ElementType = "div">(
       </Component>
       <div
         className={cn(
-          "pointer-events-none fixed z-[103] scale-75 rounded-md border border-neutral-700 bg-neutral-800/20 px-2 py-1 text-white opacity-0 backdrop-blur-lg transition-all",
+          "pointer-events-none fixed z-[103] scale-75 rounded-md border border-neutral-700 bg-neutral-800 px-2 py-1 text-white opacity-0 transition-all",
           {
             "pointer-events-auto scale-100 opacity-100": showTooltip && tooltip,
           },

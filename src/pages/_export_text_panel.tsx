@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import Button from "../components/ui/Button";
+import Button from "../components/Button";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { isExportTreeTextPanelOpenAtom } from "../state";

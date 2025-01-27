@@ -14,15 +14,15 @@ import {
 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import IconButton from "../components/ui/IconButton";
-import Switch from "../components/ui/Switch";
+import { Dialog } from "../components/dialog";
+import IconButton from "../components/IconButton";
+import Switch from "../components/Switch";
 import { RecentFileManager } from "../core/service/dataFileService/RecentFileManager";
 import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
 import { StartFilesManager } from "../core/service/dataFileService/StartFilesManager";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { fileAtom } from "../state";
 import { cn } from "../utils/cn";
-import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
 import { isDesktop } from "../utils/platform";
 
@@ -196,7 +196,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
     // 群友joe说蓝色一点更好看
     <div
       className={cn(
-        "pointer-events-none fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 scale-75 transform flex-col items-center overflow-y-scroll rounded-md border border-neutral-700 bg-neutral-900/20 px-2 py-6 opacity-0 backdrop-blur-lg",
+        "pointer-events-none fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 scale-75 transform flex-col items-center overflow-y-scroll rounded-md border border-neutral-700 bg-neutral-900 px-2 py-6 opacity-0",
         {
           "pointer-events-auto scale-100 opacity-100": open,
           "opacity-20": isPanelTransparent,

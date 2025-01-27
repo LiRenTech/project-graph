@@ -1,8 +1,8 @@
 import React from "react";
-import Button from "../components/ui/Button";
+import Button from "../components/Button";
+import { Dialog } from "../components/dialog";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
-import { Dialog } from "../utils/dialog";
 
 /**
  * 标签相关面板

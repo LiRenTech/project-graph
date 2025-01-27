@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Button from "../components/ui/Button";
+import Button from "../components/Button";
+import { Dialog } from "../components/dialog";
 import { Color } from "../core/dataStruct/Color";
 import { ColorManager } from "../core/service/feedbackService/ColorManager";
-import { Dialog } from "../utils/dialog";
 
 /**
  * 自定义颜色设置面板

@@ -1,8 +1,8 @@
 import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
 import React from "react";
-import Button from "../components/ui/Button";
-import IconButton from "../components/ui/IconButton";
-import Input from "../components/ui/Input";
+import Button from "../components/Button";
+import IconButton from "../components/IconButton";
+import Input from "../components/Input";
 import { editTextNodeHookGlobal } from "../core/service/controlService/controller/concrete/utilsControl";
 import { Controller } from "../core/service/controlService/controller/Controller";
 import { Entity } from "../core/stage/stageObject/abstract/StageEntity";

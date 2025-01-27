@@ -6,11 +6,11 @@ import { cn } from "../utils/cn";
 
 // import { Zap } from "lucide-react";
 // import IconButton from "../components/ui/IconButton";
+import { Dialog } from "../components/dialog";
 import { RecentFileManager } from "../core/service/dataFileService/RecentFileManager";
 import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
 import { StartFilesManager } from "../core/service/dataFileService/StartFilesManager";
 import { Stage } from "../core/stage/Stage";
-import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
 import { isDesktop } from "../utils/platform";
 

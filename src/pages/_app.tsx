@@ -15,15 +15,15 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import Button from "../components/ui/Button";
-import IconButton from "../components/ui/IconButton";
+import Button from "../components/Button";
+import { Dialog } from "../components/dialog";
+import IconButton from "../components/IconButton";
 import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
 import { Settings } from "../core/service/Settings";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { fileAtom } from "../state";
 import { cn } from "../utils/cn";
-import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
 import {
   appScale,

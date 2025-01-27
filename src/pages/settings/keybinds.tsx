@@ -1,7 +1,7 @@
 import { Keyboard } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import KeyBind from "../../components/ui/KeyBind";
+import KeyBind from "../../components/KeyBind";
 import { KeyBinds } from "../../core/service/controlService/KeyBinds";
 import { Field } from "./_field";
 

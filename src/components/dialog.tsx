@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import Input from "../components/ui/Input";
-import { cn } from "./cn";
+import { cn } from "../utils/cn";
+import Input from "./Input";
 
 export namespace Dialog {
   export type DialogButton = {
@@ -52,20 +52,6 @@ export namespace Dialog {
       );
     });
   }
-  export function BackDrop() {
-    return (
-      <div
-        data-tauri-drag-region
-        className={cn(
-          "hover:cursor-move active:scale-100 active:cursor-grabbing",
-          "fixed left-0 top-0 z-[100] h-full w-full bg-black/0 backdrop-blur-0",
-          {
-            "bg-black/70 !backdrop-blur-lg": show,
-          },
-        )}
-      ></div>
-    );
-  }
 
   function Component({
     title = "",
@@ -90,9 +76,9 @@ export namespace Dialog {
       <>
         <div
           className={cn(
-            "fixed left-1/2 top-1/2 z-[101] flex max-h-[50vh] max-w-96 -translate-x-1/2 -translate-y-1/2 scale-50 transform flex-col gap-4 overflow-auto text-wrap break-words rounded-2xl p-8 text-white opacity-0 shadow-xl shadow-neutral-900",
+            "fixed left-1/2 top-1/2 z-[101] flex max-h-[50vh] max-w-96 origin-top -translate-x-1/2 -translate-y-full scale-x-75 scale-y-0 flex-col gap-4 overflow-auto text-wrap break-words rounded-2xl p-8 text-white opacity-0 shadow-xl shadow-neutral-900",
             {
-              "scale-100 opacity-100": show,
+              "-translate-y-1/2 scale-x-100 scale-y-100 opacity-100": show,
               "bg-blue-950": type === "info",
               "bg-green-950": type === "success",
               "bg-yellow-950": type === "warning",
@@ -155,7 +141,15 @@ export namespace Dialog {
             ))}
           </div>
         </div>
-        <BackDrop />
+        <div
+          data-tauri-drag-region
+          className={cn(
+            "fixed left-0 top-0 z-[100] h-full w-full bg-black opacity-0",
+            {
+              "opacity-30": show,
+            },
+          )}
+        ></div>
       </>
     );
   }
