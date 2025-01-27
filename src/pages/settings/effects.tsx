@@ -10,13 +10,19 @@ export default function EffectsPage() {
     Settings.use("effectsPerferences");
 
   return Object.keys(
-    import.meta.glob("../../core/service/effectEngine/concrete/*.tsx", {
-      eager: true,
-    }),
+    import.meta.glob(
+      "../../core/service/feedbackService/effectEngine/concrete/*.tsx",
+      {
+        eager: true,
+      },
+    ),
   )
     .map((path) =>
       path
-        .replace("../../core/service/effectEngine/concrete/", "")
+        .replace(
+          "../../core/service/feedbackService/effectEngine/concrete/",
+          "",
+        )
         .replace(".tsx", ""),
     )
     .map((effectName) => (
