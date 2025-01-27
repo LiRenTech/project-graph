@@ -4,7 +4,7 @@ import {
 } from "@tauri-apps/api/window";
 import { family as osFamily, platform } from "@tauri-apps/plugin-os";
 
-export const isWeb = window.__TAURI_OS_PLUGIN_INTERNALS__ === undefined;
+export const isWeb = !("__TAURI_OS_PLUGIN_INTERNALS__" in window);
 export const isMobile = isWeb
   ? navigator.userAgent.toLowerCase().includes("mobile")
   : platform() === "android";
