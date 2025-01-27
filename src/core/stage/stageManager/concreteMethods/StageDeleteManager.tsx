@@ -1,6 +1,6 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { ExplodeAshEffect } from "../../../service/feedbackService/effectEngine/concrete/ExplodeDashEffect";
+import { ExplodeDashEffect } from "../../../service/feedbackService/effectEngine/concrete/ExplodeDashEffect";
 import { Stage } from "../../Stage";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { LineEdge } from "../../stageObject/association/LineEdge";
@@ -57,7 +57,7 @@ export namespace StageDeleteManager {
     if (StageManager.getImageNodes().includes(entity)) {
       StageManager.deleteOneImage(entity);
       Stage.effectMachine.addEffect(
-        new ExplodeAshEffect(
+        new ExplodeDashEffect(
           new ProgressNumber(0, 30),
           entity.collisionBox.getRectangle(),
           Color.White,
@@ -81,7 +81,7 @@ export namespace StageDeleteManager {
       // 从数组中去除
       StageManager.deleteOneConnectPoint(entity);
       Stage.effectMachine.addEffect(
-        new ExplodeAshEffect(
+        new ExplodeDashEffect(
           new ProgressNumber(0, 30),
           entity.collisionBox.getRectangle(),
           Color.White,
@@ -101,7 +101,7 @@ export namespace StageDeleteManager {
       StageManager.deleteOneTextNode(entity);
       // 增加特效
       Stage.effectMachine.addEffect(
-        new ExplodeAshEffect(
+        new ExplodeDashEffect(
           new ProgressNumber(0, 30),
           entity.collisionBox.getRectangle(),
           entity.color.a === 0 ? Color.White : entity.color.clone(),
