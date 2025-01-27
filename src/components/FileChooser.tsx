@@ -1,6 +1,6 @@
 import { open } from "@tauri-apps/plugin-dialog";
 import { FolderOpen } from "lucide-react";
-import { isWeb } from "../../utils/platform";
+import { isWeb } from "../utils/platform";
 import Button from "./Button";
 import Input from "./Input";
 

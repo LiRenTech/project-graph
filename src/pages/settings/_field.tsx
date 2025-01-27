@@ -1,12 +1,12 @@
 import { RotateCw } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Button from "../../components/ui/Button";
-import FileChooser from "../../components/ui/FileChooser";
-import Input from "../../components/ui/Input";
-import Select from "../../components/ui/Select";
-import Slider from "../../components/ui/Slider";
-import Switch from "../../components/ui/Switch";
+import Button from "../../components/Button";
+import FileChooser from "../../components/FileChooser";
+import Input from "../../components/Input";
+import Select from "../../components/Select";
+import Slider from "../../components/Slider";
+import Switch from "../../components/Switch";
 import { Settings } from "../../core/service/Settings";
 import { cn } from "../../utils/cn";
 

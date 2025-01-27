@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import Input from "../components/ui/Input";
-import { cn } from "./cn";
+import { cn } from "../utils/cn";
+import Input from "./Input";
 
 export namespace Dialog {
   export type DialogButton = {

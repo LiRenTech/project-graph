@@ -14,15 +14,15 @@ import {
 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import IconButton from "../components/ui/IconButton";
-import Switch from "../components/ui/Switch";
+import { Dialog } from "../components/dialog";
+import IconButton from "../components/IconButton";
+import Switch from "../components/Switch";
 import { RecentFileManager } from "../core/service/dataFileService/RecentFileManager";
 import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
 import { StartFilesManager } from "../core/service/dataFileService/StartFilesManager";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { fileAtom } from "../state";
 import { cn } from "../utils/cn";
-import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
 import { isDesktop } from "../utils/platform";
 

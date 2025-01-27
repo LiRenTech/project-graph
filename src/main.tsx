@@ -5,6 +5,8 @@ import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { runCli } from "./cli";
+import { Dialog } from "./components/dialog";
+import { Popup } from "./components/popup";
 import { Color } from "./core/dataStruct/Color";
 import { Vector } from "./core/dataStruct/Vector";
 import { EdgeRenderer } from "./core/render/canvas2d/entityRenderer/edge/EdgeRenderer";
@@ -36,11 +38,9 @@ import { EdgeCollisionBoxGetter } from "./core/stage/stageObject/association/Edg
 import "./index.pcss";
 import { ColorPanel } from "./pages/_toolbar";
 import "./polyfills/roundRect";
-import { Dialog } from "./utils/dialog";
 import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
-import { Popup } from "./utils/popup";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;

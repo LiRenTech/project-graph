@@ -26,9 +26,9 @@ import {
   Trash2,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import Box from "../components/ui/Box";
-import Button from "../components/ui/Button";
-import Input from "../components/ui/Input";
+import Box from "../components/Box";
+import Button from "../components/Button";
+import Input from "../components/Input";
 import { Color } from "../core/dataStruct/Color";
 import { ApiKeyManager } from "../core/service/dataGenerateService/ai/ApiKeyManager";
 import { StageExportSvg } from "../core/service/dataGenerateService/stageExportEngine/StageExportSvg";
@@ -39,9 +39,9 @@ import { StageDumper } from "../core/stage/StageDumper";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
 // import { StageSaveManager } from "../core/stage/StageSaveManager";
-import { Dialog } from "../utils/dialog";
+import { Dialog } from "../components/dialog";
+import { Popup } from "../components/popup";
 import { writeTextFile } from "../utils/fs";
-import { Popup } from "../utils/popup";
 // import { PathString } from "../utils/pathString";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { ColorManager } from "../core/service/feedbackService/ColorManager";

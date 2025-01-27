@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
+import { Dialog } from "../../../../components/dialog";
 import { Serialized } from "../../../../types/node";
-import { Dialog } from "../../../../utils/dialog";
 import { writeFileBase64 } from "../../../../utils/fs";
 import { PathString } from "../../../../utils/pathString";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";

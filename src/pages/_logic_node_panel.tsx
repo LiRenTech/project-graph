@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
-import Button from "../components/ui/Button";
+import Button from "../components/Button";
 import {
   LogicNodeNameEnum,
   LogicNodeNameToArgsTipsMap,

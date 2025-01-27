@@ -1,4 +1,4 @@
-import { Dialog } from "../../../../utils/dialog";
+import { Dialog } from "../../../../components/dialog";
 import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Camera } from "../../../stage/Camera";

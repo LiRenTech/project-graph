@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import Box from "../components/ui/Box";
-import Button from "../components/ui/Button";
+import Box from "../components/Box";
+import Button from "../components/Button";
+import { Dialog } from "../components/dialog";
 import { Controller } from "../core/service/controlService/controller/Controller";
 import { Stage } from "../core/stage/Stage";
-import { Dialog } from "../utils/dialog";
 
 export default function SearchingNodePanel() {
   // region 搜索相关

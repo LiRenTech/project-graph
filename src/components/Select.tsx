@@ -1,6 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../utils/cn";
 import Box from "./Box";
 
 export default function Select({

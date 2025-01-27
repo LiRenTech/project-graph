@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Button from "../components/ui/Button";
+import Button from "../components/Button";
 import { Vector } from "../core/dataStruct/Vector";
 import { Renderer } from "../core/render/canvas2d/renderer";
 import { InputElement } from "../core/render/domElement/inputElement";

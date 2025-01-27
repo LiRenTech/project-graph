@@ -3,8 +3,8 @@ import { fetch } from "@tauri-apps/plugin-http";
 import { open } from "@tauri-apps/plugin-shell";
 import { LogIn, User } from "lucide-react";
 import React from "react";
+import { Dialog } from "../../components/dialog";
 import { Settings } from "../../core/service/Settings";
-import { Dialog } from "../../utils/dialog";
 import { isMobile } from "../../utils/platform";
 import { ButtonField } from "./_field";
 

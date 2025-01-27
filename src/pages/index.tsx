@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from "react";
+import { Dialog } from "../components/dialog";
 import { Renderer } from "../core/render/canvas2d/renderer";
 import { Controller } from "../core/service/controlService/controller/Controller";
 import { StageStyleManager } from "../core/service/feedbackService/stageStyle/StageStyleManager";
 import { Settings } from "../core/service/Settings";
 import { Canvas } from "../core/stage/Canvas";
 import { Stage } from "../core/stage/Stage";
-import { Dialog } from "../utils/dialog";
 // import DetailsEditPanel from "./_details_edit_panel";
 import DetailsEditSidePanel from "./_details_edit_side_panel";
 import HintText from "./_hint_text";

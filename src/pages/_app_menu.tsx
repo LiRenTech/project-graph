@@ -43,6 +43,7 @@ import { getCurrentWindow, isDesktop, isWeb } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { dataDir } from "@tauri-apps/api/path";
 import { useTranslation } from "react-i18next";
+import { Dialog } from "../components/dialog";
 import { Settings } from "../core/service/Settings";
 import { RecentFileManager } from "../core/service/dataFileService/RecentFileManager";
 import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
@@ -50,7 +51,6 @@ import { StageExportSvg } from "../core/service/dataGenerateService/stageExportE
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { Stage } from "../core/stage/Stage";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
-import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
 
 export default function AppMenu({

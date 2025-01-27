@@ -1,4 +1,4 @@
-import { cn } from "../../utils/cn";
+import { cn } from "../utils/cn";
 
 /**
  * 手机上那种 滑动圆球的 小开关按钮

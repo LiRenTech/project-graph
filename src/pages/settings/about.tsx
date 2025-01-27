@@ -7,7 +7,7 @@ import Github from "../../assets/github.svg?react";
 import icon from "../../assets/icon.png";
 import QQ from "../../assets/qq.svg?react";
 import versions from "../../assets/versions.json";
-import Button from "../../components/ui/Button";
+import Button from "../../components/Button";
 import { getAppVersion } from "../../utils/otherApi";
 
 export default function About() {

@@ -1,6 +1,6 @@
 import { platform } from "@tauri-apps/plugin-os";
 import { open } from "@tauri-apps/plugin-shell";
-import Button from "../components/ui/Button";
+import Button from "../components/Button";
 
 export default function InfoPage() {
   return (

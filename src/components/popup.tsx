@@ -1,8 +1,8 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import Box from "../components/ui/Box";
 import { MouseLocation } from "../core/service/controlService/MouseLocation";
-import { cn } from "./cn";
+import { cn } from "../utils/cn";
+import Box from "./Box";
 
 export namespace Popup {
   export function show(children: React.ReactNode): Promise<void> {
