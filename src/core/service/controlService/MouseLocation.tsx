@@ -19,6 +19,7 @@ export namespace MouseLocation {
 
   /**
    * 返回的时视野坐标系中的鼠标位置
+   * 注意是view坐标系
    * @returns
    */
   export function vector(): Vector {

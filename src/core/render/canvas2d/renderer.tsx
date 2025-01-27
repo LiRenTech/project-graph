@@ -29,6 +29,7 @@ import {
   renderHorizonBackground,
   renderVerticalBackground,
 } from "./utilsRenderer/backgroundRenderer";
+import { MouseLocation } from "../../service/controlService/MouseLocation";
 
 /**
  * 渲染器
@@ -304,21 +305,19 @@ export namespace Renderer {
 
   /** 手动连接线 */
   function renderConnectingLine() {
-    if (
-      Stage.connectMachine.connectFromEntities.length > 0 &&
-      Controller.lastMoveLocation
-    ) {
+    if (Stage.connectMachine.isUsing) {
       // 如果鼠标位置没有和任何节点相交
       let connectTargetNode = null;
+      const mouseLocation = transformView2World(MouseLocation.vector());
       for (const node of StageManager.getConnectableEntity()) {
-        if (node.collisionBox.isContainsPoint(Controller.lastMoveLocation)) {
+        if (node.collisionBox.isContainsPoint(mouseLocation)) {
           connectTargetNode = node;
           break;
         }
       }
       if (connectTargetNode === null) {
         for (const node of Stage.connectMachine.connectFromEntities) {
-          EdgeRenderer.renderVirtualEdge(node, Controller.lastMoveLocation);
+          EdgeRenderer.renderVirtualEdge(node, mouseLocation);
         }
       } else {
         // 画一条像吸住了的线
