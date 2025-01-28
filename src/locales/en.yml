@@ -459,6 +459,10 @@ keyBinds:
       Debug information is shown in the top left corner of the canvas and is typically used by developers.
       Once enabled, debug information will appear in the top left corner of the canvas.
       If you encounter a bug and need to provide a screenshot for feedback, it is recommended to enable this option.
+  keyboardOnlyGenerateNode:
+    title: 仅使用键盘生长节点
+    description: |
+      按下后，仅使用键盘生长节点
   selectAll:
     title: selectAll
     description: Press to select all objects on the canvas
