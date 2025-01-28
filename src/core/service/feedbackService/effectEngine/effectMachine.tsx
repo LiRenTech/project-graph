@@ -12,11 +12,9 @@ export class EffectMachine implements Tickable, Renderable {
   private effectsPerferences: Record<string, boolean> = {};
 
   private constructor() {
-    setTimeout(() => {
-      Settings.watch("effectsPerferences", (value) => {
-        this.effectsPerferences = value;
-      });
-    }, 10);
+    Settings.watch("effectsPerferences", (value) => {
+      this.effectsPerferences = value;
+    });
   }
 
   static default(): EffectMachine {

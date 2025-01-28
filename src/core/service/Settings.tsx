@@ -130,7 +130,14 @@ export namespace Settings {
 
   export async function init() {
     store = await createStore("settings.json");
-    console.log("settings init");
+    // 调用所有watcher
+    Object.entries(callbacks).forEach(([key, callbacks]) => {
+      callbacks.forEach((callback) => {
+        get(key as keyof Settings).then((value) => {
+          callback(value);
+        });
+      });
+    });
   }
 
   export async function get<K extends keyof Settings>(
@@ -171,7 +178,12 @@ export namespace Settings {
       callbacks[key] = [];
     }
     callbacks[key].push(callback);
-    get(key).then((value) => callback(value));
+    if (store) {
+      get(key).then((value) => {
+        console.log(callback, value);
+        callback(value);
+      });
+    }
   }
 
   /**
