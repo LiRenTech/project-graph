@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@custom-variant page (&.active);
+
+@font-face {
+  font-family: "MiSans";
+  font-weight: normal;
+  src:
+    local("MiSans VF"),
+    url("./assets/MiSans-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "MiSans";
+  font-weight: bold;
+  src:
+    local("MiSans VF"),
+    url("./assets/MiSans-Bold.woff2") format("woff2");
+}
+
+@theme {
+  --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@layer base {
+  body,
+  #root {
+    @apply h-screen bg-transparent;
+  }
+  * {
+    @apply ease-out-expo box-border cursor-default [color-scheme:dark] transition duration-500 [-webkit-user-drag:none] select-none;
+    font-family: "MiSans";
+    font-antialiasing: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  /* Class assigned to popover wrapper */
+  .driver-popover {
+    @apply rounded-3xl bg-blue-950 p-6 text-white;
+  }
+
+  /* Arrow pointing towards the highlighted element */
+  .driver-popover-arrow {
+    @apply hidden;
+  }
+
+  /* Title and description */
+  .driver-popover-title {
+    @apply text-xl font-normal;
+    font-family: "MiSans";
+  }
+  .driver-popover-description {
+    font-family: "MiSans";
+  }
+
+  /* Close button displayed on the top right corner */
+  .driver-popover-close-btn {
+    @apply top-4 right-4 transition hover:scale-125 hover:text-white;
+  }
+
+  /* Footer of the popover displaying progress and navigation buttons */
+  .driver-popover-footer {
+  }
+  .driver-popover-progress-text {
+  }
+  .driver-popover-prev-btn[class],
+  .driver-popover-next-btn[class] {
+    @apply rounded-full border-none bg-blue-900 px-3 py-2 text-white transition hover:scale-125 active:scale-90;
+    font-family: "MiSans";
+    text-shadow: none;
+  }
+}
