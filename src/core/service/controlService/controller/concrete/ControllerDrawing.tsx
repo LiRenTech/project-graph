@@ -12,7 +12,7 @@ import { ControllerClass } from "../ControllerClass";
  */
 class ControllerDrawingClass extends ControllerClass {
   // 一开始是禁用状态
-  private _isUsing: boolean = true;
+  private _isUsing: boolean = false;
   public get isUsing() {
     return this._isUsing;
   }
