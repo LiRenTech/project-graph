@@ -11,12 +11,15 @@ import DetailsEditSidePanel from "./_details_edit_side_panel";
 import HintText from "./_hint_text";
 import SearchingNodePanel from "./_searching_node_panel";
 import Toolbar from "./_toolbar";
+import Button from "../components/Button";
+import { isMobile } from "../utils/platform";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
 
   const [cursorName, setCursorName] = React.useState("default");
   const [bgAlpha, setBgAlpha] = React.useState(1);
+  const [isDrawingMode, setIsDrawingMode] = React.useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -99,6 +102,23 @@ export default function Home() {
       {/* <DetailsEditPanel /> */}
       <DetailsEditSidePanel />
       <HintText />
+      {isMobile && (
+        <Button
+          className="z-5 absolute bottom-10 left-4"
+          onClick={() => {
+            if (isDrawingMode) {
+              // 切换到框选模式
+              Stage.drawingMachine.shutDown();
+            } else {
+              // 切换到涂鸦模式
+              Stage.drawingMachine.open();
+            }
+            setIsDrawingMode(!isDrawingMode);
+          }}
+        >
+          {isDrawingMode ? "框选模式" : "涂鸦模式"}
+        </Button>
+      )}
       {/* TODO: 下面这个写法有点奇怪 rgba值太长了 */}
       <div
         style={{

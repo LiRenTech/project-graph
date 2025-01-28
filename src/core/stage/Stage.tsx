@@ -13,6 +13,7 @@ import { EffectMachine } from "../service/feedbackService/effectEngine/effectMac
 import { KeyboardOnlyEngine } from "../service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
 import { Settings } from "../service/Settings";
 import { StageMouseInteractionCore } from "../service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
+import { ControllerDrawing } from "../service/controlService/controller/concrete/ControllerDrawing";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -42,6 +43,10 @@ export namespace Stage {
    */
   export const selectMachine = ControllerRectangleSelect;
 
+  /**
+   * 涂鸦控制器
+   */
+  export const drawingMachine = ControllerDrawing;
   /**
    * 鼠标连线控制器
    */

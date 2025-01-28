@@ -8,30 +8,37 @@ import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
 /**
- * 涂鸦功能，用于绘制临时激光笔特效，教学、录视频、屏幕分享等场景中使用
- *
- * BUG: 每次画新的笔画时会突然出现一个很长的直线
+ * 涂鸦功能
  */
-export const ControllerDrawing = new ControllerClass();
+class ControllerDrawingClass extends ControllerClass {
+  // 一开始是禁用状态
+  private _isUsing: boolean = true;
+  public get isUsing() {
+    return this._isUsing;
+  }
+  public shutDown() {
+    this._isUsing = false;
+  }
+  public open() {
+    this._isUsing = true;
+  }
 
-ControllerDrawing.mousedown = (event: MouseEvent) => {
-  if (event.button !== 1) {
-    return;
-  }
-  if (!Controller.pressingKeySet.has("`")) {
-    return;
-  }
-  const pressWorldLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
-  ControllerDrawing.lastMoveLocation = pressWorldLocation.clone();
-};
+  public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
+    if (!this._isUsing) return;
+    if (event.button !== 0) {
+      return;
+    }
+    const pressWorldLocation = Renderer.transformView2World(
+      new Vector(event.clientX, event.clientY),
+    );
+    ControllerDrawing.lastMoveLocation = pressWorldLocation.clone();
+  };
 
-ControllerDrawing.mousemove = (event: MouseEvent) => {
-  if (!Controller.isMouseDown[0]) {
-    return;
-  }
-  if (Controller.pressingKeySet.has("`")) {
+  public mousemove = (event: MouseEvent) => {
+    if (!this._isUsing) return;
+    if (!Controller.isMouseDown[0]) {
+      return;
+    }
     const worldLocation = Renderer.transformView2World(
       new Vector(event.clientX, event.clientY),
     );
@@ -47,5 +54,18 @@ ControllerDrawing.mousemove = (event: MouseEvent) => {
       ),
     );
     ControllerDrawing.lastMoveLocation = worldLocation.clone();
-  }
-};
+  };
+
+  public mouseup = (event: MouseEvent) => {
+    if (!this._isUsing) return;
+    if (event.button !== 0) {
+      return;
+    }
+    const releaseWorldLocation = Renderer.transformView2World(
+      new Vector(event.clientX, event.clientY),
+    );
+    console.log(releaseWorldLocation);
+  };
+}
+
+export const ControllerDrawing = new ControllerDrawingClass();
