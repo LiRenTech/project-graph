@@ -59,7 +59,7 @@ function ToolbarItem({ icon, handleFunction, description }: ToolbarItemProps) {
       onClick={handleFunction}
     >
       {icon}
-      <span className="pointer-events-none absolute right-10 z-10 w-auto origin-right scale-90 whitespace-nowrap rounded bg-gray-700 p-1 text-xs text-white opacity-0 group-hover:scale-100 group-hover:opacity-100">
+      <span className="pointer-events-none absolute right-10 z-10 w-auto origin-right scale-90 rounded bg-gray-700 p-1 text-xs whitespace-nowrap text-white opacity-0 group-hover:scale-100 group-hover:opacity-100">
         {description}
       </span>
     </div>
@@ -318,7 +318,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   return (
     <div
       className={cn(
-        "group/wrapper fixed right-0 top-1/2 z-40 -translate-y-1/2 p-8 pl-16",
+        "group/wrapper fixed top-1/2 right-0 z-40 -translate-y-1/2 p-8 pl-16",
         {
           "pointer-events-none": ignoreMouse,
         },

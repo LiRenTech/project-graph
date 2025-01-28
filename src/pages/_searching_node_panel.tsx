@@ -58,7 +58,7 @@ export default function SearchingNodePanel() {
   return (
     <>
       {isSearchingShow && (
-        <Box className="fixed right-32 top-32 z-10 flex transform items-center p-4 opacity-50 hover:opacity-100">
+        <Box className="fixed top-32 right-32 z-10 flex transform items-center p-4 opacity-50 hover:opacity-100">
           <span>
             {currentSearchResultIndex + 1}/{searchResultCount}
           </span>

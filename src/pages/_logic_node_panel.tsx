@@ -23,7 +23,7 @@ export default function LogicNodePanel({
   return (
     <div
       className={cn(
-        "fixed -left-64 top-16 flex h-96 w-64 flex-col overflow-auto rounded-md bg-neutral-900 p-2 transition-all",
+        "fixed top-16 -left-64 flex h-96 w-64 flex-col overflow-auto rounded-md bg-neutral-900 p-2 transition-all",
         {
           "left-0": open,
         },

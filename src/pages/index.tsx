@@ -104,7 +104,7 @@ export default function Home() {
       <HintText />
       {isMobile && (
         <Button
-          className="z-5 absolute bottom-10 left-4"
+          className="absolute bottom-10 left-4 z-5"
           onClick={() => {
             if (isDrawingMode) {
               // 切换到框选模式

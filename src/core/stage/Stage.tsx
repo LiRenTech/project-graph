@@ -14,6 +14,7 @@ import { KeyboardOnlyEngine } from "../service/controlService/keyboardOnlyEngine
 import { Settings } from "../service/Settings";
 import { StageMouseInteractionCore } from "../service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
 import { ControllerDrawing } from "../service/controlService/controller/concrete/ControllerDrawing";
+import { SecretEngine } from "../service/controlService/secretEngine/secretEngine";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -78,6 +79,8 @@ export namespace Stage {
   export const autoBackupEngine = new AutoBackupEngine();
 
   export const exportEngine = new StageExportEngine();
+
+  export const secretKeyEngine = new SecretEngine();
 
   /**
    * 逻辑总入口

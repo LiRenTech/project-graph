@@ -70,7 +70,7 @@ export default function DetailsEditSidePanel() {
       {isNodeTextEditing && (
         <MarkdownEditor
           id="details-editor"
-          className="fixed bottom-4 right-4 top-20 z-50 overflow-hidden rounded-xl"
+          className="fixed top-20 right-4 bottom-4 z-50 overflow-hidden rounded-xl"
           onChange={setInputCurrentDetailsHandler}
           defaultValue={inputCurrentDetails}
           options={{

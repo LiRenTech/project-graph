@@ -76,7 +76,7 @@ export namespace Dialog {
       <>
         <div
           className={cn(
-            "fixed left-1/2 top-1/2 z-[101] flex max-h-[50vh] max-w-96 origin-top -translate-x-1/2 -translate-y-full scale-x-75 scale-y-0 flex-col gap-4 overflow-auto text-wrap break-words rounded-2xl p-8 text-white opacity-0 shadow-xl shadow-neutral-900",
+            "fixed top-1/2 left-1/2 z-[101] flex max-h-[50vh] max-w-96 origin-top -translate-x-1/2 -translate-y-full scale-x-75 scale-y-0 flex-col gap-4 overflow-auto rounded-2xl p-8 text-wrap break-words text-white opacity-0 shadow-xl shadow-neutral-900",
             {
               "-translate-y-1/2 scale-x-100 scale-y-100 opacity-100": show,
               "bg-blue-950": type === "info",
@@ -96,7 +96,7 @@ export namespace Dialog {
             <div className="flex flex-col gap-2">
               {/* <h2 className="text-lg font-bold">代码</h2> */}
               <pre
-                className="cursor-copy select-text overflow-auto rounded-md bg-neutral-900 p-2 text-sm text-white"
+                className="cursor-copy overflow-auto rounded-md bg-neutral-900 p-2 text-sm text-white select-text"
                 onClick={() => {
                   navigator.clipboard
                     .writeText(code)
@@ -144,7 +144,7 @@ export namespace Dialog {
         <div
           data-tauri-drag-region
           className={cn(
-            "fixed left-0 top-0 z-[100] h-full w-full bg-black opacity-0",
+            "fixed top-0 left-0 z-[100] h-full w-full bg-black opacity-0",
             {
               "opacity-30": show,
             },

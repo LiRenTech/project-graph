@@ -54,7 +54,7 @@ export function SettingField({
       icon={icon}
     >
       <RotateCw
-        className="h-4 w-4 cursor-pointer text-gray-500 opacity-0 hover:rotate-180 group-hover/field:opacity-100"
+        className="h-4 w-4 cursor-pointer text-gray-500 opacity-0 group-hover/field:opacity-100 hover:rotate-180"
         onClick={() => setValue(Settings.defaultSettings[settingKey])}
       />
       {type === "text" && (

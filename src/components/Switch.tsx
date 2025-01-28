@@ -27,7 +27,7 @@ export default function Switch({
     >
       <div
         className={cn(
-          "absolute left-1 top-1 h-6 w-6 translate-x-0 transform rounded-full bg-white group-hover/switch:scale-125 group-active/switch:scale-75",
+          "absolute top-1 left-1 h-6 w-6 translate-x-0 transform rounded-full bg-white group-hover/switch:scale-125 group-active/switch:scale-75",
           {
             "translate-x-6": value,
             "bg-neutral-300": disabled,

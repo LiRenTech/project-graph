@@ -75,7 +75,7 @@ function ColorDotElement({ color }: { color: Color }) {
       style={{ backgroundColor: `rgba(${r}, ${g}, ${b}, ${a})` }}
     >
       <Button
-        className="absolute -right-2 -top-2 h-2 w-2 rounded-full text-xs"
+        className="absolute -top-2 -right-2 h-2 w-2 rounded-full text-xs"
         onClick={() => {
           ColorManager.removeUserEntityFillColor(color);
         }}

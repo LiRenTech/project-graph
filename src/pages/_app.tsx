@@ -216,7 +216,7 @@ export default function App() {
   return (
     <div
       className={cn(
-        "relative h-full w-full rounded-xl text-white shadow-2xl ring",
+        "relative h-full w-full rounded-xl text-white ring shadow-2xl",
         {
           "bg-neutral-950": isMobile || location.pathname !== "/",
         },
@@ -231,14 +231,14 @@ export default function App() {
       {/* 叠加层，显示窗口控件 */}
       <div
         className={cn(
-          "pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 p-4 *:pointer-events-auto",
+          "pointer-events-none absolute top-0 left-0 z-40 flex w-full gap-2 p-4 *:pointer-events-auto",
           {
             "*:!pointer-events-none": ignoreMouse,
           },
         )}
       >
         {isMac && (
-          <Button className="right-4 top-4 flex items-center gap-2 active:scale-100">
+          <Button className="top-4 right-4 flex items-center gap-2 active:scale-100">
             <div
               className="size-3 rounded-full bg-red-500 active:bg-red-800"
               onClick={() => getCurrentWindow().close()}
@@ -343,7 +343,7 @@ export default function App() {
                 data-tauri-drag-region
                 className={cn(
                   isSaved ? "" : "text-yellow-500",
-                  "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+                  "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
                 )}
               >
                 {filename + (isSaved ? "" : t("unsaved"))}
@@ -362,13 +362,13 @@ export default function App() {
           <Zap
             className={cn(
               "cursor-pointer",
-              isStartFilePanelOpen ? "rotate-45 scale-125" : "",
+              isStartFilePanelOpen ? "scale-125 rotate-45" : "",
             )}
           />
         </IconButton>
         {/* 右上角窗口控制按钮 */}
         {isDesktop && !useNativeTitleBar && !isMac && !isWeb && (
-          <Button className="right-4 top-4 flex items-center gap-1 active:scale-100">
+          <Button className="top-4 right-4 flex items-center gap-1 active:scale-100">
             <ChevronDown
               onClick={() => getCurrentWindow().minimize()}
               className="transition hover:opacity-80 active:scale-75"
@@ -395,7 +395,7 @@ export default function App() {
       </div>
 
       {/* 面板列表 */}
-      <AppMenu className="absolute left-4 top-16 z-20" open={isMenuOpen} />
+      <AppMenu className="absolute top-16 left-4 z-20" open={isMenuOpen} />
       <TagPanel open={isTagPanelOpen} className="z-10" />
       <LogicNodePanel open={isLogicNodePanelOpen} className="z-10" />
       <StartFilePanel open={isStartFilePanelOpen} />

@@ -12,7 +12,7 @@ import Switch from "../components/Switch";
 export default function UITestPage() {
   return (
     <div className="w-min p-32">
-      <div className="pointer-events-none absolute left-48 top-48 h-96 w-96 rounded-full bg-green-100 blur-[300px]"></div>
+      <div className="pointer-events-none absolute top-48 left-48 h-96 w-96 rounded-full bg-green-100 blur-[300px]"></div>
       <Box tooltip="tooltip">Box</Box>
       <Button>Button</Button>
       <Input placeholder="Input" />

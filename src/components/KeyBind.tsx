@@ -99,7 +99,7 @@ export default function KeyBind({
   return (
     <Button
       onClick={startInput}
-      className={cn("outline-none outline-0", {
+      className={cn("outline-0 outline-none", {
         "bg-blue-950 outline outline-4 outline-blue-500": choosing,
       })}
     >

@@ -119,7 +119,7 @@ export default function RecentFilesPanel() {
   return (
     <div
       className={cn(
-        "fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-y-scroll rounded-md bg-gray-800 px-2 py-6",
+        "fixed top-1/2 left-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-y-scroll rounded-md bg-gray-800 px-2 py-6",
         {
           hidden: !isRecentFilePanelOpen,
         },
@@ -175,7 +175,7 @@ export default function RecentFilesPanel() {
       </table>
       <p>提示：点击文件可以快速切换</p>
       <button
-        className="absolute right-0 top-0 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
+        className="absolute top-0 right-0 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
         onClick={() => setRecentFilePanelOpen(false)}
       >
         关闭
