@@ -397,6 +397,22 @@ async function registerKeyBinds() {
     StageManager.selectAll();
     Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(Color.Green));
   });
+
+  const bind = await KeyBinds.create("keyboardOnlyGenerateNode", "tab", {
+    control: false,
+    alt: false,
+    shift: false,
+  });
+  bind.down(() => {
+    if (KeyboardOnlyEngine.isEnableVirtualCreate()) {
+      KeyboardOnlyEngine.createStart();
+    }
+  });
+  bind.up(() => {
+    if (KeyboardOnlyEngine.isCreating()) {
+      KeyboardOnlyEngine.createFinished();
+    }
+  });
 }
 
 /** 加载语言文件 */

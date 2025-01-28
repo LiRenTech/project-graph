@@ -39,9 +39,9 @@ export namespace KeyboardOnlyEngine {
   function bindKeyEvents() {
     window.addEventListener("keydown", (event) => {
       if (event.key === "Tab") {
-        if (isEnableVirtualCreate()) {
-          createStart();
-        }
+        // if (isEnableVirtualCreate()) {
+        //   createStart();
+        // }
       } else if (event.key === "Enter") {
         // 这个还必须在down的位置上，因为在up上会导致无限触发
         const selectedNode = StageManager.getTextNodes().find(
@@ -54,13 +54,13 @@ export namespace KeyboardOnlyEngine {
         SelectChangeEngine.listenKeyDown(event);
       }
     });
-    window.addEventListener("keyup", (event) => {
-      if (event.key === "Tab") {
-        if (isCreating()) {
-          createFinished();
-        }
-      }
-    });
+    // window.addEventListener("keyup", (event) => {
+    //   if (event.key === "Tab") {
+    //     if (isCreating()) {
+    //       createFinished();
+    //     }
+    //   }
+    // });
   }
 
   /**
@@ -128,7 +128,7 @@ export namespace KeyboardOnlyEngine {
     return interval;
   }
 
-  async function createFinished() {
+  export async function createFinished() {
     _isCreating = false;
     if (getPressTabTimeInterval() < 100) {
       Dialog.show({

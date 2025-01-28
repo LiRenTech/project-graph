@@ -468,6 +468,10 @@ keyBinds:
       调试信息显示在画布左上角，通常为开发者使用
       开启后，画布左上角将会显示调试信息。
       若您遇到bug截图反馈时，建议开启此选项。
+  keyboardOnlyGenerateNode:
+    title: 仅使用键盘生长节点
+    description: |
+      按下后，仅使用键盘生长节点
   selectAll:
     title: 全选
     description: 按下后，所有节点和连线都会被选中
