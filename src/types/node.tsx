@@ -80,14 +80,7 @@ export namespace Serialized {
 
   export type File = {
     version: typeof StageDumper.latestVersion;
-    entities: (
-      | Node
-      | Section
-      | ConnectPoint
-      | ImageNode
-      | UrlNode
-      | PenStroke
-    )[];
+    entities: (Node | Section | ConnectPoint | ImageNode | UrlNode | PenStroke)[];
     associations: (LineEdge | CublicCatmullRomSplineEdge)[];
     tags: string[];
   };
