@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { MouseLocation } from "../core/service/controlService/MouseLocation";
 import { cn } from "../utils/cn";
+import once from "lodash/once";
 import Box from "./Box";
 
 export namespace Popup {
@@ -17,10 +18,13 @@ export namespace Popup {
           y={MouseLocation.y}
           onClose={() => {
             resolve();
-            setTimeout(() => {
-              root.unmount();
-              document.body.removeChild(container);
-            }, 300);
+            setTimeout(
+              once(() => {
+                root.unmount();
+                document.body.removeChild(container);
+              }),
+              300,
+            );
           }}
         >
           {children}
