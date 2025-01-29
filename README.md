@@ -19,6 +19,14 @@ Next-Generation Node Diagram Tool for Visual Thinking
 
 </div>
 
+# 🌍 Help us translate!
+
+[![Weblate Badge]][Weblate]
+
+Project Graph is an open-source project that aims to provide a next-generation node diagram tool for visual thinking. We need your help to translate the app into different languages.
+
+---
+
 **Draw fast, think efficiently** — Unleash creativity and streamline workflows with AI-powered graph design.
 
 ## 🚀 Features
@@ -83,9 +91,11 @@ MIT Licensed. Fork, modify, and distribute freely — credit appreciated but not
 [Install]: https://project-graph.top/installation
 [Website]: https://project-graph.top
 [Online Demo]: https://web.project-graph.top
+[Weblate]: https://hosted.weblate.org/engage/project-graph/
 
 <!----------------------------------{ Badges }--------------------------------->
 
+[Weblate Badge]: https://hosted.weblate.org/widget/project-graph/open-graph.png
 [Badge Workflow]: https://github.com/LiRenTech/project-graph/actions/workflows/nightly.yml/badge.svg
 [Badge Issues]: https://img.shields.io/github/issues/LiRenTech/project-graph
 [Badge Language]: https://img.shields.io/github/languages/top/LiRenTech/project-graph
