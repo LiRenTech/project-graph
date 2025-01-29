@@ -54,6 +54,27 @@ export namespace CurveRenderer {
   }
 
   /**
+   * 画一段折线，带有宽度实时变化
+   * @param locations
+   * @param color
+   * @param widthList
+   */
+  export function renderSolidLineMultipleWithWidth(
+    locations: Vector[],
+    color: Color,
+    widthList: number[],
+  ): void {
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(locations[0].x, locations[0].y);
+    for (let i = 1; i < locations.length; i++) {
+      Canvas.ctx.lineTo(locations[i].x, locations[i].y);
+      Canvas.ctx.lineWidth = widthList[i];
+    }
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.stroke();
+  }
+
+  /**
    * 绘制折线实线，带有阴影
    * @param locations
    * @param color

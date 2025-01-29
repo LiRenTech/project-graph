@@ -14,9 +14,11 @@ import { Camera } from "../../../stage/Camera";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { ConnectPoint } from "../../../stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
+import { PenStroke } from "../../../stage/stageObject/entity/PenStroke";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
+import { CurveRenderer } from "../basicRenderer/curveRenderer";
 import { ImageRenderer } from "../basicRenderer/ImageRenderer";
 import { ShapeRenderer } from "../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../basicRenderer/textRenderer";
@@ -49,6 +51,8 @@ export namespace EntityRenderer {
       renderImageNode(entity);
     } else if (entity instanceof UrlNode) {
       UrlNodeRenderer.render(entity);
+    } else if (entity instanceof PenStroke) {
+      renderPenStroke(entity);
     }
     // details右上角小按钮
     EntityDetailsButtonRenderer(entity);
@@ -321,5 +325,12 @@ export namespace EntityRenderer {
       );
     }
     renderEntityDetails(imageNode);
+  }
+  function renderPenStroke(penStroke: PenStroke) {
+    CurveRenderer.renderSolidLineMultipleWithWidth(
+      penStroke.getPath().map((v) => Renderer.transformWorld2View(v)),
+      penStroke.getColor(),
+      penStroke.getSegmentList().map((seg) => seg.width * Camera.currentScale),
+    );
   }
 }

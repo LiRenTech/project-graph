@@ -613,6 +613,18 @@ export namespace Renderer {
             Color.White,
             2 * Camera.currentScale,
           );
+        } else if (entity.type === "core:pen_stroke") {
+          ShapeRenderer.renderRect(
+            new Rectangle(
+              new Vector(...entity.location).add(
+                CopyEngine.copyBoardMouseVector,
+              ),
+              new Vector(10, 10),
+            ).transformWorld2View(),
+            Color.Transparent,
+            clipboardBlue,
+            2 * Camera.currentScale,
+          );
         } else {
           ShapeRenderer.renderRect(
             new Rectangle(

@@ -5,6 +5,7 @@ import { CublicCatmullRomSplineEdge } from "./stageObject/association/CublicCatm
 import { LineEdge } from "./stageObject/association/LineEdge";
 import { ConnectPoint } from "./stageObject/entity/ConnectPoint";
 import { ImageNode } from "./stageObject/entity/ImageNode";
+import { PenStroke } from "./stageObject/entity/PenStroke";
 import { Section } from "./stageObject/entity/Section";
 import { TextNode } from "./stageObject/entity/TextNode";
 import { UrlNode } from "./stageObject/entity/UrlNode";
@@ -106,7 +107,15 @@ export namespace StageDumper {
       color: urlNode.color && urlNode.color.toArray(),
     };
   }
-
+  export function dumpPenStroke(penStroke: PenStroke): Serialized.PenStroke {
+    return {
+      content: penStroke.dumpString(),
+      uuid: penStroke.uuid,
+      details: penStroke.details,
+      location: [penStroke.getPath()[0].x, penStroke.getPath()[0].y],
+      type: "core:pen_stroke",
+    };
+  }
   /**
    * 不递归（不包含section内部孩子）的序列化一个实体。
    * @param entity
@@ -119,7 +128,8 @@ export namespace StageDumper {
     | Serialized.Node
     | Serialized.ConnectPoint
     | Serialized.ImageNode
-    | Serialized.UrlNode {
+    | Serialized.UrlNode
+    | Serialized.PenStroke {
     if (entity instanceof TextNode) {
       return dumpTextNode(entity);
     } else if (entity instanceof Section) {
@@ -130,6 +140,8 @@ export namespace StageDumper {
       return dumpImageNode(entity);
     } else if (entity instanceof UrlNode) {
       return dumpUrlNode(entity);
+    } else if (entity instanceof PenStroke) {
+      return dumpPenStroke(entity);
     } else {
       throw new Error(`未知的实体类型: ${entity}`);
     }
@@ -148,6 +160,7 @@ export namespace StageDumper {
       | Serialized.ConnectPoint
       | Serialized.ImageNode
       | Serialized.UrlNode
+      | Serialized.PenStroke
     )[] = [];
     for (const entity of StageManager.getEntities()) {
       entities.push(dumpOneEntity(entity));
@@ -201,6 +214,7 @@ export namespace StageDumper {
     | Serialized.ConnectPoint
     | Serialized.ImageNode
     | Serialized.UrlNode
+    | Serialized.PenStroke
   )[] {
     //
     let selectedEntities: (
@@ -209,6 +223,7 @@ export namespace StageDumper {
       | Serialized.ConnectPoint
       | Serialized.ImageNode
       | Serialized.UrlNode
+      | Serialized.PenStroke
     )[] = entities
       .filter((entity) => entity instanceof TextNode)
       .map((node) => dumpTextNode(node));

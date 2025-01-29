@@ -49,6 +49,10 @@ export namespace Serialized {
     color: Color;
     type: "core:url_node";
   };
+  export type PenStroke = Entity & {
+    type: "core:pen_stroke";
+    content: string;
+  };
   // export type Edge = StageObject & {
   //   type: "core:edge";
   //   source: string;
@@ -76,7 +80,14 @@ export namespace Serialized {
 
   export type File = {
     version: typeof StageDumper.latestVersion;
-    entities: (Node | Section | ConnectPoint | ImageNode | UrlNode)[];
+    entities: (
+      | Node
+      | Section
+      | ConnectPoint
+      | ImageNode
+      | UrlNode
+      | PenStroke
+    )[];
     associations: (LineEdge | CublicCatmullRomSplineEdge)[];
     tags: string[];
   };

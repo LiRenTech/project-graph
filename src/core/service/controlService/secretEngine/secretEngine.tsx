@@ -35,6 +35,12 @@ export class SecretEngine {
     }
     if (keys.includes("l o v e")) {
       Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
+      Stage.drawingMachine.open();
+      return true;
+    }
+    if (keys.includes("r e c t")) {
+      Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
+      Stage.drawingMachine.shutDown();
       return true;
     }
     return false;

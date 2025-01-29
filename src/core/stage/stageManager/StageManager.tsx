@@ -17,6 +17,7 @@ import { Edge } from "../stageObject/association/Edge";
 import { LineEdge } from "../stageObject/association/LineEdge";
 import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../stageObject/entity/ImageNode";
+import { PenStroke } from "../stageObject/entity/PenStroke";
 import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
@@ -213,6 +214,9 @@ export namespace StageManager {
   }
   export function addCrEdge(edge: CublicCatmullRomSplineEdge) {
     associations.addValue(edge, edge.uuid);
+  }
+  export function addPenStroke(penStroke: PenStroke) {
+    entities.addValue(penStroke, penStroke.uuid);
   }
 
   // 用于UI层监测

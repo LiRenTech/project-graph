@@ -15,6 +15,7 @@ import { Section } from "../../stage/stageObject/entity/Section";
 import { TextNode } from "../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../stage/stageObject/entity/UrlNode";
 import { ViewFlashEffect } from "../feedbackService/effectEngine/concrete/ViewFlashEffect";
+import { PenStroke } from "../../stage/stageObject/entity/PenStroke";
 
 /**
  * 管理最近打开的文件列表
@@ -177,6 +178,8 @@ export namespace RecentFileManager {
         StageManager.addImageNode(new ImageNode(entity));
       } else if (entity.type === "core:url_node") {
         StageManager.addUrlNode(new UrlNode(entity));
+      } else if (entity.type === "core:pen_stroke") {
+        StageManager.addPenStroke(new PenStroke(entity.content));
       } else {
         console.warn("加载文件时，出现未知的实体类型：" + entity);
       }

@@ -23,22 +23,32 @@ export class PenStroke extends Entity {
   public uuid: string;
 
   move(delta: Vector): void {
-    for (const segment of this.path) {
+    for (const segment of this.segmentList) {
       segment.startLocation = segment.startLocation.add(delta);
       segment.endLocation = segment.endLocation.add(delta);
     }
   }
   moveTo(location: Vector): void {
-    for (const segment of this.path) {
+    for (const segment of this.segmentList) {
       segment.startLocation = location.clone();
       segment.endLocation = location.clone();
     }
   }
 
-  private path: PenStrokeSegment[] = [];
+  private segmentList: PenStrokeSegment[] = [];
   private color: Color = StageStyleManager.currentStyle.StageObjectBorderColor;
   public getColor(): Color {
     return this.color;
+  }
+  public getPath(): Vector[] {
+    const result: Vector[] = [];
+    for (const segment of this.segmentList) {
+      result.push(segment.startLocation);
+    }
+    return result;
+  }
+  public getSegmentList(): PenStrokeSegment[] {
+    return this.segmentList;
   }
 
   /**
@@ -47,11 +57,11 @@ export class PenStroke extends Entity {
    */
   constructor(path: string) {
     super();
+    console.log("构造函数传入的path：" + path);
     // 开始解析字符串
-    const segments = path.split(" ");
-    if (segments.length < 2) {
-      throw new Error("字符串长度太短了");
-    }
+    this.checkType(path);
+    const segments = path.split("~");
+
     // 生成一个随机的uuid
     this.uuid = v4();
     // 解析每一段
@@ -73,9 +83,61 @@ export class PenStroke extends Entity {
         parseFloat(nextPointStrList[1]),
       );
       const width = parseFloat(currentPointStrList[2]);
-      this.path.push(new PenStrokeSegment(currentPoint, nextPoint, width));
+      this.segmentList.push(
+        new PenStrokeSegment(currentPoint, nextPoint, width),
+      );
       // 生成碰撞箱，本质上是折线段
       this.collisionBox.shapeList.push(new Line(currentPoint, nextPoint));
+    }
+  }
+
+  dumpString(): string {
+    const resultList: string[] = [];
+    for (const segment of this.segmentList) {
+      resultList.push(
+        `${segment.startLocation.x},${segment.startLocation.y},${segment.width}`,
+      );
+    }
+    return resultList.join("~");
+  }
+
+  /**
+   * 检查格式是否合适
+   * @param origin
+   */
+  checkType(origin: string) {
+    if (!origin.includes("~")) {
+      throw new Error("字符串格式不正确，没有分隔号");
+    }
+    const segments = origin.split("~");
+    for (let i = 0; i < segments.length - 1; i++) {
+      const currentPointString = segments[i];
+      const nextPointString = segments[i + 1];
+      const currentPointStrList = currentPointString.split(",");
+      const nextPointStrList = nextPointString.split(",");
+      if (currentPointStrList.length < 3 || nextPointStrList.length < 3) {
+        throw new Error("字符串格式不正确");
+      }
+      const currentPoint = new Vector(
+        parseFloat(currentPointStrList[0]),
+        parseFloat(currentPointStrList[1]),
+      );
+      const nextPoint = new Vector(
+        parseFloat(nextPointStrList[0]),
+        parseFloat(nextPointStrList[1]),
+      );
+      if (
+        isNaN(currentPoint.x) ||
+        isNaN(currentPoint.y) ||
+        isNaN(nextPoint.x) ||
+        isNaN(nextPoint.y)
+      ) {
+        throw new Error("坐标格式不正确");
+      }
+      const width = parseFloat(currentPointStrList[2]);
+      if (width <= 0) {
+        throw new Error("宽度必须大于0");
+      }
     }
   }
 }
