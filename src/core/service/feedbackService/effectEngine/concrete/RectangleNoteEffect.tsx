@@ -33,27 +33,17 @@ export class RectangleNoteEffect extends EffectObject {
     const startRect = Renderer.getCoverWorldRectangle();
     const currentRect = new Rectangle(
       startRect.location.add(
-        this.targetRectangle.location
-          .subtract(startRect.location)
-          .multiply(easeOutQuint(this.timeProgress.rate)),
+        this.targetRectangle.location.subtract(startRect.location).multiply(easeOutQuint(this.timeProgress.rate)),
       ),
       new Vector(
-        startRect.size.x +
-          (this.targetRectangle.size.x - startRect.size.x) *
-            easeOutQuint(this.timeProgress.rate),
-        startRect.size.y +
-          (this.targetRectangle.size.y - startRect.size.y) *
-            easeOutQuint(this.timeProgress.rate),
+        startRect.size.x + (this.targetRectangle.size.x - startRect.size.x) * easeOutQuint(this.timeProgress.rate),
+        startRect.size.y + (this.targetRectangle.size.y - startRect.size.y) * easeOutQuint(this.timeProgress.rate),
       ),
     );
     ShapeRenderer.renderRect(
       currentRect.transformWorld2View(),
       Color.Transparent,
-      mixColors(
-        Color.Transparent,
-        this.strokeColor,
-        reverseAnimate(this.timeProgress.rate),
-      ),
+      mixColors(Color.Transparent, this.strokeColor, reverseAnimate(this.timeProgress.rate)),
       2,
       5,
     );

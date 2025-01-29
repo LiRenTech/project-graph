@@ -126,10 +126,7 @@ function getCurrentGap(): number {
   return currentGap;
 }
 
-function* getLocationXIterator(
-  viewRect: Rectangle,
-  currentGap: number,
-): IterableIterator<number> {
+function* getLocationXIterator(viewRect: Rectangle, currentGap: number): IterableIterator<number> {
   let xStart = viewRect.location.x - (viewRect.location.x % currentGap);
   while (xStart < viewRect.right) {
     yield xStart;
@@ -137,10 +134,7 @@ function* getLocationXIterator(
   }
 }
 
-function* getLocationYIterator(
-  viewRect: Rectangle,
-  currentGap: number,
-): IterableIterator<number> {
+function* getLocationYIterator(viewRect: Rectangle, currentGap: number): IterableIterator<number> {
   let yStart = viewRect.location.y - (viewRect.location.y % currentGap);
   while (yStart < viewRect.bottom) {
     yield yStart;

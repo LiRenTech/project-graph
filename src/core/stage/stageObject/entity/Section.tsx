@@ -37,10 +37,9 @@ export class Section extends ConnectableEntity {
   /** 获取折叠状态下的碰撞箱 */
   private collapsedCollisionBox(): CollisionBox {
     const centerLocation = this._collisionBoxNormal.getRectangle().center;
-    const collapsedRectangleSize = getTextSize(
-      this.text,
-      Renderer.FONT_SIZE,
-    ).add(Vector.same(Renderer.NODE_PADDING).multiply(2));
+    const collapsedRectangleSize = getTextSize(this.text, Renderer.FONT_SIZE).add(
+      Vector.same(Renderer.NODE_PADDING).multiply(2),
+    );
     const collapsedRectangle = new Rectangle(
       centerLocation.clone().subtract(collapsedRectangleSize.multiply(0.5)),
       collapsedRectangleSize,
@@ -81,14 +80,9 @@ export class Section extends ConnectableEntity {
     super();
     this.uuid = uuid;
 
-    this._collisionBoxWhenCollapsed = new CollisionBox([
-      new Rectangle(new Vector(...location), new Vector(...size)),
-    ]);
+    this._collisionBoxWhenCollapsed = new CollisionBox([new Rectangle(new Vector(...location), new Vector(...size))]);
 
-    const shapeList: Shape[] = new Rectangle(
-      new Vector(...location),
-      new Vector(...size),
-    ).getBoundingLines();
+    const shapeList: Shape[] = new Rectangle(new Vector(...location), new Vector(...size)).getBoundingLines();
     // shapeList.push(
     //   new Rectangle(new Vector(...location), new Vector(size[0], 50)),
     // );
@@ -149,10 +143,7 @@ export class Section extends ConnectableEntity {
     this._collisionBoxNormal.shapeList = rectangle.getBoundingLines();
     // 群友需求：希望Section框扩大交互范围，标题也能拖动
     this._collisionBoxNormal.shapeList.push(
-      new Rectangle(
-        rectangle.location.clone(),
-        new Vector(rectangle.size.x, 50),
-      ),
+      new Rectangle(rectangle.location.clone(), new Vector(rectangle.size.x, 50)),
     );
     // 调整折叠状态
     this._collisionBoxWhenCollapsed = this.collapsedCollisionBox();
@@ -196,18 +187,13 @@ export class Section extends ConnectableEntity {
       const leftLine: Line = this._collisionBoxNormal.shapeList[3] as Line;
       return new Rectangle(
         new Vector(leftLine.start.x, topLine.start.y),
-        new Vector(
-          rightLine.end.x - leftLine.start.x,
-          bottomLine.end.y - topLine.start.y,
-        ),
+        new Vector(rightLine.end.x - leftLine.start.x, bottomLine.end.y - topLine.start.y),
       );
     }
   }
 
   public get geometryCenter() {
-    return this.rectangle.location
-      .clone()
-      .add(this.rectangle.size.clone().multiply(0.5));
+    return this.rectangle.location.clone().add(this.rectangle.size.clone().multiply(0.5));
   }
 
   move(delta: Vector): void {
@@ -226,13 +212,7 @@ export class Section extends ConnectableEntity {
     }
 
     // 移动雪花特效
-    Stage.effectMachine.addEffect(
-      new NodeMoveShadowEffect(
-        new ProgressNumber(0, 30),
-        this.rectangle,
-        delta,
-      ),
-    );
+    Stage.effectMachine.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), this.rectangle, delta));
     this.updateFatherSectionByMove();
     // 移动其他实体，递归碰撞
     this.updateOtherEntityLocationByMove();

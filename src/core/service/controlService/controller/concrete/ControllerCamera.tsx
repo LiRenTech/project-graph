@@ -38,10 +38,7 @@ ControllerCamera.keydown = (event: KeyboardEvent) => {
       addAccelerate = addAccelerate.multiply(-1);
     }
     // 当按下某一个方向的时候,相当于朝着某个方向赋予一次加速度
-    Camera.accelerateCommander = Camera.accelerateCommander
-      .add(addAccelerate)
-      .limitX(-1, 1)
-      .limitY(-1, 1);
+    Camera.accelerateCommander = Camera.accelerateCommander.add(addAccelerate).limitX(-1, 1).limitY(-1, 1);
   }
   if (key === " ") {
     Controller.setCursorName("grab");
@@ -76,10 +73,7 @@ ControllerCamera.keyup = (event: KeyboardEvent) => {
       addAccelerate = addAccelerate.multiply(-1);
     }
     // 当松开某一个方向的时候,相当于停止加速度
-    Camera.accelerateCommander = Camera.accelerateCommander
-      .subtract(addAccelerate)
-      .limitX(-1, 1)
-      .limitY(-1, 1);
+    Camera.accelerateCommander = Camera.accelerateCommander.subtract(addAccelerate).limitX(-1, 1).limitY(-1, 1);
   }
   if (key === " ") {
     Controller.setCursorName("default");
@@ -93,12 +87,8 @@ ControllerCamera.keyup = (event: KeyboardEvent) => {
  * @param mouseIndex - 鼠标按钮索引
  */
 function moveCameraByMouseMove(x: number, y: number, mouseIndex: number) {
-  const currentMouseMoveLocation = Renderer.transformView2World(
-    new Vector(x, y),
-  );
-  const diffLocation = currentMouseMoveLocation.subtract(
-    Controller.lastMousePressLocation[mouseIndex],
-  );
+  const currentMouseMoveLocation = Renderer.transformView2World(new Vector(x, y));
+  const diffLocation = currentMouseMoveLocation.subtract(Controller.lastMousePressLocation[mouseIndex]);
   Camera.location = Camera.location.subtract(diffLocation);
 }
 
@@ -131,8 +121,7 @@ ControllerCamera.mousemove = (event: MouseEvent) => {
     moveCameraByMouseMove(event.clientX, event.clientY, 1);
     // 检测是否移动到视野边缘
     const viewLocation = new Vector(event.clientX, event.clientY);
-    const viewRectangle =
-      Renderer.getCoverWorldRectangle().transformWorld2View();
+    const viewRectangle = Renderer.getCoverWorldRectangle().transformWorld2View();
     const diff = 25; // 视野边缘的距离
     if (
       viewLocation.x < viewRectangle.left + diff ||
@@ -159,10 +148,7 @@ ControllerCamera.mousemove = (event: MouseEvent) => {
     moveCameraByMouseMove(event.clientX, event.clientY, 4);
     Controller.setCursorName("grabbing");
   }
-  if (
-    Stage.mouseRightDragBackground === "moveCamera" &&
-    Controller.isMouseDown[2]
-  ) {
+  if (Stage.mouseRightDragBackground === "moveCamera" && Controller.isMouseDown[2]) {
     // 还要保证这个鼠标位置没有悬浮在什么东西上
     const mouseLocation = new Vector(event.clientX, event.clientY);
     const worldLocation = Renderer.transformView2World(mouseLocation);
@@ -190,9 +176,7 @@ ControllerCamera.mouseup = (event: MouseEvent) => {
     // 中键松开
     Controller.setCursorName("default");
     lastMouseMiddleUpLocation = new Vector(event.clientX, event.clientY);
-    if (
-      lastMouseMiddleUpLocation.nearlyEqual(lastMouseMiddleDownLocation, 10)
-    ) {
+    if (lastMouseMiddleUpLocation.nearlyEqual(lastMouseMiddleDownLocation, 10)) {
       // 是
       Controller.isViewMoveByClickMiddle = !Controller.isViewMoveByClickMiddle;
     }
@@ -237,14 +221,10 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
   // 滚轮横向滚动是水平移动
   if (event.deltaX > 0) {
     // 左移动
-    Camera.location = Camera.location.add(
-      new Vector((-Camera.moveAmplitude * 100) / Camera.currentScale, 0),
-    );
+    Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 100) / Camera.currentScale, 0));
   } else if (event.deltaX < 0) {
     // 右移动
-    Camera.location = Camera.location.add(
-      new Vector((Camera.moveAmplitude * 100) / Camera.currentScale, 0),
-    );
+    Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 100) / Camera.currentScale, 0));
   }
 };
 

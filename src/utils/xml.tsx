@@ -12,10 +12,7 @@ export class XML {
    */
   constructor(namespace: string) {
     this.document = document.implementation.createDocument(null, namespace);
-    const pi = this.document.createProcessingInstruction(
-      "xml",
-      'version="1.0" encoding="UTF-8"',
-    );
+    const pi = this.document.createProcessingInstruction("xml", 'version="1.0" encoding="UTF-8"');
     this.document.insertBefore(pi, this.document.documentElement);
     this.root = this.document.lastChild as Element;
     this.current = this.root;

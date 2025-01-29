@@ -47,46 +47,21 @@ export class TechLineEffect extends EffectObject {
       // 开始增加点
       const lastPoint = this.currentPoints[this.currentPoints.length - 1];
       const direction = Vector.fromTwoPoints(lastPoint, this.end).normalize();
-      const randomDegrees = Random.randomItem([
-        -this.maxRotateDegrees,
-        0,
-        this.maxRotateDegrees,
-      ]);
-      const newLocation = lastPoint.add(
-        direction.rotateDegrees(randomDegrees).multiply(this.currentLen),
-      );
+      const randomDegrees = Random.randomItem([-this.maxRotateDegrees, 0, this.maxRotateDegrees]);
+      const newLocation = lastPoint.add(direction.rotateDegrees(randomDegrees).multiply(this.currentLen));
       this.currentPoints.push(newLocation);
       // 更新长度
       this.currentLen += this.lenPreChange;
     }
   }
 
-  static normal(
-    startLocation: Vector,
-    endLocation: Vector,
-    color: Color,
-  ): TechLineEffect {
-    return new TechLineEffect(
-      startLocation,
-      endLocation,
-      10,
-      100,
-      -5,
-      15,
-      color,
-      new ProgressNumber(0, 50),
-    );
+  static normal(startLocation: Vector, endLocation: Vector, color: Color): TechLineEffect {
+    return new TechLineEffect(startLocation, endLocation, 10, 100, -5, 15, color, new ProgressNumber(0, 50));
   }
 
   render(): void {
-    const currentColor = mixColors(
-      this.color,
-      Color.Transparent,
-      this.timeProgress.rate,
-    );
-    const viewLocations = this.currentPoints.map((p) =>
-      Renderer.transformWorld2View(p),
-    );
+    const currentColor = mixColors(this.color, Color.Transparent, this.timeProgress.rate);
+    const viewLocations = this.currentPoints.map((p) => Renderer.transformWorld2View(p));
     CurveRenderer.renderSolidLineMultipleWithShadow(
       viewLocations,
       currentColor,

@@ -64,14 +64,8 @@ export class PenStroke extends Entity {
       if (currentPointStrList.length < 3 || nextPointStrList.length < 3) {
         throw new Error("字符串格式不正确");
       }
-      const currentPoint = new Vector(
-        parseFloat(currentPointStrList[0]),
-        parseFloat(currentPointStrList[1]),
-      );
-      const nextPoint = new Vector(
-        parseFloat(nextPointStrList[0]),
-        parseFloat(nextPointStrList[1]),
-      );
+      const currentPoint = new Vector(parseFloat(currentPointStrList[0]), parseFloat(currentPointStrList[1]));
+      const nextPoint = new Vector(parseFloat(nextPointStrList[0]), parseFloat(nextPointStrList[1]));
       const width = parseFloat(currentPointStrList[2]);
       this.path.push(new PenStrokeSegment(currentPoint, nextPoint, width));
       // 生成碰撞箱，本质上是折线段

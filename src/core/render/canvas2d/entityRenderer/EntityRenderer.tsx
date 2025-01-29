@@ -73,9 +73,7 @@ export namespace EntityRenderer {
           "undefined",
           Renderer.transformWorld2View(node.rectangle.center),
           Renderer.FONT_SIZE * Camera.currentScale,
-          node.color.a === 1
-            ? colorInvert(node.color)
-            : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+          node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
           Color.Red,
           30 * Camera.currentScale,
         );
@@ -104,9 +102,7 @@ export namespace EntityRenderer {
             node.text,
             Renderer.transformWorld2View(node.rectangle.center),
             Renderer.FONT_SIZE * Camera.currentScale,
-            node.color.a === 1
-              ? colorInvert(node.color)
-              : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+            node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
             Color.Red,
             10 * Camera.currentScale,
             Random.randomInt(-5, 5) * Camera.currentScale,
@@ -115,9 +111,7 @@ export namespace EntityRenderer {
           ShapeRenderer.renderRect(
             new Rectangle(
               Renderer.transformWorld2View(
-                node.rectangle.location.add(
-                  new Vector(Random.randomInt(-5, 5), Random.randomInt(-5, 5)),
-                ),
+                node.rectangle.location.add(new Vector(Random.randomInt(-5, 5), Random.randomInt(-5, 5))),
               ),
               node.rectangle.size.multiply(Camera.currentScale),
             ),
@@ -129,19 +123,13 @@ export namespace EntityRenderer {
         }
       } else {
         TextRenderer.renderMultiLineText(
-          Renderer.protectingPrivacy
-            ? replaceTextWhenProtect(node.text)
-            : node.text,
+          Renderer.protectingPrivacy ? replaceTextWhenProtect(node.text) : node.text,
           Renderer.transformWorld2View(
-            node.rectangle.location
-              .add(Vector.same(Renderer.NODE_PADDING))
-              .add(new Vector(0, Renderer.FONT_SIZE / 4)),
+            node.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)).add(new Vector(0, Renderer.FONT_SIZE / 4)),
           ),
           Renderer.FONT_SIZE * Camera.currentScale,
           Infinity,
-          node.color.a === 1
-            ? colorInvert(node.color)
-            : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+          node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
           1.5,
         );
       }
@@ -159,14 +147,10 @@ export namespace EntityRenderer {
 
     if (node.isSelected) {
       // 在外面增加一个框
-      CollisionBoxRenderer.render(
-        node.collisionBox,
-        StageStyleManager.currentStyle.CollideBoxSelectedColor,
-      );
+      CollisionBoxRenderer.render(node.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
     }
     if (node.isAiGenerating) {
-      const borderColor =
-        StageStyleManager.currentStyle.CollideBoxSelectedColor.clone();
+      const borderColor = StageStyleManager.currentStyle.CollideBoxSelectedColor.clone();
       borderColor.a = Random.randomFloat(0.2, 1);
       // 在外面增加一个框
       ShapeRenderer.renderRect(
@@ -203,11 +187,7 @@ export namespace EntityRenderer {
     TextRenderer.renderMultiLineText(
       entity.details,
       Renderer.transformWorld2View(
-        entity.collisionBox
-          .getRectangle()
-          .location.add(
-            new Vector(0, entity.collisionBox.getRectangle().size.y),
-          ),
+        entity.collisionBox.getRectangle().location.add(new Vector(0, entity.collisionBox.getRectangle().size.y)),
       ),
       Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
       Math.max(
@@ -223,10 +203,7 @@ export namespace EntityRenderer {
   function renderConnectPoint(connectPoint: ConnectPoint) {
     if (connectPoint.isSelected) {
       // 在外面增加一个框
-      CollisionBoxRenderer.render(
-        connectPoint.collisionBox,
-        StageStyleManager.currentStyle.CollideBoxSelectedColor,
-      );
+      CollisionBoxRenderer.render(connectPoint.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
     }
     ShapeRenderer.renderCircle(
       Renderer.transformWorld2View(connectPoint.geometryCenter),
@@ -241,10 +218,7 @@ export namespace EntityRenderer {
   function renderImageNode(imageNode: ImageNode) {
     if (imageNode.isSelected) {
       // 在外面增加一个框
-      CollisionBoxRenderer.render(
-        imageNode.collisionBox,
-        StageStyleManager.currentStyle.CollideBoxSelectedColor,
-      );
+      CollisionBoxRenderer.render(imageNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
     }
     // 节点身体矩形
     ShapeRenderer.renderRect(
@@ -269,10 +243,7 @@ export namespace EntityRenderer {
         Renderer.transformWorld2View(imageNode.rectangle.location),
         imageNode.scaleNumber,
       );
-    } else if (
-      imageNode.state === "encodingError" ||
-      imageNode.state === "unknownError"
-    ) {
+    } else if (imageNode.state === "encodingError" || imageNode.state === "unknownError") {
       TextRenderer.renderTextFromCenter(
         imageNode.uuid,
         Renderer.transformWorld2View(imageNode.rectangle.topCenter),
@@ -305,17 +276,13 @@ export namespace EntityRenderer {
     if (Renderer.isShowDebug) {
       TextRenderer.renderText(
         "scale: " + imageNode.scaleNumber.toString(),
-        Renderer.transformWorld2View(
-          imageNode.rectangle.location.subtract(new Vector(0, 6)),
-        ),
+        Renderer.transformWorld2View(imageNode.rectangle.location.subtract(new Vector(0, 6))),
         3 * Camera.currentScale,
         Color.Gray,
       );
       TextRenderer.renderText(
         "origin size: " + imageNode.originImageSize.toString(),
-        Renderer.transformWorld2View(
-          imageNode.rectangle.location.subtract(new Vector(0, 3 + 6)),
-        ),
+        Renderer.transformWorld2View(imageNode.rectangle.location.subtract(new Vector(0, 3 + 6))),
         3 * Camera.currentScale,
         Color.Gray,
       );

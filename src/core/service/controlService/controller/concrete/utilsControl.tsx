@@ -121,24 +121,16 @@ export function addTextNodeByLocation(
 ) {
   const sections = SectionMethods.getSectionsByInnerLocation(location);
   // 新建节点
-  StageManager.addTextNodeByClick(location, sections, selectCurrent).then(
-    (uuid) => {
-      textNodeInEditModeByUUID(uuid);
-      if (successCallback) {
-        successCallback(uuid);
-      }
-    },
-  );
+  StageManager.addTextNodeByClick(location, sections, selectCurrent).then((uuid) => {
+    textNodeInEditModeByUUID(uuid);
+    if (successCallback) {
+      successCallback(uuid);
+    }
+  });
 }
 
-export function addTextNodeFromCurrentSelectedNode(
-  direction: "up" | "down" | "left" | "right",
-  selectCurrent = false,
-) {
-  StageManager.addTextNodeFromCurrentSelectedNode(
-    direction,
-    selectCurrent,
-  ).then((uuid) => {
+export function addTextNodeFromCurrentSelectedNode(direction: "up" | "down" | "left" | "right", selectCurrent = false) {
+  StageManager.addTextNodeFromCurrentSelectedNode(direction, selectCurrent).then((uuid) => {
     textNodeInEditModeByUUID(uuid);
   });
 }

@@ -3,8 +3,7 @@ import { parseMarkdownToJSON } from "../../utils/markdownParse";
 
 describe("测试测试框架是否正常运行", () => {
   it("测试用例1", () => {
-    const markdown =
-      "# 标题1\n## 标题2\n### 标题3\n#### 标题4\n##### 标题5\n###### 标题6\n";
+    const markdown = "# 标题1\n## 标题2\n### 标题3\n#### 标题4\n##### 标题5\n###### 标题6\n";
     const jsonObject = parseMarkdownToJSON(markdown);
     expect(jsonObject).to.deep.equal([
       {

@@ -20,10 +20,7 @@ export namespace Tourials {
     await store?.save();
   }
 
-  export async function tour(
-    tourial: (typeof tourials)[number],
-    fn: () => void | Promise<void>,
-  ) {
+  export async function tour(tourial: (typeof tourials)[number], fn: () => void | Promise<void>) {
     if (await store?.get(tourial)) {
       return;
     }

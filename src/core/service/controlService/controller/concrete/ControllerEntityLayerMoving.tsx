@@ -20,9 +20,7 @@ ControllerLayerMoving.mousemove = (event: MouseEvent) => {
   if (StageManager.getSelectedEntities().length === 0) {
     return;
   }
-  Controller.mouseLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
+  Controller.mouseLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 };
 
 ControllerLayerMoving.mouseup = (event: MouseEvent) => {
@@ -32,13 +30,10 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
   if (StageManager.getSelectedEntities().length === 0) {
     return;
   }
-  const mouseLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
+  const mouseLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
   // 即将跳入的sections区域
-  const targetSections =
-    SectionMethods.getSectionsByInnerLocation(mouseLocation);
+  const targetSections = SectionMethods.getSectionsByInnerLocation(mouseLocation);
   const selectedEntities = StageManager.getSelectedEntities();
   // 移动位置
 
@@ -47,9 +42,7 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
     return entity.collisionBox.getRectangle();
   });
   // 2 计算delta
-  const delta = mouseLocation.subtract(
-    Rectangle.getBoundingRectangle(rectangles).center,
-  );
+  const delta = mouseLocation.subtract(Rectangle.getBoundingRectangle(rectangles).center);
   // 3 移动所有选中的实体 的位置
   StageManager.moveEntities(delta);
 
@@ -69,10 +62,7 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
       // 特效
       for (const entity of selectedEntities) {
         Stage.effectMachine.addEffect(
-          new RectanglePushInEffect(
-            entity.collisionBox.getRectangle(),
-            section.collisionBox.getRectangle(),
-          ),
+          new RectanglePushInEffect(entity.collisionBox.getRectangle(), section.collisionBox.getRectangle()),
         );
       }
     }

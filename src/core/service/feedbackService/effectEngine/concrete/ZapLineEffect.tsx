@@ -40,42 +40,19 @@ export class ZapLineEffect extends EffectObject {
       // 开始增加点
       const lastPoint = this.currentPoints[this.currentPoints.length - 1];
       const direction = Vector.fromTwoPoints(lastPoint, this.end).normalize();
-      const randomDegrees = Random.randomFloat(
-        -this.maxRotateDegrees,
-        this.maxRotateDegrees,
-      );
-      const newLocation = lastPoint.add(
-        direction.rotateDegrees(randomDegrees).multiply(this.l),
-      );
+      const randomDegrees = Random.randomFloat(-this.maxRotateDegrees, this.maxRotateDegrees);
+      const newLocation = lastPoint.add(direction.rotateDegrees(randomDegrees).multiply(this.l));
       this.currentPoints.push(newLocation);
     }
   }
 
-  static normal(
-    startLocation: Vector,
-    endLocation: Vector,
-    color: Color,
-  ): ZapLineEffect {
-    return new ZapLineEffect(
-      startLocation,
-      endLocation,
-      10,
-      100,
-      15,
-      color,
-      new ProgressNumber(0, 50),
-    );
+  static normal(startLocation: Vector, endLocation: Vector, color: Color): ZapLineEffect {
+    return new ZapLineEffect(startLocation, endLocation, 10, 100, 15, color, new ProgressNumber(0, 50));
   }
 
   render(): void {
-    const currentColor = mixColors(
-      this.color,
-      Color.Transparent,
-      this.timeProgress.rate,
-    );
-    const viewLocations = this.currentPoints.map((p) =>
-      Renderer.transformWorld2View(p),
-    );
+    const currentColor = mixColors(this.color, Color.Transparent, this.timeProgress.rate);
+    const viewLocations = this.currentPoints.map((p) => Renderer.transformWorld2View(p));
     CurveRenderer.renderSolidLineMultipleWithShadow(
       viewLocations,
       currentColor,

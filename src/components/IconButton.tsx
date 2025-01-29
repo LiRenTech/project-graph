@@ -14,7 +14,10 @@ export default function IconButton({
 }>) {
   return (
     <Button
-      className={cn("px-2 *:!cursor-pointer", className)}
+      className={cn(
+        "border-icon-button-border bg-icon-button-bg text-icon-button-text px-2 *:!cursor-pointer",
+        className,
+      )}
       onClick={onClick}
       {...props}
     >

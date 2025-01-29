@@ -26,21 +26,14 @@ export namespace NodeLogic {
    * @param childNodes
    * @returns
    */
-  export function rgb(
-    fatherNodes: ConnectableEntity[],
-    childNodes: ConnectableEntity[],
-  ): string[] {
+  export function rgb(fatherNodes: ConnectableEntity[], childNodes: ConnectableEntity[]): string[] {
     if (fatherNodes.length !== 3) {
       return [];
     }
     const fatherNode1 = fatherNodes[0];
     const fatherNode2 = fatherNodes[1];
     const fatherNode3 = fatherNodes[2];
-    if (
-      fatherNode1 instanceof TextNode &&
-      fatherNode2 instanceof TextNode &&
-      fatherNode3 instanceof TextNode
-    ) {
+    if (fatherNode1 instanceof TextNode && fatherNode2 instanceof TextNode && fatherNode3 instanceof TextNode) {
       const r = parseInt(fatherNode1.text);
       const g = parseInt(fatherNode2.text);
       const b = parseInt(fatherNode3.text);
@@ -53,10 +46,7 @@ export namespace NodeLogic {
     return [];
   }
 
-  export function rgba(
-    fatherNodes: ConnectableEntity[],
-    childNodes: ConnectableEntity[],
-  ): string[] {
+  export function rgba(fatherNodes: ConnectableEntity[], childNodes: ConnectableEntity[]): string[] {
     if (fatherNodes.length !== 4) {
       return [];
     }
@@ -97,20 +87,13 @@ export namespace NodeLogic {
     return [location.x.toString(), location.y.toString()];
   }
 
-  export function setLocation(
-    fatherNodes: ConnectableEntity[],
-    childNodes: ConnectableEntity[],
-  ): string[] {
+  export function setLocation(fatherNodes: ConnectableEntity[], childNodes: ConnectableEntity[]): string[] {
     if (fatherNodes.length < 2) {
       return [];
     }
     const fatherNode1 = fatherNodes[0];
     const fatherNode2 = fatherNodes[1];
-    if (
-      fatherNode1 instanceof TextNode &&
-      fatherNode2 instanceof TextNode &&
-      childNodes.length > 0
-    ) {
+    if (fatherNode1 instanceof TextNode && fatherNode2 instanceof TextNode && childNodes.length > 0) {
       const x = parseFloat(fatherNode1.text);
       const y = parseFloat(fatherNode2.text);
       childNodes.forEach((node) => {
@@ -200,18 +183,13 @@ export namespace NodeLogic {
     return [];
   }
 
-  export function isCollision(
-    fatherNodes: ConnectableEntity[],
-    childNodes: ConnectableEntity[],
-  ): string[] {
+  export function isCollision(fatherNodes: ConnectableEntity[], childNodes: ConnectableEntity[]): string[] {
     if (fatherNodes.length < 1) {
       return ["0"];
     }
     const fatherNode = fatherNodes[0];
     const isCollision = childNodes.some((node) => {
-      return node.collisionBox.isIntersectsWithRectangle(
-        fatherNode.collisionBox.getRectangle(),
-      );
+      return node.collisionBox.isIntersectsWithRectangle(fatherNode.collisionBox.getRectangle());
     });
     return [isCollision ? "1" : "0"];
   }

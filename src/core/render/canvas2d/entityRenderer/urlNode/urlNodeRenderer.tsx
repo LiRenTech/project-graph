@@ -15,10 +15,7 @@ export namespace UrlNodeRenderer {
   export function render(urlNode: UrlNode): void {
     if (urlNode.isSelected) {
       // 在外面增加一个框
-      CollisionBoxRenderer.render(
-        urlNode.collisionBox,
-        StageStyleManager.currentStyle.CollideBoxSelectedColor,
-      );
+      CollisionBoxRenderer.render(urlNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
     }
     // 节点身体矩形
     ShapeRenderer.renderRect(
@@ -35,22 +32,16 @@ export namespace UrlNodeRenderer {
     if (!urlNode.isEditingTitle) {
       TextRenderer.renderText(
         urlNode.title,
-        Renderer.transformWorld2View(
-          urlNode.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
-        ),
+        Renderer.transformWorld2View(urlNode.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
         Renderer.FONT_SIZE * Camera.currentScale,
         StageStyleManager.currentStyle.StageObjectBorderColor,
       );
     }
     // 绘制分界线
     CurveRenderer.renderDashedLine(
+      Renderer.transformWorld2View(urlNode.rectangle.location.add(new Vector(0, UrlNode.titleHeight))),
       Renderer.transformWorld2View(
-        urlNode.rectangle.location.add(new Vector(0, UrlNode.titleHeight)),
-      ),
-      Renderer.transformWorld2View(
-        urlNode.rectangle.location.add(
-          new Vector(urlNode.rectangle.size.x, UrlNode.titleHeight),
-        ),
+        urlNode.rectangle.location.add(new Vector(urlNode.rectangle.size.x, UrlNode.titleHeight)),
       ),
       StageStyleManager.currentStyle.StageObjectBorderColor,
       1 * Camera.currentScale,
@@ -60,12 +51,7 @@ export namespace UrlNodeRenderer {
     TextRenderer.renderText(
       urlNode.url,
       Renderer.transformWorld2View(
-        urlNode.rectangle.location.add(
-          new Vector(
-            Renderer.NODE_PADDING,
-            UrlNode.titleHeight + Renderer.NODE_PADDING,
-          ),
-        ),
+        urlNode.rectangle.location.add(new Vector(Renderer.NODE_PADDING, UrlNode.titleHeight + Renderer.NODE_PADDING)),
       ),
       Renderer.FONT_SIZE * 0.5 * Camera.currentScale,
       StageStyleManager.currentStyle.StageObjectBorderColor,
@@ -98,9 +84,7 @@ export namespace UrlNodeRenderer {
       // 绘制提示
       TextRenderer.renderText(
         "双击打开链接",
-        Renderer.transformWorld2View(
-          urlNode.rectangle.leftBottom.add(new Vector(0, 20)),
-        ),
+        Renderer.transformWorld2View(urlNode.rectangle.leftBottom.add(new Vector(0, 20))),
         Renderer.FONT_SIZE * 0.5 * Camera.currentScale,
         StageStyleManager.currentStyle.StageObjectBorderColor,
       );

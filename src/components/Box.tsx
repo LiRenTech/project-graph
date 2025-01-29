@@ -46,10 +46,7 @@ const _Box = <E extends ElementType = "div">(
     <>
       <Component
         ref={ref}
-        className={cn(
-          "rounded-md border border-neutral-700 bg-neutral-800 text-white",
-          className,
-        )}
+        className={cn("rounded-md border text-white", className)}
         onMouseEnter={handleMouseEnter}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -59,7 +56,7 @@ const _Box = <E extends ElementType = "div">(
       </Component>
       <div
         className={cn(
-          "pointer-events-none fixed z-[103] scale-75 rounded-md border border-neutral-700 bg-neutral-800 px-2 py-1 text-white opacity-0 transition",
+          "border-tooltip-border bg-tooltip-bg text-tooltip-text pointer-events-none fixed z-[103] scale-75 rounded-md border px-2 py-1 opacity-0 transition",
           {
             "pointer-events-auto scale-100 opacity-100": showTooltip && tooltip,
           },
@@ -76,9 +73,7 @@ const _Box = <E extends ElementType = "div">(
 };
 
 // 使用 forwardRef 传递泛型参数 E
-const Box = forwardRef<HTMLElement, BoxProps<"div">>(_Box) as <
-  E extends ElementType = "div",
->(
+const Box = forwardRef<HTMLElement, BoxProps<"div">>(_Box) as <E extends ElementType = "div">(
   props: BoxProps<E> & {
     ref?: React.Ref<HTMLElement>;
   },

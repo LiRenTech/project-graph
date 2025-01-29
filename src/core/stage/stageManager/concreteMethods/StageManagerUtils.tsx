@@ -36,10 +36,7 @@ export namespace StageManagerUtils {
    * @param template
    * @param targetStageObject
    */
-  export function replaceAutoNameTemplate(
-    currentName: string,
-    targetStageObject: StageObject,
-  ): string {
+  export function replaceAutoNameTemplate(currentName: string, targetStageObject: StageObject): string {
     // 先替换掉不需要检测舞台上内容的部分
     currentName = replaceAutoNameWithoutStage(currentName);
 

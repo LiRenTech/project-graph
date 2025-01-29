@@ -13,13 +13,7 @@ import { cn } from "../utils/cn";
 /**
  *
  */
-export default function LogicNodePanel({
-  open = false,
-  className = "",
-}: {
-  open: boolean;
-  className: string;
-}) {
+export default function LogicNodePanel({ open = false, className = "" }: { open: boolean; className: string }) {
   return (
     <div
       className={cn(

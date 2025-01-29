@@ -15,13 +15,9 @@ import { PathString } from "../utils/pathString";
 import { isDesktop } from "../utils/platform";
 
 export default function RecentFilesPanel() {
-  const [recentFiles, setRecentFiles] = React.useState<
-    RecentFileManager.RecentFile[]
-  >([]);
+  const [recentFiles, setRecentFiles] = React.useState<RecentFileManager.RecentFile[]>([]);
 
-  const [isRecentFilePanelOpen, setRecentFilePanelOpen] = useAtom(
-    isRecentFilePanelOpenAtom,
-  );
+  const [isRecentFilePanelOpen, setRecentFilePanelOpen] = useAtom(isRecentFilePanelOpenAtom);
   const [currentFile, setFile] = useAtom(fileAtom);
 
   /**
@@ -161,10 +157,7 @@ export default function RecentFilesPanel() {
                 </span>
               </td>
               <td>
-                <button
-                  onClick={addToStartFiles(file.path)}
-                  className="bg-neutral-700 text-xs hover:cursor-pointer"
-                >
+                <button onClick={addToStartFiles(file.path)} className="bg-neutral-700 text-xs hover:cursor-pointer">
                   {/* <Zap /> */}
                   添加到启动
                 </button>

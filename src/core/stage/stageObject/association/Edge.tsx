@@ -65,29 +65,18 @@ export abstract class Edge extends ConnectableAssociation {
       this.source.collisionBox.getRectangle().center,
       this.target.collisionBox.getRectangle().center,
     );
-    const startPoint = this.source.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(edgeCenterLine);
-    const endPoint = this.target.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(edgeCenterLine);
+    const startPoint = this.source.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
+    const endPoint = this.target.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
     return new Line(startPoint, endPoint);
   }
 
-  static getCenterLine(
-    source: ConnectableEntity,
-    target: ConnectableEntity,
-  ): Line {
+  static getCenterLine(source: ConnectableEntity, target: ConnectableEntity): Line {
     const edgeCenterLine = new Line(
       source.collisionBox.getRectangle().center,
       target.collisionBox.getRectangle().center,
     );
-    const startPoint = source.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(edgeCenterLine);
-    const endPoint = target.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(edgeCenterLine);
+    const startPoint = source.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
+    const endPoint = target.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
     return new Line(startPoint, endPoint);
   }
 

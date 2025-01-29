@@ -24,18 +24,12 @@ export class RectangleLittleNoteEffect extends EffectObject {
   }
 
   static fromUtilsLittleNote(textNode: TextNode): RectangleLittleNoteEffect {
-    return new RectangleLittleNoteEffect(
-      new ProgressNumber(0, 15),
-      textNode.collisionBox.getRectangle(),
-      Color.Green,
-    );
+    return new RectangleLittleNoteEffect(new ProgressNumber(0, 15), textNode.collisionBox.getRectangle(), Color.Green);
   }
 
   override tick(): void {
     super.tick();
-    this.currentRect = this.currentRect.expandFromCenter(
-      Random.randomFloat(1, 2),
-    );
+    this.currentRect = this.currentRect.expandFromCenter(Random.randomFloat(1, 2));
   }
 
   render(): void {
@@ -45,11 +39,7 @@ export class RectangleLittleNoteEffect extends EffectObject {
     ShapeRenderer.renderRect(
       this.currentRect.transformWorld2View(),
       Color.Transparent,
-      mixColors(
-        Color.Transparent,
-        this.strokeColor,
-        1 - this.timeProgress.rate,
-      ),
+      mixColors(Color.Transparent, this.strokeColor, 1 - this.timeProgress.rate),
       2 * Camera.currentScale,
       8 * Camera.currentScale,
     );

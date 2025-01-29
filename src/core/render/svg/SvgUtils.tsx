@@ -9,12 +9,7 @@ import { getTextSize } from "../../../utils/font";
  * 专门存放生成svg的东西
  */
 export namespace SvgUtils {
-  export function line(
-    start: Vector,
-    end: Vector,
-    strokeColor: Color,
-    strokeWidth: number,
-  ): React.ReactNode {
+  export function line(start: Vector, end: Vector, strokeColor: Color, strokeWidth: number): React.ReactNode {
     return (
       <line
         key={v4()}
@@ -28,12 +23,7 @@ export namespace SvgUtils {
     );
   }
 
-  export function textFromCenter(
-    text: string,
-    location: Vector,
-    fontSize: number,
-    color: Color,
-  ) {
+  export function textFromCenter(text: string, location: Vector, fontSize: number, color: Color) {
     return (
       // 这里居中实际上还没完全居中，垂直方向有点问题
       <text
@@ -50,12 +40,7 @@ export namespace SvgUtils {
     );
   }
 
-  export function textFromLeftTop(
-    text: string,
-    location: Vector,
-    fontSize: number,
-    color: Color,
-  ) {
+  export function textFromLeftTop(text: string, location: Vector, fontSize: number, color: Color) {
     const textSize = getTextSize(text, fontSize);
     return (
       <text
@@ -84,24 +69,12 @@ export namespace SvgUtils {
     const result: React.ReactNode[] = [];
     for (let y = 0; y < lines.length; y++) {
       const line = lines[y];
-      result.push(
-        textFromLeftTop(
-          line,
-          location.add(new Vector(0, y * textSizeHeight * lineHeight)),
-          fontSize,
-          color,
-        ),
-      );
+      result.push(textFromLeftTop(line, location.add(new Vector(0, y * textSizeHeight * lineHeight)), fontSize, color));
     }
     return <>{result.map((item) => item)}</>;
   }
 
-  export function rectangle(
-    rectangle: Rectangle,
-    fillColor: Color,
-    strokeColor: Color,
-    strokeWidth: number,
-  ) {
+  export function rectangle(rectangle: Rectangle, fillColor: Color, strokeColor: Color, strokeWidth: number) {
     return (
       <rect
         key={v4()}

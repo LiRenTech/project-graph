@@ -13,9 +13,7 @@ import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMetho
  * 树形的
  */
 export default function ExportTreeTextPanel() {
-  const [isExportTreeTextPanelOpen, setIsExportTreeTextPanelOpen] = useAtom(
-    isExportTreeTextPanelOpenAtom,
-  );
+  const [isExportTreeTextPanelOpen, setIsExportTreeTextPanelOpen] = useAtom(isExportTreeTextPanelOpenAtom);
 
   const [markdownText, setMarkdownText] = useState("");
   const [tabText, setTabText] = useState("");
@@ -36,12 +34,8 @@ export default function ExportTreeTextPanel() {
       const selectedFirstNode = selectedEntities[0];
       if (selectedFirstNode instanceof TextNode) {
         if (GraphMethods.isTree(selectedFirstNode)) {
-          setMarkdownText(
-            Stage.exportEngine.getMarkdownStringByTextNode(selectedFirstNode),
-          );
-          setTabText(
-            Stage.exportEngine.getTabStringByTextNode(selectedFirstNode),
-          );
+          setMarkdownText(Stage.exportEngine.getMarkdownStringByTextNode(selectedFirstNode));
+          setTabText(Stage.exportEngine.getTabStringByTextNode(selectedFirstNode));
         } else {
           setMarkdownText("选择的根节点必须符合树形结构");
           setTabText("选择的根节点必须符合树形结构");
@@ -70,21 +64,9 @@ export default function ExportTreeTextPanel() {
     >
       <h2 className="my-2 text-2xl font-bold">导出节点纯文本</h2>
       <div className="flex gap-2">
-        <CodePre
-          text={tabText}
-          title="纯缩进类型"
-          details="树形结构，以缩进方式展示节点内容"
-        />
-        <CodePre
-          text={markdownText}
-          title="markdown类型"
-          details="树形结构，以markdown方式展示节点内容"
-        />
-        <CodePre
-          text={plainText}
-          title="纯文本图类型"
-          details="图形结构，上面是节点，下面是连接关系"
-        />
+        <CodePre text={tabText} title="纯缩进类型" details="树形结构，以缩进方式展示节点内容" />
+        <CodePre text={markdownText} title="markdown类型" details="树形结构，以markdown方式展示节点内容" />
+        <CodePre text={plainText} title="纯文本图类型" details="图形结构，上面是节点，下面是连接关系" />
       </div>
       <button
         className="absolute top-0 right-0 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
@@ -96,15 +78,7 @@ export default function ExportTreeTextPanel() {
   );
 }
 
-function CodePre({
-  text,
-  title,
-  details,
-}: {
-  text: string;
-  title: string;
-  details: string;
-}) {
+function CodePre({ text, title, details }: { text: string; title: string; details: string }) {
   const handleCopy = () => {
     navigator.clipboard
       .writeText(text)

@@ -40,19 +40,11 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
         new Color(255, 0, 0, 1),
         20,
       ),
-      new CircleFlameEffect(
-        new ProgressNumber(0, 15),
-        edge.bodyLine.midPoint(),
-        50,
-        new Color(255, 0, 0, 1),
-      ),
+      new CircleFlameEffect(new ProgressNumber(0, 15), edge.bodyLine.midPoint(), 50, new Color(255, 0, 0, 1)),
     ];
   }
 
-  getConnectedEffects(
-    startNode: ConnectableEntity,
-    toNode: ConnectableEntity,
-  ): EffectObject[] {
+  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): EffectObject[] {
     return [
       new CircleFlameEffect(
         new ProgressNumber(0, 15),
@@ -138,13 +130,9 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
   renderTest(edge: LineEdge) {
     for (let i = 0; i < 4; i++) {
       CurveRenderer.renderSolidLine(
+        Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().center),
         Renderer.transformWorld2View(
-          edge.target.collisionBox.getRectangle().center,
-        ),
-        Renderer.transformWorld2View(
-          edge.target.collisionBox
-            .getRectangle()
-            .center.add(new Vector(100, 0).rotateDegrees(45 + 90 * i)),
+          edge.target.collisionBox.getRectangle().center.add(new Vector(100, 0).rotateDegrees(45 + 90 * i)),
         ),
         Color.Green,
         1,
@@ -167,29 +155,24 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
         const rate =
           1 -
           this.gaussianFunction(
-            edge.target.collisionBox.getRectangle().center.x -
-              edge.source.collisionBox.getRectangle().center.x,
+            edge.target.collisionBox.getRectangle().center.x - edge.source.collisionBox.getRectangle().center.x,
           );
         // 左右偏离距离 恒正
-        const distance =
-          (rate * edge.target.collisionBox.getRectangle().size.x) / 2;
+        const distance = (rate * edge.target.collisionBox.getRectangle().size.x) / 2;
         // 根据偏移距离计算附加高度  恒正
-        const h =
-          (edge.target.collisionBox.getRectangle().size.x / 2) * (1 - rate);
+        const h = (edge.target.collisionBox.getRectangle().size.x / 2) * (1 - rate);
         // 终点
         const p1 = new Vector(
           edge.target.collisionBox.getRectangle().center.x +
             distance *
-              (edge.source.collisionBox.getRectangle().center.x >
-              edge.target.collisionBox.getRectangle().center.x
+              (edge.source.collisionBox.getRectangle().center.x > edge.target.collisionBox.getRectangle().center.x
                 ? 1
                 : -1),
           verticalDirection.y > 0
             ? edge.target.collisionBox.getRectangle().top
             : edge.target.collisionBox.getRectangle().bottom,
         );
-        const length =
-          (this.fixedLength + h) * (verticalDirection.y > 0 ? -1 : 1);
+        const length = (this.fixedLength + h) * (verticalDirection.y > 0 ? -1 : 1);
         const p2 = p1.add(new Vector(0, length));
 
         const p4 = new Vector(
@@ -219,15 +202,12 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
         const rate =
           1 -
           this.gaussianFunction(
-            edge.target.collisionBox.getRectangle().center.y -
-              edge.source.collisionBox.getRectangle().center.y,
+            edge.target.collisionBox.getRectangle().center.y - edge.source.collisionBox.getRectangle().center.y,
           );
         // 偏离距离 恒正
-        const distance =
-          (rate * edge.target.collisionBox.getRectangle().size.y) / 2;
+        const distance = (rate * edge.target.collisionBox.getRectangle().size.y) / 2;
         // 根据偏移距离计算附加高度
-        const h =
-          (edge.target.collisionBox.getRectangle().size.y / 2) * (1 - rate);
+        const h = (edge.target.collisionBox.getRectangle().size.y / 2) * (1 - rate);
         // 终点
         const p1 = new Vector(
           verticalDirection.x > 0
@@ -235,14 +215,12 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
             : edge.target.collisionBox.getRectangle().right,
           edge.target.collisionBox.getRectangle().center.y +
             distance *
-              (edge.source.collisionBox.getRectangle().center.y >
-              edge.target.collisionBox.getRectangle().center.y
+              (edge.source.collisionBox.getRectangle().center.y > edge.target.collisionBox.getRectangle().center.y
                 ? 1
                 : -1),
         );
         // length 是固定长度+h
-        const length =
-          (this.fixedLength + h) * (verticalDirection.x > 0 ? -1 : 1);
+        const length = (this.fixedLength + h) * (verticalDirection.x > 0 ? -1 : 1);
         const p2 = p1.add(new Vector(length, 0));
 
         const p4 = new Vector(
@@ -293,17 +271,13 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
 
       CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.start),
-        Renderer.transformWorld2View(
-          edgeTextRectangle.getLineIntersectionPoint(startHalf),
-        ),
+        Renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(startHalf)),
         new Color(204, 204, 204),
         2 * Camera.currentScale,
       );
       CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.end),
-        Renderer.transformWorld2View(
-          edgeTextRectangle.getLineIntersectionPoint(endHalf),
-        ),
+        Renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(endHalf)),
         new Color(204, 204, 204),
         2 * Camera.currentScale,
       );
@@ -323,20 +297,10 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
   public renderShiftingState(edge: LineEdge): void {
     const shiftingMidPoint = edge.shiftingMidPoint;
     // 从source.Center到shiftingMidPoint的线
-    const startLine = new Line(
-      edge.source.collisionBox.getRectangle().center,
-      shiftingMidPoint,
-    );
-    const endLine = new Line(
-      shiftingMidPoint,
-      edge.target.collisionBox.getRectangle().center,
-    );
-    const startPoint = edge.source.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(startLine);
-    const endPoint = edge.target.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(endLine);
+    const startLine = new Line(edge.source.collisionBox.getRectangle().center, shiftingMidPoint);
+    const endLine = new Line(shiftingMidPoint, edge.target.collisionBox.getRectangle().center);
+    const startPoint = edge.source.collisionBox.getRectangle().getLineIntersectionPoint(startLine);
+    const endPoint = edge.target.collisionBox.getRectangle().getLineIntersectionPoint(endLine);
 
     if (edge.text.trim() === "") {
       // 没有文字的边
@@ -360,8 +324,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
         Renderer.FONT_SIZE * Camera.currentScale,
       );
       const edgeTextRectangle = edge.textRectangle;
-      const start2MidPoint =
-        edgeTextRectangle.getLineIntersectionPoint(startLine);
+      const start2MidPoint = edgeTextRectangle.getLineIntersectionPoint(startLine);
       const mid2EndPoint = edgeTextRectangle.getLineIntersectionPoint(endLine);
       CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(startPoint),
@@ -378,19 +341,11 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     }
     this.renderArrowHead(
       edge,
-      edge.target.collisionBox
-        .getRectangle()
-        .getCenter()
-        .subtract(shiftingMidPoint)
-        .normalize(),
+      edge.target.collisionBox.getRectangle().getCenter().subtract(shiftingMidPoint).normalize(),
       endPoint,
     );
   }
-  private renderArrowHead(
-    edge: LineEdge,
-    direction: Vector,
-    endPoint = edge.bodyLine.end.clone(),
-  ) {
+  private renderArrowHead(edge: LineEdge, direction: Vector, endPoint = edge.bodyLine.end.clone()) {
     const size = 15;
     EdgeRenderer.renderArrowHead(endPoint, direction, size);
   }
@@ -398,11 +353,8 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
   public renderCycleState(edge: LineEdge): void {
     // 自环
     ShapeRenderer.renderArc(
-      Renderer.transformWorld2View(
-        edge.target.collisionBox.getRectangle().location,
-      ),
-      (edge.target.collisionBox.getRectangle().size.y / 2) *
-        Camera.currentScale,
+      Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
+      (edge.target.collisionBox.getRectangle().size.y / 2) * Camera.currentScale,
       Math.PI / 2,
       0,
       new Color(204, 204, 204),
@@ -498,14 +450,9 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     return <></>;
   }
 
-  public renderVirtualEdge(
-    startNode: ConnectableEntity,
-    mouseLocation: Vector,
-  ): void {
+  public renderVirtualEdge(startNode: ConnectableEntity, mouseLocation: Vector): void {
     CurveRenderer.renderGradientLine(
-      Renderer.transformWorld2View(
-        startNode.collisionBox.getRectangle().getCenter(),
-      ),
+      Renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
       Renderer.transformWorld2View(mouseLocation),
       new Color(255, 255, 255, 0),
       new Color(255, 255, 255, 0.5),
@@ -513,17 +460,10 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     );
   }
 
-  public renderVirtualConfirmedEdge(
-    startNode: ConnectableEntity,
-    endNode: ConnectableEntity,
-  ): void {
+  public renderVirtualConfirmedEdge(startNode: ConnectableEntity, endNode: ConnectableEntity): void {
     CurveRenderer.renderGradientLine(
-      Renderer.transformWorld2View(
-        startNode.collisionBox.getRectangle().getCenter(),
-      ),
-      Renderer.transformWorld2View(
-        endNode.collisionBox.getRectangle().getCenter(),
-      ),
+      Renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
+      Renderer.transformWorld2View(endNode.collisionBox.getRectangle().getCenter()),
       new Color(0, 255, 0, 0),
       new Color(0, 255, 0, 0.5),
       2,

@@ -51,9 +51,7 @@ export class TextNode extends ConnectableEntity {
   }
 
   public get geometryCenter() {
-    return this.rectangle.location
-      .clone()
-      .add(this.rectangle.size.clone().multiply(0.5));
+    return this.rectangle.location.clone().add(this.rectangle.size.clone().multiply(0.5));
   }
 
   public set isSelected(value: boolean) {
@@ -93,9 +91,7 @@ export class TextNode extends ConnectableEntity {
     this.uuid = uuid;
     this.text = text;
     this.details = details;
-    this.collisionBox = new CollisionBox([
-      new Rectangle(new Vector(...location), new Vector(...size)),
-    ]);
+    this.collisionBox = new CollisionBox([new Rectangle(new Vector(...location), new Vector(...size))]);
     this.color = new Color(...color);
     this.adjustSizeByText();
   }
@@ -103,9 +99,7 @@ export class TextNode extends ConnectableEntity {
   private adjustSizeByText() {
     this.collisionBox.shapeList[0] = new Rectangle(
       this.rectangle.location.clone(),
-      getMultiLineTextSize(this.text, Renderer.FONT_SIZE, 1.5).add(
-        Vector.same(Renderer.NODE_PADDING).multiply(2),
-      ),
+      getMultiLineTextSize(this.text, Renderer.FONT_SIZE, 1.5).add(Vector.same(Renderer.NODE_PADDING).multiply(2)),
     );
   }
 
@@ -124,13 +118,7 @@ export class TextNode extends ConnectableEntity {
     this.collisionBox.shapeList[0] = newRectangle;
 
     // 移动雪花特效
-    Stage.effectMachine.addEffect(
-      new NodeMoveShadowEffect(
-        new ProgressNumber(0, 30),
-        this.rectangle,
-        delta,
-      ),
-    );
+    Stage.effectMachine.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), this.rectangle, delta));
     this.updateFatherSectionByMove();
     // 移动其他实体，递归碰撞
     this.updateOtherEntityLocationByMove();

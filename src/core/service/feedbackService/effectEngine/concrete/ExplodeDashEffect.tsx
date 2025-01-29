@@ -32,10 +32,7 @@ export class ExplodeDashEffect extends EffectObject {
         ),
       );
       this.ashSpeedArray.push(
-        this.ashLocationArray[i]
-          .subtract(this.rectangle.center)
-          .normalize()
-          .multiply(Random.randomFloat(0.5, 10)),
+        this.ashLocationArray[i].subtract(this.rectangle.center).normalize().multiply(Random.randomFloat(0.5, 10)),
       );
     }
   }
@@ -43,9 +40,7 @@ export class ExplodeDashEffect extends EffectObject {
   override tick() {
     super.tick();
     for (let i = 0; i < this.ashLocationArray.length; i++) {
-      this.ashLocationArray[i] = this.ashLocationArray[i].add(
-        this.ashSpeedArray[i],
-      );
+      this.ashLocationArray[i] = this.ashLocationArray[i].add(this.ashSpeedArray[i]);
     }
   }
 

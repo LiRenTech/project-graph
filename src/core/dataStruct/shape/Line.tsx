@@ -30,10 +30,7 @@ export class Line extends Shape {
   }
 
   midPoint(): Vector {
-    return new Vector(
-      (this.start.x + this.end.x) / 2,
-      (this.start.y + this.end.y) / 2,
-    );
+    return new Vector((this.start.x + this.end.x) / 2, (this.start.y + this.end.y) / 2);
   }
 
   direction(): Vector {
@@ -65,10 +62,7 @@ export class Line extends Shape {
         ? this.start
         : t > 1
           ? this.end
-          : new Vector(
-              this.start.x + t * lineVector.x,
-              this.start.y + t * lineVector.y,
-            );
+          : new Vector(this.start.x + t * lineVector.x, this.start.y + t * lineVector.y);
 
     // 检查该点到line的距离是否在容差范围内
     return nearestPoint.subtract(point).magnitude() <= tolerance;
@@ -93,10 +87,7 @@ export class Line extends Shape {
 
   isCollinear(other: Line): boolean {
     /** 判断两条线段是否共线 */
-    return (
-      this.isParallel(other) &&
-      this.start.subtract(other.start).cross(this.direction()) === 0
-    );
+    return this.isParallel(other) && this.start.subtract(other.start).cross(this.direction()) === 0;
   }
 
   /**
@@ -105,11 +96,7 @@ export class Line extends Shape {
    * @param xLeft 水平线段的左端点
    * @param xRight 水平线段的右端点
    */
-  isIntersectingWithHorizontalLine(
-    y: number,
-    xLeft: number,
-    xRight: number,
-  ): boolean {
+  isIntersectingWithHorizontalLine(y: number, xLeft: number, xRight: number): boolean {
     // 如果线段两端点的y坐标都在水平线的同一侧，则不可能相交
     if ((this.start.y - y) * (this.end.y - y) > 0) {
       return false;
@@ -127,10 +114,7 @@ export class Line extends Shape {
     const intersectionX = this.start.x + slope * (y - this.start.y);
 
     // 检查交点的x坐标是否在水平线段的范围内
-    return (
-      intersectionX >= Math.min(xLeft, xRight) &&
-      intersectionX <= Math.max(xLeft, xRight)
-    );
+    return intersectionX >= Math.min(xLeft, xRight) && intersectionX <= Math.max(xLeft, xRight);
   }
 
   getRectangle(): Rectangle {
@@ -149,11 +133,7 @@ export class Line extends Shape {
    * @param yBottom 垂直线段的下端点
    * @param yTop 垂直线段的上端点
    */
-  isIntersectingWithVerticalLine(
-    x: number,
-    yBottom: number,
-    yTop: number,
-  ): boolean {
+  isIntersectingWithVerticalLine(x: number, yBottom: number, yTop: number): boolean {
     // 如果线段两端点的x坐标都在垂直线的同一侧，则不可能相交
     if ((this.start.x - x) * (this.end.x - x) > 0) {
       return false;
@@ -165,24 +145,16 @@ export class Line extends Shape {
     }
 
     // 计算线段在x轴方向上的变化率（倒数斜率）
-    const inverseSlope =
-      (this.end.y - this.start.y) / (this.end.x - this.start.x);
+    const inverseSlope = (this.end.y - this.start.y) / (this.end.x - this.start.x);
 
     // 计算线段与垂直线的交点的y坐标
     const intersectionY = this.start.y + inverseSlope * (x - this.start.x);
 
     // 检查交点的y坐标是否在垂直线段的范围内
-    return (
-      intersectionY >= Math.min(yBottom, yTop) &&
-      intersectionY <= Math.max(yBottom, yTop)
-    );
+    return intersectionY >= Math.min(yBottom, yTop) && intersectionY <= Math.max(yBottom, yTop);
   }
   // 更新 isIntersectingWithHorizontalLine 方法
-  getIntersectingWithHorizontalLine(
-    y: number,
-    xLeft: number,
-    xRight: number,
-  ): IntersectionResult {
+  getIntersectingWithHorizontalLine(y: number, xLeft: number, xRight: number): IntersectionResult {
     // 如果线段两端点的y坐标都在水平线的同一侧，则不可能相交
     if ((this.start.y - y) * (this.end.y - y) > 0) {
       return { intersects: false };
@@ -200,10 +172,7 @@ export class Line extends Shape {
     const intersectionX = this.start.x + slope * (y - this.start.y);
 
     // 检查交点的x坐标是否在水平线段的范围内
-    if (
-      intersectionX >= Math.min(xLeft, xRight) &&
-      intersectionX <= Math.max(xLeft, xRight)
-    ) {
+    if (intersectionX >= Math.min(xLeft, xRight) && intersectionX <= Math.max(xLeft, xRight)) {
       return { intersects: true, point: new Vector(intersectionX, y) };
     }
 
@@ -211,11 +180,7 @@ export class Line extends Shape {
   }
 
   // 更新 isIntersectingWithVerticalLine 方法
-  getIntersectingWithVerticalLine(
-    x: number,
-    yBottom: number,
-    yTop: number,
-  ): IntersectionResult {
+  getIntersectingWithVerticalLine(x: number, yBottom: number, yTop: number): IntersectionResult {
     // 如果线段两端点的x坐标都在垂直线的同一侧，则不可能相交
     if ((this.start.x - x) * (this.end.x - x) > 0) {
       return { intersects: false };
@@ -227,17 +192,13 @@ export class Line extends Shape {
     }
 
     // 计算线段在x轴方向上的变化率（倒数斜率）
-    const inverseSlope =
-      (this.end.y - this.start.y) / (this.end.x - this.start.x);
+    const inverseSlope = (this.end.y - this.start.y) / (this.end.x - this.start.x);
 
     // 计算线段与垂直线的交点的y坐标
     const intersectionY = this.start.y + inverseSlope * (x - this.start.x);
 
     // 检查交点的y坐标是否在垂直线段的范围内
-    if (
-      intersectionY >= Math.min(yBottom, yTop) &&
-      intersectionY <= Math.max(yBottom, yTop)
-    ) {
+    if (intersectionY >= Math.min(yBottom, yTop) && intersectionY <= Math.max(yBottom, yTop)) {
       return { intersects: true, point: new Vector(x, intersectionY) };
     }
 
@@ -275,10 +236,7 @@ export class Line extends Shape {
 
     const onSegment = (p: Vector, q: Vector, r: Vector): boolean => {
       return (
-        Math.max(p.x, r.x) >= q.x &&
-        q.x >= Math.min(p.x, r.x) &&
-        Math.max(p.y, r.y) >= q.y &&
-        q.y >= Math.min(p.y, r.y)
+        Math.max(p.x, r.x) >= q.x && q.x >= Math.min(p.x, r.x) && Math.max(p.y, r.y) >= q.y && q.y >= Math.min(p.y, r.y)
       );
     };
 

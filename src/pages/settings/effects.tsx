@@ -5,22 +5,14 @@ import { Settings } from "../../core/service/Settings";
 import { ButtonField, Field } from "./_field";
 
 const effects = Object.keys(
-  import.meta.glob(
-    "../../core/service/feedbackService/effectEngine/concrete/*.tsx",
-    {
-      eager: true,
-    },
-  ),
-).map((path) =>
-  path
-    .replace("../../core/service/feedbackService/effectEngine/concrete/", "")
-    .replace(".tsx", ""),
-);
+  import.meta.glob("../../core/service/feedbackService/effectEngine/concrete/*.tsx", {
+    eager: true,
+  }),
+).map((path) => path.replace("../../core/service/feedbackService/effectEngine/concrete/", "").replace(".tsx", ""));
 
 export default function EffectsPage() {
   const { t } = useTranslation("effects");
-  const [effectsPerferences, setEffectsPerferences] =
-    Settings.use("effectsPerferences");
+  const [effectsPerferences, setEffectsPerferences] = Settings.use("effectsPerferences");
 
   return (
     <>

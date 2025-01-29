@@ -12,9 +12,7 @@ export const ControllerCopy = new ControllerClass();
 const validKeys = ["ctrl", "shift", "c", "v", "x", "y", "escape"];
 
 ControllerCopy.mousemove = (event: MouseEvent) => {
-  const worldLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
+  const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
   // 移动时候
   if (CopyEngine.copyBoardDataRectangle) {

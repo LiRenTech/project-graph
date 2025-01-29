@@ -116,13 +116,7 @@ export namespace Dialog {
               {isCopied && <span>已复制</span>}
             </div>
           )}
-          {input && (
-            <Input
-              value={inputValue}
-              onChange={setInputValue}
-              placeholder="请输入"
-            />
-          )}
+          {input && <Input value={inputValue} onChange={setInputValue} placeholder="请输入" />}
 
           <div className="flex justify-end">
             {buttons.map((btn, i) => (
@@ -143,12 +137,9 @@ export namespace Dialog {
         </div>
         <div
           data-tauri-drag-region
-          className={cn(
-            "fixed top-0 left-0 z-[100] h-full w-full bg-black opacity-0",
-            {
-              "opacity-30": show,
-            },
-          )}
+          className={cn("fixed top-0 left-0 z-[100] h-full w-full bg-black opacity-0", {
+            "opacity-30": show,
+          })}
         ></div>
       </>
     );

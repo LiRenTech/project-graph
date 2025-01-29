@@ -207,11 +207,7 @@ export namespace MathFunctions {
   export function median(numbers: number[]): number[] {
     const sorted = numbers.sort((a, b) => a - b);
     const mid = Math.floor(sorted.length / 2);
-    return [
-      sorted.length % 2 !== 0
-        ? sorted[mid]
-        : (sorted[mid - 1] + sorted[mid]) / 2,
-    ];
+    return [sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2];
   }
 
   /**
@@ -252,9 +248,7 @@ export namespace MathFunctions {
     };
 
     const varianceValue =
-      numbers
-        .map((n) => Math.pow(n - mean(numbers), 2))
-        .reduce((acc, curr) => acc + curr, 0) / numbers.length;
+      numbers.map((n) => Math.pow(n - mean(numbers), 2)).reduce((acc, curr) => acc + curr, 0) / numbers.length;
     return [varianceValue];
   }
 

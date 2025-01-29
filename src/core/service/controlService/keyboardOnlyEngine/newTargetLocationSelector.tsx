@@ -25,12 +25,7 @@ export namespace NewTargetLocationSelector {
    * @param selectedNode 当前选择的是哪个节点
    * @param finalChoiceLocation 最终用户选择生成的位置
    */
-  export function onTabUp(
-    selectedNode: ConnectableEntity,
-    finalChoiceLocation: Vector,
-  ): void {
-    diffLocation = finalChoiceLocation.subtract(
-      selectedNode.collisionBox.getRectangle().center,
-    );
+  export function onTabUp(selectedNode: ConnectableEntity, finalChoiceLocation: Vector): void {
+    diffLocation = finalChoiceLocation.subtract(selectedNode.collisionBox.getRectangle().center);
   }
 }

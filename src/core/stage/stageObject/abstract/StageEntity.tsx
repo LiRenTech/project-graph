@@ -32,10 +32,7 @@ export abstract class Entity extends StageObject {
 
   public detailsButtonRectangle(): Rectangle {
     const thisRectangle = this.collisionBox.getRectangle();
-    return new Rectangle(
-      thisRectangle.rightTop.subtract(new Vector(20, 20)),
-      new Vector(20, 20),
-    );
+    return new Rectangle(thisRectangle.rightTop.subtract(new Vector(20, 20)), new Vector(20, 20));
   }
   public isMouseInDetailsButton(mouseWorldLocation: Vector): boolean {
     return this.detailsButtonRectangle().isPointIn(mouseWorldLocation);
@@ -85,17 +82,9 @@ export abstract class Entity extends StageObject {
     const overlapSize = selfRectangle.getOverlapSize(otherRectangle);
     let moveDelta;
     if (Math.abs(overlapSize.x) < Math.abs(overlapSize.y)) {
-      moveDelta = new Vector(
-        overlapSize.x *
-          Math.sign(otherRectangle.center.x - selfRectangle.center.x),
-        0,
-      );
+      moveDelta = new Vector(overlapSize.x * Math.sign(otherRectangle.center.x - selfRectangle.center.x), 0);
     } else {
-      moveDelta = new Vector(
-        0,
-        overlapSize.y *
-          Math.sign(otherRectangle.center.y - selfRectangle.center.y),
-      );
+      moveDelta = new Vector(0, overlapSize.y * Math.sign(otherRectangle.center.y - selfRectangle.center.y));
     }
     other.move(moveDelta);
   }

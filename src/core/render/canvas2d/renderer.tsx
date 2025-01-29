@@ -118,15 +118,9 @@ export namespace Renderer {
       isShowBackgroundCartesian = value;
     });
 
-    Settings.watch(
-      "alwaysShowDetails",
-      (value) => (isAlwaysShowDetails = value),
-    );
+    Settings.watch("alwaysShowDetails", (value) => (isAlwaysShowDetails = value));
     Settings.watch("protectingPrivacy", (value) => (protectingPrivacy = value));
-    Settings.watch(
-      "isRenderCenterPointer",
-      (value) => (isRenderCenterPointer = value),
-    );
+    Settings.watch("isRenderCenterPointer", (value) => (isRenderCenterPointer = value));
   }
 
   /**
@@ -214,18 +208,9 @@ export namespace Renderer {
     );
     for (let i = 0; i < 4; i++) {
       const degrees = i * 90;
-      const shortLineStart = viewCenterLocation.add(
-        new Vector(10, 0).rotateDegrees(degrees),
-      );
-      const shortLineEnd = viewCenterLocation.add(
-        new Vector(20, 0).rotateDegrees(degrees),
-      );
-      CurveRenderer.renderSolidLine(
-        shortLineStart,
-        shortLineEnd,
-        StageStyleManager.currentStyle.GridHeavyColor,
-        1,
-      );
+      const shortLineStart = viewCenterLocation.add(new Vector(10, 0).rotateDegrees(degrees));
+      const shortLineEnd = viewCenterLocation.add(new Vector(20, 0).rotateDegrees(degrees));
+      CurveRenderer.renderSolidLine(shortLineStart, shortLineEnd, StageStyleManager.currentStyle.GridHeavyColor, 1);
     }
   }
 
@@ -240,12 +225,7 @@ export namespace Renderer {
   function renderPrivacyBoard(viewRectangle: Rectangle) {
     // 画隐私保护边
     if (protectingPrivacy) {
-      ShapeRenderer.renderRect(
-        viewRectangle.transformWorld2View(),
-        Color.Transparent,
-        new Color(33, 54, 167, 0.5),
-        50,
-      );
+      ShapeRenderer.renderRect(viewRectangle.transformWorld2View(), Color.Transparent, new Color(33, 54, 167, 0.5), 50);
     }
   }
   /** 鼠标hover的边 */
@@ -254,22 +234,14 @@ export namespace Renderer {
       CollisionBoxRenderer.render(edge.collisionBox, new Color(0, 255, 0, 0.5));
     }
     for (const section of Stage.mouseInteractionCore.hoverSections) {
-      CollisionBoxRenderer.render(
-        section.collisionBox,
-        new Color(0, 255, 0, 0.5),
-      );
+      CollisionBoxRenderer.render(section.collisionBox, new Color(0, 255, 0, 0.5));
     }
   }
   /** 中键吸附拖动框 */
   function renderViewMoveByClickMiddle(viewRectangle: Rectangle, tMs: number) {
     if (Controller.isViewMoveByClickMiddle) {
       const color = new Color(23, 159, 255, sine(tMs, 0.2, 0.1, 0.01));
-      ShapeRenderer.renderRect(
-        viewRectangle.transformWorld2View(),
-        Color.Transparent,
-        color,
-        50,
-      );
+      ShapeRenderer.renderRect(viewRectangle.transformWorld2View(), Color.Transparent, color, 50);
       TextRenderer.renderText(
         "再次中键取消视野吸附,或移动到窗口边缘",
         new Vector(25, Renderer.h - 25 - 20),
@@ -390,10 +362,7 @@ export namespace Renderer {
       CollisionBoxRenderer.render(edge.collisionBox, new Color(255, 0, 0, 0.5));
     }
     for (const section of Stage.cuttingMachine.warningSections) {
-      CollisionBoxRenderer.render(
-        section.collisionBox,
-        new Color(255, 0, 0, 0.5),
-      );
+      CollisionBoxRenderer.render(section.collisionBox, new Color(255, 0, 0, 0.5));
     }
   }
 
@@ -417,9 +386,7 @@ export namespace Renderer {
       );
       if (Camera.currentScale < 0.25 && tagObject instanceof TextNode) {
         const backRect = rect.clone();
-        backRect.location = transformWorld2View(rect.center).add(
-          new Vector(-rect.size.x / 2, -rect.size.y / 2),
-        );
+        backRect.location = transformWorld2View(rect.center).add(new Vector(-rect.size.x / 2, -rect.size.y / 2));
         const rectBgc = StageStyleManager.currentStyle.BackgroundColor.clone();
         rectBgc.a = 0.5;
         ShapeRenderer.renderRect(
@@ -451,9 +418,7 @@ export namespace Renderer {
             const endLocation = KeyboardOnlyEngine.virtualTargetLocation();
             let rate = KeyboardOnlyEngine.getPressTabTimeInterval() / 100;
             rate = Math.min(1, rate);
-            const currentLocation = startLocation.add(
-              endLocation.subtract(startLocation).multiply(rate),
-            );
+            const currentLocation = startLocation.add(endLocation.subtract(startLocation).multiply(rate));
             WorldRenderUtils.renderLaser(
               startLocation,
               currentLocation,
@@ -466,11 +431,7 @@ export namespace Renderer {
                 120 * Camera.currentScale,
                 60 * Camera.currentScale,
                 Color.Transparent,
-                mixColors(
-                  StageStyleManager.currentStyle.StageObjectBorderColor,
-                  Color.Transparent,
-                  0.5,
-                ),
+                mixColors(StageStyleManager.currentStyle.StageObjectBorderColor, Color.Transparent, 0.5),
                 2 * Camera.currentScale,
                 NODE_ROUNDED_RADIUS * Camera.currentScale,
               );
@@ -483,9 +444,7 @@ export namespace Renderer {
           // 在生成点下方写文字提示
           TextRenderer.renderText(
             hintText,
-            transformWorld2View(
-              KeyboardOnlyEngine.virtualTargetLocation().add(new Vector(0, 50)),
-            ),
+            transformWorld2View(KeyboardOnlyEngine.virtualTargetLocation().add(new Vector(0, 50))),
             15 * Camera.currentScale,
             StageStyleManager.currentStyle.StageObjectBorderColor,
           );
@@ -495,10 +454,7 @@ export namespace Renderer {
   }
   function renderSectionBackground(viewRectangle: Rectangle) {
     for (const section of StageManager.getSections()) {
-      if (
-        !Camera.limitCameraInCycleSpace &&
-        !viewRectangle.isCollideWith(section.collisionBox.getRectangle())
-      ) {
+      if (!Camera.limitCameraInCycleSpace && !viewRectangle.isCollideWith(section.collisionBox.getRectangle())) {
         continue;
       }
       SectionRenderer.renderBackgroundColor(section);
@@ -508,10 +464,7 @@ export namespace Renderer {
     renderedNodes = 0;
     for (const entity of StageManager.getEntities()) {
       // 视线之外不画
-      if (
-        !Camera.limitCameraInCycleSpace &&
-        !viewRectangle.isCollideWith(entity.collisionBox.getRectangle())
-      ) {
+      if (!Camera.limitCameraInCycleSpace && !viewRectangle.isCollideWith(entity.collisionBox.getRectangle())) {
         continue;
         // 这里littlefean居然曾经把continue写成return了，
         // 不知道是一股脑通过代码补全补出来的还是什么原因。
@@ -524,20 +477,14 @@ export namespace Renderer {
   function renderEdges(viewRectangle: Rectangle) {
     renderedEdges = 0;
     for (const edge of StageManager.getLineEdges()) {
-      if (
-        !Camera.limitCameraInCycleSpace &&
-        !edge.isIntersectsWithRectangle(viewRectangle)
-      ) {
+      if (!Camera.limitCameraInCycleSpace && !edge.isIntersectsWithRectangle(viewRectangle)) {
         continue;
       }
       EdgeRenderer.renderEdge(edge);
       renderedEdges++;
     }
     for (const edge of StageManager.getCrEdges()) {
-      if (
-        !Camera.limitCameraInCycleSpace &&
-        !edge.isIntersectsWithRectangle(viewRectangle)
-      ) {
+      if (!Camera.limitCameraInCycleSpace && !edge.isIntersectsWithRectangle(viewRectangle)) {
         continue;
       }
       EdgeRenderer.renderCrEdge(edge);
@@ -568,9 +515,7 @@ export namespace Renderer {
         transformWorld2View(
           new Vector(
             CopyEngine.copyBoardDataRectangle.location.x,
-            CopyEngine.copyBoardDataRectangle.location.y +
-              CopyEngine.copyBoardDataRectangle.size.y +
-              20,
+            CopyEngine.copyBoardDataRectangle.location.y + CopyEngine.copyBoardDataRectangle.size.y + 20,
           ),
         ),
         12 * Camera.currentScale,
@@ -579,9 +524,7 @@ export namespace Renderer {
       // 画一个鼠标位置
       ShapeRenderer.renderRect(
         new Rectangle(
-          CopyEngine.copyBoardDataRectangle.location.add(
-            CopyEngine.copyBoardMouseVector,
-          ),
+          CopyEngine.copyBoardDataRectangle.location.add(CopyEngine.copyBoardMouseVector),
           CopyEngine.copyBoardDataRectangle.size,
         ).transformWorld2View(),
         Color.Transparent,
@@ -593,8 +536,7 @@ export namespace Renderer {
         "ctrl+v 粘贴到鼠标位置，Esc键清空粘贴板",
         transformWorld2View(
           new Vector(
-            CopyEngine.copyBoardDataRectangle.location.x +
-              CopyEngine.copyBoardMouseVector.x,
+            CopyEngine.copyBoardDataRectangle.location.x + CopyEngine.copyBoardMouseVector.x,
             CopyEngine.copyBoardDataRectangle.location.y +
               CopyEngine.copyBoardDataRectangle.size.y +
               CopyEngine.copyBoardMouseVector.y +
@@ -616,9 +558,7 @@ export namespace Renderer {
         } else {
           ShapeRenderer.renderRect(
             new Rectangle(
-              new Vector(...entity.location).add(
-                CopyEngine.copyBoardMouseVector,
-              ),
+              new Vector(...entity.location).add(CopyEngine.copyBoardMouseVector),
               new Vector(...entity.size),
             ).transformWorld2View(),
             Color.Transparent,
@@ -738,12 +678,7 @@ export namespace Renderer {
 
     for (const key of Controller.pressingKeySet) {
       const textLocation = new Vector(x, Renderer.h - 100);
-      TextRenderer.renderText(
-        key,
-        textLocation,
-        fontSize,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
-      );
+      TextRenderer.renderText(key, textLocation, fontSize, StageStyleManager.currentStyle.StageObjectBorderColor);
       const textSize = getTextSize(key, fontSize);
       x += textSize.x + margin;
     }

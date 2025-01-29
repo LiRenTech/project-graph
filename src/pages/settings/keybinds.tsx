@@ -6,9 +6,7 @@ import { KeyBinds } from "../../core/service/controlService/KeyBinds";
 import { Field } from "./_field";
 
 export default function KeyBindsPage() {
-  const [keyBinds, setKeyBinds] = React.useState<
-    [id: string, { key: string; modifiers: KeyBinds.KeyModifiers }][]
-  >([]);
+  const [keyBinds, setKeyBinds] = React.useState<[id: string, { key: string; modifiers: KeyBinds.KeyModifiers }][]>([]);
 
   React.useEffect(() => {
     KeyBinds.entries().then((entries) => {
@@ -30,9 +28,7 @@ export default function KeyBindsPage() {
           value={bind}
           onChange={(value) => {
             KeyBinds.set(id, value.key, value.modifiers);
-            setKeyBinds((prev) =>
-              prev.map((item) => (item[0] === id ? [item[0], value] : item)),
-            );
+            setKeyBinds((prev) => prev.map((item) => (item[0] === id ? [item[0], value] : item)));
           }}
         />
       </Field>

@@ -29,12 +29,8 @@ export class EntityShakeEffect extends EffectObject {
     super.tick();
     const alpha = 1 - this.timeProgress.rate;
     const maxOffsetDistance = 10;
-    this.shakeOffsetA = Random.randomVectorOnNormalCircle().multiply(
-      alpha * maxOffsetDistance,
-    );
-    this.shakeOffsetB = Random.randomVectorOnNormalCircle().multiply(
-      alpha * maxOffsetDistance,
-    );
+    this.shakeOffsetA = Random.randomVectorOnNormalCircle().multiply(alpha * maxOffsetDistance);
+    this.shakeOffsetB = Random.randomVectorOnNormalCircle().multiply(alpha * maxOffsetDistance);
   }
 
   static fromEntity(entity: Entity): EntityShakeEffect {
@@ -43,13 +39,9 @@ export class EntityShakeEffect extends EffectObject {
 
   render(): void {
     const rectangleA = this.rect.clone();
-    rectangleA.location = rectangleA.location
-      .add(this.shakeOffsetA)
-      .add(Vector.same(-2));
+    rectangleA.location = rectangleA.location.add(this.shakeOffsetA).add(Vector.same(-2));
     const rectangleB = this.rect.clone();
-    rectangleB.location = rectangleB.location
-      .add(this.shakeOffsetB)
-      .add(Vector.same(2));
+    rectangleB.location = rectangleB.location.add(this.shakeOffsetB).add(Vector.same(2));
     const fillAlpha = (1 - this.timeProgress.rate) / 2;
     ShapeRenderer.renderRectWithShadow(
       rectangleA.transformWorld2View(),

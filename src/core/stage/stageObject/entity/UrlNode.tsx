@@ -42,10 +42,7 @@ export class UrlNode extends ConnectableEntity {
    */
   get titleRectangle(): Rectangle {
     const rect = this.rectangle;
-    return new Rectangle(
-      rect.location,
-      new Vector(rect.size.x, UrlNode.titleHeight),
-    );
+    return new Rectangle(rect.location, new Vector(rect.size.x, UrlNode.titleHeight));
   }
   get urlRectangle(): Rectangle {
     const rect = this.rectangle;
@@ -67,13 +64,7 @@ export class UrlNode extends ConnectableEntity {
     this.collisionBox.shapeList[0] = newRectangle;
 
     // 移动雪花特效
-    Stage.effectMachine.addEffect(
-      new NodeMoveShadowEffect(
-        new ProgressNumber(0, 30),
-        this.rectangle,
-        delta,
-      ),
-    );
+    Stage.effectMachine.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), this.rectangle, delta));
     this.updateFatherSectionByMove();
     // 移动其他实体，递归碰撞
     this.updateOtherEntityLocationByMove();
@@ -105,9 +96,7 @@ export class UrlNode extends ConnectableEntity {
     this.title = title;
     this.url = url;
     this.color = new Color(...color);
-    this.collisionBox = new CollisionBox([
-      new Rectangle(new Vector(...location), new Vector(...size)),
-    ]);
+    this.collisionBox = new CollisionBox([new Rectangle(new Vector(...location), new Vector(...size))]);
   }
 
   rename(title: string): void {
@@ -116,14 +105,9 @@ export class UrlNode extends ConnectableEntity {
   }
 
   private adjustSizeByText() {
-    const newSize = getTextSize(this.title, Renderer.FONT_SIZE).add(
-      Vector.same(Renderer.NODE_PADDING).multiply(2),
-    );
+    const newSize = getTextSize(this.title, Renderer.FONT_SIZE).add(Vector.same(Renderer.NODE_PADDING).multiply(2));
     newSize.x = Math.max(newSize.x, UrlNode.width);
     newSize.y = Math.max(newSize.y, UrlNode.height);
-    this.collisionBox.shapeList[0] = new Rectangle(
-      this.rectangle.location.clone(),
-      newSize,
-    );
+    this.collisionBox.shapeList[0] = new Rectangle(this.rectangle.location.clone(), newSize);
   }
 }

@@ -41,10 +41,7 @@ export class AutoBackupEngine {
         const backupPath = `${this.autoBackupDraftPath}${PathString.getSep()}${PathString.getTime()}.json`;
         StageSaveManager.backupHandle(backupPath, StageDumper.dump());
       } else {
-        StageSaveManager.backupHandleWithoutCurrentPath(
-          StageDumper.dump(),
-          false,
-        );
+        StageSaveManager.backupHandleWithoutCurrentPath(StageDumper.dump(), false);
       }
       // 更新时间
       this.lastAutoBackupTime = now;

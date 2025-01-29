@@ -15,12 +15,7 @@ export namespace TextRenderer {
    * @param fontSize
    * @param color
    */
-  export function renderText(
-    text: string,
-    location: Vector,
-    fontSize: number,
-    color: Color = Color.White,
-  ): void {
+  export function renderText(text: string, location: Vector, fontSize: number, color: Color = Color.White): void {
     // alphabetic, top, hanging, middle, ideographic, bottom
     Canvas.ctx.textBaseline = "middle";
     Canvas.ctx.textAlign = "left";
@@ -108,11 +103,7 @@ export namespace TextRenderer {
    * @param fontSize
    * @param limitWidth
    */
-  function textToTextArrayWrapCache(
-    text: string,
-    fontSize: number,
-    limitWidth: number,
-  ): string[] {
+  function textToTextArrayWrapCache(text: string, fontSize: number, limitWidth: number): string[] {
     const cacheKey = `${fontSize}_${limitWidth}_${text}`;
     const cacheValue = textArrayCache.get(cacheKey);
     if (cacheValue) {
@@ -128,11 +119,7 @@ export namespace TextRenderer {
    * 将一段字符串分割成多行数组，遇到宽度限制和换行符进行换行。
    * @param text
    */
-  function textToTextArray(
-    text: string,
-    fontSize: number,
-    limitWidth: number,
-  ): string[] {
+  function textToTextArray(text: string, fontSize: number, limitWidth: number): string[] {
     let currentLine = "";
     // 先渲染一下空字符串，否则长度大小可能不匹配，造成蜜汁bug
     renderText("", Vector.getZero(), fontSize, Color.White);

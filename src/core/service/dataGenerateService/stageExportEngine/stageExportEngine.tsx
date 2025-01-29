@@ -76,10 +76,7 @@ export class StageExportEngine {
    * @param nodeToStringFunc
    * @returns
    */
-  getTreeTypeString(
-    textNode: TextNode,
-    nodeToStringFunc: (node: TextNode, level: number) => string,
-  ) {
+  getTreeTypeString(textNode: TextNode, nodeToStringFunc: (node: TextNode, level: number) => string) {
     let content = "";
     const visitedUUID = new Set<string>();
 
@@ -89,9 +86,7 @@ export class StageExportEngine {
       }
       visitedUUID.add(node.uuid);
       content += nodeToStringFunc(node, level);
-      const children = this.getNodeChildrenArray(node).filter(
-        (v) => v instanceof TextNode,
-      );
+      const children = this.getNodeChildrenArray(node).filter((v) => v instanceof TextNode);
       for (const child of children) {
         dfs(child, level + 1);
       }
@@ -125,14 +120,8 @@ export class StageExportEngine {
     }
     // 按角度排序
     return result.sort((a, b) => {
-      const angleA = Math.atan2(
-        a.geometryCenter.y - node.geometryCenter.y,
-        a.geometryCenter.x - node.geometryCenter.x,
-      );
-      const angleB = Math.atan2(
-        b.geometryCenter.y - node.geometryCenter.y,
-        b.geometryCenter.x - node.geometryCenter.x,
-      );
+      const angleA = Math.atan2(a.geometryCenter.y - node.geometryCenter.y, a.geometryCenter.x - node.geometryCenter.x);
+      const angleB = Math.atan2(b.geometryCenter.y - node.geometryCenter.y, b.geometryCenter.x - node.geometryCenter.x);
       return angleA - angleB;
     });
   }

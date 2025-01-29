@@ -21,10 +21,7 @@ export class MonoStack<T> {
   // 入栈操作
   push(item: T, level: number): void {
     const stackItem: StackItem<T> = { item, level };
-    while (
-      this.stack.length > 0 &&
-      this.stack[this.stack.length - 1].level >= level
-    ) {
+    while (this.stack.length > 0 && this.stack[this.stack.length - 1].level >= level) {
       this.stack.pop(); // 弹出不满足单调性的元素
     }
     this.stack.push(stackItem);

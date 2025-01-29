@@ -22,19 +22,13 @@ export function EntityDetailsButtonRenderer(entity: Entity) {
   // );
   let isMouseHovering = false;
   // 鼠标悬浮在按钮上提示文字
-  if (
-    entity
-      .detailsButtonRectangle()
-      .isPointIn(Renderer.transformView2World(MouseLocation.vector()))
-  ) {
+  if (entity.detailsButtonRectangle().isPointIn(Renderer.transformView2World(MouseLocation.vector()))) {
     isMouseHovering = true;
     if (!entity.isEditingDetails)
       // 鼠标悬浮在这上面
       TextRenderer.renderText(
         "点击展开或关闭节点注释详情",
-        Renderer.transformWorld2View(
-          entity.detailsButtonRectangle().topCenter.subtract(new Vector(0, 12)),
-        ),
+        Renderer.transformWorld2View(entity.detailsButtonRectangle().topCenter.subtract(new Vector(0, 12))),
         12 * Camera.currentScale,
         StageStyleManager.currentStyle.DetailsDebugTextColor,
       );

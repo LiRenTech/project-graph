@@ -30,8 +30,7 @@ export class TextRiseEffect extends EffectObject {
     const distance = 100;
 
     Canvas.ctx.font = `20px Arial`;
-    Canvas.ctx.fillStyle =
-      StageStyleManager.currentStyle.effects.flash.toString();
+    Canvas.ctx.fillStyle = StageStyleManager.currentStyle.effects.flash.toString();
     Canvas.ctx.textAlign = "center";
     Canvas.ctx.textBaseline = "middle";
     Canvas.ctx.globalAlpha = 1 - easeInOutSine(this.timeProgress.rate);

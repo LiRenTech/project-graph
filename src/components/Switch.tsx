@@ -16,21 +16,18 @@ export default function Switch({
 }) {
   return (
     <div
-      className={cn(
-        "group/switch relative h-8 w-14 rounded-full bg-neutral-800",
-        {
-          "bg-blue-500": value,
-          "cursor-not-allowed bg-neutral-600": disabled,
-        },
-      )}
+      className={cn("group/switch bg-switch-false-bg relative h-8 w-14 rounded-full", {
+        "bg-switch-true-bg": value,
+        "bg-switch-disabled-bg cursor-not-allowed": disabled,
+      })}
       onClick={() => onChange(!value)}
     >
       <div
         className={cn(
-          "absolute top-1 left-1 h-6 w-6 translate-x-0 transform rounded-full bg-white group-hover/switch:scale-125 group-active/switch:scale-75",
+          "bg-switch-false-dot absolute top-1 left-1 h-6 w-6 translate-x-0 transform rounded-full group-hover/switch:scale-125 group-active/switch:scale-75",
           {
-            "translate-x-6": value,
-            "bg-neutral-300": disabled,
+            "bg-switch-true-dot translate-x-6": value,
+            "bg-switch-disabled-dot": disabled,
           },
         )}
       ></div>

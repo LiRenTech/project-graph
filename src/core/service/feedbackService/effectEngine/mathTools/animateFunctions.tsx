@@ -16,12 +16,7 @@ export const reverseAnimate = (t: number) => {
 /**
  * 正弦函数
  */
-export const sine = (
-  t: number,
-  maxValue: number,
-  minValue: number,
-  xRate: number,
-) => {
+export const sine = (t: number, maxValue: number, minValue: number, xRate: number) => {
   const y = Math.sin(t * xRate);
   return (maxValue - minValue) * y + minValue;
 };

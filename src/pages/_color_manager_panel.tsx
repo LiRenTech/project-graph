@@ -70,10 +70,7 @@ function ColorDotElement({ color }: { color: Color }) {
   const b = color.b;
   const a = color.a;
   return (
-    <div
-      className="relative m-1 h-8 w-8 rounded-full"
-      style={{ backgroundColor: `rgba(${r}, ${g}, ${b}, ${a})` }}
-    >
+    <div className="relative m-1 h-8 w-8 rounded-full" style={{ backgroundColor: `rgba(${r}, ${g}, ${b}, ${a})` }}>
       <Button
         className="absolute -top-2 -right-2 h-2 w-2 rounded-full text-xs"
         onClick={() => {

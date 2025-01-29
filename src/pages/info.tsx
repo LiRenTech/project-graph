@@ -24,9 +24,7 @@ export default function InfoPage() {
         <p>设备像素比: {window.devicePixelRatio}</p>
 
         <input type="text" />
-        <Button onClick={() => open("https://project-graph.top")}>
-          open函数打开官网
-        </Button>
+        <Button onClick={() => open("https://project-graph.top")}>open函数打开官网</Button>
       </div>
     </>
   );

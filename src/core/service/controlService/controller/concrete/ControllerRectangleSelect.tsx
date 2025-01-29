@@ -42,9 +42,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
     if (button !== 0) {
       return;
     }
-    const pressWorldLocation = Renderer.transformView2World(
-      new Vector(event.clientX, event.clientY),
-    );
+    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
     if (
       StageManager.isEntityOnLocation(pressWorldLocation) ||
@@ -54,17 +52,12 @@ class ControllerRectangleSelectClass extends ControllerClass {
       return;
     }
 
-    const isHaveEdgeSelected = StageManager.getLineEdges().some(
-      (edge) => edge.isSelected,
-    );
-    const isHaveEntitySelected = StageManager.getEntities().some(
-      (entity) => entity.isSelected,
-    );
+    const isHaveEdgeSelected = StageManager.getLineEdges().some((edge) => edge.isSelected);
+    const isHaveEntitySelected = StageManager.getEntities().some((entity) => entity.isSelected);
 
     // 现在的情况：在空白的地方按下左键
 
-    const sections =
-      SectionMethods.getSectionsByInnerLocation(pressWorldLocation);
+    const sections = SectionMethods.getSectionsByInnerLocation(pressWorldLocation);
     if (sections.length === 0) {
       // 没有在任何section里按下
       this.mouseDownSection = null;
@@ -74,10 +67,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
 
     if (isHaveEntitySelected || isHaveEdgeSelected) {
       // A
-      if (
-        Controller.pressingKeySet.has("shift") ||
-        Controller.pressingKeySet.has("control")
-      ) {
+      if (Controller.pressingKeySet.has("shift") || Controller.pressingKeySet.has("control")) {
         // 不取消选择
       } else {
         // 取消选择所
@@ -91,10 +81,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
     this._isUsing = true;
     this.selectStartLocation = pressWorldLocation.clone();
     this.selectEndLocation = pressWorldLocation.clone();
-    this.selectingRectangle = new Rectangle(
-      pressWorldLocation.clone(),
-      Vector.getZero(),
-    );
+    this.selectingRectangle = new Rectangle(pressWorldLocation.clone(), Vector.getZero());
 
     const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
     if (clickedEdge !== null) {
@@ -111,17 +98,12 @@ class ControllerRectangleSelectClass extends ControllerClass {
     if (!Controller.isMouseDown[0]) {
       return;
     }
-    const worldLocation = Renderer.transformView2World(
-      new Vector(event.clientX, event.clientY),
-    );
+    const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     // 正在框选
     this.selectEndLocation = worldLocation.clone();
 
     // 更新框选框
-    this.selectingRectangle = Rectangle.fromTwoPoints(
-      this.selectStartLocation,
-      this.selectEndLocation,
-    );
+    this.selectingRectangle = Rectangle.fromTwoPoints(this.selectStartLocation, this.selectEndLocation);
     // 框选框在 section框中的限制情况
     if (this.mouseDownSection !== null) {
       this.selectingRectangle = Rectangle.getIntersectionRectangle(
@@ -130,10 +112,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
       );
     }
 
-    if (
-      Controller.pressingKeySet.has("shift") ||
-      Controller.pressingKeySet.has("control")
-    ) {
+    if (Controller.pressingKeySet.has("shift") || Controller.pressingKeySet.has("control")) {
       // 移动过程中不先暴力清除
     } else {
       // 先清空所有已经选择了的
@@ -148,9 +127,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
         if (entity.isHiddenBySectionCollapse) {
           continue;
         }
-        if (
-          entity.collisionBox.isIntersectsWithRectangle(this.selectingRectangle)
-        ) {
+        if (entity.collisionBox.isIntersectsWithRectangle(this.selectingRectangle)) {
           if (Controller.lastSelectedEntityUUID.has(entity.uuid)) {
             entity.isSelected = false;
           } else {
@@ -159,9 +136,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
         }
       }
       for (const edge of StageManager.getLineEdges()) {
-        if (
-          edge.collisionBox.isIntersectsWithRectangle(this.selectingRectangle)
-        ) {
+        if (edge.collisionBox.isIntersectsWithRectangle(this.selectingRectangle)) {
           if (Controller.lastSelectedEdgeUUID.has(edge.uuid)) {
             edge.isSelected = false;
           } else {
@@ -184,11 +159,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
             continue;
           }
 
-          if (
-            otherEntities.collisionBox.isIntersectsWithRectangle(
-              this.selectingRectangle,
-            )
-          ) {
+          if (otherEntities.collisionBox.isIntersectsWithRectangle(this.selectingRectangle)) {
             otherEntities.isSelected = true;
             isHaveEntity = true;
           }
@@ -202,9 +173,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
           if (edge.isHiddenBySectionCollapse) {
             continue;
           }
-          if (
-            edge.collisionBox.isIntersectsWithRectangle(this.selectingRectangle)
-          ) {
+          if (edge.collisionBox.isIntersectsWithRectangle(this.selectingRectangle)) {
             edge.isSelected = true;
           }
         }
@@ -246,9 +215,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
  */
 function selectedEntityNormalizing() {
   const entities = StageManager.getSelectedEntities();
-  const selectedSections = entities.filter(
-    (entity) => entity instanceof Section,
-  );
+  const selectedSections = entities.filter((entity) => entity instanceof Section);
   const shallowerSections = SectionMethods.shallowerSection(selectedSections);
   for (const section of selectedSections) {
     if (!shallowerSections.includes(section)) {

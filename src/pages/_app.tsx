@@ -1,16 +1,5 @@
 import { useAtom } from "jotai";
-import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronUp,
-  Cpu,
-  Diamond,
-  Menu,
-  RectangleEllipsis,
-  Tag,
-  X,
-  Zap,
-} from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronUp, Cpu, Diamond, Menu, RectangleEllipsis, Tag, X, Zap } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -24,14 +13,7 @@ import { StageDumper } from "../core/stage/StageDumper";
 import { fileAtom } from "../state";
 import { cn } from "../utils/cn";
 import { PathString } from "../utils/pathString";
-import {
-  appScale,
-  getCurrentWindow,
-  isDesktop,
-  isMac,
-  isMobile,
-  isWeb,
-} from "../utils/platform";
+import { appScale, getCurrentWindow, isDesktop, isMac, isMobile, isWeb } from "../utils/platform";
 import AppMenu from "./_app_menu";
 import ErrorHandler from "./_error_handler";
 import ExportTreeTextPanel from "./_export_text_panel";
@@ -149,10 +131,7 @@ export default function App() {
                   {
                     text: "保存并关闭",
                     onClick: async () => {
-                      await StageSaveManager.saveHandle(
-                        file,
-                        StageDumper.dump(),
-                      );
+                      await StageSaveManager.saveHandle(file, StageDumper.dump());
                       await getCurrentWindow().destroy();
                     },
                   },
@@ -172,12 +151,8 @@ export default function App() {
       }
     });
 
-    document
-      .querySelector("canvas")
-      ?.addEventListener("mousedown", () => setIgnoreMouse(true));
-    document
-      .querySelector("canvas")
-      ?.addEventListener("mouseup", () => setIgnoreMouse(false));
+    document.querySelector("canvas")?.addEventListener("mousedown", () => setIgnoreMouse(true));
+    document.querySelector("canvas")?.addEventListener("mouseup", () => setIgnoreMouse(false));
 
     return () => {
       clearInterval(saveInterval);
@@ -215,12 +190,9 @@ export default function App() {
 
   return (
     <div
-      className={cn(
-        "relative h-full w-full rounded-xl text-white ring shadow-2xl",
-        {
-          "bg-neutral-950": isMobile || location.pathname !== "/",
-        },
-      )}
+      className={cn("relative h-full w-full rounded-xl text-white ring shadow-2xl", {
+        "bg-neutral-950": isMobile || location.pathname !== "/",
+      })}
       style={{ zoom: appScale }}
       onClick={() => {
         setIsMenuOpen(false);
@@ -230,12 +202,9 @@ export default function App() {
     >
       {/* 叠加层，显示窗口控件 */}
       <div
-        className={cn(
-          "pointer-events-none absolute top-0 left-0 z-40 flex w-full gap-2 p-4 *:pointer-events-auto",
-          {
-            "*:!pointer-events-none": ignoreMouse,
-          },
-        )}
+        className={cn("pointer-events-none absolute top-0 left-0 z-40 flex w-full gap-2 p-4 *:pointer-events-auto", {
+          "*:!pointer-events-none": ignoreMouse,
+        })}
       >
         {isMac && (
           <Button className="top-4 right-4 flex items-center gap-2 active:scale-100">
@@ -285,15 +254,7 @@ export default function App() {
             }
           }}
         >
-          {location.pathname === "/" ? (
-            isMenuOpen ? (
-              <RectangleEllipsis />
-            ) : (
-              <Menu />
-            )
-          ) : (
-            <ChevronLeft />
-          )}
+          {location.pathname === "/" ? isMenuOpen ? <RectangleEllipsis /> : <Menu /> : <ChevronLeft />}
         </IconButton>
         <IconButton
           onClick={(e) => {
@@ -301,9 +262,7 @@ export default function App() {
             setIsTagPanelOpen(!isTagPanelOpen);
           }}
         >
-          <Tag
-            className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")}
-          />
+          <Tag className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")} />
         </IconButton>
         {/* 逻辑节点按钮 */}
         <IconButton
@@ -312,12 +271,7 @@ export default function App() {
             setIsLogicNodePanelOpen(!isLogicNodePanelOpen);
           }}
         >
-          <Cpu
-            className={cn(
-              "cursor-pointer",
-              isLogicNodePanelOpen ? "rotate-90" : "",
-            )}
-          />
+          <Cpu className={cn("cursor-pointer", isLogicNodePanelOpen ? "rotate-90" : "")} />
         </IconButton>
         {/* 中间标题 */}
         {useNativeTitleBar || isWeb ? (
@@ -327,13 +281,10 @@ export default function App() {
           <>
             <Button
               data-tauri-drag-region
-              className={cn(
-                "hover:cursor-move active:scale-100 active:cursor-grabbing",
-                {
-                  "text-yellow-500": isSaved,
-                  "flex-1": isDesktop,
-                },
-              )}
+              className={cn("hover:cursor-move active:scale-100 active:cursor-grabbing", {
+                "text-yellow-500": isSaved,
+                "flex-1": isDesktop,
+              })}
             >
               {isMobile && filename + (isSaved ? "" : t("unsaved"))}
             </Button>
@@ -359,12 +310,7 @@ export default function App() {
             setIsStartFilePanelOpen(!isStartFilePanelOpen);
           }}
         >
-          <Zap
-            className={cn(
-              "cursor-pointer",
-              isStartFilePanelOpen ? "scale-125 rotate-45" : "",
-            )}
-          />
+          <Zap className={cn("cursor-pointer", isStartFilePanelOpen ? "scale-125 rotate-45" : "")} />
         </IconButton>
         {/* 右上角窗口控制按钮 */}
         {isDesktop && !useNativeTitleBar && !isMac && !isWeb && (
@@ -381,15 +327,9 @@ export default function App() {
                 className="transition hover:opacity-80 active:scale-75"
               />
             ) : (
-              <ChevronUp
-                onClick={() => setMaxmized(true)}
-                className="transition hover:opacity-80 active:scale-75"
-              />
+              <ChevronUp onClick={() => setMaxmized(true)} className="transition hover:opacity-80 active:scale-75" />
             )}
-            <X
-              onClick={() => getCurrentWindow().close()}
-              className="transition hover:opacity-80 active:scale-75"
-            />
+            <X onClick={() => getCurrentWindow().close()} className="transition hover:opacity-80 active:scale-75" />
           </Button>
         )}
       </div>

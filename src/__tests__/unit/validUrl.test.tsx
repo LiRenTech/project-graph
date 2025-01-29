@@ -25,17 +25,11 @@ describe("PathString", () => {
     expect(PathString.isValidURL("http://192.168.1.1")).toBe(true);
     expect(PathString.isValidURL("https://192.168.1.1")).toBe(true);
     expect(PathString.isValidURL("https://10.20.1.1")).toBe(true);
-    expect(
-      PathString.isValidURL("https://10.200.16.149/app/detail?id=123456"),
-    ).toBe(true);
+    expect(PathString.isValidURL("https://10.200.16.149/app/detail?id=123456")).toBe(true);
   });
   it("特殊字符的链接", () => {
-    expect(PathString.isValidURL("https://example.com/path/with%20space")).toBe(
-      true,
-    );
-    expect(PathString.isValidURL("http://example.com/path/with%20space")).toBe(
-      true,
-    );
+    expect(PathString.isValidURL("https://example.com/path/with%20space")).toBe(true);
+    expect(PathString.isValidURL("http://example.com/path/with%20space")).toBe(true);
   });
   it("长链接", () => {
     expect(
@@ -78,38 +72,22 @@ describe("PathString", () => {
     expect(PathString.isValidURL("http://localhost")).toBe(true);
     expect(PathString.isValidURL("https://localhost:3000")).toBe(true);
     expect(PathString.isValidURL("https://localhost:3000/#/")).toBe(true);
-    expect(PathString.isValidURL("https://localhost:3000/index.html")).toBe(
-      true,
-    );
+    expect(PathString.isValidURL("https://localhost:3000/index.html")).toBe(true);
     expect(PathString.isValidURL("https://localhost:3000/index")).toBe(true);
-    expect(
-      PathString.isValidURL("https://localhost:3000/index.html#section1"),
-    ).toBe(true);
+    expect(PathString.isValidURL("https://localhost:3000/index.html#section1")).toBe(true);
   });
   it("带路径的链接", () => {
-    expect(PathString.isValidURL("https://example.com/path/to/resource")).toBe(
-      true,
-    );
-    expect(
-      PathString.isValidURL("http://example.com/path/to/resource?query=param"),
-    ).toBe(true);
-    expect(
-      PathString.isValidURL("https://mrjokersince1997.github.io/My-Notes/#/"),
-    ).toBe(true);
-    expect(
-      PathString.isValidURL("http://mrjokersince1997.github.io/My-Notes/#/"),
-    ).toBe(true);
+    expect(PathString.isValidURL("https://example.com/path/to/resource")).toBe(true);
+    expect(PathString.isValidURL("http://example.com/path/to/resource?query=param")).toBe(true);
+    expect(PathString.isValidURL("https://mrjokersince1997.github.io/My-Notes/#/")).toBe(true);
+    expect(PathString.isValidURL("http://mrjokersince1997.github.io/My-Notes/#/")).toBe(true);
   });
   // 一些别的协议的链接
   it("obsidian链接", () => {
     // expect(
     //   PathString.isValidURL("obsidian://open?vault=MyVault&file=MyNote"),
     // ).toBe(true);
-    expect(
-      PathString.isValidURL(
-        "obsidian://adv-uri?uid=s4w4w8-w4848w4-w48w48-w488w4-wefwaefw",
-      ),
-    ).toBe(true);
+    expect(PathString.isValidURL("obsidian://adv-uri?uid=s4w4w8-w4848w4-w48w48-w488w4-wefwaefw")).toBe(true);
   });
   it("不合法的链接", () => {
     expect(PathString.isValidURL("h t t p://a.com")).toBe(false);

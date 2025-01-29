@@ -37,11 +37,7 @@ export class EffectMachine implements Tickable, Renderable {
   }
 
   public addEffects(effects: EffectObject[]) {
-    this.effects.push(
-      ...effects.filter(
-        (effect) => this.effectsPerferences[effect.constructor.name] ?? true,
-      ),
-    );
+    this.effects.push(...effects.filter((effect) => this.effectsPerferences[effect.constructor.name] ?? true));
   }
 
   /**

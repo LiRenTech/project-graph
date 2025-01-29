@@ -242,13 +242,10 @@ export const LogicNodeNameToArgsTipsMap: {
   [LogicNodeNameEnum.GET_TIME]: "无输入",
   [LogicNodeNameEnum.PLAY_SOUND]: "a0: filePath, a1: 0/1",
   [LogicNodeNameEnum.GET_NODE_RGBA]: "a0: node",
-  [LogicNodeNameEnum.COLLECT_NODE_DETAILS_BY_RGBA]:
-    "a0: red, a1: green, a2: blue, a3: alpha",
-  [LogicNodeNameEnum.COLLECT_NODE_NAME_BY_RGBA]:
-    "a0: red, a1: green, a2: blue, a3: alpha",
+  [LogicNodeNameEnum.COLLECT_NODE_DETAILS_BY_RGBA]: "a0: red, a1: green, a2: blue, a3: alpha",
+  [LogicNodeNameEnum.COLLECT_NODE_NAME_BY_RGBA]: "a0: red, a1: green, a2: blue, a3: alpha",
   [LogicNodeNameEnum.FPS]: "无输入",
-  [LogicNodeNameEnum.CREATE_TEXT_NODE_ON_LOCATION]:
-    "a0: x, a1: y, a2: text, a3: 0/1",
+  [LogicNodeNameEnum.CREATE_TEXT_NODE_ON_LOCATION]: "a0: x, a1: y, a2: text, a3: 0/1",
   [LogicNodeNameEnum.SET_VAR]: "a0: name, a1: value",
   [LogicNodeNameEnum.GET_VAR]: "a0: name",
 };

@@ -32,18 +32,14 @@ ControllerSectionEdit.mouseDoubleClick = (event: MouseEvent) => {
 };
 
 ControllerSectionEdit.mousemove = (event: MouseEvent) => {
-  const worldLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
+  const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
   Stage.mouseInteractionCore.updateByMouseMove(worldLocation);
 };
 
 ControllerSectionEdit.keydown = (event: KeyboardEvent) => {
   if (event.key === "Enter") {
     // 先检测是否有选择了的边
-    const isHaveSectionSelected = StageManager.getSections().some(
-      (section) => section.isSelected,
-    );
+    const isHaveSectionSelected = StageManager.getSections().some((section) => section.isSelected);
     if (!isHaveSectionSelected) {
       return;
     }

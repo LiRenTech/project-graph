@@ -22,11 +22,7 @@ export class RectangleRenderEffect extends EffectObject {
     ShapeRenderer.renderRect(
       this.rectangle.transformWorld2View(),
       this.fillColor,
-      mixColors(
-        this.strokeColor,
-        this.strokeColor.toTransparent(),
-        this.timeProgress.rate,
-      ),
+      mixColors(this.strokeColor, this.strokeColor.toTransparent(), this.timeProgress.rate),
       this.strokeWidth * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );

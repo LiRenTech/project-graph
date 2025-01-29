@@ -8,9 +8,7 @@ export const ControllerImageScale = new ControllerClass();
 
 ControllerImageScale.mousewheel = (event: WheelEvent) => {
   if (Controller.pressingKeySet.has("control")) {
-    const location = Renderer.transformView2World(
-      new Vector(event.clientX, event.clientY),
-    );
+    const location = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     const hoverImageNode = StageManager.findImageNodeByLocation(location);
     if (hoverImageNode === null) {
       return;

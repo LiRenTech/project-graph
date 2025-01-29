@@ -41,9 +41,7 @@ export function autoLayoutMainTick(): void {
         return;
       }
       // 计算两个节点的距离
-      const vector = entity2.collisionBox
-        .getRectangle()
-        .center.subtract(entity.collisionBox.getRectangle().center);
+      const vector = entity2.collisionBox.getRectangle().center.subtract(entity.collisionBox.getRectangle().center);
       const distance = vector.magnitude();
       // 计算两个节点的半径
       const radius1 = getEntityRadius(entity);
@@ -51,13 +49,9 @@ export function autoLayoutMainTick(): void {
       // 计算两个节点的最小距离
       const minDistance = (radius1 + radius2) * 2;
       if (distance < minDistance) {
-        entity2.move(
-          vector.normalize().multiply(distanceToForce(distance - minDistance)),
-        );
+        entity2.move(vector.normalize().multiply(distanceToForce(distance - minDistance)));
       } else if (distance > minDistance) {
-        entity2.move(
-          vector.normalize().multiply(-distanceToForce(distance - minDistance)),
-        );
+        entity2.move(vector.normalize().multiply(-distanceToForce(distance - minDistance)));
       }
     });
   });

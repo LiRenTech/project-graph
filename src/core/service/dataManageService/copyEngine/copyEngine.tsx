@@ -87,10 +87,7 @@ export namespace CopyEngine {
     if (isClipboardEmpty()) {
       readClipboardItems(Renderer.transformView2World(MouseLocation.vector()));
     } else {
-      StageSerializedAdder.addSerializedData(
-        copyBoardData,
-        copyBoardMouseVector,
-      );
+      StageSerializedAdder.addSerializedData(copyBoardData, copyBoardMouseVector);
     }
   }
 
@@ -102,13 +99,9 @@ export namespace CopyEngine {
     const rectangles = [];
     for (const node of copyBoardData.entities) {
       if (node.type === "core:connect_point") {
-        rectangles.push(
-          new Rectangle(new Vector(...node.location), new Vector(1, 1)),
-        );
+        rectangles.push(new Rectangle(new Vector(...node.location), new Vector(1, 1)));
       } else {
-        rectangles.push(
-          new Rectangle(new Vector(...node.location), new Vector(...node.size)),
-        );
+        rectangles.push(new Rectangle(new Vector(...node.location), new Vector(...node.size)));
       }
     }
 
@@ -127,8 +120,7 @@ async function readClipboardItems(mouseLocation: Vector) {
           if (Stage.path.isDraft()) {
             Dialog.show({
               title: "草稿状态下不要粘贴图片",
-              content:
-                "请先另存为，再粘贴图片，因为粘贴的图片会和保存的工程文件在同一目录下，而草稿在内存中，没有路径",
+              content: "请先另存为，再粘贴图片，因为粘贴的图片会和保存的工程文件在同一目录下，而草稿在内存中，没有路径",
             });
             return;
           }
@@ -175,12 +167,7 @@ async function readClipboardItems(mouseLocation: Vector) {
               size: [100, 100],
               color: [0, 0, 0, 0],
             });
-            textNode.move(
-              new Vector(
-                -textNode.rectangle.size.x / 2,
-                -textNode.rectangle.size.y / 2,
-              ),
-            );
+            textNode.move(new Vector(-textNode.rectangle.size.x / 2, -textNode.rectangle.size.y / 2));
             StageManager.addTextNode(textNode);
           }
         }

@@ -140,9 +140,7 @@ export namespace Settings {
     });
   }
 
-  export async function get<K extends keyof Settings>(
-    key: K,
-  ): Promise<Settings[K]> {
+  export async function get<K extends keyof Settings>(key: K): Promise<Settings[K]> {
     const res = await store.get<Settings[K]>(key);
     if (typeof res === "undefined") {
       return defaultSettings[key];
@@ -170,10 +168,7 @@ export namespace Settings {
    * @param key 要监听的设置键
    * @param callback 设置变化时的回调函数
    */
-  export function watch<K extends keyof Settings>(
-    key: K,
-    callback: (value: Settings[K]) => void,
-  ) {
+  export function watch<K extends keyof Settings>(key: K, callback: (value: Settings[K]) => void) {
     if (!callbacks[key]) {
       callbacks[key] = [];
     }
@@ -189,9 +184,7 @@ export namespace Settings {
   /**
    * react hook
    */
-  export function use<K extends keyof Settings>(
-    key: K,
-  ): [Settings[K], (value: Settings[K]) => void] {
+  export function use<K extends keyof Settings>(key: K): [Settings[K], (value: Settings[K]) => void] {
     const [value, setValue] = useState<Settings[K]>(defaultSettings[key]);
 
     useEffect(() => {

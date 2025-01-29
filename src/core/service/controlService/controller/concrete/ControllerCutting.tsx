@@ -36,14 +36,11 @@ class CuttingControllerClass extends ControllerClass {
     if (Stage.mouseRightDragBackground !== "cut") {
       return;
     }
-    const pressWorldLocation = Renderer.transformView2World(
-      new Vector(event.clientX, event.clientY),
-    );
+    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     ControllerCutting.lastMoveLocation = pressWorldLocation.clone();
 
     const isClickedEntity = StageManager.isEntityOnLocation(pressWorldLocation);
-    const isClickedAssociation =
-      StageManager.isAssociationOnLocation(pressWorldLocation);
+    const isClickedAssociation = StageManager.isAssociationOnLocation(pressWorldLocation);
 
     if (!isClickedEntity && !isClickedAssociation) {
       // 开始绘制切断线
@@ -78,25 +75,16 @@ class CuttingControllerClass extends ControllerClass {
       if (entity.isHiddenBySectionCollapse) {
         continue; // 隐藏的节点不参与碰撞检测
       }
-      if (
-        entity.collisionBox.isIntersectsWithLine(ControllerCutting.cuttingLine)
-      ) {
+      if (entity.collisionBox.isIntersectsWithLine(ControllerCutting.cuttingLine)) {
         ControllerCutting.warningEntity.push(entity);
       }
 
       // 特效
-      const collidePoints = entity.collisionBox
-        .getRectangle()
-        .getCollidePointsWithLine(ControllerCutting.cuttingLine);
+      const collidePoints = entity.collisionBox.getRectangle().getCollidePointsWithLine(ControllerCutting.cuttingLine);
       // 增加两点特效
       for (const collidePoint of collidePoints) {
         Stage.effectMachine.addEffect(
-          new CircleFlameEffect(
-            new ProgressNumber(0, 5),
-            collidePoint,
-            10,
-            new Color(255, 255, 255, 1),
-          ),
+          new CircleFlameEffect(new ProgressNumber(0, 5), collidePoint, 10, new Color(255, 255, 255, 1)),
         );
       }
     }
@@ -106,9 +94,7 @@ class CuttingControllerClass extends ControllerClass {
       if (section.isHiddenBySectionCollapse) {
         continue; // 隐藏的节点不参与碰撞检测
       }
-      if (
-        section.collisionBox.isIntersectsWithLine(ControllerCutting.cuttingLine)
-      ) {
+      if (section.collisionBox.isIntersectsWithLine(ControllerCutting.cuttingLine)) {
         ControllerCutting.warningSections.push(section);
       }
     }
@@ -118,9 +104,7 @@ class CuttingControllerClass extends ControllerClass {
       if (edge.isHiddenBySectionCollapse) {
         continue; // 连线被隐藏了
       }
-      if (
-        edge.collisionBox.isIntersectsWithLine(ControllerCutting.cuttingLine)
-      ) {
+      if (edge.collisionBox.isIntersectsWithLine(ControllerCutting.cuttingLine)) {
         ControllerCutting.warningEdges.push(edge);
       }
     }
@@ -162,9 +146,7 @@ class CuttingControllerClass extends ControllerClass {
         ControllerCutting.lastMoveLocation,
         new Color(255, 0, 0, 1),
         new Color(255, 0, 0, 1),
-        ControllerCutting.cuttingStartLocation.distance(
-          ControllerCutting.lastMoveLocation,
-        ) / 10,
+        ControllerCutting.cuttingStartLocation.distance(ControllerCutting.lastMoveLocation) / 10,
       ),
     );
     SoundService.play.cuttingLineRelease();

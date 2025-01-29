@@ -61,12 +61,7 @@ const el = document.getElementById("root")!;
     ColorManager.init(),
   ]);
   // 这些东西依赖上面的东西，所以单独一个Promise.all
-  await Promise.all([
-    loadLanguageFiles(),
-    loadSyncModules(),
-    loadStartFile(),
-    registerKeyBinds(),
-  ]);
+  await Promise.all([loadLanguageFiles(), loadSyncModules(), loadStartFile(), registerKeyBinds()]);
   await renderApp(isCliMode);
   if (isCliMode) {
     try {
@@ -110,8 +105,7 @@ async function registerKeyBinds() {
   ).down(() =>
     Dialog.show({
       title: "自定义快捷键测试",
-      content:
-        "您按下了自定义的测试快捷键，这一功能是测试开发所用，可在设置中更改触发方式",
+      content: "您按下了自定义的测试快捷键，这一功能是测试开发所用，可在设置中更改触发方式",
       buttons: [
         {
           text: "ok",
@@ -459,9 +453,7 @@ async function loadStartFile() {
     }, 1000);
   } else {
     // 自动打开路径不存在
-    Stage.effectMachine.addEffect(
-      new TextRiseEffect(`打开工程失败，${path}不存在！`),
-    );
+    Stage.effectMachine.addEffect(new TextRiseEffect(`打开工程失败，${path}不存在！`));
   }
 }
 

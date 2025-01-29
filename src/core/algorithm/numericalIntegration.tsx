@@ -11,9 +11,7 @@ export namespace NumericalIntegration {
   export function romberg(func: (x: number) => number, error: number): number {
     const t: number[][] = [[(func(0) + func(1)) / 2]];
     function tJK(t: number[][], j: number, k: number): number {
-      return (
-        (Math.pow(4, j) * t[j - 1][k + 1] - t[j - 1][k]) / (Math.pow(4, j) - 1)
-      );
+      return (Math.pow(4, j) * t[j - 1][k + 1] - t[j - 1][k]) / (Math.pow(4, j) - 1);
     }
     function extendsTj(t: number[][], j: number): number {
       if (j == 0) {

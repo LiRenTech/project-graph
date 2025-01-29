@@ -6,11 +6,7 @@ import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-import {
-  editNodeDetails,
-  editTextNode,
-  editUrlNodeTitle,
-} from "./utilsControl";
+import { editNodeDetails, editTextNode, editUrlNodeTitle } from "./utilsControl";
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
  *
@@ -23,9 +19,7 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
     return;
   }
 
-  const pressLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
+  const pressLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
   const clickedEntity = StageManager.findEntityByLocation(pressLocation);
 
   if (clickedEntity === null) {
@@ -38,9 +32,7 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
     if (clickedEntity instanceof TextNode) {
       editTextNode(clickedEntity);
     } else if (clickedEntity instanceof UrlNode) {
-      const diffNodeLeftTopLocation = pressLocation.subtract(
-        clickedEntity.rectangle.leftTop,
-      );
+      const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
       if (diffNodeLeftTopLocation.y < UrlNode.titleHeight) {
         editUrlNodeTitle(clickedEntity);
       } else {
@@ -56,9 +48,7 @@ ControllerNodeEdit.mouseup = (event: MouseEvent) => {
     return;
   }
 
-  const pressLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
+  const pressLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
   for (const entity of StageManager.getEntities()) {
     if (entity.isMouseInDetailsButton(pressLocation)) {
       editNodeDetails(entity);
@@ -75,9 +65,7 @@ ControllerNodeEdit.mousemove = (event: MouseEvent) => {
     return;
   }
 
-  const location = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
+  const location = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
   for (const node of StageManager.getTextNodes()) {
     node.isMouseHover = false;
     if (node.collisionBox.isContainsPoint(location)) {

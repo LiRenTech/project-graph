@@ -1,7 +1,4 @@
-import {
-  open as openFileDialog,
-  save as saveFileDialog,
-} from "@tauri-apps/plugin-dialog";
+import { open as openFileDialog, save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 import { useAtom } from "jotai";
 import {
   AppWindow,
@@ -33,11 +30,7 @@ import { useNavigate } from "react-router-dom";
 import { Camera } from "../core/stage/Camera";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageManager } from "../core/stage/stageManager/StageManager";
-import {
-  fileAtom,
-  isExportTreeTextPanelOpenAtom,
-  isRecentFilePanelOpenAtom,
-} from "../state";
+import { fileAtom, isExportTreeTextPanelOpenAtom, isRecentFilePanelOpenAtom } from "../state";
 import { cn } from "../utils/cn";
 import { getCurrentWindow, isDesktop, isWeb } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
@@ -50,17 +43,11 @@ import { StageSaveManager } from "../core/service/dataFileService/StageSaveManag
 import { StageExportSvg } from "../core/service/dataGenerateService/stageExportEngine/StageExportSvg";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { Stage } from "../core/stage/Stage";
+import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { PathString } from "../utils/pathString";
-import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
 
-export default function AppMenu({
-  className = "",
-  open = false,
-}: {
-  className?: string;
-  open: boolean;
-}) {
+export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
   const [file, setFile] = useAtom(fileAtom);
   const { t } = useTranslation("appMenu");
@@ -241,10 +228,7 @@ export default function AppMenu({
         await StageSaveManager.backupHandle(backupPath, StageDumper.dump());
         return;
       }
-      await StageSaveManager.backupHandleWithoutCurrentPath(
-        StageDumper.dump(),
-        true,
-      );
+      await StageSaveManager.backupHandleWithoutCurrentPath(StageDumper.dump(), true);
     } catch {
       await Dialog.show({
         title: "备份失败",
@@ -282,9 +266,7 @@ export default function AppMenu({
   };
 
   const onExportTreeText = async () => {
-    const selectedNodes = StageManager.getSelectedEntities().filter(
-      (entity) => entity instanceof TextNode,
-    );
+    const selectedNodes = StageManager.getSelectedEntities().filter((entity) => entity instanceof TextNode);
     if (selectedNodes.length === 0) {
       Dialog.show({
         title: "没有选中节点",
@@ -297,14 +279,11 @@ export default function AppMenu({
   };
 
   const onSaveMarkdownNew = async () => {
-    const selectedNodes = StageManager.getSelectedEntities().filter(
-      (entity) => entity instanceof TextNode,
-    );
+    const selectedNodes = StageManager.getSelectedEntities().filter((entity) => entity instanceof TextNode);
     if (selectedNodes.length === 0) {
       Dialog.show({
         title: "没有选中节点",
-        content:
-          "请先选中一个根节点再使用此功能，并且根节点所形成的结构必须为树状结构",
+        content: "请先选中一个根节点再使用此功能，并且根节点所形成的结构必须为树状结构",
         type: "error",
       });
       return;
@@ -390,7 +369,7 @@ export default function AppMenu({
   return (
     <div
       className={cn(
-        "!pointer-events-none flex origin-top-left scale-0 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800 p-3 opacity-0",
+        "bg-appmenu-bg border-appmenu-border !pointer-events-none flex origin-top-left scale-0 flex-col gap-4 rounded-md border p-3 opacity-0",
         {
           "!pointer-events-auto scale-100 opacity-100": open,
         },
@@ -407,10 +386,7 @@ export default function AppMenu({
         </Col>
         {!isWeb && (
           <>
-            <Col
-              icon={<FileText />}
-              onClick={() => setRecentFilePanelOpen(true)}
-            >
+            <Col icon={<FileText />} onClick={() => setRecentFilePanelOpen(true)}>
               {t("file.items.recent")}
             </Col>
             <Col icon={<Save />} onClick={onSave}>
@@ -473,10 +449,7 @@ export default function AppMenu({
         <Col icon={<SquareDashedKanbanIcon />} onClick={() => Camera.reset()}>
           {t("view.items.resetByAll")}
         </Col>
-        <Col
-          icon={<SquareDashedMousePointer />}
-          onClick={() => Camera.resetBySelected()}
-        >
+        <Col icon={<SquareDashedMousePointer />} onClick={() => Camera.resetBySelected()}>
           {t("view.items.resetBySelect")}
         </Col>
         <Col icon={<Scaling />} onClick={() => Camera.resetScale()}>
@@ -484,10 +457,7 @@ export default function AppMenu({
         </Col>
       </Row>
       <Row icon={<MoreHorizontal />} title={t("more.title")}>
-        <Col
-          icon={<SettingsIcon />}
-          onClick={() => navigate("/settings/visual")}
-        >
+        <Col icon={<SettingsIcon />} onClick={() => navigate("/settings/visual")}>
           {t("more.items.settings")}
         </Col>
         <Col icon={<Info />} onClick={() => navigate("/settings/about")}>
@@ -595,11 +565,7 @@ export default function AppMenu({
   );
 }
 
-function Row({
-  children,
-  title,
-  icon,
-}: React.PropsWithChildren<{ title: string; icon: React.ReactNode }>) {
+function Row({ children, title, icon }: React.PropsWithChildren<{ title: string; icon: React.ReactNode }>) {
   return (
     <div className="flex gap-2">
       <span className="flex gap-1 text-neutral-400">
@@ -618,7 +584,7 @@ function Col({
 }: React.PropsWithChildren<{ icon: React.ReactNode; onClick?: () => void }>) {
   return (
     <div
-      className="flex w-max cursor-pointer items-center gap-1 rounded-lg outline outline-0 outline-white/0 transition-all hover:bg-white/15 hover:outline-8 hover:outline-white/15 active:scale-90"
+      className="hover:bg-appmenu-hover-bg hover:outline-appmenu-hover-bg flex w-max cursor-pointer items-center gap-1 rounded-lg outline-0 outline-white/0 transition-all hover:outline-8 active:scale-90"
       onClick={onClick}
     >
       {icon}

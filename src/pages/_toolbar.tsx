@@ -55,11 +55,11 @@ interface ToolbarItemProps {
 function ToolbarItem({ icon, handleFunction, description }: ToolbarItemProps) {
   return (
     <div
-      className="group relative flex h-8 w-8 items-center justify-center rounded-md hover:bg-white/20 active:scale-90"
+      className="group hover:bg-toolbar-icon-hover-bg relative flex h-8 w-8 items-center justify-center rounded-md active:scale-90"
       onClick={handleFunction}
     >
       {icon}
-      <span className="pointer-events-none absolute right-10 z-10 w-auto origin-right scale-90 rounded bg-gray-700 p-1 text-xs whitespace-nowrap text-white opacity-0 group-hover:scale-100 group-hover:opacity-100">
+      <span className="bg-toolbar-tooltip-bg border-toolbar-tooltip-border text-toolbar-tooltip-text pointer-events-none absolute right-10 z-10 w-auto origin-right scale-90 rounded border p-1 text-xs whitespace-nowrap opacity-0 group-hover:scale-100 group-hover:opacity-100">
         {description}
       </span>
     </div>
@@ -175,9 +175,7 @@ function GenerateNodePanel() {
       <div>
         <span>缩进</span>
         <Input value={indention.toString()} onChange={setIndention} number />
-        <p className="text-xs text-neutral-400">
-          会按照您的缩进等级来生成对应的节点结构
-        </p>
+        <p className="text-xs text-neutral-400">会按照您的缩进等级来生成对应的节点结构</p>
       </div>
       <Button
         onClick={() => {
@@ -270,8 +268,7 @@ function AlignNodePanel() {
 export default function Toolbar({ className = "" }: { className?: string }) {
   const [isCopyClearShow, setIsCopyClearShow] = useState(false);
   const [isHaveSelectedNode, setSsHaveSelectedNode] = useState(false);
-  const [isHaveSelectedNodeOverTwo, setSsHaveSelectedNodeOverTwo] =
-    useState(false);
+  const [isHaveSelectedNodeOverTwo, setSsHaveSelectedNodeOverTwo] = useState(false);
   const [isHaveSelectedEdge, setSsHaveSelectedEdge] = useState(false);
   const [ignoreMouse, setIgnoreMouse] = useState(false);
 
@@ -294,21 +291,13 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       setIgnoreMouse(false);
     };
 
-    document
-      .querySelector("canvas")
-      ?.addEventListener("mousedown", handleMouseDown);
-    document
-      .querySelector("canvas")
-      ?.addEventListener("mouseup", handleMouseUp);
+    document.querySelector("canvas")?.addEventListener("mousedown", handleMouseDown);
+    document.querySelector("canvas")?.addEventListener("mouseup", handleMouseUp);
     return () => {
       clearInterval(intervalId);
       // window.removeEventListener("keydown", handleKeyDown);
-      document
-        .querySelector("canvas")
-        ?.removeEventListener("mousedown", handleMouseDown);
-      document
-        .querySelector("canvas")
-        ?.removeEventListener("mouseup", handleMouseUp);
+      document.querySelector("canvas")?.removeEventListener("mousedown", handleMouseDown);
+      document.querySelector("canvas")?.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);
 
@@ -317,16 +306,13 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   // 因为报错窗口可能会被它遮挡住导致无法在右上角关闭报错窗口
   return (
     <div
-      className={cn(
-        "group/wrapper fixed top-1/2 right-0 z-40 -translate-y-1/2 p-8 pl-16",
-        {
-          "pointer-events-none": ignoreMouse,
-        },
-      )}
+      className={cn("group/wrapper fixed top-1/2 right-0 z-40 -translate-y-1/2 p-8 pl-16", {
+        "pointer-events-none": ignoreMouse,
+      })}
     >
       <Box
         className={cn(
-          "flex w-10 origin-right scale-[10%] flex-col items-center gap-4 rounded-full bg-white px-8 py-6 opacity-25 group-hover/wrapper:scale-100 group-hover/wrapper:bg-neutral-800 group-hover/wrapper:opacity-100",
+          "bg-toolbar-collapsed-bg group-hover/wrapper:border-toolbar-border group-hover/wrapper:bg-toolbar-bg flex w-10 origin-right scale-[10%] flex-col items-center gap-4 rounded-full px-8 py-6 opacity-25 group-hover/wrapper:scale-100 group-hover/wrapper:border group-hover/wrapper:opacity-100",
           className,
         )}
       >
@@ -349,9 +335,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             description="反转选中连线方向"
             icon={<Repeat />}
             handleFunction={() => {
-              const selectedEdges = StageManager.getLineEdges().filter(
-                (edge) => edge.isSelected,
-              );
+              const selectedEdges = StageManager.getLineEdges().filter((edge) => edge.isSelected);
               StageManager.reverseEdges(selectedEdges);
             }}
           />
@@ -558,9 +542,7 @@ function myOpen(url: string) {
 }
 
 function deleteSelectedObjects() {
-  StageManager.deleteEntities(
-    StageManager.getTextNodes().filter((node) => node.isSelected),
-  );
+  StageManager.deleteEntities(StageManager.getTextNodes().filter((node) => node.isSelected));
   for (const edge of StageManager.getLineEdges()) {
     if (edge.isSelected) {
       StageManager.deleteEdge(edge);

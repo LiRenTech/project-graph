@@ -28,9 +28,7 @@ class ControllerDrawingClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    const pressWorldLocation = Renderer.transformView2World(
-      new Vector(event.clientX, event.clientY),
-    );
+    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     ControllerDrawing.lastMoveLocation = pressWorldLocation.clone();
   };
 
@@ -39,9 +37,7 @@ class ControllerDrawingClass extends ControllerClass {
     if (!Controller.isMouseDown[0]) {
       return;
     }
-    const worldLocation = Renderer.transformView2World(
-      new Vector(event.clientX, event.clientY),
-    );
+    const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     // 绘制临时激光笔特效
     Stage.effectMachine.addEffect(
       new LineEffect(
@@ -61,9 +57,7 @@ class ControllerDrawingClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    const releaseWorldLocation = Renderer.transformView2World(
-      new Vector(event.clientX, event.clientY),
-    );
+    const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     console.log(releaseWorldLocation);
   };
 }

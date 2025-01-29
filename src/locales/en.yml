@@ -174,8 +174,7 @@ settings:
       The height of the cycle space, in pixels
   renderEffect:
     title: Rendering Effect
-    description:
-      Whether to render special effects. If the application is lagging,
+    description: Whether to render special effects. If the application is lagging,
       you can turn this off.
   historySize:
     title: History Size
@@ -204,8 +203,7 @@ settings:
       Enter `{{time}}` to automatically replace it with the current time, which updates automatically when nodes are created by double-click.
       These can be combined, for example `{{i}}-{{date}}-{{time}}`
   autoSaveWhenClose:
-    title:
-      Automatically save the project file when clicking the close button in the
+    title: Automatically save the project file when clicking the close button in the
       upper right corner of the window
     description: |
       When you close the software, if there are unsaved project files, a prompt will appear asking if you want to save.
@@ -418,8 +416,7 @@ keyBinds:
     description: Reset the view zoom level to the standard size
   folderSection:
     title: Toggle Section Folder
-    description:
-      Press to toggle the selected Section folder between collapsed and
+    description: Press to toggle the selected Section folder between collapsed and
       expanded states
   reverseEdges:
     title: Reverse Selected Edge Direction
