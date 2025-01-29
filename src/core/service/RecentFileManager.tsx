@@ -1,7 +1,7 @@
 import { Store } from "@tauri-apps/plugin-store";
 // import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
 import { Serialized } from "../../types/node";
-import { exists, readTextFile } from "../../utils/fs";
+import { exists, readTextFile } from "../../utils/fs/com";
 import { createStore } from "../../utils/store";
 import { Camera } from "../stage/Camera";
 import { Stage } from "../stage/Stage";

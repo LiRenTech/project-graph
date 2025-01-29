@@ -1,6 +1,4 @@
 import { v4 as uuidv4 } from "uuid";
-import { writeFileBase64 } from "../../../../utils/fs";
-import { PathString } from "../../../../utils/pathString";
 import { Color } from "../../../dataStruct/Color";
 import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
@@ -12,6 +10,7 @@ import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { TextRiseEffect } from "../../effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../effectEngine/concrete/ViewFlashEffect";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
+import { VFileSystem } from "../../VFileSystem";
 // import { listen } from "@tauri-apps/api/event";
 
 // listen("tauri://file-drop", (event) => {
@@ -195,9 +194,8 @@ function dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
     // data:image/png;base64,iVBORw0KGgoAAAANS...
     // 在这里处理读取到的内容
     const imageUUID = uuidv4();
-    const folderPath = PathString.dirPath(Stage.Path.getFilePath());
-    writeFileBase64(
-      `${folderPath}${Stage.Path.getSep()}${imageUUID}.png`,
+    VFileSystem.getFS().writeFileBase64(
+      `/picture/${imageUUID}.png`,
       fileContent.split(",")[1],
     );
     const imageNode = new ImageNode({

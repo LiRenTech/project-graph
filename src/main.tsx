@@ -36,11 +36,13 @@ import "./index.pcss";
 import { ColorPanel } from "./pages/_toolbar";
 import "./polyfills/roundRect";
 import { Dialog } from "./utils/dialog";
-import { exists } from "./utils/fs";
+import { exists } from "./utils/fs/com";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 import { Popup } from "./utils/popup";
 import { InputElement } from "./core/render/domElement/inputElement";
+// import { VFileSystem } from "./core/service/VFileSystem";
+import { IndexedDBFileSystem } from "./utils/fs/IndexedDBFileSystem";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -52,6 +54,7 @@ const el = document.getElementById("root")!;
 (async () => {
   const matches = !isWeb && isDesktop ? await getMatches() : null;
   const isCliMode = isDesktop && matches?.args.output?.occurrences === 1;
+  IndexedDBFileSystem.testFileSystem("A", "B");
   await Promise.all([
     Settings.init(),
     RecentFileManager.init(),

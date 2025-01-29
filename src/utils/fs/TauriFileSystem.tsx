@@ -5,15 +5,20 @@ import { IFileSystem, FileStats, DirectoryEntry } from "./IFileSystem";
  * Tauri 文件系统工具类
  */
 export class TauriFileSystem extends IFileSystem {
-  async exists(path: string): Promise<boolean> {
-    return invoke("exists", { path });
+  constructor(private basePath: string = "") {
+    super();
+  }
+  async _exists(path: string): Promise<boolean> {
+    return invoke("exists", { path: this.basePath + path });
   }
 
-  async readFile(path: string): Promise<Uint8Array> {
-    return new Uint8Array(await invoke("read_file", { path }));
+  async _readFile(path: string): Promise<Uint8Array> {
+    return new Uint8Array(
+      await invoke("read_file", { path: this.basePath + path }),
+    );
   }
 
-  async writeFile(path: string, content: Uint8Array | string): Promise<void> {
+  async _writeFile(path: string, content: Uint8Array | string): Promise<void> {
     let data: Uint8Array;
     if (typeof content === "string") {
       data = new TextEncoder().encode(content);
@@ -21,33 +26,36 @@ export class TauriFileSystem extends IFileSystem {
       data = content;
     }
     return invoke("write_file", {
-      path,
+      path: this.basePath + path,
       content: Array.from(data),
     });
   }
 
-  async mkdir(path: string, recursive = false): Promise<void> {
-    return invoke("mkdir", { path, recursive });
+  async _mkdir(path: string, recursive = false): Promise<void> {
+    return invoke("mkdir", { path: this.basePath + path, recursive });
   }
 
-  async stat(path: string): Promise<FileStats> {
-    return invoke("stat", { path });
+  async _stat(path: string): Promise<FileStats> {
+    return invoke("stat", { path: this.basePath + path });
   }
 
-  async readDir(path: string): Promise<DirectoryEntry[]> {
-    return invoke("read_dir", { path });
+  async _readDir(path: string): Promise<DirectoryEntry[]> {
+    return invoke("read_dir", { path: this.basePath + path });
   }
 
-  async rename(oldPath: string, newPath: string): Promise<void> {
-    return invoke("rename", { oldPath, newPath });
+  async _rename(oldPath: string, newPath: string): Promise<void> {
+    return invoke("rename", {
+      oldPath: this.basePath + oldPath,
+      newPath: this.basePath + newPath,
+    });
   }
 
-  async deleteFile(path: string): Promise<void> {
-    return invoke("delete_file", { path });
+  async _deleteFile(path: string): Promise<void> {
+    return invoke("delete_file", { path: this.basePath + path });
   }
 
-  async deleteDirectory(path: string): Promise<void> {
-    return invoke("delete_directory", { path });
+  async _deleteDirectory(path: string): Promise<void> {
+    return invoke("delete_directory", { path: this.basePath + path });
   }
 
   /**
@@ -109,3 +117,5 @@ export class TauriFileSystem extends IFileSystem {
     console.log(`Deleted directory: ${dirPath}`);
   }
 }
+
+export const TauriBaseFS = new TauriFileSystem();

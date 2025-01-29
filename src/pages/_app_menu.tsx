@@ -152,7 +152,7 @@ export default function AppMenu({
             ? [
                 {
                   name: "Project Graph",
-                  extensions: ["json"],
+                  extensions: ["gp"],
                 },
               ]
             : [],
@@ -160,9 +160,9 @@ export default function AppMenu({
     if (!path) {
       return;
     }
-    if (isDesktop && !path.endsWith(".json")) {
+    if (isDesktop && !path.endsWith(".gp")) {
       Dialog.show({
-        title: "请选择一个JSON文件",
+        title: "请选择一个gp文件",
         type: "error",
       });
       return;
@@ -173,7 +173,7 @@ export default function AppMenu({
       setFile(path);
     } catch (e) {
       Dialog.show({
-        title: "请选择正确的JSON文件",
+        title: "请选择正确的gp文件",
         content: String(e),
         type: "error",
       });
@@ -194,7 +194,8 @@ export default function AppMenu({
     // await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
     try {
       await StageSaveManager.saveHandle(path_, data);
-    } catch {
+    } catch (e) {
+      console.error(e);
       await Dialog.show({
         title: "保存失败",
         content: "保存失败，请重试",
@@ -204,14 +205,14 @@ export default function AppMenu({
 
   const onSaveNew = async () => {
     const path = isWeb
-      ? "file.json"
+      ? "file.gp"
       : await saveFileDialog({
           title: "另存为",
-          defaultPath: "新文件.json", // 提供一个默认的文件名
+          defaultPath: "新文件.gp", // 提供一个默认的文件名
           filters: [
             {
               name: "Project Graph",
-              extensions: ["json"],
+              extensions: ["gp"],
             },
           ],
         });
@@ -224,7 +225,8 @@ export default function AppMenu({
     try {
       await StageSaveManager.saveHandle(path, data);
       setFile(path);
-    } catch {
+    } catch (e) {
+      console.error(e);
       await Dialog.show({
         title: "保存失败",
         content: "保存失败，请重试",

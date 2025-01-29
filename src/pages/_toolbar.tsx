@@ -40,7 +40,7 @@ import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
 // import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { Dialog } from "../utils/dialog";
-import { writeTextFile } from "../utils/fs";
+import { writeTextFile } from "../utils/fs/com";
 import { Popup } from "../utils/popup";
 // import { PathString } from "../utils/pathString";
 import { ColorManager } from "../core/service/ColorManager";
@@ -500,11 +500,11 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 const onSaveSelectedNew = async () => {
   const path = await saveFileDialog({
     title: "另存为",
-    defaultPath: "新文件.json", // 提供一个默认的文件名
+    defaultPath: "新文件.gp", // 提供一个默认的文件名
     filters: [
       {
         name: "Project Graph",
-        extensions: ["json"],
+        extensions: ["gp"],
       },
     ],
   });

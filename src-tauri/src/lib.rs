@@ -1,8 +1,13 @@
 use serde::{Deserialize, Serialize};
 use std::fs;
-use std::path::Path;
+use std::path::{Path, MAIN_SEPARATOR};
 use std::time::UNIX_EPOCH;
 use tauri::Manager;
+
+// 新增路径规范化函数
+fn normalize_path(path: &str) -> String {
+    path.replace('/', &MAIN_SEPARATOR.to_string())
+}
 
 #[derive(Debug, Serialize, Deserialize)]
 struct FileStats {
@@ -10,7 +15,7 @@ struct FileStats {
     #[serde(rename = "isDir")]
     is_directory: bool,
     size: u64,
-    modified: i64, // milliseconds since epoch
+    modified: i64,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -22,16 +27,19 @@ struct DirectoryEntry {
 
 #[tauri::command]
 async fn read_file(path: String) -> Result<Vec<u8>, String> {
+    let path = normalize_path(&path);
     std::fs::read(&path).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 async fn write_file(path: String, content: Vec<u8>) -> Result<(), String> {
+    let path = normalize_path(&path);
     fs::write(path, content).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 async fn read_dir(path: String) -> Result<Vec<DirectoryEntry>, String> {
+    let path = normalize_path(&path);
     let entries = fs::read_dir(path).map_err(|e| e.to_string())?;
     let mut result = Vec::new();
 
@@ -50,6 +58,7 @@ async fn read_dir(path: String) -> Result<Vec<DirectoryEntry>, String> {
 
 #[tauri::command]
 async fn mkdir(path: String, recursive: bool) -> Result<(), String> {
+    let path = normalize_path(&path);
     if recursive {
         fs::create_dir_all(path).map_err(|e| e.to_string())
     } else {
@@ -59,16 +68,15 @@ async fn mkdir(path: String, recursive: bool) -> Result<(), String> {
 
 #[tauri::command]
 async fn stat(path: String) -> Result<FileStats, String> {
-    let metadata = fs::metadata(&path).map_err(|e| e.to_string())?;
+    let normalized_path = normalize_path(&path);
+    let metadata = fs::metadata(&normalized_path).map_err(|e| e.to_string())?;
 
-    // 获取文件名
-    let name = Path::new(&path)
+    let name = Path::new(&normalized_path)
         .file_name()
         .and_then(|n| n.to_str())
         .map(|s| s.to_string())
         .ok_or_else(|| "无法解析文件名".to_string())?;
 
-    // 转换修改时间
     let modified = metadata
         .modified()
         .map_err(|e| e.to_string())?
@@ -77,7 +85,7 @@ async fn stat(path: String) -> Result<FileStats, String> {
         .as_millis() as i64;
 
     Ok(FileStats {
-        name, // 新增的name字段
+        name,
         is_directory: metadata.is_dir(),
         size: metadata.len(),
         modified,
@@ -86,21 +94,26 @@ async fn stat(path: String) -> Result<FileStats, String> {
 
 #[tauri::command]
 async fn rename(old_path: String, new_path: String) -> Result<(), String> {
+    let old_path = normalize_path(&old_path);
+    let new_path = normalize_path(&new_path);
     fs::rename(old_path, new_path).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 async fn delete_file(path: String) -> Result<(), String> {
+    let path = normalize_path(&path);
     fs::remove_file(path).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 async fn delete_directory(path: String) -> Result<(), String> {
+    let path = normalize_path(&path);
     fs::remove_dir_all(path).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 async fn exists(path: String) -> Result<bool, String> {
+    let path = normalize_path(&path);
     Ok(fs::metadata(path).is_ok())
 }
 

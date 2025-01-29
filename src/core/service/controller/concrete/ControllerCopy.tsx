@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 import { Dialog } from "../../../../utils/dialog";
-import { writeFileBase64 } from "../../../../utils/fs";
 import { PathString } from "../../../../utils/pathString";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
@@ -15,6 +14,7 @@ import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
 import { Entity } from "../../../stage/stageObject/StageObject";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { VFileSystem } from "../../VFileSystem";
 
 /**
  * 关于复制相关的功能
@@ -124,13 +124,14 @@ async function readClipboardItems(mouseLocation: Vector) {
           }
           const blob = await item.getType(item.types[0]); // 获取 Blob 对象
           const imageUUID = uuidv4();
-          const folder = PathString.dirPath(Stage.Path.getFilePath());
-          const imagePath = `${folder}${Stage.Path.getSep()}${imageUUID}.png`;
 
           // 2024.12.31 测试发现这样的写法会导致读取时base64解码失败
           // writeFile(imagePath, new Uint8Array(await blob.arrayBuffer()));
           // 下面这样的写法是没有问题的
-          writeFileBase64(imagePath, await convertBlobToBase64(blob));
+          VFileSystem.getFS().writeFile(
+            `/picture/${imageUUID}.png`,
+            await blob.bytes(),
+          );
 
           // 要延迟一下，等待保存完毕
           setTimeout(() => {
@@ -190,17 +191,17 @@ function blobToText(blob: Blob): Promise<string> {
   });
 }
 
-async function convertBlobToBase64(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      if (typeof reader.result === "string") {
-        resolve(reader.result.split(",")[1]); // 去掉"data:image/png;base64,"前缀
-      } else {
-        reject(new Error("Invalid result type"));
-      }
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
-}
+// async function convertBlobToBase64(blob: Blob): Promise<string> {
+//   return new Promise((resolve, reject) => {
+//     const reader = new FileReader();
+//     reader.onloadend = () => {
+//       if (typeof reader.result === "string") {
+//         resolve(reader.result.split(",")[1]); // 去掉"data:image/png;base64,"前缀
+//       } else {
+//         reject(new Error("Invalid result type"));
+//       }
+//     };
+//     reader.onerror = reject;
+//     reader.readAsDataURL(blob);
+//   });
+// }

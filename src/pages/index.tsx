@@ -11,6 +11,7 @@ import DetailsEditSidePanel from "./_details_edit_side_panel";
 import HintText from "./_hint_text";
 import SearchingNodePanel from "./_searching_node_panel";
 import Toolbar from "./_toolbar";
+// import { WebFileApiSystem } from "../utils/fs/WebFileApiSystem";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
@@ -51,6 +52,11 @@ export default function Home() {
       });
     }
 
+    // window.addEventListener("click", () => {
+    //   const p = window.showDirectoryPicker();
+    //   const sys = new WebFileApiSystem(p);
+    //   sys.mkdir("/a/b/c/d/e/f", true);
+    // });
     window.addEventListener("resize", handleResize);
     window.addEventListener("focus", handleFocus);
     window.addEventListener("blur", handleBlur);
