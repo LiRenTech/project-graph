@@ -21,12 +21,7 @@ export namespace ColorManager {
     const data = ((await store.get("entityFillColors")) as ColorData[]) || [];
     const result: Color[] = [];
     for (const colorData of data) {
-      const color = new Color(
-        colorData.r,
-        colorData.g,
-        colorData.b,
-        colorData.a,
-      );
+      const color = new Color(colorData.r, colorData.g, colorData.b, colorData.a);
       result.push(color);
     }
     return result;
@@ -74,12 +69,7 @@ export namespace ColorManager {
 
     let index = -1;
     for (let i = 0; i < colorData.length; i++) {
-      const c = new Color(
-        colorData[i].r,
-        colorData[i].g,
-        colorData[i].b,
-        colorData[i].a,
-      );
+      const c = new Color(colorData[i].r, colorData[i].g, colorData[i].b, colorData[i].a);
       if (c.equals(color)) {
         index = i;
         break;

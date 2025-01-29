@@ -18,10 +18,7 @@ export class ViewFlashEffect extends EffectObject {
   }
 
   static SaveFile() {
-    return new ViewFlashEffect(
-      StageStyleManager.currentStyle.effects.windowFlash,
-      new ProgressNumber(0, 10),
-    );
+    return new ViewFlashEffect(StageStyleManager.currentStyle.effects.windowFlash, new ProgressNumber(0, 10));
   }
 
   render(): void {

@@ -45,12 +45,5 @@ export default function MarkdownEditor({
     };
   }, [defaultValue]);
 
-  return (
-    <div
-      ref={el}
-      id={id}
-      className={className}
-      onKeyDown={(e) => e.stopPropagation()}
-    />
-  );
+  return <div ref={el} id={id} className={className} onKeyDown={(e) => e.stopPropagation()} />;
 }

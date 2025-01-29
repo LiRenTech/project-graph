@@ -39,45 +39,33 @@ export class EntityCreateDashEffect extends EffectObject {
 
     for (let i = 0; i < EntityCreateDashEffect.DASH_NUMBER_PRE_EDGE; i++) {
       this.initLocationArrayTop.push(
-        new Vector(
-          Random.randomFloat(rectangle.left, rectangle.right),
-          rectangle.top,
-        ).subtract(new Vector(0, Random.poissonRandom(lambda) * rate)),
+        new Vector(Random.randomFloat(rectangle.left, rectangle.right), rectangle.top).subtract(
+          new Vector(0, Random.poissonRandom(lambda) * rate),
+        ),
       );
       this.initLocationArrayBottom.push(
-        new Vector(
-          Random.randomFloat(rectangle.left, rectangle.right),
-          rectangle.bottom,
-        ).add(new Vector(0, Random.poissonRandom(lambda) * rate)),
+        new Vector(Random.randomFloat(rectangle.left, rectangle.right), rectangle.bottom).add(
+          new Vector(0, Random.poissonRandom(lambda) * rate),
+        ),
       );
       this.initLocationArrayLeft.push(
-        new Vector(
-          rectangle.left,
-          Random.randomFloat(rectangle.top, rectangle.bottom),
-        ).subtract(new Vector(Random.poissonRandom(lambda) * rate, 0)),
+        new Vector(rectangle.left, Random.randomFloat(rectangle.top, rectangle.bottom)).subtract(
+          new Vector(Random.poissonRandom(lambda) * rate, 0),
+        ),
       );
       this.initLocationArrayRight.push(
-        new Vector(
-          rectangle.right,
-          Random.randomFloat(rectangle.top, rectangle.bottom),
-        ).add(new Vector(Random.poissonRandom(lambda) * rate, 0)),
+        new Vector(rectangle.right, Random.randomFloat(rectangle.top, rectangle.bottom)).add(
+          new Vector(Random.poissonRandom(lambda) * rate, 0),
+        ),
       );
 
       this.speedArray.push(Random.randomFloat(1, 5));
     }
 
-    this.currentLocationArrayTop = this.initLocationArrayTop.map((v) =>
-      v.clone(),
-    );
-    this.currentLocationArrayBottom = this.initLocationArrayBottom.map((v) =>
-      v.clone(),
-    );
-    this.currentLocationArrayLeft = this.initLocationArrayLeft.map((v) =>
-      v.clone(),
-    );
-    this.currentLocationArrayRight = this.initLocationArrayRight.map((v) =>
-      v.clone(),
-    );
+    this.currentLocationArrayTop = this.initLocationArrayTop.map((v) => v.clone());
+    this.currentLocationArrayBottom = this.initLocationArrayBottom.map((v) => v.clone());
+    this.currentLocationArrayLeft = this.initLocationArrayLeft.map((v) => v.clone());
+    this.currentLocationArrayRight = this.initLocationArrayRight.map((v) => v.clone());
   }
   private getShakeRandom() {
     return Random.randomFloat(-1, 1) * 3;
@@ -89,39 +77,24 @@ export class EntityCreateDashEffect extends EffectObject {
     for (let i = 0; i < EntityCreateDashEffect.DASH_NUMBER_PRE_EDGE; i++) {
       this.currentLocationArrayTop[i] = new Vector(
         this.currentLocationArrayTop[i].x + this.getShakeRandom(),
-        Math.min(
-          this.currentLocationArrayTop[i].y + this.speedArray[i],
-          this.rectangle.top,
-        ),
+        Math.min(this.currentLocationArrayTop[i].y + this.speedArray[i], this.rectangle.top),
       );
       this.currentLocationArrayBottom[i] = new Vector(
         this.currentLocationArrayBottom[i].x + this.getShakeRandom(),
-        Math.max(
-          this.currentLocationArrayBottom[i].y - this.speedArray[i],
-          this.rectangle.bottom,
-        ),
+        Math.max(this.currentLocationArrayBottom[i].y - this.speedArray[i], this.rectangle.bottom),
       );
       this.currentLocationArrayLeft[i] = new Vector(
-        Math.min(
-          this.currentLocationArrayLeft[i].x + this.speedArray[i],
-          this.rectangle.left,
-        ),
+        Math.min(this.currentLocationArrayLeft[i].x + this.speedArray[i], this.rectangle.left),
         this.currentLocationArrayLeft[i].y + this.getShakeRandom(),
       );
       this.currentLocationArrayRight[i] = new Vector(
-        Math.max(
-          this.currentLocationArrayRight[i].x - this.speedArray[i],
-          this.rectangle.right,
-        ),
+        Math.max(this.currentLocationArrayRight[i].x - this.speedArray[i], this.rectangle.right),
         this.currentLocationArrayRight[i].y + this.getShakeRandom(),
       );
     }
   }
 
-  static fromRectangle(
-    rectangle: Rectangle,
-    time = 30,
-  ): EntityCreateDashEffect {
+  static fromRectangle(rectangle: Rectangle, time = 30): EntityCreateDashEffect {
     return new EntityCreateDashEffect(new ProgressNumber(0, time), rectangle);
   }
 

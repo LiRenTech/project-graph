@@ -246,10 +246,7 @@ export class Vector {
     return this.x === vector.x && this.y === vector.y;
   }
   nearlyEqual(vector: Vector, radius: number): boolean {
-    return (
-      Math.abs(this.x - vector.x) <= radius &&
-      Math.abs(this.y - vector.y) <= radius
-    );
+    return Math.abs(this.x - vector.x) <= radius && Math.abs(this.y - vector.y) <= radius;
   }
 
   toString(): string {

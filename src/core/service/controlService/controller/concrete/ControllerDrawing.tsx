@@ -32,9 +32,7 @@ class ControllerDrawingClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    const pressWorldLocation = Renderer.transformView2World(
-      new Vector(event.clientX, event.clientY),
-    );
+    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
     this.recordLocation.push(pressWorldLocation.clone());
 
@@ -46,9 +44,7 @@ class ControllerDrawingClass extends ControllerClass {
     if (!Controller.isMouseDown[0]) {
       return;
     }
-    const worldLocation = Renderer.transformView2World(
-      new Vector(event.clientX, event.clientY),
-    );
+    const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
     this.recordLocation.push(worldLocation.clone());
 
@@ -71,15 +67,11 @@ class ControllerDrawingClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    const releaseWorldLocation = Renderer.transformView2World(
-      new Vector(event.clientX, event.clientY),
-    );
+    const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     // 生成笔触
     const strokeStringList: string[] = [];
     for (const location of this.recordLocation) {
-      strokeStringList.push(
-        `${Math.round(location.x)},${Math.round(location.y)},5`,
-      );
+      strokeStringList.push(`${Math.round(location.x)},${Math.round(location.y)},5`);
     }
     const contentString = strokeStringList.join("~");
     console.log("contentString", contentString);

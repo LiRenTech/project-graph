@@ -74,18 +74,10 @@ export class PenStroke extends Entity {
       if (currentPointStrList.length < 3 || nextPointStrList.length < 3) {
         throw new Error("字符串格式不正确");
       }
-      const currentPoint = new Vector(
-        parseFloat(currentPointStrList[0]),
-        parseFloat(currentPointStrList[1]),
-      );
-      const nextPoint = new Vector(
-        parseFloat(nextPointStrList[0]),
-        parseFloat(nextPointStrList[1]),
-      );
+      const currentPoint = new Vector(parseFloat(currentPointStrList[0]), parseFloat(currentPointStrList[1]));
+      const nextPoint = new Vector(parseFloat(nextPointStrList[0]), parseFloat(nextPointStrList[1]));
       const width = parseFloat(currentPointStrList[2]);
-      this.segmentList.push(
-        new PenStrokeSegment(currentPoint, nextPoint, width),
-      );
+      this.segmentList.push(new PenStrokeSegment(currentPoint, nextPoint, width));
       // 生成碰撞箱，本质上是折线段
       this.collisionBox.shapeList.push(new Line(currentPoint, nextPoint));
     }
@@ -94,9 +86,7 @@ export class PenStroke extends Entity {
   dumpString(): string {
     const resultList: string[] = [];
     for (const segment of this.segmentList) {
-      resultList.push(
-        `${segment.startLocation.x},${segment.startLocation.y},${segment.width}`,
-      );
+      resultList.push(`${segment.startLocation.x},${segment.startLocation.y},${segment.width}`);
     }
     return resultList.join("~");
   }
@@ -118,20 +108,9 @@ export class PenStroke extends Entity {
       if (currentPointStrList.length < 3 || nextPointStrList.length < 3) {
         throw new Error("字符串格式不正确");
       }
-      const currentPoint = new Vector(
-        parseFloat(currentPointStrList[0]),
-        parseFloat(currentPointStrList[1]),
-      );
-      const nextPoint = new Vector(
-        parseFloat(nextPointStrList[0]),
-        parseFloat(nextPointStrList[1]),
-      );
-      if (
-        isNaN(currentPoint.x) ||
-        isNaN(currentPoint.y) ||
-        isNaN(nextPoint.x) ||
-        isNaN(nextPoint.y)
-      ) {
+      const currentPoint = new Vector(parseFloat(currentPointStrList[0]), parseFloat(currentPointStrList[1]));
+      const nextPoint = new Vector(parseFloat(nextPointStrList[0]), parseFloat(nextPointStrList[1]));
+      if (isNaN(currentPoint.x) || isNaN(currentPoint.y) || isNaN(nextPoint.x) || isNaN(nextPoint.y)) {
         throw new Error("坐标格式不正确");
       }
       const width = parseFloat(currentPointStrList[2]);

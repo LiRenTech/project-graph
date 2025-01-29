@@ -27,9 +27,7 @@ export namespace StageAutoAlignManager {
     const viewRectangle = Renderer.getCoverWorldRectangle();
     const otherEntities = StageManager.getEntities()
       .filter((entity) => !entity.isSelected)
-      .filter((entity) =>
-        entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle),
-      );
+      .filter((entity) => entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle));
     for (const selectedEntity of selectedEntities) {
       if (!(selectedEntity instanceof TextNode)) {
         continue;
@@ -47,9 +45,7 @@ export namespace StageAutoAlignManager {
     const viewRectangle = Renderer.getCoverWorldRectangle();
     const otherEntities = StageManager.getEntities()
       .filter((entity) => !entity.isSelected)
-      .filter((entity) =>
-        entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle),
-      );
+      .filter((entity) => entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle));
     for (const selectedEntity of selectedEntities) {
       if (!(selectedEntity instanceof TextNode)) {
         continue;
@@ -63,11 +59,7 @@ export namespace StageAutoAlignManager {
    * @param selectedEntity
    * @param otherEntities 其他未选中的节点，在上游做好筛选
    */
-  function onEntityMoveAlignToOtherEntity(
-    selectedEntity: Entity,
-    otherEntities: Entity[],
-    isPreAlign = false,
-  ) {
+  function onEntityMoveAlignToOtherEntity(selectedEntity: Entity, otherEntities: Entity[], isPreAlign = false) {
     // // 只能和一个节点对齐
     // let isHaveAlignTarget = false;
     // 按照与 selectedEntity 的距离排序
@@ -80,9 +72,7 @@ export namespace StageAutoAlignManager {
       .filter((entity) => {
         // 排除entity是selectedEntity的父亲Section框
         // 可以偷个懒，如果检测两个entity具有位置重叠了，那么直接排除过滤掉
-        return !entity.collisionBox
-          .getRectangle()
-          .isCollideWithRectangle(selectedEntity.collisionBox.getRectangle());
+        return !entity.collisionBox.getRectangle().isCollideWithRectangle(selectedEntity.collisionBox.getRectangle());
       });
     let isAlign = false;
     // 目前先只做节点吸附
@@ -92,11 +82,7 @@ export namespace StageAutoAlignManager {
     const yTargetRectangles: Rectangle[] = [];
     // X轴对齐 ||||
     for (const otherEntity of sortedOtherEntities) {
-      xMoveDiff = onEntityMoveAlignToTargetEntityX(
-        selectedEntity,
-        otherEntity,
-        isPreAlign,
-      );
+      xMoveDiff = onEntityMoveAlignToTargetEntityX(selectedEntity, otherEntity, isPreAlign);
       if (xMoveDiff !== 0) {
         isAlign = true;
         xTargetRectangles.push(otherEntity.collisionBox.getRectangle());
@@ -105,11 +91,7 @@ export namespace StageAutoAlignManager {
     }
     // Y轴对齐 =
     for (const otherEntity of sortedOtherEntities) {
-      yMoveDiff = onEntityMoveAlignToTargetEntityY(
-        selectedEntity,
-        otherEntity,
-        isPreAlign,
-      );
+      yMoveDiff = onEntityMoveAlignToTargetEntityY(selectedEntity, otherEntity, isPreAlign);
       if (yMoveDiff !== 0) {
         isAlign = true;
         yTargetRectangles.push(otherEntity.collisionBox.getRectangle());
@@ -123,15 +105,9 @@ export namespace StageAutoAlignManager {
       moveTargetRectangle.location.x += xMoveDiff;
       moveTargetRectangle.location.y += yMoveDiff;
 
-      Stage.effectMachine.addEffect(
-        RectangleRenderEffect.fromPreAlign(moveTargetRectangle),
-      );
-      for (const targetRectangle of xTargetRectangles.concat(
-        yTargetRectangles,
-      )) {
-        Stage.effectMachine.addEffect(
-          EntityAlignEffect.fromEntity(moveTargetRectangle, targetRectangle),
-        );
+      Stage.effectMachine.addEffect(RectangleRenderEffect.fromPreAlign(moveTargetRectangle));
+      for (const targetRectangle of xTargetRectangles.concat(yTargetRectangles)) {
+        Stage.effectMachine.addEffect(EntityAlignEffect.fromEntity(moveTargetRectangle, targetRectangle));
       }
     }
     if (isAlign && !isPreAlign) {
@@ -146,10 +122,7 @@ export namespace StageAutoAlignManager {
    */
   function _addAlignEffect(selectedEntity: Entity, otherEntity: Entity) {
     Stage.effectMachine.addEffect(
-      EntityAlignEffect.fromEntity(
-        selectedEntity.collisionBox.getRectangle(),
-        otherEntity.collisionBox.getRectangle(),
-      ),
+      EntityAlignEffect.fromEntity(selectedEntity.collisionBox.getRectangle(), otherEntity.collisionBox.getRectangle()),
     );
   }
 
@@ -159,11 +132,7 @@ export namespace StageAutoAlignManager {
    * @param otherEntity
    * @returns 返回吸附距离
    */
-  function onEntityMoveAlignToTargetEntityX(
-    selectedEntity: Entity,
-    otherEntity: Entity,
-    isPreAlign = false,
-  ): number {
+  function onEntityMoveAlignToTargetEntityX(selectedEntity: Entity, otherEntity: Entity, isPreAlign = false): number {
     const selectedRect = selectedEntity.collisionBox.getRectangle();
     const otherRect = otherEntity.collisionBox.getRectangle();
     const distanceList = [
@@ -184,11 +153,7 @@ export namespace StageAutoAlignManager {
     }
   }
 
-  function onEntityMoveAlignToTargetEntityY(
-    selectedEntity: Entity,
-    otherEntity: Entity,
-    isPreAlign = false,
-  ): number {
+  function onEntityMoveAlignToTargetEntityY(selectedEntity: Entity, otherEntity: Entity, isPreAlign = false): number {
     const selectedRect = selectedEntity.collisionBox.getRectangle();
     const otherRect = otherEntity.collisionBox.getRectangle();
     const distanceList = [
@@ -225,9 +190,7 @@ export namespace StageAutoAlignManager {
    * 自动布局树形结构
    * @param selectedRootEntity
    */
-  export function autoLayoutSelectedFastTreeMode(
-    selectedRootEntity: ConnectableEntity,
-  ) {
+  export function autoLayoutSelectedFastTreeMode(selectedRootEntity: ConnectableEntity) {
     // 检测树形结构
     if (!GraphMethods.isTree(selectedRootEntity)) {
       // 不是树形结构，不做任何处理

@@ -76,10 +76,7 @@ export class DirectionKeyUtilsEngine {
       addAccelerate = addAccelerate.multiply(-1);
     }
     // 当按下某一个方向的时候,相当于朝着某个方向赋予一次加速度
-    this.accelerateCommander = this.accelerateCommander
-      .add(addAccelerate)
-      .limitX(-1, 1)
-      .limitY(-1, 1);
+    this.accelerateCommander = this.accelerateCommander.add(addAccelerate).limitX(-1, 1).limitY(-1, 1);
   }
 
   // 方向键松开
@@ -91,10 +88,7 @@ export class DirectionKeyUtilsEngine {
       addAccelerate = addAccelerate.multiply(-1);
     }
     // 当松开某一个方向的时候,相当于停止加速度
-    this.accelerateCommander = this.accelerateCommander
-      .subtract(addAccelerate)
-      .limitX(-1, 1)
-      .limitY(-1, 1);
+    this.accelerateCommander = this.accelerateCommander.subtract(addAccelerate).limitX(-1, 1).limitY(-1, 1);
   }
 
   public logicTick() {
@@ -111,15 +105,11 @@ export class DirectionKeyUtilsEngine {
       friction = this.speed
         .normalize()
         .multiply(-1)
-        .multiply(
-          this.frictionCoefficient * speedSize ** this.frictionExponent,
-        );
+        .multiply(this.frictionCoefficient * speedSize ** this.frictionExponent);
     }
 
     // 速度 = 速度 + 加速度（各个方向的力之和）
-    this.speed = this.speed
-      .add(this.accelerateCommander.multiply(this.moveAmplitude))
-      .add(friction);
+    this.speed = this.speed.add(this.accelerateCommander.multiply(this.moveAmplitude)).add(friction);
     this.location = this.location.add(this.speed);
   }
 }

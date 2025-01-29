@@ -1,8 +1,5 @@
 import { Color } from "../../../dataStruct/Color";
-import {
-  CubicBezierCurve,
-  SymmetryCurve,
-} from "../../../dataStruct/shape/Curve";
+import { CubicBezierCurve, SymmetryCurve } from "../../../dataStruct/shape/Curve";
 import { Vector } from "../../../dataStruct/Vector";
 import { Canvas } from "../../../stage/Canvas";
 
@@ -18,12 +15,7 @@ export namespace CurveRenderer {
    * @param color
    * @param width
    */
-  export function renderSolidLine(
-    start: Vector,
-    end: Vector,
-    color: Color,
-    width: number,
-  ): void {
+  export function renderSolidLine(start: Vector, end: Vector, color: Color, width: number): void {
     Canvas.ctx.beginPath();
     Canvas.ctx.moveTo(start.x, start.y);
     Canvas.ctx.lineTo(end.x, end.y);
@@ -38,11 +30,7 @@ export namespace CurveRenderer {
    * @param color
    * @param width
    */
-  export function renderSolidLineMultiple(
-    locations: Vector[],
-    color: Color,
-    width: number,
-  ): void {
+  export function renderSolidLineMultiple(locations: Vector[], color: Color, width: number): void {
     Canvas.ctx.beginPath();
     Canvas.ctx.moveTo(locations[0].x, locations[0].y);
     for (let i = 1; i < locations.length; i++) {
@@ -59,11 +47,7 @@ export namespace CurveRenderer {
    * @param color
    * @param widthList
    */
-  export function renderSolidLineMultipleWithWidth(
-    locations: Vector[],
-    color: Color,
-    widthList: number[],
-  ): void {
+  export function renderSolidLineMultipleWithWidth(locations: Vector[], color: Color, widthList: number[]): void {
     Canvas.ctx.beginPath();
     Canvas.ctx.moveTo(locations[0].x, locations[0].y);
     for (let i = 1; i < locations.length; i++) {
@@ -113,13 +97,7 @@ export namespace CurveRenderer {
    * @param width
    * @param dashLength 虚线的长度，效果： =2: "--  --  --  --", =1: "- - - - -"
    */
-  export function renderDashedLine(
-    start: Vector,
-    end: Vector,
-    color: Color,
-    width: number,
-    dashLength: number,
-  ): void {
+  export function renderDashedLine(start: Vector, end: Vector, color: Color, width: number, dashLength: number): void {
     Canvas.ctx.setLineDash([dashLength, dashLength]);
     Canvas.ctx.beginPath();
     Canvas.ctx.moveTo(start.x, start.y);
@@ -135,11 +113,7 @@ export namespace CurveRenderer {
    * 绘制一条贝塞尔曲线
    * @param curve
    */
-  export function renderBezierCurve(
-    curve: CubicBezierCurve,
-    color: Color,
-    width: number,
-  ): void {
+  export function renderBezierCurve(curve: CubicBezierCurve, color: Color, width: number): void {
     Canvas.ctx.beginPath();
     Canvas.ctx.moveTo(curve.start.x, curve.start.y);
     Canvas.ctx.bezierCurveTo(
@@ -159,11 +133,7 @@ export namespace CurveRenderer {
    * 绘制一条对称曲线
    * @param curve
    */
-  export function renderSymmetryCurve(
-    curve: SymmetryCurve,
-    color: Color,
-    width: number,
-  ): void {
+  export function renderSymmetryCurve(curve: SymmetryCurve, color: Color, width: number): void {
     renderBezierCurve(curve.bezier, color, width);
   }
 
@@ -177,12 +147,7 @@ export namespace CurveRenderer {
     endColor: Color,
     width: number,
   ): void {
-    const gradient = Canvas.ctx.createLinearGradient(
-      start.x,
-      start.y,
-      end.x,
-      end.y,
-    );
+    const gradient = Canvas.ctx.createLinearGradient(start.x, start.y, end.x, end.y);
     // 添加颜色
     gradient.addColorStop(0, startColor.toString()); // 起始颜色
     gradient.addColorStop(1, endColor.toString()); // 结束颜色

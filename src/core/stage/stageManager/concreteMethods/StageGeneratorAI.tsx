@@ -13,9 +13,7 @@ export namespace StageGeneratorAI {
    * 扩展所有选中的节点
    */
   export async function generateNewTextNodeBySelected() {
-    const selectedTextNodes = StageManager.getSelectedEntities().filter(
-      (entity) => entity instanceof TextNode,
-    );
+    const selectedTextNodes = StageManager.getSelectedEntities().filter((entity) => entity instanceof TextNode);
     if (selectedTextNodes.length === 0) {
       return;
     }
@@ -32,23 +30,17 @@ export namespace StageGeneratorAI {
   async function realGenerateTextList(selectedTextNode: TextNode) {
     try {
       const { words, tokens } = await (
-        await fetch(
-          (import.meta.env.LR_API_BASE_URL ?? "http://localhost:8787") +
-            "/ai/extend_word",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              word: selectedTextNode.text,
-            }),
+        await fetch((import.meta.env.LR_API_BASE_URL ?? "http://localhost:8787") + "/ai/extend_word", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-        )
+          body: JSON.stringify({
+            word: selectedTextNode.text,
+          }),
+        })
       ).json();
-      Stage.effectMachine.addEffect(
-        new TextRiseEffect(`生成完成，消耗 ${tokens} Tokens`),
-      );
+      Stage.effectMachine.addEffect(new TextRiseEffect(`生成完成，消耗 ${tokens} Tokens`));
       return words;
     } catch (e) {
       console.error(e);
@@ -62,8 +54,7 @@ export namespace StageGeneratorAI {
     }
 
     // 计算旋转角度
-    const diffRotateDegrees =
-      childTextList.length === 1 ? 0 : 90 / (childTextList.length - 1);
+    const diffRotateDegrees = childTextList.length === 1 ? 0 : 90 / (childTextList.length - 1);
     let startRotateDegrees = -(90 / 2);
 
     const toParentDegrees: number[] = [];
@@ -95,10 +86,7 @@ export namespace StageGeneratorAI {
         uuid: newUUID,
         text: newText,
         details: "",
-        location: [
-          parent.collisionBox.getRectangle().location.x,
-          parent.collisionBox.getRectangle().location.y,
-        ],
+        location: [parent.collisionBox.getRectangle().location.x, parent.collisionBox.getRectangle().location.y],
         size: [100, 100],
       });
       // moveAroundNode(newNode, parent);
@@ -107,10 +95,7 @@ export namespace StageGeneratorAI {
         parent.collisionBox
           .getRectangle()
           .center.subtract(
-            new Vector(
-              newNode.collisionBox.getRectangle().size.x / 2,
-              newNode.collisionBox.getRectangle().size.y / 2,
-            ),
+            new Vector(newNode.collisionBox.getRectangle().size.x / 2, newNode.collisionBox.getRectangle().size.y / 2),
           ),
       );
 
@@ -132,9 +117,7 @@ export namespace StageGeneratorAI {
       // 连线
       StageManager.connectEntity(parent, newNode);
       // 特效
-      Stage.effectMachine.addEffects(
-        EdgeRenderer.getConnectedEffects(parent, newNode),
-      );
+      Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(parent, newNode));
     }
   }
 

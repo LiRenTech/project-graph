@@ -35,9 +35,7 @@ export namespace KeyBinds {
     }
   }
 
-  export async function get(
-    id: string,
-  ): Promise<{ key: string; modifiers: KeyModifiers } | null> {
+  export async function get(id: string): Promise<{ key: string; modifiers: KeyModifiers } | null> {
     if (!store) {
       throw new Error("Store not initialized.");
     }
@@ -49,10 +47,7 @@ export namespace KeyBinds {
     [key: string]: Array<(key: string, modifiers: KeyModifiers) => void>;
   } = {};
 
-  export async function watch(
-    id: string,
-    callback: (key: string, modifiers: KeyModifiers) => void,
-  ) {
+  export async function watch(id: string, callback: (key: string, modifiers: KeyModifiers) => void) {
     if (!store) {
       throw new Error("Store not initialized.");
     }
@@ -153,15 +148,11 @@ export namespace KeyBinds {
         this.modifiers.control === event.ctrlKey &&
         this.modifiers.alt === event.altKey &&
         this.modifiers.shift === event.shiftKey;
-      const matchKey =
-        event instanceof KeyboardEvent &&
-        event.key.toLowerCase() === this.key.toLowerCase();
-      const matchButton =
-        event instanceof MouseEvent && event.button === this.button;
+      const matchKey = event instanceof KeyboardEvent && event.key.toLowerCase() === this.key.toLowerCase();
+      const matchButton = event instanceof MouseEvent && event.button === this.button;
       const matchWheel =
         event instanceof WheelEvent &&
-        ((event.deltaY < 0 && this.key === "wheelup") ||
-          (event.deltaY > 0 && this.key === "wheeldown"));
+        ((event.deltaY < 0 && this.key === "wheelup") || (event.deltaY > 0 && this.key === "wheeldown"));
       const match = matchModifiers && (matchKey || matchButton || matchWheel);
       if (match) {
         this.lastMatch = Date.now();

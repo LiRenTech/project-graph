@@ -49,10 +49,7 @@ export namespace SectionMethods {
         if (sectionI === sectionJ) {
           continue;
         }
-        if (
-          isEntityInSection(sectionI, sectionJ) &&
-          !isEntityInSection(sectionJ, sectionI)
-        ) {
+        if (isEntityInSection(sectionI, sectionJ) && !isEntityInSection(sectionJ, sectionI)) {
           // I 在 J 中，J不在I中，J大，排除J
           outerSections.push(sectionJ);
         }
@@ -98,9 +95,7 @@ export namespace SectionMethods {
   export function shallowerEntities(entities: Entity[]): Entity[] {
     // shallowerSection + 所有非Section的实体
     const sections = entities.filter((entity) => entity instanceof Section);
-    const nonSections = entities.filter(
-      (entity) => !(entity instanceof Section),
-    );
+    const nonSections = entities.filter((entity) => !(entity instanceof Section));
     // 遍历所有非section实体，如果是任何一个section的子节点，则删除
     const result: Entity[] = [];
     for (const entity of nonSections) {
@@ -127,11 +122,7 @@ export namespace SectionMethods {
     return _isEntityInSection(entity, section, 0);
   }
 
-  function _isEntityInSection(
-    entity: Entity,
-    section: Section,
-    deep = 0,
-  ): boolean {
+  function _isEntityInSection(entity: Entity, section: Section, deep = 0): boolean {
     if (deep > 996) {
       return false;
     }

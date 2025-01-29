@@ -9,11 +9,7 @@ export namespace NumberFunctions {
    * @param tolerance
    * @returns
    */
-  export function isNumberNear(
-    number1: number,
-    number2: number,
-    tolerance: number,
-  ): boolean {
+  export function isNumberNear(number1: number, number2: number, tolerance: number): boolean {
     return Math.abs(number1 - number2) <= tolerance;
   }
 
@@ -23,17 +19,9 @@ export namespace NumberFunctions {
    * @param minValue 震荡的最小值
    * @param cycleTime 周期时间，单位为秒
    */
-  export function sinNumberByTime(
-    maxValue: number,
-    minValue: number,
-    cycleTime: number,
-  ) {
+  export function sinNumberByTime(maxValue: number, minValue: number, cycleTime: number) {
     const t = performance.now() / 1000;
-    return (
-      Math.sin(((t % cycleTime) * (Math.PI * 2)) / cycleTime) *
-        (maxValue - minValue) +
-      minValue
-    );
+    return Math.sin(((t % cycleTime) * (Math.PI * 2)) / cycleTime) * (maxValue - minValue) + minValue;
   }
 
   /**

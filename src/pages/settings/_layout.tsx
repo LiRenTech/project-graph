@@ -1,16 +1,4 @@
-import {
-  Bot,
-  Brain,
-  Command,
-  Eye,
-  Info,
-  Keyboard,
-  Plug,
-  Settings,
-  Sparkles,
-  Speaker,
-  Zap,
-} from "lucide-react";
+import { Bot, Brain, Command, Eye, Info, Keyboard, Plug, Settings, Sparkles, Speaker, Zap } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { NavLink, Outlet } from "react-router-dom";
 import Github from "../../assets/github.svg?react";

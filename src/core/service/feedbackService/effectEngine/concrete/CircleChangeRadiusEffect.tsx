@@ -24,10 +24,7 @@ export class CircleChangeRadiusEffect extends EffectObject {
   }
 
   get radius() {
-    return (
-      this.radiusStart +
-      (this.radiusEnd - this.radiusStart) * this.timeProgress.rate
-    );
+    return this.radiusStart + (this.radiusEnd - this.radiusStart) * this.timeProgress.rate;
   }
 
   override tick() {

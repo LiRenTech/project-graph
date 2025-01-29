@@ -23,10 +23,7 @@ export class LineEdge extends Edge {
   }
 
   get isHiddenBySectionCollapse(): boolean {
-    return (
-      this.source.isHiddenBySectionCollapse &&
-      this.target.isHiddenBySectionCollapse
-    );
+    return this.source.isHiddenBySectionCollapse && this.target.isHiddenBySectionCollapse;
   }
 
   /**
@@ -55,10 +52,7 @@ export class LineEdge extends Edge {
     this.adjustSizeByText();
   }
 
-  static fromTwoEntity(
-    source: ConnectableEntity,
-    target: ConnectableEntity,
-  ): LineEdge {
+  static fromTwoEntity(source: ConnectableEntity, target: ConnectableEntity): LineEdge {
     const result = new LineEdge({
       source: source.uuid,
       target: target.uuid,
@@ -78,12 +72,8 @@ export class LineEdge extends Edge {
       this.source.collisionBox.getRectangle().center,
       this.target.collisionBox.getRectangle().center,
     );
-    const startPoint = this.source.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(edgeCenterLine);
-    const endPoint = this.target.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(edgeCenterLine);
+    const startPoint = this.source.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
+    const endPoint = this.target.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
     return new Line(startPoint, endPoint);
   }
 
@@ -98,15 +88,9 @@ export class LineEdge extends Edge {
     // HACK: 这里会造成频繁渲染，频繁计算文字宽度进而可能出现性能问题
     const textSize = getTextSize(this.text, Renderer.FONT_SIZE);
     if (this.isShifting) {
-      return new Rectangle(
-        this.shiftingMidPoint.subtract(textSize.divide(2)),
-        textSize,
-      );
+      return new Rectangle(this.shiftingMidPoint.subtract(textSize.divide(2)), textSize);
     } else {
-      return new Rectangle(
-        this.bodyLine.midPoint().subtract(textSize.divide(2)),
-        textSize,
-      );
+      return new Rectangle(this.bodyLine.midPoint().subtract(textSize.divide(2)), textSize);
     }
     // return this._textRectangle;
   }

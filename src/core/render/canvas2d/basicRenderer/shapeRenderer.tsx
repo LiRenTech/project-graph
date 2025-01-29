@@ -78,13 +78,7 @@ export namespace ShapeRenderer {
     radius: number = 0,
   ): void {
     Canvas.ctx.beginPath();
-    Canvas.ctx.roundRect(
-      centerLocation.x - width / 2,
-      centerLocation.y - height / 2,
-      width,
-      height,
-      radius,
-    );
+    Canvas.ctx.roundRect(centerLocation.x - width / 2, centerLocation.y - height / 2, width, height, radius);
     Canvas.ctx.fillStyle = color.toString();
     Canvas.ctx.fill();
     Canvas.ctx.lineWidth = strokeWidth;
@@ -108,13 +102,7 @@ export namespace ShapeRenderer {
     radius: number = 0,
   ) {
     Canvas.ctx.beginPath();
-    Canvas.ctx.roundRect(
-      rect.location.x,
-      rect.location.y,
-      rect.size.x,
-      rect.size.y,
-      radius,
-    );
+    Canvas.ctx.roundRect(rect.location.x, rect.location.y, rect.size.x, rect.size.y, radius);
     Canvas.ctx.fillStyle = color.toString();
     Canvas.ctx.fill();
     Canvas.ctx.lineWidth = strokeWidth;
@@ -142,13 +130,7 @@ export namespace ShapeRenderer {
     Canvas.ctx.shadowOffsetX = shadowOffsetX;
     Canvas.ctx.shadowOffsetY = shadowOffsetY;
     Canvas.ctx.beginPath();
-    Canvas.ctx.roundRect(
-      rect.location.x,
-      rect.location.y,
-      rect.size.x,
-      rect.size.y,
-      radius,
-    );
+    Canvas.ctx.roundRect(rect.location.x, rect.location.y, rect.size.x, rect.size.y, radius);
     Canvas.ctx.fillStyle = fillColor.toString();
     Canvas.ctx.fill();
     Canvas.ctx.lineWidth = strokeWidth;
@@ -194,11 +176,7 @@ export namespace ShapeRenderer {
    * 绘制中心过渡的圆形不加边框
    * 常用于一些特效
    */
-  export function renderCircleTransition(
-    viewLocation: Vector,
-    radius: number,
-    centerColor: Color,
-  ) {
+  export function renderCircleTransition(viewLocation: Vector, radius: number, centerColor: Color) {
     const gradient = Canvas.ctx.createRadialGradient(
       viewLocation.x,
       viewLocation.y,
@@ -216,14 +194,7 @@ export namespace ShapeRenderer {
     Canvas.ctx.strokeStyle = "transparent";
     // 绘制圆形
     Canvas.ctx.beginPath();
-    Canvas.ctx.arc(
-      viewLocation.x,
-      viewLocation.y,
-      radius,
-      0,
-      2 * Math.PI,
-      false,
-    );
+    Canvas.ctx.arc(viewLocation.x, viewLocation.y, radius, 0, 2 * Math.PI, false);
     Canvas.ctx.fill();
   }
 }

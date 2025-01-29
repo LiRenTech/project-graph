@@ -14,15 +14,8 @@ import { EffectObject } from "../effectObject";
  */
 export class EntityAlignEffect extends EffectObject {
   private lines: Line[] = [];
-  static fromEntity(
-    moveRectangle: Rectangle,
-    targetRectangle: Rectangle,
-  ): EntityAlignEffect {
-    return new EntityAlignEffect(
-      new ProgressNumber(0, 20),
-      moveRectangle,
-      targetRectangle,
-    );
+  static fromEntity(moveRectangle: Rectangle, targetRectangle: Rectangle): EntityAlignEffect {
+    return new EntityAlignEffect(new ProgressNumber(0, 20), moveRectangle, targetRectangle);
   }
   constructor(
     public override timeProgress: ProgressNumber,
@@ -34,10 +27,7 @@ export class EntityAlignEffect extends EffectObject {
     const targetEntityRectangle = targetRectangle;
 
     // 两个矩形构成的最小外接矩形
-    const twoRectangle = Rectangle.getBoundingRectangle([
-      moveEntityRectangle,
-      targetEntityRectangle,
-    ]);
+    const twoRectangle = Rectangle.getBoundingRectangle([moveEntityRectangle, targetEntityRectangle]);
     // 计算两个矩形现在是哪里对齐了，是左边缘x轴对齐，还是右边缘x轴对齐，
     // 还是上边缘y轴对齐，还是下边缘y轴对齐
     // 左边缘x对齐检测

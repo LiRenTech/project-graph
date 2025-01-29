@@ -3,10 +3,7 @@ import { StageManager } from "../StageManager";
 
 export namespace GraphMethods {
   export function isTree(node: ConnectableEntity): boolean {
-    const dfs = (
-      node: ConnectableEntity,
-      visited: ConnectableEntity[],
-    ): boolean => {
+    const dfs = (node: ConnectableEntity, visited: ConnectableEntity[]): boolean => {
       if (visited.includes(node)) {
         return false;
       }

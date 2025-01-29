@@ -43,12 +43,9 @@ export class PointDashEffect extends EffectObject {
       let isCollideWithEntity = false;
 
       for (const connectEntity of StageManager.getConnectableEntity()) {
-        const connectEntityCenter =
-          connectEntity.collisionBox.getRectangle().center;
+        const connectEntityCenter = connectEntity.collisionBox.getRectangle().center;
         const distance = connectEntityCenter.subtract(particle.location);
-        const normalizedDistance = distance
-          .normalize()
-          .multiply(20 / distance.magnitude() ** 1.2);
+        const normalizedDistance = distance.normalize().multiply(20 / distance.magnitude() ** 1.2);
         acceleration = acceleration.add(normalizedDistance);
 
         if (connectEntity.collisionBox.isContainsPoint(particle.location)) {
@@ -71,15 +68,8 @@ export class PointDashEffect extends EffectObject {
     }
   }
 
-  static fromMouseEffect(
-    mouseWorldLocation: Vector,
-    count: number,
-  ): PointDashEffect {
-    return new PointDashEffect(
-      new ProgressNumber(0, 50),
-      mouseWorldLocation,
-      count,
-    );
+  static fromMouseEffect(mouseWorldLocation: Vector, count: number): PointDashEffect {
+    return new PointDashEffect(new ProgressNumber(0, 50), mouseWorldLocation, count);
   }
 
   render(): void {

@@ -44,9 +44,7 @@ export namespace KeyboardOnlyEngine {
         // }
       } else if (event.key === "Enter") {
         // 这个还必须在down的位置上，因为在up上会导致无限触发
-        const selectedNode = StageManager.getTextNodes().find(
-          (node) => node.isSelected,
-        );
+        const selectedNode = StageManager.getTextNodes().find((node) => node.isSelected);
         if (!selectedNode) return;
         // 编辑节点
         editTextNode(selectedNode);
@@ -68,8 +66,7 @@ export namespace KeyboardOnlyEngine {
    */
   export function isEnableVirtualCreate(): boolean {
     // 确保只有一个节点被选中
-    const selectConnectableEntities =
-      StageManager.getConnectableEntity().filter((node) => node.isSelected);
+    const selectConnectableEntities = StageManager.getConnectableEntity().filter((node) => node.isSelected);
     if (selectConnectableEntities.length !== 1) {
       return false;
     }
@@ -98,16 +95,13 @@ export namespace KeyboardOnlyEngine {
     // 记录上一次按下Tab键的时间
     lastPressTabTime = Date.now();
     // 计算并更新虚拟目标位置
-    const selectConnectableEntities =
-      StageManager.getConnectableEntity().filter((node) => node.isSelected);
+    const selectConnectableEntities = StageManager.getConnectableEntity().filter((node) => node.isSelected);
 
     // 如果只有一个节点被选中，则生成到右边的位置
     if (selectConnectableEntities.length === 1) {
       // 更新方向控制器的位置
       targetLocationController.resetLocation(
-        selectConnectableEntities[0].collisionBox
-          .getRectangle()
-          .center.add(NewTargetLocationSelector.diffLocation),
+        selectConnectableEntities[0].collisionBox.getRectangle().center.add(NewTargetLocationSelector.diffLocation),
       );
       // 清空加速度和速度
       targetLocationController.clearSpeedAndAcc();
@@ -133,16 +127,14 @@ export namespace KeyboardOnlyEngine {
     if (getPressTabTimeInterval() < 100) {
       Dialog.show({
         title: "松开Tab键过快💨",
-        content:
-          "按下Tab键的时间要在0.1秒以上，在松开Tab键之前，可以通过IKJL键移动虚拟目标位置。",
+        content: "按下Tab键的时间要在0.1秒以上，在松开Tab键之前，可以通过IKJL键移动虚拟目标位置。",
         type: "warning",
       });
       return;
     }
 
     // 获取当前选择的所有节点
-    const selectConnectableEntities =
-      StageManager.getConnectableEntity().filter((node) => node.isSelected);
+    const selectConnectableEntities = StageManager.getConnectableEntity().filter((node) => node.isSelected);
     if (isTargetLocationHaveEntity()) {
       // 连接到之前的节点
       const entity = StageManager.findEntityByLocation(virtualTargetLocation());
@@ -150,9 +142,7 @@ export namespace KeyboardOnlyEngine {
         // 连接到之前的节点
         for (const selectedEntity of selectConnectableEntities) {
           StageManager.connectEntity(selectedEntity, entity);
-          Stage.effectMachine.addEffects(
-            EdgeRenderer.getConnectedEffects(selectedEntity, entity),
-          );
+          Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(selectedEntity, entity));
         }
         // 选择到新创建的节点
         entity.isSelected = true;
@@ -165,23 +155,15 @@ export namespace KeyboardOnlyEngine {
       }
     } else {
       // 更新diffLocation
-      NewTargetLocationSelector.onTabUp(
-        selectConnectableEntities[0],
-        virtualTargetLocation(),
-      );
+      NewTargetLocationSelector.onTabUp(selectConnectableEntities[0], virtualTargetLocation());
       // 创建一个新的节点
-      const newNodeUUID = await StageManager.addTextNodeByClick(
-        virtualTargetLocation().clone(),
-        [],
-      );
+      const newNodeUUID = await StageManager.addTextNodeByClick(virtualTargetLocation().clone(), []);
       const newNode = StageManager.getTextNodeByUUID(newNodeUUID);
       if (!newNode) return;
       // 连接到之前的节点
       for (const entity of selectConnectableEntities) {
         StageManager.connectEntity(entity, newNode);
-        Stage.effectMachine.addEffects(
-          EdgeRenderer.getConnectedEffects(entity, newNode),
-        );
+        Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(entity, newNode));
       }
       // 选择到新创建的节点
       newNode.isSelected = true;

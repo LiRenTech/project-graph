@@ -16,9 +16,7 @@ import { KeyBinds } from "../../core/service/controlService/KeyBinds";
 import { Field, SettingField } from "./_field";
 
 export default function Control() {
-  const [keyBinds, setKeyBinds] = React.useState<
-    [id: string, { key: string; modifiers: KeyBinds.KeyModifiers }][]
-  >([]);
+  const [keyBinds, setKeyBinds] = React.useState<[id: string, { key: string; modifiers: KeyBinds.KeyModifiers }][]>([]);
 
   React.useEffect(() => {
     KeyBinds.entries().then((entries) => {
@@ -30,78 +28,18 @@ export default function Control() {
 
   return (
     <>
-      <SettingField
-        icon={<MousePointerClick />}
-        settingKey="mouseRightDragBackground"
-        type="select"
-      />
-      <SettingField
-        icon={<ListEnd />}
-        settingKey="textNodeContentLineBreak"
-        type="select"
-      />
-      <SettingField
-        icon={<ListCheck />}
-        settingKey="textNodeExitEditMode"
-        type="select"
-      />
-      <SettingField
-        icon={<AlignStartVertical />}
-        settingKey="enableDragAutoAlign"
-        type="switch"
-      />
-      <SettingField
-        icon={<ScanEye />}
-        settingKey="scaleExponent"
-        type="slider"
-        min={0}
-        max={1}
-        step={0.01}
-      />
-      <SettingField
-        icon={<ScanEye />}
-        settingKey="scaleCameraByMouseLocation"
-        type="switch"
-      />
-      <SettingField
-        icon={<Keyboard />}
-        settingKey="allowMoveCameraByWSAD"
-        type="switch"
-      />
-      <SettingField
-        icon={<Keyboard />}
-        settingKey="cameraKeyboardMoveReverse"
-        type="switch"
-      />
-      <SettingField
-        icon={<RotateCw />}
-        settingKey="allowAddCycleEdge"
-        type="switch"
-      />
-      <SettingField
-        icon={<Move />}
-        settingKey="moveAmplitude"
-        type="slider"
-        min={0}
-        max={10}
-        step={0.1}
-      />
-      <SettingField
-        icon={<Move />}
-        settingKey="moveFriction"
-        type="slider"
-        min={0}
-        max={1}
-        step={0.01}
-      />
-      <SettingField
-        icon={<Skull />}
-        settingKey="gamepadDeadzone"
-        type="slider"
-        min={0}
-        max={1}
-        step={0.01}
-      />
+      <SettingField icon={<MousePointerClick />} settingKey="mouseRightDragBackground" type="select" />
+      <SettingField icon={<ListEnd />} settingKey="textNodeContentLineBreak" type="select" />
+      <SettingField icon={<ListCheck />} settingKey="textNodeExitEditMode" type="select" />
+      <SettingField icon={<AlignStartVertical />} settingKey="enableDragAutoAlign" type="switch" />
+      <SettingField icon={<ScanEye />} settingKey="scaleExponent" type="slider" min={0} max={1} step={0.01} />
+      <SettingField icon={<ScanEye />} settingKey="scaleCameraByMouseLocation" type="switch" />
+      <SettingField icon={<Keyboard />} settingKey="allowMoveCameraByWSAD" type="switch" />
+      <SettingField icon={<Keyboard />} settingKey="cameraKeyboardMoveReverse" type="switch" />
+      <SettingField icon={<RotateCw />} settingKey="allowAddCycleEdge" type="switch" />
+      <SettingField icon={<Move />} settingKey="moveAmplitude" type="slider" min={0} max={10} step={0.1} />
+      <SettingField icon={<Move />} settingKey="moveFriction" type="slider" min={0} max={1} step={0.01} />
+      <SettingField icon={<Skull />} settingKey="gamepadDeadzone" type="slider" min={0} max={1} step={0.01} />
       <Field icon={<Keyboard />} title={t("title")} color="blue" />
       {keyBinds
         .map(([id, bind]) => (
@@ -115,11 +53,7 @@ export default function Control() {
               value={bind}
               onChange={(value) => {
                 KeyBinds.set(id, value.key, value.modifiers);
-                setKeyBinds((prev) =>
-                  prev.map((item) =>
-                    item[0] === id ? [item[0], value] : item,
-                  ),
-                );
+                setKeyBinds((prev) => prev.map((item) => (item[0] === id ? [item[0], value] : item)));
               }}
             />
           </Field>

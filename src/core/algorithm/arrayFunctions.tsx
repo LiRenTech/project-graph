@@ -21,9 +21,7 @@ export namespace ArrayFunctions {
    */
   export function variance(arr: number[]): number {
     const avg = average(arr);
-    return (
-      arr.reduce((acc, cur) => acc + Math.pow(cur - avg, 2), 0) / arr.length
-    );
+    return arr.reduce((acc, cur) => acc + Math.pow(cur - avg, 2), 0) / arr.length;
   }
 
   /**

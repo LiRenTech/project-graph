@@ -51,22 +51,14 @@ export namespace Controller {
   /**
    * 存放鼠标 左 中 右 键上次 "按下" 时候的world位置
    */
-  export const lastMousePressLocation: Vector[] = [
-    Vector.getZero(),
-    Vector.getZero(),
-    Vector.getZero(),
-  ];
+  export const lastMousePressLocation: Vector[] = [Vector.getZero(), Vector.getZero(), Vector.getZero()];
   export function lastMousePressLocationString(): string {
     return lastMousePressLocation.map((v) => v.toString()).join(",");
   }
   /**
    * 存放鼠标 左 中 右 键上次 "松开" 时候的world位置
    */
-  const lastMouseReleaseLocation: Vector[] = [
-    Vector.getZero(),
-    Vector.getZero(),
-    Vector.getZero(),
-  ];
+  const lastMouseReleaseLocation: Vector[] = [Vector.getZero(), Vector.getZero(), Vector.getZero()];
   export function lastMouseReleaseLocationString(): string {
     return lastMouseReleaseLocation.map((v) => v.toString()).join(",");
   }
@@ -189,18 +181,13 @@ export namespace Controller {
 
   function handleMouseup(button: number, x: number, y: number) {
     isMouseDown[button] = false;
-    if (
-      Date.now() - lastClickTime < 200 &&
-      lastClickLocation.distance(new Vector(x, y)) < 10
-    ) {
+    if (Date.now() - lastClickTime < 200 && lastClickLocation.distance(new Vector(x, y)) < 10) {
       //
     }
     lastClickTime = Date.now();
     lastClickLocation = new Vector(x, y);
     // 记录松开位置
-    lastMouseReleaseLocation[button] = Renderer.transformView2World(
-      new Vector(x, y),
-    );
+    lastMouseReleaseLocation[button] = Renderer.transformView2World(new Vector(x, y));
   }
 
   function keydown(event: KeyboardEvent) {
@@ -258,9 +245,7 @@ export namespace Controller {
       touchStartLocation = center;
 
       // 移动画面
-      Camera.location = Camera.location.subtract(
-        touchDelta.multiply(1 / Camera.currentScale),
-      );
+      Camera.location = Camera.location.subtract(touchDelta.multiply(1 / Camera.currentScale));
     }
   }
 
@@ -268,18 +253,10 @@ export namespace Controller {
     e.preventDefault();
     if (e.changedTouches.length === 1) {
       // HACK: 重构后touch方法就有问题了
-      handleMouseup(
-        0,
-        e.changedTouches[0].clientX,
-        e.changedTouches[0].clientY,
-      );
+      handleMouseup(0, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
     }
     // 移动画面
-    Camera.accelerateCommander = touchDelta
-      .multiply(-1)
-      .multiply(Camera.currentScale)
-      .limitX(-1, 1)
-      .limitY(-1, 1);
+    Camera.accelerateCommander = touchDelta.multiply(-1).multiply(Camera.currentScale).limitX(-1, 1).limitY(-1, 1);
     touchDelta = Vector.getZero();
     setTimeout(() => {
       Camera.accelerateCommander = Vector.getZero();

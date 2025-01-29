@@ -23,26 +23,13 @@ export class TextRaiseEffectLocated extends EffectObject {
     }
     TextRenderer.renderTextFromCenter(
       this.text,
-      Renderer.transformWorld2View(
-        this.location.add(
-          new Vector(0, -this.timeProgress.rate * this.raiseDistance),
-        ),
-      ),
+      Renderer.transformWorld2View(this.location.add(new Vector(0, -this.timeProgress.rate * this.raiseDistance))),
       this.textSize * Camera.currentScale,
       StageStyleManager.currentStyle.CollideBoxPreSelectedColor,
     );
   }
 
-  static fromDebugLogicNode(
-    n: number,
-    location: Vector,
-  ): TextRaiseEffectLocated {
-    return new TextRaiseEffectLocated(
-      `${n}`,
-      location,
-      0,
-      150,
-      new ProgressNumber(0, 3),
-    );
+  static fromDebugLogicNode(n: number, location: Vector): TextRaiseEffectLocated {
+    return new TextRaiseEffectLocated(`${n}`, location, 0, 150, new ProgressNumber(0, 3));
   }
 }

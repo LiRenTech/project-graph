@@ -82,12 +82,7 @@ export class Rectangle extends Shape {
     //   .subtract(newSize.divide(2))
     //   .subtract(new Vector(halfAmount, halfAmount));
     // return new Rectangle(newLocation, newSize);
-    return Rectangle.fromEdges(
-      this.left - amount,
-      this.top - amount,
-      this.right + amount,
-      this.bottom + amount,
-    );
+    return Rectangle.fromEdges(this.left - amount, this.top - amount, this.right + amount, this.bottom + amount);
   }
 
   public clone(): Rectangle {
@@ -102,12 +97,7 @@ export class Rectangle extends Shape {
    * @param bottom
    * @returns
    */
-  public static fromEdges(
-    left: number,
-    top: number,
-    right: number,
-    bottom: number,
-  ): Rectangle {
+  public static fromEdges(left: number, top: number, right: number, bottom: number): Rectangle {
     const location = new Vector(left, top);
     const size = new Vector(right - left, bottom - top);
     return new Rectangle(location, size);
@@ -132,10 +122,7 @@ export class Rectangle extends Shape {
    * @param rectangles
    * @returns
    */
-  public static getBoundingRectangle(
-    rectangles: Rectangle[],
-    padding: number = 0,
-  ): Rectangle {
+  public static getBoundingRectangle(rectangles: Rectangle[], padding: number = 0): Rectangle {
     if (rectangles.length === 0) {
       // 抛出异常
       throw new Error("rectangles is empty");
@@ -161,25 +148,13 @@ export class Rectangle extends Shape {
   public getBoundingLines(): Line[] {
     const lines: Line[] = [
       // top line
-      new Line(
-        new Vector(this.left, this.top),
-        new Vector(this.right, this.top),
-      ),
+      new Line(new Vector(this.left, this.top), new Vector(this.right, this.top)),
       // right line
-      new Line(
-        new Vector(this.right, this.top),
-        new Vector(this.right, this.bottom),
-      ),
+      new Line(new Vector(this.right, this.top), new Vector(this.right, this.bottom)),
       // bottom line
-      new Line(
-        new Vector(this.right, this.bottom),
-        new Vector(this.left, this.bottom),
-      ),
+      new Line(new Vector(this.right, this.bottom), new Vector(this.left, this.bottom)),
       // left line
-      new Line(
-        new Vector(this.left, this.bottom),
-        new Vector(this.left, this.top),
-      ),
+      new Line(new Vector(this.left, this.bottom), new Vector(this.left, this.top)),
     ];
 
     return lines;
@@ -247,43 +222,19 @@ export class Rectangle extends Shape {
       return true;
     }
 
-    if (
-      line.isIntersectingWithHorizontalLine(
-        this.location.y,
-        this.left,
-        this.right,
-      )
-    ) {
+    if (line.isIntersectingWithHorizontalLine(this.location.y, this.left, this.right)) {
       return true;
     }
 
-    if (
-      line.isIntersectingWithHorizontalLine(
-        this.location.y + this.size.y,
-        this.left,
-        this.right,
-      )
-    ) {
+    if (line.isIntersectingWithHorizontalLine(this.location.y + this.size.y, this.left, this.right)) {
       return true;
     }
 
-    if (
-      line.isIntersectingWithVerticalLine(
-        this.location.x,
-        this.bottom,
-        this.top,
-      )
-    ) {
+    if (line.isIntersectingWithVerticalLine(this.location.x, this.bottom, this.top)) {
       return true;
     }
 
-    if (
-      line.isIntersectingWithVerticalLine(
-        this.location.x + this.size.x,
-        this.bottom,
-        this.top,
-      )
-    ) {
+    if (line.isIntersectingWithVerticalLine(this.location.x + this.size.x, this.bottom, this.top)) {
       return true;
     }
     return false;
@@ -301,35 +252,19 @@ export class Rectangle extends Shape {
     if (this.isPointIn(line.end)) {
       result.push(line.end);
     }
-    const topResult = line.getIntersectingWithHorizontalLine(
-      this.location.y,
-      this.left,
-      this.right,
-    );
+    const topResult = line.getIntersectingWithHorizontalLine(this.location.y, this.left, this.right);
     if (topResult.intersects) {
       result.push(topResult.point!);
     }
-    const bottomResult = line.getIntersectingWithHorizontalLine(
-      this.location.y + this.size.y,
-      this.left,
-      this.right,
-    );
+    const bottomResult = line.getIntersectingWithHorizontalLine(this.location.y + this.size.y, this.left, this.right);
     if (bottomResult.intersects) {
       result.push(bottomResult.point!);
     }
-    const leftResult = line.getIntersectingWithVerticalLine(
-      this.location.x,
-      this.bottom,
-      this.top,
-    );
+    const leftResult = line.getIntersectingWithVerticalLine(this.location.x, this.bottom, this.top);
     if (leftResult.intersects) {
       result.push(leftResult.point!);
     }
-    const rightResult = line.getIntersectingWithVerticalLine(
-      this.location.x + this.size.x,
-      this.bottom,
-      this.top,
-    );
+    const rightResult = line.getIntersectingWithVerticalLine(this.location.x + this.size.x, this.bottom, this.top);
     if (rightResult.intersects) {
       result.push(rightResult.point!);
     }
@@ -381,10 +316,7 @@ export class Rectangle extends Shape {
    */
 
   public multiply(scale: number): Rectangle {
-    return new Rectangle(
-      this.location.multiply(scale),
-      this.size.multiply(scale),
-    );
+    return new Rectangle(this.location.multiply(scale), this.size.multiply(scale));
   }
 
   public toString(): string {
@@ -406,34 +338,22 @@ export class Rectangle extends Shape {
    * 请确保线段和矩形只有一个交点，出现两个交点的情况还未测试
    */
   public getLineIntersectionPoint(line: Line) {
-    const topLine = new Line(
-      this.location,
-      this.location.add(new Vector(this.size.x, 0)),
-    );
+    const topLine = new Line(this.location, this.location.add(new Vector(this.size.x, 0)));
     const topIntersection = topLine.getIntersection(line);
     if (topIntersection) {
       return topIntersection;
     }
-    const bottomLine = new Line(
-      this.location.add(new Vector(0, this.size.y)),
-      this.location.add(this.size),
-    );
+    const bottomLine = new Line(this.location.add(new Vector(0, this.size.y)), this.location.add(this.size));
     const bottomIntersection = bottomLine.getIntersection(line);
     if (bottomIntersection) {
       return bottomIntersection;
     }
-    const leftLine = new Line(
-      this.location,
-      this.location.add(new Vector(0, this.size.y)),
-    );
+    const leftLine = new Line(this.location, this.location.add(new Vector(0, this.size.y)));
     const leftIntersection = leftLine.getIntersection(line);
     if (leftIntersection) {
       return leftIntersection;
     }
-    const rightLine = new Line(
-      this.location.add(new Vector(this.size.x, 0)),
-      this.location.add(this.size),
-    );
+    const rightLine = new Line(this.location.add(new Vector(this.size.x, 0)), this.location.add(this.size));
     const rightIntersection = rightLine.getIntersection(line);
     if (rightIntersection) {
       return rightIntersection;
@@ -466,9 +386,6 @@ export class Rectangle extends Shape {
   }
 
   public transformView2World(): Rectangle {
-    return new Rectangle(
-      Renderer.transformView2World(this.location),
-      Renderer.transformView2World(this.size),
-    );
+    return new Rectangle(Renderer.transformView2World(this.location), Renderer.transformView2World(this.size));
   }
 }

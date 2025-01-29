@@ -68,9 +68,7 @@ class ControllerNodeConnectionClass extends ControllerClass {
   }
 
   public mousedown: (event: MouseEvent) => void = (event) => {
-    const pressWorldLocation = Renderer.transformView2World(
-      new Vector(event.clientX, event.clientY),
-    );
+    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     if (event.button === 0) {
       this.onLeftMouseDown(pressWorldLocation);
     }
@@ -146,9 +144,7 @@ class ControllerNodeConnectionClass extends ControllerClass {
     if (!(Controller.isMouseDown[2] || Controller.isMouseDown[3])) {
       return;
     }
-    const worldLocation = Renderer.transformView2World(
-      new Vector(event.clientX, event.clientY),
-    );
+    const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     // 连接线
     let isFindConnectToNode = false;
     for (const entity of StageManager.getConnectableEntity()) {
@@ -175,11 +171,8 @@ class ControllerNodeConnectionClass extends ControllerClass {
       console.log("没有在使用", this.connectFromEntities, this._isUsing);
       return;
     }
-    const releaseWorldLocation = Renderer.transformView2World(
-      new Vector(event.clientX, event.clientY),
-    );
-    const releaseTargetEntity =
-      StageManager.findConnectableEntityByLocation(releaseWorldLocation);
+    const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const releaseTargetEntity = StageManager.findConnectableEntityByLocation(releaseWorldLocation);
     console.log("releaseTargetEntity", releaseTargetEntity);
     console.log("this.connectToEntity", this.connectToEntity);
     // 结束连线
@@ -187,9 +180,7 @@ class ControllerNodeConnectionClass extends ControllerClass {
       // 在目标节点上弹起
 
       // 区分是拖拽松开连线还是点击松开连线
-      if (
-        releaseWorldLocation.distance(this._lastRightMousePressLocation) < 5
-      ) {
+      if (releaseWorldLocation.distance(this._lastRightMousePressLocation) < 5) {
         // 距离过近，说明是点击事件，而不是拖拽事件
         // 这个可能歪打误撞地被用户触发
         this.clickMultiConnect(releaseWorldLocation);
@@ -206,14 +197,9 @@ class ControllerNodeConnectionClass extends ControllerClass {
       const newConnectFromEntities = this.connectFromEntities;
 
       addTextNodeByLocation(releaseWorldLocation, false, (uuid) => {
-        const createdNode = StageManager.getTextNodeByUUID(
-          uuid,
-        ) as ConnectableEntity;
+        const createdNode = StageManager.getTextNodeByUUID(uuid) as ConnectableEntity;
         for (const fromEntity of newConnectFromEntities) {
-          const connectResult = StageManager.connectEntity(
-            fromEntity,
-            createdNode,
-          );
+          const connectResult = StageManager.connectEntity(fromEntity, createdNode);
           if (connectResult) {
             this.addConnectEffect(fromEntity, createdNode);
           }
@@ -230,20 +216,14 @@ class ControllerNodeConnectionClass extends ControllerClass {
    */
   private clickMultiConnect(releaseWorldLocation: Vector) {
     // 右键点击位置和抬起位置重叠，说明是右键单击事件，没有发生拖拽现象
-    const releaseTargetEntity =
-      StageManager.findConnectableEntityByLocation(releaseWorldLocation);
+    const releaseTargetEntity = StageManager.findConnectableEntityByLocation(releaseWorldLocation);
     if (!releaseTargetEntity) {
       return;
     }
-    const selectedEntities = StageManager.getConnectableEntity().filter(
-      (entity) => entity.isSelected,
-    );
+    const selectedEntities = StageManager.getConnectableEntity().filter((entity) => entity.isSelected);
     // 还要保证当前舞台有节点被选中
     for (const selectedEntity of selectedEntities) {
-      const connectResult = StageManager.connectEntity(
-        selectedEntity,
-        releaseTargetEntity,
-      );
+      const connectResult = StageManager.connectEntity(selectedEntity, releaseTargetEntity);
       if (connectResult) {
         // 连接成功，特效
         this.addConnectEffect(selectedEntity, releaseTargetEntity);

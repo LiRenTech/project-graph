@@ -24,11 +24,7 @@ export class SecretEngine {
   detect(): boolean {
     const keys = this.pressedKeys.arrayList.join(" ");
     console.log(keys);
-    if (
-      keys.includes(
-        "arrowup arrowup arrowdown arrowdown arrowleft arrowright arrowleft arrowright b a",
-      )
-    ) {
+    if (keys.includes("arrowup arrowup arrowdown arrowdown arrowleft arrowright arrowleft arrowright b a")) {
       // 触发彩蛋
       Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
       return true;

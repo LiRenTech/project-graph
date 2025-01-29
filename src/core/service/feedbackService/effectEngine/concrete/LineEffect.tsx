@@ -28,16 +28,8 @@ export class LineEffect extends EffectObject {
     }
     const fromLocation = Renderer.transformWorld2View(this.fromLocation);
     const toLocation = Renderer.transformWorld2View(this.toLocation);
-    const fromColor = mixColors(
-      this.fromColor,
-      this.fromColor.toTransparent(),
-      this.timeProgress.rate,
-    );
-    const toColor = mixColors(
-      this.toColor,
-      this.toColor.toTransparent(),
-      this.timeProgress.rate,
-    );
+    const fromColor = mixColors(this.fromColor, this.fromColor.toTransparent(), this.timeProgress.rate);
+    const toColor = mixColors(this.toColor, this.toColor.toTransparent(), this.timeProgress.rate);
     CurveRenderer.renderGradientLine(
       fromLocation,
       toLocation,

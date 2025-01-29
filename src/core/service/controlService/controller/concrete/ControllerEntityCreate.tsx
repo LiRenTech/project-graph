@@ -21,15 +21,10 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
 
   Stage.selectMachine.shutDown();
 
-  const pressLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
+  const pressLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
   // 排除：在实体上双击或者在线上双击
-  if (
-    StageManager.isEntityOnLocation(pressLocation) ||
-    StageManager.isAssociationOnLocation(pressLocation)
-  ) {
+  if (StageManager.isEntityOnLocation(pressLocation) || StageManager.isAssociationOnLocation(pressLocation)) {
     return;
   }
 

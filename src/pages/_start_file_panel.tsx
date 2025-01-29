@@ -27,9 +27,7 @@ import { PathString } from "../utils/pathString";
 import { isDesktop } from "../utils/platform";
 
 export default function StartFilePanel({ open = false }: { open: boolean }) {
-  const [startFiles, setStartFiles] = React.useState<
-    StartFilesManager.StartFile[]
-  >([]);
+  const [startFiles, setStartFiles] = React.useState<StartFilesManager.StartFile[]>([]);
   const { t } = useTranslation("startFilePanel");
 
   const [currentStartFile, setCurrentStartFile] = React.useState<string>("");
@@ -240,27 +238,16 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
         </thead>
         <tbody>
           {startFiles.map((file) => (
-            <tr
-              key={file.path}
-              className={cn("border-b border-gray-600 p-2 text-gray-200")}
-            >
+            <tr key={file.path} className={cn("border-b border-gray-600 p-2 text-gray-200")}>
               <td className="w-10 text-center">
-                <div className="inline-block animate-bounce">
-                  {currentStartFile === file.path ? "📌" : ""}
-                </div>
+                <div className="inline-block animate-bounce">{currentStartFile === file.path ? "📌" : ""}</div>
               </td>
               <td>
                 <div className="flex flex-col">
-                  <span
-                    className={
-                      currentFile === file.path ? "text-green-400" : ""
-                    }
-                  >
+                  <span className={currentFile === file.path ? "text-green-400" : ""}>
                     {PathString.absolute2file(file.path)}
                   </span>
-                  {isShowAbsolutePath && (
-                    <span className="text-xs text-gray-500">{file.path}</span>
-                  )}
+                  {isShowAbsolutePath && <span className="text-xs text-gray-500">{file.path}</span>}
                 </div>
               </td>
               {isShowTime && (
@@ -278,22 +265,13 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
                 </td>
               )}
               <td className="flex justify-center">
-                <button
-                  className="mx-0.5 px-2 py-1"
-                  onClick={onLoadCurrentStartFile(file.path)}
-                >
+                <button className="mx-0.5 px-2 py-1" onClick={onLoadCurrentStartFile(file.path)}>
                   <HardDriveDownload />
                 </button>
-                <button
-                  className="mx-0.5 px-2 py-1"
-                  onClick={onSetCurrentStartFile(file.path)}
-                >
+                <button className="mx-0.5 px-2 py-1" onClick={onSetCurrentStartFile(file.path)}>
                   <Pin />
                 </button>
-                <button
-                  className="mx-0.5 px-2 py-1"
-                  onClick={onRemoveFile(file.path)}
-                >
+                <button className="mx-0.5 px-2 py-1" onClick={onRemoveFile(file.path)}>
                   <Delete />
                 </button>
               </td>
@@ -314,10 +292,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
               <FolderTree />
               {t("buttons.showAbsolutePath")}
             </span>
-            <Switch
-              value={isShowAbsolutePath}
-              onChange={(v) => setIsShowAbsolutePath(v)}
-            />
+            <Switch value={isShowAbsolutePath} onChange={(v) => setIsShowAbsolutePath(v)} />
           </div>
           <div className="flex flex-nowrap items-center justify-center">
             <span className="mr-2 flex">

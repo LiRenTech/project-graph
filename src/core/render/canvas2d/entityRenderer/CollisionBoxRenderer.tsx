@@ -20,9 +20,7 @@ export namespace CollisionBoxRenderer {
       if (shape instanceof Rectangle) {
         ShapeRenderer.renderRect(
           new Rectangle(
-            Renderer.transformWorld2View(
-              shape.location.subtract(Vector.same(7.5)),
-            ),
+            Renderer.transformWorld2View(shape.location.subtract(Vector.same(7.5))),
             shape.size.add(Vector.same(15)).multiply(Camera.currentScale),
           ),
           Color.Transparent,

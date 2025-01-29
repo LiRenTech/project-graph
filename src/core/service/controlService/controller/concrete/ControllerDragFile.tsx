@@ -27,9 +27,7 @@ ControllerDragFile.dragEnter = (event: DragEvent) => {
   event.stopPropagation();
   ControllerDragFile.isDraggingFile = true;
   Stage.effectMachine.addEffect(new TextRiseEffect("正在拖入文件"));
-  ControllerDragFile.draggingLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
+  ControllerDragFile.draggingLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 };
 
 /**
@@ -40,9 +38,7 @@ ControllerDragFile.dragEnter = (event: DragEvent) => {
 ControllerDragFile.dragOver = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
-  ControllerDragFile.draggingLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
+  ControllerDragFile.draggingLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 };
 
 /**
@@ -53,9 +49,7 @@ ControllerDragFile.dragOver = (event: DragEvent) => {
 ControllerDragFile.drop = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
-  const mouseWorldLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
+  const mouseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
   const files = event.dataTransfer?.files;
 
@@ -115,11 +109,7 @@ function readFileText(file: File): Promise<string> {
   });
 }
 
-function dealUnknownFileDrop(
-  file: File,
-  mouseWorldLocation: Vector,
-  i: number,
-) {
+function dealUnknownFileDrop(file: File, mouseWorldLocation: Vector, i: number) {
   // 未知类型，按插入一个textNode判断
   const textNode = new TextNode({
     uuid: uuidv4(),
@@ -129,12 +119,7 @@ function dealUnknownFileDrop(
     color: [0, 0, 0, 0],
     details: "unknown file type: " + file.type + "。",
   });
-  textNode.move(
-    new Vector(
-      -textNode.rectangle.size.x / 2,
-      -textNode.rectangle.size.y / 2 + i * 100,
-    ),
-  );
+  textNode.move(new Vector(-textNode.rectangle.size.x / 2, -textNode.rectangle.size.y / 2 + i * 100));
   StageManager.addTextNode(textNode);
 }
 
@@ -156,10 +141,7 @@ function dealJsonFileDrop(file: File, mouseWorldLocation: Vector) {
       console.error("文件内容为空");
       Stage.effectMachine.addEffect(new TextRiseEffect("文件内容为空"));
     } else {
-      StageManager.addSerializedData(
-        StageLoader.validate(JSON.parse(dataString)),
-        mouseWorldLocation,
-      );
+      StageManager.addSerializedData(StageLoader.validate(JSON.parse(dataString)), mouseWorldLocation);
       Stage.effectMachine.addEffect(new ViewFlashEffect(Color.White));
     }
   };
@@ -179,9 +161,7 @@ function dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
 
     if (typeof fileContent !== "string") {
       console.error("文件内容为空");
-      Stage.effectMachine.addEffect(
-        new TextRiseEffect("图片内容不是string类型"),
-      );
+      Stage.effectMachine.addEffect(new TextRiseEffect("图片内容不是string类型"));
       return;
     }
 
@@ -190,10 +170,7 @@ function dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
     // 在这里处理读取到的内容
     const imageUUID = uuidv4();
     const folderPath = PathString.dirPath(Stage.path.getFilePath());
-    writeFileBase64(
-      `${folderPath}${PathString.getSep()}${imageUUID}.png`,
-      fileContent.split(",")[1],
-    );
+    writeFileBase64(`${folderPath}${PathString.getSep()}${imageUUID}.png`, fileContent.split(",")[1]);
     const imageNode = new ImageNode({
       uuid: imageUUID,
       location: [mouseWorldLocation.x, mouseWorldLocation.y],

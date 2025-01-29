@@ -16,10 +16,7 @@ export namespace StageSerializedAdder {
    * 会自动刷新新增部分的uuid
    * @param serializedData
    */
-  export function addSerializedData(
-    serializedData: Serialized.File,
-    diffLocation = new Vector(0, 0),
-  ) {
+  export function addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
     const updatedSerializedData = refreshUUID(serializedData);
     console.log("updatedSerializedData", updatedSerializedData);
     for (const entity of updatedSerializedData.entities) {
@@ -56,10 +53,7 @@ export namespace StageSerializedAdder {
       const newUUID = uuidv4();
       // 把这个实体所涉及的所有有向边对应的target和source的UUID也刷新
       for (const edge of result.associations) {
-        if (
-          edge.type === "core:line_edge" ||
-          edge.type === "core:cublic_catmull_rom_spline_edge"
-        ) {
+        if (edge.type === "core:line_edge" || edge.type === "core:cublic_catmull_rom_spline_edge") {
           if (edge.source === oldUUID) {
             edge.source = newUUID;
           }
@@ -73,9 +67,7 @@ export namespace StageSerializedAdder {
       for (const section of result.entities) {
         if (section.type === "core:section") {
           if (section.children.includes(oldUUID)) {
-            section.children = section.children.map((child) =>
-              child === oldUUID ? newUUID : child,
-            );
+            section.children = section.children.map((child) => (child === oldUUID ? newUUID : child));
           }
         }
       }

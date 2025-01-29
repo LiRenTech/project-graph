@@ -8,16 +8,8 @@ import { cn } from "../utils/cn";
  * 标签相关面板
  * @param param0
  */
-export default function TagPanel({
-  open = false,
-  className = "",
-}: {
-  open: boolean;
-  className: string;
-}) {
-  const [tagNameList, setTagNameList] = React.useState<
-    { tagName: string; uuid: string }[]
-  >([]);
+export default function TagPanel({ open = false, className = "" }: { open: boolean; className: string }) {
+  const [tagNameList, setTagNameList] = React.useState<{ tagName: string; uuid: string }[]>([]);
 
   function updateTagNameList() {
     setTagNameList(StageManager.getTagNames());
@@ -66,11 +58,7 @@ export default function TagPanel({
       <div className="flex-1 overflow-y-auto">
         {tagNameList.map((tag) => {
           return (
-            <div
-              key={tag.uuid}
-              className="cursor-pointer hover:bg-neutral-600"
-              onClick={handleClickTag(tag.uuid)}
-            >
+            <div key={tag.uuid} className="cursor-pointer hover:bg-neutral-600" onClick={handleClickTag(tag.uuid)}>
               {tag.tagName}
             </div>
           );

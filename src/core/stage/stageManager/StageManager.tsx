@@ -71,9 +71,7 @@ export namespace StageManager {
     return entities.valuesToArray().filter((node) => node instanceof TextNode);
   }
   export function getConnectableEntity(): ConnectableEntity[] {
-    return entities
-      .valuesToArray()
-      .filter((node) => node instanceof ConnectableEntity);
+    return entities.valuesToArray().filter((node) => node instanceof ConnectableEntity);
   }
   export function isEntityExists(uuid: string): boolean {
     return entities.hasId(uuid);
@@ -85,9 +83,7 @@ export namespace StageManager {
     return entities.valuesToArray().filter((node) => node instanceof ImageNode);
   }
   export function getConnectPoints(): ConnectPoint[] {
-    return entities
-      .valuesToArray()
-      .filter((node) => node instanceof ConnectPoint);
+    return entities.valuesToArray().filter((node) => node instanceof ConnectPoint);
   }
   export function getUrlNodes(): UrlNode[] {
     return entities.valuesToArray().filter((node) => node instanceof UrlNode);
@@ -144,14 +140,10 @@ export namespace StageManager {
   }
 
   export function getLineEdges(): LineEdge[] {
-    return associations
-      .valuesToArray()
-      .filter((edge) => edge instanceof LineEdge);
+    return associations.valuesToArray().filter((edge) => edge instanceof LineEdge);
   }
   export function getCrEdges(): CublicCatmullRomSplineEdge[] {
-    return associations
-      .valuesToArray()
-      .filter((edge) => edge instanceof CublicCatmullRomSplineEdge);
+    return associations.valuesToArray().filter((edge) => edge instanceof CublicCatmullRomSplineEdge);
   }
 
   /** 关于标签的相关操作 */
@@ -224,9 +216,7 @@ export namespace StageManager {
   export let selectedEdgeCount = 0;
 
   /** 获取节点连接的子节点数组，未排除自环 */
-  export function nodeChildrenArray(
-    node: ConnectableEntity,
-  ): ConnectableEntity[] {
+  export function nodeChildrenArray(node: ConnectableEntity): ConnectableEntity[] {
     const res: ConnectableEntity[] = [];
     for (const edge of getLineEdges()) {
       if (edge.source.uuid === node.uuid) {
@@ -240,9 +230,7 @@ export namespace StageManager {
    * 获取一个节点的所有父亲节点，未排除自环
    * 性能有待优化！！
    */
-  export function nodeParentArray(
-    node: ConnectableEntity,
-  ): ConnectableEntity[] {
+  export function nodeParentArray(node: ConnectableEntity): ConnectableEntity[] {
     const res: ConnectableEntity[] = [];
     for (const edge of getLineEdges()) {
       if (edge.target.uuid === node.uuid) {
@@ -252,10 +240,7 @@ export namespace StageManager {
     return res;
   }
 
-  export function isConnected(
-    node: ConnectableEntity,
-    target: ConnectableEntity,
-  ): boolean {
+  export function isConnected(node: ConnectableEntity, target: ConnectableEntity): boolean {
     for (const edge of getLineEdges()) {
       if (edge.source === node && edge.target === target) {
         return true;
@@ -310,10 +295,7 @@ export namespace StageManager {
     for (const edge of getLineEdges()) {
       let isShifting = false;
       for (const otherEdge of getLineEdges()) {
-        if (
-          edge.source === otherEdge.target &&
-          edge.target === otherEdge.source
-        ) {
+        if (edge.source === otherEdge.target && edge.target === otherEdge.source) {
           isShifting = true;
           break;
         }
@@ -333,9 +315,7 @@ export namespace StageManager {
     }
     return null;
   }
-  export function getConnectableEntityByUUID(
-    uuid: string,
-  ): ConnectableEntity | null {
+  export function getConnectableEntityByUUID(uuid: string): ConnectableEntity | null {
     for (const node of getConnectableEntity()) {
       if (node.uuid === uuid) {
         return node;
@@ -385,9 +365,7 @@ export namespace StageManager {
     // }
     // return size;
     const size = Rectangle.getBoundingRectangle(
-      Array.from(entities.valuesToArray()).map((node) =>
-        node.collisionBox.getRectangle(),
-      ),
+      Array.from(entities.valuesToArray()).map((node) => node.collisionBox.getRectangle()),
     ).size;
 
     return size;
@@ -439,9 +417,7 @@ export namespace StageManager {
     return null;
   }
 
-  export function findConnectableEntityByLocation(
-    location: Vector,
-  ): ConnectableEntity | null {
+  export function findConnectableEntityByLocation(location: Vector): ConnectableEntity | null {
     for (const entity of getConnectableEntity()) {
       if (entity.isHiddenBySectionCollapse) {
         continue;
@@ -465,9 +441,7 @@ export namespace StageManager {
     return null;
   }
 
-  export function findConnectPointByLocation(
-    location: Vector,
-  ): ConnectPoint | null {
+  export function findConnectPointByLocation(location: Vector): ConnectPoint | null {
     for (const point of getConnectPoints()) {
       if (point.isHiddenBySectionCollapse) {
         continue;
@@ -514,10 +488,7 @@ export namespace StageManager {
   export function isAssociationOnLocation(location: Vector): boolean {
     for (const association of getAssociations()) {
       if (association instanceof LineEdge) {
-        if (
-          association.target.isHiddenBySectionCollapse &&
-          association.source.isHiddenBySectionCollapse
-        ) {
+        if (association.target.isHiddenBySectionCollapse && association.source.isHiddenBySectionCollapse) {
           continue;
         }
       }
@@ -542,11 +513,7 @@ export namespace StageManager {
     addToSections: Section[],
     selectCurrent = false,
   ): Promise<string> {
-    const res = await StageNodeAdder.addTextNodeByClick(
-      clickWorldLocation,
-      addToSections,
-      selectCurrent,
-    );
+    const res = await StageNodeAdder.addTextNodeByClick(clickWorldLocation, addToSections, selectCurrent);
     StageHistoryManager.recordStep();
     return res;
   }
@@ -565,11 +532,7 @@ export namespace StageManager {
     } else if (direction === "right") {
       directionVector = new Vector(100, 0);
     }
-    const res = await StageNodeAdder.addTextNodeFromCurrentSelectedNode(
-      directionVector,
-      [],
-      selectCurrent,
-    );
+    const res = await StageNodeAdder.addTextNodeFromCurrentSelectedNode(directionVector, [], selectCurrent);
     StageHistoryManager.recordStep();
     return res;
   }
@@ -695,9 +658,7 @@ export namespace StageManager {
    * 外部的交互层的delete键可以直接调用这个函数
    */
   export function deleteSelectedStageObjects() {
-    StageManager.deleteEntities(
-      StageManager.getEntities().filter((node) => node.isSelected),
-    );
+    StageManager.deleteEntities(StageManager.getEntities().filter((node) => node.isSelected));
     for (const edge of StageManager.getLineEdges()) {
       if (edge.isSelected) {
         StageManager.deleteEdge(edge);
@@ -724,10 +685,7 @@ export namespace StageManager {
   //   StageHistoryManager.recordStep();
   // }
 
-  export function connectEntity(
-    fromNode: ConnectableEntity,
-    toNode: ConnectableEntity,
-  ) {
+  export function connectEntity(fromNode: ConnectableEntity, toNode: ConnectableEntity) {
     if (fromNode === toNode && !isAllowAddCycleEdge) {
       return false;
     }
@@ -759,9 +717,7 @@ export namespace StageManager {
    * 反转所有选中的节点的每个节点的连线
    */
   export function reverseSelectedNodeEdge() {
-    const entities = getSelectedEntities().filter(
-      (entity) => entity instanceof ConnectableEntity,
-    );
+    const entities = getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
     for (const entity of entities) {
       reverseNodeEdges(entity);
     }
@@ -776,27 +732,17 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
-  export function addSerializedData(
-    serializedData: Serialized.File,
-    diffLocation = new Vector(0, 0),
-  ) {
+  export function addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
     StageSerializedAdder.addSerializedData(serializedData, diffLocation);
     StageHistoryManager.recordStep();
   }
 
-  export function generateNodeByText(
-    text: string,
-    indention: number = 4,
-    location = Camera.location,
-  ) {
+  export function generateNodeByText(text: string, indention: number = 4, location = Camera.location) {
     StageNodeAdder.addNodeByText(text, indention, location);
     StageHistoryManager.recordStep();
   }
 
-  export function generateNodeByMarkdown(
-    text: string,
-    location = Camera.location,
-  ) {
+  export function generateNodeByMarkdown(text: string, location = Camera.location) {
     StageNodeAdder.addNodeByMarkdown(text, location);
     StageHistoryManager.recordStep();
   }
@@ -842,10 +788,7 @@ export namespace StageManager {
       goOutSection(addEntities, fatherSection);
     }
     const section = Section.fromEntities(addEntities);
-    section.text = StageManagerUtils.replaceAutoNameTemplate(
-      await Settings.get("autoNamerSectionTemplate"),
-      section,
-    );
+    section.text = StageManagerUtils.replaceAutoNameTemplate(await Settings.get("autoNamerSectionTemplate"), section);
     entities.addValue(section, section.uuid);
     for (const fatherSection of firstParents) {
       goInSection([section], fatherSection);
@@ -896,10 +839,7 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
-  export function addConnectPointByClick(
-    location: Vector,
-    addToSections: Section[],
-  ) {
+  export function addConnectPointByClick(location: Vector, addToSections: Section[]) {
     StageNodeAdder.addConnectPoint(location, addToSections);
     StageHistoryManager.recordStep();
   }
@@ -920,10 +860,7 @@ export namespace StageManager {
   export function moveToTag(tag: string) {
     StageTagManager.moveToTag(tag);
   }
-  export function connectEntityByCrEdge(
-    fromNode: ConnectableEntity,
-    toNode: ConnectableEntity,
-  ) {
+  export function connectEntityByCrEdge(fromNode: ConnectableEntity, toNode: ConnectableEntity) {
     return StageNodeConnector.addCrEdge(fromNode, toNode);
   }
   /**

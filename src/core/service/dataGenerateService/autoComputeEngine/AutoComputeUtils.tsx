@@ -16,15 +16,10 @@ export namespace AutoComputeUtils {
    * @returns
    */
   export function getParentTextNodes(node: TextNode): TextNode[] {
-    const parents = StageManager.nodeParentArray(node).filter(
-      (node) => node instanceof TextNode,
-    );
+    const parents = StageManager.nodeParentArray(node).filter((node) => node instanceof TextNode);
     // 将parents按x的坐标排序，小的在前面
     parents.sort((a, b) => {
-      return (
-        a.collisionBox.getRectangle().location.x -
-        b.collisionBox.getRectangle().location.x
-      );
+      return a.collisionBox.getRectangle().location.x - b.collisionBox.getRectangle().location.x;
     });
     return parents;
   }
@@ -37,11 +32,7 @@ export namespace AutoComputeUtils {
   export function getChildTextNodes(node: TextNode): TextNode[] {
     return StageManager.nodeChildrenArray(node)
       .filter((node) => node instanceof TextNode)
-      .sort(
-        (a, b) =>
-          a.collisionBox.getRectangle().location.x -
-          b.collisionBox.getRectangle().location.x,
-      );
+      .sort((a, b) => a.collisionBox.getRectangle().location.x - b.collisionBox.getRectangle().location.x);
   }
 
   /**
@@ -50,9 +41,7 @@ export namespace AutoComputeUtils {
    * @param resultText
    */
   export function getNodeOneResult(node: TextNode, resultText: string) {
-    const childrenList = StageManager.nodeChildrenArray(node).filter(
-      (node) => node instanceof TextNode,
-    );
+    const childrenList = StageManager.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
     if (childrenList.length > 0) {
       for (const child of childrenList) {
         child.rename(resultText);
@@ -62,10 +51,7 @@ export namespace AutoComputeUtils {
       const newNode = new TextNode({
         uuid: uuidv4(),
         text: resultText,
-        location: [
-          node.collisionBox.getRectangle().location.x,
-          node.collisionBox.getRectangle().location.y + 100,
-        ],
+        location: [node.collisionBox.getRectangle().location.x, node.collisionBox.getRectangle().location.y + 100],
         size: [100, 100],
         color: [0, 0, 0, 0],
       });
@@ -80,9 +66,7 @@ export namespace AutoComputeUtils {
    * @param resultText
    */
   export function getSectionOneResult(section: Section, resultText: string) {
-    const childrenList = StageManager.nodeChildrenArray(section).filter(
-      (node) => node instanceof TextNode,
-    );
+    const childrenList = StageManager.nodeChildrenArray(section).filter((node) => node instanceof TextNode);
     if (childrenList.length > 0) {
       for (const child of childrenList) {
         child.rename(resultText);
@@ -92,10 +76,7 @@ export namespace AutoComputeUtils {
       const newNode = new TextNode({
         uuid: uuidv4(),
         text: resultText,
-        location: [
-          section.collisionBox.getRectangle().location.x,
-          section.collisionBox.getRectangle().bottom + 100,
-        ],
+        location: [section.collisionBox.getRectangle().location.x, section.collisionBox.getRectangle().bottom + 100],
         size: [100, 100],
         color: [0, 0, 0, 0],
       });
@@ -104,13 +85,8 @@ export namespace AutoComputeUtils {
     }
   }
 
-  export function getSectionMultiResult(
-    section: Section,
-    resultTextList: string[],
-  ) {
-    let childrenList = StageManager.nodeChildrenArray(section).filter(
-      (node) => node instanceof TextNode,
-    );
+  export function getSectionMultiResult(section: Section, resultTextList: string[]) {
+    let childrenList = StageManager.nodeChildrenArray(section).filter((node) => node instanceof TextNode);
     if (childrenList.length < resultTextList.length) {
       // 子节点数量不够，需要新建节点
       const needCount = resultTextList.length - childrenList.length;
@@ -133,9 +109,7 @@ export namespace AutoComputeUtils {
     childrenList = StageManager.nodeChildrenArray(section)
       .filter((node) => node instanceof TextNode)
       .sort(
-        (node1, node2) =>
-          node1.collisionBox.getRectangle().location.y -
-          node2.collisionBox.getRectangle().location.y,
+        (node1, node2) => node1.collisionBox.getRectangle().location.y - node2.collisionBox.getRectangle().location.y,
       );
     // 开始修改
     let i = -1;
@@ -152,9 +126,7 @@ export namespace AutoComputeUtils {
    */
   export function getMultiResult(node: TextNode, resultTextList: string[]) {
     // 先把子节点数量凑够
-    let childrenList = StageManager.nodeChildrenArray(node).filter(
-      (node) => node instanceof TextNode,
-    );
+    let childrenList = StageManager.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
     if (childrenList.length < resultTextList.length) {
       // 子节点数量不够，需要新建节点
       const needCount = resultTextList.length - childrenList.length;
@@ -177,9 +149,7 @@ export namespace AutoComputeUtils {
     childrenList = StageManager.nodeChildrenArray(node)
       .filter((node) => node instanceof TextNode)
       .sort(
-        (node1, node2) =>
-          node1.collisionBox.getRectangle().location.y -
-          node2.collisionBox.getRectangle().location.y,
+        (node1, node2) => node1.collisionBox.getRectangle().location.y - node2.collisionBox.getRectangle().location.y,
       );
     // 开始修改
     let i = -1;
@@ -205,14 +175,9 @@ export namespace AutoComputeUtils {
    * 同时判断是否有逻辑节点的父节点或子节点
    * @param node
    */
-  export function isNodeConnectedWithLogicNode(
-    node: ConnectableEntity,
-  ): boolean {
+  export function isNodeConnectedWithLogicNode(node: ConnectableEntity): boolean {
     for (const fatherNode of StageManager.nodeParentArray(node)) {
-      if (
-        fatherNode instanceof TextNode &&
-        isNameIsLogicNode(fatherNode.text)
-      ) {
+      if (fatherNode instanceof TextNode && isNameIsLogicNode(fatherNode.text)) {
         return true;
       }
     }

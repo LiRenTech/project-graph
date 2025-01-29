@@ -62,10 +62,7 @@ export default function DetailsEditPanel() {
   return (
     <>
       {isNodeTextEditing && (
-        <div
-          className="fixed z-10 flex h-48 w-72 flex-col"
-          style={getClickedNodeStyle()}
-        >
+        <div className="fixed z-10 flex h-48 w-72 flex-col" style={getClickedNodeStyle()}>
           <Input
             multiline
             onChange={setInputCurrentDetailsHandler}

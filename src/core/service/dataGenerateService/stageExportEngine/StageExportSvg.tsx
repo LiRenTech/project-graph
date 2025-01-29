@@ -25,12 +25,7 @@ export namespace StageExportSvg {
     }
     return (
       <>
-        {SvgUtils.rectangle(
-          node.rectangle,
-          node.color,
-          StageStyleManager.currentStyle.StageObjectBorderColor,
-          2,
-        )}
+        {SvgUtils.rectangle(node.rectangle, node.color, StageStyleManager.currentStyle.StageObjectBorderColor, 2)}
 
         {SvgUtils.multiLineTextFromLeftTop(
           node.text,
@@ -40,9 +35,7 @@ export namespace StageExportSvg {
             new Vector(0, Renderer.NODE_PADDING + Renderer.FONT_SIZE / 4),
           ),
           Renderer.FONT_SIZE,
-          node.color.a === 1
-            ? colorInvert(node.color)
-            : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+          node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
         )}
       </>
     );
@@ -53,12 +46,7 @@ export namespace StageExportSvg {
     }
     return (
       <>
-        {SvgUtils.rectangle(
-          section.rectangle,
-          section.color,
-          StageStyleManager.currentStyle.StageObjectBorderColor,
-          2,
-        )}
+        {SvgUtils.rectangle(section.rectangle, section.color, StageStyleManager.currentStyle.StageObjectBorderColor, 2)}
         {SvgUtils.textFromLeftTop(
           section.text,
           section.rectangle.leftTop,
@@ -72,10 +60,7 @@ export namespace StageExportSvg {
     return EdgeRenderer.getEdgeSvg(edge);
   }
 
-  function getEntitiesOuterRectangle(
-    entities: Entity[],
-    padding: number,
-  ): Rectangle {
+  function getEntitiesOuterRectangle(entities: Entity[], padding: number): Rectangle {
     let minX = Infinity;
     let minY = Infinity;
     let maxX = -Infinity;
@@ -87,31 +72,14 @@ export namespace StageExportSvg {
       if (entity.collisionBox.getRectangle().location.y < minY) {
         minY = entity.collisionBox.getRectangle().location.y - padding;
       }
-      if (
-        entity.collisionBox.getRectangle().location.x +
-          entity.collisionBox.getRectangle().size.x >
-        maxX
-      ) {
-        maxX =
-          entity.collisionBox.getRectangle().location.x +
-          entity.collisionBox.getRectangle().size.x +
-          padding;
+      if (entity.collisionBox.getRectangle().location.x + entity.collisionBox.getRectangle().size.x > maxX) {
+        maxX = entity.collisionBox.getRectangle().location.x + entity.collisionBox.getRectangle().size.x + padding;
       }
-      if (
-        entity.collisionBox.getRectangle().location.y +
-          entity.collisionBox.getRectangle().size.y >
-        maxY
-      ) {
-        maxY =
-          entity.collisionBox.getRectangle().location.y +
-          entity.collisionBox.getRectangle().size.y +
-          padding;
+      if (entity.collisionBox.getRectangle().location.y + entity.collisionBox.getRectangle().size.y > maxY) {
+        maxY = entity.collisionBox.getRectangle().location.y + entity.collisionBox.getRectangle().size.y + padding;
       }
     }
-    return new Rectangle(
-      new Vector(minX, minY),
-      new Vector(maxX - minX, maxY - minY),
-    );
+    return new Rectangle(new Vector(minX, minY), new Vector(maxX - minX, maxY - minY));
   }
 
   function dumpSelected(): React.ReactNode {
@@ -134,8 +102,7 @@ export namespace StageExportSvg {
         height={height}
         viewBox={viewBox}
         style={{
-          backgroundColor:
-            StageStyleManager.currentStyle.BackgroundColor.toString(),
+          backgroundColor: StageStyleManager.currentStyle.BackgroundColor.toString(),
         }}
       >
         {/* 选中的部分 */}
@@ -162,10 +129,7 @@ export namespace StageExportSvg {
       throw new Error("No nodes in stage.");
     }
     const padding = 30; // 留白
-    const viewRectangle = getEntitiesOuterRectangle(
-      StageManager.getEntities(),
-      padding,
-    );
+    const viewRectangle = getEntitiesOuterRectangle(StageManager.getEntities(), padding);
     // 计算画布的大小
     const width = viewRectangle.size.x;
     const height = viewRectangle.size.y;
@@ -179,8 +143,7 @@ export namespace StageExportSvg {
         height={height}
         viewBox={viewBox}
         style={{
-          backgroundColor:
-            StageStyleManager.currentStyle.BackgroundColor.toString(),
+          backgroundColor: StageStyleManager.currentStyle.BackgroundColor.toString(),
         }}
       >
         {StageManager.getTextNodes().map((node) => dumpNode(node))}

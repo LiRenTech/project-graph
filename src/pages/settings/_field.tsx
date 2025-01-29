@@ -57,19 +57,9 @@ export function SettingField({
         className="h-4 w-4 cursor-pointer text-gray-500 opacity-0 group-hover/field:opacity-100 hover:rotate-180"
         onClick={() => setValue(Settings.defaultSettings[settingKey])}
       />
-      {type === "text" && (
-        <Input value={value} onChange={setValue} placeholder={placeholder} />
-      )}
+      {type === "text" && <Input value={value} onChange={setValue} placeholder={placeholder} />}
       {type === "number" && <Input value={value} onChange={setValue} number />}
-      {type === "slider" && (
-        <Slider
-          value={value}
-          onChange={setValue}
-          min={min}
-          max={max}
-          step={step}
-        />
-      )}
+      {type === "slider" && <Slider value={value} onChange={setValue} min={min} max={max} step={step} />}
       {type === "switch" && <Switch value={value} onChange={setValue} />}
       {type === "select" && (
         <Select
@@ -86,9 +76,7 @@ export function SettingField({
           }))}
         ></Select>
       )}
-      {type === "file" && (
-        <FileChooser kind={kind} value={value} onChange={setValue} />
-      )}
+      {type === "file" && <FileChooser kind={kind} value={value} onChange={setValue} />}
     </Field>
   );
 }

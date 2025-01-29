@@ -15,14 +15,8 @@ export namespace StageNodeConnector {
    * @param fromNode
    * @param toNode
    */
-  function isConnectable(
-    fromNode: ConnectableEntity,
-    toNode: ConnectableEntity,
-  ): boolean {
-    if (
-      StageManager.isEntityExists(fromNode.uuid) &&
-      StageManager.isEntityExists(toNode.uuid)
-    ) {
+  function isConnectable(fromNode: ConnectableEntity, toNode: ConnectableEntity): boolean {
+    if (StageManager.isEntityExists(fromNode.uuid) && StageManager.isEntityExists(toNode.uuid)) {
       if (fromNode.uuid === toNode.uuid && fromNode instanceof ConnectPoint) {
         return false;
       }
@@ -61,10 +55,7 @@ export namespace StageNodeConnector {
     // return false;
   }
 
-  export function addCrEdge(
-    fromNode: ConnectableEntity,
-    toNode: ConnectableEntity,
-  ): void {
+  export function addCrEdge(fromNode: ConnectableEntity, toNode: ConnectableEntity): void {
     if (!isConnectable(fromNode, toNode)) {
       return;
     }
@@ -83,12 +74,8 @@ export namespace StageNodeConnector {
     });
     // 再重新连接
     edges.forEach((edge) => {
-      const sourceNode = StageManager.getConnectableEntityByUUID(
-        edge.source.uuid,
-      );
-      const targetNode = StageManager.getConnectableEntityByUUID(
-        edge.target.uuid,
-      );
+      const sourceNode = StageManager.getConnectableEntityByUUID(edge.source.uuid);
+      const targetNode = StageManager.getConnectableEntityByUUID(edge.target.uuid);
       if (sourceNode && targetNode) {
         connectConnectableEntity(targetNode, sourceNode, edge.text);
       }

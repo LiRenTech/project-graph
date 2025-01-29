@@ -30,11 +30,7 @@ export default function KeyBind({
 
     const handleKeyDown = (event: KeyboardEvent) => {
       event.preventDefault();
-      if (
-        event.key === "Control" ||
-        event.key === "Alt" ||
-        event.key === "Shift"
-      ) {
+      if (event.key === "Control" || event.key === "Alt" || event.key === "Shift") {
         return;
       }
       if (event.key === "Escape") {
@@ -99,8 +95,8 @@ export default function KeyBind({
   return (
     <Button
       onClick={startInput}
-      className={cn("outline-0 outline-none", {
-        "bg-blue-950 outline outline-4 outline-blue-500": choosing,
+      className={cn("bg-keybind-bg text-keybind-text border-keybind-border outline-0 outline-none", {
+        "outline-keybind-active-outline bg-blue-950 outline-4": choosing,
       })}
     >
       {value.modifiers.control && "Ctrl + "}

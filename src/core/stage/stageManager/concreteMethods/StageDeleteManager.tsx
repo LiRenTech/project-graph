@@ -57,11 +57,7 @@ export namespace StageDeleteManager {
     if (StageManager.getImageNodes().includes(entity)) {
       StageManager.deleteOneImage(entity);
       Stage.effectMachine.addEffect(
-        new ExplodeDashEffect(
-          new ProgressNumber(0, 30),
-          entity.collisionBox.getRectangle(),
-          Color.White,
-        ),
+        new ExplodeDashEffect(new ProgressNumber(0, 30), entity.collisionBox.getRectangle(), Color.White),
       );
       // 删除所有相关的边
       deleteEntityAfterClearEdges(entity);
@@ -81,11 +77,7 @@ export namespace StageDeleteManager {
       // 从数组中去除
       StageManager.deleteOneConnectPoint(entity);
       Stage.effectMachine.addEffect(
-        new ExplodeDashEffect(
-          new ProgressNumber(0, 30),
-          entity.collisionBox.getRectangle(),
-          Color.White,
-        ),
+        new ExplodeDashEffect(new ProgressNumber(0, 30), entity.collisionBox.getRectangle(), Color.White),
       );
       // 删除所有相关的边
       deleteEntityAfterClearEdges(entity);
@@ -139,10 +131,7 @@ export namespace StageDeleteManager {
     const fromNode = deleteEdge.source;
     const toNode = deleteEdge.target;
     // 先判断这两个节点是否在nodes里
-    if (
-      StageManager.isEntityExists(fromNode.uuid) &&
-      StageManager.isEntityExists(toNode.uuid)
-    ) {
+    if (StageManager.isEntityExists(fromNode.uuid) && StageManager.isEntityExists(toNode.uuid)) {
       // 删除边
       StageManager.deleteOneEdge(deleteEdge);
       StageManager.updateReferences();

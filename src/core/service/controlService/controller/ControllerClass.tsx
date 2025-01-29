@@ -93,9 +93,7 @@ export class ControllerClass {
     const now = new Date().getTime();
     if (
       now - this.lastClickTime < 300 &&
-      this.lastClickLocation.distance(
-        new Vector(event.clientX, event.clientY),
-      ) < 5
+      this.lastClickLocation.distance(new Vector(event.clientX, event.clientY)) < 5
     ) {
       this.mouseDoubleClick(event);
     }
@@ -124,9 +122,7 @@ export class ControllerClass {
 
   private _touchend = (event: TouchEvent) => {
     event.preventDefault();
-    const touch = event.changedTouches[
-      event.changedTouches.length - 1
-    ] as any as MouseEvent;
+    const touch = event.changedTouches[event.changedTouches.length - 1] as any as MouseEvent;
     // @ts-expect-error 必须给他来一个button属性
     touch.button = 0;
     this._mouseup(touch);

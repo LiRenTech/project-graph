@@ -27,18 +27,11 @@ export class ViewOutlineFlashEffect extends EffectObject {
     }
     const viewRect = Renderer.getCoverWorldRectangle();
 
-    const currentColor = mixColors(
-      this.color,
-      new Color(0, 0, 0, 0),
-      this.timeProgress.rate,
-    );
+    const currentColor = mixColors(this.color, new Color(0, 0, 0, 0), this.timeProgress.rate);
     // 左侧边缘
 
     ShapeRenderer.renderRectWithShadow(
-      new Rectangle(
-        viewRect.leftTop,
-        new Vector(20, viewRect.size.y),
-      ).transformWorld2View(),
+      new Rectangle(viewRect.leftTop, new Vector(20, viewRect.size.y)).transformWorld2View(),
       currentColor,
       Color.Transparent,
       0,
@@ -59,10 +52,7 @@ export class ViewOutlineFlashEffect extends EffectObject {
     );
     // 上侧边缘
     ShapeRenderer.renderRectWithShadow(
-      new Rectangle(
-        viewRect.leftTop,
-        new Vector(viewRect.size.x, 20),
-      ).transformWorld2View(),
+      new Rectangle(viewRect.leftTop, new Vector(viewRect.size.x, 20)).transformWorld2View(),
       currentColor,
       Color.Transparent,
       0,

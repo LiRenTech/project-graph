@@ -143,9 +143,7 @@ export namespace StringFunctions {
     if (strings.length < 2) return ["0"];
     try {
       const regex = new RegExp(strings[strings.length - 1]);
-      const results = strings
-        .slice(0, -1)
-        .map((str) => (regex.test(str) ? "1" : "0"));
+      const results = strings.slice(0, -1).map((str) => (regex.test(str) ? "1" : "0"));
       return results;
     } catch (e: any) {
       return [e.toString()];

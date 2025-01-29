@@ -40,9 +40,7 @@ export namespace StageDumper {
       type: "core:line_edge",
     };
   }
-  export function dumpCrEdge(
-    edge: CublicCatmullRomSplineEdge,
-  ): Serialized.CublicCatmullRomSplineEdge {
+  export function dumpCrEdge(edge: CublicCatmullRomSplineEdge): Serialized.CublicCatmullRomSplineEdge {
     return {
       source: edge.source.uuid,
       target: edge.target.uuid,
@@ -54,9 +52,7 @@ export namespace StageDumper {
       tension: edge.tension,
     };
   }
-  export function dumpConnectPoint(
-    connectPoint: ConnectPoint,
-  ): Serialized.ConnectPoint {
+  export function dumpConnectPoint(connectPoint: ConnectPoint): Serialized.ConnectPoint {
     return {
       location: [connectPoint.geometryCenter.x, connectPoint.geometryCenter.y],
       uuid: connectPoint.uuid,
@@ -67,10 +63,7 @@ export namespace StageDumper {
 
   export function dumpImageNode(imageNode: ImageNode): Serialized.ImageNode {
     return {
-      location: [
-        imageNode.rectangle.location.x,
-        imageNode.rectangle.location.y,
-      ],
+      location: [imageNode.rectangle.location.x, imageNode.rectangle.location.y],
       size: [imageNode.rectangle.size.x, imageNode.rectangle.size.y],
       scale: imageNode.scaleNumber,
       path: imageNode.path,
@@ -166,10 +159,7 @@ export namespace StageDumper {
       entities.push(dumpOneEntity(entity));
     }
 
-    const associations: (
-      | Serialized.LineEdge
-      | Serialized.CublicCatmullRomSplineEdge
-    )[] = [];
+    const associations: (Serialized.LineEdge | Serialized.CublicCatmullRomSplineEdge)[] = [];
     for (const edge of StageManager.getAssociations()) {
       if (edge instanceof LineEdge) {
         associations.push(dumpEdge(edge));
@@ -193,10 +183,8 @@ export namespace StageDumper {
    */
   export function dumpSelected(entities: Entity[]): Serialized.File {
     // 根据选中的实体，找到涉及的边
-    const selectedAssociations: (
-      | Serialized.LineEdge
-      | Serialized.CublicCatmullRomSplineEdge
-    )[] = dumpAssociationsByEntities(entities);
+    const selectedAssociations: (Serialized.LineEdge | Serialized.CublicCatmullRomSplineEdge)[] =
+      dumpAssociationsByEntities(entities);
 
     return {
       version: latestVersion,
@@ -224,9 +212,7 @@ export namespace StageDumper {
       | Serialized.ImageNode
       | Serialized.UrlNode
       | Serialized.PenStroke
-    )[] = entities
-      .filter((entity) => entity instanceof TextNode)
-      .map((node) => dumpTextNode(node));
+    )[] = entities.filter((entity) => entity instanceof TextNode).map((node) => dumpTextNode(node));
 
     // 遍历所有section的时候，要把section的子节点递归的加入进来。
     const addSection = (section: Section) => {
@@ -239,9 +225,7 @@ export namespace StageDumper {
         }
       }
     };
-    for (const section of entities.filter(
-      (entity) => entity instanceof Section,
-    )) {
+    for (const section of entities.filter((entity) => entity instanceof Section)) {
       addSection(section);
     }
 
@@ -251,14 +235,10 @@ export namespace StageDumper {
         .map((connectPoint) => dumpConnectPoint(connectPoint)),
     );
     selectedEntities = selectedEntities.concat(
-      ...entities
-        .filter((entity) => entity instanceof ImageNode)
-        .map((node) => dumpImageNode(node)),
+      ...entities.filter((entity) => entity instanceof ImageNode).map((node) => dumpImageNode(node)),
     );
     selectedEntities = selectedEntities.concat(
-      ...entities
-        .filter((entity) => entity instanceof UrlNode)
-        .map((node) => dumpUrlNode(node)),
+      ...entities.filter((entity) => entity instanceof UrlNode).map((node) => dumpUrlNode(node)),
     );
     return selectedEntities;
   }
@@ -272,10 +252,7 @@ export namespace StageDumper {
     entities: Entity[],
   ): (Serialized.LineEdge | Serialized.CublicCatmullRomSplineEdge)[] {
     // 准备答案数组
-    const result: (
-      | Serialized.LineEdge
-      | Serialized.CublicCatmullRomSplineEdge
-    )[] = [];
+    const result: (Serialized.LineEdge | Serialized.CublicCatmullRomSplineEdge)[] = [];
     // 生成
     for (const edge of StageManager.getAssociations()) {
       if (edge instanceof LineEdge) {

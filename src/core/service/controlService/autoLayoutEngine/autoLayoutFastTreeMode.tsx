@@ -17,8 +17,7 @@ export function autoLayoutFastTreeMode(rootNode: ConnectableEntity) {
     const spaceX = 20;
     const spaceY = 150;
     // 子节点所占空间的宽度
-    let width =
-      Math.max(0, StageManager.nodeChildrenArray(node).length - 1) * spaceX;
+    let width = Math.max(0, StageManager.nodeChildrenArray(node).length - 1) * spaceX;
     const widths: number[] = [];
     const paddings: number[] = [];
     let sumWidths = -width; // widths元素之和
@@ -30,18 +29,10 @@ export function autoLayoutFastTreeMode(rootNode: ConnectableEntity) {
       width += widths[widths.length - 1];
     }
     sumWidths += width;
-    let currentX =
-      node.geometryCenter.x -
-      (sumWidths - paddings[0] - paddings[paddings.length - 1]) / 2 -
-      paddings[0];
+    let currentX = node.geometryCenter.x - (sumWidths - paddings[0] - paddings[paddings.length - 1]) / 2 - paddings[0];
     for (let i = 0; i < widths.length; i++) {
       const child = StageManager.nodeChildrenArray(node)[i];
-      child.moveTo(
-        new Vector(
-          currentX + paddings[i],
-          node.collisionBox.getRectangle().top + spaceY,
-        ),
-      );
+      child.moveTo(new Vector(currentX + paddings[i], node.collisionBox.getRectangle().top + spaceY));
       currentX += widths[i] + spaceX;
     }
     return width;

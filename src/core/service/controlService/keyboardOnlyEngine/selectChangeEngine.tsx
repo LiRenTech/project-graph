@@ -13,17 +13,14 @@ export namespace SelectChangeEngine {
     // 单选中节点
     // 开始移动框选框
     // （总是有反直觉的地方）
-    const selectedNode = StageManager.getTextNodes().find(
-      (node) => node.isSelected,
-    );
+    const selectedNode = StageManager.getTextNodes().find((node) => node.isSelected);
     if (!selectedNode) return;
 
     if (key === "arrowup") {
       // 在节点上方查找所有节点，并选中距离上方最近的一个
       const newSelectedNode = getMostBottomNode(
         getRelatedNodes(selectedNode).filter(
-          (node: TextNode) =>
-            node.rectangle.center.y < selectedNode.rectangle.center.y,
+          (node: TextNode) => node.rectangle.center.y < selectedNode.rectangle.center.y,
         ),
       );
 
@@ -35,8 +32,7 @@ export namespace SelectChangeEngine {
       // 在节点下方查找所有节点，并选中距离下方最近的一个
       const newSelectedNode = getMostTopNode(
         getRelatedNodes(selectedNode).filter(
-          (node: TextNode) =>
-            node.rectangle.center.y > selectedNode.rectangle.center.y,
+          (node: TextNode) => node.rectangle.center.y > selectedNode.rectangle.center.y,
         ),
       );
 
@@ -48,8 +44,7 @@ export namespace SelectChangeEngine {
       // 在节点左侧查找所有节点，并选中距离左侧最近的一个
       const newSelectedNode = getMostRightNode(
         getRelatedNodes(selectedNode).filter(
-          (node: TextNode) =>
-            node.rectangle.center.x < selectedNode.rectangle.center.x,
+          (node: TextNode) => node.rectangle.center.x < selectedNode.rectangle.center.x,
         ),
       );
 
@@ -61,8 +56,7 @@ export namespace SelectChangeEngine {
       // 在节点右侧查找所有节点，并选中距离右侧最近的一个
       const newSelectedNode = getMostLeftNode(
         getRelatedNodes(selectedNode).filter(
-          (node: TextNode) =>
-            node.rectangle.center.x > selectedNode.rectangle.center.x,
+          (node: TextNode) => node.rectangle.center.x > selectedNode.rectangle.center.x,
         ),
       );
 

@@ -78,12 +78,7 @@ export class Color {
    */
 
   equals(color: Color) {
-    return (
-      this.r === color.r &&
-      this.g === color.g &&
-      this.b === color.b &&
-      this.a === color.a
-    );
+    return this.r === color.r && this.g === color.g && this.b === color.b && this.a === color.a;
   }
 
   toArray(): Serialized.Color {
@@ -136,17 +131,9 @@ export function mixColors(color1: Color, color2: Color, weight: number): Color {
  * 获取一个颜色列表的平均颜色
  */
 export function averageColors(colors: Color[]): Color {
-  const r = Math.round(
-    colors.reduce((acc, cur) => acc + cur.r, 0) / colors.length,
-  );
-  const g = Math.round(
-    colors.reduce((acc, cur) => acc + cur.g, 0) / colors.length,
-  );
-  const b = Math.round(
-    colors.reduce((acc, cur) => acc + cur.b, 0) / colors.length,
-  );
-  const a = Math.round(
-    colors.reduce((acc, cur) => acc + cur.a, 0) / colors.length,
-  );
+  const r = Math.round(colors.reduce((acc, cur) => acc + cur.r, 0) / colors.length);
+  const g = Math.round(colors.reduce((acc, cur) => acc + cur.g, 0) / colors.length);
+  const b = Math.round(colors.reduce((acc, cur) => acc + cur.b, 0) / colors.length);
+  const a = Math.round(colors.reduce((acc, cur) => acc + cur.a, 0) / colors.length);
   return new Color(r, g, b, a);
 }

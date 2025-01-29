@@ -73,11 +73,7 @@ export namespace PathString {
    * 获取符合路径文件名规则的时间字符串
    */
   export function getTime(): string {
-    const dateTime = new Date()
-      .toLocaleString()
-      .replaceAll(/\//g, "-")
-      .replaceAll(" ", "_")
-      .replaceAll(":", "-");
+    const dateTime = new Date().toLocaleString().replaceAll(/\//g, "-").replaceAll(" ", "_").replaceAll(":", "-");
     return dateTime;
   }
 
@@ -135,11 +131,7 @@ export namespace PathString {
       }
 
       // 检查主机名是否为 localhost 或者是有效的 IP 地址
-      if (
-        parsedUrl.hostname === "localhost" ||
-        parsedUrl.hostname === "obsidian" ||
-        ipPattern.test(url)
-      ) {
+      if (parsedUrl.hostname === "localhost" || parsedUrl.hostname === "obsidian" || ipPattern.test(url)) {
         return true;
       }
 

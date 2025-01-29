@@ -15,27 +15,9 @@ export class RectanglePushInEffect extends EffectObject {
   ) {
     super(timeProgress);
     this.subEffects = [
-      new LineCuttingEffect(
-        timeProgress,
-        smallRectangle.leftTop,
-        bigRectangle.leftTop,
-        Color.Green,
-        Color.Green,
-      ),
-      new LineCuttingEffect(
-        timeProgress,
-        smallRectangle.rightTop,
-        bigRectangle.rightTop,
-        Color.Green,
-        Color.Green,
-      ),
-      new LineCuttingEffect(
-        timeProgress,
-        smallRectangle.leftBottom,
-        bigRectangle.leftBottom,
-        Color.Green,
-        Color.Green,
-      ),
+      new LineCuttingEffect(timeProgress, smallRectangle.leftTop, bigRectangle.leftTop, Color.Green, Color.Green),
+      new LineCuttingEffect(timeProgress, smallRectangle.rightTop, bigRectangle.rightTop, Color.Green, Color.Green),
+      new LineCuttingEffect(timeProgress, smallRectangle.leftBottom, bigRectangle.leftBottom, Color.Green, Color.Green),
       new LineCuttingEffect(
         timeProgress,
         smallRectangle.rightBottom,

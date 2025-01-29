@@ -20,21 +20,12 @@ export class EntityDashTipEffect extends EffectObject {
     const initAccelerationSize = 0.5;
     // 顶边缘
     for (let i = 0; i < countPreLine; i++) {
-      const pointLocation = new Vector(
-        Random.randomFloat(rect.left, rect.right),
-        rect.top,
-      );
+      const pointLocation = new Vector(Random.randomFloat(rect.left, rect.right), rect.top);
       this.dashPoints.push(
         new EffectParticle(
           pointLocation,
-          pointLocation
-            .subtract(rect.center)
-            .normalize()
-            .multiply(Random.randomFloat(0, initSpeedSize)),
-          rect.center
-            .subtract(pointLocation)
-            .normalize()
-            .multiply(initAccelerationSize),
+          pointLocation.subtract(rect.center).normalize().multiply(Random.randomFloat(0, initSpeedSize)),
+          rect.center.subtract(pointLocation).normalize().multiply(initAccelerationSize),
           Color.White,
           1,
         ),
@@ -42,21 +33,12 @@ export class EntityDashTipEffect extends EffectObject {
     }
     // 右边缘
     for (let i = 0; i < countPreLine; i++) {
-      const pointLocation = new Vector(
-        rect.right,
-        Random.randomFloat(rect.top, rect.bottom),
-      );
+      const pointLocation = new Vector(rect.right, Random.randomFloat(rect.top, rect.bottom));
       this.dashPoints.push(
         new EffectParticle(
           pointLocation,
-          pointLocation
-            .subtract(rect.center)
-            .normalize()
-            .multiply(Random.randomFloat(0, initSpeedSize)),
-          rect.center
-            .subtract(pointLocation)
-            .normalize()
-            .multiply(initAccelerationSize),
+          pointLocation.subtract(rect.center).normalize().multiply(Random.randomFloat(0, initSpeedSize)),
+          rect.center.subtract(pointLocation).normalize().multiply(initAccelerationSize),
           Color.White,
           1,
         ),
@@ -64,21 +46,12 @@ export class EntityDashTipEffect extends EffectObject {
     }
     // 底边缘
     for (let i = 0; i < countPreLine; i++) {
-      const pointLocation = new Vector(
-        Random.randomFloat(rect.left, rect.right),
-        rect.bottom,
-      );
+      const pointLocation = new Vector(Random.randomFloat(rect.left, rect.right), rect.bottom);
       this.dashPoints.push(
         new EffectParticle(
           pointLocation,
-          pointLocation
-            .subtract(rect.center)
-            .normalize()
-            .multiply(Random.randomFloat(0, initSpeedSize)),
-          rect.center
-            .subtract(pointLocation)
-            .normalize()
-            .multiply(initAccelerationSize),
+          pointLocation.subtract(rect.center).normalize().multiply(Random.randomFloat(0, initSpeedSize)),
+          rect.center.subtract(pointLocation).normalize().multiply(initAccelerationSize),
           Color.White,
           1,
         ),
@@ -86,21 +59,12 @@ export class EntityDashTipEffect extends EffectObject {
     }
     // 左边缘
     for (let i = 0; i < countPreLine; i++) {
-      const pointLocation = new Vector(
-        rect.left,
-        Random.randomFloat(rect.top, rect.bottom),
-      );
+      const pointLocation = new Vector(rect.left, Random.randomFloat(rect.top, rect.bottom));
       this.dashPoints.push(
         new EffectParticle(
           pointLocation,
-          pointLocation
-            .subtract(rect.center)
-            .normalize()
-            .multiply(Random.randomFloat(0, initSpeedSize)),
-          rect.center
-            .subtract(pointLocation)
-            .normalize()
-            .multiply(initAccelerationSize),
+          pointLocation.subtract(rect.center).normalize().multiply(Random.randomFloat(0, initSpeedSize)),
+          rect.center.subtract(pointLocation).normalize().multiply(initAccelerationSize),
           Color.White,
           1,
         ),
@@ -116,10 +80,7 @@ export class EntityDashTipEffect extends EffectObject {
       point.tick();
       // 粒子和矩形边缘碰撞
       if (this.rect.isPointIn(point.location)) {
-        point.velocity = point.location
-          .subtract(this.rect.center)
-          .normalize()
-          .multiply(Random.randomFloat(0, 5));
+        point.velocity = point.location.subtract(this.rect.center).normalize().multiply(Random.randomFloat(0, 5));
       }
     }
   }

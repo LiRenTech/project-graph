@@ -45,11 +45,7 @@ export function getTextSize(text: string, size: number): Vector {
  * @param lineHeight 行高，是一个比率
  * @returns
  */
-export function getMultiLineTextSize(
-  text: string,
-  fontSize: number,
-  lineHeight: number,
-): Vector {
+export function getMultiLineTextSize(text: string, fontSize: number, lineHeight: number): Vector {
   const lines = text.split("\n");
   let width = 0;
   let height = 0;

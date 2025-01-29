@@ -33,9 +33,7 @@ export namespace EdgeRenderer {
     Settings.watch("lineStyle", updateRenderer);
   }
 
-  export function checkRendererBySettings(
-    lineStyle: Settings.Settings["lineStyle"],
-  ) {
+  export function checkRendererBySettings(lineStyle: Settings.Settings["lineStyle"]) {
     if (lineStyle === "straight") {
       currentRenderer = new StraightEdgeRenderer();
     } else if (lineStyle === "bezier") {
@@ -47,29 +45,17 @@ export namespace EdgeRenderer {
    * 更新渲染器
    */
   async function updateRenderer(style: Settings.Settings["lineStyle"]) {
-    if (
-      style === "straight" &&
-      !(currentRenderer instanceof StraightEdgeRenderer)
-    ) {
+    if (style === "straight" && !(currentRenderer instanceof StraightEdgeRenderer)) {
       currentRenderer = new StraightEdgeRenderer();
-    } else if (
-      style === "bezier" &&
-      !(currentRenderer instanceof SymmetryCurveEdgeRenderer)
-    ) {
+    } else if (style === "bezier" && !(currentRenderer instanceof SymmetryCurveEdgeRenderer)) {
       currentRenderer = new SymmetryCurveEdgeRenderer();
-    } else if (
-      style === "vertical" &&
-      !(currentRenderer instanceof VerticalPolyEdgeRenderer)
-    ) {
+    } else if (style === "vertical" && !(currentRenderer instanceof VerticalPolyEdgeRenderer)) {
       currentRenderer = new VerticalPolyEdgeRenderer();
     }
   }
 
   export function renderEdge(edge: LineEdge) {
-    if (
-      edge.source.isHiddenBySectionCollapse &&
-      edge.target.isHiddenBySectionCollapse
-    ) {
+    if (edge.source.isHiddenBySectionCollapse && edge.target.isHiddenBySectionCollapse) {
       return;
     }
 
@@ -90,27 +76,17 @@ export namespace EdgeRenderer {
 
     // 选中的高亮效果
     if (edge.isSelected) {
-      CollisionBoxRenderer.render(
-        edge.collisionBox,
-        new Color(255, 255, 0, 0.5),
-      );
+      CollisionBoxRenderer.render(edge.collisionBox, new Color(255, 255, 0, 0.5));
     }
   }
 
   export function renderCrEdge(edge: CublicCatmullRomSplineEdge) {
-    if (
-      edge.source.isHiddenBySectionCollapse &&
-      edge.target.isHiddenBySectionCollapse
-    ) {
+    if (edge.source.isHiddenBySectionCollapse && edge.target.isHiddenBySectionCollapse) {
       return;
     }
     const crShape = edge.getShape();
     // 画曲线
-    WorldRenderUtils.renderCublicCatmullRomSpline(
-      crShape,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
-      2,
-    );
+    WorldRenderUtils.renderCublicCatmullRomSpline(crShape, StageStyleManager.currentStyle.StageObjectBorderColor, 2);
     // 画控制点们
     for (const point of crShape.controlPoints) {
       ShapeRenderer.renderCircle(
@@ -129,9 +105,7 @@ export namespace EdgeRenderer {
    * 可以用于连线的某一端被折叠隐藏了的情况
    * @param innerEntity
    */
-  export function getMinNonCollapseParentSection(
-    innerEntity: ConnectableEntity,
-  ): Section {
+  export function getMinNonCollapseParentSection(innerEntity: ConnectableEntity): Section {
     const father = SectionMethods.getFatherSections(innerEntity);
     if (father.length === 0) {
       // 直接抛出错误
@@ -146,15 +120,9 @@ export namespace EdgeRenderer {
   }
 
   export function getEdgeView(edge: LineEdge): LineEdge {
-    if (
-      edge.source.isHiddenBySectionCollapse &&
-      edge.target.isHiddenBySectionCollapse
-    ) {
+    if (edge.source.isHiddenBySectionCollapse && edge.target.isHiddenBySectionCollapse) {
       return edge;
-    } else if (
-      !edge.source.isHiddenBySectionCollapse &&
-      !edge.target.isHiddenBySectionCollapse
-    ) {
+    } else if (!edge.source.isHiddenBySectionCollapse && !edge.target.isHiddenBySectionCollapse) {
       return edge;
     }
 
@@ -180,10 +148,7 @@ export namespace EdgeRenderer {
   }
 
   export function getEdgeSvg(edge: LineEdge): React.ReactNode {
-    if (
-      edge.source.isHiddenBySectionCollapse &&
-      edge.target.isHiddenBySectionCollapse
-    ) {
+    if (edge.source.isHiddenBySectionCollapse && edge.target.isHiddenBySectionCollapse) {
       return <></>;
     }
 
@@ -198,26 +163,17 @@ export namespace EdgeRenderer {
     }
   }
 
-  export function renderVirtualEdge(
-    startNode: ConnectableEntity,
-    mouseLocation: Vector,
-  ) {
+  export function renderVirtualEdge(startNode: ConnectableEntity, mouseLocation: Vector) {
     currentRenderer.renderVirtualEdge(startNode, mouseLocation);
   }
-  export function renderVirtualConfirmedEdge(
-    startNode: ConnectableEntity,
-    endNode: ConnectableEntity,
-  ) {
+  export function renderVirtualConfirmedEdge(startNode: ConnectableEntity, endNode: ConnectableEntity) {
     currentRenderer.renderVirtualConfirmedEdge(startNode, endNode);
   }
 
   export function getCuttingEffects(edge: LineEdge) {
     return currentRenderer.getCuttingEffects(edge);
   }
-  export function getConnectedEffects(
-    startNode: ConnectableEntity,
-    toNode: ConnectableEntity,
-  ) {
+  export function getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity) {
     return currentRenderer.getConnectedEffects(startNode, toNode);
   }
 
@@ -227,19 +183,11 @@ export namespace EdgeRenderer {
    * @param direction
    * @param size
    */
-  export function renderArrowHead(
-    endPoint: Vector,
-    direction: Vector,
-    size: number,
-  ) {
+  export function renderArrowHead(endPoint: Vector, direction: Vector, size: number) {
     const reDirection = direction.clone().multiply(-1);
-    const location2 = endPoint.add(
-      reDirection.multiply(size).rotateDegrees(15),
-    );
+    const location2 = endPoint.add(reDirection.multiply(size).rotateDegrees(15));
     const location3 = endPoint.add(reDirection.multiply(size * 0.5));
-    const location4 = endPoint.add(
-      reDirection.multiply(size).rotateDegrees(-15),
-    );
+    const location4 = endPoint.add(reDirection.multiply(size).rotateDegrees(-15));
     ShapeRenderer.renderPolygonAndFill(
       [
         Renderer.transformWorld2View(endPoint),
@@ -260,19 +208,11 @@ export namespace EdgeRenderer {
    * @param size
    * @returns SVG多边形字符串
    */
-  export function generateArrowHeadSvg(
-    endPoint: Vector,
-    direction: Vector,
-    size: number,
-  ): React.ReactNode {
+  export function generateArrowHeadSvg(endPoint: Vector, direction: Vector, size: number): React.ReactNode {
     const reDirection = direction.clone().multiply(-1);
-    const location2 = endPoint.add(
-      reDirection.multiply(size).rotateDegrees(15),
-    );
+    const location2 = endPoint.add(reDirection.multiply(size).rotateDegrees(15));
     const location3 = endPoint.add(reDirection.multiply(size * 0.5));
-    const location4 = endPoint.add(
-      reDirection.multiply(size).rotateDegrees(-15),
-    );
+    const location4 = endPoint.add(reDirection.multiply(size).rotateDegrees(-15));
 
     // 将计算得到的点转换为 SVG 坐标
     const pointsString = [endPoint, location2, location3, location4]

@@ -47,8 +47,7 @@ export function parseMarkdownToJSON(markdown: string): MarkdownNode[] {
       if (stack.length > 0) {
         stack[stack.length - 1].node.content += line + "\n";
         // 再去除一下最终的换行符
-        stack[stack.length - 1].node.content =
-          stack[stack.length - 1].node.content.trim();
+        stack[stack.length - 1].node.content = stack[stack.length - 1].node.content.trim();
       }
     }
   }

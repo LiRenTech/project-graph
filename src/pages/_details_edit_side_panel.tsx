@@ -36,8 +36,7 @@ export default function DetailsEditSidePanel() {
               element: "#details-editor",
               popover: {
                 title: "节点详情编辑",
-                description:
-                  "节点详情会显示在节点的下方，你可以在右侧编辑，支持 Markdown 语法。",
+                description: "节点详情会显示在节点的下方，你可以在右侧编辑，支持 Markdown 语法。",
               },
             },
             {

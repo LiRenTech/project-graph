@@ -8,16 +8,13 @@ import { Stage } from "../core/stage/Stage";
 export default function SearchingNodePanel() {
   // region 搜索相关
   const [isSearchingShow, setIsSearchingShow] = React.useState(false);
-  const [currentSearchResultIndex, setCurrentSearchResultIndex] =
-    React.useState(0);
+  const [currentSearchResultIndex, setCurrentSearchResultIndex] = React.useState(0);
 
   useEffect(() => {
     if (Stage.contentSearchEngine.searchResultNodes.length == 0) {
       setCurrentSearchResultIndex(-1);
     } else {
-      setCurrentSearchResultIndex(
-        Stage.contentSearchEngine.currentSearchResultIndex,
-      );
+      setCurrentSearchResultIndex(Stage.contentSearchEngine.currentSearchResultIndex);
     }
   }, [Stage.contentSearchEngine.currentSearchResultIndex]);
 
@@ -32,8 +29,7 @@ export default function SearchingNodePanel() {
         Controller.pressingKeySet.clear();
         const searchString = prompt("请输入要搜索的节点名称");
         if (searchString) {
-          const isHaveResult =
-            Stage.contentSearchEngine.startSearch(searchString);
+          const isHaveResult = Stage.contentSearchEngine.startSearch(searchString);
           // 搜索完毕
           if (isHaveResult) {
             setIsSearchingShow(true);

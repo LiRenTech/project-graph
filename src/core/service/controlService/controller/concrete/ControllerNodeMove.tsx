@@ -16,12 +16,9 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
     return;
   }
 
-  const pressWorldLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
+  const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
   ControllerNodeMove.lastMoveLocation = pressWorldLocation.clone();
-  const clickedEntity =
-    StageManager.findConnectableEntityByLocation(pressWorldLocation);
+  const clickedEntity = StageManager.findConnectableEntityByLocation(pressWorldLocation);
   if (clickedEntity !== null) {
     Controller.isMovingEntity = true;
     if (clickedEntity && !clickedEntity.isSelected) {
@@ -38,22 +35,14 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
 };
 
 ControllerNodeMove.mousemove = (event: MouseEvent) => {
-  if (
-    Stage.selectMachine.isUsing ||
-    Stage.cuttingMachine.isUsing ||
-    Controller.pressingKeySet.has("alt")
-  ) {
+  if (Stage.selectMachine.isUsing || Stage.cuttingMachine.isUsing || Controller.pressingKeySet.has("alt")) {
     return;
   }
   if (!Controller.isMovingEntity) {
     return;
   }
-  const worldLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
-  const diffLocation = worldLocation.subtract(
-    ControllerNodeMove.lastMoveLocation,
-  );
+  const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+  const diffLocation = worldLocation.subtract(ControllerNodeMove.lastMoveLocation);
 
   if (StageManager.isHaveEntitySelected()) {
     // 移动节点

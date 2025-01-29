@@ -38,18 +38,10 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
         new Color(255, 0, 0, 1),
         20,
       ),
-      new CircleFlameEffect(
-        new ProgressNumber(0, 15),
-        edge.bodyLine.midPoint(),
-        50,
-        new Color(255, 0, 0, 1),
-      ),
+      new CircleFlameEffect(new ProgressNumber(0, 15), edge.bodyLine.midPoint(), 50, new Color(255, 0, 0, 1)),
     ];
   }
-  getConnectedEffects(
-    startNode: ConnectableEntity,
-    toNode: ConnectableEntity,
-  ): EffectObject[] {
+  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): EffectObject[] {
     return [
       new CircleFlameEffect(
         new ProgressNumber(0, 15),
@@ -91,29 +83,15 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   public renderShiftingState(edge: LineEdge): void {
     const shiftingMidPoint = edge.shiftingMidPoint;
     // 从source.Center到shiftingMidPoint的线
-    const startLine = new Line(
-      edge.source.collisionBox.getRectangle().center,
-      shiftingMidPoint,
-    );
-    const endLine = new Line(
-      shiftingMidPoint,
-      edge.target.collisionBox.getRectangle().center,
-    );
-    let startPoint = edge.source.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(startLine);
+    const startLine = new Line(edge.source.collisionBox.getRectangle().center, shiftingMidPoint);
+    const endLine = new Line(shiftingMidPoint, edge.target.collisionBox.getRectangle().center);
+    let startPoint = edge.source.collisionBox.getRectangle().getLineIntersectionPoint(startLine);
     if (startPoint.equals(edge.source.collisionBox.getRectangle().center)) {
-      startPoint = edge.source.collisionBox
-        .getRectangle()
-        .getLineIntersectionPoint(endLine);
+      startPoint = edge.source.collisionBox.getRectangle().getLineIntersectionPoint(endLine);
     }
-    let endPoint = edge.target.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(endLine);
+    let endPoint = edge.target.collisionBox.getRectangle().getLineIntersectionPoint(endLine);
     if (endPoint.equals(edge.target.collisionBox.getRectangle().center)) {
-      endPoint = edge.target.collisionBox
-        .getRectangle()
-        .getLineIntersectionPoint(startLine);
+      endPoint = edge.target.collisionBox.getRectangle().getLineIntersectionPoint(startLine);
     }
     const curve = new SymmetryCurve(
       startPoint,
@@ -129,11 +107,8 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   public renderCycleState(edge: LineEdge): void {
     // 自环
     ShapeRenderer.renderArc(
-      Renderer.transformWorld2View(
-        edge.target.collisionBox.getRectangle().location,
-      ),
-      (edge.target.collisionBox.getRectangle().size.y / 2) *
-        Camera.currentScale,
+      Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
+      (edge.target.collisionBox.getRectangle().size.y / 2) * Camera.currentScale,
       Math.PI / 2,
       0,
       new Color(204, 204, 204),
@@ -228,14 +203,9 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   public getShiftingStageSvg(): React.ReactNode {
     return <></>;
   }
-  public renderVirtualEdge(
-    startNode: ConnectableEntity,
-    mouseLocation: Vector,
-  ): void {
+  public renderVirtualEdge(startNode: ConnectableEntity, mouseLocation: Vector): void {
     const rect = startNode.collisionBox.getRectangle();
-    const start = rect.getLineIntersectionPoint(
-      new Line(rect.center, mouseLocation),
-    );
+    const start = rect.getLineIntersectionPoint(new Line(rect.center, mouseLocation));
     const end = mouseLocation;
     const direction = end.subtract(start);
     const endDirection = new Vector(
@@ -255,10 +225,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     );
   }
 
-  public renderVirtualConfirmedEdge(
-    startNode: ConnectableEntity,
-    endNode: ConnectableEntity,
-  ): void {
+  public renderVirtualConfirmedEdge(startNode: ConnectableEntity, endNode: ConnectableEntity): void {
     const startRect = startNode.collisionBox.getRectangle();
     const endRect = endNode.collisionBox.getRectangle();
     const line = new Line(startRect.center, endRect.center);
@@ -301,11 +268,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     WorldRenderUtils.renderSymmetryCurve(curve, new Color(204, 204, 204), 2);
     // 画箭头
     const endPoint = end.add(curve.endDirection.multiply(2));
-    EdgeRenderer.renderArrowHead(
-      endPoint,
-      curve.endDirection.multiply(-1),
-      size,
-    );
+    EdgeRenderer.renderArrowHead(endPoint, curve.endDirection.multiply(-1), size);
   }
   // /**
   //  * 仅仅绘制曲线

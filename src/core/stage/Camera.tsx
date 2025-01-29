@@ -100,9 +100,7 @@ export namespace Camera {
       //   content: "前面的区域以后再来探索吧？",
       //   type: "error",
       // });
-      Stage.effectMachine.addEffect(
-        new TextRiseEffect("派蒙：前面的区域以后再来探索吧？"),
-      );
+      Stage.effectMachine.addEffect(new TextRiseEffect("派蒙：前面的区域以后再来探索吧？"));
       speed = Vector.getZero();
       reset();
       return;
@@ -126,9 +124,7 @@ export namespace Camera {
       friction = speed
         .normalize()
         .multiply(-1)
-        .multiply(
-          Camera.frictionCoefficient * speedSize ** Camera.frictionExponent,
-        );
+        .multiply(Camera.frictionCoefficient * speedSize ** Camera.frictionExponent);
     }
 
     // 速度 = 速度 + 加速度（各个方向的力之和）
@@ -171,14 +167,9 @@ export namespace Camera {
    * @param otherWorldLocation
    * @param viewLocation
    */
-  function setLocationByOtherLocation(
-    otherWorldLocation: Vector,
-    viewLocation: Vector,
-  ) {
+  function setLocationByOtherLocation(otherWorldLocation: Vector, viewLocation: Vector) {
     const otherLocationView = Renderer.transformWorld2View(otherWorldLocation);
-    const leftTopLocationWorld = Renderer.transformView2World(
-      otherLocationView.subtract(viewLocation),
-    );
+    const leftTopLocationWorld = Renderer.transformView2World(otherLocationView.subtract(viewLocation));
     const rect = Renderer.getCoverWorldRectangle();
     location = leftTopLocationWorld.add(rect.size.divide(2));
   }
@@ -191,15 +182,9 @@ export namespace Camera {
     let newCurrentScale = currentScale;
 
     if (currentScale < targetScale) {
-      newCurrentScale = Math.min(
-        currentScale + (targetScale - currentScale) * scaleExponent,
-        targetScale,
-      );
+      newCurrentScale = Math.min(currentScale + (targetScale - currentScale) * scaleExponent, targetScale);
     } else if (currentScale > targetScale) {
-      newCurrentScale = Math.max(
-        currentScale - (currentScale - targetScale) * scaleExponent,
-        targetScale,
-      );
+      newCurrentScale = Math.max(currentScale - (currentScale - targetScale) * scaleExponent, targetScale);
     }
     // 性能优化之，将缩放小数点保留四位
     newCurrentScale = parseFloat(newCurrentScale.toFixed(4));
@@ -250,10 +235,7 @@ export namespace Camera {
     // Camera.currentScale = 0.01;
     const allEntitiesSize = StageManager.getSize();
     allEntitiesSize.multiply(1.5);
-    Camera.currentScale = Math.min(
-      Renderer.h / allEntitiesSize.y,
-      Renderer.w / allEntitiesSize.x,
-    );
+    Camera.currentScale = Math.min(Renderer.h / allEntitiesSize.y, Renderer.w / allEntitiesSize.x);
     Camera.targetScale = Camera.currentScale;
   }
 
@@ -263,9 +245,7 @@ export namespace Camera {
       reset();
       return;
     }
-    const viewRectangle = Rectangle.getBoundingRectangle(
-      selectedEntity.map((e) => e.collisionBox.getRectangle()),
-    );
+    const viewRectangle = Rectangle.getBoundingRectangle(selectedEntity.map((e) => e.collisionBox.getRectangle()));
     const center = viewRectangle.center;
     Camera.location = center;
     Camera.targetLocationByScale = center.clone();
@@ -275,10 +255,7 @@ export namespace Camera {
     // 再取max 1.5 是为了防止缩放过大
     Camera.currentScale = Math.min(
       1.5,
-      Math.min(
-        Renderer.h / selectedRectangleSize.y,
-        Renderer.w / selectedRectangleSize.x,
-      ),
+      Math.min(Renderer.h / selectedRectangleSize.y, Renderer.w / selectedRectangleSize.x),
     );
     Camera.targetScale = Camera.currentScale;
   }

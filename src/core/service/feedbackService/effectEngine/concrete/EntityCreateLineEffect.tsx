@@ -22,10 +22,7 @@ export class EntityCreateLineEffect extends EffectObject {
     const rotateDegrees = 90;
     // 顶部线
     for (let i = 0; i < 5; i++) {
-      const topStartLocation = new Vector(
-        Random.randomFloat(this.rect.left, this.rect.right),
-        this.rect.top,
-      );
+      const topStartLocation = new Vector(Random.randomFloat(this.rect.left, this.rect.right), this.rect.top);
       const topEndLocation = topStartLocation.add(new Vector(0, -1000));
       const zapLineEffect = new TechLineEffect(
         topStartLocation,
@@ -42,10 +39,7 @@ export class EntityCreateLineEffect extends EffectObject {
     }
     // 底部线
     for (let i = 0; i < 5; i++) {
-      const bottomStartLocation = new Vector(
-        Random.randomFloat(this.rect.left, this.rect.right),
-        this.rect.bottom,
-      );
+      const bottomStartLocation = new Vector(Random.randomFloat(this.rect.left, this.rect.right), this.rect.bottom);
       const bottomEndLocation = bottomStartLocation.add(new Vector(0, 1000));
       const zapLineEffect = new TechLineEffect(
         bottomStartLocation,
@@ -62,10 +56,7 @@ export class EntityCreateLineEffect extends EffectObject {
     }
     // 左侧线
     for (let i = 0; i < 5; i++) {
-      const leftStartLocation = new Vector(
-        this.rect.left,
-        Random.randomFloat(this.rect.top, this.rect.bottom),
-      );
+      const leftStartLocation = new Vector(this.rect.left, Random.randomFloat(this.rect.top, this.rect.bottom));
       const leftEndLocation = leftStartLocation.add(new Vector(-1000, 0));
       const zapLineEffect = new TechLineEffect(
         leftStartLocation,
@@ -82,10 +73,7 @@ export class EntityCreateLineEffect extends EffectObject {
     }
     // 右侧线
     for (let i = 0; i < 5; i++) {
-      const rightStartLocation = new Vector(
-        this.rect.right,
-        Random.randomFloat(this.rect.top, this.rect.bottom),
-      );
+      const rightStartLocation = new Vector(this.rect.right, Random.randomFloat(this.rect.top, this.rect.bottom));
       const rightEndLocation = rightStartLocation.add(new Vector(1000, 0));
       const zapLineEffect = new TechLineEffect(
         rightStartLocation,

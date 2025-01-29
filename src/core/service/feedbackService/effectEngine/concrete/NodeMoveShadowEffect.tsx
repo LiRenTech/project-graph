@@ -47,9 +47,7 @@ export class NodeMoveShadowEffect extends EffectObject {
 
       this.pointList.push(new Vector(x, y));
       this.pointInitSpeedList.push(
-        this.rectangleSpeed
-          .multiply(Random.randomFloat(-0.1, -1))
-          .rotateDegrees(Random.randomFloat(-30, 30)),
+        this.rectangleSpeed.multiply(Random.randomFloat(-0.1, -1)).rotateDegrees(Random.randomFloat(-30, 30)),
       );
     }
   }
@@ -58,9 +56,7 @@ export class NodeMoveShadowEffect extends EffectObject {
     super.tick();
     // 移动点
     for (let i = 0; i < this.pointList.length; i++) {
-      this.pointList[i] = this.pointList[i].add(
-        this.pointInitSpeedList[i].multiply(1 - this.timeProgress.rate),
-      );
+      this.pointList[i] = this.pointList[i].add(this.pointInitSpeedList[i].multiply(1 - this.timeProgress.rate));
     }
   }
 

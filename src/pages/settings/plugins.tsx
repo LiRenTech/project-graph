@@ -60,9 +60,7 @@ export default function PluginsPage() {
       <Field
         icon={<Plug />}
         title="Core"
-        description={
-          "Provides the core functionality of the app\nAuthor: Project Graph Developers"
-        }
+        description={"Provides the core functionality of the app\nAuthor: Project Graph Developers"}
       >
         <Button disabled>
           <X />

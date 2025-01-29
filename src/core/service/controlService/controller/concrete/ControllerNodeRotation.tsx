@@ -14,9 +14,7 @@ export const ControllerNodeRotation = new ControllerClass();
 
 ControllerNodeRotation.mousewheel = (event: WheelEvent) => {
   if (Controller.pressingKeySet.has("control")) {
-    const location = Renderer.transformView2World(
-      new Vector(event.clientX, event.clientY),
-    );
+    const location = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     const hoverNode = StageManager.findTextNodeByLocation(location);
     if (hoverNode !== null) {
       // 旋转节点
@@ -33,13 +31,9 @@ ControllerNodeRotation.mousedown = (event: MouseEvent) => {
   if (event.button !== 0) {
     return;
   }
-  const pressWorldLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
+  const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
   const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
-  const isHaveEdgeSelected = StageManager.getLineEdges().some(
-    (edge) => edge.isSelected,
-  );
+  const isHaveEdgeSelected = StageManager.getLineEdges().some((edge) => edge.isSelected);
   if (clickedEdge === null) {
     return;
   }
@@ -70,19 +64,12 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
   if (Stage.selectMachine.isUsing || Stage.cuttingMachine.isUsing) {
     return;
   }
-  const worldLocation = Renderer.transformView2World(
-    new Vector(event.clientX, event.clientY),
-  );
+  const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
   if (Controller.isMouseDown[0]) {
-    const diffLocation = worldLocation.subtract(
-      ControllerNodeRotation.lastMoveLocation,
-    );
+    const diffLocation = worldLocation.subtract(ControllerNodeRotation.lastMoveLocation);
     // 拖拽连线
     Controller.isMovingEdge = true;
-    StageManager.moveEdges(
-      ControllerNodeRotation.lastMoveLocation,
-      diffLocation,
-    );
+    StageManager.moveEdges(ControllerNodeRotation.lastMoveLocation, diffLocation);
     ControllerNodeRotation.lastMoveLocation = worldLocation.clone();
   } else {
     // 什么都没有按下的情况

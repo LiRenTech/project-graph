@@ -30,11 +30,7 @@ export class ContentSearchEngine {
       const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
       // currentNode.isSelected = true;
       Stage.effectMachine.addEffect(
-        new RectangleNoteEffect(
-          new ProgressNumber(0, 50),
-          currentNode.rectangle,
-          Color.Green,
-        ),
+        new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.rectangle, Color.Green),
       );
       // 摄像机对准现在的节点
       Camera.location = currentNode.rectangle.center.clone();
@@ -57,11 +53,7 @@ export class ContentSearchEngine {
     // 选择当前搜索结果节点
     const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
     Stage.effectMachine.addEffect(
-      new RectangleNoteEffect(
-        new ProgressNumber(0, 50),
-        currentNode.rectangle,
-        Color.Green,
-      ),
+      new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.rectangle, Color.Green),
     );
     // 摄像机对准现在的节点
     Camera.location = currentNode.rectangle.center.clone();
@@ -81,11 +73,7 @@ export class ContentSearchEngine {
     // 选择当前搜索结果节点
     const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
     Stage.effectMachine.addEffect(
-      new RectangleNoteEffect(
-        new ProgressNumber(0, 50),
-        currentNode.rectangle,
-        Color.Green,
-      ),
+      new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.rectangle, Color.Green),
     );
     // 摄像机对准现在的节点
     Camera.location = currentNode.rectangle.center.clone();

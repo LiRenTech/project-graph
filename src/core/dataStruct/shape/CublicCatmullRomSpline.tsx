@@ -12,11 +12,7 @@ export class CublicCatmullRomSpline extends Shape {
   public alpha: number;
   public tension: number;
 
-  constructor(
-    controlPoints: Vector[],
-    alpha: number = 0.5,
-    tension: number = 0,
-  ) {
+  constructor(controlPoints: Vector[], alpha: number = 0.5, tension: number = 0) {
     super();
     if (controlPoints.length < 4) {
       throw new Error("There must be at least 4 control points");
@@ -29,10 +25,7 @@ export class CublicCatmullRomSpline extends Shape {
   computePath(): Vector[] {
     const result = [this.controlPoints[1]];
     for (const funcs of this.computeFunction()) {
-      const s = NumericalIntegration.romberg(
-        (t) => funcs.derivative(t).magnitude(),
-        0.5,
-      );
+      const s = NumericalIntegration.romberg((t) => funcs.derivative(t).magnitude(), 0.5);
       const maxLength = 5; //每一小段的最大长度
       let num = 1;
       for (; s / num > maxLength; num++);
@@ -144,12 +137,7 @@ export class CublicCatmullRomSpline extends Shape {
         .multiply(1 - this.tension);
 
       const a = p1.subtract(p2).multiply(2).add(m1).add(m2);
-      const b = p1
-        .subtract(p2)
-        .multiply(-3)
-        .subtract(m1)
-        .subtract(m1)
-        .subtract(m2);
+      const b = p1.subtract(p2).multiply(-3).subtract(m1).subtract(m1).subtract(m2);
       const c = m1;
       const d = p1;
       result.push({

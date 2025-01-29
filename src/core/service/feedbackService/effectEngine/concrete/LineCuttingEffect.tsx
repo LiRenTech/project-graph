@@ -32,9 +32,7 @@ export class LineCuttingEffect extends EffectObject {
       return;
     }
     const fromLocation = this.fromLocation.add(
-      this.toLocation
-        .subtract(this.fromLocation)
-        .multiply(this.timeProgress.rate),
+      this.toLocation.subtract(this.fromLocation).multiply(this.timeProgress.rate),
     );
 
     const toLocation = this.toLocation;

@@ -74,10 +74,7 @@ export namespace StageSaveManager {
    * @param addFlashEffect
    * @returns
    */
-  export async function backupHandleWithoutCurrentPath(
-    data: Serialized.File,
-    addFlashEffect = true,
-  ) {
+  export async function backupHandleWithoutCurrentPath(data: Serialized.File, addFlashEffect = true) {
     if (Stage.path.isDraft()) {
       throw new Error("当前文档的状态为草稿，无法备份");
     }

@@ -9,9 +9,7 @@ export namespace StageTagManager {
    * 目前先仅支持TextNode
    */
   export function changeTagBySelected() {
-    for (const selectedEntities of StageManager.getSelectedEntities().filter(
-      (entity) => entity instanceof TextNode,
-    )) {
+    for (const selectedEntities of StageManager.getSelectedEntities().filter((entity) => entity instanceof TextNode)) {
       if (StageManager.TagOptions.hasTag(selectedEntities.uuid)) {
         StageManager.TagOptions.removeTag(selectedEntities.uuid);
       } else {

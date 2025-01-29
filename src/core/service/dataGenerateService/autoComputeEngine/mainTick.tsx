@@ -13,17 +13,11 @@ import { MathFunctions } from "./functions/mathLogic";
 import { NodeLogic } from "./functions/nodeLogic";
 import { ProgramFunctions } from "./functions/programLogic";
 import { StringFunctions } from "./functions/stringLogic";
-import {
-  LogicNodeNameEnum,
-  LogicNodeSimpleOperatorEnum,
-} from "./logicNodeNameEnum";
+import { LogicNodeNameEnum, LogicNodeSimpleOperatorEnum } from "./logicNodeNameEnum";
 
 type MathFunctionType = (args: number[]) => number[];
 type StringFunctionType = (args: string[]) => string[];
-type OtherFunctionType = (
-  fatherNodes: ConnectableEntity[],
-  childNodes: ConnectableEntity[],
-) => string[];
+type OtherFunctionType = (fatherNodes: ConnectableEntity[], childNodes: ConnectableEntity[]) => string[];
 type StringFunctionMap = Record<string, StringFunctionType>;
 type OtherFunctionMap = Record<string, OtherFunctionType>;
 /**
@@ -53,12 +47,8 @@ const MapOperationNameFunction: StringFunctionMap = {
   // 比较
   [LogicNodeSimpleOperatorEnum.LT]: funcTypeTrans(CompareFunctions.lessThan),
   [LogicNodeSimpleOperatorEnum.GT]: funcTypeTrans(CompareFunctions.greaterThan),
-  [LogicNodeSimpleOperatorEnum.LTE]: funcTypeTrans(
-    CompareFunctions.isIncreasing,
-  ),
-  [LogicNodeSimpleOperatorEnum.GTE]: funcTypeTrans(
-    CompareFunctions.isDecreasing,
-  ),
+  [LogicNodeSimpleOperatorEnum.LTE]: funcTypeTrans(CompareFunctions.isIncreasing),
+  [LogicNodeSimpleOperatorEnum.GTE]: funcTypeTrans(CompareFunctions.isDecreasing),
   [LogicNodeSimpleOperatorEnum.EQ]: funcTypeTrans(CompareFunctions.isSame),
   [LogicNodeSimpleOperatorEnum.NEQ]: funcTypeTrans(CompareFunctions.isDistinct),
   // 逻辑门
@@ -110,15 +100,11 @@ const MapNameFunction: StringFunctionMap = {
   [LogicNodeNameEnum.MEDIAN]: funcTypeTrans(MathFunctions.median),
   [LogicNodeNameEnum.MODE]: funcTypeTrans(MathFunctions.mode),
   [LogicNodeNameEnum.VARIANCE]: funcTypeTrans(MathFunctions.variance),
-  [LogicNodeNameEnum.STANDARD_DEVIATION]: funcTypeTrans(
-    MathFunctions.standardDeviation,
-  ),
+  [LogicNodeNameEnum.STANDARD_DEVIATION]: funcTypeTrans(MathFunctions.standardDeviation),
   [LogicNodeNameEnum.RANDOM]: funcTypeTrans(MathFunctions.random),
   [LogicNodeNameEnum.RANDOM_INT]: funcTypeTrans(MathFunctions.randomInt),
   [LogicNodeNameEnum.RANDOM_FLOAT]: funcTypeTrans(MathFunctions.randomFloat),
-  [LogicNodeNameEnum.RANDOM_POISSON]: funcTypeTrans(
-    MathFunctions.randomPoisson,
-  ),
+  [LogicNodeNameEnum.RANDOM_POISSON]: funcTypeTrans(MathFunctions.randomPoisson),
   // 逻辑门
   [LogicNodeNameEnum.AND]: funcTypeTrans(MathFunctions.and),
   [LogicNodeNameEnum.OR]: funcTypeTrans(MathFunctions.or),
@@ -157,12 +143,9 @@ const MapOtherFunction: OtherFunctionMap = {
   [LogicNodeNameEnum.PLAY_SOUND]: NodeLogic.playSound,
   [LogicNodeNameEnum.FPS]: NodeLogic.getFps,
   [LogicNodeNameEnum.GET_NODE_RGBA]: NodeLogic.getNodeRGBA,
-  [LogicNodeNameEnum.COLLECT_NODE_DETAILS_BY_RGBA]:
-    NodeLogic.collectNodeDetailsByRGBA,
-  [LogicNodeNameEnum.COLLECT_NODE_NAME_BY_RGBA]:
-    NodeLogic.collectNodeNameByRGBA,
-  [LogicNodeNameEnum.CREATE_TEXT_NODE_ON_LOCATION]:
-    NodeLogic.createTextNodeOnLocation,
+  [LogicNodeNameEnum.COLLECT_NODE_DETAILS_BY_RGBA]: NodeLogic.collectNodeDetailsByRGBA,
+  [LogicNodeNameEnum.COLLECT_NODE_NAME_BY_RGBA]: NodeLogic.collectNodeNameByRGBA,
+  [LogicNodeNameEnum.CREATE_TEXT_NODE_ON_LOCATION]: NodeLogic.createTextNodeOnLocation,
 };
 
 /**
@@ -184,24 +167,18 @@ export function autoComputeEngineTick(tickNumber: number) {
   // 用于显示逻辑节点执行顺序标号
   let i = 0;
 
-  let nodes = StageManager.getTextNodes().filter((node) =>
-    isTextNodeLogic(node),
-  );
+  let nodes = StageManager.getTextNodes().filter((node) => isTextNodeLogic(node));
   nodes = sortEntityByLocation(nodes) as TextNode[];
 
   // 自动计算引擎功能
 
   for (const node of nodes) {
     computeTextNode(node);
-    Stage.effectMachine.addEffect(
-      TextRaiseEffectLocated.fromDebugLogicNode(i, node.geometryCenter),
-    );
+    Stage.effectMachine.addEffect(TextRaiseEffectLocated.fromDebugLogicNode(i, node.geometryCenter));
     i++;
   }
   // region 计算section
-  let sections = StageManager.getSections().filter(
-    (section) => isSectionLogic(section) && section.text.length > 0,
-  );
+  let sections = StageManager.getSections().filter((section) => isSectionLogic(section) && section.text.length > 0);
   sections = sortEntityByLocation(sections) as Section[];
 
   for (const section of sections) {
@@ -209,9 +186,7 @@ export function autoComputeEngineTick(tickNumber: number) {
   }
   // region 根据Edge计算
   for (const edge of StageManager.getLineEdges().sort(
-    (a, b) =>
-      a.source.collisionBox.getRectangle().location.x -
-      b.source.collisionBox.getRectangle().location.x,
+    (a, b) => a.source.collisionBox.getRectangle().location.x - b.source.collisionBox.getRectangle().location.x,
   )) {
     computeEdge(edge);
   }
@@ -245,21 +220,14 @@ function isSectionLogic(section: Section): boolean {
  * @param entities
  * @returns
  */
-function sortEntityByLocation(
-  entities: ConnectableEntity[],
-): ConnectableEntity[] {
+function sortEntityByLocation(entities: ConnectableEntity[]): ConnectableEntity[] {
   // 按照y坐标排序
   // 太草了，2025.1.18 周六晚上littlefean发现y轴排序不能只传递一个对象，要传递两个对象然后相互减
   // 否则就拍了个寂寞……
   return entities.sort((a, b) => {
-    const yDiff =
-      a.collisionBox.getRectangle().location.y -
-      b.collisionBox.getRectangle().location.y;
+    const yDiff = a.collisionBox.getRectangle().location.y - b.collisionBox.getRectangle().location.y;
     if (yDiff === 0) {
-      return (
-        a.collisionBox.getRectangle().location.x -
-        b.collisionBox.getRectangle().location.x
-      );
+      return a.collisionBox.getRectangle().location.x - b.collisionBox.getRectangle().location.x;
     }
     return yDiff;
   });
@@ -273,13 +241,9 @@ function computeTextNode(node: TextNode) {
   for (const name of Object.keys(MapNameFunction)) {
     if (node.text === name) {
       // 发现了一个逻辑节点
-      Stage.effectMachine.addEffect(
-        RectangleLittleNoteEffect.fromUtilsLittleNote(node),
-      );
+      Stage.effectMachine.addEffect(RectangleLittleNoteEffect.fromUtilsLittleNote(node));
 
-      const result = MapNameFunction[name](
-        AutoComputeUtils.getParentTextNodes(node).map((p) => p.text),
-      );
+      const result = MapNameFunction[name](AutoComputeUtils.getParentTextNodes(node).map((p) => p.text));
       AutoComputeUtils.getMultiResult(node, result);
     }
   }
@@ -302,9 +266,7 @@ function computeSection(section: Section) {
       // 发现了一个逻辑Section
       const inputStringList: string[] = [];
       for (const child of section.children.sort(
-        (a, b) =>
-          a.collisionBox.getRectangle().location.x -
-          b.collisionBox.getRectangle().location.x,
+        (a, b) => a.collisionBox.getRectangle().location.x - b.collisionBox.getRectangle().location.x,
       )) {
         if (child instanceof TextNode) {
           inputStringList.push(child.text);

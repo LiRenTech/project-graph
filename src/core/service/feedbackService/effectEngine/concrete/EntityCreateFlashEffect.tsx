@@ -30,10 +30,6 @@ export class EntityCreateFlashEffect extends EffectObject {
     if (this.timeProgress.isFull) {
       return;
     }
-    WorldRenderUtils.renderRectangleFlash(
-      this.rectangle,
-      Color.White,
-      50 * (1 - this.timeProgress.rate),
-    );
+    WorldRenderUtils.renderRectangleFlash(this.rectangle, Color.White, 50 * (1 - this.timeProgress.rate));
   }
 }

@@ -25,9 +25,7 @@ export default function About() {
       // versions.json 列表中的每一个version字段都必须是tauri.conf.json中填写的值的前缀
 
       setVersion(version);
-      const versionObject = versions.find((vo) =>
-        version.startsWith(vo.version),
-      );
+      const versionObject = versions.find((vo) => version.startsWith(vo.version));
       if (versionObject) {
         setVersionName(versionObject.name);
         setVersionNameEn(versionObject.name_en);
@@ -60,9 +58,7 @@ export default function About() {
             }}
           >
             <Download />
-            {updating
-              ? t("updater.downloading")
-              : `${t("updater.available")}: ${update.version}`}
+            {updating ? t("updater.downloading") : `${t("updater.available")}: ${update.version}`}
           </Button>
         )}
         <div className="flex flex-wrap justify-center gap-2">
@@ -70,15 +66,11 @@ export default function About() {
             <BookOpen />
             {t("links.documentation")}
           </Button>
-          <Button
-            onClick={() => open("https://github.com/LiRenTech/project-graph")}
-          >
+          <Button onClick={() => open("https://github.com/LiRenTech/project-graph")}>
             <Github />
             {t("links.github")}
           </Button>
-          <Button
-            onClick={() => open("https://www.bilibili.com/video/BV1hmHKeDE9D")}
-          >
+          <Button onClick={() => open("https://www.bilibili.com/video/BV1hmHKeDE9D")}>
             <Bilibili />
             {t("links.video")}
           </Button>
@@ -92,11 +84,7 @@ export default function About() {
             <QQ />
             {t("links.qq")}
           </Button>
-          <Button
-            onClick={() =>
-              open("https://forum.d2learn.org/category/16/project-graph")
-            }
-          >
+          <Button onClick={() => open("https://forum.d2learn.org/category/16/project-graph")}>
             <MessageCircleCode />
             {t("links.forum")}
           </Button>

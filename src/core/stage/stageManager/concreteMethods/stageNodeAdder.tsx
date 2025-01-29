@@ -1,8 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import {
-  MarkdownNode,
-  parseMarkdownToJSON,
-} from "../../../../utils/markdownParse";
+import { MarkdownNode, parseMarkdownToJSON } from "../../../../utils/markdownParse";
 import { MonoStack } from "../../../dataStruct/MonoStack";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
@@ -40,20 +37,14 @@ export namespace StageNodeAdder {
       size: [100, 100],
     });
     // 将node本身向左上角移动，使其居中
-    node.moveTo(
-      node.rectangle.location.subtract(node.rectangle.size.divide(2)),
-    );
+    node.moveTo(node.rectangle.location.subtract(node.rectangle.size.divide(2)));
     StageManager.addTextNode(node);
 
     for (const section of addToSections) {
       section.children.push(node);
       section.adjustLocationAndSize();
       Stage.effectMachine.addEffect(
-        new RectanglePushInEffect(
-          node.rectangle.clone(),
-          section.rectangle.clone(),
-          new ProgressNumber(0, 100),
-        ),
+        new RectanglePushInEffect(node.rectangle.clone(), section.rectangle.clone(), new ProgressNumber(0, 100)),
       );
     }
     // 处理选中问题
@@ -87,26 +78,16 @@ export namespace StageNodeAdder {
     }
     const selectedEntity = selectedEntities[0];
     const entityRectangle = selectedEntity.collisionBox.getRectangle();
-    return await addTextNodeByClick(
-      entityRectangle.center.add(distanceLocation),
-      addToSections,
-      selectCurrent,
-    );
+    return await addTextNodeByClick(entityRectangle.center.add(distanceLocation), addToSections, selectCurrent);
   }
 
   async function getAutoName(): Promise<string> {
     let template = await Settings.get("autoNamerTemplate");
-    template = StageManagerUtils.replaceAutoNameTemplate(
-      template,
-      StageManager.getTextNodes()[0],
-    );
+    template = StageManagerUtils.replaceAutoNameTemplate(template, StageManager.getTextNodes()[0]);
     return template;
   }
 
-  export function addConnectPoint(
-    clickWorldLocation: Vector,
-    addToSections: Section[],
-  ): string {
+  export function addConnectPoint(clickWorldLocation: Vector, addToSections: Section[]): string {
     const newUUID = uuidv4();
     const connectPoint = new ConnectPoint({
       uuid: newUUID,
@@ -130,11 +111,7 @@ export namespace StageNodeAdder {
   /**
    * 通过带有缩进格式的文本来增加节点
    */
-  export function addNodeByText(
-    text: string,
-    indention: number,
-    diffLocation: Vector = Vector.getZero(),
-  ) {
+  export function addNodeByText(text: string, indention: number, diffLocation: Vector = Vector.getZero()) {
     // 将本文转换成字符串数组，按换行符分割
     const lines = text.split("\n");
 
@@ -202,10 +179,7 @@ export namespace StageNodeAdder {
     return Math.floor(indent / indention);
   }
 
-  export function addNodeByMarkdown(
-    markdownText: string,
-    diffLocation: Vector = Vector.getZero(),
-  ) {
+  export function addNodeByMarkdown(markdownText: string, diffLocation: Vector = Vector.getZero()) {
     const markdownJson = parseMarkdownToJSON(markdownText);
     // 遍历markdownJson
     const dfsMarkdownNode = (markdownNode: MarkdownNode, deepLevel: number) => {
@@ -237,10 +211,7 @@ export namespace StageNodeAdder {
         uuid: newUUID,
         text: markdownNode.title,
         details: markdownNode.content,
-        location: [
-          diffLocation.x + deepLevel * 50,
-          diffLocation.y + visitedCount * 100,
-        ],
+        location: [diffLocation.x + deepLevel * 50, diffLocation.y + visitedCount * 100],
         size: [100, 100],
       });
       StageManager.addTextNode(node);
