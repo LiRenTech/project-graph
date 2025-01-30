@@ -12,6 +12,7 @@ import { Section } from "../../../../stage/stageObject/entity/Section";
 import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
+import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -144,8 +145,8 @@ class CuttingControllerClass extends ControllerClass {
         new ProgressNumber(0, 15),
         ControllerCutting.cuttingStartLocation,
         ControllerCutting.lastMoveLocation,
-        new Color(255, 0, 0, 1),
-        new Color(255, 0, 0, 1),
+        StageStyleManager.currentStyle.effects.warningShadow,
+        StageStyleManager.currentStyle.effects.warningShadow,
         ControllerCutting.cuttingStartLocation.distance(ControllerCutting.lastMoveLocation) / 10,
       ),
     );

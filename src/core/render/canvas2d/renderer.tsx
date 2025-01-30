@@ -270,7 +270,7 @@ export namespace Renderer {
         Stage.cuttingMachine.cuttingLine.start,
         Stage.cuttingMachine.cuttingLine.end,
         2,
-        Color.Red,
+        StageStyleManager.currentStyle.effects.warningShadow,
       );
     }
   }

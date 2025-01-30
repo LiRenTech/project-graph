@@ -91,6 +91,7 @@ settings:
     options:
       black: 德古拉暗黑主题
       white: 论文白色主题
+      macaron: 马卡龙主题
   lineStyle:
     title: 连线样式
     options:

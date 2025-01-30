@@ -106,6 +106,7 @@ settings:
     options:
       black: Dracula Dark Theme
       white: Paper White Theme
+      macaron: Macaron Theme
   isRenderCenterPointer:
     title: Show Center Crosshair
     description: |

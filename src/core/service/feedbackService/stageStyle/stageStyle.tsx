@@ -7,6 +7,10 @@ interface EffectColors {
   /** 粒子效果的颜色 */
   dash: Color;
   windowFlash: Color;
+  /** 警告阴影的颜色 */
+  warningShadow: Color;
+  /** 成功阴影的颜色 */
+  successShadow: Color;
 }
 
 export class StageStyle {
@@ -40,6 +44,8 @@ export class StageStyle {
     flash: Color.White,
     dash: Color.White,
     windowFlash: Color.White,
+    warningShadow: Color.Red,
+    successShadow: Color.Green,
   };
 
   private constructor() {
@@ -62,6 +68,8 @@ export class StageStyle {
       flash: Color.White,
       dash: Color.White,
       windowFlash: Color.Black,
+      warningShadow: Color.Red,
+      successShadow: Color.Green,
     };
     return style;
   }
@@ -82,6 +90,45 @@ export class StageStyle {
       flash: Color.Black,
       dash: Color.Black,
       windowFlash: Color.White,
+      warningShadow: Color.Red,
+      successShadow: Color.Green,
+    };
+    return style;
+  }
+
+  static styleMacaron(): StageStyle {
+    const style = new StageStyle();
+    // 浅粉色背景
+    style.BackgroundColor = new Color(249, 233, 234); // 樱粉色
+
+    // 网格线
+    style.GridNormalColor = new Color(98, 98, 111, 0.3);
+    style.GridHeavyColor = new Color(98, 98, 111, 0.5);
+
+    // 调试文字使用灰紫色
+    style.DetailsDebugTextColor = new Color(152, 138, 158); // 灰紫
+
+    // 选择框使用薄荷绿
+    style.SelectRectangleBorderColor = new Color(71, 108, 27, 0.5); // 薄荷绿
+    style.SelectRectangleFillColor = new Color(169, 221, 208, 0.3); // 浅薄荷
+
+    // 元素边框使用珊瑚粉
+    style.StageObjectBorderColor = new Color(242, 133, 133); // 珊瑚粉
+
+    // 碰撞盒颜色
+    style.CollideBoxPreSelectedColor = new Color(169, 221, 208, 0.3); // 薄荷绿
+    style.CollideBoxSelectedColor = new Color(143, 93, 147); // 169, 221, 208
+
+    // 文字使用深紫色
+    style.NodeDetailsTextColor = new Color(107, 89, 108); // 深灰紫
+
+    // 特效颜色调整
+    style.effects = {
+      flash: new Color(139, 88, 145),
+      dash: new Color(107, 89, 108), // 薰衣草粒子
+      windowFlash: new Color(249, 233, 234), // 背景同色
+      warningShadow: new Color(177, 133, 189),
+      successShadow: new Color(120, 147, 175),
     };
     return style;
   }
@@ -93,6 +140,8 @@ export class StageStyle {
         return StageStyle.styleDefault();
       case "white":
         return StageStyle.styleWhitePaper();
+      case "macaron":
+        return StageStyle.styleMacaron();
       default:
         return StageStyle.styleDefault();
     }
