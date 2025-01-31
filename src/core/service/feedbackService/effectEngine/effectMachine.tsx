@@ -24,9 +24,9 @@ export class EffectMachine implements Tickable, Renderable {
   private effects: EffectObject[] = [];
 
   public addEffect(effect: EffectObject) {
-    console.log("add effect", effect.constructor.name);
+    // console.log("add effect", effect.constructor.name);
     if (!(this.effectsPerferences[effect.constructor.name] ?? true)) {
-      console.log("effect not enabled");
+      // console.log("effect not enabled");
       return;
     }
     this.effects.push(effect);

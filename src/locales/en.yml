@@ -443,6 +443,11 @@ keyBinds:
     title: Pack Selected Entities into Section
     description: |
       Press to automatically wrap the selected entities into a new Section folder
+  textNodeToSection:
+    title: Convert Selected Text Nodes to Section Box
+    description: |
+      Press to automatically convert the selected text nodes into a new Section box
+      This can be used for the rapid creation of section boxes
   deleteSelectedStageObjects:
     title: Delete Selected Stage Objects
     description: |

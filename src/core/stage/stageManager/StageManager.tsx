@@ -925,4 +925,12 @@ export namespace StageManager {
       textNode.moveTo(currentLocation);
     }
   }
+
+  /**
+   * 将所有选中的节点转换成Section
+   */
+  export function textNodeToSection() {
+    StageSectionPackManager.textNodeToSection();
+    StageHistoryManager.recordStep();
+  }
 }

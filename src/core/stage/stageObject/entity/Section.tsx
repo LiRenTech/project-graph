@@ -142,9 +142,9 @@ export class Section extends ConnectableEntity {
 
     this._collisionBoxNormal.shapeList = rectangle.getBoundingLines();
     // 群友需求：希望Section框扩大交互范围，标题也能拖动
-    this._collisionBoxNormal.shapeList.push(
-      new Rectangle(rectangle.location.clone(), new Vector(rectangle.size.x, 50)),
-    );
+    const newRect = new Rectangle(rectangle.location.clone(), new Vector(rectangle.size.x, 50));
+    this._collisionBoxNormal.shapeList.push(newRect);
+    console.log(newRect);
     // 调整折叠状态
     this._collisionBoxWhenCollapsed = this.collapsedCollisionBox();
   }

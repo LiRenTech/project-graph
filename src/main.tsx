@@ -391,6 +391,15 @@ async function registerKeyBinds() {
     StageManager.selectAll();
     Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(Color.Green));
   });
+  (
+    await KeyBinds.create("textNodeToSection", "g", {
+      control: true,
+      alt: false,
+      shift: true,
+    })
+  ).down(() => {
+    StageManager.textNodeToSection();
+  });
 
   const bind = await KeyBinds.create("keyboardOnlyGenerateNode", "tab", {
     control: false,

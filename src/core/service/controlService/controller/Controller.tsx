@@ -191,8 +191,13 @@ export namespace Controller {
   }
 
   function keydown(event: KeyboardEvent) {
+    // 2025年2月1日
     // 必须要禁止ctrl f 和ctrl+g的浏览器默认行为，否则会弹出一个框
     if (event.ctrlKey && (event.key === "f" || event.key === "g")) {
+      event.preventDefault();
+    }
+    // 禁止ctrl+shift+g 浏览器默认行为：查找上一个匹配项
+    if (event.key === "G") {
       event.preventDefault();
     }
     console.log(event.key);

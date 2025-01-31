@@ -411,6 +411,11 @@ keyBinds:
     title: 将选中的实体打包到Section框中
     description: |
       按下后，选中的实体会自动包裹到新Section框中
+  textNodeToSection:
+    title: 将选中的文本节点转换成Section框
+    description: |
+      按下后，选中的文本节点会被转换成Section框
+      可以用于section框的快速创建
   deleteSelectedStageObjects:
     title: 删除选中的舞台物体
     description: |
