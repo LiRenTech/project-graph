@@ -92,123 +92,6 @@
       "type": "core:text_node"
     },
     {
-      "location": [-4392.804841550447, -687.473860335416],
-      "size": [871.0079345703125, 76],
-      "text": "在开发CannonWar2，一起在FigJam上绘制开发流程拓扑图",
-      "uuid": "4f0321af-a8c7-406f-b440-b2f5ceaf3346",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-4284.326539532491, -567.7478996095199],
-      "size": [658.9119873046875, 76],
-      "text": "Rutubet提出可以开发一个绘制节点图的工具",
-      "uuid": "359ee3c0-853c-42d5-a394-e76ab170ab94",
-      "details": "",
-      "color": [59, 130, 246, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-4219.839646357015, -456.8735054020425],
-      "size": [535.5839233398438, 76],
-      "text": "Rutubet用JavaFx简单写了一个框架",
-      "uuid": "0c8606ff-17ab-4054-a6cd-5167d9bb8f2b",
-      "details": "",
-      "color": [59, 130, 246, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-4494.427324110069, -337.72196100211306],
-      "size": [1084.8638916015625, 76],
-      "text": "Littlefean感觉不熟悉，希望早点用，快速拷贝visual-file项目代码做了出来",
-      "uuid": "4de776a3-0d8d-4491-9770-8fe2ea119748",
-      "details": "2024.08.21",
-      "color": [22, 163, 74, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-4215.481394016408, -226.78642201935213],
-      "size": [539.2319641113281, 76],
-      "text": "ZTY优化了项目结构，使用pdm管理",
-      "uuid": "f84f72e5-c43b-4088-b158-0c5e39435aee",
-      "details": "2024.08.27",
-      "color": [234, 179, 8, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-4692.263498049366, -105.21356361833023],
-      "size": [847.0399169921875, 76],
-      "text": "Littlefean不知道如何打包windows版，先发布第一期视频",
-      "uuid": "31bf362a-3845-4cff-8751-c810ade383eb",
-      "details": "",
-      "color": [22, 163, 74, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-4582.984091343531, 4.3827950934144155],
-      "size": [639.4239501953125, 76],
-      "text": "发布视频后看观众留言解决了pdm打包问题",
-      "uuid": "e0510bf5-8c9a-471e-b85d-8cedcbe3010d",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-5100.523605931969, 113.65207985239931],
-      "size": [885.6637573242188, 76],
-      "text": "Rutubet开发liren-side，打算统一projectGraph和VisualFile",
-      "uuid": "372b3ac3-3928-47fe-9c89-8747f0dd29ba",
-      "details": "",
-      "color": [59, 130, 246, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-4096.271457643785, 116.36600804123532],
-      "size": [311.0079345703125, 76],
-      "text": "ZTY提出PyQt5过时",
-      "uuid": "e98da3ed-00bb-4dcd-baa3-dcf85e687a50",
-      "details": "",
-      "color": [234, 179, 8, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-4141.518078231404, 428.7910924804196],
-      "size": [380.89593505859375, 76],
-      "text": "ZTY将项目改为tauri框架",
-      "uuid": "01745060-bceb-48e2-8b35-8a85e043d6cf",
-      "details": "",
-      "color": [234, 179, 8, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-4618.587288593573, 236.45649659806907],
-      "size": [394.4959411621094, 76],
-      "text": "Littlefean发布第二期视频",
-      "uuid": "c942b7a4-c968-4aa1-869e-9ae260402b4d",
-      "details": "",
-      "color": [22, 163, 74, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-4089.168950504665, 263.8647397465452],
-      "size": [281.98399353027344, 76],
-      "text": "项目中添加AI功能",
-      "uuid": "9737cb11-280a-4f32-8e5c-ce43228d7310",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-4252.685717489103, 559.8982344857853],
-      "size": [605.3439331054688, 76],
-      "text": "Littlefan继续在tauri项目上重写原有功能",
-      "uuid": "9456105a-3a13-4634-8ea2-eee404383bc2",
-      "details": "",
-      "color": [22, 163, 74, 1],
-      "type": "core:text_node"
-    },
-    {
       "location": [-2407.7793509230537, -799.5410730384216],
       "size": [178.27194213867188, 76],
       "text": "发布v1.0.0",
@@ -254,7 +137,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-2055.3055138942905, -716.3429020189744],
+      "location": [-2055.3055138942905, -688.2238281423229],
       "size": [220, 76],
       "text": "完成节点碰撞",
       "uuid": "b585fb8d-c8c8-43e3-ab2b-222058b51645",
@@ -304,7 +187,7 @@
       "text": "白色UI",
       "uuid": "6e6c8fc4-ed0e-4c13-b803-af41655ebf85",
       "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {
@@ -781,7 +664,7 @@
       "text": "自定义主题",
       "uuid": "5b2208d3-27fa-4f7b-ac5c-5b96d5dd6d00",
       "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {
@@ -922,10 +805,7 @@
       "type": "core:section",
       "isCollapsed": false,
       "isHidden": false,
-      "children": [
-        "66c3d7f1-56f5-455d-a3b3-e3f22f1b1224",
-        "e931a7bf-c105-4104-91db-0044cf55713a"
-      ],
+      "children": ["66c3d7f1-56f5-455d-a3b3-e3f22f1b1224", "e931a7bf-c105-4104-91db-0044cf55713a"],
       "details": ""
     },
     {
@@ -1012,10 +892,7 @@
       "type": "core:section",
       "isCollapsed": false,
       "isHidden": false,
-      "children": [
-        "c989c4bf-c028-454c-a501-73e521c12a84",
-        "1d7486ee-3c8e-49c5-bcbb-b102e12a8aff"
-      ],
+      "children": ["c989c4bf-c028-454c-a501-73e521c12a84", "1d7486ee-3c8e-49c5-bcbb-b102e12a8aff"],
       "details": ""
     },
     {
@@ -1033,32 +910,6 @@
         "16ec1596-df63-46b5-be9d-9773fc5aa6bd",
         "a7dafe6a-78c4-4a12-9a23-56234e502dc7",
         "237ad2d4-d635-4721-b46b-56ce1db811c0"
-      ],
-      "details": ""
-    },
-    {
-      "location": [-5130.523605931969, -767.473860335416],
-      "size": [1750.960173423462, 1433.3720948212012],
-      "uuid": "ed36ce54-9859-48ad-90c0-3eb3d38a7c6c",
-      "text": "岁月史书 / 项目在多人作用下的演变",
-      "color": [0, 0, 0, 0],
-      "type": "core:section",
-      "isCollapsed": false,
-      "isHidden": false,
-      "children": [
-        "4f0321af-a8c7-406f-b440-b2f5ceaf3346",
-        "359ee3c0-853c-42d5-a394-e76ab170ab94",
-        "0c8606ff-17ab-4054-a6cd-5167d9bb8f2b",
-        "4de776a3-0d8d-4491-9770-8fe2ea119748",
-        "f84f72e5-c43b-4088-b158-0c5e39435aee",
-        "31bf362a-3845-4cff-8751-c810ade383eb",
-        "e0510bf5-8c9a-471e-b85d-8cedcbe3010d",
-        "372b3ac3-3928-47fe-9c89-8747f0dd29ba",
-        "e98da3ed-00bb-4dcd-baa3-dcf85e687a50",
-        "01745060-bceb-48e2-8b35-8a85e043d6cf",
-        "c942b7a4-c968-4aa1-869e-9ae260402b4d",
-        "9737cb11-280a-4f32-8e5c-ce43228d7310",
-        "9456105a-3a13-4634-8ea2-eee404383bc2"
       ],
       "details": ""
     },
@@ -1099,10 +950,7 @@
       "type": "core:section",
       "isCollapsed": false,
       "isHidden": false,
-      "children": [
-        "ea4e42b0-7775-481e-8de7-2d7cba1cdf67",
-        "648a3088-af9f-40fc-ac0f-26cd1df17fde"
-      ],
+      "children": ["ea4e42b0-7775-481e-8de7-2d7cba1cdf67", "648a3088-af9f-40fc-ac0f-26cd1df17fde"],
       "details": ""
     },
     {
@@ -1114,10 +962,7 @@
       "type": "core:section",
       "isCollapsed": false,
       "isHidden": false,
-      "children": [
-        "cb88dfda-8e5e-4b85-8fa9-0b3196501de7",
-        "721fb8c9-912d-453d-b70e-4c7a9bbfd227"
-      ],
+      "children": ["cb88dfda-8e5e-4b85-8fa9-0b3196501de7", "721fb8c9-912d-453d-b70e-4c7a9bbfd227"],
       "details": ""
     },
     {
@@ -1194,90 +1039,6 @@
     }
   ],
   "associations": [
-    {
-      "source": "4f0321af-a8c7-406f-b440-b2f5ceaf3346",
-      "target": "359ee3c0-853c-42d5-a394-e76ab170ab94",
-      "text": "",
-      "uuid": "e5e43326-1b6f-4125-9944-620133cf5473",
-      "type": "core:line_edge"
-    },
-    {
-      "source": "359ee3c0-853c-42d5-a394-e76ab170ab94",
-      "target": "0c8606ff-17ab-4054-a6cd-5167d9bb8f2b",
-      "text": "",
-      "uuid": "00298925-8910-4a2e-a9ce-778d8e782907",
-      "type": "core:line_edge"
-    },
-    {
-      "source": "0c8606ff-17ab-4054-a6cd-5167d9bb8f2b",
-      "target": "4de776a3-0d8d-4491-9770-8fe2ea119748",
-      "text": "",
-      "uuid": "c2c28c3e-1d04-4d51-8096-88c9c51a6575",
-      "type": "core:line_edge"
-    },
-    {
-      "source": "4de776a3-0d8d-4491-9770-8fe2ea119748",
-      "target": "f84f72e5-c43b-4088-b158-0c5e39435aee",
-      "text": "",
-      "uuid": "6d35f410-bb8d-4c52-aa77-f92ec3b484bc",
-      "type": "core:line_edge"
-    },
-    {
-      "source": "f84f72e5-c43b-4088-b158-0c5e39435aee",
-      "target": "31bf362a-3845-4cff-8751-c810ade383eb",
-      "text": "",
-      "uuid": "bc81b98c-15e9-4f48-8bb6-f97a06dd792c",
-      "type": "core:line_edge"
-    },
-    {
-      "source": "31bf362a-3845-4cff-8751-c810ade383eb",
-      "target": "e0510bf5-8c9a-471e-b85d-8cedcbe3010d",
-      "text": "",
-      "uuid": "df7ad70b-41e5-43d0-bb15-3ea35d3f6d7f",
-      "type": "core:line_edge"
-    },
-    {
-      "source": "e98da3ed-00bb-4dcd-baa3-dcf85e687a50",
-      "target": "372b3ac3-3928-47fe-9c89-8747f0dd29ba",
-      "text": "",
-      "uuid": "c84d11b3-7d84-4458-8b60-3461460b9b4d",
-      "type": "core:line_edge"
-    },
-    {
-      "source": "e0510bf5-8c9a-471e-b85d-8cedcbe3010d",
-      "target": "e98da3ed-00bb-4dcd-baa3-dcf85e687a50",
-      "text": "",
-      "uuid": "bfcc70ac-1f1f-42d6-845b-cfe483b32e73",
-      "type": "core:line_edge"
-    },
-    {
-      "source": "e98da3ed-00bb-4dcd-baa3-dcf85e687a50",
-      "target": "c942b7a4-c968-4aa1-869e-9ae260402b4d",
-      "text": "",
-      "uuid": "8eb5698b-0fe0-4fdf-8567-854a689f177b",
-      "type": "core:line_edge"
-    },
-    {
-      "source": "e98da3ed-00bb-4dcd-baa3-dcf85e687a50",
-      "target": "9737cb11-280a-4f32-8e5c-ce43228d7310",
-      "text": "",
-      "uuid": "8d8e57c0-7ec5-4afe-be85-64b4e41bc6c6",
-      "type": "core:line_edge"
-    },
-    {
-      "source": "9737cb11-280a-4f32-8e5c-ce43228d7310",
-      "target": "01745060-bceb-48e2-8b35-8a85e043d6cf",
-      "text": "",
-      "uuid": "bbbd1526-cbde-4403-a8c3-7e6825c70ea4",
-      "type": "core:line_edge"
-    },
-    {
-      "source": "01745060-bceb-48e2-8b35-8a85e043d6cf",
-      "target": "9456105a-3a13-4634-8ea2-eee404383bc2",
-      "text": "",
-      "uuid": "33f2cd48-cb2c-4ef3-bde7-fadfd809fd7a",
-      "type": "core:line_edge"
-    },
     {
       "source": "3fb815ee-e5b5-417a-9af8-900a7d6f9c05",
       "target": "b585fb8d-c8c8-43e3-ab2b-222058b51645",
