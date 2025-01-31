@@ -191,6 +191,11 @@ export namespace Controller {
   }
 
   function keydown(event: KeyboardEvent) {
+    // 必须要禁止ctrl f 和ctrl+g的浏览器默认行为，否则会弹出一个框
+    if (event.ctrlKey && (event.key === "f" || event.key === "g")) {
+      event.preventDefault();
+    }
+    console.log(event.key);
     const key = event.key.toLowerCase();
     pressingKeySet.add(key);
   }
