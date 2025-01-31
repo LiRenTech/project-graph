@@ -108,9 +108,9 @@ export class StageStyle {
     // 调试文字使用灰紫色
     style.DetailsDebugTextColor = new Color(152, 138, 158); // 灰紫
 
-    // 选择框使用薄荷绿
-    style.SelectRectangleBorderColor = new Color(71, 108, 27, 0.5); // 薄荷绿
-    style.SelectRectangleFillColor = new Color(169, 221, 208, 0.3); // 浅薄荷
+    // 选择框
+    style.SelectRectangleBorderColor = new Color(108, 71, 27, 0.5);
+    style.SelectRectangleFillColor = new Color(221, 169, 208, 0.3);
 
     // 元素边框使用珊瑚粉
     style.StageObjectBorderColor = new Color(242, 133, 133); // 珊瑚粉
@@ -133,6 +133,44 @@ export class StageStyle {
     return style;
   }
 
+  static styleMorandi(): StageStyle {
+    const style = new StageStyle();
+
+    // 使用浅冷灰色作为背景
+    style.BackgroundColor = new Color(232, 230, 231);
+
+    // 网格线使用较低饱和度的冷色调
+    style.GridNormalColor = new Color(98, 98, 111, 0.3).toColdLowSaturation(); // 冷淡蓝色调的浅灰色
+    style.GridHeavyColor = new Color(98, 98, 111, 0.5).toColdLowSaturation(); // 更深的冷灰色
+
+    // 调试文字颜色调整为更深的冷灰色
+    style.DetailsDebugTextColor = new Color(107, 114, 128); // 深灰蓝
+
+    // 选择框使用雾霾蓝和豆绿
+    style.SelectRectangleBorderColor = new Color(71, 108, 117, 0.5); // 雾霾蓝
+    style.SelectRectangleFillColor = new Color(169, 221, 208, 0.3).desaturate(0.3); // 浅豆绿
+
+    // 元素边框使用冷绿
+    style.StageObjectBorderColor = new Color(69, 72, 79);
+
+    // 碰撞盒颜色使用冷绿色和冷紫色
+    style.CollideBoxPreSelectedColor = new Color(169, 221, 208, 0.3).desaturate(0.3); // 浅豆绿
+    style.CollideBoxSelectedColor = new Color(62, 125, 83);
+
+    // 文字使用更深的冷灰色
+    style.NodeDetailsTextColor = new Color(65, 74, 84); // 深冷灰
+
+    // 特效颜色调整
+    style.effects = {
+      flash: new Color(139, 148, 157).desaturate(0.3), // 冷淡蓝
+      dash: new Color(107, 114, 128).desaturate(0.3), // 薰衣草粒子
+      windowFlash: new Color(238, 241, 240), // 背景同色
+      warningShadow: new Color(177, 183, 189).desaturate(0.3), // 冷灰蓝
+      successShadow: new Color(120, 147, 175).desaturate(0.3), // 冷蓝
+    };
+
+    return style;
+  }
   // 其他风格的静态工厂方法可以按照类似的方式添加
   static styleFromTheme(theme: Settings.Settings["theme"]): StageStyle {
     switch (theme) {
@@ -142,6 +180,8 @@ export class StageStyle {
         return StageStyle.styleWhitePaper();
       case "macaron":
         return StageStyle.styleMacaron();
+      case "morandi":
+        return StageStyle.styleMorandi();
       default:
         return StageStyle.styleDefault();
     }

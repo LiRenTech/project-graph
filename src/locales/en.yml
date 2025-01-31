@@ -107,12 +107,14 @@ settings:
       black: Dracula Dark Theme
       white: Paper White Theme
       macaron: Macaron Theme
+      morandi: Morandi Theme
   uiTheme:
     title: UI Theme
     options:
       dark: dark theme
       light: light theme
       macaron: macaron theme
+      morandi: Morandi Theme
   isRenderCenterPointer:
     title: Show Center Crosshair
     description: |

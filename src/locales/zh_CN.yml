@@ -89,15 +89,17 @@ settings:
   theme:
     title: 舞台主题颜色
     options:
-      black: 德古拉暗黑主题
+      black: 黑夜防刺眼主题
       white: 论文白色主题
-      macaron: 马卡龙主题
+      macaron: 马卡龙色系主题
+      morandi: 莫兰迪色系主题
   uiTheme:
     title: UI 主题颜色
     options:
-      dark: 暗黑主题
+      dark: 黑夜主题
       light: 明亮主题
-      macaron: 马卡龙主题
+      macaron: 马卡龙色系主题
+      morandi: 莫兰迪色系主题
   lineStyle:
     title: 连线样式
     options:
