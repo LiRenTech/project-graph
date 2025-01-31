@@ -568,7 +568,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
 function Row({ children, title, icon }: React.PropsWithChildren<{ title: string; icon: React.ReactNode }>) {
   return (
     <div className="flex gap-2">
-      <span className="flex gap-1 text-neutral-400">
+      <span className="text-appmenu-category-title flex gap-1">
         {icon} {title}
       </span>
       <div className="w-0.5 bg-neutral-700"></div>
@@ -584,7 +584,7 @@ function Col({
 }: React.PropsWithChildren<{ icon: React.ReactNode; onClick?: () => void }>) {
   return (
     <div
-      className="hover:bg-appmenu-hover-bg hover:outline-appmenu-hover-bg flex w-max cursor-pointer items-center gap-1 rounded-lg outline-0 outline-white/0 transition-all hover:outline-8 active:scale-90"
+      className="hover:bg-appmenu-hover-bg hover:outline-appmenu-hover-bg text-appmenu-item-text flex w-max cursor-pointer items-center gap-1 rounded-lg outline-0 outline-white/0 transition-all hover:outline-8 active:scale-90"
       onClick={onClick}
     >
       {icon}

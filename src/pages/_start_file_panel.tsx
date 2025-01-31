@@ -194,7 +194,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
     // 群友joe说蓝色一点更好看
     <div
       className={cn(
-        "pointer-events-none fixed top-1/2 left-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 scale-75 transform flex-col items-center overflow-y-scroll rounded-md border border-neutral-700 bg-neutral-900 px-2 py-6 opacity-0",
+        "bg-panel-bg text-panel-text pointer-events-none fixed top-1/2 left-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 scale-75 transform flex-col items-center overflow-y-scroll rounded-md border px-2 py-6 opacity-0",
         {
           "pointer-events-auto scale-100 opacity-100": open,
           "opacity-20": isPanelTransparent,
@@ -204,7 +204,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
         e.stopPropagation();
       }}
     >
-      <h2 className="mb-3 text-xl font-bold text-white">{t("title")}</h2>
+      <h2 className="mb-3 text-xl font-bold">{t("title")}</h2>
       <div className="mb-3 flex justify-between">
         <IconButton onClick={onAddFile}>
           <span className="flex">
@@ -280,7 +280,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
         </tbody>
       </table>
       <div>
-        <div className="mt-3 text-sm text-gray-500">
+        <div className="text-panel-details-text mt-3 text-sm">
           <p>{t("tips.0")}</p>
           <p>{t("tips.1")}</p>
           <p>{t("tips.2")}</p>

@@ -42,7 +42,7 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
   return (
     <div
       className={cn(
-        "fixed top-16 -left-64 flex h-96 w-64 flex-col rounded-md bg-neutral-900 p-2 transition-all",
+        "bg-panel-bg fixed top-16 -left-64 flex h-96 w-64 flex-col rounded-md p-2 transition-all",
         {
           "left-0": open,
         },

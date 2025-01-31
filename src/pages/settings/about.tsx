@@ -41,8 +41,8 @@ export default function About() {
     <div className="flex h-full">
       <div className="flex w-64 flex-col items-center justify-center gap-4">
         <img src={icon} alt="icon" className="h-32 w-32" />
-        <h1 className="text-3xl font-bold">Project Graph</h1>
-        <p className="text-center text-sm text-neutral-500">
+        <h1 className="text-panel-text text-3xl font-bold">Project Graph</h1>
+        <p className="text-panel-details-text text-center text-sm">
           {i18n.language === "zh-CN" ? versionName + " " : ""}
           {versionNameEn}
           <br />
@@ -90,7 +90,7 @@ export default function About() {
           </Button>
         </div>
       </div>
-      <div className="flex flex-1 flex-col gap-4 overflow-auto">
+      <div className="text-panel-text flex flex-1 flex-col gap-4 overflow-auto">
         <Paragraph i18nKey="intro" />
         <Paragraph i18nKey="ideaSources" />
         <Paragraph i18nKey="team" />
@@ -107,11 +107,11 @@ function Paragraph({ i18nKey }: { i18nKey: string }) {
   return (
     <div className="flex flex-col gap-1">
       <h2 className="text-2xl font-bold">
-        <span className="text-neutral-500">{"# "}</span>
+        <span className="text-panel-text">{"# "}</span>
         {data[0]}
       </h2>
       {data.slice(1).map((item, index) => (
-        <p key={index} className="text-sm text-neutral-500">
+        <p key={index} className="text-panel-details-text text-sm">
           {item}
         </p>
       ))}

@@ -55,7 +55,7 @@ interface ToolbarItemProps {
 function ToolbarItem({ icon, handleFunction, description }: ToolbarItemProps) {
   return (
     <div
-      className="group hover:bg-toolbar-icon-hover-bg relative flex h-8 w-8 items-center justify-center rounded-md active:scale-90"
+      className="group hover:bg-toolbar-icon-hover-bg text-toolbar-tooltip-text relative flex h-8 w-8 items-center justify-center rounded-md active:scale-90"
       onClick={handleFunction}
     >
       {icon}

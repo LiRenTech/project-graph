@@ -79,6 +79,12 @@ settings:
       black: 德古拉暗黑主題
       white: 論文白色主題
       macaron: 马卡龙主题
+  uiTheme:
+    title: UI 主题颜色
+    options:
+      dark: 暗黑主题
+      light: 明亮主题
+      macaron: 马卡龙主题
   lineStyle:
     title: 連線樣式
     options:

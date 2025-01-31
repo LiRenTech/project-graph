@@ -15,7 +15,8 @@ export namespace Settings {
     language: "zh_CN" | "zh_TW" | "en";
     // 视觉相关
     lineStyle: "straight" | "bezier" | "vertical";
-    theme: "black" | "white" | "macaron"; // 暂无
+    theme: "black" | "white" | "macaron";
+    uiTheme: "light" | "dark" | "macaron";
     isRenderCenterPointer: boolean;
     showGrid: boolean; // 废弃
     showBackgroundHorizontalLines: boolean;
@@ -74,6 +75,7 @@ export namespace Settings {
     // 视觉相关
     lineStyle: "straight",
     theme: "black",
+    uiTheme: "dark",
     isRenderCenterPointer: false,
     showGrid: true,
     showBackgroundHorizontalLines: false,

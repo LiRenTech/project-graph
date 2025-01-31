@@ -22,6 +22,9 @@
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
 }
 @theme inline {
+  --color-panel-bg: var(--color-panel-bg);
+  --color-panel-text: var(--color-panel-text);
+  --color-panel-details-text: var(--color-panel-details-text);
   --color-tooltip-bg: var(--color-tooltip-bg);
   --color-tooltip-text: var(--color-tooltip-text);
   --color-tooltip-border: var(--color-tooltip-border);
@@ -79,8 +82,15 @@
   --color-toolbar-tooltip-text: var(--color-tooltip-text);
   --color-toolbar-tooltip-border: var(--color-tooltip-border);
   --color-toolbar-collapsed-bg: var(--color-toolbar-collapsed-bg);
+  --color-settings-page-bg: var(--color-settings-page-bg);
+  --color-settings-text: var(--color-appmenu-item-text);
+
+  --color-test-bg: var(--color-test-bg);
 }
 :root {
+  --color-panel-bg: oklch(0.269 0 0);
+  --color-panel-text: #fff;
+  --color-panel-details-text: #aaa;
   --color-tooltip-bg: oklch(0.269 0 0);
   --color-tooltip-text: #fff;
   --color-tooltip-border: oklch(0.371 0 0);
@@ -138,8 +148,208 @@
   --color-toolbar-tooltip-text: var(--color-tooltip-text);
   --color-toolbar-tooltip-border: var(--color-tooltip-border);
   --color-toolbar-collapsed-bg: #fff;
+  --color-settings-page-bg: oklch(0.145 0 0);
+  --color-settings-text: var(--color-appmenu-item-text);
+  --color-test-bg: oklch(0.21 0.034 264.665);
 }
 
+/* 暗色主题 */
+[data-theme="dark"] {
+  --color-panel-bg: oklch(0.269 0 0);
+  --color-panel-text: #fff;
+  --color-panel-details-text: #aaa;
+  --color-tooltip-bg: oklch(0.269 0 0);
+  --color-tooltip-text: #fff;
+  --color-tooltip-border: oklch(0.371 0 0);
+  --color-button-bg: oklch(0.269 0 0);
+  --color-button-text: #fff;
+  --color-button-border: oklch(0.371 0 0);
+  --color-icon-button-bg: oklch(0.269 0 0);
+  --color-icon-button-text: #fff;
+  --color-icon-button-border: oklch(0.371 0 0);
+  --color-input-bg: oklch(0.269 0 0);
+  --color-input-text: #fff;
+  --color-input-border: oklch(0.371 0 0);
+  --color-input-placeholder: oklch(0.556 0 0);
+  --color-keybind-bg: oklch(0.269 0 0);
+  --color-keybind-text: #fff;
+  --color-keybind-border: oklch(0.371 0 0);
+  --color-keybind-active-outline: oklch(0.623 0.214 259.815);
+  --color-select-bg: oklch(0.269 0 0);
+  --color-select-text: #fff;
+  --color-select-border: oklch(0.371 0 0);
+  --color-select-popup-bg: oklch(0.205 0 0);
+  --color-select-popup-border: oklch(0.371 0 0);
+  --color-select-popup-shadow: oklch(0.129 0.042 264.695);
+  --color-select-option-bg: transparent;
+  --color-select-option-text: #fff;
+  --color-select-option-border: transparent;
+  --color-select-option-hover-bg: oklch(0.269 0 0);
+  --color-select-option-hover-text: #fff;
+  --color-select-option-hover-border: transparent;
+  --color-select-option-selected-bg: oklch(0.439 0 0);
+  --color-select-option-selected-text: #fff;
+  --color-select-option-selected-border: transparent;
+  --color-select-option-selected-hover-bg: oklch(0.556 0 0);
+  --color-select-option-selected-hover-text: #fff;
+  --color-select-option-selected-hover-border: transparent;
+  --color-slider-line: oklch(0.371 0 0);
+  --color-slider-handle: oklch(0.707 0.165 254.624);
+  --color-switch-false-bg: oklch(0.269 0 0);
+  --color-switch-false-dot: #fff;
+  --color-switch-true-bg: oklch(0.623 0.214 259.815);
+  --color-switch-true-dot: #fff;
+  --color-switch-disabled-bg: oklch(0.439 0 0);
+  --color-switch-disabled-dot: #fff;
+  --color-appmenu-bg: oklch(0.269 0 0);
+  --color-appmenu-border: oklch(0.371 0 0);
+  --color-appmenu-category-title: oklch(0.708 0 0);
+  --color-appmenu-category-separator: oklch(0.371 0 0);
+  --color-appmenu-item-text: #fff;
+  --color-appmenu-hover-bg: oklch(0.371 0 0);
+  --color-toolbar-bg: oklch(0.269 0 0);
+  --color-toolbar-icon: #fff;
+  --color-toolbar-icon-hover-bg: rgb(255 255 255 / 0.2);
+  --color-toolbar-border: oklch(0.371 0 0);
+  --color-toolbar-tooltip-bg: var(--color-tooltip-bg);
+  --color-toolbar-tooltip-text: var(--color-tooltip-text);
+  --color-toolbar-tooltip-border: var(--color-tooltip-border);
+  --color-toolbar-collapsed-bg: #fff;
+  --color-settings-page-bg: oklch(0.145 0 0);
+  --color-settings-text: var(--color-appmenu-item-text);
+  --color-test-bg: oklch(0.21 0.034 264.665);
+}
+[data-theme="light"] {
+  --color-panel-bg: oklch(0.98 0.01 0);
+  --color-panel-text: oklch(0.15 0.05 0);
+  --color-panel-details-text: oklch(0.5 0.05 0);
+  --color-tooltip-bg: oklch(0.95 0.01 0);
+  --color-tooltip-text: oklch(0.15 0.05 0);
+  --color-tooltip-border: oklch(0.85 0.02 0);
+  --color-button-bg: oklch(0.98 0.01 0);
+  --color-button-text: oklch(0.15 0.05 0);
+  --color-button-border: oklch(0.85 0.02 0);
+  --color-icon-button-bg: oklch(0.98 0.01 0);
+  --color-icon-button-text: oklch(0.15 0.05 0);
+  --color-icon-button-border: oklch(0.85 0.02 0);
+  --color-input-bg: oklch(0.98 0.01 0);
+  --color-input-text: oklch(0.15 0.05 0);
+  --color-input-border: oklch(0.85 0.02 0);
+  --color-input-placeholder: oklch(0.6 0.02 0);
+  --color-keybind-bg: oklch(0.95 0.01 0);
+  --color-keybind-text: oklch(0.15 0.05 0);
+  --color-keybind-border: oklch(0.85 0.02 0);
+  --color-keybind-active-outline: oklch(0.7 0.2 259.815);
+  --color-select-bg: oklch(0.98 0.01 0);
+  --color-select-text: oklch(0.15 0.05 0);
+  --color-select-border: oklch(0.85 0.02 0);
+  --color-select-popup-bg: oklch(0.98 0.01 0);
+  --color-select-popup-border: oklch(0.85 0.02 0);
+  --color-select-popup-shadow: oklch(0.85 0.02 0 / 0.1);
+  --color-select-option-bg: transparent;
+  --color-select-option-text: oklch(0.15 0.05 0);
+  --color-select-option-border: transparent;
+  --color-select-option-hover-bg: oklch(0.95 0.01 0);
+  --color-select-option-hover-text: oklch(0.15 0.05 0);
+  --color-select-option-hover-border: transparent;
+  --color-select-option-selected-bg: oklch(0.9 0.05 0);
+  --color-select-option-selected-text: oklch(0.15 0.05 0);
+  --color-select-option-selected-border: transparent;
+  --color-select-option-selected-hover-bg: oklch(0.85 0.05 0);
+  --color-select-option-selected-hover-text: oklch(0.15 0.05 0);
+  --color-select-option-selected-hover-border: transparent;
+  --color-slider-line: oklch(0.85 0.02 0);
+  --color-slider-handle: oklch(0.7 0.2 254.624);
+  --color-switch-false-bg: oklch(0.85 0.02 0);
+  --color-switch-false-dot: oklch(0.98 0.01 0);
+  --color-switch-true-bg: oklch(0.7 0.2 259.815);
+  --color-switch-true-dot: oklch(0.98 0.01 0);
+  --color-switch-disabled-bg: oklch(0.9 0.01 0);
+  --color-switch-disabled-dot: oklch(0.7 0.02 0);
+  --color-appmenu-bg: oklch(0.98 0.01 0);
+  --color-appmenu-border: oklch(0.85 0.02 0);
+  --color-appmenu-category-title: oklch(0.6 0.02 0);
+  --color-appmenu-category-separator: oklch(0.85 0.02 0);
+  --color-appmenu-item-text: oklch(0.15 0.05 0);
+  --color-appmenu-hover-bg: oklch(0.95 0.01 0);
+  --color-toolbar-bg: oklch(0.98 0.01 0);
+  --color-toolbar-icon: oklch(0.15 0.05 0);
+  --color-toolbar-icon-hover-bg: rgb(0 0 0 / 0.1);
+  --color-toolbar-border: oklch(0.85 0.02 0);
+  --color-toolbar-tooltip-bg: var(--color-tooltip-bg);
+  --color-toolbar-tooltip-text: var(--color-tooltip-text);
+  --color-toolbar-tooltip-border: var(--color-tooltip-border);
+  --color-toolbar-collapsed-bg: oklch(0.15 0.05 0);
+  --color-settings-page-bg: #d3d3d3;
+  --color-settings-text: var(--color-appmenu-item-text);
+  --color-test-bg: oklch(0.95 0.01 0);
+}
+
+/* 马卡龙主题（柔和糖果色系） */
+[data-theme="macaron"] {
+  --color-panel-bg: oklch(0.95 0.1 60);
+  --color-panel-text: oklch(0.2 0.1 120);
+  --color-panel-details-text: oklch(0.5 0.1 120);
+  --color-tooltip-bg: oklch(0.95 0.1 120); /* 薄荷绿 */
+  --color-tooltip-text: oklch(0.2 0.1 120);
+  --color-tooltip-border: oklch(0.85 0.1 120);
+  --color-button-bg: oklch(0.95 0.1 30); /* 浅珊瑚色 */
+  --color-button-text: oklch(0.2 0.1 30);
+  --color-button-border: oklch(0.85 0.1 30);
+  --color-icon-button-bg: oklch(0.95 0.1 270); /* 淡紫色 */
+  --color-icon-button-text: oklch(0.2 0.1 270);
+  --color-icon-button-border: oklch(0.85 0.1 270);
+  --color-input-bg: oklch(0.98 0.05 0);
+  --color-input-text: oklch(0.2 0.1 200); /* 浅蓝色 */
+  --color-input-border: oklch(0.85 0.1 200);
+  --color-input-placeholder: oklch(0.7 0.1 200);
+  --color-keybind-bg: oklch(0.95 0.1 60); /* 淡黄色 */
+  --color-keybind-text: oklch(0.2 0.1 60);
+  --color-keybind-border: oklch(0.85 0.1 60);
+  --color-keybind-active-outline: oklch(0.7 0.2 259.815);
+  --color-select-bg: oklch(0.98 0.05 0);
+  --color-select-text: oklch(0.2 0.1 300); /* 粉紫色 */
+  --color-select-border: oklch(0.85 0.1 300);
+  --color-select-popup-bg: oklch(0.95 0.1 180); /* 天蓝色 */
+  --color-select-popup-border: oklch(0.85 0.1 180);
+  --color-select-popup-shadow: oklch(0.8 0.1 180 / 0.2);
+  --color-select-option-bg: transparent;
+  --color-select-option-text: oklch(0.2 0.1 180);
+  --color-select-option-border: transparent;
+  --color-select-option-hover-bg: oklch(0.9 0.1 180);
+  --color-select-option-hover-text: oklch(0.2 0.1 180);
+  --color-select-option-hover-border: transparent;
+  --color-select-option-selected-bg: oklch(0.85 0.1 180);
+  --color-select-option-selected-text: oklch(0.2 0.1 180);
+  --color-select-option-selected-border: transparent;
+  --color-select-option-selected-hover-bg: oklch(0.8 0.1 180);
+  --color-select-option-selected-hover-text: oklch(0.2 0.1 180);
+  --color-select-option-selected-hover-border: transparent;
+  --color-slider-line: oklch(0.85 0.1 30); /* 珊瑚色 */
+  --color-slider-handle: oklch(0.7 0.2 259.815);
+  --color-switch-false-bg: oklch(0.95 0.1 90); /* 浅粉色 */
+  --color-switch-false-dot: oklch(0.2 0.1 90);
+  --color-switch-true-bg: oklch(0.7 0.2 259.815);
+  --color-switch-true-dot: oklch(0.2 0.1 259.815);
+  --color-switch-disabled-bg: oklch(0.9 0.1 90);
+  --color-switch-disabled-dot: oklch(0.7 0.1 90);
+  --color-appmenu-bg: oklch(0.95 0.1 270); /* 淡紫色 */
+  --color-appmenu-border: oklch(0.85 0.1 270);
+  --color-appmenu-category-title: oklch(0.7 0.1 270);
+  --color-appmenu-category-separator: oklch(0.85 0.1 270);
+  --color-appmenu-item-text: oklch(0.2 0.1 270);
+  --color-appmenu-hover-bg: oklch(0.9 0.1 270);
+  --color-toolbar-bg: oklch(0.95 0.1 150); /* 薄荷蓝 */
+  --color-toolbar-icon: oklch(0.2 0.1 150);
+  --color-toolbar-icon-hover-bg: rgb(255 255 255 / 0.2);
+  --color-toolbar-border: oklch(0.85 0.1 150);
+  --color-toolbar-tooltip-bg: var(--color-tooltip-bg);
+  --color-toolbar-tooltip-text: var(--color-tooltip-text);
+  --color-toolbar-tooltip-border: var(--color-tooltip-border);
+  --color-toolbar-collapsed-bg: oklch(0.2 0.1 150);
+  --color-settings-page-bg: #f9e9ea;
+  --color-test-bg: oklch(0.95 0.1 60); /* 浅黄色 */
+}
 @layer base {
   body,
   #root {

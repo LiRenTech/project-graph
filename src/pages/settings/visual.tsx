@@ -21,6 +21,7 @@ export default function Visual() {
     <>
       <SettingField icon={<Languages />} settingKey="language" type="select" />
       <SettingField icon={<Palette />} settingKey="theme" type="select" />
+      <SettingField icon={<Palette />} settingKey="uiTheme" type="select" />
       <SettingField icon={<Spline />} settingKey="lineStyle" type="select" />
       {/* <SettingField icon={<Grid />} settingKey="showGrid" type="switch" /> */}
       <SettingField icon={<Crosshair />} settingKey="isRenderCenterPointer" type="switch" />

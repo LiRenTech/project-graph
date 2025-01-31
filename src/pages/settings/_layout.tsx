@@ -8,12 +8,12 @@ export default function SettingsLayout() {
 
   return (
     <div className="fixed top-24 right-20 bottom-20 left-20">
-      <h1 className="flex items-center gap-2 text-3xl font-bold">
+      <h1 className="text-appmenu-item-text flex items-center gap-2 text-3xl font-bold">
         <Settings className="h-8 w-8" />
         {t("title")}
       </h1>
       <div className="mt-4 flex h-full gap-8">
-        <div className="*:page:bg-white/10 flex flex-col gap-2 *:flex *:cursor-pointer *:items-center *:gap-2 *:rounded-full *:px-3 *:py-2 *:transition *:hover:bg-neutral-800 *:active:scale-90">
+        <div className="*:page:bg-white/10 text-appmenu-item-text *:hover:bg-appmenu-hover-bg flex flex-col gap-2 *:flex *:cursor-pointer *:items-center *:gap-2 *:rounded-full *:px-3 *:py-2 *:transition *:active:scale-90">
           <NavLink to="/settings/about">
             <Info />
             {t("tabs.about")}

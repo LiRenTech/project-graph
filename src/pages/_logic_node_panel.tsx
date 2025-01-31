@@ -17,14 +17,14 @@ export default function LogicNodePanel({ open = false, className = "" }: { open:
   return (
     <div
       className={cn(
-        "fixed top-16 -left-64 flex h-96 w-64 flex-col overflow-auto rounded-md bg-neutral-900 p-2 transition-all",
+        "bg-panel-bg fixed top-16 -left-64 flex h-96 w-64 flex-col overflow-auto rounded-md p-2 transition-all",
         {
           "left-0": open,
         },
         className,
       )}
     >
-      <h2>逻辑节点</h2>
+      <h2 className="text-panel-text text-center">逻辑节点</h2>
       {Object.values(LogicNodeNameEnum).map((name) => {
         return (
           <Button

@@ -153,8 +153,13 @@ export default function App() {
 
     document.querySelector("canvas")?.addEventListener("mousedown", () => setIgnoreMouse(true));
     document.querySelector("canvas")?.addEventListener("mouseup", () => setIgnoreMouse(false));
-
+    // 监听主题样式切换
+    Settings.watch("uiTheme", (value) => {
+      document.documentElement.setAttribute("data-theme", value);
+    });
     return () => {
+      // 经过测试发现，只要是不关闭软件，根本不会执行这里
+      // 随意切换软件内部界面不会执行这里
       clearInterval(saveInterval);
     };
   }, []);
@@ -191,7 +196,7 @@ export default function App() {
   return (
     <div
       className={cn("relative h-full w-full rounded-xl text-white ring shadow-2xl", {
-        "bg-neutral-950": isMobile || location.pathname !== "/",
+        "bg-settings-page-bg": isMobile || location.pathname !== "/",
       })}
       style={{ zoom: appScale }}
       onClick={() => {
@@ -293,7 +298,7 @@ export default function App() {
               <span
                 data-tauri-drag-region
                 className={cn(
-                  isSaved ? "" : "text-yellow-500",
+                  isSaved ? "text-icon-button-text" : "text-yellow-500",
                   "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
                 )}
               >
