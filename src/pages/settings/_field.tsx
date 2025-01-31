@@ -54,7 +54,7 @@ export function SettingField({
       icon={icon}
     >
       <RotateCw
-        className="h-4 w-4 cursor-pointer text-gray-500 opacity-0 group-hover/field:opacity-100 hover:rotate-180"
+        className="text-panel-details-text h-4 w-4 cursor-pointer opacity-0 group-hover/field:opacity-100 hover:rotate-180"
         onClick={() => setValue(Settings.defaultSettings[settingKey])}
       />
       {type === "text" && <Input value={value} onChange={setValue} placeholder={placeholder} />}
@@ -139,9 +139,9 @@ export function Field({
         <span>{icon}</span>
         <div className="flex flex-col">
           <span>{title}</span>
-          <span className="text-xs text-gray-500">
+          <span className="text-panel-details-text text-xs">
             {description.split("\n").map((dd, ii) => (
-              <p key={ii} className="text-xs text-gray-500">
+              <p key={ii} className="text-xs">
                 {dd}
               </p>
             ))}

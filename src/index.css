@@ -84,8 +84,6 @@
   --color-toolbar-collapsed-bg: var(--color-toolbar-collapsed-bg);
   --color-settings-page-bg: var(--color-settings-page-bg);
   --color-settings-text: var(--color-appmenu-item-text);
-
-  --color-test-bg: var(--color-test-bg);
 }
 :root {
   --color-panel-bg: oklch(0.269 0 0);
@@ -150,7 +148,6 @@
   --color-toolbar-collapsed-bg: #fff;
   --color-settings-page-bg: oklch(0.145 0 0);
   --color-settings-text: var(--color-appmenu-item-text);
-  --color-test-bg: oklch(0.21 0.034 264.665);
 }
 
 /* 暗色主题 */
@@ -217,7 +214,6 @@
   --color-toolbar-collapsed-bg: #fff;
   --color-settings-page-bg: oklch(0.145 0 0);
   --color-settings-text: var(--color-appmenu-item-text);
-  --color-test-bg: oklch(0.21 0.034 264.665);
 }
 [data-theme="light"] {
   --color-panel-bg: oklch(0.98 0.01 0);
@@ -282,73 +278,77 @@
   --color-toolbar-collapsed-bg: oklch(0.15 0.05 0);
   --color-settings-page-bg: #d3d3d3;
   --color-settings-text: var(--color-appmenu-item-text);
-  --color-test-bg: oklch(0.95 0.01 0);
 }
 
-/* 马卡龙主题（柔和糖果色系） */
+/* 马卡龙主题（暖色系：粉/紫/淡黄） */
+/* 马卡龙主题（柔和粉紫/淡黄） */
 [data-theme="macaron"] {
-  --color-panel-bg: oklch(0.95 0.1 60);
-  --color-panel-text: oklch(0.2 0.1 120);
-  --color-panel-details-text: oklch(0.5 0.1 120);
-  --color-tooltip-bg: oklch(0.95 0.1 120); /* 薄荷绿 */
-  --color-tooltip-text: oklch(0.2 0.1 120);
-  --color-tooltip-border: oklch(0.85 0.1 120);
-  --color-button-bg: oklch(0.95 0.1 30); /* 浅珊瑚色 */
-  --color-button-text: oklch(0.2 0.1 30);
-  --color-button-border: oklch(0.85 0.1 30);
-  --color-icon-button-bg: oklch(0.95 0.1 270); /* 淡紫色 */
-  --color-icon-button-text: oklch(0.2 0.1 270);
-  --color-icon-button-border: oklch(0.85 0.1 270);
-  --color-input-bg: oklch(0.98 0.05 0);
-  --color-input-text: oklch(0.2 0.1 200); /* 浅蓝色 */
-  --color-input-border: oklch(0.85 0.1 200);
-  --color-input-placeholder: oklch(0.7 0.1 200);
-  --color-keybind-bg: oklch(0.95 0.1 60); /* 淡黄色 */
-  --color-keybind-text: oklch(0.2 0.1 60);
-  --color-keybind-border: oklch(0.85 0.1 60);
-  --color-keybind-active-outline: oklch(0.7 0.2 259.815);
-  --color-select-bg: oklch(0.98 0.05 0);
-  --color-select-text: oklch(0.2 0.1 300); /* 粉紫色 */
-  --color-select-border: oklch(0.85 0.1 300);
-  --color-select-popup-bg: oklch(0.95 0.1 180); /* 天蓝色 */
-  --color-select-popup-border: oklch(0.85 0.1 180);
-  --color-select-popup-shadow: oklch(0.8 0.1 180 / 0.2);
-  --color-select-option-bg: transparent;
-  --color-select-option-text: oklch(0.2 0.1 180);
-  --color-select-option-border: transparent;
-  --color-select-option-hover-bg: oklch(0.9 0.1 180);
-  --color-select-option-hover-text: oklch(0.2 0.1 180);
-  --color-select-option-hover-border: transparent;
-  --color-select-option-selected-bg: oklch(0.85 0.1 180);
-  --color-select-option-selected-text: oklch(0.2 0.1 180);
-  --color-select-option-selected-border: transparent;
-  --color-select-option-selected-hover-bg: oklch(0.8 0.1 180);
-  --color-select-option-selected-hover-text: oklch(0.2 0.1 180);
-  --color-select-option-selected-hover-border: transparent;
-  --color-slider-line: oklch(0.85 0.1 30); /* 珊瑚色 */
-  --color-slider-handle: oklch(0.7 0.2 259.815);
-  --color-switch-false-bg: oklch(0.95 0.1 90); /* 浅粉色 */
-  --color-switch-false-dot: oklch(0.2 0.1 90);
-  --color-switch-true-bg: oklch(0.7 0.2 259.815);
-  --color-switch-true-dot: oklch(0.2 0.1 259.815);
-  --color-switch-disabled-bg: oklch(0.9 0.1 90);
-  --color-switch-disabled-dot: oklch(0.7 0.1 90);
-  --color-appmenu-bg: oklch(0.95 0.1 270); /* 淡紫色 */
-  --color-appmenu-border: oklch(0.85 0.1 270);
-  --color-appmenu-category-title: oklch(0.7 0.1 270);
-  --color-appmenu-category-separator: oklch(0.85 0.1 270);
-  --color-appmenu-item-text: oklch(0.2 0.1 270);
-  --color-appmenu-hover-bg: oklch(0.9 0.1 270);
-  --color-toolbar-bg: oklch(0.95 0.1 150); /* 薄荷蓝 */
-  --color-toolbar-icon: oklch(0.2 0.1 150);
-  --color-toolbar-icon-hover-bg: rgb(255 255 255 / 0.2);
-  --color-toolbar-border: oklch(0.85 0.1 150);
-  --color-toolbar-tooltip-bg: var(--color-tooltip-bg);
-  --color-toolbar-tooltip-text: var(--color-tooltip-text);
-  --color-toolbar-tooltip-border: var(--color-tooltip-border);
-  --color-toolbar-collapsed-bg: oklch(0.2 0.1 150);
-  --color-settings-page-bg: #f9e9ea;
-  --color-test-bg: oklch(0.95 0.1 60); /* 浅黄色 */
+  /* 基础面板 */
+  --color-panel-bg: oklch(0.97 0.04 60); /* 米白黄 */
+  --color-panel-text: oklch(0.45 0.08 340); /* 灰粉紫 */
+  --color-panel-details-text: oklch(0.55 0.06 340);
+
+  /* 工具提示 */
+  --color-tooltip-bg: oklch(0.95 0.06 340); /* 雾粉色 */
+  --color-tooltip-text: oklch(0.4 0.08 340);
+  --color-tooltip-border: oklch(0.88 0.05 340);
+
+  /* 按钮系统 */
+  --color-button-bg: oklch(0.95 0.05 30); /* 浅杏色 */
+  --color-button-text: oklch(0.45 0.08 340);
+  --color-button-border: oklch(0.9 0.04 30);
+  --color-icon-button-bg: oklch(0.96 0.05 320); /* 灰调紫 */
+  --color-icon-button-text: oklch(0.45 0.08 320);
+  --color-icon-button-border: oklch(0.9 0.04 320);
+
+  /* 输入控件 */
+  --color-input-bg: oklch(0.98 0.02 60); /* 极浅米黄 */
+  --color-input-text: oklch(0.45 0.08 340);
+  --color-input-border: oklch(0.9 0.04 30);
+  --color-input-placeholder: oklch(0.7 0.06 340);
+
+  /* 快捷键 */
+  --color-keybind-bg: oklch(0.95 0.05 60); /* 淡奶茶色 */
+  --color-keybind-text: oklch(0.45 0.08 340);
+  --color-keybind-border: oklch(0.9 0.04 60);
+  --color-keybind-active-outline: oklch(0.8 0.06 340); /* 柔粉边线 */
+
+  /* 下拉选择 */
+  --color-select-bg: oklch(0.97 0.04 60);
+  --color-select-text: oklch(0.45 0.08 340);
+  --color-select-border: oklch(0.9 0.04 30);
+  --color-select-popup-bg: oklch(0.96 0.05 320); /* 灰紫弹窗 */
+  --color-select-popup-border: oklch(0.9 0.04 320);
+  --color-select-popup-shadow: oklch(0.85 0.05 340 / 0.1);
+  --color-select-option-hover-bg: oklch(0.94 0.06 340);
+  --color-select-option-selected-bg: oklch(0.9 0.08 340); /* 浅藕色 */
+
+  /* 滑动条 */
+  --color-slider-line: oklch(0.9 0.04 30); /* 浅杏色轨道 */
+  --color-slider-handle: oklch(0.8 0.07 340); /* 粉灰手柄 */
+
+  /* 开关 */
+  --color-switch-false-bg: oklch(0.94 0.05 60); /* 奶茶底色 */
+  --color-switch-false-dot: oklch(0.45 0.08 340);
+  --color-switch-true-bg: oklch(0.8 0.07 340); /* 灰粉色 */
+  --color-switch-true-dot: oklch(0.96 0.03 60);
+
+  /* 菜单系统 */
+  --color-appmenu-bg: oklch(0.97 0.04 320); /* 雾紫色 */
+  --color-appmenu-border: oklch(0.9 0.04 320);
+  --color-appmenu-category-title: oklch(0.65 0.06 340);
+  --color-appmenu-item-text: oklch(0.45 0.08 340);
+  --color-appmenu-hover-bg: oklch(0.94 0.06 340); /* 薄纱粉 */
+
+  /* 工具栏 */
+  --color-toolbar-bg: oklch(0.95 0.05 30); /* 浅杏色 */
+  --color-toolbar-icon: oklch(0.45 0.08 340);
+  --color-toolbar-icon-hover-bg: oklch(0.94 0.06 340 / 0.2);
+  --color-toolbar-border: oklch(0.9 0.04 30);
+  --color-toolbar-collapsed-bg: oklch(0.45 0.08 340); /* 主色暗调 */
+
+  /* 设置页面 */
+  --color-settings-page-bg: oklch(0.98 0.02 60); /* 珍珠白 */
 }
 @layer base {
   body,
