@@ -1,4 +1,4 @@
-import { writeTextFile } from "../../../../utils/fs";
+import { writeTextFile } from "../../../../utils/fs/com";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";

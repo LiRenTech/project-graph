@@ -1,7 +1,7 @@
 import { Store } from "@tauri-apps/plugin-store";
 // import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
 import { Serialized } from "../../../types/node";
-import { exists, readTextFile } from "../../../utils/fs";
+import { exists } from "../../../utils/fs/com";
 import { createStore } from "../../../utils/store";
 import { Camera } from "../../stage/Camera";
 import { Stage } from "../../stage/Stage";
@@ -16,6 +16,7 @@ import { TextNode } from "../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../stage/stageObject/entity/UrlNode";
 import { ViewFlashEffect } from "../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { PenStroke } from "../../stage/stageObject/entity/PenStroke";
+import { VFileSystem } from "../VFileSystem";
 
 /**
  * 管理最近打开的文件列表
@@ -144,16 +145,16 @@ export namespace RecentFileManager {
    */
   export async function openFileByPath(path: string) {
     StageManager.destroy();
-    let content: string;
+
     try {
-      content = await readTextFile(path);
+      await VFileSystem.loadFromPath(path);
     } catch (e) {
       console.error("打开文件失败：", path);
       console.error(e);
       return;
     }
 
-    const data = StageLoader.validate(JSON.parse(content));
+    const data = StageLoader.validate(JSON.parse(await VFileSystem.getMetaData()));
 
     loadStageByData(data);
     StageHistoryManager.reset(data);

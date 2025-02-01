@@ -1,6 +1,7 @@
 import JSZip, * as jszip from "jszip";
 import { IndexedDBFileSystem } from "../../utils/fs/IndexedDBFileSystem";
-import { readFile } from "../../utils/fs/com";
+import { readFile, writeFile } from "../../utils/fs/com";
+import { StageDumper } from "../stage/StageDumper";
 
 export enum FSType {
   Tauri = "Tauri",
@@ -14,6 +15,9 @@ export namespace VFileSystem {
   }
   export async function setMetaData(content: string) {
     return fs.writeTextFile("/meta.json", content);
+  }
+  export async function pullMetaData() {
+    setMetaData(JSON.stringify(StageDumper.dump()));
   }
   export async function loadFromPath(path: string) {
     const data = await readFile(path);
@@ -35,10 +39,7 @@ export namespace VFileSystem {
             try {
               // 分离目录和文件名
               const lastSlashIndex = normalizedPath.lastIndexOf("/");
-              const parentDir =
-                lastSlashIndex >= 0
-                  ? normalizedPath.slice(0, lastSlashIndex)
-                  : "";
+              const parentDir = lastSlashIndex >= 0 ? normalizedPath.slice(0, lastSlashIndex) : "";
 
               // 创建父目录（如果存在）
               if (parentDir) {
@@ -57,6 +58,10 @@ export namespace VFileSystem {
     }
 
     await Promise.all(operations);
+  }
+  export async function saveToPath(path: string) {
+    await setMetaData(JSON.stringify(StageDumper.dump()));
+    await writeFile(path, await VFileSystem.exportZipData());
   }
   export async function exportZipData(): Promise<Uint8Array> {
     const zip = new JSZip();

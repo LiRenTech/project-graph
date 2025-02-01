@@ -156,7 +156,7 @@ export async function writeFileBase64(path: string, content: string): Promise<vo
     a.click();
     URL.revokeObjectURL(url);
   } else {
-    return invoke("write_file_base64", { path, content });
+    return TauriBaseFS.writeFileBase64(path, content);
   }
 }
 // /**
