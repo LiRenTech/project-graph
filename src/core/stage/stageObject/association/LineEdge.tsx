@@ -10,10 +10,12 @@ import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
 import { Edge } from "./Edge";
 import { EdgeCollisionBoxGetter } from "./EdgeCollisionBoxGetter";
+import { Color } from "../../../dataStruct/Color";
 
 export class LineEdge extends Edge {
   public uuid: string;
   public text: string;
+  public color: Color = Color.Transparent;
 
   protected _source: ConnectableEntity;
   protected _target: ConnectableEntity;
@@ -39,7 +41,7 @@ export class LineEdge extends Edge {
   private _isShifting: boolean = false;
 
   constructor(
-    { source, target, text, uuid }: Serialized.LineEdge,
+    { source, target, text, uuid, color }: Serialized.LineEdge,
     /** true表示解析状态，false表示解析完毕 */
     public unknown = false,
   ) {
@@ -48,6 +50,7 @@ export class LineEdge extends Edge {
     this._target = new TextNode({ uuid: target }, true);
     this.text = text;
     this.uuid = uuid;
+    this.color = new Color(...color);
 
     this.adjustSizeByText();
   }
@@ -59,6 +62,7 @@ export class LineEdge extends Edge {
       text: "",
       uuid: uuidv4(),
       type: "core:line_edge",
+      color: [0, 0, 0, 0],
     });
     return result;
   }

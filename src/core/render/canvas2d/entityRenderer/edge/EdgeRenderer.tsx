@@ -133,6 +133,7 @@ export namespace EdgeRenderer {
         text: edge.text,
         uuid: edge.uuid,
         type: "core:line_edge",
+        color: [0, 0, 0, 0],
       });
     }
     if (edge.target.isHiddenBySectionCollapse) {
@@ -142,6 +143,7 @@ export namespace EdgeRenderer {
         text: edge.text,
         uuid: edge.uuid,
         type: "core:line_edge",
+        color: [0, 0, 0, 0],
       });
     }
     return edge;
@@ -183,7 +185,7 @@ export namespace EdgeRenderer {
    * @param direction
    * @param size
    */
-  export function renderArrowHead(endPoint: Vector, direction: Vector, size: number) {
+  export function renderArrowHead(endPoint: Vector, direction: Vector, size: number, color: Color) {
     const reDirection = direction.clone().multiply(-1);
     const location2 = endPoint.add(reDirection.multiply(size).rotateDegrees(15));
     const location3 = endPoint.add(reDirection.multiply(size * 0.5));
@@ -195,8 +197,8 @@ export namespace EdgeRenderer {
         Renderer.transformWorld2View(location3),
         Renderer.transformWorld2View(location4),
       ],
-      StageStyleManager.currentStyle.StageObjectBorderColor,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      color,
+      color,
       0,
     );
   }
@@ -208,7 +210,12 @@ export namespace EdgeRenderer {
    * @param size
    * @returns SVG多边形字符串
    */
-  export function generateArrowHeadSvg(endPoint: Vector, direction: Vector, size: number): React.ReactNode {
+  export function generateArrowHeadSvg(
+    endPoint: Vector,
+    direction: Vector,
+    size: number,
+    edgeColor: Color,
+  ): React.ReactNode {
     const reDirection = direction.clone().multiply(-1);
     const location2 = endPoint.add(reDirection.multiply(size).rotateDegrees(15));
     const location3 = endPoint.add(reDirection.multiply(size * 0.5));
@@ -220,12 +227,6 @@ export namespace EdgeRenderer {
       .join(" ");
 
     // 返回SVG多边形字符串
-    return (
-      <polygon
-        points={pointsString}
-        fill={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
-        stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
-      />
-    );
+    return <polygon points={pointsString} fill={edgeColor.toString()} stroke={edgeColor.toString()} />;
   }
 }

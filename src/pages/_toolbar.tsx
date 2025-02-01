@@ -85,30 +85,35 @@ export function ColorPanel() {
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-red-500 hover:scale-125"
           onClick={() => {
             StageManager.setEntityColor(new Color(239, 68, 68));
+            StageManager.setEdgeColor(new Color(239, 68, 68));
           }}
         />
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-yellow-500 hover:scale-125"
           onClick={() => {
             StageManager.setEntityColor(new Color(234, 179, 8));
+            StageManager.setEdgeColor(new Color(234, 179, 8));
           }}
         />
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-green-600 hover:scale-125"
           onClick={() => {
             StageManager.setEntityColor(new Color(22, 163, 74));
+            StageManager.setEdgeColor(new Color(22, 163, 74));
           }}
         />
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-blue-500 hover:scale-125"
           onClick={() => {
             StageManager.setEntityColor(new Color(59, 130, 246));
+            StageManager.setEdgeColor(new Color(59, 130, 246));
           }}
         />
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-purple-500 hover:scale-125"
           onClick={() => {
             StageManager.setEntityColor(new Color(168, 85, 247));
+            StageManager.setEdgeColor(new Color(168, 85, 247));
           }}
         />
         {/* 清除颜色 */}
@@ -116,6 +121,7 @@ export function ColorPanel() {
           className="m-1 h-5 w-5 animate-pulse cursor-pointer rounded-full bg-gray-500 text-center text-sm hover:scale-125"
           onClick={() => {
             StageManager.clearNodeColor();
+            StageManager.clearEdgeColor();
           }}
         >
           <span>x</span>
@@ -131,6 +137,7 @@ export function ColorPanel() {
             const g = parseInt(color.slice(3, 5), 16);
             const b = parseInt(color.slice(5, 7), 16);
             StageManager.setEntityColor(new Color(r, g, b));
+            StageManager.setEdgeColor(new Color(r, g, b));
           }}
         ></input>
         <Button
@@ -152,6 +159,7 @@ export function ColorPanel() {
               }}
               onClick={() => {
                 StageManager.setEntityColor(color);
+                StageManager.setEdgeColor(color);
               }}
             />
           );
@@ -341,7 +349,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           />
         )}
 
-        {isHaveSelectedNode && (
+        {(isHaveSelectedNode || isHaveSelectedEdge) && (
           <ToolbarItem
             description="设置节点颜色"
             icon={<PaintBucket />}

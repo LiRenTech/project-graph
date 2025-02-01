@@ -66,12 +66,15 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
 
   public renderNormalState(edge: LineEdge): void {
     // 直线绘制
+    const edgeColor = edge.color.equals(Color.Transparent)
+      ? StageStyleManager.currentStyle.StageObjectBorderColor
+      : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边
       CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.start),
         Renderer.transformWorld2View(edge.bodyLine.end),
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        edgeColor,
         2 * Camera.currentScale,
       );
     } else {
@@ -83,20 +86,20 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         edge.text,
         Renderer.transformWorld2View(midPoint),
         Renderer.FONT_SIZE * Camera.currentScale,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        edgeColor,
       );
       const edgeTextRectangle = edge.textRectangle;
 
       CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.start),
         Renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(startHalf)),
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        edgeColor,
         2 * Camera.currentScale,
       );
       CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.end),
         Renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(endHalf)),
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        edgeColor,
         2 * Camera.currentScale,
       );
     }
@@ -116,14 +119,12 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
   public getNormalStageSvg(edge: LineEdge): React.ReactNode {
     let lineBody: React.ReactNode = <></>;
     let textNode: React.ReactNode = <></>;
+    const edgeColor = edge.color.equals(Color.Transparent)
+      ? StageStyleManager.currentStyle.StageObjectBorderColor
+      : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边
-      lineBody = SvgUtils.line(
-        edge.bodyLine.start,
-        edge.bodyLine.end,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
-        2,
-      );
+      lineBody = SvgUtils.line(edge.bodyLine.start, edge.bodyLine.end, edgeColor, 2);
     } else {
       // 有文字的边
       const midPoint = edge.bodyLine.midPoint();
@@ -131,26 +132,11 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       const endHalf = new Line(midPoint, edge.bodyLine.end);
       const edgeTextRectangle = edge.textRectangle;
 
-      textNode = SvgUtils.textFromCenter(
-        edge.text,
-        midPoint,
-        Renderer.FONT_SIZE,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
-      );
+      textNode = SvgUtils.textFromCenter(edge.text, midPoint, Renderer.FONT_SIZE, edgeColor);
       lineBody = (
         <>
-          {SvgUtils.line(
-            edge.bodyLine.start,
-            edgeTextRectangle.getLineIntersectionPoint(startHalf),
-            StageStyleManager.currentStyle.StageObjectBorderColor,
-            2,
-          )}
-          {SvgUtils.line(
-            edge.bodyLine.end,
-            edgeTextRectangle.getLineIntersectionPoint(endHalf),
-            StageStyleManager.currentStyle.StageObjectBorderColor,
-            2,
-          )}
+          {SvgUtils.line(edge.bodyLine.start, edgeTextRectangle.getLineIntersectionPoint(startHalf), edgeColor, 2)}
+          {SvgUtils.line(edge.bodyLine.end, edgeTextRectangle.getLineIntersectionPoint(endHalf), edgeColor, 2)}
         </>
       );
     }
@@ -163,6 +149,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         .subtract(edge.source.collisionBox.getRectangle().getCenter())
         .normalize(),
       15,
+      edgeColor,
     );
     return (
       <>
@@ -181,7 +168,10 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
 
   private renderArrowHead(edge: LineEdge, direction: Vector, endPoint = edge.bodyLine.end.clone()) {
     const size = 15;
-    EdgeRenderer.renderArrowHead(endPoint, direction, size);
+    const edgeColor = edge.color.equals(Color.Transparent)
+      ? StageStyleManager.currentStyle.StageObjectBorderColor
+      : edge.color;
+    EdgeRenderer.renderArrowHead(endPoint, direction, size, edgeColor);
   }
 
   public renderShiftingState(edge: LineEdge): void {
@@ -191,19 +181,21 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     const endLine = new Line(shiftingMidPoint, edge.target.collisionBox.getRectangle().center);
     const startPoint = edge.source.collisionBox.getRectangle().getLineIntersectionPoint(startLine);
     const endPoint = edge.target.collisionBox.getRectangle().getLineIntersectionPoint(endLine);
-
+    const edgeColor = edge.color.equals(Color.Transparent)
+      ? StageStyleManager.currentStyle.StageObjectBorderColor
+      : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边
       CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(startPoint),
         Renderer.transformWorld2View(shiftingMidPoint),
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        edgeColor,
         2 * Camera.currentScale,
       );
       CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(shiftingMidPoint),
         Renderer.transformWorld2View(endPoint),
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        edgeColor,
         2 * Camera.currentScale,
       );
     } else {
@@ -212,7 +204,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         edge.text,
         Renderer.transformWorld2View(shiftingMidPoint),
         Renderer.FONT_SIZE * Camera.currentScale,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        edgeColor,
       );
       const edgeTextRectangle = edge.textRectangle;
       const start2MidPoint = edgeTextRectangle.getLineIntersectionPoint(startLine);
@@ -220,13 +212,13 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(startPoint),
         Renderer.transformWorld2View(start2MidPoint),
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        edgeColor,
         2 * Camera.currentScale,
       );
       CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(mid2EndPoint),
         Renderer.transformWorld2View(endPoint),
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        edgeColor,
         2 * Camera.currentScale,
       );
     }
@@ -239,12 +231,15 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
 
   public renderCycleState(edge: LineEdge): void {
     // 自环
+    const edgeColor = edge.color.equals(Color.Transparent)
+      ? StageStyleManager.currentStyle.StageObjectBorderColor
+      : edge.color;
     ShapeRenderer.renderArc(
       Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
       (edge.target.collisionBox.getRectangle().size.y / 2) * Camera.currentScale,
       Math.PI / 2,
       0,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      edgeColor,
       2 * Camera.currentScale,
     );
     // 画箭头
@@ -258,7 +253,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       edge.text,
       Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location.add(new Vector(0, -50))),
       Renderer.FONT_SIZE * Camera.currentScale,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      edgeColor,
     );
   }
 

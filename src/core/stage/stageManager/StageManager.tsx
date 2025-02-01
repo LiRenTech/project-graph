@@ -29,7 +29,7 @@ import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager
 import { StageGeneratorAI } from "./concreteMethods/StageGeneratorAI";
 import { StageManagerUtils } from "./concreteMethods/StageManagerUtils";
 import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
-import { StageNodeColorManager } from "./concreteMethods/StageNodeColorManager";
+import { StageObjectColorManager } from "./concreteMethods/StageObjectColorManager";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
 import { StageNodeRotate } from "./concreteMethods/stageNodeRotate";
 import { StageNodeTextTransfer } from "./concreteMethods/StageNodeTextTransfer";
@@ -558,12 +558,22 @@ export namespace StageManager {
   }
 
   export function setEntityColor(color: Color) {
-    StageNodeColorManager.setEntityColor(color);
+    StageObjectColorManager.setEntityColor(color);
     StageHistoryManager.recordStep();
   }
 
   export function clearNodeColor() {
-    StageNodeColorManager.clearEntityColor();
+    StageObjectColorManager.clearEntityColor();
+    StageHistoryManager.recordStep();
+  }
+
+  export function setEdgeColor(color: Color) {
+    StageObjectColorManager.setEdgeColor(color);
+    StageHistoryManager.recordStep();
+  }
+
+  export function clearEdgeColor() {
+    StageObjectColorManager.clearEdgeColor();
     StageHistoryManager.recordStep();
   }
 

@@ -71,7 +71,10 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       Math.abs(end.subtract(start).magnitude()) / 2,
     );
     // 曲线模式先不屏蔽箭头，有点不美观，空出来一段距离
-    this.renderArrowCurve(curve);
+    this.renderArrowCurve(
+      curve,
+      edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorderColor : edge.color,
+    );
     // if (!(edge.target instanceof ConnectPoint)) {
     //   this.renderArrowCurve(curve);
     // } else {
@@ -100,7 +103,10 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       endLine.direction().multiply(-1),
       Math.abs(endPoint.subtract(startPoint).magnitude()) / 2,
     );
-    this.renderArrowCurve(curve);
+    this.renderArrowCurve(
+      curve,
+      edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorderColor : edge.color,
+    );
     this.renderText(curve, edge);
   }
 
@@ -111,7 +117,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       (edge.target.collisionBox.getRectangle().size.y / 2) * Camera.currentScale,
       Math.PI / 2,
       0,
-      new Color(204, 204, 204),
+      edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorderColor : edge.color,
       2 * Camera.currentScale,
     );
     // 画箭头
@@ -119,12 +125,20 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       const size = 15;
       const direction = new Vector(1, 0).rotateDegrees(15);
       const endPoint = edge.target.collisionBox.getRectangle().leftCenter;
-      EdgeRenderer.renderArrowHead(endPoint, direction, size);
+      EdgeRenderer.renderArrowHead(
+        endPoint,
+        direction,
+        size,
+        edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorderColor : edge.color,
+      );
     }
   }
   public getNormalStageSvg(edge: LineEdge): React.ReactNode {
     let lineBody = <></>;
     let textNode = <></>;
+    const edgeColor = edge.color.equals(Color.Transparent)
+      ? StageStyleManager.currentStyle.StageObjectBorderColor
+      : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边
       lineBody = (
@@ -134,7 +148,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
           y1={edge.bodyLine.start.y}
           x2={edge.bodyLine.end.x}
           y2={edge.bodyLine.end.y}
-          stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
+          stroke={edgeColor.toString()}
           strokeWidth={2}
         />
       );
@@ -148,7 +162,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
           x={midPoint.x}
           y={midPoint.y}
           key={edge.uuid + "-text"}
-          fill={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
+          fill={edgeColor.toString()}
           fontSize={Renderer.FONT_SIZE}
           textAnchor="middle"
           fontFamily="MiSans"
@@ -164,7 +178,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
             y1={edge.bodyLine.start.y}
             x2={startHalf.end.x}
             y2={startHalf.end.y}
-            stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
+            stroke={edgeColor.toString()}
             strokeWidth={2}
           />
           <line
@@ -173,7 +187,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
             y1={endHalf.end.y}
             x2={edge.bodyLine.end.x}
             y2={edge.bodyLine.end.y}
-            stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
+            stroke={edgeColor.toString()}
             strokeWidth={2}
           />
         </>
@@ -188,6 +202,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
         .subtract(edge.source.collisionBox.getRectangle().getCenter())
         .normalize(),
       15,
+      edgeColor,
     );
     return (
       <>
@@ -222,6 +237,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
         endDirection,
         Math.abs(end.subtract(start).magnitude()) / 2,
       ),
+      StageStyleManager.currentStyle.StageObjectBorderColor,
     );
   }
 
@@ -239,6 +255,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
         endRect.getNormalVectorAt(end),
         Math.abs(end.subtract(start).magnitude()) / 2,
       ),
+      StageStyleManager.currentStyle.StageObjectBorderColor,
     );
   }
 
@@ -246,7 +263,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
    * 渲染curve及箭头,curve.end即箭头头部
    * @param curve
    */
-  private renderArrowCurve(curve: SymmetryCurve): void {
+  private renderArrowCurve(curve: SymmetryCurve, color: Color): void {
     // 绘制曲线本体
     curve.endDirection = curve.endDirection.normalize();
     const end = curve.end.clone();
@@ -265,10 +282,10 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     //   )
     //   lastPoint = line.end;
     // }
-    WorldRenderUtils.renderSymmetryCurve(curve, new Color(204, 204, 204), 2);
+    WorldRenderUtils.renderSymmetryCurve(curve, color, 2);
     // 画箭头
     const endPoint = end.add(curve.endDirection.multiply(2));
-    EdgeRenderer.renderArrowHead(endPoint, curve.endDirection.multiply(-1), size);
+    EdgeRenderer.renderArrowHead(endPoint, curve.endDirection.multiply(-1), size, color);
   }
   // /**
   //  * 仅仅绘制曲线
@@ -298,6 +315,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       edge.text,
       Renderer.transformWorld2View(curve.bezier.getPointByT(0.5)),
       Renderer.FONT_SIZE * Camera.currentScale,
+      edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorderColor : edge.color,
     );
   }
 }

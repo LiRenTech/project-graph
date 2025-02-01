@@ -68,6 +68,7 @@ export namespace Serialized {
   };
   export type LineEdge = Edge & {
     type: "core:line_edge";
+    color: Color;
     text: string;
   };
   export type CublicCatmullRomSplineEdge = Edge & {

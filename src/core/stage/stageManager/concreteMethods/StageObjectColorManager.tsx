@@ -2,10 +2,10 @@ import { Color } from "../../../dataStruct/Color";
 import { StageManager } from "../StageManager";
 
 /**
- * 管理所有节点的颜色
+ * 管理所有 节点/连线 的颜色
  * 不仅包括添加颜色和去除颜色，还包括让颜色变暗和变亮等
  */
-export namespace StageNodeColorManager {
+export namespace StageObjectColorManager {
   export function setEntityColor(color: Color) {
     for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
@@ -28,6 +28,22 @@ export namespace StageNodeColorManager {
     for (const node of StageManager.getSections()) {
       if (node.isSelected) {
         node.color = Color.Transparent;
+      }
+    }
+  }
+
+  export function setEdgeColor(color: Color) {
+    for (const edge of StageManager.getLineEdges()) {
+      if (edge.isSelected) {
+        edge.color = color;
+      }
+    }
+  }
+
+  export function clearEdgeColor() {
+    for (const edge of StageManager.getLineEdges()) {
+      if (edge.isSelected) {
+        edge.color = Color.Transparent;
       }
     }
   }

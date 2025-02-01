@@ -17,7 +17,7 @@ export namespace StageDumper {
   /**
    * 最新版本
    */
-  export const latestVersion = 13;
+  export const latestVersion = 14;
 
   export function dumpTextNode(textNode: TextNode): Serialized.Node {
     return {
@@ -38,6 +38,7 @@ export namespace StageDumper {
       text: edge.text,
       uuid: edge.uuid,
       type: "core:line_edge",
+      color: edge.color && edge.color.toArray(),
     };
   }
   export function dumpCrEdge(edge: CublicCatmullRomSplineEdge): Serialized.CublicCatmullRomSplineEdge {

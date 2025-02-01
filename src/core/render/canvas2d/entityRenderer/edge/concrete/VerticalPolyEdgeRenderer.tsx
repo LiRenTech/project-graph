@@ -195,7 +195,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
         );
 
         if (!(edge.target instanceof ConnectPoint)) {
-          EdgeRenderer.renderArrowHead(p1, verticalDirection, 15);
+          EdgeRenderer.renderArrowHead(p1, verticalDirection, 15, edge.color);
         }
       } else if (verticalDirection.y === 0) {
         // 左右
@@ -244,7 +244,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
         );
 
         if (!(edge.target instanceof ConnectPoint)) {
-          EdgeRenderer.renderArrowHead(p1, verticalDirection, 15);
+          EdgeRenderer.renderArrowHead(p1, verticalDirection, 15, edge.color);
         }
       } else {
         // 不会出现的情况
@@ -290,7 +290,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
           .subtract(edge.source.collisionBox.getRectangle().getCenter())
           .normalize();
         const endPoint = edge.bodyLine.end.clone();
-        EdgeRenderer.renderArrowHead(endPoint, direction, size);
+        EdgeRenderer.renderArrowHead(endPoint, direction, size, edge.color);
       }
     }
   }
@@ -347,7 +347,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
   }
   private renderArrowHead(edge: LineEdge, direction: Vector, endPoint = edge.bodyLine.end.clone()) {
     const size = 15;
-    EdgeRenderer.renderArrowHead(endPoint, direction, size);
+    EdgeRenderer.renderArrowHead(endPoint, direction, size, edge.color);
   }
 
   public renderCycleState(edge: LineEdge): void {
@@ -365,12 +365,15 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
       const size = 15;
       const direction = new Vector(1, 0).rotateDegrees(15);
       const endPoint = edge.target.collisionBox.getRectangle().leftCenter;
-      EdgeRenderer.renderArrowHead(endPoint, direction, size);
+      EdgeRenderer.renderArrowHead(endPoint, direction, size, edge.color);
     }
   }
   public getNormalStageSvg(edge: LineEdge): React.ReactNode {
     let lineBody = <></>;
     let textNode = <></>;
+    const edgeColor = edge.color.equals(Color.Transparent)
+      ? StageStyleManager.currentStyle.StageObjectBorderColor
+      : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边
       lineBody = (
@@ -380,7 +383,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
           y1={edge.bodyLine.start.y}
           x2={edge.bodyLine.end.x}
           y2={edge.bodyLine.end.y}
-          stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
+          stroke={edgeColor.toString()}
           strokeWidth={2}
         />
       );
@@ -394,7 +397,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
           x={midPoint.x}
           y={midPoint.y}
           key={edge.uuid + "-text"}
-          fill={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
+          fill={edgeColor.toString()}
           fontSize={Renderer.FONT_SIZE}
           textAnchor="middle"
           fontFamily="MiSans"
@@ -410,7 +413,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
             y1={edge.bodyLine.start.y}
             x2={startHalf.end.x}
             y2={startHalf.end.y}
-            stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
+            stroke={edgeColor.toString()}
             strokeWidth={2}
           />
           <line
@@ -419,7 +422,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
             y1={endHalf.end.y}
             x2={edge.bodyLine.end.x}
             y2={edge.bodyLine.end.y}
-            stroke={StageStyleManager.currentStyle.StageObjectBorderColor.toString()}
+            stroke={edgeColor.toString()}
             strokeWidth={2}
           />
         </>
@@ -434,6 +437,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
         .subtract(edge.source.collisionBox.getRectangle().getCenter())
         .normalize(),
       15,
+      edgeColor,
     );
     return (
       <>
