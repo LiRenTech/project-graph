@@ -46,6 +46,7 @@ import { Stage } from "../core/stage/Stage";
 import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { PathString } from "../utils/pathString";
+import { VFileSystem } from "../core/service/dataFileService/VFileSystem";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -57,9 +58,10 @@ export default function AppMenu({ className = "", open = false }: { className?: 
   /**
    * 新建草稿
    */
-  const onNewDraft = () => {
+  const onNewDraft = async () => {
     if (StageSaveManager.isSaved() || StageManager.isEmpty()) {
       StageManager.destroy();
+      await VFileSystem.clear();
       setFile("Project Graph");
     } else {
       // 当前文件未保存
@@ -76,8 +78,9 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           },
           {
             text: "丢弃当前并直接新开",
-            onClick: () => {
+            onClick: async () => {
               StageManager.destroy();
+              await VFileSystem.clear();
               setFile("Project Graph");
             },
           },

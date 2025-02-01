@@ -157,9 +157,9 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
   const checkoutFile = (path: string) => {
     try {
       setFile(decodeURIComponent(path));
-      if (isDesktop && !path.endsWith(".json")) {
+      if (isDesktop && !path.endsWith(".gp")) {
         Dialog.show({
-          title: "请选择一个JSON文件",
+          title: "请选择一个GP文件",
           type: "error",
         });
         return;

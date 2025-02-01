@@ -76,9 +76,9 @@ export default function RecentFilesPanel() {
     try {
       const path = file.path;
       setFile(decodeURIComponent(path));
-      if (isDesktop && !path.endsWith(".json")) {
+      if (isDesktop && !path.endsWith(".gp")) {
         Dialog.show({
-          title: "请选择一个JSON文件",
+          title: "请选择一个GP文件",
           type: "error",
         });
         return;
@@ -87,7 +87,7 @@ export default function RecentFilesPanel() {
       setRecentFilePanelOpen(false);
     } catch (error) {
       Dialog.show({
-        title: "请选择正确的JSON文件",
+        title: "请选择正确的GP文件",
         content: String(error),
         type: "error",
       });

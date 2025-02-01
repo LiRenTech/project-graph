@@ -20,6 +20,7 @@ export namespace VFileSystem {
     setMetaData(JSON.stringify(StageDumper.dump()));
   }
   export async function loadFromPath(path: string) {
+    await clear();
     const data = await readFile(path);
     const zip = await jszip.loadAsync(data);
     const entries = zip.files;
