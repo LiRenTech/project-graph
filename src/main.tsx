@@ -41,6 +41,7 @@ import "./polyfills/roundRect";
 import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
+import { Tourials } from "./core/service/Tourials";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
