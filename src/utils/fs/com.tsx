@@ -117,7 +117,7 @@ export async function writeTextFile(
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = PathString.absolute2file(path);
+    a.download = PathString.absolute2fileWithExt(path);
     a.click();
     URL.revokeObjectURL(url);
   } else {
@@ -139,7 +139,7 @@ export async function writeFile(
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = PathString.absolute2file(path);
+    a.download = PathString.absolute2fileWithExt(path);
     a.click();
     URL.revokeObjectURL(url);
   } else {
