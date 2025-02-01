@@ -1,5 +1,5 @@
 import { writeTextFile } from "../../../../utils/fs";
-import { StageManager } from "../../../stage/stageManager/StageManager";
+import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
@@ -52,7 +52,7 @@ export class StageExportEngine {
       if (node.details.trim()) {
         nodesContent += "\t" + node.details + "\n";
       }
-      StageManager.nodeChildrenArray(node)
+      GraphMethods.nodeChildrenArray(node)
         .filter((node) => node instanceof TextNode)
         .filter((node) => nodes.includes(node))
         .forEach((child) => {
@@ -101,7 +101,7 @@ export class StageExportEngine {
    * @param node
    */
   private getNodeChildrenArray(node: TextNode): ConnectableEntity[] {
-    const result = StageManager.nodeChildrenArray(node);
+    const result = GraphMethods.nodeChildrenArray(node);
     // 如果全都在右侧或者左侧
     if (
       result.every((v) => v.geometryCenter.x > node.geometryCenter.x) ||

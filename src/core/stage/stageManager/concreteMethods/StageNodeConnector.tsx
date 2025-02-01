@@ -5,6 +5,7 @@ import { LineEdge } from "../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { StageManager } from "../StageManager";
 import { StageDeleteManager } from "./StageDeleteManager";
+import { GraphMethods } from "../basicMethods/GraphMethods";
 
 /**
  * 集成所有连线相关的功能
@@ -20,7 +21,7 @@ export namespace StageNodeConnector {
       if (fromNode.uuid === toNode.uuid && fromNode instanceof ConnectPoint) {
         return false;
       }
-      if (StageManager.isConnected(fromNode, toNode)) {
+      if (GraphMethods.isConnected(fromNode, toNode)) {
         // 已经连接过了，不需要再次连接
         return false;
       }

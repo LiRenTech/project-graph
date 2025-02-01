@@ -5,7 +5,7 @@
  */
 
 import { Vector } from "../../../dataStruct/Vector";
-import { StageManager } from "../../../stage/stageManager/StageManager";
+import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 
 /**
@@ -17,11 +17,11 @@ export function autoLayoutFastTreeMode(rootNode: ConnectableEntity) {
     const spaceX = 20;
     const spaceY = 150;
     // 子节点所占空间的宽度
-    let width = Math.max(0, StageManager.nodeChildrenArray(node).length - 1) * spaceX;
+    let width = Math.max(0, GraphMethods.nodeChildrenArray(node).length - 1) * spaceX;
     const widths: number[] = [];
     const paddings: number[] = [];
     let sumWidths = -width; // widths元素之和
-    for (const child of StageManager.nodeChildrenArray(node)) {
+    for (const child of GraphMethods.nodeChildrenArray(node)) {
       const childrenWidth = dfs(child);
       const wd = child.collisionBox.getRectangle().size.x;
       widths.push(Math.max(wd, childrenWidth));
@@ -31,7 +31,7 @@ export function autoLayoutFastTreeMode(rootNode: ConnectableEntity) {
     sumWidths += width;
     let currentX = node.geometryCenter.x - (sumWidths - paddings[0] - paddings[paddings.length - 1]) / 2 - paddings[0];
     for (let i = 0; i < widths.length; i++) {
-      const child = StageManager.nodeChildrenArray(node)[i];
+      const child = GraphMethods.nodeChildrenArray(node)[i];
       child.moveTo(new Vector(currentX + paddings[i], node.collisionBox.getRectangle().top + spaceY));
       currentX += widths[i] + spaceX;
     }

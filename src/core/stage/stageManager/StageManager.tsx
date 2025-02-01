@@ -21,6 +21,7 @@ import { PenStroke } from "../stageObject/entity/PenStroke";
 import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
+import { GraphMethods } from "./basicMethods/GraphMethods";
 import { SectionMethods } from "./basicMethods/SectionMethods";
 import { StageAutoAlignManager } from "./concreteMethods/StageAutoAlignManager";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
@@ -214,41 +215,6 @@ export namespace StageManager {
   // 用于UI层监测
   export let selectedNodeCount = 0;
   export let selectedEdgeCount = 0;
-
-  /** 获取节点连接的子节点数组，未排除自环 */
-  export function nodeChildrenArray(node: ConnectableEntity): ConnectableEntity[] {
-    const res: ConnectableEntity[] = [];
-    for (const edge of getLineEdges()) {
-      if (edge.source.uuid === node.uuid) {
-        res.push(edge.target);
-      }
-    }
-    return res;
-  }
-
-  /**
-   * 获取一个节点的所有父亲节点，未排除自环
-   * 性能有待优化！！
-   */
-  export function nodeParentArray(node: ConnectableEntity): ConnectableEntity[] {
-    const res: ConnectableEntity[] = [];
-    for (const edge of getLineEdges()) {
-      if (edge.target.uuid === node.uuid) {
-        res.push(edge.source);
-      }
-    }
-    return res;
-  }
-
-  export function isConnected(node: ConnectableEntity, target: ConnectableEntity): boolean {
-    for (const edge of getLineEdges()) {
-      if (edge.source === node && edge.target === target) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   /**
    * 更新节点的引用，将unknown的节点替换为真实的节点，保证对象在内存中的唯一性
    * 节点什么情况下会是unknown的？
@@ -354,16 +320,6 @@ export namespace StageManager {
     if (entities.length === 0) {
       return new Vector(Renderer.w, Renderer.h);
     }
-    // const size = Vector.getZero();
-    // for (const node of getEntities()) {
-    //   if (node.collisionBox.getRectangle().size.x > size.x) {
-    //     size.x = node.collisionBox.getRectangle().size.x;
-    //   }
-    //   if (node.collisionBox.getRectangle().size.y > size.y) {
-    //     size.y = node.collisionBox.getRectangle().size.y;
-    //   }
-    // }
-    // return size;
     const size = Rectangle.getBoundingRectangle(
       Array.from(entities.valuesToArray()).map((node) => node.collisionBox.getRectangle()),
     ).size;
@@ -691,7 +647,7 @@ export namespace StageManager {
     }
     StageNodeConnector.connectConnectableEntity(fromNode, toNode);
     StageHistoryManager.recordStep();
-    return isConnected(fromNode, toNode);
+    return GraphMethods.isConnected(fromNode, toNode);
   }
 
   export function reverseEdges(edges: LineEdge[]) {

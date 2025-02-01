@@ -4,6 +4,7 @@ import { ConnectableEntity } from "../../../stage/stageObject/abstract/Connectab
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { ProgramFunctions } from "./functions/programLogic";
+import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 
 /**
  * 一些在自动计算引擎中
@@ -16,7 +17,7 @@ export namespace AutoComputeUtils {
    * @returns
    */
   export function getParentTextNodes(node: TextNode): TextNode[] {
-    const parents = StageManager.nodeParentArray(node).filter((node) => node instanceof TextNode);
+    const parents = GraphMethods.nodeParentArray(node).filter((node) => node instanceof TextNode);
     // 将parents按x的坐标排序，小的在前面
     parents.sort((a, b) => {
       return a.collisionBox.getRectangle().location.x - b.collisionBox.getRectangle().location.x;
@@ -30,7 +31,7 @@ export namespace AutoComputeUtils {
    * @returns
    */
   export function getChildTextNodes(node: TextNode): TextNode[] {
-    return StageManager.nodeChildrenArray(node)
+    return GraphMethods.nodeChildrenArray(node)
       .filter((node) => node instanceof TextNode)
       .sort((a, b) => a.collisionBox.getRectangle().location.x - b.collisionBox.getRectangle().location.x);
   }
@@ -41,7 +42,7 @@ export namespace AutoComputeUtils {
    * @param resultText
    */
   export function getNodeOneResult(node: TextNode, resultText: string) {
-    const childrenList = StageManager.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
+    const childrenList = GraphMethods.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
     if (childrenList.length > 0) {
       for (const child of childrenList) {
         child.rename(resultText);
@@ -66,7 +67,7 @@ export namespace AutoComputeUtils {
    * @param resultText
    */
   export function getSectionOneResult(section: Section, resultText: string) {
-    const childrenList = StageManager.nodeChildrenArray(section).filter((node) => node instanceof TextNode);
+    const childrenList = GraphMethods.nodeChildrenArray(section).filter((node) => node instanceof TextNode);
     if (childrenList.length > 0) {
       for (const child of childrenList) {
         child.rename(resultText);
@@ -86,7 +87,7 @@ export namespace AutoComputeUtils {
   }
 
   export function getSectionMultiResult(section: Section, resultTextList: string[]) {
-    let childrenList = StageManager.nodeChildrenArray(section).filter((node) => node instanceof TextNode);
+    let childrenList = GraphMethods.nodeChildrenArray(section).filter((node) => node instanceof TextNode);
     if (childrenList.length < resultTextList.length) {
       // 子节点数量不够，需要新建节点
       const needCount = resultTextList.length - childrenList.length;
@@ -106,7 +107,7 @@ export namespace AutoComputeUtils {
       }
     }
     // 子节点数量够了，直接修改，顺序是从上到下
-    childrenList = StageManager.nodeChildrenArray(section)
+    childrenList = GraphMethods.nodeChildrenArray(section)
       .filter((node) => node instanceof TextNode)
       .sort(
         (node1, node2) => node1.collisionBox.getRectangle().location.y - node2.collisionBox.getRectangle().location.y,
@@ -126,7 +127,7 @@ export namespace AutoComputeUtils {
    */
   export function getMultiResult(node: TextNode, resultTextList: string[]) {
     // 先把子节点数量凑够
-    let childrenList = StageManager.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
+    let childrenList = GraphMethods.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
     if (childrenList.length < resultTextList.length) {
       // 子节点数量不够，需要新建节点
       const needCount = resultTextList.length - childrenList.length;
@@ -146,7 +147,7 @@ export namespace AutoComputeUtils {
       }
     }
     // 子节点数量够了，直接修改，顺序是从上到下
-    childrenList = StageManager.nodeChildrenArray(node)
+    childrenList = GraphMethods.nodeChildrenArray(node)
       .filter((node) => node instanceof TextNode)
       .sort(
         (node1, node2) => node1.collisionBox.getRectangle().location.y - node2.collisionBox.getRectangle().location.y,
@@ -176,12 +177,12 @@ export namespace AutoComputeUtils {
    * @param node
    */
   export function isNodeConnectedWithLogicNode(node: ConnectableEntity): boolean {
-    for (const fatherNode of StageManager.nodeParentArray(node)) {
+    for (const fatherNode of GraphMethods.nodeParentArray(node)) {
       if (fatherNode instanceof TextNode && isNameIsLogicNode(fatherNode.text)) {
         return true;
       }
     }
-    for (const childNode of StageManager.nodeChildrenArray(node)) {
+    for (const childNode of GraphMethods.nodeChildrenArray(node)) {
       if (childNode instanceof TextNode && isNameIsLogicNode(childNode.text)) {
         return true;
       }

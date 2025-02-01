@@ -1,3 +1,4 @@
+import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { Controller } from "../controller/Controller";
@@ -17,7 +18,7 @@ export function autoLayoutMainTick(): void {
   // 遍历所有选中的节点，将他们的直接孩子节点拉向自己
   selectedConnectableEntities.forEach((entity) => {
     // 计算父向子的关系
-    const children = StageManager.nodeChildrenArray(entity);
+    const children = GraphMethods.nodeChildrenArray(entity);
     children.forEach((child) => {
       // 计算子节点到父节点的向量
       const fatherToChildVector = child.collisionBox

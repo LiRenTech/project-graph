@@ -1,6 +1,7 @@
 import { Vector } from "../../../dataStruct/Vector";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../stageObject/abstract/StageEntity";
+import { GraphMethods } from "../basicMethods/GraphMethods";
 import { StageManager } from "../StageManager";
 
 /**
@@ -106,7 +107,7 @@ export namespace StageEntityMoveManager {
 
   function moveWithChildrenDfs(node: ConnectableEntity, delta: Vector, visitedUUIDs: string[]) {
     moveEntityUtils(node, delta);
-    for (const child of StageManager.nodeChildrenArray(node)) {
+    for (const child of GraphMethods.nodeChildrenArray(node)) {
       if (visitedUUIDs.includes(child.uuid)) {
         continue;
       }

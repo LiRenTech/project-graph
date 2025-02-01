@@ -4,6 +4,7 @@ import { Vector } from "../../../dataStruct/Vector";
 import { LineEffect } from "../../../service/feedbackService/effectEngine/concrete/LineEffect";
 import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
+import { GraphMethods } from "../basicMethods/GraphMethods";
 import { StageManager } from "../StageManager";
 import { StageEntityMoveManager } from "./StageEntityMoveManager";
 
@@ -69,7 +70,7 @@ export namespace StageNodeRotate {
 
     StageEntityMoveManager.moveEntityUtils(currentNode, centerToChildVectorRotated.subtract(centerToChildVector));
     // 再旋转子节点
-    for (const child of StageManager.nodeChildrenArray(currentNode)) {
+    for (const child of GraphMethods.nodeChildrenArray(currentNode)) {
       if (visitedUUIDs.includes(child.uuid)) {
         continue;
       }

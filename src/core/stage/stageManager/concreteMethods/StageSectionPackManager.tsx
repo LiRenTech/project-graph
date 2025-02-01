@@ -5,6 +5,7 @@ import { Section } from "../../stageObject/entity/Section";
 import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageManager } from "../StageManager";
 import { StageSectionInOutManager } from "./StageSectionInOutManager";
+import { GraphMethods } from "../basicMethods/GraphMethods";
 
 /**
  * 管理所有东西进出StageSection的逻辑
@@ -81,8 +82,8 @@ export namespace StageSectionPackManager {
         details: textNode.details,
       });
       // 获取所有连向它的和它连向的东西
-      const fatherConnections = StageManager.nodeParentArray(textNode);
-      const childConnections = StageManager.nodeChildrenArray(textNode);
+      const fatherConnections = GraphMethods.nodeParentArray(textNode);
+      const childConnections = GraphMethods.nodeChildrenArray(textNode);
 
       // 删除原来的textNode
       StageManager.deleteEntities([textNode]);
