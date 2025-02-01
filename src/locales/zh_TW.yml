@@ -1,0 +1,474 @@
+welcome:
+  language: 語言
+  next: 下一步
+  website: 網站
+  github: GitHub
+  bilibili: 哔哩哔哩
+  qq: QQ 群組
+
+about:
+  title: Project Graph 计划投射
+  intro:
+    - 軟體介紹
+    - 這是一個基於tauri框架的快速繪製節點圖的工具，可以用於專案拓撲圖繪製、快速頭腦風暴草稿
+    - Xmind 只能用來繪製樹形結構圖，FigJam 和 draw.io 可以用來繪製但網頁打開有點慢了
+    - 所以做了這個小軟體
+  contact:
+    - 聯絡我們
+    - 我們致力於為“圖論”設計一個最快速方便的繪製方法論，同時也在可視化思考、拓撲型 todo list 等方向進行探索創新。
+    - 如果您想快速獲得反饋和提供建議，或者有任何想法、疑問，歡迎加入我們的 QQ 群：1006956704
+  techEnvironment: 技術支持與生態環境
+  developers:
+    title: 開發者名單
+    proposer: 專案提出
+    conceptDesigner: 概念設計
+    featureDesigner: 功能設計
+    feedbackManager: 反饋管理
+    logoDesigner: 圖標設計
+    uiDesigner: UI 設計
+    softwareArchitect: 軟體架構
+    bezierCurveDesigner: 貝塞爾曲線設計
+    animationEffectDesigner: 動畫特效設計
+    automationBuilder: 自動化構建
+    xlings: 自動化環境搭建
+    websiteMaintainer: 網站維護
+    performanceSupervisor: 性能督導
+    videoPromoter: 視頻推廣
+    translator: 翻譯
+    tester: 測試
+    encourager: 程式設計師鼓勵師
+    encouragerEncourager: 鼓勵師的鼓勵師
+    atmosphereAdjuster: 氣氛調節
+  ideaSources:
+    - 靈感來源
+    - 未支持深色風格的 FigJam
+    - 所長林超的畫分析框架詳解視頻
+    - 《數據結構與演算法》中的拓撲排序、圖論
+    - “頭腦風暴法”
+    - 遊戲《Minecraft》中的“命令方塊”
+    - 遊戲《水果忍者》中揮刀的動畫效果
+    - 遊戲《Mindustry》中的工廠流水線設計成邏輯節點
+    - 狀態機的概念
+  team:
+    - 團隊簡介
+    - 理刃科技(LiRen Tech)是一個由Littlefean和Rutubet在2017年5月1日創立的小型團隊，後續ZTY加入團隊。
+    - 以其年輕化的團隊氛圍、對創新創意的重視、以及理性思維與文化包容的特點，在軟體開發領域獨樹一幟。
+    - 不僅專注於開發工具軟體和遊戲，還涉足Minecraft遊戲插件開發、遊戲伺服器運營以及網站建設等多元化業務。
+    - 理刃科技的代表作品包括CannonWar這個內容豐富的塔防遊戲、BitMountain算法競賽網站、Watch小桌面軟體，以及MinecraftPvP職業戰爭伺服器。
+    - 團隊以淺藍色和程式碼綠為代表顏色，象徵著邏輯合理與整活幽默並存的團隊文化。
+
+settings:
+  tabs:
+    about: 關於
+    visual: 顯示
+    physical: 物理
+    performance: 性能
+    automation: 自動化
+    control: 控制
+    ai: AI
+    github: GitHub
+  language:
+    title: 語言
+    options:
+      en: 英文
+      zh_CN: 简体中文
+      zh_TW: 繁體中文
+  theme:
+    title: 主題顏色
+    options:
+      black: 德古拉暗黑主題
+      white: 論文白色主題
+      macaron: 马卡龙色系主题
+      morandi: 莫兰迪色系主题
+  uiTheme:
+    title: UI 主题颜色
+    options:
+      dark: 暗黑主题
+      light: 明亮主题
+      macaron: 马卡龙色系主题
+      morandi: 莫兰迪色系主题
+  lineStyle:
+    title: 連線樣式
+    options:
+      straight: 直線
+      bezier: 貝塞爾曲線
+      vertical: 垂直折線
+  isRenderCenterPointer:
+    title: 显示中心十字准星
+    description: |
+      开启后，画布中心会显示一个十字准星，用于用于指示快捷键创建节点的位置
+  showGrid:
+    title: 顯示網格
+  showBackgroundHorizontalLines:
+    title: 顯示水平背景線
+    description: |
+      水平線和垂直線可以同時打開，實現網格效果
+  showBackgroundVerticalLines:
+    title: 顯示垂直背景線
+  showBackgroundDots:
+    title: 顯示背景點
+    description: |
+      這些背景點是水平線和垂直線的交點，實現洞洞板的效果
+  showBackgroundCartesian:
+    title: 显示背景直角坐标系
+    description: |
+      开启后，将会显示x轴、y轴和刻度数字
+      可以用于观测一些节点的绝对坐标位置
+      也能很直观的知道当前的视野缩放倍数
+  windowBackgroundAlpha:
+    title: 視窗背景透明度
+  showDebug:
+    title: 顯示除錯資訊
+    description: |
+      通常為開發者使用
+      開啟後，畫布左上角將會顯示除錯資訊。
+      若您遇到bug截圖回饋時，建議開啟此選項。
+  alwaysShowDetails:
+    title: 始終顯示節點詳細資訊
+    description: |
+      開啟後，無需滑鼠移動到節點上時，才顯示節點的詳細資訊。
+  useNativeTitleBar:
+    title: 使用原生標題列（需要重新啟動應用程式）
+    description: |
+      開啟後，視窗頂部將會出現原生的標題列，而不是模擬的標題列。
+  protectingPrivacy:
+    title: 隱私保護
+    description: |
+      用於回饋問題截圖時，開啟此項之後將漢字全部替換成《好》，以保護隱私。
+      僅作顯示層面的替換，不會影響真實數據
+      回饋完畢後可再關閉，復原
+  limitCameraInCycleSpace:
+    title: 开启循环空间限制摄像机移动
+    description: |
+      开启后，摄像机只能在一个矩形区域内移动
+      可以防止摄像机移动到很远的地方迷路
+      该矩形区域会形成一个循环空间，类似于无边贪吃蛇游戏中的地图
+      走到最上面会回到最下面，走到最左边会回到最右边
+      注意：该功能还在实验阶段
+  cameraCycleSpaceSizeX:
+    title: 循环空间宽度
+    description: |
+      循环空间的宽度，单位为像素
+  cameraCycleSpaceSizeY:
+    title: 循环空间高度
+    description: |
+      循环空间的高度，单位为像素
+  renderEffect:
+    title: 渲染特效
+    description: 是否渲染特效，如果卡頓可以關閉
+  historySize:
+    title: 歷史記錄大小
+    description: |
+      這個數值決定了您最多ctrl+z撤銷的次數
+      如果您的電腦記憶體非常少，可以適當調小這個值
+  isEnableEntityCollision:
+    title: 實體碰撞檢測
+    description: |
+      開啟後，實體之間會進行碰撞擠壓移動，可能會影響性能。
+      建議關閉此項，目前實體碰撞擠壓還不完善，可能導致爆棧
+
+  autoNamerTemplate:
+    title: 自動命名模板
+    description: |
+      輸入`{{i}}` 代表節點名稱會自動替換為編號，雙擊創建時可以自動累加數字。
+      例如`n{{i}}` 會自動替換為`n1`, `n2`, `n3`...
+      輸入`{{date}}` 會自動替換為目前日期，雙擊創建時可以自動更新日期。
+      輸入`{{time}}` 會自動替換為目前時間，雙擊創建時可以自動更新時間。
+      可以組合使用，例如`{{i}}-{{date}}-{{time}}`
+  autoNamerSectionTemplate:
+    title: 自动命名分组模板
+    description: |
+      输入`{{i}}` 代表节点名称会自动替换为编号，双击创建时可以自动累加数字。
+      例如`n{{i}}` 会自动替换为`n1`, `n2`, `n3`...
+      输入`{{date}}` 会自动替换为当前日期，双击创建时可以自动更新日期。
+      输入`{{time}}` 会自动替换为当前时间，双击创建时可以自动更新时间。
+      可以组合使用，例如`{{i}}-{{date}}-{{time}}`
+  autoSaveWhenClose:
+    title: 點擊視窗右上角關閉按鈕時自動儲存工程檔案
+    description: |
+      關閉軟體時，如果有未儲存的工程檔案，會彈出提示框詢問是否儲存。
+      開啟此選項後，關閉軟體時會自動儲存工程檔案。
+      所以，建議開啟此選項。
+  autoSave:
+    title: 開啟自動儲存
+    description: |
+      自動儲存目前檔案
+      此功能目前僅對已有路徑的檔案有效，對草稿檔案不生效！
+  autoSaveInterval:
+    title: 開啟自動儲存間隔（秒）
+    description: |
+      注意：目前計時時間僅在軟體視窗啟用時計時，軟體最小化後不會計時。
+  autoBackup:
+    title: 開啟自動備份
+    description: |
+      自動備份目前檔案
+      自動備份會在工程檔案旁邊生成一個副本
+      如果是草稿，則會儲存到指定的路徑
+  autoBackupInterval:
+    title: 自動備份間隔（秒）
+    description: |
+      自動備份過於頻繁可能會產生大量的備份檔案
+      進而佔用磁碟空間
+  autoBackupDraftPath:
+    title: 草稿的自動備份資料夾路徑
+    description: |
+      請填寫絕對路徑，草稿將統一備份到此資料夾下
+      留空或路徑錯誤時不進行備份
+      windows系統注意使用反斜杠
+      例如：C:\\Users\\username\\Documents\\DraftBackup
+      結尾不要帶路徑分隔符
+  scaleExponent:
+    title: 視角縮放速度
+    description: |
+      《目前縮放倍數》會不斷的以一定倍率無限逼近《目標縮放倍數》
+      當逼近的足夠近時（小於0.0001），會自動停止縮放
+      值为1代表縮放會立刻完成，没有中间的过渡效果
+      值为0代表縮放永遠都不会完成，可模拟锁死效果
+  scaleCameraByMouseLocation:
+    title: 视角缩放根据鼠标位置
+    description: |
+      开启后，缩放视角的中心点是鼠标的位置
+      关闭后，缩放视角的中心点是当前视野的中心
+  allowMoveCameraByWSAD:
+    title: 允許使用W S A D按鍵移動視角
+    description: |
+      開啟後，可以使用W S A D按鍵來上下左右移動視角。
+      關閉後，只能使用鼠標來移動視角，不會造成無限滾屏的bug。
+  cameraKeyboardMoveReverse:
+    title: 视角移动键盘反向
+    description: |
+      开启后，W S A D按键的移动视角方向会相反
+      原本的移动逻辑是移动悬浮在画面上的摄像机，但有人会认为是移动画布，这样就反了
+      于是就有了这个选项
+  allowAddCycleEdge:
+    title: 允許在節點之間添加自迴圈
+    description: |
+      開啟後，節點之間可以添加自迴圈，即節點與自身相連，用於狀態機繪製。
+      預設關閉，因為不常用，容易誤觸發。
+  moveAmplitude:
+    title: 視角移動加速度
+    description: |
+      此設定項用於 使用W S A D鍵來上下左右移動視角時的情景
+      可將攝影機看成一個能朝四个方向噴气的 懸浮飛機
+      此加速度值代表著噴气的動力大小，需要結合下面的摩擦力設定來調整速度
+  moveFriction:
+    title: 視角移動摩擦力係數
+    description: |
+      此設定項用於 使用W S A D鍵來上下左右移動視角時的情景
+      摩擦係數越大，滑动的距离越小，摩擦係數越小，滑动的距离越遠
+      此值=0時代表 絕對光滑
+  gamepadDeadzone:
+    title: 遊戲手柄死區
+    description: |
+      此設定項用於 遊戲手柄控制視角時的情景
+      手柄的輸入值在0-1之間，此值越小，手柄的輸入越敏感
+      死區越大，手柄的輸入越趨於0或1，不會產生太大的變化
+      死區越小，手柄的輸入越趨於中間值，會產生較大的變化
+  mouseRightDragBackground:
+    title: 右鍵拖動背景的操作
+    options:
+      cut: 斬斷並刪除物體
+      moveCamera: 移動視野
+  textNodeContentLineBreak:
+    title: 文本节点换行方案
+    options:
+      enter: enter
+      ctrlEnter: ctrlEnter
+      altEnter: altEnter
+      shiftEnter: shiftEnter
+    description: |
+      注意不要和文本节点退出编辑模式的按键一样了，这样会导致冲突
+      进而导致无法换行
+  textNodeExitEditMode:
+    title: 文本节点退出编辑模式
+    options:
+      enter: enter
+      ctrlEnter: ctrlEnter
+      altEnter: altEnter
+      shiftEnter: shiftEnter
+    description: |
+      实际上按Esc键也可以退出，这里还可以再加选一种
+  enableDragAutoAlign:
+    title: 鼠标拖动自动对齐节点
+    description: |
+      开启后，拖动节点并松开时会与其他节点在x轴、y轴方向对齐
+  # 聲音
+  cuttingLineStartSoundFile:
+    title: 斬斷線開始的聲音文件
+    description: |
+      斬斷線右鍵按下開始時播放的聲音文件路徑
+  connectLineStartSoundFile:
+    title: 連接線開始的聲音文件
+    description: |
+      連接線右鍵按下開始時播放的聲音文件路徑
+      還有問題，在開始節點上滑動滑鼠時可能會重疊播放
+  connectFindTargetSoundFile:
+    title: 連接線吸附到目標上的聲音文件
+    description: |
+      連接線吸附到目標上時播放的聲音文件路徑
+      當前吸附聲音還有問題，
+      吸附到目標上並移動滑鼠時，會重疊很多播放
+  cuttingLineReleaseSoundFile:
+    title: 斬斷線釋放的聲音文件
+    description: |
+      釋放的時候就是看到刀光刃特效的時候
+  alignAndAttachSoundFile:
+    title: 对齐的声音文件
+    description: |
+      鼠标拖动时，对齐节点和时播放的声音文件路径
+app:
+  unsaved: "*"
+appMenu:
+  file:
+    title: 檔案
+    items:
+      new: 新建
+      open: 打開
+      save: 保存
+      saveAs: 另存為
+      recent: 最近打開
+      backup: 備份
+  location:
+    title: 位置
+    items:
+      openDataFolder: 打開數據資料夾
+      openProjectFolder: 打開工程資料夾
+  export:
+    title: 匯出
+    items:
+      exportAsSVGByAll: 匯出為SVG（全部）
+      exportAsMarkdownBySelected: 匯出為Markdown（選中）
+  view:
+    title: 視圖
+    items:
+      resetByAll: 根據全部內容重置視野
+      resetBySelect: 根據選中內容重置視野
+      resetScale: 將縮放重置為標準大小
+  more:
+    title: 更多
+    items:
+      settings: 設定
+      about: 關於
+      welcome: 歡迎畫面
+  window:
+    title: 窗口
+    items:
+      refresh: 刷新
+      fullscreen: 全螢幕
+
+startFilePanel:
+  title: 選擇啟動時自動加載的工程檔案
+  tips:
+    - 說明：啟動時自動加載的工程檔案會在打開時自動加載到舞台，無需手動打開。
+    - 加載：僅將這個檔案加載到舞台（您可以透過懸浮透明來查看切換後是否是您想要的檔案）
+    - 鉛選：切換當前的啟動檔案，左側狀態中的圖示代表當前的啟動檔案。
+    - 移除：僅從列表中移除檔案，不會影響檔案本身。
+  buttons:
+    addFile: 添加檔案
+    clearList: 清空列表
+    showAbsolutePath: 顯示絕對路徑
+    showFileTime: 顯示檔案時間
+
+keyBinds:
+  test:
+    title: 測試
+    description: |
+      僅用於測試快捷鍵自定義綁定功能
+  reload:
+    title: 重載應用
+    description: 重載應用，重新加載當前工程文件
+  undo:
+    title: 撤銷
+    description: 撤銷上一次操作
+  redo:
+    title: 取消撤銷
+    description: 取消上一次撤銷操作
+  resetView:
+    title: 重置視野
+    description: |
+      如果沒有選擇任何內容，則根據全部內容重置視野；
+      如果有選擇內容，則根據選中內容重置視野
+  resetCameraScale:
+    title: 重置缩放
+    description: 将视野缩放重置为标准大小
+  folderSection:
+    title: 折叠或展开Section框
+    description: 按下后选中的Section框会切换折叠或展开状态
+  reverseEdges:
+    title: 反转连线的方向
+    description: |
+      按下后，选中的连线的方向会变成相反方向
+      例如，原先是 A -> B，按下后变成 B -> A
+      此功能的意义在于快速创建一个节点连向多个节点的情况
+      因为目前的连线只能一次性做到多连一。
+  reverseSelectedNodeEdge:
+    title: 反转选中的节点的所有连线的方向
+    description: |
+      按下后，所有框选选中的节点中
+      每个节点的所有连线都会反转方向
+      进而实现更快捷的一连多
+  packEntityToSection:
+    title: 将选中的实体打包到Section框中
+    description: |
+      按下后，选中的实体会自动包裹到新Section框中
+  textNodeToSection:
+    title: 将选中的文本节点转换成Section框
+    description: |
+      按下后，选中的文本节点会被转换成Section框
+      可以用于section框的快速创建
+  deleteSelectedStageObjects:
+    title: 删除选中的舞台物体
+    description: |
+      按下后，选中的舞台物体会被删除
+      舞台物体包括实体（节点和Section等独立存在的东西）和关系（节点之间的连线）
+      默认是delete键，您可以改成backspace键
+  editEntityDetails:
+    title: 编辑选中的实体的详细信息
+    description: |
+      按下后，选中的实体的详细信息会被打开编辑
+      只有选中的物体数量为1时才有效
+  openColorPanel:
+    title: 打开颜色面板快捷键
+    description: |
+      按下后，打开颜色面板，可以用于快速切换节点颜色
+  switchDebugShow:
+    title: 切换调试信息显示
+    description: |
+      按下后，切换调试信息显示
+      调试信息显示在画布左上角，通常为开发者使用
+      开启后，画布左上角将会显示调试信息。
+      若您遇到bug截图反馈时，建议开启此选项。
+  keyboardOnlyGenerateNode:
+    title: 仅使用键盘生长节点
+    description: |
+      按下后，仅使用键盘生长节点
+  selectAll:
+    title: 全选
+    description: 按下后，所有节点和连线都会被选中
+  createTextNodeFromCameraLocation:
+    title: 创建文本节点
+    description: |
+      按下后，在当前视野中心的位置创建一个文本节点
+      等同于鼠标双击创建节点的功能
+  createTextNodeFromSelectedTop:
+    title: 在当前选中的节点正上方创建文本节点
+    description: |
+      按下后，在当前选中的节点正上方创建一个文本节点
+  createTextNodeFromSelectedDown:
+    title: 在当前选中的节点正下方创建文本节点
+    description: |
+      按下后，在当前选中的节点正下方创建一个文本节点
+  createTextNodeFromSelectedLeft:
+    title: 在当前选中的节点左侧创建文本节点
+    description: |
+      按下后，在当前选中的节点左侧创建一个文本节点
+  createTextNodeFromSelectedRight:
+    title: 在当前选中的节点右侧创建文本节点
+    description: |
+      按下后，在当前选中的节点右侧创建一个文本节点
+  CameraScaleZoomIn:
+    title: 放大视野
+    description: 按下后，视野放大
+  CameraScaleZoomOut:
+    title: 缩小视野
+    description: 按下后，视野缩小

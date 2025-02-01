@@ -1,13 +1,8 @@
 import { replaceTextWhenProtect } from "../../../../../utils/font";
-import {
-  averageColors,
-  Color,
-  colorInvert,
-  mixColors,
-} from "../../../../dataStruct/Color";
+import { averageColors, Color, colorInvert, mixColors } from "../../../../dataStruct/Color";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { StageStyleManager } from "../../../../service/stageStyle/StageStyleManager";
+import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../../../stage/Camera";
 import { Canvas } from "../../../../stage/Canvas";
 import { Section } from "../../../../stage/stageObject/entity/Section";
@@ -30,23 +25,15 @@ export namespace SectionRenderer {
     ShapeRenderer.renderRect(
       renderRectangle,
       section.color,
-      mixColors(
-        StageStyleManager.currentStyle.StageObjectBorderColor,
-        Color.Black,
-        0.5,
-      ),
+      mixColors(StageStyleManager.currentStyle.StageObjectBorderColor, Color.Black, 0.5),
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
     // 外框
     ShapeRenderer.renderRect(
       new Rectangle(
-        Renderer.transformWorld2View(
-          section.rectangle.location.subtract(Vector.same(4)),
-        ),
-        section.rectangle.size
-          .add(Vector.same(4 * 2))
-          .multiply(Camera.currentScale),
+        Renderer.transformWorld2View(section.rectangle.location.subtract(Vector.same(4))),
+        section.rectangle.size.add(Vector.same(4 * 2)).multiply(Camera.currentScale),
       ),
       section.color,
       StageStyleManager.currentStyle.StageObjectBorderColor,
@@ -55,16 +42,10 @@ export namespace SectionRenderer {
     );
 
     TextRenderer.renderText(
-      Renderer.protectingPrivacy
-        ? replaceTextWhenProtect(section.text)
-        : section.text,
-      Renderer.transformWorld2View(
-        section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
-      ),
+      Renderer.protectingPrivacy ? replaceTextWhenProtect(section.text) : section.text,
+      Renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
       Renderer.FONT_SIZE * Camera.currentScale,
-      section.color.a === 1
-        ? colorInvert(section.color)
-        : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+      section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
     );
   }
 
@@ -93,12 +74,8 @@ export namespace SectionRenderer {
     if (Camera.currentScale > 0.2) {
       // 正常显示标题
       TextRenderer.renderText(
-        Renderer.protectingPrivacy
-          ? replaceTextWhenProtect(section.text)
-          : section.text,
-        Renderer.transformWorld2View(
-          section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)),
-        ),
+        Renderer.protectingPrivacy ? replaceTextWhenProtect(section.text) : section.text,
+        Renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
         Renderer.FONT_SIZE * Camera.currentScale,
         section.color.a === 1
           ? colorInvert(section.color)
@@ -109,9 +86,7 @@ export namespace SectionRenderer {
       const fontHeight = fontSizeVector.y;
       // 缩放过小了，显示巨大化文字
       TextRenderer.renderTextFromCenter(
-        Renderer.protectingPrivacy
-          ? replaceTextWhenProtect(section.text)
-          : section.text,
+        Renderer.protectingPrivacy ? replaceTextWhenProtect(section.text) : section.text,
         Renderer.transformWorld2View(section.rectangle.center),
         fontHeight * Camera.currentScale,
         section.color.a === 1
@@ -123,6 +98,21 @@ export namespace SectionRenderer {
         20 * Camera.currentScale,
       );
     }
+  }
+
+  export function renderBackgroundColor(section: Section) {
+    const color = section.color;
+    color.a = Math.min(color.a, 0.2);
+    ShapeRenderer.renderRect(
+      new Rectangle(
+        Renderer.transformWorld2View(section.rectangle.location),
+        section.rectangle.size.multiply(Camera.currentScale),
+      ),
+      color,
+      Color.Transparent,
+      0,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+    );
   }
 
   function getFontSizeBySectionSize(section: Section): Vector {
@@ -162,19 +152,14 @@ export namespace SectionRenderer {
 
     if (section.isSelected) {
       // 在外面增加一个框
-      CollisionBoxRenderer.render(
-        section.collisionBox,
-        new Color(0, 255, 0, 0.5),
-      );
+      CollisionBoxRenderer.render(section.collisionBox, new Color(0, 255, 0, 0.5));
     }
     // debug: 绿色虚线
     if (Renderer.isShowDebug) {
       for (const child of section.children) {
         CurveRenderer.renderDashedLine(
           Renderer.transformWorld2View(section.rectangle.leftTop),
-          Renderer.transformWorld2View(
-            child.collisionBox.getRectangle().leftTop,
-          ),
+          Renderer.transformWorld2View(child.collisionBox.getRectangle().leftTop),
           Color.Green,
           0.2 * Camera.currentScale,
           5 * Camera.currentScale,

@@ -2,8 +2,9 @@ import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { StageManager } from "../../stageManager/StageManager";
+import { ConnectableAssociation } from "../abstract/Association";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { ConnectableAssociation, ConnectableEntity } from "../StageObject";
+import { ConnectableEntity } from "../abstract/ConnectableEntity";
 
 /**
  * 连接两个实体的有向边
@@ -64,29 +65,18 @@ export abstract class Edge extends ConnectableAssociation {
       this.source.collisionBox.getRectangle().center,
       this.target.collisionBox.getRectangle().center,
     );
-    const startPoint = this.source.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(edgeCenterLine);
-    const endPoint = this.target.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(edgeCenterLine);
+    const startPoint = this.source.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
+    const endPoint = this.target.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
     return new Line(startPoint, endPoint);
   }
 
-  static getCenterLine(
-    source: ConnectableEntity,
-    target: ConnectableEntity,
-  ): Line {
+  static getCenterLine(source: ConnectableEntity, target: ConnectableEntity): Line {
     const edgeCenterLine = new Line(
       source.collisionBox.getRectangle().center,
       target.collisionBox.getRectangle().center,
     );
-    const startPoint = source.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(edgeCenterLine);
-    const endPoint = target.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(edgeCenterLine);
+    const startPoint = source.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
+    const endPoint = target.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
     return new Line(startPoint, endPoint);
   }
 

@@ -1,7 +1,4 @@
-import {
-  open as openFileDialog,
-  save as saveFileDialog,
-} from "@tauri-apps/plugin-dialog";
+import { open as openFileDialog, save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 import { useAtom } from "jotai";
 import {
   AppWindow,
@@ -33,32 +30,24 @@ import { useNavigate } from "react-router-dom";
 import { Camera } from "../core/stage/Camera";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageManager } from "../core/stage/stageManager/StageManager";
-import {
-  fileAtom,
-  isExportTreeTextPanelOpenAtom,
-  isRecentFilePanelOpenAtom,
-} from "../state";
+import { fileAtom, isExportTreeTextPanelOpenAtom, isRecentFilePanelOpenAtom } from "../state";
 import { cn } from "../utils/cn";
 import { getCurrentWindow, isDesktop, isWeb } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { dataDir } from "@tauri-apps/api/path";
 import { useTranslation } from "react-i18next";
-import { RecentFileManager } from "../core/service/RecentFileManager";
+import { Dialog } from "../components/dialog";
 import { Settings } from "../core/service/Settings";
+import { RecentFileManager } from "../core/service/dataFileService/RecentFileManager";
+import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
+import { StageExportSvg } from "../core/service/dataGenerateService/stageExportEngine/StageExportSvg";
+import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { Stage } from "../core/stage/Stage";
-import { StageDumperSvg } from "../core/stage/StageDumperSvg";
-import { StageSaveManager } from "../core/stage/StageSaveManager";
+import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
-import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
 
-export default function AppMenu({
-  className = "",
-  open = false,
-}: {
-  className?: string;
-  open: boolean;
-}) {
+export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
   const [file, setFile] = useAtom(fileAtom);
   const { t } = useTranslation("appMenu");
@@ -104,7 +93,7 @@ export default function AppMenu({
         //空项目不需要保存
         StageManager.destroy();
         openFileByDialogWindow();
-      } else if (Stage.Path.isDraft()) {
+      } else if (Stage.path.isDraft()) {
         Dialog.show({
           title: "草稿未保存",
           content: "当前草稿未保存，是否保存？",
@@ -235,16 +224,13 @@ export default function AppMenu({
   };
   const onBackup = async () => {
     try {
-      if (Stage.Path.isDraft()) {
+      if (Stage.path.isDraft()) {
         const autoBackupDraftPath = await Settings.get("autoBackupDraftPath");
-        const backupPath = `${autoBackupDraftPath}${Stage.Path.getSep()}${PathString.getTime()}.json`;
+        const backupPath = `${autoBackupDraftPath}${PathString.getSep()}${PathString.getTime()}.json`;
         await StageSaveManager.backupHandle(backupPath, StageDumper.dump());
         return;
       }
-      await StageSaveManager.backupHandleWithoutCurrentPath(
-        StageDumper.dump(),
-        true,
-      );
+      await StageSaveManager.backupHandleWithoutCurrentPath(StageDumper.dump(), true);
     } catch {
       await Dialog.show({
         title: "备份失败",
@@ -270,9 +256,9 @@ export default function AppMenu({
       return;
     }
 
-    const data = StageDumperSvg.dumpStageToSVGString();
+    const data = StageExportSvg.dumpStageToSVGString();
     try {
-      await StageSaveManager.saveSvgHandle(path, data);
+      await Stage.exportEngine.saveSvgHandle(path, data);
     } catch {
       await Dialog.show({
         title: "保存失败",
@@ -282,9 +268,7 @@ export default function AppMenu({
   };
 
   const onExportTreeText = async () => {
-    const selectedNodes = StageManager.getSelectedEntities().filter(
-      (entity) => entity instanceof TextNode,
-    );
+    const selectedNodes = StageManager.getSelectedEntities().filter((entity) => entity instanceof TextNode);
     if (selectedNodes.length === 0) {
       Dialog.show({
         title: "没有选中节点",
@@ -297,14 +281,11 @@ export default function AppMenu({
   };
 
   const onSaveMarkdownNew = async () => {
-    const selectedNodes = StageManager.getSelectedEntities().filter(
-      (entity) => entity instanceof TextNode,
-    );
+    const selectedNodes = StageManager.getSelectedEntities().filter((entity) => entity instanceof TextNode);
     if (selectedNodes.length === 0) {
       Dialog.show({
         title: "没有选中节点",
-        content:
-          "请先选中一个根节点再使用此功能，并且根节点所形成的结构必须为树状结构",
+        content: "请先选中一个根节点再使用此功能，并且根节点所形成的结构必须为树状结构",
         type: "error",
       });
       return;
@@ -316,7 +297,7 @@ export default function AppMenu({
       });
       return;
     }
-    if (!StageManager.isTree(selectedNodes[0])) {
+    if (!GraphMethods.isTree(selectedNodes[0])) {
       Dialog.show({
         title: "结构错误",
         content: "根节点所形成的结构必须为树状结构",
@@ -342,7 +323,7 @@ export default function AppMenu({
       return;
     }
     try {
-      await StageSaveManager.saveMarkdownHandle(path, selectedNodes[0]);
+      await Stage.exportEngine.saveMarkdownHandle(path, selectedNodes[0]);
     } catch {
       await Dialog.show({
         title: "保存失败",
@@ -390,7 +371,7 @@ export default function AppMenu({
   return (
     <div
       className={cn(
-        "!pointer-events-none flex origin-top-left scale-0 flex-col gap-4 rounded-md border border-neutral-700 bg-neutral-800/20 p-3 opacity-0 backdrop-blur-sm",
+        "bg-appmenu-bg border-appmenu-border !pointer-events-none flex origin-top-left scale-0 flex-col gap-4 rounded-md border p-3 opacity-0",
         {
           "!pointer-events-auto scale-100 opacity-100": open,
         },
@@ -407,10 +388,7 @@ export default function AppMenu({
         </Col>
         {!isWeb && (
           <>
-            <Col
-              icon={<FileText />}
-              onClick={() => setRecentFilePanelOpen(true)}
-            >
+            <Col icon={<FileText />} onClick={() => setRecentFilePanelOpen(true)}>
               {t("file.items.recent")}
             </Col>
             <Col icon={<Save />} onClick={onSave}>
@@ -473,10 +451,7 @@ export default function AppMenu({
         <Col icon={<SquareDashedKanbanIcon />} onClick={() => Camera.reset()}>
           {t("view.items.resetByAll")}
         </Col>
-        <Col
-          icon={<SquareDashedMousePointer />}
-          onClick={() => Camera.resetBySelected()}
-        >
+        <Col icon={<SquareDashedMousePointer />} onClick={() => Camera.resetBySelected()}>
           {t("view.items.resetBySelect")}
         </Col>
         <Col icon={<Scaling />} onClick={() => Camera.resetScale()}>
@@ -484,10 +459,7 @@ export default function AppMenu({
         </Col>
       </Row>
       <Row icon={<MoreHorizontal />} title={t("more.title")}>
-        <Col
-          icon={<SettingsIcon />}
-          onClick={() => navigate("/settings/visual")}
-        >
+        <Col icon={<SettingsIcon />} onClick={() => navigate("/settings/visual")}>
           {t("more.items.settings")}
         </Col>
         <Col icon={<Info />} onClick={() => navigate("/settings/about")}>
@@ -547,6 +519,18 @@ export default function AppMenu({
           </Col>
           <Col
             icon={<TestTube2 />}
+            onClick={() =>
+              Dialog.show({
+                title: "舞台序列化",
+                type: "info",
+                code: JSON.stringify(CopyEngine.copyBoardData, null, 2),
+              })
+            }
+          >
+            clipboard json
+          </Col>
+          <Col
+            icon={<TestTube2 />}
             onClick={() => {
               StageManager.destroy();
             }}
@@ -583,14 +567,10 @@ export default function AppMenu({
   );
 }
 
-function Row({
-  children,
-  title,
-  icon,
-}: React.PropsWithChildren<{ title: string; icon: React.ReactNode }>) {
+function Row({ children, title, icon }: React.PropsWithChildren<{ title: string; icon: React.ReactNode }>) {
   return (
     <div className="flex gap-2">
-      <span className="flex gap-1 text-neutral-400">
+      <span className="text-appmenu-category-title flex gap-1">
         {icon} {title}
       </span>
       <div className="w-0.5 bg-neutral-700"></div>
@@ -606,7 +586,7 @@ function Col({
 }: React.PropsWithChildren<{ icon: React.ReactNode; onClick?: () => void }>) {
   return (
     <div
-      className="flex w-max cursor-pointer items-center gap-1 rounded-lg outline outline-0 outline-white/0 transition-all hover:bg-white/15 hover:outline-8 hover:outline-white/15 active:scale-90"
+      className="hover:bg-appmenu-hover-bg hover:outline-appmenu-hover-bg text-appmenu-item-text flex w-max cursor-pointer items-center gap-1 rounded-lg outline-0 outline-white/0 transition-all hover:outline-8 active:scale-90"
       onClick={onClick}
     >
       {icon}

@@ -26,24 +26,24 @@ import {
   Trash2,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import Box from "../components/ui/Box";
-import Button from "../components/ui/Button";
-import Input from "../components/ui/Input";
+import Box from "../components/Box";
+import Button from "../components/Button";
+import Input from "../components/Input";
 import { Color } from "../core/dataStruct/Color";
-import { ApiKeyManager } from "../core/service/ai/ApiKeyManager";
-import { TextRiseEffect } from "../core/service/effectEngine/concrete/TextRiseEffect";
-import { ViewFlashEffect } from "../core/service/effectEngine/concrete/ViewFlashEffect";
+import { StageExportSvg } from "../core/service/dataGenerateService/stageExportEngine/StageExportSvg";
+import { TextRiseEffect } from "../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
+import { ViewFlashEffect } from "../core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
-import { StageDumperSvg } from "../core/stage/StageDumperSvg";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
 // import { StageSaveManager } from "../core/stage/StageSaveManager";
-import { Dialog } from "../utils/dialog";
+import { Dialog } from "../components/dialog";
+import { Popup } from "../components/popup";
 import { writeTextFile } from "../utils/fs/com";
-import { Popup } from "../utils/popup";
 // import { PathString } from "../utils/pathString";
-import { ColorManager } from "../core/service/ColorManager";
+import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
+import { ColorManager } from "../core/service/feedbackService/ColorManager";
 import ColorManagerPanel from "./_color_manager_panel";
 
 interface ToolbarItemProps {
@@ -55,11 +55,11 @@ interface ToolbarItemProps {
 function ToolbarItem({ icon, handleFunction, description }: ToolbarItemProps) {
   return (
     <div
-      className="group relative flex h-8 w-8 items-center justify-center rounded-md hover:bg-white/20 active:scale-90"
+      className="group hover:bg-toolbar-icon-hover-bg text-toolbar-tooltip-text relative flex h-8 w-8 items-center justify-center rounded-md active:scale-90"
       onClick={handleFunction}
     >
       {icon}
-      <span className="pointer-events-none absolute right-10 z-10 w-auto origin-right scale-90 whitespace-nowrap rounded bg-gray-700 p-1 text-xs text-white opacity-0 group-hover:scale-100 group-hover:opacity-100">
+      <span className="bg-toolbar-tooltip-bg border-toolbar-tooltip-border text-toolbar-tooltip-text pointer-events-none absolute right-10 z-10 w-auto origin-right scale-90 rounded border p-1 text-xs whitespace-nowrap opacity-0 group-hover:scale-100 group-hover:opacity-100">
         {description}
       </span>
     </div>
@@ -84,31 +84,36 @@ export function ColorPanel() {
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-red-500 hover:scale-125"
           onClick={() => {
-            StageManager.setNodeColor(new Color(239, 68, 68));
+            StageManager.setEntityColor(new Color(239, 68, 68));
+            StageManager.setEdgeColor(new Color(239, 68, 68));
           }}
         />
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-yellow-500 hover:scale-125"
           onClick={() => {
-            StageManager.setNodeColor(new Color(234, 179, 8));
+            StageManager.setEntityColor(new Color(234, 179, 8));
+            StageManager.setEdgeColor(new Color(234, 179, 8));
           }}
         />
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-green-600 hover:scale-125"
           onClick={() => {
-            StageManager.setNodeColor(new Color(22, 163, 74));
+            StageManager.setEntityColor(new Color(22, 163, 74));
+            StageManager.setEdgeColor(new Color(22, 163, 74));
           }}
         />
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-blue-500 hover:scale-125"
           onClick={() => {
-            StageManager.setNodeColor(new Color(59, 130, 246));
+            StageManager.setEntityColor(new Color(59, 130, 246));
+            StageManager.setEdgeColor(new Color(59, 130, 246));
           }}
         />
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-purple-500 hover:scale-125"
           onClick={() => {
-            StageManager.setNodeColor(new Color(168, 85, 247));
+            StageManager.setEntityColor(new Color(168, 85, 247));
+            StageManager.setEdgeColor(new Color(168, 85, 247));
           }}
         />
         {/* 清除颜色 */}
@@ -116,6 +121,7 @@ export function ColorPanel() {
           className="m-1 h-5 w-5 animate-pulse cursor-pointer rounded-full bg-gray-500 text-center text-sm hover:scale-125"
           onClick={() => {
             StageManager.clearNodeColor();
+            StageManager.clearEdgeColor();
           }}
         >
           <span>x</span>
@@ -130,7 +136,8 @@ export function ColorPanel() {
             const r = parseInt(color.slice(1, 3), 16);
             const g = parseInt(color.slice(3, 5), 16);
             const b = parseInt(color.slice(5, 7), 16);
-            StageManager.setNodeColor(new Color(r, g, b));
+            StageManager.setEntityColor(new Color(r, g, b));
+            StageManager.setEdgeColor(new Color(r, g, b));
           }}
         ></input>
         <Button
@@ -151,7 +158,8 @@ export function ColorPanel() {
                 backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`,
               }}
               onClick={() => {
-                StageManager.setNodeColor(color);
+                StageManager.setEntityColor(color);
+                StageManager.setEdgeColor(color);
               }}
             />
           );
@@ -175,9 +183,7 @@ function GenerateNodePanel() {
       <div>
         <span>缩进</span>
         <Input value={indention.toString()} onChange={setIndention} number />
-        <p className="text-xs text-neutral-400">
-          会按照您的缩进等级来生成对应的节点结构
-        </p>
+        <p className="text-xs text-neutral-400">会按照您的缩进等级来生成对应的节点结构</p>
       </div>
       <Button
         onClick={() => {
@@ -270,8 +276,7 @@ function AlignNodePanel() {
 export default function Toolbar({ className = "" }: { className?: string }) {
   const [isCopyClearShow, setIsCopyClearShow] = useState(false);
   const [isHaveSelectedNode, setSsHaveSelectedNode] = useState(false);
-  const [isHaveSelectedNodeOverTwo, setSsHaveSelectedNodeOverTwo] =
-    useState(false);
+  const [isHaveSelectedNodeOverTwo, setSsHaveSelectedNodeOverTwo] = useState(false);
   const [isHaveSelectedEdge, setSsHaveSelectedEdge] = useState(false);
   const [ignoreMouse, setIgnoreMouse] = useState(false);
 
@@ -279,7 +284,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
     setSsHaveSelectedNode(StageManager.selectedNodeCount > 0);
     setSsHaveSelectedNodeOverTwo(StageManager.selectedNodeCount > 1);
     setSsHaveSelectedEdge(StageManager.selectedEdgeCount > 0);
-    setIsCopyClearShow(Stage.copyBoardData.entities.length > 0);
+    setIsCopyClearShow(!CopyEngine.isClipboardEmpty());
   };
   useEffect(() => {
     update();
@@ -287,12 +292,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       update();
     }, 100);
 
-    // const handleKeyDown = (event: KeyboardEvent) => {
-    //   // // 绑定一些快捷键
-    //   // if (Controller.pressingKeySet.has("control") && event.key === "g") {
-    //   //   StageManager.packEntityToSectionBySelected();
-    //   // }
-    // };
     const handleMouseDown = () => {
       setIgnoreMouse(true);
     };
@@ -300,22 +299,13 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       setIgnoreMouse(false);
     };
 
-    // window.addEventListener("keydown", handleKeyDown);
-    document
-      .querySelector("canvas")
-      ?.addEventListener("mousedown", handleMouseDown);
-    document
-      .querySelector("canvas")
-      ?.addEventListener("mouseup", handleMouseUp);
+    document.querySelector("canvas")?.addEventListener("mousedown", handleMouseDown);
+    document.querySelector("canvas")?.addEventListener("mouseup", handleMouseUp);
     return () => {
       clearInterval(intervalId);
       // window.removeEventListener("keydown", handleKeyDown);
-      document
-        .querySelector("canvas")
-        ?.removeEventListener("mousedown", handleMouseDown);
-      document
-        .querySelector("canvas")
-        ?.removeEventListener("mouseup", handleMouseUp);
+      document.querySelector("canvas")?.removeEventListener("mousedown", handleMouseDown);
+      document.querySelector("canvas")?.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);
 
@@ -324,16 +314,13 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   // 因为报错窗口可能会被它遮挡住导致无法在右上角关闭报错窗口
   return (
     <div
-      className={cn(
-        "group/wrapper fixed right-0 top-1/2 z-40 -translate-y-1/2 p-8 pl-16",
-        {
-          "pointer-events-none": ignoreMouse,
-        },
-      )}
+      className={cn("group/wrapper fixed top-1/2 right-0 z-40 -translate-y-1/2 p-8 pl-16", {
+        "pointer-events-none": ignoreMouse,
+      })}
     >
       <Box
         className={cn(
-          "flex w-10 origin-right scale-[10%] flex-col items-center gap-4 rounded-full bg-white px-8 py-6 opacity-25 backdrop-blur-sm group-hover/wrapper:scale-100 group-hover/wrapper:bg-neutral-800/20 group-hover/wrapper:opacity-100",
+          "bg-toolbar-collapsed-bg group-hover/wrapper:border-toolbar-border group-hover/wrapper:bg-toolbar-bg flex w-10 origin-right scale-[10%] flex-col items-center gap-4 rounded-full px-8 py-6 opacity-25 group-hover/wrapper:scale-100 group-hover/wrapper:border group-hover/wrapper:opacity-100",
           className,
         )}
       >
@@ -356,15 +343,13 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             description="反转选中连线方向"
             icon={<Repeat />}
             handleFunction={() => {
-              const selectedEdges = StageManager.getLineEdges().filter(
-                (edge) => edge.isSelected,
-              );
+              const selectedEdges = StageManager.getLineEdges().filter((edge) => edge.isSelected);
               StageManager.reverseEdges(selectedEdges);
             }}
           />
         )}
 
-        {isHaveSelectedNode && (
+        {(isHaveSelectedNode || isHaveSelectedEdge) && (
           <ToolbarItem
             description="设置节点颜色"
             icon={<PaintBucket />}
@@ -384,7 +369,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             description="清空粘贴板内容"
             icon={<ClipboardX />}
             handleFunction={() => {
-              StageManager.clearClipboard();
+              CopyEngine.clearCopyBoardData();
             }}
           />
         )}
@@ -450,14 +435,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             description="AI扩展节点"
             icon={<BrainCircuit />}
             handleFunction={() => {
-              if (ApiKeyManager.getKeyArk().length === 0) {
-                Dialog.show({
-                  title: "提示",
-                  content: "当前为非官方构建，请使用官方构建方可使用AI功能。",
-                  type: "info",
-                });
-                return;
-              }
               StageManager.expandTextNodeByAI();
             }}
           />
@@ -467,7 +444,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             description="将选中内容导出SVG"
             icon={<SaveAll />}
             handleFunction={() => {
-              const svgString = StageDumperSvg.dumpSelectedToSVGString();
+              const svgString = StageExportSvg.dumpSelectedToSVGString();
               Dialog.show({
                 title: "导出SVG",
                 content:
@@ -573,9 +550,7 @@ function myOpen(url: string) {
 }
 
 function deleteSelectedObjects() {
-  StageManager.deleteEntities(
-    StageManager.getTextNodes().filter((node) => node.isSelected),
-  );
+  StageManager.deleteEntities(StageManager.getTextNodes().filter((node) => node.isSelected));
   for (const edge of StageManager.getLineEdges()) {
     if (edge.isSelected) {
       StageManager.deleteEdge(edge);

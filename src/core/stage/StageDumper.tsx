@@ -1,12 +1,14 @@
 import { Serialized } from "../../types/node";
 import { StageManager } from "./stageManager/StageManager";
+import { Entity } from "./stageObject/abstract/StageEntity";
+import { CublicCatmullRomSplineEdge } from "./stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "./stageObject/association/LineEdge";
 import { ConnectPoint } from "./stageObject/entity/ConnectPoint";
 import { ImageNode } from "./stageObject/entity/ImageNode";
+import { PenStroke } from "./stageObject/entity/PenStroke";
 import { Section } from "./stageObject/entity/Section";
 import { TextNode } from "./stageObject/entity/TextNode";
 import { UrlNode } from "./stageObject/entity/UrlNode";
-import { Entity } from "./stageObject/StageObject";
 
 /**
  * 将舞台信息转化为序列化JSON对象
@@ -15,7 +17,7 @@ export namespace StageDumper {
   /**
    * 最新版本
    */
-  export const latestVersion = 13;
+  export const latestVersion = 14;
 
   export function dumpTextNode(textNode: TextNode): Serialized.Node {
     return {
@@ -36,11 +38,22 @@ export namespace StageDumper {
       text: edge.text,
       uuid: edge.uuid,
       type: "core:line_edge",
+      color: edge.color && edge.color.toArray(),
     };
   }
-  export function dumpConnectPoint(
-    connectPoint: ConnectPoint,
-  ): Serialized.ConnectPoint {
+  export function dumpCrEdge(edge: CublicCatmullRomSplineEdge): Serialized.CublicCatmullRomSplineEdge {
+    return {
+      source: edge.source.uuid,
+      target: edge.target.uuid,
+      text: edge.text,
+      uuid: edge.uuid,
+      type: "core:cublic_catmull_rom_spline_edge",
+      controlPoints: edge.getControlPoints().map((point) => [point.x, point.y]),
+      alpha: edge.alpha,
+      tension: edge.tension,
+    };
+  }
+  export function dumpConnectPoint(connectPoint: ConnectPoint): Serialized.ConnectPoint {
     return {
       location: [connectPoint.geometryCenter.x, connectPoint.geometryCenter.y],
       uuid: connectPoint.uuid,
@@ -51,10 +64,7 @@ export namespace StageDumper {
 
   export function dumpImageNode(imageNode: ImageNode): Serialized.ImageNode {
     return {
-      location: [
-        imageNode.rectangle.location.x,
-        imageNode.rectangle.location.y,
-      ],
+      location: [imageNode.rectangle.location.x, imageNode.rectangle.location.y],
       size: [imageNode.rectangle.size.x, imageNode.rectangle.size.y],
       scale: imageNode.scaleNumber,
       path: imageNode.path,
@@ -91,6 +101,47 @@ export namespace StageDumper {
       color: urlNode.color && urlNode.color.toArray(),
     };
   }
+  export function dumpPenStroke(penStroke: PenStroke): Serialized.PenStroke {
+    return {
+      content: penStroke.dumpString(),
+      uuid: penStroke.uuid,
+      details: penStroke.details,
+      location: [penStroke.getPath()[0].x, penStroke.getPath()[0].y],
+      type: "core:pen_stroke",
+    };
+  }
+  /**
+   * 不递归（不包含section内部孩子）的序列化一个实体。
+   * @param entity
+   * @returns
+   */
+  export function dumpOneEntity(
+    entity: Entity,
+  ):
+    | Serialized.Section
+    | Serialized.Node
+    | Serialized.ConnectPoint
+    | Serialized.ImageNode
+    | Serialized.UrlNode
+    | Serialized.PenStroke {
+    if (entity instanceof TextNode) {
+      return dumpTextNode(entity);
+    } else if (entity instanceof Section) {
+      return dumpSection(entity);
+    } else if (entity instanceof ConnectPoint) {
+      return dumpConnectPoint(entity);
+    } else if (entity instanceof ImageNode) {
+      return dumpImageNode(entity);
+    } else if (entity instanceof UrlNode) {
+      return dumpUrlNode(entity);
+    } else if (entity instanceof PenStroke) {
+      return dumpPenStroke(entity);
+    } else {
+      throw new Error(`未知的实体类型: ${entity}`);
+    }
+  }
+
+  // ------------------------------------------------------------
 
   /**
    * 将整个舞台的全部信息转化为序列化JSON对象
@@ -103,86 +154,119 @@ export namespace StageDumper {
       | Serialized.ConnectPoint
       | Serialized.ImageNode
       | Serialized.UrlNode
-    )[] = StageManager.getTextNodes().map((node) => dumpTextNode(node));
+      | Serialized.PenStroke
+    )[] = [];
+    for (const entity of StageManager.getEntities()) {
+      entities.push(dumpOneEntity(entity));
+    }
 
-    entities.push(
-      ...StageManager.getSections().map((section) => dumpSection(section)),
-    );
-    entities.push(
-      ...StageManager.getConnectPoints().map((connectPoint) =>
-        dumpConnectPoint(connectPoint),
-      ),
-    );
-    entities.push(
-      ...StageManager.getImageNodes().map((node) => dumpImageNode(node)),
-    );
-    entities.push(
-      ...StageManager.getUrlNodes().map((node) => dumpUrlNode(node)),
-    );
+    const associations: (Serialized.LineEdge | Serialized.CublicCatmullRomSplineEdge)[] = [];
+    for (const edge of StageManager.getAssociations()) {
+      if (edge instanceof LineEdge) {
+        associations.push(dumpEdge(edge));
+      } else if (edge instanceof CublicCatmullRomSplineEdge) {
+        associations.push(dumpCrEdge(edge));
+      }
+    }
 
     return {
       version: latestVersion,
       entities,
-      associations: StageManager.getLineEdges().map((edge) => dumpEdge(edge)),
+      associations,
       tags: StageManager.TagOptions.getTagUUIDs(),
     };
   }
 
   /**
    * 只将一部分选中的节点，以及它们之间的边转化为序列化JSON对象
-   * @param nodes 选中的节点
+   * @param entities 选中的节点
    * @returns
    */
-  export function dumpSelected(nodes: Entity[]): Serialized.File {
-    let selectedNodes: (
+  export function dumpSelected(entities: Entity[]): Serialized.File {
+    // 根据选中的实体，找到涉及的边
+    const selectedAssociations: (Serialized.LineEdge | Serialized.CublicCatmullRomSplineEdge)[] =
+      dumpAssociationsByEntities(entities);
+
+    return {
+      version: latestVersion,
+      entities: dumpEntities(entities),
+      associations: selectedAssociations,
+      tags: [],
+    };
+  }
+
+  function dumpEntities(
+    entities: Entity[],
+  ): (
+    | Serialized.Section
+    | Serialized.Node
+    | Serialized.ConnectPoint
+    | Serialized.ImageNode
+    | Serialized.UrlNode
+    | Serialized.PenStroke
+  )[] {
+    //
+    let selectedEntities: (
       | Serialized.Section
       | Serialized.Node
       | Serialized.ConnectPoint
       | Serialized.ImageNode
       | Serialized.UrlNode
-    )[] = nodes
-      .filter((entity) => entity instanceof TextNode)
-      .map((node) => dumpTextNode(node));
+      | Serialized.PenStroke
+    )[] = entities.filter((entity) => entity instanceof TextNode).map((node) => dumpTextNode(node));
 
-    selectedNodes = selectedNodes.concat(
-      ...nodes
-        .filter((entity) => entity instanceof Section)
-        .map((section) => dumpSection(section)),
-    );
+    // 遍历所有section的时候，要把section的子节点递归的加入进来。
+    const addSection = (section: Section) => {
+      selectedEntities.push(dumpSection(section));
+      for (const childEntity of section.children) {
+        if (childEntity instanceof Section) {
+          addSection(childEntity);
+        } else {
+          selectedEntities.push(dumpOneEntity(childEntity));
+        }
+      }
+    };
+    for (const section of entities.filter((entity) => entity instanceof Section)) {
+      addSection(section);
+    }
 
-    selectedNodes = selectedNodes.concat(
-      ...nodes
+    selectedEntities = selectedEntities.concat(
+      ...entities
         .filter((entity) => entity instanceof ConnectPoint)
         .map((connectPoint) => dumpConnectPoint(connectPoint)),
     );
-    selectedNodes = selectedNodes.concat(
-      ...nodes
-        .filter((entity) => entity instanceof ImageNode)
-        .map((node) => dumpImageNode(node)),
+    selectedEntities = selectedEntities.concat(
+      ...entities.filter((entity) => entity instanceof ImageNode).map((node) => dumpImageNode(node)),
     );
-    selectedNodes = selectedNodes.concat(
-      ...nodes
-        .filter((entity) => entity instanceof UrlNode)
-        .map((node) => dumpUrlNode(node)),
+    selectedEntities = selectedEntities.concat(
+      ...entities.filter((entity) => entity instanceof UrlNode).map((node) => dumpUrlNode(node)),
     );
+    return selectedEntities;
+  }
 
-    // 根据选中的实体，找到涉及的边
-    const selectedAssociations: (
-      | Serialized.LineEdge
-      | Serialized.CublicCatmullRomSplineEdge
-    )[] = [];
-
-    for (const edge of StageManager.getLineEdges()) {
-      if (nodes.includes(edge.source) && nodes.includes(edge.target)) {
-        selectedAssociations.push(dumpEdge(edge));
+  /**
+   *
+   * @param entities 注意：是通过dfs展平后的
+   * @returns
+   */
+  function dumpAssociationsByEntities(
+    entities: Entity[],
+  ): (Serialized.LineEdge | Serialized.CublicCatmullRomSplineEdge)[] {
+    // 准备答案数组
+    const result: (Serialized.LineEdge | Serialized.CublicCatmullRomSplineEdge)[] = [];
+    // 生成
+    for (const edge of StageManager.getAssociations()) {
+      if (edge instanceof LineEdge) {
+        if (entities.includes(edge.source) && entities.includes(edge.target)) {
+          result.push(dumpEdge(edge));
+        }
+      } else if (edge instanceof CublicCatmullRomSplineEdge) {
+        if (entities.includes(edge.source) && entities.includes(edge.target)) {
+          result.push(dumpCrEdge(edge));
+        }
       }
     }
 
-    return {
-      version: latestVersion,
-      entities: selectedNodes,
-      associations: selectedAssociations,
-      tags: [],
-    };
+    return result;
   }
 }

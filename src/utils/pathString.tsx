@@ -2,6 +2,19 @@ import { family } from "./platform";
 
 export namespace PathString {
   /**
+   * 获取当前平台的路径分隔符
+   * @returns
+   */
+  export function getSep(): string {
+    const fam = family();
+    if (fam === "windows") {
+      return "\\";
+    } else {
+      return "/";
+    }
+  }
+
+  /**
    * 将绝对路径转换为文件名
    * @param path
    * @returns
@@ -70,11 +83,7 @@ export namespace PathString {
    * 获取符合路径文件名规则的时间字符串
    */
   export function getTime(): string {
-    const dateTime = new Date()
-      .toLocaleString()
-      .replaceAll(/\//g, "-")
-      .replaceAll(" ", "_")
-      .replaceAll(":", "-");
+    const dateTime = new Date().toLocaleString().replaceAll(/\//g, "-").replaceAll(" ", "_").replaceAll(":", "-");
     return dateTime;
   }
 
@@ -132,11 +141,7 @@ export namespace PathString {
       }
 
       // 检查主机名是否为 localhost 或者是有效的 IP 地址
-      if (
-        parsedUrl.hostname === "localhost" ||
-        parsedUrl.hostname === "obsidian" ||
-        ipPattern.test(url)
-      ) {
+      if (parsedUrl.hostname === "localhost" || parsedUrl.hostname === "obsidian" || ipPattern.test(url)) {
         return true;
       }
 

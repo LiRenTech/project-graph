@@ -14,22 +14,20 @@ import {
 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import IconButton from "../components/ui/IconButton";
-import Switch from "../components/ui/Switch";
-import { RecentFileManager } from "../core/service/RecentFileManager";
-import { StartFilesManager } from "../core/service/StartFilesManager";
-import { StageSaveManager } from "../core/stage/StageSaveManager";
+import { Dialog } from "../components/dialog";
+import IconButton from "../components/IconButton";
+import Switch from "../components/Switch";
+import { RecentFileManager } from "../core/service/dataFileService/RecentFileManager";
+import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
+import { StartFilesManager } from "../core/service/dataFileService/StartFilesManager";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { fileAtom } from "../state";
 import { cn } from "../utils/cn";
-import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
 import { isDesktop } from "../utils/platform";
 
 export default function StartFilePanel({ open = false }: { open: boolean }) {
-  const [startFiles, setStartFiles] = React.useState<
-    StartFilesManager.StartFile[]
-  >([]);
+  const [startFiles, setStartFiles] = React.useState<StartFilesManager.StartFile[]>([]);
   const { t } = useTranslation("startFilePanel");
 
   const [currentStartFile, setCurrentStartFile] = React.useState<string>("");
@@ -196,7 +194,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
     // 群友joe说蓝色一点更好看
     <div
       className={cn(
-        "pointer-events-none fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 scale-75 transform flex-col items-center overflow-y-scroll rounded-md border border-neutral-700 bg-neutral-900/20 px-2 py-6 opacity-0 backdrop-blur-lg",
+        "bg-panel-bg text-panel-text pointer-events-none fixed top-1/2 left-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 scale-75 transform flex-col items-center overflow-y-scroll rounded-md border px-2 py-6 opacity-0",
         {
           "pointer-events-auto scale-100 opacity-100": open,
           "opacity-20": isPanelTransparent,
@@ -206,7 +204,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
         e.stopPropagation();
       }}
     >
-      <h2 className="mb-3 text-xl font-bold text-white">{t("title")}</h2>
+      <h2 className="mb-3 text-xl font-bold">{t("title")}</h2>
       <div className="mb-3 flex justify-between">
         <IconButton onClick={onAddFile}>
           <span className="flex">
@@ -240,27 +238,16 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
         </thead>
         <tbody>
           {startFiles.map((file) => (
-            <tr
-              key={file.path}
-              className={cn("border-b border-gray-600 p-2 text-gray-200")}
-            >
+            <tr key={file.path} className={cn("border-b border-gray-600 p-2 text-gray-200")}>
               <td className="w-10 text-center">
-                <div className="inline-block animate-bounce">
-                  {currentStartFile === file.path ? "📌" : ""}
-                </div>
+                <div className="inline-block animate-bounce">{currentStartFile === file.path ? "📌" : ""}</div>
               </td>
               <td>
                 <div className="flex flex-col">
-                  <span
-                    className={
-                      currentFile === file.path ? "text-green-400" : ""
-                    }
-                  >
+                  <span className={currentFile === file.path ? "text-green-400" : ""}>
                     {PathString.absolute2file(file.path)}
                   </span>
-                  {isShowAbsolutePath && (
-                    <span className="text-xs text-gray-500">{file.path}</span>
-                  )}
+                  {isShowAbsolutePath && <span className="text-xs text-gray-500">{file.path}</span>}
                 </div>
               </td>
               {isShowTime && (
@@ -278,31 +265,22 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
                 </td>
               )}
               <td className="flex justify-center">
-                <IconButton
-                  className="mx-0.5 px-2 py-1"
-                  onClick={onLoadCurrentStartFile(file.path)}
-                >
+                <button className="mx-0.5 px-2 py-1" onClick={onLoadCurrentStartFile(file.path)}>
                   <HardDriveDownload />
-                </IconButton>
-                <IconButton
-                  className="mx-0.5 px-2 py-1"
-                  onClick={onSetCurrentStartFile(file.path)}
-                >
+                </button>
+                <button className="mx-0.5 px-2 py-1" onClick={onSetCurrentStartFile(file.path)}>
                   <Pin />
-                </IconButton>
-                <IconButton
-                  className="mx-0.5 px-2 py-1"
-                  onClick={onRemoveFile(file.path)}
-                >
+                </button>
+                <button className="mx-0.5 px-2 py-1" onClick={onRemoveFile(file.path)}>
                   <Delete />
-                </IconButton>
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       <div>
-        <div className="mt-3 text-sm text-gray-500">
+        <div className="text-panel-details-text mt-3 text-sm">
           <p>{t("tips.0")}</p>
           <p>{t("tips.1")}</p>
           <p>{t("tips.2")}</p>
@@ -314,10 +292,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
               <FolderTree />
               {t("buttons.showAbsolutePath")}
             </span>
-            <Switch
-              value={isShowAbsolutePath}
-              onChange={(v) => setIsShowAbsolutePath(v)}
-            />
+            <Switch value={isShowAbsolutePath} onChange={(v) => setIsShowAbsolutePath(v)} />
           </div>
           <div className="flex flex-nowrap items-center justify-center">
             <span className="mr-2 flex">

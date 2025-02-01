@@ -1,7 +1,7 @@
 import { Vector } from "../../../../dataStruct/Vector";
-import { EffectObject } from "../../../../service/effectEngine/effectObject";
+import { EffectObject } from "../../../../service/feedbackService/effectEngine/effectObject";
+import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
-import { ConnectableEntity } from "../../../../stage/stageObject/StageObject";
 
 /**
  * 不同类型的边的渲染器 基类
@@ -58,20 +58,14 @@ export abstract class EdgeRendererClass {
    * @param startNode
    * @param mouseLocation 世界坐标系
    */
-  public abstract renderVirtualEdge(
-    startNode: ConnectableEntity,
-    mouseLocation: Vector,
-  ): void;
+  public abstract renderVirtualEdge(startNode: ConnectableEntity, mouseLocation: Vector): void;
 
   /**
    * 绘制鼠标连线移动到目标节点上吸附住 时候虚拟连线效果
    * @param startNode
    * @param endNode
    */
-  public abstract renderVirtualConfirmedEdge(
-    startNode: ConnectableEntity,
-    endNode: ConnectableEntity,
-  ): void;
+  public abstract renderVirtualConfirmedEdge(startNode: ConnectableEntity, endNode: ConnectableEntity): void;
   /**
    * 获取这个线在切断时的特效
    * 外层将在切断时根据此函数来获取特效并自动加入到渲染器中
@@ -81,8 +75,5 @@ export abstract class EdgeRendererClass {
   /**
    * 获取这个线在连接成功时的特效
    */
-  abstract getConnectedEffects(
-    startNode: ConnectableEntity,
-    toNode: ConnectableEntity,
-  ): EffectObject[];
+  abstract getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): EffectObject[];
 }

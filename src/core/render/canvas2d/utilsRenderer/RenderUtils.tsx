@@ -15,23 +15,13 @@ export namespace RenderUtils {
    */
   export function renderPixel(location: Vector, color: Color) {
     Canvas.ctx.fillStyle = color.toString();
-    Canvas.ctx.fillRect(
-      location.x,
-      location.y,
-      1 * Camera.currentScale,
-      1 * Camera.currentScale,
-    );
+    Canvas.ctx.fillRect(location.x, location.y, 1 * Camera.currentScale, 1 * Camera.currentScale);
   }
 
   /**
    * 画箭头（只画头，不画线）
    */
-  export function renderArrow(
-    direction: Vector,
-    location: Vector,
-    color: Color,
-    size: number,
-  ) {
+  export function renderArrow(direction: Vector, location: Vector, color: Color, size: number) {
     /*
     Python 代码：
     self.path = QPainterPath(point_at.to_qt())
@@ -45,18 +35,9 @@ export namespace RenderUtils {
     const arrow_size = size / 2;
     Canvas.ctx.beginPath();
     Canvas.ctx.moveTo(location.x, location.y);
-    Canvas.ctx.lineTo(
-      location.x - nor.rotate(20).x * arrow_size,
-      location.y - nor.rotate(20).y * arrow_size,
-    );
-    Canvas.ctx.lineTo(
-      location.x - nor.x * (arrow_size / 2),
-      location.y - nor.y * (arrow_size / 2),
-    );
-    Canvas.ctx.lineTo(
-      location.x - nor.rotate(-20).x * arrow_size,
-      location.y - nor.rotate(-20).y * arrow_size,
-    );
+    Canvas.ctx.lineTo(location.x - nor.rotate(20).x * arrow_size, location.y - nor.rotate(20).y * arrow_size);
+    Canvas.ctx.lineTo(location.x - nor.x * (arrow_size / 2), location.y - nor.y * (arrow_size / 2));
+    Canvas.ctx.lineTo(location.x - nor.rotate(-20).x * arrow_size, location.y - nor.rotate(-20).y * arrow_size);
     Canvas.ctx.closePath();
     Canvas.ctx.fillStyle = color.toString();
     Canvas.ctx.fill();

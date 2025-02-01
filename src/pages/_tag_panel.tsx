@@ -1,23 +1,15 @@
 import React from "react";
-import Button from "../components/ui/Button";
+import Button from "../components/Button";
+import { Dialog } from "../components/dialog";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
-import { Dialog } from "../utils/dialog";
 
 /**
  * 标签相关面板
  * @param param0
  */
-export default function TagPanel({
-  open = false,
-  className = "",
-}: {
-  open: boolean;
-  className: string;
-}) {
-  const [tagNameList, setTagNameList] = React.useState<
-    { tagName: string; uuid: string }[]
-  >([]);
+export default function TagPanel({ open = false, className = "" }: { open: boolean; className: string }) {
+  const [tagNameList, setTagNameList] = React.useState<{ tagName: string; uuid: string }[]>([]);
 
   function updateTagNameList() {
     setTagNameList(StageManager.getTagNames());
@@ -50,7 +42,7 @@ export default function TagPanel({
   return (
     <div
       className={cn(
-        "fixed -left-64 top-16 flex h-96 w-64 flex-col rounded-md bg-neutral-900 p-2 transition-all",
+        "bg-panel-bg fixed top-16 -left-64 flex h-96 w-64 flex-col rounded-md p-2 transition-all",
         {
           "left-0": open,
         },
@@ -66,11 +58,7 @@ export default function TagPanel({
       <div className="flex-1 overflow-y-auto">
         {tagNameList.map((tag) => {
           return (
-            <div
-              key={tag.uuid}
-              className="cursor-pointer hover:bg-neutral-600"
-              onClick={handleClickTag(tag.uuid)}
-            >
+            <div key={tag.uuid} className="cursor-pointer hover:bg-neutral-600" onClick={handleClickTag(tag.uuid)}>
               {tag.tagName}
             </div>
           );

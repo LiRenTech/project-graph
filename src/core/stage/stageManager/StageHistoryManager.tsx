@@ -1,8 +1,8 @@
 import { Serialized } from "../../../types/node";
-import { RecentFileManager } from "../../service/RecentFileManager";
+import { RecentFileManager } from "../../service/dataFileService/RecentFileManager";
+import { StageSaveManager } from "../../service/dataFileService/StageSaveManager";
 import { Settings } from "../../service/Settings";
 import { StageDumper } from "../StageDumper";
-import { StageSaveManager } from "../StageSaveManager";
 import { StageManager } from "./StageManager";
 
 /**

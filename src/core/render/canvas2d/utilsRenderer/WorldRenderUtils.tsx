@@ -1,12 +1,9 @@
 import { Color } from "../../../dataStruct/Color";
 import { CublicCatmullRomSpline } from "../../../dataStruct/shape/CublicCatmullRomSpline";
-import {
-  CubicBezierCurve,
-  SymmetryCurve,
-} from "../../../dataStruct/shape/Curve";
+import { CubicBezierCurve, SymmetryCurve } from "../../../dataStruct/shape/Curve";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { StageStyleManager } from "../../../service/stageStyle/StageStyleManager";
+import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../../stage/Camera";
 import { Canvas } from "../../../stage/Canvas";
 import { CurveRenderer } from "../basicRenderer/curveRenderer";
@@ -22,17 +19,11 @@ export namespace WorldRenderUtils {
    * 绘制一条Catmull-Rom样条线
    * @param curve
    */
-  export function renderCublicCatmullRomSpline(
-    spline: CublicCatmullRomSpline,
-    color: Color,
-    width: number,
-  ): void {
+  export function renderCublicCatmullRomSpline(spline: CublicCatmullRomSpline, color: Color, width: number): void {
     const points = spline.computePath().map(Renderer.transformWorld2View);
     width *= Camera.currentScale;
     const start = Renderer.transformWorld2View(spline.controlPoints[1]);
-    const end = Renderer.transformWorld2View(
-      spline.controlPoints[spline.controlPoints.length - 2],
-    );
+    const end = Renderer.transformWorld2View(spline.controlPoints[spline.controlPoints.length - 2]);
     // 绘制首位控制点到曲线首尾的虚线
     const dashedColor = color.clone();
     dashedColor.a /= 2;
@@ -45,9 +36,7 @@ export namespace WorldRenderUtils {
     );
     CurveRenderer.renderDashedLine(
       end,
-      Renderer.transformWorld2View(
-        spline.controlPoints[spline.controlPoints.length - 1],
-      ),
+      Renderer.transformWorld2View(spline.controlPoints[spline.controlPoints.length - 1]),
       dashedColor,
       width,
       width * 2,
@@ -82,11 +71,7 @@ export namespace WorldRenderUtils {
    * 绘制一条贝塞尔曲线
    * @param curve
    */
-  export function renderBezierCurve(
-    curve: CubicBezierCurve,
-    color: Color,
-    width: number,
-  ): void {
+  export function renderBezierCurve(curve: CubicBezierCurve, color: Color, width: number): void {
     curve.start = Renderer.transformWorld2View(curve.start);
     curve.end = Renderer.transformWorld2View(curve.end);
     curve.ctrlPt1 = Renderer.transformWorld2View(curve.ctrlPt1);
@@ -98,20 +83,11 @@ export namespace WorldRenderUtils {
    * 绘制一条对称曲线
    * @param curve
    */
-  export function renderSymmetryCurve(
-    curve: SymmetryCurve,
-    color: Color,
-    width: number,
-  ): void {
+  export function renderSymmetryCurve(curve: SymmetryCurve, color: Color, width: number): void {
     renderBezierCurve(curve.bezier, color, width);
   }
 
-  export function renderLaser(
-    start: Vector,
-    end: Vector,
-    width: number,
-    color: Color,
-  ): void {
+  export function renderLaser(start: Vector, end: Vector, width: number, color: Color): void {
     Canvas.ctx.shadowColor = color.toString();
     Canvas.ctx.shadowBlur = 15;
 
@@ -178,22 +154,12 @@ export namespace WorldRenderUtils {
   }
 
   // BUG
-  export function renderRectangleFlash(
-    rectangle: Rectangle,
-    shadowColor: Color,
-    shadowBlur: number,
-  ) {
+  export function renderRectangleFlash(rectangle: Rectangle, shadowColor: Color, shadowBlur: number) {
     Canvas.ctx.shadowColor = shadowColor.toString();
     Canvas.ctx.shadowBlur = shadowBlur;
     // 绘制矩形
     Canvas.ctx.beginPath();
-    Canvas.ctx.roundRect(
-      rectangle.location.x,
-      rectangle.location.y,
-      rectangle.size.x,
-      rectangle.size.y,
-      0,
-    );
+    Canvas.ctx.roundRect(rectangle.location.x, rectangle.location.y, rectangle.size.x, rectangle.size.y, 0);
     Canvas.ctx.fillStyle = "red";
     Canvas.ctx.fill();
     Canvas.ctx.lineWidth = 1;
@@ -203,24 +169,15 @@ export namespace WorldRenderUtils {
     Canvas.ctx.shadowBlur = 0;
   }
 
-  export function renderCuttingFlash(
-    start: Vector,
-    end: Vector,
-    width: number,
-    shadowColor: Color,
-  ): void {
+  export function renderCuttingFlash(start: Vector, end: Vector, width: number, shadowColor: Color): void {
     Canvas.ctx.shadowColor = shadowColor.toString();
     Canvas.ctx.shadowBlur = 15;
     width = Math.min(width, 20);
 
     const direction = end.subtract(start).normalize();
     const headShiftBack = end.subtract(direction.multiply(20));
-    const headLeft = headShiftBack.add(
-      direction.rotateDegrees(90).multiply(width / 2),
-    );
-    const headRight = headShiftBack.add(
-      direction.rotateDegrees(-90).multiply(width / 2),
-    );
+    const headLeft = headShiftBack.add(direction.rotateDegrees(90).multiply(width / 2));
+    const headRight = headShiftBack.add(direction.rotateDegrees(-90).multiply(width / 2));
 
     ShapeRenderer.renderPolygonAndFill(
       [

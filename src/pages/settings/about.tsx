@@ -7,7 +7,7 @@ import Github from "../../assets/github.svg?react";
 import icon from "../../assets/icon.png";
 import QQ from "../../assets/qq.svg?react";
 import versions from "../../assets/versions.json";
-import Button from "../../components/ui/Button";
+import Button from "../../components/Button";
 import { getAppVersion } from "../../utils/otherApi";
 
 export default function About() {
@@ -25,9 +25,7 @@ export default function About() {
       // versions.json 列表中的每一个version字段都必须是tauri.conf.json中填写的值的前缀
 
       setVersion(version);
-      const versionObject = versions.find((vo) =>
-        version.startsWith(vo.version),
-      );
+      const versionObject = versions.find((vo) => version.startsWith(vo.version));
       if (versionObject) {
         setVersionName(versionObject.name);
         setVersionNameEn(versionObject.name_en);
@@ -43,8 +41,8 @@ export default function About() {
     <div className="flex h-full">
       <div className="flex w-64 flex-col items-center justify-center gap-4">
         <img src={icon} alt="icon" className="h-32 w-32" />
-        <h1 className="text-3xl font-bold">Project Graph</h1>
-        <p className="text-center text-sm text-neutral-500">
+        <h1 className="text-panel-text text-3xl font-bold">Project Graph</h1>
+        <p className="text-panel-details-text text-center text-sm">
           {i18n.language === "zh-CN" ? versionName + " " : ""}
           {versionNameEn}
           <br />
@@ -60,9 +58,7 @@ export default function About() {
             }}
           >
             <Download />
-            {updating
-              ? t("updater.downloading")
-              : `${t("updater.available")}: ${update.version}`}
+            {updating ? t("updater.downloading") : `${t("updater.available")}: ${update.version}`}
           </Button>
         )}
         <div className="flex flex-wrap justify-center gap-2">
@@ -70,15 +66,11 @@ export default function About() {
             <BookOpen />
             {t("links.documentation")}
           </Button>
-          <Button
-            onClick={() => open("https://github.com/LiRenTech/project-graph")}
-          >
+          <Button onClick={() => open("https://github.com/LiRenTech/project-graph")}>
             <Github />
             {t("links.github")}
           </Button>
-          <Button
-            onClick={() => open("https://www.bilibili.com/video/BV1hmHKeDE9D")}
-          >
+          <Button onClick={() => open("https://www.bilibili.com/video/BV1hmHKeDE9D")}>
             <Bilibili />
             {t("links.video")}
           </Button>
@@ -92,17 +84,13 @@ export default function About() {
             <QQ />
             {t("links.qq")}
           </Button>
-          <Button
-            onClick={() =>
-              open("https://forum.d2learn.org/category/16/project-graph")
-            }
-          >
+          <Button onClick={() => open("https://forum.d2learn.org/category/16/project-graph")}>
             <MessageCircleCode />
             {t("links.forum")}
           </Button>
         </div>
       </div>
-      <div className="flex flex-1 flex-col gap-4 overflow-auto">
+      <div className="text-panel-text flex flex-1 flex-col gap-4 overflow-auto">
         <Paragraph i18nKey="intro" />
         <Paragraph i18nKey="ideaSources" />
         <Paragraph i18nKey="team" />
@@ -119,11 +107,11 @@ function Paragraph({ i18nKey }: { i18nKey: string }) {
   return (
     <div className="flex flex-col gap-1">
       <h2 className="text-2xl font-bold">
-        <span className="text-neutral-500">{"# "}</span>
+        <span className="text-panel-text">{"# "}</span>
         {data[0]}
       </h2>
       {data.slice(1).map((item, index) => (
-        <p key={index} className="text-sm text-neutral-500">
+        <p key={index} className="text-panel-details-text text-sm">
           {item}
         </p>
       ))}

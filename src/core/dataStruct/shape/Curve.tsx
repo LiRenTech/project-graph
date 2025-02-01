@@ -29,11 +29,7 @@ export class CubicBezierCurve extends Shape {
     return this.start
       .multiply(Math.pow(1 - t, 3))
       .add(this.ctrlPt1.multiply(3 * t * Math.pow(1 - t, 2)))
-      .add(
-        this.ctrlPt2
-          .multiply(3 * Math.pow(t, 2) * (1 - t))
-          .add(this.end.multiply(Math.pow(t, 3))),
-      );
+      .add(this.ctrlPt2.multiply(3 * Math.pow(t, 2) * (1 - t)).add(this.end.multiply(Math.pow(t, 3))));
   }
 
   // /**
@@ -96,10 +92,7 @@ export class CubicBezierCurve extends Shape {
   isPointIn(point: Vector): boolean {
     let lastPoint = this.start;
     for (let i = 1; i <= CubicBezierCurve.segment; i++) {
-      const line = new Line(
-        lastPoint,
-        this.getPointByT(i / CubicBezierCurve.segment),
-      );
+      const line = new Line(lastPoint, this.getPointByT(i / CubicBezierCurve.segment));
       if (line.isPointIn(point)) {
         return true;
       }
@@ -110,10 +103,7 @@ export class CubicBezierCurve extends Shape {
   isCollideWithRectangle(rectangle: Rectangle): boolean {
     let lastPoint = this.start;
     for (let i = 1; i <= CubicBezierCurve.segment; i++) {
-      const line = new Line(
-        lastPoint,
-        this.getPointByT(i / CubicBezierCurve.segment),
-      );
+      const line = new Line(lastPoint, this.getPointByT(i / CubicBezierCurve.segment));
       if (line.isCollideWithRectangle(rectangle)) {
         return true;
       }
@@ -124,10 +114,7 @@ export class CubicBezierCurve extends Shape {
   isCollideWithLine(l: Line): boolean {
     let lastPoint = this.start;
     for (let i = 1; i <= CubicBezierCurve.segment; i++) {
-      const line = new Line(
-        lastPoint,
-        this.getPointByT(i / CubicBezierCurve.segment),
-      );
+      const line = new Line(lastPoint, this.getPointByT(i / CubicBezierCurve.segment));
       if (line.isCollideWithLine(l)) {
         return true;
       }
@@ -136,30 +123,10 @@ export class CubicBezierCurve extends Shape {
     return false;
   }
   getRectangle(): Rectangle {
-    const minX = Math.min(
-      this.start.x,
-      this.ctrlPt1.x,
-      this.ctrlPt2.x,
-      this.end.x,
-    );
-    const maxX = Math.max(
-      this.start.x,
-      this.ctrlPt1.x,
-      this.ctrlPt2.x,
-      this.end.x,
-    );
-    const minY = Math.min(
-      this.start.y,
-      this.ctrlPt1.y,
-      this.ctrlPt2.y,
-      this.end.y,
-    );
-    const maxY = Math.max(
-      this.start.y,
-      this.ctrlPt1.y,
-      this.ctrlPt2.y,
-      this.end.y,
-    );
+    const minX = Math.min(this.start.x, this.ctrlPt1.x, this.ctrlPt2.x, this.end.x);
+    const maxX = Math.max(this.start.x, this.ctrlPt1.x, this.ctrlPt2.x, this.end.x);
+    const minY = Math.min(this.start.y, this.ctrlPt1.y, this.ctrlPt2.y, this.end.y);
+    const maxY = Math.max(this.start.y, this.ctrlPt1.y, this.ctrlPt2.y, this.end.y);
     const leftTop = new Vector(minX, minY);
     const size = new Vector(maxX - minX, maxY - minY);
     return new Rectangle(leftTop, size);

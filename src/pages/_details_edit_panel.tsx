@@ -1,11 +1,11 @@
 import React from "react";
-import Button from "../components/ui/Button";
-import Input from "../components/ui/Input";
+import Button from "../components/Button";
+import Input from "../components/Input";
 import { Renderer } from "../core/render/canvas2d/renderer";
-import { editTextNodeHookGlobal } from "../core/service/controller/concrete/utilsControl";
-import { Controller } from "../core/service/controller/Controller";
+import { editTextNodeHookGlobal } from "../core/service/controlService/controller/concrete/utilsControl";
+import { Controller } from "../core/service/controlService/controller/Controller";
 import { Camera } from "../core/stage/Camera";
-import { Entity } from "../core/stage/stageObject/StageObject";
+import { Entity } from "../core/stage/stageObject/abstract/StageEntity";
 
 /**
  * 2025年1月4日，这个打算被侧边栏取代 ——littlefean
@@ -62,10 +62,7 @@ export default function DetailsEditPanel() {
   return (
     <>
       {isNodeTextEditing && (
-        <div
-          className="fixed z-10 flex h-48 w-72 flex-col"
-          style={getClickedNodeStyle()}
-        >
+        <div className="fixed z-10 flex h-48 w-72 flex-col" style={getClickedNodeStyle()}>
           <Input
             multiline
             onChange={setInputCurrentDetailsHandler}

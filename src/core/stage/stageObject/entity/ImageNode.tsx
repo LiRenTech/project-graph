@@ -3,8 +3,8 @@ import { PathString } from "../../../../utils/pathString";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Stage } from "../../Stage";
+import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { ConnectableEntity } from "../StageObject";
 import { VFileSystem } from "../../../service/VFileSystem";
 
 /**
@@ -52,8 +52,7 @@ export class ImageNode extends ConnectableEntity {
   /**
    * 图片的三种状态
    */
-  public state: "loading" | "success" | "unknownError" | "encodingError" =
-    "loading";
+  public state: "loading" | "success" | "unknownError" | "encodingError" = "loading";
 
   public errorDetails: string = "";
 
@@ -88,25 +87,18 @@ export class ImageNode extends ConnectableEntity {
     this.originImageSize = new Vector(...size);
 
     this.collisionBox = new CollisionBox([
-      new Rectangle(
-        new Vector(...location),
-        new Vector(...size).multiply(this.scaleNumber),
-      ),
+      new Rectangle(new Vector(...location), new Vector(...size).multiply(this.scaleNumber)),
     ]);
     this.state = "loading";
     // 初始化创建的时候，开始获取base64String
-    if (!Stage.Path.isDraft()) {
-      this.updateBase64StringByPath(
-        PathString.dirPath(Stage.Path.getFilePath()),
-      );
+    if (!Stage.path.isDraft()) {
+      this.updateBase64StringByPath(PathString.dirPath(Stage.path.getFilePath()));
     } else {
       // 一般只有在粘贴板粘贴时和初次打开文件时才调用这里
       // 所以这里只可能时初次打开文件时还是草稿的状态
 
       setTimeout(() => {
-        this.updateBase64StringByPath(
-          PathString.dirPath(Stage.Path.getFilePath()),
-        );
+        this.updateBase64StringByPath(PathString.dirPath(Stage.path.getFilePath()));
       }, 1000);
     }
   }
@@ -140,10 +132,7 @@ export class ImageNode extends ConnectableEntity {
             imageElement.width * this.scaleNumber,
             imageElement.height * this.scaleNumber,
           );
-          this.originImageSize = new Vector(
-            imageElement.width,
-            imageElement.height,
-          );
+          this.originImageSize = new Vector(imageElement.width, imageElement.height);
           this.state = "success";
         };
         imageElement.onerror = () => {
@@ -164,7 +153,7 @@ export class ImageNode extends ConnectableEntity {
    * 刷新，这个方法用于重新从路径中加载图片
    */
   public refresh() {
-    this.updateBase64StringByPath(PathString.dirPath(Stage.Path.getFilePath()));
+    this.updateBase64StringByPath(PathString.dirPath(Stage.path.getFilePath()));
   }
 
   public scaleUpdate(scaleDiff: number) {
@@ -177,10 +166,7 @@ export class ImageNode extends ConnectableEntity {
     }
 
     this.collisionBox = new CollisionBox([
-      new Rectangle(
-        this.currentLocation,
-        this.originImageSize.multiply(this.scaleNumber),
-      ),
+      new Rectangle(this.currentLocation, this.originImageSize.multiply(this.scaleNumber)),
     ]);
   }
 
@@ -193,9 +179,7 @@ export class ImageNode extends ConnectableEntity {
   }
 
   public get geometryCenter() {
-    return this.rectangle.location
-      .clone()
-      .add(this.rectangle.size.clone().multiply(0.5));
+    return this.rectangle.location.clone().add(this.rectangle.size.clone().multiply(0.5));
   }
 
   move(delta: Vector): void {

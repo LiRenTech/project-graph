@@ -1,12 +1,12 @@
 import { RotateCw } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Button from "../../components/ui/Button";
-import FileChooser from "../../components/ui/FileChooser";
-import Input from "../../components/ui/Input";
-import Select from "../../components/ui/Select";
-import Slider from "../../components/ui/Slider";
-import Switch from "../../components/ui/Switch";
+import Button from "../../components/Button";
+import FileChooser from "../../components/FileChooser";
+import Input from "../../components/Input";
+import Select from "../../components/Select";
+import Slider from "../../components/Slider";
+import Switch from "../../components/Switch";
 import { Settings } from "../../core/service/Settings";
 import { cn } from "../../utils/cn";
 
@@ -54,22 +54,12 @@ export function SettingField({
       icon={icon}
     >
       <RotateCw
-        className="h-4 w-4 cursor-pointer text-gray-500 opacity-0 hover:rotate-180 group-hover/field:opacity-100"
+        className="text-panel-details-text h-4 w-4 cursor-pointer opacity-0 group-hover/field:opacity-100 hover:rotate-180"
         onClick={() => setValue(Settings.defaultSettings[settingKey])}
       />
-      {type === "text" && (
-        <Input value={value} onChange={setValue} placeholder={placeholder} />
-      )}
+      {type === "text" && <Input value={value} onChange={setValue} placeholder={placeholder} />}
       {type === "number" && <Input value={value} onChange={setValue} number />}
-      {type === "slider" && (
-        <Slider
-          value={value}
-          onChange={setValue}
-          min={min}
-          max={max}
-          step={step}
-        />
-      )}
+      {type === "slider" && <Slider value={value} onChange={setValue} min={min} max={max} step={step} />}
       {type === "switch" && <Switch value={value} onChange={setValue} />}
       {type === "select" && (
         <Select
@@ -86,9 +76,7 @@ export function SettingField({
           }))}
         ></Select>
       )}
-      {type === "file" && (
-        <FileChooser kind={kind} value={value} onChange={setValue} />
-      )}
+      {type === "file" && <FileChooser kind={kind} value={value} onChange={setValue} />}
     </Field>
   );
 }
@@ -147,13 +135,13 @@ export function Field({
         className,
       )}
     >
-      <div className="flex items-center gap-2">
+      <div className="text-settings-text flex items-center gap-2">
         <span>{icon}</span>
         <div className="flex flex-col">
           <span>{title}</span>
-          <span className="text-xs text-gray-500">
+          <span className="text-panel-details-text text-xs">
             {description.split("\n").map((dd, ii) => (
-              <p key={ii} className="text-xs text-gray-500">
+              <p key={ii} className="text-xs">
                 {dd}
               </p>
             ))}

@@ -1,14 +1,15 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { ExplodeAshEffect } from "../../../service/effectEngine/concrete/ExplodeDashEffect";
+import { ExplodeDashEffect } from "../../../service/feedbackService/effectEngine/concrete/ExplodeDashEffect";
 import { Stage } from "../../Stage";
+import { Entity } from "../../stageObject/abstract/StageEntity";
 import { LineEdge } from "../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
-import { Entity } from "../../stageObject/StageObject";
+import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageManager } from "../StageManager";
 
 /**
@@ -47,8 +48,7 @@ export namespace StageDeleteManager {
     StageManager.deleteOneSection(entity);
     deleteEntityAfterClearEdges(entity);
     // 将自己所有的父级Section的children添加自己的children
-    const fatherSections =
-      StageManager.SectionOptions.getFatherSections(entity);
+    const fatherSections = SectionMethods.getFatherSections(entity);
     for (const fatherSection of fatherSections) {
       StageManager.goInSection(entity.children, fatherSection);
     }
@@ -57,11 +57,7 @@ export namespace StageDeleteManager {
     if (StageManager.getImageNodes().includes(entity)) {
       StageManager.deleteOneImage(entity);
       Stage.effectMachine.addEffect(
-        new ExplodeAshEffect(
-          new ProgressNumber(0, 30),
-          entity.collisionBox.getRectangle(),
-          Color.White,
-        ),
+        new ExplodeDashEffect(new ProgressNumber(0, 30), entity.collisionBox.getRectangle(), Color.White),
       );
       // 删除所有相关的边
       deleteEntityAfterClearEdges(entity);
@@ -81,11 +77,7 @@ export namespace StageDeleteManager {
       // 从数组中去除
       StageManager.deleteOneConnectPoint(entity);
       Stage.effectMachine.addEffect(
-        new ExplodeAshEffect(
-          new ProgressNumber(0, 30),
-          entity.collisionBox.getRectangle(),
-          Color.White,
-        ),
+        new ExplodeDashEffect(new ProgressNumber(0, 30), entity.collisionBox.getRectangle(), Color.White),
       );
       // 删除所有相关的边
       deleteEntityAfterClearEdges(entity);
@@ -101,7 +93,7 @@ export namespace StageDeleteManager {
       StageManager.deleteOneTextNode(entity);
       // 增加特效
       Stage.effectMachine.addEffect(
-        new ExplodeAshEffect(
+        new ExplodeDashEffect(
           new ProgressNumber(0, 30),
           entity.collisionBox.getRectangle(),
           entity.color.a === 0 ? Color.White : entity.color.clone(),
@@ -139,10 +131,7 @@ export namespace StageDeleteManager {
     const fromNode = deleteEdge.source;
     const toNode = deleteEdge.target;
     // 先判断这两个节点是否在nodes里
-    if (
-      StageManager.isEntityExists(fromNode.uuid) &&
-      StageManager.isEntityExists(toNode.uuid)
-    ) {
+    if (StageManager.isEntityExists(fromNode.uuid) && StageManager.isEntityExists(toNode.uuid)) {
       // 删除边
       StageManager.deleteOneEdge(deleteEdge);
       StageManager.updateReferences();

@@ -1,4 +1,5 @@
 import { Store } from "@tauri-apps/plugin-store";
+import { useEffect, useState } from "react";
 import { createStore } from "../../utils/store";
 
 /**
@@ -11,10 +12,11 @@ export namespace Settings {
   let store: Store;
   // 注意：下拉菜单框必须要在语言包里面配置才能生效，否则菜单项是 Error: Option Not Found
   export type Settings = {
-    language: "zh-CN" | "zh-TW" | "en";
+    language: "zh_CN" | "zh_TW" | "en";
     // 视觉相关
     lineStyle: "straight" | "bezier" | "vertical";
-    theme: "black" | "white"; // 暂无
+    theme: "black" | "white" | "macaron" | "morandi";
+    uiTheme: "light" | "dark" | "macaron" | "morandi";
     isRenderCenterPointer: boolean;
     showGrid: boolean; // 废弃
     showBackgroundHorizontalLines: boolean;
@@ -31,7 +33,7 @@ export namespace Settings {
     cameraCycleSpaceSizeY: number;
     // 性能相关
     historySize: number; // 暂无
-    renderEffect: boolean;
+    effectsPerferences: Record<string, boolean>;
     isEnableEntityCollision: boolean;
     // 自动化相关
     autoNamerTemplate: string;
@@ -69,10 +71,11 @@ export namespace Settings {
     githubUser: string;
   };
   export const defaultSettings: Settings = {
-    language: "zh-CN",
+    language: "zh_CN",
     // 视觉相关
     lineStyle: "straight",
     theme: "black",
+    uiTheme: "dark",
     isRenderCenterPointer: false,
     showGrid: true,
     showBackgroundHorizontalLines: false,
@@ -89,7 +92,7 @@ export namespace Settings {
     cameraCycleSpaceSizeY: 1000,
     // 性能相关
     historySize: 20,
-    renderEffect: true,
+    effectsPerferences: {},
     isEnableEntityCollision: false,
     // 自动相关
     autoNamerTemplate: "...",
@@ -129,11 +132,17 @@ export namespace Settings {
 
   export async function init() {
     store = await createStore("settings.json");
+    // 调用所有watcher
+    Object.entries(callbacks).forEach(([key, callbacks]) => {
+      callbacks.forEach((callback) => {
+        get(key as keyof Settings).then((value) => {
+          callback(value);
+        });
+      });
+    });
   }
 
-  export async function get<K extends keyof Settings>(
-    key: K,
-  ): Promise<Settings[K]> {
+  export async function get<K extends keyof Settings>(key: K): Promise<Settings[K]> {
     const res = await store.get<Settings[K]>(key);
     if (typeof res === "undefined") {
       return defaultSettings[key];
@@ -161,14 +170,33 @@ export namespace Settings {
    * @param key 要监听的设置键
    * @param callback 设置变化时的回调函数
    */
-  export function watch<K extends keyof Settings>(
-    key: K,
-    callback: (value: Settings[K]) => void,
-  ) {
+  export function watch<K extends keyof Settings>(key: K, callback: (value: Settings[K]) => void) {
     if (!callbacks[key]) {
       callbacks[key] = [];
     }
     callbacks[key].push(callback);
-    get(key).then((value) => callback(value));
+    if (store) {
+      get(key).then((value) => {
+        console.log(callback, value);
+        callback(value);
+      });
+    }
+  }
+
+  /**
+   * react hook
+   */
+  export function use<K extends keyof Settings>(key: K): [Settings[K], (value: Settings[K]) => void] {
+    const [value, setValue] = useState<Settings[K]>(defaultSettings[key]);
+
+    useEffect(() => {
+      get(key).then(setValue);
+    }, []);
+
+    useEffect(() => {
+      set(key, value);
+    }, [value]);
+
+    return [value, setValue];
   }
 }

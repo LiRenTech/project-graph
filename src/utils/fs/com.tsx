@@ -108,10 +108,7 @@ export async function readFile(path: string): Promise<Uint8Array> {
 //  * @param path 文件路径
 //  * @param content 文件内容
 //  */
-export async function writeTextFile(
-  path: string,
-  content: string,
-): Promise<void> {
+export async function writeTextFile(path: string, content: string): Promise<void> {
   if (isWeb) {
     const blob = new Blob([content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
@@ -130,10 +127,7 @@ export async function writeTextFile(
  * @param path 文件路径
  * @param content 文件的 Uint8Array 表示
  */
-export async function writeFile(
-  path: string,
-  content: Uint8Array,
-): Promise<void> {
+export async function writeFile(path: string, content: Uint8Array): Promise<void> {
   if (isWeb) {
     const blob = new Blob([content], { type: "application/octet-stream" });
     const url = URL.createObjectURL(blob);
@@ -147,6 +141,24 @@ export async function writeFile(
   }
 }
 
+/**
+ * 将内容以 base64 编码写入文件
+ * @param path 文件路径
+ * @param content 文件的 base64 编码内容
+ */
+export async function writeFileBase64(path: string, content: string): Promise<void> {
+  if (isWeb) {
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = PathString.absolute2file(path);
+    a.click();
+    URL.revokeObjectURL(url);
+  } else {
+    return invoke("write_file_base64", { path, content });
+  }
+}
 // /**
 //  * 将内容以 base64 编码写入文件
 //  * @param path 文件路径

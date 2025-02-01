@@ -1,18 +1,17 @@
 import { Search } from "lucide-react";
-import Box from "../components/ui/Box";
-import Button from "../components/ui/Button";
-import FileChooser from "../components/ui/FileChooser";
-import IconButton from "../components/ui/IconButton";
-import Input from "../components/ui/Input";
-import KeyBind from "../components/ui/KeyBind";
-import Select from "../components/ui/Select";
-import Slider from "../components/ui/Slider";
-import Switch from "../components/ui/Switch";
+import Box from "../components/Box";
+import Button from "../components/Button";
+import FileChooser from "../components/FileChooser";
+import IconButton from "../components/IconButton";
+import Input from "../components/Input";
+import KeyBind from "../components/KeyBind";
+import Select from "../components/Select";
+import Slider from "../components/Slider";
+import Switch from "../components/Switch";
 
 export default function UITestPage() {
   return (
-    <div className="w-min p-32">
-      <div className="pointer-events-none absolute left-48 top-48 h-96 w-96 rounded-full bg-green-100 blur-[300px]"></div>
+    <div className="w-min bg-slate-400 p-32">
       <Box tooltip="tooltip">Box</Box>
       <Button>Button</Button>
       <Input placeholder="Input" />
@@ -31,6 +30,7 @@ export default function UITestPage() {
       />
       <Slider />
       <Switch />
+      <Switch value />
     </div>
   );
 }

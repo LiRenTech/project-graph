@@ -78,12 +78,7 @@ export class Color {
    */
 
   equals(color: Color) {
-    return (
-      this.r === color.r &&
-      this.g === color.g &&
-      this.b === color.b &&
-      this.a === color.a
-    );
+    return this.r === color.r && this.g === color.g && this.b === color.b && this.a === color.a;
   }
 
   toArray(): Serialized.Color {
@@ -95,6 +90,98 @@ export class Color {
     const g = Math.floor(Math.random() * 256);
     const b = Math.floor(Math.random() * 256);
     return new Color(r, g, b);
+  }
+
+  /**
+   * 降低颜色的饱和度
+   * @param amount 0 到 1 之间的值，表示去饱和的程度
+   */
+  desaturate(amount: number): Color {
+    const grayScale = Math.round(this.r * 0.299 + this.g * 0.587 + this.b * 0.114);
+    const newR = Math.round(grayScale + (this.r - grayScale) * (1 - amount));
+    const newG = Math.round(grayScale + (this.g - grayScale) * (1 - amount));
+    const newB = Math.round(grayScale + (this.b - grayScale) * (1 - amount));
+    return new Color(newR, newG, newB, this.a);
+  }
+
+  /**
+   * 将颜色转换为冷色调且低饱和度的版本
+   * 注意：此方法是基于简单假设实现的，并不能精确地转换颜色空间。
+   */
+  toColdLowSaturation(): Color {
+    // 转换至更冷的色调，这里简化处理，主要针对红色系向蓝色系偏移
+    const hsl = this.rgbToHsl();
+    hsl.h = Math.max(180, hsl.h); // 强制色调向冷色调偏移
+    hsl.s = Math.min(hsl.s * 0.5, 1); // 减少饱和度
+
+    const rgb = this.hslToRgb(hsl);
+    return new Color(rgb.r, rgb.g, rgb.b, this.a).desaturate(0.3); // 进一步降低饱和度
+  }
+
+  // 辅助方法：RGB转HSL
+  private rgbToHsl(): { h: number; s: number; l: number } {
+    const r = this.r / 255;
+    const g = this.g / 255;
+    const b = this.b / 255;
+    const max = Math.max(r, g, b),
+      min = Math.min(r, g, b);
+    let h = (max + min) / 2,
+      s = h;
+    const l = h;
+
+    if (max === min) {
+      h = s = 0; // achromatic
+    } else {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0);
+          break;
+        case g:
+          h = (b - r) / d + 2;
+          break;
+        case b:
+          h = (r - g) / d + 4;
+          break;
+      }
+      h /= 6;
+    }
+
+    return { h: h * 360, s, l };
+  }
+
+  // 辅助方法：HSL转RGB
+  private hslToRgb(hsl: { h: number; s: number; l: number }): { r: number; g: number; b: number } {
+    let k, r, g, b;
+    const h = hsl.h / 360,
+      s = hsl.s,
+      l = hsl.l;
+
+    if (s === 0) {
+      r = g = b = l; // achromatic
+    } else {
+      k = (n: number) => (n + h * 12) % 12;
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+      r = k(0);
+      g = k(8);
+      b = k(4);
+      r = this.hueToRgb(p, q, r);
+      g = this.hueToRgb(p, q, g);
+      b = this.hueToRgb(p, q, b);
+    }
+
+    return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
+  }
+
+  private hueToRgb(p: number, q: number, t: number): number {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
   }
 }
 export function colorInvert(color: Color): Color {
@@ -136,17 +223,9 @@ export function mixColors(color1: Color, color2: Color, weight: number): Color {
  * 获取一个颜色列表的平均颜色
  */
 export function averageColors(colors: Color[]): Color {
-  const r = Math.round(
-    colors.reduce((acc, cur) => acc + cur.r, 0) / colors.length,
-  );
-  const g = Math.round(
-    colors.reduce((acc, cur) => acc + cur.g, 0) / colors.length,
-  );
-  const b = Math.round(
-    colors.reduce((acc, cur) => acc + cur.b, 0) / colors.length,
-  );
-  const a = Math.round(
-    colors.reduce((acc, cur) => acc + cur.a, 0) / colors.length,
-  );
+  const r = Math.round(colors.reduce((acc, cur) => acc + cur.r, 0) / colors.length);
+  const g = Math.round(colors.reduce((acc, cur) => acc + cur.g, 0) / colors.length);
+  const b = Math.round(colors.reduce((acc, cur) => acc + cur.b, 0) / colors.length);
+  const a = Math.round(colors.reduce((acc, cur) => acc + cur.a, 0) / colors.length);
   return new Color(r, g, b, a);
 }

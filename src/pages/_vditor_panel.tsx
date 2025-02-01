@@ -1,39 +1,49 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Vditor from "vditor";
 import "vditor/dist/index.css";
 
-interface MarkdownEditorProps {
-  initialValue: string; // 定义一个可选的初始值
-  onChange: (value: string) => void;
-}
-
 export default function MarkdownEditor({
-  initialValue = "",
+  defaultValue = "",
   onChange,
-}: MarkdownEditorProps) {
+  id = "",
+  className = "",
+  options = {},
+}: {
+  defaultValue?: string;
+  onChange: (value: string) => void;
+  id?: string;
+  className?: string;
+  options?: Omit<IOptions, "after" | "input">;
+}) {
   const [vd, setVd] = useState<Vditor>();
+  const el = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const vditor = new Vditor("vditor", {
+    const vditor = new Vditor(el.current!, {
       after: () => {
-        vditor.setValue(initialValue);
+        vditor.setValue(defaultValue);
         setVd(vditor);
       },
       input: (value: string) => {
         onChange(value);
       },
-      // preview: {
-      //   theme: {
-      //     current: "dark",
-      //   },
-      // },
+      theme: "dark",
+      preview: {
+        theme: {
+          current: "dark",
+        },
+        hljs: {
+          style: "darcula",
+        },
+      },
+      cache: { enable: false },
+      ...options,
     });
 
     return () => {
       vd?.destroy();
-      setVd(undefined);
     };
-  }, [initialValue]);
+  }, [defaultValue]);
 
-  return <div id="vditor" className="vditor flex-1 overflow-auto" />;
+  return <div ref={el} id={id} className={className} onKeyDown={(e) => e.stopPropagation()} />;
 }

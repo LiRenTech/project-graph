@@ -8,27 +8,28 @@ import { Renderer } from "../../render/canvas2d/renderer";
 import { Settings } from "../../service/Settings";
 import { Camera } from "../Camera";
 import { Stage } from "../Stage";
-import { StageDumper } from "../StageDumper";
+import { Association } from "../stageObject/abstract/Association";
+import { ConnectableEntity } from "../stageObject/abstract/ConnectableEntity";
+import { Entity } from "../stageObject/abstract/StageEntity";
+import { StageObject } from "../stageObject/abstract/StageObject";
 import { CublicCatmullRomSplineEdge } from "../stageObject/association/CublicCatmullRomSplineEdge";
+import { Edge } from "../stageObject/association/Edge";
 import { LineEdge } from "../stageObject/association/LineEdge";
 import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../stageObject/entity/ImageNode";
+import { PenStroke } from "../stageObject/entity/PenStroke";
 import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
-import {
-  Association,
-  ConnectableEntity,
-  Entity,
-  StageObject,
-} from "../stageObject/StageObject";
+import { GraphMethods } from "./basicMethods/GraphMethods";
+import { SectionMethods } from "./basicMethods/SectionMethods";
 import { StageAutoAlignManager } from "./concreteMethods/StageAutoAlignManager";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager";
 import { StageGeneratorAI } from "./concreteMethods/StageGeneratorAI";
 import { StageManagerUtils } from "./concreteMethods/StageManagerUtils";
 import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
-import { StageNodeColorManager } from "./concreteMethods/StageNodeColorManager";
+import { StageObjectColorManager } from "./concreteMethods/StageObjectColorManager";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
 import { StageNodeRotate } from "./concreteMethods/stageNodeRotate";
 import { StageNodeTextTransfer } from "./concreteMethods/StageNodeTextTransfer";
@@ -71,9 +72,7 @@ export namespace StageManager {
     return entities.valuesToArray().filter((node) => node instanceof TextNode);
   }
   export function getConnectableEntity(): ConnectableEntity[] {
-    return entities
-      .valuesToArray()
-      .filter((node) => node instanceof ConnectableEntity);
+    return entities.valuesToArray().filter((node) => node instanceof ConnectableEntity);
   }
   export function isEntityExists(uuid: string): boolean {
     return entities.hasId(uuid);
@@ -85,9 +84,7 @@ export namespace StageManager {
     return entities.valuesToArray().filter((node) => node instanceof ImageNode);
   }
   export function getConnectPoints(): ConnectPoint[] {
-    return entities
-      .valuesToArray()
-      .filter((node) => node instanceof ConnectPoint);
+    return entities.valuesToArray().filter((node) => node instanceof ConnectPoint);
   }
   export function getUrlNodes(): UrlNode[] {
     return entities.valuesToArray().filter((node) => node instanceof UrlNode);
@@ -100,6 +97,10 @@ export namespace StageManager {
     return result;
   }
 
+  /**
+   * 获取场上所有的实体
+   * @returns
+   */
   export function getEntities(): Entity[] {
     return entities.valuesToArray();
   }
@@ -140,14 +141,10 @@ export namespace StageManager {
   }
 
   export function getLineEdges(): LineEdge[] {
-    return associations
-      .valuesToArray()
-      .filter((edge) => edge instanceof LineEdge);
+    return associations.valuesToArray().filter((edge) => edge instanceof LineEdge);
   }
   export function getCrEdges(): CublicCatmullRomSplineEdge[] {
-    return associations
-      .valuesToArray()
-      .filter((edge) => edge instanceof CublicCatmullRomSplineEdge);
+    return associations.valuesToArray().filter((edge) => edge instanceof CublicCatmullRomSplineEdge);
   }
 
   /** 关于标签的相关操作 */
@@ -211,52 +208,13 @@ export namespace StageManager {
   export function addCrEdge(edge: CublicCatmullRomSplineEdge) {
     associations.addValue(edge, edge.uuid);
   }
+  export function addPenStroke(penStroke: PenStroke) {
+    entities.addValue(penStroke, penStroke.uuid);
+  }
 
   // 用于UI层监测
   export let selectedNodeCount = 0;
   export let selectedEdgeCount = 0;
-
-  /** 获取节点连接的子节点数组，未排除自环 */
-  export function nodeChildrenArray(
-    node: ConnectableEntity,
-  ): ConnectableEntity[] {
-    const res: ConnectableEntity[] = [];
-    for (const edge of getLineEdges()) {
-      if (edge.source.uuid === node.uuid) {
-        res.push(edge.target);
-      }
-    }
-    return res;
-  }
-
-  /**
-   * 获取一个节点的所有父亲节点，未排除自环
-   * 性能有待优化！！
-   */
-  export function nodeParentArray(
-    node: ConnectableEntity,
-  ): ConnectableEntity[] {
-    const res: ConnectableEntity[] = [];
-    for (const edge of getLineEdges()) {
-      if (edge.target.uuid === node.uuid) {
-        res.push(edge.source);
-      }
-    }
-    return res;
-  }
-
-  export function isConnected(
-    node: ConnectableEntity,
-    target: ConnectableEntity,
-  ): boolean {
-    for (const edge of getLineEdges()) {
-      if (edge.source === node && edge.target === target) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   /**
    * 更新节点的引用，将unknown的节点替换为真实的节点，保证对象在内存中的唯一性
    * 节点什么情况下会是unknown的？
@@ -266,13 +224,16 @@ export namespace StageManager {
    */
   export function updateReferences() {
     for (const entity of getEntities()) {
+      // 实体是可连接类型
       if (entity instanceof ConnectableEntity) {
-        for (const edge of getLineEdges()) {
-          if (edge.source.unknown && edge.source.uuid === entity.uuid) {
-            edge.source = entity;
-          }
-          if (edge.target.unknown && edge.target.uuid === entity.uuid) {
-            edge.target = entity;
+        for (const edge of getAssociations()) {
+          if (edge instanceof Edge) {
+            if (edge.source.unknown && edge.source.uuid === entity.uuid) {
+              edge.source = entity;
+            }
+            if (edge.target.unknown && edge.target.uuid === entity.uuid) {
+              edge.target = entity;
+            }
           }
         }
       }
@@ -282,9 +243,9 @@ export namespace StageManager {
         // 更新孩子数组，并调整位置和大小
         const newChildList = [];
 
-        for (const child of entity.children) {
-          if (entities.hasId(child.uuid)) {
-            const childObject = entities.getById(child.uuid);
+        for (const childUUID of entity.childrenUUIDs) {
+          if (entities.hasId(childUUID)) {
+            const childObject = entities.getById(childUUID);
             if (childObject) {
               newChildList.push(childObject);
             }
@@ -295,20 +256,19 @@ export namespace StageManager {
         entity.adjustChildrenStateByCollapse();
       }
     }
+
     // 以下是LineEdge双向线偏移状态的更新
     for (const edge of getLineEdges()) {
       let isShifting = false;
       for (const otherEdge of getLineEdges()) {
-        if (
-          edge.source === otherEdge.target &&
-          edge.target === otherEdge.source
-        ) {
+        if (edge.source === otherEdge.target && edge.target === otherEdge.source) {
           isShifting = true;
           break;
         }
       }
       edge.isShifting = isShifting;
     }
+
     // 对tags进行更新
     TagOptions.updateTags();
   }
@@ -321,9 +281,7 @@ export namespace StageManager {
     }
     return null;
   }
-  export function getConnectableEntityByUUID(
-    uuid: string,
-  ): ConnectableEntity | null {
+  export function getConnectableEntityByUUID(uuid: string): ConnectableEntity | null {
     for (const node of getConnectableEntity()) {
       if (node.uuid === uuid) {
         return node;
@@ -362,20 +320,8 @@ export namespace StageManager {
     if (entities.length === 0) {
       return new Vector(Renderer.w, Renderer.h);
     }
-    // const size = Vector.getZero();
-    // for (const node of getEntities()) {
-    //   if (node.collisionBox.getRectangle().size.x > size.x) {
-    //     size.x = node.collisionBox.getRectangle().size.x;
-    //   }
-    //   if (node.collisionBox.getRectangle().size.y > size.y) {
-    //     size.y = node.collisionBox.getRectangle().size.y;
-    //   }
-    // }
-    // return size;
     const size = Rectangle.getBoundingRectangle(
-      Array.from(entities.valuesToArray()).map((node) =>
-        node.collisionBox.getRectangle(),
-      ),
+      Array.from(entities.valuesToArray()).map((node) => node.collisionBox.getRectangle()),
     ).size;
 
     return size;
@@ -427,9 +373,7 @@ export namespace StageManager {
     return null;
   }
 
-  export function findConnectableEntityByLocation(
-    location: Vector,
-  ): ConnectableEntity | null {
+  export function findConnectableEntityByLocation(location: Vector): ConnectableEntity | null {
     for (const entity of getConnectableEntity()) {
       if (entity.isHiddenBySectionCollapse) {
         continue;
@@ -453,9 +397,7 @@ export namespace StageManager {
     return null;
   }
 
-  export function findConnectPointByLocation(
-    location: Vector,
-  ): ConnectPoint | null {
+  export function findConnectPointByLocation(location: Vector): ConnectPoint | null {
     for (const point of getConnectPoints()) {
       if (point.isHiddenBySectionCollapse) {
         continue;
@@ -502,10 +444,7 @@ export namespace StageManager {
   export function isAssociationOnLocation(location: Vector): boolean {
     for (const association of getAssociations()) {
       if (association instanceof LineEdge) {
-        if (
-          association.target.isHiddenBySectionCollapse &&
-          association.source.isHiddenBySectionCollapse
-        ) {
+        if (association.target.isHiddenBySectionCollapse && association.source.isHiddenBySectionCollapse) {
           continue;
         }
       }
@@ -514,177 +453,6 @@ export namespace StageManager {
       }
     }
     return false;
-  }
-  // region 以下为算法相关的函数
-  export function isTree(node: ConnectableEntity): boolean {
-    const dfs = (
-      node: ConnectableEntity,
-      visited: ConnectableEntity[],
-    ): boolean => {
-      if (visited.includes(node)) {
-        return false;
-      }
-      visited.push(node);
-      for (const child of nodeChildrenArray(node)) {
-        if (!dfs(child, visited)) {
-          return false;
-        }
-      }
-      return true;
-    };
-
-    return dfs(node, []);
-  }
-
-  // region Section集合操作函数
-  export namespace SectionOptions {
-    /**
-     * 获取一个实体的第一层所有父亲Sections
-     * @param entity
-     */
-    export function getFatherSections(entity: Entity): Section[] {
-      const result = [];
-      for (const section of getSections()) {
-        if (section.children.includes(entity)) {
-          result.push(section);
-        }
-      }
-      return result;
-    }
-    /**
-     * 根据一个点，获取包含这个点的所有集合（深集合优先）
-     * （小集合会覆盖大集合）
-     * 也就是 SectionA ∈ SectionB，
-     * 点击发生在 SectionA 中时，会返回 [SectionA]，不含有 SectionB
-     * @returns
-     */
-    export function getSectionsByInnerLocation(location: Vector): Section[] {
-      const sections: Section[] = [];
-      for (const section of getSections()) {
-        if (section.isCollapsed || section.isHiddenBySectionCollapse) {
-          continue;
-        }
-        if (section.collisionBox.getRectangle().isPointIn(location)) {
-          sections.push(section);
-        }
-      }
-      return deeperSections(sections);
-    }
-
-    /**
-     * 用于去除重叠集合，当有完全包含的集合时，返回最小的集合
-     * @param sections
-     */
-    function deeperSections(sections: Section[]): Section[] {
-      const outerSections: Section[] = []; // 要被排除的Section
-
-      for (const sectionI of sections) {
-        for (const sectionJ of sections) {
-          if (sectionI === sectionJ) {
-            continue;
-          }
-          if (
-            isEntityInSection(sectionI, sectionJ) &&
-            !isEntityInSection(sectionJ, sectionI)
-          ) {
-            // I 在 J 中，J不在I中，J大，排除J
-            outerSections.push(sectionJ);
-          }
-        }
-      }
-      const result: Section[] = [];
-      for (const section of sections) {
-        if (!outerSections.includes(section)) {
-          result.push(section);
-        }
-      }
-      return result;
-    }
-
-    /**
-     * 通过多个Section，获取最外层的Section（即没有父亲的Section）
-     * @param sections
-     * @returns
-     */
-    export function shallowerSection(sections: Section[]): Section[] {
-      const rootSections: Section[] = [];
-      const sectionMap = new Map<string, Section>();
-      // 首先将所有section放入map，方便快速查找
-      for (const section of sections) {
-        sectionMap.set(section.uuid, section);
-      }
-      // 遍历所有section，检查是否有父亲节点
-      for (const section of sections) {
-        for (const child of section.children) {
-          sectionMap.delete(child.uuid);
-        }
-      }
-      for (const section of sectionMap.keys()) {
-        const result = sectionMap.get(section);
-        if (result) {
-          rootSections.push(result);
-        }
-      }
-
-      return rootSections;
-    }
-
-    export function shallowerEntities(entities: Entity[]): Entity[] {
-      // shallowerSection + 所有非Section的实体
-      const sections = entities.filter((entity) => entity instanceof Section);
-      const nonSections = entities.filter(
-        (entity) => !(entity instanceof Section),
-      );
-      // 遍历所有非section实体，如果是任何一个section的子节点，则删除
-      const result: Entity[] = [];
-      for (const entity of nonSections) {
-        let isAnyChild = false;
-        for (const section of sections) {
-          if (SectionOptions.isEntityInSection(entity, section)) {
-            isAnyChild = true;
-          }
-        }
-        if (!isAnyChild) {
-          result.push(entity);
-        }
-      }
-      result.push(...sections);
-      return result;
-    }
-
-    /**
-     * 检测某个实体是否在某个集合内，跨级也算
-     * @param entity
-     * @param section
-     */
-    export function isEntityInSection(
-      entity: Entity,
-      section: Section,
-    ): boolean {
-      return _isEntityInSection(entity, section, 0);
-    }
-
-    function _isEntityInSection(
-      entity: Entity,
-      section: Section,
-      deep = 0,
-    ): boolean {
-      if (deep > 996) {
-        return false;
-      }
-      // 直接先检测一级
-      if (section.children.includes(entity)) {
-        return true;
-      } else {
-        // 涉及跨级检测
-        for (const child of section.children) {
-          if (child instanceof Section) {
-            return _isEntityInSection(entity, child, deep + 1);
-          }
-        }
-        return false;
-      }
-    }
   }
 
   // region 以下为舞台操作相关的函数
@@ -701,11 +469,7 @@ export namespace StageManager {
     addToSections: Section[],
     selectCurrent = false,
   ): Promise<string> {
-    const res = await StageNodeAdder.addTextNodeByClick(
-      clickWorldLocation,
-      addToSections,
-      selectCurrent,
-    );
+    const res = await StageNodeAdder.addTextNodeByClick(clickWorldLocation, addToSections, selectCurrent);
     StageHistoryManager.recordStep();
     return res;
   }
@@ -724,11 +488,7 @@ export namespace StageManager {
     } else if (direction === "right") {
       directionVector = new Vector(100, 0);
     }
-    const res = await StageNodeAdder.addTextNodeFromCurrentSelectedNode(
-      directionVector,
-      [],
-      selectCurrent,
-    );
+    const res = await StageNodeAdder.addTextNodeFromCurrentSelectedNode(directionVector, [], selectCurrent);
     StageHistoryManager.recordStep();
     return res;
   }
@@ -797,13 +557,23 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
-  export function setNodeColor(color: Color) {
-    StageNodeColorManager.setNodeColor(color);
+  export function setEntityColor(color: Color) {
+    StageObjectColorManager.setEntityColor(color);
     StageHistoryManager.recordStep();
   }
 
   export function clearNodeColor() {
-    StageNodeColorManager.clearNodeColor();
+    StageObjectColorManager.clearEntityColor();
+    StageHistoryManager.recordStep();
+  }
+
+  export function setEdgeColor(color: Color) {
+    StageObjectColorManager.setEdgeColor(color);
+    StageHistoryManager.recordStep();
+  }
+
+  export function clearEdgeColor() {
+    StageObjectColorManager.clearEdgeColor();
     StageHistoryManager.recordStep();
   }
 
@@ -854,9 +624,7 @@ export namespace StageManager {
    * 外部的交互层的delete键可以直接调用这个函数
    */
   export function deleteSelectedStageObjects() {
-    StageManager.deleteEntities(
-      StageManager.getEntities().filter((node) => node.isSelected),
-    );
+    StageManager.deleteEntities(StageManager.getEntities().filter((node) => node.isSelected));
     for (const edge of StageManager.getLineEdges()) {
       if (edge.isSelected) {
         StageManager.deleteEdge(edge);
@@ -883,16 +651,13 @@ export namespace StageManager {
   //   StageHistoryManager.recordStep();
   // }
 
-  export function connectEntity(
-    fromNode: ConnectableEntity,
-    toNode: ConnectableEntity,
-  ) {
+  export function connectEntity(fromNode: ConnectableEntity, toNode: ConnectableEntity) {
     if (fromNode === toNode && !isAllowAddCycleEdge) {
       return false;
     }
     StageNodeConnector.connectConnectableEntity(fromNode, toNode);
     StageHistoryManager.recordStep();
-    return isConnected(fromNode, toNode);
+    return GraphMethods.isConnected(fromNode, toNode);
   }
 
   export function reverseEdges(edges: LineEdge[]) {
@@ -918,9 +683,7 @@ export namespace StageManager {
    * 反转所有选中的节点的每个节点的连线
    */
   export function reverseSelectedNodeEdge() {
-    const entities = getSelectedEntities().filter(
-      (entity) => entity instanceof ConnectableEntity,
-    );
+    const entities = getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
     for (const entity of entities) {
       reverseNodeEdges(entity);
     }
@@ -935,36 +698,17 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
-  export function addSerializedData(
-    serializedData: Serialized.File,
-    diffLocation = new Vector(0, 0),
-  ) {
+  export function addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
     StageSerializedAdder.addSerializedData(serializedData, diffLocation);
     StageHistoryManager.recordStep();
   }
 
-  export function clearClipboard() {
-    Stage.copyBoardData = {
-      version: StageDumper.latestVersion,
-      entities: [],
-      associations: [],
-      tags: [],
-    };
-  }
-
-  export function generateNodeByText(
-    text: string,
-    indention: number = 4,
-    location = Camera.location,
-  ) {
+  export function generateNodeByText(text: string, indention: number = 4, location = Camera.location) {
     StageNodeAdder.addNodeByText(text, indention, location);
     StageHistoryManager.recordStep();
   }
 
-  export function generateNodeByMarkdown(
-    text: string,
-    location = Camera.location,
-  ) {
+  export function generateNodeByMarkdown(text: string, location = Camera.location) {
     StageNodeAdder.addNodeByMarkdown(text, location);
     StageHistoryManager.recordStep();
   }
@@ -974,14 +718,14 @@ export namespace StageManager {
     if (addEntities.length === 0) {
       return;
     }
-    addEntities = SectionOptions.shallowerEntities(addEntities);
+    addEntities = SectionMethods.shallowerEntities(addEntities);
     // 检测父亲section是否是等同
-    const firstParents = SectionOptions.getFatherSections(addEntities[0]);
+    const firstParents = SectionMethods.getFatherSections(addEntities[0]);
     if (addEntities.length > 1) {
       let isAllSameFather = true;
 
       for (let i = 1; i < addEntities.length; i++) {
-        const secondParents = SectionOptions.getFatherSections(addEntities[i]);
+        const secondParents = SectionMethods.getFatherSections(addEntities[i]);
         if (firstParents.length !== secondParents.length) {
           isAllSameFather = false;
           break;
@@ -1010,10 +754,7 @@ export namespace StageManager {
       goOutSection(addEntities, fatherSection);
     }
     const section = Section.fromEntities(addEntities);
-    section.text = StageManagerUtils.replaceAutoNameTemplate(
-      await Settings.get("autoNamerSectionTemplate"),
-      section,
-    );
+    section.text = StageManagerUtils.replaceAutoNameTemplate(await Settings.get("autoNamerSectionTemplate"), section);
     entities.addValue(section, section.uuid);
     for (const fatherSection of firstParents) {
       goInSection([section], fatherSection);
@@ -1064,10 +805,7 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
-  export function addConnectPointByClick(
-    location: Vector,
-    addToSections: Section[],
-  ) {
+  export function addConnectPointByClick(location: Vector, addToSections: Section[]) {
     StageNodeAdder.addConnectPoint(location, addToSections);
     StageHistoryManager.recordStep();
   }
@@ -1088,10 +826,7 @@ export namespace StageManager {
   export function moveToTag(tag: string) {
     StageTagManager.moveToTag(tag);
   }
-  export function connectEntityByCrEdge(
-    fromNode: ConnectableEntity,
-    toNode: ConnectableEntity,
-  ) {
+  export function connectEntityByCrEdge(fromNode: ConnectableEntity, toNode: ConnectableEntity) {
     return StageNodeConnector.addCrEdge(fromNode, toNode);
   }
   /**
@@ -1155,5 +890,13 @@ export namespace StageManager {
       currentLocation.y = Math.round(currentLocation.y);
       textNode.moveTo(currentLocation);
     }
+  }
+
+  /**
+   * 将所有选中的节点转换成Section
+   */
+  export function textNodeToSection() {
+    StageSectionPackManager.textNodeToSection();
+    StageHistoryManager.recordStep();
   }
 }

@@ -49,29 +49,15 @@ export namespace EdgeCollisionBoxGetter {
     if (edge.isShifting) {
       const shiftingMidPoint = edge.shiftingMidPoint;
       // 从source.Center到shiftingMidPoint的线
-      const startLine = new Line(
-        edge.source.collisionBox.getRectangle().center,
-        shiftingMidPoint,
-      );
-      const endLine = new Line(
-        shiftingMidPoint,
-        edge.target.collisionBox.getRectangle().center,
-      );
-      let startPoint = edge.source.collisionBox
-        .getRectangle()
-        .getLineIntersectionPoint(startLine);
+      const startLine = new Line(edge.source.collisionBox.getRectangle().center, shiftingMidPoint);
+      const endLine = new Line(shiftingMidPoint, edge.target.collisionBox.getRectangle().center);
+      let startPoint = edge.source.collisionBox.getRectangle().getLineIntersectionPoint(startLine);
       if (startPoint.equals(edge.source.collisionBox.getRectangle().center)) {
-        startPoint = edge.source.collisionBox
-          .getRectangle()
-          .getLineIntersectionPoint(endLine);
+        startPoint = edge.source.collisionBox.getRectangle().getLineIntersectionPoint(endLine);
       }
-      let endPoint = edge.target.collisionBox
-        .getRectangle()
-        .getLineIntersectionPoint(endLine);
+      let endPoint = edge.target.collisionBox.getRectangle().getLineIntersectionPoint(endLine);
       if (endPoint.equals(edge.target.collisionBox.getRectangle().center)) {
-        endPoint = edge.target.collisionBox
-          .getRectangle()
-          .getLineIntersectionPoint(startLine);
+        endPoint = edge.target.collisionBox.getRectangle().getLineIntersectionPoint(startLine);
       }
       const curve = new SymmetryCurve(
         startPoint,
@@ -81,16 +67,12 @@ export namespace EdgeCollisionBoxGetter {
         Math.abs(endPoint.subtract(startPoint).magnitude()) / 2,
       );
       const size = 15; // 箭头大小
-      curve.end = curve.end.subtract(
-        curve.endDirection.normalize().multiply(size / -2),
-      );
+      curve.end = curve.end.subtract(curve.endDirection.normalize().multiply(size / -2));
       return new CollisionBox([curve]);
     } else {
       const start = edge.bodyLine.start;
       const end = edge.bodyLine.end;
-      const endNormal = edge.target.collisionBox
-        .getRectangle()
-        .getNormalVectorAt(end);
+      const endNormal = edge.target.collisionBox.getRectangle().getNormalVectorAt(end);
       return new CollisionBox([
         new SymmetryCurve(
           start,
@@ -107,14 +89,8 @@ export namespace EdgeCollisionBoxGetter {
     if (edge.isShifting) {
       const shiftingMidPoint = edge.shiftingMidPoint;
       // 从source.Center到shiftingMidPoint的线
-      const startLine = new Line(
-        edge.source.collisionBox.getRectangle().center,
-        shiftingMidPoint,
-      );
-      const endLine = new Line(
-        shiftingMidPoint,
-        edge.target.collisionBox.getRectangle().center,
-      );
+      const startLine = new Line(edge.source.collisionBox.getRectangle().center, shiftingMidPoint);
+      const endLine = new Line(shiftingMidPoint, edge.target.collisionBox.getRectangle().center);
       return new CollisionBox([startLine, endLine]);
     } else {
       return new CollisionBox([edge.bodyLine]);

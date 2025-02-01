@@ -24,6 +24,7 @@ export namespace StageLoader {
     data = convertV10toV11(data);
     data = convertV11toV12(data);
     data = convertV12toV13(data);
+    data = convertV13toV14(data);
 
     return data as Serialized.File;
   }
@@ -246,6 +247,24 @@ export namespace StageLoader {
       delete data.edges;
     }
 
+    return data;
+  }
+
+  /**
+   * Edge增加了颜色字段
+   * @param data
+   */
+  function convertV13toV14(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 14) {
+      return data;
+    }
+    data.version = 14;
+    for (const edge of data.associations) {
+      // edge.color = [0, 0, 0, 0];
+      if (typeof edge.color === "undefined") {
+        edge.color = [0, 0, 0, 0];
+      }
+    }
     return data;
   }
 }

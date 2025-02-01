@@ -4,10 +4,11 @@ import { Color, mixColors } from "../../dataStruct/Color";
 import { Vector } from "../../dataStruct/Vector";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Settings } from "../../service/Settings";
-import { Controller } from "../../service/controller/Controller";
-import { sine } from "../../service/effectEngine/mathTools/animateFunctions";
-import { KeyboardOnlyEngine } from "../../service/keyboardOnlyEngine/keyboardOnlyEngine";
-import { StageStyleManager } from "../../service/stageStyle/StageStyleManager";
+import { Controller } from "../../service/controlService/controller/Controller";
+import { CopyEngine } from "../../service/dataManageService/copyEngine/copyEngine";
+import { sine } from "../../service/feedbackService/effectEngine/mathTools/animateFunctions";
+import { StageStyleManager } from "../../service/feedbackService/stageStyle/StageStyleManager";
+import { KeyboardOnlyEngine } from "../../service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
 import { Camera } from "../../stage/Camera";
 import { Canvas } from "../../stage/Canvas";
 import { Stage } from "../../stage/Stage";
@@ -20,6 +21,7 @@ import { TextRenderer } from "./basicRenderer/textRenderer";
 import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
 import { EntityRenderer } from "./entityRenderer/EntityRenderer";
 import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
+import { SectionRenderer } from "./entityRenderer/section/SectionRenderer";
 import { WorldRenderUtils } from "./utilsRenderer/WorldRenderUtils";
 import {
   renderCartesianBackground,
@@ -27,6 +29,7 @@ import {
   renderHorizonBackground,
   renderVerticalBackground,
 } from "./utilsRenderer/backgroundRenderer";
+import { MouseLocation } from "../../service/controlService/MouseLocation";
 
 /**
  * 渲染器
@@ -96,7 +99,6 @@ export namespace Renderer {
   let isShowBackgroundDots = false;
   let isShowBackgroundCartesian = false;
   export let isAlwaysShowDetails = false;
-  let isRenderEffect = true;
   export let protectingPrivacy = false;
   let isRenderCenterPointer = true;
 
@@ -116,16 +118,9 @@ export namespace Renderer {
       isShowBackgroundCartesian = value;
     });
 
-    Settings.watch(
-      "alwaysShowDetails",
-      (value) => (isAlwaysShowDetails = value),
-    );
-    Settings.watch("renderEffect", (value) => (isRenderEffect = value));
+    Settings.watch("alwaysShowDetails", (value) => (isAlwaysShowDetails = value));
     Settings.watch("protectingPrivacy", (value) => (protectingPrivacy = value));
-    Settings.watch(
-      "isRenderCenterPointer",
-      (value) => (isRenderCenterPointer = value),
-    );
+    Settings.watch("isRenderCenterPointer", (value) => (isRenderCenterPointer = value));
   }
 
   /**
@@ -183,6 +178,7 @@ export namespace Renderer {
   }
 
   function renderStageElements(viewRectangle: Rectangle) {
+    renderSectionBackground(viewRectangle);
     renderEdges(viewRectangle);
     renderEntities(viewRectangle);
     renderTags();
@@ -212,18 +208,9 @@ export namespace Renderer {
     );
     for (let i = 0; i < 4; i++) {
       const degrees = i * 90;
-      const shortLineStart = viewCenterLocation.add(
-        new Vector(10, 0).rotateDegrees(degrees),
-      );
-      const shortLineEnd = viewCenterLocation.add(
-        new Vector(20, 0).rotateDegrees(degrees),
-      );
-      CurveRenderer.renderSolidLine(
-        shortLineStart,
-        shortLineEnd,
-        StageStyleManager.currentStyle.GridHeavyColor,
-        1,
-      );
+      const shortLineStart = viewCenterLocation.add(new Vector(10, 0).rotateDegrees(degrees));
+      const shortLineEnd = viewCenterLocation.add(new Vector(20, 0).rotateDegrees(degrees));
+      CurveRenderer.renderSolidLine(shortLineStart, shortLineEnd, StageStyleManager.currentStyle.GridHeavyColor, 1);
     }
   }
 
@@ -238,36 +225,23 @@ export namespace Renderer {
   function renderPrivacyBoard(viewRectangle: Rectangle) {
     // 画隐私保护边
     if (protectingPrivacy) {
-      ShapeRenderer.renderRect(
-        viewRectangle.transformWorld2View(),
-        Color.Transparent,
-        new Color(33, 54, 167, 0.5),
-        50,
-      );
+      ShapeRenderer.renderRect(viewRectangle.transformWorld2View(), Color.Transparent, new Color(33, 54, 167, 0.5), 50);
     }
   }
   /** 鼠标hover的边 */
   function renderHoverCollisionBox() {
-    for (const edge of Stage.hoverEdges) {
+    for (const edge of Stage.mouseInteractionCore.hoverEdges) {
       CollisionBoxRenderer.render(edge.collisionBox, new Color(0, 255, 0, 0.5));
     }
-    for (const section of Stage.hoverSections) {
-      CollisionBoxRenderer.render(
-        section.collisionBox,
-        new Color(0, 255, 0, 0.5),
-      );
+    for (const section of Stage.mouseInteractionCore.hoverSections) {
+      CollisionBoxRenderer.render(section.collisionBox, new Color(0, 255, 0, 0.5));
     }
   }
   /** 中键吸附拖动框 */
   function renderViewMoveByClickMiddle(viewRectangle: Rectangle, tMs: number) {
     if (Controller.isViewMoveByClickMiddle) {
       const color = new Color(23, 159, 255, sine(tMs, 0.2, 0.1, 0.01));
-      ShapeRenderer.renderRect(
-        viewRectangle.transformWorld2View(),
-        Color.Transparent,
-        color,
-        50,
-      );
+      ShapeRenderer.renderRect(viewRectangle.transformWorld2View(), Color.Transparent, color, 50);
       TextRenderer.renderText(
         "再次中键取消视野吸附,或移动到窗口边缘",
         new Vector(25, Renderer.h - 25 - 20),
@@ -296,28 +270,26 @@ export namespace Renderer {
         Stage.cuttingMachine.cuttingLine.start,
         Stage.cuttingMachine.cuttingLine.end,
         2,
-        Color.Red,
+        StageStyleManager.currentStyle.effects.warningShadow,
       );
     }
   }
 
   /** 手动连接线 */
   function renderConnectingLine() {
-    if (
-      Stage.connectMachine.connectFromEntities.length > 0 &&
-      Controller.lastMoveLocation
-    ) {
+    if (Stage.connectMachine.isUsing) {
       // 如果鼠标位置没有和任何节点相交
       let connectTargetNode = null;
+      const mouseLocation = transformView2World(MouseLocation.vector());
       for (const node of StageManager.getConnectableEntity()) {
-        if (node.collisionBox.isContainsPoint(Controller.lastMoveLocation)) {
+        if (node.collisionBox.isContainsPoint(mouseLocation)) {
           connectTargetNode = node;
           break;
         }
       }
       if (connectTargetNode === null) {
         for (const node of Stage.connectMachine.connectFromEntities) {
-          EdgeRenderer.renderVirtualEdge(node, Controller.lastMoveLocation);
+          EdgeRenderer.renderVirtualEdge(node, mouseLocation);
         }
       } else {
         // 画一条像吸住了的线
@@ -358,7 +330,7 @@ export namespace Renderer {
 
   /** 拖拽文件进入窗口时的提示效果 */
   function renderDraggingFileTips() {
-    if (Stage.isDraggingFile) {
+    if (Stage.dragFileMachine.isDraggingFile) {
       ShapeRenderer.renderRect(
         Renderer.getCoverWorldRectangle().transformWorld2View(),
         new Color(0, 0, 0, 0.5),
@@ -366,7 +338,7 @@ export namespace Renderer {
         1,
       );
       ShapeRenderer.renderCircle(
-        transformWorld2View(Stage.draggingLocation),
+        transformWorld2View(Stage.dragFileMachine.draggingLocation),
         100,
         Color.Transparent,
         Color.White,
@@ -390,10 +362,7 @@ export namespace Renderer {
       CollisionBoxRenderer.render(edge.collisionBox, new Color(255, 0, 0, 0.5));
     }
     for (const section of Stage.cuttingMachine.warningSections) {
-      CollisionBoxRenderer.render(
-        section.collisionBox,
-        new Color(255, 0, 0, 0.5),
-      );
+      CollisionBoxRenderer.render(section.collisionBox, new Color(255, 0, 0, 0.5));
     }
   }
 
@@ -417,9 +386,7 @@ export namespace Renderer {
       );
       if (Camera.currentScale < 0.25 && tagObject instanceof TextNode) {
         const backRect = rect.clone();
-        backRect.location = transformWorld2View(rect.center).add(
-          new Vector(-rect.size.x / 2, -rect.size.y / 2),
-        );
+        backRect.location = transformWorld2View(rect.center).add(new Vector(-rect.size.x / 2, -rect.size.y / 2));
         const rectBgc = StageStyleManager.currentStyle.BackgroundColor.clone();
         rectBgc.a = 0.5;
         ShapeRenderer.renderRect(
@@ -451,9 +418,7 @@ export namespace Renderer {
             const endLocation = KeyboardOnlyEngine.virtualTargetLocation();
             let rate = KeyboardOnlyEngine.getPressTabTimeInterval() / 100;
             rate = Math.min(1, rate);
-            const currentLocation = startLocation.add(
-              endLocation.subtract(startLocation).multiply(rate),
-            );
+            const currentLocation = startLocation.add(endLocation.subtract(startLocation).multiply(rate));
             WorldRenderUtils.renderLaser(
               startLocation,
               currentLocation,
@@ -466,11 +431,7 @@ export namespace Renderer {
                 120 * Camera.currentScale,
                 60 * Camera.currentScale,
                 Color.Transparent,
-                mixColors(
-                  StageStyleManager.currentStyle.StageObjectBorderColor,
-                  Color.Transparent,
-                  0.5,
-                ),
+                mixColors(StageStyleManager.currentStyle.StageObjectBorderColor, Color.Transparent, 0.5),
                 2 * Camera.currentScale,
                 NODE_ROUNDED_RADIUS * Camera.currentScale,
               );
@@ -483,9 +444,7 @@ export namespace Renderer {
           // 在生成点下方写文字提示
           TextRenderer.renderText(
             hintText,
-            transformWorld2View(
-              KeyboardOnlyEngine.virtualTargetLocation().add(new Vector(0, 50)),
-            ),
+            transformWorld2View(KeyboardOnlyEngine.virtualTargetLocation().add(new Vector(0, 50))),
             15 * Camera.currentScale,
             StageStyleManager.currentStyle.StageObjectBorderColor,
           );
@@ -493,15 +452,19 @@ export namespace Renderer {
       }
     }
   }
-
+  function renderSectionBackground(viewRectangle: Rectangle) {
+    for (const section of StageManager.getSections()) {
+      if (!Camera.limitCameraInCycleSpace && !viewRectangle.isCollideWith(section.collisionBox.getRectangle())) {
+        continue;
+      }
+      SectionRenderer.renderBackgroundColor(section);
+    }
+  }
   function renderEntities(viewRectangle: Rectangle) {
     renderedNodes = 0;
     for (const entity of StageManager.getEntities()) {
       // 视线之外不画
-      if (
-        !Camera.limitCameraInCycleSpace &&
-        !viewRectangle.isCollideWith(entity.collisionBox.getRectangle())
-      ) {
+      if (!Camera.limitCameraInCycleSpace && !viewRectangle.isCollideWith(entity.collisionBox.getRectangle())) {
         continue;
         // 这里littlefean居然曾经把continue写成return了，
         // 不知道是一股脑通过代码补全补出来的还是什么原因。
@@ -514,20 +477,14 @@ export namespace Renderer {
   function renderEdges(viewRectangle: Rectangle) {
     renderedEdges = 0;
     for (const edge of StageManager.getLineEdges()) {
-      if (
-        !Camera.limitCameraInCycleSpace &&
-        !edge.isIntersectsWithRectangle(viewRectangle)
-      ) {
+      if (!Camera.limitCameraInCycleSpace && !edge.isIntersectsWithRectangle(viewRectangle)) {
         continue;
       }
       EdgeRenderer.renderEdge(edge);
       renderedEdges++;
     }
     for (const edge of StageManager.getCrEdges()) {
-      if (
-        !Camera.limitCameraInCycleSpace &&
-        !edge.isIntersectsWithRectangle(viewRectangle)
-      ) {
+      if (!Camera.limitCameraInCycleSpace && !edge.isIntersectsWithRectangle(viewRectangle)) {
         continue;
       }
       EdgeRenderer.renderCrEdge(edge);
@@ -537,17 +494,17 @@ export namespace Renderer {
 
   /** 画粘贴板上的信息 */
   function renderClipboard() {
-    if (Stage.copyBoardData.entities.length === 0) {
+    if (CopyEngine.isClipboardEmpty()) {
       return;
     }
     const clipboardBlue = new Color(156, 220, 254, 0.5);
 
     // 粘贴板有内容
     // 获取粘贴板中所有节点的外接矩形
-    if (Stage.copyBoardDataRectangle) {
+    if (CopyEngine.copyBoardDataRectangle) {
       // 画一个原位置
       ShapeRenderer.renderRect(
-        Stage.copyBoardDataRectangle.transformWorld2View(),
+        CopyEngine.copyBoardDataRectangle.transformWorld2View(),
         Color.Transparent,
         new Color(255, 255, 255, 0.5),
         1,
@@ -557,10 +514,8 @@ export namespace Renderer {
         "ctrl+shift+v 原位置叠加粘贴",
         transformWorld2View(
           new Vector(
-            Stage.copyBoardDataRectangle.location.x,
-            Stage.copyBoardDataRectangle.location.y +
-              Stage.copyBoardDataRectangle.size.y +
-              20,
+            CopyEngine.copyBoardDataRectangle.location.x,
+            CopyEngine.copyBoardDataRectangle.location.y + CopyEngine.copyBoardDataRectangle.size.y + 20,
           ),
         ),
         12 * Camera.currentScale,
@@ -569,8 +524,8 @@ export namespace Renderer {
       // 画一个鼠标位置
       ShapeRenderer.renderRect(
         new Rectangle(
-          Stage.copyBoardDataRectangle.location.add(Stage.copyBoardMouseVector),
-          Stage.copyBoardDataRectangle.size,
+          CopyEngine.copyBoardDataRectangle.location.add(CopyEngine.copyBoardMouseVector),
+          CopyEngine.copyBoardDataRectangle.size,
         ).transformWorld2View(),
         Color.Transparent,
         clipboardBlue,
@@ -581,18 +536,17 @@ export namespace Renderer {
         "ctrl+v 粘贴到鼠标位置，Esc键清空粘贴板",
         transformWorld2View(
           new Vector(
-            Stage.copyBoardDataRectangle.location.x +
-              Stage.copyBoardMouseVector.x,
-            Stage.copyBoardDataRectangle.location.y +
-              Stage.copyBoardDataRectangle.size.y +
-              Stage.copyBoardMouseVector.y +
+            CopyEngine.copyBoardDataRectangle.location.x + CopyEngine.copyBoardMouseVector.x,
+            CopyEngine.copyBoardDataRectangle.location.y +
+              CopyEngine.copyBoardDataRectangle.size.y +
+              CopyEngine.copyBoardMouseVector.y +
               20,
           ),
         ),
         12 * Camera.currentScale,
         clipboardBlue,
       );
-      for (const entity of Stage.copyBoardData.entities) {
+      for (const entity of CopyEngine.copyBoardData.entities) {
         if (entity.type === "core:connect_point") {
           ShapeRenderer.renderCircle(
             transformWorld2View(new Vector(...entity.location)),
@@ -601,10 +555,20 @@ export namespace Renderer {
             Color.White,
             2 * Camera.currentScale,
           );
+        } else if (entity.type === "core:pen_stroke") {
+          ShapeRenderer.renderRect(
+            new Rectangle(
+              new Vector(...entity.location).add(CopyEngine.copyBoardMouseVector),
+              new Vector(10, 10),
+            ).transformWorld2View(),
+            Color.Transparent,
+            clipboardBlue,
+            2 * Camera.currentScale,
+          );
         } else {
           ShapeRenderer.renderRect(
             new Rectangle(
-              new Vector(...entity.location).add(Stage.copyBoardMouseVector),
+              new Vector(...entity.location).add(CopyEngine.copyBoardMouseVector),
               new Vector(...entity.size),
             ).transformWorld2View(),
             Color.Transparent,
@@ -631,9 +595,6 @@ export namespace Renderer {
 
   /** 渲染所有特效 */
   function renderEffects() {
-    if (!isRenderEffect) {
-      return;
-    }
     Stage.effectMachine.renderTick();
   }
   function renderBackground() {
@@ -689,13 +650,13 @@ export namespace Renderer {
       `Stage.warningEdges: ${Stage.cuttingMachine.warningEdges.length}`,
       `ConnectFromNodes: ${Stage.connectMachine.connectFromEntities}`,
       `lastSelectedNode: ${Controller.lastSelectedEntityUUID.size}`,
-      `粘贴板: ${JSON.stringify(Stage.copyBoardData)}`,
+      `粘贴板: ${JSON.stringify(CopyEngine.copyBoardData)}`,
       `历史: ${StageHistoryManager.statusText()}`,
       `fps: ${fps}`,
       `delta: ${deltaTime.toFixed(2)}`,
       `Controller.isViewMoveByClickMiddle: ${Controller.isViewMoveByClickMiddle}`,
-      `path: ${Stage.Path.getFilePath()}`,
-      `autoSavePaused: ${Stage.isAutoSavePaused}`,
+      `path: ${Stage.path.getFilePath()}`,
+      `autoSave: ${Stage.autoSaveEngine.toString()}`,
       `isEnableEntityCollision: ${StageManager.isEnableEntityCollision}`,
       // `tags: ${StageManager.TagOptions.getTagUUIDs().toString()}`,
     ];
@@ -727,12 +688,7 @@ export namespace Renderer {
 
     for (const key of Controller.pressingKeySet) {
       const textLocation = new Vector(x, Renderer.h - 100);
-      TextRenderer.renderText(
-        key,
-        textLocation,
-        fontSize,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
-      );
+      TextRenderer.renderText(key, textLocation, fontSize, StageStyleManager.currentStyle.StageObjectBorderColor);
       const textSize = getTextSize(key, fontSize);
       x += textSize.x + margin;
     }

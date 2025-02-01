@@ -21,7 +21,7 @@ hero:
       link: https://qm.qq.com/cgi-bin/qm/qr?k=1Wskf2Y2KJz3ARpCgzi04y_p95a78Wku&jump_from=webapi&authKey=EkjB+oWihwZIfyqVsIv2dGrNv7bhSGSIULM3+ZLU2R5AVxOUKaIRwi6TKOHlT04/
 
   image:
-    src: /logo.svg
+    src: /logo-animated.svg
     width: 200
     height: 200
 

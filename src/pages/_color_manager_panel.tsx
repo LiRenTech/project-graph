@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Button from "../components/ui/Button";
+import Button from "../components/Button";
+import { Dialog } from "../components/dialog";
 import { Color } from "../core/dataStruct/Color";
-import { ColorManager } from "../core/service/ColorManager";
-import { Dialog } from "../utils/dialog";
+import { ColorManager } from "../core/service/feedbackService/ColorManager";
 
 /**
  * 自定义颜色设置面板
@@ -70,12 +70,9 @@ function ColorDotElement({ color }: { color: Color }) {
   const b = color.b;
   const a = color.a;
   return (
-    <div
-      className="relative m-1 h-8 w-8 rounded-full"
-      style={{ backgroundColor: `rgba(${r}, ${g}, ${b}, ${a})` }}
-    >
+    <div className="relative m-1 h-8 w-8 rounded-full" style={{ backgroundColor: `rgba(${r}, ${g}, ${b}, ${a})` }}>
       <Button
-        className="absolute -right-2 -top-2 h-2 w-2 rounded-full text-xs"
+        className="absolute -top-2 -right-2 h-2 w-2 rounded-full text-xs"
         onClick={() => {
           ColorManager.removeUserEntityFillColor(color);
         }}

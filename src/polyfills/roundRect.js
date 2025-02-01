@@ -10,8 +10,7 @@
     globalThis.CanvasRenderingContext2D.prototype.roundRect ??= roundRect;
   }
   if (globalThis.OffscreenCanvasRenderingContext2D) {
-    globalThis.OffscreenCanvasRenderingContext2D.prototype.roundRect ??=
-      roundRect;
+    globalThis.OffscreenCanvasRenderingContext2D.prototype.roundRect ??= roundRect;
   }
 
   function roundRect(x, y, w, h, radii) {
@@ -44,78 +43,31 @@
       lowerRight = toCornerPoint(radii[0]);
       lowerLeft = toCornerPoint(radii[0]);
     } else {
-      throw new RangeError(
-        `${getErrorMessageHeader(this)} ${radii.length} is not a valid size for radii sequence.`,
-      );
+      throw new RangeError(`${getErrorMessageHeader(this)} ${radii.length} is not a valid size for radii sequence.`);
     }
 
     const corners = [upperLeft, upperRight, lowerRight, lowerLeft];
     const negativeCorner = corners.find(({ x, y }) => x < 0 || y < 0);
 
-    if (
-      corners.some(({ x, y }) => !Number.isFinite(x) || !Number.isFinite(y))
-    ) {
+    if (corners.some(({ x, y }) => !Number.isFinite(x) || !Number.isFinite(y))) {
       return;
     }
 
     if (negativeCorner) {
-      throw new RangeError(
-        `${getErrorMessageHeader(this)} Radius value ${negativeCorner} is negative.`,
-      );
+      throw new RangeError(`${getErrorMessageHeader(this)} Radius value ${negativeCorner} is negative.`);
     }
 
     fixOverlappingCorners(corners);
 
     if (w < 0 && h < 0) {
       this.moveTo(x - upperLeft.x, y);
-      this.ellipse(
-        x + w + upperRight.x,
-        y - upperRight.y,
-        upperRight.x,
-        upperRight.y,
-        0,
-        -Math.PI * 1.5,
-        -Math.PI,
-      );
-      this.ellipse(
-        x + w + lowerRight.x,
-        y + h + lowerRight.y,
-        lowerRight.x,
-        lowerRight.y,
-        0,
-        -Math.PI,
-        -Math.PI / 2,
-      );
-      this.ellipse(
-        x - lowerLeft.x,
-        y + h + lowerLeft.y,
-        lowerLeft.x,
-        lowerLeft.y,
-        0,
-        -Math.PI / 2,
-        0,
-      );
-      this.ellipse(
-        x - upperLeft.x,
-        y - upperLeft.y,
-        upperLeft.x,
-        upperLeft.y,
-        0,
-        0,
-        -Math.PI / 2,
-      );
+      this.ellipse(x + w + upperRight.x, y - upperRight.y, upperRight.x, upperRight.y, 0, -Math.PI * 1.5, -Math.PI);
+      this.ellipse(x + w + lowerRight.x, y + h + lowerRight.y, lowerRight.x, lowerRight.y, 0, -Math.PI, -Math.PI / 2);
+      this.ellipse(x - lowerLeft.x, y + h + lowerLeft.y, lowerLeft.x, lowerLeft.y, 0, -Math.PI / 2, 0);
+      this.ellipse(x - upperLeft.x, y - upperLeft.y, upperLeft.x, upperLeft.y, 0, 0, -Math.PI / 2);
     } else if (w < 0) {
       this.moveTo(x - upperLeft.x, y);
-      this.ellipse(
-        x + w + upperRight.x,
-        y + upperRight.y,
-        upperRight.x,
-        upperRight.y,
-        0,
-        -Math.PI / 2,
-        -Math.PI,
-        1,
-      );
+      this.ellipse(x + w + upperRight.x, y + upperRight.y, upperRight.x, upperRight.y, 0, -Math.PI / 2, -Math.PI, 1);
       this.ellipse(
         x + w + lowerRight.x,
         y + h - lowerRight.y,
@@ -126,106 +78,20 @@
         -Math.PI * 1.5,
         1,
       );
-      this.ellipse(
-        x - lowerLeft.x,
-        y + h - lowerLeft.y,
-        lowerLeft.x,
-        lowerLeft.y,
-        0,
-        Math.PI / 2,
-        0,
-        1,
-      );
-      this.ellipse(
-        x - upperLeft.x,
-        y + upperLeft.y,
-        upperLeft.x,
-        upperLeft.y,
-        0,
-        0,
-        -Math.PI / 2,
-        1,
-      );
+      this.ellipse(x - lowerLeft.x, y + h - lowerLeft.y, lowerLeft.x, lowerLeft.y, 0, Math.PI / 2, 0, 1);
+      this.ellipse(x - upperLeft.x, y + upperLeft.y, upperLeft.x, upperLeft.y, 0, 0, -Math.PI / 2, 1);
     } else if (h < 0) {
       this.moveTo(x + upperLeft.x, y);
-      this.ellipse(
-        x + w - upperRight.x,
-        y - upperRight.y,
-        upperRight.x,
-        upperRight.y,
-        0,
-        Math.PI / 2,
-        0,
-        1,
-      );
-      this.ellipse(
-        x + w - lowerRight.x,
-        y + h + lowerRight.y,
-        lowerRight.x,
-        lowerRight.y,
-        0,
-        0,
-        -Math.PI / 2,
-        1,
-      );
-      this.ellipse(
-        x + lowerLeft.x,
-        y + h + lowerLeft.y,
-        lowerLeft.x,
-        lowerLeft.y,
-        0,
-        -Math.PI / 2,
-        -Math.PI,
-        1,
-      );
-      this.ellipse(
-        x + upperLeft.x,
-        y - upperLeft.y,
-        upperLeft.x,
-        upperLeft.y,
-        0,
-        -Math.PI,
-        -Math.PI * 1.5,
-        1,
-      );
+      this.ellipse(x + w - upperRight.x, y - upperRight.y, upperRight.x, upperRight.y, 0, Math.PI / 2, 0, 1);
+      this.ellipse(x + w - lowerRight.x, y + h + lowerRight.y, lowerRight.x, lowerRight.y, 0, 0, -Math.PI / 2, 1);
+      this.ellipse(x + lowerLeft.x, y + h + lowerLeft.y, lowerLeft.x, lowerLeft.y, 0, -Math.PI / 2, -Math.PI, 1);
+      this.ellipse(x + upperLeft.x, y - upperLeft.y, upperLeft.x, upperLeft.y, 0, -Math.PI, -Math.PI * 1.5, 1);
     } else {
       this.moveTo(x + upperLeft.x, y);
-      this.ellipse(
-        x + w - upperRight.x,
-        y + upperRight.y,
-        upperRight.x,
-        upperRight.y,
-        0,
-        -Math.PI / 2,
-        0,
-      );
-      this.ellipse(
-        x + w - lowerRight.x,
-        y + h - lowerRight.y,
-        lowerRight.x,
-        lowerRight.y,
-        0,
-        0,
-        Math.PI / 2,
-      );
-      this.ellipse(
-        x + lowerLeft.x,
-        y + h - lowerLeft.y,
-        lowerLeft.x,
-        lowerLeft.y,
-        0,
-        Math.PI / 2,
-        Math.PI,
-      );
-      this.ellipse(
-        x + upperLeft.x,
-        y + upperLeft.y,
-        upperLeft.x,
-        upperLeft.y,
-        0,
-        Math.PI,
-        Math.PI * 1.5,
-      );
+      this.ellipse(x + w - upperRight.x, y + upperRight.y, upperRight.x, upperRight.y, 0, -Math.PI / 2, 0);
+      this.ellipse(x + w - lowerRight.x, y + h - lowerRight.y, lowerRight.x, lowerRight.y, 0, 0, Math.PI / 2);
+      this.ellipse(x + lowerLeft.x, y + h - lowerLeft.y, lowerLeft.x, lowerLeft.y, 0, Math.PI / 2, Math.PI);
+      this.ellipse(x + upperLeft.x, y + upperLeft.y, upperLeft.x, upperLeft.y, 0, Math.PI, Math.PI * 1.5);
     }
 
     this.closePath();

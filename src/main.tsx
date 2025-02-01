@@ -1,46 +1,47 @@
 import { routes } from "@generouted/react-router";
 import { getMatches } from "@tauri-apps/plugin-cli";
+import "driver.js/dist/driver.css";
 import i18next from "i18next";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { runCli } from "./cli";
+import { Dialog } from "./components/dialog";
+import { Popup } from "./components/popup";
 import { Color } from "./core/dataStruct/Color";
 import { Vector } from "./core/dataStruct/Vector";
 import { EdgeRenderer } from "./core/render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "./core/render/canvas2d/renderer";
-import { PromptManager } from "./core/service/ai/PromptManager";
-import { ColorManager } from "./core/service/ColorManager";
+import { InputElement } from "./core/render/domElement/inputElement";
 import {
   addTextNodeByLocation,
   addTextNodeFromCurrentSelectedNode,
   editNodeDetailsByKeyboard,
-} from "./core/service/controller/concrete/utilsControl";
-import { TextRiseEffect } from "./core/service/effectEngine/concrete/TextRiseEffect";
-import { ViewOutlineFlashEffect } from "./core/service/effectEngine/concrete/ViewOutlineFlashEffect";
-import { KeyBinds } from "./core/service/KeyBinds";
-import { KeyboardOnlyEngine } from "./core/service/keyboardOnlyEngine/keyboardOnlyEngine";
+} from "./core/service/controlService/controller/concrete/utilsControl";
+import { KeyBinds } from "./core/service/controlService/KeyBinds";
+import { KeyboardOnlyEngine } from "./core/service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
+import { MouseLocation } from "./core/service/controlService/MouseLocation";
+import { RecentFileManager } from "./core/service/dataFileService/RecentFileManager";
+import { StartFilesManager } from "./core/service/dataFileService/StartFilesManager";
+import { ColorManager } from "./core/service/feedbackService/ColorManager";
+import { TextRiseEffect } from "./core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
+import { ViewOutlineFlashEffect } from "./core/service/feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
+import { SoundService } from "./core/service/feedbackService/SoundService";
+import { StageStyleManager } from "./core/service/feedbackService/stageStyle/StageStyleManager";
 import { LastLaunch } from "./core/service/LastLaunch";
-import { MouseLocation } from "./core/service/MouseLocation";
-import { RecentFileManager } from "./core/service/RecentFileManager";
 import { Settings } from "./core/service/Settings";
-import { SoundService } from "./core/service/SoundService";
-import { StageStyleManager } from "./core/service/stageStyle/StageStyleManager";
-import { StartFilesManager } from "./core/service/StartFilesManager";
 import { Camera } from "./core/stage/Camera";
 import { Stage } from "./core/stage/Stage";
 import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManager";
 import { StageManager } from "./core/stage/stageManager/StageManager";
 import { EdgeCollisionBoxGetter } from "./core/stage/stageObject/association/EdgeCollisionBoxGetter";
-import "./index.pcss";
+import "./index.css";
 import { ColorPanel } from "./pages/_toolbar";
 import "./polyfills/roundRect";
-import { Dialog } from "./utils/dialog";
 import { exists } from "./utils/fs/com";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
-import { Popup } from "./utils/popup";
-import { InputElement } from "./core/render/domElement/inputElement";
+import { Tourials } from "./core/service/Tourials";
 // import { VFileSystem } from "./core/service/VFileSystem";
 import { IndexedDBFileSystem } from "./utils/fs/IndexedDBFileSystem";
 
@@ -60,17 +61,12 @@ const el = document.getElementById("root")!;
     RecentFileManager.init(),
     LastLaunch.init(),
     StartFilesManager.init(),
-    PromptManager.init(),
     KeyBinds.init(),
     ColorManager.init(),
+    Tourials.init(),
   ]);
   // 这些东西依赖上面的东西，所以单独一个Promise.all
-  await Promise.all([
-    loadLanguageFiles(),
-    loadSyncModules(),
-    loadStartFile(),
-    registerKeyBinds(),
-  ]);
+  await Promise.all([loadLanguageFiles(), loadSyncModules(), loadStartFile(), registerKeyBinds()]);
   await renderApp(isCliMode);
   if (isCliMode) {
     try {
@@ -114,8 +110,7 @@ async function registerKeyBinds() {
   ).down(() =>
     Dialog.show({
       title: "自定义快捷键测试",
-      content:
-        "您按下了自定义的测试快捷键，这一功能是测试开发所用，可在设置中更改触发方式",
+      content: "您按下了自定义的测试快捷键，这一功能是测试开发所用，可在设置中更改触发方式",
       buttons: [
         {
           text: "ok",
@@ -380,6 +375,16 @@ async function registerKeyBinds() {
   ).down(() => {
     Popup.show(<ColorPanel />);
   });
+  (
+    await KeyBinds.create("switchDebugShow", "F3", {
+      control: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    const currentValue = Renderer.isShowDebug;
+    Settings.set("showDebug", !currentValue);
+  });
 
   (
     await KeyBinds.create("selectAll", "a", {
@@ -391,6 +396,31 @@ async function registerKeyBinds() {
     StageManager.selectAll();
     Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(Color.Green));
   });
+  (
+    await KeyBinds.create("textNodeToSection", "g", {
+      control: true,
+      alt: false,
+      shift: true,
+    })
+  ).down(() => {
+    StageManager.textNodeToSection();
+  });
+
+  const bind = await KeyBinds.create("keyboardOnlyGenerateNode", "tab", {
+    control: false,
+    alt: false,
+    shift: false,
+  });
+  bind.down(() => {
+    if (KeyboardOnlyEngine.isEnableVirtualCreate()) {
+      KeyboardOnlyEngine.createStart();
+    }
+  });
+  bind.up(() => {
+    if (KeyboardOnlyEngine.isCreating()) {
+      KeyboardOnlyEngine.createFinished();
+    }
+  });
 }
 
 /** 加载语言文件 */
@@ -401,12 +431,12 @@ async function loadLanguageFiles() {
     // debug: import.meta.env.DEV,
     debug: false,
     defaultNS: "",
-    fallbackLng: "zh-CN",
+    fallbackLng: "zh_CN",
     saveMissing: false,
     resources: {
       en: await import("./locales/en.yml").then((m) => m.default),
-      "zh-CN": await import("./locales/zh-CN.yml").then((m) => m.default),
-      "zh-TW": await import("./locales/zh-TW.yml").then((m) => m.default),
+      zh_CN: await import("./locales/zh_CN.yml").then((m) => m.default),
+      zh_TW: await import("./locales/zh_TW.yml").then((m) => m.default),
     },
   });
 }
@@ -437,9 +467,7 @@ async function loadStartFile() {
     }, 1000);
   } else {
     // 自动打开路径不存在
-    Stage.effectMachine.addEffect(
-      new TextRiseEffect(`打开工程失败，${path}不存在！`),
-    );
+    Stage.effectMachine.addEffect(new TextRiseEffect(`打开工程失败，${path}不存在！`));
   }
 }
 

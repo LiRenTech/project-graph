@@ -1,9 +1,10 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
-import { LineEffect } from "../../../service/effectEngine/concrete/LineEffect";
+import { LineEffect } from "../../../service/feedbackService/effectEngine/concrete/LineEffect";
 import { Stage } from "../../Stage";
-import { ConnectableEntity } from "../../stageObject/StageObject";
+import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
+import { GraphMethods } from "../basicMethods/GraphMethods";
 import { StageManager } from "../StageManager";
 import { StageEntityMoveManager } from "./StageEntityMoveManager";
 
@@ -22,23 +23,15 @@ export namespace StageNodeRotate {
       if (edge.isSelected) {
         const startMouseDragLocation = lastMoveLocation.clone();
         const endMouseDragLocation = startMouseDragLocation.add(diffLocation);
-        const vectorStart = startMouseDragLocation.subtract(
-          edge.source.geometryCenter,
-        );
-        const vectorEnd = endMouseDragLocation.subtract(
-          edge.source.geometryCenter,
-        );
+        const vectorStart = startMouseDragLocation.subtract(edge.source.geometryCenter);
+        const vectorEnd = endMouseDragLocation.subtract(edge.source.geometryCenter);
         let degrees = vectorStart.angleToSigned(vectorEnd);
         // degrees一直是正数
         if (Number.isNaN(degrees)) {
           degrees = 0;
         }
-        const sourceEntity = StageManager.getConnectableEntityByUUID(
-          edge.source.uuid,
-        );
-        const targetEntity = StageManager.getConnectableEntityByUUID(
-          edge.target.uuid,
-        );
+        const sourceEntity = StageManager.getConnectableEntityByUUID(edge.source.uuid);
+        const targetEntity = StageManager.getConnectableEntityByUUID(edge.target.uuid);
 
         if (sourceEntity && targetEntity) {
           rotateNodeDfs(
@@ -71,18 +64,13 @@ export namespace StageNodeRotate {
     const rotateCenterLocation = rotateCenterNode.geometryCenter;
     // 先旋转自己
 
-    const centerToChildVector =
-      currentNode.geometryCenter.subtract(rotateCenterLocation);
+    const centerToChildVector = currentNode.geometryCenter.subtract(rotateCenterLocation);
 
-    const centerToChildVectorRotated =
-      centerToChildVector.rotateDegrees(degrees);
+    const centerToChildVectorRotated = centerToChildVector.rotateDegrees(degrees);
 
-    StageEntityMoveManager.moveEntityUtils(
-      currentNode,
-      centerToChildVectorRotated.subtract(centerToChildVector),
-    );
+    StageEntityMoveManager.moveEntityUtils(currentNode, centerToChildVectorRotated.subtract(centerToChildVector));
     // 再旋转子节点
-    for (const child of StageManager.nodeChildrenArray(currentNode)) {
+    for (const child of GraphMethods.nodeChildrenArray(currentNode)) {
       if (visitedUUIDs.includes(child.uuid)) {
         continue;
       }
@@ -92,10 +80,7 @@ export namespace StageNodeRotate {
         console.error("child node not found");
         continue;
       }
-      const midPoint = Vector.fromTwoPointsCenter(
-        currentNode.geometryCenter,
-        childNode.geometryCenter,
-      );
+      const midPoint = Vector.fromTwoPointsCenter(currentNode.geometryCenter, childNode.geometryCenter);
 
       Stage.effectMachine.addEffect(
         new LineEffect(

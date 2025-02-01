@@ -1,6 +1,6 @@
 import { platform } from "@tauri-apps/plugin-os";
 import { open } from "@tauri-apps/plugin-shell";
-import Button from "../components/ui/Button";
+import Button from "../components/Button";
 
 export default function InfoPage() {
   return (
@@ -24,9 +24,7 @@ export default function InfoPage() {
         <p>设备像素比: {window.devicePixelRatio}</p>
 
         <input type="text" />
-        <Button onClick={() => open("https://project-graph.top")}>
-          open函数打开官网
-        </Button>
+        <Button onClick={() => open("https://project-graph.top")}>open函数打开官网</Button>
       </div>
     </>
   );

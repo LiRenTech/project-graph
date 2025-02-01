@@ -1,10 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
+import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { CublicCatmullRomSplineEdge } from "../../stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
-import { ConnectableEntity } from "../../stageObject/StageObject";
 import { StageManager } from "../StageManager";
 import { StageDeleteManager } from "./StageDeleteManager";
+import { GraphMethods } from "../basicMethods/GraphMethods";
 
 /**
  * 集成所有连线相关的功能
@@ -15,18 +16,12 @@ export namespace StageNodeConnector {
    * @param fromNode
    * @param toNode
    */
-  function isConnectable(
-    fromNode: ConnectableEntity,
-    toNode: ConnectableEntity,
-  ): boolean {
-    if (
-      StageManager.isEntityExists(fromNode.uuid) &&
-      StageManager.isEntityExists(toNode.uuid)
-    ) {
+  function isConnectable(fromNode: ConnectableEntity, toNode: ConnectableEntity): boolean {
+    if (StageManager.isEntityExists(fromNode.uuid) && StageManager.isEntityExists(toNode.uuid)) {
       if (fromNode.uuid === toNode.uuid && fromNode instanceof ConnectPoint) {
         return false;
       }
-      if (StageManager.isConnected(fromNode, toNode)) {
+      if (GraphMethods.isConnected(fromNode, toNode)) {
         // 已经连接过了，不需要再次连接
         return false;
       }
@@ -51,6 +46,7 @@ export namespace StageNodeConnector {
       text,
       uuid: uuidv4(),
       type: "core:line_edge",
+      color: [0, 0, 0, 0],
     });
 
     StageManager.addLineEdge(newEdge);
@@ -61,10 +57,7 @@ export namespace StageNodeConnector {
     // return false;
   }
 
-  export function addCrEdge(
-    fromNode: ConnectableEntity,
-    toNode: ConnectableEntity,
-  ): void {
+  export function addCrEdge(fromNode: ConnectableEntity, toNode: ConnectableEntity): void {
     if (!isConnectable(fromNode, toNode)) {
       return;
     }
@@ -83,12 +76,8 @@ export namespace StageNodeConnector {
     });
     // 再重新连接
     edges.forEach((edge) => {
-      const sourceNode = StageManager.getConnectableEntityByUUID(
-        edge.source.uuid,
-      );
-      const targetNode = StageManager.getConnectableEntityByUUID(
-        edge.target.uuid,
-      );
+      const sourceNode = StageManager.getConnectableEntityByUUID(edge.source.uuid);
+      const targetNode = StageManager.getConnectableEntityByUUID(edge.target.uuid);
       if (sourceNode && targetNode) {
         connectConnectableEntity(targetNode, sourceNode, edge.text);
       }

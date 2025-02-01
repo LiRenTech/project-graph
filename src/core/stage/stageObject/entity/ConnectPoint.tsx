@@ -1,10 +1,10 @@
 import { Serialized } from "../../../../types/node";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { CircleChangeRadiusEffect } from "../../../service/effectEngine/concrete/CircleChangeRadiusEffect";
+import { CircleChangeRadiusEffect } from "../../../service/feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
 import { Stage } from "../../Stage";
+import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { ConnectableEntity } from "../StageObject";
 
 export class ConnectPoint extends ConnectableEntity {
   get geometryCenter(): Vector {
@@ -30,9 +30,7 @@ export class ConnectPoint extends ConnectableEntity {
     const rectangle = this._collisionBox.shapeList[0];
     if (rectangle instanceof Rectangle) {
       rectangle.size = new Vector(value * 2, value * 2);
-      rectangle.location = this.geometryCenter.subtract(
-        new Vector(value, value),
-      );
+      rectangle.location = this.geometryCenter.subtract(new Vector(value, value));
     }
   }
 
@@ -66,21 +64,12 @@ export class ConnectPoint extends ConnectableEntity {
     } else {
       // 取消选中
       this.radius = 1;
-      Stage.effectMachine.addEffect(
-        CircleChangeRadiusEffect.fromConnectPointShrink(
-          this.geometryCenter.clone(),
-          30,
-        ),
-      );
+      Stage.effectMachine.addEffect(CircleChangeRadiusEffect.fromConnectPointShrink(this.geometryCenter.clone(), 30));
     }
   }
 
   constructor(
-    {
-      uuid,
-      location = [0, 0],
-      details = "",
-    }: Partial<Serialized.ConnectPoint> & { uuid: string },
+    { uuid, location = [0, 0], details = "" }: Partial<Serialized.ConnectPoint> & { uuid: string },
     public unknown = false,
   ) {
     super();
@@ -88,10 +77,7 @@ export class ConnectPoint extends ConnectableEntity {
     this.location = new Vector(...location);
     this.details = details;
     this._collisionBox = new CollisionBox([
-      new Rectangle(
-        this.location.subtract(new Vector(10, 10)),
-        new Vector(20, 20),
-      ),
+      new Rectangle(this.location.subtract(new Vector(10, 10)), new Vector(20, 20)),
     ]);
     this.radius = 1;
   }

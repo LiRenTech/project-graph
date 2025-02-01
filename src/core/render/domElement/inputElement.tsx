@@ -1,8 +1,8 @@
 import { getMultiLineTextSize } from "../../../utils/font";
 import { Vector } from "../../dataStruct/Vector";
-import { EntityDashTipEffect } from "../../service/effectEngine/concrete/EntityDashTipEffect";
-import { EntityShakeEffect } from "../../service/effectEngine/concrete/EntityShakeEffect";
-import { TextRiseEffect } from "../../service/effectEngine/concrete/TextRiseEffect";
+import { EntityDashTipEffect } from "../../service/feedbackService/effectEngine/concrete/EntityDashTipEffect";
+import { EntityShakeEffect } from "../../service/feedbackService/effectEngine/concrete/EntityShakeEffect";
+import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../service/Settings";
 import { Camera } from "../../stage/Camera";
 import { Stage } from "../../stage/Stage";
@@ -120,11 +120,7 @@ export namespace InputElement {
       textareaElement.style.overflow = "hidden"; // 隐藏滚动条
       textareaElement.style.height = "auto"; // 初始化高度为auto
       textareaElement.style.width = "auto"; // 初始化宽度为auto
-      const initSize = getMultiLineTextSize(
-        defaultValue,
-        Renderer.FONT_SIZE,
-        1.5,
-      );
+      const initSize = getMultiLineTextSize(defaultValue, Renderer.FONT_SIZE, 1.5);
       const minWidth = initSize.x * Camera.currentScale;
       console.log(minWidth, "minWidth");
       textareaElement.style.minHeight = `${initSize.y * Camera.currentScale}px`; // 设置最小高度
@@ -134,6 +130,10 @@ export namespace InputElement {
       Object.assign(textareaElement.style, style);
       document.body.appendChild(textareaElement);
 
+      // web版在右键连线直接练到空白部分触发节点生成并编辑出现此元素时，防止触发右键菜单
+      textareaElement.addEventListener("contextmenu", (event) => {
+        event.preventDefault();
+      });
       textareaElement.focus();
       textareaElement.select();
       // 以上这两部必须在appendChild之后执行
@@ -205,9 +205,7 @@ export namespace InputElement {
           const start = textareaElement.selectionStart;
           const end = textareaElement.selectionEnd;
           textareaElement.value =
-            textareaElement.value.substring(0, start) +
-            "\t" +
-            textareaElement.value.substring(end);
+            textareaElement.value.substring(0, start) + "\t" + textareaElement.value.substring(end);
           textareaElement.selectionStart = start + 1;
           textareaElement.selectionEnd = start + 1;
         } else if (event.key === "Escape") {
@@ -222,9 +220,7 @@ export namespace InputElement {
           const start = textareaElement.selectionStart;
           const end = textareaElement.selectionEnd;
           textareaElement.value =
-            textareaElement.value.substring(0, start) +
-            "\n" +
-            textareaElement.value.substring(end);
+            textareaElement.value.substring(0, start) + "\n" + textareaElement.value.substring(end);
           textareaElement.selectionStart = start + 1;
           textareaElement.selectionEnd = start + 1;
           // 调整
@@ -286,30 +282,19 @@ export namespace InputElement {
               controlSuccess = true;
             }
           }
-          const textNodes = StageManager.getTextNodes().filter(
-            (textNode) => textNode.isEditing,
-          );
+          const textNodes = StageManager.getTextNodes().filter((textNode) => textNode.isEditing);
           if (!controlSuccess) {
             // 用户可能记错了快捷键
             // 查找到当前正在编辑的TextNode
 
             for (const textNode of textNodes) {
-              Stage.effectMachine.addEffect(
-                EntityShakeEffect.fromEntity(textNode),
-              );
+              Stage.effectMachine.addEffect(EntityShakeEffect.fromEntity(textNode));
             }
-            Stage.effectMachine.addEffect(
-              TextRiseEffect.default("您可能记错了快捷键"),
-            );
+            Stage.effectMachine.addEffect(TextRiseEffect.default("您可能记错了快捷键"));
           } else {
             // 成功了
             for (const textNode of textNodes) {
-              Stage.effectMachine.addEffect(
-                new EntityDashTipEffect(
-                  50,
-                  textNode.collisionBox.getRectangle(),
-                ),
-              );
+              Stage.effectMachine.addEffect(new EntityDashTipEffect(50, textNode.collisionBox.getRectangle()));
             }
           }
         }
@@ -317,11 +302,9 @@ export namespace InputElement {
     });
   }
 
-  let textNodeContentLineBreak: Settings.Settings["textNodeContentLineBreak"] =
-    "enter";
+  let textNodeContentLineBreak: Settings.Settings["textNodeContentLineBreak"] = "enter";
 
-  let textNodeExitEditMode: Settings.Settings["textNodeExitEditMode"] =
-    "ctrlEnter";
+  let textNodeExitEditMode: Settings.Settings["textNodeExitEditMode"] = "ctrlEnter";
 
   export function init() {
     Settings.watch("textNodeContentLineBreak", (value) => {

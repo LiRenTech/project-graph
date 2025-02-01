@@ -1,46 +1,26 @@
 import { useAtom } from "jotai";
-import {
-  BrainCircuit,
-  ChevronDown,
-  ChevronLeft,
-  ChevronUp,
-  Cpu,
-  Diamond,
-  Menu,
-  RectangleEllipsis,
-  Tag,
-  X,
-  Zap,
-} from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronUp, Cpu, Diamond, Menu, RectangleEllipsis, Tag, X, Zap } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import Button from "../components/ui/Button";
-import IconButton from "../components/ui/IconButton";
+import Button from "../components/Button";
+import { Dialog } from "../components/dialog";
+import IconButton from "../components/IconButton";
+import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
 import { Settings } from "../core/service/Settings";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
-import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { fileAtom } from "../state";
 import { cn } from "../utils/cn";
-import { Dialog } from "../utils/dialog";
 import { PathString } from "../utils/pathString";
-import {
-  appScale,
-  getCurrentWindow,
-  isDesktop,
-  isMac,
-  isMobile,
-  isWeb,
-} from "../utils/platform";
-import AiPanel from "./_ai_panel";
+import { appScale, getCurrentWindow, isDesktop, isMac, isMobile, isWeb } from "../utils/platform";
 import AppMenu from "./_app_menu";
 import ErrorHandler from "./_error_handler";
 import ExportTreeTextPanel from "./_export_text_panel";
+import LogicNodePanel from "./_logic_node_panel";
 import RecentFilesPanel from "./_recent_files_panel";
 import StartFilePanel from "./_start_file_panel";
 import TagPanel from "./_tag_panel";
-import LogicNodePanel from "./_logic_node_panel";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -48,7 +28,6 @@ export default function App() {
   // 面板状态
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isStartFilePanelOpen, setIsStartFilePanelOpen] = React.useState(false);
-  const [isAiPanelOpen, setIsAiPanelOpen] = React.useState(false);
   const [isTagPanelOpen, setIsTagPanelOpen] = React.useState(false);
   const [isLogicNodePanelOpen, setIsLogicNodePanelOpen] = React.useState(false);
   const [ignoreMouse, setIgnoreMouse] = React.useState(false);
@@ -117,7 +96,7 @@ export default function App() {
     getCurrentWindow().onCloseRequested(async (e) => {
       e.preventDefault();
       try {
-        if (Stage.Path.getFilePath() === Stage.Path.draftName) {
+        if (Stage.path.getFilePath() === Stage.path.draftName) {
           await Dialog.show({
             title: "真的要关闭吗？",
             content: "您现在的新建草稿没有保存，是否要关闭项目？",
@@ -152,10 +131,7 @@ export default function App() {
                   {
                     text: "保存并关闭",
                     onClick: async () => {
-                      await StageSaveManager.saveHandle(
-                        file,
-                        StageDumper.dump(),
-                      );
+                      await StageSaveManager.saveHandle(file, StageDumper.dump());
                       await getCurrentWindow().destroy();
                     },
                   },
@@ -175,14 +151,15 @@ export default function App() {
       }
     });
 
-    document
-      .querySelector("canvas")
-      ?.addEventListener("mousedown", () => setIgnoreMouse(true));
-    document
-      .querySelector("canvas")
-      ?.addEventListener("mouseup", () => setIgnoreMouse(false));
-
+    document.querySelector("canvas")?.addEventListener("mousedown", () => setIgnoreMouse(true));
+    document.querySelector("canvas")?.addEventListener("mouseup", () => setIgnoreMouse(false));
+    // 监听主题样式切换
+    Settings.watch("uiTheme", (value) => {
+      document.documentElement.setAttribute("data-theme", value);
+    });
     return () => {
+      // 经过测试发现，只要是不关闭软件，根本不会执行这里
+      // 随意切换软件内部界面不会执行这里
       clearInterval(saveInterval);
     };
   }, []);
@@ -191,14 +168,14 @@ export default function App() {
    * 监控路径变化的地方
    */
   React.useEffect(() => {
-    if (file === Stage.Path.draftName) {
-      getCurrentWindow().setTitle(Stage.Path.draftName);
-      document.title = Stage.Path.draftName;
-      Stage.Path.setPathInEffect(Stage.Path.draftName);
+    if (file === Stage.path.draftName) {
+      getCurrentWindow().setTitle(Stage.path.draftName);
+      document.title = Stage.path.draftName;
+      Stage.path.setPathInEffect(Stage.path.draftName);
     } else {
       getCurrentWindow().setTitle(`${filename} - Project Graph`);
       document.title = `${filename} - Project Graph`;
-      Stage.Path.setPathInEffect(file);
+      Stage.path.setPathInEffect(file);
     }
   }, [file]);
 
@@ -213,40 +190,29 @@ export default function App() {
   }, [maxmized]);
 
   React.useEffect(() => {
-    Stage.isAutoSavePaused = isStartFilePanelOpen;
+    Stage.autoSaveEngine.setAutoSavePaused(isStartFilePanelOpen);
   }, [isStartFilePanelOpen]);
-
-  React.useEffect(() => {
-    Stage.isAutoSavePaused = isAiPanelOpen;
-  }, [isAiPanelOpen]);
 
   return (
     <div
-      className={cn(
-        "relative h-full w-full rounded-xl text-white shadow-2xl ring",
-        {
-          "bg-neutral-950": isMobile || location.pathname !== "/",
-        },
-      )}
+      className={cn("relative h-full w-full rounded-xl text-white ring shadow-2xl", {
+        "bg-settings-page-bg": isMobile || location.pathname !== "/",
+      })}
       style={{ zoom: appScale }}
       onClick={() => {
         setIsMenuOpen(false);
         setIsStartFilePanelOpen(false);
-        setIsAiPanelOpen(false);
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
       {/* 叠加层，显示窗口控件 */}
       <div
-        className={cn(
-          "pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 p-4 *:pointer-events-auto",
-          {
-            "*:!pointer-events-none": ignoreMouse,
-          },
-        )}
+        className={cn("pointer-events-none absolute top-0 left-0 z-40 flex w-full gap-2 p-4 *:pointer-events-auto", {
+          "*:!pointer-events-none": ignoreMouse,
+        })}
       >
         {isMac && (
-          <Button className="right-4 top-4 flex items-center gap-2 active:scale-100">
+          <Button className="top-4 right-4 flex items-center gap-2 active:scale-100">
             <div
               className="size-3 rounded-full bg-red-500 active:bg-red-800"
               onClick={() => getCurrentWindow().close()}
@@ -293,15 +259,7 @@ export default function App() {
             }
           }}
         >
-          {location.pathname === "/" ? (
-            isMenuOpen ? (
-              <RectangleEllipsis />
-            ) : (
-              <Menu />
-            )
-          ) : (
-            <ChevronLeft />
-          )}
+          {location.pathname === "/" ? isMenuOpen ? <RectangleEllipsis /> : <Menu /> : <ChevronLeft />}
         </IconButton>
         <IconButton
           onClick={(e) => {
@@ -309,9 +267,7 @@ export default function App() {
             setIsTagPanelOpen(!isTagPanelOpen);
           }}
         >
-          <Tag
-            className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")}
-          />
+          <Tag className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")} />
         </IconButton>
         {/* 逻辑节点按钮 */}
         <IconButton
@@ -320,9 +276,7 @@ export default function App() {
             setIsLogicNodePanelOpen(!isLogicNodePanelOpen);
           }}
         >
-          <Cpu
-            className={cn("cursor-pointer", isAiPanelOpen ? "rotate-90" : "")}
-          />
+          <Cpu className={cn("cursor-pointer", isLogicNodePanelOpen ? "rotate-90" : "")} />
         </IconButton>
         {/* 中间标题 */}
         {useNativeTitleBar || isWeb ? (
@@ -332,13 +286,10 @@ export default function App() {
           <>
             <Button
               data-tauri-drag-region
-              className={cn(
-                "hover:cursor-move active:scale-100 active:cursor-grabbing",
-                {
-                  "text-yellow-500": isSaved,
-                  "flex-1": isDesktop,
-                },
-              )}
+              className={cn("hover:cursor-move active:scale-100 active:cursor-grabbing", {
+                "text-yellow-500": isSaved,
+                "flex-1": isDesktop,
+              })}
             >
               {isMobile && filename + (isSaved ? "" : t("unsaved"))}
             </Button>
@@ -347,8 +298,8 @@ export default function App() {
               <span
                 data-tauri-drag-region
                 className={cn(
-                  isSaved ? "" : "text-yellow-500",
-                  "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+                  isSaved ? "text-icon-button-text" : "text-yellow-500",
+                  "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
                 )}
               >
                 {filename + (isSaved ? "" : t("unsaved"))}
@@ -357,17 +308,6 @@ export default function App() {
           </>
         )}
 
-        {/* 右上角AI按钮 */}
-        <IconButton
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsAiPanelOpen(!isAiPanelOpen);
-          }}
-        >
-          <BrainCircuit
-            className={cn("cursor-pointer", isAiPanelOpen ? "rotate-90" : "")}
-          />
-        </IconButton>
         {/* 右上角图钉按钮 */}
         <IconButton
           onClick={(e) => {
@@ -375,16 +315,11 @@ export default function App() {
             setIsStartFilePanelOpen(!isStartFilePanelOpen);
           }}
         >
-          <Zap
-            className={cn(
-              "cursor-pointer",
-              isStartFilePanelOpen ? "rotate-45 scale-125" : "",
-            )}
-          />
+          <Zap className={cn("cursor-pointer", isStartFilePanelOpen ? "scale-125 rotate-45" : "")} />
         </IconButton>
         {/* 右上角窗口控制按钮 */}
         {isDesktop && !useNativeTitleBar && !isMac && !isWeb && (
-          <Button className="right-4 top-4 flex items-center gap-1 active:scale-100">
+          <Button className="top-4 right-4 flex items-center gap-1 active:scale-100">
             <ChevronDown
               onClick={() => getCurrentWindow().minimize()}
               className="transition hover:opacity-80 active:scale-75"
@@ -397,25 +332,18 @@ export default function App() {
                 className="transition hover:opacity-80 active:scale-75"
               />
             ) : (
-              <ChevronUp
-                onClick={() => setMaxmized(true)}
-                className="transition hover:opacity-80 active:scale-75"
-              />
+              <ChevronUp onClick={() => setMaxmized(true)} className="transition hover:opacity-80 active:scale-75" />
             )}
-            <X
-              onClick={() => getCurrentWindow().close()}
-              className="transition hover:opacity-80 active:scale-75"
-            />
+            <X onClick={() => getCurrentWindow().close()} className="transition hover:opacity-80 active:scale-75" />
           </Button>
         )}
       </div>
 
       {/* 面板列表 */}
-      <AppMenu className="absolute left-4 top-16 z-20" open={isMenuOpen} />
+      <AppMenu className="absolute top-16 left-4 z-20" open={isMenuOpen} />
       <TagPanel open={isTagPanelOpen} className="z-10" />
       <LogicNodePanel open={isLogicNodePanelOpen} className="z-10" />
       <StartFilePanel open={isStartFilePanelOpen} />
-      <AiPanel open={isAiPanelOpen} />
       <RecentFilesPanel />
       <ExportTreeTextPanel />
       {/* ======= */}

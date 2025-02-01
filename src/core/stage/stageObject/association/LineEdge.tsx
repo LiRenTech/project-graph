@@ -5,15 +5,17 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../../render/canvas2d/renderer";
-import { ConnectableEntity } from "../StageObject";
+import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
 import { Edge } from "./Edge";
 import { EdgeCollisionBoxGetter } from "./EdgeCollisionBoxGetter";
+import { Color } from "../../../dataStruct/Color";
 
 export class LineEdge extends Edge {
   public uuid: string;
   public text: string;
+  public color: Color = Color.Transparent;
 
   protected _source: ConnectableEntity;
   protected _target: ConnectableEntity;
@@ -23,10 +25,7 @@ export class LineEdge extends Edge {
   }
 
   get isHiddenBySectionCollapse(): boolean {
-    return (
-      this.source.isHiddenBySectionCollapse &&
-      this.target.isHiddenBySectionCollapse
-    );
+    return this.source.isHiddenBySectionCollapse && this.target.isHiddenBySectionCollapse;
   }
 
   /**
@@ -42,7 +41,7 @@ export class LineEdge extends Edge {
   private _isShifting: boolean = false;
 
   constructor(
-    { source, target, text, uuid }: Serialized.LineEdge,
+    { source, target, text, uuid, color }: Serialized.LineEdge,
     /** true表示解析状态，false表示解析完毕 */
     public unknown = false,
   ) {
@@ -51,20 +50,19 @@ export class LineEdge extends Edge {
     this._target = new TextNode({ uuid: target }, true);
     this.text = text;
     this.uuid = uuid;
+    this.color = new Color(...color);
 
     this.adjustSizeByText();
   }
 
-  static fromTwoEntity(
-    source: ConnectableEntity,
-    target: ConnectableEntity,
-  ): LineEdge {
+  static fromTwoEntity(source: ConnectableEntity, target: ConnectableEntity): LineEdge {
     const result = new LineEdge({
       source: source.uuid,
       target: target.uuid,
       text: "",
       uuid: uuidv4(),
       type: "core:line_edge",
+      color: [0, 0, 0, 0],
     });
     return result;
   }
@@ -78,12 +76,8 @@ export class LineEdge extends Edge {
       this.source.collisionBox.getRectangle().center,
       this.target.collisionBox.getRectangle().center,
     );
-    const startPoint = this.source.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(edgeCenterLine);
-    const endPoint = this.target.collisionBox
-      .getRectangle()
-      .getLineIntersectionPoint(edgeCenterLine);
+    const startPoint = this.source.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
+    const endPoint = this.target.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
     return new Line(startPoint, endPoint);
   }
 
@@ -98,15 +92,9 @@ export class LineEdge extends Edge {
     // HACK: 这里会造成频繁渲染，频繁计算文字宽度进而可能出现性能问题
     const textSize = getTextSize(this.text, Renderer.FONT_SIZE);
     if (this.isShifting) {
-      return new Rectangle(
-        this.shiftingMidPoint.subtract(textSize.divide(2)),
-        textSize,
-      );
+      return new Rectangle(this.shiftingMidPoint.subtract(textSize.divide(2)), textSize);
     } else {
-      return new Rectangle(
-        this.bodyLine.midPoint().subtract(textSize.divide(2)),
-        textSize,
-      );
+      return new Rectangle(this.bodyLine.midPoint().subtract(textSize.divide(2)), textSize);
     }
     // return this._textRectangle;
   }

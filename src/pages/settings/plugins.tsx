@@ -2,9 +2,9 @@ import { open as openFile } from "@tauri-apps/plugin-dialog";
 import { open } from "@tauri-apps/plugin-shell";
 import { BookOpen, Box, PartyPopper, Plug, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import Button from "../../components/ui/Button";
-import Switch from "../../components/ui/Switch";
-import { Dialog } from "../../utils/dialog";
+import Button from "../../components/Button";
+import { Dialog } from "../../components/dialog";
+import Switch from "../../components/Switch";
 import { Field } from "./_field";
 
 export default function PluginsPage() {
@@ -60,9 +60,7 @@ export default function PluginsPage() {
       <Field
         icon={<Plug />}
         title="Core"
-        description={
-          "Provides the core functionality of the app\nAuthor: Project Graph Developers"
-        }
+        description={"Provides the core functionality of the app\nAuthor: Project Graph Developers"}
       >
         <Button disabled>
           <X />

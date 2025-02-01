@@ -1,20 +1,19 @@
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import Button from "../components/ui/Button";
-import { StageSaveManager } from "../core/stage/StageSaveManager";
+import Button from "../components/Button";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { isExportTreeTextPanelOpenAtom } from "../state";
 import { cn } from "../utils/cn";
+import { Stage } from "../core/stage/Stage";
+import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
 
 /**
  * 导出节点纯文本相关的面板
  * 树形的
  */
 export default function ExportTreeTextPanel() {
-  const [isExportTreeTextPanelOpen, setIsExportTreeTextPanelOpen] = useAtom(
-    isExportTreeTextPanelOpenAtom,
-  );
+  const [isExportTreeTextPanelOpen, setIsExportTreeTextPanelOpen] = useAtom(isExportTreeTextPanelOpenAtom);
 
   const [markdownText, setMarkdownText] = useState("");
   const [tabText, setTabText] = useState("");
@@ -34,13 +33,9 @@ export default function ExportTreeTextPanel() {
       // 单个节点
       const selectedFirstNode = selectedEntities[0];
       if (selectedFirstNode instanceof TextNode) {
-        if (StageManager.isTree(selectedFirstNode)) {
-          setMarkdownText(
-            StageSaveManager.getMarkdownStringByTextNode(selectedFirstNode),
-          );
-          setTabText(
-            StageSaveManager.getTabStringByTextNode(selectedFirstNode),
-          );
+        if (GraphMethods.isTree(selectedFirstNode)) {
+          setMarkdownText(Stage.exportEngine.getMarkdownStringByTextNode(selectedFirstNode));
+          setTabText(Stage.exportEngine.getTabStringByTextNode(selectedFirstNode));
         } else {
           setMarkdownText("选择的根节点必须符合树形结构");
           setTabText("选择的根节点必须符合树形结构");
@@ -51,14 +46,14 @@ export default function ExportTreeTextPanel() {
       // 多个节点
       setMarkdownText("只能选择一个节点\n且必须是树形结构的根节点");
       setTabText("只能选择一个节点\n且必须是树形结构的根节点");
-      setPlainText(StageSaveManager.getPlainTextByEntities(selectedEntities));
+      setPlainText(Stage.exportEngine.getPlainTextByEntities(selectedEntities));
     }
   }, [isExportTreeTextPanelOpen]);
 
   return (
     <div
       className={cn(
-        "fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-y-scroll rounded-md bg-gray-800 px-2 py-6",
+        "fixed top-1/2 left-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-y-scroll rounded-md bg-gray-800 px-2 py-6",
         {
           hidden: !isExportTreeTextPanelOpen,
         },
@@ -69,24 +64,12 @@ export default function ExportTreeTextPanel() {
     >
       <h2 className="my-2 text-2xl font-bold">导出节点纯文本</h2>
       <div className="flex gap-2">
-        <CodePre
-          text={tabText}
-          title="纯缩进类型"
-          details="树形结构，以缩进方式展示节点内容"
-        />
-        <CodePre
-          text={markdownText}
-          title="markdown类型"
-          details="树形结构，以markdown方式展示节点内容"
-        />
-        <CodePre
-          text={plainText}
-          title="纯文本图类型"
-          details="图形结构，上面是节点，下面是连接关系"
-        />
+        <CodePre text={tabText} title="纯缩进类型" details="树形结构，以缩进方式展示节点内容" />
+        <CodePre text={markdownText} title="markdown类型" details="树形结构，以markdown方式展示节点内容" />
+        <CodePre text={plainText} title="纯文本图类型" details="图形结构，上面是节点，下面是连接关系" />
       </div>
       <button
-        className="absolute right-0 top-0 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
+        className="absolute top-0 right-0 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
         onClick={() => setIsExportTreeTextPanelOpen(false)}
       >
         关闭
@@ -95,15 +78,7 @@ export default function ExportTreeTextPanel() {
   );
 }
 
-function CodePre({
-  text,
-  title,
-  details,
-}: {
-  text: string;
-  title: string;
-  details: string;
-}) {
+function CodePre({ text, title, details }: { text: string; title: string; details: string }) {
   const handleCopy = () => {
     navigator.clipboard
       .writeText(text)
@@ -120,7 +95,7 @@ function CodePre({
       <h4 className="text-center font-bold">{title}</h4>
       <p className="text-center text-xs text-gray-500">{details}</p>
       <Button onClick={handleCopy}>点击复制</Button>
-      <pre className="max-h-96 max-w-96 select-text overflow-x-auto rounded-md bg-black p-2 text-xs text-slate-400">
+      <pre className="max-h-96 max-w-96 overflow-x-auto rounded-md bg-black p-2 text-xs text-slate-400 select-text">
         {text}
       </pre>
     </div>

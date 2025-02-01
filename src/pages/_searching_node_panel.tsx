@@ -1,23 +1,20 @@
 import React, { useEffect } from "react";
-import Box from "../components/ui/Box";
-import Button from "../components/ui/Button";
-import { Controller } from "../core/service/controller/Controller";
+import Box from "../components/Box";
+import Button from "../components/Button";
+import { Dialog } from "../components/dialog";
+import { Controller } from "../core/service/controlService/controller/Controller";
 import { Stage } from "../core/stage/Stage";
-import { Dialog } from "../utils/dialog";
 
 export default function SearchingNodePanel() {
   // region 搜索相关
   const [isSearchingShow, setIsSearchingShow] = React.useState(false);
-  const [currentSearchResultIndex, setCurrentSearchResultIndex] =
-    React.useState(0);
+  const [currentSearchResultIndex, setCurrentSearchResultIndex] = React.useState(0);
 
   useEffect(() => {
     if (Stage.contentSearchEngine.searchResultNodes.length == 0) {
       setCurrentSearchResultIndex(-1);
     } else {
-      setCurrentSearchResultIndex(
-        Stage.contentSearchEngine.currentSearchResultIndex,
-      );
+      setCurrentSearchResultIndex(Stage.contentSearchEngine.currentSearchResultIndex);
     }
   }, [Stage.contentSearchEngine.currentSearchResultIndex]);
 
@@ -32,8 +29,7 @@ export default function SearchingNodePanel() {
         Controller.pressingKeySet.clear();
         const searchString = prompt("请输入要搜索的节点名称");
         if (searchString) {
-          const isHaveResult =
-            Stage.contentSearchEngine.startSearch(searchString);
+          const isHaveResult = Stage.contentSearchEngine.startSearch(searchString);
           // 搜索完毕
           if (isHaveResult) {
             setIsSearchingShow(true);
@@ -58,7 +54,7 @@ export default function SearchingNodePanel() {
   return (
     <>
       {isSearchingShow && (
-        <Box className="fixed right-32 top-32 z-10 flex transform items-center p-4 opacity-50 hover:opacity-100">
+        <Box className="fixed top-32 right-32 z-10 flex transform items-center p-4 opacity-50 hover:opacity-100">
           <span>
             {currentSearchResultIndex + 1}/{searchResultCount}
           </span>

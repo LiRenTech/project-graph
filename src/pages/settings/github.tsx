@@ -3,8 +3,8 @@ import { fetch } from "@tauri-apps/plugin-http";
 import { open } from "@tauri-apps/plugin-shell";
 import { LogIn, User } from "lucide-react";
 import React from "react";
+import { Dialog } from "../../components/dialog";
 import { Settings } from "../../core/service/Settings";
-import { Dialog } from "../../utils/dialog";
 import { isMobile } from "../../utils/platform";
 import { ButtonField } from "./_field";
 
@@ -28,8 +28,7 @@ export default function GithubPage() {
     if (isMobile) {
       await Dialog.show({
         title: "登录 Github",
-        content:
-          "Android 暂不支持 Github 登录，具体请见 https://v2.tauri.app/plugin/http-client/",
+        content: "Android 暂不支持 Github 登录，具体请见 https://v2.tauri.app/plugin/http-client/",
         type: "error",
       });
       return;
@@ -48,10 +47,7 @@ export default function GithubPage() {
       }
       const url1 = new URL("https://github.com/login/oauth/authorize");
       url1.searchParams.set("client_id", "Ov23lipCKsBvbzvtuEJ8");
-      url1.searchParams.set(
-        "redirect_uri",
-        "https://liren.zty012.de/oauth/github",
-      );
+      url1.searchParams.set("redirect_uri", "https://liren.zty012.de/oauth/github");
       url1.searchParams.set("scope", "read:user repo");
       await open(url1.href);
       const dialog2 = await Dialog.show({
@@ -65,15 +61,9 @@ export default function GithubPage() {
       }
       const url2 = new URL("https://github.com/login/oauth/access_token");
       url2.searchParams.set("client_id", "Ov23lipCKsBvbzvtuEJ8");
-      url2.searchParams.set(
-        "client_secret",
-        import.meta.env.LR_GITHUB_CLIENT_SECRET,
-      );
+      url2.searchParams.set("client_secret", import.meta.env.LR_GITHUB_CLIENT_SECRET);
       url2.searchParams.set("code", dialog2.value);
-      url2.searchParams.set(
-        "redirect_uri",
-        "https://liren.zty012.de/oauth/github",
-      );
+      url2.searchParams.set("redirect_uri", "https://liren.zty012.de/oauth/github");
       const token = await (
         await fetch(url2.href, {
           method: "POST",
@@ -97,9 +87,7 @@ export default function GithubPage() {
     } catch (e) {
       await Dialog.show({
         title: "登录 Github",
-        content:
-          "发生错误，请检查网络连接或稍后再试，这不是 bug，不要反馈到 Issues！！！" +
-          String(e),
+        content: "发生错误，请检查网络连接或稍后再试，这不是 bug，不要反馈到 Issues！！！" + String(e),
         type: "error",
       });
     } finally {

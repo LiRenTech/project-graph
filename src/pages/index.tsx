@@ -1,16 +1,18 @@
 import React, { useEffect, useRef } from "react";
+import { Dialog } from "../components/dialog";
 import { Renderer } from "../core/render/canvas2d/renderer";
-import { Controller } from "../core/service/controller/Controller";
+import { Controller } from "../core/service/controlService/controller/Controller";
+import { StageStyleManager } from "../core/service/feedbackService/stageStyle/StageStyleManager";
 import { Settings } from "../core/service/Settings";
-import { StageStyleManager } from "../core/service/stageStyle/StageStyleManager";
 import { Canvas } from "../core/stage/Canvas";
 import { Stage } from "../core/stage/Stage";
-import { Dialog } from "../utils/dialog";
 // import DetailsEditPanel from "./_details_edit_panel";
 import DetailsEditSidePanel from "./_details_edit_side_panel";
 import HintText from "./_hint_text";
 import SearchingNodePanel from "./_searching_node_panel";
 import Toolbar from "./_toolbar";
+import Button from "../components/Button";
+import { isMobile } from "../utils/platform";
 // import { WebFileApiSystem } from "../utils/fs/WebFileApiSystem";
 
 export default function Home() {
@@ -18,6 +20,7 @@ export default function Home() {
 
   const [cursorName, setCursorName] = React.useState("default");
   const [bgAlpha, setBgAlpha] = React.useState(1);
+  const [isDrawingMode, setIsDrawingMode] = React.useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -105,6 +108,23 @@ export default function Home() {
       {/* <DetailsEditPanel /> */}
       <DetailsEditSidePanel />
       <HintText />
+      {isMobile && (
+        <Button
+          className="absolute bottom-10 left-4 z-5"
+          onClick={() => {
+            if (isDrawingMode) {
+              // 切换到框选模式
+              Stage.drawingMachine.shutDown();
+            } else {
+              // 切换到涂鸦模式
+              Stage.drawingMachine.open();
+            }
+            setIsDrawingMode(!isDrawingMode);
+          }}
+        >
+          {isDrawingMode ? "框选模式" : "涂鸦模式"}
+        </Button>
+      )}
       {/* TODO: 下面这个写法有点奇怪 rgba值太长了 */}
       <div
         style={{

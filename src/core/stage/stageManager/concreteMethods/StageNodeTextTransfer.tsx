@@ -67,10 +67,7 @@ function calculate(expr: string): number {
         ops.pop(); // 弹出 '('
       } else {
         // 操作符
-        while (
-          ops.length > 0 &&
-          precedence[ops[ops.length - 1]] >= precedence[token]
-        ) {
+        while (ops.length > 0 && precedence[ops[ops.length - 1]] >= precedence[token]) {
           applyTopOperation();
         }
         ops.push(token);
