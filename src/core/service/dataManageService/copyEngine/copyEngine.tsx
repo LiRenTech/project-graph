@@ -14,7 +14,7 @@ import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
 import { MouseLocation } from "../../controlService/MouseLocation";
-import { VFileSystem } from "../../VFileSystem";
+import { VFileSystem } from "../../dataFileService/VFileSystem";
 
 /**
  * 专门用来管理节点复制的引擎

@@ -1,7 +1,7 @@
 import JSZip, * as jszip from "jszip";
-import { IndexedDBFileSystem } from "../../utils/fs/IndexedDBFileSystem";
-import { readFile, writeFile } from "../../utils/fs/com";
-import { StageDumper } from "../stage/StageDumper";
+import { IndexedDBFileSystem } from "../../../utils/fs/IndexedDBFileSystem";
+import { readFile, writeFile } from "../../../utils/fs/com";
+import { StageDumper } from "../../stage/StageDumper";
 
 export enum FSType {
   Tauri = "Tauri",

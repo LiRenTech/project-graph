@@ -10,7 +10,7 @@ import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
-import { VFileSystem } from "../../../VFileSystem";
+import { VFileSystem } from "../../../dataFileService/VFileSystem";
 
 /**
  * BUG: 始终无法触发文件拖入事件

@@ -42,7 +42,7 @@ import { exists } from "./utils/fs/com";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 import { Tourials } from "./core/service/Tourials";
-// import { VFileSystem } from "./core/service/VFileSystem";
+// import { VFileSystem } from "./core/service/dataFileService/VFileSystem";
 import { IndexedDBFileSystem } from "./utils/fs/IndexedDBFileSystem";
 
 const router = createMemoryRouter(routes);

@@ -16,7 +16,7 @@ import { TextNode } from "../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../stage/stageObject/entity/UrlNode";
 import { ViewFlashEffect } from "../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { PenStroke } from "../../stage/stageObject/entity/PenStroke";
-import { VFileSystem } from "../VFileSystem";
+import { VFileSystem } from "./VFileSystem";
 
 /**
  * 管理最近打开的文件列表

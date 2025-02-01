@@ -4,7 +4,7 @@ import { PathString } from "../../../utils/pathString";
 import { Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { ViewFlashEffect } from "../feedbackService/effectEngine/concrete/ViewFlashEffect";
-import { VFileSystem } from "../VFileSystem";
+import { VFileSystem } from "./VFileSystem";
 
 /**
  * 管理所有和保存相关的内容

@@ -5,7 +5,7 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { VFileSystem } from "../../../service/VFileSystem";
+import { VFileSystem } from "../../../service/dataFileService/VFileSystem";
 
 /**
  * 一个图片节点
