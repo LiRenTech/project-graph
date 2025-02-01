@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import "tailwindcss" important;
 
 @custom-variant page (&.active);
 
@@ -471,10 +471,10 @@
   /* Title and description */
   .driver-popover-title {
     @apply text-xl font-normal;
-    font-family: "MiSans";
+    font-family: "MiSans" !important;
   }
   .driver-popover-description {
-    font-family: "MiSans";
+    font-family: "MiSans" !important;
   }
 
   /* Close button displayed on the top right corner */
@@ -487,10 +487,10 @@
   }
   .driver-popover-progress-text {
   }
-  .driver-popover-prev-btn[class],
-  .driver-popover-next-btn[class] {
-    @apply rounded-full border-none bg-blue-900 px-3 py-2 text-white transition hover:scale-125 active:scale-90;
-    font-family: "MiSans";
-    text-shadow: none;
+  .driver-popover-prev-btn,
+  .driver-popover-next-btn {
+    @apply rounded-full! border-none! bg-blue-900! px-3! py-2! text-white! transition! hover:scale-125! active:scale-90!;
+    font-family: "MiSans" !important;
+    text-shadow: none !important;
   }
 }

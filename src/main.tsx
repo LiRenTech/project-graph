@@ -59,6 +59,7 @@ const el = document.getElementById("root")!;
     StartFilesManager.init(),
     KeyBinds.init(),
     ColorManager.init(),
+    Tourials.init(),
   ]);
   // 这些东西依赖上面的东西，所以单独一个Promise.all
   await Promise.all([loadLanguageFiles(), loadSyncModules(), loadStartFile(), registerKeyBinds()]);
