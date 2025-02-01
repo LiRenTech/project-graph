@@ -143,7 +143,7 @@ export default function AppMenu({
 
   const openFileByDialogWindow = async () => {
     const path = isWeb
-      ? "file.json"
+      ? "file.gp"
       : await openFileDialog({
           title: "打开文件",
           directory: false,

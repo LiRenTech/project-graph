@@ -7,6 +7,21 @@ export namespace PathString {
    * @returns
    */
   export function absolute2file(path: string): string {
+    const file = absolute2fileWithExt(path);
+    const parts = file.split(".");
+    if (parts.length > 1) {
+      return parts.slice(0, -1).join(".");
+    } else {
+      return file;
+    }
+  }
+
+  /**
+   * 将绝对路径转换为文件名(含文件后缀)
+   * @param path
+   * @returns
+   */
+  export function absolute2fileWithExt(path: string): string {
     const fam = family();
     // const fam = "windows"; // vitest 测试时打开此行注释
 
@@ -17,12 +32,7 @@ export namespace PathString {
     if (!file) {
       throw new Error("Invalid path");
     }
-    const parts = file.split(".");
-    if (parts.length > 1) {
-      return parts.slice(0, -1).join(".");
-    } else {
-      return file;
-    }
+    return file;
   }
 
   /**
