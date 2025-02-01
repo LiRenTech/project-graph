@@ -108,7 +108,8 @@ export function editNodeDetailsByKeyboard() {
 }
 
 export function editNodeDetails(clickedNode: Entity) {
-  Controller.isCameraLocked = true;
+  // Controller.isCameraLocked = true;
+  // 编辑节点详细信息的视野移动锁定解除，——用户：快深频
 
   clickedNode.isEditingDetails = true;
   editTextNodeHookGlobal.hookFunctionStart(clickedNode);
