@@ -50,7 +50,8 @@ ControllerNodeEdit.mouseup = (event: MouseEvent) => {
 
   const pressLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
   for (const entity of StageManager.getEntities()) {
-    if (entity.isMouseInDetailsButton(pressLocation)) {
+    // 必须有详细信息才显示详细信息按钮，进而点进去，否则会误触
+    if (entity.isMouseInDetailsButton(pressLocation) && entity.details) {
       editNodeDetails(entity);
       return;
     }
