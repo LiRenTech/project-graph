@@ -28,6 +28,8 @@ export namespace Settings {
     alwaysShowDetails: boolean;
     protectingPrivacy: boolean;
     useNativeTitleBar: boolean;
+    entityDetailsFontSize: number;
+    entityDetailsLinesLimit: number;
     limitCameraInCycleSpace: boolean;
     cameraCycleSpaceSizeX: number;
     cameraCycleSpaceSizeY: number;
@@ -87,6 +89,8 @@ export namespace Settings {
     alwaysShowDetails: false,
     protectingPrivacy: false,
     useNativeTitleBar: false,
+    entityDetailsFontSize: 18,
+    entityDetailsLinesLimit: 4,
     limitCameraInCycleSpace: false,
     cameraCycleSpaceSizeX: 1000,
     cameraCycleSpaceSizeY: 1000,
