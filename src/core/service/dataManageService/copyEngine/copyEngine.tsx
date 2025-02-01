@@ -130,7 +130,7 @@ async function readClipboardItems(mouseLocation: Vector) {
           const blob = await item.getType(item.types[0]); // 获取 Blob 对象
           const imageUUID = uuidv4();
           //const folder = PathString.dirPath(Stage.path.getFilePath());
-          VFileSystem.getFS().writeFile(`/picture/${imageUUID}.png`, await blob.bytes());
+          await VFileSystem.getFS().writeFile(`/picture/${imageUUID}.png`, await blob.bytes());
           //const imagePath = `${folder}${PathString.getSep()}${imageUUID}.png`;
 
           // 2024.12.31 测试发现这样的写法会导致读取时base64解码失败

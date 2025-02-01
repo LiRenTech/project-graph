@@ -155,7 +155,7 @@ function dealJsonFileDrop(file: File, mouseWorldLocation: Vector) {
 function dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
   const reader = new FileReader();
   reader.readAsDataURL(file); // 以文本格式读取文件内容
-  reader.onload = (e) => {
+  reader.onload = async (e) => {
     const fileContent = e.target?.result; // 读取的文件内容
 
     if (typeof fileContent !== "string") {
@@ -168,7 +168,7 @@ function dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
     // data:image/png;base64,iVBORw0KGgoAAAANS...
     // 在这里处理读取到的内容
     const imageUUID = uuidv4();
-    VFileSystem.getFS().writeFileBase64(`/picture/${imageUUID}.png`, fileContent.split(",")[1]);
+    await VFileSystem.getFS().writeFileBase64(`/picture/${imageUUID}.png`, fileContent.split(",")[1]);
     const imageNode = new ImageNode({
       uuid: imageUUID,
       location: [mouseWorldLocation.x, mouseWorldLocation.y],
