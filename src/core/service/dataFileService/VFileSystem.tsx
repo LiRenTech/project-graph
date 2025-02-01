@@ -96,6 +96,9 @@ export namespace VFileSystem {
       compressionOptions: { level: 6 },
     });
   }
+  export async function clear() {
+    return fs.clear();
+  }
   export function getFS() {
     return fs;
   }
