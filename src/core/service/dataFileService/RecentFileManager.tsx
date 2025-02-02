@@ -1,7 +1,7 @@
 import { Store } from "@tauri-apps/plugin-store";
 // import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
 import { Serialized } from "../../../types/node";
-import { exists } from "../../../utils/fs/com";
+import { exists, readFile, readTextFile } from "../../../utils/fs/com";
 import { createStore } from "../../../utils/store";
 import { Camera } from "../../stage/Camera";
 import { Stage } from "../../stage/Stage";
@@ -17,6 +17,7 @@ import { UrlNode } from "../../stage/stageObject/entity/UrlNode";
 import { ViewFlashEffect } from "../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { PenStroke } from "../../stage/stageObject/entity/PenStroke";
 import { VFileSystem } from "./VFileSystem";
+import { PathString } from "../../../utils/pathString";
 
 /**
  * 管理最近打开的文件列表
@@ -165,6 +166,34 @@ export namespace RecentFileManager {
       path: path,
       time: new Date().getTime(),
     });
+  }
+  export async function openLegacyFileByPath(path: string) {
+    StageManager.destroy();
+    const ext = PathString.absolute2Ext(path);
+    if (ext !== "json") {
+      throw new Error("不兼容的文件格式");
+    }
+
+    const data = StageLoader.validate(JSON.parse(await readTextFile(path)));
+    const dirPath = PathString.dirPath(path);
+    const operations = data.entities
+      .filter((entity) => entity.type === "core:image_node")
+      .map(async (entity) => {
+        const ud = await readFile(`${dirPath}${PathString.getSep()}${entity.uuid}.png`);
+        await VFileSystem.getFS().writeFile(`/picture/${entity.uuid}.png`, ud);
+      });
+    await Promise.all(operations);
+    loadStageByData(data);
+    await VFileSystem.pullMetaData();
+
+    StageHistoryManager.reset(data);
+
+    Camera.reset();
+    Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
+    // RecentFileManager.addRecentFile({
+    //   path: path,
+    //   time: new Date().getTime(),
+    // });
   }
 
   export function loadStageByData(data: Serialized.File) {

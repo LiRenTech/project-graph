@@ -90,12 +90,12 @@ export default function AppMenu({ className = "", open = false }: { className?: 
     }
   };
 
-  const onOpen = async () => {
+  const onOpen = async (legacy: boolean = false) => {
     if (!StageSaveManager.isSaved()) {
       if (StageManager.isEmpty()) {
         //空项目不需要保存
         StageManager.destroy();
-        openFileByDialogWindow();
+        openFileByDialogWindow(legacy);
       } else if (Stage.path.isDraft()) {
         Dialog.show({
           title: "草稿未保存",
@@ -107,7 +107,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
               text: "丢弃并打开新文件",
               onClick: () => {
                 StageManager.destroy();
-                openFileByDialogWindow();
+                openFileByDialogWindow(legacy);
               },
             },
           ],
@@ -120,7 +120,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             {
               text: "保存并打开新文件",
               onClick: () => {
-                onSave().then(openFileByDialogWindow);
+                onSave().then(() => openFileByDialogWindow(legacy));
               },
             },
             { text: "我再想想" },
@@ -129,11 +129,37 @@ export default function AppMenu({ className = "", open = false }: { className?: 
       }
     } else {
       // 直接打开文件
-      openFileByDialogWindow();
+      openFileByDialogWindow(legacy);
     }
   };
 
-  const openFileByDialogWindow = async () => {
+  const openLegacyFileByDialogWindow = async () => {
+    const path = isWeb
+      ? "file.json"
+      : await openFileDialog({
+          title: "打开文件",
+          directory: false,
+          multiple: false,
+          filters: [],
+        });
+    if (!path) {
+      return;
+    }
+    try {
+      await RecentFileManager.openLegacyFileByPath(path); // 已经包含历史记录重置功能
+      // 设置为草稿
+      setFile("Project Graph");
+    } catch (e) {
+      Dialog.show({
+        title: "请选择正确的文件",
+        content: String(e),
+        type: "error",
+      });
+    }
+  };
+
+  const openFileByDialogWindow = async (legacy: boolean = false) => {
+    if (legacy) return openLegacyFileByDialogWindow();
     const path = isWeb
       ? "file.gp"
       : await openFileDialog({
@@ -386,7 +412,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         <Col icon={<FilePlus />} onClick={onNewDraft}>
           {t("file.items.new")}
         </Col>
-        <Col icon={<FileText />} onClick={onOpen}>
+        <Col icon={<FileText />} onClick={() => onOpen()}>
           {t("file.items.open")}
         </Col>
         {!isWeb && (
@@ -406,6 +432,11 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         {!isWeb && (
           <Col icon={<Database />} onClick={onBackup}>
             {t("file.items.backup")}
+          </Col>
+        )}
+        {!isWeb && (
+          <Col icon={<Database />} onClick={() => onOpen(true)}>
+            {t("file.items.openLegacy")}
           </Col>
         )}
       </Row>
