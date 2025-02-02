@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { PathString } from "../../utils/pathString";
+import { describe, expect, it } from "vitest";
+import { PathString } from "../src/utils/pathString";
 
 describe("PathString", () => {
   it("URL有效性检测", () => {

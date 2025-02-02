@@ -150,6 +150,18 @@ settings:
       用于反馈问题截图时，开启此项之后将汉字全部替换成《㊙》，以保护隐私。
       仅作显示层面的替换，不会影响真实数据
       反馈完毕后可再关闭，复原
+  entityDetailsFontSize:
+    title: 实体详细信息字体大小
+    description: |
+      单位为像素
+  entityDetailsLinesLimit:
+    title: 实体详细信息行数限制
+    description: |
+      限制实体详细信息的最大行数，超过限制的部分将被省略
+  entityDetailsWidthLimit:
+    title: 实体详细信息宽度限制
+    description: |
+      限制实体详细信息的最大宽度，超过限制的部分将被换行
   limitCameraInCycleSpace:
     title: 开启循环空间限制摄像机移动
     description: |

@@ -165,6 +165,18 @@ settings:
       When taking screenshots for feedback, enabling this option will replace all Chinese characters with "好" to protect privacy.
       This is only a visual replacement and will not affect the actual data.
       You can turn it off and restore it after providing feedback.
+  entityDetailsFontSize:
+    title: Font Size for Entity Details
+    description: |
+      Unit is pixels
+  entityDetailsLinesLimit:
+    title: Line Limit for Entity Details
+    description: |
+      Limit the maximum number of lines for entity details. Exceeding this limit will result in the omission of the excess content.
+  entityDetailsWidthLimit:
+    title: Width Limit for Entity Details
+    description: |
+      Limit the maximum width for entity details. Exceeding this limit will result in the excess content wrapping to the next line.
   limitCameraInCycleSpace:
     title: Enable Camera Movement Limitation in Cycle Space
     description: |

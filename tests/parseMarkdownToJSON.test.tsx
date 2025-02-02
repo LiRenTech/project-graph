@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { parseMarkdownToJSON } from "../../utils/markdownParse";
+import { describe, expect, it } from "vitest";
+import { parseMarkdownToJSON } from "../src/utils/markdownParse";
 
 describe("测试测试框架是否正常运行", () => {
   it("测试用例1", () => {

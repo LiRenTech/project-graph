@@ -179,10 +179,10 @@ export namespace EntityRenderer {
   export function renderEntityDetails(entity: Entity) {
     if (entity.details && !entity.isEditingDetails) {
       if (Renderer.isAlwaysShowDetails) {
-        _renderEntityDetails(entity, 4);
+        _renderEntityDetails(entity, Renderer.ENTITY_DETAILS_LIENS_LIMIT);
       } else {
         if (entity.isMouseHover) {
-          _renderEntityDetails(entity, 4);
+          _renderEntityDetails(entity, Renderer.ENTITY_DETAILS_LIENS_LIMIT);
         }
       }
     }
@@ -195,7 +195,7 @@ export namespace EntityRenderer {
       ),
       Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
       Math.max(
-        Renderer.NODE_DETAILS_WIDTH * Camera.currentScale,
+        Renderer.ENTITY_DETAILS_WIDTH * Camera.currentScale,
         entity.collisionBox.getRectangle().size.x * Camera.currentScale,
       ),
       StageStyleManager.currentStyle.NodeDetailsTextColor,

@@ -10,7 +10,7 @@ import { Renderer } from "../renderer";
  * 仅仅渲染一个节点右上角的按钮
  */
 export function EntityDetailsButtonRenderer(entity: Entity) {
-  if (!entity.details) {
+  if (!entity.details.trim()) {
     return;
   }
   // ShapeRenderer.renderRect(

@@ -1,3 +1,5 @@
+/// <reference types="vitest/config" />
+
 import generouted from "@generouted/react-router/plugin";
 import ViteYaml from "@modyfi/vite-plugin-yaml";
 import tailwindcss from "@tailwindcss/vite";
@@ -59,4 +61,9 @@ export default defineConfig(async () => ({
   // 只有名字以LR_开头的环境变量才会被注入到前端
   // import.meta.env.LR_xxx
   envPrefix: "LR_",
+
+  test: {
+    environment: "jsdom",
+    include: ["./tests/**/*.test.tsx"],
+  },
 }));

@@ -1,7 +1,9 @@
 import {
   AppWindowMac,
+  ArrowDownNarrowWide,
   Blend,
   Bug,
+  CaseSensitive,
   Columns4,
   Crosshair,
   Grip,
@@ -12,6 +14,7 @@ import {
   Ratio,
   Rows4,
   Scaling,
+  Space,
   Spline,
   VenetianMask,
 } from "lucide-react";
@@ -35,6 +38,31 @@ export default function Visual() {
 
       <SettingField icon={<ListCollapse />} settingKey="alwaysShowDetails" type="switch" />
       <SettingField icon={<AppWindowMac />} settingKey="useNativeTitleBar" type="switch" />
+      <SettingField
+        icon={<CaseSensitive />}
+        settingKey="entityDetailsFontSize"
+        type="slider"
+        min={18}
+        max={36}
+        step={1}
+      />
+      <SettingField
+        icon={<ArrowDownNarrowWide />}
+        settingKey="entityDetailsLinesLimit"
+        type="slider"
+        min={1}
+        max={200}
+        step={2}
+      />
+      <SettingField
+        icon={<Space />}
+        settingKey="entityDetailsWidthLimit"
+        type="slider"
+        min={200}
+        max={2000}
+        step={100}
+      />
+
       <SettingField icon={<Ratio />} settingKey="limitCameraInCycleSpace" type="switch" />
       <SettingField
         icon={<Scaling />}
