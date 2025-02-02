@@ -47,6 +47,20 @@ export namespace PathString {
     }
     return file;
   }
+  /**
+   * 将绝对路径转换为文件后缀
+   * @param path
+   * @returns
+   */
+  export function absolute2Ext(path: string): string {
+    const fam = family();
+    // const fam = "windows"; // vitest 测试时打开此行注释
+
+    if (fam === "windows") {
+      path = path.replace(/\\/g, "/");
+    }
+    return path.split("/").pop()?.split(".").pop() || "";
+  }
 
   /**
    * 根据文件的绝对路径，获取当前文件所在目录的路径
