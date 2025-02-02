@@ -30,6 +30,7 @@ export namespace Settings {
     useNativeTitleBar: boolean;
     entityDetailsFontSize: number;
     entityDetailsLinesLimit: number;
+    entityDetailsWidthLimit: number;
     limitCameraInCycleSpace: boolean;
     cameraCycleSpaceSizeX: number;
     cameraCycleSpaceSizeY: number;
@@ -91,6 +92,7 @@ export namespace Settings {
     useNativeTitleBar: false,
     entityDetailsFontSize: 18,
     entityDetailsLinesLimit: 4,
+    entityDetailsWidthLimit: 200,
     limitCameraInCycleSpace: false,
     cameraCycleSpaceSizeX: 1000,
     cameraCycleSpaceSizeY: 1000,

@@ -173,6 +173,10 @@ settings:
     title: Line Limit for Entity Details
     description: |
       Limit the maximum number of lines for entity details. Exceeding this limit will result in the omission of the excess content.
+  entityDetailsWidthLimit:
+    title: Width Limit for Entity Details
+    description: |
+      Limit the maximum width for entity details. Exceeding this limit will result in the excess content wrapping to the next line.
   limitCameraInCycleSpace:
     title: Enable Camera Movement Limitation in Cycle Space
     description: |
