@@ -435,7 +435,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           </Col>
         )}
         {!isWeb && (
-          <Col icon={<Database />} onClick={() => onOpen(true)}>
+          <Col icon={<FileText />} onClick={() => onOpen(true)}>
             {t("file.items.openLegacy")}
           </Col>
         )}
