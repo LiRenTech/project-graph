@@ -351,7 +351,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
         {(isHaveSelectedNode || isHaveSelectedEdge) && (
           <ToolbarItem
-            description="设置节点颜色"
+            description="设置节点/连线颜色"
             icon={<PaintBucket />}
             handleFunction={() => Popup.show(<ColorPanel />)}
           />
