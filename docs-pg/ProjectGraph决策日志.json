@@ -1,5 +1,5 @@
 {
-  "version": 13,
+  "version": 14,
   "entities": [
     {
       "location": [-873.2563821367739, -1900.3784488728002],
@@ -333,6 +333,385 @@
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
+    },
+    {
+      "location": [3008.827200996962, -1283.5578634086796],
+      "size": [348, 124],
+      "text": "2024.9\n最开始，节点无法换行",
+      "uuid": "fbf81bb2-6398-4e3d-8ed8-8d433efdbec9",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2796.926463240182, -1087.5084602752104],
+      "size": [348, 76],
+      "text": "为什么当时没做换行？",
+      "uuid": "6fe33d76-ca04-4e9d-b3f5-26d15ed25dcf",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2103.289894645063, -1136.1060080402235],
+      "size": [572, 220],
+      "text": "因为用的pyqt的canvas渲染\n要换行还要手动计算每行的宽度和高度\n然后更新节点矩形的碰撞箱\n非常麻烦，所以一直没顾得做换行",
+      "uuid": "534182c2-60d6-4555-b7b2-07b7d0e28416",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3166.7427474409096, -1041.8950206778725],
+      "size": [444, 268],
+      "text": "有观众在第一期视频提到：\n能不能在节点下面写详细注释\n详细注释可以换行\n且不用计算碰撞箱，很好做\n就直接加上了。",
+      "uuid": "2bb5b822-3634-4f95-9892-20a0b2192b65",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3386.253680697209, -709.3794872004814],
+      "size": [540, 124],
+      "text": "所以当时的节点注释\n是为了解决节点内容无法换行的问题",
+      "uuid": "6d99e44e-7ec9-454e-9d6a-3c310fbb09f2",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2647.334233992139, -873.2697264965385],
+      "size": [293.1199645996094, 76],
+      "text": "后来用Tauri重写了",
+      "uuid": "cd21f186-32bd-4275-9e31-3f8dfd981a9d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2838.0744379701955, -661.418808979296],
+      "size": [519.5199584960938, 172],
+      "text": "节点换行在前端\nCanvas测量字体宽度工具的支持下\n硬是给手搓做出来了",
+      "uuid": "47ce4db8-81d4-4e2d-a032-53b56be5132f",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3418.454340229185, -354.69515365068787],
+      "size": [476, 124],
+      "text": "此时节点详细信息的存在不再是\n成为解决“节点无法换行”的理由",
+      "uuid": "8a8bdc6b-a78b-4d5a-8d58-51512ddaa153",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2041.0768271508637, -458.30897561291965],
+      "size": [316, 124],
+      "text": "有用户希望节点注释\n支持markdown语法",
+      "uuid": "9d9a8805-d538-4e98-a6aa-9a7b22ddfd27",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1991.3883653457422, -662.3909431877938],
+      "size": [365.69598388671875, 124],
+      "text": "用户希望支持Latex公式\nmarkdown节点",
+      "uuid": "fa83a554-56ef-4854-a876-9081c09689e9",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2528.5711042746893, -706.1541819220377],
+      "size": [261.1519775390625, 76],
+      "text": "发布了1.0宣传片",
+      "uuid": "9189fd92-04b5-4f51-a207-a8387994f541",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2443.5160832996426, -521.212364779904],
+      "size": [156, 76],
+      "text": "收到反馈",
+      "uuid": "9b43879a-23e0-4cef-b5e0-f8c5def66a9f",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2444.7832672548684, -409.82837201473575],
+      "size": [388.9919128417969, 124],
+      "text": "用Canvas渲染markdown\n稍微繁杂",
+      "uuid": "a86e7968-c44e-4eac-8cda-4258192f4d9a",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2939.045979523367, -310.61053221582716],
+      "size": [377.4719543457031, 172],
+      "text": "打算将节点详细信息\n（节点注释）\n承载这个markdown功能",
+      "uuid": "1f9b45c4-0413-4cc0-91f1-e544ba3fd50b",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2585.419352560482, -238.92736595198875],
+      "size": [203.9359588623047, 76],
+      "text": "增加VEditor",
+      "uuid": "382bf4dc-73b5-4afe-a8fb-484d75eb33f3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2441.3553114227866, -99.40389057928729],
+      "size": [348, 220],
+      "text": "最开始有两种输入方式\n一种是纯文本输入\n另一种是VEditor的\nmarkdown输入",
+      "uuid": "8b95cbe3-2812-473f-aaa2-0a2dbe28f374",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2345.3553114227866, 209.41089860556906],
+      "size": [444, 76],
+      "text": "后来纯文本输入的方式关闭了",
+      "uuid": "3929a2b5-c59d-43b4-b94d-c571115ea2ff",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2907.045979523367, 137.410898605569],
+      "size": [409.4719543457031, 220],
+      "text": "导致节点注释内容\n强制变成了markdown语法\n在画布上渲染出来是\n有很多空白行间隔的样子",
+      "uuid": "b9783df0-a736-44e8-be4e-67ad260c37a8",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3418.454340229185, 233.41089860556897],
+      "size": [252, 124],
+      "text": "出现矛盾\n两种习惯的矛盾",
+      "uuid": "5ee606e0-f77a-411f-9dc5-f00f212119a7",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3006.7427474409096, 440.77084763237315],
+      "size": [764, 220],
+      "text": "在节点注释中输入少量内容并直观显示在画布上\n与\n在节点注释中输入大量笔记文本并网状组织各种笔记\n的两种使用策略和习惯的矛盾",
+      "uuid": "3b930433-f146-42a5-984d-68802e05c51a",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3488.5948470502703, -1384.3250301623461],
+      "size": [437.47198486328125, 220],
+      "text": "观众可能认为：\n既然你的节点不能换行\n那么这个节点的用途是“标题”\n所以需要增添“详细内容”",
+      "uuid": "8e706cc5-b6be-4994-b453-597af51e517a",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2798.7024343059165, 795.6664272849672],
+      "size": [362.81591796875, 76],
+      "text": "思路1：（群友Partist）",
+      "uuid": "1dde98b7-bb86-4de2-a926-0dbb30d11e2a",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3386.958022723007, 819.6664272849672],
+      "size": [334.4320068359375, 172],
+      "text": "思路2：（第一反应）\n出一种自定义选项\n让用户切换两种形态",
+      "uuid": "c2d445e7-995b-42da-98d6-35293846b280",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2761.3141055760625, 1087.3568897168302],
+      "size": [263.00794982910156, 124],
+      "text": "学习heptabse的\n卡片节点",
+      "uuid": "9cafe9c3-7631-4d5e-8b85-7f6a57aeaad8",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2214.4490663919505, 795.6664272849672],
+      "size": [418.783935546875, 220],
+      "text": "直接出一个markdown节点\r\n画布上渲染输入的标题\r\n选中后自动弹出markdown\r\n编辑器",
+      "uuid": "153bd3c5-c7bc-420e-add6-4f1662434d13",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2505.6818054662517, 1325.814512902241],
+      "size": [316, 172],
+      "text": "需要做一个文本节点\n转换成卡片节点的\n操作方法",
+      "uuid": "81a319c4-013f-4955-8a84-3b9791fab519",
+      "details": "",
+      "color": [92, 47, 96, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2265.841034165388, 1087.3568897168302],
+      "size": [316, 124],
+      "text": "为了兼容一些用户的\n已有的文件",
+      "uuid": "8b71bbc0-3d0d-47f1-a46f-52b8d3714ad3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3229.3900295589447, 1175.6833574914167],
+      "size": [492, 268],
+      "text": "问题：\n如果用了markdown语法\n写详细信息\n它在画布上直接在文本底部渲染\n会以md原格式渲染，非常不美观",
+      "uuid": "ac2d50a1-54b3-4445-9cb0-6b5e9d2d22a5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2003.6802053609338, 1325.814512902241],
+      "size": [444, 124],
+      "text": "需要让markdown节点\n样子看起来和文本节点不一样",
+      "uuid": "2fea8696-53be-480f-987d-a85ec55d6481",
+      "details": "",
+      "color": [92, 47, 96, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2505.6818054662517, 1537.8255996300077],
+      "size": [380, 172],
+      "text": "真的要再加个快捷键吗？\n快捷键数量好像在以一种\n很快的速度增长",
+      "uuid": "a6ef23cb-e6b3-4c8c-b2fd-92888a8da175",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2087.2725472966436, 1503.5786521581604],
+      "size": [220, 124],
+      "text": "增加阴影\n或者边框变粗",
+      "uuid": "07867c7a-f4c1-41bc-8414-85070d8c5bba",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2355.4898193822673, 1768.8438598568064],
+      "size": [680.3839721679688, 220],
+      "text": "似乎底部可以出个工具箱了\n可以选择性添加：\n文本节点、Section、质点、markdown节点\n以拖拽的形式添加到舞台上，学习FigJam白板",
+      "uuid": "8666e25c-86e6-4a21-b8ca-552353436679",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1961.3883653457422, -1464.3250301623461],
+      "size": [1994.8653153514667, 3483.1688900191525],
+      "uuid": "879af6d9-8cbd-4a37-800d-55b8e6a1c77c",
+      "text": "节点问题",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "fbf81bb2-6398-4e3d-8ed8-8d433efdbec9",
+        "6fe33d76-ca04-4e9d-b3f5-26d15ed25dcf",
+        "534182c2-60d6-4555-b7b2-07b7d0e28416",
+        "2bb5b822-3634-4f95-9892-20a0b2192b65",
+        "6d99e44e-7ec9-454e-9d6a-3c310fbb09f2",
+        "cd21f186-32bd-4275-9e31-3f8dfd981a9d",
+        "47ce4db8-81d4-4e2d-a032-53b56be5132f",
+        "8a8bdc6b-a78b-4d5a-8d58-51512ddaa153",
+        "9d9a8805-d538-4e98-a6aa-9a7b22ddfd27",
+        "fa83a554-56ef-4854-a876-9081c09689e9",
+        "9189fd92-04b5-4f51-a207-a8387994f541",
+        "9b43879a-23e0-4cef-b5e0-f8c5def66a9f",
+        "a86e7968-c44e-4eac-8cda-4258192f4d9a",
+        "1f9b45c4-0413-4cc0-91f1-e544ba3fd50b",
+        "382bf4dc-73b5-4afe-a8fb-484d75eb33f3",
+        "8b95cbe3-2812-473f-aaa2-0a2dbe28f374",
+        "3929a2b5-c59d-43b4-b94d-c571115ea2ff",
+        "b9783df0-a736-44e8-be4e-67ad260c37a8",
+        "5ee606e0-f77a-411f-9dc5-f00f212119a7",
+        "3b930433-f146-42a5-984d-68802e05c51a",
+        "8e706cc5-b6be-4994-b453-597af51e517a",
+        "1dde98b7-bb86-4de2-a926-0dbb30d11e2a",
+        "c2d445e7-995b-42da-98d6-35293846b280",
+        "9cafe9c3-7631-4d5e-8b85-7f6a57aeaad8",
+        "153bd3c5-c7bc-420e-add6-4f1662434d13",
+        "81a319c4-013f-4955-8a84-3b9791fab519",
+        "8b71bbc0-3d0d-47f1-a46f-52b8d3714ad3",
+        "ac2d50a1-54b3-4445-9cb0-6b5e9d2d22a5",
+        "2fea8696-53be-480f-987d-a85ec55d6481",
+        "a6ef23cb-e6b3-4c8c-b2fd-92888a8da175",
+        "07867c7a-f4c1-41bc-8414-85070d8c5bba",
+        "8666e25c-86e6-4a21-b8ca-552353436679"
+      ],
+      "details": ""
+    },
+    {
+      "location": [1078.0980357406204, -2507.8962174254925],
+      "size": [252, 76],
+      "text": "其他节点图记录",
+      "uuid": "05f7bcfb-2712-4b8f-a8e9-4bf13a85aca6",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1552.7496572312302, -2507.8962174254925],
+      "size": [130.49595642089844, 76],
+      "text": "noteey",
+      "uuid": "94ef8959-7b46-4ab2-a763-67446f689d49",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1350.135131409349, -2363.0799237505757],
+      "size": [300, 150],
+      "url": "https://mefo.cc/",
+      "title": "链接",
+      "uuid": "374d658d-0dc9-4c34-8d98-19c8bb1a3272",
+      "type": "core:url_node",
+      "details": "",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "location": [1372.3697061731066, -2507.8962174254925],
+      "size": [136.3839569091797, 76],
+      "text": "FigJam",
+      "uuid": "f569f493-5f4b-413c-bd42-e85d22ae96e5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1735.6041465421165, -2507.8962174254925],
+      "size": [348, 76],
+      "text": "飞书文档的节点图功能",
+      "uuid": "6da7e1bd-f552-449d-81ac-c43d5c946de5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
     }
   ],
   "associations": [
@@ -341,294 +720,600 @@
       "target": "359ee3c0-853c-42d5-a394-e76ab170ab94",
       "text": "",
       "uuid": "e5e43326-1b6f-4125-9944-620133cf5473",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "359ee3c0-853c-42d5-a394-e76ab170ab94",
       "target": "0c8606ff-17ab-4054-a6cd-5167d9bb8f2b",
       "text": "",
       "uuid": "00298925-8910-4a2e-a9ce-778d8e782907",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "0c8606ff-17ab-4054-a6cd-5167d9bb8f2b",
       "target": "4de776a3-0d8d-4491-9770-8fe2ea119748",
       "text": "",
       "uuid": "c2c28c3e-1d04-4d51-8096-88c9c51a6575",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "4de776a3-0d8d-4491-9770-8fe2ea119748",
       "target": "f84f72e5-c43b-4088-b158-0c5e39435aee",
       "text": "",
       "uuid": "6d35f410-bb8d-4c52-aa77-f92ec3b484bc",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "f84f72e5-c43b-4088-b158-0c5e39435aee",
       "target": "31bf362a-3845-4cff-8751-c810ade383eb",
       "text": "",
       "uuid": "bc81b98c-15e9-4f48-8bb6-f97a06dd792c",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "31bf362a-3845-4cff-8751-c810ade383eb",
       "target": "e0510bf5-8c9a-471e-b85d-8cedcbe3010d",
       "text": "",
       "uuid": "df7ad70b-41e5-43d0-bb15-3ea35d3f6d7f",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "e0510bf5-8c9a-471e-b85d-8cedcbe3010d",
       "target": "e98da3ed-00bb-4dcd-baa3-dcf85e687a50",
       "text": "",
       "uuid": "bfcc70ac-1f1f-42d6-845b-cfe483b32e73",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "e98da3ed-00bb-4dcd-baa3-dcf85e687a50",
       "target": "9737cb11-280a-4f32-8e5c-ce43228d7310",
       "text": "",
       "uuid": "8d8e57c0-7ec5-4afe-be85-64b4e41bc6c6",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "9737cb11-280a-4f32-8e5c-ce43228d7310",
       "target": "01745060-bceb-48e2-8b35-8a85e043d6cf",
       "text": "",
       "uuid": "bbbd1526-cbde-4403-a8c3-7e6825c70ea4",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "e0510bf5-8c9a-471e-b85d-8cedcbe3010d",
       "target": "02798310-1809-4883-9243-c3c15419c7a8",
       "text": "",
       "uuid": "1ca7ccdc-4696-4953-abc5-7dfb5783010b",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "c942b7a4-c968-4aa1-869e-9ae260402b4d",
       "target": "655564da-c94d-41bc-8127-39bedb6e48d8",
       "text": "",
       "uuid": "8b2a91cd-2a71-452c-89d3-eb633138be6e",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "655564da-c94d-41bc-8127-39bedb6e48d8",
       "target": "d70f1280-ffa6-49ba-a385-0c24377308c0",
       "text": "",
       "uuid": "caf87935-b798-4149-bafa-2ef645129b2a",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "d70f1280-ffa6-49ba-a385-0c24377308c0",
       "target": "f1bd3f0d-34e1-46df-8354-d8b79d6d1736",
       "text": "",
       "uuid": "c4c980d6-aa2a-4389-bad9-5b3f78e8d8dd",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "f1bd3f0d-34e1-46df-8354-d8b79d6d1736",
       "target": "8f3947d9-c37f-4389-a713-6e3b5cc8f51e",
       "text": "",
       "uuid": "b3724934-9f07-4d62-9a87-e12a1bbc7289",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "d70f1280-ffa6-49ba-a385-0c24377308c0",
       "target": "50e81a06-7e00-4f0f-8011-cdbc671e36b1",
       "text": "",
       "uuid": "64368ba5-0cc7-4ae4-9346-d8cd74044a61",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "02798310-1809-4883-9243-c3c15419c7a8",
       "target": "50e81a06-7e00-4f0f-8011-cdbc671e36b1",
       "text": "",
       "uuid": "7b8907f3-b46a-46ad-8450-c0ac9b9ceb83",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "50e81a06-7e00-4f0f-8011-cdbc671e36b1",
       "target": "8f3947d9-c37f-4389-a713-6e3b5cc8f51e",
       "text": "",
       "uuid": "b7c00f0a-b749-4015-a241-09897644dbf6",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "8f3947d9-c37f-4389-a713-6e3b5cc8f51e",
       "target": "bf88e463-1dc7-490f-90ed-339191c7cab4",
       "text": "",
       "uuid": "ce2cf90a-fe59-4329-a423-44390d8158d0",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "18a8a15b-7630-43c7-b0fe-fc6c84104ede",
       "target": "bf88e463-1dc7-490f-90ed-339191c7cab4",
       "text": "",
       "uuid": "de288401-0535-4f0a-b13d-5e290536555f",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "d70f1280-ffa6-49ba-a385-0c24377308c0",
       "target": "18a8a15b-7630-43c7-b0fe-fc6c84104ede",
       "text": "",
       "uuid": "45b6a38f-38c1-43f8-bbe1-67a4cb1c50ef",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "f1bd3f0d-34e1-46df-8354-d8b79d6d1736",
       "target": "9d441349-fe73-4c4c-974d-888ab3610fb9",
       "text": "",
       "uuid": "fc728cc0-fb88-4874-be94-e15bf73592a7",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "f1bd3f0d-34e1-46df-8354-d8b79d6d1736",
       "target": "902269b4-fc9e-4bb7-ad94-6ace53342755",
       "text": "",
       "uuid": "8d5d7234-7ff8-4957-ad4c-f4b5b65d71f6",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "f84f72e5-c43b-4088-b158-0c5e39435aee",
       "target": "372b3ac3-3928-47fe-9c89-8747f0dd29ba",
       "text": "",
       "uuid": "f94f5dc9-0824-407d-acfb-9a767e97cb78",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "e98da3ed-00bb-4dcd-baa3-dcf85e687a50",
       "target": "b336d8b4-f8f8-4778-a3ed-2060386130fc",
       "text": "",
       "uuid": "5dd10b04-e57c-4c23-bdc9-a2e7b055fdad",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "372b3ac3-3928-47fe-9c89-8747f0dd29ba",
       "target": "82e75cc6-cc10-4e2e-aa24-96ce418e8f47",
       "text": "",
       "uuid": "85135ff8-116d-4dfd-823c-8490c9e43bdb",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "372b3ac3-3928-47fe-9c89-8747f0dd29ba",
       "target": "b336d8b4-f8f8-4778-a3ed-2060386130fc",
       "text": "",
       "uuid": "0a6edd31-10d7-4d32-afdd-a590085a4f2b",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "82e75cc6-cc10-4e2e-aa24-96ce418e8f47",
       "target": "b336d8b4-f8f8-4778-a3ed-2060386130fc",
       "text": "",
       "uuid": "81b84458-47e7-4bb1-91c1-4c8f4c9578c7",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "9456105a-3a13-4634-8ea2-eee404383bc2",
       "target": "c942b7a4-c968-4aa1-869e-9ae260402b4d",
       "text": "",
       "uuid": "3a133037-59f5-4e58-b3b6-21aebd1544a6",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "655564da-c94d-41bc-8127-39bedb6e48d8",
       "target": "34b2b64d-acf0-4475-9bd0-9d5f37f6d2f3",
       "text": "",
       "uuid": "e1e6a714-ce34-43ef-ab00-f41c4bd8f468",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "34b2b64d-acf0-4475-9bd0-9d5f37f6d2f3",
       "target": "1976fab6-9aca-4424-b7ec-d901118e0580",
       "text": "",
       "uuid": "bbe35a67-0dd5-4da3-a9ca-1cb0a908d55d",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "c942b7a4-c968-4aa1-869e-9ae260402b4d",
       "target": "3486b3eb-e9ac-4c91-a5cd-38ff7e868fe1",
       "text": "",
       "uuid": "fb39d2c7-9e62-43b8-b773-c369a51a2346",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "3486b3eb-e9ac-4c91-a5cd-38ff7e868fe1",
       "target": "655564da-c94d-41bc-8127-39bedb6e48d8",
       "text": "",
       "uuid": "02624983-d51a-41a4-95c2-a48ae6888bf1",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "3486b3eb-e9ac-4c91-a5cd-38ff7e868fe1",
       "target": "3fb77a00-31ba-4032-984d-ca47efea42ad",
       "text": "",
       "uuid": "664a58df-5fc6-4601-a7a5-06a0b39292a8",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "655564da-c94d-41bc-8127-39bedb6e48d8",
       "target": "e8844af9-3be5-49fc-98f5-6906116c9575",
       "text": "",
       "uuid": "9cd45f73-e864-4412-9bfe-2c6ca67b0ae6",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "3f025405-3ac7-42ec-b252-a36583ee0c33",
       "target": "01745060-bceb-48e2-8b35-8a85e043d6cf",
       "text": "",
       "uuid": "0ff39b17-20d5-4a9c-bfb6-341112dfafa9",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "a3bb3183-70f4-45e2-944f-d795f6b32456",
       "target": "3f025405-3ac7-42ec-b252-a36583ee0c33",
       "text": "",
       "uuid": "79788155-cf9d-421b-845d-5cfde8f7798a",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "01745060-bceb-48e2-8b35-8a85e043d6cf",
       "target": "32c6c052-4bc2-42c6-9d7d-23c8e4f90a0a",
       "text": "",
       "uuid": "5d10f991-c0a8-48b8-8941-77a943048c29",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "32c6c052-4bc2-42c6-9d7d-23c8e4f90a0a",
       "target": "9456105a-3a13-4634-8ea2-eee404383bc2",
       "text": "",
       "uuid": "5fa36e63-14c2-4917-a34d-16fa4d4383c3",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "e1505328-0b60-4d15-9994-3bf91142dbb4",
       "target": "32c6c052-4bc2-42c6-9d7d-23c8e4f90a0a",
       "text": "",
       "uuid": "096d3720-c39b-4e36-9d5b-4d1dad3db0d3",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "d70f1280-ffa6-49ba-a385-0c24377308c0",
       "target": "ea51d7fd-c6d9-4377-a32e-4c030cea33f9",
       "text": "",
       "uuid": "3c54701c-efb5-47af-936a-955133ce051e",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "ea51d7fd-c6d9-4377-a32e-4c030cea33f9",
       "target": "83f241f7-2b38-42f7-a719-42d2fc4898ba",
       "text": "",
       "uuid": "49674aaa-1a68-4d88-84ba-45e1a92b90fc",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     },
     {
       "source": "83f241f7-2b38-42f7-a719-42d2fc4898ba",
       "target": "6e2f248c-7a9c-4078-b6e4-e7ceb27f2d64",
       "text": "",
       "uuid": "fea46037-8392-4f44-aed9-89832d139f92",
-      "type": "core:line_edge"
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "fbf81bb2-6398-4e3d-8ed8-8d433efdbec9",
+      "target": "6fe33d76-ca04-4e9d-b3f5-26d15ed25dcf",
+      "text": "",
+      "uuid": "27d544d2-cda9-483b-a636-6f3f16d70175",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "6fe33d76-ca04-4e9d-b3f5-26d15ed25dcf",
+      "target": "534182c2-60d6-4555-b7b2-07b7d0e28416",
+      "text": "",
+      "uuid": "8e19a6ea-30be-4986-8f8b-7bbcae93b8e1",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "fbf81bb2-6398-4e3d-8ed8-8d433efdbec9",
+      "target": "2bb5b822-3634-4f95-9892-20a0b2192b65",
+      "text": "",
+      "uuid": "e918c675-c37c-4f93-a6bd-8b9e43087a39",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "2bb5b822-3634-4f95-9892-20a0b2192b65",
+      "target": "6d99e44e-7ec9-454e-9d6a-3c310fbb09f2",
+      "text": "",
+      "uuid": "3568dfc9-280a-424a-a848-0feec8c09203",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "cd21f186-32bd-4275-9e31-3f8dfd981a9d",
+      "target": "47ce4db8-81d4-4e2d-a032-53b56be5132f",
+      "text": "",
+      "uuid": "53f3dfc2-ebb9-48f2-9037-78be69e49540",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "47ce4db8-81d4-4e2d-a032-53b56be5132f",
+      "target": "8a8bdc6b-a78b-4d5a-8d58-51512ddaa153",
+      "text": "",
+      "uuid": "d9378375-d8a2-4e35-89b4-87e58e593137",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "6d99e44e-7ec9-454e-9d6a-3c310fbb09f2",
+      "target": "8a8bdc6b-a78b-4d5a-8d58-51512ddaa153",
+      "text": "",
+      "uuid": "5581dfbb-de62-4fd4-b124-52b096679c12",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "6fe33d76-ca04-4e9d-b3f5-26d15ed25dcf",
+      "target": "cd21f186-32bd-4275-9e31-3f8dfd981a9d",
+      "text": "",
+      "uuid": "af4c906c-0e4a-4807-bfd0-fa74652e6aa4",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "cd21f186-32bd-4275-9e31-3f8dfd981a9d",
+      "target": "9189fd92-04b5-4f51-a207-a8387994f541",
+      "text": "",
+      "uuid": "3cc81a1c-3723-47a8-a17a-e88864c41674",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "9189fd92-04b5-4f51-a207-a8387994f541",
+      "target": "9b43879a-23e0-4cef-b5e0-f8c5def66a9f",
+      "text": "",
+      "uuid": "e717b15f-d26b-4e8d-934f-3b300331176b",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "9b43879a-23e0-4cef-b5e0-f8c5def66a9f",
+      "target": "fa83a554-56ef-4854-a876-9081c09689e9",
+      "text": "",
+      "uuid": "caeb25f5-dd2f-4032-91b2-bf46943c8a0b",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "9b43879a-23e0-4cef-b5e0-f8c5def66a9f",
+      "target": "9d9a8805-d538-4e98-a6aa-9a7b22ddfd27",
+      "text": "",
+      "uuid": "64977324-bd4f-4d6a-81a8-8f6a74dc29bf",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "9b43879a-23e0-4cef-b5e0-f8c5def66a9f",
+      "target": "a86e7968-c44e-4eac-8cda-4258192f4d9a",
+      "text": "",
+      "uuid": "f2ab58f0-4165-4176-b9f9-c0c3d78a277e",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "a86e7968-c44e-4eac-8cda-4258192f4d9a",
+      "target": "1f9b45c4-0413-4cc0-91f1-e544ba3fd50b",
+      "text": "",
+      "uuid": "fb367881-8ae5-4070-80c6-b43de51f14bb",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "8a8bdc6b-a78b-4d5a-8d58-51512ddaa153",
+      "target": "1f9b45c4-0413-4cc0-91f1-e544ba3fd50b",
+      "text": "",
+      "uuid": "0ddda36d-663e-4759-9f5c-36bd7255d4e9",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "1f9b45c4-0413-4cc0-91f1-e544ba3fd50b",
+      "target": "382bf4dc-73b5-4afe-a8fb-484d75eb33f3",
+      "text": "",
+      "uuid": "67552527-642a-467a-b81f-5703df350196",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "382bf4dc-73b5-4afe-a8fb-484d75eb33f3",
+      "target": "8b95cbe3-2812-473f-aaa2-0a2dbe28f374",
+      "text": "",
+      "uuid": "99b37023-1523-454f-bb0d-4d7b3340a0a3",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "8b95cbe3-2812-473f-aaa2-0a2dbe28f374",
+      "target": "3929a2b5-c59d-43b4-b94d-c571115ea2ff",
+      "text": "",
+      "uuid": "534357e4-510c-48d9-8d29-1f00a0f5425e",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "3929a2b5-c59d-43b4-b94d-c571115ea2ff",
+      "target": "b9783df0-a736-44e8-be4e-67ad260c37a8",
+      "text": "",
+      "uuid": "c288587b-db21-431e-81dd-da393c0b7b1a",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "b9783df0-a736-44e8-be4e-67ad260c37a8",
+      "target": "5ee606e0-f77a-411f-9dc5-f00f212119a7",
+      "text": "",
+      "uuid": "dea001c1-adb0-496a-b879-9c1f6faf4ae3",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "5ee606e0-f77a-411f-9dc5-f00f212119a7",
+      "target": "3b930433-f146-42a5-984d-68802e05c51a",
+      "text": "",
+      "uuid": "2d25ceb7-f785-4e6c-af6a-088c04001703",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "2bb5b822-3634-4f95-9892-20a0b2192b65",
+      "target": "8e706cc5-b6be-4994-b453-597af51e517a",
+      "text": "",
+      "uuid": "38b98c47-0808-451d-a520-d2f5798336c4",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "3b930433-f146-42a5-984d-68802e05c51a",
+      "target": "1dde98b7-bb86-4de2-a926-0dbb30d11e2a",
+      "text": "",
+      "uuid": "c4e9dbfa-6e1a-4045-9db9-5e112a532ee0",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "3b930433-f146-42a5-984d-68802e05c51a",
+      "target": "c2d445e7-995b-42da-98d6-35293846b280",
+      "text": "",
+      "uuid": "c5dbb3d5-4394-44ba-9c62-c7863ac8cbc2",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "1dde98b7-bb86-4de2-a926-0dbb30d11e2a",
+      "target": "9cafe9c3-7631-4d5e-8b85-7f6a57aeaad8",
+      "text": "",
+      "uuid": "fdf7eb6d-50b3-461a-858d-59196f34cf55",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "1dde98b7-bb86-4de2-a926-0dbb30d11e2a",
+      "target": "153bd3c5-c7bc-420e-add6-4f1662434d13",
+      "text": "",
+      "uuid": "bcb283af-7f09-4f28-9305-24e052880c54",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "153bd3c5-c7bc-420e-add6-4f1662434d13",
+      "target": "8b71bbc0-3d0d-47f1-a46f-52b8d3714ad3",
+      "text": "",
+      "uuid": "01b74a84-cd93-4395-926f-a0399b1a951a",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "8b71bbc0-3d0d-47f1-a46f-52b8d3714ad3",
+      "target": "81a319c4-013f-4955-8a84-3b9791fab519",
+      "text": "",
+      "uuid": "ab78d310-a190-4b1f-a1e7-7fa8dd7a1ac7",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "c2d445e7-995b-42da-98d6-35293846b280",
+      "target": "ac2d50a1-54b3-4445-9cb0-6b5e9d2d22a5",
+      "text": "",
+      "uuid": "9f7c31de-7bff-4e69-bde6-4e2c091f27b9",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "8b71bbc0-3d0d-47f1-a46f-52b8d3714ad3",
+      "target": "2fea8696-53be-480f-987d-a85ec55d6481",
+      "text": "",
+      "uuid": "f6fd77b6-090d-4ddd-9055-e97bf0b97222",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "81a319c4-013f-4955-8a84-3b9791fab519",
+      "target": "a6ef23cb-e6b3-4c8c-b2fd-92888a8da175",
+      "text": "",
+      "uuid": "59d9bcbb-f4cc-4063-9d9a-488ae16d7407",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "2fea8696-53be-480f-987d-a85ec55d6481",
+      "target": "07867c7a-f4c1-41bc-8414-85070d8c5bba",
+      "text": "",
+      "uuid": "30957965-0fff-4a8d-aa49-f993b557e961",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "a6ef23cb-e6b3-4c8c-b2fd-92888a8da175",
+      "target": "8666e25c-86e6-4a21-b8ca-552353436679",
+      "text": "",
+      "uuid": "bcc9b609-778b-4cf2-a83f-c466d51b1945",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     }
   ],
   "tags": []
