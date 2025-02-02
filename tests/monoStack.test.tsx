@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { MonoStack } from "../../core/dataStruct/MonoStack";
+import { describe, expect, it } from "vitest";
+import { MonoStack } from "../src/core/dataStruct/MonoStack";
 describe("monoStack", () => {
   /**
    * a

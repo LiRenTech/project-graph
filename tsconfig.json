@@ -23,9 +23,16 @@
     // 其他
     "experimentalDecorators": true // 开启装饰器
   },
-  "include": ["src"],
-  "references": [
-    { "path": "./tsconfig.node.json" },
-    { "path": "./tsconfig.docs.json" }
-  ]
+  "include": [
+    "src",
+    "tests/deco.test.tsx",
+    "tests/lruCache.test.tsx",
+    "tests/mod.test.tsx",
+    "tests/monoStack.test.tsx",
+    "tests/parseMarkdownToJSON.test.tsx",
+    "tests/validUrl.test.tsx",
+    "tests/vector.test.tsx",
+    "tests/vitest.test.tsx"
+  ],
+  "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.docs.json" }]
 }
