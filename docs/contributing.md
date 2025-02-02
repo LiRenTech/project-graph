@@ -53,3 +53,11 @@ pnpm tauri build
 - Install Gitmoji: `pnpm install -g gitmoji-cli`
 - Commit changes: `gitmoji commit`
 - Push changes: `git push`
+
+### Submitting Suggestions
+
+If the functionality being submitted spans a large time period, it is recommended to pull the dev branch every day, as the project may undergo significant code refactoring at any time.
+
+If the functionality being submitted is small with a limited scope of code changes, you can directly modify and commit on the dev branch.
+
+If the functionality being submitted is large with extensive code changes, it is recommended to create a new branch first, and then modify and commit on the new branch.
