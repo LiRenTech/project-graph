@@ -47,10 +47,7 @@ export abstract class IFileSystem {
 
   // 抽象原始方法（带下划线版本）
   abstract _readFile(path: string): Promise<Uint8Array>;
-  abstract _writeFile(
-    path: string,
-    content: Uint8Array | string,
-  ): Promise<void>;
+  abstract _writeFile(path: string, content: Uint8Array | string): Promise<void>;
   abstract _readDir(path: string): Promise<DirectoryEntry[]>;
   abstract _mkdir(path: string, recursive?: boolean): Promise<void>;
   abstract _stat(path: string): Promise<FileStats>;
@@ -81,10 +78,7 @@ export abstract class IFileSystem {
   }
 
   rename(oldPath: string, newPath: string) {
-    return this._rename(
-      IFileSystem.normalizePath(oldPath),
-      IFileSystem.normalizePath(newPath),
-    );
+    return this._rename(IFileSystem.normalizePath(oldPath), IFileSystem.normalizePath(newPath));
   }
 
   deleteFile(path: string) {

@@ -13,9 +13,7 @@ export class TauriFileSystem extends IFileSystem {
   }
 
   async _readFile(path: string): Promise<Uint8Array> {
-    return new Uint8Array(
-      await invoke("read_file", { path: this.basePath + path }),
-    );
+    return new Uint8Array(await invoke("read_file", { path: this.basePath + path }));
   }
 
   async _writeFile(path: string, content: Uint8Array | string): Promise<void> {
@@ -64,18 +62,12 @@ export class TauriFileSystem extends IFileSystem {
    * @param path 文件路径
    * @param expectedContent 预期内容
    */
-  private static async verifyFileContent(
-    fs: TauriFileSystem,
-    path: string,
-    expectedContent: string,
-  ): Promise<void> {
+  private static async verifyFileContent(fs: TauriFileSystem, path: string, expectedContent: string): Promise<void> {
     const content = await fs.readFile(path);
     const actualContent = new TextDecoder("utf-8").decode(content);
     if (actualContent !== expectedContent) {
       throw new Error(
-        `File content verification failed at ${path}\n` +
-          `Expected: ${expectedContent}\n` +
-          `Actual: ${actualContent}`,
+        `File content verification failed at ${path}\n` + `Expected: ${expectedContent}\n` + `Actual: ${actualContent}`,
       );
     }
   }

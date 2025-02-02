@@ -1,8 +1,4 @@
-import {
-  IFileSystem,
-  type FileStats,
-  type DirectoryEntry,
-} from "./IFileSystem";
+import { IFileSystem, type FileStats, type DirectoryEntry } from "./IFileSystem";
 
 type FSAPHandle = FileSystemDirectoryHandle;
 
@@ -27,15 +23,11 @@ export class WebFileApiSystem extends IFileSystem {
       }
 
       try {
-        currentHandle = await (
-          currentHandle as FileSystemDirectoryHandle
-        ).getDirectoryHandle(part);
+        currentHandle = await (currentHandle as FileSystemDirectoryHandle).getDirectoryHandle(part);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (dirError) {
         try {
-          currentHandle = await (
-            currentHandle as FileSystemDirectoryHandle
-          ).getFileHandle(part);
+          currentHandle = await (currentHandle as FileSystemDirectoryHandle).getFileHandle(part);
           // 提前终止检查：文件节点不能在路径中间
           if (part !== parts[parts.length - 1]) {
             throw new Error(`File node cannot be in path middle: ${path}`);
@@ -58,8 +50,7 @@ export class WebFileApiSystem extends IFileSystem {
   }
 
   async _writeFile(path: string, content: Uint8Array | string): Promise<void> {
-    const buffer =
-      typeof content === "string" ? new TextEncoder().encode(content) : content;
+    const buffer = typeof content === "string" ? new TextEncoder().encode(content) : content;
 
     const parts = await this.resolvePathComponents(path);
     const fileName = parts.pop()!;
@@ -73,10 +64,7 @@ export class WebFileApiSystem extends IFileSystem {
     await writable.close();
   }
 
-  private async ensureDirectoryPath(
-    parts: string[],
-    recursive = false,
-  ): Promise<FileSystemDirectoryHandle> {
+  private async ensureDirectoryPath(parts: string[], recursive = false): Promise<FileSystemDirectoryHandle> {
     let currentHandle = this.rootHandle;
 
     for (let i = 0; i < parts.length; i++) {
@@ -127,11 +115,7 @@ export class WebFileApiSystem extends IFileSystem {
 
   async _rename(oldPath: string, newPath: string): Promise<void> {
     // 递归复制函数
-    const copyRecursive = async (
-      srcHandle: FileSystemHandle,
-      destDir: FileSystemDirectoryHandle,
-      newName: string,
-    ) => {
+    const copyRecursive = async (srcHandle: FileSystemHandle, destDir: FileSystemDirectoryHandle, newName: string) => {
       if (srcHandle.kind === "file") {
         const file = await (srcHandle as FileSystemFileHandle).getFile();
         const newFile = await destDir.getFileHandle(newName, { create: true });
@@ -160,10 +144,7 @@ export class WebFileApiSystem extends IFileSystem {
     await this._delete(oldHandle.kind, oldPath);
   }
 
-  private async _delete(
-    kind: "file" | "directory",
-    path: string,
-  ): Promise<void> {
+  private async _delete(kind: "file" | "directory", path: string): Promise<void> {
     const parts = await this.resolvePathComponents(path);
     const targetName = parts.pop()!;
     const parentHandle = await this.ensureDirectoryPath(parts);
