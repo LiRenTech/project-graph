@@ -46,6 +46,12 @@ export namespace KeyboardOnlyEngine {
         // 这个还必须在down的位置上，因为在up上会导致无限触发
         const selectedNode = StageManager.getTextNodes().find((node) => node.isSelected);
         if (!selectedNode) return;
+        event.preventDefault(); // 这个prevent必须开启，否则会立刻在刚创建的输入框里输入一个换行符。
+        // 编辑节点
+        editTextNode(selectedNode, false);
+      } else if (event.key === "F2") {
+        const selectedNode = StageManager.getTextNodes().find((node) => node.isSelected);
+        if (!selectedNode) return;
         // 编辑节点
         editTextNode(selectedNode);
       } else {

@@ -22,7 +22,7 @@ import { Controller } from "../Controller";
  * 编辑节点
  * @param clickedNode
  */
-export function editTextNode(clickedNode: TextNode) {
+export function editTextNode(clickedNode: TextNode, selectAll = true) {
   Controller.isCameraLocked = true;
 
   // 编辑节点
@@ -42,6 +42,7 @@ export function editTextNode(clickedNode: TextNode) {
       outline: "solid 1px rgba(255,255,255,0.1)",
       // marginTop: -8 * Camera.currentScale + "px",
     },
+    selectAll,
   ).then(() => {
     clickedNode!.isEditing = false;
     Controller.isCameraLocked = false;

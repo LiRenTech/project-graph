@@ -100,6 +100,7 @@ export namespace InputElement {
    * @param defaultValue 一开始的默认文本
    * @param onChange 输入框文本改变函数
    * @param style 输入框样式
+   * @param selectAllWhenCreated 是否在创建时全选内容
    * @returns
    */
   export function textarea(
@@ -107,6 +108,7 @@ export namespace InputElement {
     defaultValue: string,
     onChange: (value: string) => void = () => {},
     style: Partial<CSSStyleDeclaration> = {},
+    selectAllWhenCreated = true,
   ): Promise<string> {
     return new Promise((resolve) => {
       const textareaElement = document.createElement("textarea");
@@ -135,7 +137,9 @@ export namespace InputElement {
         event.preventDefault();
       });
       textareaElement.focus();
-      textareaElement.select();
+      if (selectAllWhenCreated) {
+        textareaElement.select();
+      }
       // 以上这两部必须在appendChild之后执行
       const removeElement = () => {
         if (document.body.contains(textareaElement)) {
