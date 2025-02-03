@@ -130,7 +130,11 @@ async function readClipboardItems(mouseLocation: Vector) {
           const blob = await item.getType(item.types[0]); // 获取 Blob 对象
           const imageUUID = uuidv4();
           //const folder = PathString.dirPath(Stage.path.getFilePath());
-          await VFileSystem.getFS().writeFile(`/picture/${imageUUID}.png`, await blob.bytes());
+
+          // 必须要用arrayBuffer转一下，不能用blob.bytes()，它的支持度不好，有设备报错说没有这个函数
+          const arrayBuffer = await blob.arrayBuffer();
+          const uint8Array = new Uint8Array(arrayBuffer);
+          await VFileSystem.getFS().writeFile(`/picture/${imageUUID}.png`, uint8Array);
           //const imagePath = `${folder}${PathString.getSep()}${imageUUID}.png`;
 
           // 2024.12.31 测试发现这样的写法会导致读取时base64解码失败
