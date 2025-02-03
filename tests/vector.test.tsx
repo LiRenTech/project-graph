@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { Vector } from "../../core/dataStruct/Vector";
+import { describe, expect, it } from "vitest";
+import { Vector } from "../src/core/dataStruct/Vector";
 
 describe("Vector", () => {
   it("1+1=2", () => {

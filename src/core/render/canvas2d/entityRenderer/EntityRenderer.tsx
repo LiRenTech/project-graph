@@ -195,7 +195,7 @@ export namespace EntityRenderer {
       ),
       Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
       Math.max(
-        Renderer.NODE_DETAILS_WIDTH * Camera.currentScale,
+        Renderer.ENTITY_DETAILS_WIDTH * Camera.currentScale,
         entity.collisionBox.getRectangle().size.x * Camera.currentScale,
       ),
       StageStyleManager.currentStyle.NodeDetailsTextColor,

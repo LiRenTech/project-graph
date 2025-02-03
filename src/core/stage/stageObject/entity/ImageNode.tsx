@@ -1,12 +1,11 @@
-import { join } from "@tauri-apps/api/path";
 import { Serialized } from "../../../../types/node";
-import { readFileBase64 } from "../../../../utils/fs";
 import { PathString } from "../../../../utils/pathString";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
+import { VFileSystem } from "../../../service/dataFileService/VFileSystem";
 
 /**
  * 一个图片节点
@@ -109,13 +108,14 @@ export class ImageNode extends ConnectableEntity {
    * @param folderPath 工程文件所在路径文件夹，不加尾部斜杠
    * @returns
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public updateBase64StringByPath(folderPath: string) {
     if (this.path === "") {
       return;
     }
 
-    join(folderPath, this.path)
-      .then((path) => readFileBase64(path))
+    VFileSystem.getFS()
+      .readFileBase64(`/picture/${this.path}`)
       .then((res) => {
         // 获取base64String成功
 

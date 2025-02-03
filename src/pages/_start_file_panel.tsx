@@ -72,7 +72,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
         ? [
             {
               name: "Project Graph",
-              extensions: ["json"],
+              extensions: ["gp"],
             },
           ]
         : [],
@@ -80,9 +80,9 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
     if (!path) {
       return;
     }
-    if (isDesktop && !path.endsWith(".json")) {
+    if (isDesktop && !path.endsWith(".gp")) {
       Dialog.show({
-        title: "请选择一个JSON文件",
+        title: "请选择一个gp文件",
         type: "error",
       });
       return;
@@ -99,7 +99,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
       updateStartFiles();
     } catch (e) {
       Dialog.show({
-        title: "请选择正确的JSON文件",
+        title: "请选择正确的gp文件",
         content: String(e),
         type: "error",
       });
@@ -157,9 +157,9 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
   const checkoutFile = (path: string) => {
     try {
       setFile(decodeURIComponent(path));
-      if (isDesktop && !path.endsWith(".json")) {
+      if (isDesktop && !path.endsWith(".gp")) {
         Dialog.show({
-          title: "请选择一个JSON文件",
+          title: "请选择一个GP文件",
           type: "error",
         });
         return;

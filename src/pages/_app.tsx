@@ -21,6 +21,7 @@ import LogicNodePanel from "./_logic_node_panel";
 import RecentFilesPanel from "./_recent_files_panel";
 import StartFilePanel from "./_start_file_panel";
 import TagPanel from "./_tag_panel";
+import { VFileSystem } from "../core/service/dataFileService/VFileSystem";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -104,6 +105,7 @@ export default function App() {
               {
                 text: "不保存",
                 onClick: async () => {
+                  await VFileSystem.clear();
                   await getCurrentWindow().destroy();
                 },
               },
@@ -118,10 +120,12 @@ export default function App() {
           if (isAutoSave) {
             // 开启了自动保存，不弹窗
             await StageSaveManager.saveHandle(file, StageDumper.dump());
+            await VFileSystem.clear();
             getCurrentWindow().destroy();
           } else {
             // 没开启自动保存，逐步确认
             if (StageSaveManager.isSaved()) {
+              await VFileSystem.clear();
               getCurrentWindow().destroy();
             } else {
               await Dialog.show({
@@ -132,6 +136,7 @@ export default function App() {
                     text: "保存并关闭",
                     onClick: async () => {
                       await StageSaveManager.saveHandle(file, StageDumper.dump());
+                      await VFileSystem.clear();
                       await getCurrentWindow().destroy();
                     },
                   },

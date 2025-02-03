@@ -263,6 +263,9 @@ export namespace NodeLogic {
         if (AutoComputeUtils.isNodeConnectedWithLogicNode(node)) {
           continue;
         }
+        if (node.text.trim() === "") {
+          continue;
+        }
         // 匹配颜色
         if (node.color.equals(matchColor)) {
           matchNodes.push(node);
@@ -304,6 +307,9 @@ export namespace NodeLogic {
       for (const node of StageManager.getTextNodes()) {
         // 避开与逻辑节点相连的节点
         if (AutoComputeUtils.isNodeConnectedWithLogicNode(node)) {
+          continue;
+        }
+        if (node.details.trim() === "") {
           continue;
         }
         // 匹配颜色

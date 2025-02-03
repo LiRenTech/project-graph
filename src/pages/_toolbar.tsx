@@ -40,7 +40,7 @@ import { cn } from "../utils/cn";
 // import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { Dialog } from "../components/dialog";
 import { Popup } from "../components/popup";
-import { writeTextFile } from "../utils/fs";
+import { writeTextFile } from "../utils/fs/com";
 // import { PathString } from "../utils/pathString";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { ColorManager } from "../core/service/feedbackService/ColorManager";
@@ -274,7 +274,8 @@ function AlignNodePanel() {
  * @returns
  */
 export default function Toolbar({ className = "" }: { className?: string }) {
-  const [isCopyClearShow, setIsCopyClearShow] = useState(false);
+  // 是否显示清空粘贴板
+  const [isClipboardClearShow, setIsCopyClearShow] = useState(false);
   const [isHaveSelectedNode, setSsHaveSelectedNode] = useState(false);
   const [isHaveSelectedNodeOverTwo, setSsHaveSelectedNodeOverTwo] = useState(false);
   const [isHaveSelectedEdge, setSsHaveSelectedEdge] = useState(false);
@@ -314,13 +315,13 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   // 因为报错窗口可能会被它遮挡住导致无法在右上角关闭报错窗口
   return (
     <div
-      className={cn("group/wrapper fixed top-1/2 right-0 z-40 -translate-y-1/2 p-8 pl-16", {
+      className={cn("group/wrapper fixed top-1/2 right-0 z-40 -translate-y-1/2 rounded-4xl px-8 pl-16", {
         "pointer-events-none": ignoreMouse,
       })}
     >
       <Box
         className={cn(
-          "bg-toolbar-collapsed-bg group-hover/wrapper:border-toolbar-border group-hover/wrapper:bg-toolbar-bg flex w-10 origin-right scale-[10%] flex-col items-center gap-4 rounded-full px-8 py-6 opacity-25 group-hover/wrapper:scale-100 group-hover/wrapper:border group-hover/wrapper:opacity-100",
+          "bg-toolbar-collapsed-bg group-hover/wrapper:border-toolbar-border group-hover/wrapper:bg-toolbar-bg flex w-10 origin-right scale-[10%] flex-col items-center gap-1 rounded-full px-8 py-6 opacity-25 group-hover/wrapper:scale-100 group-hover/wrapper:border group-hover/wrapper:opacity-100",
           className,
         )}
       >
@@ -351,7 +352,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
         {(isHaveSelectedNode || isHaveSelectedEdge) && (
           <ToolbarItem
-            description="设置节点颜色"
+            description="设置节点/连线颜色"
             icon={<PaintBucket />}
             handleFunction={() => Popup.show(<ColorPanel />)}
           />
@@ -364,7 +365,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             handleFunction={() => Popup.show(<AlignNodePanel />)}
           />
         )}
-        {isCopyClearShow && (
+        {isClipboardClearShow && (
           <ToolbarItem
             description="清空粘贴板内容"
             icon={<ClipboardX />}
@@ -469,6 +470,28 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             StageManager.autoLayoutFastTreeMode();
           }}
         />
+        {/* 测试占位符 */}
+        {/* <ToolbarItem
+          description="自动布局（选中的唯一节点必须是树形结构的根节点）"
+          icon={<Network />}
+          handleFunction={() => {
+            StageManager.autoLayoutFastTreeMode();
+          }}
+        />
+        <ToolbarItem
+          description="自动布局（选中的唯一节点必须是树形结构的根节点）"
+          icon={<Network />}
+          handleFunction={() => {
+            StageManager.autoLayoutFastTreeMode();
+          }}
+        />
+        <ToolbarItem
+          description="自动布局（选中的唯一节点必须是树形结构的根节点）"
+          icon={<Network />}
+          handleFunction={() => {
+            StageManager.autoLayoutFastTreeMode();
+          }}
+        /> */}
       </Box>
     </div>
   );
@@ -477,11 +500,11 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 const onSaveSelectedNew = async () => {
   const path = await saveFileDialog({
     title: "另存为",
-    defaultPath: "新文件.json", // 提供一个默认的文件名
+    defaultPath: "新文件.gp", // 提供一个默认的文件名
     filters: [
       {
         name: "Project Graph",
-        extensions: ["json"],
+        extensions: ["gp"],
       },
     ],
   });

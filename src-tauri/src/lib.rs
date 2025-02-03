@@ -1,77 +1,124 @@
-use std::env;
-use std::io::Read;
-
-use base64::engine::general_purpose;
-use base64::Engine;
-
+use serde::{Deserialize, Serialize};
+use std::fs;
+use std::path::{Path, MAIN_SEPARATOR};
+use std::time::UNIX_EPOCH;
 use tauri::Manager;
 
-/// 判断文件是否存在
-#[tauri::command]
-fn exists(path: String) -> bool {
-    std::path::Path::new(&path).exists()
+// 新增路径规范化函数
+fn normalize_path(path: &str) -> String {
+    path.replace('/', &MAIN_SEPARATOR.to_string())
 }
 
-/// 读取文件，返回字符串
-#[tauri::command]
-fn read_text_file(path: String) -> String {
-    let mut file = std::fs::File::open(path).unwrap();
-    let mut contents = String::new();
-    file.read_to_string(&mut contents).unwrap();
-    contents
+#[derive(Debug, Serialize, Deserialize)]
+struct FileStats {
+    name: String,
+    #[serde(rename = "isDir")]
+    is_directory: bool,
+    size: u64,
+    modified: i64,
 }
 
-/// 读取文件，返回base64
-#[tauri::command]
-fn read_file_base64(path: String) -> Result<String, String> {
-    Ok(general_purpose::STANDARD
-        .encode(&std::fs::read(path).map_err(|e| format!("无法读取文件: {}", e))?))
-}
-
-/// 写入文件
-#[tauri::command]
-fn write_text_file(path: String, content: String) -> Result<(), String> {
-    std::fs::write(path, content).map_err(|e| e.to_string())?;
-    Ok(())
-}
-
-/// 写入文件，base64字符串
-#[tauri::command]
-fn write_file_base64(content: String, path: String) -> Result<(), String> {
-    std::fs::write(
-        &path,
-        &general_purpose::STANDARD
-            .decode(content)
-            .map_err(|e| format!("解码失败: {}", e))?,
-    )
-    .map_err(|e| {
-        eprintln!("写入文件失败: {}", e);
-        return e.to_string();
-    })?;
-    Ok(())
+#[derive(Debug, Serialize, Deserialize)]
+struct DirectoryEntry {
+    name: String,
+    #[serde(rename = "isDir")]
+    is_directory: bool,
 }
 
 #[tauri::command]
-fn write_stdout(content: String) {
-    println!("{}", content);
+async fn read_file(path: String) -> Result<Vec<u8>, String> {
+    let path = normalize_path(&path);
+    std::fs::read(&path).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
-fn write_stderr(content: String) {
-    eprintln!("{}", content);
+async fn write_file(path: String, content: Vec<u8>) -> Result<(), String> {
+    let path = normalize_path(&path);
+    fs::write(path, content).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
-fn exit(code: i32) {
-    std::process::exit(code);
+async fn read_dir(path: String) -> Result<Vec<DirectoryEntry>, String> {
+    let path = normalize_path(&path);
+    let entries = fs::read_dir(path).map_err(|e| e.to_string())?;
+    let mut result = Vec::new();
+
+    for entry in entries {
+        let entry = entry.map_err(|e| e.to_string())?;
+        let metadata = entry.metadata().map_err(|e| e.to_string())?;
+
+        result.push(DirectoryEntry {
+            name: entry.file_name().to_string_lossy().to_string(),
+            is_directory: metadata.is_dir(),
+        });
+    }
+
+    Ok(result)
+}
+
+#[tauri::command]
+async fn mkdir(path: String, recursive: bool) -> Result<(), String> {
+    let path = normalize_path(&path);
+    if recursive {
+        fs::create_dir_all(path).map_err(|e| e.to_string())
+    } else {
+        fs::create_dir(path).map_err(|e| e.to_string())
+    }
+}
+
+#[tauri::command]
+async fn stat(path: String) -> Result<FileStats, String> {
+    let normalized_path = normalize_path(&path);
+    let metadata = fs::metadata(&normalized_path).map_err(|e| e.to_string())?;
+
+    let name = Path::new(&normalized_path)
+        .file_name()
+        .and_then(|n| n.to_str())
+        .map(|s| s.to_string())
+        .ok_or_else(|| "无法解析文件名".to_string())?;
+
+    let modified = metadata
+        .modified()
+        .map_err(|e| e.to_string())?
+        .duration_since(UNIX_EPOCH)
+        .map_err(|e| e.to_string())?
+        .as_millis() as i64;
+
+    Ok(FileStats {
+        name,
+        is_directory: metadata.is_dir(),
+        size: metadata.len(),
+        modified,
+    })
+}
+
+#[tauri::command]
+async fn rename(old_path: String, new_path: String) -> Result<(), String> {
+    let old_path = normalize_path(&old_path);
+    let new_path = normalize_path(&new_path);
+    fs::rename(old_path, new_path).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+async fn delete_file(path: String) -> Result<(), String> {
+    let path = normalize_path(&path);
+    fs::remove_file(path).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+async fn delete_directory(path: String) -> Result<(), String> {
+    let path = normalize_path(&path);
+    fs::remove_dir_all(path).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+async fn exists(path: String) -> Result<bool, String> {
+    let path = normalize_path(&path);
+    Ok(fs::metadata(path).is_ok())
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    // 在 Linux 上禁用 DMA-BUF 渲染器
-    // 否则无法在 Linux 上运行
-    // 相同的bug: https://github.com/tauri-apps/tauri/issues/10702
-    // 解决方案来源: https://github.com/clash-verge-rev/clash-verge-rev/blob/ae5b2cfb79423c7e76a281725209b812774367fa/src-tauri/src/lib.rs#L27-L28
     #[cfg(target_os = "linux")]
     std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
 
@@ -98,14 +145,15 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            read_text_file,
-            write_text_file,
-            exists,
-            read_file_base64,
-            write_file_base64,
-            write_stdout,
-            write_stderr,
-            exit
+            read_file,
+            write_file,
+            read_dir,
+            mkdir,
+            stat,
+            rename,
+            delete_file,
+            delete_directory,
+            exists
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -7,6 +7,10 @@ export const isDesktop = !isMobile;
 export const isMac = !isWeb && platform() === "macos";
 export const appScale = isMobile ? 0.5 : 1;
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+export const webFileApiSupport = !!window.showDirectoryPicker;
+
 export function family() {
   if (isWeb) {
     // 从userAgent判断unix|windows

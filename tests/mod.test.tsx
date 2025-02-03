@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { NumberFunctions } from "../../core/algorithm/numberFunctions";
+import { describe, expect, it } from "vitest";
+import { NumberFunctions } from "../src/core/algorithm/numberFunctions";
 
 describe("mod.test.tsx", () => {
   it("should pass", () => {

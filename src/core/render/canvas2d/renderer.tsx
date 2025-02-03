@@ -4,11 +4,12 @@ import { Color, mixColors } from "../../dataStruct/Color";
 import { Vector } from "../../dataStruct/Vector";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Settings } from "../../service/Settings";
+import { MouseLocation } from "../../service/controlService/MouseLocation";
 import { Controller } from "../../service/controlService/controller/Controller";
+import { KeyboardOnlyEngine } from "../../service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
 import { CopyEngine } from "../../service/dataManageService/copyEngine/copyEngine";
 import { sine } from "../../service/feedbackService/effectEngine/mathTools/animateFunctions";
 import { StageStyleManager } from "../../service/feedbackService/stageStyle/StageStyleManager";
-import { KeyboardOnlyEngine } from "../../service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
 import { Camera } from "../../stage/Camera";
 import { Canvas } from "../../stage/Canvas";
 import { Stage } from "../../stage/Stage";
@@ -29,7 +30,6 @@ import {
   renderHorizonBackground,
   renderVerticalBackground,
 } from "./utilsRenderer/backgroundRenderer";
-import { MouseLocation } from "../../service/controlService/MouseLocation";
 
 /**
  * 渲染器
@@ -50,10 +50,11 @@ export namespace Renderer {
   export const NODE_PADDING = 14;
   /// 节点的圆角半径
   export const NODE_ROUNDED_RADIUS = 8;
+
   /**
    * 节点详细信息最大宽度
    */
-  export const NODE_DETAILS_WIDTH = 200;
+  export let ENTITY_DETAILS_WIDTH = 200;
 
   export let w = 0;
   export let h = 0;
@@ -113,6 +114,9 @@ export namespace Renderer {
     });
     Settings.watch("entityDetailsLinesLimit", (value) => {
       ENTITY_DETAILS_LIENS_LIMIT = value;
+    });
+    Settings.watch("entityDetailsWidthLimit", (value) => {
+      ENTITY_DETAILS_WIDTH = value;
     });
     Settings.watch("showDebug", (value) => (isShowDebug = value));
     Settings.watch("showBackgroundHorizontalLines", (value) => {

@@ -1,9 +1,10 @@
 import { Serialized } from "../../../types/node";
-import { exists, writeTextFile } from "../../../utils/fs";
+import { exists, writeTextFile } from "../../../utils/fs/com";
 import { PathString } from "../../../utils/pathString";
 import { Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { ViewFlashEffect } from "../feedbackService/effectEngine/concrete/ViewFlashEffect";
+import { VFileSystem } from "./VFileSystem";
 
 /**
  * 管理所有和保存相关的内容
@@ -16,7 +17,7 @@ export namespace StageSaveManager {
    * @param errorCallback
    */
   export async function saveHandle(path: string, data: Serialized.File) {
-    await writeTextFile(path, JSON.stringify(data));
+    await VFileSystem.saveToPath(path);
     Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
     StageHistoryManager.reset(data); // 重置历史
     isCurrentSaved = true;
@@ -37,7 +38,7 @@ export namespace StageSaveManager {
     if (Stage.path.isDraft()) {
       throw new Error("当前文档的状态为草稿，请您先保存为文件");
     }
-    await writeTextFile(Stage.path.getFilePath(), JSON.stringify(data));
+    await VFileSystem.saveToPath(Stage.path.getFilePath());
     if (addFlashEffect) {
       Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
     }
@@ -55,6 +56,7 @@ export namespace StageSaveManager {
    * @param errorCallback
    * @returns
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   export async function backupHandle(path: string, data: Serialized.File) {
     const backupFolderPath = PathString.dirPath(path);
     const isExists = await exists(backupFolderPath);
@@ -62,7 +64,7 @@ export namespace StageSaveManager {
       throw new Error("备份文件路径错误:" + backupFolderPath);
     }
 
-    await writeTextFile(path, JSON.stringify(data));
+    await VFileSystem.saveToPath(path);
     Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
   }
   /**

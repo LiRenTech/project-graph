@@ -46,6 +46,7 @@ import { Stage } from "../core/stage/Stage";
 import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { PathString } from "../utils/pathString";
+import { VFileSystem } from "../core/service/dataFileService/VFileSystem";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -57,9 +58,10 @@ export default function AppMenu({ className = "", open = false }: { className?: 
   /**
    * 新建草稿
    */
-  const onNewDraft = () => {
+  const onNewDraft = async () => {
     if (StageSaveManager.isSaved() || StageManager.isEmpty()) {
       StageManager.destroy();
+      await VFileSystem.clear();
       setFile("Project Graph");
     } else {
       // 当前文件未保存
@@ -76,8 +78,9 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           },
           {
             text: "丢弃当前并直接新开",
-            onClick: () => {
+            onClick: async () => {
               StageManager.destroy();
+              await VFileSystem.clear();
               setFile("Project Graph");
             },
           },
@@ -87,12 +90,12 @@ export default function AppMenu({ className = "", open = false }: { className?: 
     }
   };
 
-  const onOpen = async () => {
+  const onOpen = async (legacy: boolean = false) => {
     if (!StageSaveManager.isSaved()) {
       if (StageManager.isEmpty()) {
         //空项目不需要保存
         StageManager.destroy();
-        openFileByDialogWindow();
+        openFileByDialogWindow(legacy);
       } else if (Stage.path.isDraft()) {
         Dialog.show({
           title: "草稿未保存",
@@ -104,7 +107,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
               text: "丢弃并打开新文件",
               onClick: () => {
                 StageManager.destroy();
-                openFileByDialogWindow();
+                openFileByDialogWindow(legacy);
               },
             },
           ],
@@ -117,7 +120,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             {
               text: "保存并打开新文件",
               onClick: () => {
-                onSave().then(openFileByDialogWindow);
+                onSave().then(() => openFileByDialogWindow(legacy));
               },
             },
             { text: "我再想想" },
@@ -126,13 +129,39 @@ export default function AppMenu({ className = "", open = false }: { className?: 
       }
     } else {
       // 直接打开文件
-      openFileByDialogWindow();
+      openFileByDialogWindow(legacy);
     }
   };
 
-  const openFileByDialogWindow = async () => {
+  const openLegacyFileByDialogWindow = async () => {
     const path = isWeb
       ? "file.json"
+      : await openFileDialog({
+          title: "打开文件",
+          directory: false,
+          multiple: false,
+          filters: [],
+        });
+    if (!path) {
+      return;
+    }
+    try {
+      await RecentFileManager.openLegacyFileByPath(path); // 已经包含历史记录重置功能
+      // 设置为草稿
+      setFile("Project Graph");
+    } catch (e) {
+      Dialog.show({
+        title: "请选择正确的文件",
+        content: String(e),
+        type: "error",
+      });
+    }
+  };
+
+  const openFileByDialogWindow = async (legacy: boolean = false) => {
+    if (legacy) return openLegacyFileByDialogWindow();
+    const path = isWeb
+      ? "file.gp"
       : await openFileDialog({
           title: "打开文件",
           directory: false,
@@ -141,7 +170,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             ? [
                 {
                   name: "Project Graph",
-                  extensions: ["json"],
+                  extensions: ["gp"],
                 },
               ]
             : [],
@@ -149,9 +178,9 @@ export default function AppMenu({ className = "", open = false }: { className?: 
     if (!path) {
       return;
     }
-    if (isDesktop && !path.endsWith(".json")) {
+    if (isDesktop && !path.endsWith(".gp")) {
       Dialog.show({
-        title: "请选择一个JSON文件",
+        title: "请选择一个gp文件",
         type: "error",
       });
       return;
@@ -162,7 +191,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
       setFile(path);
     } catch (e) {
       Dialog.show({
-        title: "请选择正确的JSON文件",
+        title: "请选择正确的gp文件",
         content: String(e),
         type: "error",
       });
@@ -183,7 +212,8 @@ export default function AppMenu({ className = "", open = false }: { className?: 
     // await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
     try {
       await StageSaveManager.saveHandle(path_, data);
-    } catch {
+    } catch (e) {
+      console.error(e);
       await Dialog.show({
         title: "保存失败",
         content: "保存失败，请重试",
@@ -193,14 +223,14 @@ export default function AppMenu({ className = "", open = false }: { className?: 
 
   const onSaveNew = async () => {
     const path = isWeb
-      ? "file.json"
+      ? "file.gp"
       : await saveFileDialog({
           title: "另存为",
-          defaultPath: "新文件.json", // 提供一个默认的文件名
+          defaultPath: "新文件.gp", // 提供一个默认的文件名
           filters: [
             {
               name: "Project Graph",
-              extensions: ["json"],
+              extensions: ["gp"],
             },
           ],
         });
@@ -213,7 +243,8 @@ export default function AppMenu({ className = "", open = false }: { className?: 
     try {
       await StageSaveManager.saveHandle(path, data);
       setFile(path);
-    } catch {
+    } catch (e) {
+      console.error(e);
       await Dialog.show({
         title: "保存失败",
         content: "保存失败，请重试",
@@ -381,7 +412,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         <Col icon={<FilePlus />} onClick={onNewDraft}>
           {t("file.items.new")}
         </Col>
-        <Col icon={<FileText />} onClick={onOpen}>
+        <Col icon={<FileText />} onClick={() => onOpen()}>
           {t("file.items.open")}
         </Col>
         {!isWeb && (
@@ -401,6 +432,11 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         {!isWeb && (
           <Col icon={<Database />} onClick={onBackup}>
             {t("file.items.backup")}
+          </Col>
+        )}
+        {!isWeb && (
+          <Col icon={<FileText />} onClick={() => onOpen(true)}>
+            {t("file.items.openLegacy")}
           </Col>
         )}
       </Row>

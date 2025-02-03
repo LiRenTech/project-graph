@@ -1,6 +1,4 @@
 import { v4 as uuidv4 } from "uuid";
-import { writeFileBase64 } from "../../../../../utils/fs";
-import { PathString } from "../../../../../utils/pathString";
 import { Color } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
@@ -12,6 +10,7 @@ import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
+import { VFileSystem } from "../../../dataFileService/VFileSystem";
 
 /**
  * BUG: 始终无法触发文件拖入事件
@@ -156,7 +155,7 @@ function dealJsonFileDrop(file: File, mouseWorldLocation: Vector) {
 function dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
   const reader = new FileReader();
   reader.readAsDataURL(file); // 以文本格式读取文件内容
-  reader.onload = (e) => {
+  reader.onload = async (e) => {
     const fileContent = e.target?.result; // 读取的文件内容
 
     if (typeof fileContent !== "string") {
@@ -169,8 +168,7 @@ function dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
     // data:image/png;base64,iVBORw0KGgoAAAANS...
     // 在这里处理读取到的内容
     const imageUUID = uuidv4();
-    const folderPath = PathString.dirPath(Stage.path.getFilePath());
-    writeFileBase64(`${folderPath}${PathString.getSep()}${imageUUID}.png`, fileContent.split(",")[1]);
+    await VFileSystem.getFS().writeFileBase64(`/picture/${imageUUID}.png`, fileContent.split(",")[1]);
     const imageNode = new ImageNode({
       uuid: imageUUID,
       location: [mouseWorldLocation.x, mouseWorldLocation.y],

@@ -1,6 +1,6 @@
 // LruCache.test.ts
-import { describe, it, expect } from "vitest";
-import { LruCache } from "../../core/dataStruct/Cache";
+import { describe, expect, it } from "vitest";
+import { LruCache } from "../src/core/dataStruct/Cache";
 
 describe("LruCache", () => {
   it("对于不存在的键应返回 undefined", () => {

@@ -14,6 +14,7 @@ import {
   Ratio,
   Rows4,
   Scaling,
+  Space,
   Spline,
   VenetianMask,
 } from "lucide-react";
@@ -52,6 +53,14 @@ export default function Visual() {
         min={1}
         max={200}
         step={2}
+      />
+      <SettingField
+        icon={<Space />}
+        settingKey="entityDetailsWidthLimit"
+        type="slider"
+        min={200}
+        max={2000}
+        step={100}
       />
 
       <SettingField icon={<Ratio />} settingKey="limitCameraInCycleSpace" type="switch" />

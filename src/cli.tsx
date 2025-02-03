@@ -1,7 +1,7 @@
 import { CliMatches } from "@tauri-apps/plugin-cli";
 import { StageExportSvg } from "./core/service/dataGenerateService/stageExportEngine/StageExportSvg";
-import { writeTextFile } from "./utils/fs";
 import { writeStdout } from "./utils/otherApi";
+import { TauriBaseFS } from "./utils/fs/TauriFileSystem";
 
 export async function runCli(matches: CliMatches) {
   if (matches.args.output?.occurrences > 0) {
@@ -12,7 +12,7 @@ export async function runCli(matches: CliMatches) {
       if (outputPath === "-") {
         writeStdout(result);
       } else {
-        await writeTextFile(outputPath, result);
+        await TauriBaseFS.writeTextFile(outputPath, result);
       }
     } else {
       throw new Error("Invalid output format. Only SVG format is supported.");
