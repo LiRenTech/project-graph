@@ -18,9 +18,18 @@ export default function SettingsLayout() {
             <Info />
             {t("tabs.about")}
           </NavLink>
+          {/* 越是用户可能频繁更改的，越靠上。（除了“关于”） */}
           <NavLink to="/settings/visual">
             <Eye />
             {t("tabs.visual")}
+          </NavLink>
+          <NavLink to="/settings/control">
+            <Keyboard />
+            {t("tabs.control")}
+          </NavLink>
+          <NavLink to="/settings/keybinds">
+            <Command />
+            {t("tabs.keybinds")}
           </NavLink>
           <NavLink to="/settings/performance">
             <Zap />
@@ -33,14 +42,6 @@ export default function SettingsLayout() {
           <NavLink to="/settings/automation">
             <Bot />
             {t("tabs.automation")}
-          </NavLink>
-          <NavLink to="/settings/control">
-            <Keyboard />
-            {t("tabs.control")}
-          </NavLink>
-          <NavLink to="/settings/keybinds">
-            <Command />
-            {t("tabs.keybinds")}
           </NavLink>
           <NavLink to="/settings/ai">
             <Brain />

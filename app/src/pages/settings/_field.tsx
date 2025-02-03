@@ -112,6 +112,7 @@ const fieldColors = {
   blue: "bg-blue-500/20 hover:bg-blue-500/25",
   purple: "bg-purple-500/20 hover:bg-purple-500/25",
 };
+
 export function Field({
   title = "",
   description = "",
@@ -150,6 +151,39 @@ export function Field({
       </div>
       <div className="flex-1"></div>
       {children}
+    </div>
+  );
+}
+
+/**
+ * 用于给各种设置项提供一个分类组
+ * @param param0
+ * @returns
+ */
+export function FieldGroup({
+  title = "",
+  icon = <></>,
+  children = <></>,
+  className = "",
+  description = "",
+}: {
+  title?: string;
+  icon?: React.ReactNode;
+  children?: React.ReactNode;
+  className?: string;
+  description?: string;
+}) {
+  return (
+    <div className={cn("flex w-full flex-col gap-2", className)}>
+      {/* 第一行，标题行 */}
+      <div className="text-panel-text my-2 flex items-center gap-2 pl-4 pt-4 text-lg underline">
+        <span>{icon}</span>
+        <span className="text-settings-text">{title}</span>
+      </div>
+      {/* 可能的描述行 */}
+      {description && <div className="text-panel-details-text pl-4 text-xs">{description}</div>}
+      {/* 内容 */}
+      <div className="flex w-full flex-col gap-2 pl-6 text-sm">{children}</div>
     </div>
   );
 }
