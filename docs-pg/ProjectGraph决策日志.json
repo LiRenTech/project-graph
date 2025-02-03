@@ -1,5 +1,5 @@
 {
-  "version": 14,
+  "version": 13,
   "entities": [
     {
       "location": [-873.2563821367739, -1900.3784488728002],
@@ -686,7 +686,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [1350.135131409349, -2363.0799237505757],
+      "location": [1599.2946158115606, -2334.0562050341928],
       "size": [300, 150],
       "url": "https://mefo.cc/",
       "title": "链接",
@@ -712,6 +712,33 @@
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
+    },
+    {
+      "location": [1372.3697061731066, -2261.1633795248927],
+      "size": [189.18394470214844, 76],
+      "text": "Heptabase",
+      "uuid": "e14adfc2-4201-475a-8c6d-12d368f3f0a2",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1443.9976354416794, -2126.0889979842277],
+      "size": [348, 76],
+      "text": "这些收费软件都太强了",
+      "uuid": "1613eda8-58dd-47f4-ae9e-53cf65c61935",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1395.9976354416794, -2016.3281837348643],
+      "size": [444, 172],
+      "text": "但功能强悍意味着通用性降低\n可能会在和其他软件联动方面\n有不足",
+      "uuid": "a424f562-462c-4fdc-bf04-999b88c9cdc2",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
     }
   ],
   "associations": [
@@ -720,600 +747,546 @@
       "target": "359ee3c0-853c-42d5-a394-e76ab170ab94",
       "text": "",
       "uuid": "e5e43326-1b6f-4125-9944-620133cf5473",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "359ee3c0-853c-42d5-a394-e76ab170ab94",
       "target": "0c8606ff-17ab-4054-a6cd-5167d9bb8f2b",
       "text": "",
       "uuid": "00298925-8910-4a2e-a9ce-778d8e782907",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "0c8606ff-17ab-4054-a6cd-5167d9bb8f2b",
       "target": "4de776a3-0d8d-4491-9770-8fe2ea119748",
       "text": "",
       "uuid": "c2c28c3e-1d04-4d51-8096-88c9c51a6575",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "4de776a3-0d8d-4491-9770-8fe2ea119748",
       "target": "f84f72e5-c43b-4088-b158-0c5e39435aee",
       "text": "",
       "uuid": "6d35f410-bb8d-4c52-aa77-f92ec3b484bc",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "f84f72e5-c43b-4088-b158-0c5e39435aee",
       "target": "31bf362a-3845-4cff-8751-c810ade383eb",
       "text": "",
       "uuid": "bc81b98c-15e9-4f48-8bb6-f97a06dd792c",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "31bf362a-3845-4cff-8751-c810ade383eb",
       "target": "e0510bf5-8c9a-471e-b85d-8cedcbe3010d",
       "text": "",
       "uuid": "df7ad70b-41e5-43d0-bb15-3ea35d3f6d7f",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "e0510bf5-8c9a-471e-b85d-8cedcbe3010d",
       "target": "e98da3ed-00bb-4dcd-baa3-dcf85e687a50",
       "text": "",
       "uuid": "bfcc70ac-1f1f-42d6-845b-cfe483b32e73",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "e98da3ed-00bb-4dcd-baa3-dcf85e687a50",
       "target": "9737cb11-280a-4f32-8e5c-ce43228d7310",
       "text": "",
       "uuid": "8d8e57c0-7ec5-4afe-be85-64b4e41bc6c6",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "9737cb11-280a-4f32-8e5c-ce43228d7310",
       "target": "01745060-bceb-48e2-8b35-8a85e043d6cf",
       "text": "",
       "uuid": "bbbd1526-cbde-4403-a8c3-7e6825c70ea4",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "e0510bf5-8c9a-471e-b85d-8cedcbe3010d",
       "target": "02798310-1809-4883-9243-c3c15419c7a8",
       "text": "",
       "uuid": "1ca7ccdc-4696-4953-abc5-7dfb5783010b",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "c942b7a4-c968-4aa1-869e-9ae260402b4d",
       "target": "655564da-c94d-41bc-8127-39bedb6e48d8",
       "text": "",
       "uuid": "8b2a91cd-2a71-452c-89d3-eb633138be6e",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "655564da-c94d-41bc-8127-39bedb6e48d8",
       "target": "d70f1280-ffa6-49ba-a385-0c24377308c0",
       "text": "",
       "uuid": "caf87935-b798-4149-bafa-2ef645129b2a",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "d70f1280-ffa6-49ba-a385-0c24377308c0",
       "target": "f1bd3f0d-34e1-46df-8354-d8b79d6d1736",
       "text": "",
       "uuid": "c4c980d6-aa2a-4389-bad9-5b3f78e8d8dd",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "f1bd3f0d-34e1-46df-8354-d8b79d6d1736",
       "target": "8f3947d9-c37f-4389-a713-6e3b5cc8f51e",
       "text": "",
       "uuid": "b3724934-9f07-4d62-9a87-e12a1bbc7289",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "d70f1280-ffa6-49ba-a385-0c24377308c0",
       "target": "50e81a06-7e00-4f0f-8011-cdbc671e36b1",
       "text": "",
       "uuid": "64368ba5-0cc7-4ae4-9346-d8cd74044a61",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "02798310-1809-4883-9243-c3c15419c7a8",
       "target": "50e81a06-7e00-4f0f-8011-cdbc671e36b1",
       "text": "",
       "uuid": "7b8907f3-b46a-46ad-8450-c0ac9b9ceb83",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "50e81a06-7e00-4f0f-8011-cdbc671e36b1",
       "target": "8f3947d9-c37f-4389-a713-6e3b5cc8f51e",
       "text": "",
       "uuid": "b7c00f0a-b749-4015-a241-09897644dbf6",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "8f3947d9-c37f-4389-a713-6e3b5cc8f51e",
       "target": "bf88e463-1dc7-490f-90ed-339191c7cab4",
       "text": "",
       "uuid": "ce2cf90a-fe59-4329-a423-44390d8158d0",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "18a8a15b-7630-43c7-b0fe-fc6c84104ede",
       "target": "bf88e463-1dc7-490f-90ed-339191c7cab4",
       "text": "",
       "uuid": "de288401-0535-4f0a-b13d-5e290536555f",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "d70f1280-ffa6-49ba-a385-0c24377308c0",
       "target": "18a8a15b-7630-43c7-b0fe-fc6c84104ede",
       "text": "",
       "uuid": "45b6a38f-38c1-43f8-bbe1-67a4cb1c50ef",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "f1bd3f0d-34e1-46df-8354-d8b79d6d1736",
       "target": "9d441349-fe73-4c4c-974d-888ab3610fb9",
       "text": "",
       "uuid": "fc728cc0-fb88-4874-be94-e15bf73592a7",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "f1bd3f0d-34e1-46df-8354-d8b79d6d1736",
       "target": "902269b4-fc9e-4bb7-ad94-6ace53342755",
       "text": "",
       "uuid": "8d5d7234-7ff8-4957-ad4c-f4b5b65d71f6",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "f84f72e5-c43b-4088-b158-0c5e39435aee",
       "target": "372b3ac3-3928-47fe-9c89-8747f0dd29ba",
       "text": "",
       "uuid": "f94f5dc9-0824-407d-acfb-9a767e97cb78",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "e98da3ed-00bb-4dcd-baa3-dcf85e687a50",
       "target": "b336d8b4-f8f8-4778-a3ed-2060386130fc",
       "text": "",
       "uuid": "5dd10b04-e57c-4c23-bdc9-a2e7b055fdad",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "372b3ac3-3928-47fe-9c89-8747f0dd29ba",
       "target": "82e75cc6-cc10-4e2e-aa24-96ce418e8f47",
       "text": "",
       "uuid": "85135ff8-116d-4dfd-823c-8490c9e43bdb",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "372b3ac3-3928-47fe-9c89-8747f0dd29ba",
       "target": "b336d8b4-f8f8-4778-a3ed-2060386130fc",
       "text": "",
       "uuid": "0a6edd31-10d7-4d32-afdd-a590085a4f2b",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "82e75cc6-cc10-4e2e-aa24-96ce418e8f47",
       "target": "b336d8b4-f8f8-4778-a3ed-2060386130fc",
       "text": "",
       "uuid": "81b84458-47e7-4bb1-91c1-4c8f4c9578c7",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "9456105a-3a13-4634-8ea2-eee404383bc2",
       "target": "c942b7a4-c968-4aa1-869e-9ae260402b4d",
       "text": "",
       "uuid": "3a133037-59f5-4e58-b3b6-21aebd1544a6",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "655564da-c94d-41bc-8127-39bedb6e48d8",
       "target": "34b2b64d-acf0-4475-9bd0-9d5f37f6d2f3",
       "text": "",
       "uuid": "e1e6a714-ce34-43ef-ab00-f41c4bd8f468",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "34b2b64d-acf0-4475-9bd0-9d5f37f6d2f3",
       "target": "1976fab6-9aca-4424-b7ec-d901118e0580",
       "text": "",
       "uuid": "bbe35a67-0dd5-4da3-a9ca-1cb0a908d55d",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "c942b7a4-c968-4aa1-869e-9ae260402b4d",
       "target": "3486b3eb-e9ac-4c91-a5cd-38ff7e868fe1",
       "text": "",
       "uuid": "fb39d2c7-9e62-43b8-b773-c369a51a2346",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "3486b3eb-e9ac-4c91-a5cd-38ff7e868fe1",
       "target": "655564da-c94d-41bc-8127-39bedb6e48d8",
       "text": "",
       "uuid": "02624983-d51a-41a4-95c2-a48ae6888bf1",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "3486b3eb-e9ac-4c91-a5cd-38ff7e868fe1",
       "target": "3fb77a00-31ba-4032-984d-ca47efea42ad",
       "text": "",
       "uuid": "664a58df-5fc6-4601-a7a5-06a0b39292a8",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "655564da-c94d-41bc-8127-39bedb6e48d8",
       "target": "e8844af9-3be5-49fc-98f5-6906116c9575",
       "text": "",
       "uuid": "9cd45f73-e864-4412-9bfe-2c6ca67b0ae6",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "3f025405-3ac7-42ec-b252-a36583ee0c33",
       "target": "01745060-bceb-48e2-8b35-8a85e043d6cf",
       "text": "",
       "uuid": "0ff39b17-20d5-4a9c-bfb6-341112dfafa9",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "a3bb3183-70f4-45e2-944f-d795f6b32456",
       "target": "3f025405-3ac7-42ec-b252-a36583ee0c33",
       "text": "",
       "uuid": "79788155-cf9d-421b-845d-5cfde8f7798a",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "01745060-bceb-48e2-8b35-8a85e043d6cf",
       "target": "32c6c052-4bc2-42c6-9d7d-23c8e4f90a0a",
       "text": "",
       "uuid": "5d10f991-c0a8-48b8-8941-77a943048c29",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "32c6c052-4bc2-42c6-9d7d-23c8e4f90a0a",
       "target": "9456105a-3a13-4634-8ea2-eee404383bc2",
       "text": "",
       "uuid": "5fa36e63-14c2-4917-a34d-16fa4d4383c3",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "e1505328-0b60-4d15-9994-3bf91142dbb4",
       "target": "32c6c052-4bc2-42c6-9d7d-23c8e4f90a0a",
       "text": "",
       "uuid": "096d3720-c39b-4e36-9d5b-4d1dad3db0d3",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "d70f1280-ffa6-49ba-a385-0c24377308c0",
       "target": "ea51d7fd-c6d9-4377-a32e-4c030cea33f9",
       "text": "",
       "uuid": "3c54701c-efb5-47af-936a-955133ce051e",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "ea51d7fd-c6d9-4377-a32e-4c030cea33f9",
       "target": "83f241f7-2b38-42f7-a719-42d2fc4898ba",
       "text": "",
       "uuid": "49674aaa-1a68-4d88-84ba-45e1a92b90fc",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "83f241f7-2b38-42f7-a719-42d2fc4898ba",
       "target": "6e2f248c-7a9c-4078-b6e4-e7ceb27f2d64",
       "text": "",
       "uuid": "fea46037-8392-4f44-aed9-89832d139f92",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "fbf81bb2-6398-4e3d-8ed8-8d433efdbec9",
       "target": "6fe33d76-ca04-4e9d-b3f5-26d15ed25dcf",
       "text": "",
       "uuid": "27d544d2-cda9-483b-a636-6f3f16d70175",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "6fe33d76-ca04-4e9d-b3f5-26d15ed25dcf",
       "target": "534182c2-60d6-4555-b7b2-07b7d0e28416",
       "text": "",
       "uuid": "8e19a6ea-30be-4986-8f8b-7bbcae93b8e1",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "fbf81bb2-6398-4e3d-8ed8-8d433efdbec9",
       "target": "2bb5b822-3634-4f95-9892-20a0b2192b65",
       "text": "",
       "uuid": "e918c675-c37c-4f93-a6bd-8b9e43087a39",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "2bb5b822-3634-4f95-9892-20a0b2192b65",
       "target": "6d99e44e-7ec9-454e-9d6a-3c310fbb09f2",
       "text": "",
       "uuid": "3568dfc9-280a-424a-a848-0feec8c09203",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "cd21f186-32bd-4275-9e31-3f8dfd981a9d",
       "target": "47ce4db8-81d4-4e2d-a032-53b56be5132f",
       "text": "",
       "uuid": "53f3dfc2-ebb9-48f2-9037-78be69e49540",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "47ce4db8-81d4-4e2d-a032-53b56be5132f",
       "target": "8a8bdc6b-a78b-4d5a-8d58-51512ddaa153",
       "text": "",
       "uuid": "d9378375-d8a2-4e35-89b4-87e58e593137",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "6d99e44e-7ec9-454e-9d6a-3c310fbb09f2",
       "target": "8a8bdc6b-a78b-4d5a-8d58-51512ddaa153",
       "text": "",
       "uuid": "5581dfbb-de62-4fd4-b124-52b096679c12",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "6fe33d76-ca04-4e9d-b3f5-26d15ed25dcf",
       "target": "cd21f186-32bd-4275-9e31-3f8dfd981a9d",
       "text": "",
       "uuid": "af4c906c-0e4a-4807-bfd0-fa74652e6aa4",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "cd21f186-32bd-4275-9e31-3f8dfd981a9d",
       "target": "9189fd92-04b5-4f51-a207-a8387994f541",
       "text": "",
       "uuid": "3cc81a1c-3723-47a8-a17a-e88864c41674",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "9189fd92-04b5-4f51-a207-a8387994f541",
       "target": "9b43879a-23e0-4cef-b5e0-f8c5def66a9f",
       "text": "",
       "uuid": "e717b15f-d26b-4e8d-934f-3b300331176b",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "9b43879a-23e0-4cef-b5e0-f8c5def66a9f",
       "target": "fa83a554-56ef-4854-a876-9081c09689e9",
       "text": "",
       "uuid": "caeb25f5-dd2f-4032-91b2-bf46943c8a0b",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "9b43879a-23e0-4cef-b5e0-f8c5def66a9f",
       "target": "9d9a8805-d538-4e98-a6aa-9a7b22ddfd27",
       "text": "",
       "uuid": "64977324-bd4f-4d6a-81a8-8f6a74dc29bf",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "9b43879a-23e0-4cef-b5e0-f8c5def66a9f",
       "target": "a86e7968-c44e-4eac-8cda-4258192f4d9a",
       "text": "",
       "uuid": "f2ab58f0-4165-4176-b9f9-c0c3d78a277e",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "a86e7968-c44e-4eac-8cda-4258192f4d9a",
       "target": "1f9b45c4-0413-4cc0-91f1-e544ba3fd50b",
       "text": "",
       "uuid": "fb367881-8ae5-4070-80c6-b43de51f14bb",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "8a8bdc6b-a78b-4d5a-8d58-51512ddaa153",
       "target": "1f9b45c4-0413-4cc0-91f1-e544ba3fd50b",
       "text": "",
       "uuid": "0ddda36d-663e-4759-9f5c-36bd7255d4e9",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "1f9b45c4-0413-4cc0-91f1-e544ba3fd50b",
       "target": "382bf4dc-73b5-4afe-a8fb-484d75eb33f3",
       "text": "",
       "uuid": "67552527-642a-467a-b81f-5703df350196",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "382bf4dc-73b5-4afe-a8fb-484d75eb33f3",
       "target": "8b95cbe3-2812-473f-aaa2-0a2dbe28f374",
       "text": "",
       "uuid": "99b37023-1523-454f-bb0d-4d7b3340a0a3",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "8b95cbe3-2812-473f-aaa2-0a2dbe28f374",
       "target": "3929a2b5-c59d-43b4-b94d-c571115ea2ff",
       "text": "",
       "uuid": "534357e4-510c-48d9-8d29-1f00a0f5425e",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "3929a2b5-c59d-43b4-b94d-c571115ea2ff",
       "target": "b9783df0-a736-44e8-be4e-67ad260c37a8",
       "text": "",
       "uuid": "c288587b-db21-431e-81dd-da393c0b7b1a",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "b9783df0-a736-44e8-be4e-67ad260c37a8",
       "target": "5ee606e0-f77a-411f-9dc5-f00f212119a7",
       "text": "",
       "uuid": "dea001c1-adb0-496a-b879-9c1f6faf4ae3",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "5ee606e0-f77a-411f-9dc5-f00f212119a7",
       "target": "3b930433-f146-42a5-984d-68802e05c51a",
       "text": "",
       "uuid": "2d25ceb7-f785-4e6c-af6a-088c04001703",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "2bb5b822-3634-4f95-9892-20a0b2192b65",
       "target": "8e706cc5-b6be-4994-b453-597af51e517a",
       "text": "",
       "uuid": "38b98c47-0808-451d-a520-d2f5798336c4",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "3b930433-f146-42a5-984d-68802e05c51a",
       "target": "1dde98b7-bb86-4de2-a926-0dbb30d11e2a",
       "text": "",
       "uuid": "c4e9dbfa-6e1a-4045-9db9-5e112a532ee0",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "3b930433-f146-42a5-984d-68802e05c51a",
       "target": "c2d445e7-995b-42da-98d6-35293846b280",
       "text": "",
       "uuid": "c5dbb3d5-4394-44ba-9c62-c7863ac8cbc2",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "1dde98b7-bb86-4de2-a926-0dbb30d11e2a",
       "target": "9cafe9c3-7631-4d5e-8b85-7f6a57aeaad8",
       "text": "",
       "uuid": "fdf7eb6d-50b3-461a-858d-59196f34cf55",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "1dde98b7-bb86-4de2-a926-0dbb30d11e2a",
       "target": "153bd3c5-c7bc-420e-add6-4f1662434d13",
       "text": "",
       "uuid": "bcb283af-7f09-4f28-9305-24e052880c54",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "153bd3c5-c7bc-420e-add6-4f1662434d13",
       "target": "8b71bbc0-3d0d-47f1-a46f-52b8d3714ad3",
       "text": "",
       "uuid": "01b74a84-cd93-4395-926f-a0399b1a951a",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "8b71bbc0-3d0d-47f1-a46f-52b8d3714ad3",
       "target": "81a319c4-013f-4955-8a84-3b9791fab519",
       "text": "",
       "uuid": "ab78d310-a190-4b1f-a1e7-7fa8dd7a1ac7",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "c2d445e7-995b-42da-98d6-35293846b280",
       "target": "ac2d50a1-54b3-4445-9cb0-6b5e9d2d22a5",
       "text": "",
       "uuid": "9f7c31de-7bff-4e69-bde6-4e2c091f27b9",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "8b71bbc0-3d0d-47f1-a46f-52b8d3714ad3",
       "target": "2fea8696-53be-480f-987d-a85ec55d6481",
       "text": "",
       "uuid": "f6fd77b6-090d-4ddd-9055-e97bf0b97222",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "81a319c4-013f-4955-8a84-3b9791fab519",
       "target": "a6ef23cb-e6b3-4c8c-b2fd-92888a8da175",
       "text": "",
       "uuid": "59d9bcbb-f4cc-4063-9d9a-488ae16d7407",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "2fea8696-53be-480f-987d-a85ec55d6481",
       "target": "07867c7a-f4c1-41bc-8414-85070d8c5bba",
       "text": "",
       "uuid": "30957965-0fff-4a8d-aa49-f993b557e961",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
     },
     {
       "source": "a6ef23cb-e6b3-4c8c-b2fd-92888a8da175",
       "target": "8666e25c-86e6-4a21-b8ca-552353436679",
       "text": "",
       "uuid": "bcc9b609-778b-4cf2-a83f-c466d51b1945",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "type": "core:line_edge"
+    },
+    {
+      "source": "e14adfc2-4201-475a-8c6d-12d368f3f0a2",
+      "target": "1613eda8-58dd-47f4-ae9e-53cf65c61935",
+      "text": "",
+      "uuid": "8234c31a-c058-4f8f-9a6a-138662e90d9b",
+      "type": "core:line_edge"
+    },
+    {
+      "source": "374d658d-0dc9-4c34-8d98-19c8bb1a3272",
+      "target": "1613eda8-58dd-47f4-ae9e-53cf65c61935",
+      "text": "",
+      "uuid": "205435d0-f025-4752-9e87-ada8be438f82",
+      "type": "core:line_edge"
+    },
+    {
+      "source": "1613eda8-58dd-47f4-ae9e-53cf65c61935",
+      "target": "a424f562-462c-4fdc-bf04-999b88c9cdc2",
+      "text": "",
+      "uuid": "edfd96c8-eacf-4a48-9669-7b17d298f140",
+      "type": "core:line_edge"
     }
   ],
   "tags": []
