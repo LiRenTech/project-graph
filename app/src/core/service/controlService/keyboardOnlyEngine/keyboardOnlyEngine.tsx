@@ -29,12 +29,16 @@ export namespace KeyboardOnlyEngine {
   }
 
   let textNodeStartEditMode: Settings.Settings["textNodeStartEditMode"] = "enter";
+  let textNodeSelectAllWhenStartEditByKeyboard: boolean = true;
 
   export function init() {
     bindKeyEvents();
     targetLocationController.init();
     Settings.watch("textNodeStartEditMode", (value) => {
       textNodeStartEditMode = value;
+    });
+    Settings.watch("textNodeSelectAllWhenStartEditByKeyboard", (value) => {
+      textNodeSelectAllWhenStartEditByKeyboard = value;
     });
   }
 
@@ -61,7 +65,7 @@ export namespace KeyboardOnlyEngine {
           event.preventDefault(); // 这个prevent必须开启，否则会立刻在刚创建的输入框里输入一个换行符。
           addSuccessEffect();
           // 编辑节点
-          editTextNode(selectedNode, false);
+          editTextNode(selectedNode, textNodeSelectAllWhenStartEditByKeyboard);
         } else {
           // 用户可能记错了快捷键
           addFailEffect();

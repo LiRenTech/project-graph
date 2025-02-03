@@ -109,6 +109,8 @@ export namespace Stage {
   export let mouseRightDragBackground = "cut";
   export let enableDragAutoAlign = true;
 
+  export let textNodeSelectAllWhenStartEditByMouseClick = true;
+
   export function init() {
     autoSaveEngine.init();
     autoBackupEngine.init();
@@ -117,6 +119,9 @@ export namespace Stage {
     });
     Settings.watch("enableDragAutoAlign", (value) => {
       enableDragAutoAlign = value;
+    });
+    Settings.watch("textNodeSelectAllWhenStartEditByMouseClick", (value) => {
+      textNodeSelectAllWhenStartEditByMouseClick = value;
     });
   }
 }

@@ -63,6 +63,8 @@ export namespace Settings {
     textNodeContentLineBreak: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter";
     textNodeExitEditMode: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter";
     textNodeStartEditMode: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter";
+    textNodeSelectAllWhenStartEditByKeyboard: boolean;
+    textNodeSelectAllWhenStartEditByMouseClick: boolean;
     // 音效相关
     soundEnabled: boolean;
     cuttingLineStartSoundFile: string;
@@ -126,6 +128,8 @@ export namespace Settings {
     textNodeContentLineBreak: "enter",
     textNodeExitEditMode: "ctrlEnter",
     textNodeStartEditMode: "enter",
+    textNodeSelectAllWhenStartEditByKeyboard: false,
+    textNodeSelectAllWhenStartEditByMouseClick: true,
     // 音效相关
     soundEnabled: true,
     cuttingLineStartSoundFile: "",

@@ -12,6 +12,7 @@ import {
   RotateCw,
   ScanEye,
   Skull,
+  TextCursorInput,
   TextSelect,
 } from "lucide-react";
 import { FieldGroup, SettingField } from "./_field";
@@ -28,6 +29,12 @@ export default function Control() {
         <SettingField icon={<ListRestart />} settingKey="textNodeStartEditMode" type="select" />
         <SettingField icon={<ListEnd />} settingKey="textNodeContentLineBreak" type="select" />
         <SettingField icon={<ListCheck />} settingKey="textNodeExitEditMode" type="select" />
+        <SettingField
+          icon={<TextCursorInput />}
+          settingKey="textNodeSelectAllWhenStartEditByMouseClick"
+          type="switch"
+        />
+        <SettingField icon={<TextCursorInput />} settingKey="textNodeSelectAllWhenStartEditByKeyboard" type="switch" />
       </FieldGroup>
 
       <FieldGroup title="Edge 连线" icon={<GitCompareArrows />}>

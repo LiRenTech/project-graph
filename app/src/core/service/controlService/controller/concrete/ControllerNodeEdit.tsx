@@ -7,6 +7,7 @@ import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { editNodeDetails, editTextNode, editUrlNodeTitle } from "./utilsControl";
+import { Stage } from "../../../../stage/Stage";
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
  *
@@ -30,7 +31,7 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
     editNodeDetails(clickedEntity);
   } else {
     if (clickedEntity instanceof TextNode) {
-      editTextNode(clickedEntity);
+      editTextNode(clickedEntity, Stage.textNodeSelectAllWhenStartEditByMouseClick);
     } else if (clickedEntity instanceof UrlNode) {
       const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
       if (diffNodeLeftTopLocation.y < UrlNode.titleHeight) {
