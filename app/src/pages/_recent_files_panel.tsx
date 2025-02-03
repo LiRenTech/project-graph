@@ -76,17 +76,26 @@ export default function RecentFilesPanel() {
   const checkoutFile = async (file: RecentFileManager.RecentFile) => {
     try {
       const path = file.path;
-      setFile(decodeURIComponent(path));
       if (isDesktop && !path.endsWith("." + PROJECT_GRAPH_FILE_EXT)) {
-        Dialog.show({
-          title: `请选择一个.${PROJECT_GRAPH_FILE_EXT}文件`,
-          type: "error",
-        });
+        if (path.endsWith(".json")) {
+          Dialog.show({
+            title: "文件过早，需要转换",
+            type: "error",
+            content: `此文件为早于1.5版本的早期文件格式，请在菜单中点击“从1.5版以前的文件打开”，找到此json文件，将此文件转换成新版本并另存为。即可完成版本转换。`,
+          });
+        } else {
+          Dialog.show({
+            title: `请选择一个.${PROJECT_GRAPH_FILE_EXT}文件`,
+            type: "error",
+            content: `当前文件为: ${path}`,
+          });
+        }
         return;
       }
       const isOpenSuccess = await RecentFileManager.openFileByPath(path);
       if (isOpenSuccess) {
         setRecentFilePanelOpen(false);
+        setFile(decodeURIComponent(path));
       }
     } catch (error) {
       Dialog.show({
@@ -111,6 +120,26 @@ export default function RecentFilesPanel() {
           content: `已经成功添加到快速启动界面的列表：${path}`,
           type: "success",
         });
+      }
+    };
+  };
+  const deleteStartFile = (path: string) => {
+    return async () => {
+      const removeSuccess = await RecentFileManager.removeRecentFile(path);
+      if (!removeSuccess) {
+        Dialog.show({
+          title: "文件删除失败",
+          content: `可能是文件不存在：${path}`,
+          type: "error",
+        });
+      } else {
+        Dialog.show({
+          title: "删除成功",
+          content: `已经成功删除这条记录：${path}`,
+          type: "success",
+        });
+        // 刷新
+        updateRecentFiles();
       }
     };
   };
@@ -163,6 +192,10 @@ export default function RecentFilesPanel() {
                 <button onClick={addToStartFiles(file.path)} className="bg-neutral-700 text-xs hover:cursor-pointer">
                   {/* <Zap /> */}
                   添加到启动
+                </button>
+                <button onClick={deleteStartFile(file.path)} className="bg-neutral-700 text-xs hover:cursor-pointer">
+                  {/* <Zap /> */}
+                  删除记录
                 </button>
               </td>
             </tr>
