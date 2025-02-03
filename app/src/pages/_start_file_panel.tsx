@@ -165,9 +165,9 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
       if (isDesktop && !path.endsWith(`.${PROJECT_GRAPH_FILE_EXT}`)) {
         if (path.endsWith(".json")) {
           Dialog.show({
-            title: "文件过早",
+            title: "文件过早，需要转换",
             type: "error",
-            content: `此文件为早于1.5版本的早期文件格式，请在菜单中将此文件转换成新版本。`,
+            content: `此文件为早于1.5版本的早期文件格式，请在菜单中点击“从1.5版以前的文件打开”，找到此json文件，将此文件转换成新版本并另存为。即可完成版本转换。`,
           });
         } else {
           Dialog.show({
