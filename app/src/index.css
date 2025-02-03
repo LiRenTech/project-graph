@@ -1,0 +1,496 @@
+@import "tailwindcss" important;
+
+@custom-variant page (&.active);
+
+@font-face {
+  font-family: "MiSans";
+  font-weight: normal;
+  src:
+    local("MiSans VF"),
+    url("./assets/MiSans-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "MiSans";
+  font-weight: bold;
+  src:
+    local("MiSans VF"),
+    url("./assets/MiSans-Bold.woff2") format("woff2");
+}
+
+@theme {
+  --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+}
+@theme inline {
+  --color-panel-bg: var(--color-panel-bg);
+  --color-panel-text: var(--color-panel-text);
+  --color-panel-details-text: var(--color-panel-details-text);
+  --color-tooltip-bg: var(--color-tooltip-bg);
+  --color-tooltip-text: var(--color-tooltip-text);
+  --color-tooltip-border: var(--color-tooltip-border);
+  --color-button-bg: var(--color-button-bg);
+  --color-button-text: var(--color-button-text);
+  --color-button-border: var(--color-button-border);
+  --color-icon-button-bg: var(--color-icon-button-bg);
+  --color-icon-button-text: var(--color-icon-button-text);
+  --color-icon-button-border: var(--color-icon-button-border);
+  --color-input-bg: var(--color-input-bg);
+  --color-input-text: var(--color-input-text);
+  --color-input-border: var(--color-input-border);
+  --color-input-placeholder: var(--color-input-placeholder);
+  --color-keybind-bg: var(--color-keybind-bg);
+  --color-keybind-text: var(--color-keybind-text);
+  --color-keybind-border: var(--color-keybind-border);
+  --color-keybind-active-outline: var(--color-keybind-active-outline);
+  --color-select-bg: var(--color-select-bg);
+  --color-select-text: var(--color-select-text);
+  --color-select-border: var(--color-select-border);
+  --color-select-popup-bg: var(--color-select-popup-bg);
+  --color-select-popup-border: var(--color-select-popup-border);
+  --color-select-popup-shadow: var(--color-select-popup-shadow);
+  --color-select-option-bg: var(--color-select-option-bg);
+  --color-select-option-text: var(--color-select-option-text);
+  --color-select-option-border: var(--color-select-option-border);
+  --color-select-option-hover-bg: var(--color-select-option-hover-bg);
+  --color-select-option-hover-text: var(--color-select-option-hover-text);
+  --color-select-option-hover-border: var(--color-select-option-hover-border);
+  --color-select-option-selected-bg: var(--color-select-option-selected-bg);
+  --color-select-option-selected-text: var(--color-select-option-selected-text);
+  --color-select-option-selected-border: var(--color-select-option-selected-border);
+  --color-select-option-selected-hover-bg: var(--color-select-option-selected-hover-bg);
+  --color-select-option-selected-hover-text: var(--color-select-option-selected-hover-text);
+  --color-select-option-selected-hover-border: var(--color-select-option-selected-hover-border);
+  --color-slider-line: var(--color-slider-line);
+  --color-slider-handle: var(--color-slider-handle);
+  --color-switch-false-bg: var(--color-switch-false-bg);
+  --color-switch-false-dot: var(--color-switch-false-dot);
+  --color-switch-true-bg: var(--color-switch-true-bg);
+  --color-switch-true-dot: var(--color-switch-true-dot);
+  --color-switch-disabled-bg: var(--color-switch-disabled-bg);
+  --color-switch-disabled-dot: var(--color-switch-disabled-dot);
+  --color-appmenu-bg: var(--color-appmenu-bg);
+  --color-appmenu-border: var(--color-appmenu-border);
+  --color-appmenu-category-title: var(--color-appmenu-category-title);
+  --color-appmenu-category-separator: var(--color-appmenu-category-separator);
+  --color-appmenu-item-text: var(--color-appmenu-item-text);
+  --color-appmenu-hover-bg: var(--color-appmenu-hover-bg);
+  --color-toolbar-bg: var(--color-toolbar-bg);
+  --color-toolbar-icon: var(--color-toolbar-text);
+  --color-toolbar-icon-hover-bg: var(--color-toolbar-icon-hover-bg);
+  --color-toolbar-border: var(--color-toolbar-border);
+  --color-toolbar-tooltip-bg: var(--color-tooltip-bg);
+  --color-toolbar-tooltip-text: var(--color-tooltip-text);
+  --color-toolbar-tooltip-border: var(--color-tooltip-border);
+  --color-toolbar-collapsed-bg: var(--color-toolbar-collapsed-bg);
+  --color-settings-page-bg: var(--color-settings-page-bg);
+  --color-settings-text: var(--color-appmenu-item-text);
+}
+:root {
+  --color-panel-bg: oklch(0.269 0 0);
+  --color-panel-text: #fff;
+  --color-panel-details-text: #aaa;
+  --color-tooltip-bg: oklch(0.269 0 0);
+  --color-tooltip-text: #fff;
+  --color-tooltip-border: oklch(0.371 0 0);
+  --color-button-bg: oklch(0.269 0 0);
+  --color-button-text: #fff;
+  --color-button-border: oklch(0.371 0 0);
+  --color-icon-button-bg: oklch(0.269 0 0);
+  --color-icon-button-text: #fff;
+  --color-icon-button-border: oklch(0.371 0 0);
+  --color-input-bg: oklch(0.269 0 0);
+  --color-input-text: #fff;
+  --color-input-border: oklch(0.371 0 0);
+  --color-input-placeholder: oklch(0.556 0 0);
+  --color-keybind-bg: oklch(0.269 0 0);
+  --color-keybind-text: #fff;
+  --color-keybind-border: oklch(0.371 0 0);
+  --color-keybind-active-outline: oklch(0.623 0.214 259.815);
+  --color-select-bg: oklch(0.269 0 0);
+  --color-select-text: #fff;
+  --color-select-border: oklch(0.371 0 0);
+  --color-select-popup-bg: oklch(0.205 0 0);
+  --color-select-popup-border: oklch(0.371 0 0);
+  --color-select-popup-shadow: oklch(0.129 0.042 264.695);
+  --color-select-option-bg: transparent;
+  --color-select-option-text: #fff;
+  --color-select-option-border: transparent;
+  --color-select-option-hover-bg: oklch(0.269 0 0);
+  --color-select-option-hover-text: #fff;
+  --color-select-option-hover-border: transparent;
+  --color-select-option-selected-bg: oklch(0.439 0 0);
+  --color-select-option-selected-text: #fff;
+  --color-select-option-selected-border: transparent;
+  --color-select-option-selected-hover-bg: oklch(0.556 0 0);
+  --color-select-option-selected-hover-text: #fff;
+  --color-select-option-selected-hover-border: transparent;
+  --color-slider-line: oklch(0.371 0 0);
+  --color-slider-handle: oklch(0.707 0.165 254.624);
+  --color-switch-false-bg: oklch(0.269 0 0);
+  --color-switch-false-dot: #fff;
+  --color-switch-true-bg: oklch(0.623 0.214 259.815);
+  --color-switch-true-dot: #fff;
+  --color-switch-disabled-bg: oklch(0.439 0 0);
+  --color-switch-disabled-dot: #fff;
+  --color-appmenu-bg: oklch(0.269 0 0);
+  --color-appmenu-border: oklch(0.371 0 0);
+  --color-appmenu-category-title: oklch(0.708 0 0);
+  --color-appmenu-category-separator: oklch(0.371 0 0);
+  --color-appmenu-item-text: #fff;
+  --color-appmenu-hover-bg: oklch(0.371 0 0);
+  --color-toolbar-bg: oklch(0.269 0 0);
+  --color-toolbar-icon: #fff;
+  --color-toolbar-icon-hover-bg: rgb(255 255 255 / 0.2);
+  --color-toolbar-border: oklch(0.371 0 0);
+  --color-toolbar-tooltip-bg: var(--color-tooltip-bg);
+  --color-toolbar-tooltip-text: var(--color-tooltip-text);
+  --color-toolbar-tooltip-border: var(--color-tooltip-border);
+  --color-toolbar-collapsed-bg: #fff;
+  --color-settings-page-bg: oklch(0.145 0 0);
+  --color-settings-text: var(--color-appmenu-item-text);
+}
+
+/* 暗色主题 */
+[data-theme="dark"] {
+  --color-panel-bg: oklch(0.269 0 0);
+  --color-panel-text: #fff;
+  --color-panel-details-text: #aaa;
+  --color-tooltip-bg: oklch(0.269 0 0);
+  --color-tooltip-text: #fff;
+  --color-tooltip-border: oklch(0.371 0 0);
+  --color-button-bg: oklch(0.269 0 0);
+  --color-button-text: #fff;
+  --color-button-border: oklch(0.371 0 0);
+  --color-icon-button-bg: oklch(0.269 0 0);
+  --color-icon-button-text: #fff;
+  --color-icon-button-border: oklch(0.371 0 0);
+  --color-input-bg: oklch(0.269 0 0);
+  --color-input-text: #fff;
+  --color-input-border: oklch(0.371 0 0);
+  --color-input-placeholder: oklch(0.556 0 0);
+  --color-keybind-bg: oklch(0.269 0 0);
+  --color-keybind-text: #fff;
+  --color-keybind-border: oklch(0.371 0 0);
+  --color-keybind-active-outline: oklch(0.623 0.214 259.815);
+  --color-select-bg: oklch(0.269 0 0);
+  --color-select-text: #fff;
+  --color-select-border: oklch(0.371 0 0);
+  --color-select-popup-bg: oklch(0.205 0 0);
+  --color-select-popup-border: oklch(0.371 0 0);
+  --color-select-popup-shadow: oklch(0.129 0.042 264.695);
+  --color-select-option-bg: transparent;
+  --color-select-option-text: #fff;
+  --color-select-option-border: transparent;
+  --color-select-option-hover-bg: oklch(0.269 0 0);
+  --color-select-option-hover-text: #fff;
+  --color-select-option-hover-border: transparent;
+  --color-select-option-selected-bg: oklch(0.439 0 0);
+  --color-select-option-selected-text: #fff;
+  --color-select-option-selected-border: transparent;
+  --color-select-option-selected-hover-bg: oklch(0.556 0 0);
+  --color-select-option-selected-hover-text: #fff;
+  --color-select-option-selected-hover-border: transparent;
+  --color-slider-line: oklch(0.371 0 0);
+  --color-slider-handle: oklch(0.707 0.165 254.624);
+  --color-switch-false-bg: oklch(0.269 0 0);
+  --color-switch-false-dot: #fff;
+  --color-switch-true-bg: oklch(0.623 0.214 259.815);
+  --color-switch-true-dot: #fff;
+  --color-switch-disabled-bg: oklch(0.439 0 0);
+  --color-switch-disabled-dot: #fff;
+  --color-appmenu-bg: oklch(0.269 0 0);
+  --color-appmenu-border: oklch(0.371 0 0);
+  --color-appmenu-category-title: oklch(0.708 0 0);
+  --color-appmenu-category-separator: oklch(0.371 0 0);
+  --color-appmenu-item-text: #fff;
+  --color-appmenu-hover-bg: oklch(0.371 0 0);
+  --color-toolbar-bg: oklch(0.269 0 0);
+  --color-toolbar-icon: #fff;
+  --color-toolbar-icon-hover-bg: rgb(255 255 255 / 0.2);
+  --color-toolbar-border: oklch(0.371 0 0);
+  --color-toolbar-tooltip-bg: var(--color-tooltip-bg);
+  --color-toolbar-tooltip-text: var(--color-tooltip-text);
+  --color-toolbar-tooltip-border: var(--color-tooltip-border);
+  --color-toolbar-collapsed-bg: #fff;
+  --color-settings-page-bg: oklch(0.145 0 0);
+  --color-settings-text: var(--color-appmenu-item-text);
+}
+[data-theme="light"] {
+  --color-panel-bg: oklch(0.98 0.01 0);
+  --color-panel-text: oklch(0.15 0.05 0);
+  --color-panel-details-text: oklch(0.5 0.05 0);
+  --color-tooltip-bg: oklch(0.95 0.01 0);
+  --color-tooltip-text: oklch(0.15 0.05 0);
+  --color-tooltip-border: oklch(0.85 0.02 0);
+  --color-button-bg: oklch(0.98 0.01 0);
+  --color-button-text: oklch(0.15 0.05 0);
+  --color-button-border: oklch(0.85 0.02 0);
+  --color-icon-button-bg: oklch(0.98 0.01 0);
+  --color-icon-button-text: oklch(0.15 0.05 0);
+  --color-icon-button-border: oklch(0.85 0.02 0);
+  --color-input-bg: oklch(0.98 0.01 0);
+  --color-input-text: oklch(0.15 0.05 0);
+  --color-input-border: oklch(0.85 0.02 0);
+  --color-input-placeholder: oklch(0.6 0.02 0);
+  --color-keybind-bg: oklch(0.95 0.01 0);
+  --color-keybind-text: oklch(0.15 0.05 0);
+  --color-keybind-border: oklch(0.85 0.02 0);
+  --color-keybind-active-outline: oklch(0.7 0.2 259.815);
+  --color-select-bg: oklch(0.98 0.01 0);
+  --color-select-text: oklch(0.15 0.05 0);
+  --color-select-border: oklch(0.85 0.02 0);
+  --color-select-popup-bg: oklch(0.98 0.01 0);
+  --color-select-popup-border: oklch(0.85 0.02 0);
+  --color-select-popup-shadow: oklch(0.85 0.02 0 / 0.1);
+  --color-select-option-bg: transparent;
+  --color-select-option-text: oklch(0.15 0.05 0);
+  --color-select-option-border: transparent;
+  --color-select-option-hover-bg: oklch(0.95 0.01 0);
+  --color-select-option-hover-text: oklch(0.15 0.05 0);
+  --color-select-option-hover-border: transparent;
+  --color-select-option-selected-bg: oklch(0.9 0.05 0);
+  --color-select-option-selected-text: oklch(0.15 0.05 0);
+  --color-select-option-selected-border: transparent;
+  --color-select-option-selected-hover-bg: oklch(0.85 0.05 0);
+  --color-select-option-selected-hover-text: oklch(0.15 0.05 0);
+  --color-select-option-selected-hover-border: transparent;
+  --color-slider-line: oklch(0.85 0.02 0);
+  --color-slider-handle: oklch(0.7 0.2 254.624);
+  --color-switch-false-bg: oklch(0.85 0.02 0);
+  --color-switch-false-dot: oklch(0.98 0.01 0);
+  --color-switch-true-bg: oklch(0.7 0.2 259.815);
+  --color-switch-true-dot: oklch(0.98 0.01 0);
+  --color-switch-disabled-bg: oklch(0.9 0.01 0);
+  --color-switch-disabled-dot: oklch(0.7 0.02 0);
+  --color-appmenu-bg: oklch(0.98 0.01 0);
+  --color-appmenu-border: oklch(0.85 0.02 0);
+  --color-appmenu-category-title: oklch(0.6 0.02 0);
+  --color-appmenu-category-separator: oklch(0.85 0.02 0);
+  --color-appmenu-item-text: oklch(0.15 0.05 0);
+  --color-appmenu-hover-bg: oklch(0.95 0.01 0);
+  --color-toolbar-bg: oklch(0.98 0.01 0);
+  --color-toolbar-icon: oklch(0.15 0.05 0);
+  --color-toolbar-icon-hover-bg: rgb(0 0 0 / 0.1);
+  --color-toolbar-border: oklch(0.85 0.02 0);
+  --color-toolbar-tooltip-bg: var(--color-tooltip-bg);
+  --color-toolbar-tooltip-text: var(--color-tooltip-text);
+  --color-toolbar-tooltip-border: var(--color-tooltip-border);
+  --color-toolbar-collapsed-bg: oklch(0.15 0.05 0);
+  --color-settings-page-bg: #d3d3d3;
+  --color-settings-text: var(--color-appmenu-item-text);
+}
+
+/* 马卡龙主题（暖色系：粉/紫/淡黄） */
+/* 马卡龙主题（柔和粉紫/淡黄） */
+[data-theme="macaron"] {
+  /* 基础面板 */
+  --color-panel-bg: oklch(0.97 0.04 60); /* 米白黄 */
+  --color-panel-text: oklch(0.45 0.08 340); /* 灰粉紫 */
+  --color-panel-details-text: oklch(0.55 0.06 340);
+
+  /* 工具提示 */
+  --color-tooltip-bg: oklch(0.95 0.06 340); /* 雾粉色 */
+  --color-tooltip-text: oklch(0.4 0.08 340);
+  --color-tooltip-border: oklch(0.88 0.05 340);
+
+  /* 按钮系统 */
+  --color-button-bg: oklch(0.95 0.05 30); /* 浅杏色 */
+  --color-button-text: oklch(0.45 0.08 340);
+  --color-button-border: oklch(0.9 0.04 30);
+  --color-icon-button-bg: oklch(0.96 0.05 320); /* 灰调紫 */
+  --color-icon-button-text: oklch(0.45 0.08 320);
+  --color-icon-button-border: oklch(0.9 0.04 320);
+
+  /* 输入控件 */
+  --color-input-bg: oklch(0.98 0.02 60); /* 极浅米黄 */
+  --color-input-text: oklch(0.45 0.08 340);
+  --color-input-border: oklch(0.9 0.04 30);
+  --color-input-placeholder: oklch(0.7 0.06 340);
+
+  /* 快捷键 */
+  --color-keybind-bg: oklch(0.95 0.05 60); /* 淡奶茶色 */
+  --color-keybind-text: oklch(0.45 0.08 340);
+  --color-keybind-border: oklch(0.9 0.04 60);
+  --color-keybind-active-outline: oklch(0.8 0.06 340); /* 柔粉边线 */
+
+  /* 下拉选择 */
+  --color-select-bg: oklch(0.97 0.04 60);
+  --color-select-text: oklch(0.45 0.08 340);
+  --color-select-border: oklch(0.9 0.04 30);
+  --color-select-popup-bg: oklch(0.96 0.05 320); /* 灰紫弹窗 */
+  --color-select-popup-border: oklch(0.9 0.04 320);
+  --color-select-popup-shadow: oklch(0.85 0.05 340 / 0.1);
+  --color-select-option-hover-bg: oklch(0.94 0.06 340);
+  --color-select-option-selected-bg: oklch(0.9 0.08 340); /* 浅藕色 */
+  --color-select-option-bg: transparent;
+  --color-select-option-text: oklch(0.15 0.05 0);
+  --color-select-option-border: transparent;
+  --color-select-option-hover-text: oklch(0.15 0.05 0);
+  --color-select-option-hover-border: transparent;
+  --color-select-option-selected-text: oklch(0.15 0.05 0);
+  --color-select-option-selected-border: transparent;
+  --color-select-option-selected-hover-bg: oklch(0.85 0.05 0);
+  --color-select-option-selected-hover-text: oklch(0.15 0.05 0);
+  --color-select-option-selected-hover-border: transparent;
+
+  /* 滑动条 */
+  --color-slider-line: oklch(0.9 0.04 30); /* 浅杏色轨道 */
+  --color-slider-handle: oklch(0.8 0.07 340); /* 粉灰手柄 */
+
+  /* 开关 */
+  --color-switch-false-bg: oklch(0.94 0.05 60); /* 奶茶底色 */
+  --color-switch-false-dot: oklch(0.45 0.08 340);
+  --color-switch-true-bg: oklch(0.8 0.07 340); /* 灰粉色 */
+  --color-switch-true-dot: oklch(0.96 0.03 60);
+
+  /* 菜单系统 */
+  --color-appmenu-bg: oklch(0.97 0.04 320); /* 雾紫色 */
+  --color-appmenu-border: oklch(0.9 0.04 320);
+  --color-appmenu-category-title: oklch(0.65 0.06 340);
+  --color-appmenu-item-text: oklch(0.45 0.08 340);
+  --color-appmenu-hover-bg: oklch(0.94 0.06 340); /* 薄纱粉 */
+
+  /* 工具栏 */
+  --color-toolbar-bg: oklch(0.95 0.05 30); /* 浅杏色 */
+  --color-toolbar-icon: oklch(0.45 0.08 340);
+  --color-toolbar-icon-hover-bg: oklch(0.94 0.06 340 / 0.2);
+  --color-toolbar-border: oklch(0.9 0.04 30);
+  --color-toolbar-collapsed-bg: oklch(0.45 0.08 340); /* 主色暗调 */
+
+  /* 设置页面 */
+  --color-settings-page-bg: oklch(0.98 0.02 60); /* 珍珠白 */
+}
+
+/* 莫兰迪主题（浅咖/脏粉/豆绿/雾霾蓝） */
+[data-theme="morandi"] {
+  /* 基础色 */
+  --color-panel-bg: #d6dbd5; /* 冷淡蓝色调的浅灰色 */
+  --color-panel-text: oklch(0.25 0.03 240); /* 更深的冷灰色 */
+  --color-panel-details-text: oklch(0.35 0.03 240);
+
+  /* 核心配色 */
+  --color-primary: oklch(0.85 0.02 210); /* 冷绿 */
+  --color-secondary: oklch(0.85 0.02 240); /* 冷蓝色 */
+  --color-accent: oklch(0.85 0.02 270); /* 灰紫色 */
+
+  /* 工具提示 */
+  --color-tooltip-bg: var(--color-secondary); /* 冷蓝色 */
+  --color-tooltip-text: oklch(0.25 0.03 240);
+  --color-tooltip-border: oklch(0.8 0.02 240);
+
+  /* 按钮系统 */
+  --color-button-bg: var(--color-accent); /* 灰紫色 */
+  --color-button-text: oklch(0.25 0.03 240);
+  --color-button-border: oklch(0.82 0.02 270);
+  --color-icon-button-bg: var(--color-primary); /* 冷绿 */
+  --color-icon-button-text: oklch(0.25 0.03 240);
+  --color-icon-button-border: oklch(0.78 0.02 210);
+
+  /* 输入控件 */
+  --color-input-bg: oklch(0.96 0.02 240); /* 极浅冷灰色 */
+  --color-input-text: var(--color-panel-text);
+  --color-input-border: var(--color-secondary);
+  --color-input-placeholder: oklch(0.75 0.02 240);
+
+  /* 交互元素 */
+  --color-keybind-bg: var(--color-primary); /* 冷绿 */
+  --color-keybind-text: oklch(0.95 0.02 270);
+  --color-keybind-border: oklch(0.78 0.02 210);
+  --color-keybind-active-outline: var(--color-accent);
+
+  /* 下拉选择 */
+  --color-select-bg: var(--color-input-bg);
+  --color-select-text: var(--color-panel-text);
+  --color-select-border: var(--color-secondary);
+  --color-select-popup-bg: var(--color-secondary); /* 冷蓝色弹窗 */
+  --color-select-popup-border: oklch(0.8 0.02 240);
+  --color-select-option-hover-bg: oklch(0.88 0.02 240);
+  --color-select-option-selected-bg: var(--color-primary); /* 冷绿选中 */
+  --color-select-option-bg: transparent;
+  --color-select-option-text: oklch(0.25 0.03 240);
+  --color-select-option-border: transparent;
+  --color-select-option-hover-text: oklch(0.25 0.03 240);
+  --color-select-option-hover-border: transparent;
+  --color-select-option-selected-text: oklch(0.25 0.03 240);
+  --color-select-option-selected-border: transparent;
+  --color-select-option-selected-hover-bg: oklch(0.85 0.02 240);
+  --color-select-option-selected-hover-text: oklch(0.25 0.03 240);
+  --color-select-option-selected-hover-border: transparent;
+
+  /* 滑动条 */
+  --color-slider-line: var(--color-secondary); /* 冷蓝色轨道 */
+  --color-slider-handle: var(--color-accent); /* 灰紫色手柄 */
+
+  /* 开关 */
+  --color-switch-false-bg: oklch(0.85 0.02 240); /* 浅冷灰色 */
+  --color-switch-false-dot: oklch(0.88 0.02 240);
+  --color-switch-true-bg: var(--color-primary); /* 冷绿 */
+  --color-switch-true-dot: oklch(0.95 0.02 240);
+
+  /* 菜单系统 */
+  --color-appmenu-bg: var(--color-panel-bg); /* 冷淡蓝色调的浅灰色 */
+  --color-appmenu-border: var(--color-secondary);
+  --color-appmenu-item-text: var(--color-panel-text);
+  --color-appmenu-hover-bg: var(--color-accent); /* 灰紫色悬停 */
+
+  /* 工具栏 */
+  --color-toolbar-bg: var(--color-secondary); /* 冷蓝色 */
+  --color-toolbar-icon: oklch(0.95 0.02 270);
+  --color-toolbar-icon-hover-bg: var(--color-primary); /* 冷绿悬停 */
+  --color-toolbar-border: oklch(0.8 0.02 240);
+
+  /* 特殊页面 */
+  --color-settings-page-bg: oklch(0.94 0.005 240); /* 冷淡蓝色调的极浅灰色 */
+}
+
+@layer base {
+  body,
+  #root {
+    @apply h-screen bg-transparent;
+  }
+  * {
+    @apply ease-out-expo box-border cursor-default select-none transition duration-500 [-webkit-user-drag:none] [color-scheme:dark];
+    font-family: "MiSans";
+    font-antialiasing: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  /* Class assigned to popover wrapper */
+  .driver-popover {
+    @apply rounded-3xl bg-blue-950 p-6 text-white;
+  }
+
+  /* Arrow pointing towards the highlighted element */
+  .driver-popover-arrow {
+    @apply hidden;
+  }
+
+  /* Title and description */
+  .driver-popover-title {
+    @apply text-xl font-normal;
+    font-family: "MiSans" !important;
+  }
+  .driver-popover-description {
+    font-family: "MiSans" !important;
+  }
+
+  /* Close button displayed on the top right corner */
+  .driver-popover-close-btn {
+    @apply right-4 top-4 transition hover:scale-125 hover:text-white;
+  }
+
+  /* Footer of the popover displaying progress and navigation buttons */
+  .driver-popover-footer {
+  }
+  .driver-popover-progress-text {
+  }
+  .driver-popover-prev-btn,
+  .driver-popover-next-btn {
+    @apply rounded-full! border-none! bg-blue-900! px-3! py-2! text-white! transition! hover:scale-125! active:scale-90!;
+    font-family: "MiSans" !important;
+    text-shadow: none !important;
+  }
+}

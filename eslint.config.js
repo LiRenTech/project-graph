@@ -13,7 +13,7 @@ export default [
   },
   // https://github.com/eslint/eslint/discussions/18304
   {
-    ignores: ["src-tauri/", "dist/"],
+    ignores: ["app/dist/*/*", "app/src-tauri/*/*", "docs/src/.vitepress/dist/*/*", "docs/src/.vitepress/cache/*/*"],
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,

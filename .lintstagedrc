@@ -1,5 +1,5 @@
 {
-  "*.{ts,tsx}": ["prettier --write", "eslint --fix"],
+  "*.{ts,tsx}": ["eslint --fix"],
   "*.{json,md,yaml,yml}": ["prettier --write"],
-  "docs/**/*": ["pnpm docs:build"]
+  "docs/**/*": ["pnpm build:docs"]
 }

@@ -108,6 +108,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
+          projectPath: "./app"
           # upload to release
           tagName: "nightly"
           args: ${{ matrix.args }}
@@ -183,7 +184,7 @@ jobs:
           echo "${{ secrets.ANDROID_RELEASE_KEYSTORE }}" | base64 --decode > app/upload.jks
 
       - name: build
-        run: pnpm tauri android build -v
+        run: pnpm build:android
         env:
           NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.11902837
           LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}

@@ -1,7 +1,3 @@
 {
-  "recommendations": [
-    "tauri-apps.tauri-vscode",
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode"
-  ]
+  "recommendations": ["tauri-apps.tauri-vscode", "dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
 }

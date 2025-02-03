@@ -1,0 +1,19 @@
+{
+  "name": "@mono/docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev ./src",
+    "docs:build": "vitepress build ./src",
+    "docs:preview": "vitepress preview ./src"
+  },
+  "devDependencies": {
+    "@nolebase/vitepress-plugin-enhanced-readabilities": "^2.12.1",
+    "@nolebase/vitepress-plugin-highlight-targeted-heading": "^2.12.1",
+    "@nolebase/vitepress-plugin-page-properties": "^2.12.1",
+    "markdown-it": "^14.1.0",
+    "vitepress": "^1.6.3",
+    "vue": "^3.5.13"
+  }
+}

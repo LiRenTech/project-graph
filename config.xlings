@@ -17,6 +17,6 @@ xdeps = {
         {"arch", "sudo pacman -S --needed webkit2gtk base-devel curl wget file openssl appmenu-gtk-module gtk3 libappindicator-gtk3 librsvg libvips --noconfirm"},
         --"pnpm install --registry=https://registry.npmmirror.com",
         "pnpm install",
-        "pnpm tauri dev",
+        "pnpm dev:app",
     }
 }
