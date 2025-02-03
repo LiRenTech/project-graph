@@ -1,4 +1,5 @@
 import { getMultiLineTextSize } from "../../../utils/font";
+import { getEnterKey } from "../../../utils/keyboardFunctions";
 import { Vector } from "../../dataStruct/Vector";
 import { EntityDashTipEffect } from "../../service/feedbackService/effectEngine/concrete/EntityDashTipEffect";
 import { EntityShakeEffect } from "../../service/feedbackService/effectEngine/concrete/EntityShakeEffect";
@@ -271,23 +272,7 @@ export namespace InputElement {
     for (const textNode of textNodes) {
       Stage.effectMachine.addEffect(EntityShakeEffect.fromEntity(textNode));
     }
-    Stage.effectMachine.addEffect(TextRiseEffect.default("您可能记错了快捷键"));
-  }
-
-  function getEnterKey(event: KeyboardEvent): "enter" | "ctrlEnter" | "shiftEnter" | "altEnter" | "other" {
-    if (event.key === "Enter") {
-      if (event.ctrlKey) {
-        return "ctrlEnter";
-      } else if (event.altKey) {
-        return "altEnter";
-      } else if (event.shiftKey) {
-        return "shiftEnter";
-      } else {
-        return "enter";
-      }
-    } else {
-      return "other";
-    }
+    Stage.effectMachine.addEffect(TextRiseEffect.default("您可能记错了退出或换行的控制设置"));
   }
 
   let textNodeContentLineBreak: Settings.Settings["textNodeContentLineBreak"] = "enter";

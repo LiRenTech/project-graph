@@ -1,10 +1,15 @@
 import { Dialog } from "../../../../components/dialog";
+import { getEnterKey } from "../../../../utils/keyboardFunctions";
 import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
+import { EntityDashTipEffect } from "../../feedbackService/effectEngine/concrete/EntityDashTipEffect";
+import { EntityShakeEffect } from "../../feedbackService/effectEngine/concrete/EntityShakeEffect";
+import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
+import { Settings } from "../../Settings";
 import { editTextNode } from "../controller/concrete/utilsControl";
 import { KeyboardOnlyDirectionController } from "./keyboardOnlyDirectionController";
 import { NewTargetLocationSelector } from "./newTargetLocationSelector";
@@ -23,9 +28,14 @@ export namespace KeyboardOnlyEngine {
     return targetLocationController.location;
   }
 
+  let textNodeStartEditMode: Settings.Settings["textNodeStartEditMode"] = "enter";
+
   export function init() {
     bindKeyEvents();
     targetLocationController.init();
+    Settings.watch("textNodeStartEditMode", (value) => {
+      textNodeStartEditMode = value;
+    });
   }
 
   export function logicTick() {
@@ -43,12 +53,19 @@ export namespace KeyboardOnlyEngine {
         //   createStart();
         // }
       } else if (event.key === "Enter") {
-        // 这个还必须在down的位置上，因为在up上会导致无限触发
-        const selectedNode = StageManager.getTextNodes().find((node) => node.isSelected);
-        if (!selectedNode) return;
-        event.preventDefault(); // 这个prevent必须开启，否则会立刻在刚创建的输入框里输入一个换行符。
-        // 编辑节点
-        editTextNode(selectedNode, false);
+        const enterKeyDetail = getEnterKey(event);
+        if (textNodeStartEditMode === enterKeyDetail) {
+          // 这个还必须在down的位置上，因为在up上会导致无限触发
+          const selectedNode = StageManager.getTextNodes().find((node) => node.isSelected);
+          if (!selectedNode) return;
+          event.preventDefault(); // 这个prevent必须开启，否则会立刻在刚创建的输入框里输入一个换行符。
+          addSuccessEffect();
+          // 编辑节点
+          editTextNode(selectedNode, false);
+        } else {
+          // 用户可能记错了快捷键
+          addFailEffect();
+        }
       } else if (event.key === "F2") {
         const selectedNode = StageManager.getTextNodes().find((node) => node.isSelected);
         if (!selectedNode) return;
@@ -67,6 +84,20 @@ export namespace KeyboardOnlyEngine {
     // });
   }
 
+  function addSuccessEffect() {
+    const textNodes = StageManager.getTextNodes().filter((textNode) => textNode.isSelected);
+    for (const textNode of textNodes) {
+      Stage.effectMachine.addEffect(new EntityDashTipEffect(50, textNode.collisionBox.getRectangle()));
+    }
+  }
+
+  function addFailEffect() {
+    const textNodes = StageManager.getTextNodes().filter((textNode) => textNode.isSelected);
+    for (const textNode of textNodes) {
+      Stage.effectMachine.addEffect(EntityShakeEffect.fromEntity(textNode));
+    }
+    Stage.effectMachine.addEffect(TextRiseEffect.default("您可能记错了节点进入编辑状态的控制键设置"));
+  }
   /**
    * 是否达到了按下Tab键的前置条件
    */

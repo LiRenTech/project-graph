@@ -62,6 +62,7 @@ export namespace Settings {
     mouseRightDragBackground: "cut" | "moveCamera";
     textNodeContentLineBreak: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter";
     textNodeExitEditMode: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter";
+    textNodeStartEditMode: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter";
     // 音效相关
     soundEnabled: boolean;
     cuttingLineStartSoundFile: string;
@@ -124,6 +125,7 @@ export namespace Settings {
     mouseRightDragBackground: "cut",
     textNodeContentLineBreak: "enter",
     textNodeExitEditMode: "ctrlEnter",
+    textNodeStartEditMode: "enter",
     // 音效相关
     soundEnabled: true,
     cuttingLineStartSoundFile: "",

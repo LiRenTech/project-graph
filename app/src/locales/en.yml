@@ -320,6 +320,15 @@ settings:
     description: |
       注意不要和文本节点退出编辑模式的按键一样了，这样会导致冲突
       进而导致无法换行
+  textNodeStartEditMode:
+    title: 文本节点进入编辑模式
+    options:
+      enter: enter
+      ctrlEnter: ctrlEnter
+      altEnter: altEnter
+      shiftEnter: shiftEnter
+    description: |
+      实际上按F2键也可以进入编辑模式，这里还可以再加选一种
   textNodeExitEditMode:
     title: 文本节点退出编辑模式
     options:

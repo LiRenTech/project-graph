@@ -5,6 +5,7 @@ import {
   Keyboard,
   ListCheck,
   ListEnd,
+  ListRestart,
   Mouse,
   MousePointerClick,
   Move,
@@ -20,12 +21,13 @@ export default function Control() {
     <>
       <FieldGroup title="Mouse 鼠标设定" icon={<Mouse />}>
         <SettingField icon={<MousePointerClick />} settingKey="mouseRightDragBackground" type="select" />
+        <SettingField icon={<AlignStartVertical />} settingKey="enableDragAutoAlign" type="switch" />
       </FieldGroup>
 
       <FieldGroup title="TextNode 文本节点" icon={<TextSelect />}>
+        <SettingField icon={<ListRestart />} settingKey="textNodeStartEditMode" type="select" />
         <SettingField icon={<ListEnd />} settingKey="textNodeContentLineBreak" type="select" />
         <SettingField icon={<ListCheck />} settingKey="textNodeExitEditMode" type="select" />
-        <SettingField icon={<AlignStartVertical />} settingKey="enableDragAutoAlign" type="switch" />
       </FieldGroup>
 
       <FieldGroup title="Edge 连线" icon={<GitCompareArrows />}>
