@@ -233,6 +233,7 @@ export default function App() {
         )}
         {/* 左上角菜单按钮 */}
         <IconButton
+          tooltip="菜单"
           onClick={(e) => {
             if (location.pathname !== "/") {
               if (location.pathname.startsWith("/welcome")) {
@@ -266,6 +267,7 @@ export default function App() {
             e.stopPropagation();
             setIsTagPanelOpen(!isTagPanelOpen);
           }}
+          tooltip="标签节点"
         >
           <Tag className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")} />
         </IconButton>
@@ -275,8 +277,9 @@ export default function App() {
             e.stopPropagation();
             setIsLogicNodePanelOpen(!isLogicNodePanelOpen);
           }}
+          tooltip="逻辑节点"
         >
-          <Cpu className={cn("cursor-pointer", isLogicNodePanelOpen ? "rotate-90" : "")} />
+          <Cpu className={cn("cursor-pointer", isLogicNodePanelOpen ? "rotate-45" : "")} />
         </IconButton>
         {/* 中间标题 */}
         {useNativeTitleBar || isWeb ? (
@@ -290,6 +293,7 @@ export default function App() {
                 "text-yellow-500": isSaved,
                 "flex-1": isDesktop,
               })}
+              tooltip="拖动窗口"
             >
               {isMobile && filename + (isSaved ? "" : t("unsaved"))}
             </Button>
@@ -314,6 +318,7 @@ export default function App() {
             e.stopPropagation();
             setIsStartFilePanelOpen(!isStartFilePanelOpen);
           }}
+          tooltip="设置启动时打开的文件"
         >
           <Zap className={cn("cursor-pointer", isStartFilePanelOpen ? "rotate-45 scale-125" : "")} />
         </IconButton>

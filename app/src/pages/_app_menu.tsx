@@ -15,7 +15,7 @@ import {
   Fullscreen,
   Info,
   MoreHorizontal,
-  PartyPopper,
+  // PartyPopper,
   RefreshCcw,
   Save,
   Scaling,
@@ -463,15 +463,15 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         <Col icon={<Info />} onClick={() => navigate("/settings/about")}>
           {t("more.items.about")}
         </Col>
-
-        <Col
+        {/* welcome界面没有东西，容易误导 */}
+        {/* <Col
           icon={<PartyPopper />}
           onClick={() => {
             navigate("/welcome");
           }}
         >
           {t("more.items.welcome")}
-        </Col>
+        </Col> */}
       </Row>
       {!isWeb && (
         <Row icon={<AppWindow />} title={t("window.title")}>

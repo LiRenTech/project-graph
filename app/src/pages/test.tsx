@@ -50,6 +50,7 @@ export default function TestPage() {
         <div className="h-16 bg-gray-800" />
         <p>当前主题: {theme}</p>
         <div className="bg-test-bg h-64 w-64 outline-2"></div>
+        <div className="bg-test-bg h-64 w-64 outline-2 hover:cursor-pointer"></div>
       </div>
     </>
   );
