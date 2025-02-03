@@ -1,50 +1,8 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
 node_modules
 dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# 之前python版的忽略内容
-src/build
-src/dist
-src/.venv
-src/project_graph
-*.spec
 .env
-.pdm-python
-build/
-__pycache__/
+.idea
 
-keystore.properties
-keystore.jks
-.xlings # xlings tools
-
-# 工程文件的备份文件
+.vitepress
+# pg早期的备份文件
 *.backup
-
-# vitepress
-docs/.vitepress/dist
-docs/.vitepress/cache
-docs/.vitepress/.temp/
-
-# 莫名其妙会出现的文件
-src-tauri/Project Graph

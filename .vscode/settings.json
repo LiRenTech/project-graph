@@ -1,0 +1,8 @@
+{
+  "i18n-ally.localesPaths": ["src/locales"],
+  "i18n-ally.keystyle": "nested",
+  "eslint.options": {
+    "overrideConfigFile": "./eslint.config.js"
+  },
+  "vue.server.includeLanguages": ["vue"]
+}
