@@ -47,6 +47,7 @@ import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMetho
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { PathString } from "../utils/pathString";
 import { VFileSystem } from "../core/service/dataFileService/VFileSystem";
+import { PROJECT_GRAPH_FILE_EXT } from "../utils/fs/com";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -161,7 +162,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
   const openFileByDialogWindow = async (legacy: boolean = false) => {
     if (legacy) return openLegacyFileByDialogWindow();
     const path = isWeb
-      ? "file.gp"
+      ? `file.${PROJECT_GRAPH_FILE_EXT}`
       : await openFileDialog({
           title: "打开文件",
           directory: false,
@@ -170,7 +171,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             ? [
                 {
                   name: "Project Graph",
-                  extensions: ["gp"],
+                  extensions: [PROJECT_GRAPH_FILE_EXT],
                 },
               ]
             : [],
@@ -178,9 +179,9 @@ export default function AppMenu({ className = "", open = false }: { className?: 
     if (!path) {
       return;
     }
-    if (isDesktop && !path.endsWith(".gp")) {
+    if (isDesktop && !path.endsWith(`.${PROJECT_GRAPH_FILE_EXT}`)) {
       Dialog.show({
-        title: "请选择一个gp文件",
+        title: `请选择一个.${PROJECT_GRAPH_FILE_EXT}文件`,
         type: "error",
       });
       return;
@@ -191,7 +192,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
       setFile(path);
     } catch (e) {
       Dialog.show({
-        title: "请选择正确的gp文件",
+        title: `请选择正确的.${PROJECT_GRAPH_FILE_EXT}文件`,
         content: String(e),
         type: "error",
       });
@@ -223,14 +224,14 @@ export default function AppMenu({ className = "", open = false }: { className?: 
 
   const onSaveNew = async () => {
     const path = isWeb
-      ? "file.gp"
+      ? `file.${PROJECT_GRAPH_FILE_EXT}`
       : await saveFileDialog({
           title: "另存为",
-          defaultPath: "新文件.gp", // 提供一个默认的文件名
+          defaultPath: `新文件.${PROJECT_GRAPH_FILE_EXT}`, // 提供一个默认的文件名
           filters: [
             {
               name: "Project Graph",
-              extensions: ["gp"],
+              extensions: [PROJECT_GRAPH_FILE_EXT],
             },
           ],
         });

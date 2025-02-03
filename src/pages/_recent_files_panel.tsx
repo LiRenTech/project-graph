@@ -13,6 +13,7 @@ import { StartFilesManager } from "../core/service/dataFileService/StartFilesMan
 import { Stage } from "../core/stage/Stage";
 import { PathString } from "../utils/pathString";
 import { isDesktop } from "../utils/platform";
+import { PROJECT_GRAPH_FILE_EXT } from "../utils/fs/com";
 
 export default function RecentFilesPanel() {
   const [recentFiles, setRecentFiles] = React.useState<RecentFileManager.RecentFile[]>([]);
@@ -76,9 +77,9 @@ export default function RecentFilesPanel() {
     try {
       const path = file.path;
       setFile(decodeURIComponent(path));
-      if (isDesktop && !path.endsWith(".gp")) {
+      if (isDesktop && !path.endsWith("." + PROJECT_GRAPH_FILE_EXT)) {
         Dialog.show({
-          title: "请选择一个GP文件",
+          title: `请选择一个.${PROJECT_GRAPH_FILE_EXT}文件`,
           type: "error",
         });
         return;
@@ -87,7 +88,7 @@ export default function RecentFilesPanel() {
       setRecentFilePanelOpen(false);
     } catch (error) {
       Dialog.show({
-        title: "请选择正确的GP文件",
+        title: `请选择正确的.${PROJECT_GRAPH_FILE_EXT}文件`,
         content: String(error),
         type: "error",
       });

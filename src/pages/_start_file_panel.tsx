@@ -25,6 +25,7 @@ import { fileAtom } from "../state";
 import { cn } from "../utils/cn";
 import { PathString } from "../utils/pathString";
 import { isDesktop } from "../utils/platform";
+import { PROJECT_GRAPH_FILE_EXT } from "../utils/fs/com";
 
 export default function StartFilePanel({ open = false }: { open: boolean }) {
   const [startFiles, setStartFiles] = React.useState<StartFilesManager.StartFile[]>([]);
@@ -72,7 +73,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
         ? [
             {
               name: "Project Graph",
-              extensions: ["gp"],
+              extensions: [PROJECT_GRAPH_FILE_EXT],
             },
           ]
         : [],
@@ -80,9 +81,9 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
     if (!path) {
       return;
     }
-    if (isDesktop && !path.endsWith(".gp")) {
+    if (isDesktop && !path.endsWith(`.${PROJECT_GRAPH_FILE_EXT}`)) {
       Dialog.show({
-        title: "请选择一个gp文件",
+        title: `请选择一个.${PROJECT_GRAPH_FILE_EXT}文件`,
         type: "error",
       });
       return;
@@ -99,7 +100,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
       updateStartFiles();
     } catch (e) {
       Dialog.show({
-        title: "请选择正确的gp文件",
+        title: `请选择正确的.${PROJECT_GRAPH_FILE_EXT}文件`,
         content: String(e),
         type: "error",
       });
@@ -157,9 +158,9 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
   const checkoutFile = (path: string) => {
     try {
       setFile(decodeURIComponent(path));
-      if (isDesktop && !path.endsWith(".gp")) {
+      if (isDesktop && !path.endsWith(`.${PROJECT_GRAPH_FILE_EXT}`)) {
         Dialog.show({
-          title: "请选择一个GP文件",
+          title: `请选择一个.${PROJECT_GRAPH_FILE_EXT}文件`,
           type: "error",
         });
         return;

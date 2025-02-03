@@ -3,6 +3,11 @@ import { TauriBaseFS } from "./TauriFileSystem";
 import { PathString } from "../pathString";
 
 /**
+ * project-graph 独立文件的扩展名
+ */
+export const PROJECT_GRAPH_FILE_EXT = "pgh";
+
+/**
  * 检查一个文件是否存在
  * @param path 文件路径
  * @returns 是否存在

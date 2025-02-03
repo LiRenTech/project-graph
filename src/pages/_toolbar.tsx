@@ -40,7 +40,7 @@ import { cn } from "../utils/cn";
 // import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { Dialog } from "../components/dialog";
 import { Popup } from "../components/popup";
-import { writeTextFile } from "../utils/fs/com";
+import { PROJECT_GRAPH_FILE_EXT, writeTextFile } from "../utils/fs/com";
 // import { PathString } from "../utils/pathString";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { ColorManager } from "../core/service/feedbackService/ColorManager";
@@ -500,11 +500,11 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 const onSaveSelectedNew = async () => {
   const path = await saveFileDialog({
     title: "另存为",
-    defaultPath: "新文件.gp", // 提供一个默认的文件名
+    defaultPath: `新文件.${PROJECT_GRAPH_FILE_EXT}`, // 提供一个默认的文件名
     filters: [
       {
         name: "Project Graph",
-        extensions: ["gp"],
+        extensions: [PROJECT_GRAPH_FILE_EXT],
       },
     ],
   });
