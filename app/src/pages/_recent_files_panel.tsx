@@ -73,7 +73,7 @@ export default function RecentFilesPanel() {
       }
     };
   };
-  const checkoutFile = (file: RecentFileManager.RecentFile) => {
+  const checkoutFile = async (file: RecentFileManager.RecentFile) => {
     try {
       const path = file.path;
       setFile(decodeURIComponent(path));
@@ -84,8 +84,10 @@ export default function RecentFilesPanel() {
         });
         return;
       }
-      RecentFileManager.openFileByPath(path);
-      setRecentFilePanelOpen(false);
+      const isOpenSuccess = await RecentFileManager.openFileByPath(path);
+      if (isOpenSuccess) {
+        setRecentFilePanelOpen(false);
+      }
     } catch (error) {
       Dialog.show({
         title: `请选择正确的.${PROJECT_GRAPH_FILE_EXT}文件`,

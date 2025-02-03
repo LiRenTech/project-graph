@@ -460,11 +460,13 @@ async function loadStartFile() {
   const isExists = await exists(path);
   if (isExists) {
     // 打开自定义的工程文件
-    RecentFileManager.openFileByPath(path);
-    setTimeout(() => {
-      // 更改顶部路径名称
-      RecentFileManager.openFileByPathWhenAppStart(path);
-    }, 1000);
+    const isOpenSuccess = await RecentFileManager.openFileByPath(path);
+    if (isOpenSuccess) {
+      setTimeout(() => {
+        // 更改顶部路径名称
+        RecentFileManager.openFileByPathWhenAppStart(path);
+      }, 1000);
+    }
   } else {
     // 自动打开路径不存在
     Stage.effectMachine.addEffect(new TextRiseEffect(`打开工程失败，${path}不存在！`));

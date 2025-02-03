@@ -364,7 +364,7 @@ appMenu:
       saveAs: 另存为
       recent: 最近打开
       backup: 备份
-      openLegacy: 从旧版文件打开
+      openLegacy: 从1.5版以前的文件打开
   location:
     title: 位置
     items:

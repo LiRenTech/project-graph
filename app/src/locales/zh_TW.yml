@@ -340,7 +340,7 @@ appMenu:
       saveAs: 另存為
       recent: 最近打開
       backup: 備份
-      openLegacy: 打開舊版
+      openLegacy: 从1.5版以前的文件打开
   location:
     title: 位置
     items:

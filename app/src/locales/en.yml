@@ -368,7 +368,7 @@ appMenu:
       saveAs: Save As
       recent: Recents
       backup: Backup
-      openLegacy: Open Legacy Project
+      openLegacy: Open old file before 1.5
   location:
     title: Dirs
     items:

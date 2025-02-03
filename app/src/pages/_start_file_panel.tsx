@@ -27,6 +27,11 @@ import { PathString } from "../utils/pathString";
 import { isDesktop } from "../utils/platform";
 import { PROJECT_GRAPH_FILE_EXT } from "../utils/fs/com";
 
+/**
+ * 启动文件面板（闪电面板）
+ * @param param0
+ * @returns
+ */
 export default function StartFilePanel({ open = false }: { open: boolean }) {
   const [startFiles, setStartFiles] = React.useState<StartFilesManager.StartFile[]>([]);
   const { t } = useTranslation("startFilePanel");
@@ -157,14 +162,24 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
   };
   const checkoutFile = (path: string) => {
     try {
-      setFile(decodeURIComponent(path));
       if (isDesktop && !path.endsWith(`.${PROJECT_GRAPH_FILE_EXT}`)) {
-        Dialog.show({
-          title: `请选择一个.${PROJECT_GRAPH_FILE_EXT}文件`,
-          type: "error",
-        });
+        if (path.endsWith(".json")) {
+          Dialog.show({
+            title: "文件过早",
+            type: "error",
+            content: `此文件为早于1.5版本的早期文件格式，请在菜单中将此文件转换成新版本。`,
+          });
+        } else {
+          Dialog.show({
+            title: "文件格式错误",
+            type: "error",
+            content: `请选择一个.${PROJECT_GRAPH_FILE_EXT}格式的文件`,
+          });
+        }
+
         return;
       }
+      setFile(decodeURIComponent(path));
       RecentFileManager.openFileByPath(path);
     } catch (error) {
       Dialog.show({

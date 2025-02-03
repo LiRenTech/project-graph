@@ -1,7 +1,7 @@
 import { Store } from "@tauri-apps/plugin-store";
 // import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
 import { Serialized } from "../../../types/node";
-import { exists, readFile, readTextFile } from "../../../utils/fs/com";
+import { exists, PROJECT_GRAPH_FILE_EXT, readFile, readTextFile } from "../../../utils/fs/com";
 import { createStore } from "../../../utils/store";
 import { Camera } from "../../stage/Camera";
 import { Stage } from "../../stage/Stage";
@@ -18,6 +18,7 @@ import { ViewFlashEffect } from "../feedbackService/effectEngine/concrete/ViewFl
 import { PenStroke } from "../../stage/stageObject/entity/PenStroke";
 import { VFileSystem } from "./VFileSystem";
 import { PathString } from "../../../utils/pathString";
+import { Dialog } from "../../../components/dialog";
 
 /**
  * 管理最近打开的文件列表
@@ -143,6 +144,7 @@ export namespace RecentFileManager {
    * 先销毁所有节点，然后读取文件内容，解析出节点和边，添加到管理器中
    * 自动带有历史记录恢复功能
    * @param path 打开的文件路径
+   * @returns 是否成功打开
    */
   export async function openFileByPath(path: string) {
     StageManager.destroy();
@@ -152,7 +154,19 @@ export namespace RecentFileManager {
     } catch (e) {
       console.error("打开文件失败：", path);
       console.error(e);
-      return;
+      if (path.endsWith(".json")) {
+        // 用户使用了旧文件，提醒用户将其转为新文件
+        Dialog.show({
+          title: "打开文件失败，需要升级文件格式",
+          content: `${path} 是1.5版本之前的 json格式旧文件，现已改为新格式.${PROJECT_GRAPH_FILE_EXT}，需要在菜单中点击 “从1.5之前的版本文件打开”，然后另存为新文件。`,
+        });
+      } else {
+        Dialog.show({
+          title: "打开文件失败",
+          content: `${path} 打开失败，请检查文件是否存在或格式是否正确。`,
+        });
+      }
+      return false;
     }
 
     const data = StageLoader.validate(JSON.parse(await VFileSystem.getMetaData()));
@@ -166,6 +180,7 @@ export namespace RecentFileManager {
       path: path,
       time: new Date().getTime(),
     });
+    return true;
   }
   export async function openLegacyFileByPath(path: string) {
     StageManager.destroy();

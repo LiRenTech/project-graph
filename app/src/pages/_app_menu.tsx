@@ -187,9 +187,11 @@ export default function AppMenu({ className = "", open = false }: { className?: 
       return;
     }
     try {
-      await RecentFileManager.openFileByPath(path); // 已经包含历史记录重置功能
-      // 更改file
-      setFile(path);
+      const isOpenSuccess = await RecentFileManager.openFileByPath(path); // 已经包含历史记录重置功能
+      if (isOpenSuccess) {
+        // 更改file
+        setFile(path);
+      }
     } catch (e) {
       Dialog.show({
         title: `请选择正确的.${PROJECT_GRAPH_FILE_EXT}文件`,
