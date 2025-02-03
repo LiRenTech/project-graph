@@ -236,70 +236,54 @@ export namespace InputElement {
         };
 
         if (event.key === "Enter") {
-          /** 是否操作成功，如果操作失败则说明用户可能记错了快捷键 */
-          let controlSuccess = false;
-
-          const isPressedCtrl = event.ctrlKey;
-          const isPressedAlt = event.altKey;
-          const isPressedShift = event.shiftKey;
-          // 先检测是否要退出编辑模式
-          if (textNodeExitEditMode === "enter") {
-            if (!isPressedCtrl && !isPressedAlt && !isPressedShift) {
-              exitEditMode();
-              controlSuccess = true;
-            }
-          } else if (textNodeExitEditMode === "ctrlEnter") {
-            if (isPressedCtrl && !isPressedAlt && !isPressedShift) {
-              exitEditMode();
-              controlSuccess = true;
-            }
-          } else if (textNodeExitEditMode === "altEnter") {
-            if (!isPressedCtrl && isPressedAlt && !isPressedShift) {
-              exitEditMode();
-              controlSuccess = true;
-            }
-          } else if (textNodeExitEditMode === "shiftEnter") {
-            if (!isPressedCtrl && !isPressedAlt && isPressedShift) {
-              exitEditMode();
-              controlSuccess = true;
-            }
-          }
-          // 再检测是否要换行
-          if (textNodeContentLineBreak === "enter") {
-            if (!isPressedCtrl && !isPressedAlt && !isPressedShift) {
-              // breakLine();
-              // 这里什么都不用做，因为换行的功能已经在keydown中实现了
-              controlSuccess = true;
-            }
-          } else if (textNodeContentLineBreak === "ctrlEnter") {
-            if (isPressedCtrl && !isPressedAlt && !isPressedShift) {
-              breakLine();
-              controlSuccess = true;
-            }
-          } else if (textNodeContentLineBreak === "altEnter") {
-            if (!isPressedCtrl && isPressedAlt && !isPressedShift) {
-              breakLine();
-              controlSuccess = true;
-            }
-          }
-          const textNodes = StageManager.getTextNodes().filter((textNode) => textNode.isEditing);
-          if (!controlSuccess) {
-            // 用户可能记错了快捷键
-            // 查找到当前正在编辑的TextNode
-
-            for (const textNode of textNodes) {
-              Stage.effectMachine.addEffect(EntityShakeEffect.fromEntity(textNode));
-            }
-            Stage.effectMachine.addEffect(TextRiseEffect.default("您可能记错了快捷键"));
+          event.preventDefault();
+          const enterKeyDetail = getEnterKey(event);
+          console.log("enterKeyDetail", enterKeyDetail);
+          if (textNodeExitEditMode === enterKeyDetail) {
+            // 用户想退出编辑
+            exitEditMode();
+            addSuccessEffect();
+          } else if (textNodeContentLineBreak === enterKeyDetail) {
+            // 用户想换行
+            breakLine();
           } else {
-            // 成功了
-            for (const textNode of textNodes) {
-              Stage.effectMachine.addEffect(new EntityDashTipEffect(50, textNode.collisionBox.getRectangle()));
-            }
+            // 用户可能记错了快捷键
+            addFailEffect();
           }
         }
       });
     });
+  }
+
+  function addSuccessEffect() {
+    const textNodes = StageManager.getTextNodes().filter((textNode) => textNode.isEditing);
+    for (const textNode of textNodes) {
+      Stage.effectMachine.addEffect(new EntityDashTipEffect(50, textNode.collisionBox.getRectangle()));
+    }
+  }
+
+  function addFailEffect() {
+    const textNodes = StageManager.getTextNodes().filter((textNode) => textNode.isEditing);
+    for (const textNode of textNodes) {
+      Stage.effectMachine.addEffect(EntityShakeEffect.fromEntity(textNode));
+    }
+    Stage.effectMachine.addEffect(TextRiseEffect.default("您可能记错了快捷键"));
+  }
+
+  function getEnterKey(event: KeyboardEvent): "enter" | "ctrlEnter" | "shiftEnter" | "altEnter" | "other" {
+    if (event.key === "Enter") {
+      if (event.ctrlKey) {
+        return "ctrlEnter";
+      } else if (event.altKey) {
+        return "altEnter";
+      } else if (event.shiftKey) {
+        return "shiftEnter";
+      } else {
+        return "enter";
+      }
+    } else {
+      return "other";
+    }
   }
 
   let textNodeContentLineBreak: Settings.Settings["textNodeContentLineBreak"] = "enter";
