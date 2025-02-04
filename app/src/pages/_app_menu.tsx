@@ -2,6 +2,7 @@ import { open as openFileDialog, save as saveFileDialog } from "@tauri-apps/plug
 import { useAtom } from "jotai";
 import {
   AppWindow,
+  BadgeInfo,
   Database,
   Dock,
   File,
@@ -46,6 +47,7 @@ import { Stage } from "../core/stage/Stage";
 import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { PathString } from "../utils/pathString";
+import { HelpService } from "../core/service/helpService/helpService";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -472,6 +474,14 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         >
           {t("more.items.welcome")}
         </Col> */}
+        <Col
+          icon={<BadgeInfo />}
+          onClick={() => {
+            HelpService.loadHelp();
+          }}
+        >
+          help
+        </Col>
       </Row>
       {!isWeb && (
         <Row icon={<AppWindow />} title={t("window.title")}>

@@ -6,6 +6,7 @@ import { InputElement } from "../core/render/domElement/inputElement";
 import { StageStyleManager } from "../core/service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../core/stage/Camera";
 import { Settings } from "../core/service/Settings";
+import tipsJson from "../assets/projectGraphTips.json";
 
 export default function TestPage() {
   useEffect(() => {
@@ -47,6 +48,7 @@ export default function TestPage() {
         <h1> Test Page </h1>
         <Button onClick={testInput}>TestInput</Button>
         <Button onClick={testTextarea}>TestTextarea</Button>
+        <Button onClick={() => console.log(tipsJson)}>test json</Button>
         <div className="h-16 bg-gray-800" />
         <p>当前主题: {theme}</p>
         <div className="bg-test-bg h-64 w-64 outline-2"></div>
