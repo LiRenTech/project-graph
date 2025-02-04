@@ -27,10 +27,10 @@ export class IndexedDBFileSystem extends IFileSystem {
     request.onupgradeneeded = (event) => {
       const db = (event.target as IDBOpenDBRequest).result;
       if (!db.objectStoreNames.contains(this.STORE_NAME)) {
-        db.createObjectStore(this.STORE_NAME, { keyPath: "path" });
+        db.createObjectStore(this.STORE_NAME);
       }
       if (!db.objectStoreNames.contains(this.DIR_STORE_NAME)) {
-        db.createObjectStore(this.DIR_STORE_NAME, { keyPath: "path" });
+        db.createObjectStore(this.DIR_STORE_NAME);
       }
     };
     this.db = await asPromise(request);
@@ -46,10 +46,10 @@ export class IndexedDBFileSystem extends IFileSystem {
     return this.db!.transaction(storeNames, mode);
   }
 
-  private async getStore(storeName: string, mode: IDBTransactionMode = "readonly"): Promise<IDBObjectStore> {
-    const transaction = await this.getTransaction(storeName, mode);
-    return transaction.objectStore(storeName);
-  }
+  // private async getStore(storeName: string, mode: IDBTransactionMode = "readonly"): Promise<IDBObjectStore> {
+  //   const t = await this.getTransaction(storeName, mode);
+  //   return t.objectStore(storeName);
+  // }
 
   private normalizePath(path: string): string {
     let normalized = path.replace(/\/+/g, "/").replace(/\/$/, "");
@@ -67,16 +67,17 @@ export class IndexedDBFileSystem extends IFileSystem {
     return parts.length === 0 ? "/" : `/${parts.join("/")}`;
   }
 
-  private async addEntryToParent(childPath: string, isDir: boolean): Promise<void> {
+  private async addEntryToParent(childPath: string, isDir: boolean, t?: IDBTransaction): Promise<void> {
+    if (!t) t = await this.getTransaction([this.STORE_NAME, this.DIR_STORE_NAME], "readwrite");
     const parentPath = this.getParentPath(childPath);
     if (!parentPath) return;
 
     // 确保父目录存在（递归创建）
-    if (!(await this._exists(parentPath))) {
-      await this._mkdir(parentPath, true);
+    if (!(await this._exists(parentPath, t))) {
+      await this._mkdir(parentPath, true, t);
     }
 
-    const store = await this.getStore(this.DIR_STORE_NAME, "readwrite");
+    const store = await t.objectStore(this.DIR_STORE_NAME);
     const parentDir = await asPromise(store.get(parentPath));
     const childName = childPath.split("/").pop()!;
 
@@ -84,47 +85,49 @@ export class IndexedDBFileSystem extends IFileSystem {
       throw new Error(`Parent directory ${parentPath} not found`);
     }
 
-    const exists = parentDir.entries.some((e: DirectoryEntry) => e.name === childName);
+    const exists = parentDir.some((e: DirectoryEntry) => e.name === childName);
     if (!exists) {
-      parentDir.entries.push({ name: childName, isDir });
-      await asPromise(store.put(parentDir));
+      parentDir.push({ name: childName, isDir });
+      await asPromise(store.put(parentDir, parentPath));
     }
   }
 
-  async _exists(path: string): Promise<boolean> {
+  async _exists(path: string, t?: IDBTransaction): Promise<boolean> {
+    if (!t) t = await this.getTransaction([this.STORE_NAME, this.DIR_STORE_NAME], "readonly");
     path = this.normalizePath(path);
-    const trans = await this.getTransaction([this.STORE_NAME, this.DIR_STORE_NAME], "readonly");
-    const fileExists = !!(await asPromise(trans.objectStore(this.STORE_NAME).get(path)));
+    const fileExists = !!(await asPromise(t.objectStore(this.STORE_NAME).get(path)));
     if (fileExists) return true;
-    return !!(await asPromise(trans.objectStore(this.DIR_STORE_NAME).get(path)));
+    return !!(await asPromise(t.objectStore(this.DIR_STORE_NAME).get(path)));
   }
 
-  async _readFile(path: string): Promise<Uint8Array> {
-    const store = await this.getStore(this.STORE_NAME);
+  async _readFile(path: string, t?: IDBTransaction): Promise<Uint8Array> {
+    if (!t) t = await this.getTransaction([this.STORE_NAME], "readonly");
+    const store = t.objectStore(this.STORE_NAME);
     const result = await asPromise(store.get(path));
-    if (result) return result.content;
+    if (result) return result;
     throw new Error(`File not found: ${path}`);
   }
 
-  async _mkdir(path: string, recursive = false): Promise<void> {
+  async _mkdir(path: string, recursive = false, t?: IDBTransaction): Promise<void> {
+    if (!t) t = await this.getTransaction([this.STORE_NAME, this.DIR_STORE_NAME], "readwrite");
     path = this.normalizePath(path);
     if (path === "/") {
-      const exists = await this._exists("/");
+      const exists = await this._exists("/", t);
       if (!exists) {
-        const store = await this.getStore(this.DIR_STORE_NAME, "readwrite");
-        await asPromise(store.put({ path: "/", entries: [] }));
+        const store = t.objectStore(this.DIR_STORE_NAME);
+        await asPromise(store.put([], "/"));
       }
       return;
     }
 
     if (!recursive) {
       const parentPath = this.getParentPath(path);
-      if (parentPath && !(await this._exists(parentPath))) {
+      if (parentPath && !(await this._exists(parentPath, t))) {
         throw new Error(`Parent directory does not exist: ${parentPath}`);
       }
-      const store = await this.getStore(this.DIR_STORE_NAME, "readwrite");
-      await asPromise(store.put({ path, entries: [] }));
-      if (parentPath) await this.addEntryToParent(path, true);
+      const store = t.objectStore(this.DIR_STORE_NAME);
+      await asPromise(store.put([], path));
+      if (parentPath) await this.addEntryToParent(path, true, t);
       return;
     }
 
@@ -134,50 +137,53 @@ export class IndexedDBFileSystem extends IFileSystem {
     for (const part of parts) {
       currentPath = currentPath ? `${currentPath}/${part}` : `/${part}`;
       currentPath = this.normalizePath(currentPath);
-      if (!(await this._exists(currentPath))) {
+      if (!(await this._exists(currentPath, t))) {
         pathsToCreate.push(currentPath);
       }
     }
 
-    const store = await this.getStore(this.DIR_STORE_NAME, "readwrite");
+    const store = await t.objectStore(this.DIR_STORE_NAME);
     for (const p of pathsToCreate) {
-      await asPromise(store.put({ path: p, entries: [] }));
-      await this.addEntryToParent(p, true);
+      await asPromise(store.put([], p));
+      await this.addEntryToParent(p, true, t);
     }
   }
 
-  async _writeFile(path: string, content: Uint8Array | string): Promise<void> {
+  async _writeFile(path: string, content: Uint8Array | string, t?: IDBTransaction): Promise<void> {
+    if (!t) t = await this.getTransaction([this.STORE_NAME, this.DIR_STORE_NAME], "readwrite");
     path = this.normalizePath(path);
     const parentPath = this.getParentPath(path);
     if (parentPath) {
-      await this._mkdir(parentPath, true);
+      await this._mkdir(parentPath, true, t);
     }
 
-    const store = await this.getStore(this.STORE_NAME, "readwrite");
+    const store = t.objectStore(this.STORE_NAME);
     const data = typeof content === "string" ? new TextEncoder().encode(content) : content;
-    await asPromise(store.put({ path, content: data }));
-    await this.addEntryToParent(path, false);
+    await asPromise(store.put(data, path));
+    await this.addEntryToParent(path, false, t);
   }
 
-  async _readDir(path: string): Promise<DirectoryEntry[]> {
+  async _readDir(path: string, t?: IDBTransaction): Promise<DirectoryEntry[]> {
+    if (!t) t = await this.getTransaction([this.DIR_STORE_NAME], "readonly");
     path = this.normalizePath(path);
-    const store = await this.getStore(this.DIR_STORE_NAME);
+    const store = t.objectStore(this.DIR_STORE_NAME);
     const dirEntry = await asPromise(store.get(path));
     if (!dirEntry) {
       throw new Error(`Directory not found: ${path}`);
     }
-    return dirEntry.entries;
+    return dirEntry;
   }
 
-  async _stat(path: string): Promise<FileStats> {
-    const fileStore = await this.getStore(this.STORE_NAME);
-    const dirStore = await this.getStore(this.DIR_STORE_NAME);
+  async _stat(path: string, t?: IDBTransaction): Promise<FileStats> {
+    if (!t) t = await this.getTransaction([this.STORE_NAME, this.DIR_STORE_NAME], "readonly");
+    const fileStore = t.objectStore(this.STORE_NAME);
+    const dirStore = t.objectStore(this.DIR_STORE_NAME);
     const file = await asPromise(fileStore.get(path));
     if (file) {
       return {
         name: path.split("/").pop() || "",
         isDir: false,
-        size: file.content.byteLength,
+        size: file.byteLength,
         modified: new Date(),
       };
     }
@@ -193,12 +199,12 @@ export class IndexedDBFileSystem extends IFileSystem {
     throw new Error(`Path not found: ${path}`);
   }
 
-  async _rename(oldPath: string, newPath: string): Promise<void> {
+  async _rename(oldPath: string, newPath: string, t?: IDBTransaction): Promise<void> {
     oldPath = this.normalizePath(oldPath);
     newPath = this.normalizePath(newPath);
-    const transaction = await this.getTransaction([this.STORE_NAME, this.DIR_STORE_NAME], "readwrite");
-    const filesStore = transaction.objectStore(this.STORE_NAME);
-    const dirsStore = transaction.objectStore(this.DIR_STORE_NAME);
+    if (!t) t = await this.getTransaction([this.STORE_NAME, this.DIR_STORE_NAME], "readwrite");
+    const filesStore = t.objectStore(this.STORE_NAME);
+    const dirsStore = t.objectStore(this.DIR_STORE_NAME);
 
     const isDir = !!(await asPromise(dirsStore.get(oldPath)));
     if (isDir) {
@@ -206,7 +212,7 @@ export class IndexedDBFileSystem extends IFileSystem {
       const dir = await asPromise(dirsStore.get(oldPath));
       if (!dir) throw new Error(`Directory not found: ${oldPath}`);
       await asPromise(dirsStore.delete(oldPath));
-      await asPromise(dirsStore.put({ ...dir, path: newPath }));
+      await asPromise(dirsStore.put(dir, newPath));
 
       // 更新所有子路径
       const filesCursor = await asPromise(filesStore.openCursor());
@@ -218,10 +224,10 @@ export class IndexedDBFileSystem extends IFileSystem {
             const newChildPath = newPath + oldChildPath.slice(oldPath.length);
             if (cursor.source.name === this.STORE_NAME) {
               await asPromise(filesStore.delete(oldChildPath));
-              await asPromise(filesStore.put({ ...cursor.value, path: newChildPath }));
+              await asPromise(filesStore.put(cursor.value, newChildPath));
             } else {
               await asPromise(dirsStore.delete(oldChildPath));
-              await asPromise(dirsStore.put({ ...cursor.value, path: newChildPath }));
+              await asPromise(dirsStore.put(cursor.value, newChildPath));
             }
           }
           cursor.continue();
@@ -234,60 +240,63 @@ export class IndexedDBFileSystem extends IFileSystem {
       const file = await asPromise(filesStore.get(oldPath));
       if (!file) throw new Error(`File not found: ${oldPath}`);
       await asPromise(filesStore.delete(oldPath));
-      await asPromise(filesStore.put({ ...file, path: newPath }));
+      await asPromise(filesStore.put(file, newPath));
     }
 
     // 更新父目录条目
     const oldParentPath = this.getParentPath(oldPath);
     const newParentPath = this.getParentPath(newPath);
     if (oldParentPath) {
-      const oldParentStore = await this.getStore(this.DIR_STORE_NAME, "readwrite");
-      const oldParent = await asPromise(oldParentStore.get(oldParentPath));
+      const oldParentStore = t.objectStore(this.DIR_STORE_NAME);
+      let oldParent = await asPromise(oldParentStore.get(oldParentPath));
       if (oldParent) {
         const entryName = oldPath.split("/").pop()!;
-        oldParent.entries = oldParent.entries.filter((e: DirectoryEntry) => e.name !== entryName);
-        await asPromise(oldParentStore.put(oldParent));
+        oldParent = oldParent.filter((e: DirectoryEntry) => e.name !== entryName);
+        await asPromise(oldParentStore.put(oldParent, oldParentPath));
       }
     }
     if (newParentPath) {
-      await this.addEntryToParent(newPath, isDir);
+      await this.addEntryToParent(newPath, isDir, t);
     }
   }
 
-  async _deleteFile(path: string): Promise<void> {
-    const store = await this.getStore(this.STORE_NAME, "readwrite");
+  async _deleteFile(path: string, t?: IDBTransaction): Promise<void> {
+    if (!t) t = await this.getTransaction([this.STORE_NAME, this.DIR_STORE_NAME], "readwrite");
+    const store = t.objectStore(this.STORE_NAME);
     await asPromise(store.delete(path));
     const parentPath = this.getParentPath(path);
     if (parentPath) {
-      const parentStore = await this.getStore(this.DIR_STORE_NAME, "readwrite");
-      const parent = await asPromise(parentStore.get(parentPath));
+      const parentStore = t.objectStore(this.DIR_STORE_NAME);
+      let parent = await asPromise(parentStore.get(parentPath));
       if (parent) {
         const entryName = path.split("/").pop()!;
-        parent.entries = parent.entries.filter((e: DirectoryEntry) => e.name !== entryName);
-        await asPromise(parentStore.put(parent));
+        parent = parent.filter((e: DirectoryEntry) => e.name !== entryName);
+        await asPromise(parentStore.put(parent, parentPath));
       }
     }
   }
 
-  async _deleteDirectory(path: string): Promise<void> {
-    const store = await this.getStore(this.DIR_STORE_NAME, "readwrite");
+  async _deleteDirectory(path: string, t?: IDBTransaction): Promise<void> {
+    if (!t) t = await this.getTransaction([this.STORE_NAME, this.DIR_STORE_NAME], "readwrite");
+    const store = await t.objectStore(this.DIR_STORE_NAME);
     await asPromise(store.delete(path));
     const parentPath = this.getParentPath(path);
     if (parentPath) {
-      const parentStore = await this.getStore(this.DIR_STORE_NAME, "readwrite");
-      const parent = await asPromise(parentStore.get(parentPath));
+      const parentStore = await t.objectStore(this.DIR_STORE_NAME);
+      let parent = await asPromise(parentStore.get(parentPath));
       if (parent) {
         const entryName = path.split("/").pop()!;
-        parent.entries = parent.entries.filter((e: DirectoryEntry) => e.name !== entryName);
-        await asPromise(parentStore.put(parent));
+        parent = parent.filter((e: DirectoryEntry) => e.name !== entryName);
+        await asPromise(parentStore.put(parent, parentPath));
       }
     }
   }
 
-  async clear() {
-    const filesStore = await this.getStore(this.STORE_NAME, "readwrite");
+  async clear(t?: IDBTransaction) {
+    if (!t) t = await this.getTransaction([this.STORE_NAME, this.DIR_STORE_NAME], "readwrite");
+    const filesStore = t.objectStore(this.STORE_NAME);
     await asPromise(filesStore.clear());
-    const dirsStore = await this.getStore(this.DIR_STORE_NAME, "readwrite");
+    const dirsStore = t.objectStore(this.DIR_STORE_NAME);
     await asPromise(dirsStore.clear());
   }
 
