@@ -15,6 +15,7 @@ export default function MarkdownEditor({
   className?: string;
   options?: Omit<IOptions, "after" | "input">;
 }) {
+  // console.log("veditor render");
   const [vd, setVd] = useState<Vditor>();
   const el = useRef<HTMLDivElement>(null);
 
@@ -24,7 +25,8 @@ export default function MarkdownEditor({
         vditor.setValue(defaultValue);
         setVd(vditor);
       },
-      input: (value: string) => {
+      // input 有问题，只要一输入内容停下来的时候就被迫失去焦点了。
+      blur: (value: string) => {
         onChange(value);
       },
       theme: "dark",
@@ -42,8 +44,18 @@ export default function MarkdownEditor({
 
     return () => {
       vd?.destroy();
+      setVd(undefined);
+      // console.log("veditor unmount");
     };
   }, [defaultValue]);
 
-  return <div ref={el} id={id} className={className} onKeyDown={(e) => e.stopPropagation()} />;
+  return (
+    <div
+      ref={el}
+      id={id}
+      className={className}
+      onKeyDown={(e) => e.stopPropagation()}
+      onKeyUp={(e) => e.stopPropagation()}
+    />
+  );
 }
