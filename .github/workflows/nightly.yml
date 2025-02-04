@@ -95,7 +95,7 @@ jobs:
       - name: edit version (windows only)
         if: matrix.platform == 'windows-latest' # This must match the platform value defined above.
         run: |
-          $jsonContent = Get-Content -Path "app.src-tauri/tauri.conf.json" -Raw
+          $jsonContent = Get-Content -Path "app/src-tauri/tauri.conf.json" -Raw
           $jsonObject = $jsonContent | ConvertFrom-Json
           $jsonObject.version = "0.0.0-nightly.r${{ github.run_number }}"
           $jsonObject | ConvertTo-Json -Depth 10 | Set-Content -Path "app/src-tauri/tauri.conf.json"
