@@ -265,6 +265,13 @@ settings:
       When the approximation is close enough (less than 0.0001), the scaling will stop automatically.
       A value of 1 means the scaling will be completed immediately without any intermediate transition effect.
       A value of 0 means the scaling will never be completed, which can simulate a locked effect.
+  cameraKeyboardScaleRate:
+    title: Viewport Zoom Keyboard Rate
+    description: |
+      The zoom scale factor of the viewport each time it is zoomed in or out using a keyboard press.
+      A value of 0.2 means that each zoom in will increase the scale to 1.2 times the original, and each zoom out will decrease the scale to 0.8 times the original.
+      A value of 0 means keyboard zooming is disabled.
+
   scaleCameraByMouseLocation:
     title: Scale Camera by Mouse Location
     description: |

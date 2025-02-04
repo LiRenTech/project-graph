@@ -84,6 +84,7 @@ export namespace Camera {
   export let limitCameraInCycleSpace = false;
   export let cameraCycleSpaceSizeX = 1000;
   export let cameraCycleSpaceSizeY = 1000;
+  let cameraKeyboardScaleRate = 0.2;
 
   // IDEA: 突然有一个好点子
   // 把wsad移动的逻辑改成瞬间爆炸的冲刺一小段距离，而不是改成直接赋予永久的作用力方向然后再撤销
@@ -164,12 +165,12 @@ export namespace Camera {
   let tickNumberUpper = 0;
 
   export function zoomInByKeyboard() {
-    Camera.targetScale *= 1.2;
+    Camera.targetScale *= 1 + cameraKeyboardScaleRate;
     tickNumberUpper = tickNumber + 5 * 60;
   }
 
   export function zoomOutByKeyboard() {
-    Camera.targetScale *= 0.8;
+    Camera.targetScale *= 1 - cameraKeyboardScaleRate;
     tickNumberUpper = tickNumber + 5 * 60;
   }
 
@@ -243,6 +244,9 @@ export namespace Camera {
     });
     Settings.watch("cameraCycleSpaceSizeY", (value) => {
       cameraCycleSpaceSizeY = value;
+    });
+    Settings.watch("cameraKeyboardScaleRate", (value) => {
+      cameraKeyboardScaleRate = value;
     });
   }
 

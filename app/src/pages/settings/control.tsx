@@ -43,6 +43,14 @@ export default function Control() {
 
       <FieldGroup title="Camera 摄像机/视野/相关" icon={<Fullscreen />}>
         <SettingField icon={<ScanEye />} settingKey="scaleExponent" type="slider" min={0} max={1} step={0.01} />
+        <SettingField
+          icon={<ScanEye />}
+          settingKey="cameraKeyboardScaleRate"
+          type="slider"
+          min={0}
+          max={3}
+          step={0.1}
+        />
         <SettingField icon={<ScanEye />} settingKey="scaleCameraByMouseLocation" type="switch" />
         <SettingField icon={<Keyboard />} settingKey="allowMoveCameraByWSAD" type="switch" />
         <SettingField icon={<Keyboard />} settingKey="cameraKeyboardMoveReverse" type="switch" />

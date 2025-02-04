@@ -236,6 +236,12 @@ settings:
       當逼近的足夠近時（小於0.0001），會自動停止縮放
       值为1代表縮放會立刻完成，没有中间的过渡效果
       值为0代表縮放永遠都不会完成，可模拟锁死效果
+  cameraKeyboardScaleRate:
+    title: 视角缩放键盘速率
+    description: |
+      每次通过一次按键来缩放视野时，视野的缩放倍率
+      值为0.2代表每次放大会变为原来的1.2倍，缩小为原来的0.8倍
+      值为0代表禁止通过键盘缩放
   scaleCameraByMouseLocation:
     title: 视角缩放根据鼠标位置
     description: |

@@ -55,6 +55,7 @@ export namespace Settings {
     allowMoveCameraByWSAD: boolean;
     cameraKeyboardMoveReverse: boolean;
     scaleCameraByMouseLocation: boolean;
+    cameraKeyboardScaleRate: number;
     allowAddCycleEdge: boolean;
     moveAmplitude: number;
     moveFriction: number;
@@ -120,6 +121,7 @@ export namespace Settings {
     allowMoveCameraByWSAD: false,
     cameraKeyboardMoveReverse: false,
     scaleCameraByMouseLocation: true,
+    cameraKeyboardScaleRate: 0.2,
     allowAddCycleEdge: false,
     moveAmplitude: 2,
     moveFriction: 0.1,
