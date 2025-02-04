@@ -8,6 +8,7 @@ export class TauriFileSystem extends IFileSystem {
   constructor(private basePath: string = "") {
     super();
   }
+
   async _exists(path: string): Promise<boolean> {
     return invoke("exists", { path: this.basePath + path });
   }
@@ -23,9 +24,11 @@ export class TauriFileSystem extends IFileSystem {
     } else {
       data = content;
     }
-    return invoke("write_file", {
-      path: this.basePath + path,
-      content: Array.from(data),
+    //console.log(path);
+    return invoke("write_file", data, {
+      headers: {
+        path: encodeURIComponent(path),
+      },
     });
   }
 
