@@ -80,25 +80,25 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: "./src-tauri -> target"
+          workspaces: "./app/src-tauri -> target"
 
       - name: edit version (linux only)
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.r${{ github.run_number }}\"/" src-tauri/tauri.conf.json
+          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.r${{ github.run_number }}\"/" app/src-tauri/tauri.conf.json
 
       - name: edit version (macos only)
         if: matrix.platform == 'macos-latest' # This must match the platform value defined above.
         run: |
-          sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.r${{ github.run_number }}\"/" src-tauri/tauri.conf.json
+          sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.r${{ github.run_number }}\"/" app/src-tauri/tauri.conf.json
 
       - name: edit version (windows only)
         if: matrix.platform == 'windows-latest' # This must match the platform value defined above.
         run: |
-          $jsonContent = Get-Content -Path "src-tauri/tauri.conf.json" -Raw
+          $jsonContent = Get-Content -Path "app.src-tauri/tauri.conf.json" -Raw
           $jsonObject = $jsonContent | ConvertFrom-Json
           $jsonObject.version = "0.0.0-nightly.r${{ github.run_number }}"
-          $jsonObject | ConvertTo-Json -Depth 10 | Set-Content -Path "src-tauri/tauri.conf.json"
+          $jsonObject | ConvertTo-Json -Depth 10 | Set-Content -Path "app/src-tauri/tauri.conf.json"
 
       - uses: tauri-apps/tauri-action@dev
         env:
@@ -117,7 +117,7 @@ jobs:
         name: calculate sha256sum (linux only)
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
-          cd src-tauri/target/release/bundle/deb
+          cd app/src-tauri/target/release/bundle/deb
           sha256sum "Project Graph_0.0.0-nightly.r${{ github.run_number }}_amd64.deb" | awk '{print $1}' > sha256sum.txt
           echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
 
@@ -165,15 +165,15 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: "./src-tauri -> target"
+          workspaces: "./app/src-tauri -> target"
 
       - name: Edit version
         run: |
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.${{ github.run_number }}\"/" src-tauri/tauri.conf.json
+          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.${{ github.run_number }}\"/" app/src-tauri/tauri.conf.json
 
       - name: setup sign
         run: |
-          cd src-tauri/gen/android
+          cd app/src-tauri/gen/android
           # create keystore.properties
           cat > keystore.properties <<EOF
           password=${{ secrets.ANDROID_RELEASE_PASSWORD }}
@@ -194,11 +194,11 @@ jobs:
 
       - name: rename apk file
         run: |
-          cd src-tauri/gen/android/app/build/outputs/apk/universal/release
+          cd app/src-tauri/gen/android/app/build/outputs/apk/universal/release
           mv app-universal-release.apk Project.Graph_0.0.0-nightly.r${{ github.run_number }}_universal-signed.apk
 
       - name: upload
-        run: gh release upload nightly src-tauri/gen/android/app/build/outputs/apk/universal/release/Project.Graph_0.0.0-nightly.r${{ github.run_number }}_universal-signed.apk --clobber
+        run: gh release upload nightly app/src-tauri/gen/android/app/build/outputs/apk/universal/release/Project.Graph_0.0.0-nightly.r${{ github.run_number }}_universal-signed.apk --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
