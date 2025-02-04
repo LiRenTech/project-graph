@@ -201,7 +201,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    Camera.targetScale *= 1.2;
+    Camera.zoomInByKeyboard();
   });
 
   (
@@ -211,7 +211,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    Camera.targetScale *= 0.8;
+    Camera.zoomOutByKeyboard();
   });
 
   (

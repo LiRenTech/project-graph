@@ -144,12 +144,33 @@ export namespace Camera {
     const diffViewVector = Renderer.transformWorld2View(targetLocationByScale);
     dealCameraScale();
     if (scaleCameraByMouseLocation) {
-      setLocationByOtherLocation(targetLocationByScale, diffViewVector);
+      if (tickNumber > tickNumberUpper) {
+        setLocationByOtherLocation(targetLocationByScale, diffViewVector);
+      }
     }
     // 循环空间
     if (limitCameraInCycleSpace) {
       dealCycleSpace();
     }
+    tickNumber++;
+  }
+  /**
+   * 当前的帧编号
+   */
+  let tickNumber = 0;
+  /**
+   * 多少帧以后，才能继续跟随鼠标缩放
+   */
+  let tickNumberUpper = 0;
+
+  export function zoomInByKeyboard() {
+    Camera.targetScale *= 1.2;
+    tickNumberUpper = tickNumber + 5 * 60;
+  }
+
+  export function zoomOutByKeyboard() {
+    Camera.targetScale *= 0.8;
+    tickNumberUpper = tickNumber + 5 * 60;
   }
 
   /**
