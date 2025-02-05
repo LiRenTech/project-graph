@@ -110,6 +110,8 @@ export namespace Stage {
   export let enableDragAutoAlign = true;
 
   export let textNodeSelectAllWhenStartEditByMouseClick = true;
+  export let rectangleSelectWhenLeft: "contain" | "intersect" = "contain";
+  export let rectangleSelectWhenRight: "contain" | "intersect" = "intersect";
 
   export function init() {
     autoSaveEngine.init();
@@ -122,6 +124,12 @@ export namespace Stage {
     });
     Settings.watch("textNodeSelectAllWhenStartEditByMouseClick", (value) => {
       textNodeSelectAllWhenStartEditByMouseClick = value;
+    });
+    Settings.watch("rectangleSelectWhenLeft", (value) => {
+      rectangleSelectWhenLeft = value;
+    });
+    Settings.watch("rectangleSelectWhenRight", (value) => {
+      rectangleSelectWhenRight = value;
     });
   }
 }

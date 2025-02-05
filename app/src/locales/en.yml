@@ -359,6 +359,23 @@ settings:
     title: Enable Drag Auto Align Nodes
     description: |
       When enabled, nodes will automatically align with other nodes along the x-axis and y-axis when dragged and released
+  rectangleSelectWhenLeft:
+    title: Strategy for Left Rectangle Selection
+    description: |
+      Choose the strategy for selecting with a rectangle when dragging left.
+      Complete containment means the selection rectangle must completely cover the bounding rectangle of the entity.
+      Partial containment means the selection rectangle only needs to touch a part of the entity's bounding rectangle to select it.
+    options:
+      intersect: Partial Containment
+      contain: Complete Containment
+  rectangleSelectWhenRight:
+    title: Strategy for Right Rectangle Selection
+    description: |
+      Choose the strategy for selecting with a rectangle when dragging right.
+    options:
+      intersect: Partial Containment
+      contain: Complete Containment
+
   cuttingLineStartSoundFile:
     title: Cutting Line Start Sound File
     description: |

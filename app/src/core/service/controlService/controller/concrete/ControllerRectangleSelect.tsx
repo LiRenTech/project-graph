@@ -1,8 +1,10 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
+import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
+import { StageObject } from "../../../../stage/stageObject/abstract/StageObject";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
@@ -104,6 +106,9 @@ class ControllerRectangleSelectClass extends ControllerClass {
 
     // 更新框选框
     this.selectingRectangle = Rectangle.fromTwoPoints(this.selectStartLocation, this.selectEndLocation);
+    // 更新框选方向
+    this.isSelectDirectionRight = this.selectStartLocation.x < this.selectEndLocation.x;
+
     // 框选框在 section框中的限制情况
     if (this.mouseDownSection !== null) {
       this.selectingRectangle = Rectangle.getIntersectionRectangle(
@@ -127,7 +132,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
         if (entity.isHiddenBySectionCollapse) {
           continue;
         }
-        if (entity.collisionBox.isIntersectsWithRectangle(this.selectingRectangle)) {
+        if (this.isSelectWithEntity(entity)) {
           if (Controller.lastSelectedEntityUUID.has(entity.uuid)) {
             entity.isSelected = false;
           } else {
@@ -136,7 +141,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
         }
       }
       for (const edge of StageManager.getLineEdges()) {
-        if (edge.collisionBox.isIntersectsWithRectangle(this.selectingRectangle)) {
+        if (this.isSelectWithEntity(edge)) {
           if (Controller.lastSelectedEdgeUUID.has(edge.uuid)) {
             edge.isSelected = false;
           } else {
@@ -159,7 +164,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
             continue;
           }
 
-          if (otherEntities.collisionBox.isIntersectsWithRectangle(this.selectingRectangle)) {
+          if (this.isSelectWithEntity(otherEntities)) {
             otherEntities.isSelected = true;
             isHaveEntity = true;
           }
@@ -173,7 +178,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
           if (edge.isHiddenBySectionCollapse) {
             continue;
           }
-          if (edge.collisionBox.isIntersectsWithRectangle(this.selectingRectangle)) {
+          if (this.isSelectWithEntity(edge)) {
             edge.isSelected = true;
           }
         }
@@ -185,6 +190,34 @@ class ControllerRectangleSelectClass extends ControllerClass {
     Controller.isMovingEdge = false;
     ControllerRectangleSelect.lastMoveLocation = worldLocation.clone();
   };
+
+  /**
+   * 判断当前的框选框是否选中了某个实体
+   * @param entity
+   */
+  private isSelectWithEntity(entity: StageObject) {
+    if (entity.collisionBox && this.selectingRectangle) {
+      const mode = this.getSelectMode();
+      if (mode === "intersect") {
+        return entity.collisionBox.isIntersectsWithRectangle(this.selectingRectangle);
+      } else {
+        return entity.collisionBox.isContainedByRectangle(this.selectingRectangle);
+      }
+    }
+    return false;
+  }
+  /**
+   * 当前的框选框的方向
+   */
+  private isSelectDirectionRight = false;
+  // 获取此时此刻应该的框选逻辑
+  private getSelectMode(): "contain" | "intersect" {
+    if (this.isSelectDirectionRight) {
+      return Stage.rectangleSelectWhenRight;
+    } else {
+      return Stage.rectangleSelectWhenLeft;
+    }
+  }
 
   public mouseup = (event: MouseEvent) => {
     if (event.button !== 0) {

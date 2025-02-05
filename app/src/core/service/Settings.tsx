@@ -52,6 +52,8 @@ export namespace Settings {
     // 控制相关
     enableCollision: boolean; // 暂无
     enableDragAutoAlign: boolean;
+    rectangleSelectWhenLeft: "intersect" | "contain";
+    rectangleSelectWhenRight: "intersect" | "contain";
     scaleExponent: number;
     allowMoveCameraByWSAD: boolean;
     cameraKeyboardMoveReverse: boolean;
@@ -119,6 +121,8 @@ export namespace Settings {
     // 控制相关
     enableCollision: true,
     enableDragAutoAlign: true,
+    rectangleSelectWhenLeft: "contain",
+    rectangleSelectWhenRight: "intersect",
     scaleExponent: 0.11,
     allowMoveCameraByWSAD: false,
     cameraKeyboardMoveReverse: false,
