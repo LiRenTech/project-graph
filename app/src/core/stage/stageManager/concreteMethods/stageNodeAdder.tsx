@@ -42,6 +42,7 @@ export namespace StageNodeAdder {
 
     for (const section of addToSections) {
       section.children.push(node);
+      section.childrenUUIDs.push(node.uuid); // 修复
       section.adjustLocationAndSize();
       Stage.effectMachine.addEffect(
         new RectanglePushInEffect(node.rectangle.clone(), section.rectangle.clone(), new ProgressNumber(0, 100)),
