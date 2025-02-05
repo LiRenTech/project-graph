@@ -6,3 +6,5 @@ dist
 .vitepress
 # pg早期的备份文件
 *.backup
+# 自动保存导致产生的文件
+app/src-tauri/Project Graph
