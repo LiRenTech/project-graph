@@ -1,3 +1,4 @@
+import { invoke } from "@tauri-apps/api/core";
 import { check, Update } from "@tauri-apps/plugin-updater";
 import { BookOpen, Download, MessageCircleCode } from "lucide-react";
 import React from "react";
@@ -8,7 +9,9 @@ import icon from "../../assets/icon.png";
 import QQ from "../../assets/qq.svg?react";
 import versions from "../../assets/versions.json";
 import Button from "../../components/Button";
+import { Settings } from "../../core/service/Settings";
 import { getAppVersion } from "../../utils/otherApi";
+import { SettingField } from "./_field";
 
 export default function About() {
   const [version, setVersion] = React.useState("");
@@ -16,6 +19,9 @@ export default function About() {
   const [versionNameEn, setVersionNameEn] = React.useState("");
   const [update, setUpdate] = React.useState<Update | null>(null);
   const [updating, setUpdating] = React.useState(false);
+  const [newVersionFileSize, setNewVersionFileSize] = React.useState(0);
+  const [newVersionDownloadedSize, setNewVersionDownloadedSize] = React.useState(0);
+  const [updateChannel] = Settings.use("updateChannel");
   const { t, i18n } = useTranslation("about");
 
   React.useEffect(() => {
@@ -34,8 +40,13 @@ export default function About() {
         setVersionNameEn("Unknown Version");
       }
     });
-    check().then(setUpdate);
   }, []);
+
+  React.useEffect(() => {
+    invoke("set_update_channel", { channel: updateChannel })
+      .then(() => check())
+      .then(setUpdate);
+  }, [updateChannel]);
 
   return (
     <div className="flex h-full">
@@ -52,13 +63,25 @@ export default function About() {
           <Button
             onClick={() => {
               setUpdating(true);
-              update?.downloadAndInstall().then(() => {
-                setUpdating(false);
+              update?.downloadAndInstall((event) => {
+                switch (event.event) {
+                  case "Started":
+                    setNewVersionFileSize(event.data.contentLength ?? 0);
+                    break;
+                  case "Progress":
+                    setNewVersionDownloadedSize((prev) => prev + (event.data.chunkLength ?? 0));
+                    break;
+                  case "Finished":
+                    setUpdating(false);
+                    break;
+                }
               });
             }}
           >
             <Download />
-            {updating ? t("updater.downloading") : `${t("updater.available")}: ${update.version}`}
+            {updating
+              ? `${t("updater.downloading")}: ${((newVersionDownloadedSize / newVersionFileSize) * 100).toFixed()}%`
+              : `${t("updater.available")}: ${update.version}`}
           </Button>
         )}
         <div className="flex flex-wrap justify-center gap-2">
@@ -91,6 +114,7 @@ export default function About() {
         </div>
       </div>
       <div className="text-panel-text flex flex-1 flex-col gap-4 overflow-auto">
+        <SettingField icon={<Download />} settingKey="updateChannel" type="select" />
         <Paragraph i18nKey="intro" />
         <Paragraph i18nKey="ideaSources" />
         <Paragraph i18nKey="team" />
