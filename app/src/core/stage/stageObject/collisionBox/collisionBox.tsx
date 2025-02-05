@@ -38,6 +38,11 @@ export class CollisionBox {
     return false;
   }
 
+  /**
+   * 非完全覆盖框选
+   * @param rectangle
+   * @returns
+   */
   public isIntersectsWithRectangle(rectangle: Rectangle): boolean {
     for (const shape of this.shapeList) {
       if (shape.isCollideWithRectangle(rectangle)) {
@@ -45,6 +50,36 @@ export class CollisionBox {
       }
     }
     return false;
+  }
+
+  /**
+   * 完全覆盖框选
+   * @param rectangle
+   * @returns
+   */
+  public isContainedByRectangle(rectangle: Rectangle): boolean {
+    for (const shape of this.shapeList) {
+      const shapeRectangle = shape.getRectangle();
+      const shapeLeftTop = shapeRectangle.location;
+      const shapeRightBottom = new Vector(
+        shapeLeftTop.x + shapeRectangle.size.x,
+        shapeLeftTop.y + shapeRectangle.size.y,
+      );
+
+      const rectLeftTop = rectangle.location;
+      const rectRightBottom = new Vector(rectLeftTop.x + rectangle.size.x, rectLeftTop.y + rectangle.size.y);
+
+      // 判断每个形状的最小外接矩形是否完全在给定矩形内
+      if (
+        shapeLeftTop.x < rectLeftTop.x ||
+        shapeLeftTop.y < rectLeftTop.y ||
+        shapeRightBottom.x > rectRightBottom.x ||
+        shapeRightBottom.y > rectRightBottom.y
+      ) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public isIntersectsWithLine(line: Line): boolean {
