@@ -266,11 +266,44 @@ export namespace Renderer {
   }
   /** 框选框 */
   function renderSelectingRectangle() {
-    if (Stage.selectMachine.isUsing) {
-      if (Stage.selectMachine.selectingRectangle) {
+    if (Stage.selectMachine.isUsing && Stage.selectMachine.selectingRectangle) {
+      const selectMode = Stage.selectMachine.getSelectMode();
+      if (selectMode === "intersect") {
         ShapeRenderer.renderRect(
           Stage.selectMachine.selectingRectangle.transformWorld2View(),
           StageStyleManager.currentStyle.SelectRectangleFillColor,
+          StageStyleManager.currentStyle.SelectRectangleBorderColor,
+          1,
+        );
+      } else if (selectMode === "contain") {
+        ShapeRenderer.renderRect(
+          Stage.selectMachine.selectingRectangle.transformWorld2View(),
+          StageStyleManager.currentStyle.SelectRectangleFillColor,
+          Color.Transparent,
+          0,
+        );
+        // 额外画四个直角边框
+        CurveRenderer.renderSolidLine(
+          transformWorld2View(Stage.selectMachine.selectingRectangle.leftTop),
+          transformWorld2View(Stage.selectMachine.selectingRectangle.topCenter),
+          StageStyleManager.currentStyle.SelectRectangleBorderColor,
+          1,
+        );
+        CurveRenderer.renderSolidLine(
+          transformWorld2View(Stage.selectMachine.selectingRectangle.rightTop),
+          transformWorld2View(Stage.selectMachine.selectingRectangle.rightCenter),
+          StageStyleManager.currentStyle.SelectRectangleBorderColor,
+          1,
+        );
+        CurveRenderer.renderSolidLine(
+          transformWorld2View(Stage.selectMachine.selectingRectangle.rightBottom),
+          transformWorld2View(Stage.selectMachine.selectingRectangle.bottomCenter),
+          StageStyleManager.currentStyle.SelectRectangleBorderColor,
+          1,
+        );
+        CurveRenderer.renderSolidLine(
+          transformWorld2View(Stage.selectMachine.selectingRectangle.leftBottom),
+          transformWorld2View(Stage.selectMachine.selectingRectangle.leftCenter),
           StageStyleManager.currentStyle.SelectRectangleBorderColor,
           1,
         );

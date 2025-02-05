@@ -211,7 +211,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
    */
   private isSelectDirectionRight = false;
   // 获取此时此刻应该的框选逻辑
-  private getSelectMode(): "contain" | "intersect" {
+  public getSelectMode(): "contain" | "intersect" {
     if (this.isSelectDirectionRight) {
       return Stage.rectangleSelectWhenRight;
     } else {
