@@ -5,6 +5,9 @@ use base64::engine::general_purpose;
 use base64::Engine;
 
 use tauri::Manager;
+use tauri::Runtime;
+use tauri::Url;
+use tauri_plugin_updater::UpdaterExt;
 
 /// 判断文件是否存在
 #[tauri::command]
@@ -66,6 +69,25 @@ fn exit(code: i32) {
     std::process::exit(code);
 }
 
+#[tauri::command]
+async fn set_update_channel<R: Runtime>(
+    app: tauri::AppHandle<R>,
+    channel: String,
+) -> Result<(), tauri_plugin_updater::Error> {
+    println!("Setting update channel to {}", channel);
+    app.updater_builder()
+        .endpoints(vec![Url::parse(
+            format!(
+            "https://github.com/LiRenTech/project-graph/releases/{channel}/download/latest.json"
+        )
+            .as_str(),
+        )?])?
+        .build()?
+        .check()
+        .await?;
+    Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // 在 Linux 上禁用 DMA-BUF 渲染器
@@ -105,7 +127,8 @@ pub fn run() {
             write_file_base64,
             write_stdout,
             write_stderr,
-            exit
+            exit,
+            set_update_channel
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

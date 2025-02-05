@@ -13,6 +13,7 @@ export namespace Settings {
   // 注意：下拉菜单框必须要在语言包里面配置才能生效，否则菜单项是 Error: Option Not Found
   export type Settings = {
     language: "zh_CN" | "zh_TW" | "en";
+    updateChannel: "latest" | "nightly";
     // 视觉相关
     lineStyle: "straight" | "bezier" | "vertical";
     theme: "black" | "white" | "macaron" | "morandi";
@@ -78,6 +79,7 @@ export namespace Settings {
   };
   export const defaultSettings: Settings = {
     language: "zh_CN",
+    updateChannel: "latest",
     // 视觉相关
     lineStyle: "straight",
     theme: "black",

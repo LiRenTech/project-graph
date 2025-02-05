@@ -4,5 +4,6 @@
   "eslint.options": {
     "overrideConfigFile": "./eslint.config.js"
   },
-  "vue.server.includeLanguages": ["vue"]
+  "vue.server.includeLanguages": ["vue"],
+  "rust-analyzer.linkedProjects": ["app/src-tauri/Cargo.toml"]
 }
