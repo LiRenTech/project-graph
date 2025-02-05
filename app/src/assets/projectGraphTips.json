@@ -11,7 +11,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [1118, -935],
+      "location": [1639, -947],
       "size": [231.1359405517578, 124],
       "text": "创建质点\nConnectPoint",
       "uuid": "3282f7a8-b56f-42f6-9123-9da2739b3497",
@@ -20,7 +20,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [62, 386],
+      "location": [3025, 2921],
       "size": [284, 124],
       "text": "创建网页链接节点\nUrlNode",
       "uuid": "be1c881f-59b5-4709-8c37-b1ed426d271a",
@@ -101,7 +101,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-613, -1305],
+      "location": [-598, -1168],
       "size": [220, 76],
       "text": "双击空白位置",
       "uuid": "3e4650df-a496-4252-bca9-49fb97f7cec9",
@@ -132,7 +132,7 @@
       "details": ""
     },
     {
-      "location": [-549, -1460],
+      "location": [-534, -1323],
       "size": [92, 76],
       "text": "创建",
       "uuid": "52967d45-e5f3-4332-a9b0-bc9d147ce29c",
@@ -141,7 +141,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-535, -950],
+      "location": [-566, -458],
       "size": [156, 76],
       "text": "创建连线",
       "uuid": "780f4b13-355f-489d-8ff6-ad9f7a1fc5f2",
@@ -150,7 +150,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-227, -1013],
+      "location": [-258, -521],
       "size": [316, 76],
       "text": "右键拖拽创建的节点",
       "uuid": "0d71f94c-8c4a-4388-8302-d93533779ef3",
@@ -159,7 +159,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [169, -1073],
+      "location": [138, -581],
       "size": [348, 76],
       "text": "并在另一个节点上松开",
       "uuid": "b227549f-f756-4133-9b05-d6ed950dcc9f",
@@ -168,7 +168,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [169, -950],
+      "location": [138, -458],
       "size": [252, 76],
       "text": "并在空白处松开",
       "uuid": "de867eee-6014-4b8b-a7ed-3af37c3186db",
@@ -177,7 +177,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-226, -836],
+      "location": [-257, -344],
       "size": [284, 76],
       "text": "框选选中一个节点",
       "uuid": "9d14b7e5-dfb5-4862-85b5-a66afaf72352",
@@ -186,7 +186,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [169, -838],
+      "location": [138, -346],
       "size": [316, 76],
       "text": "右键点击另一个节点",
       "uuid": "2b3cad4f-58aa-4afc-a1eb-8d7044950d01",
@@ -195,16 +195,16 @@
       "type": "core:text_node"
     },
     {
-      "location": [-569, -606],
-      "size": [220, 76],
-      "text": "创建多重连线",
+      "location": [4542, 1477],
+      "size": [271.5199890136719, 76],
+      "text": "5：创建多重连线",
       "uuid": "757a3961-833a-4e11-98e9-930085f57da6",
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [-280, -676],
+      "location": [5078, 1475],
       "size": [124, 76],
       "text": "多连一",
       "uuid": "c53a47b6-fb28-4531-a95d-13af8fac9960",
@@ -213,7 +213,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-15, -674],
+      "location": [5343, 1477],
       "size": [220, 76],
       "text": "框选多个节点",
       "uuid": "9c7c0ebf-016f-4e88-a3e2-5d2f232cee46",
@@ -222,7 +222,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-280, -515],
+      "location": [5078, 1636],
       "size": [124, 76],
       "text": "一连多",
       "uuid": "b7c3f63c-77c1-43ac-b09b-589a8ec0f0b3",
@@ -231,7 +231,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [249, -674],
+      "location": [5607, 1477],
       "size": [316, 124],
       "text": "从其中任意一个节点\n开始右键拖拽",
       "uuid": "77bd711e-1642-4b29-8d6c-370b6fc2cf0e",
@@ -240,7 +240,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [640, -674],
+      "location": [5998, 1477],
       "size": [284, 76],
       "text": "在其他节点上松开",
       "uuid": "9644b4d4-4874-4b92-970a-b9520c0691a1",
@@ -249,7 +249,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [640, -565],
+      "location": [5998, 1586],
       "size": [252, 76],
       "text": "在空白位置松开",
       "uuid": "9c19cc5f-7f78-4cc1-9e01-3fa674a6da41",
@@ -258,7 +258,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-43, -517],
+      "location": [5315, 1634],
       "size": [277.43995666503906, 124],
       "text": "实现多连一后\n按ctrl+T反转连线",
       "uuid": "3ecf3185-da05-47c4-8256-cc7475279e1c",
@@ -267,8 +267,8 @@
       "type": "core:text_node"
     },
     {
-      "location": [-599, -1153],
-      "size": [1553, 790],
+      "location": [-596, -661],
+      "size": [1112, 423],
       "uuid": "90d9f04e-e40f-4e54-86d3-0075ccef939d",
       "text": "连线的创建",
       "color": [0, 0, 0, 0],
@@ -281,15 +281,7 @@
         "b227549f-f756-4133-9b05-d6ed950dcc9f",
         "de867eee-6014-4b8b-a7ed-3af37c3186db",
         "9d14b7e5-dfb5-4862-85b5-a66afaf72352",
-        "2b3cad4f-58aa-4afc-a1eb-8d7044950d01",
-        "757a3961-833a-4e11-98e9-930085f57da6",
-        "c53a47b6-fb28-4531-a95d-13af8fac9960",
-        "9c7c0ebf-016f-4e88-a3e2-5d2f232cee46",
-        "b7c3f63c-77c1-43ac-b09b-589a8ec0f0b3",
-        "77bd711e-1642-4b29-8d6c-370b6fc2cf0e",
-        "9644b4d4-4874-4b92-970a-b9520c0691a1",
-        "9c19cc5f-7f78-4cc1-9e01-3fa674a6da41",
-        "3ecf3185-da05-47c4-8256-cc7475279e1c"
+        "2b3cad4f-58aa-4afc-a1eb-8d7044950d01"
       ],
       "details": ""
     },
@@ -324,7 +316,7 @@
       "details": ""
     },
     {
-      "location": [2045, -1005],
+      "location": [1751, -412],
       "size": [188, 76],
       "text": "自环的创建",
       "uuid": "7b47bdfa-46f6-4a53-a389-4c695e71c388",
@@ -333,7 +325,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [2029, -878],
+      "location": [1735, -285],
       "size": [220, 76],
       "text": "在设置中开启",
       "uuid": "91eeb9fa-c5df-4bdb-a9e3-b1fa5939d047",
@@ -342,16 +334,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-240, -214],
-      "size": [236.92796325683594, 76],
-      "text": "创建Section框",
-      "uuid": "127f2634-bdb2-45db-a078-596e50e30a25",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-155, -67],
+      "location": [-241, 887],
       "size": [252, 124],
       "text": "选中多个物体后\n按Ctrl+G",
       "uuid": "f689f0f2-2fae-4f76-b88d-65bc28e4080c",
@@ -360,7 +343,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [1150, -496],
+      "location": [-1610, 291],
       "size": [156, 76],
       "text": "编辑连线",
       "uuid": "0459385a-8ec9-44f1-a879-c79e38ed085c",
@@ -369,7 +352,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-227, -1459],
+      "location": [-212, -1322],
       "size": [92, 76],
       "text": "编辑",
       "uuid": "1b458893-7d94-4806-bfd5-0bf1e640e512",
@@ -378,43 +361,43 @@
       "type": "core:text_node"
     },
     {
-      "location": [-376, 107],
-      "size": [236.92796325683594, 76],
-      "text": "编辑Section框",
+      "location": [-1024, 1246],
+      "size": [300.927978515625, 76],
+      "text": "编辑Section框名称",
       "uuid": "9905fb02-e92c-41d1-92da-d23f584f89fa",
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [53, -1460],
+      "location": [69, -1323],
       "size": [284, 76],
       "text": "编辑节点详细信息",
       "uuid": "4dc16d06-2864-4b33-90bc-337bf3e996fe",
-      "details": "",
+      "details": "这是节点详细信息……\n",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [-1332, -884],
+      "location": [-1428, -843],
       "size": [220, 76],
-      "text": "更改节点颜色",
+      "text": "更改连线颜色",
       "uuid": "226a4bb0-77ce-410d-b215-f72b72e90583",
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [-1332, -988],
+      "location": [-1428, -947],
       "size": [220, 76],
-      "text": "更改连线颜色",
+      "text": "更改节点颜色",
       "uuid": "a9b6d558-e8f1-4e2c-af68-6e0f424758fc",
       "details": "",
-      "color": [0, 0, 0, 0],
+      "color": [22, 163, 74, 1],
       "type": "core:text_node"
     },
     {
-      "location": [-673, 383],
+      "location": [3062, 2011],
       "size": [156, 76],
       "text": "创建图片",
       "uuid": "b1e5c238-1bcc-45d5-9978-524b2757944e",
@@ -423,7 +406,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-415, 328],
+      "location": [3320, 1956],
       "size": [351.96795654296875, 76],
       "text": "拖拽PNG文件到舞台中",
       "uuid": "35346767-58d6-498b-a1f0-1aec18c6c5c7",
@@ -432,7 +415,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-415, 441],
+      "location": [3320, 2069],
       "size": [349.1839599609375, 76],
       "text": "截图后Ctrl+V在舞台中",
       "uuid": "55b5f816-ac2b-4759-8a6b-8e8ef3345c70",
@@ -441,7 +424,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-672, 554],
+      "location": [3063, 2182],
       "size": [220, 76],
       "text": "图片缩放大小",
       "uuid": "431ab882-d04c-4401-ab6b-a692289d901d",
@@ -450,7 +433,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-377, 573],
+      "location": [3358, 2201],
       "size": [284, 124],
       "text": "鼠标悬浮在图片上\nctrl+滚轮",
       "uuid": "b1cb127f-f4bf-409c-bdb6-a29d940d02d1",
@@ -459,7 +442,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-703, 248],
+      "location": [3032, 1876],
       "size": [669.9679565429688, 479],
       "uuid": "4a66f8dd-d435-4401-9306-d737db0d3c17",
       "text": "图片",
@@ -477,7 +460,7 @@
       "details": ""
     },
     {
-      "location": [1431, -496],
+      "location": [-1329, 291],
       "size": [156, 76],
       "text": "双击连线",
       "uuid": "ba5f08c7-586c-4a0b-9910-2b80f7933f4c",
@@ -486,7 +469,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [1399, -386],
+      "location": [-1361, 401],
       "size": [220, 76],
       "text": "框选多个连线",
       "uuid": "4b9e0b0f-aa3c-4a98-a67e-4a2052fd428f",
@@ -495,7 +478,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [1699, -386],
+      "location": [-1061, 401],
       "size": [156, 76],
       "text": "按下回车",
       "uuid": "eed3e46b-73cf-4ccc-9f49-2b8d356b2307",
@@ -504,7 +487,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [1118, -386],
+      "location": [-1642, 401],
       "size": [220, 76],
       "text": "编辑多个连线",
       "uuid": "102870fa-bb71-4256-8907-2db9cbc13948",
@@ -513,7 +496,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [1088, -576],
+      "location": [-1672, 211],
       "size": [797, 296],
       "uuid": "ea47d3ba-843c-4033-b298-a50ca3b846ee",
       "text": "编辑连线文字",
@@ -531,7 +514,7 @@
       "details": ""
     },
     {
-      "location": [-258, -1305],
+      "location": [-243, -1168],
       "size": [156, 76],
       "text": "双击节点",
       "uuid": "d6861ff7-d196-4b91-9fdd-2d2d2ff58fd5",
@@ -540,8 +523,8 @@
       "type": "core:text_node"
     },
     {
-      "location": [-406, -294],
-      "size": [872, 507],
+      "location": [-837, 637],
+      "size": [878, 404],
       "uuid": "a4887488-ae17-4cc8-8da9-4c1c663f2485",
       "text": "创建框",
       "color": [0, 0, 0, 0],
@@ -549,26 +532,23 @@
       "isCollapsed": false,
       "isHidden": false,
       "children": [
-        "127f2634-bdb2-45db-a078-596e50e30a25",
         "f689f0f2-2fae-4f76-b88d-65bc28e4080c",
         "12b60f56-c871-43d5-9f04-1c9d3daa3700",
-        "9905fb02-e92c-41d1-92da-d23f584f89fa",
-        "e57db4dc-3ba5-4350-b6eb-4ef75ffcf050",
         "2a047da7-31a5-4165-889d-39c575ddf5a2"
       ],
       "details": ""
     },
     {
-      "location": [56, -214],
-      "size": [380, 76],
-      "text": "直接将一个节点转换成框",
+      "location": [-807, 741],
+      "size": [489.44000244140625, 76],
+      "text": "方法1：直接将一个节点转换成框",
       "uuid": "12b60f56-c871-43d5-9f04-1c9d3daa3700",
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [142, -67],
+      "location": [-241, 717],
       "size": [207.74391174316406, 124],
       "text": "选中节点后\nctrl+shift+G",
       "uuid": "2a047da7-31a5-4165-889d-39c575ddf5a2",
@@ -577,25 +557,25 @@
       "type": "core:text_node"
     },
     {
-      "location": [-1012, -988],
+      "location": [-1108, -947],
       "size": [257.3119812011719, 76],
-      "text": "选中连线，按F6",
+      "text": "选中节点，按F6",
       "uuid": "7372a44d-8313-482e-a17b-0ed03f46e4e7",
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [-1012, -884],
+      "location": [-1108, -843],
       "size": [257.3119812011719, 76],
-      "text": "选中节点，按F6",
+      "text": "选中连线，按F6",
       "uuid": "21e21aa9-b771-4704-a5c0-e47d7c6d18ff",
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
     },
     {
-      "location": [-1362, -1068],
+      "location": [-1458, -1027],
       "size": [637.3119812011719, 290],
       "uuid": "53372aec-1ca3-4192-90aa-c3cf62f8fc72",
       "text": "颜色更改",
@@ -612,7 +592,7 @@
       "details": ""
     },
     {
-      "location": [405.4020239967033, 359.8094961853566],
+      "location": [3368.824428813581, 2894.655854649806],
       "size": [300, 150],
       "url": "https://project-graph.top/",
       "title": "链接",
@@ -622,7 +602,7 @@
       "color": [0, 0, 0, 0]
     },
     {
-      "location": [401, 553],
+      "location": [3364, 3088],
       "size": [285.1839599609375, 124],
       "text": "直接将复制的链接\nCtrl+V粘贴在舞台",
       "uuid": "6e6cdac8-9029-4397-972b-c2895a337792",
@@ -631,8 +611,8 @@
       "type": "core:text_node"
     },
     {
-      "location": [32, 279.8094961853566],
-      "size": [703.4020239967033, 427.1905038146434],
+      "location": [2995, 2814.655854649806],
+      "size": [709, 746.3441453501941],
       "uuid": "d9241a0a-4c2f-44fc-af2a-2e6e8fa2a8fc",
       "text": "链接",
       "color": [0, 0, 0, 0],
@@ -642,12 +622,16 @@
       "children": [
         "be1c881f-59b5-4709-8c37-b1ed426d271a",
         "f19bd621-1002-4fa7-ab41-b068e59fcade",
-        "6e6cdac8-9029-4397-972b-c2895a337792"
+        "6e6cdac8-9029-4397-972b-c2895a337792",
+        "0f8c281c-afd2-41ca-9e10-213d7fa90ca6",
+        "058981f4-f4e9-4a70-9efb-e7e5e4b4c193",
+        "60e56c50-626a-4b61-b301-c9914e825afc",
+        "423225bc-ba87-4b9c-9518-f437b02a8c3b"
       ],
       "details": ""
     },
     {
-      "location": [-59, 107],
+      "location": [-666, 1246],
       "size": [156, 76],
       "text": "双击标题",
       "uuid": "e57db4dc-3ba5-4350-b6eb-4ef75ffcf050",
@@ -656,7 +640,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [468, -1460],
+      "location": [483, -1323],
       "size": [156, 76],
       "text": "搜索节点",
       "uuid": "b70ff1e7-610b-4dc2-84f6-ddb07da53d43",
@@ -665,7 +649,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [486, -1306],
+      "location": [501, -1169],
       "size": [121.88795471191406, 76],
       "text": "Ctrl+F",
       "uuid": "be406120-88a0-4b2b-a429-6fd50ccb6e7f",
@@ -674,7 +658,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [1474, -934],
+      "location": [1995, -946],
       "size": [220, 124],
       "text": "按住反引号键\n双击空白处",
       "uuid": "e907f7fe-d333-4ec8-a71f-8c309c523270",
@@ -683,13 +667,13 @@
       "type": "core:text_node"
     },
     {
-      "location": [1396.5198917674734, -910.3259283243158],
+      "location": [1917.7733823042406, -922.7367257180483],
       "uuid": "bcfd5d88-d1bd-4838-9a79-01564f0ce1a9",
       "type": "core:connect_point",
       "details": ""
     },
     {
-      "location": [1194, -740],
+      "location": [1715, -752],
       "size": [156, 76],
       "text": "选中质点",
       "uuid": "c2c3218c-5a2f-4647-bff5-d4b155438dbb",
@@ -698,7 +682,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [1448, -744],
+      "location": [1969, -756],
       "size": [316, 76],
       "text": "框选，自动膨胀成球",
       "uuid": "3014d884-6676-41e2-9546-1de3b6931ee8",
@@ -707,7 +691,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [48, -1305],
+      "location": [63, -1168],
       "size": [289.7919616699219, 76],
       "text": "按住ctrl+双击节点",
       "uuid": "982c6588-2107-4bfd-b497-dc56817a7e09",
@@ -716,7 +700,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [1299, -1067],
+      "location": [1820, -1079],
       "size": [444, 76],
       "text": "右键拖拽连线时点击一次左键",
       "uuid": "df527dbc-18bd-4024-b6b6-a3b33d4b2598",
@@ -725,13 +709,13 @@
       "type": "core:text_node"
     },
     {
-      "location": [1855.182494882474, -1021.9012009786795],
+      "location": [2376.4359854192417, -1034.311998372412],
       "uuid": "d532cbec-0cc4-4a52-8d25-4cd9f51008c3",
       "type": "core:connect_point",
       "details": ""
     },
     {
-      "location": [745, -1461],
+      "location": [760, -1324],
       "size": [156, 76],
       "text": "移动节点",
       "uuid": "a3d9bd69-9d11-46ea-871e-fc4dd2e596be",
@@ -740,7 +724,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [716, -1304],
+      "location": [731, -1167],
       "size": [220, 76],
       "text": "左键拖拽移动",
       "uuid": "a94c4acd-d4aa-429e-b435-52e07c57a915",
@@ -749,7 +733,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [-643, -1541],
+      "location": [-628, -1404],
       "size": [1609, 343],
       "uuid": "5049a50b-b20b-40aa-961f-390996edd2f5",
       "text": "文本节点",
@@ -772,8 +756,8 @@
       "details": ""
     },
     {
-      "location": [1088, -1147],
-      "size": [798.182494882474, 513],
+      "location": [1609, -1159],
+      "size": [798.4359854192417, 513],
       "uuid": "8e0f17f9-09a3-4328-9eb9-e35bd7cae71e",
       "text": "质点/折线",
       "color": [0, 0, 0, 0],
@@ -792,16 +776,1469 @@
       "details": ""
     },
     {
-      "location": [1999, -1085],
-      "size": [280, 313],
+      "location": [1705, -492],
+      "size": [403.8719787597656, 313],
       "uuid": "5eb1fb0d-13ba-4119-895d-3323d4e69dd0",
       "text": "自环",
       "color": [0, 0, 0, 0],
       "type": "core:section",
       "isCollapsed": false,
       "isHidden": false,
-      "children": ["7b47bdfa-46f6-4a53-a389-4c695e71c388", "91eeb9fa-c5df-4bdb-a9e3-b1fa5939d047"],
+      "children": [
+        "7b47bdfa-46f6-4a53-a389-4c695e71c388",
+        "91eeb9fa-c5df-4bdb-a9e3-b1fa5939d047",
+        "5cf88c64-b179-4293-ad36-776fc714c8f5"
+      ],
       "details": ""
+    },
+    {
+      "location": [-1472, -1407],
+      "size": [221.15196228027344, 76],
+      "text": "全选：Ctrl+A",
+      "uuid": "16405a2a-9f55-4f7d-9a9f-eee09d89a0d2",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-1469, -1304],
+      "size": [218.71995544433594, 76],
+      "text": "撤销：Ctrl+Z",
+      "uuid": "21b0a281-bddc-4d6e-9924-c161cc101903",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3377, -1754],
+      "size": [284, 124],
+      "text": "纯键盘操作\n（快捷高级操作）",
+      "uuid": "9ef41a2f-4e85-4f4f-9df5-b81d724b1a8f",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3936, -2123],
+      "size": [188, 76],
+      "text": "创建子节点",
+      "uuid": "8a0bb687-096c-4d82-8e92-b9aba9051aad",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4200, -2171],
+      "size": [304.927978515625, 172],
+      "text": "选中节点后按Tab键\n用IKJL调整位置后\n松开Tab键",
+      "uuid": "9781d6e2-412f-431c-9441-a605f83979b3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4299, -1719],
+      "size": [188, 76],
+      "text": "选中的节点",
+      "uuid": "ee688fbf-d5af-446f-ab38-ab3d6dcc2fbc",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4253, -1832],
+      "size": [281.63197326660156, 76],
+      "text": "上方创建：Alt+↑",
+      "uuid": "935b1097-8e49-4d91-8ade-4fee25912218",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4253, -1610],
+      "size": [281.63197326660156, 76],
+      "text": "下方创建：Alt+↓",
+      "uuid": "0040d2c2-6a77-4d93-86b9-43a28c16aa00",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4570, -1719],
+      "size": [281.63197326660156, 76],
+      "text": "右侧创建：Alt+→",
+      "uuid": "6e09db98-643d-41c8-ba60-14107c9cd87f",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3949, -1719],
+      "size": [281.63197326660156, 76],
+      "text": "左侧创建：Alt+←",
+      "uuid": "fc7c6b37-51b2-4c14-b6cb-b18fe2603359",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3919, -1912],
+      "size": [962.6319732666016, 408],
+      "uuid": "1c04abe2-773e-41bf-8e5b-d755621acdc4",
+      "text": "在选中节点旁边创建节点",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "ee688fbf-d5af-446f-ab38-ab3d6dcc2fbc",
+        "935b1097-8e49-4d91-8ade-4fee25912218",
+        "0040d2c2-6a77-4d93-86b9-43a28c16aa00",
+        "6e09db98-643d-41c8-ba60-14107c9cd87f",
+        "fc7c6b37-51b2-4c14-b6cb-b18fe2603359"
+      ],
+      "details": ""
+    },
+    {
+      "location": [5136, -1449],
+      "size": [348, 172],
+      "text": "提示：\n这些按键可以在设置中\n自定义修改",
+      "uuid": "042d0b79-cbac-4992-96db-2b2be4097673",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-1327, -725],
+      "size": [412, 124],
+      "text": "或者选中后在右侧工具栏中\n找到更改颜色按钮",
+      "uuid": "a3a88749-a67c-47f7-a02f-fb9246709dd1",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-629, 1484],
+      "size": [252, 76],
+      "text": "拖拽标题或边框",
+      "uuid": "47d5217b-907a-43d6-8216-6ac0b3f787d6",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-807, 911],
+      "size": [366.4320068359375, 76],
+      "text": "方法2：将多个节点装箱",
+      "uuid": "914d9b69-2920-4100-a3ff-6804af6b772e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-960, 1484],
+      "size": [236.92796325683594, 76],
+      "text": "移动Section框",
+      "uuid": "ddd0f80c-3e64-4bcf-ba01-cd3d248ac567",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-317, 1460],
+      "size": [284, 124],
+      "text": "更推荐拖拽标题\n因为触碰范围更大",
+      "uuid": "9fc1b08b-6f47-4d03-8b35-ca2155446fdf",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-796, 1731],
+      "size": [460.927978515625, 76],
+      "text": "添加其他节点到Section框内部",
+      "uuid": "79fb82bc-2d27-411b-95ea-2ee121bd2105",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-692, 2001],
+      "size": [252, 172],
+      "text": "第一步：\n框选外部节点\n（绿色的节点）",
+      "uuid": "4fcad660-bec1-405d-bbdb-3f671618c9f3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-294, 2049],
+      "size": [48.511993408203125, 76],
+      "text": "0",
+      "uuid": "0eb584cb-12a4-4d82-86ea-d88fa5f11ccd",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-189, 2195],
+      "size": [41.43998718261719, 76],
+      "text": "1",
+      "uuid": "3acde86f-b5b2-45b2-b3e7-0b275edaab60",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-324, 1969],
+      "size": [206.4399871826172, 332],
+      "uuid": "961fb604-084f-431e-a1d5-bc8b1a63fc93",
+      "text": "Section_0",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": ["0eb584cb-12a4-4d82-86ea-d88fa5f11ccd", "3acde86f-b5b2-45b2-b3e7-0b275edaab60"],
+      "details": ""
+    },
+    {
+      "location": [-69, 2027],
+      "size": [46.43199157714844, 76],
+      "text": "2",
+      "uuid": "72579177-ab2d-4276-afe2-2772505871d2",
+      "details": "",
+      "color": [22, 163, 74, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [19, 2195],
+      "size": [47.167999267578125, 76],
+      "text": "3",
+      "uuid": "41790417-f6b4-493e-bf2e-3323534ff2bb",
+      "details": "",
+      "color": [22, 163, 74, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-186, 2581],
+      "size": [46.43199157714844, 76],
+      "text": "2",
+      "uuid": "1baf86dd-7470-446f-a51d-56ca38ec35b7",
+      "details": "",
+      "color": [22, 163, 74, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-130, 2710],
+      "size": [47.167999267578125, 76],
+      "text": "3",
+      "uuid": "f09162b1-6a1e-424c-b780-89391f4f5950",
+      "details": "",
+      "color": [22, 163, 74, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-312, 2501],
+      "size": [259.1679992675781, 360],
+      "uuid": "415588a7-ff22-456f-80f0-f959de6069ac",
+      "text": "Section_0",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "c1626a67-044d-4c7e-a7c8-5959ab082dee",
+        "d275feb6-99ac-472d-9614-36836404019d",
+        "1baf86dd-7470-446f-a51d-56ca38ec35b7",
+        "f09162b1-6a1e-424c-b780-89391f4f5950"
+      ],
+      "details": ""
+    },
+    {
+      "location": [-282, 2609],
+      "size": [48.511993408203125, 76],
+      "text": "0",
+      "uuid": "c1626a67-044d-4c7e-a7c8-5959ab082dee",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-177, 2755],
+      "size": [41.43998718261719, 76],
+      "text": "1",
+      "uuid": "d275feb6-99ac-472d-9614-36836404019d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-732, 2561],
+      "size": [332.927978515625, 220],
+      "text": "第二步：\n按住Alt键，点击\nSection内部空白部分\n两个节点会跳进来",
+      "uuid": "97994f78-7e6c-4def-a9a1-b36559c8fdf8",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-692, 3138],
+      "size": [252, 124],
+      "text": "第三步：\n移动到合适位置",
+      "uuid": "93bd1c6b-b891-477a-be1e-b82b12c3d8da",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-327, 3058],
+      "size": [423.1679992675781, 332],
+      "uuid": "911f7653-cafd-43cc-963d-836727008b84",
+      "text": "Section_0",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "40299812-b03d-4a53-b2e0-116fd73c92d6",
+        "7b059579-f242-4d9d-a20a-ccf409350d62",
+        "97dbb7a8-232e-41b6-b68f-675b11f0af35",
+        "42331e46-bc52-4643-b23f-14fa4a9e3d71"
+      ],
+      "details": ""
+    },
+    {
+      "location": [-297, 3138],
+      "size": [48.511993408203125, 76],
+      "text": "0",
+      "uuid": "40299812-b03d-4a53-b2e0-116fd73c92d6",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-192, 3284],
+      "size": [41.43998718261719, 76],
+      "text": "1",
+      "uuid": "7b059579-f242-4d9d-a20a-ccf409350d62",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-69, 3138],
+      "size": [46.43199157714844, 76],
+      "text": "2",
+      "uuid": "97dbb7a8-232e-41b6-b68f-675b11f0af35",
+      "details": "",
+      "color": [22, 163, 74, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [19, 3284],
+      "size": [47.167999267578125, 76],
+      "text": "3",
+      "uuid": "42331e46-bc52-4643-b23f-14fa4a9e3d71",
+      "details": "",
+      "color": [22, 163, 74, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [301, 1731],
+      "size": [332.927978515625, 76],
+      "text": "Section框中移出节点",
+      "uuid": "450572c1-10be-42e5-9078-eed9b2c22c08",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [278, 1885],
+      "size": [377.6319580078125, 172],
+      "text": "同理添加节点\nAlt+左键点击可以视为：\n跨层级的跳跃式移动",
+      "uuid": "07e07c21-3026-4978-a2d5-a5fd01ce9182",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-1483, 1731],
+      "size": [332.927978515625, 76],
+      "text": "Section框中创建节点",
+      "uuid": "5f82270a-92ab-4b43-a9db-410a25d13d63",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-1483, 1847],
+      "size": [316, 76],
+      "text": "在内部空白位置双击",
+      "uuid": "ae78726e-9317-4f8e-a7f5-328c3d1e4afb",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3060, 365],
+      "size": [220, 76],
+      "text": "调整树形布局",
+      "uuid": "b7e5a870-8510-4329-9590-418cb83583d5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1410, 1757],
+      "size": [284, 76],
+      "text": "创建多层嵌套结构",
+      "uuid": "914c54ef-0984-4b81-8165-16273936e859",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1361, 2436],
+      "size": [47.23199462890625, 76],
+      "text": "4",
+      "uuid": "5c534b94-1027-4852-b240-0100b399f327",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1331, 2356],
+      "size": [185.51998901367188, 186],
+      "uuid": "170d67e1-10da-435e-bab3-c50b5d75a4b0",
+      "text": "Section_1",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": ["5c534b94-1027-4852-b240-0100b399f327", "362c36ff-2181-4bdc-9e6c-07c6f0f71309"],
+      "details": ""
+    },
+    {
+      "location": [1439, 2436],
+      "size": [47.519989013671875, 76],
+      "text": "5",
+      "uuid": "362c36ff-2181-4bdc-9e6c-07c6f0f71309",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1559, 2440],
+      "size": [47.67999267578125, 76],
+      "text": "6",
+      "uuid": "f7f2ca2d-6304-4505-a975-e040adc710ad",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1301, 2276],
+      "size": [335.67999267578125, 296],
+      "uuid": "0b71af39-2a85-49b5-95a2-02ec0f7a1bea",
+      "text": "Section_2",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": ["f7f2ca2d-6304-4505-a975-e040adc710ad", "170d67e1-10da-435e-bab3-c50b5d75a4b0"],
+      "details": ""
+    },
+    {
+      "location": [1679, 2371],
+      "size": [45.15199279785156, 76],
+      "text": "7",
+      "uuid": "3984e25d-c9e7-47ea-a55e-e50c810f7849",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1271, 2196],
+      "size": [483.15199279785156, 406],
+      "uuid": "ff803031-e23a-4688-b8d0-13d514983992",
+      "text": "Section_3",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": ["3984e25d-c9e7-47ea-a55e-e50c810f7849", "0b71af39-2a85-49b5-95a2-02ec0f7a1bea"],
+      "details": ""
+    },
+    {
+      "location": [1786, 2266],
+      "size": [48.41600036621094, 76],
+      "text": "8",
+      "uuid": "dd55b664-061e-4c3d-aef8-e7507b4c7828",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1241, 2116],
+      "size": [623.4160003662109, 516],
+      "uuid": "af6968a7-d47a-420a-81d3-92ccb7a121e8",
+      "text": "Section_4",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": ["dd55b664-061e-4c3d-aef8-e7507b4c7828", "ff803031-e23a-4688-b8d0-13d514983992"],
+      "details": ""
+    },
+    {
+      "location": [1299, 1903],
+      "size": [492.927978515625, 124],
+      "text": "选中已有的Section框和其他节点\n再次按Ctrl+G",
+      "uuid": "c18f891a-81bd-47f9-abbc-bb30171d4f35",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2213, 1757],
+      "size": [284, 76],
+      "text": "创建交叉嵌套结构",
+      "uuid": "48ebbee4-5790-4b39-8dd1-fe8ab8181a34",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2228, 2078],
+      "size": [47.519989013671875, 76],
+      "text": "9",
+      "uuid": "eb4b61d4-5ae2-4b3b-bbcd-26cc3a5003bf",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2324, 2144],
+      "size": [61.95198059082031, 76],
+      "text": "10",
+      "uuid": "1804670b-4f38-4171-beb3-6085dc7d59ef",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2198, 1998],
+      "size": [217.9519805908203, 252],
+      "uuid": "dfa35755-596a-4b5d-bb7e-729279aaac61",
+      "text": "Section_5",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": ["eb4b61d4-5ae2-4b3b-bbcd-26cc3a5003bf", "1804670b-4f38-4171-beb3-6085dc7d59ef"],
+      "details": ""
+    },
+    {
+      "location": [2454, 2211],
+      "size": [54.879974365234375, 76],
+      "text": "11",
+      "uuid": "cb21f7f3-c12b-4c8f-b8c1-c23fc645a070",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2294, 2064],
+      "size": [244.87997436523438, 253],
+      "uuid": "56b6efc9-7ea0-47ab-93be-c265f57b3945",
+      "text": "Section_6",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": ["cb21f7f3-c12b-4c8f-b8c1-c23fc645a070", "1804670b-4f38-4171-beb3-6085dc7d59ef"],
+      "details": ""
+    },
+    {
+      "location": [2133, 1885],
+      "size": [444, 76],
+      "text": "目前暂时不教您这个危险操作",
+      "uuid": "a64222a2-7599-46f9-bc77-e5e3ba622c76",
+      "details": "",
+      "color": [168, 85, 247, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3057, 3308],
+      "size": [220, 76],
+      "text": "打开跳转链接",
+      "uuid": "0f8c281c-afd2-41ca-9e10-213d7fa90ca6",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3358, 3308],
+      "size": [316, 76],
+      "text": "双击链接的下半部分",
+      "uuid": "423225bc-ba87-4b9c-9518-f437b02a8c3b",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3057, 3455],
+      "size": [220, 76],
+      "text": "修改链接名称",
+      "uuid": "058981f4-f4e9-4a70-9efb-e7e5e4b4c193",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3358, 3455],
+      "size": [220, 76],
+      "text": "双击上半部分",
+      "uuid": "60e56c50-626a-4b61-b301-c9914e825afc",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4307, -1203],
+      "size": [220, 76],
+      "text": "选中一个节点",
+      "uuid": "d0e3074a-0ad2-47f5-a6f8-42c853045977",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4269, -1319],
+      "size": [295.26397705078125, 76],
+      "text": "向上移动：Ctrl+↑",
+      "uuid": "51c1d979-ab01-4c32-b8fa-7d5806a9dfb7",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4269, -1074],
+      "size": [295.26397705078125, 76],
+      "text": "向下移动：Ctrl+↓",
+      "uuid": "ca5c2614-a429-4b14-8674-79b4aa73ad5b",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3944, -1203],
+      "size": [295.26397705078125, 76],
+      "text": "向左移动：Ctrl+←",
+      "uuid": "ea668ce3-fd78-4677-b2f5-b5254e3551f2",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4565, -1203],
+      "size": [295.26397705078125, 76],
+      "text": "向右移动：Ctrl+→",
+      "uuid": "1e19497d-7463-4d92-ad9e-3931f2b9f6fd",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3914, -1399],
+      "size": [976.2639770507812, 431],
+      "uuid": "48976317-b064-40fa-b45f-00424d1bbcef",
+      "text": "移动选中的节点",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "d0e3074a-0ad2-47f5-a6f8-42c853045977",
+        "51c1d979-ab01-4c32-b8fa-7d5806a9dfb7",
+        "ca5c2614-a429-4b14-8674-79b4aa73ad5b",
+        "ea668ce3-fd78-4677-b2f5-b5254e3551f2",
+        "1e19497d-7463-4d92-ad9e-3931f2b9f6fd"
+      ],
+      "details": ""
+    },
+    {
+      "location": [1919, -2369],
+      "size": [156, 76],
+      "text": "标签节点",
+      "uuid": "8cb34cf1-0310-4158-b080-41c08696616f",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2643, -2755],
+      "size": [201.4399871826172, 76],
+      "text": "1：选中节点",
+      "uuid": "5d3570fe-ebef-49a6-b707-a43e18fc6c2e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2984, -2755],
+      "size": [430.4320068359375, 76],
+      "text": "2：点击工具栏中的添加标签",
+      "uuid": "f627740e-f9aa-44d7-bb66-fb26b031af76",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3121, -2655],
+      "size": [156, 76],
+      "text": "添加完毕",
+      "uuid": "916deaec-db15-4c77-947d-bc79832e2a1c",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2309, -2687],
+      "size": [156, 76],
+      "text": "添加标签",
+      "uuid": "423643b6-3535-4956-a44a-3e7e8bf94eb3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2309, -2460],
+      "size": [156, 76],
+      "text": "去除标签",
+      "uuid": "171e92c8-190d-41e8-9c67-0d153f22b320",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2676, -2460],
+      "size": [444, 76],
+      "text": "和添加标签点击相同按钮即可",
+      "uuid": "c0cfccb9-ba84-4c15-94c0-f46755407429",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2261, -2221],
+      "size": [252, 76],
+      "text": "跳转到标签位置",
+      "uuid": "dabcc4d1-6e52-4a51-84d8-53cd998b6c68",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4862, -3712],
+      "size": [113.88800048828125, 76],
+      "text": "位置A",
+      "uuid": "a3955e58-b187-4035-9754-f57997867a02",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8922, -5102],
+      "size": [113.72799682617188, 76],
+      "text": "位置B",
+      "uuid": "7cbb265a-a049-4f53-940c-860ca10c3004",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [5033, -3712],
+      "size": [348, 124],
+      "text": "这是一个遥远的孤岛\n您缩小镜头就可以看到",
+      "uuid": "3c2642ea-b73f-4e1a-b479-405a5cfddbc2",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [9028, -5011],
+      "size": [380, 124],
+      "text": "这是一个更加遥远的孤岛\n您缩小镜头就可以看到",
+      "uuid": "c9215c3b-217d-4706-9e9a-ad662094aa40",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2676, -2221],
+      "size": [412, 76],
+      "text": "点击窗口左上角的标签列表",
+      "uuid": "57bcebe6-00c6-4130-bb0f-93df1a269dc3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2725, -2108],
+      "size": [284, 76],
+      "text": "点击其中一个标签",
+      "uuid": "6360fe7c-934f-4151-8b06-05bf5b659092",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2019, -285],
+      "size": [59.871978759765625, 76],
+      "text": "12",
+      "uuid": "5cf88c64-b179-4293-ad36-776fc714c8f5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2857, -985],
+      "size": [252, 76],
+      "text": "质点的可能应用",
+      "uuid": "937fb099-c4e8-4d1e-a7d2-807ee3ed5ffe",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3290, -1023],
+      "size": [45.5679931640625, 76],
+      "text": "a",
+      "uuid": "e5a62dc5-f727-4838-a8e0-c525df694cb2",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3420, -1023],
+      "size": [47.42399597167969, 76],
+      "text": "b",
+      "uuid": "109d1790-e4fb-4dcd-9cfb-b8a7ebe90670",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3588, -1023],
+      "size": [45.31199645996094, 76],
+      "text": "c",
+      "uuid": "5565bf6c-d2d2-41f3-9dae-e57f7f4d2f34",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3599.974598388122, -1082.6932049768066],
+      "uuid": "61d1c9ad-eace-49df-893e-9b076e77d608",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [3313.939988344765, -1082.000492314019],
+      "uuid": "263939a6-6684-4e3b-ba3e-494599fb3f01",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [3180, -1203],
+      "size": [265.4399871826172, 76],
+      "text": "1：构造弯折连线",
+      "uuid": "4719999a-cc4f-4df8-8ad5-946d21d3db2d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3421, -804],
+      "size": [60.60798645019531, 76],
+      "text": "13",
+      "uuid": "51585c3b-44a6-46f4-981b-667ba1504744",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3420, -643],
+      "size": [60.67198181152344, 76],
+      "text": "14",
+      "uuid": "24634376-56f5-4a39-a880-34938236a9a1",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3288, -643],
+      "size": [60.95997619628906, 76],
+      "text": "15",
+      "uuid": "43655ad1-fef4-4529-8ebe-dc8ade536fe8",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3580, -643],
+      "size": [61.11997985839844, 76],
+      "text": "16",
+      "uuid": "e7e5416a-d24c-42bb-8e35-e1942ad03e90",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3450.8215120111686, -693.4487540615263],
+      "uuid": "d6f63018-8729-412a-bf93-3dec458c12dd",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [3318.9252201812014, -695.4424916673233],
+      "uuid": "986a0e84-defe-4350-8807-7cde830a91c3",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [3604.9524212353826, -693.6841992719303],
+      "uuid": "1b282eec-25b7-4e5a-915b-c46deda689e5",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [3194, -886],
+      "size": [238.43199157714844, 76],
+      "text": "2：绘制分叉图",
+      "uuid": "a2fcbac2-6b05-4466-979d-479d223aec6e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3215, -520],
+      "size": [207.16799926757812, 76],
+      "text": "3：标记点位",
+      "uuid": "2062f086-66aa-45eb-8e57-d12b1249660a",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3366.183346614217, -392.67273289574047],
+      "uuid": "6dd5d1ce-9277-492c-bb23-64e12da471f4",
+      "type": "core:connect_point",
+      "details": "金星\n"
+    },
+    {
+      "location": [3469.7268775506045, -334.7211320661163],
+      "uuid": "38257d76-2c0d-4fca-a383-f27300626329",
+      "type": "core:connect_point",
+      "details": "木星\n"
+    },
+    {
+      "location": [3554.5855828062604, -390.1451142226286],
+      "uuid": "0ac948a1-6e23-47bd-9331-123b5025a8cb",
+      "type": "core:connect_point",
+      "details": "土星\n"
+    },
+    {
+      "location": [3400, 23],
+      "size": [329.44000244140625, 76],
+      "text": "1：整体移动树形布局",
+      "uuid": "0dc2217a-18ac-4e23-a140-8185b616df43",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4028, 23],
+      "size": [61.855987548828125, 76],
+      "text": "18",
+      "uuid": "0979e32f-38a2-40bb-b6d3-ae46e41b9ff3",
+      "details": "",
+      "color": [22, 163, 74, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4143, -73],
+      "size": [60.95997619628906, 76],
+      "text": "19",
+      "uuid": "3a4a5273-11c8-4d7b-a33f-cc0092dc7101",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4269, -134],
+      "size": [59.871978759765625, 76],
+      "text": "21",
+      "uuid": "b1503c50-4c3c-4e4c-9b7e-85a9ae9ba608",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4269, -1],
+      "size": [66.4639892578125, 76],
+      "text": "20",
+      "uuid": "7940dedd-1651-4081-b61e-c9561cba2aad",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4141, 167],
+      "size": [64.86398315429688, 76],
+      "text": "22",
+      "uuid": "6f2f2ce0-279a-4d33-a3e3-43dfee03a5fd",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4269, 113],
+      "size": [64.79998779296875, 76],
+      "text": "23",
+      "uuid": "fa5a1a80-2a5f-4687-a3c6-b2c0de5cecac",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4269, 238],
+      "size": [64.7039794921875, 76],
+      "text": "24",
+      "uuid": "21a760dc-921a-4e99-9fd9-4a51326fe06d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3686, 167],
+      "size": [348, 124],
+      "text": "按住ctrl键\n左键拖拽移动绿色节点",
+      "uuid": "7ade38e0-0480-49a5-be23-d002006fe2de",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3446, 463],
+      "size": [238.43199157714844, 76],
+      "text": "2：整体旋转树",
+      "uuid": "dff66723-4290-4db7-9ea0-726286fbc318",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4088, 463],
+      "size": [61.855987548828125, 76],
+      "text": "18",
+      "uuid": "e7a5e32f-4bfb-4190-8fd6-f4e1adbbbf3a",
+      "details": "",
+      "color": [22, 163, 74, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4269, 418],
+      "size": [60.95997619628906, 76],
+      "text": "19",
+      "uuid": "99c40649-ecd2-4f61-8d5f-30adbe0d021d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4387, 433],
+      "size": [59.871978759765625, 76],
+      "text": "21",
+      "uuid": "1ebde0f9-77f1-43c6-ac05-528e2cadc370",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4325, 536],
+      "size": [66.4639892578125, 76],
+      "text": "20",
+      "uuid": "f5062b21-fbcf-48b8-826f-dc508b53feac",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4136, 625],
+      "size": [64.86398315429688, 76],
+      "text": "22",
+      "uuid": "8976dc21-9a84-4dd2-8733-b2272f45b658",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4269, 638],
+      "size": [64.79998779296875, 76],
+      "text": "23",
+      "uuid": "248c1797-2686-4544-97ad-7e406dd5078a",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4206, 766],
+      "size": [64.7039794921875, 76],
+      "text": "24",
+      "uuid": "610504da-6e77-4c00-8ca1-59ca9c58055e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3718, 463],
+      "size": [316, 172],
+      "text": "按住Ctrl键\n鼠标放在绿色节点上\n滚动鼠标滚轮",
+      "uuid": "2c5d1a4a-bbda-4478-880f-28372d23d12c",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3462, 814],
+      "size": [207.16799926757812, 76],
+      "text": "3：旋转部分",
+      "uuid": "37c5b82e-b785-470c-8862-88a0ae9b08e5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4208, 1141],
+      "size": [61.855987548828125, 76],
+      "text": "18",
+      "uuid": "7d7a39db-b2fd-4d06-9488-40c4e98734f6",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4261, 966],
+      "size": [60.95997619628906, 76],
+      "text": "19",
+      "uuid": "6727673d-5a94-4212-8f56-277acca76ce9",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4325, 831],
+      "size": [59.871978759765625, 76],
+      "text": "21",
+      "uuid": "eea8accb-b822-434c-b491-e0e8f8db1802",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4382, 940],
+      "size": [66.4639892578125, 76],
+      "text": "20",
+      "uuid": "aa250169-45a2-441e-a9c3-00ea5d84ae15",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4325, 1234],
+      "size": [64.86398315429688, 76],
+      "text": "22",
+      "uuid": "52cc2ab0-5171-4268-ae27-42ced9b26c30",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4499, 1199],
+      "size": [64.79998779296875, 76],
+      "text": "23",
+      "uuid": "86e32ffb-adae-4585-9e6c-35b574fb6c19",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4500, 1312],
+      "size": [64.7039794921875, 76],
+      "text": "24",
+      "uuid": "2f907842-43bd-4137-b69f-b59b310d175d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3718, 862],
+      "size": [284, 124],
+      "text": "拖拽移动绿色的线\n旋转上半部分",
+      "uuid": "abaa797d-49b4-4d68-928f-7910cca72a08",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1735, 65],
+      "size": [348, 76],
+      "text": "连线节点群的高级操作",
+      "uuid": "8efe5b62-1ff7-402e-9fc3-086d5bc5bd84",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1222, -285],
+      "size": [156, 76],
+      "text": "高级操作",
+      "uuid": "5af14099-fbc1-46fe-b784-7cba78ecc4fc",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3361, 1312],
+      "size": [460.7039489746094, 76],
+      "text": "4：导出树形结构为markdown",
+      "uuid": "458eed9b-9987-44cc-a6d1-6ff9210e34b1",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3750, 1439],
+      "size": [252, 124],
+      "text": "选中一个根节点\n点击菜单",
+      "uuid": "58346822-433c-4baf-9889-64b895173b3c",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [5003, 1063],
+      "size": [58.59197998046875, 76],
+      "text": "17",
+      "uuid": "be56a555-b40b-4cf1-9668-a0998d123b6e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4994, 1150],
+      "size": [65.95198059082031, 76],
+      "text": "25",
+      "uuid": "82668c37-00b7-4523-9b10-afaf0e8ecd38",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4996, 1242],
+      "size": [65.47198486328125, 76],
+      "text": "26",
+      "uuid": "627add5a-1858-43b8-adbb-6cef6350b466",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [5174, 1151],
+      "size": [63.583984375, 76],
+      "text": "27",
+      "uuid": "26389471-6a93-47de-9f73-9e2bb600767b",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [5497, 1065],
+      "size": [58.59197998046875, 76],
+      "text": "17",
+      "uuid": "9a472256-ecdf-4e41-be7d-a7802c92eac6",
+      "details": "",
+      "color": [22, 163, 74, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [5486, 1153],
+      "size": [65.95198059082031, 76],
+      "text": "25",
+      "uuid": "af269b15-48a8-4a3a-b7c8-13ab973648d9",
+      "details": "",
+      "color": [22, 163, 74, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [5489, 1244],
+      "size": [65.47198486328125, 76],
+      "text": "26",
+      "uuid": "0d1868e1-ac76-496b-8319-e8c129cac600",
+      "details": "",
+      "color": [22, 163, 74, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [5667, 1154],
+      "size": [63.583984375, 76],
+      "text": "27",
+      "uuid": "921e2929-2fee-45a1-bcde-d49eba134f5c",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [5989, 1064],
+      "size": [58.59197998046875, 76],
+      "text": "17",
+      "uuid": "a18fee4d-fa90-43a0-9cd3-a7375da60cd5",
+      "details": "",
+      "color": [22, 163, 74, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [5981, 1152],
+      "size": [65.95198059082031, 76],
+      "text": "25",
+      "uuid": "0c1d599e-d06f-4a19-be59-f58e564eb36d",
+      "details": "",
+      "color": [22, 163, 74, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [5980, 1245],
+      "size": [65.47198486328125, 76],
+      "text": "26",
+      "uuid": "99a8a8d0-e326-4939-bbd1-132bd37de938",
+      "details": "",
+      "color": [22, 163, 74, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6158, 1155],
+      "size": [63.583984375, 76],
+      "text": "27",
+      "uuid": "d43813e9-7a7e-4e71-9969-1630d4f23bcb",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [4964, 983],
+      "size": [303.583984375, 365],
+      "uuid": "d02135bd-9168-4afb-add6-b383cf616b11",
+      "text": "1",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "be56a555-b40b-4cf1-9668-a0998d123b6e",
+        "82668c37-00b7-4523-9b10-afaf0e8ecd38",
+        "627add5a-1858-43b8-adbb-6cef6350b466",
+        "26389471-6a93-47de-9f73-9e2bb600767b"
+      ],
+      "details": ""
+    },
+    {
+      "location": [5456, 985],
+      "size": [304.583984375, 365],
+      "uuid": "b203e52b-33ba-451b-9973-511dc13b8e3a",
+      "text": "2",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "9a472256-ecdf-4e41-be7d-a7802c92eac6",
+        "af269b15-48a8-4a3a-b7c8-13ab973648d9",
+        "0d1868e1-ac76-496b-8319-e8c129cac600",
+        "921e2929-2fee-45a1-bcde-d49eba134f5c"
+      ],
+      "details": ""
+    },
+    {
+      "location": [5950, 984],
+      "size": [301.583984375, 367],
+      "uuid": "13c99b1d-75e7-493a-8bdb-0bcdef999391",
+      "text": "3",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "a18fee4d-fa90-43a0-9cd3-a7375da60cd5",
+        "0c1d599e-d06f-4a19-be59-f58e564eb36d",
+        "99a8a8d0-e326-4939-bbd1-132bd37de938",
+        "d43813e9-7a7e-4e71-9969-1630d4f23bcb"
+      ],
+      "details": ""
+    },
+    {
+      "location": [6435, 979],
+      "size": [301.583984375, 368],
+      "uuid": "cad9e994-f4e5-4959-aa1c-bef457aa8795",
+      "text": "4",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "08b28301-2d1a-44a1-ae63-ba893b85a63e",
+        "4821b1e3-1b99-4216-8c80-ad5fc4ce8ba2",
+        "57850c2d-949b-4e92-aaae-232d1a3cc2b3",
+        "0fba4e16-dcf2-43f1-b2f1-1e15ac9a5c43"
+      ],
+      "details": ""
+    },
+    {
+      "location": [6474, 1059],
+      "size": [58.59197998046875, 76],
+      "text": "17",
+      "uuid": "08b28301-2d1a-44a1-ae63-ba893b85a63e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6465, 1147],
+      "size": [65.95198059082031, 76],
+      "text": "25",
+      "uuid": "4821b1e3-1b99-4216-8c80-ad5fc4ce8ba2",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6465, 1241],
+      "size": [65.47198486328125, 76],
+      "text": "26",
+      "uuid": "57850c2d-949b-4e92-aaae-232d1a3cc2b3",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6643, 1151],
+      "size": [63.583984375, 76],
+      "text": "27",
+      "uuid": "0fba4e16-dcf2-43f1-b2f1-1e15ac9a5c43",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
     }
   ],
   "associations": [
@@ -902,14 +2339,6 @@
       "color": [0, 0, 0, 0]
     },
     {
-      "source": "780f4b13-355f-489d-8ff6-ad9f7a1fc5f2",
-      "target": "757a3961-833a-4e11-98e9-930085f57da6",
-      "text": "",
-      "uuid": "4fbe078d-d768-482e-b9fd-96ad69301604",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
-    },
-    {
       "source": "757a3961-833a-4e11-98e9-930085f57da6",
       "target": "c53a47b6-fb28-4531-a95d-13af8fac9960",
       "text": "",
@@ -982,14 +2411,6 @@
       "color": [0, 0, 0, 0]
     },
     {
-      "source": "127f2634-bdb2-45db-a078-596e50e30a25",
-      "target": "f689f0f2-2fae-4f76-b88d-65bc28e4080c",
-      "text": "",
-      "uuid": "7a435c6b-0cd0-4b11-8d45-7cdb35c7fe39",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
-    },
-    {
       "source": "b1e5c238-1bcc-45d5-9978-524b2757944e",
       "target": "35346767-58d6-498b-a1f0-1aec18c6c5c7",
       "text": "",
@@ -1056,7 +2477,7 @@
     {
       "source": "90d9f04e-e40f-4e54-86d3-0075ccef939d",
       "target": "ea47d3ba-843c-4033-b298-a50ca3b846ee",
-      "text": "",
+      "text": "连线上也能写文字",
       "uuid": "409e31ca-35b3-4328-b363-e6cc0b7659b6",
       "type": "core:line_edge",
       "color": [0, 0, 0, 0]
@@ -1066,14 +2487,6 @@
       "target": "d6861ff7-d196-4b91-9fdd-2d2d2ff58fd5",
       "text": "",
       "uuid": "baf3f53f-1809-429b-8286-1add4afd6d02",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
-    },
-    {
-      "source": "127f2634-bdb2-45db-a078-596e50e30a25",
-      "target": "12b60f56-c871-43d5-9f04-1c9d3daa3700",
-      "text": "",
-      "uuid": "53117baf-1110-4d49-ab8b-8fc92f9c83ae",
       "type": "core:line_edge",
       "color": [0, 0, 0, 0]
     },
@@ -1099,7 +2512,7 @@
       "text": "",
       "uuid": "462a9dae-41e9-473e-945f-7ffe17d37459",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [22, 163, 74, 1]
     },
     {
       "source": "be1c881f-59b5-4709-8c37-b1ed426d271a",
@@ -1114,14 +2527,6 @@
       "target": "6e6cdac8-9029-4397-972b-c2895a337792",
       "text": "",
       "uuid": "a95e44af-04ff-4cce-b849-4f0e16b6fba7",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
-    },
-    {
-      "source": "127f2634-bdb2-45db-a078-596e50e30a25",
-      "target": "9905fb02-e92c-41d1-92da-d23f584f89fa",
-      "text": "",
-      "uuid": "00dc42ed-8951-44b9-b4d2-0a3eaff580b1",
       "type": "core:line_edge",
       "color": [0, 0, 0, 0]
     },
@@ -1206,21 +2611,793 @@
       "color": [0, 0, 0, 0]
     },
     {
-      "source": "90d9f04e-e40f-4e54-86d3-0075ccef939d",
-      "target": "8e0f17f9-09a3-4328-9eb9-e35bd7cae71e",
+      "source": "7983b72d-6cf0-4fcd-9d9e-e9f1ab414ada",
+      "target": "5049a50b-b20b-40aa-961f-390996edd2f5",
       "text": "",
-      "uuid": "a27a5884-005d-4538-a577-f6d0d34bc0af",
+      "uuid": "bfccbc9c-c17f-4186-8f11-263242381bca",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "5049a50b-b20b-40aa-961f-390996edd2f5",
+      "target": "90d9f04e-e40f-4e54-86d3-0075ccef939d",
+      "text": "",
+      "uuid": "27b37661-4414-4c8c-b542-7c4a0f49a881",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "90d9f04e-e40f-4e54-86d3-0075ccef939d",
+      "target": "a4887488-ae17-4cc8-8da9-4c1c663f2485",
+      "text": "",
+      "uuid": "ef0ae985-7406-4e4a-b5c7-03bcd20b14fb",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "8a0bb687-096c-4d82-8e92-b9aba9051aad",
+      "target": "9781d6e2-412f-431c-9441-a605f83979b3",
+      "text": "",
+      "uuid": "ee6de6b7-158f-470b-89c6-4ee34716f4b6",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "9ef41a2f-4e85-4f4f-9df5-b81d724b1a8f",
+      "target": "8a0bb687-096c-4d82-8e92-b9aba9051aad",
+      "text": "",
+      "uuid": "5b04be90-6bbc-4195-b8ce-8af8fe1d04e9",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "1c04abe2-773e-41bf-8e5b-d755621acdc4",
+      "target": "042d0b79-cbac-4992-96db-2b2be4097673",
+      "text": "",
+      "uuid": "30949d56-4baf-41f8-afb7-0bec70741742",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "9ef41a2f-4e85-4f4f-9df5-b81d724b1a8f",
+      "target": "1c04abe2-773e-41bf-8e5b-d755621acdc4",
+      "text": "",
+      "uuid": "666d0ecd-4e63-44eb-9cf5-059612c6613b",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "a4887488-ae17-4cc8-8da9-4c1c663f2485",
+      "target": "9905fb02-e92c-41d1-92da-d23f584f89fa",
+      "text": "",
+      "uuid": "5c4522cb-c5c4-4497-92e9-6ea9ba91765c",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "914d9b69-2920-4100-a3ff-6804af6b772e",
+      "target": "f689f0f2-2fae-4f76-b88d-65bc28e4080c",
+      "text": "",
+      "uuid": "3e0f8bc7-7095-4d10-961e-45be806222db",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "9905fb02-e92c-41d1-92da-d23f584f89fa",
+      "target": "ddd0f80c-3e64-4bcf-ba01-cd3d248ac567",
+      "text": "",
+      "uuid": "74e1db82-fc04-4690-b7fd-25be1d21e93e",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "ddd0f80c-3e64-4bcf-ba01-cd3d248ac567",
+      "target": "47d5217b-907a-43d6-8216-6ac0b3f787d6",
+      "text": "",
+      "uuid": "445e4127-3a7a-46a0-90b0-24d91912242a",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "47d5217b-907a-43d6-8216-6ac0b3f787d6",
+      "target": "9fc1b08b-6f47-4d03-8b35-ca2155446fdf",
+      "text": "",
+      "uuid": "17fb52cd-57ce-4830-bf41-30c317dd6f34",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "ddd0f80c-3e64-4bcf-ba01-cd3d248ac567",
+      "target": "79fb82bc-2d27-411b-95ea-2ee121bd2105",
+      "text": "",
+      "uuid": "ff640df8-3350-4f99-8908-665061467773",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "79fb82bc-2d27-411b-95ea-2ee121bd2105",
+      "target": "4fcad660-bec1-405d-bbdb-3f671618c9f3",
+      "text": "",
+      "uuid": "b6416af8-4e78-49c4-b7b3-4a27d1bc7e64",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "4fcad660-bec1-405d-bbdb-3f671618c9f3",
+      "target": "97994f78-7e6c-4def-a9a1-b36559c8fdf8",
+      "text": "",
+      "uuid": "c5cabbf8-4209-4a15-9c0d-741b44ef2b3a",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "97994f78-7e6c-4def-a9a1-b36559c8fdf8",
+      "target": "93bd1c6b-b891-477a-be1e-b82b12c3d8da",
+      "text": "",
+      "uuid": "dfda086a-1657-4225-b049-794696a02942",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "79fb82bc-2d27-411b-95ea-2ee121bd2105",
+      "target": "450572c1-10be-42e5-9078-eed9b2c22c08",
+      "text": "",
+      "uuid": "5c9e17d0-85d3-4082-b002-387a41626fee",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "450572c1-10be-42e5-9078-eed9b2c22c08",
+      "target": "07e07c21-3026-4978-a2d5-a5fd01ce9182",
+      "text": "",
+      "uuid": "b7d2cf00-3a14-4c79-8175-5d718c01e02d",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "ddd0f80c-3e64-4bcf-ba01-cd3d248ac567",
+      "target": "5f82270a-92ab-4b43-a9db-410a25d13d63",
+      "text": "",
+      "uuid": "63ed4983-f9f7-44e8-93ed-1a2e9c64eafd",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "5f82270a-92ab-4b43-a9db-410a25d13d63",
+      "target": "ae78726e-9317-4f8e-a7f5-328c3d1e4afb",
+      "text": "",
+      "uuid": "d714ba87-6952-42a2-b5d3-2606dfcba102",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "450572c1-10be-42e5-9078-eed9b2c22c08",
+      "target": "914c54ef-0984-4b81-8165-16273936e859",
+      "text": "",
+      "uuid": "464af1c5-d976-4ff9-a97c-2da551d755a9",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "914c54ef-0984-4b81-8165-16273936e859",
+      "target": "c18f891a-81bd-47f9-abbc-bb30171d4f35",
+      "text": "",
+      "uuid": "b92a3d56-e67a-4099-9fc5-1a84db041870",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "c18f891a-81bd-47f9-abbc-bb30171d4f35",
+      "target": "af6968a7-d47a-420a-81d3-92ccb7a121e8",
+      "text": "",
+      "uuid": "197d5eee-150d-41ae-80c1-f55d937a0597",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "914c54ef-0984-4b81-8165-16273936e859",
+      "target": "48ebbee4-5790-4b39-8dd1-fe8ab8181a34",
+      "text": "",
+      "uuid": "49f41994-925d-4daa-9845-7474f0a00c3f",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "be1c881f-59b5-4709-8c37-b1ed426d271a",
+      "target": "0f8c281c-afd2-41ca-9e10-213d7fa90ca6",
+      "text": "",
+      "uuid": "8ace8b90-0acf-4e33-9e8e-04f30f9813f2",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "0f8c281c-afd2-41ca-9e10-213d7fa90ca6",
+      "target": "423225bc-ba87-4b9c-9518-f437b02a8c3b",
+      "text": "",
+      "uuid": "fa5d6298-1d8c-4c9b-ac29-bf0e915bd476",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "0f8c281c-afd2-41ca-9e10-213d7fa90ca6",
+      "target": "058981f4-f4e9-4a70-9efb-e7e5e4b4c193",
+      "text": "",
+      "uuid": "d3cc9120-0174-45ea-a248-19abcfe922c5",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "058981f4-f4e9-4a70-9efb-e7e5e4b4c193",
+      "target": "60e56c50-626a-4b61-b301-c9914e825afc",
+      "text": "",
+      "uuid": "a47e8f70-ead4-4062-abed-82d9dd624a23",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "9ef41a2f-4e85-4f4f-9df5-b81d724b1a8f",
+      "target": "48976317-b064-40fa-b45f-00424d1bbcef",
+      "text": "",
+      "uuid": "20336967-025d-46a6-841a-df41044fd21a",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "48976317-b064-40fa-b45f-00424d1bbcef",
+      "target": "042d0b79-cbac-4992-96db-2b2be4097673",
+      "text": "",
+      "uuid": "1cadcd2a-f7df-492c-8644-a73460635a9f",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "5049a50b-b20b-40aa-961f-390996edd2f5",
+      "target": "8cb34cf1-0310-4158-b080-41c08696616f",
+      "text": "",
+      "uuid": "658d9750-c16b-45b1-a243-7e3211740f30",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "5d3570fe-ebef-49a6-b707-a43e18fc6c2e",
+      "target": "f627740e-f9aa-44d7-bb66-fb26b031af76",
+      "text": "",
+      "uuid": "bb9798e8-bcfc-485c-86c6-74536c459a97",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "f627740e-f9aa-44d7-bb66-fb26b031af76",
+      "target": "916deaec-db15-4c77-947d-bc79832e2a1c",
+      "text": "",
+      "uuid": "f5a64a98-5db8-480e-b7b4-695da101d0c4",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "8cb34cf1-0310-4158-b080-41c08696616f",
+      "target": "423643b6-3535-4956-a44a-3e7e8bf94eb3",
+      "text": "",
+      "uuid": "23f77acf-76a0-4315-9b7a-153f84268ad1",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "423643b6-3535-4956-a44a-3e7e8bf94eb3",
+      "target": "5d3570fe-ebef-49a6-b707-a43e18fc6c2e",
+      "text": "",
+      "uuid": "615713f1-2c3f-4946-8aab-1e61b60bf82d",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "423643b6-3535-4956-a44a-3e7e8bf94eb3",
+      "target": "171e92c8-190d-41e8-9c67-0d153f22b320",
+      "text": "",
+      "uuid": "99fb9358-a43a-4913-a5e3-fe172563329b",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "171e92c8-190d-41e8-9c67-0d153f22b320",
+      "target": "c0cfccb9-ba84-4c15-94c0-f46755407429",
+      "text": "",
+      "uuid": "c5247935-ca25-43bc-84a9-1bea09df01cd",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "171e92c8-190d-41e8-9c67-0d153f22b320",
+      "target": "dabcc4d1-6e52-4a51-84d8-53cd998b6c68",
+      "text": "",
+      "uuid": "0403170d-6c85-4644-8112-93253967de82",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "dabcc4d1-6e52-4a51-84d8-53cd998b6c68",
+      "target": "57bcebe6-00c6-4130-bb0f-93df1a269dc3",
+      "text": "",
+      "uuid": "0273cdc5-b214-4bad-84ca-e89ecadc233c",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "57bcebe6-00c6-4130-bb0f-93df1a269dc3",
+      "target": "6360fe7c-934f-4151-8b06-05bf5b659092",
+      "text": "",
+      "uuid": "3940d8ea-bf15-43b6-b9d8-48154f51710e",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "ea47d3ba-843c-4033-b298-a50ca3b846ee",
+      "target": "a4887488-ae17-4cc8-8da9-4c1c663f2485",
+      "text": "",
+      "uuid": "5a16c41d-366d-445d-9655-f01e8659580a",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "91eeb9fa-c5df-4bdb-a9e3-b1fa5939d047",
+      "target": "5cf88c64-b179-4293-ad36-776fc714c8f5",
+      "text": "",
+      "uuid": "2ca5ffd9-3ef6-4422-bf4c-ba7cedd487c1",
       "type": "core:line_edge",
       "color": [0, 0, 0, 0]
     },
     {
       "source": "8e0f17f9-09a3-4328-9eb9-e35bd7cae71e",
+      "target": "937fb099-c4e8-4d1e-a7d2-807ee3ed5ffe",
+      "text": "",
+      "uuid": "5b019d9b-4782-4a18-a641-7e75b24301f9",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "e5a62dc5-f727-4838-a8e0-c525df694cb2",
+      "target": "109d1790-e4fb-4dcd-9cfb-b8a7ebe90670",
+      "text": "",
+      "uuid": "c2d83dbb-3bef-492b-8041-4b2f4065b2a5",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "109d1790-e4fb-4dcd-9cfb-b8a7ebe90670",
+      "target": "5565bf6c-d2d2-41f3-9dae-e57f7f4d2f34",
+      "text": "",
+      "uuid": "d572a3d5-a414-4e29-bca3-1e61a1513f56",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "5565bf6c-d2d2-41f3-9dae-e57f7f4d2f34",
+      "target": "61d1c9ad-eace-49df-893e-9b076e77d608",
+      "text": "",
+      "uuid": "34bd94a1-8285-4298-ad7c-09c0b22a9e60",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "61d1c9ad-eace-49df-893e-9b076e77d608",
+      "target": "263939a6-6684-4e3b-ba3e-494599fb3f01",
+      "text": "",
+      "uuid": "417fc10e-dcfa-4218-835a-9ccd9fc785cb",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "263939a6-6684-4e3b-ba3e-494599fb3f01",
+      "target": "e5a62dc5-f727-4838-a8e0-c525df694cb2",
+      "text": "",
+      "uuid": "c5f59254-31ec-4217-ade6-fa6429c524fd",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "51585c3b-44a6-46f4-981b-667ba1504744",
+      "target": "d6f63018-8729-412a-bf93-3dec458c12dd",
+      "text": "",
+      "uuid": "2efab673-4233-4649-b464-fd8ac50bf650",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "d6f63018-8729-412a-bf93-3dec458c12dd",
+      "target": "986a0e84-defe-4350-8807-7cde830a91c3",
+      "text": "",
+      "uuid": "740be89d-5542-492e-9a91-237571023073",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "986a0e84-defe-4350-8807-7cde830a91c3",
+      "target": "43655ad1-fef4-4529-8ebe-dc8ade536fe8",
+      "text": "",
+      "uuid": "e44a565e-8bb9-4576-a699-5f3595a8cbee",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "d6f63018-8729-412a-bf93-3dec458c12dd",
+      "target": "24634376-56f5-4a39-a880-34938236a9a1",
+      "text": "",
+      "uuid": "9f58e1a1-83fc-45af-ba52-907b5c519cf7",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "d6f63018-8729-412a-bf93-3dec458c12dd",
+      "target": "1b282eec-25b7-4e5a-915b-c46deda689e5",
+      "text": "",
+      "uuid": "00547664-ea09-4030-903f-200a08813467",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "1b282eec-25b7-4e5a-915b-c46deda689e5",
+      "target": "e7e5416a-d24c-42bb-8e35-e1942ad03e90",
+      "text": "",
+      "uuid": "87c830dc-8484-4e7c-864c-9847b590dd36",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "5049a50b-b20b-40aa-961f-390996edd2f5",
+      "target": "9ef41a2f-4e85-4f4f-9df5-b81d724b1a8f",
+      "text": "",
+      "uuid": "f26e8a4a-bb75-424c-8683-763bd7732692",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "0979e32f-38a2-40bb-b6d3-ae46e41b9ff3",
+      "target": "3a4a5273-11c8-4d7b-a33f-cc0092dc7101",
+      "text": "",
+      "uuid": "b50bfbc2-3fb6-4a98-9775-2db61935d1d1",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "3a4a5273-11c8-4d7b-a33f-cc0092dc7101",
+      "target": "b1503c50-4c3c-4e4c-9b7e-85a9ae9ba608",
+      "text": "",
+      "uuid": "5db3d79e-5d5d-4f8c-a39f-b31ce8f283f1",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "3a4a5273-11c8-4d7b-a33f-cc0092dc7101",
+      "target": "7940dedd-1651-4081-b61e-c9561cba2aad",
+      "text": "",
+      "uuid": "83c3d035-6669-4571-b49f-91b8d098f963",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "0979e32f-38a2-40bb-b6d3-ae46e41b9ff3",
+      "target": "6f2f2ce0-279a-4d33-a3e3-43dfee03a5fd",
+      "text": "",
+      "uuid": "fee60cbd-2e35-443f-b9ee-ea6011e1bb32",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "6f2f2ce0-279a-4d33-a3e3-43dfee03a5fd",
+      "target": "fa5a1a80-2a5f-4687-a3c6-b2c0de5cecac",
+      "text": "",
+      "uuid": "f6ac8582-0d29-4968-9731-8339abf0aba5",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "6f2f2ce0-279a-4d33-a3e3-43dfee03a5fd",
+      "target": "21a760dc-921a-4e99-9fd9-4a51326fe06d",
+      "text": "",
+      "uuid": "4ebafcd9-6ef1-4587-a382-83efaba15ccd",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "0dc2217a-18ac-4e23-a140-8185b616df43",
+      "target": "7ade38e0-0480-49a5-be23-d002006fe2de",
+      "text": "",
+      "uuid": "019eba6a-26b6-47be-8cf3-19bf332c28b1",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "e7a5e32f-4bfb-4190-8fd6-f4e1adbbbf3a",
+      "target": "99c40649-ecd2-4f61-8d5f-30adbe0d021d",
+      "text": "",
+      "uuid": "e085cf60-cbf5-4617-8ebf-9809d15969bb",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "99c40649-ecd2-4f61-8d5f-30adbe0d021d",
+      "target": "1ebde0f9-77f1-43c6-ac05-528e2cadc370",
+      "text": "",
+      "uuid": "21040b49-4b18-48ac-901a-fef598e7a6e9",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "99c40649-ecd2-4f61-8d5f-30adbe0d021d",
+      "target": "f5062b21-fbcf-48b8-826f-dc508b53feac",
+      "text": "",
+      "uuid": "c0c29d91-d843-4af1-83fc-bd61c6257f4c",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "e7a5e32f-4bfb-4190-8fd6-f4e1adbbbf3a",
+      "target": "8976dc21-9a84-4dd2-8733-b2272f45b658",
+      "text": "",
+      "uuid": "db023962-2068-4769-a5dd-da9e4a3729c9",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "8976dc21-9a84-4dd2-8733-b2272f45b658",
+      "target": "248c1797-2686-4544-97ad-7e406dd5078a",
+      "text": "",
+      "uuid": "b36d848e-16eb-435b-ab9f-5948aad7f1c9",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "8976dc21-9a84-4dd2-8733-b2272f45b658",
+      "target": "610504da-6e77-4c00-8ca1-59ca9c58055e",
+      "text": "",
+      "uuid": "5ff040cb-dbb4-42e4-99f9-856ccaf0d97c",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "dff66723-4290-4db7-9ea0-726286fbc318",
+      "target": "2c5d1a4a-bbda-4478-880f-28372d23d12c",
+      "text": "",
+      "uuid": "dcd752d4-30a0-43e0-8eb4-b6bedf71b0ca",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "7d7a39db-b2fd-4d06-9488-40c4e98734f6",
+      "target": "6727673d-5a94-4212-8f56-277acca76ce9",
+      "text": "",
+      "uuid": "c7548228-89f6-42d0-9957-7c8fa42149de",
+      "type": "core:line_edge",
+      "color": [22, 163, 74, 1]
+    },
+    {
+      "source": "6727673d-5a94-4212-8f56-277acca76ce9",
+      "target": "eea8accb-b822-434c-b491-e0e8f8db1802",
+      "text": "",
+      "uuid": "3562eff8-0acb-4b37-b91f-8bb137183795",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "6727673d-5a94-4212-8f56-277acca76ce9",
+      "target": "aa250169-45a2-441e-a9c3-00ea5d84ae15",
+      "text": "",
+      "uuid": "0985e82c-4514-43ec-87d3-501711d3f2c8",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "7d7a39db-b2fd-4d06-9488-40c4e98734f6",
+      "target": "52cc2ab0-5171-4268-ae27-42ced9b26c30",
+      "text": "",
+      "uuid": "5353cb83-4ed7-4af0-8d03-7f260d9e9a60",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "52cc2ab0-5171-4268-ae27-42ced9b26c30",
+      "target": "86e32ffb-adae-4585-9e6c-35b574fb6c19",
+      "text": "",
+      "uuid": "37e8aa51-b015-4f5b-9e31-62da7a19f7d1",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "52cc2ab0-5171-4268-ae27-42ced9b26c30",
+      "target": "2f907842-43bd-4137-b69f-b59b310d175d",
+      "text": "",
+      "uuid": "767e34cb-8732-4a00-9f9f-0e234b8b180e",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "37c5b82e-b785-470c-8862-88a0ae9b08e5",
+      "target": "abaa797d-49b4-4d68-928f-7910cca72a08",
+      "text": "",
+      "uuid": "e152b39d-ebf1-4ad7-8fd5-00244e644243",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "8efe5b62-1ff7-402e-9fc3-086d5bc5bd84",
+      "target": "b7e5a870-8510-4329-9590-418cb83583d5",
+      "text": "",
+      "uuid": "f5d0beb1-65bb-4293-bb61-795a7ad580c7",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "90d9f04e-e40f-4e54-86d3-0075ccef939d",
+      "target": "5af14099-fbc1-46fe-b784-7cba78ecc4fc",
+      "text": "",
+      "uuid": "bf58f4f0-9b17-4baf-bafc-86a9d316425b",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "5af14099-fbc1-46fe-b784-7cba78ecc4fc",
+      "target": "8e0f17f9-09a3-4328-9eb9-e35bd7cae71e",
+      "text": "",
+      "uuid": "4a544470-f8fe-41bb-82bf-da58e06bcba2",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "5af14099-fbc1-46fe-b784-7cba78ecc4fc",
       "target": "5eb1fb0d-13ba-4119-895d-3323d4e69dd0",
       "text": "",
-      "uuid": "1405edce-81b3-45eb-bd4d-e0727edbf34d",
+      "uuid": "23d50477-f229-47cb-897f-d1b654116a95",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "5af14099-fbc1-46fe-b784-7cba78ecc4fc",
+      "target": "8efe5b62-1ff7-402e-9fc3-086d5bc5bd84",
+      "text": "",
+      "uuid": "da5d7439-cc07-4cad-8d53-f3973451d558",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "458eed9b-9987-44cc-a6d1-6ff9210e34b1",
+      "target": "58346822-433c-4baf-9889-64b895173b3c",
+      "text": "",
+      "uuid": "5494f2bf-5674-4b2d-b448-e7a09bedecd2",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "b7e5a870-8510-4329-9590-418cb83583d5",
+      "target": "0dc2217a-18ac-4e23-a140-8185b616df43",
+      "text": "",
+      "uuid": "b5470e2c-0854-431c-999d-4c6d26472d21",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "0dc2217a-18ac-4e23-a140-8185b616df43",
+      "target": "dff66723-4290-4db7-9ea0-726286fbc318",
+      "text": "",
+      "uuid": "560c0df0-a388-450b-b5f9-a7c88703e5a5",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "dff66723-4290-4db7-9ea0-726286fbc318",
+      "target": "37c5b82e-b785-470c-8862-88a0ae9b08e5",
+      "text": "",
+      "uuid": "f03baad3-bfe7-4753-b62d-98915355b8c7",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "37c5b82e-b785-470c-8862-88a0ae9b08e5",
+      "target": "458eed9b-9987-44cc-a6d1-6ff9210e34b1",
+      "text": "",
+      "uuid": "1c17dddb-c05d-4996-8963-ba95e9cab34f",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "48ebbee4-5790-4b39-8dd1-fe8ab8181a34",
+      "target": "4a66f8dd-d435-4401-9306-d737db0d3c17",
+      "text": "",
+      "uuid": "be0238fe-2e29-488e-9bcb-b6015a2b9dc8",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "4a66f8dd-d435-4401-9306-d737db0d3c17",
+      "target": "d9241a0a-4c2f-44fc-af2a-2e6e8fa2a8fc",
+      "text": "",
+      "uuid": "c8608bcc-2fa0-4d0b-b49b-67be7068ea34",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "458eed9b-9987-44cc-a6d1-6ff9210e34b1",
+      "target": "757a3961-833a-4e11-98e9-930085f57da6",
+      "text": "",
+      "uuid": "7ce5493c-cdce-47b8-a765-35c81fa2183d",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "a18fee4d-fa90-43a0-9cd3-a7375da60cd5",
+      "target": "d43813e9-7a7e-4e71-9969-1630d4f23bcb",
+      "text": "",
+      "uuid": "153b3d17-ed9c-4344-acad-da273951ceb2",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "0c1d599e-d06f-4a19-be59-f58e564eb36d",
+      "target": "d43813e9-7a7e-4e71-9969-1630d4f23bcb",
+      "text": "",
+      "uuid": "54aa94f8-7820-468e-bb1f-85d6223c922d",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "99a8a8d0-e326-4939-bbd1-132bd37de938",
+      "target": "d43813e9-7a7e-4e71-9969-1630d4f23bcb",
+      "text": "",
+      "uuid": "27e1cdfc-3239-448b-ba16-4d835493fcc2",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "d02135bd-9168-4afb-add6-b383cf616b11",
+      "target": "b203e52b-33ba-451b-9973-511dc13b8e3a",
+      "text": "框选左侧",
+      "uuid": "4f121752-59b6-45fc-aa52-3127abb6da20",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "b203e52b-33ba-451b-9973-511dc13b8e3a",
+      "target": "13c99b1d-75e7-493a-8bdb-0bcdef999391",
+      "text": "拖拽连线",
+      "uuid": "3af2056e-458e-49ca-95b7-bd3db9accca9",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "0fba4e16-dcf2-43f1-b2f1-1e15ac9a5c43",
+      "target": "08b28301-2d1a-44a1-ae63-ba893b85a63e",
+      "text": "",
+      "uuid": "ce10c93c-34a6-4fec-bf90-b109e55b2c1c",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "0fba4e16-dcf2-43f1-b2f1-1e15ac9a5c43",
+      "target": "4821b1e3-1b99-4216-8c80-ad5fc4ce8ba2",
+      "text": "",
+      "uuid": "f1e02aa9-370b-4430-b098-daa9846e41a9",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "0fba4e16-dcf2-43f1-b2f1-1e15ac9a5c43",
+      "target": "57850c2d-949b-4e92-aaae-232d1a3cc2b3",
+      "text": "",
+      "uuid": "308129e9-84a3-43f9-b981-a4d0136535cf",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "13c99b1d-75e7-493a-8bdb-0bcdef999391",
+      "target": "cad9e994-f4e5-4959-aa1c-bef457aa8795",
+      "text": "ctrl+T",
+      "uuid": "ea68b2b4-685a-400c-afca-16763628f02b",
       "type": "core:line_edge",
       "color": [0, 0, 0, 0]
     }
   ],
-  "tags": []
+  "tags": [
+    "916deaec-db15-4c77-947d-bc79832e2a1c",
+    "a3955e58-b187-4035-9754-f57997867a02",
+    "7cbb265a-a049-4f53-940c-860ca10c3004"
+  ]
 }
