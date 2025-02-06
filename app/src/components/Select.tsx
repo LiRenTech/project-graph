@@ -32,12 +32,15 @@ export default function Select({
     setShowDropdown(!showDropdown);
 
     document.addEventListener("pointerdown", handleDocumentClick);
-    document.addEventListener("wheel", handleDocumentClick);
+    document.addEventListener("wheel", handleWheel);
   };
   const handleDocumentClick = () => {
     // setShowDropdown(false);
     document.removeEventListener("pointerdown", handleDocumentClick);
-    document.removeEventListener("wheel", handleDocumentClick);
+    document.removeEventListener("wheel", handleWheel);
+  };
+  const handleWheel = () => {
+    setShowDropdown(false);
   };
 
   return (
