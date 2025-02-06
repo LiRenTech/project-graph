@@ -418,6 +418,20 @@ async function registerKeyBinds() {
       KeyboardOnlyEngine.createFinished();
     }
   });
+  const bindCamear = await KeyBinds.create("masterBrakeControl", "pause", {
+    control: false,
+    alt: false,
+    shift: false,
+  });
+  // 此按键有待进一步设计
+  bindCamear.down(() => {
+    // Camera.allowMoveCameraByWSAD = false;
+    Camera.clearMoveCommander();
+    Camera.speed = Vector.getZero();
+  });
+  bindCamear.up(() => {
+    // Camera.allowMoveCameraByWSAD = true;
+  });
 }
 
 /** 加载语言文件 */

@@ -529,6 +529,11 @@ keyBinds:
     title: 仅使用键盘生长节点
     description: |
       按下后，仅使用键盘生长节点
+  masterBrakeControl:
+    title: 动力系统刹车总控制器
+    description: |
+      按下后，摄像机无法移动
+      松开后，摄像机恢复正常
   selectAll:
     title: selectAll
     description: Press to select all objects on the canvas
