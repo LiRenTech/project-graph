@@ -15,6 +15,8 @@ import { Settings } from "../service/Settings";
 import { StageMouseInteractionCore } from "../service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
 import { ControllerDrawing } from "../service/controlService/controller/concrete/ControllerDrawing";
 import { SecretEngine } from "../service/controlService/secretEngine/secretEngine";
+import { Controller } from "../service/controlService/controller/Controller";
+import { Camera } from "./Camera";
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -101,6 +103,11 @@ export namespace Stage {
     autoBackupEngine.mainTick();
 
     KeyboardOnlyEngine.logicTick();
+
+    // 防止截屏无限滚屏
+    if (Controller.pressingKeySet.size === 0) {
+      Camera.clearMoveCommander(); // 直接动力切断
+    }
     tickNumber++;
   }
   let tickNumber = 0;

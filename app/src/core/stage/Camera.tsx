@@ -54,7 +54,7 @@ export namespace Camera {
    * 可以看成一个九宫格，主要用于处理 w s a d 按键移动，
    * 当同时按下w和s，这个值会是(-1,-1)，表示朝着左上移动
    */
-  // eslint-disable-next-line prefer-const
+
   export let accelerateCommander: Vector = Vector.getZero();
 
   /**
@@ -194,6 +194,14 @@ export namespace Camera {
     const leftTopLocationWorld = Renderer.transformView2World(otherLocationView.subtract(viewLocation));
     const rect = Renderer.getCoverWorldRectangle();
     location = leftTopLocationWorld.add(rect.size.divide(2));
+  }
+
+  /**
+   * 强制清除移动动力命令
+   * 防止无限滚屏
+   */
+  export function clearMoveCommander() {
+    accelerateCommander = Vector.getZero();
   }
 
   /**
