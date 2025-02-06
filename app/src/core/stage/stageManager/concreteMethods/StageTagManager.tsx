@@ -1,7 +1,11 @@
 import { Camera } from "../../Camera";
-import { Entity } from "../../stageObject/abstract/StageEntity";
+import { StageObject } from "../../stageObject/abstract/StageObject";
+import { Edge } from "../../stageObject/association/Edge";
+import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
+import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
+import { UrlNode } from "../../stageObject/entity/UrlNode";
 import { StageManager } from "../StageManager";
 
 export namespace StageTagManager {
@@ -11,7 +15,8 @@ export namespace StageTagManager {
    * 目前先仅支持TextNode
    */
   export function changeTagBySelected() {
-    for (const selectedEntities of StageManager.getSelectedEntities().filter((entity) => entity instanceof TextNode)) {
+    for (const selectedEntities of StageManager.getSelectedStageObjects()) {
+      // 若有则删，若无则加
       if (StageManager.TagOptions.hasTag(selectedEntities.uuid)) {
         StageManager.TagOptions.removeTag(selectedEntities.uuid);
       } else {
@@ -27,9 +32,12 @@ export namespace StageTagManager {
   export function refreshTagNames() {
     const res: { tagName: string; uuid: string }[] = [];
     const tagUUIDs = StageManager.TagOptions.getTagUUIDs();
-    const tagObjectList: Entity[] = [];
+    const tagObjectList: StageObject[] = [];
     for (const tagUUID of tagUUIDs) {
-      tagObjectList.push(StageManager.getEntitiesByUUIDs([tagUUID])[0]);
+      const stageObject = StageManager.getStageObjectByUUID(tagUUID);
+      if (stageObject) {
+        tagObjectList.push(stageObject);
+      }
     }
     // 排序，从上到下，从左到右
     tagObjectList.sort((a, b) => {
@@ -41,19 +49,35 @@ export namespace StageTagManager {
     });
 
     for (const tagObject of tagObjectList) {
+      let title = "";
       if (tagObject instanceof TextNode) {
-        res.push({ tagName: tagObject.text, uuid: tagObject.uuid });
+        title = tagObject.text;
       } else if (tagObject instanceof Section) {
-        res.push({ tagName: tagObject.text, uuid: tagObject.uuid });
+        title = tagObject.text;
+      } else if (tagObject instanceof UrlNode) {
+        title = tagObject.title;
+      } else if (tagObject instanceof ImageNode) {
+        title = "Image: " + tagObject.uuid.slice(0, 4);
+      } else if (tagObject instanceof Edge) {
+        title = tagObject.text.slice(0, 20).trim();
+        if (title.length === 0) {
+          title = "未命名连线";
+        }
+      } else if (tagObject instanceof ConnectPoint) {
+        title = tagObject.details.slice(0, 20).trim();
+        if (title.length === 0) {
+          title = "Connect Point: " + tagObject.uuid.slice(0, 4);
+        }
       } else {
-        res.push({ tagName: tagObject.uuid, uuid: tagObject.uuid });
+        title = "Unknown: " + tagObject.uuid.slice(0, 4);
       }
+      res.push({ tagName: title, uuid: tagObject.uuid });
     }
     return res;
   }
 
-  export function moveToTag(tagUUID: string) {
-    const tagObject = StageManager.getEntitiesByUUIDs([tagUUID])[0];
+  export function moveCameraToTag(tagUUID: string) {
+    const tagObject = StageManager.getStageObjectByUUID(tagUUID);
     if (!tagObject) {
       return;
     }

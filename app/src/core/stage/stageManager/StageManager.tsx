@@ -104,6 +104,17 @@ export namespace StageManager {
   export function getEntities(): Entity[] {
     return entities.valuesToArray();
   }
+  export function getStageObjectByUUID(uuid: string): StageObject | null {
+    const entity = entities.getById(uuid);
+    if (entity) {
+      return entity;
+    }
+    const association = associations.getById(uuid);
+    if (association) {
+      return association;
+    }
+    return null;
+  }
   export function getEntitiesByUUIDs(uuids: string[]): Entity[] {
     const result = [];
     for (const uuid of uuids) {
@@ -425,6 +436,15 @@ export namespace StageManager {
    */
   export function getSelectedEntities(): Entity[] {
     return entities.valuesToArray().filter((entity) => entity.isSelected);
+  }
+  export function getSelectedAssociations(): Association[] {
+    return associations.valuesToArray().filter((association) => association.isSelected);
+  }
+  export function getSelectedStageObjects(): StageObject[] {
+    const result: StageObject[] = [];
+    result.push(...getSelectedEntities());
+    result.push(...getSelectedAssociations());
+    return result;
   }
 
   /**
@@ -826,7 +846,7 @@ export namespace StageManager {
   }
 
   export function moveToTag(tag: string) {
-    StageTagManager.moveToTag(tag);
+    StageTagManager.moveCameraToTag(tag);
   }
   export function connectEntityByCrEdge(fromNode: ConnectableEntity, toNode: ConnectableEntity) {
     return StageNodeConnector.addCrEdge(fromNode, toNode);

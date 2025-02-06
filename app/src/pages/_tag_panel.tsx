@@ -1,6 +1,5 @@
 import { Plus, RefreshCcw } from "lucide-react";
 import React from "react";
-import { Dialog } from "../components/dialog";
 import IconButton from "../components/IconButton";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
@@ -28,16 +27,9 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
   };
 
   const handleClickAddTag = () => {
-    if (StageManager.selectedNodeCount === 0) {
-      Dialog.show({
-        title: "没选择节点",
-        content: "请先在舞台上选中一个或多个节点",
-        type: "error",
-      });
-    } else {
-      StageManager.addTagBySelected();
-      refreshTagNameList();
-    }
+    // TODO: 这里可能缺少一个是否有选中的实体的检测
+    StageManager.addTagBySelected();
+    refreshTagNameList();
   };
 
   return (
