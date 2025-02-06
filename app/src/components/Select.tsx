@@ -28,13 +28,14 @@ export default function Select({
     const { left, width, bottom } = ref.current!.getBoundingClientRect();
     setDropdownX(left + width / 2);
     setDropdownY(bottom + 8);
-    setShowDropdown(true);
+    // 保证多次点击能进行展开和收起的切换
+    setShowDropdown(!showDropdown);
 
     document.addEventListener("pointerdown", handleDocumentClick);
     document.addEventListener("wheel", handleDocumentClick);
   };
   const handleDocumentClick = () => {
-    setShowDropdown(false);
+    // setShowDropdown(false);
     document.removeEventListener("pointerdown", handleDocumentClick);
     document.removeEventListener("wheel", handleDocumentClick);
   };
@@ -43,7 +44,7 @@ export default function Select({
     <>
       <Box
         className={cn(
-          "group/select bg-select-bg text-select-text border-select-border flex appearance-none items-center justify-between gap-1 px-3 py-2 pl-4 hover:opacity-80",
+          "group/select bg-select-bg text-select-text border-select-border flex appearance-none items-center justify-between gap-1 px-3 py-2 pl-4 hover:cursor-pointer hover:opacity-80",
           className,
         )}
         ref={ref}

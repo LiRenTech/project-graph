@@ -15,7 +15,7 @@ export default function IconButton({
   return (
     <Button
       className={cn(
-        "border-icon-button-border bg-icon-button-bg text-icon-button-text px-2 *:!cursor-pointer",
+        "border-icon-button-border bg-icon-button-bg text-icon-button-text px-2 hover:cursor-pointer",
         className,
       )}
       onClick={onClick}
