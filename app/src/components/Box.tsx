@@ -21,7 +21,7 @@ const _Box = <E extends ElementType = "div">(
 ) => {
   const [showTooltip, setShowTooltip] = React.useState(false);
   const [tooltipX, setTooltipX] = React.useState(0);
-  const [tooltipY, setTooltipY] = React.useState(0);
+  const [tooltipY, setTooltipY] = React.useState(-100); // 防止遮挡左上角菜单按钮
 
   const handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
     // eslint-disable-next-line react/prop-types
@@ -39,6 +39,7 @@ const _Box = <E extends ElementType = "div">(
   const handleMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
     // eslint-disable-next-line react/prop-types
     props.onMouseLeave?.(event);
+    setTooltipY(-100); // 防止遮挡左上角菜单按钮
     setShowTooltip(false);
   };
 
@@ -54,20 +55,22 @@ const _Box = <E extends ElementType = "div">(
       >
         {children}
       </Component>
-      <div
-        className={cn(
-          "border-tooltip-border bg-tooltip-bg text-tooltip-text pointer-events-none fixed z-[103] scale-75 rounded-md border px-2 py-1 opacity-0 transition",
-          {
-            "pointer-events-auto scale-100 opacity-100": showTooltip && tooltip,
-          },
-        )}
-        style={{
-          top: `${tooltipY + 10}px`,
-          left: `${tooltipX + 10}px`,
-        }}
-      >
-        {tooltip}
-      </div>
+      {tooltip && (
+        <div
+          className={cn(
+            "border-tooltip-border bg-tooltip-bg text-tooltip-text pointer-events-none fixed z-[103] scale-75 rounded-md border px-2 py-1 transition",
+            {
+              "pointer-events-auto scale-100 opacity-100": showTooltip,
+            },
+          )}
+          style={{
+            top: `${tooltipY + 10}px`,
+            left: `${tooltipX + 10}px`,
+          }}
+        >
+          {tooltip}
+        </div>
+      )}
     </>
   );
 };
