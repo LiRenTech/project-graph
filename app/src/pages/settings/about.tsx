@@ -12,6 +12,8 @@ import Button from "../../components/Button";
 import { Settings } from "../../core/service/Settings";
 import { getAppVersion } from "../../utils/otherApi";
 import { SettingField } from "./_field";
+// 这行导入语句 open 不能删，否则会调用webview内部的窗口打开网页，非常卡
+import { open } from "@tauri-apps/plugin-shell";
 
 export default function About() {
   const [version, setVersion] = React.useState("");
