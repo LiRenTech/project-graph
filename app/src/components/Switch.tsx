@@ -16,7 +16,7 @@ export default function Switch({
 }) {
   return (
     <div
-      className={cn("group/switch bg-switch-false-bg relative h-8 w-14 rounded-full", {
+      className={cn("group/switch bg-switch-false-bg relative h-8 w-14 rounded-full hover:cursor-pointer", {
         "bg-switch-true-bg": value,
         "bg-switch-disabled-bg cursor-not-allowed": disabled,
       })}
@@ -24,7 +24,7 @@ export default function Switch({
     >
       <div
         className={cn(
-          "bg-switch-false-dot absolute left-1 top-1 h-6 w-6 translate-x-0 transform rounded-full group-hover/switch:scale-125 group-active/switch:scale-75",
+          "bg-switch-false-dot absolute left-1 top-1 h-6 w-6 translate-x-0 transform rounded-full hover:cursor-pointer group-hover/switch:scale-125 group-active/switch:scale-75",
           {
             "bg-switch-true-dot translate-x-6": value,
             "bg-switch-disabled-dot": disabled,

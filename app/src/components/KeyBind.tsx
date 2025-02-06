@@ -95,9 +95,12 @@ export default function KeyBind({
   return (
     <Button
       onClick={startInput}
-      className={cn("bg-keybind-bg text-keybind-text border-keybind-border outline-none outline-0", {
-        "outline-keybind-active-outline bg-blue-950 outline-4": choosing,
-      })}
+      className={cn(
+        "bg-keybind-bg text-keybind-text border-keybind-border outline-none outline-0 hover:cursor-pointer",
+        {
+          "outline-keybind-active-outline bg-blue-950 outline-4": choosing,
+        },
+      )}
     >
       {value.modifiers.control && "Ctrl + "}
       {value.modifiers.alt && "Alt + "}

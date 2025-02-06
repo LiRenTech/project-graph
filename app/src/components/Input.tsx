@@ -26,7 +26,7 @@ export default function Input<T extends boolean = false>({
     <Box<"input">
       as={multiline ? "textarea" : "input"}
       className={cn(
-        "bg-input-bg border-input-border text-input-text placeholder:text-input-placeholder px-3 py-2 outline-none",
+        "bg-input-bg border-input-border text-input-text placeholder:text-input-placeholder px-3 py-2 outline-none hover:cursor-text",
         className,
       )}
       value={value}

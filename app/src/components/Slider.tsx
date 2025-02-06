@@ -113,16 +113,16 @@ export default function Slider({
     <div className="flex items-center gap-4">
       <div
         ref={sliderRef}
-        className="relative h-4 w-36"
+        className="relative h-4 w-36 hover:cursor-pointer"
         onMouseDown={handleMouseDown}
         onTouchMove={handleTouchMove}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         onClick={handleTrackClick} // 添加轨道点击事件
       >
-        <div className="bg-slider-line absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full"></div>
+        <div className="bg-slider-line absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full hover:cursor-pointer"></div>
         <div
-          className="bg-slider-handle absolute top-0 h-4 w-4 -translate-x-2 rounded-full hover:scale-125 active:scale-90"
+          className="bg-slider-handle absolute top-0 h-4 w-4 -translate-x-2 rounded-full hover:scale-125 hover:cursor-w-resize active:scale-90"
           style={{ left: `${((sliderValue - min) / (max - min)) * 100}%` }} // 根据当前值计算滑块的位置
         ></div>
       </div>
