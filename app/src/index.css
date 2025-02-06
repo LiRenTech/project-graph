@@ -1,4 +1,9 @@
-@import "tailwindcss" important;
+@import "tailwindcss"; 
+/** 
+ * 上面这个的后面不能加important，会导致所有的按钮失去鼠标悬浮的小手样子
+ * 来自commit：31bd56b87fe132291f8deaa1c9c3b57b6cb6ffc2
+ * 修复教程始终弹出
+ */
 
 @custom-variant page (&.active);
 
