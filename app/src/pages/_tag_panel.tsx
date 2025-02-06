@@ -1,5 +1,6 @@
 import { Angry, MousePointerClick, RefreshCcw, Smile, Tags, Telescope } from "lucide-react";
 import React from "react";
+import { Dialog } from "../components/dialog";
 import IconButton from "../components/IconButton";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
@@ -26,14 +27,14 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
   const handleMoveCameraToTag = (tagUUID: string) => {
     return () => {
       // 跳转到对应位置
-      StageManager.moveToTag(tagUUID);
+      StageManager.moveCameraToTag(tagUUID);
     };
   };
 
   const handleMouseEnterTag = (tagUUID: string) => {
     return () => {
       if (isMouseEnterMoveCameraAble) {
-        StageManager.moveToTag(tagUUID);
+        StageManager.moveCameraToTag(tagUUID);
       } else {
         console.log("禁止滑动");
       }
@@ -41,7 +42,13 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
   };
 
   const handleClickAddTag = () => {
-    // TODO: 这里可能缺少一个是否有选中的实体的检测
+    // 检查是否有选中的entity或连线
+    if (StageManager.getSelectedEntities().length === 0 && StageManager.getSelectedAssociations().length === 0) {
+      Dialog.show({
+        title: "请先选中舞台上的物体",
+        content: "选中后再点此按钮，即可添标签",
+      });
+    }
     StageManager.addTagBySelected();
     refreshTagNameList();
   };
@@ -67,22 +74,26 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
         <IconButton onClick={refreshTagNameList} tooltip="如果舞台上的标签发生变更但此处未更新，可以手动刷新">
           <RefreshCcw />
         </IconButton>
-        <IconButton
-          onClick={() => {
-            setIsMouseEnterMoveCameraAble(!isMouseEnterMoveCameraAble);
-          }}
-          tooltip={isMouseEnterMoveCameraAble ? "快速瞭望模式" : "点击跳转模式"}
-        >
-          {isMouseEnterMoveCameraAble ? <Telescope /> : <MousePointerClick />}
-        </IconButton>
-        <IconButton
-          onClick={() => {
-            setIsPerspective(!isPerspective);
-          }}
-          tooltip={isPerspective ? "透视已开启" : "开启透视眼"}
-        >
-          {isPerspective ? <Angry /> : <Smile />}
-        </IconButton>
+        {tagNameList.length >= 3 && (
+          <IconButton
+            onClick={() => {
+              setIsMouseEnterMoveCameraAble(!isMouseEnterMoveCameraAble);
+            }}
+            tooltip={isMouseEnterMoveCameraAble ? "快速瞭望模式" : "点击跳转模式"}
+          >
+            {isMouseEnterMoveCameraAble ? <Telescope /> : <MousePointerClick />}
+          </IconButton>
+        )}
+        {tagNameList.length > 0 && (
+          <IconButton
+            onClick={() => {
+              setIsPerspective(!isPerspective);
+            }}
+            tooltip={isPerspective ? "透视已开启" : "开启透视眼"}
+          >
+            {isPerspective ? <Angry /> : <Smile />}
+          </IconButton>
+        )}
       </div>
 
       {/* 标签列表 */}

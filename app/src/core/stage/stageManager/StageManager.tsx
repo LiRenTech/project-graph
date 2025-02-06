@@ -845,7 +845,7 @@ export namespace StageManager {
     return StageTagManager.refreshTagNames();
   }
 
-  export function moveToTag(tag: string) {
+  export function moveCameraToTag(tag: string) {
     StageTagManager.moveCameraToTag(tag);
   }
   export function connectEntityByCrEdge(fromNode: ConnectableEntity, toNode: ConnectableEntity) {

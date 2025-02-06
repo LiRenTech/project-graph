@@ -1,4 +1,10 @@
+import { Color } from "../../../dataStruct/Color";
+import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
+import { Renderer } from "../../../render/canvas2d/renderer";
+import { MouseLocation } from "../../../service/controlService/MouseLocation";
+import { LineCuttingEffect } from "../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { Camera } from "../../Camera";
+import { Stage } from "../../Stage";
 import { StageObject } from "../../stageObject/abstract/StageObject";
 import { Edge } from "../../stageObject/association/Edge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
@@ -83,5 +89,14 @@ export namespace StageTagManager {
     }
     const location = tagObject.collisionBox.getRectangle().center;
     Camera.location = location;
+    Stage.effectMachine.addEffect(
+      new LineCuttingEffect(
+        new ProgressNumber(0, 10),
+        Renderer.transformView2World(MouseLocation.vector()),
+        location,
+        Color.Green,
+        Color.Green,
+      ),
+    );
   }
 }
