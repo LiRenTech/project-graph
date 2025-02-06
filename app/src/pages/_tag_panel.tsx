@@ -1,9 +1,9 @@
+import { Plus, RefreshCcw } from "lucide-react";
 import React from "react";
 import { Dialog } from "../components/dialog";
+import IconButton from "../components/IconButton";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
-import IconButton from "../components/IconButton";
-import { Plus, RefreshCcw } from "lucide-react";
 
 /**
  * 标签相关面板
@@ -12,12 +12,12 @@ import { Plus, RefreshCcw } from "lucide-react";
 export default function TagPanel({ open = false, className = "" }: { open: boolean; className: string }) {
   const [tagNameList, setTagNameList] = React.useState<{ tagName: string; uuid: string }[]>([]);
 
-  function updateTagNameList() {
-    setTagNameList(StageManager.getTagNames());
+  function refreshTagNameList() {
+    setTagNameList(StageManager.refreshTags());
   }
 
   React.useEffect(() => {
-    updateTagNameList();
+    refreshTagNameList();
   }, [open]);
 
   const handleClickTag = (tagUUID: string) => {
@@ -36,7 +36,7 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
       });
     } else {
       StageManager.addTagBySelected();
-      updateTagNameList();
+      refreshTagNameList();
     }
   };
 
@@ -57,7 +57,7 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
         >
           <Plus />
         </IconButton>
-        <IconButton onClick={updateTagNameList} tooltip="如果舞台上的标签发生变更但此处未更新，可以手动刷新">
+        <IconButton onClick={refreshTagNameList} tooltip="如果舞台上的标签发生变更但此处未更新，可以手动刷新">
           <RefreshCcw />
         </IconButton>
       </div>

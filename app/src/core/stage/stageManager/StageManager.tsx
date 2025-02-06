@@ -29,10 +29,10 @@ import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager
 import { StageGeneratorAI } from "./concreteMethods/StageGeneratorAI";
 import { StageManagerUtils } from "./concreteMethods/StageManagerUtils";
 import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
-import { StageObjectColorManager } from "./concreteMethods/StageObjectColorManager";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
 import { StageNodeRotate } from "./concreteMethods/stageNodeRotate";
 import { StageNodeTextTransfer } from "./concreteMethods/StageNodeTextTransfer";
+import { StageObjectColorManager } from "./concreteMethods/StageObjectColorManager";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
 import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManager";
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
@@ -167,7 +167,9 @@ export namespace StageManager {
     export function getTagUUIDs(): string[] {
       return tags.valuesToArray();
     }
-    // 清理未引用的标签
+    /**
+     * 清理未引用的标签
+     */
     export function updateTags() {
       const uuids = tags.valuesToArray();
       for (const uuid of uuids) {
@@ -819,8 +821,8 @@ export namespace StageManager {
     StageTagManager.changeTagBySelected();
   }
 
-  export function getTagNames() {
-    return StageTagManager.getTagNames();
+  export function refreshTags() {
+    return StageTagManager.refreshTagNames();
   }
 
   export function moveToTag(tag: string) {
