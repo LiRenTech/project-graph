@@ -1,12 +1,11 @@
 import { replaceTextWhenProtect } from "../../../../../utils/font";
-import { averageColors, Color, colorInvert, mixColors } from "../../../../dataStruct/Color";
+import { Color, colorInvert, mixColors } from "../../../../dataStruct/Color";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../../../stage/Camera";
 import { Canvas } from "../../../../stage/Canvas";
 import { Section } from "../../../../stage/stageObject/entity/Section";
-import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { CurveRenderer } from "../../basicRenderer/curveRenderer";
 import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../../basicRenderer/textRenderer";
@@ -51,22 +50,13 @@ export namespace SectionRenderer {
 
   // 非折叠状态
   function renderNoCollapse(section: Section) {
-    let fillColor = section.color;
-    if (Camera.currentScale < 0.2) {
-      const colors = [];
-      for (const child of section.children) {
-        if (child instanceof TextNode) {
-          colors.push(child.color);
-        }
-      }
-      fillColor = averageColors(colors);
-    }
+    // 注意：这里智能画边框
     ShapeRenderer.renderRect(
       new Rectangle(
         Renderer.transformWorld2View(section.rectangle.location),
         section.rectangle.size.multiply(Camera.currentScale),
       ),
-      Camera.currentScale > 0.2 ? section.color : fillColor,
+      Color.Transparent,
       StageStyleManager.currentStyle.StageObjectBorderColor,
       Camera.currentScale > 0.2 ? 2 * Camera.currentScale : 2,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
@@ -81,7 +71,26 @@ export namespace SectionRenderer {
           ? colorInvert(section.color)
           : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
       );
-    } else {
+    }
+  }
+
+  export function renderBackgroundColor(section: Section) {
+    const color = section.color.clone();
+    color.a = Math.min(color.a, 0.5);
+    ShapeRenderer.renderRect(
+      new Rectangle(
+        Renderer.transformWorld2View(section.rectangle.location),
+        section.rectangle.size.multiply(Camera.currentScale),
+      ),
+      color,
+      Color.Transparent,
+      0,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+    );
+  }
+
+  export function renderBigTitle(section: Section) {
+    if (Camera.currentScale < 0.2) {
       const fontSizeVector = getFontSizeBySectionSize(section);
       const fontHeight = fontSizeVector.y;
       // 缩放过小了，显示巨大化文字
@@ -98,21 +107,6 @@ export namespace SectionRenderer {
         20 * Camera.currentScale,
       );
     }
-  }
-
-  export function renderBackgroundColor(section: Section) {
-    const color = section.color;
-    color.a = Math.min(color.a, 0.2);
-    ShapeRenderer.renderRect(
-      new Rectangle(
-        Renderer.transformWorld2View(section.rectangle.location),
-        section.rectangle.size.multiply(Camera.currentScale),
-      ),
-      color,
-      Color.Transparent,
-      0,
-      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
-    );
   }
 
   function getFontSizeBySectionSize(section: Section): Vector {
@@ -154,7 +148,7 @@ export namespace SectionRenderer {
       // 在外面增加一个框
       CollisionBoxRenderer.render(section.collisionBox, new Color(0, 255, 0, 0.5));
     }
-    // debug: 绿色虚线
+    // debug: 绿色虚线 观察父子关系
     if (Renderer.isShowDebug) {
       for (const child of section.children) {
         CurveRenderer.renderDashedLine(

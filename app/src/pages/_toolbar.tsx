@@ -350,13 +350,11 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           />
         )}
 
-        {(isHaveSelectedNode || isHaveSelectedEdge) && (
-          <ToolbarItem
-            description="设置节点/连线颜色"
-            icon={<PaintBucket />}
-            handleFunction={() => Popup.show(<ColorPanel />)}
-          />
-        )}
+        <ToolbarItem
+          description="设置节点/连线/框的颜色，注意要先选中再点颜色"
+          icon={<PaintBucket />}
+          handleFunction={() => Popup.show(<ColorPanel />)}
+        />
 
         {isHaveSelectedNodeOverTwo && (
           <ToolbarItem

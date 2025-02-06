@@ -11,6 +11,7 @@ import {
 } from "../../../service/dataGenerateService/autoComputeEngine/logicNodeNameEnum";
 import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../../stage/Camera";
+import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { ConnectPoint } from "../../../stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
@@ -32,6 +33,89 @@ import { UrlNodeRenderer } from "./urlNode/urlNodeRenderer";
  * 处理节点相关的绘制
  */
 export namespace EntityRenderer {
+  let sectionSortedZIndex: Section[] = [];
+
+  /**
+   * 对所有section排序一次
+   * 为了防止每帧都调用导致排序，为了提高性能
+   * 决定：每隔几秒更新一次
+   */
+  export function sortSectionsByZIndex() {
+    const sections = StageManager.getSections();
+    sections.sort((a, b) => a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top);
+    sectionSortedZIndex = sections;
+  }
+
+  let tickNumber = 0;
+
+  export function renderAllSectionsBackground(viewRectangle: Rectangle) {
+    if (sectionSortedZIndex.length != StageManager.getSections().length) {
+      // console.log("强制更新了一次");
+      sortSectionsByZIndex();
+    } else {
+      // 假设fps=60，则10秒更新一次
+      if (tickNumber % 600 === 0) {
+        // console.log("更新了一次");
+        sortSectionsByZIndex();
+      }
+    }
+    // 1 遍历所有section实体，画底部颜色
+    for (const section of sectionSortedZIndex) {
+      if (isOverView(viewRectangle, section)) {
+        continue;
+      }
+      SectionRenderer.renderBackgroundColor(section);
+    }
+    tickNumber++;
+  }
+
+  export function renderAllSectionsBigTitle(viewRectangle: Rectangle) {
+    for (let i = sectionSortedZIndex.length - 1; i >= 0; i--) {
+      const section = sectionSortedZIndex[i];
+      if (isOverView(viewRectangle, section)) {
+        continue;
+      }
+      SectionRenderer.renderBigTitle(section);
+    }
+  }
+
+  /**
+   * 统一渲染所有实体
+   * 返回实际渲染的实体数量
+   */
+  export function renderAllEntities(viewRectangle: Rectangle) {
+    let renderedNodes = 0;
+
+    // 2 遍历所有非section实体
+    for (const entity of StageManager.getEntities()) {
+      if (entity instanceof Section) {
+        continue;
+      }
+      // 视线之外不画
+      if (isOverView(viewRectangle, entity)) {
+        continue;
+      }
+      EntityRenderer.renderEntity(entity);
+      renderedNodes++;
+    }
+    // 3 遍历所有section实体，画顶部大文字
+    for (const section of StageManager.getSections()) {
+      if (isOverView(viewRectangle, section)) {
+        continue;
+      }
+      SectionRenderer.render(section);
+    }
+    return renderedNodes;
+  }
+
+  // 是否超出了视野之外
+  function isOverView(viewRectangle: Rectangle, entity: Entity): boolean {
+    if (!Camera.limitCameraInCycleSpace && !viewRectangle.isCollideWith(entity.collisionBox.getRectangle())) {
+      return true;
+    }
+    return false;
+  }
+
   /**
    * 父渲染函数
    * @param entity
