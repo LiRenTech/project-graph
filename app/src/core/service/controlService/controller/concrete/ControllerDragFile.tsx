@@ -25,6 +25,7 @@ export const ControllerDragFile = new ControllerClassDragFile();
 ControllerDragFile.dragEnter = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
+  // console.log("开始进入窗口了", event.dataTransfer?.files);
   ControllerDragFile.isDraggingFile = true;
   Stage.effectMachine.addEffect(new TextRiseEffect("正在拖入文件"));
   ControllerDragFile.draggingLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
@@ -38,6 +39,7 @@ ControllerDragFile.dragEnter = (event: DragEvent) => {
 ControllerDragFile.dragOver = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
+  // console.log("移动中", event.dataTransfer?.files);
   ControllerDragFile.draggingLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 };
 
@@ -49,12 +51,17 @@ ControllerDragFile.dragOver = (event: DragEvent) => {
 ControllerDragFile.drop = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
+  // console.log("松开释放了", event);
+  // console.log(event.dataTransfer?.files);
   const mouseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
   const files = event.dataTransfer?.files;
 
-  if (files && files.length > 0) {
-    // const firstFile = files[0]; // 获取第一个拖入的文件
+  if (files) {
+    if (files.length === 0) {
+      // 在别的浏览器中选中文字并拽到窗口里释放会走这个if分支
+      dealTempFileDrop(mouseWorldLocation);
+    }
     let i = -1;
     for (const file of files) {
       i++;
@@ -107,6 +114,20 @@ function readFileText(file: File): Promise<string> {
       reject("文件读取错误:" + e);
     };
   });
+}
+
+function dealTempFileDrop(mouseWorldLocation: Vector) {
+  // 未知类型，按插入一个textNode判断
+  const textNode = new TextNode({
+    uuid: uuidv4(),
+    text: "拖入文件为空",
+    location: [mouseWorldLocation.x, mouseWorldLocation.y],
+    size: [100, 100],
+    color: [0, 0, 0, 0],
+    details: "如果您想拖入文字直接来生成节点，建议先复制，然后直接在舞台上按ctrl+v",
+  });
+  textNode.move(new Vector(-textNode.rectangle.size.x / 2, -textNode.rectangle.size.y / 2));
+  StageManager.addTextNode(textNode);
 }
 
 function dealUnknownFileDrop(file: File, mouseWorldLocation: Vector, i: number) {
