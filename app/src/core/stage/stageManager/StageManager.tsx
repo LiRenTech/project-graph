@@ -184,7 +184,7 @@ export namespace StageManager {
     export function updateTags() {
       const uuids = tags.valuesToArray();
       for (const uuid of uuids) {
-        if (!entities.hasId(uuid)) {
+        if (!entities.hasId(uuid) && !associations.hasId(uuid)) {
           tags.deleteValue(uuid);
         }
       }
