@@ -60,18 +60,58 @@ export namespace EntityRenderer {
 
   function renderNode(node: TextNode) {
     // 节点身体矩形
+    let fillColor = node.color;
+    if (Camera.currentScale < 0.065 && fillColor.a === 0) {
+      const color = StageStyleManager.currentStyle.StageObjectBorderColor.clone();
+      color.a = 0.2;
+      fillColor = color;
+    }
     ShapeRenderer.renderRect(
       new Rectangle(
         Renderer.transformWorld2View(node.rectangle.location),
         node.rectangle.size.multiply(Camera.currentScale),
       ),
-      node.color,
+      fillColor,
       StageStyleManager.currentStyle.StageObjectBorderColor,
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
 
+    // 视野缩放过小就不渲染内部文字
+    if (Camera.currentScale > 0.065) {
+      renderTextNodeTextLayer(node);
+    }
+
+    if (node.isSelected) {
+      // 在外面增加一个框
+      CollisionBoxRenderer.render(node.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
+    }
+    if (node.isAiGenerating) {
+      const borderColor = StageStyleManager.currentStyle.CollideBoxSelectedColor.clone();
+      borderColor.a = Random.randomFloat(0.2, 1);
+      // 在外面增加一个框
+      ShapeRenderer.renderRect(
+        new Rectangle(
+          Renderer.transformWorld2View(node.rectangle.location),
+          node.rectangle.size.multiply(Camera.currentScale),
+        ),
+        node.color,
+        borderColor,
+        Random.randomFloat(1, 10) * Camera.currentScale,
+        Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+      );
+    }
+
+    renderEntityDetails(node);
+  }
+
+  /**
+   * 画节点文字层信息
+   * @param node
+   */
+  function renderTextNodeTextLayer(node: TextNode) {
     if (!node.isEditing) {
+      // 非编辑，正常显示状态
       if (!node.text) {
         TextRenderer.renderTextFromCenter(
           "undefined",
@@ -148,28 +188,6 @@ export namespace EntityRenderer {
       //   StageStyleManager.currentStyle.GridHeavyColor,
       // );
     }
-
-    if (node.isSelected) {
-      // 在外面增加一个框
-      CollisionBoxRenderer.render(node.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
-    }
-    if (node.isAiGenerating) {
-      const borderColor = StageStyleManager.currentStyle.CollideBoxSelectedColor.clone();
-      borderColor.a = Random.randomFloat(0.2, 1);
-      // 在外面增加一个框
-      ShapeRenderer.renderRect(
-        new Rectangle(
-          Renderer.transformWorld2View(node.rectangle.location),
-          node.rectangle.size.multiply(Camera.currentScale),
-        ),
-        node.color,
-        borderColor,
-        Random.randomFloat(1, 10) * Camera.currentScale,
-        Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
-      );
-    }
-
-    renderEntityDetails(node);
   }
 
   /**
