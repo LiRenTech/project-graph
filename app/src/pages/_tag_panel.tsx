@@ -1,4 +1,4 @@
-import { Plus, RefreshCcw } from "lucide-react";
+import { Angry, MousePointerClick, RefreshCcw, Smile, Tags, Telescope } from "lucide-react";
 import React from "react";
 import IconButton from "../components/IconButton";
 import { StageManager } from "../core/stage/stageManager/StageManager";
@@ -10,6 +10,10 @@ import { cn } from "../utils/cn";
  */
 export default function TagPanel({ open = false, className = "" }: { open: boolean; className: string }) {
   const [tagNameList, setTagNameList] = React.useState<{ tagName: string; uuid: string }[]>([]);
+  // 是否开启允许滑动移动摄像机
+  const [isMouseEnterMoveCameraAble, setIsMouseEnterMoveCameraAble] = React.useState(false);
+  // 是否开启透视
+  const [isPerspective, setIsPerspective] = React.useState(false);
 
   function refreshTagNameList() {
     setTagNameList(StageManager.refreshTags());
@@ -19,10 +23,20 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
     refreshTagNameList();
   }, [open]);
 
-  const handleClickTag = (tagUUID: string) => {
+  const handleMoveCameraToTag = (tagUUID: string) => {
     return () => {
       // 跳转到对应位置
       StageManager.moveToTag(tagUUID);
+    };
+  };
+
+  const handleMouseEnterTag = (tagUUID: string) => {
+    return () => {
+      if (isMouseEnterMoveCameraAble) {
+        StageManager.moveToTag(tagUUID);
+      } else {
+        console.log("禁止滑动");
+      }
     };
   };
 
@@ -35,9 +49,10 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
   return (
     <div
       className={cn(
-        "bg-panel-bg fixed -left-64 top-16 flex h-full w-64 flex-col rounded-md p-4 transition-all",
+        "fixed -left-64 top-16 flex h-full w-64 flex-col rounded-md p-4 pb-20 transition-all",
         {
           "left-0": open,
+          "bg-panel-bg": !isPerspective,
         },
         className,
       )}
@@ -45,12 +60,28 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
       <div className="flex justify-center gap-2">
         <IconButton
           onClick={handleClickAddTag}
-          tooltip="添加选中的文本节点成为标签，如果选中了已经是标签的节点，则会取消标签状态"
+          tooltip="选中节点并添加到标签，如果选中了已经是标签的节点，则会移出标签"
         >
-          <Plus />
+          <Tags />
         </IconButton>
         <IconButton onClick={refreshTagNameList} tooltip="如果舞台上的标签发生变更但此处未更新，可以手动刷新">
           <RefreshCcw />
+        </IconButton>
+        <IconButton
+          onClick={() => {
+            setIsMouseEnterMoveCameraAble(!isMouseEnterMoveCameraAble);
+          }}
+          tooltip={isMouseEnterMoveCameraAble ? "快速瞭望模式" : "点击跳转模式"}
+        >
+          {isMouseEnterMoveCameraAble ? <Telescope /> : <MousePointerClick />}
+        </IconButton>
+        <IconButton
+          onClick={() => {
+            setIsPerspective(!isPerspective);
+          }}
+          tooltip={isPerspective ? "透视已开启" : "开启透视眼"}
+        >
+          {isPerspective ? <Angry /> : <Smile />}
         </IconButton>
       </div>
 
@@ -63,13 +94,14 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
           </p>
         </div>
       ) : (
-        <div className="mt-2 flex-1 flex-col justify-center overflow-y-auto">
+        <div className="mt-2 flex-1 flex-col justify-center overflow-y-auto p-2">
           {tagNameList.map((tag) => {
             return (
               <div
                 key={tag.uuid}
                 className="text-select-option-text hover:text-select-option-hover-text cursor-pointer text-center hover:underline"
-                onClick={handleClickTag(tag.uuid)}
+                onClick={handleMoveCameraToTag(tag.uuid)}
+                onMouseEnter={handleMouseEnterTag(tag.uuid)}
               >
                 {tag.tagName}
               </div>
