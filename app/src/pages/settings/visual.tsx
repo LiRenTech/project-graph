@@ -16,6 +16,7 @@ import {
   Scaling,
   Space,
   Spline,
+  Tag,
   VenetianMask,
 } from "lucide-react";
 import { SettingField } from "./_field";
@@ -34,6 +35,7 @@ export default function Visual() {
       <SettingField icon={<Move3d />} settingKey="showBackgroundCartesian" type="switch" />
       <SettingField icon={<Blend />} settingKey="windowBackgroundAlpha" type="slider" min={0} max={1} step={0.01} />
       <SettingField icon={<Bug />} settingKey="showDebug" type="switch" />
+      <SettingField icon={<Tag />} settingKey="enableTagTextNodesBigDisplay" type="switch" />
       <SettingField icon={<VenetianMask />} settingKey="protectingPrivacy" type="switch" />
 
       <SettingField icon={<ListCollapse />} settingKey="alwaysShowDetails" type="switch" />

@@ -151,6 +151,11 @@ settings:
       Usually used by developers.
       When enabled, debug information will be displayed in the top left corner of the canvas.
       It is recommended to enable this option when reporting bugs with screenshots.
+  enableTagTextNodesBigDisplay:
+    title: Bigify Tag Text Nodes Display
+    description: |
+      When enabled, tag text nodes will be displayed in a larger size when the canvas is zoomed out to a broad global view,
+      making it easier to identify the layout and distribution of the entire file.
   alwaysShowDetails:
     title: Always Show Node Details
     description: |

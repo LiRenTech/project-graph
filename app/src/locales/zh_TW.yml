@@ -123,6 +123,11 @@ settings:
       通常為開發者使用
       開啟後，畫布左上角將會顯示除錯資訊。
       若您遇到bug截圖回饋時，建議開啟此選項。
+  enableTagTextNodesBigDisplay:
+    title: 标签文本节点巨大化显示
+    description: |
+      开启后，标签文本节点的显示在画布缩小到广袤的全局视野时，
+      标签会巨大化显示，以便更容易辨识整个文件的布局分布
   alwaysShowDetails:
     title: 始終顯示節點詳細資訊
     description: |
