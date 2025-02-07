@@ -79,7 +79,7 @@ export function ColorPanel() {
     });
   }, []);
   return (
-    <>
+    <div className="bg-panel-bg rounded-lg">
       <div className="flex flex-wrap items-center justify-center">
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded-full bg-red-500 hover:scale-125"
@@ -126,7 +126,9 @@ export function ColorPanel() {
         >
           <span>x</span>
         </div>
-        {/* 自定义 */}
+      </div>
+      <div className="flex flex-wrap items-center justify-center">
+        {/* 临时自定义 */}
         <input
           type="color"
           id="colorPicker"
@@ -165,7 +167,7 @@ export function ColorPanel() {
           );
         })}
       </div>
-    </>
+    </div>
   );
 }
 
@@ -178,12 +180,12 @@ function GenerateNodePanel() {
   const [indention, setIndention] = useState(4);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="bg-panel-bg flex flex-col gap-4 rounded-lg p-2">
       <Input value={inputValue} onChange={setInputValue} multiline />
       <div>
-        <span>缩进</span>
+        <span className="text-panel-text">缩进数量</span>
         <Input value={indention.toString()} onChange={setIndention} number />
-        <p className="text-xs text-neutral-400">会按照您的缩进等级来生成对应的节点结构</p>
+        <p className="text-panel-details-text text-xs">会按照您的缩进等级来生成对应的节点结构</p>
       </div>
       <Button
         onClick={() => {

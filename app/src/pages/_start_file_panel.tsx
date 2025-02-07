@@ -9,6 +9,7 @@ import {
   FolderTree,
   HardDriveDownload,
   Pin,
+  PinOff,
   RefreshCw,
   Trash2,
 } from "lucide-react";
@@ -265,14 +266,18 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
                 </td>
               )}
               <td className="flex justify-center">
-                <button className="mx-0.5 px-2 py-1" onClick={onLoadCurrentStartFile(file.path)}>
-                  <HardDriveDownload />
+                <button className="mx-0.5 px-2 py-1 hover:cursor-pointer" onClick={onLoadCurrentStartFile(file.path)}>
+                  <HardDriveDownload className="hover:cursor-pointer" />
                 </button>
-                <button className="mx-0.5 px-2 py-1" onClick={onSetCurrentStartFile(file.path)}>
-                  <Pin />
+                <button className="mx-0.5 px-2 py-1 hover:cursor-pointer" onClick={onSetCurrentStartFile(file.path)}>
+                  {currentStartFile === file.path ? (
+                    <Pin className="hover:cursor-pointer" />
+                  ) : (
+                    <PinOff className="hover:cursor-pointer" />
+                  )}
                 </button>
-                <button className="mx-0.5 px-2 py-1" onClick={onRemoveFile(file.path)}>
-                  <Delete />
+                <button className="mx-0.5 px-2 py-1 hover:cursor-pointer" onClick={onRemoveFile(file.path)}>
+                  <Delete className="hover:cursor-pointer" />
                 </button>
               </td>
             </tr>
@@ -281,10 +286,19 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
       </table>
       <div>
         <div className="text-panel-details-text mt-3 text-sm">
-          <p>{t("tips.0")}</p>
-          <p>{t("tips.1")}</p>
-          <p>{t("tips.2")}</p>
-          <p>{t("tips.3")}</p>
+          <p className="flex h-8 items-center">{t("tips.0")}</p>
+          <p className="flex h-8 items-center">
+            <HardDriveDownload />
+            {t("tips.1")}
+          </p>
+          <p className="flex h-8 items-center">
+            <Pin />
+            {t("tips.2")}
+          </p>
+          <p className="flex h-8 items-center">
+            <Delete />
+            {t("tips.3")}
+          </p>
         </div>
         <div>
           <div className="flex flex-nowrap items-center justify-center">
