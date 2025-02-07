@@ -149,6 +149,10 @@ export class ImageNode extends ConnectableEntity {
       });
   }
 
+  public get base64String() {
+    return this._base64String;
+  }
+
   /**
    * 刷新，这个方法用于重新从路径中加载图片
    */

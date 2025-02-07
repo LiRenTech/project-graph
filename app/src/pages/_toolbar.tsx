@@ -43,10 +43,10 @@ import { Dialog } from "../components/dialog";
 import { Popup } from "../components/popup";
 import { writeTextFile } from "../utils/fs";
 // import { PathString } from "../utils/pathString";
+import IconButton from "../components/IconButton";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { ColorManager } from "../core/service/feedbackService/ColorManager";
 import ColorManagerPanel from "./_color_manager_panel";
-import IconButton from "../components/IconButton";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -291,7 +291,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
     setSsHaveSelectedNode(StageManager.selectedNodeCount > 0);
     setSsHaveSelectedNodeOverTwo(StageManager.selectedNodeCount > 1);
     setSsHaveSelectedEdge(StageManager.selectedEdgeCount > 0);
-    setIsCopyClearShow(!CopyEngine.isClipboardEmpty());
+    setIsCopyClearShow(!CopyEngine.isVirtualClipboardEmpty());
   };
   useEffect(() => {
     update();
@@ -392,7 +392,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             description="清空粘贴板内容"
             icon={<ClipboardX />}
             handleFunction={() => {
-              CopyEngine.clearCopyBoardData();
+              CopyEngine.clearVirtualCopyBoardData();
             }}
           />
         )}

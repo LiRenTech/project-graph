@@ -9,7 +9,7 @@ import { ControllerClass } from "../ControllerClass";
  */
 export const ControllerCopy = new ControllerClass();
 
-const validKeys = ["ctrl", "shift", "c", "v", "x", "y", "escape"];
+const validKeys = ["ctrl", "shift", "c", "v", "x", "y", "escape", "alt"];
 
 ControllerCopy.mousemove = (event: MouseEvent) => {
   const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
@@ -31,7 +31,12 @@ ControllerCopy.keydown = (event: KeyboardEvent) => {
   if (!validKeys.includes(key)) return;
   if (key === "escape") {
     // 取消复制
-    CopyEngine.clearCopyBoardData();
+    CopyEngine.clearVirtualCopyBoardData();
+    return;
+  }
+  if (key === "alt") {
+    // 取消复制
+    CopyEngine.clearVirtualCopyBoardData();
     return;
   }
   if (key === "c" && Controller.pressingKeySet.has("control")) {

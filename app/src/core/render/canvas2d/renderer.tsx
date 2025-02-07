@@ -528,7 +528,7 @@ export namespace Renderer {
 
   /** 画粘贴板上的信息 */
   function renderClipboard() {
-    if (CopyEngine.isClipboardEmpty()) {
+    if (CopyEngine.isVirtualClipboardEmpty()) {
       return;
     }
     const clipboardBlue = new Color(156, 220, 254, 0.5);
