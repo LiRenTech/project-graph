@@ -196,8 +196,17 @@ export namespace Controller {
     if (event.ctrlKey && (event.key === "f" || event.key === "g")) {
       event.preventDefault();
     }
+    if (event.key === "F3" || event.key === "F7") {
+      // 禁用F3查找功能，防止浏览器默认行为
+      // F7 插入光标浏览功能
+      event.preventDefault();
+    }
     // 禁止ctrl+shift+g 浏览器默认行为：查找上一个匹配项
     if (event.key === "G") {
+      event.preventDefault();
+    }
+    if (event.key === "p") {
+      // 禁用p打印功能，防止浏览器默认行为
       event.preventDefault();
     }
     console.log(event.key);
