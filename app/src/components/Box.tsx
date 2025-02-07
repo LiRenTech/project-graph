@@ -21,7 +21,7 @@ const _Box = <E extends ElementType = "div">(
 ) => {
   const [showTooltip, setShowTooltip] = React.useState(false);
   const [tooltipX, setTooltipX] = React.useState(0);
-  const [tooltipY, setTooltipY] = React.useState(-100); // 防止遮挡左上角菜单按钮
+  const [tooltipY, setTooltipY] = React.useState(-1000); // 防止遮挡左上角菜单按钮
 
   const handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
     // eslint-disable-next-line react/prop-types
@@ -39,7 +39,7 @@ const _Box = <E extends ElementType = "div">(
   const handleMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
     // eslint-disable-next-line react/prop-types
     props.onMouseLeave?.(event);
-    setTooltipY(-100); // 防止遮挡左上角菜单按钮
+    setTooltipY(-1000); // 防止遮挡左上角菜单按钮
     setShowTooltip(false);
   };
 
