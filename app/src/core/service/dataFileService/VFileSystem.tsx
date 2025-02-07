@@ -1,4 +1,4 @@
-import JSZip, * as jszip from "jszip";
+import { createTarGzip, parseTarGzip } from "nanotar";
 import { IndexedDBFileSystem } from "../../../utils/fs/IndexedDBFileSystem";
 import { readFile, writeFile } from "../../../utils/fs/com";
 import { StageDumper } from "../../stage/StageDumper";
@@ -22,40 +22,31 @@ export namespace VFileSystem {
   export async function loadFromPath(path: string) {
     await clear();
     const data = await readFile(path);
-    const zip = await jszip.loadAsync(data);
-    const entries = zip.files;
+    const entries = await parseTarGzip(data);
 
     const operations: Promise<void>[] = [];
 
-    for (const [rawPath, file] of Object.entries(entries)) {
-      // 标准化路径：替换多个斜杠为单个，并移除末尾斜杠
-      const normalizedPath = rawPath.replace(/\/+/g, "/").replace(/\/$/, "");
+    for (const entry of entries) {
+      const normalizedPath = entry.name.replace(/\/+/g, "/").replace(/\/$/, "");
 
-      if (file.dir) {
-        await fs.mkdir(normalizedPath, true);
-      } else {
-        // 处理文件
-        operations.push(
-          (async () => {
-            try {
-              // 分离目录和文件名
-              const lastSlashIndex = normalizedPath.lastIndexOf("/");
-              const parentDir = lastSlashIndex >= 0 ? normalizedPath.slice(0, lastSlashIndex) : "";
+      operations.push(
+        (async () => {
+          try {
+            const lastSlashIndex = normalizedPath.lastIndexOf("/");
+            const parentDir = lastSlashIndex >= 0 ? normalizedPath.slice(0, lastSlashIndex) : "";
 
-              // 创建父目录（如果存在）
-              if (parentDir) {
-                await fs.mkdir(parentDir, true);
-              }
-
-              // 写入文件内容
-              const content = await file.async("uint8array");
-              await fs.writeFile(normalizedPath, content);
-            } catch (error) {
-              console.error(`Process file failed: ${normalizedPath}`, error);
+            if (parentDir) {
+              await fs.mkdir(parentDir, true);
             }
-          })(),
-        );
-      }
+            if (!entry.data) {
+              console.error(`Process file failed(data is empty): ${normalizedPath}`);
+            }
+            await fs.writeFile(normalizedPath, entry.data!);
+          } catch (error) {
+            console.error(`Process file failed: ${normalizedPath}`, error);
+          }
+        })(),
+      );
     }
 
     await Promise.all(operations);
@@ -65,37 +56,50 @@ export namespace VFileSystem {
     await writeFile(path, await VFileSystem.exportZipData());
   }
   export async function exportZipData(): Promise<Uint8Array> {
-    const zip = new JSZip();
-
-    // 递归添加目录和文件到zip
-    async function addToZip(zipParent: jszip, path: string) {
-      console.log(zipParent, path);
+    const startTime0 = performance.now();
+    // 递归收集所有文件和目录
+    async function collectFiles(path: string): Promise<{ path: string; content: Uint8Array }[]> {
       const entries = await fs.readDir(path);
+      const files: { path: string; content: Uint8Array }[] = [];
 
       for (const entry of entries) {
         const fullPath = path ? `${path}/${entry.name}` : entry.name;
 
         if (entry.isDir) {
-          // 创建目录节点并递归处理子项
-          const dirZip = zipParent.folder(entry.name);
-          await addToZip(dirZip!, fullPath);
+          // 递归处理子目录
+          files.push(...(await collectFiles(fullPath)));
         } else {
-          // 添加文件内容到zip
+          // 添加文件项
           const content = await fs.readFile(fullPath);
-          zipParent.file(entry.name, content);
+          //去除所有前导‘/’
+          files.push({ path: fullPath.replace(/^\/+/, ""), content });
         }
       }
+
+      return files;
     }
 
-    // 从根目录开始处理
-    await addToZip(zip, "/");
-
-    // 生成zip文件内容
-    return zip.generateAsync({
-      type: "uint8array",
-      compression: "DEFLATE", // 使用压缩
-      compressionOptions: { level: 6 },
-    });
+    // 收集所有文件
+    const files = await collectFiles("/");
+    console.log(
+      files.map((file) => ({
+        name: file.path,
+        //data: file.content || new Uint8Array(0),
+      })),
+    );
+    // 创建tar.gz文件
+    const endTime0 = performance.now();
+    console.log(`read from indexedDB:${endTime0 - startTime0}ms`);
+    const startTime1 = performance.now();
+    const edata = await createTarGzip(
+      files.map((file) => ({
+        name: file.path,
+        data: file.content || new Uint8Array(0),
+      })),
+    );
+    const endTime1 = performance.now();
+    console.log(`create tar.gz:${endTime1 - startTime1}ms`);
+    return edata;
   }
   export async function clear() {
     return fs.clear();

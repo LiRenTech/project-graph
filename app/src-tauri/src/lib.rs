@@ -1,12 +1,30 @@
 use serde::{Deserialize, Serialize};
-use std::fs;
-use std::path::{Path, MAIN_SEPARATOR};
+use std::path::{Path, PathBuf, MAIN_SEPARATOR};
 use std::time::UNIX_EPOCH;
-use tauri::Manager;
+use tauri::{
+    ipc::{InvokeBody, Request, Response},
+    Manager,
+};
+use tokio::fs;
+use urlencoding;
+// 高性能路径解码结构
+#[derive(Debug)]
+struct StringPath(PathBuf);
 
-// 新增路径规范化函数
-fn normalize_path(path: &str) -> String {
-    path.replace('/', &MAIN_SEPARATOR.to_string())
+impl StringPath {
+    fn from_urldecode(base64_str: &str) -> Result<Self, String> {
+        let path_str = urlencoding::decode(base64_str).map_err(|e| e.to_string())?;
+        let normalized = Self::normalize_path(&path_str);
+
+        Ok(Self(PathBuf::from(normalized)))
+    }
+    fn normalize_path(path_str: &str) -> String {
+        return if MAIN_SEPARATOR == '/' {
+            path_str.replace('\\', "/")
+        } else {
+            path_str.replace('/', "\\")
+        };
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -26,26 +44,41 @@ struct DirectoryEntry {
 }
 
 #[tauri::command]
-async fn read_file(path: String) -> Result<Vec<u8>, String> {
-    let path = normalize_path(&path);
-    std::fs::read(&path).map_err(|e| e.to_string())
+async fn read_file(path: String) -> Result<Response, String> {
+    let path = StringPath::normalize_path(&path);
+    let data = fs::read(&path).await.map_err(|e| e.to_string())?;
+
+    Ok(Response::new(data))
 }
 
 #[tauri::command]
-async fn write_file(path: String, content: Vec<u8>) -> Result<(), String> {
-    let path = normalize_path(&path);
-    fs::write(path, content).map_err(|e| e.to_string())
+async fn write_file(request: Request<'_>) -> Result<(), String> {
+    let path = request
+        .headers()
+        .get("path")
+        .and_then(|v| v.to_str().ok())
+        .map(StringPath::from_urldecode)
+        .transpose()?
+        .ok_or("Missing path header")?;
+
+    if let InvokeBody::Raw(raw_data) = request.body() {
+        fs::write(&path.0, raw_data)
+            .await
+            .map_err(|e| e.to_string())?;
+        Ok(())
+    } else {
+        Err("Invalid body format".into())
+    }
 }
 
 #[tauri::command]
 async fn read_dir(path: String) -> Result<Vec<DirectoryEntry>, String> {
-    let path = normalize_path(&path);
-    let entries = fs::read_dir(path).map_err(|e| e.to_string())?;
+    let path = StringPath::normalize_path(&path);
+    let mut entries = fs::read_dir(path).await.map_err(|e| e.to_string())?;
     let mut result = Vec::new();
 
-    for entry in entries {
-        let entry = entry.map_err(|e| e.to_string())?;
-        let metadata = entry.metadata().map_err(|e| e.to_string())?;
+    while let Some(entry) = entries.next_entry().await.map_err(|e| e.to_string())? {
+        let metadata = entry.metadata().await.map_err(|e| e.to_string())?;
 
         result.push(DirectoryEntry {
             name: entry.file_name().to_string_lossy().to_string(),
@@ -58,18 +91,20 @@ async fn read_dir(path: String) -> Result<Vec<DirectoryEntry>, String> {
 
 #[tauri::command]
 async fn mkdir(path: String, recursive: bool) -> Result<(), String> {
-    let path = normalize_path(&path);
+    let path = StringPath::normalize_path(&path);
     if recursive {
-        fs::create_dir_all(path).map_err(|e| e.to_string())
+        fs::create_dir_all(path).await.map_err(|e| e.to_string())
     } else {
-        fs::create_dir(path).map_err(|e| e.to_string())
+        fs::create_dir(path).await.map_err(|e| e.to_string())
     }
 }
 
 #[tauri::command]
 async fn stat(path: String) -> Result<FileStats, String> {
-    let normalized_path = normalize_path(&path);
-    let metadata = fs::metadata(&normalized_path).map_err(|e| e.to_string())?;
+    let normalized_path = StringPath::normalize_path(&path);
+    let metadata = fs::metadata(&normalized_path)
+        .await
+        .map_err(|e| e.to_string())?;
 
     let name = Path::new(&normalized_path)
         .file_name()
@@ -94,27 +129,29 @@ async fn stat(path: String) -> Result<FileStats, String> {
 
 #[tauri::command]
 async fn rename(old_path: String, new_path: String) -> Result<(), String> {
-    let old_path = normalize_path(&old_path);
-    let new_path = normalize_path(&new_path);
-    fs::rename(old_path, new_path).map_err(|e| e.to_string())
+    let old_path = StringPath::normalize_path(&old_path);
+    let new_path = StringPath::normalize_path(&new_path);
+    fs::rename(old_path, new_path)
+        .await
+        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 async fn delete_file(path: String) -> Result<(), String> {
-    let path = normalize_path(&path);
-    fs::remove_file(path).map_err(|e| e.to_string())
+    let path = StringPath::normalize_path(&path);
+    fs::remove_file(path).await.map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 async fn delete_directory(path: String) -> Result<(), String> {
-    let path = normalize_path(&path);
-    fs::remove_dir_all(path).map_err(|e| e.to_string())
+    let path = StringPath::normalize_path(&path);
+    fs::remove_dir_all(path).await.map_err(|e| e.to_string())
 }
 
 #[tauri::command]
 async fn exists(path: String) -> Result<bool, String> {
-    let path = normalize_path(&path);
-    Ok(fs::metadata(path).is_ok())
+    let path = StringPath::normalize_path(&path);
+    Ok(fs::metadata(path).await.is_ok())
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
