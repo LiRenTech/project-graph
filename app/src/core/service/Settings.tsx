@@ -94,7 +94,7 @@ export namespace Settings {
     showBackgroundDots: true,
     showBackgroundCartesian: false,
     windowBackgroundAlpha: 0.9,
-    showDebug: true,
+    showDebug: false, // 从1.4.7开始，以后用户安装软件后不默认显示调试信息，进而避免出现让用户感到困惑“这一大堆字是什么”
     alwaysShowDetails: false,
     protectingPrivacy: false,
     useNativeTitleBar: false,
