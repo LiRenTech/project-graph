@@ -87,19 +87,26 @@ export default function About() {
           </Button>
         )}
         <div className="flex flex-wrap justify-center gap-2">
-          <Button onClick={() => open("https://project-graph.top")}>
+          <Button tooltip="https://project-graph.top" onClick={() => open("https://project-graph.top")}>
             <BookOpen />
             {t("links.documentation")}
           </Button>
-          <Button onClick={() => open("https://github.com/LiRenTech/project-graph")}>
+          <Button
+            tooltip="https://github.com/LiRenTech/project-graph"
+            onClick={() => open("https://github.com/LiRenTech/project-graph")}
+          >
             <Github />
             {t("links.github")}
           </Button>
-          <Button onClick={() => open("https://www.bilibili.com/video/BV1hmHKeDE9D")}>
+          <Button
+            tooltip="https://www.bilibili.com/video/BV1hmHKeDE9D"
+            onClick={() => open("https://www.bilibili.com/video/BV1hmHKeDE9D")}
+          >
             <Bilibili />
             {t("links.video")}
           </Button>
           <Button
+            tooltip="1006956704"
             onClick={() =>
               open(
                 "https://qm.qq.com/cgi-bin/qm/qr?k=1Wskf2Y2KJz3ARpCgzi04y_p95a78Wku&jump_from=webapi&authKey=EkjB+oWihwZIfyqVsIv2dGrNv7bhSGSIULM3+ZLU2R5AVxOUKaIRwi6TKOHlT04/",
@@ -109,7 +116,10 @@ export default function About() {
             <QQ />
             {t("links.qq")}
           </Button>
-          <Button onClick={() => open("https://forum.d2learn.org/category/16/project-graph")}>
+          <Button
+            tooltip="https://forum.d2learn.org/category/16/project-graph"
+            onClick={() => open("https://forum.d2learn.org/category/16/project-graph")}
+          >
             <MessageCircleCode />
             {t("links.forum")}
           </Button>
