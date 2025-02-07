@@ -18,6 +18,7 @@ import {
   Network,
   Package,
   PaintBucket,
+  Pin,
   RefreshCcw,
   Repeat,
   SaveAll,
@@ -45,6 +46,7 @@ import { writeTextFile } from "../utils/fs";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { ColorManager } from "../core/service/feedbackService/ColorManager";
 import ColorManagerPanel from "./_color_manager_panel";
+import IconButton from "../components/IconButton";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -282,6 +284,8 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   const [isHaveSelectedNodeOverTwo, setSsHaveSelectedNodeOverTwo] = useState(false);
   const [isHaveSelectedEdge, setSsHaveSelectedEdge] = useState(false);
   const [ignoreMouse, setIgnoreMouse] = useState(false);
+  // 是否固定不缩小化
+  const [isPinned, setIsPinned] = useState(true);
 
   const update = () => {
     setSsHaveSelectedNode(StageManager.selectedNodeCount > 0);
@@ -323,10 +327,28 @@ export default function Toolbar({ className = "" }: { className?: string }) {
     >
       <Box
         className={cn(
-          "bg-toolbar-collapsed-bg group-hover/wrapper:border-toolbar-border group-hover/wrapper:bg-toolbar-bg flex w-10 origin-right scale-[10%] flex-col items-center gap-1 rounded-full px-8 py-6 opacity-25 group-hover/wrapper:scale-100 group-hover/wrapper:border group-hover/wrapper:opacity-100",
+          {
+            "scale-[10%]": !isPinned,
+            "opacity-25": !isPinned,
+            "bg-toolbar-collapsed-bg": !isPinned,
+            "bg-toolbar-bg": isPinned,
+            "border-toolbar-border": isPinned,
+          },
+          "group-hover/wrapper:border-toolbar-border border-toolbar-border group-hover/wrapper:bg-toolbar-bg relative flex w-10 origin-right flex-col items-center gap-1 rounded-full px-8 py-6 group-hover/wrapper:scale-100 group-hover/wrapper:border group-hover/wrapper:opacity-100",
           className,
         )}
       >
+        <IconButton
+          onClick={() => setIsPinned(!isPinned)}
+          className="rounded-4xl absolute right-[-16px] top-[50%] translate-y-[-50%] hover:cursor-pointer"
+        >
+          <Pin className={cn("h-4 w-4 rotate-180 hover:cursor-pointer", { "rotate-45": isPinned })} />
+          {/* {isPinned ? (
+            <Pin className="h-4 w-4 hover:cursor-pointer" />
+          ) : (
+            <PinOff className="h-4 w-4 rotate-180 hover:cursor-pointer" />
+          )} */}
+        </IconButton>
         <ToolbarItem
           description="通过文本生成节点"
           icon={<ClipboardPaste />}
