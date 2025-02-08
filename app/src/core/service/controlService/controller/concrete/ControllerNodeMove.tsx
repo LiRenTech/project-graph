@@ -9,6 +9,7 @@ import { ControllerClass } from "../ControllerClass";
  * 拖拽节点使其移动的控制器
  *
  */
+// TODO: 有待改成 EntityMove
 export const ControllerNodeMove = new ControllerClass();
 
 ControllerNodeMove.mousedown = (event: MouseEvent) => {
@@ -54,10 +55,12 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
     } else {
       StageManager.moveSelectedNodes(diffLocation);
     }
+    // TODO: 此处结构不合理
     StageManager.moveSelectedSections(diffLocation);
     StageManager.moveSelectedConnectPoints(diffLocation);
     StageManager.moveSelectedImageNodes(diffLocation);
     StageManager.moveSelectedUrlNodes(diffLocation);
+    StageManager.moveSelectedPortalNodes(diffLocation);
 
     // 预瞄反馈
     if (Stage.enableDragAutoAlign) {

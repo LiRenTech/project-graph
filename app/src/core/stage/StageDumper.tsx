@@ -6,6 +6,7 @@ import { LineEdge } from "./stageObject/association/LineEdge";
 import { ConnectPoint } from "./stageObject/entity/ConnectPoint";
 import { ImageNode } from "./stageObject/entity/ImageNode";
 import { PenStroke } from "./stageObject/entity/PenStroke";
+import { PortalNode } from "./stageObject/entity/PortalNode";
 import { Section } from "./stageObject/entity/Section";
 import { TextNode } from "./stageObject/entity/TextNode";
 import { UrlNode } from "./stageObject/entity/UrlNode";
@@ -110,6 +111,20 @@ export namespace StageDumper {
       type: "core:pen_stroke",
     };
   }
+  export function dumpPortalNode(portalNode: PortalNode): Serialized.PortalNode {
+    return {
+      location: [portalNode.location.x, portalNode.location.y],
+      portalFilePath: portalNode.portalFilePath,
+      targetLocation: [portalNode.targetLocation.x, portalNode.targetLocation.y],
+      cameraScale: portalNode.cameraScale,
+      title: portalNode.title,
+      size: [portalNode.size.x, portalNode.size.y],
+      color: portalNode.color && portalNode.color.toArray(),
+      uuid: portalNode.uuid,
+      type: "core:portal_node",
+      details: portalNode.details,
+    };
+  }
   /**
    * 不递归（不包含section内部孩子）的序列化一个实体。
    * @param entity
@@ -123,7 +138,8 @@ export namespace StageDumper {
     | Serialized.ConnectPoint
     | Serialized.ImageNode
     | Serialized.UrlNode
-    | Serialized.PenStroke {
+    | Serialized.PenStroke
+    | Serialized.PortalNode {
     if (entity instanceof TextNode) {
       return dumpTextNode(entity);
     } else if (entity instanceof Section) {
@@ -136,6 +152,8 @@ export namespace StageDumper {
       return dumpUrlNode(entity);
     } else if (entity instanceof PenStroke) {
       return dumpPenStroke(entity);
+    } else if (entity instanceof PortalNode) {
+      return dumpPortalNode(entity);
     } else {
       throw new Error(`未知的实体类型: ${entity}`);
     }
@@ -155,6 +173,7 @@ export namespace StageDumper {
       | Serialized.ImageNode
       | Serialized.UrlNode
       | Serialized.PenStroke
+      | Serialized.PortalNode
     )[] = [];
     for (const entity of StageManager.getEntities()) {
       entities.push(dumpOneEntity(entity));
@@ -204,6 +223,7 @@ export namespace StageDumper {
     | Serialized.ImageNode
     | Serialized.UrlNode
     | Serialized.PenStroke
+    | Serialized.PortalNode
   )[] {
     //
     let selectedEntities: (
@@ -213,6 +233,7 @@ export namespace StageDumper {
       | Serialized.ImageNode
       | Serialized.UrlNode
       | Serialized.PenStroke
+      | Serialized.PortalNode
     )[] = entities.filter((entity) => entity instanceof TextNode).map((node) => dumpTextNode(node));
 
     // 遍历所有section的时候，要把section的子节点递归的加入进来。

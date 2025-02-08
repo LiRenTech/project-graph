@@ -1,6 +1,7 @@
 import { Queue } from "../../../dataStruct/Queue";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
+import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 
 export class SecretEngine {
@@ -42,6 +43,11 @@ export class SecretEngine {
     }
     if (keys.includes("1 1 4 5 1 4")) {
       Camera.clearMoveCommander();
+      return true;
+    }
+    if (keys.includes("p o r t a l")) {
+      Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
+      StageManager.addOnePortalNode();
       return true;
     }
     return false;

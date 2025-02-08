@@ -49,6 +49,19 @@ export namespace Serialized {
     color: Color;
     type: "core:url_node";
   };
+  export type PortalNode = Entity & {
+    // 连接的文件
+    portalFilePath: string;
+    targetLocation: Vector;
+    cameraScale: number;
+    // 显示的可更改标题
+    title: string;
+    // 传送门的大小
+    size: Vector;
+    // 颜色
+    color: Color;
+    type: "core:portal_node";
+  };
   export type PenStroke = Entity & {
     type: "core:pen_stroke";
     content: string;
@@ -81,7 +94,7 @@ export namespace Serialized {
 
   export type File = {
     version: typeof StageDumper.latestVersion;
-    entities: (Node | Section | ConnectPoint | ImageNode | UrlNode | PenStroke)[];
+    entities: (Node | Section | ConnectPoint | ImageNode | UrlNode | PenStroke | PortalNode)[];
     associations: (LineEdge | CublicCatmullRomSplineEdge)[];
     tags: string[];
   };

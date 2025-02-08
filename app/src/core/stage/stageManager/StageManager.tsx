@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { Serialized } from "../../../types/node";
 import { Color } from "../../dataStruct/Color";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
@@ -18,6 +19,7 @@ import { LineEdge } from "../stageObject/association/LineEdge";
 import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../stageObject/entity/ImageNode";
 import { PenStroke } from "../stageObject/entity/PenStroke";
+import { PortalNode } from "../stageObject/entity/PortalNode";
 import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
@@ -89,6 +91,9 @@ export namespace StageManager {
   export function getUrlNodes(): UrlNode[] {
     return entities.valuesToArray().filter((node) => node instanceof UrlNode);
   }
+  export function getPortalNodes(): PortalNode[] {
+    return entities.valuesToArray().filter((node) => node instanceof PortalNode);
+  }
 
   export function getStageObject(): StageObject[] {
     const result: StageObject[] = [];
@@ -142,6 +147,12 @@ export namespace StageManager {
   }
   export function deleteOneConnectPoint(point: ConnectPoint) {
     entities.deleteValue(point);
+  }
+  export function deleteOnePortalNode(node: PortalNode) {
+    entities.deleteValue(node);
+  }
+  export function deleteOnePenStroke(penStroke: PenStroke) {
+    entities.deleteValue(penStroke);
   }
   export function deleteOneEdge(edge: LineEdge) {
     associations.deleteValue(edge);
@@ -223,6 +234,9 @@ export namespace StageManager {
   }
   export function addPenStroke(penStroke: PenStroke) {
     entities.addValue(penStroke, penStroke.uuid);
+  }
+  export function addPortalNode(portalNode: PortalNode) {
+    entities.addValue(portalNode, portalNode.uuid);
   }
 
   // 用于UI层监测
@@ -538,6 +552,9 @@ export namespace StageManager {
   }
   export function moveSelectedUrlNodes(delta: Vector) {
     StageEntityMoveManager.moveSelectedUrlNodes(delta); // 连续过程，不记录历史，只在结束时记录
+  }
+  export function moveSelectedPortalNodes(delta: Vector) {
+    StageEntityMoveManager.moveSelectedPortalNodes(delta); // 连续过程，不记录历史，只在结束时记录
   }
 
   export function moveNodesWithChildren(delta: Vector) {
@@ -919,6 +936,23 @@ export namespace StageManager {
    */
   export function textNodeToSection() {
     StageSectionPackManager.textNodeToSection();
+    StageHistoryManager.recordStep();
+  }
+
+  // 测试
+  export function addOnePortalNode() {
+    const uuid = v4();
+    entities.addValue(
+      new PortalNode({
+        uuid: uuid,
+        title: "PortalNode",
+        portalFilePath: "",
+        location: [0, 0],
+        size: [1000, 1000],
+        cameraScale: 1,
+      }),
+      uuid,
+    );
     StageHistoryManager.recordStep();
   }
 }

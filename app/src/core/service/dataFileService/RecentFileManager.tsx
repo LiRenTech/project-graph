@@ -16,6 +16,7 @@ import { TextNode } from "../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../stage/stageObject/entity/UrlNode";
 import { ViewFlashEffect } from "../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { PenStroke } from "../../stage/stageObject/entity/PenStroke";
+import { PortalNode } from "../../stage/stageObject/entity/PortalNode";
 
 /**
  * 管理最近打开的文件列表
@@ -168,6 +169,7 @@ export namespace RecentFileManager {
 
   export function loadStageByData(data: Serialized.File) {
     for (const entity of data.entities) {
+      // TODO: 待优化结构
       if (entity.type === "core:text_node") {
         StageManager.addTextNode(new TextNode(entity));
       } else if (entity.type === "core:section") {
@@ -180,6 +182,8 @@ export namespace RecentFileManager {
         StageManager.addUrlNode(new UrlNode(entity));
       } else if (entity.type === "core:pen_stroke") {
         StageManager.addPenStroke(new PenStroke(entity.content));
+      } else if (entity.type === "core:portal_node") {
+        StageManager.addPortalNode(new PortalNode(entity));
       } else {
         console.warn("加载文件时，出现未知的实体类型：" + entity);
       }

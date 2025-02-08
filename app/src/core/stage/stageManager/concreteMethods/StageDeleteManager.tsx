@@ -6,6 +6,7 @@ import { Entity } from "../../stageObject/abstract/StageEntity";
 import { LineEdge } from "../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
+import { PortalNode } from "../../stageObject/entity/PortalNode";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
@@ -17,6 +18,7 @@ import { StageManager } from "../StageManager";
  */
 export namespace StageDeleteManager {
   export function deleteEntities(deleteNodes: Entity[]) {
+    // TODO: 这里应该优化，否则每次新加内容就得些一个类型判断
     for (const entity of deleteNodes) {
       if (entity instanceof TextNode) {
         deleteTextNode(entity);
@@ -28,9 +30,19 @@ export namespace StageDeleteManager {
         deleteImageNode(entity);
       } else if (entity instanceof UrlNode) {
         deleteUrlNode(entity);
+      } else if (entity instanceof PortalNode) {
+        deletePortalNode(entity);
       }
     }
     // StageManager.updateReferences();
+  }
+
+  function deletePortalNode(entity: PortalNode) {
+    if (StageManager.getPortalNodes().includes(entity)) {
+      StageManager.deleteOnePortalNode(entity);
+      // 删除所有相关的边
+      deleteEntityAfterClearEdges(entity);
+    }
   }
 
   function deleteSection(entity: Section) {

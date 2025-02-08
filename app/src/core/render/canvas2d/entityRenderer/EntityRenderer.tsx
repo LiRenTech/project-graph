@@ -16,6 +16,7 @@ import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { ConnectPoint } from "../../../stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { PenStroke } from "../../../stage/stageObject/entity/PenStroke";
+import { PortalNode } from "../../../stage/stageObject/entity/PortalNode";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
@@ -26,6 +27,7 @@ import { TextRenderer } from "../basicRenderer/textRenderer";
 import { Renderer } from "../renderer";
 import { CollisionBoxRenderer } from "./CollisionBoxRenderer";
 import { EntityDetailsButtonRenderer } from "./EntityDetailsButtonRenderer";
+import { PortalNodeRenderer } from "./portalNode/portalNodeRenderer";
 import { SectionRenderer } from "./section/SectionRenderer";
 import { UrlNodeRenderer } from "./urlNode/urlNodeRenderer";
 
@@ -137,6 +139,8 @@ export namespace EntityRenderer {
       UrlNodeRenderer.render(entity);
     } else if (entity instanceof PenStroke) {
       renderPenStroke(entity);
+    } else if (entity instanceof PortalNode) {
+      PortalNodeRenderer.render(entity);
     }
     // details右上角小按钮
     EntityDetailsButtonRenderer(entity);
