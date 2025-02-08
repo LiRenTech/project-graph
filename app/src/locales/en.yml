@@ -364,6 +364,16 @@ settings:
     title: Enable Drag Auto Align Nodes
     description: |
       When enabled, nodes will automatically align with other nodes along the x-axis and y-axis when dragged and released
+  mouseWheelMode:
+    title: mouse Wheel Mode
+    options:
+      zoom: zoom
+      move: move
+  mouseWheelWithShiftMode:
+    title: mouse Wheel Mode When Press Shift
+    options:
+      zoom: zoom
+      move: move
   rectangleSelectWhenLeft:
     title: Strategy for Left Rectangle Selection
     description: |

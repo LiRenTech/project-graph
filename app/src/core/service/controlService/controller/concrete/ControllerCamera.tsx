@@ -210,24 +210,45 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
   //   console.log(vector.toString());
   //   // return false;
   // }
-
-  // 滚轮纵向滚动是缩放
-  if (event.deltaY > 0) {
-    Camera.targetScale *= 0.8;
-  } else if (event.deltaY < 0) {
-    Camera.targetScale *= 1.2;
+  if (Controller.pressingKeySet.has("shift")) {
+    if (Camera.mouseWheelWithShiftMode === "zoom") {
+      zoomCameraByMouseWheel(event);
+    } else {
+      moveCameraByMouseWheel(event);
+    }
+  } else {
+    if (Camera.mouseWheelMode === "zoom") {
+      zoomCameraByMouseWheel(event);
+    } else {
+      moveCameraByMouseWheel(event);
+    }
   }
 
   // 滚轮横向滚动是水平移动
   if (event.deltaX > 0) {
     // 左移动
-    Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 100) / Camera.currentScale, 0));
+    Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
   } else if (event.deltaX < 0) {
     // 右移动
-    Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 100) / Camera.currentScale, 0));
+    Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
   }
 };
-
+function zoomCameraByMouseWheel(event: WheelEvent) {
+  if (event.deltaY > 0) {
+    Camera.targetScale *= 0.8;
+  } else if (event.deltaY < 0) {
+    Camera.targetScale *= 1.2;
+  }
+}
+function moveCameraByMouseWheel(event: WheelEvent) {
+  if (event.deltaY > 0) {
+    // 向上滚动是上移
+    Camera.location = Camera.location.add(new Vector(0, (Camera.moveAmplitude * 50) / Camera.currentScale));
+  } else if (event.deltaY < 0) {
+    // 向下滚动是下移
+    Camera.location = Camera.location.subtract(new Vector(0, (Camera.moveAmplitude * 50) / Camera.currentScale));
+  }
+}
 /**
  * 如果使用了鼠标滚轮，则x或y的滚动必有一个接近100
  * @param event

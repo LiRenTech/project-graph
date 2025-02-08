@@ -75,7 +75,11 @@ export default function Visual() {
         <SettingField icon={<Bug />} settingKey="showDebug" type="switch" />
         <SettingField icon={<VenetianMask />} settingKey="protectingPrivacy" type="switch" />
       </FieldGroup>
-      <FieldGroup title="Testing Functions 实验性功能" icon={<FlaskConical />}>
+      <FieldGroup
+        title="Testing Functions 实验性功能"
+        description="如果您不了解下面的设置，请不要修改它们。否则您会感觉出现灵异事件"
+        icon={<FlaskConical />}
+      >
         <SettingField icon={<Ratio />} settingKey="limitCameraInCycleSpace" type="switch" />
         <SettingField
           icon={<Scaling />}

@@ -70,6 +70,8 @@ export namespace Settings {
     textNodeStartEditMode: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter";
     textNodeSelectAllWhenStartEditByKeyboard: boolean;
     textNodeSelectAllWhenStartEditByMouseClick: boolean;
+    mouseWheelMode: "zoom" | "move";
+    mouseWheelWithShiftMode: "zoom" | "move";
     // 音效相关
     soundEnabled: boolean;
     cuttingLineStartSoundFile: string;
@@ -140,6 +142,8 @@ export namespace Settings {
     textNodeStartEditMode: "enter",
     textNodeSelectAllWhenStartEditByKeyboard: false,
     textNodeSelectAllWhenStartEditByMouseClick: true,
+    mouseWheelMode: "zoom",
+    mouseWheelWithShiftMode: "move",
     // 音效相关
     soundEnabled: true,
     cuttingLineStartSoundFile: "",

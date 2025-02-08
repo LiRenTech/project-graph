@@ -47,9 +47,6 @@ export namespace Camera {
   /** 当前的 画布/摄像机移动的速度矢量 */
   export let speed: Vector = Vector.getZero();
 
-  /** 当前的 移动加速度 */
-  export const accelerate: Vector = Vector.getZero();
-
   /**
    * 可以看成一个九宫格，主要用于处理 w s a d 按键移动，
    * 当同时按下w和s，这个值会是(-1,-1)，表示朝着左上移动
@@ -84,6 +81,8 @@ export namespace Camera {
   export let limitCameraInCycleSpace = false;
   export let cameraCycleSpaceSizeX = 1000;
   export let cameraCycleSpaceSizeY = 1000;
+  export let mouseWheelMode: "zoom" | "move" = "zoom"; // zoom or move
+  export let mouseWheelWithShiftMode: "zoom" | "move" = "zoom"; // zoom or move
   let cameraKeyboardScaleRate = 0.2;
 
   // IDEA: 突然有一个好点子
@@ -255,6 +254,12 @@ export namespace Camera {
     });
     Settings.watch("cameraKeyboardScaleRate", (value) => {
       cameraKeyboardScaleRate = value;
+    });
+    Settings.watch("mouseWheelMode", (value) => {
+      mouseWheelMode = value;
+    });
+    Settings.watch("mouseWheelWithShiftMode", (value) => {
+      mouseWheelWithShiftMode = value;
     });
   }
 

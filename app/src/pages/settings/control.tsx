@@ -26,6 +26,8 @@ export default function Control() {
       <FieldGroup title="Mouse 鼠标设定" icon={<Mouse />}>
         <SettingField icon={<MousePointerClick />} settingKey="mouseRightDragBackground" type="select" />
         <SettingField icon={<AlignStartVertical />} settingKey="enableDragAutoAlign" type="switch" />
+        <SettingField icon={<Mouse />} settingKey="mouseWheelMode" type="select" />
+        <SettingField icon={<Mouse />} settingKey="mouseWheelWithShiftMode" type="select" />
       </FieldGroup>
       <FieldGroup title="RectangleSelect 框选" icon={<SquareDashedMousePointer />}>
         <SettingField icon={<SquareArrowDownRight />} settingKey="rectangleSelectWhenRight" type="select" />
