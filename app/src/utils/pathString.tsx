@@ -77,6 +77,72 @@ export namespace PathString {
     return dateTime;
   }
 
+  // 这个函数用AI生成，DeepSeek整整思考了四分钟，252秒，一次性全部通过测试，而其他大模型都无法通过测试。
+  /**
+   * 根据一个绝对路径和一个相对路径，获取新文件的绝对路径
+   * @param currentPath 绝对路径
+   * @param relativePath 相对路径
+   * 例如：
+   * currentPath = "C:/Users/admin/Desktop/test.txt"
+   * relativePath = "./test2.txt"
+   * 则返回 "C:/Users/admin/Desktop/test2.txt"
+   *
+   * currentPath = "C:/Users/admin/Desktop/test.txt"
+   * relativePath = "../test2.txt"
+   * 则返回 "C:/Users/admin/test2.txt"
+   * @returns
+   */
+  export function relativePathToAbsolutePath(currentPath: string, relativePath: string): string {
+    const { drive, parts: currentParts } = splitCurrentPath(currentPath);
+    const relativeParts = splitRelativePath(relativePath);
+
+    const mergedParts = [...currentParts];
+    for (const part of relativeParts) {
+      if (part === "..") {
+        if (mergedParts.length > 0) {
+          mergedParts.pop();
+        }
+      } else if (part !== "." && part !== "") {
+        mergedParts.push(part);
+      }
+    }
+
+    let absolutePath;
+    if (drive) {
+      absolutePath = `${drive}/`;
+    } else {
+      absolutePath = "/";
+    }
+    absolutePath += mergedParts.join("/");
+
+    // 处理根目录情况
+    if (mergedParts.length === 0) {
+      absolutePath = drive ? `${drive}/` : "/";
+    }
+
+    // 替换多个连续的斜杠为单个斜杠
+    absolutePath = absolutePath.replace(/\/+/g, "/");
+
+    return absolutePath;
+  }
+
+  function splitCurrentPath(path: string) {
+    path = path.replace(/\\/g, "/");
+    let drive = "";
+    const driveMatch = path.match(/^([a-zA-Z]:)(\/|$)/);
+    if (driveMatch) {
+      drive = driveMatch[1];
+      path = path.substring(drive.length);
+    }
+    const parts = path.split("/").filter((p) => p !== "");
+    return { drive, parts };
+  }
+
+  function splitRelativePath(relativePath: string) {
+    relativePath = relativePath.replace(/\\/g, "/");
+    return relativePath.split("/").filter((p) => p !== "");
+  }
+
   /**
    * 检测一个字符串是否是一个有效的url网址
    * 用于判断是否可以打开浏览器

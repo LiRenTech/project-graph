@@ -3,6 +3,7 @@ import { StageStyleManager } from "../../../../service/feedbackService/stageStyl
 import { Camera } from "../../../../stage/Camera";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../../basicRenderer/textRenderer";
 import { Renderer } from "../../renderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { EntityRenderer } from "../EntityRenderer";
@@ -22,5 +23,16 @@ export namespace PortalNodeRenderer {
       CollisionBoxRenderer.render(portalNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
     }
     EntityRenderer.renderEntityDetails(portalNode);
+
+    // 绘制debug信息
+    if (Renderer.isShowDebug) {
+      TextRenderer.renderMultiLineText(
+        `${portalNode.title}, [${portalNode.portalFilePath}]\n${portalNode.targetLocation.toString()}`,
+        Renderer.transformWorld2View(portalNode.location),
+        10 * Camera.currentScale,
+        1000 * Camera.currentScale,
+        StageStyleManager.currentStyle.DetailsDebugTextColor,
+      );
+    }
   }
 }

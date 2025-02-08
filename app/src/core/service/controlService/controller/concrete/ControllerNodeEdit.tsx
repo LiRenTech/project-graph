@@ -1,13 +1,15 @@
 import { open } from "@tauri-apps/plugin-shell";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
+import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
+import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { editNodeDetails, editTextNode, editUrlNodeTitle } from "./utilsControl";
-import { Stage } from "../../../../stage/Stage";
+import { RecentFileManager } from "../../../dataFileService/RecentFileManager";
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
  *
@@ -39,6 +41,20 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
       } else {
         // 跳转链接
         open(clickedEntity.url);
+      }
+    } else if (clickedEntity instanceof PortalNode) {
+      // TODO:
+      const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
+      if (diffNodeLeftTopLocation.y < PortalNode.TITLE_HEIGHT) {
+        // 更改路径
+        const newPortalFilePath = prompt("请输入新的路径", clickedEntity.portalFilePath);
+        if (newPortalFilePath) {
+          clickedEntity.portalFilePath = newPortalFilePath;
+        }
+      } else {
+        // 跳转链接
+        const relativePath = clickedEntity.portalFilePath;
+        RecentFileManager.openFileByPath(relativePath);
       }
     }
   }

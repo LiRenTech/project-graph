@@ -9,6 +9,7 @@ import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
 export class PortalNode extends ConnectableEntity {
+  static TITLE_HEIGHT = 100;
   isHiddenBySectionCollapse: boolean = false;
   public uuid: string;
   public collisionBox: CollisionBox;

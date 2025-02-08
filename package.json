@@ -15,7 +15,8 @@
     "prepare": "husky",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "pnpm --filter ./app test"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
