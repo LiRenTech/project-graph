@@ -7,6 +7,7 @@ import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
+import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
 import { EntityCreateLineEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateLineEffect";
@@ -71,6 +72,32 @@ export function editUrlNodeTitle(clickedUrlNode: UrlNode) {
     },
   ).then(() => {
     clickedUrlNode!.isEditingTitle = false;
+    Controller.isCameraLocked = false;
+  });
+}
+
+export function editPortalNodeTitle(clickedPortalNode: PortalNode) {
+  Controller.isCameraLocked = true;
+  // 编辑节点
+  clickedPortalNode.isEditingTitle = true;
+  InputElement.input(
+    Renderer.transformWorld2View(clickedPortalNode.rectangle.location).add(
+      Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
+    ),
+    clickedPortalNode.title,
+    (text) => {
+      clickedPortalNode?.rename(text);
+    },
+    {
+      fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
+      backgroundColor: "transparent",
+      color: StageStyleManager.currentStyle.StageObjectBorderColor.toString(),
+      outline: "none",
+      marginTop: -8 * Camera.currentScale + "px",
+      width: "100vw",
+    },
+  ).then(() => {
+    clickedPortalNode!.isEditingTitle = false;
     Controller.isCameraLocked = false;
   });
 }

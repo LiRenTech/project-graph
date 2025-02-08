@@ -5,16 +5,16 @@ import { isWeb } from "../../../../../utils/platform";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
+import { StageDumper } from "../../../../stage/StageDumper";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
 import { RecentFileManager } from "../../../dataFileService/RecentFileManager";
+import { StageSaveManager } from "../../../dataFileService/StageSaveManager";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-import { editNodeDetails, editTextNode, editUrlNodeTitle } from "./utilsControl";
-import { StageSaveManager } from "../../../dataFileService/StageSaveManager";
-import { StageDumper } from "../../../../stage/StageDumper";
+import { editNodeDetails, editPortalNodeTitle, editTextNode, editUrlNodeTitle } from "./utilsControl";
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
  *
@@ -50,7 +50,10 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
     } else if (clickedEntity instanceof PortalNode) {
       // TODO: 点击范围有待设计
       const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
-      if (diffNodeLeftTopLocation.y < PortalNode.TITLE_HEIGHT) {
+      if (diffNodeLeftTopLocation.y < PortalNode.TITLE_LINE_Y) {
+        // 编辑标题
+        editPortalNodeTitle(clickedEntity);
+      } else if (diffNodeLeftTopLocation.y < PortalNode.PATH_LINE_Y) {
         // 更改路径
         const newPortalFilePath = prompt("请输入新的路径", clickedEntity.portalFilePath);
         if (newPortalFilePath) {

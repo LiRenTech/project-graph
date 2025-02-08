@@ -9,7 +9,30 @@ import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
 export class PortalNode extends ConnectableEntity {
-  static TITLE_HEIGHT = 100;
+  /**
+   * 标题标记线
+   */
+  static TITLE_LINE_Y = 60;
+  /**
+   * 路径标记线
+   */
+  static PATH_LINE_Y = 120;
+  public isEditingTitle: boolean = false;
+  public rename(newTitle: string): void {
+    this.title = newTitle;
+    this.updateFatherSectionByMove();
+  }
+
+  public titleRectangleArea(): Rectangle {
+    return new Rectangle(this.location, new Vector(this.size.x, PortalNode.TITLE_LINE_Y));
+  }
+  public pathRectangleArea(): Rectangle {
+    return new Rectangle(
+      this.location.add(new Vector(0, PortalNode.TITLE_LINE_Y)),
+      new Vector(this.size.x, PortalNode.PATH_LINE_Y - PortalNode.TITLE_LINE_Y),
+    );
+  }
+
   isHiddenBySectionCollapse: boolean = false;
   public uuid: string;
   public collisionBox: CollisionBox;
