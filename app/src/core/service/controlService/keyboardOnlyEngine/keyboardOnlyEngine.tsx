@@ -1,4 +1,3 @@
-import { Dialog } from "../../../../components/dialog";
 import { getEnterKey } from "../../../../utils/keyboardFunctions";
 import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
@@ -166,11 +165,7 @@ export namespace KeyboardOnlyEngine {
   export async function createFinished() {
     _isCreating = false;
     if (getPressTabTimeInterval() < 100) {
-      Dialog.show({
-        title: "松开Tab键过快💨",
-        content: "按下Tab键的时间要在0.1秒以上，在松开Tab键之前，可以通过IKJL键移动虚拟目标位置。",
-        type: "warning",
-      });
+      Stage.effectMachine.addEffect(TextRiseEffect.default("松开Tab键过快💨"));
       return;
     }
 
