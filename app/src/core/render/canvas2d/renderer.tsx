@@ -284,30 +284,17 @@ export namespace Renderer {
           Color.Transparent,
           0,
         );
-        // 额外画四个直角边框
-        CurveRenderer.renderSolidLine(
-          transformWorld2View(Stage.selectMachine.selectingRectangle.leftTop),
-          transformWorld2View(Stage.selectMachine.selectingRectangle.topCenter),
+        ShapeRenderer.renderCameraShapeBorder(
+          Stage.selectMachine.selectingRectangle.transformWorld2View(),
           StageStyleManager.currentStyle.SelectRectangleBorderColor,
           1,
         );
-        CurveRenderer.renderSolidLine(
-          transformWorld2View(Stage.selectMachine.selectingRectangle.rightTop),
-          transformWorld2View(Stage.selectMachine.selectingRectangle.rightCenter),
+        // 完全覆盖框选的提示
+        TextRenderer.renderText(
+          "完全覆盖框选",
+          transformWorld2View(Stage.selectMachine.selectingRectangle.leftBottom.add(new Vector(0, 10))),
+          10,
           StageStyleManager.currentStyle.SelectRectangleBorderColor,
-          1,
-        );
-        CurveRenderer.renderSolidLine(
-          transformWorld2View(Stage.selectMachine.selectingRectangle.rightBottom),
-          transformWorld2View(Stage.selectMachine.selectingRectangle.bottomCenter),
-          StageStyleManager.currentStyle.SelectRectangleBorderColor,
-          1,
-        );
-        CurveRenderer.renderSolidLine(
-          transformWorld2View(Stage.selectMachine.selectingRectangle.leftBottom),
-          transformWorld2View(Stage.selectMachine.selectingRectangle.leftCenter),
-          StageStyleManager.currentStyle.SelectRectangleBorderColor,
-          1,
         );
       }
     }

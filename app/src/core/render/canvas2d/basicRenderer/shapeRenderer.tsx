@@ -197,4 +197,54 @@ export namespace ShapeRenderer {
     Canvas.ctx.arc(viewLocation.x, viewLocation.y, radius, 0, 2 * Math.PI, false);
     Canvas.ctx.fill();
   }
+
+  /**
+   * 画一个类似摄像机的形状，矩形边框
+   * 表面上看上去是一个矩形框，但是只有四个角，每隔边的中间部分是透明的
+   * @param rect 矩形
+   * @param borderColor 边框颜色
+   * @param borderWidth 边框宽度
+   */
+  export function renderCameraShapeBorder(rect: Rectangle, borderColor: Color, borderWidth: number) {
+    const x = rect.location.x;
+    const y = rect.location.y;
+    const w = rect.size.x;
+    const h = rect.size.y;
+
+    // 计算四个角线段的长度（取各边长的25%）
+    const hLineLen = w * 0.25;
+    const vLineLen = h * 0.25;
+
+    Canvas.ctx.beginPath();
+
+    // 左上角（右向线段 + 下向线段）
+    Canvas.ctx.moveTo(x, y);
+    Canvas.ctx.lineTo(x + hLineLen, y);
+    Canvas.ctx.moveTo(x, y);
+    Canvas.ctx.lineTo(x, y + vLineLen);
+
+    // 右上角（左向线段 + 下向线段）
+    Canvas.ctx.moveTo(x + w, y);
+    Canvas.ctx.lineTo(x + w - hLineLen, y);
+    Canvas.ctx.moveTo(x + w, y);
+    Canvas.ctx.lineTo(x + w, y + vLineLen);
+
+    // 右下角（左向线段 + 上向线段）
+    Canvas.ctx.moveTo(x + w, y + h);
+    Canvas.ctx.lineTo(x + w - hLineLen, y + h);
+    Canvas.ctx.moveTo(x + w, y + h);
+    Canvas.ctx.lineTo(x + w, y + h - vLineLen);
+
+    // 左下角（右向线段 + 上向线段）
+    Canvas.ctx.moveTo(x, y + h);
+    Canvas.ctx.lineTo(x + hLineLen, y + h);
+    Canvas.ctx.moveTo(x, y + h);
+    Canvas.ctx.lineTo(x, y + h - vLineLen);
+
+    // 设置绘制样式
+    Canvas.ctx.strokeStyle = borderColor.toString();
+    Canvas.ctx.lineWidth = borderWidth;
+    Canvas.ctx.lineCap = "round"; // 线段末端圆角
+    Canvas.ctx.stroke();
+  }
 }
