@@ -34,7 +34,7 @@ export default function App() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const [file] = useAtom(fileAtom);
+  const [file, setFile] = useAtom(fileAtom);
   const filename = React.useMemo(() => PathString.absolute2file(file), [file]);
   const [useNativeTitleBar, setUseNativeTitleBar] = React.useState(false);
   const { t } = useTranslation("app");
@@ -157,6 +157,9 @@ export default function App() {
     Settings.watch("uiTheme", (value) => {
       document.documentElement.setAttribute("data-theme", value);
     });
+    Stage.path.setPathHook = (pathString: string) => {
+      setFile(pathString);
+    };
     return () => {
       // 经过测试发现，只要是不关闭软件，根本不会执行这里
       // 随意切换软件内部界面不会执行这里

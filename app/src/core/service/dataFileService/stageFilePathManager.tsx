@@ -1,4 +1,8 @@
+/**
+ * 此类产生的实例绑定在Stage上
+ */
 export class StageFilePathManager {
+  // TODO: 有待改成private
   public draftName = "Project Graph";
 
   private currentPath = "Project Graph";
@@ -18,6 +22,22 @@ export class StageFilePathManager {
   setPathInEffect(path: string) {
     this.currentPath = path;
   }
+
+  /**
+   * 仅舞台层面的，非UI层面的修改路径，能通过倒钩同步改变UI层
+   * @param path
+   */
+  setPathAndChangeUI(path: string) {
+    this.currentPath = path;
+    this.setPathHook(path);
+  }
+
+  /**
+   * 外部不允许修改此函数。
+   * 除了App.tsx中
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public setPathHook = (_path: string) => {};
 
   /**
    * 提供一个函数供外部调用，获取当前路径

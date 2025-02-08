@@ -1,4 +1,7 @@
 import { open } from "@tauri-apps/plugin-shell";
+import { Dialog } from "../../../../../components/dialog";
+import { PathString } from "../../../../../utils/pathString";
+import { isWeb } from "../../../../../utils/platform";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
@@ -6,10 +9,12 @@ import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
+import { RecentFileManager } from "../../../dataFileService/RecentFileManager";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { editNodeDetails, editTextNode, editUrlNodeTitle } from "./utilsControl";
-import { RecentFileManager } from "../../../dataFileService/RecentFileManager";
+import { StageSaveManager } from "../../../dataFileService/StageSaveManager";
+import { StageDumper } from "../../../../stage/StageDumper";
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
  *
@@ -43,7 +48,7 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
         open(clickedEntity.url);
       }
     } else if (clickedEntity instanceof PortalNode) {
-      // TODO:
+      // TODO: 点击范围有待设计
       const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
       if (diffNodeLeftTopLocation.y < PortalNode.TITLE_HEIGHT) {
         // 更改路径
@@ -52,9 +57,37 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
           clickedEntity.portalFilePath = newPortalFilePath;
         }
       } else {
+        if (isWeb) {
+          Dialog.show({
+            title: "网页版不支持传送门",
+            content: "网页版不支持传送门，请使用桌面版",
+          });
+          return;
+        }
         // 跳转链接
-        const relativePath = clickedEntity.portalFilePath;
-        RecentFileManager.openFileByPath(relativePath);
+        if (Stage.path.isDraft()) {
+          Dialog.show({
+            title: "草稿不支持传送门",
+            content: "请保存为本地文件后再传送门",
+          });
+          return;
+        } else {
+          // 准备要跳转了！
+          const relativePath = clickedEntity.portalFilePath;
+          const absolutePath = PathString.dirPath(Stage.path.getFilePath());
+          const newPath = PathString.relativePathToAbsolutePath(absolutePath, relativePath);
+          // 取消选择所有节点
+          StageManager.clearSelectAll();
+          // 切换前保存一下
+          StageSaveManager.saveHandleWithoutCurrentPath(StageDumper.dump(), false, false);
+          // 开始传送
+          // 不要让它立刻切换，否则会导致突然在新的文件中触发一个双击事件，创建了一个多余节点
+          setTimeout(() => {
+            // console.log(newPath);
+            RecentFileManager.openFileByPath(newPath);
+            Stage.path.setPathAndChangeUI(newPath);
+          }, 100);
+        }
       }
     }
   }

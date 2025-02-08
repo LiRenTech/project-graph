@@ -917,6 +917,14 @@ export namespace StageManager {
       entity.isSelected = true;
     }
   }
+  export function clearSelectAll() {
+    for (const entity of entities.valuesToArray()) {
+      entity.isSelected = false;
+    }
+    for (const edge of associations.valuesToArray()) {
+      edge.isSelected = false;
+    }
+  }
 
   /**
    * 将所有实体移动到整数坐标位置
@@ -948,7 +956,7 @@ export namespace StageManager {
         title: "PortalNode",
         portalFilePath: "",
         location: [0, 0],
-        size: [1000, 1000],
+        size: [500, 500],
         cameraScale: 1,
       }),
       uuid,

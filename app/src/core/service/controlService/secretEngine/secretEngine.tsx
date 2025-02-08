@@ -15,8 +15,8 @@ export class SecretEngine {
         // 清空队列
         this.pressedKeys.clear();
       }
-      // 将队列长度限制在10以内
-      while (this.pressedKeys.length > 10) {
+      // 将队列长度限制
+      while (this.pressedKeys.length > 20) {
         this.pressedKeys.dequeue();
       }
     });
@@ -45,7 +45,7 @@ export class SecretEngine {
       Camera.clearMoveCommander();
       return true;
     }
-    if (keys.includes("p o r t a l")) {
+    if (keys.includes("b o y n e x t d o o r")) {
       Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
       StageManager.addOnePortalNode();
       return true;

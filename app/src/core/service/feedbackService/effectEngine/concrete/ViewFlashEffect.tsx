@@ -20,6 +20,9 @@ export class ViewFlashEffect extends EffectObject {
   static SaveFile() {
     return new ViewFlashEffect(StageStyleManager.currentStyle.effects.windowFlash, new ProgressNumber(0, 10));
   }
+  static Portal() {
+    return new ViewFlashEffect(new Color(127, 75, 124), new ProgressNumber(0, 10));
+  }
 
   render(): void {
     if (this.timeProgress.isFull) {
