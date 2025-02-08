@@ -7,12 +7,13 @@ import { Settings } from "../core/service/Settings";
 import { Canvas } from "../core/stage/Canvas";
 import { Stage } from "../core/stage/Stage";
 // import DetailsEditPanel from "./_details_edit_panel";
+import Button from "../components/Button";
+import { isMobile } from "../utils/platform";
+import DetailsEditSmallPanel from "./_details_edit_small_panel";
 import DetailsEditSidePanel from "./_details_edit_side_panel";
 import HintText from "./_hint_text";
 import SearchingNodePanel from "./_searching_node_panel";
 import Toolbar from "./_toolbar";
-import Button from "../components/Button";
-import { isMobile } from "../utils/platform";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
@@ -20,6 +21,7 @@ export default function Home() {
   const [cursorName, setCursorName] = React.useState("default");
   const [bgAlpha, setBgAlpha] = React.useState(1);
   const [isDrawingMode, setIsDrawingMode] = React.useState(false);
+  const [nodeDetailsPanel, setNodeDetailsPanel] = React.useState("vditor");
 
   useEffect(() => {
     const handleResize = () => {
@@ -82,6 +84,10 @@ export default function Home() {
 
     let frameId = requestAnimationFrame(loop);
 
+    Settings.watch("nodeDetailsPanel", (value) => {
+      setNodeDetailsPanel(value);
+    });
+
     // 清理事件监听器
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -99,8 +105,7 @@ export default function Home() {
       <Toolbar />
       <SearchingNodePanel />
       {/* 这个打算被取代 */}
-      {/* <DetailsEditPanel /> */}
-      <DetailsEditSidePanel />
+      {nodeDetailsPanel === "small" ? <DetailsEditSmallPanel /> : <DetailsEditSidePanel />}
       <HintText />
       {isMobile && (
         <Button

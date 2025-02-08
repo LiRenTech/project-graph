@@ -9,9 +9,10 @@ import { Entity } from "../core/stage/stageObject/abstract/StageEntity";
 
 /**
  * 2025年1月4日，这个打算被侧边栏取代 ——littlefean
+ * 2025年2月9日，打算先共存
  * @returns
  */
-export default function DetailsEditPanel() {
+export default function DetailsEditSmallPanel() {
   const [inputCurrentDetails, setInputCurrentDetails] = React.useState("");
   const [isNodeTextEditing, setIsNodeTextEditing] = React.useState(false);
   const [clickedNode, setClickedNode] = React.useState<Entity>();
@@ -43,6 +44,7 @@ export default function DetailsEditPanel() {
     Controller.isCameraLocked = false;
     entity.isEditingDetails = false;
   };
+
   const getClickedNodeStyle = () => {
     if (!clickedNode) {
       return {
@@ -52,13 +54,17 @@ export default function DetailsEditPanel() {
     }
     const collisionBoxRectangle = clickedNode.collisionBox.getRectangle();
     const heightViewSize = collisionBoxRectangle.size.y * Camera.currentScale;
-
+    let viewTop = Renderer.transformWorld2View(collisionBoxRectangle.location).y + heightViewSize;
+    viewTop = Math.min(viewTop, window.innerHeight - 192);
+    let viewLeft = Renderer.transformWorld2View(collisionBoxRectangle.location).x;
+    viewLeft = Math.min(viewLeft, window.innerWidth - 288);
     return {
-      left: `${Renderer.transformWorld2View(collisionBoxRectangle.location).x}px`,
-      top: `${Renderer.transformWorld2View(collisionBoxRectangle.location).y + heightViewSize}px`,
+      left: `${viewLeft}px`,
+      top: `${viewTop}px`,
     };
   };
-
+  // h-48 = 192px
+  // w-72 = 288px
   return (
     <>
       {isNodeTextEditing && (

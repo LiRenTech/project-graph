@@ -1,4 +1,5 @@
 import {
+  AppWindow,
   AppWindowMac,
   ArrowDownNarrowWide,
   Blend,
@@ -14,6 +15,7 @@ import {
   Move3d,
   Palette,
   Ratio,
+  ReceiptText,
   Rows4,
   Scaling,
   Settings,
@@ -45,6 +47,9 @@ export default function Visual() {
       <FieldGroup title="Node & Edge 节点与连线样式" icon={<Workflow />}>
         <SettingField icon={<Spline />} settingKey="lineStyle" type="select" />
         <SettingField icon={<Tag />} settingKey="enableTagTextNodesBigDisplay" type="switch" />
+      </FieldGroup>
+      <FieldGroup title="节点详情" icon={<ReceiptText />}>
+        <SettingField icon={<AppWindow />} settingKey="nodeDetailsPanel" type="select" />
         <SettingField icon={<ListCollapse />} settingKey="alwaysShowDetails" type="switch" />
         <SettingField
           icon={<CaseSensitive />}

@@ -33,6 +33,7 @@ export namespace Settings {
     entityDetailsFontSize: number;
     entityDetailsLinesLimit: number;
     entityDetailsWidthLimit: number;
+    nodeDetailsPanel: "small" | "vditor";
     limitCameraInCycleSpace: boolean;
     cameraCycleSpaceSizeX: number;
     cameraCycleSpaceSizeY: number;
@@ -105,6 +106,7 @@ export namespace Settings {
     entityDetailsFontSize: 18,
     entityDetailsLinesLimit: 4,
     entityDetailsWidthLimit: 200,
+    nodeDetailsPanel: "vditor",
     limitCameraInCycleSpace: false,
     cameraCycleSpaceSizeX: 1000,
     cameraCycleSpaceSizeY: 1000,

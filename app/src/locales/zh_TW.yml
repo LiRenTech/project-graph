@@ -132,6 +132,11 @@ settings:
     title: 始終顯示節點詳細資訊
     description: |
       開啟後，無需滑鼠移動到節點上時，才顯示節點的詳細資訊。
+  nodeDetailsPanel:
+    title: 节点详细信息面板
+    options:
+      small: 小型面板
+      vditor: vditor markdown编辑器
   useNativeTitleBar:
     title: 使用原生標題列（需要重新啟動應用程式）
     description: |

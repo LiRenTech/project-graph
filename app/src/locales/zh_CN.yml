@@ -150,6 +150,11 @@ settings:
     title: 始终显示节点详细信息
     description: |
       开启后，无需鼠标移动到节点上时，才显示节点的详细信息。
+  nodeDetailsPanel:
+    title: 节点详细信息面板
+    options:
+      small: 小型面板
+      vditor: vditor markdown编辑器
   useNativeTitleBar:
     title: 使用原生标题栏（需要重启应用）
     description: |

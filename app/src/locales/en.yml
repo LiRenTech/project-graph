@@ -160,6 +160,11 @@ settings:
     title: Always Show Node Details
     description: |
       When enabled, node details will be shown without hovering the mouse over the node.
+  nodeDetailsPanel:
+    title: node details panel
+    options:
+      small: small panel
+      vditor: vditor markdown panel
   useNativeTitleBar:
     title: Use Native Title Bar (Requires application restart)
     description: |
