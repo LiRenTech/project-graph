@@ -2,6 +2,7 @@ import { getTextSize } from "../../../utils/font";
 import { appScale } from "../../../utils/platform";
 import { Color, mixColors } from "../../dataStruct/Color";
 import { Vector } from "../../dataStruct/Vector";
+import { CubicBezierCurve } from "../../dataStruct/shape/Curve";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Settings } from "../../service/Settings";
 import { MouseLocation } from "../../service/controlService/MouseLocation";
@@ -348,19 +349,55 @@ export namespace Renderer {
     for (const selectedEntity of selectedEntities) {
       const startLocation = selectedEntity.collisionBox.getRectangle().center;
       const endLocation = Controller.mouseLocation;
+      const distance = startLocation.distance(endLocation);
+      const height = distance / 2;
+      // 影子
       CurveRenderer.renderGradientLine(
         transformWorld2View(startLocation),
         transformWorld2View(endLocation),
         Color.Transparent,
-        Color.Green,
-        4 * Camera.currentScale,
+        new Color(0, 0, 0, 0.2),
+        8 * Camera.currentScale,
+      );
+      CurveRenderer.renderGradientBezierCurve(
+        new CubicBezierCurve(
+          transformWorld2View(startLocation),
+          transformWorld2View(startLocation.add(new Vector(0, -height))),
+          transformWorld2View(endLocation.add(new Vector(0, -height))),
+          transformWorld2View(endLocation),
+        ),
+        StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toTransparent(),
+        StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
+        8 * Camera.currentScale,
+      );
+      // 画箭头
+      const arrowLen = 10 + distance * 0.01;
+      CurveRenderer.renderBezierCurve(
+        new CubicBezierCurve(
+          transformWorld2View(endLocation),
+          transformWorld2View(endLocation),
+          transformWorld2View(endLocation),
+          transformWorld2View(endLocation.add(new Vector(-arrowLen, -arrowLen * 2))),
+        ),
+        StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
+        8 * Camera.currentScale,
+      );
+      CurveRenderer.renderBezierCurve(
+        new CubicBezierCurve(
+          transformWorld2View(endLocation),
+          transformWorld2View(endLocation),
+          transformWorld2View(endLocation),
+          transformWorld2View(endLocation.add(new Vector(arrowLen, -arrowLen * 2))),
+        ),
+        StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
+        8 * Camera.currentScale,
       );
     }
     TextRenderer.renderTextFromCenter(
       "Jump To",
-      transformWorld2View(Controller.mouseLocation).subtract(new Vector(0, 30)),
+      transformWorld2View(Controller.mouseLocation).subtract(new Vector(0, -30)),
       16,
-      Color.Green,
+      StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
     );
   }
 

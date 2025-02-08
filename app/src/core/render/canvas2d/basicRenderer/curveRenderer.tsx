@@ -158,4 +158,32 @@ export namespace CurveRenderer {
     Canvas.ctx.strokeStyle = gradient;
     Canvas.ctx.stroke();
   }
+  /**
+   * 绘制一条颜色渐变的贝塞尔曲线
+   * @param curve
+   */
+  export function renderGradientBezierCurve(
+    curve: CubicBezierCurve,
+    startColor: Color,
+    endColor: Color,
+    width: number,
+  ): void {
+    const gradient = Canvas.ctx.createLinearGradient(curve.start.x, curve.start.y, curve.end.x, curve.end.y);
+    // 添加颜色
+    gradient.addColorStop(0, startColor.toString()); // 起始颜色
+    gradient.addColorStop(1, endColor.toString()); // 结束颜色
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(curve.start.x, curve.start.y);
+    Canvas.ctx.bezierCurveTo(
+      curve.ctrlPt1.x,
+      curve.ctrlPt1.y,
+      curve.ctrlPt2.x,
+      curve.ctrlPt2.y,
+      curve.end.x,
+      curve.end.y,
+    );
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.strokeStyle = gradient;
+    Canvas.ctx.stroke();
+  }
 }
