@@ -26,25 +26,29 @@ export class SecretEngine {
   detect(): boolean {
     const keys = this.pressedKeys.arrayList.join(" ");
     console.log(keys);
+    // 测试彩蛋是否开启
     if (keys.includes("arrowup arrowup arrowdown arrowdown arrowleft arrowright arrowleft arrowright b a")) {
-      // 触发彩蛋
       Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
       return true;
     }
+    // 开启涂鸦绘制
     if (keys.includes("l o v e")) {
       Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
       Stage.drawingMachine.open();
       return true;
     }
+    // 关闭涂鸦绘制，回到矩形框选模式
     if (keys.includes("r e c t")) {
       Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
       Stage.drawingMachine.shutDown();
       return true;
     }
+    // 待定彩蛋
     if (keys.includes("1 1 4 5 1 4")) {
       Camera.clearMoveCommander();
       return true;
     }
+    // 鬼畜梗，创建一个传送门用于测试
     if (keys.includes("b o y n e x t d o o r")) {
       Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
       StageManager.addOnePortalNode();

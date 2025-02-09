@@ -152,6 +152,7 @@ export namespace Renderer {
 
     // 渲染舞台要素
     if (Camera.limitCameraInCycleSpace) {
+      // 循环空间渲染
       const originCameraLocation = Camera.location.clone();
       const LimitX = Camera.cameraCycleSpaceSizeX;
       const LimitY = Camera.cameraCycleSpaceSizeY;
@@ -165,6 +166,7 @@ export namespace Renderer {
       Camera.location = originCameraLocation;
       renderCycleSpaceBorder();
     } else {
+      // 正常模式渲染
       renderStageElements(viewRectangle);
     }
 
@@ -194,11 +196,13 @@ export namespace Renderer {
   }
 
   function renderStageElements(viewRectangle: Rectangle) {
+    // 实体相关的
     EntityRenderer.renderAllSectionsBackground(viewRectangle);
     renderEdges(viewRectangle);
     renderEntities(viewRectangle);
     EntityRenderer.renderAllSectionsBigTitle(viewRectangle);
     renderTags();
+    // 交互相关的
     renderWarningEntities();
     renderHoverCollisionBox();
     renderSelectingRectangle();

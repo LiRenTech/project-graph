@@ -149,4 +149,17 @@ export namespace PortalNodeRenderer {
       }
     }
   }
+
+  // /**
+  //  * 渲染子舞台
+  //  * @param portalNode
+  //  */
+  // function renderChildStage(portalNode: PortalNode) {
+  //   // 拿到绝对路径
+  //   // 根据绝对路径拿到缓存 pathString: 序列化对象
+  //   //  // 直接把序列化对象进行渲染？
+  //   //  // 好像太麻烦了，尤其是连线的渲染还要各种计算。
+  //   //  // 不如直接在这个函数中临时改摄像机位置然后渲染完毕再恢复。
+  //   // 偷梁换柱法，先记录摄像机位置，然后改StageManager里面的数据。
+  // }
 }
