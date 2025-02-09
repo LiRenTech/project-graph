@@ -209,6 +209,10 @@ export namespace Controller {
       // 禁用p打印功能，防止浏览器默认行为
       event.preventDefault();
     }
+    if (event.key === "j") {
+      // 禁用弹出下载界面功能
+      event.preventDefault();
+    }
     console.log(event.key);
     const key = event.key.toLowerCase();
     pressingKeySet.add(key);
