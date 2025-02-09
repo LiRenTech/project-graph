@@ -83,6 +83,7 @@ export namespace Camera {
   export let cameraCycleSpaceSizeY = 1000;
   export let mouseWheelMode: "zoom" | "move" = "zoom"; // zoom or move
   export let mouseWheelWithShiftMode: "zoom" | "move" = "zoom"; // zoom or move
+  export let mouseWheelWithCtrlMode: "zoom" | "move" = "zoom"; // zoom or move
   let cameraKeyboardScaleRate = 0.2;
 
   // IDEA: 突然有一个好点子
@@ -260,6 +261,9 @@ export namespace Camera {
     });
     Settings.watch("mouseWheelWithShiftMode", (value) => {
       mouseWheelWithShiftMode = value;
+    });
+    Settings.watch("mouseWheelWithCtrlMode", (value) => {
+      mouseWheelWithCtrlMode = value;
     });
   }
 

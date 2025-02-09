@@ -379,6 +379,11 @@ settings:
     options:
       zoom: zoom
       move: move
+  mouseWheelWithCtrlMode:
+    title: mouse Wheel Mode When Press Ctrl
+    options:
+      zoom: zoom
+      move: move
   rectangleSelectWhenLeft:
     title: Strategy for Left Rectangle Selection
     description: |

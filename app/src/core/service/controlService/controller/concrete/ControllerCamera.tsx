@@ -194,9 +194,6 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
   if (Controller.isCameraLocked) {
     return;
   }
-  if (Controller.pressingKeySet.has("control")) {
-    return;
-  }
   // 禁用触控板在这里的滚动
   // 获取触发滚轮的鼠标位置
   const mouseLocation = new Vector(event.clientX, event.clientY);
@@ -204,18 +201,14 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
   const worldLocation = Renderer.transformView2World(mouseLocation);
   Camera.targetLocationByScale = worldLocation;
 
-  // if (!isUseMouse(event)) {
-  //   const vector = new Vector(event.deltaX, event.deltaY);
-  //   // debug:
-  //   console.log(vector.toString());
-  //   // return false;
-  // }
   if (Controller.pressingKeySet.has("shift")) {
     if (Camera.mouseWheelWithShiftMode === "zoom") {
       zoomCameraByMouseWheel(event);
     } else {
       moveCameraByMouseWheel(event);
     }
+  } else if (Controller.pressingKeySet.has("control")) {
+    zoomCameraByMouseWheel(event);
   } else {
     if (Camera.mouseWheelMode === "zoom") {
       zoomCameraByMouseWheel(event);

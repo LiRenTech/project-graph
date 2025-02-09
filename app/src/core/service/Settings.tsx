@@ -73,6 +73,7 @@ export namespace Settings {
     textNodeSelectAllWhenStartEditByMouseClick: boolean;
     mouseWheelMode: "zoom" | "move";
     mouseWheelWithShiftMode: "zoom" | "move";
+    mouseWheelWithCtrlMode: "zoom" | "move";
     // 音效相关
     soundEnabled: boolean;
     cuttingLineStartSoundFile: string;
@@ -146,6 +147,7 @@ export namespace Settings {
     textNodeSelectAllWhenStartEditByMouseClick: true,
     mouseWheelMode: "zoom",
     mouseWheelWithShiftMode: "move",
+    mouseWheelWithCtrlMode: "zoom",
     // 音效相关
     soundEnabled: true,
     cuttingLineStartSoundFile: "",

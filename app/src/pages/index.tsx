@@ -21,7 +21,8 @@ export default function Home() {
   const [cursorName, setCursorName] = React.useState("default");
   const [bgAlpha, setBgAlpha] = React.useState(1);
   const [isDrawingMode, setIsDrawingMode] = React.useState(false);
-  const [nodeDetailsPanel, setNodeDetailsPanel] = React.useState("vditor");
+  // const [nodeDetailsPanel, setNodeDetailsPanel] = React.useState("vditor");
+  const [nodeDetailsPanel] = Settings.use("nodeDetailsPanel");
 
   useEffect(() => {
     const handleResize = () => {
@@ -84,9 +85,9 @@ export default function Home() {
 
     let frameId = requestAnimationFrame(loop);
 
-    Settings.watch("nodeDetailsPanel", (value) => {
-      setNodeDetailsPanel(value);
-    });
+    // Settings.watch("nodeDetailsPanel", (value) => {
+    //   setNodeDetailsPanel(value);
+    // });
 
     // 清理事件监听器
     return () => {

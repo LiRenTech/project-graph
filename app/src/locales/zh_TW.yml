@@ -349,6 +349,11 @@ settings:
     options:
       zoom: 缩放
       move: 移动
+  mouseWheelWithCtrlMode:
+    title: 按住Ctrl时，鼠标滚轮模式
+    options:
+      zoom: 缩放
+      move: 移动
   rectangleSelectWhenLeft:
     title: 向左框选的策略
     description: |
