@@ -240,6 +240,15 @@ class ControllerRectangleSelectClass extends ControllerClass {
       }
     }
   };
+
+  public keydown: (event: KeyboardEvent) => void = (event) => {
+    if (event.key === "Escape") {
+      // 取消全部选择
+      for (const stageObject of StageManager.getStageObject()) {
+        stageObject.isSelected = false;
+      }
+    }
+  };
 }
 
 /**
