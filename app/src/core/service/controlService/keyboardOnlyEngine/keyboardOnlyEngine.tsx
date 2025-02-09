@@ -69,6 +69,11 @@ export namespace KeyboardOnlyEngine {
           // 用户可能记错了快捷键
           addFailEffect();
         }
+      } else if (event.key === "Escape") {
+        // 取消全部选择
+        for (const stageObject of StageManager.getStageObject()) {
+          stageObject.isSelected = false;
+        }
       } else if (event.key === "F2") {
         const selectedNode = StageManager.getTextNodes().find((node) => node.isSelected);
         if (!selectedNode) return;
