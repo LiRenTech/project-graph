@@ -42,6 +42,7 @@ import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 import { Tourials } from "./core/service/Tourials";
+import { Direction } from "./types/directions";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -280,7 +281,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    addTextNodeFromCurrentSelectedNode("up", true);
+    addTextNodeFromCurrentSelectedNode(Direction.Up, true);
   });
 
   (
@@ -290,7 +291,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    addTextNodeFromCurrentSelectedNode("right", true);
+    addTextNodeFromCurrentSelectedNode(Direction.Right, true);
   });
 
   (
@@ -300,7 +301,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    addTextNodeFromCurrentSelectedNode("left", true);
+    addTextNodeFromCurrentSelectedNode(Direction.Left, true);
   });
 
   (
@@ -310,7 +311,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    addTextNodeFromCurrentSelectedNode("down", true);
+    addTextNodeFromCurrentSelectedNode(Direction.Down, true);
   });
 
   (

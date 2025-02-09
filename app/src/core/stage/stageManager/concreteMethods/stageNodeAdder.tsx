@@ -11,6 +11,9 @@ import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";
 import { StageManagerUtils } from "./StageManagerUtils";
+import { Direction } from "../../../../types/directions";
+import { GraphMethods } from "../basicMethods/GraphMethods";
+import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 
 /**
  * 包含增加节点的方法
@@ -64,22 +67,53 @@ export namespace StageNodeAdder {
    * 在当前已经选中的某个节点的情况下，增加节点
    * 增加在某个选中的节点的上方，下方，左方，右方等位置
    * @param selectCurrent
-   * @returns
+   * @returns 返回的是创建节点的uuid，如果当前没有选中节点，则返回空字符串
    */
   export async function addTextNodeFromCurrentSelectedNode(
-    distanceLocation: Vector,
+    direction: Direction,
     addToSections: Section[],
     selectCurrent = false,
   ): Promise<string> {
     // 先检查当前是否有选中的唯一实体
-    const selectedEntities = StageManager.getSelectedEntities();
+    const selectedEntities = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
     if (selectedEntities.length !== 1) {
       // 未选中或选中多个
       return "";
     }
     const selectedEntity = selectedEntities[0];
     const entityRectangle = selectedEntity.collisionBox.getRectangle();
-    return await addTextNodeByClick(entityRectangle.center.add(distanceLocation), addToSections, selectCurrent);
+    let createLocation = new Vector(0, 0);
+    if (direction === Direction.Up) {
+      createLocation = entityRectangle.topCenter.add(new Vector(0, -100));
+    } else if (direction === Direction.Down) {
+      createLocation = entityRectangle.bottomCenter.add(new Vector(0, 100));
+    } else if (direction === Direction.Left) {
+      createLocation = entityRectangle.leftCenter.add(new Vector(-100, 0));
+    } else if (direction === Direction.Right) {
+      createLocation = entityRectangle.rightCenter.add(new Vector(100, 0));
+    }
+    const uuid = await addTextNodeByClick(createLocation, addToSections, selectCurrent);
+    const newNode = StageManager.getTextNodeByUUID(uuid);
+    if (!newNode) {
+      throw new Error("Failed to add node");
+    }
+    for (const child of GraphMethods.nodeChildrenArray(selectedEntity)) {
+      const connectResult = StageManager.connectEntity(newNode, child);
+      if (!connectResult) {
+        console.log("Failed to connect newNode -> child");
+      } else {
+        console.log("Connect newNode -> child");
+      }
+    }
+    for (const father of GraphMethods.nodeParentArray(newNode)) {
+      const connectResult = StageManager.connectEntity(father, newNode);
+      if (!connectResult) {
+        console.log("Failed to connect father -> newNode");
+      } else {
+        console.log("Connect father -> newNode");
+      }
+    }
+    return uuid;
   }
 
   async function getAutoName(): Promise<string> {

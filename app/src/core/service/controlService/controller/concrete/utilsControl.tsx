@@ -1,3 +1,4 @@
+import { Direction } from "../../../../../types/directions";
 import { isDesktop } from "../../../../../utils/platform";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
@@ -158,7 +159,7 @@ export function addTextNodeByLocation(
   });
 }
 
-export function addTextNodeFromCurrentSelectedNode(direction: "up" | "down" | "left" | "right", selectCurrent = false) {
+export function addTextNodeFromCurrentSelectedNode(direction: Direction, selectCurrent = false) {
   StageManager.addTextNodeFromCurrentSelectedNode(direction, selectCurrent).then((uuid) => {
     textNodeInEditModeByUUID(uuid);
   });

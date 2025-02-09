@@ -40,6 +40,7 @@ import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManag
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
+import { Direction } from "../../../types/directions";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -511,20 +512,10 @@ export namespace StageManager {
   }
 
   export async function addTextNodeFromCurrentSelectedNode(
-    direction: "up" | "down" | "left" | "right",
+    direction: Direction,
     selectCurrent = false,
   ): Promise<string> {
-    let directionVector = new Vector(0, 0);
-    if (direction === "up") {
-      directionVector = new Vector(0, -100);
-    } else if (direction === "down") {
-      directionVector = new Vector(0, 100);
-    } else if (direction === "left") {
-      directionVector = new Vector(-100, 0);
-    } else if (direction === "right") {
-      directionVector = new Vector(100, 0);
-    }
-    const res = await StageNodeAdder.addTextNodeFromCurrentSelectedNode(directionVector, [], selectCurrent);
+    const res = await StageNodeAdder.addTextNodeFromCurrentSelectedNode(direction, [], selectCurrent);
     StageHistoryManager.recordStep();
     return res;
   }
