@@ -100,17 +100,13 @@ export namespace StageNodeAdder {
     for (const child of GraphMethods.nodeChildrenArray(selectedEntity)) {
       const connectResult = StageManager.connectEntity(newNode, child);
       if (!connectResult) {
-        console.log("Failed to connect newNode -> child");
-      } else {
-        console.log("Connect newNode -> child");
+        throw new Error("Failed to connect newNode -> child");
       }
     }
     for (const father of GraphMethods.nodeParentArray(selectedEntity)) {
       const connectResult = StageManager.connectEntity(father, newNode);
       if (!connectResult) {
-        console.log("Failed to connect father -> newNode");
-      } else {
-        console.log("Connect father -> newNode");
+        throw new Error("Failed to connect father -> newNode");
       }
     }
     return uuid;
