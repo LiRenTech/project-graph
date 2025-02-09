@@ -3,7 +3,8 @@ dist
 .env
 .idea
 
-.vitepress
+docs/src/.vitepress/dist
+docs/src/.vitepress/cache
 # pg早期的备份文件
 *.backup
 # 自动保存导致产生的文件
