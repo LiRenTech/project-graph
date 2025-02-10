@@ -48,15 +48,22 @@ import { PathString } from "../../../utils/pathString";
 // zty012:这个是存储数据的，和舞台无关，应该单独抽离出来
 // 并且会在舞台之外的地方操作，所以应该是namespace单例
 
+type stageContent = {
+  entities: StringDict<Entity>;
+  associations: StringDict<Association>;
+  tags: StringDict<string>;
+};
+
 /**
  * 舞台管理器，也可以看成包含了很多操作方法的《舞台实体容器》
  * 管理节点、边的关系等，内部包含了舞台上的所有实体
  */
 export namespace StageManager {
-  const entities: StringDict<Entity> = StringDict.create();
-  const associations: StringDict<Association> = StringDict.create();
-  const tags: StringDict<string> = StringDict.create();
-
+  const stageContent: stageContent = {
+    entities: StringDict.create(),
+    associations: StringDict.create(),
+    tags: StringDict.create(),
+  };
   export let isEnableEntityCollision: boolean = false;
   export let isAllowAddCycleEdge: boolean = false;
 
@@ -70,37 +77,37 @@ export namespace StageManager {
   }
 
   export function isEmpty(): boolean {
-    return entities.length === 0;
+    return stageContent.entities.length === 0;
   }
   export function getTextNodes(): TextNode[] {
-    return entities.valuesToArray().filter((node) => node instanceof TextNode);
+    return stageContent.entities.valuesToArray().filter((node) => node instanceof TextNode);
   }
   export function getConnectableEntity(): ConnectableEntity[] {
-    return entities.valuesToArray().filter((node) => node instanceof ConnectableEntity);
+    return stageContent.entities.valuesToArray().filter((node) => node instanceof ConnectableEntity);
   }
   export function isEntityExists(uuid: string): boolean {
-    return entities.hasId(uuid);
+    return stageContent.entities.hasId(uuid);
   }
   export function getSections(): Section[] {
-    return entities.valuesToArray().filter((node) => node instanceof Section);
+    return stageContent.entities.valuesToArray().filter((node) => node instanceof Section);
   }
   export function getImageNodes(): ImageNode[] {
-    return entities.valuesToArray().filter((node) => node instanceof ImageNode);
+    return stageContent.entities.valuesToArray().filter((node) => node instanceof ImageNode);
   }
   export function getConnectPoints(): ConnectPoint[] {
-    return entities.valuesToArray().filter((node) => node instanceof ConnectPoint);
+    return stageContent.entities.valuesToArray().filter((node) => node instanceof ConnectPoint);
   }
   export function getUrlNodes(): UrlNode[] {
-    return entities.valuesToArray().filter((node) => node instanceof UrlNode);
+    return stageContent.entities.valuesToArray().filter((node) => node instanceof UrlNode);
   }
   export function getPortalNodes(): PortalNode[] {
-    return entities.valuesToArray().filter((node) => node instanceof PortalNode);
+    return stageContent.entities.valuesToArray().filter((node) => node instanceof PortalNode);
   }
 
   export function getStageObject(): StageObject[] {
     const result: StageObject[] = [];
-    result.push(...entities.valuesToArray());
-    result.push(...associations.valuesToArray());
+    result.push(...stageContent.entities.valuesToArray());
+    result.push(...stageContent.associations.valuesToArray());
     return result;
   }
 
@@ -109,14 +116,14 @@ export namespace StageManager {
    * @returns
    */
   export function getEntities(): Entity[] {
-    return entities.valuesToArray();
+    return stageContent.entities.valuesToArray();
   }
   export function getStageObjectByUUID(uuid: string): StageObject | null {
-    const entity = entities.getById(uuid);
+    const entity = stageContent.entities.getById(uuid);
     if (entity) {
       return entity;
     }
-    const association = associations.getById(uuid);
+    const association = stageContent.associations.getById(uuid);
     if (association) {
       return association;
     }
@@ -125,7 +132,7 @@ export namespace StageManager {
   export function getEntitiesByUUIDs(uuids: string[]): Entity[] {
     const result = [];
     for (const uuid of uuids) {
-      const entity = entities.getById(uuid);
+      const entity = stageContent.entities.getById(uuid);
       if (entity) {
         result.push(entity);
       }
@@ -133,72 +140,72 @@ export namespace StageManager {
     return result;
   }
   export function isNoEntity(): boolean {
-    return entities.length === 0;
+    return stageContent.entities.length === 0;
   }
   export function deleteOneTextNode(node: TextNode) {
-    entities.deleteValue(node);
+    stageContent.entities.deleteValue(node);
   }
   export function deleteOneImage(node: ImageNode) {
-    entities.deleteValue(node);
+    stageContent.entities.deleteValue(node);
   }
   export function deleteOneUrlNode(node: UrlNode) {
-    entities.deleteValue(node);
+    stageContent.entities.deleteValue(node);
   }
   export function deleteOneSection(section: Section) {
-    entities.deleteValue(section);
+    stageContent.entities.deleteValue(section);
   }
   export function deleteOneConnectPoint(point: ConnectPoint) {
-    entities.deleteValue(point);
+    stageContent.entities.deleteValue(point);
   }
   export function deleteOnePortalNode(node: PortalNode) {
-    entities.deleteValue(node);
+    stageContent.entities.deleteValue(node);
   }
   export function deleteOnePenStroke(penStroke: PenStroke) {
-    entities.deleteValue(penStroke);
+    stageContent.entities.deleteValue(penStroke);
   }
   export function deleteOneEdge(edge: LineEdge) {
-    associations.deleteValue(edge);
+    stageContent.associations.deleteValue(edge);
   }
 
   export function getAssociations(): Association[] {
-    return associations.valuesToArray();
+    return stageContent.associations.valuesToArray();
   }
 
   export function getLineEdges(): LineEdge[] {
-    return associations.valuesToArray().filter((edge) => edge instanceof LineEdge);
+    return stageContent.associations.valuesToArray().filter((edge) => edge instanceof LineEdge);
   }
   export function getCrEdges(): CublicCatmullRomSplineEdge[] {
-    return associations.valuesToArray().filter((edge) => edge instanceof CublicCatmullRomSplineEdge);
+    return stageContent.associations.valuesToArray().filter((edge) => edge instanceof CublicCatmullRomSplineEdge);
   }
 
   /** 关于标签的相关操作 */
   export namespace TagOptions {
     export function reset(uuids: string[]) {
-      tags.clear();
+      stageContent.tags.clear();
       for (const uuid of uuids) {
-        tags.addValue(uuid, uuid);
+        stageContent.tags.addValue(uuid, uuid);
       }
     }
     export function addTag(uuid: string) {
-      tags.addValue(uuid, uuid);
+      stageContent.tags.addValue(uuid, uuid);
     }
     export function removeTag(uuid: string) {
-      tags.deleteValue(uuid);
+      stageContent.tags.deleteValue(uuid);
     }
     export function hasTag(uuid: string): boolean {
-      return tags.hasId(uuid);
+      return stageContent.tags.hasId(uuid);
     }
     export function getTagUUIDs(): string[] {
-      return tags.valuesToArray();
+      return stageContent.tags.valuesToArray();
     }
     /**
      * 清理未引用的标签
      */
     export function updateTags() {
-      const uuids = tags.valuesToArray();
+      const uuids = stageContent.tags.valuesToArray();
       for (const uuid of uuids) {
-        if (!entities.hasId(uuid) && !associations.hasId(uuid)) {
-          tags.deleteValue(uuid);
+        if (!stageContent.entities.hasId(uuid) && !stageContent.associations.hasId(uuid)) {
+          stageContent.tags.deleteValue(uuid);
         }
       }
     }
@@ -209,36 +216,36 @@ export namespace StageManager {
    * 以防开发过程中造成多开
    */
   export function destroy() {
-    entities.clear();
-    associations.clear();
+    stageContent.entities.clear();
+    stageContent.associations.clear();
   }
 
   export function addTextNode(node: TextNode) {
-    entities.addValue(node, node.uuid);
+    stageContent.entities.addValue(node, node.uuid);
   }
   export function addUrlNode(node: UrlNode) {
-    entities.addValue(node, node.uuid);
+    stageContent.entities.addValue(node, node.uuid);
   }
   export function addImageNode(node: ImageNode) {
-    entities.addValue(node, node.uuid);
+    stageContent.entities.addValue(node, node.uuid);
   }
   export function addSection(section: Section) {
-    entities.addValue(section, section.uuid);
+    stageContent.entities.addValue(section, section.uuid);
   }
   export function addConnectPoint(point: ConnectPoint) {
-    entities.addValue(point, point.uuid);
+    stageContent.entities.addValue(point, point.uuid);
   }
   export function addLineEdge(edge: LineEdge) {
-    associations.addValue(edge, edge.uuid);
+    stageContent.associations.addValue(edge, edge.uuid);
   }
   export function addCrEdge(edge: CublicCatmullRomSplineEdge) {
-    associations.addValue(edge, edge.uuid);
+    stageContent.associations.addValue(edge, edge.uuid);
   }
   export function addPenStroke(penStroke: PenStroke) {
-    entities.addValue(penStroke, penStroke.uuid);
+    stageContent.entities.addValue(penStroke, penStroke.uuid);
   }
   export function addPortalNode(portalNode: PortalNode) {
-    entities.addValue(portalNode, portalNode.uuid);
+    stageContent.entities.addValue(portalNode, portalNode.uuid);
   }
 
   // 用于UI层监测
@@ -273,8 +280,8 @@ export namespace StageManager {
         const newChildList = [];
 
         for (const childUUID of entity.childrenUUIDs) {
-          if (entities.hasId(childUUID)) {
-            const childObject = entities.getById(childUUID);
+          if (stageContent.entities.hasId(childUUID)) {
+            const childObject = stageContent.entities.getById(childUUID);
             if (childObject) {
               newChildList.push(childObject);
             }
@@ -319,10 +326,10 @@ export namespace StageManager {
     return null;
   }
   export function isSectionByUUID(uuid: string): boolean {
-    return entities.getById(uuid) instanceof Section;
+    return stageContent.entities.getById(uuid) instanceof Section;
   }
   export function getSectionByUUID(uuid: string): Section | null {
-    const entity = entities.getById(uuid);
+    const entity = stageContent.entities.getById(uuid);
     if (entity instanceof Section) {
       return entity;
     }
@@ -333,11 +340,11 @@ export namespace StageManager {
    * 计算所有节点的中心点
    */
   export function getCenter(): Vector {
-    if (entities.length === 0) {
+    if (stageContent.entities.length === 0) {
       return Vector.getZero();
     }
     const allNodesRectangle = Rectangle.getBoundingRectangle(
-      entities.valuesToArray().map((node) => node.collisionBox.getRectangle()),
+      stageContent.entities.valuesToArray().map((node) => node.collisionBox.getRectangle()),
     );
     return allNodesRectangle.center;
   }
@@ -346,11 +353,11 @@ export namespace StageManager {
    * 计算所有节点的大小
    */
   export function getSize(): Vector {
-    if (entities.length === 0) {
+    if (stageContent.entities.length === 0) {
       return new Vector(Renderer.w, Renderer.h);
     }
     const size = Rectangle.getBoundingRectangle(
-      Array.from(entities.valuesToArray()).map((node) => node.collisionBox.getRectangle()),
+      Array.from(stageContent.entities.valuesToArray()).map((node) => node.collisionBox.getRectangle()),
     ).size;
 
     return size;
@@ -451,10 +458,10 @@ export namespace StageManager {
    * @returns
    */
   export function getSelectedEntities(): Entity[] {
-    return entities.valuesToArray().filter((entity) => entity.isSelected);
+    return stageContent.entities.valuesToArray().filter((entity) => entity.isSelected);
   }
   export function getSelectedAssociations(): Association[] {
-    return associations.valuesToArray().filter((association) => association.isSelected);
+    return stageContent.associations.valuesToArray().filter((association) => association.isSelected);
   }
   export function getSelectedStageObjects(): StageObject[] {
     const result: StageObject[] = [];
@@ -648,7 +655,7 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
     // 更新选中节点计数
     selectedNodeCount = 0;
-    for (const node of entities.valuesToArray()) {
+    for (const node of stageContent.entities.valuesToArray()) {
       if (node.isSelected) {
         selectedNodeCount++;
       }
@@ -673,7 +680,7 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
     // 更新选中边计数
     selectedEdgeCount = 0;
-    for (const edge of associations.valuesToArray()) {
+    for (const edge of stageContent.associations.valuesToArray()) {
       if (edge.isSelected) {
         selectedEdgeCount++;
       }
@@ -790,7 +797,7 @@ export namespace StageManager {
     }
     const section = Section.fromEntities(addEntities);
     section.text = StageManagerUtils.replaceAutoNameTemplate(await Settings.get("autoNamerSectionTemplate"), section);
-    entities.addValue(section, section.uuid);
+    stageContent.entities.addValue(section, section.uuid);
     for (const fatherSection of firstParents) {
       goInSection([section], fatherSection);
     }
@@ -909,15 +916,15 @@ export namespace StageManager {
   }
 
   export function selectAll() {
-    for (const entity of entities.valuesToArray()) {
+    for (const entity of stageContent.entities.valuesToArray()) {
       entity.isSelected = true;
     }
   }
   export function clearSelectAll() {
-    for (const entity of entities.valuesToArray()) {
+    for (const entity of stageContent.entities.valuesToArray()) {
       entity.isSelected = false;
     }
-    for (const edge of associations.valuesToArray()) {
+    for (const edge of stageContent.associations.valuesToArray()) {
       edge.isSelected = false;
     }
   }
@@ -949,7 +956,7 @@ export namespace StageManager {
     if (relativePath === "") {
       return false;
     }
-    entities.addValue(
+    stageContent.entities.addValue(
       new PortalNode({
         uuid: uuid,
         title: PathString.dirPath(otherPath),
@@ -967,7 +974,7 @@ export namespace StageManager {
   // 测试
   export function addOnePortalNode() {
     const uuid = v4();
-    entities.addValue(
+    stageContent.entities.addValue(
       new PortalNode({
         uuid: uuid,
         title: "PortalNode",
