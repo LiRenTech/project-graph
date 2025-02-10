@@ -343,7 +343,12 @@ export namespace Renderer {
 
   /** 层级移动时，渲染移动指向线 */
   function rendererLayerMovingLine() {
+    // 有alt
     if (!Controller.pressingKeySet.has("alt")) {
+      return;
+    }
+    // 有alt且仅按下了alt键
+    if (Controller.pressingKeySet.size !== 1) {
       return;
     }
     if (StageManager.getSelectedEntities().length === 0) {
