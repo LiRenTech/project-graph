@@ -8,10 +8,12 @@
     "dev:android": "pnpm --filter ./app tauri android dev",
     "dev:web": "pnpm --filter ./app dev",
     "dev:docs": "pnpm --filter ./docs docs:dev",
+    "dev:coserver": "pnpm --filter ./coserver dev",
     "build:app": "pnpm --filter ./app tauri build",
     "build:android": "pnpm --filter ./app tauri android build",
     "build:web": "pnpm --filter ./app build",
     "build:docs": "pnpm --filter ./docs docs:build",
+    "build:coserver": "pnpm --filter ./coserver build",
     "prepare": "husky",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
@@ -37,6 +39,10 @@
         "@algolia/client-search",
         "search-insights"
       ]
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@swc/core",
+      "esbuild"
+    ]
   }
 }

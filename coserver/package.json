@@ -1,0 +1,25 @@
+{
+  "name": "@mono/coserver",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Collaborative Server for Project Graph",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch ./src/index.ts",
+    "build": "tsc && esbuild src/index.ts --bundle --platform=node --outfile=dist/index.js --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0",
+    "socket.io": "^4.8.1",
+    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.51.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
