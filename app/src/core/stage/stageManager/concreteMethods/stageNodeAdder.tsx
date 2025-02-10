@@ -97,6 +97,11 @@ export namespace StageNodeAdder {
     if (!newNode) {
       throw new Error("Failed to add node");
     }
+    // 如果是通过上下创建的节点，则需要左对齐
+    if (direction === Direction.Up || direction === Direction.Down) {
+      const distance = newNode.rectangle.left - entityRectangle.left;
+      newNode.moveTo(newNode.rectangle.location.add(new Vector(-distance, 0)));
+    }
     for (const child of GraphMethods.nodeChildrenArray(selectedEntity)) {
       const connectResult = StageManager.connectEntity(newNode, child);
       if (!connectResult) {
