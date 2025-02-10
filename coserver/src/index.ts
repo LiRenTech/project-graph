@@ -11,6 +11,13 @@ import { logger } from "./logger";
     logger.info(`New connection: ${socket.id}`);
     socket.emit("room", socket.id);
 
+    socket.onAny((event, data) => {
+      if (event === "join") {
+        return;
+      }
+      io.to([...socket.rooms]).emit(event, data);
+    });
+
     socket.on("join", (room) => {
       socket.join(room);
       socket.leave(socket.id);
