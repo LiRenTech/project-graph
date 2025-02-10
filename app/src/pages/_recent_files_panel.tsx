@@ -13,6 +13,7 @@ import { StartFilesManager } from "../core/service/dataFileService/StartFilesMan
 import { Stage } from "../core/stage/Stage";
 import { PathString } from "../utils/pathString";
 import { isDesktop } from "../utils/platform";
+import { StageManager } from "../core/stage/stageManager/StageManager";
 
 export default function RecentFilesPanel() {
   const [recentFiles, setRecentFiles] = React.useState<RecentFileManager.RecentFile[]>([]);
@@ -112,6 +113,23 @@ export default function RecentFilesPanel() {
     };
   };
 
+  const addPortalNodeToStage = (path: string) => {
+    return () => {
+      const result = StageManager.addPortalNodeToStage(path);
+      if (result) {
+        Dialog.show({
+          title: "添加传送门成功",
+          content: `已经成功添加传送门：${path}，注意看您的舞台上已经多了一个传送门`,
+        });
+      } else {
+        Dialog.show({
+          title: "添加传送门失败",
+          content: `可能是这个文件和当前文件路径距离过远`,
+        });
+      }
+    };
+  };
+
   return (
     <div
       className={cn(
@@ -160,6 +178,12 @@ export default function RecentFilesPanel() {
                 <button onClick={addToStartFiles(file.path)} className="bg-neutral-700 text-xs hover:cursor-pointer">
                   {/* <Zap /> */}
                   添加到启动
+                </button>
+                <button
+                  onClick={addPortalNodeToStage(file.path)}
+                  className="bg-neutral-700 text-xs hover:cursor-pointer"
+                >
+                  添加传送门
                 </button>
               </td>
             </tr>

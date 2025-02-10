@@ -41,6 +41,7 @@ import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
 import { Direction } from "../../../types/directions";
+import { PathString } from "../../../utils/pathString";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -940,6 +941,27 @@ export namespace StageManager {
   export function textNodeToSection() {
     StageSectionPackManager.textNodeToSection();
     StageHistoryManager.recordStep();
+  }
+
+  export function addPortalNodeToStage(otherPath: string) {
+    const uuid = v4();
+    const relativePath = PathString.getRelativePath(Stage.path.getFilePath(), otherPath);
+    if (relativePath === "") {
+      return false;
+    }
+    entities.addValue(
+      new PortalNode({
+        uuid: uuid,
+        title: PathString.dirPath(otherPath),
+        portalFilePath: relativePath,
+        location: [Camera.location.x, Camera.location.y],
+        size: [500, 500],
+        cameraScale: 1,
+      }),
+      uuid,
+    );
+    StageHistoryManager.recordStep();
+    return true;
   }
 
   // 测试

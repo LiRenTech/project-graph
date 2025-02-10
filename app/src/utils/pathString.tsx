@@ -77,6 +77,79 @@ export namespace PathString {
     return dateTime;
   }
 
+  /**
+   * 获取一个相对路径，从一个绝对路径到另一个绝对路径的跳转
+   * 如果无法获取，或者路径不合法，则返回空字符串
+   * @param from
+   * @param to
+   * @returns 相对路径
+   * 例如：
+   * from = "C:/Users/admin/Desktop/test.txt"
+   * to = "C:/Users/admin/Desktop/test2.txt"
+   * 则返回 "./test2.txt"
+   * from = "C:/Users/admin/Desktop/test.txt"
+   * to = "C:/Users/admin/test2.txt"
+   * 则返回 "../test2.txt"
+   */
+  export function getRelativePath(from: string, to: string): string {
+    // 统一替换反斜杠为正斜杠，并分割路径为数组，过滤掉空的部分
+    const fromParts = from
+      .replace(/\\/g, "/")
+      .split("/")
+      .filter((p) => p !== "");
+    const toParts = to
+      .replace(/\\/g, "/")
+      .split("/")
+      .filter((p) => p !== "");
+
+    // 检查根目录是否相同
+    if (fromParts.length === 0 || toParts.length === 0 || fromParts[0] !== toParts[0]) {
+      return "";
+    }
+
+    // 提取父目录数组和文件名
+    const fromParent = fromParts.slice(0, fromParts.length - 1);
+    const toParent = toParts.slice(0, toParts.length - 1);
+    const toFileName = toParts[toParts.length - 1];
+
+    // 找到共同层级i
+    let i = 0;
+    while (i < fromParent.length && i < toParent.length && fromParent[i] === toParent[i]) {
+      i++;
+    }
+
+    // 计算需要向上退的层数
+    const fromUpLevel = fromParent.length - i;
+
+    // 生成向上的部分（如'../..'）
+    const up = fromUpLevel > 0 ? Array(fromUpLevel).fill("..").join("/") : "";
+
+    // 生成向下的部分（如'dir/subdir'）
+    const down = toParent.slice(i).join("/");
+
+    // 组合路径
+    let relativePath = "";
+    if (up) {
+      relativePath += up;
+      if (down) {
+        relativePath += "/";
+      }
+    }
+    if (down) {
+      relativePath += down;
+    }
+
+    // 处理文件名部分
+    if (relativePath) {
+      relativePath += "/" + toFileName;
+    } else {
+      // 如果路径为空，说明父目录相同，直接返回当前目录下的文件名
+      relativePath = "./" + toFileName;
+    }
+
+    return relativePath;
+  }
+
   // 这个函数用AI生成，DeepSeek整整思考了四分钟，252秒，一次性全部通过测试，而其他大模型都无法通过测试。
   /**
    * 根据一个绝对路径和一个相对路径，获取新文件的绝对路径
