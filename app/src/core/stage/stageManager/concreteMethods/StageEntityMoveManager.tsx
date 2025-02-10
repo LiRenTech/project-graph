@@ -1,7 +1,11 @@
 import { Vector } from "../../../dataStruct/Vector";
+import { EntityJumpMoveEffect } from "../../../service/feedbackService/effectEngine/concrete/EntityJumpMoveEffect";
+import { RectanglePushInEffect } from "../../../service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
+import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { GraphMethods } from "../basicMethods/GraphMethods";
+import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageManager } from "../StageManager";
 
 /**
@@ -11,7 +15,7 @@ import { StageManager } from "../StageManager";
  * 以后还可能有自动布局的功能
  */
 export namespace StageEntityMoveManager {
-  export function moveEntityUtils(node: Entity, delta: Vector) {
+  export function moveEntityUtils(node: Entity, delta: Vector, isAutoAdjustSection: boolean = true) {
     // 让自己移动
     node.move(delta);
 
@@ -26,11 +30,43 @@ export namespace StageEntityMoveManager {
     //     }
     //   }
     // }
-    for (const section of StageManager.getSections()) {
-      if (section.isHaveChildrenByUUID(nodeUUID)) {
-        section.adjustLocationAndSize();
+    if (isAutoAdjustSection) {
+      for (const section of StageManager.getSections()) {
+        if (section.isHaveChildrenByUUID(nodeUUID)) {
+          section.adjustLocationAndSize();
+        }
       }
     }
+  }
+
+  export function jumpMoveEntityUtils(entity: Entity, delta: Vector) {
+    const beforeMoveRect = entity.collisionBox.getRectangle().clone();
+
+    // 将自己移动前加特效
+    Stage.effectMachine.addEffect(new EntityJumpMoveEffect(15, beforeMoveRect, delta));
+
+    // 即将跳入的sections区域
+    const targetSections = SectionMethods.getSectionsByInnerLocation(beforeMoveRect.center.add(delta));
+    // 改变层级
+    if (targetSections.length === 0) {
+      // 代表想要走出当前section
+      const currentFatherSections = SectionMethods.getFatherSections(entity);
+      if (currentFatherSections.length !== 0) {
+        StageManager.goOutSection([entity], currentFatherSections[0]);
+      }
+    } else {
+      for (const section of targetSections) {
+        StageManager.goInSection([entity], section);
+        // 特效
+        Stage.effectMachine.addEffect(
+          new RectanglePushInEffect(entity.collisionBox.getRectangle(), section.collisionBox.getRectangle()),
+        );
+      }
+    }
+
+    // 让自己移动
+    // entity.move(delta);
+    moveEntityUtils(entity, delta, false);
   }
 
   function moveEntityToUtils(entity: Entity, location: Vector) {
@@ -42,10 +78,10 @@ export namespace StageEntityMoveManager {
       }
     }
   }
-  export function moveEntities(delta: Vector) {
+  export function moveEntities(delta: Vector, isAutoAdjustSection: boolean = true) {
     for (const node of StageManager.getEntities()) {
       if (node.isSelected) {
-        moveEntityUtils(node, delta);
+        moveEntityUtils(node, delta, isAutoAdjustSection);
       }
     }
   }
@@ -53,45 +89,54 @@ export namespace StageEntityMoveManager {
    * 拖动所有选中的节点一起移动
    * @param delta
    */
-  export function moveSelectedNodes(delta: Vector) {
+  export function moveSelectedNodes(delta: Vector, isAutoAdjustSection: boolean = true) {
     for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
-        moveEntityUtils(node, delta);
+        moveEntityUtils(node, delta, isAutoAdjustSection);
       }
     }
   }
-  export function moveSelectedSections(delta: Vector) {
+
+  export function jumpMoveSelectedConnectableEntities(delta: Vector) {
+    for (const node of StageManager.getConnectableEntity()) {
+      if (node.isSelected) {
+        jumpMoveEntityUtils(node, delta);
+      }
+    }
+  }
+
+  export function moveSelectedSections(delta: Vector, isAutoAdjustSection: boolean = true) {
     for (const section of StageManager.getSections()) {
       if (section.isSelected) {
-        moveEntityUtils(section, delta);
+        moveEntityUtils(section, delta, isAutoAdjustSection);
       }
     }
   }
-  export function moveSelectedConnectPoints(delta: Vector) {
+  export function moveSelectedConnectPoints(delta: Vector, isAutoAdjustSection: boolean = true) {
     for (const point of StageManager.getConnectPoints()) {
       if (point.isSelected) {
-        moveEntityUtils(point, delta);
+        moveEntityUtils(point, delta, isAutoAdjustSection);
       }
     }
   }
-  export function moveSelectedImageNodes(delta: Vector) {
+  export function moveSelectedImageNodes(delta: Vector, isAutoAdjustSection: boolean = true) {
     for (const node of StageManager.getImageNodes()) {
       if (node.isSelected) {
-        moveEntityUtils(node, delta);
+        moveEntityUtils(node, delta, isAutoAdjustSection);
       }
     }
   }
-  export function moveSelectedUrlNodes(delta: Vector) {
+  export function moveSelectedUrlNodes(delta: Vector, isAutoAdjustSection: boolean = true) {
     for (const node of StageManager.getUrlNodes()) {
       if (node.isSelected) {
-        moveEntityUtils(node, delta);
+        moveEntityUtils(node, delta, isAutoAdjustSection);
       }
     }
   }
-  export function moveSelectedPortalNodes(delta: Vector) {
+  export function moveSelectedPortalNodes(delta: Vector, isAutoAdjustSection: boolean = true) {
     for (const node of StageManager.getPortalNodes()) {
       if (node.isSelected) {
-        moveEntityUtils(node, delta);
+        moveEntityUtils(node, delta, isAutoAdjustSection);
       }
     }
   }

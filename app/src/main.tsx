@@ -353,6 +353,45 @@ async function registerKeyBinds() {
   ).down(() => {
     StageManager.moveSelectedNodes(new Vector(100, 0));
   });
+  (
+    await KeyBinds.create("jumpMoveUpSelectedEntities", "arrowup", {
+      control: true,
+      alt: true,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.jumpMoveSelectedConnectableEntities(new Vector(0, -100));
+  });
+
+  (
+    await KeyBinds.create("jumpMoveDownSelectedEntities", "arrowdown", {
+      control: true,
+      alt: true,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.jumpMoveSelectedConnectableEntities(new Vector(0, 100));
+  });
+
+  (
+    await KeyBinds.create("jumpMoveLeftSelectedEntities", "arrowleft", {
+      control: true,
+      alt: true,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.jumpMoveSelectedConnectableEntities(new Vector(-100, 0));
+  });
+
+  (
+    await KeyBinds.create("jumpMoveRightSelectedEntities", "arrowright", {
+      control: true,
+      alt: true,
+      shift: false,
+    })
+  ).down(() => {
+    StageManager.jumpMoveSelectedConnectableEntities(new Vector(100, 0));
+  });
 
   (
     await KeyBinds.create("editEntityDetails", "enter", {

@@ -520,8 +520,8 @@ export namespace StageManager {
     return res;
   }
 
-  export function moveEntities(delta: Vector) {
-    StageEntityMoveManager.moveEntities(delta); // 连续过程，不记录历史，只在结束时记录
+  export function moveEntities(delta: Vector, isAutoAdjustSection = true) {
+    StageEntityMoveManager.moveEntities(delta, isAutoAdjustSection); // 连续过程，不记录历史，只在结束时记录
   }
 
   /**
@@ -530,6 +530,10 @@ export namespace StageManager {
    */
   export function moveSelectedNodes(delta: Vector) {
     StageEntityMoveManager.moveSelectedNodes(delta); // 连续过程，不记录历史，只在结束时记录
+  }
+
+  export function jumpMoveSelectedConnectableEntities(delta: Vector) {
+    StageEntityMoveManager.jumpMoveSelectedConnectableEntities(delta); // 连续过程，不记录历史，只在结束时记录
   }
 
   export function moveSelectedSections(delta: Vector) {
