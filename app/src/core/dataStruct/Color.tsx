@@ -73,6 +73,10 @@ export class Color {
     return new Color(this.r, this.g, this.b, 1);
   }
 
+  toNewAlpha(a: number) {
+    return new Color(this.r, this.g, this.b, a);
+  }
+
   /**
    * 判断自己是否和另一个颜色相等
    */

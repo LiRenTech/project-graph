@@ -4,6 +4,7 @@ import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
+import { EntityJumpMoveEffect } from "../../../feedbackService/effectEngine/concrete/EntityJumpMoveEffect";
 import { RectanglePushInEffect } from "../../../feedbackService/effectEngine/concrete/RectanglePushInEffect";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
@@ -43,6 +44,10 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
   });
   // 2 计算delta
   const delta = mouseLocation.subtract(Rectangle.getBoundingRectangle(rectangles).center);
+  // 4 特效(要先加特效，否则位置已经被改了)
+  for (const entity of selectedEntities) {
+    Stage.effectMachine.addEffect(new EntityJumpMoveEffect(15, entity.collisionBox.getRectangle(), delta));
+  }
   // 3 移动所有选中的实体 的位置
   StageManager.moveEntities(delta);
 
