@@ -1,4 +1,3 @@
-import { replaceTextWhenProtect } from "../../../../utils/font";
 import { Random } from "../../../algorithm/random";
 import { Color, colorInvert } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
@@ -255,7 +254,7 @@ export namespace EntityRenderer {
         }
       } else {
         TextRenderer.renderMultiLineText(
-          Renderer.protectingPrivacy ? replaceTextWhenProtect(node.text) : node.text,
+          node.text,
           Renderer.transformWorld2View(
             node.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)).add(new Vector(0, Renderer.FONT_SIZE / 4)),
           ),

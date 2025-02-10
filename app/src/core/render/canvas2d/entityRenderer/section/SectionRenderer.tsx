@@ -1,4 +1,3 @@
-import { replaceTextWhenProtect } from "../../../../../utils/font";
 import { Color, colorInvert, mixColors } from "../../../../dataStruct/Color";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
@@ -41,7 +40,7 @@ export namespace SectionRenderer {
     );
 
     TextRenderer.renderText(
-      Renderer.protectingPrivacy ? replaceTextWhenProtect(section.text) : section.text,
+      section.text,
       Renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
       Renderer.FONT_SIZE * Camera.currentScale,
       section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
@@ -64,7 +63,7 @@ export namespace SectionRenderer {
     if (Camera.currentScale > 0.2) {
       // 正常显示标题
       TextRenderer.renderText(
-        Renderer.protectingPrivacy ? replaceTextWhenProtect(section.text) : section.text,
+        section.text,
         Renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
         Renderer.FONT_SIZE * Camera.currentScale,
         section.color.a === 1
@@ -95,7 +94,7 @@ export namespace SectionRenderer {
       const fontHeight = fontSizeVector.y;
       // 缩放过小了，显示巨大化文字
       TextRenderer.renderTextFromCenter(
-        Renderer.protectingPrivacy ? replaceTextWhenProtect(section.text) : section.text,
+        section.text,
         Renderer.transformWorld2View(section.rectangle.center),
         fontHeight * Camera.currentScale,
         section.color.a === 1

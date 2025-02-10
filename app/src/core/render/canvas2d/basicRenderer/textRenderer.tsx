@@ -1,7 +1,9 @@
+import { replaceTextWhenProtect } from "../../../../utils/font";
 import { LruCache } from "../../../dataStruct/Cache";
 import { Color } from "../../../dataStruct/Color";
 import { Vector } from "../../../dataStruct/Vector";
 import { Canvas } from "../../../stage/Canvas";
+import { Renderer } from "../renderer";
 
 /**
  * 专门用于在Canvas上渲染文字
@@ -17,6 +19,7 @@ export namespace TextRenderer {
    */
   export function renderText(text: string, location: Vector, fontSize: number, color: Color = Color.White): void {
     // alphabetic, top, hanging, middle, ideographic, bottom
+    text = Renderer.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     Canvas.ctx.textBaseline = "middle";
     Canvas.ctx.textAlign = "left";
     Canvas.ctx.font = `${fontSize}px MiSans`;
@@ -45,6 +48,7 @@ export namespace TextRenderer {
     shadowOffsetX: number = 0,
     shadowOffsetY: number = 0,
   ): void {
+    text = Renderer.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     Canvas.ctx.textBaseline = "middle";
     Canvas.ctx.textAlign = "center";
     Canvas.ctx.font = `${size}px MiSans`;
@@ -82,6 +86,7 @@ export namespace TextRenderer {
     lineHeight: number = 1.2,
     limitLines: number = Infinity,
   ): void {
+    text = Renderer.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     let currentY = 0; // 顶部偏移量
     let textLineArray = textToTextArrayWrapCache(text, fontSize, limitWidth);
     // 限制行数
