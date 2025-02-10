@@ -206,6 +206,10 @@ export class Line extends Shape {
   }
 
   isIntersectingWithCircle(circle: Circle): boolean {
+    // 先判断线段的两个端点是否在圆内
+    if (circle.isPointIn(this.start) || circle.isPointIn(this.end)) {
+      return true;
+    }
     const A = this.start.y - this.end.y;
     const B = this.end.x - this.start.x;
     const C = this.start.x * this.end.y - this.end.x * this.start.y;
