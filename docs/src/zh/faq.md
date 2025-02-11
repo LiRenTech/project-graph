@@ -2,6 +2,8 @@
 
 ## macOS
 
+由于开发者没有mac电脑, 无法测试mac系统下的问题。建议先用网页版
+
 ### 显示“Project Graph 已损坏，无法打开” {#macos-cannot-open}
 
 ![image](https://s2.loli.net/2024/12/14/1YmknvPljQyR98U.png)
@@ -29,7 +31,7 @@ sudo xattr -r -d com.apple.quarantine /Applications/Project\ Graph.app
 
 ### win10 双击安装包无任何响应
 
-解决方法：右键安装包，打开属性，点击“常规”，最下面安全取消勾选“解除锁定”
+解决方法：右键安装包，打开属性，点击“常规”，最下面安全选项，勾选“解除锁定”
 
 ### win11 打开软件一闪而过一个窗口后消失，无任何响应，但任务管理器中显示软件仍在运行
 
