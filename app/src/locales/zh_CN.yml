@@ -639,3 +639,9 @@ keyBinds:
   exitSoftware:
     title: 退出软件
     description: 按下后，退出软件
+  checkoutProtectPrivacy:
+    title: 进入或退出隐私保护模式
+    description: |
+      按下后，舞台上的全部文字将会被加密，无法被其他人看到
+      按下后，舞台上的全部文字将会解密，其他人可以看到
+      可以用于截图反馈问题、突然有人看你的屏幕时使用并且你的内容是感情问题（？）时使用

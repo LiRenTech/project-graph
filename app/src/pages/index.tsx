@@ -19,10 +19,11 @@ export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
 
   const [cursorName, setCursorName] = React.useState("default");
-  const [bgAlpha, setBgAlpha] = React.useState(1);
+  const [bgAlpha] = Settings.use("windowBackgroundAlpha");
   const [isDrawingMode, setIsDrawingMode] = React.useState(false);
   // const [nodeDetailsPanel, setNodeDetailsPanel] = React.useState("vditor");
   const [nodeDetailsPanel] = Settings.use("nodeDetailsPanel");
+  const [isProtectPrivacy, setIsProtectPrivacy] = React.useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -61,8 +62,8 @@ export default function Home() {
     window.addEventListener("focus", handleFocus);
     window.addEventListener("blur", handleBlur);
 
-    Settings.get("windowBackgroundAlpha").then((value) => {
-      setBgAlpha(value);
+    Settings.watch("protectingPrivacy", (value) => {
+      setIsProtectPrivacy(value);
     });
 
     // 开启定时器
@@ -125,10 +126,11 @@ export default function Home() {
           {isDrawingMode ? "框选模式" : "涂鸦模式"}
         </Button>
       )}
+
       {/* TODO: 下面这个写法有点奇怪 rgba值太长了 */}
       <div
         style={{
-          background: `rgba(${StageStyleManager.currentStyle.BackgroundColor.r},${StageStyleManager.currentStyle.BackgroundColor.g},${StageStyleManager.currentStyle.BackgroundColor.b},${bgAlpha})`,
+          background: `rgba(${StageStyleManager.currentStyle.BackgroundColor.r},${StageStyleManager.currentStyle.BackgroundColor.g},${StageStyleManager.currentStyle.BackgroundColor.b},${isProtectPrivacy ? 1 : bgAlpha})`,
         }}
       >
         <canvas ref={canvasRef} className={`cursor-${cursorName}`} />

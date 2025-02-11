@@ -442,6 +442,16 @@ async function registerKeyBinds() {
   ).down(() => {
     StageManager.textNodeToSection();
   });
+  (
+    await KeyBinds.create("checkoutProtectPrivacy", "2", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    Settings.set("protectingPrivacy", !Renderer.protectingPrivacy);
+    console.log(123, "checkoutProtectPrivacy");
+  });
 
   const bind = await KeyBinds.create("keyboardOnlyGenerateNode", "tab", {
     control: false,
