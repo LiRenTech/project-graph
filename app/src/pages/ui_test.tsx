@@ -8,6 +8,7 @@ import KeyBind from "../components/KeyBind";
 import Select from "../components/Select";
 import Slider from "../components/Slider";
 import Switch from "../components/Switch";
+import { Panel } from "../components/panel";
 
 export default function UITestPage() {
   return (
@@ -31,6 +32,24 @@ export default function UITestPage() {
       <Slider />
       <Switch />
       <Switch value />
+      <Button
+        onClick={() => {
+          Panel.show(
+            {
+              title: "Panel",
+              buttons: [
+                {
+                  label: "button",
+                  onClick: () => {},
+                },
+              ],
+            },
+            <>content</>,
+          );
+        }}
+      >
+        open panel
+      </Button>
     </div>
   );
 }
