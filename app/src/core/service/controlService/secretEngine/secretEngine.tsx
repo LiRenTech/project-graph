@@ -3,6 +3,7 @@ import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
+import { CollaborationEngine } from "../../dataManageService/collaborationEngine/CollaborationEngine";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { SelectChangeEngine } from "../keyboardOnlyEngine/selectChangeEngine";
@@ -103,6 +104,10 @@ export class SecretEngine {
       for (const entity of collected) {
         entity.isSelected = true;
       }
+      return true;
+    }
+    if (keys.includes("c o l l a b o r a t e")) {
+      CollaborationEngine.openStartCollaborationPanel();
       return true;
     }
     return false;

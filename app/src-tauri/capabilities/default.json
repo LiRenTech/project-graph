@@ -32,9 +32,8 @@
     {
       "identifier": "http:default",
       "allow": [
-        {
-          "url": "https://api.project-graph.top"
-        }
+        {"url": "*://*.project-graph.top/*"},
+        {"url": "http://localhost:*"}
       ]
     }
   ]
