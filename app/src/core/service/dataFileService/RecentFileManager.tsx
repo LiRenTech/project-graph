@@ -197,6 +197,8 @@ export namespace RecentFileManager {
       // web模式先别加载子场景
       return;
     }
+    // 先清空所有子场景
+    StageManager.clearAllChildStage();
     // 加载所有子场景
     const childAbsolutePathList: string[] = [];
     for (const entity of data.entities) {

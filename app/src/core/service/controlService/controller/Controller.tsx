@@ -18,6 +18,8 @@ import { ControllerNodeMove } from "./concrete/ControllerNodeMove";
 import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
 import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect";
 import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
+// ...
+import { controllerChildCamera } from "./concrete/ControllerChildCamera";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -149,6 +151,7 @@ export namespace Controller {
     ControllerSectionEdit.init();
     ControllerLayerMoving.init();
     ControllerImageScale.init();
+    controllerChildCamera.init();
     //
   }
 
@@ -310,5 +313,6 @@ export namespace Controller {
     ControllerSectionEdit.destroy();
     ControllerLayerMoving.destroy();
     ControllerImageScale.destroy();
+    controllerChildCamera.destroy();
   }
 }

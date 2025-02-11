@@ -55,6 +55,25 @@ type stageContent = {
 };
 
 /**
+ * 子场景的相机数据
+ */
+export type ChildCameraData = {
+  /**
+   * 传送门的左上角位置
+   */
+  location: Vector;
+  zoom: number;
+  /**
+   * 传送门大小
+   */
+  size: Vector;
+  /**
+   * 相机的目标位置
+   */
+  targetLocation: Vector;
+};
+
+/**
  * 舞台管理器，也可以看成包含了很多操作方法的《舞台实体容器》
  * 管理节点、边的关系等，内部包含了舞台上的所有实体
  */
@@ -77,13 +96,9 @@ export namespace StageManager {
   /**
    * 每一个子舞台的相机数据，用于渲染传送门中的另一个世界
    */
-  const childStageCameraData: Record<string, { location: Vector; zoom: number; size: Vector; targetLocation: Vector }> =
-    {};
+  const childStageCameraData: Record<string, ChildCameraData> = {};
 
-  export function updateChildStageCameraData(
-    path: string,
-    data: { location: Vector; zoom: number; size: Vector; targetLocation: Vector },
-  ) {
+  export function updateChildStageCameraData(path: string, data: ChildCameraData) {
     childStageCameraData[path] = data;
   }
   export function getChildStageCameraData(path: string) {
@@ -117,8 +132,17 @@ export namespace StageManager {
   export function getAllChildStageKeys(): string[] {
     return Object.keys(childStageContent).filter((key) => key !== "main");
   }
+  export function clearAllChildStage() {
+    for (const key of Object.keys(childStageContent)) {
+      if (key !== "main") {
+        childStageContent[key].entities.clear();
+        childStageContent[key].associations.clear();
+        childStageContent[key].tags.clear();
+      }
+    }
+  }
   // 使用这个方法时要提前保证当前主舞台槽上放的是主舞台
-  export function getAllChildStageKeysAndCamera(): { key: string; camera: { location: Vector; zoom: number } }[] {
+  export function getAllChildStageKeysAndCamera(): { key: string; camera: ChildCameraData }[] {
     const result = [];
     for (const entity of getEntities().filter((entity) => entity instanceof PortalNode)) {
       const newKey = PathString.relativePathToAbsolutePath(

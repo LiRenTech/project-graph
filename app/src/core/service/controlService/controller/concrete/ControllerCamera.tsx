@@ -7,7 +7,6 @@ import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Camera } from "../../../../stage/Camera";
 import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
-// import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -105,7 +104,6 @@ ControllerCamera.mousedown = (event: MouseEvent) => {
     // 中键按下
     const newMouseMiddleDownLocation = new Vector(event.clientX, event.clientY);
     // 判断是否是原位置按下
-
     lastMouseMiddleDownLocation = newMouseMiddleDownLocation;
   }
 };
@@ -141,6 +139,10 @@ ControllerCamera.mousemove = (event: MouseEvent) => {
   }
   // 中键按下拖动视野
   if (Controller.isMouseDown[1]) {
+    if (event.ctrlKey) {
+      // ctrl键按下时,不允许移动视野
+      return;
+    }
     moveCameraByMouseMove(event.clientX, event.clientY, 1);
     Controller.setCursorName("grabbing");
   }
@@ -277,7 +279,10 @@ function moveCameraByMouseWheel(event: WheelEvent) {
  * @param event - 鼠标事件
  */
 ControllerCamera.mouseDoubleClick = (event: MouseEvent) => {
-  if (event.button === 1) {
+  if (event.button === 1 && !Controller.isCameraLocked) {
+    if (event.ctrlKey) {
+      return;
+    }
     // 中键双击
     Camera.reset();
   }

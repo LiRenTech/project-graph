@@ -15,7 +15,7 @@ export const ControllerEntityCreate = new ControllerClass();
 
 ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
   // 双击只能在左键
-  if (!(event.button === 0 || event.button === 1)) {
+  if (!(event.button === 0)) {
     return;
   }
 

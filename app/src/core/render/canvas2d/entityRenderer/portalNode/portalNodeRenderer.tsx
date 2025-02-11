@@ -1,3 +1,4 @@
+import { Color } from "../../../../dataStruct/Color";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { MouseLocation } from "../../../../service/controlService/MouseLocation";
@@ -78,13 +79,6 @@ export namespace PortalNodeRenderer {
         StageStyleManager.currentStyle.DetailsDebugTextColor,
       );
     }
-    // 提示施工中
-    TextRenderer.renderTextFromCenter(
-      "预览功能还在开发中",
-      Renderer.transformWorld2View(portalNode.rectangle.center),
-      Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
-      StageStyleManager.currentStyle.DetailsDebugTextColor,
-    );
 
     renderHoverState(portalNode);
   }
@@ -132,22 +126,25 @@ export namespace PortalNodeRenderer {
       } else {
         // 鼠标在节点区域
         // 绘制矩形
-        ShapeRenderer.renderRect(
-          bodyRectangle.transformWorld2View(),
-          StageStyleManager.currentStyle.CollideBoxPreSelectedColor,
-          StageStyleManager.currentStyle.CollideBoxSelectedColor,
-          2 * Camera.currentScale,
-          Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
-        );
-        // 绘制悬浮提示文字
-        TextRenderer.renderText(
+        TextRenderer.renderTextFromCenter(
           "双击传送",
-          Renderer.transformWorld2View(bodyRectangle.leftBottom.add(Vector.same(Renderer.NODE_PADDING))),
-          Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
-          StageStyleManager.currentStyle.DetailsDebugTextColor,
+          Renderer.transformWorld2View(portalNode.rectangle.center),
+          Renderer.FONT_SIZE * Camera.currentScale,
+          StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
         );
       }
     }
+  }
+
+  export function renderBackground(portalNode: PortalNode) {
+    // 绘制背景
+    ShapeRenderer.renderRect(
+      portalNode.rectangle.transformWorld2View(),
+      StageStyleManager.currentStyle.BackgroundColor,
+      Color.Transparent,
+      0,
+      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+    );
   }
 
   // /**

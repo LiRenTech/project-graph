@@ -62,18 +62,26 @@ export namespace EntityRenderer {
     }
     // 1 遍历所有section实体，画底部颜色
     for (const section of sectionSortedZIndex) {
-      if (isOverView(viewRectangle, section)) {
+      if (Renderer.isOverView(viewRectangle, section)) {
         continue;
       }
       SectionRenderer.renderBackgroundColor(section);
     }
+    // 2 遍历所有传送门,渲染黑底
+    for (const portalNode of StageManager.getPortalNodes()) {
+      if (Renderer.isOverView(viewRectangle, portalNode)) {
+        continue;
+      }
+      PortalNodeRenderer.renderBackground(portalNode);
+    }
+    // 最后更新帧
     tickNumber++;
   }
 
   export function renderAllSectionsBigTitle(viewRectangle: Rectangle) {
     for (let i = sectionSortedZIndex.length - 1; i >= 0; i--) {
       const section = sectionSortedZIndex[i];
-      if (isOverView(viewRectangle, section)) {
+      if (Renderer.isOverView(viewRectangle, section)) {
         continue;
       }
       SectionRenderer.renderBigTitle(section);
@@ -93,7 +101,7 @@ export namespace EntityRenderer {
         continue;
       }
       // 视线之外不画
-      if (isOverView(viewRectangle, entity)) {
+      if (Renderer.isOverView(viewRectangle, entity)) {
         continue;
       }
       EntityRenderer.renderEntity(entity);
@@ -101,20 +109,12 @@ export namespace EntityRenderer {
     }
     // 3 遍历所有section实体，画顶部大文字
     for (const section of StageManager.getSections()) {
-      if (isOverView(viewRectangle, section)) {
+      if (Renderer.isOverView(viewRectangle, section)) {
         continue;
       }
       SectionRenderer.render(section);
     }
     return renderedNodes;
-  }
-
-  // 是否超出了视野之外
-  function isOverView(viewRectangle: Rectangle, entity: Entity): boolean {
-    if (!Camera.limitCameraInCycleSpace && !viewRectangle.isCollideWith(entity.collisionBox.getRectangle())) {
-      return true;
-    }
-    return false;
   }
 
   /**

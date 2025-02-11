@@ -94,33 +94,75 @@ export class PortalNode extends ConnectableEntity {
     this.updateFatherSectionByMove();
     // 移动其他实体，递归碰撞
     this.updateOtherEntityLocationByMove();
-    this.updateChildStageCameraDataByMove();
+    this.updateChildStageCameraData();
   }
   moveTo(location: Vector): void {
     const newRectangle = this.collisionBox.getRectangle();
     newRectangle.location = location.clone();
     this.collisionBox.shapeList[0] = newRectangle;
     this.updateFatherSectionByMove();
-    this.updateChildStageCameraDataByMove();
+    this.updateChildStageCameraData();
   }
 
-  private updateChildStageCameraDataByMove() {
+  private updateChildStageCameraData() {
     StageManager.updateChildStageCameraData(
       PathString.relativePathToAbsolutePath(PathString.dirPath(Stage.path.getFilePath()), this.portalFilePath),
       {
         location: this.location,
         targetLocation: this.targetLocation,
         size: this.size,
-        zoom: 1,
+        zoom: this.cameraScale,
       },
     );
   }
 
+  public moveTargetLocation(delta: Vector): void {
+    this.targetLocation = this.targetLocation.add(delta);
+    this.updateChildStageCameraData();
+  }
+
+  public moveToTargetLocation(targetLocation: Vector): void {
+    this.targetLocation = targetLocation;
+    this.updateChildStageCameraData();
+  }
+
+  /**
+   * 扩大窗口
+   */
+  public expand() {
+    const rect = this.collisionBox.shapeList[0] as Rectangle;
+    rect.size = rect.size.add(new Vector(100, 100));
+    this.size = rect.size;
+    this.updateChildStageCameraData();
+  }
+
+  /**
+   * 缩小窗口
+   * @returns
+   */
+  public shrink() {
+    const rect = this.collisionBox.shapeList[0] as Rectangle;
+    if (rect.size.x <= 100 || rect.size.y <= 100) {
+      return;
+    }
+    rect.size = rect.size.subtract(new Vector(100, 100));
+    this.size = rect.size;
+    this.updateChildStageCameraData();
+  }
+
   public zoomIn() {
     this.cameraScale *= 1.1;
+    if (this.cameraScale > 10) {
+      this.cameraScale = 10;
+    }
+    this.updateChildStageCameraData();
   }
 
   public zoomOut() {
     this.cameraScale /= 1.1;
+    if (this.cameraScale < 0.1) {
+      this.cameraScale = 0.1;
+    }
+    this.updateChildStageCameraData();
   }
 }

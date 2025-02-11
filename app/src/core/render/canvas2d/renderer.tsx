@@ -16,6 +16,7 @@ import { Canvas } from "../../stage/Canvas";
 import { Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../stage/stageManager/StageManager";
+import { StageObject } from "../../stage/stageObject/abstract/StageObject";
 import { TextNode } from "../../stage/stageObject/entity/TextNode";
 import { CurveRenderer } from "./basicRenderer/curveRenderer";
 import { ShapeRenderer } from "./basicRenderer/shapeRenderer";
@@ -198,14 +199,18 @@ export namespace Renderer {
   function renderMainStageElements(viewRectangle: Rectangle) {
     // 先渲染主场景
     renderStageElementsWithoutReactions(viewRectangle);
+    isRenderingChildStage = true;
+    const cameraOldScale = Camera.currentScale;
     // 再渲染所有子场景
     for (const key of StageManager.getAllChildStageKeys()) {
       // key就是绝对路径
       const cameraData = StageManager.getChildStageCameraData(key);
       let diffLocation = Vector.getZero();
+      const cameraOldLocation = Camera.location.clone();
       if (cameraData) {
-        diffLocation = cameraData.location;
-        Camera.location = Camera.location.subtract(diffLocation);
+        diffLocation = cameraData.targetLocation.subtract(cameraData.location);
+        Camera.currentScale *= cameraData.zoom;
+        Camera.location = Camera.location.add(diffLocation);
       } else {
         console.log(key, "没有camera数据");
       }
@@ -214,13 +219,18 @@ export namespace Renderer {
       StageManager.storeMainStage(); // 先保存主场景
       StageManager.destroy();
       StageManager.storeChildStageToMainStage(key); // 把子场景加到主场景位置上
-      renderStageElementsWithoutReactions(new Rectangle(cameraData.targetLocation, cameraData.size)); // 再渲染主场景
+      const viewChildRectangleLocation = Camera.location.clone().add(cameraData.location.subtract(cameraOldLocation));
+      const childStageViewRectangle = new Rectangle(
+        viewChildRectangleLocation,
+        cameraData.size.multiply(cameraData.zoom),
+      );
+      renderStageElementsWithoutReactions(childStageViewRectangle); // 再渲染主场景
       StageManager.destroy();
       StageManager.restoreMainStage(); // 还原主场景位置
-
-      Camera.location = Camera.location.add(diffLocation);
+      Camera.location = Camera.location.subtract(diffLocation);
+      Camera.currentScale = cameraOldScale;
     }
-
+    isRenderingChildStage = false;
     // 交互相关的
     renderWarningEntities();
     renderHoverCollisionBox();
@@ -241,6 +251,31 @@ export namespace Renderer {
     renderEntities(viewRectangle);
     EntityRenderer.renderAllSectionsBigTitle(viewRectangle);
     renderTags();
+    // debug
+    // ShapeRenderer.renderRect(viewRectangle.transformWorld2View(), Color.Transparent, new Color(255, 0, 0, 0.5), 1);
+  }
+
+  /**
+   * 是否正在渲染子场景
+   * 如果是,则超出视野检测使用完全包含
+   */
+  let isRenderingChildStage = false;
+
+  // 是否超出了视野之外
+  export function isOverView(viewRectangle: Rectangle, entity: StageObject): boolean {
+    if (!Camera.limitCameraInCycleSpace) {
+      if (isRenderingChildStage) {
+        if (!entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle)) {
+          return true;
+        }
+      } else {
+        if (!viewRectangle.isCollideWith(entity.collisionBox.getRectangle())) {
+          return true;
+        }
+      }
+      return false;
+    }
+    return false;
   }
 
   // 渲染中心准星
@@ -573,14 +608,14 @@ export namespace Renderer {
   function renderEdges(viewRectangle: Rectangle) {
     renderedEdges = 0;
     for (const edge of StageManager.getLineEdges()) {
-      if (!Camera.limitCameraInCycleSpace && !edge.isIntersectsWithRectangle(viewRectangle)) {
+      if (!Camera.limitCameraInCycleSpace && isOverView(viewRectangle, edge)) {
         continue;
       }
       EdgeRenderer.renderEdge(edge);
       renderedEdges++;
     }
     for (const edge of StageManager.getCrEdges()) {
-      if (!Camera.limitCameraInCycleSpace && !edge.isIntersectsWithRectangle(viewRectangle)) {
+      if (!Camera.limitCameraInCycleSpace && isOverView(viewRectangle, edge)) {
         continue;
       }
       EdgeRenderer.renderCrEdge(edge);
