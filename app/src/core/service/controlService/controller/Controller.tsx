@@ -92,14 +92,6 @@ export namespace Controller {
   export let isCameraLocked = false;
 
   /**
-   * 按一次鼠标中键，视野吸附鼠标移动
-   * 再按一次鼠标中键，取消视野吸附
-   * issues/143
-   */
-  // eslint-disable-next-line prefer-const
-  export let isViewMoveByClickMiddle = false;
-
-  /**
    * 上次选中的节点
    * 仅为 Ctrl交叉选择使用
    */

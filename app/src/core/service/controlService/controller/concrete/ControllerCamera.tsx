@@ -92,21 +92,11 @@ function moveCameraByMouseMove(x: number, y: number, mouseIndex: number) {
   Camera.location = Camera.location.subtract(diffLocation);
 }
 
-/** 鼠标上次中键按下位置(view坐标) */
-let lastMouseMiddleDownLocation = new Vector(0, 0);
-let lastMouseMiddleUpLocation = new Vector(0, 0);
-
-ControllerCamera.mousedown = (event: MouseEvent) => {
-  if (Controller.isCameraLocked) {
-    return;
-  }
-  if (event.button === 1) {
-    // 中键按下
-    const newMouseMiddleDownLocation = new Vector(event.clientX, event.clientY);
-    // 判断是否是原位置按下
-    lastMouseMiddleDownLocation = newMouseMiddleDownLocation;
-  }
-};
+// ControllerCamera.mousedown = (event: MouseEvent) => {
+//   if (Controller.isCameraLocked) {
+//     return;
+//   }
+// };
 
 /**
  * 处理鼠标移动事件
@@ -115,21 +105,6 @@ ControllerCamera.mousedown = (event: MouseEvent) => {
 ControllerCamera.mousemove = (event: MouseEvent) => {
   if (Controller.isCameraLocked) {
     return;
-  }
-  if (Controller.isViewMoveByClickMiddle) {
-    moveCameraByMouseMove(event.clientX, event.clientY, 1);
-    // 检测是否移动到视野边缘
-    const viewLocation = new Vector(event.clientX, event.clientY);
-    const viewRectangle = Renderer.getCoverWorldRectangle().transformWorld2View();
-    const diff = 25; // 视野边缘的距离
-    if (
-      viewLocation.x < viewRectangle.left + diff ||
-      viewLocation.x > viewRectangle.right - diff ||
-      viewLocation.y < viewRectangle.top + diff ||
-      viewLocation.y > viewRectangle.bottom - diff
-    ) {
-      Controller.isViewMoveByClickMiddle = false;
-    }
   }
   // 空格+左键 拖动视野
   if (Controller.pressingKeySet.has(" ") && Controller.isMouseDown[0]) {
@@ -178,11 +153,7 @@ ControllerCamera.mouseup = (event: MouseEvent) => {
   if (event.button === 1) {
     // 中键松开
     Controller.setCursorName("default");
-    lastMouseMiddleUpLocation = new Vector(event.clientX, event.clientY);
-    if (lastMouseMiddleUpLocation.nearlyEqual(lastMouseMiddleDownLocation, 10)) {
-      // 是
-      Controller.isViewMoveByClickMiddle = !Controller.isViewMoveByClickMiddle;
-    }
+    // lastMouseMiddleUpLocation = new Vector(event.clientX, event.clientY);
   }
   if (event.button === 4) {
     Controller.setCursorName("default");

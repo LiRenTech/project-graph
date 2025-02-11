@@ -9,7 +9,6 @@ import { MouseLocation } from "../../service/controlService/MouseLocation";
 import { Controller } from "../../service/controlService/controller/Controller";
 import { KeyboardOnlyEngine } from "../../service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
 import { CopyEngine } from "../../service/dataManageService/copyEngine/copyEngine";
-import { sine } from "../../service/feedbackService/effectEngine/mathTools/animateFunctions";
 import { StageStyleManager } from "../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../stage/Camera";
 import { Canvas } from "../../stage/Canvas";
@@ -192,7 +191,6 @@ export namespace Renderer {
     renderSpecialKeys();
     renderCenterPointer();
     renderPrivacyBoard(viewRectangle);
-    renderViewMoveByClickMiddle(viewRectangle, performance.now());
     renderDebugDetails();
   }
 
@@ -322,19 +320,7 @@ export namespace Renderer {
       CollisionBoxRenderer.render(section.collisionBox, new Color(0, 255, 0, 0.5));
     }
   }
-  /** 中键吸附拖动框 */
-  function renderViewMoveByClickMiddle(viewRectangle: Rectangle, tMs: number) {
-    if (Controller.isViewMoveByClickMiddle) {
-      const color = new Color(23, 159, 255, sine(tMs, 0.2, 0.1, 0.01));
-      ShapeRenderer.renderRect(viewRectangle.transformWorld2View(), Color.Transparent, color, 50);
-      TextRenderer.renderText(
-        "再次中键取消视野吸附,或移动到窗口边缘",
-        new Vector(25, Renderer.h - 25 - 20),
-        20,
-        new Color(23, 159, 255, sine(tMs, 0.9, 0.7, 0.01)),
-      );
-    }
-  }
+
   /** 框选框 */
   function renderSelectingRectangle() {
     if (Stage.selectMachine.isUsing && Stage.selectMachine.selectingRectangle) {
@@ -785,7 +771,6 @@ export namespace Renderer {
       `历史: ${StageHistoryManager.statusText()}`,
       `fps: ${fps}`,
       `delta: ${deltaTime.toFixed(2)}`,
-      `Controller.isViewMoveByClickMiddle: ${Controller.isViewMoveByClickMiddle}`,
       `path: ${Stage.path.getFilePath()}`,
       `autoSave: ${Stage.autoSaveEngine.toString()}`,
       `isEnableEntityCollision: ${StageManager.isEnableEntityCollision}`,
