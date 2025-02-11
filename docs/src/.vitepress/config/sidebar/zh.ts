@@ -47,12 +47,20 @@ export const sidebarZh: DefaultTheme.Sidebar = [
         link: "/export",
       },
       {
+        text: "📄 导入",
+        link: "/import",
+      },
+      {
         text: "🔗 链接节点",
         link: "/link-node",
       },
       {
         text: "🌐 URL 节点",
         link: "/url-node",
+      },
+      {
+        text: "🚪 传送门节点",
+        link: "/portal-node",
       },
       {
         text: "⚡ 快速操作",
