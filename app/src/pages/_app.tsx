@@ -138,6 +138,12 @@ export default function App() {
                   {
                     text: "取消关闭",
                   },
+                  {
+                    text: "不保存并关闭",
+                    onClick: async () => {
+                      await getCurrentWindow().destroy();
+                    },
+                  },
                 ],
               });
             }
