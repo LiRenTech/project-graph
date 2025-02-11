@@ -97,21 +97,17 @@ export function renderCartesianBackground(viewRect: Rectangle) {
   const currentGap = getCurrentGap();
   // 画x轴上的刻度
   for (const x of getLocationXIterator(viewRect, currentGap)) {
-    TextRenderer.renderText(
-      `${x}`,
-      Renderer.transformWorld2View(new Vector(x, 0)),
-      10,
-      StageStyleManager.currentStyle.GridNormalColor,
-    );
+    const renderLocation = Renderer.transformWorld2View(new Vector(x, 0));
+    renderLocation.y = Math.max(renderLocation.y, 0);
+    renderLocation.y = Math.min(renderLocation.y, Renderer.h - 50);
+    TextRenderer.renderText(`${x}`, renderLocation, 10, StageStyleManager.currentStyle.GridNormalColor);
   }
   // 画y轴上的刻度
   for (const y of getLocationYIterator(viewRect, currentGap)) {
-    TextRenderer.renderText(
-      `${y}`,
-      Renderer.transformWorld2View(new Vector(0, y)),
-      10,
-      StageStyleManager.currentStyle.GridNormalColor,
-    );
+    const renderLocation = Renderer.transformWorld2View(new Vector(0, y));
+    renderLocation.x = Math.max(renderLocation.x, 0);
+    renderLocation.x = Math.min(renderLocation.x, Renderer.w - 150);
+    TextRenderer.renderText(`${y}`, renderLocation, 10, StageStyleManager.currentStyle.GridNormalColor);
   }
 }
 
