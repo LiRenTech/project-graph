@@ -1,10 +1,12 @@
 import { Serialized } from "../../../../types/node";
+import { PathString } from "../../../../utils/pathString";
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
 import { Stage } from "../../Stage";
+import { StageManager } from "../../stageManager/StageManager";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
@@ -92,11 +94,33 @@ export class PortalNode extends ConnectableEntity {
     this.updateFatherSectionByMove();
     // 移动其他实体，递归碰撞
     this.updateOtherEntityLocationByMove();
+    this.updateChildStageCameraDataByMove();
   }
   moveTo(location: Vector): void {
     const newRectangle = this.collisionBox.getRectangle();
     newRectangle.location = location.clone();
     this.collisionBox.shapeList[0] = newRectangle;
     this.updateFatherSectionByMove();
+    this.updateChildStageCameraDataByMove();
+  }
+
+  private updateChildStageCameraDataByMove() {
+    StageManager.updateChildStageCameraData(
+      PathString.relativePathToAbsolutePath(PathString.dirPath(Stage.path.getFilePath()), this.portalFilePath),
+      {
+        location: this.location,
+        targetLocation: this.targetLocation,
+        size: this.size,
+        zoom: 1,
+      },
+    );
+  }
+
+  public zoomIn() {
+    this.cameraScale *= 1.1;
+  }
+
+  public zoomOut() {
+    this.cameraScale /= 1.1;
   }
 }

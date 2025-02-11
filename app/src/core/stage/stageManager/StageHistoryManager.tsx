@@ -2,6 +2,7 @@ import { Serialized } from "../../../types/node";
 import { RecentFileManager } from "../../service/dataFileService/RecentFileManager";
 import { StageSaveManager } from "../../service/dataFileService/StageSaveManager";
 import { Settings } from "../../service/Settings";
+import { Stage } from "../Stage";
 import { StageDumper } from "../StageDumper";
 import { StageManager } from "./StageManager";
 
@@ -78,7 +79,7 @@ export namespace StageHistoryManager {
     if (currentIndex > 0) {
       currentIndex--;
       StageManager.destroy();
-      RecentFileManager.loadStageByData(historyList[currentIndex]);
+      RecentFileManager.loadStageByData(historyList[currentIndex], Stage.path.getFilePath());
     }
   }
 
@@ -89,7 +90,7 @@ export namespace StageHistoryManager {
     if (currentIndex < historyList.length - 1) {
       currentIndex++;
       StageManager.destroy();
-      RecentFileManager.loadStageByData(historyList[currentIndex]);
+      RecentFileManager.loadStageByData(historyList[currentIndex], Stage.path.getFilePath());
     }
   }
 }

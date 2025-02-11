@@ -64,6 +64,81 @@ export namespace StageManager {
     associations: StringDict.create(),
     tags: StringDict.create(),
   };
+
+  export function getStageContentDebug() {
+    return stageContent.entities.length;
+  }
+  /**
+   * 子舞台，用于渲染传送门中的另一个世界
+   * key：绝对路径构成的字符串，用于区分不同的子舞台
+   */
+  const childStageContent: Record<string, stageContent> = {};
+
+  /**
+   * 每一个子舞台的相机数据，用于渲染传送门中的另一个世界
+   */
+  const childStageCameraData: Record<string, { location: Vector; zoom: number; size: Vector; targetLocation: Vector }> =
+    {};
+
+  export function updateChildStageCameraData(
+    path: string,
+    data: { location: Vector; zoom: number; size: Vector; targetLocation: Vector },
+  ) {
+    childStageCameraData[path] = data;
+  }
+  export function getChildStageCameraData(path: string) {
+    return childStageCameraData[path];
+  }
+
+  export function storeMainStage() {
+    childStageContent["main"] = {
+      entities: stageContent.entities.clone(),
+      associations: stageContent.associations.clone(),
+      tags: stageContent.tags.clone(),
+    };
+  }
+  export function restoreMainStage() {
+    stageContent.associations = childStageContent["main"].associations.clone();
+    stageContent.entities = childStageContent["main"].entities.clone();
+    stageContent.tags = childStageContent["main"].tags.clone();
+  }
+  export function storeMainStageToChildStage(path: string) {
+    childStageContent[path] = {
+      entities: stageContent.entities.clone(),
+      associations: stageContent.associations.clone(),
+      tags: stageContent.tags.clone(),
+    };
+  }
+  export function storeChildStageToMainStage(path: string) {
+    stageContent.associations = childStageContent[path].associations.clone();
+    stageContent.entities = childStageContent[path].entities.clone();
+    stageContent.tags = childStageContent[path].tags.clone();
+  }
+  export function getAllChildStageKeys(): string[] {
+    return Object.keys(childStageContent).filter((key) => key !== "main");
+  }
+  // 使用这个方法时要提前保证当前主舞台槽上放的是主舞台
+  export function getAllChildStageKeysAndCamera(): { key: string; camera: { location: Vector; zoom: number } }[] {
+    const result = [];
+    for (const entity of getEntities().filter((entity) => entity instanceof PortalNode)) {
+      const newKey = PathString.relativePathToAbsolutePath(
+        PathString.dirPath(Stage.path.getFilePath()),
+        entity.portalFilePath,
+      );
+      const item = {
+        key: newKey,
+        camera: {
+          location: entity.location,
+          zoom: entity.cameraScale,
+          size: entity.size,
+          targetLocation: entity.targetLocation,
+        },
+      };
+      result.push(item);
+    }
+    return result;
+  }
+
   export let isEnableEntityCollision: boolean = false;
   export let isAllowAddCycleEdge: boolean = false;
 
@@ -218,6 +293,7 @@ export namespace StageManager {
   export function destroy() {
     stageContent.entities.clear();
     stageContent.associations.clear();
+    stageContent.tags.clear();
   }
 
   export function addTextNode(node: TextNode) {

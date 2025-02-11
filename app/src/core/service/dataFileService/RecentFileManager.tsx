@@ -17,6 +17,9 @@ import { UrlNode } from "../../stage/stageObject/entity/UrlNode";
 import { ViewFlashEffect } from "../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { PenStroke } from "../../stage/stageObject/entity/PenStroke";
 import { PortalNode } from "../../stage/stageObject/entity/PortalNode";
+import { PathString } from "../../../utils/pathString";
+import { isWeb } from "../../../utils/platform";
+import { Vector } from "../../dataStruct/Vector";
 
 /**
  * 管理最近打开的文件列表
@@ -145,18 +148,12 @@ export namespace RecentFileManager {
    */
   export async function openFileByPath(path: string) {
     StageManager.destroy();
-    let content: string;
-    try {
-      content = await readTextFile(path);
-    } catch (e) {
-      console.error("打开文件失败：", path);
-      console.error(e);
+    const data = await getDataByPath(path);
+    if (!data) {
       return;
     }
 
-    const data = StageLoader.validate(JSON.parse(content));
-
-    loadStageByData(data);
+    loadStageByData(data, path);
     StageHistoryManager.reset(data);
 
     Camera.reset();
@@ -167,7 +164,93 @@ export namespace RecentFileManager {
     });
   }
 
-  export function loadStageByData(data: Serialized.File) {
+  /**
+   * 通过路径，获取文件内容
+   * @param path
+   * @returns
+   */
+  async function getDataByPath(path: string): Promise<Serialized.File | null> {
+    if (!exists(path)) {
+      console.error("文件不存在：" + path);
+      return null;
+    }
+    let content: string;
+    try {
+      content = await readTextFile(path);
+    } catch (e) {
+      console.error("打开文件失败：", path);
+      console.error(e);
+      return null;
+    }
+    const data = StageLoader.validate(JSON.parse(content));
+    return data;
+  }
+
+  /**
+   * 加载主场景和子场景
+   * @param data 这个工程文件的整个data数据
+   * @param path 这个工程文件的绝对路径
+   */
+  export async function loadStageByData(data: Serialized.File, path: string) {
+    loadDataToMainStage(data);
+    if (isWeb) {
+      // web模式先别加载子场景
+      return;
+    }
+    // 加载所有子场景
+    const childAbsolutePathList: string[] = [];
+    for (const entity of data.entities) {
+      if (entity.type === "core:portal_node") {
+        const relativePath = entity.portalFilePath;
+        // 转换成绝对路径
+        const childAbsolutePath = PathString.relativePathToAbsolutePath(PathString.dirPath(path), relativePath);
+        childAbsolutePathList.push(childAbsolutePath);
+
+        // 更新子场景的摄像头信息
+        StageManager.updateChildStageCameraData(childAbsolutePath, {
+          location: new Vector(...entity.location),
+          zoom: entity.cameraScale,
+          size: new Vector(...entity.size),
+          targetLocation: new Vector(...entity.targetLocation),
+        });
+      }
+    }
+
+    // 加载子场景
+    for (const childAbsolutePath of childAbsolutePathList) {
+      if (!(await exists(childAbsolutePath))) {
+        console.error("子场景文件不存在：" + childAbsolutePath);
+        continue;
+      }
+      const childData = await getDataByPath(childAbsolutePath);
+      if (!childData) {
+        console.error("子场景文件不存在：" + childAbsolutePath);
+        continue;
+      }
+      console.log("开始加载子场景：" + childAbsolutePath);
+      loadChildStageByData(childData, childAbsolutePath);
+      // 先别递归
+      // if (childData) {
+      //   loadStageByData(childData);
+      // }
+    }
+  }
+
+  function loadChildStageByData(data: Serialized.File, absolutePath: string) {
+    console.log(1, StageManager.getStageContentDebug());
+    StageManager.storeMainStage();
+    console.log(2, StageManager.getStageContentDebug());
+    StageManager.destroy();
+    loadDataToMainStage(data);
+    console.log(3, StageManager.getStageContentDebug());
+    StageManager.storeMainStageToChildStage(absolutePath);
+    console.log(4, StageManager.getStageContentDebug());
+    StageManager.destroy();
+    StageManager.restoreMainStage();
+    console.log(5, StageManager.getStageContentDebug());
+  }
+
+  function loadDataToMainStage(data: Serialized.File) {
     for (const entity of data.entities) {
       // TODO: 待优化结构
       if (entity.type === "core:text_node") {

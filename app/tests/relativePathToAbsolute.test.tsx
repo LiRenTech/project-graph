@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PathString } from "../src/utils/PathString";
+import { PathString } from "../src/utils/pathString";
 
 describe("PathString", () => {
   it("should resolve relative path to absolute path with simple case (Windows)", () => {
@@ -117,4 +117,13 @@ describe("PathString", () => {
     // 相对路径没有目录变化
     expect(PathString.relativePathToAbsolutePath("/Users/admin/", "test.txt")).toBe("/Users/admin/test.txt");
   });
+
+  // it("自主测试", () => {
+  //   expect(
+  //     PathString.relativePathToAbsolutePath(
+  //       "D:\\Desktop\\graph\\测试保存\\新文件2.json",
+  //       "../projectGraph/功能总结.json",
+  //     ),
+  //   ).toBe("D:/Desktop/graph/projectGraph/功能总结.json");
+  // });
 });

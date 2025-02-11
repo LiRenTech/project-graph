@@ -7,6 +7,7 @@ import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Camera } from "../../../../stage/Camera";
 import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
+// import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -208,7 +209,20 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
       moveCameraByMouseWheel(event);
     }
   } else if (Controller.pressingKeySet.has("control")) {
-    zoomCameraByMouseWheel(event);
+    // 不要在节点上滚动
+    const entity = StageManager.findEntityByLocation(worldLocation);
+    if (entity !== null) {
+      // if (entity instanceof PortalNode) {
+      //   if (event.deltaY > 0) {
+      //     entity.zoomIn();
+      //   } else {
+      //     entity.zoomOut();
+      //   }
+      //   return;
+      // }
+    } else {
+      zoomCameraByMouseWheel(event);
+    }
   } else {
     if (Camera.mouseWheelMode === "zoom") {
       zoomCameraByMouseWheel(event);

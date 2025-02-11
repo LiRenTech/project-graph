@@ -78,4 +78,16 @@ export class StringDict<T> {
   changeValueById(key: string, fn: (value: T) => T): void {
     this.data[key] = fn(this.data[key]);
   }
+
+  /**
+   * 浅拷贝
+   * @returns
+   */
+  clone(): StringDict<T> {
+    const newDict = new StringDict<T>();
+    Object.keys(this.data).forEach((key) => {
+      newDict.setById(key, this.data[key]);
+    });
+    return newDict;
+  }
 }

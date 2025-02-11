@@ -160,14 +160,14 @@ export namespace Renderer {
         for (let xi = -1; xi <= 1; xi++) {
           Camera.location.x = originCameraLocation.x + xi * LimitX;
           Camera.location.y = originCameraLocation.y + yi * LimitY;
-          renderStageElements(viewRectangle);
+          renderMainStageElements(viewRectangle);
         }
       }
       Camera.location = originCameraLocation;
       renderCycleSpaceBorder();
     } else {
       // 正常模式渲染
-      renderStageElements(viewRectangle);
+      renderMainStageElements(viewRectangle);
     }
 
     // 不随摄像机移动的渲染要素
@@ -195,13 +195,32 @@ export namespace Renderer {
     renderDebugDetails();
   }
 
-  function renderStageElements(viewRectangle: Rectangle) {
-    // 实体相关的
-    EntityRenderer.renderAllSectionsBackground(viewRectangle);
-    renderEdges(viewRectangle);
-    renderEntities(viewRectangle);
-    EntityRenderer.renderAllSectionsBigTitle(viewRectangle);
-    renderTags();
+  function renderMainStageElements(viewRectangle: Rectangle) {
+    // 先渲染主场景
+    renderStageElementsWithoutReactions(viewRectangle);
+    // 再渲染所有子场景
+    for (const key of StageManager.getAllChildStageKeys()) {
+      // key就是绝对路径
+      const cameraData = StageManager.getChildStageCameraData(key);
+      let diffLocation = Vector.getZero();
+      if (cameraData) {
+        diffLocation = cameraData.location;
+        Camera.location = Camera.location.subtract(diffLocation);
+      } else {
+        console.log(key, "没有camera数据");
+      }
+
+      // 加载子场景
+      StageManager.storeMainStage(); // 先保存主场景
+      StageManager.destroy();
+      StageManager.storeChildStageToMainStage(key); // 把子场景加到主场景位置上
+      renderStageElementsWithoutReactions(new Rectangle(cameraData.targetLocation, cameraData.size)); // 再渲染主场景
+      StageManager.destroy();
+      StageManager.restoreMainStage(); // 还原主场景位置
+
+      Camera.location = Camera.location.add(diffLocation);
+    }
+
     // 交互相关的
     renderWarningEntities();
     renderHoverCollisionBox();
@@ -214,6 +233,16 @@ export namespace Renderer {
     renderEffects();
     // renderViewRectangle(viewRectangle);
   }
+
+  // 渲染一切实体相关的要素
+  function renderStageElementsWithoutReactions(viewRectangle: Rectangle) {
+    EntityRenderer.renderAllSectionsBackground(viewRectangle);
+    renderEdges(viewRectangle);
+    renderEntities(viewRectangle);
+    EntityRenderer.renderAllSectionsBigTitle(viewRectangle);
+    renderTags();
+  }
+
   // 渲染中心准星
   function renderCenterPointer() {
     if (!isRenderCenterPointer) {
