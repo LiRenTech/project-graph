@@ -65,7 +65,7 @@ export namespace Panel {
           )}
         >
           <div className="flex items-center justify-between px-6 py-4">
-            <h2 className="text-xl font-bold">{title}</h2>
+            <span className="text-xl font-bold">{title}</span>
             {closable && (
               <span className="cursor-pointer" onClick={() => setShow(false)}>
                 <X />
@@ -73,7 +73,7 @@ export namespace Panel {
             )}
           </div>
           <div className="flex-1 overflow-auto px-6">{children}</div>
-          <div className="flex items-center justify-end p-6">
+          <div className="flex items-center justify-end gap-4 p-6">
             {buttons.map((button) => (
               <Button
                 key={button.label}
