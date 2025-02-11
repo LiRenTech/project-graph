@@ -307,8 +307,8 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     // 画文本
     ShapeRenderer.renderRect(
       edge.textRectangle.transformWorld2View(),
-      new Color(31, 31, 31, 0.5),
-      new Color(31, 31, 31, 0.5),
+      StageStyleManager.currentStyle.BackgroundColor,
+      Color.Transparent,
       1,
     );
     TextRenderer.renderTextFromCenter(
