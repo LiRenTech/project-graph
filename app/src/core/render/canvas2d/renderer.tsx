@@ -361,7 +361,7 @@ export namespace Renderer {
         // 完全覆盖框选的提示
         TextRenderer.renderText(
           "完全覆盖框选",
-          transformWorld2View(Stage.selectMachine.selectingRectangle.leftBottom.add(new Vector(0, 10))),
+          transformWorld2View(Stage.selectMachine.selectingRectangle.leftBottom).add(new Vector(20, 10)),
           10,
           StageStyleManager.currentStyle.SelectRectangleBorderColor,
         );
