@@ -343,17 +343,20 @@ settings:
     title: 鼠标滚轮模式
     options:
       zoom: 缩放
-      move: 移动
+      move: 纵向移动
+      moveX: 横向移动
   mouseWheelWithShiftMode:
     title: 按住Shift时，鼠标滚轮模式
     options:
       zoom: 缩放
-      move: 移动
+      move: 纵向移动
+      moveX: 横向移动
   mouseWheelWithCtrlMode:
     title: 按住Ctrl时，鼠标滚轮模式
     options:
       zoom: 缩放
-      move: 移动
+      move: 纵向移动
+      moveX: 横向移动
   rectangleSelectWhenLeft:
     title: 向左框选的策略
     description: |

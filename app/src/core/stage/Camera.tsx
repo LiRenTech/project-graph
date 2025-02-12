@@ -81,9 +81,9 @@ export namespace Camera {
   export let limitCameraInCycleSpace = false;
   export let cameraCycleSpaceSizeX = 1000;
   export let cameraCycleSpaceSizeY = 1000;
-  export let mouseWheelMode: "zoom" | "move" = "zoom"; // zoom or move
-  export let mouseWheelWithShiftMode: "zoom" | "move" = "zoom"; // zoom or move
-  export let mouseWheelWithCtrlMode: "zoom" | "move" = "zoom"; // zoom or move
+  export let mouseWheelMode: Settings.Settings["mouseWheelMode"] = "zoom";
+  export let mouseWheelWithShiftMode: Settings.Settings["mouseWheelWithShiftMode"] = "zoom";
+  export let mouseWheelWithCtrlMode: Settings.Settings["mouseWheelWithCtrlMode"] = "zoom";
   let cameraKeyboardScaleRate = 0.2;
 
   // IDEA: 突然有一个好点子

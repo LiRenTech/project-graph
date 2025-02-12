@@ -179,8 +179,10 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
   if (Controller.pressingKeySet.has("shift")) {
     if (Camera.mouseWheelWithShiftMode === "zoom") {
       zoomCameraByMouseWheel(event);
-    } else {
+    } else if (Camera.mouseWheelWithShiftMode === "move") {
       moveCameraByMouseWheel(event);
+    } else if (Camera.mouseWheelWithShiftMode === "moveX") {
+      moveXCameraByMouseWheel(event);
     }
   } else if (Controller.pressingKeySet.has("control")) {
     // 不要在节点上滚动
@@ -189,13 +191,21 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
       // 给这个entity一个特效
       Stage.effectMachine.addEffect(EntityCreateFlashEffect.fromRectangle(entity.collisionBox.getRectangle()));
     } else {
-      zoomCameraByMouseWheel(event);
+      if (Camera.mouseWheelWithCtrlMode === "zoom") {
+        zoomCameraByMouseWheel(event);
+      } else if (Camera.mouseWheelWithCtrlMode === "move") {
+        moveCameraByMouseWheel(event);
+      } else if (Camera.mouseWheelWithCtrlMode === "moveX") {
+        moveXCameraByMouseWheel(event);
+      }
     }
   } else {
     if (Camera.mouseWheelMode === "zoom") {
       zoomCameraByMouseWheel(event);
-    } else {
+    } else if (Camera.mouseWheelMode === "move") {
       moveCameraByMouseWheel(event);
+    } else if (Camera.mouseWheelMode === "moveX") {
+      moveXCameraByMouseWheel(event);
     }
   }
 
@@ -222,6 +232,15 @@ function moveCameraByMouseWheel(event: WheelEvent) {
   } else if (event.deltaY < 0) {
     // 向下滚动是下移
     Camera.location = Camera.location.subtract(new Vector(0, (Camera.moveAmplitude * 50) / Camera.currentScale));
+  }
+}
+function moveXCameraByMouseWheel(event: WheelEvent) {
+  if (event.deltaY > 0) {
+    // 向上滚动是左移
+    Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
+  } else if (event.deltaY < 0) {
+    // 向下滚动是右移
+    Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
   }
 }
 /**
