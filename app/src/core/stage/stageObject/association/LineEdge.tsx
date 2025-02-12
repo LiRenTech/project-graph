@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
-import { getTextSize } from "../../../../utils/font";
+import { getMultiLineTextSize } from "../../../../utils/font";
 import { Vector } from "../../../dataStruct/Vector";
 import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
@@ -90,7 +90,7 @@ export class LineEdge extends Edge {
 
   get textRectangle(): Rectangle {
     // HACK: 这里会造成频繁渲染，频繁计算文字宽度进而可能出现性能问题
-    const textSize = getTextSize(this.text, Renderer.FONT_SIZE);
+    const textSize = getMultiLineTextSize(this.text, Renderer.FONT_SIZE, 1.2);
     if (this.isShifting) {
       return new Rectangle(this.shiftingMidPoint.subtract(textSize.divide(2)), textSize);
     } else {

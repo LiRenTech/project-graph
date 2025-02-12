@@ -48,7 +48,6 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
         open(clickedEntity.url);
       }
     } else if (clickedEntity instanceof PortalNode) {
-      // TODO: 点击范围有待设计
       const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
       if (diffNodeLeftTopLocation.y < PortalNode.TITLE_LINE_Y) {
         // 编辑标题

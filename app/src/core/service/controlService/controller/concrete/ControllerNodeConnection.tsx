@@ -180,8 +180,6 @@ class ControllerNodeConnectionClass extends ControllerClass {
     }
     const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     const releaseTargetEntity = StageManager.findConnectableEntityByLocation(releaseWorldLocation);
-    console.log("releaseTargetEntity", releaseTargetEntity);
-    console.log("this.connectToEntity", this.connectToEntity);
     // 结束连线
     if (releaseTargetEntity !== null) {
       // 在目标节点上弹起

@@ -100,6 +100,34 @@ export namespace TextRenderer {
     }
   }
 
+  export function renderMultiLineTextFromCenter(
+    text: string,
+    centerLocation: Vector,
+    size: number,
+    limitWidth: number,
+    color: Color,
+    lineHeight: number = 1.2,
+    limitLines: number = Infinity,
+  ): void {
+    text = Renderer.protectingPrivacy ? replaceTextWhenProtect(text) : text;
+    let currentY = 0; // 顶部偏移量
+    let textLineArray = textToTextArrayWrapCache(text, size, limitWidth);
+    // 限制行数
+    if (limitLines < textLineArray.length) {
+      textLineArray = textLineArray.slice(0, limitLines);
+      textLineArray[limitLines - 1] += "..."; // 最后一行加省略号
+    }
+    for (const line of textLineArray) {
+      renderTextFromCenter(
+        line,
+        centerLocation.add(new Vector(0, currentY - ((textLineArray.length - 1) * size) / 2)),
+        size,
+        color,
+      );
+      currentY += size * lineHeight;
+    }
+  }
+
   const textArrayCache: LruCache<string, string[]> = new LruCache(100);
 
   /**

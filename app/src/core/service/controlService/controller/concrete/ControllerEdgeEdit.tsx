@@ -2,6 +2,7 @@ import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 
 import { ControllerClass } from "../ControllerClass";
+import { editEdgeText } from "./utilsControl";
 
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
@@ -18,13 +19,16 @@ ControllerEdgeEdit.mouseDoubleClick = (event: MouseEvent) => {
   if (!firstHoverEdge) {
     return;
   }
+
   // 编辑边上的文字
-  const user_input = prompt("请输入线上的文字", firstHoverEdge.text);
-  if (user_input) {
-    for (const edge of Stage.mouseInteractionCore.hoverEdges) {
-      edge.rename(user_input);
-    }
-  }
+  editEdgeText(firstHoverEdge);
+
+  // const user_input = prompt("请输入线上的文字", firstHoverEdge.text);
+  // if (user_input) {
+  //   for (const edge of Stage.mouseInteractionCore.hoverEdges) {
+  //     edge.rename(user_input);
+  //   }
+  // }
   return;
 };
 

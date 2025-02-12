@@ -8,6 +8,7 @@ import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
+import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
@@ -47,6 +48,32 @@ export function editTextNode(clickedNode: TextNode, selectAll = true) {
     selectAll,
   ).then(() => {
     clickedNode!.isEditing = false;
+    Controller.isCameraLocked = false;
+  });
+}
+
+export function editEdgeText(clickedLineEdge: LineEdge, selectAll = true) {
+  Controller.isCameraLocked = true;
+
+  // clickedLineEdge.isEditing = true;
+  InputElement.textarea(
+    Renderer.transformWorld2View(clickedLineEdge.textRectangle.location).add(
+      Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
+    ),
+    clickedLineEdge.text,
+    (text) => {
+      clickedLineEdge?.rename(text);
+    },
+    {
+      fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
+      backgroundColor: StageStyleManager.currentStyle.BackgroundColor.toString(),
+      color: StageStyleManager.currentStyle.StageObjectBorderColor.toString(),
+      outline: "solid 1px rgba(255,255,255,0.1)",
+      // marginTop: -8 * Camera.currentScale + "px",
+    },
+    selectAll,
+  ).then(() => {
+    // clickedLineEdge!.isEditing = false;
     Controller.isCameraLocked = false;
   });
 }

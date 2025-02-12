@@ -82,10 +82,11 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       const midPoint = edge.bodyLine.midPoint();
       const startHalf = new Line(edge.bodyLine.start, midPoint);
       const endHalf = new Line(midPoint, edge.bodyLine.end);
-      TextRenderer.renderTextFromCenter(
+      TextRenderer.renderMultiLineTextFromCenter(
         edge.text,
         Renderer.transformWorld2View(midPoint),
         Renderer.FONT_SIZE * Camera.currentScale,
+        Infinity,
         edgeColor,
       );
       const edgeTextRectangle = edge.textRectangle;

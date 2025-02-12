@@ -38,7 +38,6 @@ ControllerSectionEdit.mousemove = (event: MouseEvent) => {
 
 ControllerSectionEdit.keydown = (event: KeyboardEvent) => {
   if (event.key === "Enter") {
-    // 先检测是否有选择了的边
     const isHaveSectionSelected = StageManager.getSections().some((section) => section.isSelected);
     if (!isHaveSectionSelected) {
       return;
