@@ -153,17 +153,21 @@ export namespace WorldRenderUtils {
     Canvas.ctx.lineJoin = originLineJoin;
   }
 
-  // BUG
-  export function renderRectangleFlash(rectangle: Rectangle, shadowColor: Color, shadowBlur: number) {
+  export function renderRectangleFlash(
+    rectangle: Rectangle,
+    shadowColor: Color,
+    shadowBlur: number,
+    roundedRadius = 0,
+  ) {
     Canvas.ctx.shadowColor = shadowColor.toString();
     Canvas.ctx.shadowBlur = shadowBlur;
     // 绘制矩形
     Canvas.ctx.beginPath();
-    Canvas.ctx.roundRect(rectangle.location.x, rectangle.location.y, rectangle.size.x, rectangle.size.y, 0);
-    Canvas.ctx.fillStyle = "red";
+    Canvas.ctx.roundRect(rectangle.location.x, rectangle.location.y, rectangle.size.x, rectangle.size.y, roundedRadius);
+    Canvas.ctx.fillStyle = Color.Transparent.toString();
     Canvas.ctx.fill();
-    Canvas.ctx.lineWidth = 1;
-    Canvas.ctx.strokeStyle = "white";
+    Canvas.ctx.lineWidth = 0;
+    Canvas.ctx.strokeStyle = shadowColor.toString();
     Canvas.ctx.stroke();
     // 恢复
     Canvas.ctx.shadowBlur = 0;

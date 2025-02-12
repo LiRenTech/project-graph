@@ -1,8 +1,13 @@
 import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Renderer } from "../../../../render/canvas2d/renderer";
 import { WorldRenderUtils } from "../../../../render/canvas2d/utilsRenderer/WorldRenderUtils";
+import { Camera } from "../../../../stage/Camera";
+import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
+import { reverseAnimate } from "../mathTools/animateFunctions";
 
 /**
  * 实体创建时闪光特效
@@ -14,6 +19,9 @@ export class EntityCreateFlashEffect extends EffectObject {
      */
     public override timeProgress: ProgressNumber,
     public rectangle: Rectangle,
+    public radius: number,
+    public color: Color = Color.White,
+    public startBlurSize = 50,
   ) {
     super(timeProgress);
   }
@@ -22,14 +30,59 @@ export class EntityCreateFlashEffect extends EffectObject {
     super.tick();
   }
 
+  /**
+   * 常用的默认效果
+   * @param rectangle
+   * @returns
+   */
   static fromRectangle(rectangle: Rectangle) {
-    return new EntityCreateFlashEffect(new ProgressNumber(0, 1000), rectangle);
+    return new EntityCreateFlashEffect(
+      new ProgressNumber(0, 50),
+      rectangle,
+      Renderer.NODE_ROUNDED_RADIUS,
+      StageStyleManager.currentStyle.effects.flash,
+    );
+  }
+
+  static fromCreateEntity(entity: Entity) {
+    const result = new EntityCreateFlashEffect(
+      new ProgressNumber(0, 15),
+      entity.collisionBox.getRectangle(),
+      Renderer.NODE_ROUNDED_RADIUS,
+      StageStyleManager.currentStyle.effects.flash,
+      100,
+    );
+    result.subEffects = [
+      new EntityCreateFlashEffect(
+        new ProgressNumber(0, 30),
+        entity.collisionBox.getRectangle(),
+        Renderer.NODE_ROUNDED_RADIUS,
+        StageStyleManager.currentStyle.effects.successShadow,
+        50,
+      ),
+      new EntityCreateFlashEffect(
+        new ProgressNumber(0, 45),
+        entity.collisionBox.getRectangle(),
+        Renderer.NODE_ROUNDED_RADIUS,
+        StageStyleManager.currentStyle.effects.successShadow,
+        25,
+      ),
+    ];
+    return result;
   }
 
   render(): void {
     if (this.timeProgress.isFull) {
       return;
     }
-    WorldRenderUtils.renderRectangleFlash(this.rectangle, Color.White, 50 * (1 - this.timeProgress.rate));
+    WorldRenderUtils.renderRectangleFlash(
+      this.rectangle.transformWorld2View(),
+      this.color,
+      this.startBlurSize * Camera.currentScale * reverseAnimate(1 - this.timeProgress.rate),
+      this.radius * Camera.currentScale,
+    );
+    for (const subEffect of this.subEffects) {
+      subEffect.render();
+    }
   }
 }

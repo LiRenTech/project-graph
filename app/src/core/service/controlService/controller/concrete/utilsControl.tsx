@@ -11,7 +11,7 @@ import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
-import { EntityCreateLineEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateLineEffect";
+import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { Controller } from "../Controller";
 
@@ -171,9 +171,8 @@ function textNodeInEditModeByUUID(uuid: string) {
     // 说明 创建了立刻删掉了
     return;
   }
-  const rect = createNode.collisionBox.getRectangle();
   // 整特效
-  Stage.effectMachine.addEffect(EntityCreateLineEffect.from(rect));
+  Stage.effectMachine.addEffect(EntityCreateFlashEffect.fromCreateEntity(createNode));
   if (isDesktop) {
     editTextNode(createNode);
   }

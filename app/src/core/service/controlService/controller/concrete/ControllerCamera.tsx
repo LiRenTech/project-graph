@@ -7,6 +7,7 @@ import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Camera } from "../../../../stage/Camera";
 import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
+import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -185,14 +186,8 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
     // 不要在节点上滚动
     const entity = StageManager.findEntityByLocation(worldLocation);
     if (entity !== null) {
-      // if (entity instanceof PortalNode) {
-      //   if (event.deltaY > 0) {
-      //     entity.zoomIn();
-      //   } else {
-      //     entity.zoomOut();
-      //   }
-      //   return;
-      // }
+      // 给这个entity一个特效
+      Stage.effectMachine.addEffect(EntityCreateFlashEffect.fromRectangle(entity.collisionBox.getRectangle()));
     } else {
       zoomCameraByMouseWheel(event);
     }
