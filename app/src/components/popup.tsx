@@ -21,7 +21,16 @@ export namespace Popup {
             setTimeout(
               once(() => {
                 root.unmount();
-                document.body.removeChild(container);
+                try {
+                  document.body.removeChild(container);
+                } catch (e) {
+                  if (e instanceof DOMException) {
+                    // 用户从开始界面弹出到关闭界面过快，导致这里报错。
+                    // ignore
+                  } else {
+                    throw Error("Popup组件销毁时，出现错误" + e);
+                  }
+                }
               }),
               300,
             );
