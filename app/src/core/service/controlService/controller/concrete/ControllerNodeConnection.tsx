@@ -63,6 +63,13 @@ class ControllerNodeConnectionClass extends ControllerClass {
           this.addConnectEffect(fromEntity, connectPoint);
         }
         this.connectFromEntities = [connectPoint];
+        // 选中这个质点
+        for (const entity of StageManager.getConnectableEntity()) {
+          if (entity.isSelected) {
+            entity.isSelected = false;
+          }
+        }
+        connectPoint.isSelected = true;
       }
     }
   }
@@ -196,7 +203,7 @@ class ControllerNodeConnectionClass extends ControllerClass {
       // 额外复制一个数组，因为回调函数执行前，这个数组已经被清空了
       const newConnectFromEntities = this.connectFromEntities;
 
-      addTextNodeByLocation(releaseWorldLocation, false, (uuid) => {
+      addTextNodeByLocation(releaseWorldLocation, true, (uuid) => {
         const createdNode = StageManager.getTextNodeByUUID(uuid) as ConnectableEntity;
         for (const fromEntity of newConnectFromEntities) {
           const connectResult = StageManager.connectEntity(fromEntity, createdNode);

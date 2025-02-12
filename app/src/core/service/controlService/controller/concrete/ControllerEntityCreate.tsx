@@ -35,7 +35,7 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
     createConnectPoint(pressLocation, sections);
   } else {
     // 双击创建节点
-    addTextNodeByLocation(pressLocation);
+    addTextNodeByLocation(pressLocation, true);
   }
 };
 
