@@ -21,7 +21,7 @@ export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
 
   const [cursorName, setCursorName] = React.useState("default");
-  const [bgAlpha] = Settings.use("windowBackgroundAlpha");
+  const [bgAlpha, setBgAlpha] = React.useState(0.9);
   const [isDrawingMode, setIsDrawingMode] = React.useState(false);
   // const [nodeDetailsPanel, setNodeDetailsPanel] = React.useState("vditor");
   const [nodeDetailsPanel] = Settings.use("nodeDetailsPanel");
@@ -67,6 +67,9 @@ export default function Home() {
 
     Settings.watch("protectingPrivacy", (value) => {
       setIsProtectPrivacy(value);
+    });
+    Settings.watch("windowBackgroundAlpha", (value) => {
+      setBgAlpha(value);
     });
 
     // 开启定时器
