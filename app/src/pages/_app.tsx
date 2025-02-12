@@ -348,6 +348,7 @@ export default function App() {
         </IconButton>
         {isDesktop && (
           <IconButton
+            className={cn(isWindowCollapsing && "animate-bounce")}
             onClick={async (e) => {
               e.stopPropagation();
               // const size = await getCurrentWindow().outerSize();

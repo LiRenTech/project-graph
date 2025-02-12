@@ -84,6 +84,31 @@ export namespace ColorManager {
     }
     return false;
   }
+  /**
+   * 按照色相环的顺序整理用户实体填充颜色
+   */
+  export async function organizeUserEntityFillColors() {
+    const colors = await getUserEntityFillColors();
+    const sortedColors = sortColorsByHue(colors);
+    await store.set("entityFillColors", colorToColorData(sortedColors));
+    store.save();
+  }
+
+  /**
+   * 按照色相环的顺序排序颜色
+   * @param colors
+   */
+  function sortColorsByHue(colors: Color[]): Color[] {
+    return colors.sort((a, b) => getColorHue(a) - getColorHue(b));
+  }
+  /**
+   * 计算颜色的色相
+   * @param color
+   * @returns 色相值（0-360）
+   */
+  function getColorHue(color: Color): number {
+    return Color.getHue(color);
+  }
 }
 /**
 json数据格式

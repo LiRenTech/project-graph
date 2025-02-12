@@ -155,6 +155,39 @@ export class Color {
     return { h: h * 360, s, l };
   }
 
+  /**
+   * 计算颜色的色相
+   * @param color
+   * @returns 色相值（0-360）
+   */
+  public static getHue(color: Color): number {
+    const r = color.r / 255;
+    const g = color.g / 255;
+    const b = color.b / 255;
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let hue = 0;
+
+    if (max === min) {
+      hue = 0; // achromatic
+    } else {
+      const diff = max - min;
+      if (max === r) {
+        hue = ((g - b) / diff) % 6;
+      } else if (max === g) {
+        hue = (b - r) / diff + 2;
+      } else if (max === b) {
+        hue = (r - g) / diff + 4;
+      }
+      hue = Math.round(hue * 60);
+      if (hue < 0) {
+        hue += 360;
+      }
+    }
+    return hue;
+  }
+
   // 辅助方法：HSL转RGB
   private hslToRgb(hsl: { h: number; s: number; l: number }): { r: number; g: number; b: number } {
     let k, r, g, b;

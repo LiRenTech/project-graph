@@ -3,6 +3,10 @@ import Button from "../components/Button";
 import { Dialog } from "../components/dialog";
 import { Color } from "../core/dataStruct/Color";
 import { ColorManager } from "../core/service/feedbackService/ColorManager";
+import { StageManager } from "../core/stage/stageManager/StageManager";
+import { TextNode } from "../core/stage/stageObject/entity/TextNode";
+import { Section } from "../core/stage/stageObject/entity/Section";
+import { LineEdge } from "../core/stage/stageObject/association/LineEdge";
 
 /**
  * 自定义颜色设置面板
@@ -19,15 +23,29 @@ export default function ColorManagerPanel() {
   const [currentColorList, setCurrentColorList] = useState<Color[]>([]);
 
   return (
-    <div className="h-96 w-96 bg-neutral-700 p-4">
+    <div className="bg-panel-bg h-96 w-96 p-4">
       <div>
-        <p>当前颜色：</p>
+        <p>我的颜色库：</p>
         {/* <ColorDotElement color={Color.Red} /> */}
         <div className="flex flex-wrap items-center justify-center">
           {currentColorList.map((color) => (
-            <ColorDotElement key={color.toString()} color={color} />
+            <ColorDotElement
+              key={color.toString()}
+              color={color}
+              onclick={() => {
+                console.log(color);
+                const rgbSharpString = color.toHexString();
+                if (rgbSharpString.length === 9) {
+                  // 去掉透明度
+                  setPreAddColor(rgbSharpString.slice(0, 7));
+                }
+              }}
+            />
           ))}
         </div>
+        {currentColorList.length !== 0 && (
+          <div className="text-panel-details-text text-center text-xs">提示：点击颜色可以复制颜色值到待添加颜色</div>
+        )}
       </div>
       <div>
         <p>添加颜色：</p>
@@ -60,25 +78,56 @@ export default function ColorManagerPanel() {
         >
           确认添加
         </Button>
+        <Button
+          onClick={() => {
+            StageManager.getSelectedStageObjects().forEach((stageObject) => {
+              if (stageObject instanceof TextNode) {
+                ColorManager.addUserEntityFillColor(stageObject.color);
+              } else if (stageObject instanceof Section) {
+                ColorManager.addUserEntityFillColor(stageObject.color);
+              } else if (stageObject instanceof LineEdge) {
+                ColorManager.addUserEntityFillColor(stageObject.color);
+              }
+            });
+          }}
+        >
+          将选中的节点颜色添加到库
+        </Button>
+        <Button
+          onClick={() => {
+            ColorManager.organizeUserEntityFillColors();
+          }}
+        >
+          一键整理颜色库
+        </Button>
       </div>
     </div>
   );
 }
-function ColorDotElement({ color }: { color: Color }) {
+
+function ColorDotElement({ color, onclick }: { color: Color; onclick: (e: any) => void }) {
   const r = color.r;
   const g = color.g;
   const b = color.b;
   const a = color.a;
   return (
-    <div className="relative m-1 h-8 w-8 rounded-full" style={{ backgroundColor: `rgba(${r}, ${g}, ${b}, ${a})` }}>
-      <Button
-        className="absolute -right-2 -top-2 h-2 w-2 rounded-full text-xs"
-        onClick={() => {
-          ColorManager.removeUserEntityFillColor(color);
-        }}
+    <div className="my-1">
+      <div
+        className="relative mx-1 h-8 min-w-8 rounded-full hover:cursor-pointer"
+        style={{ backgroundColor: `rgba(${r}, ${g}, ${b}, ${a})` }}
+        onClick={onclick}
       >
-        x
-      </Button>
+        <Button
+          className="absolute -right-2 -top-2 h-2 w-2 rounded-full text-xs"
+          onClick={() => {
+            ColorManager.removeUserEntityFillColor(color);
+          }}
+          tooltip="删除"
+        >
+          x
+        </Button>
+      </div>
+      <span className="mx-0.5 cursor-text select-all rounded bg-black px-1 text-xs text-neutral-300">{`${r}, ${g}, ${b}`}</span>
     </div>
   );
 }
