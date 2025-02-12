@@ -17,3 +17,5 @@ export const isRecentFilePanelOpenAtom = atom(false);
  * 是否显示导出树形纯文本节点面板
  */
 export const isExportTreeTextPanelOpenAtom = atom(false);
+
+export const isWindowCollapsingAtom = atom(false);

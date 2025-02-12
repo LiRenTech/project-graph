@@ -1,5 +1,17 @@
 import { useAtom } from "jotai";
-import { ChevronDown, ChevronLeft, ChevronUp, Cpu, Diamond, Menu, RectangleEllipsis, Tag, X, Zap } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronUp,
+  Cpu,
+  Diamond,
+  Menu,
+  RectangleEllipsis,
+  SquareArrowUp,
+  Tag,
+  X,
+  Zap,
+} from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -10,7 +22,7 @@ import { StageSaveManager } from "../core/service/dataFileService/StageSaveManag
 import { Settings } from "../core/service/Settings";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
-import { fileAtom } from "../state";
+import { fileAtom, isWindowCollapsingAtom } from "../state";
 import { cn } from "../utils/cn";
 import { PathString } from "../utils/pathString";
 import { appScale, getCurrentWindow, isDesktop, isMac, isMobile, isWeb } from "../utils/platform";
@@ -21,6 +33,7 @@ import LogicNodePanel from "./_logic_node_panel";
 import RecentFilesPanel from "./_recent_files_panel";
 import StartFilePanel from "./_start_file_panel";
 import TagPanel from "./_tag_panel";
+import { LogicalSize } from "@tauri-apps/api/dpi";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -37,6 +50,8 @@ export default function App() {
   const [file, setFile] = useAtom(fileAtom);
   const filename = React.useMemo(() => PathString.absolute2file(file), [file]);
   const [useNativeTitleBar, setUseNativeTitleBar] = React.useState(false);
+  const [isWindowCollapsing, setIsWindowCollapsing] = useAtom(isWindowCollapsingAtom);
+
   const { t } = useTranslation("app");
 
   React.useEffect(() => {
@@ -320,17 +335,40 @@ export default function App() {
             )}
           </>
         )}
-
-        {/* 右上角图钉按钮 */}
+        {/* 右上角闪电按钮 */}
         <IconButton
           onClick={(e) => {
             e.stopPropagation();
             setIsStartFilePanelOpen(!isStartFilePanelOpen);
           }}
           tooltip="设置启动时打开的文件"
+          disabled={isMobile}
         >
           <Zap className={cn("cursor-pointer", isStartFilePanelOpen ? "rotate-45 scale-125" : "")} />
         </IconButton>
+        {isDesktop && (
+          <IconButton
+            onClick={async (e) => {
+              e.stopPropagation();
+              // const size = await getCurrentWindow().outerSize();
+              const tauriWindow = getCurrentWindow();
+              if (isWindowCollapsing) {
+                // 纵向展开
+                tauriWindow.setSize(new LogicalSize(1100, 800));
+                tauriWindow.setAlwaysOnTop(false);
+              } else {
+                // 纵向收起
+                tauriWindow.setSize(new LogicalSize(1100, 100));
+                tauriWindow.setAlwaysOnTop(true);
+              }
+              setIsWindowCollapsing(!isWindowCollapsing);
+            }}
+            tooltip={isWindowCollapsing ? "展开并取消顶置窗口" : "卷起并顶置窗口"}
+          >
+            <SquareArrowUp className={cn("cursor-pointer", isWindowCollapsing ? "rotate-180 scale-125" : "")} />
+          </IconButton>
+        )}
+
         {/* 右上角窗口控制按钮 */}
         {isDesktop && !useNativeTitleBar && !isMac && !isWeb && (
           <Button className="right-4 top-4 flex items-center gap-1 active:scale-100">

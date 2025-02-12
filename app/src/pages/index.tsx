@@ -14,6 +14,8 @@ import DetailsEditSidePanel from "./_details_edit_side_panel";
 import HintText from "./_hint_text";
 import SearchingNodePanel from "./_searching_node_panel";
 import Toolbar from "./_toolbar";
+import { useAtom } from "jotai";
+import { isWindowCollapsingAtom } from "../state";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
@@ -24,6 +26,7 @@ export default function Home() {
   // const [nodeDetailsPanel, setNodeDetailsPanel] = React.useState("vditor");
   const [nodeDetailsPanel] = Settings.use("nodeDetailsPanel");
   const [isProtectPrivacy, setIsProtectPrivacy] = React.useState(false);
+  const [isWindowCollapsing] = useAtom(isWindowCollapsingAtom);
 
   useEffect(() => {
     const handleResize = () => {
@@ -104,11 +107,11 @@ export default function Home() {
 
   return (
     <>
-      <Toolbar />
+      {!isWindowCollapsing && <Toolbar />}
       <SearchingNodePanel />
       {/* 这个打算被取代 */}
       {nodeDetailsPanel === "small" ? <DetailsEditSmallPanel /> : <DetailsEditSidePanel />}
-      <HintText />
+      {!isWindowCollapsing && <HintText />}
       {isMobile && (
         <Button
           className="z-5 absolute bottom-10 left-4"

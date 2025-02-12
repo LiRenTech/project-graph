@@ -19,6 +19,8 @@
     "core:window:allow-destroy",
     "core:window:allow-hide",
     "core:window:allow-set-skip-taskbar",
+    "core:window:allow-set-size",
+    "core:window:allow-set-always-on-top",
     "clipboard-manager:allow-clear",
     "clipboard-manager:allow-read-image",
     "clipboard-manager:allow-write-text",
