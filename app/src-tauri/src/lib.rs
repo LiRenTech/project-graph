@@ -56,6 +56,12 @@ fn write_file_base64(content: String, path: String) -> Result<(), String> {
 }
 
 #[tauri::command]
+fn create_folder(path: String) -> Result<(), String> {
+    std::fs::create_dir_all(path).map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+#[tauri::command]
 fn write_stdout(content: String) {
     println!("{}", content);
 }
@@ -126,6 +132,7 @@ pub fn run() {
             write_text_file,
             exists,
             read_file_base64,
+            create_folder,
             write_file_base64,
             write_stdout,
             write_stderr,

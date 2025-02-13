@@ -1,3 +1,4 @@
+import { createFolder } from "../../../../utils/fs";
 import { Queue } from "../../../dataStruct/Queue";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
@@ -108,6 +109,10 @@ export class SecretEngine {
     }
     if (keys.includes("c o l l a b o r a t e")) {
       CollaborationEngine.openStartCollaborationPanel();
+      return true;
+    }
+    if (keys.includes("c r e a t e f o l d e r w i n")) {
+      createFolder("D:\\111\\111");
       return true;
     }
     return false;

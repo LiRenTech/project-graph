@@ -129,6 +129,20 @@ export async function writeTextFile(path: string, content: string): Promise<void
 }
 
 /**
+ * 创建文件夹
+ * @param path 文件夹路径
+ */
+export async function createFolder(path: string): Promise<void> {
+  if (isWeb) {
+    // Web 环境下，直接返回，因为浏览器中无法直接创建文件夹
+    console.warn("Creating folders is not supported in web environment.");
+    return;
+  } else {
+    return invoke("create_folder", { path });
+  }
+}
+
+/**
  * 将二进制数据写入文件
  * @param path 文件路径
  * @param content 文件的 Uint8Array 表示
