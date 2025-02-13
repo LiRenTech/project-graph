@@ -7,6 +7,7 @@ import { StageManager } from "../core/stage/stageManager/StageManager";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { Section } from "../core/stage/stageObject/entity/Section";
 import { LineEdge } from "../core/stage/stageObject/association/LineEdge";
+import { ArrowRightLeft, Pipette } from "lucide-react";
 
 /**
  * 自定义颜色设置面板
@@ -23,7 +24,7 @@ export default function ColorManagerPanel() {
   const [currentColorList, setCurrentColorList] = useState<Color[]>([]);
 
   return (
-    <div className="bg-panel-bg h-96 w-96 p-4">
+    <div className="bg-panel-bg flex h-96 w-96 flex-col overflow-auto p-4">
       <div>
         <p>我的颜色库：</p>
         {/* <ColorDotElement color={Color.Red} /> */}
@@ -47,7 +48,7 @@ export default function ColorManagerPanel() {
           <div className="text-panel-details-text text-center text-xs">提示：点击颜色可以复制颜色值到待添加颜色</div>
         )}
       </div>
-      <div>
+      <div className="flex items-center justify-center">
         <p>添加颜色：</p>
         <input
           type="color"
@@ -59,6 +60,7 @@ export default function ColorManagerPanel() {
           }}
         ></input>
         <Button
+          className="text-xs"
           onClick={() => {
             const color = new Color(
               parseInt(preAddColor.slice(1, 3), 16),
@@ -78,9 +80,20 @@ export default function ColorManagerPanel() {
         >
           确认添加
         </Button>
+      </div>
+
+      <div className="flex">
         <Button
           onClick={() => {
-            StageManager.getSelectedStageObjects().forEach((stageObject) => {
+            const selectedStageObjects = StageManager.getSelectedStageObjects();
+            if (selectedStageObjects.length === 0) {
+              Dialog.show({
+                title: "未选择对象",
+                content: "请先选择一个或多个有颜色的节点或连线",
+              });
+              return;
+            }
+            selectedStageObjects.forEach((stageObject) => {
               if (stageObject instanceof TextNode) {
                 ColorManager.addUserEntityFillColor(stageObject.color);
               } else if (stageObject instanceof Section) {
@@ -91,6 +104,7 @@ export default function ColorManagerPanel() {
             });
           }}
         >
+          <Pipette />
           将选中的节点颜色添加到库
         </Button>
         <Button
@@ -98,7 +112,8 @@ export default function ColorManagerPanel() {
             ColorManager.organizeUserEntityFillColors();
           }}
         >
-          一键整理颜色库
+          <ArrowRightLeft />
+          整理顺序
         </Button>
       </div>
     </div>
@@ -113,7 +128,7 @@ function ColorDotElement({ color, onclick }: { color: Color; onclick: (e: any) =
   return (
     <div className="my-1">
       <div
-        className="relative mx-1 h-8 min-w-8 rounded-full hover:cursor-pointer"
+        className="relative mx-1 h-4 min-w-4 rounded-full hover:cursor-pointer"
         style={{ backgroundColor: `rgba(${r}, ${g}, ${b}, ${a})` }}
         onClick={onclick}
       >
