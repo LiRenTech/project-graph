@@ -7,7 +7,6 @@ import { Camera } from "../../../../stage/Camera";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
-import { reverseAnimate } from "../mathTools/animateFunctions";
 
 /**
  * 实体创建时闪光特效
@@ -78,7 +77,7 @@ export class EntityCreateFlashEffect extends EffectObject {
     WorldRenderUtils.renderRectangleFlash(
       this.rectangle.transformWorld2View(),
       this.color,
-      this.startBlurSize * Camera.currentScale * reverseAnimate(1 - this.timeProgress.rate),
+      this.startBlurSize * Camera.currentScale * (1 - this.timeProgress.rate),
       this.radius * Camera.currentScale,
     );
     for (const subEffect of this.subEffects) {
