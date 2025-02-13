@@ -1,5 +1,6 @@
 import { Store } from "@tauri-apps/plugin-store";
 import { createStore } from "../../../utils/store";
+import { exists } from "../../../utils/fs";
 
 export namespace StartFilesManager {
   let store: Store;
@@ -50,7 +51,7 @@ export namespace StartFilesManager {
       return false;
     }
     await store.set("currentStartFile", filePath);
-    store.save();
+    await store.save();
     return true;
   }
 
@@ -66,7 +67,7 @@ export namespace StartFilesManager {
       time: Date.now(),
     });
     await store.set("startFiles", existingFiles);
-    store.save();
+    await store.save();
     return true;
   }
 
@@ -91,9 +92,33 @@ export namespace StartFilesManager {
     }
     const newFiles = existingFiles.filter((file) => file.path !== filePath);
     await store.set("startFiles", newFiles);
-    store.save();
+    await store.save();
     return true;
   }
 
-  export function validateAndRefreshStartFiles() {}
+  export async function validateAndRefreshStartFiles() {
+    const startFiles = await getStartFiles();
+    const startFilesValid: StartFile[] = [];
+
+    // 是否存在文件丢失情况
+    let isFileLost = false;
+
+    for (const file of startFiles) {
+      try {
+        const isExists = await exists(file.path);
+        if (isExists) {
+          startFilesValid.push(file); // 存在则保留
+        } else {
+          isFileLost = true;
+        }
+      } catch (e) {
+        console.error("无法检测文件是否存在：", file.path);
+        console.error(e);
+      }
+    }
+    if (isFileLost) {
+      await store.set("startFiles", startFilesValid); // 更新存储
+      await store.save();
+    }
+  }
 }
