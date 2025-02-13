@@ -2299,6 +2299,1220 @@
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
+    },
+    {
+      "location": [5221.503247168752, -1750.033050234811],
+      "size": [92, 76],
+      "text": "总结",
+      "uuid": "270605a3-07a4-438f-9177-fb841240dacb",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6695.086519572905, -1987.3888363837011],
+      "size": [60.06398010253906, 76],
+      "text": "F1",
+      "uuid": "560fed7b-63dc-425f-91f7-36431b4ea844",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6779.379802417179, -1987.3883996247537],
+      "size": [65.05598449707031, 76],
+      "text": "F2",
+      "uuid": "7a750749-c064-4642-a587-9e4b7d7c66a6",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6868.667421857731, -1987.3881263004955],
+      "size": [65.7919921875, 76],
+      "text": "F3",
+      "uuid": "ec3c803e-d01d-4309-b8e2-dccb0697390d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6958.688123403631, -1987.388083287785],
+      "size": [65.02398681640625, 76],
+      "text": "F4",
+      "uuid": "bb33388c-2063-43b0-be70-282b3b8c5a6b",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7047.941232827476, -1987.388026354281],
+      "size": [66.14398193359375, 76],
+      "text": "F5",
+      "uuid": "ad6a6d8c-61e9-4bce-803c-9471437216da",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7138.315023441332, -1987.3880211150363],
+      "size": [65.31198120117188, 76],
+      "text": "F6",
+      "uuid": "961c63ea-2103-4ec4-8b7a-a7f9da0a1114",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7227.855261503818, -1987.388042391962],
+      "size": [63.77598571777344, 76],
+      "text": "F7",
+      "uuid": "844307d8-c0ce-49a4-b3dd-ac7e88c5ca8d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7315.86083569712, -1987.388002454729],
+      "size": [67.03999328613281, 76],
+      "text": "F8",
+      "uuid": "a0031328-62ec-49c9-9152-b7ccecbc4421",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7407.1155380959035, -1987.3880372946708],
+      "size": [66.14398193359375, 76],
+      "text": "F9",
+      "uuid": "ec354084-35e5-4be2-aaeb-18110c683bac",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7497.501747820957, -1987.3878233443484],
+      "size": [80.57597351074219, 76],
+      "text": "F10",
+      "uuid": "0873d71c-ec20-4bb5-8872-d4e638024b1e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7602.324984098142, -1987.3883751138917],
+      "size": [73.50396728515625, 76],
+      "text": "F11",
+      "uuid": "9e68e9fb-eeb4-4597-aca2-fc5019a42f2e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7700.044308732732, -1987.3888415392985],
+      "size": [78.4959716796875, 76],
+      "text": "F12",
+      "uuid": "f825e4bb-a3dc-4f14-8238-1b9abd577a57",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6779.378081969296, -1740.1054851540598],
+      "size": [53.343994140625, 76],
+      "text": "Q",
+      "uuid": "506c3512-248b-405f-af54-65e12e9ddd3f",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6860.612306941431, -1740.1049658313407],
+      "size": [59.58399963378906, 76],
+      "text": "W",
+      "uuid": "723c2488-9edd-4aff-af2e-bc4025961476",
+      "details": "",
+      "color": [147, 67, 67, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6948.083412474568, -1740.105143198973],
+      "size": [47.32798767089844, 76],
+      "text": "E",
+      "uuid": "3f1f9fff-13c8-40f7-a12f-29606c45108f",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7023.294134895101, -1740.1041823933272],
+      "size": [48.63999938964844, 76],
+      "text": "R",
+      "uuid": "923d0679-c462-48b3-9aa1-b4fe74475efd",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7099.816039620676, -1740.103116993605],
+      "size": [47.64799499511719, 76],
+      "text": "T",
+      "uuid": "b2fca6c1-ff81-4eea-a419-1183255e01b6",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7175.344995688906, -1740.1068826937335],
+      "size": [48.70399475097656, 76],
+      "text": "Y",
+      "uuid": "bc10eb00-4fdc-4f83-82db-670a74706160",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7251.911115839521, -1740.0746659989973],
+      "size": [50.81599426269531, 76],
+      "text": "U",
+      "uuid": "1b7b78cf-5977-4ad5-907f-1fcbff63661e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7331.048560704134, -1739.5425183199538],
+      "size": [36.09599304199219, 76],
+      "text": "I",
+      "uuid": "f1ff5b2e-533d-4464-a55f-5e3b92bedd3c",
+      "details": "",
+      "color": [147, 67, 67, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7394.5598342596495, -1740.2361295109583],
+      "size": [53.343994140625, 76],
+      "text": "O",
+      "uuid": "596e1ddf-dc0d-4f21-a6d6-7a9e1f9da454",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7475.871458164586, -1740.1493817235287],
+      "size": [48.38398742675781, 76],
+      "text": "P",
+      "uuid": "8b875a2d-4d7a-4382-aa65-f72bdf054cae",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7552.168248544838, -1740.1460857580005],
+      "size": [39.3599853515625, 76],
+      "text": "[",
+      "uuid": "b259cc74-de0a-45c0-bb05-87af271a45bb",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7619.441074292138, -1740.1825290895094],
+      "size": [39.3599853515625, 76],
+      "text": "]",
+      "uuid": "957061a2-050a-4a73-bfe2-d27da68763b0",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6794.5463183992215, -1608.7299387693033],
+      "size": [49.88800048828125, 76],
+      "text": "A",
+      "uuid": "ccdb466a-03fc-4ffc-8cb5-c335c33133cb",
+      "details": "",
+      "color": [147, 67, 67, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6875.985935327594, -1608.7293368473063],
+      "size": [47.71199035644531, 76],
+      "text": "S",
+      "uuid": "2ff285af-9c62-467f-940d-84643c6ab9a9",
+      "details": "",
+      "color": [147, 67, 67, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6955.260691582254, -1608.7370380585444],
+      "size": [52.12799072265625, 76],
+      "text": "D",
+      "uuid": "885a8d0b-79b6-4061-9760-e75603efb289",
+      "details": "",
+      "color": [147, 67, 67, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7038.941592061172, -1608.7418334065446],
+      "size": [46.623992919921875, 76],
+      "text": "F",
+      "uuid": "31e7a7fa-9a46-40e1-ae6f-421ea9747a3d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7117.142397377702, -1608.7639653669394],
+      "size": [51.839996337890625, 76],
+      "text": "G",
+      "uuid": "dedc0406-87d0-4b0b-8df8-1565a7829c79",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7200.552047359402, -1608.778892677769],
+      "size": [51.42399597167969, 76],
+      "text": "H",
+      "uuid": "6a7ea126-e9d2-4138-bdb9-12dc35c9d5ab",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7283.941225707178, -1608.2641995975719],
+      "size": [43.93598937988281, 76],
+      "text": "J",
+      "uuid": "5c4152df-bba2-4df9-8385-79a2a219dc5c",
+      "details": "",
+      "color": [147, 67, 67, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7358.941347829636, -1608.7045487928826],
+      "size": [49.53599548339844, 76],
+      "text": "K",
+      "uuid": "f19a0821-8012-4947-b70c-ef9614b58d3f",
+      "details": "",
+      "color": [147, 67, 67, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7439.729419500227, -1609.0228314234328],
+      "size": [46.399993896484375, 76],
+      "text": "L",
+      "uuid": "b2853832-50d2-4896-a8f0-0ff0a0b07b6f",
+      "details": "",
+      "color": [147, 67, 67, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7518.036917615957, -1608.559124066379],
+      "size": [36.57598876953125, 76],
+      "text": ";",
+      "uuid": "ed0d14c5-e427-4c69-a197-d5d9a5fdb8ac",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7586.151795212106, -1608.710706755635],
+      "size": [34.303985595703125, 76],
+      "text": "'",
+      "uuid": "0474fc41-b200-4b12-89bc-15a91ec5bc45",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6835.0988439550465, -1492.3806105887738],
+      "size": [47.45599365234375, 76],
+      "text": "Z",
+      "uuid": "9586bd42-3918-4611-814e-26516e509455",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6914.470318538058, -1492.3750710617376],
+      "size": [49.08799743652344, 76],
+      "text": "X",
+      "uuid": "b8295cb4-4ab0-4ff8-8ab0-dc1c096d9a44",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6995.480594543307, -1492.3780664411208],
+      "size": [50.78399658203125, 76],
+      "text": "C",
+      "uuid": "539a6d6b-3154-44a6-81b4-fc08ac2c9381",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7078.178683415385, -1492.3780752104378],
+      "size": [49.91999816894531, 76],
+      "text": "V",
+      "uuid": "f8177144-dc92-4879-8434-b69b0cb8aa43",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7160.0138105412025, -1492.3739698463046],
+      "size": [49.727996826171875, 76],
+      "text": "B",
+      "uuid": "e5f3d554-abe1-4203-af86-705de2c2fe89",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7241.654136656742, -1492.3794923211346],
+      "size": [51.743988037109375, 76],
+      "text": "N",
+      "uuid": "d61f5e6d-0894-4fa1-927d-c6b16b18c8c9",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7325.322374258497, -1492.3807966127943],
+      "size": [56.511993408203125, 76],
+      "text": "M",
+      "uuid": "745af707-c463-4362-b715-deb0d8448728",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7414.450227583448, -1491.7338168159804],
+      "size": [36.57598876953125, 76],
+      "text": ",",
+      "uuid": "8cc5813e-d9b5-483e-9f68-909005a86cc9",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7482.237319004677, -1492.3728720354234],
+      "size": [36.2239990234375, 76],
+      "text": ".",
+      "uuid": "034de1c9-ab1f-45b4-b510-fa1c172978b8",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7550.376066245919, -1492.3819692868108],
+      "size": [41.1199951171875, 76],
+      "text": "/",
+      "uuid": "efd6176b-801d-494a-94e1-608f7b72f3cf",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6562.7575780175075, -2067.3888415392985],
+      "size": [1707.2121146350646, 816.7698229090563],
+      "uuid": "88b25842-6722-4b27-9da2-5b8c378ccf9f",
+      "text": "键盘",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "560fed7b-63dc-425f-91f7-36431b4ea844",
+        "7a750749-c064-4642-a587-9e4b7d7c66a6",
+        "ec3c803e-d01d-4309-b8e2-dccb0697390d",
+        "bb33388c-2063-43b0-be70-282b3b8c5a6b",
+        "ad6a6d8c-61e9-4bce-803c-9471437216da",
+        "961c63ea-2103-4ec4-8b7a-a7f9da0a1114",
+        "844307d8-c0ce-49a4-b3dd-ac7e88c5ca8d",
+        "a0031328-62ec-49c9-9152-b7ccecbc4421",
+        "ec354084-35e5-4be2-aaeb-18110c683bac",
+        "0873d71c-ec20-4bb5-8872-d4e638024b1e",
+        "9e68e9fb-eeb4-4597-aca2-fc5019a42f2e",
+        "f825e4bb-a3dc-4f14-8238-1b9abd577a57",
+        "506c3512-248b-405f-af54-65e12e9ddd3f",
+        "723c2488-9edd-4aff-af2e-bc4025961476",
+        "3f1f9fff-13c8-40f7-a12f-29606c45108f",
+        "923d0679-c462-48b3-9aa1-b4fe74475efd",
+        "b2fca6c1-ff81-4eea-a419-1183255e01b6",
+        "bc10eb00-4fdc-4f83-82db-670a74706160",
+        "1b7b78cf-5977-4ad5-907f-1fcbff63661e",
+        "f1ff5b2e-533d-4464-a55f-5e3b92bedd3c",
+        "596e1ddf-dc0d-4f21-a6d6-7a9e1f9da454",
+        "8b875a2d-4d7a-4382-aa65-f72bdf054cae",
+        "b259cc74-de0a-45c0-bb05-87af271a45bb",
+        "957061a2-050a-4a73-bfe2-d27da68763b0",
+        "ccdb466a-03fc-4ffc-8cb5-c335c33133cb",
+        "2ff285af-9c62-467f-940d-84643c6ab9a9",
+        "885a8d0b-79b6-4061-9760-e75603efb289",
+        "31e7a7fa-9a46-40e1-ae6f-421ea9747a3d",
+        "dedc0406-87d0-4b0b-8df8-1565a7829c79",
+        "6a7ea126-e9d2-4138-bdb9-12dc35c9d5ab",
+        "5c4152df-bba2-4df9-8385-79a2a219dc5c",
+        "f19a0821-8012-4947-b70c-ef9614b58d3f",
+        "b2853832-50d2-4896-a8f0-0ff0a0b07b6f",
+        "ed0d14c5-e427-4c69-a197-d5d9a5fdb8ac",
+        "0474fc41-b200-4b12-89bc-15a91ec5bc45",
+        "9586bd42-3918-4611-814e-26516e509455",
+        "b8295cb4-4ab0-4ff8-8ab0-dc1c096d9a44",
+        "539a6d6b-3154-44a6-81b4-fc08ac2c9381",
+        "f8177144-dc92-4879-8434-b69b0cb8aa43",
+        "e5f3d554-abe1-4203-af86-705de2c2fe89",
+        "d61f5e6d-0894-4fa1-927d-c6b16b18c8c9",
+        "745af707-c463-4362-b715-deb0d8448728",
+        "8cc5813e-d9b5-483e-9f68-909005a86cc9",
+        "034de1c9-ab1f-45b4-b510-fa1c172978b8",
+        "efd6176b-801d-494a-94e1-608f7b72f3cf",
+        "cc6a5018-ca1f-4b75-acfa-66341c64a1bb",
+        "015bd47a-85ce-4940-82a8-4b7f7450ec7e",
+        "981e4b10-d43f-4613-a9d2-f471333c273c",
+        "cc5dc8a4-4aa0-4b32-9442-c3ad8177158b",
+        "28e47d72-54bb-4a4a-86e0-4849d7a28281",
+        "b3807667-1416-42ff-a5a1-a5d21e8f6144",
+        "d237e6fb-9073-414d-9b95-b8982de2d72d",
+        "5251fddd-c2b7-40a6-bef2-dd04a6fff9cc",
+        "3de3adcc-c3df-4b92-a6ec-7d50a588415d",
+        "37678a2d-aabd-4947-978f-4f5b66ad2b4d",
+        "15f9e946-f105-4f97-9e6f-2f7759cdaac8",
+        "4c05a098-981f-466a-9628-77aaa4f3b3ec",
+        "feb8fe06-50bb-4dee-829c-a1012b12899f",
+        "9c5eea00-d6ed-4945-81c4-d97780ff85de",
+        "8c6e9955-3b66-4857-9f9d-6d1ed7f5fb73",
+        "28ef2857-85e0-4c17-8525-367d4e26db0b",
+        "10f3d1a2-ce5e-4f20-ba8a-8e4224af1940",
+        "8be905d3-40bd-4acd-ac1c-31199df67735",
+        "67fdcf1a-c08d-4298-89c9-4c0125f27fe3",
+        "40e73062-9330-419e-aaf1-f7cfc0a4153d",
+        "f718dd8a-e3d1-4a98-8393-0d09e978aea9",
+        "213b6cc2-1ebd-4232-b21e-efaa7e460b18",
+        "ceea083a-e6b3-41f5-a7ab-19385a989391",
+        "9c5f84b2-37df-4f5a-badf-03c354e44072",
+        "2adecac8-a6f6-4a08-8e81-9783225efcc9",
+        "a75c5490-9a72-44d8-9056-476559169488",
+        "61734d6c-854a-4e0f-b958-7d6b8ab58b68",
+        "11aab59a-dc22-4eaa-91fd-33ad7a59dcdb"
+      ],
+      "details": ""
+    },
+    {
+      "location": [6349.717614091448, -1317.859569798178],
+      "size": [92, 76],
+      "text": "保存",
+      "uuid": "ee730223-e6b0-4a31-9eb8-4e5d2027a396",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6539.637552382742, -1164.8880381137199],
+      "size": [156, 124],
+      "text": "撤销\n取消撤销",
+      "uuid": "fb7ce2f9-f231-4bfc-a2a4-981182558452",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6918.408611205905, -1055.2239326376086],
+      "size": [204.92796325683594, 76],
+      "text": "打包Section",
+      "uuid": "ad8d0b28-caae-4378-9cc5-5a7a9e181bf0",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6861.014317256319, -1164.8880381137199],
+      "size": [156, 76],
+      "text": "复制粘贴",
+      "uuid": "1a1dacf9-162d-4a38-9938-dffe3d90d2b4",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6305.3671655325625, -1464.5016451688275],
+      "size": [92, 76],
+      "text": "全选",
+      "uuid": "ec5ca033-d688-4ef4-890d-21a2e29f31b8",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6285.717614091448, -1164.8880381137199],
+      "size": [156, 76],
+      "text": "重置视野",
+      "uuid": "88b61966-fc5e-4771-a8e2-cf80a999ffc5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7459.789734576328, -2485.2074850469335],
+      "size": [156, 172],
+      "text": "改变形态\n折线翻转\n框折叠",
+      "uuid": "8e12f19f-7cad-41f1-99e0-b6b74ed1ba4d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7647.999043190516, -2268.797144743168],
+      "size": [316, 76],
+      "text": "在屏幕中心放置节点",
+      "uuid": "8a3928a8-00c6-4cda-ac57-8935e27e91b9",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7661.292294572579, -1164.8880381137199],
+      "size": [156, 76],
+      "text": "缩放视野",
+      "uuid": "c3dcef43-709d-49af-987e-6e93668279cc",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7149.743254362705, -2316.797144743168],
+      "size": [220, 76],
+      "text": "打开颜色面板",
+      "uuid": "a57fd718-8af5-4e63-8fdc-c224b4ce4c4e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6718.24380845966, -2316.797144743168],
+      "size": [187.32797241210938, 124],
+      "text": "显示/关闭\ndebug信息",
+      "uuid": "358ca577-7e7e-4034-8050-bfaa967415ee",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7052.334408932731, -2437.2074850469335],
+      "size": [92, 76],
+      "text": "刷新",
+      "uuid": "8217e672-20fb-42f8-ba20-56750f1dea67",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6592.7575780175075, -1865.4775160170996],
+      "size": [36.6719970703125, 76],
+      "text": "`",
+      "uuid": "9c5eea00-d6ed-4945-81c4-d97780ff85de",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6689.677473112339, -1865.4775160170996],
+      "size": [41.43998718261719, 76],
+      "text": "1",
+      "uuid": "cc6a5018-ca1f-4b75-acfa-66341c64a1bb",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6769.621370282365, -1865.4775160170996],
+      "size": [46.43199157714844, 76],
+      "text": "2",
+      "uuid": "015bd47a-85ce-4940-82a8-4b7f7450ec7e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6854.557271846923, -1865.4775160170996],
+      "size": [47.167999267578125, 76],
+      "text": "3",
+      "uuid": "981e4b10-d43f-4613-a9d2-f471333c273c",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6940.22918110191, -1865.4775160170996],
+      "size": [47.23199462890625, 76],
+      "text": "4",
+      "uuid": "cc5dc8a4-4aa0-4b32-9442-c3ad8177158b",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7025.965085718226, -1865.4775160170996],
+      "size": [47.519989013671875, 76],
+      "text": "5",
+      "uuid": "28e47d72-54bb-4a4a-86e0-4849d7a28281",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7111.988984719307, -1865.4775160170996],
+      "size": [47.67999267578125, 76],
+      "text": "6",
+      "uuid": "b3807667-1416-42ff-a5a1-a5d21e8f6144",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7198.172887382498, -1865.4775160170996],
+      "size": [45.15199279785156, 76],
+      "text": "7",
+      "uuid": "d237e6fb-9073-414d-9b95-b8982de2d72d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7281.828790167759, -1865.4775160170996],
+      "size": [48.41600036621094, 76],
+      "text": "8",
+      "uuid": "5251fddd-c2b7-40a6-bef2-dd04a6fff9cc",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7368.748700521379, -1865.4775160170996],
+      "size": [47.519989013671875, 76],
+      "text": "9",
+      "uuid": "3de3adcc-c3df-4b92-a6ec-7d50a588415d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7454.77259952246, -1865.4775160170996],
+      "size": [48.511993408203125, 76],
+      "text": "0",
+      "uuid": "37678a2d-aabd-4947-978f-4f5b66ad2b4d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7541.7885029180725, -1865.4775160170996],
+      "size": [42.71998596191406, 76],
+      "text": "-",
+      "uuid": "15f9e946-f105-4f97-9e6f-2f7759cdaac8",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7623.012398867396, -1865.4775160170996],
+      "size": [47.77598571777344, 76],
+      "text": "=",
+      "uuid": "4c05a098-981f-466a-9628-77aaa4f3b3ec",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7709.292294572579, -1865.4775160170996],
+      "size": [60, 76],
+      "text": "←",
+      "uuid": "feb8fe06-50bb-4dee-829c-a1012b12899f",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6193.714037586303, -1865.4775160170996],
+      "size": [188, 124],
+      "text": "按住此双击\n创建质点",
+      "uuid": "786658c3-90aa-48f7-ad23-c5b9792c361c",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6592.7575780175075, -1987.3888363837011],
+      "size": [80.15997314453125, 76],
+      "text": "Esc",
+      "uuid": "8c6e9955-3b66-4857-9f9d-6d1ed7f5fb73",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6592.7575780175075, -1740.1054851540598],
+      "size": [80.927978515625, 76],
+      "text": "Tab",
+      "uuid": "28ef2857-85e0-4c17-8525-367d4e26db0b",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6592.7575780175075, -1608.7299387693033],
+      "size": [102.87997436523438, 76],
+      "text": "Caps",
+      "uuid": "10f3d1a2-ce5e-4f20-ba8a-8e4224af1940",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6597.10958302239, -1492.3806105887738],
+      "size": [98.52796936035156, 76],
+      "text": "Shift",
+      "uuid": "8be905d3-40bd-4acd-ac1c-31199df67735",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6193.714037586303, -1690.1003503377126],
+      "size": [188, 124],
+      "text": "选中的节点\n生长子节点",
+      "uuid": "3fd1138a-cdaa-481a-8540-aa456730d69d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7996.911038253074, -1492.384271707413],
+      "size": [60, 76],
+      "text": "↑",
+      "uuid": "5d0f6d2d-fd02-4390-8d9a-7daf2f2d0121",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7996.911070824622, -1386.6194102284176],
+      "size": [60, 76],
+      "text": "↓",
+      "uuid": "22ede1f5-e0dd-417e-a2b4-ed42954f755e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7915.4390608907115, -1386.6190524914048],
+      "size": [60, 76],
+      "text": "←",
+      "uuid": "77308390-7289-46bb-a3ea-7794a8f0fd13",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8080.736143762606, -1386.6190186302422],
+      "size": [60, 76],
+      "text": "→",
+      "uuid": "0399ba78-0cb0-438f-8dc4-2c182420c2da",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7885.4390608907115, -1572.384271707413],
+      "size": [285.2970828718944, 291.7652530771709],
+      "uuid": "67fdcf1a-c08d-4298-89c9-4c0125f27fe3",
+      "text": "方向键",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "5d0f6d2d-fd02-4390-8d9a-7daf2f2d0121",
+        "22ede1f5-e0dd-417e-a2b4-ed42954f755e",
+        "77308390-7289-46bb-a3ea-7794a8f0fd13",
+        "0399ba78-0cb0-438f-8dc4-2c182420c2da"
+      ],
+      "details": ""
+    },
+    {
+      "location": [7853.695088112391, -1740.1825290895094],
+      "size": [78.55998229980469, 76],
+      "text": "Del",
+      "uuid": "40e73062-9330-419e-aaf1-f7cfc0a4153d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8352.777975469424, -1865.4775160170996],
+      "size": [220, 76],
+      "text": "删除选中内容",
+      "uuid": "1c1a637a-0a3a-4d4b-9202-9d87c03995d2",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7853.695088112391, -1987.3883751138917],
+      "size": [110.303955078125, 76],
+      "text": "PrtSc",
+      "uuid": "f718dd8a-e3d1-4a98-8393-0d09e978aea9",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7996.911038253074, -1987.3883751138917],
+      "size": [112.83197021484375, 76],
+      "text": "ScrLk",
+      "uuid": "213b6cc2-1ebd-4232-b21e-efaa7e460b18",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8121.953731959212, -1987.3888415392985],
+      "size": [117.31196594238281, 76],
+      "text": "Pause",
+      "uuid": "ceea083a-e6b3-41f5-a7ab-19385a989391",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8152.304664373945, -2268.797144743168],
+      "size": [252, 76],
+      "text": "摄像机移动刹停",
+      "uuid": "42c272f8-34fe-4969-8d7a-ae9edd505056",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6177.714037586303, -2138.482505224702],
+      "size": [220, 76],
+      "text": "进入隐私模式",
+      "uuid": "b128edae-fe7c-4578-8a39-3a74b04a0f12",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6598.55483760739, -968.036679810481],
+      "size": [284, 124],
+      "text": "按住此键\n启动自动计算引擎",
+      "uuid": "2a4c8152-f88b-4130-b1f9-5947e11dc6b2",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8475.582708840477, -1532.8273096820967],
+      "size": [188, 76],
+      "text": "移动选中框",
+      "uuid": "16ba9489-4391-4854-8095-6b16ad452a04",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8475.582708840477, -1430.1579860047293],
+      "size": [220, 76],
+      "text": "移动选中节点",
+      "uuid": "d2b164f3-2e62-4329-8004-e37cd44dea70",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8475.582708840477, -1326.6190186302422],
+      "size": [412, 76],
+      "text": "在选中节点的旁边生成节点",
+      "uuid": "86141698-b952-47fa-bce2-c8f1a8fd3831",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8475.582708840477, -1214.9014131381095],
+      "size": [316, 76],
+      "text": "跳跃式移动选中节点",
+      "uuid": "16b5fa68-5ab4-44eb-902b-f3720ec9739a",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7033.062395546647, -920.036679810481],
+      "size": [220, 76],
+      "text": "节点转换成框",
+      "uuid": "023c5549-b10f-43bb-90a2-f25d93cbf89a",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6894.104602722018, -733.6966425870268],
+      "size": [253.53598022460938, 76],
+      "text": "WSAD移动视野",
+      "uuid": "39637c78-a4d5-4fa0-90b8-ef5b714d6689",
+      "details": "",
+      "color": [147, 67, 67, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7258.75424369673, -733.6966425870268],
+      "size": [347.96795654296875, 76],
+      "text": "IJKL控制生长节点位置",
+      "uuid": "0d8ecff3-cd17-4389-ae03-3000787d9578",
+      "details": "",
+      "color": [147, 67, 67, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7835.934908853957, -614.3231075726586],
+      "uuid": "8d2c277a-5061-49f8-92ea-698fbb8953f0",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [8090.0729701721975, -614.3231430519196],
+      "uuid": "155644ed-3aaf-424c-a75f-e5450c438c5e",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [7833.215215514928, -945.7682527913976],
+      "uuid": "a5bac285-1768-401f-a0ea-4459be27db09",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [8088.81970520978, -944.3240727569167],
+      "uuid": "36885b0b-150d-43e0-b0e8-3bc5406f474a",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [7833.710235367571, -539.9935753620149],
+      "uuid": "319b7622-4f0f-4d54-ab21-758d10429f58",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [8087.847671382198, -539.9920309155478],
+      "uuid": "2674e39c-df5a-47f9-84fc-9a2b8cdd8523",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [7160.0138105412025, -1079.2239326376086],
+      "size": [252, 124],
+      "text": "引力式自动布局\n选中内容",
+      "uuid": "86447f56-5ded-4c81-8d9c-82f71b4a4dc5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7802.215215514928, -1026.7682527913976],
+      "size": [321.3132730374791, 517.7762218758497],
+      "uuid": "6a08d73c-7084-4296-b89c-60ecb31933c1",
+      "text": "连线颜色含义",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "a5bac285-1768-401f-a0ea-4459be27db09",
+        "36885b0b-150d-43e0-b0e8-3bc5406f474a",
+        "319b7622-4f0f-4d54-ab21-758d10429f58",
+        "2674e39c-df5a-47f9-84fc-9a2b8cdd8523",
+        "5c6c0ad2-2479-4796-b250-0bea8df87cba",
+        "59ddea78-1ed1-4a59-828f-037c94dc6665",
+        "8d2c277a-5061-49f8-92ea-698fbb8953f0",
+        "155644ed-3aaf-424c-a75f-e5450c438c5e",
+        "65bc7249-6011-41f9-849b-4b46833dcdf2",
+        "27e8269f-2206-44f4-99bd-6e14b33b1944"
+      ],
+      "details": ""
+    },
+    {
+      "location": [7853.695088112391, -1865.4775160170996],
+      "size": [70.43197631835938, 76],
+      "text": "Ins",
+      "uuid": "9c5f84b2-37df-4f5a-badf-03c354e44072",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7992.847027632957, -1865.4775160170996],
+      "size": [116.89598083496094, 76],
+      "text": "Home",
+      "uuid": "2adecac8-a6f6-4a08-8e81-9783225efcc9",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8008.495030257469, -1740.1825290895094],
+      "size": [85.5999755859375, 76],
+      "text": "End",
+      "uuid": "a75c5490-9a72-44d8-9056-476559169488",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8130.017727320541, -1865.4775160170996],
+      "size": [109.24797058105469, 76],
+      "text": "PgUp",
+      "uuid": "61734d6c-854a-4e0f-b958-7d6b8ab58b68",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8130.017727320541, -1740.1825290895094],
+      "size": [109.95196533203125, 76],
+      "text": "PgDn",
+      "uuid": "11aab59a-dc22-4eaa-91fd-33ad7a59dcdb",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6241.714037586303, -1987.3888363837011],
+      "size": [156, 76],
+      "text": "搜索节点",
+      "uuid": "ba0d7514-c6e7-4f3d-b2a9-b3af8876aae5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [6867.712110220037, -2437.2074850469335],
+      "size": [156, 76],
+      "text": "关闭窗口",
+      "uuid": "16f26bfc-fe09-4398-ae4b-ca366f3e2d3e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [7836.923998857555, -786.7964660428917],
+      "uuid": "5c6c0ad2-2479-4796-b250-0bea8df87cba",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [8092.528488552407, -785.3522860084108],
+      "uuid": "59ddea78-1ed1-4a59-828f-037c94dc6665",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [8305.922341670703, -686.8906448762932],
+      "size": [78.01597595214844, 76],
+      "text": "ctrl",
+      "uuid": "6bad17cd-bb16-482a-a06a-33ee03c40649",
+      "details": "",
+      "color": [59, 130, 246, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8655.461737513226, -686.8906448762932],
+      "size": [65.72798156738281, 76],
+      "text": "alt",
+      "uuid": "df84b1fa-e3e1-4fa3-9f0d-ed5d62269d4d",
+      "details": "",
+      "color": [0, 255, 0, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8462.808131413936, -942.8915745812903],
+      "size": [94.33596801757812, 76],
+      "text": "shift",
+      "uuid": "3fe3b056-baed-4e97-912c-a9fc18841e37",
+      "details": "",
+      "color": [255, 0, 0, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8262.866364803027, -869.9817805464019],
+      "size": [164.1279296875, 76],
+      "text": "ctrl+shift",
+      "uuid": "09b14625-d2e4-4a4a-9fa6-5f82bf963df4",
+      "details": "",
+      "color": [255, 0, 255, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8442.216143804073, -612.8906448762932],
+      "size": [135.5199432373047, 76],
+      "text": "ctrl+alt",
+      "uuid": "4c6fa188-eca9-444a-adc2-e36df867390a",
+      "details": "",
+      "color": [0, 255, 255, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8612.40576064555, -869.9817805464019],
+      "size": [151.83993530273438, 76],
+      "text": "alt+shift",
+      "uuid": "4f39a197-07f5-429a-a071-a95ac0625a9e",
+      "details": "",
+      "color": [255, 255, 0, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8405.30416412878, -783.9197878327844],
+      "size": [209.34390258789062, 76],
+      "text": "alt+alt+shift",
+      "uuid": "7f162b71-59e7-4d7e-b794-3214da93cdf6",
+      "details": "",
+      "color": [255, 255, 255, 1],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8232.866364803027, -1022.8915745812903],
+      "size": [561.3793311452573, 516.0009297049971],
+      "uuid": "e526f17f-e247-4127-89cc-fcbcd17304af",
+      "text": "颜色含义的RGB解释",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "6bad17cd-bb16-482a-a06a-33ee03c40649",
+        "df84b1fa-e3e1-4fa3-9f0d-ed5d62269d4d",
+        "3fe3b056-baed-4e97-912c-a9fc18841e37",
+        "09b14625-d2e4-4a4a-9fa6-5f82bf963df4",
+        "4c6fa188-eca9-444a-adc2-e36df867390a",
+        "4f39a197-07f5-429a-a071-a95ac0625a9e",
+        "7f162b71-59e7-4d7e-b794-3214da93cdf6"
+      ],
+      "details": ""
+    },
+    {
+      "location": [7836.956799413905, -870.1750714269024],
+      "uuid": "65bc7249-6011-41f9-849b-4b46833dcdf2",
+      "type": "core:connect_point",
+      "details": ""
+    },
+    {
+      "location": [8083.3459852943915, -871.4142787220283],
+      "uuid": "27e8269f-2206-44f4-99bd-6e14b33b1944",
+      "type": "core:connect_point",
+      "details": ""
     }
   ],
   "associations": [
@@ -3453,6 +4667,358 @@
       "uuid": "ea68b2b4-685a-400c-afca-16763628f02b",
       "type": "core:line_edge",
       "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "9586bd42-3918-4611-814e-26516e509455",
+      "target": "fb7ce2f9-f231-4bfc-a2a4-981182558452",
+      "text": "",
+      "uuid": "c70ef917-787e-465e-8559-d446fc05a195",
+      "type": "core:line_edge",
+      "color": [59, 130, 246, 1]
+    },
+    {
+      "source": "bc10eb00-4fdc-4f83-82db-670a74706160",
+      "target": "fb7ce2f9-f231-4bfc-a2a4-981182558452",
+      "text": "",
+      "uuid": "be8dff00-604d-4889-a0a2-13baecd1f3fe",
+      "type": "core:line_edge",
+      "color": [59, 130, 246, 1]
+    },
+    {
+      "source": "dedc0406-87d0-4b0b-8df8-1565a7829c79",
+      "target": "ad8d0b28-caae-4378-9cc5-5a7a9e181bf0",
+      "text": "",
+      "uuid": "e17f8738-cdf5-42f3-b42c-18e603540d42",
+      "type": "core:line_edge",
+      "color": [59, 130, 246, 1]
+    },
+    {
+      "source": "f8177144-dc92-4879-8434-b69b0cb8aa43",
+      "target": "1a1dacf9-162d-4a38-9938-dffe3d90d2b4",
+      "text": "",
+      "uuid": "b21b7755-b72f-41de-b14c-0c33badcb761",
+      "type": "core:line_edge",
+      "color": [59, 130, 246, 1]
+    },
+    {
+      "source": "539a6d6b-3154-44a6-81b4-fc08ac2c9381",
+      "target": "1a1dacf9-162d-4a38-9938-dffe3d90d2b4",
+      "text": "",
+      "uuid": "5c9f9f04-d6b0-447a-9e77-e5e82ffb47a4",
+      "type": "core:line_edge",
+      "color": [59, 130, 246, 1]
+    },
+    {
+      "source": "2ff285af-9c62-467f-940d-84643c6ab9a9",
+      "target": "ee730223-e6b0-4a31-9eb8-4e5d2027a396",
+      "text": "",
+      "uuid": "e07c263a-a9b2-4086-a935-f8f6374d0f2c",
+      "type": "core:line_edge",
+      "color": [59, 130, 246, 1]
+    },
+    {
+      "source": "ccdb466a-03fc-4ffc-8cb5-c335c33133cb",
+      "target": "ec5ca033-d688-4ef4-890d-21a2e29f31b8",
+      "text": "",
+      "uuid": "e880a59b-a6a1-418a-becd-d06e2f78bd2e",
+      "type": "core:line_edge",
+      "color": [59, 130, 246, 1]
+    },
+    {
+      "source": "31e7a7fa-9a46-40e1-ae6f-421ea9747a3d",
+      "target": "88b61966-fc5e-4771-a8e2-cf80a999ffc5",
+      "text": "",
+      "uuid": "fa2b8731-a1de-4d6f-991d-9990de3a120b",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "b2fca6c1-ff81-4eea-a419-1183255e01b6",
+      "target": "8e12f19f-7cad-41f1-99e0-b6b74ed1ba4d",
+      "text": "",
+      "uuid": "7be6520a-b051-400c-b372-7d8ae00dbb4c",
+      "type": "core:line_edge",
+      "color": [59, 130, 246, 1]
+    },
+    {
+      "source": "8b875a2d-4d7a-4382-aa65-f72bdf054cae",
+      "target": "8a3928a8-00c6-4cda-ac57-8935e27e91b9",
+      "text": "",
+      "uuid": "6472d533-69f1-4d30-8a92-dba431ac33fa",
+      "type": "core:line_edge",
+      "color": [59, 130, 246, 1]
+    },
+    {
+      "source": "b259cc74-de0a-45c0-bb05-87af271a45bb",
+      "target": "c3dcef43-709d-49af-987e-6e93668279cc",
+      "text": "",
+      "uuid": "1c840df7-fadf-4d10-bf8a-8b448a7ef082",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "957061a2-050a-4a73-bfe2-d27da68763b0",
+      "target": "c3dcef43-709d-49af-987e-6e93668279cc",
+      "text": "",
+      "uuid": "ebe2ae53-450c-4601-8d2c-cff5db8ede50",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "961c63ea-2103-4ec4-8b7a-a7f9da0a1114",
+      "target": "a57fd718-8af5-4e63-8fdc-c224b4ce4c4e",
+      "text": "",
+      "uuid": "a71f880d-d9e7-43b2-8dbc-7ee463d8303a",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "ec3c803e-d01d-4309-b8e2-dccb0697390d",
+      "target": "358ca577-7e7e-4034-8050-bfaa967415ee",
+      "text": "",
+      "uuid": "26cb0603-17e7-4e23-8bb1-0f5a84d2df35",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "ad6a6d8c-61e9-4bce-803c-9471437216da",
+      "target": "8217e672-20fb-42f8-ba20-56750f1dea67",
+      "text": "",
+      "uuid": "4a7b3ff7-9da2-4206-a121-480e73a8119c",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "9c5eea00-d6ed-4945-81c4-d97780ff85de",
+      "target": "786658c3-90aa-48f7-ad23-c5b9792c361c",
+      "text": "按住",
+      "uuid": "92c5da8e-1754-4cd4-a843-c6125844c2cd",
+      "type": "core:line_edge",
+      "color": [147, 67, 67, 1]
+    },
+    {
+      "source": "28ef2857-85e0-4c17-8525-367d4e26db0b",
+      "target": "3fd1138a-cdaa-481a-8540-aa456730d69d",
+      "text": "按住",
+      "uuid": "67acc193-af03-45a4-af3f-b44d9be6a40b",
+      "type": "core:line_edge",
+      "color": [147, 67, 67, 1]
+    },
+    {
+      "source": "40e73062-9330-419e-aaf1-f7cfc0a4153d",
+      "target": "1c1a637a-0a3a-4d4b-9202-9d87c03995d2",
+      "text": "",
+      "uuid": "41795ac9-7cc4-4f14-b3b7-066570c0aca1",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "ceea083a-e6b3-41f5-a7ab-19385a989391",
+      "target": "42c272f8-34fe-4969-8d7a-ae9edd505056",
+      "text": "",
+      "uuid": "b459d8e6-45ae-4ab5-8369-7ae47c6654a1",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "015bd47a-85ce-4940-82a8-4b7f7450ec7e",
+      "target": "b128edae-fe7c-4578-8a39-3a74b04a0f12",
+      "text": "",
+      "uuid": "b2d1afbf-e761-49fe-a7a8-8adc89c563f3",
+      "type": "core:line_edge",
+      "color": [59, 130, 246, 1]
+    },
+    {
+      "source": "b8295cb4-4ab0-4ff8-8ab0-dc1c096d9a44",
+      "target": "2a4c8152-f88b-4130-b1f9-5947e11dc6b2",
+      "text": "按住",
+      "uuid": "549e8fdf-024f-4930-a4fc-81dee4870098",
+      "type": "core:line_edge",
+      "color": [147, 67, 67, 1]
+    },
+    {
+      "source": "67fdcf1a-c08d-4298-89c9-4c0125f27fe3",
+      "target": "16ba9489-4391-4854-8095-6b16ad452a04",
+      "text": "",
+      "uuid": "5f81872d-655f-4420-9c59-9ecc3412fd2a",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "67fdcf1a-c08d-4298-89c9-4c0125f27fe3",
+      "target": "d2b164f3-2e62-4329-8004-e37cd44dea70",
+      "text": "",
+      "uuid": "dea8ebac-0257-4cf9-9da4-6911c28ca57c",
+      "type": "core:line_edge",
+      "color": [59, 130, 246, 1]
+    },
+    {
+      "source": "67fdcf1a-c08d-4298-89c9-4c0125f27fe3",
+      "target": "86141698-b952-47fa-bce2-c8f1a8fd3831",
+      "text": "alt",
+      "uuid": "9058262d-cb29-45e0-a009-3fe56588880f",
+      "type": "core:line_edge",
+      "color": [0, 255, 0, 1]
+    },
+    {
+      "source": "67fdcf1a-c08d-4298-89c9-4c0125f27fe3",
+      "target": "16b5fa68-5ab4-44eb-902b-f3720ec9739a",
+      "text": "ctrl+alt",
+      "uuid": "22d65aa1-10b2-46cd-8b65-c5f27c964b8c",
+      "type": "core:line_edge",
+      "color": [0, 255, 255, 1]
+    },
+    {
+      "source": "dedc0406-87d0-4b0b-8df8-1565a7829c79",
+      "target": "023c5549-b10f-43bb-90a2-f25d93cbf89a",
+      "text": "ctrl+shift",
+      "uuid": "624582e7-b09b-4026-8a95-695c49d3d7c8",
+      "type": "core:line_edge",
+      "color": [255, 0, 255, 1]
+    },
+    {
+      "source": "a5bac285-1768-401f-a0ea-4459be27db09",
+      "target": "36885b0b-150d-43e0-b0e8-3bc5406f474a",
+      "text": "ctrl+按此键",
+      "uuid": "85d3e822-750f-4f53-8d61-bc4500fe9f2e",
+      "type": "core:line_edge",
+      "color": [59, 130, 246, 1]
+    },
+    {
+      "source": "dedc0406-87d0-4b0b-8df8-1565a7829c79",
+      "target": "86447f56-5ded-4c81-8d9c-82f71b4a4dc5",
+      "text": "按住",
+      "uuid": "49ca7d03-c26a-4512-8586-e126fa5803a4",
+      "type": "core:line_edge",
+      "color": [147, 67, 67, 1]
+    },
+    {
+      "source": "31e7a7fa-9a46-40e1-ae6f-421ea9747a3d",
+      "target": "ba0d7514-c6e7-4f3d-b2a9-b3af8876aae5",
+      "text": "",
+      "uuid": "6e430226-5394-4cb7-b17f-853fee3b6374",
+      "type": "core:line_edge",
+      "color": [59, 130, 246, 1]
+    },
+    {
+      "source": "bb33388c-2063-43b0-be70-282b3b8c5a6b",
+      "target": "16f26bfc-fe09-4398-ae4b-ca366f3e2d3e",
+      "text": "alt",
+      "uuid": "c47092bc-955a-4c65-b125-cfcd2cbc4235",
+      "type": "core:line_edge",
+      "color": [0, 255, 0, 1]
+    },
+    {
+      "source": "5c6c0ad2-2479-4796-b250-0bea8df87cba",
+      "target": "59ddea78-1ed1-4a59-828f-037c94dc6665",
+      "text": "alt+按此键",
+      "uuid": "f12454f9-5962-4163-be10-252fa63f2464",
+      "type": "core:line_edge",
+      "color": [0, 255, 0, 1]
+    },
+    {
+      "source": "3fe3b056-baed-4e97-912c-a9fc18841e37",
+      "target": "09b14625-d2e4-4a4a-9fa6-5f82bf963df4",
+      "text": "",
+      "uuid": "6be6bcf7-17a1-4848-8a82-5b831e447c16",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "6bad17cd-bb16-482a-a06a-33ee03c40649",
+      "target": "09b14625-d2e4-4a4a-9fa6-5f82bf963df4",
+      "text": "",
+      "uuid": "eb999472-5ad7-4e62-804f-6fa3340fd605",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "6bad17cd-bb16-482a-a06a-33ee03c40649",
+      "target": "4c6fa188-eca9-444a-adc2-e36df867390a",
+      "text": "",
+      "uuid": "153f9285-4baa-4f56-8e5d-bb46238be18a",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "df84b1fa-e3e1-4fa3-9f0d-ed5d62269d4d",
+      "target": "4c6fa188-eca9-444a-adc2-e36df867390a",
+      "text": "",
+      "uuid": "87dc5525-5bef-4e37-87b8-7c2e9e8574a7",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "3fe3b056-baed-4e97-912c-a9fc18841e37",
+      "target": "4f39a197-07f5-429a-a071-a95ac0625a9e",
+      "text": "",
+      "uuid": "9dcb3cb5-dd53-49b8-ad6b-0578aa6a79f7",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "df84b1fa-e3e1-4fa3-9f0d-ed5d62269d4d",
+      "target": "4f39a197-07f5-429a-a071-a95ac0625a9e",
+      "text": "",
+      "uuid": "768d99bf-558f-4d4d-9206-abdf94bd476e",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "3fe3b056-baed-4e97-912c-a9fc18841e37",
+      "target": "7f162b71-59e7-4d7e-b794-3214da93cdf6",
+      "text": "",
+      "uuid": "184b8d2c-73ef-4683-831b-692a8fb195f3",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "6bad17cd-bb16-482a-a06a-33ee03c40649",
+      "target": "7f162b71-59e7-4d7e-b794-3214da93cdf6",
+      "text": "",
+      "uuid": "8456aa75-7e2a-4189-8d26-6607423e4b41",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "df84b1fa-e3e1-4fa3-9f0d-ed5d62269d4d",
+      "target": "7f162b71-59e7-4d7e-b794-3214da93cdf6",
+      "text": "",
+      "uuid": "18f71701-42b7-4560-bb0c-01777f771348",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "6a08d73c-7084-4296-b89c-60ecb31933c1",
+      "target": "e526f17f-e247-4127-89cc-fcbcd17304af",
+      "text": "",
+      "uuid": "14914ac9-7f26-45f9-9a4a-54758b69e8c7",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "8d2c277a-5061-49f8-92ea-698fbb8953f0",
+      "target": "155644ed-3aaf-424c-a75f-e5450c438c5e",
+      "text": "按下一次",
+      "uuid": "e39a48dd-a811-472b-ab17-45c220fc06d6",
+      "type": "core:line_edge",
+      "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "319b7622-4f0f-4d54-ab21-758d10429f58",
+      "target": "2674e39c-df5a-47f9-84fc-9a2b8cdd8523",
+      "text": "持续按住",
+      "uuid": "69e88adf-8b53-4f6c-84b7-87ff5434a685",
+      "type": "core:line_edge",
+      "color": [147, 67, 67, 1]
+    },
+    {
+      "source": "65bc7249-6011-41f9-849b-4b46833dcdf2",
+      "target": "27e8269f-2206-44f4-99bd-6e14b33b1944",
+      "text": "shift+按此键",
+      "uuid": "8f603c9a-12ef-4359-97d3-011ec176f35e",
+      "type": "core:line_edge",
+      "color": [255, 0, 0, 1]
     }
   ],
   "tags": [
