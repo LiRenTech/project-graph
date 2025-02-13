@@ -38,8 +38,8 @@ export class AutoBackupEngine {
     const now = performance.now();
     if (now - this.lastAutoBackupTime > this.autoBackupInterval) {
       if (Stage.path.isDraft()) {
-        const backupPath = `${this.autoBackupDraftPath}${PathString.getSep()}${PathString.getTime()}.json`;
-        StageSaveManager.backupHandle(backupPath, StageDumper.dump());
+        const backupDraftPath = `${this.autoBackupDraftPath}${PathString.getSep()}${PathString.getTime()}.json`;
+        StageSaveManager.backupHandle(backupDraftPath, StageDumper.dump());
       } else {
         StageSaveManager.backupHandleWithoutCurrentPath(StageDumper.dump(), false);
       }

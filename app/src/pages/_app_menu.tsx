@@ -2,6 +2,7 @@ import { open as openFileDialog, save as saveFileDialog } from "@tauri-apps/plug
 import { useAtom } from "jotai";
 import {
   AppWindow,
+  Axe,
   BadgeInfo,
   Database,
   Dock,
@@ -24,6 +25,7 @@ import {
   SquareDashedKanbanIcon,
   SquareDashedMousePointer,
   TestTube2,
+  Undo,
   View,
 } from "lucide-react";
 import React, { useEffect } from "react";
@@ -48,6 +50,7 @@ import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMetho
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { PathString } from "../utils/pathString";
 import { HelpService } from "../core/service/helpService/helpService";
+import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryManager";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -457,6 +460,28 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         <Col icon={<Scaling />} onClick={() => Camera.resetScale()}>
           {t("view.items.resetScale")}
         </Col>
+      </Row>
+      <Row icon={<Axe />} title={"操作"}>
+        <Col
+          icon={<Undo />}
+          onClick={() => {
+            StageHistoryManager.undo();
+          }}
+        >
+          撤销
+        </Col>
+        {/* <Col
+          icon={<Undo />}
+          onClick={() => {
+            const userInput = window.prompt("请输入搜索内容：");
+            if (!userInput) {
+              return;
+            }
+            Stage.contentSearchEngine.startSearch(userInput);
+          }}
+        >
+          查找
+        </Col> */}
       </Row>
       <Row icon={<MoreHorizontal />} title={t("more.title")}>
         <Col icon={<SettingsIcon />} onClick={() => navigate("/settings/visual")}>
