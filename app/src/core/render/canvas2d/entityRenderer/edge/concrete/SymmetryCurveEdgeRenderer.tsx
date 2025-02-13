@@ -17,6 +17,7 @@ import { Renderer } from "../../../renderer";
 import { WorldRenderUtils } from "../../../utilsRenderer/WorldRenderUtils";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
+import { SvgUtils } from "../../../../svg/SvgUtils";
 
 export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   getCuttingEffects(edge: LineEdge): EffectObject[] {
@@ -134,62 +135,26 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     }
   }
   public getNormalStageSvg(edge: LineEdge): React.ReactNode {
-    let lineBody = <></>;
-    let textNode = <></>;
+    let lineBody: React.ReactNode = <></>;
+    let textNode: React.ReactNode = <></>;
     const edgeColor = edge.color.equals(Color.Transparent)
       ? StageStyleManager.currentStyle.StageObjectBorderColor
       : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边
-      lineBody = (
-        <line
-          key={edge.source.uuid + "-" + edge.target.uuid}
-          x1={edge.bodyLine.start.x}
-          y1={edge.bodyLine.start.y}
-          x2={edge.bodyLine.end.x}
-          y2={edge.bodyLine.end.y}
-          stroke={edgeColor.toString()}
-          strokeWidth={2}
-        />
-      );
+      lineBody = SvgUtils.line(edge.bodyLine.start, edge.bodyLine.end, edgeColor, 2);
     } else {
       // 有文字的边
       const midPoint = edge.bodyLine.midPoint();
       const startHalf = new Line(edge.bodyLine.start, midPoint);
       const endHalf = new Line(midPoint, edge.bodyLine.end);
-      textNode = (
-        <text
-          x={midPoint.x}
-          y={midPoint.y}
-          key={edge.uuid + "-text"}
-          fill={edgeColor.toString()}
-          fontSize={Renderer.FONT_SIZE}
-          textAnchor="middle"
-          fontFamily="MiSans"
-        >
-          {edge.text}
-        </text>
-      );
+      const edgeTextRectangle = edge.textRectangle;
+
+      textNode = SvgUtils.textFromCenter(edge.text, midPoint, Renderer.FONT_SIZE, edgeColor);
       lineBody = (
         <>
-          <line
-            key={edge.source.uuid + "-" + edge.target.uuid + "1"}
-            x1={edge.bodyLine.start.x}
-            y1={edge.bodyLine.start.y}
-            x2={startHalf.end.x}
-            y2={startHalf.end.y}
-            stroke={edgeColor.toString()}
-            strokeWidth={2}
-          />
-          <line
-            key={edge.source.uuid + "-" + edge.target.uuid + "2"}
-            x1={endHalf.end.x}
-            y1={endHalf.end.y}
-            x2={edge.bodyLine.end.x}
-            y2={edge.bodyLine.end.y}
-            stroke={edgeColor.toString()}
-            strokeWidth={2}
-          />
+          {SvgUtils.line(edge.bodyLine.start, edgeTextRectangle.getLineIntersectionPoint(startHalf), edgeColor, 2)}
+          {SvgUtils.line(edge.bodyLine.end, edgeTextRectangle.getLineIntersectionPoint(endHalf), edgeColor, 2)}
         </>
       );
     }
