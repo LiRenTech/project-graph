@@ -197,7 +197,6 @@ class ControllerNodeConnectionClass extends ControllerClass {
       }
     } else {
       // 鼠标在空白位置抬起
-
       // 额外复制一个数组，因为回调函数执行前，这个数组已经被清空了
       const newConnectFromEntities = this.connectFromEntities;
 

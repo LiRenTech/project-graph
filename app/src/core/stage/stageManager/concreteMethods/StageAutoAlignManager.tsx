@@ -8,7 +8,6 @@ import { EntityAlignEffect } from "../../../service/feedbackService/effectEngine
 import { RectangleRenderEffect } from "../../../service/feedbackService/effectEngine/concrete/RectangleRenderEffect";
 import { SoundService } from "../../../service/feedbackService/SoundService";
 import { Stage } from "../../Stage";
-import { TextNode } from "../../stageObject/entity/TextNode";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { StageManager } from "../StageManager";
@@ -29,9 +28,6 @@ export namespace StageAutoAlignManager {
       .filter((entity) => !entity.isSelected)
       .filter((entity) => entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle));
     for (const selectedEntity of selectedEntities) {
-      if (!(selectedEntity instanceof TextNode)) {
-        continue;
-      }
       onEntityMoveAlignToOtherEntity(selectedEntity, otherEntities);
     }
   }
@@ -47,9 +43,6 @@ export namespace StageAutoAlignManager {
       .filter((entity) => !entity.isSelected)
       .filter((entity) => entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle));
     for (const selectedEntity of selectedEntities) {
-      if (!(selectedEntity instanceof TextNode)) {
-        continue;
-      }
       onEntityMoveAlignToOtherEntity(selectedEntity, otherEntities, true);
     }
   }
