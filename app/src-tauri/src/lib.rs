@@ -7,6 +7,7 @@ use base64::Engine;
 use tauri::Manager;
 use tauri::Runtime;
 use tauri::Url;
+#[cfg(desktop)]
 use tauri_plugin_updater::UpdaterExt;
 
 /// 判断文件是否存在
@@ -69,6 +70,7 @@ fn exit(code: i32) {
     std::process::exit(code);
 }
 
+#[cfg(desktop)]
 #[tauri::command]
 async fn set_update_channel<R: Runtime>(
     app: tauri::AppHandle<R>,
@@ -128,6 +130,7 @@ pub fn run() {
             write_stdout,
             write_stderr,
             exit,
+            #[cfg(desktop)]
             set_update_channel
         ])
         .run(tauri::generate_context!())
