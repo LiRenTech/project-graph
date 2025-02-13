@@ -70,6 +70,25 @@ export namespace PathString {
   }
 
   /**
+   * 通过路径字符串中，提取出文件名
+   * 例如：
+   * path = "C:/Users/admin/Desktop/test.txt"
+   * 则返回 "test"
+   * @param path
+   */
+  export function getFileNameFromPath(path: string): string {
+    path = path.replace(/\\/g, "/");
+    const parts = path.split("/");
+    const fileName = parts[parts.length - 1];
+    const parts2 = fileName.split(".");
+    if (parts2.length > 1) {
+      return parts2.slice(0, -1).join(".");
+    } else {
+      return fileName;
+    }
+  }
+
+  /**
    * 获取符合路径文件名规则的时间字符串
    */
   export function getTime(): string {

@@ -1,5 +1,5 @@
 import { Serialized } from "../../../types/node";
-import { exists, writeTextFile } from "../../../utils/fs";
+import { createFolder, exists, writeTextFile } from "../../../utils/fs";
 import { PathString } from "../../../utils/pathString";
 import { Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
@@ -66,7 +66,7 @@ export namespace StageSaveManager {
     Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
   }
   /**
-   * 备份，会在工程文件夹旁白生成一个类似的json文件
+   * 备份，会在工程文件夹的内部新建一个backup文件夹，并在里面生成一个类似的json文件
    * 可以用于手动触发，也可以自动触发
    * @param data
    * @param successCallback
@@ -80,8 +80,15 @@ export namespace StageSaveManager {
     }
     // 不能有冒号，空格，斜杠
     const dateTime = PathString.getTime();
-
-    const backupPath = `${Stage.path.getFilePath()}.${dateTime}.backup`;
+    const fatherDirPath = PathString.dirPath(Stage.path.getFilePath());
+    const backupFolderPath = `${fatherDirPath}${PathString.getSep()}backup_${PathString.getFileNameFromPath(Stage.path.getFilePath())}`;
+    if (!(await exists(backupFolderPath))) {
+      const created = await createFolder(backupFolderPath);
+      if (!created) {
+        throw new Error("创建备份文件夹失败" + backupFolderPath);
+      }
+    }
+    const backupPath = `${backupFolderPath}${PathString.getSep()}${dateTime}.backup.json`;
 
     await writeTextFile(backupPath, JSON.stringify(data));
     if (addFlashEffect) {

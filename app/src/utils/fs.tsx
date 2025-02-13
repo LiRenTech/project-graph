@@ -132,11 +132,11 @@ export async function writeTextFile(path: string, content: string): Promise<void
  * 创建文件夹
  * @param path 文件夹路径
  */
-export async function createFolder(path: string): Promise<void> {
+export async function createFolder(path: string): Promise<boolean> {
   if (isWeb) {
     // Web 环境下，直接返回，因为浏览器中无法直接创建文件夹
     console.warn("Creating folders is not supported in web environment.");
-    return;
+    return false;
   } else {
     return invoke("create_folder", { path });
   }
