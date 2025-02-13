@@ -95,11 +95,44 @@ export namespace ColorManager {
   }
 
   /**
-   * 按照色相环的顺序排序颜色
+   * 按照色相环的顺序排序颜色（黑白最前，纯红其次，其他按色相）
    * @param colors
    */
   function sortColorsByHue(colors: Color[]): Color[] {
-    return colors.sort((a, b) => getColorHue(a) - getColorHue(b));
+    return colors.sort((a, b) => {
+      // 判断颜色类型
+      const isGrayA = isGrayscale(a);
+      const isGrayB = isGrayscale(b);
+
+      // 优先级：灰度 > 彩色
+      if (isGrayA !== isGrayB) {
+        return isGrayA ? -1 : 1;
+      }
+
+      // 同类型比较
+      if (isGrayA) {
+        // 灰度颜色按亮度降序（从白到黑）
+        return getGrayscaleBrightness(b) - getGrayscaleBrightness(a);
+      } else {
+        // 彩色按色相升序
+        return getColorHue(a) - getColorHue(b);
+      }
+    });
+  }
+  /**
+   * 判断是否是灰度颜色
+   */
+  function isGrayscale(color: Color): boolean {
+    const rgb = color;
+    return rgb.r === rgb.g && rgb.g === rgb.b;
+  }
+
+  /**
+   * 获取灰度颜色的亮度（0-255）
+   */
+  function getGrayscaleBrightness(color: Color): number {
+    const rgb = color;
+    return rgb.r; // 因为r=g=b，直接返回红色通道值
   }
   /**
    * 计算颜色的色相
