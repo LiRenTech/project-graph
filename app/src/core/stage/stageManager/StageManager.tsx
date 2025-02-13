@@ -373,24 +373,25 @@ export namespace StageManager {
           }
         }
       }
+    }
+    // 以下是Section框的更新，y值降序排序，从下往上排序，因为下面的往往是内层的Section
+    for (const section of getSections().sort(
+      (a, b) => b.collisionBox.getRectangle().location.y - a.collisionBox.getRectangle().location.y,
+    )) {
+      // 更新孩子数组，并调整位置和大小
+      const newChildList = [];
 
-      // 以下是Section框的更新
-      if (entity instanceof Section) {
-        // 更新孩子数组，并调整位置和大小
-        const newChildList = [];
-
-        for (const childUUID of entity.childrenUUIDs) {
-          if (stageContent.entities.hasId(childUUID)) {
-            const childObject = stageContent.entities.getById(childUUID);
-            if (childObject) {
-              newChildList.push(childObject);
-            }
+      for (const childUUID of section.childrenUUIDs) {
+        if (stageContent.entities.hasId(childUUID)) {
+          const childObject = stageContent.entities.getById(childUUID);
+          if (childObject) {
+            newChildList.push(childObject);
           }
         }
-        entity.children = newChildList;
-        entity.adjustLocationAndSize();
-        entity.adjustChildrenStateByCollapse();
       }
+      section.children = newChildList;
+      section.adjustLocationAndSize();
+      section.adjustChildrenStateByCollapse();
     }
 
     // 以下是LineEdge双向线偏移状态的更新
