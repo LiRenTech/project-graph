@@ -2,6 +2,7 @@ import {
   AlignStartVertical,
   Fullscreen,
   GitCompareArrows,
+  Hand,
   Keyboard,
   ListCheck,
   ListEnd,
@@ -17,6 +18,7 @@ import {
   SquareDashedMousePointer,
   TextCursorInput,
   TextSelect,
+  Touchpad,
 } from "lucide-react";
 import { FieldGroup, SettingField } from "./_field";
 
@@ -29,6 +31,9 @@ export default function Control() {
         <SettingField icon={<Mouse />} settingKey="mouseWheelMode" type="select" />
         <SettingField icon={<Mouse />} settingKey="mouseWheelWithShiftMode" type="select" />
         <SettingField icon={<Mouse />} settingKey="mouseWheelWithCtrlMode" type="select" />
+      </FieldGroup>
+      <FieldGroup title="TouchPad 触摸板设定" icon={<Touchpad />}>
+        <SettingField icon={<Hand />} settingKey="enableWindowsTouchPad" type="switch" />
       </FieldGroup>
       <FieldGroup title="RectangleSelect 框选" icon={<SquareDashedMousePointer />}>
         <SettingField icon={<SquareArrowDownRight />} settingKey="rectangleSelectWhenRight" type="select" />

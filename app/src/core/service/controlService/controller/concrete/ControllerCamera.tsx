@@ -8,6 +8,7 @@ import { Camera } from "../../../../stage/Camera";
 import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
+import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -170,6 +171,29 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
     return;
   }
   // 禁用触控板在这里的滚动
+  if (!Stage.enableWindowsTouchPad) {
+    // 先看X轴的滚动
+    if (event.deltaX !== 0) {
+      // 向右滚动是缩小
+      const intDiff = Math.round(Math.abs(event.deltaX));
+      if (intDiff === 100 || intDiff === 133 || intDiff === 166 || intDiff === 200) {
+        // 绝对没问题
+      } else {
+        Stage.effectMachine.addEffect(TextRiseEffect.default("已禁用触控板滚动, x轴滚动被过滤：" + intDiff));
+        return;
+      }
+    }
+    // 先看Y轴的滚动
+    if (event.deltaY !== 0) {
+      const intDiff = Math.round(Math.abs(event.deltaY));
+      if (intDiff === 100 || intDiff === 133 || intDiff === 166 || intDiff === 200) {
+        // 绝对没问题
+      } else {
+        Stage.effectMachine.addEffect(TextRiseEffect.default("已禁用触控板滚动, y轴滚动被过滤：" + intDiff));
+        return;
+      }
+    }
+  }
   // 获取触发滚轮的鼠标位置
   const mouseLocation = new Vector(event.clientX, event.clientY);
   // 计算鼠标位置在视野中的位置

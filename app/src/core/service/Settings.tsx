@@ -54,6 +54,7 @@ export namespace Settings {
     // 控制相关
     enableCollision: boolean; // 暂无
     enableDragAutoAlign: boolean;
+    enableWindowsTouchPad: boolean;
     rectangleSelectWhenLeft: "intersect" | "contain";
     rectangleSelectWhenRight: "intersect" | "contain";
     scaleExponent: number;
@@ -128,6 +129,7 @@ export namespace Settings {
     // 控制相关
     enableCollision: true,
     enableDragAutoAlign: true,
+    enableWindowsTouchPad: true,
     rectangleSelectWhenLeft: "contain",
     rectangleSelectWhenRight: "intersect",
     scaleExponent: 0.11,

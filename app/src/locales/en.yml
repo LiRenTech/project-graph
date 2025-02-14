@@ -369,6 +369,10 @@ settings:
     title: Enable Drag Auto Align Nodes
     description: |
       When enabled, nodes will automatically align with other nodes along the x-axis and y-axis when dragged and released
+  enableWindowsTouchPad:
+    title: 允许Windows系统使用触摸板操作
+    description: |
+      开启后，可以使用触摸板操作鼠标滚轮
   mouseWheelMode:
     title: mouse Wheel Mode
     options:

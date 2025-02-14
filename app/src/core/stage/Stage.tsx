@@ -119,6 +119,7 @@ export namespace Stage {
   export let textNodeSelectAllWhenStartEditByMouseClick = true;
   export let rectangleSelectWhenLeft: "contain" | "intersect" = "contain";
   export let rectangleSelectWhenRight: "contain" | "intersect" = "intersect";
+  export let enableWindowsTouchPad = true;
 
   export function init() {
     autoSaveEngine.init();
@@ -137,6 +138,9 @@ export namespace Stage {
     });
     Settings.watch("rectangleSelectWhenRight", (value) => {
       rectangleSelectWhenRight = value;
+    });
+    Settings.watch("enableWindowsTouchPad", (value) => {
+      enableWindowsTouchPad = value;
     });
   }
 }
