@@ -4,6 +4,7 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
 import { Renderer } from "../../../../render/canvas2d/renderer";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 import { reverseAnimate } from "../mathTools/animateFunctions";
 import { easeOutQuint } from "../mathTools/easings";
@@ -24,6 +25,14 @@ export class RectangleNoteEffect extends EffectObject {
     public strokeColor: Color,
   ) {
     super(timeProgress);
+  }
+
+  static fromShiftClickSelect(rectangle: Rectangle) {
+    return new RectangleNoteEffect(
+      new ProgressNumber(0, 50),
+      rectangle,
+      StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
+    );
   }
 
   render(): void {

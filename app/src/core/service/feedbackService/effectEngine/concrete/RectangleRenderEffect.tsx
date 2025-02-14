@@ -37,4 +37,14 @@ export class RectangleRenderEffect extends EffectObject {
       4,
     );
   }
+
+  static fromShiftClickSelect(rectangle: Rectangle): RectangleRenderEffect {
+    return new RectangleRenderEffect(
+      new ProgressNumber(0, 100),
+      rectangle,
+      Color.Transparent,
+      StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
+      4,
+    );
+  }
 }
