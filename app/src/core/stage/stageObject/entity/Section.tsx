@@ -128,14 +128,17 @@ export class Section extends ConnectableEntity {
   }
 
   adjustLocationAndSize() {
+    let rectangle: Rectangle;
     if (this.children.length === 0) {
-      return;
+      rectangle = new Rectangle(this.collisionBox.getRectangle().location, new Vector(100, 100));
+    } else {
+      // 调整展开状态
+      rectangle = Rectangle.getBoundingRectangle(
+        this.children.map((child) => child.collisionBox.getRectangle()),
+        30,
+      );
     }
-    // 调整展开状态
-    const rectangle = Rectangle.getBoundingRectangle(
-      this.children.map((child) => child.collisionBox.getRectangle()),
-      30,
-    );
+
     // 留白范围在上面调整
     rectangle.location = rectangle.location.subtract(new Vector(0, 50));
     rectangle.size = rectangle.size.add(new Vector(0, 50));

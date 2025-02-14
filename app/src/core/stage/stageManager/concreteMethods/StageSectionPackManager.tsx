@@ -72,7 +72,7 @@ export namespace StageSectionPackManager {
       }
       // 获取这个节点的父级Section
       const fatherSections = SectionMethods.getFatherSections(textNode);
-      const rect = textNode.collisionBox.getRectangle();
+      const rect = textNode.collisionBox.getRectangle().expandFromCenter(50);
       const newSection = new Section({
         uuid: v4(),
         text: textNode.text,
@@ -81,6 +81,7 @@ export namespace StageSectionPackManager {
         color: [textNode.color.r, textNode.color.g, textNode.color.b, textNode.color.a],
         details: textNode.details,
       });
+      newSection.adjustLocationAndSize();
       // 获取所有连向它的和它连向的东西
       const fatherConnections = GraphMethods.nodeParentArray(textNode);
       const childConnections = GraphMethods.nodeChildrenArray(textNode);
