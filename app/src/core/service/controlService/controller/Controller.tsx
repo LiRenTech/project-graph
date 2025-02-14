@@ -12,9 +12,9 @@ import { ControllerEntityCreate } from "./concrete/ControllerEntityCreate";
 import { ControllerLayerMoving } from "./concrete/ControllerEntityLayerMoving";
 import { ControllerImageScale } from "./concrete/ControllerImageScale";
 // import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
+import { ControllerEntityClickSelectAndMove } from "./concrete/ControllerEntityClickSelectAndMove";
 import { ControllerNodeConnection } from "./concrete/ControllerNodeConnection";
 import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
-import { ControllerEntityMove } from "./concrete/ControllerEntityMove";
 import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
 import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect";
 import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
@@ -64,11 +64,6 @@ export namespace Controller {
   export function lastMouseReleaseLocationString(): string {
     return lastMouseReleaseLocation.map((v) => v.toString()).join(",");
   }
-  /**
-   * 是否正在进行移动节点的操作
-   */
-  // eslint-disable-next-line prefer-const
-  export let isMovingEntity = false;
   /**
    * 是否正在进行移动(拖拽旋转)连线的操作
    */
@@ -131,7 +126,7 @@ export namespace Controller {
     ControllerNodeRotation.init();
     ControllerNodeConnection.init();
     ControllerCutting.init();
-    ControllerEntityMove.init();
+    ControllerEntityClickSelectAndMove.init();
     ControllerRectangleSelect.init();
     ControllerNodeEdit.init();
     ControllerEntityCreate.init();
@@ -293,7 +288,7 @@ export namespace Controller {
     ControllerNodeRotation.destroy();
     ControllerNodeConnection.destroy();
     ControllerCutting.destroy();
-    ControllerEntityMove.destroy();
+    ControllerEntityClickSelectAndMove.destroy();
     ControllerRectangleSelect.destroy();
     ControllerNodeEdit.destroy();
     ControllerEntityCreate.destroy();

@@ -761,7 +761,6 @@ export namespace Renderer {
       `鼠标上次松开位置: ${Controller.lastMouseReleaseLocationString()}`,
       `lastMousePressLocation Right: ${Controller.lastMousePressLocation[2].toString()}`,
       `框选框: ${Stage.selectMachine.selectingRectangle}`,
-      `正在移动节点: ${Controller.isMovingEntity}`,
       `正在切割: ${Stage.cuttingMachine.isUsing}`,
       `Stage.warningNodes: ${Stage.cuttingMachine.warningEntity.length}`,
       `Stage.warningEdges: ${Stage.cuttingMachine.warningEdges.length}`,

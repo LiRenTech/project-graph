@@ -12,15 +12,19 @@ import { ControllerClass } from "../ControllerClass";
  * 拖拽节点使其移动的控制器
  *
  */
-export const ControllerEntityMove = new ControllerClass();
+export const ControllerEntityClickSelectAndMove = new ControllerClass();
 
-ControllerEntityMove.mousedown = (event: MouseEvent) => {
+let isMovingEntity = false;
+let mouseDownViewLocation = Vector.getZero();
+
+ControllerEntityClickSelectAndMove.mousedown = (event: MouseEvent) => {
   if (event.button !== 0) {
     return;
   }
+  mouseDownViewLocation = new Vector(event.clientX, event.clientY);
 
-  const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-  ControllerEntityMove.lastMoveLocation = pressWorldLocation.clone();
+  const pressWorldLocation = Renderer.transformView2World(mouseDownViewLocation);
+  ControllerEntityClickSelectAndMove.lastMoveLocation = pressWorldLocation.clone();
   const clickedEntity = StageManager.findConnectableEntityByLocation(pressWorldLocation);
 
   // 防止跳跃式移动的时候改变选中内容
@@ -30,7 +34,7 @@ ControllerEntityMove.mousedown = (event: MouseEvent) => {
 
   // 单击选中
   if (clickedEntity !== null) {
-    Controller.isMovingEntity = true;
+    isMovingEntity = true;
 
     if (Controller.pressingKeySet.has("shift") && Controller.pressingKeySet.has("control")) {
       // ctrl + shift 同时按下
@@ -72,19 +76,19 @@ ControllerEntityMove.mousedown = (event: MouseEvent) => {
   }
 };
 
-ControllerEntityMove.mousemove = (event: MouseEvent) => {
+ControllerEntityClickSelectAndMove.mousemove = (event: MouseEvent) => {
   if (Stage.selectMachine.isUsing || Stage.cuttingMachine.isUsing || Controller.pressingKeySet.has("alt")) {
     return;
   }
-  if (!Controller.isMovingEntity) {
+  if (!isMovingEntity) {
     return;
   }
   const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-  const diffLocation = worldLocation.subtract(ControllerEntityMove.lastMoveLocation);
+  const diffLocation = worldLocation.subtract(ControllerEntityClickSelectAndMove.lastMoveLocation);
 
   if (StageManager.isHaveEntitySelected()) {
     // 移动节点
-    Controller.isMovingEntity = true;
+    isMovingEntity = true;
     // 暂不监听alt键。因为windows下切换窗口时，alt键释放监听不到
     if (Controller.pressingKeySet.has("control")) {
       // 和子节点一起移动
@@ -104,21 +108,28 @@ ControllerEntityMove.mousemove = (event: MouseEvent) => {
       StageManager.preAlignAllSelected();
     }
 
-    ControllerEntityMove.lastMoveLocation = worldLocation.clone();
+    ControllerEntityClickSelectAndMove.lastMoveLocation = worldLocation.clone();
   }
 };
 
-ControllerEntityMove.mouseup = (event: MouseEvent) => {
+ControllerEntityClickSelectAndMove.mouseup = (event: MouseEvent) => {
   if (event.button !== 0) {
     return;
   }
-  if (Controller.isMovingEntity) {
-    // 这个时候可以触发对齐吸附事件
-    if (Stage.enableDragAutoAlign) {
-      StageManager.alignAllSelected();
-    }
 
-    StageManager.moveEntityFinished();
+  const mouseUpViewLocation = new Vector(event.clientX, event.clientY);
+  const diffLocation = mouseUpViewLocation.subtract(mouseDownViewLocation);
+  if (diffLocation.magnitude() > 5) {
+    // 判定为有效吸附的拖拽操作
+    if (isMovingEntity) {
+      // 这个时候可以触发对齐吸附事件
+      if (Stage.enableDragAutoAlign) {
+        StageManager.alignAllSelected();
+      }
+
+      StageManager.moveEntityFinished();
+    }
   }
-  Controller.isMovingEntity = false;
+
+  isMovingEntity = false;
 };

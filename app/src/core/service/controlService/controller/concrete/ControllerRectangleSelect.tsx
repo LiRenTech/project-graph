@@ -186,7 +186,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
     }
     selectedEntityNormalizing();
 
-    Controller.isMovingEntity = false;
+    // Controller.isMovingEntity = false;
     Controller.isMovingEdge = false;
     ControllerRectangleSelect.lastMoveLocation = worldLocation.clone();
   };
