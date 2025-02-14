@@ -9,16 +9,15 @@ import { ControllerClass } from "../ControllerClass";
  * 拖拽节点使其移动的控制器
  *
  */
-// TODO: 有待改成 EntityMove
-export const ControllerNodeMove = new ControllerClass();
+export const ControllerEntityMove = new ControllerClass();
 
-ControllerNodeMove.mousedown = (event: MouseEvent) => {
+ControllerEntityMove.mousedown = (event: MouseEvent) => {
   if (event.button !== 0) {
     return;
   }
 
   const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-  ControllerNodeMove.lastMoveLocation = pressWorldLocation.clone();
+  ControllerEntityMove.lastMoveLocation = pressWorldLocation.clone();
   const clickedEntity = StageManager.findConnectableEntityByLocation(pressWorldLocation);
   if (clickedEntity !== null) {
     Controller.isMovingEntity = true;
@@ -35,7 +34,7 @@ ControllerNodeMove.mousedown = (event: MouseEvent) => {
   }
 };
 
-ControllerNodeMove.mousemove = (event: MouseEvent) => {
+ControllerEntityMove.mousemove = (event: MouseEvent) => {
   if (Stage.selectMachine.isUsing || Stage.cuttingMachine.isUsing || Controller.pressingKeySet.has("alt")) {
     return;
   }
@@ -43,7 +42,7 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
     return;
   }
   const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-  const diffLocation = worldLocation.subtract(ControllerNodeMove.lastMoveLocation);
+  const diffLocation = worldLocation.subtract(ControllerEntityMove.lastMoveLocation);
 
   if (StageManager.isHaveEntitySelected()) {
     // 移动节点
@@ -67,11 +66,11 @@ ControllerNodeMove.mousemove = (event: MouseEvent) => {
       StageManager.preAlignAllSelected();
     }
 
-    ControllerNodeMove.lastMoveLocation = worldLocation.clone();
+    ControllerEntityMove.lastMoveLocation = worldLocation.clone();
   }
 };
 
-ControllerNodeMove.mouseup = (event: MouseEvent) => {
+ControllerEntityMove.mouseup = (event: MouseEvent) => {
   if (event.button !== 0) {
     return;
   }

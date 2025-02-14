@@ -14,7 +14,7 @@ import { ControllerImageScale } from "./concrete/ControllerImageScale";
 // import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
 import { ControllerNodeConnection } from "./concrete/ControllerNodeConnection";
 import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
-import { ControllerNodeMove } from "./concrete/ControllerNodeMove";
+import { ControllerEntityMove } from "./concrete/ControllerEntityMove";
 import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
 import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect";
 import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
@@ -131,7 +131,7 @@ export namespace Controller {
     ControllerNodeRotation.init();
     ControllerNodeConnection.init();
     ControllerCutting.init();
-    ControllerNodeMove.init();
+    ControllerEntityMove.init();
     ControllerRectangleSelect.init();
     ControllerNodeEdit.init();
     ControllerEntityCreate.init();
@@ -293,7 +293,7 @@ export namespace Controller {
     ControllerNodeRotation.destroy();
     ControllerNodeConnection.destroy();
     ControllerCutting.destroy();
-    ControllerNodeMove.destroy();
+    ControllerEntityMove.destroy();
     ControllerRectangleSelect.destroy();
     ControllerNodeEdit.destroy();
     ControllerEntityCreate.destroy();
