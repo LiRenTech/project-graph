@@ -7,20 +7,21 @@ import { Settings } from "../core/service/Settings";
 import { Canvas } from "../core/stage/Canvas";
 import { Stage } from "../core/stage/Stage";
 // import DetailsEditPanel from "./_details_edit_panel";
+import { useAtom } from "jotai";
 import Button from "../components/Button";
+import { isWindowCollapsingAtom } from "../state";
+import { CursorNameEnum } from "../types/cursors";
 import { isMobile } from "../utils/platform";
-import DetailsEditSmallPanel from "./_details_edit_small_panel";
 import DetailsEditSidePanel from "./_details_edit_side_panel";
+import DetailsEditSmallPanel from "./_details_edit_small_panel";
 import HintText from "./_hint_text";
 import SearchingNodePanel from "./_searching_node_panel";
 import Toolbar from "./_toolbar";
-import { useAtom } from "jotai";
-import { isWindowCollapsingAtom } from "../state";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
 
-  const [cursorName, setCursorName] = React.useState("default");
+  const [cursorName, setCursorName] = React.useState(CursorNameEnum.Default);
   const [bgAlpha, setBgAlpha] = React.useState(0.9);
   const [isDrawingMode, setIsDrawingMode] = React.useState(false);
   // const [nodeDetailsPanel, setNodeDetailsPanel] = React.useState("vditor");
@@ -52,7 +53,15 @@ export default function Home() {
       Canvas.init(canvasElement);
       Renderer.resizeWindow(window.innerWidth, window.innerHeight);
       Controller.init();
-      Controller.setCursorName = setCursorName;
+      Controller.setCursorNameHook = (name: CursorNameEnum) => {
+        setCursorName(name);
+        // if (name !== cursorName) {
+        //   console.log("change cursor", name);
+        //   setCursorName(name);
+        // } else {
+        //   console.log("传入名称和当前名称一致，不做操作", name);
+        // }
+      };
     } else {
       Dialog.show({
         title: "错误",
@@ -139,7 +148,7 @@ export default function Home() {
           background: `rgba(${StageStyleManager.currentStyle.BackgroundColor.r},${StageStyleManager.currentStyle.BackgroundColor.g},${StageStyleManager.currentStyle.BackgroundColor.b},${isProtectPrivacy ? 1 : bgAlpha})`,
         }}
       >
-        <canvas ref={canvasRef} className={`cursor-${cursorName}`} />
+        <canvas ref={canvasRef} className={cursorName} />
       </div>
     </>
   );

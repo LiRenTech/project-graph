@@ -1,3 +1,4 @@
+import { CursorNameEnum } from "../../../../../types/cursors";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
@@ -58,6 +59,7 @@ ControllerNodeRotation.mousedown = (event: MouseEvent) => {
     // F
     clickedEdge.isSelected = true;
   }
+  Controller.setCursorNameHook(CursorNameEnum.Move);
 };
 
 ControllerNodeRotation.mousemove = (event: MouseEvent) => {
@@ -85,5 +87,6 @@ ControllerNodeRotation.mouseup = (event: MouseEvent) => {
   if (Controller.isMovingEdge) {
     StageManager.moveEdgeFinished();
     Controller.isMovingEdge = false;
+    Controller.setCursorNameHook(CursorNameEnum.Default);
   }
 };

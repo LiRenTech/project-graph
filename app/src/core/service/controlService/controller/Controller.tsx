@@ -19,6 +19,7 @@ import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
 import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect";
 import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
 // ...
+import { CursorNameEnum } from "../../../../types/cursors";
 import { controllerChildCamera } from "./concrete/ControllerChildCamera";
 import { controllerPenStroke } from "./concrete/ControllerPenStrokeControl";
 
@@ -32,7 +33,7 @@ export namespace Controller {
    * 在上层接收React提供的state修改函数
    */
   // eslint-disable-next-line prefer-const
-  export let setCursorName: (_: string) => void = () => {};
+  export let setCursorNameHook: (_: CursorNameEnum) => void = () => {};
 
   // 检测正在按下的键
   export const pressingKeySet: Set<string> = new Set();
@@ -205,7 +206,7 @@ export namespace Controller {
       // 禁用弹出下载界面功能
       event.preventDefault();
     }
-    console.log(event.key);
+    // console.log(event.key);
     const key = event.key.toLowerCase();
     pressingKeySet.add(key);
   }

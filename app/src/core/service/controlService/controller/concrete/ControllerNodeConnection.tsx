@@ -16,6 +16,7 @@ import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { addTextNodeByLocation } from "./utilsControl";
 import { MouseLocation } from "../../MouseLocation";
+import { CursorNameEnum } from "../../../../../types/cursors";
 
 /**
  * 连线控制器
@@ -142,6 +143,7 @@ class ControllerNodeConnectionClass extends ControllerClass {
       );
     }
     this._isUsing = true;
+    Controller.setCursorNameHook(CursorNameEnum.Crosshair);
   };
 
   public mousemove: (event: MouseEvent) => void = (event) => {
@@ -211,6 +213,7 @@ class ControllerNodeConnectionClass extends ControllerClass {
       });
     }
     this.clear();
+    Controller.setCursorNameHook(CursorNameEnum.Default);
   };
 
   /**

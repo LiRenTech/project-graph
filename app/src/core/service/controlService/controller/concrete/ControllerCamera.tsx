@@ -2,6 +2,7 @@
  * 存放具体的控制器实例
  */
 
+import { CursorNameEnum } from "../../../../../types/cursors";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Camera } from "../../../../stage/Camera";
@@ -18,6 +19,7 @@ import { ControllerClass } from "../ControllerClass";
 export const ControllerCamera = new ControllerClass();
 
 let isPressingCtrl = false;
+let isPreGrabbingWhenSpace = false;
 
 /**
  * 处理键盘按下事件
@@ -43,7 +45,10 @@ ControllerCamera.keydown = (event: KeyboardEvent) => {
     Camera.accelerateCommander = Camera.accelerateCommander.add(addAccelerate).limitX(-1, 1).limitY(-1, 1);
   }
   if (key === " ") {
-    Controller.setCursorName("grab");
+    if (!isPreGrabbingWhenSpace) {
+      isPreGrabbingWhenSpace = true;
+      Controller.setCursorNameHook(CursorNameEnum.Grab);
+    }
   }
 };
 
@@ -78,7 +83,10 @@ ControllerCamera.keyup = (event: KeyboardEvent) => {
     Camera.accelerateCommander = Camera.accelerateCommander.subtract(addAccelerate).limitX(-1, 1).limitY(-1, 1);
   }
   if (key === " ") {
-    Controller.setCursorName("default");
+    if (isPreGrabbingWhenSpace) {
+      isPreGrabbingWhenSpace = false;
+      Controller.setCursorNameHook(CursorNameEnum.Default);
+    }
   }
 };
 
@@ -94,12 +102,15 @@ function moveCameraByMouseMove(x: number, y: number, mouseIndex: number) {
   Camera.location = Camera.location.subtract(diffLocation);
 }
 
-// ControllerCamera.mousedown = (event: MouseEvent) => {
-//   if (Controller.isCameraLocked) {
-//     return;
-//   }
-// };
-
+ControllerCamera.mousedown = (event: MouseEvent) => {
+  if (Controller.isCameraLocked) {
+    return;
+  }
+  if (event.button === 0 && Controller.pressingKeySet.has(" ")) {
+    Controller.setCursorNameHook(CursorNameEnum.Grabbing);
+    console.log("mouse down by space");
+  }
+};
 /**
  * 处理鼠标移动事件
  * @param event - 鼠标事件
@@ -111,7 +122,6 @@ ControllerCamera.mousemove = (event: MouseEvent) => {
   // 空格+左键 拖动视野
   if (Controller.pressingKeySet.has(" ") && Controller.isMouseDown[0]) {
     moveCameraByMouseMove(event.clientX, event.clientY, 0);
-    Controller.setCursorName("grabbing");
     return;
   }
   // 中键按下拖动视野
@@ -121,12 +131,12 @@ ControllerCamera.mousemove = (event: MouseEvent) => {
       return;
     }
     moveCameraByMouseMove(event.clientX, event.clientY, 1);
-    Controller.setCursorName("grabbing");
+    Controller.setCursorNameHook(CursorNameEnum.Grabbing);
   }
   // 侧键按下拖动视野
   if (Controller.isMouseDown[4]) {
     moveCameraByMouseMove(event.clientX, event.clientY, 4);
-    Controller.setCursorName("grabbing");
+    Controller.setCursorNameHook(CursorNameEnum.Grabbing);
   }
   if (Stage.mouseRightDragBackground === "moveCamera" && Controller.isMouseDown[2]) {
     // 还要保证这个鼠标位置没有悬浮在什么东西上
@@ -140,7 +150,7 @@ ControllerCamera.mousemove = (event: MouseEvent) => {
       return;
     }
     moveCameraByMouseMove(event.clientX, event.clientY, 2);
-    Controller.setCursorName("grabbing");
+    Controller.setCursorNameHook(CursorNameEnum.Grabbing);
   }
 };
 
@@ -152,13 +162,18 @@ ControllerCamera.mouseup = (event: MouseEvent) => {
   if (Controller.isCameraLocked) {
     return;
   }
+  if (event.button === 0 && Controller.pressingKeySet.has(" ")) {
+    if (isPreGrabbingWhenSpace) {
+      Controller.setCursorNameHook(CursorNameEnum.Grab);
+    }
+  }
   if (event.button === 1) {
+    console.log("mouse up by middle");
     // 中键松开
-    Controller.setCursorName("default");
-    // lastMouseMiddleUpLocation = new Vector(event.clientX, event.clientY);
+    Controller.setCursorNameHook(CursorNameEnum.Default);
   }
   if (event.button === 4) {
-    Controller.setCursorName("default");
+    Controller.setCursorNameHook(CursorNameEnum.Default);
   }
 };
 

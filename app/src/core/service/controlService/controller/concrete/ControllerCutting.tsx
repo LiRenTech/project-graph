@@ -1,3 +1,4 @@
+import { CursorNameEnum } from "../../../../../types/cursors";
 import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Line } from "../../../../dataStruct/shape/Line";
@@ -53,6 +54,8 @@ class CuttingControllerClass extends ControllerClass {
       );
       // 添加音效提示
       SoundService.play.cuttingLineStart();
+      // 鼠标提示
+      Controller.setCursorNameHook(CursorNameEnum.Crosshair);
     } else {
       ControllerCutting.isUsing = false;
     }
@@ -124,6 +127,8 @@ class CuttingControllerClass extends ControllerClass {
       return;
     }
     ControllerCutting.isUsing = false;
+    // 鼠标提示解除
+    Controller.setCursorNameHook(CursorNameEnum.Default);
 
     for (const edge of ControllerCutting.warningEdges) {
       StageManager.deleteEdge(edge);
