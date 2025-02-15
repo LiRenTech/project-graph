@@ -20,6 +20,8 @@ export default function MarkdownEditor({
   const el = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // 在每次展开面板都会调用一次这个函数 v1.4.13
+
     const vditor = new Vditor(el.current!, {
       after: () => {
         vditor.setValue(defaultValue);
@@ -41,6 +43,12 @@ export default function MarkdownEditor({
       cache: { enable: false },
       ...options,
     });
+    if (vditor) {
+      // console.log(vditor, "vditor");
+      setTimeout(() => {
+        vditor.focus();
+      }, 100);
+    }
 
     return () => {
       vd?.destroy();

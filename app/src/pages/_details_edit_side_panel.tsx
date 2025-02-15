@@ -33,13 +33,16 @@ export default function DetailsEditSidePanel() {
   };
 
   /**
-   * 按下快捷键后会触发此函数
+   * 按下快捷键，展开面板后会触发此函数
    * @param entity
    */
   editTextNodeHookGlobal.hookFunctionStart = (entity: Entity) => {
     setInputCurrentDetails(entity.details);
     setClickedNode(entity);
     setIsNodeTextEditing(true);
+    // 清空Stage上所有按下的键的状态
+    Controller.pressingKeySet.clear();
+    // 显示教程
     setTimeout(() => {
       Tourials.tour("nodeDetailsEditor", () => {
         driver({
@@ -74,6 +77,8 @@ export default function DetailsEditSidePanel() {
     entity.changeDetails(inputCurrentDetails);
     Controller.isCameraLocked = false;
     entity.isEditingDetails = false;
+    // 选中这个节点
+    entity.isSelected = true;
   };
 
   return (
@@ -91,6 +96,7 @@ export default function DetailsEditSidePanel() {
               if (clickedNode) {
                 clickedNode.details = currentInput;
                 clickedNode.isEditingDetails = false;
+                clickedNode.isSelected = true;
               } else {
                 throw new Error("没有点击节点");
               }
@@ -100,12 +106,16 @@ export default function DetailsEditSidePanel() {
               if (clickedNode) {
                 clickedNode.details = currentInput;
                 clickedNode.isEditingDetails = false;
+                // clickedNode.isSelected = true;
+                // esc键就不再选中节点了，因为它和一键取消所有选中的操作冲突了，所以选中也会被取消
               } else {
                 throw new Error("没有点击节点");
               }
             },
             blur: (currentInput: string) => {
-              console.log("blur", currentInput);
+              if (clickedNode) {
+                clickedNode.details = currentInput;
+              }
             },
             toolbar: [
               {
@@ -138,6 +148,10 @@ export default function DetailsEditSidePanel() {
               { name: "undo", tipPosition: "s" },
               { name: "redo", tipPosition: "s", tip: "取消撤销" },
             ],
+            // outline: {
+            //   enable: true,
+            //   position: "left",
+            // },
           }}
         />
       )}
