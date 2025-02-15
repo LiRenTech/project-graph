@@ -404,8 +404,14 @@ export namespace EntityRenderer {
       penStroke.getColor(),
       penStroke.getSegmentList().map((seg) => seg.width * Camera.currentScale),
     );
+    if (penStroke.isMouseHover) {
+      CollisionBoxRenderer.render(penStroke.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelectedColor);
+    }
     if (penStroke.isSelected) {
-      CollisionBoxRenderer.render(penStroke.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
+      CollisionBoxRenderer.render(
+        penStroke.collisionBox,
+        StageStyleManager.currentStyle.CollideBoxSelectedColor.toNewAlpha(0.5),
+      );
     }
   }
 }

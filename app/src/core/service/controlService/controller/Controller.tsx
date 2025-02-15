@@ -20,6 +20,7 @@ import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect"
 import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
 // ...
 import { controllerChildCamera } from "./concrete/ControllerChildCamera";
+import { controllerPenStroke } from "./concrete/ControllerPenStrokeControl";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -139,6 +140,7 @@ export namespace Controller {
     ControllerLayerMoving.init();
     ControllerImageScale.init();
     controllerChildCamera.init();
+    controllerPenStroke.init();
     //
   }
 
@@ -301,5 +303,6 @@ export namespace Controller {
     ControllerLayerMoving.destroy();
     ControllerImageScale.destroy();
     controllerChildCamera.destroy();
+    controllerPenStroke.destroy();
   }
 }

@@ -25,7 +25,7 @@ ControllerEntityClickSelectAndMove.mousedown = (event: MouseEvent) => {
 
   const pressWorldLocation = Renderer.transformView2World(mouseDownViewLocation);
   ControllerEntityClickSelectAndMove.lastMoveLocation = pressWorldLocation.clone();
-  const clickedEntity = StageManager.findConnectableEntityByLocation(pressWorldLocation);
+  const clickedEntity = StageManager.findEntityByLocation(pressWorldLocation);
 
   // 防止跳跃式移动的时候改变选中内容
   if (Controller.pressingKeySet.has("alt")) {
@@ -102,6 +102,7 @@ ControllerEntityClickSelectAndMove.mousemove = (event: MouseEvent) => {
     StageManager.moveSelectedImageNodes(diffLocation);
     StageManager.moveSelectedUrlNodes(diffLocation);
     StageManager.moveSelectedPortalNodes(diffLocation);
+    StageManager.moveSelectedPenStrokes(diffLocation);
 
     // 预瞄反馈
     if (Stage.enableDragAutoAlign) {

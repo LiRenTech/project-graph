@@ -140,6 +140,13 @@ export namespace StageEntityMoveManager {
       }
     }
   }
+  export function moveSelectedPenStrokes(delta: Vector, isAutoAdjustSection: boolean = true) {
+    for (const node of StageManager.getPenStrokes()) {
+      if (node.isSelected) {
+        moveEntityUtils(node, delta, isAutoAdjustSection);
+      }
+    }
+  }
 
   export function moveNodesWithChildren(delta: Vector) {
     for (const node of StageManager.getTextNodes()) {

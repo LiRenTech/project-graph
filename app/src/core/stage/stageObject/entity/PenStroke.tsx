@@ -27,11 +27,20 @@ export class PenStroke extends Entity {
       segment.startLocation = segment.startLocation.add(delta);
       segment.endLocation = segment.endLocation.add(delta);
     }
+    this.updateCollisionBoxBySegmentList();
   }
   moveTo(location: Vector): void {
     for (const segment of this.segmentList) {
       segment.startLocation = location.clone();
       segment.endLocation = location.clone();
+    }
+    this.updateCollisionBoxBySegmentList();
+  }
+
+  private updateCollisionBoxBySegmentList() {
+    this.collisionBox.shapeList = [];
+    for (const segment of this.segmentList) {
+      this.collisionBox.shapeList.push(new Line(segment.startLocation, segment.endLocation));
     }
   }
 

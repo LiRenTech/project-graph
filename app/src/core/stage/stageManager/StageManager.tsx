@@ -663,6 +663,9 @@ export namespace StageManager {
   export function moveSelectedPortalNodes(delta: Vector) {
     StageEntityMoveManager.moveSelectedPortalNodes(delta); // 连续过程，不记录历史，只在结束时记录
   }
+  export function moveSelectedPenStrokes(delta: Vector) {
+    StageEntityMoveManager.moveSelectedPenStrokes(delta);
+  }
 
   export function moveNodesWithChildren(delta: Vector) {
     StageEntityMoveManager.moveNodesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录
