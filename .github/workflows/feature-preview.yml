@@ -57,14 +57,14 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: "./src-tauri -> target"
+          workspaces: "./app/src-tauri -> target"
 
       - name: edit version
         run: |
-          $jsonContent = Get-Content -Path "src-tauri/tauri.conf.json" -Raw
+          $jsonContent = Get-Content -Path "app/src-tauri/tauri.conf.json" -Raw
           $jsonObject = $jsonContent | ConvertFrom-Json
           $jsonObject.version = "0.0.0-fp.${{ github.ref_name }}.r${{ github.run_number }}"
-          $jsonObject | ConvertTo-Json -Depth 10 | Set-Content -Path "src-tauri/tauri.conf.json"
+          $jsonObject | ConvertTo-Json -Depth 10 | Set-Content -Path "app/src-tauri/tauri.conf.json"
 
       - uses: tauri-apps/tauri-action@dev
         env:
