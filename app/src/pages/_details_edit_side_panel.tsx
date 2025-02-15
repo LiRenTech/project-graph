@@ -6,6 +6,7 @@ import { Entity } from "../core/stage/stageObject/abstract/StageEntity";
 import { driver } from "driver.js";
 import { Tourials } from "../core/service/Tourials";
 import MarkdownEditor from "./_vditor_panel";
+import { StageManager } from "../core/stage/stageManager/StageManager";
 
 export default function DetailsEditSidePanel() {
   const [inputCurrentDetails, setInputCurrentDetails] = React.useState("");
@@ -37,6 +38,13 @@ export default function DetailsEditSidePanel() {
    * @param entity
    */
   editTextNodeHookGlobal.hookFunctionStart = (entity: Entity) => {
+    if (isNodeTextEditing) {
+      // 发生切换
+      StageManager.getEntities().forEach((entity) => {
+        entity.isEditingDetails = false;
+      });
+      entity.isEditingDetails = true;
+    }
     setInputCurrentDetails(entity.details);
     setClickedNode(entity);
     setIsNodeTextEditing(true);
