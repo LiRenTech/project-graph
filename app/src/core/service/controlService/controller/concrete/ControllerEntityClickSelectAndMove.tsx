@@ -21,6 +21,10 @@ ControllerEntityClickSelectAndMove.mousedown = (event: MouseEvent) => {
   if (event.button !== 0) {
     return;
   }
+  if (Stage.drawingMachine.isUsing) {
+    // 涂鸦的时候用不了拖动
+    return;
+  }
   mouseDownViewLocation = new Vector(event.clientX, event.clientY);
 
   const pressWorldLocation = Renderer.transformView2World(mouseDownViewLocation);
