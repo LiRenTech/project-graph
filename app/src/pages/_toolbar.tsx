@@ -15,9 +15,11 @@ import {
   ClipboardX,
   Globe,
   LayoutDashboard,
+  MousePointer,
   Network,
   Package,
   PaintBucket,
+  PenTool,
   Pin,
   RefreshCcw,
   Repeat,
@@ -490,6 +492,17 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           icon={<Network />}
           handleFunction={() => {
             StageManager.autoLayoutFastTreeMode();
+          }}
+        />
+        <ToolbarItem
+          description="切换涂鸦和鼠标"
+          icon={Stage.drawingMachine.isUsing ? <PenTool /> : <MousePointer />}
+          handleFunction={() => {
+            if (Stage.drawingMachine.isUsing) {
+              Stage.drawingMachine.shutDown();
+            } else {
+              Stage.drawingMachine.open();
+            }
           }}
         />
         {/* 测试占位符 */}

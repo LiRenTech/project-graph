@@ -404,5 +404,8 @@ export namespace EntityRenderer {
       penStroke.getColor(),
       penStroke.getSegmentList().map((seg) => seg.width * Camera.currentScale),
     );
+    if (penStroke.isSelected) {
+      CollisionBoxRenderer.render(penStroke.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
+    }
   }
 }

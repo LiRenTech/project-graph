@@ -202,6 +202,9 @@ export namespace StageManager {
   export function getPortalNodes(): PortalNode[] {
     return stageContent.entities.valuesToArray().filter((node) => node instanceof PortalNode);
   }
+  export function getPenStrokes(): PenStroke[] {
+    return stageContent.entities.valuesToArray().filter((node) => node instanceof PenStroke);
+  }
 
   export function getStageObject(): StageObject[] {
     const result: StageObject[] = [];

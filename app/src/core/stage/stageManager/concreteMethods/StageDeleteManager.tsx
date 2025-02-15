@@ -6,6 +6,7 @@ import { Entity } from "../../stageObject/abstract/StageEntity";
 import { LineEdge } from "../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
+import { PenStroke } from "../../stageObject/entity/PenStroke";
 import { PortalNode } from "../../stageObject/entity/PortalNode";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
@@ -32,6 +33,8 @@ export namespace StageDeleteManager {
         deleteUrlNode(entity);
       } else if (entity instanceof PortalNode) {
         deletePortalNode(entity);
+      } else if (entity instanceof PenStroke) {
+        deletePenStroke(entity);
       }
     }
     // StageManager.updateReferences();
@@ -42,6 +45,12 @@ export namespace StageDeleteManager {
       StageManager.deleteOnePortalNode(entity);
       // 删除所有相关的边
       deleteEntityAfterClearEdges(entity);
+    }
+  }
+
+  function deletePenStroke(penStroke: PenStroke) {
+    if (StageManager.getPenStrokes().includes(penStroke)) {
+      StageManager.deleteOnePenStroke(penStroke);
     }
   }
 
