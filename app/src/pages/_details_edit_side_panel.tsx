@@ -94,7 +94,7 @@ export default function DetailsEditSidePanel() {
       {isNodeTextEditing && (
         <MarkdownEditor
           id="details-editor"
-          className="fixed bottom-4 right-4 top-20 z-50 overflow-hidden rounded-xl"
+          className="fixed bottom-4 right-4 top-20 z-50 overflow-hidden rounded-xl ring"
           onChange={setInputCurrentDetailsHandler}
           defaultValue={inputCurrentDetails}
           options={{
@@ -159,6 +159,10 @@ export default function DetailsEditSidePanel() {
             // outline: {
             //   enable: true,
             //   position: "left",
+            // },
+            // resize: {
+            //   enable: true,
+            //   position: "bottom",
             // },
           }}
         />

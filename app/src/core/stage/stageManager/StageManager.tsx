@@ -1057,6 +1057,11 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
+  export function targetTextNodeToSection(textNode: TextNode) {
+    StageSectionPackManager.targetTextNodeToSection(textNode);
+    StageHistoryManager.recordStep();
+  }
+
   export function addPortalNodeToStage(otherPath: string) {
     const uuid = v4();
     const relativePath = PathString.getRelativePath(Stage.path.getFilePath(), otherPath);
