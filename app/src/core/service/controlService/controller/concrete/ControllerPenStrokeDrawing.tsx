@@ -25,6 +25,9 @@ class ControllerDrawingClass extends ControllerClass {
     this._isUsing = true;
   }
 
+  /**
+   * 记录笔迹划过位置
+   */
   private recordLocation: Vector[] = [];
 
   public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
@@ -68,13 +71,15 @@ class ControllerDrawingClass extends ControllerClass {
       return;
     }
     const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    this.recordLocation.push(releaseWorldLocation.clone());
+
     // 生成笔触
     const strokeStringList: string[] = [];
     for (const location of this.recordLocation) {
       strokeStringList.push(`${Math.round(location.x)},${Math.round(location.y)},5`);
     }
     const contentString = strokeStringList.join("~");
-    console.log("contentString", contentString);
+
     const stroke = new PenStroke(contentString);
     StageManager.addPenStroke(stroke);
     this.recordLocation = [];

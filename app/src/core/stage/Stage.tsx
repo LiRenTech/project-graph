@@ -2,7 +2,12 @@ import { autoLayoutMainTick } from "../service/controlService/autoLayoutEngine/m
 import { ControllerCutting } from "../service/controlService/controller/concrete/ControllerCutting";
 import { ControllerDragFile } from "../service/controlService/controller/concrete/ControllerDragFile";
 import { ControllerNodeConnection } from "../service/controlService/controller/concrete/ControllerNodeConnection";
+import { ControllerDrawing } from "../service/controlService/controller/concrete/ControllerPenStrokeDrawing";
 import { ControllerRectangleSelect } from "../service/controlService/controller/concrete/ControllerRectangleSelect";
+import { Controller } from "../service/controlService/controller/Controller";
+import { KeyboardOnlyEngine } from "../service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
+import { SecretEngine } from "../service/controlService/secretEngine/secretEngine";
+import { StageMouseInteractionCore } from "../service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
 import { AutoBackupEngine } from "../service/dataFileService/autoSaveBackupEngine/autoBackupEngine";
 import { AutoSaveEngine } from "../service/dataFileService/autoSaveBackupEngine/autoSaveEngine";
 import { StageFilePathManager } from "../service/dataFileService/stageFilePathManager";
@@ -10,12 +15,7 @@ import { autoComputeEngineTick } from "../service/dataGenerateService/autoComput
 import { StageExportEngine } from "../service/dataGenerateService/stageExportEngine/stageExportEngine";
 import { ContentSearchEngine } from "../service/dataManageService/contentSearchEngine/contentSearchEngine";
 import { EffectMachine } from "../service/feedbackService/effectEngine/effectMachine";
-import { KeyboardOnlyEngine } from "../service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
 import { Settings } from "../service/Settings";
-import { StageMouseInteractionCore } from "../service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
-import { ControllerDrawing } from "../service/controlService/controller/concrete/ControllerDrawing";
-import { SecretEngine } from "../service/controlService/secretEngine/secretEngine";
-import { Controller } from "../service/controlService/controller/Controller";
 import { Camera } from "./Camera";
 /**
  * 舞台对象

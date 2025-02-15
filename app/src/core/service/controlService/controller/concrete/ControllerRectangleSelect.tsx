@@ -40,6 +40,9 @@ class ControllerRectangleSelectClass extends ControllerClass {
       // layer moving mode
       return;
     }
+    if (Stage.drawingMachine.isUsing) {
+      return;
+    }
     const button = event.button;
     if (button !== 0) {
       return;
