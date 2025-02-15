@@ -13,6 +13,7 @@ import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
+import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { Controller } from "../Controller";
 
@@ -158,6 +159,7 @@ export const editTextNodeHookGlobal = {
 export function editNodeDetailsByKeyboard() {
   const nodes = StageManager.getEntities().filter((node) => node.isSelected);
   if (nodes.length === 0) {
+    Stage.effectMachine.addEffect(TextRiseEffect.default("请先选择一个节点，才能编辑详细信息"));
     return;
   }
   editNodeDetails(nodes[0]);
