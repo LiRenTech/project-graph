@@ -12,6 +12,7 @@ import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../feedbackService/effectEngine/concrete/LineCuttingEffect";
+import { RectangleSplitTwoPartEffect } from "../../../feedbackService/effectEngine/concrete/RectangleSplitTwoPartEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
 import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { Controller } from "../Controller";
@@ -25,6 +26,11 @@ class CuttingControllerClass extends ControllerClass {
   public warningEdges: LineEdge[] = [];
   // 是否正在使用
   public isUsing = false;
+
+  /**
+   * 切割时与实体相交的两点
+   */
+  private twoPointsMap: Record<string, Vector[]> = {};
 
   /**
    * 开始绘制斩断线的起点位置
@@ -72,6 +78,9 @@ class CuttingControllerClass extends ControllerClass {
     );
 
     ControllerCutting.warningEntity = [];
+
+    this.twoPointsMap = {};
+
     for (const entity of StageManager.getEntities()) {
       // if (entity instanceof Section) {
       //   continue; // Section的碰撞箱比较特殊
@@ -85,6 +94,11 @@ class CuttingControllerClass extends ControllerClass {
 
       // 特效
       const collidePoints = entity.collisionBox.getRectangle().getCollidePointsWithLine(ControllerCutting.cuttingLine);
+
+      if (collidePoints.length === 2) {
+        this.twoPointsMap[entity.uuid] = collidePoints;
+      }
+
       // 增加两点特效
       for (const collidePoint of collidePoints) {
         Stage.effectMachine.addEffect(
@@ -137,8 +151,24 @@ class CuttingControllerClass extends ControllerClass {
       }
     }
     StageManager.deleteEntities(ControllerCutting.warningEntity);
+    // 裂开特效
+    for (const entity of ControllerCutting.warningEntity) {
+      const collidePoints = this.twoPointsMap[entity.uuid];
+      if (collidePoints) {
+        console.log(collidePoints, "分开了");
+        Stage.effectMachine.addEffect(
+          new RectangleSplitTwoPartEffect(
+            entity.collisionBox.getRectangle(),
+            collidePoints,
+            50,
+            StageStyleManager.currentStyle.SelectRectangleFillColor.toSolid(),
+            StageStyleManager.currentStyle.StageObjectBorderColor,
+            2,
+          ),
+        );
+      }
+    }
     ControllerCutting.warningEntity = [];
-
     ControllerCutting.warningSections = [];
 
     StageManager.updateReferences();
@@ -155,6 +185,8 @@ class CuttingControllerClass extends ControllerClass {
         ControllerCutting.cuttingStartLocation.distance(ControllerCutting.lastMoveLocation) / 10,
       ),
     );
+
+    // 声音提示
     SoundService.play.cuttingLineRelease();
   };
 }
