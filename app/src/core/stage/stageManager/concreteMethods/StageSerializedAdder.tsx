@@ -8,6 +8,7 @@ import { StageManager } from "../StageManager";
 import { Section } from "../../stageObject/entity/Section";
 import { PortalNode } from "../../stageObject/entity/PortalNode";
 import { PenStroke } from "../../stageObject/entity/PenStroke";
+import { UrlNode } from "../../stageObject/entity/UrlNode";
 /**
  * 直接向舞台中添加序列化数据
  * 用于向舞台中附加新文件图、或者用于复制粘贴、甚至撤销
@@ -21,6 +22,7 @@ export namespace StageSerializedAdder {
   export function addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
     const updatedSerializedData = refreshUUID(serializedData);
     console.log("updatedSerializedData", updatedSerializedData);
+    // TODO: 结构有待优化
     for (const entity of updatedSerializedData.entities) {
       if (entity.type === "core:text_node") {
         const newNode = new TextNode(entity);
@@ -42,6 +44,10 @@ export namespace StageSerializedAdder {
         const node = new PortalNode(entity);
         node.moveTo(node.collisionBox.getRectangle().location.add(diffLocation));
         StageManager.addPortalNode(node);
+      } else if (entity.type === "core:url_node") {
+        const node = new UrlNode(entity);
+        node.moveTo(node.collisionBox.getRectangle().location.add(diffLocation));
+        StageManager.addUrlNode(node);
       }
     }
     for (const edge of updatedSerializedData.associations) {
