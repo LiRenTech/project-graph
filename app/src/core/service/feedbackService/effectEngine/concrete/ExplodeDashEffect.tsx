@@ -5,6 +5,7 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { RenderUtils } from "../../../../render/canvas2d/utilsRenderer/RenderUtils";
+import { Stage } from "../../../../stage/Stage";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 
@@ -15,6 +16,16 @@ export class ExplodeDashEffect extends EffectObject {
   ashLocationArray: Vector[] = [];
   ashSpeedArray: Vector[] = [];
 
+  private getDashCountPreEntity(): number {
+    // 说明是按Delete删除的
+    if (Stage.cuttingMachine.warningEntity.length === 0) {
+      return 0;
+    }
+
+    // 说明是按鼠标删除的，可以多一些
+    return Math.floor(1000 / Stage.cuttingMachine.warningEntity.length);
+  }
+
   constructor(
     /**
      * 一开始为0，每tick + 1
@@ -24,7 +35,7 @@ export class ExplodeDashEffect extends EffectObject {
     public color: Color,
   ) {
     super(timeProgress);
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < this.getDashCountPreEntity(); i++) {
       this.ashLocationArray.push(
         new Vector(
           Random.randomFloat(rectangle.left, rectangle.right),
