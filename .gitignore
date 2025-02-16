@@ -10,3 +10,4 @@ docs/src/.vitepress/.temp
 *.backup
 # 自动保存导致产生的文件
 app/src-tauri/Project Graph
+backup_projectGraphTips
