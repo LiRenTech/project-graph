@@ -15,6 +15,7 @@ import {
   ClipboardX,
   Globe,
   LayoutDashboard,
+  Magnet,
   MousePointer,
   Network,
   Package,
@@ -49,6 +50,7 @@ import IconButton from "../components/IconButton";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { ColorManager } from "../core/service/feedbackService/ColorManager";
 import ColorManagerPanel from "./_color_manager_panel";
+import { Settings } from "../core/service/Settings";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -59,7 +61,7 @@ interface ToolbarItemProps {
 function ToolbarItem({ icon, handleFunction, description }: ToolbarItemProps) {
   return (
     <div
-      className="hover:bg-toolbar-icon-hover-bg text-toolbar-tooltip-text group relative flex h-8 w-8 items-center justify-center rounded-md active:scale-90"
+      className="hover:bg-toolbar-icon-hover-bg text-toolbar-tooltip-text group relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-md active:scale-90"
       onClick={handleFunction}
     >
       {icon}
@@ -212,64 +214,94 @@ function GenerateNodePanel() {
 }
 
 function AlignNodePanel() {
+  const [isEnableDragAutoAlign, setEnableDragAutoAlign] = useState(false);
+
+  useEffect(() => {
+    Settings.watch("enableDragAutoAlign", (value) => {
+      setEnableDragAutoAlign(value);
+    });
+  }, []);
+
   return (
-    <div className="grid grid-cols-3 grid-rows-3">
-      <ToolbarItem
-        description="左对齐"
-        icon={<AlignStartVertical />}
-        handleFunction={() => {
-          StageManager.alignLeft();
-        }}
-      />
-      <ToolbarItem
-        description="中心垂直对齐"
-        icon={<AlignCenterVertical />}
-        handleFunction={() => {
-          StageManager.alignCenterVertical();
-        }}
-      />
-      <ToolbarItem
-        description="右对齐"
-        icon={<AlignEndVertical />}
-        handleFunction={() => {
-          StageManager.alignRight();
-        }}
-      />
-      <ToolbarItem
-        description="顶对齐"
-        icon={<AlignStartHorizontal />}
-        handleFunction={() => {
-          StageManager.alignTop();
-        }}
-      />
-      <ToolbarItem
-        description="中心水平对齐"
-        icon={<AlignCenterHorizontal />}
-        handleFunction={() => {
-          StageManager.alignCenterHorizontal();
-        }}
-      />
-      <ToolbarItem
-        description="底对齐"
-        icon={<AlignEndHorizontal />}
-        handleFunction={() => {
-          StageManager.alignBottom();
-        }}
-      />
-      <ToolbarItem
-        description="相等间距水平对齐"
-        icon={<AlignHorizontalSpaceBetween />}
-        handleFunction={() => {
-          StageManager.alignHorizontalSpaceBetween();
-        }}
-      />
-      <ToolbarItem
-        description="相等间距垂直对齐"
-        icon={<AlignVerticalSpaceBetween />}
-        handleFunction={() => {
-          StageManager.alignVerticalSpaceBetween();
-        }}
-      />
+    <div className="bg-panel-bg">
+      <div className="grid grid-cols-3 grid-rows-3">
+        <div />
+        <ToolbarItem
+          description="顶对齐"
+          icon={<AlignStartHorizontal />}
+          handleFunction={() => {
+            StageManager.alignTop();
+          }}
+        />
+        <div />
+        <ToolbarItem
+          description="左对齐"
+          icon={<AlignStartVertical />}
+          handleFunction={() => {
+            StageManager.alignLeft();
+          }}
+        />
+        <div />
+        <ToolbarItem
+          description="右对齐"
+          icon={<AlignEndVertical />}
+          handleFunction={() => {
+            StageManager.alignRight();
+          }}
+        />
+        <div />
+        <ToolbarItem
+          description="底对齐"
+          icon={<AlignEndHorizontal />}
+          handleFunction={() => {
+            StageManager.alignBottom();
+          }}
+        />
+        <div />
+      </div>
+
+      <div className="grid grid-cols-3 grid-rows-2">
+        <ToolbarItem
+          description="相等间距垂直对齐"
+          icon={<AlignVerticalSpaceBetween />}
+          handleFunction={() => {
+            StageManager.alignVerticalSpaceBetween();
+          }}
+        />
+        <div />
+        <ToolbarItem
+          description="相等间距水平对齐"
+          icon={<AlignHorizontalSpaceBetween />}
+          handleFunction={() => {
+            StageManager.alignHorizontalSpaceBetween();
+          }}
+        />
+        <ToolbarItem
+          description="中心垂直对齐"
+          icon={<AlignCenterVertical />}
+          handleFunction={() => {
+            StageManager.alignCenterVertical();
+          }}
+        />
+        <div />
+        <ToolbarItem
+          description="中心水平对齐"
+          icon={<AlignCenterHorizontal />}
+          handleFunction={() => {
+            StageManager.alignCenterHorizontal();
+          }}
+        />
+      </div>
+      <div className="relative flex justify-center">
+        {/* {isEnableDragAutoAlign && <Magnet className="absolute animate-ping" />} */}
+        <ToolbarItem
+          description={isEnableDragAutoAlign ? "拖动吸附对齐：开启" : "拖动吸附对齐：关闭"}
+          icon={<Magnet className={cn(isEnableDragAutoAlign ? "animate-spin" : "scale-50", "transition-transform")} />}
+          handleFunction={async () => {
+            Settings.set("enableDragAutoAlign", !(await Settings.get("enableDragAutoAlign")));
+          }}
+        />
+      </div>
     </div>
   );
 }
