@@ -3,113 +3,65 @@ import { Queue } from "../../../dataStruct/Queue";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
-import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { CollaborationEngine } from "../../dataManageService/collaborationEngine/CollaborationEngine";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
-import { SelectChangeEngine } from "../keyboardOnlyEngine/selectChangeEngine";
 
+/**
+ * 秘籍键系统
+ * 类似于游戏中的秘籍键，可以触发一些特殊效果，主要用于方便测试和调试，也可以当成彩蛋。
+ */
 export class SecretEngine {
+  // 存的是小写后的按键名称
   pressedKeys: Queue<string> = new Queue<string>();
+  // 最大按键数量
+  static maxPressedKeys = 20;
 
   constructor() {
-    window.addEventListener("keydown", (event) => {
+    // 使用keyup，更省性能。防止按下某个键不动时，一直触发效果
+    window.addEventListener("keyup", (event) => {
       this.pressedKeys.enqueue(event.key.toLowerCase());
-      const isTriggered = this.detect();
+      const isTriggered = this.detectAndCall();
+      console.log(this.pressedKeys.arrayList);
       if (isTriggered) {
         // 清空队列
         this.pressedKeys.clear();
         Stage.effectMachine.addEffect(TextRiseEffect.default("触发了测试按键"));
       }
       // 将队列长度限制
-      while (this.pressedKeys.length > 20) {
+      while (this.pressedKeys.length > SecretEngine.maxPressedKeys) {
         this.pressedKeys.dequeue();
       }
     });
   }
 
-  // 监听按键，每次按键都会触发
-  detect(): boolean {
-    const keys = this.pressedKeys.arrayList.join(" ");
-    // 测试彩蛋是否开启
-    if (keys.includes("arrowup arrowup arrowdown arrowdown arrowleft arrowright arrowleft arrowright b a")) {
+  keyPressedTable: Record<string, () => void> = {
+    "arrowup arrowup arrowdown arrowdown arrowleft arrowright arrowleft arrowright b a": () => {
       Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
-      return true;
-    }
-    // 开启涂鸦绘制
-    if (keys.includes("l o v e")) {
-      Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
-      Stage.drawingMachine.open();
-      return true;
-    }
-    // 关闭涂鸦绘制，回到矩形框选模式
-    if (keys.includes("r e c t")) {
-      Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
-      Stage.drawingMachine.shutDown();
-      return true;
-    }
-    // 待定彩蛋
-    if (keys.includes("1 1 4 5 1 4")) {
+    },
+    "1 1 4 5 1 4": () => {
       Camera.clearMoveCommander();
-      return true;
-    }
-    // 鬼畜梗，创建一个传送门用于测试
-    if (keys.includes("b o y n e x t d o o r")) {
+    },
+    "b o y n e x t d o o r": () => {
       Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
       StageManager.addOnePortalNode();
-      return true;
-    }
-    if (keys.includes("v v v arrowup")) {
-      const selectNode = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
-      if (selectNode.length === 0) {
-        return true;
-      }
-      const collected = SelectChangeEngine.collectTopNodes(selectNode[0]);
-      for (const entity of collected) {
-        entity.isSelected = true;
-      }
-      return true;
-    }
-    if (keys.includes("v v v arrowdown")) {
-      const selectNode = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
-      if (selectNode.length === 0) {
-        return true;
-      }
-      const collected = SelectChangeEngine.collectBottomNodes(selectNode[0]);
-      for (const entity of collected) {
-        entity.isSelected = true;
-      }
-      return true;
-    }
-    if (keys.includes("v v v arrowleft")) {
-      const selectNode = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
-      if (selectNode.length === 0) {
-        return true;
-      }
-      const collected = SelectChangeEngine.collectLeftNodes(selectNode[0]);
-      for (const entity of collected) {
-        entity.isSelected = true;
-      }
-      return true;
-    }
-    if (keys.includes("v v v arrowright")) {
-      const selectNode = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
-      if (selectNode.length === 0) {
-        return true;
-      }
-      const collected = SelectChangeEngine.collectRightNodes(selectNode[0]);
-      for (const entity of collected) {
-        entity.isSelected = true;
-      }
-      return true;
-    }
-    if (keys.includes("c o l l a b o r a t e")) {
+    },
+    "c o l l a b o r a t e": () => {
       CollaborationEngine.openStartCollaborationPanel();
-      return true;
-    }
-    if (keys.includes("c r e a t e f o l d e r w i n")) {
+    },
+    "c r e a t e f o l d e r w i n": () => {
       createFolder("D:\\111\\111");
-      return true;
+    },
+  };
+
+  // 监听按键 并触发相应效果，每次按键都会触发
+  detectAndCall(): boolean {
+    const keys = this.pressedKeys.arrayList.join(" ");
+    for (const key in this.keyPressedTable) {
+      if (keys.includes(key)) {
+        this.keyPressedTable[key]();
+        return true;
+      }
     }
     return false;
   }
