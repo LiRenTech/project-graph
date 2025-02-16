@@ -115,7 +115,6 @@ export namespace SectionRenderer {
     const textSize = Canvas.ctx.measureText(section.text);
     const width = textSize.width;
     const height = 100;
-    // console.log("textSize", width, height);
     // 计算文字宽高比
     const ratio = width / height;
     // 计算section宽高比

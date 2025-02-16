@@ -85,7 +85,6 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
           // 开始传送
           // 不要让它立刻切换，否则会导致突然在新的文件中触发一个双击事件，创建了一个多余节点
           setTimeout(() => {
-            // console.log(newPath);
             RecentFileManager.openFileByPath(newPath);
             Stage.path.setPathAndChangeUI(newPath);
           }, 100);

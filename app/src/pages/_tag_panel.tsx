@@ -36,7 +36,7 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
       if (isMouseEnterMoveCameraAble) {
         StageManager.moveCameraToTag(tagUUID);
       } else {
-        console.log("禁止滑动");
+        console.warn("禁止滑动");
       }
     };
   };

@@ -65,7 +65,6 @@ export class SecretEngine {
         return true;
       }
       const collected = SelectChangeEngine.collectTopNodes(selectNode[0]);
-      console.log(collected);
       for (const entity of collected) {
         entity.isSelected = true;
       }
@@ -77,7 +76,6 @@ export class SecretEngine {
         return true;
       }
       const collected = SelectChangeEngine.collectBottomNodes(selectNode[0]);
-      console.log(collected);
       for (const entity of collected) {
         entity.isSelected = true;
       }
@@ -89,7 +87,6 @@ export class SecretEngine {
         return true;
       }
       const collected = SelectChangeEngine.collectLeftNodes(selectNode[0]);
-      console.log(collected);
       for (const entity of collected) {
         entity.isSelected = true;
       }
@@ -101,7 +98,6 @@ export class SecretEngine {
         return true;
       }
       const collected = SelectChangeEngine.collectRightNodes(selectNode[0]);
-      console.log(collected);
       for (const entity of collected) {
         entity.isSelected = true;
       }

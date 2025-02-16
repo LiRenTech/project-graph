@@ -21,7 +21,6 @@ export namespace StageSerializedAdder {
    */
   export function addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
     const updatedSerializedData = refreshUUID(serializedData);
-    console.log("updatedSerializedData", updatedSerializedData);
     // TODO: 结构有待优化
     for (const entity of updatedSerializedData.entities) {
       if (entity.type === "core:text_node") {

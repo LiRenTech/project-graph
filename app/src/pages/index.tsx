@@ -54,13 +54,8 @@ export default function Home() {
       Renderer.resizeWindow(window.innerWidth, window.innerHeight);
       Controller.init();
       Controller.setCursorNameHook = (name: CursorNameEnum) => {
+        // 这里只有在中键拖动的时候才可能频繁调用，似乎不太影响性能
         setCursorName(name);
-        // if (name !== cursorName) {
-        //   console.log("change cursor", name);
-        //   setCursorName(name);
-        // } else {
-        //   console.log("传入名称和当前名称一致，不做操作", name);
-        // }
       };
     } else {
       Dialog.show({

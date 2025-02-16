@@ -124,8 +124,7 @@ export namespace InputElement {
       textareaElement.style.height = "auto"; // 初始化高度为auto
       textareaElement.style.width = "auto"; // 初始化宽度为auto
       const initSize = getMultiLineTextSize(defaultValue, Renderer.FONT_SIZE, 1.5);
-      const minWidth = initSize.x * Camera.currentScale;
-      console.log(minWidth, "minWidth");
+      // const minWidth = initSize.x * Camera.currentScale;
       textareaElement.style.minHeight = `${initSize.y * Camera.currentScale}px`; // 设置最小高度
       textareaElement.style.minWidth = `${initSize.x * Camera.currentScale}px`; // 设置最小宽度
       textareaElement.style.whiteSpace = "pre"; // 保持空白符不变
@@ -182,14 +181,12 @@ export namespace InputElement {
         // 设置新的高度和宽度
         textareaElement.style.height = `${textareaElement.scrollHeight}px`;
         textareaElement.style.width = `${textareaElement.scrollWidth}px`;
-        console.log("adjustSize");
       };
       // setInterval(() => {
       //   adjustSize();
       // }, 1000);
       setTimeout(() => {
         adjustSize(); // 初始化时调整大小
-        console.log("初始化时调整大小");
       }, 10);
       textareaElement.addEventListener("input", () => {
         onChange(textareaElement.value);
@@ -243,7 +240,6 @@ export namespace InputElement {
         if (event.key === "Enter") {
           event.preventDefault();
           const enterKeyDetail = getEnterKey(event);
-          console.log("enterKeyDetail", enterKeyDetail);
           if (textNodeExitEditMode === enterKeyDetail) {
             // 用户想退出编辑
             exitEditMode();

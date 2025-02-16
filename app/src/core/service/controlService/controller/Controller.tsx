@@ -206,7 +206,6 @@ export namespace Controller {
       // 禁用弹出下载界面功能
       event.preventDefault();
     }
-    // console.log(event.key);
     const key = event.key.toLowerCase();
     pressingKeySet.add(key);
   }

@@ -83,8 +83,6 @@ class ControllerDrawingClass extends ControllerClass {
     const stroke = new PenStroke(contentString);
     StageManager.addPenStroke(stroke);
     this.recordLocation = [];
-
-    console.log(releaseWorldLocation);
   };
 }
 

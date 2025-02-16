@@ -177,7 +177,6 @@ class ControllerNodeConnectionClass extends ControllerClass {
       return;
     }
     if (!this.isConnecting()) {
-      console.log("没有在使用", this.connectFromEntities, this._isUsing);
       return;
     }
     const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));

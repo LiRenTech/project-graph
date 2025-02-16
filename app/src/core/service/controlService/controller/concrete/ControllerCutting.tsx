@@ -155,7 +155,6 @@ class CuttingControllerClass extends ControllerClass {
     for (const entity of ControllerCutting.warningEntity) {
       const collidePoints = this.twoPointsMap[entity.uuid];
       if (collidePoints) {
-        console.log(collidePoints, "分开了");
         Stage.effectMachine.addEffect(
           new RectangleSplitTwoPartEffect(
             entity.collisionBox.getRectangle(),

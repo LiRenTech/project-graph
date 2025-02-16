@@ -210,7 +210,7 @@ export namespace Renderer {
         Camera.currentScale *= cameraData.zoom;
         Camera.location = Camera.location.add(diffLocation);
       } else {
-        console.log(key, "没有camera数据");
+        console.warn(key, "没有camera数据");
       }
 
       // 加载子场景
@@ -747,7 +747,6 @@ export namespace Renderer {
       `target: ${Camera.targetScale.toFixed(2)}`,
       `shake: ${Camera.shakeLocation.toString()}`,
       `location: ${Camera.location.x.toFixed(2)}, ${Camera.location.y.toFixed(2)}`,
-      // `canvas rect: ${canvasRect.toString()}`,
       `window: ${w}x${h}`,
       `effect count: ${Stage.effectMachine.effectsCount}`,
       `node count: ${renderedNodes} , ${StageManager.getTextNodes().length}`,
@@ -773,7 +772,6 @@ export namespace Renderer {
       `path: ${Stage.path.getFilePath()}`,
       `autoSave: ${Stage.autoSaveEngine.toString()}`,
       `isEnableEntityCollision: ${StageManager.isEnableEntityCollision}`,
-      // `tags: ${StageManager.TagOptions.getTagUUIDs().toString()}`,
     ];
     for (const [k, v] of Object.entries(timings)) {
       detailsData.push(`time:${k}: ${v.toFixed(2)}`);

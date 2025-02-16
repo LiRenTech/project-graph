@@ -209,7 +209,6 @@ export namespace Settings {
     callbacks[key].push(callback);
     if (store) {
       get(key).then((value) => {
-        console.log(callback, value);
         callback(value);
       });
     }

@@ -51,12 +51,10 @@ export namespace EntityRenderer {
 
   export function renderAllSectionsBackground(viewRectangle: Rectangle) {
     if (sectionSortedZIndex.length != StageManager.getSections().length) {
-      // console.log("强制更新了一次");
       sortSectionsByZIndex();
     } else {
       // 假设fps=60，则10秒更新一次
       if (tickNumber % 600 === 0) {
-        // console.log("更新了一次");
         sortSectionsByZIndex();
       }
     }

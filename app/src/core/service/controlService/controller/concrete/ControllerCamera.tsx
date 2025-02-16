@@ -108,7 +108,6 @@ ControllerCamera.mousedown = (event: MouseEvent) => {
   }
   if (event.button === 0 && Controller.pressingKeySet.has(" ")) {
     Controller.setCursorNameHook(CursorNameEnum.Grabbing);
-    console.log("mouse down by space");
   }
 };
 /**
@@ -168,7 +167,6 @@ ControllerCamera.mouseup = (event: MouseEvent) => {
     }
   }
   if (event.button === 1) {
-    console.log("mouse up by middle");
     // 中键松开
     Controller.setCursorNameHook(CursorNameEnum.Default);
   }

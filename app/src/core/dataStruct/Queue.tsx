@@ -44,8 +44,7 @@ export class Queue<T> {
     return this.items.length;
   }
 
-  // 打印队列中的所有元素
-  print(): void {
-    console.log(this.items.toString());
+  toString(): string {
+    return this.items.toString();
   }
 }

@@ -15,7 +15,6 @@ export default function MarkdownEditor({
   className?: string;
   options?: Omit<IOptions, "after" | "input">;
 }) {
-  // console.log("veditor render");
   const [vd, setVd] = useState<Vditor>();
   const el = useRef<HTMLDivElement>(null);
 
@@ -44,7 +43,6 @@ export default function MarkdownEditor({
       ...options,
     });
     if (vditor) {
-      // console.log(vditor, "vditor");
       setTimeout(() => {
         vditor.focus();
       }, 100);
@@ -53,7 +51,6 @@ export default function MarkdownEditor({
     return () => {
       vd?.destroy();
       setVd(undefined);
-      // console.log("veditor unmount");
     };
   }, [defaultValue]);
 

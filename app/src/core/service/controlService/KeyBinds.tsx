@@ -6,7 +6,7 @@ import { Vector } from "../../dataStruct/Vector";
  * 用于管理快捷键绑定
  * @example
  * (await KeyBinds.create("move", "w", { control: true, shift: true }))
- *   .down(() => console.log("move up"))
+ *   .down(() => println("move up"))
  */
 export namespace KeyBinds {
   /** ？ */

@@ -66,7 +66,6 @@ export class PenStroke extends Entity {
    */
   constructor(path: string) {
     super();
-    console.log("构造函数传入的path：" + path);
     // 开始解析字符串
     this.checkType(path);
     const segments = path.split("~");

@@ -450,7 +450,6 @@ async function registerKeyBinds() {
     })
   ).down(() => {
     Settings.set("protectingPrivacy", !Renderer.protectingPrivacy);
-    console.log(123, "checkoutProtectPrivacy");
   });
 
   const bind = await KeyBinds.create("keyboardOnlyGenerateNode", "tab", {

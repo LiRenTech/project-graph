@@ -229,7 +229,6 @@ export namespace RecentFileManager {
         console.error("子场景文件不存在：" + childAbsolutePath);
         continue;
       }
-      console.log("开始加载子场景：" + childAbsolutePath);
       loadChildStageByData(childData, childAbsolutePath);
       // 先别递归
       // if (childData) {
@@ -239,17 +238,12 @@ export namespace RecentFileManager {
   }
 
   function loadChildStageByData(data: Serialized.File, absolutePath: string) {
-    console.log(1, StageManager.getStageContentDebug());
     StageManager.storeMainStage();
-    console.log(2, StageManager.getStageContentDebug());
     StageManager.destroy();
     loadDataToMainStage(data);
-    console.log(3, StageManager.getStageContentDebug());
     StageManager.storeMainStageToChildStage(absolutePath);
-    console.log(4, StageManager.getStageContentDebug());
     StageManager.destroy();
     StageManager.restoreMainStage();
-    console.log(5, StageManager.getStageContentDebug());
   }
 
   function loadDataToMainStage(data: Serialized.File) {

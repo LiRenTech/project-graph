@@ -25,7 +25,6 @@ export const ControllerDragFile = new ControllerClassDragFile();
 ControllerDragFile.dragEnter = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
-  // console.log("开始进入窗口了", event.dataTransfer?.files);
   ControllerDragFile.isDraggingFile = true;
   Stage.effectMachine.addEffect(new TextRiseEffect("正在拖入文件"));
   ControllerDragFile.draggingLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
@@ -39,7 +38,6 @@ ControllerDragFile.dragEnter = (event: DragEvent) => {
 ControllerDragFile.dragOver = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
-  // console.log("移动中", event.dataTransfer?.files);
   ControllerDragFile.draggingLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 };
 
@@ -51,8 +49,6 @@ ControllerDragFile.dragOver = (event: DragEvent) => {
 ControllerDragFile.drop = (event: DragEvent) => {
   event.preventDefault();
   event.stopPropagation();
-  // console.log("松开释放了", event);
-  // console.log(event.dataTransfer?.files);
   const mouseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
   const files = event.dataTransfer?.files;

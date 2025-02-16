@@ -34,7 +34,6 @@ export default function ColorManagerPanel() {
               key={color.toString()}
               color={color}
               onclick={() => {
-                console.log(color);
                 const rgbSharpString = color.toHexString();
                 if (rgbSharpString.length === 9) {
                   // 去掉透明度

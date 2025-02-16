@@ -77,7 +77,6 @@ export default function App() {
     });
     // 修复鼠标拖出窗口后触发上下文菜单的问题
     window.addEventListener("contextmenu", (event) => {
-      console.log(event, window.screen);
       if (
         event.clientX < 0 ||
         event.clientX > window.innerWidth ||
