@@ -53,6 +53,13 @@ export class MaxSizeCache<K, V> {
   private cache: Map<K, V> = new Map();
   private readonly maxSize: number;
 
+  /**
+   * 获取当前缓存的容量状态
+   * @returns
+   */
+  getCapacityStatus(): [number, number] {
+    return [this.cache.size, this.maxSize];
+  }
   constructor(maxSize: number) {
     this.maxSize = maxSize;
   }

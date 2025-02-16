@@ -185,26 +185,8 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
   }
   // 禁用触控板在这里的滚动
   if (!Stage.enableWindowsTouchPad) {
-    // 先看X轴的滚动
-    if (event.deltaX !== 0) {
-      // 向右滚动是缩小
-      const intDiff = Math.round(Math.abs(event.deltaX));
-      if (intDiff === 100 || intDiff === 133 || intDiff === 166 || intDiff === 200) {
-        // 绝对没问题
-      } else {
-        Stage.effectMachine.addEffect(TextRiseEffect.default("已禁用触控板滚动, x轴滚动被过滤：" + intDiff));
-        return;
-      }
-    }
-    // 先看Y轴的滚动
-    if (event.deltaY !== 0) {
-      const intDiff = Math.round(Math.abs(event.deltaY));
-      if (intDiff === 100 || intDiff === 133 || intDiff === 166 || intDiff === 200) {
-        // 绝对没问题
-      } else {
-        Stage.effectMachine.addEffect(TextRiseEffect.default("已禁用触控板滚动, y轴滚动被过滤：" + intDiff));
-        return;
-      }
+    if (!detectIsMouseWheel(event)) {
+      return;
     }
   }
   // 获取触发滚轮的鼠标位置
@@ -279,6 +261,33 @@ function moveXCameraByMouseWheel(event: WheelEvent) {
     // 向下滚动是右移
     Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
   }
+}
+
+function detectIsMouseWheel(event: WheelEvent): boolean {
+  // 先看X轴的滚动
+  if (event.deltaX !== 0) {
+    // 向右滚动是缩小
+    const intDiff = Math.round(Math.abs(event.deltaX));
+    if (intDiff % 100 === 0 || intDiff % 133 === 0 || intDiff % 166 === 0) {
+      // 绝对没问题
+      return true;
+    } else {
+      Stage.effectMachine.addEffect(TextRiseEffect.default("已禁用触控板滚动, x轴滚动被过滤：" + intDiff));
+      return false;
+    }
+  }
+  // 先看Y轴的滚动
+  if (event.deltaY !== 0) {
+    const intDiff = Math.round(Math.abs(event.deltaY));
+    if (intDiff % 100 === 0 || intDiff % 133 === 0 || intDiff % 166 === 0) {
+      // 绝对没问题
+      return true;
+    } else {
+      Stage.effectMachine.addEffect(TextRiseEffect.default("已禁用触控板滚动, y轴滚动被过滤：" + intDiff));
+      return false;
+    }
+  }
+  return false;
 }
 /**
  * 如果使用了鼠标滚轮，则x或y的滚动必有一个接近100
