@@ -1,3 +1,4 @@
+import { LogicalSize } from "@tauri-apps/api/dpi";
 import { useAtom } from "jotai";
 import {
   ChevronDown,
@@ -33,7 +34,6 @@ import LogicNodePanel from "./_logic_node_panel";
 import RecentFilesPanel from "./_recent_files_panel";
 import StartFilePanel from "./_start_file_panel";
 import TagPanel from "./_tag_panel";
-import { LogicalSize } from "@tauri-apps/api/dpi";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -55,14 +55,6 @@ export default function App() {
   const { t } = useTranslation("app");
 
   React.useEffect(() => {
-    getCurrentWindow().onResized(() => {
-      getCurrentWindow()
-        .isMaximized()
-        .then((isMaximized) => {
-          setMaxmized(isMaximized);
-        });
-    });
-
     window.addEventListener("keyup", async (event) => {
       // TODO: 自定义快捷键
       // 这两个按键有待添加到自定义快捷键，但他们函数内部用到了useState，还不太清楚怎么改
