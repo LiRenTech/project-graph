@@ -59,14 +59,15 @@ export default function DetailsEditSidePanel() {
               element: "#details-editor",
               popover: {
                 title: "节点详情编辑",
-                description: "节点详情会显示在节点的下方，你可以在右侧编辑，支持 Markdown 语法。",
+                description:
+                  "你可以在右侧编辑节点详情，支持 Markdown 语法。节点详情会部分显示在节点的下方，显示范围可以在 设置>显示 中自由调整",
               },
             },
             {
               element: "#details-editor .vditor-toolbar__item:nth-child(1)",
               popover: {
                 title: "确认编辑",
-                description: "编辑完成后点击此按钮确认修改。",
+                description: "编辑完成后点击此按钮确认修改。也可以使用对应的快捷键关闭编辑器。",
               },
             },
             {
@@ -94,7 +95,7 @@ export default function DetailsEditSidePanel() {
       {isNodeTextEditing && (
         <MarkdownEditor
           id="details-editor"
-          className="fixed bottom-4 right-4 top-20 z-50 overflow-hidden rounded-xl ring"
+          className="fixed bottom-4 right-4 top-20 z-50 overflow-hidden rounded-xl"
           onChange={setInputCurrentDetailsHandler}
           defaultValue={inputCurrentDetails}
           options={{
