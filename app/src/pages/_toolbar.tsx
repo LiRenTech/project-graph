@@ -15,6 +15,7 @@ import {
   ClipboardX,
   Globe,
   LayoutDashboard,
+  LayoutGrid,
   Magnet,
   MousePointer,
   Network,
@@ -51,6 +52,8 @@ import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEng
 import { ColorManager } from "../core/service/feedbackService/ColorManager";
 import ColorManagerPanel from "./_color_manager_panel";
 import { Settings } from "../core/service/Settings";
+import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
+import { ConnectableEntity } from "../core/stage/stageObject/abstract/ConnectableEntity";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -302,6 +305,52 @@ function AlignNodePanel() {
           }}
         />
       </div>
+      <div className="flex">
+        <ToolbarItem
+          description="自动布局（选中的唯一节点必须是树形结构的根节点）"
+          icon={<Network />}
+          handleFunction={() => {
+            const selected = StageManager.getSelectedEntities();
+            if (selected.length !== 1) {
+              Dialog.show({
+                title: "选择节点数量不正确",
+                content: "必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构",
+              });
+              return;
+            }
+            const selectedEntity = selected[0];
+            if (selectedEntity instanceof ConnectableEntity) {
+              if (GraphMethods.isTree(selectedEntity)) {
+                StageManager.autoLayoutFastTreeMode();
+              } else {
+                Dialog.show({
+                  title: "连接的节点必须符合树形结构",
+                  content: "连接的节点必须符合树形结构，不能有环路，不能有重叠指向",
+                });
+              }
+            } else {
+              Dialog.show({
+                title: "选择的对象必须是可连线的节点对象",
+                content: "必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构",
+              });
+            }
+          }}
+        />
+        <ToolbarItem
+          description="尽可能排列成正方形"
+          icon={<LayoutGrid />}
+          handleFunction={() => {
+            StageManager.layoutToSquare();
+          }}
+        />
+        <ToolbarItem
+          description="尽可能排列成正方形"
+          icon={<LayoutGrid />}
+          handleFunction={() => {
+            StageManager.layoutToTightSquare();
+          }}
+        />
+      </div>
     </div>
   );
 }
@@ -315,7 +364,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   // 是否显示清空粘贴板
   const [isClipboardClearShow, setIsCopyClearShow] = useState(false);
   const [isHaveSelectedNode, setSsHaveSelectedNode] = useState(false);
-  const [isHaveSelectedNodeOverTwo, setSsHaveSelectedNodeOverTwo] = useState(false);
   const [isHaveSelectedEdge, setSsHaveSelectedEdge] = useState(false);
   const [ignoreMouse, setIgnoreMouse] = useState(false);
   // 是否固定不缩小化
@@ -323,7 +371,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
   const update = () => {
     setSsHaveSelectedNode(StageManager.selectedNodeCount > 0);
-    setSsHaveSelectedNodeOverTwo(StageManager.selectedNodeCount > 1);
     setSsHaveSelectedEdge(StageManager.selectedEdgeCount > 0);
     setIsCopyClearShow(!CopyEngine.isVirtualClipboardEmpty());
   };
@@ -414,7 +461,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           handleFunction={() => Popup.show(<ColorPanel />)}
         />
 
-        {isHaveSelectedNodeOverTwo && (
+        {isHaveSelectedNode && (
           <ToolbarItem
             description="节点对齐相关"
             icon={<LayoutDashboard />}
@@ -517,13 +564,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           icon={<RefreshCcw />}
           handleFunction={() => {
             StageManager.refreshSelected();
-          }}
-        />
-        <ToolbarItem
-          description="自动布局（选中的唯一节点必须是树形结构的根节点）"
-          icon={<Network />}
-          handleFunction={() => {
-            StageManager.autoLayoutFastTreeMode();
           }}
         />
         <ToolbarItem

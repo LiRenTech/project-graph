@@ -705,6 +705,14 @@ export namespace StageManager {
     StageEntityMoveManager.alignVerticalSpaceBetween();
     StageHistoryManager.recordStep();
   }
+  export function layoutToSquare() {
+    StageEntityMoveManager.layoutToSquare();
+    StageHistoryManager.recordStep();
+  }
+  export function layoutToTightSquare() {
+    StageEntityMoveManager.layoutToTightSquare();
+    StageHistoryManager.recordStep();
+  }
 
   export function setEntityColor(color: Color) {
     StageObjectColorManager.setEntityColor(color);
