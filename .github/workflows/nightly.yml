@@ -91,7 +91,8 @@ jobs:
         if: matrix.platform == 'macos-latest' # This must match the platform value defined above.
         run: |
           sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.r${{ github.run_number }}\"/" app/src-tauri/tauri.conf.json
-          sed -i '' "s/\"macos-private-api\"/\"macos-private-api\",\"devtools\"/" ./app/src-tauri/Cargo.toml
+          # Uncomment the following line to enable devtools on macos.
+          # sed -i '' "s/\"macos-private-api\"/\"macos-private-api\",\"devtools\"/" ./app/src-tauri/Cargo.toml
 
       - name: edit version (windows only)
         if: matrix.platform == 'windows-latest' # This must match the platform value defined above.
