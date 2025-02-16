@@ -1058,8 +1058,9 @@ export namespace StageManager {
   }
 
   export function targetTextNodeToSection(textNode: TextNode) {
-    StageSectionPackManager.targetTextNodeToSection(textNode);
+    const result = StageSectionPackManager.targetTextNodeToSection(textNode);
     StageHistoryManager.recordStep();
+    return result;
   }
 
   export function addPortalNodeToStage(otherPath: string) {

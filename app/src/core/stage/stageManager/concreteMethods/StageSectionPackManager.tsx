@@ -79,7 +79,7 @@ export namespace StageSectionPackManager {
    * 将指定的文本节点转换成Section
    * @param textNode
    */
-  export function targetTextNodeToSection(textNode: TextNode) {
+  export function targetTextNodeToSection(textNode: TextNode): Section {
     // 获取这个节点的父级Section
     const fatherSections = SectionMethods.getFatherSections(textNode);
     const rect = textNode.collisionBox.getRectangle().expandFromCenter(50);
@@ -114,5 +114,6 @@ export namespace StageSectionPackManager {
     }
     // 更新section的碰撞箱
     newSection.adjustLocationAndSize();
+    return newSection;
   }
 }

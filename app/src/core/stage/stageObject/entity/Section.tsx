@@ -137,11 +137,10 @@ export class Section extends ConnectableEntity {
         this.children.map((child) => child.collisionBox.getRectangle()),
         30,
       );
+      // 留白范围在上面调整
+      rectangle.location = rectangle.location.subtract(new Vector(0, 50));
+      rectangle.size = rectangle.size.add(new Vector(0, 50));
     }
-
-    // 留白范围在上面调整
-    rectangle.location = rectangle.location.subtract(new Vector(0, 50));
-    rectangle.size = rectangle.size.add(new Vector(0, 50));
 
     this._collisionBoxNormal.shapeList = rectangle.getBoundingLines();
     // 群友需求：希望Section框扩大交互范围，标题也能拖动
