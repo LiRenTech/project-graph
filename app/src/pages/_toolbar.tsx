@@ -13,6 +13,7 @@ import {
   ClipboardPaste,
   // ChevronsRightLeft,
   ClipboardX,
+  Columns4,
   Globe,
   LayoutDashboard,
   LayoutGrid,
@@ -344,8 +345,8 @@ function AlignNodePanel() {
           }}
         />
         <ToolbarItem
-          description="尽可能排列成正方形"
-          icon={<LayoutGrid />}
+          description="排一串"
+          icon={<Columns4 />}
           handleFunction={() => {
             StageManager.layoutToTightSquare();
           }}
