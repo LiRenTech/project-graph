@@ -3755,7 +3755,7 @@
     },
     {
       "location": [6589.058799888121, 2966.995257813688],
-      "size": [1477.3958960412629, 1936.499677398724],
+      "size": [2084.1324199002256, 1936.499677398724],
       "uuid": "00548287-c41a-49e7-88b5-bccc280c35ff",
       "text": "传送门节点",
       "color": [0, 0, 0, 0],
@@ -3778,7 +3778,9 @@
         "e8fc6f93-3ad2-4ecb-a52a-cc9f31b5ef12",
         "63e4db6d-7a0f-4c87-8c9b-f74b0a69c47a",
         "f6f64bc2-779e-4fef-9539-42ac28dfd0e1",
-        "29a4be85-eb45-44e0-8097-4974f3ea57a9"
+        "29a4be85-eb45-44e0-8097-4974f3ea57a9",
+        "20ee25e1-eb84-46e9-8526-12227626516d",
+        "3c5f8fa6-a4c8-40fe-9a23-10b2e1ab0f66"
       ],
       "details": ""
     },
@@ -4673,6 +4675,33 @@
       "size": [316, 76],
       "text": "和节点更改方式相同",
       "uuid": "2ef21d40-ff49-426d-8f0c-52be06ed9ccd",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3104.470607835833, 4543.531934605687],
+      "size": [284, 172],
+      "text": "更多逻辑节点\n详见官网文档\n这里无法全部穷举",
+      "uuid": "b040c06b-fe3e-4df2-bf37-99d7e08dc9fa",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8051.671200257097, 3388.8580769603077],
+      "size": [591.52001953125, 124],
+      "text": "5：观察到舞台上多了一个传送门节点后\n保存",
+      "uuid": "20ee25e1-eb84-46e9-8526-12227626516d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [8243.591213684831, 3585.51972132932],
+      "size": [207.67999267578125, 76],
+      "text": "6：重启软件",
+      "uuid": "3c5f8fa6-a4c8-40fe-9a23-10b2e1ab0f66",
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
@@ -6980,6 +7009,30 @@
       "target": "2ef21d40-ff49-426d-8f0c-52be06ed9ccd",
       "text": "",
       "uuid": "ea2d0264-77c2-4ff6-86fb-60f74d1defb9",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "a5cc297a-f3eb-4829-aff9-f11ef7b9f237",
+      "target": "b040c06b-fe3e-4df2-bf37-99d7e08dc9fa",
+      "text": "",
+      "uuid": "b492d378-0e63-4690-beaf-a37e7cb288ad",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "00346489-0be7-4610-b7ed-f1b36045629c",
+      "target": "20ee25e1-eb84-46e9-8526-12227626516d",
+      "text": "",
+      "uuid": "91331106-e4bd-48d6-a837-4db5fc95d204",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "20ee25e1-eb84-46e9-8526-12227626516d",
+      "target": "3c5f8fa6-a4c8-40fe-9a23-10b2e1ab0f66",
+      "text": "",
+      "uuid": "3a6f26d8-cfd5-44ed-866a-dbaa444343b9",
       "type": "core:line_edge",
       "color": [0, 0, 0, 0]
     }
