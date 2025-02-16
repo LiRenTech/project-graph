@@ -4607,6 +4607,75 @@
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
+    },
+    {
+      "location": [-1844.1014492753625, 1246],
+      "size": [332.927978515625, 76],
+      "text": "更改Section框的颜色",
+      "uuid": "8c4fa756-f722-4ddb-9502-435706134d3a",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-2355.110963173674, 1256.8596023087898],
+      "size": [60.60798645019531, 76],
+      "text": "31",
+      "uuid": "085bc536-a7b6-4e11-a200-a82786673d62",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-2184.7379307663386, 1335.1403976912102],
+      "size": [64.95999145507812, 76],
+      "text": "32",
+      "uuid": "0d8e0d89-4197-4fc0-9bcb-8366e9fc1626",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-2385.110963173674, 1176.8596023087898],
+      "size": [295.3330238624135, 264.28079538242037],
+      "uuid": "4f6e6650-5812-413e-985c-d9b74fb26540",
+      "text": "Section_7",
+      "color": [59, 130, 246, 1],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": ["085bc536-a7b6-4e11-a200-a82786673d62", "0d8e0d89-4197-4fc0-9bcb-8366e9fc1626"],
+      "details": ""
+    },
+    {
+      "location": [-2048.2404902453677, 1176.8596023087898],
+      "size": [66.33599853515625, 76],
+      "text": "33",
+      "uuid": "43ad3ba9-8469-49fd-a0f3-b94211734ba5",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [-2415.110963173674, 1096.8596023087898],
+      "size": [463.20647146346255, 374.28079538242037],
+      "uuid": "b15f31bd-f830-461a-a8fd-d4c860f2919b",
+      "text": "Section_8",
+      "color": [168, 85, 247, 1],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": ["43ad3ba9-8469-49fd-a0f3-b94211734ba5", "4f6e6650-5812-413e-985c-d9b74fb26540"],
+      "details": ""
+    },
+    {
+      "location": [-1835.63746001755, 1395.1403976912102],
+      "size": [316, 76],
+      "text": "和节点更改方式相同",
+      "uuid": "2ef21d40-ff49-426d-8f0c-52be06ed9ccd",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
     }
   ],
   "associations": [
@@ -6887,6 +6956,30 @@
       "target": "6a87f52e-dfc0-4cf8-98cd-c3122cce2824",
       "text": "",
       "uuid": "672602da-8b91-4913-9a42-7c4c3ddb9587",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "9905fb02-e92c-41d1-92da-d23f584f89fa",
+      "target": "8c4fa756-f722-4ddb-9502-435706134d3a",
+      "text": "",
+      "uuid": "d407cef0-3d4b-440b-8361-acaee9f795f2",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "8c4fa756-f722-4ddb-9502-435706134d3a",
+      "target": "b15f31bd-f830-461a-a8fd-d4c860f2919b",
+      "text": "",
+      "uuid": "3f16254c-697e-42c1-8db2-490caa01aeae",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "8c4fa756-f722-4ddb-9502-435706134d3a",
+      "target": "2ef21d40-ff49-426d-8f0c-52be06ed9ccd",
+      "text": "",
+      "uuid": "ea2d0264-77c2-4ff6-86fb-60f74d1defb9",
       "type": "core:line_edge",
       "color": [0, 0, 0, 0]
     }

@@ -7,6 +7,7 @@ import { driver } from "driver.js";
 import { Tourials } from "../core/service/Tourials";
 import MarkdownEditor from "./_vditor_panel";
 import { StageManager } from "../core/stage/stageManager/StageManager";
+import { Dialog } from "../components/dialog";
 
 export default function DetailsEditSidePanel() {
   const [inputCurrentDetails, setInputCurrentDetails] = React.useState("");
@@ -23,14 +24,27 @@ export default function DetailsEditSidePanel() {
       setInputCurrentDetails(value);
     }
   };
+
+  /**
+   * 点击对勾按钮
+   */
   const handleConfirmDetailsEdit = () => {
-    console.log("handleConfirmDetailsEdit");
     setIsNodeTextEditing(false);
-    if (clickedNode) {
-      editTextNodeHookGlobal.hookFunctionEnd(clickedNode);
-    } else {
-      console.warn("没有点击节点");
-    }
+    Dialog.show({
+      title: "提示：请使用快捷键关闭面板",
+      content: "该按钮存在bug。使用Esc或Ctrl+Enter关闭面板\n注意【✏】按钮和【📃】按钮的区别，它们可点击。",
+      buttons: [
+        {
+          text: "确定",
+          // onClick
+        },
+      ],
+    });
+    // if (clickedNode) {
+    //   editTextNodeHookGlobal.hookFunctionEnd(clickedNode);
+    // } else {
+    //   console.warn("没有点击节点");
+    // }
   };
 
   /**
