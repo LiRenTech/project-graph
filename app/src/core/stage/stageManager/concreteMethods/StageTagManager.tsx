@@ -1,10 +1,14 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { MouseLocation } from "../../../service/controlService/MouseLocation";
 import { LineCuttingEffect } from "../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
+import { RectangleNoteEffect } from "../../../service/feedbackService/effectEngine/concrete/RectangleNoteEffect";
+import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../Camera";
 import { Stage } from "../../Stage";
+import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { StageObject } from "../../stageObject/abstract/StageObject";
 import { Edge } from "../../stageObject/association/Edge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
@@ -12,6 +16,7 @@ import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
+import { GraphMethods } from "../basicMethods/GraphMethods";
 import { StageManager } from "../StageManager";
 
 export namespace StageTagManager {
@@ -82,21 +87,50 @@ export namespace StageTagManager {
     return res;
   }
 
+  /**
+   * 跳转到标签位置
+   * @param tagUUID
+   * @returns
+   */
   export function moveCameraToTag(tagUUID: string) {
     const tagObject = StageManager.getStageObjectByUUID(tagUUID);
     if (!tagObject) {
       return;
     }
-    const location = tagObject.collisionBox.getRectangle().center;
-    Camera.location = location;
-    Stage.effectMachine.addEffect(
-      new LineCuttingEffect(
-        new ProgressNumber(0, 10),
-        Renderer.transformView2World(MouseLocation.vector()),
-        location,
-        Color.Green,
-        Color.Green,
-      ),
-    );
+    if (tagObject instanceof ConnectableEntity) {
+      const childNodes = GraphMethods.getSuccessorSet(tagObject);
+      const boundingRect = Rectangle.getBoundingRectangle(
+        childNodes.map((childNode) => childNode.collisionBox.getRectangle()),
+      );
+      Camera.resetByRectangle(boundingRect);
+      Stage.effectMachine.addEffect(
+        new LineCuttingEffect(
+          new ProgressNumber(0, 10),
+          Renderer.transformView2World(MouseLocation.vector()),
+          tagObject.collisionBox.getRectangle().center,
+          Color.Green,
+          Color.Green,
+        ),
+      );
+      Stage.effectMachine.addEffect(
+        new RectangleNoteEffect(
+          new ProgressNumber(0, 30),
+          boundingRect,
+          StageStyleManager.currentStyle.CollideBoxPreSelectedColor,
+        ),
+      );
+    } else {
+      const location = tagObject.collisionBox.getRectangle().center;
+      Camera.location = location;
+      Stage.effectMachine.addEffect(
+        new LineCuttingEffect(
+          new ProgressNumber(0, 10),
+          Renderer.transformView2World(MouseLocation.vector()),
+          location,
+          Color.Green,
+          Color.Green,
+        ),
+      );
+    }
   }
 }

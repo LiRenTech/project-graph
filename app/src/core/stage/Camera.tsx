@@ -292,6 +292,10 @@ export namespace Camera {
       return;
     }
     const viewRectangle = Rectangle.getBoundingRectangle(selectedEntity.map((e) => e.collisionBox.getRectangle()));
+    resetByRectangle(viewRectangle);
+  }
+
+  export function resetByRectangle(viewRectangle: Rectangle) {
     const center = viewRectangle.center;
     Camera.location = center;
     Camera.targetLocationByScale = center.clone();
