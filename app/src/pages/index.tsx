@@ -6,12 +6,9 @@ import { StageStyleManager } from "../core/service/feedbackService/stageStyle/St
 import { Settings } from "../core/service/Settings";
 import { Canvas } from "../core/stage/Canvas";
 import { Stage } from "../core/stage/Stage";
-// import DetailsEditPanel from "./_details_edit_panel";
 import { useAtom } from "jotai";
-import Button from "../components/Button";
 import { isWindowCollapsingAtom } from "../state";
 import { CursorNameEnum } from "../types/cursors";
-import { isMobile } from "../utils/platform";
 import DetailsEditSidePanel from "./_details_edit_side_panel";
 import DetailsEditSmallPanel from "./_details_edit_small_panel";
 import HintText from "./_hint_text";
@@ -23,8 +20,6 @@ export default function Home() {
 
   const [cursorName, setCursorName] = React.useState(CursorNameEnum.Default);
   const [bgAlpha, setBgAlpha] = React.useState(0.9);
-  const [isDrawingMode, setIsDrawingMode] = React.useState(false);
-  // const [nodeDetailsPanel, setNodeDetailsPanel] = React.useState("vditor");
   const [nodeDetailsPanel] = Settings.use("nodeDetailsPanel");
   const [isProtectPrivacy, setIsProtectPrivacy] = React.useState(false);
 
@@ -129,24 +124,6 @@ export default function Home() {
       {/* 这个打算被取代 */}
       {nodeDetailsPanel === "small" ? <DetailsEditSmallPanel /> : <DetailsEditSidePanel />}
       {!isWindowCollapsing && <HintText />}
-      {isMobile && (
-        <Button
-          className="z-5 absolute bottom-10 left-4"
-          onClick={() => {
-            if (isDrawingMode) {
-              // 切换到框选模式
-              Stage.drawingMachine.shutDown();
-            } else {
-              // 切换到涂鸦模式
-              Stage.drawingMachine.open();
-            }
-            setIsDrawingMode(!isDrawingMode);
-          }}
-        >
-          {isDrawingMode ? "框选模式" : "涂鸦模式"}
-        </Button>
-      )}
-
       {/* TODO: 下面这个写法有点奇怪 rgba值太长了 */}
       <div
         style={{
