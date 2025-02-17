@@ -36,7 +36,7 @@ import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManag
 import { StageManager } from "./core/stage/stageManager/StageManager";
 import { EdgeCollisionBoxGetter } from "./core/stage/stageObject/association/EdgeCollisionBoxGetter";
 import "./index.css";
-import { ColorPanel } from "./pages/_toolbar";
+import ColorPanel from "./pages/_color_panel";
 import "./polyfills/roundRect";
 import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";

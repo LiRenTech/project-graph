@@ -1,26 +1,12 @@
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 
 import {
-  AlignCenterHorizontal,
-  AlignCenterVertical,
-  AlignEndHorizontal,
-  AlignEndVertical,
-  AlignHorizontalSpaceBetween,
-  AlignStartHorizontal,
-  AlignStartVertical,
-  AlignVerticalSpaceBetween,
-  Blend,
   BrainCircuit,
   ClipboardPaste,
-  // ChevronsRightLeft,
   ClipboardX,
-  Columns4,
   Globe,
   LayoutDashboard,
-  LayoutGrid,
-  Magnet,
   MousePointer,
-  Network,
   Package,
   PaintBucket,
   PenTool,
@@ -30,14 +16,10 @@ import {
   SaveAll,
   Square,
   Tag,
-  ToggleLeft,
-  ToggleRight,
   Trash2,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Box from "../components/Box";
-import Button from "../components/Button";
-import Input from "../components/Input";
 import { Color } from "../core/dataStruct/Color";
 import { StageExportSvg } from "../core/service/dataGenerateService/stageExportEngine/StageExportSvg";
 import { TextRiseEffect } from "../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
@@ -46,19 +28,15 @@ import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
-// import { StageSaveManager } from "../core/stage/StageSaveManager";
 import { Dialog } from "../components/dialog";
 import { Popup } from "../components/popup";
 import { writeTextFile } from "../utils/fs";
-// import { PathString } from "../utils/pathString";
 import IconButton from "../components/IconButton";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
-import { ColorManager } from "../core/service/feedbackService/ColorManager";
-import ColorManagerPanel from "./_color_manager_panel";
-import { Settings } from "../core/service/Settings";
-import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
-import { ConnectableEntity } from "../core/stage/stageObject/abstract/ConnectableEntity";
 import { openBrowserOrFile } from "../utils/externalOpen";
+import AlignNodePanel from "./_align_panel";
+import ColorPanel from "./_color_panel";
+import GenerateNodePanel from "./_generate_node_panel";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -66,7 +44,7 @@ interface ToolbarItemProps {
   description: string;
 }
 
-function ToolbarItem({ icon, handleFunction, description }: ToolbarItemProps) {
+export function ToolbarItem({ icon, handleFunction, description }: ToolbarItemProps) {
   return (
     <div
       className="hover:bg-toolbar-icon-hover-bg text-toolbar-tooltip-text group relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-md active:scale-90"
@@ -76,335 +54,6 @@ function ToolbarItem({ icon, handleFunction, description }: ToolbarItemProps) {
       <span className="bg-toolbar-tooltip-bg border-toolbar-tooltip-border text-toolbar-tooltip-text pointer-events-none absolute right-10 z-10 w-auto origin-right scale-90 whitespace-nowrap rounded border p-1 text-xs opacity-0 group-hover:scale-100 group-hover:opacity-100">
         {description}
       </span>
-    </div>
-  );
-}
-
-/**
- * 调色盘面板
- * @param param0
- * @returns
- */
-export function ColorPanel() {
-  const [currentColors, setCurrentColors] = useState<Color[]>([]);
-  const [autoFillNodeColor, setAutoFillNodeColor] = useState<Color>(Color.Transparent);
-  const [autoFillNodeColorEnable, setAutoFillNodeColorEnable] = useState(true);
-
-  useEffect(() => {
-    ColorManager.getUserEntityFillColors().then((colors) => {
-      setCurrentColors(colors);
-    });
-    Settings.watch("autoFillNodeColor", (value) => {
-      setAutoFillNodeColor(new Color(...value));
-    });
-    Settings.watch("autoFillNodeColorEnable", (value) => {
-      setAutoFillNodeColorEnable(value);
-    });
-  }, []);
-
-  const handleClickSwitchNodeFillColor = () => {
-    Settings.set("autoFillNodeColorEnable", !autoFillNodeColorEnable);
-  };
-
-  return (
-    <div className="bg-panel-bg rounded-lg">
-      {/* 官方提供的默认颜色 */}
-      <div className="flex flex-wrap items-center justify-center">
-        <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-red-500 hover:scale-125"
-          onClick={() => {
-            const color = new Color(239, 68, 68);
-            StageManager.setEntityColor(color);
-            StageManager.setEdgeColor(color);
-            Settings.set("autoFillNodeColor", color.toArray());
-          }}
-        />
-        <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-yellow-500 hover:scale-125"
-          onClick={() => {
-            const color = new Color(234, 179, 8);
-            StageManager.setEntityColor(color);
-            StageManager.setEdgeColor(color);
-            Settings.set("autoFillNodeColor", color.toArray());
-          }}
-        />
-        <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-green-600 hover:scale-125"
-          onClick={() => {
-            const color = new Color(22, 163, 74);
-            StageManager.setEntityColor(color);
-            StageManager.setEdgeColor(color);
-            Settings.set("autoFillNodeColor", color.toArray());
-          }}
-        />
-        <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-blue-500 hover:scale-125"
-          onClick={() => {
-            const color = new Color(59, 130, 246);
-            StageManager.setEntityColor(color);
-            StageManager.setEdgeColor(color);
-            Settings.set("autoFillNodeColor", color.toArray());
-          }}
-        />
-        <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-purple-500 hover:scale-125"
-          onClick={() => {
-            const color = new Color(168, 85, 247);
-            StageManager.setEntityColor(color);
-            StageManager.setEdgeColor(color);
-            Settings.set("autoFillNodeColor", color.toArray());
-          }}
-        />
-        {/* 清除颜色 */}
-        <div
-          className="m-1 h-5 w-5 animate-pulse cursor-pointer rounded-full bg-transparent text-center text-sm hover:scale-125"
-          onClick={() => {
-            const color = Color.Transparent;
-            StageManager.setEntityColor(color);
-            StageManager.setEdgeColor(color);
-            Settings.set("autoFillNodeColor", color.toArray());
-          }}
-        >
-          <Blend className="h-5 w-5" />
-        </div>
-      </div>
-      {/* 按钮 */}
-      <div className="flex flex-wrap items-center justify-center">
-        {/* 临时自定义 */}
-        <input
-          type="color"
-          id="colorPicker"
-          value="#ff0000"
-          onChange={(e) => {
-            const color = e.target.value;
-            const r = parseInt(color.slice(1, 3), 16);
-            const g = parseInt(color.slice(3, 5), 16);
-            const b = parseInt(color.slice(5, 7), 16);
-            StageManager.setEntityColor(new Color(r, g, b));
-            StageManager.setEdgeColor(new Color(r, g, b));
-          }}
-        ></input>
-        <Button
-          onClick={() => {
-            Popup.show(<ColorManagerPanel />);
-          }}
-        >
-          打开颜色管理
-        </Button>
-      </div>
-      <hr className="text-panel-details-text my-2" />
-      {/* 用户颜色库 */}
-      <div className="flex max-w-64 flex-wrap items-center justify-center">
-        {currentColors.map((color) => {
-          return (
-            <div
-              className="m-1 h-5 w-5 cursor-pointer rounded-full hover:scale-125"
-              key={color.toString()}
-              style={{
-                backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`,
-              }}
-              onClick={() => {
-                StageManager.setEntityColor(color);
-                StageManager.setEdgeColor(color);
-                Settings.set("autoFillNodeColor", color.toArray());
-              }}
-            />
-          );
-        })}
-      </div>
-      <hr className="text-panel-details-text my-2" />
-      {/* 自动创建节点的颜色 */}
-      <div className="flex justify-center">
-        <span className="flex items-center justify-center text-sm">
-          <span className={cn(!autoFillNodeColorEnable && "opacity-50")}>创建节点自动上色</span>
-          <div
-            className={cn("m-1 h-5 w-5 rounded-full border-2", !autoFillNodeColorEnable && "scale-50")}
-            style={{
-              backgroundColor: autoFillNodeColor.toString(),
-            }}
-          ></div>
-          {autoFillNodeColorEnable ? (
-            <ToggleRight className="cursor-pointer" onClick={handleClickSwitchNodeFillColor} />
-          ) : (
-            <ToggleLeft className="cursor-pointer" onClick={handleClickSwitchNodeFillColor} />
-          )}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-/**
- * 通过文本来生成节点的面板
- * @returns
- */
-function GenerateNodePanel() {
-  const [inputValue, setInputValue] = useState("");
-  const [indention, setIndention] = useState(4);
-
-  return (
-    <div className="bg-panel-bg flex flex-col gap-4 rounded-lg p-2">
-      <Input value={inputValue} onChange={setInputValue} multiline />
-      <div>
-        <span className="text-panel-text">缩进数量</span>
-        <Input value={indention.toString()} onChange={setIndention} number />
-        <p className="text-panel-details-text text-xs">会按照您的缩进等级来生成对应的节点结构</p>
-      </div>
-      <Button
-        onClick={() => {
-          StageManager.generateNodeByText(inputValue, indention);
-          setInputValue("");
-        }}
-      >
-        生成纯文本节点
-      </Button>
-      <Button
-        onClick={() => {
-          StageManager.generateNodeByMarkdown(inputValue);
-          setInputValue("");
-        }}
-      >
-        根据markdown生成节点
-      </Button>
-    </div>
-  );
-}
-
-function AlignNodePanel() {
-  const [isEnableDragAutoAlign, setEnableDragAutoAlign] = useState(false);
-
-  useEffect(() => {
-    Settings.watch("enableDragAutoAlign", (value) => {
-      setEnableDragAutoAlign(value);
-    });
-  }, []);
-
-  return (
-    <div className="bg-panel-bg">
-      <div className="grid grid-cols-3 grid-rows-3">
-        <div />
-        <ToolbarItem
-          description="顶对齐"
-          icon={<AlignStartHorizontal />}
-          handleFunction={() => {
-            StageManager.alignTop();
-          }}
-        />
-        <div />
-        <ToolbarItem
-          description="左对齐"
-          icon={<AlignStartVertical />}
-          handleFunction={() => {
-            StageManager.alignLeft();
-          }}
-        />
-        <div />
-        <ToolbarItem
-          description="右对齐"
-          icon={<AlignEndVertical />}
-          handleFunction={() => {
-            StageManager.alignRight();
-          }}
-        />
-        <div />
-        <ToolbarItem
-          description="底对齐"
-          icon={<AlignEndHorizontal />}
-          handleFunction={() => {
-            StageManager.alignBottom();
-          }}
-        />
-        <div />
-      </div>
-
-      <div className="grid grid-cols-3 grid-rows-2">
-        <ToolbarItem
-          description="相等间距垂直对齐"
-          icon={<AlignVerticalSpaceBetween />}
-          handleFunction={() => {
-            StageManager.alignVerticalSpaceBetween();
-          }}
-        />
-        <div />
-        <ToolbarItem
-          description="相等间距水平对齐"
-          icon={<AlignHorizontalSpaceBetween />}
-          handleFunction={() => {
-            StageManager.alignHorizontalSpaceBetween();
-          }}
-        />
-        <ToolbarItem
-          description="中心垂直对齐"
-          icon={<AlignCenterVertical />}
-          handleFunction={() => {
-            StageManager.alignCenterVertical();
-          }}
-        />
-        <div />
-        <ToolbarItem
-          description="中心水平对齐"
-          icon={<AlignCenterHorizontal />}
-          handleFunction={() => {
-            StageManager.alignCenterHorizontal();
-          }}
-        />
-      </div>
-      <div className="relative flex justify-center">
-        {/* {isEnableDragAutoAlign && <Magnet className="absolute animate-ping" />} */}
-        <ToolbarItem
-          description={isEnableDragAutoAlign ? "拖动吸附对齐：开启" : "拖动吸附对齐：关闭"}
-          icon={<Magnet className={cn(isEnableDragAutoAlign ? "animate-spin" : "scale-50", "transition-transform")} />}
-          handleFunction={async () => {
-            Settings.set("enableDragAutoAlign", !(await Settings.get("enableDragAutoAlign")));
-          }}
-        />
-      </div>
-      <div className="flex">
-        <ToolbarItem
-          description="自动布局（选中的唯一节点必须是树形结构的根节点）"
-          icon={<Network />}
-          handleFunction={() => {
-            const selected = StageManager.getSelectedEntities();
-            if (selected.length !== 1) {
-              Dialog.show({
-                title: "选择节点数量不正确",
-                content: "必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构",
-              });
-              return;
-            }
-            const selectedEntity = selected[0];
-            if (selectedEntity instanceof ConnectableEntity) {
-              if (GraphMethods.isTree(selectedEntity)) {
-                StageManager.autoLayoutFastTreeMode();
-              } else {
-                Dialog.show({
-                  title: "连接的节点必须符合树形结构",
-                  content: "连接的节点必须符合树形结构，不能有环路，不能有重叠指向",
-                });
-              }
-            } else {
-              Dialog.show({
-                title: "选择的对象必须是可连线的节点对象",
-                content: "必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构",
-              });
-            }
-          }}
-        />
-        <ToolbarItem
-          description="尽可能排列成正方形"
-          icon={<LayoutGrid />}
-          handleFunction={() => {
-            StageManager.layoutToSquare();
-          }}
-        />
-        <ToolbarItem
-          description="排一串"
-          icon={<Columns4 />}
-          handleFunction={() => {
-            StageManager.layoutToTightSquare();
-          }}
-        />
-      </div>
     </div>
   );
 }
