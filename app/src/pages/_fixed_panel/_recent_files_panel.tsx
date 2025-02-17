@@ -14,9 +14,11 @@ import { Stage } from "../../core/stage/Stage";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { PathString } from "../../utils/pathString";
 import { isDesktop } from "../../utils/platform";
+import { LoaderPinwheel } from "lucide-react";
 
 export default function RecentFilesPanel() {
   const [recentFiles, setRecentFiles] = React.useState<RecentFileManager.RecentFile[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const [isRecentFilePanelOpen, setRecentFilePanelOpen] = useAtom(isRecentFilePanelOpenAtom);
   const [currentFile, setFile] = useAtom(fileAtom);
@@ -25,10 +27,12 @@ export default function RecentFilesPanel() {
    * 用于刷新页面显示
    */
   const updateRecentFiles = async () => {
+    setIsLoading(true);
     await RecentFileManager.validAndRefreshRecentFiles();
     await RecentFileManager.sortTimeRecentFiles();
     const files = await RecentFileManager.getRecentFiles();
     setRecentFiles(files);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -133,70 +137,87 @@ export default function RecentFilesPanel() {
   return (
     <div
       className={cn(
-        "bg-panel-bg fixed left-1/2 top-1/2 z-10 flex h-4/5 w-3/4 -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-y-scroll rounded-md px-2 py-6",
+        "bg-panel-bg fixed left-1/2 top-1/2 z-10 flex h-4/5 w-full -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-hidden rounded-md px-2 py-6", // 添加 relative
         {
           hidden: !isRecentFilePanelOpen,
         },
       )}
     >
-      <h2 className="mb-3 text-xl font-bold text-white">最近打开的文件</h2>
-      <table className="min-w-full overflow-hidden rounded-lg border border-gray-600 bg-gray-700 shadow-lg">
-        <thead>
-          <tr className="bg-gray-800 text-white">
-            <th className="px-4 py-2 text-left"></th>
-            <th className="px-4 py-2 text-left">路径</th>
-            <th className="px-4 py-2 text-left">时间</th>
-            <th className="px-4 py-2 text-left">操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          {recentFiles.map((file, index) => (
-            <tr key={index} className="text-gray-200 hover:bg-gray-600">
-              {/* 标号列 */}
-              <td className="text-center">{index + 1}</td>
-              {/* 路径列 */}
-              <td className="flex flex-col" onClick={onCheckoutFile(file)}>
-                <span>{PathString.absolute2file(file.path)}</span>
-                <span className="text-xs text-gray-500">{file.path}</span>
-              </td>
-              {/* 时间列 */}
-              <td className="">
-                <span className="text-xs">
-                  {new Date(file.time).toLocaleString("zh-CN", {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                    weekday: "long",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                    hour12: false,
-                  })}
-                </span>
-              </td>
-              <td>
-                <button onClick={addToStartFiles(file.path)} className="bg-neutral-700 text-xs hover:cursor-pointer">
-                  {/* <Zap /> */}
-                  添加到启动
-                </button>
-                <button
-                  onClick={addPortalNodeToStage(file.path)}
-                  className="bg-neutral-700 text-xs hover:cursor-pointer"
-                >
-                  添加传送门
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <p>提示：点击文件可以快速切换</p>
+      {/* 关闭按钮放置在最外层 */}
       <button
-        className="absolute right-0 top-0 rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
+        className="absolute right-2 top-2 z-20 cursor-pointer rounded bg-red-500 px-4 py-2 font-bold text-white hover:scale-105 hover:bg-red-700" // 调整位置和层级
         onClick={() => setRecentFilePanelOpen(false)}
       >
         关闭
       </button>
+
+      <h2 className="mb-3 text-xl font-bold text-white">最近打开的文件</h2>
+      {/* 加载中提示 */}
+      {isLoading && (
+        <div className="flex h-full items-center justify-center text-8xl">
+          <LoaderPinwheel className="scale-200 animate-spin" />
+        </div>
+      )}
+      {/* 滚动区域单独封装 */}
+      {!isLoading && (
+        <div className="flex-grow overflow-y-scroll">
+          <table className="min-w-full overflow-hidden rounded-lg border border-gray-600 bg-gray-700 shadow-lg">
+            <thead>
+              <tr className="bg-gray-800 text-white">
+                <th className="px-4 py-2 text-left"></th>
+                <th className="px-4 py-2 text-left">路径</th>
+                <th className="px-4 py-2 text-left">时间</th>
+                <th className="px-4 py-2 text-left">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentFiles.map((file, index) => (
+                <tr key={index} className="text-gray-200 hover:bg-gray-600">
+                  {/* 标号列 */}
+                  <td className="text-center">{index + 1}</td>
+                  {/* 路径列 */}
+                  <td className="flex flex-col" onClick={onCheckoutFile(file)}>
+                    <span>{PathString.absolute2file(file.path)}</span>
+                    <span className="text-xs text-gray-500">{file.path}</span>
+                  </td>
+                  {/* 时间列 */}
+                  <td className="">
+                    <span className="text-panel-details-text text-xs">
+                      {new Date(file.time).toLocaleString("zh-CN", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        // weekday: "long",
+                        // hour: "2-digit",
+                        // minute: "2-digit",
+                        // second: "2-digit",
+                        hour12: false,
+                      })}
+                    </span>
+                  </td>
+                  <td>
+                    <div className="flex w-36">
+                      <button
+                        onClick={addToStartFiles(file.path)}
+                        className="bg-button-bg text-button-text border-button-border m-0.5 cursor-pointer rounded-lg p-1 text-xs hover:scale-105"
+                      >
+                        添加启动
+                      </button>
+                      <button
+                        onClick={addPortalNodeToStage(file.path)}
+                        className="bg-button-bg text-button-text border-button-border m-0.5 cursor-pointer rounded-lg p-1 text-xs hover:scale-105"
+                      >
+                        添加传送门
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <p>提示：点击文件可以快速切换</p>
     </div>
   );
 }
