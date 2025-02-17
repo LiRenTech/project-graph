@@ -38,6 +38,7 @@ function myOpen(url: string) {
     .then((_) => {})
     .catch((e) => {
       // 依然会导致程序崩溃，具体原因未知
+      // 2025年2月17日，好像不会再崩溃了，只是可能会弹窗说找不到文件
       console.error(e);
     });
 }

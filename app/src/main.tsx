@@ -43,6 +43,7 @@ import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 import { Tourials } from "./core/service/Tourials";
 import { Direction } from "./types/directions";
+import { openBrowserOrFile } from "./utils/externalOpen";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -450,6 +451,15 @@ async function registerKeyBinds() {
     })
   ).down(() => {
     Settings.set("protectingPrivacy", !Renderer.protectingPrivacy);
+  });
+  (
+    await KeyBinds.create("openTextNodeByContentExternal", "e", {
+      control: true,
+      alt: false,
+      shift: true,
+    })
+  ).down(() => {
+    openBrowserOrFile();
   });
 
   const bind = await KeyBinds.create("keyboardOnlyGenerateNode", "tab", {
