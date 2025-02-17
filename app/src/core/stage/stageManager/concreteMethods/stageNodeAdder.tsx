@@ -14,6 +14,7 @@ import { StageManagerUtils } from "./StageManagerUtils";
 import { Direction } from "../../../../types/directions";
 import { GraphMethods } from "../basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
+import { Color } from "../../../dataStruct/Color";
 
 /**
  * 包含增加节点的方法
@@ -39,6 +40,7 @@ export namespace StageNodeAdder {
       location: [clickWorldLocation.x, clickWorldLocation.y],
       size: [100, 100],
     });
+    node.color = await getAutoColor();
     // 将node本身向左上角移动，使其居中
     node.moveTo(node.rectangle.location.subtract(node.rectangle.size.divide(2)));
     StageManager.addTextNode(node);
@@ -121,6 +123,16 @@ export namespace StageNodeAdder {
     let template = await Settings.get("autoNamerTemplate");
     template = StageManagerUtils.replaceAutoNameTemplate(template, StageManager.getTextNodes()[0]);
     return template;
+  }
+
+  async function getAutoColor(): Promise<Color> {
+    const isEnable = await Settings.get("autoFillNodeColorEnable");
+    if (isEnable) {
+      const colorData = await Settings.get("autoFillNodeColor");
+      return new Color(...colorData);
+    } else {
+      return Color.Transparent;
+    }
   }
 
   export function addConnectPoint(clickWorldLocation: Vector, addToSections: Section[]): string {
