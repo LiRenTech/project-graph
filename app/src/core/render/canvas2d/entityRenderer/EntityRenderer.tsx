@@ -203,8 +203,6 @@ export namespace EntityRenderer {
           Renderer.transformWorld2View(node.rectangle.center),
           Renderer.FONT_SIZE * Camera.currentScale,
           node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
-          Color.Red,
-          30 * Camera.currentScale,
         );
       } else if (AutoComputeUtils.isNameIsLogicNode(node.text)) {
         // 检查下是不是逻辑节点
@@ -220,8 +218,6 @@ export namespace EntityRenderer {
               node.color.a === 1
                 ? colorInvert(node.color)
                 : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
-              Color.Green,
-              10 * Camera.currentScale,
             );
           }
         }
@@ -232,10 +228,6 @@ export namespace EntityRenderer {
             Renderer.transformWorld2View(node.rectangle.center),
             Renderer.FONT_SIZE * Camera.currentScale,
             node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
-            Color.Red,
-            10 * Camera.currentScale,
-            Random.randomInt(-5, 5) * Camera.currentScale,
-            Random.randomInt(-15, 15) * Camera.currentScale,
           );
           ShapeRenderer.renderRect(
             new Rectangle(

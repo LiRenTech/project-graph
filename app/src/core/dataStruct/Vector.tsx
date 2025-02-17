@@ -278,4 +278,8 @@ export class Vector {
   static fromTouch(touch: Touch): Vector {
     return new Vector(touch.clientX, touch.clientY);
   }
+
+  toInteger(): Vector {
+    return new Vector(Math.round(this.x), Math.round(this.y));
+  }
 }

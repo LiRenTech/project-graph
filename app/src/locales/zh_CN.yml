@@ -201,6 +201,12 @@ settings:
     description: |
       这个数值决定了您最多ctrl+z撤销的次数
       如果您的电脑内存非常少，可以适当调小这个值
+  textIntegerLocationAndSizeRender:
+    title: 文本整数位置和大小渲染
+    description: |
+      开启后，一切文字的大小和位置都是整数，以节省渲染性能。
+      但会出现文字抖动现象。建议配合视角缩放速度调整成1一起使用。
+      如果您的电脑使用体验非常卡顿，尤其是在缩放和移动的情况下，可以开启此选项。
   isEnableEntityCollision:
     title: 实体碰撞检测
     description: |
@@ -263,6 +269,7 @@ settings:
       当逼近的足够近时（小于0.0001），会自动停止缩放
       值为1代表缩放会立刻完成，没有中间的过渡效果
       值为0代表缩放永远都不会完成，可模拟锁死效果
+      注意：若您在缩放画面时感到卡顿，请调成1
   cameraKeyboardScaleRate:
     title: 视角缩放键盘速率
     description: |

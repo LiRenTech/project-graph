@@ -196,6 +196,12 @@ settings:
     description: |
       這個數值決定了您最多ctrl+z撤銷的次數
       如果您的電腦記憶體非常少，可以適當調小這個值
+  textIntegerLocationAndSizeRender:
+    title: 文本整数位置和大小渲染
+    description: |
+      开启后，一切文字的大小和位置都是整数，以节省渲染性能。
+      但会出现文字抖动现象。建议配合视角缩放速度调整成1一起使用。
+      如果您的电脑使用体验非常卡顿，尤其是在缩放和移动的情况下，可以开启此选项。
   isEnableEntityCollision:
     title: 實體碰撞檢測
     description: |

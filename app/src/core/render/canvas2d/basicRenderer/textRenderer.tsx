@@ -22,9 +22,17 @@ export namespace TextRenderer {
     text = Renderer.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     Canvas.ctx.textBaseline = "middle";
     Canvas.ctx.textAlign = "left";
-    Canvas.ctx.font = `${fontSize}px MiSans`;
+    if (Renderer.textIntegerLocationAndSizeRender) {
+      Canvas.ctx.font = `${Math.round(fontSize)}px MiSans`;
+    } else {
+      Canvas.ctx.font = `${fontSize}px MiSans`;
+    }
     Canvas.ctx.fillStyle = color.toString();
-    Canvas.ctx.fillText(text, location.x, location.y + fontSize / 2);
+    if (Renderer.textIntegerLocationAndSizeRender) {
+      Canvas.ctx.fillText(text, Math.floor(location.x), Math.floor(location.y + fontSize / 2));
+    } else {
+      Canvas.ctx.fillText(text, location.x, location.y + fontSize / 2);
+    }
   }
 
   /**
@@ -34,34 +42,27 @@ export namespace TextRenderer {
    * @param size
    * @param color
    * @param shadowColor
-   * @param shadowBlurSize
-   * @param shadowOffsetX
-   * @param shadowOffsetY
    */
   export function renderTextFromCenter(
     text: string,
     centerLocation: Vector,
     size: number,
     color: Color = Color.White,
-    shadowColor: Color = Color.Transparent,
-    shadowBlurSize: number = 0,
-    shadowOffsetX: number = 0,
-    shadowOffsetY: number = 0,
   ): void {
     text = Renderer.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     Canvas.ctx.textBaseline = "middle";
     Canvas.ctx.textAlign = "center";
-    Canvas.ctx.font = `${size}px MiSans`;
-    // 文字阴影
-    if (!shadowColor.equals(Color.Transparent)) {
-      Canvas.ctx.shadowColor = shadowColor.toString();
-      Canvas.ctx.shadowBlur = shadowBlurSize; // 阴影模糊程度
-      Canvas.ctx.shadowOffsetX = shadowOffsetX; // 水平偏移
-      Canvas.ctx.shadowOffsetY = shadowOffsetY; // 垂直偏移
+    if (Renderer.textIntegerLocationAndSizeRender) {
+      Canvas.ctx.font = `${Math.round(size)}px MiSans`;
+    } else {
+      Canvas.ctx.font = `${size}px MiSans`;
     }
-
     Canvas.ctx.fillStyle = color.toString();
-    Canvas.ctx.fillText(text, centerLocation.x, centerLocation.y);
+    if (Renderer.textIntegerLocationAndSizeRender) {
+      Canvas.ctx.fillText(text, Math.floor(centerLocation.x), Math.floor(centerLocation.y));
+    } else {
+      Canvas.ctx.fillText(text, centerLocation.x, centerLocation.y);
+    }
     // 重置阴影
     Canvas.ctx.shadowBlur = 0; // 阴影模糊程度
     Canvas.ctx.shadowOffsetX = 0; // 水平偏移

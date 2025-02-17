@@ -41,6 +41,7 @@ export namespace Settings {
     historySize: number; // 暂无
     effectsPerferences: Record<string, boolean>;
     isEnableEntityCollision: boolean;
+    textIntegerLocationAndSizeRender: boolean;
     // 自动化相关
     autoNamerTemplate: string;
     autoNamerSectionTemplate: string;
@@ -116,6 +117,7 @@ export namespace Settings {
     historySize: 20,
     effectsPerferences: {},
     isEnableEntityCollision: false,
+    textIntegerLocationAndSizeRender: false,
     // 自动相关
     autoNamerTemplate: "...",
     autoNamerSectionTemplate: "Section_{{i}}",
