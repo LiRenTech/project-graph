@@ -1,5 +1,5 @@
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
-import { open } from "@tauri-apps/plugin-shell";
+
 import {
   AlignCenterHorizontal,
   AlignCenterVertical,
@@ -58,6 +58,7 @@ import ColorManagerPanel from "./_color_manager_panel";
 import { Settings } from "../core/service/Settings";
 import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../core/stage/stageObject/abstract/ConnectableEntity";
+import { openBrowserOrFile } from "../utils/externalOpen";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -535,12 +536,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             description="将选中的节点的内容作为网页链接或本地文件路径打开"
             icon={<Globe />}
             handleFunction={async () => {
-              // 先保存一下
-              // if (!StageSaveManager.isSaved()) {
-              //   await StageSaveManager.saveHandleWithoutCurrentPath(
-              //     StageDumper.dump(),
-              //   );
-              // }
               // 打开文件或网页
               openBrowserOrFile();
             }}
@@ -693,44 +688,6 @@ const onSaveSelectedNew = async () => {
     Stage.effectMachine.addEffect(new TextRiseEffect("保存失败" + e));
   }
 };
-
-async function openBrowserOrFile() {
-  for (const node of StageManager.getTextNodes()) {
-    if (node.isSelected) {
-      let nodeText = node.text;
-      if (node.text.startsWith('"') && node.text.endsWith('"')) {
-        // 去除前后的引号
-        nodeText = nodeText.slice(1, -1);
-      }
-      myOpen(nodeText);
-      // 2025年1月4日——有自动备份功能了，好像不需要再加验证了
-
-      // if (PathString.isValidURL(nodeText)) {
-      //   // 是网址
-      //   myOpen(nodeText);
-      // } else {
-      //   const isExists = await exists(nodeText);
-      //   if (isExists) {
-      //     // 是文件
-      //     myOpen(nodeText);
-      //   } else {
-      //     // 不是网址也不是文件，不做处理
-      //     Stage.effectMachine.addEffect(new TextRiseEffect("非法文件路径: " + nodeText));
-      //   }
-      // }
-    }
-  }
-}
-
-function myOpen(url: string) {
-  open(url)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    .then((_) => {})
-    .catch((e) => {
-      // 依然会导致程序崩溃，具体原因未知
-      console.error(e);
-    });
-}
 
 function deleteSelectedObjects() {
   StageManager.deleteEntities(StageManager.getTextNodes().filter((node) => node.isSelected));
