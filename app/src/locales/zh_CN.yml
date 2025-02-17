@@ -301,6 +301,11 @@ settings:
       开启后，W S A D按键的移动视角方向会相反
       原本的移动逻辑是移动悬浮在画面上的摄像机，但如果看成是移动画布，这样就反了
       于是就有了这个选项
+  cameraResetViewPaddingRate:
+    title: 视野重置时，边缘留白系数
+    description: |
+      值为1 表示边缘完全不留白。
+      值为2 表示留白内容恰好为自身内容的一倍
   allowAddCycleEdge:
     title: 允许在节点之间添加自环
     description: |
