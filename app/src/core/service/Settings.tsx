@@ -43,6 +43,7 @@ export namespace Settings {
     isEnableEntityCollision: boolean;
     textIntegerLocationAndSizeRender: boolean;
     isPauseRenderWhenManipulateOvertime: boolean;
+    renderOverTimeWhenNoManipulateTime: number;
     // 自动化相关
     autoNamerTemplate: string;
     autoNamerSectionTemplate: string;
@@ -120,6 +121,7 @@ export namespace Settings {
     isEnableEntityCollision: false,
     textIntegerLocationAndSizeRender: false,
     isPauseRenderWhenManipulateOvertime: true,
+    renderOverTimeWhenNoManipulateTime: 5,
     // 自动相关
     autoNamerTemplate: "...",
     autoNamerSectionTemplate: "Section_{{i}}",

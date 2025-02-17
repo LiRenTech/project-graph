@@ -211,6 +211,11 @@ settings:
     title: 超过一定时间未操作画布，暂停渲染
     description: |
       开启后，超过若干秒未做出画布操作，画布渲染会暂停，以节省CPU/GPU资源。
+  renderOverTimeWhenNoManipulateTime:
+    title: 超时停止渲染画布的时间（秒）
+    description: |
+      超过一定时间未做出画布操作，画布渲染会停止，以节省CPU/GPU资源。
+      必须在上述“超时暂停渲染”选项开启后才会生效。
   isEnableEntityCollision:
     title: 实体碰撞检测
     description: |

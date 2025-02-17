@@ -9,6 +9,14 @@ export default function Performance() {
       <SettingField icon={<ScanEye />} settingKey="scaleExponent" type="slider" min={0} max={1} step={0.1} />
       <SettingField icon={<Type />} settingKey="textIntegerLocationAndSizeRender" type="switch" />
       <SettingField icon={<Hourglass />} settingKey="isPauseRenderWhenManipulateOvertime" type="switch" />
+      <SettingField
+        icon={<Hourglass />}
+        settingKey="renderOverTimeWhenNoManipulateTime"
+        type="slider"
+        min={0.1}
+        max={10}
+        step={0.1}
+      />
     </>
   );
 }

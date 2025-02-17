@@ -118,7 +118,7 @@ export namespace Controller {
    * 进而决定不刷新屏幕
    */
   export function isManipulateOverTime() {
-    return performance.now() - lastManipulateTime > 5000;
+    return performance.now() - lastManipulateTime > Renderer.renderOverTimeWhenNoManipulateTime * 1000;
   }
 
   /**
