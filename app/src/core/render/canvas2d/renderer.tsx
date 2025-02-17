@@ -108,6 +108,7 @@ export namespace Renderer {
   export let enableTagTextNodesBigDisplay = false;
   let isRenderCenterPointer = true;
   export let textIntegerLocationAndSizeRender = false;
+  export let isPauseRenderWhenManipulateOvertime = true;
 
   // 确保这个函数在软件打开的那一次调用
   export function init() {
@@ -139,6 +140,7 @@ export namespace Renderer {
     Settings.watch("isRenderCenterPointer", (value) => (isRenderCenterPointer = value));
     Settings.watch("enableTagTextNodesBigDisplay", (value) => (enableTagTextNodesBigDisplay = value));
     Settings.watch("textIntegerLocationAndSizeRender", (value) => (textIntegerLocationAndSizeRender = value));
+    Settings.watch("isPauseRenderWhenManipulateOvertime", (value) => (isPauseRenderWhenManipulateOvertime = value));
   }
 
   /**

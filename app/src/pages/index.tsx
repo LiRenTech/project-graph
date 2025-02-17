@@ -27,7 +27,6 @@ export default function Home() {
   // const [nodeDetailsPanel, setNodeDetailsPanel] = React.useState("vditor");
   const [nodeDetailsPanel] = Settings.use("nodeDetailsPanel");
   const [isProtectPrivacy, setIsProtectPrivacy] = React.useState(false);
-  const [isPauseRenderWhenManipulateOvertime, setIsPauseRenderWhenManipulateOvertime] = React.useState(false);
 
   const [isWindowCollapsing] = useAtom(isWindowCollapsingAtom);
 
@@ -77,9 +76,6 @@ export default function Home() {
     Settings.watch("windowBackgroundAlpha", (value) => {
       setBgAlpha(value);
     });
-    Settings.watch("isPauseRenderWhenManipulateOvertime", (value) => {
-      setIsPauseRenderWhenManipulateOvertime(value);
-    });
 
     // 开启定时器
     let lastTime = performance.now();
@@ -96,7 +92,7 @@ export default function Home() {
       Renderer.deltaTime = deltaTime;
 
       // 决定是否渲染画面
-      if (isPauseRenderWhenManipulateOvertime) {
+      if (Renderer.isPauseRenderWhenManipulateOvertime) {
         if (!Controller.isManipulateOverTime()) {
           Renderer.frameTick();
         }
