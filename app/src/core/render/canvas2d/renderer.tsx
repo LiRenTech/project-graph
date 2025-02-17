@@ -297,14 +297,6 @@ export namespace Renderer {
     }
   }
 
-  // function renderViewRectangle(viewRectangle: Rectangle) {
-  //   ShapeRenderer.renderRect(
-  //     viewRectangle.transformWorld2View(),
-  //     Color.Transparent,
-  //     StageStyleManager.currentStyle.SelectRectangleBorderColor,
-  //     50,
-  //   );
-  // }
   function renderPrivacyBoard(viewRectangle: Rectangle) {
     // 画隐私保护边
     if (protectingPrivacy) {
@@ -697,19 +689,6 @@ export namespace Renderer {
     }
   }
 
-  // /**
-  //  * 获取最终要渲染的文字的大小，返回的是视野坐标系下的大小
-  //  * @param text
-  //  * @returns
-  //  */
-  // private getTextRectSize(text: string): Vector {
-  //   const metrics = Canvas.ctx.measureText(text);
-  //   const textWidth = metrics.width;
-  //   const textHeight =
-  //     metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
-  //   return new Vector(textWidth, textHeight);
-  // }
-
   /** 渲染所有特效 */
   function renderEffects() {
     Stage.effectMachine.renderTick();
@@ -774,7 +753,7 @@ export namespace Renderer {
       `isEnableEntityCollision: ${StageManager.isEnableEntityCollision}`,
     ];
     for (const [k, v] of Object.entries(timings)) {
-      detailsData.push(`time:${k}: ${v.toFixed(2)}`);
+      detailsData.push(`render time:${k}: ${v.toFixed(2)}`);
     }
     for (const line of detailsData) {
       TextRenderer.renderText(

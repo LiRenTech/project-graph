@@ -100,10 +100,6 @@ export namespace SectionRenderer {
         section.color.a === 1
           ? colorInvert(section.color)
           : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
-        StageStyleManager.currentStyle.BackgroundColor,
-        100 * Camera.currentScale,
-        20 * Camera.currentScale,
-        20 * Camera.currentScale,
       );
     }
   }

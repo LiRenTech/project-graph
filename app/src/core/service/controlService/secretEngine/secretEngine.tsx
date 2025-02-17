@@ -1,5 +1,6 @@
 import { createFolder } from "../../../../utils/fs";
 import { Queue } from "../../../dataStruct/Queue";
+import { Vector } from "../../../dataStruct/Vector";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
@@ -51,6 +52,14 @@ export class SecretEngine {
     },
     "c r e a t e f o l d e r w i n": () => {
       createFolder("D:\\111\\111");
+    },
+    "r o l l i n g 1": () => {
+      let tick = 0;
+      setInterval(() => {
+        Camera.currentScale = Math.sin(tick) + 1;
+        Camera.location = Vector.getZero();
+        tick++;
+      });
     },
   };
 
