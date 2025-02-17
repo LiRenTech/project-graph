@@ -18,4 +18,13 @@ export const isRecentFilePanelOpenAtom = atom(false);
  */
 export const isExportTreeTextPanelOpenAtom = atom(false);
 
+/**
+ * 当前窗口是否折叠
+ */
 export const isWindowCollapsingAtom = atom(false);
+
+/**
+ * 是否进入演示模式
+ * （老师专用）
+ */
+export const isClassroomModeAtom = atom(false);

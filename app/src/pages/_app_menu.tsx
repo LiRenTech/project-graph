@@ -16,7 +16,9 @@ import {
   FolderOpen,
   Fullscreen,
   Info,
+  MonitorX,
   MoreHorizontal,
+  Presentation,
   // PartyPopper,
   RefreshCcw,
   Save,
@@ -33,7 +35,7 @@ import { useNavigate } from "react-router-dom";
 import { Camera } from "../core/stage/Camera";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageManager } from "../core/stage/stageManager/StageManager";
-import { fileAtom, isExportTreeTextPanelOpenAtom, isRecentFilePanelOpenAtom } from "../state";
+import { fileAtom, isClassroomModeAtom, isExportTreeTextPanelOpenAtom, isRecentFilePanelOpenAtom } from "../state";
 import { cn } from "../utils/cn";
 import { getCurrentWindow, isDesktop, isWeb } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
@@ -55,6 +57,7 @@ import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryMana
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
   const [file, setFile] = useAtom(fileAtom);
+  const [isClassroomMode, setIsClassroomMode] = useAtom(isClassroomModeAtom);
   const { t } = useTranslation("appMenu");
   const [, setRecentFilePanelOpen] = useAtom(isRecentFilePanelOpenAtom);
   const [, setExportTreeTextPanelOpen] = useAtom(isExportTreeTextPanelOpenAtom);
@@ -518,6 +521,14 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           }}
         >
           help
+        </Col>
+        <Col
+          icon={isClassroomMode ? <MonitorX /> : <Presentation />}
+          onClick={() => {
+            setIsClassroomMode(!isClassroomMode);
+          }}
+        >
+          {isClassroomMode ? "退出演示" : "演示模式"}
         </Col>
       </Row>
       {!isWeb && (

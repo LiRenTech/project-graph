@@ -23,7 +23,7 @@ import { StageSaveManager } from "../core/service/dataFileService/StageSaveManag
 import { Settings } from "../core/service/Settings";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
-import { fileAtom, isWindowCollapsingAtom } from "../state";
+import { fileAtom, isClassroomModeAtom, isWindowCollapsingAtom } from "../state";
 import { cn } from "../utils/cn";
 import { PathString } from "../utils/pathString";
 import { appScale, getCurrentWindow, isDesktop, isMac, isMobile, isWeb } from "../utils/platform";
@@ -48,6 +48,7 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [file, setFile] = useAtom(fileAtom);
+  const [isClassroomMode] = useAtom(isClassroomModeAtom);
   const filename = React.useMemo(() => PathString.absolute2file(file), [file]);
   const [useNativeTitleBar, setUseNativeTitleBar] = React.useState(false);
   const [isWindowCollapsing, setIsWindowCollapsing] = useAtom(isWindowCollapsingAtom);
@@ -249,6 +250,7 @@ export default function App() {
         {/* 左上角菜单按钮 */}
         <IconButton
           tooltip="菜单"
+          className={cn(isClassroomMode && "opacity-0")}
           onClick={(e) => {
             if (location.pathname !== "/") {
               if (location.pathname.startsWith("/welcome")) {
@@ -277,21 +279,25 @@ export default function App() {
         >
           {location.pathname === "/" ? isMenuOpen ? <RectangleEllipsis /> : <Menu /> : <ChevronLeft />}
         </IconButton>
+
         <IconButton
           onClick={(e) => {
             e.stopPropagation();
             setIsTagPanelOpen(!isTagPanelOpen);
           }}
           tooltip="标签节点"
+          className={cn(isClassroomMode && "opacity-0")}
         >
           <Tag className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")} />
         </IconButton>
+
         {/* 逻辑节点按钮 */}
         <IconButton
           onClick={(e) => {
             e.stopPropagation();
             setIsLogicNodePanelOpen(!isLogicNodePanelOpen);
           }}
+          className={cn(isClassroomMode && "opacity-0")}
           tooltip="逻辑节点"
         >
           <Cpu className={cn("cursor-pointer", isLogicNodePanelOpen ? "rotate-45" : "")} />
@@ -307,6 +313,7 @@ export default function App() {
               className={cn("hover:cursor-move active:scale-100 active:cursor-grabbing", {
                 "text-yellow-500": isSaved,
                 "flex-1": isDesktop,
+                "opacity-0": isClassroomMode,
               })}
               tooltip="拖动窗口"
             >
@@ -319,6 +326,7 @@ export default function App() {
                 className={cn(
                   isSaved ? "text-icon-button-text" : "text-yellow-500",
                   "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+                  isClassroomMode && "opacity-0",
                 )}
               >
                 {filename + (isSaved ? "" : t("unsaved"))}
@@ -332,6 +340,7 @@ export default function App() {
             e.stopPropagation();
             setIsStartFilePanelOpen(!isStartFilePanelOpen);
           }}
+          className={cn(isClassroomMode && "opacity-0")}
           tooltip="设置启动时打开的文件"
           disabled={isMobile}
         >
@@ -339,7 +348,7 @@ export default function App() {
         </IconButton>
         {isDesktop && (
           <IconButton
-            className={cn(isWindowCollapsing && "animate-bounce")}
+            className={cn(isWindowCollapsing && "animate-bounce", isClassroomMode && "opacity-0")}
             onClick={async (e) => {
               e.stopPropagation();
               // const size = await getCurrentWindow().outerSize();
@@ -363,7 +372,9 @@ export default function App() {
 
         {/* 右上角窗口控制按钮 */}
         {isDesktop && !useNativeTitleBar && !isMac && !isWeb && (
-          <Button className="right-4 top-4 flex items-center gap-1 active:scale-100">
+          <Button
+            className={cn("right-4 top-4 flex items-center gap-1 active:scale-100", isClassroomMode && "opacity-0")}
+          >
             <ChevronDown
               onClick={() => getCurrentWindow().minimize()}
               className="transition hover:opacity-80 active:scale-75"

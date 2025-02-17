@@ -7,7 +7,7 @@ import { Settings } from "../core/service/Settings";
 import { Canvas } from "../core/stage/Canvas";
 import { Stage } from "../core/stage/Stage";
 import { useAtom } from "jotai";
-import { isWindowCollapsingAtom } from "../state";
+import { isClassroomModeAtom, isWindowCollapsingAtom } from "../state";
 import { CursorNameEnum } from "../types/cursors";
 import DetailsEditSidePanel from "./_details_edit_side_panel";
 import DetailsEditSmallPanel from "./_details_edit_small_panel";
@@ -24,6 +24,7 @@ export default function Home() {
   const [isProtectPrivacy, setIsProtectPrivacy] = React.useState(false);
 
   const [isWindowCollapsing] = useAtom(isWindowCollapsingAtom);
+  const [isClassroomMode] = useAtom(isClassroomModeAtom);
 
   useEffect(() => {
     const handleResize = () => {
@@ -119,11 +120,11 @@ export default function Home() {
 
   return (
     <>
-      {!isWindowCollapsing && <Toolbar />}
+      {!isWindowCollapsing && !isClassroomMode && <Toolbar />}
       <SearchingNodePanel />
       {/* 这个打算被取代 */}
       {nodeDetailsPanel === "small" ? <DetailsEditSmallPanel /> : <DetailsEditSidePanel />}
-      {!isWindowCollapsing && <HintText />}
+      {!isWindowCollapsing && !isClassroomMode && <HintText />}
       {/* TODO: 下面这个写法有点奇怪 rgba值太长了 */}
       <div
         style={{
