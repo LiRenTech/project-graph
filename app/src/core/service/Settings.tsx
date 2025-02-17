@@ -37,6 +37,7 @@ export namespace Settings {
     limitCameraInCycleSpace: boolean;
     cameraCycleSpaceSizeX: number;
     cameraCycleSpaceSizeY: number;
+    cameraResetViewPaddingRate: number;
     // 性能相关
     historySize: number; // 暂无
     effectsPerferences: Record<string, boolean>;
@@ -118,6 +119,7 @@ export namespace Settings {
     limitCameraInCycleSpace: false,
     cameraCycleSpaceSizeX: 1000,
     cameraCycleSpaceSizeY: 1000,
+    cameraResetViewPaddingRate: 1.5,
     // 性能相关
     historySize: 20,
     effectsPerferences: {},
