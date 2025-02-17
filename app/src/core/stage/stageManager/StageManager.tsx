@@ -42,6 +42,7 @@ import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
 import { Direction } from "../../../types/directions";
 import { PathString } from "../../../utils/pathString";
+import { EntityShrinkEffect } from "../../service/feedbackService/effectEngine/concrete/EntityShrinkEffect";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -781,7 +782,12 @@ export namespace StageManager {
    * 外部的交互层的delete键可以直接调用这个函数
    */
   export function deleteSelectedStageObjects() {
-    StageManager.deleteEntities(StageManager.getEntities().filter((node) => node.isSelected));
+    const selectedEntities = StageManager.getEntities().filter((node) => node.isSelected);
+    for (const entity of selectedEntities) {
+      Stage.effectMachine.addEffect(EntityShrinkEffect.fromEntity(entity));
+    }
+    StageManager.deleteEntities(selectedEntities);
+
     for (const edge of StageManager.getLineEdges()) {
       if (edge.isSelected) {
         StageManager.deleteEdge(edge);
