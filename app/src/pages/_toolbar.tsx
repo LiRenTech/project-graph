@@ -20,23 +20,23 @@ import {
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Box from "../components/Box";
+import { Dialog } from "../components/dialog";
+import IconButton from "../components/IconButton";
+import { Popup } from "../components/popup";
 import { Color } from "../core/dataStruct/Color";
 import { StageExportSvg } from "../core/service/dataGenerateService/stageExportEngine/StageExportSvg";
+import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { TextRiseEffect } from "../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
-import { Dialog } from "../components/dialog";
-import { Popup } from "../components/popup";
-import { writeTextFile } from "../utils/fs";
-import IconButton from "../components/IconButton";
-import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { openBrowserOrFile } from "../utils/externalOpen";
-import AlignNodePanel from "./_align_panel";
-import ColorPanel from "./_color_panel";
-import GenerateNodePanel from "./_generate_node_panel";
+import { writeTextFile } from "../utils/fs";
+import AlignNodePanel from "./_popup_panel/_align_panel";
+import ColorPanel from "./_popup_panel/_color_panel";
+import GenerateNodePanel from "./_popup_panel/_generate_node_panel";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型

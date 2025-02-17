@@ -1,19 +1,19 @@
 // import { readTextFile } from "@tauri-apps/plugin-fs";
 import { useAtom } from "jotai";
 import React, { useEffect } from "react";
-import { fileAtom, isRecentFilePanelOpenAtom } from "../state";
-import { cn } from "../utils/cn";
+import { fileAtom, isRecentFilePanelOpenAtom } from "../../state";
+import { cn } from "../../utils/cn";
 
 // import { Zap } from "lucide-react";
 // import IconButton from "../components/ui/IconButton";
-import { Dialog } from "../components/dialog";
-import { RecentFileManager } from "../core/service/dataFileService/RecentFileManager";
-import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
-import { StartFilesManager } from "../core/service/dataFileService/StartFilesManager";
-import { Stage } from "../core/stage/Stage";
-import { PathString } from "../utils/pathString";
-import { isDesktop } from "../utils/platform";
-import { StageManager } from "../core/stage/stageManager/StageManager";
+import { Dialog } from "../../components/dialog";
+import { RecentFileManager } from "../../core/service/dataFileService/RecentFileManager";
+import { StageSaveManager } from "../../core/service/dataFileService/StageSaveManager";
+import { StartFilesManager } from "../../core/service/dataFileService/StartFilesManager";
+import { Stage } from "../../core/stage/Stage";
+import { StageManager } from "../../core/stage/stageManager/StageManager";
+import { PathString } from "../../utils/pathString";
+import { isDesktop } from "../../utils/platform";
 
 export default function RecentFilesPanel() {
   const [recentFiles, setRecentFiles] = React.useState<RecentFileManager.RecentFile[]>([]);

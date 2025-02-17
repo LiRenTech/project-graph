@@ -1,12 +1,12 @@
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import Button from "../components/Button";
-import { StageManager } from "../core/stage/stageManager/StageManager";
-import { TextNode } from "../core/stage/stageObject/entity/TextNode";
-import { isExportTreeTextPanelOpenAtom } from "../state";
-import { cn } from "../utils/cn";
-import { Stage } from "../core/stage/Stage";
-import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
+import Button from "../../components/Button";
+import { Stage } from "../../core/stage/Stage";
+import { GraphMethods } from "../../core/stage/stageManager/basicMethods/GraphMethods";
+import { StageManager } from "../../core/stage/stageManager/StageManager";
+import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
+import { isExportTreeTextPanelOpenAtom } from "../../state";
+import { cn } from "../../utils/cn";
 
 /**
  * 导出节点纯文本相关的面板

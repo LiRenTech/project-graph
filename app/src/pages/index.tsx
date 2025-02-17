@@ -1,3 +1,4 @@
+import { useAtom } from "jotai";
 import React, { useEffect, useRef } from "react";
 import { Dialog } from "../components/dialog";
 import { Renderer } from "../core/render/canvas2d/renderer";
@@ -6,13 +7,12 @@ import { StageStyleManager } from "../core/service/feedbackService/stageStyle/St
 import { Settings } from "../core/service/Settings";
 import { Canvas } from "../core/stage/Canvas";
 import { Stage } from "../core/stage/Stage";
-import { useAtom } from "jotai";
 import { isClassroomModeAtom, isWindowCollapsingAtom } from "../state";
 import { CursorNameEnum } from "../types/cursors";
 import DetailsEditSidePanel from "./_details_edit_side_panel";
 import DetailsEditSmallPanel from "./_details_edit_small_panel";
 import HintText from "./_hint_text";
-import SearchingNodePanel from "./_searching_node_panel";
+import SearchingNodePanel from "./_popup_panel/_searching_node_panel";
 import Toolbar from "./_toolbar";
 
 export default function Home() {

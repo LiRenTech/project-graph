@@ -1,9 +1,9 @@
 import { Angry, MousePointerClick, RefreshCcw, Smile, Tags, Telescope } from "lucide-react";
 import React from "react";
-import { Dialog } from "../components/dialog";
-import IconButton from "../components/IconButton";
-import { StageManager } from "../core/stage/stageManager/StageManager";
-import { cn } from "../utils/cn";
+import { Dialog } from "../../components/dialog";
+import IconButton from "../../components/IconButton";
+import { StageManager } from "../../core/stage/stageManager/StageManager";
+import { cn } from "../../utils/cn";
 
 /**
  * 标签相关面板

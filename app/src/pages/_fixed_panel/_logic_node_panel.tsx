@@ -1,14 +1,14 @@
 import { v4 } from "uuid";
-import Button from "../components/Button";
+import Button from "../../components/Button";
 import {
   LogicNodeNameEnum,
   LogicNodeNameToArgsTipsMap,
   LogicNodeNameToRenderNameMap,
-} from "../core/service/dataGenerateService/autoComputeEngine/logicNodeNameEnum";
-import { Camera } from "../core/stage/Camera";
-import { StageManager } from "../core/stage/stageManager/StageManager";
-import { TextNode } from "../core/stage/stageObject/entity/TextNode";
-import { cn } from "../utils/cn";
+} from "../../core/service/dataGenerateService/autoComputeEngine/logicNodeNameEnum";
+import { Camera } from "../../core/stage/Camera";
+import { StageManager } from "../../core/stage/stageManager/StageManager";
+import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
+import { cn } from "../../utils/cn";
 
 /**
  *

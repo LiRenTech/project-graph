@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { Color } from "../core/dataStruct/Color";
-import { ColorManager } from "../core/service/feedbackService/ColorManager";
-import { Settings } from "../core/service/Settings";
-import { StageManager } from "../core/stage/stageManager/StageManager";
 import { Blend, ToggleLeft, ToggleRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import Button from "../../components/Button";
+import { Popup } from "../../components/popup";
+import { Color } from "../../core/dataStruct/Color";
+import { ColorManager } from "../../core/service/feedbackService/ColorManager";
+import { Settings } from "../../core/service/Settings";
+import { StageManager } from "../../core/stage/stageManager/StageManager";
+import { cn } from "../../utils/cn";
 import ColorManagerPanel from "./_color_manager_panel";
-import Button from "../components/Button";
-import { Popup } from "../components/popup";
-import { cn } from "../utils/cn";
 /**
  * 调色盘面板
  * @param param0

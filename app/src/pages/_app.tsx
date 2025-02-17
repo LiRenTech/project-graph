@@ -28,12 +28,12 @@ import { cn } from "../utils/cn";
 import { PathString } from "../utils/pathString";
 import { appScale, getCurrentWindow, isDesktop, isMac, isMobile, isWeb } from "../utils/platform";
 import AppMenu from "./_app_menu";
-import ErrorHandler from "./_error_handler";
-import ExportTreeTextPanel from "./_export_text_panel";
-import LogicNodePanel from "./_logic_node_panel";
-import RecentFilesPanel from "./_recent_files_panel";
-import StartFilePanel from "./_start_file_panel";
-import TagPanel from "./_tag_panel";
+import ErrorHandler from "./_fixed_panel/_error_handler";
+import ExportTreeTextPanel from "./_fixed_panel/_export_text_panel";
+import LogicNodePanel from "./_fixed_panel/_logic_node_panel";
+import RecentFilesPanel from "./_fixed_panel/_recent_files_panel";
+import StartFilePanel from "./_fixed_panel/_start_file_panel";
+import TagPanel from "./_fixed_panel/_tag_panel";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Input from "../components/Input";
-import Button from "../components/Button";
-import { StageManager } from "../core/stage/stageManager/StageManager";
+import Button from "../../components/Button";
+import Input from "../../components/Input";
+import { StageManager } from "../../core/stage/stageManager/StageManager";
 
 /**
  * 通过文本来生成节点的面板

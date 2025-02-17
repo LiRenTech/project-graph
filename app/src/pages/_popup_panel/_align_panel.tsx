@@ -1,9 +1,3 @@
-import { useEffect, useState } from "react";
-import { Settings } from "../core/service/Settings";
-import { StageManager } from "../core/stage/stageManager/StageManager";
-import { Dialog } from "../components/dialog";
-import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
-import { ConnectableEntity } from "../core/stage/stageObject/abstract/ConnectableEntity";
 import {
   AlignCenterHorizontal,
   AlignCenterVertical,
@@ -18,8 +12,14 @@ import {
   Magnet,
   Network,
 } from "lucide-react";
-import { ToolbarItem } from "./_toolbar";
-import { cn } from "../utils/cn";
+import { useEffect, useState } from "react";
+import { Dialog } from "../../components/dialog";
+import { Settings } from "../../core/service/Settings";
+import { GraphMethods } from "../../core/stage/stageManager/basicMethods/GraphMethods";
+import { StageManager } from "../../core/stage/stageManager/StageManager";
+import { ConnectableEntity } from "../../core/stage/stageObject/abstract/ConnectableEntity";
+import { cn } from "../../utils/cn";
+import { ToolbarItem } from "../_toolbar";
 export default function AlignNodePanel() {
   const [isEnableDragAutoAlign, setEnableDragAutoAlign] = useState(false);
 
