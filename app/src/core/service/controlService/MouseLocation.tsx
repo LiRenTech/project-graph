@@ -1,4 +1,5 @@
 import { Vector } from "../../dataStruct/Vector";
+import { Controller } from "./controller/Controller";
 
 export namespace MouseLocation {
   export let x: number = 0;
@@ -12,6 +13,8 @@ export namespace MouseLocation {
       // 维护一个Vector对象
       vectorObject.x = x;
       vectorObject.y = y;
+
+      Controller.recordManipulate();
     });
   }
 

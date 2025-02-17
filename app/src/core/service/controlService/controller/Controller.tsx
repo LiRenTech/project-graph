@@ -104,6 +104,23 @@ export namespace Controller {
 
   export const isMouseDown: boolean[] = [false, false, false];
 
+  let lastManipulateTime = performance.now();
+
+  /**
+   * 触发了一次操作，记录时间
+   */
+  export function recordManipulate() {
+    lastManipulateTime = performance.now();
+  }
+
+  /**
+   * 检测是否已经有挺长一段时间没有操作了
+   * 进而决定不刷新屏幕
+   */
+  export function isManipulateOverTime() {
+    return performance.now() - lastManipulateTime > 5000;
+  }
+
   /**
    * 悬浮提示的边缘距离
    */
@@ -122,6 +139,7 @@ export namespace Controller {
     Canvas.element.addEventListener("touchstart", touchstart, false);
     Canvas.element.addEventListener("touchmove", touchmove, false);
     Canvas.element.addEventListener("touchend", touchend, false);
+    Canvas.element.addEventListener("wheel", mousewheel, false);
     // 所有的具体的功能逻辑封装成控制器对象
     // 当有新功能时新建控制器对象，并在这里初始化
     ControllerCamera.init();
@@ -150,11 +168,19 @@ export namespace Controller {
   function mousedown(event: MouseEvent) {
     event.preventDefault();
     handleMousedown(event.button, event.clientX, event.clientY);
+    recordManipulate();
   }
 
   function mouseup(event: MouseEvent) {
     event.preventDefault();
     handleMouseup(event.button, event.clientX, event.clientY);
+    recordManipulate();
+  }
+
+  function mousewheel(event: WheelEvent) {
+    event.preventDefault();
+    // 禁用鼠标滚轮缩放
+    recordManipulate();
   }
 
   function handleMousedown(button: number, x: number, y: number) {
@@ -208,6 +234,7 @@ export namespace Controller {
     }
     const key = event.key.toLowerCase();
     pressingKeySet.add(key);
+    recordManipulate();
   }
 
   function keyup(event: KeyboardEvent) {
@@ -215,6 +242,7 @@ export namespace Controller {
     if (pressingKeySet.has(key)) {
       pressingKeySet.delete(key);
     }
+    recordManipulate();
   }
 
   // touch相关的事件有待重构到具体的功能逻辑中
@@ -234,6 +262,7 @@ export namespace Controller {
       // 计算初始两指间距离
       touchStartDistance = touch1.distance(touch2);
     }
+    recordManipulate();
   }
 
   function touchmove(e: TouchEvent) {
@@ -262,6 +291,7 @@ export namespace Controller {
       // 移动画面
       Camera.location = Camera.location.subtract(touchDelta.multiply(1 / Camera.currentScale));
     }
+    recordManipulate();
   }
 
   function touchend(e: TouchEvent) {
@@ -276,6 +306,7 @@ export namespace Controller {
     setTimeout(() => {
       Camera.accelerateCommander = Vector.getZero();
     }, 100);
+    recordManipulate();
   }
 
   export function destroy() {
@@ -283,6 +314,7 @@ export namespace Controller {
     window.removeEventListener("keyup", keyup);
     Canvas.element.removeEventListener("mousedown", mousedown);
     Canvas.element.removeEventListener("mouseup", mouseup);
+    Canvas.element.removeEventListener("wheel", mousewheel);
     Canvas.element.removeEventListener("touchstart", touchstart);
     Canvas.element.removeEventListener("touchmove", touchmove);
     Canvas.element.removeEventListener("touchend", touchend);

@@ -42,6 +42,7 @@ export namespace Settings {
     effectsPerferences: Record<string, boolean>;
     isEnableEntityCollision: boolean;
     textIntegerLocationAndSizeRender: boolean;
+    isPauseRenderWhenManipulateOvertime: boolean;
     // 自动化相关
     autoNamerTemplate: string;
     autoNamerSectionTemplate: string;
@@ -118,6 +119,7 @@ export namespace Settings {
     effectsPerferences: {},
     isEnableEntityCollision: false,
     textIntegerLocationAndSizeRender: false,
+    isPauseRenderWhenManipulateOvertime: true,
     // 自动相关
     autoNamerTemplate: "...",
     autoNamerSectionTemplate: "Section_{{i}}",

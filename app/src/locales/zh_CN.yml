@@ -207,6 +207,10 @@ settings:
       开启后，一切文字的大小和位置都是整数，以节省渲染性能。
       但会出现文字抖动现象。建议配合视角缩放速度调整成1一起使用。
       如果您的电脑使用体验非常卡顿，尤其是在缩放和移动的情况下，可以开启此选项。
+  isPauseRenderWhenManipulateOvertime:
+    title: 超过一定时间未操作画布，暂停渲染
+    description: |
+      开启后，超过若干秒未做出画布操作，画布渲染会暂停，以节省CPU/GPU资源。
   isEnableEntityCollision:
     title: 实体碰撞检测
     description: |
