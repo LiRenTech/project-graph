@@ -92,7 +92,7 @@ export namespace SectionMethods {
     return rootSections;
   }
 
-  export function shallowerEntities(entities: Entity[]): Entity[] {
+  export function shallowerNotSectionEntities(entities: Entity[]): Entity[] {
     // shallowerSection + 所有非Section的实体
     const sections = entities.filter((entity) => entity instanceof Section);
     const nonSections = entities.filter((entity) => !(entity instanceof Section));

@@ -251,20 +251,15 @@ class ControllerRectangleSelectClass extends ControllerClass {
  */
 function selectedEntityNormalizing() {
   const entities = StageManager.getSelectedEntities();
-  const selectedSections = entities.filter((entity) => entity instanceof Section);
-  const shallowerSections = SectionMethods.shallowerSection(selectedSections);
-  for (const section of selectedSections) {
-    if (!shallowerSections.includes(section)) {
-      section.isSelected = false;
-    }
-  }
+  const shallowerSections = SectionMethods.shallowerSection(entities.filter((entity) => entity instanceof Section));
+  const shallowerEntities = SectionMethods.shallowerNotSectionEntities(entities);
   for (const entity of entities) {
     if (entity instanceof Section) {
-      continue;
-    }
-    // 如果这个东西被包含在其他的section里，则取消选择
-    for (const section of shallowerSections) {
-      if (SectionMethods.isEntityInSection(entity, section)) {
+      if (!shallowerSections.includes(entity)) {
+        entity.isSelected = false;
+      }
+    } else {
+      if (!shallowerEntities.includes(entity)) {
         entity.isSelected = false;
       }
     }

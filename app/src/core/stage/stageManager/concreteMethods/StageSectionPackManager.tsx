@@ -1,16 +1,16 @@
 // import { Section } from "../../../stageObject/entity/Section";
 // import { Entity } from "../../../stageObject/StageEntity";
 import { v4 } from "uuid";
+import { Dialog } from "../../../../components/dialog";
+import { Settings } from "../../../service/Settings";
+import { Entity } from "../../stageObject/abstract/StageEntity";
 import { Section } from "../../stageObject/entity/Section";
+import { TextNode } from "../../stageObject/entity/TextNode";
+import { GraphMethods } from "../basicMethods/GraphMethods";
 import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageManager } from "../StageManager";
-import { StageSectionInOutManager } from "./StageSectionInOutManager";
-import { GraphMethods } from "../basicMethods/GraphMethods";
-import { TextNode } from "../../stageObject/entity/TextNode";
-import { Entity } from "../../stageObject/abstract/StageEntity";
-import { Settings } from "../../../service/Settings";
 import { StageManagerUtils } from "./StageManagerUtils";
-import { Dialog } from "../../../../components/dialog";
+import { StageSectionInOutManager } from "./StageSectionInOutManager";
 
 /**
  * 管理所有东西进出StageSection的逻辑
@@ -126,7 +126,7 @@ export namespace StageSectionPackManager {
     if (addEntities.length === 0) {
       return;
     }
-    addEntities = SectionMethods.shallowerEntities(addEntities);
+    addEntities = SectionMethods.shallowerNotSectionEntities(addEntities);
     // 检测父亲section是否是等同
     const firstParents = SectionMethods.getFatherSections(addEntities[0]);
     if (addEntities.length > 1) {
