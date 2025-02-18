@@ -7,6 +7,10 @@ import { StageManager } from "../StageManager";
 import { StageSectionInOutManager } from "./StageSectionInOutManager";
 import { GraphMethods } from "../basicMethods/GraphMethods";
 import { TextNode } from "../../stageObject/entity/TextNode";
+import { Entity } from "../../stageObject/abstract/StageEntity";
+import { Settings } from "../../../service/Settings";
+import { StageManagerUtils } from "./StageManagerUtils";
+import { Dialog } from "../../../../components/dialog";
 
 /**
  * 管理所有东西进出StageSection的逻辑
@@ -115,5 +119,57 @@ export namespace StageSectionPackManager {
     // 更新section的碰撞箱
     newSection.adjustLocationAndSize();
     return newSection;
+  }
+
+  /** 将多个实体打包成一个section，并添加到舞台中 */
+  export async function packEntityToSection(addEntities: Entity[]) {
+    if (addEntities.length === 0) {
+      return;
+    }
+    addEntities = SectionMethods.shallowerEntities(addEntities);
+    // 检测父亲section是否是等同
+    const firstParents = SectionMethods.getFatherSections(addEntities[0]);
+    if (addEntities.length > 1) {
+      let isAllSameFather = true;
+
+      for (let i = 1; i < addEntities.length; i++) {
+        const secondParents = SectionMethods.getFatherSections(addEntities[i]);
+        if (firstParents.length !== secondParents.length) {
+          isAllSameFather = false;
+          break;
+        }
+        // 检查父亲数组是否相同
+        const firstParentsString = firstParents
+          .map((section) => section.uuid)
+          .sort()
+          .join();
+        const secondParentsString = secondParents
+          .map((section) => section.uuid)
+          .sort()
+          .join();
+        if (firstParentsString !== secondParentsString) {
+          isAllSameFather = false;
+          break;
+        }
+      }
+
+      if (!isAllSameFather) {
+        // 暂时不支持交叉section的创建
+        Dialog.show({
+          title: "选中的实体不在同一层级下",
+          content: "暂时不鼓励交叉section的直接打包型创建",
+        });
+        return;
+      }
+    }
+    for (const fatherSection of firstParents) {
+      StageManager.goOutSection(addEntities, fatherSection);
+    }
+    const section = Section.fromEntities(addEntities);
+    section.text = StageManagerUtils.replaceAutoNameTemplate(await Settings.get("autoNamerSectionTemplate"), section);
+    StageManager.addSection(section);
+    for (const fatherSection of firstParents) {
+      StageManager.goInSection([section], fatherSection);
+    }
   }
 }

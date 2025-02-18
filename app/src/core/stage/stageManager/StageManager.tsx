@@ -27,12 +27,10 @@ import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
 import { GraphMethods } from "./basicMethods/GraphMethods";
-import { SectionMethods } from "./basicMethods/SectionMethods";
 import { StageAutoAlignManager } from "./concreteMethods/StageAutoAlignManager";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager";
 import { StageGeneratorAI } from "./concreteMethods/StageGeneratorAI";
-import { StageManagerUtils } from "./concreteMethods/StageManagerUtils";
 import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
 import { StageNodeRotate } from "./concreteMethods/stageNodeRotate";
@@ -878,50 +876,7 @@ export namespace StageManager {
 
   /** 将多个实体打包成一个section，并添加到舞台中 */
   export async function packEntityToSection(addEntities: Entity[]) {
-    if (addEntities.length === 0) {
-      return;
-    }
-    addEntities = SectionMethods.shallowerEntities(addEntities);
-    // 检测父亲section是否是等同
-    const firstParents = SectionMethods.getFatherSections(addEntities[0]);
-    if (addEntities.length > 1) {
-      let isAllSameFather = true;
-
-      for (let i = 1; i < addEntities.length; i++) {
-        const secondParents = SectionMethods.getFatherSections(addEntities[i]);
-        if (firstParents.length !== secondParents.length) {
-          isAllSameFather = false;
-          break;
-        }
-        // 检查父亲数组是否相同
-        const firstParentsString = firstParents
-          .map((section) => section.uuid)
-          .sort()
-          .join();
-        const secondParentsString = secondParents
-          .map((section) => section.uuid)
-          .sort()
-          .join();
-        if (firstParentsString !== secondParentsString) {
-          isAllSameFather = false;
-          break;
-        }
-      }
-
-      if (!isAllSameFather) {
-        // 暂时不支持交叉section的创建
-        return;
-      }
-    }
-    for (const fatherSection of firstParents) {
-      goOutSection(addEntities, fatherSection);
-    }
-    const section = Section.fromEntities(addEntities);
-    section.text = StageManagerUtils.replaceAutoNameTemplate(await Settings.get("autoNamerSectionTemplate"), section);
-    stageContent.entities.addValue(section, section.uuid);
-    for (const fatherSection of firstParents) {
-      goInSection([section], fatherSection);
-    }
+    await StageSectionPackManager.packEntityToSection(addEntities);
     StageHistoryManager.recordStep();
   }
 
