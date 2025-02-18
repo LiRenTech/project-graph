@@ -157,8 +157,8 @@ export namespace SectionRenderer {
             Renderer.transformWorld2View(end.add(new Vector(0, -DIS))),
             Renderer.transformWorld2View(end),
           ),
-          StageStyleManager.currentStyle.CollideBoxPreDeleteColor.toSolid(),
-          StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
+          Color.Green,
+          Color.Red,
           2 * Camera.currentScale,
         );
       }

@@ -38,6 +38,7 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
   if (entity && entity instanceof TextNode) {
     const newSection = StageManager.targetTextNodeToSection(entity);
     StageManager.goInSection(StageManager.getSelectedEntities(), newSection);
+    return; // 这个return必须写
   }
 
   // 即将跳入的sections区域
