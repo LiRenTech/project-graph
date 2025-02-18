@@ -106,6 +106,12 @@ settings:
       macaron: 马卡龙色系主题
       morandi: 莫兰迪色系主题
       blueGreen: 军事基地主题
+  showTipsOnUI:
+    title: 在 UI 中显示提示信息
+    description: |
+      开启后，屏幕上会有一行提示文本。
+      如果您已经熟悉了软件，建议关闭此项以减少屏幕占用
+      更多更详细的提示还是建议看菜单栏中的“新手引导”或官网文档。
   lineStyle:
     title: 连线样式
     options:

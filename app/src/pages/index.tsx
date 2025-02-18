@@ -20,6 +20,7 @@ export default function Home() {
 
   const [cursorName, setCursorName] = React.useState(CursorNameEnum.Default);
   const [bgAlpha, setBgAlpha] = React.useState(0.9);
+  const [uiShow, setUIShow] = React.useState(true);
   const [nodeDetailsPanel] = Settings.use("nodeDetailsPanel");
   const [isProtectPrivacy, setIsProtectPrivacy] = React.useState(false);
 
@@ -71,6 +72,9 @@ export default function Home() {
     });
     Settings.watch("windowBackgroundAlpha", (value) => {
       setBgAlpha(value);
+    });
+    Settings.watch("showTipsOnUI", (value) => {
+      setUIShow(value);
     });
 
     // 开启定时器
@@ -124,7 +128,7 @@ export default function Home() {
       <SearchingNodePanel />
       {/* 这个打算被取代 */}
       {nodeDetailsPanel === "small" ? <DetailsEditSmallPanel /> : <DetailsEditSidePanel />}
-      {!isWindowCollapsing && !isClassroomMode && <HintText />}
+      {!isWindowCollapsing && !isClassroomMode && uiShow && <HintText />}
       {/* TODO: 下面这个写法有点奇怪 rgba值太长了 */}
       <div
         style={{

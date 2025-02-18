@@ -18,6 +18,7 @@ export namespace Settings {
     lineStyle: "straight" | "bezier" | "vertical";
     theme: "black" | "white" | "macaron" | "morandi";
     uiTheme: "light" | "dark" | "macaron" | "morandi";
+    showTipsOnUI: boolean;
     isRenderCenterPointer: boolean;
     showGrid: boolean; // 废弃
     showBackgroundHorizontalLines: boolean;
@@ -100,6 +101,7 @@ export namespace Settings {
     lineStyle: "straight",
     theme: "black",
     uiTheme: "dark",
+    showTipsOnUI: true,
     isRenderCenterPointer: false,
     showGrid: true,
     showBackgroundHorizontalLines: false,

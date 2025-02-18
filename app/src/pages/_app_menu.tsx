@@ -3,7 +3,6 @@ import { useAtom } from "jotai";
 import {
   AppWindow,
   Axe,
-  BadgeInfo,
   Database,
   Dock,
   File,
@@ -18,6 +17,7 @@ import {
   Info,
   MonitorX,
   MoreHorizontal,
+  PersonStanding,
   Presentation,
   // PartyPopper,
   RefreshCcw,
@@ -484,6 +484,31 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         <Col icon={<SettingsIcon />} onClick={() => navigate("/settings/visual")}>
           {t("more.items.settings")}
         </Col>
+        <Col
+          icon={<PersonStanding />}
+          onClick={() => {
+            if (StageManager.isEmpty()) {
+              HelpService.loadHelp();
+            } else {
+              Dialog.show({
+                title: "帮助内容会覆盖当前舞台",
+                type: "warning",
+                content: "加载帮助内容会在您的当前舞台上贴入很多内容，建议清空舞台或新建草稿后再加载帮助。",
+                buttons: [
+                  {
+                    text: "叠！",
+                    onClick: () => {
+                      HelpService.loadHelp();
+                    },
+                  },
+                  { text: "取消" },
+                ],
+              });
+            }
+          }}
+        >
+          新手引导
+        </Col>
         <Col icon={<Info />} onClick={() => navigate("/settings/about")}>
           {t("more.items.about")}
         </Col>
@@ -496,26 +521,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         >
           {t("more.items.welcome")}
         </Col> */}
-        <Col
-          icon={<BadgeInfo />}
-          onClick={() => {
-            Dialog.show({
-              title: "是否加载帮助？",
-              content: "加载帮助内容会在您的当前舞台上贴入很多内容，建议清空舞台或新建草稿后再加载帮助。",
-              buttons: [
-                {
-                  text: "加载",
-                  onClick: () => {
-                    HelpService.loadHelp();
-                  },
-                },
-                { text: "取消" },
-              ],
-            });
-          }}
-        >
-          help
-        </Col>
+
         <Col
           icon={isClassroomMode ? <MonitorX /> : <Presentation />}
           onClick={() => {

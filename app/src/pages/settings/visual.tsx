@@ -33,6 +33,7 @@ export default function Visual() {
         <SettingField icon={<Languages />} settingKey="language" type="select" />
         <SettingField icon={<Palette />} settingKey="theme" type="select" />
         <SettingField icon={<Palette />} settingKey="uiTheme" type="select" />
+        <SettingField icon={<AppWindow />} settingKey="showTipsOnUI" type="switch" />
         <SettingField icon={<AppWindowMac />} settingKey="useNativeTitleBar" type="switch" />
         <SettingField icon={<Blend />} settingKey="windowBackgroundAlpha" type="slider" min={0} max={1} step={0.01} />
       </FieldGroup>

@@ -53,9 +53,10 @@ export default function HintText() {
       window.removeEventListener("mouseup", handleMouseUp);
     };
   });
+  // littlefean：放下面是真有人看不到啊，一开始窗口可能靠下，被挡住了
   return (
     <>
-      <div className="pointer-events-none fixed bottom-0 left-0 flex w-full flex-row items-center justify-start p-1">
+      <div className="pointer-events-none fixed left-0 top-16 flex w-full flex-row items-center justify-start p-1">
         {hintTextList.map((text, index) => (
           <div
             key={index}
