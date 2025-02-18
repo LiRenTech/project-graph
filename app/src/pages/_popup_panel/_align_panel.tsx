@@ -28,10 +28,11 @@ export default function AlignNodePanel() {
       setEnableDragAutoAlign(value);
     });
   }, []);
+  const cell9ClassName = "border-1 bg-panel-bg grid grid-cols-3 grid-rows-3 rounded p-1 m-1";
 
   return (
-    <div className="bg-panel-bg">
-      <div className="grid grid-cols-3 grid-rows-3">
+    <div className="grid grid-cols-2 grid-rows-2">
+      <div className={cell9ClassName}>
         <div />
         <ToolbarItem
           description="顶对齐"
@@ -67,7 +68,7 @@ export default function AlignNodePanel() {
         <div />
       </div>
 
-      <div className="grid grid-cols-3 grid-rows-2">
+      <div className={cell9ClassName}>
         <ToolbarItem
           description="相等间距垂直对齐"
           icon={<AlignVerticalSpaceBetween />}
@@ -99,20 +100,15 @@ export default function AlignNodePanel() {
           }}
         />
       </div>
-      <div className="relative flex justify-center">
-        {/* {isEnableDragAutoAlign && <Magnet className="absolute animate-ping" />} */}
+      <div className={cell9ClassName}>
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
         <ToolbarItem
-          description={isEnableDragAutoAlign ? "拖动吸附对齐：开启" : "拖动吸附对齐：关闭"}
-          icon={<Magnet className={cn(isEnableDragAutoAlign ? "animate-spin" : "scale-50", "transition-transform")} />}
-          handleFunction={async () => {
-            Settings.set("enableDragAutoAlign", !(await Settings.get("enableDragAutoAlign")));
-          }}
-        />
-      </div>
-      <div className="flex">
-        <ToolbarItem
-          description="自动布局（选中的唯一节点必须是树形结构的根节点）"
-          icon={<Network />}
+          description="向右自动树形布局"
+          icon={<Network className="-rotate-90" />}
           handleFunction={() => {
             const selected = StageManager.getSelectedEntities();
             if (selected.length !== 1) {
@@ -125,7 +121,7 @@ export default function AlignNodePanel() {
             const selectedEntity = selected[0];
             if (selectedEntity instanceof ConnectableEntity) {
               if (GraphMethods.isTree(selectedEntity)) {
-                StageManager.autoLayoutFastTreeMode();
+                StageManager.autoLayoutFastTreeModeRight();
               } else {
                 Dialog.show({
                   title: "连接的节点必须符合树形结构",
@@ -140,6 +136,40 @@ export default function AlignNodePanel() {
             }
           }}
         />
+        <div />
+        <ToolbarItem
+          description="向下自动树形布局"
+          icon={<Network />}
+          handleFunction={() => {
+            const selected = StageManager.getSelectedEntities();
+            if (selected.length !== 1) {
+              Dialog.show({
+                title: "选择节点数量不为1",
+                content: "必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构",
+              });
+              return;
+            }
+            const selectedEntity = selected[0];
+            if (selectedEntity instanceof ConnectableEntity) {
+              if (GraphMethods.isTree(selectedEntity)) {
+                StageManager.autoLayoutFastTreeModeDown();
+              } else {
+                Dialog.show({
+                  title: "连接的节点必须符合树形结构",
+                  content: "连接的节点必须符合树形结构，不能有环路，不能有重叠指向",
+                });
+              }
+            } else {
+              Dialog.show({
+                title: "选择的对象必须是可连线的节点对象",
+                content: "必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构",
+              });
+            }
+          }}
+        />
+        <div />
+      </div>
+      <div className={cell9ClassName}>
         <ToolbarItem
           description="尽可能排列成正方形"
           icon={<LayoutGrid />}
@@ -152,6 +182,13 @@ export default function AlignNodePanel() {
           icon={<Columns4 />}
           handleFunction={() => {
             StageManager.layoutToTightSquare();
+          }}
+        />
+        <ToolbarItem
+          description={isEnableDragAutoAlign ? "拖动吸附对齐：开启" : "拖动吸附对齐：关闭"}
+          icon={<Magnet className={cn(isEnableDragAutoAlign ? "animate-spin" : "scale-50", "transition-transform")} />}
+          handleFunction={async () => {
+            Settings.set("enableDragAutoAlign", !(await Settings.get("enableDragAutoAlign")));
           }}
         />
       </div>

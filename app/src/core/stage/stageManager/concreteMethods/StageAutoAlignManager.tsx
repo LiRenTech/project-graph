@@ -3,15 +3,15 @@ import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
-import { autoLayoutFastTreeMode } from "../../../service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
+import { AutoLayoutFastTree } from "../../../service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
 import { EntityAlignEffect } from "../../../service/feedbackService/effectEngine/concrete/EntityAlignEffect";
 import { RectangleRenderEffect } from "../../../service/feedbackService/effectEngine/concrete/RectangleRenderEffect";
 import { SoundService } from "../../../service/feedbackService/SoundService";
 import { Stage } from "../../Stage";
-import { Entity } from "../../stageObject/abstract/StageEntity";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
-import { StageManager } from "../StageManager";
+import { Entity } from "../../stageObject/abstract/StageEntity";
 import { GraphMethods } from "../basicMethods/GraphMethods";
+import { StageManager } from "../StageManager";
 
 /**
  * 自动对齐和布局管理器
@@ -183,7 +183,7 @@ export namespace StageAutoAlignManager {
    * 自动布局树形结构
    * @param selectedRootEntity
    */
-  export function autoLayoutSelectedFastTreeMode(selectedRootEntity: ConnectableEntity) {
+  export function autoLayoutSelectedFastTreeModeRight(selectedRootEntity: ConnectableEntity) {
     // 检测树形结构
     if (!GraphMethods.isTree(selectedRootEntity)) {
       // 不是树形结构，不做任何处理
@@ -193,6 +193,19 @@ export namespace StageAutoAlignManager {
       });
       return;
     }
-    autoLayoutFastTreeMode(selectedRootEntity);
+    AutoLayoutFastTree.autoLayoutFastTreeModeRight(selectedRootEntity);
+  }
+
+  export function autoLayoutSelectedFastTreeModeDown(selectedRootEntity: ConnectableEntity) {
+    // 检测树形结构
+    if (!GraphMethods.isTree(selectedRootEntity)) {
+      // 不是树形结构，不做任何处理
+      Dialog.show({
+        title: "提示",
+        content: "选择的节点必须是树形结构的根节点",
+      });
+      return;
+    }
+    AutoLayoutFastTree.autoLayoutFastTreeModeDown(selectedRootEntity);
   }
 }

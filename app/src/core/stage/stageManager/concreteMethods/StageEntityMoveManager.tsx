@@ -161,7 +161,7 @@ export namespace StageEntityMoveManager {
       }
     }
   }
-  function moveWithChildren(node: ConnectableEntity, delta: Vector) {
+  export function moveWithChildren(node: ConnectableEntity, delta: Vector) {
     moveWithChildrenDfs(node, delta, [node.uuid]);
   }
 

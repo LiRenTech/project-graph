@@ -1,11 +1,14 @@
 import { v4 } from "uuid";
+import { Direction } from "../../../types/directions";
 import { Serialized } from "../../../types/node";
+import { PathString } from "../../../utils/pathString";
 import { Color } from "../../dataStruct/Color";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { StringDict } from "../../dataStruct/StringDict";
 import { Vector } from "../../dataStruct/Vector";
 import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../render/canvas2d/renderer";
+import { EntityShrinkEffect } from "../../service/feedbackService/effectEngine/concrete/EntityShrinkEffect";
 import { Settings } from "../../service/Settings";
 import { Camera } from "../Camera";
 import { Stage } from "../Stage";
@@ -40,9 +43,6 @@ import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManag
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
-import { Direction } from "../../../types/directions";
-import { PathString } from "../../../utils/pathString";
-import { EntityShrinkEffect } from "../../service/feedbackService/effectEngine/concrete/EntityShrinkEffect";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -1012,11 +1012,20 @@ export namespace StageManager {
     StageAutoAlignManager.preAlignAllSelected();
   }
 
-  export function autoLayoutFastTreeMode() {
+  export function autoLayoutFastTreeModeRight() {
     const entities = getSelectedEntities();
     for (const entity of entities) {
       if (entity instanceof ConnectableEntity) {
-        StageAutoAlignManager.autoLayoutSelectedFastTreeMode(entity);
+        StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(entity);
+        return;
+      }
+    }
+  }
+  export function autoLayoutFastTreeModeDown() {
+    const entities = getSelectedEntities();
+    for (const entity of entities) {
+      if (entity instanceof ConnectableEntity) {
+        StageAutoAlignManager.autoLayoutSelectedFastTreeModeDown(entity);
         return;
       }
     }

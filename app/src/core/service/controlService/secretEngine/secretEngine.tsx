@@ -4,10 +4,12 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
+import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { CollaborationEngine } from "../../dataManageService/collaborationEngine/CollaborationEngine";
+import { RectangleNoteEffect } from "../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
-
+import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
 /**
  * 秘籍键系统
  * 类似于游戏中的秘籍键，可以触发一些特殊效果，主要用于方便测试和调试，也可以当成彩蛋。
@@ -60,6 +62,30 @@ export class SecretEngine {
         Camera.location = Vector.getZero();
         tick++;
       });
+    },
+    "t r e e r e c t": () => {
+      Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
+      const selectNode = StageManager.getSelectedEntities()[0];
+      if (!selectNode) {
+        return;
+      }
+      if (selectNode instanceof ConnectableEntity) {
+        const rect = AutoLayoutFastTree.getTreeBoundingRectangle(selectNode);
+        Stage.effectMachine.addEffect(RectangleNoteEffect.fromShiftClickSelect(rect.clone()));
+      }
+    },
+    "a l t": () => {
+      const selectNodes = StageManager.getSelectedEntities().filter((node) => node instanceof ConnectableEntity);
+      if (selectNodes.length === 0) {
+        return;
+      }
+      AutoLayoutFastTree.alignColumnTrees(selectNodes);
+    },
+    "m v e t": () => {
+      AutoLayoutFastTree.moveTreeRectTo(
+        StageManager.getSelectedEntities()[0] as ConnectableEntity,
+        Camera.location.clone(),
+      );
     },
   };
 
