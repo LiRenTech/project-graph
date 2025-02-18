@@ -266,12 +266,14 @@ async function registerKeyBinds() {
   });
 
   (
-    await KeyBinds.create("createTextNodeFromCameraLocation", "p", {
-      control: true,
+    await KeyBinds.create("createTextNodeFromCameraLocation", "insert", {
+      control: false,
       alt: false,
       shift: false,
     })
   ).down(() => {
+    Camera.clearMoveCommander();
+    Camera.speed = Vector.getZero();
     addTextNodeByLocation(Camera.location, true);
   });
 
