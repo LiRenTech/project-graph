@@ -6,6 +6,7 @@ import { StageManager } from "../StageManager";
  * 管理所有东西进出StageSection的逻辑
  */
 export namespace StageSectionInOutManager {
+  // 可能存在bug
   export function goInSection(entities: Entity[], section: Section) {
     for (const entity of entities) {
       if (section.children.includes(entity)) {
@@ -22,11 +23,36 @@ export namespace StageSectionInOutManager {
     StageManager.updateReferences();
   }
 
+  /**
+   * 一些实体跳入多个Section（交叉嵌套）
+   * 会先解除所有实体与Section的关联，再重新关联
+   * @param entities
+   * @param sections
+   */
+  export function goInSections(entities: Entity[], sections: Section[]) {
+    // 先解除所有实体与Section的关联
+    for (const entity of entities) {
+      entityDropParent(entity);
+    }
+    // 再重新关联
+    for (const section of sections) {
+      goInSection(entities, section);
+    }
+  }
+
   export function goOutSection(entities: Entity[], section: Section) {
     for (const entity of entities) {
       sectionDropChild(section, entity);
     }
     StageManager.updateReferences();
+  }
+
+  function entityDropParent(entity: Entity) {
+    for (const section of StageManager.getSections()) {
+      if (section.childrenUUIDs.includes(entity.uuid)) {
+        sectionDropChild(section, entity);
+      }
+    }
   }
 
   /**

@@ -3,6 +3,7 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
+import { StageSectionInOutManager } from "../../../../stage/stageManager/concreteMethods/StageSectionInOutManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { EntityJumpMoveEffect } from "../../../feedbackService/effectEngine/concrete/EntityJumpMoveEffect";
@@ -37,7 +38,13 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
   const entity = StageManager.findEntityByLocation(mouseLocation);
   if (entity && entity instanceof TextNode) {
     const newSection = StageManager.targetTextNodeToSection(entity);
-    StageManager.goInSection(StageManager.getSelectedEntities(), newSection);
+    const selectedEntities = StageManager.getSelectedEntities();
+    // StageManager.goInSection(StageManager.getSelectedEntities(), newSection);
+    StageSectionInOutManager.goInSections(StageManager.getSelectedEntities(), [newSection]);
+    // 最后让所有选中的实体移动
+    for (const selectedEntity of selectedEntities) {
+      selectedEntity.moveTo(mouseLocation);
+    }
     return; // 这个return必须写
   }
 
@@ -81,8 +88,11 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
     }
   } else {
     // 跑到了别的层级之中
+
+    StageSectionInOutManager.goInSections(selectedEntities, targetSections);
+
     for (const section of targetSections) {
-      StageManager.goInSection(selectedEntities, section);
+      // StageManager.goInSection(selectedEntities, section);
 
       // 特效
       for (const entity of selectedEntities) {

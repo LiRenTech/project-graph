@@ -8,6 +8,7 @@ import { Entity } from "../../stageObject/abstract/StageEntity";
 import { GraphMethods } from "../basicMethods/GraphMethods";
 import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageManager } from "../StageManager";
+import { StageSectionInOutManager } from "./StageSectionInOutManager";
 
 /**
  * 管理节点的位置移动
@@ -56,8 +57,8 @@ export namespace StageEntityMoveManager {
         StageManager.goOutSection([entity], currentFatherSections[0]);
       }
     } else {
+      StageSectionInOutManager.goInSections([entity], targetSections);
       for (const section of targetSections) {
-        StageManager.goInSection([entity], section);
         // 特效
         Stage.effectMachine.addEffect(
           new RectanglePushInEffect(entity.collisionBox.getRectangle(), section.collisionBox.getRectangle()),

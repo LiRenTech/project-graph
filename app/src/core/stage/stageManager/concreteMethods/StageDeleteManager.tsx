@@ -13,6 +13,7 @@ import { TextNode } from "../../stageObject/entity/TextNode";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
 import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageManager } from "../StageManager";
+import { StageSectionInOutManager } from "./StageSectionInOutManager";
 
 /**
  * 包含一切删除舞台上的元素的方法
@@ -70,9 +71,7 @@ export namespace StageDeleteManager {
     deleteEntityAfterClearEdges(entity);
     // 将自己所有的父级Section的children添加自己的children
     const fatherSections = SectionMethods.getFatherSections(entity);
-    for (const fatherSection of fatherSections) {
-      StageManager.goInSection(entity.children, fatherSection);
-    }
+    StageSectionInOutManager.goInSections(entity.children, fatherSections);
   }
   function deleteImageNode(entity: ImageNode) {
     if (StageManager.getImageNodes().includes(entity)) {
