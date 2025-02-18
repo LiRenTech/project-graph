@@ -10,6 +10,7 @@ import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { Section } from "../../../../stage/stageObject/entity/Section";
+import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { RectangleSplitTwoPartEffect } from "../../../feedbackService/effectEngine/concrete/RectangleSplitTwoPartEffect";
@@ -155,12 +156,19 @@ class CuttingControllerClass extends ControllerClass {
     for (const entity of ControllerCutting.warningEntity) {
       const collidePoints = this.twoPointsMap[entity.uuid];
       if (collidePoints) {
+        let fillColor = Color.Transparent;
+        if (entity instanceof TextNode) {
+          fillColor = entity.color.clone();
+        } else if (entity instanceof Section) {
+          fillColor = entity.color.toNewAlpha(0.5);
+        }
+
         Stage.effectMachine.addEffect(
           new RectangleSplitTwoPartEffect(
             entity.collisionBox.getRectangle(),
             collidePoints,
             50,
-            StageStyleManager.currentStyle.SelectRectangleFillColor.toSolid(),
+            fillColor,
             StageStyleManager.currentStyle.StageObjectBorderColor,
             2,
           ),

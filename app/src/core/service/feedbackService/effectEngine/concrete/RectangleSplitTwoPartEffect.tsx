@@ -1,5 +1,5 @@
 import { Random } from "../../../../algorithm/random";
-import { Color } from "../../../../dataStruct/Color";
+import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
@@ -16,6 +16,8 @@ export class RectangleSplitTwoPartEffect extends EffectObject {
    * 长度只有2
    */
   private splitedRectangles: SplitedRectangle[] = [];
+  private initFillColor: Color;
+  private endFillColor: Color;
 
   constructor(
     rectangle: Rectangle,
@@ -26,6 +28,8 @@ export class RectangleSplitTwoPartEffect extends EffectObject {
     strokeWidth: number,
   ) {
     super(new ProgressNumber(0, time));
+    this.initFillColor = fillColor.clone();
+    this.endFillColor = fillColor.toTransparent();
 
     const leftTop = rectangle.location;
     const rightTop = new Vector(leftTop.x + rectangle.size.x, leftTop.y);
@@ -137,7 +141,7 @@ export class RectangleSplitTwoPartEffect extends EffectObject {
     super.tick();
     for (const rect of this.splitedRectangles) {
       rect.tick();
-      rect.fillColor = rect.fillColor.toNewAlpha(1 - this.timeProgress.rate);
+      rect.fillColor = mixColors(this.initFillColor, this.endFillColor, this.timeProgress.rate);
       rect.strokeColor = rect.strokeColor.toNewAlpha(1 - this.timeProgress.rate);
     }
   }
