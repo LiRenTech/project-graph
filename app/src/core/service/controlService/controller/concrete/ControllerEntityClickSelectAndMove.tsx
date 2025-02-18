@@ -56,12 +56,8 @@ ControllerEntityClickSelectAndMove.mousedown = (event: MouseEvent) => {
         }
       }
     } else if (Controller.pressingKeySet.has("control")) {
-      // ctrl 按下，只选中节点
-      // 反转点击节点的状态
-      clickedEntity.isSelected = !clickedEntity.isSelected;
-      Stage.effectMachine.addEffect(
-        RectangleNoteEffect.fromShiftClickSelect(clickedEntity.collisionBox.getRectangle()),
-      );
+      // ctrl 按下，只选中节点，不能模仿windows文件管理器设置成反选，否则会和直接移动节点子树冲突
+      clickedEntity.isSelected = true;
     } else {
       // 直接点击
       if (!clickedEntity.isSelected) {
