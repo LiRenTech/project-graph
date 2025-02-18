@@ -46,12 +46,14 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
   const selectedEntities = StageManager.getSelectedEntities();
   // 移动位置
 
-  // 1 计算当前框选的所有实体的中心位置
-  const rectangles = selectedEntities.map((entity) => {
+  // 1 计算所有节点应该移动的 delta
+  // 1.0 计算当前框选的所有实体的中心位置
+  const selectedRectangles = selectedEntities.map((entity) => {
     return entity.collisionBox.getRectangle();
   });
-  // 2 计算delta
-  const delta = mouseLocation.subtract(Rectangle.getBoundingRectangle(rectangles).center);
+  const centerLocation = Rectangle.getBoundingRectangle(selectedRectangles).center;
+
+  const delta = mouseLocation.subtract(centerLocation);
   // 4 特效(要先加特效，否则位置已经被改了)
   for (const entity of selectedEntities) {
     Stage.effectMachine.addEffect(new EntityJumpMoveEffect(15, entity.collisionBox.getRectangle(), delta));
@@ -61,21 +63,34 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
 
   // 改变层级
   if (targetSections.length === 0) {
-    // 代表想要走出当前section
+    // 代表想要走到最外层空白位置
     for (const entity of selectedEntities) {
       const currentFatherSections = SectionMethods.getFatherSections(entity);
-      if (currentFatherSections.length === 0) {
-        continue;
+      for (const currentFatherSection of currentFatherSections) {
+        StageManager.goOutSection([entity], currentFatherSection);
+
+        // 特效
+        Stage.effectMachine.addEffect(
+          RectanglePushInEffect.sectionGoInGoOut(
+            entity.collisionBox.getRectangle(),
+            currentFatherSection.collisionBox.getRectangle(),
+            true,
+          ),
+        );
       }
-      StageManager.goOutSection([entity], currentFatherSections[0]);
     }
   } else {
+    // 跑到了别的层级之中
     for (const section of targetSections) {
       StageManager.goInSection(selectedEntities, section);
+
       // 特效
       for (const entity of selectedEntities) {
         Stage.effectMachine.addEffect(
-          new RectanglePushInEffect(entity.collisionBox.getRectangle(), section.collisionBox.getRectangle()),
+          RectanglePushInEffect.sectionGoInGoOut(
+            entity.collisionBox.getRectangle(),
+            section.collisionBox.getRectangle(),
+          ),
         );
       }
     }

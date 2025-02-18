@@ -23,20 +23,27 @@ export namespace StageSectionInOutManager {
   }
 
   export function goOutSection(entities: Entity[], section: Section) {
-    const newChildren = [];
+    for (const entity of entities) {
+      sectionDropChild(section, entity);
+    }
+    StageManager.updateReferences();
+  }
+
+  /**
+   * Section 丢弃某个孩子
+   * @param section
+   * @param entity
+   */
+  function sectionDropChild(section: Section, entity: Entity) {
+    const newChildrenUUID: string[] = [];
+    const newChildren: Entity[] = [];
     for (const child of section.children) {
-      if (!entities.includes(child)) {
+      if (entity.uuid !== child.uuid) {
+        newChildrenUUID.push(child.uuid);
         newChildren.push(child);
       }
     }
+    section.childrenUUIDs = newChildrenUUID;
     section.children = newChildren;
-    const newChildrenUUIDs = [];
-    for (const childUUID of section.childrenUUIDs) {
-      if (!entities.some((entity) => entity.uuid === childUUID)) {
-        newChildrenUUIDs.push(childUUID);
-      }
-    }
-    section.childrenUUIDs = newChildrenUUIDs;
-    StageManager.updateReferences();
   }
 }
