@@ -87,6 +87,6 @@ ControllerNodeRotation.mouseup = (event: MouseEvent) => {
   if (Controller.isMovingEdge) {
     StageManager.moveEdgeFinished();
     Controller.isMovingEdge = false;
-    Controller.setCursorNameHook(CursorNameEnum.Default);
   }
+  Controller.setCursorNameHook(CursorNameEnum.Default);
 };
