@@ -1,4 +1,5 @@
 import { Color, colorInvert, mixColors } from "../../../../dataStruct/Color";
+import { CubicBezierCurve } from "../../../../dataStruct/shape/Curve";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
@@ -145,12 +146,20 @@ export namespace SectionRenderer {
     // debug: 绿色虚线 观察父子关系
     if (Renderer.isShowDebug) {
       for (const child of section.children) {
-        CurveRenderer.renderDashedLine(
-          Renderer.transformWorld2View(section.rectangle.leftTop),
-          Renderer.transformWorld2View(child.collisionBox.getRectangle().leftTop),
-          Color.Green,
-          0.2 * Camera.currentScale,
-          5 * Camera.currentScale,
+        const start = section.rectangle.topCenter;
+        const end = child.collisionBox.getRectangle().leftTop;
+        const DIS = 100;
+        // const rate = (end.y - start.y) / section.rectangle.height;
+        CurveRenderer.renderGradientBezierCurve(
+          new CubicBezierCurve(
+            Renderer.transformWorld2View(start),
+            Renderer.transformWorld2View(start.add(new Vector(0, -DIS))),
+            Renderer.transformWorld2View(end.add(new Vector(0, -DIS))),
+            Renderer.transformWorld2View(end),
+          ),
+          StageStyleManager.currentStyle.CollideBoxPreDeleteColor.toSolid(),
+          StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
+          2 * Camera.currentScale,
         );
       }
     }
