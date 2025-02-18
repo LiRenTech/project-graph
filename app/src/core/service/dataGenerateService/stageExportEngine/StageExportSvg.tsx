@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOMServer from "react-dom/server";
-import { colorInvert } from "../../../dataStruct/Color";
+import { Color, colorInvert } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
@@ -12,6 +12,7 @@ import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
+import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 
 /**
  * 将舞台当前内容导出为SVG
@@ -58,6 +59,28 @@ export namespace StageExportSvg {
   }
   export function dumpEdge(edge: LineEdge): React.ReactNode {
     return EdgeRenderer.getEdgeSvg(edge);
+  }
+  export function dumpImageNode(node: ImageNode) {
+    if (node.isHiddenBySectionCollapse) {
+      return <></>;
+    }
+    return (
+      <>
+        {SvgUtils.rectangle(
+          node.rectangle,
+          Color.Transparent,
+          StageStyleManager.currentStyle.StageObjectBorderColor,
+          2,
+        )}
+        <image
+          href={node.path}
+          x={node.rectangle.leftTop.x}
+          y={node.rectangle.leftTop.y}
+          width={node.rectangle.size.x}
+          height={node.rectangle.size.y}
+        />
+      </>
+    );
   }
 
   function getEntitiesOuterRectangle(entities: Entity[], padding: number): Rectangle {
@@ -113,6 +136,8 @@ export namespace StageExportSvg {
             return dumpEdge(entity);
           } else if (entity instanceof Section) {
             return dumpSection(entity);
+          } else if (entity instanceof ImageNode) {
+            return dumpImageNode(entity);
           }
         })}
         {/* 构建连线 */}
@@ -149,6 +174,7 @@ export namespace StageExportSvg {
         {StageManager.getTextNodes().map((node) => dumpNode(node))}
         {StageManager.getLineEdges().map((edge) => dumpEdge(edge))}
         {StageManager.getSections().map((section) => dumpSection(section))}
+        {StageManager.getImageNodes().map((imageNode) => dumpImageNode(imageNode))}
       </svg>
     );
   }
