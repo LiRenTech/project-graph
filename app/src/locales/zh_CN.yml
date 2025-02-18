@@ -105,6 +105,7 @@ settings:
       light: 明亮主题
       macaron: 马卡龙色系主题
       morandi: 莫兰迪色系主题
+      blueGreen: 军事基地主题
   lineStyle:
     title: 连线样式
     options:

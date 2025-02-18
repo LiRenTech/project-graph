@@ -448,6 +448,89 @@
   --color-settings-page-bg: oklch(0.94 0.005 240); /* 冷淡蓝色调的极浅灰色 */
 }
 
+
+/* 理刃科技主题 */
+[data-theme="blueGreen"] {
+  /* 基础色 */
+  --color-panel-bg: #364153; /* 冷淡蓝色调的浅灰色 */
+  --color-panel-text: #e5e7eb; /* 更深的冷灰色 */
+  --color-panel-details-text: #8a909d;
+
+  /* 核心配色 */
+  --color-primary: #a3d1e4; 
+  --color-secondary: #4a5565;
+  --color-accent: #364153; 
+
+  /* 工具提示 */
+  --color-tooltip-bg: var(--color-secondary);
+  --color-tooltip-text: #e1e4e7;
+  --color-tooltip-border: #24354f;
+
+  /* 按钮系统 */
+  --color-button-bg: #49644e;
+  --color-button-text: #d5f4db;
+  --color-button-border: #7a9a81;
+  --color-icon-button-bg: #4a5565;
+  --color-icon-button-text: #e4f0fa;
+  --color-icon-button-border: #6a7680;
+
+  /* 输入控件 */
+  --color-input-bg: #4e6352;
+  --color-input-text: #d5f4db;
+  --color-input-border: #799680;
+  --color-input-placeholder: #93a998;
+
+  /* 交互元素 */
+  --color-keybind-bg: #506855;
+  --color-keybind-text: d5f4d;
+  --color-keybind-border: #7b9a82;
+  --color-keybind-active-outline: #d7efdc;
+
+  /* 下拉选择 */
+  --color-select-bg: #4c6050;
+  --color-select-text: #deffe3;
+  --color-select-border: #7d9883;
+  --color-select-popup-bg: #4f6252;
+  --color-select-popup-border: oklch(0.8 0.02 240);
+  --color-select-option-hover-bg: #28372b;
+  --color-select-option-selected-bg: #6a9a75;
+  --color-select-option-bg: transparent;
+  --color-select-option-text: #d5f4db;
+  --color-select-option-border: transparent;
+  --color-select-option-hover-text: #d5f4db;
+  --color-select-option-hover-border: transparent;
+  --color-select-option-selected-text: #28372b;
+  --color-select-option-selected-border: transparent;
+  --color-select-option-selected-hover-bg: #d5f4db;
+  --color-select-option-selected-hover-text: #28372b;
+  --color-select-option-selected-hover-border: transparent;
+
+  /* 滑动条 */
+  --color-slider-line: #6f7871; /* 轨道 */
+  --color-slider-handle: #c0cbc2; /* 手柄 */
+
+  /* 开关 */
+  --color-switch-false-bg: #1b231d; /* 浅冷灰色 */
+  --color-switch-false-dot: #425346;
+  --color-switch-true-bg: #48604d; /* 冷绿 */
+  --color-switch-true-dot: #b0cfb6;
+
+  /* 菜单系统 */
+  --color-appmenu-bg: #2c3239; /* 冷淡蓝色调的浅灰色 */
+  --color-appmenu-border: var(--color-secondary);
+  --color-appmenu-item-text: var(--color-panel-text);
+  --color-appmenu-hover-bg: #17191c; /* 灰紫色悬停 */
+
+  /* 工具栏 */
+  --color-toolbar-bg: var(--color-secondary); /* 冷蓝色 */
+  --color-toolbar-icon: oklch(0.95 0.02 270);
+  --color-toolbar-icon-hover-bg: #1e2939; /* 冷绿悬停 */
+  --color-toolbar-border: #80878e;
+
+  /* 特殊页面 */
+  --color-settings-page-bg: #2d3238;
+}
+
 @layer base {
   body,
   #root {
