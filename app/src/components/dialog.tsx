@@ -29,6 +29,20 @@ export namespace Dialog {
     value?: string;
   }>;
 
+  /**
+   * 示例：
+   * Dialog.show({
+   *   title: "标题",
+   *   content: "内容",
+   *   type: "info",
+   *   buttons: [
+   *     { text: "确定", color: "green", onClick: () => {} },
+   *     { text: "取消", color: "red", onClick: () => {} },
+   *   ],
+   * });
+   * @param options
+   * @returns
+   */
   export function show(options: Partial<DialogOptions>): Promise<{
     button: string;
     value?: string;

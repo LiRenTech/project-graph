@@ -12,6 +12,7 @@ import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
+import { Dialog } from "../../../../../components/dialog";
 
 /**
  * BUG: 始终无法触发文件拖入事件
@@ -74,7 +75,43 @@ ControllerDragFile.drop = (event: DragEvent) => {
           }
         });
       } else if (file.type.includes("image/png")) {
-        dealPngFileDrop(file, mouseWorldLocation);
+        if (Stage.path.isDraft()) {
+          Dialog.show({
+            title: "提示",
+            content: "当前处于草稿状态，请先保存草稿，再拖入图片。",
+            type: "warning",
+            buttons: [
+              { text: "确定" },
+              {
+                text: "为什么？",
+                onClick: () => {
+                  Dialog.show({
+                    title: "解释",
+                    content: "因为草稿没有文件路径，图片是基于相对路径，放在工程文件同一文件夹下存储的",
+                    type: "info",
+                    buttons: [
+                      { text: "好" },
+                      {
+                        text: "抗议",
+                        onClick: () => {
+                          Dialog.show({
+                            title: "失败",
+                            // （？——？）
+                            content:
+                              "由于我们还没做发送网络请求的后端接口，所以暂时无法直接倾听您的声音，如果需要请在github或QQ群联系我们。",
+                            type: "warning",
+                          });
+                        },
+                      },
+                    ],
+                  });
+                },
+              },
+            ],
+          });
+        } else {
+          dealPngFileDrop(file, mouseWorldLocation);
+        }
       } else {
         if (file.name.endsWith(".md")) {
           readFileText(file).then((dataString) => {
