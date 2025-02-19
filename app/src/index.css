@@ -448,7 +448,6 @@
   --color-settings-page-bg: oklch(0.94 0.005 240); /* 冷淡蓝色调的极浅灰色 */
 }
 
-
 /* 理刃科技主题 */
 [data-theme="blueGreen"] {
   /* 基础色 */
@@ -457,9 +456,9 @@
   --color-panel-details-text: #8a909d;
 
   /* 核心配色 */
-  --color-primary: #a3d1e4; 
+  --color-primary: #a3d1e4;
   --color-secondary: #4a5565;
-  --color-accent: #364153; 
+  --color-accent: #364153;
 
   /* 工具提示 */
   --color-tooltip-bg: var(--color-secondary);

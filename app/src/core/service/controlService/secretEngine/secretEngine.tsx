@@ -10,6 +10,12 @@ import { RectangleNoteEffect } from "../../feedbackService/effectEngine/concrete
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
+
+interface SecretItem {
+  name: string;
+  func: () => void;
+}
+
 /**
  * 秘籍键系统
  * 类似于游戏中的秘籍键，可以触发一些特殊效果，主要用于方便测试和调试，也可以当成彩蛋。
@@ -37,55 +43,82 @@ export class SecretEngine {
       }
     });
   }
-
-  keyPressedTable: Record<string, () => void> = {
-    "arrowup arrowup arrowdown arrowdown arrowleft arrowright arrowleft arrowright b a": () => {
-      Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
+  public getAllSecretKeysList(): { keys: string; name: string }[] {
+    const result = [];
+    for (const key in this.keyPressedTable) {
+      result.push({ keys: key, name: this.keyPressedTable[key].name });
+    }
+    return result;
+  }
+  keyPressedTable: Record<string, SecretItem> = {
+    "arrowup arrowup arrowdown arrowdown arrowleft arrowright arrowleft arrowright b a": {
+      name: "屏幕闪黑特效",
+      func: () => {
+        Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
+      },
     },
-    "1 1 4 5 1 4": () => {
-      Camera.clearMoveCommander();
+    "b o y n e x t d o o r": {
+      name: "创建传送门",
+      func: () => {
+        Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
+        StageManager.addOnePortalNode();
+      },
     },
-    "b o y n e x t d o o r": () => {
-      Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
-      StageManager.addOnePortalNode();
+    "c o l l a b o r a t e": {
+      name: "开始协作",
+      func: () => {
+        CollaborationEngine.openStartCollaborationPanel();
+      },
     },
-    "c o l l a b o r a t e": () => {
-      CollaborationEngine.openStartCollaborationPanel();
+    "c r e a t e f o l d e r w i n": {
+      name: "在D盘创建“111”文件夹",
+      func: () => {
+        createFolder("D:\\111\\111");
+      },
     },
-    "c r e a t e f o l d e r w i n": () => {
-      createFolder("D:\\111\\111");
+    "r o l l i n g 1": {
+      name: "摄像机开始疯狂缩放",
+      func: () => {
+        let tick = 0;
+        setInterval(() => {
+          Camera.currentScale = Math.sin(tick) + 1;
+          Camera.location = Vector.getZero();
+          tick++;
+        });
+      },
     },
-    "r o l l i n g 1": () => {
-      let tick = 0;
-      setInterval(() => {
-        Camera.currentScale = Math.sin(tick) + 1;
-        Camera.location = Vector.getZero();
-        tick++;
-      });
+    "t r e e r e c t": {
+      name: "获取选中根节点的整个树的外接矩形",
+      func: () => {
+        Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
+        const selectNode = StageManager.getSelectedEntities()[0];
+        if (!selectNode) {
+          return;
+        }
+        if (selectNode instanceof ConnectableEntity) {
+          const rect = AutoLayoutFastTree.getTreeBoundingRectangle(selectNode);
+          Stage.effectMachine.addEffect(RectangleNoteEffect.fromShiftClickSelect(rect.clone()));
+        }
+      },
     },
-    "t r e e r e c t": () => {
-      Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
-      const selectNode = StageManager.getSelectedEntities()[0];
-      if (!selectNode) {
-        return;
-      }
-      if (selectNode instanceof ConnectableEntity) {
-        const rect = AutoLayoutFastTree.getTreeBoundingRectangle(selectNode);
-        Stage.effectMachine.addEffect(RectangleNoteEffect.fromShiftClickSelect(rect.clone()));
-      }
+    "a l t": {
+      name: "将所有选中的根节点所对应的树进行垂直对齐",
+      func: () => {
+        const selectNodes = StageManager.getSelectedEntities().filter((node) => node instanceof ConnectableEntity);
+        if (selectNodes.length === 0) {
+          return;
+        }
+        AutoLayoutFastTree.alignColumnTrees(selectNodes);
+      },
     },
-    "a l t": () => {
-      const selectNodes = StageManager.getSelectedEntities().filter((node) => node instanceof ConnectableEntity);
-      if (selectNodes.length === 0) {
-        return;
-      }
-      AutoLayoutFastTree.alignColumnTrees(selectNodes);
-    },
-    "m v e t": () => {
-      AutoLayoutFastTree.moveTreeRectTo(
-        StageManager.getSelectedEntities()[0] as ConnectableEntity,
-        Camera.location.clone(),
-      );
+    "m v e t": {
+      name: "将选中的根节点对应的树移动到摄像机位置",
+      func: () => {
+        AutoLayoutFastTree.moveTreeRectTo(
+          StageManager.getSelectedEntities()[0] as ConnectableEntity,
+          Camera.location.clone(),
+        );
+      },
     },
   };
 
@@ -94,7 +127,7 @@ export class SecretEngine {
     const keys = this.pressedKeys.arrayList.join(" ");
     for (const key in this.keyPressedTable) {
       if (keys.includes(key)) {
-        this.keyPressedTable[key]();
+        this.keyPressedTable[key].func();
         return true;
       }
     }

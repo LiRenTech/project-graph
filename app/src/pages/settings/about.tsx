@@ -14,6 +14,7 @@ import { getAppVersion } from "../../utils/otherApi";
 import { SettingField } from "./_field";
 // 这行导入语句 open 不能删，否则会调用webview内部的窗口打开网页，非常卡
 import { open } from "@tauri-apps/plugin-shell";
+import { useNavigate } from "react-router-dom";
 
 export default function About() {
   const [version, setVersion] = React.useState("");
@@ -25,6 +26,9 @@ export default function About() {
   const [newVersionDownloadedSize, setNewVersionDownloadedSize] = React.useState(0);
   const [updateChannel] = Settings.use("updateChannel");
   const { t, i18n } = useTranslation("about");
+
+  const [clickedLogoCount, setClickedLogoCount] = React.useState(0);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     getAppVersion().then((version) => {
@@ -50,10 +54,27 @@ export default function About() {
       .then(setUpdate);
   }, [updateChannel]);
 
+  React.useEffect(() => {
+    if (clickedLogoCount > 7) {
+      setClickedLogoCount(0);
+      navigate("/info");
+    }
+  }, [clickedLogoCount]);
+
   return (
     <div className="flex h-full">
       <div className="flex w-64 flex-col items-center justify-center gap-4">
-        <img src={icon} alt="icon" className="h-32 w-32" />
+        <img
+          src={icon}
+          alt="icon"
+          style={{
+            rotate: `${clickedLogoCount * 15}deg`,
+          }}
+          className="rounded-4xl h-32 w-32 cursor-pointer shadow-lg shadow-neutral-800 hover:scale-105 active:scale-95"
+          onClick={() => {
+            setClickedLogoCount(clickedLogoCount + 1);
+          }}
+        />
         <h1 className="text-panel-text text-3xl font-bold">Project Graph</h1>
         <p className="text-panel-details-text text-center text-sm">
           {i18n.language === "zh-CN" ? versionName + " " : ""}
