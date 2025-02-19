@@ -56,15 +56,15 @@ export default function About() {
     invoke("set_update_channel", { channel: updateChannel })
       .then(() => check())
       .then(setUpdate)
-      .then(() => setIsCheckingUpdate(false))
+      .then(() => {
+        // 检查成功，显示更新提示
+        setIsCheckingUpdate(false);
+        setIsCheckingUpdateSuccess(true);
+      })
       .catch(() => {
+        // 检查失败，显示错误提示
         setIsCheckingUpdate(false);
         setIsCheckingUpdateSuccess(false);
-        // Dialog.show({
-        //   title: "无网页连接",
-        //   content: "网络连接失败，无法自动检查是否更新：" + err,
-        //   type: "error",
-        // });
       });
   }, [updateChannel]);
 
