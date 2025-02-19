@@ -15,6 +15,7 @@ import { Direction } from "../../../../types/directions";
 import { GraphMethods } from "../basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { Color } from "../../../dataStruct/Color";
+import { SectionMethods } from "../basicMethods/SectionMethods";
 
 /**
  * 包含增加节点的方法
@@ -68,6 +69,7 @@ export namespace StageNodeAdder {
   /**
    * 在当前已经选中的某个节点的情况下，增加节点
    * 增加在某个选中的节点的上方，下方，左方，右方等位置
+   * ——快深频
    * @param selectCurrent
    * @returns 返回的是创建节点的uuid，如果当前没有选中节点，则返回空字符串
    */
@@ -85,15 +87,17 @@ export namespace StageNodeAdder {
     const selectedEntity = selectedEntities[0];
     const entityRectangle = selectedEntity.collisionBox.getRectangle();
     let createLocation = new Vector(0, 0);
+    const distanceLength = 100;
     if (direction === Direction.Up) {
-      createLocation = entityRectangle.topCenter.add(new Vector(0, -100));
+      createLocation = entityRectangle.topCenter.add(new Vector(0, -distanceLength));
     } else if (direction === Direction.Down) {
-      createLocation = entityRectangle.bottomCenter.add(new Vector(0, 100));
+      createLocation = entityRectangle.bottomCenter.add(new Vector(0, distanceLength));
     } else if (direction === Direction.Left) {
-      createLocation = entityRectangle.leftCenter.add(new Vector(-100, 0));
+      createLocation = entityRectangle.leftCenter.add(new Vector(-distanceLength, 0));
     } else if (direction === Direction.Right) {
-      createLocation = entityRectangle.rightCenter.add(new Vector(100, 0));
+      createLocation = entityRectangle.rightCenter.add(new Vector(distanceLength, 0));
     }
+    addToSections = SectionMethods.getSectionsByInnerLocation(createLocation);
     const uuid = await addTextNodeByClick(createLocation, addToSections, selectCurrent);
     const newNode = StageManager.getTextNodeByUUID(uuid);
     if (!newNode) {
