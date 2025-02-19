@@ -15,8 +15,10 @@ import { SettingField } from "./_field";
 // 这行导入语句 open 不能删，否则会调用webview内部的窗口打开网页，非常卡
 import { open } from "@tauri-apps/plugin-shell";
 import { useNavigate } from "react-router-dom";
+import { cn } from "../../utils/cn";
 
 export default function About() {
+  const [isCheckingUpdate, setIsCheckingUpdate] = React.useState(false);
   const [version, setVersion] = React.useState("");
   const [versionName, setVersionName] = React.useState("");
   const [versionNameEn, setVersionNameEn] = React.useState("");
@@ -35,7 +37,7 @@ export default function About() {
       // version: string 是tauri.conf.json中填写的值
 
       // versions.json 列表中的每一个version字段都必须是tauri.conf.json中填写的值的前缀
-
+      setIsCheckingUpdate(true);
       setVersion(version);
       const versionObject = versions.find((vo) => version.startsWith(vo.version));
       if (versionObject) {
@@ -51,7 +53,8 @@ export default function About() {
   React.useEffect(() => {
     invoke("set_update_channel", { channel: updateChannel })
       .then(() => check())
-      .then(setUpdate);
+      .then(setUpdate)
+      .then(() => setIsCheckingUpdate(false));
   }, [updateChannel]);
 
   React.useEffect(() => {
@@ -70,7 +73,10 @@ export default function About() {
           style={{
             rotate: `${clickedLogoCount * 15}deg`,
           }}
-          className="rounded-4xl h-32 w-32 cursor-pointer shadow-lg shadow-neutral-800 hover:scale-105 active:scale-95"
+          className={cn(
+            "rounded-4xl h-32 w-32 cursor-pointer shadow-neutral-800 hover:scale-105 active:scale-95",
+            !isCheckingUpdate && "shadow-xl",
+          )}
           onClick={() => {
             setClickedLogoCount(clickedLogoCount + 1);
           }}
@@ -82,8 +88,12 @@ export default function About() {
           <br />
           {version}
         </p>
+        {isCheckingUpdate && (
+          <p className="text-panel-details-text animate-pulse text-center text-sm">{t("updater.checkingUpdate")}</p>
+        )}
         {update && update.available && (
           <Button
+            className="animate-bounce"
             onClick={() => {
               setUpdating(true);
               update?.downloadAndInstall((event) => {
