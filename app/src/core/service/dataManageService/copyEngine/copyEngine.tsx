@@ -15,6 +15,8 @@ import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
 import { MouseLocation } from "../../controlService/MouseLocation";
+import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
+import { RectanglePushInEffect } from "../../feedbackService/effectEngine/concrete/RectanglePushInEffect";
 
 /**
  * 专门用来管理节点复制的引擎
@@ -231,6 +233,18 @@ async function readClipboardItems(mouseLocation: Vector) {
               location: [mouseLocation.x, mouseLocation.y],
             });
             StageManager.addUrlNode(urlNode);
+
+            // 添加到section
+            const mouseSections = SectionMethods.getSectionsByInnerLocation(mouseLocation);
+            if (mouseSections.length > 0) {
+              StageManager.goInSection([urlNode], mouseSections[0]);
+              Stage.effectMachine.addEffect(
+                RectanglePushInEffect.sectionGoInGoOut(
+                  urlNode.collisionBox.getRectangle(),
+                  mouseSections[0].collisionBox.getRectangle(),
+                ),
+              );
+            }
           } else {
             // 只是普通的文本
             const textNode = new TextNode({
@@ -242,6 +256,18 @@ async function readClipboardItems(mouseLocation: Vector) {
             });
             textNode.move(new Vector(-textNode.rectangle.size.x / 2, -textNode.rectangle.size.y / 2));
             StageManager.addTextNode(textNode);
+
+            // 添加到section
+            const mouseSections = SectionMethods.getSectionsByInnerLocation(mouseLocation);
+            if (mouseSections.length > 0) {
+              StageManager.goInSection([textNode], mouseSections[0]);
+              Stage.effectMachine.addEffect(
+                RectanglePushInEffect.sectionGoInGoOut(
+                  textNode.collisionBox.getRectangle(),
+                  mouseSections[0].collisionBox.getRectangle(),
+                ),
+              );
+            }
           }
         }
       }
