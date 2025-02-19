@@ -502,6 +502,7 @@ appMenu:
     items:
       refresh: 刷新
       fullscreen: 全屏
+      cancelFullscreen: 退出全屏
 
 startFilePanel:
   title: 选择启动时自动加载的工程文件

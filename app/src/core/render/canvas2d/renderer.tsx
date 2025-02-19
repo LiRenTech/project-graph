@@ -728,6 +728,7 @@ export namespace Renderer {
       lastTime = currentTime;
     }
     const detailsData = [
+      "调试信息已开启，可在设置中关闭，或快捷键关闭",
       `scale: ${Camera.currentScale}`,
       `target: ${Camera.targetScale.toFixed(2)}`,
       `shake: ${Camera.shakeLocation.toString()}`,
