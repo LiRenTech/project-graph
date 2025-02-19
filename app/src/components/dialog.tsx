@@ -151,9 +151,12 @@ export namespace Dialog {
         </div>
         <div
           data-tauri-drag-region
-          className={cn("fixed left-0 top-0 z-[100] h-full w-full bg-black opacity-0", {
-            "opacity-30": show,
-          })}
+          className={cn(
+            "fixed left-0 top-0 z-[100] h-full w-full cursor-grab bg-black opacity-0 active:cursor-grabbing",
+            {
+              "opacity-30": show,
+            },
+          )}
         ></div>
       </>
     );
