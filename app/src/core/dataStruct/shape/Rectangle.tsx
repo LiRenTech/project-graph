@@ -304,8 +304,8 @@ export class Rectangle extends Shape {
    * 判断点是否在矩形内
    */
   public isPointIn(point: Vector): boolean {
-    const collision_x = this.left <= point.x && this.right >= point.x;
-    const collision_y = this.top <= point.y && this.bottom >= point.y;
+    const collision_x = this.left < point.x && point.x < this.right;
+    const collision_y = this.top < point.y && point.y < this.bottom;
     return collision_x && collision_y;
   }
 

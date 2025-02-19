@@ -160,9 +160,9 @@ export class Line extends Shape {
       return { intersects: false };
     }
 
-    // 如果线段的一个端点恰好位于水平线上，则视为相交
+    // 如果线段的一个端点恰好位于水平线上，则不视为相交 # 253
     if (this.start.y === y || this.end.y === y) {
-      return { intersects: true, point: new Vector(this.start.x, y) };
+      return { intersects: false };
     }
 
     // 计算线段在y轴方向上的变化率（斜率）
@@ -186,9 +186,9 @@ export class Line extends Shape {
       return { intersects: false };
     }
 
-    // 如果线段的一个端点恰好位于垂直线上，则视为相交
+    // 如果线段的一个端点恰好位于垂直线上，则不视为相交 # 253
     if (this.start.x === x || this.end.x === x) {
-      return { intersects: true, point: new Vector(x, this.start.y) };
+      return { intersects: false };
     }
 
     // 计算线段在x轴方向上的变化率（倒数斜率）
