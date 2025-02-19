@@ -57,7 +57,7 @@ import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryMana
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
   const [file, setFile] = useAtom(fileAtom);
-  const [isClassroomMode, setIsClassroomMode] = useAtom(isClassroomModeAtom);
+  const [isClassroomMode] = useAtom(isClassroomModeAtom);
   const { t } = useTranslation("appMenu");
   const [, setRecentFilePanelOpen] = useAtom(isRecentFilePanelOpenAtom);
   const [, setExportTreeTextPanelOpen] = useAtom(isExportTreeTextPanelOpenAtom);
@@ -524,14 +524,15 @@ export default function AppMenu({ className = "", open = false }: { className?: 
 
         <Col
           icon={isClassroomMode ? <MonitorX /> : <Presentation />}
-          onClick={() => {
+          onClick={async () => {
             if (!isClassroomMode) {
               Dialog.show({
                 title: "恢复方法",
                 content: "左上角菜单按钮仅仅是透明了，并没有消失",
               });
             }
-            setIsClassroomMode(!isClassroomMode);
+            // setIsClassroomMode(!isClassroomMode);
+            Settings.set("isClassroomMode", !(await Settings.get("isClassroomMode")));
           }}
         >
           {isClassroomMode ? "退出演示" : "演示模式"}

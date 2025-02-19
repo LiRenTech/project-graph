@@ -19,6 +19,7 @@ export namespace Settings {
     theme: "black" | "white" | "macaron" | "morandi";
     uiTheme: "light" | "dark" | "macaron" | "morandi" | "blueGreen";
     showTipsOnUI: boolean;
+    isClassroomMode: boolean;
     isRenderCenterPointer: boolean;
     showGrid: boolean; // 废弃
     showBackgroundHorizontalLines: boolean;
@@ -102,6 +103,7 @@ export namespace Settings {
     theme: "black",
     uiTheme: "blueGreen",
     showTipsOnUI: true,
+    isClassroomMode: false,
     isRenderCenterPointer: false,
     showGrid: true,
     showBackgroundHorizontalLines: true,

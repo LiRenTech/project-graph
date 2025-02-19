@@ -150,15 +150,17 @@ async function registerKeyBinds() {
     StageHistoryManager.redo();
   });
 
+  // 危险操作，配置一个不容易触发的快捷键
   (
     await KeyBinds.create("reload", "F5", {
-      control: false,
-      alt: false,
-      shift: false,
+      control: true,
+      alt: true,
+      shift: true,
     })
   ).down(() => {
     Dialog.show({
       title: "重新加载应用",
+      type: "warning",
       content:
         "此快捷键用于在废档了或软件卡住了的情况下重启，您按下了重新加载应用快捷键，是否要重新加载应用？这会导致您丢失所有未保存的工作。",
       buttons: [
@@ -174,6 +176,16 @@ async function registerKeyBinds() {
         },
       ],
     });
+  });
+  (
+    await KeyBinds.create("checkoutClassroomMode", "F5", {
+      control: false,
+      alt: false,
+      shift: false,
+    })
+  ).up(async () => {
+    // F5 是PPT的播放快捷键
+    Settings.set("isClassroomMode", !(await Settings.get("isClassroomMode")));
   });
 
   (

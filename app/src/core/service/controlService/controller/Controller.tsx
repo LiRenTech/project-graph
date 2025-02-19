@@ -215,7 +215,7 @@ export namespace Controller {
     if (event.ctrlKey && (event.key === "f" || event.key === "g")) {
       event.preventDefault();
     }
-    if (event.key === "F3" || event.key === "F7") {
+    if (event.key === "F3" || event.key === "F7" || event.key === "F5") {
       // 禁用F3查找功能，防止浏览器默认行为
       // F7 插入光标浏览功能
       event.preventDefault();

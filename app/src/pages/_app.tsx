@@ -48,7 +48,7 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [file, setFile] = useAtom(fileAtom);
-  const [isClassroomMode] = useAtom(isClassroomModeAtom);
+  const [isClassroomMode, setIsClassroomMode] = useAtom(isClassroomModeAtom);
   const filename = React.useMemo(() => PathString.absolute2file(file), [file]);
   const [useNativeTitleBar, setUseNativeTitleBar] = React.useState(false);
   const [isWindowCollapsing, setIsWindowCollapsing] = useAtom(isWindowCollapsingAtom);
@@ -91,6 +91,9 @@ export default function App() {
       if (useNativeTitleBar) {
         getCurrentWindow().setDecorations(true);
       }
+    });
+    Settings.watch("isClassroomMode", (isClassroomMode) => {
+      setIsClassroomMode(isClassroomMode);
     });
 
     const saveInterval = setInterval(() => {

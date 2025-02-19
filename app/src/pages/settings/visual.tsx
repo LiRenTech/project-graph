@@ -14,6 +14,7 @@ import {
   MessageCircleQuestion,
   Move3d,
   Palette,
+  Presentation,
   Ratio,
   ReceiptText,
   Rows4,
@@ -35,6 +36,7 @@ export default function Visual() {
         <SettingField icon={<Palette />} settingKey="uiTheme" type="select" />
         <SettingField icon={<AppWindow />} settingKey="showTipsOnUI" type="switch" />
         <SettingField icon={<AppWindowMac />} settingKey="useNativeTitleBar" type="switch" />
+        <SettingField icon={<Presentation />} settingKey="isClassroomMode" type="switch" />
         <SettingField icon={<Blend />} settingKey="windowBackgroundAlpha" type="slider" min={0} max={1} step={0.01} />
       </FieldGroup>
       <FieldGroup title="Background 背景设置" icon={<Grip />}>
