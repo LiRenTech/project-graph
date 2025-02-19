@@ -525,6 +525,12 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         <Col
           icon={isClassroomMode ? <MonitorX /> : <Presentation />}
           onClick={() => {
+            if (!isClassroomMode) {
+              Dialog.show({
+                title: "恢复方法",
+                content: "左上角菜单按钮仅仅是透明了，并没有消失",
+              });
+            }
             setIsClassroomMode(!isClassroomMode);
           }}
         >
