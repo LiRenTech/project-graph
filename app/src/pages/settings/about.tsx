@@ -19,6 +19,8 @@ import { cn } from "../../utils/cn";
 
 export default function About() {
   const [isCheckingUpdate, setIsCheckingUpdate] = React.useState(false);
+  const [isCheckingUpdateSuccess, setIsCheckingUpdateSuccess] = React.useState(false);
+
   const [version, setVersion] = React.useState("");
   const [versionName, setVersionName] = React.useState("");
   const [versionNameEn, setVersionNameEn] = React.useState("");
@@ -54,7 +56,16 @@ export default function About() {
     invoke("set_update_channel", { channel: updateChannel })
       .then(() => check())
       .then(setUpdate)
-      .then(() => setIsCheckingUpdate(false));
+      .then(() => setIsCheckingUpdate(false))
+      .catch(() => {
+        setIsCheckingUpdate(false);
+        setIsCheckingUpdateSuccess(false);
+        // Dialog.show({
+        //   title: "无网页连接",
+        //   content: "网络连接失败，无法自动检查是否更新：" + err,
+        //   type: "error",
+        // });
+      });
   }, [updateChannel]);
 
   React.useEffect(() => {
@@ -90,6 +101,9 @@ export default function About() {
         </p>
         {isCheckingUpdate && (
           <p className="text-panel-details-text animate-pulse text-center text-sm">{t("updater.checkingUpdate")}</p>
+        )}
+        {!isCheckingUpdate && !isCheckingUpdateSuccess && (
+          <p className="text-panel-details-text animate-pulse text-center text-sm">{t("updater.checkUpdateFail")}</p>
         )}
         {update && update.available && (
           <Button

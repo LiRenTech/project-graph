@@ -11,6 +11,7 @@ about:
     available: 新版本
     downloading: 下载中
     checkingUpdate: 检查新版本是否存在中
+    checkUpdateFail: 无法获取最新版本信息，请检查网络
   links:
     documentation: 文档
     github: Github
