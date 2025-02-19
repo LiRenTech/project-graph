@@ -65,6 +65,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   const [isClipboardClearShow, setIsCopyClearShow] = useState(false);
   const [isHaveSelectedNode, setSsHaveSelectedNode] = useState(false);
   const [isHaveSelectedEdge, setSsHaveSelectedEdge] = useState(false);
+  const [isDrawing, setIsDrawing] = useState(false);
 
   const update = () => {
     setSsHaveSelectedNode(StageManager.selectedNodeCount > 0);
@@ -205,12 +206,14 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       />
       <ToolbarItem
         description="切换涂鸦和鼠标"
-        icon={Stage.drawingMachine.isUsing ? <PenTool /> : <MousePointer />}
+        icon={isDrawing ? <PenTool /> : <MousePointer />}
         handleFunction={() => {
           if (Stage.drawingMachine.isUsing) {
             Stage.drawingMachine.shutDown();
+            setIsDrawing(false);
           } else {
             Stage.drawingMachine.open();
+            setIsDrawing(true);
           }
         }}
       />

@@ -35,7 +35,7 @@ export default function ColorPanel() {
   };
 
   return (
-    <div className="bg-panel-bg rounded-lg">
+    <div className="bg-panel-bg flex h-64 w-64 flex-col rounded-lg">
       {/* 官方提供的默认颜色 */}
       <div className="flex flex-wrap items-center justify-center">
         <div
@@ -122,7 +122,7 @@ export default function ColorPanel() {
       </div>
       <hr className="text-panel-details-text my-2" />
       {/* 用户颜色库 */}
-      <div className="flex max-w-64 flex-wrap items-center justify-center">
+      <div className="flex max-w-64 flex-1 flex-wrap items-center justify-center">
         {currentColors.map((color) => {
           return (
             <div

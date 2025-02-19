@@ -6,6 +6,11 @@ import once from "lodash/once";
 import Box from "./Box";
 
 export namespace Popup {
+  /**
+   * 弹出一个弹窗
+   * @param children
+   * @returns
+   */
   export function show(children: React.ReactNode): Promise<void> {
     return new Promise((resolve) => {
       // 启动一个新的React实例
@@ -64,6 +69,7 @@ export namespace Popup {
       if (ref.current) {
         // 调整弹窗位置，确保不会超出屏幕边界
         const { width, height } = ref.current.getBoundingClientRect();
+        console.log(width, height);
         setAdjustedX(x);
         setAdjustedY(y);
         if (x + width > window.innerWidth) {
@@ -102,8 +108,9 @@ export namespace Popup {
     return (
       <Box
         ref={ref}
-        className={cn("fixed z-[102] scale-75 p-2 opacity-0", {
-          "scale-100 opacity-100": show,
+        // 注：这个弹出面板不能用缩放动画，否则导致计算大小初始化的时候不准确，进而导致从边缘弹出时偏移位置计算不准确
+        className={cn("border-icon-button-border fixed z-[102] opacity-0", {
+          "opacity-100": show,
           "opacity-0 transition-none": adjusting,
         })}
         style={{
