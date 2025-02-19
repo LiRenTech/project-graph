@@ -1,3 +1,4 @@
+import { Dialog } from "../../components/dialog";
 import { NumberFunctions } from "../algorithm/numberFunctions";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
@@ -115,7 +116,27 @@ export namespace Camera {
     // 彩蛋
     if (currentScale > 100) {
       currentScale = 0.001;
-      targetScale = 0;
+      targetScale = 0.01;
+      Dialog.show({
+        title: "触发彩蛋：《微观尽头》",
+        content: "您已抵达微观的尽头，世界就此反转，现在回归到了宏观。默认快捷键F可根据内容重置视野",
+        type: "success",
+        buttons: [
+          {
+            text: "知道了",
+          },
+          {
+            text: "我有更好的idea",
+            onClick: () => {
+              Dialog.show({
+                title: "反馈渠道",
+                content: "您好，欢迎您提供更好的idea，可在“关于”界面找到反馈渠道",
+                type: "info",
+              });
+            },
+          },
+        ],
+      });
     }
 
     let friction = Vector.getZero();
