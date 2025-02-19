@@ -17,7 +17,7 @@ export namespace Settings {
     // 视觉相关
     lineStyle: "straight" | "bezier" | "vertical";
     theme: "black" | "white" | "macaron" | "morandi";
-    uiTheme: "light" | "dark" | "macaron" | "morandi";
+    uiTheme: "light" | "dark" | "macaron" | "morandi" | "blueGreen";
     showTipsOnUI: boolean;
     isRenderCenterPointer: boolean;
     showGrid: boolean; // 废弃
@@ -100,14 +100,14 @@ export namespace Settings {
     // 视觉相关
     lineStyle: "straight",
     theme: "black",
-    uiTheme: "dark",
+    uiTheme: "blueGreen",
     showTipsOnUI: true,
     isRenderCenterPointer: false,
     showGrid: true,
-    showBackgroundHorizontalLines: false,
-    showBackgroundVerticalLines: false,
-    showBackgroundDots: true,
-    showBackgroundCartesian: false,
+    showBackgroundHorizontalLines: true,
+    showBackgroundVerticalLines: true,
+    showBackgroundDots: false,
+    showBackgroundCartesian: true, // 1.4.17 开始必须要默认显示坐标系，没有坐标系可能会让用户迷路
     windowBackgroundAlpha: 0.9,
     enableTagTextNodesBigDisplay: false,
     showDebug: false, // 从1.4.7开始，以后用户安装软件后不默认显示调试信息，进而避免出现让用户感到困惑“这一大堆字是什么”

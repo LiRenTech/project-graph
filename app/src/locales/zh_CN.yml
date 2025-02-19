@@ -106,10 +106,10 @@ settings:
     description: 选择 UI 主题颜色，影响按钮、输入框、菜单等的颜色，而不是画布的颜色
     options:
       dark: 黑夜主题
+      blueGreen: 公园主题
       light: 明亮主题
       macaron: 马卡龙色系主题
       morandi: 莫兰迪色系主题
-      blueGreen: 军事基地主题
   showTipsOnUI:
     title: 在 UI 中显示提示信息
     description: |
