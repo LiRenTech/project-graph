@@ -16,6 +16,7 @@ import { SettingField } from "./_field";
 import { open } from "@tauri-apps/plugin-shell";
 import { useNavigate } from "react-router-dom";
 import { cn } from "../../utils/cn";
+import { Dialog } from "../../components/dialog";
 
 export default function About() {
   const [isCheckingUpdate, setIsCheckingUpdate] = React.useState(false);
@@ -109,11 +110,20 @@ export default function About() {
           <Button
             className="animate-bounce"
             onClick={() => {
+              if (updating) {
+                // 防止重复下载
+                Dialog.show({
+                  title: t("updater.downloading"),
+                  content: "不要重复点击",
+                });
+                return;
+              }
               setUpdating(true);
               update?.downloadAndInstall((event) => {
                 switch (event.event) {
                   case "Started":
                     setNewVersionFileSize(event.data.contentLength ?? 0);
+                    console.log("Started", event.data.contentLength);
                     break;
                   case "Progress":
                     setNewVersionDownloadedSize((prev) => prev + (event.data.chunkLength ?? 0));
