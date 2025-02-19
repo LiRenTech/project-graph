@@ -153,10 +153,28 @@ export class Line extends Shape {
     // 检查交点的y坐标是否在垂直线段的范围内
     return intersectionY >= Math.min(yBottom, yTop) && intersectionY <= Math.max(yBottom, yTop);
   }
-  // 更新 isIntersectingWithHorizontalLine 方法
+  /**
+   * 一个线段是否和一个水平线段相交
+   *  this line
+   *    xx
+   *      x
+   *  ├────xxx─────────┤
+   *         xxx
+   *            xxx
+   *  xLeft       xxx  xRight
+   *
+   * @param y
+   * @param xLeft
+   * @param xRight
+   * @returns
+   */
   getIntersectingWithHorizontalLine(y: number, xLeft: number, xRight: number): IntersectionResult {
-    // 如果线段两端点的y坐标都在水平线的同一侧，则不可能相交
-    if ((this.start.y - y) * (this.end.y - y) > 0) {
+    // 如果两端点都在水平线段上下两侧区域，则不可能相交
+    if ((this.start.y < y && this.end.y < y) || (this.start.y > y && this.end.y > y)) {
+      return { intersects: false };
+    }
+    // 如果两端点都在水平线段左右两侧区域，则不可能相交
+    if ((this.start.x < xLeft && this.end.x < xLeft) || (this.start.x > xRight && this.end.x > xRight)) {
       return { intersects: false };
     }
 
@@ -179,10 +197,30 @@ export class Line extends Shape {
     return { intersects: false };
   }
 
-  // 更新 isIntersectingWithVerticalLine 方法
+  /**
+   * 当前线段和垂直线段相交算法
+   * start
+   * x   │yTop
+   *  x  │
+   *   x │
+   *    x│
+   *     x   end
+   *     │x
+   *     │
+   *     │yBottom
+   * @param x
+   * @param yBottom
+   * @param yTop
+   * @returns
+   */
   getIntersectingWithVerticalLine(x: number, yBottom: number, yTop: number): IntersectionResult {
     // 如果线段两端点的x坐标都在垂直线的同一侧，则不可能相交
-    if ((this.start.x - x) * (this.end.x - x) > 0) {
+    if ((this.start.x < x && this.end.x < x) || (this.start.x > x && this.end.x > x)) {
+      return { intersects: false };
+    }
+    // 如果线段两端都在顶部或底部，则不可能相交
+    // 这里注意y坐标的顺序，yTop在yBottom的上方
+    if ((this.start.y > yBottom && this.end.y > yBottom) || (this.start.y < yTop && this.end.y < yTop)) {
       return { intersects: false };
     }
 
