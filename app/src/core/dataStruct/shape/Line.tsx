@@ -97,14 +97,18 @@ export class Line extends Shape {
    * @param xRight 水平线段的右端点
    */
   isIntersectingWithHorizontalLine(y: number, xLeft: number, xRight: number): boolean {
-    // 如果线段两端点的y坐标都在水平线的同一侧，则不可能相交
-    if ((this.start.y - y) * (this.end.y - y) > 0) {
+    // 如果两端点都在水平线段上下两侧区域，则不可能相交
+    if ((this.start.y < y && this.end.y < y) || (this.start.y > y && this.end.y > y)) {
+      return false;
+    }
+    // 如果两端点都在水平线段左右两侧区域，则不可能相交
+    if ((this.start.x < xLeft && this.end.x < xLeft) || (this.start.x > xRight && this.end.x > xRight)) {
       return false;
     }
 
-    // 如果线段的一个端点恰好位于水平线上，则视为相交
+    // 如果线段的一个端点恰好位于水平线上，则不视为相交 # 253
     if (this.start.y === y || this.end.y === y) {
-      return true;
+      return false;
     }
 
     // 计算线段在y轴方向上的变化率（斜率）
@@ -135,13 +139,18 @@ export class Line extends Shape {
    */
   isIntersectingWithVerticalLine(x: number, yBottom: number, yTop: number): boolean {
     // 如果线段两端点的x坐标都在垂直线的同一侧，则不可能相交
-    if ((this.start.x - x) * (this.end.x - x) > 0) {
+    if ((this.start.x < x && this.end.x < x) || (this.start.x > x && this.end.x > x)) {
+      return false;
+    }
+    // 如果线段两端都在顶部或底部，则不可能相交
+    // 这里注意y坐标的顺序，yTop在yBottom的上方
+    if ((this.start.y > yBottom && this.end.y > yBottom) || (this.start.y < yTop && this.end.y < yTop)) {
       return false;
     }
 
-    // 如果线段的一个端点恰好位于垂直线上，则视为相交
+    // 如果线段的一个端点恰好位于垂直线上，则不视为相交 # 253
     if (this.start.x === x || this.end.x === x) {
-      return true;
+      return false;
     }
 
     // 计算线段在x轴方向上的变化率（倒数斜率）
