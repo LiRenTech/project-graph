@@ -165,7 +165,7 @@ export namespace Camera {
 
     /** 鼠标交互位置的view坐标系相对于画面左上角的坐标 */
     const diffViewVector = Renderer.transformWorld2View(targetLocationByScale);
-    dealCameraScale();
+    dealCameraScaleInTick();
     if (scaleCameraByMouseLocation) {
       if (tickNumber > tickNumberUpper) {
         setLocationByOtherLocation(targetLocationByScale, diffViewVector);
@@ -228,9 +228,10 @@ export namespace Camera {
 
   /**
    * 单纯缩放镜头
+   * 让currentScale不断逼近targetScale
    * @returns 缩放前后变化的比值
    */
-  function dealCameraScale() {
+  function dealCameraScaleInTick() {
     let newCurrentScale = currentScale;
 
     if (currentScale < targetScale) {

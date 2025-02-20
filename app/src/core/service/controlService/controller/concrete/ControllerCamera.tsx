@@ -184,10 +184,20 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
     return;
   }
   // 禁用触控板在这里的滚动
+  const isUsingTouchPad = !isMouseWheel(event);
   if (!Stage.enableWindowsTouchPad) {
-    if (!isMouseWheel(event)) {
+    if (isUsingTouchPad) {
+      // 禁止使用触摸板
+      Stage.effectMachine.addEffect(TextRiseEffect.default("已禁用触控板滚动"));
       return;
     }
+  }
+  // 👇下面都是允许使用触控板的操作
+  if (isUsingTouchPad) {
+    // 是触控板
+    // zoomCameraByTouchPadTwoFingerMove(event);
+    moveCameraByTouchPadTwoFingerMove(event);
+    return;
   }
   // 获取触发滚轮的鼠标位置
   const mouseLocation = new Vector(event.clientX, event.clientY);
@@ -244,6 +254,30 @@ function zoomCameraByMouseWheel(event: WheelEvent) {
     Camera.targetScale *= 1.2;
   }
 }
+
+// function zoomCameraByTouchPadTwoFingerMove(event: WheelEvent) {
+//   // 过滤 -0
+//   if (Math.abs(event.deltaY) < 0.1) {
+//     return;
+//   }
+//   const newValue = event.deltaY / 1000;
+
+//   Camera.targetScale *= 1 + newValue;
+//   // 限制
+//   Camera.targetScale = Math.min(10, Math.max(Camera.targetScale, 0.1));
+// }
+
+function moveCameraByTouchPadTwoFingerMove(event: WheelEvent) {
+  // 过滤 -0
+  if (Math.abs(event.deltaX) < 0.1 && Math.abs(event.deltaY) < 0.1) {
+    return;
+  }
+  const dx = event.deltaX / 500;
+  const dy = event.deltaY / 500;
+  const diffLocation = new Vector(dx, dy).multiply((Camera.moveAmplitude * 50) / Camera.currentScale);
+  Camera.location = Camera.location.add(diffLocation);
+}
+
 function moveCameraByMouseWheel(event: WheelEvent) {
   if (event.deltaY > 0) {
     // 向上滚动是上移
@@ -278,7 +312,6 @@ function isMouseWheel(event: WheelEvent): boolean {
       // 绝对没问题
       return true;
     } else {
-      Stage.effectMachine.addEffect(TextRiseEffect.default("已禁用触控板滚动, x轴滚动被过滤：" + intDiff));
       return false;
     }
   }
@@ -289,7 +322,6 @@ function isMouseWheel(event: WheelEvent): boolean {
       // 绝对没问题
       return true;
     } else {
-      Stage.effectMachine.addEffect(TextRiseEffect.default("已禁用触控板滚动, y轴滚动被过滤：" + intDiff));
       return false;
     }
   }
