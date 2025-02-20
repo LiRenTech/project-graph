@@ -714,3 +714,13 @@ keyBinds:
       按下后，舞台上所有选中的文本节点都会被以默认方式或浏览器方式打开。
       例如一个节点内容为 "D:/Desktop/a.txt"，选中此节点按下快捷键之后，能以系统默认方式打开此文件
       如果节点内容为网页地址 "https://project-graph.top"，会以系统默认浏览器打开网页内容
+  checkoutClassroomMode:
+    title: 进入或退出演示模式
+    description: |
+      按下后，进入演示模式，所有UI都会隐藏，顶部按钮会透明化处理
+      再按一次恢复
+  searchText:
+    title: 搜索文本
+    description: |
+      按下后，打开搜索框，可以输入搜索内容
+      搜索框支持部分匹配，例如输入 "a" 能搜索到 "apple" 等
