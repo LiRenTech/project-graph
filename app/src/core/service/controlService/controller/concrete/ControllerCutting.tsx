@@ -160,7 +160,7 @@ class CuttingControllerClass extends ControllerClass {
         if (entity instanceof TextNode) {
           fillColor = entity.color.clone();
         } else if (entity instanceof Section) {
-          fillColor = entity.color.toNewAlpha(0.5);
+          fillColor = entity.color.clone();
         }
 
         Stage.effectMachine.addEffect(

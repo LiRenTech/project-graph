@@ -312,10 +312,10 @@ export namespace Renderer {
   /** 鼠标hover的边 */
   function renderHoverCollisionBox() {
     for (const edge of Stage.mouseInteractionCore.hoverEdges) {
-      CollisionBoxRenderer.render(edge.collisionBox, new Color(0, 255, 0, 0.5));
+      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelectedColor);
     }
     for (const section of Stage.mouseInteractionCore.hoverSections) {
-      CollisionBoxRenderer.render(section.collisionBox, new Color(0, 255, 0, 0.5));
+      CollisionBoxRenderer.render(section.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelectedColor);
     }
   }
 

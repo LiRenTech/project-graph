@@ -5,6 +5,7 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { RenderUtils } from "../../../../render/canvas2d/utilsRenderer/RenderUtils";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectParticle } from "../effectElements/effectParticle";
 import { EffectObject } from "../effectObject";
 
@@ -26,7 +27,7 @@ export class EntityDashTipEffect extends EffectObject {
           pointLocation,
           pointLocation.subtract(rect.center).normalize().multiply(Random.randomFloat(0, initSpeedSize)),
           rect.center.subtract(pointLocation).normalize().multiply(initAccelerationSize),
-          Color.White,
+          StageStyleManager.currentStyle.effects.dash,
           1,
         ),
       );
@@ -39,7 +40,7 @@ export class EntityDashTipEffect extends EffectObject {
           pointLocation,
           pointLocation.subtract(rect.center).normalize().multiply(Random.randomFloat(0, initSpeedSize)),
           rect.center.subtract(pointLocation).normalize().multiply(initAccelerationSize),
-          Color.White,
+          StageStyleManager.currentStyle.effects.dash,
           1,
         ),
       );
@@ -52,7 +53,7 @@ export class EntityDashTipEffect extends EffectObject {
           pointLocation,
           pointLocation.subtract(rect.center).normalize().multiply(Random.randomFloat(0, initSpeedSize)),
           rect.center.subtract(pointLocation).normalize().multiply(initAccelerationSize),
-          Color.White,
+          StageStyleManager.currentStyle.effects.dash,
           1,
         ),
       );
@@ -65,7 +66,7 @@ export class EntityDashTipEffect extends EffectObject {
           pointLocation,
           pointLocation.subtract(rect.center).normalize().multiply(Random.randomFloat(0, initSpeedSize)),
           rect.center.subtract(pointLocation).normalize().multiply(initAccelerationSize),
-          Color.White,
+          StageStyleManager.currentStyle.effects.dash,
           1,
         ),
       );

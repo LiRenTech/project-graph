@@ -289,22 +289,22 @@
 /* 马卡龙主题（柔和粉紫/淡黄） */
 [data-theme="macaron"] {
   /* 基础面板 */
-  --color-panel-bg: oklch(0.97 0.04 60); /* 米白黄 */
+  --color-panel-bg: #f4c5b3; /* 米白黄 */
   --color-panel-text: oklch(0.45 0.08 340); /* 灰粉紫 */
   --color-panel-details-text: oklch(0.55 0.06 340);
 
   /* 工具提示 */
-  --color-tooltip-bg: oklch(0.95 0.06 340); /* 雾粉色 */
+  --color-tooltip-bg: #ffe8eb; /* 雾粉色 */
   --color-tooltip-text: oklch(0.4 0.08 340);
   --color-tooltip-border: oklch(0.88 0.05 340);
 
   /* 按钮系统 */
-  --color-button-bg: oklch(0.95 0.05 30); /* 浅杏色 */
-  --color-button-text: oklch(0.45 0.08 340);
-  --color-button-border: oklch(0.9 0.04 30);
-  --color-icon-button-bg: oklch(0.96 0.05 320); /* 灰调紫 */
-  --color-icon-button-text: oklch(0.45 0.08 320);
-  --color-icon-button-border: oklch(0.9 0.04 320);
+  --color-button-bg: #f9d8dc; /* 浅杏色 */
+  --color-button-text: #573541;
+  --color-button-border: #edc5d0;
+  --color-icon-button-bg: #f9d8dc; /* 灰调紫 */
+  --color-icon-button-text: #573541;
+  --color-icon-button-border: #edc5d0;
 
   /* 输入控件 */
   --color-input-bg: oklch(0.98 0.02 60); /* 极浅米黄 */
@@ -349,14 +349,14 @@
   --color-switch-true-dot: oklch(0.96 0.03 60);
 
   /* 菜单系统 */
-  --color-appmenu-bg: oklch(0.97 0.04 320); /* 雾紫色 */
-  --color-appmenu-border: oklch(0.9 0.04 320);
-  --color-appmenu-category-title: oklch(0.65 0.06 340);
-  --color-appmenu-item-text: oklch(0.45 0.08 340);
-  --color-appmenu-hover-bg: oklch(0.94 0.06 340); /* 薄纱粉 */
+  --color-appmenu-bg: #f9d8dc;
+  --color-appmenu-border: #dfb5c0;
+  --color-appmenu-category-title: #866171;
+  --color-appmenu-item-text: #573541;
+  --color-appmenu-hover-bg: #f0c5b1; /* 薄纱粉 */
 
   /* 工具栏 */
-  --color-toolbar-bg: oklch(0.95 0.05 30); /* 浅杏色 */
+  --color-toolbar-bg: #f9d8dc; /* 浅杏色 */
   --color-toolbar-icon: oklch(0.45 0.08 340);
   --color-toolbar-icon-hover-bg: oklch(0.94 0.06 340 / 0.2);
   --color-toolbar-border: oklch(0.9 0.04 30);

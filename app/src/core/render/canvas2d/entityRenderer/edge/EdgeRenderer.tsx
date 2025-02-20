@@ -76,7 +76,7 @@ export namespace EdgeRenderer {
 
     // 选中的高亮效果
     if (edge.isSelected) {
-      CollisionBoxRenderer.render(edge.collisionBox, new Color(255, 255, 0, 0.5));
+      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
     }
   }
 

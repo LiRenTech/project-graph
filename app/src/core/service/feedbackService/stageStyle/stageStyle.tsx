@@ -100,25 +100,25 @@ export class StageStyle {
   static styleMacaron(): StageStyle {
     const style = new StageStyle();
     // 浅粉色背景
-    style.BackgroundColor = new Color(249, 233, 234); // 樱粉色
+    style.BackgroundColor = new Color(243, 233, 234); // 樱粉色
 
     // 网格线
-    style.GridNormalColor = new Color(98, 98, 111, 0.3);
-    style.GridHeavyColor = new Color(98, 98, 111, 0.5);
+    style.GridNormalColor = new Color(111, 98, 98, 0.3);
+    style.GridHeavyColor = new Color(111, 98, 98, 0.5);
 
     // 调试文字使用灰紫色
-    style.DetailsDebugTextColor = new Color(152, 138, 158); // 灰紫
+    style.DetailsDebugTextColor = new Color(210, 173, 180); // 灰紫
 
     // 选择框
-    style.SelectRectangleBorderColor = new Color(108, 71, 27, 0.5);
-    style.SelectRectangleFillColor = new Color(221, 169, 208, 0.3);
+    style.SelectRectangleBorderColor = new Color(77, 16, 24, 0.5);
+    style.SelectRectangleFillColor = new Color(227, 180, 184, 0.3);
 
-    // 元素边框使用珊瑚粉
-    style.StageObjectBorderColor = new Color(242, 133, 133); // 珊瑚粉
+    // 元素边框应该深一些了
+    style.StageObjectBorderColor = new Color(114, 36, 78);
 
     // 碰撞盒颜色
-    style.CollideBoxPreSelectedColor = new Color(169, 221, 208, 0.3); // 薄荷绿
-    style.CollideBoxSelectedColor = new Color(143, 93, 147); // 169, 221, 208
+    style.CollideBoxPreSelectedColor = new Color(238, 63, 77, 0.3);
+    style.CollideBoxSelectedColor = new Color(238, 63, 77); // 169, 221, 208
 
     // 文字使用深紫色
     style.NodeDetailsTextColor = new Color(107, 89, 108); // 深灰紫
@@ -126,7 +126,7 @@ export class StageStyle {
     // 特效颜色调整
     style.effects = {
       flash: new Color(139, 88, 145),
-      dash: new Color(107, 89, 108), // 薰衣草粒子
+      dash: Color.Black,
       windowFlash: new Color(249, 233, 234), // 背景同色
       warningShadow: new Color(177, 133, 189),
       successShadow: new Color(120, 147, 175),

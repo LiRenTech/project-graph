@@ -141,7 +141,7 @@ export namespace SectionRenderer {
 
     if (section.isSelected) {
       // 在外面增加一个框
-      CollisionBoxRenderer.render(section.collisionBox, new Color(0, 255, 0, 0.5));
+      CollisionBoxRenderer.render(section.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
     }
     // debug: 绿色虚线 观察父子关系
     if (Renderer.isShowDebug) {
