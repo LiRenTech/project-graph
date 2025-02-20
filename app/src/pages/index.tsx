@@ -12,7 +12,6 @@ import { CursorNameEnum } from "../types/cursors";
 import DetailsEditSidePanel from "./_details_edit_side_panel";
 import DetailsEditSmallPanel from "./_details_edit_small_panel";
 import HintText from "./_hint_text";
-import SearchingNodePanel from "./_popup_panel/_searching_node_panel";
 import Toolbar from "./_toolbar";
 
 export default function Home() {
@@ -125,7 +124,6 @@ export default function Home() {
   return (
     <>
       {!isWindowCollapsing && !isClassroomMode && <Toolbar />}
-      <SearchingNodePanel />
       {/* 这个打算被取代 */}
       {nodeDetailsPanel === "small" ? <DetailsEditSmallPanel /> : <DetailsEditSidePanel />}
       {!isWindowCollapsing && !isClassroomMode && uiShow && <HintText />}

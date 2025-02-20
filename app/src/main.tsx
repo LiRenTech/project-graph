@@ -38,6 +38,7 @@ import { StageManager } from "./core/stage/stageManager/StageManager";
 import { EdgeCollisionBoxGetter } from "./core/stage/stageObject/association/EdgeCollisionBoxGetter";
 import "./index.css";
 import ColorPanel from "./pages/_popup_panel/_color_panel";
+import SearchingNodePanel from "./pages/_popup_panel/_searching_node_panel";
 import "./polyfills/roundRect";
 import { Direction } from "./types/directions";
 import { openBrowserOrFile } from "./utils/externalOpen";
@@ -466,6 +467,15 @@ async function registerKeyBinds() {
     })
   ).down(() => {
     Settings.set("protectingPrivacy", !Renderer.protectingPrivacy);
+  });
+  (
+    await KeyBinds.create("searchText", "f", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    Popup.show(<SearchingNodePanel />);
   });
   (
     await KeyBinds.create("openTextNodeByContentExternal", "e", {

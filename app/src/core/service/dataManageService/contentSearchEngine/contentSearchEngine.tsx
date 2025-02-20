@@ -11,6 +11,12 @@ export class ContentSearchEngine {
    * 搜索结果
    */
   public searchResultNodes: TextNode[] = [];
+
+  /**
+   * 是否忽略大小写
+   */
+  public isCaseSensitive = false;
+
   /**
    * 搜索结果的索引
    */
@@ -20,8 +26,14 @@ export class ContentSearchEngine {
     // 开始搜索
     this.searchResultNodes = [];
     for (const node of StageManager.getTextNodes()) {
-      if (node.text.includes(searchString)) {
-        this.searchResultNodes.push(node);
+      if (this.isCaseSensitive) {
+        if (node.text.includes(searchString)) {
+          this.searchResultNodes.push(node);
+        }
+      } else {
+        if (node.text.toLowerCase().includes(searchString.toLowerCase())) {
+          this.searchResultNodes.push(node);
+        }
       }
     }
     this.currentSearchResultIndex = 0;

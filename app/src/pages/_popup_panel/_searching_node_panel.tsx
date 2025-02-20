@@ -2,13 +2,18 @@ import React, { useEffect } from "react";
 import Box from "../../components/Box";
 import Button from "../../components/Button";
 import { Dialog } from "../../components/dialog";
-import { Controller } from "../../core/service/controlService/controller/Controller";
 import { Stage } from "../../core/stage/Stage";
+import Input from "../../components/Input";
+import IconButton from "../../components/IconButton";
+import { CaseSensitive, CaseUpper, Search } from "lucide-react";
+import { ViewOutlineFlashEffect } from "../../core/service/feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
+import { Color } from "../../core/dataStruct/Color";
 
 export default function SearchingNodePanel() {
   // region 搜索相关
-  const [isSearchingShow, setIsSearchingShow] = React.useState(false);
   const [currentSearchResultIndex, setCurrentSearchResultIndex] = React.useState(0);
+  const [searchString, setSearchString] = React.useState("");
+  const [isCaseSensitive, setIsCaseSensitive] = React.useState(false);
 
   useEffect(() => {
     if (Stage.contentSearchEngine.searchResultNodes.length == 0) {
@@ -23,67 +28,74 @@ export default function SearchingNodePanel() {
     setSearchResultCount(Stage.contentSearchEngine.searchResultNodes.length);
   }, [Stage.contentSearchEngine.searchResultNodes]);
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (Controller.pressingKeySet.has("control") && event.key === "f") {
-        Controller.pressingKeySet.clear();
-        const searchString = prompt("请输入要搜索的节点名称");
-        if (searchString) {
-          const isHaveResult = Stage.contentSearchEngine.startSearch(searchString);
-          // 搜索完毕
-          if (isHaveResult) {
-            setIsSearchingShow(true);
-            setCurrentSearchResultIndex(0);
-          } else {
-            Dialog.show({
-              title: "提示",
-              type: "info",
-              content: "没有找到匹配的节点",
-            });
-          }
-        }
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  });
+  const search = () => {
+    if (searchString == "") {
+      Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(Color.Red));
+      return;
+    }
+    const isHaveResult = Stage.contentSearchEngine.startSearch(searchString);
+    // 搜索完毕
+    if (isHaveResult) {
+      setCurrentSearchResultIndex(0);
+    } else {
+      Dialog.show({
+        title: "提示",
+        type: "info",
+        content: "没有找到匹配的节点",
+      });
+    }
+  };
+
   // endregion
 
   return (
-    <>
-      {isSearchingShow && (
-        <Box className="fixed right-32 top-32 z-10 flex transform items-center p-4 opacity-50 hover:opacity-100">
-          <span>
-            {currentSearchResultIndex + 1}/{searchResultCount}
-          </span>
-          <Button
-            className="m-2"
-            onClick={() => {
-              Stage.contentSearchEngine.previousSearchResult();
-            }}
-          >
-            上一项
-          </Button>
-          <Button
-            className="m-2"
-            onClick={() => {
-              Stage.contentSearchEngine.nextSearchResult();
-            }}
-          >
-            下一项
-          </Button>
-          <Button
-            className="m-2"
-            onClick={() => {
-              setIsSearchingShow(false);
-            }}
-          >
-            关闭
-          </Button>
-        </Box>
-      )}
-    </>
+    <Box className="bg-panel-bg border-panel-details-text fixed right-0 m-1 flex transform flex-col p-4">
+      <div className="flex items-center justify-between">
+        <Input
+          placeholder="请输入要搜索的内容"
+          onChange={(value) => {
+            setSearchString(value);
+          }}
+          value={searchString}
+        />
+        <IconButton className="ml-2" onClick={search}>
+          <Search />
+        </IconButton>
+        <IconButton
+          className="ml-2"
+          onClick={() => {
+            const currentResult = !isCaseSensitive;
+            setIsCaseSensitive(currentResult);
+            Stage.contentSearchEngine.isCaseSensitive = currentResult;
+          }}
+        >
+          {isCaseSensitive ? <CaseSensitive /> : <CaseUpper />}
+        </IconButton>
+      </div>
+      <div className="text-panel-details-text flex h-8 items-center justify-center text-xs">
+        {isCaseSensitive ? "大小写敏感" : "大小写不敏感"}
+      </div>
+      <div className="flex items-center justify-center">
+        <span>
+          {currentSearchResultIndex + 1}/{searchResultCount}
+        </span>
+        <Button
+          className="mx-2"
+          onClick={() => {
+            Stage.contentSearchEngine.previousSearchResult();
+          }}
+        >
+          上一项
+        </Button>
+        <Button
+          className="mx-2"
+          onClick={() => {
+            Stage.contentSearchEngine.nextSearchResult();
+          }}
+        >
+          下一项
+        </Button>
+      </div>
+    </Box>
   );
 }
