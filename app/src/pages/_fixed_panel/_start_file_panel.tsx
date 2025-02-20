@@ -229,7 +229,7 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
           {isPanelTransparent ? <Eye /> : <EyeClosed />}
         </IconButton>
       </div>
-      <table className="overflow-hidden rounded-lg border border-gray-600 bg-gray-700 shadow-lg">
+      <table className="bg-panel-bg overflow-hidden rounded-lg border border-gray-600 shadow-lg">
         <thead>
           {/* <tr className="text-white">
             <th className="mx-4 py-2 text-left">状态</th>
@@ -240,15 +240,13 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
         </thead>
         <tbody>
           {startFiles.map((file) => (
-            <tr key={file.path} className={cn("border-b border-gray-600 p-2 text-gray-200")}>
+            <tr key={file.path} className={cn("text-panel-text border-icon-button-border border-b p-2")}>
               <td className="w-10 text-center">
                 <div className="inline-block animate-bounce">{currentStartFile === file.path ? "📌" : ""}</div>
               </td>
-              <td>
-                <div className="flex flex-col">
-                  <span className={currentFile === file.path ? "text-green-400" : ""}>
-                    {PathString.absolute2file(file.path)}
-                  </span>
+              <td className="">
+                <div className="flex w-64 flex-col">
+                  <span className={cn("truncate")}>{PathString.absolute2file(file.path)}</span>
                   {isShowAbsolutePath && <span className="text-xs text-gray-500">{file.path}</span>}
                 </div>
               </td>
@@ -266,10 +264,12 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
                   })}
                 </td>
               )}
-              <td className="flex justify-center">
-                <button className="mx-0.5 px-2 py-1 hover:cursor-pointer" onClick={onLoadCurrentStartFile(file.path)}>
-                  <HardDriveDownload className="hover:cursor-pointer" />
-                </button>
+              <td className="flex justify-end">
+                {currentFile !== file.path && (
+                  <button className="mx-0.5 px-2 py-1 hover:cursor-pointer" onClick={onLoadCurrentStartFile(file.path)}>
+                    <HardDriveDownload className="hover:cursor-pointer" />
+                  </button>
+                )}
                 <button className="mx-0.5 px-2 py-1 hover:cursor-pointer" onClick={onSetCurrentStartFile(file.path)}>
                   {currentStartFile === file.path ? (
                     <Pin className="hover:cursor-pointer" />
