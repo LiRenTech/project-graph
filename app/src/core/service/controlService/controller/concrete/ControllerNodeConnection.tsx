@@ -127,8 +127,6 @@ class ControllerNodeConnectionClass extends ControllerClass {
           );
         }
       }
-      // 播放音效
-      SoundService.play.connectLineStart();
     } else {
       // 不触发多重连接
       // 只触发一次连接
@@ -142,9 +140,16 @@ class ControllerNodeConnectionClass extends ControllerClass {
         ),
       );
     }
+    // 播放音效
+    SoundService.play.connectLineStart();
     this._isUsing = true;
     Controller.setCursorNameHook(CursorNameEnum.Crosshair);
   };
+
+  /**
+   * 在mousemove的过程中，是否鼠标悬浮在了目标节点上
+   */
+  private isMouseHoverOnTarget = false;
 
   public mousemove: (event: MouseEvent) => void = (event) => {
     if (Stage.selectMachine.isUsing || Stage.cuttingMachine.isUsing) {
@@ -161,12 +166,16 @@ class ControllerNodeConnectionClass extends ControllerClass {
         // 找到了连接的节点，吸附上去
         this.connectToEntity = entity;
         isFindConnectToNode = true;
-        SoundService.play.connectFindTarget();
+        if (!this.isMouseHoverOnTarget) {
+          SoundService.play.connectFindTarget();
+        }
+        this.isMouseHoverOnTarget = true;
         break;
       }
     }
     if (!isFindConnectToNode) {
       this.connectToEntity = null;
+      this.isMouseHoverOnTarget = false;
     }
     // 由于连接线要被渲染器绘制，所以需要更新总控制里的lastMoveLocation
     Controller.lastMoveLocation = worldLocation.clone();
