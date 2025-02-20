@@ -2,6 +2,7 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
+import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { RectangleRenderEffect } from "../../../feedbackService/effectEngine/concrete/RectangleRenderEffect";
@@ -92,16 +93,16 @@ ControllerEntityClickSelectAndMove.mousemove = (event: MouseEvent) => {
     // 暂不监听alt键。因为windows下切换窗口时，alt键释放监听不到
     if (Controller.pressingKeySet.has("control")) {
       // 和子节点一起移动
-      StageManager.moveNodesWithChildren(diffLocation);
+      StageManager.moveConnectableEntitiesWithChildren(diffLocation);
     } else {
-      // TODO: 此处结构不合理
-      StageManager.moveSelectedTextNodes(diffLocation);
-      StageManager.moveSelectedSections(diffLocation);
-      StageManager.moveSelectedConnectPoints(diffLocation);
-      StageManager.moveSelectedImageNodes(diffLocation);
-      StageManager.moveSelectedUrlNodes(diffLocation);
-      StageManager.moveSelectedPortalNodes(diffLocation);
-      StageManager.moveSelectedPenStrokes(diffLocation);
+      StageEntityMoveManager.moveSelectedEntities(diffLocation);
+      // StageManager.moveSelectedTextNodes(diffLocation);
+      // StageManager.moveSelectedSections(diffLocation);
+      // StageManager.moveSelectedConnectPoints(diffLocation);
+      // StageManager.moveSelectedImageNodes(diffLocation);
+      // StageManager.moveSelectedUrlNodes(diffLocation);
+      // StageManager.moveSelectedPortalNodes(diffLocation);
+      // StageManager.moveSelectedPenStrokes(diffLocation);
     }
 
     // 预瞄反馈

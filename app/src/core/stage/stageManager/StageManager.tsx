@@ -635,39 +635,12 @@ export namespace StageManager {
     StageEntityMoveManager.moveEntities(delta, isAutoAdjustSection); // 连续过程，不记录历史，只在结束时记录
   }
 
-  /**
-   * 拖动所有选中的节点一起移动
-   * @param delta
-   */
-  export function moveSelectedTextNodes(delta: Vector) {
-    StageEntityMoveManager.moveSelectedTextNodes(delta); // 连续过程，不记录历史，只在结束时记录
-  }
-
   export function jumpMoveSelectedConnectableEntities(delta: Vector) {
     StageEntityMoveManager.jumpMoveSelectedConnectableEntities(delta); // 连续过程，不记录历史，只在结束时记录
   }
 
-  export function moveSelectedSections(delta: Vector) {
-    StageEntityMoveManager.moveSelectedSections(delta); // 连续过程，不记录历史，只在结束时记录
-  }
-  export function moveSelectedConnectPoints(delta: Vector) {
-    StageEntityMoveManager.moveSelectedConnectPoints(delta); // 连续过程，不记录历史，只在结束时记录
-  }
-  export function moveSelectedImageNodes(delta: Vector) {
-    StageEntityMoveManager.moveSelectedImageNodes(delta); // 连续过程，不记录历史，只在结束时记录
-  }
-  export function moveSelectedUrlNodes(delta: Vector) {
-    StageEntityMoveManager.moveSelectedUrlNodes(delta); // 连续过程，不记录历史，只在结束时记录
-  }
-  export function moveSelectedPortalNodes(delta: Vector) {
-    StageEntityMoveManager.moveSelectedPortalNodes(delta); // 连续过程，不记录历史，只在结束时记录
-  }
-  export function moveSelectedPenStrokes(delta: Vector) {
-    StageEntityMoveManager.moveSelectedPenStrokes(delta);
-  }
-
-  export function moveNodesWithChildren(delta: Vector) {
-    StageEntityMoveManager.moveNodesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录
+  export function moveConnectableEntitiesWithChildren(delta: Vector) {
+    StageEntityMoveManager.moveConnectableEntitiesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录
   }
 
   export function alignLeft() {

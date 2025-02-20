@@ -87,12 +87,9 @@ export namespace StageEntityMoveManager {
       }
     }
   }
-  /**
-   * 拖动所有选中的节点一起移动
-   * @param delta
-   */
-  export function moveSelectedTextNodes(delta: Vector, isAutoAdjustSection: boolean = true) {
-    for (const node of StageManager.getTextNodes()) {
+
+  export function moveSelectedEntities(delta: Vector, isAutoAdjustSection: boolean = true) {
+    for (const node of StageManager.getEntities()) {
       if (node.isSelected) {
         moveEntityUtils(node, delta, isAutoAdjustSection);
       }
@@ -107,50 +104,7 @@ export namespace StageEntityMoveManager {
     }
   }
 
-  export function moveSelectedSections(delta: Vector, isAutoAdjustSection: boolean = true) {
-    for (const section of StageManager.getSections()) {
-      if (section.isSelected) {
-        moveEntityUtils(section, delta, isAutoAdjustSection);
-      }
-    }
-  }
-  export function moveSelectedConnectPoints(delta: Vector, isAutoAdjustSection: boolean = true) {
-    for (const point of StageManager.getConnectPoints()) {
-      if (point.isSelected) {
-        moveEntityUtils(point, delta, isAutoAdjustSection);
-      }
-    }
-  }
-  export function moveSelectedImageNodes(delta: Vector, isAutoAdjustSection: boolean = true) {
-    for (const node of StageManager.getImageNodes()) {
-      if (node.isSelected) {
-        moveEntityUtils(node, delta, isAutoAdjustSection);
-      }
-    }
-  }
-  export function moveSelectedUrlNodes(delta: Vector, isAutoAdjustSection: boolean = true) {
-    for (const node of StageManager.getUrlNodes()) {
-      if (node.isSelected) {
-        moveEntityUtils(node, delta, isAutoAdjustSection);
-      }
-    }
-  }
-  export function moveSelectedPortalNodes(delta: Vector, isAutoAdjustSection: boolean = true) {
-    for (const node of StageManager.getPortalNodes()) {
-      if (node.isSelected) {
-        moveEntityUtils(node, delta, isAutoAdjustSection);
-      }
-    }
-  }
-  export function moveSelectedPenStrokes(delta: Vector, isAutoAdjustSection: boolean = true) {
-    for (const node of StageManager.getPenStrokes()) {
-      if (node.isSelected) {
-        moveEntityUtils(node, delta, isAutoAdjustSection);
-      }
-    }
-  }
-
-  export function moveNodesWithChildren(delta: Vector) {
+  export function moveConnectableEntitiesWithChildren(delta: Vector) {
     for (const node of StageManager.getConnectableEntity()) {
       if (node.isSelected) {
         moveWithChildren(node, delta);
@@ -163,17 +117,6 @@ export namespace StageEntityMoveManager {
       moveEntityUtils(successor, delta);
     }
   }
-
-  // function moveWithChildrenDfs(node: ConnectableEntity, delta: Vector, visitedUUIDs: string[]) {
-  //   moveEntityUtils(node, delta);
-  //   for (const child of GraphMethods.nodeChildrenArray(node)) {
-  //     if (visitedUUIDs.includes(child.uuid)) {
-  //       continue;
-  //     }
-  //     visitedUUIDs.push(child.uuid);
-  //     moveWithChildrenDfs(child, delta, visitedUUIDs);
-  //   }
-  // }
 
   // 按住shift键移动
 

@@ -44,6 +44,7 @@ import { openBrowserOrFile } from "./utils/externalOpen";
 import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
+import { StageEntityMoveManager } from "./core/stage/stageManager/concreteMethods/StageEntityMoveManager";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -336,7 +337,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    StageManager.moveSelectedTextNodes(new Vector(0, -100));
+    StageEntityMoveManager.moveSelectedEntities(new Vector(0, -100));
   });
 
   (
@@ -346,7 +347,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    StageManager.moveSelectedTextNodes(new Vector(0, 100));
+    StageEntityMoveManager.moveSelectedEntities(new Vector(0, 100));
   });
 
   (
@@ -356,7 +357,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    StageManager.moveSelectedTextNodes(new Vector(-100, 0));
+    StageEntityMoveManager.moveSelectedEntities(new Vector(-100, 0));
   });
 
   (
@@ -366,7 +367,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    StageManager.moveSelectedTextNodes(new Vector(100, 0));
+    StageEntityMoveManager.moveSelectedEntities(new Vector(100, 0));
   });
   (
     await KeyBinds.create("jumpMoveUpSelectedEntities", "arrowup", {
