@@ -4,14 +4,15 @@ import { MouseLocation } from "../core/service/controlService/MouseLocation";
 import { cn } from "../utils/cn";
 import once from "lodash/once";
 import Box from "./Box";
+import { CircleX } from "lucide-react";
 
 export namespace Popup {
   /**
-   * 弹出一个弹窗
+   * 弹出一个弹窗，这个弹窗面板不能是 fixed 布局
    * @param children
    * @returns
    */
-  export function show(children: React.ReactNode): Promise<void> {
+  export function show(children: React.ReactNode, closeWhenClickOutside: boolean = true): Promise<void> {
     return new Promise((resolve) => {
       // 启动一个新的React实例
       const container = document.createElement("div");
@@ -21,6 +22,7 @@ export namespace Popup {
         <Component
           x={MouseLocation.x}
           y={MouseLocation.y}
+          closeWhenClickOutside={closeWhenClickOutside}
           onClose={() => {
             resolve();
             setTimeout(
@@ -52,11 +54,13 @@ export namespace Popup {
     y,
     onClose,
     children,
+    closeWhenClickOutside,
   }: {
     x: number;
     y: number;
     onClose: () => void;
     children: React.ReactNode;
+    closeWhenClickOutside: boolean;
   }) {
     const [adjustedX, setAdjustedX] = React.useState(0);
     const [adjustedY, setAdjustedY] = React.useState(0);
@@ -69,7 +73,6 @@ export namespace Popup {
       if (ref.current) {
         // 调整弹窗位置，确保不会超出屏幕边界
         const { width, height } = ref.current.getBoundingClientRect();
-        console.log(width, height);
         setAdjustedX(x);
         setAdjustedY(y);
         if (x + width > window.innerWidth) {
@@ -94,8 +97,10 @@ export namespace Popup {
       // 监听在外面点击事件
       const handleClickOutside = (event: MouseEvent) => {
         if (ref.current && !ref.current.contains(event.target as Node)) {
-          setShow(false);
-          onClose();
+          if (closeWhenClickOutside) {
+            setShow(false);
+            onClose();
+          }
         }
       };
       document.addEventListener("mousedown", handleClickOutside);
@@ -112,6 +117,7 @@ export namespace Popup {
         className={cn("border-icon-button-border fixed z-[102] opacity-0", {
           "opacity-100": show,
           "opacity-0 transition-none": adjusting,
+          // absolute: closeWhenClickOutside,
         })}
         style={{
           left: adjustedX,
@@ -120,6 +126,17 @@ export namespace Popup {
         }}
       >
         {children}
+        {!closeWhenClickOutside && (
+          <span
+            onClick={() => {
+              setShow(false);
+              onClose();
+            }}
+            className="bg-panel-bg text-panel-text border-panel-details-text absolute -right-4 -top-4 cursor-pointer rounded-full p-1 text-sm hover:scale-105"
+          >
+            <CircleX className="cursor-pointer" />
+          </span>
+        )}
       </Box>
     );
   }

@@ -23,6 +23,7 @@ import {
   RefreshCcw,
   Save,
   Scaling,
+  Search,
   Settings as SettingsIcon,
   SquareDashedKanbanIcon,
   SquareDashedMousePointer,
@@ -53,6 +54,9 @@ import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { PathString } from "../utils/pathString";
 import { HelpService } from "../core/service/helpService/helpService";
 import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryManager";
+import { SoundService } from "../core/service/feedbackService/SoundService";
+import SearchingNodePanel from "./_popup_panel/_searching_node_panel";
+import { Popup } from "../components/popup";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -467,18 +471,14 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         >
           撤销
         </Col>
-        {/* <Col
-          icon={<Undo />}
+        <Col
+          icon={<Search />}
           onClick={() => {
-            const userInput = window.prompt("请输入搜索内容：");
-            if (!userInput) {
-              return;
-            }
-            Stage.contentSearchEngine.startSearch(userInput);
+            Popup.show(<SearchingNodePanel />, false);
           }}
         >
           查找
-        </Col> */}
+        </Col>
       </Row>
       <Row icon={<MoreHorizontal />} title={t("more.title")}>
         <Col icon={<SettingsIcon />} onClick={() => navigate("/settings/visual")}>
@@ -651,6 +651,12 @@ function Col({
     <div
       className="hover:bg-appmenu-hover-bg hover:outline-appmenu-hover-bg text-appmenu-item-text flex w-max cursor-pointer items-center gap-1 rounded-lg outline-0 outline-white/0 transition-all hover:outline-8 active:scale-90"
       onClick={onClick}
+      onMouseDown={() => {
+        SoundService.play.mouseClickButton();
+      }}
+      onMouseEnter={() => {
+        SoundService.play.mouseEnterButton();
+      }}
     >
       {icon}
       {children}

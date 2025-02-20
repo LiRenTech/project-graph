@@ -49,7 +49,7 @@ export default function SearchingNodePanel() {
   // endregion
 
   return (
-    <Box className="bg-panel-bg border-panel-details-text fixed right-0 m-1 flex transform flex-col p-4">
+    <Box className="bg-panel-bg border-panel-details-text m-1 flex transform flex-col p-4">
       <div className="flex items-center justify-between">
         <Input
           placeholder="请输入要搜索的内容"

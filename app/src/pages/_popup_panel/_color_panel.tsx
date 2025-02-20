@@ -114,7 +114,7 @@ export default function ColorPanel() {
         ></input>
         <Button
           onClick={() => {
-            Popup.show(<ColorManagerPanel />);
+            Popup.show(<ColorManagerPanel />, true);
           }}
         >
           打开颜色管理

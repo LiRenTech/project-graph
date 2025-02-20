@@ -427,7 +427,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    Popup.show(<ColorPanel />);
+    Popup.show(<ColorPanel />, true);
   });
   (
     await KeyBinds.create("switchDebugShow", "F3", {
@@ -475,7 +475,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    Popup.show(<SearchingNodePanel />);
+    Popup.show(<SearchingNodePanel />, false);
   });
   (
     await KeyBinds.create("openTextNodeByContentExternal", "e", {

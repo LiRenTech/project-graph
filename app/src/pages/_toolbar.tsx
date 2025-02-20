@@ -95,7 +95,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       <ToolbarItem
         description="通过文本生成节点"
         icon={<ClipboardPaste />}
-        handleFunction={() => Popup.show(<GenerateNodePanel />)}
+        handleFunction={() => Popup.show(<GenerateNodePanel />, true)}
       />
       {isHaveSelectedEdge && (
         <ToolbarItem
@@ -111,14 +111,14 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       <ToolbarItem
         description="设置节点/连线/框的颜色，注意要先选中再点颜色"
         icon={<PaintBucket />}
-        handleFunction={() => Popup.show(<ColorPanel />)}
+        handleFunction={() => Popup.show(<ColorPanel />, true)}
       />
 
       {isHaveSelectedNode && (
         <ToolbarItem
           description="节点对齐相关"
           icon={<LayoutDashboard />}
-          handleFunction={() => Popup.show(<AlignNodePanel />)}
+          handleFunction={() => Popup.show(<AlignNodePanel />, true)}
         />
       )}
       {isClipboardClearShow && (
