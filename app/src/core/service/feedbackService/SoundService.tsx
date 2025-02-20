@@ -16,6 +16,8 @@ export namespace SoundService {
   let connectFindTargetSoundFile = "";
   let cuttingLineReleaseSoundFile = "";
   let alignAndAttachSoundFile = "";
+  let uiButtonEnterSoundFile = "";
+  let uiButtonClickSoundFile = "";
 
   export function init() {
     Settings.watch("cuttingLineStartSoundFile", (value) => {
@@ -32,6 +34,12 @@ export namespace SoundService {
     });
     Settings.watch("alignAndAttachSoundFile", (value) => {
       alignAndAttachSoundFile = value;
+    });
+    Settings.watch("uiButtonEnterSoundFile", (value) => {
+      uiButtonEnterSoundFile = value;
+    });
+    Settings.watch("uiButtonClickSoundFile", (value) => {
+      uiButtonClickSoundFile = value;
     });
   }
 
@@ -66,6 +74,13 @@ export namespace SoundService {
     export function alignAndAttach() {
       loadAndPlaySound(alignAndAttachSoundFile);
     }
+    // 鼠标进入按钮区域的声音
+    export function mouseEnterButton() {
+      loadAndPlaySound(uiButtonEnterSoundFile);
+    }
+    export function mouseClickButton() {
+      loadAndPlaySound(uiButtonClickSoundFile);
+    }
   }
 
   const audioContext = new window.AudioContext();
@@ -80,10 +95,10 @@ export namespace SoundService {
     }
 
     // 解码音频数据
-    const audioBuffer = await getAudioBufferByFilePath(filePath);
+    const audioBuffer = await getAudioBufferByFilePath(filePath); // 消耗0.1秒
     const source = audioContext.createBufferSource();
     source.buffer = audioBuffer;
-    source.connect(audioContext.destination);
+    source.connect(audioContext.destination); // 小概率消耗0.01秒
     source.start(0);
   }
 
@@ -91,11 +106,10 @@ export namespace SoundService {
 
   async function getAudioBufferByFilePath(filePath: string) {
     // 先从缓存中获取音频数据
-    if (pathAudioBufferMap.hasId(filePath)) {
-      const result = pathAudioBufferMap.getById(filePath);
-      if (result) {
-        return result;
-      }
+    const result = pathAudioBufferMap.getById(filePath);
+    if (result) {
+      console.log("找到缓存");
+      return result;
     }
 
     // 缓存中没有

@@ -1,18 +1,6 @@
 import { LogicalSize } from "@tauri-apps/api/dpi";
 import { useAtom } from "jotai";
-import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronUp,
-  Cpu,
-  Diamond,
-  Menu,
-  RectangleEllipsis,
-  SquareArrowUp,
-  Tag,
-  X,
-  Zap,
-} from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronUp, Cpu, Diamond, Menu, SquareArrowUp, Tag, X, Zap } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -280,7 +268,7 @@ export default function App() {
             }
           }}
         >
-          {location.pathname === "/" ? isMenuOpen ? <RectangleEllipsis /> : <Menu /> : <ChevronLeft />}
+          {location.pathname === "/" ? <Menu className={cn(isMenuOpen && "rotate-90")} /> : <ChevronLeft />}
         </IconButton>
 
         <IconButton

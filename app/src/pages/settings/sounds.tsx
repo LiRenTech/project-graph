@@ -9,6 +9,8 @@ export default function Sounds() {
       <SettingField icon={<ArrowUpFromDot />} settingKey="connectLineStartSoundFile" type="file" />
       <SettingField icon={<ArrowDownToDot />} settingKey="connectFindTargetSoundFile" type="file" />
       <SettingField icon={<AlignStartVertical />} settingKey="alignAndAttachSoundFile" type="file" />
+      <SettingField icon={<AlignStartVertical />} settingKey="uiButtonEnterSoundFile" type="file" />
+      <SettingField icon={<AlignStartVertical />} settingKey="uiButtonClickSoundFile" type="file" />
     </>
   );
 }

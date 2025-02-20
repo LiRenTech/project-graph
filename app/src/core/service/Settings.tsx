@@ -91,6 +91,8 @@ export namespace Settings {
     connectFindTargetSoundFile: string;
     cuttingLineReleaseSoundFile: string;
     alignAndAttachSoundFile: string;
+    uiButtonEnterSoundFile: string;
+    uiButtonClickSoundFile: string;
     // github 相关
     githubToken: string;
     githubUser: string;
@@ -175,6 +177,8 @@ export namespace Settings {
     connectFindTargetSoundFile: "",
     cuttingLineReleaseSoundFile: "",
     alignAndAttachSoundFile: "",
+    uiButtonEnterSoundFile: "",
+    uiButtonClickSoundFile: "",
     // github 相关
     githubToken: "",
     githubUser: "",
