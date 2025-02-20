@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { check, Update } from "@tauri-apps/plugin-updater";
-import { BookOpen, Download, MessageCircleCode } from "lucide-react";
+import { BookOpen, Download, LoaderPinwheel, MessageCircleCode } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Bilibili from "../../assets/bilibili.svg?react";
@@ -75,7 +75,13 @@ export default function About() {
       navigate("/info");
     }
   }, [clickedLogoCount]);
-
+  const getRateString = () => {
+    const rate = newVersionDownloadedSize / newVersionFileSize;
+    if (isNaN(rate)) {
+      return "连接中……";
+    }
+    return `${(rate * 100).toFixed()}%`;
+  };
   return (
     <div className="flex h-full">
       <div className="flex w-64 flex-col items-center justify-center gap-4">
@@ -108,7 +114,9 @@ export default function About() {
         )}
         {update && update.available && (
           <Button
-            className="animate-bounce"
+            className={cn(!updating && "animate-bounce")}
+            disabled={updating}
+            tooltip={"点击后什么也不用做，就可以自动更新到最新版本并自动重启软件"}
             onClick={() => {
               if (updating) {
                 // 防止重复下载
@@ -135,9 +143,9 @@ export default function About() {
               });
             }}
           >
-            <Download />
+            {updating ? <LoaderPinwheel className="animate-spin" /> : <Download />}
             {updating
-              ? `${t("updater.downloading")}: ${((newVersionDownloadedSize / newVersionFileSize) * 100).toFixed()}%`
+              ? `${t("updater.downloading")}: ${getRateString()}`
               : `${t("updater.available")}: ${update.version}`}
           </Button>
         )}
