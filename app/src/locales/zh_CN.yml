@@ -394,9 +394,11 @@ settings:
     description: |
       开启后，拖动节点并松开时会与其他节点在x轴、y轴方向对齐
   enableWindowsTouchPad:
-    title: 允许Windows系统使用触摸板操作
+    title: 允许触摸板双指移动操作
     description: |
-      开启后，可以使用触摸板操作鼠标滚轮
+      在windows系统中，双指上下移动会被识别为滚轮事件。
+      双指左右移动会被识别成鼠标横向滚轮的滚动事件。
+      如果您是笔记本操作并使用外部鼠标，建议关闭此选项。
   mouseWheelMode:
     title: 鼠标滚轮模式
     options:
