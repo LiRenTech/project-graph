@@ -211,7 +211,7 @@ export default function App() {
 
   return (
     <div
-      className={cn("relative h-full w-full rounded-xl text-white shadow-2xl ring", {
+      className={cn("relative h-full w-full", {
         "bg-settings-page-bg": isMobile || location.pathname !== "/",
       })}
       style={{ zoom: appScale }}
@@ -305,7 +305,7 @@ export default function App() {
         {/* 中间标题 */}
         {useNativeTitleBar || isWeb ? (
           // h-0 才能完全摆脱划线时经过此区域的卡顿问题
-          <div className="pointer-events-none h-0 flex-1 ring"></div>
+          <div className="pointer-events-none h-0 flex-1"></div>
         ) : (
           <>
             <Button
