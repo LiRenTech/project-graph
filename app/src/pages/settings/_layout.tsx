@@ -1,7 +1,8 @@
 import { Bot, Brain, Command, Eye, Info, Keyboard, Plug, Settings, Sparkles, Speaker, Zap } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { NavLink, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Github from "../../assets/github.svg?react";
+import NavLinkButton from "../../components/NavLinkButton";
 
 export default function SettingsLayout() {
   const { t } = useTranslation("settings");
@@ -14,51 +15,51 @@ export default function SettingsLayout() {
       </h1>
       <div className="mt-4 flex h-full gap-8">
         <div className="text-appmenu-item-text *:hover:bg-appmenu-hover-bg flex flex-col gap-2 *:flex *:cursor-pointer *:items-center *:gap-2 *:rounded-full *:px-3 *:py-2 *:transition *:active:scale-90">
-          <NavLink to="/settings/about">
+          <NavLinkButton to="/settings/about">
             <Info />
             {t("tabs.about")}
-          </NavLink>
+          </NavLinkButton>
           {/* 越是用户可能频繁更改的，越靠上。（除了“关于”） */}
-          <NavLink to="/settings/visual">
+          <NavLinkButton to="/settings/visual">
             <Eye />
             {t("tabs.visual")}
-          </NavLink>
-          <NavLink to="/settings/control">
+          </NavLinkButton>
+          <NavLinkButton to="/settings/control">
             <Keyboard />
             {t("tabs.control")}
-          </NavLink>
-          <NavLink to="/settings/keybinds">
+          </NavLinkButton>
+          <NavLinkButton to="/settings/keybinds">
             <Command />
             {t("tabs.keybinds")}
-          </NavLink>
-          <NavLink to="/settings/performance">
+          </NavLinkButton>
+          <NavLinkButton to="/settings/performance">
             <Zap />
             {t("tabs.performance")}
-          </NavLink>
-          <NavLink to="/settings/effects">
+          </NavLinkButton>
+          <NavLinkButton to="/settings/effects">
             <Sparkles />
             {t("tabs.effects")}
-          </NavLink>
-          <NavLink to="/settings/automation">
+          </NavLinkButton>
+          <NavLinkButton to="/settings/automation">
             <Bot />
             {t("tabs.automation")}
-          </NavLink>
-          <NavLink to="/settings/ai">
+          </NavLinkButton>
+          <NavLinkButton to="/settings/ai">
             <Brain />
             {t("tabs.ai")}
-          </NavLink>
-          <NavLink to="/settings/github">
+          </NavLinkButton>
+          <NavLinkButton to="/settings/github">
             <Github />
             {t("tabs.github")}
-          </NavLink>
-          <NavLink to="/settings/sounds">
+          </NavLinkButton>
+          <NavLinkButton to="/settings/sounds">
             <Speaker />
             {t("tabs.sounds")}
-          </NavLink>
-          <NavLink to="/settings/plugins">
+          </NavLinkButton>
+          <NavLinkButton to="/settings/plugins">
             <Plug />
             {t("tabs.plugins")}
-          </NavLink>
+          </NavLinkButton>
         </div>
         <div className="mx-auto w-[1024px] overflow-auto">
           <Outlet />
