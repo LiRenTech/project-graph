@@ -94,15 +94,15 @@ ControllerEntityClickSelectAndMove.mousemove = (event: MouseEvent) => {
       // 和子节点一起移动
       StageManager.moveNodesWithChildren(diffLocation);
     } else {
-      StageManager.moveSelectedNodes(diffLocation);
+      // TODO: 此处结构不合理
+      StageManager.moveSelectedTextNodes(diffLocation);
+      StageManager.moveSelectedSections(diffLocation);
+      StageManager.moveSelectedConnectPoints(diffLocation);
+      StageManager.moveSelectedImageNodes(diffLocation);
+      StageManager.moveSelectedUrlNodes(diffLocation);
+      StageManager.moveSelectedPortalNodes(diffLocation);
+      StageManager.moveSelectedPenStrokes(diffLocation);
     }
-    // TODO: 此处结构不合理
-    StageManager.moveSelectedSections(diffLocation);
-    StageManager.moveSelectedConnectPoints(diffLocation);
-    StageManager.moveSelectedImageNodes(diffLocation);
-    StageManager.moveSelectedUrlNodes(diffLocation);
-    StageManager.moveSelectedPortalNodes(diffLocation);
-    StageManager.moveSelectedPenStrokes(diffLocation);
 
     // 预瞄反馈
     if (Stage.enableDragAutoAlign) {

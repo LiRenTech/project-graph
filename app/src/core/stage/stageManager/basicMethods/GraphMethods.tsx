@@ -55,6 +55,7 @@ export namespace GraphMethods {
 
   /**
    * 通过一个节点获取一个 可达节点集合/后继节点集合 Successor Set
+   * 包括它自己
    * @param node
    */
   export function getSuccessorSet(node: ConnectableEntity): ConnectableEntity[] {

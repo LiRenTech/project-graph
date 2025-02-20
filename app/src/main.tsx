@@ -336,7 +336,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    StageManager.moveSelectedNodes(new Vector(0, -100));
+    StageManager.moveSelectedTextNodes(new Vector(0, -100));
   });
 
   (
@@ -346,7 +346,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    StageManager.moveSelectedNodes(new Vector(0, 100));
+    StageManager.moveSelectedTextNodes(new Vector(0, 100));
   });
 
   (
@@ -356,7 +356,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    StageManager.moveSelectedNodes(new Vector(-100, 0));
+    StageManager.moveSelectedTextNodes(new Vector(-100, 0));
   });
 
   (
@@ -366,7 +366,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    StageManager.moveSelectedNodes(new Vector(100, 0));
+    StageManager.moveSelectedTextNodes(new Vector(100, 0));
   });
   (
     await KeyBinds.create("jumpMoveUpSelectedEntities", "arrowup", {

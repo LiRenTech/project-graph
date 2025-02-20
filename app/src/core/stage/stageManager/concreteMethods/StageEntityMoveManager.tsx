@@ -91,7 +91,7 @@ export namespace StageEntityMoveManager {
    * 拖动所有选中的节点一起移动
    * @param delta
    */
-  export function moveSelectedNodes(delta: Vector, isAutoAdjustSection: boolean = true) {
+  export function moveSelectedTextNodes(delta: Vector, isAutoAdjustSection: boolean = true) {
     for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
         moveEntityUtils(node, delta, isAutoAdjustSection);
@@ -151,31 +151,29 @@ export namespace StageEntityMoveManager {
   }
 
   export function moveNodesWithChildren(delta: Vector) {
-    for (const node of StageManager.getTextNodes()) {
+    for (const node of StageManager.getConnectableEntity()) {
       if (node.isSelected) {
         moveWithChildren(node, delta);
       }
     }
-    for (const section of StageManager.getSections()) {
-      if (section.isSelected) {
-        moveWithChildren(section, delta);
-      }
-    }
   }
   export function moveWithChildren(node: ConnectableEntity, delta: Vector) {
-    moveWithChildrenDfs(node, delta, [node.uuid]);
-  }
-
-  function moveWithChildrenDfs(node: ConnectableEntity, delta: Vector, visitedUUIDs: string[]) {
-    moveEntityUtils(node, delta);
-    for (const child of GraphMethods.nodeChildrenArray(node)) {
-      if (visitedUUIDs.includes(child.uuid)) {
-        continue;
-      }
-      visitedUUIDs.push(child.uuid);
-      moveWithChildrenDfs(child, delta, visitedUUIDs);
+    const successorSet = GraphMethods.getSuccessorSet(node);
+    for (const successor of successorSet) {
+      moveEntityUtils(successor, delta);
     }
   }
+
+  // function moveWithChildrenDfs(node: ConnectableEntity, delta: Vector, visitedUUIDs: string[]) {
+  //   moveEntityUtils(node, delta);
+  //   for (const child of GraphMethods.nodeChildrenArray(node)) {
+  //     if (visitedUUIDs.includes(child.uuid)) {
+  //       continue;
+  //     }
+  //     visitedUUIDs.push(child.uuid);
+  //     moveWithChildrenDfs(child, delta, visitedUUIDs);
+  //   }
+  // }
 
   // 按住shift键移动
 

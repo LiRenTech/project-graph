@@ -639,8 +639,8 @@ export namespace StageManager {
    * 拖动所有选中的节点一起移动
    * @param delta
    */
-  export function moveSelectedNodes(delta: Vector) {
-    StageEntityMoveManager.moveSelectedNodes(delta); // 连续过程，不记录历史，只在结束时记录
+  export function moveSelectedTextNodes(delta: Vector) {
+    StageEntityMoveManager.moveSelectedTextNodes(delta); // 连续过程，不记录历史，只在结束时记录
   }
 
   export function jumpMoveSelectedConnectableEntities(delta: Vector) {

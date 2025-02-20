@@ -185,7 +185,7 @@ ControllerCamera.mousewheel = (event: WheelEvent) => {
   }
   // 禁用触控板在这里的滚动
   if (!Stage.enableWindowsTouchPad) {
-    if (!detectIsMouseWheel(event)) {
+    if (!isMouseWheel(event)) {
       return;
     }
   }
@@ -263,7 +263,13 @@ function moveXCameraByMouseWheel(event: WheelEvent) {
   }
 }
 
-function detectIsMouseWheel(event: WheelEvent): boolean {
+/**
+ * 返回true：是鼠标滚轮事件
+ * 返回false：是触摸板事件
+ * @param event
+ * @returns
+ */
+function isMouseWheel(event: WheelEvent): boolean {
   // 先看X轴的滚动
   if (event.deltaX !== 0) {
     // 向右滚动是缩小
