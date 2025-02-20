@@ -463,6 +463,14 @@ settings:
     title: 按钮点击时的声音文件
     description: |
       按钮点击时播放的声音文件路径
+  uiSwitchButtonOnSoundFile:
+    title: 按钮点击开关按钮时打开的声音
+    description: |
+      按钮点击开关按钮时打开的声音文件路径
+  uiSwitchButtonOffSoundFile:
+    title: 按钮点击开关按钮时关闭的声音
+    description: |
+      按钮点击开关按钮时关闭的声音文件路径
 plugins:
   welcome:
     title: 欢迎使用插件系统

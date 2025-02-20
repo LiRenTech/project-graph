@@ -18,6 +18,8 @@ export namespace SoundService {
   let alignAndAttachSoundFile = "";
   let uiButtonEnterSoundFile = "";
   let uiButtonClickSoundFile = "";
+  let uiSwitchButtonOnSoundFile = "";
+  let uiSwitchButtonOffSoundFile = "";
 
   export function init() {
     Settings.watch("cuttingLineStartSoundFile", (value) => {
@@ -40,6 +42,12 @@ export namespace SoundService {
     });
     Settings.watch("uiButtonClickSoundFile", (value) => {
       uiButtonClickSoundFile = value;
+    });
+    Settings.watch("uiSwitchButtonOnSoundFile", (value) => {
+      uiSwitchButtonOnSoundFile = value;
+    });
+    Settings.watch("uiSwitchButtonOffSoundFile", (value) => {
+      uiSwitchButtonOffSoundFile = value;
     });
   }
 
@@ -80,6 +88,12 @@ export namespace SoundService {
     }
     export function mouseClickButton() {
       loadAndPlaySound(uiButtonClickSoundFile);
+    }
+    export function mouseClickSwitchButtonOn() {
+      loadAndPlaySound(uiSwitchButtonOnSoundFile);
+    }
+    export function mouseClickSwitchButtonOff() {
+      loadAndPlaySound(uiSwitchButtonOffSoundFile);
     }
   }
 

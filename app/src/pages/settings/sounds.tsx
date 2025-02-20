@@ -1,4 +1,14 @@
-import { AlignStartVertical, ArrowDownToDot, ArrowUpFromDot, Scissors, ScissorsLineDashed } from "lucide-react";
+import {
+  AlignStartVertical,
+  ArrowDownToDot,
+  ArrowUpFromDot,
+  MousePointerClick,
+  Scissors,
+  ScissorsLineDashed,
+  SquareMousePointer,
+  ToggleLeft,
+  ToggleRight,
+} from "lucide-react";
 import { SettingField } from "./_field";
 
 export default function Sounds() {
@@ -9,8 +19,10 @@ export default function Sounds() {
       <SettingField icon={<ArrowUpFromDot />} settingKey="connectLineStartSoundFile" type="file" />
       <SettingField icon={<ArrowDownToDot />} settingKey="connectFindTargetSoundFile" type="file" />
       <SettingField icon={<AlignStartVertical />} settingKey="alignAndAttachSoundFile" type="file" />
-      <SettingField icon={<AlignStartVertical />} settingKey="uiButtonEnterSoundFile" type="file" />
-      <SettingField icon={<AlignStartVertical />} settingKey="uiButtonClickSoundFile" type="file" />
+      <SettingField icon={<SquareMousePointer />} settingKey="uiButtonEnterSoundFile" type="file" />
+      <SettingField icon={<MousePointerClick />} settingKey="uiButtonClickSoundFile" type="file" />
+      <SettingField icon={<ToggleRight />} settingKey="uiSwitchButtonOnSoundFile" type="file" />
+      <SettingField icon={<ToggleLeft />} settingKey="uiSwitchButtonOffSoundFile" type="file" />
     </>
   );
 }

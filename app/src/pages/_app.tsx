@@ -301,7 +301,7 @@ export default function App() {
           <>
             <Button
               data-tauri-drag-region
-              className={cn("hover:cursor-move active:scale-100 active:cursor-grabbing", {
+              className={cn("pointer-events-none hover:cursor-move active:scale-100 active:cursor-grabbing", {
                 "text-yellow-500": isSaved,
                 "flex-1": isDesktop,
                 "opacity-0": isClassroomMode,

@@ -93,6 +93,8 @@ export namespace Settings {
     alignAndAttachSoundFile: string;
     uiButtonEnterSoundFile: string;
     uiButtonClickSoundFile: string;
+    uiSwitchButtonOnSoundFile: string;
+    uiSwitchButtonOffSoundFile: string;
     // github 相关
     githubToken: string;
     githubUser: string;
@@ -179,6 +181,8 @@ export namespace Settings {
     alignAndAttachSoundFile: "",
     uiButtonEnterSoundFile: "",
     uiButtonClickSoundFile: "",
+    uiSwitchButtonOnSoundFile: "",
+    uiSwitchButtonOffSoundFile: "",
     // github 相关
     githubToken: "",
     githubUser: "",

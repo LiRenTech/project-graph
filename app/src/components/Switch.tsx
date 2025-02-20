@@ -1,3 +1,4 @@
+import { SoundService } from "../core/service/feedbackService/SoundService";
 import { cn } from "../utils/cn";
 
 /**
@@ -20,7 +21,15 @@ export default function Switch({
         "bg-switch-true-bg": value,
         "bg-switch-disabled-bg cursor-not-allowed": disabled,
       })}
-      onClick={() => onChange(!value)}
+      onClick={() => {
+        const newValue = !value;
+        onChange(newValue);
+        if (newValue) {
+          SoundService.play.mouseClickSwitchButtonOn();
+        } else {
+          SoundService.play.mouseClickSwitchButtonOff();
+        }
+      }}
     >
       <div
         className={cn(
