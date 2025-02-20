@@ -200,6 +200,15 @@ export default function App() {
     Stage.autoSaveEngine.setAutoSavePaused(isStartFilePanelOpen);
   }, [isStartFilePanelOpen]);
 
+  const getDisplayFileName = () => {
+    let result = filename;
+    if (filename.length > 30) {
+      // 只截取前20+后10个字符
+      result = `${filename.slice(0, 20)}...${filename.slice(-10)}`;
+    }
+    return result + (isSaved ? "" : t("unsaved"));
+  };
+
   return (
     <div
       className={cn("relative h-full w-full rounded-xl text-white shadow-2xl ring", {
@@ -296,33 +305,33 @@ export default function App() {
         {/* 中间标题 */}
         {useNativeTitleBar || isWeb ? (
           // h-0 才能完全摆脱划线时经过此区域的卡顿问题
-          <div className="pointer-events-none h-0 flex-1"></div>
+          <div className="pointer-events-none h-0 flex-1 ring"></div>
         ) : (
           <>
             <Button
               data-tauri-drag-region
-              className={cn("pointer-events-none hover:cursor-move active:scale-100 active:cursor-grabbing", {
+              className={cn("pointer-events-none relative flex-1 overflow-ellipsis active:scale-100", {
                 "text-yellow-500": isSaved,
                 "flex-1": isDesktop,
                 "opacity-0": isClassroomMode,
               })}
-              tooltip="拖动窗口"
+              tooltip="按住拖动窗口"
             >
-              {isMobile && filename + (isSaved ? "" : t("unsaved"))}
+              {isMobile && getDisplayFileName()}
+              {isDesktop && (
+                <div
+                  data-tauri-drag-region
+                  className={cn(
+                    isSaved ? "text-icon-button-text" : "text-yellow-500",
+                    "absolute flex h-full w-full items-center justify-center truncate p-0 hover:cursor-move active:cursor-grabbing",
+                    isClassroomMode && "opacity-0",
+                  )}
+                >
+                  {getDisplayFileName()}
+                </div>
+              )}
             </Button>
             {isMobile && <div className="flex-1"></div>}
-            {isDesktop && (
-              <span
-                data-tauri-drag-region
-                className={cn(
-                  isSaved ? "text-icon-button-text" : "text-yellow-500",
-                  "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-                  isClassroomMode && "opacity-0",
-                )}
-              >
-                {filename + (isSaved ? "" : t("unsaved"))}
-              </span>
-            )}
           </>
         )}
         {/* 右上角闪电按钮 */}
