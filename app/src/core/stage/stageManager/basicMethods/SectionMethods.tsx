@@ -139,4 +139,26 @@ export namespace SectionMethods {
       return false;
     }
   }
+
+  /**
+   * 检测一个Section内部是否符合树形嵌套结构
+   * @param rootNode
+   */
+  export function isTreePack(rootNode: Section) {
+    const dfs = (node: Entity, visited: Entity[]): boolean => {
+      if (visited.includes(node)) {
+        return false;
+      }
+      visited.push(node);
+      if (node instanceof Section) {
+        for (const child of node.children) {
+          if (!dfs(child, visited)) {
+            return false;
+          }
+        }
+      }
+      return true;
+    };
+    return dfs(rootNode, []);
+  }
 }

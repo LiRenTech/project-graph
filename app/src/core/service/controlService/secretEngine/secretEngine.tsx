@@ -3,8 +3,10 @@ import { Queue } from "../../../dataStruct/Queue";
 import { Vector } from "../../../dataStruct/Vector";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
+import { StageSectionPackManager } from "../../../stage/stageManager/concreteMethods/StageSectionPackManager";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
+import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { CollaborationEngine } from "../../dataManageService/collaborationEngine/CollaborationEngine";
 import { RectangleNoteEffect } from "../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
@@ -118,6 +120,13 @@ export class SecretEngine {
           StageManager.getSelectedEntities()[0] as ConnectableEntity,
           Camera.location.clone(),
         );
+      },
+    },
+    "t r e e 2 s e c t i o n": {
+      name: "将节点树转换成section多层嵌套组",
+      func() {
+        const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
+        StageSectionPackManager.textNodeTreeToSection(selectedNodes[0]);
       },
     },
   };

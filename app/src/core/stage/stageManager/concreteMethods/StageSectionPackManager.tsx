@@ -80,6 +80,32 @@ export namespace StageSectionPackManager {
   }
 
   /**
+   * 将节点树转换成嵌套集合
+   */
+  export function textNodeTreeToSection(rootNode: TextNode): void {
+    if (!GraphMethods.isTree(rootNode)) {
+      return;
+    }
+    const dfs = (node: TextNode): Section | TextNode => {
+      const childNodes = GraphMethods.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
+      if (childNodes.length === 0) {
+        return node;
+      }
+      const childEntityList = [];
+      for (const childNode of childNodes) {
+        const transEntity = dfs(childNode);
+        childEntityList.push(transEntity);
+        // TODO: 断开主和子之间的连线
+      }
+      const section = targetTextNodeToSection(node);
+
+      StageSectionInOutManager.goInSection(childEntityList, section);
+      return section;
+    };
+    dfs(rootNode);
+  }
+
+  /**
    * 将指定的文本节点转换成Section
    * @param textNode
    */
