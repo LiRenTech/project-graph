@@ -2,6 +2,8 @@ import { useState } from "react";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
+import { DataTransferEngine } from "../../core/service/dataGenerateService/dataTransferEngine/dataTransferEngine";
+import { Dialog } from "../../components/dialog";
 
 /**
  * 通过文本来生成节点的面板
@@ -13,7 +15,7 @@ export default function GenerateNodePanel() {
 
   return (
     <div className="bg-panel-bg flex flex-col gap-4 rounded-lg p-2">
-      <Input value={inputValue} onChange={setInputValue} multiline />
+      <Input value={inputValue} onChange={setInputValue} placeholder="在此输入纯文本内容，后点击下方按钮" multiline />
       <div>
         <span className="text-panel-text">缩进数量</span>
         <Input value={indention.toString()} onChange={setIndention} number />
@@ -27,14 +29,50 @@ export default function GenerateNodePanel() {
       >
         生成纯文本节点
       </Button>
-      <Button
-        onClick={() => {
-          StageManager.generateNodeByMarkdown(inputValue);
-          setInputValue("");
-        }}
-      >
-        根据markdown生成节点
-      </Button>
+      <div className="flex flex-nowrap justify-between gap-2">
+        <Button
+          className="flex-1"
+          onClick={() => {
+            StageManager.generateNodeByMarkdown(inputValue);
+            setInputValue("");
+          }}
+        >
+          根据markdown生成节点
+        </Button>
+        <Button
+          onClick={() => {
+            Dialog.show({
+              title: "帮助",
+              content: "1，将xmind后缀名改成zip\n2，找到内部的content.json\n3，打开json，将json内容复制到输入框中",
+            });
+          }}
+        >
+          疑问
+        </Button>
+      </div>
+
+      <div className="flex flex-nowrap justify-between gap-2">
+        <Button
+          className="flex-1 text-xs"
+          onClick={() => {
+            const indent4 = DataTransferEngine.xmindToString(JSON.parse(inputValue));
+            StageManager.generateNodeByText(indent4, 4);
+            setInputValue("");
+          }}
+        >
+          根据xmind中的content.json生成节点
+        </Button>
+        <Button
+          onClick={() => {
+            Dialog.show({
+              title: "帮助",
+              content: "1，将xmind后缀名改成zip\n2，找到内部的content.json\n3，打开json，将json内容复制到输入框中",
+            });
+          }}
+        >
+          疑问
+        </Button>
+      </div>
     </div>
   );
 }
