@@ -11,6 +11,9 @@ about:
   updater:
     available: New version
     downloading: Downloading
+    checkingUpdate: Checking for updates…
+    checkUpdateFail: Unable to get the newest version information, please check the
+      internet
   links:
     documentation: Documentation
     github: Github
@@ -58,8 +61,9 @@ about:
   - Inspiration Sources
   - FigJam not supporting dark mode
   - Director Lin Chao's video on the detailed analysis of drawing analysis frameworks
-  - Topological sorting and graph theory in "Data Structures and Algorithms"
-  - "Brainstorming Method"
+  - Topological ordering, graph theory, state machines, and set theory concepts in
+    Data Structures and Algorithms
+  - "Brainstorming method, cognitive load theory, cards creativity"
   - Command Blocks in Minecraft
   - The animation effect of slashing in Fruit Ninja
   - The factory assembly line design in the game "Mindustry" is turned into logical
@@ -94,7 +98,8 @@ settings:
     github: GitHub
     sounds: Sounds
     plugins: Plugins
-    effects: ""
+    effects: "Effects"
+    keybinds: Shortcut Keys
   language:
     title: Language
     options:
@@ -275,6 +280,7 @@ settings:
       When the approximation is close enough (less than 0.0001), the scaling will stop automatically.
       A value of 1 means the scaling will be completed immediately without any intermediate transition effect.
       A value of 0 means the scaling will never be completed, which can simulate a locked effect.
+      Note: If you feel stuttered when zooming in, please set it to 1
   cameraKeyboardScaleRate:
     title: Viewport Zoom Keyboard Rate
     description: |
@@ -431,6 +437,13 @@ settings:
     title: Align and Attach Sound File
     description: |
       The file path of the sound played when nodes are aligned and attached during mouse dragging
+  updateChannel:
+    title: Update Channel
+    options:
+      latest: Stable
+      nightly: Dev
+  isClassroomMode:
+    title: Demo Mode
 app:
   unsaved: "*"
 appMenu:
