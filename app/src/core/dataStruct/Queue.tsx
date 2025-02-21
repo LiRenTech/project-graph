@@ -1,5 +1,5 @@
 export class Queue<T> {
-  private items: T[] = [];
+  protected items: T[] = [];
 
   // 入队操作
   enqueue(element: T): void {
@@ -24,6 +24,13 @@ export class Queue<T> {
       return undefined;
     }
     return this.items[0];
+  }
+
+  tail(): T | undefined {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+    return this.items[this.items.length - 1];
   }
 
   clear(): void {

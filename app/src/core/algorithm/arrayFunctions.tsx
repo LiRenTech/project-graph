@@ -16,6 +16,22 @@ export namespace ArrayFunctions {
     return sum(arr) / arr.length;
   }
 
+  export function isSame(arr: number[]): boolean {
+    if (arr.length === 0) {
+      throw new Error("计算是否均一时，数组不能为空");
+    }
+    if (arr.length === 1) {
+      return true;
+    }
+    const first = arr[0];
+    for (let i = 1; i < arr.length; i++) {
+      if (first !== arr[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   /**
    * 计算方差
    */
