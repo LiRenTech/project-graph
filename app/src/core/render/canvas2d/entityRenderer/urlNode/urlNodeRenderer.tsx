@@ -49,7 +49,7 @@ export namespace UrlNodeRenderer {
     );
     // 绘制url
     TextRenderer.renderText(
-      urlNode.url,
+      urlNode.url.length > 35 ? urlNode.url.slice(0, 35) + "..." : urlNode.url,
       Renderer.transformWorld2View(
         urlNode.rectangle.location.add(new Vector(Renderer.NODE_PADDING, UrlNode.titleHeight + Renderer.NODE_PADDING)),
       ),
