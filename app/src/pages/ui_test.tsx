@@ -12,7 +12,7 @@ import { Panel } from "../components/panel";
 
 export default function UITestPage() {
   return (
-    <div className="w-min bg-slate-400 p-32">
+    <div className="bg-panel-bg text-panel-text p-32">
       <Box tooltip="tooltip">Box</Box>
       <Button>Button</Button>
       <Input placeholder="Input" />
@@ -48,7 +48,7 @@ export default function UITestPage() {
           );
         }}
       >
-        open panel
+        打开面板
       </Button>
     </div>
   );

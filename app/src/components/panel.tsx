@@ -14,11 +14,18 @@ export namespace Panel {
     closable: boolean;
     buttons: Button[];
     children: React.ReactNode;
+    widthRate: number;
   };
   type ButtonLabels<T extends Button[]> = keyof T[number]["label"];
 
+  /**
+   * widthRate: 0.33 means 33% of the screen width.
+   * @param param0
+   * @param children
+   * @returns
+   */
   export function show(
-    { title = "", closable = true, buttons = [] }: Partial<Omit<Props, "children">> = {},
+    { title = "", closable = true, buttons = [], widthRate = 0.33 }: Partial<Omit<Props, "children">> = {},
     children = <></>,
   ) {
     return new Promise<ButtonLabels<typeof buttons>>((resolve) => {
@@ -38,6 +45,7 @@ export namespace Panel {
               button.onClick();
             },
           }))}
+          widthRate={widthRate}
         >
           {children}
         </Component>,
@@ -45,7 +53,7 @@ export namespace Panel {
     });
   }
 
-  function Component({ title, closable, buttons, children }: Props) {
+  function Component({ title, closable, buttons, children, widthRate }: Props) {
     const [show, setShow] = React.useState(false);
 
     React.useEffect(() => {
@@ -58,10 +66,12 @@ export namespace Panel {
       <>
         <div
           className={cn(
-            "bg-panel-bg text-panel-text fixed bottom-0 left-2/3 right-0 top-0 z-[99] flex translate-x-full flex-col",
+            "bg-panel-bg text-panel-text fixed bottom-0 right-0 top-0 z-[99] flex translate-x-full flex-col",
             {
               "translate-x-0": show,
             },
+            `w-[${widthRate * 100}%]`,
+            // "w-[100%]",
           )}
         >
           <div className="flex items-center justify-between px-6 py-4">
@@ -73,21 +83,23 @@ export namespace Panel {
             )}
           </div>
           <div className="flex-1 overflow-auto px-6">{children}</div>
-          <div className="flex items-center justify-end gap-4 p-6">
-            {buttons.map((button) => (
-              <Button
-                key={button.label}
-                onClick={() => {
-                  setShow(false);
-                  setTimeout(() => {
-                    button.onClick();
-                  }, 500);
-                }}
-              >
-                {button.label}
-              </Button>
-            ))}
-          </div>
+          {buttons.length > 0 && (
+            <div className="flex items-center justify-end gap-4 p-6">
+              {buttons.map((button) => (
+                <Button
+                  key={button.label}
+                  onClick={() => {
+                    setShow(false);
+                    setTimeout(() => {
+                      button.onClick();
+                    }, 500);
+                  }}
+                >
+                  {button.label}
+                </Button>
+              ))}
+            </div>
+          )}
         </div>
         <div
           className={cn("pointer-events-none fixed inset-0 z-[98] bg-black opacity-0", {

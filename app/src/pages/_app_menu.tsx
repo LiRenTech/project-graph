@@ -19,6 +19,7 @@ import {
   MoreHorizontal,
   PersonStanding,
   Presentation,
+  Radar,
   // PartyPopper,
   RefreshCcw,
   Save,
@@ -57,6 +58,9 @@ import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryMana
 import { SoundService } from "../core/service/feedbackService/SoundService";
 import SearchingNodePanel from "./_popup_panel/_searching_node_panel";
 import { Popup } from "../components/popup";
+import { Panel } from "../components/panel";
+import { ComplexityDetector } from "../core/service/dataManageService/ComplexityDetector";
+import ComplexityResultPanel from "./_fixed_panel/_complexity_result_panel";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -479,6 +483,22 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         >
           查找
         </Col>
+        <Col
+          icon={<Radar />}
+          onClick={async () => {
+            Panel.show(
+              {
+                title: "内容统计",
+                widthRate: 1,
+              },
+              <>
+                <pre className="text-xs">{ComplexityResultPanel(ComplexityDetector.detectorCurrentStage())}</pre>
+              </>,
+            );
+          }}
+        >
+          内容复杂度检测
+        </Col>
       </Row>
       <Row icon={<MoreHorizontal />} title={t("more.title")}>
         <Col icon={<SettingsIcon />} onClick={() => navigate("/settings/visual")}>
@@ -563,7 +583,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             测试页面
           </Col>
           <Col icon={<TestTube2 />} onClick={() => navigate("/ui_test")}>
-            ui
+            ui测试页面
           </Col>
           <Col icon={<TestTube2 />} onClick={() => navigate("/info")}>
             Info

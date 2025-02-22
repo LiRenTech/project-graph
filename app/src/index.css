@@ -30,6 +30,11 @@
   --color-panel-bg: var(--color-panel-bg);
   --color-panel-text: var(--color-panel-text);
   --color-panel-details-text: var(--color-panel-details-text);
+  
+  --color-panel-success-text: var(--color-panel-success-text);
+  --color-panel-warning-text: var(--color-panel-warning-text);
+  --color-panel-error-text: var(--color-panel-error-text);
+
   --color-tooltip-bg: var(--color-tooltip-bg);
   --color-tooltip-text: var(--color-tooltip-text);
   --color-tooltip-border: var(--color-tooltip-border);
@@ -94,6 +99,10 @@
   --color-panel-bg: oklch(0.269 0 0);
   --color-panel-text: #fff;
   --color-panel-details-text: #aaa;
+  --color-panel-success-text: #70ca70;
+  --color-panel-warning-text: #f2b468;
+  --color-panel-error-text: #ea4848;
+
   --color-tooltip-bg: oklch(0.269 0 0);
   --color-tooltip-text: #fff;
   --color-tooltip-border: oklch(0.371 0 0);
@@ -160,6 +169,10 @@
   --color-panel-bg: oklch(0.269 0 0);
   --color-panel-text: #fff;
   --color-panel-details-text: #aaa;
+  --color-panel-success-text: #70ca70;
+  --color-panel-warning-text: #f2b468;
+  --color-panel-error-text: #ea4848;
+
   --color-tooltip-bg: oklch(0.269 0 0);
   --color-tooltip-text: #fff;
   --color-tooltip-border: oklch(0.371 0 0);
@@ -224,6 +237,10 @@
   --color-panel-bg: oklch(0.98 0.01 0);
   --color-panel-text: oklch(0.15 0.05 0);
   --color-panel-details-text: oklch(0.5 0.05 0);
+  --color-panel-success-text: #2f572f;
+  --color-panel-warning-text: #846238;
+  --color-panel-error-text: #802828;
+
   --color-tooltip-bg: oklch(0.95 0.01 0);
   --color-tooltip-text: oklch(0.15 0.05 0);
   --color-tooltip-border: oklch(0.85 0.02 0);
@@ -292,6 +309,9 @@
   --color-panel-bg: #f4c5b3; /* 米白黄 */
   --color-panel-text: oklch(0.45 0.08 340); /* 灰粉紫 */
   --color-panel-details-text: oklch(0.55 0.06 340);
+  --color-panel-success-text: #2fad2f;
+  --color-panel-warning-text: #bb7c2e;
+  --color-panel-error-text: #bb2020;
 
   /* 工具提示 */
   --color-tooltip-bg: #ffe8eb; /* 雾粉色 */
@@ -372,6 +392,9 @@
   --color-panel-bg: #d6dbd5; /* 冷淡蓝色调的浅灰色 */
   --color-panel-text: oklch(0.25 0.03 240); /* 更深的冷灰色 */
   --color-panel-details-text: oklch(0.35 0.03 240);
+  --color-panel-success-text: #70ca70;
+  --color-panel-warning-text: #f2b468;
+  --color-panel-error-text: #ea4848;
 
   /* 核心配色 */
   --color-primary: oklch(0.85 0.02 210); /* 冷绿 */
@@ -454,6 +477,9 @@
   --color-panel-bg: #364153; /* 冷淡蓝色调的浅灰色 */
   --color-panel-text: #e5e7eb; /* 更深的冷灰色 */
   --color-panel-details-text: #8a909d;
+  --color-panel-success-text: #70ca70;
+  --color-panel-warning-text: #f2b468;
+  --color-panel-error-text: #ea4848;
 
   /* 核心配色 */
   --color-primary: #a3d1e4;
