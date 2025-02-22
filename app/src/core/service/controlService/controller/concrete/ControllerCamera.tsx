@@ -237,6 +237,9 @@ export class ControllerCameraClass extends ControllerClass {
    * @param event - 鼠标事件
    */
   public mouseDoubleClick: (event: MouseEvent) => void = (event: MouseEvent) => {
+    if (Stage.doubleClickMiddleMouseButton !== "adjustCamera") {
+      return;
+    }
     if (event.button === 1 && !Controller.isCameraLocked) {
       if (event.ctrlKey) {
         return;

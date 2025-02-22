@@ -120,6 +120,7 @@ export namespace Stage {
   export let rectangleSelectWhenLeft: "contain" | "intersect" = "contain";
   export let rectangleSelectWhenRight: "contain" | "intersect" = "intersect";
   export let enableWindowsTouchPad = true;
+  export let doubleClickMiddleMouseButton: Settings.Settings["doubleClickMiddleMouseButton"] = "adjustCamera";
 
   export function init() {
     autoSaveEngine.init();
@@ -141,6 +142,9 @@ export namespace Stage {
     });
     Settings.watch("enableWindowsTouchPad", (value) => {
       enableWindowsTouchPad = value;
+    });
+    Settings.watch("doubleClickMiddleMouseButton", (value) => {
+      doubleClickMiddleMouseButton = value;
     });
   }
 }

@@ -358,6 +358,14 @@ settings:
     options:
       cut: 斩断并删除物体
       moveCamera: 移动视野
+  doubleClickMiddleMouseButton:
+    title: 双击中键鼠标
+    description: |
+      将滚轮键快速按下两次时执行的操作。默认时重置视野。
+      关闭此选项，可以防止误触发。
+    options:
+      adjustCamera: 调整视野
+      none: 无操作
   textNodeContentLineBreak:
     title: 文本节点换行方案
     options:
@@ -449,13 +457,10 @@ settings:
     title: 连接线开始的声音文件
     description: |
       连接线右键按下开始时播放的声音文件路径
-      还有问题，在开始节点上滑动鼠标时可能会重叠播放
   connectFindTargetSoundFile:
     title: 连接线吸附到目标上的声音文件
     description: |
       连接线吸附到目标上时播放的声音文件路径
-      当前吸附声音还有问题，
-      吸附到目标上并移动鼠标时，会重叠很多播放
   cuttingLineReleaseSoundFile:
     title: 斩断线释放的声音文件
     description: |

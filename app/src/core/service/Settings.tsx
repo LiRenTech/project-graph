@@ -85,6 +85,7 @@ export namespace Settings {
     mouseWheelMode: "zoom" | "move" | "moveX";
     mouseWheelWithShiftMode: "zoom" | "move" | "moveX";
     mouseWheelWithCtrlMode: "zoom" | "move" | "moveX";
+    doubleClickMiddleMouseButton: "none" | "adjustCamera";
     // 音效相关
     soundEnabled: boolean;
     cuttingLineStartSoundFile: string;
@@ -174,6 +175,7 @@ export namespace Settings {
     mouseWheelMode: "zoom",
     mouseWheelWithShiftMode: "move",
     mouseWheelWithCtrlMode: "zoom",
+    doubleClickMiddleMouseButton: "adjustCamera",
     // 音效相关
     soundEnabled: true,
     cuttingLineStartSoundFile: "",
