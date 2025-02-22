@@ -731,3 +731,7 @@ keyBinds:
     description: |
       按下后，打开搜索框，可以输入搜索内容
       搜索框支持部分匹配，例如输入 "a" 能搜索到 "apple" 等
+  clickTagPanelButton:
+    title: 打开/关闭标签面板
+    description: |
+      按下此键可代替鼠标点击页面上的标签面板展开关闭按钮

@@ -487,6 +487,23 @@ async function registerKeyBinds() {
     openBrowserOrFile();
   });
 
+  (
+    await KeyBinds.create("clickTagPanelButton", "1", {
+      control: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(() => {
+    console.log("123");
+    const button = document.getElementById("tagPanelBtn");
+    const event = new MouseEvent("click", {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+    button?.dispatchEvent(event);
+  });
+
   const bind = await KeyBinds.create("keyboardOnlyGenerateNode", "tab", {
     control: false,
     alt: false,

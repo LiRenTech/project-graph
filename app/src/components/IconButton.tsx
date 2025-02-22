@@ -6,10 +6,12 @@ export default function IconButton({
   children,
   className = "",
   onClick = () => {},
+  id = "",
   ...props
 }: React.PropsWithChildren<{
   className?: string;
   onClick?: (e: React.MouseEvent) => void;
+  id?: string;
   [key: string]: any;
 }>) {
   return (
@@ -19,6 +21,7 @@ export default function IconButton({
         className,
       )}
       onClick={onClick}
+      id={id}
       {...props}
     >
       {children}

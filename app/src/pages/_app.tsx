@@ -64,6 +64,7 @@ export default function App() {
           });
       }
     });
+
     // 修复鼠标拖出窗口后触发上下文菜单的问题
     window.addEventListener("contextmenu", (event) => {
       if (
@@ -281,6 +282,7 @@ export default function App() {
         </IconButton>
 
         <IconButton
+          id="tagPanelBtn"
           onClick={(e) => {
             e.stopPropagation();
             setIsTagPanelOpen(!isTagPanelOpen);
