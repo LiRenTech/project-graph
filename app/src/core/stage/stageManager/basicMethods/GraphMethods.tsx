@@ -1,4 +1,5 @@
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
+import { LineEdge } from "../../stageObject/association/LineEdge";
 import { StageManager } from "../StageManager";
 
 export namespace GraphMethods {
@@ -81,5 +82,15 @@ export namespace GraphMethods {
     dfs(node);
 
     return result; // 返回所有可达节点的集合
+  }
+
+  export function getEdgesBetween(node1: ConnectableEntity, node2: ConnectableEntity): LineEdge[] {
+    const result: LineEdge[] = []; // 存储连接两个节点的边的结果集
+    for (const edge of StageManager.getLineEdges()) {
+      if (edge.source === node1 && edge.target === node2) {
+        result.push(edge);
+      }
+    }
+    return result;
   }
 }

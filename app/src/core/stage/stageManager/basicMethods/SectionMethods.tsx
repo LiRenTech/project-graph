@@ -161,4 +161,25 @@ export namespace SectionMethods {
     };
     return dfs(rootNode, []);
   }
+
+  /**
+   * 返回一个Section框的最大嵌套深度
+   * @param section
+   */
+  export function getSectionMaxDeep(section: Section): number {
+    const visited: Section[] = [];
+    const dfs = (node: Section, deep = 1): number => {
+      if (visited.includes(node)) {
+        return deep;
+      }
+      visited.push(node);
+      for (const child of node.children) {
+        if (child instanceof Section) {
+          deep = Math.max(deep, dfs(child, deep + 1));
+        }
+      }
+      return deep;
+    };
+    return dfs(section);
+  }
 }

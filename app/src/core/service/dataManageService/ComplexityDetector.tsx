@@ -1,4 +1,6 @@
 import { Renderer } from "../../render/canvas2d/renderer";
+import { GraphMethods } from "../../stage/stageManager/basicMethods/GraphMethods";
+import { SectionMethods } from "../../stage/stageManager/basicMethods/SectionMethods";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stage/stageObject/entity/ConnectPoint";
@@ -9,11 +11,14 @@ import { TextNode } from "../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../stage/stageObject/entity/UrlNode";
 
 export interface CountResultObject {
-  wordCount: number;
+  textNodeWordCount: number;
+  associationWordCount: number;
+  entityDetailsWordCount: number;
+  textCharSize: number;
+
   averageWordCountPreTextNode: number;
 
   entityCount: number;
-  associationCount: number;
 
   sectionCount: number;
   textNodeCount: number;
@@ -25,20 +30,26 @@ export interface CountResultObject {
 
   noTransparentEntityColorCount: number;
   transparentEntityColorCount: number;
+  entityColorTypeCount: number;
+  noTransparentEdgeColorCount: number;
+  transparentEdgeColorCount: number;
+  edgeColorTypeCount: number;
 
   stageWidth: number;
   stageHeight: number;
   stageArea: number;
 
+  associationCount: number;
   selfLoopCount: number;
-  averageEntityOutEdgeCount: number;
-  averageEntityInEdgeCount: number;
-  entityClusterCount: number;
+  isolatedConnectableEntityCount: number;
+  multiEdgeCount: number;
+
   entityDensity: number;
   entityOverlapCount: number;
 
-  crossCount: number;
-  maxDepth: number;
+  crossEntityCount: number;
+  maxSectionDepth: number;
+  emptySetCount: number;
 }
 /**
  * 舞台场景复杂度检测器
@@ -55,12 +66,14 @@ export namespace ComplexityDetector {
 
     const countResultObject: CountResultObject = {
       // 小白统计
-      wordCount: 0,
+      textNodeWordCount: 0,
+      associationWordCount: 0,
+      entityDetailsWordCount: 0,
       averageWordCountPreTextNode: 0,
+      textCharSize: 0,
 
       // 各种实体
       entityCount: entities.length,
-      associationCount: associations.length,
 
       sectionCount: 0,
       textNodeCount: 0,
@@ -73,6 +86,10 @@ export namespace ComplexityDetector {
       // 颜色统计
       noTransparentEntityColorCount: 0,
       transparentEntityColorCount: 0,
+      entityColorTypeCount: 0,
+      noTransparentEdgeColorCount: 0,
+      transparentEdgeColorCount: 0,
+      edgeColorTypeCount: 0,
 
       // 舞台尺寸相关
       stageWidth: 0,
@@ -80,31 +97,33 @@ export namespace ComplexityDetector {
       stageArea: 0,
 
       // 图论相关
-
+      associationCount: associations.length,
       // 自环数量
       selfLoopCount: 0,
-      // 平均节点出度数量
-      averageEntityOutEdgeCount: 0,
-      // 平均节点入度数量
-      averageEntityInEdgeCount: 0,
-      // 节点团数量
-      entityClusterCount: 0,
+      // 孤立节点数量
+      isolatedConnectableEntityCount: 0,
+      multiEdgeCount: 0, // 多条边数量
+
       // 节点密度
-      entityDensity: 0,
+      entityDensity: NaN,
       // 节点重叠数量
       entityOverlapCount: 0,
 
       // 集合论相关
-
-      // 交叉数量
-      crossCount: 0,
+      // 空集数量
+      emptySetCount: 0,
+      // 交叉元素数量
+      crossEntityCount: 0,
       // 最大深度
-      maxDepth: 0,
+      maxSectionDepth: 0,
     };
+
     // 各种实体统计
     for (const entity of entities) {
+      countResultObject.entityDetailsWordCount += entity.details.length;
+
       if (entity instanceof TextNode) {
-        countResultObject.wordCount += entity.text.length;
+        countResultObject.textNodeWordCount += entity.text.length;
         countResultObject.averageWordCountPreTextNode += entity.text.length;
         countResultObject.textNodeCount++;
         if (entity.color.a === 0) {
@@ -118,6 +137,9 @@ export namespace ComplexityDetector {
         countResultObject.urlCount++;
       } else if (entity instanceof ConnectPoint) {
         countResultObject.connectPointCount++;
+        if (GraphMethods.nodeChildrenArray(entity).length === 0 && GraphMethods.nodeParentArray(entity).length === 0) {
+          countResultObject.isolatedConnectPointCount++;
+        }
       } else if (entity instanceof PenStroke) {
         countResultObject.penStrokeCount++;
       } else if (entity instanceof Section) {
@@ -142,10 +164,84 @@ export namespace ComplexityDetector {
       if (association instanceof LineEdge) {
         if (association.source === association.target) {
           countResultObject.selfLoopCount++;
+        } else {
+          // 检测是否有多重边
+          const edges = GraphMethods.getEdgesBetween(association.source, association.target);
+          if (edges.length > 1) {
+            countResultObject.multiEdgeCount++;
+          }
         }
+        countResultObject.associationWordCount += association.text.length;
       }
     }
 
+    const connectableEntities = StageManager.getConnectableEntity();
+
+    // 孤立节点数量
+    for (const entity of connectableEntities) {
+      if (GraphMethods.nodeChildrenArray(entity).length === 0 && GraphMethods.nodeParentArray(entity).length === 0) {
+        countResultObject.isolatedConnectableEntityCount++;
+      }
+      const edges = GraphMethods.getEdgesBetween(entity, entity);
+      if (edges.length > 1) {
+        countResultObject.multiEdgeCount++;
+      }
+    }
+
+    // 节点密度
+    countResultObject.entityDensity = countResultObject.entityCount / (countResultObject.stageArea / 10000);
+
+    // 节点重叠数量
+    for (const entity of entities) {
+      if (entity instanceof Section) {
+        continue;
+      }
+      for (const otherEntity of entities) {
+        if (entity === otherEntity || otherEntity instanceof Section) {
+          continue;
+        }
+        if (entity.collisionBox.isIntersectsWithRectangle(otherEntity.collisionBox.getRectangle())) {
+          countResultObject.entityOverlapCount++;
+          break;
+        }
+      }
+    }
+    // 色彩统计
+    const entityColorStringSet = new Set();
+    for (const entity of entities) {
+      if (entity instanceof TextNode || entity instanceof Section) {
+        entityColorStringSet.add(entity.color.toString());
+      }
+    }
+    countResultObject.entityColorTypeCount = entityColorStringSet.size;
+
+    const edgeColorStringSet = new Set();
+    for (const lineEdge of StageManager.getLineEdges()) {
+      if (lineEdge.color.a === 0) {
+        countResultObject.transparentEdgeColorCount++;
+      } else {
+        countResultObject.noTransparentEdgeColorCount++;
+      }
+      edgeColorStringSet.add(lineEdge.color.toString());
+    }
+    countResultObject.edgeColorTypeCount = edgeColorStringSet.size;
+    // 集合论相关
+    for (const entity of entities) {
+      const fatherSections = SectionMethods.getFatherSections(entity);
+      if (fatherSections.length > 1) {
+        countResultObject.crossEntityCount++;
+      }
+    }
+    for (const section of StageManager.getSections()) {
+      // SectionMethods.isTreePack(section);
+      countResultObject.maxSectionDepth = Math.max(
+        countResultObject.maxSectionDepth,
+        SectionMethods.getSectionMaxDeep(section),
+      );
+      if (section.childrenUUIDs.length === 0) {
+        countResultObject.emptySetCount++;
+      }
+    }
     return countResultObject;
   }
 }
