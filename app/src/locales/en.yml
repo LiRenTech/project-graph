@@ -376,26 +376,28 @@ settings:
     description: |
       When enabled, nodes will automatically align with other nodes along the x-axis and y-axis when dragged and released
   enableWindowsTouchPad:
-    title: 允许Windows系统使用触摸板操作
+    title: Allows move with the touchbar with two fingers
     description: |
-      开启后，可以使用触摸板操作鼠标滚轮
+      On Windows, moving two fingers up and down is recognized as a scroll event.
+      The movement of two fingers left and right will be recognized as a scrolling event of the mouse wheel.
+      If you are operating with a notebook and using an external mouse, it is recommended to turn this option off.
   mouseWheelMode:
     title: mouse Wheel Mode
     options:
       zoom: zoom
-      move: move
+      move: Vertical Move
       moveX: move X
   mouseWheelWithShiftMode:
     title: mouse Wheel Mode When Press Shift
     options:
       zoom: zoom
-      move: move
+      move: Vertical Move
       moveX: move X
   mouseWheelWithCtrlMode:
     title: mouse Wheel Mode When Press Ctrl
     options:
       zoom: zoom
-      move: move
+      move: Vertical Move
       moveX: move X
   rectangleSelectWhenLeft:
     title: Strategy for Left Rectangle Selection
@@ -446,6 +448,7 @@ settings:
     title: Demo Mode
 app:
   unsaved: "*"
+  comingSoon: Coming soon…
 appMenu:
   file:
     title: File
@@ -650,3 +653,9 @@ keyBinds:
       按下后，舞台上的全部文字将会被加密，无法被其他人看到
       按下后，舞台上的全部文字将会解密，其他人可以看到
       可以用于截图反馈问题、突然有人看你的屏幕时使用
+  searchText:
+    title: Search Text
+plugins:
+  uninstall: Uninstall
+keys:
+  " ": Space
