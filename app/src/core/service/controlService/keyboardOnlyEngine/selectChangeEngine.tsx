@@ -55,6 +55,12 @@ export namespace SelectChangeEngine {
       newSelectedNode.isSelected = true;
       const newSelectNodeRect = newSelectedNode.collisionBox.getRectangle();
       const color = StageStyleManager.currentStyle.effects.successShadow;
+
+      if (Camera.cameraFollowsSelectedNodeOnArrowKeys) {
+        Camera.location = newSelectNodeRect.center;
+      }
+
+      // 节点切换移动的特效有待专门写一个
       Stage.effectMachine.addEffects([
         new LineCuttingEffect(
           new ProgressNumber(0, 20),

@@ -87,6 +87,7 @@ export namespace Camera {
   export let mouseWheelWithCtrlMode: Settings.Settings["mouseWheelWithCtrlMode"] = "zoom";
   let cameraKeyboardScaleRate = 0.2;
   let cameraResetViewPaddingRate = 1.5;
+  export let cameraFollowsSelectedNodeOnArrowKeys = false;
 
   // IDEA: 突然有一个好点子
   // 把wsad移动的逻辑改成瞬间爆炸的冲刺一小段距离，而不是改成直接赋予永久的作用力方向然后再撤销
@@ -290,6 +291,9 @@ export namespace Camera {
     });
     Settings.watch("cameraResetViewPaddingRate", (value) => {
       cameraResetViewPaddingRate = value;
+    });
+    Settings.watch("cameraFollowsSelectedNodeOnArrowKeys", (value) => {
+      cameraFollowsSelectedNodeOnArrowKeys = value;
     });
   }
 

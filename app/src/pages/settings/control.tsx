@@ -1,5 +1,6 @@
 import {
   AlignStartVertical,
+  Crosshair,
   Fullscreen,
   GitCompareArrows,
   Hand,
@@ -76,6 +77,7 @@ export default function Control() {
         />
         <SettingField icon={<ScanEye />} settingKey="scaleCameraByMouseLocation" type="switch" />
         <SettingField icon={<Keyboard />} settingKey="allowMoveCameraByWSAD" type="switch" />
+        <SettingField icon={<Crosshair />} settingKey="cameraFollowsSelectedNodeOnArrowKeys" type="switch" />
         <SettingField icon={<Keyboard />} settingKey="cameraKeyboardMoveReverse" type="switch" />
         <SettingField icon={<Move />} settingKey="moveAmplitude" type="slider" min={0} max={10} step={0.1} />
         <SettingField icon={<Move />} settingKey="moveFriction" type="slider" min={0} max={1} step={0.01} />

@@ -68,6 +68,7 @@ export namespace Settings {
     rectangleSelectWhenRight: "intersect" | "contain";
     scaleExponent: number;
     allowMoveCameraByWSAD: boolean;
+    cameraFollowsSelectedNodeOnArrowKeys: boolean;
     cameraKeyboardMoveReverse: boolean;
     scaleCameraByMouseLocation: boolean;
     cameraKeyboardScaleRate: number;
@@ -156,6 +157,7 @@ export namespace Settings {
     rectangleSelectWhenRight: "intersect",
     scaleExponent: 0.11,
     allowMoveCameraByWSAD: false,
+    cameraFollowsSelectedNodeOnArrowKeys: false,
     cameraKeyboardMoveReverse: false,
     scaleCameraByMouseLocation: true,
     cameraKeyboardScaleRate: 0.2,

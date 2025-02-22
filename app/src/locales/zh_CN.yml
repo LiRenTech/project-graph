@@ -311,6 +311,10 @@ settings:
     description: |
       开启后，可以使用W S A D按键来上下左右移动视角
       关闭后，只能使用鼠标来移动视角，不会造成无限滚屏bug
+  cameraFollowsSelectedNodeOnArrowKeys:
+    title: 通过方向键切换选中节点时，视野跟随移动
+    description: |
+      开启后，使用键盘移动节点选择框时，视野跟随移动
   cameraKeyboardMoveReverse:
     title: 视角移动键盘反向
     description: |
@@ -318,9 +322,12 @@ settings:
       原本的移动逻辑是移动悬浮在画面上的摄像机，但如果看成是移动画布，这样就反了
       于是就有了这个选项
   cameraResetViewPaddingRate:
-    title: 视野重置时，边缘留白系数
+    title: 根据选择节点重置视野时，边缘留白系数
     description: |
-      值为1 表示边缘完全不留白。
+      框选一堆节点或一个节点，并按下快捷键或点击按钮来重置视野后
+      视野会调整大小和位置，确保所有选中内容出现在屏幕中央并完全涵盖
+      由于视野缩放大小原因，此时边缘可能会有留白
+      值为1 表示边缘完全不留白。（非常放大的观察）
       值为2 表示留白内容恰好为自身内容的一倍
   allowAddCycleEdge:
     title: 允许在节点之间添加自环
