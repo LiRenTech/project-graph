@@ -15,6 +15,7 @@ import {
   SaveAll,
   Square,
   Tag,
+  Trash2,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Box from "../components/Box";
@@ -92,6 +93,14 @@ export default function Toolbar({ className = "" }: { className?: string }) {
     <Box
       className={cn("bg-toolbar-bg border-toolbar-border fixed bottom-2 left-1/2 flex translate-x-[-50%]", className)}
     >
+      {/* 右键移动画布的用户希望保留此按钮 */}
+      <ToolbarItem
+        description="删除选中的节点/连线"
+        icon={<Trash2 />}
+        handleFunction={() => {
+          StageManager.deleteSelectedStageObjects();
+        }}
+      />
       <ToolbarItem
         description="通过文本生成节点"
         icon={<ClipboardPaste />}
