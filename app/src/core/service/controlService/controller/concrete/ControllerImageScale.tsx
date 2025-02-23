@@ -13,11 +13,12 @@ ControllerImageScale.mousewheel = (event: WheelEvent) => {
     if (hoverImageNode === null) {
       return;
     }
+    // 需要注意缩放逻辑和视野缩放逻辑保持一致性
     if (event.deltaY > 0) {
       // 放大图片
-      hoverImageNode.scaleUpdate(+0.1);
-    } else if (event.deltaY < 0) {
       hoverImageNode.scaleUpdate(-0.1);
+    } else if (event.deltaY < 0) {
+      hoverImageNode.scaleUpdate(+0.1);
     }
   }
 };
