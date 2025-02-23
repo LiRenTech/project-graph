@@ -17,6 +17,7 @@ export namespace MouseLocation {
 
       Controller.recordManipulate();
       // 检测是否超出范围
+      // TODO: 这里还可以优化一下，给每个Controller都加一个mouseMoveOutWindowForcedShutdown方法
       if (x < 0 || x > window.innerWidth || y < 0 || y > window.innerHeight) {
         if (Stage.cuttingMachine.isUsing) {
           Stage.cuttingMachine.mouseMoveOutWindowForcedShutdown(vectorObject);

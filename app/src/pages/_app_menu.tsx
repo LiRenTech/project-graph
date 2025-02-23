@@ -488,7 +488,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           onClick={async () => {
             Panel.show(
               {
-                title: "内容统计",
+                title: `${Stage.path.isDraft() ? "草稿内容复杂度" : PathString.absolute2file(file) + " 内容复杂度"}`,
                 widthRate: 1,
               },
               <>

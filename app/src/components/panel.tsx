@@ -77,8 +77,11 @@ export namespace Panel {
           <div className="flex items-center justify-between px-6 py-4">
             <span className="text-xl font-bold">{title}</span>
             {closable && (
-              <span className="cursor-pointer" onClick={() => setShow(false)}>
-                <X />
+              <span
+                className="text-panel-error-text cursor-pointer rounded ring hover:scale-105"
+                onClick={() => setShow(false)}
+              >
+                <X className="cursor-pointer" />
               </span>
             )}
           </div>
