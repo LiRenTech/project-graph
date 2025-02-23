@@ -1,4 +1,5 @@
 import { Serialized } from "../../types/node";
+import { SectionMethods } from "./stageManager/basicMethods/SectionMethods";
 import { StageManager } from "./stageManager/StageManager";
 import { Entity } from "./stageObject/abstract/StageEntity";
 import { CublicCatmullRomSplineEdge } from "./stageObject/association/CublicCatmullRomSplineEdge";
@@ -202,13 +203,15 @@ export namespace StageDumper {
    * @returns
    */
   export function dumpSelected(entities: Entity[]): Serialized.File {
+    const dumpedEntities = dumpEntities(entities);
+
     // 根据选中的实体，找到涉及的边
     const selectedAssociations: (Serialized.LineEdge | Serialized.CublicCatmullRomSplineEdge)[] =
-      dumpAssociationsByEntities(entities);
+      dumpAssociationsByEntities(SectionMethods.getAllEntitiesInSelectedSectionsOrEntities(entities));
 
     return {
       version: latestVersion,
-      entities: dumpEntities(entities),
+      entities: dumpedEntities,
       associations: selectedAssociations,
       tags: [],
     };

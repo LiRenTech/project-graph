@@ -182,4 +182,30 @@ export namespace SectionMethods {
     };
     return dfs(section);
   }
+
+  /**
+   * 用途：
+   * 根据选中的多个Section，获取所有选中的实体（包括子实体）
+   * 可以解决复制多个Section时，内部实体的连线问题
+   * @param selectedEntities
+   */
+  export function getAllEntitiesInSelectedSectionsOrEntities(selectedEntities: Entity[]): Entity[] {
+    const entityUUIDSet = new Set<string>();
+    const dfs = (currentEntity: Entity) => {
+      if (currentEntity.uuid in entityUUIDSet) {
+        return;
+      }
+      if (currentEntity instanceof Section) {
+        for (const child of currentEntity.children) {
+          dfs(child);
+        }
+      } else {
+        entityUUIDSet.add(currentEntity.uuid);
+      }
+    };
+    for (const entity of selectedEntities) {
+      dfs(entity);
+    }
+    return StageManager.getEntitiesByUUIDs(Array.from(entityUUIDSet));
+  }
 }
