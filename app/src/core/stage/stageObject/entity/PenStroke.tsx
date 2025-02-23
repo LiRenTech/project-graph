@@ -96,6 +96,9 @@ export class PenStroke extends Entity {
     for (const segment of this.segmentList) {
       resultList.push(`${segment.startLocation.x},${segment.startLocation.y},${segment.width}`);
     }
+    // 还要把最后一段的结尾加进来
+    const tailSegment = this.segmentList[this.segmentList.length - 1];
+    resultList.push(`${tailSegment.startLocation.x},${tailSegment.startLocation.y},${tailSegment.width}`);
     return resultList.join("~");
   }
 
