@@ -258,4 +258,39 @@ export namespace PathString {
       );
     }
   }
+
+  /**
+   * 识别一个url是否是一个markdown格式的url，并提取出内容
+   * [text](url)
+   * @param url
+   */
+  export function isMarkdownUrl(str: string): { valid: boolean; text: string; url: string } {
+    const result = { valid: false, text: "", url: "" };
+    if (typeof str !== "string") return result;
+    str = str.trim();
+
+    if (str.startsWith("[") && str.endsWith(")") && str.includes("](")) {
+      const parts = str.split("](");
+      if (parts.length === 2) {
+        let [text, url] = parts;
+        // text 去除左侧第一个 [
+        text = text.substring(1);
+        // url 去除右侧第一个 )
+        url = url.substring(0, url.length - 1);
+        // url可能是 `http://xxx "title"` 的格式
+        if (url.includes(" ")) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const [url2, _] = url.split(" ");
+          url = url2;
+          // title就丢掉不要了
+        }
+        if (isValidURL(url)) {
+          result.valid = true;
+          result.text = text;
+          result.url = url;
+        }
+      }
+    }
+    return result;
+  }
 }

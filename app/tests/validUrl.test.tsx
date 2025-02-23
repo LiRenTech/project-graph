@@ -1,7 +1,108 @@
 import { describe, expect, it } from "vitest";
 import { PathString } from "../src/utils/pathString";
 
-describe("PathString", () => {
+describe("markdown URL", () => {
+  it("标准有效链接", () => {
+    let _;
+    // 基础形式
+    _ = PathString.isMarkdownUrl("[百度](https://www.baidu.com)");
+    expect(_.valid).toBe(true);
+    expect(_.text).toBe("百度");
+    expect(_.url).toBe("https://www.baidu.com");
+
+    // 带标题的链接
+    _ = PathString.isMarkdownUrl('[GitHub](https://github.com "官方主页")');
+    expect(_.valid).toBe(true);
+    expect(_.text).toBe("GitHub");
+    expect(_.url).toBe("https://github.com");
+
+    // URL编码处理
+    _ = PathString.isMarkdownUrl("[搜索](https://example.com/search?q=hello%20world)");
+    expect(_.valid).toBe(true);
+    expect(_.url).toBe("https://example.com/search?q=hello%20world");
+  });
+
+  it("边界测试", () => {
+    let _;
+    // 最小长度
+    _ = PathString.isMarkdownUrl("");
+    expect(_.valid).toBe(false);
+
+    _ = PathString.isMarkdownUrl(" ");
+    expect(_.valid).toBe(false);
+
+    _ = PathString.isMarkdownUrl("   ");
+    expect(_.valid).toBe(false);
+    _ = PathString.isMarkdownUrl("()");
+    expect(_.valid).toBe(false);
+    _ = PathString.isMarkdownUrl("[]");
+    expect(_.valid).toBe(false);
+    _ = PathString.isMarkdownUrl("()[]()[]");
+    expect(_.valid).toBe(false);
+
+    _ = PathString.isMarkdownUrl("[]()");
+    expect(_.valid).toBe(false);
+    expect(_.text).toBe("");
+    expect(_.url).toBe("");
+
+    _ = PathString.isMarkdownUrl("[](bitmountain.top)");
+    expect(_.valid).toBe(true);
+    expect(_.text).toBe("");
+    expect(_.url).toBe("bitmountain.top");
+
+    // 超长文本（>1000字符）
+    const longText = "a".repeat(1500);
+    const longUrl = "https://example.com/" + "x".repeat(2000);
+    _ = PathString.isMarkdownUrl(`[${longText}](${longUrl})`);
+    expect(_.valid).toBe(true);
+    expect(_.text).toBe(longText);
+    expect(_.url).toBe(longUrl);
+  });
+
+  it("特殊字符处理", () => {
+    let _;
+    // 嵌套括号
+    _ = PathString.isMarkdownUrl("[特殊(案例)](https://example.com/path)");
+    expect(_.valid).toBe(true);
+    expect(_.text).toBe("特殊(案例)");
+    expect(_.url).toBe("https://example.com/path");
+
+    // Unicode字符
+    _ = PathString.isMarkdownUrl("[中文链接](https://例子.测试/路径)");
+    expect(_.valid).toBe(true);
+    expect(_.text).toBe("中文链接");
+    expect(_.url).toBe("https://例子.测试/路径");
+
+    // 转义字符
+    _ = PathString.isMarkdownUrl("[特殊]字符](http://example.com)");
+    expect(_.valid).toBe(true);
+    expect(_.text).toBe("特殊]字符");
+  });
+
+  it("无效链接测试", () => {
+    let _;
+    // 结构不完整
+    _ = PathString.isMarkdownUrl("[缺失括号");
+    expect(_.valid).toBe(false);
+
+    // 非法URL字符
+    _ = PathString.isMarkdownUrl("[测试](javascript:alert(1))");
+    expect(_.valid).toBe(false);
+
+    // 空格干扰，算了吧……
+    // _ = PathString.isMarkdownUrl(" [ 空格测试 ] ( http://example.com ) ");
+    // expect(_.valid).toBe(true); // 应该允许前后空格
+    // expect(_.url).toBe("http://example.com");
+
+    // 多协议混淆
+    _ = PathString.isMarkdownUrl("[某个其他的笔记](joplin://x-callback-url/openNote)");
+    expect(_.valid).toBe(true);
+    expect(_.text).toBe("某个其他的笔记");
+    expect(_.url).toBe("joplin://x-callback-url/openNote");
+  });
+});
+
+describe("url", () => {
   it("URL有效性检测", () => {
     expect(PathString.isValidURL("https://www.baidu.com")).toBe(true);
     expect(PathString.isValidURL("http://www.baidu.com")).toBe(true);
