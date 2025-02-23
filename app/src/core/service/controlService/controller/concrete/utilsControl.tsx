@@ -6,6 +6,7 @@ import { InputElement } from "../../../../render/domElement/inputElement";
 import { Camera } from "../../../../stage/Camera";
 import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
+import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
@@ -18,8 +19,8 @@ import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyl
 import { Controller } from "../Controller";
 
 /**
- * 可能有多个控制器公用同一个代码，
- * 这里专门存放代码相同的地方
+ * 这里是专门存放代码相同的地方
+ *    因为有可能多个控制器公用同一个代码，
  */
 
 /**
@@ -50,6 +51,7 @@ export function editTextNode(clickedNode: TextNode, selectAll = true) {
   ).then(() => {
     clickedNode!.isEditing = false;
     Controller.isCameraLocked = false;
+    StageHistoryManager.recordStep();
   });
 }
 
@@ -76,6 +78,7 @@ export function editEdgeText(clickedLineEdge: LineEdge, selectAll = true) {
   ).then(() => {
     // clickedLineEdge!.isEditing = false;
     Controller.isCameraLocked = false;
+    StageHistoryManager.recordStep();
   });
 }
 
@@ -102,6 +105,7 @@ export function editUrlNodeTitle(clickedUrlNode: UrlNode) {
   ).then(() => {
     clickedUrlNode!.isEditingTitle = false;
     Controller.isCameraLocked = false;
+    StageHistoryManager.recordStep();
   });
 }
 
@@ -128,6 +132,7 @@ export function editPortalNodeTitle(clickedPortalNode: PortalNode) {
   ).then(() => {
     clickedPortalNode!.isEditingTitle = false;
     Controller.isCameraLocked = false;
+    StageHistoryManager.recordStep();
   });
 }
 
