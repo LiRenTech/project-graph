@@ -1,4 +1,5 @@
 import { v4 } from "uuid";
+import { CursorNameEnum } from "../../../../../types/cursors";
 import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
@@ -8,15 +9,11 @@ import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
-import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concrete/CircleFlameEffect";
-import { PointDashEffect } from "../../../feedbackService/effectEngine/concrete/PointDashEffect";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { addTextNodeByLocation } from "./utilsControl";
-import { MouseLocation } from "../../MouseLocation";
-import { CursorNameEnum } from "../../../../../types/cursors";
 
 /**
  * 连线控制器
@@ -270,14 +267,6 @@ class ControllerNodeConnectionClass extends ControllerClass {
     }
     if (isHaveConnectResult) {
       // 给连向的那个节点加特效
-      Stage.effectMachine.addEffect(
-        new CircleFlameEffect(
-          new ProgressNumber(0, 15),
-          connectToEntity.collisionBox.getRectangle().center,
-          80,
-          new Color(0, 255, 0, 1),
-        ),
-      );
     }
   }
 
@@ -288,28 +277,6 @@ class ControllerNodeConnectionClass extends ControllerClass {
   private addConnectEffect(from: ConnectableEntity, to: ConnectableEntity) {
     for (const effect of EdgeRenderer.getConnectedEffects(from, to)) {
       Stage.effectMachine.addEffect(effect);
-    }
-  }
-
-  public mainTick() {
-    // 产生连接线端点的粒子特效
-    if (this.connectFromEntities.length > 0 && this._isUsing) {
-      let connectTargetNode = null;
-      for (const node of StageManager.getConnectableEntity()) {
-        if (node.collisionBox.isContainsPoint(Controller.lastMoveLocation)) {
-          connectTargetNode = node;
-          break;
-        }
-      }
-      if (connectTargetNode === null) {
-        // 如果鼠标位置没有和任何节点相交
-        Stage.effectMachine.addEffect(
-          PointDashEffect.fromMouseEffect(
-            Renderer.transformView2World(MouseLocation.vector()),
-            this.connectFromEntities.length * 5,
-          ),
-        );
-      }
     }
   }
 }

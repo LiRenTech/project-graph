@@ -95,7 +95,6 @@ export namespace Stage {
    * 该函数在上游被频繁调用
    */
   export function logicTick() {
-    connectMachine.mainTick();
     // 特效逻辑
     effectMachine.logicTick();
 
