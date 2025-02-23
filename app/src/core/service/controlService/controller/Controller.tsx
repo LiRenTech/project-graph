@@ -59,13 +59,7 @@ export namespace Controller {
   export function lastMousePressLocationString(): string {
     return lastMousePressLocation.map((v) => v.toString()).join(",");
   }
-  /**
-   * 存放鼠标 左 中 右 键上次 "松开" 时候的world位置
-   */
-  const lastMouseReleaseLocation: Vector[] = [Vector.getZero(), Vector.getZero(), Vector.getZero()];
-  export function lastMouseReleaseLocationString(): string {
-    return lastMouseReleaseLocation.map((v) => v.toString()).join(",");
-  }
+
   /**
    * 是否正在进行移动(拖拽旋转)连线的操作
    */
@@ -205,8 +199,6 @@ export namespace Controller {
     }
     lastClickTime = Date.now();
     lastClickLocation = new Vector(x, y);
-    // 记录松开位置
-    lastMouseReleaseLocation[button] = Renderer.transformView2World(new Vector(x, y));
   }
 
   function keydown(event: KeyboardEvent) {

@@ -743,7 +743,6 @@ export namespace Renderer {
       `pressingKeys: ${Controller.pressingKeysString()}`,
       `鼠标按下情况: ${Controller.isMouseDown}`,
       `鼠标上次按下位置: ${Controller.lastMousePressLocationString()}`,
-      `鼠标上次松开位置: ${Controller.lastMouseReleaseLocationString()}`,
       `lastMousePressLocation Right: ${Controller.lastMousePressLocation[2].toString()}`,
       `框选框: ${Stage.selectMachine.selectingRectangle}`,
       `正在切割: ${Stage.cuttingMachine.isUsing}`,

@@ -12,6 +12,8 @@ import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
+import { ViewOutlineFlashEffect } from "../../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
+import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -20,6 +22,9 @@ import { ControllerClass } from "../ControllerClass";
  * @param event - 键盘事件
  */
 export class ControllerCameraClass extends ControllerClass {
+  // 是否正在使用
+  public isUsingMouseGrabMove = false;
+
   public keydown: (event: KeyboardEvent) => void = (event: KeyboardEvent) => {
     if (Controller.isCameraLocked) {
       return;
@@ -85,12 +90,33 @@ export class ControllerCameraClass extends ControllerClass {
     }
   };
 
+  public mousedown = (event: MouseEvent) => {
+    if (Controller.isCameraLocked) {
+      return;
+    }
+    if (event.button === 0 && Controller.pressingKeySet.has(" ")) {
+      Controller.setCursorNameHook(CursorNameEnum.Grabbing);
+      this.isUsingMouseGrabMove = true;
+    }
+    if (event.button === 1) {
+      // 中键按下
+      this.isUsingMouseGrabMove = true;
+    }
+    if (Stage.mouseRightDragBackground === "moveCamera" && event.button === 2) {
+      // 右键按下
+      this.isUsingMouseGrabMove = true;
+    }
+  };
+
   /**
    * 处理鼠标移动事件
    * @param event - 鼠标事件
    */
   public mousemove: (event: MouseEvent) => void = (event: MouseEvent) => {
     if (Controller.isCameraLocked) {
+      return;
+    }
+    if (!this.isUsingMouseGrabMove) {
       return;
     }
     // 空格+左键 拖动视野
@@ -128,14 +154,11 @@ export class ControllerCameraClass extends ControllerClass {
     }
   };
 
-  public mousedown = (event: MouseEvent) => {
-    if (Controller.isCameraLocked) {
-      return;
-    }
-    if (event.button === 0 && Controller.pressingKeySet.has(" ")) {
-      Controller.setCursorNameHook(CursorNameEnum.Grabbing);
-    }
-  };
+  public mouseMoveOutWindowForcedShutdown() {
+    this.isUsingMouseGrabMove = false;
+    Controller.setCursorNameHook(CursorNameEnum.Default);
+    Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(StageStyleManager.currentStyle.effects.windowFlash));
+  }
 
   /**
    * 处理鼠标松开事件
@@ -143,6 +166,9 @@ export class ControllerCameraClass extends ControllerClass {
    */
   public mouseup = (event: MouseEvent) => {
     if (Controller.isCameraLocked) {
+      return;
+    }
+    if (!this.isUsingMouseGrabMove) {
       return;
     }
     if (event.button === 0 && Controller.pressingKeySet.has(" ")) {
@@ -157,6 +183,7 @@ export class ControllerCameraClass extends ControllerClass {
     if (event.button === 4) {
       Controller.setCursorNameHook(CursorNameEnum.Default);
     }
+    this.isUsingMouseGrabMove = false;
   };
   /**
    * 处理鼠标滚轮事件

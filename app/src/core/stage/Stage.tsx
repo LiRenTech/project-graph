@@ -1,4 +1,5 @@
 import { autoLayoutMainTick } from "../service/controlService/autoLayoutEngine/mainTick";
+import { ControllerCamera } from "../service/controlService/controller/concrete/ControllerCamera";
 import { ControllerCutting } from "../service/controlService/controller/concrete/ControllerCutting";
 import { ControllerDragFile } from "../service/controlService/controller/concrete/ControllerDragFile";
 import { ControllerNodeConnection } from "../service/controlService/controller/concrete/ControllerNodeConnection";
@@ -45,6 +46,11 @@ export namespace Stage {
    * 鼠标框选控制器
    */
   export const selectMachine = ControllerRectangleSelect;
+
+  /**
+   * 相机控制器
+   */
+  export const cameraControllerMachine = ControllerCamera;
 
   /**
    * 涂鸦控制器

@@ -14,6 +14,7 @@ import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { RectangleSplitTwoPartEffect } from "../../../feedbackService/effectEngine/concrete/RectangleSplitTwoPartEffect";
+import { ViewOutlineFlashEffect } from "../../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
 import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { Controller } from "../Controller";
@@ -136,6 +137,12 @@ class CuttingControllerClass extends ControllerClass {
     }
     this.mouseUpFunction(new Vector(event.clientX, event.clientY));
   };
+
+  public mouseMoveOutWindowForcedShutdown(outsideLocation: Vector) {
+    Stage.cuttingMachine.mouseUpFunction(outsideLocation);
+    Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(StageStyleManager.currentStyle.effects.warningShadow));
+  }
+
   // private clearWarningObject() {
   //   ControllerCutting.warningEntity = [];
   //   ControllerCutting.warningSections = [];
