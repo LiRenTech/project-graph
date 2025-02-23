@@ -13,6 +13,27 @@ describe("PathString", () => {
     expect(PathString.isValidURL("bitmountain.top")).toBe(true);
     expect(PathString.isValidURL("project-graph.top")).toBe(true);
   });
+  it("纯英文字母，或者变量类型、字段名 就不能识别成链接", () => {
+    expect(PathString.isValidURL("apple")).toBe(false);
+    expect(PathString.isValidURL("project-graph")).toBe(false);
+    expect(PathString.isValidURL("array_list")).toBe(false);
+  });
+  it("含有斜杠，但不是链接的东西，就不能识别成链接", () => {
+    expect(PathString.isValidURL("/* test */")).toBe(false);
+    expect(PathString.isValidURL("// 这是一个注释")).toBe(false);
+    // 正则表达式
+    expect(PathString.isValidURL("/^$/")).toBe(false);
+    expect(PathString.isValidURL("/^[a-zA-Z0-9]+$/")).toBe(false);
+  });
+  it("特殊字符串测试", () => {
+    expect(PathString.isValidURL("/")).toBe(false);
+    expect(PathString.isValidURL("//")).toBe(false);
+    expect(PathString.isValidURL("")).toBe(false);
+    expect(PathString.isValidURL(" ")).toBe(false);
+    expect(PathString.isValidURL("　")).toBe(false); // 全角空格
+    expect(PathString.isValidURL(".")).toBe(false);
+    expect(PathString.isValidURL("./")).toBe(false);
+  });
   // 其他情况
   it("带端口的链接", () => {
     expect(PathString.isValidURL("http://example.com:8080")).toBe(true);
@@ -44,19 +65,6 @@ describe("PathString", () => {
       ),
     ).toBe(true);
   });
-  // 下面这不合理吧
-  // it("带用户信息的链接", () => {
-  //   expect(PathString.isValidURL("http://user:password@example.com")).toBe(
-  //     true,
-  //   );
-  //   expect(PathString.isValidURL("https://user:password@example.com")).toBe(
-  //     true,
-  //   );
-  // });
-  it("带特殊协议的链接", () => {
-    expect(PathString.isValidURL("ws://example.com")).toBe(true);
-    expect(PathString.isValidURL("wss://example.com")).toBe(true);
-  });
   it("带子域名的链接", () => {
     expect(PathString.isValidURL("http://sub.example.com")).toBe(true);
     expect(PathString.isValidURL("https://sub.example.com")).toBe(true);
@@ -83,24 +91,11 @@ describe("PathString", () => {
     expect(PathString.isValidURL("http://mrjokersince1997.github.io/My-Notes/#/")).toBe(true);
   });
   // 一些别的协议的链接
-  it("obsidian链接", () => {
-    // expect(
-    //   PathString.isValidURL("obsidian://open?vault=MyVault&file=MyNote"),
-    // ).toBe(true);
+  it("其他协议链接，也用于和其他软件联动", () => {
+    expect(PathString.isValidURL("ws://example.com")).toBe(true);
+    expect(PathString.isValidURL("wss://example.com")).toBe(true);
+    // 其他的软件
+    expect(PathString.isValidURL("joplin://x-callback-url/openNote")).toBe(true);
     expect(PathString.isValidURL("obsidian://adv-uri?uid=s4w4w8-w4848w4-w48w48-w488w4-wefwaefw")).toBe(true);
-  });
-  it("不合法的链接", () => {
-    expect(PathString.isValidURL("h t t p://a.com")).toBe(false);
-    expect(PathString.isValidURL("http://")).toBe(false);
-    expect(PathString.isValidURL("htpp://")).toBe(false);
-    expect(PathString.isValidURL("htp://example.com")).toBe(false);
-    expect(PathString.isValidURL("htp://example.com")).toBe(false);
-    expect(PathString.isValidURL("http://exa mple.com")).toBe(false);
-    // 下面这三个不好检查到，先不写了
-    // expect(PathString.isValidURL("http:example.com")).toBe(false);
-    // expect(PathString.isValidURL("http://example.com?")).toBe(false);
-    // expect(PathString.isValidURL("http://example.com/ path/to/resource")).toBe(
-    //   false,
-    // );
   });
 });

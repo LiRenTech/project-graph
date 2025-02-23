@@ -242,63 +242,20 @@ export namespace PathString {
    * @returns
    */
   export function isValidURL(url: string): boolean {
-    // 尝试解析国际化域名
-    try {
-      url = new URL(url).href;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (e) {
-      // 如果不能直接解析，则尝试手动处理国际化域名
-      if (typeof url === "string") {
-        try {
-          const parts = url.split("://");
-          if (parts.length > 1) {
-            // 只有在有协议的情况下才进行解码
-            const protocol = parts[0];
-            const rest = parts.slice(1).join("://");
-            url = protocol + "://" + decodeURIComponent(rest);
-          }
-          url = new URL(url).href;
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (e) {
-          // 如果仍然无法解析，则保持原始 URL
-        }
-      }
-    }
+    const trimmed = url.trim();
+    if (!trimmed) return false;
 
-    // 正则表达式用于验证 URL 格式
-    const urlPattern =
-      /^(https?|wss?):\/\/(?:[a-zA-Z0-9-]+(?:(?:\.[a-zA-Z0-9-]+)*))?(?::\d{1,5})?(?:\/[^?\s]*)?(?:\?[^#\s]*)?(?:#[^#\s]*)?$/;
+    // 包含协议的正则（支持任意合法协议）
+    const protocolPattern = /^[a-z][a-z0-9+.-]*:\/\//i;
 
-    // 正则表达式用于验证 IP 地址形式的链接
-    const ipPattern =
-      /^(https?|wss?):\/\/((?:\d{1,3}\.){3}\d{1,3}|($[0-9a-fA-F:]+$))(?::\d{1,5})?(?:\/[^?\s]*)?(?:\?[^#\s]*)?(?:#[^#\s]*)?$/;
-
-    // 尝试创建一个 URL 对象以验证 URL 的合法性
-    try {
-      // 如果 URL 不包含协议，则添加 http:// 以便构造函数可以解析
-      if (!/^https?:\/\//i.test(url) && !/^wss?:\/\//i.test(url)) {
-        url = "http://" + url;
-      }
-
-      // 构造 URL 对象并检查主机名是否有效
-      const parsedUrl = new URL(url);
-
-      // 检查主机名是否为空或无效
-      if (parsedUrl.hostname.length === 0 || parsedUrl.hostname.includes(" ")) {
-        return false;
-      }
-
-      // 检查主机名是否为 localhost 或者是有效的 IP 地址
-      if (parsedUrl.hostname === "localhost" || parsedUrl.hostname === "obsidian" || ipPattern.test(url)) {
-        return true;
-      }
-
-      // 使用正则表达式进一步验证 URL
-      return urlPattern.test(url);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (e) {
-      // 如果抛出异常，说明 URL 无效
-      return false;
+    if (protocolPattern.test(trimmed)) {
+      // 完整URL校验（包含协议）
+      return /^[a-z][a-z0-9+.-]*:\/\/[^\s/?#].[^\s]*$/i.test(trimmed);
+    } else {
+      // 无协议时校验域名格式
+      return /^(?:(localhost|(\d{1,3}\.){3}\d{1,3}|([a-z0-9-]+\.)+[a-z]{2,})|xn--[a-z0-9]+|[\p{L}\p{N}-]+(\.[\p{L}\p{N}-]+)+)(?::\d+)?(?:[/?#][^\s]*)?$/iu.test(
+        trimmed,
+      );
     }
   }
 }
