@@ -6,6 +6,8 @@ import { SectionMethods } from "../../../../stage/stageManager/basicMethods/Sect
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { StageObject } from "../../../../stage/stageObject/abstract/StageObject";
 import { Section } from "../../../../stage/stageObject/entity/Section";
+import { ViewOutlineFlashEffect } from "../../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
+import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -33,6 +35,11 @@ class ControllerRectangleSelectClass extends ControllerClass {
 
   public shutDown() {
     this._isUsing = false;
+  }
+
+  public mouseMoveOutWindowForcedShutdown() {
+    this.shutDown();
+    Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(StageStyleManager.currentStyle.effects.windowFlash));
   }
 
   public mousedown: (event: MouseEvent) => void = (event) => {
