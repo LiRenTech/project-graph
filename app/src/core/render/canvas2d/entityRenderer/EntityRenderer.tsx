@@ -127,7 +127,7 @@ export namespace EntityRenderer {
     if (entity instanceof Section) {
       SectionRenderer.render(entity);
     } else if (entity instanceof TextNode) {
-      renderNode(entity);
+      renderTextNode(entity);
     } else if (entity instanceof ConnectPoint) {
       renderConnectPoint(entity);
     } else if (entity instanceof ImageNode) {
@@ -143,7 +143,7 @@ export namespace EntityRenderer {
     EntityDetailsButtonRenderer(entity);
   }
 
-  function renderNode(node: TextNode) {
+  function renderTextNode(node: TextNode) {
     // 节点身体矩形
     let fillColor = node.color;
     if (Camera.currentScale < 0.065 && fillColor.a === 0) {
@@ -195,9 +195,9 @@ export namespace EntityRenderer {
    * @param node
    */
   function renderTextNodeTextLayer(node: TextNode) {
+    // 非编辑，正常显示状态
     if (!node.isEditing) {
-      // 非编辑，正常显示状态
-      if (!node.text) {
+      if (node.text === undefined) {
         TextRenderer.renderTextFromCenter(
           "undefined",
           Renderer.transformWorld2View(node.rectangle.center),
