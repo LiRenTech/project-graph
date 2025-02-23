@@ -313,7 +313,7 @@ export default function App() {
             <Button
               data-tauri-drag-region
               className={cn("pointer-events-none relative flex-1 overflow-ellipsis active:scale-100", {
-                "text-yellow-500": isSaved,
+                "text-panel-error-text": isSaved,
                 "flex-1": isDesktop,
                 "opacity-0": isClassroomMode,
               })}
@@ -324,7 +324,7 @@ export default function App() {
                 <div
                   data-tauri-drag-region
                   className={cn(
-                    isSaved ? "text-icon-button-text" : "text-yellow-500",
+                    isSaved ? "text-icon-button-text" : "text-panel-error-text",
                     "absolute flex h-full w-full items-center justify-center truncate p-0 hover:cursor-move active:cursor-grabbing",
                     isClassroomMode && "opacity-0",
                   )}

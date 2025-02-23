@@ -497,7 +497,7 @@ plugins:
   documentation: 文档
 
 app:
-  unsaved: "*"
+  unsaved: "(未保存)"
   comingSoon: "即将到来……"
 appMenu:
   file:

@@ -447,7 +447,7 @@ settings:
   isClassroomMode:
     title: Demo Mode
 app:
-  unsaved: "*"
+  unsaved: "(unsaved)"
   comingSoon: Coming soon…
 appMenu:
   file:

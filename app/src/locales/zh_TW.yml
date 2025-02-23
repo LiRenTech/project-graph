@@ -427,7 +427,7 @@ settings:
       nightly: 開發版
     title: 更新頻道
 app:
-  unsaved: "*"
+  unsaved: "(未保存)"
   comingSoon: 即將到來……
 appMenu:
   file:
