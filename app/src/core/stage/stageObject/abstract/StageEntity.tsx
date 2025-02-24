@@ -15,6 +15,11 @@ export abstract class Entity extends StageObject {
   abstract move(delta: Vector): void;
 
   /**
+   * 是否忽略自动对齐功能
+   * 例如涂鸦就不吸附对齐
+   */
+  public isAlignExcluded = false;
+  /**
    * 将某个物体移动到某个位置
    * 注意：看的是最小外接矩形的左上角位置，不是中心位置
    * @param location

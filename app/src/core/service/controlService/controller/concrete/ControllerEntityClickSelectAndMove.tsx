@@ -96,13 +96,6 @@ ControllerEntityClickSelectAndMove.mousemove = (event: MouseEvent) => {
       StageManager.moveConnectableEntitiesWithChildren(diffLocation);
     } else {
       StageEntityMoveManager.moveSelectedEntities(diffLocation);
-      // StageManager.moveSelectedTextNodes(diffLocation);
-      // StageManager.moveSelectedSections(diffLocation);
-      // StageManager.moveSelectedConnectPoints(diffLocation);
-      // StageManager.moveSelectedImageNodes(diffLocation);
-      // StageManager.moveSelectedUrlNodes(diffLocation);
-      // StageManager.moveSelectedPortalNodes(diffLocation);
-      // StageManager.moveSelectedPenStrokes(diffLocation);
     }
 
     // 预瞄反馈

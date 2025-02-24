@@ -28,6 +28,11 @@ export namespace StageAutoAlignManager {
       .filter((entity) => !entity.isSelected)
       .filter((entity) => entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle));
     for (const selectedEntity of selectedEntities) {
+      if (selectedEntity.isAlignExcluded) {
+        // 涂鸦对象不参与对齐
+        continue;
+      }
+      console.log(selectedEntity);
       onEntityMoveAlignToOtherEntity(selectedEntity, otherEntities);
     }
   }
@@ -43,6 +48,10 @@ export namespace StageAutoAlignManager {
       .filter((entity) => !entity.isSelected)
       .filter((entity) => entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle));
     for (const selectedEntity of selectedEntities) {
+      if (selectedEntity.isAlignExcluded) {
+        // 涂鸦对象不参与对齐
+        continue;
+      }
       onEntityMoveAlignToOtherEntity(selectedEntity, otherEntities, true);
     }
   }

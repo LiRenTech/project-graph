@@ -18,6 +18,9 @@ class PenStrokeSegment {
 }
 
 export class PenStroke extends Entity {
+  /** 涂鸦不参与吸附对齐 */
+  public isAlignExcluded: boolean = true;
+
   public isHiddenBySectionCollapse: boolean = false;
   collisionBox: CollisionBox = new CollisionBox([]);
   public uuid: string;

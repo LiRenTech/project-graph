@@ -1,5 +1,6 @@
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
+import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { ControllerClass } from "../ControllerClass";
 
@@ -9,6 +10,9 @@ import { ControllerClass } from "../ControllerClass";
 export class ControllerPenStrokeControl extends ControllerClass {
   // 检查鼠标是否悬浮在笔迹上
   public mousemove: (event: MouseEvent) => void = (event) => {
+    if (Stage.drawingMachine.isUsing) {
+      return;
+    }
     const location = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     for (const node of StageManager.getPenStrokes()) {
       node.isMouseHover = false;
