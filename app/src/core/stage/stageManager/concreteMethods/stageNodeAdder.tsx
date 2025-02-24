@@ -84,6 +84,9 @@ export namespace StageNodeAdder {
       // 未选中或选中多个
       return "";
     }
+    /**
+     * 当前选择的实体
+     */
     const selectedEntity = selectedEntities[0];
     const entityRectangle = selectedEntity.collisionBox.getRectangle();
     let createLocation = new Vector(0, 0);
@@ -97,7 +100,7 @@ export namespace StageNodeAdder {
     } else if (direction === Direction.Right) {
       createLocation = entityRectangle.rightCenter.add(new Vector(distanceLength, 0));
     }
-    addToSections = SectionMethods.getSectionsByInnerLocation(createLocation);
+    addToSections = SectionMethods.getFatherSections(selectedEntity);
     const uuid = await addTextNodeByClick(createLocation, addToSections, selectCurrent);
     const newNode = StageManager.getTextNodeByUUID(uuid);
     if (!newNode) {
