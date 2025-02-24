@@ -23,15 +23,15 @@ export namespace ProgramFunctions {
    * @returns
    */
   export function setVar(args: string[]): string[] {
-    if (args.length > 1) {
-      const varName = args[0];
-      if (varName.startsWith("#")) {
-        return ["error", "变量名不能以#开头"];
-      }
-      variables[varName] = args[1];
-      return ["success"];
+    if (args.length !== 2) {
+      return ["error", "参数数量错误，必须保证两个"];
     }
-    return ["error", "参数数量错误"];
+    const varName = args[0];
+    if (!/^[a-zA-Z\u4e00-\u9fa5]/.test(varName)) {
+      return ["error", "变量名必须以字母或汉字开头"];
+    }
+    variables[varName] = args[1];
+    return ["success"];
   }
 
   /**
