@@ -110,7 +110,7 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
             return (
               <div
                 key={tag.uuid}
-                className="text-select-option-text hover:text-select-option-hover-text cursor-pointer text-center hover:underline"
+                className="text-select-option-text hover:text-select-option-hover-text cursor-pointer truncate text-left hover:underline"
                 onClick={handleMoveCameraToTag(tag.uuid)}
                 onMouseEnter={handleMouseEnterTag(tag.uuid)}
               >
