@@ -17,6 +17,11 @@ export namespace StageObjectColorManager {
         node.color = color;
       }
     }
+    for (const entity of StageManager.getPenStrokes()) {
+      if (entity.isSelected) {
+        // TODO: 涂鸦应该可以改颜色
+      }
+    }
   }
 
   export function clearEntityColor() {

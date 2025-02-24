@@ -93,9 +93,12 @@ export namespace EntityRenderer {
   export function renderAllEntities(viewRectangle: Rectangle) {
     let renderedNodes = 0;
 
-    // 2 遍历所有非section实体
+    // 2 遍历所有非section实体 / 非涂鸦实体
     for (const entity of StageManager.getEntities()) {
       if (entity instanceof Section) {
+        continue;
+      }
+      if (entity instanceof PenStroke) {
         continue;
       }
       // 视线之外不画
@@ -111,6 +114,13 @@ export namespace EntityRenderer {
         continue;
       }
       SectionRenderer.render(section);
+    }
+    // 4 遍历所有涂鸦实体
+    for (const penStroke of StageManager.getPenStrokes()) {
+      if (Renderer.isOverView(viewRectangle, penStroke)) {
+        continue;
+      }
+      EntityRenderer.renderEntity(penStroke);
     }
     return renderedNodes;
   }
