@@ -5,6 +5,7 @@ import { RectanglePushInEffect } from "../../../service/feedbackService/effectEn
 import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../stageObject/abstract/StageEntity";
+import { PenStroke } from "../../stageObject/entity/PenStroke";
 import { GraphMethods } from "../basicMethods/GraphMethods";
 import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageManager } from "../StageManager";
@@ -17,11 +18,11 @@ import { StageSectionInOutManager } from "./StageSectionInOutManager";
  * 以后还可能有自动布局的功能
  */
 export namespace StageEntityMoveManager {
-  export function moveEntityUtils(node: Entity, delta: Vector, isAutoAdjustSection: boolean = true) {
+  export function moveEntityUtils(entity: Entity, delta: Vector, isAutoAdjustSection: boolean = true) {
     // 让自己移动
-    node.move(delta);
+    entity.move(delta);
 
-    const nodeUUID = node.uuid;
+    const nodeUUID = entity.uuid;
 
     // if (StageManager.isSectionByUUID(nodeUUID)) {
     //   // 如果是Section，则需要带动孩子一起移动
@@ -36,6 +37,15 @@ export namespace StageEntityMoveManager {
       for (const section of StageManager.getSections()) {
         if (section.isHaveChildrenByUUID(nodeUUID)) {
           section.adjustLocationAndSize();
+        }
+      }
+    }
+    // 如果是涂鸦，则连带所有可连接对象一起移动
+    if (entity instanceof PenStroke) {
+      for (const otherConnectableEntity of StageManager.getConnectableEntity()) {
+        if (entity.collisionBox.isIntersectsWithRectangle(otherConnectableEntity.collisionBox.getRectangle())) {
+          // 递归了
+          moveEntityUtils(otherConnectableEntity, delta, false);
         }
       }
     }
