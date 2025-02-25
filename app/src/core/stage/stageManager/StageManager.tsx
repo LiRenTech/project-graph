@@ -933,7 +933,7 @@ export namespace StageManager {
   }
 
   export function refreshTags() {
-    return StageTagManager.refreshTagNames();
+    return StageTagManager.refreshTagNamesUI();
   }
 
   export function moveCameraToTag(tag: string) {

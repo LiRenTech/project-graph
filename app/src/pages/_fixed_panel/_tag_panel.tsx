@@ -10,7 +10,9 @@ import { cn } from "../../utils/cn";
  * @param param0
  */
 export default function TagPanel({ open = false, className = "" }: { open: boolean; className: string }) {
-  const [tagNameList, setTagNameList] = React.useState<{ tagName: string; uuid: string }[]>([]);
+  const [tagNameList, setTagNameList] = React.useState<
+    { tagName: string; uuid: string; color: [number, number, number, number] }[]
+  >([]);
   // 是否开启允许滑动移动摄像机
   const [isMouseEnterMoveCameraAble, setIsMouseEnterMoveCameraAble] = React.useState(false);
   // 是否开启透视
@@ -125,10 +127,14 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
             return (
               <div
                 key={tag.uuid}
-                className="text-select-option-text hover:text-select-option-hover-text hover:bg-icon-button-bg group flex cursor-pointer items-center truncate text-left"
+                style={{ color: tag.color[3] === 0 ? "" : `rgba(${tag.color.join(",")})` }}
+                className="text-select-option-text hover:text-select-option-hover-text hover:bg-icon-button-bg group flex cursor-pointer items-center text-left"
                 onMouseEnter={handleMouseEnterTag(tag.uuid)}
               >
-                <span onClick={handleMoveCameraToTag(tag.uuid)} className="flex-1 cursor-pointer hover:underline">
+                <span
+                  onClick={handleMoveCameraToTag(tag.uuid)}
+                  className="flex-1 cursor-pointer truncate hover:underline"
+                >
                   {tag.tagName}
                 </span>
                 <span

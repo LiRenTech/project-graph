@@ -11,6 +11,7 @@ import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { StageObject } from "../../stageObject/abstract/StageObject";
 import { Edge } from "../../stageObject/association/Edge";
+import { LineEdge } from "../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { Section } from "../../stageObject/entity/Section";
@@ -40,8 +41,8 @@ export namespace StageTagManager {
    * 用于ui渲染
    * @returns 所有标签对应的名字
    */
-  export function refreshTagNames() {
-    const res: { tagName: string; uuid: string }[] = [];
+  export function refreshTagNamesUI() {
+    const res: { tagName: string; uuid: string; color: [number, number, number, number] }[] = [];
     const tagUUIDs = StageManager.TagOptions.getTagUUIDs();
     const tagObjectList: StageObject[] = [];
     for (const tagUUID of tagUUIDs) {
@@ -61,10 +62,13 @@ export namespace StageTagManager {
 
     for (const tagObject of tagObjectList) {
       let title = "";
+      let colorItem: [number, number, number, number] = [0, 0, 0, 0];
       if (tagObject instanceof TextNode) {
         title = tagObject.text;
+        colorItem = tagObject.color.toArray();
       } else if (tagObject instanceof Section) {
         title = tagObject.text;
+        colorItem = tagObject.color.toArray();
       } else if (tagObject instanceof UrlNode) {
         title = tagObject.title;
       } else if (tagObject instanceof ImageNode) {
@@ -74,6 +78,9 @@ export namespace StageTagManager {
         if (title.length === 0) {
           title = "未命名连线";
         }
+        if (tagObject instanceof LineEdge) {
+          colorItem = tagObject.color.toArray();
+        }
       } else if (tagObject instanceof ConnectPoint) {
         title = tagObject.details.slice(0, 20).trim();
         if (title.length === 0) {
@@ -82,7 +89,7 @@ export namespace StageTagManager {
       } else {
         title = "Unknown: " + tagObject.uuid.slice(0, 4);
       }
-      res.push({ tagName: title, uuid: tagObject.uuid });
+      res.push({ tagName: title, uuid: tagObject.uuid, color: colorItem });
     }
     return res;
   }
