@@ -93,6 +93,17 @@ export namespace SectionRenderer {
     if (Camera.currentScale < 0.2) {
       const fontSizeVector = getFontSizeBySectionSize(section);
       const fontHeight = fontSizeVector.y;
+      ShapeRenderer.renderRect(
+        new Rectangle(
+          Renderer.transformWorld2View(section.rectangle.location),
+          section.rectangle.size.multiply(Camera.currentScale),
+        ),
+        section.color.a === 0
+          ? StageStyleManager.currentStyle.BackgroundColor.toNewAlpha(0.5)
+          : section.color.toNewAlpha(0.5),
+        StageStyleManager.currentStyle.StageObjectBorderColor,
+        2 * Camera.currentScale,
+      );
       // 缩放过小了，显示巨大化文字
       TextRenderer.renderTextFromCenter(
         section.text,
