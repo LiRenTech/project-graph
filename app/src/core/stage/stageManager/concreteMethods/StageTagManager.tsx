@@ -51,13 +51,13 @@ export namespace StageTagManager {
       }
     }
     // 排序，从上到下，从左到右
-    tagObjectList.sort((a, b) => {
-      const topDiff = a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top;
-      if (topDiff === 0) {
-        return a.collisionBox.getRectangle().left - b.collisionBox.getRectangle().left;
-      }
-      return topDiff;
-    });
+    // tagObjectList.sort((a, b) => {
+    //   const topDiff = a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top;
+    //   if (topDiff === 0) {
+    //     return a.collisionBox.getRectangle().left - b.collisionBox.getRectangle().left;
+    //   }
+    //   return topDiff;
+    // });
 
     for (const tagObject of tagObjectList) {
       let title = "";

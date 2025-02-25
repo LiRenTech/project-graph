@@ -50,7 +50,7 @@ import { StageHistoryManager } from "./StageHistoryManager";
 type stageContent = {
   entities: StringDict<Entity>;
   associations: StringDict<Association>;
-  tags: StringDict<string>;
+  tags: string[];
 };
 
 /**
@@ -80,7 +80,7 @@ export namespace StageManager {
   const stageContent: stageContent = {
     entities: StringDict.create(),
     associations: StringDict.create(),
-    tags: StringDict.create(),
+    tags: [],
   };
 
   export function getStageContentDebug() {
@@ -108,25 +108,25 @@ export namespace StageManager {
     childStageContent["main"] = {
       entities: stageContent.entities.clone(),
       associations: stageContent.associations.clone(),
-      tags: stageContent.tags.clone(),
+      tags: [...stageContent.tags],
     };
   }
   export function restoreMainStage() {
     stageContent.associations = childStageContent["main"].associations.clone();
     stageContent.entities = childStageContent["main"].entities.clone();
-    stageContent.tags = childStageContent["main"].tags.clone();
+    stageContent.tags = [...childStageContent["main"].tags];
   }
   export function storeMainStageToChildStage(path: string) {
     childStageContent[path] = {
       entities: stageContent.entities.clone(),
       associations: stageContent.associations.clone(),
-      tags: stageContent.tags.clone(),
+      tags: [...stageContent.tags],
     };
   }
   export function storeChildStageToMainStage(path: string) {
     stageContent.associations = childStageContent[path].associations.clone();
     stageContent.entities = childStageContent[path].entities.clone();
-    stageContent.tags = childStageContent[path].tags.clone();
+    stageContent.tags = [...childStageContent[path].tags];
   }
   export function getAllChildStageKeys(): string[] {
     return Object.keys(childStageContent).filter((key) => key !== "main");
@@ -136,7 +136,7 @@ export namespace StageManager {
       if (key !== "main") {
         childStageContent[key].entities.clear();
         childStageContent[key].associations.clear();
-        childStageContent[key].tags.clear();
+        childStageContent[key].tags = [];
       }
     }
   }
@@ -282,32 +282,54 @@ export namespace StageManager {
   /** 关于标签的相关操作 */
   export namespace TagOptions {
     export function reset(uuids: string[]) {
-      stageContent.tags.clear();
+      stageContent.tags = [];
       for (const uuid of uuids) {
-        stageContent.tags.addValue(uuid, uuid);
+        stageContent.tags.push(uuid);
       }
     }
     export function addTag(uuid: string) {
-      stageContent.tags.addValue(uuid, uuid);
+      stageContent.tags.push(uuid);
     }
     export function removeTag(uuid: string) {
-      stageContent.tags.deleteValue(uuid);
+      const index = stageContent.tags.indexOf(uuid);
+      if (index !== -1) {
+        stageContent.tags.splice(index, 1);
+      }
     }
     export function hasTag(uuid: string): boolean {
-      return stageContent.tags.hasId(uuid);
+      return stageContent.tags.includes(uuid);
     }
     export function getTagUUIDs(): string[] {
-      return stageContent.tags.valuesToArray();
+      return stageContent.tags;
     }
     /**
      * 清理未引用的标签
      */
     export function updateTags() {
-      const uuids = stageContent.tags.valuesToArray();
+      const uuids = stageContent.tags.slice();
       for (const uuid of uuids) {
         if (!stageContent.entities.hasId(uuid) && !stageContent.associations.hasId(uuid)) {
-          stageContent.tags.deleteValue(uuid);
+          stageContent.tags.splice(stageContent.tags.indexOf(uuid), 1);
         }
+      }
+    }
+
+    export function moveUpTag(uuid: string) {
+      const index = stageContent.tags.indexOf(uuid);
+      if (index !== -1 && index > 0) {
+        const temp = stageContent.tags[index - 1];
+        stageContent.tags[index - 1] = uuid;
+        stageContent.tags[index] = temp;
+        console.log("move up tag");
+      }
+    }
+    export function moveDownTag(uuid: string) {
+      const index = stageContent.tags.indexOf(uuid);
+      if (index !== -1 && index < stageContent.tags.length - 1) {
+        const temp = stageContent.tags[index + 1];
+        stageContent.tags[index + 1] = uuid;
+        stageContent.tags[index] = temp;
+        console.log("move down tag");
       }
     }
   }
@@ -319,7 +341,7 @@ export namespace StageManager {
   export function destroy() {
     stageContent.entities.clear();
     stageContent.associations.clear();
-    stageContent.tags.clear();
+    stageContent.tags = [];
   }
 
   export function addTextNode(node: TextNode) {

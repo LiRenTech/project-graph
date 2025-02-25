@@ -31,6 +31,21 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
     };
   };
 
+  const handleMoveUp = (tagUUID: string) => {
+    return () => {
+      // 向上移动标签
+      StageManager.TagOptions.moveUpTag(tagUUID);
+      refreshTagNameList();
+    };
+  };
+  const handleMoveDown = (tagUUID: string) => {
+    return () => {
+      // 向下移动标签
+      StageManager.TagOptions.moveDownTag(tagUUID);
+      refreshTagNameList();
+    };
+  };
+
   const handleMouseEnterTag = (tagUUID: string) => {
     return () => {
       if (isMouseEnterMoveCameraAble) {
@@ -110,11 +125,24 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
             return (
               <div
                 key={tag.uuid}
-                className="text-select-option-text hover:text-select-option-hover-text cursor-pointer truncate text-left hover:underline"
-                onClick={handleMoveCameraToTag(tag.uuid)}
+                className="text-select-option-text hover:text-select-option-hover-text hover:bg-icon-button-bg flex cursor-pointer items-center truncate text-left"
                 onMouseEnter={handleMouseEnterTag(tag.uuid)}
               >
-                {tag.tagName}
+                <span onClick={handleMoveCameraToTag(tag.uuid)} className="flex-1 cursor-pointer hover:underline">
+                  {tag.tagName}
+                </span>
+                <span
+                  className="text-panel-text border-panel-details-text border-1 mx-0.5 cursor-pointer rounded text-xs hover:scale-105 active:scale-95"
+                  onClick={handleMoveUp(tag.uuid)}
+                >
+                  ↑
+                </span>
+                <span
+                  className="text-panel-text border-panel-details-text border-1 mx-0.5 cursor-pointer rounded text-xs hover:scale-105 active:scale-95"
+                  onClick={handleMoveDown(tag.uuid)}
+                >
+                  ↓
+                </span>
               </div>
             );
           })}
