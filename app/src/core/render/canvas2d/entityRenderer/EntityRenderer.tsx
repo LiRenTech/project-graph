@@ -196,7 +196,35 @@ export namespace EntityRenderer {
         Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
       );
     }
+    // 用户不建议放大标签，所以这里注释掉了，但又有用户觉得这个也挺好，所以加个设置项
+    if (Renderer.enableTagTextNodesBigDisplay) {
+      if (StageManager.TagOptions.getTagUUIDs().includes(node.uuid)) {
+        if (Camera.currentScale < 0.25) {
+          const scaleRate = 5;
+          const rect = node.collisionBox.getRectangle();
 
+          const rectBgc =
+            node.color.a === 0 ? StageStyleManager.currentStyle.BackgroundColor.clone() : node.color.clone();
+          rectBgc.a = 0.5;
+
+          ShapeRenderer.renderRectFromCenter(
+            Renderer.transformWorld2View(rect.center),
+            rect.width * scaleRate * Camera.currentScale,
+            rect.height * scaleRate * Camera.currentScale,
+            rectBgc,
+            StageStyleManager.currentStyle.StageObjectBorderColor,
+            2 * Camera.currentScale,
+            Renderer.NODE_ROUNDED_RADIUS * scaleRate * Camera.currentScale,
+          );
+          TextRenderer.renderTextFromCenter(
+            node.text,
+            Renderer.transformWorld2View(rect.center),
+            Renderer.FONT_SIZE * scaleRate * Camera.currentScale,
+            StageStyleManager.currentStyle.StageObjectBorderColor,
+          );
+        }
+      }
+    }
     renderEntityDetails(node);
   }
 

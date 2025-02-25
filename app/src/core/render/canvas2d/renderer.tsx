@@ -16,7 +16,6 @@ import { Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { StageObject } from "../../stage/stageObject/abstract/StageObject";
-import { TextNode } from "../../stage/stageObject/entity/TextNode";
 import { CurveRenderer } from "./basicRenderer/curveRenderer";
 import { ShapeRenderer } from "./basicRenderer/shapeRenderer";
 import { TextRenderer } from "./basicRenderer/textRenderer";
@@ -514,28 +513,6 @@ export namespace Renderer {
         StageStyleManager.currentStyle.StageObjectBorderColor,
         2 * Camera.currentScale,
       );
-      // 用户不建议放大标签，所以这里注释掉了，但又有用户觉得这个也挺好，所以加个设置项
-      if (Renderer.enableTagTextNodesBigDisplay) {
-        if (Camera.currentScale < 0.25 && tagObject instanceof TextNode) {
-          const backRect = rect.clone();
-          backRect.location = transformWorld2View(rect.center).add(new Vector(-rect.size.x / 2, -rect.size.y / 2));
-          const rectBgc = StageStyleManager.currentStyle.BackgroundColor.clone();
-          rectBgc.a = 0.5;
-          ShapeRenderer.renderRect(
-            backRect,
-            rectBgc,
-            StageStyleManager.currentStyle.StageObjectBorderColor,
-            1,
-            NODE_ROUNDED_RADIUS,
-          );
-          TextRenderer.renderTextFromCenter(
-            tagObject.text,
-            transformWorld2View(rect.center),
-            FONT_SIZE,
-            StageStyleManager.currentStyle.StageObjectBorderColor,
-          );
-        }
-      }
     }
   }
   /**
