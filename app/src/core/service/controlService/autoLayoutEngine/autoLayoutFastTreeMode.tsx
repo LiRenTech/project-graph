@@ -8,6 +8,7 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { StageEntityMoveManager } from "../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
+import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 export namespace AutoLayoutFastTree {
   /**
@@ -102,6 +103,8 @@ export namespace AutoLayoutFastTree {
    * @param rootNode
    */
   export function autoLayoutFastTreeModeRight(rootNode: ConnectableEntity) {
+    const initLocation = rootNode.collisionBox.getRectangle().leftTop.clone();
+
     const dfs = (node: ConnectableEntity) => {
       const childList = GraphMethods.nodeChildrenArray(node);
       for (const child of childList) {
@@ -114,5 +117,11 @@ export namespace AutoLayoutFastTree {
     };
 
     dfs(rootNode);
+    // rootNode.moveTo(initLocation);
+    const delta = initLocation.subtract(rootNode.collisionBox.getRectangle().leftTop);
+    // 选中根节点
+    StageManager.clearSelectAll();
+    rootNode.isSelected = true;
+    StageManager.moveConnectableEntitiesWithChildren(delta);
   }
 }
