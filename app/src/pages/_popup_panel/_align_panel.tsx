@@ -186,7 +186,7 @@ export default function AlignNodePanel() {
         />
         <ToolbarItem
           description={isEnableDragAutoAlign ? "拖动吸附对齐：开启" : "拖动吸附对齐：关闭"}
-          icon={<Magnet className={cn(isEnableDragAutoAlign && "scale-50", "transition-transform")} />}
+          icon={<Magnet className={cn(!isEnableDragAutoAlign && "text-panel-details-text", "transition-transform")} />}
           handleFunction={async () => {
             Settings.set("enableDragAutoAlign", !(await Settings.get("enableDragAutoAlign")));
           }}
