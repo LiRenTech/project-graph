@@ -64,6 +64,8 @@ export namespace StageNodeAdder {
       }
       node.isSelected = true;
     }
+
+    StageHistoryManager.recordStep();
     return newUUID;
   }
 
@@ -124,6 +126,7 @@ export namespace StageNodeAdder {
         throw new Error("Failed to connect father -> newNode");
       }
     }
+    StageHistoryManager.recordStep();
     return uuid;
   }
 

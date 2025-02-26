@@ -1,5 +1,4 @@
 import { v4 } from "uuid";
-import { Direction } from "../../../types/directions";
 import { Serialized } from "../../../types/node";
 import { PathString } from "../../../utils/pathString";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
@@ -621,30 +620,6 @@ export namespace StageManager {
   // region 以下为舞台操作相关的函数
   // 建议不同的功能分类到具体的文件中，然后最后集中到这里调用，使得下面的显示简短一些
   // 每个操作函数尾部都要加一个记录历史的操作
-
-  /**
-   *
-   * @param clickWorldLocation
-   * @returns 返回新创建节点的uuid
-   */
-  export async function addTextNodeByClick(
-    clickWorldLocation: Vector,
-    addToSections: Section[],
-    selectCurrent = false,
-  ): Promise<string> {
-    const res = await StageNodeAdder.addTextNodeByClick(clickWorldLocation, addToSections, selectCurrent);
-    StageHistoryManager.recordStep();
-    return res;
-  }
-
-  export async function addTextNodeFromCurrentSelectedNode(
-    direction: Direction,
-    selectCurrent = false,
-  ): Promise<string> {
-    const res = await StageNodeAdder.addTextNodeFromCurrentSelectedNode(direction, [], selectCurrent);
-    StageHistoryManager.recordStep();
-    return res;
-  }
 
   export function deleteEntities(deleteNodes: Entity[]) {
     StageDeleteManager.deleteEntities(deleteNodes);

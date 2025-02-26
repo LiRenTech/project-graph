@@ -6,6 +6,7 @@ import { InputElement } from "../../../../render/domElement/inputElement";
 import { Camera } from "../../../../stage/Camera";
 import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
+import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/stageNodeAdder";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
@@ -185,7 +186,7 @@ export function addTextNodeByLocation(
 ) {
   const sections = SectionMethods.getSectionsByInnerLocation(location);
   // 新建节点
-  StageManager.addTextNodeByClick(location, sections, selectCurrent).then((uuid) => {
+  StageNodeAdder.addTextNodeByClick(location, sections, selectCurrent).then((uuid) => {
     textNodeInEditModeByUUID(uuid);
     if (successCallback) {
       successCallback(uuid);
@@ -194,7 +195,7 @@ export function addTextNodeByLocation(
 }
 
 export function addTextNodeFromCurrentSelectedNode(direction: Direction, selectCurrent = false) {
-  StageManager.addTextNodeFromCurrentSelectedNode(direction, selectCurrent).then((uuid) => {
+  StageNodeAdder.addTextNodeFromCurrentSelectedNode(direction, [], selectCurrent).then((uuid) => {
     textNodeInEditModeByUUID(uuid);
   });
 }

@@ -3,6 +3,7 @@ import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
+import { StageNodeAdder } from "../../../stage/stageManager/concreteMethods/stageNodeAdder";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { EntityDashTipEffect } from "../../feedbackService/effectEngine/concrete/EntityDashTipEffect";
@@ -198,7 +199,7 @@ export namespace KeyboardOnlyEngine {
       // 更新diffLocation
       NewTargetLocationSelector.onTabUp(selectConnectableEntities[0], virtualTargetLocation());
       // 创建一个新的节点
-      const newNodeUUID = await StageManager.addTextNodeByClick(virtualTargetLocation().clone(), []);
+      const newNodeUUID = await StageNodeAdder.addTextNodeByClick(virtualTargetLocation().clone(), []);
       const newNode = StageManager.getTextNodeByUUID(newNodeUUID);
       if (!newNode) return;
       // 连接到之前的节点
