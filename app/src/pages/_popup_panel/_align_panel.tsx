@@ -20,6 +20,8 @@ import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../core/stage/stageObject/abstract/ConnectableEntity";
 import { cn } from "../../utils/cn";
 import { ToolbarItem } from "../_toolbar";
+import { StageEntityMoveManager } from "../../core/stage/stageManager/concreteMethods/StageEntityMoveManager";
+import { StageAutoAlignManager } from "../../core/stage/stageManager/concreteMethods/StageAutoAlignManager";
 export default function AlignNodePanel() {
   const [isEnableDragAutoAlign, setEnableDragAutoAlign] = useState(false);
 
@@ -38,7 +40,7 @@ export default function AlignNodePanel() {
           description="顶对齐"
           icon={<AlignStartHorizontal />}
           handleFunction={() => {
-            StageManager.alignTop();
+            StageEntityMoveManager.alignTop();
           }}
         />
         <div />
@@ -46,7 +48,7 @@ export default function AlignNodePanel() {
           description="左对齐"
           icon={<AlignStartVertical />}
           handleFunction={() => {
-            StageManager.alignLeft();
+            StageEntityMoveManager.alignLeft();
           }}
         />
         <div />
@@ -54,7 +56,7 @@ export default function AlignNodePanel() {
           description="右对齐"
           icon={<AlignEndVertical />}
           handleFunction={() => {
-            StageManager.alignRight();
+            StageEntityMoveManager.alignRight();
           }}
         />
         <div />
@@ -62,7 +64,7 @@ export default function AlignNodePanel() {
           description="底对齐"
           icon={<AlignEndHorizontal />}
           handleFunction={() => {
-            StageManager.alignBottom();
+            StageEntityMoveManager.alignBottom();
           }}
         />
         <div />
@@ -73,7 +75,7 @@ export default function AlignNodePanel() {
           description="相等间距垂直对齐"
           icon={<AlignVerticalSpaceBetween />}
           handleFunction={() => {
-            StageManager.alignVerticalSpaceBetween();
+            StageEntityMoveManager.alignVerticalSpaceBetween();
           }}
         />
         <div />
@@ -81,14 +83,14 @@ export default function AlignNodePanel() {
           description="相等间距水平对齐"
           icon={<AlignHorizontalSpaceBetween />}
           handleFunction={() => {
-            StageManager.alignHorizontalSpaceBetween();
+            StageEntityMoveManager.alignHorizontalSpaceBetween();
           }}
         />
         <ToolbarItem
           description="中心垂直对齐"
           icon={<AlignCenterVertical />}
           handleFunction={() => {
-            StageManager.alignCenterVertical();
+            StageEntityMoveManager.alignCenterVertical();
           }}
         />
         <div />
@@ -96,7 +98,7 @@ export default function AlignNodePanel() {
           description="中心水平对齐"
           icon={<AlignCenterHorizontal />}
           handleFunction={() => {
-            StageManager.alignCenterHorizontal();
+            StageEntityMoveManager.alignCenterHorizontal();
           }}
         />
       </div>
@@ -121,7 +123,13 @@ export default function AlignNodePanel() {
             const selectedEntity = selected[0];
             if (selectedEntity instanceof ConnectableEntity) {
               if (GraphMethods.isTree(selectedEntity)) {
-                StageManager.autoLayoutFastTreeModeRight();
+                const entities = StageManager.getSelectedEntities();
+                for (const entity of entities) {
+                  if (entity instanceof ConnectableEntity) {
+                    StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(entity);
+                    return;
+                  }
+                }
               } else {
                 Dialog.show({
                   title: "连接的节点必须符合树形结构",
@@ -152,7 +160,13 @@ export default function AlignNodePanel() {
             const selectedEntity = selected[0];
             if (selectedEntity instanceof ConnectableEntity) {
               if (GraphMethods.isTree(selectedEntity)) {
-                StageManager.autoLayoutFastTreeModeDown();
+                const entities = StageManager.getSelectedEntities();
+                for (const entity of entities) {
+                  if (entity instanceof ConnectableEntity) {
+                    StageAutoAlignManager.autoLayoutSelectedFastTreeModeDown(entity);
+                    return;
+                  }
+                }
               } else {
                 Dialog.show({
                   title: "连接的节点必须符合树形结构",
@@ -174,14 +188,14 @@ export default function AlignNodePanel() {
           description="尽可能排列成正方形"
           icon={<LayoutGrid />}
           handleFunction={() => {
-            StageManager.layoutToSquare();
+            StageEntityMoveManager.layoutToSquare();
           }}
         />
         <ToolbarItem
           description="排一串"
           icon={<Columns4 />}
           handleFunction={() => {
-            StageManager.layoutToTightSquare();
+            StageEntityMoveManager.layoutToTightSquare();
           }}
         />
         <ToolbarItem

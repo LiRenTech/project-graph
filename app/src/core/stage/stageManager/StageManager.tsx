@@ -27,7 +27,6 @@ import { Section } from "../stageObject/entity/Section";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
 import { GraphMethods } from "./basicMethods/GraphMethods";
-import { StageAutoAlignManager } from "./concreteMethods/StageAutoAlignManager";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager";
 import { StageGeneratorAI } from "./concreteMethods/StageGeneratorAI";
@@ -665,49 +664,6 @@ export namespace StageManager {
     StageEntityMoveManager.moveConnectableEntitiesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录
   }
 
-  export function alignLeft() {
-    StageEntityMoveManager.alignLeft();
-    StageHistoryManager.recordStep();
-  }
-
-  export function alignRight() {
-    StageEntityMoveManager.alignRight();
-    StageHistoryManager.recordStep();
-  }
-
-  export function alignTop() {
-    StageEntityMoveManager.alignTop();
-    StageHistoryManager.recordStep();
-  }
-  export function alignBottom() {
-    StageEntityMoveManager.alignBottom();
-    StageHistoryManager.recordStep();
-  }
-  export function alignCenterHorizontal() {
-    StageEntityMoveManager.alignCenterHorizontal();
-    StageHistoryManager.recordStep();
-  }
-  export function alignCenterVertical() {
-    StageEntityMoveManager.alignCenterVertical();
-    StageHistoryManager.recordStep();
-  }
-  export function alignHorizontalSpaceBetween() {
-    StageEntityMoveManager.alignHorizontalSpaceBetween();
-    StageHistoryManager.recordStep();
-  }
-  export function alignVerticalSpaceBetween() {
-    StageEntityMoveManager.alignVerticalSpaceBetween();
-    StageHistoryManager.recordStep();
-  }
-  export function layoutToSquare() {
-    StageEntityMoveManager.layoutToSquare();
-    StageHistoryManager.recordStep();
-  }
-  export function layoutToTightSquare() {
-    StageEntityMoveManager.layoutToTightSquare();
-    StageHistoryManager.recordStep();
-  }
-
   export function setEntityColor(color: Color) {
     StageObjectColorManager.setEntityColor(color);
     StageHistoryManager.recordStep();
@@ -950,33 +906,6 @@ export namespace StageManager {
     for (const entity of entities) {
       if (entity instanceof ImageNode) {
         entity.refresh();
-      }
-    }
-  }
-
-  export function alignAllSelected() {
-    StageAutoAlignManager.alignAllSelected();
-  }
-
-  export function preAlignAllSelected() {
-    StageAutoAlignManager.preAlignAllSelected();
-  }
-
-  export function autoLayoutFastTreeModeRight() {
-    const entities = getSelectedEntities();
-    for (const entity of entities) {
-      if (entity instanceof ConnectableEntity) {
-        StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(entity);
-        return;
-      }
-    }
-  }
-  export function autoLayoutFastTreeModeDown() {
-    const entities = getSelectedEntities();
-    for (const entity of entities) {
-      if (entity instanceof ConnectableEntity) {
-        StageAutoAlignManager.autoLayoutSelectedFastTreeModeDown(entity);
-        return;
       }
     }
   }

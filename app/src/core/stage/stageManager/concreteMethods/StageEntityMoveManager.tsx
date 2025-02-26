@@ -8,6 +8,7 @@ import { Entity } from "../../stageObject/abstract/StageEntity";
 import { PenStroke } from "../../stageObject/entity/PenStroke";
 import { GraphMethods } from "../basicMethods/GraphMethods";
 import { SectionMethods } from "../basicMethods/SectionMethods";
+import { StageHistoryManager } from "../StageHistoryManager";
 import { StageManager } from "../StageManager";
 import { StageSectionInOutManager } from "./StageSectionInOutManager";
 
@@ -139,6 +140,7 @@ export namespace StageEntityMoveManager {
     for (const node of nodes) {
       moveEntityUtils(node, new Vector(minX - node.collisionBox.getRectangle().left, 0));
     }
+    StageHistoryManager.recordStep();
   }
 
   // 右侧对齐
@@ -148,6 +150,7 @@ export namespace StageEntityMoveManager {
     for (const node of nodes) {
       moveEntityUtils(node, new Vector(maxX - node.collisionBox.getRectangle().right, 0));
     }
+    StageHistoryManager.recordStep();
   }
 
   // 上侧对齐
@@ -157,6 +160,7 @@ export namespace StageEntityMoveManager {
     for (const node of nodes) {
       moveEntityUtils(node, new Vector(0, minY - node.collisionBox.getRectangle().top));
     }
+    StageHistoryManager.recordStep();
   }
 
   // 下侧对齐
@@ -166,6 +170,7 @@ export namespace StageEntityMoveManager {
     for (const node of nodes) {
       moveEntityUtils(node, new Vector(0, maxY - node.collisionBox.getRectangle().bottom));
     }
+    StageHistoryManager.recordStep();
   }
 
   export function alignCenterHorizontal() {
@@ -183,6 +188,7 @@ export namespace StageEntityMoveManager {
       const newY = centerY - (nodeCenterY - node.collisionBox.getRectangle().top);
       moveEntityToUtils(node, new Vector(node.collisionBox.getRectangle().left, newY));
     }
+    StageHistoryManager.recordStep();
   }
 
   export function alignCenterVertical() {
@@ -200,6 +206,7 @@ export namespace StageEntityMoveManager {
       const newX = centerX - (nodeCenterX - node.collisionBox.getRectangle().left);
       moveEntityToUtils(node, new Vector(newX, node.collisionBox.getRectangle().top));
     }
+    StageHistoryManager.recordStep();
   }
 
   // 相等间距水平分布对齐
@@ -219,6 +226,7 @@ export namespace StageEntityMoveManager {
       moveEntityToUtils(node, new Vector(startX, node.collisionBox.getRectangle().top));
       startX += node.collisionBox.getRectangle().size.x + spaceBetween;
     }
+    StageHistoryManager.recordStep();
   }
 
   // 相等间距垂直分布对齐
@@ -238,6 +246,7 @@ export namespace StageEntityMoveManager {
       moveEntityToUtils(node, new Vector(node.collisionBox.getRectangle().left, startY));
       startY += node.collisionBox.getRectangle().size.y + spaceBetween;
     }
+    StageHistoryManager.recordStep();
   }
 
   /**
@@ -297,6 +306,7 @@ export namespace StageEntityMoveManager {
       const newY = cellCenterY - rect.size.y / 2;
       moveEntityToUtils(node, new Vector(newX, newY));
     });
+    StageHistoryManager.recordStep();
   }
 
   /**
@@ -391,6 +401,8 @@ export namespace StageEntityMoveManager {
       }
       return [width, height];
     }
+
+    StageHistoryManager.recordStep();
   }
 }
 

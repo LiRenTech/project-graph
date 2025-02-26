@@ -2,6 +2,7 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
+import { StageAutoAlignManager } from "../../../../stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
@@ -100,7 +101,7 @@ ControllerEntityClickSelectAndMove.mousemove = (event: MouseEvent) => {
 
     // 预瞄反馈
     if (Stage.enableDragAutoAlign) {
-      StageManager.preAlignAllSelected();
+      StageAutoAlignManager.preAlignAllSelected();
     }
 
     ControllerEntityClickSelectAndMove.lastMoveLocation = worldLocation.clone();
@@ -119,7 +120,7 @@ ControllerEntityClickSelectAndMove.mouseup = (event: MouseEvent) => {
     if (isMovingEntity) {
       // 这个时候可以触发对齐吸附事件
       if (Stage.enableDragAutoAlign) {
-        StageManager.alignAllSelected();
+        StageAutoAlignManager.alignAllSelected();
       }
 
       StageManager.moveEntityFinished();
