@@ -719,8 +719,6 @@ export namespace Renderer {
       `selected edgeCount: ${StageManager.selectedEdgeCount}`,
       `pressingKeys: ${Controller.pressingKeysString()}`,
       `鼠标按下情况: ${Controller.isMouseDown}`,
-      `鼠标上次按下位置: ${Controller.lastMousePressLocationString()}`,
-      `lastMousePressLocation Right: ${Controller.lastMousePressLocation[2].toString()}`,
       `框选框: ${Stage.selectMachine.selectingRectangle}`,
       `正在切割: ${Stage.cuttingMachine.isUsing}`,
       `Stage.warningNodes: ${Stage.cuttingMachine.warningEntity.length}`,

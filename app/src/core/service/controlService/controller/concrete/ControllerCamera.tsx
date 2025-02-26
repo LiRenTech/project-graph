@@ -24,6 +24,7 @@ import { ControllerClass } from "../ControllerClass";
 export class ControllerCameraClass extends ControllerClass {
   // 是否正在使用
   public isUsingMouseGrabMove = false;
+  private lastMousePressLocation: Vector[] = [Vector.getZero(), Vector.getZero(), Vector.getZero()];
 
   public keydown: (event: KeyboardEvent) => void = (event: KeyboardEvent) => {
     if (Controller.isCameraLocked) {
@@ -106,6 +107,9 @@ export class ControllerCameraClass extends ControllerClass {
       // 右键按下
       this.isUsingMouseGrabMove = true;
     }
+    const pressWorldLocation = Renderer.transformView2World(new Vector(event.x, event.y));
+    // 获取左右中键
+    this.lastMousePressLocation[event.button] = pressWorldLocation;
   };
 
   /**
@@ -121,7 +125,7 @@ export class ControllerCameraClass extends ControllerClass {
     }
     // 空格+左键 拖动视野
     if (Controller.pressingKeySet.has(" ") && Controller.isMouseDown[0]) {
-      moveCameraByMouseMove(event.clientX, event.clientY, 0);
+      this.moveCameraByMouseMove(event.clientX, event.clientY, 0);
       return;
     }
     // 中键按下拖动视野
@@ -130,12 +134,12 @@ export class ControllerCameraClass extends ControllerClass {
         // ctrl键按下时,不允许移动视野
         return;
       }
-      moveCameraByMouseMove(event.clientX, event.clientY, 1);
+      this.moveCameraByMouseMove(event.clientX, event.clientY, 1);
       Controller.setCursorNameHook(CursorNameEnum.Grabbing);
     }
     // 侧键按下拖动视野
     if (Controller.isMouseDown[4]) {
-      moveCameraByMouseMove(event.clientX, event.clientY, 4);
+      this.moveCameraByMouseMove(event.clientX, event.clientY, 4);
       Controller.setCursorNameHook(CursorNameEnum.Grabbing);
     }
     if (Stage.mouseRightDragBackground === "moveCamera" && Controller.isMouseDown[2]) {
@@ -149,7 +153,7 @@ export class ControllerCameraClass extends ControllerClass {
       if (entity !== null) {
         return;
       }
-      moveCameraByMouseMove(event.clientX, event.clientY, 2);
+      this.moveCameraByMouseMove(event.clientX, event.clientY, 2);
       Controller.setCursorNameHook(CursorNameEnum.Grabbing);
     }
   };
@@ -275,22 +279,22 @@ export class ControllerCameraClass extends ControllerClass {
       Camera.reset();
     }
   };
+
+  /**
+   * 根据鼠标移动位置移动摄像机
+   * @param x - 鼠标在X轴的坐标
+   * @param y - 鼠标在Y轴的坐标
+   * @param mouseIndex - 鼠标按钮索引
+   */
+  private moveCameraByMouseMove(x: number, y: number, mouseIndex: number) {
+    const currentMouseMoveLocation = Renderer.transformView2World(new Vector(x, y));
+    const diffLocation = currentMouseMoveLocation.subtract(this.lastMousePressLocation[mouseIndex]);
+    Camera.location = Camera.location.subtract(diffLocation);
+  }
 }
 
 let isPressingCtrl = false;
 let isPreGrabbingWhenSpace = false;
-
-/**
- * 根据鼠标移动位置移动摄像机
- * @param x - 鼠标在X轴的坐标
- * @param y - 鼠标在Y轴的坐标
- * @param mouseIndex - 鼠标按钮索引
- */
-function moveCameraByMouseMove(x: number, y: number, mouseIndex: number) {
-  const currentMouseMoveLocation = Renderer.transformView2World(new Vector(x, y));
-  const diffLocation = currentMouseMoveLocation.subtract(Controller.lastMousePressLocation[mouseIndex]);
-  Camera.location = Camera.location.subtract(diffLocation);
-}
 
 function zoomCameraByMouseWheel(event: WheelEvent) {
   if (event.deltaY > 0) {

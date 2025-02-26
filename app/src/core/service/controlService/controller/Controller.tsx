@@ -55,10 +55,7 @@ export namespace Controller {
   /**
    * 存放鼠标 左 中 右 键上次 "按下" 时候的world位置
    */
-  export const lastMousePressLocation: Vector[] = [Vector.getZero(), Vector.getZero(), Vector.getZero()];
-  export function lastMousePressLocationString(): string {
-    return lastMousePressLocation.map((v) => v.toString()).join(",");
-  }
+  // export const lastMousePressLocation: Vector[] = [Vector.getZero(), Vector.getZero(), Vector.getZero()];
 
   /**
    * 是否正在进行移动(拖拽旋转)连线的操作
@@ -177,11 +174,9 @@ export namespace Controller {
     recordManipulate();
   }
 
-  function handleMousedown(button: number, x: number, y: number) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function handleMousedown(button: number, _x: number, _y: number) {
     isMouseDown[button] = true;
-    const pressWorldLocation = Renderer.transformView2World(new Vector(x, y));
-    // 获取左右中键
-    lastMousePressLocation[button] = pressWorldLocation;
 
     // 左右键按下时移除所有input焦点
     if (button === 0 || button === 2) {
