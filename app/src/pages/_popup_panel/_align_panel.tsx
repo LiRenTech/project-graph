@@ -11,6 +11,7 @@ import {
   LayoutGrid,
   Magnet,
   Network,
+  SquareSquare,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Dialog } from "../../components/dialog";
@@ -22,6 +23,8 @@ import { cn } from "../../utils/cn";
 import { ToolbarItem } from "../_toolbar";
 import { StageEntityMoveManager } from "../../core/stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageAutoAlignManager } from "../../core/stage/stageManager/concreteMethods/StageAutoAlignManager";
+import { StageSectionPackManager } from "../../core/stage/stageManager/concreteMethods/StageSectionPackManager";
+import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
 export default function AlignNodePanel() {
   const [isEnableDragAutoAlign, setEnableDragAutoAlign] = useState(false);
 
@@ -196,6 +199,21 @@ export default function AlignNodePanel() {
           icon={<Columns4 />}
           handleFunction={() => {
             StageEntityMoveManager.layoutToTightSquare();
+          }}
+        />
+        <ToolbarItem
+          description="将树形结构变成框嵌套结构"
+          icon={<SquareSquare />}
+          handleFunction={() => {
+            const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
+            if (selectedNodes.length !== 1) {
+              Dialog.show({
+                title: "选择节点数量不为1",
+                content: "必须只选择一个根节点才可以进行树形结构变成框嵌套结构",
+              });
+              return;
+            }
+            StageSectionPackManager.textNodeTreeToSection(selectedNodes[0]);
           }}
         />
         <ToolbarItem

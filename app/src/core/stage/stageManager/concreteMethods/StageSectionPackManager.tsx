@@ -86,6 +86,10 @@ export namespace StageSectionPackManager {
    */
   export function textNodeTreeToSection(rootNode: TextNode): void {
     if (!GraphMethods.isTree(rootNode)) {
+      Dialog.show({
+        title: "非树状结构",
+        content: "请选择一个树状结构的节点作为根节点",
+      });
       return;
     }
     const dfs = (node: TextNode): Section | TextNode => {
@@ -97,21 +101,27 @@ export namespace StageSectionPackManager {
       for (const childNode of childNodes) {
         const transEntity = dfs(childNode);
         childEntityList.push(transEntity);
-        // TODO: 断开主和子之间的连线
+
+        const edges = GraphMethods.getEdgesBetween(node, childNode);
+        for (const edge of edges) {
+          StageManager.deleteEdge(edge);
+        }
       }
-      const section = targetTextNodeToSection(node);
+      const section = targetTextNodeToSection(node, true);
 
       StageSectionInOutManager.goInSection(childEntityList, section);
       return section;
     };
     dfs(rootNode);
+    StageHistoryManager.recordStep();
   }
 
   /**
    * 将指定的文本节点转换成Section
-   * @param textNode
+   * @param textNode 要转换的节点
+   * @param ignoreEdges 是否忽略边的影响
    */
-  export function targetTextNodeToSection(textNode: TextNode): Section {
+  export function targetTextNodeToSection(textNode: TextNode, ignoreEdges: boolean = false): Section {
     // 获取这个节点的父级Section
     const fatherSections = SectionMethods.getFatherSections(textNode);
     const rect = textNode.collisionBox.getRectangle().expandFromCenter(50);
@@ -136,13 +146,15 @@ export namespace StageSectionPackManager {
       StageSectionInOutManager.goInSection([newSection], fatherSection);
     }
 
-    // 将所有连向它的东西连到新的Section
-    for (const fatherConnection of fatherConnections) {
-      StageManager.connectEntity(fatherConnection, newSection);
-    }
-    // 将所有连向新的Section的东西连到它
-    for (const childConnection of childConnections) {
-      StageManager.connectEntity(newSection, childConnection);
+    if (!ignoreEdges) {
+      // 将所有连向它的东西连到新的Section
+      for (const fatherConnection of fatherConnections) {
+        StageManager.connectEntity(fatherConnection, newSection);
+      }
+      // 将所有连向新的Section的东西连到它
+      for (const childConnection of childConnections) {
+        StageManager.connectEntity(newSection, childConnection);
+      }
     }
     // 更新section的碰撞箱
     newSection.adjustLocationAndSize();
