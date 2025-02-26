@@ -377,7 +377,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    StageManager.jumpMoveSelectedConnectableEntities(new Vector(0, -100));
+    StageEntityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(0, -100));
   });
 
   (
@@ -387,7 +387,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    StageManager.jumpMoveSelectedConnectableEntities(new Vector(0, 100));
+    StageEntityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(0, 100));
   });
 
   (
@@ -397,7 +397,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    StageManager.jumpMoveSelectedConnectableEntities(new Vector(-100, 0));
+    StageEntityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(-100, 0));
   });
 
   (
@@ -407,7 +407,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(() => {
-    StageManager.jumpMoveSelectedConnectableEntities(new Vector(100, 0));
+    StageEntityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(100, 0));
   });
 
   (

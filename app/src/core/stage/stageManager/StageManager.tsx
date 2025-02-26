@@ -2,7 +2,6 @@ import { v4 } from "uuid";
 import { Direction } from "../../../types/directions";
 import { Serialized } from "../../../types/node";
 import { PathString } from "../../../utils/pathString";
-import { Color } from "../../dataStruct/Color";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { StringDict } from "../../dataStruct/StringDict";
 import { Vector } from "../../dataStruct/Vector";
@@ -28,13 +27,11 @@ import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
 import { GraphMethods } from "./basicMethods/GraphMethods";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
-import { StageEntityMoveManager } from "./concreteMethods/StageEntityMoveManager";
 import { StageGeneratorAI } from "./concreteMethods/StageGeneratorAI";
 import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
 import { StageNodeRotate } from "./concreteMethods/stageNodeRotate";
 import { StageNodeTextTransfer } from "./concreteMethods/StageNodeTextTransfer";
-import { StageObjectColorManager } from "./concreteMethods/StageObjectColorManager";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
 import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManager";
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
@@ -650,38 +647,6 @@ export namespace StageManager {
     const res = await StageNodeAdder.addTextNodeFromCurrentSelectedNode(direction, [], selectCurrent);
     StageHistoryManager.recordStep();
     return res;
-  }
-
-  export function moveEntities(delta: Vector, isAutoAdjustSection = true) {
-    StageEntityMoveManager.moveEntities(delta, isAutoAdjustSection); // 连续过程，不记录历史，只在结束时记录
-  }
-
-  export function jumpMoveSelectedConnectableEntities(delta: Vector) {
-    StageEntityMoveManager.jumpMoveSelectedConnectableEntities(delta); // 连续过程，不记录历史，只在结束时记录
-  }
-
-  export function moveConnectableEntitiesWithChildren(delta: Vector) {
-    StageEntityMoveManager.moveConnectableEntitiesWithChildren(delta); // 连续过程，不记录历史，只在结束时记录
-  }
-
-  export function setEntityColor(color: Color) {
-    StageObjectColorManager.setEntityColor(color);
-    StageHistoryManager.recordStep();
-  }
-
-  export function clearNodeColor() {
-    StageObjectColorManager.clearEntityColor();
-    StageHistoryManager.recordStep();
-  }
-
-  export function setEdgeColor(color: Color) {
-    StageObjectColorManager.setEdgeColor(color);
-    StageHistoryManager.recordStep();
-  }
-
-  export function clearEdgeColor() {
-    StageObjectColorManager.clearEdgeColor();
-    StageHistoryManager.recordStep();
   }
 
   export function moveEntityFinished() {

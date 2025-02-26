@@ -3,6 +3,7 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
+import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageSectionInOutManager } from "../../../../stage/stageManager/concreteMethods/StageSectionInOutManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
@@ -66,7 +67,7 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
     Stage.effectMachine.addEffect(new EntityJumpMoveEffect(15, entity.collisionBox.getRectangle(), delta));
   }
   // 3 移动所有选中的实体 的位置
-  StageManager.moveEntities(delta);
+  StageEntityMoveManager.moveEntities(delta);
 
   // 改变层级
   if (targetSections.length === 0) {

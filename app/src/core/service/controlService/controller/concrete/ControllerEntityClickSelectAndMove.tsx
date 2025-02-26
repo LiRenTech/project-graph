@@ -94,7 +94,7 @@ ControllerEntityClickSelectAndMove.mousemove = (event: MouseEvent) => {
     // 暂不监听alt键。因为windows下切换窗口时，alt键释放监听不到
     if (Controller.pressingKeySet.has("control")) {
       // 和子节点一起移动
-      StageManager.moveConnectableEntitiesWithChildren(diffLocation);
+      StageEntityMoveManager.moveConnectableEntitiesWithChildren(diffLocation);
     } else {
       StageEntityMoveManager.moveSelectedEntities(diffLocation);
     }

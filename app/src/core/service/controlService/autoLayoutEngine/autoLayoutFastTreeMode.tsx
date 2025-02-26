@@ -122,6 +122,6 @@ export namespace AutoLayoutFastTree {
     // 选中根节点
     StageManager.clearSelectAll();
     rootNode.isSelected = true;
-    StageManager.moveConnectableEntitiesWithChildren(delta);
+    StageEntityMoveManager.moveConnectableEntitiesWithChildren(delta);
   }
 }

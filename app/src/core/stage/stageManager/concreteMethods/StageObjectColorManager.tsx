@@ -1,4 +1,5 @@
 import { Color } from "../../../dataStruct/Color";
+import { StageHistoryManager } from "../StageHistoryManager";
 import { StageManager } from "../StageManager";
 
 /**
@@ -22,6 +23,7 @@ export namespace StageObjectColorManager {
         // TODO: 涂鸦应该可以改颜色
       }
     }
+    StageHistoryManager.recordStep();
   }
 
   export function clearEntityColor() {
@@ -35,6 +37,7 @@ export namespace StageObjectColorManager {
         node.color = Color.Transparent;
       }
     }
+    StageHistoryManager.recordStep();
   }
 
   export function setEdgeColor(color: Color) {
@@ -43,6 +46,7 @@ export namespace StageObjectColorManager {
         edge.color = color;
       }
     }
+    StageHistoryManager.recordStep();
   }
 
   export function clearEdgeColor() {
@@ -51,6 +55,7 @@ export namespace StageObjectColorManager {
         edge.color = Color.Transparent;
       }
     }
+    StageHistoryManager.recordStep();
   }
 
   export function darkenNodeColor() {
@@ -63,6 +68,7 @@ export namespace StageObjectColorManager {
         node.color = darkenedColor;
       }
     }
+    StageHistoryManager.recordStep();
   }
 
   export function lightenNodeColor() {
@@ -75,5 +81,6 @@ export namespace StageObjectColorManager {
         node.color = lightenedColor;
       }
     }
+    StageHistoryManager.recordStep();
   }
 }
