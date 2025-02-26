@@ -1980,7 +1980,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [1735, 65],
+      "location": [1735, 327.3191958813435],
       "size": [348, 76],
       "text": "连线节点群的高级操作",
       "uuid": "8efe5b62-1ff7-402e-9fc3-086d5bc5bd84",
@@ -3631,7 +3631,7 @@
     },
     {
       "location": [4674.776062011718, 3359.8994840440646],
-      "size": [143.8399658203125, 76],
+      "size": [140.109375, 76],
       "text": "#ADD#",
       "uuid": "542070d8-ae0b-429f-b7e3-b9b2a744fb9d",
       "details": "",
@@ -3703,7 +3703,7 @@
     },
     {
       "location": [4478.35390899846, 3838.768656382353],
-      "size": [143.8399658203125, 76],
+      "size": [140.109375, 76],
       "text": "#ADD#",
       "uuid": "0a211c52-2d02-446a-a695-d49dcaf2ad45",
       "details": "",
@@ -3840,7 +3840,7 @@
     },
     {
       "location": [4480.395476955065, 4306.151651644727],
-      "size": [143.8399658203125, 76],
+      "size": [140.109375, 76],
       "text": "#ADD#",
       "uuid": "f49a811f-354c-4d4d-9eef-9b0437d289f7",
       "details": "",
@@ -3921,7 +3921,7 @@
     },
     {
       "location": [4636.696044921874, 4732.580756528851],
-      "size": [143.8399658203125, 76],
+      "size": [140.109375, 76],
       "text": "#ADD#",
       "uuid": "45df338d-4eb4-4d4b-b31a-db7e69a3bf59",
       "details": "",
@@ -4702,6 +4702,98 @@
       "size": [207.67999267578125, 76],
       "text": "6：重启软件",
       "uuid": "3c5f8fa6-a4c8-40fe-9a23-10b2e1ab0f66",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1898.2179927096206, -53.90786662423514],
+      "size": [220, 76],
+      "text": "连线更改目标",
+      "uuid": "7d145299-0297-4cbb-9015-ca5f68736237",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2249.8736357582907, -204.99780590949544],
+      "size": [65.53125, 76],
+      "text": "34",
+      "uuid": "7f0b4efe-b48a-4592-b929-1e4999a30588",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2473.0134161310725, -204.99999999999997],
+      "size": [65.53125, 76],
+      "text": "35",
+      "uuid": "3ce41751-99fd-4d29-9ba5-d272166af583",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2478.2743687025436, -59.179654564095244],
+      "size": [65.53125, 76],
+      "text": "36",
+      "uuid": "532ea53f-6da2-46d7-bfd3-817d196e7f43",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2799.2808864972026, -204.99999999999997],
+      "size": [65.53125, 76],
+      "text": "34",
+      "uuid": "ab0cefcf-5fa5-4740-b12b-92bb0a013c6c",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3027.666948703452, -204.99999999999997],
+      "size": [65.53125, 76],
+      "text": "35",
+      "uuid": "853cfadd-fe02-40ce-9bdb-70c8922dc10e",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [3023.459644071029, -59.179654564095244],
+      "size": [65.53125, 76],
+      "text": "36",
+      "uuid": "1dda04eb-67c0-4806-beb6-0ef3be02a5e7",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [2174.2329997576703, -285],
+      "size": [1008.864013671875, 513.5114052291235],
+      "uuid": "2ced6885-06c0-4c8e-bd58-757689e67cfd",
+      "text": "方法",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": [
+        "7f0b4efe-b48a-4592-b929-1e4999a30588",
+        "3ce41751-99fd-4d29-9ba5-d272166af583",
+        "532ea53f-6da2-46d7-bfd3-817d196e7f43",
+        "ab0cefcf-5fa5-4740-b12b-92bb0a013c6c",
+        "853cfadd-fe02-40ce-9bdb-70c8922dc10e",
+        "1dda04eb-67c0-4806-beb6-0ef3be02a5e7",
+        "d9383239-6280-4964-a526-42189fc7fd33"
+      ],
+      "details": ""
+    },
+    {
+      "location": [2204.2329997576703, 74.51140522912357],
+      "size": [948.864013671875, 124],
+      "text": "选中绿线，按住ctrl键，按住绿色线移动，鼠标在36号节点上释放\n可以选择多个线进行操作",
+      "uuid": "d9383239-6280-4964-a526-42189fc7fd33",
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
@@ -7035,6 +7127,38 @@
       "uuid": "b211b436-8c21-4b1e-bd02-bb8bec6d7651",
       "type": "core:line_edge",
       "color": [234, 179, 8, 1]
+    },
+    {
+      "source": "5af14099-fbc1-46fe-b784-7cba78ecc4fc",
+      "target": "7d145299-0297-4cbb-9015-ca5f68736237",
+      "text": "",
+      "uuid": "e86feddd-eb81-4dce-be7d-c5dc96432dab",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "7f0b4efe-b48a-4592-b929-1e4999a30588",
+      "target": "3ce41751-99fd-4d29-9ba5-d272166af583",
+      "text": "goto",
+      "uuid": "cf9c75b4-775b-42cc-bca7-47ca850d998d",
+      "type": "core:line_edge",
+      "color": [22, 163, 74, 1]
+    },
+    {
+      "source": "ab0cefcf-5fa5-4740-b12b-92bb0a013c6c",
+      "target": "1dda04eb-67c0-4806-beb6-0ef3be02a5e7",
+      "text": "goto",
+      "uuid": "2f201d12-3713-412a-968f-1eb2863fabde",
+      "type": "core:line_edge",
+      "color": [22, 163, 74, 1]
+    },
+    {
+      "source": "7d145299-0297-4cbb-9015-ca5f68736237",
+      "target": "2ced6885-06c0-4c8e-bd58-757689e67cfd",
+      "text": "",
+      "uuid": "a9618042-0feb-4c1b-97af-82b6fc535196",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
     }
   ],
   "tags": [

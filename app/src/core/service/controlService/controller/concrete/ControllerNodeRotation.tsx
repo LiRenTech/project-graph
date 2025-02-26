@@ -2,6 +2,7 @@ import { CursorNameEnum } from "../../../../../types/cursors";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
+import { StageNodeConnector } from "../../../../stage/stageManager/concreteMethods/StageNodeConnector";
 import { StageNodeRotate } from "../../../../stage/stageManager/concreteMethods/stageNodeRotate";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
@@ -70,10 +71,19 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
   }
   const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
   if (Controller.isMouseDown[0]) {
-    const diffLocation = worldLocation.subtract(ControllerNodeRotation.lastMoveLocation);
-    // 拖拽连线
-    Controller.isMovingEdge = true;
-    StageNodeRotate.moveEdges(ControllerNodeRotation.lastMoveLocation, diffLocation);
+    if (Controller.pressingKeySet.has("control")) {
+      // 更改连线的目标
+      const entity = StageManager.findConnectableEntityByLocation(worldLocation);
+      if (entity !== null) {
+        // 找到目标，更改目标
+        StageNodeConnector.changeSelectedEdgeTarget(entity);
+      }
+    } else {
+      const diffLocation = worldLocation.subtract(ControllerNodeRotation.lastMoveLocation);
+      // 拖拽连线
+      Controller.isMovingEdge = true;
+      StageNodeRotate.moveEdges(ControllerNodeRotation.lastMoveLocation, diffLocation);
+    }
     ControllerNodeRotation.lastMoveLocation = worldLocation.clone();
   } else {
     // 什么都没有按下的情况

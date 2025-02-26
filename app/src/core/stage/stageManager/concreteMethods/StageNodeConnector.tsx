@@ -6,6 +6,7 @@ import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { StageManager } from "../StageManager";
 import { StageDeleteManager } from "./StageDeleteManager";
 import { GraphMethods } from "../basicMethods/GraphMethods";
+import { StageHistoryManager } from "../StageHistoryManager";
 
 /**
  * 集成所有连线相关的功能
@@ -30,8 +31,14 @@ export namespace StageNodeConnector {
       return false;
     }
   }
-  // 连接两两节点
-  // 如果两个节点都是同一个 ConnectPoint类型，则不能连接，因为没有必要
+
+  /**
+   * 如果两个节点都是同一个 ConnectPoint 对象类型，则不能连接，因为没有必要
+   * @param fromNode
+   * @param toNode
+   * @param text
+   * @returns
+   */
   export function connectConnectableEntity(
     fromNode: ConnectableEntity,
     toNode: ConnectableEntity,
@@ -82,5 +89,33 @@ export namespace StageNodeConnector {
         connectConnectableEntity(targetNode, sourceNode, edge.text);
       }
     });
+  }
+
+  /**
+   * 单独改变一个节点的连接点
+   * @param edge
+   * @param newTarget
+   * @returns
+   */
+  function changeEdgeTarget(edge: LineEdge, newTarget: ConnectableEntity) {
+    if (edge.target.uuid === newTarget.uuid) {
+      return;
+    }
+    edge.target = newTarget;
+    StageManager.updateReferences();
+  }
+
+  /**
+   * 改变所有选中的连线的目标节点
+   * @param newTarget
+   */
+  export function changeSelectedEdgeTarget(newTarget: ConnectableEntity) {
+    const selectedEdges = StageManager.getSelectedStageObjects().filter((obj) => obj instanceof LineEdge);
+    for (const edge of selectedEdges) {
+      if (edge instanceof LineEdge) {
+        changeEdgeTarget(edge, newTarget);
+      }
+    }
+    StageHistoryManager.recordStep();
   }
 }
