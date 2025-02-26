@@ -35,6 +35,8 @@ import { writeTextFile } from "../utils/fs";
 import AlignNodePanel from "./_popup_panel/_align_panel";
 import ColorPanel from "./_popup_panel/_color_panel";
 import GenerateNodePanel from "./_popup_panel/_generate_node_panel";
+import { StageNodeConnector } from "../core/stage/stageManager/concreteMethods/StageNodeConnector";
+import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryManager";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -112,7 +114,8 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           icon={<Repeat />}
           handleFunction={() => {
             const selectedEdges = StageManager.getLineEdges().filter((edge) => edge.isSelected);
-            StageManager.reverseEdges(selectedEdges);
+            StageNodeConnector.reverseEdges(selectedEdges);
+            StageHistoryManager.recordStep();
           }}
         />
       )}

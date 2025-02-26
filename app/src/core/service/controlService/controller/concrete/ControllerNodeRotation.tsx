@@ -2,6 +2,8 @@ import { CursorNameEnum } from "../../../../../types/cursors";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
+import { StageNodeRotate } from "../../../../stage/stageManager/concreteMethods/stageNodeRotate";
+import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
@@ -20,9 +22,9 @@ ControllerNodeRotation.mousewheel = (event: WheelEvent) => {
     if (hoverNode !== null) {
       // 旋转节点
       if (event.deltaY > 0) {
-        StageManager.rotateNode(hoverNode, 10);
+        StageNodeRotate.rotateNodeDfs(hoverNode, hoverNode, 10, []);
       } else {
-        StageManager.rotateNode(hoverNode, -10);
+        StageNodeRotate.rotateNodeDfs(hoverNode, hoverNode, -10, []);
       }
     }
   }
@@ -71,7 +73,7 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
     const diffLocation = worldLocation.subtract(ControllerNodeRotation.lastMoveLocation);
     // 拖拽连线
     Controller.isMovingEdge = true;
-    StageManager.moveEdges(ControllerNodeRotation.lastMoveLocation, diffLocation);
+    StageNodeRotate.moveEdges(ControllerNodeRotation.lastMoveLocation, diffLocation);
     ControllerNodeRotation.lastMoveLocation = worldLocation.clone();
   } else {
     // 什么都没有按下的情况
@@ -85,7 +87,7 @@ ControllerNodeRotation.mouseup = (event: MouseEvent) => {
     return;
   }
   if (Controller.isMovingEdge) {
-    StageManager.moveEdgeFinished();
+    StageHistoryManager.recordStep(); // 鼠标抬起了，移动结束，记录历史过程
     Controller.isMovingEdge = false;
   }
   Controller.setCursorNameHook(CursorNameEnum.Default);

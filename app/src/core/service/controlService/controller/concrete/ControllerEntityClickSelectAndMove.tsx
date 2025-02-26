@@ -4,6 +4,7 @@ import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
 import { StageAutoAlignManager } from "../../../../stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
+import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { RectangleRenderEffect } from "../../../feedbackService/effectEngine/concrete/RectangleRenderEffect";
@@ -123,7 +124,7 @@ ControllerEntityClickSelectAndMove.mouseup = (event: MouseEvent) => {
         StageAutoAlignManager.alignAllSelected();
       }
 
-      StageManager.moveEntityFinished();
+      StageHistoryManager.recordStep(); // 记录一次历史
     }
   }
 

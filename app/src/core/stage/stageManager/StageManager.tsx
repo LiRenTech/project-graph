@@ -30,7 +30,6 @@ import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageGeneratorAI } from "./concreteMethods/StageGeneratorAI";
 import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
-import { StageNodeRotate } from "./concreteMethods/stageNodeRotate";
 import { StageNodeTextTransfer } from "./concreteMethods/StageNodeTextTransfer";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
 import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManager";
@@ -649,37 +648,6 @@ export namespace StageManager {
     return res;
   }
 
-  export function moveEntityFinished() {
-    // 以后有历史记录和撤销功能了再说，这里什么都不用写
-    // 需要查看ts的装饰器怎么用
-    StageHistoryManager.recordStep();
-  }
-
-  export function moveEdgeFinished() {
-    // 以后有历史记录和撤销功能了再说，这里什么都不用写
-    // 需要查看ts的装饰器怎么用
-    StageHistoryManager.recordStep();
-  }
-
-  /**
-   * 通过拖拽边的方式来旋转节点
-   * @param lastMoveLocation
-   * @param diffLocation
-   */
-  export function moveEdges(lastMoveLocation: Vector, diffLocation: Vector) {
-    StageNodeRotate.moveEdges(lastMoveLocation, diffLocation); // 连续过程，不记录历史，只在结束时记录
-  }
-
-  /**
-   * 单独对一个节点，滚轮旋转
-   * @param node
-   * @param angle
-   */
-  export function rotateNode(node: TextNode, angle: number) {
-    StageNodeRotate.rotateNodeDfs(node, node, angle, []); // 连续过程，不记录历史，只在结束时记录
-    updateReferences();
-  }
-
   export function deleteEntities(deleteNodes: Entity[]) {
     StageDeleteManager.deleteEntities(deleteNodes);
     StageHistoryManager.recordStep();
@@ -737,11 +705,6 @@ export namespace StageManager {
     return GraphMethods.isConnected(fromNode, toNode);
   }
 
-  export function reverseEdges(edges: LineEdge[]) {
-    StageNodeConnector.reverseEdges(edges);
-    StageHistoryManager.recordStep();
-  }
-
   /**
    * 反转一个节点与他相连的所有连线方向
    * @param connectEntity
@@ -753,7 +716,7 @@ export namespace StageManager {
         prepareReverseEdges.push(edge);
       }
     }
-    reverseEdges(prepareReverseEdges);
+    StageNodeConnector.reverseEdges(prepareReverseEdges);
   }
 
   /**
@@ -771,8 +734,7 @@ export namespace StageManager {
     if (selectedEdges.length === 0) {
       return;
     }
-    reverseEdges(selectedEdges);
-    StageHistoryManager.recordStep();
+    StageNodeConnector.reverseEdges(selectedEdges);
   }
 
   export function addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
