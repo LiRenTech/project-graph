@@ -22,7 +22,7 @@ export class Section extends ConnectableEntity {
    */
   _isSelected: boolean = false;
   public uuid: string;
-
+  public isEditingTitle: boolean = false;
   private _collisionBoxWhenCollapsed: CollisionBox;
   private _collisionBoxNormal: CollisionBox;
 

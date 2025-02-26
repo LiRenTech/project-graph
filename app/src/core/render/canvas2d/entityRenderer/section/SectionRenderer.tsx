@@ -39,13 +39,16 @@ export namespace SectionRenderer {
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * 1.5 * Camera.currentScale,
     );
-
-    TextRenderer.renderText(
-      section.text,
-      Renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
-      Renderer.FONT_SIZE * Camera.currentScale,
-      section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
-    );
+    if (!section.isEditingTitle) {
+      TextRenderer.renderText(
+        section.text,
+        Renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
+        Renderer.FONT_SIZE * Camera.currentScale,
+        section.color.a === 1
+          ? colorInvert(section.color)
+          : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+      );
+    }
   }
 
   // 非折叠状态
@@ -61,7 +64,7 @@ export namespace SectionRenderer {
       Camera.currentScale > 0.2 ? 2 * Camera.currentScale : 2,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
-    if (Camera.currentScale > 0.2) {
+    if (Camera.currentScale > 0.2 && !section.isEditingTitle) {
       // 正常显示标题
       TextRenderer.renderText(
         section.text,

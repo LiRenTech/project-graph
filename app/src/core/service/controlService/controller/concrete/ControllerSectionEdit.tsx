@@ -4,6 +4,7 @@ import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 
 import { ControllerClass } from "../ControllerClass";
+import { editSectionTitle } from "./utilsControl";
 
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
@@ -22,12 +23,7 @@ ControllerSectionEdit.mouseDoubleClick = (event: MouseEvent) => {
   }
 
   // 编辑文字
-  const user_input = prompt("请输入文字", firstHoverSection.text);
-  if (user_input) {
-    for (const section of Stage.mouseInteractionCore.hoverSections) {
-      section.rename(user_input);
-    }
-  }
+  editSectionTitle(firstHoverSection);
   return;
 };
 
