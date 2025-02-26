@@ -46,6 +46,7 @@ import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 import { StageEntityMoveManager } from "./core/stage/stageManager/concreteMethods/StageEntityMoveManager";
+import { StageSectionPackManager } from "./core/stage/stageManager/concreteMethods/StageSectionPackManager";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -457,7 +458,7 @@ async function registerKeyBinds() {
       shift: true,
     })
   ).down(() => {
-    StageManager.textNodeToSection();
+    StageSectionPackManager.textNodeToSection();
   });
   (
     await KeyBinds.create("checkoutProtectPrivacy", "2", {

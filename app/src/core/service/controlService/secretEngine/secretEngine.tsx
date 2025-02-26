@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { createFolder } from "../../../../utils/fs";
 import { Queue } from "../../../dataStruct/Queue";
 import { Vector } from "../../../dataStruct/Vector";
@@ -6,12 +7,14 @@ import { Stage } from "../../../stage/Stage";
 import { StageSectionPackManager } from "../../../stage/stageManager/concreteMethods/StageSectionPackManager";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
+import { PortalNode } from "../../../stage/stageObject/entity/PortalNode";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { CollaborationEngine } from "../../dataManageService/collaborationEngine/CollaborationEngine";
 import { RectangleNoteEffect } from "../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
+import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
 
 interface SecretItem {
   name: string;
@@ -63,7 +66,18 @@ export class SecretEngine {
       name: "创建传送门",
       func: () => {
         Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
-        StageManager.addOnePortalNode();
+        const uuid = v4();
+        StageManager.addPortalNode(
+          new PortalNode({
+            uuid: uuid,
+            title: "PortalNode",
+            portalFilePath: "",
+            location: [0, 0],
+            size: [500, 500],
+            cameraScale: 1,
+          }),
+        );
+        StageHistoryManager.recordStep();
       },
     },
     "c o l l a b o r a t e": {

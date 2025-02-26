@@ -636,14 +636,6 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           >
             Cr
           </Col>
-          <Col
-            icon={<TestTube2 />}
-            onClick={() => {
-              StageManager.moveAllEntityToIntegerLocation();
-            }}
-          >
-            int
-          </Col>
         </Row>
       )}
     </div>

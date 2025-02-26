@@ -16,6 +16,7 @@ import { GraphMethods } from "../basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { Color } from "../../../dataStruct/Color";
 import { SectionMethods } from "../basicMethods/SectionMethods";
+import { StageHistoryManager } from "../StageHistoryManager";
 
 /**
  * 包含增加节点的方法
@@ -160,6 +161,7 @@ export namespace StageNodeAdder {
         ),
       );
     }
+    StageHistoryManager.recordStep();
     return newUUID;
   }
 

@@ -11,6 +11,7 @@ import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageManager } from "../StageManager";
 import { StageManagerUtils } from "./StageManagerUtils";
 import { StageSectionInOutManager } from "./StageSectionInOutManager";
+import { StageHistoryManager } from "../StageHistoryManager";
 
 /**
  * 管理所有东西进出StageSection的逻辑
@@ -77,6 +78,7 @@ export namespace StageSectionPackManager {
       }
       targetTextNodeToSection(textNode);
     }
+    StageHistoryManager.recordStep();
   }
 
   /**

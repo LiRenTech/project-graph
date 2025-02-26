@@ -2,6 +2,7 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
+import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/stageNodeAdder";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { Controller } from "../Controller";
@@ -40,5 +41,5 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
 };
 
 function createConnectPoint(pressLocation: Vector, addToSections: Section[]) {
-  StageManager.addConnectPointByClick(pressLocation, addToSections);
+  StageNodeAdder.addConnectPoint(pressLocation, addToSections);
 }

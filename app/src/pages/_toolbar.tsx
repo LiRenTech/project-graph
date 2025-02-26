@@ -37,6 +37,7 @@ import ColorPanel from "./_popup_panel/_color_panel";
 import GenerateNodePanel from "./_popup_panel/_generate_node_panel";
 import { StageNodeConnector } from "../core/stage/stageManager/concreteMethods/StageNodeConnector";
 import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryManager";
+import { StageGeneratorAI } from "../core/stage/stageManager/concreteMethods/StageGeneratorAI";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -189,7 +190,8 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           description="AI扩展节点"
           icon={<BrainCircuit />}
           handleFunction={() => {
-            StageManager.expandTextNodeByAI();
+            StageGeneratorAI.generateNewTextNodeBySelected();
+            StageHistoryManager.recordStep();
           }}
         />
       )}

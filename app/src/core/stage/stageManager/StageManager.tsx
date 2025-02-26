@@ -27,10 +27,8 @@ import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
 import { GraphMethods } from "./basicMethods/GraphMethods";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
-import { StageGeneratorAI } from "./concreteMethods/StageGeneratorAI";
 import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
-import { StageNodeTextTransfer } from "./concreteMethods/StageNodeTextTransfer";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
 import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManager";
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
@@ -691,11 +689,6 @@ export namespace StageManager {
     return res;
   }
 
-  // export function deleteSection(section: Section) {
-  //   StageDeleteManager.deleteEntities([section]);
-  //   StageHistoryManager.recordStep();
-  // }
-
   export function connectEntity(fromNode: ConnectableEntity, toNode: ConnectableEntity) {
     if (fromNode === toNode && !isAllowAddCycleEdge) {
       return false;
@@ -796,21 +789,6 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
-  export function calculateSelectedNode() {
-    StageNodeTextTransfer.calculateAllSelected();
-    StageHistoryManager.recordStep();
-  }
-
-  export function addConnectPointByClick(location: Vector, addToSections: Section[]) {
-    StageNodeAdder.addConnectPoint(location, addToSections);
-    StageHistoryManager.recordStep();
-  }
-
-  export function expandTextNodeByAI() {
-    StageGeneratorAI.generateNewTextNodeBySelected();
-    StageHistoryManager.recordStep();
-  }
-
   export function addTagBySelected() {
     StageTagManager.changeTagBySelected();
   }
@@ -865,33 +843,6 @@ export namespace StageManager {
     }
   }
 
-  /**
-   * 将所有实体移动到整数坐标位置
-   * 用以减小导出时的文本内容体积
-   */
-  export function moveAllEntityToIntegerLocation() {
-    for (const textNode of getTextNodes()) {
-      const currentLocation = textNode.collisionBox.getRectangle().location;
-      currentLocation.x = Math.round(currentLocation.x);
-      currentLocation.y = Math.round(currentLocation.y);
-      textNode.moveTo(currentLocation);
-    }
-  }
-
-  /**
-   * 将所有选中的节点转换成Section
-   */
-  export function textNodeToSection() {
-    StageSectionPackManager.textNodeToSection();
-    StageHistoryManager.recordStep();
-  }
-
-  export function targetTextNodeToSection(textNode: TextNode) {
-    const result = StageSectionPackManager.targetTextNodeToSection(textNode);
-    StageHistoryManager.recordStep();
-    return result;
-  }
-
   export function addPortalNodeToStage(otherPath: string) {
     const uuid = v4();
     const relativePath = PathString.getRelativePath(Stage.path.getFilePath(), otherPath);
@@ -911,22 +862,5 @@ export namespace StageManager {
     );
     StageHistoryManager.recordStep();
     return true;
-  }
-
-  // 测试
-  export function addOnePortalNode() {
-    const uuid = v4();
-    stageContent.entities.addValue(
-      new PortalNode({
-        uuid: uuid,
-        title: "PortalNode",
-        portalFilePath: "",
-        location: [0, 0],
-        size: [500, 500],
-        cameraScale: 1,
-      }),
-      uuid,
-    );
-    StageHistoryManager.recordStep();
   }
 }

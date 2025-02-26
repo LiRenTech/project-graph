@@ -5,6 +5,7 @@ import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageSectionInOutManager } from "../../../../stage/stageManager/concreteMethods/StageSectionInOutManager";
+import { StageSectionPackManager } from "../../../../stage/stageManager/concreteMethods/StageSectionPackManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { EntityJumpMoveEffect } from "../../../feedbackService/effectEngine/concrete/EntityJumpMoveEffect";
@@ -38,7 +39,7 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
   // 提前检查点击的位置是否有一个TextNode，如果有，则转换成Section
   const entity = StageManager.findEntityByLocation(mouseLocation);
   if (entity && entity instanceof TextNode) {
-    const newSection = StageManager.targetTextNodeToSection(entity);
+    const newSection = StageSectionPackManager.targetTextNodeToSection(entity);
     const selectedEntities = StageManager.getSelectedEntities();
     // StageManager.goInSection(StageManager.getSelectedEntities(), newSection);
     StageSectionInOutManager.goInSections(StageManager.getSelectedEntities(), [newSection]);
