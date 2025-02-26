@@ -276,7 +276,7 @@ export class ControllerCameraClass extends ControllerClass {
         return;
       }
       // 中键双击
-      Camera.reset();
+      Camera.resetBySelected();
     }
   };
 
