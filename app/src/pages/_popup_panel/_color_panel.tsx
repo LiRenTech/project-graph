@@ -39,7 +39,7 @@ export default function ColorPanel() {
       {/* 官方提供的默认颜色 */}
       <div className="flex flex-wrap items-center justify-center">
         <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-red-500 hover:scale-125"
+          className="m-1 h-5 w-5 cursor-pointer rounded bg-red-500 hover:scale-125"
           onClick={() => {
             const color = new Color(239, 68, 68);
             StageManager.setEntityColor(color);
@@ -48,7 +48,7 @@ export default function ColorPanel() {
           }}
         />
         <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-yellow-500 hover:scale-125"
+          className="m-1 h-5 w-5 cursor-pointer rounded bg-yellow-500 hover:scale-125"
           onClick={() => {
             const color = new Color(234, 179, 8);
             StageManager.setEntityColor(color);
@@ -57,7 +57,7 @@ export default function ColorPanel() {
           }}
         />
         <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-green-600 hover:scale-125"
+          className="m-1 h-5 w-5 cursor-pointer rounded bg-green-600 hover:scale-125"
           onClick={() => {
             const color = new Color(22, 163, 74);
             StageManager.setEntityColor(color);
@@ -66,7 +66,7 @@ export default function ColorPanel() {
           }}
         />
         <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-blue-500 hover:scale-125"
+          className="m-1 h-5 w-5 cursor-pointer rounded bg-blue-500 hover:scale-125"
           onClick={() => {
             const color = new Color(59, 130, 246);
             StageManager.setEntityColor(color);
@@ -75,7 +75,7 @@ export default function ColorPanel() {
           }}
         />
         <div
-          className="m-1 h-5 w-5 cursor-pointer rounded-full bg-purple-500 hover:scale-125"
+          className="m-1 h-5 w-5 cursor-pointer rounded bg-purple-500 hover:scale-125"
           onClick={() => {
             const color = new Color(168, 85, 247);
             StageManager.setEntityColor(color);
@@ -85,7 +85,7 @@ export default function ColorPanel() {
         />
         {/* 清除颜色 */}
         <div
-          className="m-1 h-5 w-5 animate-pulse cursor-pointer rounded-full bg-transparent text-center text-sm hover:scale-125"
+          className="m-1 h-5 w-5 animate-pulse cursor-pointer rounded bg-transparent text-center text-sm hover:scale-125"
           onClick={() => {
             const color = Color.Transparent;
             StageManager.setEntityColor(color);
@@ -126,7 +126,7 @@ export default function ColorPanel() {
         {currentColors.map((color) => {
           return (
             <div
-              className="m-1 h-5 w-5 cursor-pointer rounded-full hover:scale-125"
+              className="m-1 h-5 w-5 cursor-pointer rounded hover:scale-125"
               key={color.toString()}
               style={{
                 backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`,
@@ -146,7 +146,7 @@ export default function ColorPanel() {
         <span className="flex items-center justify-center text-sm">
           <span className={cn(!autoFillNodeColorEnable && "opacity-50")}>创建节点自动上色</span>
           <div
-            className={cn("m-1 h-5 w-5 rounded-full border-2", !autoFillNodeColorEnable && "scale-50")}
+            className={cn("m-1 h-5 w-5 rounded border-2", !autoFillNodeColorEnable && "scale-50")}
             style={{
               backgroundColor: autoFillNodeColor.toString(),
             }}
