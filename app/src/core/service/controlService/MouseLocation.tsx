@@ -23,10 +23,10 @@ export namespace MouseLocation {
           Stage.cuttingMachine.mouseMoveOutWindowForcedShutdown(vectorObject);
         }
         if (Stage.cameraControllerMachine.isUsingMouseGrabMove) {
-          Stage.cameraControllerMachine.mouseMoveOutWindowForcedShutdown();
+          Stage.cameraControllerMachine.mouseMoveOutWindowForcedShutdown(vectorObject);
         }
         if (Stage.selectMachine.isUsing) {
-          Stage.selectMachine.mouseMoveOutWindowForcedShutdown();
+          Stage.selectMachine.mouseMoveOutWindowForcedShutdown(vectorObject);
         }
       }
     });

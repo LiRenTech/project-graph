@@ -12,8 +12,6 @@ import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
-import { ViewOutlineFlashEffect } from "../../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
-import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -158,10 +156,10 @@ export class ControllerCameraClass extends ControllerClass {
     }
   };
 
-  public mouseMoveOutWindowForcedShutdown() {
+  public mouseMoveOutWindowForcedShutdown(vectorObject: Vector) {
+    super.mouseMoveOutWindowForcedShutdown(vectorObject);
     this.isUsingMouseGrabMove = false;
     Controller.setCursorNameHook(CursorNameEnum.Default);
-    Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(StageStyleManager.currentStyle.effects.windowFlash));
   }
 
   /**

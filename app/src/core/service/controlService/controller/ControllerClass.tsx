@@ -1,6 +1,8 @@
 import { Vector } from "../../../dataStruct/Vector";
 import { Canvas } from "../../../stage/Canvas";
 import { Stage } from "../../../stage/Stage";
+import { ViewOutlineFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
+import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
 
 /**
  * 控制器类，用于处理事件绑定和解绑
@@ -127,4 +129,13 @@ export class ControllerClass {
     touch.button = 0;
     this._mouseup(touch);
   };
+
+  /**
+   * 鼠标移出窗口越界，强行停止功能
+   * @param _outsideLocation
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public mouseMoveOutWindowForcedShutdown(_outsideLocation: Vector) {
+    Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(StageStyleManager.currentStyle.effects.warningShadow));
+  }
 }
