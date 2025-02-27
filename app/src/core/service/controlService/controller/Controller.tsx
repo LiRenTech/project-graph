@@ -199,12 +199,18 @@ export namespace Controller {
   function keydown(event: KeyboardEvent) {
     // 2025年2月1日
     // 必须要禁止ctrl f 和ctrl+g的浏览器默认行为，否则会弹出一个框
+    // ctrl r 会刷新页面
     if (event.ctrlKey && (event.key === "f" || event.key === "g")) {
       event.preventDefault();
     }
     if (event.key === "F3" || event.key === "F7" || event.key === "F5") {
       // 禁用F3查找功能，防止浏览器默认行为
       // F7 插入光标浏览功能
+      event.preventDefault();
+    }
+    if (event.key === "r" || event.key === "R") {
+      // 禁用r刷新页面功能，防止浏览器默认行为
+      // 如果要在开发中测试刷新，应该在DevTools界面按这个快捷键
       event.preventDefault();
     }
     // 禁止ctrl+shift+g 浏览器默认行为：查找上一个匹配项
