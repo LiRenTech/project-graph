@@ -9,7 +9,7 @@ import { Vector } from "../../dataStruct/Vector";
  *   .down(() => println("move up"))
  */
 export namespace KeyBinds {
-  /** ？ */
+  /** 修饰键 */
   export type KeyModifiers = {
     /** 是否按下了Ctrl键 */
     control: boolean;
@@ -18,7 +18,7 @@ export namespace KeyBinds {
     /** 是否按下了Shift键 */
     shift: boolean;
     /** 是否按下了Meta键 macOs 里的command键 */
-    meta: boolean;
+    meta?: boolean;
   };
 
   let store: Store | null = null;
@@ -77,6 +77,7 @@ export namespace KeyBinds {
     return await store.entries<{ key: string; modifiers: KeyModifiers }>();
   }
 
+  // 仅用于初始化软件时注册快捷键
   const registered: Set<string> = new Set();
 
   /**
@@ -147,12 +148,24 @@ export namespace KeyBinds {
       });
     }
 
+    /**
+     * 检查这个《快捷键绑定对象》本身是否和一个事件匹配
+     * @param event
+     * @returns
+     */
     private matches(event: KeyboardEvent | MouseEvent | WheelEvent): boolean {
-      const matchModifiers =
+      let matchModifiers =
         this.modifiers.control === event.ctrlKey &&
         this.modifiers.alt === event.altKey &&
-        this.modifiers.shift === event.shiftKey &&
-        this.modifiers.meta === event.metaKey;
+        this.modifiers.shift === event.shiftKey;
+
+      if (this.modifiers.meta) {
+        matchModifiers = matchModifiers && this.modifiers.meta === event.metaKey;
+      } else {
+        // 1.4.23 之前的老版本，没有metaKey，默认为false
+        matchModifiers = matchModifiers && !event.metaKey;
+      }
+
       const matchKey = event instanceof KeyboardEvent && event.key.toLowerCase() === this.key.toLowerCase();
       const matchButton = event instanceof MouseEvent && event.button === this.button;
       const matchWheel =
@@ -165,6 +178,10 @@ export namespace KeyBinds {
       return match;
     }
 
+    /**
+     * 快捷键按下的时候触发的函数
+     * @param handler
+     */
     public down(handler: () => void) {
       window.addEventListener("keydown", (event) => {
         if (this.matches(event)) {
@@ -182,6 +199,10 @@ export namespace KeyBinds {
         }
       });
     }
+    /**
+     * 快捷键按下并抬起的时候触发的函数
+     * @param handler
+     */
     public up(handler: () => void) {
       window.addEventListener("keyup", (event) => {
         if (this.matches(event)) {
@@ -194,6 +215,11 @@ export namespace KeyBinds {
         }
       });
     }
+
+    /**
+     * 快捷键鼠标拖动的时候触发的函数
+     * @param handler
+     */
     public drag(handler: (start: Vector) => void) {
       window.addEventListener("mousemove", (event) => {
         if (this.start && this.matches(event)) {
