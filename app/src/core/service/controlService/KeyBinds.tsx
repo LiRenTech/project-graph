@@ -17,6 +17,8 @@ export namespace KeyBinds {
     alt: boolean;
     /** 是否按下了Shift键 */
     shift: boolean;
+    /** 是否按下了Meta键 macOs 里的command键 */
+    meta: boolean;
   };
 
   let store: Store | null = null;
@@ -91,15 +93,17 @@ export namespace KeyBinds {
       control: false,
       alt: false,
       shift: false,
+      meta: false,
     },
   ): Promise<_Bind> {
     const defaultModifiers = {
       control: defaultModifiers_.control || false,
       alt: defaultModifiers_.alt || false,
       shift: defaultModifiers_.shift || false,
+      meta: defaultModifiers_.meta || false,
     };
     if (registered.has(id)) {
-      throw new Error(`Keybind ${id} already registered.`);
+      throw new Error(`Keybind ${id} 已经注册过了`);
     }
     registered.add(id);
     let data = await get(id);
@@ -147,7 +151,8 @@ export namespace KeyBinds {
       const matchModifiers =
         this.modifiers.control === event.ctrlKey &&
         this.modifiers.alt === event.altKey &&
-        this.modifiers.shift === event.shiftKey;
+        this.modifiers.shift === event.shiftKey &&
+        this.modifiers.meta === event.metaKey;
       const matchKey = event instanceof KeyboardEvent && event.key.toLowerCase() === this.key.toLowerCase();
       const matchButton = event instanceof MouseEvent && event.button === this.button;
       const matchWheel =

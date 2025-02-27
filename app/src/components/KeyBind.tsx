@@ -10,7 +10,7 @@ import Button from "./Button";
  * @returns
  */
 export default function KeyBind({
-  value = { key: "", modifiers: { control: false, alt: false, shift: false } },
+  value = { key: "", modifiers: { control: false, alt: false, shift: false, meta: false } },
   onChange = () => {},
 }: {
   value?: { key: string; modifiers: KeyBinds.KeyModifiers };
@@ -30,7 +30,7 @@ export default function KeyBind({
 
     const handleKeyDown = (event: KeyboardEvent) => {
       event.preventDefault();
-      if (event.key === "Control" || event.key === "Alt" || event.key === "Shift") {
+      if (event.key === "Control" || event.key === "Alt" || event.key === "Shift" || event.key === "Meta") {
         return;
       }
       if (event.key === "Escape") {
@@ -41,6 +41,7 @@ export default function KeyBind({
         control: event.ctrlKey,
         alt: event.altKey,
         shift: event.shiftKey,
+        meta: event.metaKey,
       };
       onChange({ key: event.key, modifiers });
       end();
@@ -52,6 +53,7 @@ export default function KeyBind({
         control: event.ctrlKey,
         alt: event.altKey,
         shift: event.shiftKey,
+        meta: event.metaKey,
       };
       if (event.button !== 0) {
         onChange({
@@ -72,6 +74,7 @@ export default function KeyBind({
         control: event.ctrlKey,
         alt: event.altKey,
         shift: event.shiftKey,
+        meta: event.metaKey,
       };
       if (event.deltaY < 0) {
         onChange({ key: "wheelup", modifiers });
@@ -88,7 +91,7 @@ export default function KeyBind({
     setChoosing(true);
     onChange({
       key: "",
-      modifiers: { control: false, alt: false, shift: false },
+      modifiers: { control: false, alt: false, shift: false, meta: false },
     });
   };
 
