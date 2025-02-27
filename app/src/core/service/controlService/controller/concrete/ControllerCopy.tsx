@@ -1,7 +1,6 @@
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { CopyEngine } from "../../../dataManageService/copyEngine/copyEngine";
-import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
 /**
@@ -39,14 +38,16 @@ ControllerCopy.keydown = (event: KeyboardEvent) => {
     CopyEngine.clearVirtualCopyBoardData();
     return;
   }
-  if (key === "c" && Controller.pressingKeySet.has("control")) {
-    CopyEngine.copy();
-  } else if (key === "v" && Controller.pressingKeySet.has("control")) {
-    // 粘贴
-    if (Controller.pressingKeySet.has("shift")) {
-      CopyEngine.pasteWithOriginLocation();
-    } else {
-      CopyEngine.paste();
-    }
-  }
+  // mac 用户感觉到奇怪，所以ctrl+c和ctrl+v改成了自定义的方式。
+
+  // if (key === "c" && Controller.pressingKeySet.has("control")) {
+  //   CopyEngine.copy();
+  // } else if (key === "v" && Controller.pressingKeySet.has("control")) {
+  //   // 粘贴
+  //   if (Controller.pressingKeySet.has("shift")) {
+  //     CopyEngine.pasteWithOriginLocation();
+  //   } else {
+  //     CopyEngine.paste();
+  //   }
+  // }
 };

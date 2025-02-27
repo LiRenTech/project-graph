@@ -213,8 +213,8 @@ export namespace Controller {
       // 如果要在开发中测试刷新，应该在DevTools界面按这个快捷键
       event.preventDefault();
     }
-    // 禁止ctrl+shift+g 浏览器默认行为：查找上一个匹配项
-    if (event.key === "G") {
+    // 禁止ctrl+shift+g 浏览器默认行为：查找上一个匹配项, ctrl+shift+c 打开控制台
+    if (event.key === "G" || event.key === "C") {
       event.preventDefault();
     }
     if (event.key === "p") {

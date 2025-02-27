@@ -746,3 +746,12 @@ keyBinds:
     title: 打开/关闭标签面板
     description: |
       按下此键可代替鼠标点击页面上的标签面板展开关闭按钮
+  copy:
+    title: 复制
+    description: 按下后，复制选中的内容
+  paste:
+    title: 粘贴
+    description: 按下后，粘贴剪贴板内容
+  pasteWithOriginLocation:
+    title: 原位粘贴
+    description: 按下后，粘贴的内容会与原位置重叠

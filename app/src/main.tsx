@@ -47,6 +47,7 @@ import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
 import { StageEntityMoveManager } from "./core/stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageSectionPackManager } from "./core/stage/stageManager/concreteMethods/StageSectionPackManager";
+import { CopyEngine } from "./core/service/dataManageService/copyEngine/copyEngine";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -518,6 +519,33 @@ async function registerKeyBinds() {
     } else {
       Settings.set("windowBackgroundAlpha", 0);
     }
+  });
+  (
+    await KeyBinds.create("copy", "c", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(async () => {
+    CopyEngine.copy();
+  });
+  (
+    await KeyBinds.create("paste", "v", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(async () => {
+    CopyEngine.paste();
+  });
+  (
+    await KeyBinds.create("pasteWithOriginLocation", "v", {
+      control: true,
+      alt: false,
+      shift: true,
+    })
+  ).down(async () => {
+    CopyEngine.pasteWithOriginLocation();
   });
 
   const bind = await KeyBinds.create("keyboardOnlyGenerateNode", "tab", {
