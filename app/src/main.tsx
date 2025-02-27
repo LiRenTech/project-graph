@@ -504,6 +504,21 @@ async function registerKeyBinds() {
     });
     button?.dispatchEvent(event);
   });
+  (
+    await KeyBinds.create("checkoutWindowOpacityMode", "0", {
+      control: true,
+      alt: false,
+      shift: false,
+    })
+  ).down(async () => {
+    // 切换窗口透明度模式
+    const currentValue = await Settings.get("windowBackgroundAlpha");
+    if (currentValue === 0) {
+      Settings.set("windowBackgroundAlpha", 1);
+    } else {
+      Settings.set("windowBackgroundAlpha", 0);
+    }
+  });
 
   const bind = await KeyBinds.create("keyboardOnlyGenerateNode", "tab", {
     control: false,

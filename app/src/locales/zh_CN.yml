@@ -731,6 +731,12 @@ keyBinds:
     description: |
       按下后，进入演示模式，所有UI都会隐藏，顶部按钮会透明化处理
       再按一次恢复
+  checkoutWindowOpacityMode:
+    title: 切换窗口透明度模式
+    description: |
+      按下后，窗口进入完全透明模式，再按一次将进入完全不透明模式
+      注意要配合画布颜色风格进行设置。例如：黑色模式下文字为白色，论文白模式下文字为黑色。
+      如果窗口下层内容为白色背景，建议切换画布到论文白模式。
   searchText:
     title: 搜索文本
     description: |
