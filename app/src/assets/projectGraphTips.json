@@ -2888,7 +2888,7 @@
     },
     {
       "location": [6592.7575780175075, -1865.4775160170996],
-      "size": [36.6719970703125, 76],
+      "size": [37.4375, 76],
       "text": "`",
       "uuid": "9c5eea00-d6ed-4945-81c4-d97780ff85de",
       "details": "",
@@ -3399,7 +3399,7 @@
     },
     {
       "location": [8305.922341670703, -686.8906448762932],
-      "size": [78.01597595214844, 76],
+      "size": [76.703125, 76],
       "text": "ctrl",
       "uuid": "6bad17cd-bb16-482a-a06a-33ee03c40649",
       "details": "",
@@ -3408,7 +3408,7 @@
     },
     {
       "location": [8655.461737513226, -686.8906448762932],
-      "size": [65.72798156738281, 76],
+      "size": [66.125, 76],
       "text": "alt",
       "uuid": "df84b1fa-e3e1-4fa3-9f0d-ed5d62269d4d",
       "details": "",
@@ -4794,6 +4794,81 @@
       "size": [948.864013671875, 124],
       "text": "选中绿线，按住ctrl键，按住绿色线移动，鼠标在36号节点上释放\n可以选择多个线进行操作",
       "uuid": "d9383239-6280-4964-a526-42189fc7fd33",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1433.536018371582, 1558.9867599813697],
+      "size": [236.92796325683594, 76],
+      "text": "Section框拆包",
+      "uuid": "02c0d73e-c647-4bf6-903d-a9001060634f",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1210.9357211947618, 1063.5589139474687],
+      "size": [65.53125, 76],
+      "text": "37",
+      "uuid": "4dcffa8e-a737-48e8-b061-6278cc0fd1a8",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1354.2120867384842, 1135.9967681848752],
+      "size": [65.53125, 76],
+      "text": "38",
+      "uuid": "0a42cff3-ff95-4f55-88c2-fdee9b52df2d",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1180.9357211947618, 983.5589139474687],
+      "size": [268.8076155437225, 258.43785423740655],
+      "uuid": "bca49819-1c57-48a6-81cf-35594a97b777",
+      "text": "Section_9",
+      "color": [0, 0, 0, 0],
+      "type": "core:section",
+      "isCollapsed": false,
+      "isHidden": false,
+      "children": ["4dcffa8e-a737-48e8-b061-6278cc0fd1a8", "0a42cff3-ff95-4f55-88c2-fdee9b52df2d"],
+      "details": ""
+    },
+    {
+      "location": [1648.1711500816202, 1066.8945627456114],
+      "size": [65.53125, 76],
+      "text": "37",
+      "uuid": "4c45ac01-18dd-4820-9fd0-ac1fb483eb30",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1791.4475156253427, 1139.332416983018],
+      "size": [65.53125, 76],
+      "text": "38",
+      "uuid": "f8345175-ea92-4fae-b24a-672bfc63ddc8",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1618.1711500816202, 986.8945627456114],
+      "size": [175.199951171875, 76],
+      "text": "Section_9",
+      "uuid": "08693207-00b1-4cbc-8863-88cef86150d1",
+      "details": "",
+      "color": [0, 0, 0, 0],
+      "type": "core:text_node"
+    },
+    {
+      "location": [1218, 1292.750095587804],
+      "size": [668, 124],
+      "text": "选中框，按Ctrl+Shift+G\n框会缩成一个节点，内部包含的内容掉落出来",
+      "uuid": "8ef10b89-ef02-472b-bf27-75a0d001cb1c",
       "details": "",
       "color": [0, 0, 0, 0],
       "type": "core:text_node"
@@ -7157,6 +7232,22 @@
       "target": "2ced6885-06c0-4c8e-bd58-757689e67cfd",
       "text": "",
       "uuid": "a9618042-0feb-4c1b-97af-82b6fc535196",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "914c54ef-0984-4b81-8165-16273936e859",
+      "target": "02c0d73e-c647-4bf6-903d-a9001060634f",
+      "text": "",
+      "uuid": "5509a4e6-3e3c-4a85-b7f8-25b8e2304cd4",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0]
+    },
+    {
+      "source": "02c0d73e-c647-4bf6-903d-a9001060634f",
+      "target": "8ef10b89-ef02-472b-bf27-75a0d001cb1c",
+      "text": "",
+      "uuid": "24a6c1a7-d283-48bd-8c5c-bec1aabfe84d",
       "type": "core:line_edge",
       "color": [0, 0, 0, 0]
     }
