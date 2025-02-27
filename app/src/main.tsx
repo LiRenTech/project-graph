@@ -44,7 +44,7 @@ import { Direction } from "./types/directions";
 import { openBrowserOrFile } from "./utils/externalOpen";
 import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
-import { getCurrentWindow, isDesktop, isWeb } from "./utils/platform";
+import { getCurrentWindow, isDesktop, isMac, isWeb } from "./utils/platform";
 import { StageEntityMoveManager } from "./core/stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageSectionPackManager } from "./core/stage/stageManager/concreteMethods/StageSectionPackManager";
 import { CopyEngine } from "./core/service/dataManageService/copyEngine/copyEngine";
@@ -136,9 +136,10 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("undo", "z", {
-      control: true,
+      control: isMac ? false : true,
       alt: false,
       shift: false,
+      meta: isMac,
     })
   ).down(() => {
     StageHistoryManager.undo();
@@ -146,7 +147,8 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("redo", "y", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -157,7 +159,8 @@ async function registerKeyBinds() {
   // 危险操作，配置一个不容易触发的快捷键
   (
     await KeyBinds.create("reload", "F5", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: true,
       shift: true,
     })
@@ -204,7 +207,8 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("resetCameraScale", "r", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: true,
       shift: false,
     })
@@ -234,7 +238,8 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("folderSection", "t", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -244,7 +249,8 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("reverseEdges", "t", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -253,7 +259,8 @@ async function registerKeyBinds() {
   });
   (
     await KeyBinds.create("reverseSelectedNodeEdge", "t", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -263,7 +270,8 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("packEntityToSection", "g", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -335,7 +343,8 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("moveUpSelectedEntities", "arrowup", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -345,7 +354,8 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("moveDownSelectedEntities", "arrowdown", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -355,7 +365,8 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("moveLeftSelectedEntities", "arrowleft", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -365,7 +376,8 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("moveRightSelectedEntities", "arrowright", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -374,7 +386,8 @@ async function registerKeyBinds() {
   });
   (
     await KeyBinds.create("jumpMoveUpSelectedEntities", "arrowup", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: true,
       shift: false,
     })
@@ -384,7 +397,8 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("jumpMoveDownSelectedEntities", "arrowdown", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: true,
       shift: false,
     })
@@ -394,7 +408,8 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("jumpMoveLeftSelectedEntities", "arrowleft", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: true,
       shift: false,
     })
@@ -404,7 +419,8 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("jumpMoveRightSelectedEntities", "arrowright", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: true,
       shift: false,
     })
@@ -414,7 +430,8 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("editEntityDetails", "enter", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -444,7 +461,8 @@ async function registerKeyBinds() {
 
   (
     await KeyBinds.create("selectAll", "a", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -454,7 +472,8 @@ async function registerKeyBinds() {
   });
   (
     await KeyBinds.create("textNodeToSection", "g", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: true,
     })
@@ -463,7 +482,8 @@ async function registerKeyBinds() {
   });
   (
     await KeyBinds.create("checkoutProtectPrivacy", "2", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -472,7 +492,8 @@ async function registerKeyBinds() {
   });
   (
     await KeyBinds.create("searchText", "f", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -481,7 +502,8 @@ async function registerKeyBinds() {
   });
   (
     await KeyBinds.create("openTextNodeByContentExternal", "e", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: true,
     })
@@ -507,7 +529,8 @@ async function registerKeyBinds() {
   });
   (
     await KeyBinds.create("checkoutWindowOpacityMode", "0", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -522,7 +545,8 @@ async function registerKeyBinds() {
   });
   (
     await KeyBinds.create("copy", "c", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -531,7 +555,8 @@ async function registerKeyBinds() {
   });
   (
     await KeyBinds.create("paste", "v", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: false,
     })
@@ -540,7 +565,8 @@ async function registerKeyBinds() {
   });
   (
     await KeyBinds.create("pasteWithOriginLocation", "v", {
-      control: true,
+      control: isMac ? false : true,
+      meta: isMac,
       alt: false,
       shift: true,
     })
