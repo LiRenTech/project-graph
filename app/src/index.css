@@ -186,9 +186,9 @@
   --color-input-text: #fff;
   --color-input-border: oklch(0.371 0 0);
   --color-input-placeholder: oklch(0.556 0 0);
-  --color-keybind-bg: oklch(0.269 0 0);
+  --color-keybind-bg: oklch(0.367 0 0);
   --color-keybind-text: #fff;
-  --color-keybind-border: oklch(0.371 0 0);
+  --color-keybind-border: oklch(0.6 0 0);
   --color-keybind-active-outline: oklch(0.623 0.214 259.815);
   --color-select-bg: oklch(0.269 0 0);
   --color-select-text: #fff;
@@ -422,7 +422,7 @@
 
   /* 交互元素 */
   --color-keybind-bg: var(--color-primary); /* 冷绿 */
-  --color-keybind-text: oklch(0.95 0.02 270);
+  --color-keybind-text: oklch(0.25 0.03 240);
   --color-keybind-border: oklch(0.78 0.02 210);
   --color-keybind-active-outline: var(--color-accent);
 
