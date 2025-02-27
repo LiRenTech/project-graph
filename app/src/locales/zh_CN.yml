@@ -560,10 +560,10 @@ keys:
   mouse3: 鼠标侧键1
   mouse4: 鼠标侧键2
   " ": 空格
-  arrowup: 向上箭头
-  arrowdown: 向下箭头
-  arrowleft: 向左箭头
-  arrowright: 向右箭头
+  arrowup: 上方向键
+  arrowdown: 下方向键
+  arrowleft: 左方向键
+  arrowright: 右方向键
   wheelup: 滚轮向上
   wheeldown: 滚轮向下
 

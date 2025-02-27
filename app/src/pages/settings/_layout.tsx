@@ -1,8 +1,9 @@
-import { Bot, Brain, Command, Eye, Info, Keyboard, Plug, Settings, Sparkles, Speaker, Zap } from "lucide-react";
+import { Bot, Brain, Command, Eye, Info, Keyboard, Plug, Settings, Sparkles, Speaker, Wrench, Zap } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
 import Github from "../../assets/github.svg?react";
 import NavLinkButton from "../../components/NavLinkButton";
+import { isMac } from "../../utils/platform";
 
 export default function SettingsLayout() {
   const { t } = useTranslation("settings");
@@ -25,11 +26,11 @@ export default function SettingsLayout() {
             {t("tabs.visual")}
           </NavLinkButton>
           <NavLinkButton to="/settings/control">
-            <Keyboard />
+            <Wrench />
             {t("tabs.control")}
           </NavLinkButton>
           <NavLinkButton to="/settings/keybinds">
-            <Command />
+            {isMac ? <Command /> : <Keyboard />}
             {t("tabs.keybinds")}
           </NavLinkButton>
           <NavLinkButton to="/settings/performance">

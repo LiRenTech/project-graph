@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { KeyBinds } from "../core/service/controlService/KeyBinds";
 import { cn } from "../utils/cn";
 import Button from "./Button";
+import { isLinux, isMac, isWindows } from "../utils/platform";
 
 /**
  * 绑定快捷键的组件
@@ -95,19 +96,81 @@ export default function KeyBind({
     });
   };
 
+  const getModifiersName = () => {
+    // 如果什么控制键都没有，就什么也不加
+    if (!value.modifiers.control && !value.modifiers.alt && !value.modifiers.shift && !value.modifiers.meta) {
+      return <></>;
+    }
+
+    const modifiers = [];
+
+    if (value.modifiers.control) {
+      if (isMac) {
+        modifiers.push("⌃control");
+      } else if (isWindows) {
+        modifiers.push("Ctrl");
+      } else if (isLinux) {
+        modifiers.push("Ctrl");
+      } else {
+        modifiers.push("control");
+      }
+    }
+    if (value.modifiers.alt) {
+      if (isMac) {
+        modifiers.push("⌥option");
+      } else if (isWindows) {
+        modifiers.push("Alt");
+      } else if (isLinux) {
+        modifiers.push("Alt");
+      } else {
+        modifiers.push("alt");
+      }
+    }
+    if (value.modifiers.shift) {
+      if (isMac) {
+        modifiers.push("⇧shift");
+      } else if (isWindows) {
+        modifiers.push("Shift");
+      } else if (isLinux) {
+        modifiers.push("Shift");
+      } else {
+        modifiers.push("shift");
+      }
+    }
+    if (value.modifiers.meta) {
+      if (isMac) {
+        modifiers.push("⌘command");
+      } else if (isWindows) {
+        modifiers.push("❖Win");
+      } else if (isLinux) {
+        modifiers.push("Meta");
+      } else {
+        modifiers.push("meta");
+      }
+    }
+    return (
+      <>
+        {modifiers.map((modifier, index) => (
+          <span className="border-icon-button-border bg-panel-bg rounded px-1" key={index}>
+            {modifier}
+          </span>
+        ))}
+      </>
+    );
+  };
+
   return (
     <Button
       onClick={startInput}
       className={cn(
-        "bg-keybind-bg text-keybind-text border-keybind-border outline-none outline-0 hover:cursor-pointer",
+        "bg-keybind-bg text-keybind-text border-keybind-border text-sm outline-none outline-0 hover:cursor-pointer",
         {
           "outline-keybind-active-outline bg-blue-950 outline-4": choosing,
         },
       )}
     >
-      {value.modifiers.control && "Ctrl + "}
-      {value.modifiers.alt && "Alt + "}
-      {value.modifiers.shift && "Shift + "}
+      {getModifiersName()}
+
       {value.key ? (
         <>
           {t(value.key, { defaultValue: value.key.toUpperCase() })}
