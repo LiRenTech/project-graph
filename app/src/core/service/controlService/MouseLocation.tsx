@@ -28,6 +28,7 @@ export namespace MouseLocation {
         if (Stage.selectMachine.isUsing) {
           Stage.selectMachine.mouseMoveOutWindowForcedShutdown(vectorObject);
         }
+        Stage.entityMoveMachine.mouseMoveOutWindowForcedShutdown(vectorObject);
       }
     });
   }

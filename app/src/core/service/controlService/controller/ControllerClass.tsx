@@ -136,6 +136,6 @@ export class ControllerClass {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public mouseMoveOutWindowForcedShutdown(_outsideLocation: Vector) {
-    Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(StageStyleManager.currentStyle.effects.warningShadow));
+    Stage.effectMachine.addEffect(ViewOutlineFlashEffect.short(StageStyleManager.currentStyle.effects.warningShadow));
   }
 }

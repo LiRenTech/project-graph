@@ -2,6 +2,7 @@ import { autoLayoutMainTick } from "../service/controlService/autoLayoutEngine/m
 import { ControllerCamera } from "../service/controlService/controller/concrete/ControllerCamera";
 import { ControllerCutting } from "../service/controlService/controller/concrete/ControllerCutting";
 import { ControllerDragFile } from "../service/controlService/controller/concrete/ControllerDragFile";
+import { ControllerEntityClickSelectAndMove } from "../service/controlService/controller/concrete/ControllerEntityClickSelectAndMove";
 import { ControllerNodeConnection } from "../service/controlService/controller/concrete/ControllerNodeConnection";
 import { ControllerDrawing } from "../service/controlService/controller/concrete/ControllerPenStrokeDrawing";
 import { ControllerRectangleSelect } from "../service/controlService/controller/concrete/ControllerRectangleSelect";
@@ -47,6 +48,10 @@ export namespace Stage {
    */
   export const selectMachine = ControllerRectangleSelect;
 
+  /**
+   * 实体拖拽移动控制器
+   */
+  export const entityMoveMachine = ControllerEntityClickSelectAndMove;
   /**
    * 相机控制器
    */

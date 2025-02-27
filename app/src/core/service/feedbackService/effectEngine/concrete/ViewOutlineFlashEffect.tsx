@@ -21,6 +21,10 @@ export class ViewOutlineFlashEffect extends EffectObject {
     return new ViewOutlineFlashEffect(color);
   }
 
+  static short(color: Color): ViewOutlineFlashEffect {
+    return new ViewOutlineFlashEffect(color, new ProgressNumber(0, 5));
+  }
+
   render(): void {
     if (this.timeProgress.isFull) {
       return;
