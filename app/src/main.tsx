@@ -481,6 +481,16 @@ async function registerKeyBinds() {
     StageSectionPackManager.textNodeToSection();
   });
   (
+    await KeyBinds.create("unpackEntityFromSection", "g", {
+      control: isMac ? false : true,
+      meta: isMac,
+      alt: false,
+      shift: true,
+    })
+  ).down(() => {
+    StageSectionPackManager.unpackSelectedSections();
+  });
+  (
     await KeyBinds.create("checkoutProtectPrivacy", "2", {
       control: isMac ? false : true,
       meta: isMac,

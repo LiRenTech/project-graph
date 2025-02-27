@@ -613,6 +613,11 @@ keyBinds:
     title: 将选中的实体打包到Section框中
     description: |
       按下后，选中的实体会自动包裹到新Section框中
+  unpackEntityFromSection:
+    title: Section框拆包，转换为文本节点
+    description: |
+      按下后，选中的Section框中的实体会被拆包，自身转换成一个文本节点
+      内部的实体将会掉落在外面
   textNodeToSection:
     title: 将选中的文本节点转换成Section框
     description: |

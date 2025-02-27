@@ -68,6 +68,7 @@ export namespace StageSectionPackManager {
       }
     }
   }
+
   /**
    * 将所有选中的节点当场转换成Section
    */
@@ -159,6 +160,55 @@ export namespace StageSectionPackManager {
     // 更新section的碰撞箱
     newSection.adjustLocationAndSize();
     return newSection;
+  }
+
+  /**
+   * 拆包操作
+   */
+  export function unpackSelectedSections() {
+    const selectedSections = StageManager.getSelectedEntities();
+    unpackSections(selectedSections);
+    StageHistoryManager.recordStep();
+  }
+
+  /**
+   * 打包的反操作：拆包
+   * @param entities 要拆包的实体
+   * 如果选择了section内部一层的实体，则父section脱离剥皮，变成一个textNode
+   * 如果选择的是一个section，则其本身脱离剥皮，变成一个textNode，内部内容掉落出来。
+   */
+  function unpackSections(entities: Entity[]) {
+    if (entities.length === 0) return;
+    // 目前先仅支持选中section后再进行拆包操作
+    const sections = entities.filter((entity) => entity instanceof Section);
+    if (sections.length === 0) {
+      Dialog.show({
+        title: "请选择一个section",
+        content: "请选择一个section",
+      });
+      return;
+    }
+    for (const section of sections) {
+      const currentSectionFathers = SectionMethods.getFatherSections(section);
+      // 生成一个textnode
+      const sectionLocation = section.collisionBox.getRectangle().location;
+      const textNode = new TextNode({
+        uuid: v4(),
+        text: section.text,
+        details: section.details,
+        location: [sectionLocation.x, sectionLocation.y],
+        size: [100, 100],
+        color: section.color.toArray(),
+      });
+      // 将textNode添加到舞台
+      StageManager.addTextNode(textNode);
+      // 将新的textnode添加到父section中
+      StageSectionInOutManager.goInSections([textNode], currentSectionFathers);
+      // 将section的子节点添加到父section中
+      StageSectionInOutManager.goInSections(section.children, currentSectionFathers);
+      // 将section从舞台中删除
+      StageManager.deleteEntities([section]);
+    }
   }
 
   /** 将多个实体打包成一个section，并添加到舞台中 */
