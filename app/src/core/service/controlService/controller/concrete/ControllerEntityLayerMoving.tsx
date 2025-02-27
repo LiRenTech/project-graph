@@ -41,12 +41,16 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
   if (entity && entity instanceof TextNode) {
     const newSection = StageSectionPackManager.targetTextNodeToSection(entity);
     const selectedEntities = StageManager.getSelectedEntities();
-    // StageManager.goInSection(StageManager.getSelectedEntities(), newSection);
-    StageSectionInOutManager.goInSections(StageManager.getSelectedEntities(), [newSection]);
+    // 获取所有选中实体的外接矩形的中心点，以便计算移动距离
+    const centerLocation = Rectangle.getBoundingRectangle(
+      selectedEntities.map((entity) => entity.collisionBox.getRectangle()),
+    ).center;
     // 最后让所有选中的实体移动
     for (const selectedEntity of selectedEntities) {
-      selectedEntity.moveTo(mouseLocation);
+      const delta = mouseLocation.subtract(centerLocation);
+      selectedEntity.move(delta);
     }
+    StageSectionInOutManager.goInSections(StageManager.getSelectedEntities(), [newSection]);
     return; // 这个return必须写
   }
 
