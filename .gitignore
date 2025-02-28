@@ -11,3 +11,6 @@ docs/src/.vitepress/.temp
 # 自动保存导致产生的文件
 app/src-tauri/Project Graph
 backup_projectGraphTips
+*.backup.json
+# 省略文件夹
+backup_*
