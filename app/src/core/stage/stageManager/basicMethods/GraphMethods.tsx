@@ -32,17 +32,55 @@ export namespace GraphMethods {
   }
 
   /**
-   * 获取一个节点的所有父亲节点，未排除自环
+   * 获取一个节点的所有父亲节点，排除自环
    * 性能有待优化！！
    */
   export function nodeParentArray(node: ConnectableEntity): ConnectableEntity[] {
     const res: ConnectableEntity[] = [];
     for (const edge of StageManager.getLineEdges()) {
-      if (edge.target.uuid === node.uuid) {
+      if (edge.target.uuid === node.uuid && edge.target.uuid !== edge.source.uuid) {
         res.push(edge.source);
       }
     }
     return res;
+  }
+
+  /**
+   * 获取反向边集
+   * @param edges
+   */
+  function getReversedEdgeDict(): Record<string, string> {
+    const res: Record<string, string> = {};
+    for (const edge of StageManager.getLineEdges()) {
+      res[edge.target.uuid] = edge.source.uuid;
+    }
+    return res;
+  }
+
+  /**
+   * 获取自己的祖宗节点
+   * @param node 节点
+   */
+  export function getRoots(node: ConnectableEntity): ConnectableEntity[] {
+    const reverseEdges = getReversedEdgeDict();
+    let rootUUID = node.uuid;
+    const visited: Set<string> = new Set(); // 用于记录已经访问过的节点，避免重复访问
+    while (reverseEdges[rootUUID] && !visited.has(rootUUID)) {
+      visited.add(rootUUID);
+      const parentUUID = reverseEdges[rootUUID];
+      const parent = StageManager.getConnectableEntityByUUID(parentUUID);
+      if (parent) {
+        rootUUID = parentUUID;
+      } else {
+        break;
+      }
+    }
+    const root = StageManager.getConnectableEntityByUUID(rootUUID);
+    if (root) {
+      return [root];
+    } else {
+      return [];
+    }
   }
 
   export function isConnected(node: ConnectableEntity, target: ConnectableEntity): boolean {

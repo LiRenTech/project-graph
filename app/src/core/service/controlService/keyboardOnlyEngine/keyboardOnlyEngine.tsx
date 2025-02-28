@@ -3,6 +3,8 @@ import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
+import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
+import { StageAutoAlignManager } from "../../../stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageNodeAdder } from "../../../stage/stageManager/concreteMethods/stageNodeAdder";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
@@ -10,7 +12,7 @@ import { EntityDashTipEffect } from "../../feedbackService/effectEngine/concrete
 import { EntityShakeEffect } from "../../feedbackService/effectEngine/concrete/EntityShakeEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../Settings";
-import { editTextNode } from "../controller/concrete/utilsControl";
+import { addTextNodeByLocation, editTextNode } from "../controller/concrete/utilsControl";
 import { KeyboardOnlyDirectionController } from "./keyboardOnlyDirectionController";
 import { NewTargetLocationSelector } from "./newTargetLocationSelector";
 import { SelectChangeEngine } from "./selectChangeEngine";
@@ -52,6 +54,11 @@ export namespace KeyboardOnlyEngine {
    */
   function bindKeyEvents() {
     window.addEventListener("keydown", (event) => {
+      if (event.key === "`") {
+        onDeepGenerateNode();
+      } else if (event.key === "\\") {
+        onBroadGenerateNode();
+      }
       if (event.key === "Tab") {
         // if (isEnableVirtualCreate()) {
         //   createStart();
@@ -91,6 +98,66 @@ export namespace KeyboardOnlyEngine {
     //     }
     //   }
     // });
+  }
+
+  function onDeepGenerateNode() {
+    const rootNode = StageManager.getConnectableEntity().find((node) => node.isSelected);
+    if (!rootNode) return;
+    Camera.clearMoveCommander();
+    Camera.speed = Vector.getZero();
+    // 在自己的右下方创建一个节点
+    const newLocation = rootNode.collisionBox.getRectangle().rightCenter.add(new Vector(100, 100));
+    addTextNodeByLocation(newLocation, true, (newUUID) => {
+      const newNode = StageManager.getTextNodeByUUID(newUUID);
+      if (!newNode) return;
+      // 连接到之前的节点
+      StageManager.connectEntity(rootNode, newNode);
+      // 重新排列树形节点
+      const rootNodeParents = GraphMethods.getRoots(rootNode);
+      if (rootNodeParents.length === 1) {
+        const rootNodeParent = rootNodeParents[0];
+        if (GraphMethods.isTree(rootNodeParent)) {
+          StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
+          // 更新选择状态
+          rootNodeParent.isSelected = false;
+          newNode.isSelected = true;
+        }
+      }
+
+      Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(rootNode, newNode));
+    });
+  }
+
+  function onBroadGenerateNode() {
+    const currentSelectNode = StageManager.getConnectableEntity().find((node) => node.isSelected);
+    if (!currentSelectNode) return;
+    Camera.clearMoveCommander();
+    Camera.speed = Vector.getZero();
+    // 找到自己的父节点
+    const parents = GraphMethods.nodeParentArray(currentSelectNode);
+    if (parents.length === 0) return;
+    if (parents.length !== 1) return;
+    const parent = parents[0];
+    // 在自己的正下方创建一个节点
+    const newLocation = parent.collisionBox.getRectangle().bottomCenter.add(new Vector(0, 100));
+    addTextNodeByLocation(newLocation, true, (newUUID) => {
+      const newNode = StageManager.getTextNodeByUUID(newUUID);
+      if (!newNode) return;
+      // 连接到之前的节点
+      StageManager.connectEntity(parent, newNode);
+      // 重新排列树形节点
+      const rootNodeParents = GraphMethods.getRoots(parent);
+      if (rootNodeParents.length === 1) {
+        const rootNodeParent = rootNodeParents[0];
+        if (GraphMethods.isTree(rootNodeParent)) {
+          StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
+          // 更新选择状态
+          rootNodeParent.isSelected = false;
+          newNode.isSelected = true;
+        }
+      }
+      Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(parent, newNode));
+    });
   }
 
   function addSuccessEffect() {
