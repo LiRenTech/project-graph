@@ -5,6 +5,7 @@ import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { RectangleNoteEffect } from "../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
+import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 
 export class ContentSearchEngine {
   /**
@@ -57,6 +58,9 @@ export class ContentSearchEngine {
   public nextSearchResult() {
     if (this.currentSearchResultIndex < this.searchResultNodes.length - 1) {
       this.currentSearchResultIndex++;
+    } else {
+      Stage.effectMachine.addEffect(TextRiseEffect.default("已经到底了"));
+      return;
     }
     // 取消选择所有节点
     for (const node of StageManager.getTextNodes()) {
@@ -64,11 +68,13 @@ export class ContentSearchEngine {
     }
     // 选择当前搜索结果节点
     const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
-    Stage.effectMachine.addEffect(
-      new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.rectangle, Color.Green),
-    );
-    // 摄像机对准现在的节点
-    Camera.location = currentNode.rectangle.center.clone();
+    if (currentNode) {
+      Stage.effectMachine.addEffect(
+        new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.rectangle, Color.Green),
+      );
+      // 摄像机对准现在的节点
+      Camera.location = currentNode.rectangle.center.clone();
+    }
   }
 
   /**
@@ -77,6 +83,8 @@ export class ContentSearchEngine {
   public previousSearchResult() {
     if (this.currentSearchResultIndex > 0) {
       this.currentSearchResultIndex--;
+    } else {
+      Stage.effectMachine.addEffect(TextRiseEffect.default("已经到头了"));
     }
     // 取消选择所有节点
     for (const node of StageManager.getTextNodes()) {
@@ -84,10 +92,12 @@ export class ContentSearchEngine {
     }
     // 选择当前搜索结果节点
     const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
-    Stage.effectMachine.addEffect(
-      new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.rectangle, Color.Green),
-    );
-    // 摄像机对准现在的节点
-    Camera.location = currentNode.rectangle.center.clone();
+    if (currentNode) {
+      Stage.effectMachine.addEffect(
+        new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.rectangle, Color.Green),
+      );
+      // 摄像机对准现在的节点
+      Camera.location = currentNode.rectangle.center.clone();
+    }
   }
 }
