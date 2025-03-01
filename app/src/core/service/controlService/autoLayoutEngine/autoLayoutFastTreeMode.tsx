@@ -75,6 +75,8 @@ export namespace AutoLayoutFastTree {
     const firstTree = trees[0];
     const firstTreeRect = getTreeBoundingRectangle(firstTree);
     const currentLeftTop = firstTreeRect.leftBottom.add(new Vector(0, gap));
+    // 将这些子树向下排列时，要保持从上到下的相对位置
+    trees.sort((a, b) => a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top);
     for (let i = 1; i < trees.length; i++) {
       const tree = trees[i];
       moveTreeRectTo(tree, currentLeftTop);

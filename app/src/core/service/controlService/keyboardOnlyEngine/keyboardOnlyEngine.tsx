@@ -106,8 +106,22 @@ export namespace KeyboardOnlyEngine {
     Camera.clearMoveCommander();
     Camera.speed = Vector.getZero();
     // 在自己的右下方创建一个节点
-    const newLocation = rootNode.collisionBox.getRectangle().rightCenter.add(new Vector(100, 100));
-    addTextNodeByLocation(newLocation, true, (newUUID) => {
+    // 先找到自己所有的第一层后继节点，如果没有则在正右方创建节点。
+    const childSet = GraphMethods.getOneStepSuccessorSet(rootNode);
+
+    // 寻找创建位置
+    let createLocation;
+    if (childSet.length === 0) {
+      // 在正右侧创建
+      createLocation = rootNode.collisionBox.getRectangle().rightCenter.add(new Vector(100, 0));
+    } else {
+      // 在所有子节点中的下方创建
+      childSet.sort((a, b) => a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top);
+      const lastChild = childSet[childSet.length - 1];
+      createLocation = lastChild.collisionBox.getRectangle().bottomCenter.add(new Vector(0, 10));
+    }
+
+    addTextNodeByLocation(createLocation, true, (newUUID) => {
       const newNode = StageManager.getTextNodeByUUID(newUUID);
       if (!newNode) return;
       // 连接到之前的节点

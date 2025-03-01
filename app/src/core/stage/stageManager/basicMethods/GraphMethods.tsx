@@ -122,6 +122,21 @@ export namespace GraphMethods {
     return result; // 返回所有可达节点的集合
   }
 
+  /**
+   * 获取一个节点的一步可达节点集合/后继节点集合 One-Step Successor Set
+   * 排除自环
+   * @param node
+   */
+  export function getOneStepSuccessorSet(node: ConnectableEntity): ConnectableEntity[] {
+    const result: ConnectableEntity[] = []; // 存储可达节点的结果集
+    for (const edge of StageManager.getLineEdges()) {
+      if (edge.source === node && edge.target.uuid !== edge.source.uuid) {
+        result.push(edge.target);
+      }
+    }
+    return result;
+  }
+
   export function getEdgesBetween(node1: ConnectableEntity, node2: ConnectableEntity): LineEdge[] {
     const result: LineEdge[] = []; // 存储连接两个节点的边的结果集
     for (const edge of StageManager.getLineEdges()) {
