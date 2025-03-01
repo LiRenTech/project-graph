@@ -18,7 +18,7 @@ export namespace StageSaveManager {
   export async function saveHandle(path: string, data: Serialized.File) {
     await writeTextFile(path, JSON.stringify(data));
     Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
-    StageHistoryManager.reset(data); // 重置历史
+    // StageHistoryManager.reset(data); // 重置历史
     isCurrentSaved = true;
   }
 
