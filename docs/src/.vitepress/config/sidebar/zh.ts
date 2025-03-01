@@ -1,17 +1,21 @@
 import { DefaultTheme } from "vitepress";
 
-export const sidebarZh: DefaultTheme.Sidebar = [
+const guide: DefaultTheme.SidebarItem[] = [
+  {
+    text: "介绍",
+    link: "/zh/guide/",
+  },
   {
     text: "安装",
-    link: "/zh/installation",
+    link: "/zh/guide/installation",
   },
   {
     text: "快速上手",
-    link: "/zh/getting-started",
+    link: "/zh/guide/getting-started",
   },
   {
     text: "特性",
-    base: "/zh/features",
+    base: "/zh/guide/features",
     collapsed: false,
     items: [
       {
@@ -85,19 +89,31 @@ export const sidebarZh: DefaultTheme.Sidebar = [
     ],
   },
   {
-    text: "开发指南",
-    link: "/zh/contributing",
-  },
-  {
     text: "常见问题",
-    link: "/zh/faq",
+    link: "/zh/guide/faq",
   },
   {
     text: "用户协议",
-    link: "/zh/terms",
+    link: "/zh/misc/terms",
   },
   {
     text: "隐私政策",
-    link: "/zh/privacy",
+    link: "/zh/misc/privacy",
   },
 ];
+
+const dev: DefaultTheme.SidebarItem[] = [
+  {
+    text: "开发指南",
+    link: "/zh/dev/",
+  },
+  {
+    text: "iframe 框架",
+    link: "/zh/dev/iframe",
+  },
+];
+
+export const sidebarZh: DefaultTheme.SidebarMulti = {
+  "/zh/guide/": guide,
+  "/zh/dev": dev,
+};

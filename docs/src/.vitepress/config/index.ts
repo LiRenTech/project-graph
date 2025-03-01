@@ -79,7 +79,8 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: "首页", link: "/zh/" },
-          { text: "下载", link: "/zh/installation" },
+          { text: "指南", link: "/zh/guide" },
+          { text: "开发", link: "/zh/dev" },
           { text: "捐赠", link: "/zh/donate" },
         ],
         sidebar: sidebarZh,

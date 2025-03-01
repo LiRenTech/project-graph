@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: 🚀 快速开始
-      link: ./installation
+      link: ./guide/installation
     - theme: alt
       text: 🌍 在线使用
       link: https://web.project-graph.top
