@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { getEnterKey } from "../../../../utils/keyboardFunctions";
 import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
@@ -8,11 +9,12 @@ import { StageAutoAlignManager } from "../../../stage/stageManager/concreteMetho
 import { StageNodeAdder } from "../../../stage/stageManager/concreteMethods/stageNodeAdder";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
+import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { EntityDashTipEffect } from "../../feedbackService/effectEngine/concrete/EntityDashTipEffect";
 import { EntityShakeEffect } from "../../feedbackService/effectEngine/concrete/EntityShakeEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../Settings";
-import { addTextNodeByLocation, editTextNode } from "../controller/concrete/utilsControl";
+import { editTextNode } from "../controller/concrete/utilsControl";
 import { KeyboardOnlyDirectionController } from "./keyboardOnlyDirectionController";
 import { NewTargetLocationSelector } from "./newTargetLocationSelector";
 import { SelectChangeEngine } from "./selectChangeEngine";
@@ -120,26 +122,34 @@ export namespace KeyboardOnlyEngine {
       const lastChild = childSet[childSet.length - 1];
       createLocation = lastChild.collisionBox.getRectangle().bottomCenter.add(new Vector(0, 10));
     }
-
-    addTextNodeByLocation(createLocation, true, (newUUID) => {
-      const newNode = StageManager.getTextNodeByUUID(newUUID);
-      if (!newNode) return;
-      // 连接到之前的节点
-      StageManager.connectEntity(rootNode, newNode);
-      // 重新排列树形节点
-      const rootNodeParents = GraphMethods.getRoots(rootNode);
-      if (rootNodeParents.length === 1) {
-        const rootNodeParent = rootNodeParents[0];
-        if (GraphMethods.isTree(rootNodeParent)) {
-          StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
-          // 更新选择状态
-          rootNodeParent.isSelected = false;
-          newNode.isSelected = true;
-        }
-      }
-
-      Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(rootNode, newNode));
+    // 创建位置寻找完毕
+    const newNode = new TextNode({
+      text: "新节点",
+      details: "",
+      uuid: v4(),
+      location: [createLocation.x, createLocation.y],
+      size: [100, 100],
     });
+    StageManager.addTextNode(newNode);
+    // 连接节点
+    StageManager.connectEntity(rootNode, newNode);
+    // 重新排列树形节点
+    const rootNodeParents = GraphMethods.getRoots(rootNode);
+    if (rootNodeParents.length === 1) {
+      const rootNodeParent = rootNodeParents[0];
+      if (GraphMethods.isTree(rootNodeParent)) {
+        StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
+        // 更新选择状态
+        rootNodeParent.isSelected = false;
+        newNode.isSelected = true;
+      }
+    }
+    // 特效
+    Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(rootNode, newNode));
+    setTimeout(() => {
+      // 防止把反引号给输入进去
+      editTextNode(newNode);
+    }, 100);
   }
 
   function onBroadGenerateNode() {
@@ -152,26 +162,35 @@ export namespace KeyboardOnlyEngine {
     if (parents.length === 0) return;
     if (parents.length !== 1) return;
     const parent = parents[0];
-    // 在自己的正下方创建一个节点
-    const newLocation = parent.collisionBox.getRectangle().bottomCenter.add(new Vector(0, 100));
-    addTextNodeByLocation(newLocation, true, (newUUID) => {
-      const newNode = StageManager.getTextNodeByUUID(newUUID);
-      if (!newNode) return;
-      // 连接到之前的节点
-      StageManager.connectEntity(parent, newNode);
-      // 重新排列树形节点
-      const rootNodeParents = GraphMethods.getRoots(parent);
-      if (rootNodeParents.length === 1) {
-        const rootNodeParent = rootNodeParents[0];
-        if (GraphMethods.isTree(rootNodeParent)) {
-          StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
-          // 更新选择状态
-          rootNodeParent.isSelected = false;
-          newNode.isSelected = true;
-        }
-      }
-      Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(parent, newNode));
+    // 当前选择的节点的正下方创建一个节点
+    // 找到创建点
+    const newLocation = currentSelectNode.collisionBox.getRectangle().leftBottom.add(new Vector(0, 1));
+    const newNode = new TextNode({
+      text: "新节点",
+      details: "",
+      uuid: v4(),
+      location: [newLocation.x, newLocation.y],
+      size: [100, 100],
     });
+    StageManager.addTextNode(newNode);
+    // 连接节点
+    StageManager.connectEntity(parent, newNode);
+    // 重新排列树形节点
+    const rootNodeParents = GraphMethods.getRoots(parent);
+    if (rootNodeParents.length === 1) {
+      const rootNodeParent = rootNodeParents[0];
+      if (GraphMethods.isTree(rootNodeParent)) {
+        StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
+        // 更新选择状态
+        rootNodeParent.isSelected = false;
+        newNode.isSelected = true;
+      }
+    }
+    Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(parent, newNode));
+    setTimeout(() => {
+      // 防止把反引号给输入进去
+      editTextNode(newNode);
+    }, 100);
   }
 
   function addSuccessEffect() {
