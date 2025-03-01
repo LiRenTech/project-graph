@@ -9,6 +9,7 @@ import { Canvas } from "../core/stage/Canvas";
 import { Stage } from "../core/stage/Stage";
 import { isClassroomModeAtom, isWindowCollapsingAtom } from "../state";
 import { CursorNameEnum } from "../types/cursors";
+import { isFrame } from "../utils/platform";
 import DetailsEditSidePanel from "./_details_edit_side_panel";
 import DetailsEditSmallPanel from "./_details_edit_small_panel";
 import HintText from "./_hint_text";
@@ -123,10 +124,10 @@ export default function Home() {
 
   return (
     <>
-      {!isWindowCollapsing && !isClassroomMode && <Toolbar />}
+      {!isWindowCollapsing && !isClassroomMode && !isFrame && <Toolbar />}
       {/* 这个打算被取代 */}
       {nodeDetailsPanel === "small" ? <DetailsEditSmallPanel /> : <DetailsEditSidePanel />}
-      {!isWindowCollapsing && !isClassroomMode && uiShow && <HintText />}
+      {!isWindowCollapsing && !isClassroomMode && !isFrame && uiShow && <HintText />}
       {/* TODO: 下面这个写法有点奇怪 rgba值太长了 */}
       <div
         style={{

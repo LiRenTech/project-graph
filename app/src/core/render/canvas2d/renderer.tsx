@@ -1,5 +1,5 @@
 import { getTextSize } from "../../../utils/font";
-import { appScale } from "../../../utils/platform";
+import { appScale, isFrame } from "../../../utils/platform";
 import { Color, mixColors } from "../../dataStruct/Color";
 import { Vector } from "../../dataStruct/Vector";
 import { CubicBezierCurve } from "../../dataStruct/shape/Curve";
@@ -694,7 +694,7 @@ export namespace Renderer {
 
   /** 画debug信息 */
   function renderDebugDetails() {
-    if (!isShowDebug) {
+    if (!isShowDebug || isFrame) {
       return;
     }
     const currentTime = performance.now();

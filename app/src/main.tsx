@@ -23,6 +23,7 @@ import { KeyboardOnlyEngine } from "./core/service/controlService/keyboardOnlyEn
 import { MouseLocation } from "./core/service/controlService/MouseLocation";
 import { RecentFileManager } from "./core/service/dataFileService/RecentFileManager";
 import { StartFilesManager } from "./core/service/dataFileService/StartFilesManager";
+import { CopyEngine } from "./core/service/dataManageService/copyEngine/copyEngine";
 import { ColorManager } from "./core/service/feedbackService/ColorManager";
 import { TextRiseEffect } from "./core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewOutlineFlashEffect } from "./core/service/feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
@@ -33,6 +34,9 @@ import { Settings } from "./core/service/Settings";
 import { Tourials } from "./core/service/Tourials";
 import { Camera } from "./core/stage/Camera";
 import { Stage } from "./core/stage/Stage";
+import { StageLoader } from "./core/stage/StageLoader";
+import { StageEntityMoveManager } from "./core/stage/stageManager/concreteMethods/StageEntityMoveManager";
+import { StageSectionPackManager } from "./core/stage/stageManager/concreteMethods/StageSectionPackManager";
 import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManager";
 import { StageManager } from "./core/stage/stageManager/StageManager";
 import { EdgeCollisionBoxGetter } from "./core/stage/stageObject/association/EdgeCollisionBoxGetter";
@@ -44,10 +48,7 @@ import { Direction } from "./types/directions";
 import { openBrowserOrFile } from "./utils/externalOpen";
 import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
-import { getCurrentWindow, isDesktop, isMac, isWeb } from "./utils/platform";
-import { StageEntityMoveManager } from "./core/stage/stageManager/concreteMethods/StageEntityMoveManager";
-import { StageSectionPackManager } from "./core/stage/stageManager/concreteMethods/StageSectionPackManager";
-import { CopyEngine } from "./core/service/dataManageService/copyEngine/copyEngine";
+import { getCurrentWindow, isDesktop, isFrame, isMac, isWeb } from "./utils/platform";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -636,6 +637,15 @@ async function loadLanguageFiles() {
 /** 加载用户自定义的工程文件，或者从启动参数中获取 */
 async function loadStartFile() {
   let path = "";
+  if (isFrame) {
+    const fileBase64 = new URLSearchParams(window.location.search).get("file");
+    if (!fileBase64) {
+      return;
+    }
+    const file = atob(fileBase64);
+    RecentFileManager.loadStageByData(StageLoader.validate(JSON.parse(file)), "/frame.json");
+    return;
+  }
   if (isDesktop && !isWeb) {
     const cliMatches = await getMatches();
     if (cliMatches.args.path.value) {

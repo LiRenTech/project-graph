@@ -14,7 +14,7 @@ import { StageDumper } from "../core/stage/StageDumper";
 import { fileAtom, isClassroomModeAtom, isWindowCollapsingAtom } from "../state";
 import { cn } from "../utils/cn";
 import { PathString } from "../utils/pathString";
-import { appScale, getCurrentWindow, isDesktop, isMac, isMobile, isWeb } from "../utils/platform";
+import { appScale, getCurrentWindow, isDesktop, isFrame, isMac, isMobile, isWeb } from "../utils/platform";
 import AppMenu from "./_app_menu";
 import ErrorHandler from "./_fixed_panel/_error_handler";
 import ExportTreeTextPanel from "./_fixed_panel/_export_text_panel";
@@ -222,187 +222,197 @@ export default function App() {
       }}
       onContextMenu={(e) => e.preventDefault()}
     >
-      {/* 叠加层，显示窗口控件 */}
-      <div
-        className={cn("pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 p-4 *:pointer-events-auto", {
-          "*:!pointer-events-none": ignoreMouse,
-        })}
-      >
-        {isMac && (
-          <Button className="right-4 top-4 flex items-center gap-2 active:scale-100">
-            <div
-              className="size-3 rounded-full bg-red-500 active:bg-red-800"
-              onClick={() => getCurrentWindow().close()}
-            ></div>
-            <div
-              className="size-3 rounded-full bg-yellow-500 active:bg-yellow-800"
-              onClick={() => getCurrentWindow().minimize()}
-            ></div>
-            <div
-              className="size-3 rounded-full bg-green-500 active:bg-green-800"
-              onClick={() =>
-                getCurrentWindow()
-                  .isMaximized()
-                  .then((isMaximized) => setMaxmized(!isMaximized))
-              }
-            ></div>
-          </Button>
-        )}
-        {/* 左上角菜单按钮 */}
-        <IconButton
-          tooltip="菜单"
-          className={cn(isClassroomMode && "opacity-0")}
-          onClick={(e) => {
-            if (location.pathname !== "/") {
-              if (location.pathname.startsWith("/welcome")) {
-                Dialog.show({
-                  title: "Skip Setup?",
-                  content: "Are you sure you want to skip the setup process?",
-                  buttons: [
-                    {
-                      text: "Yes",
-                      onClick: () => navigate("/"),
-                    },
-                    {
-                      text: "No",
-                      onClick: () => {},
-                    },
-                  ],
-                });
-              } else {
-                navigate("/");
-              }
-            } else {
-              e.stopPropagation(); // 避免又触发了关闭
-              setIsMenuOpen(!isMenuOpen);
-            }
-          }}
-        >
-          {location.pathname === "/" ? <Menu className={cn(isMenuOpen && "rotate-90")} /> : <ChevronLeft />}
-        </IconButton>
-
-        <IconButton
-          id="tagPanelBtn"
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsTagPanelOpen(!isTagPanelOpen);
-          }}
-          tooltip="标签节点"
-          className={cn(isClassroomMode && "opacity-0")}
-        >
-          <Tag className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")} />
-        </IconButton>
-
-        {/* 逻辑节点按钮 */}
-        <IconButton
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsLogicNodePanelOpen(!isLogicNodePanelOpen);
-          }}
-          className={cn(isClassroomMode && "opacity-0")}
-          tooltip="逻辑节点"
-        >
-          <Cpu className={cn("cursor-pointer", isLogicNodePanelOpen ? "rotate-45" : "")} />
-        </IconButton>
-        {/* 中间标题 */}
-        {useNativeTitleBar || isWeb ? (
-          // h-0 才能完全摆脱划线时经过此区域的卡顿问题
-          <div className="pointer-events-none h-0 flex-1"></div>
-        ) : (
-          <>
-            <Button
-              data-tauri-drag-region
-              className={cn("pointer-events-none relative flex-1 overflow-ellipsis active:scale-100", {
-                "text-panel-error-text": isSaved,
-                "flex-1": isDesktop,
-                "opacity-0": isClassroomMode,
-              })}
-              tooltip="按住拖动窗口"
-            >
-              {isMobile && getDisplayFileName()}
-              {isDesktop && (
-                <div
-                  data-tauri-drag-region
-                  className={cn(
-                    isSaved ? "text-icon-button-text" : "text-panel-error-text",
-                    "absolute flex h-full w-full items-center justify-center truncate p-0 hover:cursor-move active:cursor-grabbing",
-                    isClassroomMode && "opacity-0",
-                  )}
-                >
-                  {getDisplayFileName()}
-                </div>
-              )}
-            </Button>
-            {isMobile && <div className="flex-1"></div>}
-          </>
-        )}
-        {/* 右上角闪电按钮 */}
-        <IconButton
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsStartFilePanelOpen(!isStartFilePanelOpen);
-          }}
-          className={cn(isClassroomMode && "opacity-0")}
-          tooltip="设置启动时打开的文件"
-          disabled={isMobile}
-        >
-          <Zap className={cn("cursor-pointer", isStartFilePanelOpen ? "rotate-45 scale-125" : "")} />
-        </IconButton>
-        {isDesktop && (
-          <IconButton
-            className={cn(isWindowCollapsing && "animate-bounce", isClassroomMode && "opacity-0")}
-            onClick={async (e) => {
-              e.stopPropagation();
-              // const size = await getCurrentWindow().outerSize();
-              const tauriWindow = getCurrentWindow();
-              if (isWindowCollapsing) {
-                // 纵向展开
-                tauriWindow.setSize(new LogicalSize(1100, 800));
-                tauriWindow.setAlwaysOnTop(false);
-              } else {
-                // 纵向收起
-                tauriWindow.setSize(new LogicalSize(1100, 100));
-                tauriWindow.setAlwaysOnTop(true);
-              }
-              setIsWindowCollapsing(!isWindowCollapsing);
-            }}
-            tooltip={isWindowCollapsing ? "展开并取消顶置窗口" : "卷起并顶置窗口"}
-          >
-            <SquareArrowUp className={cn("cursor-pointer", isWindowCollapsing ? "rotate-180 scale-125" : "")} />
-          </IconButton>
-        )}
-
-        {/* 右上角窗口控制按钮 */}
-        {isDesktop && !useNativeTitleBar && !isMac && !isWeb && (
-          <Button
-            className={cn("right-4 top-4 flex items-center gap-1 active:scale-100", isClassroomMode && "opacity-0")}
-          >
-            <ChevronDown
-              onClick={() => getCurrentWindow().minimize()}
-              className="transition hover:opacity-80 active:scale-75"
-            />
-            {maxmized ? (
-              <Diamond
-                onClick={() => setMaxmized(false)}
-                size={16}
-                strokeWidth={3}
-                className="transition hover:opacity-80 active:scale-75"
-              />
-            ) : (
-              <ChevronUp onClick={() => setMaxmized(true)} className="transition hover:opacity-80 active:scale-75" />
+      {!isFrame && (
+        <>
+          {/* 叠加层，显示窗口控件 */}
+          <div
+            className={cn(
+              "pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 p-4 *:pointer-events-auto",
+              {
+                "*:!pointer-events-none": ignoreMouse,
+              },
             )}
-            <X onClick={() => getCurrentWindow().close()} className="transition hover:opacity-80 active:scale-75" />
-          </Button>
-        )}
-      </div>
+          >
+            {isMac && (
+              <Button className="right-4 top-4 flex items-center gap-2 active:scale-100">
+                <div
+                  className="size-3 rounded-full bg-red-500 active:bg-red-800"
+                  onClick={() => getCurrentWindow().close()}
+                ></div>
+                <div
+                  className="size-3 rounded-full bg-yellow-500 active:bg-yellow-800"
+                  onClick={() => getCurrentWindow().minimize()}
+                ></div>
+                <div
+                  className="size-3 rounded-full bg-green-500 active:bg-green-800"
+                  onClick={() =>
+                    getCurrentWindow()
+                      .isMaximized()
+                      .then((isMaximized) => setMaxmized(!isMaximized))
+                  }
+                ></div>
+              </Button>
+            )}
+            {/* 左上角菜单按钮 */}
+            <IconButton
+              tooltip="菜单"
+              className={cn(isClassroomMode && "opacity-0")}
+              onClick={(e) => {
+                if (location.pathname !== "/") {
+                  if (location.pathname.startsWith("/welcome")) {
+                    Dialog.show({
+                      title: "Skip Setup?",
+                      content: "Are you sure you want to skip the setup process?",
+                      buttons: [
+                        {
+                          text: "Yes",
+                          onClick: () => navigate("/"),
+                        },
+                        {
+                          text: "No",
+                          onClick: () => {},
+                        },
+                      ],
+                    });
+                  } else {
+                    navigate("/");
+                  }
+                } else {
+                  e.stopPropagation(); // 避免又触发了关闭
+                  setIsMenuOpen(!isMenuOpen);
+                }
+              }}
+            >
+              {location.pathname === "/" ? <Menu className={cn(isMenuOpen && "rotate-90")} /> : <ChevronLeft />}
+            </IconButton>
 
-      {/* 面板列表 */}
-      <AppMenu className="absolute left-4 top-16 z-20" open={isMenuOpen} />
-      <TagPanel open={isTagPanelOpen} className="z-10" />
-      <LogicNodePanel open={isLogicNodePanelOpen} className="z-10" />
-      <StartFilePanel open={isStartFilePanelOpen} />
-      <RecentFilesPanel />
-      <ExportTreeTextPanel />
+            <IconButton
+              id="tagPanelBtn"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsTagPanelOpen(!isTagPanelOpen);
+              }}
+              tooltip="标签节点"
+              className={cn(isClassroomMode && "opacity-0")}
+            >
+              <Tag className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")} />
+            </IconButton>
+
+            {/* 逻辑节点按钮 */}
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsLogicNodePanelOpen(!isLogicNodePanelOpen);
+              }}
+              className={cn(isClassroomMode && "opacity-0")}
+              tooltip="逻辑节点"
+            >
+              <Cpu className={cn("cursor-pointer", isLogicNodePanelOpen ? "rotate-45" : "")} />
+            </IconButton>
+            {/* 中间标题 */}
+            {useNativeTitleBar || isWeb ? (
+              // h-0 才能完全摆脱划线时经过此区域的卡顿问题
+              <div className="pointer-events-none h-0 flex-1"></div>
+            ) : (
+              <>
+                <Button
+                  data-tauri-drag-region
+                  className={cn("pointer-events-none relative flex-1 overflow-ellipsis active:scale-100", {
+                    "text-panel-error-text": isSaved,
+                    "flex-1": isDesktop,
+                    "opacity-0": isClassroomMode,
+                  })}
+                  tooltip="按住拖动窗口"
+                >
+                  {isMobile && getDisplayFileName()}
+                  {isDesktop && (
+                    <div
+                      data-tauri-drag-region
+                      className={cn(
+                        isSaved ? "text-icon-button-text" : "text-panel-error-text",
+                        "absolute flex h-full w-full items-center justify-center truncate p-0 hover:cursor-move active:cursor-grabbing",
+                        isClassroomMode && "opacity-0",
+                      )}
+                    >
+                      {getDisplayFileName()}
+                    </div>
+                  )}
+                </Button>
+                {isMobile && <div className="flex-1"></div>}
+              </>
+            )}
+            {/* 右上角闪电按钮 */}
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsStartFilePanelOpen(!isStartFilePanelOpen);
+              }}
+              className={cn(isClassroomMode && "opacity-0")}
+              tooltip="设置启动时打开的文件"
+              disabled={isMobile}
+            >
+              <Zap className={cn("cursor-pointer", isStartFilePanelOpen ? "rotate-45 scale-125" : "")} />
+            </IconButton>
+            {isDesktop && (
+              <IconButton
+                className={cn(isWindowCollapsing && "animate-bounce", isClassroomMode && "opacity-0")}
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  // const size = await getCurrentWindow().outerSize();
+                  const tauriWindow = getCurrentWindow();
+                  if (isWindowCollapsing) {
+                    // 纵向展开
+                    tauriWindow.setSize(new LogicalSize(1100, 800));
+                    tauriWindow.setAlwaysOnTop(false);
+                  } else {
+                    // 纵向收起
+                    tauriWindow.setSize(new LogicalSize(1100, 100));
+                    tauriWindow.setAlwaysOnTop(true);
+                  }
+                  setIsWindowCollapsing(!isWindowCollapsing);
+                }}
+                tooltip={isWindowCollapsing ? "展开并取消顶置窗口" : "卷起并顶置窗口"}
+              >
+                <SquareArrowUp className={cn("cursor-pointer", isWindowCollapsing ? "rotate-180 scale-125" : "")} />
+              </IconButton>
+            )}
+
+            {/* 右上角窗口控制按钮 */}
+            {isDesktop && !useNativeTitleBar && !isMac && !isWeb && (
+              <Button
+                className={cn("right-4 top-4 flex items-center gap-1 active:scale-100", isClassroomMode && "opacity-0")}
+              >
+                <ChevronDown
+                  onClick={() => getCurrentWindow().minimize()}
+                  className="transition hover:opacity-80 active:scale-75"
+                />
+                {maxmized ? (
+                  <Diamond
+                    onClick={() => setMaxmized(false)}
+                    size={16}
+                    strokeWidth={3}
+                    className="transition hover:opacity-80 active:scale-75"
+                  />
+                ) : (
+                  <ChevronUp
+                    onClick={() => setMaxmized(true)}
+                    className="transition hover:opacity-80 active:scale-75"
+                  />
+                )}
+                <X onClick={() => getCurrentWindow().close()} className="transition hover:opacity-80 active:scale-75" />
+              </Button>
+            )}
+          </div>
+
+          {/* 面板列表 */}
+          <AppMenu className="absolute left-4 top-16 z-20" open={isMenuOpen} />
+          <TagPanel open={isTagPanelOpen} className="z-10" />
+          <LogicNodePanel open={isLogicNodePanelOpen} className="z-10" />
+          <StartFilePanel open={isStartFilePanelOpen} />
+          <RecentFilesPanel />
+          <ExportTreeTextPanel />
+        </>
+      )}
       {/* ======= */}
       <ErrorHandler />
 
