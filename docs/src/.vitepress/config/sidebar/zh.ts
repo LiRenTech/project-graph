@@ -27,7 +27,7 @@ const guide: DefaultTheme.SidebarItem[] = [
         link: "/node",
       },
       {
-        text: "↗️ 边",
+        text: "↗️ 连线",
         link: "/edge",
       },
       {
@@ -65,6 +65,10 @@ const guide: DefaultTheme.SidebarItem[] = [
       {
         text: "🚪 传送门节点",
         link: "/portal-node",
+      },
+      {
+        text: "✏ 涂鸦",
+        link: "/pen-stroke",
       },
       {
         text: "⚡ 快速操作",
