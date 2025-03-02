@@ -70,6 +70,9 @@ export default defineConfig({
           { text: "Download", link: "/installation" },
         ],
         sidebar: sidebarEn,
+        editLink: {
+          pattern: "https://github.com/LiRenTech/project-graph/edit/master/docs/src/:path",
+        },
       },
     },
     zh: {
@@ -82,11 +85,12 @@ export default defineConfig({
           { text: "指南", link: "/zh/guide" },
           { text: "开发", link: "/zh/dev" },
           { text: "捐赠", link: "/zh/donate" },
+          { text: "在线使用", link: "https://web.project-graph.top" },
         ],
         sidebar: sidebarZh,
         editLink: {
           text: "编辑页面",
-          pattern: "https://github.com/LiRenTech/project-graph/edit/master/docs/:path",
+          pattern: "https://github.com/LiRenTech/project-graph/edit/master/docs/src/:path",
         },
         lastUpdated: {
           text: "上次更新",

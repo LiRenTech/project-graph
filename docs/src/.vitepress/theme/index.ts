@@ -11,6 +11,7 @@ import { h } from "vue";
 import "./custom.scss";
 import GithubRelease from "./GithubRelease.vue";
 import Loading from "./Loading.vue";
+import Frame from "./Frame.vue";
 
 export default {
   extends: DefaultTheme,
@@ -18,6 +19,7 @@ export default {
     // register your custom global components
     app.component("GithubRelease", GithubRelease);
     app.component("Loading", Loading);
+    app.component("Frame", Frame);
   },
   Layout: () => {
     return h(DefaultTheme.Layout, null, {

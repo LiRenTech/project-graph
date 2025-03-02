@@ -39,6 +39,7 @@ export default function Home() {
       Controller.pressingKeySet.clear();
     };
     const handleBlur = () => {
+      if (isFrame) return;
       focus = false;
       // 解决alt+tab切换窗口后还在监听alt按下的问题
       Controller.pressingKeySet.clear();

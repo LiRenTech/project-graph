@@ -642,8 +642,9 @@ async function loadStartFile() {
     if (!fileBase64) {
       return;
     }
-    const file = atob(fileBase64);
+    const file = new TextDecoder().decode(Uint8Array.from(atob(fileBase64), (m) => m.codePointAt(0)!));
     RecentFileManager.loadStageByData(StageLoader.validate(JSON.parse(file)), "/frame.json");
+    Camera.reset();
     return;
   }
   if (isDesktop && !isWeb) {
