@@ -10,6 +10,7 @@ import { Camera } from "../../../../../stage/Camera";
 import { ConnectableEntity } from "../../../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
+import { Section } from "../../../../../stage/stageObject/entity/Section";
 import { SvgUtils } from "../../../../svg/SvgUtils";
 import { CurveRenderer } from "../../../basicRenderer/curveRenderer";
 import { ShapeRenderer } from "../../../basicRenderer/shapeRenderer";
@@ -69,13 +70,21 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     const edgeColor = edge.color.equals(Color.Transparent)
       ? StageStyleManager.currentStyle.StageObjectBorderColor
       : edge.color;
+
+    let edgeWidth = 2;
+    if (edge.target instanceof Section && edge.source instanceof Section) {
+      const rect1 = edge.source.collisionBox.getRectangle();
+      const rect2 = edge.target.collisionBox.getRectangle();
+      edgeWidth = Math.max(rect1.width, rect2.width, rect1.height, rect2.height) / 100;
+    }
+
     if (edge.text.trim() === "") {
       // 没有文字的边
       CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.start),
         Renderer.transformWorld2View(edge.bodyLine.end),
         edgeColor,
-        2 * Camera.currentScale,
+        edgeWidth * Camera.currentScale,
       );
     } else {
       // 有文字的边
@@ -95,13 +104,13 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         Renderer.transformWorld2View(edge.bodyLine.start),
         Renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(startHalf)),
         edgeColor,
-        2 * Camera.currentScale,
+        edgeWidth * Camera.currentScale,
       );
       CurveRenderer.renderSolidLine(
         Renderer.transformWorld2View(edge.bodyLine.end),
         Renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(endHalf)),
         edgeColor,
-        2 * Camera.currentScale,
+        edgeWidth * Camera.currentScale,
       );
     }
     if (!(edge.target instanceof ConnectPoint)) {
@@ -113,6 +122,8 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
           .getCenter()
           .subtract(edge.source.collisionBox.getRectangle().getCenter())
           .normalize(),
+        edge.bodyLine.end.clone(),
+        8 * edgeWidth,
       );
     }
   }
@@ -167,8 +178,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     return <></>;
   }
 
-  private renderArrowHead(edge: LineEdge, direction: Vector, endPoint = edge.bodyLine.end.clone()) {
-    const size = 15;
+  private renderArrowHead(edge: LineEdge, direction: Vector, endPoint = edge.bodyLine.end.clone(), size = 15) {
     const edgeColor = edge.color.equals(Color.Transparent)
       ? StageStyleManager.currentStyle.StageObjectBorderColor
       : edge.color;
