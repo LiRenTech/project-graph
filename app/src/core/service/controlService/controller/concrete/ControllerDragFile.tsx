@@ -13,6 +13,7 @@ import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/T
 import { ViewFlashEffect } from "../../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
 import { Dialog } from "../../../../../components/dialog";
+import { CircleChangeRadiusEffect } from "../../../feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
 
 /**
  * BUG: 始终无法触发文件拖入事件
@@ -151,16 +152,8 @@ function readFileText(file: File): Promise<string> {
 
 function dealTempFileDrop(mouseWorldLocation: Vector) {
   // 未知类型，按插入一个textNode判断
-  const textNode = new TextNode({
-    uuid: uuidv4(),
-    text: "拖入文件为空",
-    location: [mouseWorldLocation.x, mouseWorldLocation.y],
-    size: [100, 100],
-    color: [0, 0, 0, 0],
-    details: "如果您想拖入文字直接来生成节点，建议先复制，然后直接在舞台上按ctrl+v",
-  });
-  textNode.move(new Vector(-textNode.rectangle.size.x / 2, -textNode.rectangle.size.y / 2));
-  StageManager.addTextNode(textNode);
+  Stage.effectMachine.addEffect(new TextRiseEffect("不能直接拖入文字"));
+  Stage.effectMachine.addEffect(CircleChangeRadiusEffect.fromConnectPointShrink(mouseWorldLocation, 100));
 }
 
 function dealUnknownFileDrop(file: File, mouseWorldLocation: Vector, i: number) {
