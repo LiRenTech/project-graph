@@ -43,6 +43,7 @@ export namespace CurveRenderer {
 
   /**
    * 画一段折线，带有宽度实时变化
+   * 实测发现有宽度变化，频繁变更粗细会导致渲染卡顿
    * @param locations
    * @param color
    * @param widthList
@@ -51,11 +52,22 @@ export namespace CurveRenderer {
     Canvas.ctx.beginPath();
     Canvas.ctx.moveTo(locations[0].x, locations[0].y);
     for (let i = 1; i < locations.length; i++) {
-      Canvas.ctx.lineTo(locations[i].x, locations[i].y);
       Canvas.ctx.lineWidth = widthList[i];
+      Canvas.ctx.lineTo(locations[i].x, locations[i].y);
+      // Canvas.ctx.stroke();
     }
     Canvas.ctx.strokeStyle = color.toString();
     Canvas.ctx.stroke();
+    // Canvas.ctx.strokeStyle = color.toString();
+    // Canvas.ctx.beginPath();
+    // for (let i = 0; i < locations.length - 1; i++) {
+    //   const start = locations[i];
+    //   const end = locations[i + 1];
+    //   Canvas.ctx.lineWidth = widthList[i + 1];
+    //   Canvas.ctx.moveTo(start.x, start.y);
+    //   Canvas.ctx.lineTo(end.x, end.y);
+    //   Canvas.ctx.stroke();
+    // }
   }
 
   /**

@@ -235,6 +235,7 @@ export namespace Renderer {
     }
     isRenderingChildStage = false;
     // 交互相关的
+    renderTempDrawing();
     renderWarningEntities();
     renderHoverCollisionBox();
     renderSelectingRectangle();
@@ -479,6 +480,19 @@ export namespace Renderer {
   // function renderGrid() {
 
   // }
+
+  function renderTempDrawing() {
+    if (Stage.drawingMachine.isUsing && Stage.drawingMachine.currentStroke.length > 0) {
+      for (const segment of Stage.drawingMachine.currentStroke) {
+        CurveRenderer.renderSolidLine(
+          transformWorld2View(segment.startLocation),
+          transformWorld2View(segment.endLocation),
+          StageStyleManager.currentStyle.StageObjectBorderColor,
+          15 * Camera.currentScale,
+        );
+      }
+    }
+  }
 
   /** 待删除的节点和边 */
   function renderWarningEntities() {

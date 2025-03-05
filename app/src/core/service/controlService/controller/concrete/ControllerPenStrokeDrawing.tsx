@@ -4,7 +4,7 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
-import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
+import { PenStroke, PenStrokeSegment } from "../../../../stage/stageObject/entity/PenStroke";
 import { LineEffect } from "../../../feedbackService/effectEngine/concrete/LineEffect";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
@@ -15,11 +15,15 @@ import { ControllerClass } from "../ControllerClass";
 class ControllerDrawingClass extends ControllerClass {
   // 一开始是禁用状态
   private _isUsing: boolean = false;
+
+  public currentStroke: PenStrokeSegment[] = [];
+
   public get isUsing() {
     return this._isUsing;
   }
   public shutDown() {
     this._isUsing = false;
+    this.currentStroke = [];
   }
   public open() {
     this._isUsing = true;
@@ -62,6 +66,7 @@ class ControllerDrawingClass extends ControllerClass {
         2,
       ),
     );
+    this.currentStroke.push(new PenStrokeSegment(ControllerDrawing.lastMoveLocation, worldLocation, 15));
     ControllerDrawing.lastMoveLocation = worldLocation.clone();
   };
 
@@ -81,8 +86,10 @@ class ControllerDrawingClass extends ControllerClass {
     const contentString = strokeStringList.join("~");
 
     const stroke = new PenStroke(contentString);
+    stroke.beautify();
     StageManager.addPenStroke(stroke);
     this.recordLocation = [];
+    this.currentStroke = [];
   };
 }
 

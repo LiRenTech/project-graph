@@ -9,7 +9,7 @@ import { CollisionBox } from "../collisionBox/collisionBox";
 /**
  * 一笔画中的某一个小段
  */
-class PenStrokeSegment {
+export class PenStrokeSegment {
   constructor(
     public startLocation: Vector,
     public endLocation: Vector,
@@ -71,15 +71,21 @@ export class PenStroke extends Entity {
     super();
     // 开始解析字符串
     this.checkType(path);
-    const segments = path.split("~");
 
     // 生成一个随机的uuid
     this.uuid = v4();
     // 解析每一段
+    const segmentList = this.stringToSegmentList(path);
+    this.segmentList = segmentList;
+    this.updateCollisionBoxBySegmentList();
+  }
+
+  stringToSegmentList(origin: string): PenStrokeSegment[] {
+    const segments = origin.split("~");
+    const result: PenStrokeSegment[] = [];
     for (let i = 0; i < segments.length - 1; i++) {
       const currentPointString = segments[i];
       const nextPointString = segments[i + 1];
-
       const currentPointStrList = currentPointString.split(",");
       const nextPointStrList = nextPointString.split(",");
       if (currentPointStrList.length < 3 || nextPointStrList.length < 3) {
@@ -88,10 +94,31 @@ export class PenStroke extends Entity {
       const currentPoint = new Vector(parseFloat(currentPointStrList[0]), parseFloat(currentPointStrList[1]));
       const nextPoint = new Vector(parseFloat(nextPointStrList[0]), parseFloat(nextPointStrList[1]));
       const width = parseFloat(currentPointStrList[2]);
-      this.segmentList.push(new PenStrokeSegment(currentPoint, nextPoint, width));
-      // 生成碰撞箱，本质上是折线段
-      this.collisionBox.shapeList.push(new Line(currentPoint, nextPoint));
+      result.push(new PenStrokeSegment(currentPoint, nextPoint, width));
     }
+    return result;
+  }
+
+  // 美化segmentList
+  private beautifySegmentList(segmentList: PenStrokeSegment[]) {
+    // 粗细差距，一开细，中间粗，末尾细
+    const maxWidth = Math.max(...segmentList.map((segment) => segment.width));
+    const minWidth = 1;
+    if (segmentList.length > 10) {
+      // 前面5个段变粗，最后5个段变细
+      const firstFive = segmentList.slice(0, 5);
+      const lastFive = segmentList.slice(-5);
+      for (let i = 0; i < firstFive.length; i++) {
+        firstFive[i].width = minWidth + ((maxWidth - minWidth) * (i + 1)) / firstFive.length;
+      }
+      for (let i = 0; i < lastFive.length; i++) {
+        lastFive[i].width = maxWidth - ((maxWidth - minWidth) * (i + 1)) / lastFive.length;
+      }
+    }
+  }
+
+  public beautify(): void {
+    this.beautifySegmentList(this.segmentList);
   }
 
   dumpString(): string {
@@ -103,6 +130,14 @@ export class PenStroke extends Entity {
     const tailSegment = this.segmentList[this.segmentList.length - 1];
     resultList.push(`${tailSegment.startLocation.x},${tailSegment.startLocation.y},${tailSegment.width}`);
     return resultList.join("~");
+  }
+
+  getCollisionBoxFromSegmentList(segmentList: PenStrokeSegment[]): CollisionBox {
+    const result = new CollisionBox([]);
+    for (const segment of segmentList) {
+      result.shapeList.push(new Line(segment.startLocation, segment.endLocation));
+    }
+    return result;
   }
 
   /**
