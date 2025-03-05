@@ -16,12 +16,24 @@ import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { Stage } from "../../../stage/Stage";
 import { PathString } from "../../../../utils/pathString";
 
+export interface SvgExportConfig {
+  imageMode: "absolutePath" | "relativePath" | "base64";
+}
+
 /**
  * 将舞台当前内容导出为SVG
  *
  *
  */
 export namespace StageExportSvg {
+  let svgConfig: SvgExportConfig = {
+    imageMode: "relativePath",
+  };
+
+  export function setConfig(config: SvgExportConfig) {
+    svgConfig = config;
+  }
+
   export function dumpNode(node: TextNode) {
     if (node.isHiddenBySectionCollapse) {
       return <></>;
@@ -68,10 +80,15 @@ export namespace StageExportSvg {
    * @param absolutePath 是否使用绝对路径
    * @returns
    */
-  export function dumpImageNode(node: ImageNode, absolutePath: boolean = false) {
+  export function dumpImageNode(node: ImageNode, svgConfigObject: SvgExportConfig) {
     if (node.isHiddenBySectionCollapse) {
       return <></>;
     }
+    let imagePath = node.path;
+    if (svgConfigObject.imageMode === "absolutePath") {
+      imagePath = PathString.dirPath(Stage.path.getFilePath()) + PathString.getSep() + node.path;
+    }
+
     return (
       <>
         {SvgUtils.rectangle(
@@ -81,9 +98,7 @@ export namespace StageExportSvg {
           2,
         )}
         <image
-          href={
-            absolutePath ? PathString.dirPath(Stage.path.getFilePath()) + PathString.getSep() + node.path : node.path
-          }
+          href={imagePath}
           x={node.rectangle.leftTop.x}
           y={node.rectangle.leftTop.y}
           width={node.rectangle.size.x}
@@ -147,7 +162,7 @@ export namespace StageExportSvg {
           } else if (entity instanceof Section) {
             return dumpSection(entity);
           } else if (entity instanceof ImageNode) {
-            return dumpImageNode(entity); // true 表示使用绝对路径
+            return dumpImageNode(entity, svgConfig);
           }
         })}
         {/* 构建连线 */}
@@ -184,7 +199,7 @@ export namespace StageExportSvg {
         {StageManager.getTextNodes().map((node) => dumpNode(node))}
         {StageManager.getLineEdges().map((edge) => dumpEdge(edge))}
         {StageManager.getSections().map((section) => dumpSection(section))}
-        {StageManager.getImageNodes().map((imageNode) => dumpImageNode(imageNode))}
+        {StageManager.getImageNodes().map((imageNode) => dumpImageNode(imageNode, svgConfig))}
       </svg>
     );
   }

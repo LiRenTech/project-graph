@@ -517,6 +517,7 @@ appMenu:
   export:
     title: 导出
     items:
+      exportAsSvg: 导出为SVG
       exportAsSVGByAll: 导出为SVG（全部）
       exportAsMarkdownBySelected: 导出为Markdown（选中）
       exportAsPlainText: 导出为纯文本

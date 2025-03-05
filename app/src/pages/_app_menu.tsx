@@ -47,7 +47,6 @@ import { Dialog } from "../components/dialog";
 import { Settings } from "../core/service/Settings";
 import { RecentFileManager } from "../core/service/dataFileService/RecentFileManager";
 import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
-import { StageExportSvg } from "../core/service/dataGenerateService/stageExportEngine/StageExportSvg";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { Stage } from "../core/stage/Stage";
 import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
@@ -61,6 +60,7 @@ import { Popup } from "../components/popup";
 import { Panel } from "../components/panel";
 import { ComplexityDetector } from "../core/service/dataManageService/ComplexityDetector";
 import ComplexityResultPanel from "./_fixed_panel/_complexity_result_panel";
+import ExportSvgPanel from "./_popup_panel/_export_svg_panel";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -252,34 +252,6 @@ export default function AppMenu({ className = "", open = false }: { className?: 
       });
     }
   };
-  const onSaveSVGNew = async () => {
-    const path = isWeb
-      ? "file.svg"
-      : await saveFileDialog({
-          title: "另存为",
-          defaultPath: "新文件.svg", // 提供一个默认的文件名
-          filters: [
-            {
-              name: "Project Graph",
-              extensions: ["svg"],
-            },
-          ],
-        });
-
-    if (!path) {
-      return;
-    }
-
-    const data = StageExportSvg.dumpStageToSVGString();
-    try {
-      await Stage.exportEngine.saveSvgHandle(path, data);
-    } catch {
-      await Dialog.show({
-        title: "保存失败",
-        content: "保存失败，请重试",
-      });
-    }
-  };
 
   const onExportTreeText = async () => {
     const selectedNodes = StageManager.getSelectedEntities().filter((entity) => entity instanceof TextNode);
@@ -445,8 +417,8 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         </Row>
       )}
       <Row icon={<File />} title={t("export.title")}>
-        <Col icon={<FileCode />} onClick={onSaveSVGNew}>
-          {t("export.items.exportAsSVGByAll")}
+        <Col icon={<FileCode />} onClick={() => Popup.show(<ExportSvgPanel />, false)}>
+          {t("export.items.exportAsSvg")}
         </Col>
         <Col icon={<FileType />} onClick={onSaveMarkdownNew}>
           {t("export.items.exportAsMarkdownBySelected")}

@@ -19,10 +19,8 @@ import {
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Box from "../components/Box";
-import { Dialog } from "../components/dialog";
 import { Popup } from "../components/popup";
 import { Color } from "../core/dataStruct/Color";
-import { StageExportSvg } from "../core/service/dataGenerateService/stageExportEngine/StageExportSvg";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { TextRiseEffect } from "../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
@@ -192,22 +190,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           handleFunction={() => {
             StageGeneratorAI.generateNewTextNodeBySelected();
             StageHistoryManager.recordStep();
-          }}
-        />
-      )}
-      {isHaveSelectedNode && (
-        <ToolbarItem
-          description="将选中内容导出SVG"
-          icon={<SaveAll />}
-          handleFunction={() => {
-            const svgString = StageExportSvg.dumpSelectedToSVGString();
-            Dialog.show({
-              title: "导出SVG",
-              content:
-                "SVG的本质是一堆标签代码，如果您是在写markdown格式的博客，可以直接把下面的标签代码粘贴在您的文章中。如果您想保存成文件，可以把这段代码复制到txt中并改后缀名成svg",
-              code: svgString,
-              type: "info",
-            });
           }}
         />
       )}
