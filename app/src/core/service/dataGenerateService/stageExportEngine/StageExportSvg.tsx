@@ -13,6 +13,8 @@ import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
+import { Stage } from "../../../stage/Stage";
+import { PathString } from "../../../../utils/pathString";
 
 /**
  * 将舞台当前内容导出为SVG
@@ -60,7 +62,13 @@ export namespace StageExportSvg {
   export function dumpEdge(edge: LineEdge): React.ReactNode {
     return EdgeRenderer.getEdgeSvg(edge);
   }
-  export function dumpImageNode(node: ImageNode) {
+  /**
+   *
+   * @param node
+   * @param absolutePath 是否使用绝对路径
+   * @returns
+   */
+  export function dumpImageNode(node: ImageNode, absolutePath: boolean = false) {
     if (node.isHiddenBySectionCollapse) {
       return <></>;
     }
@@ -73,7 +81,9 @@ export namespace StageExportSvg {
           2,
         )}
         <image
-          href={node.path}
+          href={
+            absolutePath ? PathString.dirPath(Stage.path.getFilePath()) + PathString.getSep() + node.path : node.path
+          }
           x={node.rectangle.leftTop.x}
           y={node.rectangle.leftTop.y}
           width={node.rectangle.size.x}
@@ -137,7 +147,7 @@ export namespace StageExportSvg {
           } else if (entity instanceof Section) {
             return dumpSection(entity);
           } else if (entity instanceof ImageNode) {
-            return dumpImageNode(entity);
+            return dumpImageNode(entity); // true 表示使用绝对路径
           }
         })}
         {/* 构建连线 */}
