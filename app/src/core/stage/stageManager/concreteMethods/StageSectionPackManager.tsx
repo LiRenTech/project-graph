@@ -118,7 +118,7 @@ export namespace StageSectionPackManager {
   }
 
   /**
-   * 将指定的文本节点转换成Section
+   * 将指定的文本节点转换成Section，自动删除原来的TextNode
    * @param textNode 要转换的节点
    * @param ignoreEdges 是否忽略边的影响
    */
