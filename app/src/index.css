@@ -94,6 +94,7 @@
   --color-toolbar-collapsed-bg: var(--color-toolbar-collapsed-bg);
   --color-settings-page-bg: var(--color-settings-page-bg);
   --color-settings-text: var(--color-appmenu-item-text);
+  --color-field-group-bg: var(--color-field-group-bg);
 }
 :root {
   --color-panel-bg: oklch(0.269 0 0);
@@ -162,6 +163,7 @@
   --color-toolbar-collapsed-bg: #fff;
   --color-settings-page-bg: oklch(0.145 0 0);
   --color-settings-text: var(--color-appmenu-item-text);
+  --color-field-group-bg: oklch(0.269 0 0);
 }
 
 /* 暗色主题 */

@@ -61,7 +61,7 @@ export default function SettingsLayout() {
             {t("tabs.plugins")}
           </NavLinkButton>
         </div>
-        <div className="flex-1 overflow-auto">
+        <div className="mx-auto max-w-[900px] flex-1 overflow-auto">
           <Outlet />
         </div>
       </div>

@@ -105,7 +105,7 @@ export function ButtonField({
 }
 
 const fieldColors = {
-  default: "hover:bg-white/10",
+  default: "hover:bg-white/5",
   green: "bg-green-500/20 hover:bg-green-500/25",
   red: "bg-red-500/20 hover:bg-red-500/25",
   yellow: "bg-yellow-500/20 hover:bg-yellow-500/25",
@@ -176,14 +176,16 @@ export function FieldGroup({
   return (
     <div className={cn("flex w-full flex-col gap-2", className)}>
       {/* 第一行，标题行 */}
-      <div className="text-panel-text my-2 flex items-center gap-2 pl-4 pt-4 text-lg underline">
+      <div className="text-panel-text my-2 flex items-center gap-2 pl-4 pt-4 text-sm opacity-50">
         <span>{icon}</span>
         <span className="text-settings-text">{title}</span>
       </div>
       {/* 可能的描述行 */}
       {description && <div className="text-panel-details-text pl-4 text-xs">{description}</div>}
       {/* 内容 */}
-      <div className="flex w-full flex-col gap-2 pl-6 text-sm">{children}</div>
+      <div className="bg-field-group-bg group/field-group flex w-full flex-col rounded-2xl text-sm *:rounded-none *:first:rounded-t-xl *:last:rounded-b-xl">
+        {children}
+      </div>
     </div>
   );
 }
