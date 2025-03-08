@@ -44,7 +44,7 @@ export default function PluginsPage() {
       <Field
         icon={<PartyPopper />}
         title={t("welcome.title")}
-        color="green"
+        color="celebrate"
         description={t("welcome.description")}
       ></Field>
       <Field icon={<Plug />} title={t("title")}>

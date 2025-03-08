@@ -95,6 +95,7 @@
   --color-settings-page-bg: var(--color-settings-page-bg);
   --color-settings-text: var(--color-appmenu-item-text);
   --color-field-group-bg: var(--color-field-group-bg);
+  --color-field-group-hover-bg: var(--color-field-group-hover-bg);
 }
 :root {
   --color-panel-bg: oklch(0.269 0 0);
@@ -164,6 +165,7 @@
   --color-settings-page-bg: oklch(0.145 0 0);
   --color-settings-text: var(--color-appmenu-item-text);
   --color-field-group-bg: oklch(0.269 0 0);
+  --color-field-group-hover-bg: oklch(0.269 0 0);
 }
 
 /* 暗色主题 */
@@ -213,9 +215,9 @@
   --color-slider-line: oklch(0.371 0 0);
   --color-slider-handle: oklch(0.707 0.165 254.624);
   --color-switch-false-bg: oklch(0.269 0 0);
-  --color-switch-false-dot: #fff;
+  --color-switch-false-dot: #adadad;
   --color-switch-true-bg: oklch(0.623 0.214 259.815);
-  --color-switch-true-dot: #fff;
+  --color-switch-true-dot: #f0f0f0;
   --color-switch-disabled-bg: oklch(0.439 0 0);
   --color-switch-disabled-dot: #fff;
   --color-appmenu-bg: oklch(0.269 0 0);
@@ -234,6 +236,8 @@
   --color-toolbar-collapsed-bg: #fff;
   --color-settings-page-bg: oklch(0.145 0 0);
   --color-settings-text: var(--color-appmenu-item-text);
+  --color-field-group-bg: oklch(0.22 0 0);
+  --color-field-group-hover-bg: oklch(0.26 0 0);
 }
 [data-theme="light"] {
   --color-panel-bg: oklch(0.98 0.01 0);
@@ -302,6 +306,8 @@
   --color-toolbar-collapsed-bg: oklch(0.15 0.05 0);
   --color-settings-page-bg: #d3d3d3;
   --color-settings-text: var(--color-appmenu-item-text);
+  --color-field-group-bg: #acacac;
+  --color-field-group-hover-bg: rgb(240, 240, 240);
 }
 
 /* 马卡龙主题（暖色系：粉/紫/淡黄） */
@@ -361,12 +367,12 @@
   --color-select-option-selected-hover-border: transparent;
 
   /* 滑动条 */
-  --color-slider-line: oklch(0.9 0.04 30); /* 浅杏色轨道 */
-  --color-slider-handle: oklch(0.8 0.07 340); /* 粉灰手柄 */
+  --color-slider-line: #c59cb8; /* 浅杏色轨道 */
+  --color-slider-handle: #865667; /* 粉灰手柄 */
 
   /* 开关 */
-  --color-switch-false-bg: oklch(0.94 0.05 60); /* 奶茶底色 */
-  --color-switch-false-dot: oklch(0.45 0.08 340);
+  --color-switch-false-bg: #e2c8d9; /* 奶茶底色 */
+  --color-switch-false-dot: #b582a5;
   --color-switch-true-bg: oklch(0.8 0.07 340); /* 灰粉色 */
   --color-switch-true-dot: oklch(0.96 0.03 60);
 
@@ -386,6 +392,9 @@
 
   /* 设置页面 */
   --color-settings-page-bg: oklch(0.98 0.02 60); /* 珍珠白 */
+  --color-field-group-bg: #f4dadd;
+  --color-field-group-hover-bg: #fbd1d7;
+  --color-settings-text: var(--color-appmenu-item-text);
 }
 
 /* 莫兰迪主题（浅咖/脏粉/豆绿/雾霾蓝） */
@@ -448,14 +457,14 @@
   --color-select-option-selected-hover-border: transparent;
 
   /* 滑动条 */
-  --color-slider-line: var(--color-secondary); /* 冷蓝色轨道 */
-  --color-slider-handle: var(--color-accent); /* 灰紫色手柄 */
+  --color-slider-line: #949cae; /* 冷蓝色轨道 */
+  --color-slider-handle: #666b75; /* 灰紫色手柄 */
 
   /* 开关 */
-  --color-switch-false-bg: oklch(0.85 0.02 240); /* 浅冷灰色 */
-  --color-switch-false-dot: oklch(0.88 0.02 240);
-  --color-switch-true-bg: var(--color-primary); /* 冷绿 */
-  --color-switch-true-dot: oklch(0.95 0.02 240);
+  --color-switch-false-bg: #b5c0c8; /* 浅冷灰色 */
+  --color-switch-false-dot: #dde7ef;
+  --color-switch-true-bg: #a4aaba; /* 冷绿 */
+  --color-switch-true-dot: oklch(1 0.02 240);
 
   /* 菜单系统 */
   --color-appmenu-bg: var(--color-panel-bg); /* 冷淡蓝色调的浅灰色 */
@@ -471,6 +480,9 @@
 
   /* 特殊页面 */
   --color-settings-page-bg: oklch(0.94 0.005 240); /* 冷淡蓝色调的极浅灰色 */
+  --color-field-group-bg: #d8dfe5;
+  --color-field-group-hover-bg: #c9d2da;
+  --color-settings-text: #14242f;
 }
 
 /* 理刃科技主题 */
@@ -556,6 +568,9 @@
 
   /* 特殊页面 */
   --color-settings-page-bg: #2d3238;
+  --color-field-group-bg: #22272d;
+  --color-field-group-hover-bg: #1b2127;
+  --color-settings-text: var(--color-appmenu-item-text);
 }
 
 @layer base {
