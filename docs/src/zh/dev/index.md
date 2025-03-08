@@ -62,3 +62,11 @@ pnpm dev:android
 
 - 安装 Gitmoji: `pnpm install -g gitmoji-cli`
 - 提交更改: `gitmoji commit`
+
+### 安装第三方库
+
+由于本项目采用monorepo架构，涉及到增加完善功能，需要安装第三方库时，注意使用指令。
+
+```sh
+pnpm --filter @pg/app install decimal.js
+```
