@@ -125,13 +125,11 @@ export default function Toolbar({ className = "" }: { className?: string }) {
         handleFunction={() => Popup.show(<ColorPanel />, true)}
       />
 
-      {isHaveSelectedNode && (
-        <ToolbarItem
-          description="节点对齐相关"
-          icon={<LayoutDashboard />}
-          handleFunction={() => Popup.show(<AlignNodePanel />, true)}
-        />
-      )}
+      <ToolbarItem
+        description="节点对齐相关"
+        icon={<LayoutDashboard />}
+        handleFunction={() => Popup.show(<AlignNodePanel />, true)}
+      />
       {isClipboardClearShow && (
         <ToolbarItem
           description="清空粘贴板内容"
