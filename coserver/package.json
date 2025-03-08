@@ -1,5 +1,5 @@
 {
-  "name": "@mono/coserver",
+  "name": "@pg/coserver",
   "private": true,
   "version": "1.0.0",
   "description": "Collaborative Server for Project Graph",
