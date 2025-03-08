@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "docs:dev": "vitepress dev ./src",
-    "docs:build": "vitepress build ./src",
-    "docs:preview": "vitepress preview ./src"
+    "dev": "vitepress dev ./src",
+    "build": "vitepress build ./src",
+    "preview": "vitepress preview ./src"
   },
   "devDependencies": {
     "@nolebase/vitepress-plugin-enhanced-readabilities": "^2.12.1",

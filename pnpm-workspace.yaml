@@ -1,5 +1,4 @@
 packages:
   - "app"
   - "docs"
-  - "coserver"
   - "packages/*"
