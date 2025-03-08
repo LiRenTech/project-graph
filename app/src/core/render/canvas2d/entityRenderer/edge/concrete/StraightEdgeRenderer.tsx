@@ -75,7 +75,10 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     if (edge.target instanceof Section && edge.source instanceof Section) {
       const rect1 = edge.source.collisionBox.getRectangle();
       const rect2 = edge.target.collisionBox.getRectangle();
-      edgeWidth = Math.max(rect1.width, rect2.width, rect1.height, rect2.height) / 100;
+      edgeWidth = Math.min(
+        Math.min(Math.max(rect1.width, rect1.height), Math.max(rect2.width, rect2.height)) / 100,
+        100,
+      );
     }
 
     if (edge.text.trim() === "") {

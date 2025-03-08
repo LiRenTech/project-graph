@@ -93,7 +93,7 @@ export namespace SectionRenderer {
   }
 
   export function renderBigTitle(section: Section) {
-    if (Camera.currentScale < 0.2) {
+    if (Camera.currentScale < Section.bigTitleCameraScale) {
       const fontSizeVector = getFontSizeBySectionSize(section);
       const fontHeight = fontSizeVector.y;
       ShapeRenderer.renderRect(

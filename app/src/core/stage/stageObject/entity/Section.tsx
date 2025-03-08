@@ -26,6 +26,11 @@ export class Section extends ConnectableEntity {
   private _collisionBoxWhenCollapsed: CollisionBox;
   private _collisionBoxNormal: CollisionBox;
 
+  /**
+   * 小于多少的情况下，开始渲染大标题
+   */
+  static bigTitleCameraScale = 0.2;
+
   public get collisionBox(): CollisionBox {
     if (this.isCollapsed) {
       return this._collisionBoxWhenCollapsed;
