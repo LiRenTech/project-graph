@@ -2,6 +2,7 @@ node_modules
 dist
 .env
 .idea
+storybook-static
 
 docs/src/.vitepress/dist
 docs/src/.vitepress/cache
