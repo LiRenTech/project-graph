@@ -82,8 +82,8 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: "首页", link: "/zh/" },
-          { text: "指南", link: "/zh/guide" },
-          { text: "开发", link: "/zh/dev" },
+          { text: "指南", link: "/zh/guide/" },
+          { text: "开发", link: "/zh/dev/" },
           { text: "捐赠", link: "/zh/donate" },
           { text: "在线使用", link: "https://web.project-graph.top" },
         ],

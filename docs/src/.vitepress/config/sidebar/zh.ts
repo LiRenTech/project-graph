@@ -115,6 +115,10 @@ const dev: DefaultTheme.SidebarItem[] = [
     text: "iframe 框架",
     link: "/zh/dev/iframe",
   },
+  {
+    text: "@pg/ui",
+    link: "https://ui.project-graph.top",
+  },
 ];
 
 export const sidebarZh: DefaultTheme.SidebarMulti = {
