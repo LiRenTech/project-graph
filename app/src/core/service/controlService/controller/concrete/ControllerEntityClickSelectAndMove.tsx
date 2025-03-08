@@ -10,6 +10,7 @@ import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concr
 import { RectangleRenderEffect } from "../../../feedbackService/effectEngine/concrete/RectangleRenderEffect";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { getClickedStageObject } from "./utilsControl";
 
 /**
  * 拖拽节点使其移动的控制器
@@ -31,7 +32,8 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
 
     const pressWorldLocation = Renderer.transformView2World(this.mouseDownViewLocation);
     this.lastMoveLocation = pressWorldLocation.clone();
-    const clickedEntity = StageManager.findEntityByLocation(pressWorldLocation);
+
+    const clickedEntity = getClickedStageObject(pressWorldLocation);
 
     // 防止跳跃式移动的时候改变选中内容
     if (Controller.pressingKeySet.has("alt")) {

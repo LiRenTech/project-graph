@@ -8,6 +8,7 @@ import { StageObject } from "../../../../stage/stageObject/abstract/StageObject"
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { getClickedStageObject } from "./utilsControl";
 
 class ControllerRectangleSelectClass extends ControllerClass {
   /**
@@ -54,10 +55,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
     }
     const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
-    if (
-      StageManager.isEntityOnLocation(pressWorldLocation) ||
-      StageManager.isAssociationOnLocation(pressWorldLocation)
-    ) {
+    if (getClickedStageObject(pressWorldLocation) !== null) {
       // 不是点击在空白处
       return;
     }

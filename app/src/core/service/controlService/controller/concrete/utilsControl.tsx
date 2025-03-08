@@ -10,6 +10,7 @@ import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/s
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
+import { StageObject } from "../../../../stage/stageObject/abstract/StageObject";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { Section } from "../../../../stage/stageObject/entity/Section";
@@ -238,4 +239,33 @@ function textNodeInEditModeByUUID(uuid: string) {
   if (isDesktop) {
     editTextNode(createNode);
   }
+}
+
+/**
+ * 检测鼠标是否点击到了某个stage对象上
+ * @param clickedLocation
+ */
+export function getClickedStageObject(clickedLocation: Vector) {
+  let clickedStageObject: StageObject | null = StageManager.findEntityByLocation(clickedLocation);
+  // 补充：在宏观视野下，框应该被很轻松的点击
+  if (clickedStageObject === null && Camera.currentScale < Section.bigTitleCameraScale) {
+    const clickedSections = SectionMethods.getSectionsByInnerLocation(clickedLocation);
+    if (clickedSections.length > 0) {
+      clickedStageObject = clickedSections[0];
+    }
+  }
+  if (clickedStageObject === null) {
+    for (const association of StageManager.getAssociations()) {
+      if (association instanceof LineEdge) {
+        if (association.target.isHiddenBySectionCollapse && association.source.isHiddenBySectionCollapse) {
+          continue;
+        }
+      }
+      if (association.collisionBox.isContainsPoint(clickedLocation)) {
+        clickedStageObject = association;
+        break;
+      }
+    }
+  }
+  return clickedStageObject;
 }
