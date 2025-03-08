@@ -1,12 +1,13 @@
 import { NumberFunctions } from "../../../../algorithm/numberFunctions";
 import { Random } from "../../../../algorithm/random";
+import { Decimal } from "decimal.js";
 
 /**
  * 存放和数学逻辑有关的函数
  */
 export namespace MathFunctions {
   export function add(numbers: number[]): number[] {
-    return [numbers.reduce((acc, cur) => acc + cur, 0)];
+    return [numbers.reduce((acc, cur) => new Decimal(acc).plus(new Decimal(cur)).toNumber(), 0)];
   }
 
   export function subtract(numbers: number[]): number[] {
@@ -17,15 +18,15 @@ export namespace MathFunctions {
       return [-numbers[0]];
     }
     // 累减
-    let result = numbers[0];
+    let result = new Decimal(numbers[0]);
     for (let i = 1; i < numbers.length; i++) {
-      result -= numbers[i];
+      result = result.sub(new Decimal(numbers[i]));
     }
-    return [result];
+    return [result.toNumber()];
   }
 
   export function multiply(numbers: number[]): number[] {
-    return [numbers.reduce((acc, cur) => acc * cur, 1)];
+    return [numbers.reduce((acc, cur) => new Decimal(acc).times(new Decimal(cur)).toNumber(), 1)];
   }
 
   export function divide(numbers: number[]): number[] {
@@ -35,11 +36,11 @@ export namespace MathFunctions {
     if (numbers.length === 1) {
       return [1 / numbers[0]];
     }
-    let result = numbers[0];
+    let result = new Decimal(numbers[0]);
     for (let i = 1; i < numbers.length; i++) {
-      result /= numbers[i];
+      result = result.div(new Decimal(numbers[i]));
     }
-    return [result];
+    return [result.toNumber()];
   }
 
   export function modulo(numbers: number[]): number[] {
@@ -63,11 +64,11 @@ export namespace MathFunctions {
     if (numbers.length === 1) {
       return [Math.pow(numbers[0], 1)];
     }
-    let result = numbers[0];
+    let result = new Decimal(numbers[0]);
     for (let i = 1; i < numbers.length; i++) {
-      result = Math.pow(result, numbers[i]);
+      result = result.pow(new Decimal(numbers[i]));
     }
-    return [result];
+    return [result.toNumber()];
   }
 
   export function factorial(numbers: number[]): number[] {
@@ -75,11 +76,11 @@ export namespace MathFunctions {
   }
 
   export function sqrt(numbers: number[]): number[] {
-    return numbers.map((n) => Math.sqrt(n));
+    return numbers.map((n) => new Decimal(n).sqrt().toNumber());
   }
 
   export function abs(numbers: number[]): number[] {
-    return numbers.map((n) => Math.abs(n));
+    return numbers.map((n) => new Decimal(n).abs().toNumber());
   }
 
   export function log(numbers: number[]): number[] {
@@ -94,47 +95,47 @@ export namespace MathFunctions {
   }
 
   export function ln(numbers: number[]): number[] {
-    return numbers.map((n) => Math.log(n));
+    return numbers.map((n) => new Decimal(n).ln().toNumber());
   }
 
   export function exp(numbers: number[]): number[] {
-    return numbers.map((n) => Math.exp(n));
+    return numbers.map((n) => new Decimal(n).exp().toNumber());
   }
 
   export function sin(numbers: number[]): number[] {
-    return numbers.map((n) => Math.sin(n));
+    return numbers.map((n) => new Decimal(n).sin().toNumber());
   }
 
   export function cos(numbers: number[]): number[] {
-    return numbers.map((n) => Math.cos(n));
+    return numbers.map((n) => new Decimal(n).cos().toNumber());
   }
 
   export function tan(numbers: number[]): number[] {
-    return numbers.map((n) => Math.tan(n));
+    return numbers.map((n) => new Decimal(n).tan().toNumber());
   }
 
   export function asin(numbers: number[]): number[] {
-    return numbers.map((n) => Math.asin(n));
+    return numbers.map((n) => new Decimal(n).asin().toNumber());
   }
 
   export function acos(numbers: number[]): number[] {
-    return numbers.map((n) => Math.acos(n));
+    return numbers.map((n) => new Decimal(n).acos().toNumber());
   }
 
   export function atan(numbers: number[]): number[] {
-    return numbers.map((n) => Math.atan(n));
+    return numbers.map((n) => new Decimal(n).atan().toNumber());
   }
 
   export function sinh(numbers: number[]): number[] {
-    return numbers.map((n) => Math.sinh(n));
+    return numbers.map((n) => new Decimal(n).sinh().toNumber());
   }
 
   export function cosh(numbers: number[]): number[] {
-    return numbers.map((n) => Math.cosh(n));
+    return numbers.map((n) => new Decimal(n).cosh().toNumber());
   }
 
   export function tanh(numbers: number[]): number[] {
-    return numbers.map((n) => Math.tanh(n));
+    return numbers.map((n) => new Decimal(n).tanh().toNumber());
   }
   export function max(numbers: number[]): number[] {
     return [Math.max(...numbers)];
@@ -188,16 +189,13 @@ export namespace MathFunctions {
   export function count(numbers: number[]): number[] {
     return [numbers.length];
   }
-  export function sum(numbers: number[]): number[] {
-    return [numbers.reduce((acc, cur) => acc + cur, 0)];
-  }
   /**
    * 平均值
    * @param numbers
    * @returns
    */
   export function average(numbers: number[]): number[] {
-    return [numbers.reduce((acc, cur) => acc + cur, 0) / numbers.length];
+    return [new Decimal(add(numbers)[0]).div(numbers.length).toNumber()];
   }
   /**
    * 中位数
