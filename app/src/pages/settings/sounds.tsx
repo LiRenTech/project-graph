@@ -14,6 +14,8 @@ import { SettingField } from "./_field";
 import Button from "../../components/Button";
 import { Settings } from "../../core/service/Settings";
 import { PathString } from "../../utils/pathString";
+import { exists } from "../../utils/fs";
+import { Dialog } from "../../components/dialog";
 
 export default function Sounds() {
   const handleClickImportSounds = async () => {
@@ -24,18 +26,71 @@ export default function Sounds() {
       multiple: false,
       filters: [],
     });
+    const p = (fileName: string) => folderPath + PathString.getSep() + fileName;
     if (folderPath) {
-      console.log(folderPath);
       // D:\XX\XXX\project-graph
-      Settings.set("cuttingLineStartSoundFile", folderPath + PathString.getSep() + "cuttingLineStart.mp3");
-      Settings.set("cuttingLineReleaseSoundFile", folderPath + PathString.getSep() + "cuttingLineRelease.mp3");
-      Settings.set("connectLineStartSoundFile", folderPath + PathString.getSep() + "connectLineStart.mp3");
-      Settings.set("connectFindTargetSoundFile", folderPath + PathString.getSep() + "connectFindTarget.mp3");
-      Settings.set("alignAndAttachSoundFile", folderPath + PathString.getSep() + "alignAndAttach.mp3");
-      Settings.set("uiButtonEnterSoundFile", folderPath + PathString.getSep() + "uiButtonEnter.mp3");
-      Settings.set("uiButtonClickSoundFile", folderPath + PathString.getSep() + "uiButtonClick.mp3");
-      Settings.set("uiSwitchButtonOnSoundFile", folderPath + PathString.getSep() + "uiSwitchButtonOn.mp3");
-      Settings.set("uiSwitchButtonOffSoundFile", folderPath + PathString.getSep() + "uiSwitchButtonOff.mp3");
+      // console.log(folderPath);
+
+      const lostFiles = [];
+      if (await exists(p("cuttingLineStart.mp3"))) {
+        Settings.set("cuttingLineStartSoundFile", p("cuttingLineStart.mp3"));
+      } else {
+        lostFiles.push("cuttingLineStart.mp3");
+      }
+
+      if (await exists(p("cuttingLineRelease.mp3"))) {
+        Settings.set("cuttingLineReleaseSoundFile", p("cuttingLineRelease.mp3"));
+      } else {
+        lostFiles.push("cuttingLineRelease.mp3");
+      }
+      if (await exists(p("connectLineStart.mp3"))) {
+        Settings.set("connectLineStartSoundFile", p("connectLineStart.mp3"));
+      } else {
+        lostFiles.push("connectLineStart.mp3");
+      }
+      if (await exists(p("connectFindTarget.mp3"))) {
+        Settings.set("connectFindTargetSoundFile", p("connectFindTarget.mp3"));
+      } else {
+        lostFiles.push("connectFindTarget.mp3");
+      }
+      if (await exists(p("alignAndAttach.mp3"))) {
+        Settings.set("alignAndAttachSoundFile", p("alignAndAttach.mp3"));
+      } else {
+        lostFiles.push("alignAndAttach.mp3");
+      }
+      if (await exists(p("uiButtonEnter.mp3"))) {
+        Settings.set("uiButtonEnterSoundFile", p("uiButtonEnter.mp3"));
+      } else {
+        lostFiles.push("uiButtonEnter.mp3");
+      }
+      if (await exists(p("uiButtonClick.mp3"))) {
+        Settings.set("uiButtonClickSoundFile", p("uiButtonClick.mp3"));
+      } else {
+        lostFiles.push("uiButtonClick.mp3");
+      }
+      if (await exists(p("uiSwitchButtonOn.mp3"))) {
+        Settings.set("uiSwitchButtonOnSoundFile", p("uiSwitchButtonOn.mp3"));
+      } else {
+        lostFiles.push("uiSwitchButtonOn.mp3");
+      }
+      if (await exists(p("uiSwitchButtonOff.mp3"))) {
+        Settings.set("uiSwitchButtonOffSoundFile", p("uiSwitchButtonOff.mp3"));
+      } else {
+        lostFiles.push("uiSwitchButtonOff.mp3");
+      }
+      if (lostFiles.length > 0) {
+        Dialog.show({
+          title: "提示",
+          content: `未找到以下${lostFiles.length}个文件：${lostFiles.join(", ")}`,
+          type: "warning",
+        });
+      } else {
+        Dialog.show({
+          title: "提示",
+          content: "导入成功",
+          type: "success",
+        });
+      }
     }
   };
 
