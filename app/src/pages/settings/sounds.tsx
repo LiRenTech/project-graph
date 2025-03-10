@@ -73,8 +73,14 @@ export default function Sounds() {
       ))}
       <div className="flex flex-nowrap gap-2">
         <Button
-          tooltip="https://github.com/LiRenTech/project-graph/tree/master/sounds"
-          onClick={() => open("https://github.com/LiRenTech/project-graph/tree/master/sounds")}
+          tooltip="https://github.com/LiRenTech/project-graph-cdn"
+          onClick={() => {
+            Dialog.show({
+              title: "网页",
+              content: "请将下面的内容复制,在浏览器中打开",
+              code: "https://github.com/LiRenTech/project-graph-cdn",
+            });
+          }}
         >
           <Github />
           <span>获取官方音效文件夹</span>
