@@ -202,7 +202,7 @@ export class ControllerCameraClass extends ControllerClass {
     if (!Stage.enableWindowsTouchPad) {
       if (isUsingTouchPad) {
         // 禁止使用触摸板
-        Stage.effectMachine.addEffect(TextRiseEffect.default("已禁用触控板滚动"));
+        Stage.effectMachine.addEffect(TextRiseEffect.default(`已禁用触控板滚动，（${event.deltaX}, ${event.deltaY}）`));
         return;
       }
     }
@@ -261,6 +261,7 @@ export class ControllerCameraClass extends ControllerClass {
       Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
     }
   };
+
   /**
    * 处理鼠标双击事件
    * @param event - 鼠标事件
