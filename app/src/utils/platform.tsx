@@ -5,6 +5,8 @@ export const isWeb = !("__TAURI_OS_PLUGIN_INTERNALS__" in window);
 export const isMobile = isWeb ? navigator.userAgent.toLowerCase().includes("mobile") : platform() === "android";
 export const isDesktop = !isMobile;
 
+export const isIpad = isWeb && navigator.userAgent.toLowerCase().includes("mac os");
+
 export const isFrame =
   isWeb && (new URLSearchParams(window.location.search).get("frame") === "true" || import.meta.env.LR_FRAME === "true");
 

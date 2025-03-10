@@ -3,6 +3,7 @@
  */
 
 import { CursorNameEnum } from "../../../../../types/cursors";
+import { isIpad, isMac } from "../../../../../utils/platform";
 import { ArrayFunctions } from "../../../../algorithm/arrayFunctions";
 import { LimitLengthQueue } from "../../../../dataStruct/LimitLengthQueue";
 import { Vector } from "../../../../dataStruct/Vector";
@@ -347,6 +348,9 @@ const importantNumbers = new Set<number>([]); // 100, 133, 138, 166
  * @returns
  */
 function isMouseWheel(event: WheelEvent): boolean {
+  if (isIpad || isMac) {
+    return true;
+  }
   if (event.deltaX !== 0 && event.deltaY !== 0) {
     // 斜向滚动肯定不是鼠标滚轮。因为滚轮只有横向滚轮和竖向滚轮
     return false;
