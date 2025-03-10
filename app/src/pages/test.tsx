@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Settings } from "../core/service/Settings";
-import { isLinux, isMac, isMobile, isWeb, isWindows } from "../utils/platform";
+import { isDesktop, isLinux, isMac, isMobile, isWeb, isWindows } from "../utils/platform";
 
 export default function TestPage() {
   useEffect(() => {
@@ -23,13 +23,12 @@ export default function TestPage() {
   return (
     <>
       <div className="px-4 pt-20">
-        <p>当前主题: {theme}</p>
-        <p>isMac: {isMac}</p>
+        <p>当前主题: {theme.toString()}</p>
         <p>
-          isWeb: {isWeb}, isMobile: {isMobile}
+          isWeb: {isWeb.toString()}, isMobile: {isMobile.toString()}, isDesktop: {isDesktop.toString()}
         </p>
         <p>
-          {isWindows}, {isLinux}
+          isMac: {isMac.toString()}, isWindows: {isWindows.toString()}, isLinux: {isLinux.toString()}
         </p>
       </div>
     </>

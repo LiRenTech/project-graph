@@ -102,6 +102,7 @@ export default function About() {
         <h1
           className="text-panel-text text-3xl font-bold"
           onClick={() => {
+            console.log("goto test");
             navigate("/test");
           }}
         >
