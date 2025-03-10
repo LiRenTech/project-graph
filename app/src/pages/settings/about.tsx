@@ -99,7 +99,14 @@ export default function About() {
             setClickedLogoCount(clickedLogoCount + 1);
           }}
         />
-        <h1 className="text-panel-text text-3xl font-bold">Project Graph</h1>
+        <h1
+          className="text-panel-text text-3xl font-bold"
+          onClick={() => {
+            navigate("/test");
+          }}
+        >
+          Project Graph
+        </h1>
         <p className="text-panel-details-text text-center text-sm">
           {i18n.language === "zh-CN" ? versionName + " " : ""}
           {versionNameEn}
