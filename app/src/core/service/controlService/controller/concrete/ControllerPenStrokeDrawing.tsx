@@ -1,11 +1,7 @@
-import { Color } from "../../../../dataStruct/Color";
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { PenStroke, PenStrokeSegment } from "../../../../stage/stageObject/entity/PenStroke";
-import { LineEffect } from "../../../feedbackService/effectEngine/concrete/LineEffect";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -43,7 +39,7 @@ class ControllerDrawingClass extends ControllerClass {
 
     this.recordLocation.push(pressWorldLocation.clone());
 
-    ControllerDrawing.lastMoveLocation = pressWorldLocation.clone();
+    this.lastMoveLocation = pressWorldLocation.clone();
   };
 
   public mousemove = (event: MouseEvent) => {
@@ -52,22 +48,15 @@ class ControllerDrawingClass extends ControllerClass {
       return;
     }
     const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-
+    // 检测：如果移动距离不超过10，则不记录
+    if (worldLocation.distance(this.lastMoveLocation) < 5) {
+      return;
+    }
     this.recordLocation.push(worldLocation.clone());
 
-    // 绘制临时激光笔特效
-    Stage.effectMachine.addEffect(
-      new LineEffect(
-        new ProgressNumber(0, 50),
-        ControllerDrawing.lastMoveLocation,
-        worldLocation,
-        new Color(255, 255, 0, 1),
-        new Color(255, 255, 0, 1),
-        2,
-      ),
-    );
-    this.currentStroke.push(new PenStrokeSegment(ControllerDrawing.lastMoveLocation, worldLocation, 15));
-    ControllerDrawing.lastMoveLocation = worldLocation.clone();
+    // 记录笔刷
+    this.currentStroke.push(new PenStrokeSegment(this.lastMoveLocation, worldLocation, 5));
+    this.lastMoveLocation = worldLocation.clone();
   };
 
   public mouseup = (event: MouseEvent) => {
@@ -86,7 +75,6 @@ class ControllerDrawingClass extends ControllerClass {
     const contentString = strokeStringList.join("~");
 
     const stroke = new PenStroke(contentString);
-    stroke.beautify();
     StageManager.addPenStroke(stroke);
     this.recordLocation = [];
     this.currentStroke = [];

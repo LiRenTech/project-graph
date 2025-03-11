@@ -168,6 +168,7 @@ export namespace EntityRenderer {
       ),
       fillColor,
       StageStyleManager.currentStyle.StageObjectBorderColor,
+      // Color.Transparent,
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );

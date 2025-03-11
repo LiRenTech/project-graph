@@ -8,6 +8,7 @@ import { CollisionBox } from "../collisionBox/collisionBox";
 
 /**
  * 一笔画中的某一个小段
+ * 起始点，结束点，宽度
  */
 export class PenStrokeSegment {
   constructor(
@@ -57,6 +58,9 @@ export class PenStroke extends Entity {
     for (const segment of this.segmentList) {
       result.push(segment.startLocation);
     }
+    if (this.segmentList.length >= 1) {
+      result.push(this.segmentList[this.segmentList.length - 1].endLocation);
+    }
     return result;
   }
   public getSegmentList(): PenStrokeSegment[] {
@@ -97,28 +101,6 @@ export class PenStroke extends Entity {
       result.push(new PenStrokeSegment(currentPoint, nextPoint, width));
     }
     return result;
-  }
-
-  // 美化segmentList
-  private beautifySegmentList(segmentList: PenStrokeSegment[]) {
-    // 粗细差距，一开细，中间粗，末尾细
-    const maxWidth = Math.max(...segmentList.map((segment) => segment.width));
-    const minWidth = 1;
-    if (segmentList.length > 10) {
-      // 前面5个段变粗，最后5个段变细
-      const firstFive = segmentList.slice(0, 5);
-      const lastFive = segmentList.slice(-5);
-      for (let i = 0; i < firstFive.length; i++) {
-        firstFive[i].width = minWidth + ((maxWidth - minWidth) * (i + 1)) / firstFive.length;
-      }
-      for (let i = 0; i < lastFive.length; i++) {
-        lastFive[i].width = maxWidth - ((maxWidth - minWidth) * (i + 1)) / lastFive.length;
-      }
-    }
-  }
-
-  public beautify(): void {
-    this.beautifySegmentList(this.segmentList);
   }
 
   dumpString(): string {
