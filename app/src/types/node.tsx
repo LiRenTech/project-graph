@@ -65,6 +65,7 @@ export namespace Serialized {
   export type PenStroke = Entity & {
     type: "core:pen_stroke";
     content: string;
+    color: Color;
   };
   // export type Edge = StageObject & {
   //   type: "core:edge";

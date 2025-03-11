@@ -428,9 +428,13 @@ export namespace EntityRenderer {
     renderEntityDetails(imageNode);
   }
   function renderPenStroke(penStroke: PenStroke) {
+    let penStrokeColor = penStroke.getColor();
+    if (penStrokeColor.a === 0) {
+      penStrokeColor = StageStyleManager.currentStyle.StageObjectBorderColor.clone();
+    }
     CurveRenderer.renderSolidLineMultipleWithWidth(
       penStroke.getPath().map((v) => Renderer.transformWorld2View(v)),
-      penStroke.getColor(),
+      penStrokeColor,
       penStroke.getSegmentList().map((seg) => seg.width * Camera.currentScale),
     );
     if (penStroke.isMouseHover) {

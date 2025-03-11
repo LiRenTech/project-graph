@@ -25,7 +25,7 @@ export namespace StageLoader {
     data = convertV11toV12(data);
     data = convertV12toV13(data);
     data = convertV13toV14(data);
-
+    data = convertV14toV15(data);
     return data as Serialized.File;
   }
 
@@ -263,6 +263,25 @@ export namespace StageLoader {
       // edge.color = [0, 0, 0, 0];
       if (typeof edge.color === "undefined") {
         edge.color = [0, 0, 0, 0];
+      }
+    }
+    return data;
+  }
+
+  /**
+   * 涂鸦增加颜色字段
+   * @param data
+   */
+  function convertV14toV15(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 15) {
+      return data;
+    }
+    data.version = 15;
+    for (const node of data.entities) {
+      if (node.type === "core:pen_stroke") {
+        if (typeof node.color === "undefined") {
+          node.color = [0, 0, 0, 0];
+        }
       }
     }
     return data;

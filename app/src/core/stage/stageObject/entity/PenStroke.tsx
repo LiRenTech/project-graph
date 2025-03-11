@@ -2,7 +2,6 @@ import { v4 } from "uuid";
 import { Color } from "../../../dataStruct/Color";
 import { Line } from "../../../dataStruct/shape/Line";
 import { Vector } from "../../../dataStruct/Vector";
-import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Entity } from "../abstract/StageEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
@@ -49,10 +48,14 @@ export class PenStroke extends Entity {
   }
 
   private segmentList: PenStrokeSegment[] = [];
-  private color: Color = StageStyleManager.currentStyle.StageObjectBorderColor;
+  private color: Color = Color.Transparent;
   public getColor(): Color {
     return this.color;
   }
+  public setColor(color: Color): void {
+    this.color = color;
+  }
+
   public getPath(): Vector[] {
     const result: Vector[] = [];
     for (const segment of this.segmentList) {

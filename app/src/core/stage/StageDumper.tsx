@@ -110,6 +110,7 @@ export namespace StageDumper {
       details: penStroke.details,
       location: [penStroke.getPath()[0].x, penStroke.getPath()[0].y],
       type: "core:pen_stroke",
+      color: penStroke.getColor().toArray(),
     };
   }
   export function dumpPortalNode(portalNode: PortalNode): Serialized.PortalNode {

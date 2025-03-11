@@ -44,6 +44,7 @@ export default function ColorPanel() {
             const color = new Color(239, 68, 68);
             StageObjectColorManager.setEntityColor(color);
             StageObjectColorManager.setEdgeColor(color);
+            StageObjectColorManager.setStrokeColor(color);
             Settings.set("autoFillNodeColor", color.toArray());
           }}
         />
@@ -53,6 +54,7 @@ export default function ColorPanel() {
             const color = new Color(234, 179, 8);
             StageObjectColorManager.setEntityColor(color);
             StageObjectColorManager.setEdgeColor(color);
+            StageObjectColorManager.setStrokeColor(color);
             Settings.set("autoFillNodeColor", color.toArray());
           }}
         />
@@ -62,6 +64,7 @@ export default function ColorPanel() {
             const color = new Color(22, 163, 74);
             StageObjectColorManager.setEntityColor(color);
             StageObjectColorManager.setEdgeColor(color);
+            StageObjectColorManager.setStrokeColor(color);
             Settings.set("autoFillNodeColor", color.toArray());
           }}
         />
@@ -71,6 +74,7 @@ export default function ColorPanel() {
             const color = new Color(59, 130, 246);
             StageObjectColorManager.setEntityColor(color);
             StageObjectColorManager.setEdgeColor(color);
+            StageObjectColorManager.setStrokeColor(color);
             Settings.set("autoFillNodeColor", color.toArray());
           }}
         />
@@ -80,6 +84,7 @@ export default function ColorPanel() {
             const color = new Color(168, 85, 247);
             StageObjectColorManager.setEntityColor(color);
             StageObjectColorManager.setEdgeColor(color);
+            StageObjectColorManager.setStrokeColor(color);
             Settings.set("autoFillNodeColor", color.toArray());
           }}
         />
@@ -90,6 +95,7 @@ export default function ColorPanel() {
             const color = Color.Transparent;
             StageObjectColorManager.setEntityColor(color);
             StageObjectColorManager.setEdgeColor(color);
+            StageObjectColorManager.setStrokeColor(color);
             Settings.set("autoFillNodeColor", color.toArray());
           }}
         >
@@ -110,6 +116,7 @@ export default function ColorPanel() {
             const b = parseInt(color.slice(5, 7), 16);
             StageObjectColorManager.setEntityColor(new Color(r, g, b));
             StageObjectColorManager.setEdgeColor(new Color(r, g, b));
+            StageObjectColorManager.setStrokeColor(new Color(r, g, b));
           }}
         ></input>
         <Button
@@ -134,6 +141,7 @@ export default function ColorPanel() {
               onClick={() => {
                 StageObjectColorManager.setEntityColor(color);
                 StageObjectColorManager.setEdgeColor(color);
+                StageObjectColorManager.setStrokeColor(color);
                 Settings.set("autoFillNodeColor", color.toArray());
               }}
             />

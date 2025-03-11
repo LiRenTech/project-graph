@@ -49,6 +49,15 @@ export namespace StageObjectColorManager {
     StageHistoryManager.recordStep();
   }
 
+  export function setStrokeColor(color: Color) {
+    for (const entity of StageManager.getPenStrokes()) {
+      if (entity.isSelected) {
+        entity.setColor(color);
+      }
+    }
+    StageHistoryManager.recordStep();
+  }
+
   export function clearEdgeColor() {
     for (const edge of StageManager.getLineEdges()) {
       if (edge.isSelected) {
