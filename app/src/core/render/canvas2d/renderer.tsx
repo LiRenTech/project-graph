@@ -488,7 +488,7 @@ export namespace Renderer {
           transformWorld2View(segment.startLocation),
           transformWorld2View(segment.endLocation),
           StageStyleManager.currentStyle.StageObjectBorderColor,
-          15 * Camera.currentScale,
+          5 * Camera.currentScale,
         );
       }
     }
