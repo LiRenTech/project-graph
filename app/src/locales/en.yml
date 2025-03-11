@@ -21,20 +21,20 @@ about:
     qq: QQ
     forum: Forum (d2learn)
   intro:
-    - Software Introduction
-    - This is a tool for quickly drawing topological graphs based on the Tauri framework,
-      which can be used for project topology diagram drawing and rapid brainstorming
-      drafts.
-    - Xmind can only be used to draw tree structure diagrams, while FigJam and draw.io
-      can be used for drawing but they are a bit slow to open as web pages.
-    - Therefore, this small software was created.
+  - Software Introduction
+  - This is a tool for quickly drawing topological graphs based on the Tauri framework,
+    which can be used for project topology diagram drawing and rapid brainstorming
+    drafts.
+  - Xmind can only be used to draw tree structure diagrams, while FigJam and draw.io
+    can be used for drawing but they are a bit slow to open as web pages.
+  - Therefore, this small software was created.
   contact:
-    - Contact Us
-    - We are committed to designing the fastest and most convenient methodology for
-      "graph theory" and are also exploring and innovating in the fields of visual thinking
-      and topological todo lists.
-    - "If you want to get feedback quickly and provide suggestions, or if you have any
-      ideas or questions, you are welcome to join our QQ group: 1006956704"
+  - Contact Us
+  - We are committed to designing the fastest and most convenient methodology for
+    "graph theory" and are also exploring and innovating in the fields of visual thinking
+    and topological todo lists.
+  - "If you want to get feedback quickly and provide suggestions, or if you have any
+    ideas or questions, you are welcome to join our QQ group: 1006956704"
   techEnvironment: Technical Support and Ecosystem
   developers:
     title: Developers List
@@ -58,32 +58,32 @@ about:
     encouragerEncourager: Encourager's Encourager
     atmosphereAdjuster: Atmosphere Adjuster
   ideaSources:
-    - Inspiration Sources
-    - FigJam not supporting dark mode
-    - Director Lin Chao's video on the detailed analysis of drawing analysis frameworks
-    - Topological ordering, graph theory, state machines, and set theory concepts in
-      Data Structures and Algorithms
-    - "Brainstorming method, cognitive load theory, cards creativity"
-    - Command Blocks in Minecraft
-    - The animation effect of slashing in Fruit Ninja
-    - The factory assembly line design in the game "Mindustry" is turned into logical
-      nodes
-    - The concept of state machines
+  - Inspiration Sources
+  - FigJam not supporting dark mode
+  - Director Lin Chao's video on the detailed analysis of drawing analysis frameworks
+  - Topological ordering, graph theory, state machines, and set theory concepts in
+    Data Structures and Algorithms
+  - "Brainstorming method, cognitive load theory, cards creativity"
+  - Command Blocks in Minecraft
+  - The animation effect of slashing in Fruit Ninja
+  - The factory assembly line design in the game "Mindustry" is turned into logical
+    nodes
+  - The concept of state machines
   team:
-    - Team Introduction
-    - LiRen Tech is a small team founded by Littlefean and Rutubet on May 1, 2017, with
-      ZTY joining the team later.
-    - With its youthful team atmosphere, emphasis on innovation and creativity, and
-      characteristics of rational thinking and cultural inclusiveness, it stands out
-      in the field of software development.
-    - Not only focuses on developing tool software and games but also engages in Minecraft
-      game plugin development, game server operation, and website construction in a
-      diversified business.
-    - LiRen Tech's representative works include the rich content tower defense game
-      CannonWar, the BitMountain algorithm competition website, the Watch desktop software,
-      and the Minecraft PvP Professional War server.
-    - The team is represented by light blue and code green, symbolizing a team culture
-      that coexists with logical rationality and humor.
+  - Team Introduction
+  - LiRen Tech is a small team founded by Littlefean and Rutubet on May 1, 2017, with
+    ZTY joining the team later.
+  - With its youthful team atmosphere, emphasis on innovation and creativity, and
+    characteristics of rational thinking and cultural inclusiveness, it stands out
+    in the field of software development.
+  - Not only focuses on developing tool software and games but also engages in Minecraft
+    game plugin development, game server operation, and website construction in a
+    diversified business.
+  - LiRen Tech's representative works include the rich content tower defense game
+    CannonWar, the BitMountain algorithm competition website, the Watch desktop software,
+    and the Minecraft PvP Professional War server.
+  - The team is represented by light blue and code green, symbolizing a team culture
+    that coexists with logical rationality and humor.
 
 settings:
   title: Settings
@@ -491,13 +491,13 @@ appMenu:
 startFilePanel:
   title: Select the project file to be automatically loaded on startup
   tips:
-    - "Note: The project file that is automatically loaded at startup will be loaded
-      onto the stage when opened, no manual opening is required."
-    - "Load: Only load this file onto the stage (you can hover transparently to see
-      if the switched file is the one you want)"
-    - "Pin: Switch the current startup file; the icon in the left status represents
-      the current startup file."
-    - "Remove: Only remove the file from the list, it will not affect the file itself."
+  - "Note: The project file that is automatically loaded at startup will be loaded
+    onto the stage when opened, no manual opening is required."
+  - "Load: Only load this file onto the stage (you can hover transparently to see
+    if the switched file is the one you want)"
+  - "Pin: Switch the current startup file; the icon in the left status represents
+    the current startup file."
+  - "Remove: Only remove the file from the list, it will not affect the file itself."
   buttons:
     addFile: Add File
     clearList: Clear List
