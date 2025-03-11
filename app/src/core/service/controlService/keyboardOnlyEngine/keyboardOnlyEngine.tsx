@@ -56,16 +56,7 @@ export namespace KeyboardOnlyEngine {
    */
   function bindKeyEvents() {
     window.addEventListener("keydown", (event) => {
-      if (event.key === "`") {
-        onDeepGenerateNode();
-      } else if (event.key === "\\") {
-        onBroadGenerateNode();
-      }
-      if (event.key === "Tab") {
-        // if (isEnableVirtualCreate()) {
-        //   createStart();
-        // }
-      } else if (event.key === "Enter") {
+      if (event.key === "Enter") {
         const enterKeyDetail = getEnterKey(event);
         if (textNodeStartEditMode === enterKeyDetail) {
           // 这个还必须在down的位置上，因为在up上会导致无限触发
@@ -93,16 +84,13 @@ export namespace KeyboardOnlyEngine {
         SelectChangeEngine.listenKeyDown(event);
       }
     });
-    // window.addEventListener("keyup", (event) => {
-    //   if (event.key === "Tab") {
-    //     if (isCreating()) {
-    //       createFinished();
-    //     }
-    //   }
-    // });
   }
 
-  function onDeepGenerateNode() {
+  /**
+   * 树形深度生长节点
+   * @returns
+   */
+  export function onDeepGenerateNode() {
     const rootNode = StageManager.getConnectableEntity().find((node) => node.isSelected);
     if (!rootNode) return;
     Camera.clearMoveCommander();
@@ -152,7 +140,11 @@ export namespace KeyboardOnlyEngine {
     }, 100);
   }
 
-  function onBroadGenerateNode() {
+  /**
+   * 树形广度生长节点
+   * @returns
+   */
+  export function onBroadGenerateNode() {
     const currentSelectNode = StageManager.getConnectableEntity().find((node) => node.isSelected);
     if (!currentSelectNode) return;
     Camera.clearMoveCommander();

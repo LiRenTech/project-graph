@@ -650,6 +650,19 @@ keyBinds:
     title: 仅使用键盘生长节点
     description: |
       按下后，仅使用键盘生长节点
+      松开后，生长完成
+  generateNodeTreeWithDeepMode:
+    title: 按下深度模式生长节点
+    description: |
+      按下后，瞬间生长一个节点并放置在当前选中节点的右侧
+      同时自动排版整个节点树的结构，确保其是一个向右的树型结构
+      使用此功能前先确保已选中一个节点、且该节点所在结构为树形结构
+  generateNodeTreeWithBroadMode:
+    title: 按下广度模式生长节点
+    description: |
+      按下后，创建一个同级节点并放置在当前选中节点的下方
+      同时自动排版整个节点树的结构，确保其是一个向下的树型结构
+      使用此功能前先确保已选中一个节点、且该节点存在父级节点
   masterBrakeControl:
     title: 动力系统刹车总控制器
     description: |

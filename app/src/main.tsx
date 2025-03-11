@@ -584,6 +584,26 @@ async function registerKeyBinds() {
   ).down(async () => {
     CopyEngine.pasteWithOriginLocation();
   });
+  (
+    await KeyBinds.create("generateNodeTreeWithDeepMode", "`", {
+      control: false,
+      meta: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(async () => {
+    KeyboardOnlyEngine.onDeepGenerateNode();
+  });
+  (
+    await KeyBinds.create("generateNodeTreeWithBroadMode", "\\", {
+      control: false,
+      meta: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(async () => {
+    KeyboardOnlyEngine.onBroadGenerateNode();
+  });
 
   const bind = await KeyBinds.create("keyboardOnlyGenerateNode", "tab", {
     control: false,
