@@ -227,9 +227,12 @@ export default function App() {
           {/* 叠加层，显示窗口控件 */}
           <div
             className={cn(
-              "pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 p-4 *:pointer-events-auto",
+              "pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 *:pointer-events-auto",
               {
                 "*:!pointer-events-none": ignoreMouse,
+              },
+              {
+                "p-4": !isWindowCollapsing,
               },
             )}
           >
@@ -254,61 +257,67 @@ export default function App() {
               </Button>
             )}
             {/* 左上角菜单按钮 */}
-            <IconButton
-              tooltip="菜单"
-              className={cn(isClassroomMode && "opacity-0")}
-              onClick={(e) => {
-                if (location.pathname !== "/") {
-                  if (location.pathname.startsWith("/welcome")) {
-                    Dialog.show({
-                      title: "Skip Setup?",
-                      content: "Are you sure you want to skip the setup process?",
-                      buttons: [
-                        {
-                          text: "Yes",
-                          onClick: () => navigate("/"),
-                        },
-                        {
-                          text: "No",
-                          onClick: () => {},
-                        },
-                      ],
-                    });
+            {!isWindowCollapsing && (
+              <IconButton
+                tooltip="菜单"
+                className={cn(isClassroomMode && "opacity-0")}
+                onClick={(e) => {
+                  if (location.pathname !== "/") {
+                    if (location.pathname.startsWith("/welcome")) {
+                      Dialog.show({
+                        title: "Skip Setup?",
+                        content: "Are you sure you want to skip the setup process?",
+                        buttons: [
+                          {
+                            text: "Yes",
+                            onClick: () => navigate("/"),
+                          },
+                          {
+                            text: "No",
+                            onClick: () => {},
+                          },
+                        ],
+                      });
+                    } else {
+                      navigate("/");
+                    }
                   } else {
-                    navigate("/");
+                    e.stopPropagation(); // 避免又触发了关闭
+                    setIsMenuOpen(!isMenuOpen);
                   }
-                } else {
-                  e.stopPropagation(); // 避免又触发了关闭
-                  setIsMenuOpen(!isMenuOpen);
-                }
-              }}
-            >
-              {location.pathname === "/" ? <Menu className={cn(isMenuOpen && "rotate-90")} /> : <ChevronLeft />}
-            </IconButton>
+                }}
+              >
+                {location.pathname === "/" ? <Menu className={cn(isMenuOpen && "rotate-90")} /> : <ChevronLeft />}
+              </IconButton>
+            )}
 
-            <IconButton
-              id="tagPanelBtn"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsTagPanelOpen(!isTagPanelOpen);
-              }}
-              tooltip="标签节点"
-              className={cn(isClassroomMode && "opacity-0")}
-            >
-              <Tag className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")} />
-            </IconButton>
+            {!isWindowCollapsing && (
+              <IconButton
+                id="tagPanelBtn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsTagPanelOpen(!isTagPanelOpen);
+                }}
+                tooltip="标签节点"
+                className={cn(isClassroomMode && "opacity-0")}
+              >
+                <Tag className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")} />
+              </IconButton>
+            )}
 
             {/* 逻辑节点按钮 */}
-            <IconButton
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsLogicNodePanelOpen(!isLogicNodePanelOpen);
-              }}
-              className={cn(isClassroomMode && "opacity-0")}
-              tooltip="逻辑节点"
-            >
-              <Cpu className={cn("cursor-pointer", isLogicNodePanelOpen ? "rotate-45" : "")} />
-            </IconButton>
+            {!isWindowCollapsing && (
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsLogicNodePanelOpen(!isLogicNodePanelOpen);
+                }}
+                className={cn(isClassroomMode && "opacity-0")}
+                tooltip="逻辑节点"
+              >
+                <Cpu className={cn("cursor-pointer", isLogicNodePanelOpen ? "rotate-45" : "")} />
+              </IconButton>
+            )}
             {/* 中间标题 */}
             {useNativeTitleBar || isWeb ? (
               // h-0 才能完全摆脱划线时经过此区域的卡顿问题
@@ -321,6 +330,7 @@ export default function App() {
                     "text-panel-error-text": isSaved,
                     "flex-1": isDesktop,
                     "opacity-0": isClassroomMode,
+                    "text-xs": isWindowCollapsing,
                   })}
                   tooltip="按住拖动窗口"
                 >
@@ -342,20 +352,25 @@ export default function App() {
               </>
             )}
             {/* 右上角闪电按钮 */}
-            <IconButton
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsStartFilePanelOpen(!isStartFilePanelOpen);
-              }}
-              className={cn(isClassroomMode && "opacity-0")}
-              tooltip="设置启动时打开的文件"
-              disabled={isMobile}
-            >
-              <Zap className={cn("cursor-pointer", isStartFilePanelOpen ? "rotate-45 scale-125" : "")} />
-            </IconButton>
+            {!isWindowCollapsing && (
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsStartFilePanelOpen(!isStartFilePanelOpen);
+                }}
+                className={cn(isClassroomMode && "opacity-0")}
+                tooltip="设置启动时打开的文件"
+                disabled={isMobile}
+              >
+                <Zap className={cn("cursor-pointer", isStartFilePanelOpen ? "rotate-45 scale-125" : "")} />
+              </IconButton>
+            )}
             {isDesktop && (
               <IconButton
-                className={cn(isWindowCollapsing && "animate-bounce", isClassroomMode && "opacity-0")}
+                className={cn(
+                  isWindowCollapsing && "h-2 w-2 border-green-300 bg-green-500",
+                  isClassroomMode && "opacity-0",
+                )}
                 onClick={async (e) => {
                   e.stopPropagation();
                   // const size = await getCurrentWindow().outerSize();
@@ -365,20 +380,20 @@ export default function App() {
                     tauriWindow.setSize(new LogicalSize(1100, 800));
                     tauriWindow.setAlwaysOnTop(false);
                   } else {
-                    // 纵向收起
-                    tauriWindow.setSize(new LogicalSize(1100, 100));
+                    // 收起
+                    tauriWindow.setSize(new LogicalSize(300, 300));
                     tauriWindow.setAlwaysOnTop(true);
                   }
                   setIsWindowCollapsing(!isWindowCollapsing);
                 }}
-                tooltip={isWindowCollapsing ? "展开并取消顶置窗口" : "卷起并顶置窗口"}
+                tooltip={isWindowCollapsing ? "展开并取消顶置窗口" : "进入迷你窗口模式"}
               >
                 <SquareArrowUp className={cn("cursor-pointer", isWindowCollapsing ? "rotate-180 scale-125" : "")} />
               </IconButton>
             )}
 
             {/* 右上角窗口控制按钮 */}
-            {isDesktop && !useNativeTitleBar && !isMac && !isWeb && (
+            {isDesktop && !isWindowCollapsing && !useNativeTitleBar && !isMac && !isWeb && (
               <Button
                 className={cn("right-4 top-4 flex items-center gap-1 active:scale-100", isClassroomMode && "opacity-0")}
               >
