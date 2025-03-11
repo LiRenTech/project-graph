@@ -9,6 +9,7 @@ import {
   MousePointer,
   Package,
   PaintBucket,
+  Palette,
   PenTool,
   RefreshCcw,
   Repeat,
@@ -36,6 +37,8 @@ import GenerateNodePanel from "./_popup_panel/_generate_node_panel";
 import { StageNodeConnector } from "../core/stage/stageManager/concreteMethods/StageNodeConnector";
 import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryManager";
 import { StageGeneratorAI } from "../core/stage/stageManager/concreteMethods/StageGeneratorAI";
+import { Panel } from "../components/panel";
+import ColorAutoPanel from "./_popup_panel/_color_auto_panel";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -123,6 +126,11 @@ export default function Toolbar({ className = "" }: { className?: string }) {
         description="设置节点/连线/框的颜色，注意要先选中再点颜色"
         icon={<PaintBucket />}
         handleFunction={() => Popup.show(<ColorPanel />, true)}
+      />
+      <ToolbarItem
+        description="设置实体创建时自动填充的颜色"
+        icon={<Palette />}
+        handleFunction={() => Panel.show({ title: "颜色自动填充" }, <ColorAutoPanel />)}
       />
 
       <ToolbarItem

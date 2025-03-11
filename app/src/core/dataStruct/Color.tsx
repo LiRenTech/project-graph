@@ -29,6 +29,9 @@ export class Color {
   toHexString(): string {
     return `#${this.r.toString(16).padStart(2, "0")}${this.g.toString(16).padStart(2, "0")}${this.b.toString(16).padStart(2, "0")}${this.a.toString(16).padStart(2, "0")}`;
   }
+  toHexStringWithoutAlpha(): string {
+    return `#${this.r.toString(16).padStart(2, "0")}${this.g.toString(16).padStart(2, "0")}${this.b.toString(16).padStart(2, "0")}`;
+  }
   clone() {
     return new Color(this.r, this.g, this.b, this.a);
   }

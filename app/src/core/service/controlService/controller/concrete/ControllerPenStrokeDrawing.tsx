@@ -1,7 +1,9 @@
+import { Color } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { PenStroke, PenStrokeSegment } from "../../../../stage/stageObject/entity/PenStroke";
+import { Settings } from "../../../Settings";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -75,10 +77,18 @@ class ControllerDrawingClass extends ControllerClass {
     const contentString = strokeStringList.join("~");
 
     const stroke = new PenStroke(contentString);
+    this.autoSetByPenStroke(stroke);
     StageManager.addPenStroke(stroke);
     this.recordLocation = [];
     this.currentStroke = [];
   };
+
+  async autoSetByPenStroke(penStroke: PenStroke) {
+    if (await Settings.get("autoFillPenStrokeColorEnable")) {
+      const autoColor = await Settings.get("autoFillPenStrokeColor");
+      penStroke.setColor(new Color(...autoColor));
+    }
+  }
 }
 
 export const ControllerDrawing = new ControllerDrawingClass();

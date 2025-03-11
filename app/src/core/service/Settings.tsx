@@ -50,8 +50,12 @@ export namespace Settings {
     // 自动化相关
     autoNamerTemplate: string;
     autoNamerSectionTemplate: string;
+
     autoFillNodeColor: [number, number, number, number]; // 不在设置面板中
     autoFillNodeColorEnable: boolean;
+    autoFillPenStrokeColor: [number, number, number, number];
+    autoFillPenStrokeColorEnable: boolean;
+
     autoFillEdgeColor: [number, number, number, number]; // 不在设置面板中
     autoOpenPath: string; // 废弃
     autoSaveWhenClose: boolean;
@@ -143,6 +147,8 @@ export namespace Settings {
     autoFillNodeColor: [0, 0, 0, 0],
     autoFillNodeColorEnable: true,
     autoFillEdgeColor: [0, 0, 0, 0],
+    autoFillPenStrokeColor: [0, 0, 0, 0],
+    autoFillPenStrokeColorEnable: true,
     autoOpenPath: "", // 废弃
     autoSaveWhenClose: false,
     autoSave: true,

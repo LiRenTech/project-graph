@@ -1,11 +1,9 @@
-import { Blend, ToggleLeft, ToggleRight } from "lucide-react";
+import { Blend } from "lucide-react";
 import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import { Popup } from "../../components/popup";
 import { Color } from "../../core/dataStruct/Color";
 import { ColorManager } from "../../core/service/feedbackService/ColorManager";
-import { Settings } from "../../core/service/Settings";
-import { cn } from "../../utils/cn";
 import ColorManagerPanel from "./_color_manager_panel";
 import { StageObjectColorManager } from "../../core/stage/stageManager/concreteMethods/StageObjectColorManager";
 /**
@@ -15,24 +13,12 @@ import { StageObjectColorManager } from "../../core/stage/stageManager/concreteM
  */
 export default function ColorPanel() {
   const [currentColors, setCurrentColors] = useState<Color[]>([]);
-  const [autoFillNodeColor, setAutoFillNodeColor] = useState<Color>(Color.Transparent);
-  const [autoFillNodeColorEnable, setAutoFillNodeColorEnable] = useState(true);
 
   useEffect(() => {
     ColorManager.getUserEntityFillColors().then((colors) => {
       setCurrentColors(colors);
     });
-    Settings.watch("autoFillNodeColor", (value) => {
-      setAutoFillNodeColor(new Color(...value));
-    });
-    Settings.watch("autoFillNodeColorEnable", (value) => {
-      setAutoFillNodeColorEnable(value);
-    });
   }, []);
-
-  const handleClickSwitchNodeFillColor = () => {
-    Settings.set("autoFillNodeColorEnable", !autoFillNodeColorEnable);
-  };
 
   return (
     <div className="bg-panel-bg flex h-64 w-64 flex-col rounded-lg">
@@ -45,7 +31,6 @@ export default function ColorPanel() {
             StageObjectColorManager.setEntityColor(color);
             StageObjectColorManager.setEdgeColor(color);
             StageObjectColorManager.setStrokeColor(color);
-            Settings.set("autoFillNodeColor", color.toArray());
           }}
         />
         <div
@@ -55,7 +40,6 @@ export default function ColorPanel() {
             StageObjectColorManager.setEntityColor(color);
             StageObjectColorManager.setEdgeColor(color);
             StageObjectColorManager.setStrokeColor(color);
-            Settings.set("autoFillNodeColor", color.toArray());
           }}
         />
         <div
@@ -65,7 +49,6 @@ export default function ColorPanel() {
             StageObjectColorManager.setEntityColor(color);
             StageObjectColorManager.setEdgeColor(color);
             StageObjectColorManager.setStrokeColor(color);
-            Settings.set("autoFillNodeColor", color.toArray());
           }}
         />
         <div
@@ -75,7 +58,6 @@ export default function ColorPanel() {
             StageObjectColorManager.setEntityColor(color);
             StageObjectColorManager.setEdgeColor(color);
             StageObjectColorManager.setStrokeColor(color);
-            Settings.set("autoFillNodeColor", color.toArray());
           }}
         />
         <div
@@ -85,7 +67,6 @@ export default function ColorPanel() {
             StageObjectColorManager.setEntityColor(color);
             StageObjectColorManager.setEdgeColor(color);
             StageObjectColorManager.setStrokeColor(color);
-            Settings.set("autoFillNodeColor", color.toArray());
           }}
         />
         {/* 清除颜色 */}
@@ -96,7 +77,6 @@ export default function ColorPanel() {
             StageObjectColorManager.setEntityColor(color);
             StageObjectColorManager.setEdgeColor(color);
             StageObjectColorManager.setStrokeColor(color);
-            Settings.set("autoFillNodeColor", color.toArray());
           }}
         >
           <Blend className="h-5 w-5" />
@@ -130,6 +110,9 @@ export default function ColorPanel() {
       <hr className="text-panel-details-text my-2" />
       {/* 用户颜色库 */}
       <div className="flex max-w-64 flex-1 flex-wrap items-center justify-center">
+        {currentColors.length === 0 && (
+          <div className="m-1 h-5 w-5 rounded bg-transparent text-center text-sm">暂无颜色</div>
+        )}
         {currentColors.map((color) => {
           return (
             <div
@@ -142,29 +125,10 @@ export default function ColorPanel() {
                 StageObjectColorManager.setEntityColor(color);
                 StageObjectColorManager.setEdgeColor(color);
                 StageObjectColorManager.setStrokeColor(color);
-                Settings.set("autoFillNodeColor", color.toArray());
               }}
             />
           );
         })}
-      </div>
-      <hr className="text-panel-details-text my-2" />
-      {/* 自动创建节点的颜色 */}
-      <div className="flex justify-center">
-        <span className="flex items-center justify-center text-sm">
-          <span className={cn(!autoFillNodeColorEnable && "opacity-50")}>创建节点自动上色</span>
-          <div
-            className={cn("m-1 h-5 w-5 rounded border-2", !autoFillNodeColorEnable && "scale-50")}
-            style={{
-              backgroundColor: autoFillNodeColor.toString(),
-            }}
-          ></div>
-          {autoFillNodeColorEnable ? (
-            <ToggleRight className="cursor-pointer" onClick={handleClickSwitchNodeFillColor} />
-          ) : (
-            <ToggleLeft className="cursor-pointer" onClick={handleClickSwitchNodeFillColor} />
-          )}
-        </span>
       </div>
     </div>
   );
