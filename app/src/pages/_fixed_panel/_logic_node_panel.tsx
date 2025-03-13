@@ -17,7 +17,7 @@ export default function LogicNodePanel({ open = false, className = "" }: { open:
   return (
     <div
       className={cn(
-        "bg-panel-bg fixed -left-64 top-16 flex h-full w-64 flex-col overflow-auto rounded-md p-2 transition-all",
+        "bg-panel-bg fixed -left-64 top-16 flex h-full w-64 flex-col overflow-auto rounded-md p-2 pb-32 transition-all",
         {
           "left-0": open,
         },

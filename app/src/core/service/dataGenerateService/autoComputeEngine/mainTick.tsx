@@ -146,6 +146,7 @@ const MapOtherFunction: OtherFunctionMap = {
   [LogicNodeNameEnum.COLLECT_NODE_DETAILS_BY_RGBA]: NodeLogic.collectNodeDetailsByRGBA,
   [LogicNodeNameEnum.COLLECT_NODE_NAME_BY_RGBA]: NodeLogic.collectNodeNameByRGBA,
   [LogicNodeNameEnum.CREATE_TEXT_NODE_ON_LOCATION]: NodeLogic.createTextNodeOnLocation,
+  [LogicNodeNameEnum.REPLACE_GLOBAL_CONTENT]: NodeLogic.replaceGlobalContent,
 };
 
 /**

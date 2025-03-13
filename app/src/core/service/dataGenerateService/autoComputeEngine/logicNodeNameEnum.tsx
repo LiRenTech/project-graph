@@ -88,6 +88,7 @@ export enum LogicNodeNameEnum {
   COLLECT_NODE_NAME_BY_RGBA = "#COLLECT_NODE_NAME_BY_RGBA#",
   FPS = "#FPS#",
   CREATE_TEXT_NODE_ON_LOCATION = "#CREATE_TEXT_NODE_ON_LOCATION#",
+  REPLACE_GLOBAL_CONTENT = "#REPLACE_GLOBAL_CONTENT#",
 }
 export const LogicNodeNameToRenderNameMap: {
   [key in LogicNodeNameEnum]: string;
@@ -164,6 +165,7 @@ export const LogicNodeNameToRenderNameMap: {
   [LogicNodeNameEnum.COLLECT_NODE_NAME_BY_RGBA]: "根据颜色收集节点名称",
   [LogicNodeNameEnum.FPS]: "FPS",
   [LogicNodeNameEnum.CREATE_TEXT_NODE_ON_LOCATION]: "在指定位置创建节点",
+  [LogicNodeNameEnum.REPLACE_GLOBAL_CONTENT]: "全局替换内容",
 
   [LogicNodeNameEnum.SET_VAR]: "设置变量",
   [LogicNodeNameEnum.GET_VAR]: "获取变量",
@@ -246,6 +248,8 @@ export const LogicNodeNameToArgsTipsMap: {
   [LogicNodeNameEnum.COLLECT_NODE_NAME_BY_RGBA]: "a0: red, a1: green, a2: blue, a3: alpha",
   [LogicNodeNameEnum.FPS]: "无输入",
   [LogicNodeNameEnum.CREATE_TEXT_NODE_ON_LOCATION]: "a0: x, a1: y, a2: text, a3: 0/1",
+  [LogicNodeNameEnum.REPLACE_GLOBAL_CONTENT]: "a0: 被替换内容, a1: 新内容",
+
   [LogicNodeNameEnum.SET_VAR]: "a0: name, a1: value",
   [LogicNodeNameEnum.GET_VAR]: "a0: name",
 };

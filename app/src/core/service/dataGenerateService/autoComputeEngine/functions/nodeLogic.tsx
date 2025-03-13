@@ -382,4 +382,30 @@ export namespace NodeLogic {
     }
     return [];
   }
+
+  export function replaceGlobalContent(
+    fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    if (fatherNodes.length !== 2) {
+      return ["输入数量不正确"];
+    }
+    let replacedCount = 0;
+    if (fatherNodes[0] instanceof TextNode && fatherNodes[0].text.trim() !== "" && fatherNodes[1] instanceof TextNode) {
+      const content = fatherNodes[0].text;
+      const newString = fatherNodes[1].text;
+      for (const node of StageManager.getTextNodes()) {
+        // 避开与逻辑节点相连的节点
+        if (AutoComputeUtils.isNodeConnectedWithLogicNode(node)) {
+          continue;
+        }
+        if (node.text.trim() !== "" && node.text.includes(content)) {
+          node.rename(node.text.replace(content, newString));
+          replacedCount++;
+        }
+      }
+    }
+    return [`替换了${replacedCount}处内容`];
+  }
 }
