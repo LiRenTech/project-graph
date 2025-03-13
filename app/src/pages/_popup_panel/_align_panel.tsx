@@ -7,6 +7,8 @@ import {
   AlignStartHorizontal,
   AlignStartVertical,
   AlignVerticalSpaceBetween,
+  ArrowDownUp,
+  ArrowLeftRight,
   Columns4,
   Grid3x3,
   LayoutGrid,
@@ -26,6 +28,7 @@ import { StageEntityMoveManager } from "../../core/stage/stageManager/concreteMe
 import { StageAutoAlignManager } from "../../core/stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageSectionPackManager } from "../../core/stage/stageManager/concreteMethods/StageSectionPackManager";
 import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
+import { AutoLayoutFastTree } from "../../core/service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
 export default function AlignNodePanel() {
   const [isEnableDragAutoAlign, setEnableDragAutoAlign] = useState(false);
   const [isEnableDragToGridAutoAlign, setEnableDragToGridAutoAlign] = useState(false);
@@ -39,6 +42,41 @@ export default function AlignNodePanel() {
     });
   }, []);
   const cell9ClassName = "border-1 bg-panel-bg grid grid-cols-3 grid-rows-3 rounded p-1 m-1";
+
+  const isSelectedIsTreeRoot = (handleTreeRootFunc: (root: ConnectableEntity) => void) => {
+    return () => {
+      const selected = StageManager.getSelectedEntities();
+      if (selected.length !== 1) {
+        Dialog.show({
+          title: "选择节点数量不正确",
+          content: "必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构",
+        });
+        return;
+      }
+      const selectedEntity = selected[0];
+      if (selectedEntity instanceof ConnectableEntity) {
+        if (GraphMethods.isTree(selectedEntity)) {
+          const entities = StageManager.getSelectedEntities();
+          for (const entity of entities) {
+            if (entity instanceof ConnectableEntity) {
+              handleTreeRootFunc(entity);
+              return;
+            }
+          }
+        } else {
+          Dialog.show({
+            title: "连接的节点必须符合树形结构",
+            content: "连接的节点必须符合树形结构，不能有环路，不能有重叠指向",
+          });
+        }
+      } else {
+        Dialog.show({
+          title: "选择的对象必须是可连线的节点对象",
+          content: "必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构",
+        });
+      }
+    };
+  };
 
   return (
     <div className="grid grid-cols-2 grid-rows-2">
@@ -112,44 +150,23 @@ export default function AlignNodePanel() {
       </div>
       <div className={cell9ClassName}>
         <div />
+        <ToolbarItem
+          description="上下反转树位置"
+          icon={<ArrowDownUp />}
+          handleFunction={isSelectedIsTreeRoot(AutoLayoutFastTree.treeReverseY)}
+        />
         <div />
-        <div />
-        <div />
+        <ToolbarItem
+          description="左右反转树位置"
+          icon={<ArrowLeftRight />}
+          handleFunction={isSelectedIsTreeRoot(AutoLayoutFastTree.treeReverseX)}
+        />
         <div />
         <ToolbarItem
           description="向右自动树形布局"
           icon={<Network className="-rotate-90" />}
           handleFunction={() => {
-            const selected = StageManager.getSelectedEntities();
-            if (selected.length !== 1) {
-              Dialog.show({
-                title: "选择节点数量不正确",
-                content: "必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构",
-              });
-              return;
-            }
-            const selectedEntity = selected[0];
-            if (selectedEntity instanceof ConnectableEntity) {
-              if (GraphMethods.isTree(selectedEntity)) {
-                const entities = StageManager.getSelectedEntities();
-                for (const entity of entities) {
-                  if (entity instanceof ConnectableEntity) {
-                    StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(entity);
-                    return;
-                  }
-                }
-              } else {
-                Dialog.show({
-                  title: "连接的节点必须符合树形结构",
-                  content: "连接的节点必须符合树形结构，不能有环路，不能有重叠指向",
-                });
-              }
-            } else {
-              Dialog.show({
-                title: "选择的对象必须是可连线的节点对象",
-                content: "必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构",
-              });
-            }
+            isSelectedIsTreeRoot(StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight);
           }}
         />
         <div />
@@ -157,36 +174,7 @@ export default function AlignNodePanel() {
           description="向下自动树形布局"
           icon={<Network />}
           handleFunction={() => {
-            const selected = StageManager.getSelectedEntities();
-            if (selected.length !== 1) {
-              Dialog.show({
-                title: "选择节点数量不为1",
-                content: "必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构",
-              });
-              return;
-            }
-            const selectedEntity = selected[0];
-            if (selectedEntity instanceof ConnectableEntity) {
-              if (GraphMethods.isTree(selectedEntity)) {
-                const entities = StageManager.getSelectedEntities();
-                for (const entity of entities) {
-                  if (entity instanceof ConnectableEntity) {
-                    StageAutoAlignManager.autoLayoutSelectedFastTreeModeDown(entity);
-                    return;
-                  }
-                }
-              } else {
-                Dialog.show({
-                  title: "连接的节点必须符合树形结构",
-                  content: "连接的节点必须符合树形结构，不能有环路，不能有重叠指向",
-                });
-              }
-            } else {
-              Dialog.show({
-                title: "选择的对象必须是可连线的节点对象",
-                content: "必须只选择一个根节点才可以进行树形结构布局，且连接的节点必须符合树形结构",
-              });
-            }
+            isSelectedIsTreeRoot(StageAutoAlignManager.autoLayoutSelectedFastTreeModeDown);
           }}
         />
         <div />

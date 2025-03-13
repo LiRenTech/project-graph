@@ -126,4 +126,36 @@ export namespace AutoLayoutFastTree {
     rootNode.isSelected = true;
     StageEntityMoveManager.moveConnectableEntitiesWithChildren(delta);
   }
+  export function treeReverseX(selectedRootEntity: ConnectableEntity) {
+    treeReverse(selectedRootEntity, "X");
+  }
+  export function treeReverseY(selectedRootEntity: ConnectableEntity) {
+    treeReverse(selectedRootEntity, "Y");
+  }
+  /**
+   * 将树形结构翻转位置
+   * @param selectedRootEntity
+   */
+  function treeReverse(selectedRootEntity: ConnectableEntity, direction: "X" | "Y") {
+    // 检测树形结构
+    const nodeChildrenArray = GraphMethods.nodeChildrenArray(selectedRootEntity);
+    if (nodeChildrenArray.length <= 1) {
+      return;
+    }
+    // 遍历所有节点，将其位置根据选中的根节点进行镜像位置调整
+    const dfs = (node: ConnectableEntity) => {
+      const childList = GraphMethods.nodeChildrenArray(node);
+      for (const child of childList) {
+        dfs(child); // 递归口
+      }
+      const currentNodeCenter = node.collisionBox.getRectangle().center;
+      const rootNodeCenter = selectedRootEntity.collisionBox.getRectangle().center;
+      if (direction === "X") {
+        node.move(new Vector(-((currentNodeCenter.x - rootNodeCenter.x) * 2), 0));
+      } else if (direction === "Y") {
+        node.move(new Vector(0, -((currentNodeCenter.y - rootNodeCenter.y) * 2)));
+      }
+    };
+    dfs(selectedRootEntity);
+  }
 }
