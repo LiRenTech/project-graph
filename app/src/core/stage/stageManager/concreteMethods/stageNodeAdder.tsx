@@ -120,12 +120,13 @@ export namespace StageNodeAdder {
         throw new Error("Failed to connect newNode -> child");
       }
     }
-    for (const father of GraphMethods.nodeParentArray(selectedEntity)) {
-      const connectResult = StageManager.connectEntity(father, newNode);
-      if (!connectResult) {
-        throw new Error("Failed to connect father -> newNode");
-      }
-    }
+    // 不需要再连线了 ——快深频
+    // for (const father of GraphMethods.nodeParentArray(selectedEntity)) {
+    //   const connectResult = StageManager.connectEntity(father, newNode);
+    //   if (!connectResult) {
+    //     throw new Error("Failed to connect father -> newNode");
+    //   }
+    // }
     StageHistoryManager.recordStep();
     return uuid;
   }
