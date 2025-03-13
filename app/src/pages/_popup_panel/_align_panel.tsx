@@ -8,6 +8,7 @@ import {
   AlignStartVertical,
   AlignVerticalSpaceBetween,
   Columns4,
+  Grid3x3,
   LayoutGrid,
   Magnet,
   Network,
@@ -27,10 +28,14 @@ import { StageSectionPackManager } from "../../core/stage/stageManager/concreteM
 import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
 export default function AlignNodePanel() {
   const [isEnableDragAutoAlign, setEnableDragAutoAlign] = useState(false);
+  const [isEnableDragToGridAutoAlign, setEnableDragToGridAutoAlign] = useState(false);
 
   useEffect(() => {
     Settings.watch("enableDragAutoAlign", (value) => {
       setEnableDragAutoAlign(value);
+    });
+    Settings.watch("enableDragAlignToGrid", (value) => {
+      setEnableDragToGridAutoAlign(value);
     });
   }, []);
   const cell9ClassName = "border-1 bg-panel-bg grid grid-cols-3 grid-rows-3 rounded p-1 m-1";
@@ -221,6 +226,17 @@ export default function AlignNodePanel() {
           icon={<Magnet className={cn(!isEnableDragAutoAlign && "text-panel-details-text", "transition-transform")} />}
           handleFunction={async () => {
             Settings.set("enableDragAutoAlign", !(await Settings.get("enableDragAutoAlign")));
+          }}
+        />
+        <ToolbarItem
+          description={isEnableDragToGridAutoAlign ? "网格吸附对齐：开启" : "网格吸附对齐：关闭"}
+          icon={
+            <Grid3x3
+              className={cn(!isEnableDragToGridAutoAlign && "text-panel-details-text", "transition-transform")}
+            />
+          }
+          handleFunction={async () => {
+            Settings.set("enableDragAlignToGrid", !(await Settings.get("enableDragAlignToGrid")));
           }}
         />
       </div>

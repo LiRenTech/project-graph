@@ -124,6 +124,9 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
         if (Stage.enableDragAutoAlign) {
           StageAutoAlignManager.alignAllSelected();
         }
+        if (Stage.enableDragAlignToGrid) {
+          StageAutoAlignManager.alignAllSelectedToGrid();
+        }
 
         StageHistoryManager.recordStep(); // 记录一次历史
       }

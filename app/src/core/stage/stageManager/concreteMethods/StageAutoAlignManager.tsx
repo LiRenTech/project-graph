@@ -18,6 +18,20 @@ import { StageManager } from "../StageManager";
  */
 export namespace StageAutoAlignManager {
   /**
+   * 对齐到网格
+   */
+  export function alignAllSelectedToGrid() {
+    const selectedEntities = StageManager.getSelectedEntities();
+    for (const selectedEntity of selectedEntities) {
+      if (selectedEntity.isAlignExcluded) {
+        // 涂鸦对象不参与对齐
+        continue;
+      }
+      onEntityMoveAlignToGrid(selectedEntity);
+    }
+  }
+
+  /**
    * 吸附函数
    * 用于鼠标松开的时候自动移动位置一小段距离
    */
@@ -32,7 +46,6 @@ export namespace StageAutoAlignManager {
         // 涂鸦对象不参与对齐
         continue;
       }
-      console.log(selectedEntity);
       onEntityMoveAlignToOtherEntity(selectedEntity, otherEntities);
     }
   }
@@ -55,7 +68,67 @@ export namespace StageAutoAlignManager {
       onEntityMoveAlignToOtherEntity(selectedEntity, otherEntities, true);
     }
   }
+  /**
+   * 将一个节点对齐到网格
+   * @param selectedEntity
+   */
+  function onEntityMoveAlignToGrid(selectedEntity: Entity) {
+    onEntityMoveAlignToGridX(selectedEntity);
+    onEntityMoveAlignToGridY(selectedEntity);
+  }
 
+  function onEntityMoveAlignToGridX(selectedEntity: Entity) {
+    const rect = selectedEntity.collisionBox.getRectangle();
+    const leftMod = rect.left % 50;
+    const rightMode = rect.right % 50;
+    const leftMoveDistance = Math.min(leftMod, 50 - leftMod);
+    const rightMoveDistance = Math.min(rightMode, 50 - rightMode);
+    if (leftMoveDistance < rightMoveDistance) {
+      // 根据实体左边缘对齐
+      if (leftMod < 50 - leftMod) {
+        // 向左
+        selectedEntity.move(new Vector(-leftMod, 0));
+      } else {
+        // 向右
+        selectedEntity.move(new Vector(50 - leftMod, 0));
+      }
+    } else {
+      // 根据右边缘对齐
+      if (rightMode < 50 - rightMode) {
+        // 向左
+        selectedEntity.move(new Vector(-rightMode, 0));
+      } else {
+        // 向右
+        selectedEntity.move(new Vector(50 - rightMode, 0));
+      }
+    }
+  }
+  function onEntityMoveAlignToGridY(selectedEntity: Entity) {
+    const rect = selectedEntity.collisionBox.getRectangle();
+    const topMod = rect.top % 50;
+    const bottomMode = rect.bottom % 50;
+    const topMoveDistance = Math.min(topMod, 50 - topMod);
+    const bottomMoveDistance = Math.min(bottomMode, 50 - bottomMode);
+    if (topMoveDistance < bottomMoveDistance) {
+      // 根据实体左边缘对齐
+      if (topMod < 50 - topMod) {
+        // 向左
+        selectedEntity.move(new Vector(0, -topMod));
+      } else {
+        // 向右
+        selectedEntity.move(new Vector(0, 50 - topMod));
+      }
+    } else {
+      // 根据右边缘对齐
+      if (bottomMode < 50 - bottomMode) {
+        // 向左
+        selectedEntity.move(new Vector(0, -bottomMode));
+      } else {
+        // 向右
+        selectedEntity.move(new Vector(0, 50 - bottomMode));
+      }
+    }
+  }
   /**
    * 将一个节点对齐到其他节点
    * @param selectedEntity

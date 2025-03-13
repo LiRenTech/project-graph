@@ -125,6 +125,7 @@ export namespace Stage {
   /** 当前鼠标右键拖拽空白部分的操作 */
   export let mouseRightDragBackground = "cut";
   export let enableDragAutoAlign = true;
+  export let enableDragAlignToGrid = false;
 
   export let textNodeSelectAllWhenStartEditByMouseClick = true;
   export let rectangleSelectWhenLeft: "contain" | "intersect" = "contain";
@@ -140,6 +141,9 @@ export namespace Stage {
     });
     Settings.watch("enableDragAutoAlign", (value) => {
       enableDragAutoAlign = value;
+    });
+    Settings.watch("enableDragAlignToGrid", (value) => {
+      enableDragAlignToGrid = value;
     });
     Settings.watch("textNodeSelectAllWhenStartEditByMouseClick", (value) => {
       textNodeSelectAllWhenStartEditByMouseClick = value;
