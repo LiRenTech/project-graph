@@ -121,6 +121,10 @@ export namespace KeyboardOnlyEngine {
     StageManager.addTextNode(newNode);
     // 连接节点
     StageManager.connectEntity(rootNode, newNode);
+    // 继承父节点颜色
+    if (rootNode instanceof TextNode) {
+      newNode.color = rootNode.color.clone();
+    }
     // 重新排列树形节点
     const rootNodeParents = GraphMethods.getRoots(rootNode);
     if (rootNodeParents.length === 1) {
@@ -167,6 +171,10 @@ export namespace KeyboardOnlyEngine {
     StageManager.addTextNode(newNode);
     // 连接节点
     StageManager.connectEntity(parent, newNode);
+    // 继承父节点颜色
+    if (parent instanceof TextNode) {
+      newNode.color = parent.color.clone();
+    }
     // 重新排列树形节点
     const rootNodeParents = GraphMethods.getRoots(parent);
     if (rootNodeParents.length === 1) {
