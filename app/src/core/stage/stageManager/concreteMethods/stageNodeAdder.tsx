@@ -12,7 +12,6 @@ import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";
 import { StageManagerUtils } from "./StageManagerUtils";
 import { Direction } from "../../../../types/directions";
-import { GraphMethods } from "../basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { Color } from "../../../dataStruct/Color";
 import { SectionMethods } from "../basicMethods/SectionMethods";
@@ -114,19 +113,6 @@ export namespace StageNodeAdder {
       const distance = newNode.rectangle.left - entityRectangle.left;
       newNode.moveTo(newNode.rectangle.location.add(new Vector(-distance, 0)));
     }
-    for (const child of GraphMethods.nodeChildrenArray(selectedEntity)) {
-      const connectResult = StageManager.connectEntity(newNode, child);
-      if (!connectResult) {
-        throw new Error("Failed to connect newNode -> child");
-      }
-    }
-    // 不需要再连线了 ——快深频
-    // for (const father of GraphMethods.nodeParentArray(selectedEntity)) {
-    //   const connectResult = StageManager.connectEntity(father, newNode);
-    //   if (!connectResult) {
-    //     throw new Error("Failed to connect father -> newNode");
-    //   }
-    // }
     StageHistoryManager.recordStep();
     return uuid;
   }
