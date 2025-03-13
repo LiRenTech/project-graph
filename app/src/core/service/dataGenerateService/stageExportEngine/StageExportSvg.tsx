@@ -15,6 +15,7 @@ import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleMa
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { Stage } from "../../../stage/Stage";
 import { PathString } from "../../../../utils/pathString";
+import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 
 export interface SvgExportConfig {
   imageMode: "absolutePath" | "relativePath" | "base64";
@@ -142,7 +143,14 @@ export namespace StageExportSvg {
     const height = viewRectangle.size.y;
     // 计算画布的 viewBox
     const viewBox = `${viewRectangle.location.x} ${viewRectangle.location.y} ${width} ${height}`;
-
+    // fix:bug section选中了，但是内部的东西没有追加进入
+    const newEntities = SectionMethods.getAllEntitiesInSelectedSectionsOrEntities(selectedEntities);
+    // 合并两个数组并更新
+    for (const entity of newEntities) {
+      if (selectedEntities.indexOf(entity) === -1) {
+        selectedEntities.push(entity);
+      }
+    }
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -165,6 +173,7 @@ export namespace StageExportSvg {
             return dumpImageNode(entity, svgConfig);
           }
         })}
+
         {/* 构建连线 */}
         {StageManager.getLineEdges()
           .filter((edge) => edge.target.isSelected && edge.source.isSelected)
