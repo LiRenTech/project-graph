@@ -59,7 +59,7 @@ export class AutoSaveEngine {
           // 没有节点，不保存
         } else {
           // 不要顶部白线提醒了。——joe以为是bug
-          StageSaveManager.saveHandleWithoutCurrentPath(StageDumper.dump(), false, false);
+          StageSaveManager.saveHandleWithoutCurrentPath(StageDumper.dump(), false);
           // 更新时间
         }
       }

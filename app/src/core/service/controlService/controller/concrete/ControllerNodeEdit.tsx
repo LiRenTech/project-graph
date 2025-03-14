@@ -81,7 +81,7 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
           // 取消选择所有节点
           StageManager.clearSelectAll();
           // 切换前保存一下
-          StageSaveManager.saveHandleWithoutCurrentPath(StageDumper.dump(), false, false);
+          StageSaveManager.saveHandleWithoutCurrentPath(StageDumper.dump(), false);
           // 开始传送
           // 不要让它立刻切换，否则会导致突然在新的文件中触发一个双击事件，创建了一个多余节点
           setTimeout(() => {

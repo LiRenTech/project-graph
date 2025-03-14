@@ -17,8 +17,6 @@ export namespace StageSaveManager {
    */
   export async function saveHandle(path: string, data: Serialized.File) {
     await writeTextFile(path, JSON.stringify(data));
-    Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
-    // StageHistoryManager.reset(data); // 重置历史
     isCurrentSaved = true;
   }
 
@@ -29,18 +27,11 @@ export namespace StageSaveManager {
    * @param successCallback
    * @param errorCallback
    */
-  export async function saveHandleWithoutCurrentPath(
-    data: Serialized.File,
-    resetHistory = true,
-    addFlashEffect = true,
-  ) {
+  export async function saveHandleWithoutCurrentPath(data: Serialized.File, resetHistory = true) {
     if (Stage.path.isDraft()) {
       throw new Error("当前文档的状态为草稿，请您先保存为文件");
     }
     await writeTextFile(Stage.path.getFilePath(), JSON.stringify(data));
-    if (addFlashEffect) {
-      Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
-    }
     if (resetHistory) {
       StageHistoryManager.reset(data); // 重置历史
     }
