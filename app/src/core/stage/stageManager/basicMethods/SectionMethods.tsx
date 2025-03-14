@@ -208,4 +208,9 @@ export namespace SectionMethods {
     }
     return StageManager.getEntitiesByUUIDs(Array.from(entityUUIDSet));
   }
+
+  export function getSortedSectionsByZ(sections: Section[]): Section[] {
+    // 先按y排序，从上到下，先不管z
+    return sections.sort((a, b) => a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top);
+  }
 }

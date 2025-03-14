@@ -56,13 +56,24 @@ export namespace StageExportSvg {
       </>
     );
   }
+
+  /**
+   * 渲染Section顶部颜色
+   * @param section
+   * @returns
+   */
   export function dumpSection(section: Section) {
     if (section.isHiddenBySectionCollapse) {
       return <></>;
     }
     return (
       <>
-        {SvgUtils.rectangle(section.rectangle, section.color, StageStyleManager.currentStyle.StageObjectBorderColor, 2)}
+        {SvgUtils.rectangle(
+          section.rectangle,
+          Color.Transparent,
+          StageStyleManager.currentStyle.StageObjectBorderColor,
+          2,
+        )}
         {SvgUtils.textFromLeftTop(
           section.text,
           section.rectangle.leftTop,
@@ -72,6 +83,19 @@ export namespace StageExportSvg {
       </>
     );
   }
+
+  /**
+   * 只渲染Section的底部颜色
+   * @param section
+   * @returns
+   */
+  export function dumpSectionBase(section: Section) {
+    if (section.isHiddenBySectionCollapse) {
+      return <></>;
+    }
+    return <>{SvgUtils.rectangle(section.rectangle, section.color, Color.Transparent, 0)}</>;
+  }
+
   export function dumpEdge(edge: LineEdge): React.ReactNode {
     return EdgeRenderer.getEdgeSvg(edge);
   }
@@ -162,6 +186,13 @@ export namespace StageExportSvg {
         }}
       >
         {/* 选中的部分 */}
+        {SectionMethods.getSortedSectionsByZ(selectedEntities.filter((entity) => entity instanceof Section)).map(
+          (entity) => {
+            if (entity instanceof Section) {
+              return dumpSectionBase(entity);
+            }
+          },
+        )}
         {selectedEntities.map((entity) => {
           if (entity instanceof TextNode) {
             return dumpNode(entity);
@@ -205,6 +236,7 @@ export namespace StageExportSvg {
           backgroundColor: StageStyleManager.currentStyle.BackgroundColor.toString(),
         }}
       >
+        {SectionMethods.getSortedSectionsByZ(StageManager.getSections()).map((section) => dumpSectionBase(section))}
         {StageManager.getTextNodes().map((node) => dumpNode(node))}
         {StageManager.getLineEdges().map((edge) => dumpEdge(edge))}
         {StageManager.getSections().map((section) => dumpSection(section))}
