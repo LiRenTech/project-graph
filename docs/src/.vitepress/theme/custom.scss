@@ -56,41 +56,52 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .VPButton {
-  transition: 0.5s $ease-out-expo !important;
+  transition:
+    transform 0.5s $ease-out-expo,
+    outline-width 0.1s linear !important;
+  border-radius: 16px !important;
+  background-color: transparent !important;
+  color: var(--vp-button-alt-text) !important;
+
+  &.brand {
+    outline: 2px solid var(--vp-button-brand-bg) !important;
+  }
+  &.alt {
+    outline: 2px solid var(--vp-button-alt-bg) !important;
+  }
 
   &:hover {
     transform: scale(1.2);
+    outline-width: 4px !important;
   }
   &:active {
     transform: scale(0.9);
   }
 }
 
-.VPButton.brand {
-  box-shadow: 0 0 64px var(--vp-button-brand-bg);
-}
-
 .VPHomeHero .main {
   @for $i from 1 through 4 {
     > :nth-child(#{$i}) {
-      animation: enter 0.5s $ease-out-expo forwards;
-      animation-delay: #{$i * 0.1}s;
-      transform: translateX(-300%);
+      animation: enter 1.5s $ease-out-expo forwards;
+      animation-delay: #{$i * 0.3}s;
+      transform: translateX(-50%);
+      opacity: 0;
     }
   }
 
   @keyframes enter {
     to {
       transform: translateX(0);
+      opacity: 1;
     }
   }
 }
 .VPHomeFeatures .items {
   @for $i from 1 through 10 {
     > :nth-child(#{$i}) {
-      animation: enter 0.5s $ease-out-expo forwards;
-      animation-delay: #{0.5 + $i * 0.1}s;
-      transform: scale(0.5);
+      animation: enter 1s $ease-out-expo forwards;
+      animation-delay: #{0.3 + $i * 0.3}s;
+      transform: scale(1.5);
       opacity: 0;
     }
   }
@@ -161,13 +172,13 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 
-a {
-  text-shadow: 0 0 16px transparent;
-  transition: 0.3s $ease-out-expo !important;
-  &:hover {
-    text-shadow: 0 0 16px var(--vp-c-brand-1);
-  }
-}
+// a {
+//   text-shadow: 0 0 16px transparent;
+//   transition: 0.3s $ease-out-expo !important;
+//   &:hover {
+//     text-shadow: 0 0 16px var(--vp-c-brand-1);
+//   }
+// }
 
 .prev-next {
   display: flex !important;
