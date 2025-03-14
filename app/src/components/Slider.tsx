@@ -111,6 +111,7 @@ export default function Slider({
 
   return (
     <div className="flex items-center gap-4">
+      {/* 滑动区域 */}
       <div
         ref={sliderRef}
         className="relative h-4 w-36 hover:cursor-pointer"
@@ -120,11 +121,13 @@ export default function Slider({
         onTouchEnd={handleTouchEnd}
         onClick={handleTrackClick} // 添加轨道点击事件
       >
-        <div className="bg-slider-line absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full hover:cursor-pointer"></div>
+        {/* 滑动轨道 */}
+        <div className="bg-slider-line absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full hover:cursor-pointer" />
+        {/* 滑动球 */}
         <div
           className="bg-slider-handle absolute top-0 h-4 w-4 -translate-x-2 rounded-full hover:scale-125 hover:cursor-w-resize active:scale-90"
           style={{ left: `${((sliderValue - min) / (max - min)) * 100}%` }} // 根据当前值计算滑块的位置
-        ></div>
+        />
       </div>
       <Input
         value={sliderValue.toString()}
@@ -133,10 +136,10 @@ export default function Slider({
             // @ts-expect-error 防止无法输入小数点
             setSliderValue(e);
           } else {
-            setSliderValue(
-              // 确保值在 min 和 max 之间
-              Math.max(min, Math.min(max, parseFloat(e || "0"))),
-            );
+            // 确保值在 min 和 max 之间
+            const userInput = Math.max(min, Math.min(max, parseFloat(e || "0")));
+            setSliderValue(userInput);
+            onChange(userInput);
           }
         }}
         className="w-16"
