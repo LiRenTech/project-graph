@@ -2,10 +2,12 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
+import { PenStrokeMethods } from "../../../../stage/stageManager/basicMethods/PenStrokeMethods";
 import { StageAutoAlignManager } from "../../../../stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
+import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { RectangleRenderEffect } from "../../../feedbackService/effectEngine/concrete/RectangleRenderEffect";
 import { Controller } from "../Controller";
@@ -19,6 +21,11 @@ import { getClickedStageObject } from "./utilsControl";
 class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
   private isMovingEntity = false;
   private mouseDownViewLocation = Vector.getZero();
+
+  /**
+   * 正在粘连式移动的实体
+   */
+  private stickyMoveEntities: Entity[] = [];
 
   public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
     if (event.button !== 0) {
@@ -77,6 +84,12 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
         // 选中点击节点的状态
         clickedEntity.isSelected = true;
       }
+
+      // 更新粘连式移动的数组
+      this.stickyMoveEntities = PenStrokeMethods.getAllRoundedStickEntities(StageManager.getSelectedEntities());
+    } else {
+      // 未点击到节点
+      this.stickyMoveEntities = [];
     }
   };
 
@@ -104,6 +117,14 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
       // 预瞄反馈
       if (Stage.enableDragAutoAlign) {
         StageAutoAlignManager.preAlignAllSelected();
+      }
+
+      // 连带粘连式移动的内容移动
+      for (const entity of this.stickyMoveEntities) {
+        if (entity.isSelected) {
+          continue;
+        }
+        entity.move(diffLocation);
       }
 
       ControllerEntityClickSelectAndMove.lastMoveLocation = worldLocation.clone();
