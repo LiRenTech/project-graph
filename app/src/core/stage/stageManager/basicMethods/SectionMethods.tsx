@@ -199,9 +199,8 @@ export namespace SectionMethods {
         for (const child of currentEntity.children) {
           dfs(child);
         }
-      } else {
-        entityUUIDSet.add(currentEntity.uuid);
       }
+      entityUUIDSet.add(currentEntity.uuid);
     };
     for (const entity of selectedEntities) {
       dfs(entity);

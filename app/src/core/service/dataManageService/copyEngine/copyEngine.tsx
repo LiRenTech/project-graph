@@ -65,21 +65,15 @@ export namespace CopyEngine {
    */
   export function copy() {
     // 获取所有选中的实体
-    const entities: Entity[] = [];
-    for (const entity of StageManager.getEntities()) {
-      if (entity.isSelected) {
-        entities.push(entity);
-      }
-    }
-
-    const serialized = StageDumper.dumpSelected(entities);
-    // 更新虚拟剪贴板
-    copyBoardData = serialized;
+    const entities: Entity[] = StageManager.getSelectedEntities();
     if (entities.length === 0) {
       // 如果没有选中东西，就是清空虚拟粘贴板
       clearVirtualCopyBoardData();
       return;
     }
+    // 更新虚拟剪贴板
+    copyBoardData = StageDumper.dumpSelected(entities);
+
     // 更新虚拟粘贴板形状
     updateRectangle();
 

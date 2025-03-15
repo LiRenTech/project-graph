@@ -15,6 +15,7 @@ import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/Text
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
 import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
+import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 
 interface SecretItem {
   name: string;
@@ -141,6 +142,15 @@ export class SecretEngine {
       func() {
         const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
         StageSectionPackManager.textNodeTreeToSection(selectedNodes[0]);
+      },
+    },
+    "t e s t s i": {
+      name: "getAllEntitiesInSelectedSectionsOrEntities",
+      func() {
+        const selectedNodes = StageManager.getSelectedEntities();
+        for (const entity of SectionMethods.getAllEntitiesInSelectedSectionsOrEntities(selectedNodes)) {
+          Stage.effectMachine.addEffect(RectangleNoteEffect.fromShiftClickSelect(entity.collisionBox.getRectangle()));
+        }
       },
     },
   };
