@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Settings } from "../core/service/Settings";
 import { isDesktop, isLinux, isMac, isMobile, isWeb, isWindows } from "../utils/platform";
+import { DateChecker } from "../utils/dateChecker";
 
 export default function TestPage() {
   useEffect(() => {
@@ -30,6 +31,7 @@ export default function TestPage() {
         <p>
           isMac: {isMac.toString()}, isWindows: {isWindows.toString()}, isLinux: {isLinux.toString()}
         </p>
+        <p>当前是 {DateChecker.isCurrentEqualDate(3, 15) ? "3月15日!" : "其他日期"}</p>
       </div>
     </>
   );

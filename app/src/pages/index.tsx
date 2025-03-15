@@ -14,6 +14,7 @@ import DetailsEditSidePanel from "./_details_edit_side_panel";
 import DetailsEditSmallPanel from "./_details_edit_small_panel";
 import HintText from "./_hint_text";
 import Toolbar from "./_toolbar";
+import { DateChecker } from "../utils/dateChecker";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
@@ -137,6 +138,34 @@ export default function Home() {
       >
         <canvas ref={canvasRef} className={cursorName} />
       </div>
+
+      {/* 愚人节小组件 */}
+      {!isWindowCollapsing && !isClassroomMode && !isFrame && DateChecker.isCurrentEqualDate(4, 1) && (
+        <div
+          className="fixed bottom-0 right-8 h-2 w-2 cursor-pointer rounded bg-red-500 transition-all hover:bg-red-700"
+          onClick={showDialogWhen4_1}
+        />
+      )}
     </>
   );
+}
+
+function showDialogWhen4_1() {
+  // 测试时间
+  Dialog.show({
+    title: "设备即将在10秒后关机",
+    type: "error",
+    content: "",
+    buttons: [
+      {
+        text: "确定",
+        onClick: () => {
+          Dialog.show({
+            title: "愚人节快乐",
+            type: "success",
+          });
+        },
+      },
+    ],
+  });
 }
