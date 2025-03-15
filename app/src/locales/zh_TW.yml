@@ -66,6 +66,8 @@ about:
   updater:
     available: 新版本
     downloading: 下載中
+    checkingUpdate: 檢查新版本中
+    checkUpdateFail: 無法獲取最新版本的訊息，請檢查網路
 settings:
   tabs:
     about: 關於
