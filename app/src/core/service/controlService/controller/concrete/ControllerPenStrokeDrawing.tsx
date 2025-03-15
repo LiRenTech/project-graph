@@ -1,3 +1,4 @@
+import { CursorNameEnum } from "../../../../../types/cursors";
 import { Color } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
@@ -22,9 +23,13 @@ class ControllerDrawingClass extends ControllerClass {
   public shutDown() {
     this._isUsing = false;
     this.currentStroke = [];
+    // 鼠标提示
+    Controller.setCursorNameHook(CursorNameEnum.Default);
   }
   public open() {
     this._isUsing = true;
+    // 鼠标提示
+    Controller.setCursorNameHook(CursorNameEnum.Crosshair);
   }
 
   private autoFillPenStrokeColorEnable = false;
@@ -54,6 +59,8 @@ class ControllerDrawingClass extends ControllerClass {
     this.recordLocation.push(pressWorldLocation.clone());
 
     this.lastMoveLocation = pressWorldLocation.clone();
+
+    Controller.setCursorNameHook(CursorNameEnum.Crosshair);
   };
 
   public mousemove = (event: MouseEvent) => {
@@ -93,6 +100,8 @@ class ControllerDrawingClass extends ControllerClass {
     StageManager.addPenStroke(stroke);
     this.recordLocation = [];
     this.currentStroke = [];
+
+    Controller.setCursorNameHook(CursorNameEnum.Crosshair);
   };
 
   public getCurrentStrokeColor() {
