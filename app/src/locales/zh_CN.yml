@@ -778,3 +778,10 @@ keyBinds:
   pasteWithOriginLocation:
     title: 原位粘贴
     description: 按下后，粘贴的内容会与原位置重叠
+  selectEntityByPenStroke:
+    title: 涂鸦与实体的扩散选择
+    description: |
+      选中一个涂鸦或者实体后，按下此键，会扩散选择该实体周围的实体
+      如果当前选择的是涂鸦，则扩散选择涂鸦触碰到的实体
+      如果当前选择的是实体，则扩散选触碰到的所有涂鸦
+      多次按下后可以多次交替扩散

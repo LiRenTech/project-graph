@@ -48,11 +48,31 @@ export namespace PenStrokeMethods {
   }
 
   /**
+   * 此函数最终由快捷键调用
+   */
+  export function selectEntityByPenStroke() {
+    const selectedEntities = StageManager.getSelectedEntities();
+    for (const entity of selectedEntities) {
+      if (entity instanceof ConnectableEntity) {
+        const penStrokes = getTouchingPenStrokes(entity);
+        for (const penStroke of penStrokes) {
+          penStroke.isSelected = true;
+        }
+      } else if (entity instanceof PenStroke) {
+        const connectableEntities = getConnectableEntitiesByPenStroke(entity);
+        for (const connectableEntity of connectableEntities) {
+          connectableEntity.isSelected = true;
+        }
+      }
+    }
+  }
+
+  /**
    * 获取一个可连接实体触碰到的所有涂鸦
    * @param entity
    * @returns
    */
-  function getTouchingPenStrokes(entity: ConnectableEntity): PenStroke[] {
+  export function getTouchingPenStrokes(entity: ConnectableEntity): PenStroke[] {
     const touchingPenStrokes: PenStroke[] = [];
     for (const penStroke of StageManager.getPenStrokes()) {
       if (isConnectableEntityCollideWithPenStroke(entity, penStroke)) {
@@ -66,7 +86,7 @@ export namespace PenStrokeMethods {
    * 获取一个涂鸦触碰到的所有实体
    * @param penStroke
    */
-  function getConnectableEntitiesByPenStroke(penStroke: PenStroke): ConnectableEntity[] {
+  export function getConnectableEntitiesByPenStroke(penStroke: PenStroke): ConnectableEntity[] {
     const touchingEntities: ConnectableEntity[] = [];
     for (const entity of StageManager.getConnectableEntity()) {
       if (isConnectableEntityCollideWithPenStroke(entity, penStroke)) {

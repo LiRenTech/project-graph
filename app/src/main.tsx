@@ -49,6 +49,7 @@ import { openBrowserOrFile } from "./utils/externalOpen";
 import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isFrame, isMac, isWeb } from "./utils/platform";
+import { PenStrokeMethods } from "./core/stage/stageManager/basicMethods/PenStrokeMethods";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -574,6 +575,7 @@ async function registerKeyBinds() {
   ).down(async () => {
     CopyEngine.paste();
   });
+
   (
     await KeyBinds.create("pasteWithOriginLocation", "v", {
       control: isMac ? false : true,
@@ -584,6 +586,18 @@ async function registerKeyBinds() {
   ).down(async () => {
     CopyEngine.pasteWithOriginLocation();
   });
+
+  (
+    await KeyBinds.create("selectEntityByPenStroke", "w", {
+      control: isMac ? false : true,
+      meta: isMac,
+      alt: false,
+      shift: false,
+    })
+  ).down(async () => {
+    PenStrokeMethods.selectEntityByPenStroke();
+  });
+
   (
     await KeyBinds.create("generateNodeTreeWithDeepMode", "`", {
       control: false,
