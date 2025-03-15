@@ -6,9 +6,11 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
+import { GraphMethods } from "../../../../stage/stageManager/basicMethods/GraphMethods";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
+import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concrete/CircleFlameEffect";
@@ -86,6 +88,31 @@ class CuttingControllerClass extends ControllerClass {
     Controller.lastMoveLocation = ControllerCutting.lastMoveLocation.clone();
   };
 
+  // 删除孤立质点
+  private clearIsolationPoint() {
+    // 待检测的质点集
+    const connectedPoints: ConnectPoint[] = [];
+    for (const edge of ControllerCutting.warningEdges) {
+      if (edge.source instanceof ConnectPoint) {
+        connectedPoints.push(edge.source);
+      }
+      if (edge.target instanceof ConnectPoint) {
+        connectedPoints.push(edge.target);
+      }
+    }
+    // 检测所有待检测的质点是否是孤立状态
+    const prepareDeleteConnectPoints: ConnectPoint[] = [];
+    for (const point of connectedPoints) {
+      const childCount = GraphMethods.nodeChildrenArray(point).length;
+      const parentCount = GraphMethods.nodeParentArray(point).length;
+      if (childCount === 0 && parentCount === 0) {
+        prepareDeleteConnectPoints.push(point);
+      }
+    }
+    // 开始删除孤立质点
+    StageManager.deleteEntities(prepareDeleteConnectPoints);
+  }
+
   public mouseUpFunction(mouseUpWindowLocation: Vector) {
     ControllerCutting.isUsing = false;
     // 最后再更新一下鼠标位置
@@ -96,13 +123,18 @@ class CuttingControllerClass extends ControllerClass {
     // 鼠标提示解除
     Controller.setCursorNameHook(CursorNameEnum.Default);
 
+    // 删除连线
     for (const edge of ControllerCutting.warningEdges) {
       StageManager.deleteEdge(edge);
       for (const effect of EdgeRenderer.getCuttingEffects(edge)) {
         Stage.effectMachine.addEffect(effect);
       }
     }
+    // 删除实体
     StageManager.deleteEntities(ControllerCutting.warningEntity);
+    // 删除产生的孤立质点
+    this.clearIsolationPoint();
+    // 特效
     this.addEffectByWarningEntity();
 
     ControllerCutting.warningEntity = [];
