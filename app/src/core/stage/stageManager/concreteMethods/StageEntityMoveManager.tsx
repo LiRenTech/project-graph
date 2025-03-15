@@ -5,7 +5,6 @@ import { RectanglePushInEffect } from "../../../service/feedbackService/effectEn
 import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../stageObject/abstract/StageEntity";
-import { PenStroke } from "../../stageObject/entity/PenStroke";
 import { GraphMethods } from "../basicMethods/GraphMethods";
 import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageHistoryManager } from "../StageHistoryManager";
@@ -38,15 +37,6 @@ export namespace StageEntityMoveManager {
       for (const section of StageManager.getSections()) {
         if (section.isHaveChildrenByUUID(nodeUUID)) {
           section.adjustLocationAndSize();
-        }
-      }
-    }
-    // 如果是涂鸦，则连带所有可连接对象一起移动
-    if (entity instanceof PenStroke) {
-      for (const otherConnectableEntity of StageManager.getConnectableEntity()) {
-        if (entity.collisionBox.isIntersectsWithRectangle(otherConnectableEntity.collisionBox.getRectangle())) {
-          // 递归了
-          moveEntityUtils(otherConnectableEntity, delta, false);
         }
       }
     }
