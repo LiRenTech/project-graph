@@ -481,13 +481,18 @@ export namespace Renderer {
 
   // }
 
+  /**
+   * 渲染预渲染的涂鸦
+   */
   function renderTempDrawing() {
+    const currentStrokeColor = Stage.drawingMachine.getCurrentStrokeColor();
+
     if (Stage.drawingMachine.isUsing && Stage.drawingMachine.currentStroke.length > 0) {
       for (const segment of Stage.drawingMachine.currentStroke) {
         CurveRenderer.renderSolidLine(
           transformWorld2View(segment.startLocation),
           transformWorld2View(segment.endLocation),
-          StageStyleManager.currentStyle.StageObjectBorderColor,
+          currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorderColor : currentStrokeColor,
           5 * Camera.currentScale,
         );
       }

@@ -27,6 +27,19 @@ class ControllerDrawingClass extends ControllerClass {
     this._isUsing = true;
   }
 
+  private autoFillPenStrokeColorEnable = false;
+  private autoFillPenStrokeColor: Color = Color.Transparent;
+
+  public init(): void {
+    super.init();
+    Settings.watch("autoFillPenStrokeColorEnable", (value) => {
+      this.autoFillPenStrokeColorEnable = value;
+    });
+    Settings.watch("autoFillPenStrokeColor", (value) => {
+      this.autoFillPenStrokeColor = new Color(...value);
+    });
+  }
+
   /**
    * 记录笔迹划过位置
    */
@@ -38,7 +51,6 @@ class ControllerDrawingClass extends ControllerClass {
       return;
     }
     const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-
     this.recordLocation.push(pressWorldLocation.clone());
 
     this.lastMoveLocation = pressWorldLocation.clone();
@@ -77,16 +89,17 @@ class ControllerDrawingClass extends ControllerClass {
     const contentString = strokeStringList.join("~");
 
     const stroke = new PenStroke(contentString);
-    this.autoSetByPenStroke(stroke);
+    stroke.setColor(this.getCurrentStrokeColor());
     StageManager.addPenStroke(stroke);
     this.recordLocation = [];
     this.currentStroke = [];
   };
 
-  async autoSetByPenStroke(penStroke: PenStroke) {
-    if (await Settings.get("autoFillPenStrokeColorEnable")) {
-      const autoColor = await Settings.get("autoFillPenStrokeColor");
-      penStroke.setColor(new Color(...autoColor));
+  public getCurrentStrokeColor() {
+    if (this.autoFillPenStrokeColorEnable) {
+      return this.autoFillPenStrokeColor;
+    } else {
+      return Color.Transparent;
     }
   }
 }

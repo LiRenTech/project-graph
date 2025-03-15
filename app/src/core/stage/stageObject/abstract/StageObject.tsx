@@ -11,14 +11,18 @@ import { CollisionBox } from "../collisionBox/collisionBox";
  * 都具有碰撞箱，uuid
  */
 export abstract class StageObject implements Disposable {
+  // 资源释放
   [Symbol.dispose](): void {
     throw new Error("Method not implemented.");
   }
 
+  // 舞台对象，必定有 uuid
   public abstract uuid: string;
 
+  // 舞台对象，必定有碰撞箱
   public abstract collisionBox: CollisionBox;
 
+  // 舞台对象，必定有选中状态
   _isSelected: boolean = false;
 
   public get isSelected(): boolean {
