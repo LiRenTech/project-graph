@@ -26,7 +26,7 @@ export namespace NodeLogic {
    * @param childNodes
    * @returns
    */
-  export function rgb(fatherNodes: ConnectableEntity[], childNodes: ConnectableEntity[]): string[] {
+  export function setColorByRGB(fatherNodes: ConnectableEntity[], childNodes: ConnectableEntity[]): string[] {
     if (fatherNodes.length !== 3) {
       return [];
     }
@@ -46,7 +46,7 @@ export namespace NodeLogic {
     return [];
   }
 
-  export function rgba(fatherNodes: ConnectableEntity[], childNodes: ConnectableEntity[]): string[] {
+  export function setColorByRGBA(fatherNodes: ConnectableEntity[], childNodes: ConnectableEntity[]): string[] {
     if (fatherNodes.length !== 4) {
       return [];
     }

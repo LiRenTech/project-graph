@@ -128,8 +128,8 @@ const MapNameFunction: StringFunctionMap = {
  * 其他特殊功能的函数
  */
 const MapOtherFunction: OtherFunctionMap = {
-  [LogicNodeNameEnum.RGB]: NodeLogic.rgb,
-  [LogicNodeNameEnum.RGBA]: NodeLogic.rgba,
+  [LogicNodeNameEnum.RGB]: NodeLogic.setColorByRGB,
+  [LogicNodeNameEnum.RGBA]: NodeLogic.setColorByRGBA,
   [LogicNodeNameEnum.GET_LOCATION]: NodeLogic.getLocation,
   [LogicNodeNameEnum.SET_LOCATION]: NodeLogic.setLocation,
   [LogicNodeNameEnum.GET_SIZE]: NodeLogic.getSize,
