@@ -63,7 +63,7 @@ onMounted(() => {
 });
 
 function addLocalePrefixToPath(locale: string) {
-  const newPath = `/${locale}/${path}`;
+  const newPath = `/${locale}${path}`;
   const el = document.createElement("a");
   el.href = newPath;
   el.classList.add("visually-hidden");
