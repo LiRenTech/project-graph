@@ -115,6 +115,9 @@ importers:
       vditor:
         specifier: ^3.10.8
         version: 3.10.8
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.2
     devDependencies:
       "@modyfi/vite-plugin-yaml":
         specifier: ^1.1.0
@@ -243,7 +246,7 @@ importers:
         version: 8.6.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))
       "@storybook/experimental-addon-test":
         specifier: ^8.6.4
-        version: 8.6.4(@vitest/browser@3.0.8(@testing-library/dom@10.4.0)(@types/node@22.13.1)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.1(@types/node@22.13.1)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.1)(sass-embedded@1.83.4)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8))(@vitest/runner@3.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))(vitest@3.0.8(@types/node@22.13.1)(@vitest/browser@3.0.8)(jiti@2.4.2)(jsdom@25.0.1)(less@4.2.2)(lightningcss@1.29.1)(msw@2.7.3(@types/node@22.13.1)(typescript@5.7.3))(sass-embedded@1.83.4)(tsx@4.19.2)(yaml@2.7.0))
+        version: 8.6.4(@vitest/browser@3.0.8)(@vitest/runner@3.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))(vitest@3.0.8)
       "@storybook/manager-api":
         specifier: ^8.6.4
         version: 8.6.4(storybook@8.6.4(prettier@3.4.2))
@@ -273,7 +276,7 @@ importers:
         version: 3.0.8(@testing-library/dom@10.4.0)(@types/node@22.13.1)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.1(@types/node@22.13.1)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.1)(sass-embedded@1.83.4)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8)
       "@vitest/coverage-v8":
         specifier: ^3.0.8
-        version: 3.0.8(@vitest/browser@3.0.8(@testing-library/dom@10.4.0)(@types/node@22.13.1)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.1(@types/node@22.13.1)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.1)(sass-embedded@1.83.4)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8))(vitest@3.0.8(@types/node@22.13.1)(@vitest/browser@3.0.8)(jiti@2.4.2)(jsdom@25.0.1)(less@4.2.2)(lightningcss@1.29.1)(msw@2.7.3(@types/node@22.13.1)(typescript@5.7.3))(sass-embedded@1.83.4)(tsx@4.19.2)(yaml@2.7.0))
+        version: 3.0.8(@vitest/browser@3.0.8)(vitest@3.0.8)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -6379,6 +6382,10 @@ packages:
       { integrity: sha512-cYVsTjKl8b+FrnidjibDWskAv7UKOfcwaVZdp/it9n1s9fU3IkgDbhdIRKCW4JDsAlECJY0ytoVPT3sK6kideA== }
     engines: { node: ">=18" }
 
+  zod@3.24.2:
+    resolution:
+      { integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ== }
+
   zwitch@2.0.4:
     resolution:
       { integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A== }
@@ -7615,7 +7622,7 @@ snapshots:
     dependencies:
       type-fest: 2.19.0
 
-  "@storybook/experimental-addon-test@8.6.4(@vitest/browser@3.0.8(@testing-library/dom@10.4.0)(@types/node@22.13.1)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.1(@types/node@22.13.1)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.1)(sass-embedded@1.83.4)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8))(@vitest/runner@3.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))(vitest@3.0.8(@types/node@22.13.1)(@vitest/browser@3.0.8)(jiti@2.4.2)(jsdom@25.0.1)(less@4.2.2)(lightningcss@1.29.1)(msw@2.7.3(@types/node@22.13.1)(typescript@5.7.3))(sass-embedded@1.83.4)(tsx@4.19.2)(yaml@2.7.0))":
+  "@storybook/experimental-addon-test@8.6.4(@vitest/browser@3.0.8)(@vitest/runner@3.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))(vitest@3.0.8)":
     dependencies:
       "@storybook/global": 5.0.0
       "@storybook/icons": 1.4.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -8265,7 +8272,7 @@ snapshots:
       - utf-8-validate
       - vite
 
-  "@vitest/coverage-v8@3.0.8(@vitest/browser@3.0.8(@testing-library/dom@10.4.0)(@types/node@22.13.1)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.1(@types/node@22.13.1)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.1)(sass-embedded@1.83.4)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8))(vitest@3.0.8(@types/node@22.13.1)(@vitest/browser@3.0.8)(jiti@2.4.2)(jsdom@25.0.1)(less@4.2.2)(lightningcss@1.29.1)(msw@2.7.3(@types/node@22.13.1)(typescript@5.7.3))(sass-embedded@1.83.4)(tsx@4.19.2)(yaml@2.7.0))":
+  "@vitest/coverage-v8@3.0.8(@vitest/browser@3.0.8)(vitest@3.0.8)":
     dependencies:
       "@ampproject/remapping": 2.3.0
       "@bcoe/v8-coverage": 1.0.2
@@ -11615,5 +11622,7 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   yoctocolors-cjs@2.1.2: {}
+
+  zod@3.24.2: {}
 
   zwitch@2.0.4: {}
