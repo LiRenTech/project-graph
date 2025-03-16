@@ -3,22 +3,22 @@ import { DefaultTheme } from "vitepress";
 export const sidebarEn: DefaultTheme.Sidebar = [
   {
     text: "Installation",
-    link: "/installation",
+    link: "/en/installation",
   },
   {
     text: "Contributing Guide",
-    link: "/contributing",
+    link: "/en/contributing",
   },
   {
     text: "Frequently Asked Questions",
-    link: "/faq",
+    link: "/en/faq",
   },
   {
     text: "Terms of Service",
-    link: "/terms",
+    link: "/en/terms",
   },
   {
     text: "Privacy Policy",
-    link: "/privacy",
+    link: "/en/privacy",
   },
 ];

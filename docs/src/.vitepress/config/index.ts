@@ -1,6 +1,6 @@
 import { defineConfig } from "vitepress";
 import { sidebarEn } from "./sidebar/en";
-import { sidebarZh } from "./sidebar/zh";
+import { sidebarZhCn } from "./sidebar/zhCn";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -60,34 +60,19 @@ export default defineConfig({
     },
   },
   locales: {
-    root: {
-      label: "English",
-      description: "Draw fast, think efficiently.",
-      lang: "en",
-      themeConfig: {
-        nav: [
-          { text: "Home", link: "/" },
-          { text: "Download", link: "/installation" },
-        ],
-        sidebar: sidebarEn,
-        editLink: {
-          pattern: "https://github.com/LiRenTech/project-graph/edit/master/docs/src/:path",
-        },
-      },
-    },
-    zh: {
+    zh_CN: {
       label: "简体中文",
       description: "快速绘制节点图的桌面工具，可以用于项目进程拓扑图绘制、快速头脑风暴草稿",
       lang: "zh-CN",
       themeConfig: {
         nav: [
-          { text: "首页", link: "/zh/" },
-          { text: "指南", link: "/zh/guide/" },
-          { text: "开发", link: "/zh/dev/" },
-          { text: "捐赠", link: "/zh/donate" },
+          { text: "首页", link: "/zh_CN/" },
+          { text: "指南", link: "/zh_CN/guide/" },
+          { text: "开发", link: "/zh_CN/dev/" },
+          { text: "捐赠", link: "/zh_CN/donate" },
           { text: "在线使用", link: "https://web.project-graph.top" },
         ],
-        sidebar: sidebarZh,
+        sidebar: sidebarZhCn,
         editLink: {
           text: "编辑页面",
           pattern: "https://github.com/LiRenTech/project-graph/edit/master/docs/src/:path",
@@ -105,6 +90,21 @@ export default defineConfig({
         },
         sidebarMenuLabel: "导航",
         darkModeSwitchLabel: "主题",
+      },
+    },
+    en: {
+      label: "English",
+      description: "Draw fast, think efficiently.",
+      lang: "en",
+      themeConfig: {
+        nav: [
+          { text: "Home", link: "/" },
+          { text: "Download", link: "/installation" },
+        ],
+        sidebar: sidebarEn,
+        editLink: {
+          pattern: "https://github.com/LiRenTech/project-graph/edit/master/docs/src/:path",
+        },
       },
     },
   },
