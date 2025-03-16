@@ -301,11 +301,12 @@ export class Rectangle extends Shape {
   }
 
   /**
-   * 判断点是否在矩形内
+   * 判断点是否在矩形内/边上也算
+   * 为什么边上也算，因为节点的位置在左上角上，可以用于判断节点是否存在于某位置
    */
   public isPointIn(point: Vector): boolean {
-    const collision_x = this.left < point.x && point.x < this.right;
-    const collision_y = this.top < point.y && point.y < this.bottom;
+    const collision_x = this.left <= point.x && point.x <= this.right;
+    const collision_y = this.top <= point.y && point.y <= this.bottom;
     return collision_x && collision_y;
   }
 

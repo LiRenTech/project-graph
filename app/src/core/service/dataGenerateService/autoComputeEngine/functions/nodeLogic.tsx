@@ -400,6 +400,39 @@ export namespace NodeLogic {
     }
   }
 
+  /**
+   * 检测某点是否含有实体
+   * @param fatherNodes
+   * @param _childNodes
+   */
+  export function isHaveEntityOnLocation(
+    fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    if (fatherNodes.length < 2) {
+      return ["Error: input node contains less than 2 nodes"];
+    }
+    const fatherNode1 = fatherNodes[0];
+    const fatherNode2 = fatherNodes[1];
+    if (fatherNode1 instanceof TextNode && fatherNode2 instanceof TextNode) {
+      const x = parseFloat(fatherNode1.text);
+      const y = parseFloat(fatherNode2.text);
+      if (Number.isFinite(x) && Number.isFinite(y)) {
+        const entity = StageManager.isEntityOnLocation(new Vector(x, y));
+        if (entity) {
+          return ["1"];
+        } else {
+          return ["0"];
+        }
+      } else {
+        return ["输入的坐标格式不正确"];
+      }
+    } else {
+      return ["输入的节点格式必须都是TextNode"];
+    }
+  }
+
   export function replaceGlobalContent(
     fatherNodes: ConnectableEntity[],
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
