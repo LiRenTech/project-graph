@@ -65,5 +65,8 @@ export default defineConfig(async () => ({
   test: {
     environment: "jsdom",
     include: ["./tests/**/*.test.tsx"],
+    env: {
+      LR_VITEST: "true",
+    },
   },
 }));
