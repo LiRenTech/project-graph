@@ -15,7 +15,7 @@ export namespace Serialized {
     details: string;
   };
 
-  export type Node = Entity & {
+  export type TextNode = Entity & {
     type: "core:text_node";
     size: Vector;
     text: string;
@@ -95,7 +95,7 @@ export namespace Serialized {
 
   export type File = {
     version: typeof StageDumper.latestVersion;
-    entities: (Node | Section | ConnectPoint | ImageNode | UrlNode | PenStroke | PortalNode)[];
+    entities: (TextNode | Section | ConnectPoint | ImageNode | UrlNode | PenStroke | PortalNode)[];
     associations: (LineEdge | CublicCatmullRomSplineEdge)[];
     tags: string[];
   };

@@ -21,7 +21,7 @@ export namespace StageDumper {
    */
   export const latestVersion = 14;
 
-  export function dumpTextNode(textNode: TextNode): Serialized.Node {
+  export function dumpTextNode(textNode: TextNode): Serialized.TextNode {
     return {
       location: [textNode.rectangle.location.x, textNode.rectangle.location.y],
       size: [textNode.rectangle.size.x, textNode.rectangle.size.y],
@@ -136,7 +136,7 @@ export namespace StageDumper {
     entity: Entity,
   ):
     | Serialized.Section
-    | Serialized.Node
+    | Serialized.TextNode
     | Serialized.ConnectPoint
     | Serialized.ImageNode
     | Serialized.UrlNode
@@ -170,7 +170,7 @@ export namespace StageDumper {
   export function dump(): Serialized.File {
     const entities: (
       | Serialized.Section
-      | Serialized.Node
+      | Serialized.TextNode
       | Serialized.ConnectPoint
       | Serialized.ImageNode
       | Serialized.UrlNode
@@ -222,7 +222,7 @@ export namespace StageDumper {
     entities: Entity[],
   ): (
     | Serialized.Section
-    | Serialized.Node
+    | Serialized.TextNode
     | Serialized.ConnectPoint
     | Serialized.ImageNode
     | Serialized.UrlNode
@@ -232,7 +232,7 @@ export namespace StageDumper {
     //
     let selectedEntities: (
       | Serialized.Section
-      | Serialized.Node
+      | Serialized.TextNode
       | Serialized.ConnectPoint
       | Serialized.ImageNode
       | Serialized.UrlNode

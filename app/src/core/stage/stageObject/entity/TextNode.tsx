@@ -84,7 +84,7 @@ export class TextNode extends ConnectableEntity {
       location = [0, 0],
       size = [0, 0],
       color = [0, 0, 0, 0],
-    }: Partial<Serialized.Node> & { uuid: string },
+    }: Partial<Serialized.TextNode> & { uuid: string },
     public unknown = false,
   ) {
     super();
