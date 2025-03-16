@@ -2,3 +2,7 @@ app/src-tauri
 
 # 防止翻译总是被格式化
 *.yml
+
+# 这个基本不会被手动修改
+router.ts
+vite-env.d.ts
