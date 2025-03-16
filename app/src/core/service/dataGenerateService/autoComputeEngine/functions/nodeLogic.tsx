@@ -355,7 +355,7 @@ export namespace NodeLogic {
   }
 
   /**
-   * 在固定的某点创建一个文本节点
+   * 在固定的某点创建一个文本节点，输入的位置是左上角坐标位置
    * @param fatherNodes
    * @param _childNodes
    * @returns
@@ -391,9 +391,13 @@ export namespace NodeLogic {
           text: fatherNode3.text,
         });
         StageManager.addTextNode(textNode);
+        return [textNode.uuid];
+      } else {
+        return ["暂停创建节点"];
       }
+    } else {
+      return ["输入的节点格式必须都是TextNode"];
     }
-    return [];
   }
 
   export function replaceGlobalContent(
