@@ -47,7 +47,7 @@
     "@vitejs/plugin-react-swc": "^3.7.2",
     "clsx": "^2.1.1",
     "jotai": "^2.11.0",
-    "jsdom": "^25.0.1",
+    "jsdom": "^26.0.0",
     "sass-embedded": "^1.83.0",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^4.0.0",

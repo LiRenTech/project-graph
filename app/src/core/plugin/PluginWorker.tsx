@@ -44,6 +44,9 @@ export class PluginWorker {
           }
         }
         // 调用API方法
+        if (method === "hello") {
+          console.log("hello", args[0]);
+        }
         this.worker.postMessage({
           type: "apiResponse",
           payload: {
