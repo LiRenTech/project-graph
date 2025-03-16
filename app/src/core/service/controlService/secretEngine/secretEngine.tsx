@@ -165,6 +165,28 @@ export class SecretEngine {
         }
       },
     },
+    "c r t + +": {
+      name: "将选中的CR曲线增加tension值",
+      func() {
+        const selectedCREdge = StageManager.getSelectedAssociations().filter(
+          (edge) => edge instanceof CublicCatmullRomSplineEdge,
+        );
+        for (const edge of selectedCREdge) {
+          edge.tension += 0.1;
+        }
+      },
+    },
+    "c r t - -": {
+      name: "将选中的CR曲线减少tension值",
+      func() {
+        const selectedCREdge = StageManager.getSelectedAssociations().filter(
+          (edge) => edge instanceof CublicCatmullRomSplineEdge,
+        );
+        for (const edge of selectedCREdge) {
+          edge.tension -= 0.1;
+        }
+      },
+    },
   };
 
   // 监听按键 并触发相应效果，每次按键都会触发
