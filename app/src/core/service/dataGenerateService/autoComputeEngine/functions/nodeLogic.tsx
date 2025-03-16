@@ -217,6 +217,27 @@ export namespace NodeLogic {
     return [time.toString()];
   }
 
+  export function getDateTime(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    const date = new Date();
+    const result = [
+      date.getFullYear(),
+      date.getMonth() + 1, // 月份从0开始，需+1转为1-12[1,3](@ref)
+      date.getDate(), // 直接获取日期（1-31）
+      date.getDay() || 7, // 将周日（0）转为7，其他保持1-6[4,5](@ref)
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds(),
+    ];
+    return result.map((value) => {
+      return value.toString();
+    });
+  }
+
   /**
    * 播放音效
    * 接收一个路径文件，以及一个布尔值数字，如果为1则播放一下。否则不播放
