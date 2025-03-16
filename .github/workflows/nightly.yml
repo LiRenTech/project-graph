@@ -15,8 +15,8 @@ jobs:
         with:
           fetch-depth: 0
       - run: |
-          gh release delete nightly --yes --cleanup-tag || true
           changelog=$(./.github/scripts/generate-changelog.sh)
+          gh release delete nightly --yes --cleanup-tag || true
           gh release create nightly --title "Nightly Build" --notes "${changelog}" --prerelease
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
