@@ -5,6 +5,7 @@ import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { StageObject } from "../../../../stage/stageObject/abstract/StageObject";
+import { Edge } from "../../../../stage/stageObject/association/Edge";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
@@ -60,7 +61,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
       return;
     }
 
-    const isHaveEdgeSelected = StageManager.getLineEdges().some((edge) => edge.isSelected);
+    const isHaveEdgeSelected = StageManager.getAssociations().some((association) => association.isSelected);
     const isHaveEntitySelected = StageManager.getEntities().some((entity) => entity.isSelected);
 
     // 现在的情况：在空白的地方按下左键
@@ -91,8 +92,8 @@ class ControllerRectangleSelectClass extends ControllerClass {
     this.selectEndLocation = pressWorldLocation.clone();
     this.selectingRectangle = new Rectangle(pressWorldLocation.clone(), Vector.getZero());
 
-    const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
-    if (clickedEdge !== null) {
+    const clickedAssociation = StageManager.findAssociationByLocation(pressWorldLocation);
+    if (clickedAssociation !== null) {
       // 在连线身上按下
       this._isUsing = false;
     }
@@ -146,12 +147,12 @@ class ControllerRectangleSelectClass extends ControllerClass {
           }
         }
       }
-      for (const edge of StageManager.getLineEdges()) {
-        if (this.isSelectWithEntity(edge)) {
-          if (Controller.lastSelectedEdgeUUID.has(edge.uuid)) {
-            edge.isSelected = false;
+      for (const association of StageManager.getAssociations()) {
+        if (this.isSelectWithEntity(association)) {
+          if (Controller.lastSelectedEdgeUUID.has(association.uuid)) {
+            association.isSelected = false;
           } else {
-            edge.isSelected = true;
+            association.isSelected = true;
           }
         }
       }
@@ -180,8 +181,8 @@ class ControllerRectangleSelectClass extends ControllerClass {
       // Edge
       if (!isHaveEntity) {
         // 如果已经有节点被选择了，则不能再选择边了
-        for (const edge of StageManager.getLineEdges()) {
-          if (edge.isHiddenBySectionCollapse) {
+        for (const edge of StageManager.getAssociations()) {
+          if (edge instanceof Edge && edge.isHiddenBySectionCollapse) {
             continue;
           }
           if (this.isSelectWithEntity(edge)) {

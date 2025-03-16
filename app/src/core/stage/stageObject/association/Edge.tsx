@@ -27,6 +27,9 @@ export abstract class Edge extends ConnectableAssociation {
   set source(value: ConnectableEntity) {
     this._source = value;
   }
+  get isHiddenBySectionCollapse(): boolean {
+    return this.source.isHiddenBySectionCollapse && this.target.isHiddenBySectionCollapse;
+  }
 
   get target(): ConnectableEntity {
     return this._target;

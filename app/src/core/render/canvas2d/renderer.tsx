@@ -16,6 +16,8 @@ import { Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { StageObject } from "../../stage/stageObject/abstract/StageObject";
+import { CublicCatmullRomSplineEdge } from "../../stage/stageObject/association/CublicCatmullRomSplineEdge";
+import { LineEdge } from "../../stage/stageObject/association/LineEdge";
 import { CurveRenderer } from "./basicRenderer/curveRenderer";
 import { ShapeRenderer } from "./basicRenderer/shapeRenderer";
 import { TextRenderer } from "./basicRenderer/textRenderer";
@@ -587,18 +589,16 @@ export namespace Renderer {
 
   function renderEdges(viewRectangle: Rectangle) {
     renderedEdges = 0;
-    for (const edge of StageManager.getLineEdges()) {
-      if (!Camera.limitCameraInCycleSpace && isOverView(viewRectangle, edge)) {
+    for (const association of StageManager.getAssociations()) {
+      if (!Camera.limitCameraInCycleSpace && isOverView(viewRectangle, association)) {
         continue;
       }
-      EdgeRenderer.renderEdge(edge);
-      renderedEdges++;
-    }
-    for (const edge of StageManager.getCrEdges()) {
-      if (!Camera.limitCameraInCycleSpace && isOverView(viewRectangle, edge)) {
-        continue;
+      if (association instanceof LineEdge) {
+        EdgeRenderer.renderLineEdge(association);
       }
-      EdgeRenderer.renderCrEdge(edge);
+      if (association instanceof CublicCatmullRomSplineEdge) {
+        EdgeRenderer.renderCrEdge(association);
+      }
       renderedEdges++;
     }
   }

@@ -24,10 +24,6 @@ export class LineEdge extends Edge {
     return EdgeCollisionBoxGetter.getCollisionBox(this);
   }
 
-  get isHiddenBySectionCollapse(): boolean {
-    return this.source.isHiddenBySectionCollapse && this.target.isHiddenBySectionCollapse;
-  }
-
   /**
    * 是否是偏移状态
    * 偏移是为双向线准备的 A->B, B->A，防止重叠

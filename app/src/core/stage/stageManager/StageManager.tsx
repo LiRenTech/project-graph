@@ -503,10 +503,19 @@ export namespace StageManager {
    * @param location
    * @returns
    */
-  export function findEdgeByLocation(location: Vector): LineEdge | null {
+  export function findLineEdgeByLocation(location: Vector): LineEdge | null {
     for (const edge of getLineEdges()) {
       if (edge.collisionBox.isContainsPoint(location)) {
         return edge;
+      }
+    }
+    return null;
+  }
+
+  export function findAssociationByLocation(location: Vector): Association | null {
+    for (const association of getAssociations()) {
+      if (association.collisionBox.isContainsPoint(location)) {
+        return association;
       }
     }
     return null;

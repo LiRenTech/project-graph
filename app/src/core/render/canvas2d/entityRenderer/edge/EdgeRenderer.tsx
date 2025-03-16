@@ -8,6 +8,7 @@ import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 
 import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
+import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
 import { Renderer } from "../../renderer";
@@ -17,7 +18,6 @@ import { StraightEdgeRenderer } from "./concrete/StraightEdgeRenderer";
 import { SymmetryCurveEdgeRenderer } from "./concrete/SymmetryCurveEdgeRenderer";
 import { VerticalPolyEdgeRenderer } from "./concrete/VerticalPolyEdgeRenderer";
 import { EdgeRendererClass } from "./EdgeRendererClass";
-import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 
 /**
  * 边的总渲染器单例
@@ -54,7 +54,7 @@ export namespace EdgeRenderer {
     }
   }
 
-  export function renderEdge(edge: LineEdge) {
+  export function renderLineEdge(edge: LineEdge) {
     if (edge.source.isHiddenBySectionCollapse && edge.target.isHiddenBySectionCollapse) {
       return;
     }
@@ -87,6 +87,9 @@ export namespace EdgeRenderer {
     const crShape = edge.getShape();
     // 画曲线
     WorldRenderUtils.renderCublicCatmullRomSpline(crShape, StageStyleManager.currentStyle.StageObjectBorderColor, 2);
+    if (edge.isSelected) {
+      WorldRenderUtils.renderCublicCatmullRomSpline(crShape, StageStyleManager.currentStyle.CollideBoxSelectedColor, 4);
+    }
     // 画控制点们
     for (const point of crShape.controlPoints) {
       ShapeRenderer.renderCircle(

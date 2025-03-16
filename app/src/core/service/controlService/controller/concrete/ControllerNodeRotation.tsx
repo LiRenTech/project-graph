@@ -36,7 +36,7 @@ ControllerNodeRotation.mousedown = (event: MouseEvent) => {
     return;
   }
   const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-  const clickedEdge = StageManager.findEdgeByLocation(pressWorldLocation);
+  const clickedEdge = StageManager.findLineEdgeByLocation(pressWorldLocation);
   const isHaveEdgeSelected = StageManager.getLineEdges().some((edge) => edge.isSelected);
   if (clickedEdge === null) {
     return;
