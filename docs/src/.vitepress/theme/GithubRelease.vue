@@ -1,7 +1,7 @@
 <template>
   <div v-if="release">
     <p>{{ release.name }}</p>
-    <details class="details custom-block" v-if="!nightly">
+    <details class="details custom-block">
       <summary>{{ changelogTitle }}</summary>
       <div v-html="renderMarkdown(release.body)" class="markdown-body"></div>
     </details>
