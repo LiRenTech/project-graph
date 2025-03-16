@@ -364,6 +364,10 @@ export namespace StageManager {
     stageContent.entities.addValue(portalNode, portalNode.uuid);
   }
 
+  export function addEntity(entity: Entity) {
+    stageContent.entities.addValue(entity, entity.uuid);
+  }
+
   // 用于UI层监测
   export let selectedNodeCount = 0;
   export let selectedEdgeCount = 0;

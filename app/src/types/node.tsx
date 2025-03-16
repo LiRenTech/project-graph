@@ -22,6 +22,10 @@ export namespace Serialized {
     color: Color;
   };
 
+  export function isTextNode(obj: StageObject): obj is TextNode {
+    return obj.type === "core:text_node";
+  }
+
   export type Section = Entity & {
     type: "core:section";
     size: Vector;
@@ -33,15 +37,25 @@ export namespace Serialized {
     isCollapsed: boolean;
   };
 
+  export function isSection(obj: StageObject): obj is Section {
+    return obj.type === "core:section";
+  }
+
   export type ConnectPoint = Entity & {
     type: "core:connect_point";
   };
+  export function isConnectPoint(obj: StageObject): obj is ConnectPoint {
+    return obj.type === "core:connect_point";
+  }
   export type ImageNode = Entity & {
     path: string;
     size: Vector;
     scale: number;
     type: "core:image_node";
   };
+  export function isImageNode(obj: StageObject): obj is ImageNode {
+    return obj.type === "core:image_node";
+  }
   export type UrlNode = Entity & {
     url: string;
     title: string;
@@ -49,6 +63,9 @@ export namespace Serialized {
     color: Color;
     type: "core:url_node";
   };
+  export function isUrlNode(obj: StageObject): obj is UrlNode {
+    return obj.type === "core:url_node";
+  }
   export type PortalNode = Entity & {
     // 连接的文件
     portalFilePath: string;
@@ -62,11 +79,17 @@ export namespace Serialized {
     color: Color;
     type: "core:portal_node";
   };
+  export function isPortalNode(obj: StageObject): obj is PortalNode {
+    return obj.type === "core:portal_node";
+  }
   export type PenStroke = Entity & {
     type: "core:pen_stroke";
     content: string;
     color: Color;
   };
+  export function isPenStroke(obj: StageObject): obj is PenStroke {
+    return obj.type === "core:pen_stroke";
+  }
   // export type Edge = StageObject & {
   //   type: "core:edge";
   //   source: string;
@@ -85,6 +108,12 @@ export namespace Serialized {
     color: Color;
     text: string;
   };
+  export function isLineEdge(obj: StageObject): obj is LineEdge {
+    return obj.type === "core:line_edge";
+  }
+  export function isCublicCatmullRomSplineEdge(obj: StageObject): obj is CublicCatmullRomSplineEdge {
+    return obj.type === "core:cublic_catmull_rom_spline_edge";
+  }
   export type CublicCatmullRomSplineEdge = Edge & {
     type: "core:cublic_catmull_rom_spline_edge";
     text: string;

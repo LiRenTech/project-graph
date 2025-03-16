@@ -9,6 +9,7 @@ import { Section } from "../../stageObject/entity/Section";
 import { PortalNode } from "../../stageObject/entity/PortalNode";
 import { PenStroke } from "../../stageObject/entity/PenStroke";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
+import { Entity } from "../../stageObject/abstract/StageEntity";
 /**
  * 直接向舞台中添加序列化数据
  * 用于向舞台中附加新文件图、或者用于复制粘贴、甚至撤销
@@ -23,36 +24,29 @@ export namespace StageSerializedAdder {
     const updatedSerializedData = refreshUUID(serializedData);
     // TODO: 结构有待优化
     for (const entity of updatedSerializedData.entities) {
-      if (entity.type === "core:text_node") {
-        const newNode = new TextNode(entity);
-        newNode.moveTo(newNode.rectangle.location.add(diffLocation));
-        StageManager.addTextNode(newNode);
-      } else if (entity.type === "core:section") {
-        const section = new Section(entity);
-        section.moveTo(section.rectangle.location.add(diffLocation));
-        StageManager.addSection(section);
-      } else if (entity.type === "core:connect_point") {
-        const point = new ConnectPoint(entity);
-        point.moveTo(point.geometryCenter.add(diffLocation));
-        StageManager.addConnectPoint(point);
-      } else if (entity.type === "core:pen_stroke") {
-        const penStroke = new PenStroke(entity.content);
-        penStroke.moveTo(penStroke.collisionBox.getRectangle().location.add(diffLocation));
-        StageManager.addPenStroke(penStroke);
-      } else if (entity.type === "core:portal_node") {
-        const node = new PortalNode(entity);
-        node.moveTo(node.collisionBox.getRectangle().location.add(diffLocation));
-        StageManager.addPortalNode(node);
-      } else if (entity.type === "core:url_node") {
-        const node = new UrlNode(entity);
-        node.moveTo(node.collisionBox.getRectangle().location.add(diffLocation));
-        StageManager.addUrlNode(node);
+      let entityObject: Entity | null = null;
+      if (Serialized.isTextNode(entity)) {
+        entityObject = new TextNode(entity);
+      } else if (Serialized.isSection(entity)) {
+        entityObject = new Section(entity);
+      } else if (Serialized.isConnectPoint(entity)) {
+        entityObject = new ConnectPoint(entity);
+      } else if (Serialized.isPenStroke(entity)) {
+        entityObject = new PenStroke(entity.content);
+      } else if (Serialized.isPortalNode(entity)) {
+        entityObject = new PortalNode(entity);
+      } else if (Serialized.isUrlNode(entity)) {
+        entityObject = new UrlNode(entity);
+      }
+      if (entityObject) {
+        entityObject.moveTo(entityObject.collisionBox.getRectangle().location.add(diffLocation));
+        StageManager.addEntity(entityObject);
       }
     }
     for (const edge of updatedSerializedData.associations) {
-      if (edge.type === "core:line_edge") {
+      if (Serialized.isLineEdge(edge)) {
         StageManager.addLineEdge(new LineEdge(edge));
-      } else if (edge.type === "core:cublic_catmull_rom_spline_edge") {
+      } else if (Serialized.isCublicCatmullRomSplineEdge(edge)) {
         // TODO:
       }
     }
