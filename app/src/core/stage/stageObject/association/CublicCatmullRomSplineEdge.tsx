@@ -23,6 +23,20 @@ export class CublicCatmullRomSplineEdge extends Edge {
   public getControlPoints(): Vector[] {
     return this.controlPoints;
   }
+
+  // 实验性的增加控制点
+  public addControlPoint() {
+    if (this.controlPoints.length >= 4) {
+      // 获取倒数第二个和倒数第三个控制点
+      const secondLastPoint = this.controlPoints[this.controlPoints.length - 2];
+      const thirdLastPoint = this.controlPoints[this.controlPoints.length - 3];
+      // 计算中间控制点
+      const middlePoint = Vector.fromTwoPointsCenter(secondLastPoint, thirdLastPoint);
+      // 将新的控制点插入到数组对应的位置上
+      this.controlPoints.splice(this.controlPoints.length - 2, 0, middlePoint);
+    }
+  }
+
   private _collisionBox: CollisionBox;
 
   get collisionBox(): CollisionBox {
@@ -91,7 +105,13 @@ export class CublicCatmullRomSplineEdge extends Edge {
     const startLocation = this._source.collisionBox.getRectangle().center;
     const endLocation = this._target.collisionBox.getRectangle().center;
     const line = Edge.getCenterLine(this._source, this._target);
-    this.controlPoints = [startLocation, line.start, line.end, endLocation];
+    if (this.controlPoints.length <= 4) {
+      this.controlPoints = [startLocation, line.start, line.end, endLocation];
+    } else {
+      // 截取出除去前两个和最后两个控制点，获取全部的中间控制点
+      const middleControlPoints = this.controlPoints.slice(2, -2);
+      this.controlPoints = [startLocation, line.start].concat(middleControlPoints).concat([line.end, endLocation]);
+    }
     // 重新生成新的形状
     this._collisionBox.shapeList = [new CublicCatmullRomSpline(this.controlPoints, this.alpha, this.tension)];
   }

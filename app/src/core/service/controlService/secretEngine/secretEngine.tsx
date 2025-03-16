@@ -16,6 +16,7 @@ import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/Vie
 import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
 import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
+import { CublicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CublicCatmullRomSplineEdge";
 
 interface SecretItem {
   name: string;
@@ -150,6 +151,17 @@ export class SecretEngine {
         const selectedNodes = StageManager.getSelectedEntities();
         for (const entity of SectionMethods.getAllEntitiesInSelectedSectionsOrEntities(selectedNodes)) {
           Stage.effectMachine.addEffect(RectangleNoteEffect.fromShiftClickSelect(entity.collisionBox.getRectangle()));
+        }
+      },
+    },
+    "c r p + +": {
+      name: "将选中的CR曲线增加控制点",
+      func() {
+        const selectedCREdge = StageManager.getSelectedAssociations().filter(
+          (edge) => edge instanceof CublicCatmullRomSplineEdge,
+        );
+        for (const edge of selectedCREdge) {
+          edge.addControlPoint();
         }
       },
     },

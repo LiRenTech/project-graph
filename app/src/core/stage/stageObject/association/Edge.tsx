@@ -73,6 +73,12 @@ export abstract class Edge extends ConnectableAssociation {
     return new Line(startPoint, endPoint);
   }
 
+  /**
+   * 获取两个实体外接矩形的连线线段，（只连接到两个边，不连到矩形中心）
+   * @param source
+   * @param target
+   * @returns
+   */
   static getCenterLine(source: ConnectableEntity, target: ConnectableEntity): Line {
     const edgeCenterLine = new Line(
       source.collisionBox.getRectangle().center,
