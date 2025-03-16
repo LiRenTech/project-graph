@@ -129,6 +129,17 @@ export namespace NodeLogic {
     return [mouseLocation.x.toString(), mouseLocation.y.toString()];
   }
 
+  export function getMouseWorldLocation(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    const mouseLocation = MouseLocation.vector();
+    const worldLocation = Renderer.transformView2World(mouseLocation);
+    return [worldLocation.x.toString(), worldLocation.y.toString()];
+  }
+
   export function getCameraLocation(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _fatherNodes: ConnectableEntity[],

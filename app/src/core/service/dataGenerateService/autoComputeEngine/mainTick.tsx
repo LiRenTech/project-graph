@@ -134,6 +134,7 @@ const MapOtherFunction: OtherFunctionMap = {
   [LogicNodeNameEnum.SET_LOCATION]: NodeLogic.setLocation,
   [LogicNodeNameEnum.GET_SIZE]: NodeLogic.getSize,
   [LogicNodeNameEnum.GET_MOUSE_LOCATION]: NodeLogic.getMouseLocation,
+  [LogicNodeNameEnum.GET_MOUSE_WORLD_LOCATION]: NodeLogic.getMouseWorldLocation,
   [LogicNodeNameEnum.GET_CAMERA_LOCATION]: NodeLogic.getCameraLocation,
   [LogicNodeNameEnum.SET_CAMERA_LOCATION]: NodeLogic.setCameraLocation,
   [LogicNodeNameEnum.GET_CAMERA_SCALE]: NodeLogic.getCameraScale,
