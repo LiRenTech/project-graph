@@ -16,7 +16,6 @@ import { Entity } from "../stageObject/abstract/StageEntity";
 import { StageObject } from "../stageObject/abstract/StageObject";
 import { CublicCatmullRomSplineEdge } from "../stageObject/association/CublicCatmullRomSplineEdge";
 import { Edge } from "../stageObject/association/Edge";
-import { LineEdge } from "../stageObject/association/LineEdge";
 import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../stageObject/entity/ImageNode";
 import { PenStroke } from "../stageObject/entity/PenStroke";
@@ -33,6 +32,7 @@ import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManag
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
+import { LineEdge } from "../stageObject/association/LineEdge";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -256,8 +256,11 @@ export namespace StageManager {
   export function deleteOnePenStroke(penStroke: PenStroke) {
     stageContent.entities.deleteValue(penStroke);
   }
-  export function deleteOneEdge(edge: LineEdge) {
+  export function deleteOneLineEdge(edge: LineEdge) {
     stageContent.associations.deleteValue(edge);
+  }
+  export function deleteOneAssociation(association: Association) {
+    stageContent.associations.deleteValue(association);
   }
 
   export function getAssociations(): Association[] {
@@ -618,7 +621,7 @@ export namespace StageManager {
   }
   export function isAssociationOnLocation(location: Vector): boolean {
     for (const association of getAssociations()) {
-      if (association instanceof LineEdge) {
+      if (association instanceof Edge) {
         if (association.target.isHiddenBySectionCollapse && association.source.isHiddenBySectionCollapse) {
           continue;
         }
@@ -664,7 +667,7 @@ export namespace StageManager {
     }
   }
 
-  export function deleteEdge(deleteEdge: LineEdge): boolean {
+  export function deleteEdge(deleteEdge: Edge): boolean {
     const res = StageDeleteManager.deleteEdge(deleteEdge);
     StageHistoryManager.recordStep();
     // 更新选中边计数

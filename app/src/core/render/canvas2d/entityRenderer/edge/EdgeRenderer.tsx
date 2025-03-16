@@ -88,7 +88,7 @@ export namespace EdgeRenderer {
     // 画曲线
     WorldRenderUtils.renderCublicCatmullRomSpline(crShape, StageStyleManager.currentStyle.StageObjectBorderColor, 2);
     if (edge.isSelected) {
-      WorldRenderUtils.renderCublicCatmullRomSpline(crShape, StageStyleManager.currentStyle.CollideBoxSelectedColor, 4);
+      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
     }
     // 画控制点们
     for (const point of crShape.controlPoints) {

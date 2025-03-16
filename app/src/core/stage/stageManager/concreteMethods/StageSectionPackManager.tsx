@@ -8,10 +8,10 @@ import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { GraphMethods } from "../basicMethods/GraphMethods";
 import { SectionMethods } from "../basicMethods/SectionMethods";
+import { StageHistoryManager } from "../StageHistoryManager";
 import { StageManager } from "../StageManager";
 import { StageManagerUtils } from "./StageManagerUtils";
 import { StageSectionInOutManager } from "./StageSectionInOutManager";
-import { StageHistoryManager } from "../StageHistoryManager";
 
 /**
  * 管理所有东西进出StageSection的逻辑

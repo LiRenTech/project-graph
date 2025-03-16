@@ -3,10 +3,10 @@ import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity"
 import { CublicCatmullRomSplineEdge } from "../../stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
-import { StageManager } from "../StageManager";
-import { StageDeleteManager } from "./StageDeleteManager";
 import { GraphMethods } from "../basicMethods/GraphMethods";
 import { StageHistoryManager } from "../StageHistoryManager";
+import { StageManager } from "../StageManager";
+import { StageDeleteManager } from "./StageDeleteManager";
 
 /**
  * 集成所有连线相关的功能

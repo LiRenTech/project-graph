@@ -3,7 +3,7 @@ import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { ExplodeDashEffect } from "../../../service/feedbackService/effectEngine/concrete/ExplodeDashEffect";
 import { Stage } from "../../Stage";
 import { Entity } from "../../stageObject/abstract/StageEntity";
-import { LineEdge } from "../../stageObject/association/LineEdge";
+import { Edge } from "../../stageObject/association/Edge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { PenStroke } from "../../stageObject/entity/PenStroke";
@@ -131,14 +131,14 @@ export namespace StageDeleteManager {
    * @param entity
    */
   function deleteEntityAfterClearEdges(entity: Entity) {
-    const prepareDeleteEdges: LineEdge[] = [];
+    const prepareDeleteEdges: Edge[] = [];
     for (const edge of StageManager.getLineEdges()) {
       if (edge.source === entity || edge.target === entity) {
         prepareDeleteEdges.push(edge);
       }
     }
     for (const edge of prepareDeleteEdges) {
-      StageManager.deleteOneEdge(edge);
+      StageManager.deleteOneAssociation(edge);
     }
   }
 
@@ -147,13 +147,13 @@ export namespace StageDeleteManager {
    * @param deleteEdge 要删除的边
    * @returns
    */
-  export function deleteEdge(deleteEdge: LineEdge): boolean {
+  export function deleteEdge(deleteEdge: Edge): boolean {
     const fromNode = deleteEdge.source;
     const toNode = deleteEdge.target;
     // 先判断这两个节点是否在nodes里
     if (StageManager.isEntityExists(fromNode.uuid) && StageManager.isEntityExists(toNode.uuid)) {
       // 删除边
-      StageManager.deleteOneEdge(deleteEdge);
+      StageManager.deleteOneAssociation(deleteEdge);
       StageManager.updateReferences();
       return true;
     } else {

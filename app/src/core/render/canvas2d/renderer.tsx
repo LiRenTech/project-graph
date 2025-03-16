@@ -508,8 +508,8 @@ export namespace Renderer {
       CollisionBoxRenderer.render(node.collisionBox, new Color(255, 0, 0, 0.5));
     }
     // 待删除的边
-    for (const edge of Stage.cuttingMachine.warningEdges) {
-      CollisionBoxRenderer.render(edge.collisionBox, new Color(255, 0, 0, 0.5));
+    for (const association of Stage.cuttingMachine.warningAssociations) {
+      CollisionBoxRenderer.render(association.collisionBox, new Color(255, 0, 0, 0.5));
     }
     for (const section of Stage.cuttingMachine.warningSections) {
       CollisionBoxRenderer.render(section.collisionBox, new Color(255, 0, 0, 0.5));
@@ -741,7 +741,7 @@ export namespace Renderer {
       `框选框: ${Stage.selectMachine.selectingRectangle}`,
       `正在切割: ${Stage.cuttingMachine.isUsing}`,
       `Stage.warningNodes: ${Stage.cuttingMachine.warningEntity.length}`,
-      `Stage.warningEdges: ${Stage.cuttingMachine.warningEdges.length}`,
+      `Stage.warningAssociations: ${Stage.cuttingMachine.warningAssociations.length}`,
       `ConnectFromNodes: ${Stage.connectMachine.connectFromEntities}`,
       `lastSelectedNode: ${Controller.lastSelectedEntityUUID.size}`,
       `粘贴板: ${JSON.stringify(CopyEngine.copyBoardData)}`,

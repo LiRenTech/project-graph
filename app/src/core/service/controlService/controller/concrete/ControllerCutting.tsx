@@ -8,7 +8,9 @@ import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
 import { GraphMethods } from "../../../../stage/stageManager/basicMethods/GraphMethods";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
+import { Association } from "../../../../stage/stageObject/abstract/Association";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
+import { Edge } from "../../../../stage/stageObject/association/Edge";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
 import { Section } from "../../../../stage/stageObject/entity/Section";
@@ -26,7 +28,7 @@ class CuttingControllerClass extends ControllerClass {
   public lastMoveLocation = Vector.getZero();
   public warningEntity: Entity[] = [];
   public warningSections: Section[] = [];
-  public warningEdges: LineEdge[] = [];
+  public warningAssociations: Association[] = [];
   // 是否正在使用
   public isUsing = false;
 
@@ -48,56 +50,52 @@ class CuttingControllerClass extends ControllerClass {
       return;
     }
     const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    ControllerCutting.lastMoveLocation = pressWorldLocation.clone();
+    this.lastMoveLocation = pressWorldLocation.clone();
 
     const isClickedEntity = StageManager.isEntityOnLocation(pressWorldLocation);
     const isClickedAssociation = StageManager.isAssociationOnLocation(pressWorldLocation);
 
     if (!isClickedEntity && !isClickedAssociation) {
       // 开始绘制切断线
-      ControllerCutting.isUsing = true;
-      ControllerCutting.cuttingStartLocation = pressWorldLocation.clone();
-      ControllerCutting.cuttingLine = new Line(
-        ControllerCutting.cuttingStartLocation,
-        ControllerCutting.cuttingStartLocation.clone(),
-      );
+      this.isUsing = true;
+      this.cuttingStartLocation = pressWorldLocation.clone();
+      this.cuttingLine = new Line(this.cuttingStartLocation, this.cuttingStartLocation.clone());
       // 添加音效提示
       SoundService.play.cuttingLineStart();
       // 鼠标提示
       Controller.setCursorNameHook(CursorNameEnum.Crosshair);
     } else {
-      ControllerCutting.isUsing = false;
+      this.isUsing = false;
     }
   };
 
   public mousemove: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (!ControllerCutting.isUsing) {
+    if (!this.isUsing) {
       return;
     }
     // 正在切断线
-    ControllerCutting.cuttingLine = new Line(
-      ControllerCutting.cuttingStartLocation,
-      ControllerCutting.lastMoveLocation,
-    );
+    this.cuttingLine = new Line(this.cuttingStartLocation, this.lastMoveLocation);
 
     this.updateWarningObjectByCuttingLine();
-    ControllerCutting.lastMoveLocation = Renderer.transformView2World(
+    this.lastMoveLocation = Renderer.transformView2World(
       new Vector(event.clientX, event.clientY), // 鼠标位置
     );
     // 渲染器需要
-    Controller.lastMoveLocation = ControllerCutting.lastMoveLocation.clone();
+    Controller.lastMoveLocation = this.lastMoveLocation.clone();
   };
 
   // 删除孤立质点
   private clearIsolationPoint() {
     // 待检测的质点集
     const connectedPoints: ConnectPoint[] = [];
-    for (const edge of ControllerCutting.warningEdges) {
-      if (edge.source instanceof ConnectPoint) {
-        connectedPoints.push(edge.source);
-      }
-      if (edge.target instanceof ConnectPoint) {
-        connectedPoints.push(edge.target);
+    for (const edge of this.warningAssociations) {
+      if (edge instanceof Edge) {
+        if (edge.source instanceof ConnectPoint) {
+          connectedPoints.push(edge.source);
+        }
+        if (edge.target instanceof ConnectPoint) {
+          connectedPoints.push(edge.target);
+        }
       }
     }
     // 检测所有待检测的质点是否是孤立状态
@@ -114,9 +112,9 @@ class CuttingControllerClass extends ControllerClass {
   }
 
   public mouseUpFunction(mouseUpWindowLocation: Vector) {
-    ControllerCutting.isUsing = false;
+    this.isUsing = false;
     // 最后再更新一下鼠标位置
-    ControllerCutting.lastMoveLocation = Renderer.transformView2World(
+    this.lastMoveLocation = Renderer.transformView2World(
       mouseUpWindowLocation, // 鼠标位置
     );
     this.updateWarningObjectByCuttingLine();
@@ -124,34 +122,36 @@ class CuttingControllerClass extends ControllerClass {
     Controller.setCursorNameHook(CursorNameEnum.Default);
 
     // 删除连线
-    for (const edge of ControllerCutting.warningEdges) {
-      StageManager.deleteEdge(edge);
-      for (const effect of EdgeRenderer.getCuttingEffects(edge)) {
-        Stage.effectMachine.addEffect(effect);
+    for (const edge of this.warningAssociations) {
+      if (edge instanceof Edge) {
+        StageManager.deleteEdge(edge);
+        if (edge instanceof LineEdge) {
+          Stage.effectMachine.addEffects(EdgeRenderer.getCuttingEffects(edge));
+        }
       }
     }
     // 删除实体
-    StageManager.deleteEntities(ControllerCutting.warningEntity);
+    StageManager.deleteEntities(this.warningEntity);
     // 删除产生的孤立质点
     this.clearIsolationPoint();
     // 特效
     this.addEffectByWarningEntity();
 
-    ControllerCutting.warningEntity = [];
-    ControllerCutting.warningSections = [];
+    this.warningEntity = [];
+    this.warningSections = [];
 
     StageManager.updateReferences();
 
-    ControllerCutting.warningEdges = [];
+    this.warningAssociations = [];
 
     Stage.effectMachine.addEffect(
       new LineCuttingEffect(
         new ProgressNumber(0, 15),
-        ControllerCutting.cuttingStartLocation,
-        ControllerCutting.lastMoveLocation,
+        this.cuttingStartLocation,
+        this.lastMoveLocation,
         StageStyleManager.currentStyle.effects.warningShadow,
         StageStyleManager.currentStyle.effects.warningShadow,
-        ControllerCutting.cuttingStartLocation.distance(ControllerCutting.lastMoveLocation) / 10,
+        this.cuttingStartLocation.distance(this.lastMoveLocation) / 10,
       ),
     );
 
@@ -163,7 +163,7 @@ class CuttingControllerClass extends ControllerClass {
     if (!(event.button == 2 || event.button == 3)) {
       return;
     }
-    if (!ControllerCutting.isUsing) {
+    if (!this.isUsing) {
       return;
     }
     this.mouseUpFunction(new Vector(event.clientX, event.clientY));
@@ -175,9 +175,9 @@ class CuttingControllerClass extends ControllerClass {
   }
 
   // private clearWarningObject() {
-  //   ControllerCutting.warningEntity = [];
-  //   ControllerCutting.warningSections = [];
-  //   ControllerCutting.warningEdges = [];
+  //   this.warningEntity = [];
+  //   this.warningSections = [];
+  //   this.warningEdges = [];
   // }
   /**
    * 更新斩断线经过的所有鼠标对象
@@ -186,7 +186,7 @@ class CuttingControllerClass extends ControllerClass {
    * 此函数会在鼠标移动被频繁调用，所以需要优化
    */
   private updateWarningObjectByCuttingLine() {
-    ControllerCutting.warningEntity = [];
+    this.warningEntity = [];
 
     this.twoPointsMap = {};
 
@@ -197,12 +197,12 @@ class CuttingControllerClass extends ControllerClass {
       if (entity.isHiddenBySectionCollapse) {
         continue; // 隐藏的节点不参与碰撞检测
       }
-      if (entity.collisionBox.isIntersectsWithLine(ControllerCutting.cuttingLine)) {
-        ControllerCutting.warningEntity.push(entity);
+      if (entity.collisionBox.isIntersectsWithLine(this.cuttingLine)) {
+        this.warningEntity.push(entity);
       }
 
       // 特效
-      const collidePoints = entity.collisionBox.getRectangle().getCollidePointsWithLine(ControllerCutting.cuttingLine);
+      const collidePoints = entity.collisionBox.getRectangle().getCollidePointsWithLine(this.cuttingLine);
 
       if (collidePoints.length === 2) {
         this.twoPointsMap[entity.uuid] = collidePoints;
@@ -215,23 +215,23 @@ class CuttingControllerClass extends ControllerClass {
         );
       }
     }
-    ControllerCutting.warningSections = [];
+    this.warningSections = [];
     for (const section of StageManager.getSections()) {
       if (section.isHiddenBySectionCollapse) {
         continue; // 隐藏的节点不参与碰撞检测
       }
-      if (section.collisionBox.isIntersectsWithLine(ControllerCutting.cuttingLine)) {
-        ControllerCutting.warningSections.push(section);
+      if (section.collisionBox.isIntersectsWithLine(this.cuttingLine)) {
+        this.warningSections.push(section);
       }
     }
 
-    ControllerCutting.warningEdges = [];
-    for (const edge of StageManager.getLineEdges()) {
-      if (edge.isHiddenBySectionCollapse) {
+    this.warningAssociations = [];
+    for (const edge of StageManager.getAssociations()) {
+      if (edge instanceof Edge && edge.isHiddenBySectionCollapse) {
         continue; // 连线被隐藏了
       }
-      if (edge.collisionBox.isIntersectsWithLine(ControllerCutting.cuttingLine)) {
-        ControllerCutting.warningEdges.push(edge);
+      if (edge.collisionBox.isIntersectsWithLine(this.cuttingLine)) {
+        this.warningAssociations.push(edge);
       }
     }
   }
@@ -241,7 +241,7 @@ class CuttingControllerClass extends ControllerClass {
    */
   private addEffectByWarningEntity() {
     // 裂开特效
-    for (const entity of ControllerCutting.warningEntity) {
+    for (const entity of this.warningEntity) {
       const collidePoints = this.twoPointsMap[entity.uuid];
       if (collidePoints) {
         let fillColor = Color.Transparent;
