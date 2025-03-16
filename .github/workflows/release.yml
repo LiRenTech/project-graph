@@ -9,19 +9,22 @@ on:
         required: true
 
 jobs:
-  # 创建一个release
   create-release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - run: gh release create "v${{ github.event.inputs.version }}" --title "Release v${{ github.event.inputs.version }}" --notes "如果下面没有可下载的文件，说明构建失败，请联系开发者" || true # 忽略错误，防止失败导致整个流程失败
+        with:
+          fetch-depth: 0
+      - run: |
+          changelog=$(./.github/scripts/generate-changelog.sh)
+          gh release create "v${{ github.event.inputs.version }}" --title "Release v${{ github.event.inputs.version }}" --notes "${changelog}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
   publish-tauri:
-    needs: create-release
     outputs:
       hash: ${{ steps.sha256sum.outputs.hash }}
     permissions:
@@ -117,7 +120,6 @@ jobs:
           echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
 
   publish-tauri-android:
-    needs: create-release
     runs-on: ubuntu-latest
     permissions:
       contents: write

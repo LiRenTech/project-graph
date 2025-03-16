@@ -6,29 +6,24 @@ on:
   workflow_dispatch: # 手动触发
 
 jobs:
-  delete-release:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - run: gh release delete nightly --yes --cleanup-tag || true # 忽略错误
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   create-release:
-    needs: delete-release
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - run: gh release create nightly --title "Nightly Build" --prerelease
+        with:
+          fetch-depth: 0
+      - run: |
+          changelog=$(./.github/scripts/generate-changelog.sh)
+          gh release delete nightly --yes --cleanup-tag || true
+          sleep 5
+          gh release create nightly --title "Nightly Build" --notes "${changelog}" --prerelease
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
   publish-tauri:
-    needs: create-release
     outputs:
       hash: ${{ steps.sha256sum.outputs.hash }}
     permissions:
@@ -124,7 +119,6 @@ jobs:
           echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
 
   publish-tauri-android:
-    needs: create-release
     runs-on: ubuntu-latest
     permissions:
       contents: write
