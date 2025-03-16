@@ -66,10 +66,10 @@ export default defineConfig({
       lang: "zh-CN",
       themeConfig: {
         nav: [
-          { text: "首页", link: "/zh/" },
-          { text: "指南", link: "/zh/guide/" },
-          { text: "开发", link: "/zh/dev/" },
-          { text: "捐赠", link: "/zh/donate" },
+          { text: "首页", link: "/zh_CN/" },
+          { text: "指南", link: "/zh_CN/guide/" },
+          { text: "开发", link: "/zh_CN/dev/" },
+          { text: "捐赠", link: "/zh_CN/donate" },
           { text: "在线使用", link: "https://web.project-graph.top" },
         ],
         sidebar: sidebarZhCn,
