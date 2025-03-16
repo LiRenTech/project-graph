@@ -238,6 +238,59 @@ export namespace NodeLogic {
     });
   }
 
+  export function addDateTime(
+    fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    if (fatherNodes.length < 8) {
+      return ["Error: input node contains less than 7 nodes"];
+    } else {
+      if (
+        fatherNodes[0] instanceof TextNode &&
+        fatherNodes[1] instanceof TextNode &&
+        fatherNodes[2] instanceof TextNode &&
+        fatherNodes[3] instanceof TextNode &&
+        fatherNodes[4] instanceof TextNode &&
+        fatherNodes[5] instanceof TextNode &&
+        fatherNodes[6] instanceof TextNode &&
+        fatherNodes[7] instanceof TextNode
+      ) {
+        const year = parseInt(fatherNodes[0].text);
+        const month = parseInt(fatherNodes[1].text);
+        const day = parseInt(fatherNodes[2].text);
+        // const _dayOfWeek = parseInt(fatherNodes[3].text);
+        const hours = parseInt(fatherNodes[4].text);
+        const minutes = parseInt(fatherNodes[5].text);
+        const seconds = parseInt(fatherNodes[6].text);
+        const timestamp = parseInt(fatherNodes[7].text);
+
+        // 1. 将前7个参数转换为Date对象（注意月份需-1）
+        const originalDate = new Date(year, month - 1, day, hours, minutes, seconds);
+
+        // 2. 添加时间戳增量（假设timestamp单位为毫秒）
+        const newTimestamp = originalDate.getTime() + timestamp;
+        const newDate = new Date(newTimestamp);
+
+        // 3. 返回新的日期时间数组
+        const result = [
+          newDate.getFullYear(),
+          newDate.getMonth() + 1, // 修正月份为1-12
+          newDate.getDate(),
+          newDate.getDay() || 7, // 转换周日0为7
+          newDate.getHours(),
+          newDate.getMinutes(),
+          newDate.getSeconds(),
+        ];
+        return result.map((value) => {
+          return value.toString();
+        });
+      } else {
+        return ["输入节点的类型中含有非TextNode节点"];
+      }
+    }
+  }
+
   /**
    * 播放音效
    * 接收一个路径文件，以及一个布尔值数字，如果为1则播放一下。否则不播放
