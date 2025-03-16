@@ -20,6 +20,7 @@ import { PortalNode } from "../../stage/stageObject/entity/PortalNode";
 import { PathString } from "../../../utils/pathString";
 import { isWeb } from "../../../utils/platform";
 import { Vector } from "../../dataStruct/Vector";
+import { CublicCatmullRomSplineEdge } from "../../stage/stageObject/association/CublicCatmullRomSplineEdge";
 
 /**
  * 管理最近打开的文件列表
@@ -249,29 +250,29 @@ export namespace RecentFileManager {
   function loadDataToMainStage(data: Serialized.File) {
     for (const entity of data.entities) {
       // TODO: 待优化结构
-      if (entity.type === "core:text_node") {
+      if (Serialized.isTextNode(entity)) {
         StageManager.addTextNode(new TextNode(entity));
-      } else if (entity.type === "core:section") {
+      } else if (Serialized.isSection(entity)) {
         StageManager.addSection(new Section(entity));
-      } else if (entity.type === "core:connect_point") {
+      } else if (Serialized.isConnectPoint(entity)) {
         StageManager.addConnectPoint(new ConnectPoint(entity));
-      } else if (entity.type === "core:image_node") {
+      } else if (Serialized.isImageNode(entity)) {
         StageManager.addImageNode(new ImageNode(entity));
-      } else if (entity.type === "core:url_node") {
+      } else if (Serialized.isUrlNode(entity)) {
         StageManager.addUrlNode(new UrlNode(entity));
-      } else if (entity.type === "core:pen_stroke") {
+      } else if (Serialized.isPenStroke(entity)) {
         StageManager.addPenStroke(new PenStroke(entity.content));
-      } else if (entity.type === "core:portal_node") {
+      } else if (Serialized.isPortalNode(entity)) {
         StageManager.addPortalNode(new PortalNode(entity));
       } else {
         console.warn("加载文件时，出现未知的实体类型：" + entity);
       }
     }
     for (const edge of data.associations) {
-      if (edge.type === "core:line_edge") {
+      if (Serialized.isLineEdge(edge)) {
         StageManager.addLineEdge(new LineEdge(edge));
-      } else if (edge.type === "core:cublic_catmull_rom_spline_edge") {
-        // TODO:
+      } else if (Serialized.isCublicCatmullRomSplineEdge(edge)) {
+        StageManager.addCrEdge(new CublicCatmullRomSplineEdge(edge));
       }
     }
     StageManager.TagOptions.reset(data.tags);

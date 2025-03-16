@@ -10,6 +10,7 @@ import { PortalNode } from "../../stageObject/entity/PortalNode";
 import { PenStroke } from "../../stageObject/entity/PenStroke";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
 import { Entity } from "../../stageObject/abstract/StageEntity";
+import { CublicCatmullRomSplineEdge } from "../../stageObject/association/CublicCatmullRomSplineEdge";
 /**
  * 直接向舞台中添加序列化数据
  * 用于向舞台中附加新文件图、或者用于复制粘贴、甚至撤销
@@ -48,6 +49,7 @@ export namespace StageSerializedAdder {
         StageManager.addLineEdge(new LineEdge(edge));
       } else if (Serialized.isCublicCatmullRomSplineEdge(edge)) {
         // TODO:
+        StageManager.addCrEdge(new CublicCatmullRomSplineEdge(edge));
       }
     }
     StageManager.updateReferences();

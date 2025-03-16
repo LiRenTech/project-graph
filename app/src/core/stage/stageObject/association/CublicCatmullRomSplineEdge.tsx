@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
 import { CublicCatmullRomSpline } from "../../../dataStruct/shape/CublicCatmullRomSpline";
 import { Vector } from "../../../dataStruct/Vector";
-import { StageManager } from "../../stageManager/StageManager";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
@@ -54,12 +53,23 @@ export class CublicCatmullRomSplineEdge extends Edge {
     return result;
   }
 
-  constructor({ uuid, source, target, text, alpha, tension, controlPoints }: Serialized.CublicCatmullRomSplineEdge) {
+  constructor(
+    {
+      uuid,
+      source,
+      target,
+      text,
+      alpha,
+      tension,
+      controlPoints,
+    }: Serialized.CublicCatmullRomSplineEdge /** true表示解析状态，false表示解析完毕 */,
+    public unknown = false,
+  ) {
     super();
-    // this._source = new TextNode({ uuid: source }, true);
-    // this._target = new TextNode({ uuid: target }, true);
-    this._source = StageManager.getTextNodeByUUID(source) as TextNode;
-    this._target = StageManager.getTextNodeByUUID(target) as TextNode;
+    // this._source = StageManager.getTextNodeByUUID(source) as TextNode;
+    // this._target = StageManager.getTextNodeByUUID(target) as TextNode;
+    this._source = new TextNode({ uuid: source }, true);
+    this._target = new TextNode({ uuid: target }, true);
     this.uuid = uuid;
     this.text = text;
     this.alpha = alpha;
