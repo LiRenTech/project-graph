@@ -96,11 +96,13 @@ export namespace NodeLogic {
     if (fatherNode1 instanceof TextNode && fatherNode2 instanceof TextNode && childNodes.length > 0) {
       const x = parseFloat(fatherNode1.text);
       const y = parseFloat(fatherNode2.text);
-      childNodes.forEach((node) => {
-        if (node instanceof TextNode) {
-          node.moveTo(new Vector(x, y));
-        }
-      });
+      if (Number.isFinite(x) && Number.isFinite(y)) {
+        childNodes.forEach((node) => {
+          if (node instanceof TextNode) {
+            node.moveTo(new Vector(x, y));
+          }
+        });
+      }
     }
     return [];
   }

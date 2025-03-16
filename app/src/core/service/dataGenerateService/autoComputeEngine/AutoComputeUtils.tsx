@@ -126,6 +126,9 @@ export namespace AutoComputeUtils {
    * @param resultTextList
    */
   export function getMultiResult(node: TextNode, resultTextList: string[]) {
+    if (resultTextList.length === 0) {
+      return;
+    }
     // 先把子节点数量凑够
     let childrenList = GraphMethods.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
     if (childrenList.length < resultTextList.length) {
