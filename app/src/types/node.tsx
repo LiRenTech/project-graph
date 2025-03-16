@@ -103,6 +103,9 @@ export namespace Serialized {
     source: string;
     target: string;
   };
+  export function isEdge(obj: StageObject): obj is Edge {
+    return "source" in obj && "target" in obj;
+  }
   export type LineEdge = Edge & {
     type: "core:line_edge";
     color: Color;

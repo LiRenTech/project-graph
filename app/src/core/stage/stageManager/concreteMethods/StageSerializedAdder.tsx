@@ -62,7 +62,7 @@ export namespace StageSerializedAdder {
       const newUUID = uuidv4();
       // 把这个实体所涉及的所有有向边对应的target和source的UUID也刷新
       for (const edge of result.associations) {
-        if (edge.type === "core:line_edge" || edge.type === "core:cublic_catmull_rom_spline_edge") {
+        if (Serialized.isEdge(edge)) {
           if (edge.source === oldUUID) {
             edge.source = newUUID;
           }
@@ -74,7 +74,7 @@ export namespace StageSerializedAdder {
       // 把这个实体所涉及的所有Section父子关系的UUID也刷新
       // 具体来说就是找到这个节点的父Section，把父Section的children数组中这个节点的UUID替换成新UUID
       for (const section of result.entities) {
-        if (section.type === "core:section") {
+        if (Serialized.isSection(section)) {
           if (section.children.includes(oldUUID)) {
             section.children = section.children.map((child) => (child === oldUUID ? newUUID : child));
           }
