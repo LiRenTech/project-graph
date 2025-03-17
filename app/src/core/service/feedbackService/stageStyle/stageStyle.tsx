@@ -63,7 +63,7 @@ export class StageStyle {
     style.StageObjectBorderColor = new Color(204, 204, 204);
     style.CollideBoxPreDeleteColor = new Color(255, 255, 0, 0.2);
     style.CollideBoxPreSelectedColor = new Color(0, 255, 0, 0.2);
-    style.CollideBoxSelectedColor = new Color(34, 217, 110);
+    style.CollideBoxSelectedColor = new Color(34, 217, 110, 0.5);
     style.NodeDetailsTextColor = new Color(255, 255, 255);
     style.effects = {
       flash: Color.White,
@@ -85,7 +85,7 @@ export class StageStyle {
     style.SelectRectangleFillColor = new Color(0, 0, 0, 0.08);
     style.StageObjectBorderColor = new Color(0, 0, 0);
     style.CollideBoxPreSelectedColor = new Color(0, 255, 0, 0.2);
-    style.CollideBoxSelectedColor = new Color(64, 209, 171);
+    style.CollideBoxSelectedColor = new Color(64, 209, 171, 0.5);
     style.NodeDetailsTextColor = new Color(0, 0, 0);
     style.effects = {
       flash: Color.Black,
@@ -118,7 +118,7 @@ export class StageStyle {
 
     // 碰撞盒颜色
     style.CollideBoxPreSelectedColor = new Color(238, 63, 77, 0.3);
-    style.CollideBoxSelectedColor = new Color(238, 63, 77); // 169, 221, 208
+    style.CollideBoxSelectedColor = new Color(238, 63, 77, 0.7); // 169, 221, 208
 
     // 文字使用深紫色
     style.NodeDetailsTextColor = new Color(107, 89, 108); // 深灰紫
@@ -156,7 +156,7 @@ export class StageStyle {
 
     // 碰撞盒颜色使用冷绿色和冷紫色
     style.CollideBoxPreSelectedColor = new Color(169, 221, 208, 0.3).desaturate(0.3); // 浅豆绿
-    style.CollideBoxSelectedColor = new Color(62, 125, 83);
+    style.CollideBoxSelectedColor = new Color(62, 125, 83, 0.4);
 
     // 文字使用更深的冷灰色
     style.NodeDetailsTextColor = new Color(65, 74, 84); // 深冷灰

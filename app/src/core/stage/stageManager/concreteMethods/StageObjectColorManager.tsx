@@ -7,6 +7,32 @@ import { StageManager } from "../StageManager";
  * 不仅包括添加颜色和去除颜色，还包括让颜色变暗和变亮等
  */
 export namespace StageObjectColorManager {
+  export function setSelectedStageObjectColor(color: Color) {
+    for (const node of StageManager.getTextNodes()) {
+      if (node.isSelected) {
+        node.color = color;
+      }
+    }
+    for (const node of StageManager.getSections()) {
+      if (node.isSelected) {
+        node.color = color;
+      }
+    }
+    for (const entity of StageManager.getPenStrokes()) {
+      if (entity.isSelected) {
+        entity.setColor(color);
+      }
+    }
+    for (const edge of StageManager.getLineEdges()) {
+      if (edge.isSelected) {
+        edge.color = color;
+      }
+    }
+    // 特性：统一取消框选
+    StageManager.clearSelectAll();
+    StageHistoryManager.recordStep();
+  }
+
   export function setEntityColor(color: Color) {
     for (const node of StageManager.getTextNodes()) {
       if (node.isSelected) {
@@ -20,48 +46,7 @@ export namespace StageObjectColorManager {
     }
     for (const entity of StageManager.getPenStrokes()) {
       if (entity.isSelected) {
-        // TODO: 涂鸦应该可以改颜色
-      }
-    }
-    StageHistoryManager.recordStep();
-  }
-
-  export function clearEntityColor() {
-    for (const node of StageManager.getTextNodes()) {
-      if (node.isSelected) {
-        node.color = Color.Transparent;
-      }
-    }
-    for (const node of StageManager.getSections()) {
-      if (node.isSelected) {
-        node.color = Color.Transparent;
-      }
-    }
-    StageHistoryManager.recordStep();
-  }
-
-  export function setEdgeColor(color: Color) {
-    for (const edge of StageManager.getLineEdges()) {
-      if (edge.isSelected) {
-        edge.color = color;
-      }
-    }
-    StageHistoryManager.recordStep();
-  }
-
-  export function setStrokeColor(color: Color) {
-    for (const entity of StageManager.getPenStrokes()) {
-      if (entity.isSelected) {
         entity.setColor(color);
-      }
-    }
-    StageHistoryManager.recordStep();
-  }
-
-  export function clearEdgeColor() {
-    for (const edge of StageManager.getLineEdges()) {
-      if (edge.isSelected) {
-        edge.color = Color.Transparent;
       }
     }
     StageHistoryManager.recordStep();
