@@ -175,6 +175,12 @@ export namespace StageExportSvg {
         selectedEntities.push(entity);
       }
     }
+    // 所有实际包含的uuid集合
+    const selectedEntitiesUUIDSet = new Set<string>();
+    for (const entity of selectedEntities) {
+      selectedEntitiesUUIDSet.add(entity.uuid);
+    }
+
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -207,7 +213,9 @@ export namespace StageExportSvg {
 
         {/* 构建连线 */}
         {StageManager.getLineEdges()
-          .filter((edge) => edge.target.isSelected && edge.source.isSelected)
+          .filter(
+            (edge) => selectedEntitiesUUIDSet.has(edge.source.uuid) && selectedEntitiesUUIDSet.has(edge.target.uuid),
+          )
           .map((edge) => dumpEdge(edge))}
       </svg>
     );
