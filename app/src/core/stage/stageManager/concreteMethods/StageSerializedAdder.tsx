@@ -11,6 +11,7 @@ import { PenStroke } from "../../stageObject/entity/PenStroke";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { CublicCatmullRomSplineEdge } from "../../stageObject/association/CublicCatmullRomSplineEdge";
+import { ImageNode } from "../../stageObject/entity/ImageNode";
 /**
  * 直接向舞台中添加序列化数据
  * 用于向舞台中附加新文件图、或者用于复制粘贴、甚至撤销
@@ -38,6 +39,8 @@ export namespace StageSerializedAdder {
         entityObject = new PortalNode(entity);
       } else if (Serialized.isUrlNode(entity)) {
         entityObject = new UrlNode(entity);
+      } else if (Serialized.isImageNode(entity)) {
+        entityObject = new ImageNode(entity);
       }
       if (entityObject) {
         entityObject.moveTo(entityObject.collisionBox.getRectangle().location.add(diffLocation));
@@ -48,7 +51,6 @@ export namespace StageSerializedAdder {
       if (Serialized.isLineEdge(edge)) {
         StageManager.addLineEdge(new LineEdge(edge));
       } else if (Serialized.isCublicCatmullRomSplineEdge(edge)) {
-        // TODO:
         StageManager.addCrEdge(new CublicCatmullRomSplineEdge(edge));
       }
     }
