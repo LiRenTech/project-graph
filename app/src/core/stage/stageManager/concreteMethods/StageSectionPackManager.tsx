@@ -12,6 +12,7 @@ import { StageHistoryManager } from "../StageHistoryManager";
 import { StageManager } from "../StageManager";
 import { StageManagerUtils } from "./StageManagerUtils";
 import { StageSectionInOutManager } from "./StageSectionInOutManager";
+import { Edge } from "../../stageObject/association/Edge";
 
 /**
  * 管理所有东西进出StageSection的逻辑
@@ -135,12 +136,7 @@ export namespace StageSectionPackManager {
       details: textNode.details,
     });
     newSection.adjustLocationAndSize();
-    // 获取所有连向它的和它连向的东西
-    const fatherConnections = GraphMethods.nodeParentArray(textNode);
-    const childConnections = GraphMethods.nodeChildrenArray(textNode);
 
-    // 删除原来的textNode
-    StageManager.deleteEntities([textNode]);
     // 将新的Section加入舞台
     StageManager.addSection(newSection);
     for (const fatherSection of fatherSections) {
@@ -148,15 +144,19 @@ export namespace StageSectionPackManager {
     }
 
     if (!ignoreEdges) {
-      // 将所有连向它的东西连到新的Section
-      for (const fatherConnection of fatherConnections) {
-        StageManager.connectEntity(fatherConnection, newSection);
-      }
-      // 将所有连向新的Section的东西连到它
-      for (const childConnection of childConnections) {
-        StageManager.connectEntity(newSection, childConnection);
+      for (const edge of StageManager.getAssociations()) {
+        if (edge instanceof Edge) {
+          if (edge.target.uuid === textNode.uuid) {
+            edge.target = newSection;
+          }
+          if (edge.source.uuid === textNode.uuid) {
+            edge.source = newSection;
+          }
+        }
       }
     }
+    // 删除原来的textNode
+    StageManager.deleteEntities([textNode]);
     // 更新section的碰撞箱
     newSection.adjustLocationAndSize();
     return newSection;
