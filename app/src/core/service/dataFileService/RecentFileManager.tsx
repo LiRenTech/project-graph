@@ -261,7 +261,7 @@ export namespace RecentFileManager {
       } else if (Serialized.isUrlNode(entity)) {
         StageManager.addUrlNode(new UrlNode(entity));
       } else if (Serialized.isPenStroke(entity)) {
-        StageManager.addPenStroke(new PenStroke(entity.content));
+        StageManager.addPenStroke(new PenStroke(entity));
       } else if (Serialized.isPortalNode(entity)) {
         StageManager.addPortalNode(new PortalNode(entity));
       } else {

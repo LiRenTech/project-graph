@@ -1,9 +1,9 @@
-import { v4 } from "uuid";
 import { Color } from "../../../dataStruct/Color";
 import { Line } from "../../../dataStruct/shape/Line";
 import { Vector } from "../../../dataStruct/Vector";
 import { Entity } from "../abstract/StageEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
+import { Serialized } from "../../../../types/node";
 
 /**
  * 一笔画中的某一个小段
@@ -74,15 +74,16 @@ export class PenStroke extends Entity {
    *
    * @param path str格式："x1,y1,w1 x2,y2,w2 x3,y3,w3..."
    */
-  constructor(path: string) {
+  constructor({ uuid, content, color }: Serialized.PenStroke) {
     super();
     // 开始解析字符串
-    this.checkType(path);
+    this.checkType(content);
+    this.setColor(new Color(...color));
 
     // 生成一个随机的uuid
-    this.uuid = v4();
+    this.uuid = uuid;
     // 解析每一段
-    const segmentList = this.stringToSegmentList(path);
+    const segmentList = this.stringToSegmentList(content);
     this.segmentList = segmentList;
     this.updateCollisionBoxBySegmentList();
   }

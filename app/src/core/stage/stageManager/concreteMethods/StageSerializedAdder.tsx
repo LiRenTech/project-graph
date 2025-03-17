@@ -33,7 +33,7 @@ export namespace StageSerializedAdder {
       } else if (Serialized.isConnectPoint(entity)) {
         entityObject = new ConnectPoint(entity);
       } else if (Serialized.isPenStroke(entity)) {
-        entityObject = new PenStroke(entity.content);
+        entityObject = new PenStroke(entity);
       } else if (Serialized.isPortalNode(entity)) {
         entityObject = new PortalNode(entity);
       } else if (Serialized.isUrlNode(entity)) {

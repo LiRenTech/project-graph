@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { CursorNameEnum } from "../../../../../types/cursors";
 import { Color } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
@@ -95,7 +96,14 @@ class ControllerDrawingClass extends ControllerClass {
     }
     const contentString = strokeStringList.join("~");
 
-    const stroke = new PenStroke(contentString);
+    const stroke = new PenStroke({
+      type: "core:pen_stroke",
+      content: contentString,
+      color: this.getCurrentStrokeColor().toArray(),
+      uuid: v4(),
+      location: [0, 0],
+      details: "",
+    });
     stroke.setColor(this.getCurrentStrokeColor());
     StageManager.addPenStroke(stroke);
     this.recordLocation = [];
