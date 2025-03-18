@@ -126,6 +126,9 @@ export class Vector {
    * @returns
    */
   distance(vector: Vector): number {
+    if (vector === null || vector === undefined) {
+      throw new Error("vector is null or undefined");
+    }
     const dx = this.x - vector.x;
     const dy = this.y - vector.y;
     return Math.sqrt(dx ** 2 + dy ** 2);

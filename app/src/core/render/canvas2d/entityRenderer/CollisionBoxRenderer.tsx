@@ -26,7 +26,7 @@ export namespace CollisionBoxRenderer {
           ),
           Color.Transparent,
           color,
-          2 * Camera.currentScale,
+          8 * Camera.currentScale,
           16 * Camera.currentScale,
         );
       } else if (shape instanceof Circle) {
@@ -35,7 +35,7 @@ export namespace CollisionBoxRenderer {
           (shape.radius + 7.5) * Camera.currentScale,
           Color.Transparent,
           color,
-          2 * Camera.currentScale,
+          10 * Camera.currentScale,
         );
       } else if (shape instanceof Line) {
         CurveRenderer.renderSolidLine(
