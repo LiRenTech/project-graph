@@ -110,6 +110,37 @@ export namespace NodeLogic {
     return [];
   }
 
+  export function setLocationByUUID(
+    fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    if (fatherNodes.length < 3) {
+      return [];
+    }
+    const fatherNode1 = fatherNodes[0];
+    const fatherNode2 = fatherNodes[1];
+    const fatherNode3 = fatherNodes[2];
+    if (fatherNode1 instanceof TextNode && fatherNode2 instanceof TextNode && fatherNode3 instanceof TextNode) {
+      const findEntity = StageManager.getEntitiesByUUIDs([fatherNode1.text])[0];
+      if (!findEntity) {
+        return ["Error: cannot find entity by uuid"];
+      }
+      // 找到了实体
+      if (findEntity instanceof TextNode) {
+        const x = parseFloat(fatherNode2.text);
+        const y = parseFloat(fatherNode3.text);
+        if (Number.isFinite(x) && Number.isFinite(y)) {
+          findEntity.moveTo(new Vector(x, y));
+          return ["success"];
+        } else {
+          return ["Error: input x and y value is not a number"];
+        }
+      }
+    }
+    return [];
+  }
+
   export function getSize(
     fatherNodes: ConnectableEntity[],
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -427,6 +458,22 @@ export namespace NodeLogic {
       const fatherNode = fatherNodes[0];
       const color = fatherNode.color;
       return [`${color.r}`, `${color.g}`, `${color.b}`, `${color.a}`];
+    }
+    return ["Error: input node is not valid"];
+  }
+
+  export function getNodeUUID(
+    fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    if (fatherNodes.length < 1) {
+      return ["Error: input node contains less than 1 nodes"];
+    }
+    if (fatherNodes[0] instanceof TextNode) {
+      const fatherNode = fatherNodes[0];
+      const uuid = fatherNode.uuid;
+      return [uuid];
     }
     return ["Error: input node is not valid"];
   }
