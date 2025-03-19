@@ -254,13 +254,7 @@ export class ControllerCameraClass extends ControllerClass {
     }
 
     // 滚轮横向滚动是水平移动
-    if (event.deltaX > 0) {
-      // 左移动
-      Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
-    } else if (event.deltaX < 0) {
-      // 右移动
-      Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
-    }
+    moveXCameraByMouseSideWheel(event);
   };
 
   /**
@@ -306,7 +300,7 @@ function zoomCameraByMouseWheel(event: WheelEvent) {
 
 function moveCameraByTouchPadTwoFingerMove(event: WheelEvent) {
   // 过滤 -0
-  if (Math.abs(event.deltaX) < 0.1 && Math.abs(event.deltaY) < 0.1) {
+  if (Math.abs(event.deltaX) < 0.01 && Math.abs(event.deltaY) < 0.01) {
     return;
   }
   const dx = event.deltaX / 500;
@@ -330,6 +324,19 @@ function moveXCameraByMouseWheel(event: WheelEvent) {
     Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
   } else if (event.deltaY < 0) {
     // 向下滚动是右移
+    Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
+  }
+}
+
+/**
+ * 侧边滚轮滚动，导致摄像机水平移动
+ * 保持和vscode一样，侧边滚轮大拇指往下拨动，视野往右移动，内容往左移动
+ * @param event
+ */
+function moveXCameraByMouseSideWheel(event: WheelEvent) {
+  if (event.deltaX > 0) {
+    Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
+  } else if (event.deltaX < 0) {
     Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
   }
 }
@@ -367,44 +374,50 @@ function isMouseWheel(event: WheelEvent): boolean {
       // 缓慢滚动是触摸板
       return false;
     }
-    // 开始序列化检测
-    detectDeltaY.enqueue(distance);
-    const multiArray = detectDeltaY.multiGetTail(4);
-    if (multiArray.length >= 4) {
-      if (ArrayFunctions.isSame(multiArray)) {
-        // 检测到关键数字
-        // console.log("检测到关键数字", multiArray[0]);
-        importantNumbers.add(distance);
-        // 连续4个都一样，说明是滚轮
-        // 实测发现连续三个都一样，用滚轮极小概率触发。四个都一样几乎不太可能了
-        return true;
-      }
-    } else {
-      // 长度还不足 说明刚打开软件，可能拨动了两下滚轮，也可能滑动了一下触摸板
-      // 先按滚轮算
+    if (addDistanceNumberAndDetect(distance)) {
       return true;
-    }
-
-    // 是整数倍
-    for (const importNumber of importantNumbers) {
-      if (distance % importNumber === 0) {
-        return true;
-      }
     }
   }
 
   // 纯横向滚动
   if (event.deltaX !== 0 && event.deltaY === 0) {
-    const distance = Math.abs(event.deltaY);
+    console.log("检测到横向滚动");
+    const distance = Math.abs(event.deltaX);
+    console.log(distance);
     if (distance < 20) {
       // 缓慢滚动是触摸板
       return false;
     }
-    // 是整数倍
-    for (const importNumber of importantNumbers) {
-      if (distance % importNumber === 0) {
-        return true;
-      }
+    if (addDistanceNumberAndDetect(distance)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function addDistanceNumberAndDetect(distance: number): boolean {
+  // 开始序列化检测
+  detectDeltaY.enqueue(distance);
+  const multiArray = detectDeltaY.multiGetTail(4);
+  if (multiArray.length >= 4) {
+    if (ArrayFunctions.isSame(multiArray)) {
+      // 检测到关键数字
+      // console.log("检测到关键数字", multiArray[0]);
+      importantNumbers.add(distance);
+      // 连续4个都一样，说明是滚轮
+      // 实测发现连续三个都一样，用滚轮极小概率触发。四个都一样几乎不太可能了
+      return true;
+    }
+  } else {
+    // 长度还不足 说明刚打开软件，可能拨动了两下滚轮，也可能滑动了一下触摸板
+    // 先按滚轮算
+    return true;
+  }
+
+  // 是整数倍
+  for (const importNumber of importantNumbers) {
+    if (distance % importNumber === 0) {
+      return true;
     }
   }
   return false;
