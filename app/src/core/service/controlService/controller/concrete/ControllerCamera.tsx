@@ -356,7 +356,23 @@ const importantNumbers = new Set<number>([]); // 100, 133, 138, 166
  */
 function isMouseWheel(event: WheelEvent): boolean {
   if (isIpad || isMac) {
-    return true;
+    // 这里mac暂不考虑侧边横向滚轮。
+    if (event.deltaX !== 0 && event.deltaY !== 0) {
+      // 斜向滚动肯定不是鼠标滚轮。因为滚轮只有横向滚轮和竖向滚轮
+      return false;
+    } else {
+      // 垂直方向滚动
+      const distance = Math.abs(event.deltaY);
+      // 在mac系统下，测试者“雨幕”反馈数据：
+      // 当移动距离是整数时，绝对是鼠标滚轮，当是小数时，绝对是触摸板
+      if (Number.isInteger(distance)) {
+        // 整数距离，是鼠标滚轮
+        return true;
+      } else {
+        // 小数距离，是触摸板
+        return false;
+      }
+    }
   }
   if (event.deltaX !== 0 && event.deltaY !== 0) {
     // 斜向滚动肯定不是鼠标滚轮。因为滚轮只有横向滚轮和竖向滚轮
