@@ -93,6 +93,7 @@ export enum LogicNodeNameEnum {
   CREATE_TEXT_NODE_ON_LOCATION = "#CREATE_TEXT_NODE_ON_LOCATION#",
   IS_HAVE_ENTITY_ON_LOCATION = "#IS_HAVE_ENTITY_ON_LOCATION#",
   REPLACE_GLOBAL_CONTENT = "#REPLACE_GLOBAL_CONTENT#",
+  DELETE_PEN_STROKE_BY_COLOR = "#DELETE_PEN_STROKE_BY_COLOR#",
 }
 export const LogicNodeNameToRenderNameMap: {
   [key in LogicNodeNameEnum]: string;
@@ -174,6 +175,7 @@ export const LogicNodeNameToRenderNameMap: {
   [LogicNodeNameEnum.CREATE_TEXT_NODE_ON_LOCATION]: "在指定位置创建节点",
   [LogicNodeNameEnum.IS_HAVE_ENTITY_ON_LOCATION]: "判断某位置是否存在实体",
   [LogicNodeNameEnum.REPLACE_GLOBAL_CONTENT]: "全局替换内容",
+  [LogicNodeNameEnum.DELETE_PEN_STROKE_BY_COLOR]: "删除画笔颜色的笔画",
 
   [LogicNodeNameEnum.SET_VAR]: "设置变量",
   [LogicNodeNameEnum.GET_VAR]: "获取变量",
@@ -261,6 +263,7 @@ export const LogicNodeNameToArgsTipsMap: {
   [LogicNodeNameEnum.CREATE_TEXT_NODE_ON_LOCATION]: "a0: x, a1: y, a2: text, a3: 0/1",
   [LogicNodeNameEnum.IS_HAVE_ENTITY_ON_LOCATION]: "a0: x, a1: y",
   [LogicNodeNameEnum.REPLACE_GLOBAL_CONTENT]: "a0: 被替换内容, a1: 新内容",
+  [LogicNodeNameEnum.DELETE_PEN_STROKE_BY_COLOR]: "a0: red, a1: green, a2: blue, a3: alpha",
 
   [LogicNodeNameEnum.SET_VAR]: "a0: name, a1: value",
   [LogicNodeNameEnum.GET_VAR]: "a0: name",

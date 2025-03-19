@@ -9,6 +9,7 @@ import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { MouseLocation } from "../../../controlService/MouseLocation";
 import { SoundService } from "../../../feedbackService/SoundService";
 import { AutoComputeUtils } from "../AutoComputeUtils";
+import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
 
 /**
  * 直接获取输入节点和下游输出节点
@@ -531,5 +532,36 @@ export namespace NodeLogic {
       }
     }
     return [`替换了${replacedCount}处内容`];
+  }
+
+  export function deletePenStrokeByColor(
+    fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    if (fatherNodes.length < 4) {
+      return ["Error: input node contains less than 3 nodes"];
+    }
+    if (
+      fatherNodes[0] instanceof TextNode &&
+      fatherNodes[1] instanceof TextNode &&
+      fatherNodes[2] instanceof TextNode &&
+      fatherNodes[3] instanceof TextNode
+    ) {
+      const r = parseInt(fatherNodes[0].text);
+      const g = parseInt(fatherNodes[1].text);
+      const b = parseInt(fatherNodes[2].text);
+      const a = parseFloat(fatherNodes[3].text);
+      const collectPenStrokes: PenStroke[] = [];
+      for (const penStroke of StageManager.getPenStrokes()) {
+        if (penStroke.getColor().equals(new Color(r, g, b, a))) {
+          collectPenStrokes.push(penStroke);
+        }
+      }
+      for (const penStroke of collectPenStrokes) {
+        StageManager.deleteOnePenStroke(penStroke);
+      }
+    }
+    return [];
   }
 }
