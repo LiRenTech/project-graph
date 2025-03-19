@@ -47,6 +47,7 @@ export namespace Settings {
     textIntegerLocationAndSizeRender: boolean;
     isPauseRenderWhenManipulateOvertime: boolean;
     renderOverTimeWhenNoManipulateTime: number;
+    ignoreTextNodeTextRenderLessThanCameraScale: number;
     // 自动化相关
     autoNamerTemplate: string;
     autoNamerSectionTemplate: string;
@@ -142,6 +143,7 @@ export namespace Settings {
     textIntegerLocationAndSizeRender: false,
     isPauseRenderWhenManipulateOvertime: true,
     renderOverTimeWhenNoManipulateTime: 5,
+    ignoreTextNodeTextRenderLessThanCameraScale: 0.065,
     // 自动相关
     autoNamerTemplate: "...",
     autoNamerSectionTemplate: "Section_{{i}}",

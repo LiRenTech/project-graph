@@ -156,7 +156,7 @@ export namespace EntityRenderer {
   function renderTextNode(node: TextNode) {
     // 节点身体矩形
     let fillColor = node.color;
-    if (Camera.currentScale < 0.065 && fillColor.a === 0) {
+    if (Camera.currentScale < Renderer.ignoreTextNodeTextRenderLessThanCameraScale && fillColor.a === 0) {
       const color = StageStyleManager.currentStyle.StageObjectBorderColor.clone();
       color.a = 0.2;
       fillColor = color;
@@ -174,7 +174,7 @@ export namespace EntityRenderer {
     );
 
     // 视野缩放过小就不渲染内部文字
-    if (Camera.currentScale > 0.065) {
+    if (Camera.currentScale > Renderer.ignoreTextNodeTextRenderLessThanCameraScale) {
       renderTextNodeTextLayer(node);
     }
 

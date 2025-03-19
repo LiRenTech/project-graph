@@ -1,4 +1,4 @@
-import { Hourglass, ScanEye, Type, Undo, Ungroup } from "lucide-react";
+import { Hourglass, ScanEye, ScanText, Type, Undo, Ungroup } from "lucide-react";
 import { SettingField } from "./_field";
 
 export default function Performance() {
@@ -16,6 +16,16 @@ export default function Performance() {
         min={0.1}
         max={10}
         step={0.1}
+      />
+
+      {/* 0.065 */}
+      <SettingField
+        icon={<ScanText />}
+        settingKey="ignoreTextNodeTextRenderLessThanCameraScale"
+        type="slider"
+        min={0.01}
+        max={0.3}
+        step={0.01}
       />
     </>
   );

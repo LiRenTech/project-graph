@@ -111,6 +111,7 @@ export namespace Renderer {
   export let textIntegerLocationAndSizeRender = false;
   export let isPauseRenderWhenManipulateOvertime = true;
   export let renderOverTimeWhenNoManipulateTime = 5; // s
+  export let ignoreTextNodeTextRenderLessThanCameraScale = 0.065;
 
   // 确保这个函数在软件打开的那一次调用
   export function init() {
@@ -144,6 +145,10 @@ export namespace Renderer {
     Settings.watch("textIntegerLocationAndSizeRender", (value) => (textIntegerLocationAndSizeRender = value));
     Settings.watch("isPauseRenderWhenManipulateOvertime", (value) => (isPauseRenderWhenManipulateOvertime = value));
     Settings.watch("renderOverTimeWhenNoManipulateTime", (value) => (renderOverTimeWhenNoManipulateTime = value));
+    Settings.watch(
+      "ignoreTextNodeTextRenderLessThanCameraScale",
+      (value) => (ignoreTextNodeTextRenderLessThanCameraScale = value),
+    );
   }
 
   /**
