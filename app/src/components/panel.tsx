@@ -56,10 +56,20 @@ export namespace Panel {
   function Component({ title, closable, buttons, children, widthRate }: Props) {
     const [show, setShow] = React.useState(false);
 
+    const closeFunction = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setShow(false);
+      }
+    };
     React.useEffect(() => {
       setTimeout(() => {
         setShow(true);
       }, 50);
+
+      window.addEventListener("keydown", closeFunction);
+      return () => {
+        window.removeEventListener("keydown", closeFunction);
+      };
     }, []);
 
     return (
