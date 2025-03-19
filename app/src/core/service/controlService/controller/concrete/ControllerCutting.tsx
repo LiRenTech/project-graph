@@ -13,10 +13,12 @@ import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { Edge } from "../../../../stage/stageObject/association/Edge";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
+import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../feedbackService/effectEngine/concrete/LineCuttingEffect";
+import { PenStrokeDeletedEffect } from "../../../feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
 import { RectangleSplitTwoPartEffect } from "../../../feedbackService/effectEngine/concrete/RectangleSplitTwoPartEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
 import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
@@ -251,16 +253,20 @@ class CuttingControllerClass extends ControllerClass {
           fillColor = entity.color.clone();
         }
 
-        Stage.effectMachine.addEffect(
-          new RectangleSplitTwoPartEffect(
-            entity.collisionBox.getRectangle(),
-            collidePoints,
-            50,
-            fillColor,
-            StageStyleManager.currentStyle.StageObjectBorderColor,
-            2,
-          ),
-        );
+        if (entity instanceof PenStroke) {
+          Stage.effectMachine.addEffect(PenStrokeDeletedEffect.fromPenStroke(entity));
+        } else {
+          Stage.effectMachine.addEffect(
+            new RectangleSplitTwoPartEffect(
+              entity.collisionBox.getRectangle(),
+              collidePoints,
+              50,
+              fillColor,
+              StageStyleManager.currentStyle.StageObjectBorderColor,
+              2,
+            ),
+          );
+        }
       }
     }
   }

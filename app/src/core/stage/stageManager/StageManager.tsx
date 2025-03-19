@@ -33,6 +33,7 @@ import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
 import { LineEdge } from "../stageObject/association/LineEdge";
+import { PenStrokeDeletedEffect } from "../../service/feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -655,7 +656,11 @@ export namespace StageManager {
   export function deleteSelectedStageObjects() {
     const selectedEntities = StageManager.getEntities().filter((node) => node.isSelected);
     for (const entity of selectedEntities) {
-      Stage.effectMachine.addEffect(EntityShrinkEffect.fromEntity(entity));
+      if (entity instanceof PenStroke) {
+        Stage.effectMachine.addEffect(PenStrokeDeletedEffect.fromPenStroke(entity));
+      } else {
+        Stage.effectMachine.addEffect(EntityShrinkEffect.fromEntity(entity));
+      }
     }
     StageManager.deleteEntities(selectedEntities);
 
