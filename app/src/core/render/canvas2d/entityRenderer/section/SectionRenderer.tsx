@@ -93,30 +93,52 @@ export namespace SectionRenderer {
   }
 
   export function renderBigTitle(section: Section) {
-    if (Camera.currentScale < Section.bigTitleCameraScale) {
-      const fontSizeVector = getFontSizeBySectionSize(section);
-      const fontHeight = fontSizeVector.y;
-      ShapeRenderer.renderRect(
-        new Rectangle(
-          Renderer.transformWorld2View(section.rectangle.location),
-          section.rectangle.size.multiply(Camera.currentScale),
-        ),
-        section.color.a === 0
-          ? StageStyleManager.currentStyle.BackgroundColor.toNewAlpha(0.5)
-          : section.color.toNewAlpha(0.5),
-        StageStyleManager.currentStyle.StageObjectBorderColor,
-        2 * Camera.currentScale,
-      );
-      // 缩放过小了，显示巨大化文字
-      TextRenderer.renderTextFromCenter(
-        section.text,
-        Renderer.transformWorld2View(section.rectangle.center),
-        fontHeight * Camera.currentScale,
-        section.color.a === 1
-          ? colorInvert(section.color)
-          : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
-      );
+    if (Camera.currentScale >= Section.bigTitleCameraScale) {
+      return;
     }
+    const fontSizeVector = getFontSizeBySectionSize(section);
+    const fontHeight = fontSizeVector.y;
+    ShapeRenderer.renderRect(
+      new Rectangle(
+        Renderer.transformWorld2View(section.rectangle.location),
+        section.rectangle.size.multiply(Camera.currentScale),
+      ),
+      section.color.a === 0
+        ? StageStyleManager.currentStyle.BackgroundColor.toNewAlpha(0.5)
+        : section.color.toNewAlpha(0.5),
+      StageStyleManager.currentStyle.StageObjectBorderColor,
+      2 * Camera.currentScale,
+    );
+    // 缩放过小了，显示巨大化文字
+    TextRenderer.renderTextFromCenter(
+      section.text,
+      Renderer.transformWorld2View(section.rectangle.center),
+      fontHeight * Camera.currentScale,
+      section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+    );
+
+    // =========== 另一种方法
+    // const fontSize = 30 * (0.5 * Camera.currentScale + 0.5);
+    // const leftTopLocation = section.collisionBox.getRectangle().leftTop;
+    // const leftTopViewLocation = Renderer.transformWorld2View(leftTopLocation);
+    // const leftTopFontViewLocation = leftTopViewLocation.subtract(new Vector(0, fontSize));
+    // const bgColor =
+    //   section.color.a === 0
+    //     ? StageStyleManager.currentStyle.BackgroundColor.toNewAlpha(0.5)
+    //     : section.color.toNewAlpha(0.5);
+
+    // const textColor =
+    //   section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor);
+    // const textSize = getTextSize(section.text, fontSize);
+    // ShapeRenderer.renderRect(
+    //   new Rectangle(leftTopFontViewLocation, textSize).expandFromCenter(2),
+    //   bgColor,
+    //   StageStyleManager.currentStyle.StageObjectBorderColor,
+    //   2 * Camera.currentScale,
+    //   2,
+    // );
+
+    // TextRenderer.renderText(section.text, leftTopFontViewLocation, fontSize, textColor);
   }
 
   function getFontSizeBySectionSize(section: Section): Vector {
