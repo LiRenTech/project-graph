@@ -223,6 +223,18 @@ export class SecretEngine {
         Settings.set("isClassroomMode", !(await Settings.get("isClassroomMode")));
       },
     },
+    "p s a + +": {
+      name: "增加笔刷不透明度通道值",
+      async func() {
+        Stage.drawingMachine.changeCurrentStrokeColorAlpha(0.1);
+      },
+    },
+    "p s a - -": {
+      name: "减少笔刷不透明度通道值",
+      async func() {
+        Stage.drawingMachine.changeCurrentStrokeColorAlpha(-0.1);
+      },
+    },
   };
 
   // 监听按键 并触发相应效果，每次按键都会触发

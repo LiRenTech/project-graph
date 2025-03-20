@@ -164,6 +164,14 @@ class ControllerDrawingClass extends ControllerClass {
       return Color.Transparent;
     }
   }
+
+  public changeCurrentStrokeColorAlpha(dAlpha: number) {
+    if (this.autoFillPenStrokeColorEnable) {
+      const newAlpha = Math.max(Math.min(this.autoFillPenStrokeColor.a + dAlpha, 1), 0.01);
+      this.autoFillPenStrokeColor = this.autoFillPenStrokeColor.toNewAlpha(newAlpha);
+      Settings.set("autoFillPenStrokeColor", this.autoFillPenStrokeColor.toArray());
+    }
+  }
 }
 
 export const ControllerDrawing = new ControllerDrawingClass();
