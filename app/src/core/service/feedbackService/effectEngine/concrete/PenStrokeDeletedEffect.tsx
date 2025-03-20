@@ -2,10 +2,10 @@ import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { CurveRenderer } from "../../../../render/canvas2d/basicRenderer/curveRenderer";
-import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Camera } from "../../../../stage/Camera";
 import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 
 export class PenStrokeDeletedEffect extends EffectObject {
@@ -22,6 +22,9 @@ export class PenStrokeDeletedEffect extends EffectObject {
     const segmentList = penStroke.getSegmentList();
     this.pathList = penStroke.getPath();
     this.color = penStroke.getColor();
+    if (this.color.a === 0) {
+      this.color = StageStyleManager.currentStyle.StageObjectBorderColor.clone();
+    }
     this.width = segmentList[0].width;
   }
 
@@ -52,14 +55,5 @@ export class PenStrokeDeletedEffect extends EffectObject {
       this.color.toNewAlpha(1 - this.timeProgress.rate),
       this.width * Camera.currentScale,
     );
-    for (const v of this.pathList) {
-      ShapeRenderer.renderCircle(
-        Renderer.transformWorld2View(v),
-        this.width * (1 - this.timeProgress.rate) * Camera.currentScale,
-        this.color.toNewAlpha(1 - this.timeProgress.rate),
-        Color.Transparent,
-        0,
-      );
-    }
   }
 }

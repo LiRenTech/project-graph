@@ -8,6 +8,8 @@ import { PenStroke, PenStrokeSegment } from "../../../../stage/stageObject/entit
 import { Settings } from "../../../Settings";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { Stage } from "../../../../stage/Stage";
+import { LineEffect } from "../../../feedbackService/effectEngine/concrete/LineEffect";
 
 /**
  * 涂鸦功能
@@ -17,6 +19,8 @@ class ControllerDrawingClass extends ControllerClass {
   private _isUsing: boolean = false;
 
   public currentStroke: PenStrokeSegment[] = [];
+
+  public isAdjusting = false;
 
   public get isUsing() {
     return this._isUsing;
@@ -36,6 +40,18 @@ class ControllerDrawingClass extends ControllerClass {
   private autoFillPenStrokeColorEnable = false;
   private autoFillPenStrokeColor: Color = Color.Transparent;
 
+  /**
+   * 当前画笔的粗度
+   */
+  public currentStrokeWidth = 5;
+  /**
+   * Alt键右键按下时的位置
+   */
+  public startAdjustWidthLocation: Vector = Vector.getZero();
+
+  /**
+   * 初始化函数
+   */
   public init(): void {
     super.init();
     Settings.watch("autoFillPenStrokeColorEnable", (value) => {
@@ -53,63 +69,92 @@ class ControllerDrawingClass extends ControllerClass {
 
   public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
     if (!this._isUsing) return;
-    if (event.button !== 0) {
+    if (!(event.button === 0 || event.button === 2)) {
       return;
     }
     const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    this.recordLocation.push(pressWorldLocation.clone());
+    if (event.button === 0) {
+      this.recordLocation.push(pressWorldLocation.clone());
 
-    this.lastMoveLocation = pressWorldLocation.clone();
+      this.lastMoveLocation = pressWorldLocation.clone();
 
-    Controller.setCursorNameHook(CursorNameEnum.Crosshair);
+      Controller.setCursorNameHook(CursorNameEnum.Crosshair);
+    } else if (event.button === 2 && Controller.pressingKeySet.has("alt")) {
+      // 右键按下时，开始调整笔刷粗细
+      this.startAdjustWidthLocation = pressWorldLocation.clone();
+      this.isAdjusting = true;
+    }
   };
 
   public mousemove = (event: MouseEvent) => {
     if (!this._isUsing) return;
-    if (!Controller.isMouseDown[0]) {
+    if (!(Controller.isMouseDown[0] || Controller.isMouseDown[2])) {
       return;
     }
     const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    // 检测：如果移动距离不超过10，则不记录
-    if (worldLocation.distance(this.lastMoveLocation) < 5) {
+    if (Controller.pressingKeySet.has("alt") && Controller.isMouseDown[2]) {
+      this.onMouseMoveWhenAdjusting(event);
       return;
     }
-    this.recordLocation.push(worldLocation.clone());
+    if (Controller.isMouseDown[0]) {
+      // 检测：如果移动距离不超过10，则不记录
+      if (worldLocation.distance(this.lastMoveLocation) < 5) {
+        return;
+      }
+      this.recordLocation.push(worldLocation.clone());
 
-    // 记录笔刷
-    this.currentStroke.push(new PenStrokeSegment(this.lastMoveLocation, worldLocation, 5));
-    this.lastMoveLocation = worldLocation.clone();
+      // 记录笔刷
+      this.currentStroke.push(new PenStrokeSegment(this.lastMoveLocation, worldLocation, this.currentStrokeWidth));
+      this.lastMoveLocation = worldLocation.clone();
+    }
+  };
+
+  private onMouseMoveWhenAdjusting = (event: MouseEvent) => {
+    // 更改宽度，检测鼠标上下移动的距离（模仿PS的笔刷粗细调整）
+    const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const delta = worldLocation.y - this.startAdjustWidthLocation.y;
+    Stage.effectMachine.addEffect(LineEffect.default(this.startAdjustWidthLocation, worldLocation.clone()));
+    if (delta > 0) {
+      this.currentStrokeWidth = Math.min(Math.round(delta), 1000);
+    } else if (delta < 0) {
+      this.currentStrokeWidth = Math.max(Math.round(delta), 1);
+    }
   };
 
   public mouseup = (event: MouseEvent) => {
     if (!this._isUsing) return;
-    if (event.button !== 0) {
+    if (!(event.button === 0 || event.button === 2)) {
       return;
     }
-    const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    this.recordLocation.push(releaseWorldLocation.clone());
-
-    // 生成笔触
-    const strokeStringList: string[] = [];
-    for (const location of this.recordLocation) {
-      strokeStringList.push(`${Math.round(location.x)},${Math.round(location.y)},5`);
+    if (event.button === 2) {
+      this.isAdjusting = false;
     }
-    const contentString = strokeStringList.join("~");
+    if (event.button === 0) {
+      const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+      this.recordLocation.push(releaseWorldLocation.clone());
 
-    const stroke = new PenStroke({
-      type: "core:pen_stroke",
-      content: contentString,
-      color: this.getCurrentStrokeColor().toArray(),
-      uuid: v4(),
-      location: [0, 0],
-      details: "",
-    });
-    stroke.setColor(this.getCurrentStrokeColor());
-    StageManager.addPenStroke(stroke);
-    this.recordLocation = [];
-    this.currentStroke = [];
+      // 生成笔触
+      const strokeStringList: string[] = [];
+      for (const location of this.recordLocation) {
+        strokeStringList.push(`${Math.round(location.x)},${Math.round(location.y)},${this.currentStrokeWidth}`);
+      }
+      const contentString = strokeStringList.join("~");
 
-    Controller.setCursorNameHook(CursorNameEnum.Crosshair);
+      const stroke = new PenStroke({
+        type: "core:pen_stroke",
+        content: contentString,
+        color: this.getCurrentStrokeColor().toArray(),
+        uuid: v4(),
+        location: [0, 0],
+        details: "",
+      });
+      stroke.setColor(this.getCurrentStrokeColor());
+      StageManager.addPenStroke(stroke);
+      this.recordLocation = [];
+      this.currentStroke = [];
+
+      Controller.setCursorNameHook(CursorNameEnum.Crosshair);
+    }
   };
 
   public getCurrentStrokeColor() {

@@ -494,14 +494,47 @@ export namespace Renderer {
   function renderTempDrawing() {
     const currentStrokeColor = Stage.drawingMachine.getCurrentStrokeColor();
 
-    if (Stage.drawingMachine.isUsing && Stage.drawingMachine.currentStroke.length > 0) {
-      for (const segment of Stage.drawingMachine.currentStroke) {
-        CurveRenderer.renderSolidLine(
-          transformWorld2View(segment.startLocation),
-          transformWorld2View(segment.endLocation),
+    if (Stage.drawingMachine.isUsing) {
+      if (Stage.drawingMachine.isAdjusting) {
+        ShapeRenderer.renderCircle(
+          transformWorld2View(Stage.drawingMachine.startAdjustWidthLocation),
+          (Stage.drawingMachine.currentStrokeWidth / 2) * Camera.currentScale,
           currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorderColor : currentStrokeColor,
-          5 * Camera.currentScale,
+          Color.Transparent,
+          0,
         );
+      } else {
+        // 画跟随鼠标的笔头
+        // 如果粗细大于一定程度，则渲染成空心的
+        if (Stage.drawingMachine.currentStrokeWidth > 10) {
+          ShapeRenderer.renderCircle(
+            MouseLocation.vector(),
+            (Stage.drawingMachine.currentStrokeWidth / 2) * Camera.currentScale,
+            Color.Transparent,
+            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorderColor : currentStrokeColor,
+            2 * Camera.currentScale,
+          );
+        } else {
+          ShapeRenderer.renderCircle(
+            MouseLocation.vector(),
+            (Stage.drawingMachine.currentStrokeWidth / 2) * Camera.currentScale,
+            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorderColor : currentStrokeColor,
+            Color.Transparent,
+            0,
+          );
+        }
+      }
+
+      // 画笔
+      if (Stage.drawingMachine.currentStroke.length > 0) {
+        for (const segment of Stage.drawingMachine.currentStroke) {
+          CurveRenderer.renderSolidLine(
+            transformWorld2View(segment.startLocation),
+            transformWorld2View(segment.endLocation),
+            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorderColor : currentStrokeColor,
+            Stage.drawingMachine.currentStrokeWidth * Camera.currentScale,
+          );
+        }
       }
     }
   }

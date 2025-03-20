@@ -4,6 +4,7 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { CurveRenderer } from "../../../../render/canvas2d/basicRenderer/curveRenderer";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Camera } from "../../../../stage/Camera";
+import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 
 /**
@@ -21,7 +22,16 @@ export class LineEffect extends EffectObject {
   ) {
     super(timeProgress);
   }
-
+  static default(fromLocation: Vector, toLocation: Vector) {
+    return new LineEffect(
+      new ProgressNumber(0, 30),
+      fromLocation,
+      toLocation,
+      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorderColor,
+      1,
+    );
+  }
   render(): void {
     if (this.timeProgress.isFull) {
       return;
