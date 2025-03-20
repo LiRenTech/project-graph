@@ -18,6 +18,7 @@ import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryMan
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 import { CublicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CublicCatmullRomSplineEdge";
 import { Color } from "../../../dataStruct/Color";
+import { Settings } from "../../Settings";
 
 interface SecretItem {
   name: string;
@@ -202,6 +203,18 @@ export class SecretEngine {
           }
         }
         StageManager.updateReferences();
+      },
+    },
+    "b l a c k k": {
+      name: "切换成黑色主题",
+      func() {
+        Settings.set("theme", "black");
+      },
+    },
+    "w h i t e e": {
+      name: "切换成白色主题",
+      func() {
+        Settings.set("theme", "white");
       },
     },
   };
