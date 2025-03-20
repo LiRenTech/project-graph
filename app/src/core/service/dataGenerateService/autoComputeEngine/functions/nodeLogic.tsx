@@ -470,12 +470,9 @@ export namespace NodeLogic {
     if (fatherNodes.length < 1) {
       return ["Error: input node contains less than 1 nodes"];
     }
-    if (fatherNodes[0] instanceof TextNode) {
-      const fatherNode = fatherNodes[0];
-      const uuid = fatherNode.uuid;
-      return [uuid];
-    }
-    return ["Error: input node is not valid"];
+    const fatherNode = fatherNodes[0];
+    const uuid = fatherNode.uuid;
+    return [uuid];
   }
 
   /**
