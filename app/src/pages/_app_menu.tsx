@@ -15,6 +15,7 @@ import {
   FolderOpen,
   Fullscreen,
   Info,
+  Laugh,
   Monitor,
   MonitorX,
   MoreHorizontal,
@@ -529,6 +530,15 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         >
           {isClassroomMode ? "退出专注" : "专注模式"}
         </Col>
+        <Col
+          icon={<Laugh />}
+          className="opacity-0 hover:opacity-50"
+          onClick={() => {
+            navigate("/secret");
+          }}
+        >
+          秘籍键
+        </Col>
       </Row>
       {!isWeb && (
         <Row icon={<AppWindow />} title={t("window.title")}>
@@ -629,11 +639,15 @@ function Row({ children, title, icon }: React.PropsWithChildren<{ title: string;
 function Col({
   children,
   icon,
+  className = "",
   onClick = () => {},
-}: React.PropsWithChildren<{ icon: React.ReactNode; onClick?: () => void }>) {
+}: React.PropsWithChildren<{ icon: React.ReactNode; onClick?: () => void; className?: string }>) {
   return (
     <div
-      className="hover:bg-appmenu-hover-bg hover:outline-appmenu-hover-bg text-appmenu-item-text flex w-max cursor-pointer items-center gap-1 rounded-lg outline-0 outline-white/0 transition-all hover:outline-8 active:scale-90"
+      className={cn(
+        className,
+        "hover:bg-appmenu-hover-bg hover:outline-appmenu-hover-bg text-appmenu-item-text flex w-max cursor-pointer items-center gap-1 rounded-lg outline-0 outline-white/0 transition-all hover:outline-8 active:scale-90",
+      )}
       onClick={onClick}
       onMouseDown={() => {
         SoundService.play.mouseClickButton();
