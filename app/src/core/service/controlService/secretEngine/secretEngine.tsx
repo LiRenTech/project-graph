@@ -66,6 +66,17 @@ export class SecretEngine {
         Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
       },
     },
+    "i n t j": {
+      name: "将所有可连接节点的坐标位置对齐到整数，以减小json体积",
+      func: () => {
+        const entities = StageManager.getConnectableEntity();
+        for (const entity of entities) {
+          const leftTopLocation = entity.collisionBox.getRectangle().location;
+          const IntLocation = new Vector(Math.round(leftTopLocation.x), Math.round(leftTopLocation.y));
+          entity.moveTo(IntLocation);
+        }
+      },
+    },
     "b o y n e x t d o o r": {
       name: "创建传送门",
       func: () => {
