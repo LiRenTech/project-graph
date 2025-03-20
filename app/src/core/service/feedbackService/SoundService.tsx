@@ -122,7 +122,6 @@ export namespace SoundService {
     // 先从缓存中获取音频数据
     const result = pathAudioBufferMap.getById(filePath);
     if (result) {
-      console.log("找到缓存");
       return result;
     }
 

@@ -685,11 +685,16 @@ export namespace StageManager {
     return res;
   }
 
-  export function connectEntity(fromNode: ConnectableEntity, toNode: ConnectableEntity) {
+  export function connectEntity(fromNode: ConnectableEntity, toNode: ConnectableEntity, isCrEdge: boolean = false) {
     if (fromNode === toNode && !isAllowAddCycleEdge) {
       return false;
     }
-    StageNodeConnector.connectConnectableEntity(fromNode, toNode);
+    if (isCrEdge) {
+      StageNodeConnector.addCrEdge(fromNode, toNode);
+    } else {
+      StageNodeConnector.connectConnectableEntity(fromNode, toNode);
+    }
+
     StageHistoryManager.recordStep();
     return GraphMethods.isConnected(fromNode, toNode);
   }

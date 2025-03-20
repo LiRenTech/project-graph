@@ -59,9 +59,6 @@ export namespace StageNodeConnector {
     StageManager.addLineEdge(newEdge);
 
     StageManager.updateReferences();
-    // return addResult;
-
-    // return false;
   }
 
   export function addCrEdge(fromNode: ConnectableEntity, toNode: ConnectableEntity): void {

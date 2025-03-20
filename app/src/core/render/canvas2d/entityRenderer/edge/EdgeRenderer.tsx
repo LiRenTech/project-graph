@@ -100,6 +100,15 @@ export namespace EdgeRenderer {
         2 * Camera.currentScale,
       );
     }
+    // 画箭头
+    const lastPoint = crShape.controlPoints[crShape.controlPoints.length - 1];
+    const lastPoint2 = crShape.controlPoints[crShape.controlPoints.length - 2];
+    renderArrowHead(
+      lastPoint2,
+      lastPoint.subtract(lastPoint2).normalize(),
+      15,
+      StageStyleManager.currentStyle.StageObjectBorderColor,
+    );
   }
 
   /**

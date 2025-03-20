@@ -255,8 +255,11 @@ class ControllerNodeConnectionClass extends ControllerClass {
   private multiConnect(connectToEntity: ConnectableEntity) {
     // 鼠标在待连接节点上抬起
     let isHaveConnectResult = false; // 在多重链接的情况下，是否有连接成功
+
+    const isPressC = Controller.pressingKeySet.has("c");
+
     for (const entity of this.connectFromEntities) {
-      const connectResult = StageManager.connectEntity(entity, connectToEntity);
+      const connectResult = StageManager.connectEntity(entity, connectToEntity, isPressC);
       if (connectResult) {
         // 连接成功，特效
         isHaveConnectResult = true;
