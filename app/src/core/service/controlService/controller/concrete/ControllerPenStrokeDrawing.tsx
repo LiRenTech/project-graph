@@ -8,9 +8,6 @@ import { PenStroke, PenStrokeSegment } from "../../../../stage/stageObject/entit
 import { Settings } from "../../../Settings";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-import { Stage } from "../../../../stage/Stage";
-import { LineEffect } from "../../../feedbackService/effectEngine/concrete/LineEffect";
-
 /**
  * 涂鸦功能
  */
@@ -112,12 +109,10 @@ class ControllerDrawingClass extends ControllerClass {
   private onMouseMoveWhenAdjusting = (event: MouseEvent) => {
     // 更改宽度，检测鼠标上下移动的距离（模仿PS的笔刷粗细调整）
     const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    const delta = worldLocation.y - this.startAdjustWidthLocation.y;
-    Stage.effectMachine.addEffect(LineEffect.default(this.startAdjustWidthLocation, worldLocation.clone()));
-    if (delta > 0) {
-      this.currentStrokeWidth = Math.min(Math.round(delta), 1000);
-    } else if (delta < 0) {
-      this.currentStrokeWidth = Math.max(Math.round(delta), 1);
+    const delta = this.startAdjustWidthLocation.distance(worldLocation);
+    // Stage.effectMachine.addEffect(LineEffect.default(this.startAdjustWidthLocation, worldLocation.clone()));
+    if (delta > 1) {
+      this.currentStrokeWidth = Math.min(Math.round(delta * 2), 1000);
     }
   };
 
