@@ -15,10 +15,10 @@ import {
   FolderOpen,
   Fullscreen,
   Info,
+  Monitor,
   MonitorX,
   MoreHorizontal,
   PersonStanding,
-  Presentation,
   Radar,
   // PartyPopper,
   RefreshCcw,
@@ -515,7 +515,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         </Col> */}
 
         <Col
-          icon={isClassroomMode ? <MonitorX /> : <Presentation />}
+          icon={isClassroomMode ? <MonitorX /> : <Monitor />}
           onClick={async () => {
             if (!isClassroomMode) {
               Dialog.show({
@@ -527,7 +527,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             Settings.set("isClassroomMode", !(await Settings.get("isClassroomMode")));
           }}
         >
-          {isClassroomMode ? "退出演示" : "演示模式"}
+          {isClassroomMode ? "退出专注" : "专注模式"}
         </Col>
       </Row>
       {!isWeb && (

@@ -217,6 +217,12 @@ export class SecretEngine {
         Settings.set("theme", "white");
       },
     },
+    "* * *": {
+      name: "切换专注模式",
+      async func() {
+        Settings.set("isClassroomMode", !(await Settings.get("isClassroomMode")));
+      },
+    },
   };
 
   // 监听按键 并触发相应效果，每次按键都会触发
