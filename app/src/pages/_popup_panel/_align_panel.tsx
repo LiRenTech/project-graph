@@ -56,13 +56,7 @@ export default function AlignNodePanel() {
       const selectedEntity = selected[0];
       if (selectedEntity instanceof ConnectableEntity) {
         if (GraphMethods.isTree(selectedEntity)) {
-          const entities = StageManager.getSelectedEntities();
-          for (const entity of entities) {
-            if (entity instanceof ConnectableEntity) {
-              handleTreeRootFunc(entity);
-              return;
-            }
-          }
+          handleTreeRootFunc(selectedEntity);
         } else {
           Dialog.show({
             title: "连接的节点必须符合树形结构",
@@ -165,17 +159,13 @@ export default function AlignNodePanel() {
         <ToolbarItem
           description="向右自动树形布局"
           icon={<Network className="-rotate-90" />}
-          handleFunction={() => {
-            isSelectedIsTreeRoot(StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight);
-          }}
+          handleFunction={isSelectedIsTreeRoot(StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight)}
         />
         <div />
         <ToolbarItem
-          description="向下自动树形布局"
+          description="向下自动树形布局（点击一次布局一层）"
           icon={<Network />}
-          handleFunction={() => {
-            isSelectedIsTreeRoot(StageAutoAlignManager.autoLayoutSelectedFastTreeModeDown);
-          }}
+          handleFunction={isSelectedIsTreeRoot(StageAutoAlignManager.autoLayoutSelectedFastTreeModeDown)}
         />
         <div />
       </div>
