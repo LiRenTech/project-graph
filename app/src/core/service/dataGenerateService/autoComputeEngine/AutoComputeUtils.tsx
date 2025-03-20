@@ -25,6 +25,15 @@ export namespace AutoComputeUtils {
     return parents;
   }
 
+  export function getParentEntities(node: TextNode): ConnectableEntity[] {
+    const parents = GraphMethods.nodeParentArray(node);
+    // 将parents按x的坐标排序，小的在前面
+    parents.sort((a, b) => {
+      return a.collisionBox.getRectangle().location.x - b.collisionBox.getRectangle().location.x;
+    });
+    return parents;
+  }
+
   /**
    * 获取一个节点的所有直接子节点，按x坐标排序
    * @param node

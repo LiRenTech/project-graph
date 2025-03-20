@@ -260,7 +260,7 @@ function computeTextNode(node: TextNode) {
     if (node.text === name) {
       // 发现了一个特殊节点
       const result = MapOtherFunction[name](
-        AutoComputeUtils.getParentTextNodes(node),
+        AutoComputeUtils.getParentEntities(node),
         AutoComputeUtils.getChildTextNodes(node),
       );
       AutoComputeUtils.getMultiResult(node, result);
