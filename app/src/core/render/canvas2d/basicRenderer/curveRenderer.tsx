@@ -50,6 +50,7 @@ export namespace CurveRenderer {
    */
   export function renderSolidLineMultipleWithWidth(locations: Vector[], color: Color, widthList: number[]): void {
     Canvas.ctx.beginPath();
+    Canvas.ctx.lineJoin = "round";
     Canvas.ctx.lineWidth = widthList[0];
     Canvas.ctx.moveTo(locations[0].x, locations[0].y);
     for (let i = 1; i < locations.length; i++) {
