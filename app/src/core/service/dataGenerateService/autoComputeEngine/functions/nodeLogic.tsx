@@ -12,6 +12,7 @@ import { AutoComputeUtils } from "../AutoComputeUtils";
 import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
 import { Stage } from "../../../../stage/Stage";
 import { PenStrokeDeletedEffect } from "../../../feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
+import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
 
 /**
  * 直接获取输入节点和下游输出节点
@@ -127,7 +128,7 @@ export namespace NodeLogic {
         return ["Error: cannot find entity by uuid"];
       }
       // 找到了实体
-      if (findEntity instanceof TextNode) {
+      if (findEntity instanceof TextNode || findEntity instanceof ConnectPoint) {
         const x = parseFloat(fatherNode2.text);
         const y = parseFloat(fatherNode3.text);
         if (Number.isFinite(x) && Number.isFinite(y)) {
