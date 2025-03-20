@@ -17,6 +17,7 @@ import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
 import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 import { CublicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CublicCatmullRomSplineEdge";
+import { Color } from "../../../dataStruct/Color";
 
 interface SecretItem {
   name: string;
@@ -185,6 +186,22 @@ export class SecretEngine {
         for (const edge of selectedCREdge) {
           edge.tension -= 0.1;
         }
+      },
+    },
+    "o k k": {
+      name: "将选中的文本节点都打上对勾，并标为绿色",
+      func() {
+        const selectedTextNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
+        for (const node of selectedTextNodes) {
+          if (node.color.equals(new Color(59, 114, 60))) {
+            node.rename(node.text.replace("✅ ", ""));
+            node.color = Color.Transparent;
+          } else {
+            node.rename("✅ " + node.text);
+            node.color = new Color(59, 114, 60);
+          }
+        }
+        StageManager.updateReferences();
       },
     },
   };
