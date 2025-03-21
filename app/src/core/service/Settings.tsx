@@ -85,7 +85,7 @@ export namespace Settings {
     mouseRightDragBackground: "cut" | "moveCamera";
     textNodeContentLineBreak: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter";
     textNodeExitEditMode: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter";
-    textNodeStartEditMode: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter";
+    textNodeStartEditMode: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter" | "space";
     textNodeSelectAllWhenStartEditByKeyboard: boolean;
     textNodeSelectAllWhenStartEditByMouseClick: boolean;
     mouseWheelMode: "zoom" | "move" | "moveX";

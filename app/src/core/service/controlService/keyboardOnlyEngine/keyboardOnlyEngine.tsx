@@ -55,6 +55,13 @@ export namespace KeyboardOnlyEngine {
    * 仅在最开始调用一次
    */
   function bindKeyEvents() {
+    const startEditNode = (event: KeyboardEvent, selectedNode: TextNode) => {
+      event.preventDefault(); // 这个prevent必须开启，否则会立刻在刚创建的输入框里输入一个换行符。
+      addSuccessEffect();
+      // 编辑节点
+      editTextNode(selectedNode, textNodeSelectAllWhenStartEditByKeyboard);
+    };
+
     window.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         const enterKeyDetail = getEnterKey(event);
@@ -62,13 +69,16 @@ export namespace KeyboardOnlyEngine {
           // 这个还必须在down的位置上，因为在up上会导致无限触发
           const selectedNode = StageManager.getTextNodes().find((node) => node.isSelected);
           if (!selectedNode) return;
-          event.preventDefault(); // 这个prevent必须开启，否则会立刻在刚创建的输入框里输入一个换行符。
-          addSuccessEffect();
-          // 编辑节点
-          editTextNode(selectedNode, textNodeSelectAllWhenStartEditByKeyboard);
+          startEditNode(event, selectedNode);
         } else {
           // 用户可能记错了快捷键
           addFailEffect();
+        }
+      } else if (event.key === " ") {
+        if (textNodeStartEditMode === "space") {
+          const selectedNode = StageManager.getTextNodes().find((node) => node.isSelected);
+          if (!selectedNode) return;
+          startEditNode(event, selectedNode);
         }
       } else if (event.key === "Escape") {
         // 取消全部选择

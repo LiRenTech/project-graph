@@ -388,6 +388,7 @@ settings:
       ctrlEnter: ctrl + Enter
       altEnter: alt + Enter
       shiftEnter: shift + Enter
+      space: 空格键
     description: |
       实际上按F2键也可以进入编辑模式，这里还可以再加选一种
   textNodeExitEditMode:
