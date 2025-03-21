@@ -1,7 +1,7 @@
 #!/bin/env bash
 
 last_release=$(git for-each-ref --sort=-creatordate --format='%(refname:short)' "refs/tags/v*" | head -n 1)
-commits=$(git log $last_release..master --pretty=format:"%an %s" --reverse)
+commits=$(git log $last_release..master --pretty=format:"%s" --reverse)
 commits_doubleslash=$(echo -n "$commits" | awk '{printf "%s\\n", $0}')
 
 prompt="请严格按以下规则处理 Git 提交记录：
@@ -40,7 +40,7 @@ prompt="请严格按以下规则处理 Git 提交记录：
 1. 过滤无效提交 → 2. 语义聚类 → 3. 生成摘要 → 4. 格式化输出"
 prompt_doubleslash=$(echo -n "$prompt" | awk '{printf "%s\\n", $0}')
 
-changelog=$(curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=$GEMINI_API_KEY" \
+response=$(curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=$GEMINI_API_KEY" \
   -s \
   -H 'Content-Type: application/json' \
   -X POST \
@@ -49,7 +49,7 @@ changelog=$(curl "https://generativelanguage.googleapis.com/v1beta/models/gemini
       {
         \"role\": \"user\",
         \"parts\": [{
-          \"text\": \"请将用户提供的 Git 提交历史记录按以下结构化格式整理：\n\n### 📖 Summary 摘要\n[英文版] \n用1-2句简明英文概括本次更新的核心内容，突出主要改进方向\n\n[中文版]\n用流畅自然的中文复述英文摘要，保持专业技术文档语气\n\n### 🚀 Features 新功能\n- 使用小标题+冒号格式提取功能项 (例: Auth: 新增第三方登录支持)\n- 每条功能描述需中英双语对照\n- 优先展示影响较大的功能\n- 相同模块的功能合并展示\n\n### 🐞 Bug Fixes 修复\n- 用\\"修复XX问题\\"作为标准开头\n- 包含问题现象和影响范围说明 (例: 修复内存泄漏导致服务崩溃的问题)\n- 技术细节使用中文描述\n- 按问题严重性排序\n\n处理要求：\n1. 自动过滤Merge branch/update version等无意义提交\n2. 对相似提交进行智能合并\n3. 中英文内容需保持严格对应\n4. 使用技术术语保持准确\n5. 输出使用GitHub风格的Markdown格式\"
+          \"text\": \"$prompt_doubleslash\"
         }]
       },
       {
@@ -71,10 +71,14 @@ changelog=$(curl "https://generativelanguage.googleapis.com/v1beta/models/gemini
       \"topP\": 1.0,
       \"topK\": 1
     }
-  }" |
-  jq -r '.candidates[0].content.parts[0].text' |
-  sed -n '/### 📖/,$p')
+  }")
 
+# echo "$response"
+
+changelog=$(echo "$response" |
+  jq -r '.candidates[0].content.parts[0].text' |
+  sed -n '/### 📖/,$p' |
+  sed 's/```//g')
 changelog="$changelog
 
 ---
