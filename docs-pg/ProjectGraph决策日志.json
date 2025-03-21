@@ -686,7 +686,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [985.4436189595144, -2334.0562050341928],
+      "location": [985, -2334],
       "size": [300, 150],
       "url": "https://mefo.cc/",
       "title": "链接",
@@ -732,7 +732,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [782, -2016],
+      "location": [782, -1967],
       "size": [444, 172],
       "text": "但功能强悍意味着通用性降低\n可能会在和其他软件联动方面\n有不足",
       "uuid": "a424f562-462c-4fdc-bf04-999b88c9cdc2",
@@ -813,7 +813,7 @@
       "type": "core:text_node"
     },
     {
-      "location": [5698, -262],
+      "location": [5696, -287],
       "size": [496.73583984375, 124],
       "text": "dos系统上会截断\n变成application/pgp-encrypted",
       "uuid": "a3d1aa4a-1226-40c0-8a77-370f29c4a5e0",
@@ -850,7 +850,7 @@
     },
     {
       "location": [5360, -946],
-      "size": [41.43998718261719, 76],
+      "size": [46.765625, 76],
       "text": "1",
       "uuid": "958bfbe9-45dc-48bd-8582-bdc499bd6f0a",
       "details": "",
@@ -877,7 +877,7 @@
     },
     {
       "location": [5370, -565],
-      "size": [47.23199462890625, 76],
+      "size": [46.765625, 76],
       "text": "4",
       "uuid": "2a66a301-c37d-4376-8557-cb990847cd0a",
       "details": "",
@@ -1111,7 +1111,7 @@
     },
     {
       "location": [4888, -386],
-      "size": [41.43998718261719, 76],
+      "size": [46.765625, 76],
       "text": "1",
       "uuid": "8e9ae469-f7ca-4e8c-a51e-a7693a866226",
       "details": "",
