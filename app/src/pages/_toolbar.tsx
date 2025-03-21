@@ -167,14 +167,14 @@ export default function Toolbar({ className = "" }: { className?: string }) {
         />
       )}
       <ToolbarItem
-        description="将选中节点打包Section（快捷键可自定义）（Section目前bug较多，还在开发中，暂时不推荐使用）"
+        description="将选中节点打包Section（快捷键可自定义）"
         icon={<Square />}
         handleFunction={() => {
           StageManager.packEntityToSectionBySelected();
         }}
       />
       <ToolbarItem
-        description="切换Section的折叠状态（快捷键可自定义）"
+        description="切换Section的折叠状态（快捷键可自定义）（还在开发中，暂时不推荐使用）"
         icon={<Package />}
         handleFunction={() => {
           StageManager.sectionSwitchCollapse();
@@ -191,7 +191,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       )}
       {isHaveSelectedNode && (
         <ToolbarItem
-          description="AI扩展节点"
+          description="AI扩展节点，（已欠费，有待更新）"
           icon={<BrainCircuit />}
           handleFunction={() => {
             StageGeneratorAI.generateNewTextNodeBySelected();
