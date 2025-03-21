@@ -1,89 +1,70 @@
 welcome:
   language: Language
-  next: Next Step
+  next: Next
   website: Website
   github: GitHub
   bilibili: Bilibili
   qq: QQ Group
 
 about:
-  title: Project Graph
   updater:
-    available: New version
+    available: New Version
     downloading: Downloading
-    checkingUpdate: Checking for updates…
-    checkUpdateFail: Unable to get the newest version information, please check the
-      internet
+    checkingUpdate: Checking for updates...
+    checkUpdateFail: Failed to retrieve the latest version information. Please check your network connection.
   links:
     documentation: Documentation
-    github: Github
-    video: Video (Bilibili)
-    qq: QQ
-    forum: Forum (d2learn)
+    github: GitHub
+    video: Video Tutorials
+    qq: QQ Group
+    forum: Forum
   intro:
-  - Software Introduction
-  - This is a tool for quickly drawing topological graphs based on the Tauri framework,
-    which can be used for project topology diagram drawing and rapid brainstorming
-    drafts.
-  - Xmind can only be used to draw tree structure diagrams, while FigJam and draw.io
-    can be used for drawing but they are a bit slow to open as web pages.
-  - Therefore, this small software was created.
+    - Software Introduction
+    - This is a tool based on the Tauri framework for quickly drawing node diagrams, which can be used for project topology diagrams and quick brainstorming drafts.
+    - Xmind can only be used to draw tree-structured diagrams. FigJam and draw.io can be used, but the web pages load a bit slowly.
+    - That's why this software was created.
   contact:
-  - Contact Us
-  - We are committed to designing the fastest and most convenient methodology for
-    "graph theory" and are also exploring and innovating in the fields of visual thinking
-    and topological todo lists.
-  - "If you want to get feedback quickly and provide suggestions, or if you have any
-    ideas or questions, you are welcome to join our QQ group: 1006956704"
+    - Contact Us
+    - We are committed to designing the fastest and most convenient drawing methodology for "graph theory" and also exploring innovations in visual thinking and topological to-do lists.
+    - "If you want to get quick feedback, provide suggestions, or have any ideas or questions, please join our QQ Group: 1006956704."
   techEnvironment: Technical Support and Ecosystem
   developers:
-    title: Developers List
-    proposer: Project Proposer and Designer
-    conceptDesigner: Concept Designer
-    featureDesigner: Feature Designer
-    feedbackManager: Feedback Manager
-    logoDesigner: Logo Designer
-    uiDesigner: UI Designer
-    softwareArchitect: Software Architect
-    bezierCurveDesigner: Bezier Curve Designer
-    animationEffectDesigner: Animation Effect Designer
-    automationBuilder: Automation Builder
+    title: Developer List
+    proposer: Project Proposal and Founding
+    conceptDesigner: Concept Design
+    featureDesigner: Feature Design
+    feedbackManager: Feedback Management
+    logoDesigner: Logo Design
+    uiDesigner: UI Design
+    softwareArchitect: Software Architecture
+    bezierCurveDesigner: Bezier Curve Design
+    animationEffectDesigner: Animation Effect Design
+    automationBuilder: Automation Build
     xlings: Automation Environment Setup
-    websiteMaintainer: Website Maintainer
-    performanceSupervisor: Performance Supervisor
-    videoPromoter: Video Promoter
-    translator: Translator
-    tester: Tester
+    websiteMaintainer: Website Maintenance
+    performanceSupervisor: Performance Supervision
+    videoPromoter: Video Promotion
+    translator: Translation
+    tester: Testing
     encourager: Programmer Encourager
-    encouragerEncourager: Encourager's Encourager
-    atmosphereAdjuster: Atmosphere Adjuster
+    encouragerEncourager: Encourager of Encouragers
+    atmosphereAdjuster: Atmosphere Adjustment
   ideaSources:
-  - Inspiration Sources
-  - FigJam not supporting dark mode
-  - Director Lin Chao's video on the detailed analysis of drawing analysis frameworks
-  - Topological ordering, graph theory, state machines, and set theory concepts in
-    Data Structures and Algorithms
-  - "Brainstorming method, cognitive load theory, cards creativity"
-  - Command Blocks in Minecraft
-  - The animation effect of slashing in Fruit Ninja
-  - The factory assembly line design in the game "Mindustry" is turned into logical
-    nodes
-  - The concept of state machines
+    - Inspiration Sources
+    - FigJam without dark mode support
+    - Analysis framework video by Lin Chao
+    - Topological sorting, graph theory, state machines, and set theory concepts from "Data Structures and Algorithms"
+    - Brainstorming methods, cognitive load theory, and card creativity methods
+    - The Command blocks in the game "Minecraft" and the Nether portal mod for cross-world previews
+    - The slicing animation effect in the game "Fruit Ninja"
+    - The logical node design of factory assembly lines in the game "Mindustry"
   team:
-  - Team Introduction
-  - LiRen Tech is a small team founded by Littlefean and Rutubet on May 1, 2017, with
-    ZTY joining the team later.
-  - With its youthful team atmosphere, emphasis on innovation and creativity, and
-    characteristics of rational thinking and cultural inclusiveness, it stands out
-    in the field of software development.
-  - Not only focuses on developing tool software and games but also engages in Minecraft
-    game plugin development, game server operation, and website construction in a
-    diversified business.
-  - LiRen Tech's representative works include the rich content tower defense game
-    CannonWar, the BitMountain algorithm competition website, the Watch desktop software,
-    and the Minecraft PvP Professional War server.
-  - The team is represented by light blue and code green, symbolizing a team culture
-    that coexists with logical rationality and humor.
+    - Team Introduction
+    - LiRen Tech is a small team founded by Littlefean and Rutubet on May 1, 2017, with ZTY joining later.
+    - Known for its youthful atmosphere, emphasis on innovation and creativity, and rational thinking and cultural inclusiveness, it stands out in the field of software development.
+    - It focuses not only on developing tool software and games but also on developing Minecraft game plugins, operating game servers, and building websites.
+    - Representative works include the rich content tower defense game CannonWar, the algorithm competition website BitMountain, the desktop software Watch, and the Minecraft PvP professional war server.
+    - The team's representative colors are light blue and code green, symbolizing a team culture that combines logical rationality with humor and fun.
 
 settings:
   title: Settings
@@ -92,363 +73,436 @@ settings:
     visual: Visual
     physical: Physical
     performance: Performance
+    effects: Effects
     automation: Automation
     control: Control
+    keybinds: Keybinds
     ai: AI
     github: GitHub
     sounds: Sounds
     plugins: Plugins
-    effects: "Effects"
-    keybinds: Shortcut Keys
   language:
     title: Language
     options:
       en: English
       zh_CN: Simplified Chinese
       zh_TW: Traditional Chinese
+  updateChannel:
+    title: Update Channel
+    options:
+      latest: Stable
+      nightly: Development
   theme:
-    title: Theme
+    title: Stage Theme Color
+    description: Choose the stage theme color, which affects the canvas background, node colors, borders, and connection colors. The "Paper White" is specifically for final printing or pasting into papers, and the actual color is absolute white.
     options:
-      black: Dracula Dark Theme
+      black: Night Theme
       white: Paper White Theme
-      macaron: Macaron Theme
-      morandi: Morandi Theme
+      macaron: Macaron Color Theme
+      morandi: Morandi Color Theme
   uiTheme:
-    title: UI Theme
+    title: UI Theme Color
+    description: Choose the UI theme color, which affects the color of buttons, input boxes, menus, etc., not the canvas color.
     options:
-      dark: dark theme
-      light: light theme
-      macaron: macaron theme
-      morandi: Morandi Theme
-  isRenderCenterPointer:
-    title: Show Center Crosshair
+      dark: Night Theme
+      blueGreen: Park Theme
+      light: Light Theme
+      macaron: Macaron Color Theme
+      morandi: Morandi Color Theme
+  showTipsOnUI:
+    title: Show Tips on UI
     description: |
-      When enabled, a crosshair will be displayed at the center of the canvas to indicate the position for creating nodes using shortcut keys
+      When enabled, a line of tip text will be displayed on the screen.
+      If you are already familiar with the software, it is recommended to disable this option to reduce screen clutter.
+      For more detailed tips, it is still recommended to check the "New User Guide" in the menu bar or the official documentation.
+  isClassroomMode:
+    title: Presentation Mode
+    description: |
+      For teaching, training, or focus mode.
+      When enabled, the buttons at the top of the window will become transparent, and they will revert when the mouse hovers over them. You can customize the shortcut keys to enter and exit presentation mode.
   lineStyle:
     title: Line Style
     options:
       straight: Straight Line
       bezier: Bezier Curve
-      vertical: Vertical Line
+      vertical: Vertical Zigzag Line
+  isRenderCenterPointer:
+    title: Show Center Crosshair
+    description: |
+      When enabled, a crosshair will be displayed at the center of the canvas to indicate the position for creating nodes using shortcuts.
   showGrid:
     title: Show Grid
   showBackgroundHorizontalLines:
     title: Show Horizontal Background Lines
     description: |
-      Horizontal and vertical lines can be enabled simultaneously to achieve a grid effect.
+      Horizontal and vertical lines can be enabled simultaneously to create a grid effect.
   showBackgroundVerticalLines:
     title: Show Vertical Background Lines
   showBackgroundDots:
     title: Show Background Dots
     description: |
-      These background dots are the intersection points of the horizontal and vertical lines, creating a perforated board effect.
+      These background dots are the intersections of horizontal and vertical lines, creating a pegboard effect.
   showBackgroundCartesian:
-    title: Show Background Cartesian Coordinate System
+    title: Show Background Cartesian Coordinates
     description: |
-      When enabled, the x-axis, y-axis, and scale numbers will be displayed
-      This can be used to observe the absolute coordinates of some nodes
-      It also provides a clear indication of the current zoom level
+      When enabled, the x-axis, y-axis, and scale numbers will be displayed.
+      This can be used to observe the absolute coordinates of some nodes and intuitively understand the current zoom level.
   windowBackgroundAlpha:
     title: Window Background Transparency
   showDebug:
     title: Show Debug Information
     description: |
-      Usually used by developers.
-      When enabled, debug information will be displayed in the top left corner of the canvas.
-      It is recommended to enable this option when reporting bugs with screenshots.
+      Typically for developers.
+      When enabled, debug information will be displayed in the top-left corner of the canvas.
+      If you encounter a bug and need to take a screenshot for feedback, it is recommended to enable this option.
   enableTagTextNodesBigDisplay:
-    title: Bigify Tag Text Nodes Display
+    title: Enlarge Tag Text Nodes Display
     description: |
-      When enabled, tag text nodes will be displayed in a larger size when the canvas is zoomed out to a broad global view,
-      making it easier to identify the layout and distribution of the entire file.
+      When enabled, tag text nodes will be enlarged when the canvas is zoomed out to a global view to make it easier to recognize the layout of the entire file.
   alwaysShowDetails:
     title: Always Show Node Details
     description: |
-      When enabled, node details will be shown without hovering the mouse over the node.
+      When enabled, node details will be displayed without needing to hover the mouse over the node.
   nodeDetailsPanel:
-    title: node details panel
+    title: Node Details Panel
     options:
-      small: small panel
-      vditor: vditor markdown panel
+      small: Small Panel
+      vditor: Vditor Markdown Editor
   useNativeTitleBar:
-    title: Use Native Title Bar (Requires application restart)
+    title: Use Native Title Bar (Restart Required)
     description: |
-      When enabled, a native title bar will appear at the top of the window instead of a simulated one.
+      When enabled, the native title bar will appear at the top of the window instead of the simulated one.
   protectingPrivacy:
     title: Privacy Protection
     description: |
-      When taking screenshots for feedback, enabling this option will replace all Chinese characters with "好" to protect privacy.
-      This is only a visual replacement and will not affect the actual data.
-      You can turn it off and restore it after providing feedback.
+      When enabled for screenshot feedback, all Chinese characters will be replaced with 《㊙》 to protect privacy.
+      This is only a display-level replacement and does not affect the actual data.
+      You can disable it after feedback to restore the original view.
   entityDetailsFontSize:
-    title: Font Size for Entity Details
+    title: Entity Details Font Size
     description: |
-      Unit is pixels
+      Unit is pixels.
   entityDetailsLinesLimit:
-    title: Line Limit for Entity Details
+    title: Entity Details Lines Limit
     description: |
-      Limit the maximum number of lines for entity details. Exceeding this limit will result in the omission of the excess content.
+      Limits the maximum number of lines for entity details. Excess content will be truncated.
   entityDetailsWidthLimit:
-    title: Width Limit for Entity Details
+    title: Entity Details Width Limit
     description: |
-      Limit the maximum width for entity details. Exceeding this limit will result in the excess content wrapping to the next line.
+      Limits the maximum width of entity details. Excess content will be wrapped to the next line.
   limitCameraInCycleSpace:
-    title: Enable Camera Movement Limitation in Cycle Space
+    title: Enable Camera Movement Limit in Cycle Space
     description: |
-      When enabled, the camera can only move within a rectangular area
-      This prevents the camera from moving too far away and getting lost
-      The rectangular area will form a cycle space, similar to the map in the classic Snake game
-      Moving to the top will return the camera to the bottom, and moving to the left will return it to the right
-      Note: This feature is still in the experimental stage
+      When enabled, the camera can only move within a rectangular area.
+      This prevents the camera from moving too far and getting lost.
+      The rectangular area forms a cycle space, similar to the map in the game "Snake," where moving to the top will bring you to the bottom, and moving to the left will bring you to the right.
+      Note: This feature is still in the experimental stage.
   cameraCycleSpaceSizeX:
     title: Cycle Space Width
     description: |
-      The width of the cycle space, in pixels
+      The width of the cycle space, measured in pixels.
   cameraCycleSpaceSizeY:
     title: Cycle Space Height
     description: |
-      The height of the cycle space, in pixels
+      The height of the cycle space, measured in pixels.
   renderEffect:
-    title: Rendering Effect
-    description: Whether to render special effects. If the application is lagging,
-      you can turn this off.
+    title: Render Effects
+    description: Whether to render effects. If experiencing lag, this can be disabled.
   historySize:
     title: History Size
     description: |
       This value determines the maximum number of times you can undo using Ctrl+Z.
-      If your computer has very little memory, you can reduce this value.
+      If your computer has very limited memory, you can reduce this value.
+  textIntegerLocationAndSizeRender:
+    title: Text Integer Position and Size Rendering
+    description: |
+      When enabled, all text sizes and positions will be integers to save rendering performance.
+      However, this may cause text jittering. It is recommended to use this with a zoom speed of 1.
+      If your computer is very laggy, especially when zooming and panning, you can enable this option.
+  isPauseRenderWhenManipulateOvertime:
+    title: Pause Rendering When Idle for a Certain Time
+    description: |
+      When enabled, rendering will pause after a certain number of seconds without canvas manipulation to save CPU/GPU resources.
+  renderOverTimeWhenNoManipulateTime:
+    title: Time to Stop Rendering When Idle (Seconds)
+    description: |
+      Rendering will stop after a certain number of seconds without canvas manipulation to save CPU/GPU resources.
+      This will only take effect if the "Pause Rendering When Idle" option is enabled.
+  ignoreTextNodeTextRenderLessThanCameraScale:
+    title: Ignore Text Node Text Rendering When Camera Scale is Less Than a Certain Value
+    description: |
+      When enabled, text within text nodes will not be rendered when the camera scale is less than a certain value (i.e., when observing the macro view).
+      This can improve rendering performance but will make the text content of text nodes invisible.
   isEnableEntityCollision:
-    title: Entity Collision Detection
+    title: Enable Entity Collision Detection
     description: |
-      When enabled, entities will collide and push each other, which may affect performance.
-      It is recommended to turn off this option, as the current entity collision and pushing implementation is not perfect and may lead to stack overflow.
+      When enabled, entities will collide and squeeze each other, which may affect performance.
+      It is recommended to disable this option, as entity collision and squeezing are not yet perfect and may cause stack overflow.
   autoNamerTemplate:
-    title: Auto Naming Template
+    title: Auto-Naming Template
     description: |
-      Enter `{{i}}` to automatically replace the node name with a number. The number will be incremented automatically when you double-click to create a new node.
-      For example, `n{{i}}` will be automatically replaced with `n1`, `n2`, `n3`, etc.
-      Enter `{{date}}` to automatically replace with the current date. The date will be updated automatically when you double-click to create a new node.
-      Enter `{{time}}` to automatically replace with the current time. The time will be updated automatically when you double-click to create a new node.
-      You can combine them, for example, `{{i}}-{{date}}-{{time}}`.
+      Input `{{i}}` to automatically replace the node name with a number, which will increment automatically when creating by double-clicking.
+      For example, `n{{i}}` will be replaced with `n1`, `n2`, `n3`...
+      Input `{{date}}` to automatically replace with the current date, which will update automatically when creating by double-clicking.
+      Input `{{time}}` to automatically replace with the current time, which will update automatically when creating by double-clicking.
+      These can be combined, such as `{{i}}-{{date}}-{{time}}`.
   autoNamerSectionTemplate:
-    title: Auto Naming Section Template
+    title: Auto-Naming Group Template
     description: |
-      Enter `{{i}}` to automatically replace the node name with a number, which increments automatically when nodes are created by double-click.
-      For example, `n{{i}}` will be automatically replaced with `n1`, `n2`, `n3`...
-      Enter `{{date}}` to automatically replace it with the current date, which updates automatically when nodes are created by double-click.
-      Enter `{{time}}` to automatically replace it with the current time, which updates automatically when nodes are created by double-click.
-      These can be combined, for example `{{i}}-{{date}}-{{time}}`
+      Input `{{i}}` to automatically replace the node name with a number, which will increment automatically when creating by double-clicking.
+      For example, `n{{i}}` will be replaced with `n1`, `n2`, `n3`...
+      Input `{{date}}` to automatically replace with the current date, which will update automatically when creating by double-clicking.
+      Input `{{time}}` to automatically replace with the current time, which will update automatically when creating by double-clicking.
+      These can be combined, such as `{{i}}-{{date}}-{{time}}`.
   autoSaveWhenClose:
-    title: Automatically save the project file when clicking the close button in the
-      upper right corner of the window
+    title: Auto-Save When Closing
     description: |
-      When you close the software, if there are unsaved project files, a prompt will appear asking if you want to save.
-      With this option enabled, the project file will be saved automatically when you close the software.
-      Therefore, it is recommended to enable this option.
+      When closing the software, if there are unsaved project files, a prompt will appear asking whether to save.
+      Enabling this option will automatically save project files when closing the software.
+      It is recommended to enable this option.
   autoSave:
-    title: Enable Auto Save
+    title: Enable Auto-Save
     description: |
-      Automatically saves the current file.
-      This feature currently only works for files with existing paths and does not work for draft files!
+      Automatically save the current file.
+      This feature currently only works for files with a specified path and does not apply to draft files!
   autoSaveInterval:
-    title: Auto Save Interval (seconds)
+    title: Auto-Save Interval (Seconds)
     description: |
-      Note: Currently, the timer only counts when the software window is active and does not count when the software is minimized.
+      Note: The timer only counts when the software window is active and will not count when the software is minimized.
   autoBackup:
-    title: Enable Auto Backup
+    title: Enable Auto-Backup
     description: |
-      Automatically backs up the current file.
-      An automatic backup will be created next to the project file.
+      Automatically back up the current file.
+      Auto-backup will create a copy next to the project file.
       If it is a draft, it will be stored in the specified path.
   autoBackupInterval:
-    title: Auto Backup Interval (seconds)
+    title: Auto-Backup Interval (Seconds)
     description: |
-      Too frequent automatic backups may generate a large number of backup files,
-      which will take up disk space.
+      Too frequent auto-backups may generate a large number of backup files, which can occupy disk space.
   autoBackupDraftPath:
-    title: Automatic backup folder path for drafts
+    title: Auto-Backup Path for Drafts
     description: |
-      Please enter the absolute path. Drafts will be backed up to this folder.
-      If left blank or the path is incorrect, no backup will be performed.
-      For Windows systems, please use backslashes.
-      For example: C:\\Users\\username\\Documents\\DraftBackup
-      Do not include a path separator at the end.
+      Please enter an absolute path. Drafts will be backed up to this folder.
+      If the path is empty or incorrect, no backup will be performed.
+      For Windows systems, use backslashes.
+      For example: C:\Users\username\Documents\DraftBackup
+      Do not end with a path separator.
   scaleExponent:
-    title: View Scaling Speed
+    title: Zoom Speed
     description: |
-      The "current scale" will continuously approach the "target scale" at a certain rate.
-      When the approximation is close enough (less than 0.0001), the scaling will stop automatically.
-      A value of 1 means the scaling will be completed immediately without any intermediate transition effect.
-      A value of 0 means the scaling will never be completed, which can simulate a locked effect.
-      Note: If you feel stuttered when zooming in, please set it to 1
+      The current zoom level will continuously approach the target zoom level at a certain rate.
+      When it gets close enough (less than 0.0001), it will automatically stop zooming.
+      A value of 1 means the zoom will be immediate with no transition effect.
+      A value of 0 means the zoom will never complete and can simulate a locked effect.
+      Note: If you experience lag while zooming, set this to 1.
   cameraKeyboardScaleRate:
-    title: Viewport Zoom Keyboard Rate
+    title: Keyboard Zoom Rate
     description: |
-      The zoom scale factor of the viewport each time it is zoomed in or out using a keyboard press.
-      A value of 0.2 means that each zoom in will increase the scale to 1.2 times the original, and each zoom out will decrease the scale to 0.8 times the original.
-      A value of 0 means keyboard zooming is disabled.
-
+      The zoom rate of the viewport when using a key press.
+      A value of 0.2 means each zoom in will multiply the scale by 1.2, and each zoom out will multiply it by 0.8.
+      A value of 0 disables keyboard zooming.
   scaleCameraByMouseLocation:
-    title: Scale Camera by Mouse Location
+    title: Zoom Based on Mouse Position
     description: |
-      When enabled, the center of the camera scaling will be the position of the mouse
-      When disabled, the center of the camera scaling will be the center of the current view
+      When enabled, the center of the zoom will be the mouse position.
+      When disabled, the center of the zoom will be the center of the current viewport.
   allowMoveCameraByWSAD:
-    title: Allow camera movement with W S A D keys
+    title: Allow Moving Camera with W S A D Keys
     description: |
-      When enabled, you can use the W S A D keys to move the camera up, down, left, and right.
-      When disabled, you can only use the mouse to move the camera, avoiding the endless scroll bug.
+      When enabled, you can move the viewport using the W S A D keys.
+      When disabled, you can only move the viewport using the mouse, which prevents infinite scrolling bugs.
+  cameraFollowsSelectedNodeOnArrowKeys:
+    title: Follow Selected Node with Arrow Keys
+    description: |
+      When enabled, the viewport will follow when switching selected nodes using the arrow keys.
   cameraKeyboardMoveReverse:
     title: Reverse Camera Movement with Keyboard
     description: |
-      When enabled, the direction of camera movement using the W S A D keys will be reversed
-      The original movement logic was to move the camera floating on the screen, but some users interpreted it as moving the canvas, which caused confusion
-      Therefore, this option was introduced
+      When enabled, the movement direction of the W S A D keys will be reversed.
+      The original movement logic is to move the camera floating on the screen, but if it is considered moving the canvas, it is reversed.
+      Hence, this option is provided.
+  cameraResetViewPaddingRate:
+    title: Padding Rate When Resetting View Based on Selected Nodes
+    description: |
+      When you select a group of nodes or a single node and press a shortcut key or click a button to reset the viewport,
+      the viewport will adjust its size and position to ensure all selected content is centered on the screen and fully visible.
+      Due to zoom level adjustments, there may be some padding around the edges.
+      A value of 1 means no padding at all (very close-up view).
+      A value of 2 means the padding is exactly one times the content size.
   allowAddCycleEdge:
-    title: Allow adding self-loops between nodes
+    title: Allow Adding Self-Loops Between Nodes
     description: |
-      When enabled, self-loops can be added between nodes, allowing a node to connect to itself, which is useful for state machine drawings.
-      Disabled by default, as it is rarely used and may easily trigger accidental actions.
+      When enabled, nodes can have self-loops, i.e., connections to themselves, which is useful for state machine diagrams.
+      This is disabled by default because it is not commonly used and can be easily triggered by mistake.
   moveAmplitude:
-    title: View Movement Acceleration
+    title: Camera Movement Amplitude
     description: |
-      This setting is used when using the W, S, A, and D keys to move the view up, down, left, and right.
-      The camera can be considered as a hovering aircraft that can spray in four directions.
-      This acceleration value represents the size of the jet's power and needs to be adjusted with the friction setting below to adjust the speed.
+      This setting is used when moving the viewport using the W S A D keys.
+      Think of the camera as a hovering aircraft that can thrust in four directions.
+      This amplitude value represents the power of the thrust, which needs to be adjusted in combination with the friction setting below.
   moveFriction:
-    title: View Movement Friction Coefficient
+    title: Camera Movement Friction Coefficient
     description: |
-      This setting is used when using the W, S, A, and D keys to move the view up, down, left, and right.
-      The larger the friction coefficient, the smaller the sliding distance, and the smaller the friction coefficient, the larger the sliding distance.
-      A value of 0 means absolutely smooth.
+      This setting is used when moving the viewport using the W S A D keys.
+      The higher the friction coefficient, the shorter the sliding distance.
+      A value of 0 represents absolute smoothness.
   gamepadDeadzone:
-    title: Gamepad Deadzone
+    title: Gamepad Dead Zone
     description: |
-      This setting is used when using a gamepad to control the view.
-      The input value of the gamepad is between 0 and 1. The smaller this value, the more sensitive the gamepad input.
-      The larger the deadzone, the closer the gamepad input is to 0 or 1, and there will not be too much change.
-      The smaller the deadzone, the closer the gamepad input is to the middle value, and there will be a larger change.
+      This setting is used when controlling the viewport with a gamepad.
+      The input value of the gamepad ranges from 0 to 1. The smaller this value, the more sensitive the gamepad input will be.
+      A larger dead zone means the input will tend more towards 0 or 1 with less variation.
+      A smaller dead zone means the input will tend more towards the middle value with greater variation.
   mouseRightDragBackground:
-    title: Right-click Dragging Background Operation
+    title: Right-Click Drag Background Operation
     options:
-      cut: Cut and Delete Object
-      moveCamera: Move View
+      cut: Cut and Delete Objects
+      moveCamera: Move Viewport
+  doubleClickMiddleMouseButton:
+    title: Double-Click Middle Mouse Button
+    description: |
+      The action performed when the scroll wheel is quickly pressed twice. By default, it resets the viewport.
+      Disabling this option can prevent accidental triggers.
+    options:
+      adjustCamera: Adjust Viewport
+      none: No Operation
   textNodeContentLineBreak:
-    title: 文本节点换行方案
+    title: Text Node Line Break Scheme
     options:
       enter: Enter
-      ctrlEnter: ctrl + Enter
-      altEnter: alt + Enter
-      shiftEnter: shift + Enter
+      ctrlEnter: Ctrl + Enter
+      altEnter: Alt + Enter
+      shiftEnter: Shift + Enter
     description: |
-      注意不要和文本节点退出编辑模式的按键一样了，这样会导致冲突
-      进而导致无法换行
+      Do not set this to the same key as the one used to exit text node editing mode, as this will cause conflicts and prevent line breaks.
   textNodeStartEditMode:
-    title: 文本节点进入编辑模式
+    title: Enter Text Node Editing Mode
     options:
       enter: Enter
-      ctrlEnter: ctrl + Enter
-      altEnter: alt + Enter
-      shiftEnter: shift + Enter
+      ctrlEnter: Ctrl + Enter
+      altEnter: Alt + Enter
+      shiftEnter: Shift + Enter
+      space: Space Bar
     description: |
-      实际上按F2键也可以进入编辑模式，这里还可以再加选一种
+      You can also enter editing mode by pressing the F2 key. Another option can be selected here.
   textNodeExitEditMode:
-    title: 文本节点退出编辑模式
+    title: Exit Text Node Editing Mode
     options:
       enter: Enter
-      ctrlEnter: ctrl + Enter
-      altEnter: alt + Enter
-      shiftEnter: shift + Enter
+      ctrlEnter: Ctrl + Enter
+      altEnter: Alt + Enter
+      shiftEnter: Shift + Enter
     description: |
-      实际上按Esc键也可以退出，这里还可以再加选一种
+      You can also exit by pressing the Esc key. Another option can be selected here.
   textNodeSelectAllWhenStartEditByMouseClick:
-    title: 文本节点通过双击开始编辑时自动全选内容
+    title: Select All Text When Starting Edit by Mouse Click
     description: |
-      开启后，在文本节点开始编辑时，会全选文本内容
-      如果您编辑内容通常是想为了直接更改全部内容，建议开启此选项
-      如果更可能是想为了追加内容，建议关闭此选项
+      When enabled, all text content will be selected when starting to edit a text node.
+      If you usually want to change the entire content when editing, enable this option.
+      If you are more likely to append content, disable this option.
   textNodeSelectAllWhenStartEditByKeyboard:
-    title: 文本节点通过键盘开始编辑时自动全选内容
+    title: Select All Text When Starting Edit by Keyboard
     description: |
-      开启后，在您按下文本节点编辑模式的按键时，会全选文本内容
+      When enabled, all text content will be selected when you press the key to enter text node editing mode.
   enableDragAutoAlign:
-    title: Enable Drag Auto Align Nodes
+    title: Enable Automatic Alignment When Dragging Nodes
     description: |
-      When enabled, nodes will automatically align with other nodes along the x-axis and y-axis when dragged and released
+      When enabled, nodes will automatically align with other nodes in the x-axis and y-axis directions when you drag and release them.
+  enableDragAlignToGrid:
+    title: Snap to Grid When Dragging Entities
+    description: |
+      It is recommended to enable horizontal and vertical grid lines in the display settings and disable automatic alignment.
   enableWindowsTouchPad:
-    title: Allows move with the touchbar with two fingers
+    title: Enable Windows Touchpad Two-Finger Operation
     description: |
-      On Windows, moving two fingers up and down is recognized as a scroll event.
-      The movement of two fingers left and right will be recognized as a scrolling event of the mouse wheel.
-      If you are operating with a notebook and using an external mouse, it is recommended to turn this option off.
+      On Windows systems, two-finger up and down movements are recognized as scroll wheel events.
+      Two-finger left and right movements are recognized as horizontal scroll wheel events.
+      If you are using an external mouse with a laptop, it is recommended to disable this option.
   mouseWheelMode:
-    title: mouse Wheel Mode
+    title: Mouse Wheel Mode
     options:
-      zoom: zoom
-      move: Vertical Move
-      moveX: move X
+      zoom: Zoom
+      move: Vertical Movement
+      moveX: Horizontal Movement
   mouseWheelWithShiftMode:
-    title: mouse Wheel Mode When Press Shift
+    title: Mouse Wheel Mode with Shift Key
     options:
-      zoom: zoom
-      move: Vertical Move
-      moveX: move X
+      zoom: Zoom
+      move: Vertical Movement
+      moveX: Horizontal Movement
   mouseWheelWithCtrlMode:
-    title: mouse Wheel Mode When Press Ctrl
+    title: Mouse Wheel Mode with Ctrl Key
     options:
-      zoom: zoom
-      move: Vertical Move
-      moveX: move X
+      zoom: Zoom
+      move: Vertical Movement
+      moveX: Horizontal Movement
   rectangleSelectWhenLeft:
-    title: Strategy for Left Rectangle Selection
+    title: Strategy for Selecting to the Left
     description: |
-      Choose the strategy for selecting with a rectangle when dragging left.
-      Complete containment means the selection rectangle must completely cover the bounding rectangle of the entity.
-      Partial containment means the selection rectangle only needs to touch a part of the entity's bounding rectangle to select it.
+      Choose the strategy for selecting to the left, including full coverage selection and partial coverage selection.
+      Full coverage selection means the rectangular selection box must completely cover the bounding rectangle of the entity.
+      Partial coverage selection means the rectangular selection box will select the entity if it touches any part of its bounding rectangle.
     options:
-      intersect: Partial Containment
-      contain: Complete Containment
+      intersect: Partial Coverage Selection
+      contain: Full Coverage Selection
   rectangleSelectWhenRight:
-    title: Strategy for Right Rectangle Selection
+    title: Strategy for Selecting to the Right
     description: |
-      Choose the strategy for selecting with a rectangle when dragging right.
+      Choose the strategy for selecting to the right.
     options:
-      intersect: Partial Containment
-      contain: Complete Containment
-
+      intersect: Partial Coverage Selection
+      contain: Full Coverage Selection
+  # Sounds
   cuttingLineStartSoundFile:
-    title: Cutting Line Start Sound File
+    title: Sound File for Cutting Line Start
     description: |
-      File path of the sound played when the cutting line is initiated by right-clicking.
+      The path to the sound file played when starting to cut a line with a right-click.
   connectLineStartSoundFile:
-    title: Connecting Line Start Sound File
+    title: Sound File for Connecting Line Start
     description: |
-      File path of the sound played when the connecting line is initiated by right-clicking.
-      There is also an issue where sounds may overlap when moving the mouse over the starting node.
+      The path to the sound file played when starting to connect a line with a right-click.
   connectFindTargetSoundFile:
-    title: Connecting Line Snap to Target Sound File
+    title: Sound File for Connecting Line Targeting
     description: |
-      File path of the sound played when the connecting line snaps to the target.
-      There are currently issues with the snapping sound,
-      as the sound may overlap significantly when moving the mouse after snapping to the target.
+      The path to the sound file played when the connecting line snaps to a target.
   cuttingLineReleaseSoundFile:
-    title: Cutting Line Release Sound File
+    title: Sound File for Cutting Line Release
     description: |
-      The moment of release is when the blade effect is visible.
+      The sound file played when releasing the cutting line (when the blade effect is visible).
   alignAndAttachSoundFile:
-    title: Align and Attach Sound File
+    title: Sound File for Alignment
     description: |
-      The file path of the sound played when nodes are aligned and attached during mouse dragging
-  updateChannel:
-    title: Update Channel
-    options:
-      latest: Stable
-      nightly: Dev
-  isClassroomMode:
-    title: Demo Mode
+      The path to the sound file played when nodes are aligned during mouse dragging.
+  uiButtonEnterSoundFile:
+    title: Sound for Mouse Entering Button Area
+    description: |
+      The sound played when the mouse enters a button area.
+  uiButtonClickSoundFile:
+    title: Sound File for Button Click
+    description: |
+      The path to the sound file played when a button is clicked.
+  uiSwitchButtonOnSoundFile:
+    title: Sound File for Switching Button On
+    description: |
+      The path to the sound file played when a switch button is turned on.
+  uiSwitchButtonOffSoundFile:
+    title: Sound File for Switching Button Off
+    description: |
+      The path to the sound file played when a switch button is turned off
+plugins:
+  welcome:
+    title: Welcome to the Plugin System
+    description: |
+      The plugin system is part of Project Graph v2, where developers can use JavaScript to create plugins to extend the functionality of the application.
+      The plugin system is not yet complete, so please stay tuned.
+  title: Plugin Management
+  install: Install Plugin
+  uninstall: Uninstall
+  documentation: Documentation
+
 app:
-  unsaved: "(unsaved)"
-  comingSoon: Coming soon…
+  unsaved: "(Unsaved)"
+  comingSoon: "Coming Soon..."
 appMenu:
   file:
     title: File
@@ -457,205 +511,276 @@ appMenu:
       open: Open
       save: Save
       saveAs: Save As
-      recent: Recents
+      recent: Recent Files
       backup: Backup
   location:
-    title: Dirs
+    title: Location
     items:
-      openDataFolder: Data Folder
-      openProjectFolder: Project Folder
+      openDataFolder: Open Data Folder
+      openProjectFolder: Open Project Folder
   export:
     title: Export
     items:
-      exportAsSVGByAll: Export all as SVG
-      exportAsMarkdownBySelected: Export selected as Markdown
-      exportAsPlainText: Export all as Plain Text
+      exportAsSvg: Export as SVG
+      exportAsSVGByAll: Export as SVG (All)
+      exportAsMarkdownBySelected: Export as Markdown (Selected)
+      exportAsPlainText: Export as Plain Text
   view:
     title: View
     items:
-      resetByAll: Reset View
-      resetBySelect: Reset View by selected
-      resetScale: Scale to 100%
+      resetByAll: Reset View Based on All Content
+      resetBySelect: Reset View Based on Selected Content
+      resetScale: Reset Zoom to Standard Size
   more:
     title: More
     items:
       settings: Settings
       about: About
-      welcome: Welcome Page
+      welcome: Welcome Screen
   window:
     title: Window
     items:
-      refresh: Reload app
-      fullscreen: Full Screen
+      refresh: Refresh
+      fullscreen: Fullscreen
+      cancelFullscreen: Exit Fullscreen
 
 startFilePanel:
-  title: Select the project file to be automatically loaded on startup
+  title: Select Project File to Load Automatically on Startup
   tips:
-  - "Note: The project file that is automatically loaded at startup will be loaded
-    onto the stage when opened, no manual opening is required."
-  - "Load: Only load this file onto the stage (you can hover transparently to see
-    if the switched file is the one you want)"
-  - "Pin: Switch the current startup file; the icon in the left status represents
-    the current startup file."
-  - "Remove: Only remove the file from the list, it will not affect the file itself."
+    - Note: The project file selected here will be loaded automatically when the application starts, without needing to open it manually.
+    - Load: Only load this file to the stage (you can check by hovering over the transparent icon to see if it is the desired file).
+    - Pin: Change the current startup file. The icon on the left status bar represents the current startup file.
+    - Remove: Remove the file from the list only, without affecting the file itself.
   buttons:
     addFile: Add File
     clearList: Clear List
     showAbsolutePath: Show Absolute Path
     showFileTime: Show File Time
 
+keys:
+  none: No Key Binding. Click to Bind.
+  mouse0: Mouse Left Button
+  mouse1: Mouse Middle Button
+  mouse2: Mouse Right Button
+  mouse3: Mouse Side Button 1
+  mouse4: Mouse Side Button 2
+  " ": Space Bar
+  arrowup: Up Arrow Key
+  arrowdown: Down Arrow Key
+  arrowleft: Left Arrow Key
+  arrowright: Right Arrow Key
+  wheelup: Scroll Wheel Up
+  wheeldown: Scroll Wheel Down
+
 keyBinds:
+  title: Key Bindings
   test:
     title: Test
     description: |
-      Only for testing the custom key binding functionality
+      For testing custom key binding functionality only.
   reload:
     title: Reload Application
-    description: Reload the application and reload the current project file
+    description: |
+      Reload the application and the current project file.
+      This is equivalent to refreshing a web page in a browser.
+      Warning: This action can cause loss of unsaved progress!
   undo:
     title: Undo
-    description: Undo the last operation
+    description: Undo the last action.
   redo:
     title: Redo
-    description: Redo the last undone operation
+    description: Cancel the last undo action.
   resetView:
     title: Reset View
     description: |
-      If no content is selected, reset the view based on all content;
-      If content is selected, reset the view based on the selected content
+      If no content is selected, reset the viewport based on all content.
+      If content is selected, reset the viewport based on the selected content.
   resetCameraScale:
-    title: Reset Zoom Level
-    description: Reset the view zoom level to the standard size
+    title: Reset Zoom
+    description: Reset the viewport zoom to the standard size.
   folderSection:
-    title: Toggle Section Folder
-    description: Press to toggle the selected Section folder between collapsed and
-      expanded states
+    title: Fold/Unfold Section Box
+    description: Pressing this will toggle the fold/unfold state of the selected Section box.
   reverseEdges:
-    title: Reverse Selected Edge Direction
+    title: Reverse Connection Direction
     description: |
-      Press to reverse the direction of the selected edge
-      For example, if the original direction was A -> B, pressing will change it to B -> A
-      This feature is useful for quickly creating a node that connects to multiple nodes
-      Since the current edge creation only supports one-to-many connections
+      When pressed, the direction of the selected connection will be reversed.
+      For example, if it was A -> B, it will become B -> A.
+      This feature is useful for quickly creating a node connected to multiple nodes.
+      Since connections can currently only be made one-to-many.
   reverseSelectedNodeEdge:
-    title: Reverse All Edges of Selected Nodes
+    title: Reverse All Connections of Selected Node
     description: |
-      Press to reverse the direction of all edges connected to the selected nodes
-      Each node's edges will be reversed, enabling faster one-to-many connections
+      When pressed, all connections of each node in the selected group will be reversed.
+      This allows for faster one-to-many connections.
   packEntityToSection:
-    title: Pack Selected Entities into Section
+    title: Pack Selected Entities into Section Box
     description: |
-      Press to automatically wrap the selected entities into a new Section folder
+      When pressed, the selected entities will be automatically wrapped into a new Section box.
+  unpackEntityFromSection:
+    title: Unpack Section Box and Convert to Text Node
+    description: |
+      When pressed, the entities inside the selected Section box will be unpacked, and the box itself will be converted into a text node.
+      The internal entities will be dropped outside.
   textNodeToSection:
-    title: Convert Selected Text Nodes to Section Box
+    title: Convert Selected Text Node to Section Box
     description: |
-      Press to automatically convert the selected text nodes into a new Section box
-      This can be used for the rapid creation of section boxes
+      When pressed, the selected text node will be converted into a Section box.
+      This can be used for quick Section box creation.
   deleteSelectedStageObjects:
     title: Delete Selected Stage Objects
     description: |
-      Press to delete the selected stage objects
-      Stage objects include entities (nodes and Sections) and relationships (lines between nodes)
-      The default key is the delete key, but you can change it to the backspace key
+      When pressed, the selected stage objects will be deleted.
+      Stage objects include entities (nodes and Sections as independent objects) and relationships (connections between nodes).
+      The default key is Delete, but you can change it to Backspace.
   editEntityDetails:
-    title: Edit Selected Entity Details
+    title: Edit Details of Selected Entity
     description: |
-      Press to open the details of the selected entity for editing
-      This option is only valid when exactly one object is selected
+      When pressed, the details of the selected entity will be opened for editing.
+      This is only effective when a single object is selected.
   openColorPanel:
     title: Open Color Panel Shortcut
     description: |
-      Press to open the color panel, which can be used to quickly change node colors
+      When pressed, the color panel will be opened to quickly switch node colors.
   switchDebugShow:
     title: Toggle Debug Information Display
     description: |
-      When pressed, this toggles the display of debug information.
-      Debug information is shown in the top left corner of the canvas and is typically used by developers.
-      Once enabled, debug information will appear in the top left corner of the canvas.
-      If you encounter a bug and need to provide a screenshot for feedback, it is recommended to enable this option.
+      When pressed, toggle the display of debug information.
+      Debug information is displayed in the top-left corner of the canvas and is typically for developers.
+      When enabled, debug information will be shown in the top-left corner of the canvas.
+      If you encounter a bug and need to take a screenshot for feedback, it is recommended to enable this option.
   keyboardOnlyGenerateNode:
-    title: 仅使用键盘生长节点
+    title: Grow Node Using Keyboard Only
     description: |
-      按下后，仅使用键盘生长节点
+      When pressed, grow a node using only the keyboard.
+      Release to complete the growth.
+  generateNodeTreeWithDeepMode:
+    title: Grow Node in Deep Mode
+    description: |
+      When pressed, instantly grow a node and place it to the right of the currently selected node.
+      Automatically arrange the entire node tree structure to ensure it forms a rightward tree structure.
+      Before using this feature, ensure a node is selected and that the structure is tree-like.
+  generateNodeTreeWithBroadMode:
+    title: Grow Node in Broad Mode
+    description: |
+      When pressed, create a sibling node and place it below the currently selected node.
+      Automatically arrange the entire node tree structure to ensure it forms a downward tree structure.
+      Before using this feature, ensure a node is selected and that it has a parent node.
   masterBrakeControl:
-    title: 动力系统刹车总控制器
+    title: Master Brake Control for Camera Movement
     description: |
-      按下后，摄像机无法移动
-      松开后，摄像机恢复正常
+      When pressed, the camera will be locked and unable to move.
+      Release to restore normal camera movement.
   selectAll:
-    title: selectAll
-    description: Press to select all objects on the canvas
+    title: Select All
+    description: Select all nodes and connections when pressed.
   createTextNodeFromCameraLocation:
-    title: Create Text Node
+    title: Create Text Node at Camera Center
     description: |
-      Press to create a text node at the center of the current view
-      This is equivalent to the functionality of double-clicking to create a node
+      When pressed, a text node will be created at the center of the current viewport.
+      This is equivalent to the function of creating a node by double-clicking with the mouse.
   createTextNodeFromSelectedTop:
     title: Create Text Node Above Selected Node
     description: |
-      Press to create a text node directly above the selected node
+      When pressed, a text node will be created directly above the currently selected node.
   createTextNodeFromSelectedDown:
     title: Create Text Node Below Selected Node
     description: |
-      Press to create a text node directly below the selected node
+      When pressed, a text node will be created directly below the currently selected node.
   createTextNodeFromSelectedLeft:
     title: Create Text Node to the Left of Selected Node
     description: |
-      Press to create a text node to the left of the selected node
+      When pressed, a text node will be created to the left of the currently selected node.
   createTextNodeFromSelectedRight:
     title: Create Text Node to the Right of Selected Node
     description: |
-      Press to create a text node to the right of the selected node
+      When pressed, a text node will be created to the right of the currently selected node.
   moveUpSelectedEntities:
-    title: 向上移动所有选中的实体
+    title: Move Selected Entities Up
     description: |
-      按下后，所有选中的实体会向上移动一个固定距离
+      When pressed, all selected entities will move up by a fixed distance.
   moveDownSelectedEntities:
-    title: 向下移动所有选中的实体
+    title: Move Selected Entities Down
     description: |
-      按下后，所有选中的实体会向下移动一个固定距离
+      When pressed, all selected entities will move down by a fixed distance.
   moveLeftSelectedEntities:
-    title: 向左移动所有选中的实体
+    title: Move Selected Entities Left
     description: |
-      按下后，所有选中的实体会向左移动一个固定距离
+      When pressed, all selected entities will move left by a fixed distance.
   moveRightSelectedEntities:
-    title: 向右移动所有选中的实体
+    title: Move Selected Entities Right
     description: |
-      按下后，所有选中的实体会向右移动一个固定距离
+      When pressed, all selected entities will move right by a fixed distance.
   jumpMoveUpSelectedEntities:
-    title: 跳跃向上移动所有选中的实体
+    title: Jump Move Selected Entities Up
     description: |
-      按下后，所有选中的实体会跳跃向上移动一个固定距离，能够跳入或者跳出Section框
+      When pressed, all selected entities will jump up by a fixed distance, allowing them to enter or exit a Section box.
   jumpMoveDownSelectedEntities:
-    title: 跳跃向下移动所有选中的实体
+    title: Jump Move Selected Entities Down
     description: |
-      按下后，所有选中的实体会跳跃向下移动一个固定距离，能够跳入或者跳出Section框
+      When pressed, all selected entities will jump down by a fixed distance, allowing them to enter or exit a Section box.
   jumpMoveLeftSelectedEntities:
-    title: 跳跃向左移动所有选中的实体
+    title: Jump Move Selected Entities Left
     description: |
-      按下后，所有选中的实体会跳跃向左移动一个固定距离，能够跳入或者跳出Section框
+      When pressed, all selected entities will jump left by a fixed distance, allowing them to enter or exit a Section box.
   jumpMoveRightSelectedEntities:
-    title: 跳跃向右移动所有选中的实体
+    title: Jump Move Selected Entities Right
     description: |
-      按下后，所有选中的实体会跳跃向右移动一个固定距离，能够跳入或者跳出Section框
+      When pressed, all selected entities will jump right by a fixed distance, allowing them to enter or exit a Section box.
   CameraScaleZoomIn:
-    title: Zoom In on View
-    description: Press to zoom in on the view
+    title: Zoom In
+    description: Zoom in the viewport when pressed.
   CameraScaleZoomOut:
-    title: Zoom Out on View
-    description: Press to zoom out on the view
+    title: Zoom Out
+    description: Zoom out the viewport when pressed.
   exitSoftware:
     title: Exit Software
-    description: Press to exit the software
+    description: Exit the software when pressed.
   checkoutProtectPrivacy:
-    title: 进入或退出隐私保护模式
+    title: Enter/Exit Privacy Protection Mode
     description: |
-      按下后，舞台上的全部文字将会被加密，无法被其他人看到
-      按下后，舞台上的全部文字将会解密，其他人可以看到
-      可以用于截图反馈问题、突然有人看你的屏幕时使用
+      When pressed, all text on the stage will be encrypted and invisible to others.
+      Press again to decrypt and make the text visible.
+      This can be used for screenshot feedback or when someone unexpectedly looks at your screen, especially if the content is personal.
+  openTextNodeByContentExternal:
+    title: Open Selected Node Content Externally
+    description: |
+      When pressed, all selected text nodes will be opened in the default manner or browser.
+      For example, if a node contains "D:/Desktop/a.txt", pressing this key will open the file with the system default method.
+      If the node content is a web address like "https://project-graph.top", it will open the webpage in the default browser.
+  checkoutClassroomMode:
+    title: Enter/Exit Presentation Mode
+    description: |
+      When pressed, enter presentation mode, where all UI elements will be hidden, and the top buttons will become transparent.
+      Press again to restore.
+  checkoutWindowOpacityMode:
+    title: Toggle Window Transparency Mode
+    description: |
+      When pressed, the window will enter full transparency mode. Press again to switch to full opacity mode.
+      This should be coordinated with the canvas color scheme. For example, in dark mode, the text is white, and in paper white mode, the text is black.
+      If the underlying content of the window is a white background, it is recommended to switch the canvas to paper white mode.
   searchText:
     title: Search Text
-plugins:
-  uninstall: Uninstall
-keys:
-  " ": Space
+    description: |
+      When pressed, open the search box where you can enter search terms.
+      The search box supports partial matching. For example, entering "a" will match "apple".
+  clickTagPanelButton:
+    title: Open/Close Tag Panel
+    description: |
+      Pressing this key will toggle the tag panel, similar to clicking the expand/collapse button on the page.
+  copy:
+    title: Copy
+    description: Copy the selected content when pressed.
+  paste:
+    title: Paste
+    description: Paste the clipboard content when pressed.
+  pasteWithOriginLocation:
+    title: Paste at Original Location
+    description: When pressed, the pasted content will overlap with the original position.
+  selectEntityByPenStroke:
+    title: Graffiti and Entity Diffusion Selection
+    description: |
+      After selecting a graffiti or entity, press this key to expand the selection to surrounding entities.
+      If the current selection is graffiti, it will select entities touched by the graffiti.
+      If the current selection is an entity, it will select all graffiti that touch it.
+      Pressing multiple times will alternate the diffusion selection.
