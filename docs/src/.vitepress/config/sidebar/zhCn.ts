@@ -90,6 +90,10 @@ const guide: DefaultTheme.SidebarItem[] = [
         text: "⌨️ CLI",
         link: "/cli",
       },
+      {
+        text: "⌨️ 秘籍键",
+        link: "/secret-code",
+      },
     ],
   },
   {
