@@ -177,7 +177,7 @@ export default function RecentFilesPanel() {
                   <td className="text-center">{index + 1}</td>
                   {/* 路径列 */}
                   <td className="flex flex-col" onClick={onCheckoutFile(file)}>
-                    <span>{PathString.absolute2file(file.path)}</span>
+                    <span>{PathString.getShortedFileName(PathString.absolute2file(file.path), 30, 0.8)}</span>
                     <span className="text-xs text-gray-500">{file.path}</span>
                   </td>
                   {/* 时间列 */}

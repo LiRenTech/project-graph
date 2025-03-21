@@ -97,6 +97,25 @@ export namespace PathString {
   }
 
   /**
+   * 获取简短压缩后的文件名，会省略中间部分
+   * 用于显示在文件列表中
+   * @param fileName 原始文件名
+   * @param limitLength 文件名长度限制
+   * @param splitRate 分割比例，默认0.66，表示省略掉一部分内容后，
+   * 最后呈现的部分前半部分占比0.66，后半部分占比0.34
+   */
+  export function getShortedFileName(fileName: string, limitLength = 30, splitRate = 0.66): string {
+    let result = fileName;
+    if (fileName.length > limitLength) {
+      // 只截取前20+后10个字符
+      const frontEnd = Math.floor(limitLength * splitRate);
+      const endLength = limitLength - frontEnd;
+      result = `${fileName.slice(0, frontEnd)}...${fileName.slice(-endLength)}`;
+    }
+    return result;
+  }
+
+  /**
    * 获取一个相对路径，从一个绝对路径到另一个绝对路径的跳转
    * 如果无法获取，或者路径不合法，则返回空字符串
    * @param from

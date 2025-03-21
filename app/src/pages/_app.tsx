@@ -203,10 +203,7 @@ export default function App() {
 
   const getDisplayFileName = () => {
     let result = filename;
-    if (filename.length > 30) {
-      // 只截取前20+后10个字符
-      result = `${filename.slice(0, 20)}...${filename.slice(-10)}`;
-    }
+    result = PathString.getShortedFileName(result, 30, 0.66);
     return result + (isSaved ? "" : t("unsaved"));
   };
 
