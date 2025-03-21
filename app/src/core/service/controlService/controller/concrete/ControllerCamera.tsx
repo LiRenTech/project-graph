@@ -291,10 +291,17 @@ let isPressingCtrl = false;
 let isPreGrabbingWhenSpace = false;
 
 function zoomCameraByMouseWheel(event: WheelEvent) {
-  if (event.deltaY > 0) {
-    Camera.targetScale *= 0.8;
-  } else if (event.deltaY < 0) {
-    Camera.targetScale *= 1.2;
+  if (isMac) {
+    // mac电脑滚动一格滚轮会触发很多次事件。这个列表里是每个事件的deltaY
+    // [7, 7, 7, 7, 6, 7, 7, 6, 5, 5, 4, 4, 3, 3, 3, 2, 2, 1, 1, 1, 1, 1]
+    const deltaY = event.deltaY;
+    Camera.targetScale *= 1 + deltaY / 500;
+  } else {
+    if (event.deltaY > 0) {
+      Camera.targetScale *= 0.8;
+    } else if (event.deltaY < 0) {
+      Camera.targetScale *= 1.2;
+    }
   }
 }
 
@@ -365,6 +372,8 @@ function isMouseWheel(event: WheelEvent): boolean {
       const distance = Math.abs(event.deltaY);
       // 在mac系统下，测试者“雨幕”反馈数据：
       // 当移动距离是整数时，绝对是鼠标滚轮，当是小数时，绝对是触摸板
+      // 测试者“大道”反馈数据：
+      // 鼠标滚动一格，会显示好多小数字，4 5 6 7 6 5 4这样的。
       if (Number.isInteger(distance)) {
         // 整数距离，是鼠标滚轮
         return true;
@@ -374,6 +383,7 @@ function isMouseWheel(event: WheelEvent): boolean {
       }
     }
   }
+
   if (event.deltaX !== 0 && event.deltaY !== 0) {
     // 斜向滚动肯定不是鼠标滚轮。因为滚轮只有横向滚轮和竖向滚轮
     return false;
