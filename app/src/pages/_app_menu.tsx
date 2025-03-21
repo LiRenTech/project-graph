@@ -78,6 +78,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
     if (StageSaveManager.isSaved() || StageManager.isEmpty()) {
       StageManager.destroy();
       setFile("Project Graph");
+      Camera.reset();
     } else {
       // 当前文件未保存
       // 但当前可能是草稿没有保存，也可能是曾经的文件改动了没有保存
@@ -96,6 +97,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             onClick: () => {
               StageManager.destroy();
               setFile("Project Graph");
+              Camera.reset();
             },
           },
           { text: "我再想想" },
