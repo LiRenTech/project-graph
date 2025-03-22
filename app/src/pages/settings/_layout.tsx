@@ -46,6 +46,10 @@ export default function SettingsLayout() {
             {isMac ? <Command /> : <Keyboard />}
             {t("tabs.keybinds")}
           </NavLinkButton>
+          <NavLinkButton to="/settings/themes">
+            <Palette />
+            {t("tabs.themes")}
+          </NavLinkButton>
           <NavLinkButton to="/settings/performance">
             <Zap />
             {t("tabs.performance")}
@@ -73,10 +77,6 @@ export default function SettingsLayout() {
           <NavLinkButton to="/settings/plugins">
             <Plug />
             {t("tabs.plugins")}
-          </NavLinkButton>
-          <NavLinkButton to="/settings/themes">
-            <Palette />
-            {t("tabs.themes")}
           </NavLinkButton>
         </div>
         <div className="mx-auto max-w-[900px] flex-1 overflow-auto">

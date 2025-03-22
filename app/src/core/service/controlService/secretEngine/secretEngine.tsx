@@ -217,15 +217,15 @@ export class SecretEngine {
       },
     },
     "b l a c k k": {
-      name: "切换成黑色主题",
+      name: "切换成黑色主题(切换后需要在画布上划一刀才生生效)",
       func() {
-        Settings.set("theme", "black");
+        Settings.set("theme", "dark");
       },
     },
     "w h i t e e": {
-      name: "切换成白色主题",
+      name: "切换成白色主题(切换后需要在画布上划一刀才生生效)",
       func() {
-        Settings.set("theme", "white");
+        Settings.set("theme", "light");
       },
     },
     "* * *": {
