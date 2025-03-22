@@ -8,6 +8,9 @@ import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleMa
 import { appScale } from "../../../../utils/platform";
 
 export namespace StageExportPng {
+  /**
+   * 系统缩放因子
+   */
   const SCALE = window.devicePixelRatio * (1 / appScale);
 
   /**
@@ -37,29 +40,15 @@ export namespace StageExportPng {
         await sleep(200);
         Camera.location = new Vector(x + Renderer.w / 2, y + Renderer.h / 2);
         await sleep(200);
-
-        // StageManager.addTextNode(
-        //   new TextNode({
-        //     uuid: v4(),
-        //     text: i.toString(),
-        //     details: "",
-        //     location: [x, y],
-        //     size: [100, 100],
-        //   }),
-        // );
-        console.log(x, y, x - topLeft.x, y - topLeft.y);
         const imageData = Canvas.ctx.getImageData(0, 0, Renderer.w * SCALE, Renderer.h * SCALE);
         resultCtx.putImageData(imageData, (x - topLeft.x) * SCALE, (y - topLeft.y) * SCALE);
       }
     }
     const imageData = resultCanvas.toDataURL("image/png");
-    console.log(imageData);
-    // window.open(resultCanvas.toDataURL("image/png"), "_blank");
     // 移除画布
     resultCanvas.remove();
 
     const imageNode = getImageNodeByImageData(imageData);
-    // document.body.appendChild(imageNode);
     const imageBox = document.getElementById("export-png-image-box");
     if (imageBox) {
       imageBox.appendChild(imageNode);
@@ -96,9 +85,6 @@ export namespace StageExportPng {
     imageNode.src = imageData;
     imageNode.style.outline = "solid 1px red";
     imageNode.style.margin = "10px";
-    // imageNode.style.width = "100%";
-    // imageNode.style.height = "100%";
-    // imageNode.style.pointerEvents = "none";
     return imageNode;
   }
 }

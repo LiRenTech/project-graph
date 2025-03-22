@@ -24,7 +24,7 @@ export default function ExportPNGPanel() {
     if (image) {
       const a = document.createElement("a");
       a.href = image.src;
-      a.download = `${114514}.png`;
+      a.download = `${123456}.png`;
       a.click();
     }
   };
@@ -39,8 +39,7 @@ export default function ExportPNGPanel() {
       )}
     >
       <h2>导出png图片</h2>
-      <p>test……</p>
-      <div className="h-96 w-full overflow-hidden ring" id="export-png-image-box"></div>
+      <div className="h-96 w-full overflow-auto ring" id="export-png-image-box"></div>
       <div className="my-2 flex justify-center gap-2">
         <Button
           onClick={() => {
@@ -53,9 +52,9 @@ export default function ExportPNGPanel() {
             StageExportPng.exportStage();
           }}
         >
-          渲染图片
+          重新渲染图片
         </Button>
-        <Button onClick={downloadImage}>另存为图片</Button>
+        <Button onClick={downloadImage}>下载当前图片</Button>
       </div>
       {/* 关闭按钮 */}
       <button
