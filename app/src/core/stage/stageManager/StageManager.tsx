@@ -7,6 +7,7 @@ import { Vector } from "../../dataStruct/Vector";
 import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { EntityShrinkEffect } from "../../service/feedbackService/effectEngine/concrete/EntityShrinkEffect";
+import { PenStrokeDeletedEffect } from "../../service/feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
 import { Settings } from "../../service/Settings";
 import { Camera } from "../Camera";
 import { Stage } from "../Stage";
@@ -16,6 +17,7 @@ import { Entity } from "../stageObject/abstract/StageEntity";
 import { StageObject } from "../stageObject/abstract/StageObject";
 import { CublicCatmullRomSplineEdge } from "../stageObject/association/CublicCatmullRomSplineEdge";
 import { Edge } from "../stageObject/association/Edge";
+import { LineEdge } from "../stageObject/association/LineEdge";
 import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../stageObject/entity/ImageNode";
 import { PenStroke } from "../stageObject/entity/PenStroke";
@@ -32,8 +34,6 @@ import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManag
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
-import { LineEdge } from "../stageObject/association/LineEdge";
-import { PenStrokeDeletedEffect } from "../../service/feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -481,11 +481,20 @@ export namespace StageManager {
     if (stageContent.entities.length === 0) {
       return new Vector(Renderer.w, Renderer.h);
     }
-    const size = Rectangle.getBoundingRectangle(
-      Array.from(stageContent.entities.valuesToArray()).map((node) => node.collisionBox.getRectangle()),
-    ).size;
+    const size = getBoundingRectangle().size;
 
     return size;
+  }
+
+  /**
+   * 获取舞台的矩形对象
+   */
+  export function getBoundingRectangle(): Rectangle {
+    const rect = Rectangle.getBoundingRectangle(
+      Array.from(stageContent.entities.valuesToArray()).map((node) => node.collisionBox.getRectangle()),
+    );
+
+    return rect;
   }
 
   /**

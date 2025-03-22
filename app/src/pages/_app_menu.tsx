@@ -45,23 +45,24 @@ import { getCurrentWindow, isDesktop, isWeb } from "../utils/platform";
 import { dataDir } from "@tauri-apps/api/path";
 import { useTranslation } from "react-i18next";
 import { Dialog } from "../components/dialog";
+import { Panel } from "../components/panel";
+import { Popup } from "../components/popup";
 import { Settings } from "../core/service/Settings";
 import { RecentFileManager } from "../core/service/dataFileService/RecentFileManager";
 import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
+import { StageExportPng } from "../core/service/dataGenerateService/stageExportEngine/StageExportPng";
+import { ComplexityDetector } from "../core/service/dataManageService/ComplexityDetector";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
+import { SoundService } from "../core/service/feedbackService/SoundService";
+import { HelpService } from "../core/service/helpService/helpService";
 import { Stage } from "../core/stage/Stage";
+import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryManager";
 import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { PathString } from "../utils/pathString";
-import { HelpService } from "../core/service/helpService/helpService";
-import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryManager";
-import { SoundService } from "../core/service/feedbackService/SoundService";
-import SearchingNodePanel from "./_popup_panel/_searching_node_panel";
-import { Popup } from "../components/popup";
-import { Panel } from "../components/panel";
-import { ComplexityDetector } from "../core/service/dataManageService/ComplexityDetector";
 import ComplexityResultPanel from "./_fixed_panel/_complexity_result_panel";
 import ExportSvgPanel from "./_popup_panel/_export_svg_panel";
+import SearchingNodePanel from "./_popup_panel/_searching_node_panel";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -619,6 +620,9 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             }}
           >
             Cr
+          </Col>
+          <Col icon={<FileCode />} onClick={() => StageExportPng.exportStage()}>
+            png
           </Col>
         </Row>
       )}
