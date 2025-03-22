@@ -19,6 +19,7 @@ import { SectionMethods } from "../../../stage/stageManager/basicMethods/Section
 import { CublicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CublicCatmullRomSplineEdge";
 import { Color } from "../../../dataStruct/Color";
 import { Settings } from "../../Settings";
+import { StageEntityMoveManager } from "../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 
 interface SecretItem {
   name: string;
@@ -156,6 +157,67 @@ export class SecretEngine {
         Stage.drawingMachine.changeCurrentStrokeColorAlpha(-0.1);
       },
     },
+    "8 8": {
+      name: "顶部对齐",
+      explain: "小键盘的向上",
+      func() {
+        StageEntityMoveManager.alignTop();
+      },
+    },
+    "2 2": {
+      name: "底部对齐",
+      explain: "小键盘的向下",
+      func() {
+        StageEntityMoveManager.alignBottom();
+      },
+    },
+    "4 4": {
+      name: "左侧对齐",
+      explain: "小键盘的向左",
+      func() {
+        StageEntityMoveManager.alignLeft();
+      },
+    },
+    "6 6": {
+      name: "右侧对齐",
+      explain: "小键盘的向右",
+      func() {
+        StageEntityMoveManager.alignRight();
+      },
+    },
+    "4 6 4 6": {
+      name: "相等间距水平对齐",
+      explain: "小键盘的左右左右，晃一晃就等间距了",
+      func() {
+        StageEntityMoveManager.alignHorizontalSpaceBetween();
+      },
+    },
+    "8 2 8 2": {
+      name: "相等间距垂直对齐",
+      explain: "小键盘的上下上下，晃一晃就等间距了",
+      func() {
+        StageEntityMoveManager.alignVerticalSpaceBetween();
+      },
+    },
+    "4 5 6": {
+      name: "中心水平对齐",
+      explain: "小键盘横着从左到右穿一串",
+      func() {
+        StageEntityMoveManager.alignCenterHorizontal();
+      },
+    },
+    "8 5 2": {
+      name: "中心垂直对齐",
+      explain: "小键盘竖着从上到下穿一串",
+      func() {
+        StageEntityMoveManager.alignCenterVertical();
+      },
+    },
+    // ====================
+    // 以上是可能很方便的给用户用的
+    //
+    // 以下全是开发者测试用的方便写的东西
+    // ====================
     // "b o y": {
     //   name: "test",
     //   func: () => {},
