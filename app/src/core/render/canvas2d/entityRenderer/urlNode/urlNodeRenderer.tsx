@@ -15,7 +15,7 @@ export namespace UrlNodeRenderer {
   export function render(urlNode: UrlNode): void {
     if (urlNode.isSelected) {
       // 在外面增加一个框
-      CollisionBoxRenderer.render(urlNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
+      CollisionBoxRenderer.render(urlNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     // 节点身体矩形
     ShapeRenderer.renderRect(
@@ -24,7 +24,7 @@ export namespace UrlNodeRenderer {
         urlNode.rectangle.size.multiply(Camera.currentScale),
       ),
       urlNode.color,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
@@ -34,7 +34,7 @@ export namespace UrlNodeRenderer {
         urlNode.title,
         Renderer.transformWorld2View(urlNode.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
         Renderer.FONT_SIZE * Camera.currentScale,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorder,
       );
     }
     // 绘制分界线
@@ -43,7 +43,7 @@ export namespace UrlNodeRenderer {
       Renderer.transformWorld2View(
         urlNode.rectangle.location.add(new Vector(urlNode.rectangle.size.x, UrlNode.titleHeight)),
       ),
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
       1 * Camera.currentScale,
       4 * Camera.currentScale,
     );
@@ -54,7 +54,7 @@ export namespace UrlNodeRenderer {
         urlNode.rectangle.location.add(new Vector(Renderer.NODE_PADDING, UrlNode.titleHeight + Renderer.NODE_PADDING)),
       ),
       Renderer.FONT_SIZE * 0.5 * Camera.currentScale,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
     );
     EntityRenderer.renderEntityDetails(urlNode);
     // 绘制特效
@@ -67,8 +67,8 @@ export namespace UrlNodeRenderer {
       // 鼠标在标题上
       ShapeRenderer.renderRect(
         urlNode.titleRectangle.transformWorld2View(),
-        StageStyleManager.currentStyle.CollideBoxPreSelectedColor,
-        StageStyleManager.currentStyle.CollideBoxSelectedColor,
+        StageStyleManager.currentStyle.CollideBoxPreSelected,
+        StageStyleManager.currentStyle.CollideBoxSelected,
         2 * Camera.currentScale,
         0,
       );
@@ -76,8 +76,8 @@ export namespace UrlNodeRenderer {
       // 鼠标在url上
       ShapeRenderer.renderRect(
         urlNode.urlRectangle.transformWorld2View(),
-        StageStyleManager.currentStyle.CollideBoxPreSelectedColor,
-        StageStyleManager.currentStyle.CollideBoxSelectedColor,
+        StageStyleManager.currentStyle.CollideBoxPreSelected,
+        StageStyleManager.currentStyle.CollideBoxSelected,
         2 * Camera.currentScale,
         0,
       );
@@ -86,7 +86,7 @@ export namespace UrlNodeRenderer {
         "双击打开链接",
         Renderer.transformWorld2View(urlNode.rectangle.leftBottom.add(new Vector(0, 20))),
         Renderer.FONT_SIZE * 0.5 * Camera.currentScale,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorder,
       );
     }
   }

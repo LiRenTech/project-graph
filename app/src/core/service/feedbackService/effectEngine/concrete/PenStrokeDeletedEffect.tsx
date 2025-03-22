@@ -23,7 +23,7 @@ export class PenStrokeDeletedEffect extends EffectObject {
     this.pathList = penStroke.getPath();
     this.color = penStroke.getColor();
     if (this.color.a === 0) {
-      this.color = StageStyleManager.currentStyle.StageObjectBorderColor.clone();
+      this.color = StageStyleManager.currentStyle.StageObjectBorder.clone();
     }
     this.width = segmentList[0].width;
   }

@@ -1,21 +1,21 @@
 import React from "react";
 import ReactDOMServer from "react-dom/server";
+import { PathString } from "../../../../utils/pathString";
 import { Color, colorInvert } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { SvgUtils } from "../../../render/svg/SvgUtils";
+import { Stage } from "../../../stage/Stage";
+import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
+import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
-import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
-import { Stage } from "../../../stage/Stage";
-import { PathString } from "../../../../utils/pathString";
-import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 
 export interface SvgExportConfig {
   imageMode: "absolutePath" | "relativePath" | "base64";
@@ -41,7 +41,7 @@ export namespace StageExportSvg {
     }
     return (
       <>
-        {SvgUtils.rectangle(node.rectangle, node.color, StageStyleManager.currentStyle.StageObjectBorderColor, 2)}
+        {SvgUtils.rectangle(node.rectangle, node.color, StageStyleManager.currentStyle.StageObjectBorder, 2)}
 
         {SvgUtils.multiLineTextFromLeftTop(
           node.text,
@@ -51,7 +51,7 @@ export namespace StageExportSvg {
             new Vector(0, Renderer.NODE_PADDING + Renderer.FONT_SIZE / 4),
           ),
           Renderer.FONT_SIZE,
-          node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+          node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.Background),
         )}
       </>
     );
@@ -68,17 +68,12 @@ export namespace StageExportSvg {
     }
     return (
       <>
-        {SvgUtils.rectangle(
-          section.rectangle,
-          Color.Transparent,
-          StageStyleManager.currentStyle.StageObjectBorderColor,
-          2,
-        )}
+        {SvgUtils.rectangle(section.rectangle, Color.Transparent, StageStyleManager.currentStyle.StageObjectBorder, 2)}
         {SvgUtils.textFromLeftTop(
           section.text,
           section.rectangle.leftTop,
           Renderer.FONT_SIZE,
-          StageStyleManager.currentStyle.StageObjectBorderColor,
+          StageStyleManager.currentStyle.StageObjectBorder,
         )}
       </>
     );
@@ -116,12 +111,7 @@ export namespace StageExportSvg {
 
     return (
       <>
-        {SvgUtils.rectangle(
-          node.rectangle,
-          Color.Transparent,
-          StageStyleManager.currentStyle.StageObjectBorderColor,
-          2,
-        )}
+        {SvgUtils.rectangle(node.rectangle, Color.Transparent, StageStyleManager.currentStyle.StageObjectBorder, 2)}
         <image
           href={imagePath}
           x={node.rectangle.leftTop.x}
@@ -188,7 +178,7 @@ export namespace StageExportSvg {
         height={height}
         viewBox={viewBox}
         style={{
-          backgroundColor: StageStyleManager.currentStyle.BackgroundColor.toString(),
+          backgroundColor: StageStyleManager.currentStyle.Background.toString(),
         }}
       >
         {/* 选中的部分 */}
@@ -241,7 +231,7 @@ export namespace StageExportSvg {
         height={height}
         viewBox={viewBox}
         style={{
-          backgroundColor: StageStyleManager.currentStyle.BackgroundColor.toString(),
+          backgroundColor: StageStyleManager.currentStyle.Background.toString(),
         }}
       >
         {SectionMethods.getSortedSectionsByZ(StageManager.getSections()).map((section) => dumpSectionBase(section))}

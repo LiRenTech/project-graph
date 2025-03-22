@@ -88,20 +88,6 @@ settings:
       en: 英文
       zh_CN: 简体中文
       zh_TW: 繁體中文
-  theme:
-    title: 主題顏色
-    options:
-      black: 德古拉暗黑主題
-      white: 論文白色主題
-      macaron: 马卡龙色系主题
-      morandi: 莫兰迪色系主题
-  uiTheme:
-    title: UI 主题颜色
-    options:
-      dark: 暗黑主题
-      light: 明亮主题
-      macaron: 马卡龙色系主题
-      morandi: 莫兰迪色系主题
   lineStyle:
     title: 連線樣式
     options:

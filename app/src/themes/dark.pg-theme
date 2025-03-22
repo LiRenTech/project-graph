@@ -1,0 +1,130 @@
+---
+id: dark
+author: Official
+name:
+  en: Dark
+  zh_CN: 黑夜
+---
+panel:
+  bg: "oklch(0.269 0 0)"
+  text: "#fff"
+  details-text: "#aaa"
+  success-text: "#70ca70"
+  warning-text: "#f2b468"
+  error-text: "#ea4848"
+
+tooltip:
+  bg: "oklch(0.269 0 0)"
+  text: "#fff"
+  border: "oklch(0.371 0 0)"
+
+button:
+  bg: "oklch(0.269 0 0)"
+  text: "#fff"
+  border: "oklch(0.371 0 0)"
+
+icon-button:
+  bg: "oklch(0.269 0 0)"
+  text: "#fff"
+  border: "oklch(0.371 0 0)"
+
+input:
+  bg: "oklch(0.269 0 0)"
+  text: "#fff"
+  border: "oklch(0.371 0 0)"
+  placeholder: "oklch(0.556 0 0)"
+
+keybind:
+  bg: "oklch(0.269 0 0)"
+  text: "#fff"
+  border: "oklch(0.371 0 0)"
+  active-outline: "oklch(0.623 0.214 259.815)"
+
+select:
+  bg: "oklch(0.269 0 0)"
+  text: "#fff"
+  border: "oklch(0.371 0 0)"
+  popup:
+    bg: "oklch(0.205 0 0)"
+    border: "oklch(0.371 0 0)"
+    shadow: "oklch(0.129 0.042 264.695)"
+  option:
+    bg: "transparent"
+    text: "#fff"
+    border: "transparent"
+    hover:
+      bg: "oklch(0.269 0 0)"
+      text: "#fff"
+      border: "transparent"
+    selected:
+      bg: "oklch(0.439 0 0)"
+      text: "#fff"
+      border: "transparent"
+      hover:
+        bg: "oklch(0.556 0 0)"
+        text: "#fff"
+        border: "transparent"
+
+slider:
+  line: "oklch(0.371 0 0)"
+  handle: "oklch(0.707 0.165 254.624)"
+
+switch:
+  false:
+    bg: "oklch(0.269 0 0)"
+    dot: "#fff"
+  true:
+    bg: "oklch(0.623 0.214 259.815)"
+    dot: "#fff"
+  disabled:
+    bg: "oklch(0.439 0 0)"
+    dot: "#fff"
+
+appmenu:
+  bg: "oklch(0.269 0 0)"
+  border: "oklch(0.371 0 0)"
+  category:
+    title: "oklch(0.708 0 0)"
+    separator: "oklch(0.371 0 0)"
+  item:
+    text: "#fff"
+  hover-bg: "oklch(0.371 0 0)"
+
+toolbar:
+  bg: "oklch(0.269 0 0)"
+  icon: "#fff"
+  icon-hover-bg: "rgb(255 255 255 / 0.2)"
+  border: "oklch(0.371 0 0)"
+  tooltip:
+    bg: "oklch(0.269 0 0)"
+    text: "#fff"
+    border: "oklch(0.371 0 0)"
+  collapsed-bg: "#fff"
+
+settings:
+  page-bg: "oklch(0.145 0 0)"
+  text: "#fff"
+
+field-group:
+  bg: "oklch(0.269 0 0)"
+  hover-bg: "oklch(0.269 0 0)"
+
+stage:
+  Background: "#1f1f1f"
+  GridNormal: "rgba(255, 255, 255, 0.2)"
+  GridHeavy: "rgba(255, 255, 255, 0.3)"
+  DetailsDebugText: "rgba(255, 255, 255, 0.5)"
+  SelectRectangleBorder: "rgba(255, 255, 255, 0.5)"
+  SelectRectangleFill: "rgba(255, 255, 255, 0.08)"
+  StageObjectBorder: "#cccccc"
+  NodeDetailsText: "#ffffff"
+  CollideBoxSelected: "rgba(34, 217, 110, 0.5)"
+  CollideBoxPreSelected: "rgba(0, 255, 0, 0.2)"
+  CollideBoxPreDelete: "rgba(255, 255, 0, 0.2)"
+
+effects:
+  flash: "#fff"
+  dash: "#fff"
+  windowFlash: "#fff"
+  warningShadow: "#f00"
+  successShadow: "#0f0"

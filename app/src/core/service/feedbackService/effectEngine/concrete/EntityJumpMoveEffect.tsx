@@ -44,7 +44,7 @@ export class EntityJumpMoveEffect extends EffectObject {
     ShapeRenderer.renderRect(
       currentRect.transformWorld2View(),
       Color.Transparent,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );

@@ -34,6 +34,7 @@
     "react-router-dom": "^7.1.1",
     "tauri-plugin-gamepad-api": "^0.0.5",
     "vditor": "^3.10.8",
+    "yaml": "^2.7.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {

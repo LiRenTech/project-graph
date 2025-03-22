@@ -18,7 +18,7 @@ export class EntityCreateLineEffect extends EffectObject {
     const segmentCount = 50;
     const preChange = -1;
     // const effectColor = StageStyleManager.currentStyle.CollideBoxSelectedColor;
-    const effectColor = StageStyleManager.currentStyle.StageObjectBorderColor;
+    const effectColor = StageStyleManager.currentStyle.StageObjectBorder;
     const rotateDegrees = 90;
     // 顶部线
     for (let i = 0; i < 5; i++) {

@@ -262,7 +262,7 @@ class CuttingControllerClass extends ControllerClass {
               collidePoints,
               50,
               fillColor,
-              StageStyleManager.currentStyle.StageObjectBorderColor,
+              StageStyleManager.currentStyle.StageObjectBorder,
               2,
             ),
           );

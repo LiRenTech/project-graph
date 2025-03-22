@@ -27,8 +27,8 @@ export class LineEffect extends EffectObject {
       new ProgressNumber(0, 30),
       fromLocation,
       toLocation,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
+      StageStyleManager.currentStyle.StageObjectBorder,
       1,
     );
   }

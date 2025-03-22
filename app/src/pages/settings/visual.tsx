@@ -13,7 +13,6 @@ import {
   ListCollapse,
   MessageCircleQuestion,
   Move3d,
-  Palette,
   Presentation,
   Ratio,
   ReceiptText,
@@ -32,8 +31,6 @@ export default function Visual() {
     <>
       <FieldGroup title="Basic Settings 基础设置" icon={<Settings />}>
         <SettingField icon={<Languages />} settingKey="language" type="select" />
-        <SettingField icon={<Palette />} settingKey="theme" type="select" />
-        <SettingField icon={<Palette />} settingKey="uiTheme" type="select" />
         <SettingField icon={<AppWindow />} settingKey="showTipsOnUI" type="switch" />
         <SettingField icon={<AppWindowMac />} settingKey="useNativeTitleBar" type="switch" />
         <SettingField icon={<Presentation />} settingKey="isClassroomMode" type="switch" />

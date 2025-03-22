@@ -34,12 +34,12 @@ export class EntityShrinkEffect extends EffectObject {
   }
 
   static fromEntity(entity: Entity): EntityShrinkEffect {
-    let color = StageStyleManager.currentStyle.BackgroundColor.clone();
+    let color = StageStyleManager.currentStyle.Background.clone();
     if (entity instanceof TextNode || entity instanceof Section) {
       color = entity.color.clone();
     }
     if (color.equals(Color.Transparent)) {
-      color = StageStyleManager.currentStyle.BackgroundColor.clone();
+      color = StageStyleManager.currentStyle.Background.clone();
     }
     return new EntityShrinkEffect(10, entity.collisionBox.getRectangle(), color);
   }
@@ -50,7 +50,7 @@ export class EntityShrinkEffect extends EffectObject {
     ShapeRenderer.renderRect(
       rectangleA.transformWorld2View(),
       this.color.toNewAlpha(1 - this.timeProgress.rate),
-      StageStyleManager.currentStyle.StageObjectBorderColor.toNewAlpha(1 - this.timeProgress.rate),
+      StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );

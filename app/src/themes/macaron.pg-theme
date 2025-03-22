@@ -1,0 +1,130 @@
+---
+id: macaron
+author: Official
+name:
+  en: Macaron
+  zh_CN: 马卡龙
+---
+panel:
+  bg: "#f4c5b3"
+  text: "oklch(0.45 0.08 340)"
+  details-text: "oklch(0.55 0.06 340)"
+  success-text: "#00de00"
+  warning-text: "#ff8c00"
+  error-text: "#ff0000"
+
+tooltip:
+  bg: "#ffe8eb"
+  text: "oklch(0.4 0.08 340)"
+  border: "oklch(0.88 0.05 340)"
+
+button:
+  bg: "#f9d8dc"
+  text: "#573541"
+  border: "#edc5d0"
+
+icon-button:
+  bg: "#f9d8dc"
+  text: "#573541"
+  border: "#edc5d0"
+
+input:
+  bg: "oklch(0.98 0.02 60)"
+  text: "oklch(0.45 0.08 340)"
+  border: "oklch(0.9 0.04 30)"
+  placeholder: "oklch(0.7 0.06 340)"
+
+keybind:
+  bg: "oklch(0.95 0.05 60)"
+  text: "oklch(0.45 0.08 340)"
+  border: "oklch(0.9 0.04 60)"
+  active-outline: "oklch(0.8 0.06 340)"
+
+select:
+  bg: "oklch(0.97 0.04 60)"
+  text: "oklch(0.45 0.08 340)"
+  border: "oklch(0.9 0.04 30)"
+  popup:
+    bg: "oklch(0.96 0.05 320)"
+    border: "oklch(0.9 0.04 320)"
+    shadow: "oklch(0.85 0.05 340 / 0.1)"
+  option:
+    bg: "transparent"
+    text: "oklch(0.15 0.05 0)"
+    border: "transparent"
+    hover:
+      bg: "oklch(0.94 0.06 340)"
+      text: "oklch(0.15 0.05 0)"
+      border: "transparent"
+    selected:
+      bg: "oklch(0.9 0.08 340)"
+      text: "oklch(0.15 0.05 0)"
+      border: "transparent"
+      hover:
+        bg: "oklch(0.85 0.05 0)"
+        text: "oklch(0.15 0.05 0)"
+        border: "transparent"
+
+slider:
+  line: "#c59cb8"
+  handle: "#865667"
+
+switch:
+  false:
+    bg: "#e2c8d9"
+    dot: "#b582a5"
+  true:
+    bg: "oklch(0.8 0.07 340)"
+    dot: "oklch(0.96 0.03 60)"
+  disabled:
+    bg: "#f4dadd"
+    dot: "#fbd1d7"
+
+appmenu:
+  bg: "#f9d8dc"
+  border: "#dfb5c0"
+  category:
+    title: "#866171"
+    separator: "#dfb5c0"
+  item:
+    text: "#573541"
+  hover-bg: "#f0c5b1"
+
+toolbar:
+  bg: "#f9d8dc"
+  icon: "oklch(0.45 0.08 340)"
+  icon-hover-bg: "oklch(0.94 0.06 340 / 0.2)"
+  border: "oklch(0.9 0.04 30)"
+  collapsed-bg: "oklch(0.45 0.08 340)"
+  tooltip:
+    bg: "#ffe8eb"
+    text: "oklch(0.4 0.08 340)"
+    border: "oklch(0.88 0.05 340)"
+
+settings:
+  page-bg: "oklch(0.98 0.02 60)"
+  text: "#573541"
+
+field-group:
+  bg: "#f4dadd"
+  hover-bg: "#fbd1d7"
+
+stage:
+  Background: "#f3e9ea" # 樱粉色
+  GridNormal: "rgba(111, 98, 98, 0.3)"
+  GridHeavy: "rgba(111, 98, 98, 0.5)"
+  DetailsDebugText: "#d2adb4" # 灰紫
+  SelectRectangleBorder: "rgba(77, 16, 24, 0.5)"
+  SelectRectangleFill: "rgba(227, 180, 184, 0.3)"
+  StageObjectBorder: "#72244e" # 深色边框
+  NodeDetailsText: "#6b596c" # 深灰紫
+  CollideBoxPreSelected: "rgba(238, 63, 77, 0.3)"
+  CollideBoxSelected: "rgba(238, 63, 77, 0.7)"
+  CollideBoxPreDelete: "rgba(255, 255, 0, 0.2)" # 补充默认值
+
+effects:
+  flash: "#8b5891" # 紫罗兰
+  dash: "#000000" # 纯黑
+  windowFlash: "#f9e9ea" # 背景同色系
+  warningShadow: "#b185bd" # 薰衣草紫
+  successShadow: "#7893af" # 灰蓝

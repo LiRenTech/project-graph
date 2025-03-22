@@ -105,8 +105,8 @@ export class EntityCreateDashEffect extends EffectObject {
     for (const p of this.currentLocationArrayTop) {
       const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
@@ -115,8 +115,8 @@ export class EntityCreateDashEffect extends EffectObject {
     for (const p of this.currentLocationArrayBottom) {
       const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
@@ -126,8 +126,8 @@ export class EntityCreateDashEffect extends EffectObject {
     for (const p of this.currentLocationArrayLeft) {
       const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
@@ -137,8 +137,8 @@ export class EntityCreateDashEffect extends EffectObject {
     for (const p of this.currentLocationArrayRight) {
       const viewLocation = Renderer.transformWorld2View(p);
       const color = mixColors(
-        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 

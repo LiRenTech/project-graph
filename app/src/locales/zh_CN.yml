@@ -81,6 +81,7 @@ settings:
     github: GitHub
     sounds: 声音
     plugins: 插件
+    themes: 主题
   language:
     title: 语言
     options:
@@ -92,23 +93,6 @@ settings:
     options:
       latest: 稳定版
       nightly: 开发版
-  theme:
-    title: 舞台主题颜色
-    description: 选择舞台主题颜色，影响画布背景、节点颜色、边框、连线颜色等。 论文白专用于最终打印或导出粘贴到论文中，实际颜色是绝对白色
-    options:
-      black: 黑夜防刺眼主题
-      white: 论文白色主题
-      macaron: 马卡龙色系主题
-      morandi: 莫兰迪色系主题
-  uiTheme:
-    title: UI 主题颜色
-    description: 选择 UI 主题颜色，影响按钮、输入框、菜单等的颜色，而不是画布的颜色
-    options:
-      dark: 黑夜主题
-      blueGreen: 公园主题
-      light: 明亮主题
-      macaron: 马卡龙色系主题
-      morandi: 莫兰迪色系主题
   showTipsOnUI:
     title: 在 UI 中显示提示信息
     description: |

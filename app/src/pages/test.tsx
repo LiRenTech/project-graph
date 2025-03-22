@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Settings } from "../core/service/Settings";
-import { isDesktop, isLinux, isMac, isMobile, isWeb, isWindows } from "../utils/platform";
 import { DateChecker } from "../utils/dateChecker";
+import { isDesktop, isLinux, isMac, isMobile, isWeb, isWindows } from "../utils/platform";
 
 export default function TestPage() {
   useEffect(() => {
@@ -11,9 +11,8 @@ export default function TestPage() {
   const [theme, setTheme] = useState("light");
   // const [vd, setVd] = useState<Vditor>();
   useEffect(() => {
-    Settings.watch("uiTheme", (value) => {
+    Settings.watch("theme", (value) => {
       setTheme(value);
-      document.documentElement.setAttribute("data-theme", value);
     });
     return () => {
       // vd?.destroy();

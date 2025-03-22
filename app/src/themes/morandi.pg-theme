@@ -1,0 +1,130 @@
+---
+id: morandi
+author: Official
+name:
+  en: Morandi
+  zh_CN: 莫兰迪
+---
+panel:
+  bg: "#d6dbd5"
+  text: "oklch(0.25 0.03 240)"
+  details-text: "oklch(0.35 0.03 240)"
+  success-text: "#9aff9a"
+  warning-text: "#ffd8a8"
+  error-text: "#c93030"
+
+tooltip:
+  bg: "oklch(0.85 0.02 240)"
+  text: "oklch(0.25 0.03 240)"
+  border: "oklch(0.8 0.02 240)"
+
+button:
+  bg: "oklch(0.85 0.02 270)"
+  text: "oklch(0.25 0.03 240)"
+  border: "oklch(0.82 0.02 270)"
+
+icon-button:
+  bg: "oklch(0.85 0.02 210)"
+  text: "oklch(0.25 0.03 240)"
+  border: "oklch(0.78 0.02 210)"
+
+input:
+  bg: "oklch(0.96 0.02 240)"
+  text: "oklch(0.25 0.03 240)"
+  border: "oklch(0.85 0.02 240)"
+  placeholder: "oklch(0.75 0.02 240)"
+
+keybind:
+  bg: "oklch(0.85 0.02 210)"
+  text: "oklch(0.25 0.03 240)"
+  border: "oklch(0.78 0.02 210)"
+  active-outline: "oklch(0.85 0.02 270)"
+
+select:
+  bg: "oklch(0.96 0.02 240)"
+  text: "oklch(0.25 0.03 240)"
+  border: "oklch(0.85 0.02 240)"
+  popup:
+    bg: "oklch(0.85 0.02 240)"
+    border: "oklch(0.8 0.02 240)"
+    shadow: "oklch(0.8 0.02 240 / 0.1)"
+  option:
+    bg: "transparent"
+    text: "oklch(0.25 0.03 240)"
+    border: "transparent"
+    hover:
+      bg: "oklch(0.88 0.02 240)"
+      text: "oklch(0.25 0.03 240)"
+      border: "transparent"
+    selected:
+      bg: "oklch(0.85 0.02 210)"
+      text: "oklch(0.25 0.03 240)"
+      border: "transparent"
+      hover:
+        bg: "oklch(0.85 0.02 240)"
+        text: "oklch(0.25 0.03 240)"
+        border: "transparent"
+
+slider:
+  line: "#949cae"
+  handle: "#666b75"
+
+switch:
+  false:
+    bg: "#b5c0c8"
+    dot: "#dde7ef"
+  true:
+    bg: "#a4aaba"
+    dot: "oklch(1 0.02 240)"
+  disabled:
+    bg: "#d8dfe5"
+    dot: "#c9d2da"
+
+appmenu:
+  bg: "#d6dbd5"
+  border: "oklch(0.85 0.02 240)"
+  category:
+    title: "oklch(0.85 0.02 240)"
+    separator: "oklch(0.8 0.02 240)"
+  item:
+    text: "oklch(0.25 0.03 240)"
+  hover-bg: "oklch(0.85 0.02 270)"
+
+toolbar:
+  bg: "oklch(0.85 0.02 240)"
+  icon: "oklch(0.95 0.02 270)"
+  icon-hover-bg: "oklch(0.85 0.02 210)"
+  border: "oklch(0.8 0.02 240)"
+  tooltip:
+    bg: "oklch(0.85 0.02 240)"
+    text: "oklch(0.25 0.03 240)"
+    border: "oklch(0.8 0.02 240)"
+  collapsed-bg: "#14242f"
+
+settings:
+  page-bg: "oklch(0.94 0.005 240)"
+  text: "#14242f"
+
+field-group:
+  bg: "#d8dfe5"
+  hover-bg: "#c9d2da"
+
+stage:
+  Background: "#e8e6e7" # 浅冷灰色背景
+  GridNormal: "rgba(98, 98, 111, 0.3)" # 低饱和冷灰蓝
+  GridHeavy: "rgba(98, 98, 111, 0.5)" # 加深冷灰蓝
+  DetailsDebugText: "#6b7280" # 深灰蓝调试文字
+  SelectRectangleBorder: "rgba(71, 108, 117, 0.5)" # 雾霾蓝边框
+  SelectRectangleFill: "rgba(169, 221, 208, 0.3)" # 浅豆绿填充
+  StageObjectBorder: "#45484f" # 冷绿边框
+  NodeDetailsText: "#414a54" # 深冷灰文字
+  CollideBoxPreSelected: "rgba(169, 221, 208, 0.3)" # 浅豆绿预选
+  CollideBoxSelected: "rgba(62, 125, 83, 0.4)" # 冷绿选中
+  CollideBoxPreDelete: "rgba(255, 255, 0, 0.2)" # 补充默认预删状态
+
+effects:
+  flash: "#8b949d" # 冷淡蓝闪烁
+  dash: "#6b7280" # 薰衣草拖影
+  windowFlash: "#eef1f0" # 背景同色窗口闪烁
+  warningShadow: "#b1b7bd" # 冷灰蓝警告阴影
+  successShadow: "#7893af" # 冷蓝成功阴影

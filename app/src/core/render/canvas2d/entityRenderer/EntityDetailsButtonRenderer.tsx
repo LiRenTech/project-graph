@@ -30,7 +30,7 @@ export function EntityDetailsButtonRenderer(entity: Entity) {
         "点击展开或关闭节点注释详情",
         Renderer.transformWorld2View(entity.detailsButtonRectangle().topCenter.subtract(new Vector(0, 12))),
         12 * Camera.currentScale,
-        StageStyleManager.currentStyle.DetailsDebugTextColor,
+        StageStyleManager.currentStyle.DetailsDebugText,
       );
   }
   TextRenderer.renderText(

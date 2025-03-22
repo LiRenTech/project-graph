@@ -123,7 +123,7 @@ export namespace StageTagManager {
         new RectangleNoteEffect(
           new ProgressNumber(0, 30),
           boundingRect,
-          StageStyleManager.currentStyle.CollideBoxPreSelectedColor,
+          StageStyleManager.currentStyle.CollideBoxPreSelected,
         ),
       );
     } else {

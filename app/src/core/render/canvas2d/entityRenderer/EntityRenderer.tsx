@@ -157,7 +157,7 @@ export namespace EntityRenderer {
     // 节点身体矩形
     let fillColor = node.color;
     if (Camera.currentScale < Renderer.ignoreTextNodeTextRenderLessThanCameraScale && fillColor.a === 0) {
-      const color = StageStyleManager.currentStyle.StageObjectBorderColor.clone();
+      const color = StageStyleManager.currentStyle.StageObjectBorder.clone();
       color.a = 0.2;
       fillColor = color;
     }
@@ -167,7 +167,7 @@ export namespace EntityRenderer {
         node.rectangle.size.multiply(Camera.currentScale),
       ),
       fillColor,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
       // Color.Transparent,
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
@@ -180,10 +180,10 @@ export namespace EntityRenderer {
 
     if (node.isSelected) {
       // 在外面增加一个框
-      CollisionBoxRenderer.render(node.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
+      CollisionBoxRenderer.render(node.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     if (node.isAiGenerating) {
-      const borderColor = StageStyleManager.currentStyle.CollideBoxSelectedColor.clone();
+      const borderColor = StageStyleManager.currentStyle.CollideBoxSelected.clone();
       borderColor.a = Random.randomFloat(0.2, 1);
       // 在外面增加一个框
       ShapeRenderer.renderRect(
@@ -204,8 +204,7 @@ export namespace EntityRenderer {
           const scaleRate = 5;
           const rect = node.collisionBox.getRectangle();
 
-          const rectBgc =
-            node.color.a === 0 ? StageStyleManager.currentStyle.BackgroundColor.clone() : node.color.clone();
+          const rectBgc = node.color.a === 0 ? StageStyleManager.currentStyle.Background.clone() : node.color.clone();
           rectBgc.a = 0.5;
 
           ShapeRenderer.renderRectFromCenter(
@@ -213,7 +212,7 @@ export namespace EntityRenderer {
             rect.width * scaleRate * Camera.currentScale,
             rect.height * scaleRate * Camera.currentScale,
             rectBgc,
-            StageStyleManager.currentStyle.StageObjectBorderColor,
+            StageStyleManager.currentStyle.StageObjectBorder,
             2 * Camera.currentScale,
             Renderer.NODE_ROUNDED_RADIUS * scaleRate * Camera.currentScale,
           );
@@ -221,7 +220,7 @@ export namespace EntityRenderer {
             node.text,
             Renderer.transformWorld2View(rect.center),
             Renderer.FONT_SIZE * scaleRate * Camera.currentScale,
-            StageStyleManager.currentStyle.StageObjectBorderColor,
+            StageStyleManager.currentStyle.StageObjectBorder,
           );
         }
       }
@@ -241,7 +240,7 @@ export namespace EntityRenderer {
           "undefined",
           Renderer.transformWorld2View(node.rectangle.center),
           Renderer.FONT_SIZE * Camera.currentScale,
-          node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+          node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.Background),
         );
       } else if (AutoComputeUtils.isNameIsLogicNode(node.text)) {
         // 检查下是不是逻辑节点
@@ -254,9 +253,7 @@ export namespace EntityRenderer {
               getLogicNodeRenderName(logicNodeName),
               Renderer.transformWorld2View(node.rectangle.center),
               Renderer.FONT_SIZE * Camera.currentScale,
-              node.color.a === 1
-                ? colorInvert(node.color)
-                : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+              node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.Background),
             );
           }
         }
@@ -266,7 +263,7 @@ export namespace EntityRenderer {
             node.text,
             Renderer.transformWorld2View(node.rectangle.center),
             Renderer.FONT_SIZE * Camera.currentScale,
-            node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+            node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.Background),
           );
           ShapeRenderer.renderRect(
             new Rectangle(
@@ -289,7 +286,7 @@ export namespace EntityRenderer {
           ),
           Renderer.FONT_SIZE * Camera.currentScale,
           Infinity,
-          node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+          node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.Background),
           1.5,
         );
       }
@@ -332,7 +329,7 @@ export namespace EntityRenderer {
         Renderer.ENTITY_DETAILS_WIDTH * Camera.currentScale,
         entity.collisionBox.getRectangle().size.x * Camera.currentScale,
       ),
-      StageStyleManager.currentStyle.NodeDetailsTextColor,
+      StageStyleManager.currentStyle.NodeDetailsText,
       1.2,
       limitLiens,
     );
@@ -341,13 +338,13 @@ export namespace EntityRenderer {
   function renderConnectPoint(connectPoint: ConnectPoint) {
     if (connectPoint.isSelected) {
       // 在外面增加一个框
-      CollisionBoxRenderer.render(connectPoint.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
+      CollisionBoxRenderer.render(connectPoint.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     ShapeRenderer.renderCircle(
       Renderer.transformWorld2View(connectPoint.geometryCenter),
       connectPoint.radius * Camera.currentScale,
       Color.Transparent,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
       2 * Camera.currentScale,
     );
     renderEntityDetails(connectPoint);
@@ -356,7 +353,7 @@ export namespace EntityRenderer {
   function renderImageNode(imageNode: ImageNode) {
     if (imageNode.isSelected) {
       // 在外面增加一个框
-      CollisionBoxRenderer.render(imageNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
+      CollisionBoxRenderer.render(imageNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     // 节点身体矩形
     ShapeRenderer.renderRect(
@@ -365,7 +362,7 @@ export namespace EntityRenderer {
         imageNode.rectangle.size.multiply(Camera.currentScale),
       ),
       Color.Transparent,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
       2 * Camera.currentScale,
     );
     if (imageNode.state === "loading") {
@@ -373,7 +370,7 @@ export namespace EntityRenderer {
         "loading...",
         Renderer.transformWorld2View(imageNode.rectangle.center),
         20 * Camera.currentScale,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorder,
       );
     } else if (imageNode.state === "success") {
       ImageRenderer.renderImageElement(
@@ -430,7 +427,7 @@ export namespace EntityRenderer {
   function renderPenStroke(penStroke: PenStroke) {
     let penStrokeColor = penStroke.getColor();
     if (penStrokeColor.a === 0) {
-      penStrokeColor = StageStyleManager.currentStyle.StageObjectBorderColor.clone();
+      penStrokeColor = StageStyleManager.currentStyle.StageObjectBorder.clone();
     }
     CurveRenderer.renderSolidLineMultipleWithWidth(
       penStroke.getPath().map((v) => Renderer.transformWorld2View(v)),
@@ -438,12 +435,12 @@ export namespace EntityRenderer {
       penStroke.getSegmentList().map((seg) => seg.width * Camera.currentScale),
     );
     if (penStroke.isMouseHover) {
-      CollisionBoxRenderer.render(penStroke.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelectedColor);
+      CollisionBoxRenderer.render(penStroke.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelected);
     }
     if (penStroke.isSelected) {
       CollisionBoxRenderer.render(
         penStroke.collisionBox,
-        StageStyleManager.currentStyle.CollideBoxSelectedColor.toNewAlpha(0.5),
+        StageStyleManager.currentStyle.CollideBoxSelected.toNewAlpha(0.5),
       );
     }
   }

@@ -1,5 +1,6 @@
 import { Direction } from "../../../../../types/directions";
 import { isDesktop } from "../../../../../utils/platform";
+import { colorInvert } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { InputElement } from "../../../../render/domElement/inputElement";
@@ -46,7 +47,10 @@ export function editTextNode(clickedNode: TextNode, selectAll = true) {
     {
       fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
       backgroundColor: "transparent",
-      color: StageStyleManager.currentStyle.StageObjectBorderColor.toString(),
+      color: (clickedNode.color.a === 1
+        ? colorInvert(clickedNode.color)
+        : colorInvert(StageStyleManager.currentStyle.Background)
+      ).toHexStringWithoutAlpha(),
       outline: "solid 1px rgba(255,255,255,0.1)",
       // marginTop: -8 * Camera.currentScale + "px",
     },
@@ -72,8 +76,8 @@ export function editEdgeText(clickedLineEdge: LineEdge, selectAll = true) {
     },
     {
       fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
-      backgroundColor: StageStyleManager.currentStyle.BackgroundColor.toString(),
-      color: StageStyleManager.currentStyle.StageObjectBorderColor.toString(),
+      backgroundColor: StageStyleManager.currentStyle.Background.toString(),
+      color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
       outline: "solid 1px rgba(255,255,255,0.1)",
       // marginTop: -8 * Camera.currentScale + "px",
     },
@@ -100,7 +104,7 @@ export function editUrlNodeTitle(clickedUrlNode: UrlNode) {
     {
       fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
       backgroundColor: "transparent",
-      color: StageStyleManager.currentStyle.StageObjectBorderColor.toString(),
+      color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
       outline: "none",
       marginTop: -8 * Camera.currentScale + "px",
       width: "100vw",
@@ -127,7 +131,7 @@ export function editSectionTitle(section: Section) {
     {
       fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
       backgroundColor: "transparent",
-      color: StageStyleManager.currentStyle.StageObjectBorderColor.toString(),
+      color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
       outline: "none",
       marginTop: -8 * Camera.currentScale + "px",
     },
@@ -153,7 +157,7 @@ export function editPortalNodeTitle(clickedPortalNode: PortalNode) {
     {
       fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
       backgroundColor: "transparent",
-      color: StageStyleManager.currentStyle.StageObjectBorderColor.toString(),
+      color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
       outline: "none",
       marginTop: -8 * Camera.currentScale + "px",
       width: "100vw",

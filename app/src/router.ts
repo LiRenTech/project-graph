@@ -19,6 +19,7 @@ export type Path =
   | `/settings/physical`
   | `/settings/plugins`
   | `/settings/sounds`
+  | `/settings/themes`
   | `/settings/visual`
   | `/test`
   | `/ui_test`

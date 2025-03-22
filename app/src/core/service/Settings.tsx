@@ -16,8 +16,7 @@ export namespace Settings {
     updateChannel: "latest" | "nightly";
     // 视觉相关
     lineStyle: "straight" | "bezier" | "vertical";
-    theme: "black" | "white" | "macaron" | "morandi";
-    uiTheme: "light" | "dark" | "macaron" | "morandi" | "blueGreen";
+    theme: string;
     showTipsOnUI: boolean;
     isClassroomMode: boolean;
     isRenderCenterPointer: boolean;
@@ -112,8 +111,7 @@ export namespace Settings {
     updateChannel: "latest",
     // 视觉相关
     lineStyle: "straight",
-    theme: "black",
-    uiTheme: "blueGreen",
+    theme: "park",
     showTipsOnUI: true,
     isClassroomMode: false,
     isRenderCenterPointer: false,
@@ -212,6 +210,20 @@ export namespace Settings {
         });
       });
     });
+    // 兼容在旧版本保存的设置项
+    if (await has("uiTheme")) {
+      set("theme", "dark");
+      remove("uiTheme");
+    }
+  }
+
+  export function has(key: string): Promise<boolean> {
+    return store.has(key);
+  }
+
+  export function remove(key: string) {
+    store.delete(key);
+    store.save();
   }
 
   export async function get<K extends keyof Settings>(key: K): Promise<Settings[K]> {
@@ -259,14 +271,19 @@ export namespace Settings {
    */
   export function use<K extends keyof Settings>(key: K): [Settings[K], (value: Settings[K]) => void] {
     const [value, setValue] = useState<Settings[K]>(defaultSettings[key]);
+    const [inited, setInited] = useState(false);
 
     useEffect(() => {
-      get(key).then(setValue);
+      get(key)
+        .then(setValue)
+        .then(() => setInited(true));
     }, []);
 
     useEffect(() => {
-      set(key, value);
-    }, [value]);
+      if (inited) {
+        set(key, value);
+      }
+    }, [value, inited]);
 
     return [value, setValue];
   }

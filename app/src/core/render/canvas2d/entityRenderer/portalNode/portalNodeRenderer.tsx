@@ -24,7 +24,7 @@ export namespace PortalNodeRenderer {
     ShapeRenderer.renderRect(
       new Rectangle(leftTopLocation, portalNode.size).transformWorld2View(),
       portalNode.color,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
@@ -32,7 +32,7 @@ export namespace PortalNodeRenderer {
     CurveRenderer.renderDashedLine(
       Renderer.transformWorld2View(leftTopLocation.add(new Vector(0, PortalNode.TITLE_LINE_Y))),
       Renderer.transformWorld2View(rightTopLocation.add(new Vector(0, PortalNode.TITLE_LINE_Y))),
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
       1 * Camera.currentScale,
       10 * Camera.currentScale,
     );
@@ -41,13 +41,13 @@ export namespace PortalNodeRenderer {
       portalNode.title,
       Renderer.transformWorld2View(leftTopLocation.add(Vector.same(Renderer.NODE_PADDING))),
       Renderer.FONT_SIZE * Camera.currentScale,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
     );
     // 虚线 2
     CurveRenderer.renderDashedLine(
       Renderer.transformWorld2View(leftTopLocation.add(new Vector(0, PortalNode.PATH_LINE_Y))),
       Renderer.transformWorld2View(rightTopLocation.add(new Vector(0, PortalNode.PATH_LINE_Y))),
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
       1 * Camera.currentScale,
       5 * Camera.currentScale,
     );
@@ -58,13 +58,13 @@ export namespace PortalNodeRenderer {
         leftTopLocation.add(new Vector(0, PortalNode.TITLE_LINE_Y)).add(Vector.same(Renderer.NODE_PADDING)),
       ),
       Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
     );
 
     // 选中状态
     if (portalNode.isSelected) {
       // 在外面增加一个框
-      CollisionBoxRenderer.render(portalNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
+      CollisionBoxRenderer.render(portalNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     // 绘制实体详情
     EntityRenderer.renderEntityDetails(portalNode);
@@ -76,7 +76,7 @@ export namespace PortalNodeRenderer {
         Renderer.transformWorld2View(portalNode.location),
         10 * Camera.currentScale,
         1000 * Camera.currentScale,
-        StageStyleManager.currentStyle.DetailsDebugTextColor,
+        StageStyleManager.currentStyle.DetailsDebugText,
       );
     }
 
@@ -94,8 +94,8 @@ export namespace PortalNodeRenderer {
         // 绘制矩形
         ShapeRenderer.renderRect(
           titleRectangle.transformWorld2View(),
-          StageStyleManager.currentStyle.CollideBoxPreSelectedColor,
-          StageStyleManager.currentStyle.CollideBoxSelectedColor,
+          StageStyleManager.currentStyle.CollideBoxPreSelected,
+          StageStyleManager.currentStyle.CollideBoxSelected,
           2 * Camera.currentScale,
           Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
         );
@@ -104,15 +104,15 @@ export namespace PortalNodeRenderer {
           "双击编辑标题",
           Renderer.transformWorld2View(bodyRectangle.leftBottom.add(Vector.same(Renderer.NODE_PADDING))),
           Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
-          StageStyleManager.currentStyle.DetailsDebugTextColor,
+          StageStyleManager.currentStyle.DetailsDebugText,
         );
       } else if (pathRectangle.isPointIn(mouseLocation)) {
         // 鼠标在路径区域
         // 绘制矩形
         ShapeRenderer.renderRect(
           pathRectangle.transformWorld2View(),
-          StageStyleManager.currentStyle.CollideBoxPreSelectedColor,
-          StageStyleManager.currentStyle.CollideBoxSelectedColor,
+          StageStyleManager.currentStyle.CollideBoxPreSelected,
+          StageStyleManager.currentStyle.CollideBoxSelected,
           2 * Camera.currentScale,
           Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
         );
@@ -121,7 +121,7 @@ export namespace PortalNodeRenderer {
           "双击编辑相对路径",
           Renderer.transformWorld2View(bodyRectangle.leftBottom.add(Vector.same(Renderer.NODE_PADDING))),
           Renderer.FONT_SIZE_DETAILS * Camera.currentScale,
-          StageStyleManager.currentStyle.DetailsDebugTextColor,
+          StageStyleManager.currentStyle.DetailsDebugText,
         );
       } else {
         // 鼠标在节点区域
@@ -130,7 +130,7 @@ export namespace PortalNodeRenderer {
           "双击传送",
           Renderer.transformWorld2View(portalNode.rectangle.center),
           Renderer.FONT_SIZE * Camera.currentScale,
-          StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
+          StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
         );
       }
     }
@@ -140,7 +140,7 @@ export namespace PortalNodeRenderer {
     // 绘制背景
     ShapeRenderer.renderRect(
       portalNode.rectangle.transformWorld2View(),
-      StageStyleManager.currentStyle.BackgroundColor,
+      StageStyleManager.currentStyle.Background,
       Color.Transparent,
       0,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,

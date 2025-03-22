@@ -24,7 +24,7 @@ export namespace SectionRenderer {
     ShapeRenderer.renderRect(
       renderRectangle,
       section.color,
-      mixColors(StageStyleManager.currentStyle.StageObjectBorderColor, Color.Black, 0.5),
+      mixColors(StageStyleManager.currentStyle.StageObjectBorder, Color.Black, 0.5),
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
@@ -35,7 +35,7 @@ export namespace SectionRenderer {
         section.rectangle.size.add(Vector.same(4 * 2)).multiply(Camera.currentScale),
       ),
       section.color,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * 1.5 * Camera.currentScale,
     );
@@ -44,9 +44,7 @@ export namespace SectionRenderer {
         section.text,
         Renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
         Renderer.FONT_SIZE * Camera.currentScale,
-        section.color.a === 1
-          ? colorInvert(section.color)
-          : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+        section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.Background),
       );
     }
   }
@@ -60,7 +58,7 @@ export namespace SectionRenderer {
         section.rectangle.size.multiply(Camera.currentScale),
       ),
       Color.Transparent,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
       Camera.currentScale > 0.2 ? 2 * Camera.currentScale : 2,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
@@ -70,9 +68,7 @@ export namespace SectionRenderer {
         section.text,
         Renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
         Renderer.FONT_SIZE * Camera.currentScale,
-        section.color.a === 1
-          ? colorInvert(section.color)
-          : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+        section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.Background),
       );
     }
   }
@@ -103,10 +99,8 @@ export namespace SectionRenderer {
         Renderer.transformWorld2View(section.rectangle.location),
         section.rectangle.size.multiply(Camera.currentScale),
       ),
-      section.color.a === 0
-        ? StageStyleManager.currentStyle.BackgroundColor.toNewAlpha(0.5)
-        : section.color.toNewAlpha(0.5),
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      section.color.a === 0 ? StageStyleManager.currentStyle.Background.toNewAlpha(0.5) : section.color.toNewAlpha(0.5),
+      StageStyleManager.currentStyle.StageObjectBorder,
       2 * Camera.currentScale,
     );
     // 缩放过小了，显示巨大化文字
@@ -114,7 +108,7 @@ export namespace SectionRenderer {
       section.text,
       Renderer.transformWorld2View(section.rectangle.center),
       fontHeight * Camera.currentScale,
-      section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.BackgroundColor),
+      section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.Background),
     );
 
     // =========== 另一种方法
@@ -177,7 +171,7 @@ export namespace SectionRenderer {
 
     if (section.isSelected) {
       // 在外面增加一个框
-      CollisionBoxRenderer.render(section.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
+      CollisionBoxRenderer.render(section.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     // debug: 绿色虚线 观察父子关系
     if (Renderer.isShowDebug) {

@@ -81,6 +81,7 @@ settings:
     github: GitHub
     sounds: Sounds
     plugins: Plugins
+    themes: Themes
   language:
     title: Language
     options:
@@ -92,23 +93,6 @@ settings:
     options:
       latest: Stable
       nightly: Development
-  theme:
-    title: Stage Theme Color
-    description: Choose the stage theme color, which affects the canvas background, node colors, borders, and connection colors. The "Paper White" is specifically for final printing or pasting into papers, and the actual color is absolute white.
-    options:
-      black: Night Theme
-      white: Paper White Theme
-      macaron: Macaron Color Theme
-      morandi: Morandi Color Theme
-  uiTheme:
-    title: UI Theme Color
-    description: Choose the UI theme color, which affects the color of buttons, input boxes, menus, etc., not the canvas color.
-    options:
-      dark: Night Theme
-      blueGreen: Park Theme
-      light: Light Theme
-      macaron: Macaron Color Theme
-      morandi: Morandi Color Theme
   showTipsOnUI:
     title: Show Tips on UI
     description: |

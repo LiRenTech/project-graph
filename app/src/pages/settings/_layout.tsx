@@ -1,4 +1,18 @@
-import { Bot, Brain, Command, Eye, Info, Keyboard, Plug, Settings, Sparkles, Speaker, Wrench, Zap } from "lucide-react";
+import {
+  Bot,
+  Brain,
+  Command,
+  Eye,
+  Info,
+  Keyboard,
+  Palette,
+  Plug,
+  Settings,
+  Sparkles,
+  Speaker,
+  Wrench,
+  Zap,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
 import Github from "../../assets/github.svg?react";
@@ -59,6 +73,10 @@ export default function SettingsLayout() {
           <NavLinkButton to="/settings/plugins">
             <Plug />
             {t("tabs.plugins")}
+          </NavLinkButton>
+          <NavLinkButton to="/settings/themes">
+            <Palette />
+            {t("tabs.themes")}
           </NavLinkButton>
         </div>
         <div className="mx-auto max-w-[900px] flex-1 overflow-auto">

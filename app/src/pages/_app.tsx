@@ -9,6 +9,7 @@ import { Dialog } from "../components/dialog";
 import IconButton from "../components/IconButton";
 import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
 import { Settings } from "../core/service/Settings";
+import { Themes } from "../core/service/Themes";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { fileAtom, isClassroomModeAtom, isWindowCollapsingAtom } from "../state";
@@ -159,8 +160,18 @@ export default function App() {
     document.querySelector("canvas")?.addEventListener("mousedown", () => setIgnoreMouse(true));
     document.querySelector("canvas")?.addEventListener("mouseup", () => setIgnoreMouse(false));
     // 监听主题样式切换
-    Settings.watch("uiTheme", (value) => {
-      document.documentElement.setAttribute("data-theme", value);
+    Settings.watch("theme", (value) => {
+      let styleEl = document.querySelector("#pg-theme");
+      if (!styleEl) {
+        styleEl = document.createElement("style");
+        styleEl.id = "pg-theme";
+        document.head.appendChild(styleEl);
+      }
+      styleEl.innerHTML = `
+        :root {
+          ${Themes.convertThemeToCSS(Themes.getThemeById(value)?.content)}
+        }
+      `;
     });
     Stage.path.setPathHook = (pathString: string) => {
       setFile(pathString);

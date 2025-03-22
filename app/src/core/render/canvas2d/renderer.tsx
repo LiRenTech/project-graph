@@ -193,7 +193,7 @@ export namespace Renderer {
         new Vector(Camera.cameraCycleSpaceSizeX, Camera.cameraCycleSpaceSizeY),
       ).transformWorld2View(),
       Color.Transparent,
-      StageStyleManager.currentStyle.SelectRectangleBorderColor,
+      StageStyleManager.currentStyle.SelectRectangleBorder,
       2 * Camera.currentScale,
     );
   }
@@ -295,18 +295,12 @@ export namespace Renderer {
       return;
     }
     const viewCenterLocation = transformWorld2View(Camera.location);
-    ShapeRenderer.renderCircle(
-      viewCenterLocation,
-      1,
-      StageStyleManager.currentStyle.GridHeavyColor,
-      Color.Transparent,
-      0,
-    );
+    ShapeRenderer.renderCircle(viewCenterLocation, 1, StageStyleManager.currentStyle.GridHeavy, Color.Transparent, 0);
     for (let i = 0; i < 4; i++) {
       const degrees = i * 90;
       const shortLineStart = viewCenterLocation.add(new Vector(10, 0).rotateDegrees(degrees));
       const shortLineEnd = viewCenterLocation.add(new Vector(20, 0).rotateDegrees(degrees));
-      CurveRenderer.renderSolidLine(shortLineStart, shortLineEnd, StageStyleManager.currentStyle.GridHeavyColor, 1);
+      CurveRenderer.renderSolidLine(shortLineStart, shortLineEnd, StageStyleManager.currentStyle.GridHeavy, 1);
     }
   }
 
@@ -319,10 +313,10 @@ export namespace Renderer {
   /** 鼠标hover的边 */
   function renderHoverCollisionBox() {
     for (const edge of Stage.mouseInteractionCore.hoverEdges) {
-      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelectedColor);
+      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelected);
     }
     for (const section of Stage.mouseInteractionCore.hoverSections) {
-      CollisionBoxRenderer.render(section.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelectedColor);
+      CollisionBoxRenderer.render(section.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelected);
     }
   }
 
@@ -333,20 +327,20 @@ export namespace Renderer {
       if (selectMode === "intersect") {
         ShapeRenderer.renderRect(
           Stage.selectMachine.selectingRectangle.transformWorld2View(),
-          StageStyleManager.currentStyle.SelectRectangleFillColor,
-          StageStyleManager.currentStyle.SelectRectangleBorderColor,
+          StageStyleManager.currentStyle.SelectRectangleFill,
+          StageStyleManager.currentStyle.SelectRectangleBorder,
           1,
         );
       } else if (selectMode === "contain") {
         ShapeRenderer.renderRect(
           Stage.selectMachine.selectingRectangle.transformWorld2View(),
-          StageStyleManager.currentStyle.SelectRectangleFillColor,
+          StageStyleManager.currentStyle.SelectRectangleFill,
           Color.Transparent,
           0,
         );
         ShapeRenderer.renderCameraShapeBorder(
           Stage.selectMachine.selectingRectangle.transformWorld2View(),
-          StageStyleManager.currentStyle.SelectRectangleBorderColor,
+          StageStyleManager.currentStyle.SelectRectangleBorder,
           1,
         );
         // 完全覆盖框选的提示
@@ -354,7 +348,7 @@ export namespace Renderer {
           "完全覆盖框选",
           transformWorld2View(Stage.selectMachine.selectingRectangle.leftBottom).add(new Vector(20, 10)),
           10,
-          StageStyleManager.currentStyle.SelectRectangleBorderColor,
+          StageStyleManager.currentStyle.SelectRectangleBorder,
         );
       }
     }
@@ -430,8 +424,8 @@ export namespace Renderer {
           transformWorld2View(endLocation.add(new Vector(0, -height))),
           transformWorld2View(endLocation),
         ),
-        StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toTransparent(),
-        StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
+        StageStyleManager.currentStyle.CollideBoxPreSelected.toTransparent(),
+        StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
         8 * Camera.currentScale,
       );
       // 画箭头
@@ -443,7 +437,7 @@ export namespace Renderer {
           transformWorld2View(endLocation),
           transformWorld2View(endLocation.add(new Vector(-arrowLen, -arrowLen * 2))),
         ),
-        StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
+        StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
         8 * Camera.currentScale,
       );
       CurveRenderer.renderBezierCurve(
@@ -453,7 +447,7 @@ export namespace Renderer {
           transformWorld2View(endLocation),
           transformWorld2View(endLocation.add(new Vector(arrowLen, -arrowLen * 2))),
         ),
-        StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
+        StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
         8 * Camera.currentScale,
       );
     }
@@ -461,7 +455,7 @@ export namespace Renderer {
       "Jump To",
       transformWorld2View(Controller.mouseLocation).subtract(new Vector(0, -30)),
       16,
-      StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
+      StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
     );
   }
 
@@ -499,7 +493,7 @@ export namespace Renderer {
         ShapeRenderer.renderCircle(
           transformWorld2View(Stage.drawingMachine.startAdjustWidthLocation),
           (Stage.drawingMachine.currentStrokeWidth / 2) * Camera.currentScale,
-          currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorderColor : currentStrokeColor,
+          currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
           Color.Transparent,
           0,
         );
@@ -511,14 +505,14 @@ export namespace Renderer {
             MouseLocation.vector(),
             (Stage.drawingMachine.currentStrokeWidth / 2) * Camera.currentScale,
             Color.Transparent,
-            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorderColor : currentStrokeColor,
+            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
             2 * Camera.currentScale,
           );
         } else {
           ShapeRenderer.renderCircle(
             MouseLocation.vector(),
             (Stage.drawingMachine.currentStrokeWidth / 2) * Camera.currentScale,
-            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorderColor : currentStrokeColor,
+            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
             Color.Transparent,
             0,
           );
@@ -531,7 +525,7 @@ export namespace Renderer {
           CurveRenderer.renderSolidLine(
             transformWorld2View(segment.startLocation),
             transformWorld2View(segment.endLocation),
-            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorderColor : currentStrokeColor,
+            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
             Stage.drawingMachine.currentStrokeWidth * Camera.currentScale,
           );
         }
@@ -569,7 +563,7 @@ export namespace Renderer {
           transformWorld2View(rect.leftBottom.add(new Vector(0, -8))),
         ],
         new Color(255, 0, 0, 0.5),
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorder,
         2 * Camera.currentScale,
       );
     }
@@ -600,7 +594,7 @@ export namespace Renderer {
                 120 * Camera.currentScale,
                 60 * Camera.currentScale,
                 Color.Transparent,
-                mixColors(StageStyleManager.currentStyle.StageObjectBorderColor, Color.Transparent, 0.5),
+                mixColors(StageStyleManager.currentStyle.StageObjectBorder, Color.Transparent, 0.5),
                 2 * Camera.currentScale,
                 NODE_ROUNDED_RADIUS * Camera.currentScale,
               );
@@ -615,7 +609,7 @@ export namespace Renderer {
             hintText,
             transformWorld2View(KeyboardOnlyEngine.virtualTargetLocation().add(new Vector(0, 50))),
             15 * Camera.currentScale,
-            StageStyleManager.currentStyle.StageObjectBorderColor,
+            StageStyleManager.currentStyle.StageObjectBorder,
           );
         }
       }
@@ -798,7 +792,7 @@ export namespace Renderer {
         line,
         new Vector(10, 80 + detailsData.indexOf(line) * 12),
         10,
-        StageStyleManager.currentStyle.DetailsDebugTextColor,
+        StageStyleManager.currentStyle.DetailsDebugText,
       );
     }
   }
@@ -818,7 +812,7 @@ export namespace Renderer {
 
     for (const key of Controller.pressingKeySet) {
       const textLocation = new Vector(x, Renderer.h - 100);
-      TextRenderer.renderText(key, textLocation, fontSize, StageStyleManager.currentStyle.StageObjectBorderColor);
+      TextRenderer.renderText(key, textLocation, fontSize, StageStyleManager.currentStyle.StageObjectBorder);
       const textSize = getTextSize(key, fontSize);
       x += textSize.x + margin;
     }

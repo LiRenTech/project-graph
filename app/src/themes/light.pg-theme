@@ -1,0 +1,130 @@
+---
+id: light
+author: Official
+name:
+  en: Light
+  zh_CN: 明亮
+---
+panel:
+  bg: "oklch(0.98 0.01 0)"
+  text: "oklch(0.15 0.05 0)"
+  details-text: "oklch(0.5 0.05 0)"
+  success-text: "#00a300"
+  warning-text: "#b16100"
+  error-text: "#bd0000"
+
+tooltip:
+  bg: "oklch(0.95 0.01 0)"
+  text: "oklch(0.15 0.05 0)"
+  border: "oklch(0.85 0.02 0)"
+
+button:
+  bg: "oklch(0.98 0.01 0)"
+  text: "oklch(0.15 0.05 0)"
+  border: "oklch(0.85 0.02 0)"
+
+icon-button:
+  bg: "oklch(0.98 0.01 0)"
+  text: "oklch(0.15 0.05 0)"
+  border: "oklch(0.85 0.02 0)"
+
+input:
+  bg: "oklch(0.98 0.01 0)"
+  text: "oklch(0.15 0.05 0)"
+  border: "oklch(0.85 0.02 0)"
+  placeholder: "oklch(0.6 0.02 0)"
+
+keybind:
+  bg: "oklch(0.95 0.01 0)"
+  text: "oklch(0.15 0.05 0)"
+  border: "oklch(0.85 0.02 0)"
+  active-outline: "oklch(0.7 0.2 259.815)"
+
+select:
+  bg: "oklch(0.98 0.01 0)"
+  text: "oklch(0.15 0.05 0)"
+  border: "oklch(0.85 0.02 0)"
+  popup:
+    bg: "oklch(0.98 0.01 0)"
+    border: "oklch(0.85 0.02 0)"
+    shadow: "oklch(0.85 0.02 0 / 0.1)"
+  option:
+    bg: "transparent"
+    text: "oklch(0.15 0.05 0)"
+    border: "transparent"
+    hover:
+      bg: "oklch(0.95 0.01 0)"
+      text: "oklch(0.15 0.05 0)"
+      border: "transparent"
+    selected:
+      bg: "oklch(0.9 0.05 0)"
+      text: "oklch(0.15 0.05 0)"
+      border: "transparent"
+      hover:
+        bg: "oklch(0.85 0.05 0)"
+        text: "oklch(0.15 0.05 0)"
+        border: "transparent"
+
+slider:
+  line: "oklch(0.85 0.02 0)"
+  handle: "oklch(0.7 0.2 254.624)"
+
+switch:
+  false:
+    bg: "oklch(0.85 0.02 0)"
+    dot: "oklch(0.98 0.01 0)"
+  true:
+    bg: "oklch(0.7 0.2 259.815)"
+    dot: "oklch(0.98 0.01 0)"
+  disabled:
+    bg: "oklch(0.9 0.01 0)"
+    dot: "oklch(0.7 0.02 0)"
+
+appmenu:
+  bg: "oklch(0.98 0.01 0)"
+  border: "oklch(0.85 0.02 0)"
+  category:
+    title: "oklch(0.6 0.02 0)"
+    separator: "oklch(0.85 0.02 0)"
+  item:
+    text: "oklch(0.15 0.05 0)"
+  hover-bg: "oklch(0.95 0.01 0)"
+
+toolbar:
+  bg: "oklch(0.98 0.01 0)"
+  icon: "oklch(0.15 0.05 0)"
+  icon-hover-bg: "rgb(0 0 0 / 0.1)"
+  border: "oklch(0.85 0.02 0)"
+  tooltip:
+    bg: "oklch(0.95 0.01 0)"
+    text: "oklch(0.15 0.05 0)"
+    border: "oklch(0.85 0.02 0)"
+  collapsed-bg: "oklch(0.15 0.05 0)"
+
+settings:
+  page-bg: "#d3d3d3"
+  text: "oklch(0.15 0.05 0)"
+
+field-group:
+  bg: "#acacac"
+  hover-bg: "rgb(240, 240, 240)"
+
+stage:
+  Background: "#ffffff"
+  GridNormal: "rgba(51, 51, 51, 0.4)"
+  GridHeavy: "rgba(20, 20, 20, 0.4)"
+  DetailsDebugText: "rgba(125, 125, 125, 0.4)"
+  SelectRectangleBorder: "rgba(0, 0, 0, 0.5)"
+  SelectRectangleFill: "rgba(0, 0, 0, 0.08)"
+  StageObjectBorder: "#000000"
+  NodeDetailsText: "#000000"
+  CollideBoxPreSelected: "rgba(0, 255, 0, 0.2)"
+  CollideBoxSelected: "rgba(64, 209, 171, 0.5)"
+  CollideBoxPreDelete: "rgba(255, 255, 0, 0.2)"
+
+effects:
+  flash: "#000"
+  dash: "#000"
+  windowFlash: "#fff"
+  warningShadow: "#f00"
+  successShadow: "#0f0"

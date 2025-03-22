@@ -62,8 +62,8 @@ export class ExplodeDashEffect extends EffectObject {
     for (const ashLocation of this.ashLocationArray) {
       const viewLocation = Renderer.transformWorld2View(ashLocation);
       const color = mixColors(
-        StageStyleManager.currentStyle.StageObjectBorderColor,
-        StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
+        StageStyleManager.currentStyle.StageObjectBorder,
+        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
         this.timeProgress.rate,
       );
 

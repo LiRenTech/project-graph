@@ -70,3 +70,7 @@ export function replaceTextWhenProtect(text: string) {
     .replace(/[A-Z]/g, "A")
     .replace(/\d/g, "6");
 }
+
+export function camelCaseToDashCase(text: string) {
+  return text.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+}

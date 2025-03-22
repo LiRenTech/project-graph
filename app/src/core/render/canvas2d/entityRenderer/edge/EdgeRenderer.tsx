@@ -76,7 +76,7 @@ export namespace EdgeRenderer {
 
     // 选中的高亮效果
     if (edge.isSelected) {
-      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
+      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
   }
 
@@ -86,9 +86,9 @@ export namespace EdgeRenderer {
     }
     const crShape = edge.getShape();
     // 画曲线
-    WorldRenderUtils.renderCublicCatmullRomSpline(crShape, StageStyleManager.currentStyle.StageObjectBorderColor, 2);
+    WorldRenderUtils.renderCublicCatmullRomSpline(crShape, StageStyleManager.currentStyle.StageObjectBorder, 2);
     if (edge.isSelected) {
-      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelectedColor);
+      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     // 画控制点们
     for (const point of crShape.controlPoints) {
@@ -96,7 +96,7 @@ export namespace EdgeRenderer {
         Renderer.transformWorld2View(point),
         5 * Camera.currentScale,
         Color.Transparent,
-        StageStyleManager.currentStyle.StageObjectBorderColor,
+        StageStyleManager.currentStyle.StageObjectBorder,
         2 * Camera.currentScale,
       );
     }
@@ -107,7 +107,7 @@ export namespace EdgeRenderer {
       lastPoint2,
       lastPoint.subtract(lastPoint2).normalize(),
       15,
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder,
     );
   }
 

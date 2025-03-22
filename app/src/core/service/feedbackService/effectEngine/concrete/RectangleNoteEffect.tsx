@@ -31,7 +31,7 @@ export class RectangleNoteEffect extends EffectObject {
     return new RectangleNoteEffect(
       new ProgressNumber(0, 50),
       rectangle,
-      StageStyleManager.currentStyle.CollideBoxPreSelectedColor.toSolid(),
+      StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
     );
   }
 

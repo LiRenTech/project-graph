@@ -9,13 +9,13 @@ import { Canvas } from "../core/stage/Canvas";
 import { Stage } from "../core/stage/Stage";
 import { isClassroomModeAtom, isWindowCollapsingAtom } from "../state";
 import { CursorNameEnum } from "../types/cursors";
+import { DateChecker } from "../utils/dateChecker";
 import { isFrame } from "../utils/platform";
 import DetailsEditSidePanel from "./_details_edit_side_panel";
 import DetailsEditSmallPanel from "./_details_edit_small_panel";
 import HintText from "./_hint_text";
-import Toolbar from "./_toolbar";
-import { DateChecker } from "../utils/dateChecker";
 import FoolsDayButton from "./_special_day_dialog/fools_day";
+import Toolbar from "./_toolbar";
 
 export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
@@ -134,7 +134,7 @@ export default function Home() {
       {/* TODO: 下面这个写法有点奇怪 rgba值太长了 */}
       <div
         style={{
-          background: `rgba(${StageStyleManager.currentStyle.BackgroundColor.r},${StageStyleManager.currentStyle.BackgroundColor.g},${StageStyleManager.currentStyle.BackgroundColor.b},${isProtectPrivacy ? 1 : bgAlpha})`,
+          background: `rgba(${StageStyleManager.currentStyle.Background.r},${StageStyleManager.currentStyle.Background.g},${StageStyleManager.currentStyle.Background.b},${isProtectPrivacy ? 1 : bgAlpha})`,
         }}
       >
         <canvas ref={canvasRef} className={cursorName} />

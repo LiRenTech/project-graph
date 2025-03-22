@@ -16,8 +16,8 @@ import { Renderer } from "../renderer";
  */
 export function renderDotBackground(viewRect: Rectangle) {
   const currentGap = getCurrentGap();
-  const gridColor = StageStyleManager.currentStyle.GridNormalColor;
-  const mainColor = StageStyleManager.currentStyle.GridHeavyColor;
+  const gridColor = StageStyleManager.currentStyle.GridNormal;
+  const mainColor = StageStyleManager.currentStyle.GridHeavy;
 
   for (const y of getLocationYIterator(viewRect, currentGap)) {
     for (const x of getLocationXIterator(viewRect, currentGap)) {
@@ -37,8 +37,8 @@ export function renderDotBackground(viewRect: Rectangle) {
  */
 export function renderHorizonBackground(viewRect: Rectangle) {
   const currentGap = getCurrentGap();
-  const gridColor = StageStyleManager.currentStyle.GridNormalColor;
-  const mainColor = StageStyleManager.currentStyle.GridHeavyColor;
+  const gridColor = StageStyleManager.currentStyle.GridNormal;
+  const mainColor = StageStyleManager.currentStyle.GridHeavy;
 
   // 画横线
   for (const y of getLocationYIterator(viewRect, currentGap)) {
@@ -59,8 +59,8 @@ export function renderHorizonBackground(viewRect: Rectangle) {
  */
 export function renderVerticalBackground(viewRect: Rectangle) {
   const currentGap = getCurrentGap();
-  const gridColor = StageStyleManager.currentStyle.GridNormalColor;
-  const mainColor = StageStyleManager.currentStyle.GridHeavyColor;
+  const gridColor = StageStyleManager.currentStyle.GridNormal;
+  const mainColor = StageStyleManager.currentStyle.GridHeavy;
 
   // 画竖线
   for (const x of getLocationXIterator(viewRect, currentGap)) {
@@ -84,14 +84,14 @@ export function renderCartesianBackground(viewRect: Rectangle) {
   CurveRenderer.renderSolidLine(
     Renderer.transformWorld2View(new Vector(viewRect.left, 0)),
     Renderer.transformWorld2View(new Vector(viewRect.right, 0)),
-    StageStyleManager.currentStyle.GridNormalColor,
+    StageStyleManager.currentStyle.GridNormal,
     1,
   );
   // y轴
   CurveRenderer.renderSolidLine(
     Renderer.transformWorld2View(new Vector(0, viewRect.top)),
     Renderer.transformWorld2View(new Vector(0, viewRect.bottom)),
-    StageStyleManager.currentStyle.GridNormalColor,
+    StageStyleManager.currentStyle.GridNormal,
     1,
   );
   const currentGap = getCurrentGap();
@@ -100,14 +100,14 @@ export function renderCartesianBackground(viewRect: Rectangle) {
     const renderLocation = Renderer.transformWorld2View(new Vector(x, 0));
     renderLocation.y = Math.max(renderLocation.y, 0);
     renderLocation.y = Math.min(renderLocation.y, Renderer.h - 50);
-    TextRenderer.renderText(`${x}`, renderLocation, 10, StageStyleManager.currentStyle.GridNormalColor);
+    TextRenderer.renderText(`${x}`, renderLocation, 10, StageStyleManager.currentStyle.GridNormal);
   }
   // 画y轴上的刻度
   for (const y of getLocationYIterator(viewRect, currentGap)) {
     const renderLocation = Renderer.transformWorld2View(new Vector(0, y));
     renderLocation.x = Math.max(renderLocation.x, 0);
     renderLocation.x = Math.min(renderLocation.x, Renderer.w - 150);
-    TextRenderer.renderText(`${y}`, renderLocation, 10, StageStyleManager.currentStyle.GridNormalColor);
+    TextRenderer.renderText(`${y}`, renderLocation, 10, StageStyleManager.currentStyle.GridNormal);
   }
 }
 

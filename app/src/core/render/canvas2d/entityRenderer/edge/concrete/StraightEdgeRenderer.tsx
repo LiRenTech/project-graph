@@ -68,7 +68,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
   public renderNormalState(edge: LineEdge): void {
     // 直线绘制
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? StageStyleManager.currentStyle.StageObjectBorderColor
+      ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
 
     let edgeWidth = 2;
@@ -135,7 +135,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     let lineBody: React.ReactNode = <></>;
     let textNode: React.ReactNode = <></>;
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? StageStyleManager.currentStyle.StageObjectBorderColor
+      ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边
@@ -183,7 +183,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
 
   private renderArrowHead(edge: LineEdge, direction: Vector, endPoint = edge.bodyLine.end.clone(), size = 15) {
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? StageStyleManager.currentStyle.StageObjectBorderColor
+      ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     EdgeRenderer.renderArrowHead(endPoint, direction, size, edgeColor);
   }
@@ -196,7 +196,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     const startPoint = edge.source.collisionBox.getRectangle().getLineIntersectionPoint(startLine);
     const endPoint = edge.target.collisionBox.getRectangle().getLineIntersectionPoint(endLine);
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? StageStyleManager.currentStyle.StageObjectBorderColor
+      ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边
@@ -246,7 +246,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
   public renderCycleState(edge: LineEdge): void {
     // 自环
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? StageStyleManager.currentStyle.StageObjectBorderColor
+      ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     ShapeRenderer.renderArc(
       Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
@@ -275,8 +275,8 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     CurveRenderer.renderGradientLine(
       Renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
       Renderer.transformWorld2View(mouseLocation),
-      StageStyleManager.currentStyle.StageObjectBorderColor.toTransparent(),
-      StageStyleManager.currentStyle.StageObjectBorderColor,
+      StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+      StageStyleManager.currentStyle.StageObjectBorder,
       2,
     );
   }

@@ -1,0 +1,130 @@
+---
+id: park
+author: Official
+name:
+  en: Park
+  zh_CN: 公园
+---
+panel:
+  bg: "#364153"
+  text: "#e5e7eb"
+  details-text: "#8a909d"
+  success-text: "#43f243"
+  warning-text: "#eeff6b"
+  error-text: "#ffe27a"
+
+tooltip:
+  bg: "#4a5565"
+  text: "#e1e4e7"
+  border: "#24354f"
+
+button:
+  bg: "#49644e"
+  text: "#d5f4db"
+  border: "#7a9a81"
+
+icon-button:
+  bg: "#4a5565"
+  text: "#e4f0fa"
+  border: "#6a7680"
+
+input:
+  bg: "#4e6352"
+  text: "#d5f4db"
+  border: "#799680"
+  placeholder: "#93a998"
+
+keybind:
+  bg: "#506855"
+  text: "#d5f4db"
+  border: "#7b9a82"
+  active-outline: "#d7efdc"
+
+select:
+  bg: "#4c6050"
+  text: "#deffe3"
+  border: "#7d9883"
+  popup:
+    bg: "#4f6252"
+    border: "oklch(0.8 0.02 240)"
+    shadow: "rgba(0,0,0,0.1)" # 补充投影默认值
+  option:
+    bg: "transparent"
+    text: "#d5f4db"
+    border: "transparent"
+    hover:
+      bg: "#28372b"
+      text: "#d5f4db"
+      border: "transparent"
+    selected:
+      bg: "#6a9a75"
+      text: "#28372b"
+      border: "transparent"
+      hover:
+        bg: "#d5f4db"
+        text: "#28372b"
+        border: "transparent"
+
+slider:
+  line: "#6f7871"
+  handle: "#c0cbc2"
+
+switch:
+  false:
+    bg: "#1b231d"
+    dot: "#425346"
+  true:
+    bg: "#48604d"
+    dot: "#b0cfb6"
+  disabled: # 补充禁用状态
+    bg: "#22272d"
+    dot: "#1b2127"
+
+appmenu:
+  bg: "#2c3239"
+  border: "#4a5565"
+  category:
+    title: "#8a909d"
+    separator: "#4a5565"
+  item:
+    text: "#e5e7eb"
+  hover-bg: "#17191c"
+
+toolbar:
+  bg: "#4a5565"
+  icon: "oklch(0.95 0.02 270)"
+  icon-hover-bg: "#1e2939"
+  border: "#80878e"
+  tooltip:
+    bg: "#4a5565"
+    text: "#e1e4e7"
+    border: "#24354f"
+  collapsed-bg: "#e5e7eb"
+
+settings:
+  page-bg: "#2d3238"
+  text: "#e5e7eb"
+
+field-group:
+  bg: "#22272d"
+  hover-bg: "#1b2127"
+
+stage:
+  Background: "#2d3846" # 深夜空蓝
+  GridNormal: "rgba(74, 85, 101, 0.3)" # 雾霭灰网格
+  GridHeavy: "rgba(74, 85, 101, 0.5)" # 夜霭加深
+  DetailsDebugText: "rgba(118, 129, 143, 0.7)" # 暮霭灰
+  SelectRectangleBorder: "rgba(106, 138, 113, 0.5)" # 冷杉绿
+  SelectRectangleFill: "rgba(169, 221, 208, 0.15)" # 月下竹影
+  StageObjectBorder: "rgba(136, 168, 143, 0.7)"
+  NodeDetailsText: "#c0c8d0" # 霜月白
+  CollideBoxPreSelected: "rgba(110, 150, 130, 0.3)" # 青苔预选
+  CollideBoxSelected: "rgba(70, 120, 90, 0.5)" # 深林选中
+  CollideBoxPreDelete: "rgba(255, 210, 0, 0.2)" # 落叶黄
+
+effects:
+  flash: "oklch(0.65 0.05 240)" # 萤火微光
+  dash: "#6b7280" # 夜雾拖影
+  windowFlash: "#eef1f0" # 月光涟漪
+  warningShadow: "rgba(177, 183, 189, 0.4)" # 夜鸮警示
+  successShadow: "rgba(120, 147, 175, 0.4)" # 清溪反光

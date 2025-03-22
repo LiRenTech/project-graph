@@ -5,5 +5,8 @@
     "overrideConfigFile": "./eslint.config.js"
   },
   "vue.server.includeLanguages": ["vue"],
-  "rust-analyzer.linkedProjects": ["app/src-tauri/Cargo.toml"]
+  "rust-analyzer.linkedProjects": ["app/src-tauri/Cargo.toml"],
+  "files.associations": {
+    "*.pg-theme": "yaml"
+  }
 }
