@@ -435,7 +435,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         <Col icon={<FileCode />} onClick={() => Popup.show(<ExportSvgPanel />, false)}>
           {t("export.items.exportAsSvg")}
         </Col>
-        <Col icon={<ImageIcon />} onClick={onExportPng}>
+        <Col icon={<ImageIcon />} onClick={onExportPng} className="opacity-20 hover:opacity-100">
           PNG
         </Col>
         <Col icon={<FileType />} onClick={onSaveMarkdownNew}>
@@ -549,7 +549,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         </Col>
         <Col
           icon={<Laugh />}
-          className="opacity-0 hover:opacity-50"
+          className="opacity-20 hover:opacity-50"
           onClick={() => {
             navigate("/secret");
           }}

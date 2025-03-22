@@ -51,7 +51,6 @@ export default function ExportPNGPanel() {
           min={0.05}
           step={0.05}
           value={cameraScaleWhenExport}
-          defaultValue={0.5}
           onChange={(e) => {
             const value = parseFloat(e.target.value);
             setCameraScaleWhenExport(value);

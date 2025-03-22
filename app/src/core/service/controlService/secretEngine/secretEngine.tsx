@@ -23,6 +23,7 @@ import { Settings } from "../../Settings";
 interface SecretItem {
   name: string;
   func: () => void;
+  explain?: string;
 }
 
 /**
@@ -52,22 +53,51 @@ export class SecretEngine {
       }
     });
   }
-  public getAllSecretKeysList(): { keys: string; name: string }[] {
+  public getAllSecretKeysList(): { keys: string; name: string; explain: string }[] {
     const result = [];
     for (const key in this.keyPressedTable) {
-      result.push({ keys: key, name: this.keyPressedTable[key].name });
+      result.push({
+        keys: key,
+        name: this.keyPressedTable[key].name,
+        explain: this.keyPressedTable[key].explain || "",
+      });
     }
     return result;
   }
+
+  /**
+   * 检查秘籍键是否重复，即：某个秘籍键序列是否包含于其他秘籍键序列中
+   * 不能出现这种情况，因为会导致冲突
+   */
+  public checkSecretsRepeat(): string[] {
+    const conflictKeys = [];
+    const allKeys = Object.keys(this.keyPressedTable);
+    for (let i = 0; i < allKeys.length; i++) {
+      const key1 = allKeys[i];
+      for (let j = i + 1; j < allKeys.length; j++) {
+        const key2 = allKeys[j];
+        if (key1.includes(key2) || key2.includes(key1)) {
+          conflictKeys.push(`【${key1}】 - 【${key2}】`);
+        }
+      }
+    }
+    return conflictKeys;
+  }
+
+  /**
+   * 所有的秘籍键列表
+   */
   keyPressedTable: Record<string, SecretItem> = {
     "arrowup arrowup arrowdown arrowdown arrowleft arrowright arrowleft arrowright b a": {
       name: "屏幕闪黑特效",
+      explain: "类似于秘籍键中的hello world，测试出现黑屏的效果时则证明秘籍键系统正常运行了",
       func: () => {
         Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
       },
     },
     "i n t j": {
-      name: "将所有可连接节点的坐标位置对齐到整数，以减小json体积",
+      name: "将所有可连接节点的坐标位置对齐到整数",
+      explain: "可以大幅度减小json文件的体积",
       func: () => {
         const entities = StageManager.getConnectableEntity();
         for (const entity of entities) {
@@ -77,6 +107,59 @@ export class SecretEngine {
         }
       },
     },
+    "o k k": {
+      name: "将选中的文本节点都打上对勾✅，并标为绿色",
+      explain: "仅对文本节点生效，选中后再输入一次可以取消对勾",
+      func() {
+        const selectedTextNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
+        for (const node of selectedTextNodes) {
+          if (node.color.equals(new Color(59, 114, 60))) {
+            node.rename(node.text.replace("✅ ", ""));
+            node.color = Color.Transparent;
+          } else {
+            node.rename("✅ " + node.text);
+            node.color = new Color(59, 114, 60);
+          }
+        }
+        StageManager.updateReferences();
+      },
+    },
+    "b l a c k k": {
+      name: "切换成黑色主题",
+      explain: "切换后需要在画布上划一刀才生生效",
+      func() {
+        Settings.set("theme", "dark");
+      },
+    },
+    "w h i t e e": {
+      name: "切换成白色主题",
+      explain: "切换后需要在画布上划一刀才生生效",
+      func() {
+        Settings.set("theme", "light");
+      },
+    },
+    "* * *": {
+      name: "切换专注模式",
+      async func() {
+        Settings.set("isClassroomMode", !(await Settings.get("isClassroomMode")));
+      },
+    },
+    "p s a + +": {
+      name: "增加笔刷不透明度通道值",
+      async func() {
+        Stage.drawingMachine.changeCurrentStrokeColorAlpha(0.1);
+      },
+    },
+    "p s a - -": {
+      name: "减少笔刷不透明度通道值",
+      async func() {
+        Stage.drawingMachine.changeCurrentStrokeColorAlpha(-0.1);
+      },
+    },
+    // "b o y": {
+    //   name: "test",
+    //   func: () => {},
+    // },
     "b o y n e x t d o o r": {
       name: "创建传送门",
       func: () => {
@@ -159,7 +242,7 @@ export class SecretEngine {
       },
     },
     "t e s t s i": {
-      name: "getAllEntitiesInSelectedSectionsOrEntities",
+      name: "用特效高亮一次所有选中的section框及其内部全部实体",
       func() {
         const selectedNodes = StageManager.getSelectedEntities();
         for (const entity of SectionMethods.getAllEntitiesInSelectedSectionsOrEntities(selectedNodes)) {
@@ -198,52 +281,6 @@ export class SecretEngine {
         for (const edge of selectedCREdge) {
           edge.tension -= 0.1;
         }
-      },
-    },
-    "o k k": {
-      name: "将选中的文本节点都打上对勾，并标为绿色",
-      func() {
-        const selectedTextNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
-        for (const node of selectedTextNodes) {
-          if (node.color.equals(new Color(59, 114, 60))) {
-            node.rename(node.text.replace("✅ ", ""));
-            node.color = Color.Transparent;
-          } else {
-            node.rename("✅ " + node.text);
-            node.color = new Color(59, 114, 60);
-          }
-        }
-        StageManager.updateReferences();
-      },
-    },
-    "b l a c k k": {
-      name: "切换成黑色主题(切换后需要在画布上划一刀才生生效)",
-      func() {
-        Settings.set("theme", "dark");
-      },
-    },
-    "w h i t e e": {
-      name: "切换成白色主题(切换后需要在画布上划一刀才生生效)",
-      func() {
-        Settings.set("theme", "light");
-      },
-    },
-    "* * *": {
-      name: "切换专注模式",
-      async func() {
-        Settings.set("isClassroomMode", !(await Settings.get("isClassroomMode")));
-      },
-    },
-    "p s a + +": {
-      name: "增加笔刷不透明度通道值",
-      async func() {
-        Stage.drawingMachine.changeCurrentStrokeColorAlpha(0.1);
-      },
-    },
-    "p s a - -": {
-      name: "减少笔刷不透明度通道值",
-      async func() {
-        Stage.drawingMachine.changeCurrentStrokeColorAlpha(-0.1);
       },
     },
   };
