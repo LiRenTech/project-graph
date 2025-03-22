@@ -177,11 +177,13 @@ export default function About() {
             {t("links.video")}
           </Button>
           <Button
-            tooltip="1006956704"
+            tooltip="1018716404"
             onClick={() =>
-              open(
-                "https://qm.qq.com/cgi-bin/qm/qr?k=1Wskf2Y2KJz3ARpCgzi04y_p95a78Wku&jump_from=webapi&authKey=EkjB+oWihwZIfyqVsIv2dGrNv7bhSGSIULM3+ZLU2R5AVxOUKaIRwi6TKOHlT04/",
-              )
+              Dialog.show({
+                title: "QQ 交流群",
+                content: "点击复制",
+                code: `1018716404`,
+              })
             }
           >
             <QQ />
