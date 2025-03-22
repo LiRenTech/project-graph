@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { isExportPNGPanelOpenAtom } from "../../state";
 import { useAtom } from "jotai";
 import { cn } from "../../utils/cn";
 import Button from "../../components/Button";
 import { StageExportPng } from "../../core/service/dataGenerateService/stageExportEngine/StageExportPng";
+import { Camera } from "../../core/stage/Camera";
 
 /**
  * 导出png的面板
@@ -17,6 +18,8 @@ export default function ExportPNGPanel() {
       return;
     }
   }, [isExportPngPanelOpen]);
+
+  const [cameraScaleWhenExport, setCameraScaleWhenExport] = useState(0.5);
 
   const downloadImage = () => {
     const imageBox = document.getElementById("export-png-image-box") as HTMLDivElement;
@@ -40,6 +43,25 @@ export default function ExportPNGPanel() {
     >
       <h2>导出png图片</h2>
       <div className="h-96 w-full overflow-auto ring" id="export-png-image-box"></div>
+      <div className="flex w-full items-center ring">
+        <span>摄像机缩放比例：</span>
+        <input
+          type="range"
+          max={1}
+          min={0.05}
+          step={0.05}
+          value={cameraScaleWhenExport}
+          defaultValue={0.5}
+          onChange={(e) => {
+            const value = parseFloat(e.target.value);
+            setCameraScaleWhenExport(value);
+            Camera.currentScale = value;
+            Camera.targetScale = value;
+            StageExportPng.changeCameraScaleWhenExport(value);
+          }}
+        />
+        <span>{cameraScaleWhenExport}</span>
+      </div>
       <div className="my-2 flex justify-center gap-2">
         <Button
           onClick={() => {

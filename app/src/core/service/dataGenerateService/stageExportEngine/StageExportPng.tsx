@@ -14,6 +14,20 @@ export namespace StageExportPng {
   const SCALE = window.devicePixelRatio * (1 / appScale);
 
   /**
+   * 导出时，相机缩放因子
+   */
+  let cameraScaleWhenExport = 0.5;
+
+  export function changeCameraScaleWhenExport(scale: number) {
+    cameraScaleWhenExport = scale;
+  }
+
+  /**
+   * 是否有背景
+   */
+  export const isHaveBackground = true;
+
+  /**
    * 将整个舞台导出为png图片
    */
   export async function exportStage() {
@@ -23,25 +37,31 @@ export namespace StageExportPng {
     // 创建完毕
 
     const stageRect = StageManager.getBoundingRectangle();
-    // 左上角
     const topLeft = stageRect.leftTop;
-    // 右下角
     const bottomRight = stageRect.rightBottom;
     // 画布背景
-    resultCtx.fillStyle = StageStyleManager.currentStyle.Background.toHexString();
-    resultCtx.fillRect(0, 0, stageRect.size.x, stageRect.size.y);
+    if (isHaveBackground) {
+      resultCtx.fillStyle = StageStyleManager.currentStyle.Background.toNewAlpha(1).toString();
+      resultCtx.fillRect(0, 0, stageRect.size.x, stageRect.size.y);
+    }
     // 开始把画布内容渲染到新画布上
-    Camera.targetScale = 1;
-    Camera.currentScale = 1;
+    Camera.targetScale = cameraScaleWhenExport;
+    Camera.currentScale = cameraScaleWhenExport;
+    const viewRect = Renderer.getCoverWorldRectangle();
+
     // 遍历xy，xy是切割分块后的目标视野矩形的左上角
-    for (let y = topLeft.y; y <= bottomRight.y; y += Renderer.h) {
-      for (let x = topLeft.x; x <= bottomRight.x; x += Renderer.w) {
+    for (let y = topLeft.y; y <= bottomRight.y; y += viewRect.size.y) {
+      for (let x = topLeft.x; x <= bottomRight.x; x += viewRect.size.x) {
         // 先移动再暂停等待
         await sleep(200);
-        Camera.location = new Vector(x + Renderer.w / 2, y + Renderer.h / 2);
+        Camera.location = new Vector(x + viewRect.size.x / 2, y + viewRect.size.y / 2);
         await sleep(200);
-        const imageData = Canvas.ctx.getImageData(0, 0, Renderer.w * SCALE, Renderer.h * SCALE);
-        resultCtx.putImageData(imageData, (x - topLeft.x) * SCALE, (y - topLeft.y) * SCALE);
+        const imageData = Canvas.ctx.getImageData(0, 0, viewRect.size.x * SCALE, viewRect.size.y * SCALE);
+        resultCtx.putImageData(
+          imageData,
+          (x - topLeft.x) * SCALE * cameraScaleWhenExport,
+          (y - topLeft.y) * SCALE * cameraScaleWhenExport,
+        );
       }
     }
     const imageData = resultCanvas.toDataURL("image/png");
@@ -67,13 +87,12 @@ export namespace StageExportPng {
 
     const stageSize = StageManager.getSize();
     // 设置大小
-    const scale = window.devicePixelRatio * (1 / appScale);
-    resultCanvas.width = stageSize.x * scale;
-    resultCanvas.height = stageSize.y * scale;
-    resultCanvas.style.width = `${stageSize.x * (1 / appScale)}px`;
-    resultCanvas.style.height = `${stageSize.y * (1 / appScale)}px`;
+    resultCanvas.width = stageSize.x * SCALE * cameraScaleWhenExport;
+    resultCanvas.height = stageSize.y * SCALE * cameraScaleWhenExport;
+    resultCanvas.style.width = `${stageSize.x * (1 / appScale) * cameraScaleWhenExport}px`;
+    resultCanvas.style.height = `${stageSize.y * (1 / appScale) * cameraScaleWhenExport}px`;
     const ctx = resultCanvas.getContext("2d")!;
-    ctx.scale(scale, scale);
+    ctx.scale(SCALE, SCALE);
     // 设置大小完毕
 
     document.body.appendChild(resultCanvas);

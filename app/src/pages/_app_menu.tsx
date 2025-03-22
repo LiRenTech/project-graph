@@ -32,6 +32,7 @@ import {
   TestTube2,
   Undo,
   View,
+  Image as ImageIcon,
 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -434,6 +435,9 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         <Col icon={<FileCode />} onClick={() => Popup.show(<ExportSvgPanel />, false)}>
           {t("export.items.exportAsSvg")}
         </Col>
+        <Col icon={<ImageIcon />} onClick={onExportPng}>
+          PNG
+        </Col>
         <Col icon={<FileType />} onClick={onSaveMarkdownNew}>
           {t("export.items.exportAsMarkdownBySelected")}
         </Col>
@@ -630,9 +634,6 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             }}
           >
             Cr
-          </Col>
-          <Col icon={<FileCode />} onClick={onExportPng}>
-            png
           </Col>
         </Row>
       )}
