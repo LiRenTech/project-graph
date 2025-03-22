@@ -12,7 +12,7 @@ export default defineConfig({
       { icon: "github", link: "https://github.com/LiRenTech/project-graph" },
       {
         icon: "qq",
-        link: "https://qm.qq.com/cgi-bin/qm/qr?k=1Wskf2Y2KJz3ARpCgzi04y_p95a78Wku&jump_from=webapi&authKey=EkjB+oWihwZIfyqVsIv2dGrNv7bhSGSIULM3+ZLU2R5AVxOUKaIRwi6TKOHlT04/",
+        link: "https://qm.qq.com/cgi-bin/qm/qr?k=smSidcY7O_wbU9fqAhgobcOpmTKJrZ1P&jump_from=webapi&authKey=eqX5/gvxrWlfyhu0xiLqA+yLoUPa1X5fZbbuEWdqB+JzBR7TO6/XY1e69QwtQ/sn",
       },
       {
         icon: "telegram",

@@ -181,8 +181,8 @@ export default function About() {
             onClick={() =>
               Dialog.show({
                 title: "QQ 交流群",
-                content: "点击复制",
-                code: `1018716404`,
+                content: "点击复制并在网页打开",
+                code: `https://qm.qq.com/cgi-bin/qm/qr?k=smSidcY7O_wbU9fqAhgobcOpmTKJrZ1P&jump_from=webapi&authKey=eqX5/gvxrWlfyhu0xiLqA+yLoUPa1X5fZbbuEWdqB+JzBR7TO6/XY1e69QwtQ/sn`,
               })
             }
           >
