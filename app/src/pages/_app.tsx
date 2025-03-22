@@ -23,6 +23,7 @@ import LogicNodePanel from "./_fixed_panel/_logic_node_panel";
 import RecentFilesPanel from "./_fixed_panel/_recent_files_panel";
 import StartFilePanel from "./_fixed_panel/_start_file_panel";
 import TagPanel from "./_fixed_panel/_tag_panel";
+import ExportPNGPanel from "./_fixed_panel/_export_png_panel";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -434,6 +435,7 @@ export default function App() {
           <StartFilePanel open={isStartFilePanelOpen} />
           <RecentFilesPanel />
           <ExportTreeTextPanel />
+          <ExportPNGPanel />
         </>
       )}
       {/* ======= */}

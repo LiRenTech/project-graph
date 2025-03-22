@@ -38,7 +38,13 @@ import { useNavigate } from "react-router-dom";
 import { Camera } from "../core/stage/Camera";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageManager } from "../core/stage/stageManager/StageManager";
-import { fileAtom, isClassroomModeAtom, isExportTreeTextPanelOpenAtom, isRecentFilePanelOpenAtom } from "../state";
+import {
+  fileAtom,
+  isClassroomModeAtom,
+  isExportPNGPanelOpenAtom,
+  isExportTreeTextPanelOpenAtom,
+  isRecentFilePanelOpenAtom,
+} from "../state";
 import { cn } from "../utils/cn";
 import { getCurrentWindow, isDesktop, isWeb } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
@@ -50,7 +56,6 @@ import { Popup } from "../components/popup";
 import { Settings } from "../core/service/Settings";
 import { RecentFileManager } from "../core/service/dataFileService/RecentFileManager";
 import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
-import { StageExportPng } from "../core/service/dataGenerateService/stageExportEngine/StageExportPng";
 import { ComplexityDetector } from "../core/service/dataManageService/ComplexityDetector";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { SoundService } from "../core/service/feedbackService/SoundService";
@@ -71,6 +76,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
   const { t } = useTranslation("appMenu");
   const [, setRecentFilePanelOpen] = useAtom(isRecentFilePanelOpenAtom);
   const [, setExportTreeTextPanelOpen] = useAtom(isExportTreeTextPanelOpenAtom);
+  const [, setExportPNGPanelOpen] = useAtom(isExportPNGPanelOpenAtom);
 
   /**
    * 新建草稿
@@ -268,6 +274,10 @@ export default function AppMenu({ className = "", open = false }: { className?: 
       return;
     }
     setExportTreeTextPanelOpen(true);
+  };
+
+  const onExportPng = () => {
+    setExportPNGPanelOpen(true);
   };
 
   const onSaveMarkdownNew = async () => {
@@ -621,7 +631,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           >
             Cr
           </Col>
-          <Col icon={<FileCode />} onClick={() => StageExportPng.exportStage()}>
+          <Col icon={<FileCode />} onClick={onExportPng}>
             png
           </Col>
         </Row>

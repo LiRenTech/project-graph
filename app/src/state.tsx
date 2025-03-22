@@ -19,6 +19,11 @@ export const isRecentFilePanelOpenAtom = atom(false);
 export const isExportTreeTextPanelOpenAtom = atom(false);
 
 /**
+ * 是否显示导出PNG图片面板
+ */
+export const isExportPNGPanelOpenAtom = atom(false);
+
+/**
  * 当前窗口是否折叠
  */
 export const isWindowCollapsingAtom = atom(false);

@@ -7,22 +7,19 @@ import { Canvas } from "../../../stage/Canvas";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
+import { appScale } from "../../../../utils/platform";
 
 export namespace StageExportPng {
+  /**
+   * 将整个舞台导出为png图片
+   */
   export async function exportStage() {
-    const resultCanvas = document.createElement("canvas");
-    resultCanvas.style.position = "fixed";
-    resultCanvas.style.top = "0";
-    resultCanvas.style.left = "0";
-    resultCanvas.style.width = "100%";
-    resultCanvas.style.height = "100%";
-    resultCanvas.style.zIndex = "99999";
-    resultCanvas.style.pointerEvents = "none";
-    document.body.appendChild(resultCanvas);
+    // 创建一个新的画布
+    const resultCanvas = generateCanvasNode();
     const resultCtx = resultCanvas.getContext("2d")!;
     const stageSize = StageManager.getSize();
-    resultCanvas.width = stageSize.x;
-    resultCanvas.height = stageSize.y;
+    // 创建完毕
+
     // 获取到最左上角
     const stageRect = StageManager.getBoundingRectangle();
     const topLeft = stageRect.leftTop;
@@ -53,7 +50,52 @@ export namespace StageExportPng {
         i++;
       }
     }
-    window.open(resultCanvas.toDataURL("image/png"), "_blank");
+    const imageData = resultCanvas.toDataURL("image/png");
+    console.log(imageData);
+    // window.open(resultCanvas.toDataURL("image/png"), "_blank");
+    // 移除画布
     resultCanvas.remove();
+
+    const imageNode = getImageNodeByImageData(imageData);
+    // document.body.appendChild(imageNode);
+    const imageBox = document.getElementById("export-png-image-box");
+    if (imageBox) {
+      imageBox.appendChild(imageNode);
+    }
+  }
+
+  export function generateCanvasNode(): HTMLCanvasElement {
+    const resultCanvas = document.createElement("canvas");
+    resultCanvas.style.position = "fixed";
+    resultCanvas.style.top = "0";
+    resultCanvas.style.left = "0";
+    resultCanvas.style.width = "100%";
+    resultCanvas.style.height = "100%";
+    resultCanvas.style.zIndex = "99999";
+    resultCanvas.style.pointerEvents = "none";
+
+    const stageSize = StageManager.getSize();
+    // 设置大小
+    const scale = window.devicePixelRatio * (1 / appScale);
+    resultCanvas.width = stageSize.x * scale;
+    resultCanvas.height = stageSize.y * scale;
+    resultCanvas.style.width = `${stageSize.x * (1 / appScale)}px`;
+    resultCanvas.style.height = `${stageSize.y * (1 / appScale)}px`;
+    const ctx = resultCanvas.getContext("2d")!;
+    ctx.scale(scale, scale);
+    // 设置大小完毕
+
+    document.body.appendChild(resultCanvas);
+    return resultCanvas;
+  }
+
+  export function getImageNodeByImageData(imageData: string) {
+    const imageNode = new Image();
+    imageNode.src = imageData;
+    imageNode.style.outline = "solid 1px red";
+    // imageNode.style.width = "100%";
+    // imageNode.style.height = "100%";
+    // imageNode.style.pointerEvents = "none";
+    return imageNode;
   }
 }
