@@ -1,15 +1,15 @@
-import { v4 } from "uuid";
 import { sleep } from "../../../../utils/sleep";
 import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Camera } from "../../../stage/Camera";
 import { Canvas } from "../../../stage/Canvas";
 import { StageManager } from "../../../stage/stageManager/StageManager";
-import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
 import { appScale } from "../../../../utils/platform";
 
 export namespace StageExportPng {
+  const SCALE = window.devicePixelRatio * (1 / appScale);
+
   /**
    * 将整个舞台导出为png图片
    */
@@ -17,37 +17,39 @@ export namespace StageExportPng {
     // 创建一个新的画布
     const resultCanvas = generateCanvasNode();
     const resultCtx = resultCanvas.getContext("2d")!;
-    const stageSize = StageManager.getSize();
     // 创建完毕
 
-    // 获取到最左上角
     const stageRect = StageManager.getBoundingRectangle();
+    // 左上角
     const topLeft = stageRect.leftTop;
+    // 右下角
     const bottomRight = stageRect.rightBottom;
     // 画布背景
     resultCtx.fillStyle = StageStyleManager.currentStyle.Background.toHexString();
-    resultCtx.fillRect(0, 0, stageSize.x, stageSize.y);
+    resultCtx.fillRect(0, 0, stageRect.size.x, stageRect.size.y);
     // 开始把画布内容渲染到新画布上
     Camera.targetScale = 1;
     Camera.currentScale = 1;
-    let i = 0;
+    // 遍历xy，xy是切割分块后的目标视野矩形的左上角
     for (let y = topLeft.y; y <= bottomRight.y; y += Renderer.h) {
       for (let x = topLeft.x; x <= bottomRight.x; x += Renderer.w) {
-        await sleep(1000);
-        StageManager.addTextNode(
-          new TextNode({
-            uuid: v4(),
-            text: i.toString(),
-            details: "",
-            location: [x, y],
-            size: [100, 100],
-          }),
-        );
-        console.log(x, y, x - topLeft.x, y - topLeft.y);
+        // 先移动再暂停等待
+        await sleep(200);
         Camera.location = new Vector(x + Renderer.w / 2, y + Renderer.h / 2);
-        const imageData = Canvas.ctx.getImageData(0, 0, Renderer.w, Renderer.h);
-        resultCtx.putImageData(imageData, x - topLeft.x, y - topLeft.y);
-        i++;
+        await sleep(200);
+
+        // StageManager.addTextNode(
+        //   new TextNode({
+        //     uuid: v4(),
+        //     text: i.toString(),
+        //     details: "",
+        //     location: [x, y],
+        //     size: [100, 100],
+        //   }),
+        // );
+        console.log(x, y, x - topLeft.x, y - topLeft.y);
+        const imageData = Canvas.ctx.getImageData(0, 0, Renderer.w * SCALE, Renderer.h * SCALE);
+        resultCtx.putImageData(imageData, (x - topLeft.x) * SCALE, (y - topLeft.y) * SCALE);
       }
     }
     const imageData = resultCanvas.toDataURL("image/png");
@@ -93,6 +95,7 @@ export namespace StageExportPng {
     const imageNode = new Image();
     imageNode.src = imageData;
     imageNode.style.outline = "solid 1px red";
+    imageNode.style.margin = "10px";
     // imageNode.style.width = "100%";
     // imageNode.style.height = "100%";
     // imageNode.style.pointerEvents = "none";
