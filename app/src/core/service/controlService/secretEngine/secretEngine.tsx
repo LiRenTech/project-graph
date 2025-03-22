@@ -20,6 +20,9 @@ import { CublicCatmullRomSplineEdge } from "../../../stage/stageObject/associati
 import { Color } from "../../../dataStruct/Color";
 import { Settings } from "../../Settings";
 import { StageEntityMoveManager } from "../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
+import { Renderer } from "../../../render/canvas2d/renderer";
+import { Section } from "../../../stage/stageObject/entity/Section";
+import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
 
 interface SecretItem {
   name: string;
@@ -213,6 +216,115 @@ export class SecretEngine {
         StageEntityMoveManager.alignCenterVertical();
       },
     },
+    "- - a l l": {
+      name: "将所有选中实体进行全连接",
+      explain: "用于特殊教学场景或图论教学，“- -”开头表示连线相关",
+      func() {
+        const selectedNodes = StageManager.getSelectedEntities();
+        for (let i = 0; i < selectedNodes.length; i++) {
+          for (let j = 0; j < selectedNodes.length; j++) {
+            const fromNode = selectedNodes[i];
+            const toNode = selectedNodes[j];
+            if (fromNode === toNode) {
+              continue;
+            }
+            if (fromNode instanceof ConnectableEntity && toNode instanceof ConnectableEntity) {
+              StageManager.connectEntity(fromNode, toNode, false);
+            }
+          }
+        }
+      },
+    },
+    "- - r i g h t": {
+      name: "将所有选中实体按照从左到右的摆放位置进行连接",
+      func() {
+        const selectedNodes = StageManager.getSelectedEntities().filter(
+          (entity) => entity instanceof ConnectableEntity,
+        );
+        if (selectedNodes.length <= 1) {
+          return;
+        }
+        selectedNodes.sort(
+          (a, b) => a.collisionBox.getRectangle().location.x - b.collisionBox.getRectangle().location.x,
+        );
+
+        for (let i = 0; i < selectedNodes.length - 1; i++) {
+          const fromNode = selectedNodes[i];
+          const toNode = selectedNodes[i + 1];
+          if (fromNode === toNode) {
+            continue;
+          }
+          StageManager.connectEntity(fromNode, toNode, false);
+        }
+      },
+    },
+    "- - d o w n": {
+      name: "将所有选中实体按照从上到下的摆放位置进行连接",
+      func() {
+        const selectedNodes = StageManager.getSelectedEntities().filter(
+          (entity) => entity instanceof ConnectableEntity,
+        );
+        if (selectedNodes.length <= 1) {
+          return;
+        }
+        selectedNodes.sort(
+          (a, b) => a.collisionBox.getRectangle().location.y - b.collisionBox.getRectangle().location.y,
+        );
+
+        for (let i = 0; i < selectedNodes.length - 1; i++) {
+          const fromNode = selectedNodes[i];
+          const toNode = selectedNodes[i + 1];
+          if (fromNode === toNode) {
+            continue;
+          }
+          StageManager.connectEntity(fromNode, toNode, false);
+        }
+      },
+    },
+    "+ e d g e": {
+      name: "选中所有连线",
+      explain: "仅选择所有视野内的连线",
+      func() {
+        const selectedEdges = StageManager.getAssociations();
+        const viewRect = Renderer.getCoverWorldRectangle();
+        for (const edge of selectedEdges) {
+          // 是否在视野内
+          if (Renderer.isOverView(viewRect, edge)) {
+            continue;
+          }
+          edge.isSelected = true;
+          console.log(edge);
+        }
+      },
+    },
+    "; r e d": {
+      name: "将所有选中物体染色为纯红色",
+      explain: "具体为：(239, 68, 68)，仅作快速标注用",
+      func() {
+        const selectedStageObject = StageManager.getStageObject().filter((obj) => obj.isSelected);
+        for (const obj of selectedStageObject) {
+          if (obj instanceof TextNode || obj instanceof Section || obj instanceof LineEdge) {
+            obj.color = new Color(239, 68, 68);
+          }
+        }
+      },
+    },
+    "; b +": {
+      name: "将所选实体的颜色亮度增加",
+      explain: "不能对没有上色的或者透明的实体使用",
+      func() {
+        const selectedStageObject = StageManager.getStageObject().filter((obj) => obj.isSelected);
+        for (const obj of selectedStageObject) {
+          if (obj instanceof TextNode || obj instanceof Section || obj instanceof LineEdge) {
+            if (obj.color.a === 0) {
+              continue;
+            }
+            obj.color = new Color(obj.color.r + 20, obj.color.b + 20, obj.color.g + 20, obj.color.a);
+          }
+        }
+      },
+    },
+
     // ====================
     // 以上是可能很方便的给用户用的
     //
