@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { isExportPNGPanelOpenAtom } from "../../state";
 import { useAtom } from "jotai";
-import { cn } from "../../utils/cn";
+import { Download, RefreshCcw } from "lucide-react";
+import { useEffect, useState } from "react";
 import Button from "../../components/Button";
+import { Dialog } from "../../components/dialog";
 import { StageExportPng } from "../../core/service/dataGenerateService/stageExportEngine/StageExportPng";
 import { Camera } from "../../core/stage/Camera";
-import { Dialog } from "../../components/dialog";
-import { Download, RefreshCcw } from "lucide-react";
 import { Stage } from "../../core/stage/Stage";
+import { isExportPNGPanelOpenAtom } from "../../state";
+import { cn } from "../../utils/cn";
 import { PathString } from "../../utils/pathString";
 
 /**
@@ -103,6 +103,11 @@ export default function ExportPNGPanel() {
           <Download />
           下载当前图片
         </Button>
+      </div>
+      <div>
+        <p className="text-panel-details-text text-xs">
+          渲染图片时，会逐个拼接小块，需要等待若干秒才能完成渲染，摄像机缩放比率越大，渲染时间越长，画面分辨率越高
+        </p>
       </div>
       {/* 关闭按钮 */}
       <button

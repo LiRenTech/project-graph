@@ -1,3 +1,4 @@
+import { appScale } from "../../../../utils/platform";
 import { sleep } from "../../../../utils/sleep";
 import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
@@ -5,7 +6,7 @@ import { Camera } from "../../../stage/Camera";
 import { Canvas } from "../../../stage/Canvas";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
-import { appScale } from "../../../../utils/platform";
+import { Settings } from "../../Settings";
 
 export namespace StageExportPng {
   /**
@@ -30,7 +31,7 @@ export namespace StageExportPng {
   /**
    * 将整个舞台导出为png图片
    */
-  export async function exportStage() {
+  async function exportStage_() {
     // 创建一个新的画布
     const resultCanvas = generateCanvasNode();
     const resultCtx = resultCanvas.getContext("2d")!;
@@ -53,9 +54,9 @@ export namespace StageExportPng {
     for (let y = topLeft.y; y <= bottomRight.y; y += viewRect.size.y) {
       for (let x = topLeft.x; x <= bottomRight.x; x += viewRect.size.x) {
         // 先移动再暂停等待
-        await sleep(200);
+        await sleep(50);
         Camera.location = new Vector(x + viewRect.size.x / 2, y + viewRect.size.y / 2);
-        await sleep(200);
+        await sleep(50);
         const imageData = Canvas.ctx.getImageData(0, 0, viewRect.size.x * SCALE, viewRect.size.y * SCALE);
         resultCtx.putImageData(
           imageData,
@@ -73,6 +74,39 @@ export namespace StageExportPng {
     if (imageBox) {
       imageBox.appendChild(imageNode);
     }
+  }
+
+  export async function exportStage() {
+    // 背景网格信息
+    const showBackgroundCartesian = await Settings.get("showBackgroundCartesian");
+    Settings.set("showBackgroundCartesian", false);
+    const showBackgroundDots = await Settings.get("showBackgroundDots");
+    Settings.set("showBackgroundDots", false);
+    const showBackgroundHorizontalLines = await Settings.get("showBackgroundHorizontalLines");
+    Settings.set("showBackgroundHorizontalLines", false);
+    const showBackgroundVerticalLines = await Settings.get("showBackgroundVerticalLines");
+    Settings.set("showBackgroundVerticalLines", false);
+
+    // 渲染问题
+    const isPauseRenderWhenManipulateOvertime = await Settings.get("isPauseRenderWhenManipulateOvertime");
+    Settings.set("isPauseRenderWhenManipulateOvertime", false);
+    // 先记录摄像机信息
+    const cameraLocation = Camera.location.clone();
+    const cameraTargetLocation = Camera.targetLocationByScale.clone();
+    const cameraScale = Camera.currentScale;
+    // 开始渲染
+    await exportStage_();
+    // 恢复摄像机信息
+    Camera.location = cameraLocation;
+    Camera.targetLocationByScale = cameraTargetLocation;
+    Camera.currentScale = cameraScale;
+
+    // 背景网格信息
+    Settings.set("showBackgroundCartesian", showBackgroundCartesian);
+    Settings.set("showBackgroundDots", showBackgroundDots);
+    Settings.set("showBackgroundHorizontalLines", showBackgroundHorizontalLines);
+    Settings.set("showBackgroundVerticalLines", showBackgroundVerticalLines);
+    Settings.set("isPauseRenderWhenManipulateOvertime", isPauseRenderWhenManipulateOvertime);
   }
 
   export function generateCanvasNode(): HTMLCanvasElement {
