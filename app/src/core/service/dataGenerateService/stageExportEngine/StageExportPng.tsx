@@ -43,7 +43,11 @@ export namespace StageExportPng {
     // 画布背景
     if (isHaveBackground) {
       resultCtx.fillStyle = StageStyleManager.currentStyle.Background.toNewAlpha(1).toString();
-      resultCtx.fillRect(0, 0, stageRect.size.x, stageRect.size.y);
+      console.log("background", resultCtx.fillStyle, stageRect);
+      // resultCtx.roundRect(0, 0, Math.floor(stageRect.size.x * 10), Math.floor(stageRect.size.y * 10));
+      resultCtx.roundRect(-10000, 10000, 20000, 20000);
+      // 奇怪了
+      resultCtx.fill();
     }
     // 开始把画布内容渲染到新画布上
     Camera.targetScale = cameraScaleWhenExport;
@@ -54,9 +58,9 @@ export namespace StageExportPng {
     for (let y = topLeft.y; y <= bottomRight.y; y += viewRect.size.y) {
       for (let x = topLeft.x; x <= bottomRight.x; x += viewRect.size.x) {
         // 先移动再暂停等待
-        await sleep(50);
+        await sleep(20);
         Camera.location = new Vector(x + viewRect.size.x / 2, y + viewRect.size.y / 2);
-        await sleep(50);
+        await sleep(20);
         const imageData = Canvas.ctx.getImageData(0, 0, viewRect.size.x * SCALE, viewRect.size.y * SCALE);
         resultCtx.putImageData(
           imageData,

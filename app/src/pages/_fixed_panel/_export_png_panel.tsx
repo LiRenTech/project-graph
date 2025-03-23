@@ -59,7 +59,7 @@ export default function ExportPNGPanel() {
     >
       <h2>导出png图片</h2>
       <div
-        className="bg-panel-bg flex h-96 w-full items-center justify-center overflow-auto rounded-md"
+        className="flex h-96 w-full items-center justify-center overflow-auto rounded-md bg-black"
         id="export-png-image-box"
       >
         <span>暂时没有渲染结果，请先点击渲染图片</span>
@@ -106,7 +106,7 @@ export default function ExportPNGPanel() {
       </div>
       <div>
         <p className="text-panel-details-text text-xs">
-          渲染图片时，会逐个拼接小块，需要等待若干秒才能完成渲染，摄像机缩放比率越大，渲染时间越长，画面分辨率越高
+          渲染图片时，会逐个拼接小块，需要等待若干秒才能完成渲染，摄像机缩放比率越大，渲染时间越长，画面分辨率越高，目前渲染的图片是透明的
         </p>
       </div>
       {/* 关闭按钮 */}
