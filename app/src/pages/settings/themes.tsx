@@ -14,7 +14,7 @@ export default function ThemesPage() {
         <Field
           key={theme.metadata.id}
           title={theme.metadata.name[i18n.resolvedLanguage!]}
-          description={theme.metadata.author}
+          description={theme.metadata.description.zh_CN + "\n" + theme.metadata.author}
         >
           <Switch
             value={currentTheme === theme.metadata.id}

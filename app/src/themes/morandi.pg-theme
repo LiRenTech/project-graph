@@ -1,6 +1,9 @@
 ---
 id: morandi
 author: Official
+description:
+  en: Low-saturation theme with bright light in bright environments.
+  zh_CN: 低饱和度主题，光线明朗的环境下使用
 name:
   en: Morandi
   zh_CN: 莫兰迪

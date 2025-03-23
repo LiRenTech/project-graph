@@ -5,6 +5,10 @@ export namespace Themes {
   export type Metadata = {
     id: string;
     author: string;
+    description: {
+      en: string;
+      zh_CN: string;
+    };
     name: Record<string, string>;
   };
   export const builtinThemes = Object.values(

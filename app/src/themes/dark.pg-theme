@@ -1,6 +1,9 @@
 ---
 id: dark
 author: Official
+description:
+  en: A dark theme for Project Graph. Intended for use in dark environments.
+  zh_CN: 主要用于夜间使用，防止刺眼
 name:
   en: Dark
   zh_CN: 黑夜
@@ -112,7 +115,7 @@ field-group:
   hover-bg: "oklch(0.269 0 0)"
 
 stage:
-  Background: "#1f1f1f"
+  Background: "#181818"
   GridNormal: "rgba(255, 255, 255, 0.2)"
   GridHeavy: "rgba(255, 255, 255, 0.3)"
   DetailsDebugText: "rgba(255, 255, 255, 0.5)"

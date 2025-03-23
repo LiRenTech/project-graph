@@ -4,6 +4,9 @@ author: Official
 name:
   en: Park
   zh_CN: 公园
+description:
+  en: A dark and colorful theme with a black and white feel.
+  zh_CN: 兼具夜晚防刺眼的特性与一定的色彩
 ---
 panel:
   bg: "#364153"
@@ -112,7 +115,7 @@ field-group:
   hover-bg: "#1b2127"
 
 stage:
-  Background: "rgba(30, 34, 38)"
+  Background: "rgba(34, 34, 34)"
   GridNormal: "rgba(94, 101, 108, 0.5)" # 雾霭灰网格
   GridHeavy: "rgb(94, 101, 108)" # 夜霭加深
   DetailsDebugText: "rgba(118, 129, 143, 0.7)" # 暮霭灰
