@@ -6,33 +6,33 @@ name:
   zh_CN: 明亮
 ---
 panel:
-  bg: "oklch(0.98 0.01 0)"
-  text: "oklch(0.15 0.05 0)"
-  details-text: "oklch(0.5 0.05 0)"
+  bg: "rgb(255, 255, 255)"
+  text: "rgb(52, 58, 64)"
+  details-text: "rgb(103, 107, 112)"
   success-text: "#00a300"
   warning-text: "#b16100"
   error-text: "#bd0000"
 
 tooltip:
-  bg: "oklch(0.95 0.01 0)"
-  text: "oklch(0.15 0.05 0)"
-  border: "oklch(0.85 0.02 0)"
+  bg: "rgb(255, 243, 205)"
+  border: "rgb(225, 180, 126)"
+  text: "rgb(0, 0, 0)"
 
 button:
-  bg: "oklch(0.98 0.01 0)"
-  text: "oklch(0.15 0.05 0)"
-  border: "oklch(0.85 0.02 0)"
+  bg: "rgb(108, 128, 149)"
+  text: "rgb(255, 255, 255)"
+  border: "#344b62"
 
 icon-button:
-  bg: "oklch(0.98 0.01 0)"
-  text: "oklch(0.15 0.05 0)"
-  border: "oklch(0.85 0.02 0)"
+  bg: "rgb(90, 116, 144)"
+  text: "rgb(255, 255, 255)"
+  border: "#344b62"
 
 input:
-  bg: "oklch(0.98 0.01 0)"
-  text: "oklch(0.15 0.05 0)"
+  bg: "rgb(255, 255, 255)"
+  text: "rgb(24, 25, 28)"
   border: "oklch(0.85 0.02 0)"
-  placeholder: "oklch(0.6 0.02 0)"
+  placeholder: "rgb(132, 145, 165)"
 
 keybind:
   bg: "oklch(0.95 0.01 0)"
@@ -41,85 +41,85 @@ keybind:
   active-outline: "oklch(0.7 0.2 259.815)"
 
 select:
-  bg: "oklch(0.98 0.01 0)"
-  text: "oklch(0.15 0.05 0)"
+  bg: "rgb(248, 248, 250)"
+  text: "rgb(25, 27, 31)"
   border: "oklch(0.85 0.02 0)"
   popup:
-    bg: "oklch(0.98 0.01 0)"
+    bg: "rgb(248, 248, 250)"
     border: "oklch(0.85 0.02 0)"
     shadow: "oklch(0.85 0.02 0 / 0.1)"
   option:
     bg: "transparent"
-    text: "oklch(0.15 0.05 0)"
+    text: "rgb(25, 27, 31)"
     border: "transparent"
     hover:
-      bg: "oklch(0.95 0.01 0)"
-      text: "oklch(0.15 0.05 0)"
-      border: "transparent"
+      bg: "transparent"
+      text: "rgb(25, 27, 31)"
+      border: "rgb(132, 145, 165)"
     selected:
-      bg: "oklch(0.9 0.05 0)"
-      text: "oklch(0.15 0.05 0)"
-      border: "transparent"
+      bg: "rgb(255, 243, 205)"
+      text: "rgb(102, 77, 3)"
+      border: "rgb(255, 230, 156)"
       hover:
-        bg: "oklch(0.85 0.05 0)"
-        text: "oklch(0.15 0.05 0)"
-        border: "transparent"
+        bg: "rgb(255, 243, 205)"
+        text: "rgb(102, 77, 3)"
+        border: "rgb(255, 230, 156)"
 
 slider:
-  line: "oklch(0.85 0.02 0)"
+  line: "rgb(225, 227, 229)"
   handle: "oklch(0.7 0.2 254.624)"
 
 switch:
   false:
-    bg: "oklch(0.85 0.02 0)"
-    dot: "oklch(0.98 0.01 0)"
+    bg: "rgb(152, 165, 185)"
+    dot: "rgb(250, 250, 250)"
   true:
-    bg: "oklch(0.7 0.2 259.815)"
-    dot: "oklch(0.98 0.01 0)"
+    bg: "rgb(23, 114, 246)"
+    dot: "rgb(250, 250, 250)"
   disabled:
-    bg: "oklch(0.9 0.01 0)"
-    dot: "oklch(0.7 0.02 0)"
+    bg: "rgb(56, 57, 60)"
+    dot: "rgb(155, 161, 166)"
 
 appmenu:
-  bg: "oklch(0.98 0.01 0)"
-  border: "oklch(0.85 0.02 0)"
+  bg: "rgb(255, 255, 255)"
+  border: "rgb(132, 145, 165)"
   category:
-    title: "oklch(0.6 0.02 0)"
-    separator: "oklch(0.85 0.02 0)"
+    title: "rgb(26, 88, 150)"
+    separator: "rgb(132, 145, 165)"
   item:
-    text: "oklch(0.15 0.05 0)"
-  hover-bg: "oklch(0.95 0.01 0)"
+    text: "rgb(25, 27, 31)"
+  hover-bg: "rgb(233, 234, 237)"
 
 toolbar:
-  bg: "oklch(0.98 0.01 0)"
-  icon: "oklch(0.15 0.05 0)"
+  bg: "rgb(231, 240, 254)"
+  icon: "rgb(23, 114, 200)"
+  border: "rgb(153, 153, 153)"
   icon-hover-bg: "rgb(0 0 0 / 0.1)"
-  border: "oklch(0.85 0.02 0)"
   tooltip:
-    bg: "oklch(0.95 0.01 0)"
-    text: "oklch(0.15 0.05 0)"
-    border: "oklch(0.85 0.02 0)"
+    bg: "rgb(0, 0, 0)"
+    text: "rgb(0, 0, 0)"
+    border: "rgb(23, 114, 200)"
   collapsed-bg: "oklch(0.15 0.05 0)"
 
 settings:
-  page-bg: "#d3d3d3"
-  text: "oklch(0.15 0.05 0)"
+  page-bg: "rgb(244, 246, 249)"
+  text: "rgb(25, 27, 31)"
 
 field-group:
-  bg: "#acacac"
-  hover-bg: "rgb(240, 240, 240)"
+  bg: "#fff"
+  hover-bg: "rgb(248, 248, 250)"
 
 stage:
   Background: "#ffffff"
   GridNormal: "rgba(51, 51, 51, 0.4)"
   GridHeavy: "rgba(20, 20, 20, 0.4)"
-  DetailsDebugText: "rgba(125, 125, 125, 0.4)"
-  SelectRectangleBorder: "rgba(0, 0, 0, 0.5)"
-  SelectRectangleFill: "rgba(0, 0, 0, 0.08)"
+  DetailsDebugText: "rgba(125, 125, 125, 0.8)"
+  SelectRectangleBorder: "rgba(0, 0, 0, 1)"
+  SelectRectangleFill: "rgba(0, 50, 100, 0.1)"
   StageObjectBorder: "#000000"
   NodeDetailsText: "#000000"
-  CollideBoxPreSelected: "rgba(0, 255, 0, 0.2)"
-  CollideBoxSelected: "rgba(64, 209, 171, 0.5)"
+  CollideBoxPreSelected: "rgba(23, 114, 246, 0.5)"
+  CollideBoxSelected: "rgba(23, 114, 246, 0.8)"
   CollideBoxPreDelete: "rgba(255, 255, 0, 0.2)"
 
 effects:
@@ -127,4 +127,4 @@ effects:
   dash: "#000"
   windowFlash: "#fff"
   warningShadow: "#f00"
-  successShadow: "#0f0"
+  successShadow: "rgb(23, 114, 246)"

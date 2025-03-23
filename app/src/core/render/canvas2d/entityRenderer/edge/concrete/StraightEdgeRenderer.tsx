@@ -52,14 +52,14 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         new ProgressNumber(0, 15),
         startNode.collisionBox.getRectangle().center,
         80,
-        new Color(83, 175, 29, 1),
+        StageStyleManager.currentStyle.effects.successShadow.clone(),
       ),
       new LineCuttingEffect(
         new ProgressNumber(0, 30),
         startNode.collisionBox.getRectangle().center,
         toNode.collisionBox.getRectangle().center,
-        new Color(78, 201, 176, 1),
-        new Color(83, 175, 29, 1),
+        StageStyleManager.currentStyle.effects.successShadow.clone(),
+        StageStyleManager.currentStyle.effects.successShadow.clone(),
         20,
       ),
     ];
@@ -285,8 +285,8 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     CurveRenderer.renderGradientLine(
       Renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
       Renderer.transformWorld2View(endNode.collisionBox.getRectangle().getCenter()),
-      new Color(0, 255, 0, 0),
-      new Color(0, 255, 0, 0.5),
+      StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.5),
+      StageStyleManager.currentStyle.effects.successShadow.toSolid(),
       2,
     );
   }

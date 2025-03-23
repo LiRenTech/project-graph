@@ -1,6 +1,5 @@
 import { v4 } from "uuid";
 import { CursorNameEnum } from "../../../../../types/cursors";
-import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
@@ -14,6 +13,7 @@ import { SoundService } from "../../../feedbackService/SoundService";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { addTextNodeByLocation } from "./utilsControl";
+import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 
 /**
  * 连线控制器
@@ -119,7 +119,7 @@ class ControllerNodeConnectionClass extends ControllerClass {
             new RectangleNoteEffect(
               new ProgressNumber(0, 15),
               node.collisionBox.getRectangle().clone(),
-              new Color(0, 255, 0, 1),
+              StageStyleManager.currentStyle.effects.successShadow.clone(),
             ),
           );
         }
@@ -133,7 +133,7 @@ class ControllerNodeConnectionClass extends ControllerClass {
         new RectangleNoteEffect(
           new ProgressNumber(0, 15),
           clickedConnectableEntity.collisionBox.getRectangle().clone(),
-          new Color(0, 255, 0, 1),
+          StageStyleManager.currentStyle.effects.successShadow.clone(),
         ),
       );
     }

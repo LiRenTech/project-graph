@@ -647,7 +647,7 @@ function Row({ children, title, icon }: React.PropsWithChildren<{ title: string;
       <span className="text-appmenu-category-title flex gap-1">
         {icon} {title}
       </span>
-      <div className="w-0.5 bg-neutral-700"></div>
+      <div className="bg-appmenu-category-separator w-0.5"></div>
       {children}
     </div>
   );

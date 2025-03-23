@@ -348,7 +348,7 @@ export default function App() {
                     <div
                       data-tauri-drag-region
                       className={cn(
-                        isSaved ? "text-icon-button-text" : "text-panel-error-text",
+                        isSaved ? "text-button-text" : "text-panel-error-text",
                         "absolute flex h-full w-full items-center justify-center truncate p-0 hover:cursor-move active:cursor-grabbing",
                         isClassroomMode && "opacity-0",
                       )}

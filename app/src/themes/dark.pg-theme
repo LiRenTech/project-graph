@@ -35,7 +35,7 @@ input:
   placeholder: "oklch(0.556 0 0)"
 
 keybind:
-  bg: "oklch(0.269 0 0)"
+  bg: "oklch(0.4 0 0)"
   text: "#fff"
   border: "oklch(0.371 0 0)"
   active-outline: "oklch(0.623 0.214 259.815)"
@@ -71,8 +71,8 @@ slider:
 
 switch:
   false:
-    bg: "oklch(0.269 0 0)"
-    dot: "#fff"
+    bg: "oklch(0.2 0 0)"
+    dot: "#999"
   true:
     bg: "oklch(0.623 0.214 259.815)"
     dot: "#fff"
