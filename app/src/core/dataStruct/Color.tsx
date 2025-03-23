@@ -355,6 +355,23 @@ export class Color {
     if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
     return p;
   }
+
+  /**
+   * 将此颜色的色相环绕到另一个颜色
+   * @param color 另一个颜色
+   * @param deHue 色相差值，正数表示顺时针，负数表示逆时针
+   */
+  public changeHue(deHue: number): Color {
+    // 获取目标颜色和当前颜色的HSL值
+    const { h: currentHue, s: currentS, l: currentL } = this.rgbToHsl();
+    console.log(currentHue, currentS, currentL);
+    // 计算新的色相值（处理负值和360度环绕）
+    const newHue = (currentHue + deHue + 360) % 360;
+
+    // 创建并返回新的颜色对象，保持原有饱和度、亮度
+    const { r, g, b } = this.hslToRgb({ h: newHue, s: currentS, l: currentL });
+    return new Color(r, g, b, this.a);
+  }
 }
 export function colorInvert(color: Color): Color {
   /**

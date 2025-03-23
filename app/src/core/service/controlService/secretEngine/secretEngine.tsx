@@ -309,9 +309,9 @@ export class SecretEngine {
         }
       },
     },
-    "; b +": {
+    "b .": {
       name: "将所选实体的颜色亮度增加",
-      explain: "不能对没有上色的或者透明的实体使用",
+      explain: "不能对没有上色的或者透明的实体使用，b是brightness，句号键也是>键，可以看成往右走，数值增大",
       func() {
         const selectedStageObject = StageManager.getStageObject().filter((obj) => obj.isSelected);
         for (const obj of selectedStageObject) {
@@ -319,7 +319,48 @@ export class SecretEngine {
             if (obj.color.a === 0) {
               continue;
             }
-            obj.color = new Color(obj.color.r + 20, obj.color.b + 20, obj.color.g + 20, obj.color.a);
+            obj.color = new Color(
+              Math.min(255, obj.color.r + 20),
+              Math.min(255, obj.color.b + 20),
+              Math.min(255, obj.color.g + 20),
+              obj.color.a,
+            );
+          }
+        }
+      },
+    },
+    "b ,": {
+      name: "将所选实体的颜色亮度减少",
+      explain: "不能对没有上色的或者透明的实体使用，b是brightness，逗号键也是<键，可以看成往左走，数值减小",
+      func() {
+        const selectedStageObject = StageManager.getStageObject().filter((obj) => obj.isSelected);
+        for (const obj of selectedStageObject) {
+          if (obj instanceof TextNode || obj instanceof Section || obj instanceof LineEdge) {
+            if (obj.color.a === 0) {
+              continue;
+            }
+            obj.color = new Color(
+              Math.max(0, obj.color.r - 20),
+              Math.max(0, obj.color.b - 20),
+              Math.max(0, obj.color.g - 20),
+              obj.color.a,
+            );
+          }
+        }
+      },
+    },
+    "; ,": {
+      name: "将所选实体的颜色渐变",
+      explain: "后续打算做成更改色相环，目前还不完善",
+      func() {
+        const selectedStageObject = StageManager.getStageObject().filter((obj) => obj.isSelected);
+        for (const obj of selectedStageObject) {
+          if (obj instanceof TextNode || obj instanceof Section || obj instanceof LineEdge) {
+            if (obj.color.a === 0) {
+              continue;
+            }
+            const oldColor = obj.color.clone();
+            obj.color = new Color(Math.max(oldColor.a - 20, 0), Math.min(255, oldColor.g + 20), oldColor.b, oldColor.a);
           }
         }
       },
