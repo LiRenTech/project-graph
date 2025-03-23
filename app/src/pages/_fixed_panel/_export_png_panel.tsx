@@ -7,6 +7,8 @@ import { StageExportPng } from "../../core/service/dataGenerateService/stageExpo
 import { Camera } from "../../core/stage/Camera";
 import { Dialog } from "../../components/dialog";
 import { Download, RefreshCcw } from "lucide-react";
+import { Stage } from "../../core/stage/Stage";
+import { PathString } from "../../utils/pathString";
 
 /**
  * 导出png的面板
@@ -29,7 +31,14 @@ export default function ExportPNGPanel() {
     if (image) {
       const a = document.createElement("a");
       a.href = image.src;
-      a.download = `${123456}.png`;
+
+      let fileName = "file";
+      if (Stage.path.isDraft()) {
+        fileName = "草稿";
+      } else {
+        fileName = PathString.getFileNameFromPath(Stage.path.getFilePath());
+      }
+      a.download = `${fileName}.png`;
       a.click();
     } else {
       Dialog.show({
@@ -49,7 +58,10 @@ export default function ExportPNGPanel() {
       )}
     >
       <h2>导出png图片</h2>
-      <div className="bg-panel-bg flex h-96 w-full items-center justify-center rounded-md" id="export-png-image-box">
+      <div
+        className="bg-panel-bg flex h-96 w-full items-center justify-center overflow-auto rounded-md"
+        id="export-png-image-box"
+      >
         <span>暂时没有渲染结果，请先点击渲染图片</span>
       </div>
       <div className="flex w-full items-center">
