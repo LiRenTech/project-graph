@@ -5,6 +5,8 @@ import { cn } from "../../utils/cn";
 import Button from "../../components/Button";
 import { StageExportPng } from "../../core/service/dataGenerateService/stageExportEngine/StageExportPng";
 import { Camera } from "../../core/stage/Camera";
+import { Dialog } from "../../components/dialog";
+import { Download, RefreshCcw } from "lucide-react";
 
 /**
  * 导出png的面板
@@ -29,6 +31,11 @@ export default function ExportPNGPanel() {
       a.href = image.src;
       a.download = `${123456}.png`;
       a.click();
+    } else {
+      Dialog.show({
+        title: "提示",
+        content: "请先渲染图片",
+      });
     }
   };
 
@@ -42,8 +49,10 @@ export default function ExportPNGPanel() {
       )}
     >
       <h2>导出png图片</h2>
-      <div className="h-96 w-full overflow-auto ring" id="export-png-image-box"></div>
-      <div className="flex w-full items-center ring">
+      <div className="bg-panel-bg flex h-96 w-full items-center justify-center rounded-md" id="export-png-image-box">
+        <span>暂时没有渲染结果，请先点击渲染图片</span>
+      </div>
+      <div className="flex w-full items-center">
         <span>摄像机缩放比例：</span>
         <input
           type="range"
@@ -61,6 +70,9 @@ export default function ExportPNGPanel() {
         />
         <span>{cameraScaleWhenExport}</span>
       </div>
+      <div className="flex w-full items-center">
+        <span>当您的舞台内容过多过大时，一定要调小此值，防止图片过大崩溃</span>
+      </div>
       <div className="my-2 flex justify-center gap-2">
         <Button
           onClick={() => {
@@ -73,9 +85,12 @@ export default function ExportPNGPanel() {
             StageExportPng.exportStage();
           }}
         >
-          重新渲染图片
+          <RefreshCcw /> 重新渲染图片
         </Button>
-        <Button onClick={downloadImage}>下载当前图片</Button>
+        <Button onClick={downloadImage}>
+          <Download />
+          下载当前图片
+        </Button>
       </div>
       {/* 关闭按钮 */}
       <button
