@@ -35,10 +35,12 @@ input:
   placeholder: "oklch(0.556 0 0)"
 
 keybind:
-  bg: "oklch(0.4 0 0)"
+  bg: "oklch(0.269 0 0)"
   text: "#fff"
   border: "oklch(0.371 0 0)"
   active-outline: "oklch(0.623 0.214 259.815)"
+  modifiers-bg: "#ddd"
+  modifiers-text: "#000"
 
 select:
   bg: "oklch(0.269 0 0)"

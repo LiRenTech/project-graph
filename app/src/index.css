@@ -52,6 +52,8 @@
   --color-keybind-text: var(--color-keybind-text);
   --color-keybind-border: var(--color-keybind-border);
   --color-keybind-active-outline: var(--color-keybind-active-outline);
+  --color-keybind-modifiers-bg: var(--color-keybind-modifiers-bg);
+  --color-keybind-modifiers-text: var(--color-keybind-modifiers-text);
   --color-select-bg: var(--color-select-bg);
   --color-select-text: var(--color-select-text);
   --color-select-border: var(--color-select-border);

@@ -39,6 +39,8 @@ keybind:
   text: "#d5f4db"
   border: "#7b9a82"
   active-outline: "#d7efdc"
+  modifiers-bg: "rgb(27, 33, 39)"
+  modifiers-text: "#d5f4db"
 
 select:
   bg: "#4c6050"
@@ -110,20 +112,20 @@ field-group:
   hover-bg: "#1b2127"
 
 stage:
-  Background: "#2d3846" # 深夜空蓝
-  GridNormal: "rgba(74, 85, 101, 0.3)" # 雾霭灰网格
-  GridHeavy: "rgba(74, 85, 101, 0.5)" # 夜霭加深
+  Background: "rgba(30, 34, 38)"
+  GridNormal: "rgba(94, 101, 108, 0.5)" # 雾霭灰网格
+  GridHeavy: "rgb(94, 101, 108)" # 夜霭加深
   DetailsDebugText: "rgba(118, 129, 143, 0.7)" # 暮霭灰
-  SelectRectangleBorder: "rgba(106, 138, 113, 0.5)" # 冷杉绿
+  SelectRectangleBorder: "#fff"
   SelectRectangleFill: "rgba(169, 221, 208, 0.15)" # 月下竹影
-  StageObjectBorder: "rgba(136, 168, 143, 0.7)"
+  StageObjectBorder: "rgb(229, 231, 235)"
   NodeDetailsText: "#c0c8d0" # 霜月白
-  CollideBoxPreSelected: "rgba(110, 150, 130, 0.3)" # 青苔预选
-  CollideBoxSelected: "rgba(70, 120, 90, 0.5)" # 深林选中
+  CollideBoxPreSelected: "rgba(106, 153, 85, 0.5)"
+  CollideBoxSelected: "rgba(106, 153, 85, 0.85)" # 深林选中
   CollideBoxPreDelete: "rgba(255, 210, 0, 0.2)" # 落叶黄
 
 effects:
-  flash: "oklch(0.65 0.05 240)" # 萤火微光
+  flash: "#fff"
   dash: "#6b7280" # 夜雾拖影
   windowFlash: "#eef1f0" # 月光涟漪
   warningShadow: "rgba(177, 183, 189, 0.4)" # 夜鸮警示

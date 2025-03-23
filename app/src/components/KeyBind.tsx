@@ -151,7 +151,7 @@ export default function KeyBind({
     return (
       <>
         {modifiers.map((modifier, index) => (
-          <span className="border-icon-button-border bg-panel-bg rounded px-1" key={index}>
+          <span className="bg-keybind-modifiers-bg text-keybind-modifiers-text rounded px-1" key={index}>
             {modifier}
           </span>
         ))}
@@ -162,23 +162,20 @@ export default function KeyBind({
   return (
     <Button
       onClick={startInput}
-      className={cn(
-        "bg-keybind-bg text-keybind-text border-keybind-border text-sm outline-none outline-0 hover:cursor-pointer",
-        {
-          "outline-keybind-active-outline bg-blue-950 outline-4": choosing,
-        },
-      )}
+      className={cn("bg-keybind-bg border-keybind-border text-sm outline-none outline-0 hover:cursor-pointer", {
+        "outline-keybind-active-outline bg-blue-950 outline-4": choosing,
+      })}
     >
       {getModifiersName()}
 
       {value.key ? (
-        <>
+        <span className="text-keybind-text">
           {t(value.key, { defaultValue: value.key.toUpperCase() })}
           {value.key.length === 0 && choosing && "..."}
           {value.key.length === 0 && !choosing && t("none")}
-        </>
+        </span>
       ) : (
-        <>{t("none")}</>
+        <span className="text-keybind-text">{t("none")}</span>
       )}
     </Button>
   );
