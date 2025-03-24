@@ -72,12 +72,22 @@ export namespace StringFunctions {
    * 举例：
    * 输入 ["hello,world", ","]
    * 输出 ["hello", "world"]
+   * 但也可以是多个分隔符
+   * 举例：
+   * 输入 ["hello,world-my name is lisa", ",", " ", "-"]
+   * 输出 ["hello", "world", "my", "name", "is", "lisa"]
    */
   export function split(strings: string[]): string[] {
     if (strings.length < 2) return ["length less than 2"];
     const str = strings[0];
-    const sep = strings[1];
-    return str.split(sep);
+    const seps = strings.slice(1);
+
+    // 转义正则特殊字符
+    const escapedSeps = seps.map((sep) => sep.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    // 创建正则表达式，支持多个分隔符同时分割
+    const regex = new RegExp(escapedSeps.join("|"), "g");
+    // 分割后过滤空字符串
+    return str.split(regex).filter((item) => item !== "");
   }
 
   /**

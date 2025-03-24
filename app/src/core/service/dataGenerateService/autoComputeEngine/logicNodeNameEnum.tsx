@@ -234,7 +234,7 @@ export const LogicNodeNameToArgsTipsMap: {
   [LogicNodeNameEnum.LOWER]: "a0: string, 将字符串转为小写",
   [LogicNodeNameEnum.LEN]: "a0: string, 获取字符串长度",
   [LogicNodeNameEnum.COPY]: "a0: string, 复制字符串",
-  [LogicNodeNameEnum.SPLIT]: "a0: string, a1: separator, 分割字符串",
+  [LogicNodeNameEnum.SPLIT]: "a0: string, a1: separator, a2: separator2, a3: ...",
   [LogicNodeNameEnum.REPLACE]: "a0: string, a1: old, a2: new, 替换字符串",
   [LogicNodeNameEnum.CONNECT]: "a0 + a1 + a2 + ... 连接字符串",
   [LogicNodeNameEnum.CHECK_REGEX_MATCH]: "正则匹配",

@@ -29,13 +29,13 @@ features:
   - icon: 🚀
     title: 快
     details: 只需点点鼠标，即可快速绘制节点图，无需学习复杂操作。
-    link: ./features/camera
+    link: ./guide/features/camera
   - icon: 🧠
     title: AI
     details: AI 补全节点、扩展节点树，提升工作效率。
-    link: ./features/ai
+    link: ./guide/features/ai
   - icon: 🧮
     title: 计算引擎
     details: 基于图论的计算引擎，支持节点间的各种关系计算。
-    link: ./features/compute-engine
+    link: ./guide/features/compute-engine
 ---
