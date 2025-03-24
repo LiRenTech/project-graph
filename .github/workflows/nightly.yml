@@ -26,8 +26,6 @@ jobs:
   # Build frontend and upload build result to Remote Cache
   build-frontend:
     runs-on: ubuntu-latest
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
@@ -40,6 +38,9 @@ jobs:
         run: pnpm install
       - name: Build frontend
         run: pnpm build
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: zty012
 
   publish-tauri:
     needs: [create-release, build-frontend]
@@ -47,8 +48,6 @@ jobs:
       hash: ${{ steps.sha256sum.outputs.hash }}
     permissions:
       contents: write
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
@@ -168,6 +167,8 @@ jobs:
       - name: Build
         run: pnpm tauri:build
         env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: zty012
           TAURI_BUILD_ARGS: ${{ matrix.args }}
           NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.11902837
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
