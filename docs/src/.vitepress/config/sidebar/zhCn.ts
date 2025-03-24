@@ -94,6 +94,10 @@ const guide: DefaultTheme.SidebarItem[] = [
         text: "⌨️ 秘籍键",
         link: "/secret-code",
       },
+      {
+        text: "🔊 音效",
+        link: "/sounds",
+      },
     ],
   },
   {

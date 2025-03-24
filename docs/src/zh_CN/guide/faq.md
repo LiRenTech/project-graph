@@ -27,6 +27,10 @@ sudo xattr -r -d com.apple.quarantine /Applications/Project\ Graph.app
 
 可以将其中一个backup文件直接改后缀名，改回json，将原来的json文件覆盖即可。每个备份文件都有时间，可以挑一个较近的恢复。
 
+> [!TIP]
+> 2025.2月份 自动备份文件的生成位置发生修改，与json文件同文件夹内创建一个单独的新文件夹并放置其中。
+> 如果你的笔记文件中有图片，一定要确保图片文件也放在同一文件夹内，图片无法正常显示。
+
 ## windows
 
 ### win10 双击安装包无任何响应
@@ -38,6 +42,10 @@ sudo xattr -r -d com.apple.quarantine /Applications/Project\ Graph.app
 大概率是因为webview2组件的问题。（webview2组件是微软推出的浏览器内核，用于渲染网页，在win11系统中默认使用webview2，但有些软件可能还没有适配，导致软件一闪而过。）
 
 解决方法：重新安装webview2
+
+### 更新新版本软件后，打开软件一闪而过一个窗口后消失，无任何响应
+
+全盘搜索 `liren.project-graph` 文件夹，删除内部数据后重新启动软件。
 
 ### 快捷键改乱了想重置下，如何恢复默认设置？
 
