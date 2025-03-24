@@ -5,7 +5,6 @@
   "description": "Collaborative Server for Project Graph",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "tsx watch ./src/index.ts",
     "build": "tsc && esbuild src/index.ts --bundle --platform=node --outfile=dist/index.js --minify"
   },
   "keywords": [],

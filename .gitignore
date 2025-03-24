@@ -15,3 +15,5 @@ backup_projectGraphTips
 *.backup.json
 # 省略文件夹
 backup_*
+
+.turbo

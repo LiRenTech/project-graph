@@ -5,4 +5,10 @@ import { defineConfig } from "vite";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    port: 1424,
+    hmr: {
+      port: 1425,
+    },
+  },
 });

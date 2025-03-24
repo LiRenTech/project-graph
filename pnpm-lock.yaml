@@ -40,6 +40,9 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.9
         version: 0.6.11(prettier@3.4.2)
+      turbo:
+        specifier: ^2.4.5-canary.6
+        version: 2.4.5-canary.6
       typescript-eslint:
         specifier: ^8.22.0
         version: 8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3)
@@ -5839,9 +5842,50 @@ packages:
     engines: { node: ">=18.0.0" }
     hasBin: true
 
+  turbo-darwin-64@2.4.5-canary.6:
+    resolution:
+      { integrity: sha512-YOY0b/50qxFQttG7oX1hvy/BjeEWeTrexDUUNt5nubR1ZRcWM+RKYGjw6l0M8pmQiEHbI95aP2Hvadx6bYd6Lw== }
+    cpu: [x64]
+    os: [darwin]
+
+  turbo-darwin-arm64@2.4.5-canary.6:
+    resolution:
+      { integrity: sha512-wnqJ7CD17UL8LN+QH+MqECMbfZfZWA7n2+g287YY2yBAYcaf2XctBOt1T2HiiQPTfuicyLQfHsAs6iy+AeRzXA== }
+    cpu: [arm64]
+    os: [darwin]
+
+  turbo-linux-64@2.4.5-canary.6:
+    resolution:
+      { integrity: sha512-i2iRDNrAi1hq+8P5rGg5xLSyVppLEwn6CkfrKebvQ/+DrrwGELzTHbJfcu5nJaAB8h7C/06WTkTbH37/HcOFww== }
+    cpu: [x64]
+    os: [linux]
+
+  turbo-linux-arm64@2.4.5-canary.6:
+    resolution:
+      { integrity: sha512-Wi8DrO9j8F/wL8+qHhXVs4OCMv4v4wuUKe7PvoEy+grUr7ir3D9v6Jv0WTsFNmjj41VzNf93brklXlFuBzgQUA== }
+    cpu: [arm64]
+    os: [linux]
+
   turbo-stream@2.4.0:
     resolution:
       { integrity: sha512-FHncC10WpBd2eOmGwpmQsWLDoK4cqsA/UT/GqNoaKOQnT8uzhtCbg3EoUDMvqpOSAI0S26mr0rkjzbOO6S3v1g== }
+
+  turbo-windows-64@2.4.5-canary.6:
+    resolution:
+      { integrity: sha512-sj/6ReDcCOsi5xt//Ga+ZC+skTMR6PoY9S85TuKvWcyWJAlNgjIsRXFnuLSZe6hWnWh2FtEapwvCp18cEzAayw== }
+    cpu: [x64]
+    os: [win32]
+
+  turbo-windows-arm64@2.4.5-canary.6:
+    resolution:
+      { integrity: sha512-D+zSLmrOw931ftJmouLCtmY8imxs28i/vFfXAAW+jfM1n6XV+z3xdR6gd2KxP4Vf17OYZSvIsiRStdBZvL9ZNg== }
+    cpu: [arm64]
+    os: [win32]
+
+  turbo@2.4.5-canary.6:
+    resolution:
+      { integrity: sha512-6N3vGhdX/PS2IL7d+RBKtWFFJzvSOjSFiYdAhFHEKmA9J5oToCBByNWC1ksVbGPRyH3nOQryiLZy6RzH68170Q== }
+    hasBin: true
 
   type-check@0.4.0:
     resolution:
@@ -11114,7 +11158,34 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
+  turbo-darwin-64@2.4.5-canary.6:
+    optional: true
+
+  turbo-darwin-arm64@2.4.5-canary.6:
+    optional: true
+
+  turbo-linux-64@2.4.5-canary.6:
+    optional: true
+
+  turbo-linux-arm64@2.4.5-canary.6:
+    optional: true
+
   turbo-stream@2.4.0: {}
+
+  turbo-windows-64@2.4.5-canary.6:
+    optional: true
+
+  turbo-windows-arm64@2.4.5-canary.6:
+    optional: true
+
+  turbo@2.4.5-canary.6:
+    optionalDependencies:
+      turbo-darwin-64: 2.4.5-canary.6
+      turbo-darwin-arm64: 2.4.5-canary.6
+      turbo-linux-64: 2.4.5-canary.6
+      turbo-linux-arm64: 2.4.5-canary.6
+      turbo-windows-64: 2.4.5-canary.6
+      turbo-windows-arm64: 2.4.5-canary.6
 
   type-check@0.4.0:
     dependencies:

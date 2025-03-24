@@ -1,0 +1,35 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "envMode": "loose",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build", "type-check"],
+      "outputs": ["app/dist/**", "docs/src/.vitepress/dist/**", "packages/ui/dist/**", "packages/coserver/dist/**"]
+    },
+    "@pg/app#tauri:build": {
+      "dependsOn": ["@pg/app#build"],
+      "with": ["@pg/app#tauri:build:android"],
+      "outputs": ["app/src-tauri/target/release/**"]
+    },
+    "@pg/app#tauri:build:android": {
+      "dependsOn": ["@pg/app#build"],
+      "outputs": ["app/src-tauri/target/*-android/release/**"]
+    },
+    "dev": {
+      "with": ["@pg/app#tauri:dev"],
+      "cache": false,
+      "persistent": true
+    },
+    "@pg/app#tauri:dev": {
+      "outputs": ["app/src-tauri/target/debug/**"],
+      "persistent": true
+    },
+    "type-check": {
+      "cache": false,
+      "inputs": ["app/src/**/*.tsx"]
+    },
+    "@pg/ui#build-storybook": {
+      "outputs": ["packages/ui/storybook-static/**"]
+    }
+  }
+}

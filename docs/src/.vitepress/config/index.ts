@@ -58,6 +58,12 @@ export default defineConfig({
     ssr: {
       noExternal: ["@nolebase/*"],
     },
+    server: {
+      port: 1422,
+      hmr: {
+        port: 1423,
+      },
+    },
   },
   locales: {
     zh_CN: {

@@ -2,8 +2,8 @@ name: "Nightly Build"
 
 on:
   schedule:
-    - cron: "0 0 * * *" # 每天凌晨 0 点执行
-  workflow_dispatch: # 手动触发
+    - cron: "0 0 * * *"
+  workflow_dispatch:
 
 jobs:
   create-release:
@@ -23,180 +23,175 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
+  # Build frontend and upload build result to Remote Cache
+  build-frontend:
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 10
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build frontend
+        run: pnpm build
+
   publish-tauri:
     outputs:
       hash: ${{ steps.sha256sum.outputs.hash }}
     permissions:
       contents: write
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - platform: "macos-latest" # for Arm based macs (M1 and above).
-            args: "--target aarch64-apple-darwin"
-          - platform: "macos-latest" # for Intel based macs.
-            args: "--target x86_64-apple-darwin"
           - platform: "ubuntu-22.04"
             args: ""
+            rust_targets: ""
+            android: false
+            dists:
+              - "app/src-tauri/target/release/bundle/deb/Project Graph_0.0.0-nightly.r${{ github.run_number }}_amd64.deb"
           - platform: "windows-latest"
             args: ""
+            rust_targets: ""
+            android: false
+            dists:
+              - "app/src-tauri/target/release/bundle/msi/Project Graph_0.0.0-nightly.r${{ github.run_number }}-setup.exe"
+              # include signature file for updater support
+              - "app/src-tauri/target/release/bundle/msi/Project Graph_0.0.0-nightly.r${{ github.run_number }}-setup.exe.sig"
+          - platform: "macos-latest"
+            args: "--target aarch64-apple-darwin"
+            rust_targets: "aarch64-apple-darwin"
+            android: false
+            dists:
+              - "app/src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/Project Graph_0.0.0-nightly.r${{ github.run_number }}_aarch64.dmg"
+          - platform: "macos-latest"
+            args: "--target x86_64-apple-darwin"
+            rust_targets: "x86_64-apple-darwin"
+            android: false
+            dists:
+              - "app/src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/Project Graph_0.0.0-nightly.r${{ github.run_number }}_amd64.dmg"
+          - platform: "ubuntu-22.04"
+            args: ""
+            rust_targets: "armv7-linux-androideabi,i686-linux-android,x86_64-linux-android,aarch64-linux-android"
+            android: true
+            dists:
+              - "app/src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release.apk"
 
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
+      #region Prepare environment
+      - name: Linux - Install dependencies
+        if: matrix.platform == 'ubuntu-22.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libudev-dev
-
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
-          version: 9
+          version: 10
           run_install: false
-
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "pnpm"
-
       - name: Install dependencies
         run: pnpm install
-
-      - name: install Rust stable
-        uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
         with:
-          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
-
+          targets: ${{ matrix.rust_targets }}
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
           workspaces: "./app/src-tauri -> target"
+      #endregion
 
-      - name: edit version (linux only)
-        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
-        run: |
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.r${{ github.run_number }}\"/" app/src-tauri/tauri.conf.json
-
-      - name: edit version (macos only)
-        if: matrix.platform == 'macos-latest' # This must match the platform value defined above.
-        run: |
-          sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.r${{ github.run_number }}\"/" app/src-tauri/tauri.conf.json
-          # Uncomment the following line to enable devtools on macos.
-          # sed -i '' "s/\"macos-private-api\"/\"macos-private-api\",\"devtools\"/" ./app/src-tauri/Cargo.toml
-
-      - name: edit version (windows only)
-        if: matrix.platform == 'windows-latest' # This must match the platform value defined above.
-        run: |
-          $jsonContent = Get-Content -Path "app/src-tauri/tauri.conf.json" -Raw
-          $jsonObject = $jsonContent | ConvertFrom-Json
-          $jsonObject.version = "0.0.0-nightly.r${{ github.run_number }}"
-          $jsonObject | ConvertTo-Json -Depth 10 | Set-Content -Path "app/src-tauri/tauri.conf.json"
-
-      - uses: tauri-apps/tauri-action@dev
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
-          LR_API_BASE_URL: ${{ secrets.ENV_API_BASE_URL }}
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
-        with:
-          projectPath: "./app"
-          # upload to release
-          tagName: "nightly"
-          args: ${{ matrix.args }}
-
-      - id: sha256sum
-        name: calculate sha256sum (linux only)
-        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
-        run: |
-          cd app/src-tauri/target/release/bundle/deb
-          sha256sum "Project Graph_0.0.0-nightly.r${{ github.run_number }}_amd64.deb" | awk '{print $1}' > sha256sum.txt
-          echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
-
-  publish-tauri-android:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Java
+      #region Android - Prepare environment
+      - name: Android - Setup Java
+        if: matrix.android
         uses: actions/setup-java@v4
         with:
           distribution: "zulu"
           java-version: "17"
-
-      - name: Setup Android SDK
+      - name: Android - Setup Android SDK
+        if: matrix.android
         uses: android-actions/setup-android@v3
-
-      - name: Install NDK
+      - name: Android - Setup Android NDK
+        if: matrix.android
         run: sdkmanager "ndk;27.0.11902837"
-
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 9
-          run_install: false
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: install Rust stable
-        uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
-        with:
-          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
-          targets: "armv7-linux-androideabi,i686-linux-android,x86_64-linux-android,aarch64-linux-android"
-
-      - name: Rust cache
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: "./app/src-tauri -> target"
-
-      - name: Edit version
-        run: |
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.${{ github.run_number }}\"/" app/src-tauri/tauri.conf.json
-
-      - name: setup sign
+      - name: Android - Setup Android APK Signing
+        if: matrix.android
         run: |
           cd app/src-tauri/gen/android
-          # create keystore.properties
           cat > keystore.properties <<EOF
           password=${{ secrets.ANDROID_RELEASE_PASSWORD }}
           keyAlias=upload
           storeFile=upload.jks
           EOF
-          # create upload.jks
           echo "${{ secrets.ANDROID_RELEASE_KEYSTORE }}" | base64 --decode > app/upload.jks
+      #endregion
 
-      - name: build
-        run: pnpm build:android
+      #region Edit version
+      - name: Linux - Edit version
+        if: matrix.platform == 'ubuntu-22.04' && !matrix.android
+        run: |
+          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.r${{ github.run_number }}\"/" app/src-tauri/tauri.conf.json
+          sed -i "s/\"macos-private-api\"/\"macos-private-api\",\"devtools\"/" ./app/src-tauri/Cargo.toml
+      - name: Android - Edit version
+        if: matrix.platform == 'ubuntu-22.04' && matrix.android
+        run: |
+          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.${{ github.run_number }}\"/" app/src-tauri/tauri.conf.json
+      - name: MacOS - Edit version
+        if: matrix.platform == 'macos-latest'
+        run: |
+          sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.r${{ github.run_number }}\"/" app/src-tauri/tauri.conf.json
+          sed -i '' "s/\"macos-private-api\"/\"macos-private-api\",\"devtools\"/" ./app/src-tauri/Cargo.toml
+      - name: Windows - Edit version
+        if: matrix.platform == 'windows-latest'
+        run: |
+          (Get-Content -Path "app/src-tauri/tauri.conf.json" -Raw) -replace '"version": "[^"]*"', '"version": "0.0.0-nightly.r${{ github.run_number }}"' | Set-Content -Path "app/src-tauri/tauri.conf.json"
+          (Get-Content -Path "app/src-tauri/Cargo.toml" -Raw) -replace '"macos-private-api"', '"macos-private-api","devtools"' | Set-Content -Path "app/src-tauri/Cargo.toml"
+      #endregion
+
+      #region Build
+      - name: Build
+        run: pnpm tauri:build
         env:
+          TAURI_BUILD_ARGS: ${{ matrix.args }}
           NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.11902837
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
           LR_API_BASE_URL: ${{ secrets.ENV_API_BASE_URL }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
 
-      - name: rename apk file
+      - name: Upload
         run: |
-          cd app/src-tauri/gen/android/app/build/outputs/apk/universal/release
-          mv app-universal-release.apk Project.Graph_0.0.0-nightly.r${{ github.run_number }}_universal-signed.apk
-
-      - name: upload
-        run: gh release upload nightly app/src-tauri/gen/android/app/build/outputs/apk/universal/release/Project.Graph_0.0.0-nightly.r${{ github.run_number }}_universal-signed.apk --clobber
+          gh release upload nightly $(printf "\"%s\" " ${{ join(matrix.dists, ' ') }}) --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: sha256sum
+        name: Linux - Calculate SHA256 hash for AUR package
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          cd app/src-tauri/target/release/bundle/deb
+          sha256sum "Project Graph_0.0.0-nightly.r${{ github.run_number }}_amd64.deb" | awk '{print $1}' > sha256sum.txt
+          echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
+      #endregion
 
   bump-aur-version:
     needs: publish-tauri
