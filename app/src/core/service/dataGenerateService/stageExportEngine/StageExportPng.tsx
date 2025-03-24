@@ -142,6 +142,7 @@ export namespace StageExportPng {
     imageNode.src = imageData;
     imageNode.style.outline = "solid 1px red";
     imageNode.style.margin = "10px";
+    imageNode.style.transform = "scale(1)";
     return imageNode;
   }
 }

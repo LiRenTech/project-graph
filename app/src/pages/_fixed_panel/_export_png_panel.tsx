@@ -48,6 +48,25 @@ export default function ExportPNGPanel() {
     }
   };
 
+  // const scaleUpImage = () => {
+  //   const imageBox = document.getElementById("export-png-image-box") as HTMLDivElement;
+  //   const image = imageBox.querySelector("img") as HTMLImageElement;
+  //   if (image) {
+  //     console.log("width", image.width);
+  //     image.width *= 1.1;
+  //     image.height *= 1.1;
+  //   }
+  // };
+
+  // const scaleDownImage = () => {
+  //   const imageBox = document.getElementById("export-png-image-box") as HTMLDivElement;
+  //   const image = imageBox.querySelector("img") as HTMLImageElement;
+  //   if (image) {
+  //     image.width *= 0.9;
+  //     image.height *= 0.9;
+  //   }
+  // };
+
   return (
     <div
       className={cn(
@@ -58,11 +77,8 @@ export default function ExportPNGPanel() {
       )}
     >
       <h2>导出png图片</h2>
-      <div
-        className="flex h-96 w-full items-center justify-center overflow-auto rounded-md bg-black"
-        id="export-png-image-box"
-      >
-        <span>暂时没有渲染结果，请先点击渲染图片</span>
+      <div className="flex h-96 w-full overflow-hidden rounded-md bg-black" id="export-png-image-box">
+        <span className="p-8">暂时没有渲染结果，请先点击渲染图片</span>
       </div>
       <div className="flex w-full items-center">
         <span>摄像机缩放比例：</span>
@@ -103,6 +119,8 @@ export default function ExportPNGPanel() {
           <Download />
           下载当前图片
         </Button>
+        {/* <Button onClick={scaleUpImage}>放大预览图</Button>
+        <Button onClick={scaleDownImage}>缩小预览图</Button> */}
       </div>
       <div>
         <p className="text-panel-details-text text-xs">
