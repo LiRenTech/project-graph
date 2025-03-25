@@ -8,7 +8,6 @@
     },
     "@pg/app#tauri:build": {
       "dependsOn": ["@pg/app#build"],
-      "with": ["@pg/app#tauri:build:android"],
       "outputs": ["app/src-tauri/target/release/**"]
     },
     "@pg/app#tauri:build:android": {
