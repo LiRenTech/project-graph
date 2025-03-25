@@ -19,6 +19,7 @@ export default function ExportPNGPanel() {
   const [isRendering, setIsRendering] = useState(false);
   const [current, setCurrent] = useState(0);
   const [total, setTotal] = useState(0);
+  const [isTransparentBackground, setIsTransparentBackground] = useState(false);
 
   useEffect(() => {
     if (!isExportPngPanelOpen) {
@@ -35,6 +36,10 @@ export default function ExportPNGPanel() {
       setTotal(t);
     };
   }, [isExportPngPanelOpen]);
+
+  useEffect(() => {
+    StageExportPng.setHaveBackground(!isTransparentBackground);
+  }, [isTransparentBackground]);
 
   const [cameraScaleWhenExport, setCameraScaleWhenExport] = useState(0.5);
 
@@ -90,7 +95,16 @@ export default function ExportPNGPanel() {
             StageExportPng.changeCameraScaleWhenExport(value);
           }}
         />
+
         <span>{cameraScaleWhenExport}</span>
+        <span className="mx-4">
+          <input
+            type="checkbox"
+            checked={isTransparentBackground}
+            onChange={() => setIsTransparentBackground(!isTransparentBackground)}
+          />
+          <span>透明化背景</span>
+        </span>
       </div>
       <div className="flex w-full items-center">
         <span>当您的舞台内容过多过大时，一定要调小此值，防止图片过大崩溃</span>
@@ -126,7 +140,7 @@ export default function ExportPNGPanel() {
       </div>
       <div>
         <p className="text-panel-details-text text-xs">
-          渲染图片时，会逐个拼接小块，需要等待若干秒才能完成渲染，摄像机缩放比率越大，渲染时间越长，画面分辨率越高，目前渲染的图片是透明的
+          渲染图片时，会逐个拼接小块，需要等待若干秒才能完成渲染，摄像机缩放比率越大，渲染时间越长，画面分辨率越高
         </p>
       </div>
       {/* 关闭按钮 */}

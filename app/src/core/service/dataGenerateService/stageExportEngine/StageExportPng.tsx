@@ -5,7 +5,6 @@ import { Renderer } from "../../../render/canvas2d/renderer";
 import { Camera } from "../../../stage/Camera";
 import { Canvas } from "../../../stage/Canvas";
 import { StageManager } from "../../../stage/stageManager/StageManager";
-import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
 import { Settings } from "../../Settings";
 
 export namespace StageExportPng {
@@ -26,8 +25,10 @@ export namespace StageExportPng {
   /**
    * 是否有背景
    */
-  export const isHaveBackground = true;
-
+  let isHaveBackground = true;
+  export function setHaveBackground(have: boolean) {
+    isHaveBackground = have;
+  }
   /**
    * 将整个舞台导出为png图片
    */
@@ -40,15 +41,6 @@ export namespace StageExportPng {
     const stageRect = StageManager.getBoundingRectangle();
     const topLeft = stageRect.leftTop;
     const bottomRight = stageRect.rightBottom;
-    // 画布背景
-    if (isHaveBackground) {
-      resultCtx.fillStyle = StageStyleManager.currentStyle.Background.toNewAlpha(1).toString();
-      console.log("background", resultCtx.fillStyle, stageRect);
-      // resultCtx.roundRect(0, 0, Math.floor(stageRect.size.x * 10), Math.floor(stageRect.size.y * 10));
-      resultCtx.roundRect(-10000, 10000, 20000, 20000);
-      // 奇怪了
-      resultCtx.fill();
-    }
     // 开始把画布内容渲染到新画布上
     Camera.targetScale = cameraScaleWhenExport;
     Camera.currentScale = cameraScaleWhenExport;
@@ -118,12 +110,16 @@ export namespace StageExportPng {
     // 渲染问题
     const isPauseRenderWhenManipulateOvertime = await Settings.get("isPauseRenderWhenManipulateOvertime");
     Settings.set("isPauseRenderWhenManipulateOvertime", false);
+    if (isHaveBackground) {
+      Renderer.isRenderBackground = true;
+    }
     // 先记录摄像机信息
     const cameraLocation = Camera.location.clone();
     const cameraTargetLocation = Camera.targetLocationByScale.clone();
     const cameraScale = Camera.currentScale;
     // 开始渲染
     await exportStage_();
+    Renderer.isRenderBackground = false;
     // 恢复摄像机信息
     Camera.location = cameraLocation;
     Camera.targetLocationByScale = cameraTargetLocation;

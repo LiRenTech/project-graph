@@ -104,6 +104,11 @@ export namespace Renderer {
   let isShowBackgroundHorizontalLines = false;
   let isShowBackgroundVerticalLines = false;
   let isShowBackgroundDots = false;
+  /**
+   * 仅在导出png时开启
+   */
+  // eslint-disable-next-line prefer-const
+  export let isRenderBackground = true;
   let isShowBackgroundCartesian = false;
   export let isAlwaysShowDetails = false;
   export let protectingPrivacy = false;
@@ -729,21 +734,34 @@ export namespace Renderer {
   function renderEffects() {
     Stage.effectMachine.renderTick();
   }
+
+  /**
+   * 渲染背景
+   */
   function renderBackground() {
+    const rect = getCoverWorldRectangle();
+    if (isRenderBackground) {
+      ShapeRenderer.renderRect(
+        rect.transformWorld2View(),
+        StageStyleManager.currentStyle.Background,
+        Color.Transparent,
+        0,
+      );
+    }
     if (isShowBackgroundDots) {
-      renderDotBackground(getCoverWorldRectangle());
+      renderDotBackground(rect);
     }
     if (isShowBackgroundHorizontalLines) {
-      renderHorizonBackground(getCoverWorldRectangle());
+      renderHorizonBackground(rect);
     }
     if (isShowBackgroundVerticalLines) {
-      renderVerticalBackground(getCoverWorldRectangle());
+      renderVerticalBackground(rect);
     }
     if (isShowBackgroundCartesian) {
-      renderCartesianBackground(getCoverWorldRectangle());
+      renderCartesianBackground(rect);
     }
-    // renderGridBackground(getCoverWorldRectangle());
   }
+
   function updateFPS() {
     frameIndex++;
     const currentTime = performance.now();
