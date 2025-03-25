@@ -10,6 +10,9 @@ importers:
       "@eslint/js":
         specifier: ^9.17.0
         version: 9.19.0
+      cross-replace:
+        specifier: ^0.2.0
+        version: 0.2.0
       eslint:
         specifier: ^9.17.0
         version: 9.19.0(jiti@2.4.2)
@@ -3203,6 +3206,11 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  cross-replace@0.2.0:
+    resolution:
+      { integrity: sha512-LF8ZXUDGw5yy8YHPzw4RbOtJJG6NVxpxvEAJZwJgMyLV/wBJonG39vWBDS168nS4ImYP59mPkXj/5ezMOAuzwQ== }
+    hasBin: true
 
   cross-spawn@7.0.6:
     resolution:
@@ -8855,6 +8863,10 @@ snapshots:
       path-type: 4.0.0
     optionalDependencies:
       typescript: 5.7.3
+
+  cross-replace@0.2.0:
+    dependencies:
+      cross-spawn: 7.0.6
 
   cross-spawn@7.0.6:
     dependencies:
