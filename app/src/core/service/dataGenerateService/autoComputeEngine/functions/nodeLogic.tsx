@@ -581,6 +581,42 @@ export namespace NodeLogic {
     return [`替换了${replacedCount}处内容`];
   }
 
+  /**
+   * 搜索内容
+   * @param fatherNodes 被搜索字符串，是否大小写敏感
+   * @param _childNodes
+   */
+  export function searchContent(
+    fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    if (fatherNodes.length !== 2) {
+      return ["输入数量不正确，第一个参数为被搜索字符串，第二个是否大小写敏感（0/1）"];
+    }
+    if (fatherNodes[0] instanceof TextNode && fatherNodes[1] instanceof TextNode) {
+      const searchString = fatherNodes[0].text;
+      const isCaseSensitive = parseInt(fatherNodes[1].text);
+      if (!(isCaseSensitive === 0 || isCaseSensitive === 1)) {
+        return ["第二个参数只能输入 0/1"];
+      }
+      const searchResultNodes: TextNode[] = [];
+      for (const node of StageManager.getTextNodes()) {
+        if (isCaseSensitive) {
+          if (node.text.includes(searchString)) {
+            searchResultNodes.push(node);
+          }
+        } else {
+          if (node.text.toLowerCase().includes(searchString.toLowerCase())) {
+            searchResultNodes.push(node);
+          }
+        }
+      }
+      return searchResultNodes.map((node) => node.uuid);
+    }
+    return ["输入的节点格式必须都是TextNode"];
+  }
+
   export function deletePenStrokeByColor(
     fatherNodes: ConnectableEntity[],
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

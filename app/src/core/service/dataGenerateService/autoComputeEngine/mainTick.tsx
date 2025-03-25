@@ -153,6 +153,7 @@ const MapOtherFunction: OtherFunctionMap = {
   [LogicNodeNameEnum.CREATE_TEXT_NODE_ON_LOCATION]: NodeLogic.createTextNodeOnLocation,
   [LogicNodeNameEnum.IS_HAVE_ENTITY_ON_LOCATION]: NodeLogic.isHaveEntityOnLocation,
   [LogicNodeNameEnum.REPLACE_GLOBAL_CONTENT]: NodeLogic.replaceGlobalContent,
+  [LogicNodeNameEnum.SEARCH_CONTENT]: NodeLogic.searchContent,
   [LogicNodeNameEnum.DELETE_PEN_STROKE_BY_COLOR]: NodeLogic.deletePenStrokeByColor,
 };
 

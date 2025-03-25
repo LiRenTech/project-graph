@@ -7,6 +7,12 @@ import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { v4 as uuidv4 } from "uuid";
 
+/**
+ * 把粘贴板中的PNG图片读取并写入到磁盘和舞台上
+ * @param item
+ * @param mouseLocation
+ * @returns
+ */
 export async function copyEnginePasteImage(item: ClipboardItem, mouseLocation: Vector) {
   // 图片在草稿情况下不能粘贴
   if (Stage.path.isDraft()) {
