@@ -16,11 +16,24 @@ import { PathString } from "../../utils/pathString";
  */
 export default function ExportPNGPanel() {
   const [isExportPngPanelOpen, setIsExportPngPanelOpen] = useAtom(isExportPNGPanelOpenAtom);
+  const [isRendering, setIsRendering] = useState(false);
+  const [current, setCurrent] = useState(0);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     if (!isExportPngPanelOpen) {
       return;
     }
+    StageExportPng.startRender = () => {
+      setIsRendering(true);
+    };
+    StageExportPng.finishRender = () => {
+      setIsRendering(false);
+    };
+    StageExportPng.tickRenderer = (c, t) => {
+      setCurrent(c);
+      setTotal(t);
+    };
   }, [isExportPngPanelOpen]);
 
   const [cameraScaleWhenExport, setCameraScaleWhenExport] = useState(0.5);
@@ -47,25 +60,6 @@ export default function ExportPNGPanel() {
       });
     }
   };
-
-  // const scaleUpImage = () => {
-  //   const imageBox = document.getElementById("export-png-image-box") as HTMLDivElement;
-  //   const image = imageBox.querySelector("img") as HTMLImageElement;
-  //   if (image) {
-  //     console.log("width", image.width);
-  //     image.width *= 1.1;
-  //     image.height *= 1.1;
-  //   }
-  // };
-
-  // const scaleDownImage = () => {
-  //   const imageBox = document.getElementById("export-png-image-box") as HTMLDivElement;
-  //   const image = imageBox.querySelector("img") as HTMLImageElement;
-  //   if (image) {
-  //     image.width *= 0.9;
-  //     image.height *= 0.9;
-  //   }
-  // };
 
   return (
     <div
@@ -109,18 +103,26 @@ export default function ExportPNGPanel() {
             if (exportPngImageBox) {
               exportPngImageBox.innerHTML = "";
             }
+            setCurrent(0);
             //
             StageExportPng.exportStage();
           }}
+          disabled={isRendering}
         >
           <RefreshCcw /> 重新渲染图片
         </Button>
+        {isRendering && (
+          <div className="flex items-center gap-2">
+            <span>渲染中...</span>
+            <span>
+              {current}/{total}
+            </span>
+          </div>
+        )}
         <Button onClick={downloadImage}>
           <Download />
           下载当前图片
         </Button>
-        {/* <Button onClick={scaleUpImage}>放大预览图</Button>
-        <Button onClick={scaleDownImage}>缩小预览图</Button> */}
       </div>
       <div>
         <p className="text-panel-details-text text-xs">

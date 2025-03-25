@@ -54,20 +54,35 @@ export namespace StageExportPng {
     Camera.currentScale = cameraScaleWhenExport;
     const viewRect = Renderer.getCoverWorldRectangle();
 
+    const leftTopLocList: { x: number; y: number }[] = [];
+
     // 遍历xy，xy是切割分块后的目标视野矩形的左上角
     for (let y = topLeft.y; y <= bottomRight.y; y += viewRect.size.y) {
       for (let x = topLeft.x; x <= bottomRight.x; x += viewRect.size.x) {
-        // 先移动再暂停等待
-        await sleep(20);
-        Camera.location = new Vector(x + viewRect.size.x / 2, y + viewRect.size.y / 2);
-        await sleep(20);
-        const imageData = Canvas.ctx.getImageData(0, 0, viewRect.size.x * SCALE, viewRect.size.y * SCALE);
-        resultCtx.putImageData(
-          imageData,
-          (x - topLeft.x) * SCALE * cameraScaleWhenExport,
-          (y - topLeft.y) * SCALE * cameraScaleWhenExport,
-        );
+        leftTopLocList.push({ x, y });
       }
+    }
+    let i = 0;
+    let lastFrame = Renderer.frameIndex;
+    while (i < leftTopLocList.length) {
+      const { x, y } = leftTopLocList[i];
+      // 先移动再暂停等待
+      await sleep(2);
+      Camera.location = new Vector(x + viewRect.size.x / 2, y + viewRect.size.y / 2);
+      await sleep(2);
+      if (Renderer.frameIndex - lastFrame < 2) {
+        console.log("等待", lastFrame, Renderer.frameIndex, i);
+        continue;
+      }
+      lastFrame = Renderer.frameIndex;
+      const imageData = Canvas.ctx.getImageData(0, 0, viewRect.size.x * SCALE, viewRect.size.y * SCALE);
+      resultCtx.putImageData(
+        imageData,
+        (x - topLeft.x) * SCALE * cameraScaleWhenExport,
+        (y - topLeft.y) * SCALE * cameraScaleWhenExport,
+      );
+      tickRenderer(i, leftTopLocList.length);
+      i++;
     }
     const imageData = resultCanvas.toDataURL("image/png");
     // 移除画布
@@ -80,7 +95,16 @@ export namespace StageExportPng {
     }
   }
 
+  // eslint-disable-next-line prefer-const
+  export let startRender = () => {};
+  // eslint-disable-next-line prefer-const
+  export let finishRender = () => {};
+  // eslint-disable-next-line prefer-const, @typescript-eslint/no-unused-vars
+  export let tickRenderer = (_c: number, _t: number) => {};
+
   export async function exportStage() {
+    startRender();
+
     // 背景网格信息
     const showBackgroundCartesian = await Settings.get("showBackgroundCartesian");
     Settings.set("showBackgroundCartesian", false);
@@ -111,15 +135,16 @@ export namespace StageExportPng {
     Settings.set("showBackgroundHorizontalLines", showBackgroundHorizontalLines);
     Settings.set("showBackgroundVerticalLines", showBackgroundVerticalLines);
     Settings.set("isPauseRenderWhenManipulateOvertime", isPauseRenderWhenManipulateOvertime);
+
+    finishRender();
   }
 
   export function generateCanvasNode(): HTMLCanvasElement {
     const resultCanvas = document.createElement("canvas");
     resultCanvas.style.position = "fixed";
-    resultCanvas.style.top = "0";
-    resultCanvas.style.left = "0";
-    resultCanvas.style.width = "100%";
-    resultCanvas.style.height = "100%";
+    resultCanvas.style.top = "100%";
+    resultCanvas.style.left = "100%";
+    // 暂时看不见这个
     resultCanvas.style.zIndex = "99999";
     resultCanvas.style.pointerEvents = "none";
 

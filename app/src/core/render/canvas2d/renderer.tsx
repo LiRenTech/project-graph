@@ -77,7 +77,8 @@ export namespace Renderer {
   // 上一次记录fps的时间
   let lastTime = performance.now();
   // 自上一次记录fps以来的帧数是几
-  let frameCount = 0;
+  export let frameCount = 0;
+  export let frameIndex = 0; // 无穷累加
   // 上一次记录的fps数值
   export let fps = 0;
 
@@ -157,6 +158,7 @@ export namespace Renderer {
    * @returns
    */
   export function frameTick() {
+    updateFPS();
     const viewRectangle = getCoverWorldRectangle();
     Camera.frameTick();
     Canvas.ctx.clearRect(0, 0, w, h);
@@ -742,12 +744,8 @@ export namespace Renderer {
     }
     // renderGridBackground(getCoverWorldRectangle());
   }
-
-  /** 画debug信息 */
-  function renderDebugDetails() {
-    if (!isShowDebug || isFrame) {
-      return;
-    }
+  function updateFPS() {
+    frameIndex++;
     const currentTime = performance.now();
     frameCount++;
     if (currentTime - lastTime > 1000) {
@@ -755,6 +753,13 @@ export namespace Renderer {
       frameCount = 0;
       lastTime = currentTime;
     }
+  }
+  /** 画debug信息 */
+  function renderDebugDetails() {
+    if (!isShowDebug || isFrame) {
+      return;
+    }
+
     const detailsData = [
       "调试信息已开启，可在设置中关闭，或快捷键关闭",
       `scale: ${Camera.currentScale}`,
