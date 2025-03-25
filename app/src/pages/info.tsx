@@ -26,6 +26,7 @@ export default function InfoPage() {
   return (
     <>
       <div className="h-full overflow-x-auto px-4 py-24">
+        <h1 className="text-center text-2xl font-bold">测试界面</h1>
         {/* <h2 className="text-center text-3xl font-bold">我的统计信息</h2>
         <p>敬请期待</p>
         <h2 className="text-center text-3xl font-bold">我的解锁成就</h2>
@@ -51,6 +52,7 @@ export default function InfoPage() {
         <input type="text" />
         {/* <Button onClick={() => open("https://project-graph.top")}>open函数打开官网</Button> */}
         <br />
+        <h2>滑动鼠标滚动事件：用于检测不同系统鼠标滚轮差异</h2>
         <div className="h-96 overflow-y-auto text-xs">
           {dataList.map((data, i) => {
             return <p key={i}>{data}</p>;

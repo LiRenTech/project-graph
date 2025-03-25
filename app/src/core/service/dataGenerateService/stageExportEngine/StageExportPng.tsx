@@ -142,8 +142,8 @@ export namespace StageExportPng {
   export function generateCanvasNode(): HTMLCanvasElement {
     const resultCanvas = document.createElement("canvas");
     resultCanvas.style.position = "fixed";
-    resultCanvas.style.top = "100%";
-    resultCanvas.style.left = "100%";
+    resultCanvas.style.top = "50%";
+    resultCanvas.style.left = "80%";
     // 暂时看不见这个
     resultCanvas.style.zIndex = "99999";
     resultCanvas.style.pointerEvents = "none";

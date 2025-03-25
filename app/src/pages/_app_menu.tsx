@@ -343,6 +343,10 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         setFile("Project Graph");
       }
     };
+    // info页面关闭
+    if (document.getElementsByClassName("lucide" + "-info").length === 0) {
+      getCurrentWindow().close();
+    }
   }, []);
 
   useEffect(() => {
