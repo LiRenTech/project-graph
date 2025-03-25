@@ -8,16 +8,21 @@ on:
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    outputs:
+      changelog: ${{ steps.create_release.outputs.changelog }}
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: |
+      - name: Create release
+        id: create_release
+        run: |
           changelog=$(./.github/scripts/generate-changelog.sh)
+          echo "changelog=${changelog}" >> $GITHUB_OUTPUT
           gh release delete nightly --yes --cleanup-tag || true
-          sleep 5
+          sleep 1
           gh release create nightly --title "Nightly Build" --notes "${changelog}" --prerelease
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -187,6 +192,31 @@ jobs:
           sha256sum "Project Graph_0.0.0-nightly.r${{ github.run_number }}_amd64.deb" | awk '{print $1}' > sha256sum.txt
           echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
       #endregion
+
+  generate-updater-json:
+    needs: [create-release, publish-tauri]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate latest.json
+        run: |
+          changelog="${{ needs.create-release.outputs.changelog }}"
+          changelog=$(echo "$changelog" | awk '{printf "%s\n", $0}' | sed 's/"/\\"/g')
+          signature=$(gh release download nightly -p "*.exe.sig" -O -)
+          url=$(gh release view nightly --json assets -q '.assets.[] | .url | select(endswith(".exe"))')
+          echo '{' > latest.json
+          echo '  "version": "0.0.0-nightly.r${{ github.run_number }}",' >> latest.json
+          echo '  "notes": "${{ needs.create-release.outputs.changelog }}",' >> latest.json'
+          # RFC 3339 format
+          echo "  \"pub_date\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\"," >> latest.json
+          echo '  "platforms": {' >> latest.json
+          echo '  "linux-x86_64": {' >> latest.json
+          echo "    \"signature\": \"${signature}\"," >> latest.json
+          echo "    \"url\": \"${url}\""" >> latest.json
+          echo '  }' >> latest.json
+          echo '}' >> latest.json
+          cat latest.json
+          gh release upload nightly latest.json --clobber
 
   bump-aur-version:
     needs: publish-tauri
