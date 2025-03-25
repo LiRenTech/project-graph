@@ -20,7 +20,9 @@ jobs:
         id: create_release
         run: |
           changelog=$(./.github/scripts/generate-changelog.sh)
-          echo "changelog=${changelog}" >> $GITHUB_OUTPUT
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "${changelog}" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
           gh release delete nightly --yes --cleanup-tag || true
           sleep 1
           gh release create nightly --title "Nightly Build" --notes "${changelog}" --prerelease
