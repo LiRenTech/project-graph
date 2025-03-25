@@ -7,11 +7,11 @@
       "outputs": ["app/dist/**", "docs/src/.vitepress/dist/**", "packages/ui/dist/**", "packages/coserver/dist/**"]
     },
     "@pg/app#tauri:build": {
-      "dependsOn": ["@pg/app#build"],
+      "dependsOn": ["build"],
       "outputs": ["app/src-tauri/target/release/**"]
     },
     "@pg/app#tauri:build:android": {
-      "dependsOn": ["@pg/app#build"],
+      "dependsOn": ["build"],
       "outputs": ["app/src-tauri/target/*-android/release/**"]
     },
     "dev": {
