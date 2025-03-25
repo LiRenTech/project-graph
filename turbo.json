@@ -3,8 +3,16 @@
   "envMode": "loose",
   "tasks": {
     "build": {
-      "dependsOn": ["^build", "type-check"],
-      "outputs": ["app/dist/**", "docs/src/.vitepress/dist/**", "packages/ui/dist/**", "packages/coserver/dist/**"]
+      "dependsOn": ["^build", "type-check"]
+    },
+    "@pg/app#build": {
+      "outputs": ["dist/**"]
+    },
+    "@pg/docs#build": {
+      "outputs": ["src/.vitepress/dist/**"]
+    },
+    "@pg/ui#build": {
+      "outputs": ["dist/**"]
     },
     "@pg/app#tauri:build": {
       "dependsOn": ["build"],
