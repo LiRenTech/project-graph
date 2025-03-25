@@ -24,7 +24,6 @@
       "persistent": true
     },
     "type-check": {
-      "cache": false,
       "inputs": ["app/src/**/*.tsx"]
     },
     "@pg/ui#build-storybook": {

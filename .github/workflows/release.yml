@@ -1,25 +1,31 @@
 name: "Release"
 
 on:
-  workflow_dispatch: # 手动触发
+  workflow_dispatch:
     inputs:
-      # 必填版本号（x.x.x）
       version:
-        description: "版本号（x.x.x）"
+        description: "版本号 (x.x.x)"
         required: true
 
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    outputs:
+      changelog: ${{ steps.create_release.outputs.changelog }}
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: |
+      - name: Create release
+        id: create_release
+        run: |
           changelog=$(./.github/scripts/generate-changelog.sh)
-          gh release create "v${{ github.event.inputs.version }}" --title "Release ${{ github.event.inputs.version }}" --notes "${changelog}"
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "${changelog}" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          gh release create v${{ github.event.inputs.version }} --title "Release v${{ github.event.inputs.version }}" --notes "${changelog}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -158,7 +164,7 @@ jobs:
       - name: Android - Edit version
         if: matrix.platform == 'ubuntu-22.04' && matrix.android
         run: |
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.${{ github.run_number }}\"/" app/src-tauri/tauri.conf.json
+          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"${{ github.event.inputs.version }}\"/" app/src-tauri/tauri.conf.json
       #endregion
       #region Build
       - name: Build
@@ -176,7 +182,7 @@ jobs:
 
       - name: Upload
         run: |
-          gh release upload nightly ${{ join(matrix.dists, ' ') }} --clobber
+          gh release upload v${{ github.event.inputs.version }} ${{ join(matrix.dists, ' ') }} --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -188,6 +194,31 @@ jobs:
           sha256sum "Project Graph_${{ github.event.inputs.version }}_amd64.deb" | awk '{print $1}' > sha256sum.txt
           echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
       #endregion
+
+  generate-updater-json:
+    needs: [create-release, publish-tauri]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate latest.json
+        run: |
+          changelog="${{ needs.create-release.outputs.changelog }}"
+          changelog=$(echo "$changelog" | awk '{printf "%s\n", $0}' | sed 's/"/\\"/g')
+          signature=$(gh release download v${{ github.event.inputs.version }} -p "*.exe.sig" -O -)
+          url=$(gh release view v${{ github.event.inputs.version }} --json assets -q '.assets.[] | .url | select(endswith(".exe"))')
+          echo '{' > latest.json
+          echo '  "version": "${{ github.event.inputs.version }}",' >> latest.json
+          echo '  "notes": "${{ needs.create-release.outputs.changelog }}",' >> latest.json'
+          # RFC 3339 format
+          echo "  \"pub_date\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\"," >> latest.json
+          echo '  "platforms": {' >> latest.json
+          echo '  "linux-x86_64": {' >> latest.json
+          echo "    \"signature\": \"${signature}\"," >> latest.json
+          echo "    \"url\": \"${url}\""" >> latest.json
+          echo '  }' >> latest.json
+          echo '}' >> latest.json
+          cat latest.json
+          gh release upload v${{ github.event.inputs.version }} latest.json --clobber
 
   bump-aur-version:
     needs: publish-tauri
@@ -205,9 +236,9 @@ jobs:
       - name: Update version in PKGBUILD and .SRCINFO
         run: |
           cd project-graph-bin
-          sed -i "s/pkgver=.*$/pkgver=${{ github.event.inputs.version }}/" PKGBUILD
-          sed -i "s/pkgver = .*$/pkgver = ${{ github.event.inputs.version }}/" .SRCINFO
-          sed -i "s/Project\.Graph_.*_amd64\.deb/Project.Graph_${{ github.event.inputs.version }}_amd64.deb/" PKGBUILD .SRCINFO
+          sed -i "s/pkgver=.*$/pkgver=r${{ github.run_number }}/" PKGBUILD
+          sed -i "s/pkgver = .*$/pkgver = r${{ github.run_number }}/" .SRCINFO
+          sed -i "s/Project\.Graph_0\.0\.0\..*_amd64\.deb/Project.Graph_${{ github.event.inputs.version }}_amd64.deb/" PKGBUILD .SRCINFO
           sed -i "s/^sha256sums_x86_64=('.*')$/sha256sums_x86_64=('${{ needs.publish-tauri.outputs.hash }}')/" PKGBUILD
           sed -i "s/sha256sums_x86_64 = .*$/sha256sums_x86_64 = ${{ needs.publish-tauri.outputs.hash }}/" .SRCINFO
       - name: Commit and push changes
@@ -216,5 +247,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add PKGBUILD .SRCINFO
-          git commit -m "Bump version to ${{ github.event.inputs.version }}"
+          git commit -m "Bump version to r${{ github.run_number }}"
           git push origin master
