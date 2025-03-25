@@ -170,7 +170,7 @@ jobs:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
           TURBO_TEAM: zty012
           TAURI_BUILD_ARGS: ${{ matrix.args }}
-          NDK_HOME: ${{ matrix.android && format('{}/ndk/27.0.11902837', env.ANDROID_HOME) || '' }}
+          NDK_HOME: ${{ matrix.android && format('{}/ndk/27.0.11902837', env.ANDROID_HOME) || null }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
           LR_API_BASE_URL: ${{ secrets.ENV_API_BASE_URL }}
