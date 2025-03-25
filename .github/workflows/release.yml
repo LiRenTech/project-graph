@@ -58,49 +58,28 @@ jobs:
           # rust_targets: Rust 目标，以逗号分隔
           # android: 是否为 Android 构建
           # dists: 构建产物路径列表，记得转义
-          # debug: 是否为调试模式（开启 DevTools）
 
           - platform: "ubuntu-22.04"
             dists:
               - "app/src-tauri/target/release/bundle/deb/Project\\ Graph_${{ github.event.inputs.version }}_amd64.deb"
-          - platform: "ubuntu-22.04"
-            dists:
-              - "app/src-tauri/target/release/bundle/deb/Project\\ Graph_${{ github.event.inputs.version }}_amd64.deb"
-            debug: true
 
           - platform: "windows-latest"
             dists:
               - "app/src-tauri/target/release/bundle/msi/Project\\ Graph_${{ github.event.inputs.version }}-setup.exe"
               # include signature file for updater support
               - "app/src-tauri/target/release/bundle/msi/Project\\ Graph_${{ github.event.inputs.version }}-setup.exe.sig"
-          - platform: "windows-latest"
-            dists:
-              - "app/src-tauri/target/release/bundle/msi/Project\\ Graph_${{ github.event.inputs.version }}-setup.exe"
-            debug: true
 
           - platform: "macos-latest"
             args: "--target aarch64-apple-darwin"
             rust_targets: "aarch64-apple-darwin"
             dists:
               - "app/src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/Project\\ Graph_${{ github.event.inputs.version }}_aarch64.dmg"
-          - platform: "macos-latest"
-            args: "--target aarch64-apple-darwin"
-            rust_targets: "aarch64-apple-darwin"
-            dists:
-              - "app/src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/Project\\ Graph_${{ github.event.inputs.version }}_aarch64.dmg"
-            debug: true
 
           - platform: "macos-latest"
             args: "--target x86_64-apple-darwin"
             rust_targets: "x86_64-apple-darwin"
             dists:
               - "app/src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/Project\\ Graph_${{ github.event.inputs.version }}_amd64.dmg"
-          - platform: "macos-latest"
-            args: "--target x86_64-apple-darwin"
-            rust_targets: "x86_64-apple-darwin"
-            dists:
-              - "app/src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/Project\\ Graph_${{ github.event.inputs.version }}_amd64.dmg"
-            debug: true
 
           - platform: "ubuntu-22.04"
             rust_targets: "armv7-linux-androideabi,i686-linux-android,x86_64-linux-android,aarch64-linux-android"
@@ -168,26 +147,14 @@ jobs:
         if: matrix.platform == 'ubuntu-22.04' && !matrix.android
         run: |
           sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"${{ github.event.inputs.version }}\"/" app/src-tauri/tauri.conf.json
-      - name: Linux - Enable DevTools
-        if: matrix.platform == 'ubuntu-22.04' && !matrix.android && matrix.debug
-        run: |
-          sed -i "s/\"macos-private-api\"/\"macos-private-api\",\"devtools\"/" ./app/src-tauri/Cargo.toml
       - name: MacOS - Edit version
         if: matrix.platform == 'macos-latest'
         run: |
           sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"${{ github.event.inputs.version }}\"/" app/src-tauri/tauri.conf.json
-      - name: MacOS - Enable DevTools
-        if: matrix.platform == 'macos-latest' && matrix.debug
-        run: |
-          sed -i '' "s/\"macos-private-api\"/\"macos-private-api\",\"devtools\"/" ./app/src-tauri/Cargo.toml
       - name: Windows - Edit version
         if: matrix.platform == 'windows-latest'
         run: |
           (Get-Content -Path "app/src-tauri/tauri.conf.json" -Raw) -replace '"version": "[^"]*"', '"version": "${{ github.event.inputs.version }}"' | Set-Content -Path "app/src-tauri/tauri.conf.json"
-      - name: Windows - Enable DevTools
-        if: matrix.platform == 'windows-latest' && matrix.debug
-        run: |
-          (Get-Content -Path "app/src-tauri/Cargo.toml" -Raw) -replace '"macos-private-api"', '"macos-private-api","devtools"' | Set-Content -Path "app/src-tauri/Cargo.toml"
       - name: Android - Edit version
         if: matrix.platform == 'ubuntu-22.04' && matrix.android
         run: |
