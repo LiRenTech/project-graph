@@ -165,7 +165,7 @@ jobs:
 
       #region Build
       - name: Desktop - Build
-        if: !matrix.android
+        if: '!matrix.android'
         run: pnpm tauri:build
         env:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
