@@ -133,6 +133,7 @@ const MapOtherFunction: OtherFunctionMap = {
   [LogicNodeNameEnum.GET_LOCATION]: NodeLogic.getLocation,
   [LogicNodeNameEnum.SET_LOCATION]: NodeLogic.setLocation,
   [LogicNodeNameEnum.SET_LOCATION_BY_UUID]: NodeLogic.setLocationByUUID,
+  [LogicNodeNameEnum.GET_LOCATION_BY_UUID]: NodeLogic.getLocationByUUID,
   [LogicNodeNameEnum.GET_SIZE]: NodeLogic.getSize,
   [LogicNodeNameEnum.GET_MOUSE_LOCATION]: NodeLogic.getMouseLocation,
   [LogicNodeNameEnum.GET_MOUSE_WORLD_LOCATION]: NodeLogic.getMouseWorldLocation,

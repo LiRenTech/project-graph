@@ -142,6 +142,24 @@ export namespace NodeLogic {
     return [];
   }
 
+  export function getLocationByUUID(
+    fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    const fatherNode1 = fatherNodes[0];
+    if (fatherNode1 instanceof TextNode) {
+      const findEntity = StageManager.getEntitiesByUUIDs([fatherNode1.text])[0];
+      if (!findEntity) {
+        return ["Error: cannot find entity by uuid"];
+      }
+      // 找到了实体
+      const leftTop = findEntity.collisionBox.getRectangle().location;
+      return [leftTop.x.toString(), leftTop.y.toString()];
+    }
+    return ["输入不是TextNode节点"];
+  }
+
   export function getSize(
     fatherNodes: ConnectableEntity[],
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
