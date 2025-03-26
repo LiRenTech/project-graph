@@ -245,16 +245,21 @@ export default function App() {
               },
             )}
           >
+            {/* mac的红绿灯，发现如果没有内容会看不见，里面加一个点儿 */}
             {isMac && (
               <Button className="right-4 top-4 flex items-center gap-2 active:scale-100">
                 <div
                   className="size-3 rounded-full bg-red-500 active:bg-red-800"
                   onClick={() => getCurrentWindow().close()}
-                ></div>
+                >
+                  .
+                </div>
                 <div
                   className="size-3 rounded-full bg-yellow-500 active:bg-yellow-800"
                   onClick={() => getCurrentWindow().minimize()}
-                ></div>
+                >
+                  .
+                </div>
                 <div
                   className="size-3 rounded-full bg-green-500 active:bg-green-800"
                   onClick={() =>
@@ -262,7 +267,9 @@ export default function App() {
                       .isMaximized()
                       .then((isMaximized) => setMaxmized(!isMaximized))
                   }
-                ></div>
+                >
+                  .
+                </div>
               </Button>
             )}
             {/* 左上角菜单按钮 */}

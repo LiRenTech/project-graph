@@ -6,6 +6,7 @@ import { Color } from "../../core/dataStruct/Color";
 import { ColorManager } from "../../core/service/feedbackService/ColorManager";
 import ColorManagerPanel from "./_color_manager_panel";
 import { StageObjectColorManager } from "../../core/stage/stageManager/concreteMethods/StageObjectColorManager";
+import { isMac } from "../../utils/platform";
 /**
  * 上色盘面板
  * @param param0
@@ -30,35 +31,45 @@ export default function ColorPanel() {
             const color = new Color(239, 68, 68);
             StageObjectColorManager.setSelectedStageObjectColor(color);
           }}
-        />
+        >
+          {isMac && "."}
+        </div>
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded bg-yellow-500 hover:scale-125"
           onClick={() => {
             const color = new Color(234, 179, 8);
             StageObjectColorManager.setSelectedStageObjectColor(color);
           }}
-        />
+        >
+          {isMac && "."}
+        </div>
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded bg-green-600 hover:scale-125"
           onClick={() => {
             const color = new Color(22, 163, 74);
             StageObjectColorManager.setSelectedStageObjectColor(color);
           }}
-        />
+        >
+          {isMac && "."}
+        </div>
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded bg-blue-500 hover:scale-125"
           onClick={() => {
             const color = new Color(59, 130, 246);
             StageObjectColorManager.setSelectedStageObjectColor(color);
           }}
-        />
+        >
+          {isMac && "."}
+        </div>
         <div
           className="m-1 h-5 w-5 cursor-pointer rounded bg-purple-500 hover:scale-125"
           onClick={() => {
             const color = new Color(168, 85, 247);
             StageObjectColorManager.setSelectedStageObjectColor(color);
           }}
-        />
+        >
+          {isMac && "."}
+        </div>
         {/* 清除颜色 */}
         <div
           className="m-1 h-5 w-5 animate-pulse cursor-pointer rounded bg-transparent text-center text-sm hover:scale-125"
