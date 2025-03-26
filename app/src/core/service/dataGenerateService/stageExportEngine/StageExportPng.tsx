@@ -25,7 +25,7 @@ export namespace StageExportPng {
   /**
    * 是否有背景
    */
-  let isHaveBackground = true;
+  let isHaveBackground = false;
   export function setHaveBackground(have: boolean) {
     isHaveBackground = have;
   }

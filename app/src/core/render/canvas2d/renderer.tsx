@@ -108,7 +108,7 @@ export namespace Renderer {
    * 仅在导出png时开启
    */
   // eslint-disable-next-line prefer-const
-  export let isRenderBackground = true;
+  export let isRenderBackground = false;
   let isShowBackgroundCartesian = false;
   export let isAlwaysShowDetails = false;
   export let protectingPrivacy = false;

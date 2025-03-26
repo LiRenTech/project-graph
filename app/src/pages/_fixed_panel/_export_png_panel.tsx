@@ -19,7 +19,7 @@ export default function ExportPNGPanel() {
   const [isRendering, setIsRendering] = useState(false);
   const [current, setCurrent] = useState(0);
   const [total, setTotal] = useState(0);
-  const [isTransparentBackground, setIsTransparentBackground] = useState(false);
+  const [isTransparentBackground, setIsTransparentBackground] = useState(true);
 
   useEffect(() => {
     if (!isExportPngPanelOpen) {
