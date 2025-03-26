@@ -121,7 +121,7 @@ export namespace Settings {
     showBackgroundDots: false,
     showBackgroundCartesian: true, // 1.4.17 开始必须要默认显示坐标系，没有坐标系可能会让用户迷路
     windowBackgroundAlpha: 0.9,
-    enableTagTextNodesBigDisplay: false,
+    enableTagTextNodesBigDisplay: true,
     showDebug: false, // 从1.4.7开始，以后用户安装软件后不默认显示调试信息，进而避免出现让用户感到困惑“这一大堆字是什么”
     alwaysShowDetails: false,
     protectingPrivacy: false,
@@ -175,8 +175,8 @@ export namespace Settings {
     moveFriction: 0.1,
     gamepadDeadzone: 0.1,
     mouseRightDragBackground: "cut",
-    textNodeContentLineBreak: "enter",
-    textNodeExitEditMode: "ctrlEnter",
+    textNodeContentLineBreak: "shiftEnter",
+    textNodeExitEditMode: "enter",
     textNodeStartEditMode: "enter",
     textNodeSelectAllWhenStartEditByKeyboard: false,
     textNodeSelectAllWhenStartEditByMouseClick: true,
