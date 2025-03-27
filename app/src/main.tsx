@@ -599,7 +599,7 @@ async function registerKeyBinds() {
   });
 
   (
-    await KeyBinds.create("generateNodeTreeWithDeepMode", "`", {
+    await KeyBinds.create("generateNodeTreeWithDeepMode", "tab", {
       control: false,
       meta: false,
       alt: false,
@@ -619,21 +619,6 @@ async function registerKeyBinds() {
     KeyboardOnlyEngine.onBroadGenerateNode();
   });
 
-  const bind = await KeyBinds.create("keyboardOnlyGenerateNode", "tab", {
-    control: false,
-    alt: false,
-    shift: false,
-  });
-  bind.down(() => {
-    if (KeyboardOnlyEngine.isEnableVirtualCreate()) {
-      KeyboardOnlyEngine.createStart();
-    }
-  });
-  bind.up(() => {
-    if (KeyboardOnlyEngine.isCreating()) {
-      KeyboardOnlyEngine.createFinished();
-    }
-  });
   const bindCamear = await KeyBinds.create("masterBrakeControl", "pause", {
     control: false,
     alt: false,

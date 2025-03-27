@@ -1,13 +1,12 @@
 import { getTextSize } from "../../../utils/font";
 import { appScale, isFrame } from "../../../utils/platform";
-import { Color, mixColors } from "../../dataStruct/Color";
+import { Color } from "../../dataStruct/Color";
 import { Vector } from "../../dataStruct/Vector";
 import { CubicBezierCurve } from "../../dataStruct/shape/Curve";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Settings } from "../../service/Settings";
 import { MouseLocation } from "../../service/controlService/MouseLocation";
 import { Controller } from "../../service/controlService/controller/Controller";
-import { KeyboardOnlyEngine } from "../../service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
 import { CopyEngine } from "../../service/dataManageService/copyEngine/copyEngine";
 import { StageStyleManager } from "../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../stage/Camera";
@@ -256,7 +255,6 @@ export namespace Renderer {
     renderCuttingLine();
     renderConnectingLine();
     rendererLayerMovingLine();
-    renderKeyboardOnly();
     renderClipboard();
     renderEffects();
     // renderViewRectangle(viewRectangle);
@@ -573,53 +571,6 @@ export namespace Renderer {
         StageStyleManager.currentStyle.StageObjectBorder,
         2 * Camera.currentScale,
       );
-    }
-  }
-  /**
-   * 渲染和纯键盘操作相关的功能
-   */
-  function renderKeyboardOnly() {
-    if (KeyboardOnlyEngine.isCreating()) {
-      const isHaveEntity = KeyboardOnlyEngine.isTargetLocationHaveEntity();
-      for (const node of StageManager.getTextNodes()) {
-        if (node.isSelected) {
-          {
-            const startLocation = node.rectangle.center;
-            const endLocation = KeyboardOnlyEngine.virtualTargetLocation();
-            let rate = KeyboardOnlyEngine.getPressTabTimeInterval() / 100;
-            rate = Math.min(1, rate);
-            const currentLocation = startLocation.add(endLocation.subtract(startLocation).multiply(rate));
-            WorldRenderUtils.renderLaser(
-              startLocation,
-              currentLocation,
-              2,
-              rate < 1 ? Color.Yellow : isHaveEntity ? Color.Blue : Color.Green,
-            );
-            if (rate === 1 && !isHaveEntity) {
-              ShapeRenderer.renderRectFromCenter(
-                transformWorld2View(KeyboardOnlyEngine.virtualTargetLocation()),
-                120 * Camera.currentScale,
-                60 * Camera.currentScale,
-                Color.Transparent,
-                mixColors(StageStyleManager.currentStyle.StageObjectBorder, Color.Transparent, 0.5),
-                2 * Camera.currentScale,
-                NODE_ROUNDED_RADIUS * Camera.currentScale,
-              );
-            }
-          }
-          let hintText = "松开Tab键完成新节点创建,IKJL键移动生成位置";
-          if (isHaveEntity) {
-            hintText = "连接！";
-          }
-          // 在生成点下方写文字提示
-          TextRenderer.renderText(
-            hintText,
-            transformWorld2View(KeyboardOnlyEngine.virtualTargetLocation().add(new Vector(0, 50))),
-            15 * Camera.currentScale,
-            StageStyleManager.currentStyle.StageObjectBorder,
-          );
-        }
-      }
     }
   }
   function renderEntities(viewRectangle: Rectangle) {
