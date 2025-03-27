@@ -442,7 +442,7 @@ export default function App() {
             <div
               className="fixed right-0 top-0 z-50 size-1 cursor-pointer bg-amber-200 transition-all hover:size-14 hover:rounded-bl-2xl hover:bg-red-500"
               onClick={() => {
-                console.log("click Right top");
+                getCurrentWindow().close();
               }}
             >
               <X className="cursor-pointer" />
