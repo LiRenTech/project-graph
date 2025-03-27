@@ -437,6 +437,17 @@ export default function App() {
               </Button>
             )}
           </div>
+          {/* @鹿松狸，鼠标移动到最右上角出现关闭窗口按钮 */}
+          {!isMac && !isWindowCollapsing && (
+            <div
+              className="fixed right-0 top-0 z-50 size-1 cursor-pointer bg-amber-200 transition-all hover:size-14 hover:rounded-bl-2xl hover:bg-red-500"
+              onClick={() => {
+                console.log("click Right top");
+              }}
+            >
+              <X className="cursor-pointer" />
+            </div>
+          )}
 
           {/* 面板列表 */}
           <AppMenu className="absolute left-4 top-16 z-20" open={isMenuOpen} />
