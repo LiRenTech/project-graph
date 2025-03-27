@@ -95,7 +95,7 @@ export class ControllerClass {
     const now = new Date().getTime();
     if (
       now - this.lastClickTime < 300 &&
-      this.lastClickLocation.distance(new Vector(event.clientX, event.clientY)) < 5
+      this.lastClickLocation.distance(new Vector(event.clientX, event.clientY)) < 20
     ) {
       this.mouseDoubleClick(event);
     }
