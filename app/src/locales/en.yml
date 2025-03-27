@@ -11,7 +11,8 @@ about:
     available: New Version
     downloading: Downloading
     checkingUpdate: Checking for updates...
-    checkUpdateFail: Failed to retrieve the latest version information. Please check your network connection.
+    checkUpdateFail: Failed to retrieve the latest version information. Please check
+      your network connection.
   links:
     documentation: Documentation
     github: GitHub
@@ -19,14 +20,19 @@ about:
     qq: QQ Group
     forum: Forum
   intro:
-    - Software Introduction
-    - This is a tool based on the Tauri framework for quickly drawing node diagrams, which can be used for project topology diagrams and quick brainstorming drafts.
-    - Xmind can only be used to draw tree-structured diagrams. FigJam and draw.io can be used, but the web pages load a bit slowly.
-    - That's why this software was created.
+  - Software Introduction
+  - This is a tool based on the Tauri framework for quickly drawing node diagrams,
+    which can be used for project topology diagrams and quick brainstorming drafts.
+  - Xmind can only be used to draw tree-structured diagrams. FigJam and draw.io can
+    be used, but the web pages load a bit slowly.
+  - That's why this software was created.
   contact:
-    - Contact Us
-    - We are committed to designing the fastest and most convenient drawing methodology for "graph theory" and also exploring innovations in visual thinking and topological to-do lists.
-    - "If you want to get quick feedback, provide suggestions, or have any ideas or questions, please join our QQ Group: 1018716404."
+  - Contact Us
+  - We are committed to designing the fastest and most convenient drawing methodology
+    for "graph theory" and also exploring innovations in visual thinking and topological
+    to-do lists.
+  - "If you want to get quick feedback, provide suggestions, or have any ideas or
+    questions, please join our QQ Group: 1018716404."
   techEnvironment: Technical Support and Ecosystem
   developers:
     title: Developer List
@@ -50,21 +56,30 @@ about:
     encouragerEncourager: Encourager of Encouragers
     atmosphereAdjuster: Atmosphere Adjustment
   ideaSources:
-    - Inspiration Sources
-    - FigJam without dark mode support
-    - Analysis framework video by Lin Chao
-    - Topological sorting, graph theory, state machines, and set theory concepts from "Data Structures and Algorithms"
-    - Brainstorming methods, cognitive load theory, and card creativity methods
-    - The Command blocks in the game "Minecraft" and the Nether portal mod for cross-world previews
-    - The slicing animation effect in the game "Fruit Ninja"
-    - The logical node design of factory assembly lines in the game "Mindustry"
+  - Inspiration Sources
+  - FigJam without dark mode support
+  - Analysis framework video by Lin Chao
+  - Topological sorting, graph theory, state machines, and set theory concepts from
+    "Data Structures and Algorithms"
+  - Brainstorming methods, cognitive load theory, and card creativity methods
+  - The Command blocks in the game "Minecraft" and the Nether portal mod for cross-world
+    previews
+  - The slicing animation effect in the game "Fruit Ninja"
+  - The logical node design of factory assembly lines in the game "Mindustry"
   team:
-    - Team Introduction
-    - LiRen Tech is a small team founded by Littlefean and Rutubet on May 1, 2017, with ZTY joining later.
-    - Known for its youthful atmosphere, emphasis on innovation and creativity, and rational thinking and cultural inclusiveness, it stands out in the field of software development.
-    - It focuses not only on developing tool software and games but also on developing Minecraft game plugins, operating game servers, and building websites.
-    - Representative works include the rich content tower defense game CannonWar, the algorithm competition website BitMountain, the desktop software Watch, and the Minecraft PvP professional war server.
-    - The team's representative colors are light blue and code green, symbolizing a team culture that combines logical rationality with humor and fun.
+  - Team Introduction
+  - LiRen Tech is a small team founded by Littlefean and Rutubet on May 1, 2017, with
+    ZTY joining later.
+  - Known for its youthful atmosphere, emphasis on innovation and creativity, and
+    rational thinking and cultural inclusiveness, it stands out in the field of software
+    development.
+  - It focuses not only on developing tool software and games but also on developing
+    Minecraft game plugins, operating game servers, and building websites.
+  - Representative works include the rich content tower defense game CannonWar, the
+    algorithm competition website BitMountain, the desktop software Watch, and the
+    Minecraft PvP professional war server.
+  - The team's representative colors are light blue and code green, symbolizing a
+    team culture that combines logical rationality with humor and fun.
 
 settings:
   title: Settings
@@ -213,7 +228,8 @@ settings:
       Rendering will stop after a certain number of seconds without canvas manipulation to save CPU/GPU resources.
       This will only take effect if the "Pause Rendering When Idle" option is enabled.
   ignoreTextNodeTextRenderLessThanCameraScale:
-    title: Ignore Text Node Text Rendering When Camera Scale is Less Than a Certain Value
+    title: Ignore Text Node Text Rendering When Camera Scale is Less Than a Certain
+      Value
     description: |
       When enabled, text within text nodes will not be rendered when the camera scale is less than a certain value (i.e., when observing the macro view).
       This can improve rendering performance but will make the text content of text nodes invisible.
@@ -531,10 +547,13 @@ appMenu:
 startFilePanel:
   title: Select Project File to Load Automatically on Startup
   tips:
-    - Note: The project file selected here will be loaded automatically when the application starts, without needing to open it manually.
-    - Load: Only load this file to the stage (you can check by hovering over the transparent icon to see if it is the desired file).
-    - Pin: Change the current startup file. The icon on the left status bar represents the current startup file.
-    - Remove: Remove the file from the list only, without affecting the file itself.
+  - Note: The project file selected here will be loaded automatically when the application
+      starts, without needing to open it manually.
+  - Load: Only load this file to the stage (you can check by hovering over the transparent
+      icon to see if it is the desired file).
+  - Pin: Change the current startup file. The icon on the left status bar represents
+      the current startup file.
+  - Remove: Remove the file from the list only, without affecting the file itself.
   buttons:
     addFile: Add File
     clearList: Clear List
@@ -584,7 +603,8 @@ keyBinds:
     description: Reset the viewport zoom to the standard size.
   folderSection:
     title: Fold/Unfold Section Box
-    description: Pressing this will toggle the fold/unfold state of the selected Section box.
+    description: Pressing this will toggle the fold/unfold state of the selected Section
+      box.
   reverseEdges:
     title: Reverse Connection Direction
     description: |
@@ -763,7 +783,7 @@ keyBinds:
     description: When pressed, the pasted content will overlap with the original position.
   selectEntityByPenStroke:
     title: Graffiti and Entity Diffusion Selection
-    description: |
+    description: |-
       After selecting a graffiti or entity, press this key to expand the selection to surrounding entities.
       If the current selection is graffiti, it will select entities touched by the graffiti.
       If the current selection is an entity, it will select all graffiti that touch it.
