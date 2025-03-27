@@ -369,7 +369,7 @@ export default function App() {
               </>
             )}
             {/* 右上角闪电按钮 */}
-            {!isWindowCollapsing && (
+            {!isWindowCollapsing && !isWeb && (
               <IconButton
                 onClick={(e) => {
                   e.stopPropagation();
