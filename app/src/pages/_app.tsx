@@ -1,6 +1,6 @@
 import { LogicalSize } from "@tauri-apps/api/dpi";
 import { useAtom } from "jotai";
-import { ChevronDown, ChevronLeft, ChevronUp, Cpu, Diamond, Menu, SquareArrowUp, Tag, X, Zap } from "lucide-react";
+import { ChevronLeft, Copy, Cpu, Menu, Minus, PanelTop, Square, Tag, X, Zap } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -404,7 +404,7 @@ export default function App() {
                 }}
                 tooltip={isWindowCollapsing ? "展开并取消顶置窗口" : "进入迷你窗口模式"}
               >
-                <SquareArrowUp className={cn("cursor-pointer", isWindowCollapsing ? "rotate-180 scale-125" : "")} />
+                <PanelTop className={cn("cursor-pointer", isWindowCollapsing ? "rotate-180 scale-125" : "")} />
               </IconButton>
             )}
 
@@ -413,23 +413,26 @@ export default function App() {
               <Button
                 className={cn("right-4 top-4 flex items-center gap-1 active:scale-100", isClassroomMode && "opacity-0")}
               >
-                <ChevronDown
+                {/* 最小化 */}
+                <Minus
                   onClick={() => getCurrentWindow().minimize()}
                   className="transition hover:opacity-80 active:scale-75"
                 />
+                {/* 最大化/取消窗口最大化 */}
                 {maxmized ? (
-                  <Diamond
+                  <Copy
                     onClick={() => setMaxmized(false)}
                     size={16}
                     strokeWidth={3}
                     className="transition hover:opacity-80 active:scale-75"
                   />
                 ) : (
-                  <ChevronUp
+                  <Square
                     onClick={() => setMaxmized(true)}
-                    className="transition hover:opacity-80 active:scale-75"
+                    className="scale-75 transition hover:opacity-80 active:scale-75"
                   />
                 )}
+                {/* 退出 */}
                 <X onClick={() => getCurrentWindow().close()} className="transition hover:opacity-80 active:scale-75" />
               </Button>
             )}

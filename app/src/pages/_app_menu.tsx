@@ -7,15 +7,12 @@ import {
   Dock,
   File,
   FileCode,
-  FilePlus,
-  FileText,
   FileType,
   Folder,
   FolderCog,
   FolderOpen,
   Fullscreen,
   Info,
-  Laugh,
   Monitor,
   MonitorX,
   MoreHorizontal,
@@ -33,6 +30,11 @@ import {
   Undo,
   View,
   Image as ImageIcon,
+  FileClock,
+  FileInput,
+  FilePlus2,
+  FileDown,
+  Rabbit,
 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -379,15 +381,15 @@ export default function AppMenu({ className = "", open = false }: { className?: 
       onPointerDown={(e) => e.stopPropagation()}
     >
       <Row icon={<File />} title={t("file.title")}>
-        <Col icon={<FilePlus />} onClick={onNewDraft}>
+        <Col icon={<FilePlus2 />} onClick={onNewDraft}>
           {t("file.items.new")}
         </Col>
-        <Col icon={<FileText />} onClick={onOpen}>
+        <Col icon={<FileInput />} onClick={onOpen}>
           {t("file.items.open")}
         </Col>
         {!isWeb && (
           <>
-            <Col icon={<FileText />} onClick={() => setRecentFilePanelOpen(true)}>
+            <Col icon={<FileClock />} onClick={() => setRecentFilePanelOpen(true)}>
               {t("file.items.recent")}
             </Col>
             <Col icon={<Save />} onClick={onSave}>
@@ -395,7 +397,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             </Col>
           </>
         )}
-        <Col icon={<Save />} onClick={onSaveNew}>
+        <Col icon={<FileDown />} onClick={onSaveNew}>
           {t("file.items.saveAs")}
         </Col>
 
@@ -552,7 +554,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           {isClassroomMode ? "退出专注" : "专注模式"}
         </Col>
         <Col
-          icon={<Laugh />}
+          icon={<Rabbit />}
           className="opacity-20 hover:opacity-50"
           onClick={() => {
             navigate("/secret");
