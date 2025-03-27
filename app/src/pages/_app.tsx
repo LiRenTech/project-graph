@@ -1,12 +1,13 @@
 import { LogicalSize } from "@tauri-apps/api/dpi";
 import { useAtom } from "jotai";
-import { ChevronLeft, Copy, Cpu, Menu, Minus, PanelTop, Square, Tag, X, Zap } from "lucide-react";
+import { ChevronLeft, Copy, Cpu, FlaskConical, Menu, Minus, PanelTop, Square, Tag, X, Zap } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import { Dialog } from "../components/dialog";
 import IconButton from "../components/IconButton";
+import { Renderer } from "../core/render/canvas2d/renderer";
 import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
 import { Settings } from "../core/service/Settings";
 import { Themes } from "../core/service/Themes";
@@ -15,15 +16,15 @@ import { StageDumper } from "../core/stage/StageDumper";
 import { fileAtom, isClassroomModeAtom, isWindowCollapsingAtom } from "../state";
 import { cn } from "../utils/cn";
 import { PathString } from "../utils/pathString";
-import { appScale, getCurrentWindow, isDesktop, isFrame, isMac, isMobile, isWeb } from "../utils/platform";
+import { appScale, getCurrentWindow, isDesktop, isFrame, isIpad, isMac, isMobile, isWeb } from "../utils/platform";
 import AppMenu from "./_app_menu";
 import ErrorHandler from "./_fixed_panel/_error_handler";
+import ExportPNGPanel from "./_fixed_panel/_export_png_panel";
 import ExportTreeTextPanel from "./_fixed_panel/_export_text_panel";
 import LogicNodePanel from "./_fixed_panel/_logic_node_panel";
 import RecentFilesPanel from "./_fixed_panel/_recent_files_panel";
 import StartFilePanel from "./_fixed_panel/_start_file_panel";
 import TagPanel from "./_fixed_panel/_tag_panel";
-import ExportPNGPanel from "./_fixed_panel/_export_png_panel";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -381,7 +382,7 @@ export default function App() {
                 <Zap className={cn("cursor-pointer", isStartFilePanelOpen ? "rotate-45 scale-125" : "")} />
               </IconButton>
             )}
-            {isDesktop && (
+            {isDesktop && !isIpad && (
               <IconButton
                 className={cn(
                   isWindowCollapsing && "h-2 w-2 border-green-300 bg-green-500",
@@ -405,6 +406,24 @@ export default function App() {
                 tooltip={isWindowCollapsing ? "展开并取消顶置窗口" : "进入迷你窗口模式"}
               >
                 <PanelTop className={cn("cursor-pointer", isWindowCollapsing ? "rotate-180 scale-125" : "")} />
+              </IconButton>
+            )}
+            {/* ipad测试按钮 */}
+            {isIpad && (
+              <IconButton
+                onClick={() => {
+                  Renderer.resizeWindow(window.innerWidth, window.innerHeight);
+
+                  let printData = `Renderer w,h: ${Renderer.w}, ${Renderer.h}\n`;
+                  printData += `window inner: ${window.innerWidth}, ${window.innerHeight}`;
+                  printData += `window: ${window.outerWidth}, ${window.outerHeight}`;
+                  Dialog.show({
+                    title: "ipad 测试",
+                    content: printData,
+                  });
+                }}
+              >
+                <FlaskConical />
               </IconButton>
             )}
 
