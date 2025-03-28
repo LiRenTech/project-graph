@@ -556,6 +556,38 @@ async function registerKeyBinds() {
     }
   });
   (
+    await KeyBinds.create("windowOpacityAlphaIncrease", "+", {
+      control: isMac ? false : true,
+      meta: isMac,
+      alt: true,
+      shift: true,
+    })
+  ).down(async () => {
+    const currentValue = await Settings.get("windowBackgroundAlpha");
+    if (currentValue === 1) {
+      // 已经不能再大了
+      Stage.effectMachine.addEffect(ViewOutlineFlashEffect.short(StageStyleManager.currentStyle.effects.flash));
+    } else {
+      Settings.set("windowBackgroundAlpha", Math.min(1, currentValue + 0.2));
+    }
+  });
+  (
+    await KeyBinds.create("windowOpacityAlphaDecrease", "-", {
+      control: isMac ? false : true,
+      meta: isMac,
+      alt: true,
+      shift: true,
+    })
+  ).down(async () => {
+    const currentValue = await Settings.get("windowBackgroundAlpha");
+    if (currentValue === 0) {
+      // 已经不能再小了
+      Stage.effectMachine.addEffect(ViewOutlineFlashEffect.short(StageStyleManager.currentStyle.effects.flash));
+    } else {
+      Settings.set("windowBackgroundAlpha", Math.max(0, currentValue - 0.2));
+    }
+  });
+  (
     await KeyBinds.create("copy", "c", {
       control: isMac ? false : true,
       meta: isMac,

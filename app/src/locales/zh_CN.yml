@@ -744,6 +744,16 @@ keyBinds:
       按下后，窗口进入完全透明模式，再按一次将进入完全不透明模式
       注意要配合画布颜色风格进行设置。例如：黑色模式下文字为白色，论文白模式下文字为黑色。
       如果窗口下层内容为白色背景，建议切换画布到论文白模式。
+  windowOpacityAlphaIncrease:
+    title: 窗口不透明度增加
+    description: |
+      按下后，窗口不透明度（alpha）值增加0.2，往不透明的方向改变，最大值为1
+      当不能再增加时，会有窗口边缘闪烁提示
+  windowOpacityAlphaDecrease:
+    title: 窗口不透明度减小
+    description: |
+      按下后，窗口不透明度（alpha）值减小0.2，往透明的方向改变，最小值为0
+      如果您的键盘没有小键盘的纯减号键，可以改成横排数字0右侧的减号与下划线公用键
   searchText:
     title: 搜索文本
     description: |
