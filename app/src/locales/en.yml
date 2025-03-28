@@ -10,8 +10,8 @@ about:
   updater:
     available: New Version
     downloading: Downloading
-    checkingUpdate: Checking for updates...
-    checkUpdateFail: Failed to retrieve the latest version information. Please check
+    checkingUpdate: Checking for updates…
+    checkUpdateFail: Failed to retrieve the latest version information, please check
       your network connection.
   links:
     documentation: Documentation
@@ -22,7 +22,7 @@ about:
   intro:
   - Software Introduction
   - This is a tool based on the Tauri framework for quickly drawing node diagrams,
-    which can be used for project topology diagrams and quick brainstorming drafts.
+    which can be used for project topology diagrams and quick brainstorming drafts
   - Xmind can only be used to draw tree-structured diagrams. FigJam and draw.io can
     be used, but the web pages load a bit slowly.
   - That's why this software was created.
@@ -547,13 +547,14 @@ appMenu:
 startFilePanel:
   title: Select Project File to Load Automatically on Startup
   tips:
-  - Note: The project file selected here will be loaded automatically when the application
-      starts, without needing to open it manually.
-  - Load: Only load this file to the stage (you can check by hovering over the transparent
-      icon to see if it is the desired file).
-  - Pin: Change the current startup file. The icon on the left status bar represents
-      the current startup file.
-  - Remove: Remove the file from the list only, without affecting the file itself.
+  - "Tip: The selected Project File will automatically load to the Stage when the
+    program starts, don't have to open it manually."
+  - 'Load: only load this file to Stage (you can check the switch result by making
+    this window transparent )'
+  - 'Pin: switch the project file for automatically loading, the status icon on the
+    left represent the current auto-loaded file.'
+  - 'Remove: this will only remove the project file from the list, which will not
+    affect the project file itself.'
   buttons:
     addFile: Add File
     clearList: Clear List
