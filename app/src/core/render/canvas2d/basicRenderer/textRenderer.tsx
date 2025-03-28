@@ -17,7 +17,12 @@ export namespace TextRenderer {
    * @param fontSize
    * @param color
    */
-  export function renderText(text: string, location: Vector, fontSize: number, color: Color = Color.White): void {
+  export function renderOneLineText(
+    text: string,
+    location: Vector,
+    fontSize: number,
+    color: Color = Color.White,
+  ): void {
     // alphabetic, top, hanging, middle, ideographic, bottom
     text = Renderer.protectingPrivacy ? replaceTextWhenProtect(text) : text;
     Canvas.ctx.textBaseline = "middle";
@@ -96,7 +101,7 @@ export namespace TextRenderer {
       textLineArray[limitLines - 1] += "..."; // 最后一行加省略号
     }
     for (const line of textLineArray) {
-      renderText(line, location.add(new Vector(0, currentY)), fontSize, color);
+      renderOneLineText(line, location.add(new Vector(0, currentY)), fontSize, color);
       currentY += fontSize * lineHeight;
     }
   }
@@ -156,7 +161,7 @@ export namespace TextRenderer {
   function textToTextArray(text: string, fontSize: number, limitWidth: number): string[] {
     let currentLine = "";
     // 先渲染一下空字符串，否则长度大小可能不匹配，造成蜜汁bug
-    renderText("", Vector.getZero(), fontSize, Color.White);
+    renderOneLineText("", Vector.getZero(), fontSize, Color.White);
     const lines: string[] = [];
 
     for (const char of text) {
@@ -181,5 +186,29 @@ export namespace TextRenderer {
       lines.push(currentLine);
     }
     return lines;
+  }
+
+  /**
+   * 测量多行文本的大小
+   * @param text
+   * @param fontSize
+   * @param limitWidth
+   * @returns
+   */
+  export function measureMultiLineTextSize(
+    text: string,
+    fontSize: number,
+    limitWidth: number,
+    lineHeight: number = 1.2,
+  ): Vector {
+    const lines = textToTextArrayWrapCache(text, fontSize, limitWidth);
+    let maxWidth = 0;
+    let totalHeight = 0;
+    for (const line of lines) {
+      const measureSize = Canvas.ctx.measureText(line);
+      maxWidth = Math.max(maxWidth, measureSize.width);
+      totalHeight += fontSize * lineHeight;
+    }
+    return new Vector(maxWidth, totalHeight);
   }
 }

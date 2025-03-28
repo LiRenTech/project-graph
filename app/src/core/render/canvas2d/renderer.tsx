@@ -349,7 +349,7 @@ export namespace Renderer {
           1,
         );
         // 完全覆盖框选的提示
-        TextRenderer.renderText(
+        TextRenderer.renderOneLineText(
           "完全覆盖框选",
           transformWorld2View(Stage.selectMachine.selectingRectangle.leftBottom).add(new Vector(20, 10)),
           10,
@@ -611,7 +611,7 @@ export namespace Renderer {
         1,
       );
       // 在原位置下写标注
-      TextRenderer.renderText(
+      TextRenderer.renderOneLineText(
         "ctrl+shift+v 原位置叠加粘贴",
         transformWorld2View(
           new Vector(
@@ -633,7 +633,7 @@ export namespace Renderer {
         1,
       );
       // 写下标注
-      TextRenderer.renderText(
+      TextRenderer.renderOneLineText(
         "ctrl+v 粘贴到鼠标位置，Esc键清空粘贴板",
         transformWorld2View(
           new Vector(
@@ -762,7 +762,7 @@ export namespace Renderer {
       detailsData.push(`render time:${k}: ${v.toFixed(2)}`);
     }
     for (const line of detailsData) {
-      TextRenderer.renderText(
+      TextRenderer.renderOneLineText(
         line,
         new Vector(10, 80 + detailsData.indexOf(line) * 12),
         10,
@@ -786,7 +786,7 @@ export namespace Renderer {
 
     for (const key of Controller.pressingKeySet) {
       const textLocation = new Vector(x, Renderer.h - 100);
-      TextRenderer.renderText(key, textLocation, fontSize, StageStyleManager.currentStyle.StageObjectBorder);
+      TextRenderer.renderOneLineText(key, textLocation, fontSize, StageStyleManager.currentStyle.StageObjectBorder);
       const textSize = getTextSize(key, fontSize);
       x += textSize.x + margin;
     }
@@ -797,7 +797,7 @@ export namespace Renderer {
         Controller.pressingKeySet.has("a") ||
         Controller.pressingKeySet.has("d"))
     ) {
-      TextRenderer.renderText(
+      TextRenderer.renderOneLineText(
         "🔒方向键移动视野被禁止，可设置🔧更改",
         new Vector(margin, Renderer.h - 60),
         15,

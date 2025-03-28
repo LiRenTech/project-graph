@@ -293,7 +293,8 @@ export namespace EntityRenderer {
             node.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)).add(new Vector(0, Renderer.FONT_SIZE / 4)),
           ),
           Renderer.FONT_SIZE * Camera.currentScale,
-          Infinity,
+          // Infinity,
+          (node.rectangle.size.x - Renderer.NODE_PADDING * 2) * Camera.currentScale,
           node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.Background),
           1.5,
         );
@@ -417,13 +418,13 @@ export namespace EntityRenderer {
     }
     // 调试，缩放信息和位置信息
     if (Renderer.isShowDebug) {
-      TextRenderer.renderText(
+      TextRenderer.renderOneLineText(
         "scale: " + imageNode.scaleNumber.toString(),
         Renderer.transformWorld2View(imageNode.rectangle.location.subtract(new Vector(0, 6))),
         3 * Camera.currentScale,
         Color.Gray,
       );
-      TextRenderer.renderText(
+      TextRenderer.renderOneLineText(
         "origin size: " + imageNode.originImageSize.toString(),
         Renderer.transformWorld2View(imageNode.rectangle.location.subtract(new Vector(0, 3 + 6))),
         3 * Camera.currentScale,

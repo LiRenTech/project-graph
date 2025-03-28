@@ -26,14 +26,14 @@ export function EntityDetailsButtonRenderer(entity: Entity) {
     isMouseHovering = true;
     if (!entity.isEditingDetails)
       // 鼠标悬浮在这上面
-      TextRenderer.renderText(
+      TextRenderer.renderOneLineText(
         "点击展开或关闭节点注释详情",
         Renderer.transformWorld2View(entity.detailsButtonRectangle().topCenter.subtract(new Vector(0, 12))),
         12 * Camera.currentScale,
         StageStyleManager.currentStyle.DetailsDebugText,
       );
   }
-  TextRenderer.renderText(
+  TextRenderer.renderOneLineText(
     entity.isEditingDetails ? "✏️" : "📃",
     Renderer.transformWorld2View(entity.detailsButtonRectangle().leftTop),
     isMouseHovering ? getFontSizeByTime() : 20 * Camera.currentScale,

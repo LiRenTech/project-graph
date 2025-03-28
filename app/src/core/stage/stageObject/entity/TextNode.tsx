@@ -4,6 +4,7 @@ import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { TextRenderer } from "../../../render/canvas2d/basicRenderer/textRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
 import { Stage } from "../../Stage";
@@ -97,6 +98,9 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
     this.adjustSizeByText();
   }
 
+  /**
+   * 调整后的矩形是当前文字加了一圈padding之后的大小
+   */
   private adjustSizeByText() {
     this.collisionBox.shapeList[0] = new Rectangle(
       this.rectangle.location.clone(),
@@ -114,8 +118,14 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
     const newRectangle = currentRect.clone();
     // todo：宽度能自定义控制，但是高度不能
     const newSize = newRectangle.size.add(delta);
-    newSize.x = Math.max(10, newSize.x);
-    newSize.y = Math.max(10, newSize.y);
+    newSize.x = Math.max(75, newSize.x);
+    const newTextSize = TextRenderer.measureMultiLineTextSize(
+      this.text,
+      Renderer.FONT_SIZE,
+      newSize.x - Renderer.NODE_PADDING * 2,
+      1.5,
+    );
+    newSize.y = newTextSize.y + Renderer.NODE_PADDING * 2;
     newRectangle.size = newSize;
 
     this.collisionBox.shapeList[0] = newRectangle;

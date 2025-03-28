@@ -40,7 +40,7 @@ export namespace SectionRenderer {
       Renderer.NODE_ROUNDED_RADIUS * 1.5 * Camera.currentScale,
     );
     if (!section.isEditingTitle) {
-      TextRenderer.renderText(
+      TextRenderer.renderOneLineText(
         section.text,
         Renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
         Renderer.FONT_SIZE * Camera.currentScale,
@@ -64,7 +64,7 @@ export namespace SectionRenderer {
     );
     if (Camera.currentScale > 0.2 && !section.isEditingTitle) {
       // 正常显示标题
-      TextRenderer.renderText(
+      TextRenderer.renderOneLineText(
         section.text,
         Renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
         Renderer.FONT_SIZE * Camera.currentScale,
@@ -137,7 +137,7 @@ export namespace SectionRenderer {
 
   function getFontSizeBySectionSize(section: Section): Vector {
     // 缩放过小了，显示巨大化文字
-    TextRenderer.renderText("", Vector.getZero(), 100);
+    TextRenderer.renderOneLineText("", Vector.getZero(), 100);
 
     const textSize = Canvas.ctx.measureText(section.text);
     const width = textSize.width;

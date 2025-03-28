@@ -43,7 +43,6 @@ class ControllerEntityResizeClass extends ControllerClass {
       this.changeSizeEntity.resizeHandle(diff);
     }
     this.lastMoveLocation = pressWorldLocation.clone();
-    console.log("修改大小");
   };
 
   public mouseup: (event: MouseEvent) => void = (event) => {
