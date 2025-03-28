@@ -22,6 +22,7 @@ import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
 import { CursorNameEnum } from "../../../../types/cursors";
 import { controllerChildCamera } from "./concrete/ControllerChildCamera";
 import { controllerPenStroke } from "./concrete/ControllerPenStrokeControl";
+import { ControllerEntityResize } from "./concrete/ControllerEntityResize";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -151,6 +152,7 @@ export namespace Controller {
     ControllerImageScale.init();
     controllerChildCamera.init();
     controllerPenStroke.init();
+    ControllerEntityResize.init();
     //
   }
 
@@ -329,5 +331,6 @@ export namespace Controller {
     ControllerImageScale.destroy();
     controllerChildCamera.destroy();
     controllerPenStroke.destroy();
+    ControllerEntityResize.destroy();
   }
 }

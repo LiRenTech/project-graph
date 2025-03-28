@@ -9,7 +9,7 @@ import { Edge } from "../../../../stage/stageObject/association/Edge";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-import { getClickedStageObject } from "./utilsControl";
+import { getClickedStageObject, isClickedResizeRect } from "./utilsControl";
 
 class ControllerRectangleSelectClass extends ControllerClass {
   /**
@@ -58,6 +58,9 @@ class ControllerRectangleSelectClass extends ControllerClass {
 
     if (getClickedStageObject(pressWorldLocation) !== null) {
       // 不是点击在空白处
+      return;
+    }
+    if (isClickedResizeRect(pressWorldLocation)) {
       return;
     }
 

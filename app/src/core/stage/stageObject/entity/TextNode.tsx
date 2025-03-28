@@ -11,6 +11,7 @@ import { StageManager } from "../../stageManager/StageManager";
 import { SectionMethods } from "../../stageManager/basicMethods/SectionMethods";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { Entity } from "../abstract/StageEntity";
+import { ResizeAble } from "../abstract/StageObjectInterface";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { Section } from "./Section";
 
@@ -19,7 +20,7 @@ import { Section } from "./Section";
  * 文字节点类
  * 2024年10月20日：Node 改名为 TextNode，防止与 原生 Node 类冲突
  */
-export class TextNode extends ConnectableEntity {
+export class TextNode extends ConnectableEntity implements ResizeAble {
   uuid: string;
   text: string;
   details: string;
@@ -106,6 +107,22 @@ export class TextNode extends ConnectableEntity {
   rename(text: string) {
     this.text = text;
     this.adjustSizeByText();
+  }
+
+  resizeHandle(delta: Vector) {
+    const currentRect: Rectangle = this.collisionBox.shapeList[0] as Rectangle;
+    const newRectangle = currentRect.clone();
+    // todo：宽度能自定义控制，但是高度不能
+    const newSize = newRectangle.size.add(delta);
+    newSize.x = Math.max(10, newSize.x);
+    newSize.y = Math.max(10, newSize.y);
+    newRectangle.size = newSize;
+
+    this.collisionBox.shapeList[0] = newRectangle;
+  }
+
+  getResizeHandleRect(): Rectangle {
+    return new Rectangle(this.collisionBox.getRectangle().rightBottom, new Vector(10, 10));
   }
 
   /**

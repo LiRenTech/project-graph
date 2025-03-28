@@ -273,3 +273,23 @@ export function getClickedStageObject(clickedLocation: Vector) {
   }
   return clickedStageObject;
 }
+
+/**
+ * 鼠标是否点击在了调整大小的小框上
+ * @param clickedLocation
+ */
+export function isClickedResizeRect(clickedLocation: Vector): boolean {
+  const selectedEntities = StageManager.getSelectedStageObjects();
+
+  for (const selectedEntity of selectedEntities) {
+    if (selectedEntity instanceof TextNode) {
+      const resizeRect = selectedEntity.getResizeHandleRect();
+      if (resizeRect.isPointIn(clickedLocation)) {
+        // 点中了扩大缩小的东西
+        console.log("点击在了调整大小的小框上");
+        return true;
+      }
+    }
+  }
+  return false;
+}
