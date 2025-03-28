@@ -64,6 +64,7 @@ export namespace Settings {
     autoBackup: boolean;
     autoBackupInterval: number;
     autoBackupDraftPath: string;
+    generateTextNodeByStringTabCount: number; // 仅在生成节点面板中使用
     // 控制相关
     enableCollision: boolean; // 暂无
     enableDragAutoAlign: boolean;
@@ -157,6 +158,7 @@ export namespace Settings {
     autoBackup: true,
     autoBackupInterval: 600,
     autoBackupDraftPath: "",
+    generateTextNodeByStringTabCount: 4,
     // 控制相关
     enableCollision: true,
     enableDragAutoAlign: true,
