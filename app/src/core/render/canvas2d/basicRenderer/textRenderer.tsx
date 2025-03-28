@@ -209,6 +209,6 @@ export namespace TextRenderer {
       maxWidth = Math.max(maxWidth, measureSize.width);
       totalHeight += fontSize * lineHeight;
     }
-    return new Vector(maxWidth, totalHeight);
+    return new Vector(Math.ceil(maxWidth), totalHeight);
   }
 }

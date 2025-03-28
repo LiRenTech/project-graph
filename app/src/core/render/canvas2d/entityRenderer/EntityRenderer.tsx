@@ -181,14 +181,16 @@ export namespace EntityRenderer {
     if (node.isSelected) {
       // 在外面增加一个框
       CollisionBoxRenderer.render(node.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
-      // 改变大小的拖拽点
-      ShapeRenderer.renderRect(
-        node.getResizeHandleRect().transformWorld2View(),
-        Color.Transparent,
-        StageStyleManager.currentStyle.StageObjectBorder,
-        2 * Camera.currentScale,
-        8 * Camera.currentScale,
-      );
+      // 改变大小的拖拽
+      if (node.text.length > TextNode.enableResizeCharCount) {
+        ShapeRenderer.renderRect(
+          node.getResizeHandleRect().transformWorld2View(),
+          StageStyleManager.currentStyle.CollideBoxSelected,
+          StageStyleManager.currentStyle.StageObjectBorder,
+          2 * Camera.currentScale,
+          8 * Camera.currentScale,
+        );
+      }
     }
     if (node.isAiGenerating) {
       const borderColor = StageStyleManager.currentStyle.CollideBoxSelected.clone();

@@ -32,6 +32,8 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
    */
   public isAiGenerating: boolean = false;
 
+  public static enableResizeCharCount = 20;
+
   /**
    * 节点是否被选中
    */
@@ -95,7 +97,9 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
     this.details = details;
     this.collisionBox = new CollisionBox([new Rectangle(new Vector(...location), new Vector(...size))]);
     this.color = new Color(...color);
-    this.adjustSizeByText();
+    if (this.text.length < TextNode.enableResizeCharCount) {
+      this.adjustSizeByText();
+    }
   }
 
   /**
@@ -110,7 +114,9 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
 
   rename(text: string) {
     this.text = text;
-    this.adjustSizeByText();
+    if (this.text.length < TextNode.enableResizeCharCount) {
+      this.adjustSizeByText();
+    }
   }
 
   resizeHandle(delta: Vector) {
@@ -132,7 +138,8 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
   }
 
   getResizeHandleRect(): Rectangle {
-    return new Rectangle(this.collisionBox.getRectangle().rightBottom, new Vector(10, 10));
+    const rect = this.collisionBox.getRectangle();
+    return new Rectangle(rect.rightTop, new Vector(25, rect.size.y));
   }
 
   /**
