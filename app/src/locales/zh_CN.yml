@@ -113,7 +113,7 @@ settings:
   isRenderCenterPointer:
     title: 显示中心十字准星
     description: |
-      开启后，画布中心会显示一个十字准星，用于用于指示快捷键创建节点的位置
+      开启后，屏幕中心中心会显示一个十字准星，用于用于指示快捷键创建节点的位置
   showGrid:
     title: 显示网格
   showBackgroundHorizontalLines:
@@ -138,12 +138,12 @@ settings:
     title: 显示调试信息
     description: |
       通常为开发者使用
-      开启后，画布左上角将会显示调试信息。
+      开启后，屏幕左上角将会显示调试信息。
       若您遇到bug截图反馈时，建议开启此选项。
   enableTagTextNodesBigDisplay:
     title: 标签文本节点巨大化显示
     description: |
-      开启后，标签文本节点的显示在画布缩小到广袤的全局视野时，
+      开启后，标签文本节点的显示在摄像机缩小到广袤的全局视野时，
       标签会巨大化显示，以便更容易辨识整个文件的布局分布
   alwaysShowDetails:
     title: 始终显示节点详细信息
@@ -207,13 +207,13 @@ settings:
       但会出现文字抖动现象。建议配合视角缩放速度调整成1一起使用。
       如果您的电脑使用体验非常卡顿，尤其是在缩放和移动的情况下，可以开启此选项。
   isPauseRenderWhenManipulateOvertime:
-    title: 超过一定时间未操作画布，暂停渲染
+    title: 超过一定时间未操作舞台，暂停渲染
     description: |
-      开启后，超过若干秒未做出画布操作，画布渲染会暂停，以节省CPU/GPU资源。
+      开启后，超过若干秒未做出舞台操作，舞台渲染会暂停，以节省CPU/GPU资源。
   renderOverTimeWhenNoManipulateTime:
-    title: 超时停止渲染画布的时间（秒）
+    title: 超时停止渲染舞台的时间（秒）
     description: |
-      超过一定时间未做出画布操作，画布渲染会停止，以节省CPU/GPU资源。
+      超过一定时间未做出舞台操作，舞台渲染会停止，以节省CPU/GPU资源。
       必须在上述“超时暂停渲染”选项开启后才会生效。
   ignoreTextNodeTextRenderLessThanCameraScale:
     title: 当摄像机缩放倍数小于一定值时，不渲染文本节点内的文字
@@ -307,7 +307,7 @@ settings:
     title: 视角移动键盘反向
     description: |
       开启后，W S A D按键的移动视角方向会相反
-      原本的移动逻辑是移动悬浮在画面上的摄像机，但如果看成是移动画布，这样就反了
+      原本的移动逻辑是移动悬浮在画面上的摄像机，但如果看成是移动整个舞台，这样就反了
       于是就有了这个选项
   cameraResetViewPaddingRate:
     title: 根据选择节点重置视野时，边缘留白系数
@@ -636,8 +636,8 @@ keyBinds:
     title: 切换调试信息显示
     description: |
       按下后，切换调试信息显示
-      调试信息显示在画布左上角，通常为开发者使用
-      开启后，画布左上角将会显示调试信息。
+      调试信息显示在屏幕左上角，通常为开发者使用
+      开启后，屏幕左上角将会显示调试信息。
       若您遇到bug截图反馈时，建议开启此选项。
   generateNodeTreeWithDeepMode:
     title: 按下深度模式生长节点
@@ -742,8 +742,8 @@ keyBinds:
     title: 切换窗口透明度模式
     description: |
       按下后，窗口进入完全透明模式，再按一次将进入完全不透明模式
-      注意要配合画布颜色风格进行设置。例如：黑色模式下文字为白色，论文白模式下文字为黑色。
-      如果窗口下层内容为白色背景，建议切换画布到论文白模式。
+      注意要配合舞台颜色风格进行设置。例如：黑色模式下文字为白色，论文白模式下文字为黑色。
+      如果窗口下层内容为白色背景，建议切换舞台到论文白模式。
   windowOpacityAlphaIncrease:
     title: 窗口不透明度增加
     description: |
