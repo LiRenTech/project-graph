@@ -29,7 +29,7 @@ export namespace StageObjectColorManager {
       }
     }
     // 特性：统一取消框选
-    StageManager.clearSelectAll();
+    // StageManager.clearSelectAll();  // 不能统一取消全选，因为填充后可能会发现颜色不合适
     StageHistoryManager.recordStep();
   }
 

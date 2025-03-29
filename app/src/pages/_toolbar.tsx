@@ -123,7 +123,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       )}
 
       <ToolbarItem
-        description="设置节点/连线/框的颜色，注意要先选中再点颜色"
+        description="设置节点/连线/框的颜色，注意要先选中再点颜色 （F6）"
         icon={<PaintBucket />}
         handleFunction={() => Popup.show(<ColorPanel />, true)}
       />
