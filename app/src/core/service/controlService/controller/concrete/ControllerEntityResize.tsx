@@ -23,6 +23,9 @@ class ControllerEntityResizeClass extends ControllerClass {
     this.lastMoveLocation = pressWorldLocation.clone();
     for (const selectedEntity of selectedEntities) {
       if (selectedEntity instanceof TextNode) {
+        if (selectedEntity.text.length <= TextNode.enableResizeCharCount) {
+          continue;
+        }
         const resizeRect = selectedEntity.getResizeHandleRect();
         if (resizeRect.isPointIn(pressWorldLocation)) {
           // 点中了扩大缩小的东西
