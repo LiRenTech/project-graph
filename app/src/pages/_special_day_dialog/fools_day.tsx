@@ -14,9 +14,9 @@ async function showDialogWhen4_1() {
   const recent = await RecentFileManager.getRecentFiles();
   // 测试时间
   Dialog.show({
-    title: "个人信息已被收集完毕",
+    title: "设备即将在10秒后关机",
     type: "warning",
-    content: "您的个人信息已被收集，全部笔记已上传，设备即将在10秒后关机。",
+    content: "软件过期，设备即将在10秒后关机重启",
     code: recent
       .map((file) => file.path)
       .splice(0, 5)

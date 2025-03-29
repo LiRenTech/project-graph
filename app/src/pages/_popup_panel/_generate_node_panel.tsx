@@ -55,7 +55,7 @@ export default function GenerateNodePanel() {
           onClick={() => {
             Dialog.show({
               title: "帮助",
-              content: "1，将xmind后缀名改成zip\n2，找到内部的content.json\n3，打开json，将json内容复制到输入框中",
+              content: "导入markdown格式和操作详见官网文档",
             });
           }}
         >
