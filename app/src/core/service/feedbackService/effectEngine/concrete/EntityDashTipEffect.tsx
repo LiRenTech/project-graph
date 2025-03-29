@@ -1,5 +1,5 @@
 import { Random } from "../../../../algorithm/random";
-import { Color, mixColors } from "../../../../dataStruct/Color";
+import { mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
@@ -90,7 +90,7 @@ export class EntityDashTipEffect extends EffectObject {
     for (const point of this.dashPoints) {
       RenderUtils.renderPixel(
         Renderer.transformWorld2View(point.location),
-        mixColors(point.color, Color.Transparent, this.timeProgress.rate),
+        mixColors(point.color, point.color.toTransparent(), this.timeProgress.rate),
       );
     }
   }

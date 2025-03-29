@@ -1,11 +1,8 @@
-import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
-import { PointDashEffect } from "../../../feedbackService/effectEngine/concrete/PointDashEffect";
 import { ControllerClass } from "../ControllerClass";
 
 class ControllerEntityResizeClass extends ControllerClass {
@@ -48,13 +45,16 @@ class ControllerEntityResizeClass extends ControllerClass {
     this.lastMoveLocation = pressWorldLocation.clone();
   };
 
-  public mouseup: (event: MouseEvent) => void = (event) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public mouseup: (event: MouseEvent) => void = (_event) => {
     if (this.changeSizeEntity === null) {
       return;
     }
+    // if (this.changeSizeEntity instanceof TextNode) {
+    //   Stage.effectMachine.addEffect(new EntityDashTipEffect(50, this.changeSizeEntity.getResizeHandleRect()));
+    // }
     this.changeSizeEntity = null;
-    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    Stage.effectMachine.addEffect(new PointDashEffect(new ProgressNumber(0, 20), pressWorldLocation, 30));
+    // const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
   };
 }
 
