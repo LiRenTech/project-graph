@@ -61,20 +61,20 @@ export namespace InputElement {
         if (!inputElement.contains(event.target as Node)) {
           resolve(inputElement.value);
           onChange(inputElement.value);
-          document.body.removeEventListener("click", onOutsideClick);
+          document.body.removeEventListener("mousedown", onOutsideClick);
           removeElement();
         }
       };
       const onOutsideWheel = () => {
         resolve(inputElement.value);
         onChange(inputElement.value);
-        document.body.removeEventListener("click", onOutsideClick);
+        document.body.removeEventListener("mousedown", onOutsideClick);
         removeElement();
       };
 
       // 初始化
       setTimeout(() => {
-        document.body.addEventListener("click", onOutsideClick);
+        document.body.addEventListener("mousedown", onOutsideClick);
         document.body.addEventListener("touchstart", onOutsideClick);
         document.body.addEventListener("wheel", onOutsideWheel);
         adjustSize(); // 初始化时调整大小
@@ -87,7 +87,7 @@ export namespace InputElement {
       inputElement.addEventListener("blur", () => {
         resolve(inputElement.value);
         onChange(inputElement.value);
-        document.body.removeEventListener("click", onOutsideClick);
+        document.body.removeEventListener("mousedown", onOutsideClick);
         removeElement();
       });
       inputElement.addEventListener("keydown", (event) => {
@@ -95,7 +95,7 @@ export namespace InputElement {
         if (event.key === "Enter") {
           resolve(inputElement.value);
           onChange(inputElement.value);
-          document.body.removeEventListener("click", onOutsideClick);
+          document.body.removeEventListener("mousedown", onOutsideClick);
           removeElement();
         }
         if (event.key === "Tab") {
@@ -161,18 +161,18 @@ export namespace InputElement {
         if (!textareaElement.contains(event.target as Node)) {
           resolve(textareaElement.value);
           onChange(textareaElement.value, textareaElement);
-          document.body.removeEventListener("click", onOutsideClick);
+          document.body.removeEventListener("mousedown", onOutsideClick);
           removeElement();
         }
       };
       const onOutsideWheel = () => {
         resolve(textareaElement.value);
         onChange(textareaElement.value, textareaElement);
-        document.body.removeEventListener("click", onOutsideClick);
+        document.body.removeEventListener("mousedown", onOutsideClick);
         removeElement();
       };
       setTimeout(() => {
-        document.body.addEventListener("click", onOutsideClick);
+        document.body.addEventListener("mousedown", onOutsideClick);
         document.body.addEventListener("touchstart", onOutsideClick);
         document.body.addEventListener("wheel", onOutsideWheel);
       }, 10);
@@ -194,7 +194,7 @@ export namespace InputElement {
       textareaElement.addEventListener("blur", () => {
         resolve(textareaElement.value);
         onChange(textareaElement.value, textareaElement);
-        document.body.removeEventListener("click", onOutsideClick);
+        document.body.removeEventListener("mousedown", onOutsideClick);
         removeElement();
       });
       textareaElement.addEventListener("keydown", (event) => {
@@ -213,7 +213,7 @@ export namespace InputElement {
           // Escape 是通用的取消编辑的快捷键
           resolve(textareaElement.value);
           onChange(textareaElement.value, textareaElement);
-          document.body.removeEventListener("click", onOutsideClick);
+          document.body.removeEventListener("mousedown", onOutsideClick);
           removeElement();
         }
 
@@ -232,7 +232,7 @@ export namespace InputElement {
         const exitEditMode = () => {
           resolve(textareaElement.value);
           onChange(textareaElement.value, textareaElement);
-          document.body.removeEventListener("click", onOutsideClick);
+          document.body.removeEventListener("mousedown", onOutsideClick);
           removeElement();
         };
 
