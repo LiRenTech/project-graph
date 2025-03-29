@@ -161,10 +161,13 @@ export function editSectionTitle(section: Section) {
       section.rename(text);
     },
     {
+      position: "fixed",
+      resize: "none",
+      boxSizing: "border-box",
       fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
       backgroundColor: "transparent",
       color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
-      outline: "none",
+      outline: `solid ${2 * Camera.currentScale}px ${StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.25).toString()}`,
       marginTop: -8 * Camera.currentScale + "px",
     },
   ).then(() => {

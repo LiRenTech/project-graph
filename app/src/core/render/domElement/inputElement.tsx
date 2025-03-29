@@ -32,9 +32,11 @@ export namespace InputElement {
       const inputElement = document.createElement("input");
       inputElement.type = "text";
       inputElement.value = defaultValue;
+
       inputElement.style.position = "fixed";
       inputElement.style.top = `${location.y}px`;
       inputElement.style.left = `${location.x}px`;
+
       inputElement.id = "input-element";
       inputElement.autocomplete = "off";
       Object.assign(inputElement.style, style);
@@ -51,6 +53,9 @@ export namespace InputElement {
           }
         }
       };
+      const adjustSize = () => {
+        inputElement.style.width = `${inputElement.scrollWidth + 2}px`;
+      };
 
       const onOutsideClick = (event: Event) => {
         if (!inputElement.contains(event.target as Node)) {
@@ -66,13 +71,18 @@ export namespace InputElement {
         document.body.removeEventListener("click", onOutsideClick);
         removeElement();
       };
+
+      // 初始化
       setTimeout(() => {
         document.body.addEventListener("click", onOutsideClick);
         document.body.addEventListener("touchstart", onOutsideClick);
         document.body.addEventListener("wheel", onOutsideWheel);
+        adjustSize(); // 初始化时调整大小
       }, 10);
+
       inputElement.addEventListener("input", () => {
         onChange(inputElement.value);
+        adjustSize();
       });
       inputElement.addEventListener("blur", () => {
         resolve(inputElement.value);
