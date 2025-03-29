@@ -33,28 +33,52 @@ import { Controller } from "../Controller";
  */
 export function editTextNode(clickedNode: TextNode, selectAll = true) {
   Controller.isCameraLocked = true;
-
+  const rectWorld = clickedNode.collisionBox.getRectangle();
+  const rectView = rectWorld.transformWorld2View();
+  const fontColor = (
+    clickedNode.color.a === 1 ? colorInvert(clickedNode.color) : colorInvert(StageStyleManager.currentStyle.Background)
+  ).toHexStringWithoutAlpha();
   // 编辑节点
   clickedNode.isEditing = true;
+  // RectangleElement.div(rectView, StageStyleManager.currentStyle.CollideBoxSelected);
   InputElement.textarea(
-    Renderer.transformWorld2View(clickedNode.rectangle.location).add(
-      Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
-    ),
     clickedNode.text,
-    (text) => {
+    // "",
+    (text, ele) => {
+      // onChange
       clickedNode?.rename(text);
+      const rectWorld = clickedNode.collisionBox.getRectangle();
+      const rectView = rectWorld.transformWorld2View();
+      ele.style.height = "auto";
+      ele.style.height = `${rectView.height.toFixed(2)}px`;
+      // 自动改变宽度
+      ele.style.width = "auto";
+      ele.style.width = `${rectView.width.toFixed(2)}px`;
     },
     {
+      position: "fixed",
+      resize: "none",
+      boxSizing: "border-box",
+      overflow: "hidden",
+      whiteSpace: "pre-wrap",
+      wordBreak: "break-all",
+      left: `${rectView.left.toFixed(2)}px`,
+      top: `${rectView.top.toFixed(2)}px`,
+      // ====
+      // width: `${rectView.width.toFixed(2)}px`,
+      // maxWidth: `${rectView.width.toFixed(2)}px`,
+      minWidth: `${rectView.width.toFixed(2)}px`,
+      minHeight: `${rectView.height.toFixed(2)}px`,
+      // height: `${rectView.height.toFixed(2)}px`,
+      padding: Renderer.NODE_PADDING * Camera.currentScale + "px",
       fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
       backgroundColor: "transparent",
-      color: (clickedNode.color.a === 1
-        ? colorInvert(clickedNode.color)
-        : colorInvert(StageStyleManager.currentStyle.Background)
-      ).toHexStringWithoutAlpha(),
-      outline: "solid 1px rgba(255,255,255,0.1)",
-      // marginTop: -8 * Camera.currentScale + "px",
+      color: fontColor,
+      outline: `solid ${2 * Camera.currentScale}px ${StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.25).toString()}`,
+      borderRadius: `${Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale}px`,
     },
     selectAll,
+    rectWorld.width * Camera.currentScale, // limit width
   ).then(() => {
     clickedNode!.isEditing = false;
     Controller.isCameraLocked = false;
@@ -66,15 +90,23 @@ export function editEdgeText(clickedLineEdge: LineEdge, selectAll = true) {
   Controller.isCameraLocked = true;
 
   // clickedLineEdge.isEditing = true;
+  const textAreaLocation = Renderer.transformWorld2View(clickedLineEdge.textRectangle.location).add(
+    Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
+  );
   InputElement.textarea(
-    Renderer.transformWorld2View(clickedLineEdge.textRectangle.location).add(
-      Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
-    ),
     clickedLineEdge.text,
     (text) => {
       clickedLineEdge?.rename(text);
     },
     {
+      position: "fixed",
+      resize: "none",
+      boxSizing: "border-box",
+      overflow: "hidden",
+      whiteSpace: "pre-wrap",
+      wordBreak: "break-all",
+      left: `${textAreaLocation.x.toFixed(2)}px`,
+      top: `${textAreaLocation.y.toFixed(2)}px`,
       fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
       backgroundColor: StageStyleManager.currentStyle.Background.toString(),
       color: StageStyleManager.currentStyle.StageObjectBorder.toString(),

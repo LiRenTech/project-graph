@@ -36,59 +36,60 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
 
   if (Controller.pressingKeySet.has("control")) {
     editNodeDetails(clickedEntity);
-  } else {
-    if (clickedEntity instanceof TextNode) {
-      editTextNode(clickedEntity, Stage.textNodeSelectAllWhenStartEditByMouseClick);
-    } else if (clickedEntity instanceof UrlNode) {
-      const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
-      if (diffNodeLeftTopLocation.y < UrlNode.titleHeight) {
-        editUrlNodeTitle(clickedEntity);
-      } else {
-        // 跳转链接
-        open(clickedEntity.url);
+    return;
+  }
+
+  if (clickedEntity instanceof TextNode) {
+    editTextNode(clickedEntity, Stage.textNodeSelectAllWhenStartEditByMouseClick);
+  } else if (clickedEntity instanceof UrlNode) {
+    const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
+    if (diffNodeLeftTopLocation.y < UrlNode.titleHeight) {
+      editUrlNodeTitle(clickedEntity);
+    } else {
+      // 跳转链接
+      open(clickedEntity.url);
+    }
+  } else if (clickedEntity instanceof PortalNode) {
+    const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
+    if (diffNodeLeftTopLocation.y < PortalNode.TITLE_LINE_Y) {
+      // 编辑标题
+      editPortalNodeTitle(clickedEntity);
+    } else if (diffNodeLeftTopLocation.y < PortalNode.PATH_LINE_Y) {
+      // 更改路径
+      const newPortalFilePath = prompt("请输入新的路径", clickedEntity.portalFilePath);
+      if (newPortalFilePath) {
+        clickedEntity.portalFilePath = newPortalFilePath;
       }
-    } else if (clickedEntity instanceof PortalNode) {
-      const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
-      if (diffNodeLeftTopLocation.y < PortalNode.TITLE_LINE_Y) {
-        // 编辑标题
-        editPortalNodeTitle(clickedEntity);
-      } else if (diffNodeLeftTopLocation.y < PortalNode.PATH_LINE_Y) {
-        // 更改路径
-        const newPortalFilePath = prompt("请输入新的路径", clickedEntity.portalFilePath);
-        if (newPortalFilePath) {
-          clickedEntity.portalFilePath = newPortalFilePath;
-        }
+    } else {
+      if (isWeb) {
+        Dialog.show({
+          title: "网页版不支持传送门",
+          content: "网页版不支持传送门，请使用桌面版",
+        });
+        return;
+      }
+      // 跳转链接
+      if (Stage.path.isDraft()) {
+        Dialog.show({
+          title: "草稿不支持传送门",
+          content: "请保存为本地文件后再传送门",
+        });
+        return;
       } else {
-        if (isWeb) {
-          Dialog.show({
-            title: "网页版不支持传送门",
-            content: "网页版不支持传送门，请使用桌面版",
-          });
-          return;
-        }
-        // 跳转链接
-        if (Stage.path.isDraft()) {
-          Dialog.show({
-            title: "草稿不支持传送门",
-            content: "请保存为本地文件后再传送门",
-          });
-          return;
-        } else {
-          // 准备要跳转了！
-          const relativePath = clickedEntity.portalFilePath;
-          const absolutePath = PathString.dirPath(Stage.path.getFilePath());
-          const newPath = PathString.relativePathToAbsolutePath(absolutePath, relativePath);
-          // 取消选择所有节点
-          StageManager.clearSelectAll();
-          // 切换前保存一下
-          StageSaveManager.saveHandleWithoutCurrentPath(StageDumper.dump(), false);
-          // 开始传送
-          // 不要让它立刻切换，否则会导致突然在新的文件中触发一个双击事件，创建了一个多余节点
-          setTimeout(() => {
-            RecentFileManager.openFileByPath(newPath);
-            Stage.path.setPathAndChangeUI(newPath);
-          }, 100);
-        }
+        // 准备要跳转了！
+        const relativePath = clickedEntity.portalFilePath;
+        const absolutePath = PathString.dirPath(Stage.path.getFilePath());
+        const newPath = PathString.relativePathToAbsolutePath(absolutePath, relativePath);
+        // 取消选择所有节点
+        StageManager.clearSelectAll();
+        // 切换前保存一下
+        StageSaveManager.saveHandleWithoutCurrentPath(StageDumper.dump(), false);
+        // 开始传送
+        // 不要让它立刻切换，否则会导致突然在新的文件中触发一个双击事件，创建了一个多余节点
+        setTimeout(() => {
+          RecentFileManager.openFileByPath(newPath);
+          Stage.path.setPathAndChangeUI(newPath);
+        }, 100);
       }
     }
   }

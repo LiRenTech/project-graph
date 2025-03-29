@@ -1,4 +1,3 @@
-import { getMultiLineTextSize } from "../../../utils/font";
 import { getEnterKey } from "../../../utils/keyboardFunctions";
 import { Vector } from "../../dataStruct/Vector";
 import { EntityDashTipEffect } from "../../service/feedbackService/effectEngine/concrete/EntityDashTipEffect";
@@ -8,6 +7,7 @@ import { Settings } from "../../service/Settings";
 import { Camera } from "../../stage/Camera";
 import { Stage } from "../../stage/Stage";
 import { StageManager } from "../../stage/stageManager/StageManager";
+import { TextRenderer } from "../canvas2d/basicRenderer/textRenderer";
 import { Renderer } from "../canvas2d/renderer";
 
 /**
@@ -105,30 +105,25 @@ export namespace InputElement {
    * @returns
    */
   export function textarea(
-    location: Vector,
     defaultValue: string,
-    onChange: (value: string) => void = () => {},
+    onChange: (value: string, element: HTMLTextAreaElement) => void = () => {},
     style: Partial<CSSStyleDeclaration> = {},
     selectAllWhenCreated = true,
+    limitWidth = 100,
   ): Promise<string> {
     return new Promise((resolve) => {
       const textareaElement = document.createElement("textarea");
       textareaElement.value = defaultValue;
-      textareaElement.style.position = "fixed";
-      textareaElement.style.top = `${location.y}px`;
-      textareaElement.style.left = `${location.x}px`;
+
       textareaElement.id = "textarea-element";
-      textareaElement.autocomplete = "off";
-      textareaElement.style.resize = "none"; // 禁止用户手动调整大小
-      textareaElement.style.overflow = "hidden"; // 隐藏滚动条
-      textareaElement.style.height = "auto"; // 初始化高度为auto
-      textareaElement.style.width = "auto"; // 初始化宽度为auto
-      const initSize = getMultiLineTextSize(defaultValue, Renderer.FONT_SIZE, 1.5);
-      // const minWidth = initSize.x * Camera.currentScale;
-      textareaElement.style.minHeight = `${initSize.y * Camera.currentScale}px`; // 设置最小高度
-      textareaElement.style.minWidth = `${initSize.x * Camera.currentScale}px`; // 设置最小宽度
-      textareaElement.style.whiteSpace = "pre"; // 保持空白符不变
-      textareaElement.style.wordWrap = "break-word"; // 自动换行
+      textareaElement.autocomplete = "off"; // 禁止使用自动填充内容，防止影响输入体验
+      const initSizeView = TextRenderer.measureMultiLineTextSize(
+        defaultValue,
+        Renderer.FONT_SIZE * Camera.currentScale,
+        limitWidth,
+        1.5,
+      );
+      console.log(initSizeView);
       Object.assign(textareaElement.style, style);
       document.body.appendChild(textareaElement);
 
@@ -155,14 +150,14 @@ export namespace InputElement {
       const onOutsideClick = (event: Event) => {
         if (!textareaElement.contains(event.target as Node)) {
           resolve(textareaElement.value);
-          onChange(textareaElement.value);
+          onChange(textareaElement.value, textareaElement);
           document.body.removeEventListener("click", onOutsideClick);
           removeElement();
         }
       };
       const onOutsideWheel = () => {
         resolve(textareaElement.value);
-        onChange(textareaElement.value);
+        onChange(textareaElement.value, textareaElement);
         document.body.removeEventListener("click", onOutsideClick);
         removeElement();
       };
@@ -176,25 +171,19 @@ export namespace InputElement {
       const adjustSize = () => {
         // 重置高度和宽度以获取正确的scrollHeight和scrollWidth
         textareaElement.style.height = "auto";
-        textareaElement.style.width = "auto";
-
-        // 设置新的高度和宽度
         textareaElement.style.height = `${textareaElement.scrollHeight}px`;
-        textareaElement.style.width = `${textareaElement.scrollWidth}px`;
+        textareaElement.style.width = `${textareaElement.scrollWidth + 2}px`;
       };
-      // setInterval(() => {
-      //   adjustSize();
-      // }, 1000);
       setTimeout(() => {
         adjustSize(); // 初始化时调整大小
-      }, 10);
+      }, 20);
       textareaElement.addEventListener("input", () => {
-        onChange(textareaElement.value);
+        onChange(textareaElement.value, textareaElement);
         adjustSize();
       });
       textareaElement.addEventListener("blur", () => {
         resolve(textareaElement.value);
-        onChange(textareaElement.value);
+        onChange(textareaElement.value, textareaElement);
         document.body.removeEventListener("click", onOutsideClick);
         removeElement();
       });
@@ -213,7 +202,7 @@ export namespace InputElement {
         } else if (event.key === "Escape") {
           // Escape 是通用的取消编辑的快捷键
           resolve(textareaElement.value);
-          onChange(textareaElement.value);
+          onChange(textareaElement.value, textareaElement);
           document.body.removeEventListener("click", onOutsideClick);
           removeElement();
         }
@@ -227,12 +216,12 @@ export namespace InputElement {
           textareaElement.selectionEnd = start + 1;
           // 调整
           adjustSize(); // 调整textarea
-          onChange(textareaElement.value); // 调整canvas渲染上去的框大小
+          onChange(textareaElement.value, textareaElement); // 调整canvas渲染上去的框大小
         };
 
         const exitEditMode = () => {
           resolve(textareaElement.value);
-          onChange(textareaElement.value);
+          onChange(textareaElement.value, textareaElement);
           document.body.removeEventListener("click", onOutsideClick);
           removeElement();
         };

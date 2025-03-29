@@ -97,9 +97,10 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
     this.details = details;
     this.collisionBox = new CollisionBox([new Rectangle(new Vector(...location), new Vector(...size))]);
     this.color = new Color(...color);
-    if (this.text.length < TextNode.enableResizeCharCount) {
-      this.adjustSizeByText();
-    }
+    // if (this.text.length < TextNode.enableResizeCharCount) {
+    //   this.adjustSizeByText();
+    // }
+    this.adjustSizeByText();
   }
 
   /**
@@ -112,11 +113,20 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
     );
   }
 
+  // private adjustSizeByTextWidthLimitWidth(width: number) {
+  //   const currentSize = TextRenderer.measureMultiLineTextSize(this.text, Renderer.FONT_SIZE, width, 1.5);
+  //   this.collisionBox.shapeList[0] = new Rectangle(
+  //     this.rectangle.location.clone(),
+  //     currentSize.clone().add(Vector.same(Renderer.NODE_PADDING).multiply(2)),
+  //   );
+  // }
+
   rename(text: string) {
     this.text = text;
-    if (this.text.length < TextNode.enableResizeCharCount) {
-      this.adjustSizeByText();
-    }
+    // if (this.text.length < TextNode.enableResizeCharCount) {
+    //   this.adjustSizeByText();
+    // }
+    this.adjustSizeByText();
   }
 
   resizeHandle(delta: Vector) {

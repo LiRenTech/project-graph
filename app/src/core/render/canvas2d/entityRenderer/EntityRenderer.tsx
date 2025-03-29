@@ -295,9 +295,10 @@ export namespace EntityRenderer {
             node.rectangle.location.add(Vector.same(Renderer.NODE_PADDING)).add(new Vector(0, Renderer.FONT_SIZE / 4)),
           ),
           Renderer.FONT_SIZE * Camera.currentScale,
-          node.text.length > TextNode.enableResizeCharCount
-            ? (node.rectangle.size.x - Renderer.NODE_PADDING * 2) * Camera.currentScale
-            : Infinity,
+          Infinity,
+          // node.text.length > TextNode.enableResizeCharCount
+          //   ? (node.rectangle.size.x - Renderer.NODE_PADDING * 2) * Camera.currentScale
+          //   : Infinity,
           node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.Background),
           1.5,
         );

@@ -498,6 +498,15 @@ export class SecretEngine {
         }
       },
     },
+    "z e r o": {
+      name: "将选中的实体移动到0,0位置",
+      func() {
+        const selectedNodes = StageManager.getSelectedEntities();
+        for (const node of selectedNodes) {
+          node.moveTo(Vector.getZero());
+        }
+      },
+    },
   };
 
   // 监听按键 并触发相应效果，每次按键都会触发
