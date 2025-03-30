@@ -23,6 +23,8 @@ jobs:
 
   build:
     needs: generate-changelog
+    permissions:
+      contents: write
     uses: LiRenTech/turbo-tauri/.github/workflows/turbo-tauri.yml@master
     with:
       android_key_alias: "upload"
