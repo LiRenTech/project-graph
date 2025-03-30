@@ -494,9 +494,9 @@ export namespace Renderer {
     const currentStrokeColor = Stage.drawingMachine.getCurrentStrokeColor();
 
     if (Stage.drawingMachine.isUsing) {
-      if (Stage.drawingMachine.isAdjusting) {
+      if (Stage.drawingControlMachine.isAdjusting) {
         ShapeRenderer.renderCircle(
-          transformWorld2View(Stage.drawingMachine.startAdjustWidthLocation),
+          transformWorld2View(Stage.drawingControlMachine.startAdjustWidthLocation),
           (Stage.drawingMachine.currentStrokeWidth / 2) * Camera.currentScale,
           currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
           Color.Transparent,

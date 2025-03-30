@@ -8,6 +8,7 @@ import { PenStroke, PenStrokeSegment } from "../../../../stage/stageObject/entit
 import { Settings } from "../../../Settings";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 /**
  * 涂鸦功能
  */
@@ -16,8 +17,6 @@ class ControllerDrawingClass extends ControllerClass {
   private _isUsing: boolean = false;
 
   public currentStroke: PenStrokeSegment[] = [];
-
-  public isAdjusting = false;
 
   public get isUsing() {
     return this._isUsing;
@@ -41,10 +40,6 @@ class ControllerDrawingClass extends ControllerClass {
    * 当前画笔的粗度
    */
   public currentStrokeWidth = 5;
-  /**
-   * Alt键右键按下时的位置
-   */
-  public startAdjustWidthLocation: Vector = Vector.getZero();
 
   /**
    * 初始化函数
@@ -66,34 +61,26 @@ class ControllerDrawingClass extends ControllerClass {
 
   public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
     if (!this._isUsing) return;
-    if (!(event.button === 0 || event.button === 2)) {
+    if (!(event.button === 0)) {
       return;
     }
     const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    if (event.button === 0) {
+    if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.draw) {
       this.recordLocation.push(pressWorldLocation.clone());
 
       this.lastMoveLocation = pressWorldLocation.clone();
 
       Controller.setCursorNameHook(CursorNameEnum.Crosshair);
-    } else if (event.button === 2 && Controller.pressingKeySet.has("alt")) {
-      // 右键按下时，开始调整笔刷粗细
-      this.startAdjustWidthLocation = pressWorldLocation.clone();
-      this.isAdjusting = true;
     }
   };
 
   public mousemove = (event: MouseEvent) => {
     if (!this._isUsing) return;
-    if (!(Controller.isMouseDown[0] || Controller.isMouseDown[2])) {
+    if (!Controller.isMouseDown[0]) {
       return;
     }
     const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    if (Controller.pressingKeySet.has("alt") && Controller.isMouseDown[2]) {
-      this.onMouseMoveWhenAdjusting(event);
-      return;
-    }
-    if (Controller.isMouseDown[0]) {
+    if (Controller.isMouseDown[0] && Stage.leftMouseMode === LeftMouseModeEnum.draw) {
       // 检测：如果移动距离不超过10，则不记录
       if (worldLocation.distance(this.lastMoveLocation) < 5) {
         return;
@@ -106,25 +93,12 @@ class ControllerDrawingClass extends ControllerClass {
     }
   };
 
-  private onMouseMoveWhenAdjusting = (event: MouseEvent) => {
-    // 更改宽度，检测鼠标上下移动的距离（模仿PS的笔刷粗细调整）
-    const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    const delta = this.startAdjustWidthLocation.distance(worldLocation);
-    // Stage.effectMachine.addEffect(LineEffect.default(this.startAdjustWidthLocation, worldLocation.clone()));
-    if (delta > 1) {
-      this.currentStrokeWidth = Math.min(Math.round(delta * 2), 1000);
-    }
-  };
-
   public mouseup = (event: MouseEvent) => {
     if (!this._isUsing) return;
-    if (!(event.button === 0 || event.button === 2)) {
+    if (!(event.button === 0)) {
       return;
     }
-    if (event.button === 2) {
-      this.isAdjusting = false;
-    }
-    if (event.button === 0) {
+    if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.draw) {
       const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
       this.recordLocation.push(releaseWorldLocation.clone());
 

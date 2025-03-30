@@ -5,7 +5,7 @@ import { Line } from "../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Stage } from "../../../../stage/Stage";
+import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { GraphMethods } from "../../../../stage/stageManager/basicMethods/GraphMethods";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Association } from "../../../../stage/stageObject/abstract/Association";
@@ -45,12 +45,22 @@ class CuttingControllerClass extends ControllerClass {
   private cuttingStartLocation = Vector.getZero();
 
   public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (!(event.button == 2 || event.button == 3)) {
+    if (!(event.button == 2 || event.button == 0)) {
       return;
     }
-    if (Stage.mouseRightDragBackground !== "cut") {
+    // 左键按下的
+    if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
+      this.mouseDownEvent(event);
       return;
     }
+    // 右键按下的
+    if (event.button === 2 && Stage.mouseRightDragBackground === "cut") {
+      this.mouseDownEvent(event);
+      return;
+    }
+  };
+
+  private mouseDownEvent(event: MouseEvent) {
     const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     this.lastMoveLocation = pressWorldLocation.clone();
 
@@ -69,7 +79,7 @@ class CuttingControllerClass extends ControllerClass {
     } else {
       this.isUsing = false;
     }
-  };
+  }
 
   public mousemove: (event: MouseEvent) => void = (event: MouseEvent) => {
     if (!this.isUsing) {
@@ -162,7 +172,7 @@ class CuttingControllerClass extends ControllerClass {
   }
 
   public mouseup: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (!(event.button == 2 || event.button == 3)) {
+    if (!(event.button == 2 || event.button == 0)) {
       return;
     }
     if (!this.isUsing) {

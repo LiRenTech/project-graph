@@ -1,7 +1,7 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Stage } from "../../../../stage/Stage";
+import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { StageObject } from "../../../../stage/stageObject/abstract/StageObject";
@@ -47,7 +47,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
       // layer moving mode
       return;
     }
-    if (Stage.drawingMachine.isUsing) {
+    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
       return;
     }
     const button = event.button;
@@ -104,9 +104,13 @@ class ControllerRectangleSelectClass extends ControllerClass {
   };
 
   public mousemove: (event: MouseEvent) => void = (event) => {
+    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+      return;
+    }
     if (!this._isUsing) {
       return;
     }
+
     if (!Controller.isMouseDown[0]) {
       return;
     }
@@ -231,6 +235,9 @@ class ControllerRectangleSelectClass extends ControllerClass {
 
   public mouseup = (event: MouseEvent) => {
     if (event.button !== 0) {
+      return;
+    }
+    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
       return;
     }
     // 左键松开

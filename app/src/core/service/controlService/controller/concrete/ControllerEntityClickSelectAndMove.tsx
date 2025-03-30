@@ -1,7 +1,7 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Stage } from "../../../../stage/Stage";
+import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { StageAutoAlignManager } from "../../../../stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
@@ -24,8 +24,7 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    if (Stage.drawingMachine.isUsing) {
-      // 涂鸦的时候用不了拖动
+    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
       return;
     }
     this.mouseDownViewLocation = new Vector(event.clientX, event.clientY);
@@ -86,6 +85,9 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     if (Stage.selectMachine.isUsing || Stage.cuttingMachine.isUsing || Controller.pressingKeySet.has("alt")) {
       return;
     }
+    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+      return;
+    }
     if (!this.isMovingEntity) {
       return;
     }
@@ -114,6 +116,9 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
 
   public mouseup: (event: MouseEvent) => void = (event: MouseEvent) => {
     if (event.button !== 0) {
+      return;
+    }
+    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
       return;
     }
 

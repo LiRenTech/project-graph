@@ -4,7 +4,7 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Stage } from "../../../../stage/Stage";
+import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
@@ -73,12 +73,23 @@ class ControllerNodeConnectionClass extends ControllerClass {
   }
 
   public mousedown: (event: MouseEvent) => void = (event) => {
-    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    if (event.button === 0) {
-      this.onLeftMouseDown(pressWorldLocation);
-    }
-    if (!(event.button == 2 || event.button == 3)) {
+    if (!(event.button == 2 || event.button == 0)) {
       return;
+    }
+    if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
+      this.onMouseDown(event);
+    }
+    if (event.button === 2) {
+      this.onMouseDown(event);
+    }
+  };
+
+  private onMouseDown(event: MouseEvent) {
+    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+
+    if (event.button === 0 && Stage.leftMouseMode !== LeftMouseModeEnum.connectAndCut) {
+      // 在非左键模式下点击左键
+      this.onLeftMouseDown(pressWorldLocation);
     }
 
     this._lastRightMousePressLocation = pressWorldLocation.clone();
@@ -141,7 +152,7 @@ class ControllerNodeConnectionClass extends ControllerClass {
     SoundService.play.connectLineStart();
     this._isUsing = true;
     Controller.setCursorNameHook(CursorNameEnum.Crosshair);
-  };
+  }
 
   /**
    * 在mousemove的过程中，是否鼠标悬浮在了目标节点上
@@ -152,9 +163,18 @@ class ControllerNodeConnectionClass extends ControllerClass {
     if (Stage.selectMachine.isUsing || Stage.cuttingMachine.isUsing) {
       return;
     }
-    if (!(Controller.isMouseDown[2] || Controller.isMouseDown[3])) {
+    if (!this._isUsing) {
       return;
     }
+    if (Controller.isMouseDown[0] && Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
+      this.mouseMove(event);
+    }
+    if (Controller.isMouseDown[2]) {
+      this.mouseMove(event);
+    }
+  };
+
+  private mouseMove(event: MouseEvent) {
     const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     // 连接线
     let isFindConnectToNode = false;
@@ -176,15 +196,23 @@ class ControllerNodeConnectionClass extends ControllerClass {
     }
     // 由于连接线要被渲染器绘制，所以需要更新总控制里的lastMoveLocation
     Controller.lastMoveLocation = worldLocation.clone();
-  };
+  }
 
   public mouseup: (event: MouseEvent) => void = (event) => {
-    if (!(event.button == 2 || event.button == 3)) {
+    if (!(event.button == 2 || event.button == 0)) {
       return;
     }
     if (!this.isConnecting()) {
       return;
     }
+    if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
+      this.mouseUp(event);
+    } else if (event.button === 2) {
+      this.mouseUp(event);
+    }
+  };
+
+  private mouseUp(event: MouseEvent) {
     const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     const releaseTargetEntity = StageManager.findConnectableEntityByLocation(releaseWorldLocation);
     // 结束连线
@@ -219,7 +247,7 @@ class ControllerNodeConnectionClass extends ControllerClass {
     }
     this.clear();
     Controller.setCursorNameHook(CursorNameEnum.Default);
-  };
+  }
 
   /**
    * 一种更快捷的连接方法: 节点在选中状态下右键其它节点直接连接，不必拖动

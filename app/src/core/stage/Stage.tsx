@@ -4,6 +4,7 @@ import { ControllerCutting } from "../service/controlService/controller/concrete
 import { ControllerDragFile } from "../service/controlService/controller/concrete/ControllerDragFile";
 import { ControllerEntityClickSelectAndMove } from "../service/controlService/controller/concrete/ControllerEntityClickSelectAndMove";
 import { ControllerNodeConnection } from "../service/controlService/controller/concrete/ControllerNodeConnection";
+import { controllerPenStrokeControl } from "../service/controlService/controller/concrete/ControllerPenStrokeControl";
 import { ControllerDrawing } from "../service/controlService/controller/concrete/ControllerPenStrokeDrawing";
 import { ControllerRectangleSelect } from "../service/controlService/controller/concrete/ControllerRectangleSelect";
 import { Controller } from "../service/controlService/controller/Controller";
@@ -19,6 +20,13 @@ import { ContentSearchEngine } from "../service/dataManageService/contentSearchE
 import { EffectMachine } from "../service/feedbackService/effectEngine/effectMachine";
 import { Settings } from "../service/Settings";
 import { Camera } from "./Camera";
+
+export enum LeftMouseModeEnum {
+  selectAndMove = "selectAndMove",
+  draw = "draw",
+  connectAndCut = "connectAndCut",
+}
+
 /**
  * 舞台对象
  * 更广义的舞台，
@@ -29,6 +37,11 @@ import { Camera } from "./Camera";
  * 但这个里面主要存一些动态的属性，以及特效交互等信息
  */
 export namespace Stage {
+  /** 左键模式 */
+  export let leftMouseMode: LeftMouseModeEnum = LeftMouseModeEnum.selectAndMove;
+  export function changeLeftMouseFunction(mode: LeftMouseModeEnum) {
+    leftMouseMode = mode;
+  }
   /**
    * 路径管理器
    */
@@ -61,6 +74,11 @@ export namespace Stage {
    * 涂鸦控制器
    */
   export const drawingMachine = ControllerDrawing;
+
+  /**
+   * 涂鸦设置控制器
+   */
+  export const drawingControlMachine = controllerPenStrokeControl;
   /**
    * 鼠标连线控制器
    */

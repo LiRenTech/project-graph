@@ -26,7 +26,7 @@ import { Color } from "../core/dataStruct/Color";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { TextRiseEffect } from "../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
-import { Stage } from "../core/stage/Stage";
+import { LeftMouseModeEnum, Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { cn } from "../utils/cn";
@@ -101,7 +101,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
   // 以后适配安卓的时候再解决工具栏过小的问题
   return (
-    <Box className={cn("fixed bottom-2 left-1/2 flex translate-x-[-50%] gap-2 border-none", className)}>
+    <Box className={cn("fixed bottom-2 left-1/2 flex translate-x-[-50%] gap-1.5 border-none", className)}>
       <div className={toolBarGroupStyle}>
         {/* 右键移动画布的用户希望保留此按钮 */}
         <ToolbarItem
@@ -220,6 +220,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           icon={<MousePointer />}
           handleFunction={() => {
             Stage.drawingMachine.shutDown();
+            Stage.leftMouseMode = LeftMouseModeEnum.selectAndMove;
             setIsSelecting(true);
             setIsDrawing(false);
             setIsConnecting(false);
@@ -231,6 +232,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           icon={<Brush className="rotate-90" />}
           handleFunction={() => {
             Stage.drawingMachine.open();
+            Stage.leftMouseMode = LeftMouseModeEnum.draw;
             setIsSelecting(false);
             setIsDrawing(true);
             setIsConnecting(false);
@@ -242,6 +244,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           icon={<Slash className="rotate-90" />}
           handleFunction={() => {
             Stage.drawingMachine.open();
+            Stage.leftMouseMode = LeftMouseModeEnum.connectAndCut;
             setIsSelecting(false);
             setIsDrawing(false);
             setIsConnecting(true);
