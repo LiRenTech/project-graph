@@ -46,6 +46,15 @@ export class ControllerPenStrokeControl extends ControllerClass {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public mouseup: (event: MouseEvent) => void = (_event) => {
+    if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
+      if (this.isAdjusting) {
+        this.isAdjusting = false;
+      }
+    }
+  };
+
   private onMouseMoveWhenAdjusting = (event: MouseEvent) => {
     // 更改宽度，检测鼠标上下移动的距离（模仿PS的笔刷粗细调整）
     const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));

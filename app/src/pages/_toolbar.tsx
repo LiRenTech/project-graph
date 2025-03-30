@@ -2,7 +2,6 @@ import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 
 import {
   BrainCircuit,
-  Brush,
   ClipboardPaste,
   ClipboardX,
   Globe,
@@ -11,6 +10,7 @@ import {
   Package,
   PaintBucket,
   Palette,
+  Pencil,
   RefreshCcw,
   Repeat,
   SaveAll,
@@ -58,7 +58,7 @@ export function ToolbarItem({ icon, handleFunction, description, isHighlight = f
       <span className="bg-toolbar-tooltip-bg border-toolbar-tooltip-border text-toolbar-tooltip-text pointer-events-none absolute bottom-8 z-10 w-auto origin-right scale-90 whitespace-nowrap rounded border p-1 text-xs opacity-0 group-hover:scale-100 group-hover:opacity-100">
         {description}
       </span>
-      {isHighlight && <div className="bg-panel-success-text absolute bottom-0 h-1 w-6 rounded-t-md" />}
+      {isHighlight && <div className="bg-panel-success-text absolute top-0 h-1 w-6 rounded-b-md" />}
     </div>
   );
 }
@@ -229,7 +229,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
         />
         <ToolbarItem
           description="左键：涂鸦模式"
-          icon={<Brush className="rotate-90" />}
+          icon={<Pencil className="rotate-90" />}
           handleFunction={() => {
             Stage.drawingMachine.open();
             Stage.leftMouseMode = LeftMouseModeEnum.draw;
@@ -240,7 +240,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           isHighlight={isDrawing}
         />
         <ToolbarItem
-          description="左键：连接与断开（正在开发中，先用右键）"
+          description="左键：连接与斩断"
           icon={<Slash className="rotate-90" />}
           handleFunction={() => {
             Stage.drawingMachine.open();

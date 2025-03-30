@@ -11,7 +11,7 @@ import { CopyEngine } from "../../service/dataManageService/copyEngine/copyEngin
 import { StageStyleManager } from "../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../stage/Camera";
 import { Canvas } from "../../stage/Canvas";
-import { Stage } from "../../stage/Stage";
+import { LeftMouseModeEnum, Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { StageObject } from "../../stage/stageObject/abstract/StageObject";
@@ -493,7 +493,7 @@ export namespace Renderer {
   function renderTempDrawing() {
     const currentStrokeColor = Stage.drawingMachine.getCurrentStrokeColor();
 
-    if (Stage.drawingMachine.isUsing) {
+    if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
       if (Stage.drawingControlMachine.isAdjusting) {
         ShapeRenderer.renderCircle(
           transformWorld2View(Stage.drawingControlMachine.startAdjustWidthLocation),
