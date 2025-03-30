@@ -1,14 +1,20 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "envMode": "loose",
+  "remoteCache": {
+    "timeout": 60,
+    "uploadTimeout": 120
+  },
   "tasks": {
     "build": {
       "dependsOn": ["^build", "type-check"]
     },
     "@pg/app#build": {
+      "inputs": ["src/**/*", "*.{ts,tsx,html,css}"],
       "outputs": ["dist/**"]
     },
     "@pg/docs#build": {
+      "inputs": ["src/**/*"],
       "outputs": ["src/.vitepress/dist/**"]
     },
     "@pg/ui#build": {
@@ -16,11 +22,13 @@
     },
     "@pg/app#tauri:build": {
       "dependsOn": ["build"],
-      "outputs": ["app/src-tauri/target/release/**"]
+      "inputs": ["src-tauri/**/*"],
+      "outputs": ["src-tauri/target/release/**"]
     },
     "@pg/app#tauri:build:android": {
       "dependsOn": ["build"],
-      "outputs": ["app/src-tauri/target/*-android/release/**"]
+      "inputs": ["src-tauri/**/*"],
+      "outputs": ["src-tauri/target/*-android/release/**"]
     },
     "dev": {
       "with": ["@pg/app#tauri:dev"],

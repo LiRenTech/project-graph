@@ -6,246 +6,48 @@ on:
   workflow_dispatch:
 
 jobs:
-  create-release:
+  generate-changelog:
     runs-on: ubuntu-latest
     outputs:
-      changelog: ${{ steps.create_release.outputs.changelog }}
-    permissions:
-      contents: write
+      changelog: ${{ steps.generate.outputs.changelog }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Create release
-        id: create_release
+      - id: generate
         run: |
           changelog=$(./.github/scripts/generate-changelog.sh)
           echo "changelog<<EOF" >> $GITHUB_OUTPUT
           echo "${changelog}" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-          gh release delete nightly --yes --cleanup-tag || true
-          sleep 1
-          gh release create nightly --title "Nightly Build" --notes "${changelog}" --prerelease
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
-  # Build frontend and upload build result to Remote Cache
-  build-frontend:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "pnpm"
-      - name: Install dependencies
-        run: pnpm install
-      - name: Build frontend
-        run: pnpm build
-        env:
-          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-          TURBO_TEAM: zty012
-
-  publish-tauri:
-    needs: [create-release, build-frontend]
-    outputs:
-      hash: ${{ steps.sha256sum.outputs.hash }}
-    permissions:
-      contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # platform: 构建的平台
-          # args: tauri build 的参数
-          # rust_targets: Rust 目标，以逗号分隔
-          # android: 是否为 Android 构建
-          # dists: 构建产物路径列表，记得转义
-
-          - platform: "ubuntu-22.04"
-            dists:
-              - "app/src-tauri/target/release/bundle/deb/Project\\ Graph_0.0.0-nightly.r${{ github.run_number }}_amd64.deb"
-
-          - platform: "windows-latest"
-            dists:
-              - "app/src-tauri/target/release/bundle/msi/Project\\ Graph_0.0.0-nightly.r${{ github.run_number }}-setup.exe"
-              # include signature file for updater support
-              - "app/src-tauri/target/release/bundle/msi/Project\\ Graph_0.0.0-nightly.r${{ github.run_number }}-setup.exe.sig"
-
-          - platform: "macos-latest"
-            args: "--target aarch64-apple-darwin"
-            rust_targets: "aarch64-apple-darwin"
-            dists:
-              - "app/src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/Project\\ Graph_0.0.0-nightly.r${{ github.run_number }}_aarch64.dmg"
-
-          - platform: "macos-latest"
-            args: "--target x86_64-apple-darwin"
-            rust_targets: "x86_64-apple-darwin"
-            dists:
-              - "app/src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/Project\\ Graph_0.0.0-nightly.r${{ github.run_number }}_amd64.dmg"
-
-          - platform: "ubuntu-22.04"
-            rust_targets: "armv7-linux-androideabi,i686-linux-android,x86_64-linux-android,aarch64-linux-android"
-            android: true
-            dists:
-              - "app/src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release.apk"
-
-    runs-on: ${{ matrix.platform }}
-    steps:
-      - uses: actions/checkout@v4
-
-      #region Prepare environment
-      - name: Linux - Install dependencies
-        if: matrix.platform == 'ubuntu-22.04'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libudev-dev
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          run_install: false
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "pnpm"
-      - name: Install dependencies
-        run: pnpm install
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.rust_targets }}
-      - name: Rust cache
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: "./app/src-tauri -> target"
-      #endregion
-
-      #region Android - Prepare environment
-      - name: Android - Setup Java
-        if: matrix.android
-        uses: actions/setup-java@v4
-        with:
-          distribution: "zulu"
-          java-version: "17"
-      - name: Android - Setup Android SDK
-        if: matrix.android
-        uses: android-actions/setup-android@v3
-      - name: Android - Setup Android NDK
-        if: matrix.android
-        run: sdkmanager "ndk;27.0.11902837"
-      - name: Android - Setup Android APK Signing
-        if: matrix.android
-        run: |
-          cd app/src-tauri/gen/android
-          cat > keystore.properties <<EOF
-          password=${{ secrets.ANDROID_RELEASE_PASSWORD }}
-          keyAlias=upload
-          storeFile=upload.jks
-          EOF
-          echo "${{ secrets.ANDROID_RELEASE_KEYSTORE }}" | base64 --decode > app/upload.jks
-      #endregion
-      #region Edit version
-      - name: Linux - Edit version
-        if: matrix.platform == 'ubuntu-22.04' && !matrix.android
-        run: |
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.r${{ github.run_number }}\"/" app/src-tauri/tauri.conf.json
-      - name: MacOS - Edit version
-        if: matrix.platform == 'macos-latest'
-        run: |
-          sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.0-nightly.r${{ github.run_number }}\"/" app/src-tauri/tauri.conf.json
-      - name: Windows - Edit version
-        if: matrix.platform == 'windows-latest'
-        run: |
-          (Get-Content -Path "app/src-tauri/tauri.conf.json" -Raw) -replace '"version": "[^"]*"', '"version": "0.0.0-nightly.r${{ github.run_number }}"' | Set-Content -Path "app/src-tauri/tauri.conf.json"
-      - name: Android - Edit version
-        if: matrix.platform == 'ubuntu-22.04' && matrix.android
-        run: |
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"0.0.${{ github.run_number }}\"/" app/src-tauri/tauri.conf.json
-      #endregion
-      #region Build
-      - name: Build
-        run: pnpm tauri:build${{ matrix.android && ':android' || '' }}
-        env:
-          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-          TURBO_TEAM: zty012
-          TAURI_BUILD_ARGS: ${{ matrix.args }}
-          NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.11902837
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
-          LR_API_BASE_URL: ${{ secrets.ENV_API_BASE_URL }}
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
-
-      - name: Upload
-        run: |
-          gh release upload nightly ${{ join(matrix.dists, ' ') }} --clobber
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - id: sha256sum
-        name: Linux - Calculate SHA256 hash for AUR package
-        if: matrix.platform == 'ubuntu-22.04'
-        run: |
-          cd app/src-tauri/target/release/bundle/deb
-          sha256sum "Project Graph_0.0.0-nightly.r${{ github.run_number }}_amd64.deb" | awk '{print $1}' > sha256sum.txt
-          echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
-      #endregion
-
-  generate-updater-json:
-    needs: [create-release, publish-tauri]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Generate latest.json
-        run: |
-          changelog="${{ needs.create-release.outputs.changelog }}"
-          changelog=$(echo "$changelog" | awk '{printf "%s\n", $0}' | sed 's/"/\\"/g')
-          signature=$(gh release download nightly -p "*.exe.sig" -O -)
-          url=$(gh release view nightly --json assets -q '.assets.[] | .url | select(endswith(".exe"))')
-          echo '{' > latest.json
-          echo '  "version": "0.0.0-nightly.r${{ github.run_number }}",' >> latest.json
-          echo '  "notes": "${{ needs.create-release.outputs.changelog }}",' >> latest.json'
-          # RFC 3339 format
-          echo "  \"pub_date\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\"," >> latest.json
-          echo '  "platforms": {' >> latest.json
-          echo '  "linux-x86_64": {' >> latest.json
-          echo "    \"signature\": \"${signature}\"," >> latest.json
-          echo "    \"url\": \"${url}\""" >> latest.json
-          echo '  }' >> latest.json
-          echo '}' >> latest.json
-          cat latest.json
-          gh release upload nightly latest.json --clobber
-
-  bump-aur-version:
-    needs: publish-tauri
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup AUR private key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts
-      - name: Clone AUR repository
-        run: git clone ssh://aur@aur.archlinux.org/project-graph-nightly-bin.git
-      - name: Update version in PKGBUILD and .SRCINFO
-        run: |
-          cd project-graph-nightly-bin
-          sed -i "s/pkgver=.*$/pkgver=r${{ github.run_number }}/" PKGBUILD
-          sed -i "s/pkgver = .*$/pkgver = r${{ github.run_number }}/" .SRCINFO
-          sed -i "s/Project\.Graph_0\.0\.0-nightly\..*_amd64\.deb/Project.Graph_0.0.0-nightly.r${{ github.run_number }}_amd64.deb/" PKGBUILD .SRCINFO
-          sed -i "s/^sha256sums_x86_64=('.*')$/sha256sums_x86_64=('${{ needs.publish-tauri.outputs.hash }}')/" PKGBUILD
-          sed -i "s/sha256sums_x86_64 = .*$/sha256sums_x86_64 = ${{ needs.publish-tauri.outputs.hash }}/" .SRCINFO
-      - name: Commit and push changes
-        run: |
-          cd project-graph-nightly-bin
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add PKGBUILD .SRCINFO
-          git commit -m "Bump version to r${{ github.run_number }}"
-          git push origin master
+  build:
+    needs: generate-changelog
+    uses: LiRenTech/turbo-tauri/.github/workflows/turbo-tauri.yml@master
+    with:
+      android_key_alias: "upload"
+      android_key_path: "upload.jks"
+      app_root: "app"
+      app_version: "0.0.0-nightly.r${{ github.run_number }}"
+      app_version_android: "0.0.${{ github.run_number }}"
+      aur_key_algorithm: "ed25519"
+      aur_package_name: "project-graph-nightly-bin"
+      delete_release: true
+      prerelease: true
+      release_name: "Nightly Build ${{ github.run_number }}"
+      release_notes: ${{ needs.generate-changelog.outputs.changelog }}
+      release_tag: "nightly"
+      task_build: "tauri:build"
+      task_build_android: "tauri:build:android"
+      turbo_team: "zty012"
+    secrets:
+      ANDROID_KEYSTORE: ${{ secrets.ANDROID_RELEASE_KEYSTORE }}
+      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_PASSWORD }}
+      AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+      BUILD_ENV: |
+        LR_API_BASE_URL=${{ secrets.ENV_API_BASE_URL }}
+        LR_GITHUB_CLIENT_SECRET=${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+      TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}

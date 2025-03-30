@@ -6,6 +6,9 @@ const _context = _canvas.getContext("2d");
 
 const _cache = new MaxSizeCache<string, number>(10000);
 
+/** canvas中使用的字体 */
+export const FONT = "-apple-system, BlinkMacSystemFont, system-ui, sans-serif";
+
 // eslint-disable-next-line prefer-const
 let useCache = true;
 /**
@@ -28,7 +31,7 @@ export function getTextSize(text: string, size: number): Vector {
     throw new Error("Failed to get canvas context");
   }
 
-  _context.font = `${size}px MiSans`;
+  _context.font = `${size}px ${FONT}`;
   const metrics = _context.measureText(text);
   // const t2 = performance.now();
   if (useCache) {

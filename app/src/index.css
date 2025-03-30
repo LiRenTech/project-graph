@@ -7,21 +7,6 @@
 
 @custom-variant page (&.active);
 
-@font-face {
-  font-family: "MiSans";
-  font-weight: normal;
-  src:
-    local("MiSans VF"),
-    url("./assets/MiSans-Medium.woff2") format("woff2");
-}
-@font-face {
-  font-family: "MiSans";
-  font-weight: bold;
-  src:
-    local("MiSans VF"),
-    url("./assets/MiSans-Bold.woff2") format("woff2");
-}
-
 @theme {
   --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
@@ -105,7 +90,7 @@
   }
   * {
     @apply ease-out-expo box-border cursor-default select-none transition duration-500 [-webkit-user-drag:none] [color-scheme:dark];
-    font-family: "MiSans";
+    font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-antialiasing: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -126,10 +111,10 @@
   /* Title and description */
   .driver-popover-title {
     @apply text-xl font-normal;
-    font-family: "MiSans" !important;
+    font-family: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif" !important;
   }
   .driver-popover-description {
-    font-family: "MiSans" !important;
+    font-family: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif" !important;
   }
 
   /* Close button displayed on the top right corner */
@@ -145,7 +130,7 @@
   .driver-popover-prev-btn,
   .driver-popover-next-btn {
     @apply rounded-full! border-none! bg-blue-900! px-3! py-2! text-white! transition! hover:scale-125! active:scale-90!;
-    font-family: "MiSans" !important;
+    font-family: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif" !important;
     text-shadow: none !important;
   }
 }
