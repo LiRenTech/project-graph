@@ -19,6 +19,10 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
   if (!(event.button === 0)) {
     return;
   }
+  if (Stage.drawingMachine.isUsing) {
+    // 绘制模式不能使用创建节点
+    return;
+  }
 
   Stage.selectMachine.shutDown();
 
