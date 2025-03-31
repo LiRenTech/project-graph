@@ -745,8 +745,13 @@ export namespace StageManager {
     StageHistoryManager.recordStep();
   }
 
-  export function generateNodeByText(text: string, indention: number = 4, location = Camera.location) {
-    StageNodeAdder.addNodeByText(text, indention, location);
+  export function generateNodeTreeByText(text: string, indention: number = 4, location = Camera.location) {
+    StageNodeAdder.addNodeTreeByText(text, indention, location);
+    StageHistoryManager.recordStep();
+  }
+
+  export function generateNodeGraphByText(text: string, location = Camera.location) {
+    StageNodeAdder.addNodeGraphByText(text, location);
     StageHistoryManager.recordStep();
   }
 

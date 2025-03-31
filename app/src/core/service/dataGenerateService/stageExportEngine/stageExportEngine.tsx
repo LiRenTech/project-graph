@@ -30,15 +30,15 @@ export class StageExportEngine {
   }
   /**
    * 格式：
-   * 节点A
-   * 节点B
-   * 节点C
+   * A
+   * B
+   * C
    *
-   * A -> B
-   * A -> C
-   * B -> C
+   * A --> B
+   * A --> C
+   * B -xx-> C
    *
-   * @param nodes
+   * @param nodes 传入的是选中了的节点
    * @returns
    */
   public getPlainTextByEntities(nodes: Entity[]) {
@@ -52,12 +52,20 @@ export class StageExportEngine {
       if (node.details.trim()) {
         nodesContent += "\t" + node.details + "\n";
       }
-      GraphMethods.nodeChildrenArray(node)
+      const childTextNodes = GraphMethods.nodeChildrenArray(node)
         .filter((node) => node instanceof TextNode)
-        .filter((node) => nodes.includes(node))
-        .forEach((child) => {
-          linksContent += `${node.text} -> ${child.text}\n`;
-        });
+        .filter((node) => nodes.includes(node));
+      for (const child of childTextNodes) {
+        const link = GraphMethods.getEdgeFromTwoEntity(node, child);
+        if (link) {
+          linksContent += `${node.text} -${link.text}-> ${child.text}\n`;
+        } else {
+          linksContent += `${node.text} --> ${child.text}\n`;
+        }
+      }
+      // childTextNodes.forEach((child) => {
+      //   linksContent += `${node.text} --> ${child.text}\n`;
+      // });
     }
     return nodesContent + "\n" + linksContent;
   }

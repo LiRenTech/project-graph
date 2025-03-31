@@ -146,4 +146,13 @@ export namespace GraphMethods {
     }
     return result;
   }
+
+  export function getEdgeFromTwoEntity(fromNode: ConnectableEntity, toNode: ConnectableEntity): LineEdge | null {
+    for (const edge of StageManager.getLineEdges()) {
+      if (edge.source === fromNode && edge.target === toNode) {
+        return edge;
+      }
+    }
+    return null;
+  }
 }

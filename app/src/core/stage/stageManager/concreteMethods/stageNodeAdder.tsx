@@ -1,21 +1,22 @@
 import { v4 as uuidv4 } from "uuid";
+import { Direction } from "../../../../types/directions";
 import { MarkdownNode, parseMarkdownToJSON } from "../../../../utils/markdownParse";
+import { Color } from "../../../dataStruct/Color";
 import { MonoStack } from "../../../dataStruct/MonoStack";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
 import { RectanglePushInEffect } from "../../../service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
 import { Settings } from "../../../service/Settings";
 import { Stage } from "../../Stage";
+import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
-import { StageManager } from "../StageManager";
-import { StageManagerUtils } from "./StageManagerUtils";
-import { Direction } from "../../../../types/directions";
-import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
-import { Color } from "../../../dataStruct/Color";
 import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageHistoryManager } from "../StageHistoryManager";
+import { StageManager } from "../StageManager";
+import { StageManagerUtils } from "./StageManagerUtils";
+import { GraphMethods } from "../basicMethods/GraphMethods";
 
 /**
  * 包含增加节点的方法
@@ -154,11 +155,116 @@ export namespace StageNodeAdder {
     StageHistoryManager.recordStep();
     return newUUID;
   }
+  /**
+   * 通过纯文本生成网状结构
+   *
+   * @param text 网状结构的格式文本
+   * @param diffLocation
+   */
+  export function addNodeGraphByText(text: string, diffLocation: Vector = Vector.getZero()) {
+    const lines = text.split("\n");
 
+    if (lines.length === 0) {
+      return;
+    }
+
+    const randomRadius = 40 * lines.length;
+
+    const nodeDict = new Map<string, TextNode>();
+
+    const createNodeByName = (name: string) => {
+      const newUUID = uuidv4();
+      const node = new TextNode({
+        uuid: newUUID,
+        text: name,
+        details: "",
+        location: [diffLocation.x + randomRadius * Math.random(), diffLocation.y + randomRadius * Math.random()],
+        size: [100, 100],
+      });
+      StageManager.addTextNode(node);
+      nodeDict.set(name, node);
+      return node;
+    };
+
+    for (const line of lines) {
+      if (line.trim() === "") {
+        continue;
+      }
+      if (line.includes("-->") || (line.includes("-") && line.includes("->"))) {
+        // 这一行是一个关系行
+        if (line.includes("-->")) {
+          // 连线上无文字
+          // 解析
+          const names = line.split("-->");
+          if (names.length !== 2) {
+            throw new Error(`解析时出现错误: "${line}"，应该只有两个名称`);
+          }
+          const startName = names[0].trim();
+          const endName = names[1].trim();
+          if (startName === "" || endName === "") {
+            throw new Error(`解析时出现错误: "${line}"，名称不能为空`);
+          }
+          let startNode = nodeDict.get(startName);
+          let endNode = nodeDict.get(endName);
+          if (!startNode) {
+            startNode = createNodeByName(startName);
+          }
+          if (!endNode) {
+            endNode = createNodeByName(endName);
+          }
+          StageManager.connectEntity(startNode, endNode);
+        } else {
+          // 连线上有文字
+          // 解析
+          // A -xx-> B
+          const names = line.split("->");
+          if (names.length !== 2) {
+            throw new Error(`解析时出现错误: "${line}"，应该只有两个名称`);
+          }
+          const leftContent = names[0].trim();
+          const endName = names[1].trim();
+          if (leftContent === "" || endName === "") {
+            throw new Error(`解析时出现错误: "${line}"，名称不能为空`);
+          }
+          let endNode = nodeDict.get(endName);
+          if (!endNode) {
+            // 没有endNode，临时创建一下
+            endNode = createNodeByName(endName);
+          }
+          const leftContentList = leftContent.split("-");
+          if (leftContentList.length !== 2) {
+            throw new Error(`解析时出现错误: "${line}"，左侧内容应该只有两个名称`);
+          }
+          const startName = leftContentList[0].trim();
+          const edgeText = leftContentList[1].trim();
+          if (startName === "" || edgeText === "") {
+            throw new Error(`解析时出现错误: "${line}"，名称不能为空`);
+          }
+          let startNode = nodeDict.get(startName);
+          if (!startNode) {
+            // 临时创建一下
+            startNode = createNodeByName(startName);
+          }
+          StageManager.connectEntity(startNode, endNode);
+          // 在线上填写文字
+          const edge = GraphMethods.getEdgeFromTwoEntity(startNode, endNode);
+          if (edge === null) {
+            throw new Error(`解析时出现错误: "${line}"，找不到对应的连线`);
+          }
+          edge.rename(edgeText);
+        }
+      } else {
+        // 这一行是一个节点行
+        // 获取节点名称，创建节点
+        const nodeName = line.trim();
+        createNodeByName(nodeName);
+      }
+    }
+  }
   /**
    * 通过带有缩进格式的文本来增加节点
    */
-  export function addNodeByText(text: string, indention: number, diffLocation: Vector = Vector.getZero()) {
+  export function addNodeTreeByText(text: string, indention: number, diffLocation: Vector = Vector.getZero()) {
     // 将本文转换成字符串数组，按换行符分割
     const lines = text.split("\n");
 

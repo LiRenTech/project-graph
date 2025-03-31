@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { Dialog } from "../../../../../components/dialog";
 import { writeFileBase64 } from "../../../../../utils/fs";
 import { PathString } from "../../../../../utils/pathString";
 import { Color } from "../../../../dataStruct/Color";
@@ -9,11 +10,10 @@ import { StageLoader } from "../../../../stage/StageLoader";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { ImageNode } from "../../../../stage/stageObject/entity/ImageNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
+import { CircleChangeRadiusEffect } from "../../../feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
-import { Dialog } from "../../../../../components/dialog";
-import { CircleChangeRadiusEffect } from "../../../feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
 
 /**
  * BUG: 始终无法触发文件拖入事件
@@ -68,11 +68,11 @@ ControllerDragFile.drop = (event: DragEvent) => {
       } else if (file.type.includes("text")) {
         readFileText(file).then((dataString) => {
           if (file.name.endsWith(".txt")) {
-            StageManager.generateNodeByText(dataString, 1, mouseWorldLocation);
+            StageManager.generateNodeTreeByText(dataString, 1, mouseWorldLocation);
           } else if (file.name.endsWith(".md")) {
             StageManager.generateNodeByMarkdown(dataString, mouseWorldLocation);
           } else {
-            StageManager.generateNodeByText(dataString, 1, mouseWorldLocation);
+            StageManager.generateNodeTreeByText(dataString, 1, mouseWorldLocation);
           }
         });
       } else if (file.type.includes("image/png")) {
