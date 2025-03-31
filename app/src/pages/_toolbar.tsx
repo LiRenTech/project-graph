@@ -84,11 +84,41 @@ export default function Toolbar({ className = "" }: { className?: string }) {
     setSsHaveSelectedEdge(StageManager.selectedEdgeCount > 0);
     setIsCopyClearShow(!CopyEngine.isVirtualClipboardEmpty());
   };
+
+  const selectSelectingMouse = () => {
+    Stage.leftMouseMode = LeftMouseModeEnum.selectAndMove;
+    setIsSelecting(true);
+    setIsDrawing(false);
+    setIsConnecting(false);
+  };
+  const selectDrawingMouse = () => {
+    Stage.leftMouseMode = LeftMouseModeEnum.draw;
+    setIsSelecting(false);
+    setIsDrawing(true);
+    setIsConnecting(false);
+  };
+  const selectConnectingMouse = () => {
+    Stage.leftMouseMode = LeftMouseModeEnum.connectAndCut;
+    setIsSelecting(false);
+    setIsDrawing(false);
+    setIsConnecting(true);
+  };
+
   useEffect(() => {
     update();
     const intervalId = setInterval(() => {
       update();
     }, 100);
+    Stage.MouseModeManager.checkoutSelectAndMoveHook = selectSelectingMouse;
+    Stage.MouseModeManager.checkoutDrawingHook = selectDrawingMouse;
+    Stage.MouseModeManager.checkoutConnectAndCuttingHook = selectConnectingMouse;
+    if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
+      selectDrawingMouse();
+    } else if (Stage.leftMouseMode === LeftMouseModeEnum.selectAndMove) {
+      selectSelectingMouse();
+    } else if (Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
+      selectConnectingMouse();
+    }
 
     return () => {
       clearInterval(intervalId);
@@ -219,10 +249,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           description="左键：框选和移动模式"
           icon={<MousePointer />}
           handleFunction={() => {
-            Stage.leftMouseMode = LeftMouseModeEnum.selectAndMove;
-            setIsSelecting(true);
-            setIsDrawing(false);
-            setIsConnecting(false);
+            selectSelectingMouse();
           }}
           isHighlight={isSelecting}
         />
@@ -230,10 +257,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           description="左键：涂鸦模式"
           icon={<Pencil className="rotate-90" />}
           handleFunction={() => {
-            Stage.leftMouseMode = LeftMouseModeEnum.draw;
-            setIsSelecting(false);
-            setIsDrawing(true);
-            setIsConnecting(false);
+            selectDrawingMouse();
           }}
           isHighlight={isDrawing}
         />
@@ -241,10 +265,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           description="左键：连接与斩断"
           icon={<Slash className="rotate-90" />}
           handleFunction={() => {
-            Stage.leftMouseMode = LeftMouseModeEnum.connectAndCut;
-            setIsSelecting(false);
-            setIsDrawing(false);
-            setIsConnecting(true);
+            selectConnectingMouse();
           }}
           isHighlight={isConnecting}
         />

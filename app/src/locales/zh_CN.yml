@@ -779,3 +779,15 @@ keyBinds:
       如果当前选择的是涂鸦，则扩散选择涂鸦触碰到的实体
       如果当前选择的是实体，则扩散选触碰到的所有涂鸦
       多次按下后可以多次交替扩散
+  checkoutLeftMouseToSelectAndMove:
+    title: 设置左键为“选中/移动”模式
+    description: |
+      也就是鼠标左键切换为正常模式
+  checkoutLeftMouseToDrawing:
+    title: 设置左键为“涂鸦”模式
+    description: |
+      也就是鼠标左键切换为涂鸦模式，在工具栏中有对应按钮
+  checkoutLeftMouseToConnectAndCutting:
+    title: 设置左键为“连线/斩断”模式
+    description: |
+      也就是鼠标左键切换为连线/斩断 模式，在工具栏中有对应按钮

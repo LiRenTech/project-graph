@@ -42,6 +42,14 @@ export namespace Stage {
   export function changeLeftMouseFunction(mode: LeftMouseModeEnum) {
     leftMouseMode = mode;
   }
+  export namespace MouseModeManager {
+    // eslint-disable-next-line prefer-const
+    export let checkoutSelectAndMoveHook = () => {};
+    // eslint-disable-next-line prefer-const
+    export let checkoutDrawingHook = () => {};
+    // eslint-disable-next-line prefer-const
+    export let checkoutConnectAndCuttingHook = () => {};
+  }
   /**
    * 路径管理器
    */

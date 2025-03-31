@@ -620,6 +620,37 @@ async function registerKeyBinds() {
   });
 
   (
+    await KeyBinds.create("checkoutLeftMouseToSelectAndMove", "v", {
+      control: false,
+      meta: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(async () => {
+    Stage.MouseModeManager.checkoutSelectAndMoveHook();
+  });
+  (
+    await KeyBinds.create("checkoutLeftMouseToDrawing", "p", {
+      control: false,
+      meta: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(async () => {
+    Stage.MouseModeManager.checkoutDrawingHook();
+  });
+  (
+    await KeyBinds.create("checkoutLeftMouseToConnectAndCutting", "c", {
+      control: false,
+      meta: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(async () => {
+    Stage.MouseModeManager.checkoutConnectAndCuttingHook();
+  });
+
+  (
     await KeyBinds.create("selectEntityByPenStroke", "w", {
       control: isMac ? false : true,
       meta: isMac,
