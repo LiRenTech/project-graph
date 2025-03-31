@@ -110,7 +110,7 @@ export namespace PathString {
       // 只截取前20+后10个字符
       const frontEnd = Math.floor(limitLength * splitRate);
       const endLength = limitLength - frontEnd;
-      result = `${fileName.slice(0, frontEnd)}...${fileName.slice(-endLength)}`;
+      result = `${fileName.slice(0, frontEnd)}…${fileName.slice(-endLength)}`;
     }
     return result;
   }

@@ -25,8 +25,15 @@ export async function copyEnginePasteImage(item: ClipboardItem, mouseLocation: V
   const blob = await item.getType(item.types[0]); // 获取 Blob 对象
   const imageUUID = uuidv4();
   const folder = PathString.dirPath(Stage.path.getFilePath());
-  const fileName: string = imageUUID;
-  const imagePath = `${folder}${PathString.getSep()}${fileName}.png`;
+
+  // 防止有人感觉图片全是uuid感觉很混乱。
+  const currentFileName = PathString.getFileNameFromPath(Stage.path.getFilePath());
+  const shortedFileName = PathString.getShortedFileName(currentFileName, 6);
+  // 获取当前日期时间，格式：“YY-MM-DD-HH-mm-ss”
+  const currentDateTime = new Date().toISOString().replace(/:/g, "-").slice(0, 19);
+  const imageFileName = `${shortedFileName}-${currentDateTime}-${imageUUID.slice(0, 4)}`;
+  // const imageFileName: string = imageUUID;
+  const imagePath = `${folder}${PathString.getSep()}${imageFileName}.png`;
 
   // 2024.12.31 测试发现这样的写法会导致读取时base64解码失败
   // writeFile(imagePath, new Uint8Array(await blob.arrayBuffer()));
@@ -38,7 +45,7 @@ export async function copyEnginePasteImage(item: ClipboardItem, mouseLocation: V
     const imageNode = new ImageNode({
       uuid: imageUUID,
       location: [mouseLocation.x, mouseLocation.y],
-      path: `${fileName}.png`,
+      path: `${imageFileName}.png`,
     });
     // imageNode.setBase64StringForced(base64String);
     StageManager.addImageNode(imageNode);
