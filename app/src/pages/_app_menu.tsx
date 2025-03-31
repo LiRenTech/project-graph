@@ -1,4 +1,5 @@
 import { open as openFileDialog, save as saveFileDialog } from "@tauri-apps/plugin-dialog";
+import { open as openFilePath } from "@tauri-apps/plugin-shell";
 import { useAtom } from "jotai";
 import {
   AppWindow,
@@ -24,7 +25,6 @@ import {
   Scaling,
   Search,
   Settings as SettingsIcon,
-  SquareDashedKanbanIcon,
   SquareDashedMousePointer,
   TestTube2,
   Undo,
@@ -35,6 +35,7 @@ import {
   FilePlus2,
   FileDown,
   Rabbit,
+  Group,
 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -412,12 +413,8 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           <Col
             icon={<FolderCog />}
             onClick={async () => {
-              Dialog.show({
-                title: "数据文件夹位置",
-                type: "info",
-                code: await dataDir(),
-                content: "软件数据文件夹位置",
-              });
+              const path = (await dataDir()) + PathString.getSep() + "liren.project-graph";
+              openFilePath(path);
             }}
           >
             {t("location.items.openDataFolder")}
@@ -425,12 +422,8 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           <Col
             icon={<FolderOpen />}
             onClick={() => {
-              Dialog.show({
-                title: "数据文件夹位置",
-                type: "info",
-                code: file,
-                content: "软件数据文件夹位置",
-              });
+              const folderPath = PathString.dirPath(file);
+              openFilePath(folderPath);
             }}
           >
             {t("location.items.openProjectFolder")}
@@ -452,7 +445,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         </Col>
       </Row>
       <Row icon={<View />} title={t("view.title")}>
-        <Col icon={<SquareDashedKanbanIcon />} onClick={() => Camera.reset()}>
+        <Col icon={<Group />} onClick={() => Camera.reset()}>
           {t("view.items.resetByAll")}
         </Col>
         <Col icon={<SquareDashedMousePointer />} onClick={() => Camera.resetBySelected()}>
