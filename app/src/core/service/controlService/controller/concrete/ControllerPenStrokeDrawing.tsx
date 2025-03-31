@@ -105,6 +105,7 @@ class ControllerDrawingClass extends ControllerClass {
       const strokeStringList: string[] = [
         `${Math.round(startLocation.x)},${Math.round(startLocation.y)},${this.currentStrokeWidth}`,
         `${Math.round(endLocation.x)},${Math.round(endLocation.y)},${this.currentStrokeWidth}`,
+        `${Math.round(endLocation.x)},${Math.round(endLocation.y)},${this.currentStrokeWidth}`,
       ];
       const contentString = strokeStringList.join("~");
       const stroke = new PenStroke({
