@@ -89,7 +89,7 @@ appmenu:
   bg: "#d6dbd5"
   border: "oklch(0.85 0.02 240)"
   category:
-    title: "oklch(0.85 0.02 240)"
+    title: "rgb(67, 80, 88)"
     separator: "oklch(0.8 0.02 240)"
   item:
     text: "oklch(0.25 0.03 240)"

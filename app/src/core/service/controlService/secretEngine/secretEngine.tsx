@@ -142,6 +142,27 @@ export class SecretEngine {
         Settings.set("theme", "light");
       },
     },
+    "p a r k k": {
+      name: "切换成公园主题",
+      explain: "切换后需要在舞台上划一刀才生生效",
+      func() {
+        Settings.set("theme", "park");
+      },
+    },
+    "m k l": {
+      name: "切换成马卡龙主题",
+      explain: "切换后需要在舞台上划一刀才生生效",
+      func() {
+        Settings.set("theme", "macaron");
+      },
+    },
+    "m l d": {
+      name: "切换成莫兰迪主题",
+      explain: "切换后需要在舞台上划一刀才生生效",
+      func() {
+        Settings.set("theme", "morandi");
+      },
+    },
     "* * *": {
       name: "切换专注模式",
       async func() {
