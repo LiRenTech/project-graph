@@ -50,6 +50,8 @@ import { exists } from "./utils/fs";
 import { exit, openDevtools, writeStderr, writeStdout } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isFrame, isMac, isWeb } from "./utils/platform";
 import { PenStrokeMethods } from "./core/stage/stageManager/basicMethods/PenStrokeMethods";
+import { KeyboardOnlyTreeEngine } from "./core/service/controlService/keyboardOnlyEngine/keyboardOnlyTreeEngine";
+import { KeyboardOnlyGraphEngine } from "./core/service/controlService/keyboardOnlyEngine/keyboardOnlyGraphEngine";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -669,7 +671,7 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(async () => {
-    KeyboardOnlyEngine.onDeepGenerateNode();
+    KeyboardOnlyTreeEngine.onDeepGenerateNode();
   });
   (
     await KeyBinds.create("generateNodeTreeWithBroadMode", "\\", {
@@ -679,7 +681,22 @@ async function registerKeyBinds() {
       shift: false,
     })
   ).down(async () => {
-    KeyboardOnlyEngine.onBroadGenerateNode();
+    KeyboardOnlyTreeEngine.onBroadGenerateNode();
+  });
+  const bind = await KeyBinds.create("generateNodeGraph", "`", {
+    control: false,
+    alt: false,
+    shift: false,
+  });
+  bind.down(() => {
+    if (KeyboardOnlyGraphEngine.isEnableVirtualCreate()) {
+      KeyboardOnlyGraphEngine.createStart();
+    }
+  });
+  bind.up(() => {
+    if (KeyboardOnlyGraphEngine.isCreating()) {
+      KeyboardOnlyGraphEngine.createFinished();
+    }
   });
 
   const bindCamear = await KeyBinds.create("masterBrakeControl", "pause", {

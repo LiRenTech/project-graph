@@ -640,17 +640,24 @@ keyBinds:
       开启后，屏幕左上角将会显示调试信息。
       若您遇到bug截图反馈时，建议开启此选项。
   generateNodeTreeWithDeepMode:
-    title: 按下深度模式生长节点
+    title: 生长子级节点
     description: |
       按下后，瞬间生长一个节点并放置在当前选中节点的右侧
       同时自动排版整个节点树的结构，确保其是一个向右的树型结构
       使用此功能前先确保已选中一个节点、且该节点所在结构为树形结构
   generateNodeTreeWithBroadMode:
-    title: 按下广度模式生长节点
+    title: 生长同级节点
     description: |
-      按下后，创建一个同级节点并放置在当前选中节点的下方
+      按下后，瞬间生长一个同级节点并放置在当前选中节点的下方
       同时自动排版整个节点树的结构，确保其是一个向下的树型结构
       使用此功能前先确保已选中一个节点、且该节点存在父级节点
+  generateNodeGraph:
+    title: 生长自由节点
+    description: |
+      按下后，出现一个虚拟生长位置
+      在按下该键不松开的同时按下“I J K L”键自由调整生长位置
+      松开后，生长完成
+      使用此功能前先确保已选中一个节点
   masterBrakeControl:
     title: 动力系统刹车总控制器
     description: |
