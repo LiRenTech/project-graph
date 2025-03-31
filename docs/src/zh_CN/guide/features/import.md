@@ -30,7 +30,7 @@ markdown格式：
 
 生成后，标题会作为文本节点，内容会作为文本节点的子节点。节点之间的连线即为markdown表示的树形结构。
 
-## 纯文本导入
+## 纯文本树状格式导入
 
 通过工具栏的纯文本生成节点,可以将缩进格式的纯文本导入到舞台中
 
@@ -54,3 +54,29 @@ markdown格式：
 然后您可以自动或手动调整节点的位置
 
 <svg xmlns="http://www.w3.org/2000/svg" width="371.5039978027344" height="586" viewBox="2363.3328275782364 -1272.3994962490722 371.5039978027344 586" style="background-color:rgba(31, 31, 31, 1)"><rect x="2463.9" y="-1242.4" width="89.5" height="76.0" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="2477.9" y="-1190.4" fill="rgba(255, 255, 255, 1)" font-size="32" text-anchor="start" font-family="MiSans">root</text><rect x="2462.6" y="-1092.4" width="92.0" height="76.0" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="2476.6" y="-1040.4" fill="rgba(255, 255, 255, 1)" font-size="32" text-anchor="start" font-family="MiSans">王国</text><rect x="2393.3" y="-942.4" width="81.9" height="76.0" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="2407.3" y="-890.4" fill="rgba(255, 255, 255, 1)" font-size="32" text-anchor="start" font-family="MiSans">城A</text><rect x="2377.3" y="-792.4" width="113.9" height="76.0" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="2391.3" y="-740.4" fill="rgba(255, 255, 255, 1)" font-size="32" text-anchor="start" font-family="MiSans">区域A</text><rect x="2562.2" y="-942.4" width="81.7" height="76.0" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="2576.2" y="-890.4" fill="rgba(255, 255, 255, 1)" font-size="32" text-anchor="start" font-family="MiSans">城B</text><rect x="2521.2" y="-792.4" width="81.9" height="76.0" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="2535.2" y="-740.4" fill="rgba(255, 255, 255, 1)" font-size="32" text-anchor="start" font-family="MiSans">区A</text><rect x="2623.1" y="-792.4" width="81.7" height="76.0" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></rect><text x="2637.1" y="-740.4" fill="rgba(255, 255, 255, 1)" font-size="32" text-anchor="start" font-family="MiSans">区B</text><line x1="2508.6" y1="-1166.4" x2="2508.6" y2="-1092.4" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></line><polygon points="2508.6,-1092.4 2512.5,-1106.9 2508.6,-1099.9 2504.7,-1106.9" fill="rgba(204, 204, 204, 1)" stroke="rgba(204, 204, 204, 1)"></polygon><line x1="2489.8" y1="-1016.4" x2="2453.1" y2="-942.4" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></line><polygon points="2453.1,-942.4 2463.0,-953.7 2456.4,-949.1 2456.1,-957.1" fill="rgba(204, 204, 204, 1)" stroke="rgba(204, 204, 204, 1)"></polygon><line x1="2434.3" y1="-866.4" x2="2434.3" y2="-792.4" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></line><polygon points="2434.3,-792.4 2438.2,-806.9 2434.3,-799.9 2430.4,-806.9" fill="rgba(204, 204, 204, 1)" stroke="rgba(204, 204, 204, 1)"></polygon><line x1="2532.5" y1="-1016.4" x2="2579.1" y2="-942.4" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></line><polygon points="2579.1,-942.4 2574.7,-956.7 2575.1,-948.7 2568.1,-952.6" fill="rgba(204, 204, 204, 1)" stroke="rgba(204, 204, 204, 1)"></polygon><line x1="2592.7" y1="-866.4" x2="2572.5" y2="-792.4" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></line><polygon points="2572.5,-792.4 2580.1,-805.4 2574.5,-799.6 2572.6,-807.4" fill="rgba(204, 204, 204, 1)" stroke="rgba(204, 204, 204, 1)"></polygon><line x1="2618.5" y1="-866.4" x2="2648.5" y2="-792.4" stroke="rgba(204, 204, 204, 1)" stroke-width="2"></line><polygon points="2648.5,-792.4 2646.7,-807.3 2645.7,-799.3 2639.5,-804.4" fill="rgba(204, 204, 204, 1)" stroke="rgba(204, 204, 204, 1)"></polygon></svg>
+
+## 纯文本网状格式导入
+
+通过工具栏的纯文本生成节点,可以将网状格式的纯文本导入到舞台中
+
+```
+董八伟 -讨债-> 李小网
+董八伟 -羞辱-> 三门哥
+李小网 -起诉-> 三门哥
+李小网 -偷盗财物-> 董八伟
+三门哥 -嫉妒-> 董八伟
+三门哥 -坑害-> 李小网
+```
+
+> [!TIP]
+> 必须要有箭头符号 `-->`
+> 当箭头上不想写文字时，使用 `-->`
+> 当箭头上有文字时，使用 `-文字->`，如 `-起诉->`，在 `连线文字` 和 `-` 之间不能有空格
+> 连线和连线两端的节点文字可以不加空格，如 `李小网-起诉->三门哥`
+
+导入后，需要手动调整一个好看的布局
+生成效果如下
+
+<svg xmlns="http://www.w3.org/2000/svg" width="581" height="467" viewBox="467 -490 581 467" style="background-color:rgba(34, 34, 34, 1)"><rect x="689.0" y="-460.0" width="124.0" height="76.0" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(229, 231, 235, 1)" stroke-width="2"></rect><text x="703.0" y="-408.0" fill="rgba(255, 255, 255, 1)" font-size="32" text-anchor="start" font-family="MiSans">董八伟</text><rect x="894.0" y="-129.0" width="124.0" height="76.0" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(229, 231, 235, 1)" stroke-width="2"></rect><text x="908.0" y="-77.0" fill="rgba(255, 255, 255, 1)" font-size="32" text-anchor="start" font-family="MiSans">李小网</text><rect x="497.0" y="-129.0" width="124.0" height="76.0" rx="8" ry="8" fill="rgba(0, 0, 0, 0)" stroke="rgba(229, 231, 235, 1)" stroke-width="2"></rect><text x="511.0" y="-77.0" fill="rgba(255, 255, 255, 1)" font-size="32" text-anchor="start" font-family="MiSans">三门哥</text></svg>
+
+可以用于让AI大模型生成 人物/组织关系分析图
