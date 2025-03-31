@@ -31,6 +31,14 @@ icon-button:
   text: "oklch(0.25 0.03 240)"
   border: "oklch(0.78 0.02 210)"
 
+table:
+  header-bg: "rgb(170, 187, 190)"
+  header-text: "rgb(20, 36, 47)"
+  row-bg: "rgb(192, 210, 213)"
+  row-text: "rgb(20, 36, 47)"
+  row-hover-bg: "rgb(202, 220, 223)"
+  row-hover-text: "rgb(20, 36, 47)"
+
 input:
   bg: "oklch(0.96 0.02 240)"
   text: "oklch(0.25 0.03 240)"

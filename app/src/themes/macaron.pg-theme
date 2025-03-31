@@ -12,8 +12,8 @@ panel:
   bg: "#f4c5b3"
   text: "oklch(0.45 0.08 340)"
   details-text: "oklch(0.55 0.06 340)"
-  success-text: "#00de00"
-  warning-text: "#ff8c00"
+  success-text: "rgb(22, 135, 67)"
+  warning-text: "rgb(255, 82, 82)"
   error-text: "#ff0000"
 
 tooltip:
@@ -30,6 +30,14 @@ icon-button:
   bg: "#f9d8dc"
   text: "#573541"
   border: "#edc5d0"
+
+table:
+  header-bg: "rgb(152, 118, 127)"
+  header-text: "#fff"
+  row-bg: "rgb(238, 201, 211)"
+  row-text: "#573541"
+  row-hover-bg: "rgb(218, 180, 190)"
+  row-hover-text: "#573541"
 
 input:
   bg: "oklch(0.98 0.02 60)"

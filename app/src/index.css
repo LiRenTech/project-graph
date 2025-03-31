@@ -44,6 +44,14 @@
   --color-icon-button-bg: var(--color-icon-button-bg);
   --color-icon-button-text: var(--color-icon-button-text);
   --color-icon-button-border: var(--color-icon-button-border);
+  
+  --color-table-header-bg: var(--color-table-header-bg);
+  --color-table-header-text: var(--color-table-header-text);
+  --color-table-row-bg: var(--color-table-row-bg);
+  --color-table-row-text: var(--color-table-row-text);
+  --color-table-row-hover-bg: var(--color-table-row-hover-bg);
+  --color-table-row-hover-text: var(--color-table-row-hover-text);
+
   --color-input-bg: var(--color-input-bg);
   --color-input-text: var(--color-input-text);
   --color-input-border: var(--color-input-border);

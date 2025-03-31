@@ -57,7 +57,7 @@ export default function ExportSvgPanel() {
   });
 
   return (
-    <div className="bg-panel-bg p-4">
+    <div className="bg-panel-bg text-panel-text p-4">
       <h2 className="mb-4 text-center text-2xl font-bold">导出SVG</h2>
       {/* 导出图片的svg使用绝对路径，使用相对路径，使用base64编码 */}
       <div className="mb-4">

@@ -24,7 +24,7 @@ export default function SecretPage() {
 
   return (
     <div className="h-full overflow-x-auto px-4 py-24">
-      <h2 className="text-center text-xl font-bold">
+      <h2 className="text-panel-text text-center text-xl font-bold">
         <span>秘籍键列表</span>
         {conflictKeys.length === 0 && <span>🐇</span>}
         {conflictKeys.length > 0 && <span> 出现冲突</span>}

@@ -22,14 +22,23 @@ tooltip:
   border: "oklch(0.371 0 0)"
 
 button:
-  bg: "oklch(0.269 0 0)"
+  bg: "rgba(60, 63, 65, 0.5)"
   text: "#fff"
   border: "oklch(0.371 0 0)"
 
 icon-button:
-  bg: "oklch(0.269 0 0)"
+  bg: "rgb(49, 51, 53)"
   text: "#fff"
-  border: "oklch(0.371 0 0)"
+  border: "rgb(60, 63, 65)"
+
+table:
+  header-bg: "oklch(0.1 0 0)"
+  header-text: "#fff"
+  row-bg: "oklch(0.269 0 0)"
+  row-text: "#fff"
+  row-hover-bg: "oklch(0.371 0 0)"
+  row-hover-text: "#fff"
+
 
 input:
   bg: "oklch(0.269 0 0)"
@@ -96,10 +105,10 @@ appmenu:
   hover-bg: "oklch(0.371 0 0)"
 
 toolbar:
-  bg: "oklch(0.269 0 0)"
+  bg: "rgb(49, 51, 53)"
   icon: "#fff"
   icon-hover-bg: "rgb(255 255 255 / 0.2)"
-  border: "oklch(0.371 0 0)"
+  border: "rgb(60, 63, 65)"
   tooltip:
     bg: "oklch(0.269 0 0)"
     text: "#fff"

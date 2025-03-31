@@ -741,9 +741,9 @@ keyBinds:
       例如一个节点内容为 "D:/Desktop/a.txt"，选中此节点按下快捷键之后，能以系统默认方式打开此文件
       如果节点内容为网页地址 "https://project-graph.top"，会以系统默认浏览器打开网页内容
   checkoutClassroomMode:
-    title: 进入或退出演示模式
+    title: 进入或退出专注模式
     description: |
-      按下后，进入演示模式，所有UI都会隐藏，顶部按钮会透明化处理
+      按下后，进入专注模式，所有UI都会隐藏，顶部按钮会透明化处理
       再按一次恢复
   checkoutWindowOpacityMode:
     title: 切换窗口透明度模式

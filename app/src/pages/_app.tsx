@@ -349,7 +349,7 @@ export default function App() {
                     "opacity-0": isClassroomMode,
                     "text-xs": isWindowCollapsing,
                   })}
-                  tooltip="按住拖动窗口"
+                  tooltip="按住拖动窗口，双击最大化切换"
                 >
                   {isMobile && getDisplayFileName()}
                   {isDesktop && (

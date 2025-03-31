@@ -151,7 +151,7 @@ export default function RecentFilesPanel() {
         关闭
       </button>
 
-      <h2 className="mb-3 text-xl font-bold text-white">最近打开的文件</h2>
+      <h2 className="text-panel-text mb-3 text-xl font-bold">最近打开的文件</h2>
       {/* 加载中提示 */}
       {isLoading && (
         <div className="flex h-full items-center justify-center text-8xl">
@@ -161,9 +161,9 @@ export default function RecentFilesPanel() {
       {/* 滚动区域单独封装 */}
       {!isLoading && (
         <div className="flex-grow overflow-y-scroll">
-          <table className="min-w-full overflow-hidden rounded-lg border border-gray-600 bg-gray-700 shadow-lg">
+          <table className="bg-panel-bg min-w-full overflow-hidden rounded-lg border border-gray-600 shadow-lg">
             <thead>
-              <tr className="bg-gray-800 text-white">
+              <tr className="bg-table-header-bg text-table-header-text">
                 <th className="px-4 py-2 text-left"></th>
                 <th className="px-4 py-2 text-left">路径</th>
                 <th className="px-4 py-2 text-left">时间</th>
@@ -172,13 +172,13 @@ export default function RecentFilesPanel() {
             </thead>
             <tbody>
               {recentFiles.map((file, index) => (
-                <tr key={index} className="text-gray-200 hover:bg-gray-600">
+                <tr key={index} className="bg-table-row-bg hover:bg-table-row-hover-bg">
                   {/* 标号列 */}
-                  <td className="text-center">{index + 1}</td>
+                  <td className="text-table-row-text text-center">{index + 1}</td>
                   {/* 路径列 */}
-                  <td className="flex flex-col" onClick={onCheckoutFile(file)}>
+                  <td className="text-table-row-text flex flex-col" onClick={onCheckoutFile(file)}>
                     <span>{PathString.getShortedFileName(PathString.absolute2file(file.path), 30, 0.8)}</span>
-                    <span className="text-xs text-gray-500">{file.path}</span>
+                    <span className="text-panel-details-text text-xs opacity-50">{file.path}</span>
                   </td>
                   {/* 时间列 */}
                   <td className="">
@@ -217,7 +217,7 @@ export default function RecentFilesPanel() {
           </table>
         </div>
       )}
-      <p>提示：点击文件可以快速切换</p>
+      <p className="text-panel-text">提示：点击文件可以快速切换</p>
     </div>
   );
 }

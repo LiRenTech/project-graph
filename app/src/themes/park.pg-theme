@@ -31,6 +31,14 @@ icon-button:
   text: "#e4f0fa"
   border: "#6a7680"
 
+table:
+  header-bg: "oklch(0.269 0 0)"
+  header-text: "#fff"
+  row-bg: "oklch(0.269 0 0)"
+  row-text: "#fff"
+  row-hover-bg: "oklch(0.371 0 0)"
+  row-hover-text: "#fff"
+
 input:
   bg: "#4e6352"
   text: "#d5f4db"

@@ -31,6 +31,14 @@ icon-button:
   text: "rgb(255, 255, 255)"
   border: "#344b62"
 
+table:
+  header-bg: "rgb(90, 116, 144)"
+  header-text: "#fff"
+  row-bg: "rgb(227, 236, 250)"
+  row-text: "rgb(0, 0, 0)"
+  row-hover-bg: "rgb(247, 255, 255)"
+  row-hover-text: "rgb(0, 0, 0)"
+
 input:
   bg: "rgb(255, 255, 255)"
   text: "rgb(24, 25, 28)"

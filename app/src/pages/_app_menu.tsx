@@ -532,21 +532,6 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         </Col> */}
 
         <Col
-          icon={isClassroomMode ? <MonitorX /> : <Monitor />}
-          onClick={async () => {
-            if (!isClassroomMode) {
-              Dialog.show({
-                title: "恢复方法",
-                content: "左上角菜单按钮仅仅是透明了，并没有消失",
-              });
-            }
-            // setIsClassroomMode(!isClassroomMode);
-            Settings.set("isClassroomMode", !(await Settings.get("isClassroomMode")));
-          }}
-        >
-          {isClassroomMode ? "退出专注" : "专注模式"}
-        </Col>
-        <Col
           icon={<Rabbit />}
           className="opacity-20 hover:opacity-50"
           onClick={() => {
@@ -572,6 +557,21 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             }
           >
             {t("window.items.fullscreen")}
+          </Col>
+          <Col
+            icon={isClassroomMode ? <MonitorX /> : <Monitor />}
+            onClick={async () => {
+              if (!isClassroomMode) {
+                Dialog.show({
+                  title: "恢复方法",
+                  content: "左上角菜单按钮仅仅是透明了，并没有消失",
+                });
+              }
+              // setIsClassroomMode(!isClassroomMode);
+              Settings.set("isClassroomMode", !(await Settings.get("isClassroomMode")));
+            }}
+          >
+            {isClassroomMode ? "退出专注" : "专注模式"}
           </Col>
         </Row>
       )}
