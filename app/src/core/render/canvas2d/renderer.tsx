@@ -494,7 +494,28 @@ export namespace Renderer {
     const currentStrokeColor = Stage.drawingMachine.getCurrentStrokeColor();
 
     if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
+      // 画鼠标绘制过程，还未抬起鼠标左键的 笔迹
+      if (Stage.drawingMachine.currentStroke.length > 0) {
+        if (Controller.pressingKeySet.has("shift")) {
+          CurveRenderer.renderSolidLine(
+            transformWorld2View(Stage.drawingMachine.currentStroke[0].startLocation),
+            MouseLocation.vector(),
+            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
+            Stage.drawingMachine.currentStrokeWidth * Camera.currentScale,
+          );
+        } else {
+          for (const segment of Stage.drawingMachine.currentStroke) {
+            CurveRenderer.renderSolidLine(
+              transformWorld2View(segment.startLocation),
+              transformWorld2View(segment.endLocation),
+              currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
+              Stage.drawingMachine.currentStrokeWidth * Camera.currentScale,
+            );
+          }
+        }
+      }
       if (Stage.drawingControlMachine.isAdjusting) {
+        // 鼠标正在调整状态
         ShapeRenderer.renderCircle(
           transformWorld2View(Stage.drawingControlMachine.startAdjustWidthLocation),
           (Stage.drawingMachine.currentStrokeWidth / 2) * Camera.currentScale,
@@ -522,16 +543,28 @@ export namespace Renderer {
             0,
           );
         }
-      }
-
-      // 画笔
-      if (Stage.drawingMachine.currentStroke.length > 0) {
-        for (const segment of Stage.drawingMachine.currentStroke) {
+        // 如果按下shift键，说明正在画直线
+        if (Controller.pressingKeySet.has("shift")) {
+          // 画一个跟随鼠标的十字准星
+          const crossSize = 100;
+          const crossCenter = MouseLocation.vector();
+          const crossLine1Start = crossCenter.add(new Vector(-crossSize, 0));
+          const crossLine1End = crossCenter.add(new Vector(crossSize, 0));
+          const crossLine2Start = crossCenter.add(new Vector(0, -crossSize));
+          const crossLine2End = crossCenter.add(new Vector(0, crossSize));
+          CurveRenderer.renderSolidLine(crossLine1Start, crossLine1End, StageStyleManager.currentStyle.Background, 2);
+          CurveRenderer.renderSolidLine(crossLine2Start, crossLine2End, StageStyleManager.currentStyle.Background, 2);
           CurveRenderer.renderSolidLine(
-            transformWorld2View(segment.startLocation),
-            transformWorld2View(segment.endLocation),
-            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
-            Stage.drawingMachine.currentStrokeWidth * Camera.currentScale,
+            crossLine1Start,
+            crossLine1End,
+            StageStyleManager.currentStyle.effects.successShadow,
+            0.5,
+          );
+          CurveRenderer.renderSolidLine(
+            crossLine2Start,
+            crossLine2End,
+            StageStyleManager.currentStyle.effects.successShadow,
+            0.5,
           );
         }
       }

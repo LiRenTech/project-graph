@@ -13,13 +13,20 @@ import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
  * 涂鸦功能
  */
 class ControllerDrawingClass extends ControllerClass {
-  // 一开始是禁用状态
   private _isUsing: boolean = false;
 
+  /** 在移动的过程中，记录这一笔画的笔迹 */
   public currentStroke: PenStrokeSegment[] = [];
 
   private autoFillPenStrokeColorEnable = false;
   private autoFillPenStrokeColor: Color = Color.Transparent;
+
+  /**
+   * 初始按下的起始点的位置
+   */
+  public pressStartWordLocation = Vector.getZero();
+  /** 当前是否是在绘制直线 */
+  public isDrawingLine = false;
 
   /**
    * 当前画笔的粗度
@@ -52,7 +59,12 @@ class ControllerDrawingClass extends ControllerClass {
       return;
     }
     this._isUsing = true;
+
     const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    if (Controller.pressingKeySet.has("shift")) {
+      this.isDrawingLine = true;
+    }
+    this.pressStartWordLocation = pressWorldLocation.clone();
     this.recordLocation.push(pressWorldLocation.clone());
 
     this.lastMoveLocation = pressWorldLocation.clone();
@@ -86,27 +98,52 @@ class ControllerDrawingClass extends ControllerClass {
     this.recordLocation.push(releaseWorldLocation.clone());
 
     // 生成笔触
-    const strokeStringList: string[] = [];
-    for (const location of this.recordLocation) {
-      strokeStringList.push(`${Math.round(location.x)},${Math.round(location.y)},${this.currentStrokeWidth}`);
-    }
-    const contentString = strokeStringList.join("~");
+    if (Controller.pressingKeySet.has("shift")) {
+      // 直线
+      const startLocation = this.pressStartWordLocation;
+      const endLocation = releaseWorldLocation;
+      const strokeStringList: string[] = [
+        `${Math.round(startLocation.x)},${Math.round(startLocation.y)},${this.currentStrokeWidth}`,
+        `${Math.round(endLocation.x)},${Math.round(endLocation.y)},${this.currentStrokeWidth}`,
+      ];
+      const contentString = strokeStringList.join("~");
+      const stroke = new PenStroke({
+        type: "core:pen_stroke",
+        content: contentString,
+        color: this.getCurrentStrokeColor().toArray(),
+        uuid: v4(),
+        location: [0, 0],
+        details: "",
+      });
+      stroke.setColor(this.getCurrentStrokeColor());
+      StageManager.addPenStroke(stroke);
+    } else {
+      // 普通笔迹
+      const strokeStringList: string[] = [];
+      for (const location of this.recordLocation) {
+        strokeStringList.push(`${Math.round(location.x)},${Math.round(location.y)},${this.currentStrokeWidth}`);
+      }
+      const contentString = strokeStringList.join("~");
 
-    const stroke = new PenStroke({
-      type: "core:pen_stroke",
-      content: contentString,
-      color: this.getCurrentStrokeColor().toArray(),
-      uuid: v4(),
-      location: [0, 0],
-      details: "",
-    });
-    stroke.setColor(this.getCurrentStrokeColor());
-    StageManager.addPenStroke(stroke);
+      const stroke = new PenStroke({
+        type: "core:pen_stroke",
+        content: contentString,
+        color: this.getCurrentStrokeColor().toArray(),
+        uuid: v4(),
+        location: [0, 0],
+        details: "",
+      });
+      stroke.setColor(this.getCurrentStrokeColor());
+      StageManager.addPenStroke(stroke);
+    }
+
+    // 清理
     this.recordLocation = [];
     this.currentStroke = [];
 
     Controller.setCursorNameHook(CursorNameEnum.Crosshair);
     this._isUsing = false;
+    this.isDrawingLine = false;
   };
 
   public getCurrentStrokeColor() {
