@@ -1,6 +1,6 @@
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Stage } from "../../../../stage/Stage";
+import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/stageNodeAdder";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
@@ -19,7 +19,7 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
   if (!(event.button === 0)) {
     return;
   }
-  if (Stage.drawingMachine.isUsing) {
+  if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
     // 绘制模式不能使用创建节点
     return;
   }

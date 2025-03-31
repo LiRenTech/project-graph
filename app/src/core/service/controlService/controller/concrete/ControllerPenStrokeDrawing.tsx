@@ -18,21 +18,6 @@ class ControllerDrawingClass extends ControllerClass {
 
   public currentStroke: PenStrokeSegment[] = [];
 
-  public get isUsing() {
-    return this._isUsing;
-  }
-  public shutDown() {
-    this._isUsing = false;
-    this.currentStroke = [];
-    // 鼠标提示
-    Controller.setCursorNameHook(CursorNameEnum.Default);
-  }
-  public open() {
-    this._isUsing = true;
-    // 鼠标提示
-    Controller.setCursorNameHook(CursorNameEnum.Crosshair);
-  }
-
   private autoFillPenStrokeColorEnable = false;
   private autoFillPenStrokeColor: Color = Color.Transparent;
 
@@ -60,70 +45,68 @@ class ControllerDrawingClass extends ControllerClass {
   private recordLocation: Vector[] = [];
 
   public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (!this._isUsing) return;
-    if (!(event.button === 0)) {
+    if (Stage.leftMouseMode !== LeftMouseModeEnum.draw) {
       return;
     }
-    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.draw) {
-      this.recordLocation.push(pressWorldLocation.clone());
-
-      this.lastMoveLocation = pressWorldLocation.clone();
-
-      Controller.setCursorNameHook(CursorNameEnum.Crosshair);
+    if (!(event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.draw)) {
+      return;
     }
+    this._isUsing = true;
+    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    this.recordLocation.push(pressWorldLocation.clone());
+
+    this.lastMoveLocation = pressWorldLocation.clone();
+
+    Controller.setCursorNameHook(CursorNameEnum.Crosshair);
   };
 
   public mousemove = (event: MouseEvent) => {
     if (!this._isUsing) return;
-    if (!Controller.isMouseDown[0]) {
+    if (!Controller.isMouseDown[0] && Stage.leftMouseMode === LeftMouseModeEnum.draw) {
       return;
     }
     const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    if (Controller.isMouseDown[0] && Stage.leftMouseMode === LeftMouseModeEnum.draw) {
-      // 检测：如果移动距离不超过10，则不记录
-      if (worldLocation.distance(this.lastMoveLocation) < 5) {
-        return;
-      }
-      this.recordLocation.push(worldLocation.clone());
-
-      // 记录笔刷
-      this.currentStroke.push(new PenStrokeSegment(this.lastMoveLocation, worldLocation, this.currentStrokeWidth));
-      this.lastMoveLocation = worldLocation.clone();
+    // 检测：如果移动距离不超过10，则不记录
+    if (worldLocation.distance(this.lastMoveLocation) < 5) {
+      return;
     }
+    this.recordLocation.push(worldLocation.clone());
+
+    // 记录笔刷
+    this.currentStroke.push(new PenStrokeSegment(this.lastMoveLocation, worldLocation, this.currentStrokeWidth));
+    this.lastMoveLocation = worldLocation.clone();
   };
 
   public mouseup = (event: MouseEvent) => {
     if (!this._isUsing) return;
-    if (!(event.button === 0)) {
+    if (!(event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.draw)) {
       return;
     }
-    if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.draw) {
-      const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-      this.recordLocation.push(releaseWorldLocation.clone());
+    const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    this.recordLocation.push(releaseWorldLocation.clone());
 
-      // 生成笔触
-      const strokeStringList: string[] = [];
-      for (const location of this.recordLocation) {
-        strokeStringList.push(`${Math.round(location.x)},${Math.round(location.y)},${this.currentStrokeWidth}`);
-      }
-      const contentString = strokeStringList.join("~");
-
-      const stroke = new PenStroke({
-        type: "core:pen_stroke",
-        content: contentString,
-        color: this.getCurrentStrokeColor().toArray(),
-        uuid: v4(),
-        location: [0, 0],
-        details: "",
-      });
-      stroke.setColor(this.getCurrentStrokeColor());
-      StageManager.addPenStroke(stroke);
-      this.recordLocation = [];
-      this.currentStroke = [];
-
-      Controller.setCursorNameHook(CursorNameEnum.Crosshair);
+    // 生成笔触
+    const strokeStringList: string[] = [];
+    for (const location of this.recordLocation) {
+      strokeStringList.push(`${Math.round(location.x)},${Math.round(location.y)},${this.currentStrokeWidth}`);
     }
+    const contentString = strokeStringList.join("~");
+
+    const stroke = new PenStroke({
+      type: "core:pen_stroke",
+      content: contentString,
+      color: this.getCurrentStrokeColor().toArray(),
+      uuid: v4(),
+      location: [0, 0],
+      details: "",
+    });
+    stroke.setColor(this.getCurrentStrokeColor());
+    StageManager.addPenStroke(stroke);
+    this.recordLocation = [];
+    this.currentStroke = [];
+
+    Controller.setCursorNameHook(CursorNameEnum.Crosshair);
+    this._isUsing = false;
   };
 
   public getCurrentStrokeColor() {

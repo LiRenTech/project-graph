@@ -219,7 +219,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           description="左键：框选和移动模式"
           icon={<MousePointer />}
           handleFunction={() => {
-            Stage.drawingMachine.shutDown();
             Stage.leftMouseMode = LeftMouseModeEnum.selectAndMove;
             setIsSelecting(true);
             setIsDrawing(false);
@@ -231,7 +230,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           description="左键：涂鸦模式"
           icon={<Pencil className="rotate-90" />}
           handleFunction={() => {
-            Stage.drawingMachine.open();
             Stage.leftMouseMode = LeftMouseModeEnum.draw;
             setIsSelecting(false);
             setIsDrawing(true);
@@ -243,7 +241,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           description="左键：连接与斩断"
           icon={<Slash className="rotate-90" />}
           handleFunction={() => {
-            Stage.drawingMachine.open();
             Stage.leftMouseMode = LeftMouseModeEnum.connectAndCut;
             setIsSelecting(false);
             setIsDrawing(false);
