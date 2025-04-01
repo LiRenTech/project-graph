@@ -26,6 +26,7 @@ export namespace StageLoader {
     data = convertV12toV13(data);
     data = convertV13toV14(data);
     data = convertV14toV15(data);
+    data = convertV15toV16(data);
     return data as Serialized.File;
   }
 
@@ -281,6 +282,25 @@ export namespace StageLoader {
       if (node.type === "core:pen_stroke") {
         if (typeof node.color === "undefined") {
           node.color = [0, 0, 0, 0];
+        }
+      }
+    }
+    return data;
+  }
+
+  /**
+   * 文本节点增加自动转换大小/手动转换大小功能
+   * @param data
+   */
+  function convertV15toV16(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 16) {
+      return data;
+    }
+    data.version = 16;
+    for (const node of data.entities) {
+      if (node.type === "core:text_node") {
+        if (typeof node.sizeAdjust === "undefined") {
+          node.sizeAdjust = "auto";
         }
       }
     }
