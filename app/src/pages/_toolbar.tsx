@@ -1,7 +1,6 @@
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 
 import {
-  Blend,
   BrainCircuit,
   ClipboardPaste,
   ClipboardX,
@@ -43,6 +42,7 @@ import { Panel } from "../components/panel";
 import ColorAutoPanel from "./_popup_panel/_color_auto_panel";
 import { isMac } from "../utils/platform";
 import { Settings } from "../core/service/Settings";
+import { StageStyleManager } from "../core/service/feedbackService/stageStyle/StageStyleManager";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -80,20 +80,31 @@ export function PenItem({ color }: PenItemProps) {
   if (color.a === 0) {
     return (
       <div
-        className="mx-0.5 h-4 w-4 cursor-pointer rounded bg-transparent text-center text-sm hover:scale-125"
+        className="group relative mx-0.5 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full text-xs outline-1 transition-all hover:scale-125"
+        style={{
+          backgroundColor: StageStyleManager.currentStyle.StageObjectBorder.toString(),
+          color: StageStyleManager.currentStyle.Background.toString(),
+          outlineColor: StageStyleManager.currentStyle.StageObjectBorder.toString(),
+        }}
         onClick={() => {
           Settings.set("autoFillPenStrokeColorEnable", true);
           Settings.set("autoFillPenStrokeColor", color.toArray());
         }}
       >
-        <Blend className="h-4 w-4" />
+        <span className="bg-tooltip-bg text-tooltip-text border-tooltip-border absolute -top-6 flex h-6 w-48 items-center justify-center rounded-md border-2 text-xs opacity-0 transition-all group-hover:opacity-100">
+          跟随主题切换的默认边框色
+        </span>
+        A
       </div>
     );
   }
   return (
     <div
       className="mx-0.5 h-4 w-4 cursor-pointer rounded-full outline-1 transition-all hover:scale-125"
-      style={{ backgroundColor: color.toString() }}
+      style={{
+        backgroundColor: color.toString(),
+        outlineColor: StageStyleManager.currentStyle.StageObjectBorder.toString(),
+      }}
       onClick={async () => {
         //
         Settings.set("autoFillPenStrokeColorEnable", true);
