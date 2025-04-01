@@ -1,6 +1,7 @@
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 
 import {
+  Blend,
   BrainCircuit,
   ClipboardPaste,
   ClipboardX,
@@ -40,6 +41,8 @@ import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryMana
 import { StageGeneratorAI } from "../core/stage/stageManager/concreteMethods/StageGeneratorAI";
 import { Panel } from "../components/panel";
 import ColorAutoPanel from "./_popup_panel/_color_auto_panel";
+import { isMac } from "../utils/platform";
+import { Settings } from "../core/service/Settings";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -64,6 +67,43 @@ export function ToolbarItem({ icon, handleFunction, description, isHighlight = f
 }
 
 const toolBarGroupStyle = "bg-toolbar-bg border-toolbar-border flex items-center rounded-md border";
+
+interface PenItemProps {
+  color: Color;
+}
+
+/**
+ * 笔触点儿
+ * @returns
+ */
+export function PenItem({ color }: PenItemProps) {
+  if (color.a === 0) {
+    return (
+      <div
+        className="mx-0.5 h-4 w-4 cursor-pointer rounded bg-transparent text-center text-sm hover:scale-125"
+        onClick={() => {
+          Settings.set("autoFillPenStrokeColorEnable", true);
+          Settings.set("autoFillPenStrokeColor", color.toArray());
+        }}
+      >
+        <Blend className="h-4 w-4" />
+      </div>
+    );
+  }
+  return (
+    <div
+      className="mx-0.5 h-4 w-4 cursor-pointer rounded-full outline-1 transition-all hover:scale-125"
+      style={{ backgroundColor: color.toString() }}
+      onClick={async () => {
+        //
+        Settings.set("autoFillPenStrokeColorEnable", true);
+        Settings.set("autoFillPenStrokeColor", color.toArray());
+      }}
+    >
+      {isMac && <span>.</span>}
+    </div>
+  );
+}
 
 /**
  * 工具栏
@@ -270,6 +310,19 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           isHighlight={isConnecting}
         />
       </div>
+
+      {/* 涂鸦笔触颜色 */}
+      {isDrawing && (
+        <div className={toolBarGroupStyle}>
+          <PenItem color={Color.Transparent} />
+          <PenItem color={Color.Green} />
+          <PenItem color={Color.Red} />
+          <PenItem color={Color.Blue} />
+          <PenItem color={Color.Yellow} />
+          <PenItem color={Color.Cyan} />
+          <PenItem color={Color.Magenta} />
+        </div>
+      )}
     </Box>
   );
 }
