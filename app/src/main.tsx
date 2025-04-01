@@ -526,13 +526,42 @@ async function registerKeyBinds() {
   });
 
   (
-    await KeyBinds.create("clickTagPanelButton", "1", {
+    await KeyBinds.create("clickAppMenuSettingsButton", "!", {
       control: false,
       alt: false,
-      shift: false,
+      shift: true,
     })
   ).down(() => {
-    console.log("123");
+    console.log(location.pathname);
+    const AppBackToHomeIcon = document.getElementById("app-back-to-home-icon");
+    const isPageInHome = AppBackToHomeIcon === null;
+    if (isPageInHome) {
+      const button = document.getElementById("app-menu-settings-btn");
+      const event = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      });
+      button?.dispatchEvent(event);
+    } else {
+      // 说明已经不再主页面了
+      // 回到主页面
+      const appMenuButton = document.getElementById("app-menu-btn");
+      const event = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      });
+      appMenuButton?.dispatchEvent(event);
+    }
+  });
+  (
+    await KeyBinds.create("clickTagPanelButton", "@", {
+      control: false,
+      alt: false,
+      shift: true,
+    })
+  ).down(() => {
     const button = document.getElementById("tagPanelBtn");
     const event = new MouseEvent("click", {
       bubbles: true,
@@ -541,6 +570,48 @@ async function registerKeyBinds() {
     });
     button?.dispatchEvent(event);
   });
+  (
+    await KeyBinds.create("clickAppMenuRecentFileButton", "#", {
+      control: false,
+      alt: false,
+      shift: true,
+    })
+  ).down(() => {
+    const isRecentFilePanelOpening = document.getElementById("recent-files-panel-open-mark-div") !== null;
+    if (isRecentFilePanelOpening) {
+      const closeButton = document.getElementById("recent-files-panel-close-btn");
+      const event = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      });
+      closeButton?.dispatchEvent(event);
+    } else {
+      const button = document.getElementById("app-menu-recent-file-btn");
+      const event = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      });
+      button?.dispatchEvent(event);
+    }
+  });
+  (
+    await KeyBinds.create("clickStartFilePanelButton", "$", {
+      control: false,
+      alt: false,
+      shift: true,
+    })
+  ).down(() => {
+    const button = document.getElementById("app-start-file-btn");
+    const event = new MouseEvent("click", {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+    button?.dispatchEvent(event);
+  });
+
   (
     await KeyBinds.create("checkoutWindowOpacityMode", "0", {
       control: isMac ? false : true,

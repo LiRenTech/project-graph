@@ -390,7 +390,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         </Col>
         {!isWeb && (
           <>
-            <Col icon={<FileClock />} onClick={() => setRecentFilePanelOpen(true)}>
+            <Col icon={<FileClock />} id="app-menu-recent-file-btn" onClick={() => setRecentFilePanelOpen(true)}>
               {t("file.items.recent")}
             </Col>
             <Col icon={<Save />} onClick={onSave}>
@@ -490,7 +490,8 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         </Col>
       </Row>
       <Row icon={<MoreHorizontal />} title={t("more.title")}>
-        <Col icon={<SettingsIcon />} onClick={() => navigate("/settings/visual")}>
+        {/* id存在的原因：使得快捷键能够查询到，并打开设置界面 */}
+        <Col icon={<SettingsIcon />} id={"app-menu-settings-btn"} onClick={() => navigate("/settings/visual")}>
           {t("more.items.settings")}
         </Col>
         <Col
@@ -656,14 +657,16 @@ function Col({
   children,
   icon,
   className = "",
+  id, // 移除默认值
   onClick = () => {},
-}: React.PropsWithChildren<{ icon: React.ReactNode; onClick?: () => void; className?: string }>) {
+}: React.PropsWithChildren<{ icon: React.ReactNode; onClick?: () => void; className?: string; id?: string }>) {
   return (
     <div
       className={cn(
         className,
         "hover:bg-appmenu-hover-bg hover:outline-appmenu-hover-bg text-appmenu-item-text flex w-max cursor-pointer items-center gap-1 rounded-lg outline-0 outline-white/0 transition-all hover:outline-8 active:scale-90",
       )}
+      {...(id && { id })}
       onClick={onClick}
       onMouseDown={() => {
         SoundService.play.mouseClickButton();

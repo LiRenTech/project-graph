@@ -277,6 +277,8 @@ export default function App() {
             {!isWindowCollapsing && (
               <IconButton
                 tooltip="菜单"
+                // 检索用，快捷键触发
+                id="app-menu-btn"
                 className={cn(isClassroomMode && "opacity-0")}
                 onClick={(e) => {
                   if (location.pathname !== "/") {
@@ -304,13 +306,18 @@ export default function App() {
                   }
                 }}
               >
-                {location.pathname === "/" ? <Menu className={cn(isMenuOpen && "rotate-90")} /> : <ChevronLeft />}
+                {location.pathname === "/" ? (
+                  <Menu className={cn(isMenuOpen && "rotate-90")} />
+                ) : (
+                  <ChevronLeft id="app-back-to-home-icon" />
+                )}
               </IconButton>
             )}
 
             {!isWindowCollapsing && (
               <IconButton
                 id="tagPanelBtn"
+                // 不可以去除id，因为有快捷键能够触发这个按钮的点击事件，会查询到id
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsTagPanelOpen(!isTagPanelOpen);
@@ -375,6 +382,7 @@ export default function App() {
                   e.stopPropagation();
                   setIsStartFilePanelOpen(!isStartFilePanelOpen);
                 }}
+                id="app-start-file-btn"
                 className={cn(isClassroomMode && "opacity-0")}
                 tooltip="设置启动时打开的文件"
                 disabled={isMobile}

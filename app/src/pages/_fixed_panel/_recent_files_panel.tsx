@@ -143,9 +143,12 @@ export default function RecentFilesPanel() {
         },
       )}
     >
+      {/* 仅仅用作一个标签存在标记，快捷键id索引用 */}
+      {isRecentFilePanelOpen && <div className="absolute left-0 top-0 h-1 w-1" id="recent-files-panel-open-mark-div" />}
       {/* 关闭按钮放置在最外层 */}
       <button
         className="absolute right-2 top-2 z-20 cursor-pointer rounded bg-red-500 px-4 py-2 font-bold text-white hover:scale-105 hover:bg-red-700" // 调整位置和层级
+        id="recent-files-panel-close-btn"
         onClick={() => setRecentFilePanelOpen(false)}
       >
         关闭

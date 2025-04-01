@@ -766,10 +766,22 @@ keyBinds:
     description: |
       按下后，打开搜索框，可以输入搜索内容
       搜索框支持部分匹配，例如输入 "a" 能搜索到 "apple" 等
+  clickAppMenuSettingsButton:
+    title: 打开设置页面
+    description: |
+      按下此键可代替鼠标点击菜单栏里的设置界面按钮
   clickTagPanelButton:
     title: 打开/关闭标签面板
     description: |
       按下此键可代替鼠标点击页面上的标签面板展开关闭按钮
+  clickAppMenuRecentFileButton:
+    title: 打开最近打开文件列表
+    description: |
+      按下此键可代替鼠标点击菜单栏里的最近打开文件列表按钮
+  clickStartFilePanelButton:
+    title: 打开/关闭启动文件列表
+    description: |
+      按下此键可代替鼠标点击菜单栏里的启动文件列表展开关闭按钮
   copy:
     title: 复制
     description: 按下后，复制选中的内容
