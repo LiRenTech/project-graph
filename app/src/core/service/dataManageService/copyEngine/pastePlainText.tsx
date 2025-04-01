@@ -62,8 +62,9 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
         uuid: uuidv4(),
         text: clipboardText,
         location: [mouseLocation.x, mouseLocation.y],
-        size: [100, 100],
+        size: [400, 100],
         color: [0, 0, 0, 0],
+        sizeAdjust: "manual",
       });
       textNode.move(new Vector(-textNode.rectangle.size.x / 2, -textNode.rectangle.size.y / 2));
       StageManager.addTextNode(textNode);

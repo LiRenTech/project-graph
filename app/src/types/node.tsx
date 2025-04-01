@@ -14,12 +14,18 @@ export namespace Serialized {
     location: Vector;
     details: string;
   };
-
+  /**
+   * 调整大小的模式
+   * auto：自动缩紧
+   * manual：手动调整宽度，高度自动撑开。
+   */
+  export type TextNodeSizeAdjust = "auto" | "manual";
   export type TextNode = Entity & {
     type: "core:text_node";
     size: Vector;
     text: string;
     color: Color;
+    sizeAdjust: TextNodeSizeAdjust;
   };
 
   export function isTextNode(obj: StageObject): obj is TextNode {

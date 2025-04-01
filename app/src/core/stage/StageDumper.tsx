@@ -30,6 +30,7 @@ export namespace StageDumper {
       details: textNode.details,
       color: textNode.color && textNode.color.toArray(),
       type: "core:text_node",
+      sizeAdjust: textNode.sizeAdjust,
     };
   }
 

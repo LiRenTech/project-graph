@@ -35,6 +35,13 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
   public static enableResizeCharCount = 20;
 
   /**
+   * 调整大小的模式
+   * auto：自动缩紧
+   * manual：手动调整宽度，高度自动撑开。
+   */
+  public sizeAdjust: Serialized.TextNodeSizeAdjust = "auto";
+
+  /**
    * 节点是否被选中
    */
   _isSelected: boolean = false;
@@ -88,6 +95,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
       location = [0, 0],
       size = [0, 0],
       color = [0, 0, 0, 0],
+      sizeAdjust = "auto",
     }: Partial<Serialized.TextNode> & { uuid: string },
     public unknown = false,
   ) {
@@ -97,10 +105,15 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
     this.details = details;
     this.collisionBox = new CollisionBox([new Rectangle(new Vector(...location), new Vector(...size))]);
     this.color = new Color(...color);
+    this.sizeAdjust = sizeAdjust;
     // if (this.text.length < TextNode.enableResizeCharCount) {
     //   this.adjustSizeByText();
     // }
-    this.adjustSizeByText();
+    if (this.sizeAdjust === "auto") {
+      this.adjustSizeByText();
+    } else if (this.sizeAdjust === "manual") {
+      this.resizeHandle(Vector.getZero());
+    }
   }
 
   /**
@@ -126,7 +139,9 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
     // if (this.text.length < TextNode.enableResizeCharCount) {
     //   this.adjustSizeByText();
     // }
-    this.adjustSizeByText();
+    if (this.sizeAdjust === "auto") {
+      this.adjustSizeByText();
+    }
   }
 
   resizeHandle(delta: Vector) {

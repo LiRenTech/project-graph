@@ -20,7 +20,7 @@ class ControllerEntityResizeClass extends ControllerClass {
     this.lastMoveLocation = pressWorldLocation.clone();
     for (const selectedEntity of selectedEntities) {
       if (selectedEntity instanceof TextNode) {
-        if (selectedEntity.text.length <= TextNode.enableResizeCharCount) {
+        if (selectedEntity.sizeAdjust === "auto") {
           continue;
         }
         const resizeRect = selectedEntity.getResizeHandleRect();
