@@ -386,6 +386,23 @@ export class SecretEngine {
         }
       },
     },
+    "t t t": {
+      name: "将选中的文本节点，切换大小调整模式",
+      explain:
+        "仅对文本节点生效，auto模式：输入文字不能自动换行，manual模式：宽度为框的宽度，宽度超出自动换行\n如果是auto模式，则转换成manual模式，manual模式则转换成auto模式",
+      func() {
+        const selectedTextNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
+        for (const node of selectedTextNodes) {
+          if (node.sizeAdjust === "auto") {
+            node.sizeAdjust = "manual";
+            node.resizeHandle(Vector.getZero());
+          } else if (node.sizeAdjust === "manual") {
+            node.sizeAdjust = "auto";
+            node.forceAdjustSizeByText();
+          }
+        }
+      },
+    },
 
     // ====================
     // 以上是可能很方便的给用户用的

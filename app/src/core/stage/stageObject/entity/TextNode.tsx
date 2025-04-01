@@ -126,6 +126,13 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
     );
   }
 
+  /**
+   * 强制触发自动调整大小
+   */
+  public forceAdjustSizeByText() {
+    this.adjustSizeByText();
+  }
+
   // private adjustSizeByTextWidthLimitWidth(width: number) {
   //   const currentSize = TextRenderer.measureMultiLineTextSize(this.text, Renderer.FONT_SIZE, width, 1.5);
   //   this.collisionBox.shapeList[0] = new Rectangle(
