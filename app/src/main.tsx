@@ -304,6 +304,17 @@ async function registerKeyBinds() {
     Camera.speed = Vector.getZero();
     addTextNodeByLocation(Camera.location, true);
   });
+  (
+    await KeyBinds.create("createTextNodeFromMouseLocation", "insert", {
+      control: false,
+      alt: false,
+      shift: true,
+    })
+  ).down(() => {
+    Camera.clearMoveCommander();
+    Camera.speed = Vector.getZero();
+    addTextNodeByLocation(Renderer.transformView2World(MouseLocation.vector()), true);
+  });
 
   (
     await KeyBinds.create("createTextNodeFromSelectedTop", "arrowup", {

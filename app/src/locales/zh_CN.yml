@@ -671,6 +671,11 @@ keyBinds:
     description: |
       按下后，在当前视野中心的位置创建一个文本节点
       等同于鼠标双击创建节点的功能
+  createTextNodeFromMouseLocation:
+    title: 创建文本节点
+    description: |
+      按下后，在鼠标悬浮位置创建一个文本节点
+      等同于鼠标单击创建节点的功能
   createTextNodeFromSelectedTop:
     title: 在当前选中的节点正上方创建文本节点
     description: |
@@ -815,3 +820,4 @@ keyBinds:
     description: 按下后，笔画变粗
   penStrokeWidthDecrease:
     description: 按下后，笔画变细
+  
