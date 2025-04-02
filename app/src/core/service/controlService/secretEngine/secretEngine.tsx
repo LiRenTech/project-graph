@@ -403,6 +403,40 @@ export class SecretEngine {
         }
       },
     },
+    "k e i": {
+      name: "将选中的文本节点，剋(kēi)成小块",
+      explain: "仅对文本节点生效，根据标点符号，空格、换行符等进行分割，将其分割成小块",
+      func() {
+        const selectedTextNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
+        for (const node of selectedTextNodes) {
+          const text = node.text;
+          const seps = [" ", "\n", "\t", ".", ",", "，", "。", "、", "；", "：", "？", "！"];
+
+          // 转义正则特殊字符
+          const escapedSeps = seps.map((sep) => sep.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+          // 创建正则表达式，支持多个分隔符同时分割
+          const regex = new RegExp(escapedSeps.join("|"), "g");
+          // 分割后过滤空字符串
+          const splitedTextList = text.split(regex).filter((item) => item !== "");
+          // 将分割后的字符串添加到舞台
+          const putLocation = node.collisionBox.getRectangle().location.clone();
+          for (const splitedText of splitedTextList) {
+            putLocation.y += 100;
+            const newTextNode = new TextNode({
+              uuid: v4(),
+              text: splitedText,
+              location: [putLocation.x, putLocation.y],
+              size: [1, 1],
+              color: node.color.clone().toArray(),
+              // sizeAdjust: node.sizeAdjust,
+            });
+            StageManager.addTextNode(newTextNode);
+          }
+        }
+        // 删除原来的文本节点
+        StageManager.deleteEntities(selectedTextNodes);
+      },
+    },
 
     // ====================
     // 以上是可能很方便的给用户用的
