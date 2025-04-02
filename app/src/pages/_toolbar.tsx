@@ -14,10 +14,10 @@ import {
   RefreshCcw,
   Repeat,
   SaveAll,
-  Slash,
   Square,
   Tag,
   Trash2,
+  Waypoints,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Box from "../components/Box";
@@ -48,10 +48,11 @@ interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
   handleFunction: () => void; // 定义 handleFunction 的类型
   description: string;
-  isHighlight?: boolean;
+  // isHighlight?: boolean;
+  color?: Color; // 定义 color 的类型
 }
 
-export function ToolbarItem({ icon, handleFunction, description, isHighlight = false }: ToolbarItemProps) {
+export function ToolbarItem({ icon, handleFunction, description, color = Color.Transparent }: ToolbarItemProps) {
   return (
     <div
       className="hover:bg-toolbar-icon-hover-bg text-toolbar-tooltip-text group relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-md active:scale-90"
@@ -61,7 +62,13 @@ export function ToolbarItem({ icon, handleFunction, description, isHighlight = f
       <span className="bg-toolbar-tooltip-bg border-toolbar-tooltip-border text-toolbar-tooltip-text pointer-events-none absolute bottom-8 z-10 w-auto origin-right scale-90 whitespace-nowrap rounded border p-1 text-xs opacity-0 group-hover:scale-100 group-hover:opacity-100">
         {description}
       </span>
-      {isHighlight && <div className="bg-panel-success-text absolute top-0 h-1 w-6 rounded-b-md" />}
+      {/* {isHighlight && <div className="bg-panel-success-text absolute top-0 h-1 w-6 rounded-b-md" />} */}
+      {color && color.a !== 0 && (
+        <div
+          className={"border-toolbar-border absolute bottom-1 left-1 h-2 w-1 rounded-full"}
+          style={{ backgroundColor: color.toString(), outline: "1px solid", outlineColor: "bg-toolbar-border" }}
+        ></div>
+      )}
     </div>
   );
 }
@@ -129,6 +136,8 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   const [isDrawing, setIsDrawing] = useState(false);
   const [isSelecting, setIsSelecting] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
+  const [penStrokeColor, setPenStrokeColor] = useState(Color.Transparent);
+  const [nodeFillColor, setNodeFillColor] = useState(Color.Transparent);
 
   const update = () => {
     setSsHaveSelectedNode(StageManager.selectedNodeCount > 0);
@@ -171,6 +180,12 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       selectConnectingMouse();
     }
 
+    Settings.watch("autoFillPenStrokeColor", (colorList) => {
+      setPenStrokeColor(new Color(...colorList));
+    });
+    Settings.watch("autoFillNodeColor", (colorList) => {
+      setNodeFillColor(new Color(...colorList));
+    });
     return () => {
       clearInterval(intervalId);
     };
@@ -297,28 +312,27 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
       <div className={toolBarGroupStyle}>
         <ToolbarItem
-          description="左键：框选和移动模式"
-          icon={<MousePointer />}
+          description="左键：框选/移动/创建节点 模式"
+          icon={<MousePointer className={cn(isSelecting ? "opacity-100" : "opacity-25")} />}
           handleFunction={() => {
             selectSelectingMouse();
           }}
-          isHighlight={isSelecting}
+          color={nodeFillColor}
         />
         <ToolbarItem
           description="左键：涂鸦模式"
-          icon={<Pencil className="rotate-90" />}
+          icon={<Pencil className={cn(isDrawing ? "opacity-100" : "opacity-25", "rotate-90")} />}
           handleFunction={() => {
             selectDrawingMouse();
           }}
-          isHighlight={isDrawing}
+          color={penStrokeColor}
         />
         <ToolbarItem
-          description="左键：连接与斩断"
-          icon={<Slash className="rotate-90" />}
+          description="左键：连接/斩断 模式"
+          icon={<Waypoints className={cn(isConnecting ? "opacity-100" : "opacity-25")} />}
           handleFunction={() => {
             selectConnectingMouse();
           }}
-          isHighlight={isConnecting}
         />
       </div>
 
