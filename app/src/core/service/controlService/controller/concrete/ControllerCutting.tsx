@@ -48,6 +48,7 @@ class CuttingControllerClass extends ControllerClass {
     if (!(event.button == 2 || event.button == 0)) {
       return;
     }
+
     // 左键按下的
     if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
       this.mouseDownEvent(event);
@@ -83,6 +84,10 @@ class CuttingControllerClass extends ControllerClass {
 
   public mousemove: (event: MouseEvent) => void = (event: MouseEvent) => {
     if (!this.isUsing) {
+      return;
+    }
+    if (Stage.drawingControlMachine.isAdjusting) {
+      this.isUsing = false;
       return;
     }
     // 正在切断线

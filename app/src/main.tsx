@@ -33,7 +33,7 @@ import { LastLaunch } from "./core/service/LastLaunch";
 import { Settings } from "./core/service/Settings";
 import { Tourials } from "./core/service/Tourials";
 import { Camera } from "./core/stage/Camera";
-import { Stage } from "./core/stage/Stage";
+import { LeftMouseModeEnum, Stage } from "./core/stage/Stage";
 import { StageLoader } from "./core/stage/StageLoader";
 import { StageEntityMoveManager } from "./core/stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageSectionPackManager } from "./core/stage/stageManager/concreteMethods/StageSectionPackManager";
@@ -660,6 +660,36 @@ async function registerKeyBinds() {
       Settings.set("windowBackgroundAlpha", Math.max(0, currentValue - 0.2));
     }
   });
+
+  (
+    await KeyBinds.create("penStrokeWidthIncrease", "=", {
+      control: false,
+      meta: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(async () => {
+    if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
+      const newWidth = Stage.drawingMachine.currentStrokeWidth + 4;
+      Stage.drawingMachine.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
+      Stage.effectMachine.addEffect(TextRiseEffect.default(`${Stage.drawingMachine.currentStrokeWidth}px`));
+    }
+  });
+  (
+    await KeyBinds.create("penStrokeWidthDecrease", "-", {
+      control: false,
+      meta: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(async () => {
+    if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
+      const newWidth = Stage.drawingMachine.currentStrokeWidth - 4;
+      Stage.drawingMachine.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
+      Stage.effectMachine.addEffect(TextRiseEffect.default(`${Stage.drawingMachine.currentStrokeWidth}px`));
+    }
+  });
+
   (
     await KeyBinds.create("copy", "c", {
       control: isMac ? false : true,

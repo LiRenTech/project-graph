@@ -566,13 +566,21 @@ export namespace Renderer {
         }
       }
       if (Stage.drawingControlMachine.isAdjusting) {
+        const circleCenter = transformWorld2View(Stage.drawingControlMachine.startAdjustWidthLocation);
         // 鼠标正在调整状态
         ShapeRenderer.renderCircle(
-          transformWorld2View(Stage.drawingControlMachine.startAdjustWidthLocation),
+          circleCenter,
           (Stage.drawingMachine.currentStrokeWidth / 2) * Camera.currentScale,
           currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
           Color.Transparent,
           0,
+        );
+        // 当前粗细显示
+        TextRenderer.renderTextFromCenter(
+          `2R: ${Stage.drawingMachine.currentStrokeWidth}px`,
+          circleCenter.add(new Vector(0, (-(Stage.drawingMachine.currentStrokeWidth / 2) - 40) * Camera.currentScale)),
+          24,
+          currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
         );
       } else {
         // 画跟随鼠标的笔头
