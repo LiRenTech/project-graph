@@ -26,12 +26,8 @@ export namespace EdgeCollisionBoxGetter {
   export function getCollisionBox(edge: LineEdge): CollisionBox {
     if (edge.source.uuid === edge.target.uuid) {
       // 是一个自环，碰撞箱是圆形
-      return new CollisionBox([
-        new Circle(
-          edge.source.collisionBox.getRectangle().location,
-          edge.source.collisionBox.getRectangle().size.y / 2,
-        ),
-      ]);
+      const sourceEntityRect = edge.source.collisionBox.getRectangle();
+      return new CollisionBox([new Circle(sourceEntityRect.location, sourceEntityRect.size.y / 2)]);
     } else {
       if (currentStyle === "bezier") {
         return getBezierCollisionBox(edge);

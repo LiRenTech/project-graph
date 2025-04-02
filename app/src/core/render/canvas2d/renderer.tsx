@@ -282,6 +282,7 @@ export namespace Renderer {
   // 是否超出了视野之外
   export function isOverView(viewRectangle: Rectangle, entity: StageObject): boolean {
     if (!Camera.limitCameraInCycleSpace) {
+      // 如果没有开循环空间，就要看看是否超出了视野
       if (isRenderingChildStage) {
         if (!entity.collisionBox.getRectangle().isAbsoluteIn(viewRectangle)) {
           return true;
@@ -293,6 +294,7 @@ export namespace Renderer {
       }
       return false;
     }
+    // 如果开了循环空间，就永远不算超出视野
     return false;
   }
 
@@ -672,7 +674,7 @@ export namespace Renderer {
   function renderEdges(viewRectangle: Rectangle) {
     renderedEdges = 0;
     for (const association of StageManager.getAssociations()) {
-      if (!Camera.limitCameraInCycleSpace && isOverView(viewRectangle, association)) {
+      if (isOverView(viewRectangle, association)) {
         continue;
       }
       if (association instanceof LineEdge) {
