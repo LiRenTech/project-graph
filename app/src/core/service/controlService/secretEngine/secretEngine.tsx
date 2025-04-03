@@ -17,12 +17,13 @@ import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
 import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 import { CublicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CublicCatmullRomSplineEdge";
-import { Color } from "../../../dataStruct/Color";
+import { averageColors, Color } from "../../../dataStruct/Color";
 import { Settings } from "../../Settings";
 import { StageEntityMoveManager } from "../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 
 interface SecretItem {
   name: string;
@@ -45,7 +46,7 @@ export class SecretEngine {
     window.addEventListener("keyup", (event) => {
       this.pressedKeys.enqueue(event.key.toLowerCase());
       const isTriggered = this.detectAndCall();
-      console.log(this.pressedKeys.arrayList);
+      // console.log(this.pressedKeys.arrayList);
       if (isTriggered) {
         // 清空队列
         this.pressedKeys.clear();
@@ -433,6 +434,46 @@ export class SecretEngine {
             StageManager.addTextNode(newTextNode);
           }
         }
+        // 删除原来的文本节点
+        StageManager.deleteEntities(selectedTextNodes);
+      },
+    },
+    "r u a": {
+      name: "将选中的多个文本节点，挼ruá (合并)成一个文本节点，颜色也会取平均值",
+      explain: "仅对文本节点生效，顺序按从上到下排列，节点的位置按节点矩形左上角顶点坐标为准",
+      func() {
+        let selectedTextNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
+        if (selectedTextNodes.length <= 1) {
+          setTimeout(() => {
+            Stage.effectMachine.addEffect(TextRiseEffect.default("rua的节点数量不能小于2"));
+          }, 500);
+          return;
+        }
+        // 将选中的节点按照从上到下的顺序排序，如果y值位置一致，则
+        selectedTextNodes = selectedTextNodes.sort(
+          (a, b) => a.collisionBox.getRectangle().location.y - b.collisionBox.getRectangle().location.y,
+        );
+        let mergeText = "";
+        let mergeDetails = "";
+        for (const textNode of selectedTextNodes) {
+          mergeText += textNode.text;
+          mergeDetails += textNode.details;
+        }
+
+        const center = Rectangle.getBoundingRectangle(
+          selectedTextNodes.map((node) => node.collisionBox.getRectangle()),
+        ).center;
+        const avgColor = averageColors(selectedTextNodes.map((node) => node.color));
+        const newTextNode = new TextNode({
+          uuid: v4(),
+          text: mergeText,
+          location: [center.x, center.y],
+          size: [1, 1],
+          color: avgColor.toArray(),
+          sizeAdjust: "manual",
+          details: mergeDetails,
+        });
+        StageManager.addTextNode(newTextNode);
         // 删除原来的文本节点
         StageManager.deleteEntities(selectedTextNodes);
       },
