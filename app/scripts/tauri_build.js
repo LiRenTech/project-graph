@@ -10,9 +10,15 @@ const args = ["tauri", "build", ...tauriBuildArgs];
 const pnpmBin = process.env.npm_execpath;
 
 // 使用 spawn 执行命令
-const child = spawn(pnpmBin.endsWith("js") ? `node ${pnpmBin}` : pnpmBin, args, {
-  stdio: "inherit", // 继承 stdio 以便实时输出
-});
+if (pnpmBin.endsWith("js")) {
+  const child = spawn("node", [pnpmBin, ...args], {
+    stdio: "inherit",
+  });
+} else {
+  const child = spawn(pnpmBin, args, {
+    stdio: "inherit",
+  });
+}
 
 // 处理退出
 child.on("exit", (code) => {
