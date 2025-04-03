@@ -458,7 +458,11 @@ export class SecretEngine {
         for (const textNode of selectedTextNodes) {
           mergeText += textNode.text;
           mergeDetails += textNode.details;
+          if (textNode.text.length > 5) {
+            mergeText += "\n";
+          }
         }
+        mergeText = mergeText.trim();
 
         const center = Rectangle.getBoundingRectangle(
           selectedTextNodes.map((node) => node.collisionBox.getRectangle()),
