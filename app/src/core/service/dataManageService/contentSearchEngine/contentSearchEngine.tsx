@@ -3,7 +3,12 @@ import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
+import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
+import { StageObject } from "../../../stage/stageObject/abstract/StageObject";
+import { Edge } from "../../../stage/stageObject/association/Edge";
+import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
+import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
 import { RectangleNoteEffect } from "../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 
@@ -11,7 +16,7 @@ export class ContentSearchEngine {
   /**
    * 搜索结果
    */
-  public searchResultNodes: TextNode[] = [];
+  public searchResultNodes: StageObject[] = [];
 
   /**
    * 是否忽略大小写
@@ -23,16 +28,36 @@ export class ContentSearchEngine {
    */
   public currentSearchResultIndex = 0;
 
+  private getStageObjectBeSearchText(stageObject: StageObject): string {
+    if (stageObject instanceof TextNode) {
+      return stageObject.text + "$$$" + stageObject.details;
+    } else if (stageObject instanceof Section) {
+      return stageObject.text + "$$$" + stageObject.details;
+    } else if (stageObject instanceof UrlNode) {
+      return stageObject.title + "$$$" + stageObject.details + "$$$" + stageObject.url;
+    }
+    // 任何实体上都可能会写details
+    if (stageObject instanceof Entity) {
+      return stageObject.details;
+    }
+    // 线上的字
+    if (stageObject instanceof Edge) {
+      return stageObject.text;
+    }
+    return "";
+  }
+
   public startSearch(searchString: string): boolean {
     // 开始搜索
     this.searchResultNodes = [];
-    for (const node of StageManager.getTextNodes()) {
+    for (const node of StageManager.getStageObject()) {
+      const text = this.getStageObjectBeSearchText(node);
       if (this.isCaseSensitive) {
-        if (node.text.includes(searchString)) {
+        if (text.includes(searchString)) {
           this.searchResultNodes.push(node);
         }
       } else {
-        if (node.text.toLowerCase().includes(searchString.toLowerCase())) {
+        if (text.toLowerCase().includes(searchString.toLowerCase())) {
           this.searchResultNodes.push(node);
         }
       }
@@ -43,10 +68,10 @@ export class ContentSearchEngine {
       const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
       // currentNode.isSelected = true;
       Stage.effectMachine.addEffect(
-        new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.rectangle, Color.Green),
+        new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.collisionBox.getRectangle(), Color.Green),
       );
       // 摄像机对准现在的节点
-      Camera.location = currentNode.rectangle.center.clone();
+      Camera.location = currentNode.collisionBox.getRectangle().center.clone();
       return true;
     }
     return false;
@@ -70,10 +95,10 @@ export class ContentSearchEngine {
     const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
     if (currentNode) {
       Stage.effectMachine.addEffect(
-        new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.rectangle, Color.Green),
+        new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.collisionBox.getRectangle(), Color.Green),
       );
       // 摄像机对准现在的节点
-      Camera.location = currentNode.rectangle.center.clone();
+      Camera.location = currentNode.collisionBox.getRectangle().center.clone();
     }
   }
 
@@ -94,10 +119,10 @@ export class ContentSearchEngine {
     const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
     if (currentNode) {
       Stage.effectMachine.addEffect(
-        new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.rectangle, Color.Green),
+        new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.collisionBox.getRectangle(), Color.Green),
       );
       // 摄像机对准现在的节点
-      Camera.location = currentNode.rectangle.center.clone();
+      Camera.location = currentNode.collisionBox.getRectangle().center.clone();
     }
   }
 }

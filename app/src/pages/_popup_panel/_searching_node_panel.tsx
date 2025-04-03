@@ -24,6 +24,7 @@ export default function SearchingNodePanel() {
   }, [Stage.contentSearchEngine.currentSearchResultIndex]);
 
   const [searchResultCount, setSearchResultCount] = React.useState(0);
+
   useEffect(() => {
     setSearchResultCount(Stage.contentSearchEngine.searchResultNodes.length);
   }, [Stage.contentSearchEngine.searchResultNodes]);
@@ -46,6 +47,33 @@ export default function SearchingNodePanel() {
     }
   };
 
+  useEffect(() => {
+    // 给输入Input框添加事件监听
+    const input = document.querySelector(".search-panel-input") as HTMLInputElement;
+    input.focus();
+
+    const keyDownEvent = (event: KeyboardEvent) => {
+      if (event.key == "Enter") {
+        // console.log(`s[${searchString}]`);
+        // setSearchString(input.value);
+        // search();
+        const searchBtn = document.querySelector(".search-btn") as HTMLInputElement;
+        const event = new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+        });
+        searchBtn?.dispatchEvent(event);
+      }
+    };
+
+    input.addEventListener("keydown", keyDownEvent);
+
+    return () => {
+      input.removeEventListener("keydown", keyDownEvent);
+    };
+  }, []);
+
   // endregion
 
   return (
@@ -53,12 +81,14 @@ export default function SearchingNodePanel() {
       <div className="flex items-center justify-between">
         <Input
           placeholder="请输入要搜索的内容"
+          className="search-panel-input"
           onChange={(value) => {
             setSearchString(value);
+            console.log("value change", value);
           }}
           value={searchString}
         />
-        <IconButton className="ml-2" onClick={search}>
+        <IconButton className="search-btn ml-2" onClick={search}>
           <Search />
         </IconButton>
         <IconButton
