@@ -1,4 +1,5 @@
 name: "Nightly Build"
+run-name: "Nightly Build ${{ github.run_number }}"
 
 on:
   schedule:
