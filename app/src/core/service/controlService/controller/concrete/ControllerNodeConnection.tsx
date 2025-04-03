@@ -44,7 +44,7 @@ class ControllerNodeConnectionClass extends ControllerClass {
    * 拖拽时左键生成质点
    * @param pressWorldLocation
    */
-  private onLeftMouseDown(pressWorldLocation: Vector) {
+  private createConnectPointWhenConnect(pressWorldLocation: Vector) {
     // 如果是左键，则检查是否在连接的过程中按下
     if (this.isConnecting()) {
       const clickedConnectableEntity: ConnectableEntity | null =
@@ -77,20 +77,20 @@ class ControllerNodeConnectionClass extends ControllerClass {
       return;
     }
     if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
+      // 把鼠标左键切换为连线模式的情况
       this.onMouseDown(event);
-    }
-    if (event.button === 2) {
+    } else if (event.button === 0 && Stage.leftMouseMode !== LeftMouseModeEnum.connectAndCut) {
+      // 右键拖拽连线的时候点击左键
+      const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+      this.createConnectPointWhenConnect(pressWorldLocation);
+    } else if (event.button === 2) {
+      // 正常右键按下
       this.onMouseDown(event);
     }
   };
 
   private onMouseDown(event: MouseEvent) {
     const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-
-    if (event.button === 0 && Stage.leftMouseMode !== LeftMouseModeEnum.connectAndCut) {
-      // 在非左键模式下点击左键
-      this.onLeftMouseDown(pressWorldLocation);
-    }
 
     this._lastRightMousePressLocation = pressWorldLocation.clone();
 
