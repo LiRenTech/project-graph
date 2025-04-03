@@ -4,18 +4,10 @@
   "description": "An open-source project that aims to provide a next-generation node diagram tool for visual thinking.",
   "type": "module",
   "scripts": {
-    "dev:app": "pnpm --filter @pg/app tauri dev",
-    "dev:android": "pnpm --filter @pg/app tauri android dev",
-    "dev:web": "pnpm --filter @pg/app dev",
-    "dev:docs": "pnpm --filter @pg/docs dev",
-    "dev:coserver": "pnpm --filter @pg/coserver dev",
-    "dev:storybook": "pnpm --filter @pg/ui storybook",
-    "build:app": "pnpm --filter @pg/app tauri build",
-    "build:android": "pnpm --filter @pg/app tauri android build",
-    "build:web": "pnpm --filter @pg/app build",
-    "build:docs": "pnpm --filter @pg/docs build",
-    "build:coserver": "pnpm --filter @pg/coserver build",
-    "build:storybook": "pnpm --filter @pg/ui build-storybook",
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "tauri:build": "turbo run tauri:build",
+    "tauri:build:android": "turbo run tauri:build:android",
     "prepare": "husky",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
@@ -24,6 +16,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@types/node": "^22.13.13",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
@@ -34,6 +27,7 @@
     "lint-staged": "^15.4.3",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
+    "turbo": "^2.4.5-canary.6",
     "typescript-eslint": "^8.22.0"
   },
   "pnpm": {
@@ -47,5 +41,6 @@
       "@swc/core",
       "esbuild"
     ]
-  }
+  },
+  "packageManager": "pnpm@10.6.5"
 }

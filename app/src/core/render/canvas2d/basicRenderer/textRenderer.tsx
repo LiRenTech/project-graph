@@ -1,4 +1,4 @@
-import { replaceTextWhenProtect } from "../../../../utils/font";
+import { FONT, replaceTextWhenProtect } from "../../../../utils/font";
 import { LruCache } from "../../../dataStruct/Cache";
 import { Color } from "../../../dataStruct/Color";
 import { Vector } from "../../../dataStruct/Vector";
@@ -28,9 +28,9 @@ export namespace TextRenderer {
     Canvas.ctx.textBaseline = "middle";
     Canvas.ctx.textAlign = "left";
     if (Renderer.textIntegerLocationAndSizeRender) {
-      Canvas.ctx.font = `${Math.round(fontSize)}px MiSans`;
+      Canvas.ctx.font = `${Math.round(fontSize)}px ${FONT}`;
     } else {
-      Canvas.ctx.font = `${fontSize}px MiSans`;
+      Canvas.ctx.font = `${fontSize}px ${FONT}`;
     }
     Canvas.ctx.fillStyle = color.toString();
     if (Renderer.textIntegerLocationAndSizeRender) {
@@ -58,9 +58,9 @@ export namespace TextRenderer {
     Canvas.ctx.textBaseline = "middle";
     Canvas.ctx.textAlign = "center";
     if (Renderer.textIntegerLocationAndSizeRender) {
-      Canvas.ctx.font = `${Math.round(size)}px MiSans`;
+      Canvas.ctx.font = `${Math.round(size)}px ${FONT}`;
     } else {
-      Canvas.ctx.font = `${size}px MiSans`;
+      Canvas.ctx.font = `${size}px ${FONT}`;
     }
     Canvas.ctx.fillStyle = color.toString();
     if (Renderer.textIntegerLocationAndSizeRender) {

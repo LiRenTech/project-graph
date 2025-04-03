@@ -5,9 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
+    "type-check": "tsc --noEmit",
     "preview": "vite preview",
     "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:dev:android": "tauri android dev",
+    "tauri:build": "node ./scripts/tauri_build.js",
+    "tauri:build:android": "tauri android build",
     "test": "vitest"
   },
   "dependencies": {

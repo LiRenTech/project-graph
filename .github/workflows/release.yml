@@ -1,228 +1,55 @@
 name: "Release"
+run-name: "v${{ inputs.version }}"
 
 on:
-  workflow_dispatch: # 手动触发
+  workflow_dispatch:
     inputs:
-      # 必填版本号（x.x.x）
       version:
-        description: "版本号（x.x.x）"
+        description: "App version (x.y.z)"
         required: true
 
 jobs:
-  create-release:
+  generate-changelog:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    outputs:
+      changelog: ${{ steps.generate.outputs.changelog }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - run: |
+      - id: generate
+        run: |
           changelog=$(./.github/scripts/generate-changelog.sh)
-          gh release create "v${{ github.event.inputs.version }}" --title "Release v${{ github.event.inputs.version }}" --notes "${changelog}"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "${changelog}" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-  publish-tauri:
-    outputs:
-      hash: ${{ steps.sha256sum.outputs.hash }}
-    permissions:
-      contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: "macos-latest" # for Arm based macs (M1 and above).
-            args: "--target aarch64-apple-darwin"
-          - platform: "macos-latest" # for Intel based macs.
-            args: "--target x86_64-apple-darwin"
-          - platform: "ubuntu-22.04"
-            args: ""
-          - platform: "windows-latest"
-            args: ""
-
-    runs-on: ${{ matrix.platform }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libudev-dev
-
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 9
-          run_install: false
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: install Rust stable
-        uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
-        with:
-          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
-
-      - name: Rust cache
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: "./app/src-tauri -> target"
-
-      - name: edit version (linux only)
-        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
-        run: |
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"${{ github.event.inputs.version }}\"/" app/src-tauri/tauri.conf.json
-
-      - name: edit version (macos only)
-        if: matrix.platform == 'macos-latest' # This must match the platform value defined above.
-        run: |
-          sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"${{ github.event.inputs.version }}\"/" app/src-tauri/tauri.conf.json
-
-      - name: edit version (windows only)
-        if: matrix.platform == 'windows-latest' # This must match the platform value defined above.
-        run: |
-          $jsonContent = Get-Content -Path "app/src-tauri/tauri.conf.json" -Raw
-          $jsonObject = $jsonContent | ConvertFrom-Json
-          $jsonObject.version = "${{ github.event.inputs.version }}"
-          $jsonObject | ConvertTo-Json -Depth 10 | Set-Content -Path "app/src-tauri/tauri.conf.json"
-
-      - uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
-          LR_API_BASE_URL: ${{ secrets.ENV_API_BASE_URL }}
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
-        with:
-          projectPath: "./app"
-          tagName: "v${{ github.event.inputs.version }}"
-          args: ${{ matrix.args }}
-          updaterJsonPreferNsis: true
-          includeUpdaterJson: true
-          retryAttempts: 3
-
-      - id: sha256sum
-        name: calculate sha256sum (linux only)
-        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
-        run: |
-          cd app/src-tauri/target/release/bundle/deb
-          sha256sum "Project Graph_${{ github.event.inputs.version }}_amd64.deb" | awk '{print $1}' > sha256sum.txt
-          echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
-
-  publish-tauri-android:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: "zulu"
-          java-version: "17"
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install NDK
-        run: sdkmanager "ndk;27.0.11902837"
-
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 9
-          run_install: false
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: install Rust stable
-        uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
-        with:
-          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
-          targets: "armv7-linux-androideabi,i686-linux-android,x86_64-linux-android,aarch64-linux-android"
-
-      - name: Rust cache
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: "./app/src-tauri -> target"
-
-      - name: edit version
-        run: |
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"${{ github.event.inputs.version }}\"/" app/src-tauri/tauri.conf.json
-
-      - name: setup sign
-        run: |
-          cd app/src-tauri/gen/android
-          # create keystore.properties
-          cat > keystore.properties <<EOF
-          password=${{ secrets.ANDROID_RELEASE_PASSWORD }}
-          keyAlias=upload
-          storeFile=upload.jks
-          EOF
-          # create upload.jks
-          echo "${{ secrets.ANDROID_RELEASE_KEYSTORE }}" | base64 --decode > app/upload.jks
-
-      - name: build
-        run: pnpm build:android
-        env:
-          NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.11902837
-          LR_GITHUB_CLIENT_SECRET: ${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
-          LR_API_BASE_URL: ${{ secrets.ENV_API_BASE_URL }}
-
-      - name: rename apk file
-        run: |
-          cd app/src-tauri/gen/android/app/build/outputs/apk/universal/release
-          mv app-universal-release.apk Project.Graph_${{ github.event.inputs.version }}_universal-signed.apk
-
-      - name: upload
-        run: gh release upload v${{ github.event.inputs.version }} app/src-tauri/gen/android/app/build/outputs/apk/universal/release/Project.Graph_${{ github.event.inputs.version }}_universal-signed.apk --clobber
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  bump-aur-version:
-    needs: publish-tauri
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup AUR private key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts
-      - name: Clone AUR repository
-        run: git clone ssh://aur@aur.archlinux.org/project-graph-bin.git
-      - name: Update version in PKGBUILD and .SRCINFO
-        run: |
-          cd project-graph-bin
-          sed -i "s/pkgver=.*$/pkgver=${{ github.event.inputs.version }}/" PKGBUILD
-          sed -i "s/pkgver = .*$/pkgver = ${{ github.event.inputs.version }}/" .SRCINFO
-          sed -i "s/Project\.Graph_.*_amd64\.deb/Project.Graph_${{ github.event.inputs.version }}_amd64.deb/" PKGBUILD .SRCINFO
-          sed -i "s/^sha256sums_x86_64=('.*')$/sha256sums_x86_64=('${{ needs.publish-tauri.outputs.hash }}')/" PKGBUILD
-          sed -i "s/sha256sums_x86_64 = .*$/sha256sums_x86_64 = ${{ needs.publish-tauri.outputs.hash }}/" .SRCINFO
-      - name: Commit and push changes
-        run: |
-          cd project-graph-bin
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add PKGBUILD .SRCINFO
-          git commit -m "Bump version to ${{ github.event.inputs.version }}"
-          git push origin master
+  build:
+    needs: generate-changelog
+    uses: LiRenTech/turbo-tauri/.github/workflows/turbo-tauri.yml@master
+    with:
+      android_key_alias: "upload"
+      android_key_path: "upload.jks"
+      app_root: "app"
+      app_version: ${{ inputs.version }}
+      app_version_android: ${{ inputs.version }}
+      aur_key_algorithm: "ed25519"
+      aur_package_name: "project-graph-bin"
+      delete_release: false
+      prerelease: false
+      release_name: "v${{ github.run_number }}"
+      release_notes: ${{ needs.generate-changelog.outputs.changelog }}
+      release_tag: "v${{ inputs.version }}"
+      task_build: "tauri:build"
+      task_build_android: "tauri:build:android"
+      turbo_team: "zty012"
+    secrets:
+      ANDROID_KEYSTORE: ${{ secrets.ANDROID_RELEASE_KEYSTORE }}
+      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_PASSWORD }}
+      AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+      BUILD_ENV: |
+        LR_API_BASE_URL=${{ secrets.ENV_API_BASE_URL }}
+        LR_GITHUB_CLIENT_SECRET=${{ secrets.ENV_GITHUB_CLIENT_SECRET }}
+      TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+      TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}

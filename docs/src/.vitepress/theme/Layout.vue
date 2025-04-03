@@ -39,11 +39,22 @@ provide("toggle-appearance", async ({ clientX: x, clientY: y }: MouseEvent) => {
   );
 });
 
-const locales = Object.keys(site.value.locales);
-const path = window.location.pathname;
-const browserLanguage = navigator.language.toLowerCase();
-
 onMounted(() => {
+  const locales = Object.keys(site.value.locales);
+  const path = window.location.pathname;
+  const browserLanguage = navigator.language.toLowerCase();
+
+  function addLocalePrefixToPath(locale: string) {
+    const newPath = `/${locale}${path}`;
+    const el = document.createElement("a");
+    el.href = newPath;
+    el.classList.add("visually-hidden");
+    document.body.appendChild(el);
+    el.click();
+    el.blur();
+    el.remove();
+  }
+
   let localeDefinedInPath = false;
   for (const locale of locales) {
     if (path.startsWith(`/${locale}`)) {
@@ -61,17 +72,6 @@ onMounted(() => {
     }
   }
 });
-
-function addLocalePrefixToPath(locale: string) {
-  const newPath = `/${locale}${path}`;
-  const el = document.createElement("a");
-  el.href = newPath;
-  el.classList.add("visually-hidden");
-  document.body.appendChild(el);
-  el.click();
-  el.blur();
-  el.remove();
-}
 </script>
 
 <template>

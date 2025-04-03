@@ -1,9 +1,9 @@
-import { Color } from "../../dataStruct/Color";
-import { Vector } from "../../dataStruct/Vector";
 import { v4 } from "uuid";
-import { Renderer } from "../canvas2d/renderer";
+import { FONT, getTextSize } from "../../../utils/font";
+import { Color } from "../../dataStruct/Color";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
-import { getTextSize } from "../../../utils/font";
+import { Vector } from "../../dataStruct/Vector";
+import { Renderer } from "../canvas2d/renderer";
 
 /**
  * 专门存放生成svg的东西
@@ -33,7 +33,7 @@ export namespace SvgUtils {
         fill={color.toString()}
         fontSize={fontSize}
         textAnchor="middle"
-        fontFamily="MiSans"
+        fontFamily={FONT}
       >
         {text}
       </text>
@@ -50,7 +50,7 @@ export namespace SvgUtils {
         fill={color.toString()}
         fontSize={fontSize}
         textAnchor="start"
-        fontFamily="MiSans"
+        fontFamily={FONT}
       >
         {text}
       </text>
