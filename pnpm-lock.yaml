@@ -188,15 +188,6 @@ importers:
 
   docs:
     dependencies:
-      "@orama/orama":
-        specifier: ^3.1.4
-        version: 3.1.4
-      "@orama/stopwords":
-        specifier: ^3.1.4
-        version: 3.1.4
-      "@orama/tokenizers":
-        specifier: ^3.1.4
-        version: 3.1.4
       "@radix-ui/react-primitive":
         specifier: ^2.0.2
         version: 2.0.2(@types/react-dom@19.1.1(@types/react@19.1.0))(@types/react@19.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -273,7 +264,7 @@ importers:
         version: 8.6.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))
       "@storybook/experimental-addon-test":
         specifier: ^8.6.4
-        version: 8.6.4(@vitest/browser@3.0.8)(@vitest/runner@3.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))(vitest@3.0.8)
+        version: 8.6.4(@vitest/browser@3.0.8(@testing-library/dom@10.4.0)(@types/node@22.14.0)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.1(@types/node@22.14.0)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8))(@vitest/runner@3.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))(vitest@3.0.8(@edge-runtime/vm@5.0.0)(@types/debug@4.1.12)(@types/node@22.14.0)(@vitest/browser@3.0.8)(jiti@2.4.2)(jsdom@26.0.0)(less@4.2.2)(lightningcss@1.29.2)(msw@2.7.3(@types/node@22.14.0)(typescript@5.7.3))(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       "@storybook/manager-api":
         specifier: ^8.6.4
         version: 8.6.4(storybook@8.6.4(prettier@3.4.2))
@@ -303,7 +294,7 @@ importers:
         version: 3.0.8(@testing-library/dom@10.4.0)(@types/node@22.14.0)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.1(@types/node@22.14.0)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8)
       "@vitest/coverage-v8":
         specifier: ^3.0.8
-        version: 3.0.8(@vitest/browser@3.0.8)(vitest@3.0.8)
+        version: 3.0.8(@vitest/browser@3.0.8(@testing-library/dom@10.4.0)(@types/node@22.14.0)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.1(@types/node@22.14.0)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8))(vitest@3.0.8(@edge-runtime/vm@5.0.0)(@types/debug@4.1.12)(@types/node@22.14.0)(@vitest/browser@3.0.8)(jiti@2.4.2)(jsdom@26.0.0)(less@4.2.2)(lightningcss@1.29.2)(msw@2.7.3(@types/node@22.14.0)(typescript@5.7.3))(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -1520,16 +1511,6 @@ packages:
     resolution:
       { integrity: sha512-7tTuIdkzgRscJ7sGHVsoK9GtXSpwbfrj3WYnuSu/SepXHhshYiQaOeXc/aeLh4MfgIre6tEs/caIop8wrhMi3g== }
     engines: { node: ">= 16.0.0" }
-
-  "@orama/stopwords@3.1.4":
-    resolution:
-      { integrity: sha512-73PGFUJYUZwWkSgkcz6BMc/uvxnY3EXup9wcsByAg74sg5hl7zACiSNJy5d5JPqPHcGMTRJPWYTqoaWSad1zlQ== }
-    engines: { node: ">= 16.0.0" }
-
-  "@orama/tokenizers@3.1.4":
-    resolution:
-      { integrity: sha512-OKyw/uKDZqlS4Vwwyp2l+d1ISGtBt3qMORbTp3jyfeGjXllTLJrH/erzlVYKWdNp5bPrWGVrQbtgWgE5nLV1Ng== }
-    engines: { node: ">= 18.0.0" }
 
   "@pkgjs/parseargs@0.11.0":
     resolution:
@@ -8010,12 +7991,6 @@ snapshots:
 
   "@orama/orama@3.1.4": {}
 
-  "@orama/stopwords@3.1.4": {}
-
-  "@orama/tokenizers@3.1.4":
-    dependencies:
-      "@orama/orama": 3.1.4
-
   "@pkgjs/parseargs@0.11.0":
     optional: true
 
@@ -8628,7 +8603,7 @@ snapshots:
     dependencies:
       type-fest: 2.19.0
 
-  "@storybook/experimental-addon-test@8.6.4(@vitest/browser@3.0.8)(@vitest/runner@3.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))(vitest@3.0.8)":
+  "@storybook/experimental-addon-test@8.6.4(@vitest/browser@3.0.8(@testing-library/dom@10.4.0)(@types/node@22.14.0)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.1(@types/node@22.14.0)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8))(@vitest/runner@3.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))(vitest@3.0.8(@edge-runtime/vm@5.0.0)(@types/debug@4.1.12)(@types/node@22.14.0)(@vitest/browser@3.0.8)(jiti@2.4.2)(jsdom@26.0.0)(less@4.2.2)(lightningcss@1.29.2)(msw@2.7.3(@types/node@22.14.0)(typescript@5.7.3))(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))":
     dependencies:
       "@storybook/global": 5.0.0
       "@storybook/icons": 1.4.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -9369,7 +9344,7 @@ snapshots:
       - utf-8-validate
       - vite
 
-  "@vitest/coverage-v8@3.0.8(@vitest/browser@3.0.8)(vitest@3.0.8)":
+  "@vitest/coverage-v8@3.0.8(@vitest/browser@3.0.8(@testing-library/dom@10.4.0)(@types/node@22.14.0)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.1(@types/node@22.14.0)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8))(vitest@3.0.8(@edge-runtime/vm@5.0.0)(@types/debug@4.1.12)(@types/node@22.14.0)(@vitest/browser@3.0.8)(jiti@2.4.2)(jsdom@26.0.0)(less@4.2.2)(lightningcss@1.29.2)(msw@2.7.3(@types/node@22.14.0)(typescript@5.7.3))(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))":
     dependencies:
       "@ampproject/remapping": 2.3.0
       "@bcoe/v8-coverage": 1.0.2
