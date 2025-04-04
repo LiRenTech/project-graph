@@ -31,11 +31,11 @@
       "outputs": ["src-tauri/target/*-android/release/**"]
     },
     "dev": {
-      "with": ["@pg/app#tauri:dev"],
       "cache": false,
       "persistent": true
     },
     "@pg/app#tauri:dev": {
+      "with": ["dev"],
       "outputs": ["app/src-tauri/target/debug/**"],
       "persistent": true
     },

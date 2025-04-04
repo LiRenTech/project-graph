@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build",
+    "tauri:dev": "turbo run tauri:dev",
     "tauri:build": "turbo run tauri:build",
     "tauri:build:android": "turbo run tauri:build:android",
     "prepare": "husky",
@@ -39,7 +39,9 @@
     },
     "onlyBuiltDependencies": [
       "@swc/core",
-      "esbuild"
+      "esbuild",
+      "msw",
+      "sharp"
     ]
   },
   "packageManager": "pnpm@10.6.5"

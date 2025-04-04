@@ -1,0 +1,43 @@
+---
+title: 快捷键
+icon: Keyboard
+---
+
+快捷键可以自定义
+
+快捷键的配置存在于数据文件夹中的 `keybinds.json` 文件中，如果改乱了，可以直接删除该文件，然后重启软件即可。
+
+快捷键甚至可以监听鼠标事件
+
+## 不同系统的修饰键统一命名
+
+| Windows | macOS | Linux | 配置文件中的名称 |
+| --- | --- | --- | --- |
+| Ctrl | Control | Ctrl | `Control` |
+| Shift | Shift | Shift | `Shift` |
+| Alt | Option | Alt | `Alt` |
+| Win | Command | Super | `Meta` |
+
+## 快捷键格式
+
+快捷键的组合按键只能是以下格式（可选四个修饰键 + 一个非修饰键）：
+
+windows系统
+
+```
+(Ctrl | Shift | Alt | Win | 无) + 其他某个任意按键
+```
+
+macos系统
+
+```
+(Control | Shift | Option | Command | 无) + 其他某个任意按键
+```
+
+Linux系统
+
+```
+(Ctrl | Shift | Alt | Super | 无) + 其他某个任意按键
+```
+
+快捷键的具体分布图可详见菜单栏中的 `新手引导` 文件。
