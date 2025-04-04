@@ -6,7 +6,7 @@ const withMDX = createMDX();
 const config = {
   reactStrictMode: true,
   images: {
-    remotePatterns: [],
+    unoptimized: true,
   },
   output: "export",
 };
