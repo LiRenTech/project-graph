@@ -8,6 +8,7 @@ const config = {
   images: {
     remotePatterns: [],
   },
+  output: "export",
 };
 
 export default withMDX(config);
