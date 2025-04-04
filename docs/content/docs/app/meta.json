@@ -1,0 +1,7 @@
+{
+  "title": "Project Graph",
+  "description": "快速绘制节点图的桌面工具",
+  "root": true,
+  "icon": "AppWindowMac",
+  "pages": ["---指南---", "index", "---特性---", "entity", "feature"]
+}

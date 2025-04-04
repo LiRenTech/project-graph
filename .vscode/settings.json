@@ -8,5 +8,6 @@
   "rust-analyzer.linkedProjects": ["app/src-tauri/Cargo.toml"],
   "files.associations": {
     "*.pg-theme": "yaml"
-  }
+  },
+  "Codegeex.RepoIndex": true
 }

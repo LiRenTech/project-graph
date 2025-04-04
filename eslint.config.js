@@ -9,7 +9,7 @@ import tseslint from "typescript-eslint";
 export default [
   {
     files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
-    settings: { react: { version: "detect" } },
+    settings: { react: { version: "19" } },
     languageOptions: { globals: globals.browser },
   },
   // https://github.com/eslint/eslint/discussions/18304
