@@ -74,12 +74,25 @@ export function ToolbarItem({ icon, handleFunction, description, color = Color.T
   );
 }
 
-const toolBarGroupStyle = "bg-toolbar-bg border-toolbar-border flex items-center rounded-md border";
-
 interface PenItemProps {
   color: Color;
 }
 
+interface ToolbarGroupProps {
+  children: React.ReactNode;
+  groupTitle: string;
+}
+
+const ToolbarGroup: React.FC<ToolbarGroupProps> = ({ children, groupTitle }) => {
+  return (
+    <div className="bg-toolbar-bg border-toolbar-border relative flex items-center rounded-md border">
+      {children}
+      <span className="text-toolbar-border absolute -top-3.5 left-0 text-center" style={{ fontSize: "9px" }}>
+        {groupTitle}
+      </span>
+    </div>
+  );
+};
 /**
  * 笔触点儿
  * @returns
@@ -211,7 +224,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   return (
     <Box className={cn("fixed bottom-2 left-1/2 flex translate-x-[-50%] gap-1.5 border-none", className)}>
       {/* 常驻工具 */}
-      <div className={toolBarGroupStyle}>
+      <ToolbarGroup groupTitle="常驻工具">
         <ToolbarItem
           description="通过文本生成节点"
           icon={<ClipboardPaste />}
@@ -222,10 +235,10 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           icon={<Palette />}
           handleFunction={() => Panel.show({ title: "颜色自动填充" }, <ColorAutoPanel />)}
         />
-      </div>
+      </ToolbarGroup>
       {/* 特殊情况的工具 */}
       {isClipboardClearShow && (
-        <div className={toolBarGroupStyle}>
+        <ToolbarGroup groupTitle="特殊情况的工具">
           <ToolbarItem
             description="清空粘贴板内容"
             icon={<ClipboardX />}
@@ -233,12 +246,12 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               CopyEngine.clearVirtualCopyBoardData();
             }}
           />
-        </div>
+        </ToolbarGroup>
       )}
 
       {/* 舞台对象 */}
       {isHaveSelectedStageObject && (
-        <div className={toolBarGroupStyle}>
+        <ToolbarGroup groupTitle="对象">
           <ToolbarItem
             description="设置舞台对象的颜色，注意要先选中再点颜色 （F6）"
             icon={<PaintBucket />}
@@ -258,12 +271,12 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               StageManager.addTagBySelected();
             }}
           />
-        </div>
+        </ToolbarGroup>
       )}
 
       {/* 连线对象 */}
       {isHaveSelectedEdge && (
-        <div className={toolBarGroupStyle}>
+        <ToolbarGroup groupTitle="关系">
           <ToolbarItem
             description="反转选中连线方向"
             icon={<Repeat />}
@@ -273,12 +286,12 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               StageHistoryManager.recordStep();
             }}
           />
-        </div>
+        </ToolbarGroup>
       )}
 
       {/* 实体 */}
       {isHaveSelectedEntity && (
-        <div className={toolBarGroupStyle}>
+        <ToolbarGroup groupTitle="实体">
           <ToolbarItem
             description="节点对齐相关"
             icon={<LayoutDashboard />}
@@ -298,23 +311,25 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               StageManager.packEntityToSectionBySelected();
             }}
           />
-        </div>
+        </ToolbarGroup>
       )}
 
       {/* 图片节点 */}
       {isHaveSelectedImageNode && (
-        <ToolbarItem
-          description="刷新选中内容(图片加载失败了可以选中图片然后点这个按钮)"
-          icon={<RefreshCcw />}
-          handleFunction={() => {
-            StageManager.refreshSelected();
-          }}
-        />
+        <ToolbarGroup groupTitle="图片">
+          <ToolbarItem
+            description="刷新选中内容(图片加载失败了可以选中图片然后点这个按钮)"
+            icon={<RefreshCcw />}
+            handleFunction={() => {
+              StageManager.refreshSelected();
+            }}
+          />
+        </ToolbarGroup>
       )}
 
       {/* 文本节点 */}
       {isHaveSelectedTextNode && (
-        <div className={toolBarGroupStyle}>
+        <ToolbarGroup groupTitle="文本节点">
           <ToolbarItem
             description="AI扩展节点，（已欠费，有待更新）"
             icon={<BrainCircuit />}
@@ -331,12 +346,12 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               openBrowserOrFile();
             }}
           />
-        </div>
+        </ToolbarGroup>
       )}
 
       {/* 框 */}
       {isHaveSelectedSection && (
-        <div className={toolBarGroupStyle}>
+        <ToolbarGroup groupTitle="框">
           <ToolbarItem
             description="切换Section的折叠状态（快捷键可自定义）（还在开发中，暂时不推荐使用）"
             icon={<Package />}
@@ -344,11 +359,11 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               StageManager.sectionSwitchCollapse();
             }}
           />
-        </div>
+        </ToolbarGroup>
       )}
 
       {/* 鼠标模式 */}
-      <div className={toolBarGroupStyle}>
+      <ToolbarGroup groupTitle="鼠标模式">
         <ToolbarItem
           description="左键：框选/移动/创建节点 模式"
           icon={<MousePointer className={cn(isSelecting ? "opacity-100" : "opacity-25")} />}
@@ -372,11 +387,11 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             selectConnectingMouse();
           }}
         />
-      </div>
+      </ToolbarGroup>
 
       {/* 涂鸦笔触颜色 */}
       {isDrawing && (
-        <div className={toolBarGroupStyle}>
+        <ToolbarGroup groupTitle="涂鸦笔触颜色">
           <PenItem color={Color.Transparent} />
           <PenItem color={Color.Green} />
           <PenItem color={Color.Red} />
@@ -384,7 +399,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           <PenItem color={Color.Yellow} />
           <PenItem color={Color.Cyan} />
           <PenItem color={Color.Magenta} />
-        </div>
+        </ToolbarGroup>
       )}
     </Box>
   );
