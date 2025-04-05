@@ -9,6 +9,7 @@ import { Settings } from "../../../Settings";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
+import { Camera } from "../../../../stage/Camera";
 /**
  * 涂鸦功能
  */
@@ -78,8 +79,8 @@ class ControllerDrawingClass extends ControllerClass {
       return;
     }
     const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    // 检测：如果移动距离不超过10，则不记录
-    if (worldLocation.distance(this.lastMoveLocation) < 5) {
+    // 检测：如果移动距离不超过一个距离，则不记录
+    if (worldLocation.distance(this.lastMoveLocation) < 5 / Camera.currentScale) {
       return;
     }
     this.recordLocation.push(worldLocation.clone());
@@ -122,7 +123,7 @@ class ControllerDrawingClass extends ControllerClass {
       // 普通笔迹
       const strokeStringList: string[] = [];
       for (const location of this.recordLocation) {
-        strokeStringList.push(`${Math.round(location.x)},${Math.round(location.y)},${this.currentStrokeWidth}`);
+        strokeStringList.push(`${location.x.toFixed(2)},${location.y.toFixed(2)},${this.currentStrokeWidth}`);
       }
       const contentString = strokeStringList.join("~");
 
