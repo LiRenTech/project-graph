@@ -6,3 +6,10 @@ app/src/locales/*.yml
 # 这个基本不会被手动修改
 router.ts
 vite-env.d.ts
+
+# prettier不支持mdx3.0
+*.mdx
+
+dist
+.next
+out
