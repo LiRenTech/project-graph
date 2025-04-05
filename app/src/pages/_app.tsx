@@ -25,6 +25,7 @@ import LogicNodePanel from "./_fixed_panel/_logic_node_panel";
 import RecentFilesPanel from "./_fixed_panel/_recent_files_panel";
 import StartFilePanel from "./_fixed_panel/_start_file_panel";
 import TagPanel from "./_fixed_panel/_tag_panel";
+// import { LogicalPosition } from "@tauri-apps/api/window";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -401,13 +402,17 @@ export default function App() {
                   // const size = await getCurrentWindow().outerSize();
                   const tauriWindow = getCurrentWindow();
                   if (isWindowCollapsing) {
-                    // 纵向展开
+                    // 展开
                     tauriWindow.setSize(new LogicalSize(1100, 800));
                     tauriWindow.setAlwaysOnTop(false);
                   } else {
                     // 收起
-                    tauriWindow.setSize(new LogicalSize(300, 300));
-                    tauriWindow.setAlwaysOnTop(true);
+                    const width = await Settings.get("windowCollapsingWidth");
+                    const height = await Settings.get("windowCollapsingHeight");
+
+                    await tauriWindow.setSize(new LogicalSize(width, height));
+                    // await tauriWindow.setPosition(new LogicalPosition(50, 50));
+                    await tauriWindow.setAlwaysOnTop(true);
                   }
                   setIsWindowCollapsing(!isWindowCollapsing);
                 }}

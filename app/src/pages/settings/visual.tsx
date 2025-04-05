@@ -13,6 +13,9 @@ import {
   ListCollapse,
   MessageCircleQuestion,
   Move3d,
+  MoveHorizontal,
+  MoveVertical,
+  PictureInPicture,
   Presentation,
   Ratio,
   ReceiptText,
@@ -80,6 +83,11 @@ export default function Visual() {
         <SettingField icon={<Bug />} settingKey="showDebug" type="switch" />
         <SettingField icon={<VenetianMask />} settingKey="protectingPrivacy" type="switch" />
       </FieldGroup>
+      <FieldGroup title="Mini Window 迷你窗口" icon={<PictureInPicture />}>
+        <SettingField icon={<MoveHorizontal />} settingKey="windowCollapsingWidth" type="slider" min={50} max={2000} />
+        <SettingField icon={<MoveVertical />} settingKey="windowCollapsingHeight" type="slider" min={25} max={2000} />
+      </FieldGroup>
+
       <FieldGroup
         title="Testing Functions 实验性功能"
         description="如果您不了解下面的设置，请不要修改它们。否则您会感觉出现灵异事件"

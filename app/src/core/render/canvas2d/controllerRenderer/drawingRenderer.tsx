@@ -112,5 +112,9 @@ export namespace DrawingControllerRenderer {
       StageStyleManager.currentStyle.effects.successShadow,
       0.5,
     );
+    // 量角器功能
+    // 计算角度，拿到两个世界坐标
+    // const startLocation = Stage.drawingMachine.currentStroke[0].startLocation;
+    // const endLocation = Renderer.transformView2World(MouseLocation.vector());
   }
 }

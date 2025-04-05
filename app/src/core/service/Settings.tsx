@@ -35,6 +35,10 @@ export namespace Settings {
     entityDetailsLinesLimit: number;
     entityDetailsWidthLimit: number;
     nodeDetailsPanel: "small" | "vditor";
+
+    windowCollapsingWidth: number;
+    windowCollapsingHeight: number;
+
     limitCameraInCycleSpace: boolean;
     cameraCycleSpaceSizeX: number;
     cameraCycleSpaceSizeY: number;
@@ -132,6 +136,10 @@ export namespace Settings {
     entityDetailsLinesLimit: 4,
     entityDetailsWidthLimit: 200,
     nodeDetailsPanel: "vditor",
+
+    windowCollapsingWidth: 300,
+    windowCollapsingHeight: 300,
+
     limitCameraInCycleSpace: false,
     cameraCycleSpaceSizeX: 1000,
     cameraCycleSpaceSizeY: 1000,

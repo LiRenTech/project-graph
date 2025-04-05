@@ -176,6 +176,14 @@ settings:
     title: 实体详细信息宽度限制
     description: |
       限制实体详细信息的最大宽度，超过限制的部分将被换行
+  windowCollapsingWidth:
+    title: 迷你窗口的宽度
+    description: |
+      点击切换至迷你窗口时，窗口的宽度，单位为像素
+  windowCollapsingHeight:
+    title: 迷你窗口的高度
+    description: |
+      点击切换至迷你窗口时，窗口的高度，单位为像素
   limitCameraInCycleSpace:
     title: 开启循环空间限制摄像机移动
     description: |
