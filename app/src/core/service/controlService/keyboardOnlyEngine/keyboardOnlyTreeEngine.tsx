@@ -43,7 +43,8 @@ export namespace KeyboardOnlyTreeEngine {
       details: "",
       uuid: v4(),
       location: [createLocation.x, createLocation.y],
-      size: [100, 100],
+      size: [rootNode instanceof TextNode ? rootNode.collisionBox.getRectangle().width : 100, 100],
+      sizeAdjust: rootNode instanceof TextNode ? rootNode.sizeAdjust : "auto",
     });
     StageManager.addTextNode(newNode);
     // 连接节点
@@ -93,7 +94,8 @@ export namespace KeyboardOnlyTreeEngine {
       details: "",
       uuid: v4(),
       location: [newLocation.x, newLocation.y],
-      size: [100, 100],
+      size: [parent instanceof TextNode ? parent.collisionBox.getRectangle().width : 100, 100],
+      sizeAdjust: parent instanceof TextNode ? parent.sizeAdjust : "auto",
     });
     StageManager.addTextNode(newNode);
     // 连接节点
