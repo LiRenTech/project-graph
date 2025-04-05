@@ -3,6 +3,7 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
+import { StageObjectSelectCounter } from "../../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { StageObject } from "../../../../stage/stageObject/abstract/StageObject";
 import { Edge } from "../../../../stage/stageObject/association/Edge";
@@ -101,6 +102,9 @@ class ControllerRectangleSelectClass extends ControllerClass {
       this._isUsing = false;
     }
     ControllerRectangleSelect.lastMoveLocation = pressWorldLocation.clone();
+
+    // 更新选中内容的数量
+    StageObjectSelectCounter.update();
   };
 
   public mousemove: (event: MouseEvent) => void = (event) => {
@@ -203,6 +207,8 @@ class ControllerRectangleSelectClass extends ControllerClass {
     // Controller.isMovingEntity = false;
     Controller.isMovingEdge = false;
     ControllerRectangleSelect.lastMoveLocation = worldLocation.clone();
+    // 更新选中内容的数量
+    StageObjectSelectCounter.update();
   };
 
   /**
@@ -256,6 +262,8 @@ class ControllerRectangleSelectClass extends ControllerClass {
         Controller.lastSelectedEdgeUUID.add(edge.uuid);
       }
     }
+    // 更新选中数量
+    StageObjectSelectCounter.update();
   };
 }
 

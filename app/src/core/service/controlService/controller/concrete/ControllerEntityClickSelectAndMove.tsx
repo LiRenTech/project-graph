@@ -4,6 +4,7 @@ import { Renderer } from "../../../../render/canvas2d/renderer";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { StageAutoAlignManager } from "../../../../stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
+import { StageObjectSelectCounter } from "../../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
@@ -79,6 +80,8 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     } else {
       // 未点击到节点
     }
+    // 更新选中状态
+    StageObjectSelectCounter.update();
   };
 
   public mousemove: (event: MouseEvent) => void = (event: MouseEvent) => {

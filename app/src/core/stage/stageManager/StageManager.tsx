@@ -34,6 +34,7 @@ import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManag
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
+import { StageObjectSelectCounter } from "./concreteMethods/StageObjectSelectCounter";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -372,9 +373,6 @@ export namespace StageManager {
     stageContent.entities.addValue(entity, entity.uuid);
   }
 
-  // 用于UI层监测
-  export let selectedNodeCount = 0;
-  export let selectedEdgeCount = 0;
   /**
    * 更新节点的引用，将unknown的节点替换为真实的节点，保证对象在内存中的唯一性
    * 节点什么情况下会是unknown的？
@@ -651,12 +649,7 @@ export namespace StageManager {
     StageDeleteManager.deleteEntities(deleteNodes);
     StageHistoryManager.recordStep();
     // 更新选中节点计数
-    selectedNodeCount = 0;
-    for (const node of stageContent.entities.valuesToArray()) {
-      if (node.isSelected) {
-        selectedNodeCount++;
-      }
-    }
+    StageObjectSelectCounter.update();
   }
 
   /**
@@ -685,12 +678,7 @@ export namespace StageManager {
     const res = StageDeleteManager.deleteEdge(deleteEdge);
     StageHistoryManager.recordStep();
     // 更新选中边计数
-    selectedEdgeCount = 0;
-    for (const edge of stageContent.associations.valuesToArray()) {
-      if (edge.isSelected) {
-        selectedEdgeCount++;
-      }
-    }
+    StageObjectSelectCounter.update();
     return res;
   }
 

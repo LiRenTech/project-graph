@@ -66,17 +66,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
   }
 
   public set isSelected(value: boolean) {
-    const oldValue = this._isSelected;
     this._isSelected = value;
-    if (oldValue !== value) {
-      if (oldValue === true) {
-        // 减少了一个选中节点
-        StageManager.selectedNodeCount--;
-      } else {
-        // 增加了一个选中节点
-        StageManager.selectedNodeCount++;
-      }
-    }
   }
 
   /**

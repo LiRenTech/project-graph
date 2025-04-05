@@ -1,7 +1,6 @@
 import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { StageManager } from "../../stageManager/StageManager";
 import { ConnectableAssociation } from "../abstract/Association";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
@@ -46,17 +45,7 @@ export abstract class Edge extends ConnectableAssociation {
     return this._isSelected;
   }
   public set isSelected(value: boolean) {
-    const oldValue = this._isSelected;
     this._isSelected = value;
-    if (oldValue !== value) {
-      if (oldValue === true) {
-        // 减少了一个选中节点
-        StageManager.selectedEdgeCount--;
-      } else {
-        // 增加了一个选中节点
-        StageManager.selectedEdgeCount++;
-      }
-    }
   }
 
   /**

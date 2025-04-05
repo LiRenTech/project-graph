@@ -15,6 +15,7 @@ import { Canvas } from "../../stage/Canvas";
 import { LeftMouseModeEnum, Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../stage/stageManager/StageManager";
+import { StageObjectSelectCounter } from "../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageObject } from "../../stage/stageObject/abstract/StageObject";
 import { CublicCatmullRomSplineEdge } from "../../stage/stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
@@ -835,8 +836,7 @@ export namespace Renderer {
       `node count: ${renderedNodes} , ${StageManager.getTextNodes().length}`,
       `edge count: ${renderedEdges} , ${StageManager.getLineEdges().length}`,
       `section count: ${StageManager.getSections().length}`,
-      `selected nodeCount: ${StageManager.selectedNodeCount}`,
-      `selected edgeCount: ${StageManager.selectedEdgeCount}`,
+      `selected count: ${StageObjectSelectCounter.toDebugString()}`,
       `pressingKeys: ${Controller.pressingKeysString()}`,
       `鼠标按下情况: ${Controller.isMouseDown}`,
       `框选框: ${Stage.selectMachine.selectingRectangle}`,
