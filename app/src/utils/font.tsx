@@ -7,7 +7,7 @@ const _context = _canvas.getContext("2d");
 const _cache = new MaxSizeCache<string, number>(10000);
 
 /** canvas中使用的字体 */
-export const FONT = "-apple-system, BlinkMacSystemFont, system-ui, sans-serif";
+export const FONT = "-apple-system, BlinkMacSystemFont, MiSans, system-ui, sans-serif";
 
 // eslint-disable-next-line prefer-const
 let useCache = true;
