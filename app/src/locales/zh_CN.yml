@@ -195,6 +195,10 @@ settings:
   renderEffect:
     title: 渲染特效
     description: 是否渲染特效，如果卡顿可以关闭
+  compatibilityMode:
+    title: 兼容模式
+    description: |
+      开启后，软件会使用另一种渲染方式
   historySize:
     title: 历史记录大小
     description: |

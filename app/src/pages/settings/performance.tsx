@@ -1,9 +1,10 @@
-import { Hourglass, ScanEye, ScanText, Type, Undo, Ungroup } from "lucide-react";
+import { Hourglass, ScanEye, ScanText, Turtle, Type, Undo, Ungroup } from "lucide-react";
 import { SettingField } from "./_field";
 
 export default function Performance() {
   return (
     <>
+      <SettingField icon={<Turtle />} settingKey="compatibilityMode" type="switch" />
       <SettingField icon={<Undo />} settingKey="historySize" type="slider" min={10} max={1000} step={10} />
       <SettingField icon={<Ungroup />} settingKey="isEnableEntityCollision" type="switch" />
       <SettingField icon={<ScanEye />} settingKey="scaleExponent" type="slider" min={0} max={1} step={0.1} />
