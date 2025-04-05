@@ -106,7 +106,7 @@ appmenu:
 toolbar:
   bg: "rgb(231, 240, 254)"
   icon: "rgb(23, 114, 200)"
-  border: "rgb(153, 153, 153)"
+  border: "rgb(80, 80, 80)"
   icon-hover-bg: "rgb(0 0 0 / 0.1)"
   tooltip:
     bg: "rgb(0, 0, 0)"

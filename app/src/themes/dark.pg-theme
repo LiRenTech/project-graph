@@ -108,7 +108,7 @@ toolbar:
   bg: "rgb(49, 51, 53)"
   icon: "#fff"
   icon-hover-bg: "rgb(255 255 255 / 0.2)"
-  border: "rgb(60, 63, 65)"
+  border: "rgb(110, 110, 110)"
   tooltip:
     bg: "oklch(0.269 0 0)"
     text: "#fff"

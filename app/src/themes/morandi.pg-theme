@@ -107,7 +107,7 @@ toolbar:
   bg: "oklch(0.85 0.02 240)"
   icon: "oklch(0.95 0.02 270)"
   icon-hover-bg: "oklch(0.85 0.02 210)"
-  border: "oklch(0.8 0.02 240)"
+  border: "oklch(0.25 0.03 240)"
   tooltip:
     bg: "oklch(0.85 0.02 240)"
     text: "oklch(0.25 0.03 240)"
