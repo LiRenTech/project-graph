@@ -21,10 +21,11 @@ export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
 
   const [cursorName, setCursorName] = React.useState(CursorNameEnum.Default);
-  const [bgAlpha, setBgAlpha] = React.useState(0.9);
-  const [uiShow, setUIShow] = React.useState(true);
+  const [bgAlpha] = Settings.use("windowBackgroundAlpha");
+  const [uiShow] = Settings.use("showTipsOnUI");
   const [nodeDetailsPanel] = Settings.use("nodeDetailsPanel");
-  const [isProtectPrivacy, setIsProtectPrivacy] = React.useState(false);
+  const [isProtectPrivacy] = Settings.use("protectingPrivacy");
+  const [compatibilityMode] = Settings.use("compatibilityMode");
 
   const [isWindowCollapsing] = useAtom(isWindowCollapsingAtom);
   const [isClassroomMode] = useAtom(isClassroomModeAtom);
@@ -70,21 +71,7 @@ export default function Home() {
     window.addEventListener("focus", handleFocus);
     window.addEventListener("blur", handleBlur);
 
-    Settings.watch("protectingPrivacy", (value) => {
-      setIsProtectPrivacy(value);
-    });
-    Settings.watch("windowBackgroundAlpha", (value) => {
-      setBgAlpha(value);
-    });
-    Settings.watch("showTipsOnUI", (value) => {
-      setUIShow(value);
-    });
-
-    // 开启定时器
-    let lastTime = performance.now();
-    // let i = 0;
-    const loop = () => {
-      frameId = requestAnimationFrame(loop);
+    const tick = () => {
       if (!focus) {
         return;
       }
@@ -107,11 +94,20 @@ export default function Home() {
       // i++;
     };
 
-    let frameId = requestAnimationFrame(loop);
-
-    // Settings.watch("nodeDetailsPanel", (value) => {
-    //   setNodeDetailsPanel(value);
-    // });
+    // 开启定时器
+    let lastTime = performance.now();
+    let frameId = -1;
+    if (compatibilityMode) {
+      setInterval(() => {
+        tick();
+      }, 1000 / 60);
+    } else {
+      const loop = () => {
+        frameId = requestAnimationFrame(loop);
+        tick();
+      };
+      frameId = requestAnimationFrame(loop);
+    }
 
     // 清理事件监听器
     return () => {
@@ -119,7 +115,9 @@ export default function Home() {
       window.removeEventListener("focus", handleFocus);
       window.removeEventListener("blur", handleBlur);
       Controller.destroy();
-      cancelAnimationFrame(frameId);
+      if (!compatibilityMode) {
+        cancelAnimationFrame(frameId);
+      }
       // 实际上不应该清理，因为跳转到设置界面再回来就没了
       // StageManager.destroy();
     };

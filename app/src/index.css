@@ -100,7 +100,7 @@
   }
   * {
     @apply ease-out-expo box-border cursor-default select-none transition duration-500 [-webkit-user-drag:none] [color-scheme:dark];
-    font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, system-ui, "MiSans", "Noto Sans CJK SC", sans-serif;
     font-antialiasing: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

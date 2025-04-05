@@ -40,6 +40,7 @@ export namespace Settings {
     cameraCycleSpaceSizeY: number;
     cameraResetViewPaddingRate: number;
     // 性能相关
+    compatibilityMode: boolean;
     historySize: number; // 暂无
     effectsPerferences: Record<string, boolean>;
     isEnableEntityCollision: boolean;
@@ -136,6 +137,7 @@ export namespace Settings {
     cameraCycleSpaceSizeY: 1000,
     cameraResetViewPaddingRate: 1.5,
     // 性能相关
+    compatibilityMode: false,
     historySize: 20,
     effectsPerferences: {},
     isEnableEntityCollision: false,

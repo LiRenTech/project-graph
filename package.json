@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "turbo run dev",
     "tauri:dev": "turbo run tauri:dev",
+    "build": "turbo run build",
     "tauri:build": "turbo run tauri:build",
     "tauri:build:android": "turbo run tauri:build:android",
     "prepare": "husky",

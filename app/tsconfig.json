@@ -21,7 +21,8 @@
     "noFallthroughCasesInSwitch": true,
 
     // 其他
-    "experimentalDecorators": true // 开启装饰器
+    "experimentalDecorators": true, // 开启装饰器
+    "preserveSymlinks": true
   },
   "include": ["src", "tests"],
   "references": [{ "path": "./tsconfig.node.json" }]
