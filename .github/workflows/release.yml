@@ -42,7 +42,7 @@ jobs:
       aur_package_name: "project-graph-bin"
       delete_release: false
       prerelease: false
-      release_name: "v${{ github.run_number }}"
+      release_name: "v${{ inputs.version }}"
       release_notes: ${{ needs.generate-changelog.outputs.changelog }}
       release_tag: "v${{ inputs.version }}"
       task_build: "tauri:build"
