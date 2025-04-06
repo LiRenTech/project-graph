@@ -21,7 +21,10 @@ export default function Home() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
 
   const [cursorName, setCursorName] = React.useState(CursorNameEnum.Default);
-  const [bgAlpha] = Settings.use("windowBackgroundAlpha");
+
+  // 背景透明度，实测发现不能用 Settings.use，会导致无法根据快捷键实时更新，必须要切换页面才能更新背景透明度
+  const [bgAlpha, setBgAlpha] = React.useState(0.9);
+
   const [uiShow] = Settings.use("showTipsOnUI");
   const [nodeDetailsPanel] = Settings.use("nodeDetailsPanel");
   const [isProtectPrivacy] = Settings.use("protectingPrivacy");
@@ -31,6 +34,9 @@ export default function Home() {
   const [isClassroomMode] = useAtom(isClassroomModeAtom);
 
   useEffect(() => {
+    Settings.watch("windowBackgroundAlpha", (value) => {
+      setBgAlpha(value);
+    });
     const handleResize = () => {
       if (canvasElement) {
         Renderer.resizeWindow(window.innerWidth, window.innerHeight);
