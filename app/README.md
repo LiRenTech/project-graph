@@ -19,6 +19,10 @@ Next-Generation Node Diagram Tool for Visual Thinking
 
 </div>
 
+[![image](https://beisudianxueuser.oss-cn-beijing.aliyuncs.com/storage/user_avatar/ciallo/2025/04/06/1818c0770e94a4257af5eb7d5530f5fd/Screenshot%202025-04-06%20at%2016-23-03%20NodeSupport%20Promotion.png)](https://yxvm.com/)
+
+[NodeSupport](https://github.com/NodeSeekDev/NodeSupport) supported this project
+
 # 🌍 Help us translate!
 
 [![Weblate Badge]][Weblate]
