@@ -10,6 +10,7 @@ import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { Camera } from "../../../../stage/Camera";
+import { DrawingControllerRenderer } from "../../../../render/canvas2d/controllerRenderer/drawingRenderer";
 /**
  * 涂鸦功能
  */
@@ -146,6 +147,17 @@ class ControllerDrawingClass extends ControllerClass {
     Controller.setCursorNameHook(CursorNameEnum.Crosshair);
     this._isUsing = false;
     this.isDrawingLine = false;
+  };
+
+  public mousewheel: (event: WheelEvent) => void = (event: WheelEvent) => {
+    if (Controller.pressingKeySet.has("shift")) {
+      if (event.deltaY > 0) {
+        DrawingControllerRenderer.rotateUpAngle();
+      } else {
+        DrawingControllerRenderer.rotateDownAngle();
+      }
+      console.log("旋转了量角器");
+    }
   };
 
   public getCurrentStrokeColor() {

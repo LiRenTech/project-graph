@@ -9,7 +9,7 @@ import { LimitLengthQueue } from "../../../../dataStruct/LimitLengthQueue";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Camera } from "../../../../stage/Camera";
-import { Stage } from "../../../../stage/Stage";
+import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
@@ -194,6 +194,10 @@ export class ControllerCameraClass extends ControllerClass {
    */
   public mousewheel = (event: WheelEvent) => {
     if (Controller.isCameraLocked) {
+      return;
+    }
+    // 涂鸦模式下的量角器，禁止滚动
+    if (Stage.leftMouseMode === LeftMouseModeEnum.draw && Controller.pressingKeySet.has("shift")) {
       return;
     }
     // console.log(event);

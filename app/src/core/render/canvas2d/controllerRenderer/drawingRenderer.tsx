@@ -92,29 +92,67 @@ export namespace DrawingControllerRenderer {
    */
   function renderAxisMouse() {
     // 画一个跟随鼠标的十字准星
-    const crossSize = 2000;
+    // const crossSize = 2000;
+
     const crossCenter = MouseLocation.vector();
-    const crossLine1Start = crossCenter.add(new Vector(-crossSize, 0));
-    const crossLine1End = crossCenter.add(new Vector(crossSize, 0));
-    const crossLine2Start = crossCenter.add(new Vector(0, -crossSize));
-    const crossLine2End = crossCenter.add(new Vector(0, crossSize));
-    CurveRenderer.renderSolidLine(crossLine1Start, crossLine1End, StageStyleManager.currentStyle.Background, 2);
-    CurveRenderer.renderSolidLine(crossLine2Start, crossLine2End, StageStyleManager.currentStyle.Background, 2);
-    CurveRenderer.renderSolidLine(
-      crossLine1Start,
-      crossLine1End,
-      StageStyleManager.currentStyle.effects.successShadow,
-      0.5,
-    );
-    CurveRenderer.renderSolidLine(
-      crossLine2Start,
-      crossLine2End,
-      StageStyleManager.currentStyle.effects.successShadow,
-      0.5,
-    );
+
     // 量角器功能
     // 计算角度，拿到两个世界坐标
     // const startLocation = Stage.drawingMachine.currentStroke[0].startLocation;
     // const endLocation = Renderer.transformView2World(MouseLocation.vector());
+
+    renderAngleMouse(crossCenter);
+  }
+
+  let diffAngle = 0;
+
+  export function rotateUpAngle() {
+    diffAngle += 5;
+    console.log("rotateUpAngle", diffAngle);
+  }
+
+  export function rotateDownAngle() {
+    diffAngle -= 5;
+    console.log("rotateUpAngle", diffAngle);
+  }
+
+  /**
+   * 画跟随鼠标的角度量角器
+   */
+  function renderAngleMouse(mouseLocation: Vector) {
+    const R1 = 50;
+    const R2 = 60;
+    const R3 = 70;
+    for (let i = 0 + diffAngle; i < 360 + diffAngle; i += 5) {
+      let startRadius = R1;
+      let remoteRadius = R2;
+      if ((i - diffAngle) % 15 === 0) {
+        remoteRadius = R3;
+      }
+      if ((i - diffAngle) % 30 === 0) {
+        startRadius = 10;
+        remoteRadius = 200;
+      }
+      if ((i - diffAngle) % 90 === 0) {
+        startRadius = 10;
+        remoteRadius = 2000;
+      }
+
+      const angle = (i * Math.PI) / 180;
+      const lineStart = mouseLocation.add(new Vector(Math.cos(angle) * startRadius, Math.sin(angle) * startRadius));
+      const lineEnd = mouseLocation.add(new Vector(Math.cos(angle) * remoteRadius, Math.sin(angle) * remoteRadius));
+      renderLine(lineStart, lineEnd);
+    }
+  }
+
+  /**
+   * 画一条线，专用于在透明状态的时候能清晰的看到线条
+   * 因此需要叠两层
+   * @param lineStart
+   * @param lineEnd
+   */
+  function renderLine(lineStart: Vector, lineEnd: Vector) {
+    CurveRenderer.renderSolidLine(lineStart, lineEnd, StageStyleManager.currentStyle.Background, 2);
+    CurveRenderer.renderSolidLine(lineStart, lineEnd, StageStyleManager.currentStyle.effects.successShadow, 0.5);
   }
 }
