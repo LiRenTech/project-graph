@@ -832,4 +832,3 @@ keyBinds:
     description: 按下后，笔画变粗
   penStrokeWidthDecrease:
     description: 按下后，笔画变细
-  
