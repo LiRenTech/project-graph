@@ -562,7 +562,19 @@ export namespace StageManager {
     return null;
   }
 
+  /**
+   * 优先级：
+   * 涂鸦 > 其他
+   * @param location
+   * @returns
+   */
   export function findEntityByLocation(location: Vector): Entity | null {
+    for (const penStroke of getPenStrokes()) {
+      if (penStroke.isHiddenBySectionCollapse) continue;
+      if (penStroke.collisionBox.isContainsPoint(location)) {
+        return penStroke;
+      }
+    }
     for (const entity of getEntities()) {
       if (entity.isHiddenBySectionCollapse) {
         continue;
