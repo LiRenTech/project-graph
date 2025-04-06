@@ -1,1 +1,1 @@
-Please refer to [Contributing](https://project-graph.top/contributing)
+Please refer to [Contributing](https://project-graph.top/docs/contribute)
