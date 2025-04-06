@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       changelog: ${{ steps.generate.outputs.changelog }}
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     steps:
       - uses: actions/checkout@v2
         with:

@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       changelog: ${{ steps.generate.outputs.changelog }}
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -20,12 +22,15 @@ jobs:
       - id: generate
         run: |
           changelog=$(./.github/scripts/generate-changelog.sh)
+          echo $changelog
           echo "changelog<<EOF" >> $GITHUB_OUTPUT
           echo "${changelog}" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
   build:
     needs: generate-changelog
+    permissions:
+      contents: write
     uses: LiRenTech/turbo-tauri/.github/workflows/turbo-tauri.yml@master
     with:
       android_key_alias: "upload"
