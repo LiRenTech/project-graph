@@ -115,10 +115,10 @@ settings:
       If you are already familiar with the software, it is recommended to disable this option to reduce screen clutter.
       For more detailed tips, it is still recommended to check the "New User Guide" in the menu bar or the official documentation.
   isClassroomMode:
-    title: Presentation Mode
+    title: Focus Mode
     description: |
-      For teaching, training, or focus mode.
-      When enabled, the buttons at the top of the window will become transparent, and they will revert when the mouse hovers over them. You can customize the shortcut keys to enter and exit presentation mode.
+      For teaching, training.
+      When enabled, the buttons at the top of the window will become transparent, and they will revert when the mouse hovers over them. You can customize the shortcut keys to enter and exit focus mode.
   lineStyle:
     title: Line Style
     options:
