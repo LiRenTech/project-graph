@@ -12,7 +12,7 @@ about:
     downloading: Downloading
     checkingUpdate: Checking for updates…
     checkUpdateFail: Failed to retrieve the latest version information, please check
-      your network connection.
+      your network connection
   links:
     documentation: Documentation
     github: GitHub
@@ -24,15 +24,15 @@ about:
   - This is a tool based on the Tauri framework for quickly drawing node diagrams,
     which can be used for project topology diagrams and quick brainstorming drafts
   - Xmind can only be used to draw tree-structured diagrams. FigJam and draw.io can
-    be used, but the web pages load a bit slowly.
-  - That's why this software was created.
+    be used, but the web pages load a bit slowly
+  - That's why this software was created
   contact:
   - Contact Us
   - We are committed to designing the fastest and most convenient drawing methodology
     for "graph theory" and also exploring innovations in visual thinking and topological
     to-do lists.
   - "If you want to get quick feedback, provide suggestions, or have any ideas or
-    questions, please join our QQ Group: 1018716404."
+    questions, please join our QQ Group: 1018716404"
   techEnvironment: Technical Support and Ecosystem
   developers:
     title: Developer List
@@ -128,7 +128,7 @@ settings:
   isRenderCenterPointer:
     title: Show Center Crosshair
     description: |
-      When enabled, a crosshair will be displayed at the center of the canvas to indicate the position for creating nodes using shortcuts.
+      When enabled, a crosshair will be displayed at the center of the screen to indicate the position for creating nodes using shortcuts.
   showGrid:
     title: Show Grid
   showBackgroundHorizontalLines:
@@ -145,19 +145,21 @@ settings:
     title: Show Background Cartesian Coordinates
     description: |
       When enabled, the x-axis, y-axis, and scale numbers will be displayed.
-      This can be used to observe the absolute coordinates of some nodes and intuitively understand the current zoom level.
+      This can be used to observe the absolute coordinates of some nodes 
+      and intuitively understand the current zoom level.
   windowBackgroundAlpha:
     title: Window Background Transparency
   showDebug:
     title: Show Debug Information
     description: |
       Typically for developers.
-      When enabled, debug information will be displayed in the top-left corner of the canvas.
+      When enabled, debug information will be displayed in the top-left corner of the screen.
       If you encounter a bug and need to take a screenshot for feedback, it is recommended to enable this option.
   enableTagTextNodesBigDisplay:
     title: Enlarge Tag Text Nodes Display
     description: |
-      When enabled, tag text nodes will be enlarged when the canvas is zoomed out to a global view to make it easier to recognize the layout of the entire file.
+      When enabled, tag text nodes will be enlarged when the canvas is zoomed out to a global view 
+      to make it easier to recognize the layout of the entire file.
   alwaysShowDetails:
     title: Always Show Node Details
     description: |
@@ -194,7 +196,8 @@ settings:
     description: |
       When enabled, the camera can only move within a rectangular area.
       This prevents the camera from moving too far and getting lost.
-      The rectangular area forms a cycle space, similar to the map in the game "Snake," where moving to the top will bring you to the bottom, and moving to the left will bring you to the right.
+      The rectangular area forms a cycle space, similar to the map in the game "Snake," 
+      where moving to the top will bring you to the bottom, and moving to the left will bring you to the right.
       Note: This feature is still in the experimental stage.
   cameraCycleSpaceSizeX:
     title: Cycle Space Width
@@ -206,7 +209,7 @@ settings:
       The height of the cycle space, measured in pixels.
   renderEffect:
     title: Render Effects
-    description: Whether to render effects. If experiencing lag, this can be disabled.
+    description: Whether to render effects. If experiencing lag, this can be disabled
   historySize:
     title: History Size
     description: |
@@ -219,13 +222,14 @@ settings:
       However, this may cause text jittering. It is recommended to use this with a zoom speed of 1.
       If your computer is very laggy, especially when zooming and panning, you can enable this option.
   isPauseRenderWhenManipulateOvertime:
-    title: Pause Rendering When Idle for a Certain Time
+    title: Pause rendering if the stage has not been operated for a certain period
+      of time
     description: |
-      When enabled, rendering will pause after a certain number of seconds without canvas manipulation to save CPU/GPU resources.
+      When enabled, rendering will pause after a certain number of seconds without stage manipulation to save CPU/GPU resources.
   renderOverTimeWhenNoManipulateTime:
-    title: Time to Stop Rendering When Idle (Seconds)
+    title: Time to Stop Rendering Stage When Idle (Seconds)
     description: |
-      Rendering will stop after a certain number of seconds without canvas manipulation to save CPU/GPU resources.
+      Rendering will stop after a certain number of seconds without stage manipulation to save CPU/GPU resources.
       This will only take effect if the "Pause Rendering When Idle" option is enabled.
   ignoreTextNodeTextRenderLessThanCameraScale:
     title: Ignore Text Node Text Rendering When Camera Scale is Less Than a Certain
@@ -278,7 +282,8 @@ settings:
   autoBackupInterval:
     title: Auto-Backup Interval (Seconds)
     description: |
-      Too frequent auto-backups may generate a large number of backup files, which can occupy disk space.
+      Too frequent auto-backups may generate a large number of backup files, 
+      which can occupy disk space.
   autoBackupDraftPath:
     title: Auto-Backup Path for Drafts
     description: |
@@ -319,7 +324,7 @@ settings:
     title: Reverse Camera Movement with Keyboard
     description: |
       When enabled, the movement direction of the W S A D keys will be reversed.
-      The original movement logic is to move the camera floating on the screen, but if it is considered moving the canvas, it is reversed.
+      The original movement logic is to move the camera floating on the screen, but if it is considered moving the stage, it is reversed.
       Hence, this option is provided.
   cameraResetViewPaddingRate:
     title: Padding Rate When Resetting View Based on Selected Nodes
@@ -374,7 +379,8 @@ settings:
       altEnter: Alt + Enter
       shiftEnter: Shift + Enter
     description: |
-      Do not set this to the same key as the one used to exit text node editing mode, as this will cause conflicts and prevent line breaks.
+      Do not set this to the same key as the one used to exit text node editing mode, 
+      as this will cause conflicts and prevent line breaks.
   textNodeStartEditMode:
     title: Enter Text Node Editing Mode
     options:
@@ -489,6 +495,15 @@ settings:
     title: Sound File for Switching Button Off
     description: |
       The path to the sound file played when a switch button is turned off
+  windowCollapsingWidth:
+    title: Width of Mini Window
+    description: "When switches to Mini Window, The width of window in pixel\n"
+  windowCollapsingHeight:
+    title: The Height of Mini Window
+    description: "When switches to Mini Window, the height of the window in pixel\n"
+  compatibilityMode:
+    description: "When enabled, another render method will be used.\n"
+    title: Compatibility Mode
 plugins:
   welcome:
     title: Welcome to the Plugin System
@@ -502,7 +517,7 @@ plugins:
 
 app:
   unsaved: "(Unsaved)"
-  comingSoon: "Coming Soon..."
+  comingSoon: "Coming Soon...…"
 appMenu:
   file:
     title: File
@@ -516,8 +531,8 @@ appMenu:
   location:
     title: Location
     items:
-      openDataFolder: Open Data Folder
-      openProjectFolder: Open Project Folder
+      openDataFolder: Open the Software Data Folder
+      openProjectFolder: Open the folder where the current file is located
   export:
     title: Export
     items:
@@ -562,13 +577,13 @@ startFilePanel:
     showFileTime: Show File Time
 
 keys:
-  none: No Key Binding. Click to Bind.
+  none: No Key Binding. Click to Bind
   mouse0: Mouse Left Button
   mouse1: Mouse Middle Button
   mouse2: Mouse Right Button
   mouse3: Mouse Side Button 1
   mouse4: Mouse Side Button 2
-  " ": Space Bar
+  " ": Space
   arrowup: Up Arrow Key
   arrowdown: Down Arrow Key
   arrowleft: Left Arrow Key
@@ -590,10 +605,10 @@ keyBinds:
       Warning: This action can cause loss of unsaved progress!
   undo:
     title: Undo
-    description: Undo the last action.
+    description: Undo the last action
   redo:
     title: Redo
-    description: Cancel the last undo action.
+    description: Cancel the last undo action
   resetView:
     title: Reset View
     description: |
@@ -601,11 +616,11 @@ keyBinds:
       If content is selected, reset the viewport based on the selected content.
   resetCameraScale:
     title: Reset Zoom
-    description: Reset the viewport zoom to the standard size.
+    description: Reset the viewport zoom to the standard size
   folderSection:
     title: Fold/Unfold Section Box
     description: Pressing this will toggle the fold/unfold state of the selected Section
-      box.
+      box
   reverseEdges:
     title: Reverse Connection Direction
     description: |
@@ -651,8 +666,8 @@ keyBinds:
     title: Toggle Debug Information Display
     description: |
       When pressed, toggle the display of debug information.
-      Debug information is displayed in the top-left corner of the canvas and is typically for developers.
-      When enabled, debug information will be shown in the top-left corner of the canvas.
+      Debug information is displayed in the top-left corner of the screen and is typically for developers.
+      When enabled, debug information will be shown in the top-left corner of the screen.
       If you encounter a bug and need to take a screenshot for feedback, it is recommended to enable this option.
   keyboardOnlyGenerateNode:
     title: Grow Node Using Keyboard Only
@@ -660,15 +675,15 @@ keyBinds:
       When pressed, grow a node using only the keyboard.
       Release to complete the growth.
   generateNodeTreeWithDeepMode:
-    title: Grow Node in Deep Mode
+    title: Grow Node in Child Mode
     description: |
       When pressed, instantly grow a node and place it to the right of the currently selected node.
       Automatically arrange the entire node tree structure to ensure it forms a rightward tree structure.
       Before using this feature, ensure a node is selected and that the structure is tree-like.
   generateNodeTreeWithBroadMode:
-    title: Grow Node in Broad Mode
+    title: Grow Node in Brother Mode
     description: |
-      When pressed, create a sibling node and place it below the currently selected node.
+      When pressed, instantly grow a sibling node and place it below the currently selected node.
       Automatically arrange the entire node tree structure to ensure it forms a downward tree structure.
       Before using this feature, ensure a node is selected and that it has a parent node.
   masterBrakeControl:
@@ -678,7 +693,7 @@ keyBinds:
       Release to restore normal camera movement.
   selectAll:
     title: Select All
-    description: Select all nodes and connections when pressed.
+    description: Select all nodes and connections when pressed
   createTextNodeFromCameraLocation:
     title: Create Text Node at Camera Center
     description: |
@@ -734,13 +749,13 @@ keyBinds:
       When pressed, all selected entities will jump right by a fixed distance, allowing them to enter or exit a Section box.
   CameraScaleZoomIn:
     title: Zoom In
-    description: Zoom in the viewport when pressed.
+    description: Zoom in the viewport when pressed
   CameraScaleZoomOut:
     title: Zoom Out
-    description: Zoom out the viewport when pressed.
+    description: Zoom out the viewport when pressed
   exitSoftware:
     title: Exit Software
-    description: Exit the software when pressed.
+    description: Exit the software when pressed
   checkoutProtectPrivacy:
     title: Enter/Exit Privacy Protection Mode
     description: |
@@ -754,16 +769,16 @@ keyBinds:
       For example, if a node contains "D:/Desktop/a.txt", pressing this key will open the file with the system default method.
       If the node content is a web address like "https://project-graph.top", it will open the webpage in the default browser.
   checkoutClassroomMode:
-    title: Enter/Exit Presentation Mode
+    title: Enter/Exit Focus Mode
     description: |
-      When pressed, enter presentation mode, where all UI elements will be hidden, and the top buttons will become transparent.
+      When pressed, enter focus mode, where all UI elements will be hidden, and the top buttons will become transparent.
       Press again to restore.
   checkoutWindowOpacityMode:
     title: Toggle Window Transparency Mode
     description: |
       When pressed, the window will enter full transparency mode. Press again to switch to full opacity mode.
-      This should be coordinated with the canvas color scheme. For example, in dark mode, the text is white, and in paper white mode, the text is black.
-      If the underlying content of the window is a white background, it is recommended to switch the canvas to paper white mode.
+      This should be coordinated with the stage color scheme. For example, in dark mode, the text is white, and in paper white mode, the text is black.
+      If the underlying content of the window is a white background, it is recommended to switch the stage to paper white mode.
   searchText:
     title: Search Text
     description: |
@@ -775,17 +790,65 @@ keyBinds:
       Pressing this key will toggle the tag panel, similar to clicking the expand/collapse button on the page.
   copy:
     title: Copy
-    description: Copy the selected content when pressed.
+    description: Copy the selected content when pressed
   paste:
     title: Paste
-    description: Paste the clipboard content when pressed.
+    description: Paste the clipboard content when pressed
   pasteWithOriginLocation:
     title: Paste at Original Location
-    description: When pressed, the pasted content will overlap with the original position.
+    description: When pressed, the pasted content will overlap with the original position
   selectEntityByPenStroke:
     title: Graffiti and Entity Diffusion Selection
-    description: |-
+    description: |
       After selecting a graffiti or entity, press this key to expand the selection to surrounding entities.
       If the current selection is graffiti, it will select entities touched by the graffiti.
       If the current selection is an entity, it will select all graffiti that touch it.
-      Pressing multiple times will alternate the diffusion selection.
+      Pressing multiple times will alternate the diffusion selection
+  clickAppMenuSettingsButton:
+    title: Open settings page
+    description: "When this key is pressed, the settings page opens without mouse\n"
+  createTextNodeFromMouseLocation:
+    title: Create text node at the mouse position
+    description: "After pressing, create a text node at the current position of the
+      mouse \nEquivalent to the function of creating nodes with a mouse click\n"
+  clickAppMenuRecentFileButton:
+    title: Open the list of recently opened file
+    description: "When this key is pressed, open the list of recently opened files
+      without mouse\n"
+  clickStartFilePanelButton:
+    title: Open/Close start file panel
+    description: "When this key is pressed, change the state(Open/Close) of Start
+      File Panel without mouse\n"
+  checkoutLeftMouseToSelectAndMove:
+    title: Set the left mouse button to "Select/Move" mode
+    description: "That is to say, the left mouse button switches to normal mode\n"
+  checkoutLeftMouseToDrawing:
+    title: Set the left mouse button to "Drawing" mode
+    description: "That is to say, the left mouse button switches to Drawing Mode,
+      and there is a corresponding button in the toolbar\n"
+  checkoutLeftMouseToConnectAndCutting:
+    title: Set the left mouse button to "Connect/Cutting" Mode
+    description: "That is to say, the left mouse button switches to connect/cutting
+      mode, and there is corresponding button in the toolbar\n"
+  penStrokeWidthIncrease:
+    title: Thicken the drawing stroke
+    description: After pressing, the stroke becomes thicker
+  penStrokeWidthDecrease:
+    description: After pressing, the stroke become thinner
+  generateNodeGraph:
+    title: Grow Node in Free Mode
+    description: "After pressing, a virtual growth position appears \nPress the \"\
+      I J K L\" key while holding down the key to freely adjust the growth position
+      \nAfter release, growth is complete \nBefore using this feature, ensure that
+      a node has been selected\n"
+  windowOpacityAlphaIncrease:
+    title: Increase window opacity
+    description: "After pressing, the window opacity (alpha) value will be increased
+      by 0.2, with a maximum value of 1 \nWhen it cannot be increased any further,
+      there will be a window edge hint\n"
+  windowOpacityAlphaDecrease:
+    title: Decrease window opacity
+    description: "After pressing, the window opacity (alpha) value decreases by 0.2,
+      with a minimum value of 0 \nIf your keyboard does not have a pure minus key
+      on the keypad, you can use the minus and underline key on the right side of
+      the upper digit 0 key instead\n"
