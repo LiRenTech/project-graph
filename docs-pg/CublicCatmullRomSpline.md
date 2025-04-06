@@ -50,3 +50,13 @@ $$
 $$
 s=\int_0^1 \lvert {\boldsymbol{p}}^{'} \rvert dt
 $$
+
+$$
+s(t_0, t_1) = \int_{t_0}^{t_1} \lvert {\boldsymbol{p}}^{'} \rvert dt = (t_1-t_0) \int_0^1 \lvert {\boldsymbol{p}}^{'}(x(t_1-t_0)+t_0)\rvert dx
+$$
+
+其中
+
+$$
+x = \frac{t-t_0}{t_1-t_0}
+$$

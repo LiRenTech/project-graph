@@ -29,13 +29,17 @@ export class CublicCatmullRomSpline extends Shape {
       const maxLength = 5; //每一小段的最大长度
       let num = 1;
       for (; s / num > maxLength; num++);
+      // console.log("Curve segments: " + num);
       for (let i = 0, t0 = 0; i < num - 1; i++) {
         for (let left = t0, right = 1; ; ) {
           const t = left + (right - left) / 2;
           const point = funcs.equation(t);
-          const requiredError = 0.5;
+          const requiredError = 0.25;
           const dist = point.distance(result[result.length - 1]);
+          // const dist =
+          //   (t - t0) * NumericalIntegration.romberg((x) => funcs.derivative(x * (t - t0) + t0).magnitude(), 0.1);
           const diff = dist - s / num;
+          // console.log("segment " + (i + 1) + "/" + num + " diff: " + diff);
           if (Math.abs(diff) < requiredError) {
             result.push(point);
             t0 = t;
@@ -45,7 +49,9 @@ export class CublicCatmullRomSpline extends Shape {
           } else {
             right = t;
           }
+          // console.log("segment " + (i + 1) + "/" + num + " t: " + t);
         }
+        // console.log("segment " + (i + 1) + " compelete");
       }
       result.push(funcs.equation(1));
     }
