@@ -8,6 +8,7 @@ import { Camera } from "../../../../stage/Camera";
 import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/stageNodeAdder";
+import { StageObjectSelectCounter } from "../../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
@@ -83,6 +84,8 @@ export function editTextNode(clickedNode: TextNode, selectAll = true) {
     clickedNode!.isEditing = false;
     Controller.isCameraLocked = false;
     StageHistoryManager.recordStep();
+    // 更新选中内容的数量
+    StageObjectSelectCounter.update();
   });
 }
 

@@ -3,6 +3,7 @@ import { Renderer } from "../../../../render/canvas2d/renderer";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/stageNodeAdder";
+import { StageObjectSelectCounter } from "../../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { Controller } from "../Controller";
@@ -42,6 +43,8 @@ ControllerEntityCreate.mouseDoubleClick = (event: MouseEvent) => {
     // 双击创建节点
     addTextNodeByLocation(pressLocation, true);
   }
+  // 更新选中内容的数量
+  StageObjectSelectCounter.update();
 };
 
 function createConnectPoint(pressLocation: Vector, addToSections: Section[]) {

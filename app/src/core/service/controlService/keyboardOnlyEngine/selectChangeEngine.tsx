@@ -3,6 +3,7 @@ import { Line } from "../../../dataStruct/shape/Line";
 import { Vector } from "../../../dataStruct/Vector";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
+import { StageObjectSelectCounter } from "../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineCuttingEffect } from "../../feedbackService/effectEngine/concrete/LineCuttingEffect";
@@ -35,25 +36,37 @@ export namespace SelectChangeEngine {
       }
       return;
     }
-    let newSelectedNode: ConnectableEntity | null = null;
+    let newSelectedConnectableEntity: ConnectableEntity | null = null;
     const selectedNodeRect = selectedNode.collisionBox.getRectangle();
     if (key === "arrowup") {
       // 在节点上方查找所有节点，并选中距离上方最近的一个
-      newSelectedNode = getMostNearNode(collectTopNodes(selectedNode), selectedNodeRect.center);
+      newSelectedConnectableEntity = getMostNearConnectableEntity(
+        collectTopNodes(selectedNode),
+        selectedNodeRect.center,
+      );
     } else if (key === "arrowdown") {
       // 在节点下方查找所有节点，并选中距离下方最近的一个
-      newSelectedNode = getMostNearNode(collectBottomNodes(selectedNode), selectedNodeRect.center);
+      newSelectedConnectableEntity = getMostNearConnectableEntity(
+        collectBottomNodes(selectedNode),
+        selectedNodeRect.center,
+      );
     } else if (key === "arrowleft") {
       // 在节点左侧查找所有节点，并选中距离左侧最近的一个
-      newSelectedNode = getMostNearNode(collectLeftNodes(selectedNode), selectedNodeRect.center);
+      newSelectedConnectableEntity = getMostNearConnectableEntity(
+        collectLeftNodes(selectedNode),
+        selectedNodeRect.center,
+      );
     } else if (key === "arrowright") {
       // 在节点右侧查找所有节点，并选中距离右侧最近的一个
-      newSelectedNode = getMostNearNode(collectRightNodes(selectedNode), selectedNodeRect.center);
+      newSelectedConnectableEntity = getMostNearConnectableEntity(
+        collectRightNodes(selectedNode),
+        selectedNodeRect.center,
+      );
     }
-    if (newSelectedNode) {
+    if (newSelectedConnectableEntity) {
       selectedNode.isSelected = false;
-      newSelectedNode.isSelected = true;
-      const newSelectNodeRect = newSelectedNode.collisionBox.getRectangle();
+      newSelectedConnectableEntity.isSelected = true;
+      const newSelectNodeRect = newSelectedConnectableEntity.collisionBox.getRectangle();
       const color = StageStyleManager.currentStyle.effects.successShadow;
 
       if (Camera.cameraFollowsSelectedNodeOnArrowKeys) {
@@ -97,10 +110,13 @@ export namespace SelectChangeEngine {
           color,
         ),
       ]);
+
+      // 更新选中内容的数量
+      StageObjectSelectCounter.update();
     }
   }
 
-  function getMostNearNode(nodes: ConnectableEntity[], location: Vector): ConnectableEntity | null {
+  function getMostNearConnectableEntity(nodes: ConnectableEntity[], location: Vector): ConnectableEntity | null {
     if (nodes.length === 0) return null;
     let currentMinDistance = Infinity;
     let currentNearestNode: ConnectableEntity | null = null;
