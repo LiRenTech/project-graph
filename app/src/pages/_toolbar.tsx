@@ -4,7 +4,7 @@ import {
   BrainCircuit,
   ClipboardPaste,
   ClipboardX,
-  Globe,
+  FolderSymlink,
   LayoutDashboard,
   MousePointer,
   Package,
@@ -18,6 +18,7 @@ import {
   Tag,
   Trash2,
   Waypoints,
+  WrapText,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Box from "../components/Box";
@@ -44,6 +45,8 @@ import ColorAutoPanel from "./_popup_panel/_color_auto_panel";
 import ColorPanel from "./_popup_panel/_color_panel";
 import GenerateNodePanel from "./_popup_panel/_generate_node_panel";
 import { StageObjectSelectCounter } from "../core/stage/stageManager/concreteMethods/StageObjectSelectCounter";
+import { TextNode } from "../core/stage/stageObject/entity/TextNode";
+import { Vector } from "../core/dataStruct/Vector";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -331,19 +334,35 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       {isHaveSelectedTextNode && (
         <ToolbarGroup groupTitle="文本节点">
           <ToolbarItem
+            description="切换宽度调整策略（ttt）"
+            icon={<WrapText />}
+            handleFunction={() => {
+              const selectedTextNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
+              for (const node of selectedTextNodes) {
+                if (node.sizeAdjust === "auto") {
+                  node.sizeAdjust = "manual";
+                  node.resizeHandle(Vector.getZero());
+                } else if (node.sizeAdjust === "manual") {
+                  node.sizeAdjust = "auto";
+                  node.forceAdjustSizeByText();
+                }
+              }
+            }}
+          />
+          <ToolbarItem
+            description="将内容视为本地绝对路径，并打开文件/文件夹"
+            icon={<FolderSymlink />}
+            handleFunction={async () => {
+              // 打开文件或网页
+              openBrowserOrFile();
+            }}
+          />
+          <ToolbarItem
             description="AI扩展节点，（已欠费，有待更新）"
             icon={<BrainCircuit />}
             handleFunction={() => {
               StageGeneratorAI.generateNewTextNodeBySelected();
               StageHistoryManager.recordStep();
-            }}
-          />
-          <ToolbarItem
-            description="将选中的节点的内容作为网页链接或本地文件路径打开"
-            icon={<Globe />}
-            handleFunction={async () => {
-              // 打开文件或网页
-              openBrowserOrFile();
             }}
           />
         </ToolbarGroup>
