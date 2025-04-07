@@ -636,15 +636,15 @@ effects:
       高亮提示某个矩形范围，搜索节点或定位时会高亮提示
       关闭后会看不到矩形高亮效果
   RectanglePushInEffect:
-    title: 矩形推入效果
-    description: |
-      忘了
-  RectangleRenderEffect:
     title: 矩形四顶点划至另一矩形四顶点的效果
     description: |
       用于提示实体的跨越框层移动、方向键切换选中
       目前开发者由于偷懒，此效果引用了四个劈砍线效果。
       若关闭了劈砍线效果，则此效果会看不见
+  RectangleRenderEffect:
+    title: 矩形位置提示效果
+    description: |
+      用于在吸附拖拽对齐时，显示实体即将吸附到的目标位置
   RectangleSplitTwoPartEffect:
     title: 矩形被切成两块的特效
     description: |
