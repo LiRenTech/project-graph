@@ -11,6 +11,7 @@ import { ControllerClass } from "../ControllerClass";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { Camera } from "../../../../stage/Camera";
 import { DrawingControllerRenderer } from "../../../../render/canvas2d/controllerRenderer/drawingRenderer";
+import { PointDashEffect } from "../../../feedbackService/effectEngine/concrete/PointDashEffect";
 /**
  * 涂鸦功能
  */
@@ -80,8 +81,10 @@ class ControllerDrawingClass extends ControllerClass {
       return;
     }
     const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const limitDistance = 2 / Camera.currentScale;
     // 检测：如果移动距离不超过一个距离，则不记录
-    if (worldLocation.distance(this.lastMoveLocation) < 5 / Camera.currentScale) {
+    if (worldLocation.distance(this.lastMoveLocation) < limitDistance) {
+      Stage.effectMachine.addEffect(PointDashEffect.fromMouseEffect(worldLocation, 1));
       return;
     }
     this.recordLocation.push(worldLocation.clone());
@@ -105,9 +108,9 @@ class ControllerDrawingClass extends ControllerClass {
       const startLocation = this.pressStartWordLocation;
       const endLocation = releaseWorldLocation;
       const strokeStringList: string[] = [
-        `${Math.round(startLocation.x)},${Math.round(startLocation.y)},${this.currentStrokeWidth}`,
-        `${Math.round(endLocation.x)},${Math.round(endLocation.y)},${this.currentStrokeWidth}`,
-        `${Math.round(endLocation.x)},${Math.round(endLocation.y)},${this.currentStrokeWidth}`,
+        `${startLocation.x.toFixed(2)},${startLocation.y.toFixed(2)},${this.currentStrokeWidth}`,
+        `${endLocation.x.toFixed(2)},${endLocation.y.toFixed(2)},${this.currentStrokeWidth}`,
+        `${endLocation.x.toFixed(2)},${endLocation.y.toFixed(2)},${this.currentStrokeWidth}`,
       ];
       const contentString = strokeStringList.join("~");
       const stroke = new PenStroke({
