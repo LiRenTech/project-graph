@@ -10,6 +10,9 @@ import { EffectParticle } from "../effectElements/effectParticle";
 import { EffectObject } from "../effectObject";
 
 export class EntityDashTipEffect extends EffectObject {
+  getClassName(): string {
+    return "EntityDashTipEffect";
+  }
   constructor(
     public time: number,
     public rect: Rectangle,

@@ -10,6 +10,9 @@ import { EffectObject } from "../effectObject";
 import { RateFunctions } from "../mathTools/rateFunctions";
 
 export class EntityJumpMoveEffect extends EffectObject {
+  getClassName(): string {
+    return "EntityJumpMoveEffect";
+  }
   constructor(
     public time: number,
     public rectStart: Rectangle,

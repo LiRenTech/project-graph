@@ -19,6 +19,9 @@ import { easeOutQuint } from "../mathTools/easings";
  * 目标矩形大小是世界坐标系
  */
 export class RectangleNoteEffect extends EffectObject {
+  getClassName(): string {
+    return "RectangleNoteEffect";
+  }
   constructor(
     public override timeProgress: ProgressNumber,
     public targetRectangle: Rectangle,

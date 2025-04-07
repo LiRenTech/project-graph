@@ -7,6 +7,9 @@ import { EffectObject } from "../effectObject";
 import { TechLineEffect } from "./TechLineEffect";
 
 export class EntityCreateLineEffect extends EffectObject {
+  getClassName(): string {
+    return "EntityCreateLineEffect";
+  }
   constructor(
     public override timeProgress: ProgressNumber,
     public rect: Rectangle,

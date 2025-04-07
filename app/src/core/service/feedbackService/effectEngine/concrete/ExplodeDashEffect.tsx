@@ -13,6 +13,9 @@ import { EffectObject } from "../effectObject";
  * 方块的爆炸粉尘效果
  */
 export class ExplodeDashEffect extends EffectObject {
+  getClassName(): string {
+    return "ExplodeDashEffect";
+  }
   ashLocationArray: Vector[] = [];
   ashSpeedArray: Vector[] = [];
 

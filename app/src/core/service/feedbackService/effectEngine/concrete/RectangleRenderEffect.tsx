@@ -8,6 +8,9 @@ import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 
 export class RectangleRenderEffect extends EffectObject {
+  getClassName(): string {
+    return "RectangleRenderEffect";
+  }
   constructor(
     public override timeProgress: ProgressNumber,
     private rectangle: Rectangle,

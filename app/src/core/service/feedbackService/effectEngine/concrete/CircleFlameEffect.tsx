@@ -22,6 +22,9 @@ export class CircleFlameEffect extends EffectObject {
   ) {
     super(timeProgress);
   }
+  getClassName(): string {
+    return "CircleFlameEffect";
+  }
 
   override tick() {
     super.tick();

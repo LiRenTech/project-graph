@@ -7,6 +7,9 @@ import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 
 export class TextRaiseEffectLocated extends EffectObject {
+  getClassName(): string {
+    return "TextRaiseEffectLocated";
+  }
   constructor(
     public text: string,
     public location: Vector,

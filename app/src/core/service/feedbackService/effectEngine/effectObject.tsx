@@ -29,4 +29,12 @@ export abstract class EffectObject {
    * 渲染方法
    */
   abstract render(): void;
+
+  /**
+   * 获取对象的类名
+   * 实测通过反射机制 effect.constructor.name 拿到的类名会被压缩，所以还要手写一次。
+   * 用于特效的开关，需要手动控制返回的名称和类名保持一致。
+   * 文件名也和类名保证一致
+   */
+  abstract getClassName(): string;
 }

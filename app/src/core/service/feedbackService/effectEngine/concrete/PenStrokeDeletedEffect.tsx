@@ -9,6 +9,9 @@ import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 
 export class PenStrokeDeletedEffect extends EffectObject {
+  getClassName(): string {
+    return "PenStrokeDeletedEffect";
+  }
   private pathList: Vector[] = [];
   private currentPartList: Vector[] = [];
   private color: Color = new Color(0, 0, 0);

@@ -24,9 +24,7 @@ export class EffectMachine implements Tickable, Renderable {
   private effects: EffectObject[] = [];
 
   public addEffect(effect: EffectObject) {
-    console.log("effect.constructor.name: ", effect.constructor.name);
-
-    if (!(this.effectsPerferences[effect.constructor.name] ?? true)) {
+    if (!(this.effectsPerferences[effect.getClassName()] ?? true)) {
       return;
     }
     this.effects.push(effect);
@@ -37,11 +35,7 @@ export class EffectMachine implements Tickable, Renderable {
   }
 
   public addEffects(effects: EffectObject[]) {
-    console.log(
-      "addEffects",
-      effects.map((effect) => effect.constructor.name),
-    );
-    this.effects.push(...effects.filter((effect) => this.effectsPerferences[effect.constructor.name] ?? true));
+    this.effects.push(...effects.filter((effect) => this.effectsPerferences[effect.getClassName()] ?? true));
   }
 
   /**

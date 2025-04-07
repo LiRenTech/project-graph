@@ -10,6 +10,9 @@ import { EffectObject } from "../effectObject";
  * 屏幕闪颜色效果
  */
 export class ViewFlashEffect extends EffectObject {
+  getClassName(): string {
+    return "ViewFlashEffect";
+  }
   constructor(
     public color: Color,
     public override timeProgress: ProgressNumber = new ProgressNumber(0, 100),

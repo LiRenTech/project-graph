@@ -12,6 +12,9 @@ import { EffectObject } from "../effectObject";
  * 直接显示全部，随着时间推移逐渐透明
  */
 export class LineEffect extends EffectObject {
+  getClassName(): string {
+    return "LineEffect";
+  }
   constructor(
     public override timeProgress: ProgressNumber,
     public fromLocation: Vector,

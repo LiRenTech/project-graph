@@ -8,6 +8,9 @@ import { LineCuttingEffect } from "./LineCuttingEffect";
  * 用于某个节点进入了某个Section内部，四个角连向了父Section矩形的四个角
  */
 export class RectanglePushInEffect extends EffectObject {
+  getClassName(): string {
+    return "RectanglePushInEffect";
+  }
   constructor(
     public smallRectangle: Rectangle,
     public bigRectangle: Rectangle,

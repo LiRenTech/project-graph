@@ -13,6 +13,9 @@ import { RateFunctions } from "../mathTools/rateFunctions";
  * 实体创建时粉尘凝聚特效
  */
 export class EntityCreateDashEffect extends EffectObject {
+  getClassName(): string {
+    return "EntityCreateDashEffect";
+  }
   static readonly DASH_NUMBER_PRE_EDGE = 250;
 
   private initLocationArrayTop: Vector[] = [];
