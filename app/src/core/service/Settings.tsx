@@ -46,6 +46,7 @@ export namespace Settings {
     // 性能相关
     compatibilityMode: boolean;
     historySize: number; // 暂无
+    // 特效开关列表
     effectsPerferences: Record<string, boolean>;
     isEnableEntityCollision: boolean;
     textIntegerLocationAndSizeRender: boolean;
