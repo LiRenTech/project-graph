@@ -558,6 +558,124 @@ startFilePanel:
     showAbsolutePath: 显示绝对路径
     showFileTime: 显示文件时间
 
+effects:
+  CircleChangeRadiusEffect:
+    title: 圆形变换半径效果
+    description: |
+      质点被框选后波纹放大
+  CircleFlameEffect:
+    title: 圆形径向渐变光闪
+    description: |
+      存在于各种特效细节中，预劈砍直线与实体矩形切割时、斩断连线时的中点闪烁等
+  EntityAlignEffect:
+    title: 实体对齐效果
+    description: |
+      鼠标拖动吸附对齐时产生的高亮虚线
+  EntityCreateDashEffect:
+    title: 实体创建粉尘凝聚效果
+    description: |
+      实体创建时，实体周围出现粉尘凝聚
+      由于不够美观，已经废弃，不会出现
+  EntityCreateFlashEffect:
+    title: 实体边框发光效果
+    description: |
+      在ctrl+滚轮转动实体树、缩放图片、创建节点等情况下出现
+      若渲染性能较差，建议关闭此选项
+  EntityCreateLineEffect:
+    title: 实体散发电路板式线条辐射效果
+    description: |
+      已经废弃，不会出现
+  EntityDashTipEffect:
+    title: 实体提示性的粉尘抖动
+    description: |
+      出现在实体输入编辑结束或进入时，实体周围出现抖动的粉尘
+  EntityJumpMoveEffect:
+    title: 实体跳跃移动效果
+    description: |
+      实体跳跃移动时，实体出现一个象征性的跳跃弧线幻影
+      用来表示伪z轴的跨越层级移动
+  EntityShakeEffect:
+    title: 实体抖动效果
+    description: |
+      像“TickTock”Logo 一样的抖动特效，用于实体出现警告性质的提示
+  EntityShrinkEffect:
+    title: 实体缩小消失效果
+    description: |
+      使用Delete键删除实体时，实体出现缩小消失的效果
+  ExplodeDashEffect:
+    title: 粉尘爆炸效果
+    description: |
+      用劈砍删除实体时，出现粉尘爆炸
+  LineCuttingEffect:
+    title: 劈砍时的刀光
+    description: |
+      劈砍时，出现类似水果忍者一样的刀光
+  LineEffect:
+    title: 直线段淡出效果
+    description: |
+      用于拖拽旋转子树时，连线划过虚影
+  NodeMoveShadowEffect:
+    title: 节点移动时摩擦地面的粒子效果
+    description: |
+      布局造成的移动可能也会出现一闪而过的粒子
+  PenStrokeDeletedEffect:
+    title: 涂鸦被删除时的消失特效
+    description: |
+      涂鸦被删除时，出现消失的特效
+  PointDashEffect:
+    title: 在某点出迸发万有引力式的粒子效果
+    description: |
+      由于万有引力影响性能，此特效已关闭，不会出现
+  RectangleLittleNoteEffect:
+    title: 矩形闪烁提示效果
+    description: |
+      在逻辑节点执行时，逻辑节点会闪烁此效果
+  RectangleNoteEffect:
+    title: 矩形存在提示效果
+    description: |
+      高亮提示某个矩形范围，搜索节点或定位时会高亮提示
+      关闭后会看不到矩形高亮效果
+  RectanglePushInEffect:
+    title: 矩形推入效果
+    description: |
+      忘了
+  RectangleRenderEffect:
+    title: 矩形四顶点划至另一矩形四顶点的效果
+    description: |
+      用于提示实体的跨越框层移动、方向键切换选中
+      目前开发者由于偷懒，此效果引用了四个劈砍线效果。
+      若关闭了劈砍线效果，则此效果会看不见
+  RectangleSplitTwoPartEffect:
+    title: 矩形被切成两块的特效
+    description: |
+      仅存在于劈砍特效（也有可能是四块）
+  TechLineEffect:
+    title: （基础特效）折线段效果
+    description: |
+      此特效时其他特效的组成部分，若关闭则其他特效可能会受到影响
+  TextRaiseEffectLocated:
+    title: 固定位置的文本节点悬浮上升效果
+    description: |
+      文本节点悬浮上升效果，用于提示重要信息
+  TextRiseEffect:
+    title: 上浮文字效果
+    description: |
+      文本节点上浮效果，用于提示重要信息
+  ViewFlashEffect:
+    title: 视野闪烁效果
+    description: |
+      全屏闪白/闪黑等效果
+      光敏癫痫症患者请关闭此选项
+  ViewOutlineFlashEffect:
+    title: 视野轮廓闪烁效果
+    description: |
+      视野轮廓闪烁效果
+  ZapLineEffect:
+    title: （基础特效）闪电线效果
+    description: |
+      此特效时其他特效的组成部分，若关闭则其他特效可能会受到影响
+  
+
 keys:
   none: 未绑定快捷键，点击绑定
   mouse0: 鼠标左键
