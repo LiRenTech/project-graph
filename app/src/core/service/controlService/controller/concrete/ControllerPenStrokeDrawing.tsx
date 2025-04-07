@@ -106,7 +106,21 @@ class ControllerDrawingClass extends ControllerClass {
     if (Controller.pressingKeySet.has("shift")) {
       // 直线
       const startLocation = this.pressStartWordLocation;
-      const endLocation = releaseWorldLocation;
+      const endLocation = releaseWorldLocation.clone();
+
+      if (Controller.pressingKeySet.has("control")) {
+        // 垂直于坐标轴的直线
+        const dy = Math.abs(endLocation.y - startLocation.y);
+        const dx = Math.abs(endLocation.x - startLocation.x);
+        if (dy > dx) {
+          // 垂直
+          endLocation.x = startLocation.x;
+        } else {
+          // 水平
+          endLocation.y = startLocation.y;
+        }
+      }
+
       const strokeStringList: string[] = [
         `${startLocation.x.toFixed(2)},${startLocation.y.toFixed(2)},${this.currentStrokeWidth}`,
         `${endLocation.x.toFixed(2)},${endLocation.y.toFixed(2)},${this.currentStrokeWidth}`,

@@ -23,13 +23,37 @@ export namespace DrawingControllerRenderer {
     if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
       // 画鼠标绘制过程，还未抬起鼠标左键的 笔迹
       if (Stage.drawingMachine.currentStroke.length > 0) {
+        const startLocation = Stage.drawingMachine.currentStroke[0].startLocation;
+        const endLocation = Renderer.transformView2World(MouseLocation.vector());
+
+        // 正在绘制直线
         if (Controller.pressingKeySet.has("shift")) {
-          CurveRenderer.renderSolidLine(
-            Renderer.transformWorld2View(Stage.drawingMachine.currentStroke[0].startLocation),
-            MouseLocation.vector(),
-            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
-            Stage.drawingMachine.currentStrokeWidth * Camera.currentScale,
-          );
+          // 垂直于坐标轴的直线
+          if (Controller.pressingKeySet.has("control")) {
+            const dy = Math.abs(endLocation.y - startLocation.y);
+            const dx = Math.abs(endLocation.x - startLocation.x);
+            if (dy > dx) {
+              // 垂直
+              endLocation.x = startLocation.x;
+            } else {
+              // 水平
+              endLocation.y = startLocation.y;
+            }
+
+            CurveRenderer.renderSolidLine(
+              Renderer.transformWorld2View(startLocation),
+              Renderer.transformWorld2View(endLocation),
+              currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
+              Stage.drawingMachine.currentStrokeWidth * Camera.currentScale,
+            );
+          } else {
+            CurveRenderer.renderSolidLine(
+              Renderer.transformWorld2View(startLocation),
+              MouseLocation.vector(),
+              currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
+              Stage.drawingMachine.currentStrokeWidth * Camera.currentScale,
+            );
+          }
         } else {
           for (const segment of Stage.drawingMachine.currentStroke) {
             CurveRenderer.renderSolidLine(
