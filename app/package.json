@@ -25,7 +25,7 @@
     "@tauri-apps/plugin-http": "^2.2.0",
     "@tauri-apps/plugin-os": "^2.2.0",
     "@tauri-apps/plugin-process": "~2",
-    "@tauri-apps/plugin-shell": "2.2.0",
+    "@tauri-apps/plugin-shell": "2.2.1",
     "@tauri-apps/plugin-store": "^2.2.0",
     "@tauri-apps/plugin-updater": "~2",
     "decimal.js": "^10.5.0",
