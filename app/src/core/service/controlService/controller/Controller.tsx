@@ -45,18 +45,6 @@ export namespace Controller {
     }
     return res;
   }
-  // 按键映射
-  export const keyMap: { [key: string]: Vector } = {
-    w: new Vector(0, -1),
-    s: new Vector(0, 1),
-    a: new Vector(-1, 0),
-    d: new Vector(1, 0),
-  };
-
-  /**
-   * 存放鼠标 左 中 右 键上次 "按下" 时候的world位置
-   */
-  // export const lastMousePressLocation: Vector[] = [Vector.getZero(), Vector.getZero(), Vector.getZero()];
 
   /**
    * 是否正在进行移动(拖拽旋转)连线的操作

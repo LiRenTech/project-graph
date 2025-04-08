@@ -21,6 +21,14 @@ import { ControllerClass } from "../ControllerClass";
  * @param event - 键盘事件
  */
 export class ControllerCameraClass extends ControllerClass {
+  // 按键映射
+  private static keyMap: { [key: string]: Vector } = {
+    w: new Vector(0, -1),
+    s: new Vector(0, 1),
+    a: new Vector(-1, 0),
+    d: new Vector(1, 0),
+  };
+
   // 是否正在使用
   public isUsingMouseGrabMove = false;
   private lastMousePressLocation: Vector[] = [Vector.getZero(), Vector.getZero(), Vector.getZero()];
@@ -30,19 +38,27 @@ export class ControllerCameraClass extends ControllerClass {
       return;
     }
     const key = event.key.toLowerCase();
-    if (Controller.keyMap[key] && Camera.allowMoveCameraByWSAD) {
+    if (ControllerCameraClass.keyMap[key] && Camera.allowMoveCameraByWSAD) {
       if (Controller.pressingKeySet.has("control")) {
         // ctrl按下时，可能在按 ctrl+s 保存，防止出现冲突
         isPressingCtrl = true;
         return;
       }
 
-      let addAccelerate = Controller.keyMap[key];
+      let addAccelerate = ControllerCameraClass.keyMap[key];
+      let accelerateSize = 1;
+      if (Controller.pressingKeySet.has("shift")) {
+        accelerateSize = 10;
+      }
+      addAccelerate = addAccelerate.multiply(accelerateSize);
       if (Camera.cameraKeyboardMoveReverse) {
         addAccelerate = addAccelerate.multiply(-1);
       }
       // 当按下某一个方向的时候,相当于朝着某个方向赋予一次加速度
-      Camera.accelerateCommander = Camera.accelerateCommander.add(addAccelerate).limitX(-1, 1).limitY(-1, 1);
+      Camera.accelerateCommander = Camera.accelerateCommander
+        .add(addAccelerate)
+        .limitX(-accelerateSize, accelerateSize)
+        .limitY(-accelerateSize, accelerateSize);
     }
     if (key === " ") {
       if (!isPreGrabbingWhenSpace) {
@@ -70,17 +86,26 @@ export class ControllerCameraClass extends ControllerClass {
     }
     // ------
 
-    if (Controller.keyMap[key] && Camera.allowMoveCameraByWSAD) {
+    if (ControllerCameraClass.keyMap[key] && Camera.allowMoveCameraByWSAD) {
       if (isPressingCtrl) {
         // ctrl按下时，可能在按 ctrl+s 保存，防止出现冲突
         return;
       }
-      let addAccelerate = Controller.keyMap[key];
+      let addAccelerate = ControllerCameraClass.keyMap[key];
+      let accelerateSize = 1;
+      if (Controller.pressingKeySet.has("shift")) {
+        accelerateSize = 10;
+      }
+      addAccelerate = addAccelerate.multiply(accelerateSize);
+
       if (Camera.cameraKeyboardMoveReverse) {
         addAccelerate = addAccelerate.multiply(-1);
       }
       // 当松开某一个方向的时候,相当于停止加速度
-      Camera.accelerateCommander = Camera.accelerateCommander.subtract(addAccelerate).limitX(-1, 1).limitY(-1, 1);
+      Camera.accelerateCommander = Camera.accelerateCommander
+        .subtract(addAccelerate)
+        .limitX(-accelerateSize, accelerateSize)
+        .limitY(-accelerateSize, accelerateSize);
     }
     if (key === " ") {
       if (isPreGrabbingWhenSpace) {
