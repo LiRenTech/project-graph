@@ -21,6 +21,7 @@ import { CublicCatmullRomSplineEdge } from "../../stage/stageObject/association/
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
 import { CurveRenderer } from "./basicRenderer/curveRenderer";
 import { ShapeRenderer } from "./basicRenderer/shapeRenderer";
+import { SvgRenderer } from "./basicRenderer/svgRenderer";
 import { TextRenderer } from "./basicRenderer/textRenderer";
 import { DrawingControllerRenderer } from "./controllerRenderer/drawingRenderer";
 import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
@@ -804,10 +805,36 @@ export namespace Renderer {
         Controller.pressingKeySet.has("d"))
     ) {
       TextRenderer.renderOneLineText(
-        "🔒方向键移动视野被禁止，可设置🔧更改",
+        "      方向键移动视野被禁止，可设置🔧更改",
         new Vector(margin, Renderer.h - 60),
         15,
         StageStyleManager.currentStyle.effects.flash,
+      );
+
+      SvgRenderer.renderSvgFromLeftTop(
+        `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="${StageStyleManager.currentStyle.effects.warningShadow.toString()}"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M 12 12.5 C12 8.5 12 12 12 9" />
+  <path d="M 12 15 C12 15 12 15 12 15" />
+  <path d="M 12 18 C15.5 18 18 15.5 18 12" />
+  <path d="M 12 6 C8.5 6 6 8.5 6 12" />
+  <path d="M 18 12 C18 8.5 15.5 6 12 6" />
+  <path d="M 19 18 C21 16 21.5 8.5 19 6" />
+  <path d="M 4.5 18 C2.5 16 2.5 8.5 4.5 6" />
+  <path d="M 6 12 C6 15.5 8.5 18 12 18" />
+</svg>`,
+        new Vector(margin, Renderer.h - 60),
+        24,
+        24,
       );
     }
   }
