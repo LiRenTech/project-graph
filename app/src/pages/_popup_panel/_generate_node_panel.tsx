@@ -55,6 +55,14 @@ export default function GenerateNodePanel() {
       </div>
       <Button
         onClick={() => {
+          if (inputValue.trim() === "") {
+            Dialog.show({
+              title: "提示",
+              type: "warning",
+              content: "请在文本输入框中粘贴缩进格式的文本内容",
+            });
+            return;
+          }
           StageManager.generateNodeTreeByText(inputValue, indention);
           setInputValue("");
         }}
@@ -65,11 +73,19 @@ export default function GenerateNodePanel() {
         <Button
           className="flex-1"
           onClick={() => {
+            if (inputValue.trim() === "") {
+              Dialog.show({
+                title: "提示",
+                type: "warning",
+                content: "请在文本输入框中粘贴markdown格式字符串",
+              });
+              return;
+            }
             StageManager.generateNodeByMarkdown(inputValue);
             setInputValue("");
           }}
         >
-          根据markdown生树结构
+          根据markdown文本内容生成树结构
         </Button>
         <Button
           onClick={() => {
@@ -87,6 +103,14 @@ export default function GenerateNodePanel() {
         <Button
           className="flex-1 text-xs"
           onClick={() => {
+            if (inputValue.trim() === "") {
+              Dialog.show({
+                title: "提示",
+                type: "warning",
+                content: "请在文本输入框中粘贴content.json的内容",
+              });
+              return;
+            }
             const indent4 = DataTransferEngine.xmindToString(JSON.parse(inputValue));
             StageManager.generateNodeTreeByText(indent4, 4);
             setInputValue("");
