@@ -627,14 +627,6 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           >
             报错
           </Col>
-          <Col
-            icon={<TestTube2 />}
-            onClick={() => {
-              StageManager.switchLineEdgeToCrEdge();
-            }}
-          >
-            Cr
-          </Col>
         </Row>
       )}
     </div>

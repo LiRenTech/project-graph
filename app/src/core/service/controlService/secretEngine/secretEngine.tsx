@@ -4,7 +4,6 @@ import { Queue } from "../../../dataStruct/Queue";
 import { Vector } from "../../../dataStruct/Vector";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
-import { StageSectionPackManager } from "../../../stage/stageManager/concreteMethods/StageSectionPackManager";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { PortalNode } from "../../../stage/stageObject/entity/PortalNode";
@@ -566,13 +565,6 @@ export class SecretEngine {
         );
       },
     },
-    "t r e e 2 s e c t i o n": {
-      name: "将节点树转换成section多层嵌套组",
-      func() {
-        const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
-        StageSectionPackManager.textNodeTreeToSection(selectedNodes[0]);
-      },
-    },
     "t e s t s i": {
       name: "用特效高亮一次所有选中的section框及其内部全部实体",
       func() {
@@ -580,6 +572,13 @@ export class SecretEngine {
         for (const entity of SectionMethods.getAllEntitiesInSelectedSectionsOrEntities(selectedNodes)) {
           Stage.effectMachine.addEffect(RectangleNoteEffect.fromShiftClickSelect(entity.collisionBox.getRectangle()));
         }
+      },
+    },
+    "c r c r c r": {
+      name: "将选中的连线改为CR曲线",
+      explain: "输入3次cr，仅用于开发者测试——2025年4月8日",
+      func() {
+        StageManager.switchLineEdgeToCrEdge();
       },
     },
     "c r p + +": {
