@@ -847,6 +847,25 @@ export namespace StageManager {
   export function connectEntityByCrEdge(fromNode: ConnectableEntity, toNode: ConnectableEntity) {
     return StageNodeConnector.addCrEdge(fromNode, toNode);
   }
+
+  /**
+   * 刷新所有舞台内容
+   */
+  export function refreshAllStageObjects() {
+    const entities = StageManager.getEntities();
+    for (const entity of entities) {
+      if (entity instanceof TextNode) {
+        if (entity.sizeAdjust === "auto") {
+          entity.forceAdjustSizeByText();
+        }
+      } else if (entity instanceof ImageNode) {
+        entity.refresh();
+      } else if (entity instanceof Section) {
+        entity.adjustLocationAndSize();
+      }
+    }
+  }
+
   /**
    * 刷新选中内容
    */

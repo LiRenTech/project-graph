@@ -37,6 +37,7 @@ import {
   Rabbit,
   Group,
   ScrollText,
+  RefreshCcwDot,
 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -527,6 +528,14 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         </Col>
       </Row>
       <Row icon={<Axe />} title={"操作"}>
+        <Col
+          icon={<RefreshCcwDot />}
+          onClick={() => {
+            StageManager.refreshAllStageObjects();
+          }}
+        >
+          刷新全部实体
+        </Col>
         <Col
           icon={<Undo />}
           onClick={() => {
