@@ -198,6 +198,7 @@ export namespace KeyBinds {
           handler();
         }
       });
+      return this;
     }
     /**
      * 快捷键按下并抬起的时候触发的函数
@@ -214,6 +215,7 @@ export namespace KeyBinds {
           handler();
         }
       });
+      return this;
     }
 
     /**
@@ -228,6 +230,7 @@ export namespace KeyBinds {
           this.start = end;
         }
       });
+      return this;
     }
   }
 }

@@ -753,6 +753,8 @@ async function registerKeyBinds() {
   ).down(async () => {
     Stage.MouseModeManager.checkoutDrawingHook();
   });
+
+  // 鼠标左键切换为连接模式
   (
     await KeyBinds.create("checkoutLeftMouseToConnectAndCutting", "c", {
       control: false,
@@ -807,21 +809,25 @@ async function registerKeyBinds() {
   ).down(async () => {
     KeyboardOnlyTreeEngine.onBroadGenerateNode();
   });
-  const bind = await KeyBinds.create("generateNodeGraph", "`", {
-    control: false,
-    alt: false,
-    shift: false,
-  });
-  bind.down(() => {
-    if (KeyboardOnlyGraphEngine.isEnableVirtualCreate()) {
-      KeyboardOnlyGraphEngine.createStart();
-    }
-  });
-  bind.up(() => {
-    if (KeyboardOnlyGraphEngine.isCreating()) {
-      KeyboardOnlyGraphEngine.createFinished();
-    }
-  });
+
+  (
+    await KeyBinds.create("generateNodeGraph", "`", {
+      control: false,
+      alt: false,
+      meta: false,
+      shift: false,
+    })
+  )
+    .down(() => {
+      if (KeyboardOnlyGraphEngine.isEnableVirtualCreate()) {
+        KeyboardOnlyGraphEngine.createStart();
+      }
+    })
+    .up(() => {
+      if (KeyboardOnlyGraphEngine.isCreating()) {
+        KeyboardOnlyGraphEngine.createFinished();
+      }
+    });
 }
 
 /** 加载语言文件 */
