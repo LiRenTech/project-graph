@@ -38,6 +38,8 @@ import {
   Group,
   ScrollText,
   RefreshCcwDot,
+  Radiation,
+  Redo,
 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -489,8 +491,9 @@ export default function AppMenu({ className = "", open = false }: { className?: 
               const path = (await dataDir()) + PathString.getSep() + "liren.project-graph";
               openFilePath(path);
             }}
+            details={t("location.items.openDataFolder.description")}
           >
-            {t("location.items.openDataFolder")}
+            {t("location.items.openDataFolder.title")}
           </Col>
           <Col
             icon={<FolderOpen />}
@@ -498,8 +501,9 @@ export default function AppMenu({ className = "", open = false }: { className?: 
               const folderPath = PathString.dirPath(file);
               openFilePath(folderPath);
             }}
+            details={t("location.items.openProjectFolder.description")}
           >
-            {t("location.items.openProjectFolder")}
+            {t("location.items.openProjectFolder.title")}
           </Col>
         </Row>
       )}
@@ -518,14 +522,18 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         </Col>
       </Row>
       <Row icon={<View />} title={t("view.title")}>
-        <Col icon={<Group />} onClick={() => Camera.reset()}>
-          {t("view.items.resetByAll")}
+        <Col icon={<Group />} onClick={() => Camera.reset()} details={t("view.items.resetByAll.description")}>
+          {t("view.items.resetByAll.title")}
         </Col>
-        <Col icon={<SquareDashedMousePointer />} onClick={() => Camera.resetBySelected()}>
-          {t("view.items.resetBySelect")}
+        <Col
+          icon={<SquareDashedMousePointer />}
+          onClick={() => Camera.resetBySelected()}
+          details={t("view.items.resetBySelect.description")}
+        >
+          {t("view.items.resetBySelect.title")}
         </Col>
-        <Col icon={<Scaling />} onClick={() => Camera.resetScale()}>
-          {t("view.items.resetScale")}
+        <Col icon={<Scaling />} onClick={() => Camera.resetScale()} details={t("view.items.resetScale.description")}>
+          {t("view.items.resetScale.title")}
         </Col>
       </Row>
       <Row icon={<Axe />} title={"操作"}>
@@ -534,9 +542,9 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           onClick={() => {
             StageManager.refreshAllStageObjects();
           }}
-          details="刷新当前舞台所有实体"
+          details="刷新当前舞台所有实体，例如图片重新加载，实体大小重新计算等"
         >
-          刷新全部实体
+          刷新
         </Col>
         <Col
           icon={<Undo />}
@@ -547,10 +555,19 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           撤销
         </Col>
         <Col
+          icon={<Redo />}
+          onClick={() => {
+            StageHistoryManager.redo();
+          }}
+        >
+          反撤销
+        </Col>
+        <Col
           icon={<Search />}
           onClick={() => {
             Popup.show(<SearchingNodePanel />, false);
           }}
+          details="根据文字，搜索节点/实体详细信息，等含有文字的内容"
         >
           查找
         </Col>
@@ -567,8 +584,33 @@ export default function AppMenu({ className = "", open = false }: { className?: 
               </>,
             );
           }}
+          details="统计当前舞台上的实体信息、计算复杂度、检测异常"
         >
-          内容复杂度检测
+          统计
+        </Col>
+        <Col
+          icon={<Radiation />}
+          onClick={() => {
+            Dialog.show({
+              title: "危险操作！确认清空？",
+              content: "确认清空当前舞台全部内容？",
+              type: "warning",
+              buttons: [
+                {
+                  text: "清空",
+                  color: "red",
+                  onClick: () => {
+                    StageManager.destroy();
+                    Camera.reset();
+                  },
+                },
+                { text: "我再想想！>.<" },
+              ],
+            });
+          }}
+          details="清空当前舞台全部内容，用于当前舞台内容不重要，出现无法手动删除的内容时，一键清理草稿"
+        >
+          清空
         </Col>
       </Row>
       <Row icon={<MoreHorizontal />} title={t("more.title")}>
@@ -660,14 +702,8 @@ export default function AppMenu({ className = "", open = false }: { className?: 
       )}
       {import.meta.env.DEV && (
         <Row icon={<Dock />} title="测试">
-          <Col icon={<TestTube2 />} onClick={() => navigate("/test")}>
-            测试页面
-          </Col>
           <Col icon={<TestTube2 />} onClick={() => navigate("/ui_test")}>
             ui测试页面
-          </Col>
-          <Col icon={<TestTube2 />} onClick={() => navigate("/info")}>
-            Info
           </Col>
           <Col
             icon={<TestTube2 />}
@@ -767,7 +803,7 @@ function Col({
 
       {showDetails && details && (
         <div
-          className="bg-appmenu-hover-bg text-appmenu-item-text fixed bottom-0 left-0 right-0 flex h-12 w-full items-center justify-center rounded-md bg-opacity-70 p-2 text-sm"
+          className="bg-appmenu-hover-bg text-appmenu-item-text fixed -bottom-12 left-0 right-0 flex h-12 w-full items-center justify-center rounded-md bg-opacity-70 p-2 text-sm"
           style={{ zIndex: 1000 }}
         >
           {details}

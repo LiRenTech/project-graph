@@ -518,21 +518,31 @@ appMenu:
   location:
     title: 位置
     items:
-      openDataFolder: 打开软件数据文件夹
-      openProjectFolder: 打开当前文件所在文件夹
+      openDataFolder: 
+        title: 软件数据
+        description: 打开软件数据文件夹，内部存放用户自定义设置等数据
+      openProjectFolder: 
+        title: 当前位置
+        description: 打开当前编辑的 工程文件 所在的文件夹
   export:
     title: 导出
     items:
-      exportAsSvg: 导出为SVG
-      exportAsSVGByAll: 导出为SVG（全部）
-      exportAsMarkdownBySelected: 导出为Markdown（选中）
-      exportAsPlainText: 导出为纯文本
+      exportAsSvg: SVG
+      exportAsSVGByAll: SVG（全部）
+      exportAsMarkdownBySelected: Markdown
+      exportAsPlainText: 纯文本
   view:
     title: 视图
     items:
-      resetByAll: 根据全部内容重置视野
-      resetBySelect: 根据选中内容重置视野
-      resetScale: 将缩放重置为标准大小
+      resetByAll: 
+        title: 重置全部
+        description: 根据全部内容重置视野
+      resetBySelect:
+        title: 重置部分
+        description: 根据选中内容重置视野
+      resetScale:
+        title: 重置缩放
+        description: 将缩放重置为标准大小
   more:
     title: 更多
     items:
