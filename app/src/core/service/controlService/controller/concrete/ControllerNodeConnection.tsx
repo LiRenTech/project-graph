@@ -265,14 +265,11 @@ class ControllerNodeConnectionClass extends ControllerClass {
     }
     const selectedEntities = StageManager.getConnectableEntity().filter((entity) => entity.isSelected);
     // 还要保证当前舞台有节点被选中
+    // 连线
+    StageManager.connectMultipleEntities(selectedEntities, releaseTargetEntity);
+
     for (const selectedEntity of selectedEntities) {
-      const connectResult = StageManager.connectEntity(selectedEntity, releaseTargetEntity);
-      if (connectResult) {
-        // 连接成功，特效
-        this.addConnectEffect(selectedEntity, releaseTargetEntity);
-      } else {
-        console.warn("连接失败！", selectedEntity, releaseTargetEntity);
-      }
+      this.addConnectEffect(selectedEntity, releaseTargetEntity);
     }
   }
 
@@ -285,23 +282,19 @@ class ControllerNodeConnectionClass extends ControllerClass {
 
   private multiConnect(connectToEntity: ConnectableEntity) {
     // 鼠标在待连接节点上抬起
-    let isHaveConnectResult = false; // 在多重链接的情况下，是否有连接成功
+    // let isHaveConnectResult = false; // 在多重链接的情况下，是否有连接成功
 
     const isPressC = Controller.pressingKeySet.has("c");
 
+    // 连线
+    StageManager.connectMultipleEntities(this.connectFromEntities, connectToEntity, isPressC);
+
     for (const entity of this.connectFromEntities) {
-      const connectResult = StageManager.connectEntity(entity, connectToEntity, isPressC);
-      if (connectResult) {
-        // 连接成功，特效
-        isHaveConnectResult = true;
-        this.addConnectEffect(entity, connectToEntity);
-      } else {
-        console.warn("连接失败！", entity, connectToEntity);
-      }
+      this.addConnectEffect(entity, connectToEntity);
     }
-    if (isHaveConnectResult) {
-      // 给连向的那个节点加特效
-    }
+    // if (isHaveConnectResult) {
+    //   // 给连向的那个节点加特效
+    // }
   }
 
   private isConnecting() {

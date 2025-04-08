@@ -709,6 +709,35 @@ export namespace StageManager {
   }
 
   /**
+   * 多重连接，只记录一次历史
+   * @param fromNodes
+   * @param toNode
+   * @param isCrEdge
+   * @returns
+   */
+  export function connectMultipleEntities(
+    fromNodes: ConnectableEntity[],
+    toNode: ConnectableEntity,
+    isCrEdge: boolean = false,
+  ) {
+    if (fromNodes.length === 0) {
+      return false;
+    }
+    for (const fromNode of fromNodes) {
+      if (fromNode === toNode && !isAllowAddCycleEdge) {
+        continue;
+      }
+      if (isCrEdge) {
+        StageNodeConnector.addCrEdge(fromNode, toNode);
+      } else {
+        StageNodeConnector.connectConnectableEntity(fromNode, toNode);
+      }
+    }
+    StageHistoryManager.recordStep();
+    return true;
+  }
+
+  /**
    * 反转一个节点与他相连的所有连线方向
    * @param connectEntity
    */

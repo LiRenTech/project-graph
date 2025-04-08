@@ -10,6 +10,8 @@ import { Edge } from "./Edge";
 /**
  * CR曲线连线
  * 和早期的Edge一样，用于有向的连接两个实体，形成连接关系
+ * alpha 不用自己修改了，这个是0.5固定值了，只会微微影响形状
+ * tension 控制曲线的弯曲程度，0是折线。
  */
 export class CublicCatmullRomSplineEdge extends Edge {
   public uuid: string;
