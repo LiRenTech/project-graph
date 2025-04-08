@@ -84,7 +84,7 @@ Join us and shape the future of visual thinking:
 - **Telegram Group**: [@projectgraph](https://t.me/projectgraph)
 - **QQ Group**: [1006956704](https://qm.qq.com/cgi-bin/qm/qr?k=1Wskf2Y2KJz3ARpCgzi04y_p95a78Wku&jump_from=webapi&authKey=EkjB+oWihwZIfyqVsIv2dGrNv7bhSGSIULM3+ZLU2R5AVxOUKaIRwi6TKOHlT04/)
 
-We welcome PRs! Check [CONTRIBUTING.md](https://project-graph.top/contributing) for guidelines.
+We welcome PRs! Check [CONTRIBUTING.md](https://project-graph.top/docs/contribute) for guidelines.
 
 ## 📜 License
 

@@ -36,6 +36,7 @@ import {
   FileDown,
   Rabbit,
   Group,
+  ScrollText,
 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -115,6 +116,10 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         ],
       });
     }
+  };
+
+  const onNewFile = () => {
+    //
   };
 
   const onOpen = async () => {
@@ -382,12 +387,14 @@ export default function AppMenu({ className = "", open = false }: { className?: 
       onPointerDown={(e) => e.stopPropagation()}
     >
       <Row icon={<File />} title={t("file.title")}>
-        <Col icon={<FilePlus2 />} onClick={onNewDraft}>
+        <Col icon={<ScrollText />} onClick={onNewDraft}>
           {t("file.items.new")}
         </Col>
-        {/* <Col icon={<FilePlus2 />} onClick={onNewDraft}>
-          {t("file.items.newFile")}
-        </Col> */}
+        {!isWeb && (
+          <Col icon={<FilePlus2 />} onClick={onNewFile}>
+            {t("file.items.newFile")}
+          </Col>
+        )}
         <Col icon={<FileInput />} onClick={onOpen}>
           {t("file.items.open")}
         </Col>
