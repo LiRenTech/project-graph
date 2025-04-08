@@ -140,4 +140,4 @@ effects:
   dash: "#6b7280" # 夜雾拖影
   windowFlash: "#eef1f0" # 月光涟漪
   warningShadow: "rgba(177, 183, 189, 0.4)" # 夜鸮警示
-  successShadow: "rgba(120, 147, 175, 0.4)" # 清溪反光
+  successShadow: "rgba(83, 231, 237, 0.8)"
