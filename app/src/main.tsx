@@ -804,8 +804,21 @@ async function registerKeyBinds() {
   ).down(async () => {
     KeyboardOnlyTreeEngine.onDeepGenerateNode();
   });
+
   (
     await KeyBinds.create("masterBrakeControl", "pause", {
+      control: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(async () => {
+    // 按下一次就清空动力
+    Camera.clearMoveCommander();
+    Camera.speed = Vector.getZero();
+  });
+
+  (
+    await KeyBinds.create("masterBrakeCheckout", "space", {
       control: false,
       alt: false,
       shift: false,
@@ -816,6 +829,7 @@ async function registerKeyBinds() {
     Camera.speed = Vector.getZero();
     Settings.set("allowMoveCameraByWSAD", !(await Settings.get("allowMoveCameraByWSAD")));
   });
+
   (
     await KeyBinds.create("generateNodeTreeWithBroadMode", "\\", {
       control: false,
