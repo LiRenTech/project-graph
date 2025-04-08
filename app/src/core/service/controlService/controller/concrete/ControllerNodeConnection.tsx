@@ -84,6 +84,9 @@ class ControllerNodeConnectionClass extends ControllerClass {
       const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
       this.createConnectPointWhenConnect(pressWorldLocation);
     } else if (event.button === 2) {
+      // if (Stage.mouseRightDragBackground === "moveCamera") {
+      //   return;
+      // }
       // 正常右键按下
       this.onMouseDown(event);
     }

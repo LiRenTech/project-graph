@@ -186,6 +186,9 @@ export class ControllerCameraClass extends ControllerClass {
     if (event.button === 4) {
       Controller.setCursorNameHook(CursorNameEnum.Default);
     }
+    if (event.button === 2) {
+      Controller.setCursorNameHook(CursorNameEnum.Default);
+    }
     this.isUsingMouseGrabMove = false;
   };
   /**

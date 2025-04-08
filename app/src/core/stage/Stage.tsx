@@ -149,7 +149,7 @@ export namespace Stage {
   let tickNumber = 0;
 
   /** 当前鼠标右键拖拽空白部分的操作 */
-  export let mouseRightDragBackground = "cut";
+  export let mouseRightDragBackground: Settings.Settings["mouseRightDragBackground"] = "cut";
   export let enableDragAutoAlign = true;
   export let enableDragAlignToGrid = false;
 
