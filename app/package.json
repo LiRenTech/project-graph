@@ -25,7 +25,7 @@
     "@tauri-apps/plugin-http": "^2.2.0",
     "@tauri-apps/plugin-os": "^2.2.0",
     "@tauri-apps/plugin-process": "~2",
-    "@tauri-apps/plugin-shell": "2.2.0",
+    "@tauri-apps/plugin-shell": "2.2.1",
     "@tauri-apps/plugin-store": "^2.2.0",
     "@tauri-apps/plugin-updater": "~2",
     "decimal.js": "^10.5.0",
@@ -59,7 +59,7 @@
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.2",
     "uuid": "^11.0.3",
-    "vite": "^6.0.6",
+    "vite": "^6.0.14",
     "vite-plugin-svgr": "^4.3.0",
     "vitest": "3.0.5"
   }
