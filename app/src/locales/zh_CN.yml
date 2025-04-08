@@ -508,7 +508,8 @@ appMenu:
   file:
     title: 文件
     items:
-      new: 新建
+      new: 新建草稿
+      newFile: 新建文件
       open: 打开
       save: 保存
       saveAs: 另存为

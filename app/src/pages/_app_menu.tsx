@@ -385,6 +385,9 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         <Col icon={<FilePlus2 />} onClick={onNewDraft}>
           {t("file.items.new")}
         </Col>
+        {/* <Col icon={<FilePlus2 />} onClick={onNewDraft}>
+          {t("file.items.newFile")}
+        </Col> */}
         <Col icon={<FileInput />} onClick={onOpen}>
           {t("file.items.open")}
         </Col>

@@ -522,7 +522,8 @@ appMenu:
   file:
     title: File
     items:
-      new: New
+      new: New Draft
+      newFile: new File
       open: Open
       save: Save
       saveAs: Save As

@@ -421,7 +421,8 @@ appMenu:
   file:
     title: 檔案
     items:
-      new: 新建
+      new: 新建草稿
+      newFile: 新建文件
       open: 打開
       save: 保存
       saveAs: 另存為
