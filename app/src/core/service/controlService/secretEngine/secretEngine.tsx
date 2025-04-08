@@ -623,6 +623,27 @@ export class SecretEngine {
         }
       },
     },
+    "d e l e t e delete a l l": {
+      name: "废档了，全部删除",
+      explain: "当当前文档是实验性文档，且出现有无法删除的物体时，可以尝试使用这个命令",
+      func() {
+        StageManager.destroy();
+      },
+    },
+    "t u r n a r r o u n d 1": {
+      name: "将选中的实体永远原地旋转",
+      explain: "如果关闭，重启软件即可恢复",
+      func() {
+        const selectedNodes = StageManager.getSelectedEntities();
+        let i = 0;
+        setInterval(() => {
+          i++;
+          selectedNodes.forEach((node) => {
+            node.move(Vector.fromDegrees(i));
+          });
+        });
+      },
+    },
   };
 
   // 监听按键 并触发相应效果，每次按键都会触发
