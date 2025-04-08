@@ -75,6 +75,7 @@ import ComplexityResultPanel from "./_fixed_panel/_complexity_result_panel";
 import ExportSvgPanel from "./_popup_panel/_export_svg_panel";
 import SearchingNodePanel from "./_popup_panel/_searching_node_panel";
 import { createFolder, exists } from "../utils/fs";
+import { useState } from "react";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -533,6 +534,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           onClick={() => {
             StageManager.refreshAllStageObjects();
           }}
+          details="刷新当前舞台所有实体"
         >
           刷新全部实体
         </Col>
@@ -729,9 +731,18 @@ function Col({
   children,
   icon,
   className = "",
+  details = "",
   id, // 移除默认值
   onClick = () => {},
-}: React.PropsWithChildren<{ icon: React.ReactNode; onClick?: () => void; className?: string; id?: string }>) {
+}: React.PropsWithChildren<{
+  icon: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
+  details?: string;
+  id?: string;
+}>) {
+  const [showDetails, setShowDetails] = useState(false);
+
   return (
     <div
       className={cn(
@@ -744,11 +755,24 @@ function Col({
         SoundService.play.mouseClickButton();
       }}
       onMouseEnter={() => {
+        setShowDetails(true);
         SoundService.play.mouseEnterButton();
+      }}
+      onMouseLeave={() => {
+        setShowDetails(false);
       }}
     >
       {icon}
       {children}
+
+      {showDetails && details && (
+        <div
+          className="bg-appmenu-hover-bg text-appmenu-item-text fixed bottom-0 left-0 right-0 flex h-12 w-full items-center justify-center rounded-md bg-opacity-70 p-2 text-sm"
+          style={{ zIndex: 1000 }}
+        >
+          {details}
+        </div>
+      )}
     </div>
   );
 }
