@@ -99,12 +99,10 @@ export namespace Camera {
     // 获得速度的大小和方向
 
     if (Number.isNaN(location.x) || Number.isNaN(location.y)) {
-      //       // Dialog.show({
-      //   title: "派蒙",
-      //   content: "前面的区域以后再来探索吧？",
-      //   type: "error",
-      // });
-      Stage.effectMachine.addEffect(new TextRiseEffect("派蒙：前面的区域以后再来探索吧？"));
+      // 实测只有把摩擦力和动力都拉满时才会瞬间触发NaN，当玩家正常数据状态下有意识地向远处飞时反而不会触发
+      // 因此这个彩蛋可能是个bug。先暂时改成正常的提示语
+      // Stage.effectMachine.addEffect(new TextRiseEffect("派蒙：前面的区域以后再来探索吧？"));
+      Stage.effectMachine.addEffect(new TextRiseEffect("出现错误：摄像机位置为NaN"));
       speed = Vector.getZero();
       reset();
       return;
