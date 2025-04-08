@@ -945,6 +945,10 @@ keyBinds:
     title: 设置左键为“连线/斩断”模式
     description: |
       也就是鼠标左键切换为连线/斩断 模式，在工具栏中有对应按钮
+  checkoutLeftMouseToConnectAndCuttingOnlyPressed:
+    title: 设置左键为“连线/斩断”模式（仅按下时）
+    description: |
+      松开时切换回默认的鼠标模式
   penStrokeWidthIncrease:
     title: 涂鸦笔画变粗
     description: 按下后，笔画变粗

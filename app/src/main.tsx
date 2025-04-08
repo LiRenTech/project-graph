@@ -755,6 +755,7 @@ async function registerKeyBinds() {
   });
 
   // 鼠标左键切换为连接模式
+  // let lastMouseMode = LeftMouseModeEnum.selectAndMove;
   (
     await KeyBinds.create("checkoutLeftMouseToConnectAndCutting", "c", {
       control: false,
@@ -765,6 +766,22 @@ async function registerKeyBinds() {
   ).down(async () => {
     Stage.MouseModeManager.checkoutConnectAndCuttingHook();
   });
+
+  (
+    await KeyBinds.create("checkoutLeftMouseToConnectAndCuttingOnlyPressed", "z", {
+      control: false,
+      meta: false,
+      alt: false,
+      shift: false,
+    })
+  )
+    .down(async () => {
+      // lastMouseMode = Stage.leftMouseMode;
+      Stage.MouseModeManager.checkoutConnectAndCuttingHook();
+    })
+    .up(async () => {
+      Stage.MouseModeManager.checkoutSelectAndMoveHook();
+    });
 
   (
     await KeyBinds.create("selectEntityByPenStroke", "w", {
