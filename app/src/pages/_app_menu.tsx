@@ -506,12 +506,12 @@ export default function AppMenu({ className = "", open = false }: { className?: 
                 content: "加载帮助内容会在您的当前舞台上贴入很多内容，建议清空舞台或新建草稿后再加载帮助。",
                 buttons: [
                   {
-                    text: "叠！",
+                    text: "加载",
                     onClick: () => {
                       HelpService.loadHelp();
                     },
                   },
-                  { text: "取消" },
+                  { text: "我先切换一下草稿" },
                 ],
               });
             }

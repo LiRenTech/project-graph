@@ -786,6 +786,18 @@ async function registerKeyBinds() {
     KeyboardOnlyTreeEngine.onDeepGenerateNode();
   });
   (
+    await KeyBinds.create("masterBrakeControl", "pause", {
+      control: false,
+      alt: false,
+      shift: false,
+    })
+  ).down(async () => {
+    // 看成汽车的手刹，按下一次就切换是否允许移动
+    Camera.clearMoveCommander();
+    Camera.speed = Vector.getZero();
+    Settings.set("allowMoveCameraByWSAD", !(await Settings.get("allowMoveCameraByWSAD")));
+  });
+  (
     await KeyBinds.create("generateNodeTreeWithBroadMode", "\\", {
       control: false,
       meta: false,
@@ -809,21 +821,6 @@ async function registerKeyBinds() {
     if (KeyboardOnlyGraphEngine.isCreating()) {
       KeyboardOnlyGraphEngine.createFinished();
     }
-  });
-
-  const bindCamear = await KeyBinds.create("masterBrakeControl", "pause", {
-    control: false,
-    alt: false,
-    shift: false,
-  });
-  // 此按键有待进一步设计
-  bindCamear.down(() => {
-    // Camera.allowMoveCameraByWSAD = false;
-    Camera.clearMoveCommander();
-    Camera.speed = Vector.getZero();
-  });
-  bindCamear.up(() => {
-    // Camera.allowMoveCameraByWSAD = true;
   });
 }
 

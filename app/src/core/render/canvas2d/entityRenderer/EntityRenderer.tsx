@@ -268,6 +268,12 @@ export namespace EntityRenderer {
     }
     renderEntityDetails(imageNode);
   }
+
+  /**
+   * 渲染涂鸦笔画
+   * TODO: 绘制时的碰撞箱应该有一个合适的宽度
+   * @param penStroke
+   */
   function renderPenStroke(penStroke: PenStroke) {
     let penStrokeColor = penStroke.getColor();
     if (penStrokeColor.a === 0) {

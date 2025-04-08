@@ -789,10 +789,10 @@ keyBinds:
       松开后，生长完成
       使用此功能前先确保已选中一个节点
   masterBrakeControl:
-    title: 动力系统刹车总控制器
+    title: 开启/关闭通过按键控制摄像机移动
     description: |
-      按下后，摄像机无法移动
-      松开后，摄像机恢复正常
+      按下后会切换是否允许 “W S A D”键控制摄像机移动
+      可以用于临时禁止摄像机移动，在输入秘籍键或含有WSAD的快捷键时防止视野移动
   selectAll:
     title: 全选
     description: 按下后，所有节点和连线都会被选中
