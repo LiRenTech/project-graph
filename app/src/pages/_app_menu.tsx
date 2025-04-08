@@ -559,15 +559,16 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           onClick={() => {
             StageHistoryManager.redo();
           }}
+          details="反撤销：用于撤销撤过头了，恢复一次撤销"
         >
-          反撤销
+          重做
         </Col>
         <Col
           icon={<Search />}
           onClick={() => {
             Popup.show(<SearchingNodePanel />, false);
           }}
-          details="根据文字，搜索节点/实体详细信息，等含有文字的内容"
+          details="根据文字，搜索节点/实体详细信息，等含有文字的内容，建议将鼠标移动到窗口边缘后按ctrl+f"
         >
           查找
         </Col>
@@ -608,7 +609,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
               ],
             });
           }}
-          details="清空当前舞台全部内容，用于当前舞台内容不重要，出现无法手动删除的内容时，一键清理草稿"
+          details="清空当前舞台全部内容，用于当前舞台内容不重要，出现无法手动删除的故障内容时，一键清理草稿"
         >
           清空
         </Col>
