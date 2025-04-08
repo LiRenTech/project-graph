@@ -131,6 +131,8 @@ export async function writeTextFile(path: string, content: string): Promise<void
 /**
  * 创建文件夹
  * @param path 文件夹路径
+ * TODO: 返回的布尔值有bug，明明已经创建了，但还是返回false
+ * —— 2025年4月8日
  */
 export async function createFolder(path: string): Promise<boolean> {
   if (isWeb) {

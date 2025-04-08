@@ -73,6 +73,7 @@ import { PathString } from "../utils/pathString";
 import ComplexityResultPanel from "./_fixed_panel/_complexity_result_panel";
 import ExportSvgPanel from "./_popup_panel/_export_svg_panel";
 import SearchingNodePanel from "./_popup_panel/_searching_node_panel";
+import { createFolder, exists } from "../utils/fs";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -118,8 +119,68 @@ export default function AppMenu({ className = "", open = false }: { className?: 
     }
   };
 
-  const onNewFile = () => {
-    //
+  /**
+   * 新建文件夹和文件
+   */
+  const onNewFile = async () => {
+    // 选择文件夹路径
+    if (!StageSaveManager.isSaved()) {
+      Dialog.show({
+        title: "未保存",
+        content: "您打算新建一个文件，但当前文件未保存，请选择您的操作",
+        buttons: [
+          {
+            text: "保存",
+            onClick: onSave,
+          },
+        ],
+      });
+      return;
+    }
+    const path = await saveFileDialog({
+      title: "新建文件，更改“XXX”时，不要输入后缀名，直接输入文件名即可",
+      defaultPath: "XXX", // 提供一个默认的文件名
+      // filters: [
+      //   {
+      //     name: "Project Graph",
+      //     extensions: ["json"],
+      //   },
+      // ],
+    });
+
+    if (!path) {
+      return;
+    }
+
+    console.log("onNewFile", path);
+    // D:\Desktop\插件测试\XXX
+    await createFolder(path);
+    const createFolderResult = await exists(path);
+    if (!createFolderResult) {
+      Dialog.show({
+        title: "创建文件夹失败",
+        content: "创建文件夹时失败：(" + path + ")",
+        type: "error",
+      });
+      return;
+    }
+    // 文件夹创建成功
+    // 开始创建文件
+    // 获取文件名
+    const fileName = PathString.getFileNameFromPath(path);
+    const filePath = `${path}${PathString.getSep()}${fileName}.json`;
+    // 创建文件
+    try {
+      StageManager.destroy();
+      setFile(filePath);
+      Camera.reset();
+    } catch {
+      Dialog.show({
+        title: "创建文件失败",
+        content: "创建文件时失败：(" + filePath + ")",
+        type: "error",
+      });
+    }
   };
 
   const onOpen = async () => {
@@ -387,17 +448,6 @@ export default function AppMenu({ className = "", open = false }: { className?: 
       onPointerDown={(e) => e.stopPropagation()}
     >
       <Row icon={<File />} title={t("file.title")}>
-        <Col icon={<ScrollText />} onClick={onNewDraft}>
-          {t("file.items.new")}
-        </Col>
-        {!isWeb && (
-          <Col icon={<FilePlus2 />} onClick={onNewFile}>
-            {t("file.items.newFile")}
-          </Col>
-        )}
-        <Col icon={<FileInput />} onClick={onOpen}>
-          {t("file.items.open")}
-        </Col>
         {!isWeb && (
           <>
             <Col icon={<FileClock />} id="app-menu-recent-file-btn" onClick={() => setRecentFilePanelOpen(true)}>
@@ -408,6 +458,17 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             </Col>
           </>
         )}
+        {!isWeb && (
+          <Col icon={<FilePlus2 />} onClick={onNewFile}>
+            {t("file.items.newFile")}
+          </Col>
+        )}
+        <Col icon={<ScrollText />} onClick={onNewDraft}>
+          {t("file.items.new")}
+        </Col>
+        <Col icon={<FileInput />} onClick={onOpen}>
+          {t("file.items.open")}
+        </Col>
         <Col icon={<FileDown />} onClick={onSaveNew}>
           {t("file.items.saveAs")}
         </Col>
