@@ -3,5 +3,15 @@
   "description": "快速绘制节点图的桌面工具",
   "root": true,
   "icon": "AppWindowMac",
-  "pages": ["---指南---", "index", "---特性---", "stage-object", "feature", "---杂项---", "faq", "donate"]
+  "pages": [
+    "---指南---",
+    "index",
+    "---特性---",
+    "stage-object",
+    "feature",
+    "---杂项---",
+    "announcement",
+    "faq",
+    "donate"
+  ]
 }
