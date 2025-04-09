@@ -514,7 +514,7 @@ appMenu:
       save: 保存
       saveAs: 另存为
       recent: 最近打开
-      backup: 备份
+      backup: 手动备份
   location:
     title: 位置
     items:
@@ -968,4 +968,5 @@ keyBinds:
     title: 涂鸦笔画变粗
     description: 按下后，笔画变粗
   penStrokeWidthDecrease:
+    title: 涂鸦笔画变细
     description: 按下后，笔画变细

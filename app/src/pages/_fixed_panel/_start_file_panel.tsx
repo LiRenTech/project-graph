@@ -207,6 +207,10 @@ export default function StartFilePanel({ open = false }: { open: boolean }) {
       }}
     >
       <h2 className="mb-3 text-xl font-bold">{t("title")}</h2>
+      <p className="text-panel-warning-text mb-3 text-xs">
+        警告：近期发现部分用户反映此功能异常，自动打开文件时小概率导致文件内全部连线丢失，请谨慎使用！
+      </p>
+      <p className="text-panel-warning-text mb-3 text-xs">不要自动加载重要且庞大的文件</p>
       <div className="mb-3 flex justify-between">
         <IconButton onClick={onAddFile}>
           <span className="flex">
