@@ -1,7 +1,7 @@
 import { CursorNameEnum } from "../../../../../types/cursors";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Stage } from "../../../../stage/Stage";
+import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { StageNodeConnector } from "../../../../stage/stageManager/concreteMethods/StageNodeConnector";
 import { StageNodeRotate } from "../../../../stage/stageManager/concreteMethods/stageNodeRotate";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
@@ -32,6 +32,9 @@ ControllerNodeRotation.mousewheel = (event: WheelEvent) => {
 };
 
 ControllerNodeRotation.mousedown = (event: MouseEvent) => {
+  if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    return;
+  }
   if (event.button !== 0) {
     return;
   }
@@ -66,13 +69,16 @@ ControllerNodeRotation.mousedown = (event: MouseEvent) => {
 };
 
 ControllerNodeRotation.mousemove = (event: MouseEvent) => {
+  if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    return;
+  }
   if (Stage.selectMachine.isUsing || Stage.cuttingMachine.isUsing) {
     return;
   }
   const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
   if (Controller.isMouseDown[0]) {
     if (Controller.pressingKeySet.has("control")) {
-      // 更改连线的目标
+      // 更改Edge的目标
       const entity = StageManager.findConnectableEntityByLocation(worldLocation);
       if (entity !== null) {
         // 找到目标，更改目标
@@ -80,7 +86,7 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
       }
     } else {
       const diffLocation = worldLocation.subtract(ControllerNodeRotation.lastMoveLocation);
-      // 拖拽连线
+      // 拖拽Edge
       Controller.isMovingEdge = true;
       StageNodeRotate.moveEdges(ControllerNodeRotation.lastMoveLocation, diffLocation);
     }
@@ -93,6 +99,9 @@ ControllerNodeRotation.mousemove = (event: MouseEvent) => {
 };
 
 ControllerNodeRotation.mouseup = (event: MouseEvent) => {
+  if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    return;
+  }
   if (event.button !== 0) {
     return;
   }
