@@ -200,15 +200,17 @@ export namespace EntityRenderer {
       CollisionBoxRenderer.render(imageNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     // 节点身体矩形
-    ShapeRenderer.renderRect(
-      new Rectangle(
-        Renderer.transformWorld2View(imageNode.rectangle.location),
-        imageNode.rectangle.size.multiply(Camera.currentScale),
-      ),
-      Color.Transparent,
-      StageStyleManager.currentStyle.StageObjectBorder,
-      2 * Camera.currentScale,
-    );
+    // 2群群友反馈这个图片不加边框应该更好看。因为有透明logo图案，边框贴紧会很难看。
+
+    // ShapeRenderer.renderRect(
+    //   new Rectangle(
+    //     Renderer.transformWorld2View(imageNode.rectangle.location),
+    //     imageNode.rectangle.size.multiply(Camera.currentScale),
+    //   ),
+    //   Color.Transparent,
+    //   StageStyleManager.currentStyle.StageObjectBorder,
+    //   2 * Camera.currentScale,
+    // );
     if (imageNode.state === "loading") {
       TextRenderer.renderTextFromCenter(
         "loading...",
