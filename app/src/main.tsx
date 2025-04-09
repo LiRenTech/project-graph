@@ -52,6 +52,7 @@ import { getCurrentWindow, isDesktop, isFrame, isMac, isWeb } from "./utils/plat
 import { PenStrokeMethods } from "./core/stage/stageManager/basicMethods/PenStrokeMethods";
 import { KeyboardOnlyTreeEngine } from "./core/service/controlService/keyboardOnlyEngine/keyboardOnlyTreeEngine";
 import { KeyboardOnlyGraphEngine } from "./core/service/controlService/keyboardOnlyEngine/keyboardOnlyGraphEngine";
+import { UserScriptsManager } from "./core/plugin/UserScriptsManager";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -71,6 +72,7 @@ const el = document.getElementById("root")!;
     KeyBinds.init(),
     ColorManager.init(),
     Tourials.init(),
+    UserScriptsManager.init(),
   ]);
   // 这些东西依赖上面的东西，所以单独一个Promise.all
   await Promise.all([loadLanguageFiles(), loadSyncModules(), loadStartFile(), registerKeyBinds()]);

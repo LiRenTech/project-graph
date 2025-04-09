@@ -18,6 +18,7 @@ export type Path =
   | `/settings/performance`
   | `/settings/physical`
   | `/settings/plugins`
+  | `/settings/scripts`
   | `/settings/sounds`
   | `/settings/themes`
   | `/settings/visual`

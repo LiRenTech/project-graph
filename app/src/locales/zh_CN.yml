@@ -81,6 +81,7 @@ settings:
     github: GitHub
     sounds: 声音
     plugins: 插件
+    scripts: 脚本
     themes: 主题
   language:
     title: 语言

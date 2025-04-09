@@ -2,6 +2,9 @@ import { Vector } from "../dataStruct/Vector";
 import { Camera } from "../stage/Camera";
 import { APIMethods, apiValidators, PluginManifest, WorkerMessage } from "./types";
 
+/**
+ * 插件工作线程
+ */
 export class PluginWorker {
   private blobUrl: string;
   private worker: Worker;
@@ -12,7 +15,10 @@ export class PluginWorker {
     const blob = new Blob([code], { type: "text/javascript" });
     // 创建worker
     this.blobUrl = URL.createObjectURL(blob);
+    console.log("开始创建worker");
     this.worker = new Worker(this.blobUrl);
+    console.log("worker创建成功");
+
     this.allowedMethods = manifest.permissions;
 
     // worker接收到信息，判断是否为API调用

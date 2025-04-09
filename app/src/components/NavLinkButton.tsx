@@ -20,7 +20,7 @@ export default function NavLinkButton({
       to={to}
       className={cn(className, isActive && "border-icon-button-border border-1")}
       onMouseEnter={() => {
-        console.log("mouse enter");
+        // console.log("mouse enter");
         SoundService.play.mouseEnterButton();
       }}
       onMouseDown={(e: React.MouseEvent) => {

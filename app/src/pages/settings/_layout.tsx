@@ -1,6 +1,7 @@
 import {
   Bot,
   Brain,
+  CodeXml,
   Command,
   Eye,
   Info,
@@ -77,6 +78,10 @@ export default function SettingsLayout() {
           <NavLinkButton to="/settings/plugins">
             <Plug />
             {t("tabs.plugins")}
+          </NavLinkButton>
+          <NavLinkButton to="/settings/scripts">
+            <CodeXml />
+            {t("tabs.scripts")}
           </NavLinkButton>
         </div>
         <div className="mx-auto max-w-[900px] flex-1 overflow-auto">

@@ -11,6 +11,9 @@ describe("plugin", () => {
   it("call test api", () => {
     new PluginWorker(
       `
+      console.log(this);
+      console.log(window);
+      
       window.postMessage({
         type: "callAPIMethod",
         payload: {
