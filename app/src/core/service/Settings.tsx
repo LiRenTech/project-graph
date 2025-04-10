@@ -97,6 +97,7 @@ export namespace Settings {
     mouseWheelMode: "zoom" | "move" | "moveX" | "none";
     mouseWheelWithShiftMode: "zoom" | "move" | "moveX" | "none";
     mouseWheelWithCtrlMode: "zoom" | "move" | "moveX" | "none";
+    mouseWheelWithAltMode: "zoom" | "move" | "moveX" | "none";
     doubleClickMiddleMouseButton: "none" | "adjustCamera";
     // 音效相关
     soundEnabled: boolean;
@@ -194,8 +195,9 @@ export namespace Settings {
     textNodeSelectAllWhenStartEditByKeyboard: false,
     textNodeSelectAllWhenStartEditByMouseClick: true,
     mouseWheelMode: "zoom",
-    mouseWheelWithShiftMode: "move",
-    mouseWheelWithCtrlMode: "zoom",
+    mouseWheelWithShiftMode: "moveX",
+    mouseWheelWithCtrlMode: "move",
+    mouseWheelWithAltMode: "none",
     doubleClickMiddleMouseButton: "adjustCamera",
     // 音效相关
     soundEnabled: true,

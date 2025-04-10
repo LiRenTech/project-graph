@@ -279,6 +279,16 @@ export class ControllerCameraClass extends ControllerClass {
           return;
         }
       }
+    } else if (Controller.pressingKeySet.has("alt")) {
+      if (Camera.mouseWheelWithAltMode === "zoom") {
+        zoomCameraByMouseWheel(event);
+      } else if (Camera.mouseWheelWithAltMode === "move") {
+        moveCameraByMouseWheel(event);
+      } else if (Camera.mouseWheelWithAltMode === "moveX") {
+        moveXCameraByMouseWheel(event);
+      } else if (Camera.mouseWheelWithAltMode === "none") {
+        return;
+      }
     } else {
       if (Camera.mouseWheelMode === "zoom") {
         zoomCameraByMouseWheel(event);

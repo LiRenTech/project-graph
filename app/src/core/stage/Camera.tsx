@@ -85,6 +85,7 @@ export namespace Camera {
   export let mouseWheelMode: Settings.Settings["mouseWheelMode"] = "zoom";
   export let mouseWheelWithShiftMode: Settings.Settings["mouseWheelWithShiftMode"] = "zoom";
   export let mouseWheelWithCtrlMode: Settings.Settings["mouseWheelWithCtrlMode"] = "zoom";
+  export let mouseWheelWithAltMode: Settings.Settings["mouseWheelWithAltMode"] = "zoom";
   let cameraKeyboardScaleRate = 0.2;
   let cameraResetViewPaddingRate = 1.5;
   export let cameraFollowsSelectedNodeOnArrowKeys = false;
@@ -286,6 +287,9 @@ export namespace Camera {
     });
     Settings.watch("mouseWheelWithCtrlMode", (value) => {
       mouseWheelWithCtrlMode = value;
+    });
+    Settings.watch("mouseWheelWithAltMode", (value) => {
+      mouseWheelWithAltMode = value;
     });
     Settings.watch("cameraResetViewPaddingRate", (value) => {
       cameraResetViewPaddingRate = value;
