@@ -426,18 +426,21 @@ settings:
       zoom: 缩放
       move: 纵向移动
       moveX: 横向移动
+      none: 无操作
   mouseWheelWithShiftMode:
     title: 按住Shift时，鼠标滚轮模式
     options:
       zoom: 缩放
       move: 纵向移动
       moveX: 横向移动
+      none: 无操作
   mouseWheelWithCtrlMode:
     title: 按住Ctrl时，鼠标滚轮模式
     options:
       zoom: 缩放
       move: 纵向移动
       moveX: 横向移动
+      none: 无操作
   rectangleSelectWhenLeft:
     title: 向左框选的策略
     description: |

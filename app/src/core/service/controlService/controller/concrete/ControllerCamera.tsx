@@ -259,6 +259,8 @@ export class ControllerCameraClass extends ControllerClass {
         moveCameraByMouseWheel(event);
       } else if (Camera.mouseWheelWithShiftMode === "moveX") {
         moveXCameraByMouseWheel(event);
+      } else if (Camera.mouseWheelWithShiftMode === "none") {
+        return;
       }
     } else if (Controller.pressingKeySet.has("control")) {
       // 不要在节点上滚动
@@ -273,6 +275,8 @@ export class ControllerCameraClass extends ControllerClass {
           moveCameraByMouseWheel(event);
         } else if (Camera.mouseWheelWithCtrlMode === "moveX") {
           moveXCameraByMouseWheel(event);
+        } else if (Camera.mouseWheelWithCtrlMode === "none") {
+          return;
         }
       }
     } else {
@@ -282,6 +286,8 @@ export class ControllerCameraClass extends ControllerClass {
         moveCameraByMouseWheel(event);
       } else if (Camera.mouseWheelMode === "moveX") {
         moveXCameraByMouseWheel(event);
+      } else if (Camera.mouseWheelMode === "none") {
+        return;
       }
     }
 

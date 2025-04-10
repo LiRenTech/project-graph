@@ -94,9 +94,9 @@ export namespace Settings {
     textNodeStartEditMode: "enter" | "ctrlEnter" | "altEnter" | "shiftEnter" | "space";
     textNodeSelectAllWhenStartEditByKeyboard: boolean;
     textNodeSelectAllWhenStartEditByMouseClick: boolean;
-    mouseWheelMode: "zoom" | "move" | "moveX";
-    mouseWheelWithShiftMode: "zoom" | "move" | "moveX";
-    mouseWheelWithCtrlMode: "zoom" | "move" | "moveX";
+    mouseWheelMode: "zoom" | "move" | "moveX" | "none";
+    mouseWheelWithShiftMode: "zoom" | "move" | "moveX" | "none";
+    mouseWheelWithCtrlMode: "zoom" | "move" | "moveX" | "none";
     doubleClickMiddleMouseButton: "none" | "adjustCamera";
     // 音效相关
     soundEnabled: boolean;
