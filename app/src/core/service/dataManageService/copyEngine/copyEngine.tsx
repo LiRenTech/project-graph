@@ -173,6 +173,29 @@ export namespace CopyEngine {
   }
 }
 
+export function getRectangleFromSerializedEntities(serializedEntities: Serialized.Entity[]): Rectangle {
+  const rectangles = [];
+  for (const node of serializedEntities) {
+    if (
+      Serialized.isTextNode(node) ||
+      Serialized.isSection(node) ||
+      Serialized.isImageNode(node) ||
+      Serialized.isUrlNode(node) ||
+      Serialized.isPortalNode(node)
+    ) {
+      // 比较常规的矩形
+      rectangles.push(new Rectangle(new Vector(...node.location), new Vector(...node.size)));
+    }
+    if (node.type === "core:connect_point") {
+      rectangles.push(new Rectangle(new Vector(...node.location), new Vector(1, 1)));
+    } else if (node.type === "core:pen_stroke") {
+      // rectangles.push(new Rectangle(new Vector(...node.location), new Vector(1, 1)));
+      // TODO: 画笔粘贴板矩形暂时不考虑
+    }
+  }
+  return Rectangle.getBoundingRectangle(rectangles);
+}
+
 async function readClipboardItems(mouseLocation: Vector) {
   // test
   try {

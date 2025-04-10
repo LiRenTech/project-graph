@@ -625,24 +625,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         <Col
           icon={<PersonStanding />}
           onClick={() => {
-            if (StageManager.isEmpty()) {
-              HelpService.loadHelp();
-            } else {
-              Dialog.show({
-                title: "帮助内容会覆盖当前舞台",
-                type: "warning",
-                content: "加载帮助内容会在您的当前舞台上贴入很多内容，建议清空舞台或新建草稿后再加载帮助。",
-                buttons: [
-                  {
-                    text: "加载",
-                    onClick: () => {
-                      HelpService.loadHelp();
-                    },
-                  },
-                  { text: "我先切换一下草稿" },
-                ],
-              });
-            }
+            HelpService.loadHelp();
           }}
         >
           新手引导
