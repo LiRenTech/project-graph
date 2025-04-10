@@ -167,13 +167,17 @@ class ControllerDrawingClass extends ControllerClass {
   };
 
   public mousewheel: (event: WheelEvent) => void = (event: WheelEvent) => {
-    if (Controller.pressingKeySet.has("shift")) {
-      if (event.deltaY > 0) {
-        DrawingControllerRenderer.rotateUpAngle();
-      } else {
-        DrawingControllerRenderer.rotateDownAngle();
-      }
-      console.log("旋转了量角器");
+    if (!Controller.pressingKeySet.has("shift")) {
+      return;
+    }
+    if (Stage.leftMouseMode !== LeftMouseModeEnum.draw) {
+      // 涂鸦模式下才能看到量角器，或者转动量角器
+      return;
+    }
+    if (event.deltaY > 0) {
+      DrawingControllerRenderer.rotateUpAngle();
+    } else {
+      DrawingControllerRenderer.rotateDownAngle();
     }
   };
 
