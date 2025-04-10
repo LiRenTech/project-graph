@@ -84,6 +84,13 @@ export namespace RecentFileManager {
     store.save();
   }
 
+  export async function addRecentFileByPath(path: string) {
+    await addRecentFile({
+      path: path,
+      time: new Date().getTime(),
+    });
+  }
+
   /**
    * 获取最近打开的文件列表
    */

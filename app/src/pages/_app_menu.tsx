@@ -173,6 +173,8 @@ export default function AppMenu({ className = "", open = false }: { className?: 
     // 获取文件名
     const fileName = PathString.getFileNameFromPath(path);
     const filePath = `${path}${PathString.getSep()}${fileName}.json`;
+    // 更新历史
+    RecentFileManager.addRecentFileByPath(filePath);
     // 创建文件
     try {
       StageManager.destroy();
@@ -313,6 +315,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
     try {
       await StageSaveManager.saveHandle(path, data);
       setFile(path);
+      RecentFileManager.addRecentFileByPath(path);
     } catch {
       await Dialog.show({
         title: "保存失败",
