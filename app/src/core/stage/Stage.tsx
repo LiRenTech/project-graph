@@ -9,7 +9,7 @@ import { ControllerDrawing } from "../service/controlService/controller/concrete
 import { ControllerRectangleSelect } from "../service/controlService/controller/concrete/ControllerRectangleSelect";
 import { Controller } from "../service/controlService/controller/Controller";
 import { KeyboardOnlyEngine } from "../service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
-import { SecretKeyEngine } from "../service/controlService/secretKeyEngine/secretKeyEngine";
+import { SecretKeysEngine } from "../service/controlService/secretKeysEngine/secretKeysEngine";
 import { StageMouseInteractionCore } from "../service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
 import { AutoBackupEngine } from "../service/dataFileService/autoSaveBackupEngine/autoBackupEngine";
 import { AutoSaveEngine } from "../service/dataFileService/autoSaveBackupEngine/autoSaveEngine";
@@ -119,7 +119,7 @@ export namespace Stage {
 
   export const exportEngine = new StageExportEngine();
 
-  export const secretKeyEngine = new SecretKeyEngine();
+  export const secretKeyEngine = new SecretKeysEngine();
 
   /**
    * 逻辑总入口

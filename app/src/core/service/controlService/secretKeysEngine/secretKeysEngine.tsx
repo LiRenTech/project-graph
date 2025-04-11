@@ -34,7 +34,7 @@ interface SecretKeyItem {
  * 秘籍键系统
  * 类似于游戏中的秘籍键，可以触发一些特殊效果，主要用于方便测试和调试，也可以当成彩蛋。
  */
-export class SecretKeyEngine {
+export class SecretKeysEngine {
   // 存的是小写后的按键名称
   pressedKeys: Queue<string> = new Queue<string>();
   // 最大按键数量
@@ -52,7 +52,7 @@ export class SecretKeyEngine {
         Stage.effectMachine.addEffect(TextRiseEffect.default("触发了测试按键"));
       }
       // 将队列长度限制
-      while (this.pressedKeys.length > SecretKeyEngine.maxPressedKeys) {
+      while (this.pressedKeys.length > SecretKeysEngine.maxPressedKeys) {
         this.pressedKeys.dequeue();
       }
     });
