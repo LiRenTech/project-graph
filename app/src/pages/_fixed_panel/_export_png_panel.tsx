@@ -9,6 +9,7 @@ import { Stage } from "../../core/stage/Stage";
 import { isExportPNGPanelOpenAtom } from "../../state";
 import { cn } from "../../utils/cn";
 import { PathString } from "../../utils/pathString";
+import { StageManager } from "../../core/stage/stageManager/StageManager";
 
 /**
  * 导出png的面板
@@ -112,6 +113,14 @@ export default function ExportPNGPanel() {
       <div className="my-2 flex justify-center gap-2">
         <Button
           onClick={() => {
+            // 如果当前舞台没有内容，则不能渲染
+            if (StageManager.isEmpty()) {
+              Dialog.show({
+                title: "舞台没有内容",
+                content: "请先添加内容到舞台",
+              });
+              return;
+            }
             // 先清空box内部的内容
             const exportPngImageBox = document.getElementById("export-png-image-box");
             if (exportPngImageBox) {
