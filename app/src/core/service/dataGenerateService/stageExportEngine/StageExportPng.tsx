@@ -18,6 +18,8 @@ export namespace StageExportPng {
    */
   let cameraScaleWhenExport = 0.5;
 
+  const PADDING = 100;
+
   export function changeCameraScaleWhenExport(scale: number) {
     cameraScaleWhenExport = scale;
   }
@@ -39,8 +41,8 @@ export namespace StageExportPng {
     // 创建完毕
 
     const stageRect = StageManager.getBoundingRectangle();
-    const topLeft = stageRect.leftTop;
-    const bottomRight = stageRect.rightBottom;
+    const topLeft = stageRect.leftTop.subtract(new Vector(PADDING, PADDING));
+    const bottomRight = stageRect.rightBottom.add(new Vector(PADDING, PADDING));
     // 开始把画布内容渲染到新画布上
     Camera.targetScale = cameraScaleWhenExport;
     Camera.currentScale = cameraScaleWhenExport;
@@ -144,7 +146,7 @@ export namespace StageExportPng {
     resultCanvas.style.zIndex = "99999";
     resultCanvas.style.pointerEvents = "none";
 
-    const stageSize = StageManager.getSize();
+    const stageSize = StageManager.getSize().add(new Vector(PADDING * 2, PADDING * 2));
     // 设置大小
     resultCanvas.width = stageSize.x * SCALE * cameraScaleWhenExport;
     resultCanvas.height = stageSize.y * SCALE * cameraScaleWhenExport;
