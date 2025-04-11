@@ -1,3 +1,4 @@
+import { Dialog } from "../../../../../components/dialog";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
@@ -38,14 +39,21 @@ ControllerSectionEdit.keydown = (event: KeyboardEvent) => {
     if (!isHaveSectionSelected) {
       return;
     }
-
-    const user_input = prompt("请输入Section文字", "");
-    if (user_input) {
-      for (const section of StageManager.getSections()) {
-        if (section.isSelected) {
-          section.rename(user_input);
+    Dialog.show({
+      title: "重命名",
+      input: true,
+    }).then(({ button, value }) => {
+      if (button === "确定") {
+        if (value) {
+          for (const section of StageManager.getSections()) {
+            if (section.isSelected) {
+              section.rename(value);
+            }
+          }
         }
+      } else {
+        console.log(button, value);
       }
-    }
+    });
   }
 };

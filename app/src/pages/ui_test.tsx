@@ -9,6 +9,7 @@ import Select from "../components/Select";
 import Slider from "../components/Slider";
 import Switch from "../components/Switch";
 import { Panel } from "../components/panel";
+import { Dialog } from "../components/dialog";
 
 export default function UITestPage() {
   return (
@@ -49,6 +50,19 @@ export default function UITestPage() {
         }}
       >
         打开面板
+      </Button>
+      <Button
+        onClick={async () => {
+          const res = await Dialog.show({
+            title: "提示",
+            content: "提示内容",
+            type: "info",
+            input: true,
+          });
+          console.log(res);
+        }}
+      >
+        Dialog
       </Button>
     </div>
   );

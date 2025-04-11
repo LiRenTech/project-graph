@@ -1,3 +1,4 @@
+import { Dialog } from "../../../../../components/dialog";
 import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 
@@ -22,13 +23,6 @@ ControllerEdgeEdit.mouseDoubleClick = (event: MouseEvent) => {
 
   // 编辑边上的文字
   editEdgeText(firstHoverEdge);
-
-  // const user_input = prompt("请输入线上的文字", firstHoverEdge.text);
-  // if (user_input) {
-  //   for (const edge of Stage.mouseInteractionCore.hoverEdges) {
-  //     edge.rename(user_input);
-  //   }
-  // }
   return;
 };
 
@@ -40,13 +34,19 @@ ControllerEdgeEdit.keydown = (event: KeyboardEvent) => {
       return;
     }
 
-    const user_input = prompt("请输入线上的文字", "");
-    if (user_input) {
-      for (const edge of StageManager.getLineEdges()) {
-        if (edge.isSelected) {
-          edge.rename(user_input);
+    Dialog.show({
+      title: "重命名边",
+      input: true,
+    }).then(({ button, value }) => {
+      if (button === "确定") {
+        if (value) {
+          for (const edge of StageManager.getLineEdges()) {
+            if (edge.isSelected) {
+              edge.rename(value);
+            }
+          }
         }
       }
-    }
+    });
   }
 };
