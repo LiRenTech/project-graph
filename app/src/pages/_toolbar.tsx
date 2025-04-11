@@ -2,9 +2,12 @@ import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 
 import {
   BrainCircuit,
+  ChevronsLeftRightEllipsis,
+  ChevronsRightLeft,
   ClipboardPaste,
   ClipboardX,
   FolderSymlink,
+  GitBranchPlus,
   LayoutDashboard,
   MousePointer,
   Package,
@@ -186,6 +189,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   const [isHaveSelectedTextNode, setIsHaveSelectedTextNode] = useState(false);
   const [isHaveSelectedSection, setIsHaveSelectedSection] = useState(false);
   const [isHaveSelectedEdge, setIsHaveSelectedEdge] = useState(false);
+  const [isHaveSelectedCREdge, setIsHaveSelectedCREdge] = useState(false);
 
   const [isDrawing, setIsDrawing] = useState(false);
   const [penStrokeColor, setPenStrokeColor] = useState(Color.Transparent);
@@ -194,6 +198,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   const update = () => {
     setIsHaveSelectedEntity(StageObjectSelectCounter.selectedEntityCount > 0);
     setIsHaveSelectedEdge(StageObjectSelectCounter.selectedEdgeCount > 0);
+    setIsHaveSelectedCREdge(StageObjectSelectCounter.selectedCREdgeCount > 0);
     setIsHaveSelectedStageObject(
       StageObjectSelectCounter.selectedEdgeCount + StageObjectSelectCounter.selectedEntityCount > 0,
     );
@@ -323,6 +328,36 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<Spline />}
             handleFunction={() => {
               StageManager.switchLineEdgeToCrEdge();
+              StageHistoryManager.recordStep();
+            }}
+          />
+        </ToolbarGroup>
+      )}
+
+      {/* CR曲线 */}
+      {isHaveSelectedCREdge && (
+        <ToolbarGroup groupTitle="CR曲线">
+          <ToolbarItem
+            description="增加控制点"
+            icon={<GitBranchPlus />}
+            handleFunction={() => {
+              StageManager.addSelectedCREdgeControlPoint();
+              StageHistoryManager.recordStep();
+            }}
+          />
+          <ToolbarItem
+            description="拉紧曲线"
+            icon={<ChevronsRightLeft />}
+            handleFunction={() => {
+              StageManager.addSelectedCREdgeTension();
+              StageHistoryManager.recordStep();
+            }}
+          />
+          <ToolbarItem
+            description="放松曲线"
+            icon={<ChevronsLeftRightEllipsis />}
+            handleFunction={() => {
+              StageManager.reduceSelectedCREdgeTension();
               StageHistoryManager.recordStep();
             }}
           />

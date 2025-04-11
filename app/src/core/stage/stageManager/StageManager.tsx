@@ -894,6 +894,35 @@ export namespace StageManager {
     }
   }
 
+  export function addSelectedCREdgeControlPoint() {
+    const selectedCREdge = StageManager.getSelectedAssociations().filter(
+      (edge) => edge instanceof CublicCatmullRomSplineEdge,
+    );
+    for (const edge of selectedCREdge) {
+      edge.addControlPoint();
+    }
+  }
+
+  export function addSelectedCREdgeTension() {
+    const selectedCREdge = StageManager.getSelectedAssociations().filter(
+      (edge) => edge instanceof CublicCatmullRomSplineEdge,
+    );
+    for (const edge of selectedCREdge) {
+      edge.tension += 0.25;
+      edge.tension = Math.min(1, edge.tension);
+    }
+  }
+
+  export function reduceSelectedCREdgeTension() {
+    const selectedCREdge = StageManager.getSelectedAssociations().filter(
+      (edge) => edge instanceof CublicCatmullRomSplineEdge,
+    );
+    for (const edge of selectedCREdge) {
+      edge.tension -= 0.25;
+      edge.tension = Math.max(0, edge.tension);
+    }
+  }
+
   export function selectAll() {
     for (const entity of stageContent.entities.valuesToArray()) {
       entity.isSelected = true;

@@ -1,5 +1,7 @@
 import { Association } from "../../stageObject/abstract/Association";
 import { Entity } from "../../stageObject/abstract/StageEntity";
+import { CublicCatmullRomSplineEdge } from "../../stageObject/association/CublicCatmullRomSplineEdge";
+import { Edge } from "../../stageObject/association/Edge";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
@@ -13,32 +15,13 @@ export namespace StageObjectSelectCounter {
   // 用于UI层监测
   export let selectedEntityCount = 0;
   export let selectedEdgeCount = 0;
+  export let selectedCREdgeCount = 0;
   export let selectedImageNodeCount = 0;
   export let selectedTextNodeCount = 0;
   export let selectedSectionCount = 0;
 
-  // export function changeStageObjectSelectState(stageObject: StageObject, isNewStatusSelected: boolean) {
-  //   // selectedEntityCount = 0;
-  //   // selectedEdgeCount = 0;
-  //   // selectedImageNodeCount = 0;
-  //   // selectedTextNodeCount = 0;
-  //   // selectedSectionCount = 0;
-  //   // if (stageObject instanceof Entity) {
-  //   //   selectedEntityCount += isNewStatusSelected ? 1 : 0;
-  //   //   if (stageObject instanceof ImageNode) {
-  //   //     selectedImageNodeCount += isNewStatusSelected ? 1 : 0;
-  //   //   } else if (stageObject instanceof TextNode) {
-  //   //     selectedTextNodeCount += isNewStatusSelected ? 1 : 0;
-  //   //   } else if (stageObject instanceof Section) {
-  //   //     selectedSectionCount += isNewStatusSelected ? 1 : 0;
-  //   //   }
-  //   // } else if (stageObject instanceof Association) {
-  //   //   selectedEdgeCount += isNewStatusSelected ? 1 : 0;
-  //   // }
-  // }
-
   export function toDebugString(): string {
-    return `entity: ${selectedEntityCount}, edge: ${selectedEdgeCount}, imageNode: ${selectedImageNodeCount}, textNode: ${selectedTextNodeCount}, section: ${selectedSectionCount}`;
+    return `entity: ${selectedEntityCount}, edge: ${selectedEdgeCount}, cr-edge: ${selectedCREdgeCount}, imageNode: ${selectedImageNodeCount}, textNode: ${selectedTextNodeCount}, section: ${selectedSectionCount}`;
   }
 
   /**
@@ -57,6 +40,7 @@ export namespace StageObjectSelectCounter {
 
     selectedEntityCount = 0;
     selectedEdgeCount = 0;
+    selectedCREdgeCount = 0;
     selectedImageNodeCount = 0;
     selectedTextNodeCount = 0;
     selectedSectionCount = 0;
@@ -75,7 +59,12 @@ export namespace StageObjectSelectCounter {
           selectedSectionCount++;
         }
       } else if (stageObject instanceof Association) {
-        selectedEdgeCount++;
+        if (stageObject instanceof Edge) {
+          selectedEdgeCount++;
+          if (stageObject instanceof CublicCatmullRomSplineEdge) {
+            selectedCREdgeCount++;
+          }
+        }
       }
     }
   }
