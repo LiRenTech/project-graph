@@ -40,6 +40,7 @@ export namespace PathString {
 
   /**
    * 根据文件的绝对路径，获取当前文件所在目录的路径
+   * 结尾不带 /
    * @param path 必须是一个文件的路径，不能是文件夹的路径
    * @returns
    */

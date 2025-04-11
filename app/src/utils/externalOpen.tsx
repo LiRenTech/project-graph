@@ -1,5 +1,8 @@
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { open } from "@tauri-apps/plugin-shell";
+import { ImageNode } from "../core/stage/stageObject/entity/ImageNode";
+import { Stage } from "../core/stage/Stage";
+import { PathString } from "./pathString";
 
 /**
  * 工具栏中的地球仪图标
@@ -28,6 +31,14 @@ export async function openBrowserOrFile() {
       //     Stage.effectMachine.addEffect(new TextRiseEffect("非法文件路径: " + nodeText));
       //   }
       // }
+    }
+  }
+}
+
+export function openSelectedImageNode() {
+  for (const entity of StageManager.getSelectedEntities()) {
+    if (entity instanceof ImageNode && entity.isSelected) {
+      myOpen(PathString.dirPath(Stage.path.getFilePath()) + PathString.getSep() + entity.path);
     }
   }
 }

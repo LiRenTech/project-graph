@@ -37,7 +37,7 @@ import { StageManager } from "../core/stage/stageManager/StageManager";
 import { StageGeneratorAI } from "../core/stage/stageManager/concreteMethods/StageGeneratorAI";
 import { StageNodeConnector } from "../core/stage/stageManager/concreteMethods/StageNodeConnector";
 import { cn } from "../utils/cn";
-import { openBrowserOrFile } from "../utils/externalOpen";
+import { openBrowserOrFile, openSelectedImageNode } from "../utils/externalOpen";
 import { writeTextFile } from "../utils/fs";
 import { isMac } from "../utils/platform";
 import AlignNodePanel from "./_popup_panel/_align_panel";
@@ -325,6 +325,13 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<RefreshCcw />}
             handleFunction={() => {
               StageManager.refreshSelected();
+            }}
+          />
+          <ToolbarItem
+            description="打开选中的图片"
+            icon={<FolderSymlink />}
+            handleFunction={() => {
+              openSelectedImageNode();
             }}
           />
         </ToolbarGroup>
