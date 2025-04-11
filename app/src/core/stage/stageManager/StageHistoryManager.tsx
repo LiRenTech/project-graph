@@ -1,6 +1,7 @@
 import { Serialized } from "../../../types/node";
 import { RecentFileManager } from "../../service/dataFileService/RecentFileManager";
 import { StageSaveManager } from "../../service/dataFileService/StageSaveManager";
+import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../service/Settings";
 import { Stage } from "../Stage";
 import { StageDumper } from "../StageDumper";
@@ -80,6 +81,11 @@ export namespace StageHistoryManager {
       currentIndex--;
       StageManager.destroy();
       RecentFileManager.loadStageByData(historyList[currentIndex], Stage.path.getFilePath());
+      Stage.effectMachine.addEffect(TextRiseEffect.default(`当前进度：${currentIndex + 1} / ${historyList.length}`));
+    } else {
+      Stage.effectMachine.addEffect(
+        TextRiseEffect.default(`已到撤回到底！${currentIndex + 1} / ${historyList.length}，默认 ctrl + y 反撤销`),
+      );
     }
   }
 
@@ -91,6 +97,11 @@ export namespace StageHistoryManager {
       currentIndex++;
       StageManager.destroy();
       RecentFileManager.loadStageByData(historyList[currentIndex], Stage.path.getFilePath());
+      Stage.effectMachine.addEffect(TextRiseEffect.default(`当前进度：${currentIndex + 1} / ${historyList.length}`));
+    } else {
+      Stage.effectMachine.addEffect(
+        TextRiseEffect.default(`已到最新状态！${currentIndex + 1} / ${historyList.length}`),
+      );
     }
   }
 }
