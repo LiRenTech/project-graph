@@ -721,6 +721,63 @@ keys:
   wheelup: 滚轮向上
   wheeldown: 滚轮向下
 
+keyBindsGroup:
+  otherKeys:
+    title: 未分类的快捷键
+    description: |
+      未分类的快捷键，
+      此处若发现无翻译的无效快捷键项，可能是由于版本升级而未清理旧快捷键导致出现的残留
+      可手动清理 keybinds.json 文件中的对应项
+  basic:
+    title: 基础快捷键
+    description: |
+      基本的快捷键，用于常用的功能
+  camera:
+    title: 摄像机控制
+    description: |
+      用于控制摄像机移动、缩放
+  app:
+    title: 应用控制
+    description: |
+      用于控制应用的一些功能
+  ui:
+    title: UI控制
+    description: |
+      用于控制UI的一些功能
+  draw:
+    title: 涂鸦
+    description: |
+      涂鸦相关功能
+  moveEntity:
+    title: 移动实体
+    description: |
+      用于移动实体的一些功能
+  generateTextNodeInTree:
+    title: 生长节点
+    description: |
+      通过键盘生长节点（Xmind用户习惯）
+  generateTextNodeRoundedSelectedNode:
+    title: 在选中节点周围生成节点
+    description: |
+      按下后，在选中节点周围生成节点
+  createTextNode:
+    title: 创建文本节点
+    description: |
+      按下后，在当前位置创建文本节点
+  section:
+    title: Section框
+    description: |
+      Section框相关功能
+  leftMouseModeCheckout:
+    title: 左键模式切换
+    description: |
+      关于左键模式的切换
+  edge:
+    title: 连线相关
+    description: |
+      关于连线的一些功能
+  
+
 keyBinds:
   title: 快捷键绑定
   test:

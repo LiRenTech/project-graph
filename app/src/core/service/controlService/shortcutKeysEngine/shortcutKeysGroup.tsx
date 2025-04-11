@@ -2,14 +2,31 @@
  * 专门给各种快捷键分组
  */
 
+import {
+  AppWindow,
+  Brush,
+  Fullscreen,
+  Keyboard,
+  MousePointer,
+  Move,
+  Network,
+  PanelsTopLeft,
+  SendToBack,
+  Spline,
+  SquareDashed,
+  SquareMenu,
+} from "lucide-react";
+
 type ShortcutKeysGroup = {
   title: string;
+  icon: React.ReactNode;
   keys: string[];
 };
 
 export const shortcutKeysGroups: ShortcutKeysGroup[] = [
   {
     title: "basic",
+    icon: <Keyboard />,
     keys: [
       "undo",
       "redo",
@@ -23,6 +40,7 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
   },
   {
     title: "camera",
+    icon: <Fullscreen />,
     keys: [
       "resetView",
       "resetCameraScale",
@@ -34,10 +52,12 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
   },
   {
     title: "app",
+    icon: <AppWindow />,
     keys: ["switchDebugShow", "exitSoftware", "checkoutProtectPrivacy", "reload"],
   },
   {
     title: "ui",
+    icon: <PanelsTopLeft />,
     keys: [
       "checkoutClassroomMode",
       "checkoutWindowOpacityMode",
@@ -52,10 +72,12 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
   },
   {
     title: "draw",
+    icon: <Brush />,
     keys: ["selectEntityByPenStroke", "penStrokeWidthIncrease", "penStrokeWidthDecrease"],
   },
   {
     title: "moveEntity",
+    icon: <Move />,
     keys: [
       "moveUpSelectedEntities",
       "moveDownSelectedEntities",
@@ -69,10 +91,12 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
   },
   {
     title: "generateTextNodeInTree",
+    icon: <Network className="-rotate-90" />,
     keys: ["generateNodeTreeWithDeepMode", "generateNodeTreeWithBroadMode", "generateNodeGraph"],
   },
   {
     title: "generateTextNodeRoundedSelectedNode",
+    icon: <SendToBack />,
     keys: [
       "createTextNodeFromSelectedTop",
       "createTextNodeFromSelectedDown",
@@ -82,14 +106,17 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
   },
   {
     title: "createTextNode",
+    icon: <SquareMenu />,
     keys: ["createTextNodeFromCameraLocation", "createTextNodeFromMouseLocation"],
   },
   {
     title: "section",
+    icon: <SquareDashed />,
     keys: ["folderSection", "packEntityToSection", "unpackEntityFromSection", "textNodeToSection"],
   },
   {
     title: "leftMouseModeCheckout",
+    icon: <MousePointer />,
     keys: [
       "checkoutLeftMouseToSelectAndMove",
       "checkoutLeftMouseToDrawing",
@@ -99,6 +126,7 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
   },
   {
     title: "edge",
+    icon: <Spline />,
     keys: ["reverseEdges", "reverseSelectedNodeEdge"],
   },
 ];

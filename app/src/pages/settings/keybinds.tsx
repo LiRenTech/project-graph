@@ -1,4 +1,4 @@
-import { Keyboard } from "lucide-react";
+import { FileQuestion, Keyboard } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import KeyBind from "../../components/KeyBind";
@@ -28,13 +28,19 @@ export default function KeyBindsPage() {
   };
 
   const { t } = useTranslation("keyBinds");
+  const t2 = useTranslation("keyBindsGroup");
 
   return (
     <>
       {shortcutKeysGroups.map((group, i) => {
         console.log(group);
         return (
-          <FieldGroup title={t(group.title)} key={i}>
+          <FieldGroup
+            icon={group.icon}
+            title={t2.t(`${group.title}.title`)}
+            description={t2.t(`${group.title}.description`)}
+            key={i}
+          >
             {group.keys.map((id) => (
               <Field
                 key={id}
@@ -54,7 +60,7 @@ export default function KeyBindsPage() {
           </FieldGroup>
         );
       })}
-      <FieldGroup title={t("otherKeys")} description={"未分组的快捷键"}>
+      <FieldGroup title={t2.t(`otherKeys.title`)} description={t2.t(`otherKeys.description`)} icon={<FileQuestion />}>
         {getUnGroupedKeys()
           .map(([id, bind]) => (
             <Field
@@ -79,30 +85,6 @@ export default function KeyBindsPage() {
             return a.key.localeCompare(b.key); // 正常比较
           })}
       </FieldGroup>
-      {/* <h1>{t("title")}</h1>
-      {keyBinds
-        .map(([id, bind]) => (
-          <Field
-            key={id}
-            icon={<Keyboard />}
-            title={t(`${id}.title`, { defaultValue: id })}
-            description={t(`${id}.description`, { defaultValue: "" })}
-          >
-            <KeyBind
-              value={bind}
-              onChange={(value) => {
-                KeyBinds.set(id, value.key, value.modifiers);
-                setKeyBinds((prev) => prev.map((item) => (item[0] === id ? [item[0], value] : item)));
-              }}
-            />
-          </Field>
-        ))
-        .sort((a, b) => {
-          if (a.key === null && b.key === null) return 0; // 两者均为 null，相等
-          if (a.key === null) return 1; // a.key 为 null，把它排到后面
-          if (b.key === null) return -1; // b.key 为 null，把它排到后面
-          return a.key.localeCompare(b.key); // 正常比较
-        })} */}
     </>
   );
 }
