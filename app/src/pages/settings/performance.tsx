@@ -1,4 +1,4 @@
-import { Hourglass, ScanEye, ScanText, Turtle, Type, Undo, Ungroup } from "lucide-react";
+import { Hourglass, RefreshCcwDot, ScanEye, ScanText, Turtle, Type, Undo, Ungroup } from "lucide-react";
 import { SettingField } from "./_field";
 
 export default function Performance() {
@@ -28,6 +28,7 @@ export default function Performance() {
         max={0.3}
         step={0.01}
       />
+      <SettingField icon={<RefreshCcwDot />} settingKey="autoRefreshStageByMouseAction" type="switch" />
     </>
   );
 }

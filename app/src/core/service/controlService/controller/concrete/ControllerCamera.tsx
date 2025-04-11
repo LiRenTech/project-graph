@@ -134,6 +134,11 @@ export class ControllerCameraClass extends ControllerClass {
     const pressWorldLocation = Renderer.transformView2World(new Vector(event.x, event.y));
     // 获取左右中键
     this.lastMousePressLocation[event.button] = pressWorldLocation;
+
+    if (this.isUsingMouseGrabMove && Stage.autoRefreshStageByMouseAction) {
+      // 开始刷新舞台
+      StageManager.refreshAllStageObjects();
+    }
   };
 
   /**

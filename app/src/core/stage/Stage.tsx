@@ -158,6 +158,7 @@ export namespace Stage {
   export let rectangleSelectWhenRight: "contain" | "intersect" = "intersect";
   export let enableWindowsTouchPad = true;
   export let doubleClickMiddleMouseButton: Settings.Settings["doubleClickMiddleMouseButton"] = "adjustCamera";
+  export let autoRefreshStageByMouseAction = true;
 
   export function init() {
     autoSaveEngine.init();
@@ -185,6 +186,9 @@ export namespace Stage {
     });
     Settings.watch("doubleClickMiddleMouseButton", (value) => {
       doubleClickMiddleMouseButton = value;
+    });
+    Settings.watch("autoRefreshStageByMouseAction", (value) => {
+      autoRefreshStageByMouseAction = value;
     });
   }
 }

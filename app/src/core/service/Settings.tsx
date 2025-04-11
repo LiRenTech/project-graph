@@ -46,6 +46,7 @@ export namespace Settings {
     // 性能相关
     compatibilityMode: boolean;
     historySize: number; // 暂无
+    autoRefreshStageByMouseAction: boolean;
     // 特效开关列表
     effectsPerferences: Record<string, boolean>;
     isEnableEntityCollision: boolean;
@@ -155,6 +156,7 @@ export namespace Settings {
     isPauseRenderWhenManipulateOvertime: true,
     renderOverTimeWhenNoManipulateTime: 5,
     ignoreTextNodeTextRenderLessThanCameraScale: 0.065,
+    autoRefreshStageByMouseAction: true,
     // 自动相关
     autoNamerTemplate: "...",
     autoNamerSectionTemplate: "Section_{{i}}",
