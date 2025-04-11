@@ -573,13 +573,6 @@ export class SecretKeysEngine {
         }
       },
     },
-    "c r c r c r": {
-      name: "将选中的连线改为CR曲线",
-      explain: "输入3次cr，仅用于开发者测试——2025年4月8日",
-      func() {
-        StageManager.switchLineEdgeToCrEdge();
-      },
-    },
     "c r p + +": {
       name: "将选中的CR曲线增加控制点",
       func() {

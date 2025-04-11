@@ -14,6 +14,7 @@ import {
   RefreshCcw,
   Repeat,
   SaveAll,
+  Spline,
   Square,
   Tag,
   Trash2,
@@ -314,6 +315,14 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             handleFunction={() => {
               const selectedEdges = StageManager.getLineEdges().filter((edge) => edge.isSelected);
               StageNodeConnector.reverseEdges(selectedEdges);
+              StageHistoryManager.recordStep();
+            }}
+          />
+          <ToolbarItem
+            description="切换为CR曲线"
+            icon={<Spline />}
+            handleFunction={() => {
+              StageManager.switchLineEdgeToCrEdge();
               StageHistoryManager.recordStep();
             }}
           />
