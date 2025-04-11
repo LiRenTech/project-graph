@@ -86,6 +86,12 @@ interface ToolbarGroupProps {
   groupTitle: string;
 }
 
+interface ToolbarSelectGroupProps {
+  children: React.ReactNode;
+  groupTitle: string;
+  currentSelectIndex: number;
+}
+
 const ToolbarGroup: React.FC<ToolbarGroupProps> = ({ children, groupTitle }) => {
   return (
     <div className="bg-toolbar-bg border-toolbar-border relative flex items-center rounded-md border">
@@ -96,6 +102,31 @@ const ToolbarGroup: React.FC<ToolbarGroupProps> = ({ children, groupTitle }) => 
     </div>
   );
 };
+
+const ToolbarSelectGroup: React.FC<ToolbarSelectGroupProps> = ({ children, groupTitle, currentSelectIndex }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    setCurrentIndex(currentSelectIndex);
+  }, [currentSelectIndex]);
+
+  return (
+    <div className="bg-toolbar-bg border-toolbar-border relative flex items-center rounded-md border">
+      {/* 选中的高亮背景 */}
+      <span
+        className={cn("bg-toolbar-selected-item-bg absolute h-full w-8 rounded-md transition-all")}
+        style={{
+          left: `${currentIndex * 8 * 4}px`,
+        }}
+      ></span>
+      {children}
+      <span className="text-toolbar-border absolute -top-3.5 left-0 text-center" style={{ fontSize: "9px" }}>
+        {groupTitle}
+      </span>
+    </div>
+  );
+};
+
 /**
  * 笔触点儿
  * @returns
@@ -156,8 +187,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   const [isHaveSelectedEdge, setIsHaveSelectedEdge] = useState(false);
 
   const [isDrawing, setIsDrawing] = useState(false);
-  const [isSelecting, setIsSelecting] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(false);
   const [penStrokeColor, setPenStrokeColor] = useState(Color.Transparent);
   const [nodeFillColor, setNodeFillColor] = useState(Color.Transparent);
 
@@ -173,23 +202,22 @@ export default function Toolbar({ className = "" }: { className?: string }) {
     setIsCopyClearShow(!CopyEngine.isVirtualClipboardEmpty());
   };
 
+  const [currentMouseModeIndex, setCurrentMouseModeIndex] = useState(0);
+
   const selectSelectingMouse = () => {
     Stage.leftMouseMode = LeftMouseModeEnum.selectAndMove;
-    setIsSelecting(true);
     setIsDrawing(false);
-    setIsConnecting(false);
+    setCurrentMouseModeIndex(0);
   };
   const selectDrawingMouse = () => {
     Stage.leftMouseMode = LeftMouseModeEnum.draw;
-    setIsSelecting(false);
     setIsDrawing(true);
-    setIsConnecting(false);
+    setCurrentMouseModeIndex(1);
   };
   const selectConnectingMouse = () => {
     Stage.leftMouseMode = LeftMouseModeEnum.connectAndCut;
-    setIsSelecting(false);
     setIsDrawing(false);
-    setIsConnecting(true);
+    setCurrentMouseModeIndex(2);
   };
 
   useEffect(() => {
@@ -389,10 +417,10 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       )}
 
       {/* 鼠标模式 */}
-      <ToolbarGroup groupTitle="鼠标模式">
+      <ToolbarSelectGroup groupTitle="鼠标模式" currentSelectIndex={currentMouseModeIndex}>
         <ToolbarItem
           description="左键：框选/移动/创建节点 模式"
-          icon={<MousePointer className={cn(isSelecting ? "opacity-100" : "opacity-25")} />}
+          icon={<MousePointer />}
           handleFunction={() => {
             selectSelectingMouse();
           }}
@@ -400,7 +428,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
         />
         <ToolbarItem
           description="左键：涂鸦模式"
-          icon={<Pencil className={cn(isDrawing ? "opacity-100" : "opacity-25", "rotate-90")} />}
+          icon={<Pencil />}
           handleFunction={() => {
             selectDrawingMouse();
           }}
@@ -408,12 +436,12 @@ export default function Toolbar({ className = "" }: { className?: string }) {
         />
         <ToolbarItem
           description="左键：连接/斩断 模式"
-          icon={<Waypoints className={cn(isConnecting ? "opacity-100" : "opacity-25")} />}
+          icon={<Waypoints />}
           handleFunction={() => {
             selectConnectingMouse();
           }}
         />
-      </ToolbarGroup>
+      </ToolbarSelectGroup>
 
       {/* 涂鸦笔触颜色 */}
       {isDrawing && (

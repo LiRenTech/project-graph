@@ -113,6 +113,7 @@ toolbar:
     text: "rgb(0, 0, 0)"
     border: "rgb(23, 114, 200)"
   collapsed-bg: "oklch(0.15 0.05 0)"
+  selected-item-bg: "rgb(149, 155, 164)"
 
 settings:
   page-bg: "rgb(244, 246, 249)"

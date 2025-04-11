@@ -113,6 +113,7 @@ toolbar:
     text: "oklch(0.25 0.03 240)"
     border: "oklch(0.8 0.02 240)"
   collapsed-bg: "#14242f"
+  selected-item-bg: "rgb(142, 155, 166)"
 
 settings:
   page-bg: "oklch(0.94 0.005 240)"

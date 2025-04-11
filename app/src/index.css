@@ -87,6 +87,7 @@
   --color-toolbar-tooltip-text: var(--color-tooltip-text);
   --color-toolbar-tooltip-border: var(--color-tooltip-border);
   --color-toolbar-collapsed-bg: var(--color-toolbar-collapsed-bg);
+  --color-toolbar-selected-item-bg: var(--color-toolbar-selected-item-bg);
   --color-settings-page-bg: var(--color-settings-page-bg);
   --color-settings-text: var(--color-appmenu-item-text);
   --color-field-group-bg: var(--color-field-group-bg);

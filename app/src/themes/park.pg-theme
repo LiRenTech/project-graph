@@ -113,6 +113,7 @@ toolbar:
     text: "#e1e4e7"
     border: "#24354f"
   collapsed-bg: "#e5e7eb"
+  selected-item-bg: "rgb(30, 41, 57)"
 
 settings:
   page-bg: "#2d3238"

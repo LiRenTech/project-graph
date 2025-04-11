@@ -114,6 +114,7 @@ toolbar:
     text: "#fff"
     border: "oklch(0.371 0 0)"
   collapsed-bg: "#fff"
+  selected-item-bg: "#000"
 
 settings:
   page-bg: "oklch(0.145 0 0)"
