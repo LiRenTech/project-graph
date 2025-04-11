@@ -1,30 +1,30 @@
 import { v4 } from "uuid";
 import { createFolder } from "../../../../utils/fs";
+import { averageColors, Color } from "../../../dataStruct/Color";
 import { Queue } from "../../../dataStruct/Queue";
 import { Vector } from "../../../dataStruct/Vector";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { Renderer } from "../../../render/canvas2d/renderer";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
+import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../stage/stageManager/StageManager";
+import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
+import { StageEntityMoveManager } from "../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
+import { CublicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CublicCatmullRomSplineEdge";
+import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
 import { PortalNode } from "../../../stage/stageObject/entity/PortalNode";
+import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
+import { Settings } from "../../Settings";
 import { CollaborationEngine } from "../../dataManageService/collaborationEngine/CollaborationEngine";
 import { RectangleNoteEffect } from "../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
-import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
-import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
-import { CublicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CublicCatmullRomSplineEdge";
-import { averageColors, Color } from "../../../dataStruct/Color";
-import { Settings } from "../../Settings";
-import { StageEntityMoveManager } from "../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
-import { Renderer } from "../../../render/canvas2d/renderer";
-import { Section } from "../../../stage/stageObject/entity/Section";
-import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 
-interface SecretItem {
+interface SecretKeyItem {
   name: string;
   func: () => void;
   explain?: string;
@@ -34,7 +34,7 @@ interface SecretItem {
  * 秘籍键系统
  * 类似于游戏中的秘籍键，可以触发一些特殊效果，主要用于方便测试和调试，也可以当成彩蛋。
  */
-export class SecretEngine {
+export class SecretKeyEngine {
   // 存的是小写后的按键名称
   pressedKeys: Queue<string> = new Queue<string>();
   // 最大按键数量
@@ -52,7 +52,7 @@ export class SecretEngine {
         Stage.effectMachine.addEffect(TextRiseEffect.default("触发了测试按键"));
       }
       // 将队列长度限制
-      while (this.pressedKeys.length > SecretEngine.maxPressedKeys) {
+      while (this.pressedKeys.length > SecretKeyEngine.maxPressedKeys) {
         this.pressedKeys.dequeue();
       }
     });
@@ -91,7 +91,7 @@ export class SecretEngine {
   /**
    * 所有的秘籍键列表
    */
-  keyPressedTable: Record<string, SecretItem> = {
+  keyPressedTable: Record<string, SecretKeyItem> = {
     "arrowup arrowup arrowdown arrowdown arrowleft arrowright arrowleft arrowright b a": {
       name: "屏幕闪黑特效",
       explain: "类似于秘籍键中的hello world，测试出现黑屏的效果时则证明秘籍键系统正常运行了",
