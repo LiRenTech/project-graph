@@ -1,6 +1,6 @@
 import { Store } from "@tauri-apps/plugin-store";
-import { createStore } from "../../../utils/store";
-import { Vector } from "../../dataStruct/Vector";
+import { createStore } from "../../../../utils/store";
+import { Vector } from "../../../dataStruct/Vector";
 
 /**
  * 用于管理快捷键绑定
