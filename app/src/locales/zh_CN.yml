@@ -831,12 +831,12 @@ keyBinds:
     title: 全选
     description: 按下后，所有节点和连线都会被选中
   createTextNodeFromCameraLocation:
-    title: 创建文本节点
+    title: 在视野中心位置创建文本节点
     description: |
       按下后，在当前视野中心的位置创建一个文本节点
       等同于鼠标双击创建节点的功能
   createTextNodeFromMouseLocation:
-    title: 创建文本节点
+    title: 在鼠标位置创建文本节点
     description: |
       按下后，在鼠标悬浮位置创建一个文本节点
       等同于鼠标单击创建节点的功能

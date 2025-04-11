@@ -72,7 +72,7 @@ export namespace KeyBinds {
    */
   export async function entries() {
     if (!store) {
-      throw new Error("Store not initialized.");
+      throw new Error("Keybind Store not initialized.");
     }
     return await store.entries<{ key: string; modifiers: KeyModifiers }>();
   }
