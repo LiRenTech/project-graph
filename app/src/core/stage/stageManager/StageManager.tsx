@@ -268,7 +268,9 @@ export namespace StageManager {
   export function getAssociations(): Association[] {
     return stageContent.associations.valuesToArray();
   }
-
+  export function getEdges(): Edge[] {
+    return stageContent.associations.valuesToArray().filter((edge) => edge instanceof Edge);
+  }
   export function getLineEdges(): LineEdge[] {
     return stageContent.associations.valuesToArray().filter((edge) => edge instanceof LineEdge);
   }
