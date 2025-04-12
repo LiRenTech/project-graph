@@ -29,6 +29,11 @@ import { StageAutoAlignManager } from "../../core/stage/stageManager/concreteMet
 import { StageSectionPackManager } from "../../core/stage/stageManager/concreteMethods/StageSectionPackManager";
 import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
 import { AutoLayoutFastTree } from "../../core/service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
+
+/**
+ * 对齐面板
+ * @returns
+ */
 export default function AlignNodePanel() {
   const [isEnableDragAutoAlign, setEnableDragAutoAlign] = useState(false);
   const [isEnableDragToGridAutoAlign, setEnableDragToGridAutoAlign] = useState(false);

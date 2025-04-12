@@ -885,7 +885,7 @@ export namespace StageManager {
    * 改变连线的目标接头点位置
    * @param direction
    */
-  export function changeSelectedEdgeConnectLocation(direction: Direction, isSource: boolean = false) {
+  export function changeSelectedEdgeConnectLocation(direction: Direction | null, isSource: boolean = false) {
     const newLocationRate = new Vector(0.5, 0.5);
     if (direction === Direction.Left) {
       newLocationRate.x = 0.01;

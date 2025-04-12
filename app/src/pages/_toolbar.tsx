@@ -1,10 +1,6 @@
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 
 import {
-  ArrowLeftFromLine,
-  ArrowLeftToLine,
-  ArrowRightFromLine,
-  ArrowRightToLine,
   BrainCircuit,
   ChevronsLeftRightEllipsis,
   ChevronsRightLeft,
@@ -21,6 +17,7 @@ import {
   RefreshCcw,
   Repeat,
   SaveAll,
+  Shrink,
   Spline,
   Square,
   Tag,
@@ -47,7 +44,6 @@ import { StageGeneratorAI } from "../core/stage/stageManager/concreteMethods/Sta
 import { StageNodeConnector } from "../core/stage/stageManager/concreteMethods/StageNodeConnector";
 import { StageObjectSelectCounter } from "../core/stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
-import { Direction } from "../types/directions";
 import { cn } from "../utils/cn";
 import { openBrowserOrFile, openSelectedImageNode } from "../utils/externalOpen";
 import { writeTextFile } from "../utils/fs";
@@ -56,6 +52,7 @@ import AlignNodePanel from "./_popup_panel/_align_panel";
 import ColorAutoPanel from "./_popup_panel/_color_auto_panel";
 import ColorPanel from "./_popup_panel/_color_panel";
 import GenerateNodePanel from "./_popup_panel/_generate_node_panel";
+import EdgeExtremePointPanel from "./_popup_panel/_edge_extreme_point_panel";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -336,37 +333,11 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               StageHistoryManager.recordStep();
             }}
           />
+
           <ToolbarItem
-            description="将选中连线的目标点设置为左侧"
-            icon={<ArrowRightToLine />}
-            handleFunction={() => {
-              StageManager.changeSelectedEdgeConnectLocation(Direction.Left);
-              StageHistoryManager.recordStep();
-            }}
-          />
-          <ToolbarItem
-            description="将选中连线的目标点设置为右侧"
-            icon={<ArrowLeftToLine />}
-            handleFunction={() => {
-              StageManager.changeSelectedEdgeConnectLocation(Direction.Right);
-              StageHistoryManager.recordStep();
-            }}
-          />
-          <ToolbarItem
-            description="将选中连线的起始点设置为左侧"
-            icon={<ArrowLeftFromLine />}
-            handleFunction={() => {
-              StageManager.changeSelectedEdgeConnectLocation(Direction.Left, true);
-              StageHistoryManager.recordStep();
-            }}
-          />
-          <ToolbarItem
-            description="将选中连线的起始点设置为右侧"
-            icon={<ArrowRightFromLine />}
-            handleFunction={() => {
-              StageManager.changeSelectedEdgeConnectLocation(Direction.Right, true);
-              StageHistoryManager.recordStep();
-            }}
+            description="设置选中连线的端点位置"
+            icon={<Shrink className="rotate-45" />}
+            handleFunction={() => Popup.show(<EdgeExtremePointPanel />, true)}
           />
         </ToolbarGroup>
       )}
