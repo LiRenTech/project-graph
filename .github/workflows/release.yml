@@ -44,6 +44,7 @@ jobs:
       app_root: "app"
       app_version: ${{ inputs.version }}
       app_version_android: ${{ inputs.version }}
+      aur_version: ${{ inputs.version }}
       aur_key_algorithm: "ed25519"
       aur_package_name: "project-graph-bin"
       delete_release: false
