@@ -112,6 +112,9 @@ importers:
       react-i18next:
         specifier: ^15.2.0
         version: 15.4.0(i18next@24.2.2(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react-router:
+        specifier: ^7.5.0
+        version: 7.5.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react-router-dom:
         specifier: ^7.1.1
         version: 7.1.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -264,7 +267,7 @@ importers:
         version: 8.6.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))
       "@storybook/experimental-addon-test":
         specifier: ^8.6.4
-        version: 8.6.4(@vitest/browser@3.0.8(@testing-library/dom@10.4.0)(@types/node@22.14.0)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8))(@vitest/runner@3.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))(vitest@3.0.8(@edge-runtime/vm@5.0.0)(@types/debug@4.1.12)(@types/node@22.14.0)(@vitest/browser@3.0.8)(jiti@2.4.2)(jsdom@26.0.0)(less@4.2.2)(lightningcss@1.29.2)(msw@2.7.3(@types/node@22.14.0)(typescript@5.7.3))(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
+        version: 8.6.4(@vitest/browser@3.0.8)(@vitest/runner@3.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))(vitest@3.0.8)
       "@storybook/manager-api":
         specifier: ^8.6.4
         version: 8.6.4(storybook@8.6.4(prettier@3.4.2))
@@ -294,7 +297,7 @@ importers:
         version: 3.0.8(@testing-library/dom@10.4.0)(@types/node@22.14.0)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8)
       "@vitest/coverage-v8":
         specifier: ^3.0.8
-        version: 3.0.8(@vitest/browser@3.0.8(@testing-library/dom@10.4.0)(@types/node@22.14.0)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8))(vitest@3.0.8(@edge-runtime/vm@5.0.0)(@types/debug@4.1.12)(@types/node@22.14.0)(@vitest/browser@3.0.8)(jiti@2.4.2)(jsdom@26.0.0)(less@4.2.2)(lightningcss@1.29.2)(msw@2.7.3(@types/node@22.14.0)(typescript@5.7.3))(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
+        version: 3.0.8(@vitest/browser@3.0.8)(vitest@3.0.8)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -5833,6 +5836,17 @@ packages:
       react-dom:
         optional: true
 
+  react-router@7.5.0:
+    resolution:
+      { integrity: sha512-estOHrRlDMKdlQa6Mj32gIks4J+AxNsYoE0DbTTxiMy2mPzZuWSDU+N85/r1IlNR7kGfznF3VCUlvc5IUO+B9g== }
+    engines: { node: ">=20.0.0" }
+    peerDependencies:
+      react: ">=18"
+      react-dom: ">=18"
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+
   react-style-singleton@2.2.3:
     resolution:
       { integrity: sha512-b6jSvxvVnyptAiLjbkWLE/lOnR4lfTtDAl+eUC7RZy+QQWc6wRzIV2CE6xBuMmDxc2qIihtDCZD5NPOFl7fRBQ== }
@@ -8566,7 +8580,7 @@ snapshots:
     dependencies:
       type-fest: 2.19.0
 
-  "@storybook/experimental-addon-test@8.6.4(@vitest/browser@3.0.8(@testing-library/dom@10.4.0)(@types/node@22.14.0)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8))(@vitest/runner@3.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))(vitest@3.0.8(@edge-runtime/vm@5.0.0)(@types/debug@4.1.12)(@types/node@22.14.0)(@vitest/browser@3.0.8)(jiti@2.4.2)(jsdom@26.0.0)(less@4.2.2)(lightningcss@1.29.2)(msw@2.7.3(@types/node@22.14.0)(typescript@5.7.3))(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))":
+  "@storybook/experimental-addon-test@8.6.4(@vitest/browser@3.0.8)(@vitest/runner@3.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.4(prettier@3.4.2))(vitest@3.0.8)":
     dependencies:
       "@storybook/global": 5.0.0
       "@storybook/icons": 1.4.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -9298,7 +9312,7 @@ snapshots:
       - utf-8-validate
       - vite
 
-  "@vitest/coverage-v8@3.0.8(@vitest/browser@3.0.8(@testing-library/dom@10.4.0)(@types/node@22.14.0)(playwright@1.51.0)(typescript@5.7.3)(vite@6.2.5(@types/node@22.14.0)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vitest@3.0.8))(vitest@3.0.8(@edge-runtime/vm@5.0.0)(@types/debug@4.1.12)(@types/node@22.14.0)(@vitest/browser@3.0.8)(jiti@2.4.2)(jsdom@26.0.0)(less@4.2.2)(lightningcss@1.29.2)(msw@2.7.3(@types/node@22.14.0)(typescript@5.7.3))(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))":
+  "@vitest/coverage-v8@3.0.8(@vitest/browser@3.0.8)(vitest@3.0.8)":
     dependencies:
       "@ampproject/remapping": 2.3.0
       "@bcoe/v8-coverage": 1.0.2
@@ -12018,6 +12032,16 @@ snapshots:
       react-router: 7.1.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
 
   react-router@7.1.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+    dependencies:
+      "@types/cookie": 0.6.0
+      cookie: 1.0.2
+      react: 19.0.0
+      set-cookie-parser: 2.7.1
+      turbo-stream: 2.4.0
+    optionalDependencies:
+      react-dom: 19.0.0(react@19.0.0)
+
+  react-router@7.5.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       "@types/cookie": 0.6.0
       cookie: 1.0.2
