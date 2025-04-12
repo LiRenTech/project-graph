@@ -1,9 +1,8 @@
 import { LogicalSize } from "@tauri-apps/api/dpi";
 import { useAtom } from "jotai";
-import { ChevronLeft, Copy, Cpu, FlaskConical, Menu, Minus, PanelTop, Square, Tag, X, Zap } from "lucide-react";
+import { Copy, Cpu, FlaskConical, Menu, Minus, PanelTop, Square, Tag, X, Zap } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import { Dialog } from "../components/dialog";
 import IconButton from "../components/IconButton";
@@ -38,8 +37,6 @@ export default function App() {
   const [isLogicNodePanelOpen, setIsLogicNodePanelOpen] = React.useState(false);
   const [ignoreMouse, setIgnoreMouse] = React.useState(false);
 
-  const navigate = useNavigate();
-  const location = useLocation();
   const [file, setFile] = useAtom(fileAtom);
   const [isClassroomMode, setIsClassroomMode] = useAtom(isClassroomModeAtom);
   const filename = React.useMemo(() => PathString.absolute2file(file), [file]);
@@ -281,36 +278,11 @@ export default function App() {
                 id="app-menu-btn"
                 className={cn(isClassroomMode && "opacity-0")}
                 onClick={(e) => {
-                  if (location.pathname !== "/") {
-                    if (location.pathname.startsWith("/welcome")) {
-                      Dialog.show({
-                        title: "Skip Setup?",
-                        content: "Are you sure you want to skip the setup process?",
-                        buttons: [
-                          {
-                            text: "Yes",
-                            onClick: () => navigate("/"),
-                          },
-                          {
-                            text: "No",
-                            onClick: () => {},
-                          },
-                        ],
-                      });
-                    } else {
-                      navigate("/");
-                    }
-                  } else {
-                    e.stopPropagation(); // 避免又触发了关闭
-                    setIsMenuOpen(!isMenuOpen);
-                  }
+                  e.stopPropagation(); // 避免又触发了关闭
+                  setIsMenuOpen(!isMenuOpen);
                 }}
               >
-                {location.pathname === "/" ? (
-                  <Menu className={cn(isMenuOpen && "rotate-90")} />
-                ) : (
-                  <ChevronLeft id="app-back-to-home-icon" />
-                )}
+                <Menu className={cn(isMenuOpen && "rotate-90")} />
               </IconButton>
             )}
 
@@ -495,7 +467,7 @@ export default function App() {
 
       <PGCanvas />
 
-      {location.pathname !== "/" && <FloatingOutlet />}
+      <FloatingOutlet />
     </div>
   );
 }
