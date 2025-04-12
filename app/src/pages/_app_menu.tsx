@@ -285,9 +285,10 @@ export default function AppMenu({ className = "", open = false }: { className?: 
     // await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
     try {
       await StageSaveManager.saveHandle(path_, data);
-    } catch {
+    } catch (error) {
       await Dialog.show({
         title: "保存失败",
+        code: `${error}`,
         content: "保存失败，请重试",
       });
     }
@@ -422,7 +423,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
     // info页面关闭
     setTimeout(() => {
       if (document.getElementsByClassName("lucide" + "-info").length === 0) {
-        getCurrentWindow().close();
+        // getCurrentWindow().close();
       }
     }, 5000);
   }, []);

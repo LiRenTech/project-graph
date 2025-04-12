@@ -6,6 +6,10 @@ import { Camera } from "../../../../stage/Camera";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 
+/**
+ * 在特定的世界坐标系下渲染一个文字
+ * 用途之一：给逻辑引擎渲染编号
+ */
 export class TextRaiseEffectLocated extends EffectObject {
   getClassName(): string {
     return "TextRaiseEffectLocated";

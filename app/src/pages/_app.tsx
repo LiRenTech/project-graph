@@ -150,9 +150,10 @@ export default function App() {
             }
           }
         }
-      } catch {
+      } catch (error) {
         await Dialog.show({
           title: "保存失败",
+          code: `${error}`,
           content: "保存失败，请重试",
         });
       }

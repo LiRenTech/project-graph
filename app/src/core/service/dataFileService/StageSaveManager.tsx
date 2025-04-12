@@ -36,6 +36,7 @@ export namespace StageSaveManager {
       StageHistoryManager.reset(data); // 重置历史
     }
     isCurrentSaved = true;
+    console.log("触发了一次保存");
   }
 
   /**
@@ -82,6 +83,7 @@ export namespace StageSaveManager {
     const backupPath = `${backupFolderPath}${PathString.getSep()}${dateTime}.backup.json`;
 
     await writeTextFile(backupPath, JSON.stringify(data));
+    console.log("触发了一次自动备份");
     if (addFlashEffect) {
       Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
     }
