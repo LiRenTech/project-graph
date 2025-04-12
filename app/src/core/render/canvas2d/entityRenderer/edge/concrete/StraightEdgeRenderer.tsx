@@ -80,20 +80,21 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         100,
       );
     }
+    const straightBodyLine = edge.bodyLine;
 
     if (edge.text.trim() === "") {
       // 没有文字的边
       CurveRenderer.renderSolidLine(
-        Renderer.transformWorld2View(edge.bodyLine.start),
-        Renderer.transformWorld2View(edge.bodyLine.end),
+        Renderer.transformWorld2View(straightBodyLine.start),
+        Renderer.transformWorld2View(straightBodyLine.end),
         edgeColor,
         edgeWidth * Camera.currentScale,
       );
     } else {
       // 有文字的边
-      const midPoint = edge.bodyLine.midPoint();
-      const startHalf = new Line(edge.bodyLine.start, midPoint);
-      const endHalf = new Line(midPoint, edge.bodyLine.end);
+      const midPoint = straightBodyLine.midPoint();
+      const startHalf = new Line(straightBodyLine.start, midPoint);
+      const endHalf = new Line(midPoint, straightBodyLine.end);
       TextRenderer.renderMultiLineTextFromCenter(
         edge.text,
         Renderer.transformWorld2View(midPoint),
@@ -104,13 +105,13 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       const edgeTextRectangle = edge.textRectangle;
 
       CurveRenderer.renderSolidLine(
-        Renderer.transformWorld2View(edge.bodyLine.start),
+        Renderer.transformWorld2View(straightBodyLine.start),
         Renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(startHalf)),
         edgeColor,
         edgeWidth * Camera.currentScale,
       );
       CurveRenderer.renderSolidLine(
-        Renderer.transformWorld2View(edge.bodyLine.end),
+        Renderer.transformWorld2View(straightBodyLine.end),
         Renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(endHalf)),
         edgeColor,
         edgeWidth * Camera.currentScale,
@@ -120,12 +121,8 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       // 画箭头
       this.renderArrowHead(
         edge,
-        edge.target.collisionBox
-          .getRectangle()
-          .getCenter()
-          .subtract(edge.source.collisionBox.getRectangle().getCenter())
-          .normalize(),
-        edge.bodyLine.end.clone(),
+        straightBodyLine.end.subtract(straightBodyLine.start).normalize(),
+        straightBodyLine.end.clone(),
         8 * edgeWidth,
       );
     }
