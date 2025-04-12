@@ -886,6 +886,17 @@ export namespace StageManager {
    * @param direction
    */
   export function changeSelectedEdgeConnectLocation(direction: Direction | null, isSource: boolean = false) {
+    const edges = getSelectedAssociations().filter((edge) => edge instanceof Edge);
+    changeEdgesConnectLocation(edges, direction, isSource);
+  }
+
+  /**
+   * 更改多个连线的目标接头点位置
+   * @param edges
+   * @param direction
+   * @param isSource
+   */
+  export function changeEdgesConnectLocation(edges: Edge[], direction: Direction | null, isSource: boolean = false) {
     const newLocationRate = new Vector(0.5, 0.5);
     if (direction === Direction.Left) {
       newLocationRate.x = 0.01;
@@ -897,7 +908,6 @@ export namespace StageManager {
       newLocationRate.y = 0.99;
     }
 
-    const edges = getSelectedAssociations().filter((edge) => edge instanceof Edge);
     for (const edge of edges) {
       if (isSource) {
         edge.setSourceRectangleRate(newLocationRate);

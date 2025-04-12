@@ -8,6 +8,7 @@ import { StageAutoAlignManager } from "../../../stage/stageManager/concreteMetho
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { editTextNode } from "../controller/concrete/utilsControl";
+import { Direction } from "../../../../types/directions";
 
 /**
  * 专用于Xmind式的树形结构的键盘操作引擎
@@ -49,6 +50,9 @@ export namespace KeyboardOnlyTreeEngine {
     StageManager.addTextNode(newNode);
     // 连接节点
     StageManager.connectEntity(rootNode, newNode);
+    const newEdges = GraphMethods.getEdgesBetween(rootNode, newNode);
+    StageManager.changeEdgesConnectLocation(newEdges, Direction.Right, true);
+    StageManager.changeEdgesConnectLocation(newEdges, Direction.Left);
     // 继承父节点颜色
     if (rootNode instanceof TextNode) {
       newNode.color = rootNode.color.clone();
@@ -100,6 +104,11 @@ export namespace KeyboardOnlyTreeEngine {
     StageManager.addTextNode(newNode);
     // 连接节点
     StageManager.connectEntity(parent, newNode);
+
+    const newEdges = GraphMethods.getEdgesBetween(parent, newNode);
+    StageManager.changeEdgesConnectLocation(newEdges, Direction.Right, true);
+    StageManager.changeEdgesConnectLocation(newEdges, Direction.Left);
+
     // 继承父节点颜色
     if (parent instanceof TextNode) {
       newNode.color = parent.color.clone();
