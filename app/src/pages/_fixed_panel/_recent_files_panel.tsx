@@ -15,6 +15,7 @@ import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { PathString } from "../../utils/pathString";
 import { isDesktop } from "../../utils/platform";
 import { LoaderPinwheel } from "lucide-react";
+import { replaceTextWhenProtect } from "../../utils/font";
 
 export default function RecentFilesPanel() {
   const [recentFiles, setRecentFiles] = React.useState<RecentFileManager.RecentFile[]>([]);
@@ -22,6 +23,7 @@ export default function RecentFilesPanel() {
 
   const [isRecentFilePanelOpen, setRecentFilePanelOpen] = useAtom(isRecentFilePanelOpenAtom);
   const [currentFile, setFile] = useAtom(fileAtom);
+  const [isInPrivacy, setInPrivacy] = React.useState(false);
 
   /**
    * 用于刷新页面显示
@@ -153,6 +155,13 @@ export default function RecentFilesPanel() {
       >
         关闭
       </button>
+      <button
+        className="absolute right-20 top-2 z-20 cursor-pointer rounded bg-gray-500 px-4 py-2 font-bold text-white hover:scale-105 hover:bg-red-700" // 调整位置和层级
+        id="recent-files-panel-close-btn"
+        onClick={() => setInPrivacy(!isInPrivacy)}
+      >
+        {isInPrivacy ? "解密" : "隐私"}
+      </button>
 
       <h2 className="text-panel-text mb-3 text-xl font-bold">最近打开的文件</h2>
       {/* 加载中提示 */}
@@ -180,8 +189,23 @@ export default function RecentFilesPanel() {
                   <td className="text-table-row-text text-center">{index + 1}</td>
                   {/* 路径列 */}
                   <td className="text-table-row-text flex flex-col" onClick={onCheckoutFile(file)}>
-                    <span>{PathString.getShortedFileName(PathString.absolute2file(file.path), 30, 0.8)}</span>
-                    <span className="text-panel-details-text text-xs opacity-50">{file.path}</span>
+                    {isInPrivacy ? (
+                      <>
+                        <span>
+                          {replaceTextWhenProtect(
+                            PathString.getShortedFileName(PathString.absolute2file(file.path), 30, 0.8),
+                          )}
+                        </span>
+                        <span className="text-panel-details-text text-xs opacity-50">
+                          {replaceTextWhenProtect(file.path)}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span>{PathString.getShortedFileName(PathString.absolute2file(file.path), 30, 0.8)}</span>
+                        <span className="text-panel-details-text text-xs opacity-50">{file.path}</span>
+                      </>
+                    )}
                   </td>
                   {/* 时间列 */}
                   <td className="">

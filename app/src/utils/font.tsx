@@ -61,7 +61,7 @@ export function getMultiLineTextSize(text: string, fontSize: number, lineHeight:
 }
 
 /**
- * 所有的汉字替换成“好”
+ * 所有的汉字替换成“㊙”
  * 所有小写字母替换成 a，大写字母替换成 A
  * 所有数字全部替换成 6
  * @param text
