@@ -26,6 +26,7 @@ import {
   addTextNodeFromCurrentSelectedNode,
   editNodeDetailsByKeyboard,
 } from "../controller/concrete/utilsControl";
+import { Controller } from "../controller/Controller";
 import { KeyboardOnlyGraphEngine } from "../keyboardOnlyEngine/keyboardOnlyGraphEngine";
 import { KeyboardOnlyTreeEngine } from "../keyboardOnlyEngine/keyboardOnlyTreeEngine";
 import { MouseLocation } from "../MouseLocation";
@@ -476,26 +477,37 @@ export namespace ShortcutKeysRegister {
       })
     ).down(() => {
       console.log(location.pathname);
-      const AppBackToHomeIcon = document.getElementById("app-back-to-home-icon");
-      const isPageInHome = AppBackToHomeIcon === null;
+      const AppBackToHomeButton = document.getElementById("close-popin-btn");
+      const isPageInHome = AppBackToHomeButton === null;
       if (isPageInHome) {
         const button = document.getElementById("app-menu-settings-btn");
+        console.log(button);
+
         const event = new MouseEvent("click", {
           bubbles: true,
           cancelable: true,
           view: window,
         });
         button?.dispatchEvent(event);
+        setTimeout(() => {
+          Controller.pressingKeySet.clear();
+        }, 200);
       } else {
         // 说明已经不再主页面了
+
         // 回到主页面
-        const appMenuButton = document.getElementById("app-menu-btn");
+        const closeButton = document.getElementById("close-popin-btn");
+        console.log(closeButton);
+
         const event = new MouseEvent("click", {
           bubbles: true,
           cancelable: true,
           view: window,
         });
-        appMenuButton?.dispatchEvent(event);
+        closeButton?.dispatchEvent(event);
+        setTimeout(() => {
+          Controller.pressingKeySet.clear();
+        }, 200);
       }
     });
     (
