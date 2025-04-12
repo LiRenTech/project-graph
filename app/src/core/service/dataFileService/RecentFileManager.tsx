@@ -92,6 +92,22 @@ export namespace RecentFileManager {
   }
 
   /**
+   * 删除一条历史记录
+   * @param path
+   */
+  export async function removeRecentFileByPath(path: string) {
+    const existingFiles = await getRecentFiles();
+    const existingIndex = existingFiles.findIndex((f) => f.path === path);
+    if (existingIndex >= 0) {
+      existingFiles.splice(existingIndex, 1); // 删除已有记录
+      await store.set("recentFiles", existingFiles); // 更新存储
+      store.save();
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * 获取最近打开的文件列表
    */
   export async function getRecentFiles(): Promise<RecentFile[]> {

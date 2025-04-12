@@ -119,6 +119,26 @@ export default function RecentFilesPanel() {
     };
   };
 
+  const removeStartFile = (path: string) => {
+    return async () => {
+      const removeSuccess = await RecentFileManager.removeRecentFileByPath(path);
+      if (!removeSuccess) {
+        Dialog.show({
+          title: "文件删除失败",
+          content: `可能是文件不存在：${path}`,
+          type: "error",
+        });
+      } else {
+        Dialog.show({
+          title: "删除成功",
+          content: `已经成功从快速启动界面的列表中删除：${path}`,
+          type: "success",
+        });
+        updateRecentFiles();
+      }
+    };
+  };
+
   const addPortalNodeToStage = (path: string) => {
     return () => {
       const result = StageManager.addPortalNodeToStage(path);
@@ -223,7 +243,13 @@ export default function RecentFilesPanel() {
                     </span>
                   </td>
                   <td>
-                    <div className="flex w-36">
+                    <div className="flex">
+                      <button
+                        onClick={removeStartFile(file.path)}
+                        className="bg-button-bg text-button-text border-button-border m-0.5 cursor-pointer rounded-lg p-1 text-xs hover:scale-105"
+                      >
+                        清出列表
+                      </button>
                       <button
                         onClick={addToStartFiles(file.path)}
                         className="bg-button-bg text-button-text border-button-border m-0.5 cursor-pointer rounded-lg p-1 text-xs hover:scale-105"
