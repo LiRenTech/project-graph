@@ -118,5 +118,19 @@ export class CublicCatmullRomSplineEdge extends Edge {
     this._collisionBox.shapeList = [new CublicCatmullRomSpline(this.controlPoints, this.alpha, this.tension)];
   }
 
+  /**
+   * 获取箭头的位置和方向
+   */
+  getArrowHead(): { location: Vector; direction: Vector } {
+    const crShape = this._collisionBox.shapeList[0] as CublicCatmullRomSpline;
+    const location = crShape.controlPoints[crShape.controlPoints.length - 2].clone();
+    const lines = crShape.computeFunction();
+    const funcs = lines[lines.length - 1];
+    return {
+      location,
+      direction: funcs.derivative(0.95),
+    };
+  }
+
   adjustSizeByText(): void {}
 }

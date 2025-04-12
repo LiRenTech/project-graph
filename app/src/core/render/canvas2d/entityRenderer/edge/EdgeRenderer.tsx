@@ -101,15 +101,8 @@ export namespace EdgeRenderer {
       );
     }
     // 画箭头
-    const lastPoint = crShape.controlPoints[crShape.controlPoints.length - 1];
-    const lastPoint2 = crShape.controlPoints[crShape.controlPoints.length - 2];
-    const lastPoint3 = crShape.controlPoints[crShape.controlPoints.length - 3];
-    renderArrowHead(
-      lastPoint2,
-      lastPoint.subtract(lastPoint3).normalize(),
-      15,
-      StageStyleManager.currentStyle.StageObjectBorder,
-    );
+    const { location, direction } = edge.getArrowHead();
+    renderArrowHead(location, direction.normalize(), 15, StageStyleManager.currentStyle.StageObjectBorder);
   }
 
   /**
