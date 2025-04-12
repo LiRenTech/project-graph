@@ -42,6 +42,7 @@ jobs:
       app_root: "app"
       app_version: "0.0.0-nightly.r${{ github.run_number }}"
       app_version_android: "0.0.${{ github.run_number }}"
+      aur_version: "r${{ github.run_number }}"
       aur_key_algorithm: "ed25519"
       aur_package_name: "project-graph-nightly-bin"
       delete_release: true
