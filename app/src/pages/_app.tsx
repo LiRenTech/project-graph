@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 import { ChevronLeft, Copy, Cpu, FlaskConical, Menu, Minus, PanelTop, Square, Tag, X, Zap } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import { Dialog } from "../components/dialog";
 import IconButton from "../components/IconButton";
@@ -18,6 +18,7 @@ import { cn } from "../utils/cn";
 import { PathString } from "../utils/pathString";
 import { appScale, getCurrentWindow, isDesktop, isFrame, isIpad, isMac, isMobile, isWeb } from "../utils/platform";
 import AppMenu from "./_app_menu";
+import PGCanvas from "./_canvas";
 import ErrorHandler from "./_fixed_panel/_error_handler";
 import ExportPNGPanel from "./_fixed_panel/_export_png_panel";
 import ExportTreeTextPanel from "./_fixed_panel/_export_text_panel";
@@ -25,7 +26,7 @@ import LogicNodePanel from "./_fixed_panel/_logic_node_panel";
 import RecentFilesPanel from "./_fixed_panel/_recent_files_panel";
 import StartFilePanel from "./_fixed_panel/_start_file_panel";
 import TagPanel from "./_fixed_panel/_tag_panel";
-// import { LogicalPosition } from "@tauri-apps/api/window";
+import FloatingOutlet from "./_floating_outlet";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -223,9 +224,7 @@ export default function App() {
 
   return (
     <div
-      className={cn("relative h-full w-full", {
-        "bg-settings-page-bg": isMobile || location.pathname !== "/",
-      })}
+      className={cn("relative h-full w-full")}
       style={{ zoom: appScale }}
       onClick={() => {
         setIsMenuOpen(false);
@@ -494,7 +493,9 @@ export default function App() {
       {/* ======= */}
       <ErrorHandler />
 
-      <Outlet />
+      <PGCanvas />
+
+      {location.pathname !== "/" && <FloatingOutlet />}
     </div>
   );
 }

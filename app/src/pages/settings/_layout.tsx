@@ -8,7 +8,6 @@ import {
   Keyboard,
   Palette,
   Plug,
-  Settings,
   Sparkles,
   Speaker,
   Wrench,
@@ -23,11 +22,7 @@ import { isMac } from "../../utils/platform";
 export default function SettingsLayout() {
   const { t } = useTranslation("settings");
   return (
-    <div className="top-18 fixed bottom-12 left-20 right-20 flex flex-col">
-      <h1 className="text-appmenu-item-text my-2 flex items-center gap-2 text-3xl font-bold">
-        <Settings className="h-8 w-8" />
-        {t("title")}
-      </h1>
+    <div className="flex h-full w-full flex-col p-8">
       <div className="flex flex-1 gap-8 overflow-hidden">
         <div className="text-appmenu-item-text *:hover:bg-appmenu-hover-bg flex h-full flex-col gap-2 overflow-y-auto *:flex *:cursor-pointer *:items-center *:gap-2 *:rounded-full *:px-3 *:py-2 *:transition *:active:scale-90">
           <NavLinkButton to="/settings/about">
@@ -84,7 +79,7 @@ export default function SettingsLayout() {
             {t("tabs.scripts")}
           </NavLinkButton>
         </div>
-        <div className="mx-auto max-w-[900px] flex-1 overflow-auto">
+        <div className="mx-auto max-w-[900px] flex-1 overflow-auto rounded-xl">
           <Outlet />
         </div>
       </div>

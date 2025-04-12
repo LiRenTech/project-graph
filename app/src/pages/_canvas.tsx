@@ -17,7 +17,10 @@ import HintText from "./_hint_text";
 import FoolsDayButton from "./_special_day_dialog/fools_day";
 import Toolbar from "./_toolbar";
 
-export default function Home() {
+/**
+ * 画布，显示所有舞台上的内容
+ */
+export default function PGCanvas() {
   const canvasRef: React.RefObject<HTMLCanvasElement | null> = useRef(null);
 
   const [cursorName, setCursorName] = React.useState(CursorNameEnum.Default);

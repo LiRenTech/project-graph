@@ -7,7 +7,6 @@ import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 
-// @ts-expect-error 这里没有加载@types/node类型，但是这个process实际上是存在的
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
