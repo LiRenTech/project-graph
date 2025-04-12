@@ -59,6 +59,8 @@ export class CublicCatmullRomSplineEdge extends Edge {
       type: "core:cublic_catmull_rom_spline_edge",
       alpha: 0.5,
       tension: 0,
+      sourceRectRate: [0.5, 0.5],
+      targetRectRate: [0.5, 0.5],
       controlPoints: [
         [startLocation.x, startLocation.y],
         [line.start.x, line.start.y],
@@ -78,6 +80,8 @@ export class CublicCatmullRomSplineEdge extends Edge {
       alpha,
       tension,
       controlPoints,
+      sourceRectRate,
+      targetRectRate,
     }: Serialized.CublicCatmullRomSplineEdge /** true表示解析状态，false表示解析完毕 */,
     public unknown = false,
   ) {
@@ -91,7 +95,8 @@ export class CublicCatmullRomSplineEdge extends Edge {
     this.alpha = alpha;
     this.tension = tension;
     this.controlPoints = controlPoints.map((item) => new Vector(item[0], item[1]));
-
+    this.setSourceRectangleRate(new Vector(...sourceRectRate));
+    this.setTargetRectangleRate(new Vector(...targetRectRate));
     this._collisionBox = new CollisionBox([new CublicCatmullRomSpline(this.controlPoints, this.alpha, this.tension)]);
   }
 

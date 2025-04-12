@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
 import { getMultiLineTextSize } from "../../../../utils/font";
 import { Vector } from "../../../dataStruct/Vector";
-import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
@@ -37,7 +36,7 @@ export class LineEdge extends Edge {
   private _isShifting: boolean = false;
 
   constructor(
-    { source, target, text, uuid, color }: Serialized.LineEdge,
+    { source, target, text, uuid, color, sourceRectRate, targetRectRate }: Serialized.LineEdge,
     /** true表示解析状态，false表示解析完毕 */
     public unknown = false,
   ) {
@@ -47,34 +46,25 @@ export class LineEdge extends Edge {
     this.text = text;
     this.uuid = uuid;
     this.color = new Color(...color);
+    this.setSourceRectangleRate(new Vector(sourceRectRate[0], sourceRectRate[1]));
+    this.setTargetRectangleRate(new Vector(targetRectRate[0], targetRectRate[1]));
 
     this.adjustSizeByText();
   }
 
+  // warn: 暂时无引用
   static fromTwoEntity(source: ConnectableEntity, target: ConnectableEntity): LineEdge {
     const result = new LineEdge({
       source: source.uuid,
       target: target.uuid,
       text: "",
       uuid: uuidv4(),
+      sourceRectRate: [0.5, 0.5],
+      targetRectRate: [0.5, 0.5],
       type: "core:line_edge",
       color: [0, 0, 0, 0],
     });
     return result;
-  }
-
-  /**
-   * 获取两个实体之间的直线
-   * 此直线两端在两个实体外接矩形的边缘，延长后可过两个实体外接矩形的中心
-   */
-  get bodyLine(): Line {
-    const edgeCenterLine = new Line(
-      this.source.collisionBox.getRectangle().center,
-      this.target.collisionBox.getRectangle().center,
-    );
-    const startPoint = this.source.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
-    const endPoint = this.target.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
-    return new Line(startPoint, endPoint);
   }
 
   public rename(text: string) {

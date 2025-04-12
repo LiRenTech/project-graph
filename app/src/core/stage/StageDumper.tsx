@@ -19,7 +19,7 @@ export namespace StageDumper {
   /**
    * 最新版本
    */
-  export const latestVersion = 14;
+  export const latestVersion = 17;
 
   export function dumpTextNode(textNode: TextNode): Serialized.TextNode {
     return {
@@ -42,6 +42,8 @@ export namespace StageDumper {
       uuid: edge.uuid,
       type: "core:line_edge",
       color: edge.color && edge.color.toArray(),
+      sourceRectRate: [edge.sourceRectangleRate.x, edge.sourceRectangleRate.y],
+      targetRectRate: [edge.targetRectangleRate.x, edge.targetRectangleRate.y],
     };
   }
   export function dumpCrEdge(edge: CublicCatmullRomSplineEdge): Serialized.CublicCatmullRomSplineEdge {
@@ -54,6 +56,8 @@ export namespace StageDumper {
       controlPoints: edge.getControlPoints().map((point) => [point.x, point.y]),
       alpha: edge.alpha,
       tension: edge.tension,
+      sourceRectRate: [edge.sourceRectangleRate.x, edge.sourceRectangleRate.y],
+      targetRectRate: [edge.targetRectangleRate.x, edge.targetRectangleRate.y],
     };
   }
   export function dumpConnectPoint(connectPoint: ConnectPoint): Serialized.ConnectPoint {

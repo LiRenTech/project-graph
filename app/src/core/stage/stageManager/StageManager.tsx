@@ -1,4 +1,5 @@
 import { v4 } from "uuid";
+import { Direction } from "../../../types/directions";
 import { Serialized } from "../../../types/node";
 import { PathString } from "../../../utils/pathString";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
@@ -29,12 +30,12 @@ import { GraphMethods } from "./basicMethods/GraphMethods";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
 import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
+import { StageObjectSelectCounter } from "./concreteMethods/StageObjectSelectCounter";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
 import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManager";
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
-import { StageObjectSelectCounter } from "./concreteMethods/StageObjectSelectCounter";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -876,6 +877,32 @@ export namespace StageManager {
     for (const entity of entities) {
       if (entity instanceof ImageNode) {
         entity.refresh();
+      }
+    }
+  }
+
+  /**
+   * 改变连线的目标接头点位置
+   * @param direction
+   */
+  export function changeSelectedEdgeConnectLocation(direction: Direction, isSource: boolean = false) {
+    const newLocationRate = new Vector(0.5, 0.5);
+    if (direction === Direction.Left) {
+      newLocationRate.x = 0.01;
+    } else if (direction === Direction.Right) {
+      newLocationRate.x = 0.99;
+    } else if (direction === Direction.Up) {
+      newLocationRate.y = 0.01;
+    } else if (direction === Direction.Down) {
+      newLocationRate.y = 0.99;
+    }
+
+    const edges = getSelectedAssociations().filter((edge) => edge instanceof Edge);
+    for (const edge of edges) {
+      if (isSource) {
+        edge.setSourceRectangleRate(newLocationRate);
+      } else {
+        edge.setTargetRectangleRate(newLocationRate);
       }
     }
   }

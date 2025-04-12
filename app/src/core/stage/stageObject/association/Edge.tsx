@@ -53,28 +53,49 @@ export abstract class Edge extends ConnectableAssociation {
    * 此直线两端在两个实体外接矩形的边缘，延长后可过两个实体外接矩形的中心
    */
   get bodyLine(): Line {
+    const sourceRectangle = this.source.collisionBox.getRectangle();
+    const targetRectangle = this.target.collisionBox.getRectangle();
+
     const edgeCenterLine = new Line(
-      this.source.collisionBox.getRectangle().center,
-      this.target.collisionBox.getRectangle().center,
+      sourceRectangle.getInnerLocationByRateVector(this._sourceRectangleRate),
+      targetRectangle.getInnerLocationByRateVector(this._targetRectangleRate),
     );
-    const startPoint = this.source.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
-    const endPoint = this.target.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
+    const startPoint = sourceRectangle.getLineIntersectionPoint(edgeCenterLine);
+    const endPoint = targetRectangle.getLineIntersectionPoint(edgeCenterLine);
     return new Line(startPoint, endPoint);
   }
 
+  public _targetRectangleRate: Vector = new Vector(0.5, 0.5);
+  public _sourceRectangleRate: Vector = new Vector(0.5, 0.5);
+
+  get targetRectangleRate(): Vector {
+    return this._targetRectangleRate;
+  }
+  get sourceRectangleRate(): Vector {
+    return this._sourceRectangleRate;
+  }
+  // 设置接头比率位置
+  setTargetRectangleRate(rateVector: Vector) {
+    this._targetRectangleRate = rateVector;
+  }
+  setSourceRectangleRate(rateVector: Vector) {
+    this._sourceRectangleRate = rateVector;
+  }
+
   /**
+   * 静态方法：
    * 获取两个实体外接矩形的连线线段，（只连接到两个边，不连到矩形中心）
    * @param source
    * @param target
    * @returns
    */
   static getCenterLine(source: ConnectableEntity, target: ConnectableEntity): Line {
-    const edgeCenterLine = new Line(
-      source.collisionBox.getRectangle().center,
-      target.collisionBox.getRectangle().center,
-    );
-    const startPoint = source.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
-    const endPoint = target.collisionBox.getRectangle().getLineIntersectionPoint(edgeCenterLine);
+    const sourceRectangle = source.collisionBox.getRectangle();
+    const targetRectangle = target.collisionBox.getRectangle();
+
+    const edgeCenterLine = new Line(sourceRectangle.center, targetRectangle.center);
+    const startPoint = sourceRectangle.getLineIntersectionPoint(edgeCenterLine);
+    const endPoint = targetRectangle.getLineIntersectionPoint(edgeCenterLine);
     return new Line(startPoint, endPoint);
   }
 

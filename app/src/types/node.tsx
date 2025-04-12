@@ -108,6 +108,8 @@ export namespace Serialized {
   export type Edge = Association & {
     source: string;
     target: string;
+    sourceRectRate: [number, number]; // 默认中心 0.5, 0.5
+    targetRectRate: [number, number]; // 默认中心 0.5, 0.5
   };
   export function isEdge(obj: StageObject): obj is Edge {
     return "source" in obj && "target" in obj;

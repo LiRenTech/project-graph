@@ -32,6 +32,10 @@ export class Rectangle extends Shape {
     return this.location.add(this.size.divide(2));
   }
 
+  public getInnerLocationByRateVector(rateVector: Vector) {
+    return this.location.add(new Vector(this.size.x * rateVector.x, this.size.y * rateVector.y));
+  }
+
   public get leftCenter(): Vector {
     return new Vector(this.left, this.center.y);
   }

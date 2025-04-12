@@ -54,6 +54,8 @@ export namespace StageNodeConnector {
       uuid: uuidv4(),
       type: "core:line_edge",
       color: [0, 0, 0, 0],
+      targetRectRate: [0.5, 0.5],
+      sourceRectRate: [0.5, 0.5],
     });
 
     StageManager.addLineEdge(newEdge);

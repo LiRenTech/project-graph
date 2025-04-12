@@ -140,6 +140,8 @@ export namespace EdgeRenderer {
         uuid: edge.uuid,
         type: "core:line_edge",
         color: [0, 0, 0, 0],
+        sourceRectRate: [0.5, 0.5],
+        targetRectRate: [0.5, 0.5],
       });
     }
     if (edge.target.isHiddenBySectionCollapse) {
@@ -150,6 +152,8 @@ export namespace EdgeRenderer {
         uuid: edge.uuid,
         type: "core:line_edge",
         color: [0, 0, 0, 0],
+        sourceRectRate: [0.5, 0.5],
+        targetRectRate: [0.5, 0.5],
       });
     }
     return edge;

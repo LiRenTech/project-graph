@@ -1,6 +1,10 @@
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 
 import {
+  ArrowLeftFromLine,
+  ArrowLeftToLine,
+  ArrowRightFromLine,
+  ArrowRightToLine,
   BrainCircuit,
   ChevronsLeftRightEllipsis,
   ChevronsRightLeft,
@@ -29,6 +33,7 @@ import Box from "../components/Box";
 import { Panel } from "../components/panel";
 import { Popup } from "../components/popup";
 import { Color } from "../core/dataStruct/Color";
+import { Vector } from "../core/dataStruct/Vector";
 import { Settings } from "../core/service/Settings";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { TextRiseEffect } from "../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
@@ -40,6 +45,9 @@ import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryMana
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { StageGeneratorAI } from "../core/stage/stageManager/concreteMethods/StageGeneratorAI";
 import { StageNodeConnector } from "../core/stage/stageManager/concreteMethods/StageNodeConnector";
+import { StageObjectSelectCounter } from "../core/stage/stageManager/concreteMethods/StageObjectSelectCounter";
+import { TextNode } from "../core/stage/stageObject/entity/TextNode";
+import { Direction } from "../types/directions";
 import { cn } from "../utils/cn";
 import { openBrowserOrFile, openSelectedImageNode } from "../utils/externalOpen";
 import { writeTextFile } from "../utils/fs";
@@ -48,9 +56,6 @@ import AlignNodePanel from "./_popup_panel/_align_panel";
 import ColorAutoPanel from "./_popup_panel/_color_auto_panel";
 import ColorPanel from "./_popup_panel/_color_panel";
 import GenerateNodePanel from "./_popup_panel/_generate_node_panel";
-import { StageObjectSelectCounter } from "../core/stage/stageManager/concreteMethods/StageObjectSelectCounter";
-import { TextNode } from "../core/stage/stageObject/entity/TextNode";
-import { Vector } from "../core/dataStruct/Vector";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -328,6 +333,38 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<Spline />}
             handleFunction={() => {
               StageManager.switchLineEdgeToCrEdge();
+              StageHistoryManager.recordStep();
+            }}
+          />
+          <ToolbarItem
+            description="将选中连线的目标点设置为左侧"
+            icon={<ArrowRightToLine />}
+            handleFunction={() => {
+              StageManager.changeSelectedEdgeConnectLocation(Direction.Left);
+              StageHistoryManager.recordStep();
+            }}
+          />
+          <ToolbarItem
+            description="将选中连线的目标点设置为右侧"
+            icon={<ArrowLeftToLine />}
+            handleFunction={() => {
+              StageManager.changeSelectedEdgeConnectLocation(Direction.Right);
+              StageHistoryManager.recordStep();
+            }}
+          />
+          <ToolbarItem
+            description="将选中连线的起始点设置为左侧"
+            icon={<ArrowLeftFromLine />}
+            handleFunction={() => {
+              StageManager.changeSelectedEdgeConnectLocation(Direction.Left, true);
+              StageHistoryManager.recordStep();
+            }}
+          />
+          <ToolbarItem
+            description="将选中连线的起始点设置为右侧"
+            icon={<ArrowRightFromLine />}
+            handleFunction={() => {
+              StageManager.changeSelectedEdgeConnectLocation(Direction.Right, true);
               StageHistoryManager.recordStep();
             }}
           />

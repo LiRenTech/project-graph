@@ -27,6 +27,7 @@ export namespace StageLoader {
     data = convertV13toV14(data);
     data = convertV14toV15(data);
     data = convertV15toV16(data);
+    data = convertV16toV17(data);
     return data as Serialized.File;
   }
 
@@ -302,6 +303,24 @@ export namespace StageLoader {
         if (typeof node.sizeAdjust === "undefined") {
           node.sizeAdjust = "auto";
         }
+      }
+    }
+    return data;
+  }
+
+  /**
+   * Edge连线接头增加比率字段
+   * @param data
+   */
+  function convertV16toV17(data: Record<string, any>): Record<string, any> {
+    if (data.version >= 17) {
+      return data;
+    }
+    data.version = 17;
+    for (const edge of data.associations) {
+      if (Serialized.isEdge(edge) && edge.sourceRectRate === undefined && edge.targetRectRate === undefined) {
+        edge.sourceRectRate = [0.5, 0.5];
+        edge.targetRectRate = [0.5, 0.5];
       }
     }
     return data;
