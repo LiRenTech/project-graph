@@ -455,11 +455,8 @@ export class SecretKeysEngine {
         let mergeText = "";
         let mergeDetails = "";
         for (const textNode of selectedTextNodes) {
-          mergeText += textNode.text;
+          mergeText += textNode.text + "\n";
           mergeDetails += textNode.details;
-          if (textNode.text.length > 5) {
-            mergeText += "\n";
-          }
         }
         mergeText = mergeText.trim();
 
@@ -471,7 +468,7 @@ export class SecretKeysEngine {
           uuid: v4(),
           text: mergeText,
           location: [center.x, center.y],
-          size: [1, 1],
+          size: [400, 1],
           color: avgColor.toArray(),
           sizeAdjust: "manual",
           details: mergeDetails,

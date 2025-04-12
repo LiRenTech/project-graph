@@ -106,7 +106,7 @@ export class CublicCatmullRomSpline extends Shape {
   /**
    * 计算控制点所构成的曲线的参数方程和导数
    */
-  private computeFunction(): Array<{
+  public computeFunction(): Array<{
     equation: (t: number) => Vector;
     derivative: (t: number) => Vector;
   }> {
