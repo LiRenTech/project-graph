@@ -420,9 +420,11 @@ export default function AppMenu({ className = "", open = false }: { className?: 
       }
     };
     // info页面关闭
-    if (document.getElementsByClassName("lucide" + "-info").length === 0) {
-      getCurrentWindow().close();
-    }
+    setTimeout(() => {
+      if (document.getElementsByClassName("lucide" + "-info").length === 0) {
+        getCurrentWindow().close();
+      }
+    }, 5000);
   }, []);
 
   useEffect(() => {

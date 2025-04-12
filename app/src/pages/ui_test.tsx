@@ -64,6 +64,7 @@ export default function UITestPage() {
       >
         Dialog
       </Button>
+      <textarea>123456</textarea>
     </div>
   );
 }
