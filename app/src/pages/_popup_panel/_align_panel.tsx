@@ -12,6 +12,7 @@ import {
   Columns4,
   Grid3x3,
   LayoutGrid,
+  LayoutTemplate,
   Magnet,
   Network,
   SquareSquare,
@@ -24,11 +25,13 @@ import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../core/stage/stageObject/abstract/ConnectableEntity";
 import { cn } from "../../utils/cn";
 import { ToolbarItem } from "../_toolbar";
-import { StageEntityMoveManager } from "../../core/stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageAutoAlignManager } from "../../core/stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageSectionPackManager } from "../../core/stage/stageManager/concreteMethods/StageSectionPackManager";
 import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
 import { AutoLayoutFastTree } from "../../core/service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
+import { LayoutManualAlignManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
+import { LayoutToSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToSquareManager";
+import { LayoutSectionManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutSectionManager";
 
 /**
  * 对齐面板
@@ -85,7 +88,7 @@ export default function AlignNodePanel() {
           description="顶对齐"
           icon={<AlignStartHorizontal />}
           handleFunction={() => {
-            StageEntityMoveManager.alignTop();
+            LayoutManualAlignManager.alignTop();
           }}
         />
         <div />
@@ -93,7 +96,7 @@ export default function AlignNodePanel() {
           description="左对齐"
           icon={<AlignStartVertical />}
           handleFunction={() => {
-            StageEntityMoveManager.alignLeft();
+            LayoutManualAlignManager.alignLeft();
           }}
         />
         <div />
@@ -101,7 +104,7 @@ export default function AlignNodePanel() {
           description="右对齐"
           icon={<AlignEndVertical />}
           handleFunction={() => {
-            StageEntityMoveManager.alignRight();
+            LayoutManualAlignManager.alignRight();
           }}
         />
         <div />
@@ -109,7 +112,7 @@ export default function AlignNodePanel() {
           description="底对齐"
           icon={<AlignEndHorizontal />}
           handleFunction={() => {
-            StageEntityMoveManager.alignBottom();
+            LayoutManualAlignManager.alignBottom();
           }}
         />
         <div />
@@ -120,7 +123,7 @@ export default function AlignNodePanel() {
           description="相等间距垂直对齐"
           icon={<AlignVerticalSpaceBetween />}
           handleFunction={() => {
-            StageEntityMoveManager.alignVerticalSpaceBetween();
+            LayoutManualAlignManager.alignVerticalSpaceBetween();
           }}
         />
         <div />
@@ -128,14 +131,14 @@ export default function AlignNodePanel() {
           description="相等间距水平对齐"
           icon={<AlignHorizontalSpaceBetween />}
           handleFunction={() => {
-            StageEntityMoveManager.alignHorizontalSpaceBetween();
+            LayoutManualAlignManager.alignHorizontalSpaceBetween();
           }}
         />
         <ToolbarItem
           description="中心垂直对齐"
           icon={<AlignCenterVertical />}
           handleFunction={() => {
-            StageEntityMoveManager.alignCenterVertical();
+            LayoutManualAlignManager.alignCenterVertical();
           }}
         />
         <div />
@@ -143,7 +146,7 @@ export default function AlignNodePanel() {
           description="中心水平对齐"
           icon={<AlignCenterHorizontal />}
           handleFunction={() => {
-            StageEntityMoveManager.alignCenterHorizontal();
+            LayoutManualAlignManager.alignCenterHorizontal();
           }}
         />
       </div>
@@ -179,14 +182,14 @@ export default function AlignNodePanel() {
           description="尽可能排列成正方形"
           icon={<LayoutGrid />}
           handleFunction={() => {
-            StageEntityMoveManager.layoutToSquare();
+            LayoutToSquareManager.layoutToSquare();
           }}
         />
         <ToolbarItem
           description="排一串"
           icon={<Columns4 />}
           handleFunction={() => {
-            StageEntityMoveManager.layoutToTightSquare();
+            LayoutToSquareManager.layoutToTightSquare();
           }}
         />
         <ToolbarItem
@@ -202,6 +205,17 @@ export default function AlignNodePanel() {
               return;
             }
             StageSectionPackManager.textNodeTreeToSection(selectedNodes[0]);
+          }}
+        />
+        <ToolbarItem
+          description="将选中的框和实体 密集堆积"
+          icon={<LayoutTemplate />}
+          handleFunction={() => {
+            const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
+            if (selectedNodes.length === 1) {
+              return;
+            }
+            LayoutSectionManager.defaultLayout();
           }}
         />
         <ToolbarItem

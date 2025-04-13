@@ -10,7 +10,6 @@ import { Stage } from "../../../stage/Stage";
 import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
-import { StageEntityMoveManager } from "../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { CublicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
@@ -23,6 +22,7 @@ import { RectangleNoteEffect } from "../../feedbackService/effectEngine/concrete
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
+import { LayoutManualAlignManager } from "../../../stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 
 interface SecretKeyItem {
   name: string;
@@ -185,56 +185,56 @@ export class SecretKeysEngine {
       name: "顶部对齐",
       explain: "小键盘的向上",
       func() {
-        StageEntityMoveManager.alignTop();
+        LayoutManualAlignManager.alignTop();
       },
     },
     "2 2": {
       name: "底部对齐",
       explain: "小键盘的向下",
       func() {
-        StageEntityMoveManager.alignBottom();
+        LayoutManualAlignManager.alignBottom();
       },
     },
     "4 4": {
       name: "左侧对齐",
       explain: "小键盘的向左",
       func() {
-        StageEntityMoveManager.alignLeft();
+        LayoutManualAlignManager.alignLeft();
       },
     },
     "6 6": {
       name: "右侧对齐",
       explain: "小键盘的向右",
       func() {
-        StageEntityMoveManager.alignRight();
+        LayoutManualAlignManager.alignRight();
       },
     },
     "4 6 4 6": {
       name: "相等间距水平对齐",
       explain: "小键盘的左右左右，晃一晃就等间距了",
       func() {
-        StageEntityMoveManager.alignHorizontalSpaceBetween();
+        LayoutManualAlignManager.alignHorizontalSpaceBetween();
       },
     },
     "8 2 8 2": {
       name: "相等间距垂直对齐",
       explain: "小键盘的上下上下，晃一晃就等间距了",
       func() {
-        StageEntityMoveManager.alignVerticalSpaceBetween();
+        LayoutManualAlignManager.alignVerticalSpaceBetween();
       },
     },
     "4 5 6": {
       name: "中心水平对齐",
       explain: "小键盘横着从左到右穿一串",
       func() {
-        StageEntityMoveManager.alignCenterHorizontal();
+        LayoutManualAlignManager.alignCenterHorizontal();
       },
     },
     "8 5 2": {
       name: "中心垂直对齐",
       explain: "小键盘竖着从上到下穿一串",
       func() {
-        StageEntityMoveManager.alignCenterVertical();
+        LayoutManualAlignManager.alignCenterVertical();
       },
     },
     "- - a l l": {

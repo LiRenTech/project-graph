@@ -103,7 +103,7 @@ ControllerLayerMoving.mouseup = (event: MouseEvent) => {
     Stage.effectMachine.addEffect(new EntityJumpMoveEffect(15, entity.collisionBox.getRectangle(), delta));
   }
   // 3 移动所有选中的实体 的位置
-  StageEntityMoveManager.moveEntities(delta);
+  StageEntityMoveManager.moveSelectedEntities(delta);
 
   // 改变层级
   if (targetSections.length === 0) {
