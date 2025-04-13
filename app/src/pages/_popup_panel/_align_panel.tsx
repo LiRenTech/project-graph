@@ -208,7 +208,7 @@ export default function AlignNodePanel() {
           }}
         />
         <ToolbarItem
-          description="将选中的框和实体 密集堆积"
+          description="将选中的框和实体 密集堆积 （还在开发中）"
           icon={<LayoutTemplate />}
           handleFunction={() => {
             const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
