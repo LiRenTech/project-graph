@@ -54,7 +54,7 @@ import {
   isRecentFilePanelOpenAtom,
 } from "../state";
 import { cn } from "../utils/cn";
-import { getCurrentWindow, isDesktop, isMac, isWeb } from "../utils/platform";
+import { getCurrentWindow, isDesktop, isWeb } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { dataDir } from "@tauri-apps/api/path";
 import { useTranslation } from "react-i18next";
@@ -428,34 +428,6 @@ export default function AppMenu({ className = "", open = false }: { className?: 
     }, 5000);
   }, []);
 
-  useEffect(() => {
-    // 绑定快捷键
-    const keyDownFunction = (e: KeyboardEvent) => {
-      if (isMac) {
-        if (e.metaKey && e.key === "n") {
-          onNewDraft();
-        } else if (e.metaKey && e.key === "o") {
-          onOpen();
-        } else if (e.metaKey && e.key === "s") {
-          onSave();
-        }
-      } else {
-        if (e.ctrlKey && e.key === "n") {
-          onNewDraft();
-        } else if (e.ctrlKey && e.key === "o") {
-          onOpen();
-        } else if (e.ctrlKey && e.key === "s") {
-          onSave();
-        }
-      }
-    };
-    document.addEventListener("keydown", keyDownFunction);
-
-    return () => {
-      document.removeEventListener("keydown", keyDownFunction);
-    };
-  }, [file]); // 不能填空数组，否则绑定的函数里面的 file 值不会更新
-
   return (
     <div
       className={cn(
@@ -473,7 +445,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             <Col icon={<FileClock />} id="app-menu-recent-file-btn" onClick={() => setRecentFilePanelOpen(true)}>
               {t("file.items.recent")}
             </Col>
-            <Col icon={<Save />} onClick={onSave}>
+            <Col icon={<Save />} id="app-menu-save-btn" onClick={onSave}>
               {t("file.items.save")}
             </Col>
           </>
@@ -483,10 +455,10 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             {t("file.items.newFile")}
           </Col>
         )}
-        <Col icon={<ScrollText />} onClick={onNewDraft}>
+        <Col icon={<ScrollText />} id="app-menu-new-draft-btn" onClick={onNewDraft}>
           {t("file.items.new")}
         </Col>
-        <Col icon={<FileInput />} onClick={onOpen}>
+        <Col icon={<FileInput />} id="app-menu-open-btn" onClick={onOpen}>
           {t("file.items.open")}
         </Col>
         <Col icon={<FileDown />} onClick={onSaveNew}>

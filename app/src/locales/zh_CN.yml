@@ -804,6 +804,19 @@ keyBinds:
       重载应用，重新加载当前工程文件
       等同于浏览器刷新网页
       这个功能很危险！会导致未保存的进度丢失！
+  saveFile:
+    title: 保存文件
+    description: |
+      保存当前工程文件，若当前文件是草稿则另存为
+  newDraft:
+    title: 新建草稿
+    description: |
+      新建一个草稿文件，并切换到该文件
+      若当前文件未保存则无法切换
+  openFile:
+    title: 打开文件
+    description: |
+      选择一个曾经保存的json文件并打开
   undo:
     title: 撤销
     description: 撤销上一次操作

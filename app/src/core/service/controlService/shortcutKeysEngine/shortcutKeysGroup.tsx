@@ -28,6 +28,9 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
     title: "basic",
     icon: <Keyboard />,
     keys: [
+      "saveFile",
+      "openFile",
+      "newDraft",
       "undo",
       "redo",
       "selectAll",

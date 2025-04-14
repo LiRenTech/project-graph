@@ -566,6 +566,54 @@ export namespace ShortcutKeysRegister {
       });
       button?.dispatchEvent(event);
     });
+    (
+      await KeyBinds.create("saveFile", "s", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      const button = document.getElementById("app-menu-save-btn");
+      const event = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      });
+      button?.dispatchEvent(event);
+    });
+    (
+      await KeyBinds.create("newDraft", "n", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      const button = document.getElementById("app-menu-new-draft-btn");
+      const event = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      });
+      button?.dispatchEvent(event);
+    });
+    (
+      await KeyBinds.create("openFile", "o", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      const button = document.getElementById("app-menu-open-btn");
+      const event = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      });
+      button?.dispatchEvent(event);
+    });
 
     (
       await KeyBinds.create("checkoutWindowOpacityMode", "0", {
