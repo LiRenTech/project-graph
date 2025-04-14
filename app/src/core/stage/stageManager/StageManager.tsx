@@ -36,6 +36,7 @@ import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManag
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
+import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -960,10 +961,16 @@ export namespace StageManager {
     }
   }
 
+  /**
+   * ctrl + A 全选
+   */
   export function selectAll() {
-    for (const entity of stageContent.entities.valuesToArray()) {
+    const allEntity = stageContent.entities.valuesToArray();
+    for (const entity of allEntity) {
       entity.isSelected = true;
     }
+    const associations = stageContent.associations.valuesToArray();
+    Stage.effectMachine.addEffect(TextRiseEffect.default(`${allEntity.length}个实体，${associations.length}个关系`));
   }
   export function clearSelectAll() {
     for (const entity of stageContent.entities.valuesToArray()) {
