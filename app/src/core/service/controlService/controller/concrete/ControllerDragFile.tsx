@@ -15,9 +15,6 @@ import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/T
 import { ViewFlashEffect } from "../../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
 
-/**
- * BUG: 始终无法触发文件拖入事件
- */
 export const ControllerDragFile = new ControllerClassDragFile();
 
 /**
@@ -176,6 +173,9 @@ function dealUnknownFileDrop(file: File, mouseWorldLocation: Vector, i: number) 
  * @param mouseWorldLocation
  */
 function dealJsonFileDrop(file: File, mouseWorldLocation: Vector) {
+  // 将鼠标位置整数化
+  mouseWorldLocation = new Vector(Math.round(mouseWorldLocation.x), Math.round(mouseWorldLocation.y));
+
   const reader = new FileReader();
   reader.readAsText(file); // 以文本格式读取文件内容
 
@@ -185,11 +185,37 @@ function dealJsonFileDrop(file: File, mouseWorldLocation: Vector) {
     // 在这里处理读取到的内容
     const dataString = fileContent?.toString();
     if (dataString === undefined) {
-      console.error("文件内容为空");
+      Dialog.show({
+        title: "提示",
+        content: "文件内容为空",
+        type: "warning",
+      });
       Stage.effectMachine.addEffect(new TextRiseEffect("文件内容为空"));
     } else {
-      StageManager.addSerializedData(StageLoader.validate(JSON.parse(dataString)), mouseWorldLocation);
-      Stage.effectMachine.addEffect(new ViewFlashEffect(Color.White));
+      // 检测是否有图片节点
+      if (dataString.includes("core:image_node")) {
+        Dialog.show({
+          title: "提示：json中含有图片节点",
+          content:
+            "您正在将一个含有图片节点的json文件附加到当前舞台中，这会导致图片的丢失，您需要手动将涉及到的所有图片复制到当前json的文件夹下",
+          type: "warning",
+        });
+      }
+      Dialog.show({
+        title: "确认追加",
+        content: `正在准备将json文件中的内容追加到舞台中的 ${mouseWorldLocation.toString()} 坐标位置上，是否继续？\n注意：拖动文件进入舞台不是打开，是追加！`,
+        type: "info",
+        buttons: [
+          {
+            text: "确定",
+            onClick: () => {
+              StageManager.addSerializedData(StageLoader.validate(JSON.parse(dataString)), mouseWorldLocation);
+              Stage.effectMachine.addEffect(new ViewFlashEffect(Color.White));
+            },
+          },
+          { text: "取消" },
+        ],
+      });
     }
   };
 

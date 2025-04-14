@@ -1,11 +1,15 @@
 import { Store } from "@tauri-apps/plugin-store";
 import { createStore } from "../../utils/store";
 
+/**
+ * 教程记录
+ */
 export namespace Tourials {
   export const tourials = ["nodeDetailsEditor"] as const;
 
   let store: Store | null = null;
 
+  // 只在最初始时创建一次
   export async function init() {
     store = await createStore("tourials.json");
   }
