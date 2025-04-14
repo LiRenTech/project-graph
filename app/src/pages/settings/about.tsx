@@ -23,14 +23,14 @@ export default function About() {
   const [isCheckingUpdateSuccess, setIsCheckingUpdateSuccess] = React.useState(false);
 
   const [version, setVersion] = React.useState("");
-  const [versionName, setVersionName] = React.useState("");
+  const [versionNameZhCN, setVersionNameZhCN] = React.useState("");
   const [versionNameEn, setVersionNameEn] = React.useState("");
   const [update, setUpdate] = React.useState<Update | null>(null);
   const [updating, setUpdating] = React.useState(false);
   const [newVersionFileSize, setNewVersionFileSize] = React.useState(0);
   const [newVersionDownloadedSize, setNewVersionDownloadedSize] = React.useState(0);
   const [updateChannel] = Settings.use("updateChannel");
-  const { t, i18n } = useTranslation("about");
+  const { t } = useTranslation("about");
 
   const [clickedLogoCount, setClickedLogoCount] = React.useState(0);
   const navigate = useNavigate();
@@ -44,10 +44,10 @@ export default function About() {
       setVersion(version);
       const versionObject = versions.find((vo) => version.startsWith(vo.version));
       if (versionObject) {
-        setVersionName(versionObject.name);
+        setVersionNameZhCN(versionObject.name);
         setVersionNameEn(versionObject.name_en);
       } else {
-        setVersionName("神秘序章");
+        setVersionNameZhCN("神秘序章");
         setVersionNameEn("Unknown Version");
       }
     });
@@ -109,8 +109,9 @@ export default function About() {
           Project Graph
         </h1>
         <p className="text-panel-details-text text-center text-sm">
-          {i18n.language === "zh-CN" ? versionName + " " : ""}
-          {versionNameEn}
+          {/* {i18n.language === "zh-CN" ?  : ""} */}
+          {/* 先中文和英文都显示吧。因为之前发现windows上看不到中文版本号名称 */}
+          {versionNameZhCN + " " + versionNameEn}
           <br />
           {version}
         </p>

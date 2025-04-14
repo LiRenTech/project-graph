@@ -38,5 +38,15 @@
     "version": "1.5",
     "name": "云程发轫之势",
     "name_en": "Promising Start"
+  },
+  {
+    "version": "1.6",
+    "name": "贝塞流光之幕",
+    "name_en": "Bézier Luminescence"
+  },
+  {
+    "version": "1.7",
+    "name": "控弦绘影之织",
+    "name_en": "CR Precision Weave"
   }
 ]
