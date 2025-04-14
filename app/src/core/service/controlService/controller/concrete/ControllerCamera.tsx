@@ -423,17 +423,34 @@ function isMouseWheel(event: WheelEvent): boolean {
     } else {
       // 垂直方向滚动
       const distance = Math.abs(event.deltaY);
-      // 在mac系统下，测试者“雨幕”反馈数据：
-      // 当移动距离是整数时，绝对是鼠标滚轮，当是小数时，绝对是触摸板
+      // 在mac系统下
+
+      // 测试者“雨幕”反馈数据：
+      // 鼠标滚轮：移动距离是整数
+      // 触摸板：小数
+
       // 测试者“大道”反馈数据：
-      // 鼠标滚动一格，会显示好多小数字，4 5 6 7 6 5 4这样的。
-      if (Number.isInteger(distance)) {
-        // 整数距离，是鼠标滚轮
+      // 鼠标滚动一格：整数，会显示好多小数字，4 5 6 7 6 5 4这样的。
+
+      // M4 mackbook实测：
+      // 鼠标滚动一格，会显示一格数字 4.63535543
+      // 反而是触摸版，会显示 (1, 4), (0, 3) .... 很多小整数向量
+      if (Stage.macTrackpadAndMouseWheelDifference === "tarckpadFloatAndWheelInt") {
+        if (Number.isInteger(distance)) {
+          // 整数距离，是鼠标滚轮
+          return true;
+        } else {
+          // 小数距离，是触摸板
+          return false;
+        }
+      } else if (Stage.macTrackpadAndMouseWheelDifference === "trackpadIntAndWheelFloat") {
+        if (Number.isInteger(distance)) {
+          return false;
+        }
         return true;
-      } else {
-        // 小数距离，是触摸板
-        return false;
       }
+      // 无法检测出逻辑
+      return false;
     }
   }
 

@@ -160,6 +160,9 @@ export namespace Stage {
   export let doubleClickMiddleMouseButton: Settings.Settings["doubleClickMiddleMouseButton"] = "adjustCamera";
   export let autoRefreshStageByMouseAction = true;
 
+  export let macTrackpadAndMouseWheelDifference: Settings.Settings["macTrackpadAndMouseWheelDifference"] =
+    "trackpadIntAndWheelFloat";
+
   export function init() {
     autoSaveEngine.init();
     autoBackupEngine.init();
@@ -189,6 +192,9 @@ export namespace Stage {
     });
     Settings.watch("autoRefreshStageByMouseAction", (value) => {
       autoRefreshStageByMouseAction = value;
+    });
+    Settings.watch("macTrackpadAndMouseWheelDifference", (value) => {
+      macTrackpadAndMouseWheelDifference = value;
     });
   }
 }

@@ -37,6 +37,7 @@ export default function Control() {
       </FieldGroup>
       <FieldGroup title="TouchPad 触摸板设定" icon={<Touchpad />}>
         <SettingField icon={<Hand />} settingKey="enableWindowsTouchPad" type="switch" />
+        <SettingField icon={<Hand />} settingKey="macTrackpadAndMouseWheelDifference" type="select" />
       </FieldGroup>
       <FieldGroup title="RectangleSelect 框选" icon={<SquareDashedMousePointer />}>
         <SettingField icon={<SquareArrowDownRight />} settingKey="rectangleSelectWhenRight" type="select" />

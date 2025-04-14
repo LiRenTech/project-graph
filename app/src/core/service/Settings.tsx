@@ -100,6 +100,9 @@ export namespace Settings {
     mouseWheelWithCtrlMode: "zoom" | "move" | "moveX" | "none";
     mouseWheelWithAltMode: "zoom" | "move" | "moveX" | "none";
     doubleClickMiddleMouseButton: "none" | "adjustCamera";
+    // mac相关的特殊控制
+    // 触摸版和鼠标滚轮的区分逻辑
+    macTrackpadAndMouseWheelDifference: "trackpadIntAndWheelFloat" | "tarckpadFloatAndWheelInt";
     // 音效相关
     soundEnabled: boolean;
     cuttingLineStartSoundFile: string;
@@ -201,6 +204,7 @@ export namespace Settings {
     mouseWheelWithCtrlMode: "move",
     mouseWheelWithAltMode: "none",
     doubleClickMiddleMouseButton: "adjustCamera",
+    macTrackpadAndMouseWheelDifference: "trackpadIntAndWheelFloat",
     // 音效相关
     soundEnabled: true,
     cuttingLineStartSoundFile: "",

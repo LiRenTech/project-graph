@@ -425,6 +425,16 @@ settings:
       在windows系统中，双指上下移动会被识别为滚轮事件。
       双指左右移动会被识别成鼠标横向滚轮的滚动事件。
       如果您是笔记本操作并使用外部鼠标，建议关闭此选项。
+  macTrackpadAndMouseWheelDifference:
+    title: macbook 的触摸版与鼠标滚轮区分逻辑
+    description:
+      有的macbook鼠标滚轮是整数，触摸版是小数，有的则相反
+      您需要根据实际情况选择一下区分逻辑
+      区分方法可点击7次关于界面的软件logo进入“测试界面”后，滑动滚轮和触摸板查看数据反馈
+    options:
+      trackpadIntAndWheelFloat: 触摸版是整数，鼠标滚动是小数
+      tarckpadFloatAndWheelInt: 触摸版是小数，鼠标滚动是整数
+
   mouseWheelMode:
     title: 鼠标滚轮模式
     options:
