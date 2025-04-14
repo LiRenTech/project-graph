@@ -97,6 +97,7 @@ settings:
     sounds: Sounds
     plugins: Plugins
     themes: Themes
+    scripts: Scripts
   language:
     title: Language
     options:
@@ -504,6 +505,16 @@ settings:
   compatibilityMode:
     description: "When enabled, another render method will be used.\n"
     title: Compatibility Mode
+  autoRefreshStageByMouseAction:
+    description: "When enabled, mouse actions (camera view drags) will automatically
+      refresh the stage.\nThis prevents manual refreshes for images that fail to load
+      when opening a file.\n"
+  mouseWheelWithAltMode:
+    description: "This feature was added on April 10, 2025.\nIssues discovered currently:
+      In Windows, a screen tap is needed to control the stage after a mouse wheel
+      roll.\n"
+    options:
+      zoom: Zooming
 plugins:
   welcome:
     title: Welcome to the Plugin System
