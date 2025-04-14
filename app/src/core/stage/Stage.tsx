@@ -162,6 +162,7 @@ export namespace Stage {
 
   export let macTrackpadAndMouseWheelDifference: Settings.Settings["macTrackpadAndMouseWheelDifference"] =
     "trackpadIntAndWheelFloat";
+  export let macMouseWheelIsSmoothed: Settings.Settings["macMouseWheelIsSmoothed"] = false;
 
   export function init() {
     autoSaveEngine.init();
@@ -195,6 +196,9 @@ export namespace Stage {
     });
     Settings.watch("macTrackpadAndMouseWheelDifference", (value) => {
       macTrackpadAndMouseWheelDifference = value;
+    });
+    Settings.watch("macMouseWheelIsSmoothed", (value) => {
+      macMouseWheelIsSmoothed = value;
     });
   }
 }

@@ -103,6 +103,8 @@ export namespace Settings {
     // mac相关的特殊控制
     // 触摸版和鼠标滚轮的区分逻辑
     macTrackpadAndMouseWheelDifference: "trackpadIntAndWheelFloat" | "tarckpadFloatAndWheelInt";
+    // mac 的鼠标滚轮是否开启了平滑滚动
+    macMouseWheelIsSmoothed: boolean;
     // 音效相关
     soundEnabled: boolean;
     cuttingLineStartSoundFile: string;
@@ -205,6 +207,7 @@ export namespace Settings {
     mouseWheelWithAltMode: "none",
     doubleClickMiddleMouseButton: "adjustCamera",
     macTrackpadAndMouseWheelDifference: "trackpadIntAndWheelFloat",
+    macMouseWheelIsSmoothed: false,
     // 音效相关
     soundEnabled: true,
     cuttingLineStartSoundFile: "",

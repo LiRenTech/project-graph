@@ -434,7 +434,11 @@ settings:
     options:
       trackpadIntAndWheelFloat: 触摸版是整数，鼠标滚动是小数
       tarckpadFloatAndWheelInt: 触摸版是小数，鼠标滚动是整数
-
+  macMouseWheelIsSmoothed:
+    title: macbook 的鼠标滚轮是否平滑
+    description:
+      有的macbook鼠标滚轮是平滑的，有的则是滚动一格触发一次
+      可能取决于您是否安装了Mos等鼠标修改软件
   mouseWheelMode:
     title: 鼠标滚轮模式
     options:

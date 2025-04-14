@@ -347,8 +347,18 @@ function zoomCameraByMouseWheel(event: WheelEvent) {
   if (isMac) {
     // mac电脑滚动一格滚轮会触发很多次事件。这个列表里是每个事件的deltaY
     // [7, 7, 7, 7, 6, 7, 7, 6, 5, 5, 4, 4, 3, 3, 3, 2, 2, 1, 1, 1, 1, 1]
-    const deltaY = event.deltaY;
-    Camera.targetScale *= 1 + deltaY / 500;
+    if (Stage.macMouseWheelIsSmoothed) {
+      // 盲猜是开了平滑滚动了
+      const deltaY = event.deltaY;
+      Camera.targetScale *= 1 + deltaY / 500;
+    } else {
+      // 如果没有开平滑滚动
+      if (event.deltaY > 0) {
+        Camera.targetScale *= 0.8;
+      } else if (event.deltaY < 0) {
+        Camera.targetScale *= 1.2;
+      }
+    }
   } else {
     if (event.deltaY > 0) {
       Camera.targetScale *= 0.8;
@@ -453,6 +463,8 @@ function isMouseWheel(event: WheelEvent): boolean {
       return false;
     }
   }
+
+  // 不是mac系统 ======
 
   if (event.deltaX !== 0 && event.deltaY !== 0) {
     // 斜向滚动肯定不是鼠标滚轮。因为滚轮只有横向滚轮和竖向滚轮
