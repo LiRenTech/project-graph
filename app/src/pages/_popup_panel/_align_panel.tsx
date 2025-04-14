@@ -9,11 +9,14 @@ import {
   AlignVerticalSpaceBetween,
   ArrowDownUp,
   ArrowLeftRight,
+  ChevronsRightLeft,
   Columns4,
   Grid3x3,
   LayoutGrid,
   LayoutTemplate,
   Magnet,
+  Maximize2,
+  MoveHorizontal,
   Network,
   SquareSquare,
 } from "lucide-react";
@@ -32,6 +35,7 @@ import { AutoLayoutFastTree } from "../../core/service/controlService/autoLayout
 import { LayoutManualAlignManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { LayoutToSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToSquareManager";
 import { LayoutSectionManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutSectionManager";
+import { LayoutResizeManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutResizeManager";
 
 /**
  * 对齐面板
@@ -81,11 +85,11 @@ export default function AlignNodePanel() {
   };
 
   return (
-    <div className="grid grid-cols-2 grid-rows-2">
+    <div className="grid grid-cols-3 grid-rows-2">
       <div className={cell9ClassName}>
         <div />
         <ToolbarItem
-          description="顶对齐"
+          description="顶对齐 (88)"
           icon={<AlignStartHorizontal />}
           handleFunction={() => {
             LayoutManualAlignManager.alignTop();
@@ -93,7 +97,7 @@ export default function AlignNodePanel() {
         />
         <div />
         <ToolbarItem
-          description="左对齐"
+          description="左对齐 (44)"
           icon={<AlignStartVertical />}
           handleFunction={() => {
             LayoutManualAlignManager.alignLeft();
@@ -101,7 +105,7 @@ export default function AlignNodePanel() {
         />
         <div />
         <ToolbarItem
-          description="右对齐"
+          description="右对齐 (66)"
           icon={<AlignEndVertical />}
           handleFunction={() => {
             LayoutManualAlignManager.alignRight();
@@ -109,7 +113,7 @@ export default function AlignNodePanel() {
         />
         <div />
         <ToolbarItem
-          description="底对齐"
+          description="底对齐 (22)"
           icon={<AlignEndHorizontal />}
           handleFunction={() => {
             LayoutManualAlignManager.alignBottom();
@@ -120,7 +124,7 @@ export default function AlignNodePanel() {
 
       <div className={cell9ClassName}>
         <ToolbarItem
-          description="相等间距垂直对齐"
+          description="相等间距垂直对齐 (8282)"
           icon={<AlignVerticalSpaceBetween />}
           handleFunction={() => {
             LayoutManualAlignManager.alignVerticalSpaceBetween();
@@ -128,14 +132,14 @@ export default function AlignNodePanel() {
         />
         <div />
         <ToolbarItem
-          description="相等间距水平对齐"
+          description="相等间距水平对齐 (4646)"
           icon={<AlignHorizontalSpaceBetween />}
           handleFunction={() => {
             LayoutManualAlignManager.alignHorizontalSpaceBetween();
           }}
         />
         <ToolbarItem
-          description="中心垂直对齐"
+          description="中心垂直对齐 (852)"
           icon={<AlignCenterVertical />}
           handleFunction={() => {
             LayoutManualAlignManager.alignCenterVertical();
@@ -143,7 +147,7 @@ export default function AlignNodePanel() {
         />
         <div />
         <ToolbarItem
-          description="中心水平对齐"
+          description="中心水平对齐 (456)"
           icon={<AlignCenterHorizontal />}
           handleFunction={() => {
             LayoutManualAlignManager.alignCenterHorizontal();
@@ -236,6 +240,35 @@ export default function AlignNodePanel() {
             Settings.set("enableDragAlignToGrid", !(await Settings.get("enableDragAlignToGrid")));
           }}
         />
+      </div>
+      <div className={cell9ClassName}>
+        <div />
+        <ToolbarItem
+          description={"统一宽度，以最小宽度为准"}
+          icon={<ChevronsRightLeft />}
+          handleFunction={async () => {
+            LayoutResizeManager.adjustSelectedTextNodeWidth("minWidth");
+          }}
+        />
+        <div />
+        <div />
+        <ToolbarItem
+          description={"统一宽度，以平均宽度为准"}
+          icon={<MoveHorizontal />}
+          handleFunction={async () => {
+            LayoutResizeManager.adjustSelectedTextNodeWidth("average");
+          }}
+        />
+        <div />
+        <div />
+        <ToolbarItem
+          description={"统一宽度，以最大宽度为准"}
+          icon={<Maximize2 className="rotate-45" />}
+          handleFunction={async () => {
+            LayoutResizeManager.adjustSelectedTextNodeWidth("maxWidth");
+          }}
+        />
+        <div />
       </div>
     </div>
   );

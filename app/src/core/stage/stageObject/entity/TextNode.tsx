@@ -159,6 +159,11 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
     this.collisionBox.shapeList[0] = newRectangle;
   }
 
+  resizeWidthTo(width: number) {
+    const currentWidth = this.rectangle.size.x;
+    this.resizeHandle(new Vector(width - currentWidth, 0));
+  }
+
   getResizeHandleRect(): Rectangle {
     const rect = this.collisionBox.getRectangle();
     return new Rectangle(rect.rightTop, new Vector(25, rect.size.y));
