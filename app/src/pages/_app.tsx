@@ -250,15 +250,11 @@ export default function App() {
                 <div
                   className="size-3 rounded-full bg-red-500 active:bg-red-800"
                   onClick={() => getCurrentWindow().close()}
-                >
-                  .
-                </div>
+                />
                 <div
                   className="size-3 rounded-full bg-yellow-500 active:bg-yellow-800"
                   onClick={() => getCurrentWindow().minimize()}
-                >
-                  .
-                </div>
+                />
                 <div
                   className="size-3 rounded-full bg-green-500 active:bg-green-800"
                   onClick={() =>
@@ -266,9 +262,7 @@ export default function App() {
                       .isMaximized()
                       .then((isMaximized) => setMaxmized(!isMaximized))
                   }
-                >
-                  .
-                </div>
+                />
               </Button>
             )}
             {/* 左上角菜单按钮 */}
