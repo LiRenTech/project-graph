@@ -31,7 +31,7 @@ export default function PGCanvas() {
   const [uiShow, setUIShow] = React.useState(true);
   const [nodeDetailsPanel] = Settings.use("nodeDetailsPanel");
   const [isProtectPrivacy] = Settings.use("protectingPrivacy");
-  const [compatibilityMode] = Settings.use("compatibilityMode");
+  const [compatibilityMode, setCompatibilityMode] = React.useState(false);
 
   const [isWindowCollapsing] = useAtom(isWindowCollapsingAtom);
   const [isClassroomMode] = useAtom(isClassroomModeAtom);
@@ -49,20 +49,32 @@ export default function PGCanvas() {
         Renderer.resizeWindow(window.innerWidth, window.innerHeight);
       }
     };
+
+    /**
+     * 经过测试
+     * 按住窗口角落开始拖拽改变大小的时候，按下的那一刹那触发一个blur，然后再立刻触发一个focus。
+     * 按住顶部拖拽移动窗口位置时，按下的那一刹那同上
+     * F11和最大化状态切换不触发
+     * 最小化会触发blur
+     */
+    // 窗口切回来，显示到屏幕上时触发
     const handleFocus = () => {
-      focus = true;
+      Stage.isWindowFocused = true;
+      // console.log("focus");
       // 解决alt+tab切换窗口后还在监听alt按下的问题
       Controller.pressingKeySet.clear();
     };
+
+    // alt+tab切换窗口或者最小化时触发
     const handleBlur = () => {
       if (isFrame) return;
-      focus = false;
+      Stage.isWindowFocused = false;
+      // console.log("blur");
       // 解决alt+tab切换窗口后还在监听alt按下的问题
       Controller.pressingKeySet.clear();
     };
 
     const canvasElement = canvasRef.current;
-    let focus = true;
 
     if (canvasElement) {
       Canvas.init(canvasElement);
@@ -84,15 +96,17 @@ export default function PGCanvas() {
     window.addEventListener("focus", handleFocus);
     window.addEventListener("blur", handleBlur);
 
+    Settings.watch("compatibilityMode", (value) => {
+      setCompatibilityMode(value);
+      console.log(value, "compatibilityMode");
+      destroyTick(value);
+      startTick(value);
+    });
+
     const tick = () => {
-      if (!focus) {
+      if (!Stage.isWindowFocused) {
         return;
       }
-      // 计算FPS
-      const now = performance.now();
-      const deltaTime = (now - lastTime) / 1000;
-      lastTime = now;
-      Renderer.deltaTime = deltaTime;
 
       // 决定是否渲染画面
       if (Renderer.isPauseRenderWhenManipulateOvertime) {
@@ -107,32 +121,49 @@ export default function PGCanvas() {
       // i++;
     };
 
-    // 开启定时器
-    let lastTime = performance.now();
     let frameId = -1;
-    if (compatibilityMode) {
-      setInterval(() => {
-        tick();
-      }, 1000 / 60);
-    } else {
-      const loop = () => {
+    let loopInterval: NodeJS.Timeout;
+
+    // 开启定时器
+    const startTick = (isCompatibilityMode: boolean) => {
+      if (isCompatibilityMode) {
+        // setInterval 模式
+
+        loopInterval = setInterval(() => {
+          tick();
+          // console.log("interval tick");
+        }, 1000 / 60);
+        console.log("开启interval模式", loopInterval, typeof loopInterval);
+      } else {
+        // requestAnimationFrame 模式
+
+        const loop = () => {
+          frameId = requestAnimationFrame(loop);
+          tick();
+          // console.log("requestAnimationFrame tick");
+        };
         frameId = requestAnimationFrame(loop);
-        tick();
-      };
-      frameId = requestAnimationFrame(loop);
-    }
+        console.log("开启requestAnimationFrame模式", frameId, typeof frameId);
+      }
+    };
+
+    // BUG: 似乎不能准确的关闭当前正在运行的定时器，造成多开，帧数虚高卡顿
+    const destroyTick = (isCompatibilityMode: boolean) => {
+      if (isCompatibilityMode) {
+        clearInterval(loopInterval);
+      } else {
+        cancelAnimationFrame(frameId);
+      }
+    };
 
     // 清理事件监听器
     return () => {
+      // console.log("PGCanvas unmount"); // 目前似乎不会触发了
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("focus", handleFocus);
       window.removeEventListener("blur", handleBlur);
       Controller.destroy();
-      if (!compatibilityMode) {
-        cancelAnimationFrame(frameId);
-      }
-      // 实际上不应该清理，因为跳转到设置界面再回来就没了
-      // StageManager.destroy();
+      destroyTick(compatibilityMode);
     };
   }, []);
 

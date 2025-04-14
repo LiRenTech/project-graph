@@ -121,6 +121,9 @@ export namespace Stage {
 
   export const secretKeyEngine = new SecretKeysEngine();
 
+  /** 当前窗口是否处于激活状态 */
+  // eslint-disable-next-line prefer-const
+  export let isWindowFocused = true;
   /**
    * 逻辑总入口
    * 该函数在上游被频繁调用

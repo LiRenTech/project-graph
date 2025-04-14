@@ -720,7 +720,15 @@ export namespace Renderer {
     }
   }
 
+  /**
+   * 每次在frameTick最开始的时候调用一次
+   */
   function updateFPS() {
+    // 计算FPS
+    const now = performance.now();
+    const deltaTime = (now - lastTime) / 1000; // s
+    Renderer.deltaTime = deltaTime;
+
     frameIndex++;
     const currentTime = performance.now();
     frameCount++;
@@ -730,6 +738,7 @@ export namespace Renderer {
       lastTime = currentTime;
     }
   }
+
   /** 画debug信息 */
   function renderDebugDetails() {
     if (!isShowDebug || isFrame) {
