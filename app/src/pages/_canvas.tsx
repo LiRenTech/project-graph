@@ -28,7 +28,7 @@ export default function PGCanvas() {
   // 背景透明度，实测发现不能用 Settings.use，会导致无法根据快捷键实时更新，必须要切换页面才能更新背景透明度
   const [bgAlpha, setBgAlpha] = React.useState(0.9);
 
-  const [uiShow] = Settings.use("showTipsOnUI");
+  const [uiShow, setUIShow] = React.useState(true);
   const [nodeDetailsPanel] = Settings.use("nodeDetailsPanel");
   const [isProtectPrivacy] = Settings.use("protectingPrivacy");
   const [compatibilityMode] = Settings.use("compatibilityMode");
@@ -40,6 +40,10 @@ export default function PGCanvas() {
     Settings.watch("windowBackgroundAlpha", (value) => {
       setBgAlpha(value);
     });
+    Settings.watch("showTipsOnUI", (value) => {
+      setUIShow(value);
+    });
+
     const handleResize = () => {
       if (canvasElement) {
         Renderer.resizeWindow(window.innerWidth, window.innerHeight);
