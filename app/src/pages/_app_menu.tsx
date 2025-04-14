@@ -54,7 +54,7 @@ import {
   isRecentFilePanelOpenAtom,
 } from "../state";
 import { cn } from "../utils/cn";
-import { getCurrentWindow, isDesktop, isWeb } from "../utils/platform";
+import { getCurrentWindow, isDesktop, isMac, isWeb } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { dataDir } from "@tauri-apps/api/path";
 import { useTranslation } from "react-i18next";
@@ -431,12 +431,22 @@ export default function AppMenu({ className = "", open = false }: { className?: 
   useEffect(() => {
     // 绑定快捷键
     const keyDownFunction = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.key === "n") {
-        onNewDraft();
-      } else if (e.ctrlKey && e.key === "o") {
-        onOpen();
-      } else if (e.ctrlKey && e.key === "s") {
-        onSave();
+      if (isMac) {
+        if (e.metaKey && e.key === "n") {
+          onNewDraft();
+        } else if (e.metaKey && e.key === "o") {
+          onOpen();
+        } else if (e.metaKey && e.key === "s") {
+          onSave();
+        }
+      } else {
+        if (e.ctrlKey && e.key === "n") {
+          onNewDraft();
+        } else if (e.ctrlKey && e.key === "o") {
+          onOpen();
+        } else if (e.ctrlKey && e.key === "s") {
+          onSave();
+        }
       }
     };
     document.addEventListener("keydown", keyDownFunction);
