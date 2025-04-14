@@ -12,7 +12,14 @@ export default function InfoPage() {
   const onMouseWheel = (e: WheelEvent) => {
     e.preventDefault();
     const newData = `${e.deltaX}, ${e.deltaY}`;
-    setDataList((prev) => [...prev, newData]);
+    setDataList((prev) => {
+      const newList = [...prev, newData];
+      // 将长度限制为15
+      if (newList.length > 15) {
+        newList.shift();
+      }
+      return newList;
+    });
   };
 
   useEffect(() => {
@@ -53,7 +60,7 @@ export default function InfoPage() {
         {/* <Button onClick={() => open("https://project-graph.top")}>open函数打开官网</Button> */}
         <br />
         <h2>滑动鼠标滚动事件：用于检测不同系统鼠标滚轮差异</h2>
-        <div className="h-96 overflow-y-auto text-xs">
+        <div className="h-96 overflow-y-auto bg-black text-xs text-white">
           {dataList.map((data, i) => {
             return <p key={i}>{data}</p>;
           })}
