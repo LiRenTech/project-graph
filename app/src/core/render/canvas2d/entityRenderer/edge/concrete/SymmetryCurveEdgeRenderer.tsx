@@ -19,6 +19,9 @@ import { WorldRenderUtils } from "../../../utilsRenderer/WorldRenderUtils";
 import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 
+/**
+ * 贝塞尔曲线
+ */
 export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
   getCuttingEffects(edge: LineEdge): EffectObject[] {
     const midLocation = edge.bodyLine.midPoint();
@@ -269,13 +272,14 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     if (edge.text.trim() === "") {
       return;
     }
-    // 画文本
+    // 画文本底色
     ShapeRenderer.renderRect(
       edge.textRectangle.transformWorld2View(),
-      StageStyleManager.currentStyle.Background,
+      StageStyleManager.currentStyle.Background.toNewAlpha(Renderer.windowBackgroundAlpha),
       Color.Transparent,
       1,
     );
+
     TextRenderer.renderTextFromCenter(
       edge.text,
       Renderer.transformWorld2View(curve.bezier.getPointByT(0.5)),

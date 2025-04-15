@@ -121,6 +121,7 @@ export namespace Renderer {
   export let isPauseRenderWhenManipulateOvertime = true;
   export let renderOverTimeWhenNoManipulateTime = 5; // s
   export let ignoreTextNodeTextRenderLessThanCameraScale = 0.065;
+  export let windowBackgroundAlpha = 0.9;
 
   // 确保这个函数在软件打开的那一次调用
   export function init() {
@@ -145,6 +146,9 @@ export namespace Renderer {
     });
     Settings.watch("showBackgroundCartesian", (value) => {
       isShowBackgroundCartesian = value;
+    });
+    Settings.watch("windowBackgroundAlpha", (value) => {
+      windowBackgroundAlpha = value;
     });
 
     Settings.watch("alwaysShowDetails", (value) => (isAlwaysShowDetails = value));
