@@ -64,12 +64,16 @@ export default function GithubRelease() {
           <FindAsset release={nightlyRelease} endwith="x64.dmg" />
         </Tab>
         <Tab value="macOS (Apple Silicon)">
-          <Callout type="warn">由于开发者没有 Mac 电脑，无法测试 macOS arm64 版本，所以可能无法正常运行。</Callout>
+          <Callout type="warn">此处的 macOS 版本由Github Actions自动构建，可能无法正常运行。</Callout>
+          <Callout type="info">
+            解决方法：可尝试在网盘下载开发者手动构建的 Mac Apple Silicon版本。 —— 2025年4月15日
+          </Callout>
           <FindAsset release={release} endwith="aarch64.dmg" />
           <FindAsset release={nightlyRelease} endwith="aarch64.dmg" />
         </Tab>
         <Tab value="Android">
           <Callout type="warn">Android 版本目前遇到了性能瓶颈，建议在电脑上使用。</Callout>
+          <Callout type="info">如果一定要使用Android版本，可以查看Github Release界面下载，或网盘下载旧版本。</Callout>
           <FindAsset release={release} endwith=".apk" />
           <FindAsset release={nightlyRelease} endwith=".apk" />
         </Tab>
