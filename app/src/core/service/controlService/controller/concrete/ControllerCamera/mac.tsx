@@ -48,8 +48,8 @@ export namespace ControllerCameraMac {
 
   const FINGER_SCALE_MIN_DETECT_TIME = 2; // s
   // 上次检测时间
-  let lastDetectTime = performance.now();
-  //   let currentWheelMode: "fingerScale" | "mouseWheel" = "fingerScale";
+  let lastDetectTime = Date.now();
+  let currentWheelMode: "fingerScale" | "mouseWheel" = "fingerScale";
   /**
    * 检测识别双指缩放
    * @param event
@@ -64,25 +64,28 @@ export namespace ControllerCameraMac {
      * 如果触发了一个事件移动不到1，那么后续连续触发的多个事件中都按双指缩放算
      */
     const y = event.deltaY;
-    if (y < 4) {
+    if (Math.abs(y) < 4) {
       // 一定是双指缩放！
-      //   currentWheelMode = "fingerScale";
-      lastDetectTime = performance.now();
+      currentWheelMode = "fingerScale";
+      lastDetectTime = Date.now();
       return true;
     } else {
       // 可能是滚轮，也可能是双指缩放的中间过程
-      const currentTime = performance.now();
+      const currentTime = Date.now();
       const diffTime = currentTime - lastDetectTime;
       if (diffTime > FINGER_SCALE_MIN_DETECT_TIME * 1000) {
         // 间隔过大，认为是滚轮
-        // currentWheelMode = "mouseWheel";
+        currentWheelMode = "mouseWheel";
         lastDetectTime = currentTime;
         return false;
       } else {
-        // 间隔时间太短，认为是双指缩放的中间过程
-        // currentWheelMode = "fingerScale";
         lastDetectTime = currentTime;
-        return true;
+        // 间隔时间太短，按照上一次的模式判断
+        if (currentWheelMode === "fingerScale") {
+          return true;
+        } else {
+          return false;
+        }
       }
     }
   }
@@ -93,8 +96,8 @@ export namespace ControllerCameraMac {
    */
   export function handleTwoFingerScale(event: WheelEvent) {
     console.log("handleTwoFingerScale");
-    // 构建幂函数 y = 1.2 ^ x
-    const power = 1.2;
+    // 构建幂函数 y = a ^ x
+    const power = 1.02; // 1.05 有点敏感，1.01 有点迟钝
     // y 是 camera 的currentScale
     // 通过y反解x
     const currnetCameraScale = Camera.currentScale;
@@ -104,7 +107,7 @@ export namespace ControllerCameraMac {
     const newX = x + diffX;
     // 求解新的 camera scale
     const newCameraScale = Math.pow(power, newX);
-    Camera.currentScale = newCameraScale;
+    // Camera.currentScale = newCameraScale;
     Camera.targetScale = newCameraScale;
   }
 

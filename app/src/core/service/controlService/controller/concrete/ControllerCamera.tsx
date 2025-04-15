@@ -253,6 +253,10 @@ export class ControllerCameraClass extends ControllerClass {
       return;
     }
     if (isMac) {
+      if (Renderer.isShowDebug) {
+        // 是debug模式，显示滚动时的缩放系数
+        Stage.effectMachine.addEffect(TextRiseEffect.default(`event.deltaY: ${event.deltaY}`));
+      }
       // 检测一下是否是双指缩放
       if (ControllerCameraMac.isTouchPadTwoFingerScale(event)) {
         // 双指缩放
