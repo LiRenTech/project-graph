@@ -23,6 +23,7 @@ import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/Text
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
 import { LayoutManualAlignManager } from "../../../stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
+import { Direction } from "../../../../types/directions";
 
 interface SecretKeyItem {
   name: string;
@@ -182,31 +183,39 @@ export class SecretKeysEngine {
       },
     },
     "8 8": {
-      name: "顶部对齐",
+      name: "将选中实体顶部对齐，选中的连线从源实体的顶边缘射出，到目标实体底边缘结束",
       explain: "小键盘的向上",
       func() {
         LayoutManualAlignManager.alignTop();
+        StageManager.changeSelectedEdgeConnectLocation(Direction.Up, true);
+        StageManager.changeSelectedEdgeConnectLocation(Direction.Down);
       },
     },
     "2 2": {
-      name: "底部对齐",
+      name: "将选中实体底部对齐，选中的连线从源实体的底边缘射出，到目标实体顶边缘结束",
       explain: "小键盘的向下",
       func() {
         LayoutManualAlignManager.alignBottom();
+        StageManager.changeSelectedEdgeConnectLocation(Direction.Down, true);
+        StageManager.changeSelectedEdgeConnectLocation(Direction.Up);
       },
     },
     "4 4": {
-      name: "左侧对齐",
+      name: "将选中实体左侧对齐，选中的连线从源实体的左边缘射出，到目标实体右边缘结束",
       explain: "小键盘的向左",
       func() {
         LayoutManualAlignManager.alignLeft();
+        StageManager.changeSelectedEdgeConnectLocation(Direction.Left, true);
+        StageManager.changeSelectedEdgeConnectLocation(Direction.Right);
       },
     },
     "6 6": {
-      name: "右侧对齐",
+      name: "将选中实体右侧对齐，选中的连线从源实体的右边缘射出，到目标实体左边缘结束",
       explain: "小键盘的向右",
       func() {
         LayoutManualAlignManager.alignRight();
+        StageManager.changeSelectedEdgeConnectLocation(Direction.Right, true);
+        StageManager.changeSelectedEdgeConnectLocation(Direction.Left);
       },
     },
     "4 6 4 6": {
