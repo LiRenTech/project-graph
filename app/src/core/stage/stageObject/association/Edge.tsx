@@ -65,6 +65,19 @@ export abstract class Edge extends ConnectableAssociation {
     return new Line(startPoint, endPoint);
   }
 
+  /**
+   * 获取该连线的起始点位置对应的世界坐标
+   */
+  get sourceLocation(): Vector {
+    return this.source.collisionBox.getRectangle().getInnerLocationByRateVector(this._sourceRectangleRate);
+  }
+  /**
+   * 获取该连线的终止点位置对应的世界坐标
+   */
+  get targetLocation(): Vector {
+    return this.target.collisionBox.getRectangle().getInnerLocationByRateVector(this._targetRectangleRate);
+  }
+
   public _targetRectangleRate: Vector = new Vector(0.5, 0.5);
   public _sourceRectangleRate: Vector = new Vector(0.5, 0.5);
 

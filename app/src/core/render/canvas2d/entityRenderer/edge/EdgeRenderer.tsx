@@ -18,6 +18,7 @@ import { StraightEdgeRenderer } from "./concrete/StraightEdgeRenderer";
 import { SymmetryCurveEdgeRenderer } from "./concrete/SymmetryCurveEdgeRenderer";
 import { VerticalPolyEdgeRenderer } from "./concrete/VerticalPolyEdgeRenderer";
 import { EdgeRendererClass } from "./EdgeRendererClass";
+import { CurveRenderer } from "../../basicRenderer/curveRenderer";
 
 /**
  * 边的总渲染器单例
@@ -77,6 +78,29 @@ export namespace EdgeRenderer {
     // 选中的高亮效果
     if (edge.isSelected) {
       CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
+      // 还要标注起始点和终止点
+      ShapeRenderer.renderCircle(
+        Renderer.transformWorld2View(edge.sourceLocation),
+        10 * Camera.currentScale,
+        Color.Transparent,
+        StageStyleManager.currentStyle.CollideBoxSelected,
+        2 * Camera.currentScale,
+      );
+      ShapeRenderer.renderCircle(
+        Renderer.transformWorld2View(edge.targetLocation),
+        10 * Camera.currentScale,
+        Color.Transparent,
+        StageStyleManager.currentStyle.CollideBoxSelected,
+        2 * Camera.currentScale,
+      );
+      // 画一个虚线
+      CurveRenderer.renderDashedLine(
+        Renderer.transformWorld2View(edge.sourceLocation),
+        Renderer.transformWorld2View(edge.targetLocation),
+        StageStyleManager.currentStyle.CollideBoxSelected,
+        2 * Camera.currentScale,
+        10 * Camera.currentScale,
+      );
     }
   }
 
