@@ -4,7 +4,6 @@ import Button from "../components/Button";
 import FileChooser from "../components/FileChooser";
 import IconButton from "../components/IconButton";
 import Input from "../components/Input";
-import KeyBind from "../components/KeyBind";
 import Select from "../components/Select";
 import Slider from "../components/Slider";
 import Switch from "../components/Switch";
@@ -21,7 +20,6 @@ export default function UITestPage() {
         <Search />
       </IconButton>
       <FileChooser kind="file" />
-      <KeyBind />
       <Select
         value="1"
         options={[
