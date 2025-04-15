@@ -15,6 +15,7 @@ import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/c
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { ControllerCameraMac } from "./ControllerCamera/mac";
 
 /**
  * 处理键盘按下事件
@@ -251,6 +252,24 @@ export class ControllerCameraClass extends ControllerClass {
       moveCameraByTouchPadTwoFingerMove(event);
       return;
     }
+    if (isMac) {
+      // 检测一下是否是双指缩放
+      if (ControllerCameraMac.isTouchPadTwoFingerScale(event)) {
+        // 双指缩放
+        ControllerCameraMac.handleTwoFingerScale(event);
+        return;
+      }
+    }
+
+    this.mousewheelFunction(event);
+  };
+
+  /**
+   * 在上游代码已经确认是鼠标滚轮事件，这里进行处理
+   * @param event
+   * @returns
+   */
+  private mousewheelFunction(event: WheelEvent) {
     // 获取触发滚轮的鼠标位置
     const mouseLocation = new Vector(event.clientX, event.clientY);
     // 计算鼠标位置在视野中的位置
@@ -308,7 +327,7 @@ export class ControllerCameraClass extends ControllerClass {
 
     // 滚轮横向滚动是水平移动
     moveXCameraByMouseSideWheel(event);
-  };
+  }
 
   /**
    * 处理鼠标双击事件
@@ -369,6 +388,10 @@ function zoomCameraByMouseWheel(event: WheelEvent) {
 }
 
 function moveCameraByTouchPadTwoFingerMove(event: WheelEvent) {
+  if (isMac) {
+    ControllerCameraMac.moveCameraByTouchPadTwoFingerMove(event);
+    return;
+  }
   // 过滤 -0
   if (Math.abs(event.deltaX) < 0.01 && Math.abs(event.deltaY) < 0.01) {
     return;
@@ -426,42 +449,7 @@ const importantNumbers = new Set<number>([]); // 100, 133, 138, 166
  */
 function isMouseWheel(event: WheelEvent): boolean {
   if (isIpad || isMac) {
-    // 这里mac暂不考虑侧边横向滚轮。
-    if (event.deltaX !== 0 && event.deltaY !== 0) {
-      // 斜向滚动肯定不是鼠标滚轮。因为滚轮只有横向滚轮和竖向滚轮
-      return false;
-    } else {
-      // 垂直方向滚动
-      const distance = Math.abs(event.deltaY);
-      // 在mac系统下
-
-      // 测试者“雨幕”反馈数据：
-      // 鼠标滚轮：移动距离是整数
-      // 触摸板：小数
-
-      // 测试者“大道”反馈数据：
-      // 鼠标滚动一格：整数，会显示好多小数字，4 5 6 7 6 5 4这样的。
-
-      // M4 mackbook实测：
-      // 鼠标滚动一格，会显示一格数字 4.63535543
-      // 反而是触摸版，会显示 (1, 4), (0, 3) .... 很多小整数向量
-      if (Stage.macTrackpadAndMouseWheelDifference === "tarckpadFloatAndWheelInt") {
-        if (Number.isInteger(distance)) {
-          // 整数距离，是鼠标滚轮
-          return true;
-        } else {
-          // 小数距离，是触摸板
-          return false;
-        }
-      } else if (Stage.macTrackpadAndMouseWheelDifference === "trackpadIntAndWheelFloat") {
-        if (Number.isInteger(distance)) {
-          return false;
-        }
-        return true;
-      }
-      // 无法检测出逻辑
-      return false;
-    }
+    return ControllerCameraMac.isMouseWheel(event);
   }
 
   // 不是mac系统 ======

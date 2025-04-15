@@ -11,6 +11,9 @@ export default function InfoPage() {
 
   const onMouseWheel = (e: WheelEvent) => {
     e.preventDefault();
+    // 经过mac测试，发现deltaMode永远是0，0代表像素级别滚动
+    // 1代表行滚动，2代表页面滚动
+    // const newData = `${e.deltaX}, ${e.deltaY}, ${e.deltaMode}`;
     const newData = `${e.deltaX}, ${e.deltaY}`;
     setDataList((prev) => {
       const newList = [...prev, newData];
