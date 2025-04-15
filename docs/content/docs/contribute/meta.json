@@ -3,5 +3,5 @@
   "description": "参与项目开发",
   "root": true,
   "icon": "GitPullRequestArrow",
-  "pages": ["index"]
+  "pages": ["---指南---", "index", "---开发---", "env", "dev", "---翻译---", "weblate"]
 }
