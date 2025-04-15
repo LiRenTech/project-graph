@@ -438,7 +438,7 @@ settings:
       move: Vertical Movement
       moveX: Horizontal Movement
   mouseWheelWithCtrlMode:
-    title: Mouse Wheel Mode with Ctrl Key
+    title: Mouse Wheel Mode with Ctrl (Control) Key
     options:
       zoom: Zoom
       move: Vertical Movement
@@ -509,12 +509,16 @@ settings:
     description: "When enabled, mouse actions (camera view drags) will automatically
       refresh the stage.\nThis prevents manual refreshes for images that fail to load
       when opening a file.\n"
+    title: Auto-Refresh Stage After Mouse Actions
   mouseWheelWithAltMode:
     description: "This feature was added on April 10, 2025.\nIssues discovered currently:
       In Windows, a screen tap is needed to control the stage after a mouse wheel
       roll.\n"
     options:
       zoom: Zooming
+      move: Vertical Movement
+      moveX: Horizontal Movement
+    title: Mouse Wheel Mode with Alt (Option) Key
 plugins:
   welcome:
     title: Welcome to the Plugin System
@@ -539,25 +543,36 @@ appMenu:
       save: Save
       saveAs: Save As
       recent: Recent Files
-      backup: Backup
+      backup: Manual Backup
   location:
     title: Location
     items:
-      openDataFolder: Open the Software Data Folder
-      openProjectFolder: Open the folder where the current file is located
+      openDataFolder:
+        description: Open the software data folder, which stores user-customized settings,
+          etc
+        title: Software Data
+      openProjectFolder:
+        title: Current Directory
+        description: Open the current editing project file's folder
   export:
     title: Export
     items:
-      exportAsSvg: Export as SVG
-      exportAsSVGByAll: Export as SVG (All)
-      exportAsMarkdownBySelected: Export as Markdown (Selected)
-      exportAsPlainText: Export as Plain Text
+      exportAsSvg: SVG
+      exportAsSVGByAll: SVG (All)
+      exportAsMarkdownBySelected: Markdown (Selected)
+      exportAsPlainText: Plain Text
   view:
     title: View
     items:
-      resetByAll: Reset View Based on All Content
-      resetBySelect: Reset View Based on Selected Content
-      resetScale: Reset Zoom to Standard Size
+      resetByAll:
+        title: Reset by All
+        description: Reset view by all content
+      resetBySelect:
+        title: Reset by Selected
+        description: Reset view by selected content
+      resetScale:
+        title: Reset Scale
+        description: Reset the scale to the standard size
   more:
     title: More
     items:
@@ -820,7 +835,7 @@ keyBinds:
     title: Open settings page
     description: "When this key is pressed, the settings page opens without mouse\n"
   createTextNodeFromMouseLocation:
-    title: Create text node at the mouse position
+    title: Create Text Node at Mouse Position
     description: "After pressing, create a text node at the current position of the
       mouse \nEquivalent to the function of creating nodes with a mouse click\n"
   clickAppMenuRecentFileButton:
@@ -843,10 +858,11 @@ keyBinds:
     description: "That is to say, the left mouse button switches to connect/cutting
       mode, and there is corresponding button in the toolbar\n"
   penStrokeWidthIncrease:
-    title: Thicken the drawing stroke
+    title: Increase Pen Stroke Size
     description: After pressing, the stroke becomes thicker
   penStrokeWidthDecrease:
-    description: After pressing, the stroke become thinner
+    description: After pressing, the stroke becomes thinner
+    title: Decrease Pen Stroke Size
   generateNodeGraph:
     title: Grow Node in Free Mode
     description: "After pressing, a virtual growth position appears \nPress the \"\
@@ -864,3 +880,46 @@ keyBinds:
       with a minimum value of 0 \nIf your keyboard does not have a pure minus key
       on the keypad, you can use the minus and underline key on the right side of
       the upper digit 0 key instead\n"
+effects:
+  RectangleLittleNoteEffect:
+    title: Rectangle Glimmer Hint Effect
+    description: "When executing logical nodes, they will display a glimmer effect.\n"
+  RectangleNoteEffect:
+    description: "Highlights a rectangular area when searching or locating nodes\n
+      Will not display the highlight effect if disabled\n"
+    title: Rectangle Existance Hint Effect
+  RectangleRenderEffect:
+    description: "Used to display the alignment position of the entity snapping target
+      while dragging.\n"
+  RectangleSplitTwoPartEffect:
+    description: "Exists only for chop effects (or possibly four parts)\n"
+    title: Rectangle Chop Two-Part Effect
+  NodeMoveShadowEffect:
+    title: Node Moving Particles Effect
+    description: "Node movement caused by aligning might produce a flash of particles\n"
+  EntityAlignEffect:
+    title: Entity Alignment Effect
+    description: "Dashed snap lines displayed when dragging\n"
+  LineCuttingEffect:
+    description: "When cutting, a blade light like the Fruit Ninja will appear.\n"
+  LineEffect:
+    title: Line Fade Out Effect
+  PenStrokeDeletedEffect:
+    title: Pen Stroke Delete Effect
+    description: "When a pen stroke is deleted, a fade away effect will appear.\n"
+keyBindsGroup:
+  ui:
+    title: UI Controls
+    description: "Used for controlling UI functions\n"
+  draw:
+    title: Drawing
+    description: "Drawing related functions\n"
+  moveEntity:
+    description: "Functions used for moving entities\n"
+    title: Entity Moving
+  generateTextNodeRoundedSelectedNode:
+    title: Generate Text Node Around Selected Node
+    description: "When pressed, generate a text node around the selected node.\n"
+  createTextNode:
+    description: "When pressed, create a text node in its current position.\n"
+    title: Create Text Node
