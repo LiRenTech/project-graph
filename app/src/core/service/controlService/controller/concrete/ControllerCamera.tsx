@@ -12,6 +12,7 @@ import { Camera } from "../../../../stage/Camera";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
+import { MouseTipFeedbackEffect } from "../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
@@ -359,6 +360,7 @@ export class ControllerCameraClass extends ControllerClass {
   private moveCameraByMouseMove(x: number, y: number, mouseIndex: number) {
     const currentMouseMoveLocation = Renderer.transformView2World(new Vector(x, y));
     const diffLocation = currentMouseMoveLocation.subtract(this.lastMousePressLocation[mouseIndex]);
+    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("drag"));
     Camera.location = Camera.location.subtract(diffLocation);
   }
 }
@@ -378,15 +380,19 @@ function zoomCameraByMouseWheel(event: WheelEvent) {
       // 如果没有开平滑滚动
       if (event.deltaY > 0) {
         Camera.targetScale *= 0.8;
+        Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("shrink"));
       } else if (event.deltaY < 0) {
         Camera.targetScale *= 1.2;
+        Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("expand"));
       }
     }
   } else {
     if (event.deltaY > 0) {
       Camera.targetScale *= 0.8;
+      Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("shrink"));
     } else if (event.deltaY < 0) {
       Camera.targetScale *= 1.2;
+      Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("expand"));
     }
   }
 }
@@ -403,6 +409,7 @@ function moveCameraByTouchPadTwoFingerMove(event: WheelEvent) {
   const dx = event.deltaX / 500;
   const dy = event.deltaY / 500;
   const diffLocation = new Vector(dx, dy).multiply((Camera.moveAmplitude * 50) / Camera.currentScale);
+  Stage.effectMachine.addEffect(MouseTipFeedbackEffect.directionObject(diffLocation));
   Camera.location = Camera.location.add(diffLocation);
 }
 
@@ -410,18 +417,20 @@ function moveCameraByMouseWheel(event: WheelEvent) {
   if (event.deltaY > 0) {
     // 向上滚动是上移
     Camera.location = Camera.location.add(new Vector(0, (Camera.moveAmplitude * 50) / Camera.currentScale));
+    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveDown"));
   } else if (event.deltaY < 0) {
     // 向下滚动是下移
     Camera.location = Camera.location.subtract(new Vector(0, (Camera.moveAmplitude * 50) / Camera.currentScale));
+    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveUp"));
   }
 }
 function moveXCameraByMouseWheel(event: WheelEvent) {
   if (event.deltaY > 0) {
-    // 向上滚动是左移
     Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
+    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveRight"));
   } else if (event.deltaY < 0) {
-    // 向下滚动是右移
     Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
+    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveLeft"));
   }
 }
 
@@ -433,8 +442,10 @@ function moveXCameraByMouseWheel(event: WheelEvent) {
 function moveXCameraByMouseSideWheel(event: WheelEvent) {
   if (event.deltaX > 0) {
     Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
+    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveRight"));
   } else if (event.deltaX < 0) {
     Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
+    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveLeft"));
   }
 }
 

@@ -718,6 +718,10 @@ effects:
     title: （基础特效）闪电线效果
     description: |
       此特效时其他特效的组成部分，若关闭则其他特效可能会受到影响
+  MouseTipFeedbackEffect:
+    title: 鼠标交互提示特效
+    description: |
+      在鼠标进行缩放视野等操作时，鼠标旁边会出现特效提示，例如一个变大或变小的圆圈
   
 
 keys:

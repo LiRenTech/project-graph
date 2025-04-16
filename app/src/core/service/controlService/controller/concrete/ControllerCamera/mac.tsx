@@ -1,6 +1,7 @@
 import { Vector } from "../../../../../dataStruct/Vector";
 import { Camera } from "../../../../../stage/Camera";
 import { Stage } from "../../../../../stage/Stage";
+import { MouseTipFeedbackEffect } from "../../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
 
 export namespace ControllerCameraMac {
   /**
@@ -120,5 +121,6 @@ export namespace ControllerCameraMac {
     const dy = event.deltaY / 400;
     const diffLocation = new Vector(dx, dy).multiply((Camera.moveAmplitude * 50) / Camera.currentScale);
     Camera.location = Camera.location.add(diffLocation);
+    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.directionObject(diffLocation));
   }
 }
