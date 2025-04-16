@@ -15,9 +15,11 @@ import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleMa
 export namespace SelectChangeEngine {
   const includesKey = ["arrowup", "arrowdown", "arrowleft", "arrowright"];
 
+  let lastSelectNodeByKeyboardUUID = "";
+
   export function listenKeyDown(event: KeyboardEvent) {
     const key = event.key.toLowerCase();
-    if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) {
+    if (event.ctrlKey || event.metaKey || event.altKey) {
       // 忽略组合键，防止和别的功能键冲突
       return;
     }
@@ -27,15 +29,29 @@ export namespace SelectChangeEngine {
     // 单选中节点
     // 开始移动框选框
     // （总是有反直觉的地方）
-    const selectedNode = StageManager.getConnectableEntity().find((node) => node.isSelected);
-    if (!selectedNode) {
+    const selectedEntities = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
+
+    let selectedNode: ConnectableEntity | null = null;
+    if (selectedEntities.length === 0) {
       // 如果没有，则选中距离屏幕中心最近的节点
       const nearestNode = selectMostNearLocationNode(Camera.location);
       if (nearestNode) {
         nearestNode.isSelected = true;
       }
       return;
+    } else if (selectedEntities.length === 1) {
+      selectedNode = selectedEntities[0];
+    } else {
+      const lastSelectNodeArr = StageManager.getEntitiesByUUIDs([lastSelectNodeByKeyboardUUID]).filter(
+        (entity) => entity instanceof ConnectableEntity,
+      );
+      if (lastSelectNodeArr.length !== 0) {
+        selectedNode = lastSelectNodeArr[0];
+      } else {
+        selectedNode = selectedEntities[0];
+      }
     }
+
     let newSelectedConnectableEntity: ConnectableEntity | null = null;
     const selectedNodeRect = selectedNode.collisionBox.getRectangle();
     if (key === "arrowup") {
@@ -64,8 +80,12 @@ export namespace SelectChangeEngine {
       );
     }
     if (newSelectedConnectableEntity) {
-      selectedNode.isSelected = false;
+      // 按住shift+方向键，可以多选
+      if (!event.shiftKey) {
+        selectedNode.isSelected = false;
+      }
       newSelectedConnectableEntity.isSelected = true;
+      lastSelectNodeByKeyboardUUID = newSelectedConnectableEntity.uuid;
       const newSelectNodeRect = newSelectedConnectableEntity.collisionBox.getRectangle();
       const color = StageStyleManager.currentStyle.effects.successShadow;
 
