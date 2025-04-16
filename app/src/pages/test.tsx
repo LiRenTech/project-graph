@@ -18,6 +18,7 @@ export default function TestPage() {
     Settings.watch("theme", (value) => {
       setTheme(value);
     });
+
     return () => {
       // vd?.destroy();
       // setVd(undefined);

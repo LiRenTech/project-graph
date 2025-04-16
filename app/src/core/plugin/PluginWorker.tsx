@@ -1,4 +1,5 @@
 import { Vector } from "../dataStruct/Vector";
+import { Controller } from "../service/controlService/controller/Controller";
 import { Camera } from "../stage/Camera";
 import { APIMethods, apiValidators, PluginManifest, WorkerMessage } from "./types";
 
@@ -43,6 +44,16 @@ export class PluginWorker {
 
         // 校验API方法参数是否合法
         const argsSchema = apiValidators[method];
+        if (!args) {
+          this.worker.postMessage({
+            type: "apiResponse",
+            payload: {
+              reqId,
+              error: `方法 method "${method}" 调用时，未声明参数列表，若该函数不需要参数，请传入空数组 args: []`,
+            },
+          });
+          return;
+        }
         for (const [i, arg] of args.entries()) {
           const parseResult = argsSchema[i].safeParse(arg);
           if (!parseResult.success) {
@@ -62,19 +73,33 @@ export class PluginWorker {
         if (method === "hello") {
           console.log("hello", args[0]);
         } else if (method === "getCameraLocation") {
-          console.log();
+          this.worker.postMessage({
+            type: "apiResponse",
+            payload: {
+              reqId,
+              result: [Camera.location.x, Camera.location.y],
+            },
+          });
         } else if (method === "setCameraLocation") {
           const [x, y] = args;
           // 设置相机位置
           Camera.location = new Vector(x, y);
+          this.worker.postMessage({
+            type: "apiResponse",
+            payload: {
+              reqId,
+              result: null,
+            },
+          });
+        } else if (method === "getPressingKey") {
+          this.worker.postMessage({
+            type: "apiResponse",
+            payload: {
+              reqId,
+              result: Array.from(Controller.pressingKeySet),
+            },
+          });
         }
-        this.worker.postMessage({
-          type: "apiResponse",
-          payload: {
-            reqId,
-            result: null,
-          },
-        });
       }
     };
   }
