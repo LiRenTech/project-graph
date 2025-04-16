@@ -10,6 +10,7 @@ export const apiValidators = {
   hello: [z.string()],
   getCameraLocation: [],
   setCameraLocation: [z.number(), z.number()],
+  getPressingKey: [],
   // 这里可能会有超多内容
   // ....
   // ....
@@ -23,6 +24,7 @@ export interface APIMethods {
   hello: (name: string) => string;
   getCameraLocation: () => { x: number; y: number };
   setCameraLocation: (x: number, y: number) => void;
+  getPressingKey: () => string[];
   // 这里可能会有超多内容
   // ....
   // ....
