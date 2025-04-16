@@ -119,4 +119,41 @@ export namespace LayoutManualAlignManager {
     }
     StageHistoryManager.recordStep();
   }
+
+  /**
+   * 从左到右紧密排列
+   */
+  export function alignLeftToRightNoSpace() {
+    let nodes = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+    if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
+    nodes = nodes.sort((a, b) => a.collisionBox.getRectangle().left - b.collisionBox.getRectangle().left);
+
+    let leftBoundX = nodes[0].collisionBox.getRectangle().right;
+    for (let i = 1; i < nodes.length; i++) {
+      const currentNode = nodes[i];
+      StageEntityMoveManager.moveEntityToUtils(
+        currentNode,
+        new Vector(leftBoundX, currentNode.collisionBox.getRectangle().top),
+      );
+      leftBoundX = currentNode.collisionBox.getRectangle().right;
+    }
+  }
+  /**
+   * 从上到下密排列
+   */
+  export function alignTopToBottomNoSpace() {
+    let nodes = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+    if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
+    nodes = nodes.sort((a, b) => a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top);
+
+    let topBoundY = nodes[0].collisionBox.getRectangle().bottom;
+    for (let i = 1; i < nodes.length; i++) {
+      const currentNode = nodes[i];
+      StageEntityMoveManager.moveEntityToUtils(
+        currentNode,
+        new Vector(currentNode.collisionBox.getRectangle().left, topBoundY),
+      );
+      topBoundY = currentNode.collisionBox.getRectangle().bottom;
+    }
+  }
 }

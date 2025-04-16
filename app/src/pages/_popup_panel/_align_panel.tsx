@@ -3,9 +3,11 @@ import {
   AlignCenterVertical,
   AlignEndHorizontal,
   AlignEndVertical,
+  AlignHorizontalJustifyStart,
   AlignHorizontalSpaceBetween,
   AlignStartHorizontal,
   AlignStartVertical,
+  AlignVerticalJustifyStart,
   AlignVerticalSpaceBetween,
   ArrowDownUp,
   ArrowLeftRight,
@@ -139,7 +141,7 @@ export default function AlignNodePanel() {
           }}
         />
         <ToolbarItem
-          description="中心垂直对齐 (852)"
+          description="中心垂直对齐 (582)"
           icon={<AlignCenterVertical />}
           handleFunction={() => {
             LayoutManualAlignManager.alignCenterVertical();
@@ -147,10 +149,25 @@ export default function AlignNodePanel() {
         />
         <div />
         <ToolbarItem
-          description="中心水平对齐 (456)"
+          description="中心水平对齐 (546)"
           icon={<AlignCenterHorizontal />}
           handleFunction={() => {
             LayoutManualAlignManager.alignCenterHorizontal();
+          }}
+        />
+        <ToolbarItem
+          description="向下紧密堆积 (852)"
+          icon={<AlignVerticalJustifyStart />}
+          handleFunction={() => {
+            LayoutManualAlignManager.alignTopToBottomNoSpace();
+          }}
+        />
+        <div />
+        <ToolbarItem
+          description="向右紧密堆积 (456)"
+          icon={<AlignHorizontalJustifyStart />}
+          handleFunction={() => {
+            LayoutManualAlignManager.alignLeftToRightNoSpace();
           }}
         />
       </div>

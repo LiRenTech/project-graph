@@ -232,18 +232,32 @@ export class SecretKeysEngine {
         LayoutManualAlignManager.alignVerticalSpaceBetween();
       },
     },
-    "4 5 6": {
+    "5 4 6": {
       name: "中心水平对齐",
-      explain: "小键盘横着从左到右穿一串",
+      explain: "小键盘：先中，然后左右",
       func() {
         LayoutManualAlignManager.alignCenterHorizontal();
       },
     },
-    "8 5 2": {
+    "5 8 2": {
       name: "中心垂直对齐",
-      explain: "小键盘竖着从上到下穿一串",
+      explain: "小键盘：先中，然后上下",
       func() {
         LayoutManualAlignManager.alignCenterVertical();
+      },
+    },
+    "4 5 6": {
+      name: "向右紧密堆积一排",
+      explain: "小键盘横着从左到右穿一串",
+      func() {
+        LayoutManualAlignManager.alignLeftToRightNoSpace();
+      },
+    },
+    "8 5 2": {
+      name: "向下紧密堆积一列",
+      explain: "小键盘竖着从上到下穿一串",
+      func() {
+        LayoutManualAlignManager.alignTopToBottomNoSpace();
       },
     },
     "- - a l l": {
