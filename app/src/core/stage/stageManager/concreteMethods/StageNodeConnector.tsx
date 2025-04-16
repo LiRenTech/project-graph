@@ -6,7 +6,6 @@ import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { GraphMethods } from "../basicMethods/GraphMethods";
 import { StageHistoryManager } from "../StageHistoryManager";
 import { StageManager } from "../StageManager";
-import { StageDeleteManager } from "./StageDeleteManager";
 
 /**
  * 集成所有连线相关的功能
@@ -77,17 +76,23 @@ export namespace StageNodeConnector {
   // 反向连线
   export function reverseEdges(edges: LineEdge[]) {
     // 先全部删除
+    // edges.forEach((edge) => {
+    //   StageDeleteManager.deleteEdge(edge);
+    // });
+    // // 再重新连接
+    // edges.forEach((edge) => {
+    //   const sourceNode = StageManager.getConnectableEntityByUUID(edge.source.uuid);
+    //   const targetNode = StageManager.getConnectableEntityByUUID(edge.target.uuid);
+    //   if (sourceNode && targetNode) {
+    //     connectConnectableEntity(targetNode, sourceNode, edge.text);
+    //   }
+    // });
     edges.forEach((edge) => {
-      StageDeleteManager.deleteEdge(edge);
+      const oldSource = edge.source;
+      edge.source = edge.target;
+      edge.target = oldSource;
     });
-    // 再重新连接
-    edges.forEach((edge) => {
-      const sourceNode = StageManager.getConnectableEntityByUUID(edge.source.uuid);
-      const targetNode = StageManager.getConnectableEntityByUUID(edge.target.uuid);
-      if (sourceNode && targetNode) {
-        connectConnectableEntity(targetNode, sourceNode, edge.text);
-      }
-    });
+    StageManager.updateReferences();
   }
 
   /**
