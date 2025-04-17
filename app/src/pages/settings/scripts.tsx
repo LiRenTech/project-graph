@@ -21,6 +21,7 @@ export default function ScriptsPage() {
   }, []);
 
   const updateUIList = async () => {
+    setUserScripts([]);
     await UserScriptsManager.validAndRefresh();
     const scripts = await UserScriptsManager.getAllUserScripts();
     setUserScripts(scripts);
@@ -68,6 +69,7 @@ export default function ScriptsPage() {
           <BookOpen />
           {t("documentation")}
         </Button>
+        <Button onClick={updateUIList}>刷新</Button>
       </Field>
 
       <div className="flex flex-col p-2">

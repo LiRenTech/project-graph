@@ -160,17 +160,31 @@ export namespace UserScriptsManager {
         if (enabled) {
           // 用户关闭了某个正在运行的脚本
           disableUserScript(filePath);
+          Dialog.show({
+            title: "脚本已关闭",
+            content: `脚本已关闭：${filePath}`,
+          });
         } else {
           // 用户开启了某个脚本
           if (runningScripts[filePath]) {
-            disableUserScript(filePath);
+            Dialog.show({
+              title: "此脚本已在运行中",
+              content: `${filePath}`,
+              type: "warning",
+            });
           } else {
             enableUserScript(filePath);
+            Dialog.show({
+              title: "脚本已开启",
+              content: `脚本已开启：${filePath}`,
+              type: "success",
+            });
           }
         }
         break;
       }
     }
+    console.log(runningScripts);
     store.set("userScripts", existingFiles);
     store.save();
   }
