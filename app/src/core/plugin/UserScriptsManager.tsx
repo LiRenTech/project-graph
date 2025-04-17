@@ -47,7 +47,7 @@ export namespace UserScriptsManager {
       }
       const code = await readTextFile(file.path);
       new PluginWorker(code, {
-        permissions: ["hello", "setCameraLocation", "getCameraLocation", "getPressingKey"],
+        permissions: ["hello", "setCameraLocation", "getCameraLocation", "getPressingKey", "openDialog"],
         // permissions: ["hello"],
       });
     }

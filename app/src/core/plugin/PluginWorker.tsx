@@ -1,3 +1,4 @@
+import { Dialog } from "../../components/dialog";
 import { Vector } from "../dataStruct/Vector";
 import { Controller } from "../service/controlService/controller/Controller";
 import { Camera } from "../stage/Camera";
@@ -98,6 +99,12 @@ export class PluginWorker {
               reqId,
               result: Array.from(Controller.pressingKeySet),
             },
+          });
+        } else if (method === "openDialog") {
+          const [title, content] = args;
+          Dialog.show({
+            title,
+            content,
           });
         }
       }
