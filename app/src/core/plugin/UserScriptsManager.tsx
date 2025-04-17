@@ -32,7 +32,7 @@ export namespace UserScriptsManager {
     // 5秒后开始加载并运行用户脚本
     setTimeout(() => {
       startRunUserScripts();
-    }, 5000);
+    }, 1000);
   }
 
   /**

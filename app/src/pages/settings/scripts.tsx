@@ -1,6 +1,6 @@
 import { open as openFile } from "@tauri-apps/plugin-dialog";
 import { open } from "@tauri-apps/plugin-shell";
-import { BookOpen, CodeXml, Delete, FileCode2 } from "lucide-react";
+import { BookOpen, CodeXml, Delete, Eye, EyeClosed, FileCode2, PartyPopper } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Button from "../../components/Button";
 import { Field } from "./_field";
@@ -14,6 +14,7 @@ export default function ScriptsPage() {
   const { t } = useTranslation("plugins");
 
   const [userScripts, setUserScripts] = useState<UserScriptsManager.UserScriptFile[]>([]);
+  const [isShowScriptsPath, setIsShowScriptsPath] = useState(false);
 
   useEffect(() => {
     updateUIList();
@@ -46,10 +47,22 @@ export default function ScriptsPage() {
 
   return (
     <>
+      <Field
+        icon={<PartyPopper />}
+        title={"欢迎使用 Project Graph 脚本系统"}
+        color="celebrate"
+        description={
+          "脚本系统是 插件系统的前身，可以编写简单的单js文件来实现像插件一样的功能\n可以将脚本系统视为编写插件的入门"
+        }
+      ></Field>
       <Field icon={<CodeXml />} title="脚本管理">
         <Button onClick={install}>
           <FileCode2 />
-          安装脚本
+          从本地导入脚本
+        </Button>
+        <Button onClick={() => setIsShowScriptsPath(!isShowScriptsPath)}>
+          {isShowScriptsPath ? <Eye /> : <EyeClosed />}
+          {isShowScriptsPath ? "隐藏脚本路径" : "显示脚本路径"}
         </Button>
         <Button onClick={() => open("https://project-graph.top")}>
           <BookOpen />
@@ -69,7 +82,7 @@ export default function ScriptsPage() {
                   </span>
                 </h3>
                 <p className="text-panel-details-text text-sm">{script.scriptData.description}</p>
-                <p className="text-panel-details-text text-xs">{script.path}</p>
+                {isShowScriptsPath && <p className="text-panel-details-text text-xs">{script.path}</p>}
                 <p className="text-panel-details-text text-xs">{script.scriptData.author}</p>
               </div>
               <div className="flex flex-row items-center justify-center gap-2">
