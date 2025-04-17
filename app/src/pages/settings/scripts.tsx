@@ -1,13 +1,13 @@
 import { open as openFile } from "@tauri-apps/plugin-dialog";
 import { open } from "@tauri-apps/plugin-shell";
 import { BookOpen, CodeXml, Delete, Eye, EyeClosed, FileCode2, PartyPopper } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Button from "../../components/Button";
-import { Field } from "./_field";
-import { useEffect, useState } from "react";
-import { UserScriptsManager } from "../../core/plugin/UserScriptsManager";
-import Switch from "../../components/Switch";
 import IconButton from "../../components/IconButton";
+import Switch from "../../components/Switch";
+import { UserScriptsManager } from "../../core/plugin/UserScriptsManager";
+import { Field } from "./_field";
 // import { Dialog } from "../../components/dialog";
 
 export default function ScriptsPage() {
@@ -64,7 +64,7 @@ export default function ScriptsPage() {
           {isShowScriptsPath ? <Eye /> : <EyeClosed />}
           {isShowScriptsPath ? "隐藏脚本路径" : "显示脚本路径"}
         </Button>
-        <Button onClick={() => open("https://project-graph.top")}>
+        <Button onClick={() => open("https://project-graph.top/docs/plugins")}>
           <BookOpen />
           {t("documentation")}
         </Button>
@@ -90,7 +90,7 @@ export default function ScriptsPage() {
                   value={script.enabled}
                   onChange={async (value) => {
                     // console.log(value);
-                    await UserScriptsManager.setUserScriptEnabled(script.path, value);
+                    await UserScriptsManager.checkoutUserScriptEnabled(script.path, value);
                     updateUIList();
                   }}
                 />

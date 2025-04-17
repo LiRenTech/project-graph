@@ -1,8 +1,8 @@
-import { createStore } from "../../utils/store";
 import { Store } from "@tauri-apps/plugin-store";
-import { parsePluginCode, PluginCodeParseData } from "./PluginCodeParseData";
 import { Dialog } from "../../components/dialog";
 import { exists, readTextFile } from "../../utils/fs";
+import { createStore } from "../../utils/store";
+import { parsePluginCode, PluginCodeParseData } from "./PluginCodeParseData";
 import { PluginWorker } from "./PluginWorker";
 
 /**
@@ -25,11 +25,13 @@ export namespace UserScriptsManager {
     scriptData: PluginCodeParseData;
   };
 
+  const runningScripts: { [key: string]: PluginWorker } = {};
+
   export async function init() {
     store = await createStore("user-scripts.json");
     store.save();
 
-    // 5秒后开始加载并运行用户脚本
+    // 延迟一小点时间，并开始加载并运行用户脚本
     setTimeout(() => {
       startRunUserScripts();
     }, 1000);
@@ -45,11 +47,30 @@ export namespace UserScriptsManager {
       if (!file.enabled) {
         continue;
       }
-      const code = await readTextFile(file.path);
-      new PluginWorker(code, {
-        permissions: ["hello", "setCameraLocation", "getCameraLocation", "getPressingKey", "openDialog"],
-        // permissions: ["hello"],
-      });
+      enableUserScript(file.path);
+    }
+  }
+
+  /**
+   * 开启某个脚本的运行
+   * @param filePath 已经在上游确保是存在的脚本路径
+   */
+  async function enableUserScript(filePath: string) {
+    const code = await readTextFile(filePath);
+    const pluginWorker = new PluginWorker(code, {
+      permissions: ["hello", "setCameraLocation", "getCameraLocation", "getPressingKey", "openDialog"],
+    });
+    runningScripts[filePath] = pluginWorker;
+  }
+
+  /**
+   * 关闭某个脚本的运行
+   * @param filePath
+   */
+  async function disableUserScript(filePath: string) {
+    if (runningScripts[filePath]) {
+      runningScripts[filePath].destroy();
+      delete runningScripts[filePath];
     }
   }
 
@@ -131,11 +152,22 @@ export namespace UserScriptsManager {
     return true;
   }
 
-  export async function setUserScriptEnabled(filePath: string, enabled: boolean) {
+  export async function checkoutUserScriptEnabled(filePath: string, enabled: boolean) {
     const existingFiles = (await store.get("userScripts")) as UserScriptFile[];
     for (const file of existingFiles) {
       if (file.path === filePath) {
         file.enabled = enabled;
+        if (enabled) {
+          // 用户关闭了某个正在运行的脚本
+          disableUserScript(filePath);
+        } else {
+          // 用户开启了某个脚本
+          if (runningScripts[filePath]) {
+            disableUserScript(filePath);
+          } else {
+            enableUserScript(filePath);
+          }
+        }
         break;
       }
     }
@@ -156,6 +188,8 @@ export namespace UserScriptsManager {
     if (!isFind) {
       return false;
     }
+    // 先确保关闭
+    disableUserScript(filePath);
     // 开始删除
     const newFiles = existingFiles.filter((file) => file.path !== filePath);
     await store.set("userScripts", newFiles);
