@@ -33,6 +33,19 @@ export namespace Camera {
    * 指数越大，速度衰减越快
    */
   export const frictionExponent = 1.5;
+
+  // /**
+  //  * 是否正在快速移动模式
+  //  */
+  // let isFastMovingMode = false;
+  // export function changeToFastMode() {
+  //   Stage.effectMachine.addEffect(TextRiseEffect.default("快速移动开启"));
+  //   isFastMovingMode = true;
+  // }
+  // export function changeToSlowMode() {
+  //   Stage.effectMachine.addEffect(TextRiseEffect.default("快速移动关闭"));
+  //   isFastMovingMode = false;
+  // }
   /**
    * 摄像机的位置（世界坐标）
    * 实际上代表的是 currentLocation
@@ -103,7 +116,7 @@ export namespace Camera {
       // 实测只有把摩擦力和动力都拉满时才会瞬间触发NaN，当玩家正常数据状态下有意识地向远处飞时反而不会触发
       // 因此这个彩蛋可能是个bug。先暂时改成正常的提示语
       // Stage.effectMachine.addEffect(new TextRiseEffect("派蒙：前面的区域以后再来探索吧？"));
-      Stage.effectMachine.addEffect(new TextRiseEffect("出现错误：摄像机位置为NaN"));
+      Stage.effectMachine.addEffect(new TextRiseEffect("摄像机位置为NaN，自动重置视野"));
       speed = Vector.getZero();
       reset();
       return;
@@ -139,25 +152,29 @@ export namespace Camera {
       });
     }
 
+    // 计算摩擦力
     let friction = Vector.getZero();
 
     if (!speed.isZero()) {
       const speedSize = speed.magnitude();
-      // 计算摩擦力
+
       friction = speed
         .normalize()
         .multiply(-1)
         .multiply(Camera.frictionCoefficient * speedSize ** Camera.frictionExponent);
     }
 
-    // 速度 = 速度 + 加速度（各个方向的力之和）
-    speed = speed
-      .add(
-        accelerateCommander
-          /** 摄像机 >1放大 <1缩小，为了让放大的时候移动速度慢，所以取倒数 */
-          .multiply(Camera.moveAmplitude * (1 / currentScale)),
-      )
-      .add(friction);
+    // 计算动力
+    const power = accelerateCommander
+      /** 摄像机 >1放大 <1缩小，为了让放大的时候移动速度慢，所以取倒数 */
+      .multiply(Camera.moveAmplitude * (1 / currentScale));
+
+    // if (isFastMovingMode) {
+    //   power = power.multiply(10);
+    // }
+
+    // 速度 = 速度 + 加速度（动力+摩擦力）
+    speed = speed.add(power).add(friction);
     location = location.add(speed);
 
     // 处理缩放

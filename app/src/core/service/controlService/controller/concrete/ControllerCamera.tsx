@@ -48,19 +48,12 @@ export class ControllerCameraClass extends ControllerClass {
       }
 
       let addAccelerate = ControllerCameraClass.keyMap[key];
-      let accelerateSize = 1;
-      if (Controller.pressingKeySet.has("shift")) {
-        accelerateSize = 10;
-      }
-      addAccelerate = addAccelerate.multiply(accelerateSize);
+
       if (Camera.cameraKeyboardMoveReverse) {
         addAccelerate = addAccelerate.multiply(-1);
       }
       // 当按下某一个方向的时候,相当于朝着某个方向赋予一次加速度
-      Camera.accelerateCommander = Camera.accelerateCommander
-        .add(addAccelerate)
-        .limitX(-accelerateSize, accelerateSize)
-        .limitY(-accelerateSize, accelerateSize);
+      Camera.accelerateCommander = Camera.accelerateCommander.add(addAccelerate).limitX(-1, 1).limitY(-1, 1);
     }
     if (key === " ") {
       if (!isPreGrabbingWhenSpace) {
@@ -94,20 +87,12 @@ export class ControllerCameraClass extends ControllerClass {
         return;
       }
       let addAccelerate = ControllerCameraClass.keyMap[key];
-      let accelerateSize = 1;
-      if (Controller.pressingKeySet.has("shift")) {
-        accelerateSize = 10;
-      }
-      addAccelerate = addAccelerate.multiply(accelerateSize);
 
       if (Camera.cameraKeyboardMoveReverse) {
         addAccelerate = addAccelerate.multiply(-1);
       }
       // 当松开某一个方向的时候,相当于停止加速度
-      Camera.accelerateCommander = Camera.accelerateCommander
-        .subtract(addAccelerate)
-        .limitX(-accelerateSize, accelerateSize)
-        .limitY(-accelerateSize, accelerateSize);
+      Camera.accelerateCommander = Camera.accelerateCommander.subtract(addAccelerate).limitX(-1, 1).limitY(-1, 1);
     }
     if (key === " ") {
       if (isPreGrabbingWhenSpace) {
