@@ -14,8 +14,8 @@
       "outputs": ["dist/**"]
     },
     "@pg/docs#build": {
-      "inputs": ["src/**/*"],
-      "outputs": ["src/.vitepress/dist/**"]
+      "inputs": ["**/*"],
+      "outputs": ["out"]
     },
     "@pg/ui#build": {
       "outputs": ["dist/**"]
