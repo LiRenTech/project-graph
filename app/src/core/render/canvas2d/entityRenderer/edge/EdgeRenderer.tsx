@@ -19,6 +19,7 @@ import { SymmetryCurveEdgeRenderer } from "./concrete/SymmetryCurveEdgeRenderer"
 import { VerticalPolyEdgeRenderer } from "./concrete/VerticalPolyEdgeRenderer";
 import { EdgeRendererClass } from "./EdgeRendererClass";
 import { CurveRenderer } from "../../basicRenderer/curveRenderer";
+import { Edge } from "../../../../stage/stageObject/association/Edge";
 
 /**
  * 边的总渲染器单例
@@ -206,7 +207,7 @@ export namespace EdgeRenderer {
     currentRenderer.renderVirtualConfirmedEdge(startNode, endNode);
   }
 
-  export function getCuttingEffects(edge: LineEdge) {
+  export function getCuttingEffects(edge: Edge) {
     return currentRenderer.getCuttingEffects(edge);
   }
   export function getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity) {
