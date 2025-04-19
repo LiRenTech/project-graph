@@ -172,42 +172,81 @@ export namespace ShortcutKeysRegister {
     ).down(() => {
       Camera.zoomOutByKeyboard();
     });
-    (
-      await KeyBinds.create("CameraPageMoveUp", "pageup", {
-        control: false,
-        alt: false,
-        shift: false,
-      })
-    ).down(() => {
-      Camera.pageMove(Direction.Up);
-    });
-    (
-      await KeyBinds.create("CameraPageMoveDown", "pagedown", {
-        control: false,
-        alt: false,
-        shift: false,
-      })
-    ).down(() => {
-      Camera.pageMove(Direction.Down);
-    });
-    (
-      await KeyBinds.create("CameraPageMoveLeft", "home", {
-        control: false,
-        alt: false,
-        shift: false,
-      })
-    ).down(() => {
-      Camera.pageMove(Direction.Left);
-    });
-    (
-      await KeyBinds.create("CameraPageMoveRight", "end", {
-        control: false,
-        alt: false,
-        shift: false,
-      })
-    ).down(() => {
-      Camera.pageMove(Direction.Right);
-    });
+    if (isMac) {
+      (
+        await KeyBinds.create("CameraPageMoveUp", "i", {
+          control: false,
+          alt: false,
+          shift: true,
+        })
+      ).down(() => {
+        Camera.pageMove(Direction.Up);
+      });
+      (
+        await KeyBinds.create("CameraPageMoveDown", "k", {
+          control: false,
+          alt: false,
+          shift: true,
+        })
+      ).down(() => {
+        Camera.pageMove(Direction.Down);
+      });
+      (
+        await KeyBinds.create("CameraPageMoveLeft", "j", {
+          control: false,
+          alt: false,
+          shift: true,
+        })
+      ).down(() => {
+        Camera.pageMove(Direction.Left);
+      });
+      (
+        await KeyBinds.create("CameraPageMoveRight", "l", {
+          control: false,
+          alt: false,
+          shift: true,
+        })
+      ).down(() => {
+        Camera.pageMove(Direction.Right);
+      });
+    } else {
+      (
+        await KeyBinds.create("CameraPageMoveUp", "pageup", {
+          control: false,
+          alt: false,
+          shift: false,
+        })
+      ).down(() => {
+        Camera.pageMove(Direction.Up);
+      });
+      (
+        await KeyBinds.create("CameraPageMoveDown", "pagedown", {
+          control: false,
+          alt: false,
+          shift: false,
+        })
+      ).down(() => {
+        Camera.pageMove(Direction.Down);
+      });
+      (
+        await KeyBinds.create("CameraPageMoveLeft", "home", {
+          control: false,
+          alt: false,
+          shift: false,
+        })
+      ).down(() => {
+        Camera.pageMove(Direction.Left);
+      });
+      (
+        await KeyBinds.create("CameraPageMoveRight", "end", {
+          control: false,
+          alt: false,
+          shift: false,
+        })
+      ).down(() => {
+        Camera.pageMove(Direction.Right);
+      });
+    }
 
     (
       await KeyBinds.create("folderSection", "t", {
