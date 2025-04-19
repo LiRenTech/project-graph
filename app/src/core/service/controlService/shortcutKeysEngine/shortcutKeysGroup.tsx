@@ -51,6 +51,10 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
       "masterBrakeControl",
       "CameraScaleZoomIn",
       "CameraScaleZoomOut",
+      "CameraPageMoveUp",
+      "CameraPageMoveDown",
+      "CameraPageMoveLeft",
+      "CameraPageMoveRight",
     ],
   },
   {

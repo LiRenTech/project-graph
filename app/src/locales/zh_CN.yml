@@ -982,6 +982,14 @@ keyBinds:
   CameraScaleZoomOut:
     title: 视野缩小
     description: 按下后，视野缩小
+  CameraPageMoveUp:
+    title: 视野向上翻页式移动
+  CameraPageMoveDown:
+    title: 视野向下翻页式移动
+  CameraPageMoveLeft:
+    title: 视野向左翻页式移动
+  CameraPageMoveRight:
+    title: 视野向右翻页式移动
   exitSoftware:
     title: 退出软件
     description: 按下后，退出软件

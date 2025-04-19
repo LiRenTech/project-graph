@@ -1,9 +1,12 @@
 import { Dialog } from "../../components/dialog";
+import { Direction } from "../../types/directions";
 import { NumberFunctions } from "../algorithm/numberFunctions";
+import { Queue } from "../dataStruct/Queue";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 import { Renderer } from "../render/canvas2d/renderer";
 import { TextRiseEffect } from "../service/feedbackService/effectEngine/concrete/TextRiseEffect";
+import { easeOutExpo } from "../service/feedbackService/effectEngine/mathTools/easings";
 import { Settings } from "../service/Settings";
 import { Stage } from "./Stage";
 import { StageManager } from "./stageManager/StageManager";
@@ -103,10 +106,47 @@ export namespace Camera {
   let cameraResetViewPaddingRate = 1.5;
   export let cameraFollowsSelectedNodeOnArrowKeys = false;
 
-  // IDEA: 突然有一个好点子
-  // 把wsad移动的逻辑改成瞬间爆炸的冲刺一小段距离，而不是改成直接赋予永久的作用力方向然后再撤销
-  // 这样可以避免好多潜在bug
-  // 但这样估计就又不流畅了
+  // pageup / pagedown 爆炸式移动
+
+  const shockMoveDiffLocationsQueue = new Queue<Vector>();
+  /**
+   * 触发一次翻页式移动
+   *
+   * 触发一次后，接下来的60帧里，摄像机都会移动一小段距离，朝向目的位置移动
+   */
+  export function pageMove(direction: Direction) {
+    // 先清空之前的队列
+    shockMoveDiffLocationsQueue.clear();
+    // 计算爆炸式移动的目标位置
+    const targetLocation = location.clone();
+    const rect = Renderer.getCoverWorldRectangle();
+    if (direction === Direction.Up) {
+      targetLocation.y -= rect.height * 1;
+    } else if (direction === Direction.Down) {
+      targetLocation.y += rect.height * 1;
+    } else if (direction === Direction.Left) {
+      targetLocation.x -= rect.width * 1;
+    } else if (direction === Direction.Right) {
+      targetLocation.x += rect.width * 1;
+    }
+    // 生成接下来一些帧里的移动轨迹位置点。
+    const frameCount = 40;
+    const movePoints = [];
+    for (let i = 0; i < frameCount; i++) {
+      // 进度：0~1
+      const rate = easeOutExpo(i / frameCount);
+      const newPoint = location.add(targetLocation.subtract(location).multiply(rate));
+      movePoints.push(newPoint);
+    }
+    // 根据位置轨迹点生成距离变化小向量段
+    const diffLocations = [];
+    for (let i = 1; i < movePoints.length; i++) {
+      const diff = movePoints[i].subtract(movePoints[i - 1]);
+      diffLocations.push(diff);
+      // 将距离变化加入队列
+      shockMoveDiffLocationsQueue.enqueue(diff);
+    }
+  }
 
   export function frameTick() {
     // 计算摩擦力 与速度方向相反,固定值,但速度为0摩擦力就不存在
@@ -150,6 +190,13 @@ export namespace Camera {
           },
         ],
       });
+    }
+    // 冲击式移动
+    if (!shockMoveDiffLocationsQueue.isEmpty()) {
+      const diffLocation = shockMoveDiffLocationsQueue.dequeue();
+      if (diffLocation !== undefined) {
+        location = location.add(diffLocation);
+      }
     }
 
     // 计算摩擦力
