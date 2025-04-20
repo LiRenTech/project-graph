@@ -313,7 +313,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
       {/* 连线对象 */}
       {isHaveSelectedEdge && (
-        <ToolbarGroup groupTitle="关系">
+        <ToolbarGroup groupTitle="有向边">
           <ToolbarItem
             description="反转选中连线方向"
             icon={<Repeat />}

@@ -12,10 +12,10 @@ import { ControllerLayerMoving } from "./concrete/ControllerEntityLayerMoving";
 import { ControllerImageScale } from "./concrete/ControllerImageScale";
 import { ControllerDrawing } from "./concrete/ControllerPenStrokeDrawing";
 // import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
+import { ControllerAssociationReshape } from "./concrete/ControllerAssociationReshape";
 import { ControllerEntityClickSelectAndMove } from "./concrete/ControllerEntityClickSelectAndMove";
 import { ControllerNodeConnection } from "./concrete/ControllerNodeConnection";
 import { ControllerNodeEdit } from "./concrete/ControllerNodeEdit";
-import { ControllerNodeRotation } from "./concrete/ControllerNodeRotation";
 import { ControllerRectangleSelect } from "./concrete/ControllerRectangleSelect";
 import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
 // ...
@@ -123,7 +123,7 @@ export namespace Controller {
     // 所有的具体的功能逻辑封装成控制器对象
     // 当有新功能时新建控制器对象，并在这里初始化
     ControllerCamera.init();
-    ControllerNodeRotation.init();
+    ControllerAssociationReshape.init();
     ControllerNodeConnection.init();
     ControllerCutting.init();
     ControllerEntityClickSelectAndMove.init();
@@ -302,7 +302,7 @@ export namespace Controller {
     Canvas.element.removeEventListener("touchmove", touchmove);
     Canvas.element.removeEventListener("touchend", touchend);
     ControllerCamera.destroy();
-    ControllerNodeRotation.destroy();
+    ControllerAssociationReshape.destroy();
     ControllerNodeConnection.destroy();
     ControllerCutting.destroy();
     ControllerEntityClickSelectAndMove.destroy();
