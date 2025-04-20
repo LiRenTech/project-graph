@@ -21,8 +21,7 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
   get collisionBox(): CollisionBox {
     // 计算多个节点的外接矩形的中心点
     const nodes = StageManager.getEntitiesByUUIDs(this.targetUUIDs);
-    const boundingRectangle = Rectangle.getBoundingRectangle(nodes.map((n) => n.collisionBox.getRectangle()));
-    const center = boundingRectangle.center;
+    const center = this.centerLocation;
 
     const shapeList: Shape[] = [];
     for (const node of nodes) {
@@ -58,6 +57,15 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
    * 获取中心点
    */
   public get centerLocation(): Vector {
+    if (this.targetUUIDs.length === 2) {
+      // 和lineEdge保持一样的逻辑
+      const twoNode = StageManager.getEntitiesByUUIDs(this.targetUUIDs);
+      const line = new Line(
+        twoNode[0].collisionBox.getRectangle().center,
+        twoNode[1].collisionBox.getRectangle().center,
+      );
+      return line.midPoint();
+    }
     const boundingRectangle = Rectangle.getBoundingRectangle(
       StageManager.getEntitiesByUUIDs(this.targetUUIDs).map((n) => n.collisionBox.getRectangle()),
     );

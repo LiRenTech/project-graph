@@ -1,6 +1,5 @@
 import { Color } from "../../../../dataStruct/Color";
 import { Line } from "../../../../dataStruct/shape/Line";
-import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "../../../../stage/Camera";
@@ -45,8 +44,7 @@ export namespace MultiTargetUndirectedEdgeRenderer {
       return;
     }
     // 正常情况
-    const boundingRectangle = Rectangle.getBoundingRectangle(targetNodes.map((n) => n.collisionBox.getRectangle()));
-    const centerLocation = boundingRectangle.center;
+    const centerLocation = edge.centerLocation;
     const edgeColor = edge.color.equals(Color.Transparent)
       ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
