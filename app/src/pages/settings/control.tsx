@@ -4,6 +4,7 @@ import {
   Fullscreen,
   GitCompareArrows,
   Hand,
+  HandMetal,
   Keyboard,
   ListCheck,
   ListEnd,
@@ -40,7 +41,7 @@ export default function Control() {
         <SettingField icon={<Hand />} settingKey="enableWindowsTouchPad" type="switch" />
         <SettingField icon={<Hand />} settingKey="macTrackpadAndMouseWheelDifference" type="select" />
         <SettingField
-          icon={<Hand />}
+          icon={<HandMetal />}
           settingKey="macTrackpadScaleSensitivity"
           type="slider"
           min={0}

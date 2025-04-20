@@ -1,4 +1,5 @@
 import { Vector } from "../../../../../dataStruct/Vector";
+import { Renderer } from "../../../../../render/canvas2d/renderer";
 import { Camera } from "../../../../../stage/Camera";
 import { Stage } from "../../../../../stage/Stage";
 import { MouseTipFeedbackEffect } from "../../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
@@ -103,6 +104,12 @@ export namespace ControllerCameraMac {
    * @param event
    */
   export function handleTwoFingerScale(event: WheelEvent) {
+    // 获取触发滚轮的鼠标位置
+    const mouseLocation = new Vector(event.clientX, event.clientY);
+    // 计算鼠标位置在视野中的位置
+    const worldLocation = Renderer.transformView2World(mouseLocation);
+    Camera.targetLocationByScale = worldLocation;
+
     // 构建幂函数 y = a ^ x
     // const power = 1.02; // 1.05 有点敏感，1.01 有点迟钝
     const power = macTrackpadScaleSensitivity * 0.14 + 1.01;
@@ -117,7 +124,7 @@ export namespace ControllerCameraMac {
     const newCameraScale = Math.pow(power, newX);
     // Camera.currentScale = newCameraScale;
     Camera.targetScale = newCameraScale;
-    Camera.setAllowScaleFollowMouseLocationTicks(2 * 60);
+    // Camera.setAllowScaleFollowMouseLocationTicks(2 * 60);
   }
 
   export function moveCameraByTouchPadTwoFingerMove(event: WheelEvent) {
