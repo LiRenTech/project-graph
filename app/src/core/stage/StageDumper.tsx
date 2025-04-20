@@ -4,6 +4,7 @@ import { StageManager } from "./stageManager/StageManager";
 import { Entity } from "./stageObject/abstract/StageEntity";
 import { CublicCatmullRomSplineEdge } from "./stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "./stageObject/association/LineEdge";
+import { MultiTargetUndirectedEdge } from "./stageObject/association/MutiTargetUndirectedEdge";
 import { ConnectPoint } from "./stageObject/entity/ConnectPoint";
 import { ImageNode } from "./stageObject/entity/ImageNode";
 import { PenStroke } from "./stageObject/entity/PenStroke";
@@ -58,6 +59,16 @@ export namespace StageDumper {
       tension: edge.tension,
       sourceRectRate: [edge.sourceRectangleRate.x, edge.sourceRectangleRate.y],
       targetRectRate: [edge.targetRectangleRate.x, edge.targetRectangleRate.y],
+    };
+  }
+  export function dumpMTUEdge(edge: MultiTargetUndirectedEdge): Serialized.MultiTargetUndirectedEdge {
+    return {
+      type: "core:multi_target_undirected_edge",
+      targets: edge.targetUUIDs,
+      color: edge.color && edge.color.toArray(),
+      rectRates: edge.rectRates.map((v) => v.toArray()),
+      uuid: edge.uuid,
+      text: edge.text,
     };
   }
   export function dumpConnectPoint(connectPoint: ConnectPoint): Serialized.ConnectPoint {
@@ -186,12 +197,18 @@ export namespace StageDumper {
       entities.push(dumpOneEntity(entity));
     }
 
-    const associations: (Serialized.LineEdge | Serialized.CublicCatmullRomSplineEdge)[] = [];
+    const associations: (
+      | Serialized.LineEdge
+      | Serialized.CublicCatmullRomSplineEdge
+      | Serialized.MultiTargetUndirectedEdge
+    )[] = [];
     for (const edge of StageManager.getAssociations()) {
       if (edge instanceof LineEdge) {
         associations.push(dumpEdge(edge));
       } else if (edge instanceof CublicCatmullRomSplineEdge) {
         associations.push(dumpCrEdge(edge));
+      } else if (edge instanceof MultiTargetUndirectedEdge) {
+        associations.push(dumpMTUEdge(edge));
       }
     }
 

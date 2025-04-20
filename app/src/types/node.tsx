@@ -142,7 +142,7 @@ export namespace Serialized {
   export type File = {
     version: typeof StageDumper.latestVersion;
     entities: (TextNode | Section | ConnectPoint | ImageNode | UrlNode | PenStroke | PortalNode)[];
-    associations: (LineEdge | CublicCatmullRomSplineEdge)[];
+    associations: (LineEdge | CublicCatmullRomSplineEdge | MultiTargetUndirectedEdge)[];
     tags: string[];
   };
 }

@@ -1,4 +1,5 @@
 import { Color } from "../../../../dataStruct/Color";
+import { Line } from "../../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
@@ -7,6 +8,7 @@ import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { CurveRenderer } from "../../basicRenderer/curveRenderer";
 import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
+import { Renderer } from "../../renderer";
 
 export namespace MultiTargetUndirectedEdgeRenderer {
   export function render(edge: MultiTargetUndirectedEdge) {
@@ -14,25 +16,25 @@ export namespace MultiTargetUndirectedEdgeRenderer {
     if (edge.isSelected) {
       //
     }
-    const nodes = StageManager.getEntitiesByUUIDs(edge.targetUUIDs);
-    if (nodes.length < 2) {
+    const targetNodes = StageManager.getEntitiesByUUIDs(edge.targetUUIDs);
+    if (targetNodes.length < 2) {
       // 特殊情况，出问题了属于是
-      if (nodes.length === 1) {
+      if (targetNodes.length === 1) {
         // 画一个圆环
-        const node = nodes[0];
+        const node = targetNodes[0];
         const center = node.collisionBox.getRectangle().center;
         ShapeRenderer.renderCircle(
-          center,
+          Renderer.transformWorld2View(center),
           100 * Camera.currentScale,
           Color.Transparent,
           StageStyleManager.currentStyle.StageObjectBorder,
           2 * Camera.currentScale,
         );
       }
-      if (nodes.length === 0) {
+      if (targetNodes.length === 0) {
         // 在0 0 位置画圆
         ShapeRenderer.renderCircle(
-          Vector.getZero(),
+          Renderer.transformWorld2View(Vector.getZero()),
           100 * Camera.currentScale,
           Color.Transparent,
           StageStyleManager.currentStyle.StageObjectBorder,
@@ -41,14 +43,21 @@ export namespace MultiTargetUndirectedEdgeRenderer {
       }
       return;
     }
-    const boundingRectangle = Rectangle.getBoundingRectangle(nodes.map((n) => n.collisionBox.getRectangle()));
-    const center = boundingRectangle.center;
+    // 正常情况
+    const boundingRectangle = Rectangle.getBoundingRectangle(targetNodes.map((n) => n.collisionBox.getRectangle()));
+    const centerLocation = boundingRectangle.center;
 
-    for (const node of nodes) {
+    for (let i = 0; i < targetNodes.length; i++) {
+      const node = targetNodes[i];
+      const nodeRectangle = node.collisionBox.getRectangle();
+      const targetLocation = nodeRectangle.getInnerLocationByRateVector(edge.rectRates[i]);
+      const line = new Line(centerLocation, targetLocation);
+      const targetPoint = nodeRectangle.getLineIntersectionPoint(line);
+
       CurveRenderer.renderSolidLine(
-        center,
-        node.collisionBox.getRectangle().center,
-        StageStyleManager.currentStyle.StageObjectBorder,
+        Renderer.transformWorld2View(centerLocation),
+        Renderer.transformWorld2View(targetPoint),
+        edge.color.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
         2 * Camera.currentScale,
       );
     }
