@@ -15,6 +15,7 @@ import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { StageObject } from "../../../../stage/stageObject/abstract/StageObject";
 import { Edge } from "../../../../stage/stageObject/association/Edge";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
+import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
@@ -101,6 +102,40 @@ export function editEdgeText(clickedLineEdge: Edge, selectAll = true) {
     clickedLineEdge.text,
     (text) => {
       clickedLineEdge?.rename(text);
+    },
+    {
+      position: "fixed",
+      resize: "none",
+      boxSizing: "border-box",
+      overflow: "hidden",
+      whiteSpace: "pre-wrap",
+      wordBreak: "break-all",
+      left: `${textAreaLocation.x.toFixed(2)}px`,
+      top: `${textAreaLocation.y.toFixed(2)}px`,
+      fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
+      backgroundColor: StageStyleManager.currentStyle.Background.toString(),
+      color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
+      outline: "solid 1px rgba(255,255,255,0.1)",
+      // marginTop: -8 * Camera.currentScale + "px",
+    },
+    selectAll,
+  ).then(() => {
+    // clickedLineEdge!.isEditing = false;
+    Controller.isCameraLocked = false;
+    StageHistoryManager.recordStep();
+  });
+}
+export function editMultiTargetEdgeText(clickedEdge: MultiTargetUndirectedEdge, selectAll = true) {
+  Controller.isCameraLocked = true;
+
+  // clickedLineEdge.isEditing = true;
+  const textAreaLocation = Renderer.transformWorld2View(clickedEdge.textRectangle.location).add(
+    Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
+  );
+  InputElement.textarea(
+    clickedEdge.text,
+    (text) => {
+      clickedEdge?.rename(text);
     },
     {
       position: "fixed",

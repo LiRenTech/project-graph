@@ -342,6 +342,12 @@ export namespace Renderer {
     for (const section of Stage.mouseInteractionCore.hoverSections) {
       CollisionBoxRenderer.render(section.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelected);
     }
+    for (const multiTargetUndirectedEdge of Stage.mouseInteractionCore.hoverMultiTargetEdges) {
+      CollisionBoxRenderer.render(
+        multiTargetUndirectedEdge.collisionBox,
+        StageStyleManager.currentStyle.CollideBoxPreSelected,
+      );
+    }
   }
 
   /** 框选框 */

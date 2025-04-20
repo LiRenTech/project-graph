@@ -1,6 +1,7 @@
 import { Vector } from "../../../dataStruct/Vector";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Edge } from "../../../stage/stageObject/association/Edge";
+import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { Section } from "../../../stage/stageObject/entity/Section";
 
 export class StageMouseInteractionCore {
@@ -10,6 +11,10 @@ export class StageMouseInteractionCore {
   private _hoverEdges: Edge[] = [];
   /** 鼠标悬浮的框 */
   private _hoverSections: Section[] = [];
+  /**
+   * 鼠标悬浮的多边形边
+   */
+  private _hoverMultiTargetEdges: MultiTargetUndirectedEdge[] = [];
 
   public isHaveHoverObject(): boolean {
     return this._hoverEdges.length > 0 || this._hoverSections.length > 0;
@@ -30,6 +35,13 @@ export class StageMouseInteractionCore {
   get firstHoverSection(): Section | undefined {
     return this._hoverSections.length > 0 ? this._hoverSections[0] : undefined;
   }
+  get hoverMultiTargetEdges(): MultiTargetUndirectedEdge[] {
+    return this._hoverMultiTargetEdges;
+  }
+
+  get firstHoverMultiTargetEdge(): MultiTargetUndirectedEdge | undefined {
+    return this._hoverMultiTargetEdges.length > 0 ? this._hoverMultiTargetEdges[0] : undefined;
+  }
 
   public isHoverEdge(edge: Edge): boolean {
     return this._hoverEdges.includes(edge);
@@ -39,6 +51,10 @@ export class StageMouseInteractionCore {
     return this._hoverEdges.length > 0;
   }
 
+  /**
+   * mousemove 事件触发此函数
+   * @param mouseWorldLocation
+   */
   public updateByMouseMove(mouseWorldLocation: Vector): void {
     // 更新 Edge状态
     this._hoverEdges = [];
@@ -48,6 +64,15 @@ export class StageMouseInteractionCore {
       }
       if (edge.collisionBox.isContainsPoint(mouseWorldLocation)) {
         this._hoverEdges.push(edge);
+      }
+    }
+    // 更新 MultiTargetUndirectedEdge状态
+    this._hoverMultiTargetEdges = [];
+    for (const edge of StageManager.getAssociations().filter(
+      (association) => association instanceof MultiTargetUndirectedEdge,
+    )) {
+      if (edge.collisionBox.isContainsPoint(mouseWorldLocation)) {
+        this._hoverMultiTargetEdges.push(edge);
       }
     }
     // 更新 Section状态

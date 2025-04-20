@@ -3,7 +3,7 @@ import { Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 
 import { ControllerClass } from "../ControllerClass";
-import { editEdgeText } from "./utilsControl";
+import { editEdgeText, editMultiTargetEdgeText } from "./utilsControl";
 
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
@@ -17,12 +17,18 @@ ControllerEdgeEdit.mouseDoubleClick = (event: MouseEvent) => {
     return;
   }
   const firstHoverEdge = Stage.mouseInteractionCore.firstHoverEdge;
-  if (!firstHoverEdge) {
+  const firstHoverMultiTargetEdge = Stage.mouseInteractionCore.firstHoverMultiTargetEdge;
+  if (!(firstHoverEdge || firstHoverMultiTargetEdge)) {
     return;
   }
+  if (firstHoverEdge) {
+    // 编辑边上的文字
+    editEdgeText(firstHoverEdge);
+  }
+  if (firstHoverMultiTargetEdge) {
+    editMultiTargetEdgeText(firstHoverMultiTargetEdge);
+  }
 
-  // 编辑边上的文字
-  editEdgeText(firstHoverEdge);
   return;
 };
 
