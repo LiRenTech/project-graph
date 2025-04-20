@@ -10,12 +10,12 @@ import { CurveRenderer } from "../../basicRenderer/curveRenderer";
 import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../../basicRenderer/textRenderer";
 import { Renderer } from "../../renderer";
+import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 
 export namespace MultiTargetUndirectedEdgeRenderer {
   export function render(edge: MultiTargetUndirectedEdge) {
-    //
     if (edge.isSelected) {
-      //
+      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
     const targetNodes = StageManager.getEntitiesByUUIDs(edge.targetUUIDs);
     if (targetNodes.length < 2) {

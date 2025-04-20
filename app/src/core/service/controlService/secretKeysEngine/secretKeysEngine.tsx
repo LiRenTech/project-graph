@@ -25,7 +25,6 @@ import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/Text
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
 import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
-import { Dialog } from "../../../../components/dialog";
 
 interface SecretKeyItem {
   name: string;
@@ -661,15 +660,6 @@ export class SecretKeysEngine {
         }
         // 开始添加多源无向边
         const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
-        Dialog.show({
-          input: true,
-          title: "输入名称",
-          content: "您正在创建一个多源无向边，请输入多源无向边的名称",
-        }).then(({ button, value }) => {
-          if (button === "确定" && value) {
-            multiTargetUndirectedEdge.rename(value);
-          }
-        });
         StageManager.addAssociation(multiTargetUndirectedEdge);
       },
     },

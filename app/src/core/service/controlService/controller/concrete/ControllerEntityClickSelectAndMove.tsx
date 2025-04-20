@@ -33,7 +33,7 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     const pressWorldLocation = Renderer.transformView2World(this.mouseDownViewLocation);
     this.lastMoveLocation = pressWorldLocation.clone();
 
-    const clickedEntity = getClickedStageObject(pressWorldLocation);
+    const clickedStageObject = getClickedStageObject(pressWorldLocation);
 
     // 防止跳跃式移动的时候改变选中内容
     if (Controller.pressingKeySet.has("alt")) {
@@ -41,15 +41,15 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     }
 
     // 单击选中
-    if (clickedEntity !== null) {
+    if (clickedStageObject !== null) {
       this.isMovingEntity = true;
 
       if (Controller.pressingKeySet.has("shift") && Controller.pressingKeySet.has("control")) {
         // ctrl + shift 同时按下
-        clickedEntity.isSelected = !clickedEntity.isSelected;
+        clickedStageObject.isSelected = !clickedStageObject.isSelected;
       } else if (Controller.pressingKeySet.has("shift")) {
         // shift 按下，只选中节点
-        clickedEntity.isSelected = true;
+        clickedStageObject.isSelected = true;
         const rectangles = StageManager.getSelectedEntities().map((entity) => entity.collisionBox.getRectangle());
         const boundingRectangle = Rectangle.getBoundingRectangle(rectangles);
         Stage.effectMachine.addEffect(RectangleRenderEffect.fromShiftClickSelect(boundingRectangle));
@@ -61,13 +61,13 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
         }
       } else if (Controller.pressingKeySet.has("control")) {
         // ctrl 按下，只选中节点，不能模仿windows文件管理器设置成反选，否则会和直接移动节点子树冲突
-        clickedEntity.isSelected = true;
+        clickedStageObject.isSelected = true;
       } else {
         // 直接点击
-        if (!clickedEntity.isSelected) {
+        if (!clickedStageObject.isSelected) {
           // 清空所有其他节点的选中状态
           StageManager.getStageObject().forEach((stageObject) => {
-            if (stageObject === clickedEntity) {
+            if (stageObject === clickedStageObject) {
               return;
             }
             stageObject.isSelected = false;
@@ -75,7 +75,7 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
         }
 
         // 选中点击节点的状态
-        clickedEntity.isSelected = true;
+        clickedStageObject.isSelected = true;
       }
     } else {
       // 未点击到节点
