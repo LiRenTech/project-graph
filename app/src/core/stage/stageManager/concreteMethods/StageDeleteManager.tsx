@@ -2,8 +2,10 @@ import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { ExplodeDashEffect } from "../../../service/feedbackService/effectEngine/concrete/ExplodeDashEffect";
 import { Stage } from "../../Stage";
+import { Association } from "../../stageObject/abstract/Association";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { Edge } from "../../stageObject/association/Edge";
+import { MultiTargetUndirectedEdge } from "../../stageObject/association/MutiTargetUndirectedEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { PenStroke } from "../../stageObject/entity/PenStroke";
@@ -45,7 +47,7 @@ export namespace StageDeleteManager {
     if (StageManager.getPortalNodes().includes(entity)) {
       StageManager.deleteOnePortalNode(entity);
       // 删除所有相关的边
-      deleteEntityAfterClearEdges(entity);
+      deleteEntityAfterClearAssociation(entity);
     }
   }
 
@@ -68,7 +70,7 @@ export namespace StageDeleteManager {
 
     // 再删除自己
     StageManager.deleteOneSection(entity);
-    deleteEntityAfterClearEdges(entity);
+    deleteEntityAfterClearAssociation(entity);
     // 将自己所有的父级Section的children添加自己的children
     const fatherSections = SectionMethods.getFatherSections(entity);
     StageSectionInOutManager.goInSections(entity.children, fatherSections);
@@ -80,14 +82,14 @@ export namespace StageDeleteManager {
         new ExplodeDashEffect(new ProgressNumber(0, 30), entity.collisionBox.getRectangle(), Color.White),
       );
       // 删除所有相关的边
-      deleteEntityAfterClearEdges(entity);
+      deleteEntityAfterClearAssociation(entity);
     }
   }
   function deleteUrlNode(entity: UrlNode) {
     if (StageManager.getUrlNodes().includes(entity)) {
       StageManager.deleteOneUrlNode(entity);
       // 删除所有相关的边
-      deleteEntityAfterClearEdges(entity);
+      deleteEntityAfterClearAssociation(entity);
     }
   }
 
@@ -100,7 +102,7 @@ export namespace StageDeleteManager {
         new ExplodeDashEffect(new ProgressNumber(0, 30), entity.collisionBox.getRectangle(), Color.White),
       );
       // 删除所有相关的边
-      deleteEntityAfterClearEdges(entity);
+      deleteEntityAfterClearAssociation(entity);
     } else {
       console.warn("connect point not in connect points", entity.uuid);
     }
@@ -123,21 +125,31 @@ export namespace StageDeleteManager {
       console.warn("node not in nodes", entity.uuid);
     }
     // 删除所有相关的边
-    deleteEntityAfterClearEdges(entity);
+    deleteEntityAfterClearAssociation(entity);
   }
 
   /**
    * 删除所有相关的边
    * @param entity
    */
-  function deleteEntityAfterClearEdges(entity: Entity) {
-    const prepareDeleteEdges: Edge[] = [];
-    for (const edge of StageManager.getEdges()) {
-      if (edge.source === entity || edge.target === entity) {
-        prepareDeleteEdges.push(edge);
+  function deleteEntityAfterClearAssociation(entity: Entity) {
+    const prepareDeleteAssociation: Association[] = [];
+    const visitedAssociations: Set<string> = new Set();
+
+    for (const edge of StageManager.getAssociations()) {
+      if (edge instanceof Edge) {
+        if ((edge.source === entity || edge.target === entity) && visitedAssociations.has(edge.uuid) === false) {
+          prepareDeleteAssociation.push(edge);
+          visitedAssociations.add(edge.uuid);
+        }
+      } else if (edge instanceof MultiTargetUndirectedEdge) {
+        if (edge.targetUUIDs.includes(entity.uuid) && visitedAssociations.has(edge.uuid) === false) {
+          prepareDeleteAssociation.push(edge);
+          visitedAssociations.add(edge.uuid);
+        }
       }
     }
-    for (const edge of prepareDeleteEdges) {
+    for (const edge of prepareDeleteAssociation) {
       StageManager.deleteOneAssociation(edge);
     }
   }

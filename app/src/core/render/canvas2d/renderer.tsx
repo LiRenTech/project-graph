@@ -19,6 +19,7 @@ import { StageObjectSelectCounter } from "../../stage/stageManager/concreteMetho
 import { StageObject } from "../../stage/stageObject/abstract/StageObject";
 import { CublicCatmullRomSplineEdge } from "../../stage/stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
+import { MultiTargetUndirectedEdge } from "../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { CurveRenderer } from "./basicRenderer/curveRenderer";
 import { ShapeRenderer } from "./basicRenderer/shapeRenderer";
 import { SvgRenderer } from "./basicRenderer/svgRenderer";
@@ -27,6 +28,7 @@ import { DrawingControllerRenderer } from "./controllerRenderer/drawingRenderer"
 import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
 import { EntityRenderer } from "./entityRenderer/EntityRenderer";
 import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
+import { MultiTargetUndirectedEdgeRenderer } from "./entityRenderer/multiTargetUndirectedEdge/MultiTargetUndirectedEdgeRenderer";
 import { WorldRenderUtils } from "./utilsRenderer/WorldRenderUtils";
 import {
   renderCartesianBackground,
@@ -593,6 +595,9 @@ export namespace Renderer {
     for (const association of StageManager.getAssociations()) {
       if (isOverView(viewRectangle, association)) {
         continue;
+      }
+      if (association instanceof MultiTargetUndirectedEdge) {
+        MultiTargetUndirectedEdgeRenderer.render(association);
       }
       if (association instanceof LineEdge) {
         EdgeRenderer.renderLineEdge(association);

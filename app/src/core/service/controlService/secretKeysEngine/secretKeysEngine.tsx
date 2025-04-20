@@ -24,6 +24,7 @@ import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/Vie
 import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
 import { LayoutManualAlignManager } from "../../../stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { Direction } from "../../../../types/directions";
+import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 
 interface SecretKeyItem {
   name: string;
@@ -647,6 +648,19 @@ export class SecretKeysEngine {
             node.move(Vector.fromDegrees(i));
           });
         });
+      },
+    },
+    "m t u e": {
+      name: "将选中的可连接实体添加多源无向边",
+      explain: "测试中",
+      func() {
+        const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof ConnectableEntity);
+        if (selectedNodes.length <= 1) {
+          return;
+        }
+        // 开始添加多源无向边
+        const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
+        StageManager.addAssociation(multiTargetUndirectedEdge);
       },
     },
   };

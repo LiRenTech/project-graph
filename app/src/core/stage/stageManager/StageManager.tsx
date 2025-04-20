@@ -360,6 +360,9 @@ export namespace StageManager {
   export function addConnectPoint(point: ConnectPoint) {
     stageContent.entities.addValue(point, point.uuid);
   }
+  export function addAssociation(association: Association) {
+    stageContent.associations.addValue(association, association.uuid);
+  }
   export function addLineEdge(edge: LineEdge) {
     stageContent.associations.addValue(edge, edge.uuid);
   }
