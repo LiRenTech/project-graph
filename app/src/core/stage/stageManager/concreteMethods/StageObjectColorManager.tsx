@@ -23,32 +23,13 @@ export namespace StageObjectColorManager {
         entity.setColor(color);
       }
     }
-    for (const edge of StageManager.getLineEdges()) {
+    for (const edge of StageManager.getAssociations()) {
       if (edge.isSelected) {
         edge.color = color;
       }
     }
     // 特性：统一取消框选
     // StageManager.clearSelectAll();  // 不能统一取消全选，因为填充后可能会发现颜色不合适
-    StageHistoryManager.recordStep();
-  }
-
-  export function setEntityColor(color: Color) {
-    for (const node of StageManager.getTextNodes()) {
-      if (node.isSelected) {
-        node.color = color;
-      }
-    }
-    for (const node of StageManager.getSections()) {
-      if (node.isSelected) {
-        node.color = color;
-      }
-    }
-    for (const entity of StageManager.getPenStrokes()) {
-      if (entity.isSelected) {
-        entity.setColor(color);
-      }
-    }
     StageHistoryManager.recordStep();
   }
 

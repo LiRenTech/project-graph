@@ -104,11 +104,11 @@ export namespace Serialized {
   // };
   export type Association = StageObject & {
     text: string;
+    color: Color;
   };
   export type MultiTargetUndirectedEdge = Association & {
     type: "core:multi_target_undirected_edge";
     targets: string[];
-    color: Color;
     rectRates: [number, number][]; // 默认中心 0.5, 0.5
   };
   export function isMultiTargetUndirectedEdge(obj: StageObject): obj is MultiTargetUndirectedEdge {

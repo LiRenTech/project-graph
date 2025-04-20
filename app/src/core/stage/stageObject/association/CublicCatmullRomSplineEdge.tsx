@@ -9,6 +9,7 @@ import { Edge } from "./Edge";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { getMultiLineTextSize } from "../../../../utils/font";
 import { Renderer } from "../../../render/canvas2d/renderer";
+import { Color } from "../../../dataStruct/Color";
 
 /**
  * CR曲线连线
@@ -21,7 +22,7 @@ export class CublicCatmullRomSplineEdge extends Edge {
   public text: string;
   protected _source: ConnectableEntity;
   protected _target: ConnectableEntity;
-
+  public color: Color = Color.Transparent;
   public alpha = 0.5;
   public tension = 0;
   private controlPoints: Vector[] = [];
@@ -62,6 +63,7 @@ export class CublicCatmullRomSplineEdge extends Edge {
       type: "core:cublic_catmull_rom_spline_edge",
       alpha: 0.5,
       tension: 0,
+      color: [0, 0, 0, 0],
       sourceRectRate: [0.5, 0.5],
       targetRectRate: [0.5, 0.5],
       controlPoints: [
@@ -82,6 +84,7 @@ export class CublicCatmullRomSplineEdge extends Edge {
       text,
       alpha,
       tension,
+      color,
       controlPoints,
       sourceRectRate,
       targetRectRate,
@@ -96,6 +99,7 @@ export class CublicCatmullRomSplineEdge extends Edge {
     this.uuid = uuid;
     this.text = text;
     this.alpha = alpha;
+    this.color = new Color(...color);
     this.tension = tension;
     this.controlPoints = controlPoints.map((item) => new Vector(item[0], item[1]));
     this.setSourceRectangleRate(new Vector(...sourceRectRate));

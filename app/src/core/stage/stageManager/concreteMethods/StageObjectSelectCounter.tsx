@@ -14,6 +14,7 @@ import { StageManager } from "../StageManager";
 export namespace StageObjectSelectCounter {
   // 用于UI层监测
   export let selectedEntityCount = 0;
+  export let selectedAssociationCount = 0;
   export let selectedEdgeCount = 0;
   export let selectedCREdgeCount = 0;
   export let selectedImageNodeCount = 0;
@@ -44,6 +45,7 @@ export namespace StageObjectSelectCounter {
     selectedImageNodeCount = 0;
     selectedTextNodeCount = 0;
     selectedSectionCount = 0;
+    selectedAssociationCount = 0;
 
     for (const stageObject of StageManager.getStageObject()) {
       if (!stageObject.isSelected) {
@@ -59,6 +61,7 @@ export namespace StageObjectSelectCounter {
           selectedSectionCount++;
         }
       } else if (stageObject instanceof Association) {
+        selectedAssociationCount++;
         if (stageObject instanceof Edge) {
           selectedEdgeCount++;
           if (stageObject instanceof CublicCatmullRomSplineEdge) {

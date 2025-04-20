@@ -1,3 +1,4 @@
+import { Color } from "../../../dataStruct/Color";
 import { ConnectableEntity } from "./ConnectableEntity";
 import { StageObject } from "./StageObject";
 
@@ -6,6 +7,11 @@ import { StageObject } from "./StageObject";
  */
 export abstract class Association extends StageObject {
   public associationList: StageObject[] = [];
+
+  /**
+   * 任何关系都应该有一个颜色用来标注
+   */
+  public color: Color = Color.Transparent;
 }
 
 /**

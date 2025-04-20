@@ -14,6 +14,7 @@ export class TextRiseEffect extends EffectObject {
   getClassName(): string {
     return "TextRiseEffect";
   }
+
   constructor(
     public text: string,
     public override timeProgress: ProgressNumber = new ProgressNumber(0, 100),

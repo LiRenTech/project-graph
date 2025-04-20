@@ -57,6 +57,7 @@ export namespace StageDumper {
       controlPoints: edge.getControlPoints().map((point) => [point.x, point.y]),
       alpha: edge.alpha,
       tension: edge.tension,
+      color: edge.color && edge.color.toArray(),
       sourceRectRate: [edge.sourceRectangleRate.x, edge.sourceRectangleRate.y],
       targetRectRate: [edge.targetRectangleRate.x, edge.targetRectangleRate.y],
     };
