@@ -3,3 +3,7 @@
 @import "fumadocs-ui/css/preset.css";
 
 @source '../node_modules/fumadocs-ui/dist/**/*.js';
+
+#nd-sidebar > :first-child > :first-child > :nth-child(2) {
+  @apply hover:bg-fd-accent-foreground/80 cursor-pointer;
+}
