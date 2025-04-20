@@ -22,7 +22,7 @@ import {
   TextSelect,
   Touchpad,
 } from "lucide-react";
-import { FieldGroup, SettingField } from "./_field";
+import { FieldGroup, SettingField } from "../../components/Field";
 
 export default function Control() {
   return (

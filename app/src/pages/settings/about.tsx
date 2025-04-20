@@ -9,14 +9,14 @@ import icon from "../../assets/icon.png";
 import QQ from "../../assets/qq.svg?react";
 import versions from "../../assets/versions.json";
 import Button from "../../components/Button";
+import { SettingField } from "../../components/Field";
 import { Settings } from "../../core/service/Settings";
 import { getAppVersion } from "../../utils/otherApi";
-import { SettingField } from "./_field";
 // 这行导入语句 open 不能删，否则会调用webview内部的窗口打开网页，非常卡
 import { open } from "@tauri-apps/plugin-shell";
 import { useNavigate } from "react-router-dom";
-import { cn } from "../../utils/cn";
 import { Dialog } from "../../components/dialog";
+import { cn } from "../../utils/cn";
 
 export default function About() {
   const [isCheckingUpdate, setIsCheckingUpdate] = React.useState(false);

@@ -4,10 +4,10 @@ import { BookOpen, CodeXml, Delete, Eye, EyeClosed, FileCode2, PartyPopper } fro
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Button from "../../components/Button";
+import { Field } from "../../components/Field";
 import IconButton from "../../components/IconButton";
 import Switch from "../../components/Switch";
 import { UserScriptsManager } from "../../core/plugin/UserScriptsManager";
-import { Field } from "./_field";
 // import { Dialog } from "../../components/dialog";
 
 export default function ScriptsPage() {

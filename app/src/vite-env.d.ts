@@ -7,4 +7,5 @@ interface ImportMetaEnv {
   LR_API_BASE_URL?: string;
   LR_FRAME?: string;
   LR_VITEST?: "true";
+  LR_TURNSTILE_SITE_KEY?: string;
 }

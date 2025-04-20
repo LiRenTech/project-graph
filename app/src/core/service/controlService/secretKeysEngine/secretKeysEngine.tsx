@@ -1,4 +1,5 @@
 import { v4 } from "uuid";
+import { Direction } from "../../../../types/directions";
 import { createFolder } from "../../../../utils/fs";
 import { averageColors, Color } from "../../../dataStruct/Color";
 import { Queue } from "../../../dataStruct/Queue";
@@ -10,6 +11,7 @@ import { Stage } from "../../../stage/Stage";
 import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
+import { LayoutManualAlignManager } from "../../../stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { CublicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
@@ -22,8 +24,6 @@ import { RectangleNoteEffect } from "../../feedbackService/effectEngine/concrete
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
-import { LayoutManualAlignManager } from "../../../stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
-import { Direction } from "../../../../types/directions";
 
 interface SecretKeyItem {
   name: string;

@@ -1,6 +1,7 @@
 ---
 id: park
 author: Official
+type: light
 name:
   en: Park
   zh_CN: 公园

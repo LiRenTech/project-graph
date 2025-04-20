@@ -1,6 +1,7 @@
 ---
 id: light
 author: Official
+type: light
 description:
   en: The light theme with a white background for printing.
   zh_CN: 舞台背景为#FFF绝对白色，用于在论文中插图、打印时使用

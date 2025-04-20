@@ -1,3 +1,4 @@
+import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
 import {
   AlignStartVertical,
   ArrowDownToDot,
@@ -10,13 +11,12 @@ import {
   ToggleRight,
 } from "lucide-react";
 import Github from "../../assets/github.svg?react";
-import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
-import { SettingField } from "./_field";
 import Button from "../../components/Button";
-import { Settings } from "../../core/service/Settings";
-import { PathString } from "../../utils/pathString";
-import { exists } from "../../utils/fs";
 import { Dialog } from "../../components/dialog";
+import { SettingField } from "../../components/Field";
+import { Settings } from "../../core/service/Settings";
+import { exists } from "../../utils/fs";
+import { PathString } from "../../utils/pathString";
 
 const SOUND_CONFIGS: { fileName: string; settingKey: keyof Settings.Settings; icon: React.ReactNode }[] = [
   { fileName: "cuttingLineStart.mp3", settingKey: "cuttingLineStartSoundFile", icon: <Scissors /> },

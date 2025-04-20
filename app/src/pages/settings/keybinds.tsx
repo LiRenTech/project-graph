@@ -1,9 +1,9 @@
 import { FileQuestion, Keyboard } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { Field, FieldGroup } from "../../components/Field";
 import KeyBind from "../../components/KeyBind";
 import { KeyBinds } from "../../core/service/controlService/shortcutKeysEngine/KeyBinds";
-import { Field, FieldGroup } from "./_field";
 import { shortcutKeysGroups } from "../../core/service/controlService/shortcutKeysEngine/shortcutKeysGroup";
 
 export default function KeyBindsPage() {

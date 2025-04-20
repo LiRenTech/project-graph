@@ -7,39 +7,39 @@ import {
   Database,
   Dock,
   File,
+  FileClock,
   FileCode,
+  FileDown,
+  FileInput,
+  FilePlus2,
   FileType,
   Folder,
   FolderCog,
   FolderOpen,
   Fullscreen,
+  Group,
+  Image as ImageIcon,
   Info,
   Monitor,
   MonitorX,
   MoreHorizontal,
   PersonStanding,
+  Rabbit,
   Radar,
+  Radiation,
+  Redo,
   // PartyPopper,
   RefreshCcw,
+  RefreshCcwDot,
   Save,
   Scaling,
+  ScrollText,
   Search,
   Settings as SettingsIcon,
   SquareDashedMousePointer,
   TestTube2,
   Undo,
   View,
-  Image as ImageIcon,
-  FileClock,
-  FileInput,
-  FilePlus2,
-  FileDown,
-  Rabbit,
-  Group,
-  ScrollText,
-  RefreshCcwDot,
-  Radiation,
-  Redo,
 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -57,6 +57,7 @@ import { cn } from "../utils/cn";
 import { getCurrentWindow, isDesktop, isWeb } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { dataDir } from "@tauri-apps/api/path";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Dialog } from "../components/dialog";
 import { Panel } from "../components/panel";
@@ -72,12 +73,11 @@ import { Stage } from "../core/stage/Stage";
 import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryManager";
 import { GraphMethods } from "../core/stage/stageManager/basicMethods/GraphMethods";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
+import { createFolder, exists } from "../utils/fs";
 import { PathString } from "../utils/pathString";
 import ComplexityResultPanel from "./_fixed_panel/_complexity_result_panel";
 import ExportSvgPanel from "./_popup_panel/_export_svg_panel";
 import SearchingNodePanel from "./_popup_panel/_searching_node_panel";
-import { createFolder, exists } from "../utils/fs";
-import { useState } from "react";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -716,6 +716,14 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             }}
           >
             报错
+          </Col>
+          <Col
+            icon={<TestTube2 />}
+            onClick={() => {
+              navigate("/user/login");
+            }}
+          >
+            user
           </Col>
         </Row>
       )}

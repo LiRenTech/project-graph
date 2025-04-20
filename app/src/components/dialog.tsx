@@ -77,22 +77,22 @@ export namespace Dialog {
     onClose = () => {},
   }: Partial<Dialog.DialogProps>) {
     const [inputValue, setInputValue] = React.useState("");
-    const [show, setShow] = React.useState(false);
     const [isCopied, setIsCopied] = React.useState(false);
+    const [show, setShow] = React.useState(false);
 
     React.useEffect(() => {
       setTimeout(() => {
         setShow(true);
-      }, 10);
+      }, 50);
     }, []);
 
     return (
       <>
         <div
           className={cn(
-            "fixed left-1/2 top-1/2 z-[101] flex max-h-[50vh] max-w-96 origin-top -translate-x-1/2 -translate-y-full scale-x-75 scale-y-0 flex-col gap-4 overflow-auto text-wrap break-words rounded-2xl p-8 text-white opacity-0 shadow-xl shadow-neutral-900",
+            "fixed left-1/2 top-1/2 z-[101] flex max-h-[50vh] max-w-96 -translate-x-1/2 -translate-y-1/2 scale-90 flex-col gap-4 overflow-auto text-wrap break-words rounded-2xl p-8 text-white opacity-0 shadow-xl",
             {
-              "-translate-y-1/2 scale-x-100 scale-y-100 opacity-100": show,
+              "scale-100 opacity-100": show,
               "bg-blue-950": type === "info",
               "bg-green-950": type === "success",
               "bg-yellow-950": type === "warning",
