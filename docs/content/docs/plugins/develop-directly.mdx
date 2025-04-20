@@ -1,8 +1,54 @@
 ---
-title: 插件系统
-icon: Album
+title: 直接编写
 ---
 
+## 元数据
+
+插件需要包含元数据，元数据是插件的基本信息，包括插件名称、描述、版本、作者等。元数据必须放在文件的开头，使用 `// ==UserScript==` 和 `// ==/UserScript==` 包围。
+
+```js
+// ==UserScript==
+// @name     测试插件
+// @description 简单测试, IJKL移动摄像机
+// @version  1.0.0
+// @author   Littlefean
+// ==/UserScript==
+```
+
+## API
+
+插件可以通过 `postMessage` 和 `onmessage` 与应用进行通信。
+
+### postMessage
+
+```js
+window.postMessage({
+  type: "callAPIMethod",
+  payload: {
+    // 请求ID，用于标识请求，返回结果时会带上这个ID
+    reqId: "xxx",
+    // 要调用的API方法名
+    method: "getPressingKey",
+    // 参数列表
+    args: [],
+  },
+});
+```
+
+### onmessage
+
+```js
+window.onmessage = (e) => {
+  const { payload, type } = e.data;
+  if (type === "apiResponse" && payload.reqId === "xxx") {
+    // 处理API调用结果
+  }
+};
+```
+
+## 示例
+
+创建一个 `.js` 文件，写入插件代码，可以时间按下 `IJKL` 移动摄像机的效果：
 
 ```js
 // ==UserScript==
@@ -13,7 +59,7 @@ icon: Album
 // ==/UserScript==
 
 setInterval(() => {
-  this.postMessage({
+  window.postMessage({
     type: "callAPIMethod",
     payload: {
       reqId: "getPressingKey",
@@ -21,7 +67,7 @@ setInterval(() => {
       args: [],
     },
   });
-  this.postMessage({
+  window.postMessage({
     type: "callAPIMethod",
     payload: {
       reqId: "getCameraLocation",
@@ -36,7 +82,7 @@ let CAMERA_LOCATION = [0, 0];
 /**
  * 在这里处理所有接函数调用接收到的结果
  */
-this.onmessage = (e) => {
+window.onmessage = (e) => {
   const { payload, type } = e.data;
   if (type === "apiResponse") {
     if (payload.reqId === "getCameraLocation") {
@@ -64,7 +110,7 @@ this.onmessage = (e) => {
 };
 
 function setCameraLocation(x, y) {
-  this.postMessage({
+  window.postMessage({
     type: "callAPIMethod",
     payload: {
       reqId: "setCameraLocation",
@@ -73,5 +119,4 @@ function setCameraLocation(x, y) {
     },
   });
 }
-
 ```
