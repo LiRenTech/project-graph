@@ -1,10 +1,5 @@
 import { z } from "zod";
 
-// 增加代码验证类型
-export interface PluginPackage {
-  code: string;
-  manifest: PluginManifest;
-}
 // 定义允许插件调用的 API 方法类型
 export const apiTypes = {
   hello: [[z.string()], z.void()],
@@ -66,12 +61,3 @@ export type APIResponseMessage = {
     error?: string;
   };
 };
-
-export type WorkerMessage = CallAPIMessage | APIResponseMessage;
-
-/**
- * 插件清单类型
- */
-export interface PluginManifest {
-  permissions: (keyof typeof apiTypes)[];
-}
