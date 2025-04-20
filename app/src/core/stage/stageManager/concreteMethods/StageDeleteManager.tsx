@@ -172,4 +172,10 @@ export namespace StageDeleteManager {
       return false;
     }
   }
+
+  export function deleteMultiTargetUndirectedEdge(edge: MultiTargetUndirectedEdge) {
+    StageManager.deleteOneAssociation(edge);
+    StageManager.updateReferences();
+    return true;
+  }
 }

@@ -9,6 +9,8 @@ import { StageManager } from "../../stageManager/StageManager";
 import { ConnectableAssociation } from "../abstract/Association";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
+import { getMultiLineTextSize } from "../../../../utils/font";
+import { Renderer } from "../../../render/canvas2d/renderer";
 
 /**
  * 多端无向边
@@ -50,6 +52,22 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
     this.color = new Color(...color);
     this.targetUUIDs = targets;
     this.rectRates = rectRates.map((v) => new Vector(v[0], v[1]));
+  }
+
+  /**
+   * 获取中心点
+   */
+  public get centerLocation(): Vector {
+    const boundingRectangle = Rectangle.getBoundingRectangle(
+      StageManager.getEntitiesByUUIDs(this.targetUUIDs).map((n) => n.collisionBox.getRectangle()),
+    );
+    return boundingRectangle.center;
+  }
+
+  get textRectangle(): Rectangle {
+    // HACK: 这里会造成频繁渲染，频繁计算文字宽度进而可能出现性能问题
+    const textSize = getMultiLineTextSize(this.text, Renderer.FONT_SIZE, 1.2);
+    return new Rectangle(this.centerLocation.subtract(textSize.divide(2)), textSize);
   }
 
   static createFromSomeEntity(entities: ConnectableEntity[]) {
