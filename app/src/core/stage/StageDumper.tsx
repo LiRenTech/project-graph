@@ -70,6 +70,7 @@ export namespace StageDumper {
       rectRates: edge.rectRates.map((v) => v.toArray()),
       uuid: edge.uuid,
       text: edge.text,
+      arrow: edge.arrow,
     };
   }
   export function dumpConnectPoint(connectPoint: ConnectPoint): Serialized.ConnectPoint {

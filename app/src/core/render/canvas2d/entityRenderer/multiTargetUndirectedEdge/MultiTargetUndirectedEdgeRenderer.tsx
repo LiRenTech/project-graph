@@ -10,6 +10,7 @@ import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
 import { TextRenderer } from "../../basicRenderer/textRenderer";
 import { Renderer } from "../../renderer";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
+import { EdgeRenderer } from "../edge/EdgeRenderer";
 
 export namespace MultiTargetUndirectedEdgeRenderer {
   export function render(edge: MultiTargetUndirectedEdge) {
@@ -43,7 +44,7 @@ export namespace MultiTargetUndirectedEdgeRenderer {
       }
       return;
     }
-    // 正常情况
+    // 正常情况, target >= 2
     const centerLocation = edge.centerLocation;
     const edgeColor = edge.color.equals(Color.Transparent)
       ? StageStyleManager.currentStyle.StageObjectBorder
@@ -58,6 +59,7 @@ export namespace MultiTargetUndirectedEdgeRenderer {
         edgeColor,
       );
     }
+    // 画每一条线
     for (let i = 0; i < targetNodes.length; i++) {
       const node = targetNodes[i];
       const nodeRectangle = node.collisionBox.getRectangle();
@@ -75,6 +77,26 @@ export namespace MultiTargetUndirectedEdgeRenderer {
         edgeColor,
         2 * Camera.currentScale,
       );
+      // 画箭头
+      if (edge.arrow === "inner") {
+        //
+        EdgeRenderer.renderArrowHead(
+          // Renderer.transformWorld2View(toCenterPoint),
+          toCenterPoint,
+          toCenterPoint.subtract(targetPoint).normalize(),
+          15,
+          edgeColor,
+        );
+      } else if (edge.arrow === "outer") {
+        //
+        EdgeRenderer.renderArrowHead(
+          // Renderer.transformWorld2View(targetPoint),
+          targetPoint,
+          targetPoint.subtract(toCenterPoint).normalize(),
+          15,
+          edgeColor,
+        );
+      }
     }
   }
 }

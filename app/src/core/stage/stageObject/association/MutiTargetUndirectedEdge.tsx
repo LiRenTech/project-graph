@@ -35,12 +35,13 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
   public color: Color;
   public targetUUIDs: string[];
   public rectRates: Vector[];
+  public arrow: Serialized.UndirectedEdgeArrowType = "none";
 
   public rename(text: string) {
     this.text = text;
   }
   constructor(
-    { targets, text, uuid, color, rectRates }: Serialized.MultiTargetUndirectedEdge,
+    { targets, text, uuid, color, rectRates, arrow }: Serialized.MultiTargetUndirectedEdge,
     /** true表示解析状态，false表示解析完毕 */
     public unknown = false,
   ) {
@@ -51,6 +52,7 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
     this.color = new Color(...color);
     this.targetUUIDs = targets;
     this.rectRates = rectRates.map((v) => new Vector(v[0], v[1]));
+    this.arrow = arrow;
   }
 
   /**
@@ -87,6 +89,7 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
       rectRates: entities.map((_) => [0.5, 0.5]),
       text: "",
       uuid: v4(),
+      arrow: "none",
       color: [0, 0, 0, 0],
     });
   }

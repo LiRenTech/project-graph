@@ -9,6 +9,8 @@ import {
   FolderSymlink,
   GitBranchPlus,
   LayoutDashboard,
+  Maximize2,
+  Minimize2,
   MousePointer,
   Package,
   PaintBucket,
@@ -18,6 +20,7 @@ import {
   Repeat,
   SaveAll,
   Shrink,
+  Slash,
   Spline,
   Square,
   Tag,
@@ -53,6 +56,7 @@ import ColorAutoPanel from "./_popup_panel/_color_auto_panel";
 import ColorPanel from "./_popup_panel/_color_panel";
 import GenerateNodePanel from "./_popup_panel/_generate_node_panel";
 import EdgeExtremePointPanel from "./_popup_panel/_edge_extreme_point_panel";
+import { MultiTargetUndirectedEdge } from "../core/stage/stageObject/association/MutiTargetUndirectedEdge";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -191,6 +195,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   const [isHaveSelectedTextNode, setIsHaveSelectedTextNode] = useState(false);
   const [isHaveSelectedSection, setIsHaveSelectedSection] = useState(false);
   const [isHaveSelectedEdge, setIsHaveSelectedEdge] = useState(false);
+  const [isHaveSelectedMultiTargetEdge, setIsHaveSelectedMultiTargetEdge] = useState(false);
   const [isHaveSelectedCREdge, setIsHaveSelectedCREdge] = useState(false);
 
   const [isDrawing, setIsDrawing] = useState(false);
@@ -205,6 +210,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
     setIsHaveSelectedImageNode(StageObjectSelectCounter.selectedImageNodeCount > 0);
     setIsHaveSelectedTextNode(StageObjectSelectCounter.selectedTextNodeCount > 0);
     setIsHaveSelectedSection(StageObjectSelectCounter.selectedSectionCount > 0);
+    setIsHaveSelectedMultiTargetEdge(StageObjectSelectCounter.selectedMultiTargetUndirectedEdgeCount > 0);
     setIsCopyClearShow(!CopyEngine.isVirtualClipboardEmpty());
   };
 
@@ -306,6 +312,51 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<Tag />}
             handleFunction={() => {
               StageManager.addTagBySelected();
+            }}
+          />
+        </ToolbarGroup>
+      )}
+
+      {/* 多源无向边 */}
+      {isHaveSelectedMultiTargetEdge && (
+        <ToolbarGroup groupTitle="多源无向边">
+          <ToolbarItem
+            description="箭头外向"
+            icon={<Maximize2 />}
+            handleFunction={() => {
+              const selectedMTUEdge = StageManager.getSelectedAssociations().filter(
+                (edge) => edge instanceof MultiTargetUndirectedEdge,
+              );
+              for (const multi_target_undirected_edge of selectedMTUEdge) {
+                multi_target_undirected_edge.arrow = "outer";
+              }
+              StageHistoryManager.recordStep();
+            }}
+          />
+          <ToolbarItem
+            description="无箭内向"
+            icon={<Minimize2 />}
+            handleFunction={() => {
+              const selectedMTUEdge = StageManager.getSelectedAssociations().filter(
+                (edge) => edge instanceof MultiTargetUndirectedEdge,
+              );
+              for (const multi_target_undirected_edge of selectedMTUEdge) {
+                multi_target_undirected_edge.arrow = "inner";
+              }
+              StageHistoryManager.recordStep();
+            }}
+          />
+          <ToolbarItem
+            description="无箭头"
+            icon={<Slash />}
+            handleFunction={() => {
+              const selectedMTUEdge = StageManager.getSelectedAssociations().filter(
+                (edge) => edge instanceof MultiTargetUndirectedEdge,
+              );
+              for (const multi_target_undirected_edge of selectedMTUEdge) {
+                multi_target_undirected_edge.arrow = "none";
+              }
+              StageHistoryManager.recordStep();
             }}
           />
         </ToolbarGroup>
