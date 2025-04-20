@@ -1,14 +1,14 @@
 import { RotateCw } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Button from "../../components/Button";
-import FileChooser from "../../components/FileChooser";
-import Input from "../../components/Input";
-import Select from "../../components/Select";
-import Slider from "../../components/Slider";
-import Switch from "../../components/Switch";
-import { Settings } from "../../core/service/Settings";
-import { cn } from "../../utils/cn";
+import { Settings } from "../core/service/Settings";
+import { cn } from "../utils/cn";
+import Button from "./Button";
+import FileChooser from "./FileChooser";
+import Input from "./Input";
+import Select from "./Select";
+import Slider from "./Slider";
+import Switch from "./Switch";
 
 export function SettingField({
   settingKey,

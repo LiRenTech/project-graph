@@ -1,6 +1,7 @@
 ---
 id: dark
 author: Official
+type: dark
 description:
   en: A dark theme for Project Graph. Intended for use in dark environments.
   zh_CN: 主要用于夜间使用，防止刺眼
@@ -38,7 +39,6 @@ table:
   row-text: "#fff"
   row-hover-bg: "oklch(0.371 0 0)"
   row-hover-text: "#fff"
-
 
 input:
   bg: "oklch(0.269 0 0)"

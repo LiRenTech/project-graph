@@ -6,32 +6,31 @@ export interface PluginPackage {
   manifest: PluginManifest;
 }
 // 定义允许插件调用的 API 方法类型
-export const apiValidators = {
-  hello: [z.string()],
-  getCameraLocation: [],
-  setCameraLocation: [z.number(), z.number()],
-  getPressingKey: [],
-  openDialog: [z.string(), z.string()],
-  // 这里可能会有超多内容
-  // ....
-  // ....
-  // ....
+export const apiTypes = {
+  hello: [[z.string()], z.void()],
+  getCameraLocation: [[], z.tuple([z.number(), z.number()])],
+  setCameraLocation: [[z.number(), z.number()], z.void()],
+  getPressingKey: [[], z.array(z.string())],
+  openDialog: [[z.string(), z.string()], z.void()],
+} as const;
+
+type Zod2Interface<T> = {
+  [K in keyof T]: T[K] extends readonly [
+    // 第一个元素：参数列表
+    infer Args extends readonly z.ZodTypeAny[],
+    // 第二个元素：返回值类型
+    infer Return extends z.ZodTypeAny,
+  ]
+    ? (
+        ...args: {
+          // 对每个参数使用z.infer
+          [L in keyof Args]: Args[L] extends z.ZodTypeAny ? z.infer<Args[L]> : never;
+        }
+      ) => z.infer<Return>
+    : never;
 };
 
-/**
- * 这里列举所有允许插件调用的 API 方法
- */
-export interface APIMethods {
-  hello: (name: string) => string;
-  getCameraLocation: () => { x: number; y: number };
-  setCameraLocation: (x: number, y: number) => void;
-  getPressingKey: () => string[];
-  openDialog: (title: string, content: string) => void;
-  // 这里可能会有超多内容
-  // ....
-  // ....
-  // ....
-}
+export type PluginAPI = Zod2Interface<typeof apiTypes>;
 
 // 消息通信协议类型
 
@@ -41,7 +40,7 @@ export interface APIMethods {
 export type CallAPIMessage = {
   type: "callAPIMethod";
   payload: {
-    method: keyof APIMethods;
+    method: keyof typeof apiTypes;
     args: any[];
     reqId: string;
   };
@@ -65,5 +64,5 @@ export type WorkerMessage = CallAPIMessage | APIResponseMessage;
  * 插件清单类型
  */
 export interface PluginManifest {
-  permissions: (keyof APIMethods)[];
+  permissions: (keyof typeof apiTypes)[];
 }

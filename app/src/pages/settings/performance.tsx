@@ -11,7 +11,7 @@ import {
   Undo,
   Ungroup,
 } from "lucide-react";
-import { FieldGroup, SettingField } from "./_field";
+import { FieldGroup, SettingField } from "../../components/Field";
 
 export default function Performance() {
   return (

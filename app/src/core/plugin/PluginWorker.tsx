@@ -1,8 +1,5 @@
-import { Dialog } from "../../components/dialog";
-import { Vector } from "../dataStruct/Vector";
-import { Controller } from "../service/controlService/controller/Controller";
-import { Camera } from "../stage/Camera";
-import { APIMethods, apiValidators, PluginManifest, WorkerMessage } from "./types";
+import { pluginApis } from "./apis";
+import { apiTypes, PluginManifest, WorkerMessage } from "./types";
 
 /**
  * 插件工作线程
@@ -10,7 +7,7 @@ import { APIMethods, apiValidators, PluginManifest, WorkerMessage } from "./type
 export class PluginWorker {
   private blobUrl: string;
   private worker: Worker;
-  private allowedMethods: Array<keyof APIMethods>;
+  private allowedMethods: Array<keyof typeof apiTypes>;
 
   constructor(code: string, manifest: PluginManifest) {
     // 把code转换成blob
@@ -44,7 +41,7 @@ export class PluginWorker {
         }
 
         // 校验API方法参数是否合法
-        const argsSchema = apiValidators[method];
+        const argsSchema = apiTypes[method][0];
         if (!args) {
           this.worker.postMessage({
             type: "apiResponse",
@@ -71,42 +68,15 @@ export class PluginWorker {
         // 校验通过
 
         // 调用API方法
-        if (method === "hello") {
-          console.log("hello", args[0]);
-        } else if (method === "getCameraLocation") {
-          this.worker.postMessage({
-            type: "apiResponse",
-            payload: {
-              reqId,
-              result: [Camera.location.x, Camera.location.y],
-            },
-          });
-        } else if (method === "setCameraLocation") {
-          const [x, y] = args;
-          // 设置相机位置
-          Camera.location = new Vector(x, y);
-          this.worker.postMessage({
-            type: "apiResponse",
-            payload: {
-              reqId,
-              result: null,
-            },
-          });
-        } else if (method === "getPressingKey") {
-          this.worker.postMessage({
-            type: "apiResponse",
-            payload: {
-              reqId,
-              result: Array.from(Controller.pressingKeySet),
-            },
-          });
-        } else if (method === "openDialog") {
-          const [title, content] = args;
-          Dialog.show({
-            title,
-            content,
-          });
-        }
+        const apiMethod = pluginApis[method] as (...args: any[]) => any;
+        const result = apiMethod(...args);
+        this.worker.postMessage({
+          type: "apiResponse",
+          payload: {
+            reqId,
+            result,
+          },
+        });
       }
     };
   }

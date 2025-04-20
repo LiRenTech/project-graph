@@ -23,6 +23,8 @@ export type Path =
   | `/settings/visual`
   | `/test`
   | `/ui_test`
+  | `/user/login`
+  | `/user/register`
   | `/welcome`
 
 export type Params = {
