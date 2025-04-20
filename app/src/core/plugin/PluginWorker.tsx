@@ -69,14 +69,50 @@ export class PluginWorker {
 
         // 调用API方法
         const apiMethod = pluginApis[method] as (...args: any[]) => any;
-        const result = apiMethod(...args);
-        this.worker.postMessage({
-          type: "apiResponse",
-          payload: {
-            reqId,
-            result,
-          },
-        });
+        try {
+          const result = apiMethod(...args);
+          if (result instanceof Promise) {
+            result
+              .then((res) => {
+                this.worker.postMessage({
+                  type: "apiResponse",
+                  payload: {
+                    reqId,
+                    success: true,
+                    result: res,
+                  },
+                });
+              })
+              .catch((err) => {
+                this.worker.postMessage({
+                  type: "apiResponse",
+                  payload: {
+                    reqId,
+                    success: false,
+                    result: err,
+                  },
+                });
+              });
+          } else {
+            this.worker.postMessage({
+              type: "apiResponse",
+              payload: {
+                reqId,
+                success: true,
+                result,
+              },
+            });
+          }
+        } catch (err) {
+          this.worker.postMessage({
+            type: "apiResponse",
+            payload: {
+              reqId,
+              success: false,
+              result: err,
+            },
+          });
+        }
       }
     };
   }

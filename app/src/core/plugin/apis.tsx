@@ -2,9 +2,9 @@ import { Dialog } from "../../components/dialog";
 import { Vector } from "../dataStruct/Vector";
 import { Controller } from "../service/controlService/controller/Controller";
 import { Camera } from "../stage/Camera";
-import { PluginAPI } from "./types";
+import { PluginAPIMayAsync } from "./types";
 
-export const pluginApis: PluginAPI = {
+export const pluginApis: PluginAPIMayAsync = {
   hello() {
     return "Hello from Project Graph";
   },

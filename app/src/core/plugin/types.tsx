@@ -30,7 +30,16 @@ type Zod2Interface<T> = {
     : never;
 };
 
+export type Asyncize<T extends (...args: any[]) => any> = (...args: Parameters<T>) => Promise<ReturnType<T>>;
+export type AsyncizeInterface<T> = {
+  [K in keyof T]: T[K] extends (...args: any[]) => any ? Asyncize<T[K]> : never;
+};
+export type SyncOrAsyncizeInterface<T> = {
+  [K in keyof T]: T[K] extends (...args: any[]) => any ? Asyncize<T[K]> | T[K] : never;
+};
+
 export type PluginAPI = Zod2Interface<typeof apiTypes>;
+export type PluginAPIMayAsync = SyncOrAsyncizeInterface<PluginAPI>;
 
 // 消息通信协议类型
 
