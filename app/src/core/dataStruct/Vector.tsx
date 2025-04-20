@@ -285,4 +285,8 @@ export class Vector {
   toInteger(): Vector {
     return new Vector(Math.round(this.x), Math.round(this.y));
   }
+
+  toArray(): [number, number] {
+    return [this.x, this.y];
+  }
 }
