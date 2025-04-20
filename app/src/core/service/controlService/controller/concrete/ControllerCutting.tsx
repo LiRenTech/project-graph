@@ -140,8 +140,8 @@ class CuttingControllerClass extends ControllerClass {
 
     // 删除连线
     for (const edge of this.warningAssociations) {
+      StageManager.deleteAssociation(edge);
       if (edge instanceof Edge) {
-        StageManager.deleteEdge(edge);
         if (edge instanceof LineEdge) {
           Stage.effectMachine.addEffects(EdgeRenderer.getCuttingEffects(edge));
         }
@@ -196,6 +196,7 @@ class CuttingControllerClass extends ControllerClass {
   //   this.warningSections = [];
   //   this.warningEdges = [];
   // }
+
   /**
    * 更新斩断线经过的所有鼠标对象
    *

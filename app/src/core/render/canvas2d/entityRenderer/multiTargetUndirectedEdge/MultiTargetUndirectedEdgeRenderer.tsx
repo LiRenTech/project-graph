@@ -8,6 +8,7 @@ import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { CurveRenderer } from "../../basicRenderer/curveRenderer";
 import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../../basicRenderer/textRenderer";
 import { Renderer } from "../../renderer";
 
 export namespace MultiTargetUndirectedEdgeRenderer {
@@ -46,18 +47,34 @@ export namespace MultiTargetUndirectedEdgeRenderer {
     // 正常情况
     const boundingRectangle = Rectangle.getBoundingRectangle(targetNodes.map((n) => n.collisionBox.getRectangle()));
     const centerLocation = boundingRectangle.center;
-
+    const edgeColor = edge.color.equals(Color.Transparent)
+      ? StageStyleManager.currentStyle.StageObjectBorder
+      : edge.color;
+    if (edge.text !== "") {
+      // 画文字
+      TextRenderer.renderMultiLineTextFromCenter(
+        edge.text,
+        Renderer.transformWorld2View(centerLocation),
+        Renderer.FONT_SIZE * Camera.currentScale,
+        Infinity,
+        edgeColor,
+      );
+    }
     for (let i = 0; i < targetNodes.length; i++) {
       const node = targetNodes[i];
       const nodeRectangle = node.collisionBox.getRectangle();
       const targetLocation = nodeRectangle.getInnerLocationByRateVector(edge.rectRates[i]);
       const line = new Line(centerLocation, targetLocation);
       const targetPoint = nodeRectangle.getLineIntersectionPoint(line);
-
+      let toCenterPoint = centerLocation;
+      if (edge.text !== "") {
+        const textRectangle = edge.textRectangle;
+        toCenterPoint = textRectangle.getLineIntersectionPoint(new Line(centerLocation, targetLocation));
+      }
       CurveRenderer.renderSolidLine(
-        Renderer.transformWorld2View(centerLocation),
         Renderer.transformWorld2View(targetPoint),
-        edge.color.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
+        Renderer.transformWorld2View(toCenterPoint),
+        edgeColor,
         2 * Camera.currentScale,
       );
     }

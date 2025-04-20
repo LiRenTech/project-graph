@@ -37,6 +37,7 @@ import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
 import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
+import { MultiTargetUndirectedEdge } from "../stageObject/association/MutiTargetUndirectedEdge";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -691,6 +692,19 @@ export namespace StageManager {
         Stage.effectMachine.addEffects(EdgeRenderer.getCuttingEffects(edge));
       }
     }
+  }
+  export function deleteAssociation(deleteAssociation: Association): boolean {
+    if (deleteAssociation instanceof Edge) {
+      return deleteEdge(deleteAssociation);
+    } else if (deleteAssociation instanceof MultiTargetUndirectedEdge) {
+      const res = StageDeleteManager.deleteMultiTargetUndirectedEdge(deleteAssociation);
+      StageHistoryManager.recordStep();
+      // 更新选中边计数
+      StageObjectSelectCounter.update();
+      return res;
+    }
+    Stage.effectMachine.addEffect(TextRiseEffect.default("无法删除未知类型的关系"));
+    return false;
   }
 
   export function deleteEdge(deleteEdge: Edge): boolean {
