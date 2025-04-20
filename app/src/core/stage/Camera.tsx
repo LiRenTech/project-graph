@@ -37,18 +37,6 @@ export namespace Camera {
    */
   export const frictionExponent = 1.5;
 
-  // /**
-  //  * 是否正在快速移动模式
-  //  */
-  // let isFastMovingMode = false;
-  // export function changeToFastMode() {
-  //   Stage.effectMachine.addEffect(TextRiseEffect.default("快速移动开启"));
-  //   isFastMovingMode = true;
-  // }
-  // export function changeToSlowMode() {
-  //   Stage.effectMachine.addEffect(TextRiseEffect.default("快速移动关闭"));
-  //   isFastMovingMode = false;
-  // }
   /**
    * 摄像机的位置（世界坐标）
    * 实际上代表的是 currentLocation
