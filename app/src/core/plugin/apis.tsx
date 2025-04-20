@@ -2,9 +2,9 @@ import { Dialog } from "../../components/dialog";
 import { Vector } from "../dataStruct/Vector";
 import { Controller } from "../service/controlService/controller/Controller";
 import { Camera } from "../stage/Camera";
-import { PluginAPI } from "./types";
+import { PluginAPIMayAsync } from "./types";
 
-export const pluginApis: PluginAPI = {
+export const pluginApis: PluginAPIMayAsync = {
   hello(userString: string) {
     console.log("用户插件调用hello", userString);
     Dialog.show({
@@ -12,6 +12,7 @@ export const pluginApis: PluginAPI = {
       content: `你好，${userString}`,
       type: "success",
     });
+    return "hello";
   },
   getCameraLocation() {
     return Camera.location.toArray();
