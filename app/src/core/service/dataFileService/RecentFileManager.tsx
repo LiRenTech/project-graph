@@ -21,6 +21,7 @@ import { PathString } from "../../../utils/pathString";
 import { isWeb } from "../../../utils/platform";
 import { Vector } from "../../dataStruct/Vector";
 import { CublicCatmullRomSplineEdge } from "../../stage/stageObject/association/CublicCatmullRomSplineEdge";
+import { MultiTargetUndirectedEdge } from "../../stage/stageObject/association/MutiTargetUndirectedEdge";
 
 /**
  * 管理最近打开的文件列表
@@ -293,9 +294,11 @@ export namespace RecentFileManager {
     }
     for (const edge of data.associations) {
       if (Serialized.isLineEdge(edge)) {
-        StageManager.addLineEdge(new LineEdge(edge));
+        StageManager.addAssociation(new LineEdge(edge));
       } else if (Serialized.isCublicCatmullRomSplineEdge(edge)) {
-        StageManager.addCrEdge(new CublicCatmullRomSplineEdge(edge));
+        StageManager.addAssociation(new CublicCatmullRomSplineEdge(edge));
+      } else if (Serialized.isMultiTargetUndirectedEdge(edge)) {
+        StageManager.addAssociation(new MultiTargetUndirectedEdge(edge));
       }
     }
     StageManager.TagOptions.reset(data.tags);

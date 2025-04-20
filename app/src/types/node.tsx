@@ -111,6 +111,9 @@ export namespace Serialized {
     color: Color;
     rectRates: [number, number][]; // 默认中心 0.5, 0.5
   };
+  export function isMultiTargetUndirectedEdge(obj: StageObject): obj is MultiTargetUndirectedEdge {
+    return obj.type === "core:multi_target_undirected_edge";
+  }
   export type Edge = Association & {
     source: string;
     target: string;
