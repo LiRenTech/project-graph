@@ -3,9 +3,7 @@ title: Mac问题
 icon: Apple
 ---
 
-由于开发者没有mac电脑, 无法测试mac系统下的问题。建议先用网页版
-
-### 显示“Project Graph 已损坏，无法打开”
+### 安装后打开显示“Project Graph 已损坏，无法打开”
 
 ![image](https://s2.loli.net/2024/12/14/1YmknvPljQyR98U.png)
 
@@ -17,3 +15,16 @@ sudo xattr -r -d com.apple.quarantine /Applications/Project\ Graph.app
 
 提示 `Password:` 时输入你的开机密码（不会显示在屏幕上，直接输入即可），然后回车确认。
 
+如何打开终端？
+
+- 按下 `Command + Space` 调出 Spotlight 搜索框，输入 `Terminal` 并回车打开。
+- 或者前往 `应用程序 -> 实用工具 -> 终端` 打开。
+
+命令解释：
+
+- `sudo`：以超级用户权限运行命令
+- `xattr`：显示或修改文件属性
+- `-r`：递归操作
+- `-d`：删除指定属性
+- `com.apple.quarantine`：属性名
+- `/Applications/Project\ Graph.app`：文件路径
