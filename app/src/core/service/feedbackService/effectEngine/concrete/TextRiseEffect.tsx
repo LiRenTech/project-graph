@@ -1,5 +1,6 @@
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
+import { TextRenderer } from "../../../../render/canvas2d/basicRenderer/textRenderer";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Canvas } from "../../../../stage/Canvas";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
@@ -29,18 +30,17 @@ export class TextRiseEffect extends EffectObject {
       return;
     }
     // 在画布中心缓缓升高一段距离
-    const centerLocation = new Vector(Renderer.w / 2, Renderer.h / 2);
     const distance = 100;
-
-    Canvas.ctx.font = `20px Arial`;
-    Canvas.ctx.fillStyle = StageStyleManager.currentStyle.effects.flash.toString();
-    Canvas.ctx.textAlign = "center";
-    Canvas.ctx.textBaseline = "middle";
-    Canvas.ctx.globalAlpha = 1 - easeInOutSine(this.timeProgress.rate);
-    Canvas.ctx.fillText(
+    const renderCenterLocation = new Vector(
+      Renderer.w / 2,
+      Renderer.h / 2 - distance * easeInOutSine(this.timeProgress.rate),
+    );
+    TextRenderer.renderMultiLineTextFromCenter(
       this.text,
-      centerLocation.x,
-      centerLocation.y - distance * easeInOutSine(this.timeProgress.rate),
+      renderCenterLocation,
+      20,
+      Infinity,
+      StageStyleManager.currentStyle.StageObjectBorder,
     );
     Canvas.ctx.globalAlpha = 1;
   }

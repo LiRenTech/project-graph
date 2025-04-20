@@ -46,12 +46,12 @@ export class SecretKeysEngine {
     // 使用keyup，更省性能。防止按下某个键不动时，一直触发效果
     window.addEventListener("keyup", (event) => {
       this.pressedKeys.enqueue(event.key.toLowerCase());
-      const isTriggered = this.detectAndCall();
+      const { isTriggered, secretName } = this.detectAndCall();
       // console.log(this.pressedKeys.arrayList);
       if (isTriggered) {
         // 清空队列
         this.pressedKeys.clear();
-        Stage.effectMachine.addEffect(TextRiseEffect.default("触发了测试按键"));
+        Stage.effectMachine.addEffect(TextRiseEffect.default(`触发了秘籍键: \n${secretName}`));
       }
       // 将队列长度限制
       while (this.pressedKeys.length > SecretKeysEngine.maxPressedKeys) {
@@ -650,7 +650,7 @@ export class SecretKeysEngine {
         });
       },
     },
-    "m t u e": {
+    "= = =": {
       name: "将选中的可连接实体添加多源无向边",
       explain: "测试中",
       func() {
@@ -666,14 +666,14 @@ export class SecretKeysEngine {
   };
 
   // 监听按键 并触发相应效果，每次按键都会触发
-  detectAndCall(): boolean {
+  private detectAndCall(): { isTriggered: boolean; secretName: string } {
     const keys = this.pressedKeys.arrayList.join(" ");
     for (const key in this.keyPressedTable) {
       if (keys.includes(key)) {
         this.keyPressedTable[key].func();
-        return true;
+        return { isTriggered: true, secretName: this.keyPressedTable[key].name };
       }
     }
-    return false;
+    return { isTriggered: false, secretName: "" };
   }
 }
