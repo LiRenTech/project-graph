@@ -20,6 +20,7 @@ import { VerticalPolyEdgeRenderer } from "./concrete/VerticalPolyEdgeRenderer";
 import { EdgeRendererClass } from "./EdgeRendererClass";
 import { CurveRenderer } from "../../basicRenderer/curveRenderer";
 import { Edge } from "../../../../stage/stageObject/association/Edge";
+import { TextRenderer } from "../../basicRenderer/textRenderer";
 
 /**
  * 边的总渲染器单例
@@ -123,6 +124,23 @@ export namespace EdgeRenderer {
         Color.Transparent,
         StageStyleManager.currentStyle.StageObjectBorder,
         2 * Camera.currentScale,
+      );
+    }
+    // 画文字
+    if (edge.text !== "") {
+      const textRect = edge.textRectangle;
+      ShapeRenderer.renderRect(
+        textRect.transformWorld2View(),
+        StageStyleManager.currentStyle.Background,
+        Color.Transparent,
+        0,
+      );
+      TextRenderer.renderMultiLineTextFromCenter(
+        edge.text,
+        Renderer.transformWorld2View(textRect.center),
+        Renderer.FONT_SIZE * Camera.currentScale,
+        Infinity,
+        StageStyleManager.currentStyle.StageObjectBorder,
       );
     }
     // 画箭头

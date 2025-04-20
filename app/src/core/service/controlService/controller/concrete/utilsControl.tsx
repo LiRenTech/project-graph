@@ -13,6 +13,7 @@ import { StageHistoryManager } from "../../../../stage/stageManager/StageHistory
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { StageObject } from "../../../../stage/stageObject/abstract/StageObject";
+import { Edge } from "../../../../stage/stageObject/association/Edge";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { Section } from "../../../../stage/stageObject/entity/Section";
@@ -89,7 +90,7 @@ export function editTextNode(clickedNode: TextNode, selectAll = true) {
   });
 }
 
-export function editEdgeText(clickedLineEdge: LineEdge, selectAll = true) {
+export function editEdgeText(clickedLineEdge: Edge, selectAll = true) {
   Controller.isCameraLocked = true;
 
   // clickedLineEdge.isEditing = true;

@@ -6,6 +6,9 @@ import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
 import { Edge } from "./Edge";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
+import { getMultiLineTextSize } from "../../../../utils/font";
+import { Renderer } from "../../../render/canvas2d/renderer";
 
 /**
  * CR曲线连线
@@ -105,6 +108,14 @@ export class CublicCatmullRomSplineEdge extends Edge {
     const crShape = this._collisionBox.shapeList[0] as CublicCatmullRomSpline;
     this.autoUpdateControlPoints(); // ?
     return crShape;
+  }
+
+  /**
+   * 获取文字的矩形框的方法
+   */
+  get textRectangle(): Rectangle {
+    const textSize = getMultiLineTextSize(this.text, Renderer.FONT_SIZE, 1.2);
+    return new Rectangle(this.bodyLine.midPoint().subtract(textSize.divide(2)), textSize);
   }
 
   autoUpdateControlPoints() {

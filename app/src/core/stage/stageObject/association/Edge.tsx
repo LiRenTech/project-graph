@@ -49,6 +49,12 @@ export abstract class Edge extends ConnectableAssociation {
   }
 
   /**
+   * 任何有向边都可以标注文字
+   * 进而获得该文字的外框矩形
+   */
+  abstract get textRectangle(): Rectangle;
+
+  /**
    * 获取两个实体之间的直线
    * 此直线两端在两个实体外接矩形的边缘，延长后可过两个实体外接矩形的中心
    */
