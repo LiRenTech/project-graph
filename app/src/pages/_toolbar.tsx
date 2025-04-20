@@ -201,9 +201,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
     setIsHaveSelectedEntity(StageObjectSelectCounter.selectedEntityCount > 0);
     setIsHaveSelectedEdge(StageObjectSelectCounter.selectedEdgeCount > 0);
     setIsHaveSelectedCREdge(StageObjectSelectCounter.selectedCREdgeCount > 0);
-    setIsHaveSelectedStageObject(
-      StageObjectSelectCounter.selectedEdgeCount + StageObjectSelectCounter.selectedEntityCount > 0,
-    );
+    setIsHaveSelectedStageObject(StageObjectSelectCounter.selectedStageObjectCount > 0);
     setIsHaveSelectedImageNode(StageObjectSelectCounter.selectedImageNodeCount > 0);
     setIsHaveSelectedTextNode(StageObjectSelectCounter.selectedTextNodeCount > 0);
     setIsHaveSelectedSection(StageObjectSelectCounter.selectedSectionCount > 0);
