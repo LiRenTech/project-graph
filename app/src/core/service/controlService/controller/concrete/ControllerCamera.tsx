@@ -35,6 +35,13 @@ export class ControllerCameraClass extends ControllerClass {
   public isUsingMouseGrabMove = false;
   private lastMousePressLocation: Vector[] = [Vector.getZero(), Vector.getZero(), Vector.getZero()];
 
+  override init() {
+    super.init();
+    if (isMac) {
+      ControllerCameraMac.init();
+    }
+  }
+
   public keydown: (event: KeyboardEvent) => void = (event: KeyboardEvent) => {
     if (Controller.isCameraLocked) {
       return;

@@ -219,7 +219,7 @@ export namespace Camera {
     const diffViewVector = Renderer.transformWorld2View(targetLocationByScale);
     dealCameraScaleInTick();
     if (scaleCameraByMouseLocation) {
-      if (tickNumber > tickNumberUpper) {
+      if (tickNumber > allowScaleFollowMouseLocationTicks) {
         setLocationByOtherLocation(targetLocationByScale, diffViewVector);
       }
     }
@@ -236,16 +236,19 @@ export namespace Camera {
   /**
    * 多少帧以后，才能继续跟随鼠标缩放
    */
-  let tickNumberUpper = 0;
+  let allowScaleFollowMouseLocationTicks = 0;
+  export function setAllowScaleFollowMouseLocationTicks(ticks: number) {
+    allowScaleFollowMouseLocationTicks = ticks;
+  }
 
   export function zoomInByKeyboard() {
     Camera.targetScale *= 1 + cameraKeyboardScaleRate;
-    tickNumberUpper = tickNumber + 5 * 60;
+    allowScaleFollowMouseLocationTicks = tickNumber + 5 * 60;
   }
 
   export function zoomOutByKeyboard() {
     Camera.targetScale *= 1 - cameraKeyboardScaleRate;
-    tickNumberUpper = tickNumber + 5 * 60;
+    allowScaleFollowMouseLocationTicks = tickNumber + 5 * 60;
   }
 
   /**
