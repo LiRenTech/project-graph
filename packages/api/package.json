@@ -2,12 +2,12 @@
   "name": "project-graph-api",
   "description": "Provide API and types for Project Graph plugin development",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc && esbuild src/index.ts --bundle --platform=browser --format=cjs --target=es2022 --outfile=dist/index.js --minify",
+    "build": "tsc && esbuild src/index.ts --bundle --platform=browser --format=esm --target=es2022 --outfile=dist/index.js --minify",
     "prepublish": "pnpm run build"
   },
   "keywords": [],
