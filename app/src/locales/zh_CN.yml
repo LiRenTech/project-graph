@@ -460,24 +460,27 @@ settings:
       moveX: 横向移动
       none: 无操作
   mouseWheelWithShiftMode:
-    title: 按住Shift时，鼠标滚轮模式
+    title: 按住 Shift 时，鼠标滚轮模式
     options:
       zoom: 缩放
       move: 纵向移动
       moveX: 横向移动
       none: 无操作
   mouseWheelWithCtrlMode:
-    title: 按住Ctrl（control）时，鼠标滚轮模式
+    title: 按住 Ctrl 时，鼠标滚轮模式
+    description: |
+      提示：这里的 Ctrl 是 Control
     options:
       zoom: 缩放
       move: 纵向移动
       moveX: 横向移动
       none: 无操作
   mouseWheelWithAltMode:
-    title: 按住Alt（Option）时，鼠标滚轮模式
+    title: 按住 Alt 时，鼠标滚轮模式
     description: |
       此功能于2025年4月10日新增
       目前发现还存在问题：win系统下滑动滚轮后需要再点击一次屏幕才能操作舞台
+      提示：这里的 Alt 是 Option
     options:
       zoom: 缩放
       move: 纵向移动
