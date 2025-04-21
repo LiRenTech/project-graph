@@ -25,6 +25,7 @@ import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/Text
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
 import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
+import { Random } from "../../../algorithm/random";
 
 interface SecretKeyItem {
   name: string;
@@ -656,6 +657,59 @@ export class SecretKeysEngine {
           node.forceAdjustSizeByText();
         }
         StageHistoryManager.recordStep();
+      },
+    },
+    "e m o j i * *": {
+      name: "生成超大量表情节点",
+      explain:
+        "高性能消耗！将摄像机移动到空旷地方，确保周围边长为4000px的正方形区域内都没有内容再按次指令，即可生成大量表情节点",
+      func() {
+        // 定义 Emoji 的 Unicode 范围（基于 Unicode 13.0）
+        const emojiRanges = [
+          [0x1f600, 0x1f64f], // Emoticons
+          [0x1f300, 0x1f5ff], // Symbols & Pictographs
+          [0x1f680, 0x1f6ff], // Transport & Map
+          [0x1f1e6, 0x1f1ff], // Flags
+          [0x2600, 0x26ff], // Miscellaneous Symbols
+          [0x2700, 0x27bf], // Dingbats
+          [0xfe00, 0xfe0f], // Variation Selectors
+          [0x1f900, 0x1f9ff], // Supplemental Symbols
+          [0x1fa70, 0x1faff], // Chess & Games
+        ];
+
+        // 生成 Emoji 的函数
+        function generateEmojis(): string[] {
+          const emojis: string[] = [];
+
+          for (const [start, end] of emojiRanges) {
+            for (let codePoint = start; codePoint <= end; codePoint++) {
+              try {
+                // 使用 fromCodePoint 处理 32 位编码
+                const emoji = String.fromCodePoint(codePoint);
+                emojis.push(emoji);
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              } catch (e) {
+                // 忽略无效码点（如代理对间隙）
+              }
+            }
+          }
+
+          return emojis;
+        }
+        const currentLocation = Camera.location.clone();
+        for (const emoji of generateEmojis()) {
+          const textNode = new TextNode({
+            uuid: v4(),
+            text: emoji,
+            location: currentLocation
+              .add(Random.randomVectorOnNormalCircle().multiply(Random.randomInt(50, 2000)))
+              .toArray(),
+            size: [100, 100],
+            color: [0, 0, 0, 0],
+            sizeAdjust: "auto",
+          });
+          StageManager.addTextNode(textNode);
+        }
       },
     },
   };
