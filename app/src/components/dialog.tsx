@@ -81,11 +81,34 @@ export namespace Dialog {
     const [show, setShow] = React.useState(false);
 
     React.useEffect(() => {
+      // 这个用Enter来快速关闭输入有点难做，以后再做 —— 2025年4月22日
+
+      // const handleKeydown = (e: KeyboardEvent) => {
+      //   if (e.key === "Escape") {
+      //     setShow(false);
+      //   } else if (e.key === "Enter" && input) {
+      //     const confirmBtn = document.querySelector(".dialog-confirm-btn");
+      //     if (confirmBtn) {
+      //       const event = new MouseEvent("click", {
+      //         bubbles: true,
+      //         cancelable: true,
+      //         view: window,
+      //       });
+      //       confirmBtn?.dispatchEvent(event);
+      //     }
+      //   }
+      // };
+      // window.addEventListener("keydown", handleKeydown);
+
       setTimeout(() => {
         setShow(true);
         const input = document.querySelector(".dialog-input") as HTMLInputElement;
         input.focus();
       }, 50);
+
+      return () => {
+        // window.removeEventListener("keydown", handleKeydown);
+      };
     }, []);
 
     return (
@@ -145,7 +168,10 @@ export namespace Dialog {
                   onClose(btn.text ?? "", inputValue);
                   setShow(false);
                 }}
-                className={`px-4 py-2 hover:bg-${btn.color ?? "white"}/10 text-${btn.color ?? "white"} cursor-pointer rounded-full active:scale-90`}
+                className={cn(
+                  `px-4 py-2 hover:bg-${btn.color ?? "white"}/10 text-${btn.color ?? "white"} cursor-pointer rounded-full active:scale-90`,
+                  btn.text === "确定" && "dialog-confirm-btn",
+                )}
               >
                 {btn.text}
               </div>
