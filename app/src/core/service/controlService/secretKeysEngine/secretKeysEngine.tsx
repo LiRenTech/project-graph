@@ -46,12 +46,12 @@ export class SecretKeysEngine {
     // 使用keyup，更省性能。防止按下某个键不动时，一直触发效果
     window.addEventListener("keyup", (event) => {
       this.pressedKeys.enqueue(event.key.toLowerCase());
-      const { isTriggered, secretName } = this.detectAndCall();
+      const { isTriggered, secretName, key } = this.detectAndCall();
       // console.log(this.pressedKeys.arrayList);
       if (isTriggered) {
         // 清空队列
         this.pressedKeys.clear();
-        Stage.effectMachine.addEffect(TextRiseEffect.default(`触发了秘籍键: \n${secretName}`));
+        Stage.effectMachine.addEffect(TextRiseEffect.default(`触发了秘籍键: 【${key}】\n${secretName}`));
       }
       // 将队列长度限制
       while (this.pressedKeys.length > SecretKeysEngine.maxPressedKeys) {
@@ -605,28 +605,6 @@ export class SecretKeysEngine {
         }
       },
     },
-    "c r t + +": {
-      name: "将选中的CR曲线增加tension值",
-      func() {
-        const selectedCREdge = StageManager.getSelectedAssociations().filter(
-          (edge) => edge instanceof CublicCatmullRomSplineEdge,
-        );
-        for (const edge of selectedCREdge) {
-          edge.tension += 0.1;
-        }
-      },
-    },
-    "c r t - -": {
-      name: "将选中的CR曲线减少tension值",
-      func() {
-        const selectedCREdge = StageManager.getSelectedAssociations().filter(
-          (edge) => edge instanceof CublicCatmullRomSplineEdge,
-        );
-        for (const edge of selectedCREdge) {
-          edge.tension -= 0.1;
-        }
-      },
-    },
     "z e r o": {
       name: "将选中的实体移动到0,0位置",
       func() {
@@ -663,17 +641,34 @@ export class SecretKeysEngine {
         StageManager.addAssociation(multiTargetUndirectedEdge);
       },
     },
+    "e e e e e": {
+      name: "详略交换",
+      explain:
+        "将所有选中的文本节点的详细信息和实际内容进行交换，连按5次e，主要用于直接粘贴进来的文本内容想写入详细信息\n注：将详细信息换入节点内容后滑动滚轮可能有概率丢失文字\n",
+      func() {
+        const selectedTextNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
+        for (const node of selectedTextNodes) {
+          const details = node.details;
+          const text = node.text;
+          node.details = text;
+          node.text = details;
+          // 刷新一下
+          node.forceAdjustSizeByText();
+        }
+        StageHistoryManager.recordStep();
+      },
+    },
   };
 
   // 监听按键 并触发相应效果，每次按键都会触发
-  private detectAndCall(): { isTriggered: boolean; secretName: string } {
+  private detectAndCall(): { isTriggered: boolean; secretName: string; key: string } {
     const keys = this.pressedKeys.arrayList.join(" ");
     for (const key in this.keyPressedTable) {
       if (keys.includes(key)) {
         this.keyPressedTable[key].func();
-        return { isTriggered: true, secretName: this.keyPressedTable[key].name };
+        return { isTriggered: true, secretName: this.keyPressedTable[key].name, key };
       }
     }
-    return { isTriggered: false, secretName: "" };
+    return { isTriggered: false, secretName: "", key: "" };
   }
 }
