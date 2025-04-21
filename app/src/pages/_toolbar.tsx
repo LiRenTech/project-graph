@@ -504,7 +504,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             }}
           />
           <ToolbarItem
-            description="将内容视为本地绝对路径，并打开文件/文件夹"
+            description="将内容视为本地绝对路径，并打开文件/文件夹（优先解析详细信息第一行，后解析文本节点内容）"
             icon={<FolderSymlink />}
             handleFunction={async () => {
               // 打开文件或网页
