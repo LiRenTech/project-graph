@@ -1,3 +1,4 @@
+import { ConvexHull } from "../../../../algorithm/geometry/convexHull";
 import { Color } from "../../../../dataStruct/Color";
 import { Line } from "../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../dataStruct/Vector";
@@ -49,6 +50,7 @@ export namespace MultiTargetUndirectedEdgeRenderer {
     const edgeColor = edge.color.equals(Color.Transparent)
       ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
+    // 画文字
     if (edge.text !== "") {
       // 画文字
       TextRenderer.renderMultiLineTextFromCenter(
@@ -59,6 +61,7 @@ export namespace MultiTargetUndirectedEdgeRenderer {
         edgeColor,
       );
     }
+
     // 画每一条线
     for (let i = 0; i < targetNodes.length; i++) {
       const node = targetNodes[i];
@@ -98,5 +101,29 @@ export namespace MultiTargetUndirectedEdgeRenderer {
         );
       }
     }
+    // 凸包渲染
+    let convexPoints: Vector[] = [];
+    targetNodes.map((node) => {
+      const nodeRectangle = node.collisionBox.getRectangle().expandFromCenter(20);
+      convexPoints.push(nodeRectangle.leftTop);
+      convexPoints.push(nodeRectangle.rightTop);
+      convexPoints.push(nodeRectangle.rightBottom);
+      convexPoints.push(nodeRectangle.leftBottom);
+    });
+    if (edge.text !== "") {
+      const textRectangle = edge.textRectangle.expandFromCenter(20);
+      convexPoints.push(textRectangle.leftTop);
+      convexPoints.push(textRectangle.rightTop);
+      convexPoints.push(textRectangle.rightBottom);
+      convexPoints.push(textRectangle.leftBottom);
+    }
+    convexPoints = ConvexHull.computeConvexHull(convexPoints);
+    // 保证首尾相接
+    convexPoints.push(convexPoints[0]);
+    CurveRenderer.renderSolidLineMultiple(
+      convexPoints.map((point) => Renderer.transformWorld2View(point)),
+      edgeColor,
+      2 * Camera.currentScale,
+    );
   }
 }
