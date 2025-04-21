@@ -477,18 +477,18 @@ settings:
   rectangleSelectWhenLeft:
     title: 向左框选的策略
     description: |
-      选择鼠标向左框选的策略，包含完全覆盖框选和非完全覆盖框选
+      选择鼠标向左框选的策略，包含完全覆盖框选和碰撞框选
       完全覆盖框选是指矩形框选框必须完全覆盖实体的外接矩形
-      非完全覆盖框选是指矩形框选框只要碰到一点点实体的外接矩形，就能够选中了
+      碰撞框选是指矩形框选框只要碰到一点点实体的外接矩形，就能够选中了
     options:
-      intersect: 非完全覆盖框选
+      intersect: 碰撞框选
       contain: 完全覆盖框选
   rectangleSelectWhenRight:
     title: 向右框选的策略
     description: |
       选择鼠标向右框选的策略
     options:
-      intersect: 非完全覆盖框选
+      intersect: 碰撞框选
       contain: 完全覆盖框选
   # 声音
   cuttingLineStartSoundFile:

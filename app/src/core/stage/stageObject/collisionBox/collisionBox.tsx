@@ -39,7 +39,7 @@ export class CollisionBox {
   }
 
   /**
-   * 非完全覆盖框选
+   * 碰撞框选
    * @param rectangle
    * @returns
    */
