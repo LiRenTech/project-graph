@@ -277,7 +277,7 @@ export class ControllerCameraClass extends ControllerClass {
       if (Camera.mouseWheelWithShiftMode === "zoom") {
         zoomCameraByMouseWheel(event);
       } else if (Camera.mouseWheelWithShiftMode === "move") {
-        moveCameraByMouseWheel(event);
+        moveYCameraByMouseWheel(event);
       } else if (Camera.mouseWheelWithShiftMode === "moveX") {
         moveXCameraByMouseWheel(event);
       } else if (Camera.mouseWheelWithShiftMode === "none") {
@@ -293,7 +293,7 @@ export class ControllerCameraClass extends ControllerClass {
         if (Camera.mouseWheelWithCtrlMode === "zoom") {
           zoomCameraByMouseWheel(event);
         } else if (Camera.mouseWheelWithCtrlMode === "move") {
-          moveCameraByMouseWheel(event);
+          moveYCameraByMouseWheel(event);
         } else if (Camera.mouseWheelWithCtrlMode === "moveX") {
           moveXCameraByMouseWheel(event);
         } else if (Camera.mouseWheelWithCtrlMode === "none") {
@@ -304,7 +304,7 @@ export class ControllerCameraClass extends ControllerClass {
       if (Camera.mouseWheelWithAltMode === "zoom") {
         zoomCameraByMouseWheel(event);
       } else if (Camera.mouseWheelWithAltMode === "move") {
-        moveCameraByMouseWheel(event);
+        moveYCameraByMouseWheel(event);
       } else if (Camera.mouseWheelWithAltMode === "moveX") {
         moveXCameraByMouseWheel(event);
       } else if (Camera.mouseWheelWithAltMode === "none") {
@@ -314,7 +314,7 @@ export class ControllerCameraClass extends ControllerClass {
       if (Camera.mouseWheelMode === "zoom") {
         zoomCameraByMouseWheel(event);
       } else if (Camera.mouseWheelMode === "move") {
-        moveCameraByMouseWheel(event);
+        moveYCameraByMouseWheel(event);
       } else if (Camera.mouseWheelMode === "moveX") {
         moveXCameraByMouseWheel(event);
       } else if (Camera.mouseWheelMode === "none") {
@@ -323,7 +323,7 @@ export class ControllerCameraClass extends ControllerClass {
     }
 
     // 滚轮横向滚动是水平移动
-    moveXCameraByMouseSideWheel(event);
+    moveCameraByMouseSideWheel(event);
   }
 
   /**
@@ -415,33 +415,45 @@ function moveCameraByTouchPadTwoFingerMove(event: WheelEvent) {
   Camera.location = Camera.location.add(diffLocation);
 }
 
-function moveCameraByMouseWheel(event: WheelEvent) {
+function moveYCameraByMouseWheel(event: WheelEvent) {
+  Camera.bombMove(
+    Camera.location.add(new Vector(0, (Camera.moveAmplitude * event.deltaY * 0.5) / Camera.currentScale)),
+  );
   if (event.deltaY > 0) {
-    // 向上滚动是上移
-    Camera.location = Camera.location.add(new Vector(0, (Camera.moveAmplitude * 50) / Camera.currentScale));
     Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveDown"));
   } else if (event.deltaY < 0) {
-    // 向下滚动是下移
-    Camera.location = Camera.location.subtract(new Vector(0, (Camera.moveAmplitude * 50) / Camera.currentScale));
     Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveUp"));
   }
 }
-function moveCameraByMouseSideWheel(event: WheelEvent) {
+
+function moveYCameraByMouseSideWheel(event: WheelEvent) {
+  Camera.location = Camera.location.add(
+    new Vector(0, (Camera.moveAmplitude * event.deltaX * 0.5) / Camera.currentScale),
+  );
   if (event.deltaX > 0) {
-    Camera.location = Camera.location.add(new Vector(0, (Camera.moveAmplitude * 50) / Camera.currentScale));
     Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveDown"));
   } else if (event.deltaX < 0) {
-    Camera.location = Camera.location.subtract(new Vector(0, (Camera.moveAmplitude * 50) / Camera.currentScale));
     Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveUp"));
   }
 }
 
 function moveXCameraByMouseWheel(event: WheelEvent) {
+  Camera.bombMove(
+    Camera.location.add(new Vector((Camera.moveAmplitude * event.deltaY * 0.5) / Camera.currentScale, 0)),
+  );
   if (event.deltaY > 0) {
-    Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
     Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveRight"));
   } else if (event.deltaY < 0) {
-    Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
+    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveLeft"));
+  }
+}
+function moveXCameraByMouseSideWheel(event: WheelEvent) {
+  Camera.bombMove(
+    Camera.location.add(new Vector((Camera.moveAmplitude * event.deltaX * 0.5) / Camera.currentScale, 0)),
+  );
+  if (event.deltaX > 0) {
+    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveRight"));
+  } else if (event.deltaX < 0) {
     Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveLeft"));
   }
 }
@@ -451,7 +463,7 @@ function moveXCameraByMouseWheel(event: WheelEvent) {
  * 保持和vscode一样，侧边滚轮大拇指往下拨动，视野往右移动，内容往左移动
  * @param event
  */
-function moveXCameraByMouseSideWheel(event: WheelEvent) {
+function moveCameraByMouseSideWheel(event: WheelEvent) {
   // 首先先确保横向方向有数据
   if (event.deltaX === 0) {
     return;
@@ -460,15 +472,16 @@ function moveXCameraByMouseSideWheel(event: WheelEvent) {
   if (Camera.mouseSideWheelMode === "zoom") {
     zoomCameraByMouseSideWheel(event);
   } else if (Camera.mouseSideWheelMode === "move") {
-    moveCameraByMouseSideWheel(event);
+    moveYCameraByMouseSideWheel(event);
   } else if (Camera.mouseSideWheelMode === "moveX") {
-    if (event.deltaX > 0) {
-      Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
-      Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveRight"));
-    } else if (event.deltaX < 0) {
-      Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
-      Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveLeft"));
-    }
+    moveXCameraByMouseSideWheel(event);
+    // if (event.deltaX > 0) {
+    //   Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
+    //   Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveRight"));
+    // } else if (event.deltaX < 0) {
+    //   Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
+    //   Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveLeft"));
+    // }
   } else if (Camera.mouseSideWheelMode === "none") {
     return;
   } else if (Camera.mouseSideWheelMode === "cameraMoveToMouse") {
