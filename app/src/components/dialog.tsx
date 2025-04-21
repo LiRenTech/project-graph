@@ -83,6 +83,8 @@ export namespace Dialog {
     React.useEffect(() => {
       setTimeout(() => {
         setShow(true);
+        const input = document.querySelector(".dialog-input") as HTMLInputElement;
+        input.focus();
       }, 50);
     }, []);
 
@@ -130,7 +132,8 @@ export namespace Dialog {
               {isCopied && <span>已复制</span>}
             </div>
           )}
-          {input && <Input value={inputValue} onChange={setInputValue} placeholder="请输入" />}
+          {/* 输入框 */}
+          {input && <Input value={inputValue} onChange={setInputValue} placeholder="请输入" className="dialog-input" />}
 
           <div className="flex justify-end">
             {buttons.map((btn, i) => (
