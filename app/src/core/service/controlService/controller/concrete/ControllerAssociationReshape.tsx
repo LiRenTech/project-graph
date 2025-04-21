@@ -2,10 +2,12 @@ import { CursorNameEnum } from "../../../../../types/cursors";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
+import { StageMultiTargetEdgeMove } from "../../../../stage/stageManager/concreteMethods/StageMultiTargetEdgeMove";
 import { StageNodeConnector } from "../../../../stage/stageManager/concreteMethods/StageNodeConnector";
 import { StageNodeRotate } from "../../../../stage/stageManager/concreteMethods/stageNodeRotate";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
+import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 
@@ -15,6 +17,8 @@ import { ControllerClass } from "../ControllerClass";
  * 曾经：旋转图的节点控制器
  * 鼠标按住Ctrl旋转节点
  * 或者拖拽连线旋转
+ *
+ * 有向边的嫁接
  */
 class ControllerAssociationReshapeClass extends ControllerClass {
   public mousewheel: (event: WheelEvent) => void = (event: WheelEvent) => {
@@ -32,6 +36,8 @@ class ControllerAssociationReshapeClass extends ControllerClass {
     }
   };
 
+  public lastMoveLocation: Vector = Vector.getZero();
+
   public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
     if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
       return;
@@ -40,17 +46,22 @@ class ControllerAssociationReshapeClass extends ControllerClass {
       return;
     }
     const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    const clickedEdge = StageManager.findLineEdgeByLocation(pressWorldLocation);
-    const isHaveEdgeSelected = StageManager.getLineEdges().some((edge) => edge.isSelected);
-    if (clickedEdge === null) {
+    // 点击
+    const clickedAssociation = StageManager.findAssociationByLocation(pressWorldLocation);
+    if (clickedAssociation === null) {
       return;
     }
-    ControllerAssociationReshape.lastMoveLocation = pressWorldLocation.clone();
+    const isHaveLineEdgeSelected = StageManager.getLineEdges().some((edge) => edge.isSelected);
+    const isHaveMultiTargetEdgeSelected = StageManager.getSelectedAssociations().some(
+      (association) => association instanceof MultiTargetUndirectedEdge,
+    );
 
-    if (isHaveEdgeSelected) {
+    this.lastMoveLocation = pressWorldLocation.clone();
+
+    if (isHaveLineEdgeSelected) {
       Controller.isMovingEdge = true;
 
-      if (clickedEdge.isSelected) {
+      if (clickedAssociation.isSelected) {
         // E1
         StageManager.getLineEdges().forEach((edge) => {
           edge.isSelected = false;
@@ -61,10 +72,13 @@ class ControllerAssociationReshapeClass extends ControllerClass {
           edge.isSelected = false;
         });
       }
-      clickedEdge.isSelected = true;
+      clickedAssociation.isSelected = true;
+    } else if (isHaveMultiTargetEdgeSelected) {
+      // 点击了多源无向边
+      clickedAssociation.isSelected = true;
     } else {
       // F
-      clickedEdge.isSelected = true;
+      clickedAssociation.isSelected = true;
     }
     Controller.setCursorNameHook(CursorNameEnum.Move);
   };
@@ -86,12 +100,13 @@ class ControllerAssociationReshapeClass extends ControllerClass {
           StageNodeConnector.changeSelectedEdgeTarget(entity);
         }
       } else {
-        const diffLocation = worldLocation.subtract(ControllerAssociationReshape.lastMoveLocation);
+        const diffLocation = worldLocation.subtract(this.lastMoveLocation);
         // 拖拽Edge
         Controller.isMovingEdge = true;
-        StageNodeRotate.moveEdges(ControllerAssociationReshape.lastMoveLocation, diffLocation);
+        StageNodeRotate.moveEdges(this.lastMoveLocation, diffLocation);
+        StageMultiTargetEdgeMove.moveMultiTargetEdge(diffLocation);
       }
-      ControllerAssociationReshape.lastMoveLocation = worldLocation.clone();
+      this.lastMoveLocation = worldLocation.clone();
     } else {
       // 什么都没有按下的情况
       // 看看鼠标当前的位置是否和线接近

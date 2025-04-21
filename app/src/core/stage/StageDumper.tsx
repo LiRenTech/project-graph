@@ -71,6 +71,7 @@ export namespace StageDumper {
       uuid: edge.uuid,
       text: edge.text,
       arrow: edge.arrow,
+      centerRate: edge.centerRate.toArray(),
     };
   }
   export function dumpConnectPoint(connectPoint: ConnectPoint): Serialized.ConnectPoint {

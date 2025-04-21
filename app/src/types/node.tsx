@@ -118,6 +118,7 @@ export namespace Serialized {
     targets: string[];
     arrow: UndirectedEdgeArrowType;
     rectRates: [number, number][]; // 默认中心 0.5, 0.5
+    centerRate: [number, number]; // 默认中心 0.5, 0.5
   };
   export function isMultiTargetUndirectedEdge(obj: StageObject): obj is MultiTargetUndirectedEdge {
     return obj.type === "core:multi_target_undirected_edge";

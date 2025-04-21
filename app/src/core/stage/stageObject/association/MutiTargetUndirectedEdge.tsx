@@ -35,13 +35,14 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
   public color: Color;
   public targetUUIDs: string[];
   public rectRates: Vector[];
+  public centerRate: Vector;
   public arrow: Serialized.UndirectedEdgeArrowType = "none";
 
   public rename(text: string) {
     this.text = text;
   }
   constructor(
-    { targets, text, uuid, color, rectRates, arrow }: Serialized.MultiTargetUndirectedEdge,
+    { targets, text, uuid, color, rectRates, arrow, centerRate }: Serialized.MultiTargetUndirectedEdge,
     /** true表示解析状态，false表示解析完毕 */
     public unknown = false,
   ) {
@@ -52,6 +53,7 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
     this.color = new Color(...color);
     this.targetUUIDs = targets;
     this.rectRates = rectRates.map((v) => new Vector(v[0], v[1]));
+    this.centerRate = new Vector(centerRate[0], centerRate[1]);
     this.arrow = arrow;
   }
 
@@ -71,7 +73,7 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
     const boundingRectangle = Rectangle.getBoundingRectangle(
       StageManager.getEntitiesByUUIDs(this.targetUUIDs).map((n) => n.collisionBox.getRectangle()),
     );
-    return boundingRectangle.center;
+    return boundingRectangle.getInnerLocationByRateVector(this.centerRate);
   }
 
   get textRectangle(): Rectangle {
@@ -90,6 +92,7 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
       text: "",
       uuid: v4(),
       arrow: "none",
+      centerRate: [0.5, 0.5],
       color: [0, 0, 0, 0],
     });
   }
