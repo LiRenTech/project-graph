@@ -433,6 +433,9 @@ export class SecretKeysEngine {
       explain: "仅对文本节点生效，根据标点符号，空格、换行符等进行分割，将其分割成小块",
       func() {
         const selectedTextNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
+        selectedTextNodes.forEach((node) => {
+          node.isSelected = false;
+        });
         for (const node of selectedTextNodes) {
           const text = node.text;
           const seps = [" ", "\n", "\t", ".", ",", "，", "。", "、", "；", "：", "？", "！"];
@@ -445,8 +448,9 @@ export class SecretKeysEngine {
           const splitedTextList = text.split(regex).filter((item) => item !== "");
           // 将分割后的字符串添加到舞台
           const putLocation = node.collisionBox.getRectangle().location.clone();
+
+          const newNodes = [];
           for (const splitedText of splitedTextList) {
-            putLocation.y += 100;
             const newTextNode = new TextNode({
               uuid: v4(),
               text: splitedText,
@@ -455,8 +459,18 @@ export class SecretKeysEngine {
               color: node.color.clone().toArray(),
               // sizeAdjust: node.sizeAdjust,
             });
+            newNodes.push(newTextNode);
             StageManager.addTextNode(newTextNode);
+            putLocation.y += 100;
           }
+          // 向下紧密堆积一下
+          newNodes.forEach((newNode) => {
+            newNode.isSelected = true;
+          });
+          LayoutManualAlignManager.alignTopToBottomNoSpace();
+          newNodes.forEach((newNode) => {
+            newNode.isSelected = false;
+          });
         }
         // 删除原来的文本节点
         StageManager.deleteEntities(selectedTextNodes);
@@ -485,14 +499,14 @@ export class SecretKeysEngine {
         }
         mergeText = mergeText.trim();
 
-        const center = Rectangle.getBoundingRectangle(
+        const leftTop = Rectangle.getBoundingRectangle(
           selectedTextNodes.map((node) => node.collisionBox.getRectangle()),
-        ).center;
+        ).leftTop;
         const avgColor = averageColors(selectedTextNodes.map((node) => node.color));
         const newTextNode = new TextNode({
           uuid: v4(),
           text: mergeText,
-          location: [center.x, center.y],
+          location: [leftTop.x, leftTop.y],
           size: [400, 1],
           color: avgColor.toArray(),
           sizeAdjust: "manual",
