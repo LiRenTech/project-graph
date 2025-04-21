@@ -389,6 +389,16 @@ function zoomCameraByMouseWheel(event: WheelEvent) {
   }
 }
 
+function zoomCameraByMouseWheelX(event: WheelEvent) {
+  if (event.deltaX > 0) {
+    Camera.targetScale *= 0.8;
+    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("shrink"));
+  } else if (event.deltaX < 0) {
+    Camera.targetScale *= 1.2;
+    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("expand"));
+  }
+}
+
 function moveCameraByTouchPadTwoFingerMove(event: WheelEvent) {
   if (isMac) {
     ControllerCameraMac.moveCameraByTouchPadTwoFingerMove(event);
@@ -416,6 +426,16 @@ function moveCameraByMouseWheel(event: WheelEvent) {
     Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveUp"));
   }
 }
+function moveCameraByMouseWheelX(event: WheelEvent) {
+  if (event.deltaX > 0) {
+    Camera.location = Camera.location.add(new Vector(0, (Camera.moveAmplitude * 50) / Camera.currentScale));
+    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveDown"));
+  } else if (event.deltaX < 0) {
+    Camera.location = Camera.location.subtract(new Vector(0, (Camera.moveAmplitude * 50) / Camera.currentScale));
+    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveUp"));
+  }
+}
+
 function moveXCameraByMouseWheel(event: WheelEvent) {
   if (event.deltaY > 0) {
     Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
@@ -432,12 +452,20 @@ function moveXCameraByMouseWheel(event: WheelEvent) {
  * @param event
  */
 function moveXCameraByMouseSideWheel(event: WheelEvent) {
-  if (event.deltaX > 0) {
-    Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
-    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveRight"));
-  } else if (event.deltaX < 0) {
-    Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
-    Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveLeft"));
+  if (Camera.mouseWheelXMode === "zoom") {
+    zoomCameraByMouseWheelX(event);
+  } else if (Camera.mouseWheelXMode === "move") {
+    moveCameraByMouseWheelX(event);
+  } else if (Camera.mouseWheelXMode === "moveX") {
+    if (event.deltaX > 0) {
+      Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
+      Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveRight"));
+    } else if (event.deltaX < 0) {
+      Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
+      Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveLeft"));
+    }
+  } else if (Camera.mouseWheelXMode === "none") {
+    return;
   }
 }
 
@@ -484,9 +512,7 @@ function isMouseWheel(event: WheelEvent): boolean {
 
   // 纯横向滚动
   if (event.deltaX !== 0 && event.deltaY === 0) {
-    console.log("检测到横向滚动");
     const distance = Math.abs(event.deltaX);
-    console.log(distance);
     if (distance < 20) {
       // 缓慢滚动是触摸板
       return false;

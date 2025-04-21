@@ -99,6 +99,7 @@ export namespace Settings {
     mouseWheelWithShiftMode: "zoom" | "move" | "moveX" | "none";
     mouseWheelWithCtrlMode: "zoom" | "move" | "moveX" | "none";
     mouseWheelWithAltMode: "zoom" | "move" | "moveX" | "none";
+    mouseWheelXMode: "zoom" | "move" | "moveX" | "none";
     doubleClickMiddleMouseButton: "none" | "adjustCamera";
     // mac相关的特殊控制
     // 触摸版和鼠标滚轮的区分逻辑
@@ -205,6 +206,7 @@ export namespace Settings {
     mouseWheelWithShiftMode: "moveX",
     mouseWheelWithCtrlMode: "move",
     mouseWheelWithAltMode: "none",
+    mouseWheelXMode: "moveX",
     doubleClickMiddleMouseButton: "adjustCamera",
     macTrackpadAndMouseWheelDifference: "trackpadIntAndWheelFloat",
     macMouseWheelIsSmoothed: false,
