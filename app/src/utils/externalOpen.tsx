@@ -4,16 +4,29 @@ import { ImageNode } from "../core/stage/stageObject/entity/ImageNode";
 import { Stage } from "../core/stage/Stage";
 import { PathString } from "./pathString";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
+import { Entity } from "../core/stage/stageObject/abstract/StageEntity";
 
 /**
  * 工具栏中的地球仪图标
  */
 export async function openBrowserOrFile() {
-  for (const node of StageManager.getTextNodes()) {
-    if (node.isSelected) {
+  for (const node of StageManager.getSelectedEntities()) {
+    if (node instanceof TextNode) {
       openOneTextNode(node);
+    } else {
+      openOneEntity(node);
     }
   }
+}
+
+function openOneEntity(node: Entity) {
+  let targetUrl = node.details;
+  if (node.details.trim() !== "") {
+    const firstLine = node.details.trim().split("\n")[0].trim();
+    targetUrl = firstLine;
+  }
+  targetUrl = splitDoubleQuote(targetUrl);
+  myOpen(targetUrl);
 }
 
 /**
