@@ -11,6 +11,7 @@ import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { getMultiLineTextSize } from "../../../../utils/font";
 import { Renderer } from "../../../render/canvas2d/renderer";
+import { HyperGraphMethods } from "../../stageManager/basicMethods/HyperGraphMethods";
 
 /**
  * 多端无向边
@@ -100,6 +101,16 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
   }
 
   static createFromSomeEntity(entities: ConnectableEntity[]) {
+    // 自动计算padding
+    let padding = 10;
+    for (const entity of entities) {
+      const hyperEdges = HyperGraphMethods.getHyperEdgesByNode(entity);
+      if (hyperEdges.length > 0) {
+        const maxPadding = Math.max(...hyperEdges.map((e) => e.padding));
+        padding = Math.max(maxPadding + 10, padding);
+      }
+    }
+
     const targetUUIDs = entities.map((e) => e.uuid);
     return new MultiTargetUndirectedEdge({
       type: "core:multi_target_undirected_edge",
@@ -111,7 +122,7 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
       arrow: "none",
       centerRate: [0.5, 0.5],
       color: [0, 0, 0, 0],
-      padding: 10,
+      padding,
       renderType: "line",
     });
   }
