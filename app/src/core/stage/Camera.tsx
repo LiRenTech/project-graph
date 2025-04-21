@@ -90,7 +90,7 @@ export namespace Camera {
   export let mouseWheelWithShiftMode: Settings.Settings["mouseWheelWithShiftMode"] = "zoom";
   export let mouseWheelWithCtrlMode: Settings.Settings["mouseWheelWithCtrlMode"] = "zoom";
   export let mouseWheelWithAltMode: Settings.Settings["mouseWheelWithAltMode"] = "zoom";
-  export let mouseWheelXMode: Settings.Settings["mouseWheelXMode"] = "moveX";
+  export let mouseSideWheelMode: Settings.Settings["mouseSideWheelMode"] = "moveX";
   let cameraKeyboardScaleRate = 0.2;
   let cameraResetViewPaddingRate = 1.5;
   export let cameraFollowsSelectedNodeOnArrowKeys = false;
@@ -104,8 +104,6 @@ export namespace Camera {
    * 触发一次后，接下来的60帧里，摄像机都会移动一小段距离，朝向目的位置移动
    */
   export function pageMove(direction: Direction) {
-    // 先清空之前的队列
-    shockMoveDiffLocationsQueue.clear();
     // 计算爆炸式移动的目标位置
     const targetLocation = location.clone();
     const rect = Renderer.getCoverWorldRectangle();
@@ -118,6 +116,16 @@ export namespace Camera {
     } else if (direction === Direction.Right) {
       targetLocation.x += rect.width * 1;
     }
+    // 生成接下来一些帧里的移动轨迹位置点。
+    bombMove(targetLocation);
+  }
+  /**
+   * 爆炸式移动
+   * @param targetLocation 摄像机即将要移动到的世界坐标
+   */
+  export function bombMove(targetLocation: Vector) {
+    // 先清空之前的队列
+    shockMoveDiffLocationsQueue.clear();
     // 生成接下来一些帧里的移动轨迹位置点。
     const frameCount = 40;
     const movePoints = [];
@@ -335,8 +343,8 @@ export namespace Camera {
     Settings.watch("cameraKeyboardScaleRate", (value) => {
       cameraKeyboardScaleRate = value;
     });
-    Settings.watch("mouseWheelXMode", (value) => {
-      mouseWheelXMode = value;
+    Settings.watch("mouseSideWheelMode", (value) => {
+      mouseSideWheelMode = value;
     });
     Settings.watch("mouseWheelMode", (value) => {
       mouseWheelMode = value;

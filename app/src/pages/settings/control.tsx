@@ -37,7 +37,7 @@ export default function Control() {
         <SettingField icon={<Mouse />} settingKey="mouseWheelWithCtrlMode" type="select" />
         <SettingField icon={<Mouse />} settingKey="mouseWheelWithAltMode" type="select" />
         <SettingField icon={<Mouse />} settingKey="doubleClickMiddleMouseButton" type="select" />
-        <SettingField icon={<Grab />} settingKey="mouseWheelXMode" type="select" />
+        <SettingField icon={<Grab />} settingKey="mouseSideWheelMode" type="select" />
         {isMac && <SettingField icon={<Mouse />} settingKey="macMouseWheelIsSmoothed" type="switch" />}
       </FieldGroup>
       <FieldGroup title="TouchPad 触摸板设定" icon={<Touchpad />}>

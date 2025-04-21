@@ -443,7 +443,7 @@ settings:
     description:
       有的macbook鼠标滚轮是平滑的，有的则是滚动一格触发一次
       可能取决于您是否安装了Mos等鼠标修改软件
-  mouseWheelXMode:
+  mouseSideWheelMode:
     title: 鼠标侧边滚轮模式
     description: |
       侧边滚轮就是大拇指上的滚轮
@@ -452,6 +452,7 @@ settings:
       move: 纵向移动
       moveX: 横向移动
       none: 无操作
+      cameraMoveToMouse: 将视野向鼠标位置移动
   mouseWheelMode:
     title: 鼠标滚轮模式
     options:

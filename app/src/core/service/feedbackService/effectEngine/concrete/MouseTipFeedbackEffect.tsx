@@ -10,7 +10,17 @@ import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 import { easeOutSine } from "../mathTools/easings";
 
-type MouseTipType = "shrink" | "expand" | "moveLeft" | "moveRight" | "moveUp" | "moveDown" | "move" | "drag";
+type MouseTipType =
+  | "shrink"
+  | "expand"
+  | "moveLeft"
+  | "moveRight"
+  | "moveUp"
+  | "moveDown"
+  | "move"
+  | "drag"
+  | "cameraMoveToMouse"
+  | "cameraBackToMouse";
 
 /**
  * 在鼠标上释放一个小特效，用于提示
@@ -135,6 +145,25 @@ export class MouseTipFeedbackEffect extends EffectObject {
         Color.Transparent,
         StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
         1,
+      );
+    } else if (this.type === "cameraMoveToMouse") {
+      CurveRenderer.renderDashedLine(
+        Renderer.transformWorld2View(Camera.location),
+        MouseLocation.vector(),
+        StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
+        1,
+        8,
+      );
+    } else if (this.type === "cameraBackToMouse") {
+      const mouseBackLocation = MouseLocation.vector().add(
+        Renderer.transformWorld2View(Camera.location).subtract(MouseLocation.vector()).multiply(2),
+      );
+      CurveRenderer.renderDashedLine(
+        Renderer.transformWorld2View(Camera.location),
+        mouseBackLocation,
+        StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
+        1,
+        8,
       );
     }
   }

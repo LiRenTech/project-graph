@@ -389,7 +389,7 @@ function zoomCameraByMouseWheel(event: WheelEvent) {
   }
 }
 
-function zoomCameraByMouseWheelX(event: WheelEvent) {
+function zoomCameraByMouseSideWheel(event: WheelEvent) {
   if (event.deltaX > 0) {
     Camera.targetScale *= 0.8;
     Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("shrink"));
@@ -426,7 +426,7 @@ function moveCameraByMouseWheel(event: WheelEvent) {
     Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveUp"));
   }
 }
-function moveCameraByMouseWheelX(event: WheelEvent) {
+function moveCameraByMouseSideWheel(event: WheelEvent) {
   if (event.deltaX > 0) {
     Camera.location = Camera.location.add(new Vector(0, (Camera.moveAmplitude * 50) / Camera.currentScale));
     Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveDown"));
@@ -452,11 +452,16 @@ function moveXCameraByMouseWheel(event: WheelEvent) {
  * @param event
  */
 function moveXCameraByMouseSideWheel(event: WheelEvent) {
-  if (Camera.mouseWheelXMode === "zoom") {
-    zoomCameraByMouseWheelX(event);
-  } else if (Camera.mouseWheelXMode === "move") {
-    moveCameraByMouseWheelX(event);
-  } else if (Camera.mouseWheelXMode === "moveX") {
+  // 首先先确保横向方向有数据
+  if (event.deltaX === 0) {
+    return;
+  }
+  console.log("触发侧边");
+  if (Camera.mouseSideWheelMode === "zoom") {
+    zoomCameraByMouseSideWheel(event);
+  } else if (Camera.mouseSideWheelMode === "move") {
+    moveCameraByMouseSideWheel(event);
+  } else if (Camera.mouseSideWheelMode === "moveX") {
     if (event.deltaX > 0) {
       Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
       Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveRight"));
@@ -464,8 +469,22 @@ function moveXCameraByMouseSideWheel(event: WheelEvent) {
       Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
       Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveLeft"));
     }
-  } else if (Camera.mouseWheelXMode === "none") {
+  } else if (Camera.mouseSideWheelMode === "none") {
     return;
+  } else if (Camera.mouseSideWheelMode === "cameraMoveToMouse") {
+    // 先测试性的加一个，将准星向鼠标位置移动
+    const mouseLocation = new Vector(event.clientX, event.clientY);
+    const mouseWorldLocation = Renderer.transformView2World(mouseLocation);
+    let diffLocation = mouseWorldLocation.subtract(Camera.location).multiply(0.75);
+    if (event.deltaX < 0) {
+      diffLocation = diffLocation.multiply(-1);
+      Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("cameraBackToMouse"));
+    } else {
+      // 正常
+      Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("cameraMoveToMouse"));
+    }
+    const moveToLocation = Camera.location.add(diffLocation);
+    Camera.bombMove(moveToLocation);
   }
 }
 
