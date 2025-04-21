@@ -14,6 +14,9 @@ import { Renderer } from "../../../render/canvas2d/renderer";
 
 /**
  * 多端无向边
+ *
+ * 超边。
+ * 以后可以求最大强独立集
  */
 export class MultiTargetUndirectedEdge extends ConnectableAssociation {
   public uuid: string;
@@ -37,12 +40,24 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
   public rectRates: Vector[];
   public centerRate: Vector;
   public arrow: Serialized.UndirectedEdgeArrowType = "none";
+  public renderType: Serialized.MultiTargetUndirectedEdgeRenderType = "line";
+  public padding: number;
 
   public rename(text: string) {
     this.text = text;
   }
   constructor(
-    { targets, text, uuid, color, rectRates, arrow, centerRate }: Serialized.MultiTargetUndirectedEdge,
+    {
+      targets,
+      text,
+      uuid,
+      color,
+      rectRates,
+      arrow,
+      centerRate,
+      padding,
+      renderType,
+    }: Serialized.MultiTargetUndirectedEdge,
     /** true表示解析状态，false表示解析完毕 */
     public unknown = false,
   ) {
@@ -55,6 +70,8 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
     this.rectRates = rectRates.map((v) => new Vector(v[0], v[1]));
     this.centerRate = new Vector(centerRate[0], centerRate[1]);
     this.arrow = arrow;
+    this.renderType = renderType;
+    this.padding = padding;
   }
 
   /**
@@ -94,6 +111,8 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
       arrow: "none",
       centerRate: [0.5, 0.5],
       color: [0, 0, 0, 0],
+      padding: 10,
+      renderType: "line",
     });
   }
 

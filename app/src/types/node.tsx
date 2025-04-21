@@ -113,12 +113,20 @@ export namespace Serialized {
    * none： --- xxx ---
    */
   export type UndirectedEdgeArrowType = "inner" | "outer" | "none";
+  /**
+   * 无向边的渲染方式
+   * line：内部连线式渲染
+   * convex：凸包连线式渲染
+   */
+  export type MultiTargetUndirectedEdgeRenderType = "line" | "convex";
   export type MultiTargetUndirectedEdge = Association & {
     type: "core:multi_target_undirected_edge";
     targets: string[];
     arrow: UndirectedEdgeArrowType;
     rectRates: [number, number][]; // 默认中心 0.5, 0.5
     centerRate: [number, number]; // 默认中心 0.5, 0.5
+    padding: number;
+    renderType: MultiTargetUndirectedEdgeRenderType;
   };
   export function isMultiTargetUndirectedEdge(obj: StageObject): obj is MultiTargetUndirectedEdge {
     return obj.type === "core:multi_target_undirected_edge";

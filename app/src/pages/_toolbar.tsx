@@ -18,6 +18,7 @@ import {
   Pencil,
   RefreshCcw,
   Repeat,
+  Repeat2,
   SaveAll,
   Shrink,
   Slash,
@@ -355,6 +356,23 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               );
               for (const multi_target_undirected_edge of selectedMTUEdge) {
                 multi_target_undirected_edge.arrow = "none";
+              }
+              StageHistoryManager.recordStep();
+            }}
+          />
+          <ToolbarItem
+            description="转换渲染形态"
+            icon={<Repeat2 />}
+            handleFunction={() => {
+              const selectedMTUEdge = StageManager.getSelectedAssociations().filter(
+                (edge) => edge instanceof MultiTargetUndirectedEdge,
+              );
+              for (const multi_target_undirected_edge of selectedMTUEdge) {
+                if (multi_target_undirected_edge.renderType === "line") {
+                  multi_target_undirected_edge.renderType = "convex";
+                } else if (multi_target_undirected_edge.renderType === "convex") {
+                  multi_target_undirected_edge.renderType = "line";
+                }
               }
               StageHistoryManager.recordStep();
             }}

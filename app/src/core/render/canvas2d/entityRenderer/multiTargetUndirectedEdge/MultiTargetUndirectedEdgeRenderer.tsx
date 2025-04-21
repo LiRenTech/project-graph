@@ -61,69 +61,71 @@ export namespace MultiTargetUndirectedEdgeRenderer {
         edgeColor,
       );
     }
-
-    // 画每一条线
-    for (let i = 0; i < targetNodes.length; i++) {
-      const node = targetNodes[i];
-      const nodeRectangle = node.collisionBox.getRectangle();
-      const targetLocation = nodeRectangle.getInnerLocationByRateVector(edge.rectRates[i]);
-      const line = new Line(centerLocation, targetLocation);
-      const targetPoint = nodeRectangle.getLineIntersectionPoint(line);
-      let toCenterPoint = centerLocation;
-      if (edge.text !== "") {
-        const textRectangle = edge.textRectangle;
-        toCenterPoint = textRectangle.getLineIntersectionPoint(new Line(centerLocation, targetLocation));
+    if (edge.renderType === "line") {
+      // 画每一条线
+      for (let i = 0; i < targetNodes.length; i++) {
+        const node = targetNodes[i];
+        const nodeRectangle = node.collisionBox.getRectangle();
+        const targetLocation = nodeRectangle.getInnerLocationByRateVector(edge.rectRates[i]);
+        const line = new Line(centerLocation, targetLocation);
+        const targetPoint = nodeRectangle.getLineIntersectionPoint(line);
+        let toCenterPoint = centerLocation;
+        if (edge.text !== "") {
+          const textRectangle = edge.textRectangle;
+          toCenterPoint = textRectangle.getLineIntersectionPoint(new Line(centerLocation, targetLocation));
+        }
+        CurveRenderer.renderSolidLine(
+          Renderer.transformWorld2View(targetPoint),
+          Renderer.transformWorld2View(toCenterPoint),
+          edgeColor,
+          2 * Camera.currentScale,
+        );
+        // 画箭头
+        if (edge.arrow === "inner") {
+          //
+          EdgeRenderer.renderArrowHead(
+            // Renderer.transformWorld2View(toCenterPoint),
+            toCenterPoint,
+            toCenterPoint.subtract(targetPoint).normalize(),
+            15,
+            edgeColor,
+          );
+        } else if (edge.arrow === "outer") {
+          //
+          EdgeRenderer.renderArrowHead(
+            // Renderer.transformWorld2View(targetPoint),
+            targetPoint,
+            targetPoint.subtract(toCenterPoint).normalize(),
+            15,
+            edgeColor,
+          );
+        }
       }
-      CurveRenderer.renderSolidLine(
-        Renderer.transformWorld2View(targetPoint),
-        Renderer.transformWorld2View(toCenterPoint),
+    } else if (edge.renderType === "convex") {
+      // 凸包渲染
+      let convexPoints: Vector[] = [];
+      targetNodes.map((node) => {
+        const nodeRectangle = node.collisionBox.getRectangle().expandFromCenter(edge.padding);
+        convexPoints.push(nodeRectangle.leftTop);
+        convexPoints.push(nodeRectangle.rightTop);
+        convexPoints.push(nodeRectangle.rightBottom);
+        convexPoints.push(nodeRectangle.leftBottom);
+      });
+      if (edge.text !== "") {
+        const textRectangle = edge.textRectangle.expandFromCenter(edge.padding);
+        convexPoints.push(textRectangle.leftTop);
+        convexPoints.push(textRectangle.rightTop);
+        convexPoints.push(textRectangle.rightBottom);
+        convexPoints.push(textRectangle.leftBottom);
+      }
+      convexPoints = ConvexHull.computeConvexHull(convexPoints);
+      // 保证首尾相接
+      convexPoints.push(convexPoints[0]);
+      CurveRenderer.renderSolidLineMultiple(
+        convexPoints.map((point) => Renderer.transformWorld2View(point)),
         edgeColor,
         2 * Camera.currentScale,
       );
-      // 画箭头
-      if (edge.arrow === "inner") {
-        //
-        EdgeRenderer.renderArrowHead(
-          // Renderer.transformWorld2View(toCenterPoint),
-          toCenterPoint,
-          toCenterPoint.subtract(targetPoint).normalize(),
-          15,
-          edgeColor,
-        );
-      } else if (edge.arrow === "outer") {
-        //
-        EdgeRenderer.renderArrowHead(
-          // Renderer.transformWorld2View(targetPoint),
-          targetPoint,
-          targetPoint.subtract(toCenterPoint).normalize(),
-          15,
-          edgeColor,
-        );
-      }
     }
-    // 凸包渲染
-    let convexPoints: Vector[] = [];
-    targetNodes.map((node) => {
-      const nodeRectangle = node.collisionBox.getRectangle().expandFromCenter(20);
-      convexPoints.push(nodeRectangle.leftTop);
-      convexPoints.push(nodeRectangle.rightTop);
-      convexPoints.push(nodeRectangle.rightBottom);
-      convexPoints.push(nodeRectangle.leftBottom);
-    });
-    if (edge.text !== "") {
-      const textRectangle = edge.textRectangle.expandFromCenter(20);
-      convexPoints.push(textRectangle.leftTop);
-      convexPoints.push(textRectangle.rightTop);
-      convexPoints.push(textRectangle.rightBottom);
-      convexPoints.push(textRectangle.leftBottom);
-    }
-    convexPoints = ConvexHull.computeConvexHull(convexPoints);
-    // 保证首尾相接
-    convexPoints.push(convexPoints[0]);
-    CurveRenderer.renderSolidLineMultiple(
-      convexPoints.map((point) => Renderer.transformWorld2View(point)),
-      edgeColor,
-      2 * Camera.currentScale,
-    );
   }
 }
