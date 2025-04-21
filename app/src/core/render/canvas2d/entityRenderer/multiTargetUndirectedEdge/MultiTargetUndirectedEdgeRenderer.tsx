@@ -123,8 +123,8 @@ export namespace MultiTargetUndirectedEdgeRenderer {
       convexPoints.push(convexPoints[0]);
       CurveRenderer.renderSolidLineMultiple(
         convexPoints.map((point) => Renderer.transformWorld2View(point)),
-        edgeColor,
-        2 * Camera.currentScale,
+        edgeColor.toNewAlpha(0.5),
+        8 * Camera.currentScale,
       );
     }
   }
