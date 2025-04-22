@@ -367,7 +367,7 @@ settings:
   doubleClickMiddleMouseButton:
     title: 双击中键鼠标
     description: |
-      将滚轮键快速按下两次时执行的操作。默认时重置视野。
+      将滚轮键快速按下两次时执行的操作。默认是重置视野。
       关闭此选项，可以防止误触发。
     options:
       adjustCamera: 调整视野

@@ -829,7 +829,7 @@ export namespace Renderer {
         Controller.pressingKeySet.has("d"))
     ) {
       TextRenderer.renderOneLineText(
-        "      方向键移动视野被禁止，可通过快捷键松或设置界面送开“手刹”",
+        "      方向键移动视野被禁止，可通过快捷键或设置界面松开“手刹”",
         new Vector(margin, Renderer.h - 60),
         15,
         StageStyleManager.currentStyle.effects.flash,
