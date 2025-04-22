@@ -431,18 +431,22 @@ settings:
       zoom: Zoom
       move: Vertical Movement
       moveX: Horizontal Movement
+      none: No operation
   mouseWheelWithShiftMode:
     title: Mouse Wheel Mode with Shift Key
     options:
       zoom: Zoom
       move: Vertical Movement
       moveX: Horizontal Movement
+      none: No operation
   mouseWheelWithCtrlMode:
     title: Mouse Wheel Mode with Ctrl (Control) Key
     options:
       zoom: Zoom
       move: Vertical Movement
       moveX: Horizontal Movement
+      none: No operation
+    description: "Hint: Here, Ctrl stands for Control\n"
   rectangleSelectWhenLeft:
     title: Strategy for Selecting to the Left
     description: |
@@ -518,7 +522,24 @@ settings:
       zoom: Zooming
       move: Vertical Movement
       moveX: Horizontal Movement
+      none: No operation
     title: Mouse Wheel Mode with Alt (Option) Key
+  macTrackpadScaleSensitivity:
+    title: MacBook trackpad two-finger zoom sensitivity
+    description: The larger the value, the faster the scaling speed
+  mouseSideWheelMode:
+    title: Mouse Side Scroll Wheel Mode
+    description: "The side scroll wheel is the roller on the thumb\n"
+    options:
+      zoom: Zoom
+      move: Vertical movement
+      moveX: Horizontal movement
+      none: No operation
+      cameraMoveToMouse: Move the view to the mouse position
+  macMouseWheelIsSmoothed:
+    description: Some MacBook mouse wheels are smooth, while others trigger a scroll
+      with each click, which may depend on whether you have installed mouse modification
+      software like Mos
 plugins:
   welcome:
     title: Welcome to the Plugin System
@@ -880,6 +901,21 @@ keyBinds:
       with a minimum value of 0 \nIf your keyboard does not have a pure minus key
       on the keypad, you can use the minus and underline key on the right side of
       the upper digit 0 key instead\n"
+  openFile:
+    title: Open File
+    description: "Select a previously saved JSON file and open it.\n"
+  newDraft:
+    title: Create New Draft
+    description: "Create a new draft file and switch to this file.\nIf the current
+      file is not saved, you cannot switch.\n"
+  saveFile:
+    description: "Save the current project file, if the current file is a draft, then
+      save it as a new file.\n"
+    title: Save File
+  masterBrakeCheckout:
+    title: 'Handbrake: Open/Close Camera Movement Controlled by Button'
+  checkoutLeftMouseToConnectAndCuttingOnlyPressed:
+    description: "Release to switch back to the default mouse mode\n"
 effects:
   RectangleLittleNoteEffect:
     title: Rectangle Glimmer Hint Effect
@@ -891,6 +927,7 @@ effects:
   RectangleRenderEffect:
     description: "Used to display the alignment position of the entity snapping target
       while dragging.\n"
+    title: Rectangle Position Prompt Effect
   RectangleSplitTwoPartEffect:
     description: "Exists only for chop effects (or possibly four parts)\n"
     title: Rectangle Chop Two-Part Effect
@@ -902,11 +939,74 @@ effects:
     description: "Dashed snap lines displayed when dragging\n"
   LineCuttingEffect:
     description: "When cutting, a blade light like the Fruit Ninja will appear.\n"
+    title: Blade light during cutting
   LineEffect:
     title: Line Fade Out Effect
   PenStrokeDeletedEffect:
     title: Pen Stroke Delete Effect
     description: "When a pen stroke is deleted, a fade away effect will appear.\n"
+  CircleChangeRadiusEffect:
+    title: CircleChangeRadiusEffect
+    description: "Enhance the ripple effect after selecting the particle\n"
+  TextRiseEffect:
+    description: "Floating effect on text nodes, used for highlighting important information\n"
+    title: Text Floating Effect
+  EntityCreateDashEffect:
+    title: Dust condensation effect during entity creation
+    description: "When an entity is created, dust condensation appears around the
+      entity\nDue to its lack of aesthetic appeal, it has been abandoned and will
+      not appear\n"
+  CircleFlameEffect:
+    description: "Existing in various special effect details, such as the midpoint
+      flicker when pre-cutting straight lines and cutting through solid rectangles,
+      and when cutting through connections\n"
+  EntityCreateFlashEffect:
+    title: Entity border glow effect
+    description: "In situations such as rotating the entity tree with Ctrl+scroll
+      wheel, zooming in on images, creating nodes, etc.\nIf the rendering performance
+      is poor, it is recommended to turn off this option\n"
+  PointDashEffect:
+    description: "Due to the influence of universal gravitation on performance, this
+      effect has been turned off and will not appear.\n"
+  ZapLineEffect:
+    title: (Basic Effects) Zap Line Effect
+    description: "This effect is a component of other effects; if it is turned off,
+      other effects may be affected.\n"
+  TechLineEffect:
+    description: "This effect is a component of other effects; if it is turned off,
+      other effects may be affected.\n"
+  TextRaiseEffectLocated:
+    title: ''
+    description: "Text node floating upward effect, used for prompting important information\n"
+  ViewOutlineFlashEffect:
+    title: ''
+  ViewFlashEffect:
+    description: "Full-screen flash white/flash black effects,\nplease turn off this
+      option for photosensitive epilepsy patients.\n"
+  MouseTipFeedbackEffect:
+    title: Mouse Interaction Feedback Effect
+    description: "When the mouse performs operations such as zooming the view, an
+      effect prompt will appear next to the mouse, such as a circle that expands or
+      shrinks.\n"
+  EntityShakeEffect:
+    title: Entity judder effect
+  EntityShrinkEffect:
+    description: "Press the Delete key to delete the entity, the entity will shrink
+      and disappear\n"
+    title: Entity Shrink and Disappear Effect
+  ExplodeDashEffect:
+    title: Dust Explosion Effect
+    description: ''
+  EntityCreateLineEffect:
+    title: Entity emits circuit board-like line radiation effect
+    description: "Already abandoned, will not appear\n"
+  EntityDashTipEffect:
+    description: "When entering or ending input within an entity, dust particles shake
+      around the entity.\n"
+  EntityJumpMoveEffect:
+    title: Entity's jump move effect
+    description: "When an entity performs a jump move, a symbolic jump arc shadow
+      appears\n to represent the level crossing movement along the pseudo Z-axis.\n"
 keyBindsGroup:
   ui:
     title: UI Controls
@@ -923,3 +1023,21 @@ keyBindsGroup:
   createTextNode:
     description: "When pressed, create a text node in its current position.\n"
     title: Create Text Node
+  basic:
+    title: Basic Shortcut Keys
+    description: "Basic shortcut keys for commonly used functions\n"
+  otherKeys:
+    title: Unclassified Shortcuts
+    description: "Unclassified shortcuts.\nIf invalid shortcut items without translation
+      are found here, it may be due to old shortcuts remaining after version upgrades,\n
+      which can be manually cleaned up by deleting the corresponding items in the
+      keybinds.json file.\n"
+  camera:
+    title: Camera Control
+    description: "Used for controlling camera movement and zoom\n"
+  app:
+    title: Application Control
+    description: "Some functions used to control the application\n"
+  section:
+    description: "Functions about Section Box.\n"
+    title: Section Box
