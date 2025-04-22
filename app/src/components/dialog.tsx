@@ -103,7 +103,9 @@ export namespace Dialog {
       setTimeout(() => {
         setShow(true);
         const input = document.querySelector(".dialog-input") as HTMLInputElement;
-        input.focus();
+        if (input !== null) {
+          input.focus();
+        }
       }, 50);
 
       return () => {
