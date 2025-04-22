@@ -949,6 +949,59 @@ export namespace StageManager {
     }
   }
 
+  /**
+   * 有向边转无向边
+   */
+  export function switchEdgeToUndirectedEdge() {
+    const prepareDeleteLineEdge: LineEdge[] = [];
+    for (const edge of getLineEdges()) {
+      if (edge instanceof LineEdge && edge.isSelected) {
+        // 删除这个连线，并准备创建
+        prepareDeleteLineEdge.push(edge);
+      }
+    }
+    for (const edge of prepareDeleteLineEdge) {
+      if (edge.target === edge.source) {
+        continue;
+      }
+      deleteEdge(edge);
+      const undirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity([edge.target, edge.source]);
+      undirectedEdge.text = edge.text;
+      undirectedEdge.color = edge.color.clone();
+      undirectedEdge.arrow = "outer";
+      // undirectedEdge.isSelected = true;
+      addAssociation(undirectedEdge);
+    }
+    StageObjectSelectCounter.update();
+  }
+  /**
+   * 无向边转有向边
+   */
+  export function switchUndirectedEdgeToEdge() {
+    const prepareDeleteUndirectedEdge: MultiTargetUndirectedEdge[] = [];
+    for (const edge of getAssociations()) {
+      if (edge instanceof MultiTargetUndirectedEdge && edge.isSelected) {
+        // 删除这个连线，并准备创建
+        prepareDeleteUndirectedEdge.push(edge);
+      }
+    }
+    for (const edge of prepareDeleteUndirectedEdge) {
+      if (edge.targetUUIDs.length !== 2) {
+        continue;
+      }
+
+      const [fromNode, toNode] = getEntitiesByUUIDs(edge.targetUUIDs);
+      if (fromNode && toNode && fromNode instanceof ConnectableEntity && toNode instanceof ConnectableEntity) {
+        const lineEdge = LineEdge.fromTwoEntity(fromNode, toNode);
+        lineEdge.text = edge.text;
+        lineEdge.color = edge.color.clone();
+        deleteAssociation(edge);
+        addLineEdge(lineEdge);
+        updateReferences();
+      }
+    }
+  }
+
   export function addSelectedCREdgeControlPoint() {
     const selectedCREdge = StageManager.getSelectedAssociations().filter(
       (edge) => edge instanceof CublicCatmullRomSplineEdge,

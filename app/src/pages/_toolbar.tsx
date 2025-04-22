@@ -12,18 +12,19 @@ import {
   Maximize2,
   Minimize2,
   MousePointer,
+  MoveUpRight,
   Package,
   PaintBucket,
   Palette,
   Pencil,
   RefreshCcw,
   Repeat,
-  Repeat2,
   SaveAll,
   Shrink,
   Slash,
   Spline,
   Square,
+  Squircle,
   Tag,
   Trash2,
   Waypoints,
@@ -322,6 +323,14 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       {isHaveSelectedMultiTargetEdge && (
         <ToolbarGroup groupTitle="多源无向边">
           <ToolbarItem
+            description="切换为有向边"
+            icon={<MoveUpRight />}
+            handleFunction={() => {
+              StageManager.switchUndirectedEdgeToEdge();
+              StageHistoryManager.recordStep();
+            }}
+          />
+          <ToolbarItem
             description="箭头外向"
             icon={<Maximize2 />}
             handleFunction={() => {
@@ -362,7 +371,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           />
           <ToolbarItem
             description="转换渲染形态"
-            icon={<Repeat2 />}
+            icon={<Squircle />}
             handleFunction={() => {
               const selectedMTUEdge = StageManager.getSelectedAssociations().filter(
                 (edge) => edge instanceof MultiTargetUndirectedEdge,
@@ -393,10 +402,18 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             }}
           />
           <ToolbarItem
-            description="切换为CR曲线"
+            description="切换为CR曲线（还在开发中，不推荐使用）"
             icon={<Spline />}
             handleFunction={() => {
               StageManager.switchLineEdgeToCrEdge();
+              StageHistoryManager.recordStep();
+            }}
+          />
+          <ToolbarItem
+            description="切换为无向边"
+            icon={<ChevronsLeftRightEllipsis />}
+            handleFunction={() => {
+              StageManager.switchEdgeToUndirectedEdge();
               StageHistoryManager.recordStep();
             }}
           />
