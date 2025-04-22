@@ -66,6 +66,9 @@ export namespace KeyboardOnlyTreeEngine {
         // 更新选择状态
         rootNodeParent.isSelected = false;
         newNode.isSelected = true;
+        // if (Camera.cameraFollowsSelectedNodeOnArrowKeys) {
+        //   Camera.bombMove(newNode.collisionBox.getRectangle().center);
+        // }
       }
     }
     // 特效
@@ -122,6 +125,9 @@ export namespace KeyboardOnlyTreeEngine {
         // 更新选择状态
         rootNodeParent.isSelected = false;
         newNode.isSelected = true;
+        // if (Camera.cameraFollowsSelectedNodeOnArrowKeys) {
+        //   Camera.bombMove(newNode.collisionBox.getRectangle().center);
+        // }
       }
     }
     Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(parent, newNode));

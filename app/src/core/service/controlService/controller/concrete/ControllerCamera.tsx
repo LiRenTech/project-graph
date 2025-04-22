@@ -468,20 +468,12 @@ function moveCameraByMouseSideWheel(event: WheelEvent) {
   if (event.deltaX === 0) {
     return;
   }
-  console.log("触发侧边");
   if (Camera.mouseSideWheelMode === "zoom") {
     zoomCameraByMouseSideWheel(event);
   } else if (Camera.mouseSideWheelMode === "move") {
     moveYCameraByMouseSideWheel(event);
   } else if (Camera.mouseSideWheelMode === "moveX") {
     moveXCameraByMouseSideWheel(event);
-    // if (event.deltaX > 0) {
-    //   Camera.location = Camera.location.add(new Vector((Camera.moveAmplitude * 50) / Camera.currentScale, 0));
-    //   Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveRight"));
-    // } else if (event.deltaX < 0) {
-    //   Camera.location = Camera.location.add(new Vector((-Camera.moveAmplitude * 50) / Camera.currentScale, 0));
-    //   Stage.effectMachine.addEffect(MouseTipFeedbackEffect.default("moveLeft"));
-    // }
   } else if (Camera.mouseSideWheelMode === "none") {
     return;
   } else if (Camera.mouseSideWheelMode === "cameraMoveToMouse") {

@@ -90,7 +90,7 @@ export namespace SelectChangeEngine {
       const color = StageStyleManager.currentStyle.effects.successShadow;
 
       if (Camera.cameraFollowsSelectedNodeOnArrowKeys) {
-        Camera.location = newSelectNodeRect.center;
+        Camera.bombMove(newSelectNodeRect.center);
       }
 
       // 节点切换移动的特效有待专门写一个
