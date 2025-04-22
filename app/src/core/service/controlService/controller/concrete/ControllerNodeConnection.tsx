@@ -1,4 +1,3 @@
-import { v4 } from "uuid";
 import { CursorNameEnum } from "../../../../../types/cursors";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
@@ -14,6 +13,8 @@ import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { addTextNodeByLocation } from "./utilsControl";
 import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
+import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
+import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/stageNodeAdder";
 
 /**
  * 连线控制器
@@ -50,12 +51,12 @@ class ControllerNodeConnectionClass extends ControllerClass {
       const clickedConnectableEntity: ConnectableEntity | null =
         StageManager.findConnectableEntityByLocation(pressWorldLocation);
       if (clickedConnectableEntity === null) {
-        // 在这里创建一个质点
-        const connectPoint = new ConnectPoint({
-          uuid: v4(),
-          location: [pressWorldLocation.x, pressWorldLocation.y],
-        });
-        StageManager.addConnectPoint(connectPoint);
+        // 是否是在Section内部双击
+        const sections = SectionMethods.getSectionsByInnerLocation(pressWorldLocation);
+
+        const pointUUID = StageNodeAdder.addConnectPoint(pressWorldLocation, sections);
+        const connectPoint = StageManager.getConnectableEntityByUUID(pointUUID) as ConnectPoint;
+
         for (const fromEntity of this.connectFromEntities) {
           StageManager.connectEntity(fromEntity, connectPoint);
           this.addConnectEffect(fromEntity, connectPoint);

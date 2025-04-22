@@ -143,6 +143,7 @@ export namespace StageNodeAdder {
     StageManager.addConnectPoint(connectPoint);
     for (const section of addToSections) {
       section.children.push(connectPoint);
+      section.childrenUUIDs.push(connectPoint.uuid);
       section.adjustLocationAndSize();
       Stage.effectMachine.addEffect(
         new RectanglePushInEffect(
