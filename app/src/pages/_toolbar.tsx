@@ -10,6 +10,7 @@ import {
   GitBranchPlus,
   LayoutDashboard,
   Maximize2,
+  Merge,
   Minimize2,
   MousePointer,
   MoveUpRight,
@@ -24,7 +25,7 @@ import {
   Slash,
   Spline,
   Square,
-  Squircle,
+  SquareDashed,
   Tag,
   Trash2,
   Waypoints,
@@ -59,6 +60,7 @@ import ColorPanel from "./_popup_panel/_color_panel";
 import GenerateNodePanel from "./_popup_panel/_generate_node_panel";
 import EdgeExtremePointPanel from "./_popup_panel/_edge_extreme_point_panel";
 import { MultiTargetUndirectedEdge } from "../core/stage/stageObject/association/MutiTargetUndirectedEdge";
+import { ConnectableEntity } from "../core/stage/stageObject/abstract/ConnectableEntity";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -371,7 +373,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           />
           <ToolbarItem
             description="转换渲染形态"
-            icon={<Squircle />}
+            icon={<RefreshCcw />}
             handleFunction={() => {
               const selectedMTUEdge = StageManager.getSelectedAssociations().filter(
                 (edge) => edge instanceof MultiTargetUndirectedEdge,
@@ -476,6 +478,39 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<Square />}
             handleFunction={() => {
               StageManager.packEntityToSectionBySelected();
+            }}
+          />
+
+          <ToolbarItem
+            description="创建无向边(凸包型)"
+            icon={<SquareDashed />}
+            handleFunction={async () => {
+              const selectedNodes = StageManager.getSelectedEntities().filter(
+                (node) => node instanceof ConnectableEntity,
+              );
+              if (selectedNodes.length <= 1) {
+                Stage.effectMachine.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
+                return;
+              }
+              const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
+              multiTargetUndirectedEdge.text = "group";
+              multiTargetUndirectedEdge.renderType = "convex";
+              StageManager.addAssociation(multiTargetUndirectedEdge);
+            }}
+          />
+          <ToolbarItem
+            description="创建无向边(连线型)"
+            icon={<Merge />}
+            handleFunction={async () => {
+              const selectedNodes = StageManager.getSelectedEntities().filter(
+                (node) => node instanceof ConnectableEntity,
+              );
+              if (selectedNodes.length <= 1) {
+                Stage.effectMachine.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
+                return;
+              }
+              const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
+              StageManager.addAssociation(multiTargetUndirectedEdge);
             }}
           />
           <ToolbarItem
