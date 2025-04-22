@@ -24,12 +24,18 @@ export default function InfoPage() {
       return newList;
     });
   };
+  // pointermove 无法区分鼠标和触摸板（windows）
+  // const onPointerMove = (e: PointerEvent) => {
+  //   console.log(e);
+  // };
 
   useEffect(() => {
     window.addEventListener("wheel", onMouseWheel);
+    // window.addEventListener("pointermove", onPointerMove);
 
     return () => {
       window.removeEventListener("wheel", onMouseWheel);
+      // window.removeEventListener("pointermove", onPointerMove);
     };
   }, []);
 
