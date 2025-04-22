@@ -43,9 +43,9 @@ about:
   - 靈感來源
   - 未支持深色風格的 FigJam
   - 所長林超的畫分析框架詳解視頻
-  - 《數據結構與演算法》中的拓撲排序、圖論
-  - “頭腦風暴法”
-  - 遊戲《Minecraft》中的“命令方塊”
+  - 《數據結構與演算法》中的拓撲排序、圖論，以及狀態機、集合論的概念
+  - 頭腦風暴法、認知負荷理論、卡片創意法
+  - 遊戲《Minecraft》中的“命令方塊”、跨世界預覽的地獄傳送門模組
   - 遊戲《水果忍者》中揮刀的動畫效果
   - 遊戲《Mindustry》中的工廠流水線設計成邏輯節點
   - 狀態機的概念
@@ -66,7 +66,7 @@ about:
   updater:
     available: 新版本
     downloading: 下載中
-    checkingUpdate: 檢查新版本中
+    checkingUpdate: 檢查新版本中……
     checkUpdateFail: 無法獲取最新版本的訊息，請檢查網路
 settings:
   tabs:
@@ -82,6 +82,8 @@ settings:
     sounds: 聲音
     keybinds: 快捷鍵
     plugins: 插件
+    scripts: 腳本
+    themes: 主題
   language:
     title: 語言
     options:
@@ -97,7 +99,7 @@ settings:
   isRenderCenterPointer:
     title: 显示中心十字准星
     description: |
-      开启后，画布中心会显示一个十字准星，用于用于指示快捷键创建节点的位置
+      開啟後，畫布中心會顯示一个十字準星，用於指示快捷鍵創建節點的位置
   showGrid:
     title: 顯示網格
   showBackgroundHorizontalLines:
@@ -111,11 +113,11 @@ settings:
     description: |
       這些背景點是水平線和垂直線的交點，實現洞洞板的效果
   showBackgroundCartesian:
-    title: 显示背景直角坐标系
+    title: 顯示背景直角坐標系
     description: |
-      开启后，将会显示x轴、y轴和刻度数字
-      可以用于观测一些节点的绝对坐标位置
-      也能很直观的知道当前的视野缩放倍数
+      開啟後，將會顯示x軸、y軸和刻度數字
+      可以用於觀測一些節點的絕對座標位置
+      也能很直觀的知道當前的視野縮放倍數
   windowBackgroundAlpha:
     title: 視窗背景透明度
   showDebug:
@@ -127,17 +129,17 @@ settings:
   enableTagTextNodesBigDisplay:
     title: 标签文本节点巨大化显示
     description: |
-      开启后，标签文本节点的显示在画布缩小到广袤的全局视野时，
-      标签会巨大化显示，以便更容易辨识整个文件的布局分布
+      開啟后，標籤文本節點的顯示在攝影機缩小到廣袤的全局視野时，
+      標籤会巨大化顯示，以便更容易識別整个文件的布局分布
   alwaysShowDetails:
     title: 始終顯示節點詳細資訊
     description: |
       開啟後，無需滑鼠移動到節點上時，才顯示節點的詳細資訊。
   nodeDetailsPanel:
-    title: 节点详细信息面板
+    title: 節點詳細資訊面板
     options:
       small: 小型面板
-      vditor: vditor markdown编辑器
+      vditor: vditor markdown編輯器
   useNativeTitleBar:
     title: 使用原生標題列（需要重新啟動應用程式）
     description: |
@@ -149,33 +151,33 @@ settings:
       僅作顯示層面的替換，不會影響真實數據
       回饋完畢後可再關閉，復原
   entityDetailsFontSize:
-    title: 实体详细信息字体大小
+    title: 實體詳細資訊字體大小
     description: |
-      单位为像素
+      單位為像素
   entityDetailsLinesLimit:
-    title: 实体详细信息行数限制
+    title: 實體詳細資訊行數限制
     description: |
-      限制实体详细信息的最大行数，超过限制的部分将被省略
+      限制實體詳細資訊的最大行數，超過限制的部分將被省略
   entityDetailsWidthLimit:
-    title: 实体详细信息宽度限制
+    title: 實體詳細資訊寬度限制
     description: |
-      限制实体详细信息的最大宽度，超过限制的部分将被换行
+      限制實體詳細資訊的最大寬度，超過限制的部分將被換行
   limitCameraInCycleSpace:
-    title: 开启循环空间限制摄像机移动
+    title: 開啟循環空間限制攝影機移動
     description: |
-      开启后，摄像机只能在一个矩形区域内移动
-      可以防止摄像机移动到很远的地方迷路
-      该矩形区域会形成一个循环空间，类似于无边贪吃蛇游戏中的地图
-      走到最上面会回到最下面，走到最左边会回到最右边
-      注意：该功能还在实验阶段
+      開啟後，攝影機只能在一個矩形區域內移動
+      可以防止攝影機移動到很遠的地方迷路
+      該舉行區域會形成一個循環空間，類似於無邊貪吃蛇遊戲中的地圖
+      走到最上面會回到最下面，走到最左邊會回到最右邊
+      注意：該功能還在實驗階段
   cameraCycleSpaceSizeX:
-    title: 循环空间宽度
+    title: 循環空間寬度
     description: |
-      循环空间的宽度，单位为像素
+      循環空間的寬度，單位為像素
   cameraCycleSpaceSizeY:
-    title: 循环空间高度
+    title: 循環空間高度
     description: |
-      循环空间的高度，单位为像素
+      循環空間的高度，單位為像素
   renderEffect:
     title: 渲染特效
     description: 是否渲染特效，如果卡頓可以關閉
@@ -185,11 +187,11 @@ settings:
       這個數值決定了您最多ctrl+z撤銷的次數
       如果您的電腦記憶體非常少，可以適當調小這個值
   textIntegerLocationAndSizeRender:
-    title: 文本整数位置和大小渲染
+    title: 文本整數位置和大小渲染
     description: |
-      开启后，一切文字的大小和位置都是整数，以节省渲染性能。
-      但会出现文字抖动现象。建议配合视角缩放速度调整成1一起使用。
-      如果您的电脑使用体验非常卡顿，尤其是在缩放和移动的情况下，可以开启此选项。
+      開啟後，一切文字的大小和位置都是整數，以節省渲染性能。
+      但會出現文字抖動現象。建議配合視角縮放速度調整成1一起使用。
+      如果您的電腦使用體驗非常卡頓，尤其是在縮放和移動的情況下，可以開啟此選項。
   isEnableEntityCollision:
     title: 實體碰撞檢測
     description: |
@@ -201,17 +203,17 @@ settings:
     description: |
       輸入`{{i}}` 代表節點名稱會自動替換為編號，雙擊創建時可以自動累加數字。
       例如`n{{i}}` 會自動替換為`n1`, `n2`, `n3`...
-      輸入`{{date}}` 會自動替換為目前日期，雙擊創建時可以自動更新日期。
+      輸入`{{date}}` 會自動替換為目前日期，雙擊創建時可以自動更新日期。autoNamerTemplate
       輸入`{{time}}` 會自動替換為目前時間，雙擊創建時可以自動更新時間。
       可以組合使用，例如`{{i}}-{{date}}-{{time}}`
   autoNamerSectionTemplate:
     title: 自动命名分组模板
     description: |
-      输入`{{i}}` 代表节点名称会自动替换为编号，双击创建时可以自动累加数字。
-      例如`n{{i}}` 会自动替换为`n1`, `n2`, `n3`...
-      输入`{{date}}` 会自动替换为当前日期，双击创建时可以自动更新日期。
-      输入`{{time}}` 会自动替换为当前时间，双击创建时可以自动更新时间。
-      可以组合使用，例如`{{i}}-{{date}}-{{time}}`
+      輸入`{{i}}` 代表節點名稱會自動替換為編號，雙擊創建时可以自動累加數字。
+      例如`n{{i}}` 會自動替換為`n1`, `n2`, `n3`...
+      輸入`{{date}}` 會自動替換為當前日期，雙擊創建时可以自動更新日期。
+      輸入`{{time}}` 會自動替換為當前時間，雙擊創建时可以自動更新時間。
+      可以組合使用，例如`{{i}}-{{date}}-{{time}}`
   autoSaveWhenClose:
     title: 點擊視窗右上角關閉按鈕時自動儲存工程檔案
     description: |
@@ -251,30 +253,31 @@ settings:
     description: |
       《目前縮放倍數》會不斷的以一定倍率無限逼近《目標縮放倍數》
       當逼近的足夠近時（小於0.0001），會自動停止縮放
-      值为1代表縮放會立刻完成，没有中间的过渡效果
-      值为0代表縮放永遠都不会完成，可模拟锁死效果
+      值為1代表縮放會立刻完成，沒有中間的過渡效果
+      值為0代表縮放永遠都不會完成，可模擬鎖死效果
+      注意：諾您在縮放畫面時感到卡頓，請調成1
   cameraKeyboardScaleRate:
-    title: 视角缩放键盘速率
+    title: 視角縮放鍵盤速率
     description: |
-      每次通过一次按键来缩放视野时，视野的缩放倍率
-      值为0.2代表每次放大会变为原来的1.2倍，缩小为原来的0.8倍
-      值为0代表禁止通过键盘缩放
+      每次通過一次按鍵來縮放視野時，視野的縮放倍率
+      值為0.2代表每次放大會變為原來的1.2倍，縮小為原來的0.8倍
+      值為0代表禁止通過鍵盤縮放
   scaleCameraByMouseLocation:
-    title: 视角缩放根据鼠标位置
+    title: 視角縮放根據滑鼠位置
     description: |
-      开启后，缩放视角的中心点是鼠标的位置
-      关闭后，缩放视角的中心点是当前视野的中心
+      開啟後，縮放視角的中心點是滑鼠的位置
+      關閉後，縮放視角的中心點是當前視野的中心
   allowMoveCameraByWSAD:
     title: 允許使用W S A D按鍵移動視角
     description: |
       開啟後，可以使用W S A D按鍵來上下左右移動視角。
-      關閉後，只能使用鼠標來移動視角，不會造成無限滾屏的bug。
+      關閉後，只能使用滑鼠來移動視角，不會造成無限滾動的bug。
   cameraKeyboardMoveReverse:
-    title: 视角移动键盘反向
+    title: 視角移動鍵盤反向
     description: |
-      开启后，W S A D按键的移动视角方向会相反
-      原本的移动逻辑是移动悬浮在画面上的摄像机，但有人会认为是移动画布，这样就反了
-      于是就有了这个选项
+      開啟后，W S A D按鍵的移動視角方向會相反
+      原本的移動邏輯是移動懸浮在畫面上的攝影機，但有人會認為是移動畫布，這樣就反了
+      於是就有了這個選項
   allowAddCycleEdge:
     title: 允許在節點之間添加自迴圈
     description: |
@@ -321,6 +324,7 @@ settings:
       ctrlEnter: ctrl + Enter
       altEnter: alt + Enter
       shiftEnter: shift + Enter
+      space: 空白鍵
     description: |
       实际上按F2键也可以进入编辑模式，这里还可以再加选一种
   textNodeExitEditMode:
@@ -347,9 +351,11 @@ settings:
     description: |
       开启后，拖动节点并松开时会与其他节点在x轴、y轴方向对齐
   enableWindowsTouchPad:
-    title: 允许Windows系统使用触摸板操作
+    title: 允許觸控板雙指移動操作
     description: |
-      开启后，可以使用触摸板操作鼠标滚轮
+      在windows系統中，雙指上下移動會被識別為滾輪事件。
+      雙指左右移動會被識別為滑鼠橫向滾輪的滾動事件。
+      如果您是筆記型電腦操作並使用外部滑鼠，建議關閉此選項。
   mouseWheelMode:
     title: 鼠标滚轮模式
     options:
@@ -357,13 +363,13 @@ settings:
       move: 纵向移动
       moveX: 横向移动
   mouseWheelWithShiftMode:
-    title: 按住Shift时，鼠标滚轮模式
+    title: 按住 Shift 時，滑鼠滾輪模式
     options:
       zoom: 缩放
       move: 纵向移动
       moveX: 横向移动
   mouseWheelWithCtrlMode:
-    title: 按住Ctrl时，鼠标滚轮模式
+    title: 按住 Ctrl 時，滑鼠滾輪模式
     options:
       zoom: 缩放
       move: 纵向移动
@@ -371,18 +377,18 @@ settings:
   rectangleSelectWhenLeft:
     title: 向左框选的策略
     description: |
-      选择鼠标向左框选的策略，包含完全覆盖框选和非完全覆盖框选
-      完全覆盖框选是指矩形框选框必须完全覆盖实体的外接矩形
-      非完全覆盖框选是指矩形框选框只要碰到一点点实体的外接矩形，就能够选中了
+      選擇滑鼠向左框選的策略，包含完全覆蓋框選和碰撞框選
+      完全覆蓋框選是指矩形框選框必須完全覆蓋實體的外接矩形
+      碰撞框選是指矩形框選框只要碰到一點點實體的外接矩形，就能夠選中了
     options:
-      intersect: 非完全覆盖框选
+      intersect: 碰撞框選
       contain: 完全覆盖框选
   rectangleSelectWhenRight:
     title: 向右框选的策略
     description: |
       选择鼠标向右框选的策略
     options:
-      intersect: 非完全覆盖框选
+      intersect: 碰撞框選
       contain: 完全覆盖框选
   # 聲音
   cuttingLineStartSoundFile:
@@ -393,13 +399,10 @@ settings:
     title: 連接線開始的聲音文件
     description: |
       連接線右鍵按下開始時播放的聲音文件路徑
-      還有問題，在開始節點上滑動滑鼠時可能會重疊播放
   connectFindTargetSoundFile:
     title: 連接線吸附到目標上的聲音文件
     description: |
       連接線吸附到目標上時播放的聲音文件路徑
-      當前吸附聲音還有問題，
-      吸附到目標上並移動滑鼠時，會重疊很多播放
   cuttingLineReleaseSoundFile:
     title: 斬斷線釋放的聲音文件
     description: |
@@ -414,6 +417,45 @@ settings:
       latest: 穩定版
       nightly: 開發版
     title: 更新頻道
+  showTipsOnUI:
+    title: 在UI中顯示提示訊息
+    description: "開啟後，螢幕上會有一行提示訊息。\n如果你已經熟悉了軟體，建議關閉此選項以減少螢幕佔用\n更多更詳細的提示還是建議看菜單欄中的“新手引導”或官方文檔。\n"
+  compatibilityMode:
+    title: 兼容模式
+    description: "開啟後，軟體會使用另一種渲染方式\n"
+  windowCollapsingWidth:
+    title: 迷你視窗的寬度
+    description: "點擊切換至迷你視窗時，視窗的寬度，單位為像素\n"
+  isPauseRenderWhenManipulateOvertime:
+    title: 超過一定時間未操作舞台，暫停渲染
+    description: "開啟後，超過若干秒未做出舞台操作，舞台渲染會暫停，以節省CPU/GPU資源。\n"
+  isClassroomMode:
+    title: 專注模式
+    description: "用於教學、培訓等場景。\n開啟後視窗頂部按鈕會透明，滑鼠懸浮上去會恢復，可以修改進入退出專注模式的快捷鍵\n"
+  cameraFollowsSelectedNodeOnArrowKeys:
+    title: 通過方向鍵切換選中節點時，視野跟隨移動
+    description: "開啟後，使用鍵盤移動節點選擇框時，視野跟隨移動\n"
+  doubleClickMiddleMouseButton:
+    options:
+      adjustCamera: 調整視野
+      none: 無操作
+  enableDragAlignToGrid:
+    description: "建議在顯示中開啟橫向和縱向網格線，並關閉自動吸附對齊\n"
+    title: 拖動實體時，吸附到網格
+  renderOverTimeWhenNoManipulateTime:
+    description: "超過一段時間未做出舞台操作，舞台渲染會暫停，以節省CPU/GPU資源。\n必須在上述“超時暫停渲染”選項開啟後才會生效。\n"
+    title: 超時停止渲染舞台的時間（秒）
+  windowCollapsingHeight:
+    title: 迷你視窗的高度
+    description: "點擊切換至迷你視窗時，視窗的高度，單位為像素\n"
+  autoRefreshStageByMouseAction:
+    title: 滑鼠操作時自動更新舞台
+    description: "開啟後，滑鼠操作(拖拽移動視野)會自動更新舞台\n防止出現打開某個文件後，圖片未加載成功還需手動更新的情況\n"
+  ignoreTextNodeTextRenderLessThanCameraScale:
+    title: 當攝影機縮放倍數小於一定值時，不渲染文本節點內的文字
+    description: "開啟後，當攝影及縮放倍數小於一定值時，(也就是觀察宏觀狀態時)\n不渲染文本節點內的文字，這樣可以提高渲染性能，但會導致文本節點內的文字內容無法顯示\n"
+  macTrackpadAndMouseWheelDifference:
+    title: macbook 的觸控板和滑鼠滾輪區分邏輯
 app:
   unsaved: "(未保存)"
   comingSoon: 即將到來……
@@ -427,7 +469,7 @@ appMenu:
       save: 保存
       saveAs: 另存為
       recent: 最近打開
-      backup: 備份
+      backup: 手動備份
   location:
     title: 位置
     items:
@@ -436,9 +478,9 @@ appMenu:
   export:
     title: 匯出
     items:
-      exportAsSVGByAll: 匯出為SVG（全部）
-      exportAsMarkdownBySelected: 匯出為Markdown（選中）
-      exportAsPlainText: 導出爲純文本
+      exportAsSVGByAll: SVG（全部）
+      exportAsMarkdownBySelected: Markdown
+      exportAsPlainText: 純文本
   view:
     title: 視圖
     items:
@@ -477,7 +519,7 @@ keyBinds:
       僅用於測試快捷鍵自定義綁定功能
   reload:
     title: 重載應用
-    description: 重載應用，重新加載當前工程文件
+    description: "重載應用，重新加載當前工程文件\n等同於瀏覽器刷新網頁\n這個功能很危險！會導致未保存的進度丟失！\n"
   undo:
     title: 撤銷
     description: 撤銷上一次操作
@@ -535,24 +577,23 @@ keyBinds:
   switchDebugShow:
     title: 切换调试信息显示
     description: |
-      按下后，切换调试信息显示
-      调试信息显示在画布左上角，通常为开发者使用
-      开启后，画布左上角将会显示调试信息。
-      若您遇到bug截图反馈时，建议开启此选项。
+      按下後，切換調試資訊顯示
+      調試資訊顯示在畫布左上角，通常為開發者使用
+      開啟後，畫布左上角將會顯示調試資訊。
+      若您遇到bug截圖反饋時，建議開啟此選項。
   keyboardOnlyGenerateNode:
     title: 仅使用键盘生长节点
     description: |
       按下后，仅使用键盘生长节点
   masterBrakeControl:
-    title: 动力系统刹车总控制器
+    title: 腳剎：停止攝影機飄移
     description: |
-      按下后，摄像机无法移动
-      松开后，摄像机恢复正常
+      按下後，停止攝影機飄移，並將速度設置為0
   selectAll:
     title: 全选
     description: 按下后，所有节点和连线都会被选中
   createTextNodeFromCameraLocation:
-    title: 创建文本节点
+    title: 在視野中心位置創建文本節點
     description: |
       按下后，在当前视野中心的位置创建一个文本节点
       等同于鼠标双击创建节点的功能
@@ -624,10 +665,10 @@ keys:
   mouse3: 鼠標側鍵1
   mouse4: 鼠標側鍵2
   wheelup: 滾輪向上
-  arrowup: 向上箭頭
-  arrowdown: 向下箭頭
-  arrowleft: 向左箭頭
-  arrowright: 向右箭頭
+  arrowup: 上方向鍵
+  arrowdown: 下方向鍵
+  arrowleft: 左方向鍵
+  arrowright: 右方向鍵
   " ": 空格
   wheeldown: 滾輪向下
   mouse1: 鼠標中鍵
