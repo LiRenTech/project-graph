@@ -659,7 +659,7 @@ export class SecretKeysEngine {
     "e e e e e": {
       name: "详略交换",
       explain:
-        "将所有选中的文本节点的详细信息和实际内容进行交换，连按5次e，主要用于直接粘贴进来的文本内容想写入详细信息\n注：将详细信息换入节点内容后滑动滚轮可能有概率丢失文字\n",
+        "将所有选中的文本节点的详细信息和实际内容进行交换，连按5次e，主要用于直接粘贴进来的文本内容想写入详细信息\n\n注：将详细信息换入节点内容后滑动滚轮可能有概率丢失文字\n",
       func() {
         const selectedTextNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
         for (const node of selectedTextNodes) {
@@ -724,6 +724,15 @@ export class SecretKeysEngine {
           });
           StageManager.addTextNode(textNode);
         }
+      },
+    },
+    "contextmenu e r r o r": {
+      name: "手动测试",
+      explain: "触发手动报错，用于观察红色的弹窗是否正常显示、内部报错文字是否可以复制等操作",
+      func() {
+        setTimeout(() => {
+          throw new Error("您用秘籍键触发了手动报错，用于观察红色的弹窗是否正常显示、内部报错文字是否可以复制等操作");
+        }, 1000);
       },
     },
   };
