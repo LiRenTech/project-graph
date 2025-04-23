@@ -233,8 +233,8 @@ settings:
       Rendering will stop after a certain number of seconds without stage manipulation to save CPU/GPU resources.
       This will only take effect if the "Pause Rendering When Idle" option is enabled.
   ignoreTextNodeTextRenderLessThanCameraScale:
-    title: Ignore Text Node Text Rendering When Camera Scale is Less Than a Certain
-      Value
+    title: Ignore Text And Its Detailed Information Rendering Within Text Node When
+      Camera Scale is Less Than a Certain Value
     description: |
       When enabled, text within text nodes will not be rendered when the camera scale is less than a certain value (i.e., when observing the macro view).
       This can improve rendering performance but will make the text content of text nodes invisible.
