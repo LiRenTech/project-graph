@@ -57,6 +57,11 @@ export function editTextNode(clickedNode: TextNode, selectAll = true) {
       // 自动改变宽度
       ele.style.width = "auto";
       ele.style.width = `${rectView.width.toFixed(2)}px`;
+      // 自动调整它的外层框的大小
+      const fatherSections = SectionMethods.getFatherSectionsList(clickedNode);
+      for (const section of fatherSections) {
+        section.adjustLocationAndSize();
+      }
     },
     {
       position: "fixed",

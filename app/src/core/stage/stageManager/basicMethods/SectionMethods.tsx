@@ -6,6 +6,7 @@ import { StageManager } from "../StageManager";
 export namespace SectionMethods {
   /**
    * 获取一个实体的第一层所有父亲Sections
+   * 注：需要遍历所有Section
    * @param entity
    */
   export function getFatherSections(entity: Entity): Section[] {
@@ -17,6 +18,23 @@ export namespace SectionMethods {
     }
     return result;
   }
+
+  /**
+   * 获取一个实体被他包围的全部实体，一层一层的包含并以数组返回
+   * A{B{C{entity}}}
+   * 会返回 [C, B, A]
+   * @param entity
+   */
+  export function getFatherSectionsList(entity: Entity): Section[] {
+    const result = [];
+    for (const section of StageManager.getSections()) {
+      if (isEntityInSection_fake(entity, section)) {
+        result.push(section);
+      }
+    }
+    return getSortedSectionsByZ(result).reverse();
+  }
+
   /**
    * 根据一个点，获取包含这个点的所有集合（深集合优先）
    * （小集合会覆盖大集合）
@@ -120,6 +138,18 @@ export namespace SectionMethods {
    */
   export function isEntityInSection(entity: Entity, section: Section): boolean {
     return _isEntityInSection(entity, section, 0);
+  }
+
+  /**
+   * 检测某个实体的几何区域是否在某个集合内，仅计算碰撞，不看引用，所以是个假的
+   * 性能比较高
+   * @param entity
+   * @param section
+   */
+  function isEntityInSection_fake(entity: Entity, section: Section): boolean {
+    const entityBox = entity.collisionBox.getRectangle();
+    const sectionBox = section.collisionBox.getRectangle();
+    return entityBox.isCollideWithRectangle(sectionBox);
   }
 
   function _isEntityInSection(entity: Entity, section: Section, deep = 0): boolean {
