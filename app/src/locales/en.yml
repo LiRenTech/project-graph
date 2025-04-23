@@ -938,7 +938,7 @@ effects:
     description: "Dashed snap lines displayed when dragging\n"
   LineCuttingEffect:
     description: "When cutting, a blade light like the Fruit Ninja will appear.\n"
-    title: Blade light during cutting
+    title: Line Cutting Blade Light Effect
   LineEffect:
     title: Line Fade Out Effect
   PenStrokeDeletedEffect:
