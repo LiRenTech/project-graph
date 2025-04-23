@@ -227,6 +227,10 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   };
   const selectDrawingMouse = () => {
     Stage.leftMouseMode = LeftMouseModeEnum.draw;
+
+    // 自动取消选择当前状态，避免按ALT调整画笔粗细时，和移动模式下的alt跳转相互干扰
+    // StageManager.clearSelectAll();
+
     setIsDrawing(true);
     setCurrentMouseModeIndex(1);
   };

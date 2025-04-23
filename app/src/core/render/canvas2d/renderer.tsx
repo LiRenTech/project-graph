@@ -7,6 +7,7 @@ import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Settings } from "../../service/Settings";
 import { MouseLocation } from "../../service/controlService/MouseLocation";
 import { Controller } from "../../service/controlService/controller/Controller";
+import { ControllerLayerMoving } from "../../service/controlService/controller/concrete/ControllerEntityLayerMoving";
 import { KeyboardOnlyGraphEngine } from "../../service/controlService/keyboardOnlyEngine/keyboardOnlyGraphEngine";
 import { CopyEngine } from "../../service/dataManageService/copyEngine/copyEngine";
 import { StageStyleManager } from "../../service/feedbackService/stageStyle/StageStyleManager";
@@ -471,6 +472,9 @@ export namespace Renderer {
 
   /** 层级移动时，渲染移动指向线 */
   function rendererLayerMovingLine() {
+    if (!ControllerLayerMoving.isEnabled) {
+      return;
+    }
     // 有alt
     if (!Controller.pressingKeySet.has("alt")) {
       return;
