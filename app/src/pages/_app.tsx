@@ -26,6 +26,7 @@ import RecentFilesPanel from "./_fixed_panel/_recent_files_panel";
 import StartFilePanel from "./_fixed_panel/_start_file_panel";
 import TagPanel from "./_fixed_panel/_tag_panel";
 import FloatingOutlet from "./_floating_outlet";
+import { StageManager } from "../core/stage/stageManager/StageManager";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -98,21 +99,26 @@ export default function App() {
       e.preventDefault();
       try {
         if (Stage.path.getFilePath() === Stage.path.draftName) {
-          await Dialog.show({
-            title: "真的要关闭吗？",
-            content: "您现在的新建草稿没有保存，是否要关闭项目？",
-            buttons: [
-              {
-                text: "不保存",
-                onClick: async () => {
-                  await getCurrentWindow().destroy();
+          if (StageManager.isEmpty()) {
+            // 空草稿，直接关闭
+            await getCurrentWindow().destroy();
+          } else {
+            await Dialog.show({
+              title: "真的要关闭吗？",
+              content: "您现在的新建草稿没有保存，是否要关闭项目？",
+              buttons: [
+                {
+                  text: "不保存",
+                  onClick: async () => {
+                    await getCurrentWindow().destroy();
+                  },
                 },
-              },
-              {
-                text: "取消",
-              },
-            ],
-          });
+                {
+                  text: "取消",
+                },
+              ],
+            });
+          }
         } else {
           // 先检查下是否开启了关闭自动保存
           const isAutoSave = await Settings.get("autoSaveWhenClose");
