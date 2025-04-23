@@ -620,8 +620,7 @@ export namespace Renderer {
     if (CopyEngine.isVirtualClipboardEmpty()) {
       return;
     }
-    const clipboardBlue = new Color(156, 220, 254, 0.5);
-
+    const clipboardBlue = StageStyleManager.currentStyle.effects.successShadow;
     // 粘贴板有内容
     // 获取粘贴板中所有节点的外接矩形
     if (CopyEngine.copyBoardDataRectangle) {
@@ -641,8 +640,8 @@ export namespace Renderer {
             CopyEngine.copyBoardDataRectangle.location.y + CopyEngine.copyBoardDataRectangle.size.y + 20,
           ),
         ),
-        12 * Camera.currentScale,
-        new Color(255, 255, 255, 0.5),
+        12,
+        clipboardBlue,
       );
       // 画一个鼠标位置
       ShapeRenderer.renderRect(
@@ -655,8 +654,8 @@ export namespace Renderer {
         1,
       );
       // 写下标注
-      TextRenderer.renderOneLineText(
-        "ctrl+v 粘贴到鼠标位置，Esc键清空粘贴板",
+      TextRenderer.renderMultiLineText(
+        "ctrl+v 粘贴\n点击左键粘贴\nEsc键清空粘贴板取消粘贴\n跨文件粘贴请直接在软件内切换文件",
         transformWorld2View(
           new Vector(
             CopyEngine.copyBoardDataRectangle.location.x + CopyEngine.copyBoardMouseVector.x,
@@ -666,7 +665,8 @@ export namespace Renderer {
               20,
           ),
         ),
-        12 * Camera.currentScale,
+        12,
+        Infinity,
         clipboardBlue,
       );
       for (const entity of CopyEngine.copyBoardData.entities) {

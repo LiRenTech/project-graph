@@ -24,6 +24,21 @@ ControllerCopy.mousemove = (event: MouseEvent) => {
     CopyEngine.copyBoardMouseVector = offset;
   }
 };
+/**
+ * 2025年4月23日，用户希望鼠标左键点击就直接粘贴了。
+ * @param event
+ */
+ControllerCopy.mousedown = (event: MouseEvent) => {
+  if (event.button !== 0) {
+    return;
+  }
+  if (CopyEngine.copyBoardDataRectangle) {
+    // 粘贴
+    CopyEngine.paste();
+    CopyEngine.clearVirtualCopyBoardData();
+  }
+};
+
 ControllerCopy.keydown = (event: KeyboardEvent) => {
   const key = event.key.toLowerCase();
   // 首先判断是否是合法的按键
