@@ -69,7 +69,7 @@ export class Line extends Shape {
   }
 
   isPointIn(point: Vector): boolean {
-    return this.isPointNearLine(point);
+    return this.isPointNearLine(point, 12);
   }
 
   isCollideWithRectangle(rectangle: Rectangle): boolean {

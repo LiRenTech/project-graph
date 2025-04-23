@@ -486,6 +486,11 @@ export namespace Renderer {
     if (StageManager.getSelectedEntities().length === 0) {
       return;
     }
+    let lineWidth = 8;
+    if (Controller.isMouseDown[0]) {
+      lineWidth = 16;
+    }
+
     const selectedEntities = StageManager.getSelectedEntities();
     for (const selectedEntity of selectedEntities) {
       const startLocation = selectedEntity.collisionBox.getRectangle().center;
@@ -498,7 +503,7 @@ export namespace Renderer {
         transformWorld2View(endLocation),
         Color.Transparent,
         new Color(0, 0, 0, 0.2),
-        8 * Camera.currentScale,
+        lineWidth * Camera.currentScale,
       );
       CurveRenderer.renderGradientBezierCurve(
         new CubicBezierCurve(
@@ -509,7 +514,7 @@ export namespace Renderer {
         ),
         StageStyleManager.currentStyle.CollideBoxPreSelected.toTransparent(),
         StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
-        8 * Camera.currentScale,
+        lineWidth * Camera.currentScale,
       );
       // 画箭头
       const arrowLen = 10 + distance * 0.01;
@@ -521,7 +526,7 @@ export namespace Renderer {
           transformWorld2View(endLocation.add(new Vector(-arrowLen, -arrowLen * 2))),
         ),
         StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
-        8 * Camera.currentScale,
+        lineWidth * Camera.currentScale,
       );
       CurveRenderer.renderBezierCurve(
         new CubicBezierCurve(
@@ -531,7 +536,7 @@ export namespace Renderer {
           transformWorld2View(endLocation.add(new Vector(arrowLen, -arrowLen * 2))),
         ),
         StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
-        8 * Camera.currentScale,
+        lineWidth * Camera.currentScale,
       );
     }
     TextRenderer.renderTextFromCenter(

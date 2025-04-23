@@ -42,7 +42,7 @@ export namespace CollisionBoxRenderer {
           Renderer.transformWorld2View(shape.start),
           Renderer.transformWorld2View(shape.end),
           color,
-          5 * 2 * Camera.currentScale,
+          12 * 2 * Camera.currentScale,
         );
       } else if (shape instanceof SymmetryCurve) {
         // shape.endDirection = shape.endDirection.normalize();
