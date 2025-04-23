@@ -188,10 +188,15 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
   public renderShiftingState(edge: LineEdge): void {
     const shiftingMidPoint = edge.shiftingMidPoint;
     // 从source.Center到shiftingMidPoint的线
-    const startLine = new Line(edge.source.collisionBox.getRectangle().center, shiftingMidPoint);
-    const endLine = new Line(shiftingMidPoint, edge.target.collisionBox.getRectangle().center);
-    const startPoint = edge.source.collisionBox.getRectangle().getLineIntersectionPoint(startLine);
-    const endPoint = edge.target.collisionBox.getRectangle().getLineIntersectionPoint(endLine);
+    const sourceRectangle = edge.source.collisionBox.getRectangle();
+    const targetRectangle = edge.target.collisionBox.getRectangle();
+    const startLine = new Line(
+      sourceRectangle.getInnerLocationByRateVector(edge.sourceRectangleRate),
+      shiftingMidPoint,
+    );
+    const endLine = new Line(shiftingMidPoint, targetRectangle.getInnerLocationByRateVector(edge.targetRectangleRate));
+    const startPoint = sourceRectangle.getLineIntersectionPoint(startLine);
+    const endPoint = targetRectangle.getLineIntersectionPoint(endLine);
     const edgeColor = edge.color.equals(Color.Transparent)
       ? StageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
