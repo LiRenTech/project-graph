@@ -45,7 +45,7 @@ class CuttingControllerClass extends ControllerClass {
   private cuttingStartLocation = Vector.getZero();
 
   public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (!(event.button == 2 || event.button == 0)) {
+    if (!(event.button == 2 || event.button == 0 || event.button == 1)) {
       return;
     }
 
@@ -56,6 +56,11 @@ class CuttingControllerClass extends ControllerClass {
     }
     // 右键按下的
     if (event.button === 2 && Stage.mouseRightDragBackground === "cut") {
+      this.mouseDownEvent(event);
+      return;
+    }
+    // 中键按下的
+    if (event.button === 1 && Stage.mouseRightDragBackground === "moveCamera") {
       this.mouseDownEvent(event);
       return;
     }
@@ -177,7 +182,7 @@ class CuttingControllerClass extends ControllerClass {
   }
 
   public mouseup: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (!(event.button == 2 || event.button == 0)) {
+    if (!(event.button == 2 || event.button == 0 || event.button == 1)) {
       return;
     }
     if (!this.isUsing) {

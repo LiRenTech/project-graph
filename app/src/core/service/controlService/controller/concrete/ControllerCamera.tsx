@@ -117,7 +117,7 @@ export class ControllerCameraClass extends ControllerClass {
       Controller.setCursorNameHook(CursorNameEnum.Grabbing);
       this.isUsingMouseGrabMove = true;
     }
-    if (event.button === 1) {
+    if (event.button === 1 && Stage.mouseRightDragBackground !== "moveCamera") {
       // 中键按下
       this.isUsingMouseGrabMove = true;
     }
@@ -152,7 +152,7 @@ export class ControllerCameraClass extends ControllerClass {
       return;
     }
     // 中键按下拖动视野
-    if (Controller.isMouseDown[1]) {
+    if (Controller.isMouseDown[1] && Stage.mouseRightDragBackground !== "moveCamera") {
       if (event.ctrlKey) {
         // ctrl键按下时,不允许移动视野
         return;
