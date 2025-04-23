@@ -517,7 +517,7 @@ settings:
   mouseWheelWithAltMode:
     description: "This feature was added on April 10, 2025.\nIssues discovered currently:
       In Windows, a screen tap is needed to control the stage after a mouse wheel
-      roll.\n"
+      roll.\nTip: Alt here is Option\n"
     options:
       zoom: Zooming
       move: Vertical Movement
@@ -737,8 +737,7 @@ keyBinds:
   masterBrakeControl:
     title: Master Brake Control for Camera Movement
     description: |
-      When pressed, the camera will be locked and unable to move.
-      Release to restore normal camera movement.
+      When pressed, the camera the camera stops drifting and sets the speed to 0
   selectAll:
     title: Select All
     description: Select all nodes and connections when pressed
