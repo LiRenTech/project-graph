@@ -17,6 +17,7 @@ import { WorldRenderUtils } from "../utilsRenderer/WorldRenderUtils";
  */
 export namespace CollisionBoxRenderer {
   export function render(collideBox: CollisionBox, color: Color) {
+    const scale = Camera.currentScale > 0.02 ? Camera.currentScale : Camera.currentScale * 20;
     for (const shape of collideBox.shapeList) {
       if (shape instanceof Rectangle) {
         ShapeRenderer.renderRect(
@@ -26,8 +27,8 @@ export namespace CollisionBoxRenderer {
           ),
           Color.Transparent,
           color,
-          8 * Camera.currentScale,
-          16 * Camera.currentScale,
+          8 * scale,
+          16 * scale,
         );
       } else if (shape instanceof Circle) {
         ShapeRenderer.renderCircle(
@@ -35,14 +36,14 @@ export namespace CollisionBoxRenderer {
           (shape.radius + 7.5) * Camera.currentScale,
           Color.Transparent,
           color,
-          10 * Camera.currentScale,
+          10 * scale,
         );
       } else if (shape instanceof Line) {
         CurveRenderer.renderSolidLine(
           Renderer.transformWorld2View(shape.start),
           Renderer.transformWorld2View(shape.end),
           color,
-          12 * 2 * Camera.currentScale,
+          12 * 2 * scale,
         );
       } else if (shape instanceof SymmetryCurve) {
         // shape.endDirection = shape.endDirection.normalize();
