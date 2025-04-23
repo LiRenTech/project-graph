@@ -54,7 +54,7 @@ Project Graph is an open-source project that aims to provide a next-generation n
 
 ## 📥 Installation
 
-Refer to [Documentation](https://project-graph.top/installation)
+Refer to [Documentation](https://project-graph.top/docs/app#%E5%AE%89%E8%A3%85)
 
 **System Requirements**:
 
