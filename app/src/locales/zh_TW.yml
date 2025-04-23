@@ -561,6 +561,73 @@ appMenu:
       fullscreen: 全螢幕
 
       cancelFullscreen: 退出全螢幕
+
+toolbar:
+  pinnedTools:
+    title: 常駐工具
+    items:
+      generateTextNodeByText: 透過文本生成節點
+      autoFillColorSettings: 設置實體創建時自動填充的顏色
+  stageObjects:
+    title: 舞台物件
+    items:
+      setColor: 設置舞台物件的顏色，注意要先選取再點顏色 （F6）
+      delete: 刪除選取的舞台物件
+      tag: 給舞台物件添加標籤，如果已添加則去除標籤
+  multiTargetUndirectedEdges:
+    title: 多源無向邊
+    items:
+      switchToEdge: 切換為有向邊
+      arrowExterior: 箭頭向外
+      arrowInterior: 箭頭向內
+      noArrow: 無箭頭
+      switchRenderState: 轉換渲染形態
+  edge:
+    title: 有向邊
+    items:
+      switchDirection: 反轉選取線條的方向
+      switchToCrEdge: 切換為CR曲線（仍在開發中，不建議使用）
+      switchToUndirectedEdge: 切換為無向邊
+      setExtremePoint: 設置選取線條的端點位置
+  crEdge:
+    title: CR曲線
+    items:
+      addControlPoint: 添加控制點
+      tensionIncrease: 拉緊曲線
+      tensionDecrease: 放鬆曲線
+  entity:
+    title: 實體
+    items:
+      align: 實體對齊相關
+      saveNew: 將選取的節點保存為新檔案
+      packSection: 將選取節點打包成Section（快捷鍵可自訂）
+      createMultiTargetEdgeConvex: 創建無向邊(凸包型)
+      createMultiTargetEdgeLine: 創建無向邊(連線型)
+      openPathByContent: 將實體詳細資訊第一行視為本地絕對路徑，並打開檔案/資料夾
+  imageNode:
+    title: 圖片節點
+    items:
+      refresh: 刷新選取內容(圖片加載失敗了可以選取圖片然後點這個按鈕)
+      openImage: 打開選取圖片
+  textNode:
+    title: 文本節點
+    items:
+      switchWidthAdjustMode: 切換寬度調整模式（ttt）
+      aiGenerateNewNode: AI擴展節點
+  section:
+    title: 框
+    items:
+      checkoutFolderState: 切換Section的折疊狀態（快捷鍵可自訂）
+  mouseMode:
+    title: 滑鼠模式
+    items:
+      leftMouseSelectMove: 左鍵：框選/移動/創建節點 模式
+      leftMouseDraw: 左鍵：塗鴉模式
+      leftMouseCutAndConnect: 左鍵：連接/斬斷 模式
+  drawColor:
+    title: 塗鴉筆觸顏色
+
+
 startFilePanel:
   title: 選擇啟動時自動加載的工程檔案
   tips:

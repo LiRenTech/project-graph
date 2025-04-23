@@ -5,7 +5,6 @@ import {
   ChevronsLeftRightEllipsis,
   ChevronsRightLeft,
   ClipboardPaste,
-  ClipboardX,
   FolderSymlink,
   GitBranchPlus,
   LayoutDashboard,
@@ -38,7 +37,6 @@ import { Popup } from "../components/popup";
 import { Color } from "../core/dataStruct/Color";
 import { Vector } from "../core/dataStruct/Vector";
 import { Settings } from "../core/service/Settings";
-import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { TextRiseEffect } from "../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { StageStyleManager } from "../core/service/feedbackService/stageStyle/StageStyleManager";
@@ -61,6 +59,7 @@ import GenerateNodePanel from "./_popup_panel/_generate_node_panel";
 import EdgeExtremePointPanel from "./_popup_panel/_edge_extreme_point_panel";
 import { MultiTargetUndirectedEdge } from "../core/stage/stageObject/association/MutiTargetUndirectedEdge";
 import { ConnectableEntity } from "../core/stage/stageObject/abstract/ConnectableEntity";
+import { useTranslation } from "react-i18next";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -191,8 +190,9 @@ export function PenItem({ color }: PenItemProps) {
  * @returns
  */
 export default function Toolbar({ className = "" }: { className?: string }) {
+  const { t } = useTranslation("toolbar");
+
   // 是否显示清空粘贴板
-  const [isClipboardClearShow, setIsCopyClearShow] = useState(false);
   const [isHaveSelectedStageObject, setIsHaveSelectedStageObject] = useState(false);
   const [isHaveSelectedEntity, setIsHaveSelectedEntity] = useState(false);
   const [isHaveSelectedImageNode, setIsHaveSelectedImageNode] = useState(false);
@@ -215,7 +215,6 @@ export default function Toolbar({ className = "" }: { className?: string }) {
     setIsHaveSelectedTextNode(StageObjectSelectCounter.selectedTextNodeCount > 0);
     setIsHaveSelectedSection(StageObjectSelectCounter.selectedSectionCount > 0);
     setIsHaveSelectedMultiTargetEdge(StageObjectSelectCounter.selectedMultiTargetUndirectedEdgeCount > 0);
-    setIsCopyClearShow(!CopyEngine.isVirtualClipboardEmpty());
   };
 
   const [currentMouseModeIndex, setCurrentMouseModeIndex] = useState(0);
@@ -275,48 +274,36 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   return (
     <Box className={cn("fixed bottom-2 left-1/2 flex translate-x-[-50%] gap-1.5 border-none", className)}>
       {/* 常驻工具 */}
-      <ToolbarGroup groupTitle="常驻工具">
+      <ToolbarGroup groupTitle={t("pinnedTools.title")}>
         <ToolbarItem
-          description="通过文本生成节点"
+          description={t("pinnedTools.items.generateTextNodeByText")}
           icon={<ClipboardPaste />}
           handleFunction={() => Popup.show(<GenerateNodePanel />, true)}
         />
         <ToolbarItem
-          description="设置实体创建时自动填充的颜色"
+          description={t("pinnedTools.items.autoFillColorSettings")}
           icon={<Palette />}
           handleFunction={() => Panel.show({ title: "颜色自动填充" }, <ColorAutoPanel />)}
         />
       </ToolbarGroup>
-      {/* 特殊情况的工具 */}
-      {isClipboardClearShow && (
-        <ToolbarGroup groupTitle="特殊情况的工具">
-          <ToolbarItem
-            description="清空粘贴板内容"
-            icon={<ClipboardX />}
-            handleFunction={() => {
-              CopyEngine.clearVirtualCopyBoardData();
-            }}
-          />
-        </ToolbarGroup>
-      )}
 
       {/* 舞台对象 */}
       {isHaveSelectedStageObject && (
-        <ToolbarGroup groupTitle="对象">
+        <ToolbarGroup groupTitle={t("stageObjects.title")}>
           <ToolbarItem
-            description="设置舞台对象的颜色，注意要先选中再点颜色 （F6）"
+            description={t("stageObjects.items.setColor")}
             icon={<PaintBucket />}
             handleFunction={() => Popup.show(<ColorPanel />, true)}
           />
           <ToolbarItem
-            description="删除选中的舞台对象"
+            description={t("stageObjects.items.delete")}
             icon={<Trash2 />}
             handleFunction={() => {
               StageManager.deleteSelectedStageObjects();
             }}
           />
           <ToolbarItem
-            description="给舞台对象添加标签，如果已添加则去除标签"
+            description={t("stageObjects.items.tag")}
             icon={<Tag />}
             handleFunction={() => {
               StageManager.addTagBySelected();
@@ -327,9 +314,9 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
       {/* 多源无向边 */}
       {isHaveSelectedMultiTargetEdge && (
-        <ToolbarGroup groupTitle="多源无向边">
+        <ToolbarGroup groupTitle={t("multiTargetUndirectedEdges.title")}>
           <ToolbarItem
-            description="切换为有向边"
+            description={t("multiTargetUndirectedEdges.items.switchToEdge")}
             icon={<MoveUpRight />}
             handleFunction={() => {
               StageManager.switchUndirectedEdgeToEdge();
@@ -337,7 +324,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             }}
           />
           <ToolbarItem
-            description="箭头外向"
+            description={t("multiTargetUndirectedEdges.items.arrowExterior")}
             icon={<Maximize2 />}
             handleFunction={() => {
               const selectedMTUEdge = StageManager.getSelectedAssociations().filter(
@@ -350,7 +337,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             }}
           />
           <ToolbarItem
-            description="无箭内向"
+            description={t("multiTargetUndirectedEdges.items.arrowInterior")}
             icon={<Minimize2 />}
             handleFunction={() => {
               const selectedMTUEdge = StageManager.getSelectedAssociations().filter(
@@ -363,7 +350,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             }}
           />
           <ToolbarItem
-            description="无箭头"
+            description={t("multiTargetUndirectedEdges.items.noArrow")}
             icon={<Slash />}
             handleFunction={() => {
               const selectedMTUEdge = StageManager.getSelectedAssociations().filter(
@@ -376,7 +363,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             }}
           />
           <ToolbarItem
-            description="转换渲染形态"
+            description={t("multiTargetUndirectedEdges.items.switchRenderState")}
             icon={<RefreshCcw />}
             handleFunction={() => {
               const selectedMTUEdge = StageManager.getSelectedAssociations().filter(
@@ -397,9 +384,9 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
       {/* 连线对象 */}
       {isHaveSelectedEdge && (
-        <ToolbarGroup groupTitle="有向边">
+        <ToolbarGroup groupTitle={t("edge.title")}>
           <ToolbarItem
-            description="反转选中连线方向"
+            description={t("edge.items.switchDirection")}
             icon={<Repeat />}
             handleFunction={() => {
               const selectedEdges = StageManager.getLineEdges().filter((edge) => edge.isSelected);
@@ -408,7 +395,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             }}
           />
           <ToolbarItem
-            description="切换为CR曲线（还在开发中，不推荐使用）"
+            description={t("edge.items.switchToCrEdge") + "还在开发中，不推荐使用"}
             icon={<Spline />}
             handleFunction={() => {
               StageManager.switchLineEdgeToCrEdge();
@@ -416,7 +403,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             }}
           />
           <ToolbarItem
-            description="切换为无向边"
+            description={t("edge.items.switchToUndirectedEdge")}
             icon={<ChevronsLeftRightEllipsis />}
             handleFunction={() => {
               StageManager.switchEdgeToUndirectedEdge();
@@ -425,7 +412,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           />
 
           <ToolbarItem
-            description="设置选中连线的端点位置"
+            description={t("edge.items.setExtremePoint")}
             icon={<Shrink className="rotate-45" />}
             handleFunction={() => Popup.show(<EdgeExtremePointPanel />, true)}
           />
@@ -434,9 +421,9 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
       {/* CR曲线 */}
       {isHaveSelectedCREdge && (
-        <ToolbarGroup groupTitle="CR曲线">
+        <ToolbarGroup groupTitle={t("crEdge.title")}>
           <ToolbarItem
-            description="增加控制点"
+            description={t("crEdge.items.addControlPoint")}
             icon={<GitBranchPlus />}
             handleFunction={() => {
               StageManager.addSelectedCREdgeControlPoint();
@@ -444,7 +431,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             }}
           />
           <ToolbarItem
-            description="拉紧曲线"
+            description={t("crEdge.items.tensionIncrease")}
             icon={<ChevronsRightLeft />}
             handleFunction={() => {
               StageManager.addSelectedCREdgeTension();
@@ -452,7 +439,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             }}
           />
           <ToolbarItem
-            description="放松曲线"
+            description={t("crEdge.items.tensionDecrease")}
             icon={<ChevronsLeftRightEllipsis />}
             handleFunction={() => {
               StageManager.reduceSelectedCREdgeTension();
@@ -464,21 +451,21 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
       {/* 实体 */}
       {isHaveSelectedEntity && (
-        <ToolbarGroup groupTitle="实体">
+        <ToolbarGroup groupTitle={t("entity.title")}>
           <ToolbarItem
-            description="节点对齐相关"
+            description={t("entity.items.align")}
             icon={<LayoutDashboard />}
             handleFunction={() => Popup.show(<AlignNodePanel />, true)}
           />
           <ToolbarItem
-            description="将选中的节点保存为新文件"
+            description={t("entity.items.saveNew")}
             icon={<SaveAll />}
             handleFunction={() => {
               onSaveSelectedNew();
             }}
           />
           <ToolbarItem
-            description="将选中节点打包Section（快捷键可自定义）"
+            description={t("entity.items.packSection")}
             icon={<Square />}
             handleFunction={() => {
               StageManager.packEntityToSectionBySelected();
@@ -486,7 +473,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           />
 
           <ToolbarItem
-            description="创建无向边(凸包型)"
+            description={t("entity.items.createMultiTargetEdgeConvex")}
             icon={<SquareDashed />}
             handleFunction={async () => {
               const selectedNodes = StageManager.getSelectedEntities().filter(
@@ -503,7 +490,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             }}
           />
           <ToolbarItem
-            description="创建无向边(连线型)"
+            description={t("entity.items.createMultiTargetEdgeLine")}
             icon={<Merge />}
             handleFunction={async () => {
               const selectedNodes = StageManager.getSelectedEntities().filter(
@@ -518,7 +505,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             }}
           />
           <ToolbarItem
-            description="将实体详细信息第一行视为本地绝对路径，并打开文件/文件夹"
+            description={t("entity.items.openPathByContent")}
             icon={<FolderSymlink />}
             handleFunction={async () => {
               // 打开文件或网页
@@ -530,16 +517,16 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
       {/* 图片节点 */}
       {isHaveSelectedImageNode && (
-        <ToolbarGroup groupTitle="图片">
+        <ToolbarGroup groupTitle={t("imageNode.title")}>
           <ToolbarItem
-            description="刷新选中内容(图片加载失败了可以选中图片然后点这个按钮)"
+            description={t("imageNode.items.refresh")}
             icon={<RefreshCcw />}
             handleFunction={() => {
               StageManager.refreshSelected();
             }}
           />
           <ToolbarItem
-            description="打开选中的图片"
+            description={t("imageNode.items.openImage")}
             icon={<FolderSymlink />}
             handleFunction={() => {
               openSelectedImageNode();
@@ -550,9 +537,9 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
       {/* 文本节点 */}
       {isHaveSelectedTextNode && (
-        <ToolbarGroup groupTitle="文本节点">
+        <ToolbarGroup groupTitle={t("textNode.title")}>
           <ToolbarItem
-            description="切换宽度调整策略（ttt）"
+            description={t("textNode.items.switchWidthAdjustMode")}
             icon={<WrapText />}
             handleFunction={() => {
               const selectedTextNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
@@ -568,7 +555,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             }}
           />
           <ToolbarItem
-            description="AI扩展节点，（已欠费，有待更新）"
+            description={t("textNode.items.aiGenerateNewNode") + "（已欠费，有待更新）"}
             icon={<BrainCircuit />}
             handleFunction={() => {
               StageGeneratorAI.generateNewTextNodeBySelected();
@@ -580,9 +567,9 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
       {/* 框 */}
       {isHaveSelectedSection && (
-        <ToolbarGroup groupTitle="框">
+        <ToolbarGroup groupTitle={t("section.title")}>
           <ToolbarItem
-            description="切换Section的折叠状态（快捷键可自定义）（还在开发中，暂时不推荐使用）"
+            description={t("section.items.checkoutFolderState") + "（还在开发中，暂时不推荐使用）"}
             icon={<Package />}
             handleFunction={() => {
               StageManager.sectionSwitchCollapse();
@@ -592,9 +579,9 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       )}
 
       {/* 鼠标模式 */}
-      <ToolbarSelectGroup groupTitle="鼠标模式" currentSelectIndex={currentMouseModeIndex}>
+      <ToolbarSelectGroup groupTitle={t("mouseMode.title")} currentSelectIndex={currentMouseModeIndex}>
         <ToolbarItem
-          description="左键：框选/移动/创建节点 模式"
+          description={t("mouseMode.items.leftMouseSelectMove")}
           icon={<MousePointer />}
           handleFunction={() => {
             selectSelectingMouse();
@@ -602,7 +589,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           color={nodeFillColor}
         />
         <ToolbarItem
-          description="左键：涂鸦模式"
+          description={t("mouseMode.items.leftMouseDraw")}
           icon={<Pencil />}
           handleFunction={() => {
             selectDrawingMouse();
@@ -610,7 +597,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           color={penStrokeColor}
         />
         <ToolbarItem
-          description="左键：连接/斩断 模式"
+          description={t("mouseMode.items.leftMouseCutAndConnect")}
           icon={<Waypoints />}
           handleFunction={() => {
             selectConnectingMouse();
@@ -620,7 +607,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
 
       {/* 涂鸦笔触颜色 */}
       {isDrawing && (
-        <ToolbarGroup groupTitle="涂鸦笔触颜色">
+        <ToolbarGroup groupTitle={t("drawColor.title")}>
           <PenItem color={Color.Transparent} />
           <PenItem color={Color.Green} />
           <PenItem color={Color.Red} />

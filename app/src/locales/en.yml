@@ -607,6 +607,72 @@ appMenu:
       fullscreen: Fullscreen
       cancelFullscreen: Exit Fullscreen
 
+toolbar:
+  pinnedTools:
+    title: Pinned Tools
+    items:
+      generateTextNodeByText: Generate Node by Text
+      autoFillColorSettings: Set Automatic Fill Color for Entity Creation
+  stageObjects:
+    title: Stage Objects
+    items:
+      setColor: Set Color of Selected Stage Object, Note to Select First and Then Click Color (F6)
+      delete: Delete Selected Stage Object
+      tag: Add or Remove Tags from Stage Object
+  multiTargetUndirectedEdges:
+    title: Multi-Source Undirected Edges
+    items:
+      switchToEdge: Switch to Directed Edge
+      arrowExterior: Arrow Pointing Outward
+      arrowInterior: Arrow Pointing Inward
+      noArrow: No Arrow
+      switchRenderState: Switch Render State
+  edge:
+    title: Directed Edge
+    items:
+      switchDirection: Reverse Direction of Selected Edge
+      switchToCrEdge: Switch to CR Curve (Under Development, Not Recommended for Use)
+      switchToUndirectedEdge: Switch to Undirected Edge
+      setExtremePoint: Set Position of Selected Edge Endpoints
+  crEdge:
+    title: CR Curve
+    items:
+      addControlPoint: Add Control Point
+      tensionIncrease: Tighten Curve
+      tensionDecrease: Loosen Curve
+  entity:
+    title: Entity
+    items:
+      align: Entity Alignment Options
+      saveNew: Save Selected Node as New File
+      packSection: Pack Selected Node into Section (Customizable Shortcut)
+      createMultiTargetEdgeConvex: Create Undirected Edge (Convex Hull Type)
+      createMultiTargetEdgeLine: Create Undirected Edge (Line Type)
+      openPathByContent: Open File/Folder Based on First Line of Entity Details as Local Absolute Path
+  imageNode:
+    title: Image Node
+    items:
+      refresh: Refresh Selected Content (Click this Button if Image Loading Fails)
+      openImage: Open Selected Image
+  textNode:
+    title: Text Node
+    items:
+      switchWidthAdjustMode: Switch Width Adjustment Mode (ttt)
+      aiGenerateNewNode: AI Expand Node
+  section:
+    title: Box
+    items:
+      checkoutFolderState: Toggle Section Fold State (Customizable Shortcut)
+  mouseMode:
+    title: Mouse Mode
+    items:
+      leftMouseSelectMove: Selection/Move/Create Node Mode (Left Mouse Button)
+      leftMouseDraw: Draw Mode (Left Mouse Button)
+      leftMouseCutAndConnect: Connect/Cut Mode (Left Mouse Button)
+  drawColor:
+    title: Draw Stroke Color
+
+
 startFilePanel:
   title: Select Project File to Load Automatically on Startup
   tips:
