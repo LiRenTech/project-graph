@@ -16,6 +16,8 @@ import { StageEntityMoveManager } from "../../../stage/stageManager/concreteMeth
 import { StageSectionPackManager } from "../../../stage/stageManager/concreteMethods/StageSectionPackManager";
 import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../stage/stageManager/StageManager";
+import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
+import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { CopyEngine } from "../../dataManageService/copyEngine/copyEngine";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewOutlineFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
@@ -289,6 +291,23 @@ export namespace ShortcutKeysRegister {
       })
     ).down(() => {
       StageManager.packEntityToSectionBySelected();
+    });
+    (
+      await KeyBinds.create("createUndirectedEdgeFromEntities", "g", {
+        control: false,
+        meta: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
+      // 构建无向边
+      const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof ConnectableEntity);
+      if (selectedNodes.length <= 1) {
+        Stage.effectMachine.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
+        return;
+      }
+      const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
+      StageManager.addAssociation(multiTargetUndirectedEdge);
     });
 
     (

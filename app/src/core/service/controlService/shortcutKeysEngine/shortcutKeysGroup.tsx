@@ -134,6 +134,6 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
   {
     title: "edge",
     icon: <Spline />,
-    keys: ["reverseEdges", "reverseSelectedNodeEdge"],
+    keys: ["reverseEdges", "reverseSelectedNodeEdge", "createUndirectedEdgeFromEntities"],
   },
 ];

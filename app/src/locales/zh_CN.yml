@@ -868,6 +868,10 @@ keyBinds:
       按下后，所有框选选中的节点中
       每个节点的所有连线都会反转方向
       进而实现更快捷的一连多
+  createUndirectedEdgeFromEntities:
+    title: 选中的实体之间创建无向连线
+    description: |
+      按下后，选中的两个或者多个实体之间会创建一条无向连线
   packEntityToSection:
     title: 将选中的实体打包到Section框中
     description: |
