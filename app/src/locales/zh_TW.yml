@@ -458,8 +458,8 @@ settings:
     title: 滑鼠操作時自動更新舞台
     description: "開啟後，滑鼠操作(拖拽移動視野)會自動更新舞台\n防止出現打開某個文件後，圖片未加載成功還需手動更新的情況\n"
   ignoreTextNodeTextRenderLessThanCameraScale:
-    title: 當攝影機縮放倍數小於一定值時，不渲染文本節點內的文字
-    description: "開啟後，當攝影及縮放倍數小於一定值時，(也就是觀察宏觀狀態時)\n不渲染文本節點內的文字，這樣可以提高渲染性能，但會導致文本節點內的文字內容無法顯示\n"
+    title: 當攝影機縮放倍數小於一定值時，不渲染文本節點內的文字及其詳細訊息
+    description: "開啟後，當攝影及縮放倍數小於一定值時，(也就是觀察宏觀狀態時)\n不渲染文本節點內的文字及其詳細訊息，這樣可以提高渲染性能，但會導致文本節點內的文字內容無法顯示\n"
   macTrackpadAndMouseWheelDifference:
     title: macbook 的觸控板和滑鼠滾輪區分邏輯
     options:
@@ -708,20 +708,20 @@ keyBinds:
     description: |
       按下后，所有选中的实体会跳跃向右移动一个固定距离，能够跳入或者跳出Section框
   CameraScaleZoomIn:
-    title: 放大视野
+    title: 放大視野
     description: 按下后，视野放大
   CameraScaleZoomOut:
-    title: 缩小视野
-    description: 按下后，视野缩小
+    title: 縮小視野
+    description: 按下後，視野縮小
   exitSoftware:
     title: 退出软件
     description: 按下后，退出软件
   checkoutProtectPrivacy:
-    title: 进入或退出隐私保护模式
+    title: 進入或退出私隱保護模式
     description: |
-      按下后，舞台上的全部文字将会被加密，无法被其他人看到
-      按下后，舞台上的全部文字将会解密，其他人可以看到
-      可以用于截图反馈问题、突然有人看你的屏幕时使用
+      按下後，舞台上的全部文字將會被加密，無法被其他人看到
+      按下後，舞台上的全部文字將會解密，其他人可以看到
+      可以用於截图反饋问题、突然有人看你的屏幕時使用
   title: 快捷鍵綁定
   pasteWithOriginLocation:
     title: 原位貼上
@@ -813,7 +813,7 @@ keyBinds:
     title: 視窗不透明度增加
   checkoutWindowOpacityMode:
     title: 切換視窗透明度模式
-    description: "按下后，視窗進入完全透明模式，再按一次將進入完全不透明模式\n注意要配合舞台顏色風格進行設置。例如：黑色模式下文字為白色，論文白模式下文字為黑色。\n\
+    description: "按下後，視窗進入完全透明模式，再按一次將進入完全不透明模式\n注意要配合舞台顏色風格進行設置。例如：黑色模式下文字為白色，論文白模式下文字為黑色。\n\
       如果視窗下層内容為白色背景，建議切換舞台到論文白模式。\n"
   paste:
     title: 貼上
