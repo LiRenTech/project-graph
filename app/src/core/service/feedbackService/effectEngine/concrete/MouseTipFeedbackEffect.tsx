@@ -8,7 +8,6 @@ import { Camera } from "../../../../stage/Camera";
 import { MouseLocation } from "../../../controlService/MouseLocation";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
-import { easeOutSine } from "../mathTools/easings";
 
 type MouseTipType =
   | "shrink"
@@ -29,19 +28,13 @@ export class MouseTipFeedbackEffect extends EffectObject {
   constructor(
     public override timeProgress: ProgressNumber,
     public type: MouseTipType,
-    private viewLocation: Vector,
     private direction: Vector,
   ) {
     super(timeProgress);
   }
 
   static default(type: MouseTipType) {
-    return new MouseTipFeedbackEffect(
-      new ProgressNumber(0, 15),
-      type,
-      MouseLocation.vector().clone(),
-      Vector.getZero(),
-    );
+    return new MouseTipFeedbackEffect(new ProgressNumber(0, 15), type, Vector.getZero());
   }
 
   /**
@@ -50,7 +43,7 @@ export class MouseTipFeedbackEffect extends EffectObject {
    * @returns
    */
   static directionObject(direction: Vector) {
-    return new MouseTipFeedbackEffect(new ProgressNumber(0, 15), "move", MouseLocation.vector().clone(), direction);
+    return new MouseTipFeedbackEffect(new ProgressNumber(0, 15), "move", direction);
   }
 
   render(): void {
@@ -59,44 +52,27 @@ export class MouseTipFeedbackEffect extends EffectObject {
     }
 
     if (this.type === "shrink") {
-      const centerLocation = Camera.scaleCameraByMouseLocation
-        ? this.viewLocation
-        : Renderer.transformWorld2View(Camera.location);
-      const diffLocations = [new Vector(0, 1), new Vector(1, 0), new Vector(0, -1), new Vector(-1, 0)];
-      // 四个点，往里跑
-      // 应该先快后慢
-      for (const diff of diffLocations) {
-        ShapeRenderer.renderCircle(
-          centerLocation.add(
-            diff
-              .multiply(20 * (1 - easeOutSine(this.timeProgress.rate)))
-              .rotateDegrees(30 * easeOutSine(this.timeProgress.rate)),
-          ),
-          2 * (1 - easeOutSine(this.timeProgress.rate)),
-          StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
-          Color.Transparent,
-          0,
-        );
-      }
+      const hintCenter = MouseLocation.vector().add(new Vector(30, 25));
+      CurveRenderer.renderSolidLine(
+        hintCenter.add(new Vector(-5, 0)),
+        hintCenter.add(new Vector(5, 0)),
+        StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
+        2,
+      );
     } else if (this.type === "expand") {
-      const centerLocation = Camera.scaleCameraByMouseLocation
-        ? this.viewLocation
-        : Renderer.transformWorld2View(Camera.location);
-      const diffLocations = [new Vector(0, 1), new Vector(1, 0), new Vector(0, -1), new Vector(-1, 0)];
-      // 应该先快后慢
-      for (const diff of diffLocations) {
-        ShapeRenderer.renderCircle(
-          centerLocation.add(
-            diff
-              .multiply(20 * easeOutSine(this.timeProgress.rate))
-              .rotateDegrees(30 * easeOutSine(this.timeProgress.rate)),
-          ),
-          2 * (1 - easeOutSine(this.timeProgress.rate)),
-          StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
-          Color.Transparent,
-          0,
-        );
-      }
+      const hintCenter = MouseLocation.vector().add(new Vector(30, 25));
+      CurveRenderer.renderSolidLine(
+        hintCenter.add(new Vector(-5, 0)),
+        hintCenter.add(new Vector(5, 0)),
+        StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
+        2,
+      );
+      CurveRenderer.renderSolidLine(
+        hintCenter.add(new Vector(0, -5)),
+        hintCenter.add(new Vector(0, 5)),
+        StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
+        2,
+      );
     } else if (this.type === "moveLeft") {
       // 鼠标向左移动，右边应该出现幻影
       CurveRenderer.renderGradientLine(
