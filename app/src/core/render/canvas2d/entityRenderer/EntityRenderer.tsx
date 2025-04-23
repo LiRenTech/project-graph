@@ -144,7 +144,9 @@ export namespace EntityRenderer {
       PortalNodeRenderer.render(entity);
     }
     // details右上角小按钮
-    EntityDetailsButtonRenderer(entity);
+    if (Camera.currentScale > Renderer.ignoreTextNodeTextRenderLessThanCameraScale) {
+      EntityDetailsButtonRenderer(entity);
+    }
   }
 
   /**

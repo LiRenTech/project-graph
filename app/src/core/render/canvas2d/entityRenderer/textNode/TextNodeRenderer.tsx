@@ -101,7 +101,9 @@ export namespace TextNodeRenderer {
         }
       }
     }
-    EntityRenderer.renderEntityDetails(node);
+    if (Camera.currentScale > Renderer.ignoreTextNodeTextRenderLessThanCameraScale) {
+      EntityRenderer.renderEntityDetails(node);
+    }
   }
 
   /**
