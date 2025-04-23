@@ -288,12 +288,12 @@ settings:
     description: |
       此設定項用於 使用W S A D鍵來上下左右移動視角時的情景
       可將攝影機看成一個能朝四个方向噴气的 懸浮飛機
-      此加速度值代表著噴气的動力大小，需要結合下面的摩擦力設定來調整速度
+      此加速度值代表著噴氣的動力大小，需要結合下面的摩擦力設定來調整速度
   moveFriction:
     title: 視角移動摩擦力係數
     description: |
       此設定項用於 使用W S A D鍵來上下左右移動視角時的情景
-      摩擦係數越大，滑动的距离越小，摩擦係數越小，滑动的距离越遠
+      摩擦係數越大，滑動的距離越小，摩擦係數越小，滑動的距離越遠
       此值=0時代表 絕對光滑
   gamepadDeadzone:
     title: 遊戲手柄死區
@@ -308,17 +308,17 @@ settings:
       cut: 斬斷並刪除物體
       moveCamera: 移動視野
   textNodeContentLineBreak:
-    title: 文本节点换行方案
+    title: 文本節點換行方案
     options:
       enter: Enter
       ctrlEnter: ctrl + Enter
       altEnter: alt + Enter
       shiftEnter: shift + Enter
     description: |
-      注意不要和文本节点退出编辑模式的按键一样了，这样会导致冲突
-      进而导致无法换行
+      注意不要和文本節點退出編輯模式的按鍵一樣了，這樣會導致衝突
+      進而導致無法換行
   textNodeStartEditMode:
-    title: 文本节点进入编辑模式
+    title: 文本節點進入編輯模式
     options:
       enter: Enter
       ctrlEnter: ctrl + Enter
@@ -326,30 +326,30 @@ settings:
       shiftEnter: shift + Enter
       space: 空白鍵
     description: |
-      实际上按F2键也可以进入编辑模式，这里还可以再加选一种
+      實際上按F2鍵也可以進入編輯模式，這裡還可以再加選一種
   textNodeExitEditMode:
-    title: 文本节点退出编辑模式
+    title: 文本節點退出編輯模式
     options:
       enter: Enter
       ctrlEnter: ctrl + Enter
       altEnter: alt + Enter
       shiftEnter: shift + Enter
     description: |
-      实际上按Esc键也可以退出，这里还可以再加选一种
+      實際上按Esc鍵也可以退出，這裡還可以再加選一種
   textNodeSelectAllWhenStartEditByMouseClick:
-    title: 文本节点通过双击开始编辑时自动全选内容
+    title: 文本節點通過雙擊開始編輯時自動全選內容
     description: |
-      开启后，在文本节点开始编辑时，会全选文本内容
-      如果您编辑内容通常是想为了直接更改全部内容，建议开启此选项
-      如果更可能是想为了追加内容，建议关闭此选项
+      開啟後，在文本節點開始編輯時，會全選文本內容
+      如果您編輯內容通常是想為了直接更改全部内容，建議開啟此選項
+      如果更可能是想為了追加内容，建議關閉此選項
   textNodeSelectAllWhenStartEditByKeyboard:
-    title: 文本节点通过键盘开始编辑时自动全选内容
+    title: 文本節點通過鍵盤開始編輯時自動全選內容
     description: |
-      开启后，在您按下文本节点编辑模式的按键时，会全选文本内容
+      開啟後，在您按下文本節點編輯模式的按鍵時，會全選文本內容
   enableDragAutoAlign:
-    title: 鼠标拖动自动对齐节点
+    title: 滑鼠拖動自動吸附對齊節點
     description: |
-      开启后，拖动节点并松开时会与其他节点在x轴、y轴方向对齐
+      開啟後，拖動節點並鬆開時會與其他節點在x軸、y軸方向對齊
   enableWindowsTouchPad:
     title: 允許觸控板雙指移動操作
     description: |
@@ -362,18 +362,22 @@ settings:
       zoom: 缩放
       move: 纵向移动
       moveX: 横向移动
+      none: 無操作
   mouseWheelWithShiftMode:
     title: 按住 Shift 時，滑鼠滾輪模式
     options:
       zoom: 缩放
       move: 纵向移动
       moveX: 横向移动
+      none: 无操作
   mouseWheelWithCtrlMode:
     title: 按住 Ctrl 時，滑鼠滾輪模式
     options:
       zoom: 缩放
       move: 纵向移动
       moveX: 横向移动
+      none: 无操作
+    description: "提示：這裡的 Ctrl 是 Control\n"
   rectangleSelectWhenLeft:
     title: 向左框选的策略
     description: |
@@ -439,6 +443,8 @@ settings:
     options:
       adjustCamera: 調整視野
       none: 無操作
+    title: 雙擊中鍵滑鼠
+    description: "將滾輪鍵快速按下兩次時執行的操作。默認是重置視野。\n關閉此選項，可以防止誤觸發\n"
   enableDragAlignToGrid:
     description: "建議在顯示中開啟橫向和縱向網格線，並關閉自動吸附對齊\n"
     title: 拖動實體時，吸附到網格
@@ -456,6 +462,50 @@ settings:
     description: "開啟後，當攝影及縮放倍數小於一定值時，(也就是觀察宏觀狀態時)\n不渲染文本節點內的文字，這樣可以提高渲染性能，但會導致文本節點內的文字內容無法顯示\n"
   macTrackpadAndMouseWheelDifference:
     title: macbook 的觸控板和滑鼠滾輪區分邏輯
+    options:
+      trackpadIntAndWheelFloat: 觸控板是整數，滑鼠滾動是小數
+      tarckpadFloatAndWheelInt: 觸控板是小數，滑鼠滾動是整數
+    description: 有的macbook滑鼠滾輪是整數，觸控板是小數，有的則相反 您需要根據實際情況選擇一下區分邏輯 區分方法可點擊7次關於介面的軟體logo進入“測試介面”後，滑動滾輪和觸控板查看資料反饋
+  cameraResetViewPaddingRate:
+    title: 根據選擇節點重置視野時，邊緣留白係數
+    description: "框選一堆節點或一個節點，並按下快捷鍵或點擊按鈕來重置視野後\n視野會調整大小和位置，確保所有選中內容出現在螢幕中央並完全覆蓋\n
+      由於視野縮放大小原因，因此邊緣可能會有留白\n值為1 表示邊緣完全不留白。（非常放大的觀察）\n值為2 表示留白内容恰好为自身内容的一倍\n"
+  uiSwitchButtonOnSoundFile:
+    description: "按鈕點擊開關按鈕時打開的聲音文件路徑\n"
+    title: 按鈕點擊開關按鈕時打開惡生因
+  uiSwitchButtonOffSoundFile:
+    title: 按鈕點擊開關按鈕時關閉的聲音
+    description: "按鈕點擊開關按鈕時關閉的聲音文件路徑\n"
+  macTrackpadScaleSensitivity:
+    description: 值越大，縮放的速度越快
+    title: macbook 的觸控板雙指縮放靈敏度
+  uiButtonClickSoundFile:
+    description: "按鈕點擊時播放的聲音文件路徑\n"
+    title: 按鈕點擊時的聲音文件
+  uiButtonEnterSoundFile:
+    title: 滑鼠進入按鈕區域的聲音
+    description: "滑鼠進入按鈕區域的聲音\n"
+  mouseSideWheelMode:
+    title: 滑鼠側邊滾輪模式
+    description: "側邊滾輪就是大拇指上的滾輪\n"
+    options:
+      zoom: 縮放
+      move: 縱向移動
+      moveX: 橫向移動
+      none: 無操作
+      cameraMoveToMouse: 將視野向滑鼠位置移動
+  mouseWheelWithAltMode:
+    title: 按住 Alt 時，滑鼠滾輪模式
+    description: "此功能於2025年4月10日新增\n目前發現還存在問題：win系统下滑動滾輪後需要再點擊一次螢幕才能操作舞台\n提示：這裡的 Alt
+      是 Option\n"
+    options:
+      zoom: 縮放
+      move: 縱向移動
+      moveX: 橫向移動
+      none: 無操作
+  macMouseWheelIsSmoothed:
+    title: macbook 的滑鼠滾輪是否平滑
+    description: 有的macbook滑鼠滾輪是平滑的，有的則是滾動一格觸發一次 可能取決于您是否安裝了Mos等滑鼠修改軟體
 app:
   unsaved: "(未保存)"
   comingSoon: 即將到來……
@@ -473,20 +523,31 @@ appMenu:
   location:
     title: 位置
     items:
-      openDataFolder: 打開數據資料夾
-      openProjectFolder: 打開工程資料夾
+      openDataFolder:
+        description: 打開軟體資訊文件夾，內部存放用戶自定義等資料
+        title: 軟體資訊
+      openProjectFolder:
+        title: 當前位置
+        description: 打開當前編輯的 工程文件 所在的資料夾
   export:
     title: 匯出
     items:
       exportAsSVGByAll: SVG（全部）
       exportAsMarkdownBySelected: Markdown
       exportAsPlainText: 純文本
+      exportAsSvg: SVG
   view:
     title: 視圖
     items:
-      resetByAll: 根據全部內容重置視野
-      resetBySelect: 根據選中內容重置視野
-      resetScale: 將縮放重置為標準大小
+      resetByAll:
+        description: 根據全部內容重置視野
+        title: 重置全部
+      resetBySelect:
+        title: 重置部分
+        description: 根據選中內容重置視野
+      resetScale:
+        title: 重置縮放
+        description: 將縮放重置為標準大小
   more:
     title: 更多
     items:
@@ -499,6 +560,7 @@ appMenu:
       refresh: 刷新
       fullscreen: 全螢幕
 
+      cancelFullscreen: 退出全螢幕
 startFilePanel:
   title: 選擇啟動時自動加載的工程檔案
   tips:
@@ -661,6 +723,104 @@ keyBinds:
       按下后，舞台上的全部文字将会解密，其他人可以看到
       可以用于截图反馈问题、突然有人看你的屏幕时使用
   title: 快捷鍵綁定
+  pasteWithOriginLocation:
+    title: 原位貼上
+    description: 按下後，貼上的內容會與原位置重疊
+  clickStartFilePanelButton:
+    title: 打開/關閉啟動文件列表
+    description: "按下此鍵可代替滑鼠點擊菜單欄裡的啟動文件列表展開關閉按鈕\n"
+  penStrokeWidthIncrease:
+    description: 按下後，筆畫變粗
+    title: 塗鴉筆畫變粗
+  createTextNodeFromMouseLocation:
+    title: 在滑鼠位置創建文本節點
+    description: "按下後，在滑鼠懸浮位置創建一個文本節點\n等同於滑鼠單擊創建節點的功能\n"
+  clickAppMenuSettingsButton:
+    title: 打開設置頁面
+    description: "按下此鍵可代替滑鼠點擊菜單欄裡的設置界面按鈕\n"
+  checkoutLeftMouseToConnectAndCutting:
+    title: 設置左鍵為“連線/斬斷”模式
+    description: "也就是滑鼠左鍵切換為連線/斬斷 模式，在工具欄中有對應按鈕\n"
+  searchText:
+    title: 搜尋文本
+    description: "按下後，打開搜尋框，可以輸入搜尋內容\n搜尋框支持部分匹配，例如輸入 “a” 能搜尋到 “apple” 等\n"
+  generateNodeGraph:
+    title: 生長自由節點
+    description: "按下後，出現一個虛擬生長位置\n在按下該鍵不鬆開的同時按下“I J K L”鍵自由調整生長位置\n鬆開後，生長完成\n使用此功能前先確保已選中一個節點\n"
+  checkoutClassroomMode:
+    title: 進入或退出專注模式
+    description: "按下後，進入專注模式，所有UI都會隱藏，頂部按鈕會透明化處理\n再按一次恢復\n"
+  copy:
+    title: 複製
+    description: 按下後，複製選中的內容
+  checkoutLeftMouseToDrawing:
+    description: "也就是滑鼠左鍵切換為塗鴉模式，在工具欄中有對應按鈕\n"
+    title: 設置左鍵為“塗鴉”模式
+  checkoutLeftMouseToSelectAndMove:
+    title: 設置左鍵為“選中/移動”模式
+    description: "也就是滑鼠左鍵切換為正常模式\n"
+  penStrokeWidthDecrease:
+    description: 按下後，筆畫變細
+    title: 塗鴉筆畫變細
+  openTextNodeByContentExternal:
+    title: 以網頁瀏覽器或本地文件形式打開選中節點的內容
+    description: "按下後，舞台上所有選中的文本節點都會被以默認方式或瀏覽器方式打開。\n例如一個節點內容為 \"D:/Desktop/a.txt\"\
+      ，選中此節點按下快捷鍵之後，能以系統默認方式打開此文件\n如果節點內容為網頁地址 \"https://project-graph.top\"，會以系統默認瀏覽器打開網頁內容\n"
+  CameraPageMoveRight:
+    title: 視野向右翻頁式移動
+  CameraPageMoveLeft:
+    title: 視野向左翻頁式移動
+  CameraPageMoveUp:
+    title: 視野向上翻頁式移動
+  selectEntityByPenStroke:
+    description: "選中一個塗鴉或實體後，按下此鍵，會擴散選擇該實體周圍的實體\n如果當前選擇的是塗鴉，則擴散選擇塗鴉觸碰到的實體\n如果當前選擇的是實體，則擴散選擇碰到的所有塗鴉\n\
+      多次按下後可以多次交替擴散\n"
+    title: 塗鴉與實體的擴散選項
+  clickAppMenuRecentFileButton:
+    title: 打開最近打開文件列表
+    description: "按下此鍵可代替滑鼠點擊菜單欄裡的最近打開文件列表按鈕\n"
+  clickTagPanelButton:
+    description: "按下此鍵可代替滑鼠點擊頁面上的標籤面板展開關閉按鈕\n"
+    title: 打開/關閉標籤面板
+  checkoutLeftMouseToConnectAndCuttingOnlyPressed:
+    title: 設置左鍵為“連線/斬斷”模式（僅按下時）
+    description: "鬆開時切換回默認的滑鼠模式\n"
+  masterBrakeCheckout:
+    description: "按下後會切換是否允许 “W S A D”鍵控制攝影機移動\n可以用於臨時禁止攝影機移動，在輸入秘籍鍵或含有WSAD的快捷鍵時防止視野移動\n"
+    title: 手剎：開啟/關閉通過按鍵控制攝影機移動
+  generateNodeTreeWithBroadMode:
+    description: "按下後，瞬間生長一個同級節點並放置在當前選中節點下方\n同時自動排版整個節點樹的結構，確保其是一個向下的樹形結構\n使用此功能前先確保已選中一個節點，且該節點存在父級節點\n"
+    title: 生長同級節點
+  generateNodeTreeWithDeepMode:
+    title: 生長子級節點
+    description: "按下後，瞬間生長一個節點並放置在當前選中節點的右側\n同時自動排版整個節點樹的結構，確保其是一個向右的樹形結構\n使用此功能前先確保已選中一個節點，且該節點所在結構為樹形結構\n"
+  CameraPageMoveDown:
+    title: 視野向下翻頁式移動
+  unpackEntityFromSection:
+    description: "按下後，選中的Section框中的實體會被拆包，自身轉換成一個文本節點\n內部的實體將會掉落在外面\n"
+    title: Section框拆包，轉換為文本節點
+  saveFile:
+    description: "保存當前工程檔案，若當前檔案是草稿則另存為\n"
+    title: 保存檔案
+  newDraft:
+    title: 新建草稿
+    description: "新建一個草稿檔案，並切換到該檔案\n若當前檔案未保存則無法切換\n"
+  windowOpacityAlphaDecrease:
+    title: 視窗不透明度減小
+    description: "按下后，視窗不透明度（alpha）值减小0.2，往透明的方向改變，最小值為0\n如果您的鍵盤沒有小鍵盤的純減號鍵，可以改成横排數字0右側的減號與下划線公用鍵\n"
+  windowOpacityAlphaIncrease:
+    description: "按下后，視窗不透明度（alpha）值增加0.2，往不透明的方向改變，最小值為1\n當不能再增加時，會有視窗邊緣閃爍提示\n"
+    title: 視窗不透明度增加
+  checkoutWindowOpacityMode:
+    title: 切換視窗透明度模式
+    description: "按下后，視窗進入完全透明模式，再按一次將進入完全不透明模式\n注意要配合舞台顏色風格進行設置。例如：黑色模式下文字為白色，論文白模式下文字為黑色。\n\
+      如果視窗下層内容為白色背景，建議切換舞台到論文白模式。\n"
+  paste:
+    title: 貼上
+    description: 按下後，貼上剪貼簿內容
+  openFile:
+    title: 打開檔案
+    description: "選擇一個曾經保存的json檔案並打開\n"
 keys:
   mouse3: 鼠標側鍵1
   mouse4: 鼠標側鍵2
@@ -684,3 +844,129 @@ plugins:
     title: 歡迎使用插件系統
   title: 插件管理
   install: 安裝插件
+effects:
+  CircleChangeRadiusEffect:
+    title: 圓形變換半徑效果
+    description: "節點被框選後波紋放大\n"
+  EntityCreateLineEffect:
+    description: "已經廢棄，不會出現\n"
+    title: 實體散發電路板式線條輻射效果
+  RectangleNoteEffect:
+    title: 矩形存在提示效果
+    description: "高亮提示某個矩形範圍，搜索節點或定位時會高亮提示\n關閉後會看不到矩形高亮效果\n"
+  RectangleSplitTwoPartEffect:
+    title: 矩形被切成兩塊的特效
+    description: "僅存在於劈砍特效（也有可能是四塊）\n"
+  TextRiseEffect:
+    title: 上浮文字效果
+    description: "文本節點上浮效果，用於提示重要訊息\n"
+  TextRaiseEffectLocated:
+    description: "文本節點懸浮上升效果，用於提示重要訊息\n"
+    title: 固定位置的文本節點懸浮上升效果
+  ZapLineEffect:
+    title: （基礎特效）閃電線效果
+    description: "此特效是其他特效的組成部分，若關閉則其他特效可能會受到影響\n"
+  RectanglePushInEffect:
+    title: 矩形四頂點划至另一矩形四頂點的效果
+    description: "用於提示實體的跨越框層移動、方向鍵切換選中\n目前開發者🦑偷懶，此效果引用了四個劈砍線效果。\n若關閉了劈砍線效果，則此效果會看不見\n"
+  MouseTipFeedbackEffect:
+    description: "在滑鼠進行縮放視野等操作時，滑鼠旁邊會出現特效提示，例如一個變大或變小的圓圈\n"
+    title: 滑鼠互動提示特效
+  RectangleRenderEffect:
+    title: 矩形位置提示效果
+    description: "用於在吸附拖拽對齊時，顯示實體即將吸附到的目標位置\n"
+  CircleFlameEffect:
+    title: 圓形逕向漸變光閃
+    description: "存在於各種特效細節中，預劈砍直線與實體矩形切割時、斬斷連線時的中點閃爍等\n"
+  EntityAlignEffect:
+    title: 實體對齊效果
+    description: "滑鼠拖動吸附對齊時產生的高亮虛線\n"
+  EntityCreateDashEffect:
+    title: 實體創建粉塵凝聚效果
+    description: "實體創建時，實體周圍出現粉塵凝聚\n由於不夠美觀，已經廢棄，不會出現\n"
+  EntityCreateFlashEffect:
+    description: "在ctrl+滾輪轉動實體樹、縮放圖片、創建節點等情况下出現\n若渲染性能較差，建議關閉此選項\n"
+    title: 實體邊框發光效果
+  EntityDashTipEffect:
+    title: 實體提示性的粉塵抖動
+    description: "出現在實體出入編輯結束或進入時，實體周圍出現抖動的粉塵\n"
+  EntityJumpMoveEffect:
+    title: 實體跳躍移動效果
+    description: "實體跳躍移動時，實體出現一個象徵性的跳躍弧線幻影\n用來表示偽z軸的跨越層級移動\n"
+  LineCuttingEffect:
+    description: "劈砍時，出現類似水果忍者一樣的刀光\n"
+    title: 劈砍時的刀光
+  LineEffect:
+    title: 直線段淡出效果
+    description: "用於拖拽旋轉子樹時，連線划過虛影\n"
+  NodeMoveShadowEffect:
+    title: 節點移動時摩擦地面的粒子效果
+    description: "佈局造成的移動可能也會出現一閃而過的粒子\n"
+  PointDashEffect:
+    title: 在某點併發出萬有引力式的粒子效果
+    description: "由於萬有引力影響性能，此特效已關閉，不會出現\n"
+  TechLineEffect:
+    description: "此特效是其他特效的組成部分，若關閉則其他特效可能會受到影響\n"
+    title: （基礎特效）折線段效果
+  ViewFlashEffect:
+    title: 視野閃爍效果
+    description: "全螢幕閃白/閃黑等效果\n光敏癲癇症患者請關閉此選項\n"
+  ExplodeDashEffect:
+    description: "用劈砍刪除實體時，出現粉塵爆炸\n"
+    title: 粉塵爆炸效果
+  EntityShakeEffect:
+    title: 實體抖動效果
+    description: "像“TickTock”Logo 一樣的抖動特效，用於實體出現警告性質的提示\n"
+  RectangleLittleNoteEffect:
+    title: 矩形閃爍提示效果
+    description: "在邏輯節點執行時，邏輯節點會閃爍此效果\n"
+  EntityShrinkEffect:
+    title: 實體縮小消失效果
+    description: "使用Delete鍵刪除實體時，實體出現縮小消失的效果\n"
+  ViewOutlineFlashEffect:
+    description: "視野輪廓閃爍效果\n"
+    title: 視野輪廓閃爍效果
+  PenStrokeDeletedEffect:
+    title: 塗鴉被刪除時的消失特效
+    description: "塗鴉被刪除時，出現消失的特效\n"
+keyBindsGroup:
+  otherKeys:
+    title: 未分類的快捷鍵
+    description: "未分類的快捷鍵，\n此處若發現無翻譯的無效快捷鍵選項，可能是由於版本升級而未清理就快捷鍵導致出現的殘留\n可手動清理 keybinds.json
+      檔案中的對應項\n"
+  app:
+    description: "用於控制應用的一些功能\n"
+    title: 應用控制
+  camera:
+    description: "用於控制攝影機移動、縮放\n"
+    title: 攝影機控制
+  basic:
+    description: "基本的快捷鍵，用於常用的功能\n"
+    title: 基礎快捷鍵
+  draw:
+    title: 塗鴉
+    description: "塗鴉相關功能\n"
+  ui:
+    description: "用於控制UI的一些功能\n"
+    title: UI控制
+  generateTextNodeInTree:
+    title: 生長節點
+    description: "通過鍵盤生成節點（Xmind用戶習慣）\n"
+  moveEntity:
+    description: "用於移動實體的一些功能\n"
+    title: 移動實體
+  section:
+    title: Section框
+    description: "Section框相關功能\n"
+  createTextNode:
+    description: "按下後，在當前位置創建文本節點\n"
+    title: 創建文本節點
+  generateTextNodeRoundedSelectedNode:
+    description: "按下後，在選中節點周圍生成節點\n"
+    title: 在選中節點周圍生成節點
+  leftMouseModeCheckout:
+    description: "關於左鍵模式的切換\n"
+    title: 左鍵模式切換
+  edge:
+    description: "關於連線的一些功能\n"
+    title: 連線相關
