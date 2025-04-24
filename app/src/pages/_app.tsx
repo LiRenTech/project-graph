@@ -204,6 +204,10 @@ export default function App() {
       document.title = `${filename} - Project Graph`;
       Stage.path.setPathInEffect(file);
     }
+    // 如果当前是开发模式，标题需要做区分
+    if (import.meta.env.DEV) {
+      getCurrentWindow().setTitle(`DEV`);
+    }
   }, [file]);
 
   const [isSaved, setIsSaved] = React.useState(false);
