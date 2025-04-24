@@ -78,6 +78,7 @@ import { PathString } from "../utils/pathString";
 import ComplexityResultPanel from "./_fixed_panel/_complexity_result_panel";
 import ExportSvgPanel from "./_popup_panel/_export_svg_panel";
 import SearchingNodePanel from "./_popup_panel/_searching_node_panel";
+import { FileLoader } from "../core/service/dataFileService/fileLoader";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -259,7 +260,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
       return;
     }
     try {
-      await RecentFileManager.openFileByPath(path); // 已经包含历史记录重置功能
+      await FileLoader.openFileByPath(path); // 已经包含历史记录重置功能
       // 更改file
       setFile(path);
     } catch (e) {
@@ -458,7 +459,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         <Col icon={<ScrollText />} id="app-menu-new-draft-btn" onClick={onNewDraft}>
           {t("file.items.new")}
         </Col>
-        <Col icon={<FileInput />} id="app-menu-open-btn" onClick={onOpen}>
+        <Col icon={<FileInput />} id="app-menu-open-btn" onClick={onOpen} details="选择一个曾经保存的json文件并打开。">
           {t("file.items.open")}
         </Col>
         <Col icon={<FileDown />} onClick={onSaveNew}>

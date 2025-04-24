@@ -34,6 +34,7 @@ import { exists } from "./utils/fs";
 import { exit, writeStderr } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isFrame, isWeb } from "./utils/platform";
 import { ShortcutKeysRegister } from "./core/service/controlService/shortcutKeysEngine/shortcutKeysRegister";
+import { FileLoader } from "./core/service/dataFileService/fileLoader";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -113,7 +114,7 @@ async function loadStartFile() {
       return;
     }
     const file = new TextDecoder().decode(Uint8Array.from(atob(fileBase64), (m) => m.codePointAt(0)!));
-    RecentFileManager.loadStageByData(StageLoader.validate(JSON.parse(file)), "/frame.json");
+    FileLoader.loadStageByData(StageLoader.validate(JSON.parse(file)), "/frame.json");
     Camera.reset();
     return;
   }
@@ -133,7 +134,7 @@ async function loadStartFile() {
   const isExists = await exists(path);
   if (isExists) {
     // 打开自定义的工程文件
-    RecentFileManager.openFileByPath(path);
+    FileLoader.openFileByPath(path);
     setTimeout(() => {
       // 更改顶部路径名称
       RecentFileManager.openFileByPathWhenAppStart(path);

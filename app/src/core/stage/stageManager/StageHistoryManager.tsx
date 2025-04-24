@@ -1,5 +1,5 @@
 import { Serialized } from "../../../types/node";
-import { RecentFileManager } from "../../service/dataFileService/RecentFileManager";
+import { FileLoader } from "../../service/dataFileService/fileLoader";
 import { StageSaveManager } from "../../service/dataFileService/StageSaveManager";
 import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../service/Settings";
@@ -80,7 +80,7 @@ export namespace StageHistoryManager {
     if (currentIndex > 0) {
       currentIndex--;
       StageManager.destroy();
-      RecentFileManager.loadStageByData(historyList[currentIndex], Stage.path.getFilePath());
+      FileLoader.loadStageByData(historyList[currentIndex], Stage.path.getFilePath());
       Stage.effectMachine.addEffect(TextRiseEffect.default(`当前进度：${currentIndex + 1} / ${historyList.length}`));
     } else {
       Stage.effectMachine.addEffect(
@@ -96,7 +96,7 @@ export namespace StageHistoryManager {
     if (currentIndex < historyList.length - 1) {
       currentIndex++;
       StageManager.destroy();
-      RecentFileManager.loadStageByData(historyList[currentIndex], Stage.path.getFilePath());
+      FileLoader.loadStageByData(historyList[currentIndex], Stage.path.getFilePath());
       Stage.effectMachine.addEffect(TextRiseEffect.default(`当前进度：${currentIndex + 1} / ${historyList.length}`));
     } else {
       Stage.effectMachine.addEffect(

@@ -16,6 +16,7 @@ import { PathString } from "../../utils/pathString";
 import { isDesktop } from "../../utils/platform";
 import { LoaderPinwheel } from "lucide-react";
 import { replaceTextWhenProtect } from "../../utils/font";
+import { FileLoader } from "../../core/service/dataFileService/fileLoader";
 
 export default function RecentFilesPanel() {
   const [recentFiles, setRecentFiles] = React.useState<RecentFileManager.RecentFile[]>([]);
@@ -90,7 +91,7 @@ export default function RecentFilesPanel() {
         });
         return;
       }
-      RecentFileManager.openFileByPath(path);
+      FileLoader.openFileByPath(path);
       setRecentFilePanelOpen(false);
     } catch (error) {
       Dialog.show({

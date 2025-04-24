@@ -10,11 +10,11 @@ import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
-import { RecentFileManager } from "../../../dataFileService/RecentFileManager";
 import { StageSaveManager } from "../../../dataFileService/StageSaveManager";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { editNodeDetails, editPortalNodeTitle, editTextNode, editUrlNodeTitle } from "./utilsControl";
+import { FileLoader } from "../../../dataFileService/fileLoader";
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
  *
@@ -87,7 +87,7 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
         // 开始传送
         // 不要让它立刻切换，否则会导致突然在新的文件中触发一个双击事件，创建了一个多余节点
         setTimeout(() => {
-          RecentFileManager.openFileByPath(newPath);
+          FileLoader.openFileByPath(newPath);
           Stage.path.setPathAndChangeUI(newPath);
         }, 100);
       }
