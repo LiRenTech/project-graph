@@ -1,7 +1,6 @@
 import { Serialized } from "../../../types/node";
 import { exists, readTextFile } from "../../../utils/fs";
 import { Camera } from "../../stage/Camera";
-import { Stage } from "../../stage/Stage";
 import { StageLoader } from "../../stage/StageLoader";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../stage/stageManager/StageManager";
@@ -11,7 +10,6 @@ import { ImageNode } from "../../stage/stageObject/entity/ImageNode";
 import { Section } from "../../stage/stageObject/entity/Section";
 import { TextNode } from "../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../stage/stageObject/entity/UrlNode";
-import { ViewFlashEffect } from "../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { PenStroke } from "../../stage/stageObject/entity/PenStroke";
 import { PortalNode } from "../../stage/stageObject/entity/PortalNode";
 import { PathString } from "../../../utils/pathString";
@@ -43,7 +41,6 @@ export namespace FileLoader {
     StageHistoryManager.reset(data);
 
     Camera.reset();
-    Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
     RecentFileManager.addRecentFile({
       path: path,
       time: new Date().getTime(),
