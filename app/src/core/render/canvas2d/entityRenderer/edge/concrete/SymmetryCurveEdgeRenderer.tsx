@@ -72,33 +72,31 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       edge.source.collisionBox.getRectangle().getNormalVectorAt(start),
       end,
       edge.target.collisionBox.getRectangle().getNormalVectorAt(end),
-      Math.abs(end.subtract(start).magnitude()) / 2,
+      Math.min(300, Math.abs(end.subtract(start).magnitude()) / 2),
     );
     // 曲线模式先不屏蔽箭头，有点不美观，空出来一段距离
     this.renderArrowCurve(
       curve,
       edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
     );
-    // if (!(edge.target instanceof ConnectPoint)) {
-    //   this.renderArrowCurve(curve);
-    // } else {
-    //   this.renderCurveOnly(curve);
-    // }
     this.renderText(curve, edge);
   }
 
   public renderShiftingState(edge: LineEdge): void {
     const shiftingMidPoint = edge.shiftingMidPoint;
+    const sourceRectangle = edge.source.collisionBox.getRectangle();
+    const targetRectangle = edge.target.collisionBox.getRectangle();
+
     // 从source.Center到shiftingMidPoint的线
-    const startLine = new Line(edge.source.collisionBox.getRectangle().center, shiftingMidPoint);
+    const startLine = new Line(sourceRectangle.center, shiftingMidPoint);
     const endLine = new Line(shiftingMidPoint, edge.target.collisionBox.getRectangle().center);
-    let startPoint = edge.source.collisionBox.getRectangle().getLineIntersectionPoint(startLine);
-    if (startPoint.equals(edge.source.collisionBox.getRectangle().center)) {
-      startPoint = edge.source.collisionBox.getRectangle().getLineIntersectionPoint(endLine);
+    let startPoint = sourceRectangle.getLineIntersectionPoint(startLine);
+    if (startPoint.equals(sourceRectangle.center)) {
+      startPoint = sourceRectangle.getLineIntersectionPoint(endLine);
     }
-    let endPoint = edge.target.collisionBox.getRectangle().getLineIntersectionPoint(endLine);
-    if (endPoint.equals(edge.target.collisionBox.getRectangle().center)) {
-      endPoint = edge.target.collisionBox.getRectangle().getLineIntersectionPoint(startLine);
+    let endPoint = targetRectangle.getLineIntersectionPoint(endLine);
+    if (endPoint.equals(targetRectangle.center)) {
+      endPoint = targetRectangle.getLineIntersectionPoint(startLine);
     }
     const curve = new SymmetryCurve(
       startPoint,
