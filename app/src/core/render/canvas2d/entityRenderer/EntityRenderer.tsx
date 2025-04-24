@@ -283,10 +283,15 @@ export namespace EntityRenderer {
     if (penStrokeColor.a === 0) {
       penStrokeColor = StageStyleManager.currentStyle.StageObjectBorder.clone();
     }
-    CurveRenderer.renderSolidLineMultipleWithWidth(
+    // CurveRenderer.renderSolidLineMultipleWithWidth(
+    //   penStroke.getPath().map((v) => Renderer.transformWorld2View(v)),
+    //   penStrokeColor,
+    //   penStroke.getSegmentList().map((seg) => seg.width * Camera.currentScale),
+    // );
+    CurveRenderer.renderSolidLineMultipleSmoothly(
       penStroke.getPath().map((v) => Renderer.transformWorld2View(v)),
       penStrokeColor,
-      penStroke.getSegmentList().map((seg) => seg.width * Camera.currentScale),
+      penStroke.getSegmentList()[0].width * Camera.currentScale,
     );
     if (penStroke.isMouseHover) {
       CollisionBoxRenderer.render(penStroke.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelected);

@@ -42,6 +42,52 @@ export namespace CurveRenderer {
   }
 
   /**
+   * 绘制经过平滑后的折线
+   * 核心思路：将折线的顶点转换为连续贝塞尔曲线的控制点。
+   * @param locations
+   * @param color
+   * @param width
+   */
+  export function renderSolidLineMultipleSmoothly(locations: Vector[], color: Color, width: number): void {
+    Canvas.ctx.beginPath();
+    Canvas.ctx.moveTo(locations[0].x, locations[0].y);
+
+    const segments = smoothPoints(locations, 0.25);
+    segments.forEach((seg) => {
+      Canvas.ctx.bezierCurveTo(seg.cp1.x, seg.cp1.y, seg.cp2.x, seg.cp2.y, seg.end.x, seg.end.y);
+    });
+    Canvas.ctx.lineWidth = width;
+    Canvas.ctx.lineJoin = "round";
+    Canvas.ctx.strokeStyle = color.toString();
+    Canvas.ctx.stroke();
+  }
+
+  function smoothPoints(points: Vector[], tension = 0.5) {
+    const smoothed = [];
+    for (let i = 0; i < points.length - 1; i++) {
+      const p0 = i > 0 ? points[i - 1] : points[i];
+      const p1 = points[i];
+      const p2 = points[i + 1];
+      const p3 = i < points.length - 2 ? points[i + 2] : p2;
+
+      // 计算控制点（基于前后点位置）
+      const cp1x = p1.x + (p2.x - p0.x) * tension;
+      const cp1y = p1.y + (p2.y - p0.y) * tension;
+      const cp2x = p2.x - (p3.x - p1.x) * tension;
+      const cp2y = p2.y - (p3.y - p1.y) * tension;
+
+      // 添加三次贝塞尔曲线段
+      smoothed.push({
+        type: "bezier",
+        cp1: { x: cp1x, y: cp1y },
+        cp2: { x: cp2x, y: cp2y },
+        end: p2,
+      });
+    }
+    return smoothed;
+  }
+
+  /**
    * 画一段折线，带有宽度实时变化
    * 实测发现有宽度变化，频繁变更粗细会导致渲染卡顿
    * @param locations
