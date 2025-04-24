@@ -123,11 +123,10 @@ export namespace Camera {
    * 爆炸式移动
    * @param targetLocation 摄像机即将要移动到的世界坐标
    */
-  export function bombMove(targetLocation: Vector) {
+  export function bombMove(targetLocation: Vector, frameCount = 40) {
     // 先清空之前的队列
     shockMoveDiffLocationsQueue.clear();
     // 生成接下来一些帧里的移动轨迹位置点。
-    const frameCount = 40;
     const movePoints = [];
     for (let i = 0; i < frameCount; i++) {
       // 进度：0~1

@@ -73,10 +73,15 @@ export namespace KeyboardOnlyTreeEngine {
     }
     // 特效
     Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(rootNode, newNode));
-    setTimeout(() => {
-      // 防止把反引号给输入进去
-      editTextNode(newNode);
-    }, 100);
+    setTimeout(
+      () => {
+        // 防止把反引号给输入进去
+        editTextNode(newNode);
+      },
+      (1000 / 60) * 6,
+    );
+    // 重置视野
+    Camera.bombMove(newNode.collisionBox.getRectangle().center, 5);
   }
 
   /**
@@ -131,9 +136,14 @@ export namespace KeyboardOnlyTreeEngine {
       }
     }
     Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(parent, newNode));
-    setTimeout(() => {
-      // 防止把反引号给输入进去
-      editTextNode(newNode);
-    }, 100);
+    setTimeout(
+      () => {
+        // 防止把反引号给输入进去
+        editTextNode(newNode);
+      },
+      (1000 / 60) * 6,
+    );
+    // 重置视野
+    Camera.bombMove(newNode.collisionBox.getRectangle().center, 5);
   }
 }
