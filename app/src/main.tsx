@@ -32,9 +32,10 @@ import "./index.css";
 import "./polyfills/roundRect";
 import { exists } from "./utils/fs";
 import { exit, writeStderr } from "./utils/otherApi";
-import { getCurrentWindow, isDesktop, isFrame, isWeb } from "./utils/platform";
+import { getCurrentWindow, isDesktop, isFrame, isWeb, isWindows } from "./utils/platform";
 import { ShortcutKeysRegister } from "./core/service/controlService/shortcutKeysEngine/shortcutKeysRegister";
 import { FileLoader } from "./core/service/dataFileService/fileLoader";
+import { Dialog } from "./components/dialog";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -121,7 +122,19 @@ async function loadStartFile() {
   if (isDesktop && !isWeb) {
     const cliMatches = await getMatches();
     if (cliMatches.args.path.value) {
+      // ？
       path = cliMatches.args.path.value as string;
+      if (isWindows) {
+        path = "【不要把json文件的打开方式设置成此软件，应在软件内打开】";
+        setTimeout(() => {
+          Dialog.show({
+            title: "提示",
+            content: "不要把json文件的打开方式设置成此软件，应在软件内打开，具体原因详见：",
+            code: "https://project-graph.top/docs/app/announcement",
+            type: "warning",
+          });
+        }, 3000);
+      }
     } else {
       path = await StartFilesManager.getCurrentStartFile();
     }
