@@ -1,5 +1,6 @@
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Line } from "../../../dataStruct/shape/Line";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
@@ -13,24 +14,90 @@ import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleMa
  * 仅在keyboardOnlyEngine中使用，用于处理select change事件
  */
 export namespace SelectChangeEngine {
-  const includesKey = ["arrowup", "arrowdown", "arrowleft", "arrowright"];
-
   let lastSelectNodeByKeyboardUUID = "";
 
-  export function listenKeyDown(event: KeyboardEvent) {
-    const key = event.key.toLowerCase();
-    if (event.ctrlKey || event.metaKey || event.altKey) {
-      // 忽略组合键，防止和别的功能键冲突
+  export function selectUp(addSelect = false) {
+    const selectedNode = getCurrentSelectedNode();
+    if (selectedNode === null) {
       return;
     }
-    if (!includesKey.includes(key)) {
-      return;
-    }
-    // 单选中节点
-    // 开始移动框选框
-    // （总是有反直觉的地方）
-    const selectedEntities = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
+    const newSelectedConnectableEntity = getMostNearConnectableEntity(
+      collectTopNodes(selectedNode),
+      selectedNode.collisionBox.getRectangle().center,
+    );
+    afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
+  }
 
+  export function selectDown(addSelect = false) {
+    const selectedNode = getCurrentSelectedNode();
+    if (selectedNode === null) {
+      return;
+    }
+    const newSelectedConnectableEntity = getMostNearConnectableEntity(
+      collectBottomNodes(selectedNode),
+      selectedNode.collisionBox.getRectangle().center,
+    );
+    afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
+  }
+
+  export function selectLeft(addSelect = false) {
+    const selectedNode = getCurrentSelectedNode();
+    if (selectedNode === null) {
+      return;
+    }
+    const newSelectedConnectableEntity = getMostNearConnectableEntity(
+      collectLeftNodes(selectedNode),
+      selectedNode.collisionBox.getRectangle().center,
+    );
+    afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
+  }
+
+  export function selectRight(addSelect = false) {
+    const selectedNode = getCurrentSelectedNode();
+    if (selectedNode === null) {
+      return;
+    }
+    const newSelectedConnectableEntity = getMostNearConnectableEntity(
+      collectRightNodes(selectedNode),
+      selectedNode.collisionBox.getRectangle().center,
+    );
+    afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
+  }
+
+  /**
+   * 按下选择方向键后的善后工作
+   * @param selectedNodeRect
+   * @param newSelectedConnectableEntity
+   * @param clearOldSelect
+   * @returns
+   */
+  function afterSelect(
+    selectedNodeRect: ConnectableEntity,
+    newSelectedConnectableEntity: ConnectableEntity | null,
+    clearOldSelect = true,
+  ) {
+    if (newSelectedConnectableEntity === null) {
+      return;
+    }
+    newSelectedConnectableEntity.isSelected = true;
+    lastSelectNodeByKeyboardUUID = newSelectedConnectableEntity.uuid;
+    const newSelectNodeRect = newSelectedConnectableEntity.collisionBox.getRectangle();
+
+    if (Camera.cameraFollowsSelectedNodeOnArrowKeys) {
+      Camera.bombMove(newSelectNodeRect.center);
+    }
+    if (clearOldSelect) {
+      selectedNodeRect.isSelected = false;
+    }
+
+    addEffect(selectedNodeRect.collisionBox.getRectangle(), newSelectNodeRect);
+
+    // 更新选中内容的数量
+    StageObjectSelectCounter.update();
+  }
+
+  function getCurrentSelectedNode(): ConnectableEntity | null {
+    const selectedEntities = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
     let selectedNode: ConnectableEntity | null = null;
     if (selectedEntities.length === 0) {
       // 如果没有，则选中距离屏幕中心最近的节点
@@ -38,7 +105,8 @@ export namespace SelectChangeEngine {
       if (nearestNode) {
         nearestNode.isSelected = true;
       }
-      return;
+      // throw new Error("未选中任何节点");
+      return null;
     } else if (selectedEntities.length === 1) {
       selectedNode = selectedEntities[0];
     } else {
@@ -51,89 +119,48 @@ export namespace SelectChangeEngine {
         selectedNode = selectedEntities[0];
       }
     }
+    return selectedNode;
+  }
 
-    let newSelectedConnectableEntity: ConnectableEntity | null = null;
-    const selectedNodeRect = selectedNode.collisionBox.getRectangle();
-    if (key === "arrowup") {
-      // 在节点上方查找所有节点，并选中距离上方最近的一个
-      newSelectedConnectableEntity = getMostNearConnectableEntity(
-        collectTopNodes(selectedNode),
-        selectedNodeRect.center,
-      );
-    } else if (key === "arrowdown") {
-      // 在节点下方查找所有节点，并选中距离下方最近的一个
-      newSelectedConnectableEntity = getMostNearConnectableEntity(
-        collectBottomNodes(selectedNode),
-        selectedNodeRect.center,
-      );
-    } else if (key === "arrowleft") {
-      // 在节点左侧查找所有节点，并选中距离左侧最近的一个
-      newSelectedConnectableEntity = getMostNearConnectableEntity(
-        collectLeftNodes(selectedNode),
-        selectedNodeRect.center,
-      );
-    } else if (key === "arrowright") {
-      // 在节点右侧查找所有节点，并选中距离右侧最近的一个
-      newSelectedConnectableEntity = getMostNearConnectableEntity(
-        collectRightNodes(selectedNode),
-        selectedNodeRect.center,
-      );
-    }
-    if (newSelectedConnectableEntity) {
-      // 按住shift+方向键，可以多选
-      if (!event.shiftKey) {
-        selectedNode.isSelected = false;
-      }
-      newSelectedConnectableEntity.isSelected = true;
-      lastSelectNodeByKeyboardUUID = newSelectedConnectableEntity.uuid;
-      const newSelectNodeRect = newSelectedConnectableEntity.collisionBox.getRectangle();
-      const color = StageStyleManager.currentStyle.effects.successShadow;
-
-      if (Camera.cameraFollowsSelectedNodeOnArrowKeys) {
-        Camera.bombMove(newSelectNodeRect.center);
-      }
-
-      // 节点切换移动的特效有待专门写一个
-      Stage.effectMachine.addEffects([
-        new LineCuttingEffect(
-          new ProgressNumber(0, 20),
-          selectedNodeRect.leftTop,
-          newSelectNodeRect.leftTop,
-          color,
-          color,
-        ),
-      ]);
-      Stage.effectMachine.addEffects([
-        new LineCuttingEffect(
-          new ProgressNumber(0, 20),
-          selectedNodeRect.rightTop,
-          newSelectNodeRect.rightTop,
-          color,
-          color,
-        ),
-      ]);
-      Stage.effectMachine.addEffects([
-        new LineCuttingEffect(
-          new ProgressNumber(0, 20),
-          selectedNodeRect.rightBottom,
-          newSelectNodeRect.rightBottom,
-          color,
-          color,
-        ),
-      ]);
-      Stage.effectMachine.addEffects([
-        new LineCuttingEffect(
-          new ProgressNumber(0, 20),
-          selectedNodeRect.leftBottom,
-          newSelectNodeRect.leftBottom,
-          color,
-          color,
-        ),
-      ]);
-
-      // 更新选中内容的数量
-      StageObjectSelectCounter.update();
-    }
+  function addEffect(selectedNodeRect: Rectangle, newSelectNodeRect: Rectangle) {
+    const color = StageStyleManager.currentStyle.effects.successShadow;
+    // 节点切换移动的特效有待专门写一个
+    Stage.effectMachine.addEffects([
+      new LineCuttingEffect(
+        new ProgressNumber(0, 20),
+        selectedNodeRect.leftTop,
+        newSelectNodeRect.leftTop,
+        color,
+        color,
+      ),
+    ]);
+    Stage.effectMachine.addEffects([
+      new LineCuttingEffect(
+        new ProgressNumber(0, 20),
+        selectedNodeRect.rightTop,
+        newSelectNodeRect.rightTop,
+        color,
+        color,
+      ),
+    ]);
+    Stage.effectMachine.addEffects([
+      new LineCuttingEffect(
+        new ProgressNumber(0, 20),
+        selectedNodeRect.rightBottom,
+        newSelectNodeRect.rightBottom,
+        color,
+        color,
+      ),
+    ]);
+    Stage.effectMachine.addEffects([
+      new LineCuttingEffect(
+        new ProgressNumber(0, 20),
+        selectedNodeRect.leftBottom,
+        newSelectNodeRect.leftBottom,
+        color,
+        color,
+      ),
+    ]);
   }
 
   function getMostNearConnectableEntity(nodes: ConnectableEntity[], location: Vector): ConnectableEntity | null {

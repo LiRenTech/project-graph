@@ -83,6 +83,20 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
     keys: ["selectEntityByPenStroke", "penStrokeWidthIncrease", "penStrokeWidthDecrease"],
   },
   {
+    title: "select",
+    icon: <Move />,
+    keys: [
+      "selectUp",
+      "selectDown",
+      "selectLeft",
+      "selectRight",
+      "selectAdditionalUp",
+      "selectAdditionalDown",
+      "selectAdditionalLeft",
+      "selectAdditionalRight",
+    ],
+  },
+  {
     title: "moveEntity",
     icon: <Move />,
     keys: [

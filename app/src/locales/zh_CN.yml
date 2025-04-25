@@ -857,6 +857,10 @@ keyBindsGroup:
     title: 涂鸦
     description: |
       涂鸦相关功能
+  select:
+    title: 选择
+    description: |
+      使用键盘来切换选中的实体
   moveEntity:
     title: 移动实体
     description: |
@@ -1039,6 +1043,30 @@ keyBinds:
     title: 在当前选中的节点右侧创建文本节点
     description: |
       按下后，在当前选中的节点右侧创建一个文本节点
+  selectUp:
+    title: 选中上方节点
+    description: 按下后，选中上方节点
+  selectDown:
+    title: 选中下方节点
+    description: 按下后，选中下方节点
+  selectLeft:
+    title: 选中左侧节点
+    description: 按下后，选中左侧节点
+  selectRight:
+    title: 选中右侧节点
+    description: 按下后，选中右侧节点
+  selectAdditionalUp:
+    title: 附加选中上方节点
+    description: 按下后，附加选中上方节点
+  selectAdditionalDown:
+    title: 附加选中下方节点
+    description: 按下后，附加选中下方节点
+  selectAdditionalLeft:
+    title: 附加选中左侧节点
+    description: 按下后，附加选中左侧节点
+  selectAdditionalRight:
+    title: 附加选中右侧节点
+    description: 按下后，附加选中右侧节点
   moveUpSelectedEntities:
     title: 向上移动所有选中的实体
     description: |

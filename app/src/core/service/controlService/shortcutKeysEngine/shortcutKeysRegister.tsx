@@ -31,6 +31,7 @@ import {
 import { Controller } from "../controller/Controller";
 import { KeyboardOnlyGraphEngine } from "../keyboardOnlyEngine/keyboardOnlyGraphEngine";
 import { KeyboardOnlyTreeEngine } from "../keyboardOnlyEngine/keyboardOnlyTreeEngine";
+import { SelectChangeEngine } from "../keyboardOnlyEngine/selectChangeEngine";
 import { MouseLocation } from "../MouseLocation";
 import { KeyBinds } from "./KeyBinds";
 
@@ -381,6 +382,79 @@ export namespace ShortcutKeysRegister {
       })
     ).down(() => {
       addTextNodeFromCurrentSelectedNode(Direction.Down, true);
+    });
+
+    (
+      await KeyBinds.create("selectUp", "arrowup", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      SelectChangeEngine.selectUp();
+    });
+    (
+      await KeyBinds.create("selectDown", "arrowdown", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      SelectChangeEngine.selectDown();
+    });
+    (
+      await KeyBinds.create("selectLeft", "arrowleft", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      SelectChangeEngine.selectLeft();
+    });
+    (
+      await KeyBinds.create("selectRight", "arrowright", {
+        control: false,
+        alt: false,
+        shift: false,
+      })
+    ).down(() => {
+      SelectChangeEngine.selectRight();
+    });
+    (
+      await KeyBinds.create("selectAdditionalUp", "arrowup", {
+        control: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
+      SelectChangeEngine.selectUp(true);
+    });
+    (
+      await KeyBinds.create("selectAdditionalDown", "arrowdown", {
+        control: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
+      SelectChangeEngine.selectDown(true);
+    });
+    (
+      await KeyBinds.create("selectAdditionalLeft", "arrowleft", {
+        control: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
+      SelectChangeEngine.selectLeft(true);
+    });
+    (
+      await KeyBinds.create("selectAdditionalRight", "arrowright", {
+        control: false,
+        alt: false,
+        shift: true,
+      })
+    ).down(() => {
+      SelectChangeEngine.selectRight(true);
     });
 
     (

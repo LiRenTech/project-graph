@@ -8,7 +8,6 @@ import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/Text
 import { Settings } from "../../Settings";
 import { editTextNode } from "../controller/concrete/utilsControl";
 import { KeyboardOnlyGraphEngine } from "./keyboardOnlyGraphEngine";
-import { SelectChangeEngine } from "./selectChangeEngine";
 
 /**
  * 纯键盘控制的相关引擎
@@ -73,7 +72,7 @@ export namespace KeyboardOnlyEngine {
         // 编辑节点
         editTextNode(selectedNode);
       } else {
-        SelectChangeEngine.listenKeyDown(event);
+        // SelectChangeEngine.listenKeyDown(event);
       }
     });
   }
