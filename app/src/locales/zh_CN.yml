@@ -146,6 +146,12 @@ settings:
     description: |
       开启后，标签文本节点的显示在摄像机缩小到广袤的全局视野时，
       标签会巨大化显示，以便更容易辨识整个文件的布局分布
+  sectionBitTitleRenderType:
+    title: 框的缩略大标题渲染类型
+    options:
+      none: 不渲染（节省性能）
+      top: 顶部小字
+      cover: 半透明覆盖框体（最佳效果）
   alwaysShowDetails:
     title: 始终显示节点详细信息
     description: |

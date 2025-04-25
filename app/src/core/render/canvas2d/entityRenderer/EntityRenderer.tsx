@@ -2,6 +2,7 @@ import { Color } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
+import { Settings } from "../../../service/Settings";
 import { Camera } from "../../../stage/Camera";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
@@ -29,6 +30,13 @@ import { UrlNodeRenderer } from "./urlNode/urlNodeRenderer";
  */
 export namespace EntityRenderer {
   let sectionSortedZIndex: Section[] = [];
+  export let sectionBitTitleRenderType: Settings.Settings["sectionBitTitleRenderType"] = "cover";
+
+  export function init() {
+    Settings.watch("sectionBitTitleRenderType", (value) => {
+      sectionBitTitleRenderType = value;
+    });
+  }
 
   /**
    * 对所有section排序一次
@@ -70,13 +78,26 @@ export namespace EntityRenderer {
     tickNumber++;
   }
 
+  /**
+   * 统一渲染全部框的大标题
+   */
   export function renderAllSectionsBigTitle(viewRectangle: Rectangle) {
-    for (let i = sectionSortedZIndex.length - 1; i >= 0; i--) {
-      const section = sectionSortedZIndex[i];
+    if (sectionBitTitleRenderType === "none") {
+      return;
+    }
+    // 从最深层的最小框开始渲染
+    // 目前的层级排序是假的，是直接按y轴从上往下判定
+    // 认为最靠上的才是最底下的
+    for (let z = sectionSortedZIndex.length - 1; z >= 0; z--) {
+      const section = sectionSortedZIndex[z];
       if (Renderer.isOverView(viewRectangle, section)) {
         continue;
       }
-      SectionRenderer.renderBigTitle(section);
+      if (sectionBitTitleRenderType === "cover") {
+        SectionRenderer.renderBigCoveredTitle(section);
+      } else if (sectionBitTitleRenderType === "top") {
+        SectionRenderer.renderTopTitle(section);
+      }
     }
   }
 

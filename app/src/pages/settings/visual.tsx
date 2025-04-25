@@ -24,6 +24,8 @@ import {
   Settings,
   Space,
   Spline,
+  Square,
+  SquareM,
   Tag,
   VenetianMask,
   Workflow,
@@ -51,6 +53,9 @@ export default function Visual() {
       <FieldGroup title="Node & Edge 节点与连线样式" icon={<Workflow />}>
         <SettingField icon={<Spline />} settingKey="lineStyle" type="select" />
         <SettingField icon={<Tag />} settingKey="enableTagTextNodesBigDisplay" type="switch" />
+      </FieldGroup>
+      <FieldGroup title="Section 框" icon={<Square />}>
+        <SettingField icon={<SquareM />} settingKey="sectionBitTitleRenderType" type="select" />
       </FieldGroup>
       <FieldGroup title="节点详情" icon={<ReceiptText />}>
         <SettingField icon={<AppWindow />} settingKey="nodeDetailsPanel" type="select" />

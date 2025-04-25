@@ -165,6 +165,7 @@ export namespace Renderer {
       "ignoreTextNodeTextRenderLessThanCameraScale",
       (value) => (ignoreTextNodeTextRenderLessThanCameraScale = value),
     );
+    EntityRenderer.init();
   }
 
   /**

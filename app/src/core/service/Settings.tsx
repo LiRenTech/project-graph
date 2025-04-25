@@ -35,6 +35,7 @@ export namespace Settings {
     entityDetailsLinesLimit: number;
     entityDetailsWidthLimit: number;
     nodeDetailsPanel: "small" | "vditor";
+    sectionBitTitleRenderType: "top" | "cover" | "none";
 
     windowCollapsingWidth: number;
     windowCollapsingHeight: number;
@@ -145,6 +146,7 @@ export namespace Settings {
     entityDetailsLinesLimit: 4,
     entityDetailsWidthLimit: 200,
     nodeDetailsPanel: "vditor",
+    sectionBitTitleRenderType: "cover",
 
     windowCollapsingWidth: 300,
     windowCollapsingHeight: 300,
