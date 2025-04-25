@@ -506,6 +506,12 @@ settings:
   macMouseWheelIsSmoothed:
     title: macbook 的滑鼠滾輪是否平滑
     description: 有的macbook滑鼠滾輪是平滑的，有的則是滾動一格觸發一次 可能取決于您是否安裝了Mos等滑鼠修改軟體
+  sectionBitTitleRenderType:
+    title: 框的縮略大標題渲染類型
+    options:
+      none: 不渲染（節省性能）
+      top: 頂部小字
+      cover: 半透明覆蓋框體（最佳效果）
 app:
   unsaved: "(未保存)"
   comingSoon: 即將到來……
@@ -888,6 +894,9 @@ keyBinds:
   openFile:
     title: 打開檔案
     description: "選擇一個曾經保存的json檔案並打開\n"
+  createUndirectedEdgeFromEntities:
+    description: "按下後，選中的兩個或以上實體之間會創建一條無方向連線\n"
+    title: 選中的實體之間創建無限連線
 keys:
   mouse3: 鼠標側鍵1
   mouse4: 鼠標側鍵2

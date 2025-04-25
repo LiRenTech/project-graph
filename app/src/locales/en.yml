@@ -540,6 +540,9 @@ settings:
     description: Some MacBook mouse wheels are smooth, while others trigger a scroll
       with each click, which may depend on whether you have installed mouse modification
       software like Mos
+  sectionBitTitleRenderType:
+    options:
+      none: No Rendering (Improve Performance)
 plugins:
   welcome:
     title: Welcome to the Plugin System
@@ -616,7 +619,8 @@ toolbar:
   stageObjects:
     title: Stage Objects
     items:
-      setColor: Set Color of Selected Stage Object, Note to Select First and Then Click Color (F6)
+      setColor: Set Color of Selected Stage Object, Note to Select First and Then
+        Click Color (F6)
       delete: Delete Selected Stage Object
       tag: Add or Remove Tags from Stage Object
   multiTargetUndirectedEdges:
@@ -648,7 +652,8 @@ toolbar:
       packSection: Pack Selected Node into Section (Customizable Shortcut)
       createMultiTargetEdgeConvex: Create Undirected Edge (Convex Hull Type)
       createMultiTargetEdgeLine: Create Undirected Edge (Line Type)
-      openPathByContent: Open File/Folder Based on First Line of Entity Details as Local Absolute Path
+      openPathByContent: Open File/Folder Based on First Line of Entity Details as
+        Local Absolute Path
   imageNode:
     title: Image Node
     items:
