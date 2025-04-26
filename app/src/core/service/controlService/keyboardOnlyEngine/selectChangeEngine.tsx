@@ -9,6 +9,7 @@ import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineCuttingEffect } from "../../feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
+import { KeyboardOnlyEngine } from "./keyboardOnlyEngine";
 
 /**
  * 仅在keyboardOnlyEngine中使用，用于处理select change事件
@@ -17,6 +18,9 @@ export namespace SelectChangeEngine {
   let lastSelectNodeByKeyboardUUID = "";
 
   export function selectUp(addSelect = false) {
+    if (!KeyboardOnlyEngine.isOpenning()) {
+      return;
+    }
     const selectedNode = getCurrentSelectedNode();
     if (selectedNode === null) {
       return;
@@ -29,6 +33,9 @@ export namespace SelectChangeEngine {
   }
 
   export function selectDown(addSelect = false) {
+    if (!KeyboardOnlyEngine.isOpenning()) {
+      return;
+    }
     const selectedNode = getCurrentSelectedNode();
     if (selectedNode === null) {
       return;
@@ -41,6 +48,9 @@ export namespace SelectChangeEngine {
   }
 
   export function selectLeft(addSelect = false) {
+    if (!KeyboardOnlyEngine.isOpenning()) {
+      return;
+    }
     const selectedNode = getCurrentSelectedNode();
     if (selectedNode === null) {
       return;
@@ -53,6 +63,9 @@ export namespace SelectChangeEngine {
   }
 
   export function selectRight(addSelect = false) {
+    if (!KeyboardOnlyEngine.isOpenning()) {
+      return;
+    }
     const selectedNode = getCurrentSelectedNode();
     if (selectedNode === null) {
       return;

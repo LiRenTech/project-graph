@@ -16,6 +16,17 @@ export namespace KeyboardOnlyEngine {
   let textNodeStartEditMode: Settings.Settings["textNodeStartEditMode"] = "enter";
   let textNodeSelectAllWhenStartEditByKeyboard: boolean = true;
 
+  /**
+   * 只有在某些面板打开的时候，这个引擎才会禁用，防止误触
+   */
+  let openning = true;
+  export function setOpenning(value: boolean) {
+    openning = value;
+  }
+  export function isOpenning() {
+    return openning;
+  }
+
   export function init() {
     bindKeyEvents();
     KeyboardOnlyGraphEngine.init();
@@ -44,6 +55,9 @@ export namespace KeyboardOnlyEngine {
     };
 
     window.addEventListener("keydown", (event) => {
+      // 防止在编辑节点时，按下其他按键导致编辑失败
+      if (!openning) return;
+
       if (event.key === "Enter") {
         const enterKeyDetail = getEnterKey(event);
         if (textNodeStartEditMode === enterKeyDetail) {

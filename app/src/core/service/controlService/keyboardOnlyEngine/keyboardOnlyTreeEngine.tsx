@@ -9,6 +9,7 @@ import { StageManager } from "../../../stage/stageManager/StageManager";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { editTextNode } from "../controller/concrete/utilsControl";
 import { Direction } from "../../../../types/directions";
+import { KeyboardOnlyEngine } from "./keyboardOnlyEngine";
 
 /**
  * 专用于Xmind式的树形结构的键盘操作引擎
@@ -19,6 +20,9 @@ export namespace KeyboardOnlyTreeEngine {
    * @returns
    */
   export function onDeepGenerateNode() {
+    if (!KeyboardOnlyEngine.isOpenning()) {
+      return;
+    }
     const rootNode = StageManager.getConnectableEntity().find((node) => node.isSelected);
     if (!rootNode) return;
     Camera.clearMoveCommander();
@@ -89,6 +93,9 @@ export namespace KeyboardOnlyTreeEngine {
    * @returns
    */
   export function onBroadGenerateNode() {
+    if (!KeyboardOnlyEngine.isOpenning()) {
+      return;
+    }
     const currentSelectNode = StageManager.getConnectableEntity().find((node) => node.isSelected);
     if (!currentSelectNode) return;
     Camera.clearMoveCommander();

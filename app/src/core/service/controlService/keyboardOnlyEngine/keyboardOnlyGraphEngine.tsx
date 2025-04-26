@@ -8,6 +8,7 @@ import { ConnectableEntity } from "../../../stage/stageObject/abstract/Connectab
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { editTextNode } from "../controller/concrete/utilsControl";
 import { KeyboardOnlyDirectionController } from "./keyboardOnlyDirectionController";
+import { KeyboardOnlyEngine } from "./keyboardOnlyEngine";
 import { NewTargetLocationSelector } from "./newTargetLocationSelector";
 
 /**
@@ -56,6 +57,9 @@ export namespace KeyboardOnlyGraphEngine {
    * @returns
    */
   export function createStart(): void {
+    if (!KeyboardOnlyEngine.isOpenning()) {
+      return;
+    }
     if (isCreating()) {
       // 已经在创建状态，不要重复创建
       return;

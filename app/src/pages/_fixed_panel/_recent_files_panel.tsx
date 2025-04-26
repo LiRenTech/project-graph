@@ -17,6 +17,7 @@ import { isDesktop } from "../../utils/platform";
 import { LoaderPinwheel } from "lucide-react";
 import { replaceTextWhenProtect } from "../../utils/font";
 import { FileLoader } from "../../core/service/dataFileService/fileLoader";
+import { KeyboardOnlyEngine } from "../../core/service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
 
 /**
  * 最近文件面板按钮
@@ -48,6 +49,8 @@ export default function RecentFilesPanel() {
   useEffect(() => {
     updateRecentFiles();
     Stage.autoSaveEngine.setAutoSavePaused(isRecentFilePanelOpen);
+    // 临时禁用纯键盘引擎
+    KeyboardOnlyEngine.setOpenning(!isRecentFilePanelOpen);
   }, [isRecentFilePanelOpen]);
 
   useEffect(() => {
