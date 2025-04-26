@@ -18,13 +18,21 @@ import { LoaderPinwheel } from "lucide-react";
 import { replaceTextWhenProtect } from "../../utils/font";
 import { FileLoader } from "../../core/service/dataFileService/fileLoader";
 import { KeyboardOnlyEngine } from "../../core/service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
+import Input from "../../components/Input";
 
 /**
  * 最近文件面板按钮
  * @returns
  */
 export default function RecentFilesPanel() {
+  /**
+   * 数据中有多少就是多少
+   */
   const [recentFiles, setRecentFiles] = React.useState<RecentFileManager.RecentFile[]>([]);
+  /**
+   * 经过搜索字符串过滤后的
+   */
+  const [recentFilesFiltered, setRecentFilesFiltered] = React.useState<RecentFileManager.RecentFile[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const [isRecentFilePanelOpen, setRecentFilePanelOpen] = useAtom(isRecentFilePanelOpenAtom);
@@ -33,6 +41,7 @@ export default function RecentFilesPanel() {
 
   // 当前预选中的文件下标
   const [currentPreselect, setCurrentPreselect] = React.useState<number>(0);
+  const [searchString, setSearchString] = React.useState("");
 
   /**
    * 用于刷新页面显示
@@ -43,7 +52,13 @@ export default function RecentFilesPanel() {
     await RecentFileManager.sortTimeRecentFiles();
     const files = await RecentFileManager.getRecentFiles();
     setRecentFiles(files);
+    setRecentFilesFiltered(files);
     setIsLoading(false);
+  };
+
+  const onInputChange = (input: string) => {
+    setSearchString(input);
+    setRecentFilesFiltered(recentFiles.filter((file) => file.path.includes(input)));
   };
 
   useEffect(() => {
@@ -55,6 +70,8 @@ export default function RecentFilesPanel() {
 
   useEffect(() => {
     updateRecentFiles();
+    const input = document.querySelector(".recent-files-panel-search-input") as HTMLInputElement;
+    input.focus();
   }, []);
 
   useEffect(() => {
@@ -197,7 +214,7 @@ export default function RecentFilesPanel() {
   return (
     <div
       className={cn(
-        "bg-panel-bg fixed left-1/2 top-1/2 z-10 flex h-4/5 w-full -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-hidden rounded-md px-2 py-6", // 添加 relative
+        "bg-settings-page-bg fixed left-1/2 top-1/2 z-10 flex h-4/5 w-full -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-hidden rounded-md px-2 py-6", // 添加 relative
         {
           hidden: !isRecentFilePanelOpen,
         },
@@ -222,6 +239,12 @@ export default function RecentFilesPanel() {
       </button>
 
       <h2 className="text-panel-text mb-3 text-xl font-bold">最近打开的文件</h2>
+      <Input
+        placeholder="请输入要搜索的内容"
+        className="recent-files-panel-search-input"
+        onChange={onInputChange}
+        value={searchString}
+      />
       {/* 加载中提示 */}
       {isLoading && (
         <div className="flex h-full items-center justify-center text-8xl">
@@ -241,7 +264,7 @@ export default function RecentFilesPanel() {
               </tr>
             </thead>
             <tbody>
-              {recentFiles.map((file, index) => (
+              {recentFilesFiltered.map((file, index) => (
                 <tr
                   key={index}
                   className={cn(
@@ -290,19 +313,19 @@ export default function RecentFilesPanel() {
                     <div className="flex">
                       <button
                         onClick={removeStartFile(file.path)}
-                        className="bg-button-bg text-button-text border-button-border m-0.5 cursor-pointer rounded-lg p-1 text-xs hover:scale-105"
+                        className="bg-button-bg text-button-text border-button-border hover:border-panel-success-text m-0.5 cursor-pointer rounded-lg border-2 p-1 text-xs hover:scale-105"
                       >
                         清出列表
                       </button>
                       <button
                         onClick={addToStartFiles(file.path)}
-                        className="bg-button-bg text-button-text border-button-border m-0.5 cursor-pointer rounded-lg p-1 text-xs hover:scale-105"
+                        className="bg-button-bg text-button-text border-button-border hover:border-panel-success-text m-0.5 cursor-pointer rounded-lg border-2 p-1 text-xs hover:scale-105"
                       >
                         添加启动
                       </button>
                       <button
                         onClick={addPortalNodeToStage(file.path)}
-                        className="bg-button-bg text-button-text border-button-border m-0.5 cursor-pointer rounded-lg p-1 text-xs hover:scale-105"
+                        className="bg-button-bg text-button-text border-button-border hover:border-panel-success-text m-0.5 cursor-pointer rounded-lg border-2 p-1 text-xs hover:scale-105"
                       >
                         添加传送门
                       </button>

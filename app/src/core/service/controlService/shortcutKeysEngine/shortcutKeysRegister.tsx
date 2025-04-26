@@ -29,6 +29,7 @@ import {
   editNodeDetailsByKeyboard,
 } from "../controller/concrete/utilsControl";
 import { Controller } from "../controller/Controller";
+import { KeyboardOnlyEngine } from "../keyboardOnlyEngine/keyboardOnlyEngine";
 import { KeyboardOnlyGraphEngine } from "../keyboardOnlyEngine/keyboardOnlyGraphEngine";
 import { KeyboardOnlyTreeEngine } from "../keyboardOnlyEngine/keyboardOnlyTreeEngine";
 import { SelectChangeEngine } from "../keyboardOnlyEngine/selectChangeEngine";
@@ -82,6 +83,7 @@ export namespace ShortcutKeysRegister {
         meta: isMac,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       StageHistoryManager.undo();
     });
 
@@ -93,6 +95,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       StageHistoryManager.redo();
     });
 
@@ -142,6 +145,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       Camera.resetBySelected();
     });
 
@@ -163,6 +167,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       Camera.zoomInByKeyboard();
     });
 
@@ -173,6 +178,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       Camera.zoomOutByKeyboard();
     });
     if (isMac) {
@@ -220,6 +226,7 @@ export namespace ShortcutKeysRegister {
           shift: false,
         })
       ).down(() => {
+        if (!KeyboardOnlyEngine.isOpenning()) return;
         Camera.pageMove(Direction.Up);
       });
       (
@@ -229,6 +236,7 @@ export namespace ShortcutKeysRegister {
           shift: false,
         })
       ).down(() => {
+        if (!KeyboardOnlyEngine.isOpenning()) return;
         Camera.pageMove(Direction.Down);
       });
       (
@@ -238,6 +246,7 @@ export namespace ShortcutKeysRegister {
           shift: false,
         })
       ).down(() => {
+        if (!KeyboardOnlyEngine.isOpenning()) return;
         Camera.pageMove(Direction.Left);
       });
       (
@@ -247,6 +256,7 @@ export namespace ShortcutKeysRegister {
           shift: false,
         })
       ).down(() => {
+        if (!KeyboardOnlyEngine.isOpenning()) return;
         Camera.pageMove(Direction.Right);
       });
     }
@@ -318,6 +328,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       StageManager.deleteSelectedStageObjects();
     });
 
@@ -328,6 +339,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       Camera.clearMoveCommander();
       Camera.speed = Vector.getZero();
       addTextNodeByLocation(Camera.location, true);
@@ -339,6 +351,7 @@ export namespace ShortcutKeysRegister {
         shift: true,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       Camera.clearMoveCommander();
       Camera.speed = Vector.getZero();
       addTextNodeByLocation(Renderer.transformView2World(MouseLocation.vector()), true);
@@ -351,6 +364,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       addTextNodeFromCurrentSelectedNode(Direction.Up, true);
     });
 
@@ -361,6 +375,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       addTextNodeFromCurrentSelectedNode(Direction.Right, true);
     });
 
@@ -371,6 +386,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       addTextNodeFromCurrentSelectedNode(Direction.Left, true);
     });
 
@@ -381,6 +397,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       addTextNodeFromCurrentSelectedNode(Direction.Down, true);
     });
 
@@ -391,6 +408,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       SelectChangeEngine.selectUp();
     });
     (
@@ -400,6 +418,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       SelectChangeEngine.selectDown();
     });
     (
@@ -418,6 +437,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       SelectChangeEngine.selectRight();
     });
     (
@@ -427,6 +447,7 @@ export namespace ShortcutKeysRegister {
         shift: true,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       SelectChangeEngine.selectUp(true);
     });
     (
@@ -436,6 +457,7 @@ export namespace ShortcutKeysRegister {
         shift: true,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       SelectChangeEngine.selectDown(true);
     });
     (
@@ -445,6 +467,7 @@ export namespace ShortcutKeysRegister {
         shift: true,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       SelectChangeEngine.selectLeft(true);
     });
     (
@@ -454,6 +477,7 @@ export namespace ShortcutKeysRegister {
         shift: true,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       SelectChangeEngine.selectRight(true);
     });
 
@@ -465,6 +489,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       StageEntityMoveManager.moveSelectedEntities(new Vector(0, -100));
     });
 
@@ -476,6 +501,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       StageEntityMoveManager.moveSelectedEntities(new Vector(0, 100));
     });
 
@@ -498,6 +524,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       StageEntityMoveManager.moveSelectedEntities(new Vector(100, 0));
     });
     (
@@ -508,6 +535,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       StageEntityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(0, -100));
     });
 
@@ -519,6 +547,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       StageEntityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(0, 100));
     });
 
@@ -530,6 +559,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       StageEntityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(-100, 0));
     });
 
@@ -541,6 +571,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       StageEntityMoveManager.jumpMoveSelectedConnectableEntities(new Vector(100, 0));
     });
 
@@ -552,6 +583,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       editNodeDetailsByKeyboard();
     });
 
@@ -583,6 +615,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       StageManager.selectAll();
       Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(Color.Green));
     });
@@ -624,6 +657,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       Popup.show(<SearchingNodePanel />, false);
     });
     (
@@ -634,6 +668,7 @@ export namespace ShortcutKeysRegister {
         shift: true,
       })
     ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       openBrowserOrFile();
     });
 
@@ -692,6 +727,9 @@ export namespace ShortcutKeysRegister {
         view: window,
       });
       button?.dispatchEvent(event);
+      setTimeout(() => {
+        Controller.pressingKeySet.clear();
+      }, 200);
     });
     (
       await KeyBinds.create("clickAppMenuRecentFileButton", "#", {
@@ -709,6 +747,9 @@ export namespace ShortcutKeysRegister {
           view: window,
         });
         closeButton?.dispatchEvent(event);
+        setTimeout(() => {
+          Controller.pressingKeySet.clear();
+        }, 200);
       } else {
         const button = document.getElementById("app-menu-recent-file-btn");
         const event = new MouseEvent("click", {
@@ -717,6 +758,9 @@ export namespace ShortcutKeysRegister {
           view: window,
         });
         button?.dispatchEvent(event);
+        setTimeout(() => {
+          Controller.pressingKeySet.clear();
+        }, 200);
       }
     });
     (
@@ -733,6 +777,9 @@ export namespace ShortcutKeysRegister {
         view: window,
       });
       button?.dispatchEvent(event);
+      setTimeout(() => {
+        Controller.pressingKeySet.clear();
+      }, 200);
     });
     (
       await KeyBinds.create("saveFile", "s", {
@@ -869,6 +916,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       CopyEngine.copy();
     });
     (
@@ -879,6 +927,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       CopyEngine.paste();
     });
 
@@ -890,6 +939,7 @@ export namespace ShortcutKeysRegister {
         shift: true,
       })
     ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       CopyEngine.pasteWithOriginLocation();
     });
 
@@ -901,6 +951,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       Stage.MouseModeManager.checkoutSelectAndMoveHook();
     });
     (
@@ -911,6 +962,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       Stage.MouseModeManager.checkoutDrawingHook();
     });
 
@@ -924,6 +976,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       Stage.MouseModeManager.checkoutConnectAndCuttingHook();
     });
 
@@ -937,9 +990,11 @@ export namespace ShortcutKeysRegister {
     )
       .down(async () => {
         // lastMouseMode = Stage.leftMouseMode;
+        if (!KeyboardOnlyEngine.isOpenning()) return;
         Stage.MouseModeManager.checkoutConnectAndCuttingHook();
       })
       .up(async () => {
+        if (!KeyboardOnlyEngine.isOpenning()) return;
         Stage.MouseModeManager.checkoutSelectAndMoveHook();
       });
 
@@ -951,6 +1006,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       PenStrokeMethods.selectEntityByPenStroke();
     });
 
@@ -962,6 +1018,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       KeyboardOnlyTreeEngine.onDeepGenerateNode();
     });
 
@@ -972,6 +1029,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       // 按下一次就清空动力
       Camera.clearMoveCommander();
       Camera.speed = Vector.getZero();
@@ -984,6 +1042,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       // 看成汽车的手刹，按下一次就切换是否允许移动
       Camera.clearMoveCommander();
       Camera.speed = Vector.getZero();
@@ -998,6 +1057,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
       KeyboardOnlyTreeEngine.onBroadGenerateNode();
     });
 
@@ -1010,11 +1070,13 @@ export namespace ShortcutKeysRegister {
       })
     )
       .down(() => {
+        if (!KeyboardOnlyEngine.isOpenning()) return;
         if (KeyboardOnlyGraphEngine.isEnableVirtualCreate()) {
           KeyboardOnlyGraphEngine.createStart();
         }
       })
       .up(() => {
+        if (!KeyboardOnlyEngine.isOpenning()) return;
         if (KeyboardOnlyGraphEngine.isCreating()) {
           KeyboardOnlyGraphEngine.createFinished();
         }
