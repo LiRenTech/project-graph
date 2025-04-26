@@ -1,5 +1,6 @@
 import { Dialog } from "../../components/dialog";
 import { Direction } from "../../types/directions";
+import { isMac } from "../../utils/platform";
 import { NumberFunctions } from "../algorithm/numberFunctions";
 import { Queue } from "../dataStruct/Queue";
 import { Rectangle } from "../dataStruct/shape/Rectangle";
@@ -166,26 +167,34 @@ export namespace Camera {
     if (currentScale > 100) {
       currentScale = 0.001;
       targetScale = 0.01;
-      Dialog.show({
-        title: "触发彩蛋：《微观尽头》",
-        content: "您已抵达微观的尽头，世界就此反转，现在回归到了宏观。默认快捷键F可根据内容重置视野",
-        type: "success",
-        buttons: [
-          {
-            text: "知道了",
-          },
-          {
-            text: "我有更好的idea",
-            onClick: () => {
-              Dialog.show({
-                title: "反馈渠道",
-                content: "您好，欢迎您提供更好的idea，可在“关于”界面找到反馈渠道",
-                type: "info",
-              });
+      if (isMac) {
+        Dialog.show({
+          title: "视野已经放大到极限了",
+          content: "默认快捷键F可根据内容重置视野，mac在刚启动软件的若干秒内鼠标滚轮可能过于灵敏，导致缩放过快",
+          type: "info",
+        });
+      } else {
+        Dialog.show({
+          title: "触发彩蛋：《微观尽头》",
+          content: "您已抵达微观的尽头，世界就此反转，现在回归到了宏观。默认快捷键F可根据内容重置视野",
+          type: "success",
+          buttons: [
+            {
+              text: "知道了",
             },
-          },
-        ],
-      });
+            {
+              text: "我有更好的idea",
+              onClick: () => {
+                Dialog.show({
+                  title: "反馈渠道",
+                  content: "您好，欢迎您提供更好的idea，可在“关于”界面找到反馈渠道",
+                  type: "info",
+                });
+              },
+            },
+          ],
+        });
+      }
     }
     // 冲击式移动
     if (!shockMoveDiffLocationsQueue.isEmpty()) {
