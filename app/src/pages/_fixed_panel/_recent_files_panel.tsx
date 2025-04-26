@@ -18,6 +18,10 @@ import { LoaderPinwheel } from "lucide-react";
 import { replaceTextWhenProtect } from "../../utils/font";
 import { FileLoader } from "../../core/service/dataFileService/fileLoader";
 
+/**
+ * 最近文件面板按钮
+ * @returns
+ */
 export default function RecentFilesPanel() {
   const [recentFiles, setRecentFiles] = React.useState<RecentFileManager.RecentFile[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -25,6 +29,9 @@ export default function RecentFilesPanel() {
   const [isRecentFilePanelOpen, setRecentFilePanelOpen] = useAtom(isRecentFilePanelOpenAtom);
   const [currentFile, setFile] = useAtom(fileAtom);
   const [isInPrivacy, setInPrivacy] = React.useState(false);
+
+  // 当前预选中的文件下标
+  const [currentPreselect, setCurrentPreselect] = React.useState<number>(0);
 
   /**
    * 用于刷新页面显示
@@ -45,8 +52,35 @@ export default function RecentFilesPanel() {
 
   useEffect(() => {
     updateRecentFiles();
-    return () => {};
   }, []);
+
+  useEffect(() => {
+    /**
+     * 按键事件
+     * @param e
+     */
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setRecentFilePanelOpen(false);
+      } else if (e.key === "ArrowUp") {
+        if (currentPreselect > 0) {
+          setCurrentPreselect(currentPreselect - 1);
+        }
+      } else if (e.key === "ArrowDown") {
+        if (currentPreselect < recentFiles.length - 1) {
+          setCurrentPreselect(currentPreselect + 1);
+        }
+      } else if (e.key === "Enter") {
+        const file = recentFiles[currentPreselect];
+        checkoutFile(file);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isRecentFilePanelOpen, recentFiles, currentPreselect]);
 
   const onCheckoutFile = (file: RecentFileManager.RecentFile) => {
     return () => {
@@ -205,7 +239,13 @@ export default function RecentFilesPanel() {
             </thead>
             <tbody>
               {recentFiles.map((file, index) => (
-                <tr key={index} className="bg-table-row-bg hover:bg-table-row-hover-bg">
+                <tr
+                  key={index}
+                  className={cn(
+                    "bg-table-row-bg hover:bg-table-row-hover-bg",
+                    currentPreselect === index && "border-panel-success-text border-l-4",
+                  )}
+                >
                   {/* 标号列 */}
                   <td className="text-table-row-text text-center">{index + 1}</td>
                   {/* 路径列 */}
