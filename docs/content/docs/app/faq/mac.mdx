@@ -28,3 +28,15 @@ sudo xattr -r -d com.apple.quarantine /Applications/Project\ Graph.app
 - `-d`：删除指定属性
 - `com.apple.quarantine`：属性名
 - `/Applications/Project\ Graph.app`：文件路径
+
+### 运行后节点无法输入文字
+
+目前实测 macos 14 以上的用户无此问题，仅有12及其以下的用户存在此问题。
+
+解决方法：
+
+升级系统
+
+若升级系统后也无法输入文字，请反馈给开发者。
+
+macos 12及其以下的设备webkit版本过低，存在很多css样式不兼容的问题，还有可能会出现左上角红绿灯不显示、底部工具栏不居中，仅左侧边缘居中进而导致偏右的问题。
