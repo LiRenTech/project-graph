@@ -41,6 +41,8 @@ export class ControllerCameraClass extends ControllerClass {
       ControllerCameraMac.init();
     }
   }
+  // private recordCameraScale = 1;
+  // private recordCameraLocation = Vector.getZero();
 
   public keydown: (event: KeyboardEvent) => void = (event: KeyboardEvent) => {
     if (Controller.isCameraLocked) {
@@ -133,6 +135,15 @@ export class ControllerCameraClass extends ControllerClass {
       // 开始刷新舞台
       StageManager.refreshAllStageObjects();
     }
+
+    // 2025年4月28日：实验性内容
+    if (event.button === 4) {
+      // 前侧键按下
+      Camera.resetBySelected();
+    } else if (event.button === 3) {
+      // 后侧键按下
+      Camera.reset();
+    }
   };
 
   /**
@@ -194,6 +205,12 @@ export class ControllerCameraClass extends ControllerClass {
   public mouseup = (event: MouseEvent) => {
     if (Controller.isCameraLocked) {
       return;
+    }
+    if (event.button === 4) {
+      // console.log(this.recordCameraScale);
+      // Camera.currentScale = this.recordCameraScale;
+      // Camera.currentScale = this.recordCameraScale;
+      // // Camera.location = this.recordCameraLocation.clone();
     }
     if (!this.isUsingMouseGrabMove) {
       return;
