@@ -57,6 +57,7 @@ export default function RecentFilesPanel() {
   };
 
   const onInputChange = (input: string) => {
+    setCurrentPreselect(0); // 一旦有输入，就设置下标为0
     setSearchString(input);
     setRecentFilesFiltered(recentFiles.filter((file) => file.path.includes(input)));
   };
@@ -73,34 +74,32 @@ export default function RecentFilesPanel() {
     const input = document.querySelector(".recent-files-panel-search-input") as HTMLInputElement;
     input.focus();
   }, []);
-
+  /**
+   * 按键事件
+   * @param e
+   */
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (!isRecentFilePanelOpen) {
+      return;
+    }
+    console.log("key down in recent files panel");
+    if (e.key === "Escape") {
+      setRecentFilePanelOpen(false);
+    } else if (e.key === "ArrowUp") {
+      setCurrentPreselect((prev) => Math.max(0, prev - 1));
+    } else if (e.key === "ArrowDown") {
+      setCurrentPreselect((prev) => Math.min(recentFilesFiltered.length - 1, prev + 1));
+    } else if (e.key === "Enter") {
+      const file = recentFilesFiltered[currentPreselect];
+      checkoutFile(file);
+    }
+  };
   useEffect(() => {
-    /**
-     * 按键事件
-     * @param e
-     */
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setRecentFilePanelOpen(false);
-      } else if (e.key === "ArrowUp") {
-        if (currentPreselect > 0) {
-          setCurrentPreselect(currentPreselect - 1);
-        }
-      } else if (e.key === "ArrowDown") {
-        if (currentPreselect < recentFiles.length - 1) {
-          setCurrentPreselect(currentPreselect + 1);
-        }
-      } else if (e.key === "Enter") {
-        const file = recentFiles[currentPreselect];
-        checkoutFile(file);
-      }
-    };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isRecentFilePanelOpen, recentFiles, currentPreselect]);
+  }, [isRecentFilePanelOpen, recentFilesFiltered]); // isRecentFilePanelOpen, recentFiles, currentPreselect
 
   const onCheckoutFile = (file: RecentFileManager.RecentFile) => {
     return () => {
