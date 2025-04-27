@@ -14,11 +14,12 @@ import { Stage } from "../../core/stage/Stage";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { PathString } from "../../utils/pathString";
 import { isDesktop } from "../../utils/platform";
-import { LoaderPinwheel } from "lucide-react";
+import { CircleHelp, EyeOff, LoaderPinwheel, VenetianMask, X } from "lucide-react";
 import { replaceTextWhenProtect } from "../../utils/font";
 import { FileLoader } from "../../core/service/dataFileService/fileLoader";
 import { KeyboardOnlyEngine } from "../../core/service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
 import Input from "../../components/Input";
+import IconButton from "../../components/IconButton";
 
 /**
  * 最近文件面板按钮
@@ -213,37 +214,58 @@ export default function RecentFilesPanel() {
   return (
     <div
       className={cn(
-        "bg-settings-page-bg fixed left-1/2 top-1/2 z-10 flex h-4/5 w-full -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-hidden rounded-md px-2 py-6", // 添加 relative
+        "bg-settings-page-bg fixed left-1/2 top-1/2 z-10 flex h-4/5 w-full -translate-x-1/2 -translate-y-1/2 transform flex-col items-center overflow-hidden rounded-md px-2 py-1", // 添加 relative
         {
           hidden: !isRecentFilePanelOpen,
         },
       )}
     >
+      {/* 顶部区域 */}
+      <div className="my-1 flex w-full flex-nowrap items-center justify-between px-8">
+        <h2 className="text-panel-details-text text-md">最近打开的文件</h2>
+        <Input
+          placeholder="请输入要筛选的文件"
+          className="recent-files-panel-search-input text-sm"
+          onChange={onInputChange}
+          value={searchString}
+        />
+
+        <div className="flex items-center gap-1">
+          <IconButton
+            id="recent-files-panel-close-btn"
+            onClick={() => {
+              Dialog.show({
+                title: "“最近打开的文件”界面说明",
+                content:
+                  "点击文件列表中的文件可以快速切换\n搜索和筛选文件时，会根据绝对路径匹配\n可用快捷键打开和关闭此面板",
+              });
+            }}
+            tooltip="查看帮助"
+          >
+            <CircleHelp />
+          </IconButton>
+          <IconButton
+            className="cursor-pointer rounded bg-gray-500 font-bold text-white hover:scale-105 hover:bg-red-700" // 调整位置和层级
+            id="recent-files-panel-close-btn"
+            onClick={() => setInPrivacy(!isInPrivacy)}
+            tooltip={isInPrivacy ? "关闭隐私模式" : "进入隐私模式，关闭路径和文件显示"}
+          >
+            {isInPrivacy ? <EyeOff /> : <VenetianMask />}
+          </IconButton>
+          <IconButton
+            className="cursor-pointer hover:scale-105" // 调整位置和层级
+            id="recent-files-panel-close-btn"
+            onClick={() => setRecentFilePanelOpen(false)}
+            tooltip="Esc 或再按一次进入面板快捷键 关闭"
+          >
+            <X />
+          </IconButton>
+        </div>
+      </div>
       {/* 仅仅用作一个标签存在标记，快捷键id索引用 */}
       {isRecentFilePanelOpen && <div className="absolute left-0 top-0 h-1 w-1" id="recent-files-panel-open-mark-div" />}
       {/* 关闭按钮放置在最外层 */}
-      <button
-        className="absolute right-2 top-2 z-20 cursor-pointer rounded bg-red-500 px-4 py-2 font-bold text-white hover:scale-105 hover:bg-red-700" // 调整位置和层级
-        id="recent-files-panel-close-btn"
-        onClick={() => setRecentFilePanelOpen(false)}
-      >
-        关闭
-      </button>
-      <button
-        className="absolute right-20 top-2 z-20 cursor-pointer rounded bg-gray-500 px-4 py-2 font-bold text-white hover:scale-105 hover:bg-red-700" // 调整位置和层级
-        id="recent-files-panel-close-btn"
-        onClick={() => setInPrivacy(!isInPrivacy)}
-      >
-        {isInPrivacy ? "解密" : "隐私"}
-      </button>
 
-      <h2 className="text-panel-text mb-3 text-xl font-bold">最近打开的文件</h2>
-      <Input
-        placeholder="请输入要搜索的内容"
-        className="recent-files-panel-search-input"
-        onChange={onInputChange}
-        value={searchString}
-      />
       {/* 加载中提示 */}
       {isLoading && (
         <div className="flex h-full items-center justify-center text-8xl">
@@ -336,7 +358,6 @@ export default function RecentFilesPanel() {
           </table>
         </div>
       )}
-      <p className="text-panel-text">提示：点击文件可以快速切换</p>
     </div>
   );
 }
