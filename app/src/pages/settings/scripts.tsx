@@ -27,11 +27,15 @@ export default function ScriptsPage() {
     setUserScripts(scripts);
   };
 
+  const onClickRefresh = () => {
+    updateUIList();
+  };
+
   /**
    * 从本地安装脚本
    * @returns
    */
-  const install = async () => {
+  const onClickInstallScript = async () => {
     const path = await openFile({
       filters: [
         {
@@ -43,6 +47,10 @@ export default function ScriptsPage() {
     if (!path) return;
 
     await UserScriptsManager.addUserScript(path);
+    // setUserScripts((prev) => [
+    //   ...prev,
+    //   { path, enabled: true, scriptData: { name: "", version: "", description: "", author: "" } },
+    // ]);
     updateUIList();
   };
 
@@ -57,7 +65,7 @@ export default function ScriptsPage() {
         }
       ></Field>
       <Field icon={<CodeXml />} title="脚本管理">
-        <Button onClick={install}>
+        <Button onClick={onClickInstallScript}>
           <FileCode2 />
           从本地导入脚本
         </Button>
@@ -69,7 +77,7 @@ export default function ScriptsPage() {
           <BookOpen />
           {t("documentation")}
         </Button>
-        <Button onClick={updateUIList}>刷新</Button>
+        <Button onClick={onClickRefresh}>刷新</Button>
       </Field>
 
       <div className="flex flex-col p-2">

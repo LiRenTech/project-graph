@@ -83,6 +83,10 @@ export namespace StageManager {
   export function getStageContentDebug() {
     return stageContent.entities.length;
   }
+
+  export function getStageJsonByPlugin(): string {
+    return JSON.stringify(stageContent);
+  }
   /**
    * 子舞台，用于渲染传送门中的另一个世界
    * key：绝对路径构成的字符串，用于区分不同的子舞台

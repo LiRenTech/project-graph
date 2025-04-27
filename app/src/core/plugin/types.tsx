@@ -12,6 +12,9 @@ export const apiTypes = {
   setCameraLocation: [[z.number(), z.number()], z.void()],
   getPressingKey: [[], z.array(z.string())],
   openDialog: [[z.string(), z.string()], z.void()],
+  getCurrentStageJson: [[], z.string()],
+  getCurrentStageSelectedObjectsUUIDs: [[], z.array(z.string())],
+  createTextOnLocation: [[z.number(), z.number(), z.string()], z.void()],
 } as const;
 
 type Zod2Interface<T> = {

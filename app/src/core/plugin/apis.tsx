@@ -1,8 +1,11 @@
+import { v4 } from "uuid";
 import { Dialog } from "../../components/dialog";
 import { Vector } from "../dataStruct/Vector";
 import { Controller } from "../service/controlService/controller/Controller";
 import { Camera } from "../stage/Camera";
+import { StageManager } from "../stage/stageManager/StageManager";
 import { PluginAPIMayAsync } from "./types";
+import { TextNode } from "../stage/stageObject/entity/TextNode";
 
 export const pluginApis: PluginAPIMayAsync = {
   hello(userString: string) {
@@ -28,5 +31,23 @@ export const pluginApis: PluginAPIMayAsync = {
       title,
       content,
     });
+  },
+  getCurrentStageJson() {
+    return StageManager.getStageJsonByPlugin();
+  },
+  getCurrentStageSelectedObjectsUUIDs() {
+    return StageManager.getSelectedStageObjects().map((stageObject) => stageObject.uuid);
+  },
+  createTextOnLocation(x: number, y: number, text: string) {
+    StageManager.addTextNode(
+      new TextNode({
+        uuid: v4(),
+        details: "",
+        location: [x, y],
+        size: [100, 100],
+        color: [0, 0, 0, 0],
+        text,
+      }),
+    );
   },
 };
