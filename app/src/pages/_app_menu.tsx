@@ -20,6 +20,7 @@ import {
   Group,
   Image as ImageIcon,
   Info,
+  Locate,
   Monitor,
   MonitorX,
   MoreHorizontal,
@@ -79,6 +80,7 @@ import ComplexityResultPanel from "./_fixed_panel/_complexity_result_panel";
 import ExportSvgPanel from "./_popup_panel/_export_svg_panel";
 import SearchingNodePanel from "./_popup_panel/_searching_node_panel";
 import { FileLoader } from "../core/service/dataFileService/fileLoader";
+import { Vector } from "../core/dataStruct/Vector";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -523,6 +525,13 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         </Col>
         <Col icon={<Scaling />} onClick={() => Camera.resetScale()} details={t("view.items.resetScale.description")}>
           {t("view.items.resetScale.title")}
+        </Col>
+        <Col
+          icon={<Locate />}
+          onClick={() => (Camera.location = new Vector(0, 0))}
+          details={t("view.items.resetLocation.description")}
+        >
+          {t("view.items.resetLocation.title")}
         </Col>
       </Row>
       <Row icon={<Axe />} title={"操作"}>
