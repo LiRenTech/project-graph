@@ -153,7 +153,7 @@ export namespace Camera {
       // 实测只有把摩擦力和动力都拉满时才会瞬间触发NaN，当玩家正常数据状态下有意识地向远处飞时反而不会触发
       // 因此这个彩蛋可能是个bug。先暂时改成正常的提示语
       // Stage.effectMachine.addEffect(new TextRiseEffect("派蒙：前面的区域以后再来探索吧？"));
-      Stage.effectMachine.addEffect(new TextRiseEffect("摄像机位置为NaN，自动重置视野"));
+      Stage.effectMachine.addEffect(new TextRiseEffect("已自动重置视野"));
       speed = Vector.getZero();
       reset();
       return;

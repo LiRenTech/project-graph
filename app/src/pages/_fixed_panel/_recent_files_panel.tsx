@@ -20,6 +20,7 @@ import { FileLoader } from "../../core/service/dataFileService/fileLoader";
 import { KeyboardOnlyEngine } from "../../core/service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
 import Input from "../../components/Input";
 import IconButton from "../../components/IconButton";
+import { myOpen } from "../../utils/externalOpen";
 
 /**
  * 最近文件面板按钮
@@ -336,19 +337,25 @@ export default function RecentFilesPanel() {
                         onClick={removeStartFile(file.path)}
                         className="bg-button-bg text-button-text border-button-border hover:border-panel-success-text m-0.5 cursor-pointer rounded-lg border-2 p-1 text-xs hover:scale-105"
                       >
-                        清出列表
+                        删除记录
                       </button>
                       <button
                         onClick={addToStartFiles(file.path)}
                         className="bg-button-bg text-button-text border-button-border hover:border-panel-success-text m-0.5 cursor-pointer rounded-lg border-2 p-1 text-xs hover:scale-105"
                       >
-                        添加启动
+                        收藏
                       </button>
                       <button
                         onClick={addPortalNodeToStage(file.path)}
                         className="bg-button-bg text-button-text border-button-border hover:border-panel-success-text m-0.5 cursor-pointer rounded-lg border-2 p-1 text-xs hover:scale-105"
                       >
                         添加传送门
+                      </button>
+                      <button
+                        onClick={handleOpenFile(file.path)}
+                        className="bg-button-bg text-button-text border-button-border hover:border-panel-success-text m-0.5 cursor-pointer rounded-lg border-2 p-1 text-xs hover:scale-105"
+                      >
+                        打开位置
                       </button>
                     </div>
                   </td>
@@ -361,3 +368,9 @@ export default function RecentFilesPanel() {
     </div>
   );
 }
+
+const handleOpenFile = (file: string) => {
+  return () => {
+    myOpen(PathString.dirPath(file));
+  };
+};

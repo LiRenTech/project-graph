@@ -78,8 +78,11 @@ export function openSelectedImageNode() {
     }
   }
 }
-
-function myOpen(url: string) {
+/**
+ * 调用tauri框架的open方法
+ * @param url
+ */
+export function myOpen(url: string) {
   open(url)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     .then((_) => {})
