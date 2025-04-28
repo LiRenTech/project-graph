@@ -1,4 +1,5 @@
 import { Serialized } from "../../../../types/node";
+import { isMac } from "../../../../utils/platform";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
@@ -8,6 +9,7 @@ import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
+import { Controller } from "../../controlService/controller/Controller";
 import { MouseLocation } from "../../controlService/MouseLocation";
 import { copyEnginePasteImage } from "./pasteImage";
 import { copyEnginePastePlainText } from "./pastePlainText";
@@ -148,6 +150,14 @@ export namespace CopyEngine {
       readClipboardItems(Renderer.transformView2World(MouseLocation.vector()));
     } else {
       StageSerializedAdder.addSerializedData(copyBoardData, copyBoardMouseVector);
+    }
+    if (isMac) {
+      // mac下无法直接粘贴，还要点一个按钮，但这导致
+      // 按下按钮后，程序中依然显示 meta v 仍然在按下状态
+      // 因此需要主动删除
+      setTimeout(() => {
+        Controller.pressingKeySet.clear();
+      }, 500);
     }
   }
 
