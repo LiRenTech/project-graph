@@ -26,6 +26,8 @@ import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/Vie
 import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
 import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { Random } from "../../../algorithm/random";
+import { Dialog } from "../../../../components/dialog";
+import { SvgNode } from "../../../stage/stageObject/entity/SvgNode";
 
 interface SecretKeyItem {
   name: string;
@@ -733,6 +735,28 @@ export class SecretKeysEngine {
         setTimeout(() => {
           throw new Error("您用秘籍键触发了手动报错，用于观察红色的弹窗是否正常显示、内部报错文字是否可以复制等操作");
         }, 1000);
+      },
+    },
+    "s v g s v g": {
+      name: "测试创建svg节点",
+      explain: "测试创建svg节点，后续会删除",
+      func() {
+        Dialog.show({
+          title: "创建svg",
+          input: true,
+          content: "请输入svg内容",
+        }).then(({ button, value }) => {
+          if (button === "确定" && value) {
+            const svgNode = new SvgNode({
+              uuid: v4(),
+              content: value,
+              location: [Camera.location.x, Camera.location.y],
+              size: [100, 100],
+              color: [0, 0, 0, 0],
+            });
+            StageManager.addEntity(svgNode);
+          }
+        });
       },
     },
   };
