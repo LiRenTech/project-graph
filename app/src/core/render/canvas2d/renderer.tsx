@@ -261,7 +261,7 @@ export namespace Renderer {
     isRenderingChildStage = false;
     // 交互相关的
     DrawingControllerRenderer.renderTempDrawing();
-    renderWarningEntities();
+    renderWarningStageObjects();
     renderHoverCollisionBox();
     renderSelectingRectangle();
     renderCuttingLine();
@@ -563,17 +563,26 @@ export namespace Renderer {
   }
 
   /** 待删除的节点和边 */
-  function renderWarningEntities() {
+  function renderWarningStageObjects() {
     // 待删除的节点
     for (const node of Stage.cuttingMachine.warningEntity) {
-      CollisionBoxRenderer.render(node.collisionBox, new Color(255, 0, 0, 0.5));
+      CollisionBoxRenderer.render(
+        node.collisionBox,
+        StageStyleManager.currentStyle.effects.warningShadow.toNewAlpha(0.5),
+      );
     }
     // 待删除的边
     for (const association of Stage.cuttingMachine.warningAssociations) {
-      CollisionBoxRenderer.render(association.collisionBox, new Color(255, 0, 0, 0.5));
+      CollisionBoxRenderer.render(
+        association.collisionBox,
+        StageStyleManager.currentStyle.effects.warningShadow.toNewAlpha(0.5),
+      );
     }
     for (const section of Stage.cuttingMachine.warningSections) {
-      CollisionBoxRenderer.render(section.collisionBox, new Color(255, 0, 0, 0.5));
+      CollisionBoxRenderer.render(
+        section.collisionBox,
+        StageStyleManager.currentStyle.effects.warningShadow.toNewAlpha(0.5),
+      );
     }
   }
 

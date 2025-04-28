@@ -141,5 +141,5 @@ effects:
   flash: "#8b5891" # 紫罗兰
   dash: "#000000" # 纯黑
   windowFlash: "#f9e9ea" # 背景同色系
-  warningShadow: "#b185bd" # 薰衣草紫
+  warningShadow: "rgba(226, 167, 31, 0.2)"
   successShadow: "#7893af" # 灰蓝

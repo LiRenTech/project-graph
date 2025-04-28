@@ -141,5 +141,5 @@ effects:
   flash: "#8b949d" # 冷淡蓝闪烁
   dash: "#6b7280" # 薰衣草拖影
   windowFlash: "#eef1f0" # 背景同色窗口闪烁
-  warningShadow: "#b1b7bd" # 冷灰蓝警告阴影
+  warningShadow: "rgba(248, 128, 112, 0.4)"
   successShadow: "#7893af" # 冷蓝成功阴影

@@ -141,5 +141,5 @@ effects:
   flash: "#fff"
   dash: "#6b7280" # 夜雾拖影
   windowFlash: "#eef1f0" # 月光涟漪
-  warningShadow: "rgba(177, 183, 189, 0.4)" # 夜鸮警示
+  warningShadow: "rgba(223, 195, 134, 0.4)" # 夜鸮警示
   successShadow: "rgba(122, 154, 129, 0.8)"
