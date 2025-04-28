@@ -40,6 +40,23 @@ export namespace Dialog {
    *     { text: "取消", color: "red", onClick: () => {} },
    *   ],
    * });
+   *
+   * # 带有输入框的对话框
+   *
+   * Dialog.show({
+   *     title: "重命名边",
+   *     input: true,
+   *   }).then(({ button, value }) => {
+   *     if (button === "确定") {
+   *       if (value) {
+   *         for (const edge of StageManager.getLineEdges()) {
+   *           if (edge.isSelected) {
+   *             edge.rename(value);
+   *           }
+   *         }
+   *       }
+   *     }
+   *   });
    * @param options
    * @returns
    */

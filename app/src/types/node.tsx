@@ -96,15 +96,16 @@ export namespace Serialized {
   export function isPenStroke(obj: StageObject): obj is PenStroke {
     return obj.type === "core:pen_stroke";
   }
-  // export type SvgNode = Entity & {
-  //   type: "core:svg_node";
-  //   content: string;
-  //   size: Vector;
-  //   color: Color;
-  // };
-  // export function isSvgNode(obj: StageObject): obj is SvgNode {
-  //   return obj.type === "core:svg_node";
-  // }
+  export type SvgNode = Entity & {
+    type: "core:svg_node";
+    content: string;
+    size: Vector;
+    color: Color;
+    scale: number;
+  };
+  export function isSvgNode(obj: StageObject): obj is SvgNode {
+    return obj.type === "core:svg_node";
+  }
   // export type Edge = StageObject & {
   //   type: "core:edge";
   //   source: string;
@@ -171,7 +172,7 @@ export namespace Serialized {
 
   export type File = {
     version: typeof StageDumper.latestVersion;
-    entities: (TextNode | Section | ConnectPoint | ImageNode | UrlNode | PenStroke | PortalNode)[];
+    entities: (TextNode | Section | ConnectPoint | ImageNode | UrlNode | PenStroke | PortalNode | SvgNode)[];
     associations: (LineEdge | CublicCatmullRomSplineEdge | MultiTargetUndirectedEdge)[];
     tags: string[];
   };

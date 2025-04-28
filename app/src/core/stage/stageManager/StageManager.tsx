@@ -265,6 +265,9 @@ export namespace StageManager {
   export function deleteOnePenStroke(penStroke: PenStroke) {
     stageContent.entities.deleteValue(penStroke);
   }
+  export function deleteOneEntity(entity: Entity) {
+    stageContent.entities.deleteValue(entity);
+  }
   export function deleteOneLineEdge(edge: LineEdge) {
     stageContent.associations.deleteValue(edge);
   }

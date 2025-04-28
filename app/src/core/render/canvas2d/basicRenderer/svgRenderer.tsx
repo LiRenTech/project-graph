@@ -17,15 +17,15 @@ export namespace SvgRenderer {
     Canvas.ctx.drawImage(img, centerLocation.x - width / 2, centerLocation.y - height / 2, width, height);
   }
 
-  export function renderSvgFromLeftTopWithoutSize(svg: string, location: Vector): void {
+  export function renderSvgFromLeftTopWithoutSize(svg: string, location: Vector, scaleNumber = 1): void {
     const img = new Image();
     img.src = "data:image/svg+xml;base64," + btoa(svg);
     Canvas.ctx.drawImage(
       img,
       location.x,
       location.y,
-      img.naturalWidth * Camera.currentScale,
-      img.naturalHeight * Camera.currentScale,
+      img.naturalWidth * Camera.currentScale * scaleNumber,
+      img.naturalHeight * Camera.currentScale * scaleNumber,
     );
   }
 

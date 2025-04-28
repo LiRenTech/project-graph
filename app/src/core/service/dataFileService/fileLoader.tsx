@@ -18,6 +18,7 @@ import { Vector } from "../../dataStruct/Vector";
 import { CublicCatmullRomSplineEdge } from "../../stage/stageObject/association/CublicCatmullRomSplineEdge";
 import { MultiTargetUndirectedEdge } from "../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { RecentFileManager } from "./RecentFileManager";
+import { SvgNode } from "../../stage/stageObject/entity/SvgNode";
 
 /**
  * 将文件里的内容加载到舞台上
@@ -146,6 +147,8 @@ export namespace FileLoader {
         StageManager.addPenStroke(new PenStroke(entity));
       } else if (Serialized.isPortalNode(entity)) {
         StageManager.addPortalNode(new PortalNode(entity));
+      } else if (Serialized.isSvgNode(entity)) {
+        StageManager.addEntity(new SvgNode(entity));
       } else {
         console.warn("加载文件时，出现未知的实体类型：" + entity);
       }

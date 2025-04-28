@@ -11,6 +11,7 @@ import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { PenStroke } from "../../../stage/stageObject/entity/PenStroke";
 import { PortalNode } from "../../../stage/stageObject/entity/PortalNode";
 import { Section } from "../../../stage/stageObject/entity/Section";
+import { SvgNode } from "../../../stage/stageObject/entity/SvgNode";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
 import { CurveRenderer } from "../basicRenderer/curveRenderer";
@@ -22,6 +23,7 @@ import { CollisionBoxRenderer } from "./CollisionBoxRenderer";
 import { EntityDetailsButtonRenderer } from "./EntityDetailsButtonRenderer";
 import { PortalNodeRenderer } from "./portalNode/portalNodeRenderer";
 import { SectionRenderer } from "./section/SectionRenderer";
+import { SvgNodeRenderer } from "./svgNode/svgNodeRenderer";
 import { TextNodeRenderer } from "./textNode/TextNodeRenderer";
 import { UrlNodeRenderer } from "./urlNode/urlNodeRenderer";
 
@@ -163,6 +165,8 @@ export namespace EntityRenderer {
       renderPenStroke(entity);
     } else if (entity instanceof PortalNode) {
       PortalNodeRenderer.render(entity);
+    } else if (entity instanceof SvgNode) {
+      SvgNodeRenderer.render(entity);
     }
     // details右上角小按钮
     if (Camera.currentScale > Renderer.ignoreTextNodeTextRenderLessThanCameraScale) {
