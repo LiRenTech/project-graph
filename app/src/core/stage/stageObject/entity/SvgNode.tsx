@@ -2,6 +2,7 @@ import { Serialized } from "../../../../types/node";
 import { Color } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
+import { SvgRenderer } from "../../../render/canvas2d/basicRenderer/svgRenderer";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
@@ -16,6 +17,8 @@ export class SvgNode extends ConnectableEntity {
   public collisionBox: CollisionBox;
   content: string;
   location: Vector;
+  originSize: Vector;
+  state: "loading" | "loaded" = "loading";
   isHiddenBySectionCollapse: boolean = false;
 
   constructor({
@@ -23,7 +26,6 @@ export class SvgNode extends ConnectableEntity {
     details = "",
     content = "",
     location = [0, 0],
-    size = [0, 0],
     scale = 1,
     color = [0, 0, 0, 0],
   }: Partial<Serialized.SvgNode> & { uuid: string }) {
@@ -35,13 +37,35 @@ export class SvgNode extends ConnectableEntity {
     this.location = new Vector(...location);
     this.color = new Color(...color);
 
+    this.originSize = new Vector(100, 100);
+    // 解析svg尺寸
+    SvgRenderer.getSvgOriginalSize(content).then((size) => {
+      this.originSize = size;
+      this.collisionBox = new CollisionBox([
+        new Rectangle(new Vector(...location), this.originSize.multiply(this.scaleNumber)),
+      ]);
+      this.state = "loaded";
+    });
+
     this.collisionBox = new CollisionBox([
-      new Rectangle(new Vector(...location), new Vector(...size).multiply(this.scaleNumber)),
+      new Rectangle(new Vector(...location), this.originSize.multiply(this.scaleNumber)),
     ]);
   }
 
   public get geometryCenter(): Vector {
     return this.collisionBox.getRectangle().center;
+  }
+
+  public scaleUpdate(scaleDiff: number) {
+    this.scaleNumber += scaleDiff;
+    if (this.scaleNumber < 0.1) {
+      this.scaleNumber = 0.1;
+    }
+    if (this.scaleNumber > 10) {
+      this.scaleNumber = 10;
+    }
+
+    this.collisionBox = new CollisionBox([new Rectangle(this.location, this.originSize.multiply(this.scaleNumber))]);
   }
 
   move(delta: Vector): void {

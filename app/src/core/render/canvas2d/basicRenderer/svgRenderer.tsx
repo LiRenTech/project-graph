@@ -29,6 +29,19 @@ export namespace SvgRenderer {
     );
   }
 
+  export async function getSvgOriginalSize(svg: string): Promise<Vector> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        resolve(new Vector(img.naturalWidth, img.naturalHeight));
+      };
+      img.onerror = (error) => {
+        reject(error);
+      };
+      img.src = "data:image/svg+xml;base64," + btoa(svg);
+    });
+  }
+
   export function renderSvgFromCenterWithoutSize(svg: string, centerLocation: Vector): void {
     const img = new Image();
     img.src = "data:image/svg+xml;base64," + btoa(svg);
