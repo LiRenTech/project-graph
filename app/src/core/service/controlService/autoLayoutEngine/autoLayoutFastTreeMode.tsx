@@ -1,19 +1,19 @@
-/**
- * 瞬间树形布局算法
- * 瞬间：一次性直接移动所有节点到合适的位置
- * 树形：此布局算法仅限于树形结构，在代码上游保证
- */
-
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { StageEntityMoveManager } from "../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
+
+/**
+ * 瞬间树形布局算法
+ * 瞬间：一次性直接移动所有节点到合适的位置
+ * 树形：此布局算法仅限于树形结构，在代码上游保证
+ */
 export namespace AutoLayoutFastTree {
   /**
-   * 树形节点的根节点
-   * @param rootNode
+   * 向下树形布局
+   * @param rootNode 树形节点的根节点
    */
   export function autoLayoutFastTreeModeDown(rootNode: ConnectableEntity) {
     const dfs = (node: ConnectableEntity) => {
@@ -43,6 +43,7 @@ export namespace AutoLayoutFastTree {
     };
     dfs(rootNode);
   }
+
   /**
    * 获取当前树的外接矩形，注意不要有环，有环就废了
    * @param node
@@ -105,10 +106,14 @@ export namespace AutoLayoutFastTree {
    * @param rootNode
    */
   export function autoLayoutFastTreeModeRight(rootNode: ConnectableEntity) {
+    // 树形结构的根节点 左上角位置固定不动
     const initLocation = rootNode.collisionBox.getRectangle().leftTop.clone();
 
     const dfs = (node: ConnectableEntity) => {
-      const childList = GraphMethods.nodeChildrenArray(node);
+      // 按照从上到下的顺序排序
+      const childList = GraphMethods.nodeChildrenArray(node).sort(
+        (a, b) => a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top,
+      );
       for (const child of childList) {
         dfs(child); // 递归口
       }
@@ -126,6 +131,9 @@ export namespace AutoLayoutFastTree {
     rootNode.isSelected = true;
     StageEntityMoveManager.moveConnectableEntitiesWithChildren(delta);
   }
+
+  // ======================= 反转树的位置系列 ====================
+
   export function treeReverseX(selectedRootEntity: ConnectableEntity) {
     treeReverse(selectedRootEntity, "X");
   }
