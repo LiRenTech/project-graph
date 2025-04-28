@@ -10,6 +10,7 @@ import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { editTextNode } from "../controller/concrete/utilsControl";
 import { Direction } from "../../../../types/directions";
 import { KeyboardOnlyEngine } from "./keyboardOnlyEngine";
+import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 
 /**
  * 专用于Xmind式的树形结构的键盘操作引擎
@@ -52,6 +53,14 @@ export namespace KeyboardOnlyTreeEngine {
       sizeAdjust: rootNode instanceof TextNode ? rootNode.sizeAdjust : "auto",
     });
     StageManager.addTextNode(newNode);
+
+    // 如果是在框里，则把新生长的节点也纳入到框里
+    const fatherSections = SectionMethods.getFatherSections(rootNode);
+    for (const section of fatherSections) {
+      section.childrenUUIDs.push(newNode.uuid);
+      section.children.push(newNode);
+    }
+
     // 连接节点
     StageManager.connectEntity(rootNode, newNode);
     const newEdges = GraphMethods.getEdgesBetween(rootNode, newNode);
@@ -117,6 +126,12 @@ export namespace KeyboardOnlyTreeEngine {
       sizeAdjust: parent instanceof TextNode ? parent.sizeAdjust : "auto",
     });
     StageManager.addTextNode(newNode);
+    // 如果是在框里，则把新生长的节点也纳入到框里
+    const fatherSections = SectionMethods.getFatherSections(parent);
+    for (const section of fatherSections) {
+      section.childrenUUIDs.push(newNode.uuid);
+      section.children.push(newNode);
+    }
     // 连接节点
     StageManager.connectEntity(parent, newNode);
 
