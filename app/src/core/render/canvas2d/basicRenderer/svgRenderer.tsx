@@ -10,7 +10,7 @@ export namespace SvgRenderer {
       Canvas.ctx.drawImage(svgCache[svg], location.x, location.y, width, height);
     } else {
       const img = new Image();
-      img.src = "data:image/svg+xml;base64," + btoa(svg);
+      img.src = "data:image/svg+xml," + encodeURIComponent(svg);
       img.onload = () => {
         svgCache[svg] = img;
       };
@@ -22,7 +22,7 @@ export namespace SvgRenderer {
       Canvas.ctx.drawImage(svgCache[svg], centerLocation.x - width / 2, centerLocation.y - height / 2, width, height);
     } else {
       const img = new Image();
-      img.src = "data:image/svg+xml;base64," + btoa(svg);
+      img.src = "data:image/svg+xml," + encodeURIComponent(svg);
       img.onload = () => {
         svgCache[svg] = img;
       };
@@ -41,7 +41,7 @@ export namespace SvgRenderer {
       );
     } else {
       const img = new Image();
-      img.src = "data:image/svg+xml;base64," + btoa(svg);
+      img.src = "data:image/svg+xml," + encodeURIComponent(svg);
       img.onload = () => {
         svgCache[svg] = img;
       };
@@ -57,7 +57,10 @@ export namespace SvgRenderer {
       img.onerror = (error) => {
         reject(error);
       };
-      img.src = "data:image/svg+xml;base64," + btoa(svg);
+      // img.src = "data:image/svg+xml;base64," + btoa(svg);
+      // 以上方法，出现汉字会报错，因此改用 encodeURIComponent
+      // 直接使用 URI 编码（无需 Base64）
+      img.src = "data:image/svg+xml," + encodeURIComponent(svg);
     });
   }
 
@@ -73,7 +76,7 @@ export namespace SvgRenderer {
       );
     } else {
       const img = new Image();
-      img.src = "data:image/svg+xml;base64," + btoa(svg);
+      img.src = "data:image/svg+xml," + encodeURIComponent(svg);
       img.onload = () => {
         svgCache[svg] = img;
       };

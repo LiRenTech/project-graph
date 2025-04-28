@@ -14,6 +14,7 @@ import { CircleChangeRadiusEffect } from "../../../feedbackService/effectEngine/
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
+import { SvgNode } from "../../../../stage/stageObject/entity/SvgNode";
 
 export const ControllerDragFile = new ControllerClassDragFile();
 
@@ -71,6 +72,17 @@ ControllerDragFile.drop = (event: DragEvent) => {
           } else {
             StageManager.generateNodeTreeByText(dataString, 1, mouseWorldLocation);
           }
+        });
+      } else if (file.type.includes("image/svg+xml")) {
+        readFileText(file).then((dataString) => {
+          const entity = new SvgNode({
+            uuid: uuidv4(),
+            content: dataString,
+            location: [mouseWorldLocation.x, mouseWorldLocation.y],
+            size: [400, 100],
+            color: [0, 0, 0, 0],
+          });
+          StageManager.addEntity(entity);
         });
       } else if (file.type.includes("image/png")) {
         if (Stage.path.isDraft()) {
