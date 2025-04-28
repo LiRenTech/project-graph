@@ -3,30 +3,49 @@ import { Camera } from "../../../stage/Camera";
 import { Canvas } from "../../../stage/Canvas";
 
 export namespace SvgRenderer {
+  const svgCache: { [key: string]: HTMLImageElement } = {};
+
   export function renderSvgFromLeftTop(svg: string, location: Vector, width: number, height: number): void {
-    const data = svg;
-    const img = new Image();
-    img.src = "data:image/svg+xml;base64," + btoa(data);
-    Canvas.ctx.drawImage(img, location.x, location.y, width, height);
+    if (svg in svgCache) {
+      Canvas.ctx.drawImage(svgCache[svg], location.x, location.y, width, height);
+    } else {
+      const img = new Image();
+      img.src = "data:image/svg+xml;base64," + btoa(svg);
+      img.onload = () => {
+        svgCache[svg] = img;
+      };
+    }
   }
 
   export function renderSvgFromCenter(svg: string, centerLocation: Vector, width: number, height: number): void {
-    const data = svg;
-    const img = new Image();
-    img.src = "data:image/svg+xml;base64," + btoa(data);
-    Canvas.ctx.drawImage(img, centerLocation.x - width / 2, centerLocation.y - height / 2, width, height);
+    if (svg in svgCache) {
+      Canvas.ctx.drawImage(svgCache[svg], centerLocation.x - width / 2, centerLocation.y - height / 2, width, height);
+    } else {
+      const img = new Image();
+      img.src = "data:image/svg+xml;base64," + btoa(svg);
+      img.onload = () => {
+        svgCache[svg] = img;
+      };
+    }
   }
 
   export function renderSvgFromLeftTopWithoutSize(svg: string, location: Vector, scaleNumber = 1): void {
-    const img = new Image();
-    img.src = "data:image/svg+xml;base64," + btoa(svg);
-    Canvas.ctx.drawImage(
-      img,
-      location.x,
-      location.y,
-      img.naturalWidth * Camera.currentScale * scaleNumber,
-      img.naturalHeight * Camera.currentScale * scaleNumber,
-    );
+    if (svg in svgCache) {
+      const img = svgCache[svg];
+      Canvas.ctx.drawImage(
+        svgCache[svg],
+        location.x,
+        location.y,
+        img.naturalWidth * Camera.currentScale * scaleNumber,
+        img.naturalHeight * Camera.currentScale * scaleNumber,
+      );
+    } else {
+      const img = new Image();
+      img.src = "data:image/svg+xml;base64," + btoa(svg);
+      img.onload = () => {
+        svgCache[svg] = img;
+      };
+    }
   }
 
   export async function getSvgOriginalSize(svg: string): Promise<Vector> {
@@ -43,14 +62,21 @@ export namespace SvgRenderer {
   }
 
   export function renderSvgFromCenterWithoutSize(svg: string, centerLocation: Vector): void {
-    const img = new Image();
-    img.src = "data:image/svg+xml;base64," + btoa(svg);
-    Canvas.ctx.drawImage(
-      img,
-      centerLocation.x - (img.naturalWidth / 2) * Camera.currentScale,
-      centerLocation.y - (img.naturalHeight / 2) * Camera.currentScale,
-      img.naturalWidth * Camera.currentScale,
-      img.naturalHeight * Camera.currentScale,
-    );
+    if (svg in svgCache) {
+      const img = svgCache[svg];
+      Canvas.ctx.drawImage(
+        svgCache[svg],
+        centerLocation.x - (img.naturalWidth / 2) * Camera.currentScale,
+        centerLocation.y - (img.naturalHeight / 2) * Camera.currentScale,
+        img.naturalWidth * Camera.currentScale,
+        img.naturalHeight * Camera.currentScale,
+      );
+    } else {
+      const img = new Image();
+      img.src = "data:image/svg+xml;base64," + btoa(svg);
+      img.onload = () => {
+        svgCache[svg] = img;
+      };
+    }
   }
 }

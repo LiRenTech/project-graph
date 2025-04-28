@@ -23,7 +23,7 @@ import { CollisionBoxRenderer } from "./CollisionBoxRenderer";
 import { EntityDetailsButtonRenderer } from "./EntityDetailsButtonRenderer";
 import { PortalNodeRenderer } from "./portalNode/portalNodeRenderer";
 import { SectionRenderer } from "./section/SectionRenderer";
-import { SvgNodeRenderer } from "./svgNode/svgNodeRenderer";
+import { SvgNodeRenderer } from "./svgNode/SvgNodeRenderer";
 import { TextNodeRenderer } from "./textNode/TextNodeRenderer";
 import { UrlNodeRenderer } from "./urlNode/urlNodeRenderer";
 

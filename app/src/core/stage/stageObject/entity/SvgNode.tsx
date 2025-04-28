@@ -18,7 +18,7 @@ export class SvgNode extends ConnectableEntity {
   content: string;
   location: Vector;
   originSize: Vector;
-  state: "loading" | "loaded" = "loading";
+  state: "loading" | "loaded" | "error" = "loading";
   isHiddenBySectionCollapse: boolean = false;
 
   constructor({
@@ -39,13 +39,18 @@ export class SvgNode extends ConnectableEntity {
 
     this.originSize = new Vector(100, 100);
     // 解析svg尺寸
-    SvgRenderer.getSvgOriginalSize(content).then((size) => {
-      this.originSize = size;
-      this.collisionBox = new CollisionBox([
-        new Rectangle(new Vector(...location), this.originSize.multiply(this.scaleNumber)),
-      ]);
-      this.state = "loaded";
-    });
+    SvgRenderer.getSvgOriginalSize(content)
+      .then((size) => {
+        this.originSize = size;
+        this.collisionBox = new CollisionBox([
+          new Rectangle(new Vector(...location), this.originSize.multiply(this.scaleNumber)),
+        ]);
+        this.state = "loaded";
+      })
+      .catch((error) => {
+        this.state = "error";
+        console.error(error);
+      });
 
     this.collisionBox = new CollisionBox([
       new Rectangle(new Vector(...location), this.originSize.multiply(this.scaleNumber)),
