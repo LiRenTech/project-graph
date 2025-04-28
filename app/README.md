@@ -60,7 +60,7 @@ Refer to [Documentation](https://project-graph.top/docs/app#%E5%AE%89%E8%A3%85)
 
 - Windows 10+ (Edge WebView2)
 - Linux (webkit2gtk, gtk)
-- _macOS support in development_
+- _macOS 14+ support in development_
 
 ## 🎮 Quick Start
 
@@ -81,8 +81,7 @@ For advanced features like compute engine, see [Full Documentation](https://proj
 
 Join us and shape the future of visual thinking:
 
-- **Telegram Group**: [@projectgraph](https://t.me/projectgraph)
-- **QQ Group**: [1006956704](https://qm.qq.com/cgi-bin/qm/qr?k=1Wskf2Y2KJz3ARpCgzi04y_p95a78Wku&jump_from=webapi&authKey=EkjB+oWihwZIfyqVsIv2dGrNv7bhSGSIULM3+ZLU2R5AVxOUKaIRwi6TKOHlT04/)
+[https://project-graph.top/docs/app/community](https://project-graph.top/docs/app/community)
 
 We welcome PRs! Check [CONTRIBUTING.md](https://project-graph.top/docs/contribute) for guidelines.
 
