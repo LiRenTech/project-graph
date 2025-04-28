@@ -5,11 +5,25 @@ icon: Spline
 
 ## 说明
 
-全称为：Cublic Catmull Rom Spline，一般项目里面简称CR曲线。
+全称为：Cublic Catmull Rom Spline，一般项目里面简称CR曲线。CR曲线是唯一可以自带控制点的可调整曲线。
 
-## 计算
+CR曲线在创建时默认没有手动控制点，因此看上去是一条直线，需要自行添加控制点才能成为曲线。
 
-CR曲线本质是一个参数方程，给定四个控制点$\boldsymbol{p_0},\boldsymbol{p_1},\boldsymbol{p_2},\boldsymbol{p_3}$以及$\alpha,\tau$通过如下方法计算：
+如果将松紧程度拉到最紧，形态会变成一条折线。
+
+目前还在开发状态，交互还不完整。
+
+## 属性
+
+松紧程度：`tension`，控制曲线弯曲程度，取值范围为0~1，0表示线性，1表示圆滑。
+
+其他参数：`alpha`，固定0.5不可调整，仅由开发人员调整。
+
+## 原理
+
+### 计算
+
+CR曲线本质是一个参数方程，给定四个控制点 $\boldsymbol{p_0},\boldsymbol{p_1},\boldsymbol{p_2},\boldsymbol{p_3}$ 以及 $\alpha,\tau$ 通过如下方法计算：
 
 $$
 t_{01}=\lvert \boldsymbol{p_0}-\boldsymbol{p_1} \rvert ^\alpha \\
@@ -42,12 +56,12 @@ $$
 \boldsymbol{p}(t)=\boldsymbol{a}t^3+\boldsymbol{b}t^2+\boldsymbol{c}t+\boldsymbol{d}
 $$
 
-## 弧长
+### 弧长
 
 先求导
 
 $$
-{\boldsymbol{p}}^{'}=\frac{d\boldsymbol{p}(t)}{dt}=3t^2\boldsymbol{a}+2t\boldsymbol{b}+\boldsymbol{c}
+\boldsymbol{p}^{'}=\frac{d\boldsymbol{p}(t)}{dt}=3t^2\boldsymbol{a}+2t\boldsymbol{b}+\boldsymbol{c}
 $$
 
 弧长:
