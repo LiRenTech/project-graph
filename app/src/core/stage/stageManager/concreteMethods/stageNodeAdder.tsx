@@ -114,6 +114,24 @@ export namespace StageNodeAdder {
       const distance = newNode.rectangle.left - entityRectangle.left;
       newNode.moveTo(newNode.rectangle.location.add(new Vector(-distance, 0)));
     }
+    if (direction === Direction.Left) {
+      // 顶对齐
+      const distance = newNode.rectangle.top - entityRectangle.top;
+      newNode.moveTo(newNode.rectangle.location.add(new Vector(0, -distance)));
+    }
+    if (direction === Direction.Right) {
+      // 顶对齐，+ 自己对齐到目标的右侧
+      const targetLocation = entityRectangle.rightTop;
+      newNode.moveTo(targetLocation);
+    }
+    if (direction === Direction.Up) {
+      const targetLocation = entityRectangle.leftTop.add(new Vector(0, newNode.collisionBox.getRectangle().height));
+      newNode.moveTo(targetLocation);
+    }
+    if (direction === Direction.Down) {
+      const targetLocation = entityRectangle.leftBottom;
+      newNode.moveTo(targetLocation);
+    }
     StageHistoryManager.recordStep();
     return uuid;
   }
