@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./src/assets/logo-animated.svg" height="150" alt="banner">
+<img src="app/src/assets/logo-animated.svg" height="150" alt="banner">
 <h1>Project Graph</h1>
 
 Next-Generation Node Diagram Tool for Visual Thinking
