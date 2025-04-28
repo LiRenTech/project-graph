@@ -3,7 +3,7 @@ welcome:
   next: 下一步
   website: 網站
   github: GitHub
-  bilibili: 哔哩哔哩
+  bilibili: 嗶哩嗶哩
   qq: QQ 群組
 
 about:
@@ -20,7 +20,7 @@ about:
   techEnvironment: 技術支持與生態環境
   developers:
     title: 開發者名單
-    proposer: 專案提出
+    proposer: 專案提出與創立
     conceptDesigner: 概念設計
     featureDesigner: 功能設計
     feedbackManager: 反饋管理
@@ -58,11 +58,11 @@ about:
   - 團隊以淺藍色和程式碼綠為代表顏色，象徵著邏輯合理與整活幽默並存的團隊文化。
 
   links:
-    video: 視頻教程
-    qq: QQ羣組
+    video: 影片教學
+    qq: QQ 群
     forum: 論壇
     documentation: 文檔
-    github: Github
+    github: GitHub
   updater:
     available: 新版本
     downloading: 下載中
@@ -94,10 +94,10 @@ settings:
     title: 連線樣式
     options:
       straight: 直線
-      bezier: 貝塞爾曲線
+      bezier: 貝茲曲線
       vertical: 垂直折線
   isRenderCenterPointer:
-    title: 显示中心十字准星
+    title: 顯示中心十字准星
     description: |
       開啟後，畫布中心會顯示一个十字準星，用於指示快捷鍵創建節點的位置
   showGrid:
@@ -127,10 +127,10 @@ settings:
       開啟後，畫布左上角將會顯示除錯資訊。
       若您遇到bug截圖回饋時，建議開啟此選項。
   enableTagTextNodesBigDisplay:
-    title: 标签文本节点巨大化显示
+    title: 標籤文本節點巨大化顯示
     description: |
-      開啟后，標籤文本節點的顯示在攝影機缩小到廣袤的全局視野时，
-      標籤会巨大化顯示，以便更容易識別整个文件的布局分布
+      開啟後，標籤文本節點的顯示在攝影縮縮小到廣袤的全局視野時，
+      標籤會巨大化顯示，以便更容易識別整个文件的布局分布
   alwaysShowDetails:
     title: 始終顯示節點詳細資訊
     description: |
@@ -207,12 +207,12 @@ settings:
       輸入`{{time}}` 會自動替換為目前時間，雙擊創建時可以自動更新時間。
       可以組合使用，例如`{{i}}-{{date}}-{{time}}`
   autoNamerSectionTemplate:
-    title: 自动命名分组模板
+    title: 自動命名分组模板
     description: |
-      輸入`{{i}}` 代表節點名稱會自動替換為編號，雙擊創建时可以自動累加數字。
+      輸入`{{i}}` 代表節點名稱會自動替換為編號，雙擊創建時可以自動累加數字。
       例如`n{{i}}` 會自動替換為`n1`, `n2`, `n3`...
-      輸入`{{date}}` 會自動替換為當前日期，雙擊創建时可以自動更新日期。
-      輸入`{{time}}` 會自動替換為當前時間，雙擊創建时可以自動更新時間。
+      輸入`{{date}}` 會自動替換為當前日期，雙擊創建時可以自動更新日期。
+      輸入`{{time}}` 會自動替換為當前時間，雙擊創建時可以自動更新時間。
       可以組合使用，例如`{{i}}-{{date}}-{{time}}`
   autoSaveWhenClose:
     title: 點擊視窗右上角關閉按鈕時自動儲存工程檔案
@@ -275,7 +275,7 @@ settings:
   cameraKeyboardMoveReverse:
     title: 視角移動鍵盤反向
     description: |
-      開啟后，W S A D按鍵的移動視角方向會相反
+      開啟後，W S A D按鍵的移動視角方向會相反
       原本的移動邏輯是移動懸浮在畫面上的攝影機，但有人會認為是移動畫布，這樣就反了
       於是就有了這個選項
   allowAddCycleEdge:
@@ -357,43 +357,43 @@ settings:
       雙指左右移動會被識別為滑鼠橫向滾輪的滾動事件。
       如果您是筆記型電腦操作並使用外部滑鼠，建議關閉此選項。
   mouseWheelMode:
-    title: 鼠标滚轮模式
+    title: 滑鼠滚轮模式
     options:
-      zoom: 缩放
-      move: 纵向移动
-      moveX: 横向移动
+      zoom: 縮放
+      move: 垂直方向移動
+      moveX: 横向移動
       none: 無操作
   mouseWheelWithShiftMode:
     title: 按住 Shift 時，滑鼠滾輪模式
     options:
-      zoom: 缩放
-      move: 纵向移动
-      moveX: 横向移动
+      zoom: 縮放
+      move: 垂直方向移動
+      moveX: 横向移動
       none: 无操作
   mouseWheelWithCtrlMode:
     title: 按住 Ctrl 時，滑鼠滾輪模式
     options:
-      zoom: 缩放
-      move: 纵向移动
-      moveX: 横向移动
+      zoom: 縮放
+      move: 垂直方向移動
+      moveX: 横向移動
       none: 无操作
     description: "提示：這裡的 Ctrl 是 Control\n"
   rectangleSelectWhenLeft:
-    title: 向左框选的策略
+    title: 向左框選的策略
     description: |
       選擇滑鼠向左框選的策略，包含完全覆蓋框選和碰撞框選
       完全覆蓋框選是指矩形框選框必須完全覆蓋實體的外接矩形
       碰撞框選是指矩形框選框只要碰到一點點實體的外接矩形，就能夠選中了
     options:
       intersect: 碰撞框選
-      contain: 完全覆盖框选
+      contain: 完全覆盖框選
   rectangleSelectWhenRight:
-    title: 向右框选的策略
+    title: 向右框選的策略
     description: |
-      选择鼠标向右框选的策略
+      選择滑鼠向右框選的策略
     options:
       intersect: 碰撞框選
-      contain: 完全覆盖框选
+      contain: 完全覆盖框選
   # 聲音
   cuttingLineStartSoundFile:
     title: 斬斷線開始的聲音文件
@@ -412,9 +412,9 @@ settings:
     description: |
       釋放的時候就是看到刀光刃特效的時候
   alignAndAttachSoundFile:
-    title: 对齐的声音文件
+    title: 對齊的聲音文件
     description: |
-      鼠标拖动时，对齐节点和时播放的声音文件路径
+      滑鼠拖動時，對齊節點和時播放的聲音文件路徑
   title: 設置
   updateChannel:
     options:
@@ -443,7 +443,7 @@ settings:
     options:
       adjustCamera: 調整視野
       none: 無操作
-    title: 雙擊中鍵滑鼠
+    title: 雙擊滑鼠中鍵
     description: "將滾輪鍵快速按下兩次時執行的操作。默認是重置視野。\n關閉此選項，可以防止誤觸發\n"
   enableDragAlignToGrid:
     description: "建議在顯示中開啟橫向和縱向網格線，並關閉自動吸附對齊\n"
@@ -469,7 +469,7 @@ settings:
   cameraResetViewPaddingRate:
     title: 根據選擇節點重置視野時，邊緣留白係數
     description: "框選一堆節點或一個節點，並按下快捷鍵或點擊按鈕來重置視野後\n視野會調整大小和位置，確保所有選中內容出現在螢幕中央並完全覆蓋\n
-      由於視野縮放大小原因，因此邊緣可能會有留白\n值為1 表示邊緣完全不留白。（非常放大的觀察）\n值為2 表示留白内容恰好为自身内容的一倍\n"
+      由於視野縮放大小原因，因此邊緣可能會有留白\n值為1 表示邊緣完全不留白。（非常放大的觀察）\n值為2 表示留白内容恰好為自身内容的一倍\n"
   uiSwitchButtonOnSoundFile:
     description: "按鈕點擊開關按鈕時打開的聲音文件路徑\n"
     title: 按鈕點擊開關按鈕時打開惡生因
@@ -554,6 +554,9 @@ appMenu:
       resetScale:
         title: 重置縮放
         description: 將縮放重置為標準大小
+      resetLocation:
+        description: 將視野重置到坐標原點
+        title: 重置位置
   more:
     title: 更多
     items:
@@ -667,50 +670,50 @@ keyBinds:
       如果沒有選擇任何內容，則根據全部內容重置視野；
       如果有選擇內容，則根據選中內容重置視野
   resetCameraScale:
-    title: 重置缩放
-    description: 将视野缩放重置为标准大小
+    title: 重置縮放
+    description: 將視野縮放重置為標準大小
   folderSection:
     title: 折叠或展开Section框
-    description: 按下后选中的Section框会切换折叠或展开状态
+    description: 按下後選中的Section框會切換摺叠或展開狀態
   reverseEdges:
-    title: 反转连线的方向
+    title: 反轉连线的方向
     description: |
-      按下后，选中的连线的方向会变成相反方向
-      例如，原先是 A -> B，按下后变成 B -> A
-      此功能的意义在于快速创建一个节点连向多个节点的情况
-      因为目前的连线只能一次性做到多连一。
+      按下後，選中的連線的方向會變成相反方向
+      例如，原先是 A -> B，按下後變成 B -> A
+      此功能的意義在於快速創建一個節點連向多個節點的情況
+      因爲目前的連線只能一次性做到多連一。
   reverseSelectedNodeEdge:
-    title: 反转选中的节点的所有连线的方向
+    title: 反轉選中的節點的所有连线的方向
     description: |
-      按下后，所有框选选中的节点中
-      每个节点的所有连线都会反转方向
-      进而实现更快捷的一连多
+      按下後，所有框選選中的節點中
+      每個節點的所有連線都會反轉方向
+      進而實現更快捷的一連多
   packEntityToSection:
-    title: 将选中的实体打包到Section框中
+    title: 將選中的實體打包到Section框中
     description: |
-      按下后，选中的实体会自动包裹到新Section框中
+      按下後，選中的實體會自動包裹到新Section框中
   textNodeToSection:
-    title: 将选中的文本节点转换成Section框
+    title: 將選中的文本節點轉換成Section框
     description: |
-      按下后，选中的文本节点会被转换成Section框
-      可以用于section框的快速创建
+      按下後，選中的文本節點會被轉換成Section框
+      可以用於快速創建section框
   deleteSelectedStageObjects:
-    title: 删除选中的舞台物体
+    title: 删除選中的舞台物体
     description: |
-      按下后，选中的舞台物体会被删除
-      舞台物体包括实体（节点和Section等独立存在的东西）和关系（节点之间的连线）
-      默认是delete键，您可以改成backspace键
+      按下後，選中的舞台物體會被刪除
+      舞台物體包括實體（實體和Section等獨立存在的東西）和關係（節點之间的連線）
+      默認是delete键，您可以改成backspace键
   editEntityDetails:
-    title: 编辑选中的实体的详细信息
+    title: 編輯選中的實體的詳細資訊
     description: |
-      按下后，选中的实体的详细信息会被打开编辑
-      只有选中的物体数量为1时才有效
+      按下後，選中的實體的詳細資訊會被打开編輯
+      只有選中的物體數量為1是才有效
   openColorPanel:
     title: 打开颜色面板快捷键
     description: |
-      按下后，打开颜色面板，可以用于快速切换节点颜色
+      按下後，打开顔色面板，可以用于快速切換節點顔色
   switchDebugShow:
-    title: 切换调试信息显示
+    title: 切換調試資訊顯示
     description: |
       按下後，切換調試資訊顯示
       調試資訊顯示在畫布左上角，通常為開發者使用
@@ -725,70 +728,70 @@ keyBinds:
     description: |
       按下後，停止攝影機飄移，並將速度設置為0
   selectAll:
-    title: 全选
-    description: 按下后，所有节点和连线都会被选中
+    title: 全選
+    description: 按下後，所有節點和連線都會被選中
   createTextNodeFromCameraLocation:
     title: 在視野中心位置創建文本節點
     description: |
-      按下后，在当前视野中心的位置创建一个文本节点
-      等同于鼠标双击创建节点的功能
+      按下後，在當前視野中心的位置創建一个文本節點
+      等同于雙擊滑鼠創建節點的功能
   createTextNodeFromSelectedTop:
-    title: 在当前选中的节点正上方创建文本节点
+    title: 在當前選中的節點正上方創建文本節點
     description: |
-      按下后，在当前选中的节点正上方创建一个文本节点
+      按下後，在當前選中的節點正上方創建一个文本節點
   createTextNodeFromSelectedDown:
-    title: 在当前选中的节点正下方创建文本节点
+    title: 在當前選中的節點正下方創建文本節點
     description: |
-      按下后，在当前选中的节点正下方创建一个文本节点
+      按下後，在當前選中的節點正下方創建一个文本節點
   createTextNodeFromSelectedLeft:
-    title: 在当前选中的节点左侧创建文本节点
+    title: 在當前選中的節點左側創建文本節點
     description: |
-      按下后，在当前选中的节点左侧创建一个文本节点
+      按下後，在當前選中的節點左側創建一个文本節點
   createTextNodeFromSelectedRight:
-    title: 在当前选中的节点右侧创建文本节点
+    title: 在當前選中的節點右側創建文本節點
     description: |
-      按下后，在当前选中的节点右侧创建一个文本节点
+      按下後，在當前選中的節點右側創建一个文本節點
   moveUpSelectedEntities:
-    title: 向上移动所有选中的实体
+    title: 向上移動所有選中的實體
     description: |
-      按下后，所有选中的实体会向上移动一个固定距离
+      按下後，所有選中的實體會向上移動一个固定距離
   moveDownSelectedEntities:
-    title: 向下移动所有选中的实体
+    title: 向下移動所有選中的實體
     description: |
-      按下后，所有选中的实体会向下移动一个固定距离
+      按下後，所有選中的實體會向下移動一个固定距離
   moveLeftSelectedEntities:
-    title: 向左移动所有选中的实体
+    title: 向左移動所有選中的實體
     description: |
-      按下后，所有选中的实体会向左移动一个固定距离
+      按下後，所有選中的實體會向左移動一个固定距離
   moveRightSelectedEntities:
-    title: 向右移动所有选中的实体
+    title: 向右移動所有選中的實體
     description: |
-      按下后，所有选中的实体会向右移动一个固定距离
+      按下後，所有選中的實體會向右移動一个固定距離
   jumpMoveUpSelectedEntities:
-    title: 跳跃向上移动所有选中的实体
+    title: 跳跃向上移動所有選中的實體
     description: |
-      按下后，所有选中的实体会跳跃向上移动一个固定距离，能够跳入或者跳出Section框
+      按下後，所有選中的實體會跳跃向上移動一个固定距離，能够跳入或者跳出Section框
   jumpMoveDownSelectedEntities:
-    title: 跳跃向下移动所有选中的实体
+    title: 跳跃向下移動所有選中的實體
     description: |
-      按下后，所有选中的实体会跳跃向下移动一个固定距离，能够跳入或者跳出Section框
+      按下後，所有選中的實體會跳跃向下移動一个固定距離，能够跳入或者跳出Section框
   jumpMoveLeftSelectedEntities:
-    title: 跳跃向左移动所有选中的实体
+    title: 跳跃向左移動所有選中的實體
     description: |
-      按下后，所有选中的实体会跳跃向左移动一个固定距离，能够跳入或者跳出Section框
+      按下後，所有選中的實體會跳跃向左移動一个固定距離，能够跳入或者跳出Section框
   jumpMoveRightSelectedEntities:
-    title: 跳跃向右移动所有选中的实体
+    title: 跳跃向右移動所有選中的實體
     description: |
-      按下后，所有选中的实体会跳跃向右移动一个固定距离，能够跳入或者跳出Section框
+      按下後，所有選中的實體會跳跃向右移動一个固定距離，能够跳入或者跳出Section框
   CameraScaleZoomIn:
     title: 放大視野
-    description: 按下后，视野放大
+    description: 按下後，視野放大
   CameraScaleZoomOut:
     title: 縮小視野
     description: 按下後，視野縮小
   exitSoftware:
-    title: 退出软件
-    description: 按下后，退出软件
+    title: 退出軟件
+    description: 按下後，退出軟件
   checkoutProtectPrivacy:
     title: 進入或退出私隱保護模式
     description: |
@@ -880,9 +883,9 @@ keyBinds:
     description: "新建一個草稿檔案，並切換到該檔案\n若當前檔案未保存則無法切換\n"
   windowOpacityAlphaDecrease:
     title: 視窗不透明度減小
-    description: "按下后，視窗不透明度（alpha）值减小0.2，往透明的方向改變，最小值為0\n如果您的鍵盤沒有小鍵盤的純減號鍵，可以改成横排數字0右側的減號與下划線公用鍵\n"
+    description: "按下後，視窗不透明度（alpha）值减小0.2，往透明的方向改變，最小值為0\n如果您的鍵盤沒有小鍵盤的純減號鍵，可以改成横排數字0右側的減號與下划線公用鍵\n"
   windowOpacityAlphaIncrease:
-    description: "按下后，視窗不透明度（alpha）值增加0.2，往不透明的方向改變，最小值為1\n當不能再增加時，會有視窗邊緣閃爍提示\n"
+    description: "按下後，視窗不透明度（alpha）值增加0.2，往不透明的方向改變，最小值為1\n當不能再增加時，會有視窗邊緣閃爍提示\n"
     title: 視窗不透明度增加
   checkoutWindowOpacityMode:
     title: 切換視窗透明度模式
@@ -897,9 +900,33 @@ keyBinds:
   createUndirectedEdgeFromEntities:
     description: "按下後，選中的兩個或以上實體之間會創建一條無方向連線\n"
     title: 選中的實體之間創建無限連線
+  selectUp:
+    description: 按下後，選中上方節點
+    title: 選中上方節點
+  selectDown:
+    title: 選中下方節點
+    description: 按下後，選中下方節點
+  selectLeft:
+    title: 選中左側節點
+    description: 按下後，選中左側節點
+  selectRight:
+    title: 選中右側節點
+    description: 按下後，選中右側節點
+  selectAdditionalUp:
+    title: 附加選中上方節點
+    description: 按下後，附加選中上方節點
+  selectAdditionalDown:
+    title: 附加選中下方節點
+    description: 按下後，附加選中下方節點
+  selectAdditionalLeft:
+    title: 附加選中左側節點
+    description: 按下後，附加選中左側節點
+  selectAdditionalRight:
+    description: 按下後，附加選中右側節點
+    title: 附加選中右側節點
 keys:
-  mouse3: 鼠標側鍵1
-  mouse4: 鼠標側鍵2
+  mouse3: 滑鼠側鍵1
+  mouse4: 滑鼠側鍵2
   wheelup: 滾輪向上
   arrowup: 上方向鍵
   arrowdown: 下方向鍵
@@ -907,10 +934,10 @@ keys:
   arrowright: 右方向鍵
   " ": 空格
   wheeldown: 滾輪向下
-  mouse1: 鼠標中鍵
+  mouse1: 滑鼠中鍵
   none: 未綁定快捷鍵，點擊綁定
-  mouse0: 鼠標左鍵
-  mouse2: 鼠標右鍵
+  mouse0: 滑鼠左鍵
+  mouse2: 滑鼠右鍵
 plugins:
   documentation: 文檔
   uninstall: 卸載
@@ -1046,3 +1073,6 @@ keyBindsGroup:
   edge:
     description: "關於連線的一些功能\n"
     title: 連線相關
+  select:
+    description: "使用鍵盤來切換選中的實體\n"
+    title: 選擇
