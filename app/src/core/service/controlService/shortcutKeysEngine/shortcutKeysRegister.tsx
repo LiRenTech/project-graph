@@ -322,7 +322,7 @@ export namespace ShortcutKeysRegister {
     });
 
     (
-      await KeyBinds.create("deleteSelectedStageObjects", "delete", {
+      await KeyBinds.create("deleteSelectedStageObjects", isMac ? "backspace" : "delete", {
         control: false,
         alt: false,
         shift: false,
