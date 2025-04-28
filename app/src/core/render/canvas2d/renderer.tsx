@@ -281,13 +281,8 @@ export namespace Renderer {
     EntityRenderer.renderAllSectionsBigTitle(viewRectangle);
     renderTags();
     // debug
-    // ShapeRenderer.renderRect(viewRectangle.transformWorld2View(), Color.Transparent, new Color(255, 0, 0, 0.5), 1);
-    // CurveRenderer.renderSolidLine(
-    //   transformWorld2View(Vector.getZero()),
-    //   transformWorld2View(new Vector(0, 5 / Camera.currentScale)),
-    //   Color.Red,
-    //   1,
-    // );
+
+    // debugRender();
   }
 
   /**
