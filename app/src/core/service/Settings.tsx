@@ -100,7 +100,14 @@ export namespace Settings {
     mouseWheelWithShiftMode: "zoom" | "move" | "moveX" | "none";
     mouseWheelWithCtrlMode: "zoom" | "move" | "moveX" | "none";
     mouseWheelWithAltMode: "zoom" | "move" | "moveX" | "none";
-    mouseSideWheelMode: "zoom" | "move" | "moveX" | "none" | "cameraMoveToMouse" | "adjustWindowOpacity";
+    mouseSideWheelMode:
+      | "zoom"
+      | "move"
+      | "moveX"
+      | "none"
+      | "cameraMoveToMouse"
+      | "adjustWindowOpacity"
+      | "adjustPenStrokeWidth";
     doubleClickMiddleMouseButton: "none" | "adjustCamera";
     // mac相关的特殊控制
     // 触摸版和鼠标滚轮的区分逻辑

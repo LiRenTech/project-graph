@@ -517,6 +517,20 @@ function moveCameraByMouseSideWheel(event: WheelEvent) {
         Settings.set("windowBackgroundAlpha", Math.max(0, value - 0.1));
       }
     });
+  } else if (Camera.mouseSideWheelMode === "adjustPenStrokeWidth") {
+    if (Stage.leftMouseMode !== LeftMouseModeEnum.draw) {
+      return;
+    }
+    // 调整笔画粗细
+    if (event.deltaX < 0) {
+      const newWidth = Stage.drawingMachine.currentStrokeWidth + 1;
+      Stage.drawingMachine.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
+      Stage.effectMachine.addEffect(TextRiseEffect.default(`${Stage.drawingMachine.currentStrokeWidth}px`));
+    } else {
+      const newWidth = Stage.drawingMachine.currentStrokeWidth - 1;
+      Stage.drawingMachine.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
+      Stage.effectMachine.addEffect(TextRiseEffect.default(`${Stage.drawingMachine.currentStrokeWidth}px`));
+    }
   }
 }
 
