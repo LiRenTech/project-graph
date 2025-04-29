@@ -97,7 +97,7 @@ settings:
       bezier: 貝茲曲線
       vertical: 垂直折線
   isRenderCenterPointer:
-    title: 顯示中心十字准星
+    title: 顯示中心十字準星
     description: |
       開啟後，畫布中心會顯示一个十字準星，用於指示快捷鍵創建節點的位置
   showGrid:
@@ -357,7 +357,7 @@ settings:
       雙指左右移動會被識別為滑鼠橫向滾輪的滾動事件。
       如果您是筆記型電腦操作並使用外部滑鼠，建議關閉此選項。
   mouseWheelMode:
-    title: 滑鼠滚轮模式
+    title: 滑鼠滾輪模式
     options:
       zoom: 縮放
       move: 垂直方向移動
@@ -422,7 +422,7 @@ settings:
       nightly: 開發版
     title: 更新頻道
   showTipsOnUI:
-    title: 在UI中顯示提示訊息
+    title: 在 UI 中顯示提示訊息
     description: "開啟後，螢幕上會有一行提示訊息。\n如果你已經熟悉了軟體，建議關閉此選項以減少螢幕佔用\n更多更詳細的提示還是建議看菜單欄中的“新手引導”或官方文檔。\n"
   compatibilityMode:
     title: 兼容模式
