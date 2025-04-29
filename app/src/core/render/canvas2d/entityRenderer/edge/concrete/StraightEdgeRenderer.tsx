@@ -3,6 +3,7 @@ import { ProgressNumber } from "../../../../../dataStruct/ProgressNumber";
 import { Line } from "../../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../../dataStruct/Vector";
 import { CircleFlameEffect } from "../../../../../service/feedbackService/effectEngine/concrete/CircleFlameEffect";
+import { EdgeCutEffect } from "../../../../../service/feedbackService/effectEngine/concrete/EdgeCutEffect";
 import { LineCuttingEffect } from "../../../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { EffectObject } from "../../../../../service/feedbackService/effectEngine/effectObject";
 import { StageStyleManager } from "../../../../../service/feedbackService/stageStyle/StageStyleManager";
@@ -24,25 +25,13 @@ import { EdgeRendererClass } from "../EdgeRendererClass";
  */
 export class StraightEdgeRenderer extends EdgeRendererClass {
   getCuttingEffects(edge: LineEdge): EffectObject[] {
-    const midLocation = edge.bodyLine.midPoint();
     return [
-      new LineCuttingEffect(
-        new ProgressNumber(0, 15),
-        midLocation,
+      EdgeCutEffect.default(
         edge.bodyLine.start,
-        new Color(255, 0, 0, 1),
-        new Color(255, 0, 0, 1),
-        20,
-      ),
-      new LineCuttingEffect(
-        new ProgressNumber(0, 15),
-        midLocation,
         edge.bodyLine.end,
-        new Color(255, 0, 0, 1),
-        new Color(255, 0, 0, 1),
-        20,
+        StageStyleManager.currentStyle.StageObjectBorder,
+        2,
       ),
-      new CircleFlameEffect(new ProgressNumber(0, 15), edge.bodyLine.midPoint(), 50, new Color(255, 0, 0, 1)),
     ];
   }
 
