@@ -450,18 +450,18 @@ settings:
   rectangleSelectWhenLeft:
     title: Strategy for Selecting to the Left
     description: |
-      Choose the strategy for selecting to the left, including full coverage selection and partial coverage selection.
-      Full coverage selection means the rectangular selection box must completely cover the bounding rectangle of the entity.
-      Partial coverage selection means the rectangular selection box will select the entity if it touches any part of its bounding rectangle.
+      Left-click Selection Strategy
+      Full Containment: Selection box must fully enclose the entity's bounding box
+      Collision-based Selection: Selection box only needs to touch the entity's bounding box
     options:
-      intersect: Partial Coverage Selection
+      intersect: Collision-based Selection
       contain: Full Coverage Selection
   rectangleSelectWhenRight:
     title: Strategy for Selecting to the Right
     description: |
       Choose the strategy for selecting to the right.
     options:
-      intersect: Partial Coverage Selection
+      intersect: Collision-based Selection
       contain: Full Coverage Selection
   # Sounds
   cuttingLineStartSoundFile:
@@ -540,9 +540,26 @@ settings:
     description: Some MacBook mouse wheels are smooth, while others trigger a scroll
       with each click, which may depend on whether you have installed mouse modification
       software like Mos
+    title: Is the mouse scroll wheel of MacBook smooth
   sectionBitTitleRenderType:
     options:
       none: No Rendering (Improve Performance)
+      top: Small text at the top
+      cover: Semi-transparent overlay frame (optimal effect)
+    title: The rendering type of the abbreviated main title in the frame
+  macTrackpadAndMouseWheelDifference:
+    options:
+      tarckpadFloatAndWheelInt: The value of the trackpad is a decimal, while the
+        value of the mouse scroll is an integer
+      trackpadIntAndWheelFloat: The trackpad value is an integer and the mouse scroll
+        value is a decimal
+    title: The differentiation logic between the trackpad of MacBook and the mouse
+      scroll wheel
+    description: For some MacBooks, the mouse scroll wheel value is an integer and
+      the trackpad value is a decimal; for others, it's reversed. Select the differentiation
+      logic based on the actual situation. To differentiate, click the software logo
+      in the "About" interface seven times to enter the "Test Interface", then scroll
+      the wheel and trackpad to view the data feedback
 plugins:
   welcome:
     title: Welcome to the Plugin System
@@ -597,6 +614,9 @@ appMenu:
       resetScale:
         title: Reset Scale
         description: Reset the scale to the standard size
+      resetLocation:
+        title: Reset Position
+        description: Reset View to Origin
   more:
     title: More
     items:
@@ -1012,11 +1032,12 @@ effects:
     title: Line Cutting Blade Light Effect
   LineEffect:
     title: Line Fade Out Effect
+    description: "Ghost Trails for Subtree Drag-Rotation\n"
   PenStrokeDeletedEffect:
     title: Pen Stroke Delete Effect
     description: "When a pen stroke is deleted, a fade away effect will appear.\n"
   CircleChangeRadiusEffect:
-    title: CircleChangeRadiusEffect
+    title: Circular Transform Radius
     description: "Enhance the ripple effect after selecting the particle\n"
   TextRiseEffect:
     description: "Floating effect on text nodes, used for highlighting important information\n"
@@ -1030,6 +1051,7 @@ effects:
     description: "Existing in various special effect details, such as the midpoint
       flicker when pre-cutting straight lines and cutting through solid rectangles,
       and when cutting through connections\n"
+    title: Radial Light Flash
   EntityCreateFlashEffect:
     title: Entity border glow effect
     description: "In situations such as rotating the entity tree with Ctrl+scroll
@@ -1038,6 +1060,7 @@ effects:
   PointDashEffect:
     description: "Due to the influence of universal gravitation on performance, this
       effect has been turned off and will not appear.\n"
+    title: Singularity Burst
   ZapLineEffect:
     title: (Basic Effects) Zap Line Effect
     description: "This effect is a component of other effects; if it is turned off,
@@ -1060,23 +1083,29 @@ effects:
       shrinks.\n"
   EntityShakeEffect:
     title: Entity judder effect
+    description: "Warning Jitter Effect\n"
   EntityShrinkEffect:
     description: "Press the Delete key to delete the entity, the entity will shrink
       and disappear\n"
     title: Entity Shrink and Disappear Effect
   ExplodeDashEffect:
     title: Dust Explosion Effect
-    description: ''
+    description: 'Particle Burst Effect Triggered by Cleaving Elimination
+
+      '
   EntityCreateLineEffect:
     title: Entity emits circuit board-like line radiation effect
     description: "Already abandoned, will not appear\n"
   EntityDashTipEffect:
     description: "When entering or ending input within an entity, dust particles shake
       around the entity.\n"
+    title: Dust Particle Highlight Effect
   EntityJumpMoveEffect:
     title: Entity's jump move effect
     description: "When an entity performs a jump move, a symbolic jump arc shadow
       appears\n to represent the level crossing movement along the pseudo Z-axis.\n"
+  RectanglePushInEffect:
+    title: Quadrilateral Vertex Morphing
 keyBindsGroup:
   ui:
     title: UI Controls
