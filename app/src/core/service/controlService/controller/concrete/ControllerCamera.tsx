@@ -14,6 +14,7 @@ import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { MouseTipFeedbackEffect } from "../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
+import { Settings } from "../../../Settings";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { ControllerCameraMac } from "./ControllerCamera/mac";
@@ -507,6 +508,15 @@ function moveCameraByMouseSideWheel(event: WheelEvent) {
     }
     const moveToLocation = Camera.location.add(diffLocation);
     Camera.bombMove(moveToLocation);
+  } else if (Camera.mouseSideWheelMode === "adjustWindowOpacity") {
+    const currentValue = Settings.get("windowBackgroundAlpha");
+    currentValue.then((value) => {
+      if (event.deltaX < 0) {
+        Settings.set("windowBackgroundAlpha", Math.min(1, value + 0.1));
+      } else {
+        Settings.set("windowBackgroundAlpha", Math.max(0, value - 0.1));
+      }
+    });
   }
 }
 

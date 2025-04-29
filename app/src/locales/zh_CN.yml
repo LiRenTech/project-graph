@@ -459,6 +459,7 @@ settings:
       moveX: 横向移动
       none: 无操作
       cameraMoveToMouse: 将视野向鼠标位置移动
+      adjustWindowOpacity: 调整窗口透明度
   mouseWheelMode:
     title: 鼠标滚轮模式
     options:
