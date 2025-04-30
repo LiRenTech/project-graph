@@ -299,6 +299,10 @@ settings:
       windows系统注意使用反斜杠
       例如：C:\\Users\\username\\Documents\\DraftBackup
       结尾不要带路径分隔符
+  autoBackupLimitCount:
+    title: 自动备份最大数量
+    description: |
+      自动备份的最大数量，超过此数量将会删除旧的备份文件
   scaleExponent:
     title: 视角缩放速度
     description: |

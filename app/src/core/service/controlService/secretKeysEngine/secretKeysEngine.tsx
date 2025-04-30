@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 import { Direction } from "../../../../types/directions";
-import { createFolder } from "../../../../utils/fs";
+import { createFolder, readFolder } from "../../../../utils/fs";
 import { averageColors, Color } from "../../../dataStruct/Color";
 import { Queue } from "../../../dataStruct/Queue";
 import { Vector } from "../../../dataStruct/Vector";
@@ -26,13 +26,12 @@ import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/Vie
 import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
 import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { Random } from "../../../algorithm/random";
-import { Dialog } from "../../../../components/dialog";
-import { SvgNode } from "../../../stage/stageObject/entity/SvgNode";
 
 interface SecretKeyItem {
   name: string;
   func: () => void;
   explain?: string;
+  isHidden?: boolean;
 }
 
 /**
@@ -65,6 +64,9 @@ export class SecretKeysEngine {
   public getAllSecretKeysList(): { keys: string; name: string; explain: string }[] {
     const result = [];
     for (const key in this.keyPressedTable) {
+      if (this.keyPressedTable[key].isHidden) {
+        continue;
+      }
       result.push({
         keys: key,
         name: this.keyPressedTable[key].name,
@@ -170,6 +172,7 @@ export class SecretKeysEngine {
     },
     "* * *": {
       name: "切换专注模式",
+      isHidden: true,
       async func() {
         Settings.set("isClassroomMode", !(await Settings.get("isClassroomMode")));
       },
@@ -530,6 +533,7 @@ export class SecretKeysEngine {
     // },
     "b o y n e x t d o o r": {
       name: "创建传送门",
+      isHidden: true,
       func: () => {
         Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
         const uuid = v4();
@@ -548,18 +552,21 @@ export class SecretKeysEngine {
     },
     "c o l l a b o r a t e": {
       name: "开始协作",
+      isHidden: true,
       func: () => {
         CollaborationEngine.openStartCollaborationPanel();
       },
     },
     "c r e a t e f o l d e r w i n": {
       name: "在D盘创建“111”文件夹",
+      isHidden: true,
       func: () => {
         createFolder("D:\\111\\111");
       },
     },
     "r o l l i n g 1": {
       name: "摄像机开始疯狂缩放",
+      isHidden: true,
       func: () => {
         let tick = 0;
         setInterval(() => {
@@ -571,6 +578,7 @@ export class SecretKeysEngine {
     },
     "t r e e r e c t": {
       name: "获取选中根节点的整个树的外接矩形",
+      isHidden: true,
       func: () => {
         Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
         const selectNode = StageManager.getSelectedEntities()[0];
@@ -585,6 +593,7 @@ export class SecretKeysEngine {
     },
     "a l t": {
       name: "将所有选中的根节点所对应的树进行垂直对齐",
+      isHidden: true,
       func: () => {
         const selectNodes = StageManager.getSelectedEntities().filter((node) => node instanceof ConnectableEntity);
         if (selectNodes.length === 0) {
@@ -595,6 +604,7 @@ export class SecretKeysEngine {
     },
     "m v e t": {
       name: "将选中的根节点对应的树移动到摄像机位置",
+      isHidden: true,
       func: () => {
         AutoLayoutFastTree.moveTreeRectTo(
           StageManager.getSelectedEntities()[0] as ConnectableEntity,
@@ -613,6 +623,7 @@ export class SecretKeysEngine {
     },
     "c r p + +": {
       name: "将选中的CR曲线增加控制点",
+      isHidden: true,
       func() {
         const selectedCREdge = StageManager.getSelectedAssociations().filter(
           (edge) => edge instanceof CublicCatmullRomSplineEdge,
@@ -647,6 +658,7 @@ export class SecretKeysEngine {
     },
     "= = =": {
       name: "将选中的可连接实体添加多源无向边",
+      isHidden: true,
       explain: "测试中",
       func() {
         const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof ConnectableEntity);
@@ -730,6 +742,7 @@ export class SecretKeysEngine {
     },
     "contextmenu e r r o r": {
       name: "手动测试",
+      isHidden: true,
       explain: "触发手动报错，用于观察红色的弹窗是否正常显示、内部报错文字是否可以复制等操作",
       func() {
         setTimeout(() => {
@@ -737,26 +750,13 @@ export class SecretKeysEngine {
         }, 1000);
       },
     },
-    "s v g s v g": {
-      name: "测试创建svg节点",
-      explain: "测试创建svg节点，后续会删除",
+    "g e t f o l d e r": {
+      name: "获取文件夹路径下的文件",
+      explain: "未来即将删除",
+      isHidden: true,
       func() {
-        Dialog.show({
-          title: "创建svg",
-          input: true,
-          content: "请输入svg内容",
-        }).then(({ button, value }) => {
-          if (button === "确定" && value) {
-            const svgNode = new SvgNode({
-              uuid: v4(),
-              content: value,
-              location: [Camera.location.x, Camera.location.y],
-              size: [100, 100],
-              color: [0, 0, 0, 0],
-            });
-            StageManager.addEntity(svgNode);
-          }
-        });
+        const files = readFolder("D:\\");
+        console.log(files);
       },
     },
   };

@@ -16,6 +16,27 @@ export async function exists(path: string): Promise<boolean> {
 }
 
 /**
+ * 返回一个目录的子文件列表
+ * @param path 绝对路径
+ * @returns 返回每一个文件的绝对路径
+ */
+export async function readFolder(path: string): Promise<string[]> {
+  if (isWeb) {
+    return [];
+  } else {
+    return invoke("read_folder", { path });
+  }
+}
+
+export async function deleteFile(path: string): Promise<boolean> {
+  if (isWeb) {
+    return false;
+  } else {
+    return invoke("delete_file", { path });
+  }
+}
+
+/**
  * 读取文本文件内容
  * @param path 文件路径
  * @returns 文件内容

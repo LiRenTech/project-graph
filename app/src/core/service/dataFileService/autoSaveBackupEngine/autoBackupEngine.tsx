@@ -1,3 +1,4 @@
+import { deleteFile, readFolder } from "../../../../utils/fs";
 import { PathString } from "../../../../utils/pathString";
 import { isWeb } from "../../../../utils/platform";
 import { Stage } from "../../../stage/Stage";
@@ -13,6 +14,7 @@ export class AutoBackupEngine {
   autoBackupInterval: number = 30 * 60 * 1000; // 30分钟
   autoBackupDraftPath: string = "";
   private lastAutoBackupTime: number = performance.now();
+  autoBackupLimitCount: number = 10;
 
   init() {
     Settings.watch("autoBackup", (value) => {
@@ -23,6 +25,9 @@ export class AutoBackupEngine {
     });
     Settings.watch("autoBackupDraftPath", (value) => {
       this.autoBackupDraftPath = value;
+    });
+    Settings.watch("autoBackupLimitCount", (value) => {
+      this.autoBackupLimitCount = value;
     });
   }
 
@@ -42,9 +47,38 @@ export class AutoBackupEngine {
         StageSaveManager.backupHandle(backupDraftPath, StageDumper.dump());
       } else {
         StageSaveManager.backupHandleWithoutCurrentPath(StageDumper.dump(), false);
+        this.limitBackupFilesAndDeleteOld(this.autoBackupLimitCount);
       }
       // 更新时间
       this.lastAutoBackupTime = now;
+    }
+  }
+
+  /**
+   * 获取当前场景对应的备份文件夹路径
+   * @returns
+   */
+  static getBackupFolderPath() {
+    const fatherDirPath = PathString.dirPath(Stage.path.getFilePath());
+    return `${fatherDirPath}${PathString.getSep()}backup_${PathString.getFileNameFromPath(Stage.path.getFilePath())}`;
+  }
+
+  /**
+   * 限制备份文件的数量，并删除旧的备份文件
+   * @param maxCount
+   */
+  public async limitBackupFilesAndDeleteOld(maxCount: number) {
+    //
+    const backupFolderPath = AutoBackupEngine.getBackupFolderPath();
+    const backupFiles = (await readFolder(backupFolderPath))
+      .map((value) => backupFolderPath + PathString.getSep() + value)
+      .filter((value) => value.endsWith(".backup.json"))
+      .sort();
+    if (backupFiles.length > maxCount) {
+      // 开始限制
+      for (let i = 0; i < backupFiles.length - maxCount; i++) {
+        await deleteFile(backupFiles[i]);
+      }
     }
   }
 }

@@ -4,6 +4,7 @@ import { PathString } from "../../../utils/pathString";
 import { Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { ViewFlashEffect } from "../feedbackService/effectEngine/concrete/ViewFlashEffect";
+import { AutoBackupEngine } from "./autoSaveBackupEngine/autoBackupEngine";
 
 /**
  * 管理所有和保存相关的内容
@@ -72,8 +73,7 @@ export namespace StageSaveManager {
     }
     // 不能有冒号，空格，斜杠
     const dateTime = PathString.getTime();
-    const fatherDirPath = PathString.dirPath(Stage.path.getFilePath());
-    const backupFolderPath = `${fatherDirPath}${PathString.getSep()}backup_${PathString.getFileNameFromPath(Stage.path.getFilePath())}`;
+    const backupFolderPath = AutoBackupEngine.getBackupFolderPath();
     if (!(await exists(backupFolderPath))) {
       const created = await createFolder(backupFolderPath);
       if (!created) {

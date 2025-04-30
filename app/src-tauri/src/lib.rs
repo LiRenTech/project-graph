@@ -16,6 +16,27 @@ fn exists(path: String) -> bool {
     std::path::Path::new(&path).exists()
 }
 
+/// 读取文件夹中的文件列表
+#[tauri::command]
+fn read_folder(path: String) -> Vec<String> {
+    let mut files = Vec::new();
+    for entry in std::fs::read_dir(path).unwrap() {
+        let entry = entry.unwrap();
+        if entry.path().is_file() {
+            files.push(entry.file_name().to_str().unwrap().to_string());
+        }
+    }
+    files
+}
+
+/// 删除文件
+#[tauri::command]
+fn delete_file(path: String) -> Result<(), String> {
+    std::fs::remove_file(path).map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+
 /// 读取文件，返回字符串
 #[tauri::command]
 fn read_text_file(path: String) -> String {
@@ -129,6 +150,8 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             read_text_file,
+            read_folder,
+            delete_file,
             write_text_file,
             exists,
             read_file_base64,
