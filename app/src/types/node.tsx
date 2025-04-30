@@ -170,10 +170,16 @@ export namespace Serialized {
     tension: number;
   };
 
+  export type CoreEntity = TextNode | Section | ConnectPoint | ImageNode | UrlNode | PenStroke | PortalNode | SvgNode;
+  export function isCoreEntity(obj: StageObject): obj is CoreEntity {
+    return obj.type.startsWith("core:");
+  }
+  export type CoreAssociation = LineEdge | CublicCatmullRomSplineEdge | MultiTargetUndirectedEdge;
+
   export type File = {
     version: typeof StageDumper.latestVersion;
-    entities: (TextNode | Section | ConnectPoint | ImageNode | UrlNode | PenStroke | PortalNode | SvgNode)[];
-    associations: (LineEdge | CublicCatmullRomSplineEdge | MultiTargetUndirectedEdge)[];
+    entities: CoreEntity[];
+    associations: CoreAssociation[];
     tags: string[];
   };
 }

@@ -133,33 +133,43 @@ export namespace FileLoader {
   function loadDataToMainStage(data: Serialized.File) {
     for (const entity of data.entities) {
       // TODO: 待优化结构
+      let newEntity = null;
       if (Serialized.isTextNode(entity)) {
-        StageManager.addTextNode(new TextNode(entity));
+        newEntity = new TextNode(entity);
       } else if (Serialized.isSection(entity)) {
-        StageManager.addSection(new Section(entity));
+        newEntity = new Section(entity);
       } else if (Serialized.isConnectPoint(entity)) {
-        StageManager.addConnectPoint(new ConnectPoint(entity));
+        newEntity = new ConnectPoint(entity);
       } else if (Serialized.isImageNode(entity)) {
-        StageManager.addImageNode(new ImageNode(entity));
+        newEntity = new ImageNode(entity);
       } else if (Serialized.isUrlNode(entity)) {
-        StageManager.addUrlNode(new UrlNode(entity));
+        newEntity = new UrlNode(entity);
       } else if (Serialized.isPenStroke(entity)) {
-        StageManager.addPenStroke(new PenStroke(entity));
+        newEntity = new PenStroke(entity);
       } else if (Serialized.isPortalNode(entity)) {
-        StageManager.addPortalNode(new PortalNode(entity));
+        newEntity = new PortalNode(entity);
       } else if (Serialized.isSvgNode(entity)) {
-        StageManager.addEntity(new SvgNode(entity));
+        newEntity = new SvgNode(entity);
+      }
+      if (newEntity) {
+        StageManager.addEntity(newEntity);
       } else {
         console.warn("加载文件时，出现未知的实体类型：" + entity);
       }
     }
     for (const edge of data.associations) {
+      let newAssociation = null;
       if (Serialized.isLineEdge(edge)) {
-        StageManager.addAssociation(new LineEdge(edge));
+        newAssociation = new LineEdge(edge);
       } else if (Serialized.isCublicCatmullRomSplineEdge(edge)) {
-        StageManager.addAssociation(new CublicCatmullRomSplineEdge(edge));
+        newAssociation = new CublicCatmullRomSplineEdge(edge);
       } else if (Serialized.isMultiTargetUndirectedEdge(edge)) {
-        StageManager.addAssociation(new MultiTargetUndirectedEdge(edge));
+        newAssociation = new MultiTargetUndirectedEdge(edge);
+      }
+      if (newAssociation) {
+        StageManager.addAssociation(newAssociation);
+      } else {
+        console.warn("加载文件时，出现未知的关系类型：" + edge);
       }
     }
     StageManager.TagOptions.reset(data.tags);

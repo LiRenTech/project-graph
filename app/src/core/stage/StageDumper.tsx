@@ -1,6 +1,7 @@
 import { Serialized } from "../../types/node";
 import { SectionMethods } from "./stageManager/basicMethods/SectionMethods";
 import { StageManager } from "./stageManager/StageManager";
+import { Association } from "./stageObject/abstract/Association";
 import { Entity } from "./stageObject/abstract/StageEntity";
 import { CublicCatmullRomSplineEdge } from "./stageObject/association/CublicCatmullRomSplineEdge";
 import { LineEdge } from "./stageObject/association/LineEdge";
@@ -167,17 +168,7 @@ export namespace StageDumper {
    * @param entity
    * @returns
    */
-  export function dumpOneEntity(
-    entity: Entity,
-  ):
-    | Serialized.Section
-    | Serialized.TextNode
-    | Serialized.ConnectPoint
-    | Serialized.ImageNode
-    | Serialized.UrlNode
-    | Serialized.PenStroke
-    | Serialized.PortalNode
-    | Serialized.SvgNode {
+  export function dumpOneEntity(entity: Entity): Serialized.CoreEntity {
     if (entity instanceof TextNode) {
       return dumpTextNode(entity);
     } else if (entity instanceof Section) {
@@ -199,6 +190,18 @@ export namespace StageDumper {
     }
   }
 
+  export function dumpOneAssociation(association: Association): Serialized.CoreAssociation {
+    if (association instanceof LineEdge) {
+      return dumpEdge(association);
+    } else if (association instanceof CublicCatmullRomSplineEdge) {
+      return dumpCrEdge(association);
+    } else if (association instanceof MultiTargetUndirectedEdge) {
+      return dumpMTUEdge(association);
+    } else {
+      throw new Error(`未知的关联类型: ${association}`);
+    }
+  }
+
   // ------------------------------------------------------------
 
   /**
@@ -206,33 +209,14 @@ export namespace StageDumper {
    * @returns
    */
   export function dump(): Serialized.File {
-    const entities: (
-      | Serialized.Section
-      | Serialized.TextNode
-      | Serialized.ConnectPoint
-      | Serialized.ImageNode
-      | Serialized.UrlNode
-      | Serialized.PenStroke
-      | Serialized.PortalNode
-      | Serialized.SvgNode
-    )[] = [];
+    const entities: Serialized.CoreEntity[] = [];
     for (const entity of StageManager.getEntities()) {
       entities.push(dumpOneEntity(entity));
     }
 
-    const associations: (
-      | Serialized.LineEdge
-      | Serialized.CublicCatmullRomSplineEdge
-      | Serialized.MultiTargetUndirectedEdge
-    )[] = [];
+    const associations: Serialized.CoreAssociation[] = [];
     for (const edge of StageManager.getAssociations()) {
-      if (edge instanceof LineEdge) {
-        associations.push(dumpEdge(edge));
-      } else if (edge instanceof CublicCatmullRomSplineEdge) {
-        associations.push(dumpCrEdge(edge));
-      } else if (edge instanceof MultiTargetUndirectedEdge) {
-        associations.push(dumpMTUEdge(edge));
-      }
+      associations.push(dumpOneAssociation(edge));
     }
 
     return {
@@ -252,8 +236,9 @@ export namespace StageDumper {
     const dumpedEntities = dumpEntities(entities);
 
     // 根据选中的实体，找到涉及的边
-    const selectedAssociations: (Serialized.LineEdge | Serialized.CublicCatmullRomSplineEdge)[] =
-      dumpAssociationsByEntities(SectionMethods.getAllEntitiesInSelectedSectionsOrEntities(entities));
+    const selectedAssociations: Serialized.CoreAssociation[] = dumpAssociationsByEntities(
+      SectionMethods.getAllEntitiesInSelectedSectionsOrEntities(entities),
+    );
 
     return {
       version: latestVersion,
@@ -263,29 +248,11 @@ export namespace StageDumper {
     };
   }
 
-  function dumpEntities(
-    entities: Entity[],
-  ): (
-    | Serialized.Section
-    | Serialized.TextNode
-    | Serialized.ConnectPoint
-    | Serialized.ImageNode
-    | Serialized.UrlNode
-    | Serialized.PenStroke
-    | Serialized.PortalNode
-    | Serialized.SvgNode
-  )[] {
+  function dumpEntities(entities: Entity[]): Serialized.CoreEntity[] {
     //
-    let selectedEntities: (
-      | Serialized.Section
-      | Serialized.TextNode
-      | Serialized.ConnectPoint
-      | Serialized.ImageNode
-      | Serialized.UrlNode
-      | Serialized.PenStroke
-      | Serialized.PortalNode
-      | Serialized.SvgNode
-    )[] = entities.filter((entity) => entity instanceof TextNode).map((node) => dumpTextNode(node));
+    let selectedEntities: Serialized.CoreEntity[] = entities
+      .filter((entity) => entity instanceof TextNode)
+      .map((node) => dumpTextNode(node));
 
     // 遍历所有section的时候，要把section的子节点递归的加入进来。
     const addSection = (section: Section) => {
@@ -321,11 +288,9 @@ export namespace StageDumper {
    * @param entities 注意：是通过dfs展平后的
    * @returns
    */
-  function dumpAssociationsByEntities(
-    entities: Entity[],
-  ): (Serialized.LineEdge | Serialized.CublicCatmullRomSplineEdge)[] {
+  function dumpAssociationsByEntities(entities: Entity[]): Serialized.CoreAssociation[] {
     // 准备答案数组
-    const result: (Serialized.LineEdge | Serialized.CublicCatmullRomSplineEdge)[] = [];
+    const result: Serialized.CoreAssociation[] = [];
     // 生成
     for (const edge of StageManager.getAssociations()) {
       if (edge instanceof LineEdge) {
@@ -335,6 +300,12 @@ export namespace StageDumper {
       } else if (edge instanceof CublicCatmullRomSplineEdge) {
         if (entities.includes(edge.source) && entities.includes(edge.target)) {
           result.push(dumpCrEdge(edge));
+        }
+      } else if (edge instanceof MultiTargetUndirectedEdge) {
+        const connectedEntities = edge.associationList;
+        // 需要全部包含，才能算是连接的
+        if (connectedEntities.every((entity) => entities.includes(entity))) {
+          result.push(dumpMTUEdge(edge));
         }
       }
     }
