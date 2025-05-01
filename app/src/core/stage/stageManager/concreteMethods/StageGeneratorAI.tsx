@@ -1,9 +1,11 @@
 import { fetch } from "@tauri-apps/plugin-http";
 import { v4 as uuidv4 } from "uuid";
+import { Dialog } from "../../../../components/dialog";
 import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
 import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
-import { TextRiseEffect } from "../../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
+import { FeatureFlags } from "../../../service/FeatureFlags";
+import { Settings } from "../../../service/Settings";
 import { Stage } from "../../Stage";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";
@@ -28,19 +30,44 @@ export namespace StageGeneratorAI {
   }
 
   async function realGenerateTextList(selectedTextNode: TextNode) {
+    if (!FeatureFlags.AI) {
+      Dialog.show({
+        type: "error",
+        title: "当前版本不支持AI功能",
+        content: "请使用官方版本，或在构建时添加API_BASE_URL环境变量",
+      });
+      return [];
+    }
     try {
-      const { words, tokens } = await (
-        await fetch((import.meta.env.LR_API_BASE_URL ?? "http://localhost:8787") + "/ai/extend_word", {
+      const treeParents: string[] = [];
+      let currentNode = selectedTextNode;
+      while (true) {
+        const parents = StageManager.getLineEdges().filter((edge) => edge.target === currentNode);
+        // 遇到了=>-的结构，或者没有父节点了
+        if (parents.length !== 1) {
+          break;
+        }
+        // 父节点不是文本节点
+        if (!(parents[0].source instanceof TextNode)) {
+          break;
+        }
+        treeParents.push(parents[0].source.text);
+        currentNode = parents[0].source;
+      }
+      treeParents.reverse();
+      const { words } = await (
+        await fetch(import.meta.env.LR_API_BASE_URL! + "/ai/extend-word", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             word: selectedTextNode.text,
+            language: await Settings.get("language"),
+            parents: treeParents,
           }),
         })
       ).json();
-      Stage.effectMachine.addEffect(new TextRiseEffect(`生成完成，消耗 ${tokens} Tokens`));
       return words;
     } catch (e) {
       console.error(e);
