@@ -161,7 +161,7 @@ export async function createFolder(path: string): Promise<boolean> {
     console.warn("Creating folders is not supported in web environment.");
     return false;
   } else {
-    return invoke("create_folder", { path });
+    return await invoke("create_folder", { path });
   }
 }
 

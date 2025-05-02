@@ -15,19 +15,25 @@ use tauri_plugin_updater::UpdaterExt;
 fn exists(path: String) -> bool {
     std::path::Path::new(&path).exists()
 }
-
 /// 读取文件夹中的文件列表
+/// 如果文件夹不存在，返回空列表
 #[tauri::command]
 fn read_folder(path: String) -> Vec<String> {
     let mut files = Vec::new();
-    for entry in std::fs::read_dir(path).unwrap() {
-        let entry = entry.unwrap();
-        if entry.path().is_file() {
-            files.push(entry.file_name().to_str().unwrap().to_string());
+    if let Ok(entries) = std::fs::read_dir(path) {
+        for entry in entries {
+            if let Ok(entry) = entry {
+                if entry.path().is_file() {
+                    if let Some(file_name) = entry.file_name().to_str() {
+                        files.push(file_name.to_string());
+                    }
+                }
+            }
         }
     }
     files
 }
+
 
 /// 删除文件
 #[tauri::command]
@@ -76,10 +82,11 @@ fn write_file_base64(content: String, path: String) -> Result<(), String> {
     Ok(())
 }
 
+/// 创建文件夹
+/// 如果创建成功，则返回true，如果创建失败则返回false
 #[tauri::command]
-fn create_folder(path: String) -> Result<(), String> {
-    std::fs::create_dir_all(path).map_err(|e| e.to_string())?;
-    Ok(())
+fn create_folder(path: String) -> bool {
+    std::fs::create_dir_all(&path).is_ok()
 }
 
 #[tauri::command]

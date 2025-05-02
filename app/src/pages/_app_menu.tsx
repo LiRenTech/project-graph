@@ -161,7 +161,15 @@ export default function AppMenu({ className = "", open = false }: { className?: 
 
     console.log("onNewFile", path);
     // D:\Desktop\插件测试\XXX
-    await createFolder(path);
+    const newFolderCreated = await createFolder(path);
+    if (!newFolderCreated) {
+      Dialog.show({
+        title: "创建文件夹失败",
+        content: "创建文件夹时失败：(" + path + ")" + "请换一个文件夹名称",
+        type: "error",
+      });
+      return;
+    }
     const createFolderResult = await exists(path);
     if (!createFolderResult) {
       Dialog.show({
