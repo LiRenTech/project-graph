@@ -2,14 +2,14 @@ import { Store } from "@tauri-apps/plugin-store";
 import { createStore } from "../../utils/store";
 import { FeatureFlags } from "./FeatureFlags";
 
-export namespace User {
+export namespace UserState {
   let store: Store;
 
   export async function init() {
     if (!FeatureFlags.USER) {
       return;
     }
-    store = await createStore("user");
+    store = await createStore("user.json");
   }
 
   export async function getToken() {

@@ -1,18 +1,20 @@
-import { Turnstile } from "@marsidev/react-turnstile";
+import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 import { fetch } from "@tauri-apps/plugin-http";
 import { Check, Key, User } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Button from "../../components/Button";
 import { Dialog } from "../../components/dialog";
 import Input from "../../components/Input";
 import { Settings } from "../../core/service/Settings";
 import { Themes } from "../../core/service/Themes";
+import { UserState } from "../../core/service/UserState";
 
 export default function LoginPage() {
   const [theme] = Settings.use("theme");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [turnstileToken, setTurnstileToken] = useState("");
+  const turnstileInstance = useRef<TurnstileInstance>(null);
 
   const login = async () => {
     const resp = await fetch(`${import.meta.env.LR_API_BASE_URL}/user/login`, {
@@ -27,6 +29,7 @@ export default function LoginPage() {
       }),
     });
     if (resp.status === 200) {
+      await UserState.setToken((await resp.json()).token);
       Dialog.show({
         type: "success",
         title: "登录",
@@ -39,6 +42,7 @@ export default function LoginPage() {
         content: (await resp.json()).msg,
       });
     }
+    turnstileInstance.current?.reset();
   };
 
   return (
@@ -54,6 +58,7 @@ export default function LoginPage() {
       </div>
       <Turnstile
         siteKey={import.meta.env.LR_TURNSTILE_SITE_KEY ?? ""}
+        ref={turnstileInstance}
         onSuccess={setTurnstileToken}
         options={{
           theme: Themes.getThemeById(theme)?.metadata.type,

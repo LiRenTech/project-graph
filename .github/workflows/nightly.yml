@@ -7,35 +7,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  generate-changelog:
-    runs-on: ubuntu-latest
-    outputs:
-      changelog: ${{ steps.generate.outputs.changelog }}
-    env:
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install dependencies
-        run: npm i -g node-fetch
-      - id: generate
-        run: |
-          changelog=$(node ./.github/scripts/generate-changelog.mjs)
-          echo $changelog
-          echo "changelog<<EOF" >> $GITHUB_OUTPUT
-          echo "${changelog}" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
   build:
-    needs: generate-changelog
     permissions:
       contents: write
-    uses: LiRenTech/turbo-tauri/.github/workflows/turbo-tauri.yml@master
+    uses: ./.github/workflows/publish.yml
     with:
       android_key_alias: "upload"
       android_key_path: "upload.jks"
@@ -48,7 +23,6 @@ jobs:
       delete_release: true
       prerelease: true
       release_name: "Nightly Build ${{ github.run_number }}"
-      release_notes: ${{ needs.generate-changelog.outputs.changelog }}
       release_tag: "nightly"
       task_build: "tauri:build"
       task_build_android: "tauri:build:android"
@@ -63,3 +37,4 @@ jobs:
       TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
       TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

@@ -1,8 +1,8 @@
-import { Turnstile } from "@marsidev/react-turnstile";
+import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 import { fetch } from "@tauri-apps/plugin-http";
 import { open } from "@tauri-apps/plugin-shell";
 import { Check, Key, Ticket, User } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Button from "../../components/Button";
 import { Dialog } from "../../components/dialog";
 import Input from "../../components/Input";
@@ -16,6 +16,7 @@ export default function LoginPage() {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [inviteCode, setInviteCode] = useState("");
   const [turnstileToken, setTurnstileToken] = useState("");
+  const turnstileInstance = useRef<TurnstileInstance>(null);
 
   const register = async () => {
     if (password !== passwordConfirm) {
@@ -50,6 +51,7 @@ export default function LoginPage() {
         content: (await resp.json()).msg,
       });
     }
+    turnstileInstance.current?.reset();
   };
 
   return (
@@ -80,6 +82,7 @@ export default function LoginPage() {
       </Button>
       <Turnstile
         siteKey={import.meta.env.LR_TURNSTILE_SITE_KEY ?? ""}
+        ref={turnstileInstance}
         onSuccess={setTurnstileToken}
         options={{
           theme: Themes.getThemeById(theme)?.metadata.type,
