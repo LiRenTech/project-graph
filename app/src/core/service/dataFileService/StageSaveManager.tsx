@@ -48,15 +48,19 @@ export namespace StageSaveManager {
    * @param errorCallback
    * @returns
    */
-  export async function backupHandle(path: string, data: Serialized.File) {
+  export async function backupHandle(path: string, data: Serialized.File, addFlashEffect = true) {
     const backupFolderPath = PathString.dirPath(path);
     const isExists = await exists(backupFolderPath);
     if (!isExists) {
-      throw new Error("备份文件路径错误:" + backupFolderPath);
+      // throw new Error("备份文件路径不存在:" + backupFolderPath);
+      // 创建备份文件夹
+      await createFolder(backupFolderPath);
     }
 
     await writeTextFile(path, JSON.stringify(data));
-    Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
+    if (addFlashEffect) {
+      Stage.effectMachine.addEffect(ViewFlashEffect.SaveFile());
+    }
   }
   /**
    * 备份，会在工程文件夹的内部新建一个backup文件夹，并在里面生成一个类似的json文件

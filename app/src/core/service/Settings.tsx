@@ -1,6 +1,9 @@
 import { Store } from "@tauri-apps/plugin-store";
 import { useEffect, useState } from "react";
 import { createStore } from "../../utils/store";
+import { appCacheDir } from "@tauri-apps/api/path";
+import { PathString } from "../../utils/pathString";
+import { isWeb } from "../../utils/platform";
 
 /**
  * 设置相关的操作
@@ -238,6 +241,17 @@ export namespace Settings {
     githubUser: "",
   };
 
+  /**
+   * 获取默认的草稿备份路径
+   * @returns
+   */
+  async function getDefaultDraftBackupPath() {
+    if (isWeb) {
+      return "web-drafts-backup"; // 随便设置一个非空字符串
+    }
+    return (await appCacheDir()) + PathString.getSep() + "drafts-backup";
+  }
+
   export async function init() {
     store = await createStore("settings.json");
     // 调用所有watcher
@@ -252,6 +266,14 @@ export namespace Settings {
     if (await has("uiTheme")) {
       set("theme", "dark");
       remove("uiTheme");
+    }
+
+    // 1.7.4 之前的草稿默认备份路径都是空，现在自动改成appCacheDir默认路径
+    if (!isWeb) {
+      if ((await get("autoBackupDraftPath")) === "") {
+        set("autoBackupDraftPath", await getDefaultDraftBackupPath());
+      }
+      defaultSettings.autoBackupDraftPath = await getDefaultDraftBackupPath();
     }
   }
 

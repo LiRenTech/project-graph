@@ -44,7 +44,7 @@ export class AutoBackupEngine {
     if (now - this.lastAutoBackupTime > this.autoBackupInterval) {
       if (Stage.path.isDraft()) {
         const backupDraftPath = `${this.autoBackupDraftPath}${PathString.getSep()}${PathString.getTime()}.json`;
-        StageSaveManager.backupHandle(backupDraftPath, StageDumper.dump());
+        StageSaveManager.backupHandle(backupDraftPath, StageDumper.dump(), false);
       } else {
         StageSaveManager.backupHandleWithoutCurrentPath(StageDumper.dump(), false);
         this.limitBackupFilesAndDeleteOld(this.autoBackupLimitCount);

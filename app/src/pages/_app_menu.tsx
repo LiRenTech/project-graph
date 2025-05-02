@@ -14,6 +14,7 @@ import {
   FilePlus2,
   FileType,
   Folder,
+  FolderClock,
   FolderCog,
   FolderOpen,
   Fullscreen,
@@ -57,7 +58,7 @@ import {
 import { cn } from "../utils/cn";
 import { getCurrentWindow, isDesktop, isWeb } from "../utils/platform";
 // import { writeTextFile } from "@tauri-apps/plugin-fs";
-import { dataDir } from "@tauri-apps/api/path";
+import { appCacheDir, dataDir } from "@tauri-apps/api/path";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Dialog } from "../components/dialog";
@@ -493,6 +494,16 @@ export default function AppMenu({ className = "", open = false }: { className?: 
             details={t("location.items.openDataFolder.description")}
           >
             {t("location.items.openDataFolder.title")}
+          </Col>
+          <Col
+            icon={<FolderClock />}
+            onClick={async () => {
+              const path = await appCacheDir();
+              openFilePath(path);
+            }}
+            details={t("location.items.openCacheFolder.description")}
+          >
+            {t("location.items.openCacheFolder.title")}
           </Col>
           <Col
             icon={<FolderOpen />}

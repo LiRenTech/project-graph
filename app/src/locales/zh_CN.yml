@@ -297,7 +297,7 @@ settings:
       请填写绝对路径，草稿将统一备份到此文件夹下
       留空或路径错误时不进行备份
       windows系统注意使用反斜杠
-      例如：C:\\Users\\username\\Documents\\DraftBackup
+      例如：C:\Users\username\Documents\DraftBackup
       结尾不要带路径分隔符
   autoBackupLimitCount:
     title: 自动备份最大数量
@@ -581,11 +581,14 @@ appMenu:
     title: 位置
     items:
       openDataFolder: 
-        title: 软件数据
-        description: 打开软件数据文件夹，内部存放用户自定义设置等数据
+        title: 配置数据
+        description: 打开软件用户配置数据文件夹，内部存放用户自定义设置等数据
       openProjectFolder: 
         title: 当前位置
         description: 打开当前编辑的 工程文件 所在的文件夹
+      openCacheFolder:
+        title: 缓存文件夹
+        description: 打开软件缓存文件夹，内部存放软件运行时产生的缓存数据，以及默认的草稿备份文件
   export:
     title: 导出
     items:
