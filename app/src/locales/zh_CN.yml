@@ -565,6 +565,7 @@ plugins:
 
 app:
   unsaved: "(未保存)"
+  draftUnsaved: " 草稿无法自动保存，需手动保存 "
   comingSoon: "即将到来……"
 appMenu:
   file:

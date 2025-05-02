@@ -227,7 +227,11 @@ export default function App() {
   const getDisplayFileName = () => {
     let result = filename;
     result = PathString.getShortedFileName(result, 30, 0.66);
-    return result + (isSaved ? "" : t("unsaved"));
+    if (file === Stage.path.draftName) {
+      return isSaved ? result : t("draftUnsaved");
+    } else {
+      return result + (isSaved ? "" : t("unsaved"));
+    }
   };
 
   return (
