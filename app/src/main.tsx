@@ -6,6 +6,7 @@ import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { runCli } from "./cli";
+import { Dialog } from "./components/dialog";
 import { UserScriptsManager } from "./core/plugin/UserScriptsManager";
 import { EdgeRenderer } from "./core/render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "./core/render/canvas2d/renderer";
@@ -13,6 +14,8 @@ import { InputElement } from "./core/render/domElement/inputElement";
 import { KeyboardOnlyEngine } from "./core/service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
 import { MouseLocation } from "./core/service/controlService/MouseLocation";
 import { KeyBinds } from "./core/service/controlService/shortcutKeysEngine/KeyBinds";
+import { ShortcutKeysRegister } from "./core/service/controlService/shortcutKeysEngine/shortcutKeysRegister";
+import { FileLoader } from "./core/service/dataFileService/fileLoader";
 import { RecentFileManager } from "./core/service/dataFileService/RecentFileManager";
 import { StartFilesManager } from "./core/service/dataFileService/StartFilesManager";
 import { ColorManager } from "./core/service/feedbackService/ColorManager";
@@ -22,6 +25,7 @@ import { StageStyleManager } from "./core/service/feedbackService/stageStyle/Sta
 import { LastLaunch } from "./core/service/LastLaunch";
 import { Settings } from "./core/service/Settings";
 import { Tourials } from "./core/service/Tourials";
+import { UserState } from "./core/service/UserState";
 import { Camera } from "./core/stage/Camera";
 import { Stage } from "./core/stage/Stage";
 import { StageLoader } from "./core/stage/StageLoader";
@@ -33,9 +37,6 @@ import "./polyfills/roundRect";
 import { exists } from "./utils/fs";
 import { exit, writeStderr } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isFrame, isWeb, isWindows } from "./utils/platform";
-import { ShortcutKeysRegister } from "./core/service/controlService/shortcutKeysEngine/shortcutKeysRegister";
-import { FileLoader } from "./core/service/dataFileService/fileLoader";
-import { Dialog } from "./components/dialog";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -56,6 +57,7 @@ const el = document.getElementById("root")!;
     ColorManager.init(),
     Tourials.init(),
     UserScriptsManager.init(),
+    UserState.init(),
   ]);
   // 这些东西依赖上面的东西，所以单独一个Promise.all
   await Promise.all([loadLanguageFiles(), loadSyncModules(), loadStartFile(), ShortcutKeysRegister.registerKeyBinds()]);
