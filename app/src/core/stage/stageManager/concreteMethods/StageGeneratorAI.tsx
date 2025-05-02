@@ -13,6 +13,7 @@ import { StageManager } from "../StageManager";
 export namespace StageGeneratorAI {
   /**
    * 扩展所有选中的节点
+   * 工具栏按钮的触发函数
    */
   export async function generateNewTextNodeBySelected() {
     const selectedTextNodes = StageManager.getSelectedEntities().filter((entity) => entity instanceof TextNode);
