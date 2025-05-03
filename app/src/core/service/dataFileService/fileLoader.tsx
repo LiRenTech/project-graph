@@ -19,6 +19,7 @@ import { CublicCatmullRomSplineEdge } from "../../stage/stageObject/association/
 import { MultiTargetUndirectedEdge } from "../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { RecentFileManager } from "./RecentFileManager";
 import { SvgNode } from "../../stage/stageObject/entity/SvgNode";
+import { Dialog } from "../../../components/dialog";
 
 /**
  * 将文件里的内容加载到舞台上
@@ -32,11 +33,11 @@ export namespace FileLoader {
    * @param path 打开的文件路径
    */
   export async function openFileByPath(path: string) {
-    StageManager.destroy();
     const data = await getDataByPath(path);
     if (!data) {
       return;
     }
+    StageManager.destroy();
 
     loadStageByData(data, path);
     StageHistoryManager.reset(data);
@@ -55,15 +56,22 @@ export namespace FileLoader {
    */
   async function getDataByPath(path: string): Promise<Serialized.File | null> {
     if (!exists(path)) {
-      console.error("文件不存在：" + path);
+      Dialog.show({
+        title: "打开文件失败",
+        content: "文件不存在：" + path,
+        type: "error",
+      });
       return null;
     }
     let content: string;
     try {
       content = await readTextFile(path);
     } catch (e) {
-      console.error("打开文件失败：", path);
-      console.error(e);
+      Dialog.show({
+        title: "打开文件失败",
+        content: "打开文件失败：" + JSON.stringify(e),
+        type: "error",
+      });
       return null;
     }
     const data = StageLoader.validate(JSON.parse(content));
