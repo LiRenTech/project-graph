@@ -44,14 +44,15 @@ fn read_folder_recursive(path: String, fileExts: Vec<String>) -> Vec<String> {
     if let Ok(entries) = std::fs::read_dir(path) {
         for entry in entries {
             if let Ok(entry) = entry {
-                if entry.path().is_file() {
-                    if let Some(file_name) = entry.file_name().to_str() {
+                let path = entry.path();
+                if path.is_file() {
+                    if let Some(file_name) = path.to_str() {
                         if fileExts.iter().any(|ext| file_name.ends_with(ext)) {
                             files.push(file_name.to_string());
                         }
                     }
-                } else if entry.path().is_dir() {
-                    let mut sub_files = read_folder_recursive(entry.path().to_str().unwrap().to_string(), fileExts.clone());
+                } else if path.is_dir() {
+                    let mut sub_files = read_folder_recursive(path.to_str().unwrap().to_string(), fileExts.clone());
                     files.append(&mut sub_files);
                 }
             }
@@ -184,6 +185,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             read_text_file,
             read_folder,
+            read_folder_recursive,
             delete_file,
             write_text_file,
             exists,

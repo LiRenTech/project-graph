@@ -2,6 +2,7 @@
 import { useAtom } from "jotai";
 import React, { useEffect } from "react";
 import { fileAtom, isRecentFilePanelOpenAtom } from "../../state";
+import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
 import { cn } from "../../utils/cn";
 
 // import { Zap } from "lucide-react";
@@ -21,6 +22,7 @@ import { KeyboardOnlyEngine } from "../../core/service/controlService/keyboardOn
 import Input from "../../components/Input";
 import IconButton from "../../components/IconButton";
 import { myOpen } from "../../utils/externalOpen";
+import { readFolderRecursive } from "../../utils/fs";
 
 /**
  * 最近文件面板按钮
@@ -259,10 +261,37 @@ export default function RecentFilesPanel() {
             <CircleHelp />
           </IconButton>
           <IconButton
-            onClick={() => {
-              //
+            onClick={async () => {
+              try {
+                const path = await openFileDialog({
+                  title: "选择包含JSON文件的文件夹",
+                  directory: true,
+                  multiple: false,
+                });
+                if (!path) {
+                  return;
+                }
+                const jsonFiles = await readFolderRecursive(path, [".json"]);
+                const filteredFiles = jsonFiles.filter((path) => !path.toLowerCase().includes("backup"));
+
+                console.log(filteredFiles);
+
+                await RecentFileManager.addRecentFilesByPaths(filteredFiles);
+                updateRecentFiles();
+                Dialog.show({
+                  title: "导入完成",
+                  content: `成功导入 ${filteredFiles.length} 个文件，过滤掉 ${jsonFiles.length - filteredFiles.length} 个备份文件`,
+                  type: filteredFiles.length > 0 ? "success" : "info",
+                });
+              } catch (error) {
+                Dialog.show({
+                  title: "导入失败",
+                  content: String(error),
+                  type: "error",
+                });
+              }
             }}
-            tooltip="从文件夹导入历史文件"
+            tooltip="从文件夹导入多个文件进入列表"
           >
             <FolderInput />
           </IconButton>

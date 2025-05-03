@@ -72,6 +72,23 @@ export namespace RecentFileManager {
     });
   }
 
+  export async function addRecentFilesByPaths(paths: string[]) {
+    // 先去重
+    const uniquePaths = Array.from(new Set(paths));
+    const existingFiles = await getRecentFiles();
+    for (const path of uniquePaths) {
+      const addFile = {
+        path: path,
+        time: new Date().getTime(),
+      };
+      if (!existingFiles.some((f) => f.path === addFile.path)) {
+        existingFiles.push(addFile); // 添加新文件
+      }
+    }
+    await store.set("recentFiles", existingFiles); // 更新存储
+    store.save();
+  }
+
   /**
    * 删除一条历史记录
    * @param path

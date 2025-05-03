@@ -28,6 +28,20 @@ export async function readFolder(path: string): Promise<string[]> {
   }
 }
 
+/**
+ * 递归读取文件夹中的文件列表
+ * @param path 文件夹路径
+ * @param fileExts 要读取的文件扩展名列表，例如：[".txt", ".md"]
+ * @returns 返回匹配扩展名的文件路径列表
+ */
+export async function readFolderRecursive(path: string, fileExts: string[]): Promise<string[]> {
+  if (isWeb) {
+    return [];
+  } else {
+    return invoke("read_folder_recursive", { path, fileExts });
+  }
+}
+
 export async function deleteFile(path: string): Promise<boolean> {
   if (isWeb) {
     return false;
