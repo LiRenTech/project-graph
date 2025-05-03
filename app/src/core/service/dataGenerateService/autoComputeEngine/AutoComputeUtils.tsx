@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
+import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { ProgramFunctions } from "./functions/programLogic";
-import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 
 /**
  * 一些在自动计算引擎中
@@ -122,19 +122,19 @@ export namespace AutoComputeUtils {
         (node1, node2) => node1.collisionBox.getRectangle().location.y - node2.collisionBox.getRectangle().location.y,
       );
     // 开始修改
-    let i = -1;
-    for (const child of childrenList) {
-      child.rename(resultTextList[++i]);
+    for (let i = 0; i < resultTextList.length; i++) {
+      childrenList[i].rename(resultTextList[i]);
     }
   }
 
   /**
    * 生成一个节点的多个结果
    * 如果子节点数量不够，则新建节点
+   * 如果子节点数量超过，则不修改多余节点
    * @param node
    * @param resultTextList
    */
-  export function getMultiResult(node: TextNode, resultTextList: string[]) {
+  export function generateMultiResult(node: TextNode, resultTextList: string[]) {
     if (resultTextList.length === 0) {
       return;
     }
@@ -165,9 +165,8 @@ export namespace AutoComputeUtils {
         (node1, node2) => node1.collisionBox.getRectangle().location.y - node2.collisionBox.getRectangle().location.y,
       );
     // 开始修改
-    let i = -1;
-    for (const child of childrenList) {
-      child.rename(resultTextList[++i]);
+    for (let i = 0; i < resultTextList.length; i++) {
+      childrenList[i].rename(resultTextList[i]);
     }
   }
 

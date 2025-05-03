@@ -254,7 +254,7 @@ function computeTextNode(node: TextNode) {
       Stage.effectMachine.addEffect(RectangleLittleNoteEffect.fromUtilsLittleNote(node));
 
       const result = MapNameFunction[name](AutoComputeUtils.getParentTextNodes(node).map((p) => p.text));
-      AutoComputeUtils.getMultiResult(node, result);
+      AutoComputeUtils.generateMultiResult(node, result);
     }
   }
   // 特殊类型计算
@@ -265,7 +265,7 @@ function computeTextNode(node: TextNode) {
         AutoComputeUtils.getParentEntities(node),
         AutoComputeUtils.getChildTextNodes(node),
       );
-      AutoComputeUtils.getMultiResult(node, result);
+      AutoComputeUtils.generateMultiResult(node, result);
     }
   }
 }
