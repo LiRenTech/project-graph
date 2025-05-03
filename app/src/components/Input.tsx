@@ -9,6 +9,7 @@ type InputProps<T extends boolean = false> = {
   multiline?: boolean;
   onChange?: (value: T extends true ? number : string) => void; // 使用条件类型来定义 onChange 的参数
   number?: T;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   [key: string]: any;
 };
 
@@ -20,6 +21,8 @@ export default function Input<T extends boolean = false>({
   placeholder = "",
   number = false as T,
   multiline = false,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onKeyDown = (_e) => {},
   ...props
 }: React.PropsWithChildren<InputProps<T>>) {
   return (
@@ -38,7 +41,10 @@ export default function Input<T extends boolean = false>({
           onChange?.((e.target as HTMLInputElement).value as any); // 强制转换为 string
         }
       }}
-      onKeyDown={(e) => e.stopPropagation()}
+      onKeyDown={(e) => {
+        e.stopPropagation();
+        onKeyDown?.(e);
+      }}
       onKeyUp={(e) => e.stopPropagation()}
       placeholder={placeholder}
       pattern={number ? "[0-9]*" : undefined}

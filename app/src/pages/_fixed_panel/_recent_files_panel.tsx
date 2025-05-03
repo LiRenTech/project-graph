@@ -59,9 +59,20 @@ export default function RecentFilesPanel() {
   };
 
   const onInputChange = (input: string) => {
+    console.log(input, "inputContent");
+    if (input === "#") {
+      // 默认的shift + 3 会触发井号
+      return;
+    }
     setCurrentPreselect(0); // 一旦有输入，就设置下标为0
     setSearchString(input);
     setRecentFilesFiltered(recentFiles.filter((file) => file.path.includes(input)));
+  };
+
+  const onInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Escape") {
+      setRecentFilePanelOpen(false);
+    }
   };
 
   useEffect(() => {
@@ -69,12 +80,14 @@ export default function RecentFilesPanel() {
     Stage.autoSaveEngine.setAutoSavePaused(isRecentFilePanelOpen);
     // 临时禁用纯键盘引擎
     KeyboardOnlyEngine.setOpenning(!isRecentFilePanelOpen);
+    if (isRecentFilePanelOpen) {
+      const input = document.querySelector(".recent-files-panel-search-input") as HTMLInputElement;
+      input.focus();
+    }
   }, [isRecentFilePanelOpen]);
 
   useEffect(() => {
     updateRecentFiles();
-    const input = document.querySelector(".recent-files-panel-search-input") as HTMLInputElement;
-    input.focus();
   }, []);
   /**
    * 按键事件
@@ -228,6 +241,7 @@ export default function RecentFilesPanel() {
           placeholder="请输入要筛选的文件"
           className="recent-files-panel-search-input text-sm"
           onChange={onInputChange}
+          onKeyDown={onInputKeyDown}
           value={searchString}
         />
 
