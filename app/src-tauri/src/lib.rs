@@ -15,6 +15,7 @@ use tauri_plugin_updater::UpdaterExt;
 fn exists(path: String) -> bool {
     std::path::Path::new(&path).exists()
 }
+
 /// 读取文件夹中的文件列表
 /// 如果文件夹不存在，返回空列表
 #[tauri::command]
@@ -27,6 +28,31 @@ fn read_folder(path: String) -> Vec<String> {
                     if let Some(file_name) = entry.file_name().to_str() {
                         files.push(file_name.to_string());
                     }
+                }
+            }
+        }
+    }
+    files
+}
+
+/// 读取一个文件夹中的全部文件，递归的读取
+/// 如果文件夹不存在，返回空列表
+/// fileExts: 要读取的文件扩展名列表，例如：[".txt", ".md"]
+#[tauri::command]
+fn read_folder_recursive(path: String, fileExts: Vec<String>) -> Vec<String> {
+    let mut files = Vec::new();
+    if let Ok(entries) = std::fs::read_dir(path) {
+        for entry in entries {
+            if let Ok(entry) = entry {
+                if entry.path().is_file() {
+                    if let Some(file_name) = entry.file_name().to_str() {
+                        if fileExts.iter().any(|ext| file_name.ends_with(ext)) {
+                            files.push(file_name.to_string());
+                        }
+                    }
+                } else if entry.path().is_dir() {
+                    let mut sub_files = read_folder_recursive(entry.path().to_str().unwrap().to_string(), fileExts.clone());
+                    files.append(&mut sub_files);
                 }
             }
         }
