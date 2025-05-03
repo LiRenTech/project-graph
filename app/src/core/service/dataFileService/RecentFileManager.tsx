@@ -89,6 +89,14 @@ export namespace RecentFileManager {
   }
 
   /**
+   * 清空所有历史记录
+   */
+  export async function clearAllRecentFiles() {
+    await store.set("recentFiles", []); // 清空列表
+    store.save();
+  }
+
+  /**
    * 获取最近打开的文件列表
    */
   export async function getRecentFiles(): Promise<RecentFile[]> {

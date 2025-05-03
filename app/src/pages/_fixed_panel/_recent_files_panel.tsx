@@ -14,7 +14,7 @@ import { Stage } from "../../core/stage/Stage";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { PathString } from "../../utils/pathString";
 import { isDesktop } from "../../utils/platform";
-import { CircleHelp, EyeOff, LoaderPinwheel, VenetianMask, X } from "lucide-react";
+import { CircleHelp, EyeOff, FolderInput, LoaderPinwheel, Radiation, VenetianMask, X } from "lucide-react";
 import { replaceTextWhenProtect } from "../../utils/font";
 import { FileLoader } from "../../core/service/dataFileService/fileLoader";
 import { KeyboardOnlyEngine } from "../../core/service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
@@ -247,7 +247,6 @@ export default function RecentFilesPanel() {
 
         <div className="flex items-center gap-1">
           <IconButton
-            id="recent-files-panel-close-btn"
             onClick={() => {
               Dialog.show({
                 title: "“最近打开的文件”界面说明",
@@ -260,8 +259,40 @@ export default function RecentFilesPanel() {
             <CircleHelp />
           </IconButton>
           <IconButton
+            onClick={() => {
+              //
+            }}
+            tooltip="从文件夹导入历史文件"
+          >
+            <FolderInput />
+          </IconButton>
+          <IconButton
+            className="cursor-pointer rounded"
+            onClick={() => {
+              Dialog.show({
+                title: "确认操作",
+                content: "确认清空全部记录？",
+                buttons: [
+                  {
+                    text: "取消",
+                    onClick: () => {},
+                  },
+                  {
+                    text: "确认",
+                    onClick: () => {
+                      setRecentFiles([]);
+                      RecentFileManager.clearRecentFiles();
+                    },
+                  },
+                ],
+              });
+            }}
+            tooltip="清空全部记录"
+          >
+            <Radiation />
+          </IconButton>
+          <IconButton
             className="cursor-pointer rounded bg-gray-500 font-bold text-white hover:scale-105 hover:bg-red-700" // 调整位置和层级
-            id="recent-files-panel-close-btn"
             onClick={() => setInPrivacy(!isInPrivacy)}
             tooltip={isInPrivacy ? "关闭隐私模式" : "进入隐私模式，关闭路径和文件显示"}
           >
@@ -288,7 +319,12 @@ export default function RecentFilesPanel() {
         </div>
       )}
       {/* 滚动区域单独封装 */}
-      {!isLoading && (
+      {!isLoading && recentFilesFiltered.length === 0 && (
+        <div className="flex h-full items-center justify-center text-8xl">
+          <span>NULL</span>
+        </div>
+      )}
+      {!isLoading && recentFilesFiltered.length > 0 && (
         <div className="flex-grow overflow-y-scroll">
           <table className="bg-panel-bg min-w-full overflow-hidden rounded-lg border border-gray-600 shadow-lg">
             <thead>
