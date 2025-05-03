@@ -47,7 +47,7 @@ console.log("===== PKGBUILD =====");
 console.log(PKGBUILD);
 writeFileSync("./PKGBUILD", PKGBUILD);
 
-const SRCINFO = `pkgbase = project-graph-nightly-bin
+const SRCINFO = `pkgbase = ${pkgname}
 \tpkgdesc = A simple tool to create topology diagrams.
 \tpkgver = ${pkgver}
 \tpkgrel = 1
