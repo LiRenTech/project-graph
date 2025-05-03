@@ -72,7 +72,7 @@
       "sizeAdjust": "auto"
     },
     {
-      "location": [-1926, -1716.886555351884],
+      "location": [-1926, -1717],
       "size": [220, 76],
       "text": "自动布局引擎",
       "uuid": "ab36d50a-91b4-4c13-8a20-ec2dd446659d",
@@ -82,7 +82,7 @@
       "sizeAdjust": "auto"
     },
     {
-      "location": [-1926, -1593.886555351884],
+      "location": [-1926, -1594],
       "size": [252, 76],
       "text": "纯键盘操作引擎",
       "uuid": "1bd4eedd-8e53-4b28-9ee9-07740cfecd88",
@@ -122,7 +122,7 @@
       "sizeAdjust": "auto"
     },
     {
-      "location": [-1403, -1716.886555351884],
+      "location": [-1403, -1717],
       "size": [316, 76],
       "text": "快捷键注册监听系统",
       "uuid": "8cc30dad-e619-4c9f-b9cf-331fd7da3ef1",
@@ -182,7 +182,7 @@
       "sizeAdjust": "auto"
     },
     {
-      "location": [872, -2451.109357226226],
+      "location": [872, -2451],
       "size": [141.2799835205078, 76],
       "text": "CLI系统",
       "uuid": "42e7ab69-54cf-4562-b765-2e0e9d931668",
@@ -412,7 +412,7 @@
       "sizeAdjust": "auto"
     },
     {
-      "location": [-1928.6223551535222, 483.93957318078117],
+      "location": [-1929, 484],
       "size": [219.1039276123047, 76],
       "text": "StageLoader",
       "uuid": "bf28c283-84e6-4b15-80b9-d84ede8e120c",
@@ -422,7 +422,7 @@
       "sizeAdjust": "auto"
     },
     {
-      "location": [-1928.6223551535222, 326.93957318078117],
+      "location": [-1929, 327],
       "size": [236.4479217529297, 76],
       "text": "StageDumper",
       "uuid": "586c1c04-aa80-4fed-8d5d-0a9e1e403d08",
@@ -432,7 +432,7 @@
       "sizeAdjust": "auto"
     },
     {
-      "location": [-2798, -1099],
+      "location": [1563, 469],
       "size": [300.31988525390625, 76],
       "text": "StageDumperSVG",
       "uuid": "260d6b15-eeb4-41e8-9672-3cf1a9086d01",
@@ -645,7 +645,7 @@
       "sizeAdjust": "auto"
     },
     {
-      "location": [-983.7773948385154, 1354.2132884290447],
+      "location": [-984, 1354],
       "size": [215.26393127441406, 124],
       "text": "舞台对象\nStageObject",
       "uuid": "13179626-e481-4300-a546-c3dafbe2d149",
@@ -879,7 +879,7 @@
       "sizeAdjust": "auto"
     },
     {
-      "location": [-370.6223551535222, 644.9395731807812],
+      "location": [-371, 645],
       "size": [188, 76],
       "text": "集合论算法",
       "uuid": "42328117-8a34-4feb-956a-936eecbc8246",
@@ -889,7 +889,7 @@
       "sizeAdjust": "auto"
     },
     {
-      "location": [-220.62235515352222, 449.93957318078117],
+      "location": [-221, 450],
       "size": [156, 76],
       "text": "图论算法",
       "uuid": "e41866cf-0713-4475-b646-1631069824d2",
@@ -899,7 +899,7 @@
       "sizeAdjust": "auto"
     },
     {
-      "location": [-400.6223551535222, 369.93957318078117],
+      "location": [-401, 370],
       "size": [366, 381],
       "uuid": "d6d3ce04-b3ae-486f-a60f-b6d3f312eab6",
       "text": "基础算法类模块",
@@ -912,7 +912,7 @@
     },
     {
       "location": [-1959, -575],
-      "size": [1954.3776448464778, 1356],
+      "size": [1954, 1356],
       "uuid": "aaff9a9f-5f96-4cf5-a13d-793b2b5f34fb",
       "text": "舞台管理器 StageManager",
       "color": [0, 0, 0, 0],
@@ -930,7 +930,7 @@
       "details": ""
     },
     {
-      "location": [-1075.073357628122, 580],
+      "location": [-1121.1171579743009, 645],
       "size": [220, 76],
       "text": "舞台内容容器",
       "uuid": "3547931c-b425-4e94-b103-aecead33d619",
@@ -1093,7 +1093,7 @@
       "sizeAdjust": "auto"
     },
     {
-      "location": [-1266.073357628122, 645],
+      "location": [-1281.1171579743009, 645],
       "size": [124, 76],
       "text": "摄像机",
       "uuid": "2bcb54f6-d25d-47e2-9bd7-82bf26299713",
@@ -1103,7 +1103,7 @@
       "sizeAdjust": "auto"
     },
     {
-      "location": [-1200.073357628122, 286],
+      "location": [-1213.1171579743009, 217],
       "size": [114.81596374511719, 124],
       "text": "舞台\nStage",
       "uuid": "2280fcad-b69f-4fbd-aacf-39e3d1e8adf8",
@@ -1113,8 +1113,8 @@
       "sizeAdjust": "auto"
     },
     {
-      "location": [-1472, 206],
-      "size": [646.926642371878, 545],
+      "location": [-1457, 137],
+      "size": [585.8828420256991, 614],
       "uuid": "05bc2592-ddc9-4fbe-a43e-ec724fa37b57",
       "text": "舞台基础",
       "color": [0, 0, 0, 0],
@@ -1130,13 +1130,13 @@
       "details": ""
     },
     {
-      "location": [-1150, 451],
+      "location": [-1159, 460],
       "uuid": "0a36e598-7e3f-4180-977e-94791ebbd1d7",
       "type": "core:connect_point",
       "details": ""
     },
     {
-      "location": [-1442, 580],
+      "location": [-1427, 645],
       "size": [124, 76],
       "text": "框选框",
       "uuid": "c1c4a086-cd6e-4c0e-a436-a1bef678473c",
@@ -1521,8 +1521,8 @@
       "uuid": "7149c45d-1e04-4315-8302-72a680a3d635",
       "type": "core:line_edge",
       "color": [0, 0, 0, 0],
-      "sourceRectRate": [0.5, 0.5],
-      "targetRectRate": [0.5, 0.5]
+      "sourceRectRate": [0.5, 0.01],
+      "targetRectRate": [0.5, 0.99]
     },
     {
       "source": "2bcb54f6-d25d-47e2-9bd7-82bf26299713",
@@ -1531,8 +1531,8 @@
       "uuid": "24877899-610b-49e8-8dab-6b818605daff",
       "type": "core:line_edge",
       "color": [0, 0, 0, 0],
-      "sourceRectRate": [0.5, 0.5],
-      "targetRectRate": [0.5, 0.5]
+      "sourceRectRate": [0.5, 0.01],
+      "targetRectRate": [0.5, 0.99]
     },
     {
       "source": "0a36e598-7e3f-4180-977e-94791ebbd1d7",
@@ -1551,8 +1551,8 @@
       "uuid": "8b57a408-bd8d-480d-a7e4-3073f6f8c0c2",
       "type": "core:line_edge",
       "color": [0, 0, 0, 0],
-      "sourceRectRate": [0.5, 0.5],
-      "targetRectRate": [0.5, 0.5]
+      "sourceRectRate": [0.5, 0.01],
+      "targetRectRate": [0.5, 0.99]
     },
     {
       "source": "d69f9781-4694-419d-bdb4-d693c1ccf43b",
@@ -1569,6 +1569,16 @@
       "target": "a6219774-81f5-471b-8659-1d9e0b15d1a6",
       "text": "成熟后加入",
       "uuid": "658d5b0c-dc03-4ad4-96e9-dc6e08b16bb0",
+      "type": "core:line_edge",
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
+    },
+    {
+      "source": "c52beb93-3cfe-419f-8892-b0830094f1f5",
+      "target": "260d6b15-eeb4-41e8-9672-3cf1a9086d01",
+      "text": "",
+      "uuid": "91e61733-5c76-4626-b2da-7f8aea27ab76",
       "type": "core:line_edge",
       "color": [0, 0, 0, 0],
       "sourceRectRate": [0.5, 0.5],

@@ -1,15 +1,6 @@
 {
-  "version": 14,
+  "version": 17,
   "entities": [
-    {
-      "location": [-71, -117],
-      "size": [252, 76],
-      "text": "节点自适应宽度",
-      "uuid": "8ceef1ee-fce4-45ab-9ac6-e8dc651ae263",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
     {
       "location": [-2559, -1927],
       "size": [357.407958984375, 76],
@@ -17,16 +8,18 @@
       "uuid": "0862210f-3dbb-43c8-a6ce-bc49837f6311",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [-1858, -1093],
+      "location": [-1849, -1026],
       "size": [188, 76],
       "text": "第二次重构",
       "uuid": "63591c61-d454-4720-9619-ac85b90fd637",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-2666, -1670],
@@ -35,7 +28,8 @@
       "uuid": "2e31b90e-1388-4670-b7a4-280a95186c45",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-1701, -1492],
@@ -44,16 +38,18 @@
       "uuid": "0a8fe11c-0af7-4cd9-8365-4b8c3fc4f88a",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [-1039, -2783],
+      "location": [-1402, -2335],
       "size": [156, 76],
       "text": "多人联机",
       "uuid": "0bfa1bb4-c518-478c-aca1-ea4112ae9b5b",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-2523, -1801],
@@ -62,7 +58,8 @@
       "uuid": "277b551a-2b74-4d54-80bb-e8ca5478d054",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-1849, -738],
@@ -71,34 +68,28 @@
       "uuid": "199a0ec8-61de-4566-af09-4cdc65c56e96",
       "details": "",
       "color": [22, 163, 74, 1],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [-711, -578],
+      "location": [-742, -578],
       "size": [188, 76],
       "text": "富文本功能",
       "uuid": "aa4c1e02-8cf6-431e-b5bd-dee0509b9b97",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [506, -548],
+      "location": [506, -275],
       "size": [316, 76],
       "text": "贝塞尔曲线手动调整",
       "uuid": "8de14ca9-9717-4aa0-9274-38f34251ce37",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [474, -17],
-      "size": [380, 76],
-      "text": "舞台上的图片可复制路径",
-      "uuid": "973a47e9-c13d-4918-8a20-ce6ad98e49ef",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-641, -1826],
@@ -107,7 +98,8 @@
       "uuid": "66c3d7f1-56f5-455d-a3b3-e3f22f1b1224",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-773, -728],
@@ -116,34 +108,28 @@
       "uuid": "2923abe6-b4b9-469a-9a79-f93e5b275d41",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [-1953, -136],
-      "size": [220, 76],
-      "text": "自动布局功能",
-      "uuid": "ac86c832-c901-4523-be30-2d1f1cf7a100",
-      "details": "",
-      "color": [234, 179, 8, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-961, 375],
+      "location": [-1056, 283],
       "size": [297.85589599609375, 76],
       "text": "优化ctrl+c、ctrl+v",
       "uuid": "45613fa3-8436-4818-bcf5-3edf029b69a6",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [-961, 498],
+      "location": [-1056, 406],
       "size": [261.8559875488281, 76],
       "text": "支持Alt复制功能",
       "uuid": "16ec1596-df63-46b5-be9d-9773fc5aa6bd",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-1701, -1250],
@@ -152,7 +138,8 @@
       "uuid": "0977daf0-bd15-4bc2-aa03-9171c7825bbe",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-310, 375],
@@ -161,7 +148,8 @@
       "uuid": "150c64b0-8639-43b2-8a3b-25fde6856ee3",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-641, -1600],
@@ -170,7 +158,8 @@
       "uuid": "e931a7bf-c105-4104-91db-0044cf55713a",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-848, -2239],
@@ -179,25 +168,8 @@
       "uuid": "c989c4bf-c028-454c-a501-73e521c12a84",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-961, 258],
-      "size": [442.9119873046875, 76],
-      "text": "支持一些UI面板的快捷键弹出",
-      "uuid": "a7dafe6a-78c4-4a12-9a23-56234e502dc7",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [506, -435],
-      "size": [252, 76],
-      "text": "完善自环碰撞箱",
-      "uuid": "e3de4bbf-4d96-424e-8d12-b3c07117b63a",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-2034, -23],
@@ -206,16 +178,8 @@
       "uuid": "55d5a658-d6a7-4bce-8b51-50b2bf67b119",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [506, -325],
-      "size": [316, 76],
-      "text": "增加双箭头线的功能",
-      "uuid": "bdec94bd-e357-44cf-b2a8-d0cae7e1dfba",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-446, -578],
@@ -224,97 +188,18 @@
       "uuid": "8ae18bb2-0725-461d-a08f-9cbefe1d6b22",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [490, 93],
+      "location": [490, 38],
       "size": [348, 76],
       "text": "图片下面增加一个标题",
       "uuid": "087da532-0840-4c12-8d82-f177a9883702",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [326, -1262],
-      "size": [252.03196716308594, 76],
-      "text": "支持Xmind文件",
-      "uuid": "b8e8f9ba-63db-49fb-b3c4-a5a7dbd7d645",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [650, -1114],
-      "size": [92, 76],
-      "text": "导入",
-      "uuid": "69243e05-5415-403f-889f-78f1d134edce",
-      "details": "",
-      "color": [22, 163, 74, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [359, -1082],
-      "size": [185.43995666503906, 76],
-      "text": "Markdown",
-      "uuid": "3e29ff6c-df17-4550-b5c2-8115eb56c11a",
-      "details": "",
-      "color": [22, 163, 74, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [650, -1035],
-      "size": [92, 76],
-      "text": "导出",
-      "uuid": "05506e4f-e604-4247-b5aa-e7cd328fe5de",
-      "details": "",
-      "color": [22, 163, 74, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [646, -1280],
-      "size": [92, 76],
-      "text": "导入",
-      "uuid": "c9e3613f-1bc5-492f-be5c-f3c8608a8824",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [646, -1202],
-      "size": [92, 76],
-      "text": "导出",
-      "uuid": "b0f227c0-eaec-43e4-8c91-9a777f3f2e92",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [438, -911],
-      "size": [68.31997680664062, 76],
-      "text": "txt",
-      "uuid": "be563a50-954a-4443-9b72-ce554ebfa5f5",
-      "details": "",
-      "color": [22, 163, 74, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [624, -945],
-      "size": [92, 76],
-      "text": "导入",
-      "uuid": "373f5db0-76df-4200-877a-283e82a97f9a",
-      "details": "",
-      "color": [22, 163, 74, 1],
-      "type": "core:text_node"
-    },
-    {
-      "location": [622, -870],
-      "size": [92, 76],
-      "text": "导出",
-      "uuid": "30f58676-4cc7-477f-9111-a70beaac3aee",
-      "details": "",
-      "color": [22, 163, 74, 1],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-71, -245],
@@ -323,7 +208,8 @@
       "uuid": "90d63a73-db33-4758-a715-89c04591a7f0",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-877, -2335],
@@ -332,16 +218,8 @@
       "uuid": "1d7486ee-3c8e-49c5-bcbb-b102e12a8aff",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [964, -1280],
-      "size": [152.3839569091797, 76],
-      "text": "Obsdian",
-      "uuid": "bcc82588-2f83-472c-a5b4-c49097e89775",
-      "details": "up，关于很多人想到的obsidian联动，我觉得其实可以通过文件节点功能实现，把文件放在obsidian库中跟着obsidian库一起同步，然后打开项目文件之后，使用文件节点功能把相应的笔记md文件拖进去。另外还有一个重大的BUG就是当我不小心误删节点，点击ctrl+z是没有反映的，没有撤销功能；然后想要关闭且不保存，重新打开文件重新编辑，实际上此时文件是被保存了的，因此常常造成比较大的问题，希望修复这个不保存但是实际上保存了的问题",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-1100, -1026],
@@ -350,16 +228,18 @@
       "uuid": "f07cd6e4-981a-41fe-8202-7ea6bf601e46",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [-1180, -2670],
+      "location": [-1538, -2150],
       "size": [220, 76],
       "text": "头脑风暴方向",
       "uuid": "e9054cbb-9356-43c5-8f9a-e9adb25eb72b",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-1244, -1678],
@@ -368,7 +248,8 @@
       "uuid": "9da829e6-dfb8-414d-900f-694608040d6d",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-1223, -104],
@@ -377,43 +258,18 @@
       "uuid": "4938e887-858e-4bfc-b94a-55309009276c",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [-310, 484],
-      "size": [524.927978515625, 76],
-      "text": "优化缩小情况下的Section碰撞范围",
-      "uuid": "12fa5047-06a7-464f-8fea-c5b78c91494f",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-310, 598],
-      "size": [765.85595703125, 76],
-      "text": "编辑Section内部文字的时候，Section能够自动膨胀",
-      "uuid": "5423d26a-5e6a-40c0-a24d-531b0274ff35",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-287, 894],
+      "location": [-310, 630],
       "size": [712.7359619140625, 76],
       "text": "多层嵌套时，外层折叠，内层section碰撞箱还在",
       "uuid": "0af5b406-7888-4d15-b5f1-ba18ea96398d",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-961, 605],
-      "size": [385.05596923828125, 76],
-      "text": "准星对准节点按F2重命名",
-      "uuid": "237ad2d4-d635-4721-b46b-56ce1db811c0",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-931, -79],
@@ -422,7 +278,8 @@
       "uuid": "ea4e42b0-7775-481e-8de7-2d7cba1cdf67",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-71, 13],
@@ -431,16 +288,18 @@
       "uuid": "fb40ca58-8a2c-4e77-8a0d-2c1aefebe06d",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [-1287, -548],
+      "location": [-1985, -275],
       "size": [284, 76],
       "text": "更改工程文件格式",
       "uuid": "56c82faf-7ed0-428a-94a0-5917a6d11843",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-1701, -1353],
@@ -449,34 +308,38 @@
       "uuid": "7bf3996d-e1e1-4d4b-ba13-a8f00ef1fe13",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [-573, -1261],
+      "location": [-570, -1262],
       "size": [245.47198486328125, 76],
       "text": "“知识库”的概念",
       "uuid": "e299c930-6e0c-4986-8152-2e9d361f06c1",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [-596, -1386],
+      "location": [-773, -1432],
       "size": [156, 76],
       "text": "双向链接",
       "uuid": "23e9b42d-d28b-4e14-8990-7bdd9d8976e3",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [-1803, 258],
+      "location": [-1917, 283],
       "size": [639.5198974609375, 76],
       "text": "自定义工具栏（类似kde plasma的“面板”）",
       "uuid": "f7a586ef-e6db-4c7f-8887-95f26679bb76",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [-528, -1093],
@@ -485,61 +348,61 @@
       "uuid": "78be1241-8d96-4b21-99e7-03a1fb40fd00",
       "details": "",
       "color": [22, 163, 74, 1],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [-1592, -2801],
+      "location": [-1665, -2335],
       "size": [183.4239501953125, 76],
       "text": "发布v3.0.0",
       "uuid": "61735b75-480c-4867-96fd-0a5fb300f0d6",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [-104, 1168],
+      "location": [-128, 919],
       "size": [92, 76],
       "text": "……",
       "uuid": "cb88dfda-8e5e-4b85-8fa9-0b3196501de7",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [152, 1168],
+      "location": [128, 919],
       "size": [92, 76],
       "text": "……",
       "uuid": "721fb8c9-912d-453d-b70e-4c7a9bbfd227",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
-      "location": [476, -628],
-      "size": [376, 409],
+      "location": [476, -355],
+      "size": [376, 186],
       "uuid": "80f1e32c-1c9d-49a7-b6b9-d64321bc867b",
       "text": "连线",
       "color": [0, 0, 0, 0],
       "type": "core:section",
       "isCollapsed": false,
       "isHidden": false,
-      "children": [
-        "8de14ca9-9717-4aa0-9274-38f34251ce37",
-        "e3de4bbf-4d96-424e-8d12-b3c07117b63a",
-        "bdec94bd-e357-44cf-b2a8-d0cae7e1dfba"
-      ],
+      "children": ["8de14ca9-9717-4aa0-9274-38f34251ce37"],
       "details": ""
     },
     {
-      "location": [444, -97],
-      "size": [440, 296],
+      "location": [460, -42],
+      "size": [408, 186],
       "uuid": "14f720f1-0169-408e-bb05-759cd9b81aec",
       "text": "图片",
       "color": [0, 0, 0, 0],
       "type": "core:section",
       "isCollapsed": false,
       "isHidden": false,
-      "children": ["973a47e9-c13d-4918-8a20-ce6ad98e49ef", "087da532-0840-4c12-8d82-f177a9883702"],
+      "children": ["087da532-0840-4c12-8d82-f177a9883702"],
       "details": ""
     },
     {
@@ -560,22 +423,18 @@
     },
     {
       "location": [-340, 295],
-      "size": [825.85595703125, 409],
+      "size": [644.7359619140625, 186],
       "uuid": "bbfedb68-6a3c-435c-b468-2185f5aa48d5",
       "text": "Section功能完善",
       "color": [0, 0, 0, 0],
       "type": "core:section",
       "isCollapsed": false,
       "isHidden": false,
-      "children": [
-        "150c64b0-8639-43b2-8a3b-25fde6856ee3",
-        "12fa5047-06a7-464f-8fea-c5b78c91494f",
-        "5423d26a-5e6a-40c0-a24d-531b0274ff35"
-      ],
+      "children": ["150c64b0-8639-43b2-8a3b-25fde6856ee3"],
       "details": ""
     },
     {
-      "location": [-1833, 178],
+      "location": [-1947, 203],
       "size": [699.5198974609375, 186],
       "uuid": "eb6c8d0f-2c59-4a85-9d74-ff3c38aa3c3c",
       "text": "工具栏优化",
@@ -599,15 +458,15 @@
       "details": ""
     },
     {
-      "location": [-2064, -216],
-      "size": [442.3359680175781, 299],
+      "location": [-2064, -103],
+      "size": [442.3359680175781, 186],
       "uuid": "f8a64ce4-a3cc-423f-8e26-9738de4d63e2",
       "text": "布局功能",
       "color": [0, 0, 0, 0],
       "type": "core:section",
       "isCollapsed": false,
       "isHidden": false,
-      "children": ["ac86c832-c901-4523-be30-2d1f1cf7a100", "55d5a658-d6a7-4bce-8b51-50b2bf67b119"],
+      "children": ["55d5a658-d6a7-4bce-8b51-50b2bf67b119"],
       "details": ""
     },
     {
@@ -627,31 +486,6 @@
       "details": ""
     },
     {
-      "location": [296, -1360],
-      "size": [850.3839569091797, 596],
-      "uuid": "eb8afe99-42ac-4c4f-91aa-97358397ef8d",
-      "text": "多软件文件联通计划",
-      "color": [0, 0, 0, 0],
-      "type": "core:section",
-      "isCollapsed": false,
-      "isHidden": false,
-      "children": [
-        "b8e8f9ba-63db-49fb-b3c4-a5a7dbd7d645",
-        "69243e05-5415-403f-889f-78f1d134edce",
-        "3e29ff6c-df17-4550-b5c2-8115eb56c11a",
-        "05506e4f-e604-4247-b5aa-e7cd328fe5de",
-        "c9e3613f-1bc5-492f-be5c-f3c8608a8824",
-        "b0f227c0-eaec-43e4-8c91-9a777f3f2e92",
-        "be563a50-954a-4443-9b72-ce554ebfa5f5",
-        "373f5db0-76df-4200-877a-283e82a97f9a",
-        "30f58676-4cc7-477f-9111-a70beaac3aee",
-        "bcc82588-2f83-472c-a5b4-c49097e89775",
-        "748a5048-4435-4a04-bf94-a8ba797eaf50",
-        "412519e9-5583-41a7-a225-601d9e8f6e56"
-      ],
-      "details": ""
-    },
-    {
       "location": [-101, -325],
       "size": [376, 444],
       "uuid": "52014138-86c1-4fa5-a072-21d3d2ecfc6b",
@@ -660,11 +494,7 @@
       "type": "core:section",
       "isCollapsed": false,
       "isHidden": false,
-      "children": [
-        "90d63a73-db33-4758-a715-89c04591a7f0",
-        "8ceef1ee-fce4-45ab-9ac6-e8dc651ae263",
-        "fb40ca58-8a2c-4e77-8a0d-2c1aefebe06d"
-      ],
+      "children": ["90d63a73-db33-4758-a715-89c04591a7f0", "fb40ca58-8a2c-4e77-8a0d-2c1aefebe06d"],
       "details": ""
     },
     {
@@ -680,24 +510,19 @@
       "details": ""
     },
     {
-      "location": [-991, 178],
-      "size": [502.9119873046875, 533],
+      "location": [-1086, 203],
+      "size": [357.85589599609375, 309],
       "uuid": "38512161-5d70-4688-8d41-4baf972a27cf",
       "text": "优化键盘操作",
       "color": [0, 0, 0, 0],
       "type": "core:section",
       "isCollapsed": false,
       "isHidden": false,
-      "children": [
-        "45613fa3-8436-4818-bcf5-3edf029b69a6",
-        "16ec1596-df63-46b5-be9d-9773fc5aa6bd",
-        "a7dafe6a-78c4-4a12-9a23-56234e502dc7",
-        "237ad2d4-d635-4721-b46b-56ce1db811c0"
-      ],
+      "children": ["45613fa3-8436-4818-bcf5-3edf029b69a6", "16ec1596-df63-46b5-be9d-9773fc5aa6bd"],
       "details": ""
     },
     {
-      "location": [-317, 814],
+      "location": [-340, 550],
       "size": [772.7359619140625, 186],
       "uuid": "c9085182-3fa3-4773-a90b-985bb57002f2",
       "text": "多层嵌套Section完善",
@@ -721,7 +546,7 @@
       "details": ""
     },
     {
-      "location": [-134, 1088],
+      "location": [-158, 839],
       "size": [408, 186],
       "uuid": "09362bef-d992-4819-a4a1-850b0aaedbea",
       "text": "增加表格元素",
@@ -733,31 +558,14 @@
       "details": ""
     },
     {
-      "location": [821, -1161],
-      "size": [92, 76],
-      "text": "幕布",
-      "uuid": "748a5048-4435-4a04-bf94-a8ba797eaf50",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [821, -1041],
-      "size": [121.69596862792969, 76],
-      "text": "figjam",
-      "uuid": "412519e9-5583-41a7-a225-601d9e8f6e56",
-      "details": "",
-      "color": [0, 0, 0, 0],
-      "type": "core:text_node"
-    },
-    {
-      "location": [-221, -1353],
+      "location": [-392, -1456],
       "size": [316, 124],
       "text": "加强搜索功能\n支持跨工程文件搜索",
       "uuid": "f2a7b75a-560b-44e0-b4b8-03e34426f3b8",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [198, -1942],
@@ -766,7 +574,8 @@
       "uuid": "c3a79790-1cdf-41e7-8090-3df3feca7324",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [310, -1826],
@@ -775,7 +584,8 @@
       "uuid": "1f9f415c-7422-44ef-ba79-93370c9d06d2",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [310, -1717],
@@ -784,7 +594,8 @@
       "uuid": "013b0e2d-cda1-4f13-99ab-971c2e08b99e",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     },
     {
       "location": [310, -1600],
@@ -793,7 +604,8 @@
       "uuid": "02e8e0b7-60a5-4dd3-adcf-75e5cae9e1d2",
       "details": "",
       "color": [0, 0, 0, 0],
-      "type": "core:text_node"
+      "type": "core:text_node",
+      "sizeAdjust": "auto"
     }
   ],
   "associations": [
@@ -803,15 +615,9 @@
       "text": "",
       "uuid": "20ce82ad-bfce-4e0f-8cc7-089c80e15208",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
-    },
-    {
-      "source": "973a47e9-c13d-4918-8a20-ce6ad98e49ef",
-      "target": "087da532-0840-4c12-8d82-f177a9883702",
-      "text": "",
-      "uuid": "cb63939d-c2f4-4ba1-bb65-705526005f0a",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "277b551a-2b74-4d54-80bb-e8ca5478d054",
@@ -819,55 +625,9 @@
       "text": "",
       "uuid": "690cd19d-afbe-4eef-a8ca-bdb186b90e57",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
-    },
-    {
-      "source": "3e29ff6c-df17-4550-b5c2-8115eb56c11a",
-      "target": "69243e05-5415-403f-889f-78f1d134edce",
-      "text": "",
-      "uuid": "37e00899-f46b-4b03-89fd-7fe201c2280d",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
-    },
-    {
-      "source": "3e29ff6c-df17-4550-b5c2-8115eb56c11a",
-      "target": "05506e4f-e604-4247-b5aa-e7cd328fe5de",
-      "text": "",
-      "uuid": "707f8d16-03c7-4c41-b34b-830c08e9b53e",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
-    },
-    {
-      "source": "b8e8f9ba-63db-49fb-b3c4-a5a7dbd7d645",
-      "target": "c9e3613f-1bc5-492f-be5c-f3c8608a8824",
-      "text": "",
-      "uuid": "d84ef5b4-00ca-465c-bc9c-275297fc2237",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
-    },
-    {
-      "source": "b8e8f9ba-63db-49fb-b3c4-a5a7dbd7d645",
-      "target": "b0f227c0-eaec-43e4-8c91-9a777f3f2e92",
-      "text": "",
-      "uuid": "43dc69f0-ba97-4aef-92d5-c8a80ea48436",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
-    },
-    {
-      "source": "be563a50-954a-4443-9b72-ce554ebfa5f5",
-      "target": "373f5db0-76df-4200-877a-283e82a97f9a",
-      "text": "",
-      "uuid": "badde1f2-8ea9-414b-8427-4c724cb5407a",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
-    },
-    {
-      "source": "be563a50-954a-4443-9b72-ce554ebfa5f5",
-      "target": "30f58676-4cc7-477f-9111-a70beaac3aee",
-      "text": "",
-      "uuid": "7595ef70-82cf-4aaf-908a-0de7d17ec9ff",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "63591c61-d454-4720-9619-ac85b90fd637",
@@ -875,7 +635,9 @@
       "text": "",
       "uuid": "b9826a89-7fd7-4075-877c-2d6f307871b4",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "199a0ec8-61de-4566-af09-4cdc65c56e96",
@@ -883,7 +645,9 @@
       "text": "",
       "uuid": "1cc12bb8-7b0a-4c1e-a069-caa642aace9f",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.99],
+      "targetRectRate": [0.5, 0.01]
     },
     {
       "source": "52014138-86c1-4fa5-a072-21d3d2ecfc6b",
@@ -891,7 +655,9 @@
       "text": "",
       "uuid": "dbb2d24b-fe27-4fb5-a058-a54e5cc8c302",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "199a0ec8-61de-4566-af09-4cdc65c56e96",
@@ -899,7 +665,9 @@
       "text": "",
       "uuid": "284c6d5f-83c6-4bf5-b305-6b76d1f71b83",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.99, 0.5],
+      "targetRectRate": [0.01, 0.5]
     },
     {
       "source": "9da829e6-dfb8-414d-900f-694608040d6d",
@@ -907,7 +675,9 @@
       "text": "",
       "uuid": "614ad2e7-f2dd-48e7-aa32-f96b468a05d9",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "199a0ec8-61de-4566-af09-4cdc65c56e96",
@@ -915,7 +685,9 @@
       "text": "",
       "uuid": "80ec5ef5-4a0c-4652-a8f4-e8aec3ea752e",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "9da829e6-dfb8-414d-900f-694608040d6d",
@@ -923,7 +695,9 @@
       "text": "",
       "uuid": "170b79b6-d5e1-423f-926c-f42218754d9b",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "bbfedb68-6a3c-435c-b468-2185f5aa48d5",
@@ -931,7 +705,9 @@
       "text": "",
       "uuid": "1b2a0e54-cb6c-491c-9293-f5e9da3b8e07",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "4938e887-858e-4bfc-b94a-55309009276c",
@@ -939,7 +715,9 @@
       "text": "",
       "uuid": "b40d6bc4-d019-4fe0-aa8b-c10ad4c109fa",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "0b3e55b4-a884-4e1e-8116-15b74a56ad35",
@@ -947,7 +725,9 @@
       "text": "",
       "uuid": "a2d89309-14f7-4a14-a326-b7f34fbe003d",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "0b3e55b4-a884-4e1e-8116-15b74a56ad35",
@@ -955,7 +735,9 @@
       "text": "",
       "uuid": "7295dd4b-1255-4b29-b449-7d094b9ddfab",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "9da829e6-dfb8-414d-900f-694608040d6d",
@@ -963,7 +745,9 @@
       "text": "",
       "uuid": "e055c780-b0e4-482f-80db-ebeff2ff509e",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "4938e887-858e-4bfc-b94a-55309009276c",
@@ -971,7 +755,9 @@
       "text": "",
       "uuid": "054b3162-ba3c-4235-b657-a3c5264bd32e",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "4938e887-858e-4bfc-b94a-55309009276c",
@@ -979,7 +765,9 @@
       "text": "",
       "uuid": "69970843-c02b-4cbe-9ba6-413672ee1590",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "52014138-86c1-4fa5-a072-21d3d2ecfc6b",
@@ -987,7 +775,9 @@
       "text": "",
       "uuid": "c0798190-43d8-4ee0-b042-8d7a55764a5c",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "52014138-86c1-4fa5-a072-21d3d2ecfc6b",
@@ -995,7 +785,9 @@
       "text": "",
       "uuid": "c45e1169-b7ed-44c2-82aa-a5e5616480d9",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "4938e887-858e-4bfc-b94a-55309009276c",
@@ -1003,7 +795,9 @@
       "text": "",
       "uuid": "b77da430-5fe9-4973-92ab-785e30b5dc5a",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "f07cd6e4-981a-41fe-8202-7ea6bf601e46",
@@ -1011,7 +805,9 @@
       "text": "",
       "uuid": "f894e1c5-f3e3-49f5-84d7-002d89bcd4ff",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "4938e887-858e-4bfc-b94a-55309009276c",
@@ -1019,7 +815,9 @@
       "text": "",
       "uuid": "127e51a2-6bee-421f-b306-76ab374fec14",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.01, 0.5],
+      "targetRectRate": [0.99, 0.5]
     },
     {
       "source": "199a0ec8-61de-4566-af09-4cdc65c56e96",
@@ -1027,7 +825,9 @@
       "text": "",
       "uuid": "bb1e7f78-9021-46dc-a09d-cca83a51bc74",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "0977daf0-bd15-4bc2-aa03-9171c7825bbe",
@@ -1035,7 +835,9 @@
       "text": "",
       "uuid": "5ed81fed-3715-49b1-9828-43e8252e32e5",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "7bf3996d-e1e1-4d4b-ba13-a8f00ef1fe13",
@@ -1043,7 +845,9 @@
       "text": "",
       "uuid": "a5b5b99a-50db-4cba-b650-02703894d1dd",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.01, 0.5],
+      "targetRectRate": [0.99, 0.5]
     },
     {
       "source": "7bf3996d-e1e1-4d4b-ba13-a8f00ef1fe13",
@@ -1051,7 +855,9 @@
       "text": "",
       "uuid": "18e32370-27c1-47ad-87c2-3e43f5d40f41",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "e299c930-6e0c-4986-8152-2e9d361f06c1",
@@ -1059,7 +865,9 @@
       "text": "",
       "uuid": "8fa8263d-1779-4661-be00-3aef0824db1c",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "78be1241-8d96-4b21-99e7-03a1fb40fd00",
@@ -1067,7 +875,9 @@
       "text": "",
       "uuid": "48ce46b9-7c86-4d31-900f-ca6ae297957d",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "f07cd6e4-981a-41fe-8202-7ea6bf601e46",
@@ -1075,15 +885,9 @@
       "text": "",
       "uuid": "db0ab1c2-0aa8-4dca-92c3-9280760af78d",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
-    },
-    {
-      "source": "78be1241-8d96-4b21-99e7-03a1fb40fd00",
-      "target": "eb8afe99-42ac-4c4f-91aa-97358397ef8d",
-      "text": "",
-      "uuid": "1afef25c-c0aa-43aa-81bb-39b90cac155d",
-      "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "e9054cbb-9356-43c5-8f9a-e9adb25eb72b",
@@ -1091,7 +895,9 @@
       "text": "",
       "uuid": "1240a4de-2abb-43d0-ab17-2b84db418000",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "e9054cbb-9356-43c5-8f9a-e9adb25eb72b",
@@ -1099,7 +905,9 @@
       "text": "",
       "uuid": "a6638465-e6a4-4282-be0d-c12fedfbf985",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "c9085182-3fa3-4773-a90b-985bb57002f2",
@@ -1107,7 +915,9 @@
       "text": "",
       "uuid": "3dd74016-93c0-4d58-a805-3a560492351a",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "e299c930-6e0c-4986-8152-2e9d361f06c1",
@@ -1115,7 +925,9 @@
       "text": "",
       "uuid": "5795c6bc-43ac-4d1b-a81b-fd6968e74769",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "43704845-0f9a-4fc1-a32a-9cf86088ab67",
@@ -1123,7 +935,9 @@
       "text": "",
       "uuid": "8c0c85d4-b342-4ce1-a57e-238dc1958b33",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.99, 0.5],
+      "targetRectRate": [0.01, 0.5]
     },
     {
       "source": "1f9f415c-7422-44ef-ba79-93370c9d06d2",
@@ -1131,7 +945,9 @@
       "text": "",
       "uuid": "ee91a0b5-af44-4034-adb3-d3f41320b989",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "013b0e2d-cda1-4f13-99ab-971c2e08b99e",
@@ -1139,7 +955,9 @@
       "text": "",
       "uuid": "f2a0f197-f290-4df7-bcea-4655326bfcfe",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     },
     {
       "source": "c3a79790-1cdf-41e7-8090-3df3feca7324",
@@ -1147,13 +965,10 @@
       "text": "",
       "uuid": "0ae3e2c8-ba9a-473c-9db3-5c27e552d5b8",
       "type": "core:line_edge",
-      "color": [0, 0, 0, 0]
+      "color": [0, 0, 0, 0],
+      "sourceRectRate": [0.5, 0.5],
+      "targetRectRate": [0.5, 0.5]
     }
   ],
-  "tags": [
-    "f07cd6e4-981a-41fe-8202-7ea6bf601e46",
-    "e9054cbb-9356-43c5-8f9a-e9adb25eb72b",
-    "9da829e6-dfb8-414d-900f-694608040d6d",
-    "4938e887-858e-4bfc-b94a-55309009276c"
-  ]
+  "tags": []
 }
