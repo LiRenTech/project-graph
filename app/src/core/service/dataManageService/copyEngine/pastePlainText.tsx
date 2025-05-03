@@ -11,6 +11,11 @@ import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
 import { RectanglePushInEffect } from "../../feedbackService/effectEngine/concrete/RectanglePushInEffect";
 import { v4 as uuidv4 } from "uuid";
 
+/**
+ * 复制粘贴引擎 粘贴各种各样的纯文本 处理函数
+ * @param item
+ * @param mouseLocation
+ */
 export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocation: Vector) {
   const blob = await item.getType("text/plain"); // 获取文本内容
   // const text = await blob.text();
@@ -32,6 +37,14 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
       title: "链接",
       uuid: uuidv4(),
       url: clipboardText,
+      location: [mouseLocation.x, mouseLocation.y],
+    });
+  } else if (isMermaidGraphString(clipboardText)) {
+    // 是Mermaid图表类型
+    entity = new TextNode({
+      text: "mermaid图表",
+      details: "```mermaid\n" + clipboardText + "\n```",
+      uuid: uuidv4(),
       location: [mouseLocation.x, mouseLocation.y],
     });
   } else {
@@ -143,4 +156,16 @@ function isSvgString(str: string): boolean {
   }
 
   return true;
+}
+
+/**
+ * 检测是否是Mermaid图表字符串
+ * @param str
+ */
+function isMermaidGraphString(str: string): boolean {
+  str = str.trim();
+  if (str.startsWith("graph TD;") && str.endsWith(";")) {
+    return true;
+  }
+  return false;
 }
