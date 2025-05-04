@@ -164,7 +164,7 @@ jobs:
             dist: "src-tauri/target/release/bundle/**/*.{deb,AppImage,sig}"
 
           - platform: "windows-latest"
-            dist: "src-tauri/target/release/bundle/nsis/*.{exe,sig}"
+            dist: "src-tauri/target/release/bundle/nsis"
 
           - platform: "macos-latest"
             args: "--target aarch64-apple-darwin"
@@ -304,7 +304,8 @@ jobs:
       - name: Windows - Upload
         if: matrix.platform == 'windows-latest'
         run: |
-          gh release upload ${{ inputs.release_tag }} (Get-Item .\${{ inputs.app_root }}\${{ matrix.dist }}).FullName --clobber
+          gh release upload ${{ inputs.release_tag }} (Get-Item .\${{ inputs.app_root }}\${{ matrix.dist }}\*.exe).FullName --clobber
+          gh release upload ${{ inputs.release_tag }} (Get-Item .\${{ inputs.app_root }}\${{ matrix.dist }}\*.sig).FullName --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -316,35 +317,6 @@ jobs:
           sha256sum ./*.deb | awk '{print $1}' > sha256sum.txt
           echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
       #endregion
-
-  generate-updater-json:
-    needs: [create-release, publish-tauri]
-    permissions:
-      contents: write
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Generate latest.json
-        run: |
-          # changelog=$(echo "$changelog" | awk '{printf "%s\n", $0}' | sed 's/"/\\"/g')
-          changelog=""
-          signature=$(gh release download ${{ inputs.release_tag }} -p "*.exe.sig" -O -)
-          url=$(gh release view ${{ inputs.release_tag }} --json assets -q '.assets.[] | .url | select(endswith(".exe"))')
-          echo '{' > latest.json
-          echo '  "version": "${{ inputs.app_version }}",' >> latest.json
-          echo "  \"notes\": \"$changelog\"," >> latest.json
-          # RFC 3339 format
-          echo "  \"pub_date\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\"," >> latest.json
-          echo '  "platforms": {' >> latest.json
-          echo '  "windows-x86_64": {' >> latest.json
-          echo "    \"signature\": \"${signature}\"," >> latest.json
-          echo "    \"url\": \"${url}\"" >> latest.json
-          echo '  }' >> latest.json
-          echo '}' >> latest.json
-          cat latest.json
-          gh release upload ${{ inputs.release_tag }} latest.json --clobber
 
   bump-aur-version:
     needs: publish-tauri
