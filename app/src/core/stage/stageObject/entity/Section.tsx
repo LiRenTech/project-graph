@@ -15,6 +15,7 @@ import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { Entity } from "../abstract/StageEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { SectionMethods } from "../../stageManager/basicMethods/SectionMethods";
+import { SectionRenderer } from "../../../render/canvas2d/entityRenderer/section/SectionRenderer";
 
 export class Section extends ConnectableEntity {
   /**
@@ -22,9 +23,17 @@ export class Section extends ConnectableEntity {
    */
   _isSelected: boolean = false;
   public uuid: string;
-  public isEditingTitle: boolean = false;
+  _isEditingTitle: boolean = false;
   private _collisionBoxWhenCollapsed: CollisionBox;
   private _collisionBoxNormal: CollisionBox;
+
+  public get isEditingTitle() {
+    return this._isEditingTitle;
+  }
+  public set isEditingTitle(value: boolean) {
+    this._isEditingTitle = value;
+    SectionRenderer.render(this);
+  }
 
   /**
    * 小于多少的情况下，开始渲染大标题
