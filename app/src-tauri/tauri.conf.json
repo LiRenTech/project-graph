@@ -69,7 +69,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEIyQzM3OTE1QjgwRTRCNzEKUldSeFN3NjRGWG5Ec2hVb05sWGZhVmpJdEVCR2cwNmM4UXlISEN5eHJBeFlCQkF3VjV6Z0tEY08K",
       "endpoints": [
-        "https://github.com/LiRenTech/project-graph/releases/latest/download/latest.json"
+        "https://release.project-graph.top/update/{{target}}/{{arch}}/{{current_version}}"
       ],
       "windows": {
         "installMode": "passive"
