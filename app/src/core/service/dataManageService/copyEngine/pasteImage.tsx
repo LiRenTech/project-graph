@@ -26,13 +26,7 @@ export async function copyEnginePasteImage(item: ClipboardItem, mouseLocation: V
   const imageUUID = uuidv4();
   const folder = PathString.dirPath(Stage.path.getFilePath());
 
-  // 防止有人感觉图片全是uuid感觉很混乱。
-  const currentFileName = PathString.getFileNameFromPath(Stage.path.getFilePath());
-  const shortedFileName = PathString.getShortedFileName(currentFileName, 6);
-  // 获取当前日期时间，格式：“YY-MM-DD-HH-mm-ss”
-  const currentDateTime = new Date().toISOString().replace(/:/g, "-").slice(0, 19);
-  const imageFileName = `${shortedFileName}-${currentDateTime}-${imageUUID.slice(0, 4)}`;
-  // const imageFileName: string = imageUUID;
+  const imageFileName = getImageName(imageUUID);
   const imagePath = `${folder}${PathString.getSep()}${imageFileName}.png`;
 
   // 2024.12.31 测试发现这样的写法会导致读取时base64解码失败
@@ -47,9 +41,21 @@ export async function copyEnginePasteImage(item: ClipboardItem, mouseLocation: V
       location: [mouseLocation.x, mouseLocation.y],
       path: `${imageFileName}.png`,
     });
-    // imageNode.setBase64StringForced(base64String);
     StageManager.addImageNode(imageNode);
   }, 100);
+}
+
+/**
+ * 根据uuid和时间生成图片文件名
+ * 防止有人感觉图片全是uuid感觉很混乱
+ */
+function getImageName(uuid: string): string {
+  const currentFileName = PathString.getFileNameFromPath(Stage.path.getFilePath());
+  const shortedFileName = PathString.getShortedFileName(currentFileName, 6);
+  // 获取当前日期时间，格式：“YY-MM-DD-HH-mm-ss”
+  const currentDateTime = new Date().toISOString().replace(/:/g, "-").slice(0, 19);
+  const imageFileName = `${shortedFileName}-${currentDateTime}-${uuid.slice(0, 4)}`;
+  return imageFileName;
 }
 
 async function convertBlobToBase64(blob: Blob): Promise<string> {
