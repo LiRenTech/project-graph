@@ -37,6 +37,7 @@ import {
   renderHorizonBackground,
   renderVerticalBackground,
 } from "./utilsRenderer/backgroundRenderer";
+import { searchContentHighlightRenderer } from "./utilsRenderer/searchContentHighlightRenderer";
 
 /**
  * 渲染器
@@ -270,6 +271,7 @@ export namespace Renderer {
     rendererLayerMovingLine();
     renderClipboard();
     renderEffects();
+    searchContentHighlightRenderer(frameIndex);
     // renderViewRectangle(viewRectangle);
   }
 

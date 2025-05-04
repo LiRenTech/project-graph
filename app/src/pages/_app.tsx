@@ -1,6 +1,6 @@
 import { LogicalSize } from "@tauri-apps/api/dpi";
 import { useAtom } from "jotai";
-import { Copy, Cpu, FlaskConical, Menu, Minus, PanelTop, Square, Tag, X, Zap } from "lucide-react";
+import { Copy, Cpu, FlaskConical, Menu, Minus, PanelTop, Square, Tag, TextSearch, X, Zap } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Button from "../components/Button";
@@ -25,6 +25,7 @@ import LogicNodePanel from "./_fixed_panel/_logic_node_panel";
 import RecentFilesPanel from "./_fixed_panel/_recent_files_panel";
 import StartFilePanel from "./_fixed_panel/_start_file_panel";
 import TagPanel from "./_fixed_panel/_tag_panel";
+import SearchingContentPanel from "./_fixed_panel/_searching_content_panel";
 import FloatingOutlet from "./_floating_outlet";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 
@@ -35,6 +36,7 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isStartFilePanelOpen, setIsStartFilePanelOpen] = React.useState(false);
   const [isTagPanelOpen, setIsTagPanelOpen] = React.useState(false);
+  const [isSearchPanelOpen, setIsSearchPanelOpen] = React.useState(false);
   const [isLogicNodePanelOpen, setIsLogicNodePanelOpen] = React.useState(false);
   const [ignoreMouse, setIgnoreMouse] = React.useState(false);
 
@@ -323,6 +325,19 @@ export default function App() {
                 <Cpu className={cn("cursor-pointer", isLogicNodePanelOpen ? "rotate-45" : "")} />
               </IconButton>
             )}
+            {/* 搜索内容按钮 */}
+            {!isWindowCollapsing && (
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsSearchPanelOpen(!isSearchPanelOpen);
+                }}
+                className={cn(isClassroomMode && "opacity-0")}
+                tooltip="搜索内容"
+              >
+                <TextSearch className={cn("cursor-pointer", isSearchPanelOpen ? "rotate-45" : "")} />
+              </IconButton>
+            )}
             {/* 中间标题 */}
             {useNativeTitleBar || isWeb ? (
               // h-0 才能完全摆脱划线时经过此区域的卡顿问题
@@ -464,6 +479,7 @@ export default function App() {
           {/* 面板列表 */}
           <AppMenu className="absolute left-4 top-16 z-20" open={isMenuOpen} />
           <TagPanel open={isTagPanelOpen} className="z-10" />
+          <SearchingContentPanel open={isSearchPanelOpen} className="z-10" />
           <LogicNodePanel open={isLogicNodePanelOpen} className="z-10" />
           <StartFilePanel open={isStartFilePanelOpen} />
           <RecentFilesPanel />

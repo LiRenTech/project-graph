@@ -28,13 +28,18 @@ export class ContentSearchEngine {
    */
   public currentSearchResultIndex = 0;
 
-  private getStageObjectBeSearchText(stageObject: StageObject): string {
+  /**
+   * 抽取一个舞台对象的被搜索文本
+   * @param stageObject
+   * @returns
+   */
+  public getStageObjectText(stageObject: StageObject): string {
     if (stageObject instanceof TextNode) {
-      return stageObject.text + "$$$" + stageObject.details;
+      return stageObject.text + "　" + stageObject.details;
     } else if (stageObject instanceof Section) {
-      return stageObject.text + "$$$" + stageObject.details;
+      return stageObject.text + "　" + stageObject.details;
     } else if (stageObject instanceof UrlNode) {
-      return stageObject.title + "$$$" + stageObject.details + "$$$" + stageObject.url;
+      return stageObject.title + "　" + stageObject.details + "　" + stageObject.url;
     }
     // 任何实体上都可能会写details
     if (stageObject instanceof Entity) {
@@ -47,11 +52,14 @@ export class ContentSearchEngine {
     return "";
   }
 
-  public startSearch(searchString: string): boolean {
+  public startSearch(searchString: string, autoFocus = true): boolean {
     // 开始搜索
     this.searchResultNodes = [];
+    if (searchString === "") {
+      return false;
+    }
     for (const node of StageManager.getStageObject()) {
-      const text = this.getStageObjectBeSearchText(node);
+      const text = this.getStageObjectText(node);
       if (this.isCaseSensitive) {
         if (text.includes(searchString)) {
           this.searchResultNodes.push(node);
@@ -63,15 +71,19 @@ export class ContentSearchEngine {
       }
     }
     this.currentSearchResultIndex = 0;
+
     if (this.searchResultNodes.length > 0) {
-      // 选择第一个搜索结果节点
-      const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
-      // currentNode.isSelected = true;
-      Stage.effectMachine.addEffect(
-        new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.collisionBox.getRectangle(), Color.Green),
-      );
-      // 摄像机对准现在的节点
-      Camera.location = currentNode.collisionBox.getRectangle().center.clone();
+      if (autoFocus) {
+        // 选择第一个搜索结果节点
+        const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
+        // currentNode.isSelected = true;
+        Stage.effectMachine.addEffect(
+          new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.collisionBox.getRectangle(), Color.Green),
+        );
+        // 摄像机对准现在的节点
+        Camera.location = currentNode.collisionBox.getRectangle().center.clone();
+      }
+
       return true;
     }
     return false;
