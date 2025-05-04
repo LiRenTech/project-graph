@@ -245,8 +245,8 @@ settings:
     description: |
       請填寫絕對路徑，草稿將統一備份到此資料夾下
       留空或路徑錯誤時不進行備份
-      windows系統注意使用反斜杠
-      例如：C:\\Users\\username\\Documents\\DraftBackup
+      windows系統注意使用反斜杠「\」
+      例如：C:\Users\username\Documents\DraftBackup
       結尾不要帶路徑分隔符
   scaleExponent:
     title: 視角縮放速度
@@ -489,6 +489,8 @@ settings:
       moveX: 橫向移動
       none: 無操作
       cameraMoveToMouse: 將視野向滑鼠位置移動
+      adjustPenStrokeWidth: 調整畫筆粗細
+      adjustWindowOpacity: 調整窗口透明度
   mouseWheelWithAltMode:
     title: 按住 Alt 時，滑鼠滾輪模式
     description: "此功能於2025年4月10日新增\n目前發現還存在問題：win系统下滑動滾輪後需要再點擊一次螢幕才能操作舞台\n提示：這裡的 Alt
@@ -507,9 +509,13 @@ settings:
       none: 不渲染（節省性能）
       top: 頂部小字
       cover: 半透明覆蓋框體（最佳效果）
+  autoBackupLimitCount:
+    title: 自動備份最大數量
+    description: "自動備份的最大數量，超過此數量將會刪除舊的備份文件\n"
 app:
   unsaved: "(未保存)"
   comingSoon: 即將到來……
+  draftUnsaved: ' 草稿無法自動保存，需手動保存 '
 appMenu:
   file:
     title: 檔案
@@ -526,7 +532,7 @@ appMenu:
     items:
       openDataFolder:
         description: 打開軟體資訊文件夾，內部存放用戶自定義等資料
-        title: 軟體資訊
+        title: 配置資訊
       openProjectFolder:
         title: 當前位置
         description: 打開當前編輯的 工程文件 所在的資料夾
