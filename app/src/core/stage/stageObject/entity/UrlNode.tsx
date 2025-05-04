@@ -9,6 +9,7 @@ import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEng
 import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
+import { UrlNodeRenderer } from "../../../render/canvas2d/entityRenderer/urlNode/urlNodeRenderer";
 
 /**
  * 网页链接节点
@@ -28,12 +29,19 @@ export class UrlNode extends ConnectableEntity {
   /** 上半部分的高度 */
   static titleHeight: number = 100;
   /** 是否正在编辑标题 */
-  isEditingTitle: boolean = false;
+  _isEditingTitle: boolean = false;
   /** 鼠标是否悬浮在标题上 */
   isMouseHoverTitle: boolean = false;
   /** 鼠标是否悬浮在url上 */
   isMouseHoverUrl: boolean = false;
 
+  public get isEditingTitle() {
+    return this._isEditingTitle;
+  }
+  public set isEditingTitle(value: boolean) {
+    this._isEditingTitle = value;
+    UrlNodeRenderer.render(this);
+  }
   get geometryCenter(): Vector {
     return this.collisionBox.getRectangle().center;
   }

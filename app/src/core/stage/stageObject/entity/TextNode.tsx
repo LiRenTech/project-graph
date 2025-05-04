@@ -15,6 +15,7 @@ import { Entity } from "../abstract/StageEntity";
 import { ResizeAble } from "../abstract/StageObjectInterface";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { Section } from "./Section";
+import { TextNodeRenderer } from "../../../render/canvas2d/entityRenderer/textNode/TextNodeRenderer";
 
 /**
  *
@@ -72,8 +73,17 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
   /**
    * 是否在编辑文字，编辑时不渲染文字
    */
-  isEditing: boolean = false;
+  _isEditing: boolean = false;
 
+  public get isEditing() {
+    return this._isEditing;
+  }
+
+  public set isEditing(value: boolean) {
+    this._isEditing = value;
+    TextNodeRenderer.renderTextNode(this);
+    // 再主动渲染一次，确保即使渲染引擎停止，文字也能显示出来
+  }
   isHiddenBySectionCollapse = false;
 
   color: Color = Color.Transparent;
