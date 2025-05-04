@@ -104,11 +104,6 @@ settings:
       en: English
       zh_CN: Simplified Chinese
       zh_TW: Traditional Chinese
-  updateChannel:
-    title: Update Channel
-    options:
-      latest: Stable
-      nightly: Development
   showTipsOnUI:
     title: Show Tips on UI
     description: |

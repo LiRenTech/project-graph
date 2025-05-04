@@ -160,31 +160,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # platform: The platform to build for
-          # args: Arguments to pass to `tauri build`
-          # rust_targets: Rust targets
-          # android: Whether to build for Android
-          # dist_dir: Directory of the distribution files, relative to app_root
-
           - platform: "ubuntu-22.04"
-            dist_dir: "src-tauri/target/release/bundle/deb"
-            dist_ext: "deb"
+            dist: "src-tauri/target/release/bundle/**/*.{deb,AppImage,sig}"
 
           - platform: "windows-latest"
-            dist_dir: "src-tauri/target/release/bundle/nsis"
-            dist_ext: "exe"
+            dist: "src-tauri/target/release/bundle/nsis"
 
           - platform: "macos-latest"
             args: "--target aarch64-apple-darwin"
             rust_targets: "aarch64-apple-darwin"
-            dist_dir: "src-tauri/target/aarch64-apple-darwin/release/bundle/dmg"
-            dist_ext: "dmg"
+            dist: "src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg"
 
           - platform: "macos-latest"
             args: "--target x86_64-apple-darwin"
             rust_targets: "x86_64-apple-darwin"
-            dist_dir: "src-tauri/target/x86_64-apple-darwin/release/bundle/dmg"
-            dist_ext: "dmg"
+            dist: "src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/*.dmg"
 
           # - platform: "ubuntu-22.04"
           #   rust_targets: "armv7-linux-androideabi,i686-linux-android,x86_64-linux-android,aarch64-linux-android"
@@ -301,22 +291,21 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
 
-      - name: MacOS - Remove unnessary files
-        if: matrix.platform == 'macos-latest'
-        run: |
-          rm -rf ${{ inputs.app_root }}/${{ matrix.dist_dir }}/*.{sh,icns} || true
-      - name: Linux Macos - Upload
+      # - name: MacOS - Remove unnessary files
+      #   if: matrix.platform == 'macos-latest'
+      #   run: |
+      #     rm -rf ${{ inputs.app_root }}/${{ matrix.dist_dir }}/*.{sh,icns} || true
+      - name: Linux / MacOS - Upload
         if: matrix.platform != 'windows-latest'
         run: |
-          gh release upload ${{ inputs.release_tag }} ${{ inputs.app_root }}/${{ matrix.dist_dir }}/*.${{ matrix.dist_ext }} --clobber
+          gh release upload ${{ inputs.release_tag }} ${{ inputs.app_root }}/${{ matrix.dist }} --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Windows - Upload
         if: matrix.platform == 'windows-latest'
         run: |
-          cd ${{ inputs.app_root }}/${{ matrix.dist_dir }}
-          gh release upload ${{ inputs.release_tag }} (Get-Item .\*.${{ matrix.dist_ext }}).FullName --clobber
-          gh release upload ${{ inputs.release_tag }} (Get-Item .\*.sig).FullName --clobber
+          gh release upload ${{ inputs.release_tag }} (Get-Item .\${{ inputs.app_root }}\${{ matrix.dist }}\*.exe).FullName --clobber
+          gh release upload ${{ inputs.release_tag }} (Get-Item .\${{ inputs.app_root }}\${{ matrix.dist }}\*.sig).FullName --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -328,35 +317,6 @@ jobs:
           sha256sum ./*.deb | awk '{print $1}' > sha256sum.txt
           echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
       #endregion
-
-  generate-updater-json:
-    needs: [create-release, publish-tauri]
-    permissions:
-      contents: write
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Generate latest.json
-        run: |
-          # changelog=$(echo "$changelog" | awk '{printf "%s\n", $0}' | sed 's/"/\\"/g')
-          changelog=""
-          signature=$(gh release download ${{ inputs.release_tag }} -p "*.exe.sig" -O -)
-          url=$(gh release view ${{ inputs.release_tag }} --json assets -q '.assets.[] | .url | select(endswith(".exe"))')
-          echo '{' > latest.json
-          echo '  "version": "${{ inputs.app_version }}",' >> latest.json
-          echo "  \"notes\": \"$changelog\"," >> latest.json
-          # RFC 3339 format
-          echo "  \"pub_date\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\"," >> latest.json
-          echo '  "platforms": {' >> latest.json
-          echo '  "windows-x86_64": {' >> latest.json
-          echo "    \"signature\": \"${signature}\"," >> latest.json
-          echo "    \"url\": \"${url}\"" >> latest.json
-          echo '  }' >> latest.json
-          echo '}' >> latest.json
-          cat latest.json
-          gh release upload ${{ inputs.release_tag }} latest.json --clobber
 
   bump-aur-version:
     needs: publish-tauri
