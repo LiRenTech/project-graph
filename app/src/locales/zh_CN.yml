@@ -13,11 +13,16 @@ about:
     checkingUpdate: 检查新版本中……
     checkUpdateFail: 无法获取最新版本信息，请检查网络
   links:
+    website: 官方网站
     documentation: 文档
     github: Github
     video: 视频教程
     qq: QQ 群
     forum: 论坛
+    community:
+      title: 社区
+      description: 加入社区，包含QQ群、论坛、Discord、Telegram等，分享您的想法、经验、教程、资源、问题、建议等。
+    importantAnnouncement: 重要公告
   intro:
   - 软件介绍
   - 这是一个基于tauri框架的快速绘制节点图的工具，可以用于项目拓扑图绘制、快速头脑风暴草稿

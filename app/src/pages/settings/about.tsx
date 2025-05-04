@@ -1,11 +1,10 @@
 import { check, Update } from "@tauri-apps/plugin-updater";
-import { BookOpen, Download, LoaderPinwheel, MessageCircleCode } from "lucide-react";
+import { BookOpenText, Download, LoaderPinwheel, MessageCircleWarning, UsersRound } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Bilibili from "../../assets/bilibili.svg?react";
 import Github from "../../assets/github.svg?react";
 import icon from "../../assets/icon.png";
-import QQ from "../../assets/qq.svg?react";
 import versions from "../../assets/versions.json";
 import Button from "../../components/Button";
 import { getAppVersion } from "../../utils/otherApi";
@@ -154,9 +153,12 @@ export default function About() {
           </Button>
         )}
         <div className="flex flex-wrap justify-center gap-2">
-          <Button tooltip="https://project-graph.top" onClick={() => open("https://project-graph.top")}>
-            <BookOpen />
-            {t("links.documentation")}
+          <Button
+            tooltip="https://project-graph.top/docs/app"
+            onClick={() => open("https://project-graph.top/docs/app")}
+          >
+            <BookOpenText />
+            {t("links.website")}
           </Button>
           <Button
             tooltip="https://github.com/LiRenTech/project-graph"
@@ -173,24 +175,15 @@ export default function About() {
             {t("links.video")}
           </Button>
           <Button
-            tooltip="1018716404"
-            onClick={() =>
-              Dialog.show({
-                title: "QQ 交流群",
-                content: "点击复制并在网页打开",
-                code: `https://qm.qq.com/cgi-bin/qm/qr?k=smSidcY7O_wbU9fqAhgobcOpmTKJrZ1P&jump_from=webapi&authKey=eqX5/gvxrWlfyhu0xiLqA+yLoUPa1X5fZbbuEWdqB+JzBR7TO6/XY1e69QwtQ/sn`,
-              })
-            }
+            onClick={() => open("https://project-graph.top/docs/app/community")}
+            tooltip={t("links.community.description")}
           >
-            <QQ />
-            {t("links.qq")}
+            <UsersRound />
+            {t("links.community.title")}
           </Button>
-          <Button
-            tooltip="https://forum.d2learn.org/category/16/project-graph"
-            onClick={() => open("https://forum.d2learn.org/category/16/project-graph")}
-          >
-            <MessageCircleCode />
-            {t("links.forum")}
+          <Button onClick={() => open("https://project-graph.top/docs/app/announcement")}>
+            <MessageCircleWarning />
+            {t("links.importantAnnouncement")}
           </Button>
         </div>
       </div>
