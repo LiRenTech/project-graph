@@ -1,9 +1,9 @@
+import { appCacheDir } from "@tauri-apps/api/path";
 import { Store } from "@tauri-apps/plugin-store";
 import { useEffect, useState } from "react";
-import { createStore } from "../../utils/store";
-import { appCacheDir } from "@tauri-apps/api/path";
 import { PathString } from "../../utils/pathString";
 import { isWeb } from "../../utils/platform";
+import { createStore } from "../../utils/store";
 
 /**
  * 设置相关的操作
@@ -16,7 +16,6 @@ export namespace Settings {
   // 注意：下拉菜单框必须要在语言包里面配置才能生效，否则菜单项是 Error: Option Not Found
   export type Settings = {
     language: "zh_CN" | "zh_TW" | "en";
-    updateChannel: "latest" | "nightly";
     // 视觉相关
     lineStyle: "straight" | "bezier" | "vertical";
     theme: string;
@@ -135,7 +134,6 @@ export namespace Settings {
   };
   export const defaultSettings: Settings = {
     language: "zh_CN",
-    updateChannel: "latest",
     // 视觉相关
     lineStyle: "straight",
     theme: "park",

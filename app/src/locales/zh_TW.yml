@@ -416,11 +416,6 @@ settings:
     description: |
       滑鼠拖動時，對齊節點和時播放的聲音文件路徑
   title: 設置
-  updateChannel:
-    options:
-      latest: 穩定版
-      nightly: 開發版
-    title: 更新頻道
   showTipsOnUI:
     title: 在 UI 中顯示提示訊息
     description: "開啟後，螢幕上會有一行提示訊息。\n如果你已經熟悉了軟體，建議關閉此選項以減少螢幕佔用\n更多更詳細的提示還是建議看菜單欄中的“新手引導”或官方文檔。\n"
