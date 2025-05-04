@@ -6,9 +6,11 @@ import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { v4 as uuidv4 } from "uuid";
+import { Settings } from "../../Settings";
 
 /**
  * 把粘贴板中的PNG图片读取并写入到磁盘和舞台上
+ * 此函数在调用时，上游已确认 clipboardItem 的类型是 image/png
  * @param item
  * @param mouseLocation
  * @returns
@@ -32,7 +34,10 @@ export async function copyEnginePasteImage(item: ClipboardItem, mouseLocation: V
   // 2024.12.31 测试发现这样的写法会导致读取时base64解码失败
   // writeFile(imagePath, new Uint8Array(await blob.arrayBuffer()));
   // 下面这样的写法是没有问题的
-  writeFileBase64(imagePath, await convertBlobToBase64(blob));
+  const compressPastedImages = await Settings.get("compressPastedImages");
+  const maxPastedImageSize = await Settings.get("maxPastedImageSize");
+
+  writeFileBase64(imagePath, await convertBlobToBase64(blob, compressPastedImages, maxPastedImageSize));
 
   // 要延迟一下，等待保存完毕
   setTimeout(() => {
@@ -58,12 +63,66 @@ function getImageName(uuid: string): string {
   return imageFileName;
 }
 
-async function convertBlobToBase64(blob: Blob): Promise<string> {
+async function convertBlobToBase64(blob: Blob, isCompressOpen = true, maxSize = 1920): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onloadend = () => {
+    reader.onloadend = async () => {
       if (typeof reader.result === "string") {
-        resolve(reader.result.split(",")[1]); // 去掉"data:image/png;base64,"前缀
+        if (!isCompressOpen) {
+          resolve(reader.result.split(",")[1]);
+        } else {
+          // 创建Image对象来获取原始尺寸
+          const img = new Image();
+          img.src = reader.result;
+
+          await new Promise((resolve) => {
+            img.onload = resolve;
+          });
+
+          // 创建canvas进行压缩
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d")!;
+
+          // 设置压缩后最大尺寸为1920px
+          // const maxSize = 3840;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxSize || height > maxSize) {
+            const ratio = Math.min(maxSize / width, maxSize / height);
+            width = width * ratio;
+            height = height * ratio;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          // 绘制压缩后的图片，质量设为0.8
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // 转换为压缩后的base64
+          canvas.toBlob(
+            (compressedBlob) => {
+              if (!compressedBlob) {
+                reject(new Error("Compression failed"));
+                return;
+              }
+
+              const compressedReader = new FileReader();
+              compressedReader.onloadend = () => {
+                if (typeof compressedReader.result === "string") {
+                  resolve(compressedReader.result.split(",")[1]);
+                } else {
+                  reject(new Error("Invalid result type"));
+                }
+              };
+              compressedReader.onerror = reject;
+              compressedReader.readAsDataURL(compressedBlob);
+            },
+            "image/png",
+            0.8, // 压缩质量，0-1之间，仅对 jpeg 有用
+          );
+        }
       } else {
         reject(new Error("Invalid result type"));
       }

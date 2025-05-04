@@ -1,6 +1,8 @@
 import {
   Cpu,
   Hourglass,
+  ImageMinus,
+  ImageUpscale,
   MemoryStick,
   MonitorPlay,
   RefreshCcwDot,
@@ -18,6 +20,15 @@ export default function Performance() {
     <>
       <FieldGroup title="Memory 内存" description="以下选项和设备内存相关" icon={<MemoryStick />}>
         <SettingField icon={<Undo />} settingKey="historySize" type="slider" min={10} max={1000} step={10} />
+        <SettingField icon={<ImageMinus />} settingKey="compressPastedImages" type="switch" />
+        <SettingField
+          icon={<ImageUpscale />}
+          settingKey="maxPastedImageSize"
+          type="slider"
+          min={100}
+          max={3840}
+          step={50}
+        />
       </FieldGroup>
 
       <FieldGroup title="CPU 处理器" description="以下选项和设备处理器相关" icon={<Cpu />}>
