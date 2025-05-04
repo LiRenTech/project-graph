@@ -333,6 +333,7 @@ export default function App() {
                   setIsSearchPanelOpen(!isSearchPanelOpen);
                 }}
                 className={cn(isClassroomMode && "opacity-0")}
+                id="app-search-content-btn"
                 tooltip="搜索内容"
               >
                 <TextSearch className={cn("cursor-pointer", isSearchPanelOpen ? "rotate-45" : "")} />

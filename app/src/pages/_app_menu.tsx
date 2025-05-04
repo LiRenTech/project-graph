@@ -36,7 +36,6 @@ import {
   Save,
   Scaling,
   ScrollText,
-  Search,
   Settings as SettingsIcon,
   SquareDashedMousePointer,
   TestTube2,
@@ -79,7 +78,6 @@ import { createFolder, exists } from "../utils/fs";
 import { PathString } from "../utils/pathString";
 import ComplexityResultPanel from "./_fixed_panel/_complexity_result_panel";
 import ExportSvgPanel from "./_popup_panel/_export_svg_panel";
-import SearchingNodePanel from "./_popup_panel/_searching_node_panel";
 import { FileLoader } from "../core/service/dataFileService/fileLoader";
 import { Vector } from "../core/dataStruct/Vector";
 
@@ -580,7 +578,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         >
           重做
         </Col>
-        <Col
+        {/* <Col
           icon={<Search />}
           onClick={() => {
             Popup.show(<SearchingNodePanel />, false);
@@ -588,7 +586,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           details="根据文字，搜索节点/实体详细信息，等含有文字的内容，建议将鼠标移动到窗口边缘后按ctrl+f"
         >
           查找
-        </Col>
+        </Col> */}
         <Col
           icon={<Radar />}
           onClick={async () => {

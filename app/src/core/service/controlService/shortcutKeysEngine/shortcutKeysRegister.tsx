@@ -1,7 +1,6 @@
 import { Dialog } from "../../../../components/dialog";
 import { Popup } from "../../../../components/popup";
 import ColorPanel from "../../../../pages/_popup_panel/_color_panel";
-import SearchingNodePanel from "../../../../pages/_popup_panel/_searching_node_panel";
 import { Direction } from "../../../../types/directions";
 import { openBrowserOrFile } from "../../../../utils/externalOpen";
 import { openDevtools, writeStdout } from "../../../../utils/otherApi";
@@ -657,8 +656,17 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
-      if (!KeyboardOnlyEngine.isOpenning()) return;
-      Popup.show(<SearchingNodePanel />, false);
+      // app-search-content-btn
+      const button = document.getElementById("app-search-content-btn");
+      const event = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      });
+      button?.dispatchEvent(event);
+      setTimeout(() => {
+        Controller.pressingKeySet.clear();
+      }, 200);
     });
     (
       await KeyBinds.create("openTextNodeByContentExternal", "e", {

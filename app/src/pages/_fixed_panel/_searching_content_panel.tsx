@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "../../utils/cn";
 import IconButton from "../../components/IconButton";
 import { Stage } from "../../core/stage/Stage";
@@ -14,6 +14,21 @@ export default function SearchingContentPanel({ open = false, className = "" }: 
   const [isCaseSensitive, setIsCaseSensitive] = useState(false);
   const [searchString, setSearchString] = useState("");
   const [searchResults, setSearchResults] = useState<{ title: string; uuid: string }[]>([]);
+
+  useEffect(() => {
+    const input = document.querySelector(".search-panel-input") as HTMLInputElement;
+    if (open) {
+      // 获取焦点，搜索框
+      if (input) {
+        input.focus();
+      }
+    } else {
+      // 取消搜索框的焦点
+      if (input) {
+        input.blur();
+      }
+    }
+  }, [open]);
 
   return (
     <div
@@ -45,6 +60,18 @@ export default function SearchingContentPanel({ open = false, className = "" }: 
                 uuid: node.uuid,
               })),
             );
+          }}
+          onKeyDown={(e) => {
+            if (e.ctrlKey || e.altKey || e.metaKey) {
+              // 取消默认事件
+              e.preventDefault();
+            } else if (e.key === "Escape") {
+              if (searchString !== "") {
+                // 取消搜索
+                setSearchString("");
+                setSearchResults([]);
+              }
+            }
           }}
           value={searchString}
         />
