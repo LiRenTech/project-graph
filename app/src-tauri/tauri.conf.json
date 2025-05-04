@@ -47,6 +47,11 @@
         "headerImage": "nsis/project-graph-install.bmp",
         "installerHooks": "nsis/installer.nsh"
       }
+    },
+    "linux": {
+      "appimage": {
+        "bundleMediaFramework": true
+      }
     }
   },
   "plugins": {
