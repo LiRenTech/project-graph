@@ -291,10 +291,11 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
 
-      # - name: MacOS - Remove unnessary files
-      #   if: matrix.platform == 'macos-latest'
-      #   run: |
-      #     rm -rf ${{ inputs.app_root }}/${{ matrix.dist_dir }}/*.{sh,icns} || true
+      - name: MacOS - Rename app.tar.gz
+        if: matrix.platform == 'macos-latest'
+        run: |
+          cd ${{ inputs.app_root }}/src-tauri/target/aarch64-apple-darwin/release/bundle/macos
+          mv *.app.tar.gz "Project Graph_${{ inputs.app_version }}_${{ startsWith(matrix.rust_targets, 'x86_64') && 'x64' || 'aarch64' }}.app.tar.gz"
       - name: Linux / MacOS - Upload
         if: matrix.platform != 'windows-latest'
         run: |
