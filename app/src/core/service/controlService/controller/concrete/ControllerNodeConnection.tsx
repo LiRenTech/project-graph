@@ -237,8 +237,50 @@ class ControllerNodeConnectionClass extends ControllerClass {
   private mouseUp(event: MouseEvent) {
     const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     const releaseTargetEntity = StageManager.findConnectableEntityByLocation(releaseWorldLocation);
-    // 判断轨迹
-    // 根据点状数组生成折线段
+
+    // 根据轨迹判断方向
+    const [sourceDirection, targetDirection] = this.getConnectDirectionByMouseTrack();
+
+    // 结束连线
+    if (releaseTargetEntity !== null) {
+      // 在目标节点上弹起
+
+      // 区分是拖拽松开连线还是点击松开连线
+      if (releaseWorldLocation.distance(this._lastRightMousePressLocation) < 5) {
+        // 距离过近，说明是点击事件，而不是拖拽事件
+        // 这个可能歪打误撞地被用户触发
+        this.clickMultiConnect(releaseWorldLocation);
+      } else {
+        // 鼠标在待连接节点上抬起
+        if (this.connectToEntity) {
+          this.multiConnect(this.connectToEntity, sourceDirection, targetDirection);
+        }
+      }
+    } else {
+      // 鼠标在空白位置抬起
+      // 额外复制一个数组，因为回调函数执行前，这个数组已经被清空了
+      const newConnectFromEntities = this.connectFromEntities;
+
+      addTextNodeByLocation(releaseWorldLocation, true, (uuid) => {
+        const createdNode = StageManager.getTextNodeByUUID(uuid) as ConnectableEntity;
+        for (const fromEntity of newConnectFromEntities) {
+          const connectResult = StageManager.connectEntity(fromEntity, createdNode);
+          if (connectResult) {
+            this.addConnectEffect(fromEntity, createdNode);
+          }
+        }
+      });
+    }
+    this.clear();
+    Controller.setCursorNameHook(CursorNameEnum.Default);
+  }
+
+  /**
+   * // 判断轨迹
+   * // 根据点状数组生成折线段
+   * @returns
+   */
+  private getConnectDirectionByMouseTrack(): [Direction | null, Direction | null] {
     const lines = [];
     for (let i = 0; i < this.mouseLocations.length - 1; i++) {
       const start = this.mouseLocations[i];
@@ -297,40 +339,7 @@ class ControllerNodeConnectionClass extends ControllerClass {
         }
       }
     }
-    console.log(sourceDirection, targetDirection);
-
-    // 结束连线
-    if (releaseTargetEntity !== null) {
-      // 在目标节点上弹起
-
-      // 区分是拖拽松开连线还是点击松开连线
-      if (releaseWorldLocation.distance(this._lastRightMousePressLocation) < 5) {
-        // 距离过近，说明是点击事件，而不是拖拽事件
-        // 这个可能歪打误撞地被用户触发
-        this.clickMultiConnect(releaseWorldLocation);
-      } else {
-        // 鼠标在待连接节点上抬起
-        if (this.connectToEntity) {
-          this.multiConnect(this.connectToEntity, sourceDirection, targetDirection);
-        }
-      }
-    } else {
-      // 鼠标在空白位置抬起
-      // 额外复制一个数组，因为回调函数执行前，这个数组已经被清空了
-      const newConnectFromEntities = this.connectFromEntities;
-
-      addTextNodeByLocation(releaseWorldLocation, true, (uuid) => {
-        const createdNode = StageManager.getTextNodeByUUID(uuid) as ConnectableEntity;
-        for (const fromEntity of newConnectFromEntities) {
-          const connectResult = StageManager.connectEntity(fromEntity, createdNode);
-          if (connectResult) {
-            this.addConnectEffect(fromEntity, createdNode);
-          }
-        }
-      });
-    }
-    this.clear();
-    Controller.setCursorNameHook(CursorNameEnum.Default);
+    return [sourceDirection, targetDirection];
   }
 
   /**

@@ -77,22 +77,13 @@ export namespace StageNodeConnector {
 
   // 反向连线
   export function reverseEdges(edges: LineEdge[]) {
-    // 先全部删除
-    // edges.forEach((edge) => {
-    //   StageDeleteManager.deleteEdge(edge);
-    // });
-    // // 再重新连接
-    // edges.forEach((edge) => {
-    //   const sourceNode = StageManager.getConnectableEntityByUUID(edge.source.uuid);
-    //   const targetNode = StageManager.getConnectableEntityByUUID(edge.target.uuid);
-    //   if (sourceNode && targetNode) {
-    //     connectConnectableEntity(targetNode, sourceNode, edge.text);
-    //   }
-    // });
     edges.forEach((edge) => {
       const oldSource = edge.source;
       edge.source = edge.target;
       edge.target = oldSource;
+      const oldSourceRectRage = edge.sourceRectangleRate;
+      edge.setSourceRectangleRate(edge.targetRectangleRate);
+      edge.setTargetRectangleRate(oldSourceRectRage);
     });
     StageManager.updateReferences();
   }
