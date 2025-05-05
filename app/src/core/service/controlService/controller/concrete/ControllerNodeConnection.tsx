@@ -15,6 +15,8 @@ import { addTextNodeByLocation } from "./utilsControl";
 import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/stageNodeAdder";
+import { Line } from "../../../../dataStruct/shape/Line";
+import { Direction } from "../../../../../types/directions";
 
 /**
  * 连线控制器
@@ -40,6 +42,12 @@ class ControllerNodeConnectionClass extends ControllerClass {
    */
   public connectFromEntities: ConnectableEntity[] = [];
   public connectToEntity: ConnectableEntity | null = null;
+
+  // TODO: 记录鼠标移动轨迹
+  private mouseLocations: Vector[] = [];
+  public getMouseLocationsPoints(): Vector[] {
+    return this.mouseLocations;
+  }
 
   /**
    * 拖拽时左键生成质点
@@ -97,6 +105,9 @@ class ControllerNodeConnectionClass extends ControllerClass {
     const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
     this._lastRightMousePressLocation = pressWorldLocation.clone();
+
+    // 清空之前的轨迹记录
+    this.mouseLocations = [pressWorldLocation.clone()];
 
     const clickedConnectableEntity: ConnectableEntity | null =
       StageManager.findConnectableEntityByLocation(pressWorldLocation);
@@ -180,6 +191,13 @@ class ControllerNodeConnectionClass extends ControllerClass {
 
   private mouseMove(event: MouseEvent) {
     const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    // 添加轨迹
+    if (
+      this.mouseLocations.length === 0 ||
+      this.mouseLocations[this.mouseLocations.length - 1].distance(worldLocation) > 5
+    ) {
+      this.mouseLocations.push(worldLocation.clone());
+    }
     // 连接线
     let isFindConnectToNode = false;
     for (const entity of StageManager.getConnectableEntity()) {
@@ -219,6 +237,68 @@ class ControllerNodeConnectionClass extends ControllerClass {
   private mouseUp(event: MouseEvent) {
     const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     const releaseTargetEntity = StageManager.findConnectableEntityByLocation(releaseWorldLocation);
+    // 判断轨迹
+    // 根据点状数组生成折线段
+    const lines = [];
+    for (let i = 0; i < this.mouseLocations.length - 1; i++) {
+      const start = this.mouseLocations[i];
+      const end = this.mouseLocations[i + 1];
+      lines.push(new Line(start, end));
+    }
+    // 根据折线段，判断，从选中的实体到目标实体经过的折线段与其交点位置
+    let sourceDirection: Direction | null = null;
+    let targetDirection: Direction | null = null;
+
+    for (const line of lines) {
+      // 寻找源头端点位置
+      for (const fromEntity of this.connectFromEntities) {
+        if (fromEntity.collisionBox.isContainsPoint(line.start) && !fromEntity.collisionBox.isContainsPoint(line.end)) {
+          // 找到了出去的一小段线段
+          const rect = fromEntity.collisionBox.getRectangle();
+          const intersectionPoint = rect.getLineIntersectionPoint(line);
+          // 找到交点，判断交点在哪个方位上
+          if (intersectionPoint.y === rect.top) {
+            // 从顶部发出
+            sourceDirection = Direction.Up;
+          } else if (intersectionPoint.y === rect.bottom) {
+            // 从底部发出
+            sourceDirection = Direction.Down;
+          } else if (intersectionPoint.x === rect.left) {
+            // 从左侧发出
+            sourceDirection = Direction.Left;
+          } else if (intersectionPoint.x === rect.right) {
+            // 从右侧发出
+            sourceDirection = Direction.Right;
+          }
+        }
+      }
+      // 寻找目标端点位置
+      if (
+        this.connectToEntity &&
+        this.connectToEntity.collisionBox.isContainsPoint(line.end) &&
+        !this.connectToEntity.collisionBox.isContainsPoint(line.start)
+      ) {
+        // 找到了入来的一小段线段
+        const rect = this.connectToEntity.collisionBox.getRectangle();
+        const intersectionPoint = rect.getLineIntersectionPoint(line);
+        // 找到交点，判断交点在哪个方位上
+        if (intersectionPoint.y === rect.top) {
+          // 到达顶部
+          targetDirection = Direction.Up;
+        } else if (intersectionPoint.y === rect.bottom) {
+          // 到达底部
+          targetDirection = Direction.Down;
+        } else if (intersectionPoint.x === rect.left) {
+          // 到达左侧
+          targetDirection = Direction.Left;
+        } else if (intersectionPoint.x === rect.right) {
+          // 到达右侧
+          targetDirection = Direction.Right;
+        }
+      }
+    }
+    console.log(sourceDirection, targetDirection);
+
     // 结束连线
     if (releaseTargetEntity !== null) {
       // 在目标节点上弹起
@@ -231,7 +311,7 @@ class ControllerNodeConnectionClass extends ControllerClass {
       } else {
         // 鼠标在待连接节点上抬起
         if (this.connectToEntity) {
-          this.multiConnect(this.connectToEntity);
+          this.multiConnect(this.connectToEntity, sourceDirection, targetDirection);
         }
       }
     } else {
@@ -281,21 +361,58 @@ class ControllerNodeConnectionClass extends ControllerClass {
     this._isUsing = false;
   }
 
-  private multiConnect(connectToEntity: ConnectableEntity) {
+  private multiConnect(
+    connectToEntity: ConnectableEntity,
+    sourceDirection: Direction | null = null,
+    targetDirection: Direction | null = null,
+  ) {
     // 鼠标在待连接节点上抬起
     // let isHaveConnectResult = false; // 在多重链接的情况下，是否有连接成功
 
     const isPressC = Controller.pressingKeySet.has("c");
-
+    let sourceRectRate: [number, number] = [0.5, 0.5];
+    switch (sourceDirection) {
+      case Direction.Left:
+        sourceRectRate = [0, 0.5];
+        break;
+      case Direction.Right:
+        sourceRectRate = [1, 0.5];
+        break;
+      case Direction.Up:
+        sourceRectRate = [0.5, 0];
+        break;
+      case Direction.Down:
+        sourceRectRate = [0.5, 1];
+        break;
+    }
+    // 计算出源头位置
+    let targetRectRate: [number, number] = [0.5, 0.5];
+    switch (targetDirection) {
+      case Direction.Left:
+        targetRectRate = [0, 0.5];
+        break;
+      case Direction.Right:
+        targetRectRate = [1, 0.5];
+        break;
+      case Direction.Up:
+        targetRectRate = [0.5, 0];
+        break;
+      case Direction.Down:
+        targetRectRate = [0.5, 1];
+        break;
+    }
     // 连线
-    StageManager.connectMultipleEntities(this.connectFromEntities, connectToEntity, isPressC);
+    StageManager.connectMultipleEntities(
+      this.connectFromEntities,
+      connectToEntity,
+      isPressC,
+      sourceRectRate,
+      targetRectRate,
+    );
 
     for (const entity of this.connectFromEntities) {
       this.addConnectEffect(entity, connectToEntity);
     }
-    // if (isHaveConnectResult) {
-    //   // 给连向的那个节点加特效
-    // }
   }
 
   private isConnecting() {
