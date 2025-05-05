@@ -294,8 +294,14 @@ jobs:
       - name: MacOS - Rename app.tar.gz
         if: matrix.platform == 'macos-latest'
         run: |
-          cd ${{ inputs.app_root }}/src-tauri/target/aarch64-apple-darwin/release/bundle/macos
+          cd ${{ inputs.app_root }}/src-tauri/target/*/release/bundle/macos
           mv *.app.tar.gz "Project Graph_${{ inputs.app_version }}_${{ startsWith(matrix.rust_targets, 'x86_64') && 'x64' || 'aarch64' }}.app.tar.gz"
+          mv *.app.tar.gz.sig "Project Graph_${{ inputs.app_version }}_${{ startsWith(matrix.rust_targets, 'x86_64') && 'x64' || 'aarch64' }}.app.tar.gz.sig"
+      - name: Linux - Rename rpm
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          cd ${{ inputs.app_root }}/src-tauri/target/release/bundle/rpm
+          mv *.rpm "Project Graph_${{ inputs.app_version }}_amd64.rpm"
       - name: Linux / MacOS - Upload
         if: matrix.platform != 'windows-latest'
         run: |
