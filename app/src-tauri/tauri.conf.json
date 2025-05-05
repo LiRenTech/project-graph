@@ -27,7 +27,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["nsis", "deb", "dmg", "appimage"],
+    "targets": ["nsis", "deb", "dmg", "appimage", "rpm", "app"],
     "createUpdaterArtifacts": true,
     "category": "Productivity",
     "longDescription": "A simple tool to create topology diagrams.",

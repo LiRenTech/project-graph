@@ -169,12 +169,12 @@ jobs:
           - platform: "macos-latest"
             args: "--target aarch64-apple-darwin"
             rust_targets: "aarch64-apple-darwin"
-            dist: "src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg"
+            dist: "src-tauri/target/aarch64-apple-darwin/release/bundle/**/*.{dmg,app,tar.gz,sig}"
 
           - platform: "macos-latest"
             args: "--target x86_64-apple-darwin"
             rust_targets: "x86_64-apple-darwin"
-            dist: "src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/*.dmg"
+            dist: "src-tauri/target/x86_64-apple-darwin/release/bundle/**/*.{dmg,app,tar.gz,sig}"
 
           # - platform: "ubuntu-22.04"
           #   rust_targets: "armv7-linux-androideabi,i686-linux-android,x86_64-linux-android,aarch64-linux-android"
