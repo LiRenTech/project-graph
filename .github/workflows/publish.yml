@@ -161,7 +161,7 @@ jobs:
       matrix:
         include:
           - platform: "ubuntu-22.04"
-            dist: "src-tauri/target/release/bundle/**/*.{deb,AppImage,sig}"
+            dist: "src-tauri/target/release/bundle/**/*.{deb,AppImage,rpm,sig}"
 
           - platform: "windows-latest"
             dist: "src-tauri/target/release/bundle/nsis"
@@ -169,12 +169,12 @@ jobs:
           - platform: "macos-latest"
             args: "--target aarch64-apple-darwin"
             rust_targets: "aarch64-apple-darwin"
-            dist: "src-tauri/target/aarch64-apple-darwin/release/bundle/**/*.{dmg,app,tar.gz,sig}"
+            dist: "src-tauri/target/aarch64-apple-darwin/release/bundle/**/*.{dmg,tar.gz,sig}"
 
           - platform: "macos-latest"
             args: "--target x86_64-apple-darwin"
             rust_targets: "x86_64-apple-darwin"
-            dist: "src-tauri/target/x86_64-apple-darwin/release/bundle/**/*.{dmg,app,tar.gz,sig}"
+            dist: "src-tauri/target/x86_64-apple-darwin/release/bundle/**/*.{dmg,tar.gz,sig}"
 
           # - platform: "ubuntu-22.04"
           #   rust_targets: "armv7-linux-androideabi,i686-linux-android,x86_64-linux-android,aarch64-linux-android"
