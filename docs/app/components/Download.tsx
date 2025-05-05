@@ -35,33 +35,33 @@ export default function Download() {
   );
 }
 
-function detectPlatformAndArch() {
-  // 检测操作系统
-  const platform = navigator.platform;
-  let os;
-  if (platform.includes("Win")) {
-    os = "windows";
-  } else if (platform.includes("Mac")) {
-    os = "darwin";
-  } else if (platform.includes("Linux")) {
-    os = "linux";
-  } else {
-    os = "unknown";
-  }
+// function detectPlatformAndArch() {
+//   // 检测操作系统
+//   const platform = navigator.platform;
+//   let os;
+//   if (platform.includes("Win")) {
+//     os = "windows";
+//   } else if (platform.includes("Mac")) {
+//     os = "darwin";
+//   } else if (platform.includes("Linux")) {
+//     os = "linux";
+//   } else {
+//     os = "unknown";
+//   }
 
-  // 检测CPU架构（间接推断）
-  const userAgent = navigator.userAgent;
-  let arch = "unknown";
-  if (/aarch64|arm64/i.test(userAgent)) {
-    arch = "aarch64";
-  } else if (/x86_64|x64|win64|wow64/i.test(userAgent)) {
-    arch = "x86_64";
-  } else if (/x86|i386|i686|win32/i.test(userAgent)) {
-    arch = "x86";
-  }
+//   // 检测CPU架构（间接推断）
+//   const userAgent = navigator.userAgent;
+//   let arch = "unknown";
+//   if (/aarch64|arm64/i.test(userAgent)) {
+//     arch = "aarch64";
+//   } else if (/x86_64|x64|win64|wow64/i.test(userAgent)) {
+//     arch = "x86_64";
+//   } else if (/x86|i386|i686|win32/i.test(userAgent)) {
+//     arch = "x86";
+//   }
 
-  return `${os}-${arch}`;
-}
+//   return `${os}-${arch}`;
+// }
 
 const platformMap = {
   "windows-x86_64": "Windows",
@@ -76,7 +76,7 @@ const formatMap = {
 function Downloads({ data }: { data: Record<string, Record<string, string>> }) {
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap gap-3">
+      {/* <div className="flex flex-wrap gap-3">
         {Object.entries(data[detectPlatformAndArch()]).map(([format, url]) => (
           <a
             key={format}
@@ -90,10 +90,10 @@ function Downloads({ data }: { data: Record<string, Record<string, string>> }) {
             </div>
           </a>
         ))}
-      </div>
+      </div> */}
       <div className="flex flex-wrap gap-3">
         {Object.entries(data)
-          .filter(([key]) => key !== detectPlatformAndArch())
+          // .filter(([key]) => key !== detectPlatformAndArch())
           .map(([platform, formats]) =>
             Object.entries(formats).map(([format, url]) => (
               <a
