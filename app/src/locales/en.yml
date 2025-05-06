@@ -19,6 +19,13 @@ about:
     video: Video Tutorials
     qq: QQ Group
     forum: Forum
+    website: Official Website
+    community:
+      title: Community
+      description: Join the community, including the QQ Group, forum, Discord, Telegram,
+        and share your ideas, experiences, tutorials, resources, problems, suggestions,
+        etc.
+    importantAnnouncement: Important Announcement
   intro:
   - Software Introduction
   - This is a tool based on the Tauri framework for quickly drawing node diagrams,
@@ -228,11 +235,11 @@ settings:
       Rendering will stop after a certain number of seconds without stage manipulation to save CPU/GPU resources.
       This will only take effect if the "Pause Rendering When Idle" option is enabled.
   ignoreTextNodeTextRenderLessThanCameraScale:
-    title: Ignore Text And Its Detailed Information Rendering Within Text Node When
-      Camera Scale is Less Than a Certain Value
+    title: Hide Text and Details of Text Nodes When Camera Zoom Is Less Than a Certain
+      Value
     description: |
-      When enabled, text within text nodes will not be rendered when the camera scale is less than a certain value (i.e., when observing the macro view).
-      This can improve rendering performance but will make the text content of text nodes invisible.
+      When enabled, text and details of text nodes will not be rendered when the camera zooming is less than a certain value (i.e., when observing the macro view).
+      This can improve rendering performance, but will make the text content of text nodes invisible.
   isEnableEntityCollision:
     title: Enable Entity Collision Detection
     description: |
@@ -555,6 +562,17 @@ settings:
       logic based on the actual situation. To differentiate, click the software logo
       in the "About" interface seven times to enter the "Test Interface", then scroll
       the wheel and trackpad to view the data feedback
+  compressPastedImages:
+    title: Compress Pasted Images
+    description: "When enabled, images pasted on the stage are compressed to save
+      memory and disk space when loading files.\n"
+  maxPastedImageSize:
+    description: "For images whose width or height exceeds this size, their maximum
+      width or height is limited to this size.\nMeanwhile, it keeps the aspect ratio,
+      but only takes effect when “Compress Pasted Images” is enabled.\n"
+    title: Max Pasted Image Size (In Pixels)
+  autoBackupLimitCount:
+    title: Max Auto Backup Count
 plugins:
   welcome:
     title: Welcome to the Plugin System
