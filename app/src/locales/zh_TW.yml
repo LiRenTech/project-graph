@@ -517,6 +517,12 @@ settings:
   autoBackupLimitCount:
     title: 自動備份最大數量
     description: "自動備份的最大數量，超過此數量將會刪除舊的備份文件\n"
+  compressPastedImages:
+    title: 是否壓縮要貼到舞台的圖片
+    description: "開啟後，要貼到舞台的圖片會被壓縮，以解省加載文件時的記憶體壓力和硬碟壓力\n"
+  maxPastedImageSize:
+    title: 要貼到舞台的圖片的尺寸限制（像素）
+    description: "長或寬超過此尺寸的圖片，其長或寬的最大值將會被限制為此大小\n同時保持長寬比不變．僅在開啟“壓縮要貼到舞台的圖片”時生效\n"
 app:
   unsaved: "(未保存)"
   comingSoon: 即將到來……
