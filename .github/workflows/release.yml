@@ -16,7 +16,6 @@ jobs:
     with:
       android_key_alias: "upload"
       android_key_path: "upload.jks"
-      app_root: "app"
       app_version: ${{ inputs.version }}
       app_version_android: ${{ inputs.version }}
       aur_version: ${{ inputs.version }}
