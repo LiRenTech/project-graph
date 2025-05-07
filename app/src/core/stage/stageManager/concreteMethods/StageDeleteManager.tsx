@@ -17,6 +17,7 @@ import { UrlNode } from "../../stageObject/entity/UrlNode";
 import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageManager } from "../StageManager";
 import { StageSectionInOutManager } from "./StageSectionInOutManager";
+import { NodeLogic } from "../../../service/dataGenerateService/autoComputeEngine/functions/nodeLogic";
 
 /**
  * 包含一切删除舞台上的元素的方法
@@ -122,6 +123,8 @@ export namespace StageDeleteManager {
   function deleteTextNode(entity: TextNode) {
     // 先判断这个node是否在nodes里
     if (StageManager.getTextNodes().includes(entity)) {
+      // 删除逻辑节点存储的状态
+      if (NodeLogic.delayStates.has(entity.uuid)) NodeLogic.delayStates.delete(entity.uuid);
       // 从数组中去除
       StageManager.deleteOneTextNode(entity);
       // 增加特效

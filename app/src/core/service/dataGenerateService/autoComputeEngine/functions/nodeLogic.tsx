@@ -24,6 +24,11 @@ import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint"
  * 返回值：额外生成的节点数组，如果当前子节点数量不够则自主创建
  */
 export namespace NodeLogic {
+  export const delayStates: Map<string, Record<number, string>> = new Map();
+  let step: number = 0;
+  // step 是一个计数器，每当逻辑引擎实际执行一次时，step 就会加一
+  // TODO: 可以考虑把 step 放到逻辑引擎层面，甚至可以出一个节点获取当前步数，可以加一个每次只运行一步的快捷键
+  // 现在的好处是只有在用延迟复制时才会有这个计数器，其他时候step不存在
   /**
    * 输入三个数字节点，并将所有的孩子节点更改为相应的颜色
    * @param fatherNodes
@@ -641,7 +646,7 @@ export namespace NodeLogic {
     _childNodes: ConnectableEntity[],
   ): string[] {
     if (fatherNodes.length < 4) {
-      return ["Error: input node contains less than 3 nodes"];
+      return ["Error: input node contains less than 4 nodes"];
     }
     if (
       fatherNodes[0] instanceof TextNode &&
@@ -665,5 +670,63 @@ export namespace NodeLogic {
       }
     }
     return [];
+  }
+  /**
+   * 延迟复制函数，用于在指定的延迟时间后输出指定的字符串。
+   *
+   * @param fatherNodes - 父节点数组，包含至少4个节点，最后一个节点是当前逻辑节点本身。
+   * @param _childNodes - 子节点数组（当前未使用）。
+   * @returns - 返回一个字符串数组，包含以下可能的结果：
+   *   - 如果延迟时间为0，立即返回输入字符串。
+   *   - 如果当前步数有对应的输出，返回该输出字符串。
+   *   - 如果当前步数没有输出，返回默认字符串。
+   */
+  export function delayCopy(
+    fatherNodes: ConnectableEntity[],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _childNodes: ConnectableEntity[],
+  ): string[] {
+    step++;
+    if (fatherNodes.length < 4) {
+      // 多了一个逻辑节点本身，所以实际进来的节点比延迟复制需要的节点节点多一个
+      return ["Error: input node contains less than 3 nodes"];
+    }
+    console.log("delayCopy", fatherNodes);
+    console.log(delayStates);
+    if (
+      fatherNodes[0] instanceof TextNode &&
+      fatherNodes[1] instanceof TextNode &&
+      fatherNodes[2] instanceof TextNode &&
+      fatherNodes[3] instanceof TextNode
+    ) {
+      const str = fatherNodes[0].text;
+      const defaultStr = fatherNodes[1].text;
+      const delayTime = parseInt(fatherNodes[2].text);
+      const selfUUID = fatherNodes[3].uuid;
+      if (delayTime < 0) {
+        return ["延迟时间不能为负数"];
+      }
+      if (delayTime > 256) {
+        return ["延迟时间不能超过256刻"];
+      }
+      if (delayTime === 0) {
+        return [str];
+      }
+      // state 是当前逻辑节点本身存储的状态
+      let state = delayStates.get(selfUUID);
+      if (state === undefined) {
+        delayStates.set(selfUUID, []);
+        state = [];
+      }
+      // 在未来的(step + delayTime)刻时把str输出
+      state[step + delayTime] = str;
+      if (state[step] !== undefined) {
+        const result = state[step];
+        delete state[step];
+        return [result];
+      }
+      return [defaultStr];
+    }
+    return ["输入的节点格式必须都是TextNode"];
   }
 }
