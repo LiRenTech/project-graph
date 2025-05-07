@@ -311,6 +311,7 @@ export namespace StageManager {
     export function getTagUUIDs(): string[] {
       return stageContent.tags;
     }
+
     /**
      * 清理未引用的标签
      */
@@ -747,6 +748,8 @@ export namespace StageManager {
     fromNodes: ConnectableEntity[],
     toNode: ConnectableEntity,
     isCrEdge: boolean = false,
+    sourceRectRate?: [number, number],
+    targetRectRate?: [number, number],
   ) {
     if (fromNodes.length === 0) {
       return false;
@@ -758,7 +761,7 @@ export namespace StageManager {
       if (isCrEdge) {
         StageNodeConnector.addCrEdge(fromNode, toNode);
       } else {
-        StageNodeConnector.connectConnectableEntity(fromNode, toNode);
+        StageNodeConnector.connectConnectableEntity(fromNode, toNode, "", targetRectRate, sourceRectRate);
       }
     }
     StageHistoryManager.recordStep();

@@ -27,7 +27,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["nsis", "deb", "dmg", "appimage"],
+    "targets": ["nsis", "deb", "dmg", "appimage", "rpm", "app"],
     "createUpdaterArtifacts": true,
     "category": "Productivity",
     "longDescription": "A simple tool to create topology diagrams.",
@@ -46,6 +46,9 @@
         "sidebarImage": "nsis/left.bmp",
         "headerImage": "nsis/project-graph-install.bmp",
         "installerHooks": "nsis/installer.nsh"
+      },
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
       }
     },
     "linux": {

@@ -63,6 +63,11 @@ about:
     forum: 論壇
     documentation: 文檔
     github: GitHub
+    website: 官方網站
+    community:
+      title: 社群
+      description: 加入社群，包含QQ群、論壇、Discord、Telegram等，分享您的想法、經驗、教學、資源、問題、建議等。
+    importantAnnouncement: 重要公告
   updater:
     available: 新版本
     downloading: 下載中
@@ -512,6 +517,12 @@ settings:
   autoBackupLimitCount:
     title: 自動備份最大數量
     description: "自動備份的最大數量，超過此數量將會刪除舊的備份文件\n"
+  compressPastedImages:
+    title: 是否壓縮要貼到舞台的圖片
+    description: "開啟後，要貼到舞台的圖片會被壓縮，以解省加載文件時的記憶體壓力和硬碟壓力\n"
+  maxPastedImageSize:
+    title: 要貼到舞台的圖片的尺寸限制（像素）
+    description: "長或寬超過此尺寸的圖片，其長或寬的最大值將會被限制為此大小\n同時保持長寬比不變．僅在開啟“壓縮要貼到舞台的圖片”時生效\n"
 app:
   unsaved: "(未保存)"
   comingSoon: 即將到來……
@@ -531,11 +542,14 @@ appMenu:
     title: 位置
     items:
       openDataFolder:
-        description: 打開軟體資訊文件夾，內部存放用戶自定義等資料
+        description: 打開軟體用戶配置資訊文件夾，內部存放用戶自定義設置等資料
         title: 配置資訊
       openProjectFolder:
         title: 當前位置
         description: 打開當前編輯的 工程文件 所在的資料夾
+      openCacheFolder:
+        title: 緩存資料夾
+        description: 打開軟體緩存資料夾，內部存放軟體運行時產生的緩存資料，以及默認的草稿備份文件
   export:
     title: 匯出
     items:

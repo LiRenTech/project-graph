@@ -3,11 +3,6 @@ name: Publish
 on:
   workflow_call:
     inputs:
-      app_root:
-        type: string
-        description: The root directory of the app.
-        required: false
-        default: .
       app_version:
         type: string
         description: The version of the app.
@@ -161,21 +156,20 @@ jobs:
       matrix:
         include:
           - platform: "ubuntu-22.04"
-            dist: "src-tauri/target/release/bundle/**/*.{deb,AppImage,sig}"
-
+            dist: "src-tauri/target/release/bundle/**/*.{deb,AppImage,rpm,sig}"
           - platform: "windows-latest"
             dist: "src-tauri/target/release/bundle/nsis"
-
+          - platform: "windows-latest"
+            dist: "src-tauri/target/release/bundle/nsis"
+            tag: "win7"
           - platform: "macos-latest"
             args: "--target aarch64-apple-darwin"
             rust_targets: "aarch64-apple-darwin"
-            dist: "src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg"
-
+            dist: "src-tauri/target/aarch64-apple-darwin/release/bundle/**/*.{dmg,tar.gz,sig}"
           - platform: "macos-latest"
             args: "--target x86_64-apple-darwin"
             rust_targets: "x86_64-apple-darwin"
-            dist: "src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/*.dmg"
-
+            dist: "src-tauri/target/x86_64-apple-darwin/release/bundle/**/*.{dmg,tar.gz,sig}"
           # - platform: "ubuntu-22.04"
           #   rust_targets: "armv7-linux-androideabi,i686-linux-android,x86_64-linux-android,aarch64-linux-android"
           #   android: true
@@ -210,7 +204,7 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: "${{ inputs.app_root }}/src-tauri -> target"
+          workspaces: "app/src-tauri -> target"
       #endregion
 
       #region Android - Prepare environment
@@ -229,31 +223,32 @@ jobs:
       - name: Android - Setup Android APK Signing
         if: matrix.android
         run: |
-          cd ${{ inputs.app_root }}/src-tauri/gen/android
+          cd app/src-tauri/gen/android
           cat > keystore.properties <<EOF
           password=${{ secrets.ANDROID_RELEASE_PASSWORD }}
           keyAlias=${{ inputs.android_key_alias }}
           storeFile=${{ inputs.android_key_path }}
           EOF
-          echo "${{ secrets.ANDROID_RELEASE_KEYSTORE }}" | base64 --decode > ${{ inputs.app_root }}/${{ inputs.android_key_path }}
+          echo "${{ secrets.ANDROID_RELEASE_KEYSTORE }}" | base64 --decode > app/${{ inputs.android_key_path }}
       #endregion
       #region Edit version
-      - name: Linux - Edit version
-        if: matrix.platform == 'ubuntu-22.04' && !matrix.android
+      - name: Set app version
+        if: ${{ !matrix.android && !matrix.tag }}
         run: |
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"${{ inputs.app_version }}\"/" ${{ inputs.app_root }}/src-tauri/tauri.conf.json
-      - name: MacOS - Edit version
-        if: matrix.platform == 'macos-latest'
+          node ./.github/scripts/set-version.mjs ${{ inputs.app_version }}
+      - name: Set app version when tag exists
+        if: ${{ !matrix.android && matrix.tag }}
         run: |
-          sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"${{ inputs.app_version }}\"/" ${{ inputs.app_root }}/src-tauri/tauri.conf.json
-      - name: Windows - Edit version
-        if: matrix.platform == 'windows-latest'
+          node ./.github/scripts/set-version.mjs ${{ inputs.app_version }}-${{ matrix.tag }}
+      - name: Android - Set app version
+        if: matrix.android
         run: |
-          (Get-Content -Path "${{ inputs.app_root }}/src-tauri/tauri.conf.json" -Raw) -replace '"version": "[^"]*"', '"version": "${{ inputs.app_version }}"' | Set-Content -Path "${{ inputs.app_root }}/src-tauri/tauri.conf.json"
-      - name: Android - Edit version
-        if: matrix.platform == 'ubuntu-22.04' && matrix.android
+          node ./.github/scripts/set-version.mjs ${{ inputs.app_version_android }}
+      - name: Tag - win7
+        if: matrix.tag == 'win7'
         run: |
-          sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"${{ inputs.app_version_android }}\"/" ${{ inputs.app_root }}/src-tauri/tauri.conf.json
+          (Get-Content ./app/src-tauri/tauri.conf.json).Replace('downloadBootstrapper', 'embedBootstrapper') | Set-Content ./app/src-tauri/tauri.conf.json
+          cat ./app/src-tauri/tauri.conf.json
       #endregion
       #region Build
       - name: Linux Macos - Build
@@ -291,21 +286,28 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
 
-      # - name: MacOS - Remove unnessary files
-      #   if: matrix.platform == 'macos-latest'
-      #   run: |
-      #     rm -rf ${{ inputs.app_root }}/${{ matrix.dist_dir }}/*.{sh,icns} || true
+      - name: MacOS - Rename app.tar.gz
+        if: matrix.platform == 'macos-latest'
+        run: |
+          cd app/src-tauri/target/*/release/bundle/macos
+          mv *.app.tar.gz "Project Graph_${{ inputs.app_version }}_${{ startsWith(matrix.rust_targets, 'x86_64') && 'x64' || 'aarch64' }}.app.tar.gz"
+          mv *.app.tar.gz.sig "Project Graph_${{ inputs.app_version }}_${{ startsWith(matrix.rust_targets, 'x86_64') && 'x64' || 'aarch64' }}.app.tar.gz.sig"
+      - name: Linux - Rename rpm
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          cd app/src-tauri/target/release/bundle/rpm
+          mv *.rpm "Project Graph_${{ inputs.app_version }}_amd64.rpm"
       - name: Linux / MacOS - Upload
         if: matrix.platform != 'windows-latest'
         run: |
-          gh release upload ${{ inputs.release_tag }} ${{ inputs.app_root }}/${{ matrix.dist }} --clobber
+          gh release upload ${{ inputs.release_tag }} app/${{ matrix.dist }} --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Windows - Upload
         if: matrix.platform == 'windows-latest'
         run: |
-          gh release upload ${{ inputs.release_tag }} (Get-Item .\${{ inputs.app_root }}\${{ matrix.dist }}\*.exe).FullName --clobber
-          gh release upload ${{ inputs.release_tag }} (Get-Item .\${{ inputs.app_root }}\${{ matrix.dist }}\*.sig).FullName --clobber
+          gh release upload ${{ inputs.release_tag }} (Get-Item .\app\${{ matrix.dist }}\*.exe).FullName --clobber
+          gh release upload ${{ inputs.release_tag }} (Get-Item .\app\${{ matrix.dist }}\*.sig).FullName --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -313,7 +315,7 @@ jobs:
         name: Linux - Calculate SHA256 hash for AUR package
         if: matrix.platform == 'ubuntu-22.04'
         run: |
-          cd ${{ inputs.app_root }}/src-tauri/target/release/bundle/deb
+          cd app/src-tauri/target/release/bundle/deb
           sha256sum ./*.deb | awk '{print $1}' > sha256sum.txt
           echo "hash=$(cat sha256sum.txt)" >> "$GITHUB_OUTPUT"
       #endregion

@@ -416,6 +416,17 @@ export namespace Renderer {
           EdgeRenderer.renderVirtualConfirmedEdge(node, connectTargetNode);
         }
       }
+      if (isShowDebug) {
+        // 调试模式下显示右键连线轨迹
+        const points = Stage.connectMachine.getMouseLocationsPoints().map((point) => transformWorld2View(point));
+        if (points.length > 1) {
+          CurveRenderer.renderSolidLineMultiple(
+            Stage.connectMachine.getMouseLocationsPoints().map((point) => transformWorld2View(point)),
+            StageStyleManager.currentStyle.effects.warningShadow,
+            1,
+          );
+        }
+      }
     }
   }
 

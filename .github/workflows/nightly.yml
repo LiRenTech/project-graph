@@ -14,7 +14,6 @@ jobs:
     with:
       android_key_alias: "upload"
       android_key_path: "upload.jks"
-      app_root: "app"
       app_version: "0.0.0-nightly.r${{ github.run_number }}"
       app_version_android: "0.0.${{ github.run_number }}"
       aur_version: "r${{ github.run_number }}"

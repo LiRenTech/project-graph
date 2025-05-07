@@ -3,46 +3,29 @@ title: 快速开始
 icon: Album
 ---
 
-import GithubRelease from "@/app/components/GithubRelease"
-import { AppWindowMac, Brush } from "lucide-react"
+import Download from "@/app/components/Download"
 
 ## 介绍
 
 Project Graph 是一款专注于快速绘制节点图的桌面工具，旨在帮助用户高效地创建项目拓扑图和进行头脑风暴。用户可以通过简单的拖拽操作来创建和连接节点，从而轻松构建复杂的图结构。该工具还具备层级清晰的结构，能够直观地呈现项目关系或数据关系。
 
-Project Graph 项目分为多个模块：
-
-<Cards>
-  <Card
-    title="Project Graph"
-    icon={<AppWindowMac />}
-  >
-    开箱即用的节点图绘制工具
-  </Card>
-  <Card
-    title="UI"
-    icon={<Brush />}
-  >
-    应用中使用到的所有 UI 组件（开发中）
-  </Card>
-  <Card
-    title="..."
-  >
-    我们正在将应用拆分为更多的模块，敬请期待！
-  </Card>
-</Cards>
-
 ## 安装
 
 ### 下载安装包
 
-<Callout>
-如果你初次使用本应用，建议点击 `Release` 版本。
+<Download />
 
-`Nightly` 版本是开发版本，带有最新的功能，但可能存在一些未知的 bug。
+<Callout type="warn">
+Mac用户注意
+
+在Mac系统上首次下载运行时可能会提示"Project Graph 已损坏，无法打开"。
+
+解决方法：
+1. 右键点击应用选择"打开"
+2. 或运行终端命令：`xattr -r -d com.apple.quarantine /Applications/Project\ Graph.app`
+
+[详细解决方案请查看Mac常见问题](/docs/app/faq/mac)
 </Callout>
-
-<GithubRelease />
 
 ### 从网盘下载
 

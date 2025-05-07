@@ -76,6 +76,9 @@ export namespace Settings {
     autoBackupDraftPath: string;
     autoBackupLimitCount: number;
     generateTextNodeByStringTabCount: number; // 仅在生成节点面板中使用
+    compressPastedImages: boolean;
+    maxPastedImageSize: number;
+    autoLayoutWhenTreeGenerate: boolean;
     // 控制相关
     enableCollision: boolean; // 暂无
     enableDragAutoAlign: boolean;
@@ -174,6 +177,8 @@ export namespace Settings {
     renderOverTimeWhenNoManipulateTime: 5,
     ignoreTextNodeTextRenderLessThanCameraScale: 0.065,
     autoRefreshStageByMouseAction: true,
+    compressPastedImages: true,
+    maxPastedImageSize: 1920,
     // 自动相关
     autoNamerTemplate: "...",
     autoNamerSectionTemplate: "Section_{{i}}",
@@ -191,6 +196,7 @@ export namespace Settings {
     autoBackupDraftPath: "",
     autoBackupLimitCount: 10,
     generateTextNodeByStringTabCount: 4,
+    autoLayoutWhenTreeGenerate: true,
     // 控制相关
     enableCollision: true,
     enableDragAutoAlign: true,

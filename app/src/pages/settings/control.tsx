@@ -10,9 +10,11 @@ import {
   ListCheck,
   ListEnd,
   ListRestart,
+  ListTree,
   Mouse,
   MousePointerClick,
   Move,
+  Network,
   RotateCw,
   ScanEye,
   Skull,
@@ -73,6 +75,9 @@ export default function Control() {
 
       <FieldGroup title="Edge 连线" icon={<GitCompareArrows />}>
         <SettingField icon={<RotateCw />} settingKey="allowAddCycleEdge" type="switch" />
+      </FieldGroup>
+      <FieldGroup title="GenerateNode 通过键盘生长节点" icon={<Network className="-rotate-90" />}>
+        <SettingField icon={<ListTree />} settingKey="autoLayoutWhenTreeGenerate" type="switch" />
       </FieldGroup>
 
       <FieldGroup title="Camera 摄像机/视野/相关" icon={<Fullscreen />}>

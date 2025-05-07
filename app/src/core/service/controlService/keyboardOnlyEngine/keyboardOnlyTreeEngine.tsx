@@ -75,15 +75,16 @@ export namespace KeyboardOnlyTreeEngine {
     if (rootNodeParents.length === 1) {
       const rootNodeParent = rootNodeParents[0];
       if (GraphMethods.isTree(rootNodeParent)) {
-        StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
+        if (KeyboardOnlyEngine.autoLayoutWhenTreeGenerate) {
+          StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
+        }
         // 更新选择状态
         rootNodeParent.isSelected = false;
         newNode.isSelected = true;
-        // if (Camera.cameraFollowsSelectedNodeOnArrowKeys) {
-        //   Camera.bombMove(newNode.collisionBox.getRectangle().center);
-        // }
+        rootNode.isSelected = false;
       }
     }
+
     // 特效
     Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(rootNode, newNode));
     setTimeout(
@@ -148,13 +149,13 @@ export namespace KeyboardOnlyTreeEngine {
     if (rootNodeParents.length === 1) {
       const rootNodeParent = rootNodeParents[0];
       if (GraphMethods.isTree(rootNodeParent)) {
-        StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
+        if (KeyboardOnlyEngine.autoLayoutWhenTreeGenerate) {
+          StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
+        }
         // 更新选择状态
         rootNodeParent.isSelected = false;
         newNode.isSelected = true;
-        // if (Camera.cameraFollowsSelectedNodeOnArrowKeys) {
-        //   Camera.bombMove(newNode.collisionBox.getRectangle().center);
-        // }
+        currentSelectNode.isSelected = false;
       }
     }
     Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(parent, newNode));
