@@ -1,16 +1,21 @@
 import { v4 } from "uuid";
 import { CursorNameEnum } from "../../../../../types/cursors";
-import { Color } from "../../../../dataStruct/Color";
+import { Color, mixColors } from "../../../../dataStruct/Color";
+import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
+import { DrawingControllerRenderer } from "../../../../render/canvas2d/controllerRenderer/drawingRenderer";
 import { Renderer } from "../../../../render/canvas2d/renderer";
+import { Camera } from "../../../../stage/Camera";
+import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { PenStroke, PenStrokeSegment } from "../../../../stage/stageObject/entity/PenStroke";
+import { CircleChangeRadiusEffect } from "../../../feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
+import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { Settings } from "../../../Settings";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
-import { Camera } from "../../../../stage/Camera";
-import { DrawingControllerRenderer } from "../../../../render/canvas2d/controllerRenderer/drawingRenderer";
+import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
+import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 /**
  * 涂鸦功能
  */
@@ -100,65 +105,103 @@ class ControllerDrawingClass extends ControllerClass {
       return;
     }
     const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+
     this.recordLocation.push(releaseWorldLocation.clone());
-
-    // 生成笔触
-    if (Controller.pressingKeySet.has("shift")) {
-      // 直线
-      const startLocation = this.pressStartWordLocation;
-      const endLocation = releaseWorldLocation.clone();
-
-      if (Controller.pressingKeySet.has("control")) {
-        // 垂直于坐标轴的直线
-        const dy = Math.abs(endLocation.y - startLocation.y);
-        const dx = Math.abs(endLocation.x - startLocation.x);
-        if (dy > dx) {
-          // 垂直
-          endLocation.x = startLocation.x;
-        } else {
-          // 水平
-          endLocation.y = startLocation.y;
+    if (releaseWorldLocation.subtract(this.pressStartWordLocation).magnitude() < 2) {
+      // 判断当前位置是否有舞台对象，如果有则更改颜色。
+      const entity = StageManager.findEntityByLocation(releaseWorldLocation);
+      if (entity) {
+        if (entity instanceof TextNode) {
+          const currentPenColor = this.getCurrentStrokeColor().clone();
+          if (Controller.pressingKeySet.has("shift")) {
+            // 颜色叠加
+            entity.color = mixColors(entity.color, currentPenColor, 0.1);
+          } else {
+            entity.color = currentPenColor.clone();
+          }
+          Stage.effectMachine.addEffect(EntityCreateFlashEffect.fromCreateEntity(entity));
         }
       }
-      const startX = startLocation.x.toFixed(1);
-      const startY = startLocation.y.toFixed(1);
-      const endX = endLocation.x.toFixed(1);
-      const endY = endLocation.y.toFixed(1);
-
-      const strokeStringList: string[] = [
-        `${startX},${startY},${this.currentStrokeWidth}`,
-        `${endX},${endY},${this.currentStrokeWidth}`,
-        `${endX},${endY},${this.currentStrokeWidth}`,
-      ];
-      const contentString = strokeStringList.join("~");
-      const stroke = new PenStroke({
-        type: "core:pen_stroke",
-        content: contentString,
-        color: this.getCurrentStrokeColor().toArray(),
-        uuid: v4(),
-        location: [0, 0],
-        details: "",
-      });
-      stroke.setColor(this.getCurrentStrokeColor());
-      StageManager.addPenStroke(stroke);
+      // 如果没有，则画一个圈。
+      // 增加特效
+      // 只是点了一下，应该有特殊效果
+      Stage.effectMachine.addEffect(
+        new CircleFlameEffect(
+          new ProgressNumber(0, 20),
+          releaseWorldLocation.clone(),
+          50,
+          this.getCurrentStrokeColor().clone(),
+        ),
+      );
+      Stage.effectMachine.addEffect(
+        new CircleChangeRadiusEffect(
+          new ProgressNumber(0, 20),
+          releaseWorldLocation.clone(),
+          1,
+          50,
+          this.getCurrentStrokeColor().clone(),
+        ),
+      );
     } else {
-      // 普通笔迹
-      const strokeStringList: string[] = [];
-      for (const location of this.recordLocation) {
-        strokeStringList.push(`${location.x.toFixed(2)},${location.y.toFixed(2)},${this.currentStrokeWidth}`);
-      }
-      const contentString = strokeStringList.join("~");
+      // 正常的划过一段距离
+      // 生成笔触
+      if (Controller.pressingKeySet.has("shift")) {
+        // 直线
+        const startLocation = this.pressStartWordLocation;
+        const endLocation = releaseWorldLocation.clone();
 
-      const stroke = new PenStroke({
-        type: "core:pen_stroke",
-        content: contentString,
-        color: this.getCurrentStrokeColor().toArray(),
-        uuid: v4(),
-        location: [0, 0],
-        details: "",
-      });
-      stroke.setColor(this.getCurrentStrokeColor());
-      StageManager.addPenStroke(stroke);
+        if (Controller.pressingKeySet.has("control")) {
+          // 垂直于坐标轴的直线
+          const dy = Math.abs(endLocation.y - startLocation.y);
+          const dx = Math.abs(endLocation.x - startLocation.x);
+          if (dy > dx) {
+            // 垂直
+            endLocation.x = startLocation.x;
+          } else {
+            // 水平
+            endLocation.y = startLocation.y;
+          }
+        }
+        const startX = startLocation.x.toFixed(1);
+        const startY = startLocation.y.toFixed(1);
+        const endX = endLocation.x.toFixed(1);
+        const endY = endLocation.y.toFixed(1);
+
+        const strokeStringList: string[] = [
+          `${startX},${startY},${this.currentStrokeWidth}`,
+          `${endX},${endY},${this.currentStrokeWidth}`,
+          `${endX},${endY},${this.currentStrokeWidth}`,
+        ];
+        const contentString = strokeStringList.join("~");
+        const stroke = new PenStroke({
+          type: "core:pen_stroke",
+          content: contentString,
+          color: this.getCurrentStrokeColor().toArray(),
+          uuid: v4(),
+          location: [0, 0],
+          details: "",
+        });
+        stroke.setColor(this.getCurrentStrokeColor());
+        StageManager.addPenStroke(stroke);
+      } else {
+        // 普通笔迹
+        const strokeStringList: string[] = [];
+        for (const location of this.recordLocation) {
+          strokeStringList.push(`${location.x.toFixed(2)},${location.y.toFixed(2)},${this.currentStrokeWidth}`);
+        }
+        const contentString = strokeStringList.join("~");
+
+        const stroke = new PenStroke({
+          type: "core:pen_stroke",
+          content: contentString,
+          color: this.getCurrentStrokeColor().toArray(),
+          uuid: v4(),
+          location: [0, 0],
+          details: "",
+        });
+        stroke.setColor(this.getCurrentStrokeColor());
+        StageManager.addPenStroke(stroke);
+      }
     }
 
     // 清理
