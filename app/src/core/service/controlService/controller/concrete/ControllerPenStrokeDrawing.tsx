@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 import { CursorNameEnum } from "../../../../../types/cursors";
-import { Color } from "../../../../dataStruct/Color";
+import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { DrawingControllerRenderer } from "../../../../render/canvas2d/controllerRenderer/drawingRenderer";
@@ -112,7 +112,13 @@ class ControllerDrawingClass extends ControllerClass {
       const entity = StageManager.findEntityByLocation(releaseWorldLocation);
       if (entity) {
         if (entity instanceof TextNode) {
-          entity.color = this.getCurrentStrokeColor().clone();
+          const currentPenColor = this.getCurrentStrokeColor().clone();
+          if (Controller.pressingKeySet.has("shift")) {
+            // 颜色叠加
+            entity.color = mixColors(entity.color, currentPenColor, 0.1);
+          } else {
+            entity.color = currentPenColor.clone();
+          }
           Stage.effectMachine.addEffect(EntityCreateFlashEffect.fromCreateEntity(entity));
         }
       }
