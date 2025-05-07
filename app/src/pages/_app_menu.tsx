@@ -21,6 +21,7 @@ import {
   Group,
   Image as ImageIcon,
   Info,
+  Keyboard,
   Locate,
   Monitor,
   MonitorX,
@@ -80,6 +81,7 @@ import ComplexityResultPanel from "./_fixed_panel/_complexity_result_panel";
 import ExportSvgPanel from "./_popup_panel/_export_svg_panel";
 import { FileLoader } from "../core/service/dataFileService/fileLoader";
 import { Vector } from "../core/dataStruct/Vector";
+import { Controller } from "../core/service/controlService/controller/Controller";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -577,6 +579,15 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           details="反撤销：用于撤销撤过头了，恢复一次撤销"
         >
           重做
+        </Col>
+        <Col
+          icon={<Keyboard />}
+          onClick={() => {
+            Controller.pressingKeySet.clear();
+          }}
+          details="松开全部按键，仅用于观察到左下角有异常按键时使用"
+        >
+          松开按键
         </Col>
         {/* <Col
           icon={<Search />}
