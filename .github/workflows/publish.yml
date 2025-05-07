@@ -247,8 +247,8 @@ jobs:
       - name: Tag - win7
         if: matrix.tag == 'win7'
         run: |
-          node ./.github/scripts/set-tauri-features.mjs windows7-compat
           (Get-Content ./app/src-tauri/tauri.conf.json).Replace('downloadBootstrapper', 'embedBootstrapper') | Set-Content ./app/src-tauri/tauri.conf.json
+          cat ./app/src-tauri/tauri.conf.json
       #endregion
       #region Build
       - name: Linux Macos - Build
