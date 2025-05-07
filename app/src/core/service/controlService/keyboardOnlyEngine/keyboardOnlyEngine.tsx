@@ -15,6 +15,7 @@ import { KeyboardOnlyGraphEngine } from "./keyboardOnlyGraphEngine";
 export namespace KeyboardOnlyEngine {
   let textNodeStartEditMode: Settings.Settings["textNodeStartEditMode"] = "enter";
   let textNodeSelectAllWhenStartEditByKeyboard: boolean = true;
+  export let autoLayoutWhenTreeGenerate: Settings.Settings["autoLayoutWhenTreeGenerate"] = true;
 
   /**
    * 只有在某些面板打开的时候，这个引擎才会禁用，防止误触
@@ -35,6 +36,9 @@ export namespace KeyboardOnlyEngine {
     });
     Settings.watch("textNodeSelectAllWhenStartEditByKeyboard", (value) => {
       textNodeSelectAllWhenStartEditByKeyboard = value;
+    });
+    Settings.watch("autoLayoutWhenTreeGenerate", (value) => {
+      autoLayoutWhenTreeGenerate = value;
     });
   }
 

@@ -311,6 +311,7 @@ export namespace StageManager {
     export function getTagUUIDs(): string[] {
       return stageContent.tags;
     }
+
     /**
      * 清理未引用的标签
      */

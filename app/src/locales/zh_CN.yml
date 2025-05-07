@@ -359,6 +359,11 @@ settings:
     description: |
       开启后，节点之间可以添加自环，即节点与自身相连，用于状态机绘制
       默认关闭，因为不常用，容易误触发
+  autoLayoutWhenTreeGenerate:
+    title: 生长节点时自动更新布局
+    description: |
+      开启后，生长节点时自动更新布局
+      此处的生长节点指tab和\键生长节点
   moveAmplitude:
     title: 视角移动加速度
     description: |

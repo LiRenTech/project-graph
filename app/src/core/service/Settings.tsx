@@ -78,6 +78,7 @@ export namespace Settings {
     generateTextNodeByStringTabCount: number; // 仅在生成节点面板中使用
     compressPastedImages: boolean;
     maxPastedImageSize: number;
+    autoLayoutWhenTreeGenerate: boolean;
     // 控制相关
     enableCollision: boolean; // 暂无
     enableDragAutoAlign: boolean;
@@ -195,7 +196,7 @@ export namespace Settings {
     autoBackupDraftPath: "",
     autoBackupLimitCount: 10,
     generateTextNodeByStringTabCount: 4,
-
+    autoLayoutWhenTreeGenerate: true,
     // 控制相关
     enableCollision: true,
     enableDragAutoAlign: true,
