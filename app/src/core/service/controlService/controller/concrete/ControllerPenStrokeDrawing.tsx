@@ -14,6 +14,8 @@ import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concret
 import { Settings } from "../../../Settings";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
+import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 /**
  * 涂鸦功能
  */
@@ -105,8 +107,15 @@ class ControllerDrawingClass extends ControllerClass {
     const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
     this.recordLocation.push(releaseWorldLocation.clone());
-    if (releaseWorldLocation.equals(this.pressStartWordLocation)) {
+    if (releaseWorldLocation.subtract(this.pressStartWordLocation).magnitude() < 2) {
       // 判断当前位置是否有舞台对象，如果有则更改颜色。
+      const entity = StageManager.findEntityByLocation(releaseWorldLocation);
+      if (entity) {
+        if (entity instanceof TextNode) {
+          entity.color = this.getCurrentStrokeColor().clone();
+          Stage.effectMachine.addEffect(EntityCreateFlashEffect.fromCreateEntity(entity));
+        }
+      }
       // 如果没有，则画一个圈。
       // 增加特效
       // 只是点了一下，应该有特殊效果
