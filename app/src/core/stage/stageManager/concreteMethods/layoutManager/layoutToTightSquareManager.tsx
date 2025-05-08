@@ -18,6 +18,7 @@ export namespace LayoutToTightSquareManager {
   }
 
   export function layoutToTightSquare(entities: Entity[]) {
+    if (entities.length === 0) return;
     const layoutItems = entities.map((entity) => ({
       entity,
       rect: entity.collisionBox.getRectangle().clone(),

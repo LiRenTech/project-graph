@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use std::env;
 use std::io::Read;
 
@@ -7,8 +8,56 @@ use base64::Engine;
 use tauri::Manager;
 use tauri::Runtime;
 use tauri::Url;
+
+#[derive(Debug, Serialize, Deserialize)]
+struct FolderEntry {
+    name: String,
+    is_file: bool,
+    path: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    children: Option<Vec<FolderEntry>>,
+}
 #[cfg(desktop)]
 use tauri_plugin_updater::UpdaterExt;
+
+/// 递归读取文件夹结构，返回嵌套的文件夹结构
+#[tauri::command]
+fn read_folder_structure(path: String) -> FolderEntry {
+    let path_buf = std::path::PathBuf::from(&path);
+    let name = path_buf.file_name()
+        .and_then(|n| n.to_str())
+        .unwrap_or("")
+        .to_string();
+
+    let mut children = Vec::new();
+    if let Ok(entries) = std::fs::read_dir(&path) {
+        for entry in entries {
+            if let Ok(entry) = entry {
+                let path = entry.path();
+                let child_name = entry.file_name().to_string_lossy().to_string();
+                let path_str = path.to_string_lossy().to_string();
+                
+                if path.is_file() {
+                    children.push(FolderEntry {
+                        name: child_name,
+                        is_file: true,
+                        path: path_str,
+                        children: None,
+                    });
+                } else if path.is_dir() {
+                    children.push(read_folder_structure(path_str));
+                }
+            }
+        }
+    }
+    
+    FolderEntry {
+        name,
+        is_file: false,
+        path,
+        children: Some(children),
+    }
+}
 
 /// 判断文件是否存在
 #[tauri::command]
@@ -186,6 +235,7 @@ pub fn run() {
             read_text_file,
             read_folder,
             read_folder_recursive,
+            read_folder_structure,
             delete_file,
             write_text_file,
             exists,

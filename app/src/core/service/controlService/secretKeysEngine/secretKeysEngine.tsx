@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 import { Direction } from "../../../../types/directions";
-import { createFolder, readFolder } from "../../../../utils/fs";
+import { createFolder, readFolder, readFolderStructure } from "../../../../utils/fs";
 import { averageColors, Color } from "../../../dataStruct/Color";
 import { Queue } from "../../../dataStruct/Queue";
 import { Vector } from "../../../dataStruct/Vector";
@@ -757,6 +757,17 @@ export class SecretKeysEngine {
       func() {
         const files = readFolder("D:\\");
         console.log(files);
+      },
+    },
+    "v f v f v f 1": {
+      name: "读取文件夹结构并生成图",
+      explain: "未来即将删除",
+      isHidden: true,
+      func() {
+        const folderPath = "D:\\Desktop\\graph\\projectGraph\\welcome";
+        readFolderStructure(folderPath).then((folderStructure) => {
+          console.log(folderStructure);
+        });
       },
     },
   };

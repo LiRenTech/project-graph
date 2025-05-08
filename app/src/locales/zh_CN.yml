@@ -615,6 +615,12 @@ appMenu:
       openCacheFolder:
         title: 缓存文件夹
         description: 打开软件缓存文件夹，内部存放软件运行时产生的缓存数据，以及默认的草稿备份文件
+  import:
+    title: 导入
+    items:
+      generateSectionByFolder: 
+        title: 根据本地文件夹生成框图
+        description: 选择一个本地文件夹后，将该文件夹下所有文件生成为一个框嵌套图
   export:
     title: 导出
     items:
