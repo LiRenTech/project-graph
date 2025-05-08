@@ -38,6 +38,7 @@ import { LayoutManualAlignManager } from "../../core/stage/stageManager/concrete
 import { LayoutToSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToSquareManager";
 import { LayoutSectionManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutSectionManager";
 import { LayoutResizeManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutResizeManager";
+import { LayoutToTightSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToTightSquareManager";
 
 /**
  * 对齐面板
@@ -210,7 +211,7 @@ export default function AlignNodePanel() {
           description="排一串"
           icon={<Columns4 />}
           handleFunction={() => {
-            LayoutToSquareManager.layoutToTightSquare();
+            LayoutToTightSquareManager.layoutToTightSquare();
           }}
         />
         <ToolbarItem
