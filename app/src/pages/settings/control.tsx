@@ -2,6 +2,7 @@ import {
   AlignStartVertical,
   Crosshair,
   Fullscreen,
+  Gamepad2,
   GitCompareArrows,
   Grab,
   Hand,
@@ -16,6 +17,7 @@ import {
   Move,
   Network,
   RotateCw,
+  Scaling,
   ScanEye,
   Skull,
   SquareArrowDownRight,
@@ -56,6 +58,33 @@ export default function Control() {
           />
         )}
       </FieldGroup>
+      <FieldGroup title="Camera Move 摄像机/视野 移动" icon={<Fullscreen />}>
+        <SettingField icon={<Keyboard />} settingKey="allowMoveCameraByWSAD" type="switch" />
+        <SettingField icon={<Crosshair />} settingKey="cameraFollowsSelectedNodeOnArrowKeys" type="switch" />
+        <SettingField icon={<Keyboard />} settingKey="cameraKeyboardMoveReverse" type="switch" />
+        <SettingField icon={<Move />} settingKey="moveAmplitude" type="slider" min={0} max={10} step={0.1} />
+        <SettingField icon={<Move />} settingKey="moveFriction" type="slider" min={0} max={1} step={0.01} />
+      </FieldGroup>
+      <FieldGroup title="Camera Scale 摄像机/视野 缩放" icon={<Scaling />}>
+        <SettingField icon={<ScanEye />} settingKey="scaleExponent" type="slider" min={0} max={1} step={0.01} />
+        <SettingField
+          icon={<Fullscreen />}
+          settingKey="cameraResetViewPaddingRate"
+          type="slider"
+          min={1}
+          max={2}
+          step={0.05}
+        />
+        <SettingField icon={<ScanEye />} settingKey="scaleCameraByMouseLocation" type="switch" />
+        <SettingField
+          icon={<ScanEye />}
+          settingKey="cameraKeyboardScaleRate"
+          type="slider"
+          min={0}
+          max={3}
+          step={0.1}
+        />
+      </FieldGroup>
       <FieldGroup title="RectangleSelect 框选" icon={<SquareDashedMousePointer />}>
         <SettingField icon={<SquareArrowDownRight />} settingKey="rectangleSelectWhenRight" type="select" />
         <SettingField icon={<SquareArrowUpLeft />} settingKey="rectangleSelectWhenLeft" type="select" />
@@ -80,30 +109,7 @@ export default function Control() {
         <SettingField icon={<ListTree />} settingKey="autoLayoutWhenTreeGenerate" type="switch" />
       </FieldGroup>
 
-      <FieldGroup title="Camera 摄像机/视野/相关" icon={<Fullscreen />}>
-        <SettingField icon={<ScanEye />} settingKey="scaleExponent" type="slider" min={0} max={1} step={0.01} />
-        <SettingField
-          icon={<Fullscreen />}
-          settingKey="cameraResetViewPaddingRate"
-          type="slider"
-          min={1}
-          max={2}
-          step={0.05}
-        />
-        <SettingField
-          icon={<ScanEye />}
-          settingKey="cameraKeyboardScaleRate"
-          type="slider"
-          min={0}
-          max={3}
-          step={0.1}
-        />
-        <SettingField icon={<ScanEye />} settingKey="scaleCameraByMouseLocation" type="switch" />
-        <SettingField icon={<Keyboard />} settingKey="allowMoveCameraByWSAD" type="switch" />
-        <SettingField icon={<Crosshair />} settingKey="cameraFollowsSelectedNodeOnArrowKeys" type="switch" />
-        <SettingField icon={<Keyboard />} settingKey="cameraKeyboardMoveReverse" type="switch" />
-        <SettingField icon={<Move />} settingKey="moveAmplitude" type="slider" min={0} max={10} step={0.1} />
-        <SettingField icon={<Move />} settingKey="moveFriction" type="slider" min={0} max={1} step={0.01} />
+      <FieldGroup title="Gamepad 手柄相关" icon={<Gamepad2 />}>
         <SettingField icon={<Skull />} settingKey="gamepadDeadzone" type="slider" min={0} max={1} step={0.01} />
       </FieldGroup>
       {/* 已经有快捷键专栏了，这里不再显示快捷键相关 */}
