@@ -60,7 +60,7 @@ export class CubicCatmullRomSplineEdge extends Edge {
       target: target.uuid,
       text: "",
       uuid: uuidv4(),
-      type: "core:cubic_catmull_rom_spline_edge",
+      type: "core:cublic_catmull_rom_spline_edge",
       alpha: 0.5,
       tension: 0,
       color: [0, 0, 0, 0],

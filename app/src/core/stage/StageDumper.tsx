@@ -55,7 +55,7 @@ export namespace StageDumper {
       target: edge.target.uuid,
       text: edge.text,
       uuid: edge.uuid,
-      type: "core:cubic_catmull_rom_spline_edge",
+      type: "core:cublic_catmull_rom_spline_edge",
       controlPoints: edge.getControlPoints().map((point) => [point.x, point.y]),
       alpha: edge.alpha,
       tension: edge.tension,

@@ -160,10 +160,10 @@ export namespace Serialized {
     return obj.type === "core:line_edge";
   }
   export function isCubicCatmullRomSplineEdge(obj: StageObject): obj is CubicCatmullRomSplineEdge {
-    return obj.type === "core:cubic_catmull_rom_spline_edge";
+    return obj.type === "core:cublic_catmull_rom_spline_edge";
   }
   export type CubicCatmullRomSplineEdge = Edge & {
-    type: "core:cubic_catmull_rom_spline_edge";
+    type: "core:cublic_catmull_rom_spline_edge";
     text: string;
     controlPoints: Vector[];
     alpha: number;
