@@ -609,12 +609,14 @@ export default function Toolbar({ className = "" }: { className?: string }) {
       {isDrawing && (
         <ToolbarGroup groupTitle={t("drawColor.title")}>
           <PenItem color={Color.Transparent} />
-          <PenItem color={Color.Green} />
-          <PenItem color={Color.Red} />
-          <PenItem color={Color.Blue} />
-          <PenItem color={Color.Yellow} />
-          <PenItem color={Color.Cyan} />
-          <PenItem color={Color.Magenta} />
+          <PenItem color={new Color(239, 83, 80)} />
+          <PenItem color={new Color(78, 201, 176)} />
+          <PenItem color={new Color(94, 153, 85)} />
+          <PenItem color={new Color(86, 156, 214)} />
+          <PenItem color={new Color(255, 215, 0)} />
+          <PenItem color={new Color(218, 112, 214)} />
+          <PenItem color={new Color(156, 220, 254)} />
+          <PenItem color={new Color(206, 145, 120)} />
         </ToolbarGroup>
       )}
     </Box>
