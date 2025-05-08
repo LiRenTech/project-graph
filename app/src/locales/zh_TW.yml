@@ -523,6 +523,9 @@ settings:
   maxPastedImageSize:
     title: 要貼到舞台的圖片的尺寸限制（像素）
     description: "長或寬超過此尺寸的圖片，其長或寬的最大值將會被限制為此大小\n同時保持長寬比不變．僅在開啟“壓縮要貼到舞台的圖片”時生效\n"
+  autoLayoutWhenTreeGenerate:
+    description: "開啟後，生長節點時自動更新佈局\n此處的生長節點指 tab 和 \\ 鍵生長節點\n"
+    title: 生長節點時自動更新佈局
 app:
   unsaved: "(未保存)"
   comingSoon: 即將到來……
