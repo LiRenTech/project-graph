@@ -566,6 +566,17 @@ settings:
     title: 按钮点击开关按钮时关闭的声音
     description: |
       按钮点击开关按钮时关闭的声音文件路径
+  agreeTerms:
+    title: 同意用户协议
+    description: |
+      请您仔细阅读并同意用户协议
+  allowTelemetry:
+    title: 参与用户体验改进计划
+    description: |
+      如果您启用此项，我们会收集您的使用数据，帮助我们改进软件
+      发送的数据仅用于统计，不会包含您的个人隐私信息
+      您的数据会在中国香港的云服务器上存储，不会发送到国外
+
 plugins:
   welcome:
     title: 欢迎使用插件系统
