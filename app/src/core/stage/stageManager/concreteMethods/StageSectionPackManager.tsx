@@ -84,7 +84,7 @@ export namespace StageSectionPackManager {
   }
 
   /**
-   * 将节点树转换成嵌套集合
+   * 将节点树转换成嵌套集合 （递归的）
    */
   export function textNodeTreeToSection(rootNode: TextNode): void {
     if (!GraphMethods.isTree(rootNode)) {
@@ -115,6 +115,39 @@ export namespace StageSectionPackManager {
       return section;
     };
     dfs(rootNode);
+    StageHistoryManager.recordStep();
+  }
+
+  /**
+   * 非递归的 将节点树转换成嵌套集合
+   * @param rootNode
+   */
+  export function textNodeTreeToSectionNoDeep(rootNode: TextNode): void {
+    if (!GraphMethods.isTree(rootNode)) {
+      Dialog.show({
+        title: "非树状结构",
+        content: "请选择一个树状结构的节点作为根节点",
+      });
+      return;
+    }
+    const childNodes = GraphMethods.nodeChildrenArray(rootNode).filter((node) => node instanceof TextNode);
+    const childSets = GraphMethods.getSuccessorSet(rootNode, true);
+    if (childNodes.length === 0) {
+      return;
+    }
+
+    for (const childNode of childNodes) {
+      const edges = GraphMethods.getEdgesBetween(rootNode, childNode);
+      for (const edge of edges) {
+        StageManager.deleteEdge(edge);
+      }
+    }
+    const section = targetTextNodeToSection(rootNode, true);
+    const rootNodeFatherSection = SectionMethods.getFatherSections(rootNode);
+    for (const fatherSection of rootNodeFatherSection) {
+      StageSectionInOutManager.goOutSection(childSets, fatherSection);
+    }
+    StageSectionInOutManager.goInSection(childSets, section);
     StageHistoryManager.recordStep();
   }
 

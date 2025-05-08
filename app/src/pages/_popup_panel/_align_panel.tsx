@@ -12,33 +12,33 @@ import {
   ArrowDownUp,
   ArrowLeftRight,
   ChevronsRightLeft,
-  Columns4,
   Grid3x3,
-  LayoutGrid,
-  LayoutTemplate,
+  Grip,
+  LayoutDashboard,
   Magnet,
   Maximize2,
   MoveHorizontal,
   Network,
+  Square,
   SquareSquare,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Dialog } from "../../components/dialog";
+import { AutoLayoutFastTree } from "../../core/service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
 import { Settings } from "../../core/service/Settings";
 import { GraphMethods } from "../../core/stage/stageManager/basicMethods/GraphMethods";
-import { StageManager } from "../../core/stage/stageManager/StageManager";
-import { ConnectableEntity } from "../../core/stage/stageObject/abstract/ConnectableEntity";
-import { cn } from "../../utils/cn";
-import { ToolbarItem } from "../_toolbar";
+import { LayoutManualAlignManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
+import { LayoutResizeManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutResizeManager";
+import { LayoutToSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToSquareManager";
+import { LayoutToTightSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToTightSquareManager";
 import { StageAutoAlignManager } from "../../core/stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageSectionPackManager } from "../../core/stage/stageManager/concreteMethods/StageSectionPackManager";
+import { StageManager } from "../../core/stage/stageManager/StageManager";
+import { ConnectableEntity } from "../../core/stage/stageObject/abstract/ConnectableEntity";
 import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
-import { AutoLayoutFastTree } from "../../core/service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
-import { LayoutManualAlignManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
-import { LayoutToSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToSquareManager";
-import { LayoutSectionManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutSectionManager";
-import { LayoutResizeManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutResizeManager";
-import { LayoutToTightSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToTightSquareManager";
+import { cn } from "../../utils/cn";
+import { ToolbarItem } from "../_toolbar";
+import { LayoutEntityManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutEntityManager";
 
 /**
  * 对齐面板
@@ -201,22 +201,71 @@ export default function AlignNodePanel() {
       </div>
       <div className={cell9ClassName}>
         <ToolbarItem
-          description="尽可能排列成正方形"
-          icon={<LayoutGrid />}
+          description="松散方阵"
+          icon={<Grip />}
           handleFunction={() => {
-            LayoutToSquareManager.layoutToSquare();
+            LayoutEntityManager.layoutBySelected(LayoutToSquareManager.layoutToSquare, false);
           }}
         />
         <ToolbarItem
-          description="排一串"
-          icon={<Columns4 />}
+          description="紧密堆积"
+          icon={<LayoutDashboard />}
           handleFunction={() => {
-            LayoutToTightSquareManager.layoutToTightSquare();
+            LayoutEntityManager.layoutBySelected(LayoutToTightSquareManager.layoutToTightSquare, false);
           }}
         />
         <ToolbarItem
-          description="将树形结构变成框嵌套结构"
-          icon={<SquareSquare />}
+          description="树变框"
+          icon={
+            <span className="relative flex h-8 w-8 items-center justify-center">
+              <Square className="absolute" />
+              <Network className="absolute -rotate-90 scale-50" />
+            </span>
+          }
+          handleFunction={() => {
+            const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
+            if (selectedNodes.length !== 1) {
+              Dialog.show({
+                title: "选择节点数量不为1",
+                content: "必须只选择一个根节点才可以进行树形结构变成框嵌套结构",
+              });
+              return;
+            }
+            StageSectionPackManager.textNodeTreeToSectionNoDeep(selectedNodes[0]);
+          }}
+        />
+        <ToolbarItem
+          description="松散方阵（递归）"
+          icon={
+            <span className="relative flex h-8 w-8 items-center justify-center">
+              <Square className="absolute" />
+              <Grip className="absolute scale-50" />
+            </span>
+          }
+          handleFunction={() => {
+            LayoutEntityManager.layoutBySelected(LayoutToSquareManager.layoutToSquare, true);
+          }}
+        />
+        <ToolbarItem
+          description="紧密堆积（递归）"
+          icon={
+            <span className="relative flex h-8 w-8 items-center justify-center">
+              <Square className="absolute" />
+              <LayoutDashboard className="absolute scale-50" />
+            </span>
+          }
+          handleFunction={() => {
+            LayoutEntityManager.layoutBySelected(LayoutToTightSquareManager.layoutToTightSquare, true);
+          }}
+        />
+        <ToolbarItem
+          description="树变框（递归）"
+          icon={
+            <span className="relative flex h-8 w-8 items-center justify-center">
+              <Square className="absolute" />
+              <SquareSquare className="absolute scale-50" />
+            </span>
+          }
           handleFunction={() => {
             const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
             if (selectedNodes.length !== 1) {
@@ -227,35 +276,6 @@ export default function AlignNodePanel() {
               return;
             }
             StageSectionPackManager.textNodeTreeToSection(selectedNodes[0]);
-          }}
-        />
-        <ToolbarItem
-          description="将选中的框和实体 密集堆积 （还在开发中）"
-          icon={<LayoutTemplate />}
-          handleFunction={() => {
-            const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof TextNode);
-            if (selectedNodes.length === 1) {
-              return;
-            }
-            LayoutSectionManager.defaultLayout();
-          }}
-        />
-        <ToolbarItem
-          description={isEnableDragAutoAlign ? "拖动吸附对齐：开启" : "拖动吸附对齐：关闭"}
-          icon={<Magnet className={cn(!isEnableDragAutoAlign && "text-panel-details-text", "transition-transform")} />}
-          handleFunction={async () => {
-            Settings.set("enableDragAutoAlign", !(await Settings.get("enableDragAutoAlign")));
-          }}
-        />
-        <ToolbarItem
-          description={isEnableDragToGridAutoAlign ? "网格吸附对齐：开启" : "网格吸附对齐：关闭"}
-          icon={
-            <Grid3x3
-              className={cn(!isEnableDragToGridAutoAlign && "text-panel-details-text", "transition-transform")}
-            />
-          }
-          handleFunction={async () => {
-            Settings.set("enableDragAlignToGrid", !(await Settings.get("enableDragAlignToGrid")));
           }}
         />
       </div>
@@ -287,6 +307,26 @@ export default function AlignNodePanel() {
           }}
         />
         <div />
+      </div>
+      <div className={cell9ClassName}>
+        <ToolbarItem
+          description={isEnableDragAutoAlign ? "拖动吸附对齐：开启" : "拖动吸附对齐：关闭"}
+          icon={<Magnet className={cn(!isEnableDragAutoAlign && "text-panel-details-text", "transition-transform")} />}
+          handleFunction={async () => {
+            Settings.set("enableDragAutoAlign", !(await Settings.get("enableDragAutoAlign")));
+          }}
+        />
+        <ToolbarItem
+          description={isEnableDragToGridAutoAlign ? "网格吸附对齐：开启" : "网格吸附对齐：关闭"}
+          icon={
+            <Grid3x3
+              className={cn(!isEnableDragToGridAutoAlign && "text-panel-details-text", "transition-transform")}
+            />
+          }
+          handleFunction={async () => {
+            Settings.set("enableDragAlignToGrid", !(await Settings.get("enableDragAlignToGrid")));
+          }}
+        />
       </div>
     </div>
   );

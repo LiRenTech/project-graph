@@ -97,8 +97,8 @@ export namespace GraphMethods {
    * 包括它自己
    * @param node
    */
-  export function getSuccessorSet(node: ConnectableEntity): ConnectableEntity[] {
-    const result: ConnectableEntity[] = []; // 存储可达节点的结果集
+  export function getSuccessorSet(node: ConnectableEntity, isHaveSelf: boolean = true): ConnectableEntity[] {
+    let result: ConnectableEntity[] = []; // 存储可达节点的结果集
     const visited: Set<string> = new Set(); // 用于记录已经访问过的节点，避免重复访问
 
     // 深度优先搜索 (DFS) 实现
@@ -118,6 +118,9 @@ export namespace GraphMethods {
 
     // 从给定节点开始进行深度优先搜索
     dfs(node);
+    if (!isHaveSelf) {
+      result = result.filter((n) => n === node);
+    }
 
     return result; // 返回所有可达节点的集合
   }

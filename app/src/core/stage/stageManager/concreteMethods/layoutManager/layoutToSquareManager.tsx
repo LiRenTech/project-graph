@@ -1,4 +1,5 @@
 import { Vector } from "../../../../dataStruct/Vector";
+import { Entity } from "../../../stageObject/abstract/StageEntity";
 import { StageHistoryManager } from "../../StageHistoryManager";
 import { StageManager } from "../../StageManager";
 import { StageEntityMoveManager } from "../StageEntityMoveManager";
@@ -7,15 +8,20 @@ export namespace LayoutToSquareManager {
   /**
    * 将所有选中的节点尽可能摆放排列成正方形
    */
-  export function layoutToSquare() {
-    const nodes = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
-    const n = nodes.length;
+  export function layoutToSquareBySelected() {
+    const entities = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+    layoutToSquare(entities);
+    StageHistoryManager.recordStep();
+  }
+
+  export function layoutToSquare(entities: Entity[]) {
+    const n = entities.length;
     if (n <= 1) return;
 
     // 计算所有节点的最大宽度和高度
     let maxWidth = 0,
       maxHeight = 0;
-    nodes.forEach((node) => {
+    entities.forEach((node) => {
       const rect = node.collisionBox.getRectangle();
       maxWidth = Math.max(maxWidth, rect.size.x);
       maxHeight = Math.max(maxHeight, rect.size.y);
@@ -36,7 +42,7 @@ export namespace LayoutToSquareManager {
       minY = Infinity,
       maxX = -Infinity,
       maxY = -Infinity;
-    nodes.forEach((node) => {
+    entities.forEach((node) => {
       const rect = node.collisionBox.getRectangle();
       minX = Math.min(minX, rect.left);
       minY = Math.min(minY, rect.top);
@@ -51,7 +57,7 @@ export namespace LayoutToSquareManager {
     const startY = centerY - gridHeight / 2;
 
     // 将节点排列到网格中
-    nodes.forEach((node, index) => {
+    entities.forEach((node, index) => {
       const row = Math.floor(index / cols);
       const col = index % cols;
       const cellCenterX = startX + col * cellSize + cellSize / 2;
@@ -61,7 +67,6 @@ export namespace LayoutToSquareManager {
       const newY = cellCenterY - rect.size.y / 2;
       StageEntityMoveManager.moveEntityToUtils(node, new Vector(newX, newY));
     });
-    StageHistoryManager.recordStep();
   }
 }
 

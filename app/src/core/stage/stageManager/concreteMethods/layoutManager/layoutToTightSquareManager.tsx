@@ -3,7 +3,6 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { Entity } from "../../../stageObject/abstract/StageEntity";
 import { StageHistoryManager } from "../../StageHistoryManager";
 import { StageManager } from "../../StageManager";
-import { StageEntityMoveManager } from "../StageEntityMoveManager";
 
 export namespace LayoutToTightSquareManager {
   /**
@@ -11,96 +10,170 @@ export namespace LayoutToTightSquareManager {
    * 尽可能接近美观的矩形比例，不出现极端的长方形
    * 有待优化
    */
-  export function layoutToTightSquare() {
+  export function layoutToTightSquareBySelected() {
     const entities = Array.from(StageManager.getEntities()).filter((entity) => entity.isSelected);
     if (entities.length === 0) return;
-    layoutToTightSquareWithEntity(entities);
+    layoutToTightSquare(entities);
     StageHistoryManager.recordStep();
   }
 
-  export function layoutToTightSquareWithEntity(entities: Entity[]) {
-    // 获取所有实体的包围盒并建立布局信息
+  export function layoutToTightSquare(entities: Entity[]) {
     const layoutItems = entities.map((entity) => ({
       entity,
       rect: entity.collisionBox.getRectangle().clone(),
     }));
+    // 记录调整前的全部矩形的外接矩形
+    const boundingRectangleBefore = Rectangle.getBoundingRectangle(layoutItems.map((item) => item.rect));
 
-    // 按面积降序排序（优先放置大元素）
-    layoutItems.sort((a, b) => b.rect.width * b.rect.height - a.rect.width * a.rect.height);
+    const sortedRects = sortRectangleGreedy(
+      layoutItems.map((item) => item.rect),
+      // 10,
+    );
 
-    // 初始化布局参数
-    let layoutWidth = 0;
-    let layoutHeight = 0;
-    const placedRects: Rectangle[] = [];
-    const spacing = 5; // 最小间距
+    for (let i = 0; i < sortedRects.length; i++) {
+      layoutItems[i].entity.moveTo(sortedRects[i].leftTop.clone());
+    }
 
-    // 核心布局算法
-    layoutItems.forEach((item) => {
-      const currentRect = item.rect;
-      let bestPosition: Vector | null = null;
-
-      // 扫描现有空间寻找合适位置（三次方时间复杂度）
-      for (let y = 0; y <= layoutHeight; y += spacing) {
-        for (let x = 0; x <= layoutWidth; x += spacing) {
-          const testRect = new Rectangle(new Vector(x, y), currentRect.size.clone());
-
-          // 检查是否与已有元素碰撞
-          const collision = placedRects.some((placed) => testRect.isCollideWith(placed.expandFromCenter(spacing)));
-
-          if (!collision) {
-            // 优先选择最靠左上的位置
-            if (!bestPosition || y < bestPosition.y || (y === bestPosition.y && x < bestPosition.x)) {
-              bestPosition = new Vector(x, y);
-            }
-          }
-        }
-      }
-
-      // 如果没有找到合适位置则扩展布局
-      if (!bestPosition) {
-        bestPosition = new Vector(layoutWidth, 0);
-        layoutWidth += currentRect.width + spacing;
-        layoutHeight = Math.max(layoutHeight, currentRect.height);
-      }
-
-      // 更新实际布局边界
-      const right = bestPosition.x + currentRect.width;
-      const bottom = bestPosition.y + currentRect.height;
-      layoutWidth = Math.max(layoutWidth, right);
-      layoutHeight = Math.max(layoutHeight, bottom);
-
-      // 记录最终位置
-      currentRect.location = bestPosition;
-      placedRects.push(currentRect);
-    });
-
-    // 平衡宽高比（最大1.5:1）
-    const [finalWidth, finalHeight] = balanceLayoutRatio(layoutWidth, layoutHeight);
-
-    // 计算原始包围盒中心
-    const originalBounds = Rectangle.getBoundingRectangle(entities.map((e) => e.collisionBox.getRectangle()));
-    const originalCenter = originalBounds.center;
-
-    // 计算布局中心偏移量
-    const offset = originalCenter.subtract(new Vector(finalWidth / 2, finalHeight / 2));
-
-    // 应用布局位置
-    layoutItems.forEach((item) => {
-      const targetPos = item.rect.location.add(offset);
-      StageEntityMoveManager.moveEntityToUtils(item.entity, targetPos);
-    });
-
-    // 辅助函数：平衡布局比例
-    function balanceLayoutRatio(width: number, height: number, maxRatio = 1.5): [number, number] {
-      const ratio = width / height;
-
-      if (ratio > maxRatio) {
-        return [width, width / maxRatio];
-      }
-      if (1 / ratio > maxRatio) {
-        return [height * maxRatio, height];
-      }
-      return [width, height];
+    // 调整后的全部矩形的外接矩形
+    const boundingRectangleAfter = Rectangle.getBoundingRectangle(sortedRects);
+    // 整体移动，使得全部内容的外接矩形中心坐标保持不变
+    const diff = boundingRectangleBefore.center.subtract(boundingRectangleAfter.center);
+    for (const item of layoutItems) {
+      item.entity.move(diff);
     }
   }
+}
+
+/**
+ * 
+ * 装箱问题，排序矩形
+    :param rectangles: N个矩形的大小和位置
+    :param margin: 矩形之间的间隔（为了美观考虑）
+    :return: 调整好后的N个矩形的大小和位置，数组内每个矩形一一对应。
+    例如：
+    rectangles = [Rectangle(NumberVector(0, 0), 10, 10), Rectangle(NumberVector(10, 10), 1, 1)]
+    这两个矩形对角放，外套矩形空隙面积过大，空间浪费，需要调整位置。
+
+    调整后返回：
+
+    [Rectangle(NumberVector(0, 0), 10, 10), Rectangle(NumberVector(12, 0), 1, 1)]
+    参数 margin = 2
+    横向放置，减少了空间浪费。
+ * 
+ * 
+ * 
+ * 
+ */
+
+// 从visual-file项目里抄过来的
+
+function sortRectangleGreedy(rectangles: Rectangle[]): Rectangle[] {
+  if (rectangles.length === 0) return [];
+
+  // 处理第一个矩形
+  const firstOriginal = rectangles[0];
+  const first = new Rectangle(new Vector(0, 0), new Vector(firstOriginal.size.x, firstOriginal.size.y));
+  const ret: Rectangle[] = [first];
+  let currentWidth = first.right;
+  let currentHeight = first.bottom;
+
+  for (let i = 1; i < rectangles.length; i++) {
+    const originalRect = rectangles[i];
+    let bestCandidate: Rectangle | null = null;
+    let minSpaceScore = Infinity;
+    let minShapeScore = Infinity;
+
+    for (const placedRect of ret) {
+      // 尝试放在右侧
+      const candidateRight = appendRight(placedRect, originalRect, ret);
+      const rightSpaceScore =
+        Math.max(currentWidth, candidateRight.right) -
+        currentWidth +
+        (Math.max(currentHeight, candidateRight.bottom) - currentHeight);
+      const rightShapeScore = Math.abs(
+        Math.max(candidateRight.right, currentWidth) - Math.max(candidateRight.bottom, currentHeight),
+      );
+
+      if (rightSpaceScore < minSpaceScore || (rightSpaceScore === minSpaceScore && rightShapeScore < minShapeScore)) {
+        minSpaceScore = rightSpaceScore;
+        minShapeScore = rightShapeScore;
+        bestCandidate = candidateRight;
+      }
+
+      // 尝试放在下方
+      const candidateBottom = appendBottom(placedRect, originalRect, ret);
+      const bottomSpaceScore =
+        Math.max(currentWidth, candidateBottom.right) -
+        currentWidth +
+        (Math.max(currentHeight, candidateBottom.bottom) - currentHeight);
+      const bottomShapeScore = Math.abs(
+        Math.max(candidateBottom.right, currentWidth) - Math.max(candidateBottom.bottom, currentHeight),
+      );
+
+      if (
+        bottomSpaceScore < minSpaceScore ||
+        (bottomSpaceScore === minSpaceScore && bottomShapeScore < minShapeScore)
+      ) {
+        minSpaceScore = bottomSpaceScore;
+        minShapeScore = bottomShapeScore;
+        bestCandidate = candidateBottom;
+      }
+    }
+
+    if (bestCandidate) {
+      ret.push(bestCandidate);
+      currentWidth = Math.max(currentWidth, bestCandidate.right);
+      currentHeight = Math.max(currentHeight, bestCandidate.bottom);
+    } else {
+      throw new Error("No candidate found");
+    }
+  }
+
+  return ret;
+}
+
+function appendRight(origin: Rectangle, originalRect: Rectangle, existingRects: Rectangle[]): Rectangle {
+  const candidate = new Rectangle(
+    new Vector(origin.right, origin.location.y),
+    new Vector(originalRect.size.x, originalRect.size.y),
+  );
+
+  let hasCollision: boolean;
+  do {
+    hasCollision = false;
+    for (const existing of existingRects) {
+      if (candidate.isCollideWithRectangle(existing)) {
+        hasCollision = true;
+        // 调整位置：下移到底部并保持右侧对齐
+        candidate.location.y = existing.bottom;
+        candidate.location.x = Math.max(candidate.location.x, existing.right);
+        break;
+      }
+    }
+  } while (hasCollision);
+
+  return candidate;
+}
+
+function appendBottom(origin: Rectangle, originalRect: Rectangle, existingRects: Rectangle[]): Rectangle {
+  const candidate = new Rectangle(
+    new Vector(origin.location.x, origin.bottom),
+    new Vector(originalRect.size.x, originalRect.size.y),
+  );
+
+  let hasCollision: boolean;
+  do {
+    hasCollision = false;
+    for (const existing of existingRects) {
+      if (candidate.isCollideWithRectangle(existing)) {
+        hasCollision = true;
+        // 调整位置：右移并保持底部对齐
+        candidate.location.x = existing.right;
+        candidate.location.y = Math.max(candidate.location.y, existing.bottom);
+        break;
+      }
+    }
+  } while (hasCollision);
+
+  return candidate;
 }
