@@ -11,6 +11,7 @@ import {
   Move,
   Network,
   PanelsTopLeft,
+  Scan,
   SendToBack,
   Spline,
   SquareDashed,
@@ -84,7 +85,7 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
   },
   {
     title: "select",
-    icon: <Move />,
+    icon: <Scan />,
     keys: [
       "selectUp",
       "selectDown",

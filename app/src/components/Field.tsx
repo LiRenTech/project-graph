@@ -1,5 +1,5 @@
-import { RotateCw } from "lucide-react";
-import React from "react";
+import { ChevronRight, RotateCw } from "lucide-react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Settings } from "../core/service/Settings";
 import { cn } from "../utils/cn";
@@ -178,19 +178,27 @@ export function FieldGroup({
   className?: string;
   description?: string;
 }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className={cn("flex w-full flex-col gap-2", className)}>
       {/* 第一行，标题行 */}
-      <div className="text-settings-text my-2 flex items-center gap-2 pl-4 pt-4 text-sm opacity-60">
-        <span>{icon}</span>
-        <span>{title}</span>
+      <div
+        className="text-settings-text my-2 flex cursor-pointer items-center gap-2 pl-4 pt-4 text-sm opacity-60 hover:opacity-100"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span className="cursor-pointer">{icon}</span>
+        <span className="cursor-pointer">{title}</span>
+        <ChevronRight className={cn(isOpen && "rotate-90")} />
       </div>
       {/* 可能的描述行 */}
-      {description && <div className="text-panel-details-text pl-4 text-xs">{description}</div>}
+      {description && isOpen && <div className="text-panel-details-text pl-4 text-xs">{description}</div>}
       {/* 内容 */}
-      <div className="bg-field-group-bg group/field-group flex w-full flex-col overflow-hidden rounded-2xl text-sm *:rounded-none *:first:rounded-t-xl *:last:rounded-b-xl">
-        {children}
-      </div>
+      {isOpen && (
+        <div className="bg-field-group-bg group/field-group flex w-full flex-col overflow-hidden rounded-2xl text-sm *:rounded-none *:first:rounded-t-xl *:last:rounded-b-xl">
+          {children}
+        </div>
+      )}
     </div>
   );
 }
