@@ -1089,5 +1089,19 @@ export namespace ShortcutKeysRegister {
           KeyboardOnlyGraphEngine.createFinished();
         }
       });
+    (
+      await KeyBinds.create("treeGraphAdjust", "f", {
+        control: false,
+        alt: true,
+        meta: false,
+        shift: true,
+      })
+    ).down(() => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      const entities = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
+      for (const entity of entities) {
+        KeyboardOnlyTreeEngine.adjustTreeNode(entity);
+      }
+    });
   }
 }

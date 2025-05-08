@@ -1032,6 +1032,12 @@ keyBinds:
       在按下该键不松开的同时按下“I J K L”键自由调整生长位置
       松开后，生长完成
       使用此功能前先确保已选中一个节点
+  treeGraphAdjust:
+    title: 调整当前节点所在树形结构的树形排布
+    description: |
+      主要用于关闭了键盘生长节点时触发的树形排布调整时使用
+      可以通过此快捷键手动触发布局调整
+
   masterBrakeCheckout:
     title: 手刹：开启/关闭通过按键控制摄像机移动
     description: |

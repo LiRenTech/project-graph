@@ -113,7 +113,7 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
   {
     title: "generateTextNodeInTree",
     icon: <Network className="-rotate-90" />,
-    keys: ["generateNodeTreeWithDeepMode", "generateNodeTreeWithBroadMode", "generateNodeGraph"],
+    keys: ["generateNodeTreeWithDeepMode", "generateNodeTreeWithBroadMode", "generateNodeGraph", "treeGraphAdjust"],
   },
   {
     title: "generateTextNodeRoundedSelectedNode",

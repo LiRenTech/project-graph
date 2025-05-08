@@ -11,6 +11,7 @@ import { editTextNode } from "../controller/concrete/utilsControl";
 import { Direction } from "../../../../types/directions";
 import { KeyboardOnlyEngine } from "./keyboardOnlyEngine";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
+import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 
 /**
  * 专用于Xmind式的树形结构的键盘操作引擎
@@ -168,5 +169,14 @@ export namespace KeyboardOnlyTreeEngine {
     );
     // 重置视野
     Camera.bombMove(newNode.collisionBox.getRectangle().center, 5);
+  }
+
+  /**
+   * 根据某个已经选中的节点，调整其所在树的结构
+   * @param entity
+   */
+  export function adjustTreeNode(entity: ConnectableEntity) {
+    const rootNodeParents = GraphMethods.getRoots(entity);
+    StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParents[0]);
   }
 }
