@@ -12,6 +12,7 @@ import { Settings } from "../core/service/Settings";
 import { Themes } from "../core/service/Themes";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
+import { StageManager } from "../core/stage/stageManager/StageManager";
 import { fileAtom, isClassroomModeAtom, isWindowCollapsingAtom } from "../state";
 import { cn } from "../utils/cn";
 import { PathString } from "../utils/pathString";
@@ -23,11 +24,10 @@ import ExportPNGPanel from "./_fixed_panel/_export_png_panel";
 import ExportTreeTextPanel from "./_fixed_panel/_export_text_panel";
 import LogicNodePanel from "./_fixed_panel/_logic_node_panel";
 import RecentFilesPanel from "./_fixed_panel/_recent_files_panel";
+import SearchingContentPanel from "./_fixed_panel/_searching_content_panel";
 import StartFilePanel from "./_fixed_panel/_start_file_panel";
 import TagPanel from "./_fixed_panel/_tag_panel";
-import SearchingContentPanel from "./_fixed_panel/_searching_content_panel";
 import FloatingOutlet from "./_floating_outlet";
-import { StageManager } from "../core/stage/stageManager/StageManager";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -235,6 +235,16 @@ export default function App() {
       return result + (isSaved ? "" : t("unsaved"));
     }
   };
+
+  /**
+   * 首次启动时显示欢迎页面
+   */
+  // const navigate = useNavigate();
+  // React.useEffect(() => {
+  //   if (LastLaunch.isFirstLaunch) {
+  //     navigate("/welcome");
+  //   }
+  // }, []);
 
   return (
     <div

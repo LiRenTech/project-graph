@@ -134,6 +134,9 @@ export namespace Settings {
     // github 相关
     githubToken: string;
     githubUser: string;
+    // 用户协议
+    agreeTerms: boolean;
+    allowTelemetry: boolean;
   };
   export const defaultSettings: Settings = {
     language: "zh_CN",
@@ -243,6 +246,9 @@ export namespace Settings {
     // github 相关
     githubToken: "",
     githubUser: "",
+    // 用户协议
+    agreeTerms: false,
+    allowTelemetry: false,
   };
 
   /**
