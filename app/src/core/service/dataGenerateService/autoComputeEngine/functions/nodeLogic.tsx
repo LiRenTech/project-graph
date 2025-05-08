@@ -25,10 +25,10 @@ import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint"
  */
 export namespace NodeLogic {
   export const delayStates: Map<string, Record<number, string>> = new Map();
-  let step: number = 0;
+  /* eslint-disable prefer-const */
+  export let step: number = 0;
   // step 是一个计数器，每当逻辑引擎实际执行一次时，step 就会加一
   // TODO: 可以考虑把 step 放到逻辑引擎层面，甚至可以出一个节点获取当前步数，可以加一个每次只运行一步的快捷键
-  // 现在的好处是只有在用延迟复制时才会有这个计数器，其他时候step不存在
   /**
    * 输入三个数字节点，并将所有的孩子节点更改为相应的颜色
    * @param fatherNodes
@@ -686,13 +686,10 @@ export namespace NodeLogic {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _childNodes: ConnectableEntity[],
   ): string[] {
-    step++;
     if (fatherNodes.length < 4) {
       // 多了一个逻辑节点本身，所以实际进来的节点比延迟复制需要的节点节点多一个
       return ["Error: input node contains less than 3 nodes"];
     }
-    console.log("delayCopy", fatherNodes);
-    console.log(delayStates);
     if (
       fatherNodes[0] instanceof TextNode &&
       fatherNodes[1] instanceof TextNode &&
