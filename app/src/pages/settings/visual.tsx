@@ -31,18 +31,21 @@ import {
   Workflow,
 } from "lucide-react";
 import { FieldGroup, SettingField } from "../../components/Field";
+import { useTranslation } from "react-i18next";
 
 export default function Visual() {
+  const { t } = useTranslation("visualSettingsGroup");
+
   return (
     <>
-      <FieldGroup title="Basic Settings 基础设置" icon={<Settings />}>
+      <FieldGroup title={t("basic.title")} icon={<Settings />}>
         <SettingField icon={<Languages />} settingKey="language" type="select" />
         <SettingField icon={<AppWindow />} settingKey="showTipsOnUI" type="switch" />
         <SettingField icon={<AppWindowMac />} settingKey="useNativeTitleBar" type="switch" />
         <SettingField icon={<Presentation />} settingKey="isClassroomMode" type="switch" />
         <SettingField icon={<Blend />} settingKey="windowBackgroundAlpha" type="slider" min={0} max={1} step={0.01} />
       </FieldGroup>
-      <FieldGroup title="Background 背景设置" icon={<Grip />}>
+      <FieldGroup title={t("background.title")} icon={<Grip />}>
         <SettingField icon={<Crosshair />} settingKey="isRenderCenterPointer" type="switch" />
         <SettingField icon={<Rows4 />} settingKey="showBackgroundHorizontalLines" type="switch" />
         <SettingField icon={<Columns4 />} settingKey="showBackgroundVerticalLines" type="switch" />
@@ -50,14 +53,16 @@ export default function Visual() {
         <SettingField icon={<Move3d />} settingKey="showBackgroundCartesian" type="switch" />
       </FieldGroup>
 
-      <FieldGroup title="Node & Edge 节点与连线样式" icon={<Workflow />}>
-        <SettingField icon={<Spline />} settingKey="lineStyle" type="select" />
+      <FieldGroup title={t("node.title")} icon={<Workflow />}>
         <SettingField icon={<Tag />} settingKey="enableTagTextNodesBigDisplay" type="switch" />
       </FieldGroup>
-      <FieldGroup title="Section 框" icon={<Square />}>
+      <FieldGroup title={t("edge.title")} icon={<Workflow />}>
+        <SettingField icon={<Spline />} settingKey="lineStyle" type="select" />
+      </FieldGroup>
+      <FieldGroup title={t("section.title")} icon={<Square />}>
         <SettingField icon={<SquareM />} settingKey="sectionBitTitleRenderType" type="select" />
       </FieldGroup>
-      <FieldGroup title="节点详情" icon={<ReceiptText />}>
+      <FieldGroup title={t("entityDetails.title")} icon={<ReceiptText />}>
         <SettingField icon={<AppWindow />} settingKey="nodeDetailsPanel" type="select" />
         <SettingField icon={<ListCollapse />} settingKey="alwaysShowDetails" type="switch" />
         <SettingField
@@ -85,18 +90,18 @@ export default function Visual() {
           step={100}
         />
       </FieldGroup>
-      <FieldGroup title="Help 遇到问题时相关的设置" icon={<MessageCircleQuestion />}>
+      <FieldGroup title={t("help.title")} icon={<MessageCircleQuestion />}>
         <SettingField icon={<Bug />} settingKey="showDebug" type="switch" />
         <SettingField icon={<VenetianMask />} settingKey="protectingPrivacy" type="switch" />
       </FieldGroup>
-      <FieldGroup title="Mini Window 迷你窗口" icon={<PictureInPicture />}>
+      <FieldGroup title={t("miniWindow.title")} icon={<PictureInPicture />}>
         <SettingField icon={<MoveHorizontal />} settingKey="windowCollapsingWidth" type="slider" min={50} max={2000} />
         <SettingField icon={<MoveVertical />} settingKey="windowCollapsingHeight" type="slider" min={25} max={2000} />
       </FieldGroup>
 
       <FieldGroup
-        title="Testing Functions 实验性功能"
-        description="如果您不了解下面的设置，请不要修改它们。否则您会感觉出现灵异事件"
+        title={t("testingFunctions.title")}
+        description={t("testingFunctions.description")}
         icon={<FlaskConical />}
       >
         <SettingField icon={<Ratio />} settingKey="limitCameraInCycleSpace" type="switch" />

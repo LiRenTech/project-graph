@@ -731,6 +731,66 @@ startFilePanel:
     showAbsolutePath: 显示绝对路径
     showFileTime: 显示文件时间
 
+controlSettingsGroup:
+  mouse:
+    title: 鼠标设置
+  touchpad:
+    title: 触摸板设置
+  cameraMove:
+    title: 视野移动设置
+  cameraZoom:
+    title: 视野缩放设置
+  rectangleSelect:
+    title: 框选设置
+  textNode:
+    title: 文本节点设置
+  edge:
+    title: 连线设置
+  generateNode:
+    title: 通过键盘生长节点设置
+  gamepad:
+    title: 游戏手柄设置
+
+visualSettingsGroup:
+  basic:
+    title: 基础设置
+  background:
+    title: 背景设置
+  node:
+    title: 节点样式设置
+  edge:
+    title: 连线样式设置
+  section:
+    title: “框”的样式设置
+  entityDetails:
+    title: 实体详情设置
+  help:
+    title: 遇到问题时相关的设置
+  miniWindow:
+    title: 迷你窗口设置
+  testingFunctions:
+    title: 实验性功能
+    description: |
+      如果您不了解下面的设置，请不要修改它们。否则您会感觉出现灵异事件
+
+performanceSettingsGroup:
+  memory:
+    title: 内存相关性能设置
+    description: |
+      以下设置项和内存有关，建议根据您的计算机配置进行调整
+  cpu:
+    title: CPU相关性能设置
+    description: |
+      以下设置项和CPU有关，建议根据您的计算机配置进行调整
+  render:
+    title: 渲染相关性能设置
+    description: |
+      以下设置项和渲染有关，建议根据您的计算机配置进行调整
+  dev:
+    title: 还在开发中的功能
+    description: |
+      以下设置项还在开发，不建议修改
+
 effects:
   CircleChangeRadiusEffect:
     title: 圆形变换半径效果

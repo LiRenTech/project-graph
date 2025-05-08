@@ -14,12 +14,15 @@ import {
   Ungroup,
 } from "lucide-react";
 import { FieldGroup, SettingField } from "../../components/Field";
+import { useTranslation } from "react-i18next";
 
 export default function Performance() {
+  const { t } = useTranslation("performanceSettingsGroup");
+
   return (
     <>
-      <FieldGroup title="Memory 内存" description="以下选项和设备内存相关" icon={<MemoryStick />}>
-        <SettingField icon={<Undo />} settingKey="historySize" type="slider" min={10} max={1000} step={10} />
+      <FieldGroup title={t("memory.title")} description={t("memory.description")} icon={<MemoryStick />}>
+        <SettingField icon={<Undo />} settingKey="historySize" type="slider" min={1} max={1000} step={5} />
         <SettingField icon={<ImageMinus />} settingKey="compressPastedImages" type="switch" />
         <SettingField
           icon={<ImageUpscale />}
@@ -31,10 +34,10 @@ export default function Performance() {
         />
       </FieldGroup>
 
-      <FieldGroup title="CPU 处理器" description="以下选项和设备处理器相关" icon={<Cpu />}>
+      <FieldGroup title={t("cpu.title")} description={t("cpu.description")} icon={<Cpu />}>
         <SettingField icon={<RefreshCcwDot />} settingKey="autoRefreshStageByMouseAction" type="switch" />
       </FieldGroup>
-      <FieldGroup title="Render 画面渲染" description="以下选项和设备的显卡/核显/屏幕刷新率相关" icon={<MonitorPlay />}>
+      <FieldGroup title={t("render.title")} description={t("render.description")} icon={<MonitorPlay />}>
         <SettingField icon={<Hourglass />} settingKey="isPauseRenderWhenManipulateOvertime" type="switch" />
         <SettingField
           icon={<Hourglass />}
@@ -58,11 +61,7 @@ export default function Performance() {
         />
       </FieldGroup>
 
-      <FieldGroup
-        title="开发中 Developing..."
-        description="功能正在开发中，可能存在一些问题，请谨慎使用。"
-        icon={<Hourglass />}
-      >
+      <FieldGroup title={t("dev.title")} description={t("dev.description")} icon={<Hourglass />}>
         <SettingField icon={<Turtle />} settingKey="compatibilityMode" type="switch" />
         <SettingField icon={<Ungroup />} settingKey="isEnableEntityCollision" type="switch" />
       </FieldGroup>
