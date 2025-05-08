@@ -15,7 +15,7 @@ import { PortalNode } from "../../stage/stageObject/entity/PortalNode";
 import { PathString } from "../../../utils/pathString";
 import { isWeb } from "../../../utils/platform";
 import { Vector } from "../../dataStruct/Vector";
-import { CublicCatmullRomSplineEdge } from "../../stage/stageObject/association/CublicCatmullRomSplineEdge";
+import { CubicCatmullRomSplineEdge } from "../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { MultiTargetUndirectedEdge } from "../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { RecentFileManager } from "./RecentFileManager";
 import { SvgNode } from "../../stage/stageObject/entity/SvgNode";
@@ -169,8 +169,8 @@ export namespace FileLoader {
       let newAssociation = null;
       if (Serialized.isLineEdge(edge)) {
         newAssociation = new LineEdge(edge);
-      } else if (Serialized.isCublicCatmullRomSplineEdge(edge)) {
-        newAssociation = new CublicCatmullRomSplineEdge(edge);
+      } else if (Serialized.isCubicCatmullRomSplineEdge(edge)) {
+        newAssociation = new CubicCatmullRomSplineEdge(edge);
       } else if (Serialized.isMultiTargetUndirectedEdge(edge)) {
         newAssociation = new MultiTargetUndirectedEdge(edge);
       }

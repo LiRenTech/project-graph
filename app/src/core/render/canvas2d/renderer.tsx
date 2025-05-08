@@ -18,7 +18,7 @@ import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManage
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { StageObjectSelectCounter } from "../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageObject } from "../../stage/stageObject/abstract/StageObject";
-import { CublicCatmullRomSplineEdge } from "../../stage/stageObject/association/CublicCatmullRomSplineEdge";
+import { CubicCatmullRomSplineEdge } from "../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
 import { MultiTargetUndirectedEdge } from "../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { CurveRenderer } from "./basicRenderer/curveRenderer";
@@ -635,7 +635,7 @@ export namespace Renderer {
       if (association instanceof LineEdge) {
         EdgeRenderer.renderLineEdge(association);
       }
-      if (association instanceof CublicCatmullRomSplineEdge) {
+      if (association instanceof CubicCatmullRomSplineEdge) {
         EdgeRenderer.renderCrEdge(association);
       }
       renderedEdges++;

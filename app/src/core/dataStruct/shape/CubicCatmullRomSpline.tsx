@@ -7,7 +7,7 @@ import { Shape } from "./Shape";
 /**
  * CR曲线形状
  */
-export class CublicCatmullRomSpline extends Shape {
+export class CubicCatmullRomSpline extends Shape {
   public controlPoints: Vector[];
   public alpha: number;
   public tension: number;

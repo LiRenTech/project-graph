@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
-import { CublicCatmullRomSplineEdge } from "../../stageObject/association/CublicCatmullRomSplineEdge";
+import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { GraphMethods } from "../basicMethods/GraphMethods";
@@ -68,7 +68,7 @@ export namespace StageNodeConnector {
     if (!isConnectable(fromNode, toNode)) {
       return;
     }
-    const newEdge = CublicCatmullRomSplineEdge.fromTwoEntity(fromNode, toNode);
+    const newEdge = CubicCatmullRomSplineEdge.fromTwoEntity(fromNode, toNode);
     StageManager.addCrEdge(newEdge);
     StageManager.updateReferences();
   }

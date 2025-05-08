@@ -2,7 +2,7 @@ import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 // import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
-import { StageNodeAdder } from "../../../stage/stageManager/concreteMethods/stageNodeAdder";
+import { StageNodeAdder } from "../../../stage/stageManager/concreteMethods/StageNodeAdder";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";

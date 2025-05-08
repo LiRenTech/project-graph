@@ -7,7 +7,7 @@ import { InputElement } from "../../../../render/domElement/inputElement";
 import { Camera } from "../../../../stage/Camera";
 import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
-import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/stageNodeAdder";
+import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/StageNodeAdder";
 import { StageObjectSelectCounter } from "../../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
@@ -126,6 +126,7 @@ export function editEdgeText(clickedLineEdge: Edge, selectAll = true) {
     selectAll,
   ).then(() => {
     // clickedLineEdge!.isEditing = false;
+    // 因为这里用的是不透明文本框，所以不需要停止节点上文字的渲染
     Controller.isCameraLocked = false;
     StageHistoryManager.recordStep();
   });
@@ -160,6 +161,7 @@ export function editMultiTargetEdgeText(clickedEdge: MultiTargetUndirectedEdge, 
     selectAll,
   ).then(() => {
     // clickedLineEdge!.isEditing = false;
+    // 因为这里用的是不透明文本框，所以不需要停止节点上文字的渲染
     Controller.isCameraLocked = false;
     StageHistoryManager.recordStep();
   });

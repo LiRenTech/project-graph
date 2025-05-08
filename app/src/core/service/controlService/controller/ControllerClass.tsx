@@ -105,9 +105,10 @@ export class ControllerClass {
 
   private _touchstart = (event: TouchEvent) => {
     event.preventDefault();
-    const touch = event.touches[event.touches.length - 1] as any as MouseEvent;
-    // @ts-expect-error 必须给他来一个button属性
-    touch.button = 0;
+    const touch = {
+      ...(event.touches[event.touches.length - 1] as unknown as MouseEvent),
+      button: 0, // 通过对象展开实现相对安全的属性合并
+    } as MouseEvent;
     if (event.touches.length > 1) {
       Stage.selectMachine.shutDown();
     }
@@ -116,17 +117,19 @@ export class ControllerClass {
 
   private _touchmove = (event: TouchEvent) => {
     event.preventDefault();
-    const touch = event.touches[event.touches.length - 1] as any as MouseEvent;
-    // @ts-expect-error 必须给他来一个button属性
-    touch.button = 0;
+    const touch = {
+      ...(event.touches[event.touches.length - 1] as unknown as MouseEvent),
+      button: 0, // 通过对象展开实现相对安全的属性合并
+    } as MouseEvent;
     this.mousemove(touch);
   };
 
   private _touchend = (event: TouchEvent) => {
     event.preventDefault();
-    const touch = event.changedTouches[event.changedTouches.length - 1] as any as MouseEvent;
-    // @ts-expect-error 必须给他来一个button属性
-    touch.button = 0;
+    const touch = {
+      ...(event.touches[event.touches.length - 1] as unknown as MouseEvent),
+      button: 0, // 通过对象展开实现相对安全的属性合并
+    } as MouseEvent;
     this._mouseup(touch);
   };
 

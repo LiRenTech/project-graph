@@ -16,7 +16,7 @@ import { Association } from "../stageObject/abstract/Association";
 import { ConnectableEntity } from "../stageObject/abstract/ConnectableEntity";
 import { Entity } from "../stageObject/abstract/StageEntity";
 import { StageObject } from "../stageObject/abstract/StageObject";
-import { CublicCatmullRomSplineEdge } from "../stageObject/association/CublicCatmullRomSplineEdge";
+import { CubicCatmullRomSplineEdge } from "../stageObject/association/CubicCatmullRomSplineEdge";
 import { Edge } from "../stageObject/association/Edge";
 import { LineEdge } from "../stageObject/association/LineEdge";
 import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
@@ -28,7 +28,7 @@ import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
 import { GraphMethods } from "./basicMethods/GraphMethods";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
-import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
+import { StageNodeAdder } from "./concreteMethods/StageNodeAdder";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
 import { StageObjectSelectCounter } from "./concreteMethods/StageObjectSelectCounter";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
@@ -284,8 +284,8 @@ export namespace StageManager {
   export function getLineEdges(): LineEdge[] {
     return stageContent.associations.valuesToArray().filter((edge) => edge instanceof LineEdge);
   }
-  export function getCrEdges(): CublicCatmullRomSplineEdge[] {
-    return stageContent.associations.valuesToArray().filter((edge) => edge instanceof CublicCatmullRomSplineEdge);
+  export function getCrEdges(): CubicCatmullRomSplineEdge[] {
+    return stageContent.associations.valuesToArray().filter((edge) => edge instanceof CubicCatmullRomSplineEdge);
   }
 
   /** 关于标签的相关操作 */
@@ -375,7 +375,7 @@ export namespace StageManager {
   export function addLineEdge(edge: LineEdge) {
     stageContent.associations.addValue(edge, edge.uuid);
   }
-  export function addCrEdge(edge: CublicCatmullRomSplineEdge) {
+  export function addCrEdge(edge: CubicCatmullRomSplineEdge) {
     stageContent.associations.addValue(edge, edge.uuid);
   }
   export function addPenStroke(penStroke: PenStroke) {
@@ -1014,7 +1014,7 @@ export namespace StageManager {
 
   export function addSelectedCREdgeControlPoint() {
     const selectedCREdge = StageManager.getSelectedAssociations().filter(
-      (edge) => edge instanceof CublicCatmullRomSplineEdge,
+      (edge) => edge instanceof CubicCatmullRomSplineEdge,
     );
     for (const edge of selectedCREdge) {
       edge.addControlPoint();
@@ -1023,7 +1023,7 @@ export namespace StageManager {
 
   export function addSelectedCREdgeTension() {
     const selectedCREdge = StageManager.getSelectedAssociations().filter(
-      (edge) => edge instanceof CublicCatmullRomSplineEdge,
+      (edge) => edge instanceof CubicCatmullRomSplineEdge,
     );
     for (const edge of selectedCREdge) {
       edge.tension += 0.25;
@@ -1033,7 +1033,7 @@ export namespace StageManager {
 
   export function reduceSelectedCREdgeTension() {
     const selectedCREdge = StageManager.getSelectedAssociations().filter(
-      (edge) => edge instanceof CublicCatmullRomSplineEdge,
+      (edge) => edge instanceof CubicCatmullRomSplineEdge,
     );
     for (const edge of selectedCREdge) {
       edge.tension -= 0.25;
