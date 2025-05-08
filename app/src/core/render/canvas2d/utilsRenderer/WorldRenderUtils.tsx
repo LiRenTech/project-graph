@@ -1,5 +1,5 @@
 import { Color } from "../../../dataStruct/Color";
-import { CublicCatmullRomSpline } from "../../../dataStruct/shape/CublicCatmullRomSpline";
+import { CubicCatmullRomSpline } from "../../../dataStruct/shape/CubicCatmullRomSpline";
 import { CubicBezierCurve, SymmetryCurve } from "../../../dataStruct/shape/Curve";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
@@ -19,7 +19,7 @@ export namespace WorldRenderUtils {
    * 绘制一条Catmull-Rom样条线
    * @param curve
    */
-  export function renderCublicCatmullRomSpline(spline: CublicCatmullRomSpline, color: Color, width: number): void {
+  export function renderCubicCatmullRomSpline(spline: CubicCatmullRomSpline, color: Color, width: number): void {
     const points = spline.computePath().map(Renderer.transformWorld2View);
     width *= Camera.currentScale;
     const start = Renderer.transformWorld2View(spline.controlPoints[1]);

@@ -10,7 +10,7 @@ import { PortalNode } from "../../stageObject/entity/PortalNode";
 import { PenStroke } from "../../stageObject/entity/PenStroke";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
 import { Entity } from "../../stageObject/abstract/StageEntity";
-import { CublicCatmullRomSplineEdge } from "../../stageObject/association/CublicCatmullRomSplineEdge";
+import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
 /**
  * 直接向舞台中添加序列化数据
@@ -50,8 +50,8 @@ export namespace StageSerializedAdder {
     for (const edge of updatedSerializedData.associations) {
       if (Serialized.isLineEdge(edge)) {
         StageManager.addLineEdge(new LineEdge(edge));
-      } else if (Serialized.isCublicCatmullRomSplineEdge(edge)) {
-        StageManager.addCrEdge(new CublicCatmullRomSplineEdge(edge));
+      } else if (Serialized.isCubicCatmullRomSplineEdge(edge)) {
+        StageManager.addCrEdge(new CubicCatmullRomSplineEdge(edge));
       }
     }
     StageManager.updateReferences();

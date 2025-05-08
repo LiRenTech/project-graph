@@ -1,6 +1,6 @@
 import { Color } from "../../../dataStruct/Color";
 import { Circle } from "../../../dataStruct/shape/Circle";
-import { CublicCatmullRomSpline } from "../../../dataStruct/shape/CublicCatmullRomSpline";
+import { CubicCatmullRomSpline } from "../../../dataStruct/shape/CubicCatmullRomSpline";
 import { SymmetryCurve } from "../../../dataStruct/shape/Curve";
 import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
@@ -50,8 +50,8 @@ export namespace CollisionBoxRenderer {
         // const size = 15; // 箭头大小
         // shape.end = shape.end.subtract(shape.endDirection.multiply(size / -2));
         WorldRenderUtils.renderSymmetryCurve(shape, color, 10);
-      } else if (shape instanceof CublicCatmullRomSpline) {
-        WorldRenderUtils.renderCublicCatmullRomSpline(shape, color, 10);
+      } else if (shape instanceof CubicCatmullRomSpline) {
+        WorldRenderUtils.renderCubicCatmullRomSpline(shape, color, 10);
       }
     }
   }

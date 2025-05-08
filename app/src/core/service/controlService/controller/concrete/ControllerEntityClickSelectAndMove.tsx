@@ -50,6 +50,8 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
       } else if (Controller.pressingKeySet.has("shift")) {
         // shift 按下，只选中节点
         clickedStageObject.isSelected = true;
+        // 没有实体被选中则return
+        if (StageManager.getSelectedEntities().length === 0) return;
         const rectangles = StageManager.getSelectedEntities().map((entity) => entity.collisionBox.getRectangle());
         const boundingRectangle = Rectangle.getBoundingRectangle(rectangles);
         Stage.effectMachine.addEffect(RectangleRenderEffect.fromShiftClickSelect(boundingRectangle));

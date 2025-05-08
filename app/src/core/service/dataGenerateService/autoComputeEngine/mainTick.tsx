@@ -201,6 +201,8 @@ export function autoComputeEngineTick(tickNumber: number) {
   )) {
     computeEdge(edge);
   }
+  NodeLogic.step++;
+  // 逻辑引擎执行一步，计数器+1
 }
 
 export function isTextNodeLogic(node: TextNode): boolean {

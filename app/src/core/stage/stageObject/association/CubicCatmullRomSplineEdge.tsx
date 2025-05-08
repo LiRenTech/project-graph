@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
-import { CublicCatmullRomSpline } from "../../../dataStruct/shape/CublicCatmullRomSpline";
+import { CubicCatmullRomSpline } from "../../../dataStruct/shape/CubicCatmullRomSpline";
 import { Vector } from "../../../dataStruct/Vector";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
@@ -17,7 +17,7 @@ import { Color } from "../../../dataStruct/Color";
  * alpha 不用自己修改了，这个是0.5固定值了，只会微微影响形状
  * tension 控制曲线的弯曲程度，0是折线。
  */
-export class CublicCatmullRomSplineEdge extends Edge {
+export class CubicCatmullRomSplineEdge extends Edge {
   public uuid: string;
   public text: string;
   protected _source: ConnectableEntity;
@@ -49,18 +49,18 @@ export class CublicCatmullRomSplineEdge extends Edge {
     return this._collisionBox;
   }
 
-  static fromTwoEntity(source: ConnectableEntity, target: ConnectableEntity): CublicCatmullRomSplineEdge {
+  static fromTwoEntity(source: ConnectableEntity, target: ConnectableEntity): CubicCatmullRomSplineEdge {
     // 处理控制点，控制点必须有四个，1 2 3 4，12可重叠，34可重叠
     const startLocation = source.geometryCenter.clone();
     const endLocation = target.geometryCenter.clone();
     const line = Edge.getCenterLine(source, target);
 
-    const result = new CublicCatmullRomSplineEdge({
+    const result = new CubicCatmullRomSplineEdge({
       source: source.uuid,
       target: target.uuid,
       text: "",
       uuid: uuidv4(),
-      type: "core:cublic_catmull_rom_spline_edge",
+      type: "core:cubic_catmull_rom_spline_edge",
       alpha: 0.5,
       tension: 0,
       color: [0, 0, 0, 0],
@@ -88,7 +88,7 @@ export class CublicCatmullRomSplineEdge extends Edge {
       controlPoints,
       sourceRectRate,
       targetRectRate,
-    }: Serialized.CublicCatmullRomSplineEdge /** true表示解析状态，false表示解析完毕 */,
+    }: Serialized.CubicCatmullRomSplineEdge /** true表示解析状态，false表示解析完毕 */,
     public unknown = false,
   ) {
     super();
@@ -104,12 +104,12 @@ export class CublicCatmullRomSplineEdge extends Edge {
     this.controlPoints = controlPoints.map((item) => new Vector(item[0], item[1]));
     this.setSourceRectangleRate(new Vector(...sourceRectRate));
     this.setTargetRectangleRate(new Vector(...targetRectRate));
-    this._collisionBox = new CollisionBox([new CublicCatmullRomSpline(this.controlPoints, this.alpha, this.tension)]);
+    this._collisionBox = new CollisionBox([new CubicCatmullRomSpline(this.controlPoints, this.alpha, this.tension)]);
   }
 
-  public getShape(): CublicCatmullRomSpline {
+  public getShape(): CubicCatmullRomSpline {
     // 重新计算形状
-    const crShape = this._collisionBox.shapeList[0] as CublicCatmullRomSpline;
+    const crShape = this._collisionBox.shapeList[0] as CubicCatmullRomSpline;
     this.autoUpdateControlPoints(); // ?
     return crShape;
   }
@@ -135,14 +135,14 @@ export class CublicCatmullRomSplineEdge extends Edge {
       this.controlPoints = [startLocation, line.start].concat(middleControlPoints).concat([line.end, endLocation]);
     }
     // 重新生成新的形状
-    this._collisionBox.shapeList = [new CublicCatmullRomSpline(this.controlPoints, this.alpha, this.tension)];
+    this._collisionBox.shapeList = [new CubicCatmullRomSpline(this.controlPoints, this.alpha, this.tension)];
   }
 
   /**
    * 获取箭头的位置和方向
    */
   getArrowHead(): { location: Vector; direction: Vector } {
-    const crShape = this._collisionBox.shapeList[0] as CublicCatmullRomSpline;
+    const crShape = this._collisionBox.shapeList[0] as CubicCatmullRomSpline;
     const location = crShape.controlPoints[crShape.controlPoints.length - 2].clone();
     const lines = crShape.computeFunction();
     const funcs = lines[lines.length - 1];

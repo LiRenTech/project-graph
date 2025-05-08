@@ -1,6 +1,6 @@
 import { Association } from "../../stageObject/abstract/Association";
 import { Entity } from "../../stageObject/abstract/StageEntity";
-import { CublicCatmullRomSplineEdge } from "../../stageObject/association/CublicCatmullRomSplineEdge";
+import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";
 import { Edge } from "../../stageObject/association/Edge";
 import { MultiTargetUndirectedEdge } from "../../stageObject/association/MutiTargetUndirectedEdge";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
@@ -72,7 +72,7 @@ export namespace StageObjectSelectCounter {
         }
         if (stageObject instanceof Edge) {
           selectedEdgeCount++;
-          if (stageObject instanceof CublicCatmullRomSplineEdge) {
+          if (stageObject instanceof CubicCatmullRomSplineEdge) {
             selectedCREdgeCount++;
           }
         }

@@ -14,7 +14,7 @@ import { ControllerClass } from "../ControllerClass";
 import { addTextNodeByLocation } from "./utilsControl";
 import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
-import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/stageNodeAdder";
+import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/StageNodeAdder";
 import { Line } from "../../../../dataStruct/shape/Line";
 import { Direction } from "../../../../../types/directions";
 

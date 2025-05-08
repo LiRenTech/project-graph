@@ -3,7 +3,7 @@ import { Color } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Settings } from "../../../../service/Settings";
 import { Camera } from "../../../../stage/Camera";
-import { CublicCatmullRomSplineEdge } from "../../../../stage/stageObject/association/CublicCatmullRomSplineEdge";
+import { CubicCatmullRomSplineEdge } from "../../../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 
@@ -106,14 +106,14 @@ export namespace EdgeRenderer {
     }
   }
 
-  export function renderCrEdge(edge: CublicCatmullRomSplineEdge) {
+  export function renderCrEdge(edge: CubicCatmullRomSplineEdge) {
     if (edge.source.isHiddenBySectionCollapse && edge.target.isHiddenBySectionCollapse) {
       return;
     }
     const crShape = edge.getShape();
     const edgeColor = edge.color.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : edge.color;
     // 画曲线
-    WorldRenderUtils.renderCublicCatmullRomSpline(crShape, edgeColor, 2);
+    WorldRenderUtils.renderCubicCatmullRomSpline(crShape, edgeColor, 2);
     if (edge.isSelected) {
       CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }

@@ -13,7 +13,7 @@ import { StageManager } from "../../../stage/stageManager/StageManager";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 import { LayoutManualAlignManager } from "../../../stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
-import { CublicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CublicCatmullRomSplineEdge";
+import { CubicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
 import { PortalNode } from "../../../stage/stageObject/entity/PortalNode";
 import { Section } from "../../../stage/stageObject/entity/Section";
@@ -626,7 +626,7 @@ export class SecretKeysEngine {
       isHidden: true,
       func() {
         const selectedCREdge = StageManager.getSelectedAssociations().filter(
-          (edge) => edge instanceof CublicCatmullRomSplineEdge,
+          (edge) => edge instanceof CubicCatmullRomSplineEdge,
         );
         for (const edge of selectedCREdge) {
           edge.addControlPoint();
