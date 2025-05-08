@@ -43,7 +43,6 @@ class ControllerNodeConnectionClass extends ControllerClass {
   public connectFromEntities: ConnectableEntity[] = [];
   public connectToEntity: ConnectableEntity | null = null;
 
-  // TODO: 记录鼠标移动轨迹
   private mouseLocations: Vector[] = [];
   public getMouseLocationsPoints(): Vector[] {
     return this.mouseLocations;
@@ -382,32 +381,32 @@ class ControllerNodeConnectionClass extends ControllerClass {
     let sourceRectRate: [number, number] = [0.5, 0.5];
     switch (sourceDirection) {
       case Direction.Left:
-        sourceRectRate = [0, 0.5];
+        sourceRectRate = [0.01, 0.5];
         break;
       case Direction.Right:
-        sourceRectRate = [1, 0.5];
+        sourceRectRate = [0.99, 0.5];
         break;
       case Direction.Up:
-        sourceRectRate = [0.5, 0];
+        sourceRectRate = [0.5, 0.01];
         break;
       case Direction.Down:
-        sourceRectRate = [0.5, 1];
+        sourceRectRate = [0.5, 0.99];
         break;
     }
     // 计算出源头位置
     let targetRectRate: [number, number] = [0.5, 0.5];
     switch (targetDirection) {
       case Direction.Left:
-        targetRectRate = [0, 0.5];
+        targetRectRate = [0.01, 0.5];
         break;
       case Direction.Right:
-        targetRectRate = [1, 0.5];
+        targetRectRate = [0.99, 0.5];
         break;
       case Direction.Up:
-        targetRectRate = [0.5, 0];
+        targetRectRate = [0.5, 0.01];
         break;
       case Direction.Down:
-        targetRectRate = [0.5, 1];
+        targetRectRate = [0.5, 0.99];
         break;
     }
     // 连线
