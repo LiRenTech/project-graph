@@ -495,7 +495,9 @@ export namespace ShortcutKeysRegister {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
         newRect.location.y -= 100;
-        Stage.effectMachine.addEffect(RectangleSlideEffect.verticalSlide(rect, newRect, Color.Blue));
+        Stage.effectMachine.addEffect(
+          RectangleSlideEffect.verticalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
+        );
       }
       StageEntityMoveManager.moveSelectedEntities(new Vector(0, -100));
     });
@@ -514,7 +516,9 @@ export namespace ShortcutKeysRegister {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
         newRect.location.y += 100;
-        Stage.effectMachine.addEffect(RectangleSlideEffect.verticalSlide(rect, newRect, Color.Blue));
+        Stage.effectMachine.addEffect(
+          RectangleSlideEffect.verticalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
+        );
       }
       StageEntityMoveManager.moveSelectedEntities(new Vector(0, 100));
     });
@@ -532,7 +536,9 @@ export namespace ShortcutKeysRegister {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
         newRect.location.x -= 100;
-        Stage.effectMachine.addEffect(RectangleSlideEffect.horizontalSlide(rect, newRect, Color.Blue));
+        Stage.effectMachine.addEffect(
+          RectangleSlideEffect.horizontalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
+        );
       }
       StageEntityMoveManager.moveSelectedEntities(new Vector(-100, 0));
     });
@@ -551,7 +557,9 @@ export namespace ShortcutKeysRegister {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
         newRect.location.x += 100;
-        Stage.effectMachine.addEffect(RectangleSlideEffect.horizontalSlide(rect, newRect, Color.Blue));
+        Stage.effectMachine.addEffect(
+          RectangleSlideEffect.horizontalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
+        );
       }
       StageEntityMoveManager.moveSelectedEntities(new Vector(100, 0));
     });

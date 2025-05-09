@@ -911,6 +911,11 @@ effects:
     title: 鼠标交互提示特效
     description: |
       在鼠标进行缩放视野等操作时，鼠标旁边会出现特效提示，例如一个变大或变小的圆圈
+  RectangleSlideEffect:
+    title: 矩形滑动尾翼特效
+    description: |
+      用于垂直方向键盘移动实体
+
   
 
 keys:
