@@ -18,6 +18,7 @@ import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { CopyEngine } from "../../dataManageService/copyEngine/copyEngine";
+import { RectangleSlideEffect } from "../../feedbackService/effectEngine/concrete/RectangleSlideEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewOutlineFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
 import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
@@ -489,6 +490,15 @@ export namespace ShortcutKeysRegister {
       })
     ).down(() => {
       if (!KeyboardOnlyEngine.isOpenning()) return;
+      const entities = StageManager.getEntities().filter((e) => e.isSelected);
+      if (entities.length > 0) {
+        const rect = entities[0].collisionBox.getRectangle();
+        const newRect = rect.clone();
+        newRect.location.y -= 100;
+        Stage.effectMachine.addEffect(
+          RectangleSlideEffect.verticalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
+        );
+      }
       StageEntityMoveManager.moveSelectedEntities(new Vector(0, -100));
     });
 
@@ -501,6 +511,15 @@ export namespace ShortcutKeysRegister {
       })
     ).down(() => {
       if (!KeyboardOnlyEngine.isOpenning()) return;
+      const entities = StageManager.getEntities().filter((e) => e.isSelected);
+      if (entities.length > 0) {
+        const rect = entities[0].collisionBox.getRectangle();
+        const newRect = rect.clone();
+        newRect.location.y += 100;
+        Stage.effectMachine.addEffect(
+          RectangleSlideEffect.verticalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
+        );
+      }
       StageEntityMoveManager.moveSelectedEntities(new Vector(0, 100));
     });
 
@@ -512,6 +531,15 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
+      const entities = StageManager.getEntities().filter((e) => e.isSelected);
+      if (entities.length > 0) {
+        const rect = entities[0].collisionBox.getRectangle();
+        const newRect = rect.clone();
+        newRect.location.x -= 100;
+        Stage.effectMachine.addEffect(
+          RectangleSlideEffect.horizontalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
+        );
+      }
       StageEntityMoveManager.moveSelectedEntities(new Vector(-100, 0));
     });
 
@@ -524,6 +552,15 @@ export namespace ShortcutKeysRegister {
       })
     ).down(() => {
       if (!KeyboardOnlyEngine.isOpenning()) return;
+      const entities = StageManager.getEntities().filter((e) => e.isSelected);
+      if (entities.length > 0) {
+        const rect = entities[0].collisionBox.getRectangle();
+        const newRect = rect.clone();
+        newRect.location.x += 100;
+        Stage.effectMachine.addEffect(
+          RectangleSlideEffect.horizontalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
+        );
+      }
       StageEntityMoveManager.moveSelectedEntities(new Vector(100, 0));
     });
     (
