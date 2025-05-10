@@ -14,6 +14,7 @@ import {
   Scan,
   SendToBack,
   Spline,
+  Split,
   SquareDashed,
   SquareMenu,
 } from "lucide-react";
@@ -98,6 +99,16 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
     ],
   },
   {
+    title: "expandSelect",
+    icon: <Split className="rotate-90" />,
+    keys: [
+      "expandSelectEntity",
+      "expandSelectEntityReversed",
+      "expandSelectEntityKeepLastSelected",
+      "expandSelectEntityReversedKeepLastSelected",
+    ],
+  },
+  {
     title: "moveEntity",
     icon: <Move />,
     keys: [
@@ -111,6 +122,7 @@ export const shortcutKeysGroups: ShortcutKeysGroup[] = [
       "jumpMoveRightSelectedEntities",
     ],
   },
+
   {
     title: "generateTextNodeInTree",
     icon: <Network className="-rotate-90" />,

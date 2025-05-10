@@ -1054,6 +1054,50 @@ export namespace ShortcutKeysRegister {
       if (!KeyboardOnlyEngine.isOpenning()) return;
       PenStrokeMethods.selectEntityByPenStroke();
     });
+    (
+      await KeyBinds.create("expandSelectEntity", "w", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: false,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.expandSelect(false, false);
+    });
+    (
+      await KeyBinds.create("expandSelectEntityReversed", "w", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: false,
+        shift: true,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.expandSelect(false, true);
+    });
+    (
+      await KeyBinds.create("expandSelectEntityKeepLastSelected", "w", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: true,
+        shift: false,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.expandSelect(true, false);
+    });
+    (
+      await KeyBinds.create("expandSelectEntityReversedKeepLastSelected", "w", {
+        control: isMac ? false : true,
+        meta: isMac,
+        alt: true,
+        shift: true,
+      })
+    ).down(async () => {
+      if (!KeyboardOnlyEngine.isOpenning()) return;
+      SelectChangeEngine.expandSelect(true, true);
+    });
 
     (
       await KeyBinds.create("generateNodeTreeWithDeepMode", "tab", {

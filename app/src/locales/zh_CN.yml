@@ -967,7 +967,7 @@ keyBindsGroup:
     description: |
       涂鸦相关功能
   select:
-    title: 选择
+    title: 切换选择
     description: |
       使用键盘来切换选中的实体
   moveEntity:
@@ -998,6 +998,10 @@ keyBindsGroup:
     title: 连线相关
     description: |
       关于连线的一些功能
+  expandSelect:
+    title: 扩散选择
+    description: |
+      扩散选择节点相关的快捷键
   
 
 keyBinds:
@@ -1301,6 +1305,22 @@ keyBinds:
       如果当前选择的是涂鸦，则扩散选择涂鸦触碰到的实体
       如果当前选择的是实体，则扩散选触碰到的所有涂鸦
       多次按下后可以多次交替扩散
+  expandSelectEntity:
+    title: 扩散选择节点
+    description: |
+      按下后，实体的选择状态会转移到子级节点上
+  expandSelectEntityReversed:
+    title: 反向扩散选择节点
+    description: |
+      按下后，实体的选择状态会转移到父级节点上
+  expandSelectEntityKeepLastSelected:
+    title: 扩散选择节点（保留当前节点的选择状态）
+    description: |
+      按下后，实体的选择状态会转移到子级节点上，同时保留当前节点的选择状态
+  expandSelectEntityReversedKeepLastSelected:
+    title: 反向扩散选择节点（保留当前节点的选择状态）
+    description: |
+      按下后，实体的选择状态会转移到父级节点上，同时保留当前节点的选择状态
   checkoutLeftMouseToSelectAndMove:
     title: 设置左键为“选中/移动”模式
     description: |
