@@ -25,6 +25,7 @@ import { CurveRenderer } from "./basicRenderer/curveRenderer";
 import { ShapeRenderer } from "./basicRenderer/shapeRenderer";
 import { SvgRenderer } from "./basicRenderer/svgRenderer";
 import { TextRenderer } from "./basicRenderer/textRenderer";
+import { TextNodeRenderer } from "./entityRenderer/textNode/TextNodeRenderer";
 import { DrawingControllerRenderer } from "./controllerRenderer/drawingRenderer";
 import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
 import { EntityRenderer } from "./entityRenderer/EntityRenderer";
@@ -129,6 +130,7 @@ export namespace Renderer {
 
   // 确保这个函数在软件打开的那一次调用
   export function init() {
+    TextNodeRenderer.init();
     Settings.watch("entityDetailsFontSize", (value) => {
       FONT_SIZE_DETAILS = value;
     });

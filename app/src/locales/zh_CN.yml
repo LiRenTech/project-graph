@@ -146,6 +146,10 @@ settings:
     description: |
       开启后，标签文本节点的显示在摄像机缩小到广袤的全局视野时，
       标签会巨大化显示，以便更容易辨识整个文件的布局分布
+  showTextNodeBorder:
+    title: 显示文本节点边框
+    description: |
+      控制是否显示文本节点的边框
   sectionBitTitleRenderType:
     title: 框的缩略大标题渲染类型
     options:

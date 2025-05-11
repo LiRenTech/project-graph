@@ -57,6 +57,7 @@ export namespace Settings {
     isPauseRenderWhenManipulateOvertime: boolean;
     renderOverTimeWhenNoManipulateTime: number;
     ignoreTextNodeTextRenderLessThanCameraScale: number;
+    showTextNodeBorder: boolean;
     // 自动化相关
     autoNamerTemplate: string;
     autoNamerSectionTemplate: string;
@@ -179,6 +180,7 @@ export namespace Settings {
     isPauseRenderWhenManipulateOvertime: true,
     renderOverTimeWhenNoManipulateTime: 5,
     ignoreTextNodeTextRenderLessThanCameraScale: 0.065,
+    showTextNodeBorder: true,
     autoRefreshStageByMouseAction: true,
     compressPastedImages: true,
     maxPastedImageSize: 1920,

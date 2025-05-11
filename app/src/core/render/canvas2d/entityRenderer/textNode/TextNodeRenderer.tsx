@@ -3,6 +3,7 @@ import { Color, colorInvert } from "../../../../dataStruct/Color";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { AutoComputeUtils } from "../../../../service/dataGenerateService/autoComputeEngine/AutoComputeUtils";
+import { Settings } from "../../../../service/Settings";
 import {
   getLogicNodeRenderName,
   LogicNodeNameEnum,
@@ -19,6 +20,15 @@ import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
 import { EntityRenderer } from "../EntityRenderer";
 
 export namespace TextNodeRenderer {
+  let showTextNodeBorder = true;
+
+  // 初始化时监听设置变化
+  export function init() {
+    Settings.watch("showTextNodeBorder", (value) => {
+      showTextNodeBorder = value;
+    });
+  }
+
   export function renderTextNode(node: TextNode) {
     // 节点身体矩形
     let fillColor = node.color;
@@ -27,14 +37,14 @@ export namespace TextNodeRenderer {
       color.a = 0.2;
       fillColor = color;
     }
+    const borderColor = showTextNodeBorder ? StageStyleManager.currentStyle.StageObjectBorder : Color.Transparent;
     ShapeRenderer.renderRect(
       new Rectangle(
         Renderer.transformWorld2View(node.rectangle.location),
         node.rectangle.size.multiply(Camera.currentScale),
       ),
       fillColor,
-      StageStyleManager.currentStyle.StageObjectBorder,
-      // Color.Transparent,
+      borderColor,
       2 * Camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     );
