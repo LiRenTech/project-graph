@@ -35,7 +35,7 @@
       "persistent": true
     },
     "@pg/app#tauri:dev": {
-      "with": ["dev", "@pg/docs#dev", "@pg/ui#dev"],
+      "with": ["dev", "@pg/docs#dev"],
       "outputs": ["app/src-tauri/target/debug/**"],
       "persistent": true
     },
