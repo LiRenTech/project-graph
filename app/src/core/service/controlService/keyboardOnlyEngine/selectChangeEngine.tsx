@@ -4,6 +4,7 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
+import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { StageObjectSelectCounter } from "../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
@@ -17,6 +18,11 @@ import { KeyboardOnlyEngine } from "./keyboardOnlyEngine";
 export namespace SelectChangeEngine {
   let lastSelectNodeByKeyboardUUID = "";
 
+  /**
+   * 向上选择节点
+   * @param addSelect
+   * @returns
+   */
   export function selectUp(addSelect = false) {
     if (!KeyboardOnlyEngine.isOpenning()) {
       return;
@@ -32,6 +38,11 @@ export namespace SelectChangeEngine {
     afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
   }
 
+  /**
+   * 向下选择节点
+   * @param addSelect
+   * @returns
+   */
   export function selectDown(addSelect = false) {
     if (!KeyboardOnlyEngine.isOpenning()) {
       return;
@@ -47,6 +58,11 @@ export namespace SelectChangeEngine {
     afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
   }
 
+  /**
+   * 向左选择
+   * @param addSelect
+   * @returns
+   */
   export function selectLeft(addSelect = false) {
     if (!KeyboardOnlyEngine.isOpenning()) {
       return;
@@ -62,6 +78,11 @@ export namespace SelectChangeEngine {
     afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
   }
 
+  /**
+   * 向右选择
+   * @param addSelect
+   * @returns
+   */
   export function selectRight(addSelect = false) {
     if (!KeyboardOnlyEngine.isOpenning()) {
       return;
@@ -75,6 +96,66 @@ export namespace SelectChangeEngine {
       selectedNode.collisionBox.getRectangle().center,
     );
     afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
+  }
+
+  /**
+   * 扩散选择（根据连线）
+   * @param isKeepExpand 扩散后是否保持原有的选择
+   * @param reversed 是否反向扩散
+   * @returns
+   */
+  export function expandSelect(isKeepExpand = false, reversed: boolean = false) {
+    if (!KeyboardOnlyEngine.isOpenning()) {
+      return;
+    }
+
+    const selectedEntities = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
+    // 当前选择的节点
+    const selectedEntitiesUUIDSet = new Set<string>();
+    selectedEntities.map((entity) => selectedEntitiesUUIDSet.add(entity.uuid));
+    if (selectedEntities.length === 0) {
+      return;
+    }
+    // 第一步后继节点集合 或 前驱节点集合
+    const expandUUIDSet: Set<string> = new Set();
+
+    if (reversed) {
+      // 反向扩散
+      for (const selectedEntity of selectedEntities) {
+        GraphMethods.nodeParentArray(selectedEntity).map((entity) => expandUUIDSet.add(entity.uuid));
+      }
+    } else {
+      // 收集所有第一步后继节点
+      for (const selectedEntity of selectedEntities) {
+        GraphMethods.getOneStepSuccessorSet(selectedEntity).map((entity) => expandUUIDSet.add(entity.uuid));
+      }
+    }
+    console.log("expandUUIDSet", expandUUIDSet);
+
+    if (isKeepExpand) {
+      // 保留原有的选择 的扩散
+      const combinedUUIDSet = new Set([...selectedEntitiesUUIDSet, ...expandUUIDSet]);
+      for (const newUUID of combinedUUIDSet) {
+        const newEntity = StageManager.getConnectableEntityByUUID(newUUID);
+        if (newEntity) {
+          newEntity.isSelected = true;
+        }
+      }
+    } else {
+      // 全新的扩散
+      for (const newUUID of expandUUIDSet) {
+        const newEntity = StageManager.getConnectableEntityByUUID(newUUID);
+        if (newEntity) {
+          newEntity.isSelected = true;
+        }
+      }
+      for (const oldUUID of selectedEntitiesUUIDSet) {
+        const oldEntity = StageManager.getConnectableEntityByUUID(oldUUID);
+        if (oldEntity) {
+          oldEntity.isSelected = false;
+        }
+      }
+    }
   }
 
   /**

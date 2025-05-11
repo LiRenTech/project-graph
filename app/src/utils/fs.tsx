@@ -42,6 +42,33 @@ export async function readFolderRecursive(path: string, fileExts: string[]): Pro
   }
 }
 
+/**
+ * 文件结构类型
+ */
+export type FolderEntry = {
+  name: string;
+  path: string;
+  is_file: boolean;
+  children?: FolderEntry[];
+};
+
+/**
+ * 递归的读取一个文件夹，并返回一个树形结构
+ * @param path
+ * @returns
+ */
+export async function readFolderStructure(path: string): Promise<FolderEntry> {
+  if (isWeb) {
+    return {
+      name: "网页版本暂不支持此功能",
+      path: "",
+      is_file: true,
+    };
+  } else {
+    return invoke("read_folder_structure", { path });
+  }
+}
+
 export async function deleteFile(path: string): Promise<boolean> {
   if (isWeb) {
     return false;

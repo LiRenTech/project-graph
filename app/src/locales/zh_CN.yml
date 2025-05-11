@@ -619,6 +619,12 @@ appMenu:
       openCacheFolder:
         title: 缓存文件夹
         description: 打开软件缓存文件夹，内部存放软件运行时产生的缓存数据，以及默认的草稿备份文件
+  import:
+    title: 导入
+    items:
+      generateSectionByFolder: 
+        title: 根据本地文件夹生成框图
+        description: 选择一个本地文件夹后，将该文件夹下所有文件生成为一个框嵌套图
   export:
     title: 导出
     items:
@@ -965,7 +971,7 @@ keyBindsGroup:
     description: |
       涂鸦相关功能
   select:
-    title: 选择
+    title: 切换选择
     description: |
       使用键盘来切换选中的实体
   moveEntity:
@@ -996,6 +1002,10 @@ keyBindsGroup:
     title: 连线相关
     description: |
       关于连线的一些功能
+  expandSelect:
+    title: 扩散选择
+    description: |
+      扩散选择节点相关的快捷键
   
 
 keyBinds:
@@ -1299,6 +1309,22 @@ keyBinds:
       如果当前选择的是涂鸦，则扩散选择涂鸦触碰到的实体
       如果当前选择的是实体，则扩散选触碰到的所有涂鸦
       多次按下后可以多次交替扩散
+  expandSelectEntity:
+    title: 扩散选择节点
+    description: |
+      按下后，实体的选择状态会转移到子级节点上
+  expandSelectEntityReversed:
+    title: 反向扩散选择节点
+    description: |
+      按下后，实体的选择状态会转移到父级节点上
+  expandSelectEntityKeepLastSelected:
+    title: 扩散选择节点（保留当前节点的选择状态）
+    description: |
+      按下后，实体的选择状态会转移到子级节点上，同时保留当前节点的选择状态
+  expandSelectEntityReversedKeepLastSelected:
+    title: 反向扩散选择节点（保留当前节点的选择状态）
+    description: |
+      按下后，实体的选择状态会转移到父级节点上，同时保留当前节点的选择状态
   checkoutLeftMouseToSelectAndMove:
     title: 设置左键为“选中/移动”模式
     description: |

@@ -17,6 +17,7 @@ import {
   FolderClock,
   FolderCog,
   FolderOpen,
+  Folders,
   Fullscreen,
   Group,
   Image as ImageIcon,
@@ -82,6 +83,7 @@ import ExportSvgPanel from "./_popup_panel/_export_svg_panel";
 import { FileLoader } from "../core/service/dataFileService/fileLoader";
 import { Vector } from "../core/dataStruct/Vector";
 import { Controller } from "../core/service/controlService/controller/Controller";
+import { GenerateFromFolderEngine } from "../core/service/dataGenerateService/generateFromFolderEngine/generateFromFolderEngine";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -281,6 +283,20 @@ export default function AppMenu({ className = "", open = false }: { className?: 
         type: "error",
       });
     }
+  };
+
+  const openFolderByDialogWindow = async () => {
+    const path = await openFileDialog({
+      title: "打开文件夹",
+      directory: true,
+      multiple: false,
+      filters: [],
+    });
+    if (!path) {
+      return;
+    }
+    // console.log(path);
+    GenerateFromFolderEngine.generateFromFolder(path);
   };
 
   const onSave = async () => {
@@ -517,6 +533,17 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           </Col>
         </Row>
       )}
+      <Row icon={<File />} title={t("import.title")}>
+        <Col
+          icon={<Folders />}
+          onClick={() => {
+            openFolderByDialogWindow();
+          }}
+          details={t("import.items.generateSectionByFolder.description")}
+        >
+          {t("import.items.generateSectionByFolder.title")}
+        </Col>
+      </Row>
       <Row icon={<File />} title={t("export.title")}>
         <Col icon={<FileCode />} onClick={() => Popup.show(<ExportSvgPanel />, false)}>
           {t("export.items.exportAsSvg")}
