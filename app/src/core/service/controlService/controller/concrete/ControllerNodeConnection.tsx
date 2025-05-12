@@ -17,6 +17,8 @@ import { SectionMethods } from "../../../../stage/stageManager/basicMethods/Sect
 import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/StageNodeAdder";
 import { Line } from "../../../../dataStruct/shape/Line";
 import { Direction } from "../../../../../types/directions";
+import { isMac } from "../../../../../utils/platform";
+import { MouseLocation } from "../../MouseLocation";
 
 /**
  * 连线控制器
@@ -27,6 +29,52 @@ import { Direction } from "../../../../../types/directions";
  * 拖拽再生连（可多重）、
  */
 class ControllerNodeConnectionClass extends ControllerClass {
+  private _isControlKeyDown = false;
+  private _controlKeyEventRegistered = false;
+
+  private onControlKeyDown = (event: KeyboardEvent) => {
+    if (isMac && event.key === "Control" && !this._isControlKeyDown) {
+      this._isControlKeyDown = true;
+      // 模拟鼠标按下事件
+      const fakeMouseEvent = new MouseEvent("mousedown", {
+        button: 2,
+        clientX: MouseLocation.vector().x,
+        clientY: MouseLocation.vector().y,
+      });
+      this.mousedown(fakeMouseEvent);
+      Controller.isMouseDown[2] = true;
+    }
+  };
+
+  private onControlKeyUp = (event: KeyboardEvent) => {
+    if (isMac && event.key === "Control" && this._isControlKeyDown) {
+      this._isControlKeyDown = false;
+      // 模拟鼠标松开事件
+      const fakeMouseEvent = new MouseEvent("mouseup", {
+        button: 2,
+        clientX: MouseLocation.vector().x,
+        clientY: MouseLocation.vector().y,
+      });
+      this.mouseup(fakeMouseEvent);
+      Controller.isMouseDown[2] = false;
+    }
+  };
+
+  private registerControlKeyEvents() {
+    if (!this._controlKeyEventRegistered) {
+      window.addEventListener("keydown", this.onControlKeyDown);
+      window.addEventListener("keyup", this.onControlKeyUp);
+      this._controlKeyEventRegistered = true;
+    }
+  }
+
+  private unregisterControlKeyEvents() {
+    if (this._controlKeyEventRegistered) {
+      window.removeEventListener("keydown", this.onControlKeyDown);
+      window.removeEventListener("keyup", this.onControlKeyUp);
+      this._controlKeyEventRegistered = false;
+    }
+  }
   /**
    * 仅限在当前文件中使用的记录
    * 右键点击的位置，仅用于连接检测按下位置和抬起位置是否重叠
@@ -36,6 +84,16 @@ class ControllerNodeConnectionClass extends ControllerClass {
   private _isUsing: boolean = false;
   public get isUsing(): boolean {
     return this._isUsing;
+  }
+
+  constructor() {
+    super();
+    this.registerControlKeyEvents();
+  }
+
+  destroy() {
+    super.destroy();
+    this.unregisterControlKeyEvents();
   }
   /**
    * 用于多重连接
