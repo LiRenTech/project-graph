@@ -36,7 +36,8 @@ import "./index.css";
 import "./polyfills/roundRect";
 import { exists } from "./utils/fs";
 import { exit, writeStderr } from "./utils/otherApi";
-import { getCurrentWindow, isDesktop, isFrame, isWeb, isWindows } from "./utils/platform";
+import { getCurrentWindow, isDesktop, isFrame, isMac, isWeb, isWindows } from "./utils/platform";
+import { Menu, MenuItem } from "@tauri-apps/api/menu";
 
 const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
@@ -48,6 +49,9 @@ const el = document.getElementById("root")!;
 (async () => {
   const matches = !isWeb && isDesktop ? await getMatches() : null;
   const isCliMode = isDesktop && matches?.args.output?.occurrences === 1;
+  if (isMac) {
+    macosLoadMenu();
+  }
   await Promise.all([
     Settings.init(),
     RecentFileManager.init(),
@@ -158,6 +162,30 @@ async function loadStartFile() {
     // 自动打开路径不存在
     Stage.effectMachine.addEffect(new TextRiseEffect(`打开工程失败，${path}不存在！`));
   }
+}
+
+/** macos加载顶部菜单栏 */
+async function macosLoadMenu() {
+  // 奇怪了，什么都显示不出来（
+  // 创建菜单项
+  const testItem1 = await MenuItem.new({
+    text: "测试",
+    action: (_id) => {
+      console.log(_id);
+    },
+  });
+  const testItem2 = await MenuItem.new({
+    text: "测试2",
+    action: (_id) => {
+      console.log(_id);
+    },
+  });
+  // 创建主菜单
+  const menu = await Menu.new({ items: [testItem1, testItem2] });
+
+  // 设置应用菜单
+  await menu.setAsAppMenu();
+  console.log("macos加载菜单栏成功");
 }
 
 /** 渲染应用 */
