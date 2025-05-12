@@ -24,8 +24,66 @@ import { SoundService } from "../../../feedbackService/SoundService";
 import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+import { isMac } from "../../../../../utils/platform";
+import { MouseLocation } from "../../MouseLocation";
 
 class CuttingControllerClass extends ControllerClass {
+  private _isControlKeyDown = false;
+  private _controlKeyEventRegistered = false;
+
+  private onControlKeyDown = (event: KeyboardEvent) => {
+    if (isMac && event.key === "Control" && !this._isControlKeyDown) {
+      this._isControlKeyDown = true;
+      Controller.isMouseDown[2] = true;
+      // 模拟鼠标按下事件
+      const fakeMouseEvent = new MouseEvent("mousedown", {
+        button: 2,
+        clientX: MouseLocation.vector().x,
+        clientY: MouseLocation.vector().y,
+      });
+      this.mousedown(fakeMouseEvent);
+    }
+  };
+
+  private onControlKeyUp = (event: KeyboardEvent) => {
+    if (isMac && event.key === "Control" && this._isControlKeyDown) {
+      this._isControlKeyDown = false;
+      Controller.isMouseDown[2] = false;
+      // 模拟鼠标松开事件
+      const fakeMouseEvent = new MouseEvent("mouseup", {
+        button: 2,
+        clientX: MouseLocation.vector().x,
+        clientY: MouseLocation.vector().y,
+      });
+      this.mouseup(fakeMouseEvent);
+    }
+  };
+
+  private registerControlKeyEvents() {
+    if (!this._controlKeyEventRegistered) {
+      window.addEventListener("keydown", this.onControlKeyDown);
+      window.addEventListener("keyup", this.onControlKeyUp);
+      this._controlKeyEventRegistered = true;
+    }
+  }
+
+  private unregisterControlKeyEvents() {
+    if (this._controlKeyEventRegistered) {
+      window.removeEventListener("keydown", this.onControlKeyDown);
+      window.removeEventListener("keyup", this.onControlKeyUp);
+      this._controlKeyEventRegistered = false;
+    }
+  }
+  constructor() {
+    super();
+    this.registerControlKeyEvents();
+  }
+
+  destroy() {
+    super.destroy();
+    this.unregisterControlKeyEvents();
+  }
+
   public cuttingLine: Line = new Line(Vector.getZero(), Vector.getZero());
   public lastMoveLocation = Vector.getZero();
   public warningEntity: Entity[] = [];
