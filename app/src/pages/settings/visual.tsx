@@ -57,7 +57,7 @@ export default function Visual() {
         <SettingField icon={<Tag />} settingKey="enableTagTextNodesBigDisplay" type="switch" />
         <SettingField icon={<Square />} settingKey="showTextNodeBorder" type="switch" />
       </FieldGroup>
-      <FieldGroup title={t("edge.title")} icon={<Workflow />}>
+      <FieldGroup title={t("edge.title")} icon={<Spline />}>
         <SettingField icon={<Spline />} settingKey="lineStyle" type="select" />
       </FieldGroup>
       <FieldGroup title={t("section.title")} icon={<Square />}>
