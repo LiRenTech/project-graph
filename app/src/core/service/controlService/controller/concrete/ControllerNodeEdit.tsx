@@ -1,7 +1,7 @@
 import { open } from "@tauri-apps/plugin-shell";
 import { Dialog } from "../../../../../components/dialog";
 import { PathString } from "../../../../../utils/pathString";
-import { isWeb } from "../../../../../utils/platform";
+import { isWeb, isMac } from "../../../../../utils/platform";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Stage } from "../../../../stage/Stage";
@@ -34,7 +34,7 @@ ControllerNodeEdit.mouseDoubleClick = (event: MouseEvent) => {
     return;
   }
 
-  if (Controller.pressingKeySet.has("control")) {
+  if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
     editNodeDetails(clickedEntity);
     return;
   }
