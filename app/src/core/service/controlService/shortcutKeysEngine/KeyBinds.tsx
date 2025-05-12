@@ -1,6 +1,7 @@
 import { Store } from "@tauri-apps/plugin-store";
 import { createStore } from "../../../../utils/store";
 import { Vector } from "../../../dataStruct/Vector";
+import { isMac } from "../../../../utils/platform";
 
 /**
  * 用于管理快捷键绑定
@@ -45,10 +46,22 @@ export namespace KeyBinds {
     return data || null;
   }
 
+  /**
+   * 一个记录全部快捷键绑定对象的类
+   * @param id 快捷键的英文字段名
+   * @param key 按下的字母
+   * @param modifiers 配合字母的修饰键
+   */
   const callbacks: {
     [key: string]: Array<(key: string, modifiers: KeyModifiers) => void>;
   } = {};
 
+  /**
+   * 让某一个快捷键开始监听
+   * @param id
+   * @param callback
+   * @returns
+   */
   export async function watch(id: string, callback: (key: string, modifiers: KeyModifiers) => void) {
     if (!store) {
       throw new Error("Store not initialized.");
@@ -154,6 +167,7 @@ export namespace KeyBinds {
      * @returns
      */
     private matches(event: KeyboardEvent | MouseEvent | WheelEvent): boolean {
+      // 先检查 修饰键 是否匹配
       let matchModifiers =
         this.modifiers.control === event.ctrlKey &&
         this.modifiers.alt === event.altKey &&
@@ -166,7 +180,38 @@ export namespace KeyBinds {
         matchModifiers = matchModifiers && !event.metaKey;
       }
 
-      const matchKey = event instanceof KeyboardEvent && event.key.toLowerCase() === this.key.toLowerCase();
+      // 再检查 按键 是否匹配
+      let matchKey = event instanceof KeyboardEvent && event.key.toLowerCase() === this.key.toLowerCase();
+      // 处理macbook特殊中文按键符号问题
+      if (isMac && event instanceof KeyboardEvent) {
+        const currentKey = event.key.toLowerCase();
+        const transedKeyDict: { [key: string]: string } = {
+          "【": "[",
+          "】": "]",
+          "；": ";",
+          "‘": "'",
+          "’": "'",
+          "“": '"',
+          "”": '"',
+          "，": ",",
+          "。": ".",
+          "、": "\\",
+          "《": "<",
+          "》": ">",
+          "？": "?",
+          "！": "!",
+          "：": ":",
+          "·": "`",
+          "¥": "$",
+          "～": "~",
+          "……": "^",
+          "｜": "|",
+        };
+        const transedKey = transedKeyDict[currentKey];
+        if (currentKey === transedKey) {
+          matchKey = true;
+        }
+      }
       const matchButton = event instanceof MouseEvent && event.button === this.button;
       const matchWheel =
         event instanceof WheelEvent &&
