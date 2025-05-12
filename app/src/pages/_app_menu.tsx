@@ -83,7 +83,7 @@ import ExportSvgPanel from "./_popup_panel/_export_svg_panel";
 import { FileLoader } from "../core/service/dataFileService/fileLoader";
 import { Vector } from "../core/dataStruct/Vector";
 import { Controller } from "../core/service/controlService/controller/Controller";
-import { GenerateFromFolderEngine } from "../core/service/dataGenerateService/generateFromFolderEngine/generateFromFolderEngine";
+import { GenerateFromFolderEngine } from "../core/service/dataGenerateService/generateFromFolderEngine/GenerateFromFolderEngine";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -544,6 +544,8 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           {t("import.items.generateSectionByFolder.title")}
         </Col>
       </Row>
+
+      {/* 导出 */}
       <Row icon={<File />} title={t("export.title")}>
         <Col icon={<FileCode />} onClick={() => Popup.show(<ExportSvgPanel />, false)}>
           {t("export.items.exportAsSvg")}
@@ -558,6 +560,8 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           {t("export.items.exportAsPlainText")}
         </Col>
       </Row>
+
+      {/* 视野相关操作 */}
       <Row icon={<View />} title={t("view.title")}>
         <Col icon={<Group />} onClick={() => Camera.reset()} details={t("view.items.resetByAll.description")}>
           {t("view.items.resetByAll.title")}
