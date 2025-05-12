@@ -271,7 +271,7 @@ export default function App() {
             )}
           >
             {/* mac的红绿灯，发现如果没有内容会看不见，里面加一个点儿 */}
-            {isMac && (
+            {isMac && !useNativeTitleBar && (
               <Button className="right-4 top-4 flex items-center gap-2 active:scale-100">
                 <div
                   className="size-3 rounded-full bg-red-500 active:bg-red-800"
@@ -476,7 +476,7 @@ export default function App() {
             )}
           </div>
           {/* @鹿松狸，鼠标移动到最右上角出现关闭窗口按钮 */}
-          {!isMac && !isWindowCollapsing && (
+          {!isMac && !isWindowCollapsing && !useNativeTitleBar && (
             <div
               className="fixed right-0 top-0 z-50 size-1 cursor-pointer rounded-bl-2xl bg-amber-200 transition-all hover:size-14 hover:bg-red-500"
               onClick={() => {
