@@ -2,6 +2,7 @@ import { CursorNameEnum } from "../../../../../types/cursors";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
+import { isMac } from "../../../../../utils/platform";
 import { StageMultiTargetEdgeMove } from "../../../../stage/stageManager/concreteMethods/StageMultiTargetEdgeMove";
 import { StageNodeConnector } from "../../../../stage/stageManager/concreteMethods/StageNodeConnector";
 import { StageNodeRotate } from "../../../../stage/stageManager/concreteMethods/StageNodeRotate";
@@ -22,7 +23,7 @@ import { ControllerClass } from "../ControllerClass";
  */
 class ControllerAssociationReshapeClass extends ControllerClass {
   public mousewheel: (event: WheelEvent) => void = (event: WheelEvent) => {
-    if (Controller.pressingKeySet.has("control")) {
+    if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
       const location = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
       const hoverNode = StageManager.findTextNodeByLocation(location);
       if (hoverNode !== null) {
@@ -92,7 +93,7 @@ class ControllerAssociationReshapeClass extends ControllerClass {
     }
     const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     if (Controller.isMouseDown[0]) {
-      if (Controller.pressingKeySet.has("control")) {
+      if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
         // 更改Edge的目标
         const entity = StageManager.findConnectableEntityByLocation(worldLocation);
         if (entity !== null) {

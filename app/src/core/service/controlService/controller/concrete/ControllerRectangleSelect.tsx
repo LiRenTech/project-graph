@@ -1,5 +1,6 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
+import { isMac } from "../../../../../utils/platform";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
@@ -80,7 +81,10 @@ class ControllerRectangleSelectClass extends ControllerClass {
 
     if (isHaveEntitySelected || isHaveEdgeSelected) {
       // A
-      if (Controller.pressingKeySet.has("shift") || Controller.pressingKeySet.has("control")) {
+      if (
+        Controller.pressingKeySet.has("shift") ||
+        (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control"))
+      ) {
         // 不取消选择
       } else {
         // 取消选择所
@@ -135,7 +139,10 @@ class ControllerRectangleSelectClass extends ControllerClass {
       );
     }
 
-    if (Controller.pressingKeySet.has("shift") || Controller.pressingKeySet.has("control")) {
+    if (
+      Controller.pressingKeySet.has("shift") ||
+      (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control"))
+    ) {
       // 移动过程中不先暴力清除
     } else {
       // 先清空所有已经选择了的
@@ -144,7 +151,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
       });
     }
 
-    if (Controller.pressingKeySet.has("control")) {
+    if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
       // 交叉选择，没的变有，有的变没
       for (const entity of StageManager.getEntities()) {
         if (entity.isHiddenBySectionCollapse) {

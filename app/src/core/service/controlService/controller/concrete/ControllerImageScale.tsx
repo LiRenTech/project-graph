@@ -1,5 +1,6 @@
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
+import { isMac } from "../../../../../utils/platform";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { ImageNode } from "../../../../stage/stageObject/entity/ImageNode";
 import { SvgNode } from "../../../../stage/stageObject/entity/SvgNode";
@@ -9,7 +10,7 @@ import { ControllerClass } from "../ControllerClass";
 export const ControllerImageScale = new ControllerClass();
 
 ControllerImageScale.mousewheel = (event: WheelEvent) => {
-  if (Controller.pressingKeySet.has("control")) {
+  if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
     const location = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
     const hoverEntity = StageManager.findEntityByLocation(location);
     if (hoverEntity === null) {

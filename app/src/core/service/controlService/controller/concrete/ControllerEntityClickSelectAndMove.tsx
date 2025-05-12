@@ -1,3 +1,4 @@
+import { isMac } from "../../../../../utils/platform";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
@@ -44,7 +45,10 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     if (clickedStageObject !== null) {
       this.isMovingEntity = true;
 
-      if (Controller.pressingKeySet.has("shift") && Controller.pressingKeySet.has("control")) {
+      if (
+        Controller.pressingKeySet.has("shift") &&
+        (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control"))
+      ) {
         // ctrl + shift 同时按下
         clickedStageObject.isSelected = !clickedStageObject.isSelected;
       } else if (Controller.pressingKeySet.has("shift")) {
@@ -61,7 +65,7 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
             entity.isSelected = true;
           }
         }
-      } else if (Controller.pressingKeySet.has("control")) {
+      } else if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
         // ctrl 按下，只选中节点，不能模仿windows文件管理器设置成反选，否则会和直接移动节点子树冲突
         clickedStageObject.isSelected = true;
       } else {
@@ -103,7 +107,7 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
       // 移动节点
       this.isMovingEntity = true;
       // 暂不监听alt键。因为windows下切换窗口时，alt键释放监听不到
-      if (Controller.pressingKeySet.has("control")) {
+      if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
         // 和子节点一起移动
         StageEntityMoveManager.moveConnectableEntitiesWithChildren(diffLocation);
       } else {

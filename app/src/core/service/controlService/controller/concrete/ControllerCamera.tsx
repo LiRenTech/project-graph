@@ -84,7 +84,7 @@ export class ControllerCameraClass extends ControllerClass {
     const key = event.key.toLowerCase();
 
     // 解决ctrl+s 冲突
-    if (key === "control") {
+    if (isMac ? key === "meta" : key === "control") {
       setTimeout(() => {
         isPressingCtrl = false;
       }, 500);

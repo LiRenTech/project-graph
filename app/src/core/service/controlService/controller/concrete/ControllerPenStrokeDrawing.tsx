@@ -1,5 +1,6 @@
 import { v4 } from "uuid";
 import { CursorNameEnum } from "../../../../../types/cursors";
+import { isMac } from "../../../../../utils/platform";
 import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
@@ -150,7 +151,7 @@ class ControllerDrawingClass extends ControllerClass {
         const startLocation = this.pressStartWordLocation;
         const endLocation = releaseWorldLocation.clone();
 
-        if (Controller.pressingKeySet.has("control")) {
+        if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
           // 垂直于坐标轴的直线
           const dy = Math.abs(endLocation.y - startLocation.y);
           const dx = Math.abs(endLocation.x - startLocation.x);
