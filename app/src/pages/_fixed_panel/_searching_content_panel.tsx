@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { cn } from "../../utils/cn";
 import IconButton from "../../components/IconButton";
 import { Stage } from "../../core/stage/Stage";
-import { CaseSensitive, CaseUpper, Delete, SquareDashedMousePointer } from "lucide-react";
+import { CaseSensitive, CaseUpper, Delete, SquareDashedMousePointer, Telescope } from "lucide-react";
 import Input from "../../components/Input";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { Camera } from "../../core/stage/Camera";
@@ -15,6 +15,8 @@ export default function SearchingContentPanel({ open = false, className = "" }: 
   const [isCaseSensitive, setIsCaseSensitive] = useState(false);
   const [searchString, setSearchString] = useState("");
   const [searchResults, setSearchResults] = useState<{ title: string; uuid: string }[]>([]);
+  // 是否开启快速瞭望模式
+  const [isMouseEnterMoveCameraAble, setIsMouseEnterMoveCameraAble] = useState(false);
 
   useEffect(() => {
     const input = document.querySelector(".search-panel-input") as HTMLInputElement;
@@ -66,6 +68,17 @@ export default function SearchingContentPanel({ open = false, className = "" }: 
           <SquareDashedMousePointer />
         </IconButton>
 
+        {searchResults.length >= 3 && (
+          <IconButton
+            onClick={() => {
+              setIsMouseEnterMoveCameraAble(!isMouseEnterMoveCameraAble);
+            }}
+            tooltip={isMouseEnterMoveCameraAble ? "快速瞭望模式" : "点击跳转模式"}
+          >
+            <Telescope />
+          </IconButton>
+        )}
+
         <IconButton
           onClick={() => {
             setSearchString("");
@@ -112,6 +125,14 @@ export default function SearchingContentPanel({ open = false, className = "" }: 
             className={cn("hover:text-panel-success-text cursor-pointer truncate", {
               "bg-panel-bg-active": index === Stage.contentSearchEngine.currentSearchResultIndex,
             })}
+            onMouseEnter={() => {
+              if (isMouseEnterMoveCameraAble) {
+                const node = StageManager.getStageObjectByUUID(result.uuid);
+                if (node) {
+                  Camera.location = node.collisionBox.getRectangle().center;
+                }
+              }
+            }}
             onClick={() => {
               const node = StageManager.getStageObjectByUUID(result.uuid);
               if (node) {
