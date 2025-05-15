@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import Button from "../components/Button";
 import { Settings } from "../core/service/Settings";
+import { router } from "../main";
 import { DateChecker } from "../utils/dateChecker";
 import { isDesktop, isLinux, isMac, isMobile, isWeb, isWindows } from "../utils/platform";
 
@@ -64,6 +66,7 @@ export default function TestPage() {
           style={{ zIndex: 999 }}
           className="fixed bottom-96 right-2 h-12 resize-none text-xs ring"
         />
+        <Button onClick={() => router.navigate("/")}>不在context里面的跳转页面</Button>
       </div>
     </>
   );

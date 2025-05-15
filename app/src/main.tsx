@@ -1,4 +1,5 @@
 import { routes } from "@generouted/react-router";
+import { Menu, MenuItem } from "@tauri-apps/api/menu";
 import { getMatches } from "@tauri-apps/plugin-cli";
 import "driver.js/dist/driver.css";
 import i18next from "i18next";
@@ -37,9 +38,14 @@ import "./polyfills/roundRect";
 import { exists } from "./utils/fs";
 import { exit, writeStderr } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isFrame, isMac, isWeb, isWindows } from "./utils/platform";
-import { Menu, MenuItem } from "@tauri-apps/api/menu";
 
-const router = createMemoryRouter(routes);
+/**
+ * @private
+ * 仅供不在组件里的页面跳转使用，在组件里面必须用useNavigate()
+ * @example
+ * router.navigate("/")
+ */
+export const router = createMemoryRouter(routes);
 const Routes = () => <RouterProvider router={router} />;
 const el = document.getElementById("root")!;
 
