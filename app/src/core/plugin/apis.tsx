@@ -2,11 +2,12 @@ import { v4 } from "uuid";
 import { Dialog } from "../../components/dialog";
 import { Vector } from "../dataStruct/Vector";
 import { Controller } from "../service/controlService/controller/Controller";
+import { TextRiseEffect } from "../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Camera } from "../stage/Camera";
-import { StageManager } from "../stage/stageManager/StageManager";
-import { PluginAPIMayAsync } from "./types";
-import { TextNode } from "../stage/stageObject/entity/TextNode";
 import { Stage } from "../stage/Stage";
+import { StageManager } from "../stage/stageManager/StageManager";
+import { TextNode } from "../stage/stageObject/entity/TextNode";
+import { PluginAPIMayAsync } from "./types";
 
 export const pluginApis: PluginAPIMayAsync = {
   hello(userString: string) {
@@ -18,6 +19,7 @@ export const pluginApis: PluginAPIMayAsync = {
     });
     return "hello";
   },
+  // 应该有一个获取当前软件版本号的api
   getCameraLocation() {
     return Camera.location.toArray();
   },
@@ -41,6 +43,9 @@ export const pluginApis: PluginAPIMayAsync = {
       title,
       content,
     });
+  },
+  addDebugText(text: string) {
+    Stage.effectMachine.addEffect(TextRiseEffect.default(text));
   },
   getCurrentStageJson() {
     return StageManager.getStageJsonByPlugin();

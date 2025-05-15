@@ -15,6 +15,7 @@ export const apiTypes = {
   getPressingKeySequence: [[], z.array(z.string())],
   clearPressingKeySequence: [[], z.void()],
   openDialog: [[z.string(), z.string()], z.void()],
+  addDebugText: [[z.string()], z.void()],
   getCurrentStageJson: [[], z.string()],
   getCurrentStageSelectedObjectsUUIDs: [[], z.array(z.string())],
   createTextOnLocation: [[z.number(), z.number(), z.string()], z.void()],
