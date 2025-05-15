@@ -77,6 +77,21 @@ export class SecretKeysEngine {
   }
 
   /**
+   * 强制清空秘籍键序列
+   */
+  public clearSequenceForced() {
+    this.pressedKeys.clear();
+  }
+
+  /**
+   * 读取当前按下的秘籍键序列
+   * @returns
+   */
+  public getCurrentPressedKeys(): string[] {
+    return this.pressedKeys.arrayList;
+  }
+
+  /**
    * 检查秘籍键是否重复，即：某个秘籍键序列是否包含于其他秘籍键序列中
    * 不能出现这种情况，因为会导致冲突
    */

@@ -6,6 +6,7 @@ import { Camera } from "../stage/Camera";
 import { StageManager } from "../stage/stageManager/StageManager";
 import { PluginAPIMayAsync } from "./types";
 import { TextNode } from "../stage/stageObject/entity/TextNode";
+import { Stage } from "../stage/Stage";
 
 export const pluginApis: PluginAPIMayAsync = {
   hello(userString: string) {
@@ -25,6 +26,15 @@ export const pluginApis: PluginAPIMayAsync = {
   },
   getPressingKey() {
     return [...Controller.pressingKeySet];
+  },
+  getPressingKeySequence(): string[] {
+    return Stage.secretKeyEngine.getCurrentPressedKeys();
+  },
+  clearPressingKey() {
+    Controller.pressingKeySet.clear();
+  },
+  clearPressingKeySequence() {
+    Stage.secretKeyEngine.clearSequenceForced();
   },
   openDialog(title, content) {
     Dialog.show({
