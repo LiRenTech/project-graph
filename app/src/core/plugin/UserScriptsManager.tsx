@@ -4,6 +4,7 @@ import { exists, readTextFile } from "../../utils/fs";
 import { createStore } from "../../utils/store";
 import { parsePluginCode, PluginCodeParseData } from "./PluginCodeParseData";
 import { PluginWorker } from "./PluginWorker";
+import { getAllAPIMethods } from "./types";
 
 /**
  * 用户脚本管理器
@@ -58,7 +59,7 @@ export namespace UserScriptsManager {
   async function enableUserScript(filePath: string) {
     const code = await readTextFile(filePath);
     const pluginWorker = new PluginWorker(code, {
-      permissions: ["hello", "setCameraLocation", "getCameraLocation", "getPressingKey", "openDialog"],
+      permissions: getAllAPIMethods(),
     });
     runningScripts[filePath] = pluginWorker;
   }

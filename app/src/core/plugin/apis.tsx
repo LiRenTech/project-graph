@@ -8,6 +8,8 @@ import { Stage } from "../stage/Stage";
 import { StageManager } from "../stage/stageManager/StageManager";
 import { TextNode } from "../stage/stageObject/entity/TextNode";
 import { PluginAPIMayAsync } from "./types";
+import { StageDumper } from "../stage/StageDumper";
+import { ConnectableEntity } from "../stage/stageObject/abstract/ConnectableEntity";
 
 export const pluginApis: PluginAPIMayAsync = {
   hello(userString: string) {
@@ -48,15 +50,16 @@ export const pluginApis: PluginAPIMayAsync = {
     Stage.effectMachine.addEffect(TextRiseEffect.default(text));
   },
   getCurrentStageJson() {
-    return StageManager.getStageJsonByPlugin();
+    return JSON.stringify(StageDumper.dump(), null, 2);
   },
   getCurrentStageSelectedObjectsUUIDs() {
     return StageManager.getSelectedStageObjects().map((stageObject) => stageObject.uuid);
   },
   createTextOnLocation(x: number, y: number, text: string) {
+    const newUUID = v4();
     StageManager.addTextNode(
       new TextNode({
-        uuid: v4(),
+        uuid: newUUID,
         details: "",
         location: [x, y],
         size: [100, 100],
@@ -64,5 +67,14 @@ export const pluginApis: PluginAPIMayAsync = {
         text,
       }),
     );
+    return newUUID;
+  },
+  connectEntityByTwoUUID(fromUUID: string, toUUID: string): boolean {
+    const fromNode = StageManager.getStageObjectByUUID(fromUUID);
+    const toNode = StageManager.getStageObjectByUUID(toUUID);
+    if (fromNode && toNode && fromNode instanceof ConnectableEntity && toNode instanceof ConnectableEntity) {
+      return StageManager.connectEntity(fromNode, toNode);
+    }
+    return false;
   },
 };
