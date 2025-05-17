@@ -280,6 +280,9 @@ export namespace StageDumper {
     selectedEntities = selectedEntities.concat(
       ...entities.filter((entity) => entity instanceof UrlNode).map((node) => dumpUrlNode(node)),
     );
+    selectedEntities = selectedEntities.concat(
+      ...entities.filter((entity) => entity instanceof SvgNode).map((node) => dumpSvgNode(node)),
+    );
     return selectedEntities;
   }
 

@@ -12,6 +12,7 @@ import { UrlNode } from "../../stageObject/entity/UrlNode";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
+import { SvgNode } from "../../stageObject/entity/SvgNode";
 /**
  * 直接向舞台中添加序列化数据
  * 用于向舞台中附加新文件图、或者用于复制粘贴、甚至撤销
@@ -41,6 +42,8 @@ export namespace StageSerializedAdder {
         entityObject = new UrlNode(entity);
       } else if (Serialized.isImageNode(entity)) {
         entityObject = new ImageNode(entity);
+      } else if (Serialized.isSvgNode(entity)) {
+        entityObject = new SvgNode(entity);
       }
       if (entityObject) {
         entityObject.moveTo(entityObject.collisionBox.getRectangle().location.add(diffLocation));
