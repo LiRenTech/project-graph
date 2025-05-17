@@ -573,6 +573,11 @@ settings:
     title: Max Pasted Image Size (In Pixels)
   autoBackupLimitCount:
     title: Max Auto Backup Count
+    description: "The maximum number of auto-backups, beyond which old backup files
+      will be deleted.\n"
+  showTextNodeBorder:
+    title: Show Text Node Border
+    description: "Controls whether to show the text node border or not.\n"
 plugins:
   welcome:
     title: Welcome to the Plugin System
