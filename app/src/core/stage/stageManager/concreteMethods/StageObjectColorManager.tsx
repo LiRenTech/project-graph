@@ -23,6 +23,11 @@ export namespace StageObjectColorManager {
         entity.setColor(color);
       }
     }
+    for (const entity of StageManager.getSvgNodes()) {
+      if (entity.isSelected) {
+        entity.changeColor(color);
+      }
+    }
     for (const edge of StageManager.getAssociations()) {
       if (edge.isSelected) {
         edge.color = color;

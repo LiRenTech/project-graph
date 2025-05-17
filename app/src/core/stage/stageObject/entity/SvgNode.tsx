@@ -88,4 +88,19 @@ export class SvgNode extends ConnectableEntity {
     this.location = newRectangle.location.clone();
     this.updateFatherSectionByMove();
   }
+
+  /**
+   * 修改SVG内容中的颜色
+   * @param newColor 新颜色
+   */
+  changeColor(newColor: Color): void {
+    this.color = newColor;
+    const hexColor = newColor.toHexStringWithoutAlpha();
+
+    // 替换常见的颜色属性
+    this.content = this.content
+      .replace(/(fill|stroke|stop-color|flood-color)="([^"]*)"/g, `$1="${hexColor}"`)
+      .replace(/(fill|stroke|stop-color|flood-color):([^;"]*);/g, `$1:${hexColor};`)
+      .replace(/(fill|stroke|stop-color|flood-color):([^;"]*)$/g, `$1:${hexColor}`);
+  }
 }

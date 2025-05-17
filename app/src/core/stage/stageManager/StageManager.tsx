@@ -28,7 +28,7 @@ import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
 import { GraphMethods } from "./basicMethods/GraphMethods";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
-import { StageNodeAdder } from "./concreteMethods/StageNodeAdder";
+import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
 import { StageObjectSelectCounter } from "./concreteMethods/StageObjectSelectCounter";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
@@ -38,6 +38,7 @@ import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
 import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { MultiTargetUndirectedEdge } from "../stageObject/association/MutiTargetUndirectedEdge";
+import { SvgNode } from "../stageObject/entity/SvgNode";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -204,6 +205,9 @@ export namespace StageManager {
   }
   export function getPenStrokes(): PenStroke[] {
     return stageContent.entities.valuesToArray().filter((node) => node instanceof PenStroke);
+  }
+  export function getSvgNodes(): SvgNode[] {
+    return stageContent.entities.valuesToArray().filter((node) => node instanceof SvgNode);
   }
 
   export function getStageObject(): StageObject[] {
