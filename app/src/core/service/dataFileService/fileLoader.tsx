@@ -1,25 +1,26 @@
+import { decodeAsync } from "@msgpack/msgpack";
+import { Dialog } from "../../../components/dialog";
 import { Serialized } from "../../../types/node";
-import { exists, readTextFile } from "../../../utils/fs";
+import { exists, readFile, readTextFile } from "../../../utils/fs";
+import { PathString } from "../../../utils/pathString";
+import { isWeb } from "../../../utils/platform";
+import { Vector } from "../../dataStruct/Vector";
 import { Camera } from "../../stage/Camera";
 import { StageLoader } from "../../stage/StageLoader";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../stage/stageManager/StageManager";
+import { CubicCatmullRomSplineEdge } from "../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
+import { MultiTargetUndirectedEdge } from "../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { ConnectPoint } from "../../stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stage/stageObject/entity/ImageNode";
-import { Section } from "../../stage/stageObject/entity/Section";
-import { TextNode } from "../../stage/stageObject/entity/TextNode";
-import { UrlNode } from "../../stage/stageObject/entity/UrlNode";
 import { PenStroke } from "../../stage/stageObject/entity/PenStroke";
 import { PortalNode } from "../../stage/stageObject/entity/PortalNode";
-import { PathString } from "../../../utils/pathString";
-import { isWeb } from "../../../utils/platform";
-import { Vector } from "../../dataStruct/Vector";
-import { CubicCatmullRomSplineEdge } from "../../stage/stageObject/association/CubicCatmullRomSplineEdge";
-import { MultiTargetUndirectedEdge } from "../../stage/stageObject/association/MutiTargetUndirectedEdge";
-import { RecentFileManager } from "./RecentFileManager";
+import { Section } from "../../stage/stageObject/entity/Section";
 import { SvgNode } from "../../stage/stageObject/entity/SvgNode";
-import { Dialog } from "../../../components/dialog";
+import { TextNode } from "../../stage/stageObject/entity/TextNode";
+import { UrlNode } from "../../stage/stageObject/entity/UrlNode";
+import { RecentFileManager } from "./RecentFileManager";
 
 /**
  * 将文件里的内容加载到舞台上
@@ -63,10 +64,15 @@ export namespace FileLoader {
       });
       return null;
     }
-    let content: string;
+    let data: any;
     try {
-      content = await readTextFile(path);
+      if (path.endsWith(".json")) {
+        data = JSON.parse(await readTextFile(path));
+      } else if (path.endsWith(".prg")) {
+        data = await decodeAsync(new Blob([await readFile(path)]).stream());
+      }
     } catch (e) {
+      console.error(e);
       Dialog.show({
         title: "打开文件失败",
         content: "打开文件失败：" + JSON.stringify(e),
@@ -74,8 +80,7 @@ export namespace FileLoader {
       });
       return null;
     }
-    const data = StageLoader.validate(JSON.parse(content));
-    return data;
+    return StageLoader.validate(data);
   }
 
   /**

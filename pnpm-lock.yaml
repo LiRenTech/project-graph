@@ -58,6 +58,9 @@ importers:
       "@marsidev/react-turnstile":
         specifier: ^1.1.0
         version: 1.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      "@msgpack/msgpack":
+        specifier: ^3.1.1
+        version: 3.1.1
       "@octokit/rest":
         specifier: ^21.0.2
         version: 21.1.0
@@ -1087,6 +1090,11 @@ packages:
       { integrity: sha512-L26xfzkSo1yamODCAtk/ipVlL6OEw2bcJ92zunyHu8zxi7+meV0zefA9xscRMDCsMY8xL3C3wi3DhMiPxcbxbw== }
     peerDependencies:
       vite: ^3.2.7 || ^4.0.5 || ^5.0.5
+
+  "@msgpack/msgpack@3.1.1":
+    resolution:
+      { integrity: sha512-DnBpqkMOUGayNVKyTLlkM6ILmU/m/+VUxGkuQlPQVAcvreLz5jn1OlQnWd8uHKL/ZSiljpM12rjRhr51VtvJUQ== }
+    engines: { node: ">= 18" }
 
   "@mswjs/interceptors@0.37.6":
     resolution:
@@ -7014,6 +7022,8 @@ snapshots:
       vite: 6.2.5(@types/node@22.14.0)(jiti@2.4.2)(less@4.2.2)(lightningcss@1.29.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0)
     transitivePeerDependencies:
       - rollup
+
+  "@msgpack/msgpack@3.1.1": {}
 
   "@mswjs/interceptors@0.37.6":
     dependencies:
