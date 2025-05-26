@@ -538,6 +538,7 @@ settings:
       moveX: Horizontal movement
       none: No operation
       cameraMoveToMouse: Move the view to the mouse position
+      adjustWindowOpacity: adjust window opacity
   macMouseWheelIsSmoothed:
     description: Some MacBook mouse wheels are smooth, while others trigger a scroll
       with each click, which may depend on whether you have installed mouse modification
@@ -578,6 +579,13 @@ settings:
   showTextNodeBorder:
     title: Show Text Node Border
     description: "Controls whether to show the text node border or not.\n"
+  autoLayoutWhenTreeGenerate:
+    title: Automatically update layout when growing nodes
+  agreeTerms:
+    title: agree to the Terms of Service
+    description: "please read carefully and agree to the Terms of Service\n"
+  allowTelemetry:
+    title: Participate in the User Experience Improvement Program
 plugins:
   welcome:
     title: Welcome to the Plugin System
@@ -592,6 +600,7 @@ plugins:
 app:
   unsaved: "(Unsaved)"
   comingSoon: "Coming Soon...…"
+  draftUnsaved: ' Drafts cannot be saved automatically and require manual saving '
 appMenu:
   file:
     title: File
@@ -609,10 +618,12 @@ appMenu:
       openDataFolder:
         description: Open the software data folder, which stores user-customized settings,
           etc
-        title: Software Data
+        title: Configuration Data
       openProjectFolder:
         title: Current Directory
         description: Open the current editing project file's folder
+      openCacheFolder:
+        title: Cache Folder
   export:
     title: Export
     items:
@@ -648,6 +659,8 @@ appMenu:
       fullscreen: Fullscreen
       cancelFullscreen: Exit Fullscreen
 
+  import:
+    title: Import
 toolbar:
   pinnedTools:
     title: Pinned Tools
@@ -995,8 +1008,8 @@ keyBinds:
   generateNodeGraph:
     title: Grow Node in Free Mode
     description: "After pressing, a virtual growth position appears \nPress the \"\
-      I J K L\" key while holding down the key to freely adjust the growth position
-      \nAfter release, growth is complete \nBefore using this feature, ensure that
+      I J K L\" key while holding down the key to freely adjust the growth position\
+      \ \nAfter release, growth is complete \nBefore using this feature, ensure that
       a node has been selected\n"
   windowOpacityAlphaIncrease:
     title: Increase window opacity
@@ -1029,8 +1042,8 @@ effects:
     title: Rectangle Glimmer Hint Effect
     description: "When executing logical nodes, they will display a glimmer effect.\n"
   RectangleNoteEffect:
-    description: "Highlights a rectangular area when searching or locating nodes\n
-      Will not display the highlight effect if disabled\n"
+    description: "Highlights a rectangular area when searching or locating nodes\n\
+      \ Will not display the highlight effect if disabled\n"
     title: Rectangle Existance Hint Effect
   RectangleRenderEffect:
     description: "Used to display the alignment position of the entity snapping target
@@ -1146,8 +1159,8 @@ keyBindsGroup:
   otherKeys:
     title: Unclassified Shortcuts
     description: "Unclassified shortcuts.\nIf invalid shortcut items without translation
-      are found here, it may be due to old shortcuts remaining after version upgrades,\n
-      which can be manually cleaned up by deleting the corresponding items in the
+      are found here, it may be due to old shortcuts remaining after version upgrades,\n\
+      \ which can be manually cleaned up by deleting the corresponding items in the
       keybinds.json file.\n"
   camera:
     title: Camera Control
@@ -1158,3 +1171,17 @@ keyBindsGroup:
   section:
     description: "Functions about Section Box.\n"
     title: Section Box
+controlSettingsGroup:
+  mouse:
+    title: Mouse Settings
+  touchpad:
+    title: Touchpad Settings
+  textNode:
+    title: TextNode Settings
+  gamepad:
+    title: Gamepad Settings
+visualSettingsGroup:
+  basic:
+    title: Basic Settings
+  background:
+    title: Background Settings
