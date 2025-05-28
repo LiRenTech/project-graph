@@ -28,7 +28,7 @@ import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
 import { GraphMethods } from "./basicMethods/GraphMethods";
 import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
-import { StageNodeAdder } from "./concreteMethods/stageNodeAdder";
+import { StageNodeAdder } from "./concreteMethods/StageNodeAdder";
 import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
 import { StageObjectSelectCounter } from "./concreteMethods/StageObjectSelectCounter";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
