@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@generouted/react-router": "^1.19.9",
+    "@headlessui/react": "^2.2.4",
     "@marsidev/react-turnstile": "^1.1.0",
     "@msgpack/msgpack": "^3.1.2",
     "@octokit/rest": "^21.0.2",

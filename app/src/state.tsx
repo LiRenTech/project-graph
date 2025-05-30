@@ -1,7 +1,9 @@
-import { atom } from "jotai";
+import { atom, createStore } from "jotai";
 /**
  * 全局状态管理
  */
+
+export const store = createStore();
 
 /**
  * 当前打开的文件路径

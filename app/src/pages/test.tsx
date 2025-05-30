@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import { Settings } from "../core/service/Settings";
+import { SubWindow } from "../core/service/SubWindow";
 import { router } from "../main";
 import { DateChecker } from "../utils/dateChecker";
 import { isDesktop, isLinux, isMac, isMobile, isWeb, isWindows } from "../utils/platform";
@@ -67,6 +68,16 @@ export default function TestPage() {
           className="fixed bottom-96 right-2 h-12 resize-none text-xs ring"
         />
         <Button onClick={() => router.navigate("/")}>不在context里面的跳转页面</Button>
+        <Button
+          onClick={() =>
+            SubWindow.create({
+              title: "子窗口",
+              children: <>content</>,
+            })
+          }
+        >
+          创建子窗口
+        </Button>
       </div>
     </>
   );

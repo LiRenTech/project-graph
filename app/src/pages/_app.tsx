@@ -1,6 +1,6 @@
 import { LogicalSize } from "@tauri-apps/api/dpi";
 import { restoreStateCurrent, saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
-import { useAtom } from "jotai";
+import { Provider, useAtom } from "jotai";
 import { Copy, Cpu, FlaskConical, Menu, Minus, PanelTop, Square, Tag, TextSearch, X, Zap } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -14,7 +14,7 @@ import { Themes } from "../core/service/Themes";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageManager } from "../core/stage/stageManager/StageManager";
-import { fileAtom, isClassroomModeAtom, isWindowCollapsingAtom } from "../state";
+import { fileAtom, isClassroomModeAtom, isWindowCollapsingAtom, store } from "../state";
 import { cn } from "../utils/cn";
 import { PathString } from "../utils/pathString";
 import { appScale, getCurrentWindow, isDesktop, isFrame, isIpad, isMac, isMobile, isWeb } from "../utils/platform";
@@ -29,6 +29,7 @@ import SearchingContentPanel from "./_fixed_panel/_searching_content_panel";
 import StartFilePanel from "./_fixed_panel/_start_file_panel";
 import TagPanel from "./_fixed_panel/_tag_panel";
 import FloatingOutlet from "./_floating_outlet";
+import RenderSubWindows from "./_render_sub_windows";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -254,264 +255,273 @@ export default function App() {
   // }, []);
 
   return (
-    <div
-      className={cn("relative h-full w-full")}
-      style={{ zoom: appScale }}
-      onClick={() => {
-        setIsMenuOpen(false);
-        setIsStartFilePanelOpen(false);
-      }}
-      onContextMenu={(e) => e.preventDefault()}
-    >
-      {!isFrame && (
-        <>
-          {/* 叠加层，显示窗口控件 */}
-          <div
-            className={cn(
-              "pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 *:pointer-events-auto",
-              {
-                "*:!pointer-events-none": ignoreMouse,
-              },
-              {
-                "p-4": !isWindowCollapsing,
-              },
-            )}
-          >
-            {/* mac的红绿灯，发现如果没有内容会看不见，里面加一个点儿 */}
-            {isMac && !useNativeTitleBar && (
-              <Button className="right-4 top-4 flex items-center gap-2 active:scale-100">
-                <div
-                  className="size-3 rounded-full bg-red-500 active:bg-red-800"
-                  onClick={() => getCurrentWindow().close()}
-                />
-                <div
-                  className="size-3 rounded-full bg-yellow-500 active:bg-yellow-800"
-                  onClick={() => getCurrentWindow().minimize()}
-                />
-                <div
-                  className="size-3 rounded-full bg-green-500 active:bg-green-800"
-                  onClick={() =>
-                    getCurrentWindow()
-                      .isMaximized()
-                      .then((isMaximized) => setMaxmized(!isMaximized))
-                  }
-                />
-              </Button>
-            )}
-            {/* 左上角菜单按钮 */}
-            {!isWindowCollapsing && (
-              <IconButton
-                tooltip="菜单"
-                // 检索用，快捷键触发
-                id="app-menu-btn"
-                className={cn(isClassroomMode && "opacity-0")}
-                onClick={(e) => {
-                  e.stopPropagation(); // 避免又触发了关闭
-                  setIsMenuOpen(!isMenuOpen);
-                }}
-              >
-                <Menu className={cn(isMenuOpen && "rotate-90")} />
-              </IconButton>
-            )}
-
-            {!isWindowCollapsing && (
-              <IconButton
-                id="tagPanelBtn"
-                // 不可以去除id，因为有快捷键能够触发这个按钮的点击事件，会查询到id
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsTagPanelOpen(!isTagPanelOpen);
-                }}
-                tooltip="标签节点"
-                className={cn(isClassroomMode && "opacity-0")}
-              >
-                <Tag className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")} />
-              </IconButton>
-            )}
-
-            {/* 逻辑节点按钮 */}
-            {!isWindowCollapsing && (
-              <IconButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsLogicNodePanelOpen(!isLogicNodePanelOpen);
-                }}
-                className={cn(isClassroomMode && "opacity-0")}
-                tooltip="逻辑节点"
-              >
-                <Cpu className={cn("cursor-pointer", isLogicNodePanelOpen ? "rotate-45" : "")} />
-              </IconButton>
-            )}
-            {/* 搜索内容按钮 */}
-            {!isWindowCollapsing && (
-              <IconButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsSearchPanelOpen(!isSearchPanelOpen);
-                }}
-                className={cn(isClassroomMode && "opacity-0")}
-                id="app-search-content-btn"
-                tooltip="搜索内容"
-              >
-                <TextSearch className={cn("cursor-pointer", isSearchPanelOpen ? "rotate-45" : "")} />
-              </IconButton>
-            )}
-            {/* 中间标题 */}
-            {useNativeTitleBar || isWeb ? (
-              // h-0 才能完全摆脱划线时经过此区域的卡顿问题
-              <div className="pointer-events-none h-0 flex-1"></div>
-            ) : (
-              <>
-                <Button
-                  data-tauri-drag-region
-                  className={cn("pointer-events-none relative flex-1 overflow-ellipsis active:scale-100", {
-                    "text-panel-error-text": isSaved,
-                    "flex-1": isDesktop,
-                    "opacity-0": isClassroomMode,
-                    "text-xs": isWindowCollapsing,
-                  })}
-                  tooltip="按住拖动窗口，双击最大化切换"
-                >
-                  {isMobile && getDisplayFileName()}
-                  {isDesktop && (
-                    <div
-                      data-tauri-drag-region
-                      className={cn(
-                        isSaved ? "text-button-text" : "text-panel-error-text",
-                        "absolute flex h-full w-full items-center justify-center truncate p-0 hover:cursor-move active:cursor-grabbing",
-                        isClassroomMode && "opacity-0",
-                      )}
-                    >
-                      {getDisplayFileName()}
-                    </div>
-                  )}
+    <Provider store={store}>
+      <div
+        className={cn("relative h-full w-full")}
+        style={{ zoom: appScale }}
+        onClick={() => {
+          setIsMenuOpen(false);
+          setIsStartFilePanelOpen(false);
+        }}
+        onContextMenu={(e) => e.preventDefault()}
+      >
+        {!isFrame && (
+          <>
+            {/* 叠加层，显示窗口控件 */}
+            <div
+              className={cn(
+                "pointer-events-none absolute left-0 top-0 z-40 flex w-full gap-2 *:pointer-events-auto",
+                {
+                  "*:!pointer-events-none": ignoreMouse,
+                },
+                {
+                  "p-4": !isWindowCollapsing,
+                },
+              )}
+            >
+              {/* mac的红绿灯，发现如果没有内容会看不见，里面加一个点儿 */}
+              {isMac && !useNativeTitleBar && (
+                <Button className="right-4 top-4 flex items-center gap-2 active:scale-100">
+                  <div
+                    className="size-3 rounded-full bg-red-500 active:bg-red-800"
+                    onClick={() => getCurrentWindow().close()}
+                  />
+                  <div
+                    className="size-3 rounded-full bg-yellow-500 active:bg-yellow-800"
+                    onClick={() => getCurrentWindow().minimize()}
+                  />
+                  <div
+                    className="size-3 rounded-full bg-green-500 active:bg-green-800"
+                    onClick={() =>
+                      getCurrentWindow()
+                        .isMaximized()
+                        .then((isMaximized) => setMaxmized(!isMaximized))
+                    }
+                  />
                 </Button>
-                {isMobile && <div className="flex-1"></div>}
-              </>
-            )}
-            {/* 右上角闪电按钮 */}
-            {!isWindowCollapsing && !isWeb && (
-              <IconButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsStartFilePanelOpen(!isStartFilePanelOpen);
-                }}
-                id="app-start-file-btn"
-                className={cn(isClassroomMode && "opacity-0")}
-                tooltip="设置启动时打开的文件"
-                disabled={isMobile}
-              >
-                <Zap className={cn("cursor-pointer", isStartFilePanelOpen ? "rotate-45 scale-125" : "")} />
-              </IconButton>
-            )}
-            {isDesktop && !isIpad && (
-              <IconButton
-                className={cn(
-                  isWindowCollapsing && "h-2 w-2 border-green-300 bg-green-500",
-                  isClassroomMode && "opacity-0",
-                )}
-                onClick={async (e) => {
-                  e.stopPropagation();
-                  // const size = await getCurrentWindow().outerSize();
-                  const tauriWindow = getCurrentWindow();
-                  if (isWindowCollapsing) {
-                    // 展开
-                    tauriWindow.setSize(new LogicalSize(1100, 800));
-                    tauriWindow.setAlwaysOnTop(false);
-                  } else {
-                    // 收起
-                    const width = await Settings.get("windowCollapsingWidth");
-                    const height = await Settings.get("windowCollapsingHeight");
+              )}
+              {/* 左上角菜单按钮 */}
+              {!isWindowCollapsing && (
+                <IconButton
+                  tooltip="菜单"
+                  // 检索用，快捷键触发
+                  id="app-menu-btn"
+                  className={cn(isClassroomMode && "opacity-0")}
+                  onClick={(e) => {
+                    e.stopPropagation(); // 避免又触发了关闭
+                    setIsMenuOpen(!isMenuOpen);
+                  }}
+                >
+                  <Menu className={cn(isMenuOpen && "rotate-90")} />
+                </IconButton>
+              )}
 
-                    await tauriWindow.setSize(new LogicalSize(width, height));
-                    // await tauriWindow.setPosition(new LogicalPosition(50, 50));
-                    await tauriWindow.setAlwaysOnTop(true);
-                  }
-                  setIsWindowCollapsing(!isWindowCollapsing);
-                }}
-                tooltip={isWindowCollapsing ? "展开并取消顶置窗口" : "进入迷你窗口模式"}
-              >
-                <PanelTop className={cn("cursor-pointer", isWindowCollapsing ? "rotate-180 scale-125" : "")} />
-              </IconButton>
-            )}
-            {/* ipad测试按钮 */}
-            {isIpad && (
-              <IconButton
-                onClick={() => {
-                  Renderer.resizeWindow(window.innerWidth, window.innerHeight);
+              {!isWindowCollapsing && (
+                <IconButton
+                  id="tagPanelBtn"
+                  // 不可以去除id，因为有快捷键能够触发这个按钮的点击事件，会查询到id
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsTagPanelOpen(!isTagPanelOpen);
+                  }}
+                  tooltip="标签节点"
+                  className={cn(isClassroomMode && "opacity-0")}
+                >
+                  <Tag className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")} />
+                </IconButton>
+              )}
 
-                  let printData = `Renderer w,h: ${Renderer.w}, ${Renderer.h}\n`;
-                  printData += `window inner: ${window.innerWidth}, ${window.innerHeight}`;
-                  printData += `window: ${window.outerWidth}, ${window.outerHeight}`;
-                  Dialog.show({
-                    title: "ipad 测试",
-                    content: printData,
-                  });
-                }}
-              >
-                <FlaskConical />
-              </IconButton>
-            )}
+              {/* 逻辑节点按钮 */}
+              {!isWindowCollapsing && (
+                <IconButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsLogicNodePanelOpen(!isLogicNodePanelOpen);
+                  }}
+                  className={cn(isClassroomMode && "opacity-0")}
+                  tooltip="逻辑节点"
+                >
+                  <Cpu className={cn("cursor-pointer", isLogicNodePanelOpen ? "rotate-45" : "")} />
+                </IconButton>
+              )}
+              {/* 搜索内容按钮 */}
+              {!isWindowCollapsing && (
+                <IconButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsSearchPanelOpen(!isSearchPanelOpen);
+                  }}
+                  className={cn(isClassroomMode && "opacity-0")}
+                  id="app-search-content-btn"
+                  tooltip="搜索内容"
+                >
+                  <TextSearch className={cn("cursor-pointer", isSearchPanelOpen ? "rotate-45" : "")} />
+                </IconButton>
+              )}
+              {/* 中间标题 */}
+              {useNativeTitleBar || isWeb ? (
+                // h-0 才能完全摆脱划线时经过此区域的卡顿问题
+                <div className="pointer-events-none h-0 flex-1"></div>
+              ) : (
+                <>
+                  <Button
+                    data-tauri-drag-region
+                    className={cn("pointer-events-none relative flex-1 overflow-ellipsis active:scale-100", {
+                      "text-panel-error-text": isSaved,
+                      "flex-1": isDesktop,
+                      "opacity-0": isClassroomMode,
+                      "text-xs": isWindowCollapsing,
+                    })}
+                    tooltip="按住拖动窗口，双击最大化切换"
+                  >
+                    {isMobile && getDisplayFileName()}
+                    {isDesktop && (
+                      <div
+                        data-tauri-drag-region
+                        className={cn(
+                          isSaved ? "text-button-text" : "text-panel-error-text",
+                          "absolute flex h-full w-full items-center justify-center truncate p-0 hover:cursor-move active:cursor-grabbing",
+                          isClassroomMode && "opacity-0",
+                        )}
+                      >
+                        {getDisplayFileName()}
+                      </div>
+                    )}
+                  </Button>
+                  {isMobile && <div className="flex-1"></div>}
+                </>
+              )}
+              {/* 右上角闪电按钮 */}
+              {!isWindowCollapsing && !isWeb && (
+                <IconButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsStartFilePanelOpen(!isStartFilePanelOpen);
+                  }}
+                  id="app-start-file-btn"
+                  className={cn(isClassroomMode && "opacity-0")}
+                  tooltip="设置启动时打开的文件"
+                  disabled={isMobile}
+                >
+                  <Zap className={cn("cursor-pointer", isStartFilePanelOpen ? "rotate-45 scale-125" : "")} />
+                </IconButton>
+              )}
+              {isDesktop && !isIpad && (
+                <IconButton
+                  className={cn(
+                    isWindowCollapsing && "h-2 w-2 border-green-300 bg-green-500",
+                    isClassroomMode && "opacity-0",
+                  )}
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    // const size = await getCurrentWindow().outerSize();
+                    const tauriWindow = getCurrentWindow();
+                    if (isWindowCollapsing) {
+                      // 展开
+                      tauriWindow.setSize(new LogicalSize(1100, 800));
+                      tauriWindow.setAlwaysOnTop(false);
+                    } else {
+                      // 收起
+                      const width = await Settings.get("windowCollapsingWidth");
+                      const height = await Settings.get("windowCollapsingHeight");
 
-            {/* 右上角窗口控制按钮 */}
-            {isDesktop && !isWindowCollapsing && !useNativeTitleBar && !isMac && !isWeb && (
-              <Button
-                className={cn("right-4 top-4 flex items-center gap-1 active:scale-100", isClassroomMode && "opacity-0")}
-              >
-                {/* 最小化 */}
-                <Minus
-                  onClick={() => getCurrentWindow().minimize()}
-                  className="transition hover:opacity-80 active:scale-75"
-                />
-                {/* 最大化/取消窗口最大化 */}
-                {maxmized ? (
-                  <Copy
-                    onClick={() => setMaxmized(false)}
-                    size={16}
-                    strokeWidth={3}
+                      await tauriWindow.setSize(new LogicalSize(width, height));
+                      // await tauriWindow.setPosition(new LogicalPosition(50, 50));
+                      await tauriWindow.setAlwaysOnTop(true);
+                    }
+                    setIsWindowCollapsing(!isWindowCollapsing);
+                  }}
+                  tooltip={isWindowCollapsing ? "展开并取消顶置窗口" : "进入迷你窗口模式"}
+                >
+                  <PanelTop className={cn("cursor-pointer", isWindowCollapsing ? "rotate-180 scale-125" : "")} />
+                </IconButton>
+              )}
+              {/* ipad测试按钮 */}
+              {isIpad && (
+                <IconButton
+                  onClick={() => {
+                    Renderer.resizeWindow(window.innerWidth, window.innerHeight);
+
+                    let printData = `Renderer w,h: ${Renderer.w}, ${Renderer.h}\n`;
+                    printData += `window inner: ${window.innerWidth}, ${window.innerHeight}`;
+                    printData += `window: ${window.outerWidth}, ${window.outerHeight}`;
+                    Dialog.show({
+                      title: "ipad 测试",
+                      content: printData,
+                    });
+                  }}
+                >
+                  <FlaskConical />
+                </IconButton>
+              )}
+
+              {/* 右上角窗口控制按钮 */}
+              {isDesktop && !isWindowCollapsing && !useNativeTitleBar && !isMac && !isWeb && (
+                <Button
+                  className={cn(
+                    "right-4 top-4 flex items-center gap-1 active:scale-100",
+                    isClassroomMode && "opacity-0",
+                  )}
+                >
+                  {/* 最小化 */}
+                  <Minus
+                    onClick={() => getCurrentWindow().minimize()}
                     className="transition hover:opacity-80 active:scale-75"
                   />
-                ) : (
-                  <Square
-                    onClick={() => setMaxmized(true)}
-                    className="scale-75 transition hover:opacity-80 active:scale-75"
+                  {/* 最大化/取消窗口最大化 */}
+                  {maxmized ? (
+                    <Copy
+                      onClick={() => setMaxmized(false)}
+                      size={16}
+                      strokeWidth={3}
+                      className="transition hover:opacity-80 active:scale-75"
+                    />
+                  ) : (
+                    <Square
+                      onClick={() => setMaxmized(true)}
+                      className="scale-75 transition hover:opacity-80 active:scale-75"
+                    />
+                  )}
+                  {/* 退出 */}
+                  <X
+                    onClick={() => getCurrentWindow().close()}
+                    className="transition hover:opacity-80 active:scale-75"
                   />
-                )}
-                {/* 退出 */}
-                <X onClick={() => getCurrentWindow().close()} className="transition hover:opacity-80 active:scale-75" />
-              </Button>
-            )}
-          </div>
-          {/* @鹿松狸，鼠标移动到最右上角出现关闭窗口按钮 */}
-          {!isMac && !isWindowCollapsing && !useNativeTitleBar && (
-            <div
-              className="fixed right-0 top-0 z-50 size-1 cursor-pointer rounded-bl-2xl bg-amber-200 transition-all hover:size-14 hover:bg-red-500"
-              onClick={() => {
-                getCurrentWindow().close();
-              }}
-            >
-              <X className="cursor-pointer" />
+                </Button>
+              )}
             </div>
-          )}
+            {/* @鹿松狸，鼠标移动到最右上角出现关闭窗口按钮 */}
+            {!isMac && !isWindowCollapsing && !useNativeTitleBar && (
+              <div
+                className="fixed right-0 top-0 z-50 size-1 cursor-pointer rounded-bl-2xl bg-amber-200 transition-all hover:size-14 hover:bg-red-500"
+                onClick={() => {
+                  getCurrentWindow().close();
+                }}
+              >
+                <X className="cursor-pointer" />
+              </div>
+            )}
 
-          {/* 面板列表 */}
-          <AppMenu className="absolute left-4 top-16 z-20" open={isMenuOpen} />
-          <TagPanel open={isTagPanelOpen} className="z-10" />
-          <SearchingContentPanel open={isSearchPanelOpen} className="z-10" />
-          <LogicNodePanel open={isLogicNodePanelOpen} className="z-10" />
-          <StartFilePanel open={isStartFilePanelOpen} />
-          <RecentFilesPanel />
-          <ExportTreeTextPanel />
-          <ExportPNGPanel />
-        </>
-      )}
-      {/* ======= */}
-      <ErrorHandler />
+            {/* 面板列表 */}
+            <AppMenu className="absolute left-4 top-16 z-20" open={isMenuOpen} />
+            <TagPanel open={isTagPanelOpen} className="z-10" />
+            <SearchingContentPanel open={isSearchPanelOpen} className="z-10" />
+            <LogicNodePanel open={isLogicNodePanelOpen} className="z-10" />
+            <StartFilePanel open={isStartFilePanelOpen} />
+            <RecentFilesPanel />
+            <ExportTreeTextPanel />
+            <ExportPNGPanel />
+          </>
+        )}
+        {/* ======= */}
+        <ErrorHandler />
 
-      <PGCanvas />
+        <PGCanvas />
 
-      <FloatingOutlet />
-    </div>
+        <FloatingOutlet />
+        <RenderSubWindows />
+      </div>
+    </Provider>
   );
 }
 

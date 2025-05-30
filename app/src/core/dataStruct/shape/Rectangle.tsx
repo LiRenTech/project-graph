@@ -1,7 +1,7 @@
-import { Line } from "./Line";
 import { Renderer } from "../../render/canvas2d/renderer";
 import { Camera } from "../../stage/Camera";
 import { Vector } from "../Vector";
+import { Line } from "./Line";
 import { Shape } from "./Shape";
 
 export class Rectangle extends Shape {
@@ -380,6 +380,10 @@ export class Rectangle extends Shape {
     } else {
       return new Vector(0, 1);
     }
+  }
+
+  public translate(offset: Vector): Rectangle {
+    return new Rectangle(this.location.add(offset), this.size);
   }
 
   public transformWorld2View(): Rectangle {

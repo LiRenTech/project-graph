@@ -92,6 +92,10 @@
   --color-settings-text: var(--color-appmenu-item-text);
   --color-field-group-bg: var(--color-field-group-bg);
   --color-field-group-hover-bg: var(--color-field-group-hover-bg);
+  --color-sub-window-bg: var(--color-sub-window-bg);
+  --color-sub-window-text: var(--color-sub-window-text);
+  --color-sub-window-border: var(--color-sub-window-border);
+  --color-sub-window-shadow: var(--color-sub-window-shadow);
 }
 
 @layer base {

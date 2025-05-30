@@ -124,6 +124,12 @@ field-group:
   bg: "oklch(0.269 0 0)"
   hover-bg: "oklch(0.269 0 0)"
 
+sub-window:
+  bg: "oklch(0.269 0 0)"
+  text: "#fff"
+  border: "oklch(0.371 0 0)"
+  shadow: "rgba(0, 0, 0, 0.5)"
+
 stage:
   Background: "#181818"
   GridNormal: "rgba(255, 255, 255, 0.2)"
