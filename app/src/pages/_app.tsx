@@ -1,4 +1,5 @@
 import { LogicalSize } from "@tauri-apps/api/dpi";
+import { restoreStateCurrent, saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
 import { useAtom } from "jotai";
 import { Copy, Cpu, FlaskConical, Menu, Minus, PanelTop, Square, Tag, TextSearch, X, Zap } from "lucide-react";
 import React from "react";
@@ -99,6 +100,8 @@ export default function App() {
      */
     getCurrentWindow().onCloseRequested(async (e) => {
       e.preventDefault();
+      // 保存窗口位置
+      await saveWindowState(StateFlags.SIZE | StateFlags.POSITION | StateFlags.MAXIMIZED);
       try {
         if (Stage.path.getFilePath() === Stage.path.draftName) {
           if (StageManager.isEmpty()) {
@@ -186,6 +189,10 @@ export default function App() {
     Stage.path.setPathHook = (pathString: string) => {
       setFile(pathString);
     };
+
+    // 恢复窗口位置大小
+    restoreStateCurrent(StateFlags.SIZE | StateFlags.POSITION | StateFlags.MAXIMIZED);
+
     return () => {
       // 经过测试发现，只要是不关闭软件，根本不会执行这里
       // 随意切换软件内部界面不会执行这里
