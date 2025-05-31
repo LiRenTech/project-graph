@@ -6,8 +6,6 @@ use base64::engine::general_purpose;
 use base64::Engine;
 
 use tauri::Manager;
-use tauri::Runtime;
-use tauri::Url;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct FolderEntry {
@@ -17,14 +15,13 @@ struct FolderEntry {
     #[serde(skip_serializing_if = "Option::is_none")]
     children: Option<Vec<FolderEntry>>,
 }
-#[cfg(desktop)]
-use tauri_plugin_updater::UpdaterExt;
 
 /// 递归读取文件夹结构，返回嵌套的文件夹结构
 #[tauri::command]
 fn read_folder_structure(path: String) -> FolderEntry {
     let path_buf = std::path::PathBuf::from(&path);
-    let name = path_buf.file_name()
+    let name = path_buf
+        .file_name()
         .and_then(|n| n.to_str())
         .unwrap_or("")
         .to_string();
@@ -36,7 +33,7 @@ fn read_folder_structure(path: String) -> FolderEntry {
                 let path = entry.path();
                 let child_name = entry.file_name().to_string_lossy().to_string();
                 let path_str = path.to_string_lossy().to_string();
-                
+
                 if path.is_file() {
                     children.push(FolderEntry {
                         name: child_name,
@@ -50,7 +47,7 @@ fn read_folder_structure(path: String) -> FolderEntry {
             }
         }
     }
-    
+
     FolderEntry {
         name,
         is_file: false,
@@ -88,7 +85,7 @@ fn read_folder(path: String) -> Vec<String> {
 /// 如果文件夹不存在，返回空列表
 /// fileExts: 要读取的文件扩展名列表，例如：[".txt", ".md"]
 #[tauri::command]
-fn read_folder_recursive(path: String, fileExts: Vec<String>) -> Vec<String> {
+fn read_folder_recursive(path: String, file_exts: Vec<String>) -> Vec<String> {
     let mut files = Vec::new();
     if let Ok(entries) = std::fs::read_dir(path) {
         for entry in entries {
@@ -96,12 +93,15 @@ fn read_folder_recursive(path: String, fileExts: Vec<String>) -> Vec<String> {
                 let path = entry.path();
                 if path.is_file() {
                     if let Some(file_name) = path.to_str() {
-                        if fileExts.iter().any(|ext| file_name.ends_with(ext)) {
+                        if file_exts.iter().any(|ext| file_name.ends_with(ext)) {
                             files.push(file_name.to_string());
                         }
                     }
                 } else if path.is_dir() {
-                    let mut sub_files = read_folder_recursive(path.to_str().unwrap().to_string(), fileExts.clone());
+                    let mut sub_files = read_folder_recursive(
+                        path.to_str().unwrap().to_string(),
+                        file_exts.clone(),
+                    );
                     files.append(&mut sub_files);
                 }
             }
@@ -110,14 +110,12 @@ fn read_folder_recursive(path: String, fileExts: Vec<String>) -> Vec<String> {
     files
 }
 
-
 /// 删除文件
 #[tauri::command]
 fn delete_file(path: String) -> Result<(), String> {
     std::fs::remove_file(path).map_err(|e| e.to_string())?;
     Ok(())
 }
-
 
 /// 读取文件，返回字符串
 #[tauri::command]
@@ -180,26 +178,6 @@ fn exit(code: i32) {
     std::process::exit(code);
 }
 
-#[cfg(desktop)]
-#[tauri::command]
-async fn set_update_channel<R: Runtime>(
-    app: tauri::AppHandle<R>,
-    channel: String,
-) -> Result<(), tauri_plugin_updater::Error> {
-    println!("Setting update channel to {}", channel);
-    app.updater_builder()
-        .endpoints(vec![Url::parse(
-            format!(
-            "https://github.com/LiRenTech/project-graph/releases/{channel}/download/latest.json"
-        )
-            .as_str(),
-        )?])?
-        .build()?
-        .check()
-        .await?;
-    Ok(())
-}
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // 在 Linux 上禁用 DMA-BUF 渲染器
@@ -227,6 +205,8 @@ pub fn run() {
                 app.handle().plugin(tauri_plugin_cli::init())?;
                 app.handle().plugin(tauri_plugin_process::init())?;
                 app.handle()
+                    .plugin(tauri_plugin_window_state::Builder::new().build())?;
+                app.handle()
                     .plugin(tauri_plugin_updater::Builder::new().build())?;
             }
             Ok(())
@@ -244,9 +224,7 @@ pub fn run() {
             write_file_base64,
             write_stdout,
             write_stderr,
-            exit,
-            #[cfg(desktop)]
-            set_update_channel
+            exit
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

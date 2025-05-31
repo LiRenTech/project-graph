@@ -76,7 +76,7 @@ export class MouseTipFeedbackEffect extends EffectObject {
     } else if (this.type === "moveLeft") {
       // 鼠标向左移动，右边应该出现幻影
       CurveRenderer.renderGradientLine(
-        MouseLocation.vector(),
+        MouseLocation.vector().clone(),
         MouseLocation.vector().add(new Vector(100 * (1 - this.timeProgress.rate), 0)),
         StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
         StageStyleManager.currentStyle.effects.successShadow.toTransparent(),
@@ -84,7 +84,7 @@ export class MouseTipFeedbackEffect extends EffectObject {
       );
     } else if (this.type === "moveRight") {
       CurveRenderer.renderGradientLine(
-        MouseLocation.vector(),
+        MouseLocation.vector().clone(),
         MouseLocation.vector().add(new Vector(-100 * (1 - this.timeProgress.rate), 0)),
         StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
         StageStyleManager.currentStyle.effects.successShadow.toTransparent(),
@@ -92,7 +92,7 @@ export class MouseTipFeedbackEffect extends EffectObject {
       );
     } else if (this.type === "moveUp") {
       CurveRenderer.renderGradientLine(
-        MouseLocation.vector(),
+        MouseLocation.vector().clone(),
         MouseLocation.vector().add(new Vector(0, 100 * (1 - this.timeProgress.rate))),
         StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
         StageStyleManager.currentStyle.effects.successShadow.toTransparent(),
@@ -100,7 +100,7 @@ export class MouseTipFeedbackEffect extends EffectObject {
       );
     } else if (this.type === "moveDown") {
       CurveRenderer.renderGradientLine(
-        MouseLocation.vector(),
+        MouseLocation.vector().clone(),
         MouseLocation.vector().add(new Vector(0, -100 * (1 - this.timeProgress.rate))),
         StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
         StageStyleManager.currentStyle.effects.successShadow.toTransparent(),
@@ -108,7 +108,7 @@ export class MouseTipFeedbackEffect extends EffectObject {
       );
     } else if (this.type === "move") {
       CurveRenderer.renderGradientLine(
-        MouseLocation.vector(),
+        MouseLocation.vector().clone(),
         MouseLocation.vector().add(this.direction.multiply(-5 * (1 - this.timeProgress.rate))),
         StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
         StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
@@ -116,7 +116,7 @@ export class MouseTipFeedbackEffect extends EffectObject {
       );
     } else if (this.type === "drag") {
       ShapeRenderer.renderCircle(
-        MouseLocation.vector(),
+        MouseLocation.vector().clone(),
         6 * (1 - this.timeProgress.rate),
         Color.Transparent,
         StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
@@ -125,7 +125,7 @@ export class MouseTipFeedbackEffect extends EffectObject {
     } else if (this.type === "cameraMoveToMouse") {
       CurveRenderer.renderDashedLine(
         Renderer.transformWorld2View(Camera.location),
-        MouseLocation.vector(),
+        MouseLocation.vector().clone(),
         StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(1 - this.timeProgress.rate),
         1,
         8,

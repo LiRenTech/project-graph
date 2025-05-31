@@ -1,5 +1,6 @@
+import { encode } from "@msgpack/msgpack";
 import { Serialized } from "../../../types/node";
-import { createFolder, exists, writeTextFile } from "../../../utils/fs";
+import { createFolder, exists, writeFile, writeTextFile } from "../../../utils/fs";
 import { PathString } from "../../../utils/pathString";
 import { Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
@@ -17,7 +18,11 @@ export namespace StageSaveManager {
    * @param errorCallback
    */
   export async function saveHandle(path: string, data: Serialized.File) {
-    await writeTextFile(path, JSON.stringify(data));
+    if (path.endsWith(".json")) {
+      await writeTextFile(path, JSON.stringify(data));
+    } else if (path.endsWith(".prg")) {
+      await writeFile(path, encode(data));
+    }
     isCurrentSaved = true;
   }
 

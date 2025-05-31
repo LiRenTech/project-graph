@@ -90,9 +90,17 @@ export namespace InputElement {
         document.body.removeEventListener("mousedown", onOutsideClick);
         removeElement();
       });
+      let isComposing = false;
+      inputElement.addEventListener("compositionstart", () => {
+        isComposing = true;
+      });
+      inputElement.addEventListener("compositionend", () => {
+        isComposing = false;
+      });
+
       inputElement.addEventListener("keydown", (event) => {
         event.stopPropagation();
-        if (event.key === "Enter") {
+        if (event.key === "Enter" && !isComposing) {
           resolve(inputElement.value);
           onChange(inputElement.value);
           document.body.removeEventListener("mousedown", onOutsideClick);
@@ -197,7 +205,19 @@ export namespace InputElement {
         document.body.removeEventListener("mousedown", onOutsideClick);
         removeElement();
       });
+      let isComposing = false;
+      textareaElement.addEventListener("compositionstart", () => {
+        isComposing = true;
+      });
+      textareaElement.addEventListener("compositionend", () => {
+        // 防止此事件早于enter键按下触发（Mac的bug）
+        setTimeout(() => {
+          isComposing = false;
+        }, 100);
+      });
+
       textareaElement.addEventListener("keydown", (event) => {
+        console.log(event.key, "keydown");
         event.stopPropagation();
         if (event.key === "Tab") {
           // 防止tab切换到其他按钮
@@ -238,17 +258,20 @@ export namespace InputElement {
 
         if (event.key === "Enter") {
           event.preventDefault();
-          const enterKeyDetail = getEnterKey(event);
-          if (textNodeExitEditMode === enterKeyDetail) {
-            // 用户想退出编辑
-            exitEditMode();
-            addSuccessEffect();
-          } else if (textNodeContentLineBreak === enterKeyDetail) {
-            // 用户想换行
-            breakLine();
-          } else {
-            // 用户可能记错了快捷键
-            addFailEffect();
+          // 使用event.isComposing和自定义isComposing双重检查
+          if (!(event.isComposing || isComposing)) {
+            const enterKeyDetail = getEnterKey(event);
+            if (textNodeExitEditMode === enterKeyDetail) {
+              // 用户想退出编辑
+              exitEditMode();
+              addSuccessEffect();
+            } else if (textNodeContentLineBreak === enterKeyDetail) {
+              // 用户想换行
+              breakLine();
+            } else {
+              // 用户可能记错了快捷键
+              addFailEffect();
+            }
           }
         }
       });

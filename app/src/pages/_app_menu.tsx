@@ -65,9 +65,13 @@ import { useTranslation } from "react-i18next";
 import { Dialog } from "../components/dialog";
 import { Panel } from "../components/panel";
 import { Popup } from "../components/popup";
+import { Vector } from "../core/dataStruct/Vector";
 import { Settings } from "../core/service/Settings";
+import { Controller } from "../core/service/controlService/controller/Controller";
 import { RecentFileManager } from "../core/service/dataFileService/RecentFileManager";
 import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
+import { FileLoader } from "../core/service/dataFileService/fileLoader";
+import { GenerateFromFolderEngine } from "../core/service/dataGenerateService/generateFromFolderEngine/GenerateFromFolderEngine";
 import { ComplexityDetector } from "../core/service/dataManageService/ComplexityDetector";
 import { CopyEngine } from "../core/service/dataManageService/copyEngine/copyEngine";
 import { SoundService } from "../core/service/feedbackService/SoundService";
@@ -80,10 +84,6 @@ import { createFolder, exists } from "../utils/fs";
 import { PathString } from "../utils/pathString";
 import ComplexityResultPanel from "./_fixed_panel/_complexity_result_panel";
 import ExportSvgPanel from "./_popup_panel/_export_svg_panel";
-import { FileLoader } from "../core/service/dataFileService/fileLoader";
-import { Vector } from "../core/dataStruct/Vector";
-import { Controller } from "../core/service/controlService/controller/Controller";
-import { GenerateFromFolderEngine } from "../core/service/dataGenerateService/generateFromFolderEngine/GenerateFromFolderEngine";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -256,20 +256,17 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           filters: isDesktop
             ? [
                 {
-                  name: "Project Graph",
+                  name: "JSON 格式，兼容旧版本",
                   extensions: ["json"],
+                },
+                {
+                  name: "新版 PRG 格式，文件更小",
+                  extensions: ["prg"],
                 },
               ]
             : [],
         });
     if (!path) {
-      return;
-    }
-    if (isDesktop && !path.endsWith(".json")) {
-      Dialog.show({
-        title: "请选择一个JSON文件",
-        type: "error",
-      });
       return;
     }
     try {
@@ -330,8 +327,12 @@ export default function AppMenu({ className = "", open = false }: { className?: 
           defaultPath: "新文件.json", // 提供一个默认的文件名
           filters: [
             {
-              name: "Project Graph",
+              name: "JSON 格式，兼容旧版本",
               extensions: ["json"],
+            },
+            {
+              name: "新版 PRG 格式，文件更小",
+              extensions: ["prg"],
             },
           ],
         });

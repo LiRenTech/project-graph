@@ -28,7 +28,7 @@ export namespace LayoutToTightSquareManager {
 
     const sortedRects = sortRectangleGreedy(
       layoutItems.map((item) => item.rect),
-      // 10,
+      20,
     );
 
     for (let i = 0; i < sortedRects.length; i++) {
@@ -68,7 +68,7 @@ export namespace LayoutToTightSquareManager {
 
 // 从visual-file项目里抄过来的
 
-function sortRectangleGreedy(rectangles: Rectangle[]): Rectangle[] {
+function sortRectangleGreedy(rectangles: Rectangle[], margin = 20): Rectangle[] {
   if (rectangles.length === 0) return [];
 
   // 处理第一个矩形
@@ -86,7 +86,7 @@ function sortRectangleGreedy(rectangles: Rectangle[]): Rectangle[] {
 
     for (const placedRect of ret) {
       // 尝试放在右侧
-      const candidateRight = appendRight(placedRect, originalRect, ret);
+      const candidateRight = appendRight(placedRect, originalRect, ret, margin);
       const rightSpaceScore =
         Math.max(currentWidth, candidateRight.right) -
         currentWidth +
@@ -102,7 +102,7 @@ function sortRectangleGreedy(rectangles: Rectangle[]): Rectangle[] {
       }
 
       // 尝试放在下方
-      const candidateBottom = appendBottom(placedRect, originalRect, ret);
+      const candidateBottom = appendBottom(placedRect, originalRect, ret, margin);
       const bottomSpaceScore =
         Math.max(currentWidth, candidateBottom.right) -
         currentWidth +
@@ -133,9 +133,9 @@ function sortRectangleGreedy(rectangles: Rectangle[]): Rectangle[] {
   return ret;
 }
 
-function appendRight(origin: Rectangle, originalRect: Rectangle, existingRects: Rectangle[]): Rectangle {
+function appendRight(origin: Rectangle, originalRect: Rectangle, existingRects: Rectangle[], margin = 20): Rectangle {
   const candidate = new Rectangle(
-    new Vector(origin.right, origin.location.y),
+    new Vector(origin.right + margin, origin.location.y),
     new Vector(originalRect.size.x, originalRect.size.y),
   );
 
@@ -156,9 +156,9 @@ function appendRight(origin: Rectangle, originalRect: Rectangle, existingRects: 
   return candidate;
 }
 
-function appendBottom(origin: Rectangle, originalRect: Rectangle, existingRects: Rectangle[]): Rectangle {
+function appendBottom(origin: Rectangle, originalRect: Rectangle, existingRects: Rectangle[], margin = 20): Rectangle {
   const candidate = new Rectangle(
-    new Vector(origin.location.x, origin.bottom),
+    new Vector(origin.location.x, origin.bottom + margin),
     new Vector(originalRect.size.x, originalRect.size.y),
   );
 
