@@ -13,17 +13,36 @@ export default function Download() {
     nightly: {},
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("https://release.project-graph.top")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`网络请求失败: ${res.status}`);
+        }
+        return res.json();
+      })
       .then(setData)
+      .catch((err) => {
+        setError(err.message);
+      })
       .finally(() => setLoading(false));
   }, []);
 
-  return loading ? (
-    <Loader2 className="animate-spin" />
-  ) : (
+  if (loading) {
+    return <Loader2 className="animate-spin" />;
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center">
+        <p>获取下载链接失败，请联系开发者，或从Github Release界面或网盘下载</p>
+      </div>
+    );
+  }
+
+  return (
     <Tabs items={["正式版", "开发版"]}>
       <Tab>
         <Downloads data={data.latest} />
