@@ -5,11 +5,11 @@ import Button from "../../components/Button";
 import { Dialog } from "../../components/dialog";
 import { StageExportPng } from "../../core/service/dataGenerateService/stageExportEngine/StageExportPng";
 import { Camera } from "../../core/stage/Camera";
-import { Stage } from "../../core/stage/Stage";
 import { isExportPNGPanelOpenAtom } from "../../state";
 import { cn } from "../../utils/cn";
-import { PathString } from "../../utils/pathString";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
+import { isMac } from "../../utils/platform";
+import { writeFileBase64 } from "../../utils/fs";
 
 /**
  * 导出png的面板
@@ -47,23 +47,36 @@ export default function ExportPNGPanel() {
   const downloadImage = () => {
     const imageBox = document.getElementById("export-png-image-box") as HTMLDivElement;
     const image = imageBox.querySelector("img") as HTMLImageElement;
-    if (image) {
-      const a = document.createElement("a");
-      a.href = image.src;
-
-      let fileName = "file";
-      if (Stage.path.isDraft()) {
-        fileName = "草稿";
-      } else {
-        fileName = PathString.getFileNameFromPath(Stage.path.getFilePath());
-      }
-      a.download = `${fileName}.png`;
-      a.click();
-    } else {
+    if (!image) {
       Dialog.show({
         title: "提示",
         content: "请先渲染图片",
       });
+      return;
+    }
+
+    const fileName = "导出图片";
+
+    if (isMac) {
+      try {
+        const base64Data = image.src.split(",")[1];
+        const filePath = `${fileName}.png`;
+        writeFileBase64(filePath, base64Data);
+        Dialog.show({
+          title: "导出成功",
+          content: `图片已保存，名称为 ${filePath}，用访达搜索该文件可以找到它`,
+        });
+      } catch (error) {
+        Dialog.show({
+          title: "导出失败",
+          content: `保存图片时出错: ${error}`,
+        });
+      }
+    } else {
+      const a = document.createElement("a");
+      a.href = image.src;
+      a.download = `${fileName}.png`;
+      a.click();
     }
   };
 
