@@ -38,6 +38,8 @@ import "./polyfills/roundRect";
 import { exists } from "./utils/fs";
 import { exit, writeStderr } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isFrame, isWeb, isWindows } from "./utils/platform";
+import { Provider } from "jotai";
+import { store } from "./state";
 
 /**
  * @private
@@ -202,6 +204,10 @@ async function renderApp(cli: boolean = false) {
     await getCurrentWindow().setSkipTaskbar(true);
     root.render(<></>);
   } else {
-    root.render(<Routes />);
+    root.render(
+      <Provider store={store}>
+        <Routes />
+      </Provider>,
+    );
   }
 }
