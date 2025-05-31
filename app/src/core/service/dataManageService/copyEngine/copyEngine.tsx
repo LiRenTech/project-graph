@@ -191,7 +191,8 @@ export function getRectangleFromSerializedEntities(serializedEntities: Serialize
       Serialized.isSection(node) ||
       Serialized.isImageNode(node) ||
       Serialized.isUrlNode(node) ||
-      Serialized.isPortalNode(node)
+      Serialized.isPortalNode(node) ||
+      Serialized.isSvgNode(node)
     ) {
       // 比较常规的矩形
       rectangles.push(new Rectangle(new Vector(...node.location), new Vector(...node.size)));
