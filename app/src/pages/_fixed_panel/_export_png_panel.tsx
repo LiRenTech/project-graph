@@ -10,6 +10,7 @@ import { cn } from "../../utils/cn";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { isMac } from "../../utils/platform";
 import { writeFileBase64 } from "../../utils/fs";
+import { downloadDir } from "@tauri-apps/api/path";
 
 /**
  * 导出png的面板
@@ -44,7 +45,7 @@ export default function ExportPNGPanel() {
 
   const [cameraScaleWhenExport, setCameraScaleWhenExport] = useState(0.5);
 
-  const downloadImage = () => {
+  const downloadImage = async () => {
     const imageBox = document.getElementById("export-png-image-box") as HTMLDivElement;
     const image = imageBox.querySelector("img") as HTMLImageElement;
     if (!image) {
@@ -60,11 +61,12 @@ export default function ExportPNGPanel() {
     if (isMac) {
       try {
         const base64Data = image.src.split(",")[1];
-        const filePath = `${fileName}.png`;
-        writeFileBase64(filePath, base64Data);
+        const downloadsDir = await downloadDir();
+        const filePath = `${downloadsDir}/${fileName}.png`;
+        await writeFileBase64(filePath, base64Data);
         Dialog.show({
           title: "导出成功",
-          content: `图片已保存，名称为 ${filePath}，用访达搜索该文件可以找到它`,
+          content: `图片已保存到下载文件夹: ${filePath}`,
         });
       } catch (error) {
         Dialog.show({
