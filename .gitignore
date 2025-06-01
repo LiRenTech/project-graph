@@ -3,6 +3,7 @@ dist
 .env
 .idea
 storybook-static
+.swc
 
 docs/src/.vitepress/dist
 docs/src/.vitepress/cache
