@@ -55,14 +55,14 @@ export namespace DrawingControllerRenderer {
             );
           }
         } else {
-          for (const segment of Stage.drawingMachine.currentStroke) {
-            CurveRenderer.renderSolidLine(
-              Renderer.transformWorld2View(segment.startLocation),
-              Renderer.transformWorld2View(segment.endLocation),
-              currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
-              Stage.drawingMachine.currentStrokeWidth * Camera.currentScale,
-            );
-          }
+          CurveRenderer.renderPenStroke(
+            Stage.drawingMachine.currentStroke.map((segment) => ({
+              startLocation: Renderer.transformWorld2View(segment.startLocation),
+              endLocation: Renderer.transformWorld2View(segment.endLocation),
+              width: segment.width * Camera.currentScale,
+            })),
+            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
+          );
         }
       }
       if (Stage.drawingControlMachine.isAdjusting) {

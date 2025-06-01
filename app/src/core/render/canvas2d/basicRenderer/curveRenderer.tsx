@@ -2,6 +2,7 @@ import { Color } from "../../../dataStruct/Color";
 import { CubicBezierCurve, SymmetryCurve } from "../../../dataStruct/shape/Curve";
 import { Vector } from "../../../dataStruct/Vector";
 import { Canvas } from "../../../stage/Canvas";
+import { PenStrokeSegment } from "../../../stage/stageObject/entity/PenStroke";
 
 /**
  * 关于各种曲线和直线的渲染
@@ -39,6 +40,26 @@ export namespace CurveRenderer {
     Canvas.ctx.lineWidth = width;
     Canvas.ctx.strokeStyle = color.toString();
     Canvas.ctx.stroke();
+  }
+  export function renderPenStroke(stroke: PenStrokeSegment[], color: Color): void {
+    // 在canvas上绘制笔画
+    Canvas.ctx.beginPath();
+    Canvas.ctx.lineJoin = "round";
+    Canvas.ctx.moveTo(stroke[0].startLocation.x, stroke[0].startLocation.y);
+    for (let i = 0; i < stroke.length; i++) {
+      // console.log(stroke[i].width);
+      // 修改循环开始从0
+      if (i > 0) {
+        Canvas.ctx.lineTo(stroke[i].endLocation.x, stroke[i].endLocation.y);
+      }
+      Canvas.ctx.lineWidth = stroke[i].width; // 更新线宽为当前线段的宽度
+      Canvas.ctx.stroke(); // 为了确保每个线段按照不同的宽度绘制，需要在这里调用stroke
+      if (i < stroke.length - 1) {
+        Canvas.ctx.beginPath(); // 开始新的路径，以便每个线段可以有不同的宽度
+        Canvas.ctx.moveTo(stroke[i].endLocation.x, stroke[i].endLocation.y);
+      }
+    }
+    Canvas.ctx.strokeStyle = color.toString();
   }
 
   /**

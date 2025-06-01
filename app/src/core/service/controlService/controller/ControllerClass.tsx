@@ -17,11 +17,11 @@ export class ControllerClass {
 
   public keydown: (event: KeyboardEvent) => void = () => {};
   public keyup: (event: KeyboardEvent) => void = () => {};
-  public mousedown: (event: MouseEvent) => void = () => {};
-  public mouseup: (event: MouseEvent) => void = () => {};
-  public mousemove: (event: MouseEvent) => void = () => {};
+  public mousedown: (event: PointerEvent) => void = () => {};
+  public mouseup: (event: PointerEvent) => void = () => {};
+  public mousemove: (event: PointerEvent) => void = () => {};
   public mousewheel: (event: WheelEvent) => void = () => {};
-  public mouseDoubleClick: (event: MouseEvent) => void = () => {};
+  public mouseDoubleClick: (event: PointerEvent) => void = () => {};
   public touchstart: (event: TouchEvent) => void = () => {};
   public touchmove: (event: TouchEvent) => void = () => {};
   public touchend: (event: TouchEvent) => void = () => {};
@@ -35,9 +35,9 @@ export class ControllerClass {
   public init() {
     window.addEventListener("keydown", this.keydown);
     window.addEventListener("keyup", this.keyup);
-    Canvas.element.addEventListener("mousedown", this.mousedown);
-    Canvas.element.addEventListener("mouseup", this._mouseup);
-    Canvas.element.addEventListener("mousemove", this.mousemove);
+    Canvas.element.addEventListener("pointerdown", this.mousedown);
+    Canvas.element.addEventListener("pointerup", this._mouseup);
+    Canvas.element.addEventListener("pointermove", this.mousemove);
     Canvas.element.addEventListener("wheel", this.mousewheel);
     Canvas.element.addEventListener("touchstart", this._touchstart);
     Canvas.element.addEventListener("touchmove", this._touchmove);
@@ -48,9 +48,9 @@ export class ControllerClass {
   public destroy() {
     window.removeEventListener("keydown", this.keydown);
     window.removeEventListener("keyup", this.keyup);
-    Canvas.element.removeEventListener("mousedown", this.mousedown);
-    Canvas.element.removeEventListener("mouseup", this._mouseup);
-    Canvas.element.removeEventListener("mousemove", this.mousemove);
+    Canvas.element.removeEventListener("pointerdown", this.mousedown);
+    Canvas.element.removeEventListener("pointerup", this._mouseup);
+    Canvas.element.removeEventListener("pointermove", this.mousemove);
     Canvas.element.removeEventListener("wheel", this.mousewheel);
     Canvas.element.removeEventListener("touchstart", this._touchstart);
     Canvas.element.removeEventListener("touchmove", this._touchmove);
@@ -59,7 +59,7 @@ export class ControllerClass {
     this.lastMoveLocation = Vector.getZero();
   }
 
-  // private _mousedown = (event: MouseEvent) => {
+  // private _mousedown = (event: PointerEvent) => {
   //   this.mousedown(event);
   //   // 检测双击
   //   const now = new Date().getTime();
@@ -89,7 +89,7 @@ export class ControllerClass {
    * ——2024年12月5日
    * @param event 鼠标事件对象
    */
-  private _mouseup = (event: MouseEvent) => {
+  private _mouseup = (event: PointerEvent) => {
     this.mouseup(event);
     // 检测双击
     const now = new Date().getTime();
@@ -106,13 +106,13 @@ export class ControllerClass {
   private _touchstart = (event: TouchEvent) => {
     event.preventDefault();
     const touch = {
-      ...(event.touches[event.touches.length - 1] as unknown as MouseEvent),
+      ...(event.touches[event.touches.length - 1] as unknown as PointerEvent),
       button: 0, // 通过对象展开实现相对安全的属性合并
 
       // 尝试修复华为触摸屏的笔记本报错问题
       clientX: event.touches[event.touches.length - 1].clientX,
       clientY: event.touches[event.touches.length - 1].clientY,
-    } as MouseEvent;
+    } as PointerEvent;
     if (event.touches.length > 1) {
       Stage.selectMachine.shutDown();
     }
@@ -126,13 +126,13 @@ export class ControllerClass {
       event.touches[event.touches.length - 1].clientY,
     );
     const touch = {
-      ...(event.touches[event.touches.length - 1] as unknown as MouseEvent),
+      ...(event.touches[event.touches.length - 1] as unknown as PointerEvent),
       button: 0, // 通过对象展开实现相对安全的属性合并
 
       // 尝试修复华为触摸屏的笔记本报错问题
       clientX: this.onePointTouchMoveLocation.x,
       clientY: this.onePointTouchMoveLocation.y,
-    } as MouseEvent;
+    } as PointerEvent;
     this.mousemove(touch);
   };
 
@@ -142,13 +142,13 @@ export class ControllerClass {
   private _touchend = (event: TouchEvent) => {
     event.preventDefault();
     const touch = {
-      ...(event.touches[event.touches.length - 1] as unknown as MouseEvent),
+      ...(event.touches[event.touches.length - 1] as unknown as PointerEvent),
       button: 0, // 通过对象展开实现相对安全的属性合并
 
       // 尝试修复华为触摸屏的笔记本报错问题
       clientX: this.onePointTouchMoveLocation.x,
       clientY: this.onePointTouchMoveLocation.y,
-    } as MouseEvent;
+    } as PointerEvent;
     this._mouseup(touch);
   };
 

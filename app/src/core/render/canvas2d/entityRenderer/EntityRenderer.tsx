@@ -313,10 +313,18 @@ export namespace EntityRenderer {
     //   penStrokeColor,
     //   penStroke.getSegmentList().map((seg) => seg.width * Camera.currentScale),
     // );
-    CurveRenderer.renderSolidLineMultipleSmoothly(
-      penStroke.getPath().map((v) => Renderer.transformWorld2View(v)),
+    // CurveRenderer.renderSolidLineMultipleSmoothly(
+    //   penStroke.getPath().map((v) => Renderer.transformWorld2View(v)),
+    //   penStrokeColor,
+    //   penStroke.getSegmentList()[0].width * Camera.currentScale,
+    // );
+    CurveRenderer.renderPenStroke(
+      penStroke.getSegmentList().map((segment) => ({
+        startLocation: Renderer.transformWorld2View(segment.startLocation),
+        endLocation: Renderer.transformWorld2View(segment.endLocation),
+        width: segment.width * Camera.currentScale,
+      })),
       penStrokeColor,
-      penStroke.getSegmentList()[0].width * Camera.currentScale,
     );
     if (penStroke.isMouseHover) {
       CollisionBoxRenderer.render(penStroke.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelected);

@@ -1,9 +1,9 @@
+import { Serialized } from "../../../../types/node";
 import { Color } from "../../../dataStruct/Color";
 import { Line } from "../../../dataStruct/shape/Line";
 import { Vector } from "../../../dataStruct/Vector";
 import { Entity } from "../abstract/StageEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { Serialized } from "../../../../types/node";
 
 /**
  * 一笔画中的某一个小段

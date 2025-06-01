@@ -10,13 +10,13 @@ import { Camera } from "../../../../stage/Camera";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { PenStroke, PenStrokeSegment } from "../../../../stage/stageObject/entity/PenStroke";
+import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { CircleChangeRadiusEffect } from "../../../feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
 import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concrete/CircleFlameEffect";
+import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { Settings } from "../../../Settings";
 import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
-import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
-import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 /**
  * 涂鸦功能
  */
@@ -80,24 +80,28 @@ class ControllerDrawingClass extends ControllerClass {
     Controller.setCursorNameHook(CursorNameEnum.Crosshair);
   };
 
-  public mousemove = (event: MouseEvent) => {
+  public mousemove = (event: PointerEvent) => {
     if (!this._isUsing) return;
     if (!Controller.isMouseDown[0] && Stage.leftMouseMode === LeftMouseModeEnum.draw) {
       return;
     }
-    const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    // const limitDistance = 2 / Camera.currentScale;
-    const limitDistance = 8 / Camera.currentScale;
-    // 检测：如果移动距离不超过一个距离，则不记录
-    if (worldLocation.distance(this.lastMoveLocation) < limitDistance) {
-      // Stage.effectMachine.addEffect(PointDashEffect.fromMouseEffect(worldLocation, 1));
-      return;
-    }
-    this.recordLocation.push(worldLocation.clone());
+    const events = event.getCoalescedEvents();
+    for (const e of events) {
+      const isPen = e.pointerType === "pen";
+      const worldLocation = Renderer.transformView2World(new Vector(e.clientX, e.clientY));
+      const limitDistance = 8 / Camera.currentScale;
+      // 检测：如果移动距离不超过一个距离，则不记录
+      if (worldLocation.distance(this.lastMoveLocation) < limitDistance) {
+        return;
+      }
+      this.recordLocation.push(worldLocation.clone());
 
-    // 记录笔刷
-    this.currentStroke.push(new PenStrokeSegment(this.lastMoveLocation, worldLocation, this.currentStrokeWidth));
-    this.lastMoveLocation = worldLocation.clone();
+      // 记录笔刷
+      this.currentStroke.push(
+        new PenStrokeSegment(this.lastMoveLocation, worldLocation, this.currentStrokeWidth * (isPen ? e.pressure : 1)),
+      );
+      this.lastMoveLocation = worldLocation.clone();
+    }
   };
 
   public mouseup = (event: MouseEvent) => {
@@ -187,8 +191,10 @@ class ControllerDrawingClass extends ControllerClass {
       } else {
         // 普通笔迹
         const strokeStringList: string[] = [];
-        for (const location of this.recordLocation) {
-          strokeStringList.push(`${location.x.toFixed(2)},${location.y.toFixed(2)},${this.currentStrokeWidth}`);
+        for (const segment of this.currentStroke) {
+          strokeStringList.push(
+            `${segment.startLocation.x.toFixed(2)},${segment.startLocation.y.toFixed(2)},${segment.width}`,
+          );
         }
         const contentString = strokeStringList.join("~");
 
