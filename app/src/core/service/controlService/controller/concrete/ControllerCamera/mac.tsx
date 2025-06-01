@@ -4,6 +4,7 @@ import { Camera } from "../../../../../stage/Camera";
 import { Stage } from "../../../../../stage/Stage";
 import { MouseTipFeedbackEffect } from "../../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
 import { Settings } from "../../../../Settings";
+import { Controller } from "../../Controller";
 
 export namespace ControllerCameraMac {
   let macTrackpadScaleSensitivity = 0.5;
@@ -132,10 +133,22 @@ export namespace ControllerCameraMac {
     if (Math.abs(event.deltaX) < 0.01 && Math.abs(event.deltaY) < 0.01) {
       return;
     }
+    if (Controller.pressingKeySet.has(" ")) {
+      console.log("space pressed, ignore touch pad move");
+      handleRectangleSelectByTwoFingerMove(event);
+      return;
+    }
     const dx = event.deltaX / 400;
     const dy = event.deltaY / 400;
     const diffLocation = new Vector(dx, dy).multiply((Camera.moveAmplitude * 50) / Camera.currentScale);
     Camera.location = Camera.location.add(diffLocation);
     Stage.effectMachine.addEffect(MouseTipFeedbackEffect.directionObject(diffLocation));
+  }
+
+  function handleRectangleSelectByTwoFingerMove(event: WheelEvent) {
+    const dx = event.deltaX;
+    const dy = event.deltaY;
+    console.log("dx, dy", dx, dy);
+    // TODO: 调用矩形框选
   }
 }

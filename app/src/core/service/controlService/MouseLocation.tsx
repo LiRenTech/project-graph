@@ -25,8 +25,8 @@ export namespace MouseLocation {
         if (Stage.cameraControllerMachine.isUsingMouseGrabMove) {
           Stage.cameraControllerMachine.mouseMoveOutWindowForcedShutdown(vectorObject);
         }
-        if (Stage.selectMachine.isUsing) {
-          Stage.selectMachine.mouseMoveOutWindowForcedShutdown(vectorObject);
+        if (Stage.rectangleSelectMouseMachine.isUsing) {
+          Stage.rectangleSelectMouseMachine.mouseMoveOutWindowForcedShutdown(vectorObject);
         }
         Stage.entityMoveMachine.mouseMoveOutWindowForcedShutdown(vectorObject);
       }

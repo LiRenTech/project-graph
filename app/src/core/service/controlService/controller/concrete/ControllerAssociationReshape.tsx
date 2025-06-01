@@ -88,7 +88,7 @@ class ControllerAssociationReshapeClass extends ControllerClass {
     if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
       return;
     }
-    if (Stage.selectMachine.isUsing || Stage.cuttingMachine.isUsing) {
+    if (Stage.rectangleSelectMouseMachine.isUsing || Stage.cuttingMachine.isUsing) {
       return;
     }
     const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));

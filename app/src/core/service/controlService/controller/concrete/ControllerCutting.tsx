@@ -28,9 +28,9 @@ import { isMac } from "../../../../../utils/platform";
 import { MouseLocation } from "../../MouseLocation";
 
 class CuttingControllerClass extends ControllerClass {
-  private _isControlKeyDown = false;
   private _controlKeyEventRegistered = false;
-
+  private _isControlKeyDown = false;
+  // mac 特性功能
   private onControlKeyDown = (event: KeyboardEvent) => {
     if (isMac && event.key === "Control" && !this._isControlKeyDown) {
       this._isControlKeyDown = true;
@@ -45,6 +45,7 @@ class CuttingControllerClass extends ControllerClass {
     }
   };
 
+  // mac 特性功能
   private onControlKeyUp = (event: KeyboardEvent) => {
     if (isMac && event.key === "Control" && this._isControlKeyDown) {
       this._isControlKeyDown = false;

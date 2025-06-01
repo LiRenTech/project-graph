@@ -353,36 +353,67 @@ export namespace Renderer {
 
   /** 框选框 */
   function renderSelectingRectangle() {
-    if (Stage.selectMachine.isUsing && Stage.selectMachine.selectingRectangle) {
-      const selectMode = Stage.selectMachine.getSelectMode();
+    const rectangle = Stage.rectangleSelectEngine.getRectangle();
+    if (rectangle) {
+      const selectMode = Stage.rectangleSelectEngine.getSelectMode();
       if (selectMode === "intersect") {
         ShapeRenderer.renderRect(
-          Stage.selectMachine.selectingRectangle.transformWorld2View(),
+          rectangle.transformWorld2View(),
           StageStyleManager.currentStyle.SelectRectangleFill,
           StageStyleManager.currentStyle.SelectRectangleBorder,
           1,
         );
       } else if (selectMode === "contain") {
         ShapeRenderer.renderRect(
-          Stage.selectMachine.selectingRectangle.transformWorld2View(),
+          rectangle.transformWorld2View(),
           StageStyleManager.currentStyle.SelectRectangleFill,
           Color.Transparent,
           0,
         );
         ShapeRenderer.renderCameraShapeBorder(
-          Stage.selectMachine.selectingRectangle.transformWorld2View(),
+          rectangle.transformWorld2View(),
           StageStyleManager.currentStyle.SelectRectangleBorder,
           1,
         );
         // 完全覆盖框选的提示
         TextRenderer.renderOneLineText(
           "完全覆盖框选",
-          transformWorld2View(Stage.selectMachine.selectingRectangle.leftBottom).add(new Vector(20, 10)),
+          transformWorld2View(rectangle.leftBottom).add(new Vector(20, 10)),
           10,
           StageStyleManager.currentStyle.SelectRectangleBorder,
         );
       }
     }
+    // if (Stage.selectMachine.isUsing && Stage.selectMachine.selectingRectangle) {
+    //   const selectMode = Stage.selectMachine.getSelectMode();
+    //   if (selectMode === "intersect") {
+    //     ShapeRenderer.renderRect(
+    //       Stage.selectMachine.selectingRectangle.transformWorld2View(),
+    //       StageStyleManager.currentStyle.SelectRectangleFill,
+    //       StageStyleManager.currentStyle.SelectRectangleBorder,
+    //       1,
+    //     );
+    //   } else if (selectMode === "contain") {
+    //     ShapeRenderer.renderRect(
+    //       Stage.selectMachine.selectingRectangle.transformWorld2View(),
+    //       StageStyleManager.currentStyle.SelectRectangleFill,
+    //       Color.Transparent,
+    //       0,
+    //     );
+    //     ShapeRenderer.renderCameraShapeBorder(
+    //       Stage.selectMachine.selectingRectangle.transformWorld2View(),
+    //       StageStyleManager.currentStyle.SelectRectangleBorder,
+    //       1,
+    //     );
+    //     // 完全覆盖框选的提示
+    //     TextRenderer.renderOneLineText(
+    //       "完全覆盖框选",
+    //       transformWorld2View(Stage.selectMachine.selectingRectangle.leftBottom).add(new Vector(20, 10)),
+    //       10,
+    //       StageStyleManager.currentStyle.SelectRectangleBorder,
+    //     );
+    //   }
+    // }
   }
   /** 切割线 */
   function renderCuttingLine() {
@@ -804,7 +835,7 @@ export namespace Renderer {
       `selected count: ${StageObjectSelectCounter.toDebugString()}`,
       `pressingKeys: ${Controller.pressingKeysString()}`,
       `鼠标按下情况: ${Controller.isMouseDown}`,
-      `框选框: ${Stage.selectMachine.selectingRectangle}`,
+      `框选框: ${JSON.stringify(Stage.rectangleSelectEngine.getRectangle())}`,
       `正在切割: ${Stage.cuttingMachine.isUsing}`,
       `Stage.warningNodes: ${Stage.cuttingMachine.warningEntity.length}`,
       `Stage.warningAssociations: ${Stage.cuttingMachine.warningAssociations.length}`,

@@ -9,6 +9,7 @@ import { ControllerDrawing } from "../service/controlService/controller/concrete
 import { ControllerRectangleSelect } from "../service/controlService/controller/concrete/ControllerRectangleSelect";
 import { Controller } from "../service/controlService/controller/Controller";
 import { KeyboardOnlyEngine } from "../service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
+import { RectangleSelectEngine } from "../service/controlService/rectangleSelectEngine/rectangleSelectEngine";
 import { SecretKeysEngine } from "../service/controlService/secretKeysEngine/secretKeysEngine";
 import { StageMouseInteractionCore } from "../service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
 import { AutoBackupEngine } from "../service/dataFileService/autoSaveBackupEngine/autoBackupEngine";
@@ -67,12 +68,16 @@ export namespace Stage {
   /**
    * 鼠标框选控制器
    */
-  export const selectMachine = ControllerRectangleSelect;
-
+  export const rectangleSelectMouseMachine = ControllerRectangleSelect;
+  /**
+   * 框选内核
+   */
+  export const rectangleSelectEngine = new RectangleSelectEngine();
   /**
    * 实体拖拽移动控制器
    */
   export const entityMoveMachine = ControllerEntityClickSelectAndMove;
+
   /**
    * 相机控制器
    */

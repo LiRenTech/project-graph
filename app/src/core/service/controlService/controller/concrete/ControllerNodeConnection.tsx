@@ -232,7 +232,7 @@ class ControllerNodeConnectionClass extends ControllerClass {
   private isMouseHoverOnTarget = false;
 
   public mousemove: (event: MouseEvent) => void = (event) => {
-    if (Stage.selectMachine.isUsing || Stage.cuttingMachine.isUsing) {
+    if (Stage.rectangleSelectMouseMachine.isUsing || Stage.cuttingMachine.isUsing) {
       return;
     }
     if (!this._isUsing) {

@@ -91,7 +91,11 @@ class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
   };
 
   public mousemove: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Stage.selectMachine.isUsing || Stage.cuttingMachine.isUsing || Controller.pressingKeySet.has("alt")) {
+    if (
+      Stage.rectangleSelectMouseMachine.isUsing ||
+      Stage.cuttingMachine.isUsing ||
+      Controller.pressingKeySet.has("alt")
+    ) {
       return;
     }
     if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {

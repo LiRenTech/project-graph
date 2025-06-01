@@ -114,7 +114,7 @@ export class ControllerClass {
       clientY: event.touches[event.touches.length - 1].clientY,
     } as PointerEvent;
     if (event.touches.length > 1) {
-      Stage.selectMachine.shutDown();
+      Stage.rectangleSelectMouseMachine.shutDown();
     }
     this.mousedown(touch);
   };
