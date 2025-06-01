@@ -148,7 +148,19 @@ export namespace ControllerCameraMac {
   function handleRectangleSelectByTwoFingerMove(event: WheelEvent) {
     const dx = event.deltaX;
     const dy = event.deltaY;
-    console.log("dx, dy", dx, dy);
     // TODO: 调用矩形框选
+    const rectangle = Stage.rectangleSelectEngine.getRectangle();
+    if (rectangle) {
+      // 正在框选中
+      const selectEndLocation = Stage.rectangleSelectEngine.getSelectEndLocation();
+      Stage.rectangleSelectEngine.moveSelecting(
+        selectEndLocation.add(new Vector(-dx, -dy).divide(Camera.currentScale)),
+      );
+    } else {
+      // 开始框选
+      const mouseLocation = new Vector(event.clientX, event.clientY);
+      const worldLocation = Renderer.transformView2World(mouseLocation);
+      Stage.rectangleSelectEngine.startSelecting(worldLocation);
+    }
   }
 }

@@ -23,6 +23,8 @@ import { CursorNameEnum } from "../../../../types/cursors";
 import { controllerChildCamera } from "./concrete/ControllerChildCamera";
 import { ControllerEntityResize } from "./concrete/ControllerEntityResize";
 import { controllerPenStrokeControl } from "./concrete/ControllerPenStrokeControl";
+import { isMac } from "../../../../utils/platform";
+import { Stage } from "../../../stage/Stage";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -224,6 +226,10 @@ export namespace Controller {
     const key = event.key.toLowerCase();
     if (pressingKeySet.has(key)) {
       pressingKeySet.delete(key);
+    }
+    if (event.key === " " && isMac) {
+      // 停止框选
+      Stage.rectangleSelectEngine.shutDown();
     }
     recordManipulate();
   }

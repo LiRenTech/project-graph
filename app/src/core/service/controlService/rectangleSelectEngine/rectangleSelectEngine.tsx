@@ -21,6 +21,12 @@ export class RectangleSelectEngine {
   private selectStartLocation = Vector.getZero();
   // 结束点
   private selectEndLocation = Vector.getZero();
+  public getSelectStartLocation(): Vector {
+    return this.selectStartLocation.clone();
+  }
+  public getSelectEndLocation(): Vector {
+    return this.selectEndLocation.clone();
+  }
   private selectingRectangle: Rectangle | null = null;
   // 将框选框限制在某个section内
   private limitSection: Section | null = null;
