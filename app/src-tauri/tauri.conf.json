@@ -55,7 +55,19 @@
       "appimage": {
         "bundleMediaFramework": true
       }
-    }
+    },
+    "macOS": {
+      "minimumSystemVersion": "14.0"
+    },
+    "fileAssociations": [
+      {
+        "name": "Project Graph Document",
+        "description": "Project Graph Document",
+        "ext": ["prg"],
+        "mimeType": "application/vnd.project-graph",
+        "role": "Editor"
+      }
+    ]
   },
   "plugins": {
     "cli": {

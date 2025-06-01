@@ -20,7 +20,10 @@ export default defineConfig(async () => ({
     // import config from "./config.yaml"
     ViteYaml(),
     // 使用swc的react插件
-    react({ tsDecorators: true }),
+    react({
+      tsDecorators: true,
+      // plugins: [["@swc-jotai/react-refresh", {}]],
+    }),
     // 自动生成路由文件
     generouted(),
   ],

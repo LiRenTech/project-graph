@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@modyfi/vite-plugin-yaml": "^1.1.0",
+    "@swc-jotai/react-refresh": "^0.3.0",
     "@tailwindcss/vite": "^4.0.0",
     "@tauri-apps/cli": "^2.1.0",
     "@types/lodash": "^4.17.15",
