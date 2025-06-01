@@ -1,7 +1,9 @@
+import { isMac } from "../../../../../../utils/platform";
 import { Vector } from "../../../../../dataStruct/Vector";
 import { Renderer } from "../../../../../render/canvas2d/renderer";
 import { Camera } from "../../../../../stage/Camera";
 import { Stage } from "../../../../../stage/Stage";
+import { StageEntityMoveManager } from "../../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { MouseTipFeedbackEffect } from "../../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
 import { Settings } from "../../../../Settings";
 import { Controller } from "../../Controller";
@@ -137,6 +139,9 @@ export namespace ControllerCameraMac {
       console.log("space pressed, ignore touch pad move");
       handleRectangleSelectByTwoFingerMove(event);
       return;
+    } else if (Controller.pressingKeySet.has("meta") && isMac) {
+      handleDrageMoveEntityByTwoFingerMove(event);
+      return;
     }
     const dx = event.deltaX / 400;
     const dy = event.deltaY / 400;
@@ -162,5 +167,12 @@ export namespace ControllerCameraMac {
       const worldLocation = Renderer.transformView2World(mouseLocation);
       Stage.rectangleSelectEngine.startSelecting(worldLocation);
     }
+  }
+
+  function handleDrageMoveEntityByTwoFingerMove(event: WheelEvent) {
+    const dx = event.deltaX;
+    const dy = event.deltaY;
+    const diffLocation = new Vector(-dx, -dy).divide(Camera.currentScale);
+    StageEntityMoveManager.moveSelectedEntities(diffLocation);
   }
 }
