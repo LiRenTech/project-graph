@@ -226,7 +226,7 @@ export async function writeFile(path: string, content: Uint8Array): Promise<void
       reader.onload = () => resolve(reader.result as string);
       reader.readAsDataURL(new Blob([content]));
     });
-    const base64 = btoa(base64url.split(",")[1]);
+    const base64 = base64url.split(",")[1];
     return invoke("write_file_base64", { path, content: base64 });
   }
 }

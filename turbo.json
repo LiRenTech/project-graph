@@ -37,6 +37,7 @@
     "@pg/app#tauri:dev": {
       "with": ["dev", "@pg/docs#dev"],
       "outputs": ["app/src-tauri/target/debug/**"],
+      "cache": false,
       "persistent": true
     },
     "type-check": {

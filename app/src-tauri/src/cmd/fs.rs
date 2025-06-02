@@ -140,16 +140,17 @@ pub fn write_text_file(path: String, content: String) -> Result<(), String> {
 /// 写入文件，base64字符串
 #[tauri::command]
 pub fn write_file_base64(content: String, path: String) -> Result<(), String> {
-    std::fs::write(
-        &path,
-        &general_purpose::STANDARD
-            .decode(content)
-            .map_err(|e| format!("解码失败: {}", e))?,
-    )
-    .map_err(|e| {
+    // 解码 Base64 内容
+    let decoded_content = general_purpose::STANDARD
+        .decode(content)
+        .map_err(|e| format!("解码失败: {}", e))?;
+
+    // 写入文件
+    std::fs::write(&path, decoded_content).map_err(|e| {
         eprintln!("写入文件失败: {}", e);
-        return e.to_string();
+        e.to_string()
     })?;
+
     Ok(())
 }
 
