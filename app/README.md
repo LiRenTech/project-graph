@@ -19,10 +19,6 @@ Next-Generation Node Diagram Tool for Visual Thinking
 
 </div>
 
-[![image](https://beisudianxueuser.oss-cn-beijing.aliyuncs.com/storage/user_avatar/ciallo/2025/04/06/1818c0770e94a4257af5eb7d5530f5fd/Screenshot%202025-04-06%20at%2016-23-03%20NodeSupport%20Promotion.png)](https://yxvm.com/)
-
-[NodeSupport](https://github.com/NodeSeekDev/NodeSupport) supported this project
-
 # 🌍 Help us translate!
 
 [![Weblate Badge]][Weblate]
@@ -85,9 +81,12 @@ Join us and shape the future of visual thinking:
 
 We welcome PRs! Check [CONTRIBUTING.md](https://project-graph.top/docs/contribute) for guidelines.
 
-## 📜 License
+# 🏆 Sponsors
 
-MIT Licensed. Fork, modify, and distribute freely — credit appreciated but not required.
+|                         ![YXVM Logo]                          |                 ![ZMTO Logo]                 |
+| :-----------------------------------------------------------: | :------------------------------------------: |
+| [YXVM](https://yxvm.com/) & [NodeSeek](https://nodeseek.com/) | [ZMTO](https://console.zmto.com/?affid=1574) |
+|                                                               |   Get 5% off by this code: `ZOE2SGSZ5SP6`    |
 
 <!----------------------------------------------------------------------------->
 
@@ -104,3 +103,8 @@ MIT Licensed. Fork, modify, and distribute freely — credit appreciated but not
 [Badge Language]: https://img.shields.io/github/languages/top/LiRenTech/project-graph
 [Badge License]: https://img.shields.io/github/license/LiRenTech/project-graph
 [Badge Lines]: https://img.shields.io/tokei/lines/github/LiRenTech/project-graph
+
+<!----------------------------------{ Images }--------------------------------->
+
+[YXVM Logo]: https://yxvm.com/assets/img/logo.png
+[ZMTO Logo]: https://console.zmto.com/templates/2019/dist/images/logo_white.svg
