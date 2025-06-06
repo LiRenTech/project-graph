@@ -8,7 +8,7 @@ router.ts
 vite-env.d.ts
 
 # prettier不支持mdx3.0
-*.mdx
+# *.mdx
 
 dist
 .next
