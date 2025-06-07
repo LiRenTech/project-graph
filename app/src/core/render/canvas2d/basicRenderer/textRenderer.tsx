@@ -30,7 +30,7 @@ export namespace TextRenderer {
     if (Renderer.textIntegerLocationAndSizeRender) {
       Canvas.ctx.font = `${Math.round(fontSize)}px ${FONT}`;
     } else {
-      Canvas.ctx.font = `${fontSize}px ${FONT}`;
+      Canvas.ctx.font = `${fontSize}px normal ${FONT}`;
     }
     Canvas.ctx.fillStyle = color.toString();
     if (Renderer.textIntegerLocationAndSizeRender) {
@@ -58,9 +58,9 @@ export namespace TextRenderer {
     Canvas.ctx.textBaseline = "middle";
     Canvas.ctx.textAlign = "center";
     if (Renderer.textIntegerLocationAndSizeRender) {
-      Canvas.ctx.font = `${Math.round(size)}px ${FONT}`;
+      Canvas.ctx.font = `${Math.round(size)}px normal ${FONT}`;
     } else {
-      Canvas.ctx.font = `${size}px ${FONT}`;
+      Canvas.ctx.font = `${size}px normal ${FONT}`;
     }
     Canvas.ctx.fillStyle = color.toString();
     if (Renderer.textIntegerLocationAndSizeRender) {

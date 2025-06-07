@@ -1,5 +1,6 @@
 import { MaxSizeCache } from "../core/dataStruct/Cache";
 import { Vector } from "../core/dataStruct/Vector";
+import { isMac } from "./platform";
 
 const _canvas = document.createElement("canvas");
 const _context = _canvas.getContext("2d");
@@ -7,7 +8,10 @@ const _context = _canvas.getContext("2d");
 const _cache = new MaxSizeCache<string, number>(10000);
 
 /** canvas中使用的字体 */
-export const FONT = "-apple-system, BlinkMacSystemFont, MiSans, system-ui, sans-serif";
+export let FONT = "-apple-system, BlinkMacSystemFont, MiSans, system-ui, sans-serif";
+if (isMac) {
+  FONT = "PingFang SC, PingFang TC, -apple-system";
+}
 
 // eslint-disable-next-line prefer-const
 let useCache = true;
@@ -31,7 +35,7 @@ export function getTextSize(text: string, size: number): Vector {
     throw new Error("Failed to get canvas context");
   }
 
-  _context.font = `${size}px ${FONT}`;
+  _context.font = `${size}px normal ${FONT}`;
   const metrics = _context.measureText(text);
   // const t2 = performance.now();
   if (useCache) {
