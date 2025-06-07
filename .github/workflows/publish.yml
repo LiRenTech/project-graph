@@ -161,7 +161,7 @@ jobs:
             dist: "src-tauri/target/release/bundle/nsis"
           - platform: "windows-latest"
             dist: "src-tauri/target/release/bundle/nsis"
-            tag: "win7"
+            variant: "win7"
           - platform: "macos-latest"
             args: "--target aarch64-apple-darwin"
             rust_targets: "aarch64-apple-darwin"
@@ -244,8 +244,8 @@ jobs:
         if: matrix.android
         run: |
           node ./.github/scripts/set-version.mjs ${{ inputs.app_version_android }}
-      - name: Tag - win7
-        if: matrix.tag == 'win7'
+      - name: Variant - win7
+        if: matrix.variant == 'win7'
         run: |
           (Get-Content ./app/src-tauri/tauri.conf.json).Replace('downloadBootstrapper', 'embedBootstrapper') | Set-Content ./app/src-tauri/tauri.conf.json
           cat ./app/src-tauri/tauri.conf.json
