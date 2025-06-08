@@ -7,4 +7,5 @@ export namespace FeatureFlags {
    * AI扩展节点等所有和AI有关的功能
    */
   export const AI = "LR_API_BASE_URL" in import.meta.env;
+  export const TELEMETRY = "LR_API_BASE_URL" in import.meta.env;
 }

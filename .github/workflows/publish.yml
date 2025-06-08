@@ -157,8 +157,14 @@ jobs:
         include:
           - platform: "ubuntu-22.04"
             dist: "src-tauri/target/release/bundle/**/*.{deb,AppImage,rpm,sig}"
+          - platform: "ubuntu-22.04"
+            dist: "src-tauri/target/release/bundle/**/*.{deb,AppImage,rpm,sig}"
+            variant: "foss"
           - platform: "windows-latest"
             dist: "src-tauri/target/release/bundle/nsis"
+          - platform: "windows-latest"
+            dist: "src-tauri/target/release/bundle/nsis"
+            variant: "foss"
           - platform: "windows-latest"
             dist: "src-tauri/target/release/bundle/nsis"
             variant: "win7"
@@ -167,9 +173,19 @@ jobs:
             rust_targets: "aarch64-apple-darwin"
             dist: "src-tauri/target/aarch64-apple-darwin/release/bundle/**/*.{dmg,tar.gz,sig}"
           - platform: "macos-latest"
+            args: "--target aarch64-apple-darwin"
+            rust_targets: "aarch64-apple-darwin"
+            dist: "src-tauri/target/aarch64-apple-darwin/release/bundle/**/*.{dmg,tar.gz,sig}"
+            variant: "foss"
+          - platform: "macos-latest"
             args: "--target x86_64-apple-darwin"
             rust_targets: "x86_64-apple-darwin"
             dist: "src-tauri/target/x86_64-apple-darwin/release/bundle/**/*.{dmg,tar.gz,sig}"
+          - platform: "macos-latest"
+            args: "--target x86_64-apple-darwin"
+            rust_targets: "x86_64-apple-darwin"
+            dist: "src-tauri/target/x86_64-apple-darwin/release/bundle/**/*.{dmg,tar.gz,sig}"
+            variant: "foss"
           # - platform: "ubuntu-22.04"
           #   rust_targets: "armv7-linux-androideabi,i686-linux-android,x86_64-linux-android,aarch64-linux-android"
           #   android: true
@@ -258,7 +274,7 @@ jobs:
           eval $envs_with_export
           pnpm turbo run ${{ matrix.android && inputs.task_build_android || inputs.task_build }}
         env:
-          envs: ${{ secrets.BUILD_ENV }}
+          envs: ${{ matrix.variant == 'foss' && '' || secrets.BUILD_ENV }}
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
           TURBO_TEAM: ${{ inputs.turbo_team }}
           TAURI_BUILD_ARGS: ${{ matrix.args }}
@@ -277,7 +293,7 @@ jobs:
           }
           pnpm turbo run ${{ inputs.task_build }}
         env:
-          envs: ${{ secrets.BUILD_ENV }}
+          envs: ${{ matrix.variant == 'foss' && '' || secrets.BUILD_ENV }}
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
           TURBO_TEAM: ${{ inputs.turbo_team }}
           TAURI_BUILD_ARGS: ${{ matrix.args }}

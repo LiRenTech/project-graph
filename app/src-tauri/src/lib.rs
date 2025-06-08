@@ -51,6 +51,7 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            cmd::device::get_device_id,
             cmd::fs::read_folder_structure,
             cmd::fs::read_text_file,
             cmd::fs::read_file_base64,

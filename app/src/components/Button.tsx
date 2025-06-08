@@ -1,7 +1,7 @@
 import React from "react";
+import { SoundService } from "../core/service/feedbackService/SoundService";
 import { cn } from "../utils/cn";
 import Box from "./Box";
-import { SoundService } from "../core/service/feedbackService/SoundService";
 
 export default function Button({
   children,
@@ -34,8 +34,7 @@ export default function Button({
           onClick(e);
         }
       }}
-      onMouseDown={(e: React.MouseEvent) => {
-        console.log(e);
+      onMouseDown={() => {
         SoundService.play.mouseClickButton();
       }}
       {...props}

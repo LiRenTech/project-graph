@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getDeviceId } from "../utils/otherApi";
 // import { open } from "@tauri-apps/plugin-shell";
 // import Button from "../components/Button";
 
@@ -8,6 +9,7 @@ import { useEffect, useState } from "react";
  */
 export default function InfoPage() {
   const [dataList, setDataList] = useState<string[]>([]);
+  const [deviceId, setDeviceId] = useState("");
 
   const onMouseWheel = (e: WheelEvent) => {
     e.preventDefault();
@@ -33,6 +35,10 @@ export default function InfoPage() {
     window.addEventListener("wheel", onMouseWheel);
     // window.addEventListener("pointermove", onPointerMove);
 
+    getDeviceId().then((d) => {
+      setDeviceId(d);
+    });
+
     return () => {
       window.removeEventListener("wheel", onMouseWheel);
       // window.removeEventListener("pointermove", onPointerMove);
@@ -49,20 +55,7 @@ export default function InfoPage() {
         <p>敬请期待</p> */}
         <div className="text-panel-details-text text-xs">
           <p>{navigator.userAgent}</p>
-          <p>浏览器语言: {navigator.language}</p>
-          <p>
-            window.screen: {window.screen.width} x {window.screen.height}
-          </p>
-          <p>{window.location.href}</p>
-          <p>colorDepth: {window.screen.colorDepth}</p>
-          <p>availHeight: {window.screen.availHeight}</p>
-          <p>history.length: {window.history.length}</p>
-          {/* 无法解决的ts报错 */}
-          {/* <p>设备内存: {navigator.deviceMemory || "未知"} GB</p>
-        <p>网络类型: {navigator.connection?.effectiveType || "未知"}</p> */}
-          <p>CPU 核心数: {navigator.hardwareConcurrency}</p>
-          {/* <p>操作系统platform(): {platform()}</p> */}
-          <p>设备像素比: {window.devicePixelRatio}</p>
+          <p>神秘字符串：{deviceId}</p>
         </div>
 
         <input type="text" />

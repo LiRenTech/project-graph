@@ -113,10 +113,14 @@ ENV_VAR2=value2
 | 构建平台 `platform`\* | [应用变体](../variant) `variant` | 产物路径 Glob `dist`\*                                                       | 额外的 Rust 平台 `rust_targets` | 是否为 Android 版本 `android` |
 | --------------------- | -------------------------------- | ---------------------------------------------------------------------------- | ------------------------------- | ----------------------------- |
 | ubuntu-22.04          |                                  | `src-tauri/target/release/bundle/**/*.{deb,AppImage,rpm,sig}`                |                                 |                               |
+| ubuntu-22.04          | foss                             | `src-tauri/target/release/bundle/**/*.{deb,AppImage,rpm,sig}`                |                                 |                               |
 | windows-latest        |                                  | `src-tauri/target/release/bundle/nsis`                                       |                                 |                               |
+| windows-latest        | foss                             | `src-tauri/target/release/bundle/nsis`                                       |                                 |                               |
 | windows-latest        | win7                             | `src-tauri/target/release/bundle/nsis`                                       |                                 |                               |
 | macos-latest          |                                  | `src-tauri/target/aarch64-apple-darwin/release/bundle/**/*.{dmg,tar.gz,sig}` | aarch64-apple-darwin            |                               |
+| macos-latest          | foss                             | `src-tauri/target/aarch64-apple-darwin/release/bundle/**/*.{dmg,tar.gz,sig}` | aarch64-apple-darwin            |                               |
 | macos-latest          |                                  | `src-tauri/target/x86_64-apple-darwin/release/bundle/**/*.{dmg,tar.gz,sig}`  | x86_64-apple-darwin             |                               |
+| macos-latest          | foss                             | `src-tauri/target/x86_64-apple-darwin/release/bundle/**/*.{dmg,tar.gz,sig}`  | x86_64-apple-darwin             |                               |
 
 运行流程：
 
