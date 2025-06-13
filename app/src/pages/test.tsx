@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
+import { Dialog } from "../components/dialog";
+import { AIEngine } from "../core/service/dataManageService/aiEngine/AIEngine";
 import { Settings } from "../core/service/Settings";
 import { SubWindow } from "../core/service/SubWindow";
 import { router } from "../main";
@@ -77,6 +79,25 @@ export default function TestPage() {
           }
         >
           创建子窗口
+        </Button>
+        <Button
+          onClick={async () => {
+            await AIEngine.chat([
+              {
+                role: "user",
+                content:
+                  (
+                    await Dialog.show({
+                      title: "输入内容",
+                      content: "请输入内容",
+                      input: true,
+                    })
+                  ).value ?? "",
+              },
+            ]);
+          }}
+        >
+          ai
         </Button>
       </div>
     </>
