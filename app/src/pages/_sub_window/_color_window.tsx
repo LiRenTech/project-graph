@@ -3,16 +3,21 @@ import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import { Popup } from "../../components/popup";
 import { Color } from "../../core/dataStruct/Color";
+import { Rectangle } from "../../core/dataStruct/shape/Rectangle";
+import { Vector } from "../../core/dataStruct/Vector";
+import { MouseLocation } from "../../core/service/controlService/MouseLocation";
 import { ColorManager } from "../../core/service/feedbackService/ColorManager";
-import ColorManagerPanel from "./_color_manager_panel";
+import { SubWindow } from "../../core/service/SubWindow";
 import { StageObjectColorManager } from "../../core/stage/stageManager/concreteMethods/StageObjectColorManager";
 import { isMac } from "../../utils/platform";
+import ColorManagerPanel from "../_popup_panel/_color_manager_panel";
+
 /**
  * 上色盘面板
  * @param param0
  * @returns
  */
-export default function ColorPanel() {
+export default function ColorWindow() {
   const [currentColors, setCurrentColors] = useState<Color[]>([]);
 
   useEffect(() => {
@@ -22,7 +27,7 @@ export default function ColorPanel() {
   }, []);
 
   return (
-    <div className="bg-panel-bg flex h-64 w-64 flex-col rounded-lg">
+    <div className="flex flex-col">
       {/* 官方提供的默认颜色 */}
       <div className="flex flex-wrap items-center justify-center">
         <div
@@ -128,3 +133,12 @@ export default function ColorPanel() {
     </div>
   );
 }
+
+ColorWindow.open = () => {
+  SubWindow.create({
+    title: "调色盘",
+    children: <ColorWindow />,
+    rect: new Rectangle(MouseLocation.vector().clone(), new Vector(256, 256)),
+    closeWhenClickOutside: true,
+  });
+};

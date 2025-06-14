@@ -1,6 +1,5 @@
 import { Dialog } from "../../../../components/dialog";
-import { Popup } from "../../../../components/popup";
-import ColorPanel from "../../../../pages/_popup_panel/_color_panel";
+import ColorWindow from "../../../../pages/_sub_window/_color_window";
 import FindWindow from "../../../../pages/_sub_window/_find_window";
 import TagWindow from "../../../../pages/_sub_window/_tag_window";
 import { Direction } from "../../../../types/directions";
@@ -632,7 +631,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
-      Popup.show(<ColorPanel />, true);
+      ColorWindow.open();
     });
     (
       await KeyBinds.create("switchDebugShow", "F3", {

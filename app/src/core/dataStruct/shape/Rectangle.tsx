@@ -397,4 +397,12 @@ export class Rectangle extends Shape {
   public transformView2World(): Rectangle {
     return new Rectangle(Renderer.transformView2World(this.location), Renderer.transformView2World(this.size));
   }
+
+  public limit(limit: Rectangle): Rectangle {
+    const left = Math.max(limit.left, this.left);
+    const top = Math.max(limit.top, this.top);
+    const right = Math.min(limit.right, this.right);
+    const bottom = Math.min(limit.bottom, this.bottom);
+    return Rectangle.fromEdges(left, top, right, bottom);
+  }
 }

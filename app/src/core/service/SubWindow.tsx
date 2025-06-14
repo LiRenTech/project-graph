@@ -20,6 +20,8 @@ export namespace SubWindow {
     focused: boolean;
     zIndex: number;
     titleBarOverlay: boolean;
+    closeWhenClickOutside: boolean;
+    _closeWhenClickOutsideListener?: (e: PointerEvent) => void;
   }
   const subWindowsAtom = atom<Window[]>([]);
   export const use = () => useAtomValue(subWindowsAtom);
@@ -43,9 +45,28 @@ export namespace SubWindow {
       focused: false,
       zIndex: getMaxZIndex() + 1,
       titleBarOverlay: false,
+      closeWhenClickOutside: false,
       ...options,
     };
+    //检测如果窗口到屏幕外面了，自动调整位置
+    const { x: width, y: height } = win.rect.size;
+    const { innerWidth, innerHeight } = window;
+    if (win.rect.location.x + width > innerWidth) {
+      win.rect.location.x = innerWidth - width;
+    }
+    if (win.rect.location.y + height > innerHeight) {
+      win.rect.location.y = innerHeight - height;
+    }
+    // 窗口创建完成，添加到store中
     store.set(subWindowsAtom, [...store.get(subWindowsAtom), win]);
+    if (options.closeWhenClickOutside) {
+      win._closeWhenClickOutsideListener = (e: PointerEvent) => {
+        if (!get(win.id).rect.isPointIn(new Vector(e.clientX, e.clientY))) {
+          close(win.id);
+        }
+      };
+      document.addEventListener("pointerdown", win._closeWhenClickOutsideListener);
+    }
     return win;
   }
   export function update(id: number, options: Partial<Omit<Window, "id">>) {
@@ -55,6 +76,9 @@ export namespace SubWindow {
     );
   }
   export function close(id: number) {
+    if (get(id).closeWhenClickOutside) {
+      document.removeEventListener("pointerdown", get(id)._closeWhenClickOutsideListener!);
+    }
     store.set(
       subWindowsAtom,
       store.get(subWindowsAtom).filter((window) => window.id !== id),
@@ -62,5 +86,8 @@ export namespace SubWindow {
   }
   export function focus(id: number) {
     update(id, { focused: true, zIndex: getMaxZIndex() + 1 });
+  }
+  export function get(id: number) {
+    return store.get(subWindowsAtom).find((window) => window.id === id)!;
   }
 }

@@ -31,6 +31,7 @@ import {
   WrapText,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Box from "../components/Box";
 import { Panel } from "../components/panel";
 import { Popup } from "../components/popup";
@@ -47,6 +48,8 @@ import { StageManager } from "../core/stage/stageManager/StageManager";
 import { StageGeneratorAI } from "../core/stage/stageManager/concreteMethods/StageGeneratorAI";
 import { StageNodeConnector } from "../core/stage/stageManager/concreteMethods/StageNodeConnector";
 import { StageObjectSelectCounter } from "../core/stage/stageManager/concreteMethods/StageObjectSelectCounter";
+import { ConnectableEntity } from "../core/stage/stageObject/abstract/ConnectableEntity";
+import { MultiTargetUndirectedEdge } from "../core/stage/stageObject/association/MutiTargetUndirectedEdge";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { cn } from "../utils/cn";
 import { openBrowserOrFile, openSelectedImageNode } from "../utils/externalOpen";
@@ -54,12 +57,9 @@ import { writeTextFile } from "../utils/fs";
 import { isMac } from "../utils/platform";
 import AlignNodePanel from "./_popup_panel/_align_panel";
 import ColorAutoPanel from "./_popup_panel/_color_auto_panel";
-import ColorPanel from "./_popup_panel/_color_panel";
-import GenerateNodePanel from "./_popup_panel/_generate_node_panel";
 import EdgeExtremePointPanel from "./_popup_panel/_edge_extreme_point_panel";
-import { MultiTargetUndirectedEdge } from "../core/stage/stageObject/association/MutiTargetUndirectedEdge";
-import { ConnectableEntity } from "../core/stage/stageObject/abstract/ConnectableEntity";
-import { useTranslation } from "react-i18next";
+import GenerateNodePanel from "./_popup_panel/_generate_node_panel";
+import ColorWindow from "./_sub_window/_color_window";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型
@@ -293,7 +293,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
           <ToolbarItem
             description={t("stageObjects.items.setColor")}
             icon={<PaintBucket />}
-            handleFunction={() => Popup.show(<ColorPanel />, true)}
+            handleFunction={() => ColorWindow.open()}
           />
           <ToolbarItem
             description={t("stageObjects.items.delete")}
