@@ -42,6 +42,7 @@ export namespace CurveRenderer {
     Canvas.ctx.stroke();
   }
   export function renderPenStroke(stroke: PenStrokeSegment[], color: Color): void {
+    Canvas.ctx.strokeStyle = color.toString();
     // 在canvas上绘制笔画
     Canvas.ctx.beginPath();
     Canvas.ctx.lineJoin = "round";
@@ -59,7 +60,8 @@ export namespace CurveRenderer {
         Canvas.ctx.moveTo(stroke[i].endLocation.x, stroke[i].endLocation.y);
       }
     }
-    Canvas.ctx.strokeStyle = color.toString();
+    // Canvas.ctx.strokeStyle = color.toString();
+    // 更改颜色要在操作之前就更改，否则会出现第一笔画的颜色还是上一次的颜色这种诡异现象。
   }
 
   /**

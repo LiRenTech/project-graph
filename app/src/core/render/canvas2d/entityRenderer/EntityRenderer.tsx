@@ -308,16 +308,21 @@ export namespace EntityRenderer {
     if (penStrokeColor.a === 0) {
       penStrokeColor = StageStyleManager.currentStyle.StageObjectBorder.clone();
     }
-    // CurveRenderer.renderSolidLineMultipleWithWidth(
-    //   penStroke.getPath().map((v) => Renderer.transformWorld2View(v)),
-    //   penStrokeColor,
-    //   penStroke.getSegmentList().map((seg) => seg.width * Camera.currentScale),
-    // );
-    // CurveRenderer.renderSolidLineMultipleSmoothly(
-    //   penStroke.getPath().map((v) => Renderer.transformWorld2View(v)),
-    //   penStrokeColor,
-    //   penStroke.getSegmentList()[0].width * Camera.currentScale,
-    // );
+    // const path = penStroke.getPath();
+    // if (path.length <= 3) {
+    //   CurveRenderer.renderSolidLineMultipleWithWidth(
+    //     penStroke.getPath().map((v) => Renderer.transformWorld2View(v)),
+    //     penStrokeColor,
+    //     penStroke.getSegmentList().map((seg) => seg.width * Camera.currentScale),
+    //   );
+    // } else {
+    //   CurveRenderer.renderSolidLineMultipleSmoothly(
+    //     penStroke.getPath().map((v) => Renderer.transformWorld2View(v)),
+    //     penStrokeColor,
+    //     penStroke.getSegmentList()[0].width * Camera.currentScale,
+    //   );
+    // }
+
     CurveRenderer.renderPenStroke(
       penStroke.getSegmentList().map((segment) => ({
         startLocation: Renderer.transformWorld2View(segment.startLocation),
