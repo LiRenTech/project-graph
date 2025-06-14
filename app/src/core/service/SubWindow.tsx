@@ -4,7 +4,7 @@ import { Rectangle } from "../dataStruct/shape/Rectangle";
 import { Vector } from "../dataStruct/Vector";
 
 export namespace SubWindow {
-  export enum IdEnum {}
+  // export enum IdEnum {}
   export interface Window {
     /**
      * 唯一的id，不能重复，如果创建了已经存在的id，会聚焦到已存在的窗口
@@ -19,6 +19,7 @@ export namespace SubWindow {
     // opacity: number;
     focused: boolean;
     zIndex: number;
+    titleBarOverlay: boolean;
   }
   const subWindowsAtom = atom<Window[]>([]);
   export const use = () => useAtomValue(subWindowsAtom);
@@ -26,11 +27,11 @@ export namespace SubWindow {
     return store.get(subWindowsAtom).reduce((maxZIndex, window) => Math.max(maxZIndex, window.zIndex), 0);
   }
   export function create(options: Partial<Window>): Window {
-    if (options.id && store.get(subWindowsAtom).some((window) => window.id === options.id)) {
-      // 如果已经存在的id，聚焦到已存在的窗口
-      focus(options.id);
-      return store.get(subWindowsAtom).find((window) => window.id === options.id)!;
-    }
+    // if (options.id && store.get(subWindowsAtom).some((window) => window.id === options.id)) {
+    //   // 如果已经存在的id，聚焦到已存在的窗口
+    //   focus(options.id);
+    //   return store.get(subWindowsAtom).find((window) => window.id === options.id)!;
+    // }
     const win: Window = {
       id: store.get(subWindowsAtom).reduce((maxId, window) => Math.max(maxId, window.id), 0) + 1,
       title: "",
@@ -41,6 +42,7 @@ export namespace SubWindow {
       // opacity: 1,
       focused: false,
       zIndex: getMaxZIndex() + 1,
+      titleBarOverlay: false,
       ...options,
     };
     store.set(subWindowsAtom, [...store.get(subWindowsAtom), win]);

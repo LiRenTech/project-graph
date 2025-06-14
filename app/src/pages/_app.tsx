@@ -23,13 +23,13 @@ import PGCanvas from "./_canvas";
 import ErrorHandler from "./_fixed_panel/_error_handler";
 import ExportPNGPanel from "./_fixed_panel/_export_png_panel";
 import ExportTreeTextPanel from "./_fixed_panel/_export_text_panel";
-import LogicNodePanel from "./_fixed_panel/_logic_node_panel";
 import RecentFilesPanel from "./_fixed_panel/_recent_files_panel";
-import SearchingContentPanel from "./_fixed_panel/_searching_content_panel";
 import StartFilePanel from "./_fixed_panel/_start_file_panel";
-import TagPanel from "./_fixed_panel/_tag_panel";
 import FloatingOutlet from "./_floating_outlet";
 import RenderSubWindows from "./_render_sub_windows";
+import FindWindow from "./_sub_window/_find_window";
+import { default as LogicNodeWindow } from "./_sub_window/_logic_node_window";
+import TagWindow from "./_sub_window/_tag_window";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
@@ -37,9 +37,6 @@ export default function App() {
   // 面板状态
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isStartFilePanelOpen, setIsStartFilePanelOpen] = React.useState(false);
-  const [isTagPanelOpen, setIsTagPanelOpen] = React.useState(false);
-  const [isSearchPanelOpen, setIsSearchPanelOpen] = React.useState(false);
-  const [isLogicNodePanelOpen, setIsLogicNodePanelOpen] = React.useState(false);
   const [ignoreMouse, setIgnoreMouse] = React.useState(false);
 
   const [file, setFile] = useAtom(fileAtom);
@@ -317,16 +314,14 @@ export default function App() {
 
             {!isWindowCollapsing && (
               <IconButton
-                id="tagPanelBtn"
-                // 不可以去除id，因为有快捷键能够触发这个按钮的点击事件，会查询到id
                 onClick={(e) => {
                   e.stopPropagation();
-                  setIsTagPanelOpen(!isTagPanelOpen);
+                  TagWindow.open();
                 }}
                 tooltip="标签节点"
                 className={cn(isClassroomMode && "opacity-0")}
               >
-                <Tag className={cn("cursor-pointer", isTagPanelOpen ? "rotate-90" : "")} />
+                <Tag />
               </IconButton>
             )}
 
@@ -335,12 +330,12 @@ export default function App() {
               <IconButton
                 onClick={(e) => {
                   e.stopPropagation();
-                  setIsLogicNodePanelOpen(!isLogicNodePanelOpen);
+                  LogicNodeWindow.open();
                 }}
                 className={cn(isClassroomMode && "opacity-0")}
                 tooltip="逻辑节点"
               >
-                <Cpu className={cn("cursor-pointer", isLogicNodePanelOpen ? "rotate-45" : "")} />
+                <Cpu />
               </IconButton>
             )}
             {/* 搜索内容按钮 */}
@@ -348,13 +343,12 @@ export default function App() {
               <IconButton
                 onClick={(e) => {
                   e.stopPropagation();
-                  setIsSearchPanelOpen(!isSearchPanelOpen);
+                  FindWindow.open();
                 }}
                 className={cn(isClassroomMode && "opacity-0")}
-                id="app-search-content-btn"
                 tooltip="搜索内容"
               >
-                <TextSearch className={cn("cursor-pointer", isSearchPanelOpen ? "rotate-45" : "")} />
+                <TextSearch />
               </IconButton>
             )}
             {/* 中间标题 */}
@@ -497,9 +491,6 @@ export default function App() {
 
           {/* 面板列表 */}
           <AppMenu className="absolute left-4 top-16 z-20" open={isMenuOpen} />
-          <TagPanel open={isTagPanelOpen} className="z-10" />
-          <SearchingContentPanel open={isSearchPanelOpen} className="z-10" />
-          <LogicNodePanel open={isLogicNodePanelOpen} className="z-10" />
           <StartFilePanel open={isStartFilePanelOpen} />
           <RecentFilesPanel />
           <ExportTreeTextPanel />

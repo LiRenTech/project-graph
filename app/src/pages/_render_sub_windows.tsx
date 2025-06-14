@@ -23,7 +23,7 @@ export default function RenderSubWindows() {
               zIndex: win.zIndex,
             }}
             className={cn(
-              "bg-sub-window-bg border-sub-window-border text-sub-window-text shadow-sub-window-shadow pointer-events-auto absolute flex flex-col rounded-xl border opacity-75 shadow-xl hover:opacity-100",
+              "bg-sub-window-bg border-sub-window-border text-sub-window-text shadow-sub-window-shadow pointer-events-auto absolute flex flex-col overflow-hidden rounded-xl border opacity-75 shadow-xl hover:opacity-100",
               "data-closed:scale-75 data-closed:opacity-0",
             )}
             onMouseDown={() => {
@@ -31,7 +31,7 @@ export default function RenderSubWindows() {
             }}
           >
             <div
-              className="flex p-1"
+              className={cn("flex p-1", win.titleBarOverlay && "absolute left-0 top-0 w-full")}
               onMouseDown={(e) => {
                 const start = new Vector(e.clientX, e.clientY);
                 const onMouseUp = () => {
@@ -57,6 +57,7 @@ export default function RenderSubWindows() {
                 }}
               />
             </div>
+            <div className="flex-1 overflow-auto">{win.children}</div>
             {/* 添加一个可调整大小的边缘，这里以右下角为例 */}
             <div
               className="bg-sub-window-resize-bg absolute bottom-0 right-0 h-4 w-4 cursor-se-resize"

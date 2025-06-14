@@ -1,30 +1,23 @@
 import { v4 } from "uuid";
 import Button from "../../components/Button";
+import { Rectangle } from "../../core/dataStruct/shape/Rectangle";
+import { Vector } from "../../core/dataStruct/Vector";
 import {
   LogicNodeNameEnum,
   LogicNodeNameToArgsTipsMap,
   LogicNodeNameToRenderNameMap,
 } from "../../core/service/dataGenerateService/autoComputeEngine/logicNodeNameEnum";
+import { SubWindow } from "../../core/service/SubWindow";
 import { Camera } from "../../core/stage/Camera";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
-import { cn } from "../../utils/cn";
 
 /**
  *
  */
-export default function LogicNodePanel({ open = false, className = "" }: { open: boolean; className: string }) {
+export default function LogicNodeWindow() {
   return (
-    <div
-      className={cn(
-        "bg-panel-bg fixed -left-64 top-16 flex h-full w-64 flex-col overflow-auto rounded-md p-2 pb-32 transition-all",
-        {
-          "left-0": open,
-        },
-        className,
-      )}
-    >
-      <h2 className="text-panel-text text-center">逻辑节点</h2>
+    <div className="flex flex-col">
       {Object.values(LogicNodeNameEnum).map((name) => {
         return (
           <Button
@@ -49,3 +42,11 @@ export default function LogicNodePanel({ open = false, className = "" }: { open:
     </div>
   );
 }
+
+LogicNodeWindow.open = () => {
+  SubWindow.create({
+    title: "逻辑节点",
+    children: <LogicNodeWindow />,
+    rect: new Rectangle(new Vector(100, 100), new Vector(150, 500)),
+  });
+};

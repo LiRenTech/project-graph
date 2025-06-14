@@ -1,6 +1,8 @@
 import { Dialog } from "../../../../components/dialog";
 import { Popup } from "../../../../components/popup";
 import ColorPanel from "../../../../pages/_popup_panel/_color_panel";
+import FindWindow from "../../../../pages/_sub_window/_find_window";
+import TagWindow from "../../../../pages/_sub_window/_tag_window";
 import { Direction } from "../../../../types/directions";
 import { openBrowserOrFile } from "../../../../utils/externalOpen";
 import { openDevtools, writeStdout } from "../../../../utils/otherApi";
@@ -693,17 +695,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
-      // app-search-content-btn
-      const button = document.getElementById("app-search-content-btn");
-      const event = new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-      });
-      button?.dispatchEvent(event);
-      setTimeout(() => {
-        Controller.pressingKeySet.clear();
-      }, 200);
+      FindWindow.open();
     });
     (
       await KeyBinds.create("openTextNodeByContentExternal", "e", {
@@ -765,16 +757,7 @@ export namespace ShortcutKeysRegister {
         shift: true,
       })
     ).down(() => {
-      const button = document.getElementById("tagPanelBtn");
-      const event = new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-      });
-      button?.dispatchEvent(event);
-      setTimeout(() => {
-        Controller.pressingKeySet.clear();
-      }, 200);
+      TagWindow.open();
     });
     (
       await KeyBinds.create("clickAppMenuRecentFileButton", "#", {

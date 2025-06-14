@@ -2,14 +2,16 @@ import { Angry, MousePointerClick, RefreshCcw, Smile, Tags, Telescope } from "lu
 import React from "react";
 import { Dialog } from "../../components/dialog";
 import IconButton from "../../components/IconButton";
+import { Rectangle } from "../../core/dataStruct/shape/Rectangle";
+import { Vector } from "../../core/dataStruct/Vector";
+import { SubWindow } from "../../core/service/SubWindow";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
-import { cn } from "../../utils/cn";
 
 /**
  * 标签相关面板
  * @param param0
  */
-export default function TagPanel({ open = false, className = "" }: { open: boolean; className: string }) {
+export default function TagWindow() {
   const [tagNameList, setTagNameList] = React.useState<
     { tagName: string; uuid: string; color: [number, number, number, number] }[]
   >([]);
@@ -71,16 +73,7 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
   };
 
   return (
-    <div
-      className={cn(
-        "fixed -left-64 top-16 flex h-full w-64 flex-col rounded-md p-4 pb-20 transition-all",
-        {
-          "left-0": open,
-          "bg-panel-bg": !isPerspective,
-        },
-        className,
-      )}
-    >
+    <div className="flex flex-col">
       <div className="flex justify-center gap-2">
         <IconButton
           onClick={handleClickAddTag}
@@ -157,3 +150,11 @@ export default function TagPanel({ open = false, className = "" }: { open: boole
     </div>
   );
 }
+
+TagWindow.open = () => {
+  SubWindow.create({
+    title: "标签",
+    children: <TagWindow />,
+    rect: new Rectangle(new Vector(100, 100), new Vector(150, 500)),
+  });
+};
