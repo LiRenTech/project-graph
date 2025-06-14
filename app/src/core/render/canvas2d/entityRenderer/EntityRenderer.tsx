@@ -322,9 +322,12 @@ export namespace EntityRenderer {
     //     penStroke.getSegmentList()[0].width * Camera.currentScale,
     //   );
     // }
+    const segmentList = penStroke.getSegmentList();
+
+    // console.log("@@", segmentList);
 
     CurveRenderer.renderPenStroke(
-      penStroke.getSegmentList().map((segment) => ({
+      segmentList.map((segment) => ({
         startLocation: Renderer.transformWorld2View(segment.startLocation),
         endLocation: Renderer.transformWorld2View(segment.endLocation),
         width: segment.width * Camera.currentScale,

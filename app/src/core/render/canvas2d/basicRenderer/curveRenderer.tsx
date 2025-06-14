@@ -49,10 +49,17 @@ export namespace CurveRenderer {
     Canvas.ctx.moveTo(stroke[0].startLocation.x, stroke[0].startLocation.y);
     for (let i = 0; i < stroke.length; i++) {
       // console.log(stroke[i].width);
+
+      /*
       // 修改循环开始从0
       if (i > 0) {
         Canvas.ctx.lineTo(stroke[i].endLocation.x, stroke[i].endLocation.y);
       }
+        */
+      // 上述代码这样，导致开头少了一段。如果是按住shift键画出来的直线就看不到了。
+
+      Canvas.ctx.lineTo(stroke[i].endLocation.x, stroke[i].endLocation.y);
+
       Canvas.ctx.lineWidth = stroke[i].width; // 更新线宽为当前线段的宽度
       Canvas.ctx.stroke(); // 为了确保每个线段按照不同的宽度绘制，需要在这里调用stroke
       if (i < stroke.length - 1) {
