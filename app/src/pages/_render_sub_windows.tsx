@@ -1,6 +1,7 @@
 import { Transition } from "@headlessui/react";
 import { X } from "lucide-react";
 import React from "react";
+import { Rectangle } from "../core/dataStruct/shape/Rectangle";
 import { Vector } from "../core/dataStruct/Vector";
 import { SubWindow } from "../core/service/SubWindow";
 import { cn } from "../utils/cn";
@@ -22,7 +23,7 @@ export default function RenderSubWindows() {
               zIndex: win.zIndex,
             }}
             className={cn(
-              "bg-sub-window-bg border-sub-window-border text-sub-window-text shadow-sub-window-shadow pointer-events-auto absolute flex flex-col rounded-xl border shadow-xl",
+              "bg-sub-window-bg border-sub-window-border text-sub-window-text shadow-sub-window-shadow pointer-events-auto absolute flex flex-col rounded-xl border opacity-75 shadow-xl hover:opacity-100",
               "data-closed:scale-75 data-closed:opacity-0",
             )}
             onMouseDown={() => {
@@ -56,6 +57,47 @@ export default function RenderSubWindows() {
                 }}
               />
             </div>
+            {/* 添加一个可调整大小的边缘，这里以右下角为例 */}
+            <div
+              className="bg-sub-window-resize-bg absolute bottom-0 right-0 h-4 w-4 cursor-se-resize"
+              onMouseDown={(e) => {
+                const start = new Vector(e.clientX, e.clientY);
+                const onMouseUp = () => {
+                  window.removeEventListener("mouseup", onMouseUp);
+                  window.removeEventListener("mousemove", onMouseMove);
+                };
+                const onMouseMove = (e: MouseEvent) => {
+                  const delta = new Vector(e.clientX, e.clientY).subtract(start);
+                  SubWindow.update(win.id, {
+                    rect: new Rectangle(win.rect.location, win.rect.size.add(delta)),
+                  });
+                };
+                window.addEventListener("mouseup", onMouseUp);
+                window.addEventListener("mousemove", onMouseMove);
+              }}
+            />
+            {/* 左下角 */}
+            <div
+              className="bg-sub-window-resize-bg absolute bottom-0 left-0 h-4 w-4 cursor-sw-resize"
+              onMouseDown={(e) => {
+                const start = new Vector(e.clientX, e.clientY);
+                const onMouseUp = () => {
+                  window.removeEventListener("mouseup", onMouseUp);
+                  window.removeEventListener("mousemove", onMouseMove);
+                };
+                const onMouseMove = (e: MouseEvent) => {
+                  const delta = new Vector(e.clientX, e.clientY).subtract(start);
+                  SubWindow.update(win.id, {
+                    rect: new Rectangle(
+                      new Vector(win.rect.left + delta.x, win.rect.top),
+                      new Vector(win.rect.width - delta.x, win.rect.height + delta.y),
+                    ),
+                  });
+                };
+                window.addEventListener("mouseup", onMouseUp);
+                window.addEventListener("mousemove", onMouseMove);
+              }}
+            />
           </div>
         </Transition>
       ))}

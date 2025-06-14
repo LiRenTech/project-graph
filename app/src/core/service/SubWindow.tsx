@@ -16,7 +16,7 @@ export namespace SubWindow {
     rect: Rectangle;
     maximized: boolean;
     minimized: boolean;
-    opacity: number;
+    // opacity: number;
     focused: boolean;
     zIndex: number;
   }
@@ -38,7 +38,7 @@ export namespace SubWindow {
       rect: new Rectangle(Vector.getZero(), Vector.same(100)),
       maximized: false,
       minimized: false,
-      opacity: 1,
+      // opacity: 1,
       focused: false,
       zIndex: getMaxZIndex() + 1,
       ...options,
