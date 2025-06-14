@@ -249,13 +249,13 @@ jobs:
       #endregion
       #region Edit version
       - name: Set app version
-        if: ${{ !matrix.android && !matrix.tag }}
+        if: ${{ !matrix.android && !matrix.variant }}
         run: |
           node ./.github/scripts/set-version.mjs ${{ inputs.app_version }}
-      - name: Set app version when tag exists
-        if: ${{ !matrix.android && matrix.tag }}
+      - name: Set app version when variant
+        if: ${{ !matrix.android && matrix.variant }}
         run: |
-          node ./.github/scripts/set-version.mjs ${{ inputs.app_version }}-${{ matrix.tag }}
+          node ./.github/scripts/set-version.mjs ${{ inputs.app_version }}-${{ matrix.variant }}
       - name: Android - Set app version
         if: matrix.android
         run: |
