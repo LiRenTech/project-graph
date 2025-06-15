@@ -100,6 +100,7 @@ export default function ColorWindow() {
             const b = parseInt(color.slice(5, 7), 16);
             StageObjectColorManager.setSelectedStageObjectColor(new Color(r, g, b));
           }}
+          onClick={(e) => e.stopPropagation()}
         ></input>
         <Button
           onClick={() => {
@@ -140,5 +141,6 @@ ColorWindow.open = () => {
     children: <ColorWindow />,
     rect: new Rectangle(MouseLocation.vector().clone(), new Vector(256, 256)),
     closeWhenClickOutside: true,
+    closeWhenClickInside: true,
   });
 };

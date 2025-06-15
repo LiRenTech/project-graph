@@ -16,8 +16,10 @@ export namespace SubWindow {
     focused: boolean;
     zIndex: number;
     titleBarOverlay: boolean;
+    closing: boolean;
     closeWhenClickOutside: boolean;
     _closeWhenClickOutsideListener?: (e: PointerEvent) => void;
+    closeWhenClickInside: boolean;
   }
   const subWindowsAtom = atom<Window[]>([]);
   export const use = () => useAtomValue(subWindowsAtom);
@@ -25,7 +27,6 @@ export namespace SubWindow {
     return store.get(subWindowsAtom).reduce((maxZIndex, window) => Math.max(maxZIndex, window.zIndex), 0);
   }
   export function create(options: Partial<Window>): Window {
-    console.log("尝试创建子窗口", options);
     const win: Window = {
       id: crypto.randomUUID(),
       title: "",
@@ -37,7 +38,9 @@ export namespace SubWindow {
       focused: false,
       zIndex: getMaxZIndex() + 1,
       titleBarOverlay: false,
+      closing: false,
       closeWhenClickOutside: false,
+      closeWhenClickInside: false,
       ...options,
     };
     //检测如果窗口到屏幕外面了，自动调整位置
@@ -50,9 +53,7 @@ export namespace SubWindow {
       win.rect.location.y = innerHeight - height;
     }
     // 窗口创建完成，添加到store中
-    console.log("创建子窗口成功", win);
     store.set(subWindowsAtom, [...store.get(subWindowsAtom), win]);
-    console.log("子窗口列表", store.get(subWindowsAtom));
     if (options.closeWhenClickOutside) {
       win._closeWhenClickOutsideListener = (e: PointerEvent) => {
         if (!get(win.id).rect.isPointIn(new Vector(e.clientX, e.clientY))) {
@@ -73,10 +74,13 @@ export namespace SubWindow {
     if (get(id).closeWhenClickOutside) {
       document.removeEventListener("pointerdown", get(id)._closeWhenClickOutsideListener!);
     }
-    store.set(
-      subWindowsAtom,
-      store.get(subWindowsAtom).filter((window) => window.id !== id),
-    );
+    update(id, { closing: true });
+    setTimeout(() => {
+      store.set(
+        subWindowsAtom,
+        store.get(subWindowsAtom).filter((window) => window.id !== id),
+      );
+    }, 500);
   }
   export function focus(id: string) {
     update(id, { focused: true, zIndex: getMaxZIndex() + 1 });

@@ -1,6 +1,5 @@
 import { Transition } from "@headlessui/react";
 import { X } from "lucide-react";
-import React from "react";
 import { Rectangle } from "../core/dataStruct/shape/Rectangle";
 import { Vector } from "../core/dataStruct/Vector";
 import { SubWindow } from "../core/service/SubWindow";
@@ -8,12 +7,11 @@ import { cn } from "../utils/cn";
 
 export default function RenderSubWindows() {
   const subWindows = SubWindow.use();
-  const [closingWindows, setClosingWindows] = React.useState<string[]>([]);
 
   return (
     <div className="pointer-events-none fixed left-0 top-0 z-[10000] h-full w-full">
       {subWindows.map((win) => (
-        <Transition key={win.id} appear={true} show={!closingWindows.includes(win.id)}>
+        <Transition key={win.id} appear={true} show={!win.closing}>
           <div
             style={{
               top: win.rect.top + "px",
@@ -28,6 +26,11 @@ export default function RenderSubWindows() {
             )}
             onMouseDown={() => {
               SubWindow.focus(win.id);
+            }}
+            onClick={() => {
+              if (win.closeWhenClickInside) {
+                SubWindow.close(win.id);
+              }
             }}
           >
             <div
@@ -50,10 +53,7 @@ export default function RenderSubWindows() {
               <div className="flex-1 px-1">{win.title}</div>
               <X
                 onClick={() => {
-                  setClosingWindows([...closingWindows, win.id]);
-                  setTimeout(() => {
-                    SubWindow.close(win.id);
-                  }, 500);
+                  SubWindow.close(win.id);
                 }}
               />
             </div>
