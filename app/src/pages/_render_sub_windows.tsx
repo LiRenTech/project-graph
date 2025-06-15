@@ -8,7 +8,7 @@ import { cn } from "../utils/cn";
 
 export default function RenderSubWindows() {
   const subWindows = SubWindow.use();
-  const [closingWindows, setClosingWindows] = React.useState<number[]>([]);
+  const [closingWindows, setClosingWindows] = React.useState<string[]>([]);
 
   return (
     <div className="pointer-events-none fixed left-0 top-0 z-[10000] h-full w-full">

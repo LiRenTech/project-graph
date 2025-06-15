@@ -6,11 +6,7 @@ import { Vector } from "../dataStruct/Vector";
 export namespace SubWindow {
   // export enum IdEnum {}
   export interface Window {
-    /**
-     * 唯一的id，不能重复，如果创建了已经存在的id，会聚焦到已存在的窗口
-     * 可以是负数，可以不连续
-     */
-    id: number;
+    id: string;
     title: string;
     children: React.ReactNode;
     rect: Rectangle;
@@ -29,13 +25,9 @@ export namespace SubWindow {
     return store.get(subWindowsAtom).reduce((maxZIndex, window) => Math.max(maxZIndex, window.zIndex), 0);
   }
   export function create(options: Partial<Window>): Window {
-    // if (options.id && store.get(subWindowsAtom).some((window) => window.id === options.id)) {
-    //   // 如果已经存在的id，聚焦到已存在的窗口
-    //   focus(options.id);
-    //   return store.get(subWindowsAtom).find((window) => window.id === options.id)!;
-    // }
+    console.log("尝试创建子窗口", options);
     const win: Window = {
-      id: store.get(subWindowsAtom).reduce((maxId, window) => Math.max(maxId, window.id), 0) + 1,
+      id: crypto.randomUUID(),
       title: "",
       children: <></>,
       rect: new Rectangle(Vector.getZero(), Vector.same(100)),
@@ -58,7 +50,9 @@ export namespace SubWindow {
       win.rect.location.y = innerHeight - height;
     }
     // 窗口创建完成，添加到store中
+    console.log("创建子窗口成功", win);
     store.set(subWindowsAtom, [...store.get(subWindowsAtom), win]);
+    console.log("子窗口列表", store.get(subWindowsAtom));
     if (options.closeWhenClickOutside) {
       win._closeWhenClickOutsideListener = (e: PointerEvent) => {
         if (!get(win.id).rect.isPointIn(new Vector(e.clientX, e.clientY))) {
@@ -69,13 +63,13 @@ export namespace SubWindow {
     }
     return win;
   }
-  export function update(id: number, options: Partial<Omit<Window, "id">>) {
+  export function update(id: string, options: Partial<Omit<Window, "id">>) {
     store.set(
       subWindowsAtom,
       store.get(subWindowsAtom).map((window) => (window.id === id ? { ...window, ...options } : window)),
     );
   }
-  export function close(id: number) {
+  export function close(id: string) {
     if (get(id).closeWhenClickOutside) {
       document.removeEventListener("pointerdown", get(id)._closeWhenClickOutsideListener!);
     }
@@ -84,10 +78,10 @@ export namespace SubWindow {
       store.get(subWindowsAtom).filter((window) => window.id !== id),
     );
   }
-  export function focus(id: number) {
+  export function focus(id: string) {
     update(id, { focused: true, zIndex: getMaxZIndex() + 1 });
   }
-  export function get(id: number) {
+  export function get(id: string) {
     return store.get(subWindowsAtom).find((window) => window.id === id)!;
   }
 }
