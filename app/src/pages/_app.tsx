@@ -18,7 +18,6 @@ import { fileAtom, isClassroomModeAtom, isWindowCollapsingAtom } from "../state"
 import { cn } from "../utils/cn";
 import { PathString } from "../utils/pathString";
 import { appScale, getCurrentWindow, isDesktop, isFrame, isIpad, isMac, isMobile, isWeb } from "../utils/platform";
-import AppMenu from "./_app_menu";
 import PGCanvas from "./_canvas";
 import ErrorHandler from "./_fixed_panel/_error_handler";
 import ExportPNGPanel from "./_fixed_panel/_export_png_panel";
@@ -27,6 +26,7 @@ import RecentFilesPanel from "./_fixed_panel/_recent_files_panel";
 import StartFilePanel from "./_fixed_panel/_start_file_panel";
 import FloatingOutlet from "./_floating_outlet";
 import RenderSubWindows from "./_render_sub_windows";
+import AppMenuWindow from "./_sub_window/AppMenuWindow";
 import FindWindow from "./_sub_window/FindWindow";
 import LogicNodeWindow from "./_sub_window/LogicNodeWindow";
 import TagWindow from "./_sub_window/TagWindow";
@@ -35,7 +35,6 @@ export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);
 
   // 面板状态
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isStartFilePanelOpen, setIsStartFilePanelOpen] = React.useState(false);
   const [ignoreMouse, setIgnoreMouse] = React.useState(false);
 
@@ -53,7 +52,6 @@ export default function App() {
       // 这两个按键有待添加到自定义快捷键，但他们函数内部用到了useState，还不太清楚怎么改
       // ——littlefean（2024年12月27日）
       if (event.key === "Escape") {
-        setIsMenuOpen(false);
         setIsStartFilePanelOpen(false);
       }
       if (event.key === "F11") {
@@ -256,7 +254,6 @@ export default function App() {
       className={cn("relative h-full w-full")}
       style={{ zoom: appScale }}
       onClick={() => {
-        setIsMenuOpen(false);
         setIsStartFilePanelOpen(false);
       }}
       onContextMenu={(e) => e.preventDefault()}
@@ -305,10 +302,10 @@ export default function App() {
                 className={cn(isClassroomMode && "opacity-0")}
                 onClick={(e) => {
                   e.stopPropagation(); // 避免又触发了关闭
-                  setIsMenuOpen(!isMenuOpen);
+                  AppMenuWindow.open();
                 }}
               >
-                <Menu className={cn(isMenuOpen && "rotate-90")} />
+                <Menu />
               </IconButton>
             )}
 
@@ -490,7 +487,6 @@ export default function App() {
           )}
 
           {/* 面板列表 */}
-          <AppMenu className="absolute left-4 top-16 z-20" open={isMenuOpen} />
           <StartFilePanel open={isStartFilePanelOpen} />
           <RecentFilesPanel />
           <ExportTreeTextPanel />

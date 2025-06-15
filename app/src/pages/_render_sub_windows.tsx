@@ -16,9 +16,11 @@ export default function RenderSubWindows() {
             style={{
               top: win.rect.top + "px",
               left: win.rect.left + "px",
-              width: win.rect.width + "px",
-              height: win.rect.height + "px",
               zIndex: win.zIndex,
+              ...(win.rect.size.equals(Vector.same(-1)) && {
+                width: win.rect.width + "px",
+                height: win.rect.height + "px",
+              }),
             }}
             className={cn(
               "bg-sub-window-bg border-sub-window-border text-sub-window-text shadow-sub-window-shadow pointer-events-auto absolute flex flex-col overflow-hidden rounded-xl border opacity-75 shadow-xl hover:opacity-100",
@@ -34,7 +36,7 @@ export default function RenderSubWindows() {
             }}
           >
             <div
-              className={cn("flex p-1", win.titleBarOverlay && "absolute left-0 top-0 w-full")}
+              className={cn("flex p-1", win.titleBarOverlay && "pointer-events-none absolute left-0 top-0 w-full")}
               onMouseDown={(e) => {
                 const start = new Vector(e.clientX, e.clientY);
                 const onMouseUp = () => {
@@ -52,6 +54,7 @@ export default function RenderSubWindows() {
             >
               <div className="flex-1 px-1">{win.title}</div>
               <X
+                className="pointer-events-auto"
                 onClick={() => {
                   SubWindow.close(win.id);
                 }}
