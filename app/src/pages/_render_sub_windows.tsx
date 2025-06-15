@@ -49,11 +49,12 @@ export default function RenderSubWindows() {
               window.addEventListener("mousemove", onMouseMove);
             }}
           >
-            <div className={cn("flex p-1", win.titleBarOverlay && "absolute left-0 top-0 w-full")}>
+            <div className={cn("flex p-1", win.titleBarOverlay && "pointer-events-none absolute left-0 top-0 w-full")}>
               <div className="flex-1 px-1" data-pg-drag-region={win.titleBarOverlay ? undefined : ""}>
                 {win.title}
               </div>
               <X
+                className="pointer-events-auto"
                 onClick={() => {
                   SubWindow.close(win.id);
                 }}
