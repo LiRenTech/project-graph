@@ -6,18 +6,27 @@ import { Vector } from "../dataStruct/Vector";
 export namespace SubWindow {
   // export enum IdEnum {}
   export interface Window {
+    /** uuid */
     id: string;
     title: string;
     children: React.ReactNode;
+    /** 当大小为(-1,-1)时，则为自适应大小 */
     rect: Rectangle;
+    /** 开发中 */
     maximized: boolean;
+    /** 开发中 */
     minimized: boolean;
-    // opacity: number;
     focused: boolean;
     zIndex: number;
+    /**
+     * 标题栏区域覆盖在内容之上
+     * 设置为true就不能拖动窗口了
+     * 可以给窗口内元素添加data-pg-drag-region属性，使其成为可拖动区域
+     */
     titleBarOverlay: boolean;
     closing: boolean;
     closeWhenClickOutside: boolean;
+    /** @private */
     _closeWhenClickOutsideListener?: (e: PointerEvent) => void;
     closeWhenClickInside: boolean;
   }

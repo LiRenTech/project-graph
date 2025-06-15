@@ -24,35 +24,36 @@ export default function RenderSubWindows() {
               "bg-sub-window-bg border-sub-window-border text-sub-window-text shadow-sub-window-shadow pointer-events-auto absolute flex flex-col overflow-hidden rounded-xl border opacity-75 shadow-xl hover:opacity-100",
               "data-closed:scale-75 data-closed:opacity-0",
             )}
-            onMouseDown={() => {
-              SubWindow.focus(win.id);
-            }}
             onClick={() => {
               if (win.closeWhenClickInside) {
                 SubWindow.close(win.id);
               }
             }}
+            onMouseDown={(e) => {
+              SubWindow.focus(win.id);
+              // 如果按到的元素的父元素都没有data-pg-drag-region属性，就不移动窗口
+              if (!(e.target as HTMLElement).closest("[data-pg-drag-region]")) {
+                return;
+              }
+              const start = new Vector(e.clientX, e.clientY);
+              const onMouseUp = () => {
+                window.removeEventListener("mouseup", onMouseUp);
+                window.removeEventListener("mousemove", onMouseMove);
+              };
+              const onMouseMove = (e: MouseEvent) => {
+                const delta = new Vector(e.clientX, e.clientY).subtract(start);
+                const newRect = win.rect.translate(delta);
+                SubWindow.update(win.id, { rect: newRect });
+              };
+              window.addEventListener("mouseup", onMouseUp);
+              window.addEventListener("mousemove", onMouseMove);
+            }}
           >
-            <div
-              className={cn("flex p-1", win.titleBarOverlay && "pointer-events-none absolute left-0 top-0 w-full")}
-              onMouseDown={(e) => {
-                const start = new Vector(e.clientX, e.clientY);
-                const onMouseUp = () => {
-                  window.removeEventListener("mouseup", onMouseUp);
-                  window.removeEventListener("mousemove", onMouseMove);
-                };
-                const onMouseMove = (e: MouseEvent) => {
-                  const delta = new Vector(e.clientX, e.clientY).subtract(start);
-                  const newRect = win.rect.translate(delta);
-                  SubWindow.update(win.id, { rect: newRect });
-                };
-                window.addEventListener("mouseup", onMouseUp);
-                window.addEventListener("mousemove", onMouseMove);
-              }}
-            >
-              <div className="flex-1 px-1">{win.title}</div>
+            <div className={cn("flex p-1", win.titleBarOverlay && "absolute left-0 top-0 w-full")}>
+              <div className="flex-1 px-1" data-pg-drag-region={win.titleBarOverlay ? undefined : ""}>
+                {win.title}
+              </div>
               <X
-                className="pointer-events-auto"
                 onClick={() => {
                   SubWindow.close(win.id);
                 }}

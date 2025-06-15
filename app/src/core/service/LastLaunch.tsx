@@ -11,7 +11,8 @@ export namespace LastLaunch {
   export async function init() {
     store = await createStore("last_launch.json");
     version = (await store.get<string>("version")) ?? "";
-    if (version === "" && (await getAppVersion()).includes("foss")) {
+    const currentVersion = await getAppVersion();
+    if (version === "" && currentVersion.includes("foss")) {
       isFirstLaunch = true;
       Dialog.show({
         title: "你使用的是 FOSS 版本",
@@ -19,6 +20,6 @@ export namespace LastLaunch {
         type: "warning",
       });
     }
-    await store.set("version", await getAppVersion());
+    await store.set("version", currentVersion);
   }
 }
