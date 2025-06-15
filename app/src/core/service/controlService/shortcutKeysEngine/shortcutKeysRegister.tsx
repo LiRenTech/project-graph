@@ -1,7 +1,8 @@
 import { Dialog } from "../../../../components/dialog";
-import ColorWindow from "../../../../pages/_sub_window/_color_window";
-import FindWindow from "../../../../pages/_sub_window/_find_window";
-import TagWindow from "../../../../pages/_sub_window/_tag_window";
+import ColorWindow from "../../../../pages/_sub_window/ColorWindow";
+import FindWindow from "../../../../pages/_sub_window/FindWindow";
+import SettingsWindow from "../../../../pages/_sub_window/SettingsWindow";
+import TagWindow from "../../../../pages/_sub_window/TagWindow";
 import { Direction } from "../../../../types/directions";
 import { openBrowserOrFile } from "../../../../utils/externalOpen";
 import { openDevtools, writeStdout } from "../../../../utils/otherApi";
@@ -715,39 +716,7 @@ export namespace ShortcutKeysRegister {
         shift: true,
       })
     ).down(() => {
-      console.log(location.pathname);
-      const AppBackToHomeButton = document.getElementById("close-popin-btn");
-      const isPageInHome = AppBackToHomeButton === null;
-      if (isPageInHome) {
-        const button = document.getElementById("app-menu-settings-btn");
-        console.log(button);
-
-        const event = new MouseEvent("click", {
-          bubbles: true,
-          cancelable: true,
-          view: window,
-        });
-        button?.dispatchEvent(event);
-        setTimeout(() => {
-          Controller.pressingKeySet.clear();
-        }, 200);
-      } else {
-        // 说明已经不再主页面了
-
-        // 回到主页面
-        const closeButton = document.getElementById("close-popin-btn");
-        console.log(closeButton);
-
-        const event = new MouseEvent("click", {
-          bubbles: true,
-          cancelable: true,
-          view: window,
-        });
-        closeButton?.dispatchEvent(event);
-        setTimeout(() => {
-          Controller.pressingKeySet.clear();
-        }, 200);
-      }
+      SettingsWindow.open();
     });
     (
       await KeyBinds.create("clickTagPanelButton", "@", {

@@ -84,6 +84,7 @@ import { createFolder, exists } from "../utils/fs";
 import { PathString } from "../utils/pathString";
 import ComplexityResultPanel from "./_fixed_panel/_complexity_result_panel";
 import ExportSvgPanel from "./_popup_panel/_export_svg_panel";
+import SettingsWindow from "./_sub_window/SettingsWindow";
 
 export default function AppMenu({ className = "", open = false }: { className?: string; open: boolean }) {
   const navigate = useNavigate();
@@ -674,7 +675,7 @@ export default function AppMenu({ className = "", open = false }: { className?: 
       </Row>
       <Row icon={<MoreHorizontal />} title={t("more.title")}>
         {/* id存在的原因：使得快捷键能够查询到，并打开设置界面 */}
-        <Col icon={<SettingsIcon />} id={"app-menu-settings-btn"} onClick={() => navigate("/settings/visual")}>
+        <Col icon={<SettingsIcon />} onClick={() => SettingsWindow.open()}>
           {t("more.items.settings")}
         </Col>
         <Col

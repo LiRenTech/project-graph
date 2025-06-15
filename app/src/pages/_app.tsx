@@ -27,9 +27,9 @@ import RecentFilesPanel from "./_fixed_panel/_recent_files_panel";
 import StartFilePanel from "./_fixed_panel/_start_file_panel";
 import FloatingOutlet from "./_floating_outlet";
 import RenderSubWindows from "./_render_sub_windows";
-import FindWindow from "./_sub_window/_find_window";
-import { default as LogicNodeWindow } from "./_sub_window/_logic_node_window";
-import TagWindow from "./_sub_window/_tag_window";
+import FindWindow from "./_sub_window/FindWindow";
+import LogicNodeWindow from "./_sub_window/LogicNodeWindow";
+import TagWindow from "./_sub_window/TagWindow";
 
 export default function App() {
   const [maxmized, setMaxmized] = React.useState(false);

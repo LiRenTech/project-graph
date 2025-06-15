@@ -27,9 +27,9 @@ import {
   TextSelect,
   Touchpad,
 } from "lucide-react";
-import { FieldGroup, SettingField } from "../../components/Field";
-import { isMac } from "../../utils/platform";
 import { useTranslation } from "react-i18next";
+import { FieldGroup, SettingField } from "../../../components/Field";
+import { isMac } from "../../../utils/platform";
 
 export default function Control() {
   const { t } = useTranslation("controlSettingsGroup");

@@ -1,10 +1,10 @@
 import { FileQuestion, Keyboard } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Field, FieldGroup } from "../../components/Field";
-import KeyBind from "../../components/KeyBind";
-import { KeyBinds } from "../../core/service/controlService/shortcutKeysEngine/KeyBinds";
-import { shortcutKeysGroups } from "../../core/service/controlService/shortcutKeysEngine/shortcutKeysGroup";
+import { Field, FieldGroup } from "../../../components/Field";
+import KeyBind from "../../../components/KeyBind";
+import { KeyBinds } from "../../../core/service/controlService/shortcutKeysEngine/KeyBinds";
+import { shortcutKeysGroups } from "../../../core/service/controlService/shortcutKeysEngine/shortcutKeysGroup";
 
 export default function KeyBindsPage() {
   const [keyBinds, setKeyBinds] = React.useState<[id: string, { key: string; modifiers: KeyBinds.KeyModifiers }][]>([]);

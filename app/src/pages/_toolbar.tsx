@@ -59,7 +59,7 @@ import AlignNodePanel from "./_popup_panel/_align_panel";
 import ColorAutoPanel from "./_popup_panel/_color_auto_panel";
 import EdgeExtremePointPanel from "./_popup_panel/_edge_extreme_point_panel";
 import GenerateNodePanel from "./_popup_panel/_generate_node_panel";
-import ColorWindow from "./_sub_window/_color_window";
+import ColorWindow from "./_sub_window/ColorWindow";
 
 interface ToolbarItemProps {
   icon: React.ReactNode; // 定义 icon 的类型

@@ -3,9 +3,9 @@ import { Check, Download, Loader2 } from "lucide-react";
 import MarkdownIt from "markdown-it";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Button from "../../../components/Button";
-import { Dialog } from "../../../components/dialog";
-import { cn } from "../../../utils/cn";
+import Button from "../../../../components/Button";
+import { Dialog } from "../../../../components/dialog";
+import { cn } from "../../../../utils/cn";
 
 export default function Introduction() {
   const [checkingUpdate, setCheckingUpdate] = useState(true);

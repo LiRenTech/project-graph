@@ -10,13 +10,13 @@ import {
   ToggleLeft,
   ToggleRight,
 } from "lucide-react";
-import Github from "../../assets/github.svg?react";
-import Button from "../../components/Button";
-import { Dialog } from "../../components/dialog";
-import { SettingField } from "../../components/Field";
-import { Settings } from "../../core/service/Settings";
-import { exists } from "../../utils/fs";
-import { PathString } from "../../utils/pathString";
+import Github from "../../../assets/github.svg?react";
+import Button from "../../../components/Button";
+import { Dialog } from "../../../components/dialog";
+import { SettingField } from "../../../components/Field";
+import { Settings } from "../../../core/service/Settings";
+import { exists } from "../../../utils/fs";
+import { PathString } from "../../../utils/pathString";
 
 const SOUND_CONFIGS: { fileName: string; settingKey: keyof Settings.Settings; icon: React.ReactNode }[] = [
   { fileName: "cuttingLineStart.mp3", settingKey: "cuttingLineStartSoundFile", icon: <Scissors /> },

@@ -12,6 +12,15 @@ export class Rectangle extends Shape {
     super();
   }
 
+  /**
+   * 构造一个内容居中的矩形
+   */
+  public static inCenter(size: Vector): Rectangle {
+    const screenCenter = new Vector(window.innerWidth, window.innerHeight).divide(2);
+    const location = screenCenter.subtract(size.divide(2));
+    return new Rectangle(location, size);
+  }
+
   public get left(): number {
     return this.location.x;
   }

@@ -78,7 +78,7 @@ export namespace Dialog {
             }}
           />
         ),
-        rect: new Rectangle(new Vector(200, 200), new Vector(400, 300)),
+        rect: Rectangle.inCenter(new Vector(400, 300)),
         titleBarOverlay: true,
       });
     });
