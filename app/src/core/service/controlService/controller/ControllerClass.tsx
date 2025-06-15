@@ -36,12 +36,12 @@ export class ControllerClass {
     window.addEventListener("keydown", this.keydown);
     window.addEventListener("keyup", this.keyup);
     Canvas.element.addEventListener("pointerdown", this.mousedown);
-    Canvas.element.addEventListener("pointerup", this._mouseup);
-    Canvas.element.addEventListener("pointermove", this.mousemove);
+    window.addEventListener("pointerup", this._mouseup);
+    window.addEventListener("pointermove", this.mousemove);
     Canvas.element.addEventListener("wheel", this.mousewheel);
     Canvas.element.addEventListener("touchstart", this._touchstart);
-    Canvas.element.addEventListener("touchmove", this._touchmove);
-    Canvas.element.addEventListener("touchend", this._touchend);
+    window.addEventListener("touchmove", this._touchmove);
+    window.addEventListener("touchend", this._touchend);
 
     // 有待优雅
   }
@@ -49,12 +49,12 @@ export class ControllerClass {
     window.removeEventListener("keydown", this.keydown);
     window.removeEventListener("keyup", this.keyup);
     Canvas.element.removeEventListener("pointerdown", this.mousedown);
-    Canvas.element.removeEventListener("pointerup", this._mouseup);
-    Canvas.element.removeEventListener("pointermove", this.mousemove);
+    window.removeEventListener("pointerup", this._mouseup);
+    window.removeEventListener("pointermove", this.mousemove);
     Canvas.element.removeEventListener("wheel", this.mousewheel);
     Canvas.element.removeEventListener("touchstart", this._touchstart);
-    Canvas.element.removeEventListener("touchmove", this._touchmove);
-    Canvas.element.removeEventListener("touchend", this._touchend);
+    window.removeEventListener("touchmove", this._touchmove);
+    window.removeEventListener("touchend", this._touchend);
 
     this.lastMoveLocation = Vector.getZero();
   }
