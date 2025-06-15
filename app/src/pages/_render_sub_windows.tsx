@@ -17,10 +17,8 @@ export default function RenderSubWindows() {
               top: win.rect.top + "px",
               left: win.rect.left + "px",
               zIndex: win.zIndex,
-              ...(win.rect.size.equals(Vector.same(-1)) && {
-                width: win.rect.width + "px",
-                height: win.rect.height + "px",
-              }),
+              width: win.rect.width + "px",
+              height: win.rect.height + "px",
             }}
             className={cn(
               "bg-sub-window-bg border-sub-window-border text-sub-window-text shadow-sub-window-shadow pointer-events-auto absolute flex flex-col overflow-hidden rounded-xl border opacity-75 shadow-xl hover:opacity-100",
