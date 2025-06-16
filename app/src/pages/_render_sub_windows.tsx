@@ -60,7 +60,17 @@ export default function RenderSubWindows() {
                 }}
               />
             </div>
-            <div className="flex-1 overflow-auto">{win.children}</div>
+            <div className="flex-1 overflow-auto">
+              {win.children && win.children instanceof Object && "props" in win.children
+                ? {
+                    ...win.children,
+                    props: {
+                      ...(win.children.props || {}),
+                      winId: win.id,
+                    },
+                  }
+                : win.children}
+            </div>
             {/* 添加一个可调整大小的边缘，这里以右下角为例 */}
             <div
               className="bg-sub-window-resize-bg absolute bottom-0 right-0 h-4 w-4 cursor-se-resize"

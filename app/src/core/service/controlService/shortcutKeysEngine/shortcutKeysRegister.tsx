@@ -1,6 +1,8 @@
 import { Dialog } from "../../../../components/dialog";
+import { onNewDraft, onOpen, onSave } from "../../../../pages/_sub_window/AppMenuWindow";
 import ColorWindow from "../../../../pages/_sub_window/ColorWindow";
 import FindWindow from "../../../../pages/_sub_window/FindWindow";
+import RecentFilesWindow from "../../../../pages/_sub_window/RecentFilesWindow";
 import SettingsWindow from "../../../../pages/_sub_window/SettingsWindow";
 import TagWindow from "../../../../pages/_sub_window/TagWindow";
 import { Direction } from "../../../../types/directions";
@@ -734,30 +736,7 @@ export namespace ShortcutKeysRegister {
         shift: true,
       })
     ).down(() => {
-      const isRecentFilePanelOpening = document.getElementById("recent-files-panel-open-mark-div") !== null;
-      if (isRecentFilePanelOpening) {
-        const closeButton = document.getElementById("recent-files-panel-close-btn");
-        const event = new MouseEvent("click", {
-          bubbles: true,
-          cancelable: true,
-          view: window,
-        });
-        closeButton?.dispatchEvent(event);
-        setTimeout(() => {
-          Controller.pressingKeySet.clear();
-        }, 200);
-      } else {
-        const button = document.getElementById("app-menu-recent-file-btn");
-        const event = new MouseEvent("click", {
-          bubbles: true,
-          cancelable: true,
-          view: window,
-        });
-        button?.dispatchEvent(event);
-        setTimeout(() => {
-          Controller.pressingKeySet.clear();
-        }, 200);
-      }
+      RecentFilesWindow.open();
     });
     (
       await KeyBinds.create("clickStartFilePanelButton", "$", {
@@ -784,14 +763,8 @@ export namespace ShortcutKeysRegister {
         alt: false,
         shift: false,
       })
-    ).down(() => {
-      const button = document.getElementById("app-menu-save-btn");
-      const event = new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-      });
-      button?.dispatchEvent(event);
+    ).down(async () => {
+      onSave();
     });
     (
       await KeyBinds.create("newDraft", "n", {
@@ -801,13 +774,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
-      const button = document.getElementById("app-menu-new-draft-btn");
-      const event = new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-      });
-      button?.dispatchEvent(event);
+      onNewDraft();
     });
     (
       await KeyBinds.create("openFile", "o", {
@@ -817,13 +784,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
-      const button = document.getElementById("app-menu-open-btn");
-      const event = new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-      });
-      button?.dispatchEvent(event);
+      onOpen();
     });
 
     (

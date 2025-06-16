@@ -77,7 +77,7 @@ import {
   isClassroomModeAtom,
   isExportPNGPanelOpenAtom,
   isExportTreeTextPanelOpenAtom,
-  isRecentFilePanelOpenAtom,
+  store,
 } from "../../state";
 import { cn } from "../../utils/cn";
 import { createFolder, exists } from "../../utils/fs";
@@ -85,6 +85,7 @@ import { PathString } from "../../utils/pathString";
 import { isDesktop, isWeb } from "../../utils/platform";
 import ComplexityResultPanel from "../_fixed_panel/_complexity_result_panel";
 import ExportSvgPanel from "../_popup_panel/_export_svg_panel";
+import RecentFilesWindow from "./RecentFilesWindow";
 import SettingsWindow from "./SettingsWindow";
 
 export default function AppMenuWindow() {
@@ -92,285 +93,8 @@ export default function AppMenuWindow() {
   const [file, setFile] = useAtom(fileAtom);
   const [isClassroomMode] = useAtom(isClassroomModeAtom);
   const { t } = useTranslation("appMenu");
-  const [, setRecentFilePanelOpen] = useAtom(isRecentFilePanelOpenAtom);
   const [, setExportTreeTextPanelOpen] = useAtom(isExportTreeTextPanelOpenAtom);
   const [, setExportPNGPanelOpen] = useAtom(isExportPNGPanelOpenAtom);
-
-  /**
-   * 新建草稿
-   */
-  const onNewDraft = () => {
-    if (StageSaveManager.isSaved() || StageManager.isEmpty()) {
-      StageManager.destroy();
-      setFile("Project Graph");
-      Camera.reset();
-    } else {
-      // 当前文件未保存
-      // 但当前可能是草稿没有保存，也可能是曾经的文件改动了没有保存
-      Dialog.show({
-        title: "未保存",
-        content: "您打算新建一个文件，但当前文件未保存，请选择您的操作",
-        buttons: [
-          {
-            text: "保存",
-            onClick: () => {
-              onSave().then(onNewDraft);
-            },
-          },
-          {
-            text: "丢弃当前并直接新开",
-            onClick: () => {
-              StageManager.destroy();
-              setFile("Project Graph");
-              Camera.reset();
-            },
-          },
-          { text: "我再想想" },
-        ],
-      });
-    }
-  };
-
-  /**
-   * 新建文件夹和文件
-   */
-  const onNewFile = async () => {
-    // 选择文件夹路径
-    if (!StageSaveManager.isSaved()) {
-      Dialog.show({
-        title: "未保存",
-        content: "您打算新建一个文件，但当前文件未保存，请选择您的操作",
-        buttons: [
-          {
-            text: "保存",
-            onClick: onSave,
-          },
-        ],
-      });
-      return;
-    }
-    const path = await saveFileDialog({
-      title: "新建文件，更改“XXX”时，不要输入后缀名，直接输入文件名即可",
-      defaultPath: "XXX", // 提供一个默认的文件名
-      // filters: [
-      //   {
-      //     name: "Project Graph",
-      //     extensions: ["json"],
-      //   },
-      // ],
-    });
-
-    if (!path) {
-      return;
-    }
-
-    console.log("onNewFile", path);
-    // D:\Desktop\插件测试\XXX
-    const newFolderCreated = await createFolder(path);
-    if (!newFolderCreated) {
-      Dialog.show({
-        title: "创建文件夹失败",
-        content: "创建文件夹时失败：(" + path + ")" + "请换一个文件夹名称",
-        type: "error",
-      });
-      return;
-    }
-    const createFolderResult = await exists(path);
-    if (!createFolderResult) {
-      Dialog.show({
-        title: "创建文件夹失败",
-        content: "创建文件夹时失败：(" + path + ")",
-        type: "error",
-      });
-      return;
-    }
-    // 文件夹创建成功
-    // 开始创建文件
-    // 获取文件名
-    const fileName = PathString.getFileNameFromPath(path);
-    const filePath = `${path}${PathString.getSep()}${fileName}.json`;
-    // 更新历史
-    RecentFileManager.addRecentFileByPath(filePath);
-    // 创建文件
-    try {
-      StageManager.destroy();
-      setFile(filePath);
-      Camera.reset();
-    } catch {
-      Dialog.show({
-        title: "创建文件失败",
-        content: "创建文件时失败：(" + filePath + ")",
-        type: "error",
-      });
-    }
-  };
-
-  const onOpen = async () => {
-    if (!StageSaveManager.isSaved()) {
-      if (StageManager.isEmpty()) {
-        //空项目不需要保存
-        StageManager.destroy();
-        openFileByDialogWindow();
-      } else if (Stage.path.isDraft()) {
-        Dialog.show({
-          title: "草稿未保存",
-          content: "当前草稿未保存，是否保存？",
-          buttons: [
-            { text: "我再想想" },
-            { text: "保存草稿", onClick: onSave },
-            {
-              text: "丢弃并打开新文件",
-              onClick: () => {
-                StageManager.destroy();
-                openFileByDialogWindow();
-              },
-            },
-          ],
-        });
-      } else {
-        Dialog.show({
-          title: "未保存",
-          content: "是否保存当前文件？",
-          buttons: [
-            {
-              text: "保存并打开新文件",
-              onClick: () => {
-                onSave().then(openFileByDialogWindow);
-              },
-            },
-            { text: "我再想想" },
-          ],
-        });
-      }
-    } else {
-      // 直接打开文件
-      openFileByDialogWindow();
-    }
-  };
-
-  const openFileByDialogWindow = async () => {
-    const path = isWeb
-      ? "file.json"
-      : await openFileDialog({
-          title: "打开文件",
-          directory: false,
-          multiple: false,
-          filters: isDesktop
-            ? [
-                {
-                  name: "JSON 格式，兼容旧版本",
-                  extensions: ["json"],
-                },
-                {
-                  name: "新版 PRG 格式，文件更小",
-                  extensions: ["prg"],
-                },
-              ]
-            : [],
-        });
-    if (!path) {
-      return;
-    }
-    try {
-      await FileLoader.openFileByPath(path); // 已经包含历史记录重置功能
-      // 更改file
-      setFile(path);
-    } catch (e) {
-      Dialog.show({
-        title: "请选择正确的JSON文件",
-        content: String(e),
-        type: "error",
-      });
-    }
-  };
-
-  const openFolderByDialogWindow = async () => {
-    const path = await openFileDialog({
-      title: "打开文件夹",
-      directory: true,
-      multiple: false,
-      filters: [],
-    });
-    if (!path) {
-      return;
-    }
-    // console.log(path);
-    GenerateFromFolderEngine.generateFromFolder(path);
-  };
-
-  const onSave = async () => {
-    const path_ = file;
-
-    if (path_ === "Project Graph") {
-      // 如果文件名为 "Project Graph" 则说明是新建文件。
-      // 要走另存为流程
-      await onSaveNew();
-      return;
-    }
-    const data = StageDumper.dump(); // 获取当前节点和边的数据
-    // 2024年10月6日发现保存文件也开始变得没有权限了，可能是tauri-plugin-fs的bug
-    // await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
-    try {
-      await StageSaveManager.saveHandle(path_, data);
-    } catch (error) {
-      await Dialog.show({
-        title: "保存失败",
-        code: `${error}`,
-        content: "保存失败，请重试",
-      });
-    }
-  };
-
-  const onSaveNew = async () => {
-    const path = isWeb
-      ? "file.json"
-      : await saveFileDialog({
-          title: "另存为",
-          defaultPath: "新文件.json", // 提供一个默认的文件名
-          filters: [
-            {
-              name: "JSON 格式，兼容旧版本",
-              extensions: ["json"],
-            },
-            {
-              name: "新版 PRG 格式，文件更小",
-              extensions: ["prg"],
-            },
-          ],
-        });
-
-    if (!path) {
-      return;
-    }
-
-    const data = StageDumper.dump(); // 获取当前节点和边的数据
-    try {
-      await StageSaveManager.saveHandle(path, data);
-      setFile(path);
-      RecentFileManager.addRecentFileByPath(path);
-    } catch {
-      await Dialog.show({
-        title: "保存失败",
-        content: "保存失败，请重试",
-      });
-    }
-  };
-  const onBackup = async () => {
-    try {
-      if (Stage.path.isDraft()) {
-        const autoBackupDraftPath = await Settings.get("autoBackupDraftPath");
-        const backupPath = `${autoBackupDraftPath}${PathString.getSep()}${PathString.getTime()}.json`;
-        await StageSaveManager.backupHandle(backupPath, StageDumper.dump());
-        return;
-      }
-      await StageSaveManager.backupHandleWithoutCurrentPath(StageDumper.dump(), true);
-    } catch {
-      await Dialog.show({
-        title: "备份失败",
-        content: "备份失败，请重试",
-      });
-    }
-  };
 
   const onExportTreeText = async () => {
     const selectedNodes = StageManager.getSelectedEntities().filter((entity) => entity instanceof TextNode);
@@ -464,10 +188,10 @@ export default function AppMenuWindow() {
       <Row icon={<File />} title={t("file.title")}>
         {!isWeb && (
           <>
-            <Col icon={<FileClock />} id="app-menu-recent-file-btn" onClick={() => setRecentFilePanelOpen(true)}>
+            <Col icon={<FileClock />} onClick={RecentFilesWindow.open}>
               {t("file.items.recent")}
             </Col>
-            <Col icon={<Save />} id="app-menu-save-btn" onClick={onSave}>
+            <Col icon={<Save />} onClick={onSave}>
               {t("file.items.save")}
             </Col>
           </>
@@ -477,10 +201,10 @@ export default function AppMenuWindow() {
             {t("file.items.newFile")}
           </Col>
         )}
-        <Col icon={<ScrollText />} id="app-menu-new-draft-btn" onClick={onNewDraft}>
+        <Col icon={<ScrollText />} onClick={onNewDraft}>
           {t("file.items.new")}
         </Col>
-        <Col icon={<FileInput />} id="app-menu-open-btn" onClick={onOpen} details="选择一个曾经保存的json文件并打开。">
+        <Col icon={<FileInput />} onClick={onOpen} details="选择一个曾经保存的json文件并打开。">
           {t("file.items.open")}
         </Col>
         <Col icon={<FileDown />} onClick={onSaveNew}>
@@ -864,4 +588,280 @@ AppMenuWindow.open = () => {
     closeWhenClickInside: true,
     closeWhenClickOutside: true,
   });
+};
+
+/**
+ * 新建草稿
+ */
+export const onNewDraft = () => {
+  if (StageSaveManager.isSaved() || StageManager.isEmpty()) {
+    StageManager.destroy();
+    store.set(fileAtom, "Project Graph");
+    Camera.reset();
+  } else {
+    // 当前文件未保存
+    // 但当前可能是草稿没有保存，也可能是曾经的文件改动了没有保存
+    Dialog.show({
+      title: "未保存",
+      content: "您打算新建一个文件，但当前文件未保存，请选择您的操作",
+      buttons: [
+        {
+          text: "保存",
+          onClick: () => {
+            onSave().then(onNewDraft);
+          },
+        },
+        {
+          text: "丢弃当前并直接新开",
+          onClick: () => {
+            StageManager.destroy();
+            store.set(fileAtom, "Project Graph");
+            Camera.reset();
+          },
+        },
+        { text: "我再想想" },
+      ],
+    });
+  }
+};
+
+/**
+ * 新建文件夹和文件
+ */
+export const onNewFile = async () => {
+  // 选择文件夹路径
+  if (!StageSaveManager.isSaved()) {
+    Dialog.show({
+      title: "未保存",
+      content: "您打算新建一个文件，但当前文件未保存，请选择您的操作",
+      buttons: [
+        {
+          text: "保存",
+          onClick: onSave,
+        },
+      ],
+    });
+    return;
+  }
+  const path = await saveFileDialog({
+    title: "新建文件，更改“XXX”时，不要输入后缀名，直接输入文件名即可",
+    defaultPath: "XXX", // 提供一个默认的文件名
+    // filters: [
+    //   {
+    //     name: "Project Graph",
+    //     extensions: ["json"],
+    //   },
+    // ],
+  });
+
+  if (!path) {
+    return;
+  }
+
+  console.log("onNewFile", path);
+  // D:\Desktop\插件测试\XXX
+  const newFolderCreated = await createFolder(path);
+  if (!newFolderCreated) {
+    Dialog.show({
+      title: "创建文件夹失败",
+      content: "创建文件夹时失败：(" + path + ")" + "请换一个文件夹名称",
+      type: "error",
+    });
+    return;
+  }
+  const createFolderResult = await exists(path);
+  if (!createFolderResult) {
+    Dialog.show({
+      title: "创建文件夹失败",
+      content: "创建文件夹时失败：(" + path + ")",
+      type: "error",
+    });
+    return;
+  }
+  // 文件夹创建成功
+  // 开始创建文件
+  // 获取文件名
+  const fileName = PathString.getFileNameFromPath(path);
+  const filePath = `${path}${PathString.getSep()}${fileName}.json`;
+  // 更新历史
+  RecentFileManager.addRecentFileByPath(filePath);
+  // 创建文件
+  try {
+    StageManager.destroy();
+    store.set(fileAtom, filePath);
+    Camera.reset();
+  } catch {
+    Dialog.show({
+      title: "创建文件失败",
+      content: "创建文件时失败：(" + filePath + ")",
+      type: "error",
+    });
+  }
+};
+
+export const onOpen = async () => {
+  if (!StageSaveManager.isSaved()) {
+    if (StageManager.isEmpty()) {
+      //空项目不需要保存
+      StageManager.destroy();
+      openFileByDialogWindow();
+    } else if (Stage.path.isDraft()) {
+      Dialog.show({
+        title: "草稿未保存",
+        content: "当前草稿未保存，是否保存？",
+        buttons: [
+          { text: "我再想想" },
+          { text: "保存草稿", onClick: onSave },
+          {
+            text: "丢弃并打开新文件",
+            onClick: () => {
+              StageManager.destroy();
+              openFileByDialogWindow();
+            },
+          },
+        ],
+      });
+    } else {
+      Dialog.show({
+        title: "未保存",
+        content: "是否保存当前文件？",
+        buttons: [
+          {
+            text: "保存并打开新文件",
+            onClick: () => {
+              onSave().then(openFileByDialogWindow);
+            },
+          },
+          { text: "我再想想" },
+        ],
+      });
+    }
+  } else {
+    // 直接打开文件
+    openFileByDialogWindow();
+  }
+};
+
+const openFileByDialogWindow = async () => {
+  const path = isWeb
+    ? "file.json"
+    : await openFileDialog({
+        title: "打开文件",
+        directory: false,
+        multiple: false,
+        filters: isDesktop
+          ? [
+              {
+                name: "JSON 格式，兼容旧版本",
+                extensions: ["json"],
+              },
+              {
+                name: "新版 PRG 格式，文件更小",
+                extensions: ["prg"],
+              },
+            ]
+          : [],
+      });
+  if (!path) {
+    return;
+  }
+  try {
+    await FileLoader.openFileByPath(path); // 已经包含历史记录重置功能
+    // 更改file
+    store.set(fileAtom, path);
+  } catch (e) {
+    Dialog.show({
+      title: "请选择正确的JSON文件",
+      content: String(e),
+      type: "error",
+    });
+  }
+};
+
+const openFolderByDialogWindow = async () => {
+  const path = await openFileDialog({
+    title: "打开文件夹",
+    directory: true,
+    multiple: false,
+    filters: [],
+  });
+  if (!path) {
+    return;
+  }
+  // console.log(path);
+  GenerateFromFolderEngine.generateFromFolder(path);
+};
+
+export const onSave = async () => {
+  const path_ = store.get(fileAtom);
+
+  if (path_ === "Project Graph") {
+    // 如果文件名为 "Project Graph" 则说明是新建文件。
+    // 要走另存为流程
+    await onSaveNew();
+    return;
+  }
+  const data = StageDumper.dump(); // 获取当前节点和边的数据
+  // 2024年10月6日发现保存文件也开始变得没有权限了，可能是tauri-plugin-fs的bug
+  // await writeTextFile(path, JSON.stringify(data, null, 2)); // 将数据写入文件
+  try {
+    await StageSaveManager.saveHandle(path_, data);
+  } catch (error) {
+    await Dialog.show({
+      title: "保存失败",
+      code: `${error}`,
+      content: "保存失败，请重试",
+    });
+  }
+};
+
+const onSaveNew = async () => {
+  const path = isWeb
+    ? "file.json"
+    : await saveFileDialog({
+        title: "另存为",
+        defaultPath: "新文件.json", // 提供一个默认的文件名
+        filters: [
+          {
+            name: "JSON 格式，兼容旧版本",
+            extensions: ["json"],
+          },
+          {
+            name: "新版 PRG 格式，文件更小",
+            extensions: ["prg"],
+          },
+        ],
+      });
+
+  if (!path) {
+    return;
+  }
+
+  const data = StageDumper.dump(); // 获取当前节点和边的数据
+  try {
+    await StageSaveManager.saveHandle(path, data);
+    store.set(fileAtom, path);
+    RecentFileManager.addRecentFileByPath(path);
+  } catch {
+    await Dialog.show({
+      title: "保存失败",
+      content: "保存失败，请重试",
+    });
+  }
+};
+export const onBackup = async () => {
+  try {
+    if (Stage.path.isDraft()) {
+      const autoBackupDraftPath = await Settings.get("autoBackupDraftPath");
+      const backupPath = `${autoBackupDraftPath}${PathString.getSep()}${PathString.getTime()}.json`;
+      await StageSaveManager.backupHandle(backupPath, StageDumper.dump());
+      return;
+    }
+    await StageSaveManager.backupHandleWithoutCurrentPath(StageDumper.dump(), true);
+  } catch {
+    await Dialog.show({
+      title: "备份失败",
+      content: "备份失败，请重试",
+    });
+  }
 };

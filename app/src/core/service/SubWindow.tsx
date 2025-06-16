@@ -80,7 +80,7 @@ export namespace SubWindow {
     );
   }
   export function close(id: string) {
-    if (get(id).closeWhenClickOutside) {
+    if (get(id)?.closeWhenClickOutside) {
       document.removeEventListener("pointerdown", get(id)._closeWhenClickOutsideListener!);
     }
     update(id, { closing: true });

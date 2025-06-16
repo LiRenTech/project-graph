@@ -22,7 +22,6 @@ import PGCanvas from "./_canvas";
 import ErrorHandler from "./_fixed_panel/_error_handler";
 import ExportPNGPanel from "./_fixed_panel/_export_png_panel";
 import ExportTreeTextPanel from "./_fixed_panel/_export_text_panel";
-import RecentFilesPanel from "./_fixed_panel/_recent_files_panel";
 import StartFilePanel from "./_fixed_panel/_start_file_panel";
 import FloatingOutlet from "./_floating_outlet";
 import RenderSubWindows from "./_render_sub_windows";
@@ -488,7 +487,6 @@ export default function App() {
 
           {/* 面板列表 */}
           <StartFilePanel open={isStartFilePanelOpen} />
-          <RecentFilesPanel />
           <ExportTreeTextPanel />
           <ExportPNGPanel />
         </>
