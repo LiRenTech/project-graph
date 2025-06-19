@@ -95,7 +95,6 @@ switch:
     dot: "#fff"
 
 appmenu:
-  bg: "oklch(0.269 0 0)"
   border: "oklch(0.371 0 0)"
   category:
     title: "oklch(0.708 0 0)"
@@ -115,10 +114,6 @@ toolbar:
     border: "oklch(0.371 0 0)"
   collapsed-bg: "#fff"
   selected-item-bg: "#000"
-
-settings:
-  page-bg: "oklch(0.145 0 0)"
-  text: "#fff"
 
 field-group:
   bg: "oklch(0.269 0 0)"

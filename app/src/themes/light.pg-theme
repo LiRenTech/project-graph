@@ -95,7 +95,6 @@ switch:
     dot: "rgb(155, 161, 166)"
 
 appmenu:
-  bg: "rgb(255, 255, 255)"
   border: "rgb(132, 145, 165)"
   category:
     title: "rgb(26, 88, 150)"
@@ -116,13 +115,15 @@ toolbar:
   collapsed-bg: "oklch(0.15 0.05 0)"
   selected-item-bg: "rgb(149, 155, 164)"
 
-settings:
-  page-bg: "rgb(244, 246, 249)"
-  text: "rgb(25, 27, 31)"
-
 field-group:
   bg: "#fff"
   hover-bg: "rgb(248, 248, 250)"
+
+sub-window:
+  bg: "rgb(208, 228, 249)"
+  text: "#000"
+  border: "#344b62"
+  shadow: "rgba(0, 0, 0, 0.1)"
 
 stage:
   Background: "#ffffff"

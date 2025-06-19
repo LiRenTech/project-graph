@@ -184,7 +184,7 @@ export default function AppMenuWindow() {
   }, []);
 
   return (
-    <div className="bg-appmenu-bg flex flex-col gap-4 p-3" onPointerDown={(e) => e.stopPropagation()}>
+    <div className="flex flex-col gap-4 p-3" onPointerDown={(e) => e.stopPropagation()}>
       <Row icon={<File />} title={t("file.title")}>
         {!isWeb && (
           <>

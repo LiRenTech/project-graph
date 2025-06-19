@@ -95,7 +95,6 @@ switch:
     dot: "#1b2127"
 
 appmenu:
-  bg: "#2c3239"
   border: "#4a5565"
   category:
     title: "#8a909d"
@@ -116,13 +115,15 @@ toolbar:
   collapsed-bg: "#e5e7eb"
   selected-item-bg: "rgb(30, 41, 57)"
 
-settings:
-  page-bg: "#2d3238"
-  text: "#e5e7eb"
-
 field-group:
   bg: "#22272d"
   hover-bg: "#1b2127"
+
+sub-window:
+  bg: "#2d3238"
+  text: "#fff"
+  border: "#344b62"
+  shadow: "rgba(0, 0, 0, 0.1)"
 
 stage:
   Background: "rgba(34, 34, 34)"

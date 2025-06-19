@@ -111,12 +111,14 @@ export default function SettingsWindow() {
   return (
     <div className="flex h-full w-full flex-col p-8">
       <div className="flex flex-1 gap-8 overflow-hidden">
-        <div className="text-appmenu-item-text *:hover:bg-appmenu-hover-bg flex h-full flex-col gap-2 overflow-y-auto *:flex *:cursor-pointer *:items-center *:gap-2 *:rounded-full *:px-3 *:py-2 *:transition *:active:scale-90">
+        <div className="text-appmenu-item-text flex h-full flex-col gap-2 overflow-y-auto *:flex *:cursor-pointer *:items-center *:gap-2 *:rounded-full *:px-3 *:py-2 *:transition *:active:scale-90">
           {pages.map((page) => (
             <Button
               key={page.id}
               onClick={() => setCurrentPage(page.id)}
-              className={cn(page.id !== currentPage && "border-none bg-transparent")}
+              className={cn(
+                page.id !== currentPage && "text-sub-window-text border-none bg-transparent hover:scale-125",
+              )}
             >
               {page.icon}
               {t(`tabs.${page.id}`)}
@@ -134,6 +136,7 @@ export default function SettingsWindow() {
 SettingsWindow.open = () => {
   SubWindow.create({
     title: "设置",
+
     children: <SettingsWindow />,
     rect: Rectangle.inCenter(new Vector(window.innerWidth * 0.87, window.innerHeight * 0.88)),
   });
