@@ -11,8 +11,8 @@ about:
     available: New Version
     downloading: Downloading
     checkingUpdate: Checking for updates…
-    checkUpdateFail: Failed to retrieve the latest version information, please check
-      your network connection
+    checkUpdateFail: Failed to retrieve the latest version information, please 
+      check your network connection
   links:
     documentation: Documentation
     github: GitHub
@@ -22,22 +22,23 @@ about:
     website: Official Website
     community:
       title: Community
-      description: Join the community, including the QQ Group, forum, Discord, Telegram,
-        and share your ideas, experiences, tutorials, resources, problems, suggestions,
-        etc.
+      description: Join the community, including the QQ Group, forum, Discord, 
+        Telegram, and share your ideas, experiences, tutorials, resources, 
+        problems, suggestions, etc.
     importantAnnouncement: Important Announcement
   intro:
   - Software Introduction
-  - This is a tool based on the Tauri framework for quickly drawing node diagrams,
-    which can be used for project topology diagrams and quick brainstorming drafts
-  - Xmind can only be used to draw tree-structured diagrams. FigJam and draw.io can
-    be used, but the web pages load a bit slowly
+  - This is a tool based on the Tauri framework for quickly drawing node 
+    diagrams, which can be used for project topology diagrams and quick 
+    brainstorming drafts
+  - Xmind can only be used to draw tree-structured diagrams. FigJam and draw.io 
+    can be used, but the web pages load a bit slowly
   - That's why this software was created
   contact:
   - Contact Us
-  - We are committed to designing the fastest and most convenient drawing methodology
-    for "graph theory" and also exploring innovations in visual thinking and topological
-    to-do lists.
+  - We are committed to designing the fastest and most convenient drawing 
+    methodology for "graph theory" and also exploring innovations in visual 
+    thinking and topological to-do lists.
   - "If you want to get quick feedback, provide suggestions, or have any ideas or
     questions, please join our QQ Group: 1018716404"
   techEnvironment: Technical Support and Ecosystem
@@ -66,27 +67,28 @@ about:
   - Inspiration Sources
   - FigJam without dark mode support
   - Analysis framework video by Lin Chao
-  - Topological sorting, graph theory, state machines, and set theory concepts from
-    "Data Structures and Algorithms"
+  - Topological sorting, graph theory, state machines, and set theory concepts 
+    from "Data Structures and Algorithms"
   - Brainstorming methods, cognitive load theory, and card creativity methods
-  - The Command blocks in the game "Minecraft" and the Nether portal mod for cross-world
-    previews
+  - The Command blocks in the game "Minecraft" and the Nether portal mod for 
+    cross-world previews
   - The slicing animation effect in the game "Fruit Ninja"
   - The logical node design of factory assembly lines in the game "Mindustry"
   team:
   - Team Introduction
-  - LiRen Tech is a small team founded by Littlefean and Rutubet on May 1, 2017, with
-    ZTY joining later.
-  - Known for its youthful atmosphere, emphasis on innovation and creativity, and
-    rational thinking and cultural inclusiveness, it stands out in the field of software
-    development.
-  - It focuses not only on developing tool software and games but also on developing
-    Minecraft game plugins, operating game servers, and building websites.
-  - Representative works include the rich content tower defense game CannonWar, the
-    algorithm competition website BitMountain, the desktop software Watch, and the
-    Minecraft PvP professional war server.
-  - The team's representative colors are light blue and code green, symbolizing a
-    team culture that combines logical rationality with humor and fun.
+  - LiRen Tech is a small team founded by Littlefean and Rutubet on May 1, 2017,
+    with ZTY joining later.
+  - Known for its youthful atmosphere, emphasis on innovation and creativity, 
+    and rational thinking and cultural inclusiveness, it stands out in the field
+    of software development.
+  - It focuses not only on developing tool software and games but also on 
+    developing Minecraft game plugins, operating game servers, and building 
+    websites.
+  - Representative works include the rich content tower defense game CannonWar, 
+    the algorithm competition website BitMountain, the desktop software Watch, 
+    and the Minecraft PvP professional war server.
+  - The team's representative colors are light blue and code green, symbolizing 
+    a team culture that combines logical rationality with humor and fun.
 
 settings:
   title: Settings
@@ -212,7 +214,8 @@ settings:
       The height of the cycle space, measured in pixels.
   renderEffect:
     title: Render Effects
-    description: Whether to render effects. If experiencing lag, this can be disabled
+    description: Whether to render effects. If experiencing lag, this can be 
+      disabled
   historySize:
     title: History Size
     description: |
@@ -225,8 +228,8 @@ settings:
       However, this may cause text jittering. It is recommended to use this with a zoom speed of 1.
       If your computer is very laggy, especially when zooming and panning, you can enable this option.
   isPauseRenderWhenManipulateOvertime:
-    title: Pause rendering if the stage has not been operated for a certain period
-      of time
+    title: Pause rendering if the stage has not been operated for a certain 
+      period of time
     description: |
       When enabled, rendering will pause after a certain number of seconds without stage manipulation to save CPU/GPU resources.
   renderOverTimeWhenNoManipulateTime:
@@ -235,8 +238,8 @@ settings:
       Rendering will stop after a certain number of seconds without stage manipulation to save CPU/GPU resources.
       This will only take effect if the "Pause Rendering When Idle" option is enabled.
   ignoreTextNodeTextRenderLessThanCameraScale:
-    title: Hide Text and Details of Text Nodes When Camera Zoom Is Less Than a Certain
-      Value
+    title: Hide Text and Details of Text Nodes When Camera Zoom Is Less Than a 
+      Certain Value
     description: |
       When enabled, text and details of text nodes will not be rendered when the camera zooming is less than a certain value (i.e., when observing the macro view).
       This can improve rendering performance, but will make the text content of text nodes invisible.
@@ -539,10 +542,11 @@ settings:
       none: No operation
       cameraMoveToMouse: Move the view to the mouse position
       adjustWindowOpacity: adjust window opacity
+      adjustPenStrokeWidth: Adjust brush thickness
   macMouseWheelIsSmoothed:
-    description: Some MacBook mouse wheels are smooth, while others trigger a scroll
-      with each click, which may depend on whether you have installed mouse modification
-      software like Mos
+    description: Some MacBook mouse wheels are smooth, while others trigger a 
+      scroll with each click, which may depend on whether you have installed 
+      mouse modification software like Mos
     title: Is the mouse scroll wheel of MacBook smooth
   sectionBitTitleRenderType:
     options:
@@ -552,17 +556,18 @@ settings:
     title: The rendering type of the abbreviated main title in the frame
   macTrackpadAndMouseWheelDifference:
     options:
-      tarckpadFloatAndWheelInt: The value of the trackpad is a decimal, while the
-        value of the mouse scroll is an integer
-      trackpadIntAndWheelFloat: The trackpad value is an integer and the mouse scroll
-        value is a decimal
-    title: The differentiation logic between the trackpad of MacBook and the mouse
-      scroll wheel
-    description: For some MacBooks, the mouse scroll wheel value is an integer and
-      the trackpad value is a decimal; for others, it's reversed. Select the differentiation
-      logic based on the actual situation. To differentiate, click the software logo
-      in the "About" interface seven times to enter the "Test Interface", then scroll
-      the wheel and trackpad to view the data feedback
+      tarckpadFloatAndWheelInt: The value of the trackpad is a decimal, while 
+        the value of the mouse scroll is an integer
+      trackpadIntAndWheelFloat: The trackpad value is an integer and the mouse 
+        scroll value is a decimal
+    title: The differentiation logic between the trackpad of MacBook and the 
+      mouse scroll wheel
+    description: For some MacBooks, the mouse scroll wheel value is an integer 
+      and the trackpad value is a decimal; for others, it's reversed. Select the
+      differentiation logic based on the actual situation. To differentiate, 
+      click the software logo in the "About" interface seven times to enter the 
+      "Test Interface", then scroll the wheel and trackpad to view the data 
+      feedback
   compressPastedImages:
     title: Compress Pasted Images
     description: "When enabled, images pasted on the stage are compressed to save
@@ -581,6 +586,9 @@ settings:
     description: "Controls whether to show the text node border or not.\n"
   autoLayoutWhenTreeGenerate:
     title: Automatically update layout when growing nodes
+    description: "After it is turned on, the layout will be automatically updated
+      when growing nodes\nThe growing nodes here refer to the tab and \\ key growing
+      nodes\n"
   agreeTerms:
     title: agree to the Terms of Service
     description: "please read carefully and agree to the Terms of Service\n"
@@ -616,8 +624,8 @@ appMenu:
     title: Location
     items:
       openDataFolder:
-        description: Open the software data folder, which stores user-customized settings,
-          etc
+        description: Open the software data folder, which stores user-customized
+          settings, etc
         title: Configuration Data
       openProjectFolder:
         title: Current Directory
@@ -670,8 +678,8 @@ toolbar:
   stageObjects:
     title: Stage Objects
     items:
-      setColor: Set Color of Selected Stage Object, Note to Select First and Then
-        Click Color (F6)
+      setColor: Set Color of Selected Stage Object, Note to Select First and 
+        Then Click Color (F6)
       delete: Delete Selected Stage Object
       tag: Add or Remove Tags from Stage Object
   multiTargetUndirectedEdges:
@@ -686,7 +694,8 @@ toolbar:
     title: Directed Edge
     items:
       switchDirection: Reverse Direction of Selected Edge
-      switchToCrEdge: Switch to CR Curve (Under Development, Not Recommended for Use)
+      switchToCrEdge: Switch to CR Curve (Under Development, Not Recommended for
+        Use)
       switchToUndirectedEdge: Switch to Undirected Edge
       setExtremePoint: Set Position of Selected Edge Endpoints
   crEdge:
@@ -703,12 +712,13 @@ toolbar:
       packSection: Pack Selected Node into Section (Customizable Shortcut)
       createMultiTargetEdgeConvex: Create Undirected Edge (Convex Hull Type)
       createMultiTargetEdgeLine: Create Undirected Edge (Line Type)
-      openPathByContent: Open File/Folder Based on First Line of Entity Details as
-        Local Absolute Path
+      openPathByContent: Open File/Folder Based on First Line of Entity Details 
+        as Local Absolute Path
   imageNode:
     title: Image Node
     items:
-      refresh: Refresh Selected Content (Click this Button if Image Loading Fails)
+      refresh: Refresh Selected Content (Click this Button if Image Loading 
+        Fails)
       openImage: Open Selected Image
   textNode:
     title: Text Node
@@ -789,8 +799,8 @@ keyBinds:
     description: Reset the viewport zoom to the standard size
   folderSection:
     title: Fold/Unfold Section Box
-    description: Pressing this will toggle the fold/unfold state of the selected Section
-      box
+    description: Pressing this will toggle the fold/unfold state of the selected
+      Section box
   reverseEdges:
     title: Reverse Connection Direction
     description: |
@@ -965,7 +975,8 @@ keyBinds:
     description: Paste the clipboard content when pressed
   pasteWithOriginLocation:
     title: Paste at Original Location
-    description: When pressed, the pasted content will overlap with the original position
+    description: When pressed, the pasted content will overlap with the original
+      position
   selectEntityByPenStroke:
     title: Graffiti and Entity Diffusion Selection
     description: |
