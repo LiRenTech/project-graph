@@ -31,19 +31,19 @@ Project Graph is an open-source project that aims to provide a next-generation n
 
 ## 🚀 Features
 
-- **Blazing-Fast Drawing**  
+- **Blazing-Fast Drawing**
   Create complex node diagrams in seconds with drag-and-drop simplicity. Optimized with Tauri framework for seamless performance, even with thousands of nodes.
 
-- **AI-Powered Intelligence**  
+- **AI-Powered Intelligence**
   Auto-generate tree structures and suggest node relationships using integrated large language models (e.g., ChatGPT), accelerating brainstorming and system design.
 
-- **Dynamic Compute Engine**  
+- **Dynamic Compute Engine**
   Analyze dependencies, optimize paths, and derive logic trees in real time through a powerful graph engine.
 
-- **Cross-Platform & Multi-Modal**  
+- **Cross-Platform & Multi-Modal**
   Native support for Windows, Linux, and experimental macOS/Android builds. Export diagrams as PNG, SVG, or JSON for diverse use cases.
 
-- **Open Ecosystem**  
+- **Open Ecosystem**
   Built with React and ~~extensible APIs~~ (WIP). MIT-licensed for unlimited customization.
 
 ---
@@ -83,10 +83,9 @@ We welcome PRs! Check [CONTRIBUTING.md](https://project-graph.top/docs/contribut
 
 # 🏆 Sponsors
 
-|                         ![YXVM Logo]                          |                 ![ZMTO Logo]                 |
-| :-----------------------------------------------------------: | :------------------------------------------: |
-| [YXVM](https://yxvm.com/) & [NodeSeek](https://nodeseek.com/) | [ZMTO](https://console.zmto.com/?affid=1574) |
-|                                                               |   Get 5% off by this code: `ZOE2SGSZ5SP6`    |
+[![image](https://beisudianxueuser.oss-cn-beijing.aliyuncs.com/storage/user_avatar/ciallo/2025/04/06/1818c0770e94a4257af5eb7d5530f5fd/Screenshot%202025-04-06%20at%2016-23-03%20NodeSupport%20Promotion.png)](https://yxvm.com/)
+[![ZMTO Logo](https://console.zmto.com/templates/2019/dist/images/logo_white.svg)](https://console.zmto.com/?affid=1574)
+[![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
 
 <!----------------------------------------------------------------------------->
 
@@ -105,6 +104,3 @@ We welcome PRs! Check [CONTRIBUTING.md](https://project-graph.top/docs/contribut
 [Badge Lines]: https://img.shields.io/tokei/lines/github/LiRenTech/project-graph
 
 <!----------------------------------{ Images }--------------------------------->
-
-[YXVM Logo]: https://yxvm.com/assets/img/logo.png
-[ZMTO Logo]: https://console.zmto.com/templates/2019/dist/images/logo_white.svg
