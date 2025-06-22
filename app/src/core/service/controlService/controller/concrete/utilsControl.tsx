@@ -1,3 +1,4 @@
+import AutoCompleteWindow from "../../../../../pages/_sub_window/AutoCompleteWindow";
 import { Direction } from "../../../../../types/directions";
 import { isDesktop } from "../../../../../utils/platform";
 import { colorInvert } from "../../../../dataStruct/Color";
@@ -20,9 +21,11 @@ import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
+import { LogicNodeNameToRenderNameMap } from "../../../dataGenerateService/autoComputeEngine/logicNodeNameEnum";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
+import { SubWindow } from "../../../SubWindow";
 import { Controller } from "../Controller";
 
 /**
@@ -44,10 +47,28 @@ export function editTextNode(clickedNode: TextNode, selectAll = true) {
   // 编辑节点
   clickedNode.isEditing = true;
   // RectangleElement.div(rectView, StageStyleManager.currentStyle.CollideBoxSelected);
+  let lastAutoCompleteWindowId: string;
   InputElement.textarea(
     clickedNode.text,
     // "",
     (text, ele) => {
+      if (lastAutoCompleteWindowId) {
+        SubWindow.close(lastAutoCompleteWindowId);
+      }
+      // 自动补全逻辑节点
+      if (text.startsWith("#")) {
+        lastAutoCompleteWindowId = AutoCompleteWindow.open(
+          clickedNode.rectangle.transformWorld2View().leftBottom,
+          Object.fromEntries(
+            Object.entries(LogicNodeNameToRenderNameMap).filter(([k]) =>
+              k.toLowerCase().startsWith(text.toLowerCase()),
+            ),
+          ),
+          (value) => {
+            ele.value = value;
+          },
+        ).id;
+      }
       // onChange
       clickedNode?.rename(text);
       const rectWorld = clickedNode.collisionBox.getRectangle();
@@ -88,6 +109,7 @@ export function editTextNode(clickedNode: TextNode, selectAll = true) {
     selectAll,
     rectWorld.width * Camera.currentScale, // limit width
   ).then(() => {
+    SubWindow.close(lastAutoCompleteWindowId);
     clickedNode!.isEditing = false;
     Controller.isCameraLocked = false;
     StageHistoryManager.recordStep();

@@ -158,6 +158,8 @@ export namespace InputElement {
         if (document.body.contains(textareaElement)) {
           try {
             // 暂时关闭频繁弹窗报错。
+            document.body.removeEventListener("mousedown", onOutsideClick);
+            document.body.removeEventListener("wheel", onOutsideWheel);
             document.body.removeChild(textareaElement);
           } catch (error) {
             console.error(error);
@@ -169,14 +171,12 @@ export namespace InputElement {
         if (!textareaElement.contains(event.target as Node)) {
           resolve(textareaElement.value);
           onChange(textareaElement.value, textareaElement);
-          document.body.removeEventListener("mousedown", onOutsideClick);
           removeElement();
         }
       };
       const onOutsideWheel = () => {
         resolve(textareaElement.value);
         onChange(textareaElement.value, textareaElement);
-        document.body.removeEventListener("mousedown", onOutsideClick);
         removeElement();
       };
       setTimeout(() => {
@@ -202,7 +202,6 @@ export namespace InputElement {
       textareaElement.addEventListener("blur", () => {
         resolve(textareaElement.value);
         onChange(textareaElement.value, textareaElement);
-        document.body.removeEventListener("mousedown", onOutsideClick);
         removeElement();
       });
       let isComposing = false;
@@ -233,7 +232,6 @@ export namespace InputElement {
           // Escape 是通用的取消编辑的快捷键
           resolve(textareaElement.value);
           onChange(textareaElement.value, textareaElement);
-          document.body.removeEventListener("mousedown", onOutsideClick);
           removeElement();
         }
 
@@ -252,7 +250,6 @@ export namespace InputElement {
         const exitEditMode = () => {
           resolve(textareaElement.value);
           onChange(textareaElement.value, textareaElement);
-          document.body.removeEventListener("mousedown", onOutsideClick);
           removeElement();
         };
 
