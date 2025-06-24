@@ -6,7 +6,7 @@ import { PathString } from "../../../utils/pathString";
 import { isWeb } from "../../../utils/platform";
 import { Vector } from "../../dataStruct/Vector";
 import { Camera } from "../../stage/Camera";
-import { StageLoader } from "../../stage/StageLoader";
+import { ProjectFormatUpgrader } from "../../stage/ProjectFormatUpgrader";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../stage/stageManager/StageManager";
 import { CubicCatmullRomSplineEdge } from "../../stage/stageObject/association/CubicCatmullRomSplineEdge";
@@ -80,7 +80,7 @@ export namespace FileLoader {
       });
       return null;
     }
-    return StageLoader.validate(data);
+    return ProjectFormatUpgrader.upgrade(data);
   }
 
   /**

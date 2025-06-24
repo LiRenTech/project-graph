@@ -3,6 +3,7 @@ import { routes } from "@generouted/react-router";
 import { getMatches } from "@tauri-apps/plugin-cli";
 import "driver.js/dist/driver.css";
 import i18next from "i18next";
+import { Provider } from "jotai";
 import { createRoot } from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
@@ -28,18 +29,17 @@ import { Settings } from "./core/service/Settings";
 import { Tourials } from "./core/service/Tourials";
 import { UserState } from "./core/service/UserState";
 import { Camera } from "./core/stage/Camera";
+import { ProjectFormatUpgrader } from "./core/stage/ProjectFormatUpgrader";
 import { Stage } from "./core/stage/Stage";
-import { StageLoader } from "./core/stage/StageLoader";
 import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManager";
 import { StageManager } from "./core/stage/stageManager/StageManager";
 import { EdgeCollisionBoxGetter } from "./core/stage/stageObject/association/EdgeCollisionBoxGetter";
 import "./index.css";
 import "./polyfills/roundRect";
+import { store } from "./state";
 import { exists } from "./utils/fs";
 import { exit, writeStderr } from "./utils/otherApi";
 import { getCurrentWindow, isDesktop, isFrame, isWeb, isWindows } from "./utils/platform";
-import { Provider } from "jotai";
-import { store } from "./state";
 
 /**
  * @private
@@ -126,7 +126,7 @@ async function loadStartFile() {
       return;
     }
     const file = new TextDecoder().decode(Uint8Array.from(atob(fileBase64), (m) => m.codePointAt(0)!));
-    FileLoader.loadStageByData(StageLoader.validate(JSON.parse(file)), "/frame.json");
+    FileLoader.loadStageByData(ProjectFormatUpgrader.upgrade(JSON.parse(file)), "/frame.json");
     Camera.reset();
     return;
   }

@@ -5,16 +5,16 @@ import { PathString } from "../../../../../utils/pathString";
 import { Color } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
+import { ProjectFormatUpgrader } from "../../../../stage/ProjectFormatUpgrader";
 import { Stage } from "../../../../stage/Stage";
-import { StageLoader } from "../../../../stage/StageLoader";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { ImageNode } from "../../../../stage/stageObject/entity/ImageNode";
+import { SvgNode } from "../../../../stage/stageObject/entity/SvgNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { CircleChangeRadiusEffect } from "../../../feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
-import { SvgNode } from "../../../../stage/stageObject/entity/SvgNode";
 
 export const ControllerDragFile = new ControllerClassDragFile();
 
@@ -221,7 +221,7 @@ function dealJsonFileDrop(file: File, mouseWorldLocation: Vector) {
           {
             text: "确定",
             onClick: () => {
-              StageManager.addSerializedData(StageLoader.validate(JSON.parse(dataString)), mouseWorldLocation);
+              StageManager.addSerializedData(ProjectFormatUpgrader.upgrade(JSON.parse(dataString)), mouseWorldLocation);
               Stage.effectMachine.addEffect(new ViewFlashEffect(Color.White));
             },
           },
