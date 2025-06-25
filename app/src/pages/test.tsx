@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import { Dialog } from "../components/dialog";
 import { AIEngine } from "../core/service/dataManageService/aiEngine/AIEngine";
-import { Settings } from "../core/service/Settings";
 import { SubWindow } from "../core/service/SubWindow";
 import { router } from "../main";
 import { DateChecker } from "../utils/dateChecker";

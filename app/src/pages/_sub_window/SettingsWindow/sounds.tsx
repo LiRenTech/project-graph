@@ -14,7 +14,6 @@ import Github from "../../../assets/github.svg?react";
 import Button from "../../../components/Button";
 import { Dialog } from "../../../components/dialog";
 import { SettingField } from "../../../components/Field";
-import { Settings } from "../../../core/service/Settings";
 import { exists } from "../../../utils/fs";
 import { PathString } from "../../../utils/pathString";
 

@@ -9,7 +9,6 @@ import { Dialog } from "../components/dialog";
 import IconButton from "../components/IconButton";
 import { Renderer } from "../core/render/canvas2d/renderer";
 import { StageSaveManager } from "../core/service/dataFileService/StageSaveManager";
-import { Settings } from "../core/service/Settings";
 import { Themes } from "../core/service/Themes";
 import { Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";

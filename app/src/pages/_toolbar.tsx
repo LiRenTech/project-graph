@@ -37,7 +37,6 @@ import { Panel } from "../components/panel";
 import { Popup } from "../components/popup";
 import { Color } from "../core/dataStruct/Color";
 import { Vector } from "../core/dataStruct/Vector";
-import { Settings } from "../core/service/Settings";
 import { TextRiseEffect } from "../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { StageStyleManager } from "../core/service/feedbackService/stageStyle/StageStyleManager";

@@ -1,5 +1,17 @@
 import { URI } from "vscode-uri";
 import { Service, ServiceClass } from "./interfaces/Service";
+import { Renderer } from "./render/canvas2d/renderer";
+import { AutoLayout } from "./service/controlService/autoLayoutEngine/mainTick";
+import { Controller } from "./service/controlService/controller/Controller";
+import { MouseLocation } from "./service/controlService/MouseLocation";
+import { RectangleSelect } from "./service/controlService/rectangleSelectEngine/rectangleSelectEngine";
+import { SecretKeys } from "./service/controlService/secretKeysEngine/secretKeysEngine";
+import { AutoBackup } from "./service/dataFileService/autoSaveBackupEngine/autoBackupEngine";
+import { AutoSave } from "./service/dataFileService/autoSaveBackupEngine/autoSaveEngine";
+import { AutoCompute } from "./service/dataGenerateService/autoComputeEngine/mainTick";
+import { StageExport } from "./service/dataGenerateService/stageExportEngine/stageExportEngine";
+import { Effects } from "./service/feedbackService/effectEngine/effectMachine";
+import { Camera } from "./stage/Camera";
 
 /**
  * “工程”
@@ -49,11 +61,16 @@ export class Project {
    * 立刻加载一个新的服务
    */
   registerService(service: ServiceClass) {
+    if (!service.id) {
+      service.id = crypto.randomUUID();
+      console.warn("服务 %o 未指定 ID，自动生成：%s", service, service.id);
+    }
     const inst = new service(this);
     this.services.set(service.id, inst);
     if (Object.hasOwn(inst, "tick")) {
       this.tickableServices.add(inst);
     }
+    this[service.id as keyof this] = inst as this[keyof this];
   }
   /**
    * 立刻销毁一个服务
@@ -88,4 +105,54 @@ export class Project {
     this.services.clear();
     this.tickableServices.clear();
   }
+
+  /**
+   * 获取某个服务的实例
+   */
+  getService<T extends keyof this & string>(serviceId: T): this[T] {
+    return this.services.get(serviceId) as this[T];
+  }
 }
+
+declare module "./Project" {
+  /*
+   * 不直接在class中定义的原因
+   * 在class中定义的话ts会报错，因为它没有初始值并且没有在构造函数中赋值
+   * 在这里用语法糖定义就能优雅的绕过这个限制
+   */
+  interface Project {
+    renderer: Renderer;
+    camera: Camera;
+    controller: Controller;
+    mouseLocation: MouseLocation;
+    effects: Effects;
+    autoCompute: AutoCompute;
+    autoLayout: AutoLayout;
+    secretKeys: SecretKeys;
+    autoBackup: AutoBackup;
+    autoSave: AutoSave;
+    stageExport: StageExport;
+    rectangleSelect: RectangleSelect;
+  }
+}
+
+/**
+ * 装饰器
+ * @example
+ * @service("renderer")
+ * class Renderer {}
+ */
+export const service =
+  (id: string) =>
+  <
+    T extends {
+      [x: string | number | symbol]: any;
+      id?: string;
+      new (...args: any[]): any;
+    },
+  >(
+    target: T,
+  ): T & { id: string } => {
+    target.id = id;
+    return target as T & { id: string };
+  };

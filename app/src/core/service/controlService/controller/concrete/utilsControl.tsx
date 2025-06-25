@@ -3,10 +3,7 @@ import { Direction } from "../../../../../types/directions";
 import { isDesktop } from "../../../../../utils/platform";
 import { colorInvert } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
-import { Renderer } from "../../../../render/canvas2d/renderer";
 import { InputElement } from "../../../../render/domElement/inputElement";
-import { Camera } from "../../../../stage/Camera";
-import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/StageNodeAdder";
 import { StageObjectSelectCounter } from "../../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
@@ -26,7 +23,6 @@ import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/c
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { SubWindow } from "../../../SubWindow";
-import { Controller } from "../Controller";
 
 /**
  * 这里是专门存放代码相同的地方
@@ -38,7 +34,7 @@ import { Controller } from "../Controller";
  * @param clickedNode
  */
 export function editTextNode(clickedNode: TextNode, selectAll = true) {
-  Controller.isCameraLocked = true;
+  this.project.controller.isCameraLocked = true;
   const rectWorld = clickedNode.collisionBox.getRectangle();
   const rectView = rectWorld.transformWorld2View();
   const fontColor = (
@@ -99,19 +95,19 @@ export function editTextNode(clickedNode: TextNode, selectAll = true) {
       minWidth: `${rectView.width.toFixed(2)}px`,
       minHeight: `${rectView.height.toFixed(2)}px`,
       // height: `${rectView.height.toFixed(2)}px`,
-      padding: Renderer.NODE_PADDING * Camera.currentScale + "px",
-      fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
+      padding: this.project.renderer.NODE_PADDING * this.project.camera.currentScale + "px",
+      fontSize: this.project.renderer.FONT_SIZE * this.project.camera.currentScale + "px",
       backgroundColor: "transparent",
       color: fontColor,
-      outline: `solid ${2 * Camera.currentScale}px ${StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.25).toString()}`,
-      borderRadius: `${Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale}px`,
+      outline: `solid ${2 * this.project.camera.currentScale}px ${StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.25).toString()}`,
+      borderRadius: `${this.project.renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale}px`,
     },
     selectAll,
-    rectWorld.width * Camera.currentScale, // limit width
+    rectWorld.width * this.project.camera.currentScale, // limit width
   ).then(() => {
     SubWindow.close(lastAutoCompleteWindowId);
     clickedNode!.isEditing = false;
-    Controller.isCameraLocked = false;
+    this.project.controller.isCameraLocked = false;
     StageHistoryManager.recordStep();
     // 更新选中内容的数量
     StageObjectSelectCounter.update();
@@ -119,12 +115,12 @@ export function editTextNode(clickedNode: TextNode, selectAll = true) {
 }
 
 export function editEdgeText(clickedLineEdge: Edge, selectAll = true) {
-  Controller.isCameraLocked = true;
+  this.project.controller.isCameraLocked = true;
 
   // clickedLineEdge.isEditing = true;
-  const textAreaLocation = Renderer.transformWorld2View(clickedLineEdge.textRectangle.location).add(
-    Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
-  );
+  const textAreaLocation = this.project.renderer
+    .transformWorld2View(clickedLineEdge.textRectangle.location)
+    .add(Vector.same(this.project.renderer.NODE_PADDING).multiply(this.project.camera.currentScale));
   InputElement.textarea(
     clickedLineEdge.text,
     (text) => {
@@ -139,27 +135,27 @@ export function editEdgeText(clickedLineEdge: Edge, selectAll = true) {
       wordBreak: "break-all",
       left: `${textAreaLocation.x.toFixed(2)}px`,
       top: `${textAreaLocation.y.toFixed(2)}px`,
-      fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
+      fontSize: this.project.renderer.FONT_SIZE * this.project.camera.currentScale + "px",
       backgroundColor: StageStyleManager.currentStyle.Background.toString(),
       color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
       outline: "solid 1px rgba(255,255,255,0.1)",
-      // marginTop: -8 * Camera.currentScale + "px",
+      // marginTop: -8 * this.project.camera.currentScale + "px",
     },
     selectAll,
   ).then(() => {
     // clickedLineEdge!.isEditing = false;
     // 因为这里用的是不透明文本框，所以不需要停止节点上文字的渲染
-    Controller.isCameraLocked = false;
+    this.project.controller.isCameraLocked = false;
     StageHistoryManager.recordStep();
   });
 }
 export function editMultiTargetEdgeText(clickedEdge: MultiTargetUndirectedEdge, selectAll = true) {
-  Controller.isCameraLocked = true;
+  this.project.controller.isCameraLocked = true;
 
   // clickedLineEdge.isEditing = true;
-  const textAreaLocation = Renderer.transformWorld2View(clickedEdge.textRectangle.location).add(
-    Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
-  );
+  const textAreaLocation = this.project.renderer
+    .transformWorld2View(clickedEdge.textRectangle.location)
+    .add(Vector.same(this.project.renderer.NODE_PADDING).multiply(this.project.camera.currentScale));
   InputElement.textarea(
     clickedEdge.text,
     (text) => {
@@ -174,56 +170,56 @@ export function editMultiTargetEdgeText(clickedEdge: MultiTargetUndirectedEdge, 
       wordBreak: "break-all",
       left: `${textAreaLocation.x.toFixed(2)}px`,
       top: `${textAreaLocation.y.toFixed(2)}px`,
-      fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
+      fontSize: this.project.renderer.FONT_SIZE * this.project.camera.currentScale + "px",
       backgroundColor: StageStyleManager.currentStyle.Background.toString(),
       color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
       outline: "solid 1px rgba(255,255,255,0.1)",
-      // marginTop: -8 * Camera.currentScale + "px",
+      // marginTop: -8 * this.project.camera.currentScale + "px",
     },
     selectAll,
   ).then(() => {
     // clickedLineEdge!.isEditing = false;
     // 因为这里用的是不透明文本框，所以不需要停止节点上文字的渲染
-    Controller.isCameraLocked = false;
+    this.project.controller.isCameraLocked = false;
     StageHistoryManager.recordStep();
   });
 }
 
 export function editUrlNodeTitle(clickedUrlNode: UrlNode) {
-  Controller.isCameraLocked = true;
+  this.project.controller.isCameraLocked = true;
   // 编辑节点
   clickedUrlNode.isEditingTitle = true;
   InputElement.input(
-    Renderer.transformWorld2View(clickedUrlNode.rectangle.location).add(
-      Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
-    ),
+    this.project.renderer
+      .transformWorld2View(clickedUrlNode.rectangle.location)
+      .add(Vector.same(this.project.renderer.NODE_PADDING).multiply(this.project.camera.currentScale)),
     clickedUrlNode.title,
     (text) => {
       clickedUrlNode?.rename(text);
     },
     {
-      fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
+      fontSize: this.project.renderer.FONT_SIZE * this.project.camera.currentScale + "px",
       backgroundColor: "transparent",
       color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
       outline: "none",
-      marginTop: -8 * Camera.currentScale + "px",
+      marginTop: -8 * this.project.camera.currentScale + "px",
       width: "100vw",
     },
   ).then(() => {
     clickedUrlNode!.isEditingTitle = false;
-    Controller.isCameraLocked = false;
+    this.project.controller.isCameraLocked = false;
     StageHistoryManager.recordStep();
   });
 }
 
 export function editSectionTitle(section: Section) {
-  Controller.isCameraLocked = true;
+  this.project.controller.isCameraLocked = true;
   // 编辑节点
   section.isEditingTitle = true;
   InputElement.input(
-    Renderer.transformWorld2View(section.rectangle.location).add(
-      Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
-    ),
+    this.project.renderer
+      .transformWorld2View(section.rectangle.location)
+      .add(Vector.same(this.project.renderer.NODE_PADDING).multiply(this.project.camera.currentScale)),
     section.text,
     (text) => {
       section.rename(text);
@@ -232,42 +228,42 @@ export function editSectionTitle(section: Section) {
       position: "fixed",
       resize: "none",
       boxSizing: "border-box",
-      fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
+      fontSize: this.project.renderer.FONT_SIZE * this.project.camera.currentScale + "px",
       backgroundColor: "transparent",
       color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
-      outline: `solid ${2 * Camera.currentScale}px ${StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.25).toString()}`,
-      marginTop: -8 * Camera.currentScale + "px",
+      outline: `solid ${2 * this.project.camera.currentScale}px ${StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.25).toString()}`,
+      marginTop: -8 * this.project.camera.currentScale + "px",
     },
   ).then(() => {
     section.isEditingTitle = false;
-    Controller.isCameraLocked = false;
+    this.project.controller.isCameraLocked = false;
     StageHistoryManager.recordStep();
   });
 }
 
 export function editPortalNodeTitle(clickedPortalNode: PortalNode) {
-  Controller.isCameraLocked = true;
+  this.project.controller.isCameraLocked = true;
   // 编辑节点
   clickedPortalNode.isEditingTitle = true;
   InputElement.input(
-    Renderer.transformWorld2View(clickedPortalNode.rectangle.location).add(
-      Vector.same(Renderer.NODE_PADDING).multiply(Camera.currentScale),
-    ),
+    this.project.renderer
+      .transformWorld2View(clickedPortalNode.rectangle.location)
+      .add(Vector.same(this.project.renderer.NODE_PADDING).multiply(this.project.camera.currentScale)),
     clickedPortalNode.title,
     (text) => {
       clickedPortalNode?.rename(text);
     },
     {
-      fontSize: Renderer.FONT_SIZE * Camera.currentScale + "px",
+      fontSize: this.project.renderer.FONT_SIZE * this.project.camera.currentScale + "px",
       backgroundColor: "transparent",
       color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
       outline: "none",
-      marginTop: -8 * Camera.currentScale + "px",
+      marginTop: -8 * this.project.camera.currentScale + "px",
       width: "100vw",
     },
   ).then(() => {
     clickedPortalNode!.isEditingTitle = false;
-    Controller.isCameraLocked = false;
+    this.project.controller.isCameraLocked = false;
     StageHistoryManager.recordStep();
   });
 }
@@ -300,14 +296,14 @@ export const editTextNodeHookGlobal = {
 export function editNodeDetailsByKeyboard() {
   const nodes = StageManager.getEntities().filter((node) => node.isSelected);
   if (nodes.length === 0) {
-    Stage.effectMachine.addEffect(TextRiseEffect.default("请先选择一个节点，才能编辑详细信息"));
+    this.project.effects.addEffect(TextRiseEffect.default("请先选择一个节点，才能编辑详细信息"));
     return;
   }
   editNodeDetails(nodes[0]);
 }
 
 export function editNodeDetails(clickedNode: Entity) {
-  // Controller.isCameraLocked = true;
+  // this.project.controller.isCameraLocked = true;
   // 编辑节点详细信息的视野移动锁定解除，——用户：快深频
 
   clickedNode.isEditingDetails = true;
@@ -342,7 +338,7 @@ function textNodeInEditModeByUUID(uuid: string) {
     return;
   }
   // 整特效
-  Stage.effectMachine.addEffect(EntityCreateFlashEffect.fromCreateEntity(createNode));
+  this.project.effects.addEffect(EntityCreateFlashEffect.fromCreateEntity(createNode));
   if (isDesktop) {
     editTextNode(createNode);
   }
@@ -355,7 +351,7 @@ function textNodeInEditModeByUUID(uuid: string) {
 export function getClickedStageObject(clickedLocation: Vector) {
   let clickedStageObject: StageObject | null = StageManager.findEntityByLocation(clickedLocation);
   // 补充：在宏观视野下，框应该被很轻松的点击
-  if (clickedStageObject === null && Camera.currentScale < Section.bigTitleCameraScale) {
+  if (clickedStageObject === null && this.project.camera.currentScale < Section.bigTitleCameraScale) {
     const clickedSections = SectionMethods.getSectionsByInnerLocation(clickedLocation);
     if (clickedSections.length > 0) {
       clickedStageObject = clickedSections[0];

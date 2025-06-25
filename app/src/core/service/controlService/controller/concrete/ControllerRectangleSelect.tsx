@@ -1,13 +1,14 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { Renderer } from "../../../../render/canvas2d/renderer";
+import { Project } from "../../../../Project";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
-import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
 import { getClickedStageObject, isClickedResizeRect } from "./utilsControl";
 
-class ControllerRectangleSelectClass extends ControllerClass {
+export let ControllerRectangleSelect: ControllerRectangleSelectClass;
+
+export class ControllerRectangleSelectClass extends ControllerClass {
   private _isUsing: boolean = false;
   /**
    * 框选框
@@ -17,12 +18,18 @@ class ControllerRectangleSelectClass extends ControllerClass {
    */
   public selectingRectangle: Rectangle | null = null;
 
+  constructor(protected readonly project: Project) {
+    super(project);
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    ControllerRectangleSelect = this;
+  }
+
   public get isUsing() {
     return this._isUsing;
   }
 
   public shutDown() {
-    Stage.rectangleSelectEngine.shutDown();
+    this.project.rectangleSelect.shutDown();
     this._isUsing = false;
   }
 
@@ -32,7 +39,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
   }
 
   public mousedown: (event: MouseEvent) => void = (event) => {
-    if (Controller.pressingKeySet.has("alt")) {
+    if (this.project.controller.pressingKeySet.has("alt")) {
       // layer moving mode
       return;
     }
@@ -43,7 +50,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
     if (button !== 0) {
       return;
     }
-    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const pressWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
     if (getClickedStageObject(pressWorldLocation) !== null) {
       // 不是点击在空白处
@@ -55,7 +62,7 @@ class ControllerRectangleSelectClass extends ControllerClass {
 
     this._isUsing = true;
 
-    Stage.rectangleSelectEngine.startSelecting(pressWorldLocation);
+    this.project.rectangleSelect.startSelecting(pressWorldLocation);
 
     const clickedAssociation = StageManager.findAssociationByLocation(pressWorldLocation);
     if (clickedAssociation !== null) {
@@ -73,12 +80,12 @@ class ControllerRectangleSelectClass extends ControllerClass {
       return;
     }
 
-    if (!Controller.isMouseDown[0]) {
+    if (!this.project.controller.isMouseDown[0]) {
       return;
     }
-    const worldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const worldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
-    Stage.rectangleSelectEngine.moveSelecting(worldLocation);
+    this.project.rectangleSelect.moveSelecting(worldLocation);
 
     ControllerRectangleSelect.lastMoveLocation = worldLocation.clone();
   };
@@ -107,11 +114,6 @@ class ControllerRectangleSelectClass extends ControllerClass {
     this._isUsing = false;
 
     // 代替
-    Stage.rectangleSelectEngine.endSelecting();
+    this.project.rectangleSelect.endSelecting();
   };
 }
-
-/**
- * 框选控制器
- */
-export const ControllerRectangleSelect = new ControllerRectangleSelectClass();

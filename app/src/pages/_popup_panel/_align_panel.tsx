@@ -25,8 +25,8 @@ import {
 import { useEffect, useState } from "react";
 import { Dialog } from "../../components/dialog";
 import { AutoLayoutFastTree } from "../../core/service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
-import { Settings } from "../../core/service/Settings";
 import { GraphMethods } from "../../core/stage/stageManager/basicMethods/GraphMethods";
+import { LayoutEntityManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutEntityManager";
 import { LayoutManualAlignManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { LayoutResizeManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutResizeManager";
 import { LayoutToSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToSquareManager";
@@ -38,7 +38,6 @@ import { ConnectableEntity } from "../../core/stage/stageObject/abstract/Connect
 import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
 import { cn } from "../../utils/cn";
 import { ToolbarItem } from "../_toolbar";
-import { LayoutEntityManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutEntityManager";
 
 /**
  * 对齐面板

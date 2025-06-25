@@ -5,7 +5,6 @@ import { useRef, useState } from "react";
 import Button from "../../components/Button";
 import { Dialog } from "../../components/dialog";
 import Input from "../../components/Input";
-import { Settings } from "../../core/service/Settings";
 import { Themes } from "../../core/service/Themes";
 import { UserState } from "../../core/service/UserState";
 

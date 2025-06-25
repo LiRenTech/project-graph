@@ -1,6 +1,7 @@
 import { isMac } from "../../../../utils/platform";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
+import { Project, service } from "../../../Project";
 import { Stage } from "../../../stage/Stage";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageObjectSelectCounter } from "../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
@@ -8,15 +9,15 @@ import { StageManager } from "../../../stage/stageManager/StageManager";
 import { StageObject } from "../../../stage/stageObject/abstract/StageObject";
 import { Edge } from "../../../stage/stageObject/association/Edge";
 import { Section } from "../../../stage/stageObject/entity/Section";
-import { Controller } from "../controller/Controller";
 
 /**
  * 框选引擎
  * 因为不止鼠标会用到框选，mac下的空格+双指移动可能也用到框选功能
  * 所以框选功能单独抽离成一个引擎，提供API被其他地方调用
  */
-export class RectangleSelectEngine {
-  constructor() {}
+@service("rectangleSelect")
+export class RectangleSelect {
+  constructor(private readonly project: Project) {}
   // 开始点
   private selectStartLocation = Vector.getZero();
   // 结束点
@@ -55,8 +56,10 @@ export class RectangleSelectEngine {
     if (isHaveEntitySelected || isHaveEdgeSelected) {
       // A
       if (
-        Controller.pressingKeySet.has("shift") ||
-        (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control"))
+        this.project.controller.pressingKeySet.has("shift") ||
+        (isMac
+          ? this.project.controller.pressingKeySet.has("meta")
+          : this.project.controller.pressingKeySet.has("control"))
       ) {
         // 不取消选择
       } else {
@@ -95,7 +98,7 @@ export class RectangleSelectEngine {
     }
 
     this.updateStageObjectByMove();
-    Controller.isMovingEdge = false;
+    this.project.controller.isMovingEdge = false;
     // 更新选中内容的数量
     StageObjectSelectCounter.update();
   }
@@ -105,17 +108,17 @@ export class RectangleSelectEngine {
    */
   endSelecting() {
     // 将所有选择到的增加到上次选择的节点中
-    Controller.lastSelectedEntityUUID.clear();
+    this.project.controller.lastSelectedEntityUUID.clear();
     for (const node of StageManager.getEntities()) {
       if (node.isSelected) {
-        Controller.lastSelectedEntityUUID.add(node.uuid);
+        this.project.controller.lastSelectedEntityUUID.add(node.uuid);
       }
     }
 
-    Controller.lastSelectedEdgeUUID.clear();
+    this.project.controller.lastSelectedEdgeUUID.clear();
     for (const edge of StageManager.getLineEdges()) {
       if (edge.isSelected) {
-        Controller.lastSelectedEdgeUUID.add(edge.uuid);
+        this.project.controller.lastSelectedEdgeUUID.add(edge.uuid);
       }
     }
     // 更新选中数量
@@ -125,8 +128,10 @@ export class RectangleSelectEngine {
 
   private updateStageObjectByMove() {
     if (
-      Controller.pressingKeySet.has("shift") ||
-      (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control"))
+      this.project.controller.pressingKeySet.has("shift") ||
+      (isMac
+        ? this.project.controller.pressingKeySet.has("meta")
+        : this.project.controller.pressingKeySet.has("control"))
     ) {
       // 移动过程中不先暴力清除
     } else {
@@ -136,14 +141,16 @@ export class RectangleSelectEngine {
       });
     }
 
-    if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
+    if (
+      isMac ? this.project.controller.pressingKeySet.has("meta") : this.project.controller.pressingKeySet.has("control")
+    ) {
       // 交叉选择，没的变有，有的变没
       for (const entity of StageManager.getEntities()) {
         if (entity.isHiddenBySectionCollapse) {
           continue;
         }
         if (this.isSelectWithEntity(entity)) {
-          if (Controller.lastSelectedEntityUUID.has(entity.uuid)) {
+          if (this.project.controller.lastSelectedEntityUUID.has(entity.uuid)) {
             entity.isSelected = false;
           } else {
             entity.isSelected = true;
@@ -152,7 +159,7 @@ export class RectangleSelectEngine {
       }
       for (const association of StageManager.getAssociations()) {
         if (this.isSelectWithEntity(association)) {
-          if (Controller.lastSelectedEdgeUUID.has(association.uuid)) {
+          if (this.project.controller.lastSelectedEdgeUUID.has(association.uuid)) {
             association.isSelected = false;
           } else {
             association.isSelected = true;

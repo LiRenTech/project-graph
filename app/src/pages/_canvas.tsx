@@ -4,7 +4,6 @@ import { Dialog } from "../components/dialog";
 import { Renderer } from "../core/render/canvas2d/renderer";
 import { Controller } from "../core/service/controlService/controller/Controller";
 import { StageStyleManager } from "../core/service/feedbackService/stageStyle/StageStyleManager";
-import { Settings } from "../core/service/Settings";
 import { Canvas } from "../core/stage/Canvas";
 import { Stage } from "../core/stage/Stage";
 import { isClassroomModeAtom, isWindowCollapsingAtom } from "../state";

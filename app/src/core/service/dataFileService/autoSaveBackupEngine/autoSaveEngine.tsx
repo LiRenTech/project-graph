@@ -1,4 +1,5 @@
 import { isWeb } from "../../../../utils/platform";
+import { Project, service } from "../../../Project";
 import { Stage } from "../../../stage/Stage";
 import { StageDumper } from "../../../stage/StageDumper";
 import { StageManager } from "../../../stage/stageManager/StageManager";
@@ -8,7 +9,8 @@ import { StageSaveManager } from "../StageSaveManager";
 /**
  * 自动保存功能
  */
-export class AutoSaveEngine {
+@service("autoSave")
+export class AutoSave {
   private lastAutoSaveTime = performance.now();
   private autoSaveInterval = 10 * 1000; // 10s
   private autoSave = true;
@@ -26,7 +28,7 @@ export class AutoSaveEngine {
     return `isAutoSavePaused: ${this.isAutoSavePaused}, autoSaveInterval: ${this.autoSaveInterval}, autoSave: ${this.autoSave}`;
   }
 
-  init() {
+  constructor(private readonly project: Project) {
     // 注册事件
     Settings.watch("autoSaveInterval", (value) => {
       this.autoSaveInterval = value * 1000; // s to ms
@@ -36,7 +38,7 @@ export class AutoSaveEngine {
     });
   }
 
-  mainTick() {
+  tick() {
     if (isWeb) {
       // 自动保存功能暂时不支持web端
       return;

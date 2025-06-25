@@ -2,8 +2,8 @@
 // import { Entity } from "../../../stageObject/StageEntity";
 import { v4 } from "uuid";
 import { Dialog } from "../../../../components/dialog";
-import { Settings } from "../../../service/Settings";
 import { Entity } from "../../stageObject/abstract/StageEntity";
+import { Edge } from "../../stageObject/association/Edge";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { GraphMethods } from "../basicMethods/GraphMethods";
@@ -12,7 +12,6 @@ import { StageHistoryManager } from "../StageHistoryManager";
 import { StageManager } from "../StageManager";
 import { StageManagerUtils } from "./StageManagerUtils";
 import { StageSectionInOutManager } from "./StageSectionInOutManager";
-import { Edge } from "../../stageObject/association/Edge";
 
 /**
  * 管理所有东西进出StageSection的逻辑

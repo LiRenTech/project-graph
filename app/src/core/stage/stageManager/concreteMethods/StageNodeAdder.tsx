@@ -6,17 +6,16 @@ import { MonoStack } from "../../../dataStruct/MonoStack";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
 import { RectanglePushInEffect } from "../../../service/feedbackService/effectEngine/concrete/RectanglePushInEffect";
-import { Settings } from "../../../service/Settings";
 import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
+import { GraphMethods } from "../basicMethods/GraphMethods";
 import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageHistoryManager } from "../StageHistoryManager";
 import { StageManager } from "../StageManager";
 import { StageManagerUtils } from "./StageManagerUtils";
-import { GraphMethods } from "../basicMethods/GraphMethods";
 
 /**
  * 包含增加节点的方法

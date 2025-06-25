@@ -1,6 +1,6 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { Renderer } from "../../../../render/canvas2d/renderer";
+import { Project } from "../../../../Project";
 import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
@@ -13,14 +13,21 @@ import { EntityJumpMoveEffect } from "../../../feedbackService/effectEngine/conc
 import { EntityShakeEffect } from "../../../feedbackService/effectEngine/concrete/EntityShakeEffect";
 import { RectanglePushInEffect } from "../../../feedbackService/effectEngine/concrete/RectanglePushInEffect";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
-import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+
+export let ControllerLayerMoving: ControllerLayerMovingClass;
 
 /**
  * 创建节点层级移动控制器
  */
 
-class ControllerLayerMovingClass extends ControllerClass {
+export class ControllerLayerMovingClass extends ControllerClass {
+  constructor(protected readonly project: Project) {
+    super(project);
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    ControllerLayerMoving = this;
+  }
+
   public get isEnabled(): boolean {
     if (Stage.leftMouseMode === "draw") {
       return false;
@@ -29,7 +36,7 @@ class ControllerLayerMovingClass extends ControllerClass {
   }
 
   public mousemove: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (!Controller.pressingKeySet.has("alt")) {
+    if (!this.project.controller.pressingKeySet.has("alt")) {
       return;
     }
     if (this.isEnabled === false) {
@@ -38,11 +45,13 @@ class ControllerLayerMovingClass extends ControllerClass {
     if (StageManager.getSelectedEntities().length === 0) {
       return;
     }
-    Controller.mouseLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    this.project.controller.mouseLocation = this.project.renderer.transformView2World(
+      new Vector(event.clientX, event.clientY),
+    );
   };
 
   public mouseup: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (!Controller.pressingKeySet.has("alt")) {
+    if (!this.project.controller.pressingKeySet.has("alt")) {
       return;
     }
     if (this.isEnabled === false) {
@@ -51,7 +60,7 @@ class ControllerLayerMovingClass extends ControllerClass {
     if (StageManager.getSelectedEntities().length === 0) {
       return;
     }
-    const mouseLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const mouseLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
     // 提前检查点击的位置是否有一个TextNode，如果有，则转换成Section
     const entity = StageManager.findEntityByLocation(mouseLocation);
@@ -60,9 +69,9 @@ class ControllerLayerMovingClass extends ControllerClass {
       const selectedEntities = StageManager.getSelectedEntities();
       for (const selectedEntity of selectedEntities) {
         if (selectedEntity instanceof Section && SectionMethods.isEntityInSection(entity, selectedEntity)) {
-          Stage.effectMachine.addEffect(EntityShakeEffect.fromEntity(entity));
-          Stage.effectMachine.addEffect(EntityShakeEffect.fromEntity(selectedEntity));
-          Stage.effectMachine.addEffect(TextRiseEffect.default("禁止将框套入自身内部"));
+          this.project.effects.addEffect(EntityShakeEffect.fromEntity(entity));
+          this.project.effects.addEffect(EntityShakeEffect.fromEntity(selectedEntity));
+          this.project.effects.addEffect(TextRiseEffect.default("禁止将框套入自身内部"));
           return;
         }
       }
@@ -93,8 +102,8 @@ class ControllerLayerMovingClass extends ControllerClass {
       if (selectedEntity instanceof Section) {
         for (const targetSection of targetSections) {
           if (SectionMethods.isEntityInSection(targetSection, selectedEntity)) {
-            Stage.effectMachine.addEffect(EntityShakeEffect.fromEntity(targetSection));
-            Stage.effectMachine.addEffect(TextRiseEffect.default("禁止将框套入自身内部"));
+            this.project.effects.addEffect(EntityShakeEffect.fromEntity(targetSection));
+            this.project.effects.addEffect(TextRiseEffect.default("禁止将框套入自身内部"));
             return;
           }
         }
@@ -113,7 +122,7 @@ class ControllerLayerMovingClass extends ControllerClass {
     const delta = mouseLocation.subtract(centerLocation);
     // 4 特效(要先加特效，否则位置已经被改了)
     for (const entity of selectedEntities) {
-      Stage.effectMachine.addEffect(new EntityJumpMoveEffect(15, entity.collisionBox.getRectangle(), delta));
+      this.project.effects.addEffect(new EntityJumpMoveEffect(15, entity.collisionBox.getRectangle(), delta));
     }
     // 3 移动所有选中的实体 的位置
     StageEntityMoveManager.moveSelectedEntities(delta);
@@ -127,7 +136,7 @@ class ControllerLayerMovingClass extends ControllerClass {
           StageManager.goOutSection([entity], currentFatherSection);
 
           // 特效
-          Stage.effectMachine.addEffect(
+          this.project.effects.addEffect(
             RectanglePushInEffect.sectionGoInGoOut(
               entity.collisionBox.getRectangle(),
               currentFatherSection.collisionBox.getRectangle(),
@@ -146,7 +155,7 @@ class ControllerLayerMovingClass extends ControllerClass {
 
         // 特效
         for (const entity of selectedEntities) {
-          Stage.effectMachine.addEffect(
+          this.project.effects.addEffect(
             RectanglePushInEffect.sectionGoInGoOut(
               entity.collisionBox.getRectangle(),
               section.collisionBox.getRectangle(),
@@ -157,5 +166,3 @@ class ControllerLayerMovingClass extends ControllerClass {
     }
   };
 }
-
-export const ControllerLayerMoving = new ControllerLayerMovingClass();

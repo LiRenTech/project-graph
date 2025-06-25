@@ -9,7 +9,7 @@ import { EdgeRenderer } from "../../render/canvas2d/entityRenderer/edge/EdgeRend
 import { Renderer } from "../../render/canvas2d/renderer";
 import { EntityShrinkEffect } from "../../service/feedbackService/effectEngine/concrete/EntityShrinkEffect";
 import { PenStrokeDeletedEffect } from "../../service/feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
-import { Settings } from "../../service/Settings";
+import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Camera } from "../Camera";
 import { Stage } from "../Stage";
 import { Association } from "../stageObject/abstract/Association";
@@ -19,11 +19,13 @@ import { StageObject } from "../stageObject/abstract/StageObject";
 import { CubicCatmullRomSplineEdge } from "../stageObject/association/CubicCatmullRomSplineEdge";
 import { Edge } from "../stageObject/association/Edge";
 import { LineEdge } from "../stageObject/association/LineEdge";
+import { MultiTargetUndirectedEdge } from "../stageObject/association/MutiTargetUndirectedEdge";
 import { ConnectPoint } from "../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../stageObject/entity/ImageNode";
 import { PenStroke } from "../stageObject/entity/PenStroke";
 import { PortalNode } from "../stageObject/entity/PortalNode";
 import { Section } from "../stageObject/entity/Section";
+import { SvgNode } from "../stageObject/entity/SvgNode";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
 import { GraphMethods } from "./basicMethods/GraphMethods";
@@ -36,9 +38,6 @@ import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManag
 import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
-import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
-import { MultiTargetUndirectedEdge } from "../stageObject/association/MutiTargetUndirectedEdge";
-import { SvgNode } from "../stageObject/entity/SvgNode";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开

@@ -4,7 +4,7 @@ import { Vector } from "../../../dataStruct/Vector";
  * 专门用来处理文件拖拽的类
  */
 export class ControllerClassDragFile {
-  constructor() {}
+  constructor(protected readonly project: Project) {}
   /**
    * 当前是否是拖拽文件入窗口的状态
    */

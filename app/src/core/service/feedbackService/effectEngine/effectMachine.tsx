@@ -1,4 +1,4 @@
-import { Renderable, Tickable } from "../../../interfaces/interfaces";
+import { service } from "../../../Project";
 import { Settings } from "../../Settings";
 import { EffectObject } from "./effectObject";
 
@@ -8,17 +8,14 @@ import { EffectObject } from "./effectObject";
  * 它将产生一个机器对象，并唯一附着在舞台上。
  * 如果有多页签多页面，则每个页面都有自己的唯一特效机器。
  */
-export class EffectMachine implements Tickable, Renderable {
+@service("effects")
+export class Effects {
   private effectsPerferences: Record<string, boolean> = {};
 
-  private constructor() {
+  constructor() {
     Settings.watch("effectsPerferences", (value) => {
       this.effectsPerferences = value;
     });
-  }
-
-  static default(): EffectMachine {
-    return new EffectMachine();
   }
 
   private effects: EffectObject[] = [];
@@ -38,19 +35,12 @@ export class EffectMachine implements Tickable, Renderable {
     this.effects.push(...effects.filter((effect) => this.effectsPerferences[effect.getClassName()] ?? true));
   }
 
-  /**
-   * 此函数放在舞台的逻辑循环中，每帧都会被调用。
-   */
-  public logicTick() {
+  tick() {
     for (const effect of this.effects) {
       effect.tick();
     }
     // 清理过时特效
     this.effects = this.effects.filter((effect) => !effect.timeProgress.isFull);
-  }
-
-  /** 渲染所有特效 */
-  public renderTick() {
     for (const effect of this.effects) {
       effect.render();
     }

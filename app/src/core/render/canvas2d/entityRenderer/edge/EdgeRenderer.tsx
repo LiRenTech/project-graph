@@ -1,7 +1,6 @@
 import { Color } from "../../../../dataStruct/Color";
 
 import { Vector } from "../../../../dataStruct/Vector";
-import { Settings } from "../../../../service/Settings";
 import { Camera } from "../../../../stage/Camera";
 import { CubicCatmullRomSplineEdge } from "../../../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
@@ -10,7 +9,10 @@ import { Section } from "../../../../stage/stageObject/entity/Section";
 import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
+import { Edge } from "../../../../stage/stageObject/association/Edge";
+import { CurveRenderer } from "../../basicRenderer/curveRenderer";
 import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
+import { TextRenderer } from "../../basicRenderer/textRenderer";
 import { Renderer } from "../../renderer";
 import { WorldRenderUtils } from "../../utilsRenderer/WorldRenderUtils";
 import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
@@ -18,9 +20,6 @@ import { StraightEdgeRenderer } from "./concrete/StraightEdgeRenderer";
 import { SymmetryCurveEdgeRenderer } from "./concrete/SymmetryCurveEdgeRenderer";
 import { VerticalPolyEdgeRenderer } from "./concrete/VerticalPolyEdgeRenderer";
 import { EdgeRendererClass } from "./EdgeRendererClass";
-import { CurveRenderer } from "../../basicRenderer/curveRenderer";
-import { Edge } from "../../../../stage/stageObject/association/Edge";
-import { TextRenderer } from "../../basicRenderer/textRenderer";
 
 /**
  * 边的总渲染器单例

@@ -2,7 +2,6 @@ import { Serialized } from "../../../types/node";
 import { FileLoader } from "../../service/dataFileService/fileLoader";
 import { StageSaveManager } from "../../service/dataFileService/StageSaveManager";
 import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
-import { Settings } from "../../service/Settings";
 import { Stage } from "../Stage";
 import { StageDumper } from "../StageDumper";
 import { StageManager } from "./StageManager";

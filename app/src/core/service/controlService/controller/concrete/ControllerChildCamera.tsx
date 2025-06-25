@@ -1,10 +1,9 @@
-import { ControllerClass } from "../ControllerClass";
 import { Vector } from "../../../../dataStruct/Vector";
-import { Renderer } from "../../../../render/canvas2d/renderer";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
+import { ControllerClass } from "../ControllerClass";
 
-class ControllerChildCamera extends ControllerClass {
+export class ControllerChildCamera extends ControllerClass {
   private targetPortalNode: PortalNode | null = null;
   // private isMoving: boolean = false;
   // 开始按下的世界坐标
@@ -17,7 +16,7 @@ class ControllerChildCamera extends ControllerClass {
     if (event.button === 1) {
       // 中键按下
       const location = new Vector(event.clientX, event.clientY);
-      const pressWorldLocation = Renderer.transformView2World(location);
+      const pressWorldLocation = this.project.renderer.transformView2World(location);
       for (const entity of StageManager.getEntities()) {
         if (entity instanceof PortalNode) {
           if (entity.collisionBox.isContainsPoint(pressWorldLocation)) {
@@ -40,7 +39,7 @@ class ControllerChildCamera extends ControllerClass {
     // }
     if (this.targetPortalNode) {
       const location = new Vector(event.clientX, event.clientY);
-      const moveWorldLocation = Renderer.transformView2World(location);
+      const moveWorldLocation = this.project.renderer.transformView2World(location);
       const delta = moveWorldLocation.subtract(this.currentWorldLocation);
       this.targetPortalNode.moveTargetLocation(delta.multiply(-1)); // 此处必须是反着的,否则很奇怪
       // this.isMoving = true;
@@ -61,7 +60,7 @@ class ControllerChildCamera extends ControllerClass {
     }
     if (event.button === 1) {
       const location = new Vector(event.clientX, event.clientY);
-      const pressWorldLocation = Renderer.transformView2World(location);
+      const pressWorldLocation = this.project.renderer.transformView2World(location);
       for (const entity of StageManager.getEntities()) {
         if (entity instanceof PortalNode) {
           if (entity.collisionBox.isContainsPoint(pressWorldLocation)) {
@@ -79,7 +78,7 @@ class ControllerChildCamera extends ControllerClass {
       return;
     }
     const location = new Vector(event.clientX, event.clientY);
-    const pressWorldLocation = Renderer.transformView2World(location);
+    const pressWorldLocation = this.project.renderer.transformView2World(location);
     const portalNodes: PortalNode[] = StageManager.getEntities().filter(
       (entity) => entity instanceof PortalNode && entity.collisionBox.isContainsPoint(pressWorldLocation),
     ) as PortalNode[];
@@ -108,5 +107,3 @@ class ControllerChildCamera extends ControllerClass {
     }
   };
 }
-
-export const controllerChildCamera = new ControllerChildCamera();

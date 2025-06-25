@@ -5,7 +5,6 @@ import { Renderer } from "../../../render/canvas2d/renderer";
 import { Camera } from "../../../stage/Camera";
 import { Canvas } from "../../../stage/Canvas";
 import { StageManager } from "../../../stage/stageManager/StageManager";
-import { Settings } from "../../Settings";
 
 export namespace StageExportPng {
   /**

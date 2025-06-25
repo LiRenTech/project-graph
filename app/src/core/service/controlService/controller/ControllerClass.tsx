@@ -1,4 +1,5 @@
 import { Vector } from "../../../dataStruct/Vector";
+import { Project } from "../../../Project";
 import { Canvas } from "../../../stage/Canvas";
 import { Stage } from "../../../stage/Stage";
 import { ViewOutlineFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
@@ -9,7 +10,17 @@ import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleMa
  * 每一个对象都是一个具体的功能
  */
 export class ControllerClass {
-  constructor() {}
+  constructor(protected readonly project: Project) {
+    window.addEventListener("keydown", this.keydown);
+    window.addEventListener("keyup", this.keyup);
+    Canvas.element.addEventListener("pointerdown", this.mousedown);
+    window.addEventListener("pointerup", this._mouseup);
+    window.addEventListener("pointermove", this.mousemove);
+    Canvas.element.addEventListener("wheel", this.mousewheel);
+    Canvas.element.addEventListener("touchstart", this._touchstart);
+    window.addEventListener("touchmove", this._touchmove);
+    window.addEventListener("touchend", this._touchend);
+  }
 
   public lastMoveLocation: Vector = Vector.getZero();
   private lastClickTime: number = 0;
@@ -26,25 +37,6 @@ export class ControllerClass {
   public touchmove: (event: TouchEvent) => void = () => {};
   public touchend: (event: TouchEvent) => void = () => {};
 
-  /**
-   * 这个函数将在总控制器初始化是统一调用。
-   * 调用之前，确保实例控制器的事件函数已经被赋值
-   * 如果没有赋值被自动过滤，
-   * 一旦绑定，后期就一定不要再换绑！
-   */
-  public init() {
-    window.addEventListener("keydown", this.keydown);
-    window.addEventListener("keyup", this.keyup);
-    Canvas.element.addEventListener("pointerdown", this.mousedown);
-    window.addEventListener("pointerup", this._mouseup);
-    window.addEventListener("pointermove", this.mousemove);
-    Canvas.element.addEventListener("wheel", this.mousewheel);
-    Canvas.element.addEventListener("touchstart", this._touchstart);
-    window.addEventListener("touchmove", this._touchmove);
-    window.addEventListener("touchend", this._touchend);
-
-    // 有待优雅
-  }
   public destroy() {
     window.removeEventListener("keydown", this.keydown);
     window.removeEventListener("keyup", this.keyup);
@@ -158,6 +150,6 @@ export class ControllerClass {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public mouseMoveOutWindowForcedShutdown(_outsideLocation: Vector) {
-    Stage.effectMachine.addEffect(ViewOutlineFlashEffect.short(StageStyleManager.currentStyle.effects.warningShadow));
+    this.project.effects.addEffect(ViewOutlineFlashEffect.short(StageStyleManager.currentStyle.effects.warningShadow));
   }
 }

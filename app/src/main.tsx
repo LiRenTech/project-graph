@@ -25,7 +25,6 @@ import { TextRiseEffect } from "./core/service/feedbackService/effectEngine/conc
 import { SoundService } from "./core/service/feedbackService/SoundService";
 import { StageStyleManager } from "./core/service/feedbackService/stageStyle/StageStyleManager";
 import { LastLaunch } from "./core/service/LastLaunch";
-import { Settings } from "./core/service/Settings";
 import { Tourials } from "./core/service/Tourials";
 import { UserState } from "./core/service/UserState";
 import { Camera } from "./core/stage/Camera";

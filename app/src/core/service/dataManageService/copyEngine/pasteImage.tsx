@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { Dialog } from "../../../../components/dialog";
 import { writeFileBase64 } from "../../../../utils/fs";
 import { PathString } from "../../../../utils/pathString";
@@ -5,8 +6,6 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Stage } from "../../../stage/Stage";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
-import { v4 as uuidv4 } from "uuid";
-import { Settings } from "../../Settings";
 
 /**
  * 把粘贴板中的PNG图片读取并写入到磁盘和舞台上

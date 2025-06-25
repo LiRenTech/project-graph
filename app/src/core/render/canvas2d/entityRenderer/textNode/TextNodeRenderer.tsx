@@ -3,7 +3,6 @@ import { Color, colorInvert } from "../../../../dataStruct/Color";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { AutoComputeUtils } from "../../../../service/dataGenerateService/autoComputeEngine/AutoComputeUtils";
-import { Settings } from "../../../../service/Settings";
 import {
   getLogicNodeRenderName,
   LogicNodeNameEnum,

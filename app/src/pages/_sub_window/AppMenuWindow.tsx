@@ -63,7 +63,6 @@ import { ComplexityDetector } from "../../core/service/dataManageService/Complex
 import { CopyEngine } from "../../core/service/dataManageService/copyEngine/copyEngine";
 import { SoundService } from "../../core/service/feedbackService/SoundService";
 import { HelpService } from "../../core/service/helpService/helpService";
-import { Settings } from "../../core/service/Settings";
 import { SubWindow } from "../../core/service/SubWindow";
 import { Camera } from "../../core/stage/Camera";
 import { Stage } from "../../core/stage/Stage";

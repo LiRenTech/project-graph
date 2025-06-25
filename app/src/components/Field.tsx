@@ -1,7 +1,6 @@
 import { ChevronRight, RotateCw } from "lucide-react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Settings } from "../core/service/Settings";
 import { cn } from "../utils/cn";
 import Button from "./Button";
 import FileChooser from "./FileChooser";

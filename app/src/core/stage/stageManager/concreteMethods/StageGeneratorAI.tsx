@@ -5,7 +5,6 @@ import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
 import { Vector } from "../../../dataStruct/Vector";
 import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { FeatureFlags } from "../../../service/FeatureFlags";
-import { Settings } from "../../../service/Settings";
 import { Stage } from "../../Stage";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { StageManager } from "../StageManager";

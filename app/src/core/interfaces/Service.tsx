@@ -12,6 +12,6 @@ export interface Service {
  * @see {@link Service}
  */
 export interface ServiceClass {
-  readonly id: string;
+  id?: string;
   new (project: Project): Service;
 }

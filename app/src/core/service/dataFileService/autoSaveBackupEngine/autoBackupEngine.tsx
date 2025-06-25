@@ -1,6 +1,7 @@
 import { deleteFile, readFolder } from "../../../../utils/fs";
 import { PathString } from "../../../../utils/pathString";
 import { isWeb } from "../../../../utils/platform";
+import { service } from "../../../Project";
 import { Stage } from "../../../stage/Stage";
 import { StageDumper } from "../../../stage/StageDumper";
 import { Settings } from "../../Settings";
@@ -9,14 +10,15 @@ import { StageSaveManager } from "../StageSaveManager";
 /**
  * 自动备份引擎
  */
-export class AutoBackupEngine {
+@service("autoBackup")
+export class AutoBackup {
   autoBackup: boolean = false;
   autoBackupInterval: number = 30 * 60 * 1000; // 30分钟
   autoBackupDraftPath: string = "";
   private lastAutoBackupTime: number = performance.now();
   autoBackupLimitCount: number = 10;
 
-  init() {
+  constructor() {
     Settings.watch("autoBackup", (value) => {
       this.autoBackup = value;
     });
@@ -31,7 +33,7 @@ export class AutoBackupEngine {
     });
   }
 
-  public mainTick() {
+  public tick() {
     // 如果当前是web版本，则禁止自动备份，因为会出现频繁下载文件。
     if (isWeb) {
       return;
@@ -69,7 +71,7 @@ export class AutoBackupEngine {
    */
   public async limitBackupFilesAndDeleteOld(maxCount: number) {
     //
-    const backupFolderPath = AutoBackupEngine.getBackupFolderPath();
+    const backupFolderPath = AutoBackup.getBackupFolderPath();
     const backupFiles = (await readFolder(backupFolderPath))
       .map((value) => backupFolderPath + PathString.getSep() + value)
       .filter((value) => value.endsWith(".backup.json"))

@@ -1,26 +1,9 @@
-import { autoLayoutMainTick } from "../service/controlService/autoLayoutEngine/mainTick";
-import { ControllerCamera } from "../service/controlService/controller/concrete/ControllerCamera";
-import { ControllerCutting } from "../service/controlService/controller/concrete/ControllerCutting";
-import { ControllerDragFile } from "../service/controlService/controller/concrete/ControllerDragFile";
-import { ControllerEntityClickSelectAndMove } from "../service/controlService/controller/concrete/ControllerEntityClickSelectAndMove";
-import { ControllerNodeConnection } from "../service/controlService/controller/concrete/ControllerNodeConnection";
-import { controllerPenStrokeControl } from "../service/controlService/controller/concrete/ControllerPenStrokeControl";
-import { ControllerDrawing } from "../service/controlService/controller/concrete/ControllerPenStrokeDrawing";
-import { ControllerRectangleSelect } from "../service/controlService/controller/concrete/ControllerRectangleSelect";
-import { Controller } from "../service/controlService/controller/Controller";
+import { ControllerDragFileClass } from "../service/controlService/controller/concrete/ControllerDragFile";
 import { KeyboardOnlyEngine } from "../service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
-import { RectangleSelectEngine } from "../service/controlService/rectangleSelectEngine/rectangleSelectEngine";
-import { SecretKeysEngine } from "../service/controlService/secretKeysEngine/secretKeysEngine";
 import { StageMouseInteractionCore } from "../service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
-import { AutoBackupEngine } from "../service/dataFileService/autoSaveBackupEngine/autoBackupEngine";
-import { AutoSaveEngine } from "../service/dataFileService/autoSaveBackupEngine/autoSaveEngine";
 import { StageFilePathManager } from "../service/dataFileService/stageFilePathManager";
-import { autoComputeEngineTick } from "../service/dataGenerateService/autoComputeEngine/mainTick";
-import { StageExportEngine } from "../service/dataGenerateService/stageExportEngine/stageExportEngine";
 import { ContentSearchEngine } from "../service/dataManageService/contentSearchEngine/contentSearchEngine";
-import { EffectMachine } from "../service/feedbackService/effectEngine/effectMachine";
 import { Settings } from "../service/Settings";
-import { Camera } from "./Camera";
 
 export enum LeftMouseModeEnum {
   selectAndMove = "selectAndMove",
@@ -55,47 +38,6 @@ export namespace Stage {
    * 路径管理器
    */
   export const path = new StageFilePathManager();
-  /**
-   * 特效机
-   */
-  export const effectMachine = EffectMachine.default();
-
-  /**
-   * 鼠标切割控制器
-   */
-  export const cuttingMachine = ControllerCutting;
-
-  /**
-   * 鼠标框选控制器
-   */
-  export const rectangleSelectMouseMachine = ControllerRectangleSelect;
-  /**
-   * 框选内核
-   */
-  export const rectangleSelectEngine = new RectangleSelectEngine();
-  /**
-   * 实体拖拽移动控制器
-   */
-  export const entityMoveMachine = ControllerEntityClickSelectAndMove;
-
-  /**
-   * 相机控制器
-   */
-  export const cameraControllerMachine = ControllerCamera;
-
-  /**
-   * 涂鸦控制器
-   */
-  export const drawingMachine = ControllerDrawing;
-
-  /**
-   * 涂鸦设置控制器
-   */
-  export const drawingControlMachine = controllerPenStrokeControl;
-  /**
-   * 鼠标连线控制器
-   */
-  export const connectMachine = ControllerNodeConnection;
 
   /**
    * 鼠标交互管理器
@@ -111,20 +53,7 @@ export namespace Stage {
   /**
    * 拖拽文件进入窗口控制器
    */
-  export const dragFileMachine = ControllerDragFile;
-
-  /**
-   * 自动保机
-   */
-  export const autoSaveEngine = new AutoSaveEngine();
-  /**
-   * 自动备份功能
-   */
-  export const autoBackupEngine = new AutoBackupEngine();
-
-  export const exportEngine = new StageExportEngine();
-
-  export const secretKeyEngine = new SecretKeysEngine();
+  export const dragFileMachine = ControllerDragFileClass;
 
   /** 当前窗口是否处于激活状态 */
   // eslint-disable-next-line prefer-const
@@ -134,27 +63,8 @@ export namespace Stage {
    * 该函数在上游被频繁调用
    */
   export function logicTick() {
-    // 特效逻辑
-    effectMachine.logicTick();
-
-    // 计算引擎
-    autoComputeEngineTick(tickNumber);
-    // 自动布局
-    autoLayoutMainTick();
-    // 自动保存功能
-    autoSaveEngine.mainTick();
-    // 自动备份功能
-    autoBackupEngine.mainTick();
-
     KeyboardOnlyEngine.logicTick();
-
-    // 防止截屏无限滚屏
-    if (Controller.pressingKeySet.size === 0) {
-      Camera.clearMoveCommander(); // 直接动力切断
-    }
-    tickNumber++;
   }
-  let tickNumber = 0;
 
   /** 当前鼠标右键拖拽空白部分的操作 */
   export let mouseRightDragBackground: Settings.Settings["mouseRightDragBackground"] = "cut";
@@ -173,8 +83,6 @@ export namespace Stage {
   export let macMouseWheelIsSmoothed: Settings.Settings["macMouseWheelIsSmoothed"] = false;
 
   export function init() {
-    autoSaveEngine.init();
-    autoBackupEngine.init();
     Settings.watch("mouseRightDragBackground", (value) => {
       mouseRightDragBackground = value;
     });

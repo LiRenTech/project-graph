@@ -2,7 +2,6 @@ import { Color } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
-import { Settings } from "../../../service/Settings";
 import { Camera } from "../../../stage/Camera";
 import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";

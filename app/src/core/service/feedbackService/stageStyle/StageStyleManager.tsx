@@ -1,4 +1,3 @@
-import { Settings } from "../../Settings";
 import { StageStyle } from "./stageStyle";
 
 /**

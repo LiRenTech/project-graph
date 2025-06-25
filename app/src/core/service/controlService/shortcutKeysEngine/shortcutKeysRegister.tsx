@@ -26,7 +26,6 @@ import { RectangleSlideEffect } from "../../feedbackService/effectEngine/concret
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewOutlineFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
 import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
-import { Settings } from "../../Settings";
 import {
   addTextNodeByLocation,
   addTextNodeFromCurrentSelectedNode,

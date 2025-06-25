@@ -4,7 +4,6 @@
 
 import { readFile } from "../../../utils/fs";
 import { StringDict } from "../../dataStruct/StringDict";
-import { Settings } from "../Settings";
 
 /**
  * 播放音效的服务

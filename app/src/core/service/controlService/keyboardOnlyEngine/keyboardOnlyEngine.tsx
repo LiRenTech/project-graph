@@ -5,7 +5,6 @@ import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { EntityDashTipEffect } from "../../feedbackService/effectEngine/concrete/EntityDashTipEffect";
 import { EntityShakeEffect } from "../../feedbackService/effectEngine/concrete/EntityShakeEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
-import { Settings } from "../../Settings";
 import { editTextNode } from "../controller/concrete/utilsControl";
 import { KeyboardOnlyGraphEngine } from "./keyboardOnlyGraphEngine";
 

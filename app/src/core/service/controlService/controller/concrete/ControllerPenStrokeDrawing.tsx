@@ -4,9 +4,6 @@ import { isMac } from "../../../../../utils/platform";
 import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
-import { DrawingControllerRenderer } from "../../../../render/canvas2d/controllerRenderer/drawingRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { PenStroke, PenStrokeSegment } from "../../../../stage/stageObject/entity/PenStroke";
@@ -15,12 +12,14 @@ import { CircleChangeRadiusEffect } from "../../../feedbackService/effectEngine/
 import { CircleFlameEffect } from "../../../feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { Settings } from "../../../Settings";
-import { Controller } from "../Controller";
 import { ControllerClass } from "../ControllerClass";
+
+export let ControllerDrawing: ControllerDrawingClass;
+
 /**
  * 涂鸦功能
  */
-class ControllerDrawingClass extends ControllerClass {
+export class ControllerDrawingClass extends ControllerClass {
   private _isUsing: boolean = false;
 
   /** 在移动的过程中，记录这一笔画的笔迹 */
@@ -44,8 +43,8 @@ class ControllerDrawingClass extends ControllerClass {
   /**
    * 初始化函数
    */
-  public init(): void {
-    super.init();
+  constructor(protected readonly project: Project) {
+    super(project);
     Settings.watch("autoFillPenStrokeColorEnable", (value) => {
       this.autoFillPenStrokeColorEnable = value;
     });
@@ -68,8 +67,8 @@ class ControllerDrawingClass extends ControllerClass {
     }
     this._isUsing = true;
 
-    const pressWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    if (Controller.pressingKeySet.has("shift")) {
+    const pressWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    if (this.project.controller.pressingKeySet.has("shift")) {
       this.isDrawingLine = true;
     }
     this.pressStartWordLocation = pressWorldLocation.clone();
@@ -77,19 +76,19 @@ class ControllerDrawingClass extends ControllerClass {
 
     this.lastMoveLocation = pressWorldLocation.clone();
 
-    Controller.setCursorNameHook(CursorNameEnum.Crosshair);
+    this.project.controller.setCursorNameHook(CursorNameEnum.Crosshair);
   };
 
   public mousemove = (event: PointerEvent) => {
     if (!this._isUsing) return;
-    if (!Controller.isMouseDown[0] && Stage.leftMouseMode === LeftMouseModeEnum.draw) {
+    if (!this.project.controller.isMouseDown[0] && Stage.leftMouseMode === LeftMouseModeEnum.draw) {
       return;
     }
     const events = event.getCoalescedEvents();
     for (const e of events) {
       const isPen = e.pointerType === "pen";
-      const worldLocation = Renderer.transformView2World(new Vector(e.clientX, e.clientY));
-      const limitDistance = 8 / Camera.currentScale;
+      const worldLocation = this.project.renderer.transformView2World(new Vector(e.clientX, e.clientY));
+      const limitDistance = 8 / this.project.camera.currentScale;
       // 检测：如果移动距离不超过一个距离，则不记录
       if (worldLocation.distance(this.lastMoveLocation) < limitDistance) {
         return;
@@ -109,7 +108,7 @@ class ControllerDrawingClass extends ControllerClass {
     if (!(event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.draw)) {
       return;
     }
-    const releaseWorldLocation = Renderer.transformView2World(new Vector(event.clientX, event.clientY));
+    const releaseWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
     this.recordLocation.push(releaseWorldLocation.clone());
     if (releaseWorldLocation.subtract(this.pressStartWordLocation).magnitude() < 2) {
@@ -118,19 +117,19 @@ class ControllerDrawingClass extends ControllerClass {
       if (entity) {
         if (entity instanceof TextNode) {
           const currentPenColor = this.getCurrentStrokeColor().clone();
-          if (Controller.pressingKeySet.has("shift")) {
+          if (this.project.controller.pressingKeySet.has("shift")) {
             // 颜色叠加
             entity.color = mixColors(entity.color, currentPenColor, 0.1);
           } else {
             entity.color = currentPenColor.clone();
           }
-          Stage.effectMachine.addEffect(EntityCreateFlashEffect.fromCreateEntity(entity));
+          this.project.effects.addEffect(EntityCreateFlashEffect.fromCreateEntity(entity));
         }
       }
       // 如果没有，则画一个圈。
       // 增加特效
       // 只是点了一下，应该有特殊效果
-      Stage.effectMachine.addEffect(
+      this.project.effects.addEffect(
         new CircleFlameEffect(
           new ProgressNumber(0, 20),
           releaseWorldLocation.clone(),
@@ -138,7 +137,7 @@ class ControllerDrawingClass extends ControllerClass {
           this.getCurrentStrokeColor().clone(),
         ),
       );
-      Stage.effectMachine.addEffect(
+      this.project.effects.addEffect(
         new CircleChangeRadiusEffect(
           new ProgressNumber(0, 20),
           releaseWorldLocation.clone(),
@@ -150,12 +149,16 @@ class ControllerDrawingClass extends ControllerClass {
     } else {
       // 正常的划过一段距离
       // 生成笔触
-      if (Controller.pressingKeySet.has("shift")) {
+      if (this.project.controller.pressingKeySet.has("shift")) {
         // 直线
         const startLocation = this.pressStartWordLocation;
         const endLocation = releaseWorldLocation.clone();
 
-        if (isMac ? Controller.pressingKeySet.has("meta") : Controller.pressingKeySet.has("control")) {
+        if (
+          isMac
+            ? this.project.controller.pressingKeySet.has("meta")
+            : this.project.controller.pressingKeySet.has("control")
+        ) {
           // 垂直于坐标轴的直线
           const dy = Math.abs(endLocation.y - startLocation.y);
           const dx = Math.abs(endLocation.x - startLocation.x);
@@ -215,13 +218,13 @@ class ControllerDrawingClass extends ControllerClass {
     this.recordLocation = [];
     this.currentStroke = [];
 
-    Controller.setCursorNameHook(CursorNameEnum.Crosshair);
+    this.project.controller.setCursorNameHook(CursorNameEnum.Crosshair);
     this._isUsing = false;
     this.isDrawingLine = false;
   };
 
   public mousewheel: (event: WheelEvent) => void = (event: WheelEvent) => {
-    if (!Controller.pressingKeySet.has("shift")) {
+    if (!this.project.controller.pressingKeySet.has("shift")) {
       return;
     }
     if (Stage.leftMouseMode !== LeftMouseModeEnum.draw) {
@@ -229,9 +232,9 @@ class ControllerDrawingClass extends ControllerClass {
       return;
     }
     if (event.deltaY > 0) {
-      DrawingControllerRenderer.rotateUpAngle();
+      DrawingControllerthis.project.renderer.rotateUpAngle();
     } else {
-      DrawingControllerRenderer.rotateDownAngle();
+      DrawingControllerthis.project.renderer.rotateDownAngle();
     }
   };
 
@@ -251,5 +254,3 @@ class ControllerDrawingClass extends ControllerClass {
     }
   }
 }
-
-export const ControllerDrawing = new ControllerDrawingClass();
