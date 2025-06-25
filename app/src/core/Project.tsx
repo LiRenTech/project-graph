@@ -1,13 +1,25 @@
 import { URI } from "vscode-uri";
+import { Service, ServiceClass } from "./interfaces/Service";
 
 /**
- * “工程”，只负责管理数据，不负责渲染。
- * 在2.0.0以前，一个应用实例对应一个工程，但在2.0.0之后，一个应用实例可以打开多个工程，通过标签页的形式切换。
- * 2.0.0以前的所有“全局单例”（namespace）在现在都被包含在一个“工程”实例中。
- * 在最开始的时候就有把所有namespace放进一个叫做“核心”（Core）的namespace中的想法，但后来想到要做多标签页，遂废弃。
- * 最初的想法中，这个概念叫做“文档”（Document），但是和原生的Document类冲突了，遂改为GraphDocument，但是觉得有点太长了，遂改为Project。
+ * “工程”
+ * 一个标签页对应一个工程，一个工程只能对应一个URI
+ * @example
+ * class ServiceImpl implements Service {
+ *   static id = "impl";
+ *   static dependencies: string[] = [];
+ *   constructor(private readonly project: Project) {}
+ *   tick() {}
+ *   dispose() {}
+ * }
+ * const p = Project.newDraft();
+ * p.registerService(ServiceImpl);
  */
 export class Project {
+  private readonly services = new Map<string, Service>();
+  private readonly tickableServices = new Set<Service>();
+  private rafHandle = -1;
+
   private constructor(
     /**
      * 工程文件的URI
@@ -18,13 +30,62 @@ export class Project {
      */
     public readonly uri: URI,
   ) {
-    if (uri.scheme === "draft") {
-      //
-    }
+    const animationFrame = () => {
+      this.tick();
+      this.rafHandle = requestAnimationFrame(animationFrame);
+    };
+    animationFrame();
   }
-
+  /**
+   * 创建一个草稿工程
+   * URI为draft:UUID
+   */
   static newDraft(): Project {
     const uri = URI.parse("draft:" + crypto.randomUUID());
     return new Project(uri);
+  }
+
+  /**
+   * 立刻加载一个新的服务
+   */
+  registerService(service: ServiceClass) {
+    const inst = new service(this);
+    this.services.set(service.id, inst);
+    if (Object.hasOwn(inst, "tick")) {
+      this.tickableServices.add(inst);
+    }
+  }
+  /**
+   * 立刻销毁一个服务
+   */
+  disposeService(serviceId: string) {
+    const service = this.services.get(serviceId);
+    if (service) {
+      service.dispose?.();
+      this.services.delete(serviceId);
+      this.tickableServices.delete(service);
+    }
+  }
+
+  private tick() {
+    for (const service of this.tickableServices) {
+      service.tick?.();
+    }
+  }
+  /**
+   * 用户关闭标签页时，销毁工程
+   */
+  async dispose() {
+    cancelAnimationFrame(this.rafHandle);
+    const promises: Promise<void>[] = [];
+    for (const service of this.services.values()) {
+      const result = service.dispose?.();
+      if (result instanceof Promise) {
+        promises.push(result);
+      }
+    }
+    await Promise.allSettled(promises);
+    this.services.clear();
+    this.tickableServices.clear();
   }
 }
