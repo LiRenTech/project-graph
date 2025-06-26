@@ -20,7 +20,6 @@ export class LineCuttingEffect extends Effect {
     return "LineCuttingEffect";
   }
   constructor(
-    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     public fromLocation: Vector,
     public toLocation: Vector,
@@ -31,7 +30,7 @@ export class LineCuttingEffect extends Effect {
     super(timeProgress);
   }
 
-  render() {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
@@ -40,7 +39,7 @@ export class LineCuttingEffect extends Effect {
     );
 
     const toLocation = this.toLocation;
-    this.project.worldRenderUtils.renderCuttingFlash(
+    project.worldRenderUtils.renderCuttingFlash(
       fromLocation,
       toLocation,
       this.lineWidth * (1 - this.timeProgress.rate),

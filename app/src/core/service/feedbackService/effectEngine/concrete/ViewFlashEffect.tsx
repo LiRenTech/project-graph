@@ -14,25 +14,24 @@ export class ViewFlashEffect extends Effect {
     return "ViewFlashEffect";
   }
   constructor(
-    private readonly project: Project,
     public color: Color,
     public override timeProgress: ProgressNumber = new ProgressNumber(0, 100),
   ) {
     super(timeProgress);
   }
 
-  static SaveFile(project: Project) {
-    return new ViewFlashEffect(project, StageStyleManager.currentStyle.effects.windowFlash, new ProgressNumber(0, 10));
+  static SaveFile() {
+    return new ViewFlashEffect(StageStyleManager.currentStyle.effects.windowFlash, new ProgressNumber(0, 10));
   }
-  static Portal(project: Project) {
-    return new ViewFlashEffect(project, new Color(127, 75, 124), new ProgressNumber(0, 10));
+  static Portal() {
+    return new ViewFlashEffect(new Color(127, 75, 124), new ProgressNumber(0, 10));
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
-    this.project.shapeRenderer.renderRect(
+    project.shapeRenderer.renderRect(
       new Rectangle(new Vector(-10000, -10000), new Vector(20000, 20000)),
       mixColors(this.color, new Color(0, 0, 0, 0), this.timeProgress.rate),
       Color.Transparent,

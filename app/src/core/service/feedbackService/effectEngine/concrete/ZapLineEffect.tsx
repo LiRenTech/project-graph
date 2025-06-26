@@ -16,7 +16,6 @@ export class ZapLineEffect extends Effect {
     return "ZapLineEffect";
   }
   constructor(
-    private readonly project: Project,
     start: Vector,
     private end: Vector,
     private n: number,
@@ -48,17 +47,17 @@ export class ZapLineEffect extends Effect {
     }
   }
 
-  static normal(project: Project, startLocation: Vector, endLocation: Vector, color: Color): ZapLineEffect {
-    return new ZapLineEffect(project, startLocation, endLocation, 10, 100, 15, color, new ProgressNumber(0, 50));
+  static normal(startLocation: Vector, endLocation: Vector, color: Color): ZapLineEffect {
+    return new ZapLineEffect(startLocation, endLocation, 10, 100, 15, color, new ProgressNumber(0, 50));
   }
 
-  render(): void {
+  render(project: Project) {
     const currentColor = mixColors(this.color, Color.Transparent, this.timeProgress.rate);
-    const viewLocations = this.currentPoints.map((p) => this.project.renderer.transformWorld2View(p));
-    this.project.curveRenderer.renderSolidLineMultipleWithShadow(
+    const viewLocations = this.currentPoints.map((p) => project.renderer.transformWorld2View(p));
+    project.curveRenderer.renderSolidLineMultipleWithShadow(
       viewLocations,
       currentColor,
-      (1 - this.timeProgress.rate) * this.lineWidth * this.project.camera.currentScale,
+      (1 - this.timeProgress.rate) * this.lineWidth * project.camera.currentScale,
       this.color,
       10,
     );

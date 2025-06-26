@@ -21,7 +21,6 @@ export class RectangleSplitTwoPartEffect extends Effect {
   private endFillColor: Color;
 
   constructor(
-    private readonly project: Project,
     rectangle: Rectangle,
     twoPoint: Vector[],
     time: number,
@@ -134,7 +133,7 @@ export class RectangleSplitTwoPartEffect extends Effect {
     this.splitedRectangles[0].accleration = new Vector(0, 0.5);
     this.splitedRectangles[1].accleration = new Vector(0, 0.5);
   }
-  render() {
+  render(project: Project) {
     for (const rect of this.splitedRectangles) {
       rect.render();
     }
@@ -163,7 +162,6 @@ class SplitedRectangle {
    * @param polygon 切割后的多边形
    */
   constructor(
-    private readonly project: Project,
     public polygon: Vector[],
     public fillColor: Color,
     public strokeColor: Color,
@@ -201,12 +199,12 @@ class SplitedRectangle {
     this.move(offset);
   }
 
-  render() {
-    this.project.shapeRenderer.renderPolygonAndFill(
-      this.polygon.map((v) => this.project.renderer.transformWorld2View(v)),
+  render(project: Project) {
+    project.shapeRenderer.renderPolygonAndFill(
+      this.polygon.map((v) => project.renderer.transformWorld2View(v)),
       this.fillColor,
       this.strokeColor,
-      this.strokeWidth * this.project.camera.currentScale,
+      this.strokeWidth * project.camera.currentScale,
       "round",
     );
   }

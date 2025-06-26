@@ -16,7 +16,6 @@ export class PenStrokeDeletedEffect extends Effect {
   private width: number = 1;
 
   constructor(
-    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     penStroke: PenStroke,
   ) {
@@ -30,9 +29,9 @@ export class PenStrokeDeletedEffect extends Effect {
     this.width = segmentList[0].width;
   }
 
-  static fromPenStroke(project: Project, penStroke: PenStroke): PenStrokeDeletedEffect {
+  static fromPenStroke(penStroke: PenStroke): PenStrokeDeletedEffect {
     const len = penStroke.getPath().length;
-    return new PenStrokeDeletedEffect(project, new ProgressNumber(0, len), penStroke);
+    return new PenStrokeDeletedEffect(new ProgressNumber(0, len), penStroke);
   }
 
   tick(): void {
@@ -44,7 +43,7 @@ export class PenStrokeDeletedEffect extends Effect {
     }
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
@@ -52,10 +51,10 @@ export class PenStrokeDeletedEffect extends Effect {
       return;
     }
 
-    this.project.curveRenderer.renderSolidLineMultiple(
-      this.currentPartList.map((v) => this.project.renderer.transformWorld2View(v)),
+    project.curveRenderer.renderSolidLineMultiple(
+      this.currentPartList.map((v) => project.renderer.transformWorld2View(v)),
       this.color.toNewAlpha(1 - this.timeProgress.rate),
-      this.width * this.project.camera.currentScale,
+      this.width * project.camera.currentScale,
     );
   }
 }

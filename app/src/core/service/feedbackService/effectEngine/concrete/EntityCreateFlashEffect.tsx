@@ -15,7 +15,6 @@ export class EntityCreateFlashEffect extends Effect {
     return "EntityCreateFlashEffect";
   }
   constructor(
-    private readonly project: Project,
     /**
      * 一开始为0，每tick + 1
      */
@@ -37,9 +36,8 @@ export class EntityCreateFlashEffect extends Effect {
    * @param rectangle
    * @returns
    */
-  static fromRectangle(project: Project, rectangle: Rectangle) {
+  static fromRectangle(rectangle: Rectangle) {
     return new EntityCreateFlashEffect(
-      project,
       new ProgressNumber(0, 50),
       rectangle,
       Renderer.NODE_ROUNDED_RADIUS,
@@ -47,7 +45,7 @@ export class EntityCreateFlashEffect extends Effect {
     );
   }
 
-  static fromCreateEntity(project: Project, entity: Entity) {
+  static fromCreateEntity(entity: Entity) {
     const result = new EntityCreateFlashEffect(
       project,
       new ProgressNumber(0, 15),
@@ -77,15 +75,15 @@ export class EntityCreateFlashEffect extends Effect {
     return result;
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
-    this.project.worldRenderUtils.renderRectangleFlash(
-      this.project.renderer.transformWorld2View(this.rectangle),
+    project.worldRenderUtils.renderRectangleFlash(
+      project.renderer.transformWorld2View(this.rectangle),
       this.color,
-      this.startBlurSize * this.project.camera.currentScale * (1 - this.timeProgress.rate),
-      this.radius * this.project.camera.currentScale,
+      this.startBlurSize * project.camera.currentScale * (1 - this.timeProgress.rate),
+      this.radius * project.camera.currentScale,
     );
     for (const subEffect of this.subEffects) {
       subEffect.render();

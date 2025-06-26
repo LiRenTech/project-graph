@@ -22,7 +22,6 @@ export class RectangleNoteEffect extends Effect {
     return "RectangleNoteEffect";
   }
   constructor(
-    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     public targetRectangle: Rectangle,
     public strokeColor: Color,
@@ -30,20 +29,19 @@ export class RectangleNoteEffect extends Effect {
     super(timeProgress);
   }
 
-  static fromShiftClickSelect(project: Project, rectangle: Rectangle) {
+  static fromShiftClickSelect(rectangle: Rectangle) {
     return new RectangleNoteEffect(
-      project,
       new ProgressNumber(0, 50),
       rectangle,
       StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
     );
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
-    const startRect = this.project.renderer.getCoverWorldRectangle();
+    const startRect = project.renderer.getCoverWorldRectangle();
     const currentRect = new Rectangle(
       startRect.location.add(
         this.targetRectangle.location.subtract(startRect.location).multiply(easeOutQuint(this.timeProgress.rate)),
@@ -53,8 +51,8 @@ export class RectangleNoteEffect extends Effect {
         startRect.size.y + (this.targetRectangle.size.y - startRect.size.y) * easeOutQuint(this.timeProgress.rate),
       ),
     );
-    this.project.shapeRenderer.renderRect(
-      this.project.renderer.transformWorld2View(currentRect),
+    project.shapeRenderer.renderRect(
+      project.renderer.transformWorld2View(currentRect),
       Color.Transparent,
       mixColors(Color.Transparent, this.strokeColor, reverseAnimate(this.timeProgress.rate)),
       2,

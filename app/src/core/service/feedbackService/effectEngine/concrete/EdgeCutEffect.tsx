@@ -10,7 +10,6 @@ import { easeOutQuint } from "../mathTools/easings";
  */
 export class EdgeCutEffect extends Effect {
   constructor(
-    private readonly project: Project,
     timeProgress: ProgressNumber,
     delay: number,
     private start: Vector,
@@ -21,15 +20,15 @@ export class EdgeCutEffect extends Effect {
     super(timeProgress, delay);
   }
 
-  static default(project: Project, start: Vector, end: Vector, color: Color, width: number) {
-    return new EdgeCutEffect(project, new ProgressNumber(0, 30), 0, start, end, color, width);
+  static default(start: Vector, end: Vector, color: Color, width: number) {
+    return new EdgeCutEffect(new ProgressNumber(0, 30), 0, start, end, color, width);
   }
 
   getClassName(): string {
     return "EdgeCutEffect";
   }
 
-  render() {
+  render(project: Project) {
     const midPoint = new Vector((this.start.x + this.end.x) / 2, (this.start.y + this.end.y) / 2);
 
     // 计算动画进度 (0-1)
@@ -47,17 +46,17 @@ export class EdgeCutEffect extends Effect {
     );
 
     // 绘制两端缩短的线条
-    this.project.curveRenderer.renderSolidLine(
-      this.project.renderer.transformWorld2View(this.start),
-      this.project.renderer.transformWorld2View(leftEnd),
+    project.curveRenderer.renderSolidLine(
+      project.renderer.transformWorld2View(this.start),
+      project.renderer.transformWorld2View(leftEnd),
       this.color.toNewAlpha(1 - progress),
-      this.width * this.project.camera.currentScale,
+      this.width * project.camera.currentScale,
     );
-    this.project.curveRenderer.renderSolidLine(
-      this.project.renderer.transformWorld2View(rightEnd),
-      this.project.renderer.transformWorld2View(this.end),
+    project.curveRenderer.renderSolidLine(
+      project.renderer.transformWorld2View(rightEnd),
+      project.renderer.transformWorld2View(this.end),
       this.color.toNewAlpha(1 - progress),
-      this.width * this.project.camera.currentScale,
+      this.width * project.camera.currentScale,
     );
   }
 }

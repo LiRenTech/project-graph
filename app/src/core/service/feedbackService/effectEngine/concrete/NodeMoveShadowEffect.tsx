@@ -18,7 +18,6 @@ export class NodeMoveShadowEffect extends Effect {
   pointInitSpeedList: Vector[] = [];
 
   constructor(
-    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     public rectangle: Rectangle,
     public rectangleSpeed: Vector,
@@ -86,19 +85,19 @@ export class NodeMoveShadowEffect extends Effect {
     return "top";
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
     for (const point of this.pointList) {
-      const viewLocation = this.project.renderer.transformWorld2View(point);
+      const viewLocation = project.renderer.transformWorld2View(point);
       const color = mixColors(
         StageStyleManager.currentStyle.effects.flash,
         StageStyleManager.currentStyle.effects.flash.toTransparent(),
         this.timeProgress.rate,
       );
 
-      this.project.renderUtils.renderPixel(viewLocation, color);
+      project.renderUtils.renderPixel(viewLocation, color);
     }
   }
 }

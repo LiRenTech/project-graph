@@ -17,7 +17,6 @@ export class RectangleSlideEffect extends Effect {
   }
 
   constructor(
-    private readonly project: Project,
     public startRect: Rectangle,
     public endRect: Rectangle,
     public override timeProgress: ProgressNumber = new ProgressNumber(0, 50),
@@ -87,7 +86,7 @@ export class RectangleSlideEffect extends Effect {
 
   protected subEffects: Effect[];
 
-  render(): void {
+  render(project: Project) {
     for (const effect of this.subEffects) {
       effect.render();
     }
@@ -96,16 +95,16 @@ export class RectangleSlideEffect extends Effect {
   /**
    * 创建水平滑动效果
    */
-  static horizontalSlide(project: Project, startRect: Rectangle, endRect: Rectangle, color?: Color) {
+  static horizontalSlide(startRect: Rectangle, endRect: Rectangle, color?: Color) {
     const timeProgress = new ProgressNumber(0, 30);
-    return new RectangleSlideEffect(project, startRect, endRect, timeProgress, color, true);
+    return new RectangleSlideEffect(startRect, endRect, timeProgress, color, true);
   }
 
   /**
    * 创建垂直滑动效果
    */
-  static verticalSlide(project: Project, startRect: Rectangle, endRect: Rectangle, color?: Color) {
+  static verticalSlide(startRect: Rectangle, endRect: Rectangle, color?: Color) {
     const timeProgress = new ProgressNumber(0, 30);
-    return new RectangleSlideEffect(project, startRect, endRect, timeProgress, color, false);
+    return new RectangleSlideEffect(startRect, endRect, timeProgress, color, false);
   }
 }

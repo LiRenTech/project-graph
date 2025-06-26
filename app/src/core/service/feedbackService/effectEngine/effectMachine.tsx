@@ -1,4 +1,4 @@
-import { service } from "../../../Project";
+import { Project, service } from "../../../Project";
 import { Settings } from "../../Settings";
 import { Effect } from "./effectObject";
 
@@ -12,7 +12,7 @@ import { Effect } from "./effectObject";
 export class Effects {
   private effectsPerferences: Record<string, boolean> = {};
 
-  constructor() {
+  constructor(private readonly project: Project) {
     Settings.watch("effectsPerferences", (value) => {
       this.effectsPerferences = value;
     });
@@ -42,7 +42,7 @@ export class Effects {
     // 清理过时特效
     this.effects = this.effects.filter((effect) => !effect.timeProgress.isFull);
     for (const effect of this.effects) {
-      effect.render();
+      effect.render(this.project);
     }
   }
 }

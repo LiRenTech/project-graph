@@ -29,7 +29,6 @@ export class EntityCreateDashEffect extends Effect {
   public currentLocationArrayRight: Vector[] = [];
 
   constructor(
-    private readonly project: Project,
     /**
      * 一开始为0，每tick + 1
      */
@@ -97,55 +96,55 @@ export class EntityCreateDashEffect extends Effect {
     }
   }
 
-  static fromRectangle(project: Project, rectangle: Rectangle, time = 30): EntityCreateDashEffect {
-    return new EntityCreateDashEffect(project, new ProgressNumber(0, time), rectangle);
+  static fromRectangle(rectangle: Rectangle, time = 30): EntityCreateDashEffect {
+    return new EntityCreateDashEffect(new ProgressNumber(0, time), rectangle);
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
     for (const p of this.currentLocationArrayTop) {
-      const viewLocation = this.project.renderer.transformWorld2View(p);
+      const viewLocation = project.renderer.transformWorld2View(p);
       const color = mixColors(
         StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
         StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
-      this.project.renderUtils.renderPixel(viewLocation, color);
+      project.renderUtils.renderPixel(viewLocation, color);
     }
     for (const p of this.currentLocationArrayBottom) {
-      const viewLocation = this.project.renderer.transformWorld2View(p);
+      const viewLocation = project.renderer.transformWorld2View(p);
       const color = mixColors(
         StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
         StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
-      this.project.renderUtils.renderPixel(viewLocation, color);
+      project.renderUtils.renderPixel(viewLocation, color);
     }
 
     for (const p of this.currentLocationArrayLeft) {
-      const viewLocation = this.project.renderer.transformWorld2View(p);
+      const viewLocation = project.renderer.transformWorld2View(p);
       const color = mixColors(
         StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
         StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
-      this.project.renderUtils.renderPixel(viewLocation, color);
+      project.renderUtils.renderPixel(viewLocation, color);
     }
 
     for (const p of this.currentLocationArrayRight) {
-      const viewLocation = this.project.renderer.transformWorld2View(p);
+      const viewLocation = project.renderer.transformWorld2View(p);
       const color = mixColors(
         StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
         StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
-      this.project.renderUtils.renderPixel(viewLocation, color);
+      project.renderUtils.renderPixel(viewLocation, color);
     }
   }
 }

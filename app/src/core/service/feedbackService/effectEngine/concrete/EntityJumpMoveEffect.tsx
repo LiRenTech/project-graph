@@ -13,7 +13,6 @@ export class EntityJumpMoveEffect extends Effect {
     return "EntityJumpMoveEffect";
   }
   constructor(
-    private readonly project: Project,
     public time: number,
     public rectStart: Rectangle,
     public delta: Vector,
@@ -21,7 +20,7 @@ export class EntityJumpMoveEffect extends Effect {
     super(new ProgressNumber(0, time));
   }
 
-  render() {
+  render(project: Project) {
     const currentRect = this.rectStart.clone();
     currentRect.location = currentRect.location.add(this.delta.clone().multiply(this.timeProgress.rate));
 
@@ -31,25 +30,25 @@ export class EntityJumpMoveEffect extends Effect {
     currentRect.location.y -= addHeight;
 
     // 画地面阴影
-    this.project.shapeRenderer.renderRectWithShadow(
-      this.project.renderer.transformWorld2View(groundShadowRect),
+    project.shapeRenderer.renderRectWithShadow(
+      project.renderer.transformWorld2View(groundShadowRect),
       StageStyleManager.currentStyle.effects.windowFlash.toNewAlpha(0.2),
       Color.Transparent,
-      2 * this.project.camera.currentScale,
+      2 * project.camera.currentScale,
       StageStyleManager.currentStyle.effects.windowFlash.toNewAlpha(0.2),
       10,
       0,
       0,
-      Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * project.camera.currentScale,
     );
 
     // 画跳高的框
-    this.project.shapeRenderer.renderRect(
-      this.project.renderer.transformWorld2View(currentRect),
+    project.shapeRenderer.renderRect(
+      project.renderer.transformWorld2View(currentRect),
       Color.Transparent,
       StageStyleManager.currentStyle.StageObjectBorder,
-      2 * this.project.camera.currentScale,
-      Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
+      2 * project.camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * project.camera.currentScale,
     );
   }
 }

@@ -18,7 +18,6 @@ export class EntityShakeEffect extends Effect {
     return "EntityShakeEffect";
   }
   constructor(
-    private readonly project: Project,
     public time: number,
     public rect: Rectangle,
   ) {
@@ -36,34 +35,34 @@ export class EntityShakeEffect extends Effect {
     this.shakeOffsetB = Random.randomVectorOnNormalCircle().multiply(alpha * maxOffsetDistance);
   }
 
-  static fromEntity(project: Project, entity: Entity): EntityShakeEffect {
-    return new EntityShakeEffect(project, 30, entity.collisionBox.getRectangle());
+  static fromEntity(entity: Entity): EntityShakeEffect {
+    return new EntityShakeEffect(30, entity.collisionBox.getRectangle());
   }
 
-  render(): void {
+  render(project: Project) {
     const rectangleA = this.rect.clone();
     rectangleA.location = rectangleA.location.add(this.shakeOffsetA).add(Vector.same(-2));
     const rectangleB = this.rect.clone();
     rectangleB.location = rectangleB.location.add(this.shakeOffsetB).add(Vector.same(2));
     const fillAlpha = (1 - this.timeProgress.rate) / 2;
-    this.project.shapeRenderer.renderRectWithShadow(
-      this.project.renderer.transformWorld2View(rectangleA),
+    project.shapeRenderer.renderRectWithShadow(
+      project.renderer.transformWorld2View(rectangleA),
       new Color(255, 0, 0, fillAlpha),
       new Color(255, 0, 0, 0.2),
-      2 * this.project.camera.currentScale,
+      2 * project.camera.currentScale,
       Color.Red,
-      50 * this.project.camera.currentScale,
+      50 * project.camera.currentScale,
       0,
       0,
       Renderer.NODE_ROUNDED_RADIUS,
     );
-    this.project.shapeRenderer.renderRectWithShadow(
-      this.project.renderer.transformWorld2View(rectangleB),
+    project.shapeRenderer.renderRectWithShadow(
+      project.renderer.transformWorld2View(rectangleB),
       new Color(0, 0, 255, fillAlpha),
       new Color(0, 0, 255, 0.2),
-      2 * this.project.camera.currentScale,
+      2 * project.camera.currentScale,
       Color.Blue,
-      50 * this.project.camera.currentScale,
+      50 * project.camera.currentScale,
       0,
       0,
       Renderer.NODE_ROUNDED_RADIUS,

@@ -14,34 +14,33 @@ export class TextRiseEffect extends Effect {
   }
 
   constructor(
-    private readonly project: Project,
     public text: string,
     public override timeProgress: ProgressNumber = new ProgressNumber(0, 100),
   ) {
     super(timeProgress);
   }
 
-  static default(project: Project, text: string): TextRiseEffect {
-    return new TextRiseEffect(project, text, new ProgressNumber(0, 100));
+  static default(text: string): TextRiseEffect {
+    return new TextRiseEffect(text, new ProgressNumber(0, 100));
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
     // 在画布中心缓缓升高一段距离
     const distance = 100;
     const renderCenterLocation = new Vector(
-      this.project.renderer.w / 2,
-      this.project.renderer.h / 2 - distance * easeInOutSine(this.timeProgress.rate),
+      project.renderer.w / 2,
+      project.renderer.h / 2 - distance * easeInOutSine(this.timeProgress.rate),
     );
-    this.project.textRenderer.renderMultiLineTextFromCenter(
+    project.textRenderer.renderMultiLineTextFromCenter(
       this.text,
       renderCenterLocation,
       20,
       Infinity,
       StageStyleManager.currentStyle.StageObjectBorder,
     );
-    this.project.canvas.ctx.globalAlpha = 1;
+    project.canvas.ctx.globalAlpha = 1;
   }
 }

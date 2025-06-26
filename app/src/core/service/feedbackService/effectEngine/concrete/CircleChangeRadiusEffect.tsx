@@ -9,7 +9,6 @@ import { Effect } from "../effectObject";
  */
 export class CircleChangeRadiusEffect extends Effect {
   constructor(
-    private readonly project: Project,
     /**
      * 一开始为0，每tick + 1
      */
@@ -34,9 +33,8 @@ export class CircleChangeRadiusEffect extends Effect {
     super.tick();
   }
 
-  static fromConnectPointExpand(project: Project, location: Vector, expandRadius: number) {
+  static fromConnectPointExpand(location: Vector, expandRadius: number) {
     return new CircleChangeRadiusEffect(
-      project,
       new ProgressNumber(0, 10),
       location,
       0.01,
@@ -44,9 +42,8 @@ export class CircleChangeRadiusEffect extends Effect {
       new Color(255, 255, 255),
     );
   }
-  static fromConnectPointShrink(project: Project, location: Vector, currentRadius: number) {
+  static fromConnectPointShrink(location: Vector, currentRadius: number) {
     return new CircleChangeRadiusEffect(
-      project,
       new ProgressNumber(0, 10),
       location,
       currentRadius,
@@ -55,17 +52,17 @@ export class CircleChangeRadiusEffect extends Effect {
     );
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
     this.color.a = 1 - this.timeProgress.rate;
-    this.project.shapeRenderer.renderCircle(
-      this.project.renderer.transformWorld2View(this.location),
-      this.radius * this.project.camera.currentScale,
+    project.shapeRenderer.renderCircle(
+      project.renderer.transformWorld2View(this.location),
+      this.radius * project.camera.currentScale,
       Color.Transparent,
       this.color,
-      2 * this.project.camera.currentScale,
+      2 * project.camera.currentScale,
     );
   }
 }

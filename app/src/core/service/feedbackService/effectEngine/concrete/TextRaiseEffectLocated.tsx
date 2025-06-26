@@ -13,7 +13,6 @@ export class TextRaiseEffectLocated extends Effect {
     return "TextRaiseEffectLocated";
   }
   constructor(
-    private readonly project: Project,
     public text: string,
     public location: Vector,
     public raiseDistance: number,
@@ -23,21 +22,21 @@ export class TextRaiseEffectLocated extends Effect {
     super(timeProgress);
   }
 
-  render() {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
-    this.project.textRenderer.renderTextFromCenter(
+    project.textRenderer.renderTextFromCenter(
       this.text,
-      this.project.renderer.transformWorld2View(
+      project.renderer.transformWorld2View(
         this.location.add(new Vector(0, -this.timeProgress.rate * this.raiseDistance)),
       ),
-      this.textSize * this.project.camera.currentScale,
+      this.textSize * project.camera.currentScale,
       StageStyleManager.currentStyle.CollideBoxPreSelected,
     );
   }
 
-  static fromDebugLogicNode(project: Project, n: number, location: Vector): TextRaiseEffectLocated {
+  static fromDebugLogicNode(n: number, location: Vector): TextRaiseEffectLocated {
     return new TextRaiseEffectLocated(project, `${n}`, location, 0, 150, new ProgressNumber(0, 3));
   }
 }

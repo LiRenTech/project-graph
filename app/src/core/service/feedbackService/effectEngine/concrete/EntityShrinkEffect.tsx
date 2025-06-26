@@ -18,7 +18,6 @@ export class EntityShrinkEffect extends Effect {
     return "EntityShrinkEffect";
   }
   constructor(
-    private readonly project: Project,
     public time: number,
     public rect: Rectangle,
     public color: Color,
@@ -36,7 +35,7 @@ export class EntityShrinkEffect extends Effect {
     this.rect.location = this.rect.location.add(this.originCenterLocation.subtract(currentCenter));
   }
 
-  static fromEntity(project: Project, entity: Entity): EntityShrinkEffect {
+  static fromEntity(entity: Entity): EntityShrinkEffect {
     let color = StageStyleManager.currentStyle.Background.clone();
     if (entity instanceof TextNode || entity instanceof Section) {
       color = entity.color.clone();
@@ -44,18 +43,18 @@ export class EntityShrinkEffect extends Effect {
     if (color.equals(Color.Transparent)) {
       color = StageStyleManager.currentStyle.Background.clone();
     }
-    return new EntityShrinkEffect(project, 10, entity.collisionBox.getRectangle(), color);
+    return new EntityShrinkEffect(10, entity.collisionBox.getRectangle(), color);
   }
 
-  render(): void {
+  render(project: Project) {
     const rectangleA = this.rect.clone();
 
-    this.project.shapeRenderer.renderRect(
-      this.project.renderer.transformWorld2View(rectangleA),
+    project.shapeRenderer.renderRect(
+      project.renderer.transformWorld2View(rectangleA),
       this.color.toNewAlpha(1 - this.timeProgress.rate),
       StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
-      2 * this.project.camera.currentScale,
-      Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
+      2 * project.camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * project.camera.currentScale,
     );
   }
 }

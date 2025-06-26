@@ -3,12 +3,9 @@ import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
-import { this.project.renderer } from "../../../render/canvas2d/renderer";
-import { AutoLayoutFastTree } from "../../../service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
 import { EntityAlignEffect } from "../../../service/feedbackService/effectEngine/concrete/EntityAlignEffect";
 import { RectangleRenderEffect } from "../../../service/feedbackService/effectEngine/concrete/RectangleRenderEffect";
 import { SoundService } from "../../../service/feedbackService/SoundService";
-import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { GraphMethods } from "../basicMethods/GraphMethods";
@@ -16,7 +13,7 @@ import { GraphMethods } from "../basicMethods/GraphMethods";
 /**
  * 自动对齐和布局管理器
  */
-@service("autoAlignManager")
+@service("autoAlign")
 export class StageAutoAlignManager {
   constructor(private readonly project: Project) {}
 
@@ -185,9 +182,9 @@ export class StageAutoAlignManager {
       moveTargetRectangle.location.x += xMoveDiff;
       moveTargetRectangle.location.y += yMoveDiff;
 
-      this.project.effects.addEffect(RectangleRenderEffect.fromPreAlign(this.project,moveTargetRectangle));
+      this.project.effects.addEffect(RectangleRenderEffect.fromPreAlign(moveTargetRectangle));
       for (const targetRectangle of xTargetRectangles.concat(yTargetRectangles)) {
-        this.project.effects.addEffect(EntityAlignEffect.fromEntity(this.project,moveTargetRectangle, targetRectangle));
+        this.project.effects.addEffect(EntityAlignEffect.fromEntity(moveTargetRectangle, targetRectangle));
       }
     }
     if (isAlign && !isPreAlign) {
@@ -202,7 +199,7 @@ export class StageAutoAlignManager {
    */
   private _addAlignEffect(selectedEntity: Entity, otherEntity: Entity) {
     this.project.effects.addEffect(
-      EntityAlignEffect.fromEntity(this.project,selectedEntity.collisionBox.getRectangle(), otherEntity.collisionBox.getRectangle()),
+      EntityAlignEffect.fromEntity(selectedEntity.collisionBox.getRectangle(), otherEntity.collisionBox.getRectangle()),
     );
   }
 
@@ -280,7 +277,7 @@ export class StageAutoAlignManager {
       });
       return;
     }
-    AutoLayoutFastTree.autoLayoutFastTreeModeRight(selectedRootEntity);
+    this.project.autoLayoutFastTree.autoLayoutFastTreeModeRight(selectedRootEntity);
   }
 
   autoLayoutSelectedFastTreeModeDown(selectedRootEntity: ConnectableEntity) {
@@ -293,6 +290,6 @@ export class StageAutoAlignManager {
       });
       return;
     }
-    AutoLayoutFastTree.autoLayoutFastTreeModeDown(selectedRootEntity);
+    this.project.autoLayoutFastTree.autoLayoutFastTreeModeDown(selectedRootEntity);
   }
 }

@@ -16,7 +16,6 @@ export class PointDashEffect extends Effect {
   public particleList: EffectParticle[] = [];
 
   constructor(
-    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     public location: Vector,
     public particleCount: number,
@@ -44,7 +43,7 @@ export class PointDashEffect extends Effect {
 
       let isCollideWithEntity = false;
 
-      for (const connectEntity of this.project.stageManager.getConnectableEntity()) {
+      for (const connectEntity of project.stageManager.getConnectableEntity()) {
         const connectEntityCenter = connectEntity.collisionBox.getRectangle().center;
         const distance = connectEntityCenter.subtract(particle.location);
         const normalizedDistance = distance.normalize().multiply(20 / distance.magnitude() ** 1.2);
@@ -70,23 +69,23 @@ export class PointDashEffect extends Effect {
     }
   }
 
-  static fromMouseEffect(project: Project, mouseWorldLocation: Vector, count: number): PointDashEffect {
-    return new PointDashEffect(project, new ProgressNumber(0, 50), mouseWorldLocation, count);
+  static fromMouseEffect(mouseWorldLocation: Vector, count: number): PointDashEffect {
+    return new PointDashEffect(new ProgressNumber(0, 50), mouseWorldLocation, count);
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
     for (const p of this.particleList) {
-      const viewLocation = this.project.renderer.transformWorld2View(p.location);
+      const viewLocation = project.renderer.transformWorld2View(p.location);
       // const color = mixColors(
       //   p.color,
       //   p.color.toTransparent(),
       //   this.timeProgress.rate,
       // );
 
-      this.project.renderUtils.renderPixel(viewLocation, p.color);
+      project.renderUtils.renderPixel(viewLocation, p.color);
     }
   }
 }

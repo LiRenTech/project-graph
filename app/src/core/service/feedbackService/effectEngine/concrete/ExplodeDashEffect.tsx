@@ -19,16 +19,15 @@ export class ExplodeDashEffect extends Effect {
 
   private getDashCountPreEntity(): number {
     // 说明是按Delete删除的
-    if (this.project.controller.cutting.warningEntity.length === 0) {
+    if (project.controller.cutting.warningEntity.length === 0) {
       return 0;
     }
 
     // 说明是按鼠标删除的，可以多一些
-    return Math.floor(1000 / this.project.controller.cutting.warningEntity.length);
+    return Math.floor(1000 / project.controller.cutting.warningEntity.length);
   }
 
   constructor(
-    private readonly project: Project,
     /**
      * 一开始为0，每tick + 1
      */
@@ -57,19 +56,19 @@ export class ExplodeDashEffect extends Effect {
     }
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
     for (const ashLocation of this.ashLocationArray) {
-      const viewLocation = this.project.renderer.transformWorld2View(ashLocation);
+      const viewLocation = project.renderer.transformWorld2View(ashLocation);
       const color = mixColors(
         StageStyleManager.currentStyle.StageObjectBorder,
         StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
         this.timeProgress.rate,
       );
 
-      this.project.renderUtils.renderPixel(viewLocation, color);
+      project.renderUtils.renderPixel(viewLocation, color);
     }
   }
 }

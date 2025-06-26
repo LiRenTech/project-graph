@@ -13,7 +13,6 @@ export class EntityDashTipEffect extends Effect {
     return "EntityDashTipEffect";
   }
   constructor(
-    private readonly project: Project,
     public time: number,
     public rect: Rectangle,
   ) {
@@ -89,10 +88,10 @@ export class EntityDashTipEffect extends Effect {
     }
   }
 
-  render(): void {
+  render(project: Project) {
     for (const point of this.dashPoints) {
-      this.project.renderUtils.renderPixel(
-        this.project.renderer.transformWorld2View(point.location),
+      project.renderUtils.renderPixel(
+        project.renderer.transformWorld2View(point.location),
         mixColors(point.color, point.color.toTransparent(), this.timeProgress.rate),
       );
     }

@@ -15,11 +15,10 @@ export class EntityAlignEffect extends Effect {
     return "EntityAlignEffect";
   }
   private lines: Line[] = [];
-  static fromEntity(project: Project, moveRectangle: Rectangle, targetRectangle: Rectangle): EntityAlignEffect {
-    return new EntityAlignEffect(project, new ProgressNumber(0, 20), moveRectangle, targetRectangle);
+  static fromEntity(moveRectangle: Rectangle, targetRectangle: Rectangle): EntityAlignEffect {
+    return new EntityAlignEffect(new ProgressNumber(0, 20), moveRectangle, targetRectangle);
   }
   constructor(
-    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     moveRectangle: Rectangle,
     targetRectangle: Rectangle,
@@ -94,18 +93,18 @@ export class EntityAlignEffect extends Effect {
     }
   }
 
-  render(): void {
+  render(project: Project) {
     for (const line of this.lines) {
-      this.project.curveRenderer.renderDashedLine(
-        this.project.renderer.transformWorld2View(line.start),
-        this.project.renderer.transformWorld2View(line.end),
+      project.curveRenderer.renderDashedLine(
+        project.renderer.transformWorld2View(line.start),
+        project.renderer.transformWorld2View(line.end),
         mixColors(
           StageStyleManager.currentStyle.CollideBoxSelected.toSolid(),
           StageStyleManager.currentStyle.CollideBoxSelected.clone().toTransparent(),
           1 - this.timeProgress.rate,
         ),
-        0.5 * this.project.camera.currentScale,
-        8 * this.project.camera.currentScale,
+        0.5 * project.camera.currentScale,
+        8 * project.camera.currentScale,
       );
     }
   }

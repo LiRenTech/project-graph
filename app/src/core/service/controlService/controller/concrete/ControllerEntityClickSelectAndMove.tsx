@@ -2,7 +2,6 @@ import { isMac } from "../../../../../utils/platform";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
-import { StageAutoAlignManager } from "../../../../stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageObjectSelectCounter } from "../../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
@@ -128,7 +127,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
 
       // 预瞄反馈
       if (Stage.enableDragAutoAlign) {
-        StageAutoAlignManager.preAlignAllSelected();
+        this.project.autoAlign.preAlignAllSelected();
       }
 
       this.lastMoveLocation = worldLocation.clone();
@@ -150,10 +149,10 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
       if (this.isMovingEntity) {
         // 这个时候可以触发对齐吸附事件
         if (Stage.enableDragAutoAlign) {
-          StageAutoAlignManager.alignAllSelected();
+          this.project.autoAlign.alignAllSelected();
         }
         if (Stage.enableDragAlignToGrid) {
-          StageAutoAlignManager.alignAllSelectedToGrid();
+          this.project.autoAlign.alignAllSelectedToGrid();
         }
 
         StageHistoryManager.recordStep(); // 记录一次历史

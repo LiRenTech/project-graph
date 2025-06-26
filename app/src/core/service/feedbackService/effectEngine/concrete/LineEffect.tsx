@@ -14,7 +14,6 @@ export class LineEffect extends Effect {
     return "LineEffect";
   }
   constructor(
-    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     public fromLocation: Vector,
     public toLocation: Vector,
@@ -24,9 +23,8 @@ export class LineEffect extends Effect {
   ) {
     super(timeProgress);
   }
-  static default(project: Project, fromLocation: Vector, toLocation: Vector) {
+  static default(fromLocation: Vector, toLocation: Vector) {
     return new LineEffect(
-      project,
       new ProgressNumber(0, 30),
       fromLocation,
       toLocation,
@@ -35,20 +33,20 @@ export class LineEffect extends Effect {
       1,
     );
   }
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }
-    const fromLocation = this.project.renderer.transformWorld2View(this.fromLocation);
-    const toLocation = this.project.renderer.transformWorld2View(this.toLocation);
+    const fromLocation = project.renderer.transformWorld2View(this.fromLocation);
+    const toLocation = project.renderer.transformWorld2View(this.toLocation);
     const fromColor = mixColors(this.fromColor, this.fromColor.toTransparent(), this.timeProgress.rate);
     const toColor = mixColors(this.toColor, this.toColor.toTransparent(), this.timeProgress.rate);
-    this.project.curveRenderer.renderGradientLine(
+    project.curveRenderer.renderGradientLine(
       fromLocation,
       toLocation,
       fromColor,
       toColor,
-      this.lineWidth * this.project.camera.currentScale,
+      this.lineWidth * project.camera.currentScale,
     );
   }
 }

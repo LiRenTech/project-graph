@@ -42,6 +42,7 @@ import { Effects } from "./service/feedbackService/effectEngine/effectMachine";
 import { Camera } from "./stage/Camera";
 import { Canvas } from "./stage/Canvas";
 import { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
+import { StageAutoAlignManager } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageNodeRotate } from "./stage/stageManager/concreteMethods/stageNodeRotate";
 import { StageManager } from "./stage/stageManager/StageManager";
 
@@ -172,6 +173,7 @@ declare module "./Project" {
     autoLayout: AutoLayout;
     autoLayoutFastTree: AutoLayoutFastTree;
     layoutManualAlign: LayoutManualAlign;
+    autoAlign: StageAutoAlignManager;
     // 纯键盘操作引擎
     keyboardOnlyEngine: KeyboardOnlyEngine;
     keyboardOnlyGraphEngine: KeyboardOnlyGraphEngine;

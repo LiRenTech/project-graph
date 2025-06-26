@@ -13,7 +13,6 @@ export class RectanglePushInEffect extends Effect {
     return "RectanglePushInEffect";
   }
   constructor(
-    private readonly project: Project,
     public smallRectangle: Rectangle,
     public bigRectangle: Rectangle,
     public override timeProgress: ProgressNumber = new ProgressNumber(0, 50),
@@ -93,14 +92,14 @@ export class RectanglePushInEffect extends Effect {
     }
   }
 
-  static sectionGoInGoOut(project: Project, entityRectangle: Rectangle, sectionRectangle: Rectangle, isGoOut = false) {
+  static sectionGoInGoOut(entityRectangle: Rectangle, sectionRectangle: Rectangle, isGoOut = false) {
     const timeProgress = new ProgressNumber(0, 50);
-    return new RectanglePushInEffect(project, entityRectangle, sectionRectangle, timeProgress, isGoOut);
+    return new RectanglePushInEffect(entityRectangle, sectionRectangle, timeProgress, isGoOut);
   }
 
   protected subEffects: Effect[];
 
-  render(): void {
+  render(project: Project) {
     for (const effect of this.subEffects) {
       effect.render();
     }

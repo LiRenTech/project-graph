@@ -10,7 +10,6 @@ import { Effect } from "../effectObject";
  */
 export class CircleFlameEffect extends Effect {
   constructor(
-    private readonly project: Project,
     /**
      * 一开始为0，每tick + 1
      */
@@ -29,7 +28,7 @@ export class CircleFlameEffect extends Effect {
     super.tick();
   }
 
-  render(): void {
+  render(project: Project) {
     if (this.timeProgress.isFull) {
       return;
     }

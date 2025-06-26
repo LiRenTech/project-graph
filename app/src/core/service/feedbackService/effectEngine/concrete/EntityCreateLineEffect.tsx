@@ -12,7 +12,6 @@ export class EntityCreateLineEffect extends Effect {
     return "EntityCreateLineEffect";
   }
   constructor(
-    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     public rect: Rectangle,
   ) {
@@ -99,15 +98,15 @@ export class EntityCreateLineEffect extends Effect {
     }
   }
 
-  static from(project: Project, rectangle: Rectangle): EntityCreateLineEffect {
-    return new EntityCreateLineEffect(project, new ProgressNumber(0, 30), rectangle);
+  static from(rectangle: Rectangle): EntityCreateLineEffect {
+    return new EntityCreateLineEffect(new ProgressNumber(0, 30), rectangle);
   }
 
   override tick() {
     super.tick();
   }
 
-  render(): void {
+  render(project: Project) {
     for (const subEffect of this.subEffects) {
       subEffect.render();
     }

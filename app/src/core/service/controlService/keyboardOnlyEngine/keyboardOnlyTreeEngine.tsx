@@ -4,7 +4,6 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
-import { StageAutoAlignManager } from "../../../stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 
@@ -75,7 +74,7 @@ export class KeyboardOnlyTreeEngine {
       const rootNodeParent = rootNodeParents[0];
       if (GraphMethods.isTree(rootNodeParent)) {
         if (this.project.keyboardOnlyEngine.autoLayoutWhenTreeGenerate) {
-          StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
+          this.project.autoAlign.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
         }
         // 更新选择状态
         rootNodeParent.isSelected = false;
@@ -149,7 +148,7 @@ export class KeyboardOnlyTreeEngine {
       const rootNodeParent = rootNodeParents[0];
       if (GraphMethods.isTree(rootNodeParent)) {
         if (this.project.keyboardOnlyEngine.autoLayoutWhenTreeGenerate) {
-          StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
+          this.project.autoAlign.autoLayoutSelectedFastTreeModeRight(rootNodeParent);
         }
         // 更新选择状态
         rootNodeParent.isSelected = false;
@@ -175,6 +174,6 @@ export class KeyboardOnlyTreeEngine {
    */
   adjustTreeNode(entity: ConnectableEntity) {
     const rootNodeParents = GraphMethods.getRoots(entity);
-    StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight(rootNodeParents[0]);
+    this.project.autoAlign.autoLayoutSelectedFastTreeModeRight(rootNodeParents[0]);
   }
 }
