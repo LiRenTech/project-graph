@@ -18,7 +18,6 @@ import { PenStrokeMethods } from "../../../stage/stageManager/basicMethods/PenSt
 import { StageEntityMoveManager } from "../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageSectionPackManager } from "../../../stage/stageManager/concreteMethods/StageSectionPackManager";
 import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { CopyEngine } from "../../dataManageService/copyEngine/copyEngine";
@@ -26,6 +25,7 @@ import { RectangleSlideEffect } from "../../feedbackService/effectEngine/concret
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewOutlineFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
 import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
+import { Settings } from "../../Settings";
 import {
   addTextNodeByLocation,
   addTextNodeFromCurrentSelectedNode,
@@ -272,7 +272,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
-      StageManager.sectionSwitchCollapse();
+      this.project.stageManager.sectionSwitchCollapse();
     });
 
     (
@@ -283,7 +283,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
-      StageManager.reverseSelectedEdges();
+      this.project.stageManager.reverseSelectedEdges();
     });
     (
       await KeyBinds.create("reverseSelectedNodeEdge", "t", {
@@ -293,7 +293,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
-      StageManager.reverseSelectedNodeEdge();
+      this.project.stageManager.reverseSelectedNodeEdge();
     });
 
     (
@@ -304,7 +304,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
-      StageManager.packEntityToSectionBySelected();
+      this.project.stageManager.packEntityToSectionBySelected();
     });
     (
       await KeyBinds.create("createUndirectedEdgeFromEntities", "g", {
@@ -315,13 +315,15 @@ export namespace ShortcutKeysRegister {
       })
     ).down(() => {
       // 构建无向边
-      const selectedNodes = StageManager.getSelectedEntities().filter((node) => node instanceof ConnectableEntity);
+      const selectedNodes = this.project.stageManager
+        .getSelectedEntities()
+        .filter((node) => node instanceof ConnectableEntity);
       if (selectedNodes.length <= 1) {
         Stage.effectMachine.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
         return;
       }
       const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
-      StageManager.addAssociation(multiTargetUndirectedEdge);
+      this.project.stageManager.addAssociation(multiTargetUndirectedEdge);
     });
 
     (
@@ -332,7 +334,7 @@ export namespace ShortcutKeysRegister {
       })
     ).down(() => {
       if (!KeyboardOnlyEngine.isOpenning()) return;
-      StageManager.deleteSelectedStageObjects();
+      this.project.stageManager.deleteSelectedStageObjects();
     });
 
     (
@@ -493,7 +495,7 @@ export namespace ShortcutKeysRegister {
       })
     ).down(() => {
       if (!KeyboardOnlyEngine.isOpenning()) return;
-      const entities = StageManager.getEntities().filter((e) => e.isSelected);
+      const entities = this.project.stageManager.getEntities().filter((e) => e.isSelected);
       if (entities.length > 0) {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
@@ -514,7 +516,7 @@ export namespace ShortcutKeysRegister {
       })
     ).down(() => {
       if (!KeyboardOnlyEngine.isOpenning()) return;
-      const entities = StageManager.getEntities().filter((e) => e.isSelected);
+      const entities = this.project.stageManager.getEntities().filter((e) => e.isSelected);
       if (entities.length > 0) {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
@@ -534,7 +536,7 @@ export namespace ShortcutKeysRegister {
         shift: false,
       })
     ).down(() => {
-      const entities = StageManager.getEntities().filter((e) => e.isSelected);
+      const entities = this.project.stageManager.getEntities().filter((e) => e.isSelected);
       if (entities.length > 0) {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
@@ -555,7 +557,7 @@ export namespace ShortcutKeysRegister {
       })
     ).down(() => {
       if (!KeyboardOnlyEngine.isOpenning()) return;
-      const entities = StageManager.getEntities().filter((e) => e.isSelected);
+      const entities = this.project.stageManager.getEntities().filter((e) => e.isSelected);
       if (entities.length > 0) {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
@@ -655,7 +657,7 @@ export namespace ShortcutKeysRegister {
       })
     ).down(() => {
       if (!KeyboardOnlyEngine.isOpenning()) return;
-      StageManager.selectAll();
+      this.project.stageManager.selectAll();
       Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(Color.Green));
     });
     (
@@ -1090,7 +1092,9 @@ export namespace ShortcutKeysRegister {
       })
     ).down(() => {
       if (!KeyboardOnlyEngine.isOpenning()) return;
-      const entities = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
+      const entities = this.project.stageManager
+        .getSelectedEntities()
+        .filter((entity) => entity instanceof ConnectableEntity);
       for (const entity of entities) {
         KeyboardOnlyTreeEngine.adjustTreeNode(entity);
       }

@@ -4,12 +4,10 @@ import { PathString } from "../../../../utils/pathString";
 import { Color, colorInvert } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { SvgUtils } from "../../../render/svg/SvgUtils";
 import { Stage } from "../../../stage/Stage";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
@@ -92,7 +90,7 @@ export namespace StageExportSvg {
   }
 
   export function dumpEdge(edge: LineEdge): React.ReactNode {
-    return EdgeRenderer.getEdgeSvg(edge);
+    return this.project.edgeRenderer.getEdgeSvg(edge);
   }
   /**
    *
@@ -146,7 +144,7 @@ export namespace StageExportSvg {
   }
 
   function dumpSelected(): React.ReactNode {
-    const selectedEntities = StageManager.getSelectedEntities();
+    const selectedEntities = this.project.stageManager.getSelectedEntities();
     if (selectedEntities.length === 0) {
       return "";
     }
@@ -202,7 +200,8 @@ export namespace StageExportSvg {
         })}
 
         {/* 构建连线 */}
-        {StageManager.getLineEdges()
+        {this.project.stageManager
+          .getLineEdges()
           .filter(
             (edge) => selectedEntitiesUUIDSet.has(edge.source.uuid) && selectedEntitiesUUIDSet.has(edge.target.uuid),
           )
@@ -213,11 +212,11 @@ export namespace StageExportSvg {
 
   function dumpStage(): React.ReactNode {
     // 如果没有任何节点，则抛出一个异常
-    if (StageManager.isNoEntity()) {
+    if (this.project.stageManager.isNoEntity()) {
       throw new Error("No nodes in stage.");
     }
     const padding = 30; // 留白
-    const viewRectangle = getEntitiesOuterRectangle(StageManager.getEntities(), padding);
+    const viewRectangle = getEntitiesOuterRectangle(this.project.stageManager.getEntities(), padding);
     // 计算画布的大小
     const width = viewRectangle.size.x;
     const height = viewRectangle.size.y;
@@ -234,11 +233,13 @@ export namespace StageExportSvg {
           backgroundColor: StageStyleManager.currentStyle.Background.toString(),
         }}
       >
-        {SectionMethods.getSortedSectionsByZ(StageManager.getSections()).map((section) => dumpSectionBase(section))}
-        {StageManager.getTextNodes().map((node) => dumpNode(node))}
-        {StageManager.getLineEdges().map((edge) => dumpEdge(edge))}
-        {StageManager.getSections().map((section) => dumpSection(section))}
-        {StageManager.getImageNodes().map((imageNode) => dumpImageNode(imageNode, svgConfig))}
+        {SectionMethods.getSortedSectionsByZ(this.project.stageManager.getSections()).map((section) =>
+          dumpSectionBase(section),
+        )}
+        {this.project.stageManager.getTextNodes().map((node) => dumpNode(node))}
+        {this.project.stageManager.getLineEdges().map((edge) => dumpEdge(edge))}
+        {this.project.stageManager.getSections().map((section) => dumpSection(section))}
+        {this.project.stageManager.getImageNodes().map((imageNode) => dumpImageNode(imageNode, svgConfig))}
       </svg>
     );
   }

@@ -1,6 +1,5 @@
 import { Serialized } from "../../types/node";
 import { SectionMethods } from "./stageManager/basicMethods/SectionMethods";
-import { StageManager } from "./stageManager/StageManager";
 import { Association } from "./stageObject/abstract/Association";
 import { Entity } from "./stageObject/abstract/StageEntity";
 import { CubicCatmullRomSplineEdge } from "./stageObject/association/CubicCatmullRomSplineEdge";
@@ -210,12 +209,12 @@ export namespace StageDumper {
    */
   export function dump(): Serialized.File {
     const entities: Serialized.CoreEntity[] = [];
-    for (const entity of StageManager.getEntities()) {
+    for (const entity of this.project.stageManager.getEntities()) {
       entities.push(dumpOneEntity(entity));
     }
 
     const associations: Serialized.CoreAssociation[] = [];
-    for (const edge of StageManager.getAssociations()) {
+    for (const edge of this.project.stageManager.getAssociations()) {
       associations.push(dumpOneAssociation(edge));
     }
 
@@ -223,7 +222,7 @@ export namespace StageDumper {
       version: latestVersion,
       entities,
       associations,
-      tags: StageManager.TagOptions.getTagUUIDs(),
+      tags: this.project.stageManager.TagOptions.getTagUUIDs(),
     };
   }
 
@@ -295,7 +294,7 @@ export namespace StageDumper {
     // 准备答案数组
     const result: Serialized.CoreAssociation[] = [];
     // 生成
-    for (const edge of StageManager.getAssociations()) {
+    for (const edge of this.project.stageManager.getAssociations()) {
       if (edge instanceof LineEdge) {
         if (entities.includes(edge.source) && entities.includes(edge.target)) {
           result.push(dumpEdge(edge));

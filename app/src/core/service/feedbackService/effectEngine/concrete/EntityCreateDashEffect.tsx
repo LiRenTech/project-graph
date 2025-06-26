@@ -3,8 +3,7 @@ import { mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { RenderUtils } from "../../../../render/canvas2d/utilsRenderer/RenderUtils";
+import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 import { RateFunctions } from "../mathTools/rateFunctions";
@@ -30,6 +29,7 @@ export class EntityCreateDashEffect extends EffectObject {
   public currentLocationArrayRight: Vector[] = [];
 
   constructor(
+    private readonly project: Project,
     /**
      * 一开始为0，每tick + 1
      */
@@ -97,8 +97,8 @@ export class EntityCreateDashEffect extends EffectObject {
     }
   }
 
-  static fromRectangle(rectangle: Rectangle, time = 30): EntityCreateDashEffect {
-    return new EntityCreateDashEffect(new ProgressNumber(0, time), rectangle);
+  static fromRectangle(project: Project, rectangle: Rectangle, time = 30): EntityCreateDashEffect {
+    return new EntityCreateDashEffect(project, new ProgressNumber(0, time), rectangle);
   }
 
   render(): void {
@@ -106,46 +106,46 @@ export class EntityCreateDashEffect extends EffectObject {
       return;
     }
     for (const p of this.currentLocationArrayTop) {
-      const viewLocation = Renderer.transformWorld2View(p);
+      const viewLocation = this.project.renderer.transformWorld2View(p);
       const color = mixColors(
         StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
         StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
-      RenderUtils.renderPixel(viewLocation, color);
+      this.project.renderUtils.renderPixel(viewLocation, color);
     }
     for (const p of this.currentLocationArrayBottom) {
-      const viewLocation = Renderer.transformWorld2View(p);
+      const viewLocation = this.project.renderer.transformWorld2View(p);
       const color = mixColors(
         StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
         StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
-      RenderUtils.renderPixel(viewLocation, color);
+      this.project.renderUtils.renderPixel(viewLocation, color);
     }
 
     for (const p of this.currentLocationArrayLeft) {
-      const viewLocation = Renderer.transformWorld2View(p);
+      const viewLocation = this.project.renderer.transformWorld2View(p);
       const color = mixColors(
         StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
         StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
-      RenderUtils.renderPixel(viewLocation, color);
+      this.project.renderUtils.renderPixel(viewLocation, color);
     }
 
     for (const p of this.currentLocationArrayRight) {
-      const viewLocation = Renderer.transformWorld2View(p);
+      const viewLocation = this.project.renderer.transformWorld2View(p);
       const color = mixColors(
         StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
         StageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
-      RenderUtils.renderPixel(viewLocation, color);
+      this.project.renderUtils.renderPixel(viewLocation, color);
     }
   }
 }

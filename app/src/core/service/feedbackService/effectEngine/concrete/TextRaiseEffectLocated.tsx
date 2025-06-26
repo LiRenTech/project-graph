@@ -1,8 +1,6 @@
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
-import { TextRenderer } from "../../../../render/canvas2d/basicRenderer/textRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
+import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 
@@ -15,6 +13,7 @@ export class TextRaiseEffectLocated extends EffectObject {
     return "TextRaiseEffectLocated";
   }
   constructor(
+    private readonly project: Project,
     public text: string,
     public location: Vector,
     public raiseDistance: number,
@@ -28,15 +27,17 @@ export class TextRaiseEffectLocated extends EffectObject {
     if (this.timeProgress.isFull) {
       return;
     }
-    TextRenderer.renderTextFromCenter(
+    this.project.textRenderer.renderTextFromCenter(
       this.text,
-      Renderer.transformWorld2View(this.location.add(new Vector(0, -this.timeProgress.rate * this.raiseDistance))),
-      this.textSize * Camera.currentScale,
+      this.project.renderer.transformWorld2View(
+        this.location.add(new Vector(0, -this.timeProgress.rate * this.raiseDistance)),
+      ),
+      this.textSize * this.project.camera.currentScale,
       StageStyleManager.currentStyle.CollideBoxPreSelected,
     );
   }
 
-  static fromDebugLogicNode(n: number, location: Vector): TextRaiseEffectLocated {
-    return new TextRaiseEffectLocated(`${n}`, location, 0, 150, new ProgressNumber(0, 3));
+  static fromDebugLogicNode(project: Project, n: number, location: Vector): TextRaiseEffectLocated {
+    return new TextRaiseEffectLocated(project, `${n}`, location, 0, 150, new ProgressNumber(0, 3));
   }
 }

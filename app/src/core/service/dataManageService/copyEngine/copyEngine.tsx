@@ -5,7 +5,6 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { StageDumper } from "../../../stage/StageDumper";
 import { StageSerializedAdder } from "../../../stage/stageManager/concreteMethods/StageSerializedAdder";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
@@ -61,7 +60,7 @@ export namespace CopyEngine {
    */
   export function copy() {
     // 获取所有选中的实体
-    const entities: Entity[] = StageManager.getSelectedEntities();
+    const entities: Entity[] = this.project.stageManager.getSelectedEntities();
     if (entities.length === 0) {
       // 如果没有选中东西，就是清空虚拟粘贴板
       clearVirtualCopyBoardData();

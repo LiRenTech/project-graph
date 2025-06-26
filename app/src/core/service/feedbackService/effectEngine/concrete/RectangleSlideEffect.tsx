@@ -1,10 +1,11 @@
+import { Random } from "../../../../algorithm/random";
 import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Vector } from "../../../../dataStruct/Vector";
+import { Project } from "../../../../Project";
 import { EffectObject } from "../effectObject";
 import { LineEffect } from "./LineEffect";
-import { Random } from "../../../../algorithm/random";
-import { Vector } from "../../../../dataStruct/Vector";
 
 /**
  * 专门处理矩形水平和垂直移动效果
@@ -16,6 +17,7 @@ export class RectangleSlideEffect extends EffectObject {
   }
 
   constructor(
+    private readonly project: Project,
     public startRect: Rectangle,
     public endRect: Rectangle,
     public override timeProgress: ProgressNumber = new ProgressNumber(0, 50),
@@ -44,7 +46,15 @@ export class RectangleSlideEffect extends EffectObject {
           : startPoint.add(new Vector(Random.randomFloat(minLength, maxLength), 0));
 
         this.subEffects.push(
-          new LineEffect(timeProgress.clone(), startPoint, endPoint, color.toNewAlpha(0.8), color.toNewAlpha(0.2), 2),
+          new LineEffect(
+            project,
+            timeProgress.clone(),
+            startPoint,
+            endPoint,
+            color.toNewAlpha(0.8),
+            color.toNewAlpha(0.2),
+            2,
+          ),
         );
       }
     } else {
@@ -61,7 +71,15 @@ export class RectangleSlideEffect extends EffectObject {
           : startPoint.add(new Vector(0, Random.randomFloat(minLength, maxLength)));
 
         this.subEffects.push(
-          new LineEffect(timeProgress.clone(), startPoint, endPoint, color.toNewAlpha(0.8), color.toNewAlpha(0.2), 2),
+          new LineEffect(
+            project,
+            timeProgress.clone(),
+            startPoint,
+            endPoint,
+            color.toNewAlpha(0.8),
+            color.toNewAlpha(0.2),
+            2,
+          ),
         );
       }
     }
@@ -78,16 +96,16 @@ export class RectangleSlideEffect extends EffectObject {
   /**
    * 创建水平滑动效果
    */
-  static horizontalSlide(startRect: Rectangle, endRect: Rectangle, color?: Color) {
+  static horizontalSlide(project: Project, startRect: Rectangle, endRect: Rectangle, color?: Color) {
     const timeProgress = new ProgressNumber(0, 30);
-    return new RectangleSlideEffect(startRect, endRect, timeProgress, color, true);
+    return new RectangleSlideEffect(project, startRect, endRect, timeProgress, color, true);
   }
 
   /**
    * 创建垂直滑动效果
    */
-  static verticalSlide(startRect: Rectangle, endRect: Rectangle, color?: Color) {
+  static verticalSlide(project: Project, startRect: Rectangle, endRect: Rectangle, color?: Color) {
     const timeProgress = new ProgressNumber(0, 30);
-    return new RectangleSlideEffect(startRect, endRect, timeProgress, color, false);
+    return new RectangleSlideEffect(project, startRect, endRect, timeProgress, color, false);
   }
 }

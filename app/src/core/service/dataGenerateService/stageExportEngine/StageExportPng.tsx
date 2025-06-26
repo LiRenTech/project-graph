@@ -3,8 +3,6 @@ import { sleep } from "../../../../utils/sleep";
 import { Vector } from "../../../dataStruct/Vector";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Camera } from "../../../stage/Camera";
-import { Canvas } from "../../../stage/Canvas";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 
 export namespace StageExportPng {
   /**
@@ -36,10 +34,10 @@ export namespace StageExportPng {
   async function exportStage_() {
     // 创建一个新的画布
     const resultCanvas = generateCanvasNode();
-    const resultCtx = resultCanvas.getContext("2d")!;
+    const resultCtx = resultthis.project.canvas.getContext("2d")!;
     // 创建完毕
 
-    const stageRect = StageManager.getBoundingRectangle();
+    const stageRect = this.project.stageManager.getBoundingRectangle();
     const topLeft = stageRect.leftTop.subtract(new Vector(PADDING, PADDING));
     const bottomRight = stageRect.rightBottom.add(new Vector(PADDING, PADDING));
     // 开始把画布内容渲染到新画布上
@@ -68,7 +66,7 @@ export namespace StageExportPng {
         continue;
       }
       lastFrame = Renderer.frameIndex;
-      const imageData = Canvas.ctx.getImageData(0, 0, viewRect.size.x * SCALE, viewRect.size.y * SCALE);
+      const imageData = this.project.canvas.ctx.getImageData(0, 0, viewRect.size.x * SCALE, viewRect.size.y * SCALE);
       resultCtx.putImageData(
         imageData,
         (x - topLeft.x) * SCALE * cameraScaleWhenExport,
@@ -77,9 +75,9 @@ export namespace StageExportPng {
       tickRenderer(i, leftTopLocList.length);
       i++;
     }
-    const imageData = resultCanvas.toDataURL("image/png");
+    const imageData = resultthis.project.canvas.toDataURL("image/png");
     // 移除画布
-    resultCanvas.remove();
+    resultthis.project.canvas.remove();
 
     const imageNode = getImageNodeByImageData(imageData);
     const imageBox = document.getElementById("export-png-image-box");
@@ -138,20 +136,20 @@ export namespace StageExportPng {
 
   export function generateCanvasNode(): HTMLCanvasElement {
     const resultCanvas = document.createElement("canvas");
-    resultCanvas.style.position = "fixed";
-    resultCanvas.style.top = "50%";
-    resultCanvas.style.left = "80%";
+    resultthis.project.canvas.style.position = "fixed";
+    resultthis.project.canvas.style.top = "50%";
+    resultthis.project.canvas.style.left = "80%";
     // 暂时看不见这个
-    resultCanvas.style.zIndex = "99999";
-    resultCanvas.style.pointerEvents = "none";
+    resultthis.project.canvas.style.zIndex = "99999";
+    resultthis.project.canvas.style.pointerEvents = "none";
 
-    const stageSize = StageManager.getSize().add(new Vector(PADDING * 2, PADDING * 2));
+    const stageSize = this.project.stageManager.getSize().add(new Vector(PADDING * 2, PADDING * 2));
     // 设置大小
-    resultCanvas.width = stageSize.x * SCALE * cameraScaleWhenExport;
-    resultCanvas.height = stageSize.y * SCALE * cameraScaleWhenExport;
-    resultCanvas.style.width = `${stageSize.x * (1 / appScale) * cameraScaleWhenExport}px`;
-    resultCanvas.style.height = `${stageSize.y * (1 / appScale) * cameraScaleWhenExport}px`;
-    const ctx = resultCanvas.getContext("2d")!;
+    resultthis.project.canvas.width = stageSize.x * SCALE * cameraScaleWhenExport;
+    resultthis.project.canvas.height = stageSize.y * SCALE * cameraScaleWhenExport;
+    resultthis.project.canvas.style.width = `${stageSize.x * (1 / appScale) * cameraScaleWhenExport}px`;
+    resultthis.project.canvas.style.height = `${stageSize.y * (1 / appScale) * cameraScaleWhenExport}px`;
+    const ctx = resultthis.project.canvas.getContext("2d")!;
     ctx.scale(SCALE, SCALE);
     // 设置大小完毕
 

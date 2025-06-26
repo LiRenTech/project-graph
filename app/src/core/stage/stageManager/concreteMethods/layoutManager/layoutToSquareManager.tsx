@@ -1,7 +1,6 @@
 import { Vector } from "../../../../dataStruct/Vector";
 import { Entity } from "../../../stageObject/abstract/StageEntity";
 import { StageHistoryManager } from "../../StageHistoryManager";
-import { StageManager } from "../../StageManager";
 import { StageEntityMoveManager } from "../StageEntityMoveManager";
 
 export namespace LayoutToSquareManager {
@@ -9,7 +8,7 @@ export namespace LayoutToSquareManager {
    * 将所有选中的节点尽可能摆放排列成正方形
    */
   export function layoutToSquareBySelected() {
-    const entities = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+    const entities = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     layoutToSquare(entities);
     StageHistoryManager.recordStep();
   }

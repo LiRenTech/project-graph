@@ -2,6 +2,7 @@ import { Random } from "../../../../algorithm/random";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
+import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 import { TechLineEffect } from "./TechLineEffect";
@@ -11,6 +12,7 @@ export class EntityCreateLineEffect extends EffectObject {
     return "EntityCreateLineEffect";
   }
   constructor(
+    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     public rect: Rectangle,
   ) {
@@ -28,6 +30,7 @@ export class EntityCreateLineEffect extends EffectObject {
       const topStartLocation = new Vector(Random.randomFloat(this.rect.left, this.rect.right), this.rect.top);
       const topEndLocation = topStartLocation.add(new Vector(0, -1000));
       const zapLineEffect = new TechLineEffect(
+        project,
         topStartLocation,
         topEndLocation,
         segmentCount,
@@ -45,6 +48,7 @@ export class EntityCreateLineEffect extends EffectObject {
       const bottomStartLocation = new Vector(Random.randomFloat(this.rect.left, this.rect.right), this.rect.bottom);
       const bottomEndLocation = bottomStartLocation.add(new Vector(0, 1000));
       const zapLineEffect = new TechLineEffect(
+        project,
         bottomStartLocation,
         bottomEndLocation,
         segmentCount,
@@ -62,6 +66,7 @@ export class EntityCreateLineEffect extends EffectObject {
       const leftStartLocation = new Vector(this.rect.left, Random.randomFloat(this.rect.top, this.rect.bottom));
       const leftEndLocation = leftStartLocation.add(new Vector(-1000, 0));
       const zapLineEffect = new TechLineEffect(
+        project,
         leftStartLocation,
         leftEndLocation,
         segmentCount,
@@ -79,6 +84,7 @@ export class EntityCreateLineEffect extends EffectObject {
       const rightStartLocation = new Vector(this.rect.right, Random.randomFloat(this.rect.top, this.rect.bottom));
       const rightEndLocation = rightStartLocation.add(new Vector(1000, 0));
       const zapLineEffect = new TechLineEffect(
+        project,
         rightStartLocation,
         rightEndLocation,
         segmentCount,
@@ -93,8 +99,8 @@ export class EntityCreateLineEffect extends EffectObject {
     }
   }
 
-  static from(rectangle: Rectangle): EntityCreateLineEffect {
-    return new EntityCreateLineEffect(new ProgressNumber(0, 30), rectangle);
+  static from(project: Project, rectangle: Rectangle): EntityCreateLineEffect {
+    return new EntityCreateLineEffect(project, new ProgressNumber(0, 30), rectangle);
   }
 
   override tick() {

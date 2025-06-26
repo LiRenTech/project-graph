@@ -3,8 +3,7 @@ import { mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { RenderUtils } from "../../../../render/canvas2d/utilsRenderer/RenderUtils";
+import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 
@@ -19,6 +18,7 @@ export class NodeMoveShadowEffect extends EffectObject {
   pointInitSpeedList: Vector[] = [];
 
   constructor(
+    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     public rectangle: Rectangle,
     public rectangleSpeed: Vector,
@@ -91,14 +91,14 @@ export class NodeMoveShadowEffect extends EffectObject {
       return;
     }
     for (const point of this.pointList) {
-      const viewLocation = Renderer.transformWorld2View(point);
+      const viewLocation = this.project.renderer.transformWorld2View(point);
       const color = mixColors(
         StageStyleManager.currentStyle.effects.flash,
         StageStyleManager.currentStyle.effects.flash.toTransparent(),
         this.timeProgress.rate,
       );
 
-      RenderUtils.renderPixel(viewLocation, color);
+      this.project.renderUtils.renderPixel(viewLocation, color);
     }
   }
 }

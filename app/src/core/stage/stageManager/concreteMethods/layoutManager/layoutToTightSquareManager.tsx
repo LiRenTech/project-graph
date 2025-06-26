@@ -2,7 +2,6 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Entity } from "../../../stageObject/abstract/StageEntity";
 import { StageHistoryManager } from "../../StageHistoryManager";
-import { StageManager } from "../../StageManager";
 
 export namespace LayoutToTightSquareManager {
   /**
@@ -11,7 +10,7 @@ export namespace LayoutToTightSquareManager {
    * 有待优化
    */
   export function layoutToTightSquareBySelected() {
-    const entities = Array.from(StageManager.getEntities()).filter((entity) => entity.isSelected);
+    const entities = Array.from(this.project.stageManager.getEntities()).filter((entity) => entity.isSelected);
     if (entities.length === 0) return;
     layoutToTightSquare(entities);
     StageHistoryManager.recordStep();

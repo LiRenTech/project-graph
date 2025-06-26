@@ -6,7 +6,6 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
 import { Stage } from "../../Stage";
-import { StageManager } from "../../stageManager/StageManager";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
@@ -105,7 +104,7 @@ export class PortalNode extends ConnectableEntity {
   }
 
   private updateChildStageCameraData() {
-    StageManager.updateChildStageCameraData(
+    this.project.stageManager.updateChildStageCameraData(
       PathString.relativePathToAbsolutePath(PathString.dirPath(Stage.path.getFilePath()), this.portalFilePath),
       {
         location: this.location,

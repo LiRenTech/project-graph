@@ -1,16 +1,19 @@
 import { Dialog } from "../../../../../components/dialog";
 import { Vector } from "../../../../dataStruct/Vector";
+import { Project } from "../../../../Project";
 import { Stage } from "../../../../stage/Stage";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
-
-import { editSectionTitle } from "./utilsControl";
+import { ControllerClass } from "../ControllerClass";
 
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
  *
  * 当有节点编辑时，会把摄像机锁定住
  */
-export class ControllerSectionEdit {
+export class ControllerSectionEdit extends ControllerClass {
+  constructor(protected readonly project: Project) {
+    super(project);
+  }
+
   mouseDoubleClick = (event: MouseEvent) => {
     if (event.button !== 0) {
       return;
@@ -21,7 +24,7 @@ export class ControllerSectionEdit {
     }
 
     // 编辑文字
-    editSectionTitle(firstHoverSection);
+    this.project.controllerUtils.editSectionTitle(firstHoverSection);
     return;
   };
 
@@ -32,7 +35,7 @@ export class ControllerSectionEdit {
 
   keydown = (event: KeyboardEvent) => {
     if (event.key === "Enter") {
-      const isHaveSectionSelected = StageManager.getSections().some((section) => section.isSelected);
+      const isHaveSectionSelected = this.project.stageManager.getSections().some((section) => section.isSelected);
       if (!isHaveSectionSelected) {
         return;
       }
@@ -42,7 +45,7 @@ export class ControllerSectionEdit {
       }).then(({ button, value }) => {
         if (button === "确定") {
           if (value) {
-            for (const section of StageManager.getSections()) {
+            for (const section of this.project.stageManager.getSections()) {
               if (section.isSelected) {
                 section.rename(value);
               }

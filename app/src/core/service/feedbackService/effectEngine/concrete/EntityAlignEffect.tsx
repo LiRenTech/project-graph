@@ -3,9 +3,7 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Line } from "../../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { CurveRenderer } from "../../../../render/canvas2d/basicRenderer/curveRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
+import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 
@@ -17,10 +15,11 @@ export class EntityAlignEffect extends EffectObject {
     return "EntityAlignEffect";
   }
   private lines: Line[] = [];
-  static fromEntity(moveRectangle: Rectangle, targetRectangle: Rectangle): EntityAlignEffect {
-    return new EntityAlignEffect(new ProgressNumber(0, 20), moveRectangle, targetRectangle);
+  static fromEntity(project: Project, moveRectangle: Rectangle, targetRectangle: Rectangle): EntityAlignEffect {
+    return new EntityAlignEffect(project, new ProgressNumber(0, 20), moveRectangle, targetRectangle);
   }
   constructor(
+    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     moveRectangle: Rectangle,
     targetRectangle: Rectangle,
@@ -97,16 +96,16 @@ export class EntityAlignEffect extends EffectObject {
 
   render(): void {
     for (const line of this.lines) {
-      CurveRenderer.renderDashedLine(
-        Renderer.transformWorld2View(line.start),
-        Renderer.transformWorld2View(line.end),
+      this.project.curveRenderer.renderDashedLine(
+        this.project.renderer.transformWorld2View(line.start),
+        this.project.renderer.transformWorld2View(line.end),
         mixColors(
           StageStyleManager.currentStyle.CollideBoxSelected.toSolid(),
           StageStyleManager.currentStyle.CollideBoxSelected.clone().toTransparent(),
           1 - this.timeProgress.rate,
         ),
-        0.5 * Camera.currentScale,
-        8 * Camera.currentScale,
+        0.5 * this.project.camera.currentScale,
+        8 * this.project.camera.currentScale,
       );
     }
   }

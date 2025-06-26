@@ -5,20 +5,15 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Line } from "../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { EdgeRenderer } from "../../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/StageNodeAdder";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
 import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { ControllerClass } from "../ControllerClass";
-import { addTextNodeByLocation } from "./utilsControl";
-
-export let ControllerNodeConnection: ControllerNodeConnectionClass;
 
 /**
  * 连线控制器
@@ -89,8 +84,6 @@ export class ControllerNodeConnectionClass extends ControllerClass {
   constructor(protected readonly project: Project) {
     super(project);
     this.registerControlKeyEvents();
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    ControllerNodeConnection = this;
   }
 
   destroy() {
@@ -116,21 +109,21 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     // 如果是左键，则检查是否在连接的过程中按下
     if (this.isConnecting()) {
       const clickedConnectableEntity: ConnectableEntity | null =
-        StageManager.findConnectableEntityByLocation(pressWorldLocation);
+        this.project.stageManager.findConnectableEntityByLocation(pressWorldLocation);
       if (clickedConnectableEntity === null) {
         // 是否是在Section内部双击
         const sections = SectionMethods.getSectionsByInnerLocation(pressWorldLocation);
 
         const pointUUID = StageNodeAdder.addConnectPoint(pressWorldLocation, sections);
-        const connectPoint = StageManager.getConnectableEntityByUUID(pointUUID) as ConnectPoint;
+        const connectPoint = this.project.stageManager.getConnectableEntityByUUID(pointUUID) as ConnectPoint;
 
         for (const fromEntity of this.connectFromEntities) {
-          StageManager.connectEntity(fromEntity, connectPoint);
+          this.project.stageManager.connectEntity(fromEntity, connectPoint);
           this.addConnectEffect(fromEntity, connectPoint);
         }
         this.connectFromEntities = [connectPoint];
         // 选中这个质点
-        for (const entity of StageManager.getConnectableEntity()) {
+        for (const entity of this.project.stageManager.getConnectableEntity()) {
           if (entity.isSelected) {
             entity.isSelected = false;
           }
@@ -169,14 +162,14 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     this.mouseLocations = [pressWorldLocation.clone()];
 
     const clickedConnectableEntity: ConnectableEntity | null =
-      StageManager.findConnectableEntityByLocation(pressWorldLocation);
+      this.project.stageManager.findConnectableEntityByLocation(pressWorldLocation);
     if (clickedConnectableEntity === null) {
       return;
     }
 
     // 右键点击了某个节点
     this.connectFromEntities = [];
-    for (const node of StageManager.getConnectableEntity()) {
+    for (const node of this.project.stageManager.getConnectableEntity()) {
       if (node.isSelected) {
         this.connectFromEntities.push(node);
       }
@@ -197,7 +190,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
      */
     if (this.connectFromEntities.includes(clickedConnectableEntity)) {
       // 多重连接
-      for (const node of StageManager.getConnectableEntity()) {
+      for (const node of this.project.stageManager.getConnectableEntity()) {
         if (node.isSelected) {
           // 特效
           this.project.effects.addEffect(
@@ -234,7 +227,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
   private isMouseHoverOnTarget = false;
 
   public mousemove: (event: MouseEvent) => void = (event) => {
-    if (Stage.rectangleSelectMouseMachine.isUsing || Stage.cuttingMachine.isUsing) {
+    if (this.project.controller.rectangleSelect.isUsing || this.project.controller.cutting.isUsing) {
       return;
     }
     if (!this._isUsing) {
@@ -259,7 +252,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     }
     // 连接线
     let isFindConnectToNode = false;
-    for (const entity of StageManager.getConnectableEntity()) {
+    for (const entity of this.project.stageManager.getConnectableEntity()) {
       if (entity.collisionBox.isContainsPoint(worldLocation)) {
         // 找到了连接的节点，吸附上去
         this.connectToEntity = entity;
@@ -295,7 +288,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
 
   private mouseUp(event: MouseEvent) {
     const releaseWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    const releaseTargetEntity = StageManager.findConnectableEntityByLocation(releaseWorldLocation);
+    const releaseTargetEntity = this.project.stageManager.findConnectableEntityByLocation(releaseWorldLocation);
 
     // 根据轨迹判断方向
     const [sourceDirection, targetDirection] = this.getConnectDirectionByMouseTrack();
@@ -320,10 +313,10 @@ export class ControllerNodeConnectionClass extends ControllerClass {
       // 额外复制一个数组，因为回调函数执行前，这个数组已经被清空了
       const newConnectFromEntities = this.connectFromEntities;
 
-      addTextNodeByLocation(releaseWorldLocation, true, (uuid) => {
-        const createdNode = StageManager.getTextNodeByUUID(uuid) as ConnectableEntity;
+      this.project.controllerUtils.addTextNodeByLocation(releaseWorldLocation, true, (uuid) => {
+        const createdNode = this.project.stageManager.getTextNodeByUUID(uuid) as ConnectableEntity;
         for (const fromEntity of newConnectFromEntities) {
-          const connectResult = StageManager.connectEntity(fromEntity, createdNode);
+          const connectResult = this.project.stageManager.connectEntity(fromEntity, createdNode);
           if (connectResult) {
             this.addConnectEffect(fromEntity, createdNode);
           }
@@ -408,14 +401,14 @@ export class ControllerNodeConnectionClass extends ControllerClass {
    */
   private clickMultiConnect(releaseWorldLocation: Vector) {
     // 右键点击位置和抬起位置重叠，说明是右键单击事件，没有发生拖拽现象
-    const releaseTargetEntity = StageManager.findConnectableEntityByLocation(releaseWorldLocation);
+    const releaseTargetEntity = this.project.stageManager.findConnectableEntityByLocation(releaseWorldLocation);
     if (!releaseTargetEntity) {
       return;
     }
-    const selectedEntities = StageManager.getConnectableEntity().filter((entity) => entity.isSelected);
+    const selectedEntities = this.project.stageManager.getConnectableEntity().filter((entity) => entity.isSelected);
     // 还要保证当前舞台有节点被选中
     // 连线
-    StageManager.connectMultipleEntities(selectedEntities, releaseTargetEntity);
+    this.project.stageManager.connectMultipleEntities(selectedEntities, releaseTargetEntity);
 
     for (const selectedEntity of selectedEntities) {
       this.addConnectEffect(selectedEntity, releaseTargetEntity);
@@ -470,7 +463,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
         break;
     }
     // 连线
-    StageManager.connectMultipleEntities(
+    this.project.stageManager.connectMultipleEntities(
       this.connectFromEntities,
       connectToEntity,
       isPressC,
@@ -488,7 +481,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
   }
 
   private addConnectEffect(from: ConnectableEntity, to: ConnectableEntity) {
-    for (const effect of EdgeRenderer.getConnectedEffects(from, to)) {
+    for (const effect of this.project.edgeRenderer.getConnectedEffects(from, to)) {
       this.project.effects.addEffect(effect);
     }
   }

@@ -1,9 +1,7 @@
 import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { RenderUtils } from "../../../../render/canvas2d/utilsRenderer/RenderUtils";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
+import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectParticle } from "../effectElements/effectParticle";
 import { EffectObject } from "../effectObject";
@@ -18,6 +16,7 @@ export class PointDashEffect extends EffectObject {
   public particleList: EffectParticle[] = [];
 
   constructor(
+    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     public location: Vector,
     public particleCount: number,
@@ -45,7 +44,7 @@ export class PointDashEffect extends EffectObject {
 
       let isCollideWithEntity = false;
 
-      for (const connectEntity of StageManager.getConnectableEntity()) {
+      for (const connectEntity of this.project.stageManager.getConnectableEntity()) {
         const connectEntityCenter = connectEntity.collisionBox.getRectangle().center;
         const distance = connectEntityCenter.subtract(particle.location);
         const normalizedDistance = distance.normalize().multiply(20 / distance.magnitude() ** 1.2);
@@ -71,8 +70,8 @@ export class PointDashEffect extends EffectObject {
     }
   }
 
-  static fromMouseEffect(mouseWorldLocation: Vector, count: number): PointDashEffect {
-    return new PointDashEffect(new ProgressNumber(0, 50), mouseWorldLocation, count);
+  static fromMouseEffect(project: Project, mouseWorldLocation: Vector, count: number): PointDashEffect {
+    return new PointDashEffect(project, new ProgressNumber(0, 50), mouseWorldLocation, count);
   }
 
   render(): void {
@@ -80,14 +79,14 @@ export class PointDashEffect extends EffectObject {
       return;
     }
     for (const p of this.particleList) {
-      const viewLocation = Renderer.transformWorld2View(p.location);
+      const viewLocation = this.project.renderer.transformWorld2View(p.location);
       // const color = mixColors(
       //   p.color,
       //   p.color.toTransparent(),
       //   this.timeProgress.rate,
       // );
 
-      RenderUtils.renderPixel(viewLocation, p.color);
+      this.project.renderUtils.renderPixel(viewLocation, p.color);
     }
   }
 }

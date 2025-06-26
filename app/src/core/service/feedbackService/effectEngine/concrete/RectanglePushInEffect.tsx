@@ -1,6 +1,7 @@
 import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Project } from "../../../../Project";
 import { EffectObject } from "../effectObject";
 import { LineCuttingEffect } from "./LineCuttingEffect";
 
@@ -12,6 +13,7 @@ export class RectanglePushInEffect extends EffectObject {
     return "RectanglePushInEffect";
   }
   constructor(
+    private readonly project: Project,
     public smallRectangle: Rectangle,
     public bigRectangle: Rectangle,
     public override timeProgress: ProgressNumber = new ProgressNumber(0, 50),
@@ -20,16 +22,59 @@ export class RectanglePushInEffect extends EffectObject {
     super(timeProgress);
     if (this.reversed) {
       this.subEffects = [
-        new LineCuttingEffect(timeProgress, bigRectangle.leftTop, smallRectangle.leftTop, Color.Red, Color.Red),
-        new LineCuttingEffect(timeProgress, bigRectangle.rightTop, smallRectangle.rightTop, Color.Red, Color.Red),
-        new LineCuttingEffect(timeProgress, bigRectangle.leftBottom, smallRectangle.leftBottom, Color.Red, Color.Red),
-        new LineCuttingEffect(timeProgress, bigRectangle.rightBottom, smallRectangle.rightBottom, Color.Red, Color.Red),
+        new LineCuttingEffect(
+          project,
+          timeProgress,
+          bigRectangle.leftTop,
+          smallRectangle.leftTop,
+          Color.Red,
+          Color.Red,
+        ),
+        new LineCuttingEffect(
+          project,
+          timeProgress,
+          bigRectangle.rightTop,
+          smallRectangle.rightTop,
+          Color.Red,
+          Color.Red,
+        ),
+        new LineCuttingEffect(
+          project,
+          timeProgress,
+          bigRectangle.leftBottom,
+          smallRectangle.leftBottom,
+          Color.Red,
+          Color.Red,
+        ),
+        new LineCuttingEffect(
+          project,
+          timeProgress,
+          bigRectangle.rightBottom,
+          smallRectangle.rightBottom,
+          Color.Red,
+          Color.Red,
+        ),
       ];
     } else {
       this.subEffects = [
-        new LineCuttingEffect(timeProgress, smallRectangle.leftTop, bigRectangle.leftTop, Color.Green, Color.Green),
-        new LineCuttingEffect(timeProgress, smallRectangle.rightTop, bigRectangle.rightTop, Color.Green, Color.Green),
         new LineCuttingEffect(
+          project,
+          timeProgress,
+          smallRectangle.leftTop,
+          bigRectangle.leftTop,
+          Color.Green,
+          Color.Green,
+        ),
+        new LineCuttingEffect(
+          project,
+          timeProgress,
+          smallRectangle.rightTop,
+          bigRectangle.rightTop,
+          Color.Green,
+          Color.Green,
+        ),
+        new LineCuttingEffect(
+          project,
           timeProgress,
           smallRectangle.leftBottom,
           bigRectangle.leftBottom,
@@ -37,6 +82,7 @@ export class RectanglePushInEffect extends EffectObject {
           Color.Green,
         ),
         new LineCuttingEffect(
+          project,
           timeProgress,
           smallRectangle.rightBottom,
           bigRectangle.rightBottom,
@@ -47,9 +93,9 @@ export class RectanglePushInEffect extends EffectObject {
     }
   }
 
-  static sectionGoInGoOut(entityRectangle: Rectangle, sectionRectangle: Rectangle, isGoOut = false) {
+  static sectionGoInGoOut(project: Project, entityRectangle: Rectangle, sectionRectangle: Rectangle, isGoOut = false) {
     const timeProgress = new ProgressNumber(0, 50);
-    return new RectanglePushInEffect(entityRectangle, sectionRectangle, timeProgress, isGoOut);
+    return new RectanglePushInEffect(project, entityRectangle, sectionRectangle, timeProgress, isGoOut);
   }
 
   protected subEffects: EffectObject[];

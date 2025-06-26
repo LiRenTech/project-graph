@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
@@ -65,8 +64,8 @@ export namespace AutoComputeUtils {
         size: [100, 100],
         color: [0, 0, 0, 0],
       });
-      StageManager.addTextNode(newNode);
-      StageManager.connectEntity(node, newNode);
+      this.project.stageManager.addTextNode(newNode);
+      this.project.stageManager.connectEntity(node, newNode);
     }
   }
 
@@ -90,8 +89,8 @@ export namespace AutoComputeUtils {
         size: [100, 100],
         color: [0, 0, 0, 0],
       });
-      StageManager.addTextNode(newNode);
-      StageManager.connectEntity(section, newNode);
+      this.project.stageManager.addTextNode(newNode);
+      this.project.stageManager.connectEntity(section, newNode);
     }
   }
 
@@ -111,8 +110,8 @@ export namespace AutoComputeUtils {
           size: [100, 100],
           color: [0, 0, 0, 0],
         });
-        StageManager.addTextNode(newNode);
-        StageManager.connectEntity(section, newNode);
+        this.project.stageManager.addTextNode(newNode);
+        this.project.stageManager.connectEntity(section, newNode);
       }
     }
     // 子节点数量够了，直接修改，顺序是从上到下
@@ -154,8 +153,8 @@ export namespace AutoComputeUtils {
           size: [100, 100],
           color: [0, 0, 0, 0],
         });
-        StageManager.addTextNode(newNode);
-        StageManager.connectEntity(node, newNode);
+        this.project.stageManager.addTextNode(newNode);
+        this.project.stageManager.connectEntity(node, newNode);
       }
     }
     // 子节点数量够了，直接修改，顺序是从上到下

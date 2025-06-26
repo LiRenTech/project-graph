@@ -1,9 +1,8 @@
 import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
-import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
+import { Project } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 
@@ -12,6 +11,7 @@ export class RectangleRenderEffect extends EffectObject {
     return "RectangleRenderEffect";
   }
   constructor(
+    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     private rectangle: Rectangle,
     private fillColor: Color,
@@ -22,17 +22,18 @@ export class RectangleRenderEffect extends EffectObject {
   }
 
   render() {
-    ShapeRenderer.renderRect(
-      this.rectangle.transformWorld2View(),
+    this.project.shapeRenderer.renderRect(
+      this.project.renderer.transformWorld2View(this.rectangle),
       this.fillColor,
       mixColors(this.strokeColor, this.strokeColor.toTransparent(), this.timeProgress.rate),
-      this.strokeWidth * Camera.currentScale,
-      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+      this.strokeWidth * this.project.camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
     );
   }
 
-  static fromPreAlign(rectangle: Rectangle): RectangleRenderEffect {
+  static fromPreAlign(project: Project, rectangle: Rectangle): RectangleRenderEffect {
     return new RectangleRenderEffect(
+      project,
       new ProgressNumber(0, 10),
       rectangle,
       Color.Transparent,
@@ -41,8 +42,9 @@ export class RectangleRenderEffect extends EffectObject {
     );
   }
 
-  static fromShiftClickSelect(rectangle: Rectangle): RectangleRenderEffect {
+  static fromShiftClickSelect(project: Project, rectangle: Rectangle): RectangleRenderEffect {
     return new RectangleRenderEffect(
+      project,
       new ProgressNumber(0, 100),
       rectangle,
       Color.Transparent,

@@ -1,6 +1,5 @@
 import { Project, service } from "../../../Project";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 
 /**
@@ -32,9 +31,9 @@ export class AutoLayout {
       return;
     }
     // 获取所有选中的节点
-    const selectedConnectableEntities = StageManager.getSelectedEntities().filter(
-      (entity) => entity instanceof ConnectableEntity,
-    );
+    const selectedConnectableEntities = this.project.stageManager
+      .getSelectedEntities()
+      .filter((entity) => entity instanceof ConnectableEntity);
     // 遍历所有选中的节点，将他们的直接孩子节点拉向自己
     selectedConnectableEntities.forEach((entity) => {
       // 计算父向子的关系

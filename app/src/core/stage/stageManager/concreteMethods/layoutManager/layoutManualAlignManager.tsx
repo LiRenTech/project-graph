@@ -1,12 +1,15 @@
 import { Vector } from "../../../../dataStruct/Vector";
+import { Project, service } from "../../../../Project";
 import { StageHistoryManager } from "../../StageHistoryManager";
-import { StageManager } from "../../StageManager";
 import { StageEntityMoveManager } from "../StageEntityMoveManager";
 
-export namespace LayoutManualAlignManager {
+@service("layoutManualAlign")
+export class LayoutManualAlign {
+  constructor(private readonly project: Project) {}
+
   // 左侧对齐
-  export function alignLeft() {
-    const nodes = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+  alignLeft() {
+    const nodes = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     const minX = Math.min(...nodes.map((node) => node.collisionBox.getRectangle().left));
     for (const node of nodes) {
       StageEntityMoveManager.moveEntityUtils(node, new Vector(minX - node.collisionBox.getRectangle().left, 0));
@@ -15,8 +18,8 @@ export namespace LayoutManualAlignManager {
   }
 
   // 右侧对齐
-  export function alignRight() {
-    const nodes = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+  alignRight() {
+    const nodes = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     const maxX = Math.max(...nodes.map((node) => node.collisionBox.getRectangle().right));
     for (const node of nodes) {
       StageEntityMoveManager.moveEntityUtils(node, new Vector(maxX - node.collisionBox.getRectangle().right, 0));
@@ -25,8 +28,8 @@ export namespace LayoutManualAlignManager {
   }
 
   // 上侧对齐
-  export function alignTop() {
-    const nodes = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+  alignTop() {
+    const nodes = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     const minY = Math.min(...nodes.map((node) => node.collisionBox.getRectangle().top));
     for (const node of nodes) {
       StageEntityMoveManager.moveEntityUtils(node, new Vector(0, minY - node.collisionBox.getRectangle().top));
@@ -35,8 +38,8 @@ export namespace LayoutManualAlignManager {
   }
 
   // 下侧对齐
-  export function alignBottom() {
-    const nodes = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+  alignBottom() {
+    const nodes = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     const maxY = Math.max(...nodes.map((node) => node.collisionBox.getRectangle().bottom));
     for (const node of nodes) {
       StageEntityMoveManager.moveEntityUtils(node, new Vector(0, maxY - node.collisionBox.getRectangle().bottom));
@@ -44,8 +47,8 @@ export namespace LayoutManualAlignManager {
     StageHistoryManager.recordStep();
   }
 
-  export function alignCenterHorizontal() {
-    const nodes = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+  alignCenterHorizontal() {
+    const nodes = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
 
     // 计算所有选中节点的总高度和最小 y 坐标
@@ -62,8 +65,8 @@ export namespace LayoutManualAlignManager {
     StageHistoryManager.recordStep();
   }
 
-  export function alignCenterVertical() {
-    const nodes = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+  alignCenterVertical() {
+    const nodes = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
 
     // 计算所有选中节点的总宽度和最小 x 坐标
@@ -81,8 +84,8 @@ export namespace LayoutManualAlignManager {
   }
 
   // 相等间距水平分布对齐
-  export function alignHorizontalSpaceBetween() {
-    const nodes = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+  alignHorizontalSpaceBetween() {
+    const nodes = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
 
     const minX = Math.min(...nodes.map((node) => node.collisionBox.getRectangle().left));
@@ -101,8 +104,8 @@ export namespace LayoutManualAlignManager {
   }
 
   // 相等间距垂直分布对齐
-  export function alignVerticalSpaceBetween() {
-    const nodes = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+  alignVerticalSpaceBetween() {
+    const nodes = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
 
     const minY = Math.min(...nodes.map((node) => node.collisionBox.getRectangle().top));
@@ -123,8 +126,8 @@ export namespace LayoutManualAlignManager {
   /**
    * 从左到右紧密排列
    */
-  export function alignLeftToRightNoSpace() {
-    let nodes = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+  alignLeftToRightNoSpace() {
+    let nodes = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
     nodes = nodes.sort((a, b) => a.collisionBox.getRectangle().left - b.collisionBox.getRectangle().left);
 
@@ -141,8 +144,8 @@ export namespace LayoutManualAlignManager {
   /**
    * 从上到下密排列
    */
-  export function alignTopToBottomNoSpace() {
-    let nodes = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+  alignTopToBottomNoSpace() {
+    let nodes = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     if (nodes.length <= 1) return; // 如果只有一个或没有选中的节点，则不需要重新排列
     nodes = nodes.sort((a, b) => a.collisionBox.getRectangle().top - b.collisionBox.getRectangle().top);
 

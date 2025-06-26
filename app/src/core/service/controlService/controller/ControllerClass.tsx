@@ -1,7 +1,5 @@
 import { Vector } from "../../../dataStruct/Vector";
 import { Project } from "../../../Project";
-import { Canvas } from "../../../stage/Canvas";
-import { Stage } from "../../../stage/Stage";
 import { ViewOutlineFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
 import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
 
@@ -13,11 +11,11 @@ export class ControllerClass {
   constructor(protected readonly project: Project) {
     window.addEventListener("keydown", this.keydown);
     window.addEventListener("keyup", this.keyup);
-    Canvas.element.addEventListener("pointerdown", this.mousedown);
+    this.project.canvas.element.addEventListener("pointerdown", this.mousedown);
     window.addEventListener("pointerup", this._mouseup);
     window.addEventListener("pointermove", this.mousemove);
-    Canvas.element.addEventListener("wheel", this.mousewheel);
-    Canvas.element.addEventListener("touchstart", this._touchstart);
+    this.project.canvas.element.addEventListener("wheel", this.mousewheel);
+    this.project.canvas.element.addEventListener("touchstart", this._touchstart);
     window.addEventListener("touchmove", this._touchmove);
     window.addEventListener("touchend", this._touchend);
   }
@@ -40,11 +38,11 @@ export class ControllerClass {
   public destroy() {
     window.removeEventListener("keydown", this.keydown);
     window.removeEventListener("keyup", this.keyup);
-    Canvas.element.removeEventListener("pointerdown", this.mousedown);
+    this.project.canvas.element.removeEventListener("pointerdown", this.mousedown);
     window.removeEventListener("pointerup", this._mouseup);
     window.removeEventListener("pointermove", this.mousemove);
-    Canvas.element.removeEventListener("wheel", this.mousewheel);
-    Canvas.element.removeEventListener("touchstart", this._touchstart);
+    this.project.canvas.element.removeEventListener("wheel", this.mousewheel);
+    this.project.canvas.element.removeEventListener("touchstart", this._touchstart);
     window.removeEventListener("touchmove", this._touchmove);
     window.removeEventListener("touchend", this._touchend);
 
@@ -106,7 +104,7 @@ export class ControllerClass {
       clientY: event.touches[event.touches.length - 1].clientY,
     } as PointerEvent;
     if (event.touches.length > 1) {
-      Stage.rectangleSelectMouseMachine.shutDown();
+      this.project.controller.rectangleSelect.shutDown();
     }
     this.mousedown(touch);
   };

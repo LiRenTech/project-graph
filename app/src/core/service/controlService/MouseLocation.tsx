@@ -1,6 +1,5 @@
 import { Vector } from "../../dataStruct/Vector";
 import { Project, service } from "../../Project";
-import { Stage } from "../../stage/Stage";
 
 @service("mouseLocation")
 export class MouseLocation {
@@ -20,16 +19,16 @@ export class MouseLocation {
       // 检测是否超出范围
       // TODO: 这里还可以优化一下，给每个Controller都加一个mouseMoveOutWindowForcedShutdown方法
       if (this.x < 0 || this.x > window.innerWidth || this.y < 0 || this.y > window.innerHeight) {
-        if (Stage.cuttingMachine.isUsing) {
-          Stage.cuttingMachine.mouseMoveOutWindowForcedShutdown(this.vectorObject);
+        if (this.project.controller.cutting.isUsing) {
+          this.project.controller.cutting.mouseMoveOutWindowForcedShutdown(this.vectorObject);
         }
-        if (Stage.cameraControllerMachine.isUsingMouseGrabMove) {
-          Stage.cameraControllerMachine.mouseMoveOutWindowForcedShutdown(this.vectorObject);
+        if (this.project.controller.camera.isUsingMouseGrabMove) {
+          this.project.controller.camera.mouseMoveOutWindowForcedShutdown(this.vectorObject);
         }
-        if (Stage.rectangleSelectMouseMachine.isUsing) {
-          Stage.rectangleSelectMouseMachine.mouseMoveOutWindowForcedShutdown(this.vectorObject);
+        if (this.project.controller.rectangleSelect.isUsing) {
+          this.project.controller.rectangleSelect.mouseMoveOutWindowForcedShutdown(this.vectorObject);
         }
-        Stage.entityMoveMachine.mouseMoveOutWindowForcedShutdown(this.vectorObject);
+        this.project.controller.entityClickSelectAndMove.mouseMoveOutWindowForcedShutdown(this.vectorObject);
       }
     });
   }

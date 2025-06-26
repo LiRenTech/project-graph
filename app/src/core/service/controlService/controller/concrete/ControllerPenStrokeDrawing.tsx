@@ -4,8 +4,8 @@ import { isMac } from "../../../../../utils/platform";
 import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
+import { Project } from "../../../../Project";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { PenStroke, PenStrokeSegment } from "../../../../stage/stageObject/entity/PenStroke";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { CircleChangeRadiusEffect } from "../../../feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
@@ -14,12 +14,10 @@ import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/c
 import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 
-export let ControllerDrawing: ControllerDrawingClass;
-
 /**
  * 涂鸦功能
  */
-export class ControllerDrawingClass extends ControllerClass {
+export class ControllerPenStrokeDrawingClass extends ControllerClass {
   private _isUsing: boolean = false;
 
   /** 在移动的过程中，记录这一笔画的笔迹 */
@@ -113,7 +111,7 @@ export class ControllerDrawingClass extends ControllerClass {
     this.recordLocation.push(releaseWorldLocation.clone());
     if (releaseWorldLocation.subtract(this.pressStartWordLocation).magnitude() < 2) {
       // 判断当前位置是否有舞台对象，如果有则更改颜色。
-      const entity = StageManager.findEntityByLocation(releaseWorldLocation);
+      const entity = this.project.stageManager.findEntityByLocation(releaseWorldLocation);
       if (entity) {
         if (entity instanceof TextNode) {
           const currentPenColor = this.getCurrentStrokeColor().clone();
@@ -190,7 +188,7 @@ export class ControllerDrawingClass extends ControllerClass {
           details: "",
         });
         stroke.setColor(this.getCurrentStrokeColor());
-        StageManager.addPenStroke(stroke);
+        this.project.stageManager.addPenStroke(stroke);
       } else {
         // 普通笔迹
         const strokeStringList: string[] = [];
@@ -210,7 +208,7 @@ export class ControllerDrawingClass extends ControllerClass {
           details: "",
         });
         stroke.setColor(this.getCurrentStrokeColor());
-        StageManager.addPenStroke(stroke);
+        this.project.stageManager.addPenStroke(stroke);
       }
     }
 
@@ -232,9 +230,9 @@ export class ControllerDrawingClass extends ControllerClass {
       return;
     }
     if (event.deltaY > 0) {
-      DrawingControllerthis.project.renderer.rotateUpAngle();
+      this.project.drawingControllerRenderer.rotateUpAngle();
     } else {
-      DrawingControllerthis.project.renderer.rotateDownAngle();
+      this.project.drawingControllerRenderer.rotateDownAngle();
     }
   };
 

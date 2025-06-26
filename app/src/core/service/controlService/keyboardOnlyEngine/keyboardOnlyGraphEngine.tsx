@@ -1,117 +1,120 @@
 import { Vector } from "../../../dataStruct/Vector";
-import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
+import { Project, service } from "../../../Project";
 // import { Camera } from "../../../stage/Camera";
-import { Stage } from "../../../stage/Stage";
 import { StageNodeAdder } from "../../../stage/stageManager/concreteMethods/StageNodeAdder";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
-import { editTextNode } from "../controller/concrete/utilsControl";
 import { KeyboardOnlyDirectionController } from "./keyboardOnlyDirectionController";
-import { KeyboardOnlyEngine } from "./keyboardOnlyEngine";
 import { NewTargetLocationSelector } from "./newTargetLocationSelector";
 
 /**
  * 纯键盘创建图论型的引擎
  */
-export namespace KeyboardOnlyGraphEngine {
+@service("keyboardOnlyGraphEngine")
+export class KeyboardOnlyGraphEngine {
   /**
    * 虚拟目标位置控制器
    */
-  const targetLocationController = new KeyboardOnlyDirectionController();
+  private targetLocationController = new KeyboardOnlyDirectionController();
 
-  export function virtualTargetLocation(): Vector {
-    return targetLocationController.location;
+  virtualTargetLocation(): Vector {
+    return this.targetLocationController.location;
   }
 
-  export function logicTick() {
-    targetLocationController.logicTick();
+  tick() {
+    this.targetLocationController.logicTick();
   }
 
-  export function init() {
-    targetLocationController.init();
+  constructor(private readonly project: Project) {
+    this.targetLocationController.init();
   }
   /**
    * 是否达到了按下Tab键的前置条件
    */
-  export function isEnableVirtualCreate(): boolean {
+  isEnableVirtualCreate(): boolean {
     // 确保只有一个节点被选中
-    const selectConnectableEntities = StageManager.getConnectableEntity().filter((node) => node.isSelected);
+    const selectConnectableEntities = this.project.stageManager
+      .getConnectableEntity()
+      .filter((node) => node.isSelected);
     if (selectConnectableEntities.length !== 1) {
       return false;
     }
     return true;
   }
 
-  let _isCreating = false;
+  private _isCreating = false;
   /**
    * 当前是否是按下Tab键不松开的情况
    * @returns
    */
-  export function isCreating(): boolean {
-    return _isCreating;
+  isCreating(): boolean {
+    return this._isCreating;
   }
 
   /**
    * 按下Tab键开始创建
    * @returns
    */
-  export function createStart(): void {
-    if (!KeyboardOnlyEngine.isOpenning()) {
+  createStart(): void {
+    if (!this.project.keyboardOnlyEngine.isOpenning()) {
       return;
     }
-    if (isCreating()) {
+    if (this.isCreating()) {
       // 已经在创建状态，不要重复创建
       return;
     }
-    _isCreating = true;
+    this._isCreating = true;
     // 记录上一次按下Tab键的时间
-    lastPressTabTime = Date.now();
+    this.lastPressTabTime = Date.now();
     // 计算并更新虚拟目标位置
-    const selectConnectableEntities = StageManager.getConnectableEntity().filter((node) => node.isSelected);
+    const selectConnectableEntities = this.project.stageManager
+      .getConnectableEntity()
+      .filter((node) => node.isSelected);
 
     // 如果只有一个节点被选中，则生成到右边的位置
     if (selectConnectableEntities.length === 1) {
       // 更新方向控制器的位置
-      targetLocationController.resetLocation(
+      this.targetLocationController.resetLocation(
         selectConnectableEntities[0].collisionBox.getRectangle().center.add(NewTargetLocationSelector.diffLocation),
       );
       // 清空加速度和速度
-      targetLocationController.clearSpeedAndAcc();
+      this.targetLocationController.clearSpeedAndAcc();
       // 最后更新虚拟目标位置
       NewTargetLocationSelector.onTabDown(selectConnectableEntities[0]);
     }
   }
-  let lastPressTabTime = 0;
+  private lastPressTabTime = 0;
 
   /**
    * 返回按下Tab键的时间完成率，0-1之间，0表示刚刚按下Tab键，1表示已经达到可以松开Tab键的状态
    * @returns
    */
-  export function getPressTabTimeInterval(): number {
+  getPressTabTimeInterval(): number {
     // 计算距离上次按下Tab键的时间间隔
     const now = Date.now();
-    const interval = now - lastPressTabTime;
+    const interval = now - this.lastPressTabTime;
     return interval;
   }
 
-  export async function createFinished() {
-    _isCreating = false;
-    if (getPressTabTimeInterval() < 100) {
-      Stage.effectMachine.addEffect(TextRiseEffect.default("松开 生长键 过快💨"));
+  async createFinished() {
+    this._isCreating = false;
+    if (this.getPressTabTimeInterval() < 100) {
+      this.project.effects.addEffect(TextRiseEffect.default("松开 生长键 过快💨"));
       return;
     }
 
     // 获取当前选择的所有节点
-    const selectConnectableEntities = StageManager.getConnectableEntity().filter((node) => node.isSelected);
-    if (isTargetLocationHaveEntity()) {
+    const selectConnectableEntities = this.project.stageManager
+      .getConnectableEntity()
+      .filter((node) => node.isSelected);
+    if (this.isTargetLocationHaveEntity()) {
       // 连接到之前的节点
-      const entity = StageManager.findEntityByLocation(virtualTargetLocation());
+      const entity = this.project.stageManager.findEntityByLocation(this.virtualTargetLocation());
       if (entity && entity instanceof ConnectableEntity) {
         // 连接到之前的节点
         for (const selectedEntity of selectConnectableEntities) {
-          StageManager.connectEntity(selectedEntity, entity);
-          Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(selectedEntity, entity));
+          this.project.stageManager.connectEntity(selectedEntity, entity);
+          this.project.effects.addEffects(this.project.edgeRenderer.getConnectedEffects(selectedEntity, entity));
         }
         // 选择到新创建的节点
         entity.isSelected = true;
@@ -125,15 +128,15 @@ export namespace KeyboardOnlyGraphEngine {
       }
     } else {
       // 更新diffLocation
-      NewTargetLocationSelector.onTabUp(selectConnectableEntities[0], virtualTargetLocation());
+      NewTargetLocationSelector.onTabUp(selectConnectableEntities[0], this.virtualTargetLocation());
       // 创建一个新的节点
-      const newNodeUUID = await StageNodeAdder.addTextNodeByClick(virtualTargetLocation().clone(), []);
-      const newNode = StageManager.getTextNodeByUUID(newNodeUUID);
+      const newNodeUUID = await StageNodeAdder.addTextNodeByClick(this.virtualTargetLocation().clone(), []);
+      const newNode = this.project.stageManager.getTextNodeByUUID(newNodeUUID);
       if (!newNode) return;
       // 连接到之前的节点
       for (const entity of selectConnectableEntities) {
-        StageManager.connectEntity(entity, newNode);
-        Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(entity, newNode));
+        this.project.stageManager.connectEntity(entity, newNode);
+        this.project.effects.addEffects(this.project.edgeRenderer.getConnectedEffects(entity, newNode));
       }
       // 选择到新创建的节点
       newNode.isSelected = true;
@@ -143,30 +146,30 @@ export namespace KeyboardOnlyGraphEngine {
       }
       // 视野移动到新创建的节点
       // Camera.location = virtualTargetLocation().clone();
-      editTextNode(newNode);
+      this.project.controllerUtils.editTextNode(newNode);
     }
   }
 
-  export function moveVirtualTarget(delta: Vector): void {
-    targetLocationController.resetLocation(virtualTargetLocation().add(delta));
+  moveVirtualTarget(delta: Vector): void {
+    this.targetLocationController.resetLocation(this.virtualTargetLocation().add(delta));
   }
 
   /**
    * 取消创建
    */
-  export function createCancel(): void {
+  createCancel(): void {
     // do nothing
-    _isCreating = false;
+    this._isCreating = false;
   }
 
   /**
    * 是否有实体在虚拟目标位置
    * @returns
    */
-  export function isTargetLocationHaveEntity(): boolean {
-    const entities = StageManager.getConnectableEntity();
+  isTargetLocationHaveEntity(): boolean {
+    const entities = this.project.stageManager.getConnectableEntity();
     for (const entity of entities) {
-      if (entity.collisionBox.isContainsPoint(virtualTargetLocation())) {
+      if (entity.collisionBox.isContainsPoint(this.virtualTargetLocation())) {
         return true;
       }
     }

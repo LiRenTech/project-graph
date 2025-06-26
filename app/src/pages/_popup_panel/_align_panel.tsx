@@ -27,7 +27,7 @@ import { Dialog } from "../../components/dialog";
 import { AutoLayoutFastTree } from "../../core/service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
 import { GraphMethods } from "../../core/stage/stageManager/basicMethods/GraphMethods";
 import { LayoutEntityManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutEntityManager";
-import { LayoutManualAlignManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
+import { LayoutManualAlign } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { LayoutResizeManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutResizeManager";
 import { LayoutToSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToSquareManager";
 import { LayoutToTightSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToTightSquareManager";
@@ -94,7 +94,7 @@ export default function AlignNodePanel() {
           description="顶对齐 (88)"
           icon={<AlignStartHorizontal />}
           handleFunction={() => {
-            LayoutManualAlignManager.alignTop();
+            LayoutManualAlign.alignTop();
           }}
         />
         <div />
@@ -102,7 +102,7 @@ export default function AlignNodePanel() {
           description="左对齐 (44)"
           icon={<AlignStartVertical />}
           handleFunction={() => {
-            LayoutManualAlignManager.alignLeft();
+            LayoutManualAlign.alignLeft();
           }}
         />
         <div />
@@ -110,7 +110,7 @@ export default function AlignNodePanel() {
           description="右对齐 (66)"
           icon={<AlignEndVertical />}
           handleFunction={() => {
-            LayoutManualAlignManager.alignRight();
+            LayoutManualAlign.alignRight();
           }}
         />
         <div />
@@ -118,7 +118,7 @@ export default function AlignNodePanel() {
           description="底对齐 (22)"
           icon={<AlignEndHorizontal />}
           handleFunction={() => {
-            LayoutManualAlignManager.alignBottom();
+            LayoutManualAlign.alignBottom();
           }}
         />
         <div />
@@ -129,7 +129,7 @@ export default function AlignNodePanel() {
           description="相等间距垂直对齐 (8282)"
           icon={<AlignVerticalSpaceBetween />}
           handleFunction={() => {
-            LayoutManualAlignManager.alignVerticalSpaceBetween();
+            LayoutManualAlign.alignVerticalSpaceBetween();
           }}
         />
         <div />
@@ -137,14 +137,14 @@ export default function AlignNodePanel() {
           description="相等间距水平对齐 (4646)"
           icon={<AlignHorizontalSpaceBetween />}
           handleFunction={() => {
-            LayoutManualAlignManager.alignHorizontalSpaceBetween();
+            LayoutManualAlign.alignHorizontalSpaceBetween();
           }}
         />
         <ToolbarItem
           description="中心垂直对齐 (582)"
           icon={<AlignCenterVertical />}
           handleFunction={() => {
-            LayoutManualAlignManager.alignCenterVertical();
+            LayoutManualAlign.alignCenterVertical();
           }}
         />
         <div />
@@ -152,14 +152,14 @@ export default function AlignNodePanel() {
           description="中心水平对齐 (546)"
           icon={<AlignCenterHorizontal />}
           handleFunction={() => {
-            LayoutManualAlignManager.alignCenterHorizontal();
+            LayoutManualAlign.alignCenterHorizontal();
           }}
         />
         <ToolbarItem
           description="向下紧密堆积 (852)"
           icon={<AlignVerticalJustifyStart />}
           handleFunction={() => {
-            LayoutManualAlignManager.alignTopToBottomNoSpace();
+            LayoutManualAlign.alignTopToBottomNoSpace();
           }}
         />
         <div />
@@ -167,7 +167,7 @@ export default function AlignNodePanel() {
           description="向右紧密堆积 (456)"
           icon={<AlignHorizontalJustifyStart />}
           handleFunction={() => {
-            LayoutManualAlignManager.alignLeftToRightNoSpace();
+            LayoutManualAlign.alignLeftToRightNoSpace();
           }}
         />
       </div>

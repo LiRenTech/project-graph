@@ -1,5 +1,3 @@
-import { Renderer } from "../../render/canvas2d/renderer";
-import { Camera } from "../../stage/Camera";
 import { Vector } from "../Vector";
 import { Line } from "./Line";
 import { Shape } from "./Shape";
@@ -393,18 +391,6 @@ export class Rectangle extends Shape {
 
   public translate(offset: Vector): Rectangle {
     return new Rectangle(this.location.add(offset), this.size);
-  }
-
-  public transformWorld2View(): Rectangle {
-    return new Rectangle(
-      Renderer.transformWorld2View(this.location),
-      // Renderer.transformWorld2View(this.size),
-      this.size.multiply(Camera.currentScale),
-    );
-  }
-
-  public transformView2World(): Rectangle {
-    return new Rectangle(Renderer.transformView2World(this.location), Renderer.transformView2World(this.size));
   }
 
   public limit(limit: Rectangle): Rectangle {

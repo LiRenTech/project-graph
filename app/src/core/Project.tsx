@@ -1,8 +1,36 @@
 import { URI } from "vscode-uri";
 import { Service, ServiceClass } from "./interfaces/Service";
+import { CurveRenderer } from "./render/canvas2d/basicRenderer/curveRenderer";
+import { ImageRenderer } from "./render/canvas2d/basicRenderer/ImageRenderer";
+import { ShapeRenderer } from "./render/canvas2d/basicRenderer/shapeRenderer";
+import { SvgRenderer } from "./render/canvas2d/basicRenderer/svgRenderer";
+import { TextRenderer } from "./render/canvas2d/basicRenderer/textRenderer";
+import { DrawingControllerRenderer } from "./render/canvas2d/controllerRenderer/drawingRenderer";
+import { CollisionBoxRenderer } from "./render/canvas2d/entityRenderer/CollisionBoxRenderer";
+import { StraightEdgeRenderer } from "./render/canvas2d/entityRenderer/edge/concrete/StraightEdgeRenderer";
+import { SymmetryCurveEdgeRenderer } from "./render/canvas2d/entityRenderer/edge/concrete/SymmetryCurveEdgeRenderer";
+import { VerticalPolyEdgeRenderer } from "./render/canvas2d/entityRenderer/edge/concrete/VerticalPolyEdgeRenderer";
+import { EdgeRenderer } from "./render/canvas2d/entityRenderer/edge/EdgeRenderer";
+import { EntityDetailsButtonRenderer } from "./render/canvas2d/entityRenderer/EntityDetailsButtonRenderer";
+import { EntityRenderer } from "./render/canvas2d/entityRenderer/EntityRenderer";
+import { MultiTargetUndirectedEdgeRenderer } from "./render/canvas2d/entityRenderer/multiTargetUndirectedEdge/MultiTargetUndirectedEdgeRenderer";
+import { PortalNodeRenderer } from "./render/canvas2d/entityRenderer/portalNode/portalNodeRenderer";
+import { SectionRenderer } from "./render/canvas2d/entityRenderer/section/SectionRenderer";
+import { SvgNodeRenderer } from "./render/canvas2d/entityRenderer/svgNode/SvgNodeRenderer";
+import { TextNodeRenderer } from "./render/canvas2d/entityRenderer/textNode/TextNodeRenderer";
+import { UrlNodeRenderer } from "./render/canvas2d/entityRenderer/urlNode/urlNodeRenderer";
 import { Renderer } from "./render/canvas2d/renderer";
+import { BackgroundRenderer } from "./render/canvas2d/utilsRenderer/backgroundRenderer";
+import { RenderUtils } from "./render/canvas2d/utilsRenderer/RenderUtils";
+import { SearchContentHighlightRenderer } from "./render/canvas2d/utilsRenderer/searchContentHighlightRenderer";
+import { WorldRenderUtils } from "./render/canvas2d/utilsRenderer/WorldRenderUtils";
+import { InputElement } from "./render/domElement/inputElement";
+import { AutoLayoutFastTree } from "./service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
 import { AutoLayout } from "./service/controlService/autoLayoutEngine/mainTick";
+import { ControllerUtils } from "./service/controlService/controller/concrete/utilsControl";
 import { Controller } from "./service/controlService/controller/Controller";
+import { KeyboardOnlyEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
+import { KeyboardOnlyGraphEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyGraphEngine";
 import { MouseLocation } from "./service/controlService/MouseLocation";
 import { RectangleSelect } from "./service/controlService/rectangleSelectEngine/rectangleSelectEngine";
 import { SecretKeys } from "./service/controlService/secretKeysEngine/secretKeysEngine";
@@ -12,6 +40,10 @@ import { AutoCompute } from "./service/dataGenerateService/autoComputeEngine/mai
 import { StageExport } from "./service/dataGenerateService/stageExportEngine/stageExportEngine";
 import { Effects } from "./service/feedbackService/effectEngine/effectMachine";
 import { Camera } from "./stage/Camera";
+import { Canvas } from "./stage/Canvas";
+import { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
+import { StageNodeRotate } from "./stage/stageManager/concreteMethods/stageNodeRotate";
+import { StageManager } from "./stage/stageManager/StageManager";
 
 /**
  * “工程”
@@ -121,18 +153,58 @@ declare module "./Project" {
    * 在这里用语法糖定义就能优雅的绕过这个限制
    */
   interface Project {
-    renderer: Renderer;
+    // 最底层
+    canvas: Canvas;
+    inputElement: InputElement;
+    // 数据管理
+    stageManager: StageManager;
     camera: Camera;
-    controller: Controller;
     mouseLocation: MouseLocation;
     effects: Effects;
     autoCompute: AutoCompute;
-    autoLayout: AutoLayout;
     secretKeys: SecretKeys;
     autoBackup: AutoBackup;
     autoSave: AutoSave;
     stageExport: StageExport;
     rectangleSelect: RectangleSelect;
+    stageNodeRotate: StageNodeRotate;
+    // 自动布局算法
+    autoLayout: AutoLayout;
+    autoLayoutFastTree: AutoLayoutFastTree;
+    layoutManualAlign: LayoutManualAlign;
+    // 纯键盘操作引擎
+    keyboardOnlyEngine: KeyboardOnlyEngine;
+    keyboardOnlyGraphEngine: KeyboardOnlyGraphEngine;
+    // 渲染底层
+    renderUtils: RenderUtils;
+    worldRenderUtils: WorldRenderUtils;
+    // 各种节点的渲染器
+    textRenderer: TextRenderer;
+    imageRenderer: ImageRenderer;
+    shapeRenderer: ShapeRenderer;
+    entityRenderer: EntityRenderer;
+    edgeRenderer: EdgeRenderer;
+    multiTargetUndirectedEdgeRenderer: MultiTargetUndirectedEdgeRenderer;
+    curveRenderer: CurveRenderer;
+    svgRenderer: SvgRenderer;
+    drawingControllerRenderer: DrawingControllerRenderer;
+    collisionBoxRenderer: CollisionBoxRenderer;
+    entityDetailsButtonRenderer: EntityDetailsButtonRenderer;
+    straightEdgeRenderer: StraightEdgeRenderer;
+    symmetryCurveEdgeRenderer: SymmetryCurveEdgeRenderer;
+    verticalPolyEdgeRenderer: VerticalPolyEdgeRenderer;
+    portalNodeRenderer: PortalNodeRenderer;
+    sectionRenderer: SectionRenderer;
+    svgNodeRenderer: SvgNodeRenderer;
+    textNodeRenderer: TextNodeRenderer;
+    urlNodeRenderer: UrlNodeRenderer;
+    backgroundRenderer: BackgroundRenderer;
+    searchContentHighlightRenderer: SearchContentHighlightRenderer;
+    // utils
+    controllerUtils: ControllerUtils;
+    // 最终呈现给用户的东西
+    renderer: Renderer;
+    controller: Controller;
   }
 }
 

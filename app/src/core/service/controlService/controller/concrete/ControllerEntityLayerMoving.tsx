@@ -1,12 +1,10 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { Project } from "../../../../Project";
 import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageSectionInOutManager } from "../../../../stage/stageManager/concreteMethods/StageSectionInOutManager";
 import { StageSectionPackManager } from "../../../../stage/stageManager/concreteMethods/StageSectionPackManager";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { EntityJumpMoveEffect } from "../../../feedbackService/effectEngine/concrete/EntityJumpMoveEffect";
@@ -15,19 +13,11 @@ import { RectanglePushInEffect } from "../../../feedbackService/effectEngine/con
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ControllerClass } from "../ControllerClass";
 
-export let ControllerLayerMoving: ControllerLayerMovingClass;
-
 /**
  * 创建节点层级移动控制器
  */
 
 export class ControllerLayerMovingClass extends ControllerClass {
-  constructor(protected readonly project: Project) {
-    super(project);
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    ControllerLayerMoving = this;
-  }
-
   public get isEnabled(): boolean {
     if (Stage.leftMouseMode === "draw") {
       return false;
@@ -42,7 +32,7 @@ export class ControllerLayerMovingClass extends ControllerClass {
     if (this.isEnabled === false) {
       return;
     }
-    if (StageManager.getSelectedEntities().length === 0) {
+    if (this.project.stageManager.getSelectedEntities().length === 0) {
       return;
     }
     this.project.controller.mouseLocation = this.project.renderer.transformView2World(
@@ -57,16 +47,16 @@ export class ControllerLayerMovingClass extends ControllerClass {
     if (this.isEnabled === false) {
       return;
     }
-    if (StageManager.getSelectedEntities().length === 0) {
+    if (this.project.stageManager.getSelectedEntities().length === 0) {
       return;
     }
     const mouseLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
     // 提前检查点击的位置是否有一个TextNode，如果有，则转换成Section
-    const entity = StageManager.findEntityByLocation(mouseLocation);
+    const entity = this.project.stageManager.findEntityByLocation(mouseLocation);
     if (entity && entity instanceof TextNode) {
       // 防止无限循环嵌套：当跳入的实体是选中的所有内容当中任意一个Section的内部时，禁止触发该操作
-      const selectedEntities = StageManager.getSelectedEntities();
+      const selectedEntities = this.project.stageManager.getSelectedEntities();
       for (const selectedEntity of selectedEntities) {
         if (selectedEntity instanceof Section && SectionMethods.isEntityInSection(entity, selectedEntity)) {
           this.project.effects.addEffect(EntityShakeEffect.fromEntity(entity));
@@ -87,7 +77,7 @@ export class ControllerLayerMovingClass extends ControllerClass {
           const delta = mouseLocation.subtract(centerLocation);
           selectedEntity.move(delta);
         }
-        StageSectionInOutManager.goInSections(StageManager.getSelectedEntities(), [newSection]);
+        StageSectionInOutManager.goInSections(this.project.stageManager.getSelectedEntities(), [newSection]);
       }
 
       return; // 这个return必须写
@@ -95,7 +85,7 @@ export class ControllerLayerMovingClass extends ControllerClass {
 
     // 即将跳入的sections区域
     const targetSections = SectionMethods.getSectionsByInnerLocation(mouseLocation);
-    const selectedEntities = StageManager.getSelectedEntities();
+    const selectedEntities = this.project.stageManager.getSelectedEntities();
 
     // 防止无限循环嵌套：当跳入的实体是选中的所有内容当中任意一个Section的内部时，禁止触发该操作
     for (const selectedEntity of selectedEntities) {
@@ -133,7 +123,7 @@ export class ControllerLayerMovingClass extends ControllerClass {
       for (const entity of selectedEntities) {
         const currentFatherSections = SectionMethods.getFatherSections(entity);
         for (const currentFatherSection of currentFatherSections) {
-          StageManager.goOutSection([entity], currentFatherSection);
+          this.project.stageManager.goOutSection([entity], currentFatherSection);
 
           // 特效
           this.project.effects.addEffect(
@@ -151,7 +141,7 @@ export class ControllerLayerMovingClass extends ControllerClass {
       StageSectionInOutManager.goInSections(selectedEntities, targetSections);
 
       for (const section of targetSections) {
-        // StageManager.goInSection(selectedEntities, section);
+        // this.project.stageManager.goInSection(selectedEntities, section);
 
         // 特效
         for (const entity of selectedEntities) {

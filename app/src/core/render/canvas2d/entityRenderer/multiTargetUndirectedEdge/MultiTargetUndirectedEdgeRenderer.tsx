@@ -2,45 +2,42 @@ import { ConvexHull } from "../../../../algorithm/geometry/convexHull";
 import { Color } from "../../../../dataStruct/Color";
 import { Line } from "../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../dataStruct/Vector";
+import { Project, service } from "../../../../Project";
 import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
-import { Camera } from "../../../../stage/Camera";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
-import { CurveRenderer } from "../../basicRenderer/curveRenderer";
-import { ShapeRenderer } from "../../basicRenderer/shapeRenderer";
-import { TextRenderer } from "../../basicRenderer/textRenderer";
 import { Renderer } from "../../renderer";
-import { CollisionBoxRenderer } from "../CollisionBoxRenderer";
-import { EdgeRenderer } from "../edge/EdgeRenderer";
 
-export namespace MultiTargetUndirectedEdgeRenderer {
-  export function render(edge: MultiTargetUndirectedEdge) {
+@service("multiTargetUndirectedEdgeRenderer")
+export class MultiTargetUndirectedEdgeRenderer {
+  constructor(private readonly project: Project) {}
+
+  render(edge: MultiTargetUndirectedEdge) {
     if (edge.isSelected) {
-      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
+      this.project.collisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
     }
-    const targetNodes = StageManager.getEntitiesByUUIDs(edge.targetUUIDs);
+    const targetNodes = this.project.stageManager.getEntitiesByUUIDs(edge.targetUUIDs);
     if (targetNodes.length < 2) {
       // 特殊情况，出问题了属于是
       if (targetNodes.length === 1) {
         // 画一个圆环
         const node = targetNodes[0];
         const center = node.collisionBox.getRectangle().center;
-        ShapeRenderer.renderCircle(
-          Renderer.transformWorld2View(center),
-          100 * Camera.currentScale,
+        this.project.shapeRenderer.renderCircle(
+          this.project.renderer.transformWorld2View(center),
+          100 * this.project.camera.currentScale,
           Color.Transparent,
           StageStyleManager.currentStyle.StageObjectBorder,
-          2 * Camera.currentScale,
+          2 * this.project.camera.currentScale,
         );
       }
       if (targetNodes.length === 0) {
         // 在0 0 位置画圆
-        ShapeRenderer.renderCircle(
-          Renderer.transformWorld2View(Vector.getZero()),
-          100 * Camera.currentScale,
+        this.project.shapeRenderer.renderCircle(
+          this.project.renderer.transformWorld2View(Vector.getZero()),
+          100 * this.project.camera.currentScale,
           Color.Transparent,
           StageStyleManager.currentStyle.StageObjectBorder,
-          2 * Camera.currentScale,
+          2 * this.project.camera.currentScale,
         );
       }
       return;
@@ -53,10 +50,10 @@ export namespace MultiTargetUndirectedEdgeRenderer {
     // 画文字
     if (edge.text !== "") {
       // 画文字
-      TextRenderer.renderMultiLineTextFromCenter(
+      this.project.textRenderer.renderMultiLineTextFromCenter(
         edge.text,
-        Renderer.transformWorld2View(centerLocation),
-        Renderer.FONT_SIZE * Camera.currentScale,
+        this.project.renderer.transformWorld2View(centerLocation),
+        Renderer.FONT_SIZE * this.project.camera.currentScale,
         Infinity,
         edgeColor,
       );
@@ -74,16 +71,16 @@ export namespace MultiTargetUndirectedEdgeRenderer {
           const textRectangle = edge.textRectangle;
           toCenterPoint = textRectangle.getLineIntersectionPoint(new Line(centerLocation, targetLocation));
         }
-        CurveRenderer.renderSolidLine(
-          Renderer.transformWorld2View(targetPoint),
-          Renderer.transformWorld2View(toCenterPoint),
+        this.project.curveRenderer.renderSolidLine(
+          this.project.renderer.transformWorld2View(targetPoint),
+          this.project.renderer.transformWorld2View(toCenterPoint),
           edgeColor,
-          2 * Camera.currentScale,
+          2 * this.project.camera.currentScale,
         );
         // 画箭头
         if (edge.arrow === "inner") {
           //
-          EdgeRenderer.renderArrowHead(
+          this.project.edgeRenderer.renderArrowHead(
             // Renderer.transformWorld2View(toCenterPoint),
             toCenterPoint,
             toCenterPoint.subtract(targetPoint).normalize(),
@@ -92,7 +89,7 @@ export namespace MultiTargetUndirectedEdgeRenderer {
           );
         } else if (edge.arrow === "outer") {
           //
-          EdgeRenderer.renderArrowHead(
+          this.project.edgeRenderer.renderArrowHead(
             // Renderer.transformWorld2View(targetPoint),
             targetPoint,
             targetPoint.subtract(toCenterPoint).normalize(),
@@ -121,10 +118,10 @@ export namespace MultiTargetUndirectedEdgeRenderer {
       convexPoints = ConvexHull.computeConvexHull(convexPoints);
       // 保证首尾相接
       convexPoints.push(convexPoints[0]);
-      CurveRenderer.renderSolidLineMultiple(
-        convexPoints.map((point) => Renderer.transformWorld2View(point)),
+      this.project.curveRenderer.renderSolidLineMultiple(
+        convexPoints.map((point) => this.project.renderer.transformWorld2View(point)),
         edgeColor.toNewAlpha(0.5),
-        8 * Camera.currentScale,
+        8 * this.project.camera.currentScale,
       );
     }
   }

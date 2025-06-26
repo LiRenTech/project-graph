@@ -3,28 +3,32 @@ import { Dialog } from "../../../../../components/dialog";
 import { PathString } from "../../../../../utils/pathString";
 import { isMac, isWeb } from "../../../../../utils/platform";
 import { Vector } from "../../../../dataStruct/Vector";
+import { Project } from "../../../../Project";
 import { Stage } from "../../../../stage/Stage";
 import { StageDumper } from "../../../../stage/StageDumper";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
 import { FileLoader } from "../../../dataFileService/fileLoader";
 import { StageSaveManager } from "../../../dataFileService/StageSaveManager";
-import { editNodeDetails, editPortalNodeTitle, editTextNode, editUrlNodeTitle } from "./utilsControl";
+import { ControllerClass } from "../ControllerClass";
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
  *
  * 当有节点编辑时，会把摄像机锁定住
  */
-export class ControllerNodeEdit {
+export class ControllerNodeEditClass extends ControllerClass {
+  constructor(protected readonly project: Project) {
+    super(project);
+  }
+
   mouseDoubleClick = (event: MouseEvent) => {
     if (event.button !== 0) {
       return;
     }
 
     const pressLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    const clickedEntity = StageManager.findEntityByLocation(pressLocation);
+    const clickedEntity = this.project.stageManager.findEntityByLocation(pressLocation);
 
     if (clickedEntity === null) {
       return;
@@ -33,16 +37,16 @@ export class ControllerNodeEdit {
     if (
       isMac ? this.project.controller.pressingKeySet.has("meta") : this.project.controller.pressingKeySet.has("control")
     ) {
-      editNodeDetails(clickedEntity);
+      this.project.controllerUtils.editNodeDetails(clickedEntity);
       return;
     }
 
     if (clickedEntity instanceof TextNode) {
-      editTextNode(clickedEntity, Stage.textNodeSelectAllWhenStartEditByMouseClick);
+      this.project.controllerUtils.editTextNode(clickedEntity, Stage.textNodeSelectAllWhenStartEditByMouseClick);
     } else if (clickedEntity instanceof UrlNode) {
       const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
       if (diffNodeLeftTopLocation.y < UrlNode.titleHeight) {
-        editUrlNodeTitle(clickedEntity);
+        this.project.controllerUtils.editUrlNodeTitle(clickedEntity);
       } else {
         // 跳转链接
         open(clickedEntity.url);
@@ -51,7 +55,7 @@ export class ControllerNodeEdit {
       const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
       if (diffNodeLeftTopLocation.y < PortalNode.TITLE_LINE_Y) {
         // 编辑标题
-        editPortalNodeTitle(clickedEntity);
+        this.project.controllerUtils.editPortalNodeTitle(clickedEntity);
       } else if (diffNodeLeftTopLocation.y < PortalNode.PATH_LINE_Y) {
         // 更改路径
         const newPortalFilePath = prompt("请输入新的路径", clickedEntity.portalFilePath);
@@ -79,7 +83,7 @@ export class ControllerNodeEdit {
           const absolutePath = PathString.dirPath(Stage.path.getFilePath());
           const newPath = PathString.relativePathToAbsolutePath(absolutePath, relativePath);
           // 取消选择所有节点
-          StageManager.clearSelectAll();
+          this.project.stageManager.clearSelectAll();
           // 切换前保存一下
           StageSaveManager.saveHandleWithoutCurrentPath(StageDumper.dump(), false);
           // 开始传送
@@ -99,10 +103,10 @@ export class ControllerNodeEdit {
     }
 
     const pressLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    for (const entity of StageManager.getEntities()) {
+    for (const entity of this.project.stageManager.getEntities()) {
       // 必须有详细信息才显示详细信息按钮，进而点进去，否则会误触
       if (entity.isMouseInDetailsButton(pressLocation) && entity.details) {
-        editNodeDetails(entity);
+        this.project.controllerUtils.editNodeDetails(entity);
         return;
       }
     }
@@ -117,7 +121,7 @@ export class ControllerNodeEdit {
     }
 
     const location = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    for (const node of StageManager.getTextNodes()) {
+    for (const node of this.project.stageManager.getTextNodes()) {
       node.isMouseHover = false;
       if (node.collisionBox.isContainsPoint(location)) {
         node.isMouseHover = true;

@@ -6,40 +6,15 @@ import { Vector } from "../../dataStruct/Vector";
 import { CubicBezierCurve } from "../../dataStruct/shape/Curve";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Settings } from "../../service/Settings";
-import { ControllerCutting } from "../../service/controlService/controller/concrete/ControllerCutting";
-import { ControllerDragFile } from "../../service/controlService/controller/concrete/ControllerDragFile";
-import { ControllerLayerMoving } from "../../service/controlService/controller/concrete/ControllerEntityLayerMoving";
-import { ControllerNodeConnection } from "../../service/controlService/controller/concrete/ControllerNodeConnection";
-import { KeyboardOnlyGraphEngine } from "../../service/controlService/keyboardOnlyEngine/keyboardOnlyGraphEngine";
 import { CopyEngine } from "../../service/dataManageService/copyEngine/copyEngine";
 import { StageStyleManager } from "../../service/feedbackService/stageStyle/StageStyleManager";
-import { Canvas } from "../../stage/Canvas";
 import { Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
-import { StageManager } from "../../stage/stageManager/StageManager";
 import { StageObjectSelectCounter } from "../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageObject } from "../../stage/stageObject/abstract/StageObject";
 import { CubicCatmullRomSplineEdge } from "../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
 import { MultiTargetUndirectedEdge } from "../../stage/stageObject/association/MutiTargetUndirectedEdge";
-import { CurveRenderer } from "./basicRenderer/curveRenderer";
-import { ShapeRenderer } from "./basicRenderer/shapeRenderer";
-import { SvgRenderer } from "./basicRenderer/svgRenderer";
-import { TextRenderer } from "./basicRenderer/textRenderer";
-import { DrawingControllerRenderer } from "./controllerRenderer/drawingRenderer";
-import { CollisionBoxRenderer } from "./entityRenderer/CollisionBoxRenderer";
-import { EntityRenderer } from "./entityRenderer/EntityRenderer";
-import { EdgeRenderer } from "./entityRenderer/edge/EdgeRenderer";
-import { MultiTargetUndirectedEdgeRenderer } from "./entityRenderer/multiTargetUndirectedEdge/MultiTargetUndirectedEdgeRenderer";
-import { TextNodeRenderer } from "./entityRenderer/textNode/TextNodeRenderer";
-import { WorldRenderUtils } from "./utilsRenderer/WorldRenderUtils";
-import {
-  renderCartesianBackground,
-  renderDotBackground,
-  renderHorizonBackground,
-  renderVerticalBackground,
-} from "./utilsRenderer/backgroundRenderer";
-import { searchContentHighlightRenderer } from "./utilsRenderer/searchContentHighlightRenderer";
 
 /**
  * 渲染器
@@ -99,11 +74,11 @@ export class Renderer {
     const scale = window.devicePixelRatio * (1 / appScale);
     this.w = newW;
     this.h = newH;
-    Canvas.element.width = newW * scale;
-    Canvas.element.height = newH * scale;
-    Canvas.element.style.width = `${newW * (1 / appScale)}px`;
-    Canvas.element.style.height = `${newH * (1 / appScale)}px`;
-    Canvas.ctx.scale(scale, scale);
+    this.project.canvas.element.width = newW * scale;
+    this.project.canvas.element.height = newH * scale;
+    this.project.canvas.element.style.width = `${newW * (1 / appScale)}px`;
+    this.project.canvas.element.style.height = `${newH * (1 / appScale)}px`;
+    this.project.canvas.ctx.scale(scale, scale);
   }
 
   /**
@@ -131,7 +106,6 @@ export class Renderer {
 
   // 确保这个函数在软件打开的那一次调用
   constructor(private readonly project: Project) {
-    TextNodeRenderer.init();
     Settings.watch("entityDetailsFontSize", (value) => {
       Renderer.FONT_SIZE_DETAILS = value;
     });
@@ -172,7 +146,6 @@ export class Renderer {
       "ignoreTextNodeTextRenderLessThanCameraScale",
       (value) => (this.ignoreTextNodeTextRenderLessThanCameraScale = value),
     );
-    EntityRenderer.init();
   }
 
   /**
@@ -183,7 +156,7 @@ export class Renderer {
   tick() {
     this.updateFPS();
     const viewRectangle = this.getCoverWorldRectangle();
-    Canvas.ctx.clearRect(0, 0, this.w, this.h);
+    this.project.canvas.ctx.clearRect(0, 0, this.w, this.h);
     this.renderBackground();
 
     // 渲染舞台要素
@@ -211,11 +184,13 @@ export class Renderer {
   }
 
   private renderCycleSpaceBorder() {
-    ShapeRenderer.renderRect(
-      new Rectangle(
-        Vector.getZero(),
-        new Vector(this.project.camera.cameraCycleSpaceSizeX, this.project.camera.cameraCycleSpaceSizeY),
-      ).transformWorld2View(),
+    this.project.shapeRenderer.renderRect(
+      this.transformWorld2View(
+        new Rectangle(
+          Vector.getZero(),
+          new Vector(this.project.camera.cameraCycleSpaceSizeX, this.project.camera.cameraCycleSpaceSizeY),
+        ),
+      ),
       Color.Transparent,
       StageStyleManager.currentStyle.SelectRectangleBorder,
       2 * this.project.camera.currentScale,
@@ -236,9 +211,9 @@ export class Renderer {
     this.isRenderingChildStage = true;
     const cameraOldScale = this.project.camera.currentScale;
     // 再渲染所有子场景
-    for (const key of StageManager.getAllChildStageKeys()) {
+    for (const key of this.project.stageManager.getAllChildStageKeys()) {
       // key就是绝对路径
-      const cameraData = StageManager.getChildStageCameraData(key);
+      const cameraData = this.project.stageManager.getChildStageCameraData(key);
       let diffLocation = Vector.getZero();
       const cameraOldLocation = this.project.camera.location.clone();
       if (cameraData) {
@@ -250,9 +225,9 @@ export class Renderer {
       }
 
       // 加载子场景
-      StageManager.storeMainStage(); // 先保存主场景
-      StageManager.destroy();
-      StageManager.storeChildStageToMainStage(key); // 把子场景加到主场景位置上
+      this.project.stageManager.storeMainStage(); // 先保存主场景
+      this.project.stageManager.destroy();
+      this.project.stageManager.storeChildStageToMainStage(key); // 把子场景加到主场景位置上
       const viewChildRectangleLocation = this.project.camera.location
         .clone()
         .add(cameraData.location.subtract(cameraOldLocation));
@@ -261,14 +236,14 @@ export class Renderer {
         cameraData.size.multiply(cameraData.zoom),
       );
       this.renderStageElementsWithoutReactions(childStageViewRectangle); // 再渲染主场景
-      StageManager.destroy();
-      StageManager.restoreMainStage(); // 还原主场景位置
+      this.project.stageManager.destroy();
+      this.project.stageManager.restoreMainStage(); // 还原主场景位置
       this.project.camera.location = this.project.camera.location.subtract(diffLocation);
       this.project.camera.currentScale = cameraOldScale;
     }
     this.isRenderingChildStage = false;
     // 交互相关的
-    DrawingControllerRenderer.renderTempDrawing();
+    this.project.drawingControllerRenderer.renderTempDrawing();
     this.renderWarningStageObjects();
     this.renderHoverCollisionBox();
     this.renderSelectingRectangle();
@@ -277,16 +252,16 @@ export class Renderer {
     this.renderKeyboardOnly();
     this.rendererLayerMovingLine();
     this.renderClipboard();
-    searchContentHighlightRenderer(this.frameIndex);
+    this.project.searchContentHighlightRenderer.render(this.frameIndex);
     // renderViewRectangle(viewRectangle);
   }
 
   // 渲染一切实体相关的要素
   private renderStageElementsWithoutReactions(viewRectangle: Rectangle) {
-    EntityRenderer.renderAllSectionsBackground(viewRectangle);
+    this.project.entityRenderer.renderAllSectionsBackground(viewRectangle);
     this.renderEdges(viewRectangle);
     this.renderEntities(viewRectangle);
-    EntityRenderer.renderAllSectionsBigTitle(viewRectangle);
+    this.project.entityRenderer.renderAllSectionsBigTitle(viewRectangle);
     this.renderTags();
     // debug
 
@@ -324,31 +299,50 @@ export class Renderer {
       return;
     }
     const viewCenterLocation = this.transformWorld2View(this.project.camera.location);
-    ShapeRenderer.renderCircle(viewCenterLocation, 1, StageStyleManager.currentStyle.GridHeavy, Color.Transparent, 0);
+    this.project.shapeRenderer.renderCircle(
+      viewCenterLocation,
+      1,
+      StageStyleManager.currentStyle.GridHeavy,
+      Color.Transparent,
+      0,
+    );
     for (let i = 0; i < 4; i++) {
       const degrees = i * 90;
       const shortLineStart = viewCenterLocation.add(new Vector(10, 0).rotateDegrees(degrees));
       const shortLineEnd = viewCenterLocation.add(new Vector(20, 0).rotateDegrees(degrees));
-      CurveRenderer.renderSolidLine(shortLineStart, shortLineEnd, StageStyleManager.currentStyle.GridHeavy, 1);
+      this.project.curveRenderer.renderSolidLine(
+        shortLineStart,
+        shortLineEnd,
+        StageStyleManager.currentStyle.GridHeavy,
+        1,
+      );
     }
   }
 
   private renderPrivacyBoard(viewRectangle: Rectangle) {
     // 画隐私保护边
     if (this.protectingPrivacy) {
-      ShapeRenderer.renderRect(viewRectangle.transformWorld2View(), Color.Transparent, new Color(33, 54, 167, 0.5), 50);
+      this.project.shapeRenderer.renderRect(
+        this.transformWorld2View(viewRectangle),
+        Color.Transparent,
+        new Color(33, 54, 167, 0.5),
+        50,
+      );
     }
   }
   /** 鼠标hover的边 */
   private renderHoverCollisionBox() {
     for (const edge of Stage.mouseInteractionCore.hoverEdges) {
-      CollisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelected);
+      this.project.collisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelected);
     }
     for (const section of Stage.mouseInteractionCore.hoverSections) {
-      CollisionBoxRenderer.render(section.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelected);
+      this.project.collisionBoxRenderer.render(
+        section.collisionBox,
+        StageStyleManager.currentStyle.CollideBoxPreSelected,
+      );
     }
     for (const multiTargetUndirectedEdge of Stage.mouseInteractionCore.hoverMultiTargetEdges) {
-      CollisionBoxRenderer.render(
+      this.project.collisionBoxRenderer.render(
         multiTargetUndirectedEdge.collisionBox,
         StageStyleManager.currentStyle.CollideBoxPreSelected,
       );
@@ -361,26 +355,26 @@ export class Renderer {
     if (rectangle) {
       const selectMode = this.project.rectangleSelect.getSelectMode();
       if (selectMode === "intersect") {
-        ShapeRenderer.renderRect(
-          rectangle.transformWorld2View(),
+        this.project.shapeRenderer.renderRect(
+          this.transformWorld2View(rectangle),
           StageStyleManager.currentStyle.SelectRectangleFill,
           StageStyleManager.currentStyle.SelectRectangleBorder,
           1,
         );
       } else if (selectMode === "contain") {
-        ShapeRenderer.renderRect(
-          rectangle.transformWorld2View(),
+        this.project.shapeRenderer.renderRect(
+          this.transformWorld2View(rectangle),
           StageStyleManager.currentStyle.SelectRectangleFill,
           Color.Transparent,
           0,
         );
-        ShapeRenderer.renderCameraShapeBorder(
-          rectangle.transformWorld2View(),
+        this.project.shapeRenderer.renderCameraShapeBorder(
+          this.transformWorld2View(rectangle),
           StageStyleManager.currentStyle.SelectRectangleBorder,
           1,
         );
         // 完全覆盖框选的提示
-        TextRenderer.renderOneLineText(
+        this.project.textRenderer.renderOneLineText(
           "完全覆盖框选",
           this.transformWorld2View(rectangle.leftBottom).add(new Vector(20, 10)),
           10,
@@ -391,26 +385,26 @@ export class Renderer {
     // if (Stage.selectMachine.isUsing && Stage.selectMachine.selectingRectangle) {
     //   const selectMode = Stage.selectMachine.getSelectMode();
     //   if (selectMode === "intersect") {
-    //     ShapeRenderer.renderRect(
+    //     this.project.shapeRenderer.renderRect(
     //       Stage.selectMachine.selectingRectangle.transformWorld2View(),
     //       StageStyleManager.currentStyle.SelectRectangleFill,
     //       StageStyleManager.currentStyle.SelectRectangleBorder,
     //       1,
     //     );
     //   } else if (selectMode === "contain") {
-    //     ShapeRenderer.renderRect(
+    //     this.project.shapeRenderer.renderRect(
     //       Stage.selectMachine.selectingRectangle.transformWorld2View(),
     //       StageStyleManager.currentStyle.SelectRectangleFill,
     //       Color.Transparent,
     //       0,
     //     );
-    //     ShapeRenderer.renderCameraShapeBorder(
+    //     this.project.shapeRenderer.renderCameraShapeBorder(
     //       Stage.selectMachine.selectingRectangle.transformWorld2View(),
     //       StageStyleManager.currentStyle.SelectRectangleBorder,
     //       1,
     //     );
     //     // 完全覆盖框选的提示
-    //     TextRenderer.renderOneLineText(
+    //     this.project.textRenderer.renderOneLineText(
     //       "完全覆盖框选",
     //       transformWorld2View(Stage.selectMachine.selectingRectangle.leftBottom).add(new Vector(20, 10)),
     //       10,
@@ -421,10 +415,10 @@ export class Renderer {
   }
   /** 切割线 */
   private renderCuttingLine() {
-    if (ControllerCutting.isUsing && ControllerCutting.cuttingLine) {
-      WorldRenderUtils.renderLaser(
-        ControllerCutting.cuttingLine.start,
-        ControllerCutting.cuttingLine.end,
+    if (this.project.controller.cutting.isUsing && this.project.controller.cutting.cuttingLine) {
+      this.project.worldRenderUtils.renderLaser(
+        this.project.controller.cutting.cuttingLine.start,
+        this.project.controller.cutting.cuttingLine.end,
         2,
         StageStyleManager.currentStyle.effects.warningShadow,
       );
@@ -433,34 +427,36 @@ export class Renderer {
 
   /** 手动连接线 */
   private renderConnectingLine() {
-    if (ControllerNodeConnection.isUsing) {
+    if (this.project.controller.nodeConnection.isUsing) {
       // 如果鼠标位置没有和任何节点相交
       let connectTargetNode = null;
       const mouseLocation = this.transformView2World(this.project.mouseLocation.vector());
-      for (const node of StageManager.getConnectableEntity()) {
+      for (const node of this.project.stageManager.getConnectableEntity()) {
         if (node.collisionBox.isContainsPoint(mouseLocation)) {
           connectTargetNode = node;
           break;
         }
       }
       if (connectTargetNode === null) {
-        for (const node of ControllerNodeConnection.connectFromEntities) {
-          EdgeRenderer.renderVirtualEdge(node, mouseLocation);
+        for (const node of this.project.controller.nodeConnection.connectFromEntities) {
+          this.project.edgeRenderer.renderVirtualEdge(node, mouseLocation);
         }
       } else {
         // 画一条像吸住了的线
-        for (const node of ControllerNodeConnection.connectFromEntities) {
-          EdgeRenderer.renderVirtualConfirmedEdge(node, connectTargetNode);
+        for (const node of this.project.controller.nodeConnection.connectFromEntities) {
+          this.project.edgeRenderer.renderVirtualConfirmedEdge(node, connectTargetNode);
         }
       }
       if (this.isShowDebug) {
         // 调试模式下显示右键连线轨迹
-        const points = ControllerNodeConnection.getMouseLocationsPoints().map((point) =>
-          this.transformWorld2View(point),
-        );
+        const points = this.project.controller.nodeConnection
+          .getMouseLocationsPoints()
+          .map((point) => this.transformWorld2View(point));
         if (points.length > 1) {
-          CurveRenderer.renderSolidLineMultiple(
-            ControllerNodeConnection.getMouseLocationsPoints().map((point) => this.transformWorld2View(point)),
+          this.project.curveRenderer.renderSolidLineMultiple(
+            this.project.controller.nodeConnection
+              .getMouseLocationsPoints()
+              .map((point) => this.transformWorld2View(point)),
             StageStyleManager.currentStyle.effects.warningShadow,
             1,
           );
@@ -473,25 +469,25 @@ export class Renderer {
    * 渲染和纯键盘操作相关的功能
    */
   private renderKeyboardOnly() {
-    if (KeyboardOnlyGraphEngine.isCreating()) {
-      const isHaveEntity = KeyboardOnlyGraphEngine.isTargetLocationHaveEntity();
-      for (const node of StageManager.getTextNodes()) {
+    if (this.project.keyboardOnlyGraphEngine.isCreating()) {
+      const isHaveEntity = this.project.keyboardOnlyGraphEngine.isTargetLocationHaveEntity();
+      for (const node of this.project.stageManager.getTextNodes()) {
         if (node.isSelected) {
           {
             const startLocation = node.rectangle.center;
-            const endLocation = KeyboardOnlyGraphEngine.virtualTargetLocation();
-            let rate = KeyboardOnlyGraphEngine.getPressTabTimeInterval() / 100;
+            const endLocation = this.project.keyboardOnlyGraphEngine.virtualTargetLocation();
+            let rate = this.project.keyboardOnlyGraphEngine.getPressTabTimeInterval() / 100;
             rate = Math.min(1, rate);
             const currentLocation = startLocation.add(endLocation.subtract(startLocation).multiply(rate));
-            WorldRenderUtils.renderLaser(
+            this.project.worldRenderUtils.renderLaser(
               startLocation,
               currentLocation,
               2,
               rate < 1 ? Color.Yellow : isHaveEntity ? Color.Blue : Color.Green,
             );
             if (rate === 1 && !isHaveEntity) {
-              ShapeRenderer.renderRectFromCenter(
-                this.transformWorld2View(KeyboardOnlyGraphEngine.virtualTargetLocation()),
+              this.project.shapeRenderer.renderRectFromCenter(
+                this.transformWorld2View(this.project.keyboardOnlyGraphEngine.virtualTargetLocation()),
                 120 * this.project.camera.currentScale,
                 60 * this.project.camera.currentScale,
                 Color.Transparent,
@@ -506,9 +502,11 @@ export class Renderer {
             hintText = "连接！";
           }
           // 在生成点下方写文字提示
-          TextRenderer.renderMultiLineText(
+          this.project.textRenderer.renderMultiLineText(
             hintText,
-            this.transformWorld2View(KeyboardOnlyGraphEngine.virtualTargetLocation().add(new Vector(0, 50))),
+            this.transformWorld2View(
+              this.project.keyboardOnlyGraphEngine.virtualTargetLocation().add(new Vector(0, 50)),
+            ),
             15 * this.project.camera.currentScale,
             Infinity,
             StageStyleManager.currentStyle.StageObjectBorder,
@@ -520,7 +518,7 @@ export class Renderer {
 
   /** 层级移动时，渲染移动指向线 */
   private rendererLayerMovingLine() {
-    if (!ControllerLayerMoving.isEnabled) {
+    if (!this.project.controller.entityLayerMoving.isEnabled) {
       return;
     }
     // 有alt
@@ -531,7 +529,7 @@ export class Renderer {
     if (this.project.controller.pressingKeySet.size !== 1) {
       return;
     }
-    if (StageManager.getSelectedEntities().length === 0) {
+    if (this.project.stageManager.getSelectedEntities().length === 0) {
       return;
     }
     let lineWidth = 8;
@@ -539,21 +537,21 @@ export class Renderer {
       lineWidth = 16;
     }
 
-    const selectedEntities = StageManager.getSelectedEntities();
+    const selectedEntities = this.project.stageManager.getSelectedEntities();
     for (const selectedEntity of selectedEntities) {
       const startLocation = selectedEntity.collisionBox.getRectangle().center;
       const endLocation = this.project.controller.mouseLocation;
       const distance = startLocation.distance(endLocation);
       const height = distance / 2;
       // 影子
-      CurveRenderer.renderGradientLine(
+      this.project.curveRenderer.renderGradientLine(
         this.transformWorld2View(startLocation),
         this.transformWorld2View(endLocation),
         Color.Transparent,
         new Color(0, 0, 0, 0.2),
         lineWidth * this.project.camera.currentScale,
       );
-      CurveRenderer.renderGradientBezierCurve(
+      this.project.curveRenderer.renderGradientBezierCurve(
         new CubicBezierCurve(
           this.transformWorld2View(startLocation),
           this.transformWorld2View(startLocation.add(new Vector(0, -height))),
@@ -566,7 +564,7 @@ export class Renderer {
       );
       // 画箭头
       const arrowLen = 10 + distance * 0.01;
-      CurveRenderer.renderBezierCurve(
+      this.project.curveRenderer.renderBezierCurve(
         new CubicBezierCurve(
           this.transformWorld2View(endLocation),
           this.transformWorld2View(endLocation),
@@ -576,7 +574,7 @@ export class Renderer {
         StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
         lineWidth * this.project.camera.currentScale,
       );
-      CurveRenderer.renderBezierCurve(
+      this.project.curveRenderer.renderBezierCurve(
         new CubicBezierCurve(
           this.transformWorld2View(endLocation),
           this.transformWorld2View(endLocation),
@@ -587,7 +585,7 @@ export class Renderer {
         lineWidth * this.project.camera.currentScale,
       );
     }
-    TextRenderer.renderTextFromCenter(
+    this.project.textRenderer.renderTextFromCenter(
       "Jump To",
       this.transformWorld2View(this.project.controller.mouseLocation).subtract(new Vector(0, -30)),
       16,
@@ -597,15 +595,15 @@ export class Renderer {
 
   /** 拖拽文件进入窗口时的提示效果 */
   private renderDraggingFileTips() {
-    if (ControllerDragFile.isDraggingFile) {
-      ShapeRenderer.renderRect(
-        this.getCoverWorldRectangle().transformWorld2View(),
+    if (this.project.controller.dragFile.isDraggingFile) {
+      this.project.shapeRenderer.renderRect(
+        this.transformWorld2View(this.getCoverWorldRectangle()),
         new Color(0, 0, 0, 0.5),
         Color.Transparent,
         1,
       );
-      ShapeRenderer.renderCircle(
-        this.transformWorld2View(ControllerDragFile.draggingLocation),
+      this.project.shapeRenderer.renderCircle(
+        this.transformWorld2View(this.project.controller.dragFile.draggingLocation),
         100,
         Color.Transparent,
         Color.White,
@@ -617,21 +615,21 @@ export class Renderer {
   /** 待删除的节点和边 */
   private renderWarningStageObjects() {
     // 待删除的节点
-    for (const node of ControllerCutting.warningEntity) {
-      CollisionBoxRenderer.render(
+    for (const node of this.project.controller.cutting.warningEntity) {
+      this.project.collisionBoxRenderer.render(
         node.collisionBox,
         StageStyleManager.currentStyle.effects.warningShadow.toNewAlpha(0.5),
       );
     }
     // 待删除的边
-    for (const association of ControllerCutting.warningAssociations) {
-      CollisionBoxRenderer.render(
+    for (const association of this.project.controller.cutting.warningAssociations) {
+      this.project.collisionBoxRenderer.render(
         association.collisionBox,
         StageStyleManager.currentStyle.effects.warningShadow.toNewAlpha(0.5),
       );
     }
-    for (const section of ControllerCutting.warningSections) {
-      CollisionBoxRenderer.render(
+    for (const section of this.project.controller.cutting.warningSections) {
+      this.project.collisionBoxRenderer.render(
         section.collisionBox,
         StageStyleManager.currentStyle.effects.warningShadow.toNewAlpha(0.5),
       );
@@ -640,13 +638,13 @@ export class Renderer {
 
   /** 画所有被标签了的节点的特殊装饰物和缩小视野时的直观显示 */
   private renderTags() {
-    for (const tagString of StageManager.TagOptions.getTagUUIDs()) {
-      const tagObject = StageManager.getStageObjectByUUID(tagString);
+    for (const tagString of this.project.stageManager.TagOptions.getTagUUIDs()) {
+      const tagObject = this.project.stageManager.getStageObjectByUUID(tagString);
       if (!tagObject) {
         continue;
       }
       const rect = tagObject.collisionBox.getRectangle();
-      ShapeRenderer.renderPolygonAndFill(
+      this.project.shapeRenderer.renderPolygonAndFill(
         [
           this.transformWorld2View(rect.leftTop.add(new Vector(0, 8))),
           this.transformWorld2View(rect.leftCenter.add(new Vector(-15, 0))),
@@ -659,23 +657,23 @@ export class Renderer {
     }
   }
   private renderEntities(viewRectangle: Rectangle) {
-    this.renderedNodes = EntityRenderer.renderAllEntities(viewRectangle);
+    this.renderedNodes = this.project.entityRenderer.renderAllEntities(viewRectangle);
   }
 
   private renderEdges(viewRectangle: Rectangle) {
     this.renderedEdges = 0;
-    for (const association of StageManager.getAssociations()) {
+    for (const association of this.project.stageManager.getAssociations()) {
       if (this.isOverView(viewRectangle, association)) {
         continue;
       }
       if (association instanceof MultiTargetUndirectedEdge) {
-        MultiTargetUndirectedEdgeRenderer.render(association);
+        this.project.multiTargetUndirectedEdgeRenderer.render(association);
       }
       if (association instanceof LineEdge) {
-        EdgeRenderer.renderLineEdge(association);
+        this.project.edgeRenderer.renderLineEdge(association);
       }
       if (association instanceof CubicCatmullRomSplineEdge) {
-        EdgeRenderer.renderCrEdge(association);
+        this.project.edgeRenderer.renderCrEdge(association);
       }
       this.renderedEdges++;
     }
@@ -691,14 +689,14 @@ export class Renderer {
     // 获取粘贴板中所有节点的外接矩形
     if (CopyEngine.copyBoardDataRectangle) {
       // 画一个原位置
-      ShapeRenderer.renderRect(
-        CopyEngine.copyBoardDataRectangle.transformWorld2View(),
+      this.project.shapeRenderer.renderRect(
+        this.transformWorld2View(CopyEngine.copyBoardDataRectangle),
         Color.Transparent,
         new Color(255, 255, 255, 0.5),
         1,
       );
       // 在原位置下写标注
-      TextRenderer.renderOneLineText(
+      this.project.textRenderer.renderOneLineText(
         "ctrl+shift+v 原位置叠加粘贴",
         this.transformWorld2View(
           new Vector(
@@ -710,17 +708,19 @@ export class Renderer {
         clipboardBlue,
       );
       // 画一个鼠标位置
-      ShapeRenderer.renderRect(
-        new Rectangle(
-          CopyEngine.copyBoardDataRectangle.location.add(CopyEngine.copyBoardMouseVector),
-          CopyEngine.copyBoardDataRectangle.size,
-        ).transformWorld2View(),
+      this.project.shapeRenderer.renderRect(
+        this.transformWorld2View(
+          new Rectangle(
+            CopyEngine.copyBoardDataRectangle.location.add(CopyEngine.copyBoardMouseVector),
+            CopyEngine.copyBoardDataRectangle.size,
+          ),
+        ),
         Color.Transparent,
         clipboardBlue,
         1,
       );
       // 写下标注
-      TextRenderer.renderMultiLineText(
+      this.project.textRenderer.renderMultiLineText(
         "ctrl+v 粘贴\n点击左键粘贴\nEsc键清空粘贴板取消粘贴\n跨文件粘贴请直接在软件内切换文件",
         this.transformWorld2View(
           new Vector(
@@ -737,7 +737,7 @@ export class Renderer {
       );
       for (const entity of CopyEngine.copyBoardData.entities) {
         if (entity.type === "core:connect_point") {
-          ShapeRenderer.renderCircle(
+          this.project.shapeRenderer.renderCircle(
             this.transformWorld2View(new Vector(...entity.location)),
             10 * this.project.camera.currentScale,
             Color.Transparent,
@@ -745,21 +745,22 @@ export class Renderer {
             2 * this.project.camera.currentScale,
           );
         } else if (entity.type === "core:pen_stroke") {
-          ShapeRenderer.renderRect(
-            new Rectangle(
-              new Vector(...entity.location).add(CopyEngine.copyBoardMouseVector),
-              new Vector(10, 10),
-            ).transformWorld2View(),
+          this.project.shapeRenderer.renderRect(
+            this.transformWorld2View(
+              new Rectangle(new Vector(...entity.location).add(CopyEngine.copyBoardMouseVector), new Vector(10, 10)),
+            ),
             Color.Transparent,
             clipboardBlue,
             2 * this.project.camera.currentScale,
           );
         } else {
-          ShapeRenderer.renderRect(
-            new Rectangle(
-              new Vector(...entity.location).add(CopyEngine.copyBoardMouseVector),
-              new Vector(...entity.size),
-            ).transformWorld2View(),
+          this.project.shapeRenderer.renderRect(
+            this.transformWorld2View(
+              new Rectangle(
+                new Vector(...entity.location).add(CopyEngine.copyBoardMouseVector),
+                new Vector(...entity.size),
+              ),
+            ),
             Color.Transparent,
             clipboardBlue,
             2 * this.project.camera.currentScale,
@@ -775,24 +776,24 @@ export class Renderer {
   private renderBackground() {
     const rect = this.getCoverWorldRectangle();
     if (this.isRenderBackground) {
-      ShapeRenderer.renderRect(
-        rect.transformWorld2View(),
+      this.project.shapeRenderer.renderRect(
+        this.transformWorld2View(rect),
         StageStyleManager.currentStyle.Background,
         Color.Transparent,
         0,
       );
     }
     if (this.isShowBackgroundDots) {
-      renderDotBackground(rect);
+      this.project.backgroundRenderer.renderDotBackground(rect);
     }
     if (this.isShowBackgroundHorizontalLines) {
-      renderHorizonBackground(rect);
+      this.project.backgroundRenderer.renderHorizonBackground(rect);
     }
     if (this.isShowBackgroundVerticalLines) {
-      renderVerticalBackground(rect);
+      this.project.backgroundRenderer.renderVerticalBackground(rect);
     }
     if (this.isShowBackgroundCartesian) {
-      renderCartesianBackground(rect);
+      this.project.backgroundRenderer.renderCartesianBackground(rect);
     }
   }
 
@@ -830,17 +831,17 @@ export class Renderer {
       `location: ${this.project.camera.location.x}, ${this.project.camera.location.y}`,
       `window: ${this.w}x${this.h}`,
       `effect count: ${this.project.effects.effectsCount}`,
-      `node count: ${this.renderedNodes} , ${StageManager.getTextNodes().length}`,
-      `edge count: ${this.renderedEdges} , ${StageManager.getLineEdges().length}`,
-      `section count: ${StageManager.getSections().length}`,
+      `node count: ${this.renderedNodes} , ${this.project.stageManager.getTextNodes().length}`,
+      `edge count: ${this.renderedEdges} , ${this.project.stageManager.getLineEdges().length}`,
+      `section count: ${this.project.stageManager.getSections().length}`,
       `selected count: ${StageObjectSelectCounter.toDebugString()}`,
       `pressingKeys: ${this.project.controller.pressingKeysString()}`,
       `鼠标按下情况: ${this.project.controller.isMouseDown}`,
       `框选框: ${JSON.stringify(this.project.rectangleSelect.getRectangle())}`,
-      `正在切割: ${ControllerCutting.isUsing}`,
-      `Stage.warningNodes: ${ControllerCutting.warningEntity.length}`,
-      `Stage.warningAssociations: ${ControllerCutting.warningAssociations.length}`,
-      `ConnectFromNodes: ${ControllerNodeConnection.connectFromEntities}`,
+      `正在切割: ${this.project.controller.cutting.isUsing}`,
+      `Stage.warningNodes: ${this.project.controller.cutting.warningEntity.length}`,
+      `Stage.warningAssociations: ${this.project.controller.cutting.warningAssociations.length}`,
+      `ConnectFromNodes: ${this.project.controller.nodeConnection.connectFromEntities}`,
       `lastSelectedNode: ${this.project.controller.lastSelectedEntityUUID.size}`,
       `粘贴板: ${JSON.stringify(CopyEngine.copyBoardData)}`,
       `历史: ${StageHistoryManager.statusText()}`,
@@ -848,13 +849,13 @@ export class Renderer {
       `delta: ${this.deltaTime.toFixed(2)}`,
       `path: ${Stage.path.getFilePath()}`,
       `autoSave: ${this.project.autoSave.toString()}`,
-      `isEnableEntityCollision: ${StageManager.isEnableEntityCollision}`,
+      `isEnableEntityCollision: ${this.project.stageManager.isEnableEntityCollision}`,
     ];
     for (const [k, v] of Object.entries(this.timings)) {
       detailsData.push(`render time:${k}: ${v.toFixed(2)}`);
     }
     for (const line of detailsData) {
-      TextRenderer.renderOneLineText(
+      this.project.textRenderer.renderOneLineText(
         line,
         new Vector(10, 80 + detailsData.indexOf(line) * 12),
         10,
@@ -878,7 +879,12 @@ export class Renderer {
 
     for (const key of this.project.controller.pressingKeySet) {
       const textLocation = new Vector(x, this.h - 100);
-      TextRenderer.renderOneLineText(key, textLocation, fontSize, StageStyleManager.currentStyle.StageObjectBorder);
+      this.project.textRenderer.renderOneLineText(
+        key,
+        textLocation,
+        fontSize,
+        StageStyleManager.currentStyle.StageObjectBorder,
+      );
       const textSize = getTextSize(key, fontSize);
       x += textSize.x + margin;
     }
@@ -889,14 +895,14 @@ export class Renderer {
         this.project.controller.pressingKeySet.has("a") ||
         this.project.controller.pressingKeySet.has("d"))
     ) {
-      TextRenderer.renderOneLineText(
+      this.project.textRenderer.renderOneLineText(
         "      方向键移动视野被禁止，可通过快捷键或设置界面松开“手刹”",
         new Vector(margin, this.h - 60),
         15,
         StageStyleManager.currentStyle.effects.flash,
       );
 
-      SvgRenderer.renderSvgFromLeftTop(
+      this.project.svgRenderer.renderSvgFromLeftTop(
         `<svg
   xmlns="http://www.w3.org/2000/svg"
   width="24"
@@ -934,12 +940,23 @@ export class Renderer {
    * @param worldLocation
    * @returns
    */
-  transformWorld2View(worldLocation: Vector): Vector {
-    return worldLocation
-      .subtract(this.project.camera.location)
-      .multiply(this.project.camera.currentScale)
-      .add(new Vector(this.w / 2, this.h / 2))
-      .add(this.project.camera.shakeLocation);
+  transformWorld2View(location: Vector): Vector;
+  transformWorld2View(rectangle: Rectangle): Rectangle;
+  transformWorld2View(arg1: Vector | Rectangle): Vector | Rectangle {
+    if (arg1 instanceof Rectangle) {
+      return new Rectangle(
+        this.transformWorld2View(arg1.location),
+        arg1.size.multiply(this.project.camera.currentScale),
+      );
+    }
+    if (arg1 instanceof Vector) {
+      return arg1
+        .subtract(this.project.camera.location)
+        .multiply(this.project.camera.currentScale)
+        .add(new Vector(this.w / 2, this.h / 2))
+        .add(this.project.camera.shakeLocation);
+    }
+    return arg1;
   }
 
   /**
@@ -949,12 +966,20 @@ export class Renderer {
    * @param viewLocation
    * @returns
    */
-  transformView2World(viewLocation: Vector): Vector {
-    return viewLocation
-      .subtract(this.project.camera.shakeLocation)
-      .subtract(new Vector(this.w / 2, this.h / 2))
-      .multiply(1 / this.project.camera.currentScale)
-      .add(this.project.camera.location);
+  transformView2World(location: Vector): Vector;
+  transformView2World(rectangle: Rectangle): Rectangle;
+  transformView2World(arg1: Vector | Rectangle): Vector | Rectangle {
+    if (arg1 instanceof Rectangle) {
+      return new Rectangle(this.transformView2World(arg1.location), this.transformView2World(arg1.size));
+    }
+    if (arg1 instanceof Vector) {
+      return arg1
+        .subtract(this.project.camera.shakeLocation)
+        .subtract(new Vector(this.w / 2, this.h / 2))
+        .multiply(1 / this.project.camera.currentScale)
+        .add(this.project.camera.location);
+    }
+    return arg1;
   }
 
   /**

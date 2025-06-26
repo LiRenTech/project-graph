@@ -2,7 +2,6 @@ import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Camera } from "../../../stage/Camera";
 import { Stage } from "../../../stage/Stage";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { StageObject } from "../../../stage/stageObject/abstract/StageObject";
 import { Edge } from "../../../stage/stageObject/association/Edge";
@@ -58,7 +57,7 @@ export class ContentSearchEngine {
     if (searchString === "") {
       return false;
     }
-    for (const node of StageManager.getStageObject()) {
+    for (const node of this.project.stageManager.getStageObject()) {
       const text = this.getStageObjectText(node);
       if (this.isCaseSensitive) {
         if (text.includes(searchString)) {
@@ -100,7 +99,7 @@ export class ContentSearchEngine {
       return;
     }
     // 取消选择所有节点
-    for (const node of StageManager.getTextNodes()) {
+    for (const node of this.project.stageManager.getTextNodes()) {
       node.isSelected = false;
     }
     // 选择当前搜索结果节点
@@ -124,7 +123,7 @@ export class ContentSearchEngine {
       Stage.effectMachine.addEffect(TextRiseEffect.default("已经到头了"));
     }
     // 取消选择所有节点
-    for (const node of StageManager.getTextNodes()) {
+    for (const node of this.project.stageManager.getTextNodes()) {
       node.isSelected = false;
     }
     // 选择当前搜索结果节点

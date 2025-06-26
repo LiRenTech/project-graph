@@ -1,35 +1,32 @@
 import { Color } from "../../../dataStruct/Color";
 import { Vector } from "../../../dataStruct/Vector";
-import { Controller } from "../../../service/controlService/controller/Controller";
-import { MouseLocation } from "../../../service/controlService/MouseLocation";
+import { Project, service } from "../../../Project";
 import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
-import { Camera } from "../../../stage/Camera";
 import { LeftMouseModeEnum, Stage } from "../../../stage/Stage";
-import { CurveRenderer } from "../basicRenderer/curveRenderer";
-import { ShapeRenderer } from "../basicRenderer/shapeRenderer";
-import { TextRenderer } from "../basicRenderer/textRenderer";
-import { Renderer } from "../renderer";
 
 /**
  * 绘画控制器
  */
-export namespace DrawingControllerRenderer {
+@service("drawingControllerRenderer")
+export class DrawingControllerRenderer {
+  constructor(private readonly project: Project) {}
+
   /**
    * 渲染预渲染的涂鸦
    */
-  export function renderTempDrawing() {
-    const currentStrokeColor = Stage.drawingMachine.getCurrentStrokeColor();
+  renderTempDrawing() {
+    const currentStrokeColor = this.project.controller.penStrokeDrawing.getCurrentStrokeColor();
 
     if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
       // 画鼠标绘制过程，还未抬起鼠标左键的 笔迹
-      if (Stage.drawingMachine.currentStroke.length > 0) {
-        const startLocation = Stage.drawingMachine.currentStroke[0].startLocation;
-        const endLocation = Renderer.transformView2World(MouseLocation.vector());
+      if (this.project.controller.penStrokeDrawing.currentStroke.length > 0) {
+        const startLocation = this.project.controller.penStrokeDrawing.currentStroke[0].startLocation;
+        const endLocation = this.project.renderer.transformView2World(this.project.mouseLocation.vector());
 
         // 正在绘制直线
-        if (Controller.pressingKeySet.has("shift")) {
+        if (this.project.controller.pressingKeySet.has("shift")) {
           // 垂直于坐标轴的直线
-          if (Controller.pressingKeySet.has("control")) {
+          if (this.project.controller.pressingKeySet.has("control")) {
             const dy = Math.abs(endLocation.y - startLocation.y);
             const dx = Math.abs(endLocation.x - startLocation.x);
             if (dy > dx) {
@@ -40,71 +37,79 @@ export namespace DrawingControllerRenderer {
               endLocation.y = startLocation.y;
             }
 
-            CurveRenderer.renderSolidLine(
-              Renderer.transformWorld2View(startLocation),
-              Renderer.transformWorld2View(endLocation),
+            this.project.curveRenderer.renderSolidLine(
+              this.project.renderer.transformWorld2View(startLocation),
+              this.project.renderer.transformWorld2View(endLocation),
               currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
-              Stage.drawingMachine.currentStrokeWidth * Camera.currentScale,
+              this.project.controller.penStrokeDrawing.currentStrokeWidth * this.project.camera.currentScale,
             );
           } else {
-            CurveRenderer.renderSolidLine(
-              Renderer.transformWorld2View(startLocation),
-              MouseLocation.vector(),
+            this.project.curveRenderer.renderSolidLine(
+              this.project.renderer.transformWorld2View(startLocation),
+              this.project.mouseLocation.vector(),
               currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
-              Stage.drawingMachine.currentStrokeWidth * Camera.currentScale,
+              this.project.controller.penStrokeDrawing.currentStrokeWidth * this.project.camera.currentScale,
             );
           }
         } else {
-          CurveRenderer.renderPenStroke(
-            Stage.drawingMachine.currentStroke.map((segment) => ({
-              startLocation: Renderer.transformWorld2View(segment.startLocation),
-              endLocation: Renderer.transformWorld2View(segment.endLocation),
-              width: segment.width * Camera.currentScale,
+          this.project.curveRenderer.renderPenStroke(
+            this.project.controller.penStrokeDrawing.currentStroke.map((segment) => ({
+              startLocation: this.project.renderer.transformWorld2View(segment.startLocation),
+              endLocation: this.project.renderer.transformWorld2View(segment.endLocation),
+              width: segment.width * this.project.camera.currentScale,
             })),
             currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
           );
         }
       }
-      if (Stage.drawingControlMachine.isAdjusting) {
-        const circleCenter = Renderer.transformWorld2View(Stage.drawingControlMachine.startAdjustWidthLocation);
+      if (this.project.controller.penStrokeControl.isAdjusting) {
+        const circleCenter = this.project.renderer.transformWorld2View(
+          this.project.controller.penStrokeControl.startAdjustWidthLocation,
+        );
         // 鼠标正在调整状态
-        ShapeRenderer.renderCircle(
+        this.project.shapeRenderer.renderCircle(
           circleCenter,
-          (Stage.drawingMachine.currentStrokeWidth / 2) * Camera.currentScale,
+          (this.project.controller.penStrokeDrawing.currentStrokeWidth / 2) * this.project.camera.currentScale,
           currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
           Color.Transparent,
           0,
         );
         // 当前粗细显示
-        TextRenderer.renderTextFromCenter(
-          `2R: ${Stage.drawingMachine.currentStrokeWidth}px`,
-          circleCenter.add(new Vector(0, (-(Stage.drawingMachine.currentStrokeWidth / 2) - 40) * Camera.currentScale)),
+        this.project.textRenderer.renderTextFromCenter(
+          `2R: ${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`,
+          circleCenter.add(
+            new Vector(
+              0,
+              (-(this.project.controller.penStrokeDrawing.currentStrokeWidth / 2) - 40) *
+                this.project.camera.currentScale,
+            ),
+          ),
           24,
           currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
         );
       } else {
         // 画跟随鼠标的笔头
         // 如果粗细大于一定程度，则渲染成空心的
-        if (Stage.drawingMachine.currentStrokeWidth > 10) {
-          ShapeRenderer.renderCircle(
-            MouseLocation.vector(),
-            (Stage.drawingMachine.currentStrokeWidth / 2) * Camera.currentScale,
+        if (this.project.controller.penStrokeDrawing.currentStrokeWidth > 10) {
+          this.project.shapeRenderer.renderCircle(
+            this.project.mouseLocation.vector(),
+            (this.project.controller.penStrokeDrawing.currentStrokeWidth / 2) * this.project.camera.currentScale,
             Color.Transparent,
             currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
-            2 * Camera.currentScale,
+            2 * this.project.camera.currentScale,
           );
         } else {
-          ShapeRenderer.renderCircle(
-            MouseLocation.vector(),
-            (Stage.drawingMachine.currentStrokeWidth / 2) * Camera.currentScale,
+          this.project.shapeRenderer.renderCircle(
+            this.project.mouseLocation.vector(),
+            (this.project.controller.penStrokeDrawing.currentStrokeWidth / 2) * this.project.camera.currentScale,
             currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
             Color.Transparent,
             0,
           );
         }
         // 如果按下shift键，说明正在画直线
-        if (Controller.pressingKeySet.has("shift")) {
-          renderAxisMouse();
+        if (this.project.controller.pressingKeySet.has("shift")) {
+          this.renderAxisMouse();
         }
       }
     }
@@ -114,50 +119,50 @@ export namespace DrawingControllerRenderer {
    * 画一个跟随鼠标的巨大十字准星
    * 直线模式
    */
-  function renderAxisMouse() {
+  private renderAxisMouse() {
     // 画一个跟随鼠标的十字准星
     // const crossSize = 2000;
 
-    const crossCenter = MouseLocation.vector();
+    const crossCenter = this.project.mouseLocation.vector();
 
     // 量角器功能
     // 计算角度，拿到两个世界坐标
-    // const startLocation = Stage.drawingMachine.currentStroke[0].startLocation;
-    // const endLocation = Renderer.transformView2World(MouseLocation.vector());
+    // const startLocation = this.project.controller.penStrokeDrawing.currentStroke[0].startLocation;
+    // const endLocation =this.project.renderer.transformView2World(this.project.mouseLocation.vector());
 
-    renderAngleMouse(crossCenter);
+    this.renderAngleMouse(crossCenter);
   }
 
-  let diffAngle = 0;
+  private diffAngle = 0;
 
-  export function rotateUpAngle() {
-    diffAngle += 5;
-    console.log("rotateUpAngle", diffAngle);
+  rotateUpAngle() {
+    this.diffAngle += 5;
+    console.log("rotateUpAngle", this.diffAngle);
   }
 
-  export function rotateDownAngle() {
-    diffAngle -= 5;
-    console.log("rotateUpAngle", diffAngle);
+  rotateDownAngle() {
+    this.diffAngle -= 5;
+    console.log("rotateUpAngle", this.diffAngle);
   }
 
   /**
    * 画跟随鼠标的角度量角器
    */
-  function renderAngleMouse(mouseLocation: Vector) {
+  private renderAngleMouse(mouseLocation: Vector) {
     const R1 = 50;
     const R2 = 60;
     const R3 = 70;
-    for (let i = 0 + diffAngle; i < 360 + diffAngle; i += 5) {
+    for (let i = 0 + this.diffAngle; i < 360 + this.diffAngle; i += 5) {
       let startRadius = R1;
       let remoteRadius = R2;
-      if ((i - diffAngle) % 15 === 0) {
+      if ((i - this.diffAngle) % 15 === 0) {
         remoteRadius = R3;
       }
-      if ((i - diffAngle) % 30 === 0) {
+      if ((i - this.diffAngle) % 30 === 0) {
         startRadius = 10;
         remoteRadius = 200;
       }
-      if ((i - diffAngle) % 90 === 0) {
+      if ((i - this.diffAngle) % 90 === 0) {
         startRadius = 10;
         remoteRadius = 2000;
       }
@@ -165,7 +170,7 @@ export namespace DrawingControllerRenderer {
       const angle = (i * Math.PI) / 180;
       const lineStart = mouseLocation.add(new Vector(Math.cos(angle) * startRadius, Math.sin(angle) * startRadius));
       const lineEnd = mouseLocation.add(new Vector(Math.cos(angle) * remoteRadius, Math.sin(angle) * remoteRadius));
-      renderLine(lineStart, lineEnd);
+      this.renderLine(lineStart, lineEnd);
     }
   }
 
@@ -175,8 +180,13 @@ export namespace DrawingControllerRenderer {
    * @param lineStart
    * @param lineEnd
    */
-  function renderLine(lineStart: Vector, lineEnd: Vector) {
-    CurveRenderer.renderSolidLine(lineStart, lineEnd, StageStyleManager.currentStyle.Background, 2);
-    CurveRenderer.renderSolidLine(lineStart, lineEnd, StageStyleManager.currentStyle.effects.successShadow, 0.5);
+  private renderLine(lineStart: Vector, lineEnd: Vector) {
+    this.project.curveRenderer.renderSolidLine(lineStart, lineEnd, StageStyleManager.currentStyle.Background, 2);
+    this.project.curveRenderer.renderSolidLine(
+      lineStart,
+      lineEnd,
+      StageStyleManager.currentStyle.effects.successShadow,
+      0.5,
+    );
   }
 }

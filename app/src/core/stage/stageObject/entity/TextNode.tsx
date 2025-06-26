@@ -4,18 +4,16 @@ import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { TextRenderer } from "../../../render/canvas2d/basicRenderer/textRenderer";
+import { TextNodeRenderer } from "../../../render/canvas2d/entityRenderer/textNode/TextNodeRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
 import { Stage } from "../../Stage";
-import { StageManager } from "../../stageManager/StageManager";
 import { SectionMethods } from "../../stageManager/basicMethods/SectionMethods";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { Entity } from "../abstract/StageEntity";
 import { ResizeAble } from "../abstract/StageObjectInterface";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { Section } from "./Section";
-import { TextNodeRenderer } from "../../../render/canvas2d/entityRenderer/textNode/TextNodeRenderer";
 
 /**
  *
@@ -134,7 +132,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
   }
 
   // private adjustSizeByTextWidthLimitWidth(width: number) {
-  //   const currentSize = TextRenderer.measureMultiLineTextSize(this.text, Renderer.FONT_SIZE, width, 1.5);
+  //   const currentSize = this.project.textRenderer.measureMultiLineTextSize(this.text, Renderer.FONT_SIZE, width, 1.5);
   //   this.collisionBox.shapeList[0] = new Rectangle(
   //     this.rectangle.location.clone(),
   //     currentSize.clone().add(Vector.same(Renderer.NODE_PADDING).multiply(2)),
@@ -157,7 +155,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
     // todo：宽度能自定义控制，但是高度不能
     const newSize = newRectangle.size.add(delta);
     newSize.x = Math.max(75, newSize.x);
-    const newTextSize = TextRenderer.measureMultiLineTextSize(
+    const newTextSize = this.project.textRenderer.measureMultiLineTextSize(
       this.text,
       Renderer.FONT_SIZE,
       newSize.x - Renderer.NODE_PADDING * 2,
@@ -196,7 +194,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
   }
 
   protected override collideWithOtherEntity(other: Entity): void {
-    if (!StageManager.isEnableEntityCollision) {
+    if (!this.project.stageManager.isEnableEntityCollision) {
       return;
     }
     if (other instanceof Section) {

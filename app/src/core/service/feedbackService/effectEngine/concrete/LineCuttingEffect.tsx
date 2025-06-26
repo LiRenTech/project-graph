@@ -1,7 +1,7 @@
 import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
-import { WorldRenderUtils } from "../../../../render/canvas2d/utilsRenderer/WorldRenderUtils";
+import { Project } from "../../../../Project";
 import { EffectObject } from "../effectObject";
 
 /**
@@ -20,6 +20,7 @@ export class LineCuttingEffect extends EffectObject {
     return "LineCuttingEffect";
   }
   constructor(
+    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     public fromLocation: Vector,
     public toLocation: Vector,
@@ -39,7 +40,7 @@ export class LineCuttingEffect extends EffectObject {
     );
 
     const toLocation = this.toLocation;
-    WorldRenderUtils.renderCuttingFlash(
+    this.project.worldRenderUtils.renderCuttingFlash(
       fromLocation,
       toLocation,
       this.lineWidth * (1 - this.timeProgress.rate),

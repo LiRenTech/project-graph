@@ -2,40 +2,39 @@ import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { Camera } from "../../../stage/Camera";
-import { Stage } from "../../../stage/Stage";
+import { Project } from "../../../Project";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { StageObjectSelectCounter } from "../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineCuttingEffect } from "../../feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
-import { KeyboardOnlyEngine } from "./keyboardOnlyEngine";
 
 /**
  * 仅在keyboardOnlyEngine中使用，用于处理select change事件
  */
-export namespace SelectChangeEngine {
-  let lastSelectNodeByKeyboardUUID = "";
+export class SelectChangeEngine {
+  private lastSelectNodeByKeyboardUUID = "";
+
+  constructor(private readonly project: Project) {}
 
   /**
    * 向上选择节点
    * @param addSelect
    * @returns
    */
-  export function selectUp(addSelect = false) {
-    if (!KeyboardOnlyEngine.isOpenning()) {
+  selectUp(addSelect = false) {
+    if (!this.project.keyboardOnlyEngine.isOpenning()) {
       return;
     }
-    const selectedNode = getCurrentSelectedNode();
+    const selectedNode = this.getCurrentSelectedNode();
     if (selectedNode === null) {
       return;
     }
-    const newSelectedConnectableEntity = getMostNearConnectableEntity(
-      collectTopNodes(selectedNode),
+    const newSelectedConnectableEntity = this.getMostNearConnectableEntity(
+      this.collectTopNodes(selectedNode),
       selectedNode.collisionBox.getRectangle().center,
     );
-    afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
+    this.afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
   }
 
   /**
@@ -43,19 +42,19 @@ export namespace SelectChangeEngine {
    * @param addSelect
    * @returns
    */
-  export function selectDown(addSelect = false) {
-    if (!KeyboardOnlyEngine.isOpenning()) {
+  selectDown(addSelect = false) {
+    if (!this.project.keyboardOnlyEngine.isOpenning()) {
       return;
     }
-    const selectedNode = getCurrentSelectedNode();
+    const selectedNode = this.getCurrentSelectedNode();
     if (selectedNode === null) {
       return;
     }
-    const newSelectedConnectableEntity = getMostNearConnectableEntity(
-      collectBottomNodes(selectedNode),
+    const newSelectedConnectableEntity = this.getMostNearConnectableEntity(
+      this.collectBottomNodes(selectedNode),
       selectedNode.collisionBox.getRectangle().center,
     );
-    afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
+    this.afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
   }
 
   /**
@@ -63,19 +62,19 @@ export namespace SelectChangeEngine {
    * @param addSelect
    * @returns
    */
-  export function selectLeft(addSelect = false) {
-    if (!KeyboardOnlyEngine.isOpenning()) {
+  selectLeft(addSelect = false) {
+    if (!this.project.keyboardOnlyEngine.isOpenning()) {
       return;
     }
-    const selectedNode = getCurrentSelectedNode();
+    const selectedNode = this.getCurrentSelectedNode();
     if (selectedNode === null) {
       return;
     }
-    const newSelectedConnectableEntity = getMostNearConnectableEntity(
-      collectLeftNodes(selectedNode),
+    const newSelectedConnectableEntity = this.getMostNearConnectableEntity(
+      this.collectLeftNodes(selectedNode),
       selectedNode.collisionBox.getRectangle().center,
     );
-    afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
+    this.afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
   }
 
   /**
@@ -83,19 +82,19 @@ export namespace SelectChangeEngine {
    * @param addSelect
    * @returns
    */
-  export function selectRight(addSelect = false) {
-    if (!KeyboardOnlyEngine.isOpenning()) {
+  selectRight(addSelect = false) {
+    if (!this.project.keyboardOnlyEngine.isOpenning()) {
       return;
     }
-    const selectedNode = getCurrentSelectedNode();
+    const selectedNode = this.getCurrentSelectedNode();
     if (selectedNode === null) {
       return;
     }
-    const newSelectedConnectableEntity = getMostNearConnectableEntity(
-      collectRightNodes(selectedNode),
+    const newSelectedConnectableEntity = this.getMostNearConnectableEntity(
+      this.collectRightNodes(selectedNode),
       selectedNode.collisionBox.getRectangle().center,
     );
-    afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
+    this.afterSelect(selectedNode, newSelectedConnectableEntity, !addSelect);
   }
 
   /**
@@ -104,12 +103,14 @@ export namespace SelectChangeEngine {
    * @param reversed 是否反向扩散
    * @returns
    */
-  export function expandSelect(isKeepExpand = false, reversed: boolean = false) {
-    if (!KeyboardOnlyEngine.isOpenning()) {
+  expandSelect(isKeepExpand = false, reversed: boolean = false) {
+    if (!this.project.keyboardOnlyEngine.isOpenning()) {
       return;
     }
 
-    const selectedEntities = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
+    const selectedEntities = this.project.stageManager
+      .getSelectedEntities()
+      .filter((entity) => entity instanceof ConnectableEntity);
     // 当前选择的节点
     const selectedEntitiesUUIDSet = new Set<string>();
     selectedEntities.map((entity) => selectedEntitiesUUIDSet.add(entity.uuid));
@@ -136,7 +137,7 @@ export namespace SelectChangeEngine {
       // 保留原有的选择 的扩散
       const combinedUUIDSet = new Set([...selectedEntitiesUUIDSet, ...expandUUIDSet]);
       for (const newUUID of combinedUUIDSet) {
-        const newEntity = StageManager.getConnectableEntityByUUID(newUUID);
+        const newEntity = this.project.stageManager.getConnectableEntityByUUID(newUUID);
         if (newEntity) {
           newEntity.isSelected = true;
         }
@@ -144,13 +145,13 @@ export namespace SelectChangeEngine {
     } else {
       // 全新的扩散
       for (const newUUID of expandUUIDSet) {
-        const newEntity = StageManager.getConnectableEntityByUUID(newUUID);
+        const newEntity = this.project.stageManager.getConnectableEntityByUUID(newUUID);
         if (newEntity) {
           newEntity.isSelected = true;
         }
       }
       for (const oldUUID of selectedEntitiesUUIDSet) {
-        const oldEntity = StageManager.getConnectableEntityByUUID(oldUUID);
+        const oldEntity = this.project.stageManager.getConnectableEntityByUUID(oldUUID);
         if (oldEntity) {
           oldEntity.isSelected = false;
         }
@@ -165,7 +166,7 @@ export namespace SelectChangeEngine {
    * @param clearOldSelect
    * @returns
    */
-  function afterSelect(
+  private afterSelect(
     selectedNodeRect: ConnectableEntity,
     newSelectedConnectableEntity: ConnectableEntity | null,
     clearOldSelect = true,
@@ -174,28 +175,30 @@ export namespace SelectChangeEngine {
       return;
     }
     newSelectedConnectableEntity.isSelected = true;
-    lastSelectNodeByKeyboardUUID = newSelectedConnectableEntity.uuid;
+    this.lastSelectNodeByKeyboardUUID = newSelectedConnectableEntity.uuid;
     const newSelectNodeRect = newSelectedConnectableEntity.collisionBox.getRectangle();
 
-    if (Camera.cameraFollowsSelectedNodeOnArrowKeys) {
-      Camera.bombMove(newSelectNodeRect.center);
+    if (this.project.camera.cameraFollowsSelectedNodeOnArrowKeys) {
+      this.project.camera.bombMove(newSelectNodeRect.center);
     }
     if (clearOldSelect) {
       selectedNodeRect.isSelected = false;
     }
 
-    addEffect(selectedNodeRect.collisionBox.getRectangle(), newSelectNodeRect);
+    this.addEffect(selectedNodeRect.collisionBox.getRectangle(), newSelectNodeRect);
 
     // 更新选中内容的数量
     StageObjectSelectCounter.update();
   }
 
-  function getCurrentSelectedNode(): ConnectableEntity | null {
-    const selectedEntities = StageManager.getSelectedEntities().filter((entity) => entity instanceof ConnectableEntity);
+  private getCurrentSelectedNode(): ConnectableEntity | null {
+    const selectedEntities = this.project.stageManager
+      .getSelectedEntities()
+      .filter((entity) => entity instanceof ConnectableEntity);
     let selectedNode: ConnectableEntity | null = null;
     if (selectedEntities.length === 0) {
       // 如果没有，则选中距离屏幕中心最近的节点
-      const nearestNode = selectMostNearLocationNode(Camera.location);
+      const nearestNode = this.selectMostNearLocationNode(this.project.camera.location);
       if (nearestNode) {
         nearestNode.isSelected = true;
       }
@@ -204,9 +207,9 @@ export namespace SelectChangeEngine {
     } else if (selectedEntities.length === 1) {
       selectedNode = selectedEntities[0];
     } else {
-      const lastSelectNodeArr = StageManager.getEntitiesByUUIDs([lastSelectNodeByKeyboardUUID]).filter(
-        (entity) => entity instanceof ConnectableEntity,
-      );
+      const lastSelectNodeArr = this.project.stageManager
+        .getEntitiesByUUIDs([this.lastSelectNodeByKeyboardUUID])
+        .filter((entity) => entity instanceof ConnectableEntity);
       if (lastSelectNodeArr.length !== 0) {
         selectedNode = lastSelectNodeArr[0];
       } else {
@@ -216,10 +219,10 @@ export namespace SelectChangeEngine {
     return selectedNode;
   }
 
-  function addEffect(selectedNodeRect: Rectangle, newSelectNodeRect: Rectangle) {
+  private addEffect(selectedNodeRect: Rectangle, newSelectNodeRect: Rectangle) {
     const color = StageStyleManager.currentStyle.effects.successShadow;
     // 节点切换移动的特效有待专门写一个
-    Stage.effectMachine.addEffects([
+    this.project.effects.addEffects([
       new LineCuttingEffect(
         new ProgressNumber(0, 20),
         selectedNodeRect.leftTop,
@@ -228,7 +231,7 @@ export namespace SelectChangeEngine {
         color,
       ),
     ]);
-    Stage.effectMachine.addEffects([
+    this.project.effects.addEffects([
       new LineCuttingEffect(
         new ProgressNumber(0, 20),
         selectedNodeRect.rightTop,
@@ -237,7 +240,7 @@ export namespace SelectChangeEngine {
         color,
       ),
     ]);
-    Stage.effectMachine.addEffects([
+    this.project.effects.addEffects([
       new LineCuttingEffect(
         new ProgressNumber(0, 20),
         selectedNodeRect.rightBottom,
@@ -246,7 +249,7 @@ export namespace SelectChangeEngine {
         color,
       ),
     ]);
-    Stage.effectMachine.addEffects([
+    this.project.effects.addEffects([
       new LineCuttingEffect(
         new ProgressNumber(0, 20),
         selectedNodeRect.leftBottom,
@@ -257,7 +260,7 @@ export namespace SelectChangeEngine {
     ]);
   }
 
-  function getMostNearConnectableEntity(nodes: ConnectableEntity[], location: Vector): ConnectableEntity | null {
+  private getMostNearConnectableEntity(nodes: ConnectableEntity[], location: Vector): ConnectableEntity | null {
     if (nodes.length === 0) return null;
     let currentMinDistance = Infinity;
     let currentNearestNode: ConnectableEntity | null = null;
@@ -281,10 +284,10 @@ export namespace SelectChangeEngine {
    * 然后这个交点到目标的距离
    * @param location
    */
-  function selectMostNearLocationNode(location: Vector): ConnectableEntity | null {
+  private selectMostNearLocationNode(location: Vector): ConnectableEntity | null {
     let currentMinDistance = Infinity;
     let currentNearestNode: ConnectableEntity | null = null;
-    for (const node of StageManager.getConnectableEntity()) {
+    for (const node of this.project.stageManager.getConnectableEntity()) {
       const entityCenter = node.collisionBox.getRectangle().center;
       const intersectLocation = node.collisionBox
         .getRectangle()
@@ -303,9 +306,9 @@ export namespace SelectChangeEngine {
    * 无视连线关系，只看位置
    * @param node 当前所在的节点
    */
-  export function collectTopNodes(node: ConnectableEntity): ConnectableEntity[] {
+  collectTopNodes(node: ConnectableEntity): ConnectableEntity[] {
     const topNodes: ConnectableEntity[] = [];
-    for (const otherNode of StageManager.getConnectableEntity()) {
+    for (const otherNode of this.project.stageManager.getConnectableEntity()) {
       if (otherNode.uuid === node.uuid) continue;
       const otherNodeRect = otherNode.collisionBox.getRectangle();
       const nodeRect = node.collisionBox.getRectangle();
@@ -321,9 +324,9 @@ export namespace SelectChangeEngine {
     return topNodes;
   }
 
-  export function collectBottomNodes(node: ConnectableEntity): ConnectableEntity[] {
+  collectBottomNodes(node: ConnectableEntity): ConnectableEntity[] {
     const bottomNodes: ConnectableEntity[] = [];
-    for (const otherNode of StageManager.getConnectableEntity()) {
+    for (const otherNode of this.project.stageManager.getConnectableEntity()) {
       if (otherNode.uuid === node.uuid) continue;
       const otherNodeRect = otherNode.collisionBox.getRectangle();
       const nodeRect = node.collisionBox.getRectangle();
@@ -339,9 +342,9 @@ export namespace SelectChangeEngine {
     return bottomNodes;
   }
 
-  export function collectLeftNodes(node: ConnectableEntity): ConnectableEntity[] {
+  collectLeftNodes(node: ConnectableEntity): ConnectableEntity[] {
     const leftNodes: ConnectableEntity[] = [];
-    for (const otherNode of StageManager.getConnectableEntity()) {
+    for (const otherNode of this.project.stageManager.getConnectableEntity()) {
       if (otherNode.uuid === node.uuid) continue;
       const otherNodeRect = otherNode.collisionBox.getRectangle();
       const nodeRect = node.collisionBox.getRectangle();
@@ -357,9 +360,9 @@ export namespace SelectChangeEngine {
     return leftNodes;
   }
 
-  export function collectRightNodes(node: ConnectableEntity): ConnectableEntity[] {
+  collectRightNodes(node: ConnectableEntity): ConnectableEntity[] {
     const rightNodes: ConnectableEntity[] = [];
-    for (const otherNode of StageManager.getConnectableEntity()) {
+    for (const otherNode of this.project.stageManager.getConnectableEntity()) {
       if (otherNode.uuid === node.uuid) continue;
       const otherNodeRect = otherNode.collisionBox.getRectangle();
       const nodeRect = node.collisionBox.getRectangle();

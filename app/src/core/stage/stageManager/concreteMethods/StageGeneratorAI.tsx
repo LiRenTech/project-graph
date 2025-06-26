@@ -3,11 +3,9 @@ import { v4 as uuidv4 } from "uuid";
 import { Dialog } from "../../../../components/dialog";
 import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
 import { Vector } from "../../../dataStruct/Vector";
-import { EdgeRenderer } from "../../../render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { FeatureFlags } from "../../../service/FeatureFlags";
 import { Stage } from "../../Stage";
 import { TextNode } from "../../stageObject/entity/TextNode";
-import { StageManager } from "../StageManager";
 
 export namespace StageGeneratorAI {
   /**
@@ -15,7 +13,9 @@ export namespace StageGeneratorAI {
    * 工具栏按钮的触发函数
    */
   export async function generateNewTextNodeBySelected() {
-    const selectedTextNodes = StageManager.getSelectedEntities().filter((entity) => entity instanceof TextNode);
+    const selectedTextNodes = this.project.stageManager
+      .getSelectedEntities()
+      .filter((entity) => entity instanceof TextNode);
     if (selectedTextNodes.length === 0) {
       return;
     }
@@ -42,7 +42,7 @@ export namespace StageGeneratorAI {
       const treeParents: string[] = [];
       let currentNode = selectedTextNode;
       while (true) {
-        const parents = StageManager.getLineEdges().filter((edge) => edge.target === currentNode);
+        const parents = this.project.stageManager.getLineEdges().filter((edge) => edge.target === currentNode);
         // 遇到了=>-的结构，或者没有父节点了
         if (parents.length !== 1) {
           break;
@@ -85,7 +85,7 @@ export namespace StageGeneratorAI {
     let startRotateDegrees = -(90 / 2);
 
     const toParentDegrees: number[] = [];
-    for (const edge of StageManager.getLineEdges()) {
+    for (const edge of this.project.stageManager.getLineEdges()) {
       if (edge.target === parent) {
         toParentDegrees.push(
           edge.target.collisionBox
@@ -140,17 +140,17 @@ export namespace StageGeneratorAI {
         );
       }
 
-      StageManager.addTextNode(newNode);
+      this.project.stageManager.addTextNode(newNode);
       // 连线
-      StageManager.connectEntity(parent, newNode);
+      this.project.stageManager.connectEntity(parent, newNode);
       // 特效
-      Stage.effectMachine.addEffects(EdgeRenderer.getConnectedEffects(parent, newNode));
+      Stage.effectMachine.addEffects(this.project.edgeRenderer.getConnectedEffects(parent, newNode));
     }
   }
 
   function isNodeOverlapWithOther(node: TextNode): boolean {
     const rect = node.collisionBox.getRectangle();
-    for (const otherNode of StageManager.getTextNodes()) {
+    for (const otherNode of this.project.stageManager.getTextNodes()) {
       if (node.uuid === otherNode.uuid) {
         continue;
       }

@@ -1,7 +1,6 @@
 import { StageObject } from "../../stageObject/abstract/StageObject";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
-import { StageManager } from "../StageManager";
 
 /**
  * 舞台管理器相关的工具函数
@@ -64,7 +63,7 @@ export namespace StageManagerUtils {
   }
 
   function isNameConflictWithTextNodes(name: string): boolean {
-    for (const node of StageManager.getTextNodes()) {
+    for (const node of this.project.stageManager.getTextNodes()) {
       if (node.text === name) {
         return true;
       }
@@ -73,7 +72,7 @@ export namespace StageManagerUtils {
   }
 
   function isNameConflictWithSections(name: string): boolean {
-    for (const section of StageManager.getSections()) {
+    for (const section of this.project.stageManager.getSections()) {
       if (section.text === name) {
         return true;
       }

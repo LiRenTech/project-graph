@@ -1,18 +1,17 @@
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
 import { Vector } from "../../../dataStruct/Vector";
-import { LineEdge } from "../../stageObject/association/LineEdge";
-import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
-import { TextNode } from "../../stageObject/entity/TextNode";
-import { StageManager } from "../StageManager";
-import { Section } from "../../stageObject/entity/Section";
-import { PortalNode } from "../../stageObject/entity/PortalNode";
-import { PenStroke } from "../../stageObject/entity/PenStroke";
-import { UrlNode } from "../../stageObject/entity/UrlNode";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";
+import { LineEdge } from "../../stageObject/association/LineEdge";
+import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
+import { PenStroke } from "../../stageObject/entity/PenStroke";
+import { PortalNode } from "../../stageObject/entity/PortalNode";
+import { Section } from "../../stageObject/entity/Section";
 import { SvgNode } from "../../stageObject/entity/SvgNode";
+import { TextNode } from "../../stageObject/entity/TextNode";
+import { UrlNode } from "../../stageObject/entity/UrlNode";
 /**
  * 直接向舞台中添加序列化数据
  * 用于向舞台中附加新文件图、或者用于复制粘贴、甚至撤销
@@ -47,17 +46,17 @@ export namespace StageSerializedAdder {
       }
       if (entityObject) {
         entityObject.moveTo(entityObject.collisionBox.getRectangle().location.add(diffLocation));
-        StageManager.addEntity(entityObject);
+        this.project.stageManager.addEntity(entityObject);
       }
     }
     for (const edge of updatedSerializedData.associations) {
       if (Serialized.isLineEdge(edge)) {
-        StageManager.addLineEdge(new LineEdge(edge));
+        this.project.stageManager.addLineEdge(new LineEdge(edge));
       } else if (Serialized.isCubicCatmullRomSplineEdge(edge)) {
-        StageManager.addCrEdge(new CubicCatmullRomSplineEdge(edge));
+        this.project.stageManager.addCrEdge(new CubicCatmullRomSplineEdge(edge));
       }
     }
-    StageManager.updateReferences();
+    this.project.stageManager.updateReferences();
   }
 
   function refreshUUID(serializedData: Serialized.File): Serialized.File {

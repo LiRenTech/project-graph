@@ -4,7 +4,6 @@ import { writeFileBase64 } from "../../../../utils/fs";
 import { PathString } from "../../../../utils/pathString";
 import { Vector } from "../../../dataStruct/Vector";
 import { Stage } from "../../../stage/Stage";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 
 /**
@@ -45,7 +44,7 @@ export async function copyEnginePasteImage(item: ClipboardItem, mouseLocation: V
       location: [mouseLocation.x, mouseLocation.y],
       path: `${imageFileName}.png`,
     });
-    StageManager.addImageNode(imageNode);
+    this.project.stageManager.addImageNode(imageNode);
   }, 100);
 }
 

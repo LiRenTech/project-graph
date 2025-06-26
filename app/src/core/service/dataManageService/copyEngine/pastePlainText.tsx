@@ -1,15 +1,14 @@
+import { v4 as uuidv4 } from "uuid";
 import { Dialog } from "../../../../components/dialog";
 import { PathString } from "../../../../utils/pathString";
 import { Vector } from "../../../dataStruct/Vector";
 import { Stage } from "../../../stage/Stage";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { SvgNode } from "../../../stage/stageObject/entity/SvgNode";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
 import { RectanglePushInEffect } from "../../feedbackService/effectEngine/concrete/RectanglePushInEffect";
-import { v4 as uuidv4 } from "uuid";
 
 /**
  * 复制粘贴引擎 粘贴各种各样的纯文本 处理函数
@@ -86,11 +85,11 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
   }
 
   if (entity !== null) {
-    StageManager.addEntity(entity);
+    this.project.stageManager.addEntity(entity);
     // 添加到section
     const mouseSections = SectionMethods.getSectionsByInnerLocation(mouseLocation);
     if (mouseSections.length > 0) {
-      StageManager.goInSection([entity], mouseSections[0]);
+      this.project.stageManager.goInSection([entity], mouseSections[0]);
       Stage.effectMachine.addEffect(
         RectanglePushInEffect.sectionGoInGoOut(
           entity.collisionBox.getRectangle(),

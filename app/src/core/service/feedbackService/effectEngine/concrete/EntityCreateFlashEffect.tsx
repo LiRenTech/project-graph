@@ -1,9 +1,8 @@
 import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
+import { Project } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { WorldRenderUtils } from "../../../../render/canvas2d/utilsRenderer/WorldRenderUtils";
-import { Camera } from "../../../../stage/Camera";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
@@ -16,6 +15,7 @@ export class EntityCreateFlashEffect extends EffectObject {
     return "EntityCreateFlashEffect";
   }
   constructor(
+    private readonly project: Project,
     /**
      * 一开始为0，每tick + 1
      */
@@ -37,8 +37,9 @@ export class EntityCreateFlashEffect extends EffectObject {
    * @param rectangle
    * @returns
    */
-  static fromRectangle(rectangle: Rectangle) {
+  static fromRectangle(project: Project, rectangle: Rectangle) {
     return new EntityCreateFlashEffect(
+      project,
       new ProgressNumber(0, 50),
       rectangle,
       Renderer.NODE_ROUNDED_RADIUS,
@@ -46,8 +47,9 @@ export class EntityCreateFlashEffect extends EffectObject {
     );
   }
 
-  static fromCreateEntity(entity: Entity) {
+  static fromCreateEntity(project: Project, entity: Entity) {
     const result = new EntityCreateFlashEffect(
+      project,
       new ProgressNumber(0, 15),
       entity.collisionBox.getRectangle(),
       Renderer.NODE_ROUNDED_RADIUS,
@@ -56,6 +58,7 @@ export class EntityCreateFlashEffect extends EffectObject {
     );
     result.subEffects = [
       new EntityCreateFlashEffect(
+        project,
         new ProgressNumber(0, 30),
         entity.collisionBox.getRectangle(),
         Renderer.NODE_ROUNDED_RADIUS,
@@ -63,6 +66,7 @@ export class EntityCreateFlashEffect extends EffectObject {
         50,
       ),
       new EntityCreateFlashEffect(
+        project,
         new ProgressNumber(0, 45),
         entity.collisionBox.getRectangle(),
         Renderer.NODE_ROUNDED_RADIUS,
@@ -77,11 +81,11 @@ export class EntityCreateFlashEffect extends EffectObject {
     if (this.timeProgress.isFull) {
       return;
     }
-    WorldRenderUtils.renderRectangleFlash(
-      this.rectangle.transformWorld2View(),
+    this.project.worldRenderUtils.renderRectangleFlash(
+      this.project.renderer.transformWorld2View(this.rectangle),
       this.color,
-      this.startBlurSize * Camera.currentScale * (1 - this.timeProgress.rate),
-      this.radius * Camera.currentScale,
+      this.startBlurSize * this.project.camera.currentScale * (1 - this.timeProgress.rate),
+      this.radius * this.project.camera.currentScale,
     );
     for (const subEffect of this.subEffects) {
       subEffect.render();

@@ -3,9 +3,8 @@ import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
+import { Project } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { EffectObject } from "../effectObject";
 
@@ -19,6 +18,7 @@ export class EntityShakeEffect extends EffectObject {
     return "EntityShakeEffect";
   }
   constructor(
+    private readonly project: Project,
     public time: number,
     public rect: Rectangle,
   ) {
@@ -36,8 +36,8 @@ export class EntityShakeEffect extends EffectObject {
     this.shakeOffsetB = Random.randomVectorOnNormalCircle().multiply(alpha * maxOffsetDistance);
   }
 
-  static fromEntity(entity: Entity): EntityShakeEffect {
-    return new EntityShakeEffect(30, entity.collisionBox.getRectangle());
+  static fromEntity(project: Project, entity: Entity): EntityShakeEffect {
+    return new EntityShakeEffect(project, 30, entity.collisionBox.getRectangle());
   }
 
   render(): void {
@@ -46,24 +46,24 @@ export class EntityShakeEffect extends EffectObject {
     const rectangleB = this.rect.clone();
     rectangleB.location = rectangleB.location.add(this.shakeOffsetB).add(Vector.same(2));
     const fillAlpha = (1 - this.timeProgress.rate) / 2;
-    ShapeRenderer.renderRectWithShadow(
-      rectangleA.transformWorld2View(),
+    this.project.shapeRenderer.renderRectWithShadow(
+      this.project.renderer.transformWorld2View(rectangleA),
       new Color(255, 0, 0, fillAlpha),
       new Color(255, 0, 0, 0.2),
-      2 * Camera.currentScale,
+      2 * this.project.camera.currentScale,
       Color.Red,
-      50 * Camera.currentScale,
+      50 * this.project.camera.currentScale,
       0,
       0,
       Renderer.NODE_ROUNDED_RADIUS,
     );
-    ShapeRenderer.renderRectWithShadow(
-      rectangleB.transformWorld2View(),
+    this.project.shapeRenderer.renderRectWithShadow(
+      this.project.renderer.transformWorld2View(rectangleB),
       new Color(0, 0, 255, fillAlpha),
       new Color(0, 0, 255, 0.2),
-      2 * Camera.currentScale,
+      2 * this.project.camera.currentScale,
       Color.Blue,
-      50 * Camera.currentScale,
+      50 * this.project.camera.currentScale,
       0,
       0,
       Renderer.NODE_ROUNDED_RADIUS,

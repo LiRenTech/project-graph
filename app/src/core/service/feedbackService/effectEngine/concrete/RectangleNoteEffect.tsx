@@ -2,8 +2,7 @@ import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
+import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 import { reverseAnimate } from "../mathTools/animateFunctions";
@@ -23,6 +22,7 @@ export class RectangleNoteEffect extends EffectObject {
     return "RectangleNoteEffect";
   }
   constructor(
+    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     public targetRectangle: Rectangle,
     public strokeColor: Color,
@@ -30,8 +30,9 @@ export class RectangleNoteEffect extends EffectObject {
     super(timeProgress);
   }
 
-  static fromShiftClickSelect(rectangle: Rectangle) {
+  static fromShiftClickSelect(project: Project, rectangle: Rectangle) {
     return new RectangleNoteEffect(
+      project,
       new ProgressNumber(0, 50),
       rectangle,
       StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
@@ -42,7 +43,7 @@ export class RectangleNoteEffect extends EffectObject {
     if (this.timeProgress.isFull) {
       return;
     }
-    const startRect = Renderer.getCoverWorldRectangle();
+    const startRect = this.project.renderer.getCoverWorldRectangle();
     const currentRect = new Rectangle(
       startRect.location.add(
         this.targetRectangle.location.subtract(startRect.location).multiply(easeOutQuint(this.timeProgress.rate)),
@@ -52,8 +53,8 @@ export class RectangleNoteEffect extends EffectObject {
         startRect.size.y + (this.targetRectangle.size.y - startRect.size.y) * easeOutQuint(this.timeProgress.rate),
       ),
     );
-    ShapeRenderer.renderRect(
-      currentRect.transformWorld2View(),
+    this.project.shapeRenderer.renderRect(
+      this.project.renderer.transformWorld2View(currentRect),
       Color.Transparent,
       mixColors(Color.Transparent, this.strokeColor, reverseAnimate(this.timeProgress.rate)),
       2,

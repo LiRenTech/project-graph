@@ -1,9 +1,7 @@
 import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
-import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
+import { Project } from "../../../../Project";
 import { EffectObject } from "../effectObject";
 
 /**
@@ -11,6 +9,7 @@ import { EffectObject } from "../effectObject";
  */
 export class CircleChangeRadiusEffect extends EffectObject {
   constructor(
+    private readonly project: Project,
     /**
      * 一开始为0，每tick + 1
      */
@@ -35,8 +34,9 @@ export class CircleChangeRadiusEffect extends EffectObject {
     super.tick();
   }
 
-  static fromConnectPointExpand(location: Vector, expandRadius: number) {
+  static fromConnectPointExpand(project: Project, location: Vector, expandRadius: number) {
     return new CircleChangeRadiusEffect(
+      project,
       new ProgressNumber(0, 10),
       location,
       0.01,
@@ -44,8 +44,9 @@ export class CircleChangeRadiusEffect extends EffectObject {
       new Color(255, 255, 255),
     );
   }
-  static fromConnectPointShrink(location: Vector, currentRadius: number) {
+  static fromConnectPointShrink(project: Project, location: Vector, currentRadius: number) {
     return new CircleChangeRadiusEffect(
+      project,
       new ProgressNumber(0, 10),
       location,
       currentRadius,
@@ -59,12 +60,12 @@ export class CircleChangeRadiusEffect extends EffectObject {
       return;
     }
     this.color.a = 1 - this.timeProgress.rate;
-    ShapeRenderer.renderCircle(
-      Renderer.transformWorld2View(this.location),
-      this.radius * Camera.currentScale,
+    this.project.shapeRenderer.renderCircle(
+      this.project.renderer.transformWorld2View(this.location),
+      this.radius * this.project.camera.currentScale,
       Color.Transparent,
       this.color,
-      2 * Camera.currentScale,
+      2 * this.project.camera.currentScale,
     );
   }
 }

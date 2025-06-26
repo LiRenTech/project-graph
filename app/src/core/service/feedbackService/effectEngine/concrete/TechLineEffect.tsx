@@ -2,9 +2,7 @@ import { Random } from "../../../../algorithm/random";
 import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
-import { CurveRenderer } from "../../../../render/canvas2d/basicRenderer/curveRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
+import { Project } from "../../../../Project";
 import { EffectObject } from "../effectObject";
 
 /**
@@ -18,6 +16,7 @@ export class TechLineEffect extends EffectObject {
     return "TechLineEffect";
   }
   constructor(
+    private readonly project: Project,
     start: Vector,
     private end: Vector,
     private segmentCount: number,
@@ -58,17 +57,17 @@ export class TechLineEffect extends EffectObject {
     }
   }
 
-  static normal(startLocation: Vector, endLocation: Vector, color: Color): TechLineEffect {
-    return new TechLineEffect(startLocation, endLocation, 10, 100, -5, 15, color, new ProgressNumber(0, 50));
+  static normal(project: Project, startLocation: Vector, endLocation: Vector, color: Color): TechLineEffect {
+    return new TechLineEffect(project, startLocation, endLocation, 10, 100, -5, 15, color, new ProgressNumber(0, 50));
   }
 
   render(): void {
     const currentColor = mixColors(this.color, Color.Transparent, this.timeProgress.rate);
-    const viewLocations = this.currentPoints.map((p) => Renderer.transformWorld2View(p));
-    CurveRenderer.renderSolidLineMultipleWithShadow(
+    const viewLocations = this.currentPoints.map((p) => this.project.renderer.transformWorld2View(p));
+    this.project.curveRenderer.renderSolidLineMultipleWithShadow(
       viewLocations,
       currentColor,
-      (1 - this.timeProgress.rate) * this.lineWidth * Camera.currentScale,
+      (1 - this.timeProgress.rate) * this.lineWidth * this.project.camera.currentScale,
       this.color,
       10,
     );

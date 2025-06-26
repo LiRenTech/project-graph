@@ -1,8 +1,6 @@
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
-import { TextRenderer } from "../../../../render/canvas2d/basicRenderer/textRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Canvas } from "../../../../stage/Canvas";
+import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 import { easeInOutSine } from "../mathTools/easings";
@@ -16,14 +14,15 @@ export class TextRiseEffect extends EffectObject {
   }
 
   constructor(
+    private readonly project: Project,
     public text: string,
     public override timeProgress: ProgressNumber = new ProgressNumber(0, 100),
   ) {
     super(timeProgress);
   }
 
-  static default(text: string): TextRiseEffect {
-    return new TextRiseEffect(text, new ProgressNumber(0, 100));
+  static default(project: Project, text: string): TextRiseEffect {
+    return new TextRiseEffect(project, text, new ProgressNumber(0, 100));
   }
 
   render(): void {
@@ -33,16 +32,16 @@ export class TextRiseEffect extends EffectObject {
     // 在画布中心缓缓升高一段距离
     const distance = 100;
     const renderCenterLocation = new Vector(
-      Renderer.w / 2,
-      Renderer.h / 2 - distance * easeInOutSine(this.timeProgress.rate),
+      this.project.renderer.w / 2,
+      this.project.renderer.h / 2 - distance * easeInOutSine(this.timeProgress.rate),
     );
-    TextRenderer.renderMultiLineTextFromCenter(
+    this.project.textRenderer.renderMultiLineTextFromCenter(
       this.text,
       renderCenterLocation,
       20,
       Infinity,
       StageStyleManager.currentStyle.StageObjectBorder,
     );
-    Canvas.ctx.globalAlpha = 1;
+    this.project.canvas.ctx.globalAlpha = 1;
   }
 }

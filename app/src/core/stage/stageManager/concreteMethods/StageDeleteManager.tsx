@@ -1,5 +1,6 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
+import { NodeLogic } from "../../../service/dataGenerateService/autoComputeEngine/functions/nodeLogic";
 import { ExplodeDashEffect } from "../../../service/feedbackService/effectEngine/concrete/ExplodeDashEffect";
 import { Stage } from "../../Stage";
 import { Association } from "../../stageObject/abstract/Association";
@@ -15,9 +16,7 @@ import { SvgNode } from "../../stageObject/entity/SvgNode";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
 import { SectionMethods } from "../basicMethods/SectionMethods";
-import { StageManager } from "../StageManager";
 import { StageSectionInOutManager } from "./StageSectionInOutManager";
-import { NodeLogic } from "../../../service/dataGenerateService/autoComputeEngine/functions/nodeLogic";
 
 /**
  * 包含一切删除舞台上的元素的方法
@@ -55,29 +54,29 @@ export namespace StageDeleteManager {
   }
 
   function deleteSvgNode(entity: SvgNode) {
-    if (StageManager.getEntities().includes(entity)) {
-      StageManager.deleteOneEntity(entity);
+    if (this.project.stageManager.getEntities().includes(entity)) {
+      this.project.stageManager.deleteOneEntity(entity);
       // 删除所有相关的边
       deleteEntityAfterClearAssociation(entity);
     }
   }
 
   function deletePortalNode(entity: PortalNode) {
-    if (StageManager.getPortalNodes().includes(entity)) {
-      StageManager.deleteOnePortalNode(entity);
+    if (this.project.stageManager.getPortalNodes().includes(entity)) {
+      this.project.stageManager.deleteOnePortalNode(entity);
       // 删除所有相关的边
       deleteEntityAfterClearAssociation(entity);
     }
   }
 
   function deletePenStroke(penStroke: PenStroke) {
-    if (StageManager.getPenStrokes().includes(penStroke)) {
-      StageManager.deleteOnePenStroke(penStroke);
+    if (this.project.stageManager.getPenStrokes().includes(penStroke)) {
+      this.project.stageManager.deleteOnePenStroke(penStroke);
     }
   }
 
   function deleteSection(entity: Section) {
-    if (!StageManager.getSections().includes(entity)) {
+    if (!this.project.stageManager.getSections().includes(entity)) {
       console.warn("section not in sections!!!", entity.uuid);
       return;
     }
@@ -88,15 +87,15 @@ export namespace StageDeleteManager {
     }
 
     // 再删除自己
-    StageManager.deleteOneSection(entity);
+    this.project.stageManager.deleteOneSection(entity);
     deleteEntityAfterClearAssociation(entity);
     // 将自己所有的父级Section的children添加自己的children
     const fatherSections = SectionMethods.getFatherSections(entity);
     StageSectionInOutManager.goInSections(entity.children, fatherSections);
   }
   function deleteImageNode(entity: ImageNode) {
-    if (StageManager.getImageNodes().includes(entity)) {
-      StageManager.deleteOneImage(entity);
+    if (this.project.stageManager.getImageNodes().includes(entity)) {
+      this.project.stageManager.deleteOneImage(entity);
       Stage.effectMachine.addEffect(
         new ExplodeDashEffect(new ProgressNumber(0, 30), entity.collisionBox.getRectangle(), Color.White),
       );
@@ -105,8 +104,8 @@ export namespace StageDeleteManager {
     }
   }
   function deleteUrlNode(entity: UrlNode) {
-    if (StageManager.getUrlNodes().includes(entity)) {
-      StageManager.deleteOneUrlNode(entity);
+    if (this.project.stageManager.getUrlNodes().includes(entity)) {
+      this.project.stageManager.deleteOneUrlNode(entity);
       // 删除所有相关的边
       deleteEntityAfterClearAssociation(entity);
     }
@@ -114,9 +113,9 @@ export namespace StageDeleteManager {
 
   function deleteConnectPoint(entity: ConnectPoint) {
     // 先判断这个node是否在nodes里
-    if (StageManager.getConnectPoints().includes(entity)) {
+    if (this.project.stageManager.getConnectPoints().includes(entity)) {
       // 从数组中去除
-      StageManager.deleteOneConnectPoint(entity);
+      this.project.stageManager.deleteOneConnectPoint(entity);
       Stage.effectMachine.addEffect(
         new ExplodeDashEffect(new ProgressNumber(0, 30), entity.collisionBox.getRectangle(), Color.White),
       );
@@ -129,11 +128,11 @@ export namespace StageDeleteManager {
 
   function deleteTextNode(entity: TextNode) {
     // 先判断这个node是否在nodes里
-    if (StageManager.getTextNodes().includes(entity)) {
+    if (this.project.stageManager.getTextNodes().includes(entity)) {
       // 删除逻辑节点存储的状态
       if (NodeLogic.delayStates.has(entity.uuid)) NodeLogic.delayStates.delete(entity.uuid);
       // 从数组中去除
-      StageManager.deleteOneTextNode(entity);
+      this.project.stageManager.deleteOneTextNode(entity);
       // 增加特效
       Stage.effectMachine.addEffect(
         new ExplodeDashEffect(
@@ -157,7 +156,7 @@ export namespace StageDeleteManager {
     const prepareDeleteAssociation: Association[] = [];
     const visitedAssociations: Set<string> = new Set();
 
-    for (const edge of StageManager.getAssociations()) {
+    for (const edge of this.project.stageManager.getAssociations()) {
       if (edge instanceof Edge) {
         if ((edge.source === entity || edge.target === entity) && visitedAssociations.has(edge.uuid) === false) {
           prepareDeleteAssociation.push(edge);
@@ -171,7 +170,7 @@ export namespace StageDeleteManager {
       }
     }
     for (const edge of prepareDeleteAssociation) {
-      StageManager.deleteOneAssociation(edge);
+      this.project.stageManager.deleteOneAssociation(edge);
     }
   }
 
@@ -184,10 +183,13 @@ export namespace StageDeleteManager {
     const fromNode = deleteEdge.source;
     const toNode = deleteEdge.target;
     // 先判断这两个节点是否在nodes里
-    if (StageManager.isEntityExists(fromNode.uuid) && StageManager.isEntityExists(toNode.uuid)) {
+    if (
+      this.project.stageManager.isEntityExists(fromNode.uuid) &&
+      this.project.stageManager.isEntityExists(toNode.uuid)
+    ) {
       // 删除边
-      StageManager.deleteOneAssociation(deleteEdge);
-      StageManager.updateReferences();
+      this.project.stageManager.deleteOneAssociation(deleteEdge);
+      this.project.stageManager.updateReferences();
       return true;
     } else {
       return false;
@@ -195,8 +197,8 @@ export namespace StageDeleteManager {
   }
 
   export function deleteMultiTargetUndirectedEdge(edge: MultiTargetUndirectedEdge) {
-    StageManager.deleteOneAssociation(edge);
-    StageManager.updateReferences();
+    this.project.stageManager.deleteOneAssociation(edge);
+    this.project.stageManager.updateReferences();
     return true;
   }
 }

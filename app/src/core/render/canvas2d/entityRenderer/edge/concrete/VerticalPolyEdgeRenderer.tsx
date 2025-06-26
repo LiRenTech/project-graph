@@ -2,26 +2,27 @@ import { Color } from "../../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../../dataStruct/ProgressNumber";
 import { Line } from "../../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../../dataStruct/Vector";
+import { Project, service } from "../../../../../Project";
 import { CircleFlameEffect } from "../../../../../service/feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { EffectObject } from "../../../../../service/feedbackService/effectEngine/effectObject";
 import { StageStyleManager } from "../../../../../service/feedbackService/stageStyle/StageStyleManager";
-import { Camera } from "../../../../../stage/Camera";
 import { ConnectableEntity } from "../../../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
 import { SvgUtils } from "../../../../svg/SvgUtils";
-import { CurveRenderer } from "../../../basicRenderer/curveRenderer";
-import { ShapeRenderer } from "../../../basicRenderer/shapeRenderer";
-import { TextRenderer } from "../../../basicRenderer/textRenderer";
 import { Renderer } from "../../../renderer";
-import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 
 /**
  * 折线渲染器
  */
+@service("verticalPolyEdgeRenderer")
 export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
+  constructor(private readonly project: Project) {
+    super();
+  }
+
   getCuttingEffects(edge: LineEdge): EffectObject[] {
     const midLocation = edge.bodyLine.midPoint();
     return [
@@ -130,9 +131,9 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
   // debug 测试
   renderTest(edge: LineEdge) {
     for (let i = 0; i < 4; i++) {
-      CurveRenderer.renderSolidLine(
-        Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().center),
-        Renderer.transformWorld2View(
+      this.project.curveRenderer.renderSolidLine(
+        this.project.renderer.transformWorld2View(edge.target.collisionBox.getRectangle().center),
+        this.project.renderer.transformWorld2View(
           edge.target.collisionBox.getRectangle().center.add(new Vector(100, 0).rotateDegrees(45 + 90 * i)),
         ),
         Color.Green,
@@ -184,19 +185,19 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
         );
 
         const p3 = new Vector(p4.x, p2.y);
-        CurveRenderer.renderSolidLineMultiple(
+        this.project.curveRenderer.renderSolidLineMultiple(
           [
-            Renderer.transformWorld2View(p1),
-            Renderer.transformWorld2View(p2),
-            Renderer.transformWorld2View(p3),
-            Renderer.transformWorld2View(p4),
+            this.project.renderer.transformWorld2View(p1),
+            this.project.renderer.transformWorld2View(p2),
+            this.project.renderer.transformWorld2View(p3),
+            this.project.renderer.transformWorld2View(p4),
           ],
           new Color(204, 204, 204),
-          2 * Camera.currentScale,
+          2 * this.project.camera.currentScale,
         );
 
         if (!(edge.target instanceof ConnectPoint)) {
-          EdgeRenderer.renderArrowHead(p1, verticalDirection, 15, edge.color);
+          this.project.edgeRenderer.renderArrowHead(p1, verticalDirection, 15, edge.color);
         }
       } else if (verticalDirection.y === 0) {
         // 左右
@@ -233,54 +234,54 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
 
         const p3 = new Vector(p2.x, p4.y);
 
-        CurveRenderer.renderSolidLineMultiple(
+        this.project.curveRenderer.renderSolidLineMultiple(
           [
-            Renderer.transformWorld2View(p1),
-            Renderer.transformWorld2View(p2),
-            Renderer.transformWorld2View(p3),
-            Renderer.transformWorld2View(p4),
+            this.project.renderer.transformWorld2View(p1),
+            this.project.renderer.transformWorld2View(p2),
+            this.project.renderer.transformWorld2View(p3),
+            this.project.renderer.transformWorld2View(p4),
           ],
           new Color(204, 204, 204),
-          2 * Camera.currentScale,
+          2 * this.project.camera.currentScale,
         );
 
         if (!(edge.target instanceof ConnectPoint)) {
-          EdgeRenderer.renderArrowHead(p1, verticalDirection, 15, edge.color);
+          this.project.edgeRenderer.renderArrowHead(p1, verticalDirection, 15, edge.color);
         }
       } else {
         // 不会出现的情况
       }
 
       // 没有文字的边
-      // CurveRenderer.renderSolidLine(
-      //   Renderer.transformWorld2View(edge.bodyLine.start),
-      //   Renderer.transformWorld2View(edge.bodyLine.end),
+      // this.project.curveRenderer.renderSolidLine(
+      //  this.project.renderer.transformWorld2View(edge.bodyLine.start),
+      //  this.project.renderer.transformWorld2View(edge.bodyLine.end),
       //   new Color(204, 204, 204),
-      //   2 * Camera.currentScale,
+      //   2 * this.project.camera.currentScale,
       // );
     } else {
       // 有文字的边
       const midPoint = edge.bodyLine.midPoint();
       const startHalf = new Line(edge.bodyLine.start, midPoint);
       const endHalf = new Line(midPoint, edge.bodyLine.end);
-      TextRenderer.renderTextFromCenter(
+      this.project.textRenderer.renderTextFromCenter(
         edge.text,
-        Renderer.transformWorld2View(midPoint),
-        Renderer.FONT_SIZE * Camera.currentScale,
+        this.project.renderer.transformWorld2View(midPoint),
+        Renderer.FONT_SIZE * this.project.camera.currentScale,
       );
       const edgeTextRectangle = edge.textRectangle;
 
-      CurveRenderer.renderSolidLine(
-        Renderer.transformWorld2View(edge.bodyLine.start),
-        Renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(startHalf)),
+      this.project.curveRenderer.renderSolidLine(
+        this.project.renderer.transformWorld2View(edge.bodyLine.start),
+        this.project.renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(startHalf)),
         new Color(204, 204, 204),
-        2 * Camera.currentScale,
+        2 * this.project.camera.currentScale,
       );
-      CurveRenderer.renderSolidLine(
-        Renderer.transformWorld2View(edge.bodyLine.end),
-        Renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(endHalf)),
+      this.project.curveRenderer.renderSolidLine(
+        this.project.renderer.transformWorld2View(edge.bodyLine.end),
+        this.project.renderer.transformWorld2View(edgeTextRectangle.getLineIntersectionPoint(endHalf)),
         new Color(204, 204, 204),
-        2 * Camera.currentScale,
+        2 * this.project.camera.currentScale,
       );
       // 画箭头
       if (!(edge.target instanceof ConnectPoint)) {
@@ -291,7 +292,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
           .subtract(edge.source.collisionBox.getRectangle().getCenter())
           .normalize();
         const endPoint = edge.bodyLine.end.clone();
-        EdgeRenderer.renderArrowHead(endPoint, direction, size, edge.color);
+        this.project.edgeRenderer.renderArrowHead(endPoint, direction, size, edge.color);
       }
     }
   }
@@ -305,39 +306,39 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
 
     if (edge.text.trim() === "") {
       // 没有文字的边
-      CurveRenderer.renderSolidLine(
-        Renderer.transformWorld2View(startPoint),
-        Renderer.transformWorld2View(shiftingMidPoint),
+      this.project.curveRenderer.renderSolidLine(
+        this.project.renderer.transformWorld2View(startPoint),
+        this.project.renderer.transformWorld2View(shiftingMidPoint),
         new Color(204, 204, 204),
-        2 * Camera.currentScale,
+        2 * this.project.camera.currentScale,
       );
-      CurveRenderer.renderSolidLine(
-        Renderer.transformWorld2View(shiftingMidPoint),
-        Renderer.transformWorld2View(endPoint),
+      this.project.curveRenderer.renderSolidLine(
+        this.project.renderer.transformWorld2View(shiftingMidPoint),
+        this.project.renderer.transformWorld2View(endPoint),
         new Color(204, 204, 204),
-        2 * Camera.currentScale,
+        2 * this.project.camera.currentScale,
       );
     } else {
       // 有文字的边
-      TextRenderer.renderTextFromCenter(
+      this.project.textRenderer.renderTextFromCenter(
         edge.text,
-        Renderer.transformWorld2View(shiftingMidPoint),
-        Renderer.FONT_SIZE * Camera.currentScale,
+        this.project.renderer.transformWorld2View(shiftingMidPoint),
+        Renderer.FONT_SIZE * this.project.camera.currentScale,
       );
       const edgeTextRectangle = edge.textRectangle;
       const start2MidPoint = edgeTextRectangle.getLineIntersectionPoint(startLine);
       const mid2EndPoint = edgeTextRectangle.getLineIntersectionPoint(endLine);
-      CurveRenderer.renderSolidLine(
-        Renderer.transformWorld2View(startPoint),
-        Renderer.transformWorld2View(start2MidPoint),
+      this.project.curveRenderer.renderSolidLine(
+        this.project.renderer.transformWorld2View(startPoint),
+        this.project.renderer.transformWorld2View(start2MidPoint),
         new Color(204, 204, 204),
-        2 * Camera.currentScale,
+        2 * this.project.camera.currentScale,
       );
-      CurveRenderer.renderSolidLine(
-        Renderer.transformWorld2View(mid2EndPoint),
-        Renderer.transformWorld2View(endPoint),
+      this.project.curveRenderer.renderSolidLine(
+        this.project.renderer.transformWorld2View(mid2EndPoint),
+        this.project.renderer.transformWorld2View(endPoint),
         new Color(204, 204, 204),
-        2 * Camera.currentScale,
+        2 * this.project.camera.currentScale,
       );
     }
     this.renderArrowHead(
@@ -348,25 +349,25 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
   }
   private renderArrowHead(edge: LineEdge, direction: Vector, endPoint = edge.bodyLine.end.clone()) {
     const size = 15;
-    EdgeRenderer.renderArrowHead(endPoint, direction, size, edge.color);
+    this.project.edgeRenderer.renderArrowHead(endPoint, direction, size, edge.color);
   }
 
   public renderCycleState(edge: LineEdge): void {
     // 自环
-    ShapeRenderer.renderArc(
-      Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
-      (edge.target.collisionBox.getRectangle().size.y / 2) * Camera.currentScale,
+    this.project.shapeRenderer.renderArc(
+      this.project.renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
+      (edge.target.collisionBox.getRectangle().size.y / 2) * this.project.camera.currentScale,
       Math.PI / 2,
       0,
       new Color(204, 204, 204),
-      2 * Camera.currentScale,
+      2 * this.project.camera.currentScale,
     );
     // 画箭头
     {
       const size = 15;
       const direction = new Vector(1, 0).rotateDegrees(15);
       const endPoint = edge.target.collisionBox.getRectangle().leftCenter;
-      EdgeRenderer.renderArrowHead(endPoint, direction, size, edge.color);
+      this.project.edgeRenderer.renderArrowHead(endPoint, direction, size, edge.color);
     }
   }
   public getNormalStageSvg(edge: LineEdge): React.ReactNode {
@@ -394,7 +395,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
       );
     }
     // 加箭头
-    const arrowHead = EdgeRenderer.generateArrowHeadSvg(
+    const arrowHead = this.project.edgeRenderer.generateArrowHeadSvg(
       edge.bodyLine.end.clone(),
       edge.target.collisionBox
         .getRectangle()
@@ -420,9 +421,9 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
   }
 
   public renderVirtualEdge(startNode: ConnectableEntity, mouseLocation: Vector): void {
-    CurveRenderer.renderGradientLine(
-      Renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
-      Renderer.transformWorld2View(mouseLocation),
+    this.project.curveRenderer.renderGradientLine(
+      this.project.renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
+      this.project.renderer.transformWorld2View(mouseLocation),
       new Color(255, 255, 255, 0),
       new Color(255, 255, 255, 0.5),
       2,
@@ -430,9 +431,9 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
   }
 
   public renderVirtualConfirmedEdge(startNode: ConnectableEntity, endNode: ConnectableEntity): void {
-    CurveRenderer.renderGradientLine(
-      Renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
-      Renderer.transformWorld2View(endNode.collisionBox.getRectangle().getCenter()),
+    this.project.curveRenderer.renderGradientLine(
+      this.project.renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
+      this.project.renderer.transformWorld2View(endNode.collisionBox.getRectangle().getCenter()),
       new Color(0, 255, 0, 0),
       new Color(0, 255, 0, 0.5),
       2,

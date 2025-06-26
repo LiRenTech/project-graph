@@ -8,7 +8,6 @@ import { Vector } from "../../dataStruct/Vector";
 import { Camera } from "../../stage/Camera";
 import { ProjectFormatUpgrader } from "../../stage/ProjectFormatUpgrader";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
-import { StageManager } from "../../stage/stageManager/StageManager";
 import { CubicCatmullRomSplineEdge } from "../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
 import { MultiTargetUndirectedEdge } from "../../stage/stageObject/association/MutiTargetUndirectedEdge";
@@ -38,7 +37,7 @@ export namespace FileLoader {
     if (!data) {
       return;
     }
-    StageManager.destroy();
+    this.project.stageManager.destroy();
 
     loadStageByData(data, path);
     StageHistoryManager.reset(data);
@@ -95,7 +94,7 @@ export namespace FileLoader {
       return;
     }
     // 先清空所有子场景
-    StageManager.clearAllChildStage();
+    this.project.stageManager.clearAllChildStage();
     // 加载所有子场景
     const childAbsolutePathList: string[] = [];
     for (const entity of data.entities) {
@@ -106,7 +105,7 @@ export namespace FileLoader {
         childAbsolutePathList.push(childAbsolutePath);
 
         // 更新子场景的摄像头信息
-        StageManager.updateChildStageCameraData(childAbsolutePath, {
+        this.project.stageManager.updateChildStageCameraData(childAbsolutePath, {
           location: new Vector(...entity.location),
           zoom: entity.cameraScale,
           size: new Vector(...entity.size),
@@ -135,12 +134,12 @@ export namespace FileLoader {
   }
 
   function loadChildStageByData(data: Serialized.File, absolutePath: string) {
-    StageManager.storeMainStage();
-    StageManager.destroy();
+    this.project.stageManager.storeMainStage();
+    this.project.stageManager.destroy();
     loadDataToMainStage(data);
-    StageManager.storeMainStageToChildStage(absolutePath);
-    StageManager.destroy();
-    StageManager.restoreMainStage();
+    this.project.stageManager.storeMainStageToChildStage(absolutePath);
+    this.project.stageManager.destroy();
+    this.project.stageManager.restoreMainStage();
   }
 
   function loadDataToMainStage(data: Serialized.File) {
@@ -165,7 +164,7 @@ export namespace FileLoader {
         newEntity = new SvgNode(entity);
       }
       if (newEntity) {
-        StageManager.addEntity(newEntity);
+        this.project.stageManager.addEntity(newEntity);
       } else {
         console.warn("加载文件时，出现未知的实体类型：" + entity);
       }
@@ -180,12 +179,12 @@ export namespace FileLoader {
         newAssociation = new MultiTargetUndirectedEdge(edge);
       }
       if (newAssociation) {
-        StageManager.addAssociation(newAssociation);
+        this.project.stageManager.addAssociation(newAssociation);
       } else {
         console.warn("加载文件时，出现未知的关系类型：" + edge);
       }
     }
-    StageManager.TagOptions.reset(data.tags);
-    StageManager.updateReferences();
+    this.project.stageManager.TagOptions.reset(data.tags);
+    this.project.stageManager.updateReferences();
   }
 }

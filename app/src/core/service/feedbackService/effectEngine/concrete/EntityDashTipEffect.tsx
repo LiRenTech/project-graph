@@ -3,8 +3,7 @@ import { mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { RenderUtils } from "../../../../render/canvas2d/utilsRenderer/RenderUtils";
+import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectParticle } from "../effectElements/effectParticle";
 import { EffectObject } from "../effectObject";
@@ -14,6 +13,7 @@ export class EntityDashTipEffect extends EffectObject {
     return "EntityDashTipEffect";
   }
   constructor(
+    private readonly project: Project,
     public time: number,
     public rect: Rectangle,
   ) {
@@ -91,8 +91,8 @@ export class EntityDashTipEffect extends EffectObject {
 
   render(): void {
     for (const point of this.dashPoints) {
-      RenderUtils.renderPixel(
-        Renderer.transformWorld2View(point.location),
+      this.project.renderUtils.renderPixel(
+        this.project.renderer.transformWorld2View(point.location),
         mixColors(point.color, point.color.toTransparent(), this.timeProgress.rate),
       );
     }

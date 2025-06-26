@@ -1,15 +1,15 @@
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
+import { getMultiLineTextSize } from "../../../../utils/font";
+import { Color } from "../../../dataStruct/Color";
 import { CubicCatmullRomSpline } from "../../../dataStruct/shape/CubicCatmullRomSpline";
+import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
+import { Renderer } from "../../../render/canvas2d/renderer";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
 import { Edge } from "./Edge";
-import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { getMultiLineTextSize } from "../../../../utils/font";
-import { Renderer } from "../../../render/canvas2d/renderer";
-import { Color } from "../../../dataStruct/Color";
 
 /**
  * CR曲线连线
@@ -92,8 +92,8 @@ export class CubicCatmullRomSplineEdge extends Edge {
     public unknown = false,
   ) {
     super();
-    // this._source = StageManager.getTextNodeByUUID(source) as TextNode;
-    // this._target = StageManager.getTextNodeByUUID(target) as TextNode;
+    // this._source = this.project.stageManager.getTextNodeByUUID(source) as TextNode;
+    // this._target = this.project.stageManager.getTextNodeByUUID(target) as TextNode;
     this._source = new TextNode({ uuid: source }, true);
     this._target = new TextNode({ uuid: target }, true);
     this.uuid = uuid;

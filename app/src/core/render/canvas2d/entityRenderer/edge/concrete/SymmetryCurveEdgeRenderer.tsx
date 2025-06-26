@@ -7,22 +7,23 @@ import { CircleFlameEffect } from "../../../../../service/feedbackService/effect
 import { LineCuttingEffect } from "../../../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { EffectObject } from "../../../../../service/feedbackService/effectEngine/effectObject";
 import { StageStyleManager } from "../../../../../service/feedbackService/stageStyle/StageStyleManager";
-import { Camera } from "../../../../../stage/Camera";
 import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
 // import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
+import { Project, service } from "../../../../../Project";
 import { ConnectableEntity } from "../../../../../stage/stageObject/abstract/ConnectableEntity";
 import { SvgUtils } from "../../../../svg/SvgUtils";
-import { ShapeRenderer } from "../../../basicRenderer/shapeRenderer";
-import { TextRenderer } from "../../../basicRenderer/textRenderer";
 import { Renderer } from "../../../renderer";
-import { WorldRenderUtils } from "../../../utilsRenderer/WorldRenderUtils";
-import { EdgeRenderer } from "../EdgeRenderer";
 import { EdgeRendererClass } from "../EdgeRendererClass";
 
 /**
  * 贝塞尔曲线
  */
+@service("symmetryCurveEdgeRenderer")
 export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
+  constructor(private readonly project: Project) {
+    super();
+  }
+
   getCuttingEffects(edge: LineEdge): EffectObject[] {
     const midLocation = edge.bodyLine.midPoint();
     return [
@@ -114,20 +115,20 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
 
   public renderCycleState(edge: LineEdge): void {
     // 自环
-    ShapeRenderer.renderArc(
-      Renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
-      (edge.target.collisionBox.getRectangle().size.y / 2) * Camera.currentScale,
+    this.project.shapeRenderer.renderArc(
+      this.project.renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
+      (edge.target.collisionBox.getRectangle().size.y / 2) * this.project.camera.currentScale,
       Math.PI / 2,
       0,
       edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
-      2 * Camera.currentScale,
+      2 * this.project.camera.currentScale,
     );
     // 画箭头
     {
       const size = 15;
       const direction = new Vector(1, 0).rotateDegrees(15);
       const endPoint = edge.target.collisionBox.getRectangle().leftCenter;
-      EdgeRenderer.renderArrowHead(
+      this.project.edgeRenderer.renderArrowHead(
         endPoint,
         direction,
         size,
@@ -160,7 +161,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       );
     }
     // 加箭头
-    const arrowHead = EdgeRenderer.generateArrowHeadSvg(
+    const arrowHead = this.project.edgeRenderer.generateArrowHeadSvg(
       edge.bodyLine.end.clone(),
       edge.target.collisionBox
         .getRectangle()
@@ -248,10 +249,10 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     //   )
     //   lastPoint = line.end;
     // }
-    WorldRenderUtils.renderSymmetryCurve(curve, color, 2);
+    this.project.worldRenderUtils.renderSymmetryCurve(curve, color, 2);
     // 画箭头
     const endPoint = end.add(curve.endDirection.multiply(2));
-    EdgeRenderer.renderArrowHead(endPoint, curve.endDirection.multiply(-1), size, color);
+    this.project.edgeRenderer.renderArrowHead(endPoint, curve.endDirection.multiply(-1), size, color);
   }
   // /**
   //  * 仅仅绘制曲线
@@ -271,17 +272,17 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       return;
     }
     // 画文本底色
-    ShapeRenderer.renderRect(
-      edge.textRectangle.transformWorld2View(),
-      StageStyleManager.currentStyle.Background.toNewAlpha(Renderer.windowBackgroundAlpha),
+    this.project.shapeRenderer.renderRect(
+      this.project.renderer.transformWorld2View(edge.textRectangle),
+      StageStyleManager.currentStyle.Background.toNewAlpha(this.project.renderer.windowBackgroundAlpha),
       Color.Transparent,
       1,
     );
 
-    TextRenderer.renderTextFromCenter(
+    this.project.textRenderer.renderTextFromCenter(
       edge.text,
-      Renderer.transformWorld2View(curve.bezier.getPointByT(0.5)),
-      Renderer.FONT_SIZE * Camera.currentScale,
+      this.project.renderer.transformWorld2View(curve.bezier.getPointByT(0.5)),
+      Renderer.FONT_SIZE * this.project.camera.currentScale,
       edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
     );
   }

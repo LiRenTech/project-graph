@@ -4,7 +4,6 @@ import { StageSaveManager } from "../../service/dataFileService/StageSaveManager
 import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Stage } from "../Stage";
 import { StageDumper } from "../StageDumper";
-import { StageManager } from "./StageManager";
 
 /**
  * 专门管理历史记录
@@ -78,7 +77,7 @@ export namespace StageHistoryManager {
   export function undo() {
     if (currentIndex > 0) {
       currentIndex--;
-      StageManager.destroy();
+      this.project.stageManager.destroy();
       FileLoader.loadStageByData(historyList[currentIndex], Stage.path.getFilePath());
       Stage.effectMachine.addEffect(TextRiseEffect.default(`当前进度：${currentIndex + 1} / ${historyList.length}`));
     } else {
@@ -94,7 +93,7 @@ export namespace StageHistoryManager {
   export function redo() {
     if (currentIndex < historyList.length - 1) {
       currentIndex++;
-      StageManager.destroy();
+      this.project.stageManager.destroy();
       FileLoader.loadStageByData(historyList[currentIndex], Stage.path.getFilePath());
       Stage.effectMachine.addEffect(TextRiseEffect.default(`当前进度：${currentIndex + 1} / ${historyList.length}`));
     } else {

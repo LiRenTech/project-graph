@@ -2,7 +2,6 @@ import { fetch } from "@tauri-apps/plugin-http";
 import { Dialog } from "../../../../components/dialog";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { Camera } from "../../../stage/Camera";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { FeatureFlags } from "../../FeatureFlags";
@@ -16,7 +15,8 @@ export namespace AIEngine {
   export async function chat(messages: Message[]) {
     if (!FeatureFlags.AI) return;
     const doc = {
-      entities: StageManager.getEntities()
+      entities: this.project.stageManager
+        .getEntities()
         .filter((it) => it instanceof TextNode)
         .map((it) => ({
           uuid: it.uuid,
@@ -25,13 +25,15 @@ export namespace AIEngine {
           details: it.details,
           color: it.color.toArray(),
         })),
-      associations: StageManager.getAssociations()
+      associations: this.project.stageManager
+        .getAssociations()
         .filter((it) => it instanceof LineEdge)
         .map((it) => ({
           source: it.source.uuid,
           target: it.target.uuid,
         })),
-      entitiesInView: StageManager.getEntities()
+      entitiesInView: this.project.stageManager
+        .getEntities()
         .filter((it) => Renderer.getCoverWorldRectangle().isCollideWithRectangle(it.collisionBox.getRectangle()))
         .map((it) => it.uuid),
       cameraLocation: Camera.location.toArray(),

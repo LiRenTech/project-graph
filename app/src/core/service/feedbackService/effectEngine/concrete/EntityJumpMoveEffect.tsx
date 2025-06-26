@@ -2,9 +2,8 @@ import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
+import { Project } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 import { RateFunctions } from "../mathTools/rateFunctions";
@@ -14,6 +13,7 @@ export class EntityJumpMoveEffect extends EffectObject {
     return "EntityJumpMoveEffect";
   }
   constructor(
+    private readonly project: Project,
     public time: number,
     public rectStart: Rectangle,
     public delta: Vector,
@@ -31,25 +31,25 @@ export class EntityJumpMoveEffect extends EffectObject {
     currentRect.location.y -= addHeight;
 
     // 画地面阴影
-    ShapeRenderer.renderRectWithShadow(
-      groundShadowRect.transformWorld2View(),
+    this.project.shapeRenderer.renderRectWithShadow(
+      this.project.renderer.transformWorld2View(groundShadowRect),
       StageStyleManager.currentStyle.effects.windowFlash.toNewAlpha(0.2),
       Color.Transparent,
-      2 * Camera.currentScale,
+      2 * this.project.camera.currentScale,
       StageStyleManager.currentStyle.effects.windowFlash.toNewAlpha(0.2),
       10,
       0,
       0,
-      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
     );
 
     // 画跳高的框
-    ShapeRenderer.renderRect(
-      currentRect.transformWorld2View(),
+    this.project.shapeRenderer.renderRect(
+      this.project.renderer.transformWorld2View(currentRect),
       Color.Transparent,
       StageStyleManager.currentStyle.StageObjectBorder,
-      2 * Camera.currentScale,
-      Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
+      2 * this.project.camera.currentScale,
+      Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
     );
   }
 }

@@ -1,5 +1,4 @@
 import { Vector } from "../../../../dataStruct/Vector";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { ControllerClass } from "../ControllerClass";
@@ -11,7 +10,7 @@ export class ControllerEntityResizeClass extends ControllerClass {
       return;
     }
     // 检查是否有选中的物体
-    const selectedEntities = StageManager.getSelectedEntities();
+    const selectedEntities = this.project.stageManager.getSelectedEntities();
     if (selectedEntities.length === 0) {
       return;
     }

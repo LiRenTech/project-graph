@@ -8,15 +8,12 @@ import { ArrayFunctions } from "../../../../algorithm/arrayFunctions";
 import { LimitLengthQueue } from "../../../../dataStruct/LimitLengthQueue";
 import { Vector } from "../../../../dataStruct/Vector";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { MouseTipFeedbackEffect } from "../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 import { ControllerCameraMac } from "./ControllerCamera/mac";
-import { ControllerNodeConnection } from "./ControllerNodeConnection";
-import { ControllerDrawing } from "./ControllerPenStrokeDrawing";
 
 /**
  * 处理键盘按下事件
@@ -134,7 +131,7 @@ export class ControllerCameraClass extends ControllerClass {
 
     if (this.isUsingMouseGrabMove && Stage.autoRefreshStageByMouseAction) {
       // 开始刷新舞台
-      StageManager.refreshAllStageObjects();
+      this.project.stageManager.refreshAllStageObjects();
     }
 
     // 2025年4月28日：实验性内容
@@ -181,8 +178,8 @@ export class ControllerCameraClass extends ControllerClass {
       // 还要保证这个鼠标位置没有悬浮在什么东西上
       const mouseLocation = new Vector(event.clientX, event.clientY);
       const worldLocation = this.project.renderer.transformView2World(mouseLocation);
-      const entity = StageManager.findEntityByLocation(worldLocation);
-      if (ControllerNodeConnection.isUsing) {
+      const entity = this.project.stageManager.findEntityByLocation(worldLocation);
+      if (this.project.controller.nodeConnection.isUsing) {
         return;
       }
       if (entity !== null) {
@@ -306,7 +303,7 @@ export class ControllerCameraClass extends ControllerClass {
       }
     } else if (this.project.controller.pressingKeySet.has("control")) {
       // 不要在节点上滚动
-      const entity = StageManager.findEntityByLocation(worldLocation);
+      const entity = this.project.stageManager.findEntityByLocation(worldLocation);
       if (entity !== null) {
         // 给这个entity一个特效
         this.project.effects.addEffect(EntityCreateFlashEffect.fromRectangle(entity.collisionBox.getRectangle()));
@@ -478,13 +475,17 @@ export class ControllerCameraClass extends ControllerClass {
       }
       // 调整笔画粗细
       if (event.deltaX < 0) {
-        const newWidth = ControllerDrawing.currentStrokeWidth + 1;
-        ControllerDrawing.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
-        this.project.effects.addEffect(TextRiseEffect.default(`${ControllerDrawing.currentStrokeWidth}px`));
+        const newWidth = this.project.controller.penStrokeDrawing.currentStrokeWidth + 1;
+        this.project.controller.penStrokeDrawing.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
+        this.project.effects.addEffect(
+          TextRiseEffect.default(`${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`),
+        );
       } else {
-        const newWidth = ControllerDrawing.currentStrokeWidth - 1;
-        ControllerDrawing.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
-        this.project.effects.addEffect(TextRiseEffect.default(`${ControllerDrawing.currentStrokeWidth}px`));
+        const newWidth = this.project.controller.penStrokeDrawing.currentStrokeWidth - 1;
+        this.project.controller.penStrokeDrawing.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
+        this.project.effects.addEffect(
+          TextRiseEffect.default(`${this.project.controller.penStrokeDrawing.currentStrokeWidth}px`),
+        );
       }
     }
   }

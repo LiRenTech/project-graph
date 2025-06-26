@@ -7,15 +7,14 @@ import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Shape } from "../../../dataStruct/shape/Shape";
 import { Vector } from "../../../dataStruct/Vector";
+import { SectionRenderer } from "../../../render/canvas2d/entityRenderer/section/SectionRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
 import { Stage } from "../../Stage";
-import { StageManager } from "../../stageManager/StageManager";
+import { SectionMethods } from "../../stageManager/basicMethods/SectionMethods";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { Entity } from "../abstract/StageEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { SectionMethods } from "../../stageManager/basicMethods/SectionMethods";
-import { SectionRenderer } from "../../../render/canvas2d/entityRenderer/section/SectionRenderer";
 
 export class Section extends ConnectableEntity {
   /**
@@ -108,7 +107,7 @@ export class Section extends ConnectableEntity {
     this.isCollapsed = isCollapsed;
     this.details = details;
     this.childrenUUIDs = children;
-    this.children = StageManager.getEntitiesByUUIDs(children);
+    this.children = this.project.stageManager.getEntitiesByUUIDs(children);
     // 一定要放在最后
     this.adjustLocationAndSize();
   }
@@ -240,7 +239,7 @@ export class Section extends ConnectableEntity {
     this.updateOtherEntityLocationByMove();
   }
   protected override collideWithOtherEntity(other: Entity): void {
-    if (!StageManager.isEnableEntityCollision) {
+    if (!this.project.stageManager.isEnableEntityCollision) {
       return;
     }
     if (other instanceof Section) {

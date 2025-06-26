@@ -1,12 +1,7 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { Project } from "../../../../Project";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { ControllerClass } from "../ControllerClass";
-import { getClickedStageObject, isClickedResizeRect } from "./utilsControl";
-
-export let ControllerRectangleSelect: ControllerRectangleSelectClass;
 
 export class ControllerRectangleSelectClass extends ControllerClass {
   private _isUsing: boolean = false;
@@ -17,12 +12,6 @@ export class ControllerRectangleSelectClass extends ControllerClass {
    * 此变量会根据两个点的位置自动更新。
    */
   public selectingRectangle: Rectangle | null = null;
-
-  constructor(protected readonly project: Project) {
-    super(project);
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    ControllerRectangleSelect = this;
-  }
 
   public get isUsing() {
     return this._isUsing;
@@ -52,11 +41,11 @@ export class ControllerRectangleSelectClass extends ControllerClass {
     }
     const pressWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
-    if (getClickedStageObject(pressWorldLocation) !== null) {
+    if (this.project.controllerUtils.getClickedStageObject(pressWorldLocation) !== null) {
       // 不是点击在空白处
       return;
     }
-    if (isClickedResizeRect(pressWorldLocation)) {
+    if (this.project.controllerUtils.isClickedResizeRect(pressWorldLocation)) {
       return;
     }
 
@@ -64,12 +53,12 @@ export class ControllerRectangleSelectClass extends ControllerClass {
 
     this.project.rectangleSelect.startSelecting(pressWorldLocation);
 
-    const clickedAssociation = StageManager.findAssociationByLocation(pressWorldLocation);
+    const clickedAssociation = this.project.stageManager.findAssociationByLocation(pressWorldLocation);
     if (clickedAssociation !== null) {
       // 在连线身上按下
       this._isUsing = false;
     }
-    ControllerRectangleSelect.lastMoveLocation = pressWorldLocation.clone();
+    this.project.controller.rectangleSelect.lastMoveLocation = pressWorldLocation.clone();
   };
 
   public mousemove: (event: MouseEvent) => void = (event) => {
@@ -87,7 +76,7 @@ export class ControllerRectangleSelectClass extends ControllerClass {
 
     this.project.rectangleSelect.moveSelecting(worldLocation);
 
-    ControllerRectangleSelect.lastMoveLocation = worldLocation.clone();
+    this.project.controller.rectangleSelect.lastMoveLocation = worldLocation.clone();
   };
 
   /**

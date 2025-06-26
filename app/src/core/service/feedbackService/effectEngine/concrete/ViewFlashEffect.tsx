@@ -2,7 +2,7 @@ import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
+import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 
@@ -14,24 +14,25 @@ export class ViewFlashEffect extends EffectObject {
     return "ViewFlashEffect";
   }
   constructor(
+    private readonly project: Project,
     public color: Color,
     public override timeProgress: ProgressNumber = new ProgressNumber(0, 100),
   ) {
     super(timeProgress);
   }
 
-  static SaveFile() {
-    return new ViewFlashEffect(StageStyleManager.currentStyle.effects.windowFlash, new ProgressNumber(0, 10));
+  static SaveFile(project: Project) {
+    return new ViewFlashEffect(project, StageStyleManager.currentStyle.effects.windowFlash, new ProgressNumber(0, 10));
   }
-  static Portal() {
-    return new ViewFlashEffect(new Color(127, 75, 124), new ProgressNumber(0, 10));
+  static Portal(project: Project) {
+    return new ViewFlashEffect(project, new Color(127, 75, 124), new ProgressNumber(0, 10));
   }
 
   render(): void {
     if (this.timeProgress.isFull) {
       return;
     }
-    ShapeRenderer.renderRect(
+    this.project.shapeRenderer.renderRect(
       new Rectangle(new Vector(-10000, -10000), new Vector(20000, 20000)),
       mixColors(this.color, new Color(0, 0, 0, 0), this.timeProgress.rate),
       Color.Transparent,

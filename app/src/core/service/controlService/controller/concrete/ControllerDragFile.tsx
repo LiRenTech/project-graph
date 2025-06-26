@@ -4,10 +4,8 @@ import { writeFileBase64 } from "../../../../../utils/fs";
 import { PathString } from "../../../../../utils/pathString";
 import { Color } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
-import { Project } from "../../../../Project";
 import { ProjectFormatUpgrader } from "../../../../stage/ProjectFormatUpgrader";
 import { Stage } from "../../../../stage/Stage";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { ImageNode } from "../../../../stage/stageObject/entity/ImageNode";
 import { SvgNode } from "../../../../stage/stageObject/entity/SvgNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
@@ -16,15 +14,7 @@ import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/T
 import { ViewFlashEffect } from "../../../feedbackService/effectEngine/concrete/ViewFlashEffect";
 import { ControllerClassDragFile } from "../ControllerClassDragFile";
 
-export let ControllerDragFile: ControllerDragFileClass;
-
 export class ControllerDragFileClass extends ControllerClassDragFile {
-  constructor(protected readonly project: Project) {
-    super(project);
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    ControllerDragFile = this;
-  }
-
   /**
    * 处理文件拖入窗口事件
    * @param event
@@ -73,11 +63,11 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
         } else if (file.type.includes("text")) {
           this.readFileText(file).then((dataString) => {
             if (file.name.endsWith(".txt")) {
-              StageManager.generateNodeTreeByText(dataString, 1, mouseWorldLocation);
+              this.project.stageManager.generateNodeTreeByText(dataString, 1, mouseWorldLocation);
             } else if (file.name.endsWith(".md")) {
-              StageManager.generateNodeByMarkdown(dataString, mouseWorldLocation);
+              this.project.stageManager.generateNodeByMarkdown(dataString, mouseWorldLocation);
             } else {
-              StageManager.generateNodeTreeByText(dataString, 1, mouseWorldLocation);
+              this.project.stageManager.generateNodeTreeByText(dataString, 1, mouseWorldLocation);
             }
           });
         } else if (file.type.includes("image/svg+xml")) {
@@ -89,7 +79,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
               size: [400, 100],
               color: [0, 0, 0, 0],
             });
-            StageManager.addEntity(entity);
+            this.project.stageManager.addEntity(entity);
           });
         } else if (file.type.includes("image/png")) {
           if (Stage.path.isDraft()) {
@@ -132,7 +122,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
         } else {
           if (file.name.endsWith(".md")) {
             this.readFileText(file).then((dataString) => {
-              StageManager.generateNodeByMarkdown(dataString, mouseWorldLocation);
+              this.project.stageManager.generateNodeByMarkdown(dataString, mouseWorldLocation);
             });
           }
           this.dealUnknownFileDrop(file, mouseWorldLocation, i);
@@ -183,7 +173,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
       details: "unknown file type: " + file.type + "。",
     });
     textNode.move(new Vector(-textNode.rectangle.size.x / 2, -textNode.rectangle.size.y / 2 + i * 100));
-    StageManager.addTextNode(textNode);
+    this.project.stageManager.addTextNode(textNode);
   }
 
   /**
@@ -228,7 +218,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
             {
               text: "确定",
               onClick: () => {
-                StageManager.addSerializedData(
+                this.project.stageManager.addSerializedData(
                   ProjectFormatUpgrader.upgrade(JSON.parse(dataString)),
                   mouseWorldLocation,
                 );
@@ -271,7 +261,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
         location: [mouseWorldLocation.x, mouseWorldLocation.y],
         path: `${imageUUID}.png`,
       });
-      StageManager.addImageNode(imageNode);
+      this.project.stageManager.addImageNode(imageNode);
     };
     reader.onerror = (e) => {
       console.error("文件读取错误:", e);

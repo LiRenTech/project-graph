@@ -1,6 +1,5 @@
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { Section } from "../../stageObject/entity/Section";
-import { StageManager } from "../StageManager";
 
 /**
  * 管理所有东西进出StageSection的逻辑
@@ -20,7 +19,7 @@ export namespace StageSectionInOutManager {
       section.childrenUUIDs.push(entity.uuid);
       section.children.push(entity);
     }
-    StageManager.updateReferences();
+    this.project.stageManager.updateReferences();
   }
 
   /**
@@ -44,11 +43,11 @@ export namespace StageSectionInOutManager {
     for (const entity of entities) {
       sectionDropChild(section, entity);
     }
-    StageManager.updateReferences();
+    this.project.stageManager.updateReferences();
   }
 
   function entityDropParent(entity: Entity) {
-    for (const section of StageManager.getSections()) {
+    for (const section of this.project.stageManager.getSections()) {
       if (section.childrenUUIDs.includes(entity.uuid)) {
         sectionDropChild(section, entity);
       }

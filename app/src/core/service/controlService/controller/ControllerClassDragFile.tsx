@@ -1,4 +1,5 @@
 import { Vector } from "../../../dataStruct/Vector";
+import { Project } from "../../../Project";
 
 /**
  * 专门用来处理文件拖拽的类

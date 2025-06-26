@@ -18,7 +18,6 @@ import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
 import { GraphMethods } from "../basicMethods/GraphMethods";
-import { StageManager } from "../StageManager";
 
 export namespace StageTagManager {
   /**
@@ -27,12 +26,12 @@ export namespace StageTagManager {
    * 目前先仅支持TextNode
    */
   export function changeTagBySelected() {
-    for (const selectedEntities of StageManager.getSelectedStageObjects()) {
+    for (const selectedEntities of this.project.stageManager.getSelectedStageObjects()) {
       // 若有则删，若无则加
-      if (StageManager.TagOptions.hasTag(selectedEntities.uuid)) {
-        StageManager.TagOptions.removeTag(selectedEntities.uuid);
+      if (this.project.stageManager.TagOptions.hasTag(selectedEntities.uuid)) {
+        this.project.stageManager.TagOptions.removeTag(selectedEntities.uuid);
       } else {
-        StageManager.TagOptions.addTag(selectedEntities.uuid);
+        this.project.stageManager.TagOptions.addTag(selectedEntities.uuid);
       }
     }
   }
@@ -43,10 +42,10 @@ export namespace StageTagManager {
    */
   export function refreshTagNamesUI() {
     const res: { tagName: string; uuid: string; color: [number, number, number, number] }[] = [];
-    const tagUUIDs = StageManager.TagOptions.getTagUUIDs();
+    const tagUUIDs = this.project.stageManager.TagOptions.getTagUUIDs();
     const tagObjectList: StageObject[] = [];
     for (const tagUUID of tagUUIDs) {
-      const stageObject = StageManager.getStageObjectByUUID(tagUUID);
+      const stageObject = this.project.stageManager.getStageObjectByUUID(tagUUID);
       if (stageObject) {
         tagObjectList.push(stageObject);
       }
@@ -100,7 +99,7 @@ export namespace StageTagManager {
    * @returns
    */
   export function moveCameraToTag(tagUUID: string) {
-    const tagObject = StageManager.getStageObjectByUUID(tagUUID);
+    const tagObject = this.project.stageManager.getStageObjectByUUID(tagUUID);
     if (!tagObject) {
       return;
     }

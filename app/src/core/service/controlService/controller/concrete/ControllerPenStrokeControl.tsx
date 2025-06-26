@@ -1,10 +1,6 @@
 import { Vector } from "../../../../dataStruct/Vector";
-import { Project } from "../../../../Project";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { ControllerClass } from "../ControllerClass";
-
-export let ControllerPenStrokeControl: ControllerPenStrokeControlClass;
 
 /**
  * 所有和笔迹控制特定的逻辑都在这里
@@ -19,12 +15,6 @@ export class ControllerPenStrokeControlClass extends ControllerClass {
    * 在右键移动的过程中，记录上一次的位置
    */
   public lastAdjustWidthLocation: Vector = Vector.getZero();
-
-  constructor(protected readonly project: Project) {
-    super(project);
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    ControllerPenStrokeControl = this;
-  }
 
   public mousedown: (event: MouseEvent) => void = (event) => {
     if (!(event.button === 2 && Stage.leftMouseMode === LeftMouseModeEnum.draw)) {
@@ -43,7 +33,7 @@ export class ControllerPenStrokeControlClass extends ControllerClass {
     if (Stage.leftMouseMode === LeftMouseModeEnum.selectAndMove) {
       // 检查鼠标是否悬浮在笔迹上
       const location = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
-      for (const node of StageManager.getPenStrokes()) {
+      for (const node of this.project.stageManager.getPenStrokes()) {
         node.isMouseHover = false;
         if (node.collisionBox.isContainsPoint(location)) {
           node.isMouseHover = true;
@@ -102,12 +92,12 @@ export class ControllerPenStrokeControlClass extends ControllerClass {
     // if (currentWorldLocation.y > this.lastAdjustWidthLocation.y) {
     //   delta = -delta;
     // }
-    const lastWidth = ControllerDrawing.currentStrokeWidth;
+    const lastWidth = this.project.controller.penStrokeDrawing.currentStrokeWidth;
     // this.project.effects.addEffect(LineEffect.default(this.startAdjustWidthLocation, worldLocation.clone()));
     const newWidth = Math.round(lastWidth + change);
 
     // 限制宽度范围
-    Stage.drawingMachine.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
+    this.project.controller.penStrokeDrawing.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
 
     // 记录上一次位置
     this.lastAdjustWidthLocation = currentWorldLocation.clone();

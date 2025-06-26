@@ -1,5 +1,4 @@
 import { Project, service } from "../../../Project";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
 import { Section } from "../../../stage/stageObject/entity/Section";
@@ -171,7 +170,7 @@ export class AutoCompute {
     // 用于显示逻辑节点执行顺序标号
     let i = 0;
 
-    let nodes = StageManager.getTextNodes().filter((node) => this.isTextNodeLogic(node));
+    let nodes = this.project.stageManager.getTextNodes().filter((node) => this.isTextNodeLogic(node));
     nodes = this.sortEntityByLocation(nodes) as TextNode[];
 
     // 自动计算引擎功能
@@ -182,18 +181,20 @@ export class AutoCompute {
       i++;
     }
     // region 计算section
-    let sections = StageManager.getSections().filter(
-      (section) => this.isSectionLogic(section) && section.text.length > 0,
-    );
+    let sections = this.project.stageManager
+      .getSections()
+      .filter((section) => this.isSectionLogic(section) && section.text.length > 0);
     sections = this.sortEntityByLocation(sections) as Section[];
 
     for (const section of sections) {
       this.computeSection(section);
     }
     // region 根据Edge计算
-    for (const edge of StageManager.getLineEdges().sort(
-      (a, b) => a.source.collisionBox.getRectangle().location.x - b.source.collisionBox.getRectangle().location.x,
-    )) {
+    for (const edge of this.project.stageManager
+      .getLineEdges()
+      .sort(
+        (a, b) => a.source.collisionBox.getRectangle().location.x - b.source.collisionBox.getRectangle().location.x,
+      )) {
       this.computeEdge(edge);
     }
     NodeLogic.step++;

@@ -9,7 +9,6 @@ import { TextNode } from "../../stageObject/entity/TextNode";
 import { GraphMethods } from "../basicMethods/GraphMethods";
 import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageHistoryManager } from "../StageHistoryManager";
-import { StageManager } from "../StageManager";
 import { StageManagerUtils } from "./StageManagerUtils";
 import { StageSectionInOutManager } from "./StageSectionInOutManager";
 
@@ -19,14 +18,14 @@ import { StageSectionInOutManager } from "./StageSectionInOutManager";
 export namespace StageSectionPackManager {
   /** 折叠起来 */
   export function packSection(): void {
-    for (const section of StageManager.getSections()) {
+    for (const section of this.project.stageManager.getSections()) {
       if (!section.isSelected) {
         continue;
       }
       modifyHiddenDfs(section, true);
       section.isCollapsed = true;
     }
-    StageManager.updateReferences();
+    this.project.stageManager.updateReferences();
   }
 
   /**
@@ -46,18 +45,18 @@ export namespace StageSectionPackManager {
 
   /** 展开 */
   export function unpackSection(): void {
-    for (const section of StageManager.getSections()) {
+    for (const section of this.project.stageManager.getSections()) {
       if (!section.isSelected) {
         continue;
       }
       modifyHiddenDfs(section, false);
       section.isCollapsed = false;
     }
-    StageManager.updateReferences();
+    this.project.stageManager.updateReferences();
   }
 
   export function switchCollapse(): void {
-    for (const section of StageManager.getSections()) {
+    for (const section of this.project.stageManager.getSections()) {
       if (!section.isSelected) {
         continue;
       }
@@ -73,7 +72,7 @@ export namespace StageSectionPackManager {
    * 将所有选中的节点当场转换成Section
    */
   export function textNodeToSection(): void {
-    for (const textNode of StageManager.getTextNodes()) {
+    for (const textNode of this.project.stageManager.getTextNodes()) {
       if (!textNode.isSelected) {
         continue;
       }
@@ -105,7 +104,7 @@ export namespace StageSectionPackManager {
 
         const edges = GraphMethods.getEdgesBetween(node, childNode);
         for (const edge of edges) {
-          StageManager.deleteEdge(edge);
+          this.project.stageManager.deleteEdge(edge);
         }
       }
       const section = targetTextNodeToSection(node, true);
@@ -138,7 +137,7 @@ export namespace StageSectionPackManager {
     for (const childNode of childNodes) {
       const edges = GraphMethods.getEdgesBetween(rootNode, childNode);
       for (const edge of edges) {
-        StageManager.deleteEdge(edge);
+        this.project.stageManager.deleteEdge(edge);
       }
     }
     const section = targetTextNodeToSection(rootNode, true);
@@ -170,13 +169,13 @@ export namespace StageSectionPackManager {
     newSection.adjustLocationAndSize();
 
     // 将新的Section加入舞台
-    StageManager.addSection(newSection);
+    this.project.stageManager.addSection(newSection);
     for (const fatherSection of fatherSections) {
       StageSectionInOutManager.goInSection([newSection], fatherSection);
     }
 
     if (!ignoreEdges) {
-      for (const edge of StageManager.getAssociations()) {
+      for (const edge of this.project.stageManager.getAssociations()) {
         if (edge instanceof Edge) {
           if (edge.target.uuid === textNode.uuid) {
             edge.target = newSection;
@@ -188,7 +187,7 @@ export namespace StageSectionPackManager {
       }
     }
     // 删除原来的textNode
-    StageManager.deleteEntities([textNode]);
+    this.project.stageManager.deleteEntities([textNode]);
     // 更新section的碰撞箱
     newSection.adjustLocationAndSize();
     return newSection;
@@ -198,7 +197,7 @@ export namespace StageSectionPackManager {
    * 拆包操作
    */
   export function unpackSelectedSections() {
-    const selectedSections = StageManager.getSelectedEntities();
+    const selectedSections = this.project.stageManager.getSelectedEntities();
     unpackSections(selectedSections);
     StageHistoryManager.recordStep();
   }
@@ -233,13 +232,13 @@ export namespace StageSectionPackManager {
         color: section.color.toArray(),
       });
       // 将textNode添加到舞台
-      StageManager.addTextNode(textNode);
+      this.project.stageManager.addTextNode(textNode);
       // 将新的textnode添加到父section中
       StageSectionInOutManager.goInSections([textNode], currentSectionFathers);
       // 将section的子节点添加到父section中
       StageSectionInOutManager.goInSections(section.children, currentSectionFathers);
       // 将section从舞台中删除
-      StageManager.deleteEntities([section]);
+      this.project.stageManager.deleteEntities([section]);
     }
   }
 
@@ -285,13 +284,13 @@ export namespace StageSectionPackManager {
       }
     }
     for (const fatherSection of firstParents) {
-      StageManager.goOutSection(addEntities, fatherSection);
+      this.project.stageManager.goOutSection(addEntities, fatherSection);
     }
     const section = Section.fromEntities(addEntities);
     section.text = StageManagerUtils.replaceAutoNameTemplate(await Settings.get("autoNamerSectionTemplate"), section);
-    StageManager.addSection(section);
+    this.project.stageManager.addSection(section);
     for (const fatherSection of firstParents) {
-      StageManager.goInSection([section], fatherSection);
+      this.project.stageManager.goInSection([section], fatherSection);
     }
   }
 }

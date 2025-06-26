@@ -2,7 +2,6 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { ConnectableEntity } from "../../../stageObject/abstract/ConnectableEntity";
 import { Section } from "../../../stageObject/entity/Section";
 import { GraphMethods } from "../../basicMethods/GraphMethods";
-import { StageManager } from "../../StageManager";
 import { StageEntityMoveManager } from "../StageEntityMoveManager";
 
 /**
@@ -13,7 +12,7 @@ export namespace LayoutSectionManager {
    * 默认化布局所有选中的内容
    */
   export function defaultLayout() {
-    const entities = Array.from(StageManager.getEntities()).filter((node) => node.isSelected);
+    const entities = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     // ======= 编写以下代码
 
     for (const entity of entities) {
@@ -33,7 +32,7 @@ export namespace LayoutSectionManager {
         }
 
         // 和上面的写法是等效的
-        for (const child of StageManager.getEntitiesByUUIDs(entity.childrenUUIDs)) {
+        for (const child of this.project.stageManager.getEntitiesByUUIDs(entity.childrenUUIDs)) {
           console.log(child);
         }
       } else {

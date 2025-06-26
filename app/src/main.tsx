@@ -10,7 +10,6 @@ import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { runCli } from "./cli";
 import { Dialog } from "./components/dialog";
 import { UserScriptsManager } from "./core/plugin/UserScriptsManager";
-import { EdgeRenderer } from "./core/render/canvas2d/entityRenderer/edge/EdgeRenderer";
 import { Renderer } from "./core/render/canvas2d/renderer";
 import { InputElement } from "./core/render/domElement/inputElement";
 import { KeyboardOnlyEngine } from "./core/service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
@@ -84,7 +83,7 @@ const el = document.getElementById("root")!;
 /** 加载同步初始化的模块 */
 async function loadSyncModules() {
   EdgeCollisionBoxGetter.init();
-  EdgeRenderer.init();
+  this.project.edgeRenderer.init();
   Renderer.init();
   Camera.init();
   Stage.init();

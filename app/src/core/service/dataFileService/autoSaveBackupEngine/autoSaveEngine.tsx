@@ -2,7 +2,6 @@ import { isWeb } from "../../../../utils/platform";
 import { Project, service } from "../../../Project";
 import { Stage } from "../../../stage/Stage";
 import { StageDumper } from "../../../stage/StageDumper";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Settings } from "../../Settings";
 import { StageSaveManager } from "../StageSaveManager";
 
@@ -57,7 +56,7 @@ export class AutoSave {
       } else {
         // 特殊情况，如果没有节点，则不保存
 
-        if (StageManager.getTextNodes().length === 0) {
+        if (this.project.stageManager.getTextNodes().length === 0) {
           // 没有节点，不保存
         } else {
           // 不要顶部白线提醒了。——joe以为是bug

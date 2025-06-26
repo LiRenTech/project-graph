@@ -4,9 +4,7 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { StageMultiTargetEdgeMove } from "../../../../stage/stageManager/concreteMethods/StageMultiTargetEdgeMove";
 import { StageNodeConnector } from "../../../../stage/stageManager/concreteMethods/StageNodeConnector";
-import { StageNodeRotate } from "../../../../stage/stageManager/concreteMethods/StageNodeRotate";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { ControllerClass } from "../ControllerClass";
 
@@ -25,13 +23,13 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
       isMac ? this.project.controller.pressingKeySet.has("meta") : this.project.controller.pressingKeySet.has("control")
     ) {
       const location = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
-      const hoverNode = StageManager.findTextNodeByLocation(location);
+      const hoverNode = this.project.stageManager.findTextNodeByLocation(location);
       if (hoverNode !== null) {
         // 旋转节点
         if (event.deltaY > 0) {
-          StageNodeRotate.rotateNodeDfs(hoverNode, hoverNode, 10, []);
+          this.project.stageNodeRotate.rotateNodeDfs(hoverNode, hoverNode, 10, []);
         } else {
-          StageNodeRotate.rotateNodeDfs(hoverNode, hoverNode, -10, []);
+          this.project.stageNodeRotate.rotateNodeDfs(hoverNode, hoverNode, -10, []);
         }
       }
     }
@@ -48,14 +46,14 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
     }
     const pressWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
     // 点击
-    const clickedAssociation = StageManager.findAssociationByLocation(pressWorldLocation);
+    const clickedAssociation = this.project.stageManager.findAssociationByLocation(pressWorldLocation);
     if (clickedAssociation === null) {
       return;
     }
-    const isHaveLineEdgeSelected = StageManager.getLineEdges().some((edge) => edge.isSelected);
-    const isHaveMultiTargetEdgeSelected = StageManager.getSelectedAssociations().some(
-      (association) => association instanceof MultiTargetUndirectedEdge,
-    );
+    const isHaveLineEdgeSelected = this.project.stageManager.getLineEdges().some((edge) => edge.isSelected);
+    const isHaveMultiTargetEdgeSelected = this.project.stageManager
+      .getSelectedAssociations()
+      .some((association) => association instanceof MultiTargetUndirectedEdge);
 
     this.lastMoveLocation = pressWorldLocation.clone();
 
@@ -64,12 +62,12 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
 
       if (clickedAssociation.isSelected) {
         // E1
-        StageManager.getLineEdges().forEach((edge) => {
+        this.project.stageManager.getLineEdges().forEach((edge) => {
           edge.isSelected = false;
         });
       } else {
         // E2
-        StageManager.getLineEdges().forEach((edge) => {
+        this.project.stageManager.getLineEdges().forEach((edge) => {
           edge.isSelected = false;
         });
       }
@@ -88,7 +86,7 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
     if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
       return;
     }
-    if (Stage.rectangleSelectMouseMachine.isUsing || Stage.cuttingMachine.isUsing) {
+    if (this.project.controller.rectangleSelect.isUsing || this.project.controller.cutting.isUsing) {
       return;
     }
     const worldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
@@ -99,7 +97,7 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
           : this.project.controller.pressingKeySet.has("control")
       ) {
         // 更改Edge的目标
-        const entity = StageManager.findConnectableEntityByLocation(worldLocation);
+        const entity = this.project.stageManager.findConnectableEntityByLocation(worldLocation);
         if (entity !== null) {
           // 找到目标，更改目标
           StageNodeConnector.changeSelectedEdgeTarget(entity);
@@ -108,7 +106,7 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
         const diffLocation = worldLocation.subtract(this.lastMoveLocation);
         // 拖拽Edge
         this.project.controller.isMovingEdge = true;
-        StageNodeRotate.moveEdges(this.lastMoveLocation, diffLocation);
+        this.project.stageNodeRotate.moveEdges(this.lastMoveLocation, diffLocation);
         StageMultiTargetEdgeMove.moveMultiTargetEdge(diffLocation);
       }
       this.lastMoveLocation = worldLocation.clone();

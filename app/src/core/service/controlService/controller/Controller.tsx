@@ -1,10 +1,27 @@
 import { Vector } from "../../../dataStruct/Vector";
-import { Canvas } from "../../../stage/Canvas";
 // import { ControllerKeyboardOnly } from "./concrete/ControllerKeyboardOnly";
 // ...
 import { CursorNameEnum } from "../../../../types/cursors";
 import { isMac } from "../../../../utils/platform";
 import { Project, service } from "../../../Project";
+import { ControllerAssociationReshapeClass } from "./concrete/ControllerAssociationReshape";
+import { ControllerCameraClass } from "./concrete/ControllerCamera";
+import { ControllerChildCamera } from "./concrete/ControllerChildCamera";
+import { ControllerCopy } from "./concrete/ControllerCopy";
+import { ControllerCuttingClass } from "./concrete/ControllerCutting";
+import { ControllerDragFileClass } from "./concrete/ControllerDragFile";
+import { ControllerEdgeEditClass } from "./concrete/ControllerEdgeEdit";
+import { ControllerEntityClickSelectAndMoveClass } from "./concrete/ControllerEntityClickSelectAndMove";
+import { ControllerEntityCreate } from "./concrete/ControllerEntityCreate";
+import { ControllerLayerMovingClass } from "./concrete/ControllerEntityLayerMoving";
+import { ControllerEntityResizeClass } from "./concrete/ControllerEntityResize";
+import { ControllerImageScale } from "./concrete/ControllerImageScale";
+import { ControllerNodeConnectionClass } from "./concrete/ControllerNodeConnection";
+import { ControllerNodeEditClass } from "./concrete/ControllerNodeEdit";
+import { ControllerPenStrokeControlClass } from "./concrete/ControllerPenStrokeControl";
+import { ControllerPenStrokeDrawingClass } from "./concrete/ControllerPenStrokeDrawing";
+import { ControllerRectangleSelectClass } from "./concrete/ControllerRectangleSelect";
+import { ControllerSectionEdit } from "./concrete/ControllerSectionEdit";
 
 /**
  * 控制器，控制鼠标、键盘事件
@@ -93,24 +110,29 @@ export class Controller {
 
   /**
    * 初始化函数在页面挂在的时候调用，将事件绑定到Canvas上
-   * @param Canvas.element
+   * @param this.project.canvas.element
    */
   constructor(private readonly project: Project) {
     // 绑定事件
     window.addEventListener("keydown", this.keydown);
     window.addEventListener("keyup", this.keyup);
-    Canvas.element.addEventListener("mousedown", this.mousedown);
-    Canvas.element.addEventListener("mouseup", this.mouseup);
-    Canvas.element.addEventListener("touchstart", this.touchstart, false);
-    Canvas.element.addEventListener("touchmove", this.touchmove, false);
-    Canvas.element.addEventListener("touchend", this.touchend, false);
-    Canvas.element.addEventListener("wheel", this.mousewheel, false);
+    this.project.canvas.element.addEventListener("mousedown", this.mousedown);
+    this.project.canvas.element.addEventListener("mouseup", this.mouseup);
+    this.project.canvas.element.addEventListener("touchstart", this.touchstart, false);
+    this.project.canvas.element.addEventListener("touchmove", this.touchmove, false);
+    this.project.canvas.element.addEventListener("touchend", this.touchend, false);
+    this.project.canvas.element.addEventListener("wheel", this.mousewheel, false);
     // 所有的具体的功能逻辑封装成控制器对象
     // 当有新功能时新建控制器对象，并在这里初始化
     Object.values(import.meta.glob("./concrete/*.tsx", { eager: true }))
       .map((module) => Object.entries(module as any).find(([k]) => k.includes("Class"))!)
       .filter(Boolean)
-      .map(([, v]) => new (v as any)(this.project));
+      .map(([k, v]) => {
+        new (v as any)(this.project);
+        const id = k.replace("Controller", "").replace("Class", "");
+        // 首字母小写
+        this[(id[0].toLowerCase() + id.slice(1)) as keyof this] = v as this[keyof this];
+      });
   }
 
   // 以下事件处理函数仅为Controller总控制器修改重要属性使用。不涉及具体的功能逻辑。
@@ -269,5 +291,28 @@ export class Controller {
       this.project.camera.accelerateCommander = Vector.getZero();
     }, 100);
     this.recordManipulate();
+  }
+}
+
+declare module "./Controller" {
+  interface Controller {
+    associationReshape: ControllerAssociationReshapeClass;
+    camera: ControllerCameraClass;
+    childCamera: ControllerChildCamera;
+    copy: ControllerCopy;
+    cutting: ControllerCuttingClass;
+    dragFile: ControllerDragFileClass;
+    edgeEdit: ControllerEdgeEditClass;
+    entityClickSelectAndMove: ControllerEntityClickSelectAndMoveClass;
+    entityCreate: ControllerEntityCreate;
+    entityLayerMoving: ControllerLayerMovingClass;
+    entityResize: ControllerEntityResizeClass;
+    imageScale: ControllerImageScale;
+    nodeConnection: ControllerNodeConnectionClass;
+    nodeEdit: ControllerNodeEditClass;
+    penStrokeControl: ControllerPenStrokeControlClass;
+    penStrokeDrawing: ControllerPenStrokeDrawingClass;
+    rectangleSelect: ControllerRectangleSelectClass;
+    sectionEdit: ControllerSectionEdit;
   }
 }

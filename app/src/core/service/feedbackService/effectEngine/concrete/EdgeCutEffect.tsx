@@ -1,10 +1,8 @@
-import { EffectObject } from "../effectObject";
+import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
-import { Color } from "../../../../dataStruct/Color";
-import { CurveRenderer } from "../../../../render/canvas2d/basicRenderer/curveRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
+import { Project } from "../../../../Project";
+import { EffectObject } from "../effectObject";
 import { easeOutQuint } from "../mathTools/easings";
 
 /**
@@ -12,6 +10,7 @@ import { easeOutQuint } from "../mathTools/easings";
  */
 export class EdgeCutEffect extends EffectObject {
   constructor(
+    private readonly project: Project,
     timeProgress: ProgressNumber,
     delay: number,
     private start: Vector,
@@ -22,8 +21,8 @@ export class EdgeCutEffect extends EffectObject {
     super(timeProgress, delay);
   }
 
-  static default(start: Vector, end: Vector, color: Color, width: number) {
-    return new EdgeCutEffect(new ProgressNumber(0, 30), 0, start, end, color, width);
+  static default(project: Project, start: Vector, end: Vector, color: Color, width: number) {
+    return new EdgeCutEffect(project, new ProgressNumber(0, 30), 0, start, end, color, width);
   }
 
   getClassName(): string {
@@ -48,17 +47,17 @@ export class EdgeCutEffect extends EffectObject {
     );
 
     // 绘制两端缩短的线条
-    CurveRenderer.renderSolidLine(
-      Renderer.transformWorld2View(this.start),
-      Renderer.transformWorld2View(leftEnd),
+    this.project.curveRenderer.renderSolidLine(
+      this.project.renderer.transformWorld2View(this.start),
+      this.project.renderer.transformWorld2View(leftEnd),
       this.color.toNewAlpha(1 - progress),
-      this.width * Camera.currentScale,
+      this.width * this.project.camera.currentScale,
     );
-    CurveRenderer.renderSolidLine(
-      Renderer.transformWorld2View(rightEnd),
-      Renderer.transformWorld2View(this.end),
+    this.project.curveRenderer.renderSolidLine(
+      this.project.renderer.transformWorld2View(rightEnd),
+      this.project.renderer.transformWorld2View(this.end),
       this.color.toNewAlpha(1 - progress),
-      this.width * Camera.currentScale,
+      this.width * this.project.camera.currentScale,
     );
   }
 }

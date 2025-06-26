@@ -1,9 +1,7 @@
 import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
-import { CurveRenderer } from "../../../../render/canvas2d/basicRenderer/curveRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
+import { Project } from "../../../../Project";
 import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
@@ -18,6 +16,7 @@ export class PenStrokeDeletedEffect extends EffectObject {
   private width: number = 1;
 
   constructor(
+    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     penStroke: PenStroke,
   ) {
@@ -31,9 +30,9 @@ export class PenStrokeDeletedEffect extends EffectObject {
     this.width = segmentList[0].width;
   }
 
-  static fromPenStroke(penStroke: PenStroke): PenStrokeDeletedEffect {
+  static fromPenStroke(project: Project, penStroke: PenStroke): PenStrokeDeletedEffect {
     const len = penStroke.getPath().length;
-    return new PenStrokeDeletedEffect(new ProgressNumber(0, len), penStroke);
+    return new PenStrokeDeletedEffect(project, new ProgressNumber(0, len), penStroke);
   }
 
   tick(): void {
@@ -53,10 +52,10 @@ export class PenStrokeDeletedEffect extends EffectObject {
       return;
     }
 
-    CurveRenderer.renderSolidLineMultiple(
-      this.currentPartList.map((v) => Renderer.transformWorld2View(v)),
+    this.project.curveRenderer.renderSolidLineMultiple(
+      this.currentPartList.map((v) => this.project.renderer.transformWorld2View(v)),
       this.color.toNewAlpha(1 - this.timeProgress.rate),
-      this.width * Camera.currentScale,
+      this.width * this.project.camera.currentScale,
     );
   }
 }

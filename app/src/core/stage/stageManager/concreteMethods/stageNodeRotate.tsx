@@ -1,25 +1,27 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
+import { Project, service } from "../../../Project";
 import { LineEffect } from "../../../service/feedbackService/effectEngine/concrete/LineEffect";
-import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { GraphMethods } from "../basicMethods/GraphMethods";
-import { StageManager } from "../StageManager";
 import { StageEntityMoveManager } from "./StageEntityMoveManager";
 
 /**
  * 所有和旋转相关的操作
  */
-export namespace StageNodeRotate {
+@service("stageNodeRotate")
+export class StageNodeRotate {
+  constructor(private readonly project: Project) {}
+
   /**
    * 通过拖拽边的方式来旋转节点
    * 会查找所有选中的边，但只能旋转一个边
    * @param lastMoveLocation
    * @param diffLocation
    */
-  export function moveEdges(lastMoveLocation: Vector, diffLocation: Vector) {
-    for (const edge of StageManager.getLineEdges()) {
+  moveEdges(lastMoveLocation: Vector, diffLocation: Vector) {
+    for (const edge of this.project.stageManager.getLineEdges()) {
       if (edge.isSelected) {
         const startMouseDragLocation = lastMoveLocation.clone();
         const endMouseDragLocation = startMouseDragLocation.add(diffLocation);
@@ -30,13 +32,13 @@ export namespace StageNodeRotate {
         if (Number.isNaN(degrees)) {
           degrees = 0;
         }
-        const sourceEntity = StageManager.getConnectableEntityByUUID(edge.source.uuid);
-        const targetEntity = StageManager.getConnectableEntityByUUID(edge.target.uuid);
+        const sourceEntity = this.project.stageManager.getConnectableEntityByUUID(edge.source.uuid);
+        const targetEntity = this.project.stageManager.getConnectableEntityByUUID(edge.target.uuid);
 
         if (sourceEntity && targetEntity) {
-          rotateNodeDfs(
-            StageManager.getConnectableEntityByUUID(edge.source.uuid)!,
-            StageManager.getConnectableEntityByUUID(edge.target.uuid)!,
+          this.rotateNodeDfs(
+            this.project.stageManager.getConnectableEntityByUUID(edge.source.uuid)!,
+            this.project.stageManager.getConnectableEntityByUUID(edge.target.uuid)!,
             degrees,
             [edge.source.uuid],
           );
@@ -55,7 +57,7 @@ export namespace StageNodeRotate {
    * @param degrees 旋转角度
    * @param visitedUUIDs 已经访问过的节点的uuid列表，用于避免死循环
    */
-  export function rotateNodeDfs(
+  rotateNodeDfs(
     rotateCenterNode: ConnectableEntity,
     currentNode: ConnectableEntity,
     degrees: number,
@@ -75,14 +77,14 @@ export namespace StageNodeRotate {
         continue;
       }
       visitedUUIDs.push(child.uuid);
-      const childNode = StageManager.getConnectableEntityByUUID(child.uuid);
+      const childNode = this.project.stageManager.getConnectableEntityByUUID(child.uuid);
       if (!childNode) {
         console.error("child node not found");
         continue;
       }
       const midPoint = Vector.fromTwoPointsCenter(currentNode.geometryCenter, childNode.geometryCenter);
 
-      Stage.effectMachine.addEffect(
+      this.project.effects.addEffect(
         new LineEffect(
           new ProgressNumber(0, 20),
           currentNode.geometryCenter,
@@ -92,7 +94,7 @@ export namespace StageNodeRotate {
           Math.abs(degrees),
         ),
       );
-      Stage.effectMachine.addEffect(
+      this.project.effects.addEffect(
         new LineEffect(
           new ProgressNumber(0, 20),
           midPoint,
@@ -103,7 +105,7 @@ export namespace StageNodeRotate {
         ),
       );
 
-      rotateNodeDfs(
+      this.rotateNodeDfs(
         rotateCenterNode,
         // 2024年10月6日：发现打开文件后，旋转节点无法带动子树，只能传递一层。
         // child,

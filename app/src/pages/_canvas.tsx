@@ -4,7 +4,6 @@ import { Dialog } from "../components/dialog";
 import { Renderer } from "../core/render/canvas2d/renderer";
 import { Controller } from "../core/service/controlService/controller/Controller";
 import { StageStyleManager } from "../core/service/feedbackService/stageStyle/StageStyleManager";
-import { Canvas } from "../core/stage/Canvas";
 import { Stage } from "../core/stage/Stage";
 import { isClassroomModeAtom, isWindowCollapsingAtom } from "../state";
 import { CursorNameEnum } from "../types/cursors";
@@ -76,7 +75,7 @@ export default function PGCanvas() {
     const canvasElement = canvasRef.current;
 
     if (canvasElement) {
-      Canvas.init(canvasElement);
+      this.project.canvas.init(canvasElement);
       Renderer.resizeWindow(window.innerWidth, window.innerHeight);
       Controller.init();
       Controller.setCursorNameHook = (name: CursorNameEnum) => {

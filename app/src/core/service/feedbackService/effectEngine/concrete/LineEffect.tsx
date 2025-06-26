@@ -1,9 +1,7 @@
 import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
-import { CurveRenderer } from "../../../../render/canvas2d/basicRenderer/curveRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
+import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectObject } from "../effectObject";
 
@@ -16,6 +14,7 @@ export class LineEffect extends EffectObject {
     return "LineEffect";
   }
   constructor(
+    private readonly project: Project,
     public override timeProgress: ProgressNumber,
     public fromLocation: Vector,
     public toLocation: Vector,
@@ -25,8 +24,9 @@ export class LineEffect extends EffectObject {
   ) {
     super(timeProgress);
   }
-  static default(fromLocation: Vector, toLocation: Vector) {
+  static default(project: Project, fromLocation: Vector, toLocation: Vector) {
     return new LineEffect(
+      project,
       new ProgressNumber(0, 30),
       fromLocation,
       toLocation,
@@ -39,16 +39,16 @@ export class LineEffect extends EffectObject {
     if (this.timeProgress.isFull) {
       return;
     }
-    const fromLocation = Renderer.transformWorld2View(this.fromLocation);
-    const toLocation = Renderer.transformWorld2View(this.toLocation);
+    const fromLocation = this.project.renderer.transformWorld2View(this.fromLocation);
+    const toLocation = this.project.renderer.transformWorld2View(this.toLocation);
     const fromColor = mixColors(this.fromColor, this.fromColor.toTransparent(), this.timeProgress.rate);
     const toColor = mixColors(this.toColor, this.toColor.toTransparent(), this.timeProgress.rate);
-    CurveRenderer.renderGradientLine(
+    this.project.curveRenderer.renderGradientLine(
       fromLocation,
       toLocation,
       fromColor,
       toColor,
-      this.lineWidth * Camera.currentScale,
+      this.lineWidth * this.project.camera.currentScale,
     );
   }
 }

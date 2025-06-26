@@ -3,9 +3,7 @@ import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { ShapeRenderer } from "../../../../render/canvas2d/basicRenderer/shapeRenderer";
-import { Renderer } from "../../../../render/canvas2d/renderer";
-import { Camera } from "../../../../stage/Camera";
+import { Project } from "../../../../Project";
 import { EffectObject } from "../effectObject";
 
 /**
@@ -23,6 +21,7 @@ export class RectangleSplitTwoPartEffect extends EffectObject {
   private endFillColor: Color;
 
   constructor(
+    private readonly project: Project,
     rectangle: Rectangle,
     twoPoint: Vector[],
     time: number,
@@ -107,10 +106,10 @@ export class RectangleSplitTwoPartEffect extends EffectObject {
       const poly3 = [rightTop, rightBottom, innerPt];
       const poly4 = [leftBottom, rightBottom, innerPt];
       this.splitedRectangles.push(
-        new SplitedRectangle(poly1, fillColor, strokeColor, strokeWidth),
-        new SplitedRectangle(poly2, fillColor, strokeColor, strokeWidth),
-        new SplitedRectangle(poly3, fillColor, strokeColor, strokeWidth),
-        new SplitedRectangle(poly4, fillColor, strokeColor, strokeWidth),
+        new SplitedRectangle(project, poly1, fillColor, strokeColor, strokeWidth),
+        new SplitedRectangle(project, poly2, fillColor, strokeColor, strokeWidth),
+        new SplitedRectangle(project, poly3, fillColor, strokeColor, strokeWidth),
+        new SplitedRectangle(project, poly4, fillColor, strokeColor, strokeWidth),
       );
       for (const rect of this.splitedRectangles) {
         rect.speed = new Vector(0, -Random.randomInt(1, 10)).rotateDegrees(Random.randomInt(-45, 45));
@@ -125,8 +124,8 @@ export class RectangleSplitTwoPartEffect extends EffectObject {
     }
 
     this.splitedRectangles.push(
-      new SplitedRectangle(poly1, fillColor, strokeColor, strokeWidth),
-      new SplitedRectangle(poly2, fillColor, strokeColor, strokeWidth),
+      new SplitedRectangle(project, poly1, fillColor, strokeColor, strokeWidth),
+      new SplitedRectangle(project, poly2, fillColor, strokeColor, strokeWidth),
     );
     this.splitedRectangles.sort((a, b) => a.center.x - b.center.x);
     this.splitedRectangles[0].speed = new Vector(-Random.randomInt(1, 10), -Random.randomInt(0, 3));
@@ -164,6 +163,7 @@ class SplitedRectangle {
    * @param polygon 切割后的多边形
    */
   constructor(
+    private readonly project: Project,
     public polygon: Vector[],
     public fillColor: Color,
     public strokeColor: Color,
@@ -202,11 +202,11 @@ class SplitedRectangle {
   }
 
   render() {
-    ShapeRenderer.renderPolygonAndFill(
-      this.polygon.map((v) => Renderer.transformWorld2View(v)),
+    this.project.shapeRenderer.renderPolygonAndFill(
+      this.polygon.map((v) => this.project.renderer.transformWorld2View(v)),
       this.fillColor,
       this.strokeColor,
-      this.strokeWidth * Camera.currentScale,
+      this.strokeWidth * this.project.camera.currentScale,
       "round",
     );
   }

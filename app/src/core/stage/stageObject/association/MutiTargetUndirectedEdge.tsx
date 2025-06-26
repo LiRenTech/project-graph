@@ -1,17 +1,16 @@
 import { v4 } from "uuid";
 import { Serialized } from "../../../../types/node";
+import { getMultiLineTextSize } from "../../../../utils/font";
 import { Color } from "../../../dataStruct/Color";
 import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Shape } from "../../../dataStruct/shape/Shape";
 import { Vector } from "../../../dataStruct/Vector";
-import { StageManager } from "../../stageManager/StageManager";
+import { Renderer } from "../../../render/canvas2d/renderer";
+import { HyperGraphMethods } from "../../stageManager/basicMethods/HyperGraphMethods";
 import { ConnectableAssociation } from "../abstract/Association";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { getMultiLineTextSize } from "../../../../utils/font";
-import { Renderer } from "../../../render/canvas2d/renderer";
-import { HyperGraphMethods } from "../../stageManager/basicMethods/HyperGraphMethods";
 
 /**
  * 多端无向边
@@ -24,7 +23,7 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
 
   get collisionBox(): CollisionBox {
     // 计算多个节点的外接矩形的中心点
-    const nodes = StageManager.getEntitiesByUUIDs(this.targetUUIDs);
+    const nodes = this.project.stageManager.getEntitiesByUUIDs(this.targetUUIDs);
     const center = this.centerLocation;
 
     const shapeList: Shape[] = [];
@@ -81,7 +80,7 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
   public get centerLocation(): Vector {
     if (this.targetUUIDs.length === 2) {
       // 和lineEdge保持一样的逻辑
-      const twoNode = StageManager.getEntitiesByUUIDs(this.targetUUIDs);
+      const twoNode = this.project.stageManager.getEntitiesByUUIDs(this.targetUUIDs);
       const line = new Line(
         twoNode[0].collisionBox.getRectangle().center,
         twoNode[1].collisionBox.getRectangle().center,
@@ -89,7 +88,7 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
       return line.midPoint();
     }
     const boundingRectangle = Rectangle.getBoundingRectangle(
-      StageManager.getEntitiesByUUIDs(this.targetUUIDs).map((n) => n.collisionBox.getRectangle()),
+      this.project.stageManager.getEntitiesByUUIDs(this.targetUUIDs).map((n) => n.collisionBox.getRectangle()),
     );
     return boundingRectangle.getInnerLocationByRateVector(this.centerRate);
   }

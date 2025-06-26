@@ -1,7 +1,6 @@
 import { Renderer } from "../../render/canvas2d/renderer";
 import { GraphMethods } from "../../stage/stageManager/basicMethods/GraphMethods";
 import { SectionMethods } from "../../stage/stageManager/basicMethods/SectionMethods";
-import { StageManager } from "../../stage/stageManager/StageManager";
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stage/stageObject/entity/ImageNode";
@@ -61,8 +60,8 @@ export namespace ComplexityDetector {
   export function detectorCurrentStage(): CountResultObject {
     // 统计字数
     // 统计各种类型节点数量
-    const entities = StageManager.getEntities();
-    const associations = StageManager.getAssociations();
+    const entities = this.project.stageManager.getEntities();
+    const associations = this.project.stageManager.getAssociations();
 
     const countResultObject: CountResultObject = {
       // 小白统计
@@ -175,7 +174,7 @@ export namespace ComplexityDetector {
       }
     }
 
-    const connectableEntities = StageManager.getConnectableEntity();
+    const connectableEntities = this.project.stageManager.getConnectableEntity();
 
     // 孤立节点数量
     for (const entity of connectableEntities) {
@@ -216,7 +215,7 @@ export namespace ComplexityDetector {
     countResultObject.entityColorTypeCount = entityColorStringSet.size;
 
     const edgeColorStringSet = new Set();
-    for (const lineEdge of StageManager.getLineEdges()) {
+    for (const lineEdge of this.project.stageManager.getLineEdges()) {
       if (lineEdge.color.a === 0) {
         countResultObject.transparentEdgeColorCount++;
       } else {
@@ -232,7 +231,7 @@ export namespace ComplexityDetector {
         countResultObject.crossEntityCount++;
       }
     }
-    for (const section of StageManager.getSections()) {
+    for (const section of this.project.stageManager.getSections()) {
       // SectionMethods.isTreePack(section);
       countResultObject.maxSectionDepth = Math.max(
         countResultObject.maxSectionDepth,

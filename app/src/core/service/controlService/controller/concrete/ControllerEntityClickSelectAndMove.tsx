@@ -6,13 +6,9 @@ import { StageAutoAlignManager } from "../../../../stage/stageManager/concreteMe
 import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageObjectSelectCounter } from "../../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
-import { StageManager } from "../../../../stage/stageManager/StageManager";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { RectangleRenderEffect } from "../../../feedbackService/effectEngine/concrete/RectangleRenderEffect";
 import { ControllerClass } from "../ControllerClass";
-import { ControllerCutting } from "./ControllerCutting";
-import { ControllerRectangleSelect } from "./ControllerRectangleSelect";
-import { getClickedStageObject } from "./utilsControl";
 
 /**
  * 拖拽节点使其移动的控制器
@@ -34,7 +30,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     const pressWorldLocation = this.project.renderer.transformView2World(this.mouseDownViewLocation);
     this.lastMoveLocation = pressWorldLocation.clone();
 
-    const clickedStageObject = getClickedStageObject(pressWorldLocation);
+    const clickedStageObject = this.project.controllerUtils.getClickedStageObject(pressWorldLocation);
 
     // 防止跳跃式移动的时候改变选中内容
     if (this.project.controller.pressingKeySet.has("alt")) {
@@ -57,12 +53,14 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
         // shift 按下，只选中节点
         clickedStageObject.isSelected = true;
         // 没有实体被选中则return
-        if (StageManager.getSelectedEntities().length === 0) return;
-        const rectangles = StageManager.getSelectedEntities().map((entity) => entity.collisionBox.getRectangle());
+        if (this.project.stageManager.getSelectedEntities().length === 0) return;
+        const rectangles = this.project.stageManager
+          .getSelectedEntities()
+          .map((entity) => entity.collisionBox.getRectangle());
         const boundingRectangle = Rectangle.getBoundingRectangle(rectangles);
         this.project.effects.addEffect(RectangleRenderEffect.fromShiftClickSelect(boundingRectangle));
         this.project.effects.addEffect(RectangleNoteEffect.fromShiftClickSelect(boundingRectangle));
-        for (const entity of StageManager.getStageObject()) {
+        for (const entity of this.project.stageManager.getStageObject()) {
           if (entity.collisionBox.isIntersectsWithRectangle(boundingRectangle)) {
             entity.isSelected = true;
           }
@@ -78,7 +76,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
         // 直接点击
         if (!clickedStageObject.isSelected) {
           // 清空所有其他节点的选中状态
-          StageManager.getStageObject().forEach((stageObject) => {
+          this.project.stageManager.getStageObject().forEach((stageObject) => {
             if (stageObject === clickedStageObject) {
               return;
             }
@@ -98,8 +96,8 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
 
   public mousemove: (event: MouseEvent) => void = (event: MouseEvent) => {
     if (
-      ControllerRectangleSelect.isUsing ||
-      ControllerCutting.isUsing ||
+      this.project.controller.rectangleSelect.isUsing ||
+      this.project.controller.cutting.isUsing ||
       this.project.controller.pressingKeySet.has("alt")
     ) {
       return;
@@ -113,7 +111,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     const worldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
     const diffLocation = worldLocation.subtract(this.lastMoveLocation);
 
-    if (StageManager.isHaveEntitySelected()) {
+    if (this.project.stageManager.isHaveEntitySelected()) {
       // 移动节点
       this.isMovingEntity = true;
       // 暂不监听alt键。因为windows下切换窗口时，alt键释放监听不到

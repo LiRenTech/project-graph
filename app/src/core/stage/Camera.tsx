@@ -9,7 +9,6 @@ import { Project, service } from "../Project";
 import { TextRiseEffect } from "../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { easeOutExpo } from "../service/feedbackService/effectEngine/mathTools/easings";
 import { Settings } from "../service/Settings";
-import { StageManager } from "./stageManager/StageManager";
 import { Entity } from "./stageObject/abstract/StageEntity";
 
 /**
@@ -385,10 +384,10 @@ export class Camera {
    * 还是不要有动画过度了，因为过度效果会带来一点卡顿（2024年10月25日）
    */
   reset() {
-    this.location = StageManager.getCenter();
+    this.location = this.project.stageManager.getCenter();
     this.targetLocationByScale = this.location.clone();
     // this.currentScale = 0.01;
-    const allEntitiesSize = StageManager.getSize();
+    const allEntitiesSize = this.project.stageManager.getSize();
     allEntitiesSize.multiply(this.cameraResetViewPaddingRate);
     this.currentScale = Math.min(
       this.project.renderer.h / allEntitiesSize.y,
@@ -398,7 +397,7 @@ export class Camera {
   }
 
   resetBySelected() {
-    const selectedEntity: Entity[] = StageManager.getSelectedEntities();
+    const selectedEntity: Entity[] = this.project.stageManager.getSelectedEntities();
     if (selectedEntity.length === 0) {
       this.reset();
       return;

@@ -1,11 +1,10 @@
 import { v4 } from "uuid";
 import { FolderEntry, readFolderStructure } from "../../../../utils/fs";
+import { Color } from "../../../dataStruct/Color";
 import { Camera } from "../../../stage/Camera";
 import { LayoutToTightSquareManager } from "../../../stage/stageManager/concreteMethods/layoutManager/layoutToTightSquareManager";
-import { StageManager } from "../../../stage/stageManager/StageManager";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
-import { Color } from "../../../dataStruct/Color";
 
 export namespace GenerateFromFolderEngine {
   //
@@ -25,9 +24,9 @@ export namespace GenerateFromFolderEngine {
           location: currentLocation.toArray(),
           color: getColorByPath(fEntry.path).toArray(),
         });
-        StageManager.addTextNode(textNode);
+        this.project.stageManager.addTextNode(textNode);
         if (currentSection) {
-          StageManager.goInSection([textNode], currentSection);
+          this.project.stageManager.goInSection([textNode], currentSection);
         }
         return textNode;
       } else {
@@ -38,9 +37,9 @@ export namespace GenerateFromFolderEngine {
           details: fEntry.path,
           location: currentLocation.toArray(),
         });
-        StageManager.addSection(section);
+        this.project.stageManager.addSection(section);
         if (currentSection) {
-          StageManager.goInSection([section], currentSection);
+          this.project.stageManager.goInSection([section], currentSection);
         }
         // 然后递归处理子文件夹
         if (fEntry.children) {
