@@ -4,9 +4,9 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
-export class PenStrokeDeletedEffect extends EffectObject {
+export class PenStrokeDeletedEffect extends Effect {
   getClassName(): string {
     return "PenStrokeDeletedEffect";
   }

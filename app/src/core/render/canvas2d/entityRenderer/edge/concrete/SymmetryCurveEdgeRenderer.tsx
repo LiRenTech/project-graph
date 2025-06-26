@@ -5,7 +5,7 @@ import { Line } from "../../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../../dataStruct/Vector";
 import { CircleFlameEffect } from "../../../../../service/feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
-import { EffectObject } from "../../../../../service/feedbackService/effectEngine/effectObject";
+import { Effect } from "../../../../../service/feedbackService/effectEngine/effectObject";
 import { StageStyleManager } from "../../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
 // import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
@@ -24,7 +24,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     super();
   }
 
-  getCuttingEffects(edge: LineEdge): EffectObject[] {
+  getCuttingEffects(edge: LineEdge): Effect[] {
     const midLocation = edge.bodyLine.midPoint();
     return [
       new LineCuttingEffect(
@@ -46,7 +46,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       new CircleFlameEffect(new ProgressNumber(0, 15), edge.bodyLine.midPoint(), 50, new Color(255, 0, 0, 1)),
     ];
   }
-  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): EffectObject[] {
+  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): Effect[] {
     return [
       new CircleFlameEffect(
         new ProgressNumber(0, 15),

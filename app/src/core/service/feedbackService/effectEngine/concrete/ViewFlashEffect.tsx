@@ -4,12 +4,12 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 屏幕闪颜色效果
  */
-export class ViewFlashEffect extends EffectObject {
+export class ViewFlashEffect extends Effect {
   getClassName(): string {
     return "ViewFlashEffect";
   }

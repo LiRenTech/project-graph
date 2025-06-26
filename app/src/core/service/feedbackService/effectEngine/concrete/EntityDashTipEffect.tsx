@@ -6,9 +6,9 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectParticle } from "../effectElements/effectParticle";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
-export class EntityDashTipEffect extends EffectObject {
+export class EntityDashTipEffect extends Effect {
   getClassName(): string {
     return "EntityDashTipEffect";
   }

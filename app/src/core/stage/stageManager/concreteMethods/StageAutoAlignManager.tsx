@@ -2,7 +2,8 @@ import { Dialog } from "../../../../components/dialog";
 import { ArrayFunctions } from "../../../algorithm/arrayFunctions";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { Renderer } from "../../../render/canvas2d/renderer";
+import { Project, service } from "../../../Project";
+import { this.project.renderer } from "../../../render/canvas2d/renderer";
 import { AutoLayoutFastTree } from "../../../service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
 import { EntityAlignEffect } from "../../../service/feedbackService/effectEngine/concrete/EntityAlignEffect";
 import { RectangleRenderEffect } from "../../../service/feedbackService/effectEngine/concrete/RectangleRenderEffect";
@@ -15,18 +16,21 @@ import { GraphMethods } from "../basicMethods/GraphMethods";
 /**
  * 自动对齐和布局管理器
  */
-export namespace StageAutoAlignManager {
+@service("autoAlignManager")
+export class StageAutoAlignManager {
+  constructor(private readonly project: Project) {}
+
   /**
    * 对齐到网格
    */
-  export function alignAllSelectedToGrid() {
+  alignAllSelectedToGrid() {
     const selectedEntities = this.project.stageManager.getSelectedEntities();
     for (const selectedEntity of selectedEntities) {
       if (selectedEntity.isAlignExcluded) {
         // 涂鸦对象不参与对齐
         continue;
       }
-      onEntityMoveAlignToGrid(selectedEntity);
+      this.onEntityMoveAlignToGrid(selectedEntity);
     }
   }
 
@@ -34,9 +38,9 @@ export namespace StageAutoAlignManager {
    * 吸附函数
    * 用于鼠标松开的时候自动移动位置一小段距离
    */
-  export function alignAllSelected() {
+  alignAllSelected() {
     const selectedEntities = this.project.stageManager.getSelectedEntities();
-    const viewRectangle = Renderer.getCoverWorldRectangle();
+    const viewRectangle = this.project.renderer.getCoverWorldRectangle();
     const otherEntities = this.project.stageManager
       .getEntities()
       .filter((entity) => !entity.isSelected)
@@ -46,7 +50,7 @@ export namespace StageAutoAlignManager {
         // 涂鸦对象不参与对齐
         continue;
       }
-      onEntityMoveAlignToOtherEntity(selectedEntity, otherEntities);
+      this.onEntityMoveAlignToOtherEntity(selectedEntity, otherEntities);
     }
   }
 
@@ -54,9 +58,9 @@ export namespace StageAutoAlignManager {
    * 预先对齐显示反馈
    * 用于鼠标移动的时候显示对齐的效果
    */
-  export function preAlignAllSelected() {
+  preAlignAllSelected() {
     const selectedEntities = this.project.stageManager.getSelectedEntities();
-    const viewRectangle = Renderer.getCoverWorldRectangle();
+    const viewRectangle = this.project.renderer.getCoverWorldRectangle();
     const otherEntities = this.project.stageManager
       .getEntities()
       .filter((entity) => !entity.isSelected)
@@ -66,19 +70,19 @@ export namespace StageAutoAlignManager {
         // 涂鸦对象不参与对齐
         continue;
       }
-      onEntityMoveAlignToOtherEntity(selectedEntity, otherEntities, true);
+      this.onEntityMoveAlignToOtherEntity(selectedEntity, otherEntities, true);
     }
   }
   /**
    * 将一个节点对齐到网格
    * @param selectedEntity
    */
-  function onEntityMoveAlignToGrid(selectedEntity: Entity) {
-    onEntityMoveAlignToGridX(selectedEntity);
-    onEntityMoveAlignToGridY(selectedEntity);
+  private onEntityMoveAlignToGrid(selectedEntity: Entity) {
+    this.onEntityMoveAlignToGridX(selectedEntity);
+    this.onEntityMoveAlignToGridY(selectedEntity);
   }
 
-  function onEntityMoveAlignToGridX(selectedEntity: Entity) {
+  private onEntityMoveAlignToGridX(selectedEntity: Entity) {
     const rect = selectedEntity.collisionBox.getRectangle();
     const leftMod = rect.left % 50;
     const rightMode = rect.right % 50;
@@ -104,7 +108,7 @@ export namespace StageAutoAlignManager {
       }
     }
   }
-  function onEntityMoveAlignToGridY(selectedEntity: Entity) {
+  private onEntityMoveAlignToGridY(selectedEntity: Entity) {
     const rect = selectedEntity.collisionBox.getRectangle();
     const topMod = rect.top % 50;
     const bottomMode = rect.bottom % 50;
@@ -135,14 +139,14 @@ export namespace StageAutoAlignManager {
    * @param selectedEntity
    * @param otherEntities 其他未选中的节点，在上游做好筛选
    */
-  function onEntityMoveAlignToOtherEntity(selectedEntity: Entity, otherEntities: Entity[], isPreAlign = false) {
+  private onEntityMoveAlignToOtherEntity(selectedEntity: Entity, otherEntities: Entity[], isPreAlign = false) {
     // // 只能和一个节点对齐
     // let isHaveAlignTarget = false;
     // 按照与 selectedEntity 的距离排序
     const sortedOtherEntities = otherEntities
       .sort((a, b) => {
-        const distanceA = calculateDistance(selectedEntity, a);
-        const distanceB = calculateDistance(selectedEntity, b);
+        const distanceA = this.calculateDistance(selectedEntity, a);
+        const distanceB = this.calculateDistance(selectedEntity, b);
         return distanceA - distanceB; // 升序排序
       })
       .filter((entity) => {
@@ -158,7 +162,7 @@ export namespace StageAutoAlignManager {
     const yTargetRectangles: Rectangle[] = [];
     // X轴对齐 ||||
     for (const otherEntity of sortedOtherEntities) {
-      xMoveDiff = onEntityMoveAlignToTargetEntityX(selectedEntity, otherEntity, isPreAlign);
+      xMoveDiff = this.onEntityMoveAlignToTargetEntityX(selectedEntity, otherEntity, isPreAlign);
       if (xMoveDiff !== 0) {
         isAlign = true;
         xTargetRectangles.push(otherEntity.collisionBox.getRectangle());
@@ -167,7 +171,7 @@ export namespace StageAutoAlignManager {
     }
     // Y轴对齐 =
     for (const otherEntity of sortedOtherEntities) {
-      yMoveDiff = onEntityMoveAlignToTargetEntityY(selectedEntity, otherEntity, isPreAlign);
+      yMoveDiff = this.onEntityMoveAlignToTargetEntityY(selectedEntity, otherEntity, isPreAlign);
       if (yMoveDiff !== 0) {
         isAlign = true;
         yTargetRectangles.push(otherEntity.collisionBox.getRectangle());
@@ -181,9 +185,9 @@ export namespace StageAutoAlignManager {
       moveTargetRectangle.location.x += xMoveDiff;
       moveTargetRectangle.location.y += yMoveDiff;
 
-      Stage.effectMachine.addEffect(RectangleRenderEffect.fromPreAlign(moveTargetRectangle));
+      this.project.effects.addEffect(RectangleRenderEffect.fromPreAlign(this.project,moveTargetRectangle));
       for (const targetRectangle of xTargetRectangles.concat(yTargetRectangles)) {
-        Stage.effectMachine.addEffect(EntityAlignEffect.fromEntity(moveTargetRectangle, targetRectangle));
+        this.project.effects.addEffect(EntityAlignEffect.fromEntity(this.project,moveTargetRectangle, targetRectangle));
       }
     }
     if (isAlign && !isPreAlign) {
@@ -196,9 +200,9 @@ export namespace StageAutoAlignManager {
    * @param selectedEntity
    * @param otherEntity
    */
-  function _addAlignEffect(selectedEntity: Entity, otherEntity: Entity) {
-    Stage.effectMachine.addEffect(
-      EntityAlignEffect.fromEntity(selectedEntity.collisionBox.getRectangle(), otherEntity.collisionBox.getRectangle()),
+  private _addAlignEffect(selectedEntity: Entity, otherEntity: Entity) {
+    this.project.effects.addEffect(
+      EntityAlignEffect.fromEntity(this.project,selectedEntity.collisionBox.getRectangle(), otherEntity.collisionBox.getRectangle()),
     );
   }
 
@@ -208,7 +212,7 @@ export namespace StageAutoAlignManager {
    * @param otherEntity
    * @returns 返回吸附距离
    */
-  function onEntityMoveAlignToTargetEntityX(selectedEntity: Entity, otherEntity: Entity, isPreAlign = false): number {
+  private onEntityMoveAlignToTargetEntityX(selectedEntity: Entity, otherEntity: Entity, isPreAlign = false): number {
     const selectedRect = selectedEntity.collisionBox.getRectangle();
     const otherRect = otherEntity.collisionBox.getRectangle();
     const distanceList = [
@@ -222,14 +226,14 @@ export namespace StageAutoAlignManager {
         selectedEntity.move(new Vector(minDistance, 0));
       }
       // 添加特效
-      _addAlignEffect(selectedEntity, otherEntity);
+      this._addAlignEffect(selectedEntity, otherEntity);
       return minDistance;
     } else {
       return 0;
     }
   }
 
-  function onEntityMoveAlignToTargetEntityY(selectedEntity: Entity, otherEntity: Entity, isPreAlign = false): number {
+  private onEntityMoveAlignToTargetEntityY(selectedEntity: Entity, otherEntity: Entity, isPreAlign = false): number {
     const selectedRect = selectedEntity.collisionBox.getRectangle();
     const otherRect = otherEntity.collisionBox.getRectangle();
     const distanceList = [
@@ -243,7 +247,7 @@ export namespace StageAutoAlignManager {
         selectedEntity.move(new Vector(0, minDistance));
       }
       // 添加特效
-      _addAlignEffect(selectedEntity, otherEntity);
+      this._addAlignEffect(selectedEntity, otherEntity);
       return minDistance;
     } else {
       return 0;
@@ -251,7 +255,7 @@ export namespace StageAutoAlignManager {
   }
 
   // 假设你有一个方法可以计算两个节点之间的距离
-  function calculateDistance(entityA: Entity, entityB: Entity) {
+  private calculateDistance(entityA: Entity, entityB: Entity) {
     const rectA = entityA.collisionBox.getRectangle();
     const rectB = entityB.collisionBox.getRectangle();
 
@@ -266,7 +270,7 @@ export namespace StageAutoAlignManager {
    * 自动布局树形结构
    * @param selectedRootEntity
    */
-  export function autoLayoutSelectedFastTreeModeRight(selectedRootEntity: ConnectableEntity) {
+  autoLayoutSelectedFastTreeModeRight(selectedRootEntity: ConnectableEntity) {
     // 检测树形结构
     if (!GraphMethods.isTree(selectedRootEntity)) {
       // 不是树形结构，不做任何处理
@@ -279,7 +283,7 @@ export namespace StageAutoAlignManager {
     AutoLayoutFastTree.autoLayoutFastTreeModeRight(selectedRootEntity);
   }
 
-  export function autoLayoutSelectedFastTreeModeDown(selectedRootEntity: ConnectableEntity) {
+  autoLayoutSelectedFastTreeModeDown(selectedRootEntity: ConnectableEntity) {
     // 检测树形结构
     if (!GraphMethods.isTree(selectedRootEntity)) {
       // 不是树形结构，不做任何处理

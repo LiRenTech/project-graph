@@ -3,7 +3,7 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 type MouseTipType =
   | "shrink"
@@ -20,7 +20,7 @@ type MouseTipType =
 /**
  * 在鼠标上释放一个小特效，用于提示
  */
-export class MouseTipFeedbackEffect extends EffectObject {
+export class MouseTipFeedbackEffect extends Effect {
   constructor(
     private readonly project: Project,
     public override timeProgress: ProgressNumber,

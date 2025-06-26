@@ -4,12 +4,12 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 一个矩形被一刀切成两半，两个多边形的的特效
  */
-export class RectangleSplitTwoPartEffect extends EffectObject {
+export class RectangleSplitTwoPartEffect extends Effect {
   getClassName(): string {
     return "RectangleSplitTwoPartEffect";
   }

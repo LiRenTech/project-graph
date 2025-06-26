@@ -3,7 +3,7 @@ import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 一条富有科技感的连线特效
@@ -11,7 +11,7 @@ import { EffectObject } from "../effectObject";
  * 经过segmentCount短折线，每段折线的长度为initLen，每次偏转角度为-rotateDegrees | 0 | rotateDegrees 之间随机
  * 最终不一定到达end点，因为有随机偏移
  */
-export class TechLineEffect extends EffectObject {
+export class TechLineEffect extends Effect {
   getClassName(): string {
     return "TechLineEffect";
   }

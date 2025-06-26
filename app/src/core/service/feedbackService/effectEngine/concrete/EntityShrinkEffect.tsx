@@ -8,12 +8,12 @@ import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 实体收缩消失特效
  */
-export class EntityShrinkEffect extends EffectObject {
+export class EntityShrinkEffect extends Effect {
   getClassName(): string {
     return "EntityShrinkEffect";
   }

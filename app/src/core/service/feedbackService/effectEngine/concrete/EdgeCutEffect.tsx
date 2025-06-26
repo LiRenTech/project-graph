@@ -2,13 +2,13 @@ import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 import { easeOutQuint } from "../mathTools/easings";
 
 /**
  * 直线连线被斩断的特效
  */
-export class EdgeCutEffect extends EffectObject {
+export class EdgeCutEffect extends Effect {
   constructor(
     private readonly project: Project,
     timeProgress: ProgressNumber,

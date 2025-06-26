@@ -2,18 +2,18 @@ import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 圆形光圈缩放特效
  */
-export class CircleChangeRadiusEffect extends EffectObject {
+export class CircleChangeRadiusEffect extends Effect {
   constructor(
     private readonly project: Project,
     /**
      * 一开始为0，每tick + 1
      */
-    public override timeProgress: ProgressNumber,
+    public timeProgress: ProgressNumber,
     public location: Vector,
     public radiusStart: number,
     public radiusEnd: number,
@@ -30,7 +30,7 @@ export class CircleChangeRadiusEffect extends EffectObject {
     return this.radiusStart + (this.radiusEnd - this.radiusStart) * this.timeProgress.rate;
   }
 
-  override tick() {
+  tick() {
     super.tick();
   }
 

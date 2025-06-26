@@ -2,13 +2,13 @@ import { Color } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 圆形火光特效
  * 中间有颜色，边缘透明，中心放射状过渡
  */
-export class CircleFlameEffect extends EffectObject {
+export class CircleFlameEffect extends Effect {
   constructor(
     private readonly project: Project,
     /**
@@ -35,9 +35,9 @@ export class CircleFlameEffect extends EffectObject {
     }
     this.color.a = 1 - this.timeProgress.rate;
     const rendRadius = this.radius * this.timeProgress.rate;
-    this.project.shapeRenderer.renderCircleTransition(
-      this.project.renderer.transformWorld2View(this.location),
-      rendRadius * this.project.camera.currentScale,
+    project.shapeRenderer.renderCircleTransition(
+      project.renderer.transformWorld2View(this.location),
+      rendRadius * project.camera.currentScale,
       this.color,
     );
   }

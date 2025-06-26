@@ -5,13 +5,13 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 import { RateFunctions } from "../mathTools/rateFunctions";
 
 /**
  * 实体创建时粉尘凝聚特效
  */
-export class EntityCreateDashEffect extends EffectObject {
+export class EntityCreateDashEffect extends Effect {
   getClassName(): string {
     return "EntityCreateDashEffect";
   }

@@ -5,12 +5,12 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 方块的爆炸粉尘效果
  */
-export class ExplodeDashEffect extends EffectObject {
+export class ExplodeDashEffect extends Effect {
   getClassName(): string {
     return "ExplodeDashEffect";
   }

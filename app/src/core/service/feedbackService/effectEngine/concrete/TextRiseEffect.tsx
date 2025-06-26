@@ -2,13 +2,13 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 import { easeInOutSine } from "../mathTools/easings";
 
 /**
  * 文字上浮特效
  */
-export class TextRiseEffect extends EffectObject {
+export class TextRiseEffect extends Effect {
   getClassName(): string {
     return "TextRiseEffect";
   }

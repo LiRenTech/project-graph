@@ -3,12 +3,12 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 屏幕边缘闪颜色效果
  */
-export class ViewOutlineFlashEffect extends EffectObject {
+export class ViewOutlineFlashEffect extends Effect {
   getClassName(): string {
     return "ViewOutlineFlashEffect";
   }

@@ -5,10 +5,10 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 import { RateFunctions } from "../mathTools/rateFunctions";
 
-export class EntityJumpMoveEffect extends EffectObject {
+export class EntityJumpMoveEffect extends Effect {
   getClassName(): string {
     return "EntityJumpMoveEffect";
   }

@@ -5,12 +5,12 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  *
  */
-export class NodeMoveShadowEffect extends EffectObject {
+export class NodeMoveShadowEffect extends Effect {
   getClassName(): string {
     return "NodeMoveShadowEffect";
   }

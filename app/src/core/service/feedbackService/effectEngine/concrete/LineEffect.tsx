@@ -3,13 +3,13 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 线段特效
  * 直接显示全部，随着时间推移逐渐透明
  */
-export class LineEffect extends EffectObject {
+export class LineEffect extends Effect {
   getClassName(): string {
     return "LineEffect";
   }

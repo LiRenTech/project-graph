@@ -2,13 +2,13 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 在特定的世界坐标系下渲染一个文字
  * 用途之一：给逻辑引擎渲染编号
  */
-export class TextRaiseEffectLocated extends EffectObject {
+export class TextRaiseEffectLocated extends Effect {
   getClassName(): string {
     return "TextRaiseEffectLocated";
   }

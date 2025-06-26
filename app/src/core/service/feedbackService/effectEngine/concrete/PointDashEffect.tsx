@@ -4,12 +4,12 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectParticle } from "../effectElements/effectParticle";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 在一个点迸发一些粒子效果
  */
-export class PointDashEffect extends EffectObject {
+export class PointDashEffect extends Effect {
   getClassName(): string {
     return "PointDashEffect";
   }

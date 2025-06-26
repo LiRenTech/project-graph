@@ -4,9 +4,9 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Project } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
-export class RectangleRenderEffect extends EffectObject {
+export class RectangleRenderEffect extends Effect {
   getClassName(): string {
     return "RectangleRenderEffect";
   }

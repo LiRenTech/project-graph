@@ -5,12 +5,12 @@ import { Project } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 实体创建时闪光特效
  */
-export class EntityCreateFlashEffect extends EffectObject {
+export class EntityCreateFlashEffect extends Effect {
   getClassName(): string {
     return "EntityCreateFlashEffect";
   }

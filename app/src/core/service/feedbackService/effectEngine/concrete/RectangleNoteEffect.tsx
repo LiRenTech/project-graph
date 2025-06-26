@@ -4,7 +4,7 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { StageStyleManager } from "../../stageStyle/StageStyleManager";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 import { reverseAnimate } from "../mathTools/animateFunctions";
 import { easeOutQuint } from "../mathTools/easings";
 
@@ -17,7 +17,7 @@ import { easeOutQuint } from "../mathTools/easings";
  *
  * 目标矩形大小是世界坐标系
  */
-export class RectangleNoteEffect extends EffectObject {
+export class RectangleNoteEffect extends Effect {
   getClassName(): string {
     return "RectangleNoteEffect";
   }

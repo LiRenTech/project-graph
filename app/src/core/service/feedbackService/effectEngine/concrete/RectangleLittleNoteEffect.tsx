@@ -4,13 +4,13 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Project } from "../../../../Project";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 用于逻辑节点执行了一次效果
  * 附着在矩形上，从中心向外扩散
  */
-export class RectangleLittleNoteEffect extends EffectObject {
+export class RectangleLittleNoteEffect extends Effect {
   getClassName(): string {
     return "RectangleLittleNoteEffect";
   }

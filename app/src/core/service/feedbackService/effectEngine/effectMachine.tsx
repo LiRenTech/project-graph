@@ -1,6 +1,6 @@
 import { service } from "../../../Project";
 import { Settings } from "../../Settings";
-import { EffectObject } from "./effectObject";
+import { Effect } from "./effectObject";
 
 /**
  * 特效机器
@@ -18,9 +18,9 @@ export class Effects {
     });
   }
 
-  private effects: EffectObject[] = [];
+  private effects: Effect[] = [];
 
-  public addEffect(effect: EffectObject) {
+  public addEffect(effect: Effect) {
     if (!(this.effectsPerferences[effect.getClassName()] ?? true)) {
       return;
     }
@@ -31,7 +31,7 @@ export class Effects {
     return this.effects.length;
   }
 
-  public addEffects(effects: EffectObject[]) {
+  public addEffects(effects: Effect[]) {
     this.effects.push(...effects.filter((effect) => this.effectsPerferences[effect.getClassName()] ?? true));
   }
 

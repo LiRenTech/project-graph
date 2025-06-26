@@ -6,7 +6,7 @@ import { Project, service } from "../../../../../Project";
 import { CircleFlameEffect } from "../../../../../service/feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { EdgeCutEffect } from "../../../../../service/feedbackService/effectEngine/concrete/EdgeCutEffect";
 import { LineCuttingEffect } from "../../../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
-import { EffectObject } from "../../../../../service/feedbackService/effectEngine/effectObject";
+import { Effect } from "../../../../../service/feedbackService/effectEngine/effectObject";
 import { StageStyleManager } from "../../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { ConnectableEntity } from "../../../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
@@ -25,7 +25,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     super();
   }
 
-  getCuttingEffects(edge: LineEdge): EffectObject[] {
+  getCuttingEffects(edge: LineEdge): Effect[] {
     return [
       EdgeCutEffect.default(
         edge.bodyLine.start,
@@ -36,7 +36,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     ];
   }
 
-  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): EffectObject[] {
+  getConnectedEffects(startNode: ConnectableEntity, toNode: ConnectableEntity): Effect[] {
     return [
       new CircleFlameEffect(
         new ProgressNumber(0, 15),

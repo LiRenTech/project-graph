@@ -6,14 +6,14 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 实体抖动特效
  * 在实体的外接矩形增加一个像“TickTock”Logo 一样的抖动特效
  * 可以用来表示提醒效果
  */
-export class EntityShakeEffect extends EffectObject {
+export class EntityShakeEffect extends Effect {
   getClassName(): string {
     return "EntityShakeEffect";
   }

@@ -2,7 +2,7 @@ import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { EffectObject } from "../effectObject";
+import { Effect } from "../effectObject";
 
 /**
  * 线段特效
@@ -15,7 +15,7 @@ import { EffectObject } from "../effectObject";
  * 100%
  *                   ->
  */
-export class LineCuttingEffect extends EffectObject {
+export class LineCuttingEffect extends Effect {
   getClassName(): string {
     return "LineCuttingEffect";
   }
