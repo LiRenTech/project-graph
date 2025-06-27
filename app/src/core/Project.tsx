@@ -1,4 +1,9 @@
+import { Decoder, Encoder } from "@msgpack/msgpack";
+import { appLocalDataDir, join } from "@tauri-apps/api/path";
 import { URI } from "vscode-uri";
+import { Serialized } from "../types/node";
+import { Base64 } from "../utils/base64";
+import { exists, readFile, writeFile } from "../utils/fs";
 import { Service, ServiceClass } from "./interfaces/Service";
 import { CurveRenderer } from "./render/canvas2d/basicRenderer/curveRenderer";
 import { ImageRenderer } from "./render/canvas2d/basicRenderer/ImageRenderer";
@@ -46,6 +51,7 @@ import { ContentSearch } from "./service/dataManageService/contentSearchEngine/c
 import { Effects } from "./service/feedbackService/effectEngine/effectMachine";
 import { Camera } from "./stage/Camera";
 import { Canvas } from "./stage/Canvas";
+import { ProjectFormatUpgrader } from "./stage/ProjectFormatUpgrader";
 import { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { StageAutoAlignManager as AutoAlign } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageNodeRotate } from "./stage/stageManager/concreteMethods/stageNodeRotate";
@@ -54,21 +60,28 @@ import { StageManager } from "./stage/stageManager/StageManager";
 /**
  * “工程”
  * 一个标签页对应一个工程，一个工程只能对应一个URI
- * @example
- * class ServiceImpl implements Service {
- *   static id = "impl";
- *   static dependencies: string[] = [];
- *   constructor(private readonly project: Project) {}
- *   tick() {}
- *   dispose() {}
- * }
- * const p = Project.newDraft();
- * p.registerService(ServiceImpl);
+ * 一个工程可以加载不同的服务，类似vscode的扩展（Extensions）机制
  */
 export class Project {
+  static readonly latestVersion = 17;
+
   private readonly services = new Map<string, Service>();
   private readonly tickableServices = new Set<Service>();
   private rafHandle = -1;
+  private _uri: URI;
+  private _state: ProjectState = ProjectState.Unsaved;
+  private _data: Serialized.File = {
+    version: Project.latestVersion,
+    entities: [],
+    associations: [],
+    tags: [],
+  };
+  /**
+   * 创建Encoder对象比直接用encode()快
+   * @see https://github.com/msgpack/msgpack-javascript#reusing-encoder-and-decoder-instances
+   */
+  private encoder = new Encoder();
+  private decoder = new Decoder();
 
   private constructor(
     /**
@@ -77,15 +90,44 @@ export class Project {
      * 普通的“路径”无法表示云盘中的文件，而URI可以。
      * 同时，草稿文件也从硬编码的“Project Graph”特殊文件路径改为了协议为draft、内容为UUID的URI。
      * @see https://code.visualstudio.com/api/references/vscode-api#workspace.workspaceFile
-     * @see https://github.com/microsoft/vscode-uri
      */
-    public readonly uri: URI,
+    uri: URI,
   ) {
-    const animationFrame = () => {
-      this.tick();
-      this.rafHandle = requestAnimationFrame(animationFrame);
-    };
-    animationFrame();
+    this._uri = uri;
+    (async () => {
+      switch (this.uri.scheme) {
+        case "file": {
+          // 先检测之前有没有暂存
+          const stashFilePath = await join(await appLocalDataDir(), "stash", Base64.encode(uri.toString()));
+          if (await exists(stashFilePath)) {
+            // 加载暂存的文件
+            const decoded = this.decoder.decode(await readFile(stashFilePath)) as Record<string, any>;
+            const upgraded = ProjectFormatUpgrader.upgrade(decoded);
+            this._data = upgraded;
+            this._state = ProjectState.Stashed;
+          } else {
+            // 加载原始文件
+            const filePath = this.uri.fsPath;
+            if (await exists(filePath)) {
+              const decoded = this.decoder.decode(await readFile(filePath)) as Record<string, any>;
+              const upgraded = ProjectFormatUpgrader.upgrade(decoded);
+              this._data = upgraded;
+              this._state = ProjectState.Saved;
+            } else {
+              // 这下真废了，新建一个空工程
+            }
+          }
+          break;
+        }
+        case "draft": {
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+      this.loop();
+    })();
   }
   /**
    * 创建一个草稿工程
@@ -123,6 +165,13 @@ export class Project {
     }
   }
 
+  private loop() {
+    const animationFrame = () => {
+      this.tick();
+      this.rafHandle = requestAnimationFrame(animationFrame);
+    };
+    animationFrame();
+  }
   private tick() {
     for (const service of this.tickableServices) {
       service.tick?.();
@@ -154,6 +203,36 @@ export class Project {
 
   get isDraft() {
     return this.uri.scheme === "draft";
+  }
+  get uri() {
+    return this._uri;
+  }
+  set uri(uri: URI) {
+    this._uri = uri;
+    this._state = ProjectState.Unsaved;
+  }
+  get state() {
+    return this._state;
+  }
+  get data() {
+    return this._data;
+  }
+
+  /**
+   * 将文件暂存到数据目录中（通常为~/.local/share）
+   * ~/.local/share/liren.project-graph/stash/<normalizedUri>
+   * @see https://code.visualstudio.com/blogs/2016/11/30/hot-exit-in-insiders
+   *
+   * 频繁用msgpack序列化不会卡吗？
+   * 虽然JSON.stringify()在V8上面速度和msgpack差不多
+   * 但是要考虑跨平台，目前linux和macos用的都是webkit，目前还没有JavaScriptCore相关的benchmark
+   * 而且考虑到以后会把图片也放进文件里面，JSON肯定不合适了
+   * @see https://github.com/msgpack/msgpack-javascript#benchmark
+   */
+  async stash() {
+    const stashFilePath = await join(await appLocalDataDir(), "stash", Base64.encode(this.uri.toString()));
+    const encoded = this.encoder.encodeSharedRef(this.data);
+    await writeFile(stashFilePath, encoded);
   }
 }
 
@@ -225,6 +304,24 @@ declare module "./Project" {
     stageExportPng: StageExportPng;
     generateFromFolder: GenerateFromFolder;
   }
+}
+
+export enum ProjectState {
+  /**
+   * 已写入到原始文件中
+   * 已上传到云端
+   */
+  Saved,
+  /**
+   * 未写入到原始文件中，但是已经暂存到数据目录
+   * 未上传到云端，但是已经暂存到本地
+   */
+  Stashed,
+  /**
+   * 未写入到原始文件中，也未暂存到数据目录（真·未保存）
+   * 未上传到云端，也未暂存到本地
+   */
+  Unsaved,
 }
 
 /**

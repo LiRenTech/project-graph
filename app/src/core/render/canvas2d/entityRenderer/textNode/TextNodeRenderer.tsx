@@ -3,7 +3,6 @@ import { Color, colorInvert } from "../../../../dataStruct/Color";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project, service } from "../../../../Project";
-import { AutoComputeUtils } from "../../../../service/dataGenerateService/autoComputeEngine/AutoComputeUtils";
 import {
   getLogicNodeRenderName,
   LogicNodeNameEnum,
@@ -141,7 +140,7 @@ export class TextNodeRenderer {
         Renderer.FONT_SIZE * this.project.camera.currentScale,
         node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.Background),
       );
-    } else if (AutoComputeUtils.isNameIsLogicNode(node.text)) {
+    } else if (this.project.autoComputeUtils.isNameIsLogicNode(node.text)) {
       // 检查下是不是逻辑节点
       let isFindLogicName = false;
       for (const key of Object.keys(LogicNodeNameToRenderNameMap)) {

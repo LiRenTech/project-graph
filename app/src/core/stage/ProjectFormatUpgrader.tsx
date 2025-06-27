@@ -4,28 +4,28 @@ import { Serialized } from "../../types/node";
 /**
  * 将工程文件转换为最新版本的格式
  */
-export class ProjectFormatUpgrader {
-  static upgrade(data: Record<string, any>): Serialized.File {
-    data = ProjectFormatUpgrader.convertV1toV2(data);
-    data = ProjectFormatUpgrader.convertV2toV3(data);
-    data = ProjectFormatUpgrader.convertV3toV4(data);
-    data = ProjectFormatUpgrader.convertV4toV5(data);
-    data = ProjectFormatUpgrader.convertV5toV6(data);
-    data = ProjectFormatUpgrader.convertV6toV7(data);
-    data = ProjectFormatUpgrader.convertV7toV8(data);
-    data = ProjectFormatUpgrader.convertV8toV9(data);
-    data = ProjectFormatUpgrader.convertV9toV10(data);
-    data = ProjectFormatUpgrader.convertV10toV11(data);
-    data = ProjectFormatUpgrader.convertV11toV12(data);
-    data = ProjectFormatUpgrader.convertV12toV13(data);
-    data = ProjectFormatUpgrader.convertV13toV14(data);
-    data = ProjectFormatUpgrader.convertV14toV15(data);
-    data = ProjectFormatUpgrader.convertV15toV16(data);
-    data = ProjectFormatUpgrader.convertV16toV17(data);
+export namespace ProjectFormatUpgrader {
+  export function upgrade(data: Record<string, any>): Serialized.File {
+    data = convertV1toV2(data);
+    data = convertV2toV3(data);
+    data = convertV3toV4(data);
+    data = convertV4toV5(data);
+    data = convertV5toV6(data);
+    data = convertV6toV7(data);
+    data = convertV7toV8(data);
+    data = convertV8toV9(data);
+    data = convertV9toV10(data);
+    data = convertV10toV11(data);
+    data = convertV11toV12(data);
+    data = convertV12toV13(data);
+    data = convertV13toV14(data);
+    data = convertV14toV15(data);
+    data = convertV15toV16(data);
+    data = convertV16toV17(data);
     return data as Serialized.File;
   }
 
-  private static convertV1toV2(data: Record<string, any>): Record<string, any> {
+  function convertV1toV2(data: Record<string, any>): Record<string, any> {
     // 如果有version字段，说明数据是v2以上版本，不需要转换
     if ("version" in data) {
       return data;
@@ -60,7 +60,7 @@ export class ProjectFormatUpgrader {
     }
     return data;
   }
-  private static convertV2toV3(data: Record<string, any>): Record<string, any> {
+  function convertV2toV3(data: Record<string, any>): Record<string, any> {
     if (data.version >= 3) {
       return data;
     }
@@ -89,7 +89,7 @@ export class ProjectFormatUpgrader {
     }
     return data;
   }
-  private static convertV3toV4(data: Record<string, any>): Record<string, any> {
+  function convertV3toV4(data: Record<string, any>): Record<string, any> {
     if (data.version >= 4) {
       return data;
     }
@@ -103,7 +103,7 @@ export class ProjectFormatUpgrader {
     }
     return data;
   }
-  private static convertV4toV5(data: Record<string, any>): Record<string, any> {
+  function convertV4toV5(data: Record<string, any>): Record<string, any> {
     if (data.version >= 5) {
       return data;
     }
@@ -117,7 +117,7 @@ export class ProjectFormatUpgrader {
   }
 
   // 继承体系重构，移除节点的 children字段
-  private static convertV5toV6(data: Record<string, any>): Record<string, any> {
+  function convertV5toV6(data: Record<string, any>): Record<string, any> {
     if (data.version >= 6) {
       return data;
     }
@@ -131,7 +131,7 @@ export class ProjectFormatUpgrader {
   }
 
   // 继承体系重构，Edge增加uuid字段
-  private static convertV6toV7(data: Record<string, any>): Record<string, any> {
+  function convertV6toV7(data: Record<string, any>): Record<string, any> {
     if (data.version >= 7) {
       return data;
     }
@@ -145,7 +145,7 @@ export class ProjectFormatUpgrader {
   }
 
   // 继承体系重构，增加type
-  private static convertV7toV8(data: Record<string, any>): Record<string, any> {
+  function convertV7toV8(data: Record<string, any>): Record<string, any> {
     if (data.version >= 8) {
       return data;
     }
@@ -160,7 +160,7 @@ export class ProjectFormatUpgrader {
   }
 
   // 增加连接点 ConnectionPoint
-  private static convertV8toV9(data: Record<string, any>): Record<string, any> {
+  function convertV8toV9(data: Record<string, any>): Record<string, any> {
     if (data.version >= 9) {
       return data;
     }
@@ -169,7 +169,7 @@ export class ProjectFormatUpgrader {
   }
 
   // 增加tags
-  private static convertV9toV10(data: Record<string, any>): Record<string, any> {
+  function convertV9toV10(data: Record<string, any>): Record<string, any> {
     if (data.version >= 10) {
       return data;
     }
@@ -179,7 +179,7 @@ export class ProjectFormatUpgrader {
   }
 
   // 所有实体都支持 details，不再仅仅是TextNode支持
-  private static convertV10toV11(data: Record<string, any>): Record<string, any> {
+  function convertV10toV11(data: Record<string, any>): Record<string, any> {
     if (data.version >= 11) {
       return data;
     }
@@ -205,7 +205,7 @@ export class ProjectFormatUpgrader {
   }
 
   // 图片支持自定义缩放大小
-  private static convertV11toV12(data: Record<string, any>): Record<string, any> {
+  function convertV11toV12(data: Record<string, any>): Record<string, any> {
     if (data.version >= 12) {
       return data;
     }
@@ -226,7 +226,7 @@ export class ProjectFormatUpgrader {
    * @param data
    * @returns
    */
-  private static convertV12toV13(data: Record<string, any>): Record<string, any> {
+  function convertV12toV13(data: Record<string, any>): Record<string, any> {
     if (data.version >= 13) {
       return data;
     }
@@ -250,7 +250,7 @@ export class ProjectFormatUpgrader {
    * Edge增加了颜色字段
    * @param data
    */
-  private static convertV13toV14(data: Record<string, any>): Record<string, any> {
+  function convertV13toV14(data: Record<string, any>): Record<string, any> {
     if (data.version >= 14) {
       return data;
     }
@@ -268,7 +268,7 @@ export class ProjectFormatUpgrader {
    * 涂鸦增加颜色字段
    * @param data
    */
-  private static convertV14toV15(data: Record<string, any>): Record<string, any> {
+  function convertV14toV15(data: Record<string, any>): Record<string, any> {
     if (data.version >= 15) {
       return data;
     }
@@ -287,7 +287,7 @@ export class ProjectFormatUpgrader {
    * 文本节点增加自动转换大小/手动转换大小功能
    * @param data
    */
-  private static convertV15toV16(data: Record<string, any>): Record<string, any> {
+  function convertV15toV16(data: Record<string, any>): Record<string, any> {
     if (data.version >= 16) {
       return data;
     }
@@ -306,7 +306,7 @@ export class ProjectFormatUpgrader {
    * Edge连线接头增加比率字段
    * @param data
    */
-  private static convertV16toV17(data: Record<string, any>): Record<string, any> {
+  function convertV16toV17(data: Record<string, any>): Record<string, any> {
     if (data.version >= 17) {
       return data;
     }
