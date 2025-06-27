@@ -1,18 +1,21 @@
 import { v4 } from "uuid";
 import { FolderEntry, readFolderStructure } from "../../../../utils/fs";
 import { Color } from "../../../dataStruct/Color";
-import { Camera } from "../../../stage/Camera";
+import { Project, service } from "../../../Project";
 import { LayoutToTightSquareManager } from "../../../stage/stageManager/concreteMethods/layoutManager/layoutToTightSquareManager";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 
-export namespace GenerateFromFolderEngine {
+@service("generateFromFolder")
+export class GenerateFromFolder {
+  constructor(private readonly project: Project) {}
+
   //
-  export async function generateFromFolder(folderPath: string): Promise<void> {
+  async generateFromFolder(folderPath: string): Promise<void> {
     const folderStructure = await readFolderStructure(folderPath);
 
     // 当前的放置点位
-    const currentLocation = Camera.location.clone();
+    const currentLocation = this.project.camera.location.clone();
 
     const dfs = (fEntry: FolderEntry, currentSection: Section | null = null) => {
       if (fEntry.is_file) {
@@ -22,7 +25,7 @@ export namespace GenerateFromFolderEngine {
           text: fEntry.name,
           details: fEntry.path,
           location: currentLocation.toArray(),
-          color: getColorByPath(fEntry.path).toArray(),
+          color: this.getColorByPath(fEntry.path).toArray(),
         });
         this.project.stageManager.addTextNode(textNode);
         if (currentSection) {
@@ -55,12 +58,12 @@ export namespace GenerateFromFolderEngine {
     LayoutToTightSquareManager.layoutToTightSquare([rootEntity]);
   }
 
-  function getColorByPath(path: string): Color {
+  private getColorByPath(path: string): Color {
     if (path.includes(".")) {
       const ext = path.split(".").pop() as string;
       console.log(ext);
-      if (ext in fileExtColorMap) {
-        return Color.fromHex(fileExtColorMap[ext]);
+      if (ext in GenerateFromFolder.fileExtColorMap) {
+        return Color.fromHex(GenerateFromFolder.fileExtColorMap[ext]);
       } else {
         return Color.Transparent;
       }
@@ -69,7 +72,7 @@ export namespace GenerateFromFolderEngine {
     }
   }
 
-  const fileExtColorMap: Record<string, string> = {
+  static fileExtColorMap: Record<string, string> = {
     txt: "#000000",
     md: "#000000",
     html: "#4ec9b0",

@@ -1,5 +1,4 @@
 import { Dialog } from "../../../../../components/dialog";
-import { Stage } from "../../../../stage/Stage";
 
 import { ControllerClass } from "../ControllerClass";
 
@@ -13,8 +12,8 @@ export class ControllerEdgeEditClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    const firstHoverEdge = Stage.mouseInteractionCore.firstHoverEdge;
-    const firstHoverMultiTargetEdge = Stage.mouseInteractionCore.firstHoverMultiTargetEdge;
+    const firstHoverEdge = this.project.mouseInteraction.firstHoverEdge;
+    const firstHoverMultiTargetEdge = this.project.mouseInteraction.firstHoverMultiTargetEdge;
     if (!(firstHoverEdge || firstHoverMultiTargetEdge)) {
       return;
     }

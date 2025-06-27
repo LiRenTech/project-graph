@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { Project, service } from "../../../Project";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { Section } from "../../../stage/stageObject/entity/Section";
@@ -9,13 +10,16 @@ import { ProgramFunctions } from "./functions/programLogic";
  * 一些在自动计算引擎中
  * 常用的工具函数
  */
-export namespace AutoComputeUtils {
+@service("autoComputeUtils")
+export class AutoComputeUtils {
+  constructor(private readonly project: Project) {}
+
   /**
    * 获取一个节点的所有直接父节点，按x坐标排序
    * @param node
    * @returns
    */
-  export function getParentTextNodes(node: TextNode): TextNode[] {
+  getParentTextNodes(node: TextNode): TextNode[] {
     const parents = GraphMethods.nodeParentArray(node).filter((node) => node instanceof TextNode);
     // 将parents按x的坐标排序，小的在前面
     parents.sort((a, b) => {
@@ -24,7 +28,7 @@ export namespace AutoComputeUtils {
     return parents;
   }
 
-  export function getParentEntities(node: TextNode): ConnectableEntity[] {
+  getParentEntities(node: TextNode): ConnectableEntity[] {
     const parents = GraphMethods.nodeParentArray(node);
     // 将parents按x的坐标排序，小的在前面
     parents.sort((a, b) => {
@@ -38,7 +42,7 @@ export namespace AutoComputeUtils {
    * @param node
    * @returns
    */
-  export function getChildTextNodes(node: TextNode): TextNode[] {
+  getChildTextNodes(node: TextNode): TextNode[] {
     return GraphMethods.nodeChildrenArray(node)
       .filter((node) => node instanceof TextNode)
       .sort((a, b) => a.collisionBox.getRectangle().location.x - b.collisionBox.getRectangle().location.x);
@@ -49,7 +53,7 @@ export namespace AutoComputeUtils {
    * @param node
    * @param resultText
    */
-  export function getNodeOneResult(node: TextNode, resultText: string) {
+  getNodeOneResult(node: TextNode, resultText: string) {
     const childrenList = GraphMethods.nodeChildrenArray(node).filter((node) => node instanceof TextNode);
     if (childrenList.length > 0) {
       for (const child of childrenList) {
@@ -74,7 +78,7 @@ export namespace AutoComputeUtils {
    * @param section
    * @param resultText
    */
-  export function getSectionOneResult(section: Section, resultText: string) {
+  getSectionOneResult(section: Section, resultText: string) {
     const childrenList = GraphMethods.nodeChildrenArray(section).filter((node) => node instanceof TextNode);
     if (childrenList.length > 0) {
       for (const child of childrenList) {
@@ -94,7 +98,7 @@ export namespace AutoComputeUtils {
     }
   }
 
-  export function getSectionMultiResult(section: Section, resultTextList: string[]) {
+  getSectionMultiResult(section: Section, resultTextList: string[]) {
     let childrenList = GraphMethods.nodeChildrenArray(section).filter((node) => node instanceof TextNode);
     if (childrenList.length < resultTextList.length) {
       // 子节点数量不够，需要新建节点
@@ -133,7 +137,7 @@ export namespace AutoComputeUtils {
    * @param node
    * @param resultTextList
    */
-  export function generateMultiResult(node: TextNode, resultTextList: string[]) {
+  generateMultiResult(node: TextNode, resultTextList: string[]) {
     if (resultTextList.length === 0) {
       return;
     }
@@ -174,7 +178,7 @@ export namespace AutoComputeUtils {
    * @param str
    * @returns
    */
-  export function stringToNumber(str: string) {
+  stringToNumber(str: string) {
     if (ProgramFunctions.isHaveVar(str)) {
       return parseFloat(ProgramFunctions.getVarInCore(str));
     }
@@ -186,14 +190,14 @@ export namespace AutoComputeUtils {
    * 同时判断是否有逻辑节点的父节点或子节点
    * @param node
    */
-  export function isNodeConnectedWithLogicNode(node: ConnectableEntity): boolean {
+  isNodeConnectedWithLogicNode(node: ConnectableEntity): boolean {
     for (const fatherNode of GraphMethods.nodeParentArray(node)) {
-      if (fatherNode instanceof TextNode && isNameIsLogicNode(fatherNode.text)) {
+      if (fatherNode instanceof TextNode && this.isNameIsLogicNode(fatherNode.text)) {
         return true;
       }
     }
     for (const childNode of GraphMethods.nodeChildrenArray(node)) {
-      if (childNode instanceof TextNode && isNameIsLogicNode(childNode.text)) {
+      if (childNode instanceof TextNode && this.isNameIsLogicNode(childNode.text)) {
         return true;
       }
     }
@@ -206,7 +210,7 @@ export namespace AutoComputeUtils {
    * 2：中间只有数字、大写字母、下划线
    * @param name
    */
-  export function isNameIsLogicNode(name: string): boolean {
+  isNameIsLogicNode(name: string): boolean {
     const reg = /^#[a-zA-Z0-9_]+#$/;
     return reg.test(name);
   }

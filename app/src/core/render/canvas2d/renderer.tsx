@@ -332,16 +332,16 @@ export class Renderer {
   }
   /** 鼠标hover的边 */
   private renderHoverCollisionBox() {
-    for (const edge of Stage.mouseInteractionCore.hoverEdges) {
+    for (const edge of this.project.mouseInteraction.hoverEdges) {
       this.project.collisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxPreSelected);
     }
-    for (const section of Stage.mouseInteractionCore.hoverSections) {
+    for (const section of this.project.mouseInteraction.hoverSections) {
       this.project.collisionBoxRenderer.render(
         section.collisionBox,
         StageStyleManager.currentStyle.CollideBoxPreSelected,
       );
     }
-    for (const multiTargetUndirectedEdge of Stage.mouseInteractionCore.hoverMultiTargetEdges) {
+    for (const multiTargetUndirectedEdge of this.project.mouseInteraction.hoverMultiTargetEdges) {
       this.project.collisionBoxRenderer.render(
         multiTargetUndirectedEdge.collisionBox,
         StageStyleManager.currentStyle.CollideBoxPreSelected,

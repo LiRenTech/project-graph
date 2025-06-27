@@ -34,15 +34,20 @@ import { KeyboardOnlyGraphEngine } from "./service/controlService/keyboardOnlyEn
 import { MouseLocation } from "./service/controlService/MouseLocation";
 import { RectangleSelect } from "./service/controlService/rectangleSelectEngine/rectangleSelectEngine";
 import { SecretKeys } from "./service/controlService/secretKeysEngine/secretKeysEngine";
+import { MouseInteraction } from "./service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
 import { AutoBackup } from "./service/dataFileService/autoSaveBackupEngine/autoBackupEngine";
 import { AutoSave } from "./service/dataFileService/autoSaveBackupEngine/autoSaveEngine";
+import { AutoComputeUtils } from "./service/dataGenerateService/autoComputeEngine/AutoComputeUtils";
 import { AutoCompute } from "./service/dataGenerateService/autoComputeEngine/mainTick";
+import { GenerateFromFolder } from "./service/dataGenerateService/generateFromFolderEngine/GenerateFromFolderEngine";
 import { StageExport } from "./service/dataGenerateService/stageExportEngine/stageExportEngine";
+import { StageExportPng } from "./service/dataGenerateService/stageExportEngine/StageExportPng";
+import { ContentSearch } from "./service/dataManageService/contentSearchEngine/contentSearchEngine";
 import { Effects } from "./service/feedbackService/effectEngine/effectMachine";
 import { Camera } from "./stage/Camera";
 import { Canvas } from "./stage/Canvas";
 import { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
-import { StageAutoAlignManager } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
+import { StageAutoAlignManager as AutoAlign } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageNodeRotate } from "./stage/stageManager/concreteMethods/stageNodeRotate";
 import { StageManager } from "./stage/stageManager/StageManager";
 
@@ -72,6 +77,7 @@ export class Project {
      * 普通的“路径”无法表示云盘中的文件，而URI可以。
      * 同时，草稿文件也从硬编码的“Project Graph”特殊文件路径改为了协议为draft、内容为UUID的URI。
      * @see https://code.visualstudio.com/api/references/vscode-api#workspace.workspaceFile
+     * @see https://github.com/microsoft/vscode-uri
      */
     public readonly uri: URI,
   ) {
@@ -145,6 +151,10 @@ export class Project {
   getService<T extends keyof this & string>(serviceId: T): this[T] {
     return this.services.get(serviceId) as this[T];
   }
+
+  get isDraft() {
+    return this.uri.scheme === "draft";
+  }
 }
 
 declare module "./Project" {
@@ -157,6 +167,12 @@ declare module "./Project" {
     // 最底层
     canvas: Canvas;
     inputElement: InputElement;
+    // utils
+    controllerUtils: ControllerUtils;
+    autoComputeUtils: AutoComputeUtils;
+    // 渲染底层
+    renderUtils: RenderUtils;
+    worldRenderUtils: WorldRenderUtils;
     // 数据管理
     stageManager: StageManager;
     camera: Camera;
@@ -166,20 +182,19 @@ declare module "./Project" {
     secretKeys: SecretKeys;
     autoBackup: AutoBackup;
     autoSave: AutoSave;
-    stageExport: StageExport;
     rectangleSelect: RectangleSelect;
     stageNodeRotate: StageNodeRotate;
     // 自动布局算法
     autoLayout: AutoLayout;
     autoLayoutFastTree: AutoLayoutFastTree;
     layoutManualAlign: LayoutManualAlign;
-    autoAlign: StageAutoAlignManager;
+    // 和stage相关的
+    autoAlign: AutoAlign;
+    mouseInteraction: MouseInteraction;
+    contentSearch: ContentSearch;
     // 纯键盘操作引擎
     keyboardOnlyEngine: KeyboardOnlyEngine;
     keyboardOnlyGraphEngine: KeyboardOnlyGraphEngine;
-    // 渲染底层
-    renderUtils: RenderUtils;
-    worldRenderUtils: WorldRenderUtils;
     // 各种节点的渲染器
     textRenderer: TextRenderer;
     imageRenderer: ImageRenderer;
@@ -202,11 +217,13 @@ declare module "./Project" {
     urlNodeRenderer: UrlNodeRenderer;
     backgroundRenderer: BackgroundRenderer;
     searchContentHighlightRenderer: SearchContentHighlightRenderer;
-    // utils
-    controllerUtils: ControllerUtils;
     // 最终呈现给用户的东西
     renderer: Renderer;
     controller: Controller;
+    // 导入导出
+    stageExport: StageExport;
+    stageExportPng: StageExportPng;
+    generateFromFolder: GenerateFromFolder;
   }
 }
 

@@ -1,7 +1,6 @@
 import { Dialog } from "../../../../../components/dialog";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { Stage } from "../../../../stage/Stage";
 import { ControllerClass } from "../ControllerClass";
 
 /**
@@ -18,7 +17,7 @@ export class ControllerSectionEdit extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    const firstHoverSection = Stage.mouseInteractionCore.firstHoverSection;
+    const firstHoverSection = this.project.mouseInteraction.firstHoverSection;
     if (!firstHoverSection) {
       return;
     }
@@ -30,7 +29,7 @@ export class ControllerSectionEdit extends ControllerClass {
 
   mousemove = (event: MouseEvent) => {
     const worldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
-    Stage.mouseInteractionCore.updateByMouseMove(worldLocation);
+    this.project.mouseInteraction.updateByMouseMove(worldLocation);
   };
 
   keydown = (event: KeyboardEvent) => {

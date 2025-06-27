@@ -1,7 +1,6 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
-import { Camera } from "../../../stage/Camera";
-import { Stage } from "../../../stage/Stage";
+import { Project, service } from "../../../Project";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { StageObject } from "../../../stage/stageObject/abstract/StageObject";
 import { Edge } from "../../../stage/stageObject/association/Edge";
@@ -11,7 +10,10 @@ import { UrlNode } from "../../../stage/stageObject/entity/UrlNode";
 import { RectangleNoteEffect } from "../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 
-export class ContentSearchEngine {
+@service("contentSearch")
+export class ContentSearch {
+  constructor(private readonly project: Project) {}
+
   /**
    * 搜索结果
    */
@@ -76,11 +78,11 @@ export class ContentSearchEngine {
         // 选择第一个搜索结果节点
         const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
         // currentNode.isSelected = true;
-        Stage.effectMachine.addEffect(
+        this.project.effects.addEffect(
           new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.collisionBox.getRectangle(), Color.Green),
         );
         // 摄像机对准现在的节点
-        Camera.location = currentNode.collisionBox.getRectangle().center.clone();
+        this.project.camera.location = currentNode.collisionBox.getRectangle().center.clone();
       }
 
       return true;
@@ -95,7 +97,7 @@ export class ContentSearchEngine {
     if (this.currentSearchResultIndex < this.searchResultNodes.length - 1) {
       this.currentSearchResultIndex++;
     } else {
-      Stage.effectMachine.addEffect(TextRiseEffect.default("已经到底了"));
+      this.project.effects.addEffect(TextRiseEffect.default("已经到底了"));
       return;
     }
     // 取消选择所有节点
@@ -105,11 +107,11 @@ export class ContentSearchEngine {
     // 选择当前搜索结果节点
     const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
     if (currentNode) {
-      Stage.effectMachine.addEffect(
+      this.project.effects.addEffect(
         new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.collisionBox.getRectangle(), Color.Green),
       );
       // 摄像机对准现在的节点
-      Camera.location = currentNode.collisionBox.getRectangle().center.clone();
+      this.project.camera.location = currentNode.collisionBox.getRectangle().center.clone();
     }
   }
 
@@ -120,7 +122,7 @@ export class ContentSearchEngine {
     if (this.currentSearchResultIndex > 0) {
       this.currentSearchResultIndex--;
     } else {
-      Stage.effectMachine.addEffect(TextRiseEffect.default("已经到头了"));
+      this.project.effects.addEffect(TextRiseEffect.default("已经到头了"));
     }
     // 取消选择所有节点
     for (const node of this.project.stageManager.getTextNodes()) {
@@ -129,11 +131,11 @@ export class ContentSearchEngine {
     // 选择当前搜索结果节点
     const currentNode = this.searchResultNodes[this.currentSearchResultIndex];
     if (currentNode) {
-      Stage.effectMachine.addEffect(
+      this.project.effects.addEffect(
         new RectangleNoteEffect(new ProgressNumber(0, 50), currentNode.collisionBox.getRectangle(), Color.Green),
       );
       // 摄像机对准现在的节点
-      Camera.location = currentNode.collisionBox.getRectangle().center.clone();
+      this.project.camera.location = currentNode.collisionBox.getRectangle().center.clone();
     }
   }
 }

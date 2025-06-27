@@ -1,9 +1,13 @@
 import { Vector } from "../../../dataStruct/Vector";
+import { Project, service } from "../../../Project";
 import { Edge } from "../../../stage/stageObject/association/Edge";
 import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { Section } from "../../../stage/stageObject/entity/Section";
 
-export class StageMouseInteractionCore {
+@service("mouseInteraction")
+export class MouseInteraction {
+  constructor(private readonly project: Project) {}
+
   /**
    * 鼠标悬浮的边
    */
