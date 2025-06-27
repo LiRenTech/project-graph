@@ -4,9 +4,9 @@ import { PathString } from "../../../../utils/pathString";
 import { Color, colorInvert } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
+import { Project, service } from "../../../Project";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { SvgUtils } from "../../../render/svg/SvgUtils";
-import { Stage } from "../../../stage/Stage";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
@@ -24,16 +24,19 @@ export interface SvgExportConfig {
  *
  *
  */
-export namespace StageExportSvg {
-  let svgConfig: SvgExportConfig = {
+@service("stageExportSvg")
+export class StageExportSvg {
+  constructor(private readonly project: Project) {}
+
+  private svgConfig: SvgExportConfig = {
     imageMode: "relativePath",
   };
 
-  export function setConfig(config: SvgExportConfig) {
-    svgConfig = config;
+  setConfig(config: SvgExportConfig) {
+    this.svgConfig = config;
   }
 
-  export function dumpNode(node: TextNode) {
+  dumpNode(node: TextNode) {
     if (node.isHiddenBySectionCollapse) {
       return <></>;
     }
@@ -60,7 +63,7 @@ export namespace StageExportSvg {
    * @param section
    * @returns
    */
-  export function dumpSection(section: Section) {
+  dumpSection(section: Section) {
     if (section.isHiddenBySectionCollapse) {
       return <></>;
     }
@@ -82,14 +85,14 @@ export namespace StageExportSvg {
    * @param section
    * @returns
    */
-  export function dumpSectionBase(section: Section) {
+  dumpSectionBase(section: Section) {
     if (section.isHiddenBySectionCollapse) {
       return <></>;
     }
     return <>{SvgUtils.rectangle(section.rectangle, section.color, Color.Transparent, 0)}</>;
   }
 
-  export function dumpEdge(edge: LineEdge): React.ReactNode {
+  dumpEdge(edge: LineEdge): React.ReactNode {
     return this.project.edgeRenderer.getEdgeSvg(edge);
   }
   /**
@@ -98,7 +101,7 @@ export namespace StageExportSvg {
    * @param absolutePath 是否使用绝对路径
    * @returns
    */
-  export function dumpImageNode(node: ImageNode, svgConfigObject: SvgExportConfig) {
+  dumpImageNode(node: ImageNode, svgConfigObject: SvgExportConfig) {
     if (node.isHiddenBySectionCollapse) {
       return <></>;
     }
@@ -121,7 +124,7 @@ export namespace StageExportSvg {
     );
   }
 
-  function getEntitiesOuterRectangle(entities: Entity[], padding: number): Rectangle {
+  private getEntitiesOuterRectangle(entities: Entity[], padding: number): Rectangle {
     let minX = Infinity;
     let minY = Infinity;
     let maxX = -Infinity;
@@ -143,13 +146,13 @@ export namespace StageExportSvg {
     return new Rectangle(new Vector(minX, minY), new Vector(maxX - minX, maxY - minY));
   }
 
-  function dumpSelected(): React.ReactNode {
+  private dumpSelected(): React.ReactNode {
     const selectedEntities = this.project.stageManager.getSelectedEntities();
     if (selectedEntities.length === 0) {
       return "";
     }
     const padding = 30; // 留白
-    const viewRectangle = getEntitiesOuterRectangle(selectedEntities, padding);
+    const viewRectangle = this.getEntitiesOuterRectangle(selectedEntities, padding);
     // 计算画布的大小
     const width = viewRectangle.size.x;
     const height = viewRectangle.size.y;
@@ -183,19 +186,19 @@ export namespace StageExportSvg {
         {SectionMethods.getSortedSectionsByZ(selectedEntities.filter((entity) => entity instanceof Section)).map(
           (entity) => {
             if (entity instanceof Section) {
-              return dumpSectionBase(entity);
+              return this.dumpSectionBase(entity);
             }
           },
         )}
         {selectedEntities.map((entity) => {
           if (entity instanceof TextNode) {
-            return dumpNode(entity);
+            return this.dumpNode(entity);
           } else if (entity instanceof LineEdge) {
-            return dumpEdge(entity);
+            return this.dumpEdge(entity);
           } else if (entity instanceof Section) {
-            return dumpSection(entity);
+            return this.dumpSection(entity);
           } else if (entity instanceof ImageNode) {
-            return dumpImageNode(entity, svgConfig);
+            return this.dumpImageNode(entity, this.svgConfig);
           }
         })}
 
@@ -205,18 +208,18 @@ export namespace StageExportSvg {
           .filter(
             (edge) => selectedEntitiesUUIDSet.has(edge.source.uuid) && selectedEntitiesUUIDSet.has(edge.target.uuid),
           )
-          .map((edge) => dumpEdge(edge))}
+          .map((edge) => this.dumpEdge(edge))}
       </svg>
     );
   }
 
-  function dumpStage(): React.ReactNode {
+  private dumpStage(): React.ReactNode {
     // 如果没有任何节点，则抛出一个异常
     if (this.project.stageManager.isNoEntity()) {
       throw new Error("No nodes in stage.");
     }
     const padding = 30; // 留白
-    const viewRectangle = getEntitiesOuterRectangle(this.project.stageManager.getEntities(), padding);
+    const viewRectangle = this.getEntitiesOuterRectangle(this.project.stageManager.getEntities(), padding);
     // 计算画布的大小
     const width = viewRectangle.size.x;
     const height = viewRectangle.size.y;
@@ -234,12 +237,12 @@ export namespace StageExportSvg {
         }}
       >
         {SectionMethods.getSortedSectionsByZ(this.project.stageManager.getSections()).map((section) =>
-          dumpSectionBase(section),
+          this.dumpSectionBase(section),
         )}
-        {this.project.stageManager.getTextNodes().map((node) => dumpNode(node))}
-        {this.project.stageManager.getLineEdges().map((edge) => dumpEdge(edge))}
-        {this.project.stageManager.getSections().map((section) => dumpSection(section))}
-        {this.project.stageManager.getImageNodes().map((imageNode) => dumpImageNode(imageNode, svgConfig))}
+        {this.project.stageManager.getTextNodes().map((node) => this.dumpNode(node))}
+        {this.project.stageManager.getLineEdges().map((edge) => this.dumpEdge(edge))}
+        {this.project.stageManager.getSections().map((section) => this.dumpSection(section))}
+        {this.project.stageManager.getImageNodes().map((imageNode) => this.dumpImageNode(imageNode, this.svgConfig))}
       </svg>
     );
   }
@@ -248,15 +251,15 @@ export namespace StageExportSvg {
    * 将整个舞台导出为SVG字符串
    * @returns
    */
-  export function dumpStageToSVGString(): string {
-    return ReactDOMServer.renderToStaticMarkup(dumpStage());
+  dumpStageToSVGString(): string {
+    return ReactDOMServer.renderToStaticMarkup(this.dumpStage());
   }
 
   /**
    * 将选中的节点导出为SVG字符串
    * @returns
    */
-  export function dumpSelectedToSVGString(): string {
-    return ReactDOMServer.renderToString(dumpSelected());
+  dumpSelectedToSVGString(): string {
+    return ReactDOMServer.renderToString(this.dumpSelected());
   }
 }

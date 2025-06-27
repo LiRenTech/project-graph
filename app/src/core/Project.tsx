@@ -47,6 +47,7 @@ import { AutoCompute } from "./service/dataGenerateService/autoComputeEngine/mai
 import { GenerateFromFolder } from "./service/dataGenerateService/generateFromFolderEngine/GenerateFromFolderEngine";
 import { StageExport } from "./service/dataGenerateService/stageExportEngine/stageExportEngine";
 import { StageExportPng } from "./service/dataGenerateService/stageExportEngine/StageExportPng";
+import { StageExportSvg } from "./service/dataGenerateService/stageExportEngine/StageExportSvg";
 import { ContentSearch } from "./service/dataManageService/contentSearchEngine/contentSearchEngine";
 import { Effects } from "./service/feedbackService/effectEngine/effectMachine";
 import { Camera } from "./stage/Camera";
@@ -56,6 +57,12 @@ import { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutMa
 import { StageAutoAlignManager as AutoAlign } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageNodeRotate } from "./stage/stageManager/concreteMethods/stageNodeRotate";
 import { StageManager } from "./stage/stageManager/StageManager";
+
+// TODO: 将filesystem接口提取出来
+// TODO: 支持服务进行文件操作，而不是直接操作文件系统
+// TODO: 删除文件路径相关的API
+// TODO: 删除自动备份、自动保存
+// TODO: 文档
 
 /**
  * “工程”
@@ -234,6 +241,23 @@ export class Project {
     const encoded = this.encoder.encodeSharedRef(this.data);
     await writeFile(stashFilePath, encoded);
   }
+  save() {
+    const encoded = this.encoder.encodeSharedRef(this.data);
+    switch (this.uri.scheme) {
+      case "file": {
+        const filePath = this.uri.fsPath;
+        writeFile(filePath, encoded);
+        this._state = ProjectState.Saved;
+        break;
+      }
+      case "draft": {
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
 }
 
 declare module "./Project" {
@@ -302,6 +326,7 @@ declare module "./Project" {
     // 导入导出
     stageExport: StageExport;
     stageExportPng: StageExportPng;
+    StageExportSvg: StageExportSvg;
     generateFromFolder: GenerateFromFolder;
   }
 }
