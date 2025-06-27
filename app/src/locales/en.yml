@@ -445,7 +445,7 @@ settings:
       moveX: Horizontal Movement
       none: No operation
   mouseWheelWithCtrlMode:
-    title: Mouse Wheel Mode with Ctrl (Control) Key
+    title: Mouse Wheel Mode with Ctrl Key
     options:
       zoom: Zoom
       move: Vertical Movement
@@ -528,7 +528,7 @@ settings:
       move: Vertical Movement
       moveX: Horizontal Movement
       none: No operation
-    title: Mouse Wheel Mode with Alt (Option) Key
+    title: Mouse Wheel Mode with Alt Key
   macTrackpadScaleSensitivity:
     title: MacBook trackpad two-finger zoom sensitivity
     description: The larger the value, the faster the scaling speed
@@ -594,6 +594,10 @@ settings:
     description: "please read carefully and agree to the Terms of Service\n"
   allowTelemetry:
     title: Participate in the User Experience Improvement Program
+    description: "If you enable this, we will collect your usage data to help us improve
+      the software\nThe data sent is only for statistics and will not include your
+      personal privacy information\nYour data will be stored on cloud servers in Hong
+      Kong, China, and will not be sent abroad\n"
 plugins:
   welcome:
     title: Welcome to the Plugin System
@@ -624,14 +628,17 @@ appMenu:
     title: Location
     items:
       openDataFolder:
-        description: Open the software data folder, which stores user-customized
-          settings, etc
+        description: Open the user configuration data folder, which stores 
+          user-customized settings, etc
         title: Configuration Data
       openProjectFolder:
         title: Current Directory
         description: Open the current editing project file's folder
       openCacheFolder:
         title: Cache Folder
+        description: Open the software cache folder, which stores cache data 
+          generated during software operation, as well as default draft backup 
+          files
   export:
     title: Export
     items:
@@ -669,6 +676,11 @@ appMenu:
 
   import:
     title: Import
+    items:
+      generateSectionByFolder:
+        title: Generate a block diagram from the local folder
+        description: After selecting a local folder, generate a nested box 
+          diagram of all files in the folder
 toolbar:
   pinnedTools:
     title: Pinned Tools
