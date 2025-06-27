@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "fumadocs-ui/css/dusk.css";
+@import "fumadocs-ui/css/ocean.css";
 @import "fumadocs-ui/css/preset.css";
 
 @source '../node_modules/fumadocs-ui/dist/**/*.js';
