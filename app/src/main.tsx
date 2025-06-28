@@ -10,10 +10,6 @@ import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { runCli } from "./cli";
 import { Dialog } from "./components/dialog";
 import { UserScriptsManager } from "./core/plugin/UserScriptsManager";
-import { Renderer } from "./core/render/canvas2d/renderer";
-import { InputElement } from "./core/render/domElement/inputElement";
-import { KeyboardOnlyEngine } from "./core/service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
-import { MouseLocation } from "./core/service/controlService/MouseLocation";
 import { KeyBinds } from "./core/service/controlService/shortcutKeysEngine/KeyBinds";
 import { ShortcutKeysRegister } from "./core/service/controlService/shortcutKeysEngine/shortcutKeysRegister";
 import { FileLoader } from "./core/service/dataFileService/fileLoader";
@@ -24,13 +20,13 @@ import { TextRiseEffect } from "./core/service/feedbackService/effectEngine/conc
 import { SoundService } from "./core/service/feedbackService/SoundService";
 import { StageStyleManager } from "./core/service/feedbackService/stageStyle/StageStyleManager";
 import { LastLaunch } from "./core/service/LastLaunch";
+import { Settings } from "./core/service/Settings";
 import { Tourials } from "./core/service/Tourials";
 import { UserState } from "./core/service/UserState";
 import { Camera } from "./core/stage/Camera";
 import { ProjectFormatUpgrader } from "./core/stage/ProjectFormatUpgrader";
 import { Stage } from "./core/stage/Stage";
 import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManager";
-import { StageManager } from "./core/stage/stageManager/StageManager";
 import { EdgeCollisionBoxGetter } from "./core/stage/stageObject/association/EdgeCollisionBoxGetter";
 import "./index.css";
 import "./polyfills/roundRect";
@@ -83,18 +79,9 @@ const el = document.getElementById("root")!;
 /** 加载同步初始化的模块 */
 async function loadSyncModules() {
   EdgeCollisionBoxGetter.init();
-  this.project.edgeRenderer.init();
-  Renderer.init();
-  Camera.init();
-  Stage.init();
   StageHistoryManager.init();
   StageStyleManager.init();
-  MouseLocation.init();
-  StageManager.init();
-  // 可以稍微晚几秒再初始化都没事的模块
   SoundService.init();
-  KeyboardOnlyEngine.init();
-  InputElement.init();
 }
 
 /** 加载语言文件 */

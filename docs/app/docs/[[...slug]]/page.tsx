@@ -1,7 +1,9 @@
 import { source } from "@/lib/source";
-import defaultMdxComponents, { createRelativeLink } from "fumadocs-ui/mdx";
+import { getMDXComponents } from "@/mdx-components";
+import { createRelativeLink } from "fumadocs-ui/mdx";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page";
 import { notFound } from "next/navigation";
+import { RelatedFileButton } from "./page.client";
 
 export default async function Page(props: { params: Promise<{ slug?: string[] }> }) {
   const params = await props.params;
@@ -14,22 +16,18 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
     <DocsPage toc={page.data.toc} full={page.data.full}>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
+      <div className="flex flex-row items-center gap-2 border-b pb-6 pt-2">
+        {"relatedFile" in page.data && <RelatedFileButton relatedFile={page.data.relatedFile} />}
+      </div>
       <DocsBody>
         <MDXContent
-          components={{
-            ...defaultMdxComponents,
-            // this allows you to link to other pages with relative file paths
+          components={getMDXComponents({
             a: createRelativeLink(source, page),
-            // you can add other MDX components here
-          }}
+          })}
         />
       </DocsBody>
     </DocsPage>
   );
-}
-
-export async function generateStaticParams() {
-  return source.generateParams();
 }
 
 export async function generateMetadata(props: { params: Promise<{ slug?: string[] }> }) {
@@ -41,4 +39,8 @@ export async function generateMetadata(props: { params: Promise<{ slug?: string[
     title: page.data.title,
     description: page.data.description,
   };
+}
+
+export function generateStaticParams() {
+  return source.generateParams();
 }
