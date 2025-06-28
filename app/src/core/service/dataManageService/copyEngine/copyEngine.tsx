@@ -2,26 +2,27 @@ import { Serialized } from "../../../../types/node";
 import { isMac } from "../../../../utils/platform";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { Renderer } from "../../../render/canvas2d/renderer";
+import { Project, service } from "../../../Project";
 import { StageDumper } from "../../../stage/StageDumper";
-import { StageSerializedAdder } from "../../../stage/stageManager/concreteMethods/StageSerializedAdder";
+import { SerializedDataAdder } from "../../../stage/stageManager/concreteMethods/StageSerializedAdder";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
-import { Controller } from "../../controlService/controller/Controller";
-import { MouseLocation } from "../../controlService/MouseLocation";
 import { copyEnginePasteImage } from "./pasteImage";
 import { copyEnginePastePlainText } from "./pastePlainText";
 
 /**
  * 专门用来管理节点复制的引擎
  */
-export namespace CopyEngine {
+@service("copyEngine")
+export class CopyEngine {
+  constructor(private readonly project: Project) {}
+
   /**
    * 虚拟粘贴板数据
    * 注意：这个不是系统粘贴板
    */
-  export let copyBoardData: Serialized.File = {
+  copyBoardData: Serialized.File = {
     version: StageDumper.latestVersion,
     entities: [],
     associations: [],
@@ -32,25 +33,25 @@ export namespace CopyEngine {
    * 当他为null时，表示没有粘贴板数据
    */
 
-  export let copyBoardDataRectangle: Rectangle | null = null;
+  copyBoardDataRectangle: Rectangle | null = null;
   /**
    * 表示从粘贴板外接矩形的矩形中心，到鼠标当前位置的向量
    * 用于计算即将粘贴的位置
    */
-  // eslint-disable-next-line prefer-const
-  export let copyBoardMouseVector: Vector = Vector.getZero();
+
+  copyBoardMouseVector: Vector = Vector.getZero();
 
   /**
    * 清空虚拟粘贴板
    */
-  export function clearVirtualCopyBoardData() {
-    copyBoardData = {
+  clearVirtualCopyBoardData() {
+    this.copyBoardData = {
       version: StageDumper.latestVersion,
       entities: [],
       associations: [],
       tags: [],
     };
-    copyBoardDataRectangle = null;
+    this.copyBoardDataRectangle = null;
   }
 
   /**
@@ -58,19 +59,19 @@ export namespace CopyEngine {
    * 将当前选中的节点复制到虚拟粘贴板
    * 也要将选中的部分复制到系统粘贴板
    */
-  export function copy() {
+  copy() {
     // 获取所有选中的实体
     const entities: Entity[] = this.project.stageManager.getSelectedEntities();
     if (entities.length === 0) {
       // 如果没有选中东西，就是清空虚拟粘贴板
-      clearVirtualCopyBoardData();
+      this.clearVirtualCopyBoardData();
       return;
     }
     // 更新虚拟剪贴板
-    copyBoardData = StageDumper.dumpSelected(entities);
+    this.copyBoardData = StageDumper.dumpSelected(entities);
 
     // 更新虚拟粘贴板形状
-    updateRectangle();
+    this.updateRectangle();
 
     // 更新系统剪贴板
     const clipboardItems = [];
@@ -90,9 +91,9 @@ export namespace CopyEngine {
     const systemClipboardItems = [];
     for (const entity of entities) {
       if (entity instanceof ImageNode) {
-        systemClipboardItems.push(getImageClipboardItem(entity));
+        systemClipboardItems.push(this.getImageClipboardItem(entity));
       } else if (entity instanceof TextNode) {
-        systemClipboardItems.push(getTextNodeClipboardItem(entity));
+        systemClipboardItems.push(this.getTextNodeClipboardItem(entity));
       }
     }
     if (systemClipboardItems.length > 0) {
@@ -100,7 +101,7 @@ export namespace CopyEngine {
     }
   }
 
-  function getTextNodeClipboardItem(textNode: TextNode) {
+  private getTextNodeClipboardItem(textNode: TextNode) {
     try {
       let clipboardText = textNode.text;
       if (textNode.details.trim() !== "") {
@@ -114,7 +115,7 @@ export namespace CopyEngine {
     }
   }
 
-  function getImageClipboardItem(entityImage: ImageNode) {
+  private getImageClipboardItem(entityImage: ImageNode) {
     const base64String = "data:image/png;base64," + entityImage.base64String;
     try {
       // 将 Base64 字符串转换为 Blob 对象
@@ -136,37 +137,37 @@ export namespace CopyEngine {
     }
   }
 
-  export function isVirtualClipboardEmpty() {
-    return copyBoardData.entities.length === 0;
+  isVirtualClipboardEmpty() {
+    return this.copyBoardData.entities.length === 0;
   }
 
   /**
    * 用户按下了ctrl+v，将粘贴板数据粘贴到画布上
    */
-  export function paste() {
+  paste() {
     // 如果有虚拟粘贴板数据，则优先粘贴虚拟粘贴板上的东西
-    if (isVirtualClipboardEmpty()) {
-      readClipboardItems(Renderer.transformView2World(MouseLocation.vector()));
+    if (this.isVirtualClipboardEmpty()) {
+      readClipboardItems(this.project.renderer.transformView2World(this.project.mouseLocation.vector()));
     } else {
-      StageSerializedAdder.addSerializedData(copyBoardData, copyBoardMouseVector);
+      SerializedDataAdder.addSerializedData(this.copyBoardData, this.copyBoardMouseVector);
     }
     if (isMac) {
       // mac下无法直接粘贴，还要点一个按钮，但这导致
       // 按下按钮后，程序中依然显示 meta v 仍然在按下状态
       // 因此需要主动删除
       setTimeout(() => {
-        Controller.pressingKeySet.clear();
+        this.project.controller.pressingKeySet.clear();
       }, 500);
     }
   }
 
-  export function pasteWithOriginLocation() {
-    StageSerializedAdder.addSerializedData(copyBoardData);
+  pasteWithOriginLocation() {
+    SerializedDataAdder.addSerializedData(this.copyBoardData);
   }
 
-  function updateRectangle() {
+  private updateRectangle() {
     const rectangles = [];
-    for (const node of copyBoardData.entities) {
+    for (const node of this.copyBoardData.entities) {
       if (node.type === "core:connect_point") {
         rectangles.push(new Rectangle(new Vector(...node.location), new Vector(1, 1)));
       } else if (node.type === "core:pen_stroke") {
@@ -178,7 +179,7 @@ export namespace CopyEngine {
     }
 
     const clipboardRect = Rectangle.getBoundingRectangle(rectangles);
-    copyBoardDataRectangle = clipboardRect;
+    this.copyBoardDataRectangle = clipboardRect;
   }
 }
 

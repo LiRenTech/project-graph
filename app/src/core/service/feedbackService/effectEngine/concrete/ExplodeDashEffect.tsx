@@ -18,13 +18,15 @@ export class ExplodeDashEffect extends Effect {
   ashSpeedArray: Vector[] = [];
 
   private getDashCountPreEntity(): number {
-    // 说明是按Delete删除的
-    if (project.controller.cutting.warningEntity.length === 0) {
-      return 0;
-    }
+    // // 说明是按Delete删除的
+    // if (project.controller.cutting.warningEntity.length === 0) {
+    //   return 0;
+    // }
 
-    // 说明是按鼠标删除的，可以多一些
-    return Math.floor(1000 / project.controller.cutting.warningEntity.length);
+    // // 说明是按鼠标删除的，可以多一些
+    // return Math.floor(1000 / project.controller.cutting.warningEntity.length);
+    // TODO: 把逻辑移动到render()
+    return 30;
   }
 
   constructor(
@@ -49,8 +51,8 @@ export class ExplodeDashEffect extends Effect {
     }
   }
 
-  override tick() {
-    super.tick();
+  override tick(project: Project) {
+    super.tick(project);
     for (let i = 0; i < this.ashLocationArray.length; i++) {
       this.ashLocationArray[i] = this.ashLocationArray[i].add(this.ashSpeedArray[i]);
     }

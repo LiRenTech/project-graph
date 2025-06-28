@@ -7,7 +7,6 @@ import { isIpad, isMac } from "../../../../../utils/platform";
 import { ArrayFunctions } from "../../../../algorithm/arrayFunctions";
 import { LimitLengthQueue } from "../../../../dataStruct/LimitLengthQueue";
 import { Vector } from "../../../../dataStruct/Vector";
-import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { MouseTipFeedbackEffect } from "../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
@@ -117,11 +116,11 @@ export class ControllerCameraClass extends ControllerClass {
       this.project.controller.setCursorNameHook(CursorNameEnum.Grabbing);
       this.isUsingMouseGrabMove = true;
     }
-    if (event.button === 1 && Stage.mouseRightDragBackground !== "moveCamera") {
+    if (event.button === 1 && Settings.sync.mouseRightDragBackground !== "moveCamera") {
       // 中键按下
       this.isUsingMouseGrabMove = true;
     }
-    if (Stage.mouseRightDragBackground === "moveCamera" && event.button === 2) {
+    if (Settings.sync.mouseRightDragBackground === "moveCamera" && event.button === 2) {
       // 右键按下
       this.isUsingMouseGrabMove = true;
     }
@@ -129,7 +128,7 @@ export class ControllerCameraClass extends ControllerClass {
     // 获取左右中键
     this.lastMousePressLocation[event.button] = pressWorldLocation;
 
-    if (this.isUsingMouseGrabMove && Stage.autoRefreshStageByMouseAction) {
+    if (this.isUsingMouseGrabMove && Settings.sync.autoRefreshStageByMouseAction) {
       // 开始刷新舞台
       this.project.stageManager.refreshAllStageObjects();
     }
@@ -161,7 +160,7 @@ export class ControllerCameraClass extends ControllerClass {
       return;
     }
     // 中键按下拖动视野
-    if (this.project.controller.isMouseDown[1] && Stage.mouseRightDragBackground !== "moveCamera") {
+    if (this.project.controller.isMouseDown[1] && Settings.sync.mouseRightDragBackground !== "moveCamera") {
       if (event.ctrlKey) {
         // ctrl键按下时,不允许移动视野
         return;
@@ -174,7 +173,7 @@ export class ControllerCameraClass extends ControllerClass {
       this.moveCameraByMouseMove(event.clientX, event.clientY, 4);
       this.project.controller.setCursorNameHook(CursorNameEnum.Grabbing);
     }
-    if (Stage.mouseRightDragBackground === "moveCamera" && this.project.controller.isMouseDown[2]) {
+    if (Settings.sync.mouseRightDragBackground === "moveCamera" && this.project.controller.isMouseDown[2]) {
       // 还要保证这个鼠标位置没有悬浮在什么东西上
       const mouseLocation = new Vector(event.clientX, event.clientY);
       const worldLocation = this.project.renderer.transformView2World(mouseLocation);
@@ -240,19 +239,19 @@ export class ControllerCameraClass extends ControllerClass {
       return;
     }
     // 涂鸦模式下的量角器，禁止滚动
-    if (Stage.leftMouseMode === LeftMouseModeEnum.draw && this.project.controller.pressingKeySet.has("shift")) {
+    if (Settings.sync.mouseLeftMode === "draw" && this.project.controller.pressingKeySet.has("shift")) {
       return;
     }
     // console.log(event);
     // console.log(event.deltaX, event.deltaY);
     // 禁用触控板在这里的滚动
     const isUsingTouchPad = !this.isMouseWheel(event);
-    if (!Stage.enableWindowsTouchPad) {
+    if (!Settings.sync.enableWindowsTouchPad) {
       if (isUsingTouchPad) {
         // 禁止使用触摸板
-        this.project.effects.addEffect(
-          TextRiseEffect.default(`已禁用触控板滚动，（${event.deltaX}, ${event.deltaY}）`),
-        );
+        // this.project.effects.addEffect(
+        //   TextRiseEffect.default(`已禁用触控板滚动，（${event.deltaX}, ${event.deltaY}）`),
+        // );
         return;
       }
     }
@@ -349,7 +348,7 @@ export class ControllerCameraClass extends ControllerClass {
    * @param event - 鼠标事件
    */
   public mouseDoubleClick: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Stage.doubleClickMiddleMouseButton !== "adjustCamera") {
+    if (Settings.sync.doubleClickMiddleMouseButton === "none") {
       return;
     }
     if (event.button === 1 && !this.project.controller.isCameraLocked) {
@@ -396,7 +395,7 @@ export class ControllerCameraClass extends ControllerClass {
     if (isMac) {
       // mac电脑滚动一格滚轮会触发很多次事件。这个列表里是每个事件的deltaY
       // [7, 7, 7, 7, 6, 7, 7, 6, 5, 5, 4, 4, 3, 3, 3, 2, 2, 1, 1, 1, 1, 1]
-      if (Stage.macMouseWheelIsSmoothed) {
+      if (Settings.sync.macMouseWheelIsSmoothed) {
         // 盲猜是开了平滑滚动了
         const deltaY = event.deltaY;
         this.project.camera.targetScale *= 1 + deltaY / 500;
@@ -470,7 +469,7 @@ export class ControllerCameraClass extends ControllerClass {
         }
       });
     } else if (this.project.camera.mouseSideWheelMode === "adjustPenStrokeWidth") {
-      if (Stage.leftMouseMode !== LeftMouseModeEnum.draw) {
+      if (Settings.sync.mouseLeftMode !== "draw") {
         return;
       }
       // 调整笔画粗细

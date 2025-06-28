@@ -45,15 +45,7 @@ export class RectangleSlideEffect extends Effect {
           : startPoint.add(new Vector(Random.randomFloat(minLength, maxLength), 0));
 
         this.subEffects.push(
-          new LineEffect(
-            project,
-            timeProgress.clone(),
-            startPoint,
-            endPoint,
-            color.toNewAlpha(0.8),
-            color.toNewAlpha(0.2),
-            2,
-          ),
+          new LineEffect(timeProgress.clone(), startPoint, endPoint, color.toNewAlpha(0.8), color.toNewAlpha(0.2), 2),
         );
       }
     } else {
@@ -70,15 +62,7 @@ export class RectangleSlideEffect extends Effect {
           : startPoint.add(new Vector(0, Random.randomFloat(minLength, maxLength)));
 
         this.subEffects.push(
-          new LineEffect(
-            project,
-            timeProgress.clone(),
-            startPoint,
-            endPoint,
-            color.toNewAlpha(0.8),
-            color.toNewAlpha(0.2),
-            2,
-          ),
+          new LineEffect(timeProgress.clone(), startPoint, endPoint, color.toNewAlpha(0.8), color.toNewAlpha(0.2), 2),
         );
       }
     }
@@ -88,7 +72,7 @@ export class RectangleSlideEffect extends Effect {
 
   render(project: Project) {
     for (const effect of this.subEffects) {
-      effect.render();
+      effect.render(project);
     }
   }
 

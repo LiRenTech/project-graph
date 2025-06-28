@@ -21,59 +21,16 @@ export class RectanglePushInEffect extends Effect {
     super(timeProgress);
     if (this.reversed) {
       this.subEffects = [
-        new LineCuttingEffect(
-          project,
-          timeProgress,
-          bigRectangle.leftTop,
-          smallRectangle.leftTop,
-          Color.Red,
-          Color.Red,
-        ),
-        new LineCuttingEffect(
-          project,
-          timeProgress,
-          bigRectangle.rightTop,
-          smallRectangle.rightTop,
-          Color.Red,
-          Color.Red,
-        ),
-        new LineCuttingEffect(
-          project,
-          timeProgress,
-          bigRectangle.leftBottom,
-          smallRectangle.leftBottom,
-          Color.Red,
-          Color.Red,
-        ),
-        new LineCuttingEffect(
-          project,
-          timeProgress,
-          bigRectangle.rightBottom,
-          smallRectangle.rightBottom,
-          Color.Red,
-          Color.Red,
-        ),
+        new LineCuttingEffect(timeProgress, bigRectangle.leftTop, smallRectangle.leftTop, Color.Red, Color.Red),
+        new LineCuttingEffect(timeProgress, bigRectangle.rightTop, smallRectangle.rightTop, Color.Red, Color.Red),
+        new LineCuttingEffect(timeProgress, bigRectangle.leftBottom, smallRectangle.leftBottom, Color.Red, Color.Red),
+        new LineCuttingEffect(timeProgress, bigRectangle.rightBottom, smallRectangle.rightBottom, Color.Red, Color.Red),
       ];
     } else {
       this.subEffects = [
+        new LineCuttingEffect(timeProgress, smallRectangle.leftTop, bigRectangle.leftTop, Color.Green, Color.Green),
+        new LineCuttingEffect(timeProgress, smallRectangle.rightTop, bigRectangle.rightTop, Color.Green, Color.Green),
         new LineCuttingEffect(
-          project,
-          timeProgress,
-          smallRectangle.leftTop,
-          bigRectangle.leftTop,
-          Color.Green,
-          Color.Green,
-        ),
-        new LineCuttingEffect(
-          project,
-          timeProgress,
-          smallRectangle.rightTop,
-          bigRectangle.rightTop,
-          Color.Green,
-          Color.Green,
-        ),
-        new LineCuttingEffect(
-          project,
           timeProgress,
           smallRectangle.leftBottom,
           bigRectangle.leftBottom,
@@ -81,7 +38,6 @@ export class RectanglePushInEffect extends Effect {
           Color.Green,
         ),
         new LineCuttingEffect(
-          project,
           timeProgress,
           smallRectangle.rightBottom,
           bigRectangle.rightBottom,
@@ -101,7 +57,7 @@ export class RectanglePushInEffect extends Effect {
 
   render(project: Project) {
     for (const effect of this.subEffects) {
-      effect.render();
+      effect.render(project);
     }
   }
 }

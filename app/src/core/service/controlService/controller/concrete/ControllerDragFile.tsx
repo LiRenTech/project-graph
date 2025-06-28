@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
 import { Dialog } from "../../../../../components/dialog";
 import { writeFileBase64 } from "../../../../../utils/fs";
+import { Path } from "../../../../../utils/path";
 import { PathString } from "../../../../../utils/pathString";
 import { Color } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
 import { ProjectFormatUpgrader } from "../../../../stage/ProjectFormatUpgrader";
-import { Stage } from "../../../../stage/Stage";
 import { ImageNode } from "../../../../stage/stageObject/entity/ImageNode";
 import { SvgNode } from "../../../../stage/stageObject/entity/SvgNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
@@ -82,7 +82,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
             this.project.stageManager.addEntity(entity);
           });
         } else if (file.type.includes("image/png")) {
-          if (Stage.path.isDraft()) {
+          if (this.project.isDraft) {
             Dialog.show({
               title: "提示",
               content: "当前处于草稿状态，请先保存草稿，再拖入图片。",
@@ -254,7 +254,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
       // data:image/png;base64,iVBORw0KGgoAAAANS...
       // 在这里处理读取到的内容
       const imageUUID = uuidv4();
-      const folderPath = PathString.dirPath(Stage.path.getFilePath());
+      const folderPath = new Path(this.project.uri).parent.toString();
       writeFileBase64(`${folderPath}${PathString.getSep()}${imageUUID}.png`, fileContent.split(",")[1]);
       const imageNode = new ImageNode({
         uuid: imageUUID,

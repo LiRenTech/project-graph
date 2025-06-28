@@ -27,10 +27,6 @@ export class EntityCreateFlashEffect extends Effect {
     super(timeProgress);
   }
 
-  override tick() {
-    super.tick();
-  }
-
   /**
    * 常用的默认效果
    * @param rectangle
@@ -47,7 +43,6 @@ export class EntityCreateFlashEffect extends Effect {
 
   static fromCreateEntity(entity: Entity) {
     const result = new EntityCreateFlashEffect(
-      project,
       new ProgressNumber(0, 15),
       entity.collisionBox.getRectangle(),
       Renderer.NODE_ROUNDED_RADIUS,
@@ -56,7 +51,6 @@ export class EntityCreateFlashEffect extends Effect {
     );
     result.subEffects = [
       new EntityCreateFlashEffect(
-        project,
         new ProgressNumber(0, 30),
         entity.collisionBox.getRectangle(),
         Renderer.NODE_ROUNDED_RADIUS,
@@ -64,7 +58,6 @@ export class EntityCreateFlashEffect extends Effect {
         50,
       ),
       new EntityCreateFlashEffect(
-        project,
         new ProgressNumber(0, 45),
         entity.collisionBox.getRectangle(),
         Renderer.NODE_ROUNDED_RADIUS,
@@ -86,7 +79,7 @@ export class EntityCreateFlashEffect extends Effect {
       this.radius * project.camera.currentScale,
     );
     for (const subEffect of this.subEffects) {
-      subEffect.render();
+      subEffect.render(project);
     }
   }
 }

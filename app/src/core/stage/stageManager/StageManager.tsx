@@ -34,7 +34,7 @@ import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
 import { StageObjectSelectCounter } from "./concreteMethods/StageObjectSelectCounter";
 import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
 import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManager";
-import { StageSerializedAdder } from "./concreteMethods/StageSerializedAdder";
+import { SerializedDataAdder } from "./concreteMethods/StageSerializedAdder";
 import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
 
@@ -804,7 +804,7 @@ export class StageManager {
   }
 
   addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
-    StageSerializedAdder.addSerializedData(serializedData, diffLocation);
+    SerializedDataAdder.addSerializedData(serializedData, diffLocation);
     StageHistoryManager.recordStep();
   }
 

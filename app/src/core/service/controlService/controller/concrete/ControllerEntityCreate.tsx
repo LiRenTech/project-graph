@@ -1,10 +1,10 @@
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/StageNodeAdder";
 import { StageObjectSelectCounter } from "../../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { Section } from "../../../../stage/stageObject/entity/Section";
+import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 
 /**
@@ -20,7 +20,7 @@ export class ControllerEntityCreate extends ControllerClass {
     if (!(event.button === 0)) {
       return;
     }
-    if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
+    if (Settings.sync.mouseLeftMode === "draw") {
       // 绘制模式不能使用创建节点
       return;
     }

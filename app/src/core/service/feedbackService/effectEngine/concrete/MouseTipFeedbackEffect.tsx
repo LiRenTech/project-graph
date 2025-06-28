@@ -44,7 +44,7 @@ export class MouseTipFeedbackEffect extends Effect {
 
   render(project: Project) {
     for (const effect of this.subEffects) {
-      effect.render();
+      effect.render(project);
     }
 
     if (this.type === "shrink") {

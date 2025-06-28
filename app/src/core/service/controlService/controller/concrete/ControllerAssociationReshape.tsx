@@ -1,11 +1,11 @@
 import { CursorNameEnum } from "../../../../../types/cursors";
 import { isMac } from "../../../../../utils/platform";
 import { Vector } from "../../../../dataStruct/Vector";
-import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { StageMultiTargetEdgeMove } from "../../../../stage/stageManager/concreteMethods/StageMultiTargetEdgeMove";
 import { StageNodeConnector } from "../../../../stage/stageManager/concreteMethods/StageNodeConnector";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
+import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 
 /**
@@ -38,7 +38,7 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
   public lastMoveLocation: Vector = Vector.getZero();
 
   public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
     if (event.button !== 0) {
@@ -83,7 +83,7 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
   };
 
   public mousemove: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
     if (this.project.controller.rectangleSelect.isUsing || this.project.controller.cutting.isUsing) {
@@ -118,7 +118,7 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
   };
 
   public mouseup: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
     if (event.button !== 0) {

@@ -5,6 +5,7 @@ import { PathString } from "../../../../utils/pathString";
 import { Vector } from "../../../dataStruct/Vector";
 import { Stage } from "../../../stage/Stage";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
+import { Settings } from "../../Settings";
 
 /**
  * 把粘贴板中的PNG图片读取并写入到磁盘和舞台上

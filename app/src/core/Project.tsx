@@ -40,15 +40,16 @@ import { MouseLocation } from "./service/controlService/MouseLocation";
 import { RectangleSelect } from "./service/controlService/rectangleSelectEngine/rectangleSelectEngine";
 import { SecretKeys } from "./service/controlService/secretKeysEngine/secretKeysEngine";
 import { MouseInteraction } from "./service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
-import { AutoBackup } from "./service/dataFileService/autoSaveBackupEngine/autoBackupEngine";
-import { AutoSave } from "./service/dataFileService/autoSaveBackupEngine/autoSaveEngine";
 import { AutoComputeUtils } from "./service/dataGenerateService/autoComputeEngine/AutoComputeUtils";
 import { AutoCompute } from "./service/dataGenerateService/autoComputeEngine/mainTick";
 import { GenerateFromFolder } from "./service/dataGenerateService/generateFromFolderEngine/GenerateFromFolderEngine";
 import { StageExport } from "./service/dataGenerateService/stageExportEngine/stageExportEngine";
 import { StageExportPng } from "./service/dataGenerateService/stageExportEngine/StageExportPng";
 import { StageExportSvg } from "./service/dataGenerateService/stageExportEngine/StageExportSvg";
+import { AI } from "./service/dataManageService/aiEngine/AIEngine";
+import { ComplexityDetector } from "./service/dataManageService/ComplexityDetector";
 import { ContentSearch } from "./service/dataManageService/contentSearchEngine/contentSearchEngine";
+import { CopyEngine } from "./service/dataManageService/copyEngine/copyEngine";
 import { Effects } from "./service/feedbackService/effectEngine/effectMachine";
 import { Camera } from "./stage/Camera";
 import { Canvas } from "./stage/Canvas";
@@ -56,6 +57,7 @@ import { ProjectFormatUpgrader } from "./stage/ProjectFormatUpgrader";
 import { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { StageAutoAlignManager as AutoAlign } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageNodeRotate } from "./stage/stageManager/concreteMethods/stageNodeRotate";
+import { SerializedDataAdder } from "./stage/stageManager/concreteMethods/StageSerializedAdder";
 import { StageManager } from "./stage/stageManager/StageManager";
 
 // TODO: 将filesystem接口提取出来
@@ -283,10 +285,11 @@ declare module "./Project" {
     effects: Effects;
     autoCompute: AutoCompute;
     secretKeys: SecretKeys;
-    autoBackup: AutoBackup;
-    autoSave: AutoSave;
     rectangleSelect: RectangleSelect;
     stageNodeRotate: StageNodeRotate;
+    complexityDetector: ComplexityDetector;
+    ai: AI;
+    copyEngine: CopyEngine;
     // 自动布局算法
     autoLayout: AutoLayout;
     autoLayoutFastTree: AutoLayoutFastTree;
@@ -328,6 +331,7 @@ declare module "./Project" {
     stageExportPng: StageExportPng;
     StageExportSvg: StageExportSvg;
     generateFromFolder: GenerateFromFolder;
+    serializedDataAdder: SerializedDataAdder;
   }
 }
 

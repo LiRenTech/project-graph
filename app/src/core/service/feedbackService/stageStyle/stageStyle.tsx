@@ -1,4 +1,5 @@
 import { Color } from "../../../dataStruct/Color";
+import { Settings } from "../../Settings";
 import { Themes } from "../../Themes";
 
 interface EffectColors {

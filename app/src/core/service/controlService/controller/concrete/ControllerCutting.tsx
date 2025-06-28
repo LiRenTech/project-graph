@@ -5,7 +5,6 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Line } from "../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { GraphMethods } from "../../../../stage/stageManager/basicMethods/GraphMethods";
 import { Association } from "../../../../stage/stageObject/abstract/Association";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
@@ -21,6 +20,7 @@ import { PenStrokeDeletedEffect } from "../../../feedbackService/effectEngine/co
 import { RectangleSplitTwoPartEffect } from "../../../feedbackService/effectEngine/concrete/RectangleSplitTwoPartEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
 import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
+import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 
 export class ControllerCuttingClass extends ControllerClass {
@@ -105,17 +105,17 @@ export class ControllerCuttingClass extends ControllerClass {
     }
 
     // 左键按下的
-    if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
+    if (event.button === 0 && Settings.sync.mouseLeftMode === "connectAndCut") {
       this.mouseDownEvent(event);
       return;
     }
     // 右键按下的
-    if (event.button === 2 && Stage.mouseRightDragBackground === "cut") {
+    if (event.button === 2 && Settings.sync.mouseRightDragBackground === "cut") {
       this.mouseDownEvent(event);
       return;
     }
     // 中键按下的
-    if (event.button === 1 && Stage.mouseRightDragBackground === "moveCamera") {
+    if (event.button === 1 && Settings.sync.mouseRightDragBackground === "moveCamera") {
       this.mouseDownEvent(event);
       return;
     }

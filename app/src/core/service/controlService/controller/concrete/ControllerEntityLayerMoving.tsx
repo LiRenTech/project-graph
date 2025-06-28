@@ -1,6 +1,5 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageSectionInOutManager } from "../../../../stage/stageManager/concreteMethods/StageSectionInOutManager";
@@ -11,6 +10,7 @@ import { EntityJumpMoveEffect } from "../../../feedbackService/effectEngine/conc
 import { EntityShakeEffect } from "../../../feedbackService/effectEngine/concrete/EntityShakeEffect";
 import { RectanglePushInEffect } from "../../../feedbackService/effectEngine/concrete/RectanglePushInEffect";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
+import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 
 /**
@@ -19,7 +19,7 @@ import { ControllerClass } from "../ControllerClass";
 
 export class ControllerLayerMovingClass extends ControllerClass {
   public get isEnabled(): boolean {
-    if (Stage.leftMouseMode === "draw") {
+    if (Settings.sync.mouseLeftMode === "draw") {
       return false;
     }
     return true;

@@ -1,14 +1,15 @@
 import { open } from "@tauri-apps/plugin-shell";
 import { Dialog } from "../../../../../components/dialog";
+import { Path } from "../../../../../utils/path";
 import { PathString } from "../../../../../utils/pathString";
 import { isMac, isWeb } from "../../../../../utils/platform";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { Stage } from "../../../../stage/Stage";
 import { StageDumper } from "../../../../stage/StageDumper";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
+import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 /**
  * 包含编辑节点文字，编辑详细信息等功能的控制器
@@ -40,7 +41,10 @@ export class ControllerNodeEditClass extends ControllerClass {
     }
 
     if (clickedEntity instanceof TextNode) {
-      this.project.controllerUtils.editTextNode(clickedEntity, Stage.textNodeSelectAllWhenStartEditByMouseClick);
+      this.project.controllerUtils.editTextNode(
+        clickedEntity,
+        Settings.sync.textNodeSelectAllWhenStartEditByMouseClick,
+      );
     } else if (clickedEntity instanceof UrlNode) {
       const diffNodeLeftTopLocation = pressLocation.subtract(clickedEntity.rectangle.leftTop);
       if (diffNodeLeftTopLocation.y < UrlNode.titleHeight) {
@@ -69,7 +73,7 @@ export class ControllerNodeEditClass extends ControllerClass {
           return;
         }
         // 跳转链接
-        if (Stage.path.isDraft()) {
+        if (this.project.isDraft) {
           Dialog.show({
             title: "草稿不支持传送门",
             content: "请保存为本地文件后再传送门",
@@ -78,7 +82,7 @@ export class ControllerNodeEditClass extends ControllerClass {
         } else {
           // 准备要跳转了！
           const relativePath = clickedEntity.portalFilePath;
-          const absolutePath = PathString.dirPath(Stage.path.getFilePath());
+          const absolutePath = new Path(this.project.uri).parent.toString();
           const newPath = PathString.relativePathToAbsolutePath(absolutePath, relativePath);
           // 取消选择所有节点
           this.project.stageManager.clearSelectAll();

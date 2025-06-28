@@ -105,10 +105,10 @@ export class RectangleSplitTwoPartEffect extends Effect {
       const poly3 = [rightTop, rightBottom, innerPt];
       const poly4 = [leftBottom, rightBottom, innerPt];
       this.splitedRectangles.push(
-        new SplitedRectangle(project, poly1, fillColor, strokeColor, strokeWidth),
-        new SplitedRectangle(project, poly2, fillColor, strokeColor, strokeWidth),
-        new SplitedRectangle(project, poly3, fillColor, strokeColor, strokeWidth),
-        new SplitedRectangle(project, poly4, fillColor, strokeColor, strokeWidth),
+        new SplitedRectangle(poly1, fillColor, strokeColor, strokeWidth),
+        new SplitedRectangle(poly2, fillColor, strokeColor, strokeWidth),
+        new SplitedRectangle(poly3, fillColor, strokeColor, strokeWidth),
+        new SplitedRectangle(poly4, fillColor, strokeColor, strokeWidth),
       );
       for (const rect of this.splitedRectangles) {
         rect.speed = new Vector(0, -Random.randomInt(1, 10)).rotateDegrees(Random.randomInt(-45, 45));
@@ -123,8 +123,8 @@ export class RectangleSplitTwoPartEffect extends Effect {
     }
 
     this.splitedRectangles.push(
-      new SplitedRectangle(project, poly1, fillColor, strokeColor, strokeWidth),
-      new SplitedRectangle(project, poly2, fillColor, strokeColor, strokeWidth),
+      new SplitedRectangle(poly1, fillColor, strokeColor, strokeWidth),
+      new SplitedRectangle(poly2, fillColor, strokeColor, strokeWidth),
     );
     this.splitedRectangles.sort((a, b) => a.center.x - b.center.x);
     this.splitedRectangles[0].speed = new Vector(-Random.randomInt(1, 10), -Random.randomInt(0, 3));
@@ -135,11 +135,11 @@ export class RectangleSplitTwoPartEffect extends Effect {
   }
   render(project: Project) {
     for (const rect of this.splitedRectangles) {
-      rect.render();
+      rect.render(project);
     }
   }
-  override tick() {
-    super.tick();
+  override tick(project: Project) {
+    super.tick(project);
     for (const rect of this.splitedRectangles) {
       rect.tick();
       rect.fillColor = mixColors(this.initFillColor, this.endFillColor, this.timeProgress.rate);

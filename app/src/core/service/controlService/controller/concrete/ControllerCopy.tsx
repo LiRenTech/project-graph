@@ -1,5 +1,4 @@
 import { Vector } from "../../../../dataStruct/Vector";
-import { CopyEngine } from "../../../dataManageService/copyEngine/copyEngine";
 import { ControllerClass } from "../ControllerClass";
 
 /**
@@ -12,14 +11,14 @@ export class ControllerCopy extends ControllerClass {
     const worldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
 
     // 移动时候
-    if (CopyEngine.copyBoardDataRectangle) {
+    if (this.project.copyEngine.copyBoardDataRectangle) {
       // 计算鼠标位置的偏移量
 
       const offset = new Vector(
-        worldLocation.x - CopyEngine.copyBoardDataRectangle.center.x,
-        worldLocation.y - CopyEngine.copyBoardDataRectangle.center.y,
+        worldLocation.x - this.project.copyEngine.copyBoardDataRectangle.center.x,
+        worldLocation.y - this.project.copyEngine.copyBoardDataRectangle.center.y,
       );
-      CopyEngine.copyBoardMouseVector = offset;
+      this.project.copyEngine.copyBoardMouseVector = offset;
     }
   };
   /**
@@ -30,10 +29,10 @@ export class ControllerCopy extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    if (CopyEngine.copyBoardDataRectangle) {
+    if (this.project.copyEngine.copyBoardDataRectangle) {
       // 粘贴
-      CopyEngine.paste();
-      CopyEngine.clearVirtualCopyBoardData();
+      this.project.copyEngine.paste();
+      this.project.copyEngine.clearVirtualCopyBoardData();
     }
   };
 
@@ -43,12 +42,12 @@ export class ControllerCopy extends ControllerClass {
     if (!this.validKeys.includes(key)) return;
     if (key === "escape") {
       // 取消复制
-      CopyEngine.clearVirtualCopyBoardData();
+      this.project.copyEngine.clearVirtualCopyBoardData();
       return;
     }
     if (key === "alt") {
       // 取消复制
-      CopyEngine.clearVirtualCopyBoardData();
+      this.project.copyEngine.clearVirtualCopyBoardData();
       return;
     }
   };

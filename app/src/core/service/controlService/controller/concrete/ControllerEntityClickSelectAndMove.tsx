@@ -1,12 +1,12 @@
 import { isMac } from "../../../../../utils/platform";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageObjectSelectCounter } from "../../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { RectangleRenderEffect } from "../../../feedbackService/effectEngine/concrete/RectangleRenderEffect";
+import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 
 /**
@@ -21,7 +21,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
     this.mouseDownViewLocation = new Vector(event.clientX, event.clientY);
@@ -101,7 +101,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     ) {
       return;
     }
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
     if (!this.isMovingEntity) {
@@ -126,7 +126,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
       }
 
       // 预瞄反馈
-      if (Stage.enableDragAutoAlign) {
+      if (Settings.sync.enableDragAutoAlign) {
         this.project.autoAlign.preAlignAllSelected();
       }
 
@@ -138,7 +138,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
 
@@ -148,10 +148,10 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
       // 判定为有效吸附的拖拽操作
       if (this.isMovingEntity) {
         // 这个时候可以触发对齐吸附事件
-        if (Stage.enableDragAutoAlign) {
+        if (Settings.sync.enableDragAutoAlign) {
           this.project.autoAlign.alignAllSelected();
         }
-        if (Stage.enableDragAlignToGrid) {
+        if (Settings.sync.enableDragAlignToGrid) {
           this.project.autoAlign.alignAllSelectedToGrid();
         }
 

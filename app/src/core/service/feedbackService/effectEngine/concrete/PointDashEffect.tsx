@@ -35,8 +35,8 @@ export class PointDashEffect extends Effect {
     }
   }
 
-  override tick() {
-    super.tick();
+  override tick(project: Project) {
+    super.tick(project);
     for (const particle of this.particleList) {
       // 让粒子的加速度为一些节点
       let acceleration = Vector.getZero();

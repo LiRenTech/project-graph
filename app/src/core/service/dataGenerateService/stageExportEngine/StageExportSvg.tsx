@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOMServer from "react-dom/server";
-import { PathString } from "../../../../utils/pathString";
+import { Path } from "../../../../utils/path";
 import { Color, colorInvert } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
@@ -107,7 +107,7 @@ export class StageExportSvg {
     }
     let imagePath = node.path;
     if (svgConfigObject.imageMode === "absolutePath") {
-      imagePath = PathString.dirPath(Stage.path.getFilePath()) + PathString.getSep() + node.path;
+      imagePath = new Path(this.project.uri).parent.join(node.path).toString();
     }
 
     return (

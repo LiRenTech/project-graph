@@ -1,18 +1,20 @@
 import { fetch } from "@tauri-apps/plugin-http";
 import { Dialog } from "../../../../components/dialog";
-import { Renderer } from "../../../render/canvas2d/renderer";
-import { Camera } from "../../../stage/Camera";
+import { Project, service } from "../../../Project";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { FeatureFlags } from "../../FeatureFlags";
 
-export namespace AIEngine {
-  export type Message = {
-    role: "system" | "user" | "assistant";
-    content: string;
-  };
+type Message = {
+  role: "system" | "user" | "assistant";
+  content: string;
+};
 
-  export async function chat(messages: Message[]) {
+@service("ai")
+export class AI {
+  constructor(private readonly project: Project) {}
+
+  async chat(messages: Message[]) {
     if (!FeatureFlags.AI) return;
     const doc = {
       entities: this.project.stageManager
@@ -34,9 +36,11 @@ export namespace AIEngine {
         })),
       entitiesInView: this.project.stageManager
         .getEntities()
-        .filter((it) => Renderer.getCoverWorldRectangle().isCollideWithRectangle(it.collisionBox.getRectangle()))
+        .filter((it) =>
+          this.project.renderer.getCoverWorldRectangle().isCollideWithRectangle(it.collisionBox.getRectangle()),
+        )
         .map((it) => it.uuid),
-      cameraLocation: Camera.location.toArray(),
+      cameraLocation: this.project.camera.location.toArray(),
     };
     const resp = await (
       await fetch(import.meta.env.LR_API_BASE_URL + "/ai/chat", {

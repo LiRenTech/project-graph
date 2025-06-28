@@ -37,6 +37,6 @@ export class TextRaiseEffectLocated extends Effect {
   }
 
   static fromDebugLogicNode(n: number, location: Vector): TextRaiseEffectLocated {
-    return new TextRaiseEffectLocated(project, `${n}`, location, 0, 150, new ProgressNumber(0, 3));
+    return new TextRaiseEffectLocated(`${n}`, location, 0, 150, new ProgressNumber(0, 3));
   }
 }

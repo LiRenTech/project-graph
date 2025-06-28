@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
 import { Vector } from "../../../dataStruct/Vector";
+import { Project, service } from "../../../Project";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../stageObject/association/LineEdge";
@@ -16,14 +17,17 @@ import { UrlNode } from "../../stageObject/entity/UrlNode";
  * 直接向舞台中添加序列化数据
  * 用于向舞台中附加新文件图、或者用于复制粘贴、甚至撤销
  */
-export namespace StageSerializedAdder {
+@service("serializedDataAdder")
+export class SerializedDataAdder {
+  constructor(private readonly project: Project) {}
+
   /**
    * 将一个序列化信息加入舞台中
    * 会自动刷新新增部分的uuid
    * @param serializedData
    */
-  export function addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
-    const updatedSerializedData = refreshUUID(serializedData);
+  addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
+    const updatedSerializedData = this.refreshUUID(serializedData);
     // TODO: 结构有待优化
     for (const entity of updatedSerializedData.entities) {
       let entityObject: Entity | null = null;
@@ -59,7 +63,7 @@ export namespace StageSerializedAdder {
     this.project.stageManager.updateReferences();
   }
 
-  function refreshUUID(serializedData: Serialized.File): Serialized.File {
+  private refreshUUID(serializedData: Serialized.File): Serialized.File {
     // 先深拷贝一份数据
     const result: Serialized.File = JSON.parse(JSON.stringify(serializedData));
     // 刷新实体UUID

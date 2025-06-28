@@ -1,4 +1,4 @@
-import { Renderer } from "../../render/canvas2d/renderer";
+import { Project, service } from "../../Project";
 import { GraphMethods } from "../../stage/stageManager/basicMethods/GraphMethods";
 import { SectionMethods } from "../../stage/stageManager/basicMethods/SectionMethods";
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
@@ -53,11 +53,14 @@ export interface CountResultObject {
 /**
  * 舞台场景复杂度检测器
  */
-export namespace ComplexityDetector {
+@service("complexityDetector")
+export class ComplexityDetector {
+  constructor(private readonly project: Project) {}
+
   /**
    * 检测当前舞台
    */
-  export function detectorCurrentStage(): CountResultObject {
+  detectorCurrentStage(): CountResultObject {
     // 统计字数
     // 统计各种类型节点数量
     const entities = this.project.stageManager.getEntities();
@@ -153,7 +156,7 @@ export namespace ComplexityDetector {
     countResultObject.averageWordCountPreTextNode /= countResultObject.textNodeCount;
     countResultObject.averageWordCountPreTextNode = Math.round(countResultObject.averageWordCountPreTextNode);
 
-    const worldViewRectangle = Renderer.getCoverWorldRectangle();
+    const worldViewRectangle = this.project.renderer.getCoverWorldRectangle();
     countResultObject.stageWidth = worldViewRectangle.width;
     countResultObject.stageHeight = worldViewRectangle.height;
     countResultObject.stageArea = worldViewRectangle.width * worldViewRectangle.height;

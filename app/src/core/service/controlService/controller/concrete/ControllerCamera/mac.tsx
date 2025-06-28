@@ -1,7 +1,6 @@
 import { isMac } from "../../../../../../utils/platform";
 import { Vector } from "../../../../../dataStruct/Vector";
 import { Project } from "../../../../../Project";
-import { Stage } from "../../../../../stage/Stage";
 import { StageEntityMoveManager } from "../../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { MouseTipFeedbackEffect } from "../../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
 import { Settings } from "../../../../Settings";
@@ -37,7 +36,7 @@ export class ControllerCameraMac {
       // M4 mackbook实测：
       // 鼠标滚动一格，会显示一格数字 4.63535543
       // 反而是触摸版，会显示 (1, 4), (0, 3) .... 很多小整数向量
-      if (Stage.macTrackpadAndMouseWheelDifference === "tarckpadFloatAndWheelInt") {
+      if (Settings.sync.macTrackpadAndMouseWheelDifference === "tarckpadFloatAndWheelInt") {
         if (Number.isInteger(distance)) {
           // 整数距离，是鼠标滚轮
           return true;
@@ -45,7 +44,7 @@ export class ControllerCameraMac {
           // 小数距离，是触摸板
           return false;
         }
-      } else if (Stage.macTrackpadAndMouseWheelDifference === "trackpadIntAndWheelFloat") {
+      } else if (Settings.sync.macTrackpadAndMouseWheelDifference === "trackpadIntAndWheelFloat") {
         if (Number.isInteger(distance)) {
           return false;
         }

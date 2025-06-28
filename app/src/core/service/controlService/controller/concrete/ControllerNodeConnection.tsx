@@ -5,7 +5,6 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Line } from "../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/StageNodeAdder";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
@@ -13,6 +12,7 @@ import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint"
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
 import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
+import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 
 /**
@@ -137,10 +137,10 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     if (!(event.button == 2 || event.button == 0)) {
       return;
     }
-    if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
+    if (event.button === 0 && Settings.sync.mouseLeftMode === "connectAndCut") {
       // 把鼠标左键切换为连线模式的情况
       this.onMouseDown(event);
-    } else if (event.button === 0 && Stage.leftMouseMode !== LeftMouseModeEnum.connectAndCut) {
+    } else if (event.button === 0 && Settings.sync.mouseLeftMode !== "connectAndCut") {
       // 右键拖拽连线的时候点击左键
       const pressWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
       this.createConnectPointWhenConnect(pressWorldLocation);
@@ -233,7 +233,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     if (!this._isUsing) {
       return;
     }
-    if (this.project.controller.isMouseDown[0] && Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
+    if (this.project.controller.isMouseDown[0] && Settings.sync.mouseLeftMode === "connectAndCut") {
       this.mouseMove(event);
     }
     if (this.project.controller.isMouseDown[2]) {
@@ -279,7 +279,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     if (!this.isConnecting()) {
       return;
     }
-    if (event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.connectAndCut) {
+    if (event.button === 0 && Settings.sync.mouseLeftMode === "connectAndCut") {
       this.mouseUp(event);
     } else if (event.button === 2) {
       this.mouseUp(event);
