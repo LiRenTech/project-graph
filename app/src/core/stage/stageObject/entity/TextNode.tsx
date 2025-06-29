@@ -7,7 +7,6 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { TextNodeRenderer } from "../../../render/canvas2d/entityRenderer/textNode/TextNodeRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
-import { Stage } from "../../Stage";
 import { SectionMethods } from "../../stageManager/basicMethods/SectionMethods";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { Entity } from "../abstract/StageEntity";
@@ -187,7 +186,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
     this.collisionBox.shapeList[0] = newRectangle;
 
     // 移动雪花特效
-    Stage.effectMachine.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), this.rectangle, delta));
+    this.project.effects.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), this.rectangle, delta));
     this.updateFatherSectionByMove();
     // 移动其他实体，递归碰撞
     this.updateOtherEntityLocationByMove();

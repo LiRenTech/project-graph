@@ -89,7 +89,7 @@ export class PortalNode extends ConnectableEntity {
     this.collisionBox.shapeList[0] = newRectangle;
 
     // 移动雪花特效
-    Stage.effectMachine.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), newRectangle, delta));
+    this.project.effects.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), newRectangle, delta));
     this.updateFatherSectionByMove();
     // 移动其他实体，递归碰撞
     this.updateOtherEntityLocationByMove();

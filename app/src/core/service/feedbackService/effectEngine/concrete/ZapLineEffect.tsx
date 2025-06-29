@@ -35,8 +35,8 @@ export class ZapLineEffect extends Effect {
 
   private currentPoints: Vector[] = [];
 
-  tick(): void {
-    super.tick();
+  override tick(project: Project) {
+    super.tick(project);
     if (this.currentPoints.length < this.n + 1) {
       // 开始增加点
       const lastPoint = this.currentPoints[this.currentPoints.length - 1];

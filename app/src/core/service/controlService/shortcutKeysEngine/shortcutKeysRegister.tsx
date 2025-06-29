@@ -319,7 +319,7 @@ export namespace ShortcutKeysRegister {
         .getSelectedEntities()
         .filter((node) => node instanceof ConnectableEntity);
       if (selectedNodes.length <= 1) {
-        Stage.effectMachine.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
+        this.project.effects.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
         return;
       }
       const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
@@ -500,7 +500,7 @@ export namespace ShortcutKeysRegister {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
         newRect.location.y -= 100;
-        Stage.effectMachine.addEffect(
+        this.project.effects.addEffect(
           RectangleSlideEffect.verticalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
         );
       }
@@ -521,7 +521,7 @@ export namespace ShortcutKeysRegister {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
         newRect.location.y += 100;
-        Stage.effectMachine.addEffect(
+        this.project.effects.addEffect(
           RectangleSlideEffect.verticalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
         );
       }
@@ -541,7 +541,7 @@ export namespace ShortcutKeysRegister {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
         newRect.location.x -= 100;
-        Stage.effectMachine.addEffect(
+        this.project.effects.addEffect(
           RectangleSlideEffect.horizontalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
         );
       }
@@ -562,7 +562,7 @@ export namespace ShortcutKeysRegister {
         const rect = entities[0].collisionBox.getRectangle();
         const newRect = rect.clone();
         newRect.location.x += 100;
-        Stage.effectMachine.addEffect(
+        this.project.effects.addEffect(
           RectangleSlideEffect.horizontalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
         );
       }
@@ -658,7 +658,7 @@ export namespace ShortcutKeysRegister {
     ).down(() => {
       if (!KeyboardOnlyEngine.isOpenning()) return;
       this.project.stageManager.selectAll();
-      Stage.effectMachine.addEffect(ViewOutlineFlashEffect.normal(Color.Green));
+      this.project.effects.addEffect(ViewOutlineFlashEffect.normal(Color.Green));
     });
     (
       await KeyBinds.create("textNodeToSection", "g", {
@@ -815,7 +815,7 @@ export namespace ShortcutKeysRegister {
       const currentValue = await Settings.get("windowBackgroundAlpha");
       if (currentValue === 1) {
         // 已经不能再大了
-        Stage.effectMachine.addEffect(ViewOutlineFlashEffect.short(StageStyleManager.currentStyle.effects.flash));
+        this.project.effects.addEffect(ViewOutlineFlashEffect.short(StageStyleManager.currentStyle.effects.flash));
       } else {
         Settings.set("windowBackgroundAlpha", Math.min(1, currentValue + 0.2));
       }
@@ -831,7 +831,7 @@ export namespace ShortcutKeysRegister {
       const currentValue = await Settings.get("windowBackgroundAlpha");
       if (currentValue === 0) {
         // 已经不能再小了
-        Stage.effectMachine.addEffect(ViewOutlineFlashEffect.short(StageStyleManager.currentStyle.effects.flash));
+        this.project.effects.addEffect(ViewOutlineFlashEffect.short(StageStyleManager.currentStyle.effects.flash));
       } else {
         Settings.set("windowBackgroundAlpha", Math.max(0, currentValue - 0.2));
       }
@@ -848,7 +848,7 @@ export namespace ShortcutKeysRegister {
       if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
         const newWidth = Stage.drawingMachine.currentStrokeWidth + 4;
         Stage.drawingMachine.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
-        Stage.effectMachine.addEffect(TextRiseEffect.default(`${Stage.drawingMachine.currentStrokeWidth}px`));
+        this.project.effects.addEffect(TextRiseEffect.default(`${Stage.drawingMachine.currentStrokeWidth}px`));
       }
     });
     (
@@ -862,7 +862,7 @@ export namespace ShortcutKeysRegister {
       if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
         const newWidth = Stage.drawingMachine.currentStrokeWidth - 4;
         Stage.drawingMachine.currentStrokeWidth = Math.max(1, Math.min(newWidth, 1000));
-        Stage.effectMachine.addEffect(TextRiseEffect.default(`${Stage.drawingMachine.currentStrokeWidth}px`));
+        this.project.effects.addEffect(TextRiseEffect.default(`${Stage.drawingMachine.currentStrokeWidth}px`));
       }
     });
 

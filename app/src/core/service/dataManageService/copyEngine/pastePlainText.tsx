@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from "uuid";
 import { Dialog } from "../../../../components/dialog";
 import { PathString } from "../../../../utils/pathString";
 import { Vector } from "../../../dataStruct/Vector";
-import { Stage } from "../../../stage/Stage";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { SvgNode } from "../../../stage/stageObject/entity/SvgNode";
@@ -90,7 +89,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
     const mouseSections = SectionMethods.getSectionsByInnerLocation(mouseLocation);
     if (mouseSections.length > 0) {
       this.project.stageManager.goInSection([entity], mouseSections[0]);
-      Stage.effectMachine.addEffect(
+      this.project.effects.addEffect(
         RectanglePushInEffect.sectionGoInGoOut(
           entity.collisionBox.getRectangle(),
           mouseSections[0].collisionBox.getRectangle(),

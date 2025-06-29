@@ -77,8 +77,8 @@ export class EntityDashTipEffect extends Effect {
 
   private dashPoints: EffectParticle[] = [];
 
-  tick(): void {
-    super.tick();
+  override tick(project: Project) {
+    super.tick(project);
     for (const point of this.dashPoints) {
       point.tick();
       // 粒子和矩形边缘碰撞

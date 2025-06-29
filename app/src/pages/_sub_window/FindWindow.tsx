@@ -28,7 +28,7 @@ export default function FindWindow() {
         node.isSelected = true;
       }
     }
-    Stage.effectMachine.addEffect(TextRiseEffect.default(`${searchResults.length}个结果已全部选中`));
+    this.project.effects.addEffect(TextRiseEffect.default(`${searchResults.length}个结果已全部选中`));
   };
 
   return (

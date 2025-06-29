@@ -1,17 +1,21 @@
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
+import { Project, service } from "../../../Project";
 import { MultiTargetUndirectedEdge } from "../../stageObject/association/MutiTargetUndirectedEdge";
 
 /**
  * 多源无向边移动中心点
  */
-export namespace StageMultiTargetEdgeMove {
+@service("multiTargetEdgeMove")
+export class MultiTargetEdgeMove {
+  constructor(private readonly project: Project) {}
+
   /**
    *
    * @param lastMoveLocation 鼠标按下的位置
    * @param diffLocation 鼠标移动向量
    */
-  export function moveMultiTargetEdge(diffLocation: Vector) {
+  moveMultiTargetEdge(diffLocation: Vector) {
     for (const association of this.project.stageManager.getSelectedAssociations()) {
       if (!(association instanceof MultiTargetUndirectedEdge)) {
         continue;

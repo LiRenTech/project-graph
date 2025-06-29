@@ -1,12 +1,16 @@
 import { Color } from "../../../dataStruct/Color";
+import { Project, service } from "../../../Project";
 import { StageHistoryManager } from "../StageHistoryManager";
 
 /**
  * 管理所有 节点/连线 的颜色
  * 不仅包括添加颜色和去除颜色，还包括让颜色变暗和变亮等
  */
-export namespace StageObjectColorManager {
-  export function setSelectedStageObjectColor(color: Color) {
+@service("stageManagerColorManager")
+export class StageObjectColorManager {
+  constructor(private readonly project: Project) {}
+
+  setSelectedStageObjectColor(color: Color) {
     for (const node of this.project.stageManager.getTextNodes()) {
       if (node.isSelected) {
         node.color = color;
@@ -37,7 +41,7 @@ export namespace StageObjectColorManager {
     StageHistoryManager.recordStep();
   }
 
-  export function darkenNodeColor() {
+  darkenNodeColor() {
     for (const node of this.project.stageManager.getTextNodes()) {
       if (node.isSelected && node.color) {
         const darkenedColor = node.color.clone();
@@ -50,7 +54,7 @@ export namespace StageObjectColorManager {
     StageHistoryManager.recordStep();
   }
 
-  export function lightenNodeColor() {
+  lightenNodeColor() {
     for (const node of this.project.stageManager.getTextNodes()) {
       if (node.isSelected && node.color) {
         const lightenedColor = node.color.clone();

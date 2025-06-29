@@ -3,7 +3,6 @@ import { Color } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Camera } from "../../../../stage/Camera";
-import { Stage } from "../../../../stage/Stage";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
 import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
@@ -664,7 +663,7 @@ export namespace NodeLogic {
         }
       }
       for (const penStroke of collectPenStrokes) {
-        Stage.effectMachine.addEffect(PenStrokeDeletedEffect.fromPenStroke(penStroke));
+        this.project.effects.addEffect(PenStrokeDeletedEffect.fromPenStroke(penStroke));
         this.project.stageManager.deleteOnePenStroke(penStroke);
       }
     }

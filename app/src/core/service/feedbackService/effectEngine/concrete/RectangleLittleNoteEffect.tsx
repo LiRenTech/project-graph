@@ -29,8 +29,8 @@ export class RectangleLittleNoteEffect extends Effect {
     return new RectangleLittleNoteEffect(new ProgressNumber(0, 15), textNode.collisionBox.getRectangle(), Color.Green);
   }
 
-  override tick(): void {
-    super.tick();
+  override tick(project: Project) {
+    super.tick(project);
     this.currentRect = this.currentRect.expandFromCenter(Random.randomFloat(1, 2));
   }
 

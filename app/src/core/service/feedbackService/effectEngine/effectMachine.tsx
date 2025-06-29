@@ -37,7 +37,7 @@ export class Effects {
 
   tick() {
     for (const effect of this.effects) {
-      effect.tick();
+      effect.tick(this.project);
     }
     // 清理过时特效
     this.effects = this.effects.filter((effect) => !effect.timeProgress.isFull);

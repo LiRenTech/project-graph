@@ -5,7 +5,6 @@ import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 import { RectangleLittleNoteEffect } from "../../feedbackService/effectEngine/concrete/RectangleLittleNoteEffect";
 import { TextRaiseEffectLocated } from "../../feedbackService/effectEngine/concrete/TextRaiseEffectLocated";
-import { AutoComputeUtils } from "./AutoComputeUtils";
 import { CompareFunctions } from "./functions/compareLogic";
 import { MathFunctions } from "./functions/mathLogic";
 import { NodeLogic } from "./functions/nodeLogic";
@@ -25,79 +24,79 @@ export class AutoCompute {
    *
    * 简单符号与函数的映射
    */
-  static MapOperationNameFunction: StringFunctionMap = {
-    [LogicNodeSimpleOperatorEnum.ADD]: AutoCompute.funcTypeTrans(MathFunctions.add),
-    [LogicNodeSimpleOperatorEnum.SUBTRACT]: AutoCompute.funcTypeTrans(MathFunctions.subtract),
-    [LogicNodeSimpleOperatorEnum.MULTIPLY]: AutoCompute.funcTypeTrans(MathFunctions.multiply),
-    [LogicNodeSimpleOperatorEnum.DIVIDE]: AutoCompute.funcTypeTrans(MathFunctions.divide),
-    [LogicNodeSimpleOperatorEnum.MODULO]: AutoCompute.funcTypeTrans(MathFunctions.modulo),
-    [LogicNodeSimpleOperatorEnum.POWER]: AutoCompute.funcTypeTrans(MathFunctions.power),
+  MapOperationNameFunction: StringFunctionMap = {
+    [LogicNodeSimpleOperatorEnum.ADD]: this.funcTypeTrans(MathFunctions.add),
+    [LogicNodeSimpleOperatorEnum.SUBTRACT]: this.funcTypeTrans(MathFunctions.subtract),
+    [LogicNodeSimpleOperatorEnum.MULTIPLY]: this.funcTypeTrans(MathFunctions.multiply),
+    [LogicNodeSimpleOperatorEnum.DIVIDE]: this.funcTypeTrans(MathFunctions.divide),
+    [LogicNodeSimpleOperatorEnum.MODULO]: this.funcTypeTrans(MathFunctions.modulo),
+    [LogicNodeSimpleOperatorEnum.POWER]: this.funcTypeTrans(MathFunctions.power),
     // 比较
-    [LogicNodeSimpleOperatorEnum.LT]: AutoCompute.funcTypeTrans(CompareFunctions.lessThan),
-    [LogicNodeSimpleOperatorEnum.GT]: AutoCompute.funcTypeTrans(CompareFunctions.greaterThan),
-    [LogicNodeSimpleOperatorEnum.LTE]: AutoCompute.funcTypeTrans(CompareFunctions.isIncreasing),
-    [LogicNodeSimpleOperatorEnum.GTE]: AutoCompute.funcTypeTrans(CompareFunctions.isDecreasing),
-    [LogicNodeSimpleOperatorEnum.EQ]: AutoCompute.funcTypeTrans(CompareFunctions.isSame),
-    [LogicNodeSimpleOperatorEnum.NEQ]: AutoCompute.funcTypeTrans(CompareFunctions.isDistinct),
+    [LogicNodeSimpleOperatorEnum.LT]: this.funcTypeTrans(CompareFunctions.lessThan),
+    [LogicNodeSimpleOperatorEnum.GT]: this.funcTypeTrans(CompareFunctions.greaterThan),
+    [LogicNodeSimpleOperatorEnum.LTE]: this.funcTypeTrans(CompareFunctions.isIncreasing),
+    [LogicNodeSimpleOperatorEnum.GTE]: this.funcTypeTrans(CompareFunctions.isDecreasing),
+    [LogicNodeSimpleOperatorEnum.EQ]: this.funcTypeTrans(CompareFunctions.isSame),
+    [LogicNodeSimpleOperatorEnum.NEQ]: this.funcTypeTrans(CompareFunctions.isDistinct),
     // 逻辑门
-    [LogicNodeSimpleOperatorEnum.AND]: AutoCompute.funcTypeTrans(MathFunctions.and),
-    [LogicNodeSimpleOperatorEnum.OR]: AutoCompute.funcTypeTrans(MathFunctions.or),
-    [LogicNodeSimpleOperatorEnum.NOT]: AutoCompute.funcTypeTrans(MathFunctions.not),
-    [LogicNodeSimpleOperatorEnum.XOR]: AutoCompute.funcTypeTrans(MathFunctions.xor),
+    [LogicNodeSimpleOperatorEnum.AND]: this.funcTypeTrans(MathFunctions.and),
+    [LogicNodeSimpleOperatorEnum.OR]: this.funcTypeTrans(MathFunctions.or),
+    [LogicNodeSimpleOperatorEnum.NOT]: this.funcTypeTrans(MathFunctions.not),
+    [LogicNodeSimpleOperatorEnum.XOR]: this.funcTypeTrans(MathFunctions.xor),
   };
 
   /**
    * 双井号格式的名字与函数的映射
    */
-  static MapNameFunction: StringFunctionMap = {
+  MapNameFunction: StringFunctionMap = {
     // 数学一元运算
-    [LogicNodeNameEnum.ABS]: AutoCompute.funcTypeTrans(MathFunctions.abs),
-    [LogicNodeNameEnum.FLOOR]: AutoCompute.funcTypeTrans(MathFunctions.floor),
-    [LogicNodeNameEnum.CEIL]: AutoCompute.funcTypeTrans(MathFunctions.ceil),
-    [LogicNodeNameEnum.ROUND]: AutoCompute.funcTypeTrans(MathFunctions.round),
-    [LogicNodeNameEnum.SQRT]: AutoCompute.funcTypeTrans(MathFunctions.sqrt),
+    [LogicNodeNameEnum.ABS]: this.funcTypeTrans(MathFunctions.abs),
+    [LogicNodeNameEnum.FLOOR]: this.funcTypeTrans(MathFunctions.floor),
+    [LogicNodeNameEnum.CEIL]: this.funcTypeTrans(MathFunctions.ceil),
+    [LogicNodeNameEnum.ROUND]: this.funcTypeTrans(MathFunctions.round),
+    [LogicNodeNameEnum.SQRT]: this.funcTypeTrans(MathFunctions.sqrt),
     // 数学二元运算
-    [LogicNodeNameEnum.ADD]: AutoCompute.funcTypeTrans(MathFunctions.add),
-    [LogicNodeNameEnum.SUBTRACT]: AutoCompute.funcTypeTrans(MathFunctions.subtract),
-    [LogicNodeNameEnum.MULTIPLY]: AutoCompute.funcTypeTrans(MathFunctions.multiply),
-    [LogicNodeNameEnum.DIVIDE]: AutoCompute.funcTypeTrans(MathFunctions.divide),
-    [LogicNodeNameEnum.MODULO]: AutoCompute.funcTypeTrans(MathFunctions.modulo),
-    [LogicNodeNameEnum.MAX]: AutoCompute.funcTypeTrans(MathFunctions.max),
-    [LogicNodeNameEnum.MIN]: AutoCompute.funcTypeTrans(MathFunctions.min),
-    [LogicNodeNameEnum.POWER]: AutoCompute.funcTypeTrans(MathFunctions.power),
-    [LogicNodeNameEnum.LOG]: AutoCompute.funcTypeTrans(MathFunctions.log),
+    [LogicNodeNameEnum.ADD]: this.funcTypeTrans(MathFunctions.add),
+    [LogicNodeNameEnum.SUBTRACT]: this.funcTypeTrans(MathFunctions.subtract),
+    [LogicNodeNameEnum.MULTIPLY]: this.funcTypeTrans(MathFunctions.multiply),
+    [LogicNodeNameEnum.DIVIDE]: this.funcTypeTrans(MathFunctions.divide),
+    [LogicNodeNameEnum.MODULO]: this.funcTypeTrans(MathFunctions.modulo),
+    [LogicNodeNameEnum.MAX]: this.funcTypeTrans(MathFunctions.max),
+    [LogicNodeNameEnum.MIN]: this.funcTypeTrans(MathFunctions.min),
+    [LogicNodeNameEnum.POWER]: this.funcTypeTrans(MathFunctions.power),
+    [LogicNodeNameEnum.LOG]: this.funcTypeTrans(MathFunctions.log),
     // 数学一元函数
-    [LogicNodeNameEnum.SIN]: AutoCompute.funcTypeTrans(MathFunctions.sin),
-    [LogicNodeNameEnum.COS]: AutoCompute.funcTypeTrans(MathFunctions.cos),
-    [LogicNodeNameEnum.TAN]: AutoCompute.funcTypeTrans(MathFunctions.tan),
-    [LogicNodeNameEnum.ASIN]: AutoCompute.funcTypeTrans(MathFunctions.asin),
-    [LogicNodeNameEnum.ACOS]: AutoCompute.funcTypeTrans(MathFunctions.acos),
-    [LogicNodeNameEnum.ATAN]: AutoCompute.funcTypeTrans(MathFunctions.atan),
-    [LogicNodeNameEnum.EXP]: AutoCompute.funcTypeTrans(MathFunctions.exp),
-    [LogicNodeNameEnum.LN]: AutoCompute.funcTypeTrans(MathFunctions.ln),
+    [LogicNodeNameEnum.SIN]: this.funcTypeTrans(MathFunctions.sin),
+    [LogicNodeNameEnum.COS]: this.funcTypeTrans(MathFunctions.cos),
+    [LogicNodeNameEnum.TAN]: this.funcTypeTrans(MathFunctions.tan),
+    [LogicNodeNameEnum.ASIN]: this.funcTypeTrans(MathFunctions.asin),
+    [LogicNodeNameEnum.ACOS]: this.funcTypeTrans(MathFunctions.acos),
+    [LogicNodeNameEnum.ATAN]: this.funcTypeTrans(MathFunctions.atan),
+    [LogicNodeNameEnum.EXP]: this.funcTypeTrans(MathFunctions.exp),
+    [LogicNodeNameEnum.LN]: this.funcTypeTrans(MathFunctions.ln),
     // 比较
-    [LogicNodeNameEnum.LT]: AutoCompute.funcTypeTrans(CompareFunctions.lessThan),
-    [LogicNodeNameEnum.GT]: AutoCompute.funcTypeTrans(CompareFunctions.greaterThan),
-    [LogicNodeNameEnum.LTE]: AutoCompute.funcTypeTrans(CompareFunctions.isIncreasing),
-    [LogicNodeNameEnum.GTE]: AutoCompute.funcTypeTrans(CompareFunctions.isDecreasing),
-    [LogicNodeNameEnum.EQ]: AutoCompute.funcTypeTrans(CompareFunctions.isSame),
-    [LogicNodeNameEnum.NEQ]: AutoCompute.funcTypeTrans(CompareFunctions.isDistinct),
+    [LogicNodeNameEnum.LT]: this.funcTypeTrans(CompareFunctions.lessThan),
+    [LogicNodeNameEnum.GT]: this.funcTypeTrans(CompareFunctions.greaterThan),
+    [LogicNodeNameEnum.LTE]: this.funcTypeTrans(CompareFunctions.isIncreasing),
+    [LogicNodeNameEnum.GTE]: this.funcTypeTrans(CompareFunctions.isDecreasing),
+    [LogicNodeNameEnum.EQ]: this.funcTypeTrans(CompareFunctions.isSame),
+    [LogicNodeNameEnum.NEQ]: this.funcTypeTrans(CompareFunctions.isDistinct),
     // 概率论与统计
-    [LogicNodeNameEnum.COUNT]: AutoCompute.funcTypeTrans(MathFunctions.count),
-    [LogicNodeNameEnum.AVE]: AutoCompute.funcTypeTrans(MathFunctions.average),
-    [LogicNodeNameEnum.MEDIAN]: AutoCompute.funcTypeTrans(MathFunctions.median),
-    [LogicNodeNameEnum.MODE]: AutoCompute.funcTypeTrans(MathFunctions.mode),
-    [LogicNodeNameEnum.VARIANCE]: AutoCompute.funcTypeTrans(MathFunctions.variance),
-    [LogicNodeNameEnum.STANDARD_DEVIATION]: AutoCompute.funcTypeTrans(MathFunctions.standardDeviation),
-    [LogicNodeNameEnum.RANDOM]: AutoCompute.funcTypeTrans(MathFunctions.random),
-    [LogicNodeNameEnum.RANDOM_INT]: AutoCompute.funcTypeTrans(MathFunctions.randomInt),
-    [LogicNodeNameEnum.RANDOM_FLOAT]: AutoCompute.funcTypeTrans(MathFunctions.randomFloat),
-    [LogicNodeNameEnum.RANDOM_POISSON]: AutoCompute.funcTypeTrans(MathFunctions.randomPoisson),
+    [LogicNodeNameEnum.COUNT]: this.funcTypeTrans(MathFunctions.count),
+    [LogicNodeNameEnum.AVE]: this.funcTypeTrans(MathFunctions.average),
+    [LogicNodeNameEnum.MEDIAN]: this.funcTypeTrans(MathFunctions.median),
+    [LogicNodeNameEnum.MODE]: this.funcTypeTrans(MathFunctions.mode),
+    [LogicNodeNameEnum.VARIANCE]: this.funcTypeTrans(MathFunctions.variance),
+    [LogicNodeNameEnum.STANDARD_DEVIATION]: this.funcTypeTrans(MathFunctions.standardDeviation),
+    [LogicNodeNameEnum.RANDOM]: this.funcTypeTrans(MathFunctions.random),
+    [LogicNodeNameEnum.RANDOM_INT]: this.funcTypeTrans(MathFunctions.randomInt),
+    [LogicNodeNameEnum.RANDOM_FLOAT]: this.funcTypeTrans(MathFunctions.randomFloat),
+    [LogicNodeNameEnum.RANDOM_POISSON]: this.funcTypeTrans(MathFunctions.randomPoisson),
     // 逻辑门
-    [LogicNodeNameEnum.AND]: AutoCompute.funcTypeTrans(MathFunctions.and),
-    [LogicNodeNameEnum.OR]: AutoCompute.funcTypeTrans(MathFunctions.or),
-    [LogicNodeNameEnum.NOT]: AutoCompute.funcTypeTrans(MathFunctions.not),
-    [LogicNodeNameEnum.XOR]: AutoCompute.funcTypeTrans(MathFunctions.xor),
+    [LogicNodeNameEnum.AND]: this.funcTypeTrans(MathFunctions.and),
+    [LogicNodeNameEnum.OR]: this.funcTypeTrans(MathFunctions.or),
+    [LogicNodeNameEnum.NOT]: this.funcTypeTrans(MathFunctions.not),
+    [LogicNodeNameEnum.XOR]: this.funcTypeTrans(MathFunctions.xor),
     // 字符串类计算
     [LogicNodeNameEnum.UPPER]: StringFunctions.upper,
     [LogicNodeNameEnum.LOWER]: StringFunctions.lower,
@@ -115,7 +114,7 @@ export class AutoCompute {
   /**
    * 其他特殊功能的函数
    */
-  static MapOtherFunction: OtherFunctionMap = {
+  MapOtherFunction: OtherFunctionMap = {
     [LogicNodeNameEnum.RGB]: NodeLogic.setColorByRGB,
     [LogicNodeNameEnum.RGBA]: NodeLogic.setColorByRGBA,
     [LogicNodeNameEnum.GET_LOCATION]: NodeLogic.getLocation,
@@ -206,21 +205,21 @@ export class AutoCompute {
    * @param mF
    * @returns
    */
-  static funcTypeTrans(mF: MathFunctionType): StringFunctionType {
+  funcTypeTrans(mF: MathFunctionType): StringFunctionType {
     return (args: string[]): string[] => {
-      const numbers = args.map((arg) => AutoComputeUtils.stringToNumber(arg));
+      const numbers = args.map((arg) => this.project.autoComputeUtils.stringToNumber(arg));
       const result = mF(numbers);
       return result.map((num) => String(num));
     };
   }
 
   isTextNodeLogic(node: TextNode): boolean {
-    for (const name of Object.keys(AutoCompute.MapNameFunction)) {
+    for (const name of Object.keys(this.MapNameFunction)) {
       if (node.text === name) {
         return true;
       }
     }
-    for (const name of Object.keys(AutoCompute.MapOtherFunction)) {
+    for (const name of Object.keys(this.MapOtherFunction)) {
       if (node.text === name) {
         return true;
       }
@@ -229,7 +228,7 @@ export class AutoCompute {
   }
 
   private isSectionLogic(section: Section): boolean {
-    for (const name of Object.keys(AutoCompute.MapNameFunction)) {
+    for (const name of Object.keys(this.MapNameFunction)) {
       if (section.text === name) {
         return true;
       }
@@ -260,39 +259,41 @@ export class AutoCompute {
    * @param node
    */
   private computeTextNode(node: TextNode) {
-    for (const name of Object.keys(AutoCompute.MapNameFunction)) {
+    for (const name of Object.keys(this.MapNameFunction)) {
       if (node.text === name) {
         // 发现了一个逻辑节点
         this.project.effects.addEffect(RectangleLittleNoteEffect.fromUtilsLittleNote(node));
 
-        const result = AutoCompute.MapNameFunction[name](AutoComputeUtils.getParentTextNodes(node).map((p) => p.text));
-        AutoComputeUtils.generateMultiResult(node, result);
+        const result = this.MapNameFunction[name](
+          this.project.autoComputeUtils.getParentTextNodes(node).map((p) => p.text),
+        );
+        this.project.autoComputeUtils.generateMultiResult(node, result);
       }
     }
     // 特殊类型计算
-    for (const name of Object.keys(AutoCompute.MapOtherFunction)) {
+    for (const name of Object.keys(this.MapOtherFunction)) {
       if (node.text === name) {
         // 发现了一个特殊节点
         if (name === LogicNodeNameEnum.DELAY_COPY) {
           // 延迟复制要传逻辑节点本身的uuid
-          const result = AutoCompute.MapOtherFunction[name](
-            [...AutoComputeUtils.getParentEntities(node), node],
-            AutoComputeUtils.getChildTextNodes(node),
+          const result = this.MapOtherFunction[name](
+            [...this.project.autoComputeUtils.getParentEntities(node), node],
+            this.project.autoComputeUtils.getChildTextNodes(node),
           );
-          AutoComputeUtils.generateMultiResult(node, result);
+          this.project.autoComputeUtils.generateMultiResult(node, result);
           continue;
         }
-        const result = AutoCompute.MapOtherFunction[name](
-          AutoComputeUtils.getParentEntities(node),
-          AutoComputeUtils.getChildTextNodes(node),
+        const result = this.MapOtherFunction[name](
+          this.project.autoComputeUtils.getParentEntities(node),
+          this.project.autoComputeUtils.getChildTextNodes(node),
         );
-        AutoComputeUtils.generateMultiResult(node, result);
+        this.project.autoComputeUtils.generateMultiResult(node, result);
       }
     }
   }
 
   private computeSection(section: Section) {
-    for (const name of Object.keys(AutoCompute.MapNameFunction)) {
+    for (const name of Object.keys(this.MapNameFunction)) {
       if (section.text === name) {
         // 发现了一个逻辑Section
         const inputStringList: string[] = [];
@@ -303,14 +304,14 @@ export class AutoCompute {
             inputStringList.push(child.text);
           }
         }
-        const result = AutoCompute.MapNameFunction[name](inputStringList);
-        AutoComputeUtils.getSectionMultiResult(section, result);
+        const result = this.MapNameFunction[name](inputStringList);
+        this.project.autoComputeUtils.getSectionMultiResult(section, result);
       }
     }
   }
 
   private computeEdge(edge: LineEdge) {
-    for (const name of Object.keys(AutoCompute.MapOperationNameFunction)) {
+    for (const name of Object.keys(this.MapOperationNameFunction)) {
       if (edge.text === name) {
         // 发现了一个逻辑Edge
         const source = edge.source;
@@ -318,8 +319,8 @@ export class AutoCompute {
         if (source instanceof TextNode && target instanceof TextNode) {
           const inputStringList: string[] = [source.text, target.text];
 
-          const result = AutoCompute.MapOperationNameFunction[name](inputStringList);
-          AutoComputeUtils.getNodeOneResult(target, result[0]);
+          const result = this.MapOperationNameFunction[name](inputStringList);
+          this.project.autoComputeUtils.getNodeOneResult(target, result[0]);
         }
       }
       // 更加简化的Edge计算
@@ -331,7 +332,7 @@ export class AutoCompute {
           const target = edge.target;
           if (source instanceof TextNode && target instanceof TextNode) {
             const inputStringList: string[] = [source.text, num.toString()];
-            const result = AutoCompute.MapOperationNameFunction[name](inputStringList);
+            const result = this.MapOperationNameFunction[name](inputStringList);
             target.rename(result[0]);
           }
         }

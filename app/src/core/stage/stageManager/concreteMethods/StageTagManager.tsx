@@ -1,13 +1,10 @@
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Renderer } from "../../../render/canvas2d/renderer";
-import { MouseLocation } from "../../../service/controlService/MouseLocation";
+import { Project, service } from "../../../Project";
 import { LineCuttingEffect } from "../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { RectangleNoteEffect } from "../../../service/feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
-import { Camera } from "../../Camera";
-import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { StageObject } from "../../stageObject/abstract/StageObject";
 import { Edge } from "../../stageObject/association/Edge";
@@ -19,13 +16,16 @@ import { TextNode } from "../../stageObject/entity/TextNode";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
 import { GraphMethods } from "../basicMethods/GraphMethods";
 
-export namespace StageTagManager {
+@service("tagManager")
+export class TagManager {
+  constructor(private readonly project: Project) {}
+
   /**
    * 将所有选择的实体添加或移除标签
    *
    * 目前先仅支持TextNode
    */
-  export function changeTagBySelected() {
+  changeTagBySelected() {
     for (const selectedEntities of this.project.stageManager.getSelectedStageObjects()) {
       // 若有则删，若无则加
       if (this.project.stageManager.TagOptions.hasTag(selectedEntities.uuid)) {
@@ -40,7 +40,7 @@ export namespace StageTagManager {
    * 用于ui渲染
    * @returns 所有标签对应的名字
    */
-  export function refreshTagNamesUI() {
+  refreshTagNamesUI() {
     const res: { tagName: string; uuid: string; color: [number, number, number, number] }[] = [];
     const tagUUIDs = this.project.stageManager.TagOptions.getTagUUIDs();
     const tagObjectList: StageObject[] = [];
@@ -98,7 +98,7 @@ export namespace StageTagManager {
    * @param tagUUID
    * @returns
    */
-  export function moveCameraToTag(tagUUID: string) {
+  moveCameraToTag(tagUUID: string) {
     const tagObject = this.project.stageManager.getStageObjectByUUID(tagUUID);
     if (!tagObject) {
       return;
@@ -108,17 +108,17 @@ export namespace StageTagManager {
       const boundingRect = Rectangle.getBoundingRectangle(
         childNodes.map((childNode) => childNode.collisionBox.getRectangle()),
       );
-      Camera.resetByRectangle(boundingRect);
-      Stage.effectMachine.addEffect(
+      this.project.camera.resetByRectangle(boundingRect);
+      this.project.effects.addEffect(
         new LineCuttingEffect(
           new ProgressNumber(0, 10),
-          Renderer.transformView2World(MouseLocation.vector()),
+          this.project.renderer.transformView2World(this.project.mouseLocation.vector()),
           tagObject.collisionBox.getRectangle().center,
           Color.Green,
           Color.Green,
         ),
       );
-      Stage.effectMachine.addEffect(
+      this.project.effects.addEffect(
         new RectangleNoteEffect(
           new ProgressNumber(0, 30),
           boundingRect,
@@ -127,11 +127,11 @@ export namespace StageTagManager {
       );
     } else {
       const location = tagObject.collisionBox.getRectangle().center;
-      Camera.location = location;
-      Stage.effectMachine.addEffect(
+      this.project.camera.location = location;
+      this.project.effects.addEffect(
         new LineCuttingEffect(
           new ProgressNumber(0, 10),
-          Renderer.transformView2World(MouseLocation.vector()),
+          this.project.renderer.transformView2World(this.project.mouseLocation.vector()),
           location,
           Color.Green,
           Color.Green,

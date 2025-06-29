@@ -27,8 +27,8 @@ export class EntityShakeEffect extends Effect {
   private shakeOffsetA: Vector = Vector.getZero();
   private shakeOffsetB: Vector = Vector.getZero();
 
-  tick(): void {
-    super.tick();
+  override tick(project: Project) {
+    super.tick(project);
     const alpha = 1 - this.timeProgress.rate;
     const maxOffsetDistance = 10;
     this.shakeOffsetA = Random.randomVectorOnNormalCircle().multiply(alpha * maxOffsetDistance);

@@ -4,12 +4,11 @@ import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
+import { UrlNodeRenderer } from "../../../render/canvas2d/entityRenderer/urlNode/urlNodeRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
-import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
-import { UrlNodeRenderer } from "../../../render/canvas2d/entityRenderer/urlNode/urlNodeRenderer";
 
 /**
  * 网页链接节点
@@ -72,7 +71,7 @@ export class UrlNode extends ConnectableEntity {
     this.collisionBox.shapeList[0] = newRectangle;
 
     // 移动雪花特效
-    Stage.effectMachine.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), this.rectangle, delta));
+    this.project.effects.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), this.rectangle, delta));
     this.updateFatherSectionByMove();
     // 移动其他实体，递归碰撞
     this.updateOtherEntityLocationByMove();

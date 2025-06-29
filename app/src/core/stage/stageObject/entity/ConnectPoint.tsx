@@ -2,7 +2,6 @@ import { Serialized } from "../../../../types/node";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { CircleChangeRadiusEffect } from "../../../service/feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
-import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
@@ -55,7 +54,7 @@ export class ConnectPoint extends ConnectableEntity {
     if (value) {
       // 设定选中
       this.radius = 30;
-      // Stage.effectMachine.addEffect(
+      // this.project.effects.addEffect(
       //   CircleChangeRadiusEffect.fromConnectPointExpand(
       //     this.geometryCenter.clone(),
       //     30,
@@ -64,7 +63,7 @@ export class ConnectPoint extends ConnectableEntity {
     } else {
       // 取消选中
       this.radius = 1;
-      Stage.effectMachine.addEffect(CircleChangeRadiusEffect.fromConnectPointShrink(this.geometryCenter.clone(), 30));
+      this.project.effects.addEffect(CircleChangeRadiusEffect.fromConnectPointShrink(this.geometryCenter.clone(), 30));
     }
   }
 

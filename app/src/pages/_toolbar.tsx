@@ -479,7 +479,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
                 (node) => node instanceof ConnectableEntity,
               );
               if (selectedNodes.length <= 1) {
-                Stage.effectMachine.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
+                this.project.effects.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
                 return;
               }
               const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
@@ -496,7 +496,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
                 (node) => node instanceof ConnectableEntity,
               );
               if (selectedNodes.length <= 1) {
-                Stage.effectMachine.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
+                this.project.effects.addEffect(new TextRiseEffect("至少选择两个可连接节点"));
                 return;
               }
               const multiTargetUndirectedEdge = MultiTargetUndirectedEdge.createFromSomeEntity(selectedNodes);
@@ -649,12 +649,12 @@ const onSaveSelectedNew = async () => {
     writeTextFile(path, JSON.stringify(data))
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .then((_) => {
-        Stage.effectMachine.addEffect(new ViewFlashEffect(Color.Black));
+        this.project.effects.addEffect(new ViewFlashEffect(Color.Black));
       })
       .catch((err) => {
-        Stage.effectMachine.addEffect(new TextRiseEffect("保存失败" + err));
+        this.project.effects.addEffect(new TextRiseEffect("保存失败" + err));
       });
   } catch (e) {
-    Stage.effectMachine.addEffect(new TextRiseEffect("保存失败" + e));
+    this.project.effects.addEffect(new TextRiseEffect("保存失败" + e));
   }
 };

@@ -54,8 +54,8 @@ export class NodeMoveShadowEffect extends Effect {
     }
   }
 
-  override tick() {
-    super.tick();
+  override tick(project: Project) {
+    super.tick(project);
     // 移动点
     for (let i = 0; i < this.pointList.length; i++) {
       this.pointList[i] = this.pointList[i].add(this.pointInitSpeedList[i].multiply(1 - this.timeProgress.rate));

@@ -25,7 +25,6 @@ import { Tourials } from "./core/service/Tourials";
 import { UserState } from "./core/service/UserState";
 import { Camera } from "./core/stage/Camera";
 import { ProjectFormatUpgrader } from "./core/stage/ProjectFormatUpgrader";
-import { Stage } from "./core/stage/Stage";
 import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManager";
 import { EdgeCollisionBoxGetter } from "./core/stage/stageObject/association/EdgeCollisionBoxGetter";
 import "./index.css";
@@ -150,7 +149,7 @@ async function loadStartFile() {
     }, 1000);
   } else {
     // 自动打开路径不存在
-    Stage.effectMachine.addEffect(new TextRiseEffect(`打开工程失败，${path}不存在！`));
+    this.project.effects.addEffect(new TextRiseEffect(`打开工程失败，${path}不存在！`));
   }
 }
 

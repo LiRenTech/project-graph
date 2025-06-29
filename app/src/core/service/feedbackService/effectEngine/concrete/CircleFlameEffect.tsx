@@ -24,10 +24,6 @@ export class CircleFlameEffect extends Effect {
     return "CircleFlameEffect";
   }
 
-  override tick() {
-    super.tick();
-  }
-
   render(project: Project) {
     if (this.timeProgress.isFull) {
       return;

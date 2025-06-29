@@ -29,10 +29,6 @@ export class CircleChangeRadiusEffect extends Effect {
     return this.radiusStart + (this.radiusEnd - this.radiusStart) * this.timeProgress.rate;
   }
 
-  tick() {
-    super.tick();
-  }
-
   static fromConnectPointExpand(location: Vector, expandRadius: number) {
     return new CircleChangeRadiusEffect(
       new ProgressNumber(0, 10),

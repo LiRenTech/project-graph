@@ -42,8 +42,8 @@ export class TechLineEffect extends Effect {
 
   private currentLen = this.initLen;
 
-  tick(): void {
-    super.tick();
+  override tick(project: Project) {
+    super.tick(project);
     if (this.currentPoints.length < this.segmentCount + 1) {
       // 开始增加点
       const lastPoint = this.currentPoints[this.currentPoints.length - 1];

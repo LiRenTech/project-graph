@@ -1,7 +1,5 @@
 import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
-// import { Camera } from "../../../stage/Camera";
-import { StageNodeAdder } from "../../../stage/stageManager/concreteMethods/StageNodeAdder";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { KeyboardOnlyDirectionController } from "./keyboardOnlyDirectionController";
@@ -130,7 +128,7 @@ export class KeyboardOnlyGraphEngine {
       // 更新diffLocation
       NewTargetLocationSelector.onTabUp(selectConnectableEntities[0], this.virtualTargetLocation());
       // 创建一个新的节点
-      const newNodeUUID = await StageNodeAdder.addTextNodeByClick(this.virtualTargetLocation().clone(), []);
+      const newNodeUUID = await this.project.nodeAdder.addTextNodeByClick(this.virtualTargetLocation().clone(), []);
       const newNode = this.project.stageManager.getTextNodeByUUID(newNodeUUID);
       if (!newNode) return;
       // 连接到之前的节点

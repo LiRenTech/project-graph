@@ -34,8 +34,8 @@ export class PenStrokeDeletedEffect extends Effect {
     return new PenStrokeDeletedEffect(new ProgressNumber(0, len), penStroke);
   }
 
-  tick(): void {
-    super.tick();
+  override tick(project: Project) {
+    super.tick(project);
     const currentSep = Math.floor(this.pathList.length * this.timeProgress.rate);
     this.currentPartList = [];
     for (let i = currentSep; i < this.pathList.length; i++) {

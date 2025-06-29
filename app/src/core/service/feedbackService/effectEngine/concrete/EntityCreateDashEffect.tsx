@@ -73,8 +73,8 @@ export class EntityCreateDashEffect extends Effect {
     return Random.randomFloat(-1, 1) * 3;
   }
 
-  override tick() {
-    super.tick();
+  override tick(project: Project) {
+    super.tick(project);
     // 更新每个边上的当前粉尘位置
     for (let i = 0; i < EntityCreateDashEffect.DASH_NUMBER_PRE_EDGE; i++) {
       this.currentLocationArrayTop[i] = new Vector(

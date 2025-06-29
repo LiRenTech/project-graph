@@ -79,9 +79,9 @@ export namespace StageHistoryManager {
       currentIndex--;
       this.project.stageManager.destroy();
       FileLoader.loadStageByData(historyList[currentIndex], Stage.path.getFilePath());
-      Stage.effectMachine.addEffect(TextRiseEffect.default(`当前进度：${currentIndex + 1} / ${historyList.length}`));
+      this.project.effects.addEffect(TextRiseEffect.default(`当前进度：${currentIndex + 1} / ${historyList.length}`));
     } else {
-      Stage.effectMachine.addEffect(
+      this.project.effects.addEffect(
         TextRiseEffect.default(`已到撤回到底！${currentIndex + 1} / ${historyList.length}，默认 ctrl + y 反撤销`),
       );
     }
@@ -95,9 +95,9 @@ export namespace StageHistoryManager {
       currentIndex++;
       this.project.stageManager.destroy();
       FileLoader.loadStageByData(historyList[currentIndex], Stage.path.getFilePath());
-      Stage.effectMachine.addEffect(TextRiseEffect.default(`当前进度：${currentIndex + 1} / ${historyList.length}`));
+      this.project.effects.addEffect(TextRiseEffect.default(`当前进度：${currentIndex + 1} / ${historyList.length}`));
     } else {
-      Stage.effectMachine.addEffect(
+      this.project.effects.addEffect(
         TextRiseEffect.default(`已到最新状态！${currentIndex + 1} / ${historyList.length}`),
       );
     }

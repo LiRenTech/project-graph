@@ -56,8 +56,18 @@ import { Canvas } from "./stage/Canvas";
 import { ProjectFormatUpgrader } from "./stage/ProjectFormatUpgrader";
 import { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { StageAutoAlignManager as AutoAlign } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
+import { DeleteManager } from "./stage/stageManager/concreteMethods/StageDeleteManager";
+import { EntityMoveManager } from "./stage/stageManager/concreteMethods/StageEntityMoveManager";
+import { StageUtils } from "./stage/stageManager/concreteMethods/StageManagerUtils";
+import { MultiTargetEdgeMove } from "./stage/stageManager/concreteMethods/StageMultiTargetEdgeMove";
+import { NodeAdder } from "./stage/stageManager/concreteMethods/StageNodeAdder";
+import { NodeConnector } from "./stage/stageManager/concreteMethods/StageNodeConnector";
 import { StageNodeRotate } from "./stage/stageManager/concreteMethods/stageNodeRotate";
+import { StageObjectColorManager } from "./stage/stageManager/concreteMethods/StageObjectColorManager";
+import { StageObjectSelectCounter } from "./stage/stageManager/concreteMethods/StageObjectSelectCounter";
+import { SectionInOutManager } from "./stage/stageManager/concreteMethods/StageSectionInOutManager";
 import { SerializedDataAdder } from "./stage/stageManager/concreteMethods/StageSerializedAdder";
+import { TagManager } from "./stage/stageManager/concreteMethods/StageTagManager";
 import { StageManager } from "./stage/stageManager/StageManager";
 
 // TODO: 将filesystem接口提取出来
@@ -298,6 +308,16 @@ declare module "./Project" {
     autoAlign: AutoAlign;
     mouseInteraction: MouseInteraction;
     contentSearch: ContentSearch;
+    deleteManager: DeleteManager;
+    nodeAdder: NodeAdder;
+    entityMoveManager: EntityMoveManager;
+    stageUtils: StageUtils;
+    multiTargetEdgeMove: MultiTargetEdgeMove;
+    nodeConnector: NodeConnector;
+    stageObjectColorManager: StageObjectColorManager;
+    stageObjectSelectCounter: StageObjectSelectCounter;
+    sectionInOutManager: SectionInOutManager;
+    tagManager: TagManager;
     // 纯键盘操作引擎
     keyboardOnlyEngine: KeyboardOnlyEngine;
     keyboardOnlyGraphEngine: KeyboardOnlyGraphEngine;
@@ -337,16 +357,19 @@ declare module "./Project" {
 
 export enum ProjectState {
   /**
+   * “已保存”
    * 已写入到原始文件中
    * 已上传到云端
    */
   Saved,
   /**
+   * "已暂存"
    * 未写入到原始文件中，但是已经暂存到数据目录
    * 未上传到云端，但是已经暂存到本地
    */
   Stashed,
   /**
+   * “未保存”
    * 未写入到原始文件中，也未暂存到数据目录（真·未保存）
    * 未上传到云端，也未暂存到本地
    */

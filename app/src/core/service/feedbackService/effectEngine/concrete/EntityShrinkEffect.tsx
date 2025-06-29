@@ -27,8 +27,8 @@ export class EntityShrinkEffect extends Effect {
   }
   private originCenterLocation = Vector.getZero();
 
-  tick(): void {
-    super.tick();
+  override tick(project: Project) {
+    super.tick(project);
     this.rect.size = this.rect.size.multiply(0.95);
 
     const currentCenter = this.rect.center;

@@ -2,7 +2,6 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
-import { StageEntityMoveManager } from "../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 
 /**
@@ -64,7 +63,7 @@ export class AutoLayoutFastTree {
    */
   moveTreeRectTo(treeRoot: ConnectableEntity, targetLocation: Vector) {
     const treeRect = this.getTreeBoundingRectangle(treeRoot);
-    StageEntityMoveManager.moveWithChildren(treeRoot, targetLocation.subtract(treeRect.leftTop));
+    this.project.entityMoveManager.moveWithChildren(treeRoot, targetLocation.subtract(treeRect.leftTop));
   }
 
   /**
@@ -132,7 +131,7 @@ export class AutoLayoutFastTree {
     // 选中根节点
     this.project.stageManager.clearSelectAll();
     rootNode.isSelected = true;
-    StageEntityMoveManager.moveConnectableEntitiesWithChildren(delta);
+    this.project.entityMoveManager.moveConnectableEntitiesWithChildren(delta);
   }
 
   // ======================= 反转树的位置系列 ====================

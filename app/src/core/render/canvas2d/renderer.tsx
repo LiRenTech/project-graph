@@ -6,9 +6,7 @@ import { Vector } from "../../dataStruct/Vector";
 import { CubicBezierCurve } from "../../dataStruct/shape/Curve";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Settings } from "../../service/Settings";
-import { CopyEngine } from "../../service/dataManageService/copyEngine/copyEngine";
 import { StageStyleManager } from "../../service/feedbackService/stageStyle/StageStyleManager";
-import { Stage } from "../../stage/Stage";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageObjectSelectCounter } from "../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageObject } from "../../stage/stageObject/abstract/StageObject";
@@ -681,16 +679,16 @@ export class Renderer {
 
   /** 画粘贴板上的信息 */
   private renderClipboard() {
-    if (CopyEngine.isVirtualClipboardEmpty()) {
+    if (this.project.copyEngine.isVirtualClipboardEmpty()) {
       return;
     }
     const clipboardBlue = StageStyleManager.currentStyle.effects.successShadow;
     // 粘贴板有内容
     // 获取粘贴板中所有节点的外接矩形
-    if (CopyEngine.copyBoardDataRectangle) {
+    if (this.project.copyEngine.copyBoardDataRectangle) {
       // 画一个原位置
       this.project.shapeRenderer.renderRect(
-        this.transformWorld2View(CopyEngine.copyBoardDataRectangle),
+        this.transformWorld2View(this.project.copyEngine.copyBoardDataRectangle),
         Color.Transparent,
         new Color(255, 255, 255, 0.5),
         1,
@@ -700,8 +698,10 @@ export class Renderer {
         "ctrl+shift+v 原位置叠加粘贴",
         this.transformWorld2View(
           new Vector(
-            CopyEngine.copyBoardDataRectangle.location.x,
-            CopyEngine.copyBoardDataRectangle.location.y + CopyEngine.copyBoardDataRectangle.size.y + 20,
+            this.project.copyEngine.copyBoardDataRectangle.location.x,
+            this.project.copyEngine.copyBoardDataRectangle.location.y +
+              this.project.copyEngine.copyBoardDataRectangle.size.y +
+              20,
           ),
         ),
         12,
@@ -711,8 +711,8 @@ export class Renderer {
       this.project.shapeRenderer.renderRect(
         this.transformWorld2View(
           new Rectangle(
-            CopyEngine.copyBoardDataRectangle.location.add(CopyEngine.copyBoardMouseVector),
-            CopyEngine.copyBoardDataRectangle.size,
+            this.project.copyEngine.copyBoardDataRectangle.location.add(this.project.copyEngine.copyBoardMouseVector),
+            this.project.copyEngine.copyBoardDataRectangle.size,
           ),
         ),
         Color.Transparent,
@@ -724,10 +724,10 @@ export class Renderer {
         "ctrl+v 粘贴\n点击左键粘贴\nEsc键清空粘贴板取消粘贴\n跨文件粘贴请直接在软件内切换文件",
         this.transformWorld2View(
           new Vector(
-            CopyEngine.copyBoardDataRectangle.location.x + CopyEngine.copyBoardMouseVector.x,
-            CopyEngine.copyBoardDataRectangle.location.y +
-              CopyEngine.copyBoardDataRectangle.size.y +
-              CopyEngine.copyBoardMouseVector.y +
+            this.project.copyEngine.copyBoardDataRectangle.location.x + this.project.copyEngine.copyBoardMouseVector.x,
+            this.project.copyEngine.copyBoardDataRectangle.location.y +
+              this.project.copyEngine.copyBoardDataRectangle.size.y +
+              this.project.copyEngine.copyBoardMouseVector.y +
               20,
           ),
         ),
@@ -735,7 +735,7 @@ export class Renderer {
         Infinity,
         clipboardBlue,
       );
-      for (const entity of CopyEngine.copyBoardData.entities) {
+      for (const entity of this.project.copyEngine.copyBoardData.entities) {
         if (entity.type === "core:connect_point") {
           this.project.shapeRenderer.renderCircle(
             this.transformWorld2View(new Vector(...entity.location)),
@@ -747,7 +747,10 @@ export class Renderer {
         } else if (entity.type === "core:pen_stroke") {
           this.project.shapeRenderer.renderRect(
             this.transformWorld2View(
-              new Rectangle(new Vector(...entity.location).add(CopyEngine.copyBoardMouseVector), new Vector(10, 10)),
+              new Rectangle(
+                new Vector(...entity.location).add(this.project.copyEngine.copyBoardMouseVector),
+                new Vector(10, 10),
+              ),
             ),
             Color.Transparent,
             clipboardBlue,
@@ -757,7 +760,7 @@ export class Renderer {
           this.project.shapeRenderer.renderRect(
             this.transformWorld2View(
               new Rectangle(
-                new Vector(...entity.location).add(CopyEngine.copyBoardMouseVector),
+                new Vector(...entity.location).add(this.project.copyEngine.copyBoardMouseVector),
                 new Vector(...entity.size),
               ),
             ),
@@ -843,12 +846,11 @@ export class Renderer {
       `Stage.warningAssociations: ${this.project.controller.cutting.warningAssociations.length}`,
       `ConnectFromNodes: ${this.project.controller.nodeConnection.connectFromEntities}`,
       `lastSelectedNode: ${this.project.controller.lastSelectedEntityUUID.size}`,
-      `粘贴板: ${JSON.stringify(CopyEngine.copyBoardData)}`,
+      `粘贴板: ${JSON.stringify(this.project.copyEngine.copyBoardData)}`,
       `历史: ${StageHistoryManager.statusText()}`,
       `fps: ${this.fps}`,
       `delta: ${this.deltaTime.toFixed(2)}`,
-      `path: ${Stage.path.getFilePath()}`,
-      `autoSave: ${this.project.autoSave.toString()}`,
+      `uri: ${this.project.uri}`,
       `isEnableEntityCollision: ${this.project.stageManager.isEnableEntityCollision}`,
     ];
     for (const [k, v] of Object.entries(this.timings)) {

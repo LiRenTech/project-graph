@@ -1,10 +1,10 @@
-import { StageManager } from "../core/stage/stageManager/StageManager";
 import { open } from "@tauri-apps/plugin-shell";
-import { ImageNode } from "../core/stage/stageObject/entity/ImageNode";
 import { Stage } from "../core/stage/Stage";
-import { PathString } from "./pathString";
-import { TextNode } from "../core/stage/stageObject/entity/TextNode";
+import { StageManager } from "../core/stage/stageManager/StageManager";
 import { Entity } from "../core/stage/stageObject/abstract/StageEntity";
+import { ImageNode } from "../core/stage/stageObject/entity/ImageNode";
+import { TextNode } from "../core/stage/stageObject/entity/TextNode";
+import { PathString } from "./pathString";
 
 /**
  * 工具栏中的地球仪图标
@@ -55,7 +55,7 @@ function openOneTextNode(node: TextNode) {
   //     myOpen(nodeText);
   //   } else {
   //     // 不是网址也不是文件，不做处理
-  //     Stage.effectMachine.addEffect(new TextRiseEffect("非法文件路径: " + nodeText));
+  //     this.project.effects.addEffect(new TextRiseEffect("非法文件路径: " + nodeText));
   //   }
   // }
 }
