@@ -1,7 +1,6 @@
 import { Vector } from "../../../../dataStruct/Vector";
 import { Entity } from "../../../stageObject/abstract/StageEntity";
 import { StageHistoryManager } from "../../StageHistoryManager";
-import { StageEntityMoveManager } from "../StageEntityMoveManager";
 
 export namespace LayoutToSquareManager {
   /**
@@ -64,7 +63,7 @@ export namespace LayoutToSquareManager {
       const rect = node.collisionBox.getRectangle();
       const newX = cellCenterX - rect.size.x / 2;
       const newY = cellCenterY - rect.size.y / 2;
-      StageEntityMoveManager.moveEntityToUtils(node, new Vector(newX, newY));
+      this.project.entityMoveManager.moveEntityToUtils(node, new Vector(newX, newY));
     });
   }
 }

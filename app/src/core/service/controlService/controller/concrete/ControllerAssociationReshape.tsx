@@ -1,8 +1,6 @@
 import { CursorNameEnum } from "../../../../../types/cursors";
 import { isMac } from "../../../../../utils/platform";
 import { Vector } from "../../../../dataStruct/Vector";
-import { StageMultiTargetEdgeMove } from "../../../../stage/stageManager/concreteMethods/StageMultiTargetEdgeMove";
-import { StageNodeConnector } from "../../../../stage/stageManager/concreteMethods/StageNodeConnector";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { Settings } from "../../../Settings";
@@ -100,14 +98,14 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
         const entity = this.project.stageManager.findConnectableEntityByLocation(worldLocation);
         if (entity !== null) {
           // 找到目标，更改目标
-          StageNodeConnector.changeSelectedEdgeTarget(entity);
+          this.project.nodeConnector.changeSelectedEdgeTarget(entity);
         }
       } else {
         const diffLocation = worldLocation.subtract(this.lastMoveLocation);
         // 拖拽Edge
         this.project.controller.isMovingEdge = true;
         this.project.stageNodeRotate.moveEdges(this.lastMoveLocation, diffLocation);
-        StageMultiTargetEdgeMove.moveMultiTargetEdge(diffLocation);
+        this.project.multiTargetEdgeMove.moveMultiTargetEdge(diffLocation);
       }
       this.lastMoveLocation = worldLocation.clone();
     } else {

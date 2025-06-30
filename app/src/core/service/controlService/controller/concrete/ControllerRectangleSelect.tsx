@@ -1,6 +1,6 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
+import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 
 export class ControllerRectangleSelectClass extends ControllerClass {
@@ -32,7 +32,7 @@ export class ControllerRectangleSelectClass extends ControllerClass {
       // layer moving mode
       return;
     }
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
     const button = event.button;
@@ -62,7 +62,7 @@ export class ControllerRectangleSelectClass extends ControllerClass {
   };
 
   public mousemove: (event: MouseEvent) => void = (event) => {
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
     if (!this._isUsing) {
@@ -86,9 +86,9 @@ export class ControllerRectangleSelectClass extends ControllerClass {
   // 获取此时此刻应该的框选逻辑
   public getSelectMode(): "contain" | "intersect" {
     if (this.isSelectDirectionRight) {
-      return Stage.rectangleSelectWhenRight;
+      return Settings.sync.rectangleSelectWhenLeft;
     } else {
-      return Stage.rectangleSelectWhenLeft;
+      return Settings.sync.rectangleSelectWhenLeft;
     }
   }
 
@@ -96,7 +96,7 @@ export class ControllerRectangleSelectClass extends ControllerClass {
     if (event.button !== 0) {
       return;
     }
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.selectAndMove) {
+    if (Settings.sync.mouseLeftMode !== "selectAndMove") {
       return;
     }
     // 左键松开

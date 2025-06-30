@@ -45,8 +45,6 @@ import { StageDumper } from "../core/stage/StageDumper";
 import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryManager";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { StageGeneratorAI } from "../core/stage/stageManager/concreteMethods/StageGeneratorAI";
-import { StageNodeConnector } from "../core/stage/stageManager/concreteMethods/StageNodeConnector";
-import { StageObjectSelectCounter } from "../core/stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { ConnectableEntity } from "../core/stage/stageObject/abstract/ConnectableEntity";
 import { MultiTargetUndirectedEdge } from "../core/stage/stageObject/association/MutiTargetUndirectedEdge";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
@@ -206,14 +204,14 @@ export default function Toolbar({ className = "" }: { className?: string }) {
   const [nodeFillColor, setNodeFillColor] = useState(Color.Transparent);
 
   const update = () => {
-    setIsHaveSelectedEntity(StageObjectSelectCounter.selectedEntityCount > 0);
-    setIsHaveSelectedEdge(StageObjectSelectCounter.selectedEdgeCount > 0);
-    setIsHaveSelectedCREdge(StageObjectSelectCounter.selectedCREdgeCount > 0);
-    setIsHaveSelectedStageObject(StageObjectSelectCounter.selectedStageObjectCount > 0);
-    setIsHaveSelectedImageNode(StageObjectSelectCounter.selectedImageNodeCount > 0);
-    setIsHaveSelectedTextNode(StageObjectSelectCounter.selectedTextNodeCount > 0);
-    setIsHaveSelectedSection(StageObjectSelectCounter.selectedSectionCount > 0);
-    setIsHaveSelectedMultiTargetEdge(StageObjectSelectCounter.selectedMultiTargetUndirectedEdgeCount > 0);
+    setIsHaveSelectedEntity(this.project.stageObjectSelectCounter.selectedEntityCount > 0);
+    setIsHaveSelectedEdge(this.project.stageObjectSelectCounter.selectedEdgeCount > 0);
+    setIsHaveSelectedCREdge(this.project.stageObjectSelectCounter.selectedCREdgeCount > 0);
+    setIsHaveSelectedStageObject(this.project.stageObjectSelectCounter.selectedStageObjectCount > 0);
+    setIsHaveSelectedImageNode(this.project.stageObjectSelectCounter.selectedImageNodeCount > 0);
+    setIsHaveSelectedTextNode(this.project.stageObjectSelectCounter.selectedTextNodeCount > 0);
+    setIsHaveSelectedSection(this.project.stageObjectSelectCounter.selectedSectionCount > 0);
+    setIsHaveSelectedMultiTargetEdge(this.project.stageObjectSelectCounter.selectedMultiTargetUndirectedEdgeCount > 0);
   };
 
   const [currentMouseModeIndex, setCurrentMouseModeIndex] = useState(0);
@@ -389,7 +387,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<Repeat />}
             handleFunction={() => {
               const selectedEdges = StageManager.getLineEdges().filter((edge) => edge.isSelected);
-              StageNodeConnector.reverseEdges(selectedEdges);
+              this.project.nodeConnector.reverseEdges(selectedEdges);
               StageHistoryManager.recordStep();
             }}
           />

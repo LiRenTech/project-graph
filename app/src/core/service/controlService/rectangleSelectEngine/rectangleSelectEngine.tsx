@@ -2,12 +2,11 @@ import { isMac } from "../../../../utils/platform";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
-import { Stage } from "../../../stage/Stage";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
-import { StageObjectSelectCounter } from "../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageObject } from "../../../stage/stageObject/abstract/StageObject";
 import { Edge } from "../../../stage/stageObject/association/Edge";
 import { Section } from "../../../stage/stageObject/entity/Section";
+import { Settings } from "../../Settings";
 
 /**
  * 框选引擎
@@ -76,7 +75,7 @@ export class RectangleSelect {
     this.selectEndLocation = worldLocation.clone();
 
     // 更新选中内容的数量
-    StageObjectSelectCounter.update();
+    this.project.stageObjectSelectCounter.update();
   }
 
   moveSelecting(newEndLocation: Vector) {
@@ -101,7 +100,7 @@ export class RectangleSelect {
     this.updateStageObjectByMove();
     this.project.controller.isMovingEdge = false;
     // 更新选中内容的数量
-    StageObjectSelectCounter.update();
+    this.project.stageObjectSelectCounter.update();
   }
 
   /**
@@ -123,7 +122,7 @@ export class RectangleSelect {
       }
     }
     // 更新选中数量
-    StageObjectSelectCounter.update();
+    this.project.stageObjectSelectCounter.update();
     this.selectingRectangle = null;
   }
 
@@ -224,9 +223,9 @@ export class RectangleSelect {
   // 获取此时此刻应该的框选逻辑
   public getSelectMode(): "contain" | "intersect" {
     if (this.isSelectDirectionRight) {
-      return Stage.rectangleSelectWhenRight;
+      return Settings.sync.rectangleSelectWhenRight;
     } else {
-      return Stage.rectangleSelectWhenLeft;
+      return Settings.sync.rectangleSelectWhenLeft;
     }
   }
 

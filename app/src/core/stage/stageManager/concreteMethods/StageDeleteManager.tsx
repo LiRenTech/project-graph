@@ -15,7 +15,6 @@ import { SvgNode } from "../../stageObject/entity/SvgNode";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
 import { SectionMethods } from "../basicMethods/SectionMethods";
-import { StageSectionInOutManager } from "./StageSectionInOutManager";
 
 type DeleteHandler<T extends Entity> = (entity: T) => void;
 type Constructor<T> = { new (...args: any[]): T };
@@ -94,7 +93,7 @@ export class DeleteManager {
     this.deleteEntityAfterClearAssociation(entity);
     // 将自己所有的父级Section的children添加自己的children
     const fatherSections = SectionMethods.getFatherSections(entity);
-    StageSectionInOutManager.goInSections(entity.children, fatherSections);
+    this.project.sectionInOutManager.goInSections(entity.children, fatherSections);
   }
   private deleteImageNode(entity: ImageNode) {
     if (this.project.stageManager.getImageNodes().includes(entity)) {

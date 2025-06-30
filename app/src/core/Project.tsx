@@ -36,9 +36,13 @@ import { ControllerUtils } from "./service/controlService/controller/concrete/ut
 import { Controller } from "./service/controlService/controller/Controller";
 import { KeyboardOnlyEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
 import { KeyboardOnlyGraphEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyGraphEngine";
+import { KeyboardOnlyTreeEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyTreeEngine";
+import { SelectChangeEngine } from "./service/controlService/keyboardOnlyEngine/selectChangeEngine";
 import { MouseLocation } from "./service/controlService/MouseLocation";
 import { RectangleSelect } from "./service/controlService/rectangleSelectEngine/rectangleSelectEngine";
 import { SecretKeys } from "./service/controlService/secretKeysEngine/secretKeysEngine";
+import { KeyBinds } from "./service/controlService/shortcutKeysEngine/KeyBinds";
+import { KeyBindsRegistrar } from "./service/controlService/shortcutKeysEngine/shortcutKeysRegister";
 import { MouseInteraction } from "./service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
 import { AutoComputeUtils } from "./service/dataGenerateService/autoComputeEngine/AutoComputeUtils";
 import { AutoCompute } from "./service/dataGenerateService/autoComputeEngine/mainTick";
@@ -66,6 +70,7 @@ import { StageNodeRotate } from "./stage/stageManager/concreteMethods/stageNodeR
 import { StageObjectColorManager } from "./stage/stageManager/concreteMethods/StageObjectColorManager";
 import { StageObjectSelectCounter } from "./stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { SectionInOutManager } from "./stage/stageManager/concreteMethods/StageSectionInOutManager";
+import { SectionPackManager } from "./stage/stageManager/concreteMethods/StageSectionPackManager";
 import { SerializedDataAdder } from "./stage/stageManager/concreteMethods/StageSerializedAdder";
 import { TagManager } from "./stage/stageManager/concreteMethods/StageTagManager";
 import { StageManager } from "./stage/stageManager/StageManager";
@@ -282,6 +287,7 @@ declare module "./Project" {
     // 最底层
     canvas: Canvas;
     inputElement: InputElement;
+    keyBinds: KeyBinds;
     // utils
     controllerUtils: ControllerUtils;
     autoComputeUtils: AutoComputeUtils;
@@ -317,10 +323,13 @@ declare module "./Project" {
     stageObjectColorManager: StageObjectColorManager;
     stageObjectSelectCounter: StageObjectSelectCounter;
     sectionInOutManager: SectionInOutManager;
+    sectionPackManager: SectionPackManager;
     tagManager: TagManager;
     // 纯键盘操作引擎
     keyboardOnlyEngine: KeyboardOnlyEngine;
     keyboardOnlyGraphEngine: KeyboardOnlyGraphEngine;
+    keyboardOnlyTreeEngine: KeyboardOnlyTreeEngine;
+    selectChangeEngine: SelectChangeEngine;
     // 各种节点的渲染器
     textRenderer: TextRenderer;
     imageRenderer: ImageRenderer;
@@ -352,6 +361,8 @@ declare module "./Project" {
     StageExportSvg: StageExportSvg;
     generateFromFolder: GenerateFromFolder;
     serializedDataAdder: SerializedDataAdder;
+    // 可以晚一点注册的服务
+    keyBindsRegistrar: KeyBindsRegistrar;
   }
 }
 

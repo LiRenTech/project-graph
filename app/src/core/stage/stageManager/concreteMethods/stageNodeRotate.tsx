@@ -5,7 +5,6 @@ import { Project, service } from "../../../Project";
 import { LineEffect } from "../../../service/feedbackService/effectEngine/concrete/LineEffect";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { GraphMethods } from "../basicMethods/GraphMethods";
-import { StageEntityMoveManager } from "./StageEntityMoveManager";
 
 /**
  * 所有和旋转相关的操作
@@ -70,7 +69,10 @@ export class StageNodeRotate {
 
     const centerToChildVectorRotated = centerToChildVector.rotateDegrees(degrees);
 
-    StageEntityMoveManager.moveEntityUtils(currentNode, centerToChildVectorRotated.subtract(centerToChildVector));
+    this.project.entityMoveManager.moveEntityUtils(
+      currentNode,
+      centerToChildVectorRotated.subtract(centerToChildVector),
+    );
     // 再旋转子节点
     for (const child of GraphMethods.nodeChildrenArray(currentNode)) {
       if (visitedUUIDs.includes(child.uuid)) {

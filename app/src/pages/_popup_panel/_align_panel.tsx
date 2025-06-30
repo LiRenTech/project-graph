@@ -32,7 +32,6 @@ import { LayoutResizeManager } from "../../core/stage/stageManager/concreteMetho
 import { LayoutToSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToSquareManager";
 import { LayoutToTightSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToTightSquareManager";
 import { StageAutoAlignManager } from "../../core/stage/stageManager/concreteMethods/StageAutoAlignManager";
-import { StageSectionPackManager } from "../../core/stage/stageManager/concreteMethods/StageSectionPackManager";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../core/stage/stageObject/abstract/ConnectableEntity";
 import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
@@ -230,7 +229,7 @@ export default function AlignNodePanel() {
               });
               return;
             }
-            StageSectionPackManager.textNodeTreeToSectionNoDeep(selectedNodes[0]);
+            this.project.sectionPackManager.textNodeTreeToSectionNoDeep(selectedNodes[0]);
           }}
         />
         <ToolbarItem
@@ -274,7 +273,7 @@ export default function AlignNodePanel() {
               });
               return;
             }
-            StageSectionPackManager.textNodeTreeToSection(selectedNodes[0]);
+            this.project.sectionPackManager.textNodeTreeToSection(selectedNodes[0]);
           }}
         />
       </div>

@@ -6,7 +6,6 @@ import { Line } from "../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
-import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/StageNodeAdder";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
@@ -114,7 +113,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
         // 是否是在Section内部双击
         const sections = SectionMethods.getSectionsByInnerLocation(pressWorldLocation);
 
-        const pointUUID = StageNodeAdder.addConnectPoint(pressWorldLocation, sections);
+        const pointUUID = this.project.nodeAdder.addConnectPoint(pressWorldLocation, sections);
         const connectPoint = this.project.stageManager.getConnectableEntityByUUID(pointUUID) as ConnectPoint;
 
         for (const fromEntity of this.connectFromEntities) {

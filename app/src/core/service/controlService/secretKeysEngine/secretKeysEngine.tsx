@@ -7,10 +7,8 @@ import { averageColors, Color } from "../../../dataStruct/Color";
 import { Queue } from "../../../dataStruct/Queue";
 import { Vector } from "../../../dataStruct/Vector";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { Stage } from "../../../stage/Stage";
 import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
 import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
-import { LayoutManualAlign } from "../../../stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { CubicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
@@ -23,7 +21,6 @@ import { CollaborationEngine } from "../../dataManageService/collaborationEngine
 import { RectangleNoteEffect } from "../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewFlashEffect";
-import { AutoLayoutFastTree } from "../autoLayoutEngine/autoLayoutFastTreeMode";
 
 interface SecretKeyItem {
   name: string;
@@ -196,20 +193,20 @@ export class SecretKeys {
     "p s a + +": {
       name: "增加笔刷不透明度通道值",
       func: async () => {
-        Stage.drawingMachine.changeCurrentStrokeColorAlpha(0.1);
+        this.project.controller.penStrokeDrawing.changeCurrentStrokeColorAlpha(0.1);
       },
     },
     "p s a - -": {
       name: "减少笔刷不透明度通道值",
       func: async () => {
-        Stage.drawingMachine.changeCurrentStrokeColorAlpha(-0.1);
+        this.project.controller.penStrokeDrawing.changeCurrentStrokeColorAlpha(-0.1);
       },
     },
     "8 8": {
       name: "将选中实体顶部对齐，选中的连线从源实体的顶边缘射出，到目标实体底边缘结束",
       explain: "小键盘的向上",
       func: () => {
-        LayoutManualAlign.alignTop();
+        this.project.layoutManualAlign.alignTop();
         this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Up, true);
         this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Down);
       },
@@ -218,7 +215,7 @@ export class SecretKeys {
       name: "将选中实体底部对齐，选中的连线从源实体的底边缘射出，到目标实体顶边缘结束",
       explain: "小键盘的向下",
       func: () => {
-        LayoutManualAlign.alignBottom();
+        this.project.layoutManualAlign.alignBottom();
         this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Down, true);
         this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Up);
       },
@@ -227,7 +224,7 @@ export class SecretKeys {
       name: "将选中实体左侧对齐，选中的连线从源实体的左边缘射出，到目标实体右边缘结束",
       explain: "小键盘的向左",
       func: () => {
-        LayoutManualAlign.alignLeft();
+        this.project.layoutManualAlign.alignLeft();
         this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Left, true);
         this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Right);
       },
@@ -236,7 +233,7 @@ export class SecretKeys {
       name: "将选中实体右侧对齐，选中的连线从源实体的右边缘射出，到目标实体左边缘结束",
       explain: "小键盘的向右",
       func: () => {
-        LayoutManualAlign.alignRight();
+        this.project.layoutManualAlign.alignRight();
         this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Right, true);
         this.project.stageManager.changeSelectedEdgeConnectLocation(Direction.Left);
       },
@@ -245,42 +242,42 @@ export class SecretKeys {
       name: "相等间距水平对齐",
       explain: "小键盘的左右左右，晃一晃就等间距了",
       func: () => {
-        LayoutManualAlign.alignHorizontalSpaceBetween();
+        this.project.layoutManualAlign.alignHorizontalSpaceBetween();
       },
     },
     "8 2 8 2": {
       name: "相等间距垂直对齐",
       explain: "小键盘的上下上下，晃一晃就等间距了",
       func: () => {
-        LayoutManualAlign.alignVerticalSpaceBetween();
+        this.project.layoutManualAlign.alignVerticalSpaceBetween();
       },
     },
     "5 4 6": {
       name: "中心水平对齐",
       explain: "小键盘：先中，然后左右",
       func: () => {
-        LayoutManualAlign.alignCenterHorizontal();
+        this.project.layoutManualAlign.alignCenterHorizontal();
       },
     },
     "5 8 2": {
       name: "中心垂直对齐",
       explain: "小键盘：先中，然后上下",
       func: () => {
-        LayoutManualAlign.alignCenterVertical();
+        this.project.layoutManualAlign.alignCenterVertical();
       },
     },
     "4 5 6": {
       name: "向右紧密堆积一排",
       explain: "小键盘横着从左到右穿一串",
       func: () => {
-        LayoutManualAlign.alignLeftToRightNoSpace();
+        this.project.layoutManualAlign.alignLeftToRightNoSpace();
       },
     },
     "8 5 2": {
       name: "向下紧密堆积一列",
       explain: "小键盘竖着从上到下穿一串",
       func: () => {
-        LayoutManualAlign.alignTopToBottomNoSpace();
+        this.project.layoutManualAlign.alignTopToBottomNoSpace();
       },
     },
     "- - a l l": {
@@ -492,7 +489,7 @@ export class SecretKeys {
           newNodes.forEach((newNode) => {
             newNode.isSelected = true;
           });
-          LayoutManualAlign.alignTopToBottomNoSpace();
+          this.project.layoutManualAlign.alignTopToBottomNoSpace();
           newNodes.forEach((newNode) => {
             newNode.isSelected = false;
           });
@@ -608,7 +605,7 @@ export class SecretKeys {
           return;
         }
         if (selectNode instanceof ConnectableEntity) {
-          const rect = AutoLayoutFastTree.getTreeBoundingRectangle(selectNode);
+          const rect = this.project.autoLayoutFastTree.getTreeBoundingRectangle(selectNode);
           this.project.effects.addEffect(RectangleNoteEffect.fromShiftClickSelect(rect.clone()));
         }
       },
@@ -623,14 +620,14 @@ export class SecretKeys {
         if (selectNodes.length === 0) {
           return;
         }
-        AutoLayoutFastTree.alignColumnTrees(selectNodes);
+        this.project.autoLayoutFastTree.alignColumnTrees(selectNodes);
       },
     },
     "m v e t": {
       name: "将选中的根节点对应的树移动到摄像机位置",
       isHidden: true,
       func: () => {
-        AutoLayoutFastTree.moveTreeRectTo(
+        this.project.autoLayoutFastTree.moveTreeRectTo(
           this.project.stageManager.getSelectedEntities()[0] as ConnectableEntity,
           this.project.camera.location.clone(),
         );

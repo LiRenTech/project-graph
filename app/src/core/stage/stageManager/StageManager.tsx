@@ -10,7 +10,6 @@ import { EntityShrinkEffect } from "../../service/feedbackService/effectEngine/c
 import { PenStrokeDeletedEffect } from "../../service/feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
 import { TextRiseEffect } from "../../service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { Settings } from "../../service/Settings";
-import { Stage } from "../Stage";
 import { Association } from "../stageObject/abstract/Association";
 import { ConnectableEntity } from "../stageObject/abstract/ConnectableEntity";
 import { Entity } from "../stageObject/abstract/StageEntity";
@@ -28,14 +27,6 @@ import { SvgNode } from "../stageObject/entity/SvgNode";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
 import { GraphMethods } from "./basicMethods/GraphMethods";
-import { StageDeleteManager } from "./concreteMethods/StageDeleteManager";
-import { StageNodeAdder } from "./concreteMethods/StageNodeAdder";
-import { StageNodeConnector } from "./concreteMethods/StageNodeConnector";
-import { StageObjectSelectCounter } from "./concreteMethods/StageObjectSelectCounter";
-import { StageSectionInOutManager } from "./concreteMethods/StageSectionInOutManager";
-import { StageSectionPackManager } from "./concreteMethods/StageSectionPackManager";
-import { SerializedDataAdder } from "./concreteMethods/StageSerializedAdder";
-import { StageTagManager } from "./concreteMethods/StageTagManager";
 import { StageHistoryManager } from "./StageHistoryManager";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
@@ -677,10 +668,10 @@ export class StageManager {
   // 每个操作函数尾部都要加一个记录历史的操作
 
   deleteEntities(deleteNodes: Entity[]) {
-    StageDeleteManager.deleteEntities(deleteNodes);
+    this.project.deleteManager.deleteEntities(deleteNodes);
     StageHistoryManager.recordStep();
     // 更新选中节点计数
-    StageObjectSelectCounter.update();
+    this.project.stageObjectSelectCounter.update();
   }
 
   /**
@@ -708,10 +699,10 @@ export class StageManager {
     if (deleteAssociation instanceof Edge) {
       return this.deleteEdge(deleteAssociation);
     } else if (deleteAssociation instanceof MultiTargetUndirectedEdge) {
-      const res = StageDeleteManager.deleteMultiTargetUndirectedEdge(deleteAssociation);
+      const res = this.project.deleteManager.deleteMultiTargetUndirectedEdge(deleteAssociation);
       StageHistoryManager.recordStep();
       // 更新选中边计数
-      StageObjectSelectCounter.update();
+      this.project.stageObjectSelectCounter.update();
       return res;
     }
     this.project.effects.addEffect(TextRiseEffect.default("无法删除未知类型的关系"));
@@ -719,10 +710,10 @@ export class StageManager {
   }
 
   deleteEdge(deleteEdge: Edge): boolean {
-    const res = StageDeleteManager.deleteEdge(deleteEdge);
+    const res = this.project.deleteManager.deleteEdge(deleteEdge);
     StageHistoryManager.recordStep();
     // 更新选中边计数
-    StageObjectSelectCounter.update();
+    this.project.stageObjectSelectCounter.update();
     return res;
   }
 
@@ -731,9 +722,9 @@ export class StageManager {
       return false;
     }
     if (isCrEdge) {
-      StageNodeConnector.addCrEdge(fromNode, toNode);
+      this.project.nodeConnector.addCrEdge(fromNode, toNode);
     } else {
-      StageNodeConnector.connectConnectableEntity(fromNode, toNode);
+      this.project.nodeConnector.connectConnectableEntity(fromNode, toNode);
     }
 
     StageHistoryManager.recordStep();
@@ -762,9 +753,9 @@ export class StageManager {
         continue;
       }
       if (isCrEdge) {
-        StageNodeConnector.addCrEdge(fromNode, toNode);
+        this.project.nodeConnector.addCrEdge(fromNode, toNode);
       } else {
-        StageNodeConnector.connectConnectableEntity(fromNode, toNode, "", targetRectRate, sourceRectRate);
+        this.project.nodeConnector.connectConnectableEntity(fromNode, toNode, "", targetRectRate, sourceRectRate);
       }
     }
     StageHistoryManager.recordStep();
@@ -782,7 +773,7 @@ export class StageManager {
         prepareReverseEdges.push(edge);
       }
     }
-    StageNodeConnector.reverseEdges(prepareReverseEdges);
+    this.project.nodeConnector.reverseEdges(prepareReverseEdges);
   }
 
   /**
@@ -800,32 +791,32 @@ export class StageManager {
     if (selectedEdges.length === 0) {
       return;
     }
-    StageNodeConnector.reverseEdges(selectedEdges);
+    this.project.nodeConnector.reverseEdges(selectedEdges);
   }
 
   addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
-    SerializedDataAdder.addSerializedData(serializedData, diffLocation);
+    this.project.serializedDataAdder.addSerializedData(serializedData, diffLocation);
     StageHistoryManager.recordStep();
   }
 
   generateNodeTreeByText(text: string, indention: number = 4, location = this.project.camera.location) {
-    StageNodeAdder.addNodeTreeByText(text, indention, location);
+    this.project.nodeAdder.addNodeTreeByText(text, indention, location);
     StageHistoryManager.recordStep();
   }
 
   generateNodeGraphByText(text: string, location = this.project.camera.location) {
-    StageNodeAdder.addNodeGraphByText(text, location);
+    this.project.nodeAdder.addNodeGraphByText(text, location);
     StageHistoryManager.recordStep();
   }
 
   generateNodeByMarkdown(text: string, location = this.project.camera.location) {
-    StageNodeAdder.addNodeByMarkdown(text, location);
+    this.project.nodeAdder.addNodeByMarkdown(text, location);
     StageHistoryManager.recordStep();
   }
 
   /** 将多个实体打包成一个section，并添加到舞台中 */
   async packEntityToSection(addEntities: Entity[]) {
-    await StageSectionPackManager.packEntityToSection(addEntities);
+    await this.project.sectionPackManager.packEntityToSection(addEntities);
     StageHistoryManager.recordStep();
   }
 
@@ -839,23 +830,23 @@ export class StageManager {
   }
 
   goInSection(entities: Entity[], section: Section) {
-    StageSectionInOutManager.goInSection(entities, section);
+    this.project.sectionInOutManager.goInSection(entities, section);
     StageHistoryManager.recordStep();
   }
 
   goOutSection(entities: Entity[], section: Section) {
-    StageSectionInOutManager.goOutSection(entities, section);
+    this.project.sectionInOutManager.goOutSection(entities, section);
     StageHistoryManager.recordStep();
   }
   /** 将所有选中的Section折叠起来 */
   packSelectedSection() {
-    StageSectionPackManager.packSection();
+    this.project.sectionPackManager.packSection();
     StageHistoryManager.recordStep();
   }
 
   /** 将所有选中的Section展开 */
   unpackSelectedSection() {
-    StageSectionPackManager.unpackSection();
+    this.project.sectionPackManager.unpackSection();
     StageHistoryManager.recordStep();
   }
 
@@ -863,23 +854,23 @@ export class StageManager {
    * 切换选中的Section的折叠状态
    */
   sectionSwitchCollapse() {
-    StageSectionPackManager.switchCollapse();
+    this.project.sectionPackManager.switchCollapse();
     StageHistoryManager.recordStep();
   }
 
   addTagBySelected() {
-    StageTagManager.changeTagBySelected();
+    this.project.tagManager.changeTagBySelected();
   }
 
   refreshTags() {
-    return StageTagManager.refreshTagNamesUI();
+    return this.project.tagManager.refreshTagNamesUI();
   }
 
   moveCameraToTag(tag: string) {
-    StageTagManager.moveCameraToTag(tag);
+    this.project.tagManager.moveCameraToTag(tag);
   }
   connectEntityByCrEdge(fromNode: ConnectableEntity, toNode: ConnectableEntity) {
-    return StageNodeConnector.addCrEdge(fromNode, toNode);
+    return this.project.nodeConnector.addCrEdge(fromNode, toNode);
   }
 
   /**
@@ -985,7 +976,7 @@ export class StageManager {
       // undirectedEdge.isSelected = true;
       this.addAssociation(undirectedEdge);
     }
-    StageObjectSelectCounter.update();
+    this.project.stageObjectSelectCounter.update();
   }
   /**
    * 无向边转有向边

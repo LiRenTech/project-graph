@@ -1,8 +1,6 @@
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
-import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/StageNodeAdder";
-import { StageObjectSelectCounter } from "../../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
@@ -47,10 +45,10 @@ export class ControllerEntityCreate extends ControllerClass {
       this.project.controllerUtils.addTextNodeByLocation(pressLocation, true);
     }
     // 更新选中内容的数量
-    StageObjectSelectCounter.update();
+    this.project.stageObjectSelectCounter.update();
   };
 
   createConnectPoint(pressLocation: Vector, addToSections: Section[]) {
-    StageNodeAdder.addConnectPoint(pressLocation, addToSections);
+    this.project.nodeAdder.addConnectPoint(pressLocation, addToSections);
   }
 }

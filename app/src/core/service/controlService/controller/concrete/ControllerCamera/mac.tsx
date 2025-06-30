@@ -1,7 +1,6 @@
 import { isMac } from "../../../../../../utils/platform";
 import { Vector } from "../../../../../dataStruct/Vector";
 import { Project } from "../../../../../Project";
-import { StageEntityMoveManager } from "../../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { MouseTipFeedbackEffect } from "../../../../feedbackService/effectEngine/concrete/MouseTipFeedbackEffect";
 import { Settings } from "../../../../Settings";
 
@@ -172,6 +171,6 @@ export class ControllerCameraMac {
     const dx = event.deltaX;
     const dy = event.deltaY;
     const diffLocation = new Vector(-dx, -dy).divide(this.project.camera.currentScale);
-    StageEntityMoveManager.moveSelectedEntities(diffLocation);
+    this.project.entityMoveManager.moveSelectedEntities(diffLocation);
   }
 }

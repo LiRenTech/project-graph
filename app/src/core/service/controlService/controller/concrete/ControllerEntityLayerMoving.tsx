@@ -1,9 +1,6 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
-import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
-import { StageSectionInOutManager } from "../../../../stage/stageManager/concreteMethods/StageSectionInOutManager";
-import { StageSectionPackManager } from "../../../../stage/stageManager/concreteMethods/StageSectionPackManager";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { EntityJumpMoveEffect } from "../../../feedbackService/effectEngine/concrete/EntityJumpMoveEffect";
@@ -66,7 +63,7 @@ export class ControllerLayerMovingClass extends ControllerClass {
         }
       }
 
-      const newSection = StageSectionPackManager.targetTextNodeToSection(entity);
+      const newSection = this.project.sectionPackManager.targetTextNodeToSection(entity);
       if (newSection && selectedEntities.length > 0) {
         // 获取所有选中实体的外接矩形的中心点，以便计算移动距离
         const centerLocation = Rectangle.getBoundingRectangle(
@@ -77,7 +74,7 @@ export class ControllerLayerMovingClass extends ControllerClass {
           const delta = mouseLocation.subtract(centerLocation);
           selectedEntity.move(delta);
         }
-        StageSectionInOutManager.goInSections(this.project.stageManager.getSelectedEntities(), [newSection]);
+        this.project.sectionInOutManager.goInSections(this.project.stageManager.getSelectedEntities(), [newSection]);
       }
 
       return; // 这个return必须写
@@ -115,7 +112,7 @@ export class ControllerLayerMovingClass extends ControllerClass {
       this.project.effects.addEffect(new EntityJumpMoveEffect(15, entity.collisionBox.getRectangle(), delta));
     }
     // 3 移动所有选中的实体 的位置
-    StageEntityMoveManager.moveSelectedEntities(delta);
+    this.project.entityMoveManager.moveSelectedEntities(delta);
 
     // 改变层级
     if (targetSections.length === 0) {
@@ -138,7 +135,7 @@ export class ControllerLayerMovingClass extends ControllerClass {
     } else {
       // 跑到了别的层级之中
 
-      StageSectionInOutManager.goInSections(selectedEntities, targetSections);
+      this.project.sectionInOutManager.goInSections(selectedEntities, targetSections);
 
       for (const section of targetSections) {
         // this.project.stageManager.goInSection(selectedEntities, section);

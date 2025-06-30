@@ -2,7 +2,6 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { ConnectableEntity } from "../../../stageObject/abstract/ConnectableEntity";
 import { Section } from "../../../stageObject/entity/Section";
 import { GraphMethods } from "../../basicMethods/GraphMethods";
-import { StageEntityMoveManager } from "../StageEntityMoveManager";
 
 /**
  * 关于框嵌套结构的自动布局工具
@@ -20,8 +19,8 @@ export namespace LayoutSectionManager {
       const rect = entity.collisionBox.getRectangle();
       console.log(rect);
       // 移动，和移动到
-      StageEntityMoveManager.moveEntityUtils(entity, new Vector(10, 10), false); // 向右下移动 10 10
-      StageEntityMoveManager.moveEntityToUtils(entity, new Vector(10, 10)); // 移动到 10 10
+      this.project.entityMoveManager.moveEntityUtils(entity, new Vector(10, 10), false); // 向右下移动 10 10
+      this.project.entityMoveManager.moveEntityToUtils(entity, new Vector(10, 10)); // 移动到 10 10
 
       if (entity instanceof Section) {
         // 是一个框

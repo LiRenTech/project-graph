@@ -1,8 +1,6 @@
 import { isMac } from "../../../../../utils/platform";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { StageEntityMoveManager } from "../../../../stage/stageManager/concreteMethods/StageEntityMoveManager";
-import { StageObjectSelectCounter } from "../../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { RectangleRenderEffect } from "../../../feedbackService/effectEngine/concrete/RectangleRenderEffect";
@@ -90,7 +88,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
       // 未点击到节点
     }
     // 更新选中状态
-    StageObjectSelectCounter.update();
+    this.project.stageObjectSelectCounter.update();
   };
 
   public mousemove: (event: MouseEvent) => void = (event: MouseEvent) => {
@@ -120,9 +118,9 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
           : this.project.controller.pressingKeySet.has("control")
       ) {
         // 和子节点一起移动
-        StageEntityMoveManager.moveConnectableEntitiesWithChildren(diffLocation);
+        this.project.entityMoveManager.moveConnectableEntitiesWithChildren(diffLocation);
       } else {
-        StageEntityMoveManager.moveSelectedEntities(diffLocation);
+        this.project.entityMoveManager.moveSelectedEntities(diffLocation);
       }
 
       // 预瞄反馈

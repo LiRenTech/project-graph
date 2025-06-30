@@ -8,7 +8,6 @@ import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Settings } from "../../service/Settings";
 import { StageStyleManager } from "../../service/feedbackService/stageStyle/StageStyleManager";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
-import { StageObjectSelectCounter } from "../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageObject } from "../../stage/stageObject/abstract/StageObject";
 import { CubicCatmullRomSplineEdge } from "../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
@@ -837,7 +836,7 @@ export class Renderer {
       `node count: ${this.renderedNodes} , ${this.project.stageManager.getTextNodes().length}`,
       `edge count: ${this.renderedEdges} , ${this.project.stageManager.getLineEdges().length}`,
       `section count: ${this.project.stageManager.getSections().length}`,
-      `selected count: ${StageObjectSelectCounter.toDebugString()}`,
+      `selected count: ${this.project.stageObjectSelectCounter.toDebugString()}`,
       `pressingKeys: ${this.project.controller.pressingKeysString()}`,
       `鼠标按下情况: ${this.project.controller.isMouseDown}`,
       `框选框: ${JSON.stringify(this.project.rectangleSelect.getRectangle())}`,

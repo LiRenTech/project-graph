@@ -6,8 +6,6 @@ import { Vector } from "../../../../dataStruct/Vector";
 import { Project, service } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
-import { StageNodeAdder } from "../../../../stage/stageManager/concreteMethods/StageNodeAdder";
-import { StageObjectSelectCounter } from "../../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { StageObject } from "../../../../stage/stageObject/abstract/StageObject";
@@ -117,7 +115,7 @@ export class ControllerUtils {
         this.project.controller.isCameraLocked = false;
         StageHistoryManager.recordStep();
         // 更新选中内容的数量
-        StageObjectSelectCounter.update();
+        this.project.stageObjectSelectCounter.update();
       });
   }
 
@@ -330,7 +328,7 @@ export class ControllerUtils {
   addTextNodeByLocation(location: Vector, selectCurrent: boolean = false, successCallback?: (uuid: string) => void) {
     const sections = SectionMethods.getSectionsByInnerLocation(location);
     // 新建节点
-    StageNodeAdder.addTextNodeByClick(location, sections, selectCurrent).then((uuid) => {
+    this.project.nodeAdder.addTextNodeByClick(location, sections, selectCurrent).then((uuid) => {
       this.textNodeInEditModeByUUID(uuid);
       if (successCallback) {
         successCallback(uuid);
@@ -339,7 +337,7 @@ export class ControllerUtils {
   }
 
   addTextNodeFromCurrentSelectedNode(direction: Direction, selectCurrent = false) {
-    StageNodeAdder.addTextNodeFromCurrentSelectedNode(direction, [], selectCurrent).then((uuid) => {
+    this.project.nodeAdder.addTextNodeFromCurrentSelectedNode(direction, [], selectCurrent).then((uuid) => {
       this.textNodeInEditModeByUUID(uuid);
     });
   }

@@ -5,7 +5,6 @@ import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { LeftMouseModeEnum, Stage } from "../../../../stage/Stage";
 import { PenStroke, PenStrokeSegment } from "../../../../stage/stageObject/entity/PenStroke";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { CircleChangeRadiusEffect } from "../../../feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
@@ -57,10 +56,10 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
   private recordLocation: Vector[] = [];
 
   public mousedown: (event: MouseEvent) => void = (event: MouseEvent) => {
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.draw) {
+    if (Settings.sync.mouseLeftMode !== "draw") {
       return;
     }
-    if (!(event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.draw)) {
+    if (!(event.button === 0 && Settings.sync.mouseLeftMode === "draw")) {
       return;
     }
     this._isUsing = true;
@@ -79,7 +78,7 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
 
   public mousemove = (event: PointerEvent) => {
     if (!this._isUsing) return;
-    if (!this.project.controller.isMouseDown[0] && Stage.leftMouseMode === LeftMouseModeEnum.draw) {
+    if (!this.project.controller.isMouseDown[0] && Settings.sync.mouseLeftMode === "draw") {
       return;
     }
     const events = event.getCoalescedEvents();
@@ -103,7 +102,7 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
 
   public mouseup = (event: MouseEvent) => {
     if (!this._isUsing) return;
-    if (!(event.button === 0 && Stage.leftMouseMode === LeftMouseModeEnum.draw)) {
+    if (!(event.button === 0 && Settings.sync.mouseLeftMode === "draw")) {
       return;
     }
     const releaseWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
@@ -225,7 +224,7 @@ export class ControllerPenStrokeDrawingClass extends ControllerClass {
     if (!this.project.controller.pressingKeySet.has("shift")) {
       return;
     }
-    if (Stage.leftMouseMode !== LeftMouseModeEnum.draw) {
+    if (Settings.sync.mouseLeftMode !== "draw") {
       // 涂鸦模式下才能看到量角器，或者转动量角器
       return;
     }

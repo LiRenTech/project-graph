@@ -2,7 +2,7 @@ import { Color } from "../../../dataStruct/Color";
 import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
-import { LeftMouseModeEnum, Stage } from "../../../stage/Stage";
+import { Settings } from "../../../service/Settings";
 
 /**
  * 绘画控制器
@@ -17,7 +17,7 @@ export class DrawingControllerRenderer {
   renderTempDrawing() {
     const currentStrokeColor = this.project.controller.penStrokeDrawing.getCurrentStrokeColor();
 
-    if (Stage.leftMouseMode === LeftMouseModeEnum.draw) {
+    if (Settings.sync.mouseLeftMode === "draw") {
       // 画鼠标绘制过程，还未抬起鼠标左键的 笔迹
       if (this.project.controller.penStrokeDrawing.currentStroke.length > 0) {
         const startLocation = this.project.controller.penStrokeDrawing.currentStroke[0].startLocation;

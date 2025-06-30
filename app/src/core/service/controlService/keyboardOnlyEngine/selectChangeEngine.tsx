@@ -2,9 +2,8 @@ import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { Project } from "../../../Project";
+import { Project, service } from "../../../Project";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
-import { StageObjectSelectCounter } from "../../../stage/stageManager/concreteMethods/StageObjectSelectCounter";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineCuttingEffect } from "../../feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
@@ -12,6 +11,7 @@ import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleMa
 /**
  * 仅在keyboardOnlyEngine中使用，用于处理select change事件
  */
+@service("selectChangeEngine")
 export class SelectChangeEngine {
   private lastSelectNodeByKeyboardUUID = "";
 
@@ -188,7 +188,7 @@ export class SelectChangeEngine {
     this.addEffect(selectedNodeRect.collisionBox.getRectangle(), newSelectNodeRect);
 
     // 更新选中内容的数量
-    StageObjectSelectCounter.update();
+    this.project.stageObjectSelectCounter.update();
   }
 
   private getCurrentSelectedNode(): ConnectableEntity | null {
