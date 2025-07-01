@@ -1,5 +1,6 @@
 import { save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 
+import { writeTextFile } from "@tauri-apps/plugin-fs";
 import {
   BrainCircuit,
   ChevronsLeftRightEllipsis,
@@ -50,7 +51,6 @@ import { MultiTargetUndirectedEdge } from "../core/stage/stageObject/association
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
 import { cn } from "../utils/cn";
 import { openBrowserOrFile, openSelectedImageNode } from "../utils/externalOpen";
-import { writeTextFile } from "../utils/fs";
 import { isMac } from "../utils/platform";
 import AlignNodePanel from "./_popup_panel/_align_panel";
 import ColorAutoPanel from "./_popup_panel/_color_auto_panel";

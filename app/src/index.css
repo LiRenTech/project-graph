@@ -12,31 +12,16 @@
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
 }
 @theme inline {
-  --color-panel-bg: var(--color-panel-bg);
-  --color-panel-text: var(--color-panel-text);
-  --color-panel-details-text: var(--color-panel-details-text);
-
-  --color-panel-success-text: var(--color-panel-success-text);
-  --color-panel-warning-text: var(--color-panel-warning-text);
-  --color-panel-error-text: var(--color-panel-error-text);
-
+  --color-titlebar-bg: var(--color-titlebar-bg);
+  --color-titlebar-text: var(--color-titlebar-text);
+  --color-titlebar-border: var(--color-titlebar-border);
+  --color-titlebar-control-hover-bg: var(--color-titlebar-control-hover-bg);
   --color-tooltip-bg: var(--color-tooltip-bg);
   --color-tooltip-text: var(--color-tooltip-text);
   --color-tooltip-border: var(--color-tooltip-border);
   --color-button-bg: var(--color-button-bg);
   --color-button-text: var(--color-button-text);
   --color-button-border: var(--color-button-border);
-  --color-icon-button-bg: var(--color-icon-button-bg);
-  --color-icon-button-text: var(--color-icon-button-text);
-  --color-icon-button-border: var(--color-icon-button-border);
-
-  --color-table-header-bg: var(--color-table-header-bg);
-  --color-table-header-text: var(--color-table-header-text);
-  --color-table-row-bg: var(--color-table-row-bg);
-  --color-table-row-text: var(--color-table-row-text);
-  --color-table-row-hover-bg: var(--color-table-row-hover-bg);
-  --color-table-row-hover-text: var(--color-table-row-hover-text);
-
   --color-input-bg: var(--color-input-bg);
   --color-input-text: var(--color-input-text);
   --color-input-border: var(--color-input-border);
@@ -109,6 +94,20 @@
     font-antialiasing: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  ::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-corner {
+    background-color: transparent;
   }
 }
 

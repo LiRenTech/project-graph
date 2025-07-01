@@ -9,13 +9,12 @@ name:
   en: Dark
   zh_CN: 黑夜
 ---
-panel:
-  bg: "oklch(0.269 0 0)"
+titlebar:
+  bg: "oklch(0.129 0 0)"
   text: "#fff"
-  details-text: "#aaa"
-  success-text: "#70ca70"
-  warning-text: "#f2b468"
-  error-text: "#ea4848"
+  border: "oklch(0.371 0 0)"
+  control:
+    hover-bg: "oklch(0.269 0 0)"
 
 tooltip:
   bg: "oklch(0.269 0 0)"
@@ -26,19 +25,6 @@ button:
   bg: "rgba(60, 63, 65, 0.5)"
   text: "#fff"
   border: "oklch(0.371 0 0)"
-
-icon-button:
-  bg: "rgb(49, 51, 53)"
-  text: "#fff"
-  border: "rgb(60, 63, 65)"
-
-table:
-  header-bg: "oklch(0.1 0 0)"
-  header-text: "#fff"
-  row-bg: "oklch(0.269 0 0)"
-  row-text: "#fff"
-  row-hover-bg: "oklch(0.371 0 0)"
-  row-hover-text: "#fff"
 
 input:
   bg: "oklch(0.269 0 0)"
@@ -93,15 +79,6 @@ switch:
   disabled:
     bg: "oklch(0.439 0 0)"
     dot: "#fff"
-
-appmenu:
-  border: "oklch(0.371 0 0)"
-  category:
-    title: "oklch(0.708 0 0)"
-    separator: "oklch(0.371 0 0)"
-  item:
-    text: "#fff"
-  hover-bg: "oklch(0.371 0 0)"
 
 toolbar:
   bg: "rgb(49, 51, 53)"

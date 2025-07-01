@@ -1,6 +1,6 @@
+import { writeFile } from "@tauri-apps/plugin-fs";
 import { v4 as uuidv4 } from "uuid";
 import { Dialog } from "../../../../../components/dialog";
-import { writeFileBase64 } from "../../../../../utils/fs";
 import { Path } from "../../../../../utils/path";
 import { PathString } from "../../../../../utils/pathString";
 import { Color } from "../../../../dataStruct/Color";
@@ -43,7 +43,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
    * @param event
    * @returns
    */
-  drop = (event: DragEvent) => {
+  drop = async (event: DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
     const mouseWorldLocation = this.project.renderer.transformView2World(new Vector(event.clientX, event.clientY));
@@ -53,13 +53,13 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
     if (files) {
       if (files.length === 0) {
         // 在别的浏览器中选中文字并拽到窗口里释放会走这个if分支
-        this.dealTempFileDrop(mouseWorldLocation);
+        await this.dealTempFileDrop(mouseWorldLocation);
       }
       let i = -1;
       for (const file of files) {
         i++;
         if (file.type.includes("json")) {
-          this.dealJsonFileDrop(file, mouseWorldLocation);
+          await this.dealJsonFileDrop(file, mouseWorldLocation);
         } else if (file.type.includes("text")) {
           this.readFileText(file).then((dataString) => {
             if (file.name.endsWith(".txt")) {
@@ -117,7 +117,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
               ],
             });
           } else {
-            this.dealPngFileDrop(file, mouseWorldLocation);
+            await this.dealPngFileDrop(file, mouseWorldLocation);
           }
         } else {
           if (file.name.endsWith(".md")) {
@@ -125,7 +125,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
               this.project.stageManager.generateNodeByMarkdown(dataString, mouseWorldLocation);
             });
           }
-          this.dealUnknownFileDrop(file, mouseWorldLocation, i);
+          await this.dealUnknownFileDrop(file, mouseWorldLocation, i);
         }
       }
     }
@@ -156,13 +156,13 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
     });
   }
 
-  dealTempFileDrop(mouseWorldLocation: Vector) {
+  async dealTempFileDrop(mouseWorldLocation: Vector) {
     // 未知类型，按插入一个textNode判断
     this.project.effects.addEffect(new TextRiseEffect("不能直接拖入文字"));
     this.project.effects.addEffect(CircleChangeRadiusEffect.fromConnectPointShrink(mouseWorldLocation, 100));
   }
 
-  dealUnknownFileDrop(file: File, mouseWorldLocation: Vector, i: number) {
+  async dealUnknownFileDrop(file: File, mouseWorldLocation: Vector, i: number) {
     // 未知类型，按插入一个textNode判断
     const textNode = new TextNode({
       uuid: uuidv4(),
@@ -181,7 +181,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
    * @param file
    * @param mouseWorldLocation
    */
-  dealJsonFileDrop(file: File, mouseWorldLocation: Vector) {
+  async dealJsonFileDrop(file: File, mouseWorldLocation: Vector) {
     // 将鼠标位置整数化
     mouseWorldLocation = new Vector(Math.round(mouseWorldLocation.x), Math.round(mouseWorldLocation.y));
 
@@ -238,35 +238,15 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
     };
   }
 
-  dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file); // 以文本格式读取文件内容
-    reader.onload = (e) => {
-      const fileContent = e.target?.result; // 读取的文件内容
-
-      if (typeof fileContent !== "string") {
-        console.error("文件内容为空");
-        this.project.effects.addEffect(new TextRiseEffect("图片内容不是string类型"));
-        return;
-      }
-
-      // 正常情况下，fileContent打印出来是 string类型的东西：
-      // data:image/png;base64,iVBORw0KGgoAAAANS...
-      // 在这里处理读取到的内容
-      const imageUUID = uuidv4();
-      const folderPath = new Path(this.project.uri).parent.toString();
-      writeFileBase64(`${folderPath}${PathString.getSep()}${imageUUID}.png`, fileContent.split(",")[1]);
-      const imageNode = new ImageNode({
-        uuid: imageUUID,
-        location: [mouseWorldLocation.x, mouseWorldLocation.y],
-        path: `${imageUUID}.png`,
-      });
-      this.project.stageManager.addImageNode(imageNode);
-    };
-    reader.onerror = (e) => {
-      console.error("文件读取错误:", e);
-      this.project.effects.addEffect(new TextRiseEffect("文件读取错误:" + e));
-      this.project.effects.addEffect(new ViewFlashEffect(Color.Red));
-    };
+  async dealPngFileDrop(file: File, mouseWorldLocation: Vector) {
+    const imageUUID = uuidv4();
+    const folderPath = new Path(this.project.uri).parent.toString();
+    await writeFile(`${folderPath}${PathString.getSep()}${imageUUID}.png`, new Uint8Array(await file.arrayBuffer()));
+    const imageNode = new ImageNode({
+      uuid: imageUUID,
+      location: [mouseWorldLocation.x, mouseWorldLocation.y],
+      path: `${imageUUID}.png`,
+    });
+    this.project.stageManager.addImageNode(imageNode);
   }
 }

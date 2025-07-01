@@ -1,6 +1,6 @@
+import { exists, readTextFile } from "@tauri-apps/plugin-fs";
 import { Store } from "@tauri-apps/plugin-store";
 import { Dialog } from "../../components/dialog";
-import { exists, readTextFile } from "../../utils/fs";
 import { createStore } from "../../utils/store";
 import { parsePluginCode, PluginCodeParseData } from "./PluginCodeParseData";
 import { PluginWorker } from "./PluginWorker";

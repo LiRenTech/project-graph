@@ -1,10 +1,6 @@
-import { join } from "@tauri-apps/api/path";
 import { Serialized } from "../../../../types/node";
-import { readFileBase64 } from "../../../../utils/fs";
-import { PathString } from "../../../../utils/pathString";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
@@ -92,16 +88,17 @@ export class ImageNode extends ConnectableEntity {
     ]);
     this.state = "loading";
     // 初始化创建的时候，开始获取base64String
-    if (!Stage.path.isDraft()) {
-      this.updateBase64StringByPath(PathString.dirPath(Stage.path.getFilePath()));
-    } else {
-      // 一般只有在粘贴板粘贴时和初次打开文件时才调用这里
-      // 所以这里只可能时初次打开文件时还是草稿的状态
+    // TODO: 读取图片
+    // if (!Stage.path.isDraft()) {
+    //   this.updateBase64StringByPath(PathString.dirPath(Stage.path.getFilePath()));
+    // } else {
+    //   // 一般只有在粘贴板粘贴时和初次打开文件时才调用这里
+    //   // 所以这里只可能时初次打开文件时还是草稿的状态
 
-      setTimeout(() => {
-        this.updateBase64StringByPath(PathString.dirPath(Stage.path.getFilePath()));
-      }, 1000);
-    }
+    //   setTimeout(() => {
+    //     this.updateBase64StringByPath(PathString.dirPath(Stage.path.getFilePath()));
+    //   }, 1000);
+    // }
   }
 
   /**
@@ -114,39 +111,40 @@ export class ImageNode extends ConnectableEntity {
       return;
     }
 
-    join(folderPath, this.path)
-      .then((path) => readFileBase64(path))
-      .then((res) => {
-        // 获取base64String成功
+    // TODO: 读取图片
+    // join(folderPath, this.path)
+    //   .then((path) => readFileBase64(path))
+    //   .then((res) => {
+    //     // 获取base64String成功
 
-        this._base64String = res;
-        const imageElement = new Image();
-        this._imageElement = imageElement;
-        imageElement.src = `data:image/png;base64,${this._base64String}`;
-        imageElement.onload = () => {
-          // 图片加载成功
+    //     this._base64String = res;
+    //     const imageElement = new Image();
+    //     this._imageElement = imageElement;
+    //     imageElement.src = `data:image/png;base64,${this._base64String}`;
+    //     imageElement.onload = () => {
+    //       // 图片加载成功
 
-          // 调整碰撞箱大小
+    //       // 调整碰撞箱大小
 
-          this.rectangle.size = new Vector(
-            imageElement.width * this.scaleNumber,
-            imageElement.height * this.scaleNumber,
-          );
-          this.originImageSize = new Vector(imageElement.width, imageElement.height);
-          this.state = "success";
-        };
-        imageElement.onerror = () => {
-          this.state = "encodingError";
-          this.errorDetails = "图片编码错误";
-        };
-      })
+    //       this.rectangle.size = new Vector(
+    //         imageElement.width * this.scaleNumber,
+    //         imageElement.height * this.scaleNumber,
+    //       );
+    //       this.originImageSize = new Vector(imageElement.width, imageElement.height);
+    //       this.state = "success";
+    //     };
+    //     imageElement.onerror = () => {
+    //       this.state = "encodingError";
+    //       this.errorDetails = "图片编码错误";
+    //     };
+    //   })
 
-      .catch((_err) => {
-        // 获取base64String失败
-        // TODO: 图片上显示ErrorDetails信息
-        this.state = "unknownError";
-        this.errorDetails = _err.toString();
-      });
+    //   .catch((_err) => {
+    //     // 获取base64String失败
+    //     // TODO: 图片上显示ErrorDetails信息
+    //     this.state = "unknownError";
+    //     this.errorDetails = _err.toString();
+    //   });
   }
 
   public get base64String() {
@@ -157,7 +155,8 @@ export class ImageNode extends ConnectableEntity {
    * 刷新，这个方法用于重新从路径中加载图片
    */
   public refresh() {
-    this.updateBase64StringByPath(PathString.dirPath(Stage.path.getFilePath()));
+    // TODO: 读取图片
+    // this.updateBase64StringByPath(PathString.dirPath(Stage.path.getFilePath()));
   }
 
   public scaleUpdate(scaleDiff: number) {

@@ -1,11 +1,7 @@
 import { Serialized } from "../../../../types/node";
-import { PathString } from "../../../../utils/pathString";
 import { Color } from "../../../dataStruct/Color";
-import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
-import { Stage } from "../../Stage";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
@@ -89,7 +85,7 @@ export class PortalNode extends ConnectableEntity {
     this.collisionBox.shapeList[0] = newRectangle;
 
     // 移动雪花特效
-    this.project.effects.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), newRectangle, delta));
+    // this.project.effects.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), newRectangle, delta));
     this.updateFatherSectionByMove();
     // 移动其他实体，递归碰撞
     this.updateOtherEntityLocationByMove();
@@ -104,15 +100,16 @@ export class PortalNode extends ConnectableEntity {
   }
 
   private updateChildStageCameraData() {
-    this.project.stageManager.updateChildStageCameraData(
-      PathString.relativePathToAbsolutePath(PathString.dirPath(Stage.path.getFilePath()), this.portalFilePath),
-      {
-        location: this.location,
-        targetLocation: this.targetLocation,
-        size: this.size,
-        zoom: this.cameraScale,
-      },
-    );
+    // TODO: updateChildStageCameraData
+    // this.project.stageManager.updateChildStageCameraData(
+    //   PathString.relativePathToAbsolutePath(PathString.dirPath(Stage.path.getFilePath()), this.portalFilePath),
+    //   {
+    //     location: this.location,
+    //     targetLocation: this.targetLocation,
+    //     size: this.size,
+    //     zoom: this.cameraScale,
+    //   },
+    // );
   }
 
   public moveTargetLocation(delta: Vector): void {

@@ -2,7 +2,6 @@ import { appCacheDir, dataDir } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open as openFileDialog, save as saveFileDialog } from "@tauri-apps/plugin-dialog";
 import { open as openFilePath } from "@tauri-apps/plugin-shell";
-import { useAtom } from "jotai";
 import {
   AppWindow,
   Axe,
@@ -51,35 +50,23 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Dialog } from "../../components/dialog";
 import { Panel } from "../../components/panel";
-import { Popup } from "../../components/popup";
 import { Rectangle } from "../../core/dataStruct/shape/Rectangle";
 import { Vector } from "../../core/dataStruct/Vector";
 import { Controller } from "../../core/service/controlService/controller/Controller";
-import { FileLoader } from "../../core/service/dataFileService/fileLoader";
 import { RecentFileManager } from "../../core/service/dataFileService/RecentFileManager";
-import { StageSaveManager } from "../../core/service/dataFileService/StageSaveManager";
-import { GenerateFromFolderEngine } from "../../core/service/dataGenerateService/generateFromFolderEngine/GenerateFromFolderEngine";
 import { ComplexityDetector } from "../../core/service/dataManageService/ComplexityDetector";
 import { CopyEngine } from "../../core/service/dataManageService/copyEngine/copyEngine";
 import { SoundService } from "../../core/service/feedbackService/SoundService";
 import { HelpService } from "../../core/service/helpService/helpService";
 import { SubWindow } from "../../core/service/SubWindow";
 import { Camera } from "../../core/stage/Camera";
-import { Stage } from "../../core/stage/Stage";
 import { StageDumper } from "../../core/stage/StageDumper";
 import { GraphMethods } from "../../core/stage/stageManager/basicMethods/GraphMethods";
 import { StageHistoryManager } from "../../core/stage/stageManager/StageHistoryManager";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
-import {
-  fileAtom,
-  isClassroomModeAtom,
-  isExportPNGPanelOpenAtom,
-  isExportTreeTextPanelOpenAtom,
-  store,
-} from "../../state";
+import { store } from "../../state";
 import { cn } from "../../utils/cn";
-import { createFolder, exists } from "../../utils/fs";
 import { PathString } from "../../utils/pathString";
 import { isDesktop, isWeb } from "../../utils/platform";
 import ComplexityResultPanel from "../_fixed_panel/_complexity_result_panel";
@@ -89,11 +76,7 @@ import SettingsWindow from "./SettingsWindow";
 
 export default function AppMenuWindow() {
   const navigate = useNavigate();
-  const [file, setFile] = useAtom(fileAtom);
-  const [isClassroomMode] = useAtom(isClassroomModeAtom);
   const { t } = useTranslation("appMenu");
-  const [, setExportTreeTextPanelOpen] = useAtom(isExportTreeTextPanelOpenAtom);
-  const [, setExportPNGPanelOpen] = useAtom(isExportPNGPanelOpenAtom);
 
   const onExportTreeText = async () => {
     const selectedNodes = StageManager.getSelectedEntities().filter((entity) => entity instanceof TextNode);

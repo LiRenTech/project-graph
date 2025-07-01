@@ -1,4 +1,5 @@
 import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
+import { exists } from "@tauri-apps/plugin-fs";
 import {
   AlignStartVertical,
   ArrowDownToDot,
@@ -14,7 +15,6 @@ import Github from "../../../assets/github.svg?react";
 import Button from "../../../components/Button";
 import { Dialog } from "../../../components/dialog";
 import { SettingField } from "../../../components/Field";
-import { exists } from "../../../utils/fs";
 import { PathString } from "../../../utils/pathString";
 
 const SOUND_CONFIGS: { fileName: string; settingKey: keyof Settings.Settings; icon: React.ReactNode }[] = [

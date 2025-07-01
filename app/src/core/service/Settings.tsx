@@ -321,6 +321,9 @@ export namespace Settings {
         callback(value);
       });
     }
+    return () => {
+      callbacks[key] = callbacks[key].filter((cb) => cb !== callback);
+    };
   }
 
   /**
@@ -334,6 +337,12 @@ export namespace Settings {
       get(key)
         .then(setValue)
         .then(() => setInited(true));
+      const unwatch = watch(key, (newValue) => {
+        setValue(newValue);
+      });
+      return () => {
+        unwatch();
+      };
     }, []);
 
     useEffect(() => {

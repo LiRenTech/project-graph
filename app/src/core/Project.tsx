@@ -1,10 +1,10 @@
 import { Decoder, Encoder } from "@msgpack/msgpack";
 import { appLocalDataDir, join } from "@tauri-apps/api/path";
+import { exists, readFile, writeFile } from "@tauri-apps/plugin-fs";
 import { URI } from "vscode-uri";
 import { Serialized } from "../types/node";
 import { Base64 } from "../utils/base64";
-import { exists, readFile, writeFile } from "../utils/fs";
-import { Service, ServiceClass } from "./interfaces/Service";
+import { Service } from "./interfaces/Service";
 import { CurveRenderer } from "./render/canvas2d/basicRenderer/curveRenderer";
 import { ImageRenderer } from "./render/canvas2d/basicRenderer/ImageRenderer";
 import { ShapeRenderer } from "./render/canvas2d/basicRenderer/shapeRenderer";
@@ -165,7 +165,7 @@ export class Project {
   /**
    * 立刻加载一个新的服务
    */
-  registerService(service: ServiceClass) {
+  registerService(service: { id?: string; new (...args: any[]): Service }) {
     if (!service.id) {
       service.id = crypto.randomUUID();
       console.warn("服务 %o 未指定 ID，自动生成：%s", service, service.id);
@@ -258,12 +258,12 @@ export class Project {
     const encoded = this.encoder.encodeSharedRef(this.data);
     await writeFile(stashFilePath, encoded);
   }
-  save() {
+  async save() {
     const encoded = this.encoder.encodeSharedRef(this.data);
     switch (this.uri.scheme) {
       case "file": {
         const filePath = this.uri.fsPath;
-        writeFile(filePath, encoded);
+        await writeFile(filePath, encoded);
         this._state = ProjectState.Saved;
         break;
       }

@@ -1,6 +1,5 @@
+import { exists } from "@tauri-apps/plugin-fs";
 import { Store } from "@tauri-apps/plugin-store";
-// import { exists } from "@tauri-apps/plugin-fs"; // 导入文件相关函数
-import { exists } from "../../../utils/fs";
 import { createStore } from "../../../utils/store";
 
 /**

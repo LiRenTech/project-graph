@@ -18,14 +18,13 @@ import { useTranslation } from "react-i18next";
 import { Dialog } from "../../components/dialog";
 import IconButton from "../../components/IconButton";
 import Switch from "../../components/Switch";
+import { FileLoader } from "../../core/service/dataFileService/fileLoader";
 import { StageSaveManager } from "../../core/service/dataFileService/StageSaveManager";
 import { StartFilesManager } from "../../core/service/dataFileService/StartFilesManager";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
-import { fileAtom } from "../../state";
 import { cn } from "../../utils/cn";
 import { PathString } from "../../utils/pathString";
 import { isDesktop } from "../../utils/platform";
-import { FileLoader } from "../../core/service/dataFileService/fileLoader";
 
 export default function StartFilePanel({ open = false }: { open: boolean }) {
   const [startFiles, setStartFiles] = React.useState<StartFilesManager.StartFile[]>([]);

@@ -7,7 +7,6 @@ import { Vector } from "../../core/dataStruct/Vector";
 import { TextRiseEffect } from "../../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { SubWindow } from "../../core/service/SubWindow";
 import { Camera } from "../../core/stage/Camera";
-import { Stage } from "../../core/stage/Stage";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { cn } from "../../utils/cn";
 
@@ -103,7 +102,7 @@ export default function FindWindow() {
           <div
             key={result.uuid}
             className={cn("hover:text-panel-success-text cursor-pointer truncate", {
-              "bg-panel-bg-active": index === Stage.contentSearchEngine.currentSearchResultIndex,
+              "font-bold": index === Stage.contentSearchEngine.currentSearchResultIndex,
             })}
             onMouseEnter={() => {
               if (isMouseEnterMoveCameraAble) {

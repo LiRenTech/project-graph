@@ -1,5 +1,5 @@
+import { FolderEntry, readFolderStructure } from "@tauri-apps/plugin-fs";
 import { v4 } from "uuid";
-import { FolderEntry, readFolderStructure } from "../../../../utils/fs";
 import { Color } from "../../../dataStruct/Color";
 import { Project, service } from "../../../Project";
 import { LayoutToTightSquareManager } from "../../../stage/stageManager/concreteMethods/layoutManager/layoutToTightSquareManager";

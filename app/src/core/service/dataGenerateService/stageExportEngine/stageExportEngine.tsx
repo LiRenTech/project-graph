@@ -1,4 +1,4 @@
-import { writeTextFile } from "../../../../utils/fs";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { service } from "../../../Project";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";

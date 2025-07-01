@@ -1,11 +1,9 @@
-import { useAtom } from "jotai";
 import React, { useEffect, useRef } from "react";
 import { Dialog } from "../components/dialog";
 import { Renderer } from "../core/render/canvas2d/renderer";
 import { Controller } from "../core/service/controlService/controller/Controller";
 import { StageStyleManager } from "../core/service/feedbackService/stageStyle/StageStyleManager";
-import { Stage } from "../core/stage/Stage";
-import { isClassroomModeAtom, isWindowCollapsingAtom } from "../state";
+import { Settings } from "../core/service/Settings";
 import { CursorNameEnum } from "../types/cursors";
 import { DateChecker } from "../utils/dateChecker";
 import { isFrame } from "../utils/platform";
@@ -29,10 +27,6 @@ export default function PGCanvas() {
   const [uiShow, setUIShow] = React.useState(true);
   const [nodeDetailsPanel] = Settings.use("nodeDetailsPanel");
   const [isProtectPrivacy] = Settings.use("protectingPrivacy");
-  const [compatibilityMode, setCompatibilityMode] = React.useState(false);
-
-  const [isWindowCollapsing] = useAtom(isWindowCollapsingAtom);
-  const [isClassroomMode] = useAtom(isClassroomModeAtom);
 
   useEffect(() => {
     Settings.watch("windowBackgroundAlpha", (value) => {

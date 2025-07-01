@@ -9,14 +9,6 @@ export interface Service {
   dispose?(): void | Promise<void>;
 }
 
-/**
- * @see {@link Service}
- */
-export interface ServiceClass {
-  id?: string;
-  new (project: Project): Service;
-}
-
 export interface FileSystemProvider {
   read(uri: URI): Promise<Uint8Array>;
   write(uri: URI, content: Uint8Array): Promise<void>;

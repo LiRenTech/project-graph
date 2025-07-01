@@ -1,9 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { Dialog } from "../../../../components/dialog";
-import { writeFileBase64 } from "../../../../utils/fs";
 import { PathString } from "../../../../utils/pathString";
 import { Vector } from "../../../dataStruct/Vector";
-import { Stage } from "../../../stage/Stage";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { Settings } from "../../Settings";
 

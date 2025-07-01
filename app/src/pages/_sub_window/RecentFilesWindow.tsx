@@ -1,27 +1,17 @@
-// import { readTextFile } from "@tauri-apps/plugin-fs";
 import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
-import { useAtom } from "jotai";
-import React, { useEffect } from "react";
-import { fileAtom } from "../../state";
-import { cn } from "../../utils/cn";
-
-// import { Zap } from "lucide-react";
-// import IconButton from "../components/ui/IconButton";
 import { CircleHelp, Delete, DoorOpen, File, FolderInput, LoaderPinwheel, Radiation, Star } from "lucide-react";
+import React, { useEffect } from "react";
 import Button from "../../components/Button";
 import { Dialog } from "../../components/dialog";
 import IconButton from "../../components/IconButton";
 import Input from "../../components/Input";
 import { Rectangle } from "../../core/dataStruct/shape/Rectangle";
 import { Vector } from "../../core/dataStruct/Vector";
-import { FileLoader } from "../../core/service/dataFileService/fileLoader";
 import { RecentFileManager } from "../../core/service/dataFileService/RecentFileManager";
-import { StageSaveManager } from "../../core/service/dataFileService/StageSaveManager";
 import { StartFilesManager } from "../../core/service/dataFileService/StartFilesManager";
 import { SubWindow } from "../../core/service/SubWindow";
-import { Stage } from "../../core/stage/Stage";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
-import { readFolderRecursive } from "../../utils/fs";
+import { cn } from "../../utils/cn";
 import { PathString } from "../../utils/pathString";
 import { isDesktop } from "../../utils/platform";
 
@@ -39,8 +29,6 @@ export default function RecentFilesWindow({ winId = "" }: { winId?: string }) {
    */
   const [recentFilesFiltered, setRecentFilesFiltered] = React.useState<RecentFileManager.RecentFile[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
-
-  const [currentFile, setFile] = useAtom(fileAtom);
 
   // 当前预选中的文件下标
   const [currentPreselect, setCurrentPreselect] = React.useState<number>(0);

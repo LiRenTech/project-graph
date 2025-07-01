@@ -15,15 +15,7 @@ export default function IconButton({
   [key: string]: any;
 }>) {
   return (
-    <Button
-      className={cn(
-        "border-icon-button-border bg-icon-button-bg text-icon-button-text px-2 hover:cursor-pointer",
-        className,
-      )}
-      onClick={onClick}
-      id={id}
-      {...props}
-    >
+    <Button className={cn("px-2 hover:cursor-pointer", className)} onClick={onClick} id={id} {...props}>
       {children}
     </Button>
   );

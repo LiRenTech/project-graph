@@ -1,6 +1,6 @@
+import { createFolder, readFolder, readFolderStructure } from "@tauri-apps/plugin-fs";
 import { v4 } from "uuid";
 import { Direction } from "../../../../types/directions";
-import { createFolder, readFolder, readFolderStructure } from "../../../../utils/fs";
 import { Project, service } from "../../../Project";
 import { Random } from "../../../algorithm/random";
 import { averageColors, Color } from "../../../dataStruct/Color";
