@@ -2,7 +2,9 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "core:default",
     "shell:allow-open",
@@ -34,10 +36,28 @@
     {
       "identifier": "http:default",
       "allow": [
-        {"url": "*://*.project-graph.top/*"},
-        {"url": "http://localhost:*"},
-        {"url": "http://127.0.0.1:*"}
+        {
+          "url": "*://*.project-graph.top/*"
+        },
+        {
+          "url": "http://localhost:*"
+        },
+        {
+          "url": "http://127.0.0.1:*"
+        }
       ]
+    },
+    "fs:default",
+    "fs:read-all",
+    "fs:write-all",
+    "fs:allow-rename",
+    "fs:allow-mkdir",
+    "fs:allow-exists",
+    "fs:allow-watch",
+    "fs:read-dirs",
+    {
+      "identifier": "fs:scope",
+      "allow": ["**/*"]
     }
   ]
 }

@@ -3041,6 +3041,7 @@ dependencies = [
  "tauri-plugin-cli",
  "tauri-plugin-clipboard-manager",
  "tauri-plugin-dialog",
+ "tauri-plugin-fs",
  "tauri-plugin-http",
  "tauri-plugin-os",
  "tauri-plugin-process",

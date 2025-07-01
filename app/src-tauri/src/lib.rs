@@ -27,6 +27,7 @@ pub fn run() {
     std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_dialog::init())
@@ -52,16 +53,6 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             cmd::device::get_device_id,
-            cmd::fs::read_folder_structure,
-            cmd::fs::read_text_file,
-            cmd::fs::read_file_base64,
-            cmd::fs::write_text_file,
-            cmd::fs::write_file_base64,
-            cmd::fs::create_folder,
-            cmd::fs::read_folder,
-            cmd::fs::read_folder_recursive,
-            cmd::fs::delete_file,
-            cmd::fs::exists,
             write_stdout,
             write_stderr,
             exit
