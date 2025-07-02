@@ -16,6 +16,10 @@ titlebar:
   control:
     hover-bg: "oklch(0.269 0 0)"
 
+menu:
+  item-hover-bg: "oklch(0.269 0 0)"
+  separator: "oklch(0.371 0 0)"
+
 tooltip:
   bg: "oklch(0.269 0 0)"
   text: "#fff"

@@ -21,7 +21,7 @@ export class DrawingControllerRenderer {
       // 画鼠标绘制过程，还未抬起鼠标左键的 笔迹
       if (this.project.controller.penStrokeDrawing.currentStroke.length > 0) {
         const startLocation = this.project.controller.penStrokeDrawing.currentStroke[0].startLocation;
-        const endLocation = this.project.renderer.transformView2World(this.project.mouseLocation.vector());
+        const endLocation = this.project.renderer.transformView2World(MouseLocation.vector());
 
         // 正在绘制直线
         if (this.project.controller.pressingKeySet.has("shift")) {
@@ -46,7 +46,7 @@ export class DrawingControllerRenderer {
           } else {
             this.project.curveRenderer.renderSolidLine(
               this.project.renderer.transformWorld2View(startLocation),
-              this.project.mouseLocation.vector(),
+              MouseLocation.vector(),
               currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
               this.project.controller.penStrokeDrawing.currentStrokeWidth * this.project.camera.currentScale,
             );
@@ -92,7 +92,7 @@ export class DrawingControllerRenderer {
         // 如果粗细大于一定程度，则渲染成空心的
         if (this.project.controller.penStrokeDrawing.currentStrokeWidth > 10) {
           this.project.shapeRenderer.renderCircle(
-            this.project.mouseLocation.vector(),
+            MouseLocation.vector(),
             (this.project.controller.penStrokeDrawing.currentStrokeWidth / 2) * this.project.camera.currentScale,
             Color.Transparent,
             currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
@@ -100,7 +100,7 @@ export class DrawingControllerRenderer {
           );
         } else {
           this.project.shapeRenderer.renderCircle(
-            this.project.mouseLocation.vector(),
+            MouseLocation.vector(),
             (this.project.controller.penStrokeDrawing.currentStrokeWidth / 2) * this.project.camera.currentScale,
             currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
             Color.Transparent,
@@ -123,12 +123,12 @@ export class DrawingControllerRenderer {
     // 画一个跟随鼠标的十字准星
     // const crossSize = 2000;
 
-    const crossCenter = this.project.mouseLocation.vector();
+    const crossCenter = MouseLocation.vector();
 
     // 量角器功能
     // 计算角度，拿到两个世界坐标
     // const startLocation = this.project.controller.penStrokeDrawing.currentStroke[0].startLocation;
-    // const endLocation =this.project.renderer.transformView2World(this.project.mouseLocation.vector());
+    // const endLocation =this.project.renderer.transformView2World(MouseLocation.vector());
 
     this.renderAngleMouse(crossCenter);
   }

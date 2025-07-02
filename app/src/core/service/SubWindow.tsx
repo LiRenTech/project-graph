@@ -24,6 +24,10 @@ export namespace SubWindow {
      * 可以给窗口内元素添加data-pg-drag-region属性，使其成为可拖动区域
      */
     titleBarOverlay: boolean;
+    /**
+     * 只是隐藏关闭按钮，不影响下面的closeWhen...
+     */
+    closable: boolean;
     closing: boolean;
     closeWhenClickOutside: boolean;
     /** @private */
@@ -47,6 +51,7 @@ export namespace SubWindow {
       focused: false,
       zIndex: getMaxZIndex() + 1,
       titleBarOverlay: false,
+      closable: true,
       closing: false,
       closeWhenClickOutside: false,
       closeWhenClickInside: false,
@@ -65,9 +70,10 @@ export namespace SubWindow {
     store.set(subWindowsAtom, [...store.get(subWindowsAtom), win]);
     if (options.closeWhenClickOutside) {
       win._closeWhenClickOutsideListener = (e: PointerEvent) => {
-        if (!get(win.id).rect.isPointIn(new Vector(e.clientX, e.clientY))) {
-          close(win.id);
+        if (e.target instanceof HTMLElement && e.target.closest(`[data-pg-window-id="${win.id}"]`)) {
+          return;
         }
+        close(win.id);
       };
       document.addEventListener("pointerdown", win._closeWhenClickOutsideListener);
     }

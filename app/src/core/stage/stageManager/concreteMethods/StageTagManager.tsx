@@ -112,7 +112,7 @@ export class TagManager {
       this.project.effects.addEffect(
         new LineCuttingEffect(
           new ProgressNumber(0, 10),
-          this.project.renderer.transformView2World(this.project.mouseLocation.vector()),
+          this.project.renderer.transformView2World(MouseLocation.vector()),
           tagObject.collisionBox.getRectangle().center,
           Color.Green,
           Color.Green,
@@ -131,7 +131,7 @@ export class TagManager {
       this.project.effects.addEffect(
         new LineCuttingEffect(
           new ProgressNumber(0, 10),
-          this.project.renderer.transformView2World(this.project.mouseLocation.vector()),
+          this.project.renderer.transformView2World(MouseLocation.vector()),
           location,
           Color.Green,
           Color.Green,

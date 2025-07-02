@@ -34,8 +34,8 @@ export class ControllerCuttingClass extends ControllerClass {
       // 模拟鼠标按下事件
       const fakeMouseEvent = new MouseEvent("mousedown", {
         button: 2,
-        clientX: this.project.mouseLocation.vector().x,
-        clientY: this.project.mouseLocation.vector().y,
+        clientX: MouseLocation.vector().x,
+        clientY: MouseLocation.vector().y,
       });
       this.mousedown(fakeMouseEvent);
     }
@@ -49,8 +49,8 @@ export class ControllerCuttingClass extends ControllerClass {
       // 模拟鼠标松开事件
       const fakeMouseEvent = new MouseEvent("mouseup", {
         button: 2,
-        clientX: this.project.mouseLocation.vector().x,
-        clientY: this.project.mouseLocation.vector().y,
+        clientX: MouseLocation.vector().x,
+        clientY: MouseLocation.vector().y,
       });
       this.mouseup(fakeMouseEvent);
     }

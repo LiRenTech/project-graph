@@ -147,7 +147,7 @@ export class CopyEngine {
   paste() {
     // 如果有虚拟粘贴板数据，则优先粘贴虚拟粘贴板上的东西
     if (this.isVirtualClipboardEmpty()) {
-      readClipboardItems(this.project.renderer.transformView2World(this.project.mouseLocation.vector()));
+      readClipboardItems(this.project.renderer.transformView2World(MouseLocation.vector()));
     } else {
       SerializedDataAdder.addSerializedData(this.copyBoardData, this.copyBoardMouseVector);
     }

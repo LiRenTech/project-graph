@@ -427,7 +427,7 @@ export class Renderer {
     if (this.project.controller.nodeConnection.isUsing) {
       // 如果鼠标位置没有和任何节点相交
       let connectTargetNode = null;
-      const mouseLocation = this.transformView2World(this.project.mouseLocation.vector());
+      const mouseLocation = this.transformView2World(MouseLocation.vector());
       for (const node of this.project.stageManager.getConnectableEntity()) {
         if (node.collisionBox.isContainsPoint(mouseLocation)) {
           connectTargetNode = node;

@@ -9,6 +9,7 @@ import { initReactI18next } from "react-i18next";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { runCli } from "./cli";
 import { UserScriptsManager } from "./core/plugin/UserScriptsManager";
+import { MouseLocation } from "./core/service/controlService/MouseLocation";
 import { RecentFileManager } from "./core/service/dataFileService/RecentFileManager";
 import { StartFilesManager } from "./core/service/dataFileService/StartFilesManager";
 import { ColorManager } from "./core/service/feedbackService/ColorManager";
@@ -72,6 +73,7 @@ async function loadSyncModules() {
   StageHistoryManager.init();
   StageStyleManager.init();
   SoundService.init();
+  MouseLocation.init();
 }
 
 /** 加载语言文件 */

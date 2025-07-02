@@ -16,6 +16,8 @@
   --color-titlebar-text: var(--color-titlebar-text);
   --color-titlebar-border: var(--color-titlebar-border);
   --color-titlebar-control-hover-bg: var(--color-titlebar-control-hover-bg);
+  --color-menu-item-hover-bg: var(--color-menu-item-hover-bg);
+  --color-menu-separator: var(--color-menu-separator);
   --color-tooltip-bg: var(--color-tooltip-bg);
   --color-tooltip-text: var(--color-tooltip-text);
   --color-tooltip-border: var(--color-tooltip-border);
@@ -95,19 +97,11 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  ::-webkit-scrollbar {
-    width: 2px;
-    height: 2px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-  }
-  ::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-  ::-webkit-scrollbar-corner {
-    background-color: transparent;
+  .cursor-pointer > svg.lucide,
+  .cursor-pointer > svg.lucide *,
+  .\*\:cursor-pointer > * > svg.lucide,
+  .\*\:cursor-pointer > * > svg.lucide * {
+    @apply cursor-pointer;
   }
 }
 

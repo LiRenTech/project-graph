@@ -23,11 +23,7 @@ export class EntityDetailsButtonRenderer {
     // );
     let isMouseHovering = false;
     // 鼠标悬浮在按钮上提示文字
-    if (
-      entity
-        .detailsButtonRectangle()
-        .isPointIn(this.project.renderer.transformView2World(this.project.mouseLocation.vector()))
-    ) {
+    if (entity.detailsButtonRectangle().isPointIn(this.project.renderer.transformView2World(MouseLocation.vector()))) {
       isMouseHovering = true;
       if (!entity.isEditingDetails)
         // 鼠标悬浮在这上面

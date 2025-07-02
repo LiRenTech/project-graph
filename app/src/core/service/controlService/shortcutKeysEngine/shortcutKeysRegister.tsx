@@ -189,7 +189,7 @@ export class KeyBindsRegistrar {
       this.project.camera.clearMoveCommander();
       this.project.camera.speed = Vector.getZero();
       this.project.controllerUtils.addTextNodeByLocation(
-        this.project.renderer.transformView2World(this.project.mouseLocation.vector()),
+        this.project.renderer.transformView2World(MouseLocation.vector()),
         true,
       );
     });

@@ -59,7 +59,7 @@ export class UrlNodeRenderer {
   }
 
   private renderHoverState(urlNode: UrlNode): void {
-    const mouseLocation = this.project.renderer.transformView2World(this.project.mouseLocation.vector());
+    const mouseLocation = this.project.renderer.transformView2World(MouseLocation.vector());
     if (urlNode.titleRectangle.isPointIn(mouseLocation)) {
       // 鼠标在标题上
       this.project.shapeRenderer.renderRect(

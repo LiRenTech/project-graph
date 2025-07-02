@@ -1,18 +1,22 @@
 import { restoreStateCurrent, saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
 import { useAtom } from "jotai";
-import { Minus, Square, X } from "lucide-react";
+import { Copy, Minus, Pin, PinOff, Square, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import icon from "../assets/icon.png";
 import { Dialog } from "../components/dialog";
+import { GlobalMenu } from "../core/service/GlobalMenu";
 import { Settings } from "../core/service/Settings";
 import { Themes } from "../core/service/Themes";
 import { projectsAtom } from "../state";
 import { cn } from "../utils/cn";
 import { appScale, getCurrentWindow } from "../utils/platform";
+import RenderSubWindows from "./_render_sub_windows";
+import MenuWindow from "./_sub_window/MenuWindow";
 
 export default function App() {
-  const [maxmized, setMaxmized] = useState(false);
+  const [maximized, _setMaximized] = useState(false);
+  const [alwaysOnTop, setAlwaysOnTop] = useState(false);
 
   // 面板状态
   // TODO: start file window
@@ -31,7 +35,7 @@ export default function App() {
       if (event.key === "F11") {
         // 如果当前已经是最大化的状态
         if (await getCurrentWindow().isMaximized()) {
-          setMaxmized(false);
+          _setMaximized(false);
         }
         getCurrentWindow()
           .isFullscreen()
@@ -100,17 +104,14 @@ export default function App() {
       `;
     });
 
+    // 监听最大化状态
+    getCurrentWindow().onResized(async () => {
+      _setMaximized(await getCurrentWindow().isMaximized());
+    });
+
     // 恢复窗口位置大小
     restoreStateCurrent(StateFlags.SIZE | StateFlags.POSITION | StateFlags.MAXIMIZED);
   }, []);
-
-  useEffect(() => {
-    if (maxmized) {
-      getCurrentWindow().maximize();
-    } else {
-      getCurrentWindow().unmaximize();
-    }
-  }, [maxmized]);
 
   /**
    * 首次启动时显示欢迎页面
@@ -132,22 +133,56 @@ export default function App() {
       {/* 第一行：logo | 菜单 | ...移动窗口区域... | 窗口控制按钮 */}
       <div className="bg-titlebar-bg text-titlebar-text border-titlebar-border flex h-8 items-center overflow-hidden rounded-lg border">
         <img src={icon} alt="logo" className="m-2 size-6" />
-        <div className="m-2 flex items-center gap-2 text-sm">
-          <span>文件</span>
-          <span>编辑</span>
-          <span>视图</span>
-          <span>帮助</span>
+        <div className="ml-2 flex h-full items-center text-sm">
+          {GlobalMenu.menus.map((menu, i) => (
+            <div
+              key={i}
+              className="hover:bg-titlebar-control-hover-bg flex h-full items-center gap-1 rounded-lg px-2 transition-all active:scale-90 active:rounded-2xl [&_svg]:size-4"
+              onMouseDown={() => {
+                MenuWindow.open(menu);
+              }}
+            >
+              {menu.icon}
+              {menu.name}
+            </div>
+          ))}
         </div>
         <div className="flex-1" data-tauri-drag-region></div>
-        <div className="*:hover:bg-titlebar-control-hover-bg flex h-full *:flex *:h-full *:w-8 *:items-center *:justify-center">
-          <div>
-            <Minus size={14} />
+        <div className="*:hover:bg-titlebar-control-hover-bg flex h-full *:flex *:h-full *:w-8 *:cursor-pointer *:items-center *:justify-center *:rounded-lg *:transition-all *:active:scale-90 *:active:rounded-2xl">
+          {/* 要确保每一个图标在视觉上的大小和粗细都相同 */}
+          {alwaysOnTop ? (
+            <div
+              onClick={() => {
+                getCurrentWindow().setAlwaysOnTop(false);
+                setAlwaysOnTop(false);
+              }}
+            >
+              <PinOff size={14} strokeWidth={2} />
+            </div>
+          ) : (
+            <div
+              onClick={() => {
+                getCurrentWindow().setAlwaysOnTop(true);
+                setAlwaysOnTop(true);
+              }}
+            >
+              <Pin size={14} strokeWidth={2} />
+            </div>
+          )}
+          <div onClick={() => getCurrentWindow().minimize()}>
+            <Minus size={14} strokeWidth={4} />
           </div>
-          <div>
-            <Square size={10} strokeWidth={3} />
-          </div>
-          <div>
-            <X size={14} />
+          {maximized ? (
+            <div onClick={() => getCurrentWindow().unmaximize()}>
+              <Copy size={12} strokeWidth={3} />
+            </div>
+          ) : (
+            <div onClick={() => getCurrentWindow().maximize()}>
+              <Square size={10} strokeWidth={5} />
+            </div>
+          )}
+          <div onClick={() => getCurrentWindow().close()}>
+            <X size={14} strokeWidth={4} />
           </div>
         </div>
       </div>
@@ -172,6 +207,8 @@ export default function App() {
 
       {/* <FloatingOutlet />
       <RenderSubWindows /> */}
+
+      <RenderSubWindows />
     </div>
   );
 }

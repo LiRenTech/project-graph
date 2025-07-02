@@ -84,7 +84,7 @@ export class PortalNodeRenderer {
   }
 
   private renderHoverState(portalNode: PortalNode) {
-    const mouseLocation = this.project.renderer.transformView2World(this.project.mouseLocation.vector());
+    const mouseLocation = this.project.renderer.transformView2World(MouseLocation.vector());
     const bodyRectangle = portalNode.collisionBox.getRectangle();
     if (bodyRectangle.isPointIn(mouseLocation)) {
       const titleRectangle = portalNode.titleRectangleArea();
