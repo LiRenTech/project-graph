@@ -1,4 +1,4 @@
-import { createFolder, readFolder, readFolderStructure } from "@tauri-apps/plugin-fs";
+import { mkdir, readDir } from "@tauri-apps/plugin-fs";
 import { v4 } from "uuid";
 import { Direction } from "../../../../types/directions";
 import { Project, service } from "../../../Project";
@@ -580,7 +580,7 @@ export class SecretKeys {
       name: "在D盘创建“111”文件夹",
       isHidden: true,
       func: () => {
-        createFolder("D:\\111\\111");
+        mkdir("D:\\111\\111");
       },
     },
     "r o l l i n g 1": {
@@ -780,7 +780,7 @@ export class SecretKeys {
       explain: "未来即将删除",
       isHidden: true,
       func: () => {
-        const files = readFolder("D:\\");
+        const files = readDir("D:\\");
         console.log(files);
       },
     },
@@ -790,9 +790,10 @@ export class SecretKeys {
       isHidden: true,
       func: () => {
         const folderPath = "D:\\Desktop\\graph\\projectGraph\\welcome";
-        readFolderStructure(folderPath).then((folderStructure) => {
-          console.log(folderStructure);
-        });
+        // TODO: 读取文件夹结构并生成图
+        // readDir(folderPath).then((folderStructure) => {
+        //   console.log(folderStructure);
+        // });
       },
     },
   };

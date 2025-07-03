@@ -1,22 +1,16 @@
 import { open } from "@tauri-apps/plugin-shell";
-import { Stage } from "../core/stage/Stage";
-import { StageManager } from "../core/stage/stageManager/StageManager";
 import { Entity } from "../core/stage/stageObject/abstract/StageEntity";
-import { ImageNode } from "../core/stage/stageObject/entity/ImageNode";
 import { TextNode } from "../core/stage/stageObject/entity/TextNode";
-import { PathString } from "./pathString";
 
-/**
- * 工具栏中的地球仪图标
- */
+// TODO: 工具栏中的地球仪图标
 export async function openBrowserOrFile() {
-  for (const node of StageManager.getSelectedEntities()) {
-    if (node instanceof TextNode) {
-      openOneTextNode(node);
-    } else {
-      openOneEntity(node);
-    }
-  }
+  // for (const node of StageManager.getSelectedEntities()) {
+  //   if (node instanceof TextNode) {
+  //     openOneTextNode(node);
+  //   } else {
+  //     openOneEntity(node);
+  //   }
+  // }
 }
 
 function openOneEntity(node: Entity) {
@@ -71,12 +65,13 @@ function splitDoubleQuote(str: string) {
   return str;
 }
 
+// TODO: 打开图片节点文件路径
 export function openSelectedImageNode() {
-  for (const entity of StageManager.getSelectedEntities()) {
-    if (entity instanceof ImageNode && entity.isSelected) {
-      myOpen(PathString.dirPath(Stage.path.getFilePath()) + PathString.getSep() + entity.path);
-    }
-  }
+  // for (const entity of StageManager.getSelectedEntities()) {
+  //   if (entity instanceof ImageNode && entity.isSelected) {
+  //     myOpen(PathString.dirPath(Stage.path.getFilePath()) + PathString.getSep() + entity.path);
+  //   }
+  // }
 }
 /**
  * 调用tauri框架的open方法

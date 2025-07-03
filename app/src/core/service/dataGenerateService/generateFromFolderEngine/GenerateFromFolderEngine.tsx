@@ -1,10 +1,5 @@
-import { FolderEntry, readFolderStructure } from "@tauri-apps/plugin-fs";
-import { v4 } from "uuid";
 import { Color } from "../../../dataStruct/Color";
 import { Project, service } from "../../../Project";
-import { LayoutToTightSquareManager } from "../../../stage/stageManager/concreteMethods/layoutManager/layoutToTightSquareManager";
-import { Section } from "../../../stage/stageObject/entity/Section";
-import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 
 @service("generateFromFolder")
 export class GenerateFromFolder {
@@ -12,50 +7,48 @@ export class GenerateFromFolder {
 
   //
   async generateFromFolder(folderPath: string): Promise<void> {
-    const folderStructure = await readFolderStructure(folderPath);
-
-    // 当前的放置点位
-    const currentLocation = this.project.camera.location.clone();
-
-    const dfs = (fEntry: FolderEntry, currentSection: Section | null = null) => {
-      if (fEntry.is_file) {
-        // 是文件，创建文本节点
-        const textNode = new TextNode({
-          uuid: v4(),
-          text: fEntry.name,
-          details: fEntry.path,
-          location: currentLocation.toArray(),
-          color: this.getColorByPath(fEntry.path).toArray(),
-        });
-        this.project.stageManager.addTextNode(textNode);
-        if (currentSection) {
-          this.project.stageManager.goInSection([textNode], currentSection);
-        }
-        return textNode;
-      } else {
-        // 是文件夹，先创建一个Section
-        const section = new Section({
-          uuid: v4(),
-          text: fEntry.name,
-          details: fEntry.path,
-          location: currentLocation.toArray(),
-        });
-        this.project.stageManager.addSection(section);
-        if (currentSection) {
-          this.project.stageManager.goInSection([section], currentSection);
-        }
-        // 然后递归处理子文件夹
-        if (fEntry.children) {
-          for (const child of fEntry.children) {
-            dfs(child, section);
-          }
-        }
-        return section;
-      }
-    };
-
-    const rootEntity = dfs(folderStructure);
-    LayoutToTightSquareManager.layoutToTightSquare([rootEntity]);
+    // TODO: 读取文件夹结构并生成图
+    // const folderStructure = await readFolderStructure(folderPath);
+    // // 当前的放置点位
+    // const currentLocation = this.project.camera.location.clone();
+    // const dfs = (fEntry: FolderEntry, currentSection: Section | null = null) => {
+    //   if (fEntry.is_file) {
+    //     // 是文件，创建文本节点
+    //     const textNode = new TextNode({
+    //       uuid: v4(),
+    //       text: fEntry.name,
+    //       details: fEntry.path,
+    //       location: currentLocation.toArray(),
+    //       color: this.getColorByPath(fEntry.path).toArray(),
+    //     });
+    //     this.project.stageManager.addTextNode(textNode);
+    //     if (currentSection) {
+    //       this.project.stageManager.goInSection([textNode], currentSection);
+    //     }
+    //     return textNode;
+    //   } else {
+    //     // 是文件夹，先创建一个Section
+    //     const section = new Section({
+    //       uuid: v4(),
+    //       text: fEntry.name,
+    //       details: fEntry.path,
+    //       location: currentLocation.toArray(),
+    //     });
+    //     this.project.stageManager.addSection(section);
+    //     if (currentSection) {
+    //       this.project.stageManager.goInSection([section], currentSection);
+    //     }
+    //     // 然后递归处理子文件夹
+    //     if (fEntry.children) {
+    //       for (const child of fEntry.children) {
+    //         dfs(child, section);
+    //       }
+    //     }
+    //     return section;
+    //   }
+    // };
+    // const rootEntity = dfs(folderStructure);
+    // LayoutToTightSquareManager.layoutToTightSquare([rootEntity]);
   }
 
   private getColorByPath(path: string): Color {
