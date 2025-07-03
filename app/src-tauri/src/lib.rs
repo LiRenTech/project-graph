@@ -24,7 +24,10 @@ pub fn run() {
     // 相同的bug: https://github.com/tauri-apps/tauri/issues/10702
     // 解决方案来源: https://github.com/clash-verge-rev/clash-verge-rev/blob/ae5b2cfb79423c7e76a281725209b812774367fa/src-tauri/src/lib.rs#L27-L28
     #[cfg(target_os = "linux")]
-    std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
+    {
+        std::env::set_var("__GL_THREADED_OPTIMIZATIONS", "0");
+        std::env::set_var("__NV_DISABLE_EXPLICIT_SYNC", "1");
+    }
 
     tauri::Builder::default()
         .plugin(tauri_plugin_store::Builder::new().build())
