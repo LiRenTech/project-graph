@@ -38,7 +38,6 @@ import { KeyboardOnlyEngine } from "./service/controlService/keyboardOnlyEngine/
 import { KeyboardOnlyGraphEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyGraphEngine";
 import { KeyboardOnlyTreeEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyTreeEngine";
 import { SelectChangeEngine } from "./service/controlService/keyboardOnlyEngine/selectChangeEngine";
-import { MouseLocation } from "./service/controlService/MouseLocation";
 import { RectangleSelect } from "./service/controlService/rectangleSelectEngine/rectangleSelectEngine";
 import { SecretKeys } from "./service/controlService/secretKeysEngine/secretKeysEngine";
 import { KeyBinds } from "./service/controlService/shortcutKeysEngine/KeyBinds";
@@ -59,7 +58,7 @@ import { Camera } from "./stage/Camera";
 import { Canvas } from "./stage/Canvas";
 import { ProjectFormatUpgrader } from "./stage/ProjectFormatUpgrader";
 import { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
-import { StageAutoAlignManager as AutoAlign } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
+import { AutoAlign } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { DeleteManager } from "./stage/stageManager/concreteMethods/StageDeleteManager";
 import { EntityMoveManager } from "./stage/stageManager/concreteMethods/StageEntityMoveManager";
 import { StageUtils } from "./stage/stageManager/concreteMethods/StageManagerUtils";
@@ -165,7 +164,7 @@ export class Project {
   /**
    * 立刻加载一个新的服务
    */
-  registerService(service: { id?: string; new (...args: any[]): Service }) {
+  registerService(service: { id?: string; new (...args: any[]): any }) {
     if (!service.id) {
       service.id = crypto.randomUUID();
       console.warn("服务 %o 未指定 ID，自动生成：%s", service, service.id);
@@ -297,7 +296,6 @@ declare module "./Project" {
     // 数据管理
     stageManager: StageManager;
     camera: Camera;
-    mouseLocation: MouseLocation;
     effects: Effects;
     autoCompute: AutoCompute;
     secretKeys: SecretKeys;

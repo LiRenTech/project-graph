@@ -14,7 +14,7 @@ import { GraphMethods } from "../basicMethods/GraphMethods";
  * 自动对齐和布局管理器
  */
 @service("autoAlign")
-export class StageAutoAlignManager {
+export class AutoAlign {
   constructor(private readonly project: Project) {}
 
   /**

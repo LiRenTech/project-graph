@@ -189,12 +189,12 @@ export default function App() {
 
       {/* 第二行：标签页 */}
       <div className="flex h-8 gap-2 overflow-x-auto">
-        {Array.from({ length: 30 }, (_, i) => `文件${i + 1}`).map((file) => (
+        {projects.map((project) => (
           <div
-            key={file}
+            key={project.uri.toString()}
             className="bg-titlebar-bg text-titlebar-text border-titlebar-border flex shrink-0 items-center gap-1 rounded-lg border p-2"
           >
-            <span className="text-sm">{file}</span>
+            <span className="text-sm">{project.uri.toString()}</span>
             <X size={16} strokeWidth={3} className="hover:bg-titlebar-control-hover-bg rounded-full hover:scale-125" />
           </div>
         ))}

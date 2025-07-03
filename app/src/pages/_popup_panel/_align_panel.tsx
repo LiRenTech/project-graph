@@ -31,7 +31,7 @@ import { LayoutManualAlign } from "../../core/stage/stageManager/concreteMethods
 import { LayoutResizeManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutResizeManager";
 import { LayoutToSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToSquareManager";
 import { LayoutToTightSquareManager } from "../../core/stage/stageManager/concreteMethods/layoutManager/layoutToTightSquareManager";
-import { StageAutoAlignManager } from "../../core/stage/stageManager/concreteMethods/StageAutoAlignManager";
+import { AutoAlign } from "../../core/stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { StageManager } from "../../core/stage/stageManager/StageManager";
 import { ConnectableEntity } from "../../core/stage/stageObject/abstract/ConnectableEntity";
 import { TextNode } from "../../core/stage/stageObject/entity/TextNode";
@@ -187,13 +187,13 @@ export default function AlignNodePanel() {
         <ToolbarItem
           description="向右自动树形布局"
           icon={<Network className="-rotate-90" />}
-          handleFunction={isSelectedIsTreeRoot(StageAutoAlignManager.autoLayoutSelectedFastTreeModeRight)}
+          handleFunction={isSelectedIsTreeRoot(AutoAlign.autoLayoutSelectedFastTreeModeRight)}
         />
         <div />
         <ToolbarItem
           description="向下自动树形布局（点击一次布局一层）"
           icon={<Network />}
-          handleFunction={isSelectedIsTreeRoot(StageAutoAlignManager.autoLayoutSelectedFastTreeModeDown)}
+          handleFunction={isSelectedIsTreeRoot(AutoAlign.autoLayoutSelectedFastTreeModeDown)}
         />
         <div />
       </div>

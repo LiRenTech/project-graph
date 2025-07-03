@@ -4,7 +4,7 @@ import { MouseLocation } from "../../core/service/controlService/MouseLocation";
 import { GlobalMenu } from "../../core/service/GlobalMenu";
 import { SubWindow } from "../../core/service/SubWindow";
 
-export default function MenuWindow({ menu }: { menu: GlobalMenu.Menu }) {
+export default function MenuWindow({ menu, winId = "" }: { menu: GlobalMenu.Menu; winId?: string }) {
   return (
     <div className="flex flex-col p-2">
       {menu.items.map((item, index) =>
@@ -12,9 +12,10 @@ export default function MenuWindow({ menu }: { menu: GlobalMenu.Menu }) {
           <div
             key={index}
             className="hover:bg-menu-item-hover-bg flex cursor-pointer items-center gap-1 rounded-lg p-2 transition-all active:scale-90 active:rounded-2xl"
-            // onMouseUp={() => {
-            //   console.log("click");
-            // }}
+            onMouseUp={() => {
+              item.fn();
+              SubWindow.close(winId);
+            }}
           >
             {item.icon}
             {item.name}
