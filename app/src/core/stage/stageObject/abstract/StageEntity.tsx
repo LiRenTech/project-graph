@@ -1,6 +1,5 @@
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { SectionMethods } from "../../stageManager/basicMethods/SectionMethods";
 import { StageObject } from "./StageObject";
 /**
  * 一切独立存在、能被移动的东西，且放在框里能被连带移动的东西
@@ -46,7 +45,7 @@ export abstract class Entity extends StageObject {
    * 由于自身位置的移动，递归的更新所有父级Section的位置和大小
    */
   protected updateFatherSectionByMove() {
-    const fatherSections = SectionMethods.getFatherSections(this);
+    const fatherSections = this.project.sectionMethods.getFatherSections(this);
     for (const section of fatherSections) {
       section.adjustLocationAndSize();
       section.updateFatherSectionByMove();

@@ -61,7 +61,7 @@ export class AutoComputeUtils {
       }
     } else {
       // 新建一个节点生长出去
-      const newNode = new TextNode({
+      const newNode = new TextNode(this.project, {
         uuid: uuidv4(),
         text: resultText,
         location: [node.collisionBox.getRectangle().location.x, node.collisionBox.getRectangle().location.y + 100],
@@ -86,7 +86,7 @@ export class AutoComputeUtils {
       }
     } else {
       // 新建一个节点生长出去
-      const newNode = new TextNode({
+      const newNode = new TextNode(this.project, {
         uuid: uuidv4(),
         text: resultText,
         location: [section.collisionBox.getRectangle().location.x, section.collisionBox.getRectangle().bottom + 100],
@@ -104,7 +104,7 @@ export class AutoComputeUtils {
       // 子节点数量不够，需要新建节点
       const needCount = resultTextList.length - childrenList.length;
       for (let j = 0; j < needCount; j++) {
-        const newNode = new TextNode({
+        const newNode = new TextNode(this.project, {
           uuid: uuidv4(),
           text: "",
           location: [
@@ -147,7 +147,7 @@ export class AutoComputeUtils {
       // 子节点数量不够，需要新建节点
       const needCount = resultTextList.length - childrenList.length;
       for (let j = 0; j < needCount; j++) {
-        const newNode = new TextNode({
+        const newNode = new TextNode(this.project, {
           uuid: uuidv4(),
           text: "",
           location: [

@@ -525,7 +525,7 @@ export namespace NodeLogic {
       if (b === 1) {
         const x = parseFloat(fatherNode1.text);
         const y = parseFloat(fatherNode2.text);
-        const textNode = new TextNode({
+        const textNode = new TextNode(this.project, {
           uuid: v4(),
           details: "",
           location: [x, y],

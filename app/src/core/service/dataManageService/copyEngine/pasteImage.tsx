@@ -38,7 +38,7 @@ export async function copyEnginePasteImage(item: ClipboardItem, mouseLocation: V
 
   // 要延迟一下，等待保存完毕
   setTimeout(() => {
-    const imageNode = new ImageNode({
+    const imageNode = new ImageNode(this.project, {
       uuid: imageUUID,
       location: [mouseLocation.x, mouseLocation.y],
       path: `${imageFileName}.png`,

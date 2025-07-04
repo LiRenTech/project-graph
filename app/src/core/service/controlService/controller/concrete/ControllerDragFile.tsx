@@ -72,7 +72,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
           });
         } else if (file.type.includes("image/svg+xml")) {
           this.readFileText(file).then((dataString) => {
-            const entity = new SvgNode({
+            const entity = new SvgNode(this.project, {
               uuid: uuidv4(),
               content: dataString,
               location: [mouseWorldLocation.x, mouseWorldLocation.y],
@@ -164,7 +164,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
 
   async dealUnknownFileDrop(file: File, mouseWorldLocation: Vector, i: number) {
     // 未知类型，按插入一个textNode判断
-    const textNode = new TextNode({
+    const textNode = new TextNode(this.project, {
       uuid: uuidv4(),
       text: file.name,
       location: [mouseWorldLocation.x, mouseWorldLocation.y],
@@ -242,7 +242,7 @@ export class ControllerDragFileClass extends ControllerClassDragFile {
     const imageUUID = uuidv4();
     const folderPath = new Path(this.project.uri).parent.toString();
     await writeFile(`${folderPath}${PathString.getSep()}${imageUUID}.png`, new Uint8Array(await file.arrayBuffer()));
-    const imageNode = new ImageNode({
+    const imageNode = new ImageNode(this.project, {
       uuid: imageUUID,
       location: [mouseWorldLocation.x, mouseWorldLocation.y],
       path: `${imageUUID}.png`,

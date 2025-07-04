@@ -1,6 +1,7 @@
 import { Serialized } from "../../../../types/node";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
+import { Project } from "../../../Project";
 import { CircleChangeRadiusEffect } from "../../../service/feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
@@ -69,6 +70,7 @@ export class ConnectPoint /* extends ConnectableEntity */ {
   }
 
   constructor(
+    protected readonly project: Project,
     { uuid, location = [0, 0], details = "" }: Partial<Serialized.ConnectPoint> & { uuid: string },
     public unknown = false,
   ) {

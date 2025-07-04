@@ -4,7 +4,7 @@ import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
-import { UrlNodeRenderer } from "../../../render/canvas2d/entityRenderer/urlNode/urlNodeRenderer";
+import { Project } from "../../../Project";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
@@ -39,7 +39,7 @@ export class UrlNode extends ConnectableEntity {
   }
   public set isEditingTitle(value: boolean) {
     this._isEditingTitle = value;
-    UrlNodeRenderer.render(this);
+    this.project.urlNodeRenderer.render(this);
   }
   get geometryCenter(): Vector {
     return this.collisionBox.getRectangle().center;
@@ -88,15 +88,18 @@ export class UrlNode extends ConnectableEntity {
   }
   isHiddenBySectionCollapse: boolean = false;
 
-  constructor({
-    uuid,
-    title = "",
-    details = "",
-    url = "",
-    location = [0, 0],
-    size = [UrlNode.width, UrlNode.height],
-    color = [0, 0, 0, 0],
-  }: Partial<Serialized.UrlNode> & { uuid: string }) {
+  constructor(
+    protected readonly project: Project,
+    {
+      uuid,
+      title = "",
+      details = "",
+      url = "",
+      location = [0, 0],
+      size = [UrlNode.width, UrlNode.height],
+      color = [0, 0, 0, 0],
+    }: Partial<Serialized.UrlNode> & { uuid: string },
+  ) {
     super();
     this.uuid = uuid;
     this.details = details;

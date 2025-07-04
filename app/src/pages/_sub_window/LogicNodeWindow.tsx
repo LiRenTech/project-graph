@@ -26,7 +26,7 @@ export default function LogicNodeWindow() {
             tooltip={LogicNodeNameToArgsTipsMap[name]}
             onClick={() => {
               StageManager.addTextNode(
-                new TextNode({
+                new TextNode(this.project, {
                   uuid: v4(),
                   location: [Camera.location.x, Camera.location.y],
                   text: name,

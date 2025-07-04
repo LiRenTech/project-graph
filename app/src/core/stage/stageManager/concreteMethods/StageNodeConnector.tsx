@@ -54,7 +54,7 @@ export class NodeConnector {
     if (!this.isConnectable(fromNode, toNode)) {
       return;
     }
-    const newEdge = new LineEdge({
+    const newEdge = new LineEdge(this.project, {
       source: fromNode.uuid,
       target: toNode.uuid,
       text,
@@ -74,7 +74,7 @@ export class NodeConnector {
     if (!this.isConnectable(fromNode, toNode)) {
       return;
     }
-    const newEdge = CubicCatmullRomSplineEdge.fromTwoEntity(fromNode, toNode);
+    const newEdge = CubicCatmullRomSplineEdge.fromTwoEntity(this.project, fromNode, toNode);
     this.project.stageManager.addCrEdge(newEdge);
     this.project.stageManager.updateReferences();
   }

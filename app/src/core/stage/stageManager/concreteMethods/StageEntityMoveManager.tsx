@@ -5,7 +5,6 @@ import { RectanglePushInEffect } from "../../../service/feedbackService/effectEn
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { GraphMethods } from "../basicMethods/GraphMethods";
-import { SectionMethods } from "../basicMethods/SectionMethods";
 
 /**
  * 管理节点的位置移动
@@ -60,11 +59,11 @@ export class EntityMoveManager {
     this.project.effects.addEffect(new EntityJumpMoveEffect(15, beforeMoveRect, delta));
 
     // 即将跳入的sections区域
-    const targetSections = SectionMethods.getSectionsByInnerLocation(beforeMoveRect.center.add(delta));
+    const targetSections = this.project.sectionMethods.getSectionsByInnerLocation(beforeMoveRect.center.add(delta));
     // 改变层级
     if (targetSections.length === 0) {
       // 代表想要走出当前section
-      const currentFatherSections = SectionMethods.getFatherSections(entity);
+      const currentFatherSections = this.project.sectionMethods.getFatherSections(entity);
       if (currentFatherSections.length !== 0) {
         this.project.stageManager.goOutSection([entity], currentFatherSections[0]);
       }

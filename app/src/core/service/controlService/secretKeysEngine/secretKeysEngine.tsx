@@ -8,7 +8,6 @@ import { Queue } from "../../../dataStruct/Queue";
 import { Vector } from "../../../dataStruct/Vector";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
-import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { CubicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
@@ -473,7 +472,7 @@ export class SecretKeys {
 
           const newNodes = [];
           for (const splitedText of splitedTextList) {
-            const newTextNode = new TextNode({
+            const newTextNode = new TextNode(this.project, {
               uuid: v4(),
               text: splitedText,
               location: [putLocation.x, putLocation.y],
@@ -527,7 +526,7 @@ export class SecretKeys {
           selectedTextNodes.map((node) => node.collisionBox.getRectangle()),
         ).leftTop;
         const avgColor = averageColors(selectedTextNodes.map((node) => node.color));
-        const newTextNode = new TextNode({
+        const newTextNode = new TextNode(this.project, {
           uuid: v4(),
           text: mergeText,
           location: [leftTop.x, leftTop.y],
@@ -557,7 +556,7 @@ export class SecretKeys {
         this.project.effects.addEffect(ViewFlashEffect.SaveFile());
         const uuid = v4();
         this.project.stageManager.addPortalNode(
-          new PortalNode({
+          new PortalNode(this.project, {
             uuid: uuid,
             title: "PortalNode",
             portalFilePath: "",
@@ -637,7 +636,7 @@ export class SecretKeys {
       name: "用特效高亮一次所有选中的section框及其内部全部实体",
       func: () => {
         const selectedNodes = this.project.stageManager.getSelectedEntities();
-        for (const entity of SectionMethods.getAllEntitiesInSelectedSectionsOrEntities(selectedNodes)) {
+        for (const entity of this.project.sectionMethods.getAllEntitiesInSelectedSectionsOrEntities(selectedNodes)) {
           this.project.effects.addEffect(RectangleNoteEffect.fromShiftClickSelect(entity.collisionBox.getRectangle()));
         }
       },
@@ -751,7 +750,7 @@ export class SecretKeys {
         }
         const currentLocation = this.project.camera.location.clone();
         for (const emoji of generateEmojis()) {
-          const textNode = new TextNode({
+          const textNode = new TextNode(this.project, {
             uuid: v4(),
             text: emoji,
             location: currentLocation
@@ -789,7 +788,7 @@ export class SecretKeys {
       explain: "未来即将删除",
       isHidden: true,
       func: () => {
-        const folderPath = "D:\\Desktop\\graph\\projectGraph\\welcome";
+        // const folderPath = "D:\\Desktop\\graph\\projectGraph\\welcome";
         // TODO: 读取文件夹结构并生成图
         // readDir(folderPath).then((folderStructure) => {
         //   console.log(folderStructure);

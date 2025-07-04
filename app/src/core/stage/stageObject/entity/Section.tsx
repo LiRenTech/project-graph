@@ -7,10 +7,10 @@ import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Shape } from "../../../dataStruct/shape/Shape";
 import { Vector } from "../../../dataStruct/Vector";
+import { Project } from "../../../Project";
 import { SectionRenderer } from "../../../render/canvas2d/entityRenderer/section/SectionRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
-import { SectionMethods } from "../../stageManager/basicMethods/SectionMethods";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { Entity } from "../abstract/StageEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
@@ -76,6 +76,7 @@ export class Section extends ConnectableEntity {
   isHiddenBySectionCollapse = false;
 
   constructor(
+    protected readonly project: Project,
     {
       uuid,
       text = "",
@@ -242,11 +243,11 @@ export class Section extends ConnectableEntity {
       return;
     }
     if (other instanceof Section) {
-      if (SectionMethods.isEntityInSection(this, other)) {
+      if (this.project.sectionMethods.isEntityInSection(this, other)) {
         return;
       }
     }
-    if (SectionMethods.isEntityInSection(other, this)) {
+    if (this.project.sectionMethods.isEntityInSection(other, this)) {
       return;
     }
     super.collideWithOtherEntity(other);

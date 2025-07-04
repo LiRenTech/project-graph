@@ -14,7 +14,6 @@ import { Section } from "../../stageObject/entity/Section";
 import { SvgNode } from "../../stageObject/entity/SvgNode";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { UrlNode } from "../../stageObject/entity/UrlNode";
-import { SectionMethods } from "../basicMethods/SectionMethods";
 
 type DeleteHandler<T extends Entity> = (entity: T) => void;
 type Constructor<T> = { new (...args: any[]): T };
@@ -33,7 +32,8 @@ export class DeleteManager {
   constructor(private readonly project: Project) {
     this.registerHandler(TextNode, this.deleteTextNode);
     this.registerHandler(Section, this.deleteSection);
-    this.registerHandler(ConnectPoint, this.deleteConnectPoint);
+    // TODO: 修复ConnectPoint
+    // this.registerHandler(ConnectPoint, this.deleteConnectPoint);
     this.registerHandler(ImageNode, this.deleteImageNode);
     this.registerHandler(UrlNode, this.deleteUrlNode);
     this.registerHandler(PortalNode, this.deletePortalNode);
@@ -92,7 +92,7 @@ export class DeleteManager {
     this.project.stageManager.deleteOneSection(entity);
     this.deleteEntityAfterClearAssociation(entity);
     // 将自己所有的父级Section的children添加自己的children
-    const fatherSections = SectionMethods.getFatherSections(entity);
+    const fatherSections = this.project.sectionMethods.getFatherSections(entity);
     this.project.sectionInOutManager.goInSections(entity.children, fatherSections);
   }
   private deleteImageNode(entity: ImageNode) {
@@ -129,6 +129,7 @@ export class DeleteManager {
   }
 
   private deleteTextNode(entity: TextNode) {
+    console.log(this.project);
     // 先判断这个node是否在nodes里
     if (this.project.stageManager.getTextNodes().includes(entity)) {
       // TODO: 删除逻辑节点存储的状态

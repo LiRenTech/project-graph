@@ -8,7 +8,6 @@ import { Section } from "../../../../stage/stageObject/entity/Section";
 import { Project, service } from "../../../../Project";
 import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Settings } from "../../../../service/Settings";
-import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { Edge } from "../../../../stage/stageObject/association/Edge";
 import { Renderer } from "../../renderer";
@@ -152,7 +151,7 @@ export class EdgeRenderer {
    * @param innerEntity
    */
   getMinNonCollapseParentSection(innerEntity: ConnectableEntity): Section {
-    const father = SectionMethods.getFatherSections(innerEntity);
+    const father = this.project.sectionMethods.getFatherSections(innerEntity);
     if (father.length === 0) {
       // 直接抛出错误
       throw new Error("Can't find parent section");

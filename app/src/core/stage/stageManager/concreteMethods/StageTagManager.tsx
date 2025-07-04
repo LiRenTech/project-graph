@@ -9,7 +9,6 @@ import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity"
 import { StageObject } from "../../stageObject/abstract/StageObject";
 import { Edge } from "../../stageObject/association/Edge";
 import { LineEdge } from "../../stageObject/association/LineEdge";
-import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
@@ -80,11 +79,12 @@ export class TagManager {
         if (tagObject instanceof LineEdge) {
           colorItem = tagObject.color.toArray();
         }
-      } else if (tagObject instanceof ConnectPoint) {
-        title = tagObject.details.slice(0, 20).trim();
-        if (title.length === 0) {
-          title = "Connect Point: " + tagObject.uuid.slice(0, 4);
-        }
+        // TODO: 修复ConnectPoint
+        // } else if (tagObject instanceof ConnectPoint) {
+        //   title = tagObject.details.slice(0, 20).trim();
+        //   if (title.length === 0) {
+        //     title = "Connect Point: " + tagObject.uuid.slice(0, 4);
+        //   }
       } else {
         title = "Unknown: " + tagObject.uuid.slice(0, 4);
       }

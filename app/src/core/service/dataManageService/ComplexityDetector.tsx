@@ -1,6 +1,5 @@
 import { Project, service } from "../../Project";
 import { GraphMethods } from "../../stage/stageManager/basicMethods/GraphMethods";
-import { SectionMethods } from "../../stage/stageManager/basicMethods/SectionMethods";
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stage/stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stage/stageObject/entity/ImageNode";
@@ -229,16 +228,16 @@ export class ComplexityDetector {
     countResultObject.edgeColorTypeCount = edgeColorStringSet.size;
     // 集合论相关
     for (const entity of entities) {
-      const fatherSections = SectionMethods.getFatherSections(entity);
+      const fatherSections = this.project.sectionMethods.getFatherSections(entity);
       if (fatherSections.length > 1) {
         countResultObject.crossEntityCount++;
       }
     }
     for (const section of this.project.stageManager.getSections()) {
-      // SectionMethods.isTreePack(section);
+      // this.project.sectionMethods.isTreePack(section);
       countResultObject.maxSectionDepth = Math.max(
         countResultObject.maxSectionDepth,
-        SectionMethods.getSectionMaxDeep(section),
+        this.project.sectionMethods.getSectionMaxDeep(section),
       );
       if (section.childrenUUIDs.length === 0) {
         countResultObject.emptySetCount++;

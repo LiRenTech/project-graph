@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from "uuid";
 import { Dialog } from "../../../../components/dialog";
 import { PathString } from "../../../../utils/pathString";
 import { Vector } from "../../../dataStruct/Vector";
-import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { SvgNode } from "../../../stage/stageObject/entity/SvgNode";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
@@ -22,7 +21,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
 
   if (isSvgString(clipboardText)) {
     // 是SVG类型
-    entity = new SvgNode({
+    entity = new SvgNode(this.project, {
       uuid: uuidv4(),
       content: clipboardText,
       location: [mouseLocation.x, mouseLocation.y],
@@ -31,7 +30,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
     });
   } else if (PathString.isValidURL(clipboardText)) {
     // 是URL类型
-    entity = new UrlNode({
+    entity = new UrlNode(this.project, {
       title: "链接",
       uuid: uuidv4(),
       url: clipboardText,
@@ -39,7 +38,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
     });
   } else if (isMermaidGraphString(clipboardText)) {
     // 是Mermaid图表类型
-    entity = new TextNode({
+    entity = new TextNode(this.project, {
       text: "mermaid图表",
       details: "```mermaid\n" + clipboardText + "\n```",
       uuid: uuidv4(),
@@ -49,7 +48,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
     const { valid, text, url } = PathString.isMarkdownUrl(clipboardText);
     if (valid) {
       // 是Markdown链接类型
-      entity = new UrlNode({
+      entity = new UrlNode(this.project, {
         title: text,
         uuid: uuidv4(),
         url: url,
@@ -58,7 +57,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
     } else {
       // 只是普通的文本
       if (clipboardText.length > 3000) {
-        entity = new TextNode({
+        entity = new TextNode(this.project, {
           uuid: uuidv4(),
           text: "粘贴板文字过长",
           location: [mouseLocation.x, mouseLocation.y],
@@ -68,7 +67,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
           details: clipboardText,
         });
       } else {
-        entity = new TextNode({
+        entity = new TextNode(this.project, {
           uuid: uuidv4(),
           text: clipboardText,
           location: [mouseLocation.x, mouseLocation.y],
@@ -86,7 +85,7 @@ export async function copyEnginePastePlainText(item: ClipboardItem, mouseLocatio
   if (entity !== null) {
     this.project.stageManager.addEntity(entity);
     // 添加到section
-    const mouseSections = SectionMethods.getSectionsByInnerLocation(mouseLocation);
+    const mouseSections = this.project.sectionMethods.getSectionsByInnerLocation(mouseLocation);
     if (mouseSections.length > 0) {
       this.project.stageManager.goInSection([entity], mouseSections[0]);
       this.project.effects.addEffect(

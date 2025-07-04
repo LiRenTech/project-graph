@@ -1,13 +1,12 @@
 import { Serialized } from "../../../../types/node";
 import { getMultiLineTextSize } from "../../../../utils/font";
+import { Project } from "../../../Project";
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { TextNodeRenderer } from "../../../render/canvas2d/entityRenderer/textNode/TextNodeRenderer";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
-import { SectionMethods } from "../../stageManager/basicMethods/SectionMethods";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { Entity } from "../abstract/StageEntity";
 import { ResizeAble } from "../abstract/StageObjectInterface";
@@ -78,13 +77,14 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
 
   public set isEditing(value: boolean) {
     this._isEditing = value;
-    TextNodeRenderer.renderTextNode(this);
+    this.project.textNodeRenderer.renderTextNode(this);
     // 再主动渲染一次，确保即使渲染引擎停止，文字也能显示出来
   }
   isHiddenBySectionCollapse = false;
 
   color: Color = Color.Transparent;
   constructor(
+    protected readonly project: Project,
     {
       uuid,
       text = "",
@@ -199,7 +199,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
     if (other instanceof Section) {
       // 如果碰撞的东西是一个section
       // 如果自己是section的子节点，则不移动
-      if (SectionMethods.isEntityInSection(this, other)) {
+      if (this.project.sectionMethods.isEntityInSection(this, other)) {
         return;
       }
     }

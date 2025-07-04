@@ -5,7 +5,6 @@ import { Project, service } from "../../../Project";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../stageObject/association/LineEdge";
-import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { PenStroke } from "../../stageObject/entity/PenStroke";
 import { PortalNode } from "../../stageObject/entity/PortalNode";
@@ -32,21 +31,22 @@ export class SerializedDataAdder {
     for (const entity of updatedSerializedData.entities) {
       let entityObject: Entity | null = null;
       if (Serialized.isTextNode(entity)) {
-        entityObject = new TextNode(entity);
+        entityObject = new TextNode(this.project, entity);
       } else if (Serialized.isSection(entity)) {
-        entityObject = new Section(entity);
-      } else if (Serialized.isConnectPoint(entity)) {
-        entityObject = new ConnectPoint(entity);
+        entityObject = new Section(this.project, entity);
+        // TODO: 修复ConnectPoint
+        // } else if (Serialized.isConnectPoint(entity)) {
+        //   entityObject = new ConnectPoint(entity);
       } else if (Serialized.isPenStroke(entity)) {
-        entityObject = new PenStroke(entity);
+        entityObject = new PenStroke(this.project, entity);
       } else if (Serialized.isPortalNode(entity)) {
-        entityObject = new PortalNode(entity);
+        entityObject = new PortalNode(this.project, entity);
       } else if (Serialized.isUrlNode(entity)) {
-        entityObject = new UrlNode(entity);
+        entityObject = new UrlNode(this.project, entity);
       } else if (Serialized.isImageNode(entity)) {
-        entityObject = new ImageNode(entity);
+        entityObject = new ImageNode(this.project, entity);
       } else if (Serialized.isSvgNode(entity)) {
-        entityObject = new SvgNode(entity);
+        entityObject = new SvgNode(this.project, entity);
       }
       if (entityObject) {
         entityObject.moveTo(entityObject.collisionBox.getRectangle().location.add(diffLocation));
@@ -55,9 +55,9 @@ export class SerializedDataAdder {
     }
     for (const edge of updatedSerializedData.associations) {
       if (Serialized.isLineEdge(edge)) {
-        this.project.stageManager.addLineEdge(new LineEdge(edge));
+        this.project.stageManager.addLineEdge(new LineEdge(this.project, edge));
       } else if (Serialized.isCubicCatmullRomSplineEdge(edge)) {
-        this.project.stageManager.addCrEdge(new CubicCatmullRomSplineEdge(edge));
+        this.project.stageManager.addCrEdge(new CubicCatmullRomSplineEdge(this.project, edge));
       }
     }
     this.project.stageManager.updateReferences();

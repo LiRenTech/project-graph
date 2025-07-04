@@ -1,6 +1,7 @@
 import { Serialized } from "../../../../types/node";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
+import { Project } from "../../../Project";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
@@ -66,6 +67,7 @@ export class ImageNode extends ConnectableEntity {
   }
 
   constructor(
+    protected readonly project: Project,
     {
       uuid,
       location = [0, 0],
@@ -106,6 +108,7 @@ export class ImageNode extends ConnectableEntity {
    * @param folderPath 工程文件所在路径文件夹，不加尾部斜杠
    * @returns
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public updateBase64StringByPath(folderPath: string) {
     if (this.path === "") {
       return;

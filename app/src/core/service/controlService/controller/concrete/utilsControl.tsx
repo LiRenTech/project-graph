@@ -5,7 +5,6 @@ import { colorInvert } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project, service } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { StageObject } from "../../../../stage/stageObject/abstract/StageObject";
@@ -79,7 +78,7 @@ export class ControllerUtils {
           ele.style.width = "auto";
           ele.style.width = `${rectView.width.toFixed(2)}px`;
           // 自动调整它的外层框的大小
-          const fatherSections = SectionMethods.getFatherSectionsList(clickedNode);
+          const fatherSections = this.project.sectionMethods.getFatherSectionsList(clickedNode);
           for (const section of fatherSections) {
             section.adjustLocationAndSize();
           }
@@ -326,7 +325,7 @@ export class ControllerUtils {
   }
 
   addTextNodeByLocation(location: Vector, selectCurrent: boolean = false, successCallback?: (uuid: string) => void) {
-    const sections = SectionMethods.getSectionsByInnerLocation(location);
+    const sections = this.project.sectionMethods.getSectionsByInnerLocation(location);
     // 新建节点
     this.project.nodeAdder.addTextNodeByClick(location, sections, selectCurrent).then((uuid) => {
       this.textNodeInEditModeByUUID(uuid);
@@ -363,7 +362,7 @@ export class ControllerUtils {
     let clickedStageObject: StageObject | null = this.project.stageManager.findEntityByLocation(clickedLocation);
     // 补充：在宏观视野下，框应该被很轻松的点击
     if (clickedStageObject === null && this.project.camera.currentScale < Section.bigTitleCameraScale) {
-      const clickedSections = SectionMethods.getSectionsByInnerLocation(clickedLocation);
+      const clickedSections = this.project.sectionMethods.getSectionsByInnerLocation(clickedLocation);
       if (clickedSections.length > 0) {
         clickedStageObject = clickedSections[0];
       }

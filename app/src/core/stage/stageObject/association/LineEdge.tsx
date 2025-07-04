@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
 import { getMultiLineTextSize } from "../../../../utils/font";
+import { Project } from "../../../Project";
 import { Color } from "../../../dataStruct/Color";
 import { Vector } from "../../../dataStruct/Vector";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
@@ -36,13 +37,14 @@ export class LineEdge extends Edge {
   private _isShifting: boolean = false;
 
   constructor(
+    protected readonly project: Project,
     { source, target, text, uuid, color, sourceRectRate, targetRectRate }: Serialized.LineEdge,
     /** true表示解析状态，false表示解析完毕 */
     public unknown = false,
   ) {
     super();
-    this._source = new TextNode({ uuid: source }, true);
-    this._target = new TextNode({ uuid: target }, true);
+    this._source = new TextNode(this.project, { uuid: source }, true);
+    this._target = new TextNode(this.project, { uuid: target }, true);
     this.text = text;
     this.uuid = uuid;
     this.color = new Color(...color);
@@ -53,8 +55,8 @@ export class LineEdge extends Edge {
   }
 
   // warn: 暂时无引用
-  static fromTwoEntity(source: ConnectableEntity, target: ConnectableEntity): LineEdge {
-    const result = new LineEdge({
+  static fromTwoEntity(project: Project, source: ConnectableEntity, target: ConnectableEntity): LineEdge {
+    const result = new LineEdge(project, {
       source: source.uuid,
       target: target.uuid,
       text: "",

@@ -5,6 +5,7 @@ import { Color } from "../../../dataStruct/Color";
 import { CubicCatmullRomSpline } from "../../../dataStruct/shape/CubicCatmullRomSpline";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
+import { Project } from "../../../Project";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
@@ -49,13 +50,17 @@ export class CubicCatmullRomSplineEdge extends Edge {
     return this._collisionBox;
   }
 
-  static fromTwoEntity(source: ConnectableEntity, target: ConnectableEntity): CubicCatmullRomSplineEdge {
+  static fromTwoEntity(
+    project: Project,
+    source: ConnectableEntity,
+    target: ConnectableEntity,
+  ): CubicCatmullRomSplineEdge {
     // 处理控制点，控制点必须有四个，1 2 3 4，12可重叠，34可重叠
     const startLocation = source.geometryCenter.clone();
     const endLocation = target.geometryCenter.clone();
     const line = Edge.getCenterLine(source, target);
 
-    const result = new CubicCatmullRomSplineEdge({
+    const result = new CubicCatmullRomSplineEdge(project, {
       source: source.uuid,
       target: target.uuid,
       text: "",
@@ -77,6 +82,7 @@ export class CubicCatmullRomSplineEdge extends Edge {
   }
 
   constructor(
+    protected readonly project: Project,
     {
       uuid,
       source,
@@ -94,8 +100,8 @@ export class CubicCatmullRomSplineEdge extends Edge {
     super();
     // this._source = this.project.stageManager.getTextNodeByUUID(source) as TextNode;
     // this._target = this.project.stageManager.getTextNodeByUUID(target) as TextNode;
-    this._source = new TextNode({ uuid: source }, true);
-    this._target = new TextNode({ uuid: target }, true);
+    this._source = new TextNode(this.project, { uuid: source }, true);
+    this._target = new TextNode(this.project, { uuid: target }, true);
     this.uuid = uuid;
     this.text = text;
     this.alpha = alpha;

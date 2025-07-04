@@ -1,5 +1,4 @@
 import { Serialized } from "../../types/node";
-import { SectionMethods } from "./stageManager/basicMethods/SectionMethods";
 import { Association } from "./stageObject/abstract/Association";
 import { Entity } from "./stageObject/abstract/StageEntity";
 import { CubicCatmullRomSplineEdge } from "./stageObject/association/CubicCatmullRomSplineEdge";
@@ -236,7 +235,7 @@ export namespace StageDumper {
 
     // 根据选中的实体，找到涉及的边
     const selectedAssociations: Serialized.CoreAssociation[] = dumpAssociationsByEntities(
-      SectionMethods.getAllEntitiesInSelectedSectionsOrEntities(entities),
+      this.project.sectionMethods.getAllEntitiesInSelectedSectionsOrEntities(entities),
     );
 
     return {

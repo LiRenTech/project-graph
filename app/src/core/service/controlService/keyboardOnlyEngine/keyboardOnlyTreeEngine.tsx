@@ -3,7 +3,6 @@ import { Direction } from "../../../../types/directions";
 import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
-import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
 
@@ -42,7 +41,7 @@ export class KeyboardOnlyTreeEngine {
       createLocation = lastChild.collisionBox.getRectangle().bottomCenter.add(new Vector(0, 10));
     }
     // 创建位置寻找完毕
-    const newNode = new TextNode({
+    const newNode = new TextNode(this.project, {
       text: "新节点",
       details: "",
       uuid: v4(),
@@ -53,7 +52,7 @@ export class KeyboardOnlyTreeEngine {
     this.project.stageManager.addTextNode(newNode);
 
     // 如果是在框里，则把新生长的节点也纳入到框里
-    const fatherSections = SectionMethods.getFatherSections(rootNode);
+    const fatherSections = this.project.sectionMethods.getFatherSections(rootNode);
     for (const section of fatherSections) {
       section.childrenUUIDs.push(newNode.uuid);
       section.children.push(newNode);
@@ -116,7 +115,7 @@ export class KeyboardOnlyTreeEngine {
     // 当前选择的节点的正下方创建一个节点
     // 找到创建点
     const newLocation = currentSelectNode.collisionBox.getRectangle().leftBottom.add(new Vector(0, 1));
-    const newNode = new TextNode({
+    const newNode = new TextNode(this.project, {
       text: "新节点",
       details: "",
       uuid: v4(),
@@ -126,7 +125,7 @@ export class KeyboardOnlyTreeEngine {
     });
     this.project.stageManager.addTextNode(newNode);
     // 如果是在框里，则把新生长的节点也纳入到框里
-    const fatherSections = SectionMethods.getFatherSections(parent);
+    const fatherSections = this.project.sectionMethods.getFatherSections(parent);
     for (const section of fatherSections) {
       section.childrenUUIDs.push(newNode.uuid);
       section.children.push(newNode);

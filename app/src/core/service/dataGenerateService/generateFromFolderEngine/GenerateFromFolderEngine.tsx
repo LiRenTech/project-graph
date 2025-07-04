@@ -1,11 +1,12 @@
 import { Color } from "../../../dataStruct/Color";
-import { Project, service } from "../../../Project";
+import { service } from "../../../Project";
 
 @service("generateFromFolder")
 export class GenerateFromFolder {
-  constructor(private readonly project: Project) {}
+  // constructor(private readonly project: Project) {}
 
   //
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async generateFromFolder(folderPath: string): Promise<void> {
     // TODO: 读取文件夹结构并生成图
     // const folderStructure = await readFolderStructure(folderPath);
@@ -14,7 +15,7 @@ export class GenerateFromFolder {
     // const dfs = (fEntry: FolderEntry, currentSection: Section | null = null) => {
     //   if (fEntry.is_file) {
     //     // 是文件，创建文本节点
-    //     const textNode = new TextNode({
+    //     const textNode = new TextNode(this.project, {
     //       uuid: v4(),
     //       text: fEntry.name,
     //       details: fEntry.path,

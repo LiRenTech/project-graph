@@ -2,6 +2,7 @@ import { Serialized } from "../../../../types/node";
 import { Color } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
+import { Project } from "../../../Project";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
@@ -45,6 +46,7 @@ export class PortalNode extends ConnectableEntity {
   public cameraScale: number;
 
   constructor(
+    protected readonly project: Project,
     {
       uuid,
       title = "",

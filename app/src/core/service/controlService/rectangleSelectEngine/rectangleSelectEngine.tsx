@@ -2,7 +2,6 @@ import { isMac } from "../../../../utils/platform";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
-import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 import { StageObject } from "../../../stage/stageObject/abstract/StageObject";
 import { Edge } from "../../../stage/stageObject/association/Edge";
 import { Section } from "../../../stage/stageObject/entity/Section";
@@ -45,7 +44,7 @@ export class RectangleSelect {
       .some((association) => association.isSelected);
     const isHaveEntitySelected = this.project.stageManager.getEntities().some((entity) => entity.isSelected);
 
-    const sections = SectionMethods.getSectionsByInnerLocation(worldLocation);
+    const sections = this.project.sectionMethods.getSectionsByInnerLocation(worldLocation);
     if (sections.length === 0) {
       // 没有在任何section里按下
       this.limitSection = null;
@@ -231,8 +230,10 @@ export class RectangleSelect {
 
   selectedEntityNormalizing() {
     const entities = this.project.stageManager.getSelectedEntities();
-    const shallowerSections = SectionMethods.shallowerSection(entities.filter((entity) => entity instanceof Section));
-    const shallowerEntities = SectionMethods.shallowerNotSectionEntities(entities);
+    const shallowerSections = this.project.sectionMethods.shallowerSection(
+      entities.filter((entity) => entity instanceof Section),
+    );
+    const shallowerEntities = this.project.sectionMethods.shallowerNotSectionEntities(entities);
     for (const entity of entities) {
       if (entity instanceof Section) {
         if (!shallowerSections.includes(entity)) {

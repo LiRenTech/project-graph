@@ -13,7 +13,6 @@ import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { GraphMethods } from "../basicMethods/GraphMethods";
-import { SectionMethods } from "../basicMethods/SectionMethods";
 import { StageHistoryManager } from "../StageHistoryManager";
 
 /**
@@ -36,7 +35,7 @@ export class NodeAdder {
     selectCurrent = false,
   ): Promise<string> {
     const newUUID = uuidv4();
-    const node = new TextNode({
+    const node = new TextNode(this.project, {
       uuid: newUUID,
       text: await this.getAutoName(),
       details: "",
@@ -106,7 +105,7 @@ export class NodeAdder {
     } else if (direction === Direction.Right) {
       createLocation = entityRectangle.rightCenter.add(new Vector(distanceLength, 0));
     }
-    addToSections = SectionMethods.getFatherSections(selectedEntity);
+    addToSections = this.project.sectionMethods.getFatherSections(selectedEntity);
     const uuid = await this.addTextNodeByClick(createLocation, addToSections, selectCurrent);
     const newNode = this.project.stageManager.getTextNodeByUUID(uuid);
     if (!newNode) {
@@ -163,7 +162,8 @@ export class NodeAdder {
     });
     this.project.stageManager.addConnectPoint(connectPoint);
     for (const section of addToSections) {
-      section.children.push(connectPoint);
+      // TODO: 修复ConnectPoint
+      // section.children.push(connectPoint);
       section.childrenUUIDs.push(connectPoint.uuid);
       section.adjustLocationAndSize();
       this.project.effects.addEffect(
@@ -196,7 +196,7 @@ export class NodeAdder {
 
     const createNodeByName = (name: string) => {
       const newUUID = uuidv4();
-      const node = new TextNode({
+      const node = new TextNode(this.project, {
         uuid: newUUID,
         text: name,
         details: "",
@@ -293,7 +293,7 @@ export class NodeAdder {
     const rootUUID = uuidv4();
 
     // 准备好栈和根节点
-    const rootNode = new TextNode({
+    const rootNode = new TextNode(this.project, {
       uuid: rootUUID,
       text: "root",
       details: "",
@@ -316,7 +316,7 @@ export class NodeAdder {
       const textContent = line.trim();
 
       const newUUID = uuidv4();
-      const node = new TextNode({
+      const node = new TextNode(this.project, {
         uuid: newUUID,
         text: textContent,
         details: "",
@@ -367,7 +367,7 @@ export class NodeAdder {
     };
     const monoStack = new MonoStack<TextNode>();
     monoStack.push(
-      new TextNode({
+      new TextNode(this.project, {
         uuid: uuidv4(),
         text: "root",
         details: "",
@@ -382,7 +382,7 @@ export class NodeAdder {
     const visitFunction = (markdownNode: MarkdownNode, deepLevel: number) => {
       visitedCount++;
       const newUUID = uuidv4();
-      const node = new TextNode({
+      const node = new TextNode(this.project, {
         uuid: newUUID,
         text: markdownNode.title,
         details: markdownNode.content,

@@ -6,6 +6,7 @@ import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Shape } from "../../../dataStruct/shape/Shape";
 import { Vector } from "../../../dataStruct/Vector";
+import { Project } from "../../../Project";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { HyperGraphMethods } from "../../stageManager/basicMethods/HyperGraphMethods";
 import { ConnectableAssociation } from "../abstract/Association";
@@ -47,6 +48,7 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
     this.text = text;
   }
   constructor(
+    protected readonly project: Project,
     {
       targets,
       text,
@@ -99,7 +101,7 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
     return new Rectangle(this.centerLocation.subtract(textSize.divide(2)), textSize);
   }
 
-  static createFromSomeEntity(entities: ConnectableEntity[]) {
+  static createFromSomeEntity(project: Project, entities: ConnectableEntity[]) {
     // 自动计算padding
     let padding = 10;
     for (const entity of entities) {
@@ -111,7 +113,7 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
     }
 
     const targetUUIDs = entities.map((e) => e.uuid);
-    return new MultiTargetUndirectedEdge({
+    return new MultiTargetUndirectedEdge(project, {
       type: "core:multi_target_undirected_edge",
       targets: targetUUIDs,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

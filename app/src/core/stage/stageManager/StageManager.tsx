@@ -996,7 +996,7 @@ export class StageManager {
 
       const [fromNode, toNode] = this.getEntitiesByUUIDs(edge.targetUUIDs);
       if (fromNode && toNode && fromNode instanceof ConnectableEntity && toNode instanceof ConnectableEntity) {
-        const lineEdge = LineEdge.fromTwoEntity(fromNode, toNode);
+        const lineEdge = LineEdge.fromTwoEntity(this.project, fromNode, toNode);
         lineEdge.text = edge.text;
         lineEdge.color = edge.color.clone();
         this.deleteAssociation(edge);
@@ -1056,7 +1056,7 @@ export class StageManager {
       return false;
     }
     this.stageContent.entities.addValue(
-      new PortalNode({
+      new PortalNode(this.project, {
         uuid: uuid,
         title: PathString.dirPath(otherPath),
         portalFilePath: relativePath,

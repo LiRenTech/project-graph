@@ -1,6 +1,5 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { EntityJumpMoveEffect } from "../../../feedbackService/effectEngine/concrete/EntityJumpMoveEffect";
@@ -55,7 +54,10 @@ export class ControllerLayerMovingClass extends ControllerClass {
       // 防止无限循环嵌套：当跳入的实体是选中的所有内容当中任意一个Section的内部时，禁止触发该操作
       const selectedEntities = this.project.stageManager.getSelectedEntities();
       for (const selectedEntity of selectedEntities) {
-        if (selectedEntity instanceof Section && SectionMethods.isEntityInSection(entity, selectedEntity)) {
+        if (
+          selectedEntity instanceof Section &&
+          this.project.sectionMethods.isEntityInSection(entity, selectedEntity)
+        ) {
           this.project.effects.addEffect(EntityShakeEffect.fromEntity(entity));
           this.project.effects.addEffect(EntityShakeEffect.fromEntity(selectedEntity));
           this.project.effects.addEffect(TextRiseEffect.default("禁止将框套入自身内部"));
@@ -81,14 +83,14 @@ export class ControllerLayerMovingClass extends ControllerClass {
     }
 
     // 即将跳入的sections区域
-    const targetSections = SectionMethods.getSectionsByInnerLocation(mouseLocation);
+    const targetSections = this.project.sectionMethods.getSectionsByInnerLocation(mouseLocation);
     const selectedEntities = this.project.stageManager.getSelectedEntities();
 
     // 防止无限循环嵌套：当跳入的实体是选中的所有内容当中任意一个Section的内部时，禁止触发该操作
     for (const selectedEntity of selectedEntities) {
       if (selectedEntity instanceof Section) {
         for (const targetSection of targetSections) {
-          if (SectionMethods.isEntityInSection(targetSection, selectedEntity)) {
+          if (this.project.sectionMethods.isEntityInSection(targetSection, selectedEntity)) {
             this.project.effects.addEffect(EntityShakeEffect.fromEntity(targetSection));
             this.project.effects.addEffect(TextRiseEffect.default("禁止将框套入自身内部"));
             return;
@@ -118,7 +120,7 @@ export class ControllerLayerMovingClass extends ControllerClass {
     if (targetSections.length === 0) {
       // 代表想要走到最外层空白位置
       for (const entity of selectedEntities) {
-        const currentFatherSections = SectionMethods.getFatherSections(entity);
+        const currentFatherSections = this.project.sectionMethods.getFatherSections(entity);
         for (const currentFatherSection of currentFatherSections) {
           this.project.stageManager.goOutSection([entity], currentFatherSection);
 

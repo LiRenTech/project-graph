@@ -7,7 +7,6 @@ import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { Renderer } from "../../../render/canvas2d/renderer";
 import { SvgUtils } from "../../../render/svg/SvgUtils";
-import { SectionMethods } from "../../../stage/stageManager/basicMethods/SectionMethods";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
@@ -159,7 +158,7 @@ export class StageExportSvg {
     // 计算画布的 viewBox
     const viewBox = `${viewRectangle.location.x} ${viewRectangle.location.y} ${width} ${height}`;
     // fix:bug section选中了，但是内部的东西没有追加进入
-    const newEntities = SectionMethods.getAllEntitiesInSelectedSectionsOrEntities(selectedEntities);
+    const newEntities = this.project.sectionMethods.getAllEntitiesInSelectedSectionsOrEntities(selectedEntities);
     // 合并两个数组并更新
     for (const entity of newEntities) {
       if (selectedEntities.indexOf(entity) === -1) {
@@ -183,13 +182,13 @@ export class StageExportSvg {
         }}
       >
         {/* 选中的部分 */}
-        {SectionMethods.getSortedSectionsByZ(selectedEntities.filter((entity) => entity instanceof Section)).map(
-          (entity) => {
+        {this.project.sectionMethods
+          .getSortedSectionsByZ(selectedEntities.filter((entity) => entity instanceof Section))
+          .map((entity) => {
             if (entity instanceof Section) {
               return this.dumpSectionBase(entity);
             }
-          },
-        )}
+          })}
         {selectedEntities.map((entity) => {
           if (entity instanceof TextNode) {
             return this.dumpNode(entity);
@@ -236,9 +235,9 @@ export class StageExportSvg {
           backgroundColor: StageStyleManager.currentStyle.Background.toString(),
         }}
       >
-        {SectionMethods.getSortedSectionsByZ(this.project.stageManager.getSections()).map((section) =>
-          this.dumpSectionBase(section),
-        )}
+        {this.project.sectionMethods
+          .getSortedSectionsByZ(this.project.stageManager.getSections())
+          .map((section) => this.dumpSectionBase(section))}
         {this.project.stageManager.getTextNodes().map((node) => this.dumpNode(node))}
         {this.project.stageManager.getLineEdges().map((edge) => this.dumpEdge(edge))}
         {this.project.stageManager.getSections().map((section) => this.dumpSection(section))}
