@@ -50,6 +50,7 @@ import { CopyEngine } from "./service/dataManageService/copyEngine/copyEngine";
 import { Effects } from "./service/feedbackService/effectEngine/effectMachine";
 import { Camera } from "./stage/Camera";
 import { Canvas } from "./stage/Canvas";
+import { SectionMethods } from "./stage/stageManager/basicMethods/SectionMethods";
 import { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { AutoAlign } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
 import { DeleteManager } from "./stage/stageManager/concreteMethods/StageDeleteManager";
@@ -72,6 +73,7 @@ export function loadAllServices(project: Project): void {
   project.loadService(InputElement);
   project.loadService(KeyBinds);
   project.loadService(ControllerUtils);
+  project.loadService(SectionMethods);
   project.loadService(Controller);
   project.loadService(AutoComputeUtils);
   project.loadService(RenderUtils);

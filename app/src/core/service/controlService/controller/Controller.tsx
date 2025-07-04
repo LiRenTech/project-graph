@@ -12,7 +12,7 @@ import { ControllerCuttingClass } from "./concrete/ControllerCutting";
 import { ControllerDragFileClass } from "./concrete/ControllerDragFile";
 import { ControllerEdgeEditClass } from "./concrete/ControllerEdgeEdit";
 import { ControllerEntityClickSelectAndMoveClass } from "./concrete/ControllerEntityClickSelectAndMove";
-import { ControllerEntityCreate } from "./concrete/ControllerEntityCreate";
+import { ControllerEntityCreateClass } from "./concrete/ControllerEntityCreate";
 import { ControllerLayerMovingClass } from "./concrete/ControllerEntityLayerMoving";
 import { ControllerEntityResizeClass } from "./concrete/ControllerEntityResize";
 import { ControllerImageScale } from "./concrete/ControllerImageScale";
@@ -321,7 +321,7 @@ declare module "./Controller" {
     dragFile: ControllerDragFileClass;
     edgeEdit: ControllerEdgeEditClass;
     entityClickSelectAndMove: ControllerEntityClickSelectAndMoveClass;
-    entityCreate: ControllerEntityCreate;
+    entityCreate: ControllerEntityCreateClass;
     layerMoving: ControllerLayerMovingClass;
     entityResize: ControllerEntityResizeClass;
     imageScale: ControllerImageScale;

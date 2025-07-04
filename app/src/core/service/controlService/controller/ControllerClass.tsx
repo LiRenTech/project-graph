@@ -9,15 +9,18 @@ import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleMa
  */
 export class ControllerClass {
   constructor(protected readonly project: Project) {
-    this.project.canvas.element.addEventListener("keydown", this.keydown.bind(this));
-    this.project.canvas.element.addEventListener("keyup", this.keyup.bind(this));
-    this.project.canvas.element.addEventListener("pointerdown", this.mousedown.bind(this));
-    this.project.canvas.element.addEventListener("pointerup", this._mouseup.bind(this));
-    this.project.canvas.element.addEventListener("pointermove", this.mousemove.bind(this));
-    this.project.canvas.element.addEventListener("wheel", this.mousewheel.bind(this));
-    this.project.canvas.element.addEventListener("touchstart", this._touchstart.bind(this));
-    this.project.canvas.element.addEventListener("touchmove", this._touchmove.bind(this));
-    this.project.canvas.element.addEventListener("touchend", this._touchend.bind(this));
+    // 等一会再开始绑定
+    setTimeout(() => {
+      this.project.canvas.element.addEventListener("keydown", this.keydown.bind(this));
+      this.project.canvas.element.addEventListener("keyup", this.keyup.bind(this));
+      this.project.canvas.element.addEventListener("pointerdown", this.mousedown.bind(this));
+      this.project.canvas.element.addEventListener("pointerup", this._mouseup.bind(this));
+      this.project.canvas.element.addEventListener("pointermove", this.mousemove.bind(this));
+      this.project.canvas.element.addEventListener("wheel", this.mousewheel.bind(this));
+      this.project.canvas.element.addEventListener("touchstart", this._touchstart.bind(this));
+      this.project.canvas.element.addEventListener("touchmove", this._touchmove.bind(this));
+      this.project.canvas.element.addEventListener("touchend", this._touchend.bind(this));
+    }, 10);
   }
 
   public lastMoveLocation: Vector = Vector.getZero();

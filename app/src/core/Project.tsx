@@ -359,6 +359,7 @@ declare module "./Project" {
     generateFromFolder: GenerateFromFolder;
     serializedDataAdder: SerializedDataAdder;
     keyBindsRegistrar: KeyBindsRegistrar;
+    sectionMethods: SectionMethods;
   }
 }
 

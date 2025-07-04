@@ -1,6 +1,5 @@
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { SectionMethods } from "../../../../stage/stageManager/basicMethods/SectionMethods";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
@@ -8,7 +7,7 @@ import { ControllerClass } from "../ControllerClass";
 /**
  * 创建节点的控制器
  */
-export class ControllerEntityCreate extends ControllerClass {
+export class ControllerEntityCreateClass extends ControllerClass {
   constructor(protected readonly project: Project) {
     super(project);
   }
@@ -36,7 +35,7 @@ export class ControllerEntityCreate extends ControllerClass {
     }
 
     // 是否是在Section内部双击
-    const sections = SectionMethods.getSectionsByInnerLocation(pressLocation);
+    const sections = this.project.sectionMethods.getSectionsByInnerLocation(pressLocation);
 
     if (this.project.controller.pressingKeySet.has("`")) {
       this.createConnectPoint(pressLocation, sections);
