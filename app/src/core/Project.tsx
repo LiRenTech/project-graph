@@ -5,74 +5,74 @@ import { URI } from "vscode-uri";
 import { Serialized } from "../types/node";
 import { Base64 } from "../utils/base64";
 import { Service } from "./interfaces/Service";
-import { CurveRenderer } from "./render/canvas2d/basicRenderer/curveRenderer";
-import { ImageRenderer } from "./render/canvas2d/basicRenderer/ImageRenderer";
-import { ShapeRenderer } from "./render/canvas2d/basicRenderer/shapeRenderer";
-import { SvgRenderer } from "./render/canvas2d/basicRenderer/svgRenderer";
-import { TextRenderer } from "./render/canvas2d/basicRenderer/textRenderer";
-import { DrawingControllerRenderer } from "./render/canvas2d/controllerRenderer/drawingRenderer";
-import { CollisionBoxRenderer } from "./render/canvas2d/entityRenderer/CollisionBoxRenderer";
-import { StraightEdgeRenderer } from "./render/canvas2d/entityRenderer/edge/concrete/StraightEdgeRenderer";
-import { SymmetryCurveEdgeRenderer } from "./render/canvas2d/entityRenderer/edge/concrete/SymmetryCurveEdgeRenderer";
-import { VerticalPolyEdgeRenderer } from "./render/canvas2d/entityRenderer/edge/concrete/VerticalPolyEdgeRenderer";
-import { EdgeRenderer } from "./render/canvas2d/entityRenderer/edge/EdgeRenderer";
-import { EntityDetailsButtonRenderer } from "./render/canvas2d/entityRenderer/EntityDetailsButtonRenderer";
-import { EntityRenderer } from "./render/canvas2d/entityRenderer/EntityRenderer";
-import { MultiTargetUndirectedEdgeRenderer } from "./render/canvas2d/entityRenderer/multiTargetUndirectedEdge/MultiTargetUndirectedEdgeRenderer";
-import { PortalNodeRenderer } from "./render/canvas2d/entityRenderer/portalNode/portalNodeRenderer";
-import { SectionRenderer } from "./render/canvas2d/entityRenderer/section/SectionRenderer";
-import { SvgNodeRenderer } from "./render/canvas2d/entityRenderer/svgNode/SvgNodeRenderer";
-import { TextNodeRenderer } from "./render/canvas2d/entityRenderer/textNode/TextNodeRenderer";
-import { UrlNodeRenderer } from "./render/canvas2d/entityRenderer/urlNode/urlNodeRenderer";
-import { Renderer } from "./render/canvas2d/renderer";
-import { BackgroundRenderer } from "./render/canvas2d/utilsRenderer/backgroundRenderer";
-import { RenderUtils } from "./render/canvas2d/utilsRenderer/RenderUtils";
-import { SearchContentHighlightRenderer } from "./render/canvas2d/utilsRenderer/searchContentHighlightRenderer";
-import { WorldRenderUtils } from "./render/canvas2d/utilsRenderer/WorldRenderUtils";
-import { InputElement } from "./render/domElement/inputElement";
-import { AutoLayoutFastTree } from "./service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
-import { AutoLayout } from "./service/controlService/autoLayoutEngine/mainTick";
-import { ControllerUtils } from "./service/controlService/controller/concrete/utilsControl";
-import { Controller } from "./service/controlService/controller/Controller";
-import { KeyboardOnlyEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
-import { KeyboardOnlyGraphEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyGraphEngine";
-import { KeyboardOnlyTreeEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyTreeEngine";
-import { SelectChangeEngine } from "./service/controlService/keyboardOnlyEngine/selectChangeEngine";
-import { RectangleSelect } from "./service/controlService/rectangleSelectEngine/rectangleSelectEngine";
-import { SecretKeys } from "./service/controlService/secretKeysEngine/secretKeysEngine";
-import { KeyBinds } from "./service/controlService/shortcutKeysEngine/KeyBinds";
-import { KeyBindsRegistrar } from "./service/controlService/shortcutKeysEngine/shortcutKeysRegister";
-import { MouseInteraction } from "./service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
-import { AutoComputeUtils } from "./service/dataGenerateService/autoComputeEngine/AutoComputeUtils";
-import { AutoCompute } from "./service/dataGenerateService/autoComputeEngine/mainTick";
-import { GenerateFromFolder } from "./service/dataGenerateService/generateFromFolderEngine/GenerateFromFolderEngine";
-import { StageExport } from "./service/dataGenerateService/stageExportEngine/stageExportEngine";
-import { StageExportPng } from "./service/dataGenerateService/stageExportEngine/StageExportPng";
-import { StageExportSvg } from "./service/dataGenerateService/stageExportEngine/StageExportSvg";
-import { AI } from "./service/dataManageService/aiEngine/AIEngine";
-import { ComplexityDetector } from "./service/dataManageService/ComplexityDetector";
-import { ContentSearch } from "./service/dataManageService/contentSearchEngine/contentSearchEngine";
-import { CopyEngine } from "./service/dataManageService/copyEngine/copyEngine";
-import { Effects } from "./service/feedbackService/effectEngine/effectMachine";
-import { Camera } from "./stage/Camera";
-import { Canvas } from "./stage/Canvas";
+import type { CurveRenderer } from "./render/canvas2d/basicRenderer/curveRenderer";
+import type { ImageRenderer } from "./render/canvas2d/basicRenderer/ImageRenderer";
+import type { ShapeRenderer } from "./render/canvas2d/basicRenderer/shapeRenderer";
+import type { SvgRenderer } from "./render/canvas2d/basicRenderer/svgRenderer";
+import type { TextRenderer } from "./render/canvas2d/basicRenderer/textRenderer";
+import type { DrawingControllerRenderer } from "./render/canvas2d/controllerRenderer/drawingRenderer";
+import type { CollisionBoxRenderer } from "./render/canvas2d/entityRenderer/CollisionBoxRenderer";
+import type { StraightEdgeRenderer } from "./render/canvas2d/entityRenderer/edge/concrete/StraightEdgeRenderer";
+import type { SymmetryCurveEdgeRenderer } from "./render/canvas2d/entityRenderer/edge/concrete/SymmetryCurveEdgeRenderer";
+import type { VerticalPolyEdgeRenderer } from "./render/canvas2d/entityRenderer/edge/concrete/VerticalPolyEdgeRenderer";
+import type { EdgeRenderer } from "./render/canvas2d/entityRenderer/edge/EdgeRenderer";
+import type { EntityDetailsButtonRenderer } from "./render/canvas2d/entityRenderer/EntityDetailsButtonRenderer";
+import type { EntityRenderer } from "./render/canvas2d/entityRenderer/EntityRenderer";
+import type { MultiTargetUndirectedEdgeRenderer } from "./render/canvas2d/entityRenderer/multiTargetUndirectedEdge/MultiTargetUndirectedEdgeRenderer";
+import type { PortalNodeRenderer } from "./render/canvas2d/entityRenderer/portalNode/portalNodeRenderer";
+import type { SectionRenderer } from "./render/canvas2d/entityRenderer/section/SectionRenderer";
+import type { SvgNodeRenderer } from "./render/canvas2d/entityRenderer/svgNode/SvgNodeRenderer";
+import type { TextNodeRenderer } from "./render/canvas2d/entityRenderer/textNode/TextNodeRenderer";
+import type { UrlNodeRenderer } from "./render/canvas2d/entityRenderer/urlNode/urlNodeRenderer";
+import type { Renderer } from "./render/canvas2d/renderer";
+import type { BackgroundRenderer } from "./render/canvas2d/utilsRenderer/backgroundRenderer";
+import type { RenderUtils } from "./render/canvas2d/utilsRenderer/RenderUtils";
+import type { SearchContentHighlightRenderer } from "./render/canvas2d/utilsRenderer/searchContentHighlightRenderer";
+import type { WorldRenderUtils } from "./render/canvas2d/utilsRenderer/WorldRenderUtils";
+import type { InputElement } from "./render/domElement/inputElement";
+import type { AutoLayoutFastTree } from "./service/controlService/autoLayoutEngine/autoLayoutFastTreeMode";
+import type { AutoLayout } from "./service/controlService/autoLayoutEngine/mainTick";
+import type { ControllerUtils } from "./service/controlService/controller/concrete/utilsControl";
+import type { Controller } from "./service/controlService/controller/Controller";
+import type { KeyboardOnlyEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyEngine";
+import type { KeyboardOnlyGraphEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyGraphEngine";
+import type { KeyboardOnlyTreeEngine } from "./service/controlService/keyboardOnlyEngine/keyboardOnlyTreeEngine";
+import type { SelectChangeEngine } from "./service/controlService/keyboardOnlyEngine/selectChangeEngine";
+import type { RectangleSelect } from "./service/controlService/rectangleSelectEngine/rectangleSelectEngine";
+import type { SecretKeys } from "./service/controlService/secretKeysEngine/secretKeysEngine";
+import type { KeyBinds } from "./service/controlService/shortcutKeysEngine/KeyBinds";
+import type { KeyBindsRegistrar } from "./service/controlService/shortcutKeysEngine/shortcutKeysRegister";
+import type { MouseInteraction } from "./service/controlService/stageMouseInteractionCore/stageMouseInteractionCore";
+import type { AutoComputeUtils } from "./service/dataGenerateService/autoComputeEngine/AutoComputeUtils";
+import type { AutoCompute } from "./service/dataGenerateService/autoComputeEngine/mainTick";
+import type { GenerateFromFolder } from "./service/dataGenerateService/generateFromFolderEngine/GenerateFromFolderEngine";
+import type { StageExport } from "./service/dataGenerateService/stageExportEngine/stageExportEngine";
+import type { StageExportPng } from "./service/dataGenerateService/stageExportEngine/StageExportPng";
+import type { StageExportSvg } from "./service/dataGenerateService/stageExportEngine/StageExportSvg";
+import type { AI } from "./service/dataManageService/aiEngine/AIEngine";
+import type { ComplexityDetector } from "./service/dataManageService/ComplexityDetector";
+import type { ContentSearch } from "./service/dataManageService/contentSearchEngine/contentSearchEngine";
+import type { CopyEngine } from "./service/dataManageService/copyEngine/copyEngine";
+import type { Effects } from "./service/feedbackService/effectEngine/effectMachine";
+import type { Camera } from "./stage/Camera";
+import type { Canvas } from "./stage/Canvas";
 import { ProjectFormatUpgrader } from "./stage/ProjectFormatUpgrader";
-import { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
-import { AutoAlign } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
-import { DeleteManager } from "./stage/stageManager/concreteMethods/StageDeleteManager";
-import { EntityMoveManager } from "./stage/stageManager/concreteMethods/StageEntityMoveManager";
-import { StageUtils } from "./stage/stageManager/concreteMethods/StageManagerUtils";
-import { MultiTargetEdgeMove } from "./stage/stageManager/concreteMethods/StageMultiTargetEdgeMove";
-import { NodeAdder } from "./stage/stageManager/concreteMethods/StageNodeAdder";
-import { NodeConnector } from "./stage/stageManager/concreteMethods/StageNodeConnector";
-import { StageNodeRotate } from "./stage/stageManager/concreteMethods/stageNodeRotate";
-import { StageObjectColorManager } from "./stage/stageManager/concreteMethods/StageObjectColorManager";
-import { StageObjectSelectCounter } from "./stage/stageManager/concreteMethods/StageObjectSelectCounter";
-import { SectionInOutManager } from "./stage/stageManager/concreteMethods/StageSectionInOutManager";
-import { SectionPackManager } from "./stage/stageManager/concreteMethods/StageSectionPackManager";
-import { SerializedDataAdder } from "./stage/stageManager/concreteMethods/StageSerializedAdder";
-import { TagManager } from "./stage/stageManager/concreteMethods/StageTagManager";
-import { StageManager } from "./stage/stageManager/StageManager";
+import type { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
+import type { AutoAlign } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
+import type { DeleteManager } from "./stage/stageManager/concreteMethods/StageDeleteManager";
+import type { EntityMoveManager } from "./stage/stageManager/concreteMethods/StageEntityMoveManager";
+import type { StageUtils } from "./stage/stageManager/concreteMethods/StageManagerUtils";
+import type { MultiTargetEdgeMove } from "./stage/stageManager/concreteMethods/StageMultiTargetEdgeMove";
+import type { NodeAdder } from "./stage/stageManager/concreteMethods/StageNodeAdder";
+import type { NodeConnector } from "./stage/stageManager/concreteMethods/StageNodeConnector";
+import type { StageNodeRotate } from "./stage/stageManager/concreteMethods/stageNodeRotate";
+import type { StageObjectColorManager } from "./stage/stageManager/concreteMethods/StageObjectColorManager";
+import type { StageObjectSelectCounter } from "./stage/stageManager/concreteMethods/StageObjectSelectCounter";
+import type { SectionInOutManager } from "./stage/stageManager/concreteMethods/StageSectionInOutManager";
+import type { SectionPackManager } from "./stage/stageManager/concreteMethods/StageSectionPackManager";
+import type { SerializedDataAdder } from "./stage/stageManager/concreteMethods/StageSerializedAdder";
+import type { TagManager } from "./stage/stageManager/concreteMethods/StageTagManager";
+import type { StageManager } from "./stage/stageManager/StageManager";
 
 // TODO: 将filesystem接口提取出来
 // TODO: 支持服务进行文件操作，而不是直接操作文件系统
@@ -117,6 +117,7 @@ export class Project {
     uri: URI,
   ) {
     this._uri = uri;
+    console.log("new project", uri);
     (async () => {
       switch (this.uri.scheme) {
         case "file": {
@@ -149,6 +150,7 @@ export class Project {
           break;
         }
       }
+      console.log("start loop");
       this.loop();
     })();
   }
@@ -164,14 +166,15 @@ export class Project {
   /**
    * 立刻加载一个新的服务
    */
-  registerService(service: { id?: string; new (...args: any[]): any }) {
+  loadService(service: { id?: string; new (...args: any[]): any }) {
     if (!service.id) {
       service.id = crypto.randomUUID();
       console.warn("服务 %o 未指定 ID，自动生成：%s", service, service.id);
     }
     const inst = new service(this);
     this.services.set(service.id, inst);
-    if (Object.hasOwn(inst, "tick")) {
+    if ("tick" in inst) {
+      console.log("服务 %s 实现了 tick()", service.id);
       this.tickableServices.add(inst);
     }
     this[service.id as keyof this] = inst as this[keyof this];
@@ -191,13 +194,18 @@ export class Project {
   private loop() {
     const animationFrame = () => {
       this.tick();
-      this.rafHandle = requestAnimationFrame(animationFrame);
+      this.rafHandle = requestAnimationFrame(animationFrame.bind(this));
     };
     animationFrame();
   }
   private tick() {
     for (const service of this.tickableServices) {
-      service.tick?.();
+      try {
+        service.tick?.();
+      } catch (e) {
+        console.error("[%s] %o", service, e);
+        this.tickableServices.delete(service);
+      }
     }
   }
   /**
@@ -281,19 +289,16 @@ declare module "./Project" {
    * 不直接在class中定义的原因
    * 在class中定义的话ts会报错，因为它没有初始值并且没有在构造函数中赋值
    * 在这里用语法糖定义就能优雅的绕过这个限制
+   * 服务加载的顺序在调用registerService()时确定
    */
   interface Project {
-    // 最底层
     canvas: Canvas;
     inputElement: InputElement;
     keyBinds: KeyBinds;
-    // utils
     controllerUtils: ControllerUtils;
     autoComputeUtils: AutoComputeUtils;
-    // 渲染底层
     renderUtils: RenderUtils;
     worldRenderUtils: WorldRenderUtils;
-    // 数据管理
     stageManager: StageManager;
     camera: Camera;
     effects: Effects;
@@ -304,11 +309,9 @@ declare module "./Project" {
     complexityDetector: ComplexityDetector;
     ai: AI;
     copyEngine: CopyEngine;
-    // 自动布局算法
     autoLayout: AutoLayout;
     autoLayoutFastTree: AutoLayoutFastTree;
     layoutManualAlign: LayoutManualAlign;
-    // 和stage相关的
     autoAlign: AutoAlign;
     mouseInteraction: MouseInteraction;
     contentSearch: ContentSearch;
@@ -323,12 +326,10 @@ declare module "./Project" {
     sectionInOutManager: SectionInOutManager;
     sectionPackManager: SectionPackManager;
     tagManager: TagManager;
-    // 纯键盘操作引擎
     keyboardOnlyEngine: KeyboardOnlyEngine;
     keyboardOnlyGraphEngine: KeyboardOnlyGraphEngine;
     keyboardOnlyTreeEngine: KeyboardOnlyTreeEngine;
     selectChangeEngine: SelectChangeEngine;
-    // 各种节点的渲染器
     textRenderer: TextRenderer;
     imageRenderer: ImageRenderer;
     shapeRenderer: ShapeRenderer;
@@ -350,16 +351,13 @@ declare module "./Project" {
     urlNodeRenderer: UrlNodeRenderer;
     backgroundRenderer: BackgroundRenderer;
     searchContentHighlightRenderer: SearchContentHighlightRenderer;
-    // 最终呈现给用户的东西
     renderer: Renderer;
     controller: Controller;
-    // 导入导出
     stageExport: StageExport;
     stageExportPng: StageExportPng;
     StageExportSvg: StageExportSvg;
     generateFromFolder: GenerateFromFolder;
     serializedDataAdder: SerializedDataAdder;
-    // 可以晚一点注册的服务
     keyBindsRegistrar: KeyBindsRegistrar;
   }
 }

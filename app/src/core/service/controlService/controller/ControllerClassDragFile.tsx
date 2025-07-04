@@ -32,7 +32,7 @@ export class ControllerClassDragFile {
     window.addEventListener("dragleave", this.dragLeave, false);
     window.addEventListener("drop", this.drop, false);
   }
-  public destroy() {
+  public dispose() {
     window.removeEventListener("dragenter", this.dragEnter);
     window.removeEventListener("dragover", this.dragOver);
     window.removeEventListener("dragleave", this.dragLeave);

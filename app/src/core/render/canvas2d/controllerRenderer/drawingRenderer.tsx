@@ -1,6 +1,7 @@
 import { Color } from "../../../dataStruct/Color";
 import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
+import { MouseLocation } from "../../../service/controlService/MouseLocation";
 import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Settings } from "../../../service/Settings";
 

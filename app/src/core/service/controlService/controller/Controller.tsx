@@ -114,25 +114,42 @@ export class Controller {
    */
   constructor(private readonly project: Project) {
     // 绑定事件
-    window.addEventListener("keydown", this.keydown);
-    window.addEventListener("keyup", this.keyup);
-    this.project.canvas.element.addEventListener("mousedown", this.mousedown);
-    this.project.canvas.element.addEventListener("mouseup", this.mouseup);
-    this.project.canvas.element.addEventListener("touchstart", this.touchstart, false);
-    this.project.canvas.element.addEventListener("touchmove", this.touchmove, false);
-    this.project.canvas.element.addEventListener("touchend", this.touchend, false);
-    this.project.canvas.element.addEventListener("wheel", this.mousewheel, false);
+    this.project.canvas.element.addEventListener("keydown", this.keydown.bind(this));
+    this.project.canvas.element.addEventListener("keyup", this.keyup.bind(this));
+    this.project.canvas.element.addEventListener("mousedown", this.mousedown.bind(this));
+    this.project.canvas.element.addEventListener("mouseup", this.mouseup.bind(this));
+    this.project.canvas.element.addEventListener("touchstart", this.touchstart.bind(this), false);
+    this.project.canvas.element.addEventListener("touchmove", this.touchmove.bind(this), false);
+    this.project.canvas.element.addEventListener("touchend", this.touchend.bind(this), false);
+    this.project.canvas.element.addEventListener("wheel", this.mousewheel.bind(this), false);
     // 所有的具体的功能逻辑封装成控制器对象
     // 当有新功能时新建控制器对象，并在这里初始化
     Object.values(import.meta.glob("./concrete/*.tsx", { eager: true }))
       .map((module) => Object.entries(module as any).find(([k]) => k.includes("Class"))!)
       .filter(Boolean)
       .map(([k, v]) => {
-        new (v as any)(this.project);
-        const id = k.replace("Controller", "").replace("Class", "");
+        const inst = new (v as any)(this.project);
+        let id = k.replace("Controller", "").replace("Class", "");
+        id = id[0].toLowerCase() + id.slice(1);
+        console.log("controller.%s loaded", id);
         // 首字母小写
-        this[(id[0].toLowerCase() + id.slice(1)) as keyof this] = v as this[keyof this];
+        this[id as keyof this] = inst;
       });
+  }
+  dispose() {
+    Object.values(this).forEach((v) => {
+      if (v instanceof Controller) {
+        v.dispose();
+      }
+    });
+    this.project.canvas.element.removeEventListener("keydown", this.keydown.bind(this));
+    this.project.canvas.element.removeEventListener("keyup", this.keyup.bind(this));
+    this.project.canvas.element.removeEventListener("mousedown", this.mousedown.bind(this));
+    this.project.canvas.element.removeEventListener("mouseup", this.mouseup.bind(this));
+    this.project.canvas.element.removeEventListener("touchstart", this.touchstart.bind(this), false);
+    this.project.canvas.element.removeEventListener("touchmove", this.touchmove.bind(this), false);
+    this.project.canvas.element.removeEventListener("touchend", this.touchend.bind(this), false);
+    this.project.canvas.element.removeEventListener("wheel", this.mousewheel.bind(this), false);
   }
 
   // 以下事件处理函数仅为Controller总控制器修改重要属性使用。不涉及具体的功能逻辑。
@@ -305,7 +322,7 @@ declare module "./Controller" {
     edgeEdit: ControllerEdgeEditClass;
     entityClickSelectAndMove: ControllerEntityClickSelectAndMoveClass;
     entityCreate: ControllerEntityCreate;
-    entityLayerMoving: ControllerLayerMovingClass;
+    layerMoving: ControllerLayerMovingClass;
     entityResize: ControllerEntityResizeClass;
     imageScale: ControllerImageScale;
     nodeConnection: ControllerNodeConnectionClass;

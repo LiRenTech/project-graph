@@ -6,6 +6,7 @@ import { Vector } from "../../dataStruct/Vector";
 import { CubicBezierCurve } from "../../dataStruct/shape/Curve";
 import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Settings } from "../../service/Settings";
+import { MouseLocation } from "../../service/controlService/MouseLocation";
 import { StageStyleManager } from "../../service/feedbackService/stageStyle/StageStyleManager";
 import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageObject } from "../../stage/stageObject/abstract/StageObject";
@@ -71,6 +72,7 @@ export class Renderer {
     const scale = window.devicePixelRatio * (1 / appScale);
     this.w = newW;
     this.h = newH;
+    console.log(newW, newH);
     this.project.canvas.element.width = newW * scale;
     this.project.canvas.element.height = newH * scale;
     this.project.canvas.element.style.width = `${newW * (1 / appScale)}px`;
@@ -515,7 +517,7 @@ export class Renderer {
 
   /** 层级移动时，渲染移动指向线 */
   private rendererLayerMovingLine() {
-    if (!this.project.controller.entityLayerMoving.isEnabled) {
+    if (!this.project.controller.layerMoving.isEnabled) {
       return;
     }
     // 有alt

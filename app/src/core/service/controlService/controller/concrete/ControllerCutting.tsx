@@ -76,8 +76,8 @@ export class ControllerCuttingClass extends ControllerClass {
     this.registerControlKeyEvents();
   }
 
-  destroy() {
-    super.destroy();
+  dispose() {
+    super.dispose();
     this.unregisterControlKeyEvents();
   }
 

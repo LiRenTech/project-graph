@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { Serialized } from "../../../../types/node";
 import { getMultiLineTextSize } from "../../../../utils/font";
+import { Color } from "../../../dataStruct/Color";
 import { Vector } from "../../../dataStruct/Vector";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../../render/canvas2d/renderer";
@@ -9,7 +10,6 @@ import { CollisionBox } from "../collisionBox/collisionBox";
 import { TextNode } from "../entity/TextNode";
 import { Edge } from "./Edge";
 import { EdgeCollisionBoxGetter } from "./EdgeCollisionBoxGetter";
-import { Color } from "../../../dataStruct/Color";
 
 export class LineEdge extends Edge {
   public uuid: string;

@@ -85,8 +85,8 @@ export class ControllerNodeConnectionClass extends ControllerClass {
     this.registerControlKeyEvents();
   }
 
-  destroy() {
-    super.destroy();
+  dispose() {
+    super.dispose();
     this.unregisterControlKeyEvents();
   }
   /**

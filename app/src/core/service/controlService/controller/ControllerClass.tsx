@@ -9,15 +9,15 @@ import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleMa
  */
 export class ControllerClass {
   constructor(protected readonly project: Project) {
-    window.addEventListener("keydown", this.keydown);
-    window.addEventListener("keyup", this.keyup);
-    this.project.canvas.element.addEventListener("pointerdown", this.mousedown);
-    window.addEventListener("pointerup", this._mouseup);
-    window.addEventListener("pointermove", this.mousemove);
-    this.project.canvas.element.addEventListener("wheel", this.mousewheel);
-    this.project.canvas.element.addEventListener("touchstart", this._touchstart);
-    window.addEventListener("touchmove", this._touchmove);
-    window.addEventListener("touchend", this._touchend);
+    this.project.canvas.element.addEventListener("keydown", this.keydown.bind(this));
+    this.project.canvas.element.addEventListener("keyup", this.keyup.bind(this));
+    this.project.canvas.element.addEventListener("pointerdown", this.mousedown.bind(this));
+    this.project.canvas.element.addEventListener("pointerup", this._mouseup.bind(this));
+    this.project.canvas.element.addEventListener("pointermove", this.mousemove.bind(this));
+    this.project.canvas.element.addEventListener("wheel", this.mousewheel.bind(this));
+    this.project.canvas.element.addEventListener("touchstart", this._touchstart.bind(this));
+    this.project.canvas.element.addEventListener("touchmove", this._touchmove.bind(this));
+    this.project.canvas.element.addEventListener("touchend", this._touchend.bind(this));
   }
 
   public lastMoveLocation: Vector = Vector.getZero();
@@ -35,16 +35,16 @@ export class ControllerClass {
   public touchmove: (event: TouchEvent) => void = () => {};
   public touchend: (event: TouchEvent) => void = () => {};
 
-  public destroy() {
-    window.removeEventListener("keydown", this.keydown);
-    window.removeEventListener("keyup", this.keyup);
-    this.project.canvas.element.removeEventListener("pointerdown", this.mousedown);
-    window.removeEventListener("pointerup", this._mouseup);
-    window.removeEventListener("pointermove", this.mousemove);
-    this.project.canvas.element.removeEventListener("wheel", this.mousewheel);
-    this.project.canvas.element.removeEventListener("touchstart", this._touchstart);
-    window.removeEventListener("touchmove", this._touchmove);
-    window.removeEventListener("touchend", this._touchend);
+  public dispose() {
+    this.project.canvas.element.removeEventListener("keydown", this.keydown.bind(this));
+    this.project.canvas.element.removeEventListener("keyup", this.keyup.bind(this));
+    this.project.canvas.element.removeEventListener("pointerdown", this.mousedown.bind(this));
+    this.project.canvas.element.removeEventListener("pointerup", this._mouseup.bind(this));
+    this.project.canvas.element.removeEventListener("pointermove", this.mousemove.bind(this));
+    this.project.canvas.element.removeEventListener("wheel", this.mousewheel.bind(this));
+    this.project.canvas.element.removeEventListener("touchstart", this._touchstart.bind(this));
+    this.project.canvas.element.removeEventListener("touchmove", this._touchmove.bind(this));
+    this.project.canvas.element.removeEventListener("touchend", this._touchend.bind(this));
 
     this.lastMoveLocation = Vector.getZero();
   }

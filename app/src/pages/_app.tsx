@@ -1,10 +1,11 @@
 import { restoreStateCurrent, saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
 import { useAtom } from "jotai";
 import { Copy, Minus, Pin, PinOff, Square, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import icon from "../assets/icon.png";
 import { Dialog } from "../components/dialog";
+import { Project } from "../core/Project";
 import { GlobalMenu } from "../core/service/GlobalMenu";
 import { Settings } from "../core/service/Settings";
 import { Themes } from "../core/service/Themes";
@@ -22,6 +23,8 @@ export default function App() {
   // TODO: start file window
 
   const [projects, setProjects] = useAtom(projectsAtom);
+  const [activeProject, setActiveProject] = useState<Project>();
+  const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const [isWindowCollapsing, setIsWindowCollapsing] = useState(false);
   const [isClassroomMode, setIsClassroomMode] = Settings.use("isClassroomMode");
 
@@ -113,6 +116,12 @@ export default function App() {
     restoreStateCurrent(StateFlags.SIZE | StateFlags.POSITION | StateFlags.MAXIMIZED);
   }, []);
 
+  useEffect(() => {
+    if (!canvasWrapperRef.current) return;
+    if (!activeProject) return;
+    activeProject.canvas.mount(canvasWrapperRef.current);
+  }, [activeProject]);
+
   /**
    * 首次启动时显示欢迎页面
    */
@@ -131,7 +140,7 @@ export default function App() {
       onContextMenu={(e) => e.preventDefault()}
     >
       {/* 第一行：logo | 菜单 | ...移动窗口区域... | 窗口控制按钮 */}
-      <div className="bg-titlebar-bg text-titlebar-text border-titlebar-border flex h-8 items-center overflow-hidden rounded-lg border">
+      <div className="bg-titlebar-bg text-titlebar-text border-titlebar-border z-10 flex h-8 items-center overflow-hidden rounded-lg border">
         <img src={icon} alt="logo" className="m-2 size-6" />
         <div className="ml-2 flex h-full items-center text-sm">
           {GlobalMenu.menus.map((menu, i) => (
@@ -188,17 +197,28 @@ export default function App() {
       </div>
 
       {/* 第二行：标签页 */}
-      <div className="flex h-8 gap-2 overflow-x-auto">
+      <div className="z-10 flex h-8 gap-2 overflow-x-auto">
         {projects.map((project) => (
           <div
             key={project.uri.toString()}
-            className="bg-titlebar-bg text-titlebar-text border-titlebar-border flex shrink-0 items-center gap-1 rounded-lg border p-2"
+            className={cn(
+              "bg-titlebar-bg text-titlebar-text border-titlebar-border flex shrink-0 items-center gap-1 rounded-lg border p-2",
+              {
+                "bg-titlebar-control-hover-bg": activeProject?.uri.toString() === project.uri.toString(),
+              },
+            )}
+            onClick={() => {
+              setActiveProject(project);
+            }}
           >
             <span className="text-sm">{project.uri.toString()}</span>
             <X size={16} strokeWidth={3} className="hover:bg-titlebar-control-hover-bg rounded-full hover:scale-125" />
           </div>
         ))}
       </div>
+
+      {/* canvas */}
+      <div className="absolute inset-0 overflow-hidden" ref={canvasWrapperRef}></div>
 
       {/* ======= */}
       {/* <ErrorHandler /> */}

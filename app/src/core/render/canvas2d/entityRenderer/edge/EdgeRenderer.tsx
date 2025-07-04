@@ -29,7 +29,7 @@ export class EdgeRenderer {
    * 初始化边的渲染器
    */
   constructor(private readonly project: Project) {
-    Settings.watch("lineStyle", this.updateRenderer);
+    Settings.watch("lineStyle", this.updateRenderer.bind(this));
   }
 
   checkRendererBySettings(lineStyle: Settings.Settings["lineStyle"]) {
