@@ -108,11 +108,6 @@ export default function App() {
       `;
     });
 
-    // 监听最大化状态
-    getCurrentWindow().onResized(async () => {
-      _setMaximized(await getCurrentWindow().isMaximized());
-    });
-
     // 恢复窗口位置大小
     restoreStateCurrent(StateFlags.SIZE | StateFlags.POSITION | StateFlags.MAXIMIZED);
   }, []);
