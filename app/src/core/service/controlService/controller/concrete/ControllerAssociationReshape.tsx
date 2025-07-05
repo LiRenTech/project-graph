@@ -1,7 +1,6 @@
 import { CursorNameEnum } from "../../../../../types/cursors";
 import { isMac } from "../../../../../utils/platform";
 import { Vector } from "../../../../dataStruct/Vector";
-import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
@@ -123,7 +122,7 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
       return;
     }
     if (this.project.controller.isMovingEdge) {
-      StageHistoryManager.recordStep(); // 鼠标抬起了，移动结束，记录历史过程
+      this.project.stageHistoryManager.recordStep(); // 鼠标抬起了，移动结束，记录历史过程
       this.project.controller.isMovingEdge = false;
     }
     this.project.controller.setCursorNameHook(CursorNameEnum.Default);

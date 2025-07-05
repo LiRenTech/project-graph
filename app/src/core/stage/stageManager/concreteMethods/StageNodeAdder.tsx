@@ -13,7 +13,6 @@ import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { GraphMethods } from "../basicMethods/GraphMethods";
-import { StageHistoryManager } from "../StageHistoryManager";
 
 /**
  * 包含增加节点的方法
@@ -65,7 +64,7 @@ export class NodeAdder {
       node.isSelected = true;
     }
 
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
     return newUUID;
   }
 
@@ -134,7 +133,7 @@ export class NodeAdder {
       const targetLocation = entityRectangle.leftBottom;
       newNode.moveTo(targetLocation);
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
     return uuid;
   }
 
@@ -174,7 +173,7 @@ export class NodeAdder {
         ),
       );
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
     return newUUID;
   }
   /**

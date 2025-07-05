@@ -48,8 +48,10 @@ import { ComplexityDetector } from "./service/dataManageService/ComplexityDetect
 import { ContentSearch } from "./service/dataManageService/contentSearchEngine/contentSearchEngine";
 import { CopyEngine } from "./service/dataManageService/copyEngine/copyEngine";
 import { Effects } from "./service/feedbackService/effectEngine/effectMachine";
+import { StageStyleManager } from "./service/feedbackService/stageStyle/StageStyleManager";
 import { Camera } from "./stage/Camera";
 import { Canvas } from "./stage/Canvas";
+import { StageDumper } from "./stage/StageDumper";
 import { SectionMethods } from "./stage/stageManager/basicMethods/SectionMethods";
 import { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import { AutoAlign } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
@@ -66,11 +68,13 @@ import { SectionInOutManager } from "./stage/stageManager/concreteMethods/StageS
 import { SectionPackManager } from "./stage/stageManager/concreteMethods/StageSectionPackManager";
 import { SerializedDataAdder } from "./stage/stageManager/concreteMethods/StageSerializedAdder";
 import { TagManager } from "./stage/stageManager/concreteMethods/StageTagManager";
+import { StageHistoryManager } from "./stage/stageManager/StageHistoryManager";
 import { StageManager } from "./stage/stageManager/StageManager";
 
 export function loadAllServices(project: Project): void {
   project.loadService(Canvas);
   project.loadService(InputElement);
+  project.loadService(StageStyleManager);
   project.loadService(KeyBinds);
   project.loadService(ControllerUtils);
   project.loadService(SectionMethods);
@@ -83,6 +87,8 @@ export function loadAllServices(project: Project): void {
   project.loadService(Effects);
   project.loadService(AutoCompute);
   project.loadService(SecretKeys);
+  project.loadService(StageDumper);
+  project.loadService(StageHistoryManager);
   project.loadService(RectangleSelect);
   project.loadService(StageNodeRotate);
   project.loadService(ComplexityDetector);

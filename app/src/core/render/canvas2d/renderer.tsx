@@ -8,7 +8,6 @@ import { Rectangle } from "../../dataStruct/shape/Rectangle";
 import { Settings } from "../../service/Settings";
 import { MouseLocation } from "../../service/controlService/MouseLocation";
 import { StageStyleManager } from "../../service/feedbackService/stageStyle/StageStyleManager";
-import { StageHistoryManager } from "../../stage/stageManager/StageHistoryManager";
 import { StageObject } from "../../stage/stageObject/abstract/StageObject";
 import { CubicCatmullRomSplineEdge } from "../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../stage/stageObject/association/LineEdge";
@@ -848,7 +847,7 @@ export class Renderer {
       `ConnectFromNodes: ${this.project.controller.nodeConnection.connectFromEntities}`,
       `lastSelectedNode: ${this.project.controller.lastSelectedEntityUUID.size}`,
       `粘贴板: ${JSON.stringify(this.project.copyEngine.copyBoardData)}`,
-      `历史: ${StageHistoryManager.statusText()}`,
+      `历史: ${this.project.stageHistoryManager.statusText()}`,
       `fps: ${this.fps}`,
       `delta: ${this.deltaTime.toFixed(2)}`,
       `uri: ${this.project.uri}`,

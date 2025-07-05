@@ -23,8 +23,6 @@ import { AutoComputeUtils } from "../AutoComputeUtils";
  */
 export namespace NodeLogic {
   export const delayStates: Map<string, Record<number, string>> = new Map();
-  /* eslint-disable prefer-const */
-  export let step: number = 0;
   // step 是一个计数器，每当逻辑引擎实际执行一次时，step 就会加一
   // TODO: 可以考虑把 step 放到逻辑引擎层面，甚至可以出一个节点获取当前步数，可以加一个每次只运行一步的快捷键
   /**

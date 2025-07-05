@@ -5,7 +5,6 @@ import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCa
 import { LineEdge } from "../../stageObject/association/LineEdge";
 import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { GraphMethods } from "../basicMethods/GraphMethods";
-import { StageHistoryManager } from "../StageHistoryManager";
 
 /**
  * 集成所有连线相关的功能
@@ -119,6 +118,6 @@ export class NodeConnector {
         this.changeEdgeTarget(edge, newTarget);
       }
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 }

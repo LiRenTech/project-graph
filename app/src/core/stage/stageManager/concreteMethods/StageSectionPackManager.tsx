@@ -9,7 +9,6 @@ import { Edge } from "../../stageObject/association/Edge";
 import { Section } from "../../stageObject/entity/Section";
 import { TextNode } from "../../stageObject/entity/TextNode";
 import { GraphMethods } from "../basicMethods/GraphMethods";
-import { StageHistoryManager } from "../StageHistoryManager";
 
 /**
  * 管理所有东西进出StageSection的逻辑
@@ -80,7 +79,7 @@ export class SectionPackManager {
       }
       this.targetTextNodeToSection(textNode);
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   /**
@@ -115,7 +114,7 @@ export class SectionPackManager {
       return section;
     };
     dfs(rootNode);
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   /**
@@ -148,7 +147,7 @@ export class SectionPackManager {
       this.project.sectionInOutManager.goOutSection(childSets, fatherSection);
     }
     this.project.sectionInOutManager.goInSection(childSets, section);
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   /**
@@ -201,7 +200,7 @@ export class SectionPackManager {
   unpackSelectedSections() {
     const selectedSections = this.project.stageManager.getSelectedEntities();
     this.unpackSections(selectedSections);
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   /**

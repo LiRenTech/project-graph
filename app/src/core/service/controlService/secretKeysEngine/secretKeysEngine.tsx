@@ -7,7 +7,6 @@ import { averageColors, Color } from "../../../dataStruct/Color";
 import { Queue } from "../../../dataStruct/Queue";
 import { Vector } from "../../../dataStruct/Vector";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
-import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { CubicCatmullRomSplineEdge } from "../../../stage/stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
@@ -565,7 +564,7 @@ export class SecretKeys {
             cameraScale: 1,
           }),
         );
-        StageHistoryManager.recordStep();
+        this.project.stageHistoryManager.recordStep();
       },
     },
     "c o l l a b o r a t e": {
@@ -708,7 +707,7 @@ export class SecretKeys {
           // 刷新一下
           node.forceAdjustSizeByText();
         }
-        StageHistoryManager.recordStep();
+        this.project.stageHistoryManager.recordStep();
       },
     },
     "e m o j i * *": {

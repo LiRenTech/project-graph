@@ -1,13 +1,12 @@
 import { Vector } from "../../dataStruct/Vector";
 
-export namespace MouseLocation {
-  export let x: number = 0;
-  export let y: number = 0;
-
-  export function init() {
+export const MouseLocation = {
+  x: 0,
+  y: 0,
+  init() {
     window.addEventListener("mousemove", (event) => {
-      x = event.clientX;
-      y = event.clientY;
+      this.x = event.clientX;
+      this.y = event.clientY;
 
       // this.project.controller.recordManipulate();
       // 检测是否超出范围
@@ -25,14 +24,13 @@ export namespace MouseLocation {
       //   this.project.controller.entityClickSelectAndMove.mouseMoveOutWindowForcedShutdown(this.vectorObject);
       // }
     });
-  }
-
+  },
   /**
    * 返回的时视野坐标系中的鼠标位置
    * 注意是view坐标系
    * @returns
    */
-  export function vector(): Vector {
-    return new Vector(x, y);
-  }
-}
+  vector(): Vector {
+    return new Vector(this.x, this.y);
+  },
+};

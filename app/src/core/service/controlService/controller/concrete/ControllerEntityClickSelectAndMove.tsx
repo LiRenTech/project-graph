@@ -1,7 +1,6 @@
 import { isMac } from "../../../../../utils/platform";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
-import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { RectangleRenderEffect } from "../../../feedbackService/effectEngine/concrete/RectangleRenderEffect";
 import { Settings } from "../../../Settings";
@@ -153,7 +152,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
           this.project.autoAlign.alignAllSelectedToGrid();
         }
 
-        StageHistoryManager.recordStep(); // 记录一次历史
+        this.project.stageHistoryManager.recordStep(); // 记录一次历史
       }
     }
 

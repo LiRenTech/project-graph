@@ -1,5 +1,4 @@
 import { Dialog } from "../../../../components/dialog";
-import { onNewDraft, onOpen, onSave } from "../../../../pages/_sub_window/AppMenuWindow";
 import ColorWindow from "../../../../pages/_sub_window/ColorWindow";
 import FindWindow from "../../../../pages/_sub_window/FindWindow";
 import RecentFilesWindow from "../../../../pages/_sub_window/RecentFilesWindow";
@@ -13,7 +12,6 @@ import { Color } from "../../../dataStruct/Color";
 import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { PenStrokeMethods } from "../../../stage/stageManager/basicMethods/PenStrokeMethods";
-import { StageHistoryManager } from "../../../stage/stageManager/StageHistoryManager";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { RectangleSlideEffect } from "../../feedbackService/effectEngine/concrete/RectangleSlideEffect";
@@ -60,12 +58,12 @@ export class KeyBindsRegistrar {
 
     await this.project.keyBinds.create("undo", "C-z", () => {
       if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      StageHistoryManager.undo();
+      this.project.stageHistoryManager.undo();
     });
 
     await this.project.keyBinds.create("redo", "C-y", () => {
       if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      StageHistoryManager.redo();
+      this.project.stageHistoryManager.redo();
     });
 
     // 危险操作，配置一个不容易触发的快捷键

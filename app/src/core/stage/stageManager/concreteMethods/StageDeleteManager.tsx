@@ -30,15 +30,15 @@ export class DeleteManager {
   }
 
   constructor(private readonly project: Project) {
-    this.registerHandler(TextNode, this.deleteTextNode);
-    this.registerHandler(Section, this.deleteSection);
+    this.registerHandler(TextNode, this.deleteTextNode.bind(this));
+    this.registerHandler(Section, this.deleteSection.bind(this));
     // TODO: 修复ConnectPoint
-    // this.registerHandler(ConnectPoint, this.deleteConnectPoint);
-    this.registerHandler(ImageNode, this.deleteImageNode);
-    this.registerHandler(UrlNode, this.deleteUrlNode);
-    this.registerHandler(PortalNode, this.deletePortalNode);
-    this.registerHandler(PenStroke, this.deletePenStroke);
-    this.registerHandler(SvgNode, this.deleteSvgNode);
+    // this.registerHandler(ConnectPoint, this.deleteConnectPoint.bind(this));
+    this.registerHandler(ImageNode, this.deleteImageNode.bind(this));
+    this.registerHandler(UrlNode, this.deleteUrlNode.bind(this));
+    this.registerHandler(PortalNode, this.deletePortalNode.bind(this));
+    this.registerHandler(PenStroke, this.deletePenStroke.bind(this));
+    this.registerHandler(SvgNode, this.deleteSvgNode.bind(this));
   }
 
   deleteEntities(deleteNodes: Entity[]) {
@@ -129,7 +129,6 @@ export class DeleteManager {
   }
 
   private deleteTextNode(entity: TextNode) {
-    console.log(this.project);
     // 先判断这个node是否在nodes里
     if (this.project.stageManager.getTextNodes().includes(entity)) {
       // TODO: 删除逻辑节点存储的状态

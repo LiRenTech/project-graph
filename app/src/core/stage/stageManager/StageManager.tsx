@@ -27,7 +27,6 @@ import { SvgNode } from "../stageObject/entity/SvgNode";
 import { TextNode } from "../stageObject/entity/TextNode";
 import { UrlNode } from "../stageObject/entity/UrlNode";
 import { GraphMethods } from "./basicMethods/GraphMethods";
-import { StageHistoryManager } from "./StageHistoryManager";
 
 // littlefean:应该改成类，实例化的对象绑定到舞台上。这成单例模式了
 // 开发过程中会造成多开
@@ -669,7 +668,7 @@ export class StageManager {
 
   deleteEntities(deleteNodes: Entity[]) {
     this.project.deleteManager.deleteEntities(deleteNodes);
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
     // 更新选中节点计数
     this.project.stageObjectSelectCounter.update();
   }
@@ -700,7 +699,7 @@ export class StageManager {
       return this.deleteEdge(deleteAssociation);
     } else if (deleteAssociation instanceof MultiTargetUndirectedEdge) {
       const res = this.project.deleteManager.deleteMultiTargetUndirectedEdge(deleteAssociation);
-      StageHistoryManager.recordStep();
+      this.project.stageHistoryManager.recordStep();
       // 更新选中边计数
       this.project.stageObjectSelectCounter.update();
       return res;
@@ -711,7 +710,7 @@ export class StageManager {
 
   deleteEdge(deleteEdge: Edge): boolean {
     const res = this.project.deleteManager.deleteEdge(deleteEdge);
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
     // 更新选中边计数
     this.project.stageObjectSelectCounter.update();
     return res;
@@ -727,7 +726,7 @@ export class StageManager {
       this.project.nodeConnector.connectConnectableEntity(fromNode, toNode);
     }
 
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
     return GraphMethods.isConnected(fromNode, toNode);
   }
 
@@ -758,7 +757,7 @@ export class StageManager {
         this.project.nodeConnector.connectConnectableEntity(fromNode, toNode, "", targetRectRate, sourceRectRate);
       }
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
     return true;
   }
 
@@ -796,28 +795,28 @@ export class StageManager {
 
   addSerializedData(serializedData: Serialized.File, diffLocation = new Vector(0, 0)) {
     this.project.serializedDataAdder.addSerializedData(serializedData, diffLocation);
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   generateNodeTreeByText(text: string, indention: number = 4, location = this.project.camera.location) {
     this.project.nodeAdder.addNodeTreeByText(text, indention, location);
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   generateNodeGraphByText(text: string, location = this.project.camera.location) {
     this.project.nodeAdder.addNodeGraphByText(text, location);
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   generateNodeByMarkdown(text: string, location = this.project.camera.location) {
     this.project.nodeAdder.addNodeByMarkdown(text, location);
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   /** 将多个实体打包成一个section，并添加到舞台中 */
   async packEntityToSection(addEntities: Entity[]) {
     await this.project.sectionPackManager.packEntityToSection(addEntities);
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   /** 将选中的实体打包成一个section，并添加到舞台中 */
@@ -831,23 +830,23 @@ export class StageManager {
 
   goInSection(entities: Entity[], section: Section) {
     this.project.sectionInOutManager.goInSection(entities, section);
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   goOutSection(entities: Entity[], section: Section) {
     this.project.sectionInOutManager.goOutSection(entities, section);
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
   /** 将所有选中的Section折叠起来 */
   packSelectedSection() {
     this.project.sectionPackManager.packSection();
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   /** 将所有选中的Section展开 */
   unpackSelectedSection() {
     this.project.sectionPackManager.unpackSection();
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   /**
@@ -855,7 +854,7 @@ export class StageManager {
    */
   sectionSwitchCollapse() {
     this.project.sectionPackManager.switchCollapse();
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   addTagBySelected() {
@@ -1066,7 +1065,7 @@ export class StageManager {
       }),
       uuid,
     );
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
     return true;
   }
 }

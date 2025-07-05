@@ -3,7 +3,7 @@
 import generouted from "@generouted/react-router/plugin";
 import ViteYaml from "@modyfi/vite-plugin-yaml";
 import tailwindcss from "@tailwindcss/vite";
-import react from "@vitejs/plugin-react-swc";
+import react from "@vitejs/plugin-react-oxc";
 import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 
@@ -19,11 +19,8 @@ export default defineConfig(async () => ({
     // 解析yaml文件，作为js对象导入
     // import config from "./config.yaml"
     ViteYaml(),
-    // 使用swc的react插件
-    react({
-      tsDecorators: true,
-      // plugins: [["@swc-jotai/react-refresh", {}]],
-    }),
+    // react插件
+    react(),
     // 自动生成路由文件
     generouted(),
   ],

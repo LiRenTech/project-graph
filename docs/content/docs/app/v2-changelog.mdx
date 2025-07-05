@@ -28,6 +28,24 @@ icon: CircleFadingArrowUp
 
 如果你的硬盘速度非常慢，可以在设置中关闭暂存功能，以免影响软件流畅度。
 
+## 提高浏览器内核版本要求
+
+在此版本中，我们升级了各种框架的版本，浏览器内核版本要求也随之改变：
+
+- Chrome 111
+- Edge 111
+- Android System WebView 111
+- Safari 16.4
+
+### macOS 系统要求
+
+同时，随着 Safari 版本要求的变更，我们将 macOS 系统的最小版本要求改为 11.0 (Big Sur)。
+
+如果你的 Mac 没有搭载 Safari 16.4 及以上版本，请按照以下步骤更新：
+
+1. 打开系统设置中的“软件更新”页面
+2. 更新“其他可用更新”中的“Safari 浏览器”
+
 ## 使用 URI 替代文件路径
 
 在之前 Project Graph 使用文件路径来标识项目文件，现在换成了 URI：
@@ -39,3 +57,19 @@ icon: CircleFadingArrowUp
 |   云存储 | ?                              | cloud:/project.prg            |
 
 这是为了以后的云同步功能做铺垫，可以更好的区分不同类型的文件。
+
+## 使用 Rolldown 打包前端
+
+Vite 计划将由 Rust 驱动的 JavaScript 打包工具 Rolldown 集成进来，以提升构建的性能和功能。
+
+Rolldown 是一个现代化、高性能的 JavaScript 打包工具，由 Rust 编写。它被设计为 Rollup 的替代品，旨在保持与现有生态系统兼容的同时，显著提升性能。
+
+Rolldown 专注于三个主要原则：
+
+- 速度：利用 Rust 的高性能进行构建
+- 兼容性：能够与现有的 Rollup 插件一起工作
+- 优化：拥有比 esbuild 和 Rollup 更先进的特性
+
+同时，Project Graph 决定从 2.0 版本开始使用 Rolldown 打包前端，可能会使构建速度有所提升。
+
+当然，使用 Rolldown 后可能会有一些问题，欢迎反馈。

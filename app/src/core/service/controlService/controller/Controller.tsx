@@ -131,8 +131,6 @@ export class Controller {
         const inst = new (v as any)(this.project);
         let id = k.replace("Controller", "").replace("Class", "");
         id = id[0].toLowerCase() + id.slice(1);
-        console.log("controller.%s loaded", id);
-        // 首字母小写
         this[id as keyof this] = inst;
       });
   }

@@ -54,9 +54,11 @@ import type { ComplexityDetector } from "./service/dataManageService/ComplexityD
 import type { ContentSearch } from "./service/dataManageService/contentSearchEngine/contentSearchEngine";
 import type { CopyEngine } from "./service/dataManageService/copyEngine/copyEngine";
 import type { Effects } from "./service/feedbackService/effectEngine/effectMachine";
+import { StageStyleManager } from "./service/feedbackService/stageStyle/StageStyleManager";
 import type { Camera } from "./stage/Camera";
 import type { Canvas } from "./stage/Canvas";
 import { ProjectFormatUpgrader } from "./stage/ProjectFormatUpgrader";
+import { SectionMethods } from "./stage/stageManager/basicMethods/SectionMethods";
 import type { LayoutManualAlign } from "./stage/stageManager/concreteMethods/layoutManager/layoutManualAlignManager";
 import type { AutoAlign } from "./stage/stageManager/concreteMethods/StageAutoAlignManager";
 import type { DeleteManager } from "./stage/stageManager/concreteMethods/StageDeleteManager";
@@ -74,11 +76,9 @@ import type { SerializedDataAdder } from "./stage/stageManager/concreteMethods/S
 import type { TagManager } from "./stage/stageManager/concreteMethods/StageTagManager";
 import type { StageManager } from "./stage/stageManager/StageManager";
 
-// TODO: 将filesystem接口提取出来
-// TODO: 支持服务进行文件操作，而不是直接操作文件系统
-// TODO: 删除文件路径相关的API
-// TODO: 删除自动备份、自动保存
-// TODO: 文档
+if (import.meta.hot) {
+  import.meta.hot.accept();
+}
 
 /**
  * “工程”
@@ -87,6 +87,30 @@ import type { StageManager } from "./stage/stageManager/StageManager";
  */
 export class Project {
   static readonly latestVersion = 17;
+  /**
+   * 仅开发环境有效，用于热重载服务
+   */
+  static readonly serviceId2ModulePathMap = new Map<string, string>();
+  static {
+    if (import.meta.hot) {
+      Object.entries(
+        import.meta.glob("./**/*.tsx", {
+          eager: true,
+          import: "default",
+          // 每个服务类上面都会有@service装饰器，所以只要用正则匹配一下就可以了，所有不用解析模块
+          query: "?raw",
+        }),
+      ).forEach(([k, v]) => {
+        const idMatch = (v as string).match(/^@service\("([a-zA-Z]+)"\)$/m);
+        if (!idMatch) {
+          return;
+        }
+        const id = idMatch[1];
+        console.debug("[Project] 发现服务: %s (%s)", id, k);
+        this.serviceId2ModulePathMap.set(id, k);
+      });
+    }
+  }
 
   private readonly services = new Map<string, Service>();
   private readonly tickableServices = new Set<Service>();
@@ -117,7 +141,6 @@ export class Project {
     uri: URI,
   ) {
     this._uri = uri;
-    console.log("new project", uri);
     (async () => {
       switch (this.uri.scheme) {
         case "file": {
@@ -150,7 +173,6 @@ export class Project {
           break;
         }
       }
-      console.log("start loop");
       this.loop();
     })();
   }
@@ -169,15 +191,40 @@ export class Project {
   loadService(service: { id?: string; new (...args: any[]): any }) {
     if (!service.id) {
       service.id = crypto.randomUUID();
-      console.warn("服务 %o 未指定 ID，自动生成：%s", service, service.id);
+      console.warn("[Project] 服务 %o 未指定 ID，自动生成：%s", service, service.id);
     }
     const inst = new service(this);
     this.services.set(service.id, inst);
     if ("tick" in inst) {
-      console.log("服务 %s 实现了 tick()", service.id);
       this.tickableServices.add(inst);
     }
     this[service.id as keyof this] = inst as this[keyof this];
+    // TODO: 现在的热重载用不了
+    if (import.meta.hot) {
+      // 获取服务所在的模块路径
+      // 这也是为什么要求传递一个类而不是实例的原因
+      const modulePath = Project.serviceId2ModulePathMap.get(service.id);
+      if (!modulePath) {
+        console.warn("[Project] 未找到服务 %s 的模块路径，将无法热重载该服务", service.id);
+        return;
+      }
+      console.log("accept", modulePath);
+      import.meta.hot.accept(modulePath, (module) => {
+        console.debug("[Project] 热重载服务: %s (%s)", service.id, modulePath);
+        // 先卸载原来的服务
+        if (service.id) {
+          this.disposeService(service.id);
+        }
+        // 找到模块中包含id属性的对象
+        const newService = Object.values(module!).find((v) => v.id === service.id);
+        if (!newService) {
+          console.warn("[Project] %s 热重载无效: 新的模块中未找到服务类", service.id);
+          return;
+        }
+        // 重新加载服务
+        this.loadService(newService);
+      });
+    }
   }
   /**
    * 立刻销毁一个服务
@@ -360,6 +407,7 @@ declare module "./Project" {
     serializedDataAdder: SerializedDataAdder;
     keyBindsRegistrar: KeyBindsRegistrar;
     sectionMethods: SectionMethods;
+    stageStyleManager: StageStyleManager;
   }
 }
 

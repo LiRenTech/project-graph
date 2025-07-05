@@ -22,12 +22,13 @@ import { EdgeRendererClass } from "./EdgeRendererClass";
 @service("edgeRenderer")
 export class EdgeRenderer {
   // let currentRenderer = new StraightEdgeRenderer();
-  private currentRenderer: EdgeRendererClass = this.project.symmetryCurveEdgeRenderer;
+  private currentRenderer: EdgeRendererClass;
 
   /**
    * 初始化边的渲染器
    */
   constructor(private readonly project: Project) {
+    this.currentRenderer = this.project.symmetryCurveEdgeRenderer;
     Settings.watch("lineStyle", this.updateRenderer.bind(this));
   }
 
@@ -172,7 +173,7 @@ export class EdgeRenderer {
     }
 
     if (edge.source.isHiddenBySectionCollapse) {
-      return new LineEdge({
+      return new LineEdge(this.project, {
         source: this.getMinNonCollapseParentSection(edge.source).uuid,
         target: edge.target.uuid,
         text: edge.text,
@@ -184,7 +185,7 @@ export class EdgeRenderer {
       });
     }
     if (edge.target.isHiddenBySectionCollapse) {
-      return new LineEdge({
+      return new LineEdge(this.project, {
         source: edge.source.uuid,
         target: this.getMinNonCollapseParentSection(edge.target).uuid,
         text: edge.text,

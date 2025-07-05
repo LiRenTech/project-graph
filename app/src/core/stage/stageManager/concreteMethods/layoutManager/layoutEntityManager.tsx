@@ -1,6 +1,5 @@
 import { Entity } from "../../../stageObject/abstract/StageEntity";
 import { Section } from "../../../stageObject/entity/Section";
-import { StageHistoryManager } from "../../StageHistoryManager";
 
 export namespace LayoutEntityManager {
   /**
@@ -28,6 +27,6 @@ export namespace LayoutEntityManager {
     } else {
       layoutFunction(entities);
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 }

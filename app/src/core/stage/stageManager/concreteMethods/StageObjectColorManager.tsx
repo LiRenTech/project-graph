@@ -1,6 +1,5 @@
 import { Color } from "../../../dataStruct/Color";
 import { Project, service } from "../../../Project";
-import { StageHistoryManager } from "../StageHistoryManager";
 
 /**
  * 管理所有 节点/连线 的颜色
@@ -38,7 +37,7 @@ export class StageObjectColorManager {
     }
     // 特性：统一取消框选
     // this.project.stageManager.clearSelectAll();  // 不能统一取消全选，因为填充后可能会发现颜色不合适
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   darkenNodeColor() {
@@ -51,7 +50,7 @@ export class StageObjectColorManager {
         node.color = darkenedColor;
       }
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   lightenNodeColor() {
@@ -64,6 +63,6 @@ export class StageObjectColorManager {
         node.color = lightenedColor;
       }
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 }

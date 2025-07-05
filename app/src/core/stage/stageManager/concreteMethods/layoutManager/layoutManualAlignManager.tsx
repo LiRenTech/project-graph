@@ -1,6 +1,5 @@
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project, service } from "../../../../Project";
-import { StageHistoryManager } from "../../StageHistoryManager";
 
 @service("layoutManualAlign")
 export class LayoutManualAlign {
@@ -13,7 +12,7 @@ export class LayoutManualAlign {
     for (const node of nodes) {
       this.project.entityMoveManager.moveEntityUtils(node, new Vector(minX - node.collisionBox.getRectangle().left, 0));
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   // 右侧对齐
@@ -26,7 +25,7 @@ export class LayoutManualAlign {
         new Vector(maxX - node.collisionBox.getRectangle().right, 0),
       );
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   // 上侧对齐
@@ -36,7 +35,7 @@ export class LayoutManualAlign {
     for (const node of nodes) {
       this.project.entityMoveManager.moveEntityUtils(node, new Vector(0, minY - node.collisionBox.getRectangle().top));
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   // 下侧对齐
@@ -49,7 +48,7 @@ export class LayoutManualAlign {
         new Vector(0, maxY - node.collisionBox.getRectangle().bottom),
       );
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   alignCenterHorizontal() {
@@ -67,7 +66,7 @@ export class LayoutManualAlign {
       const newY = centerY - (nodeCenterY - node.collisionBox.getRectangle().top);
       this.project.entityMoveManager.moveEntityToUtils(node, new Vector(node.collisionBox.getRectangle().left, newY));
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   alignCenterVertical() {
@@ -85,7 +84,7 @@ export class LayoutManualAlign {
       const newX = centerX - (nodeCenterX - node.collisionBox.getRectangle().left);
       this.project.entityMoveManager.moveEntityToUtils(node, new Vector(newX, node.collisionBox.getRectangle().top));
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   // 相等间距水平分布对齐
@@ -105,7 +104,7 @@ export class LayoutManualAlign {
       this.project.entityMoveManager.moveEntityToUtils(node, new Vector(startX, node.collisionBox.getRectangle().top));
       startX += node.collisionBox.getRectangle().size.x + spaceBetween;
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   // 相等间距垂直分布对齐
@@ -125,7 +124,7 @@ export class LayoutManualAlign {
       this.project.entityMoveManager.moveEntityToUtils(node, new Vector(node.collisionBox.getRectangle().left, startY));
       startY += node.collisionBox.getRectangle().size.y + spaceBetween;
     }
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   /**

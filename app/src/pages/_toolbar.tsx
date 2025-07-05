@@ -43,7 +43,6 @@ import { ViewFlashEffect } from "../core/service/feedbackService/effectEngine/co
 import { StageStyleManager } from "../core/service/feedbackService/stageStyle/StageStyleManager";
 import { LeftMouseModeEnum, Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
-import { StageHistoryManager } from "../core/stage/stageManager/StageHistoryManager";
 import { StageManager } from "../core/stage/stageManager/StageManager";
 import { StageGeneratorAI } from "../core/stage/stageManager/concreteMethods/StageGeneratorAI";
 import { ConnectableEntity } from "../core/stage/stageObject/abstract/ConnectableEntity";
@@ -317,7 +316,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<MoveUpRight />}
             handleFunction={() => {
               StageManager.switchUndirectedEdgeToEdge();
-              StageHistoryManager.recordStep();
+              this.project.stageHistoryManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -330,7 +329,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               for (const multi_target_undirected_edge of selectedMTUEdge) {
                 multi_target_undirected_edge.arrow = "outer";
               }
-              StageHistoryManager.recordStep();
+              this.project.stageHistoryManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -343,7 +342,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               for (const multi_target_undirected_edge of selectedMTUEdge) {
                 multi_target_undirected_edge.arrow = "inner";
               }
-              StageHistoryManager.recordStep();
+              this.project.stageHistoryManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -356,7 +355,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
               for (const multi_target_undirected_edge of selectedMTUEdge) {
                 multi_target_undirected_edge.arrow = "none";
               }
-              StageHistoryManager.recordStep();
+              this.project.stageHistoryManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -373,7 +372,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
                   multi_target_undirected_edge.renderType = "line";
                 }
               }
-              StageHistoryManager.recordStep();
+              this.project.stageHistoryManager.recordStep();
             }}
           />
         </ToolbarGroup>
@@ -388,7 +387,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             handleFunction={() => {
               const selectedEdges = StageManager.getLineEdges().filter((edge) => edge.isSelected);
               this.project.nodeConnector.reverseEdges(selectedEdges);
-              StageHistoryManager.recordStep();
+              this.project.stageHistoryManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -396,7 +395,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<Spline />}
             handleFunction={() => {
               StageManager.switchLineEdgeToCrEdge();
-              StageHistoryManager.recordStep();
+              this.project.stageHistoryManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -404,7 +403,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<ChevronsLeftRightEllipsis />}
             handleFunction={() => {
               StageManager.switchEdgeToUndirectedEdge();
-              StageHistoryManager.recordStep();
+              this.project.stageHistoryManager.recordStep();
             }}
           />
 
@@ -424,7 +423,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<GitBranchPlus />}
             handleFunction={() => {
               StageManager.addSelectedCREdgeControlPoint();
-              StageHistoryManager.recordStep();
+              this.project.stageHistoryManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -432,7 +431,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<ChevronsRightLeft />}
             handleFunction={() => {
               StageManager.addSelectedCREdgeTension();
-              StageHistoryManager.recordStep();
+              this.project.stageHistoryManager.recordStep();
             }}
           />
           <ToolbarItem
@@ -440,7 +439,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<ChevronsLeftRightEllipsis />}
             handleFunction={() => {
               StageManager.reduceSelectedCREdgeTension();
-              StageHistoryManager.recordStep();
+              this.project.stageHistoryManager.recordStep();
             }}
           />
         </ToolbarGroup>
@@ -556,7 +555,7 @@ export default function Toolbar({ className = "" }: { className?: string }) {
             icon={<BrainCircuit />}
             handleFunction={() => {
               StageGeneratorAI.generateNewTextNodeBySelected();
-              StageHistoryManager.recordStep();
+              this.project.stageHistoryManager.recordStep();
             }}
           />
         </ToolbarGroup>

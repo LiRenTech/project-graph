@@ -8,24 +8,24 @@ import { ConnectableEntity } from "../../../stage/stageObject/abstract/Connectab
  *
  * 以尽可能减少用户按方向键更改目标位置的操作，提高效率
  */
-export namespace NewTargetLocationSelector {
-  export let diffLocation = new Vector(150, 0);
+export const NewTargetLocationSelector = {
+  diffLocation: new Vector(150, 0),
 
   /**
    *
    * @param selectedNode 当前选择的是哪个节点
    * @returns 返回最佳的目标位置
    */
-  export function onTabDown(selectedNode: ConnectableEntity): Vector {
-    return selectedNode.collisionBox.getRectangle().center.add(diffLocation);
-  }
+  onTabDown(selectedNode: ConnectableEntity): Vector {
+    return selectedNode.collisionBox.getRectangle().center.add(this.diffLocation);
+  },
 
   /**
    * 在Tab键抬起时
    * @param selectedNode 当前选择的是哪个节点
    * @param finalChoiceLocation 最终用户选择生成的位置
    */
-  export function onTabUp(selectedNode: ConnectableEntity, finalChoiceLocation: Vector): void {
-    diffLocation = finalChoiceLocation.subtract(selectedNode.collisionBox.getRectangle().center);
-  }
-}
+  onTabUp(selectedNode: ConnectableEntity, finalChoiceLocation: Vector): void {
+    this.diffLocation = finalChoiceLocation.subtract(selectedNode.collisionBox.getRectangle().center);
+  },
+};

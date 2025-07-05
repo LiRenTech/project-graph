@@ -14,12 +14,9 @@ import { RecentFileManager } from "./core/service/dataFileService/RecentFileMana
 import { StartFilesManager } from "./core/service/dataFileService/StartFilesManager";
 import { ColorManager } from "./core/service/feedbackService/ColorManager";
 import { SoundService } from "./core/service/feedbackService/SoundService";
-import { StageStyleManager } from "./core/service/feedbackService/stageStyle/StageStyleManager";
-import { LastLaunch } from "./core/service/LastLaunch";
 import { Settings } from "./core/service/Settings";
 import { Tourials } from "./core/service/Tourials";
 import { UserState } from "./core/service/UserState";
-import { StageHistoryManager } from "./core/stage/stageManager/StageHistoryManager";
 import { EdgeCollisionBoxGetter } from "./core/stage/stageObject/association/EdgeCollisionBoxGetter";
 import "./index.css";
 import "./polyfills/roundRect";
@@ -46,7 +43,6 @@ const el = document.getElementById("root")!;
   await Promise.all([
     Settings.init(),
     RecentFileManager.init(),
-    LastLaunch.init(),
     StartFilesManager.init(),
     ColorManager.init(),
     Tourials.init(),
@@ -70,8 +66,6 @@ const el = document.getElementById("root")!;
 /** 加载同步初始化的模块 */
 async function loadSyncModules() {
   EdgeCollisionBoxGetter.init();
-  StageHistoryManager.init();
-  StageStyleManager.init();
   SoundService.init();
   MouseLocation.init();
 }

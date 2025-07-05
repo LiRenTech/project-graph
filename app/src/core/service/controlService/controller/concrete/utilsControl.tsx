@@ -5,7 +5,6 @@ import { colorInvert } from "../../../../dataStruct/Color";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project, service } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { StageHistoryManager } from "../../../../stage/stageManager/StageHistoryManager";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { StageObject } from "../../../../stage/stageObject/abstract/StageObject";
 import { Edge } from "../../../../stage/stageObject/association/Edge";
@@ -112,7 +111,7 @@ export class ControllerUtils {
         SubWindow.close(lastAutoCompleteWindowId);
         clickedNode!.isEditing = false;
         this.project.controller.isCameraLocked = false;
-        StageHistoryManager.recordStep();
+        this.project.stageHistoryManager.recordStep();
         // 更新选中内容的数量
         this.project.stageObjectSelectCounter.update();
       });
@@ -152,7 +151,7 @@ export class ControllerUtils {
         // clickedLineEdge!.isEditing = false;
         // 因为这里用的是不透明文本框，所以不需要停止节点上文字的渲染
         this.project.controller.isCameraLocked = false;
-        StageHistoryManager.recordStep();
+        this.project.stageHistoryManager.recordStep();
       });
   }
   editMultiTargetEdgeText(clickedEdge: MultiTargetUndirectedEdge, selectAll = true) {
@@ -189,7 +188,7 @@ export class ControllerUtils {
         // clickedLineEdge!.isEditing = false;
         // 因为这里用的是不透明文本框，所以不需要停止节点上文字的渲染
         this.project.controller.isCameraLocked = false;
-        StageHistoryManager.recordStep();
+        this.project.stageHistoryManager.recordStep();
       });
   }
 
@@ -218,7 +217,7 @@ export class ControllerUtils {
       .then(() => {
         clickedUrlNode!.isEditingTitle = false;
         this.project.controller.isCameraLocked = false;
-        StageHistoryManager.recordStep();
+        this.project.stageHistoryManager.recordStep();
       });
   }
 
@@ -249,7 +248,7 @@ export class ControllerUtils {
       .then(() => {
         section.isEditingTitle = false;
         this.project.controller.isCameraLocked = false;
-        StageHistoryManager.recordStep();
+        this.project.stageHistoryManager.recordStep();
       });
   }
 
@@ -278,7 +277,7 @@ export class ControllerUtils {
       .then(() => {
         clickedPortalNode!.isEditingTitle = false;
         this.project.controller.isCameraLocked = false;
-        StageHistoryManager.recordStep();
+        this.project.stageHistoryManager.recordStep();
       });
   }
 

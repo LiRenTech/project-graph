@@ -1,6 +1,5 @@
 import { Vector } from "../../../../dataStruct/Vector";
 import { Entity } from "../../../stageObject/abstract/StageEntity";
-import { StageHistoryManager } from "../../StageHistoryManager";
 
 export namespace LayoutToSquareManager {
   /**
@@ -9,7 +8,7 @@ export namespace LayoutToSquareManager {
   export function layoutToSquareBySelected() {
     const entities = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     layoutToSquare(entities);
-    StageHistoryManager.recordStep();
+    this.project.stageHistoryManager.recordStep();
   }
 
   export function layoutToSquare(entities: Entity[]) {
