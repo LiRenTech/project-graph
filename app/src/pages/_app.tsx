@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { restoreStateCurrent, saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
 import { useAtom } from "jotai";
 import { Copy, Minus, Pin, PinOff, Square, X } from "lucide-react";
@@ -114,6 +115,29 @@ export default function App() {
 
     // 恢复窗口位置大小
     restoreStateCurrent(StateFlags.SIZE | StateFlags.POSITION | StateFlags.MAXIMIZED);
+  }, []);
+
+  // https://github.com/tauri-apps/tauri/issues/5812
+  const isOnResizedDisabled = useRef(true);
+  function isMaximizedWorkaround() {
+    isOnResizedDisabled.current = true;
+    getCurrentWindow()
+      .isMaximized()
+      .then((isMaximized) => {
+        isOnResizedDisabled.current = false;
+        // your stuff
+        _setMaximized(isMaximized);
+      });
+  }
+  useEffect(() => {
+    const unlisten = getCurrentWindow().onResized(() => {
+      if (!isOnResizedDisabled.current) {
+        isMaximizedWorkaround();
+      }
+    });
+    return () => {
+      if (unlisten) unlisten.then((f) => f());
+    };
   }, []);
 
   useEffect(() => {
