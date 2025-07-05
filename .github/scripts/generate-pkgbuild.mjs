@@ -5,7 +5,7 @@ import { writeFileSync } from "fs";
 // 命令行参数：
 // node ./generate-pkgbuild.mjs <pkgname> <pkgver> <sha256sums>
 const pkgname = process.argv[2];
-const pkgver = process.argv[3];
+const pkgver = process.argv[3].replaceAll("-", ".");
 const sha256sums = process.argv[4];
 
 if (!pkgname || !pkgver || !sha256sums) {
