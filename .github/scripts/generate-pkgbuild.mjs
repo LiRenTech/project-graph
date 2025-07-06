@@ -5,7 +5,7 @@ import { writeFileSync } from "fs";
 // 命令行参数：
 // node ./generate-pkgbuild.mjs <pkgname> <pkgver> <sha256sums>
 const pkgname = process.argv[2];
-const pkgver = process.argv[3].replaceAll("-", ".");
+const pkgver = process.argv[3];
 const sha256sums = process.argv[4];
 
 if (!pkgname || !pkgver || !sha256sums) {
@@ -24,7 +24,7 @@ const source =
 
 const PKGBUILD = `# Maintainer: zty012 <me@zty012.de>
 pkgname=${pkgname}
-pkgver=${pkgver}
+pkgver=${pkgver.replaceAll("-", ".")}
 pkgrel=1
 pkgdesc="A simple tool to create topology diagrams."
 arch=('x86_64')
@@ -49,7 +49,7 @@ writeFileSync("./PKGBUILD", PKGBUILD);
 
 const SRCINFO = `pkgbase = ${pkgname}
 \tpkgdesc = A simple tool to create topology diagrams.
-\tpkgver = ${pkgver}
+\tpkgver = ${pkgver.replaceAll("-", ".")}
 \tpkgrel = 1
 \turl = https://github.com/LiRenTech/project-graph
 \tinstall = ${pkgname}.install

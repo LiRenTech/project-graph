@@ -1,6 +1,6 @@
 import { Decoder, Encoder } from "@msgpack/msgpack";
 import { appLocalDataDir, join } from "@tauri-apps/api/path";
-import { exists, readFile, writeFile } from "@tauri-apps/plugin-fs";
+import { exists, mkdir, readFile, writeFile } from "@tauri-apps/plugin-fs";
 import { URI } from "vscode-uri";
 import { Serialized } from "../types/node";
 import { Base64 } from "../utils/base64";
@@ -130,7 +130,7 @@ export class Project {
   private encoder = new Encoder();
   private decoder = new Decoder();
 
-  private constructor(
+  constructor(
     /**
      * 工程文件的URI
      * 之所以从“路径”改为了“URI”，是因为要为后面的云同步功能做铺垫。
@@ -145,7 +145,11 @@ export class Project {
       switch (this.uri.scheme) {
         case "file": {
           // 先检测之前有没有暂存
-          const stashFilePath = await join(await appLocalDataDir(), "stash", Base64.encode(uri.toString()));
+          const stashPath = await join(await appLocalDataDir(), "stash");
+          if (!(await exists(stashPath))) {
+            await mkdir(stashPath);
+          }
+          const stashFilePath = await join(stashPath, Base64.encode(uri.toString()));
           if (await exists(stashFilePath)) {
             // 加载暂存的文件
             const decoded = this.decoder.decode(await readFile(stashFilePath)) as Record<string, any>;

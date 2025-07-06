@@ -1,6 +1,7 @@
 import { open } from "@tauri-apps/plugin-dialog";
 import { File, FileDown, FilePlus, FolderOpen, Save } from "lucide-react";
 import { ReactNode } from "react";
+import { URI } from "vscode-uri";
 import { Dialog } from "../../components/dialog";
 import { projectsAtom, store } from "../../state";
 import { Project } from "../Project";
@@ -52,6 +53,9 @@ export namespace GlobalMenu {
           });
           if (answer.button === "取消打开") return;
         }
+        const project = new Project(URI.file(path));
+        loadAllServices(project);
+        store.set(projectsAtom, [...store.get(projectsAtom), project]);
       }),
       new Separator(),
       new MenuItem("保存", <Save />),
