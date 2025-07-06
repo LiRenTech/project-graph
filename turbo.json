@@ -31,6 +31,7 @@
       "outputs": ["src-tauri/target/*-android/release/**"]
     },
     "dev": {
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },

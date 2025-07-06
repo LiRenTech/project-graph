@@ -70,6 +70,7 @@
     "typescript": "^5.8.3",
     "uuid": "^11.1.0",
     "vite": "^7.0.2",
+    "vite-plugin-pg-theme": "workspace:*",
     "vite-plugin-svgr": "^4.3.0",
     "vitest": "3.2.4"
   }

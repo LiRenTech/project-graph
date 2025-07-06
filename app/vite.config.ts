@@ -5,6 +5,7 @@ import ViteYaml from "@modyfi/vite-plugin-yaml";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-oxc";
 import { defineConfig } from "vite";
+import pgTheme from "vite-plugin-pg-theme";
 import svgr from "vite-plugin-svgr";
 
 const host = process.env.TAURI_DEV_HOST;
@@ -13,6 +14,11 @@ const host = process.env.TAURI_DEV_HOST;
 export default defineConfig(async () => ({
   plugins: [
     tailwindcss(),
+    pgTheme({
+      glob: "src/themes/*.pg-theme",
+      out: "src/theme.pcss",
+      defaultTheme: "dark",
+    }),
     // 将svg文件作为react组件导入
     // import Icon from "./icon.svg?react"
     svgr(),
