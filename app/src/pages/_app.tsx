@@ -165,7 +165,7 @@ export default function App() {
           {GlobalMenu.menus.map((menu, i) => (
             <div
               key={i}
-              className="hover:bg-titlebar-control-hover-bg flex h-full items-center gap-1 rounded-lg px-2 transition-all active:scale-90 active:rounded-2xl [&_svg]:size-4"
+              className="hover:bg-titlebar-control-hover-bg flex h-full items-center gap-1 rounded-lg px-2 transition-all hover:cursor-pointer active:scale-90 active:rounded-2xl [&_svg]:size-4"
               onMouseDown={() => {
                 MenuWindow.open(menu);
               }}
@@ -232,7 +232,11 @@ export default function App() {
             }}
           >
             <span className="text-sm">{project.uri.toString()}</span>
-            <X size={16} strokeWidth={3} className="hover:bg-titlebar-control-hover-bg rounded-full hover:scale-125" />
+            <X
+              size={16}
+              strokeWidth={3}
+              className="hover:bg-titlebar-control-hover-bg cursor-pointer rounded-full hover:scale-125"
+            />
           </div>
         ))}
       </div>
