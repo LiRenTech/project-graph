@@ -6,9 +6,10 @@ Project Graph 是一个图形化思维桌面工具和知识管理系统，支持
 
 ## 技术架构
 
-- 前端：React + TypeScript
-- 后端：Tauri (Rust)
+- 框架：React (TypeScript) + Tauri (Rust)
 - 构建工具：Vite + pnpm (monorepo)
+- 图形渲染：Canvas 2D
+- UI: tailwindcss
 
 ## 核心功能模块
 

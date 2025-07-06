@@ -175,7 +175,8 @@ export default function App() {
             </div>
           ))}
         </div>
-        <div className="flex-1" data-tauri-drag-region></div>
+        {/* 悬浮拖拽区域 ↓ */}
+        <div className="h-full flex-1 hover:cursor-grab active:cursor-grabbing" data-tauri-drag-region></div>
         <div className="*:hover:bg-titlebar-control-hover-bg flex h-full *:flex *:h-full *:w-8 *:cursor-pointer *:items-center *:justify-center *:rounded-lg *:transition-all *:active:scale-90 *:active:rounded-2xl">
           {/* 要确保每一个图标在视觉上的大小和粗细都相同 */}
           {alwaysOnTop ? (
