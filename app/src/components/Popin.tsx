@@ -14,6 +14,8 @@ import { useEffect, useMemo, useState } from "react";
  * <Popin show={show}>
  *   <Xxx />
  * </Popin>
+ *
+ * @deprecated Remove in 2.0.0
  */
 export default function Popin({ show, children }: { show: boolean; children: React.ReactElement<any> }) {
   const [realShow, setRealShow] = useState(false);

@@ -19,7 +19,7 @@ export default function Button({
     <Box
       as="button"
       className={cn(
-        "border-button-border bg-button-bg text-button-text flex items-center justify-center gap-1 px-3 py-2",
+        "el-button flex items-center justify-center gap-1 px-3 py-2",
         {
           "hover:cursor-pointer hover:opacity-80 active:scale-90": !disabled,
           "cursor-not-allowed opacity-50": disabled,

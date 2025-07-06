@@ -58,7 +58,7 @@ const _Box = <E extends ElementType = "div">(
       {tooltip && (
         <div
           className={cn(
-            "border-tooltip-border bg-tooltip-bg text-tooltip-text pointer-events-none fixed z-[103] scale-75 rounded-md border px-2 py-1 transition",
+            "el-tooltip pointer-events-none fixed z-[103] scale-75 rounded-md border px-2 py-1 transition",
             {
               "pointer-events-auto scale-100 opacity-100": showTooltip,
             },

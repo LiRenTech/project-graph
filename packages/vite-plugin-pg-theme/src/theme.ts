@@ -47,15 +47,19 @@ export function convertThemeToCss(themeContent: any) {
 button-bg
 button-text
 button-border
+button-shadow
 button-hover-bg
 button-hover-text
 button-hover-border
+button-hover-shadow
 button-active-bg
 button-active-text
 button-active-border
+button-active-shadow
 button-disabled-bg
 button-disabled-text
 button-disabled-border
+button-disabled-shadow
 以上都算一个color: button
 */
 
@@ -79,21 +83,25 @@ export function generateUtilities(themeContent: any) {
   background-color: var(--color-${color}-bg);
   color: var(--color-${color}-text);
   border-color: var(--color-${color}-border);
+  --tw-shadow-color: var(--color-${color}-shadow);
   &:hover {
     background-color: var(--color-${color}-hover-bg);
     color: var(--color-${color}-hover-text);
     border-color: var(--color-${color}-hover-border);
+    --tw-shadow-color: var(--color-${color}-hover-shadow);
   }
   &:active {
     background-color: var(--color-${color}-active-bg);
     color: var(--color-${color}-active-text);
     border-color: var(--color-${color}-active-border);
+    --tw-shadow-color: var(--color-${color}-active-shadow);
   }
   &:disabled,
   &[disabled] {
     background-color: var(--color-${color}-disabled-bg);
     color: var(--color-${color}-disabled-text);
     border-color: var(--color-${color}-disabled-border);
+    --tw-shadow-color: var(--color-${color}-disabled-shadow);
   }
 }
 `,

@@ -4,6 +4,9 @@ import { createRoot } from "react-dom/client";
 import { cn } from "../utils/cn";
 import Button from "./Button";
 
+/**
+ * @deprecated Remove in 2.0.0
+ */
 export namespace Panel {
   export type Button = {
     label: string;
