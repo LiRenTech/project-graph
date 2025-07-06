@@ -17,7 +17,6 @@ import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
 import { LogicNodeNameToRenderNameMap } from "../../../dataGenerateService/autoComputeEngine/logicNodeNameEnum";
 import { EntityCreateFlashEffect } from "../../../feedbackService/effectEngine/concrete/EntityCreateFlashEffect";
 import { TextRiseEffect } from "../../../feedbackService/effectEngine/concrete/TextRiseEffect";
-import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { SubWindow } from "../../../SubWindow";
 
 /**
@@ -39,11 +38,11 @@ export class ControllerUtils {
     const fontColor = (
       clickedNode.color.a === 1
         ? colorInvert(clickedNode.color)
-        : colorInvert(StageStyleManager.currentStyle.Background)
+        : colorInvert(this.project.stageStyleManager.currentStyle.Background)
     ).toHexStringWithoutAlpha();
     // 编辑节点
     clickedNode.isEditing = true;
-    // RectangleElement.div(rectView, StageStyleManager.currentStyle.CollideBoxSelected);
+    // RectangleElement.div(rectView, this.project.stageStyleManager.currentStyle.CollideBoxSelected);
     let lastAutoCompleteWindowId: string;
     this.project.inputElement
       .textarea(
@@ -101,7 +100,7 @@ export class ControllerUtils {
           fontSize: Renderer.FONT_SIZE * this.project.camera.currentScale + "px",
           backgroundColor: "transparent",
           color: fontColor,
-          outline: `solid ${2 * this.project.camera.currentScale}px ${StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.25).toString()}`,
+          outline: `solid ${2 * this.project.camera.currentScale}px ${this.project.stageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.25).toString()}`,
           borderRadius: `${Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale}px`,
         },
         selectAll,
@@ -140,8 +139,8 @@ export class ControllerUtils {
           left: `${textAreaLocation.x.toFixed(2)}px`,
           top: `${textAreaLocation.y.toFixed(2)}px`,
           fontSize: Renderer.FONT_SIZE * this.project.camera.currentScale + "px",
-          backgroundColor: StageStyleManager.currentStyle.Background.toString(),
-          color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
+          backgroundColor: this.project.stageStyleManager.currentStyle.Background.toString(),
+          color: this.project.stageStyleManager.currentStyle.StageObjectBorder.toString(),
           outline: "solid 1px rgba(255,255,255,0.1)",
           // marginTop: -8 * this.project.camera.currentScale + "px",
         },
@@ -177,8 +176,8 @@ export class ControllerUtils {
           left: `${textAreaLocation.x.toFixed(2)}px`,
           top: `${textAreaLocation.y.toFixed(2)}px`,
           fontSize: Renderer.FONT_SIZE * this.project.camera.currentScale + "px",
-          backgroundColor: StageStyleManager.currentStyle.Background.toString(),
-          color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
+          backgroundColor: this.project.stageStyleManager.currentStyle.Background.toString(),
+          color: this.project.stageStyleManager.currentStyle.StageObjectBorder.toString(),
           outline: "solid 1px rgba(255,255,255,0.1)",
           // marginTop: -8 * this.project.camera.currentScale + "px",
         },
@@ -208,7 +207,7 @@ export class ControllerUtils {
         {
           fontSize: Renderer.FONT_SIZE * this.project.camera.currentScale + "px",
           backgroundColor: "transparent",
-          color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
+          color: this.project.stageStyleManager.currentStyle.StageObjectBorder.toString(),
           outline: "none",
           marginTop: -8 * this.project.camera.currentScale + "px",
           width: "100vw",
@@ -240,8 +239,8 @@ export class ControllerUtils {
           boxSizing: "border-box",
           fontSize: Renderer.FONT_SIZE * this.project.camera.currentScale + "px",
           backgroundColor: "transparent",
-          color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
-          outline: `solid ${2 * this.project.camera.currentScale}px ${StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.25).toString()}`,
+          color: this.project.stageStyleManager.currentStyle.StageObjectBorder.toString(),
+          outline: `solid ${2 * this.project.camera.currentScale}px ${this.project.stageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.25).toString()}`,
           marginTop: -8 * this.project.camera.currentScale + "px",
         },
       )
@@ -268,7 +267,7 @@ export class ControllerUtils {
         {
           fontSize: Renderer.FONT_SIZE * this.project.camera.currentScale + "px",
           backgroundColor: "transparent",
-          color: StageStyleManager.currentStyle.StageObjectBorder.toString(),
+          color: this.project.stageStyleManager.currentStyle.StageObjectBorder.toString(),
           outline: "none",
           marginTop: -8 * this.project.camera.currentScale + "px",
           width: "100vw",

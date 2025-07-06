@@ -7,7 +7,6 @@ import { CircleFlameEffect } from "../../../../../service/feedbackService/effect
 import { EdgeCutEffect } from "../../../../../service/feedbackService/effectEngine/concrete/EdgeCutEffect";
 import { LineCuttingEffect } from "../../../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { Effect } from "../../../../../service/feedbackService/effectEngine/effectObject";
-import { StageStyleManager } from "../../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { ConnectableEntity } from "../../../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
@@ -30,7 +29,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
       EdgeCutEffect.default(
         edge.bodyLine.start,
         edge.bodyLine.end,
-        StageStyleManager.currentStyle.StageObjectBorder,
+        this.project.stageStyleManager.currentStyle.StageObjectBorder,
         2,
       ),
     ];
@@ -42,14 +41,14 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
         new ProgressNumber(0, 15),
         startNode.collisionBox.getRectangle().center,
         80,
-        StageStyleManager.currentStyle.effects.successShadow.clone(),
+        this.project.stageStyleManager.currentStyle.effects.successShadow.clone(),
       ),
       new LineCuttingEffect(
         new ProgressNumber(0, 30),
         startNode.collisionBox.getRectangle().center,
         toNode.collisionBox.getRectangle().center,
-        StageStyleManager.currentStyle.effects.successShadow.clone(),
-        StageStyleManager.currentStyle.effects.successShadow.clone(),
+        this.project.stageStyleManager.currentStyle.effects.successShadow.clone(),
+        this.project.stageStyleManager.currentStyle.effects.successShadow.clone(),
         20,
       ),
     ];
@@ -58,7 +57,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
   public renderNormalState(edge: LineEdge): void {
     // 直线绘制
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? StageStyleManager.currentStyle.StageObjectBorder
+      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
 
     let edgeWidth = 2;
@@ -122,7 +121,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     let lineBody: React.ReactNode = <></>;
     let textNode: React.ReactNode = <></>;
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? StageStyleManager.currentStyle.StageObjectBorder
+      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边
@@ -170,7 +169,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
 
   private renderArrowHead(edge: LineEdge, direction: Vector, endPoint = edge.bodyLine.end.clone(), size = 15) {
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? StageStyleManager.currentStyle.StageObjectBorder
+      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     this.project.edgeRenderer.renderArrowHead(endPoint, direction, size, edgeColor);
   }
@@ -188,7 +187,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     const startPoint = sourceRectangle.getLineIntersectionPoint(startLine);
     const endPoint = targetRectangle.getLineIntersectionPoint(endLine);
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? StageStyleManager.currentStyle.StageObjectBorder
+      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边
@@ -238,7 +237,7 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
   public renderCycleState(edge: LineEdge): void {
     // 自环
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? StageStyleManager.currentStyle.StageObjectBorder
+      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     this.project.shapeRenderer.renderArc(
       this.project.renderer.transformWorld2View(edge.target.collisionBox.getRectangle().location),
@@ -269,8 +268,8 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     this.project.curveRenderer.renderGradientLine(
       this.project.renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
       this.project.renderer.transformWorld2View(mouseLocation),
-      StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
       2,
     );
   }
@@ -279,8 +278,8 @@ export class StraightEdgeRenderer extends EdgeRendererClass {
     this.project.curveRenderer.renderGradientLine(
       this.project.renderer.transformWorld2View(startNode.collisionBox.getRectangle().getCenter()),
       this.project.renderer.transformWorld2View(endNode.collisionBox.getRectangle().getCenter()),
-      StageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.5),
-      StageStyleManager.currentStyle.effects.successShadow.toSolid(),
+      this.project.stageStyleManager.currentStyle.effects.successShadow.toNewAlpha(0.5),
+      this.project.stageStyleManager.currentStyle.effects.successShadow.toSolid(),
       2,
     );
   }

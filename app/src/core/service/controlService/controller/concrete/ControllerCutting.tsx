@@ -19,7 +19,6 @@ import { LineCuttingEffect } from "../../../feedbackService/effectEngine/concret
 import { PenStrokeDeletedEffect } from "../../../feedbackService/effectEngine/concrete/PenStrokeDeletedEffect";
 import { RectangleSplitTwoPartEffect } from "../../../feedbackService/effectEngine/concrete/RectangleSplitTwoPartEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
-import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 
@@ -226,8 +225,8 @@ export class ControllerCuttingClass extends ControllerClass {
         new ProgressNumber(0, 15),
         this.cuttingStartLocation,
         this.lastMoveLocation,
-        StageStyleManager.currentStyle.effects.warningShadow,
-        StageStyleManager.currentStyle.effects.warningShadow,
+        this.project.stageStyleManager.currentStyle.effects.warningShadow,
+        this.project.stageStyleManager.currentStyle.effects.warningShadow,
         this.cuttingStartLocation.distance(this.lastMoveLocation) / 10,
       ),
     );
@@ -338,7 +337,7 @@ export class ControllerCuttingClass extends ControllerClass {
               collidePoints,
               50,
               fillColor,
-              StageStyleManager.currentStyle.StageObjectBorder,
+              this.project.stageStyleManager.currentStyle.StageObjectBorder,
               2,
             ),
           );

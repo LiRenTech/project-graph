@@ -1,7 +1,6 @@
 import { NumberFunctions } from "../../../algorithm/numberFunctions";
 import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
-import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 /**
  * 仅仅渲染一个节点右上角的按钮
@@ -16,8 +15,8 @@ export class EntityDetailsButtonRenderer {
     }
     // this.project.shapeRenderer.renderRect(
     //   entity.detailsButtonRectangle().transformWorld2View(),
-    //   StageStyleManager.currentStyle.DetailsDebugTextColor,
-    //   StageStyleManager.currentStyle.DetailsDebugTextColor,
+    //   this.project.stageStyleManager.currentStyle.DetailsDebugTextColor,
+    //   this.project.stageStyleManager.currentStyle.DetailsDebugTextColor,
     //   2 * Camera.currentScale,
     //   Renderer.NODE_ROUNDED_RADIUS * Camera.currentScale,
     // );
@@ -33,7 +32,7 @@ export class EntityDetailsButtonRenderer {
             entity.detailsButtonRectangle().topCenter.subtract(new Vector(0, 12)),
           ),
           12 * this.project.camera.currentScale,
-          StageStyleManager.currentStyle.DetailsDebugText,
+          this.project.stageStyleManager.currentStyle.DetailsDebugText,
         );
     }
     this.project.textRenderer.renderOneLineText(

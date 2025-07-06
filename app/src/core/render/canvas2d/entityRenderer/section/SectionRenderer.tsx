@@ -4,7 +4,6 @@ import { CubicBezierCurve } from "../../../../dataStruct/shape/Curve";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project, service } from "../../../../Project";
-import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { Renderer } from "../../renderer";
 
@@ -22,7 +21,7 @@ export class SectionRenderer {
     this.project.shapeRenderer.renderRect(
       renderRectangle,
       section.color,
-      mixColors(StageStyleManager.currentStyle.StageObjectBorder, Color.Black, 0.5),
+      mixColors(this.project.stageStyleManager.currentStyle.StageObjectBorder, Color.Black, 0.5),
       2 * this.project.camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
     );
@@ -33,7 +32,7 @@ export class SectionRenderer {
         section.rectangle.size.add(Vector.same(4 * 2)).multiply(this.project.camera.currentScale),
       ),
       section.color,
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
       2 * this.project.camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * 1.5 * this.project.camera.currentScale,
     );
@@ -42,7 +41,9 @@ export class SectionRenderer {
         section.text,
         this.project.renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
         Renderer.FONT_SIZE * this.project.camera.currentScale,
-        section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.Background),
+        section.color.a === 1
+          ? colorInvert(section.color)
+          : colorInvert(this.project.stageStyleManager.currentStyle.Background),
       );
     }
   }
@@ -63,7 +64,7 @@ export class SectionRenderer {
         section.rectangle.size.multiply(this.project.camera.currentScale),
       ),
       Color.Transparent,
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
       borderWidth,
       Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
     );
@@ -77,7 +78,9 @@ export class SectionRenderer {
         section.text,
         this.project.renderer.transformWorld2View(section.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
         Renderer.FONT_SIZE * this.project.camera.currentScale,
-        section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.Background),
+        section.color.a === 1
+          ? colorInvert(section.color)
+          : colorInvert(this.project.stageStyleManager.currentStyle.Background),
       );
     }
   }
@@ -113,8 +116,10 @@ export class SectionRenderer {
         this.project.renderer.transformWorld2View(section.rectangle.location),
         section.rectangle.size.multiply(this.project.camera.currentScale),
       ),
-      section.color.a === 0 ? StageStyleManager.currentStyle.Background.toNewAlpha(0.5) : section.color.toNewAlpha(0.5),
-      StageStyleManager.currentStyle.StageObjectBorder,
+      section.color.a === 0
+        ? this.project.stageStyleManager.currentStyle.Background.toNewAlpha(0.5)
+        : section.color.toNewAlpha(0.5),
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
       2 * this.project.camera.currentScale,
     );
     // 缩放过小了，显示巨大化文字
@@ -122,7 +127,9 @@ export class SectionRenderer {
       section.text,
       this.project.renderer.transformWorld2View(section.rectangle.center),
       fontHeight * this.project.camera.currentScale,
-      section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.Background),
+      section.color.a === 1
+        ? colorInvert(section.color)
+        : colorInvert(this.project.stageStyleManager.currentStyle.Background),
     );
   }
 
@@ -140,15 +147,19 @@ export class SectionRenderer {
     const leftTopViewLocation = this.project.renderer.transformWorld2View(leftTopLocation);
     const leftTopFontViewLocation = leftTopViewLocation.subtract(new Vector(0, fontSize));
     const bgColor =
-      section.color.a === 0 ? StageStyleManager.currentStyle.Background.toNewAlpha(0.5) : section.color.toNewAlpha(0.5);
+      section.color.a === 0
+        ? this.project.stageStyleManager.currentStyle.Background.toNewAlpha(0.5)
+        : section.color.toNewAlpha(0.5);
 
     const textColor =
-      section.color.a === 1 ? colorInvert(section.color) : colorInvert(StageStyleManager.currentStyle.Background);
+      section.color.a === 1
+        ? colorInvert(section.color)
+        : colorInvert(this.project.stageStyleManager.currentStyle.Background);
     const textSize = getTextSize(section.text, fontSize);
     this.project.shapeRenderer.renderRect(
       new Rectangle(leftTopFontViewLocation, textSize).expandFromCenter(2),
       bgColor,
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
       2 * this.project.camera.currentScale,
       2,
     );
@@ -192,7 +203,10 @@ export class SectionRenderer {
 
     if (section.isSelected) {
       // 在外面增加一个框
-      this.project.collisionBoxRenderer.render(section.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
+      this.project.collisionBoxRenderer.render(
+        section.collisionBox,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
+      );
     }
     // debug: 绿色虚线 观察父子关系
     if (this.project.renderer.isShowDebug) {

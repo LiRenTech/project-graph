@@ -3,7 +3,6 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effectObject";
 
 /**
@@ -21,7 +20,10 @@ export class ViewFlashEffect extends Effect {
   }
 
   static SaveFile() {
-    return new ViewFlashEffect(StageStyleManager.currentStyle.effects.windowFlash, new ProgressNumber(0, 10));
+    return new ViewFlashEffect(
+      this.project.stageStyleManager.currentStyle.effects.windowFlash,
+      new ProgressNumber(0, 10),
+    );
   }
   static Portal() {
     return new ViewFlashEffect(new Color(127, 75, 124), new ProgressNumber(0, 10));

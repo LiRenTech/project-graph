@@ -4,7 +4,6 @@ import { CubicBezierCurve, SymmetryCurve } from "../../../dataStruct/shape/Curve
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
-import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 
 /**
  * 一些基础的渲染图形
@@ -91,12 +90,18 @@ export class WorldRenderUtils {
     this.project.canvas.ctx.shadowBlur = 15;
 
     if (start.distance(end) === 0) {
-      this.renderPrismaticBlock(start, 4, Color.Transparent, StageStyleManager.currentStyle.effects.flash, 2);
+      this.renderPrismaticBlock(
+        start,
+        4,
+        Color.Transparent,
+        this.project.stageStyleManager.currentStyle.effects.flash,
+        2,
+      );
     } else {
       this.project.curveRenderer.renderSolidLine(
         this.project.renderer.transformWorld2View(start),
         this.project.renderer.transformWorld2View(end),
-        StageStyleManager.currentStyle.effects.flash,
+        this.project.stageStyleManager.currentStyle.effects.flash,
         width * this.project.camera.currentScale,
       );
     }
@@ -184,7 +189,7 @@ export class WorldRenderUtils {
         this.project.renderer.transformWorld2View(end),
         this.project.renderer.transformWorld2View(headRight),
       ],
-      StageStyleManager.currentStyle.effects.flash,
+      this.project.stageStyleManager.currentStyle.effects.flash,
       Color.Transparent,
       0,
     );

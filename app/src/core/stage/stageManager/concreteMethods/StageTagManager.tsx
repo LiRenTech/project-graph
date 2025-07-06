@@ -4,7 +4,6 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Project, service } from "../../../Project";
 import { LineCuttingEffect } from "../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { RectangleNoteEffect } from "../../../service/feedbackService/effectEngine/concrete/RectangleNoteEffect";
-import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { ConnectableEntity } from "../../stageObject/abstract/ConnectableEntity";
 import { StageObject } from "../../stageObject/abstract/StageObject";
 import { Edge } from "../../stageObject/association/Edge";
@@ -122,7 +121,7 @@ export class TagManager {
         new RectangleNoteEffect(
           new ProgressNumber(0, 30),
           boundingRect,
-          StageStyleManager.currentStyle.CollideBoxPreSelected,
+          this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
         ),
       );
     } else {

@@ -4,7 +4,6 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effectObject";
 import { RateFunctions } from "../mathTools/rateFunctions";
 
@@ -107,8 +106,8 @@ export class EntityCreateDashEffect extends Effect {
     for (const p of this.currentLocationArrayTop) {
       const viewLocation = project.renderer.transformWorld2View(p);
       const color = mixColors(
-        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
-        StageStyleManager.currentStyle.StageObjectBorder,
+        this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        this.project.stageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
@@ -117,8 +116,8 @@ export class EntityCreateDashEffect extends Effect {
     for (const p of this.currentLocationArrayBottom) {
       const viewLocation = project.renderer.transformWorld2View(p);
       const color = mixColors(
-        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
-        StageStyleManager.currentStyle.StageObjectBorder,
+        this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        this.project.stageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
@@ -128,8 +127,8 @@ export class EntityCreateDashEffect extends Effect {
     for (const p of this.currentLocationArrayLeft) {
       const viewLocation = project.renderer.transformWorld2View(p);
       const color = mixColors(
-        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
-        StageStyleManager.currentStyle.StageObjectBorder,
+        this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        this.project.stageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 
@@ -139,8 +138,8 @@ export class EntityCreateDashEffect extends Effect {
     for (const p of this.currentLocationArrayRight) {
       const viewLocation = project.renderer.transformWorld2View(p);
       const color = mixColors(
-        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
-        StageStyleManager.currentStyle.StageObjectBorder,
+        this.project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        this.project.stageStyleManager.currentStyle.StageObjectBorder,
         RateFunctions.doorFunction(this.timeProgress.rate),
       );
 

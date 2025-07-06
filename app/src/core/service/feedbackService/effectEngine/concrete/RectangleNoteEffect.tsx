@@ -3,7 +3,6 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effectObject";
 import { reverseAnimate } from "../mathTools/animateFunctions";
 import { easeOutQuint } from "../mathTools/easings";
@@ -33,7 +32,7 @@ export class RectangleNoteEffect extends Effect {
     return new RectangleNoteEffect(
       new ProgressNumber(0, 50),
       rectangle,
-      StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
+      this.project.stageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
     );
   }
 

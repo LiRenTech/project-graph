@@ -40,7 +40,6 @@ import { Color } from "../core/dataStruct/Color";
 import { Vector } from "../core/dataStruct/Vector";
 import { TextRiseEffect } from "../core/service/feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewFlashEffect } from "../core/service/feedbackService/effectEngine/concrete/ViewFlashEffect";
-import { StageStyleManager } from "../core/service/feedbackService/stageStyle/StageStyleManager";
 import { LeftMouseModeEnum, Stage } from "../core/stage/Stage";
 import { StageDumper } from "../core/stage/StageDumper";
 import { StageManager } from "../core/stage/stageManager/StageManager";
@@ -146,9 +145,9 @@ export function PenItem({ color }: PenItemProps) {
       <div
         className="group relative mx-0.5 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full text-xs outline-1 transition-all hover:scale-125"
         style={{
-          backgroundColor: StageStyleManager.currentStyle.StageObjectBorder.toString(),
-          color: StageStyleManager.currentStyle.Background.toString(),
-          outlineColor: StageStyleManager.currentStyle.StageObjectBorder.toString(),
+          backgroundColor: this.project.stageStyleManager.currentStyle.StageObjectBorder.toString(),
+          color: this.project.stageStyleManager.currentStyle.Background.toString(),
+          outlineColor: this.project.stageStyleManager.currentStyle.StageObjectBorder.toString(),
         }}
         onClick={() => {
           Settings.set("autoFillPenStrokeColorEnable", true);
@@ -167,7 +166,7 @@ export function PenItem({ color }: PenItemProps) {
       className="mx-0.5 h-4 w-4 cursor-pointer rounded-full outline-1 transition-all hover:scale-125"
       style={{
         backgroundColor: color.toString(),
-        outlineColor: StageStyleManager.currentStyle.StageObjectBorder.toString(),
+        outlineColor: this.project.stageStyleManager.currentStyle.StageObjectBorder.toString(),
       }}
       onClick={async () => {
         //

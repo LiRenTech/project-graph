@@ -4,7 +4,6 @@ import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Project } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effectObject";
 
 /**
@@ -37,7 +36,7 @@ export class EntityCreateFlashEffect extends Effect {
       new ProgressNumber(0, 50),
       rectangle,
       Renderer.NODE_ROUNDED_RADIUS,
-      StageStyleManager.currentStyle.effects.flash,
+      this.project.stageStyleManager.currentStyle.effects.flash,
     );
   }
 
@@ -46,7 +45,7 @@ export class EntityCreateFlashEffect extends Effect {
       new ProgressNumber(0, 15),
       entity.collisionBox.getRectangle(),
       Renderer.NODE_ROUNDED_RADIUS,
-      StageStyleManager.currentStyle.effects.flash,
+      this.project.stageStyleManager.currentStyle.effects.flash,
       100,
     );
     result.subEffects = [
@@ -54,14 +53,14 @@ export class EntityCreateFlashEffect extends Effect {
         new ProgressNumber(0, 30),
         entity.collisionBox.getRectangle(),
         Renderer.NODE_ROUNDED_RADIUS,
-        StageStyleManager.currentStyle.effects.successShadow,
+        this.project.stageStyleManager.currentStyle.effects.successShadow,
         50,
       ),
       new EntityCreateFlashEffect(
         new ProgressNumber(0, 45),
         entity.collisionBox.getRectangle(),
         Renderer.NODE_ROUNDED_RADIUS,
-        StageStyleManager.currentStyle.effects.successShadow,
+        this.project.stageStyleManager.currentStyle.effects.successShadow,
         25,
       ),
     ];

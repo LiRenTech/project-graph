@@ -3,7 +3,6 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effectObject";
 import { TechLineEffect } from "./TechLineEffect";
 
@@ -21,8 +20,8 @@ export class EntityCreateLineEffect extends Effect {
     const initLen = 20;
     const segmentCount = 50;
     const preChange = -1;
-    // const effectColor = StageStyleManager.currentStyle.CollideBoxSelectedColor;
-    const effectColor = StageStyleManager.currentStyle.StageObjectBorder;
+    // const effectColor = this.project.stageStyleManager.currentStyle.CollideBoxSelectedColor;
+    const effectColor = this.project.stageStyleManager.currentStyle.StageObjectBorder;
     const rotateDegrees = 90;
     // 顶部线
     for (let i = 0; i < 5; i++) {

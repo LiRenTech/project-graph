@@ -4,7 +4,6 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effectObject";
 
 /**
@@ -65,8 +64,8 @@ export class ExplodeDashEffect extends Effect {
     for (const ashLocation of this.ashLocationArray) {
       const viewLocation = project.renderer.transformWorld2View(ashLocation);
       const color = mixColors(
-        StageStyleManager.currentStyle.StageObjectBorder,
-        StageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
+        project.stageStyleManager.currentStyle.StageObjectBorder,
+        project.stageStyleManager.currentStyle.StageObjectBorder.toTransparent(),
         this.timeProgress.rate,
       );
 

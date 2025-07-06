@@ -9,7 +9,6 @@ import { ConnectableEntity } from "../../../../stage/stageObject/abstract/Connec
 import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint";
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
-import { StageStyleManager } from "../../../feedbackService/stageStyle/StageStyleManager";
 import { Settings } from "../../../Settings";
 import { ControllerClass } from "../ControllerClass";
 
@@ -195,7 +194,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
             new RectangleNoteEffect(
               new ProgressNumber(0, 15),
               node.collisionBox.getRectangle().clone(),
-              StageStyleManager.currentStyle.effects.successShadow.clone(),
+              this.project.stageStyleManager.currentStyle.effects.successShadow.clone(),
             ),
           );
         }
@@ -209,7 +208,7 @@ export class ControllerNodeConnectionClass extends ControllerClass {
         new RectangleNoteEffect(
           new ProgressNumber(0, 15),
           clickedConnectableEntity.collisionBox.getRectangle().clone(),
-          StageStyleManager.currentStyle.effects.successShadow.clone(),
+          this.project.stageStyleManager.currentStyle.effects.successShadow.clone(),
         ),
       );
     }

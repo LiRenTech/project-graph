@@ -2,7 +2,6 @@ import { Color, mixColors } from "../../../../dataStruct/Color";
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effectObject";
 
 /**
@@ -28,8 +27,8 @@ export class LineEffect extends Effect {
       new ProgressNumber(0, 30),
       fromLocation,
       toLocation,
-      StageStyleManager.currentStyle.StageObjectBorder,
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
       1,
     );
   }

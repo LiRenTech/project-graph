@@ -6,7 +6,6 @@ import { LineEdge } from "../../../../stage/stageObject/association/LineEdge";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 
 import { Project, service } from "../../../../Project";
-import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Settings } from "../../../../service/Settings";
 import { ConnectableEntity } from "../../../../stage/stageObject/abstract/ConnectableEntity";
 import { Edge } from "../../../../stage/stageObject/association/Edge";
@@ -75,27 +74,30 @@ export class EdgeRenderer {
 
     // 选中的高亮效果
     if (edge.isSelected) {
-      this.project.collisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
+      this.project.collisionBoxRenderer.render(
+        edge.collisionBox,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
+      );
       // 还要标注起始点和终止点
       this.project.shapeRenderer.renderCircle(
         this.project.renderer.transformWorld2View(edge.sourceLocation),
         10 * this.project.camera.currentScale,
         Color.Transparent,
-        StageStyleManager.currentStyle.CollideBoxSelected,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
         2 * this.project.camera.currentScale,
       );
       this.project.shapeRenderer.renderCircle(
         this.project.renderer.transformWorld2View(edge.targetLocation),
         10 * this.project.camera.currentScale,
         Color.Transparent,
-        StageStyleManager.currentStyle.CollideBoxSelected,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
         2 * this.project.camera.currentScale,
       );
       // 画一个虚线
       this.project.curveRenderer.renderDashedLine(
         this.project.renderer.transformWorld2View(edge.sourceLocation),
         this.project.renderer.transformWorld2View(edge.targetLocation),
-        StageStyleManager.currentStyle.CollideBoxSelected,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
         2 * this.project.camera.currentScale,
         10 * this.project.camera.currentScale,
       );
@@ -107,11 +109,14 @@ export class EdgeRenderer {
       return;
     }
     const crShape = edge.getShape();
-    const edgeColor = edge.color.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : edge.color;
+    const edgeColor = edge.color.a === 0 ? this.project.stageStyleManager.currentStyle.StageObjectBorder : edge.color;
     // 画曲线
     this.project.worldRenderUtils.renderCubicCatmullRomSpline(crShape, edgeColor, 2);
     if (edge.isSelected) {
-      this.project.collisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
+      this.project.collisionBoxRenderer.render(
+        edge.collisionBox,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
+      );
     }
     // 画控制点们
     for (const point of crShape.controlPoints) {
@@ -128,7 +133,7 @@ export class EdgeRenderer {
       const textRect = edge.textRectangle;
       this.project.shapeRenderer.renderRect(
         this.project.renderer.transformWorld2View(textRect),
-        StageStyleManager.currentStyle.Background,
+        this.project.stageStyleManager.currentStyle.Background,
         Color.Transparent,
         0,
       );

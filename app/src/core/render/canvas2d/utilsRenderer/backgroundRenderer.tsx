@@ -2,7 +2,6 @@ import { Color } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
-import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 
 @service("backgroundRenderer")
 export class BackgroundRenderer {
@@ -16,8 +15,8 @@ export class BackgroundRenderer {
    */
   renderDotBackground(viewRect: Rectangle) {
     const currentGap = this.getCurrentGap();
-    const gridColor = StageStyleManager.currentStyle.GridNormal;
-    const mainColor = StageStyleManager.currentStyle.GridHeavy;
+    const gridColor = this.project.stageStyleManager.currentStyle.GridNormal;
+    const mainColor = this.project.stageStyleManager.currentStyle.GridHeavy;
 
     for (const y of this.getLocationYIterator(viewRect, currentGap)) {
       for (const x of this.getLocationXIterator(viewRect, currentGap)) {
@@ -37,8 +36,8 @@ export class BackgroundRenderer {
    */
   renderHorizonBackground(viewRect: Rectangle) {
     const currentGap = this.getCurrentGap();
-    const gridColor = StageStyleManager.currentStyle.GridNormal;
-    const mainColor = StageStyleManager.currentStyle.GridHeavy;
+    const gridColor = this.project.stageStyleManager.currentStyle.GridNormal;
+    const mainColor = this.project.stageStyleManager.currentStyle.GridHeavy;
 
     // 画横线
     for (const y of this.getLocationYIterator(viewRect, currentGap)) {
@@ -59,8 +58,8 @@ export class BackgroundRenderer {
    */
   renderVerticalBackground(viewRect: Rectangle) {
     const currentGap = this.getCurrentGap();
-    const gridColor = StageStyleManager.currentStyle.GridNormal;
-    const mainColor = StageStyleManager.currentStyle.GridHeavy;
+    const gridColor = this.project.stageStyleManager.currentStyle.GridNormal;
+    const mainColor = this.project.stageStyleManager.currentStyle.GridHeavy;
 
     // 画竖线
     for (const x of this.getLocationXIterator(viewRect, currentGap)) {
@@ -84,14 +83,14 @@ export class BackgroundRenderer {
     this.project.curveRenderer.renderSolidLine(
       this.project.renderer.transformWorld2View(new Vector(viewRect.left, 0)),
       this.project.renderer.transformWorld2View(new Vector(viewRect.right, 0)),
-      StageStyleManager.currentStyle.GridNormal,
+      this.project.stageStyleManager.currentStyle.GridNormal,
       1,
     );
     // y轴
     this.project.curveRenderer.renderSolidLine(
       this.project.renderer.transformWorld2View(new Vector(0, viewRect.top)),
       this.project.renderer.transformWorld2View(new Vector(0, viewRect.bottom)),
-      StageStyleManager.currentStyle.GridNormal,
+      this.project.stageStyleManager.currentStyle.GridNormal,
       1,
     );
     const currentGap = this.getCurrentGap();
@@ -104,7 +103,7 @@ export class BackgroundRenderer {
         `${x}`,
         renderLocation,
         10,
-        StageStyleManager.currentStyle.GridNormal,
+        this.project.stageStyleManager.currentStyle.GridNormal,
       );
     }
     // 画y轴上的刻度
@@ -116,7 +115,7 @@ export class BackgroundRenderer {
         `${y}`,
         renderLocation,
         10,
-        StageStyleManager.currentStyle.GridNormal,
+        this.project.stageStyleManager.currentStyle.GridNormal,
       );
     }
   }

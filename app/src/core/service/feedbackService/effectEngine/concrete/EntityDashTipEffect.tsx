@@ -4,7 +4,6 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { EffectParticle } from "../effectElements/effectParticle";
 import { Effect } from "../effectObject";
 
@@ -29,7 +28,7 @@ export class EntityDashTipEffect extends Effect {
           pointLocation,
           pointLocation.subtract(rect.center).normalize().multiply(Random.randomFloat(0, initSpeedSize)),
           rect.center.subtract(pointLocation).normalize().multiply(initAccelerationSize),
-          StageStyleManager.currentStyle.effects.dash,
+          this.project.stageStyleManager.currentStyle.effects.dash,
           1,
         ),
       );
@@ -42,7 +41,7 @@ export class EntityDashTipEffect extends Effect {
           pointLocation,
           pointLocation.subtract(rect.center).normalize().multiply(Random.randomFloat(0, initSpeedSize)),
           rect.center.subtract(pointLocation).normalize().multiply(initAccelerationSize),
-          StageStyleManager.currentStyle.effects.dash,
+          this.project.stageStyleManager.currentStyle.effects.dash,
           1,
         ),
       );
@@ -55,7 +54,7 @@ export class EntityDashTipEffect extends Effect {
           pointLocation,
           pointLocation.subtract(rect.center).normalize().multiply(Random.randomFloat(0, initSpeedSize)),
           rect.center.subtract(pointLocation).normalize().multiply(initAccelerationSize),
-          StageStyleManager.currentStyle.effects.dash,
+          this.project.stageStyleManager.currentStyle.effects.dash,
           1,
         ),
       );
@@ -68,7 +67,7 @@ export class EntityDashTipEffect extends Effect {
           pointLocation,
           pointLocation.subtract(rect.center).normalize().multiply(Random.randomFloat(0, initSpeedSize)),
           rect.center.subtract(pointLocation).normalize().multiply(initAccelerationSize),
-          StageStyleManager.currentStyle.effects.dash,
+          this.project.stageStyleManager.currentStyle.effects.dash,
           1,
         ),
       );

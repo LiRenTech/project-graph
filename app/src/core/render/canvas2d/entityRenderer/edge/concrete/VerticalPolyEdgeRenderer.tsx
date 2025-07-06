@@ -6,7 +6,6 @@ import { Project, service } from "../../../../../Project";
 import { CircleFlameEffect } from "../../../../../service/feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { Effect } from "../../../../../service/feedbackService/effectEngine/effectObject";
-import { StageStyleManager } from "../../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { ConnectableEntity } from "../../../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
 import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
@@ -374,7 +373,7 @@ export class VerticalPolyEdgeRenderer extends EdgeRendererClass {
     let lineBody: React.ReactNode = <></>;
     let textNode: React.ReactNode = <></>;
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? StageStyleManager.currentStyle.StageObjectBorder
+      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边

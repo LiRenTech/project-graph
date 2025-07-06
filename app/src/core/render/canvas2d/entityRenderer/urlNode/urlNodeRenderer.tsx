@@ -1,7 +1,6 @@
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project, service } from "../../../../Project";
-import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { UrlNode } from "../../../../stage/stageObject/entity/UrlNode";
 import { Renderer } from "../../renderer";
 
@@ -12,7 +11,10 @@ export class UrlNodeRenderer {
   render(urlNode: UrlNode): void {
     if (urlNode.isSelected) {
       // 在外面增加一个框
-      this.project.collisionBoxRenderer.render(urlNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
+      this.project.collisionBoxRenderer.render(
+        urlNode.collisionBox,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
+      );
     }
     // 节点身体矩形
     this.project.shapeRenderer.renderRect(
@@ -21,7 +23,7 @@ export class UrlNodeRenderer {
         urlNode.rectangle.size.multiply(this.project.camera.currentScale),
       ),
       urlNode.color,
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
       2 * this.project.camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
     );
@@ -31,7 +33,7 @@ export class UrlNodeRenderer {
         urlNode.title,
         this.project.renderer.transformWorld2View(urlNode.rectangle.location.add(Vector.same(Renderer.NODE_PADDING))),
         Renderer.FONT_SIZE * this.project.camera.currentScale,
-        StageStyleManager.currentStyle.StageObjectBorder,
+        this.project.stageStyleManager.currentStyle.StageObjectBorder,
       );
     }
     // 绘制分界线
@@ -40,7 +42,7 @@ export class UrlNodeRenderer {
       this.project.renderer.transformWorld2View(
         urlNode.rectangle.location.add(new Vector(urlNode.rectangle.size.x, UrlNode.titleHeight)),
       ),
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
       1 * this.project.camera.currentScale,
       4 * this.project.camera.currentScale,
     );
@@ -51,7 +53,7 @@ export class UrlNodeRenderer {
         urlNode.rectangle.location.add(new Vector(Renderer.NODE_PADDING, UrlNode.titleHeight + Renderer.NODE_PADDING)),
       ),
       Renderer.FONT_SIZE * 0.5 * this.project.camera.currentScale,
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
     );
     this.project.entityRenderer.renderEntityDetails(urlNode);
     // 绘制特效
@@ -64,8 +66,8 @@ export class UrlNodeRenderer {
       // 鼠标在标题上
       this.project.shapeRenderer.renderRect(
         this.project.renderer.transformWorld2View(urlNode.titleRectangle),
-        StageStyleManager.currentStyle.CollideBoxPreSelected,
-        StageStyleManager.currentStyle.CollideBoxSelected,
+        this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
         2 * this.project.camera.currentScale,
         0,
       );
@@ -73,8 +75,8 @@ export class UrlNodeRenderer {
       // 鼠标在url上
       this.project.shapeRenderer.renderRect(
         this.project.renderer.transformWorld2View(urlNode.urlRectangle),
-        StageStyleManager.currentStyle.CollideBoxPreSelected,
-        StageStyleManager.currentStyle.CollideBoxSelected,
+        this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
         2 * this.project.camera.currentScale,
         0,
       );
@@ -83,7 +85,7 @@ export class UrlNodeRenderer {
         "双击打开链接",
         this.project.renderer.transformWorld2View(urlNode.rectangle.leftBottom.add(new Vector(0, 20))),
         Renderer.FONT_SIZE * 0.5 * this.project.camera.currentScale,
-        StageStyleManager.currentStyle.StageObjectBorder,
+        this.project.stageStyleManager.currentStyle.StageObjectBorder,
       );
     }
   }

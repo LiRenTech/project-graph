@@ -17,7 +17,6 @@ import { MultiTargetUndirectedEdge } from "../../../stage/stageObject/associatio
 import { RectangleSlideEffect } from "../../feedbackService/effectEngine/concrete/RectangleSlideEffect";
 import { TextRiseEffect } from "../../feedbackService/effectEngine/concrete/TextRiseEffect";
 import { ViewOutlineFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
-import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
 import { Settings } from "../../Settings";
 
 /**
@@ -252,7 +251,11 @@ export class KeyBindsRegistrar {
         const newRect = rect.clone();
         newRect.location.y -= 100;
         this.project.effects.addEffect(
-          RectangleSlideEffect.verticalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
+          RectangleSlideEffect.verticalSlide(
+            rect,
+            newRect,
+            this.project.stageStyleManager.currentStyle.effects.successShadow,
+          ),
         );
       }
       this.project.entityMoveManager.moveSelectedEntities(new Vector(0, -100));
@@ -266,7 +269,11 @@ export class KeyBindsRegistrar {
         const newRect = rect.clone();
         newRect.location.y += 100;
         this.project.effects.addEffect(
-          RectangleSlideEffect.verticalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
+          RectangleSlideEffect.verticalSlide(
+            rect,
+            newRect,
+            this.project.stageStyleManager.currentStyle.effects.successShadow,
+          ),
         );
       }
       this.project.entityMoveManager.moveSelectedEntities(new Vector(0, 100));
@@ -279,7 +286,11 @@ export class KeyBindsRegistrar {
         const newRect = rect.clone();
         newRect.location.x -= 100;
         this.project.effects.addEffect(
-          RectangleSlideEffect.horizontalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
+          RectangleSlideEffect.horizontalSlide(
+            rect,
+            newRect,
+            this.project.stageStyleManager.currentStyle.effects.successShadow,
+          ),
         );
       }
       this.project.entityMoveManager.moveSelectedEntities(new Vector(-100, 0));
@@ -293,7 +304,11 @@ export class KeyBindsRegistrar {
         const newRect = rect.clone();
         newRect.location.x += 100;
         this.project.effects.addEffect(
-          RectangleSlideEffect.horizontalSlide(rect, newRect, StageStyleManager.currentStyle.effects.successShadow),
+          RectangleSlideEffect.horizontalSlide(
+            rect,
+            newRect,
+            this.project.stageStyleManager.currentStyle.effects.successShadow,
+          ),
         );
       }
       this.project.entityMoveManager.moveSelectedEntities(new Vector(100, 0));
@@ -397,7 +412,9 @@ export class KeyBindsRegistrar {
       const currentValue = await Settings.get("windowBackgroundAlpha");
       if (currentValue === 1) {
         // 已经不能再大了
-        this.project.effects.addEffect(ViewOutlineFlashEffect.short(StageStyleManager.currentStyle.effects.flash));
+        this.project.effects.addEffect(
+          ViewOutlineFlashEffect.short(this.project.stageStyleManager.currentStyle.effects.flash),
+        );
       } else {
         Settings.set("windowBackgroundAlpha", Math.min(1, currentValue + 0.2));
       }
@@ -406,7 +423,9 @@ export class KeyBindsRegistrar {
       const currentValue = await Settings.get("windowBackgroundAlpha");
       if (currentValue === 0) {
         // 已经不能再小了
-        this.project.effects.addEffect(ViewOutlineFlashEffect.short(StageStyleManager.currentStyle.effects.flash));
+        this.project.effects.addEffect(
+          ViewOutlineFlashEffect.short(this.project.stageStyleManager.currentStyle.effects.flash),
+        );
       } else {
         Settings.set("windowBackgroundAlpha", Math.max(0, currentValue - 0.2));
       }

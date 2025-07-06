@@ -3,7 +3,6 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Project } from "../../../../Project";
 import { Renderer } from "../../../../render/canvas2d/renderer";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effectObject";
 
 export class RectangleRenderEffect extends Effect {
@@ -35,7 +34,7 @@ export class RectangleRenderEffect extends Effect {
       new ProgressNumber(0, 10),
       rectangle,
       Color.Transparent,
-      StageStyleManager.currentStyle.CollideBoxPreSelected,
+      this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
       4,
     );
   }
@@ -45,7 +44,7 @@ export class RectangleRenderEffect extends Effect {
       new ProgressNumber(0, 100),
       rectangle,
       Color.Transparent,
-      StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
+      this.project.stageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
       4,
     );
   }

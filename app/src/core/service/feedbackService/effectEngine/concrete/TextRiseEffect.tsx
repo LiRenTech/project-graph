@@ -1,7 +1,6 @@
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effectObject";
 import { easeInOutSine } from "../mathTools/easings";
 
@@ -39,7 +38,7 @@ export class TextRiseEffect extends Effect {
       renderCenterLocation,
       20,
       Infinity,
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
     );
     project.canvas.ctx.globalAlpha = 1;
   }

@@ -7,7 +7,6 @@ import { Renderer } from "../../../../render/canvas2d/renderer";
 import { Entity } from "../../../../stage/stageObject/abstract/StageEntity";
 import { Section } from "../../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effectObject";
 
 /**
@@ -36,12 +35,12 @@ export class EntityShrinkEffect extends Effect {
   }
 
   static fromEntity(entity: Entity): EntityShrinkEffect {
-    let color = StageStyleManager.currentStyle.Background.clone();
+    let color = this.project.stageStyleManager.currentStyle.Background.clone();
     if (entity instanceof TextNode || entity instanceof Section) {
       color = entity.color.clone();
     }
     if (color.equals(Color.Transparent)) {
-      color = StageStyleManager.currentStyle.Background.clone();
+      color = this.project.stageStyleManager.currentStyle.Background.clone();
     }
     return new EntityShrinkEffect(10, entity.collisionBox.getRectangle(), color);
   }
@@ -52,7 +51,7 @@ export class EntityShrinkEffect extends Effect {
     project.shapeRenderer.renderRect(
       project.renderer.transformWorld2View(rectangleA),
       this.color.toNewAlpha(1 - this.timeProgress.rate),
-      StageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
+      this.project.stageStyleManager.currentStyle.StageObjectBorder.toNewAlpha(1 - this.timeProgress.rate),
       2 * project.camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * project.camera.currentScale,
     );

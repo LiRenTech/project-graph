@@ -2,7 +2,6 @@ import { Color } from "../../../../dataStruct/Color";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project, service } from "../../../../Project";
-import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { PortalNode } from "../../../../stage/stageObject/entity/PortalNode";
 import { Renderer } from "../../renderer";
 
@@ -21,7 +20,7 @@ export class PortalNodeRenderer {
     this.project.shapeRenderer.renderRect(
       this.project.renderer.transformWorld2View(new Rectangle(leftTopLocation, portalNode.size)),
       portalNode.color,
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
       2 * this.project.camera.currentScale,
       Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
     );
@@ -29,7 +28,7 @@ export class PortalNodeRenderer {
     this.project.curveRenderer.renderDashedLine(
       this.project.renderer.transformWorld2View(leftTopLocation.add(new Vector(0, PortalNode.TITLE_LINE_Y))),
       this.project.renderer.transformWorld2View(rightTopLocation.add(new Vector(0, PortalNode.TITLE_LINE_Y))),
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
       1 * this.project.camera.currentScale,
       10 * this.project.camera.currentScale,
     );
@@ -38,13 +37,13 @@ export class PortalNodeRenderer {
       portalNode.title,
       this.project.renderer.transformWorld2View(leftTopLocation.add(Vector.same(Renderer.NODE_PADDING))),
       Renderer.FONT_SIZE * this.project.camera.currentScale,
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
     );
     // 虚线 2
     this.project.curveRenderer.renderDashedLine(
       this.project.renderer.transformWorld2View(leftTopLocation.add(new Vector(0, PortalNode.PATH_LINE_Y))),
       this.project.renderer.transformWorld2View(rightTopLocation.add(new Vector(0, PortalNode.PATH_LINE_Y))),
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
       1 * this.project.camera.currentScale,
       5 * this.project.camera.currentScale,
     );
@@ -55,7 +54,7 @@ export class PortalNodeRenderer {
         leftTopLocation.add(new Vector(0, PortalNode.TITLE_LINE_Y)).add(Vector.same(Renderer.NODE_PADDING)),
       ),
       Renderer.FONT_SIZE_DETAILS * this.project.camera.currentScale,
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
     );
 
     // 选中状态
@@ -63,7 +62,7 @@ export class PortalNodeRenderer {
       // 在外面增加一个框
       this.project.collisionBoxRenderer.render(
         portalNode.collisionBox,
-        StageStyleManager.currentStyle.CollideBoxSelected,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
       );
     }
     // 绘制实体详情
@@ -76,7 +75,7 @@ export class PortalNodeRenderer {
         this.project.renderer.transformWorld2View(portalNode.location),
         10 * this.project.camera.currentScale,
         1000 * this.project.camera.currentScale,
-        StageStyleManager.currentStyle.DetailsDebugText,
+        this.project.stageStyleManager.currentStyle.DetailsDebugText,
       );
     }
 
@@ -94,8 +93,8 @@ export class PortalNodeRenderer {
         // 绘制矩形
         this.project.shapeRenderer.renderRect(
           this.project.renderer.transformWorld2View(titleRectangle),
-          StageStyleManager.currentStyle.CollideBoxPreSelected,
-          StageStyleManager.currentStyle.CollideBoxSelected,
+          this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
+          this.project.stageStyleManager.currentStyle.CollideBoxSelected,
           2 * this.project.camera.currentScale,
           Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
         );
@@ -104,15 +103,15 @@ export class PortalNodeRenderer {
           "双击编辑标题",
           this.project.renderer.transformWorld2View(bodyRectangle.leftBottom.add(Vector.same(Renderer.NODE_PADDING))),
           Renderer.FONT_SIZE_DETAILS * this.project.camera.currentScale,
-          StageStyleManager.currentStyle.DetailsDebugText,
+          this.project.stageStyleManager.currentStyle.DetailsDebugText,
         );
       } else if (pathRectangle.isPointIn(mouseLocation)) {
         // 鼠标在路径区域
         // 绘制矩形
         this.project.shapeRenderer.renderRect(
           this.project.renderer.transformWorld2View(pathRectangle),
-          StageStyleManager.currentStyle.CollideBoxPreSelected,
-          StageStyleManager.currentStyle.CollideBoxSelected,
+          this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
+          this.project.stageStyleManager.currentStyle.CollideBoxSelected,
           2 * this.project.camera.currentScale,
           Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,
         );
@@ -121,7 +120,7 @@ export class PortalNodeRenderer {
           "双击编辑相对路径",
           this.project.renderer.transformWorld2View(bodyRectangle.leftBottom.add(Vector.same(Renderer.NODE_PADDING))),
           Renderer.FONT_SIZE_DETAILS * this.project.camera.currentScale,
-          StageStyleManager.currentStyle.DetailsDebugText,
+          this.project.stageStyleManager.currentStyle.DetailsDebugText,
         );
       } else {
         // 鼠标在节点区域
@@ -130,7 +129,7 @@ export class PortalNodeRenderer {
           "双击传送",
           this.project.renderer.transformWorld2View(portalNode.rectangle.center),
           Renderer.FONT_SIZE * this.project.camera.currentScale,
-          StageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
+          this.project.stageStyleManager.currentStyle.CollideBoxPreSelected.toSolid(),
         );
       }
     }
@@ -140,7 +139,7 @@ export class PortalNodeRenderer {
     // 绘制背景
     this.project.shapeRenderer.renderRect(
       this.project.renderer.transformWorld2View(portalNode.rectangle),
-      StageStyleManager.currentStyle.Background,
+      this.project.stageStyleManager.currentStyle.Background,
       Color.Transparent,
       0,
       Renderer.NODE_ROUNDED_RADIUS * this.project.camera.currentScale,

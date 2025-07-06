@@ -4,7 +4,6 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effectObject";
 
 /**
@@ -92,8 +91,8 @@ export class NodeMoveShadowEffect extends Effect {
     for (const point of this.pointList) {
       const viewLocation = project.renderer.transformWorld2View(point);
       const color = mixColors(
-        StageStyleManager.currentStyle.effects.flash,
-        StageStyleManager.currentStyle.effects.flash.toTransparent(),
+        this.project.stageStyleManager.currentStyle.effects.flash,
+        this.project.stageStyleManager.currentStyle.effects.flash.toTransparent(),
         this.timeProgress.rate,
       );
 

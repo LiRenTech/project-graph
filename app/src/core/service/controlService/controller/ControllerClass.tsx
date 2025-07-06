@@ -1,7 +1,6 @@
 import { Vector } from "../../../dataStruct/Vector";
 import { Project } from "../../../Project";
 import { ViewOutlineFlashEffect } from "../../feedbackService/effectEngine/concrete/ViewOutlineFlashEffect";
-import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
 
 /**
  * 控制器类，用于处理事件绑定和解绑
@@ -151,6 +150,8 @@ export class ControllerClass {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public mouseMoveOutWindowForcedShutdown(_outsideLocation: Vector) {
-    this.project.effects.addEffect(ViewOutlineFlashEffect.short(StageStyleManager.currentStyle.effects.warningShadow));
+    this.project.effects.addEffect(
+      ViewOutlineFlashEffect.short(this.project.stageStyleManager.currentStyle.effects.warningShadow),
+    );
   }
 }

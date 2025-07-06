@@ -6,7 +6,6 @@ import { Project, service } from "../../../Project";
 import { GraphMethods } from "../../../stage/stageManager/basicMethods/GraphMethods";
 import { ConnectableEntity } from "../../../stage/stageObject/abstract/ConnectableEntity";
 import { LineCuttingEffect } from "../../feedbackService/effectEngine/concrete/LineCuttingEffect";
-import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
 
 /**
  * 仅在keyboardOnlyEngine中使用，用于处理select change事件
@@ -220,7 +219,7 @@ export class SelectChangeEngine {
   }
 
   private addEffect(selectedNodeRect: Rectangle, newSelectNodeRect: Rectangle) {
-    const color = StageStyleManager.currentStyle.effects.successShadow;
+    const color = this.project.stageStyleManager.currentStyle.effects.successShadow;
     // 节点切换移动的特效有待专门写一个
     this.project.effects.addEffects([
       new LineCuttingEffect(

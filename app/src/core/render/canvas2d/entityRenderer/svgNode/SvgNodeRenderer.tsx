@@ -1,5 +1,4 @@
 import { Project, service } from "../../../../Project";
-import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { SvgNode } from "../../../../stage/stageObject/entity/SvgNode";
 
 /**
@@ -13,7 +12,10 @@ export class SvgNodeRenderer {
   render(svgNode: SvgNode) {
     if (svgNode.isSelected) {
       // 在外面增加一个框
-      this.project.collisionBoxRenderer.render(svgNode.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
+      this.project.collisionBoxRenderer.render(
+        svgNode.collisionBox,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
+      );
     }
     if (svgNode.state === "loading") {
       // 正在加载
@@ -21,7 +23,7 @@ export class SvgNodeRenderer {
         "Loading...",
         svgNode.collisionBox.getRectangle().center,
         16 * this.project.camera.currentScale,
-        StageStyleManager.currentStyle.CollideBoxPreSelected,
+        this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
       );
     } else if (svgNode.state === "loaded") {
       this.project.svgRenderer.renderSvgFromLeftTopWithoutSize(
@@ -34,7 +36,7 @@ export class SvgNodeRenderer {
         "Error",
         svgNode.collisionBox.getRectangle().center,
         16 * this.project.camera.currentScale,
-        StageStyleManager.currentStyle.effects.warningShadow,
+        this.project.stageStyleManager.currentStyle.effects.warningShadow,
       );
     }
 

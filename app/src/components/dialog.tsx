@@ -80,6 +80,7 @@ export namespace Dialog {
         ),
         rect: Rectangle.inCenter(new Vector(400, 300)),
         titleBarOverlay: true,
+        closable: false,
       });
     });
   }

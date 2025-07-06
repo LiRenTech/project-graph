@@ -3,7 +3,6 @@ import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
 import { PenStroke } from "../../../../stage/stageObject/entity/PenStroke";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effectObject";
 
 export class PenStrokeDeletedEffect extends Effect {
@@ -24,7 +23,7 @@ export class PenStrokeDeletedEffect extends Effect {
     this.pathList = penStroke.getPath();
     this.color = penStroke.getColor();
     if (this.color.a === 0) {
-      this.color = StageStyleManager.currentStyle.StageObjectBorder.clone();
+      this.color = this.project.stageStyleManager.currentStyle.StageObjectBorder.clone();
     }
     this.width = segmentList[0].width;
   }

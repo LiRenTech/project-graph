@@ -2,7 +2,6 @@ import { Color } from "../../../dataStruct/Color";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
-import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Settings } from "../../../service/Settings";
 import { Entity } from "../../../stage/stageObject/abstract/StageEntity";
 import { ConnectPoint } from "../../../stage/stageObject/entity/ConnectPoint";
@@ -189,7 +188,7 @@ export class EntityRenderer {
         Renderer.ENTITY_DETAILS_WIDTH * this.project.camera.currentScale,
         entity.collisionBox.getRectangle().size.x * this.project.camera.currentScale,
       ),
-      StageStyleManager.currentStyle.NodeDetailsText,
+      this.project.stageStyleManager.currentStyle.NodeDetailsText,
       1.2,
       limitLiens,
     );
@@ -200,14 +199,14 @@ export class EntityRenderer {
       // 在外面增加一个框
       this.project.collisionBoxRenderer.render(
         connectPoint.collisionBox,
-        StageStyleManager.currentStyle.CollideBoxSelected,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
       );
     }
     this.project.shapeRenderer.renderCircle(
       this.project.renderer.transformWorld2View(connectPoint.geometryCenter),
       connectPoint.radius * this.project.camera.currentScale,
       Color.Transparent,
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
       2 * this.project.camera.currentScale,
     );
     this.renderEntityDetails(connectPoint);
@@ -218,7 +217,7 @@ export class EntityRenderer {
       // 在外面增加一个框
       this.project.collisionBoxRenderer.render(
         imageNode.collisionBox,
-        StageStyleManager.currentStyle.CollideBoxSelected,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
       );
     }
     // 节点身体矩形
@@ -230,7 +229,7 @@ export class EntityRenderer {
     //     imageNode.rectangle.size.multiply(this.project.camera.currentScale),
     //   ),
     //   Color.Transparent,
-    //   StageStyleManager.currentStyle.StageObjectBorder,
+    //   this.project.stageStyleManager.currentStyle.StageObjectBorder,
     //   2 * this.project.camera.currentScale,
     // );
     if (imageNode.state === "loading") {
@@ -238,7 +237,7 @@ export class EntityRenderer {
         "loading...",
         this.project.renderer.transformWorld2View(imageNode.rectangle.center),
         20 * this.project.camera.currentScale,
-        StageStyleManager.currentStyle.StageObjectBorder,
+        this.project.stageStyleManager.currentStyle.StageObjectBorder,
       );
     } else if (imageNode.state === "success") {
       this.project.imageRenderer.renderImageElement(
@@ -301,7 +300,7 @@ export class EntityRenderer {
   private renderPenStroke(penStroke: PenStroke) {
     let penStrokeColor = penStroke.getColor();
     if (penStrokeColor.a === 0) {
-      penStrokeColor = StageStyleManager.currentStyle.StageObjectBorder.clone();
+      penStrokeColor = this.project.stageStyleManager.currentStyle.StageObjectBorder.clone();
     }
     // const path = penStroke.getPath();
     // if (path.length <= 3) {
@@ -332,13 +331,13 @@ export class EntityRenderer {
     if (penStroke.isMouseHover) {
       this.project.collisionBoxRenderer.render(
         penStroke.collisionBox,
-        StageStyleManager.currentStyle.CollideBoxPreSelected,
+        this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
       );
     }
     if (penStroke.isSelected) {
       this.project.collisionBoxRenderer.render(
         penStroke.collisionBox,
-        StageStyleManager.currentStyle.CollideBoxSelected.toNewAlpha(0.5),
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected.toNewAlpha(0.5),
       );
     }
   }

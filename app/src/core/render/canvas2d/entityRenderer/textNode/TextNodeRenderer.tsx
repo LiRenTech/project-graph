@@ -8,7 +8,6 @@ import {
   LogicNodeNameEnum,
   LogicNodeNameToRenderNameMap,
 } from "../../../../service/dataGenerateService/autoComputeEngine/logicNodeNameEnum";
-import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Settings } from "../../../../service/Settings";
 import { TextNode } from "../../../../stage/stageObject/entity/TextNode";
 import { Renderer } from "../../renderer";
@@ -31,11 +30,13 @@ export class TextNodeRenderer {
       this.project.camera.currentScale < this.project.renderer.ignoreTextNodeTextRenderLessThanCameraScale &&
       fillColor.a === 0
     ) {
-      const color = StageStyleManager.currentStyle.StageObjectBorder.clone();
+      const color = this.project.stageStyleManager.currentStyle.StageObjectBorder.clone();
       color.a = 0.2;
       fillColor = color;
     }
-    const borderColor = this.showTextNodeBorder ? StageStyleManager.currentStyle.StageObjectBorder : Color.Transparent;
+    const borderColor = this.showTextNodeBorder
+      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+      : Color.Transparent;
     this.project.shapeRenderer.renderRect(
       new Rectangle(
         this.project.renderer.transformWorld2View(node.rectangle.location),
@@ -54,20 +55,23 @@ export class TextNodeRenderer {
 
     if (node.isSelected) {
       // 在外面增加一个框
-      this.project.collisionBoxRenderer.render(node.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
+      this.project.collisionBoxRenderer.render(
+        node.collisionBox,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
+      );
       // 改变大小的拖拽
       if (node.sizeAdjust === "manual") {
         this.project.shapeRenderer.renderRect(
           this.project.renderer.transformWorld2View(node.getResizeHandleRect()),
-          StageStyleManager.currentStyle.CollideBoxSelected,
-          StageStyleManager.currentStyle.StageObjectBorder,
+          this.project.stageStyleManager.currentStyle.CollideBoxSelected,
+          this.project.stageStyleManager.currentStyle.StageObjectBorder,
           2 * this.project.camera.currentScale,
           8 * this.project.camera.currentScale,
         );
       }
     }
     if (node.isAiGenerating) {
-      const borderColor = StageStyleManager.currentStyle.CollideBoxSelected.clone();
+      const borderColor = this.project.stageStyleManager.currentStyle.CollideBoxSelected.clone();
       borderColor.a = Random.randomFloat(0.2, 1);
       // 在外面增加一个框
       this.project.shapeRenderer.renderRect(
@@ -88,7 +92,8 @@ export class TextNodeRenderer {
           const scaleRate = 5;
           const rect = node.collisionBox.getRectangle();
 
-          const rectBgc = node.color.a === 0 ? StageStyleManager.currentStyle.Background.clone() : node.color.clone();
+          const rectBgc =
+            node.color.a === 0 ? this.project.stageStyleManager.currentStyle.Background.clone() : node.color.clone();
           rectBgc.a = 0.5;
 
           this.project.shapeRenderer.renderRectFromCenter(
@@ -96,7 +101,7 @@ export class TextNodeRenderer {
             rect.width * scaleRate * this.project.camera.currentScale,
             rect.height * scaleRate * this.project.camera.currentScale,
             rectBgc,
-            StageStyleManager.currentStyle.StageObjectBorder,
+            this.project.stageStyleManager.currentStyle.StageObjectBorder,
             2 * this.project.camera.currentScale,
             Renderer.NODE_ROUNDED_RADIUS * scaleRate * this.project.camera.currentScale,
           );
@@ -104,7 +109,7 @@ export class TextNodeRenderer {
             node.text,
             this.project.renderer.transformWorld2View(rect.center),
             Renderer.FONT_SIZE * scaleRate * this.project.camera.currentScale,
-            StageStyleManager.currentStyle.StageObjectBorder,
+            this.project.stageStyleManager.currentStyle.StageObjectBorder,
           );
         }
       }
@@ -128,7 +133,7 @@ export class TextNodeRenderer {
       //     node.rectangle.location.add(new Vector(0, -25)),
       //   ),
       //   20 * Camera.currentScale,
-      //   StageStyleManager.currentStyle.GridHeavyColor,
+      //   this.project.stageStyleManager.currentStyle.GridHeavyColor,
       // );
       return;
     }
@@ -138,7 +143,9 @@ export class TextNodeRenderer {
         "undefined",
         this.project.renderer.transformWorld2View(node.rectangle.center),
         Renderer.FONT_SIZE * this.project.camera.currentScale,
-        node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.Background),
+        node.color.a === 1
+          ? colorInvert(node.color)
+          : colorInvert(this.project.stageStyleManager.currentStyle.Background),
       );
     } else if (this.project.autoComputeUtils.isNameIsLogicNode(node.text)) {
       // 检查下是不是逻辑节点
@@ -151,7 +158,9 @@ export class TextNodeRenderer {
             getLogicNodeRenderName(logicNodeName),
             this.project.renderer.transformWorld2View(node.rectangle.center),
             Renderer.FONT_SIZE * this.project.camera.currentScale,
-            node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.Background),
+            node.color.a === 1
+              ? colorInvert(node.color)
+              : colorInvert(this.project.stageStyleManager.currentStyle.Background),
           );
         }
       }
@@ -161,7 +170,9 @@ export class TextNodeRenderer {
           node.text,
           this.project.renderer.transformWorld2View(node.rectangle.center),
           Renderer.FONT_SIZE * this.project.camera.currentScale,
-          node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.Background),
+          node.color.a === 1
+            ? colorInvert(node.color)
+            : colorInvert(this.project.stageStyleManager.currentStyle.Background),
         );
         this.project.shapeRenderer.renderRect(
           new Rectangle(
@@ -187,7 +198,9 @@ export class TextNodeRenderer {
         node.sizeAdjust === "manual"
           ? (node.rectangle.size.x - Renderer.NODE_PADDING * 2) * this.project.camera.currentScale
           : Infinity,
-        node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.Background),
+        node.color.a === 1
+          ? colorInvert(node.color)
+          : colorInvert(this.project.stageStyleManager.currentStyle.Background),
         1.5,
       );
     }

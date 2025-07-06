@@ -12,7 +12,6 @@ import { LineEdge } from "../../../stage/stageObject/association/LineEdge";
 import { ImageNode } from "../../../stage/stageObject/entity/ImageNode";
 import { Section } from "../../../stage/stageObject/entity/Section";
 import { TextNode } from "../../../stage/stageObject/entity/TextNode";
-import { StageStyleManager } from "../../feedbackService/stageStyle/StageStyleManager";
 
 export interface SvgExportConfig {
   imageMode: "absolutePath" | "relativePath" | "base64";
@@ -41,7 +40,12 @@ export class StageExportSvg {
     }
     return (
       <>
-        {SvgUtils.rectangle(node.rectangle, node.color, StageStyleManager.currentStyle.StageObjectBorder, 2)}
+        {SvgUtils.rectangle(
+          node.rectangle,
+          node.color,
+          this.project.stageStyleManager.currentStyle.StageObjectBorder,
+          2,
+        )}
 
         {SvgUtils.multiLineTextFromLeftTop(
           node.text,
@@ -51,7 +55,9 @@ export class StageExportSvg {
             new Vector(0, Renderer.NODE_PADDING + Renderer.FONT_SIZE / 4),
           ),
           Renderer.FONT_SIZE,
-          node.color.a === 1 ? colorInvert(node.color) : colorInvert(StageStyleManager.currentStyle.Background),
+          node.color.a === 1
+            ? colorInvert(node.color)
+            : colorInvert(this.project.stageStyleManager.currentStyle.Background),
         )}
       </>
     );
@@ -68,12 +74,17 @@ export class StageExportSvg {
     }
     return (
       <>
-        {SvgUtils.rectangle(section.rectangle, Color.Transparent, StageStyleManager.currentStyle.StageObjectBorder, 2)}
+        {SvgUtils.rectangle(
+          section.rectangle,
+          Color.Transparent,
+          this.project.stageStyleManager.currentStyle.StageObjectBorder,
+          2,
+        )}
         {SvgUtils.textFromLeftTop(
           section.text,
           section.rectangle.leftTop,
           Renderer.FONT_SIZE,
-          StageStyleManager.currentStyle.StageObjectBorder,
+          this.project.stageStyleManager.currentStyle.StageObjectBorder,
         )}
       </>
     );
@@ -111,7 +122,12 @@ export class StageExportSvg {
 
     return (
       <>
-        {SvgUtils.rectangle(node.rectangle, Color.Transparent, StageStyleManager.currentStyle.StageObjectBorder, 2)}
+        {SvgUtils.rectangle(
+          node.rectangle,
+          Color.Transparent,
+          this.project.stageStyleManager.currentStyle.StageObjectBorder,
+          2,
+        )}
         <image
           href={imagePath}
           x={node.rectangle.leftTop.x}
@@ -178,7 +194,7 @@ export class StageExportSvg {
         height={height}
         viewBox={viewBox}
         style={{
-          backgroundColor: StageStyleManager.currentStyle.Background.toString(),
+          backgroundColor: this.project.stageStyleManager.currentStyle.Background.toString(),
         }}
       >
         {/* 选中的部分 */}
@@ -232,7 +248,7 @@ export class StageExportSvg {
         height={height}
         viewBox={viewBox}
         style={{
-          backgroundColor: StageStyleManager.currentStyle.Background.toString(),
+          backgroundColor: this.project.stageStyleManager.currentStyle.Background.toString(),
         }}
       >
         {this.project.sectionMethods

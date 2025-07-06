@@ -1,7 +1,6 @@
 import { ProgressNumber } from "../../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effectObject";
 
 /**
@@ -32,7 +31,7 @@ export class TextRaiseEffectLocated extends Effect {
         this.location.add(new Vector(0, -this.timeProgress.rate * this.raiseDistance)),
       ),
       this.textSize * project.camera.currentScale,
-      StageStyleManager.currentStyle.CollideBoxPreSelected,
+      this.project.stageStyleManager.currentStyle.CollideBoxPreSelected,
     );
   }
 

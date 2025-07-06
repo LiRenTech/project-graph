@@ -3,7 +3,6 @@ import { Color } from "../../../../dataStruct/Color";
 import { Line } from "../../../../dataStruct/shape/Line";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project, service } from "../../../../Project";
-import { StageStyleManager } from "../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { MultiTargetUndirectedEdge } from "../../../../stage/stageObject/association/MutiTargetUndirectedEdge";
 import { Renderer } from "../../renderer";
 
@@ -13,7 +12,10 @@ export class MultiTargetUndirectedEdgeRenderer {
 
   render(edge: MultiTargetUndirectedEdge) {
     if (edge.isSelected) {
-      this.project.collisionBoxRenderer.render(edge.collisionBox, StageStyleManager.currentStyle.CollideBoxSelected);
+      this.project.collisionBoxRenderer.render(
+        edge.collisionBox,
+        this.project.stageStyleManager.currentStyle.CollideBoxSelected,
+      );
     }
     const targetNodes = this.project.stageManager.getEntitiesByUUIDs(edge.targetUUIDs);
     if (targetNodes.length < 2) {
@@ -26,7 +28,7 @@ export class MultiTargetUndirectedEdgeRenderer {
           this.project.renderer.transformWorld2View(center),
           100 * this.project.camera.currentScale,
           Color.Transparent,
-          StageStyleManager.currentStyle.StageObjectBorder,
+          this.project.stageStyleManager.currentStyle.StageObjectBorder,
           2 * this.project.camera.currentScale,
         );
       }
@@ -36,7 +38,7 @@ export class MultiTargetUndirectedEdgeRenderer {
           this.project.renderer.transformWorld2View(Vector.getZero()),
           100 * this.project.camera.currentScale,
           Color.Transparent,
-          StageStyleManager.currentStyle.StageObjectBorder,
+          this.project.stageStyleManager.currentStyle.StageObjectBorder,
           2 * this.project.camera.currentScale,
         );
       }
@@ -45,7 +47,7 @@ export class MultiTargetUndirectedEdgeRenderer {
     // 正常情况, target >= 2
     const centerLocation = edge.centerLocation;
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? StageStyleManager.currentStyle.StageObjectBorder
+      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     // 画文字
     if (edge.text !== "") {

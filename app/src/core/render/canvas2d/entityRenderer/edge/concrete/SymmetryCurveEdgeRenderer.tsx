@@ -6,7 +6,6 @@ import { Vector } from "../../../../../dataStruct/Vector";
 import { CircleFlameEffect } from "../../../../../service/feedbackService/effectEngine/concrete/CircleFlameEffect";
 import { LineCuttingEffect } from "../../../../../service/feedbackService/effectEngine/concrete/LineCuttingEffect";
 import { Effect } from "../../../../../service/feedbackService/effectEngine/effectObject";
-import { StageStyleManager } from "../../../../../service/feedbackService/stageStyle/StageStyleManager";
 import { LineEdge } from "../../../../../stage/stageObject/association/LineEdge";
 // import { ConnectPoint } from "../../../../../stage/stageObject/entity/ConnectPoint";
 import { Project, service } from "../../../../../Project";
@@ -78,7 +77,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     // 曲线模式先不屏蔽箭头，有点不美观，空出来一段距离
     this.renderArrowCurve(
       curve,
-      edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
+      edge.color.equals(Color.Transparent) ? this.project.stageStyleManager.currentStyle.StageObjectBorder : edge.color,
     );
     this.renderText(curve, edge);
   }
@@ -108,7 +107,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     );
     this.renderArrowCurve(
       curve,
-      edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
+      edge.color.equals(Color.Transparent) ? this.project.stageStyleManager.currentStyle.StageObjectBorder : edge.color,
     );
     this.renderText(curve, edge);
   }
@@ -120,7 +119,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       (edge.target.collisionBox.getRectangle().size.y / 2) * this.project.camera.currentScale,
       Math.PI / 2,
       0,
-      edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
+      edge.color.equals(Color.Transparent) ? this.project.stageStyleManager.currentStyle.StageObjectBorder : edge.color,
       2 * this.project.camera.currentScale,
     );
     // 画箭头
@@ -132,7 +131,9 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
         endPoint,
         direction,
         size,
-        edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
+        edge.color.equals(Color.Transparent)
+          ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+          : edge.color,
       );
     }
   }
@@ -140,7 +141,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     let lineBody: React.ReactNode = <></>;
     let textNode: React.ReactNode = <></>;
     const edgeColor = edge.color.equals(Color.Transparent)
-      ? StageStyleManager.currentStyle.StageObjectBorder
+      ? this.project.stageStyleManager.currentStyle.StageObjectBorder
       : edge.color;
     if (edge.text.trim() === "") {
       // 没有文字的边
@@ -204,7 +205,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
         endDirection,
         Math.abs(end.subtract(start).magnitude()) / 2,
       ),
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
     );
   }
 
@@ -222,7 +223,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
         endRect.getNormalVectorAt(end),
         Math.abs(end.subtract(start).magnitude()) / 2,
       ),
-      StageStyleManager.currentStyle.StageObjectBorder,
+      this.project.stageStyleManager.currentStyle.StageObjectBorder,
     );
   }
 
@@ -274,7 +275,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
     // 画文本底色
     this.project.shapeRenderer.renderRect(
       this.project.renderer.transformWorld2View(edge.textRectangle),
-      StageStyleManager.currentStyle.Background.toNewAlpha(this.project.renderer.windowBackgroundAlpha),
+      this.project.stageStyleManager.currentStyle.Background.toNewAlpha(this.project.renderer.windowBackgroundAlpha),
       Color.Transparent,
       1,
     );
@@ -283,7 +284,7 @@ export class SymmetryCurveEdgeRenderer extends EdgeRendererClass {
       edge.text,
       this.project.renderer.transformWorld2View(curve.bezier.getPointByT(0.5)),
       Renderer.FONT_SIZE * this.project.camera.currentScale,
-      edge.color.equals(Color.Transparent) ? StageStyleManager.currentStyle.StageObjectBorder : edge.color,
+      edge.color.equals(Color.Transparent) ? this.project.stageStyleManager.currentStyle.StageObjectBorder : edge.color,
     );
   }
 }

@@ -2,7 +2,6 @@ import { Color } from "../../../dataStruct/Color";
 import { Vector } from "../../../dataStruct/Vector";
 import { Project, service } from "../../../Project";
 import { MouseLocation } from "../../../service/controlService/MouseLocation";
-import { StageStyleManager } from "../../../service/feedbackService/stageStyle/StageStyleManager";
 import { Settings } from "../../../service/Settings";
 
 /**
@@ -41,14 +40,18 @@ export class DrawingControllerRenderer {
             this.project.curveRenderer.renderSolidLine(
               this.project.renderer.transformWorld2View(startLocation),
               this.project.renderer.transformWorld2View(endLocation),
-              currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
+              currentStrokeColor.a === 0
+                ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+                : currentStrokeColor,
               this.project.controller.penStrokeDrawing.currentStrokeWidth * this.project.camera.currentScale,
             );
           } else {
             this.project.curveRenderer.renderSolidLine(
               this.project.renderer.transformWorld2View(startLocation),
               MouseLocation.vector(),
-              currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
+              currentStrokeColor.a === 0
+                ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+                : currentStrokeColor,
               this.project.controller.penStrokeDrawing.currentStrokeWidth * this.project.camera.currentScale,
             );
           }
@@ -59,7 +62,9 @@ export class DrawingControllerRenderer {
               endLocation: this.project.renderer.transformWorld2View(segment.endLocation),
               width: segment.width * this.project.camera.currentScale,
             })),
-            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
+            currentStrokeColor.a === 0
+              ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+              : currentStrokeColor,
           );
         }
       }
@@ -71,7 +76,9 @@ export class DrawingControllerRenderer {
         this.project.shapeRenderer.renderCircle(
           circleCenter,
           (this.project.controller.penStrokeDrawing.currentStrokeWidth / 2) * this.project.camera.currentScale,
-          currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
+          currentStrokeColor.a === 0
+            ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+            : currentStrokeColor,
           Color.Transparent,
           0,
         );
@@ -86,7 +93,9 @@ export class DrawingControllerRenderer {
             ),
           ),
           24,
-          currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
+          currentStrokeColor.a === 0
+            ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+            : currentStrokeColor,
         );
       } else {
         // 画跟随鼠标的笔头
@@ -96,14 +105,18 @@ export class DrawingControllerRenderer {
             MouseLocation.vector(),
             (this.project.controller.penStrokeDrawing.currentStrokeWidth / 2) * this.project.camera.currentScale,
             Color.Transparent,
-            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
+            currentStrokeColor.a === 0
+              ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+              : currentStrokeColor,
             2 * this.project.camera.currentScale,
           );
         } else {
           this.project.shapeRenderer.renderCircle(
             MouseLocation.vector(),
             (this.project.controller.penStrokeDrawing.currentStrokeWidth / 2) * this.project.camera.currentScale,
-            currentStrokeColor.a === 0 ? StageStyleManager.currentStyle.StageObjectBorder : currentStrokeColor,
+            currentStrokeColor.a === 0
+              ? this.project.stageStyleManager.currentStyle.StageObjectBorder
+              : currentStrokeColor,
             Color.Transparent,
             0,
           );
@@ -182,11 +195,16 @@ export class DrawingControllerRenderer {
    * @param lineEnd
    */
   private renderLine(lineStart: Vector, lineEnd: Vector) {
-    this.project.curveRenderer.renderSolidLine(lineStart, lineEnd, StageStyleManager.currentStyle.Background, 2);
     this.project.curveRenderer.renderSolidLine(
       lineStart,
       lineEnd,
-      StageStyleManager.currentStyle.effects.successShadow,
+      this.project.stageStyleManager.currentStyle.Background,
+      2,
+    );
+    this.project.curveRenderer.renderSolidLine(
+      lineStart,
+      lineEnd,
+      this.project.stageStyleManager.currentStyle.effects.successShadow,
       0.5,
     );
   }

@@ -4,7 +4,6 @@ import { Line } from "../../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../../dataStruct/Vector";
 import { Project } from "../../../../Project";
-import { StageStyleManager } from "../../stageStyle/StageStyleManager";
 import { Effect } from "../effectObject";
 
 /**
@@ -99,8 +98,8 @@ export class EntityAlignEffect extends Effect {
         project.renderer.transformWorld2View(line.start),
         project.renderer.transformWorld2View(line.end),
         mixColors(
-          StageStyleManager.currentStyle.CollideBoxSelected.toSolid(),
-          StageStyleManager.currentStyle.CollideBoxSelected.clone().toTransparent(),
+          this.project.stageStyleManager.currentStyle.CollideBoxSelected.toSolid(),
+          this.project.stageStyleManager.currentStyle.CollideBoxSelected.clone().toTransparent(),
           1 - this.timeProgress.rate,
         ),
         0.5 * project.camera.currentScale,
