@@ -39,6 +39,7 @@ pub fn run() {
             {
                 let window = app.get_webview_window("main").unwrap();
                 window.open_devtools();
+                app.handle().plugin(tauri_plugin_devtools::init())?;
             }
             #[cfg(desktop)]
             {
