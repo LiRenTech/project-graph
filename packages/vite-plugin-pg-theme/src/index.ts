@@ -1,6 +1,8 @@
 import { glob, writeFile } from "node:fs/promises";
-import { Plugin } from "vite";
+import { createLogger, Plugin } from "vite";
 import { convertThemeToCss, generateUtilities, parseThemeFiles } from "./theme";
+
+const logger = createLogger("info", { prefix: "[pg-theme]" });
 
 interface Config {
   /** 主题文件glob */
@@ -19,8 +21,12 @@ export default function pgTheme(pluginConfig: Config): Plugin {
     },
     async handleHotUpdate(ctx) {
       for await (const file of glob(pluginConfig.glob)) {
-        if (file === ctx.file) {
-          await generateAndWrite(pluginConfig);
+        if (ctx.file.endsWith(file)) {
+          try {
+            await generateAndWrite(pluginConfig);
+          } catch (e) {
+            logger.error(String(e));
+          }
           break;
         }
       }
@@ -29,10 +35,13 @@ export default function pgTheme(pluginConfig: Config): Plugin {
 }
 
 async function generateAndWrite(pluginConfig: Config) {
-  console.log("[vite-plugin-pg-theme] 重新生成主题文件");
+  logger.info("重新生成主题文件", { timestamp: true });
   const themes = await parseThemeFiles(pluginConfig.glob);
   const defaultTheme = themes.find((theme) => theme.metadata.id === pluginConfig.defaultTheme);
-  if (!defaultTheme) return;
+  if (!defaultTheme) {
+    logger.error(`未找到默认主题 ${pluginConfig.defaultTheme}`, { timestamp: true });
+    return;
+  }
   // 生成tailwindcss主题
   const cssVariables = convertThemeToCss(defaultTheme.content);
   const tailwindUtilities = generateUtilities(defaultTheme.content);
@@ -53,5 +62,5 @@ ${tailwindTheme}
 `;
   // 写入文件
   await writeFile(pluginConfig.out, withComments, "utf-8");
-  console.log("[vite-plugin-pg-theme] 主题文件生成完成");
+  logger.info("主题文件生成完成", { timestamp: true });
 }

@@ -11,7 +11,7 @@ export default function MenuWindow({ menu, winId = "" }: { menu: GlobalMenu.Menu
         item instanceof GlobalMenu.MenuItem ? (
           <div
             key={index}
-            className="hover:bg-menu-item-hover-bg flex cursor-pointer items-center gap-1 rounded-lg p-2 transition-all active:scale-90 active:rounded-2xl"
+            className="el-menu-item flex cursor-pointer items-center gap-1 rounded-lg p-2 transition-all active:scale-90 active:rounded-2xl [&_svg]:size-5"
             onMouseUp={() => {
               item.fn();
               SubWindow.close(winId);
@@ -21,7 +21,7 @@ export default function MenuWindow({ menu, winId = "" }: { menu: GlobalMenu.Menu
             {item.name}
           </div>
         ) : item instanceof GlobalMenu.Separator ? (
-          <div key={index} className="bg-menu-separator h-[1px] rounded-full" />
+          <div key={index} className="el-menu-separator h-[1px] rounded-full" />
         ) : (
           <></>
         ),

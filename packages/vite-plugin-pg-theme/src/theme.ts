@@ -43,26 +43,6 @@ export function convertThemeToCss(themeContent: any) {
   return generateCssVariables(themeContent);
 }
 
-/*
-button-bg
-button-text
-button-border
-button-shadow
-button-hover-bg
-button-hover-text
-button-hover-border
-button-hover-shadow
-button-active-bg
-button-active-text
-button-active-border
-button-active-shadow
-button-disabled-bg
-button-disabled-text
-button-disabled-border
-button-disabled-shadow
-以上都算一个color: button
-*/
-
 export function generateUtilities(themeContent: any) {
   function generateColors(obj: any, prefix: string = "", colors: string[] = []): string[] {
     for (const key in obj) {
@@ -72,36 +52,61 @@ export function generateUtilities(themeContent: any) {
         colors.push(`${prefix}${key}`);
       }
     }
-    return colors;
+    return colors.filter((color, index, arr) => arr.indexOf(color) === index);
   }
   const utilities = generateColors(themeContent)
-    .map((color) => color.replaceAll(/(-(hover|active|disabled))?-(bg|text|border)$/gm, ""))
-    .filter((color, index, arr) => arr.indexOf(color) === index)
+    .map((color) =>
+      color.replaceAll(
+        /(-(hover|active|disabled|focus|focus-within|focus-visible|placeholder))?-(bg|text|border)$/gm,
+        "",
+      ),
+    )
     .map(
       (color) => `\
 @utility el-${color} {
   background-color: var(--color-${color}-bg);
   color: var(--color-${color}-text);
-  border-color: var(--color-${color}-border);
+  border-color: var(--color-${color}-border, transparent);
   --tw-shadow-color: var(--color-${color}-shadow);
   &:hover {
-    background-color: var(--color-${color}-hover-bg);
-    color: var(--color-${color}-hover-text);
-    border-color: var(--color-${color}-hover-border);
-    --tw-shadow-color: var(--color-${color}-hover-shadow);
+    background-color: var(--color-${color}-hover-bg, var(--color-${color}-bg));
+    color: var(--color-${color}-hover-text, var(--color-${color}-text));
+    border-color: var(--color-${color}-hover-border, var(--color-${color}-border));
+    --tw-shadow-color: var(--color-${color}-hover-shadow, var(--color-${color}-shadow));
   }
   &:active {
-    background-color: var(--color-${color}-active-bg);
-    color: var(--color-${color}-active-text);
-    border-color: var(--color-${color}-active-border);
-    --tw-shadow-color: var(--color-${color}-active-shadow);
+    background-color: var(--color-${color}-active-bg, var(--color-${color}-hover-bg, var(--color-${color}-bg)));
+    color: var(--color-${color}-active-text, var(--color-${color}-hover-text, var(--color-${color}-text)));
+    border-color: var(--color-${color}-active-border, var(--color-${color}-hover-border, var(--color-${color}-border)));
+    --tw-shadow-color: var(--color-${color}-active-shadow, var(--color-${color}-hover-shadow, var(--color-${color}-shadow)));
   }
   &:disabled,
   &[disabled] {
-    background-color: var(--color-${color}-disabled-bg);
-    color: var(--color-${color}-disabled-text);
-    border-color: var(--color-${color}-disabled-border);
-    --tw-shadow-color: var(--color-${color}-disabled-shadow);
+    background-color: var(--color-${color}-disabled-bg, var(--color-${color}-bg));
+    color: var(--color-${color}-disabled-text, var(--color-${color}-text));
+    border-color: var(--color-${color}-disabled-border, var(--color-${color}-border));
+    --tw-shadow-color: var(--color-${color}-disabled-shadow, var(--color-${color}-shadow));
+  }
+  &:focus {
+    background-color: var(--color-${color}-focus-bg, var(--color-${color}-bg));
+    color: var(--color-${color}-focus-text, var(--color-${color}-text));
+    border-color: var(--color-${color}-focus-border, var(--color-${color}-border));
+    --tw-shadow-color: var(--color-${color}-focus-shadow, var(--color-${color}-shadow));
+  }
+  &:focus-within {
+    background-color: var(--color-${color}-focus-within-bg, var(--color-${color}-bg));
+    color: var(--color-${color}-focus-within-text, var(--color-${color}-text));
+    border-color: var(--color-${color}-focus-within-border, var(--color-${color}-border));
+    --tw-shadow-color: var(--color-${color}-focus-within-shadow, var(--color-${color}-shadow));
+  }
+  &:focus-visible {
+    background-color: var(--color-${color}-focus-visible-bg, var(--color-${color}-bg));
+    color: var(--color-${color}-focus-visible-text, var(--color-${color}-text));
+    border-color: var(--color-${color}-focus-visible-border, var(--color-${color}-border));
+    --tw-shadow-color: var(--color-${color}-focus-visible-shadow, var(--color-${color}-shadow));
+  }
+  &::placeholder {
+    color: var(--color-${color}-placeholder-text, var(--color-${color}-text));
   }
 }
 `,

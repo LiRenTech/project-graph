@@ -43,7 +43,7 @@ import { GenerateFromFolder } from "./service/dataGenerateService/generateFromFo
 import { StageExport } from "./service/dataGenerateService/stageExportEngine/stageExportEngine";
 import { StageExportPng } from "./service/dataGenerateService/stageExportEngine/StageExportPng";
 import { StageExportSvg } from "./service/dataGenerateService/stageExportEngine/StageExportSvg";
-import { AI } from "./service/dataManageService/aiEngine/AIEngine";
+import { AIEngine } from "./service/dataManageService/aiEngine/AIEngine";
 import { ComplexityDetector } from "./service/dataManageService/ComplexityDetector";
 import { ContentSearch } from "./service/dataManageService/contentSearchEngine/contentSearchEngine";
 import { CopyEngine } from "./service/dataManageService/copyEngine/copyEngine";
@@ -92,7 +92,7 @@ export function loadAllServices(project: Project): void {
   project.loadService(RectangleSelect);
   project.loadService(StageNodeRotate);
   project.loadService(ComplexityDetector);
-  project.loadService(AI);
+  project.loadService(AIEngine);
   project.loadService(CopyEngine);
   project.loadService(AutoLayout);
   project.loadService(AutoLayoutFastTree);

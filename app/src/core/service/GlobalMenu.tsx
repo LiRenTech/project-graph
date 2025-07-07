@@ -1,8 +1,10 @@
 import { open } from "@tauri-apps/plugin-dialog";
-import { File, FileDown, FilePlus, FolderOpen, Save } from "lucide-react";
+import { Bot, ExternalLink, File, FileDown, FilePlus, FolderOpen, Save, SettingsIcon } from "lucide-react";
 import { ReactNode } from "react";
 import { URI } from "vscode-uri";
 import { Dialog } from "../../components/dialog";
+import AIWindow from "../../pages/_sub_window/AIWindow";
+import SettingsWindow from "../../pages/_sub_window/SettingsWindow";
 import { projectsAtom, store } from "../../state";
 import { Project } from "../Project";
 import { loadAllServices } from "../loadAllServices";
@@ -61,6 +63,15 @@ export namespace GlobalMenu {
       new MenuItem("保存", <Save />),
       new MenuItem("另存为", <FileDown />),
     ]),
-    new Menu("编辑", <File />, []),
+    new Menu("设置", <SettingsIcon />, [
+      new MenuItem("设置", <SettingsIcon />, () => {
+        SettingsWindow.open();
+      }),
+    ]),
+    new Menu("AI", <Bot />, [
+      new MenuItem("打开 AI 面板", <ExternalLink />, () => {
+        AIWindow.open();
+      }),
+    ]),
   ];
 }

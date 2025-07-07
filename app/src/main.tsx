@@ -18,7 +18,7 @@ import { Settings } from "./core/service/Settings";
 import { Tourials } from "./core/service/Tourials";
 import { UserState } from "./core/service/UserState";
 import { EdgeCollisionBoxGetter } from "./core/stage/stageObject/association/EdgeCollisionBoxGetter";
-import "./index.css";
+import "./css/index.css";
 import "./polyfills/roundRect";
 import { store } from "./state";
 import { exit, writeStderr } from "./utils/otherApi";

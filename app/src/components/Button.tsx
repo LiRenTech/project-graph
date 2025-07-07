@@ -1,4 +1,5 @@
-import React from "react";
+import { Loader2 } from "lucide-react";
+import React, { useState } from "react";
 import { SoundService } from "../core/service/feedbackService/SoundService";
 import { cn } from "../utils/cn";
 import Box from "./Box";
@@ -11,10 +12,12 @@ export default function Button({
   ...props
 }: React.PropsWithChildren<{
   className?: string;
-  onClick?: (e: React.MouseEvent) => void;
+  onClick?: (e: React.MouseEvent) => void | Promise<void>;
   disabled?: boolean;
   [key: string]: any;
 }>) {
+  const [loading, setLoading] = useState(false);
+
   return (
     <Box
       as="button"
@@ -30,8 +33,16 @@ export default function Button({
         SoundService.play.mouseEnterButton();
       }}
       onClick={(e: React.MouseEvent) => {
-        if (!disabled) {
-          onClick(e);
+        if (disabled || loading) return;
+        const maybePromise = onClick(e);
+        if (maybePromise && "then" in maybePromise) {
+          setLoading(true);
+          maybePromise
+            .then(() => setLoading(false))
+            .catch((e) => {
+              console.error(e);
+              setLoading(false);
+            });
         }
       }}
       onMouseDown={() => {
@@ -39,7 +50,7 @@ export default function Button({
       }}
       {...props}
     >
-      {children}
+      {loading ? <Loader2 className="animate-spin" /> : children}
     </Box>
   );
 }

@@ -35,13 +35,7 @@
       "identifier": "http:default",
       "allow": [
         {
-          "url": "*://*.project-graph.top/*"
-        },
-        {
-          "url": "http://localhost:*"
-        },
-        {
-          "url": "http://127.0.0.1:*"
+          "url": "*://**:*/**"
         }
       ]
     },

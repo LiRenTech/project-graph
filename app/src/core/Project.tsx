@@ -49,7 +49,7 @@ import type { GenerateFromFolder } from "./service/dataGenerateService/generateF
 import type { StageExport } from "./service/dataGenerateService/stageExportEngine/stageExportEngine";
 import type { StageExportPng } from "./service/dataGenerateService/stageExportEngine/StageExportPng";
 import type { StageExportSvg } from "./service/dataGenerateService/stageExportEngine/StageExportSvg";
-import type { AI } from "./service/dataManageService/aiEngine/AIEngine";
+import type { AIEngine } from "./service/dataManageService/aiEngine/AIEngine";
 import type { ComplexityDetector } from "./service/dataManageService/ComplexityDetector";
 import type { ContentSearch } from "./service/dataManageService/contentSearchEngine/contentSearchEngine";
 import type { CopyEngine } from "./service/dataManageService/copyEngine/copyEngine";
@@ -106,7 +106,7 @@ export class Project {
           return;
         }
         const id = idMatch[1];
-        console.debug("[Project] 发现服务: %s (%s)", id, k);
+        // console.debug("[Project] 发现服务: %s (%s)", id, k);
         this.serviceId2ModulePathMap.set(id, k);
       });
     }
@@ -212,7 +212,7 @@ export class Project {
         console.warn("[Project] 未找到服务 %s 的模块路径，将无法热重载该服务", service.id);
         return;
       }
-      console.log("accept", modulePath);
+      // console.log("accept", modulePath);
       import.meta.hot.accept(modulePath, (module) => {
         console.debug("[Project] 热重载服务: %s (%s)", service.id, modulePath);
         // 先卸载原来的服务
@@ -358,7 +358,7 @@ declare module "./Project" {
     rectangleSelect: RectangleSelect;
     stageNodeRotate: StageNodeRotate;
     complexityDetector: ComplexityDetector;
-    ai: AI;
+    aiEngine: AIEngine;
     copyEngine: CopyEngine;
     autoLayout: AutoLayout;
     autoLayoutFastTree: AutoLayoutFastTree;

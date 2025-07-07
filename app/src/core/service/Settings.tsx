@@ -137,6 +137,10 @@ export namespace Settings {
     // 用户协议
     agreeTerms: boolean;
     allowTelemetry: boolean;
+    // AI
+    aiApiBaseUrl: string;
+    aiApiKey: string;
+    aiModel: string;
   };
   export const defaultSettings: Settings = {
     language: "zh_CN",
@@ -251,6 +255,10 @@ export namespace Settings {
     // 用户协议
     agreeTerms: false,
     allowTelemetry: false,
+    // AI
+    aiApiBaseUrl: "https://generativelanguage.googleapis.com/v1beta/openai/",
+    aiApiKey: "",
+    aiModel: "gemini-2.5-flash",
   };
 
   export const sync = defaultSettings;

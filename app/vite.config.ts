@@ -16,7 +16,7 @@ export default defineConfig(async () => ({
     tailwindcss(),
     pgTheme({
       glob: "src/themes/*.pg-theme",
-      out: "src/theme.pcss",
+      out: "src/css/theme.pcss",
       defaultTheme: "dark",
     }),
     // 将svg文件作为react组件导入

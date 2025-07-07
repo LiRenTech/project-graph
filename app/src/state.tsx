@@ -7,3 +7,4 @@ import { Project } from "./core/Project";
 export const store = createStore();
 
 export const projectsAtom = atom<Project[]>([]);
+export const activeProjectAtom = atom<Project | undefined>(undefined);

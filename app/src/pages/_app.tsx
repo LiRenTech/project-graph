@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+// FIXME: 移除上面的disable注释
 import { restoreStateCurrent, saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
 import { useAtom } from "jotai";
 import { Copy, Minus, Pin, PinOff, Square, X } from "lucide-react";
@@ -6,11 +7,10 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import icon from "../assets/icon.png";
 import { Dialog } from "../components/dialog";
-import { Project } from "../core/Project";
 import { GlobalMenu } from "../core/service/GlobalMenu";
 import { Settings } from "../core/service/Settings";
 import { Themes } from "../core/service/Themes";
-import { projectsAtom } from "../state";
+import { activeProjectAtom, projectsAtom } from "../state";
 import { cn } from "../utils/cn";
 import { appScale, getCurrentWindow } from "../utils/platform";
 import RenderSubWindows from "./_render_sub_windows";
@@ -24,7 +24,7 @@ export default function App() {
   // TODO: start file window
 
   const [projects, setProjects] = useAtom(projectsAtom);
-  const [activeProject, setActiveProject] = useState<Project>();
+  const [activeProject, setActiveProject] = useAtom(activeProjectAtom);
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const [isWindowCollapsing, setIsWindowCollapsing] = useState(false);
   const [isClassroomMode, setIsClassroomMode] = Settings.use("isClassroomMode");
@@ -159,13 +159,13 @@ export default function App() {
       onContextMenu={(e) => e.preventDefault()}
     >
       {/* 第一行：logo | 菜单 | ...移动窗口区域... | 窗口控制按钮 */}
-      <div className="bg-titlebar-bg text-titlebar-text border-titlebar-border z-10 flex h-8 items-center overflow-hidden rounded-lg border">
+      <div className="el-titlebar z-10 flex h-8 items-center overflow-hidden rounded-lg border">
         <img src={icon} alt="logo" className="m-2 size-6" />
         <div className="ml-2 flex h-full items-center text-sm">
           {GlobalMenu.menus.map((menu, i) => (
             <div
               key={i}
-              className="hover:bg-titlebar-control-hover-bg flex h-full cursor-pointer items-center gap-1 rounded-lg px-2 transition-all active:scale-90 active:rounded-2xl [&_svg]:size-4"
+              className="el-titlebar-menu flex h-full cursor-pointer items-center gap-1 rounded-lg px-2 transition-all active:scale-90 active:rounded-2xl [&_svg]:size-4"
               onMouseDown={() => {
                 MenuWindow.open(menu);
               }}
@@ -177,7 +177,7 @@ export default function App() {
         </div>
         {/* 悬浮拖拽区域 ↓ */}
         <div className="h-full flex-1 cursor-grab active:cursor-grabbing" data-tauri-drag-region></div>
-        <div className="*:hover:bg-titlebar-control-hover-bg flex h-full *:flex *:h-full *:w-8 *:cursor-pointer *:items-center *:justify-center *:rounded-lg *:transition-all *:active:scale-90 *:active:rounded-2xl">
+        <div className="*:el-titlebar-control flex h-full *:flex *:h-full *:w-8 *:cursor-pointer *:items-center *:justify-center *:rounded-lg *:transition-all *:active:scale-90 *:active:rounded-2xl">
           {/* 要确保每一个图标在视觉上的大小和粗细都相同 */}
           {alwaysOnTop ? (
             <div
@@ -221,12 +221,9 @@ export default function App() {
         {projects.map((project) => (
           <div
             key={project.uri.toString()}
-            className={cn(
-              "bg-titlebar-bg text-titlebar-text border-titlebar-border flex shrink-0 items-center gap-1 rounded-lg border p-2",
-              {
-                "bg-titlebar-control-hover-bg": activeProject?.uri.toString() === project.uri.toString(),
-              },
-            )}
+            className={cn("el-tab flex shrink-0 items-center gap-1 rounded-lg border p-2", {
+              "el-tab-active": activeProject?.uri.toString() === project.uri.toString(),
+            })}
             onClick={() => {
               setActiveProject(project);
             }}

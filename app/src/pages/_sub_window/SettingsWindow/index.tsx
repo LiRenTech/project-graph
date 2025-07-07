@@ -23,7 +23,7 @@ import { SubWindow } from "../../../core/service/SubWindow";
 import { cn } from "../../../utils/cn";
 import { isMac } from "../../../utils/platform";
 import About from "./about";
-import AI from "./ai";
+import AISettings from "./ai";
 import Automation from "./automation";
 import Control from "./control";
 import Effects from "./effects";
@@ -80,7 +80,7 @@ const pages = [
   {
     id: "ai",
     icon: <Brain />,
-    component: <AI />,
+    component: <AISettings />,
   },
   {
     id: "github",
@@ -104,9 +104,9 @@ const pages = [
   },
 ];
 
-export default function SettingsWindow() {
+export default function SettingsWindow({ defaultPage = "visual" }: { defaultPage?: string }) {
   const { t } = useTranslation("settings");
-  const [currentPage, setCurrentPage] = useState("visual");
+  const [currentPage, setCurrentPage] = useState(defaultPage);
 
   return (
     <div className="flex h-full w-full flex-col p-8">
@@ -133,11 +133,10 @@ export default function SettingsWindow() {
   );
 }
 
-SettingsWindow.open = () => {
+SettingsWindow.open = (page: string) => {
   SubWindow.create({
     title: "设置",
-
-    children: <SettingsWindow />,
+    children: <SettingsWindow defaultPage={page} />,
     rect: Rectangle.inCenter(new Vector(window.innerWidth * 0.87, window.innerHeight * 0.88)),
   });
 };
