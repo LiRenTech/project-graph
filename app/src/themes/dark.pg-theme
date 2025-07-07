@@ -30,6 +30,16 @@ button:
   text: "#fff"
   border: "oklch(0.371 0 0)"
 
+dialog:
+  info:
+    bg: oklch(28.2% 0.091 267.935)
+  success:
+    bg: oklch(26.6% 0.065 152.934)
+  warning:
+    bg: oklch(28.6% 0.066 53.813)
+  error:
+    bg: oklch(25.8% 0.092 26.042)
+
 input:
   bg: "oklch(0.269 0 0)"
   text: "#fff"

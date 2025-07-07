@@ -100,12 +100,7 @@ export namespace Dialog {
     return (
       <div
         data-pg-drag-region
-        className={cn("flex h-full flex-col gap-4 text-wrap break-words p-8", {
-          "bg-blue-950": type === "info",
-          "bg-green-950": type === "success",
-          "bg-yellow-950": type === "warning",
-          "bg-red-950": type === "error",
-        })}
+        className={cn("flex h-full flex-col gap-4 text-wrap break-words p-8", `el-dialog-${type}`)}
       >
         <h1 className="text-2xl font-bold">{title}</h1>
         <div className="flex-1 overflow-auto">
