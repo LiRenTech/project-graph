@@ -2,6 +2,7 @@ import { fetch } from "@tauri-apps/plugin-http";
 import OpenAI from "openai";
 import { Project, service } from "../../../Project";
 import { Settings } from "../../Settings";
+import { AITools } from "./AITools";
 
 @service("aiEngine")
 export class AIEngine {
@@ -27,6 +28,7 @@ export class AIEngine {
       stream_options: {
         include_usage: true,
       },
+      tools: AITools.tools,
     });
     return stream;
   }
