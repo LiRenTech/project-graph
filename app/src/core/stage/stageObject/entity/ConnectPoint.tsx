@@ -3,11 +3,12 @@ import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Vector } from "../../../dataStruct/Vector";
 import { Project } from "../../../Project";
 import { CircleChangeRadiusEffect } from "../../../service/feedbackService/effectEngine/concrete/CircleChangeRadiusEffect";
+import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { CollisionBox } from "../collisionBox/collisionBox";
 
 // TODO: 这里继承了ConnectableEntity的话，TextNode模块就会报错，原因未知
 // Uncaught ReferenceError: can't access lexical declaration 'ConnectableEntity' before initialization
-export class ConnectPoint /* extends ConnectableEntity */ {
+export class ConnectPoint extends ConnectableEntity {
   get geometryCenter(): Vector {
     return this.location;
   }

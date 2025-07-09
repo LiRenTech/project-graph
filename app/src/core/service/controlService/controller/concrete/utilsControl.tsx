@@ -110,7 +110,7 @@ export class ControllerUtils {
         SubWindow.close(lastAutoCompleteWindowId);
         clickedNode!.isEditing = false;
         this.project.controller.isCameraLocked = false;
-        this.project.stageHistoryManager.recordStep();
+        this.project.historyManager.recordStep();
         // 更新选中内容的数量
         this.project.stageObjectSelectCounter.update();
       });
@@ -150,7 +150,7 @@ export class ControllerUtils {
         // clickedLineEdge!.isEditing = false;
         // 因为这里用的是不透明文本框，所以不需要停止节点上文字的渲染
         this.project.controller.isCameraLocked = false;
-        this.project.stageHistoryManager.recordStep();
+        this.project.historyManager.recordStep();
       });
   }
   editMultiTargetEdgeText(clickedEdge: MultiTargetUndirectedEdge, selectAll = true) {
@@ -187,7 +187,7 @@ export class ControllerUtils {
         // clickedLineEdge!.isEditing = false;
         // 因为这里用的是不透明文本框，所以不需要停止节点上文字的渲染
         this.project.controller.isCameraLocked = false;
-        this.project.stageHistoryManager.recordStep();
+        this.project.historyManager.recordStep();
       });
   }
 
@@ -216,7 +216,7 @@ export class ControllerUtils {
       .then(() => {
         clickedUrlNode!.isEditingTitle = false;
         this.project.controller.isCameraLocked = false;
-        this.project.stageHistoryManager.recordStep();
+        this.project.historyManager.recordStep();
       });
   }
 
@@ -247,7 +247,7 @@ export class ControllerUtils {
       .then(() => {
         section.isEditingTitle = false;
         this.project.controller.isCameraLocked = false;
-        this.project.stageHistoryManager.recordStep();
+        this.project.historyManager.recordStep();
       });
   }
 
@@ -276,7 +276,7 @@ export class ControllerUtils {
       .then(() => {
         clickedPortalNode!.isEditingTitle = false;
         this.project.controller.isCameraLocked = false;
-        this.project.stageHistoryManager.recordStep();
+        this.project.historyManager.recordStep();
       });
   }
 

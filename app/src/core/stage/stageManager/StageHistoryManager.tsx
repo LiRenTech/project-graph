@@ -10,8 +10,8 @@ import { Settings } from "../../service/Settings";
  *
  * 切换文件，保存时都应该重置
  */
-@service("stageHistoryManager")
-export class StageHistoryManager {
+@service("historyManager")
+export class HistoryManager {
   /**
    * 历史记录列表数组
    */
@@ -60,14 +60,15 @@ export class StageHistoryManager {
     this.historyList.splice(this.currentIndex + 1);
     // 上面一行的含义：删除从 currentIndex + 1 开始的所有元素。
     // 也就是撤回了好几步之后再做修改，后面的曾经历史就都删掉了，相当于重开了一个分支。
-    this.historyList.push(this.project.stageDumper.dump());
+    // TODO: dump
+    // this.historyList.push(this.project.stageDumper.dump());
     this.currentIndex++;
     if (this.historyList.length > this.historySize) {
       // 数组长度超过最大值时，删除最早的元素
       this.historyList.shift();
       this.currentIndex--;
     }
-    StageSaveManager.setIsCurrentSaved(false);
+    // StageSaveManager.setIsCurrentSaved(false);
   }
 
   /**

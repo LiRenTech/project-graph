@@ -57,12 +57,12 @@ export class KeyBindsRegistrar {
 
     await this.project.keyBinds.create("undo", "C-z", () => {
       if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.stageHistoryManager.undo();
+      this.project.historyManager.undo();
     });
 
     await this.project.keyBinds.create("redo", "C-y", () => {
       if (!this.project.keyboardOnlyEngine.isOpenning()) return;
-      this.project.stageHistoryManager.redo();
+      this.project.historyManager.redo();
     });
 
     // 危险操作，配置一个不容易触发的快捷键

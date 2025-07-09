@@ -152,7 +152,7 @@ export class ControllerEntityClickSelectAndMoveClass extends ControllerClass {
           this.project.autoAlign.alignAllSelectedToGrid();
         }
 
-        this.project.stageHistoryManager.recordStep(); // 记录一次历史
+        this.project.historyManager.recordStep(); // 记录一次历史
       }
     }
 

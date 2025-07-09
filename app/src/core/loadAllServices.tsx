@@ -68,7 +68,7 @@ import { SectionInOutManager } from "./stage/stageManager/concreteMethods/StageS
 import { SectionPackManager } from "./stage/stageManager/concreteMethods/StageSectionPackManager";
 import { SerializedDataAdder } from "./stage/stageManager/concreteMethods/StageSerializedAdder";
 import { TagManager } from "./stage/stageManager/concreteMethods/StageTagManager";
-import { StageHistoryManager } from "./stage/stageManager/StageHistoryManager";
+import { HistoryManager } from "./stage/stageManager/StageHistoryManager";
 import { StageManager } from "./stage/stageManager/StageManager";
 
 export function loadAllServices(project: Project): void {
@@ -88,7 +88,7 @@ export function loadAllServices(project: Project): void {
   project.loadService(AutoCompute);
   project.loadService(SecretKeys);
   project.loadService(StageDumper);
-  project.loadService(StageHistoryManager);
+  project.loadService(HistoryManager);
   project.loadService(RectangleSelect);
   project.loadService(StageNodeRotate);
   project.loadService(ComplexityDetector);

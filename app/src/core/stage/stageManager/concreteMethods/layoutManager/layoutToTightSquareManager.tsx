@@ -12,7 +12,7 @@ export namespace LayoutToTightSquareManager {
     const entities = Array.from(this.project.stageManager.getEntities()).filter((entity) => entity.isSelected);
     if (entities.length === 0) return;
     layoutToTightSquare(entities);
-    this.project.stageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
   }
 
   export function layoutToTightSquare(entities: Entity[]) {

@@ -64,7 +64,7 @@ export class NodeAdder {
       node.isSelected = true;
     }
 
-    this.project.stageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
     return newUUID;
   }
 
@@ -133,7 +133,7 @@ export class NodeAdder {
       const targetLocation = entityRectangle.leftBottom;
       newNode.moveTo(targetLocation);
     }
-    this.project.stageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
     return uuid;
   }
 
@@ -155,14 +155,13 @@ export class NodeAdder {
 
   public addConnectPoint(clickWorldLocation: Vector, addToSections: Section[]): string {
     const newUUID = uuidv4();
-    const connectPoint = new ConnectPoint({
+    const connectPoint = new ConnectPoint(this.project, {
       uuid: newUUID,
       location: [clickWorldLocation.x, clickWorldLocation.y],
     });
     this.project.stageManager.addConnectPoint(connectPoint);
     for (const section of addToSections) {
-      // TODO: 修复ConnectPoint
-      // section.children.push(connectPoint);
+      section.children.push(connectPoint);
       section.childrenUUIDs.push(connectPoint.uuid);
       section.adjustLocationAndSize();
       this.project.effects.addEffect(
@@ -173,7 +172,7 @@ export class NodeAdder {
         ),
       );
     }
-    this.project.stageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
     return newUUID;
   }
   /**

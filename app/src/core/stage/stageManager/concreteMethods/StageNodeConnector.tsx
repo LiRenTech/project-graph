@@ -118,6 +118,6 @@ export class NodeConnector {
         this.changeEdgeTarget(edge, newTarget);
       }
     }
-    this.project.stageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
   }
 }

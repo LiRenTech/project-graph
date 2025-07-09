@@ -20,6 +20,7 @@ import { PenStrokeDeletedEffect } from "../../../feedbackService/effectEngine/co
 import { RectangleSplitTwoPartEffect } from "../../../feedbackService/effectEngine/concrete/RectangleSplitTwoPartEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
 import { Settings } from "../../../Settings";
+import { MouseLocation } from "../../MouseLocation";
 import { ControllerClass } from "../ControllerClass";
 
 export class ControllerCuttingClass extends ControllerClass {
@@ -196,7 +197,6 @@ export class ControllerCuttingClass extends ControllerClass {
     this.updateWarningObjectByCuttingLine();
     // 鼠标提示解除
     this.project.controller.setCursorNameHook(CursorNameEnum.Default);
-
     // 删除连线
     for (const edge of this.warningAssociations) {
       this.project.stageManager.deleteAssociation(edge);

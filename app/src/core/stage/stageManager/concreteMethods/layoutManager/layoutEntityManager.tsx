@@ -27,6 +27,6 @@ export namespace LayoutEntityManager {
     } else {
       layoutFunction(entities);
     }
-    this.project.stageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
   }
 }

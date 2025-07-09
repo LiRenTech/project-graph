@@ -37,7 +37,7 @@ export class StageObjectColorManager {
     }
     // 特性：统一取消框选
     // this.project.stageManager.clearSelectAll();  // 不能统一取消全选，因为填充后可能会发现颜色不合适
-    this.project.stageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
   }
 
   darkenNodeColor() {
@@ -50,7 +50,7 @@ export class StageObjectColorManager {
         node.color = darkenedColor;
       }
     }
-    this.project.stageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
   }
 
   lightenNodeColor() {
@@ -63,6 +63,6 @@ export class StageObjectColorManager {
         node.color = lightenedColor;
       }
     }
-    this.project.stageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
   }
 }

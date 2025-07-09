@@ -32,8 +32,7 @@ export class DeleteManager {
   constructor(private readonly project: Project) {
     this.registerHandler(TextNode, this.deleteTextNode.bind(this));
     this.registerHandler(Section, this.deleteSection.bind(this));
-    // TODO: 修复ConnectPoint
-    // this.registerHandler(ConnectPoint, this.deleteConnectPoint.bind(this));
+    this.registerHandler(ConnectPoint, this.deleteConnectPoint.bind(this));
     this.registerHandler(ImageNode, this.deleteImageNode.bind(this));
     this.registerHandler(UrlNode, this.deleteUrlNode.bind(this));
     this.registerHandler(PortalNode, this.deletePortalNode.bind(this));

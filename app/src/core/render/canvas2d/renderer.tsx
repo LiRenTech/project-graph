@@ -849,7 +849,7 @@ export class Renderer {
       `ConnectFromNodes: ${this.project.controller.nodeConnection.connectFromEntities}`,
       `lastSelectedNode: ${this.project.controller.lastSelectedEntityUUID.size}`,
       `粘贴板: ${JSON.stringify(this.project.copyEngine.copyBoardData)}`,
-      `历史: ${this.project.stageHistoryManager.statusText()}`,
+      `历史: ${this.project.historyManager.statusText()}`,
       `fps: ${this.fps}`,
       `delta: ${this.deltaTime.toFixed(2)}`,
       `uri: ${this.project.uri}`,

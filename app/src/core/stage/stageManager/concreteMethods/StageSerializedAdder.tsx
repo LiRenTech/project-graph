@@ -5,6 +5,7 @@ import { Project, service } from "../../../Project";
 import { Entity } from "../../stageObject/abstract/StageEntity";
 import { CubicCatmullRomSplineEdge } from "../../stageObject/association/CubicCatmullRomSplineEdge";
 import { LineEdge } from "../../stageObject/association/LineEdge";
+import { ConnectPoint } from "../../stageObject/entity/ConnectPoint";
 import { ImageNode } from "../../stageObject/entity/ImageNode";
 import { PenStroke } from "../../stageObject/entity/PenStroke";
 import { PortalNode } from "../../stageObject/entity/PortalNode";
@@ -34,9 +35,8 @@ export class SerializedDataAdder {
         entityObject = new TextNode(this.project, entity);
       } else if (Serialized.isSection(entity)) {
         entityObject = new Section(this.project, entity);
-        // TODO: 修复ConnectPoint
-        // } else if (Serialized.isConnectPoint(entity)) {
-        //   entityObject = new ConnectPoint(entity);
+      } else if (Serialized.isConnectPoint(entity)) {
+        entityObject = new ConnectPoint(this.project, entity);
       } else if (Serialized.isPenStroke(entity)) {
         entityObject = new PenStroke(this.project, entity);
       } else if (Serialized.isPortalNode(entity)) {

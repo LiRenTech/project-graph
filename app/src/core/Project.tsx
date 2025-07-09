@@ -74,6 +74,7 @@ import type { SectionInOutManager } from "./stage/stageManager/concreteMethods/S
 import type { SectionPackManager } from "./stage/stageManager/concreteMethods/StageSectionPackManager";
 import type { SerializedDataAdder } from "./stage/stageManager/concreteMethods/StageSerializedAdder";
 import type { TagManager } from "./stage/stageManager/concreteMethods/StageTagManager";
+import { HistoryManager } from "./stage/stageManager/StageHistoryManager";
 import type { StageManager } from "./stage/stageManager/StageManager";
 
 if (import.meta.hot) {
@@ -350,6 +351,7 @@ declare module "./Project" {
     autoComputeUtils: AutoComputeUtils;
     renderUtils: RenderUtils;
     worldRenderUtils: WorldRenderUtils;
+    historyManager: HistoryManager;
     stageManager: StageManager;
     camera: Camera;
     effects: Effects;

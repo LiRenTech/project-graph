@@ -564,7 +564,7 @@ export class SecretKeys {
             cameraScale: 1,
           }),
         );
-        this.project.stageHistoryManager.recordStep();
+        this.project.historyManager.recordStep();
       },
     },
     "c o l l a b o r a t e": {
@@ -707,7 +707,7 @@ export class SecretKeys {
           // 刷新一下
           node.forceAdjustSizeByText();
         }
-        this.project.stageHistoryManager.recordStep();
+        this.project.historyManager.recordStep();
       },
     },
     "e m o j i * *": {

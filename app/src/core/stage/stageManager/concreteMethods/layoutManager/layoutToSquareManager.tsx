@@ -8,7 +8,7 @@ export namespace LayoutToSquareManager {
   export function layoutToSquareBySelected() {
     const entities = Array.from(this.project.stageManager.getEntities()).filter((node) => node.isSelected);
     layoutToSquare(entities);
-    this.project.stageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
   }
 
   export function layoutToSquare(entities: Entity[]) {

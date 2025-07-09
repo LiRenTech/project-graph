@@ -79,7 +79,7 @@ export class SectionPackManager {
       }
       this.targetTextNodeToSection(textNode);
     }
-    this.project.stageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
   }
 
   /**
@@ -114,7 +114,7 @@ export class SectionPackManager {
       return section;
     };
     dfs(rootNode);
-    this.project.stageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
   }
 
   /**
@@ -147,7 +147,7 @@ export class SectionPackManager {
       this.project.sectionInOutManager.goOutSection(childSets, fatherSection);
     }
     this.project.sectionInOutManager.goInSection(childSets, section);
-    this.project.stageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
   }
 
   /**
@@ -200,7 +200,7 @@ export class SectionPackManager {
   unpackSelectedSections() {
     const selectedSections = this.project.stageManager.getSelectedEntities();
     this.unpackSections(selectedSections);
-    this.project.stageHistoryManager.recordStep();
+    this.project.historyManager.recordStep();
   }
 
   /**

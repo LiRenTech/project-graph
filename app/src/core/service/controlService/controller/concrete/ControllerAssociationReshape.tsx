@@ -122,7 +122,7 @@ export class ControllerAssociationReshapeClass extends ControllerClass {
       return;
     }
     if (this.project.controller.isMovingEdge) {
-      this.project.stageHistoryManager.recordStep(); // 鼠标抬起了，移动结束，记录历史过程
+      this.project.historyManager.recordStep(); // 鼠标抬起了，移动结束，记录历史过程
       this.project.controller.isMovingEdge = false;
     }
     this.project.controller.setCursorNameHook(CursorNameEnum.Default);
