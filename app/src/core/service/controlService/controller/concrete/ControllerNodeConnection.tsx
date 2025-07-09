@@ -10,6 +10,7 @@ import { ConnectPoint } from "../../../../stage/stageObject/entity/ConnectPoint"
 import { RectangleNoteEffect } from "../../../feedbackService/effectEngine/concrete/RectangleNoteEffect";
 import { SoundService } from "../../../feedbackService/SoundService";
 import { Settings } from "../../../Settings";
+import { MouseLocation } from "../../MouseLocation";
 import { ControllerClass } from "../ControllerClass";
 
 /**

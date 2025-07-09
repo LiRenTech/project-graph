@@ -11,6 +11,8 @@ export class Canvas {
     private readonly project: Project,
     public element: HTMLCanvasElement = document.createElement("canvas"),
   ) {
+    element.tabIndex = 0;
+    element.addEventListener("mousemove", () => element.focus());
     this.ctx = element.getContext("2d")!;
   }
 
