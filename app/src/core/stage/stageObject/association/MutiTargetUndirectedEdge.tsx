@@ -27,12 +27,12 @@ export class MultiTargetUndirectedEdge extends ConnectableAssociation {
     const nodes = this.project.stageManager.getEntitiesByUUIDs(this.targetUUIDs);
     const center = this.centerLocation;
 
-    const shapeList: Shape[] = [];
+    const shapes: Shape[] = [];
     for (const node of nodes) {
       const line = new Line(center, node.collisionBox.getRectangle().center);
-      shapeList.push(line);
+      shapes.push(line);
     }
-    return new CollisionBox(shapeList);
+    return new CollisionBox(shapes);
   }
 
   public text: string;

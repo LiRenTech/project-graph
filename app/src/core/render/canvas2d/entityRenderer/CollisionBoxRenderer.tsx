@@ -20,7 +20,7 @@ export class CollisionBoxRenderer {
       this.project.camera.currentScale > 0.02
         ? this.project.camera.currentScale
         : this.project.camera.currentScale * 20;
-    for (const shape of collideBox.shapeList) {
+    for (const shape of collideBox.shapes) {
       if (shape instanceof Rectangle) {
         this.project.shapeRenderer.renderRect(
           new Rectangle(

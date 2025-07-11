@@ -11,16 +11,16 @@ export class CollisionBox {
   @serializable
   shapes: Shape[] = [];
 
-  constructor(shapeList: Shape[]) {
-    this.shapes = shapeList;
+  constructor(shapes: Shape[]) {
+    this.shapes = shapes;
   }
 
   /**
    *
-   * @param shapeList 更新碰撞箱的形状列表
+   * @param shapes 更新碰撞箱的形状列表
    */
-  updateShapeList(shapeList: Shape[]): void {
-    this.shapes = shapeList;
+  updateShapeList(shapes: Shape[]): void {
+    this.shapes = shapes;
   }
 
   public isContainsPoint(location: Vector): boolean {

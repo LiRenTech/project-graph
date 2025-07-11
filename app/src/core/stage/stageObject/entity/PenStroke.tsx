@@ -125,7 +125,7 @@ export class PenStroke extends Entity {
   getCollisionBoxFromSegmentList(segmentList: PenStrokeSegment[]): CollisionBox {
     const result = new CollisionBox([]);
     for (const segment of segmentList) {
-      result.shapeList.push(new Line(segment.startLocation, segment.endLocation));
+      result.shapes.push(new Line(segment.startLocation, segment.endLocation));
     }
     return result;
   }

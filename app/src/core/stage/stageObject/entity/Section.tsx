@@ -95,11 +95,11 @@ export class Section extends ConnectableEntity {
 
     this._collisionBoxWhenCollapsed = new CollisionBox([new Rectangle(new Vector(...location), new Vector(...size))]);
 
-    const shapeList: Shape[] = new Rectangle(new Vector(...location), new Vector(...size)).getBoundingLines();
-    // shapeList.push(
+    const shapes: Shape[] = new Rectangle(new Vector(...location), new Vector(...size)).getBoundingLines();
+    // shapes.push(
     //   new Rectangle(new Vector(...location), new Vector(size[0], 50)),
     // );
-    this._collisionBoxNormal = new CollisionBox(shapeList);
+    this._collisionBoxNormal = new CollisionBox(shapes);
 
     this.color = new Color(...color);
     this.text = text;
@@ -162,10 +162,10 @@ export class Section extends ConnectableEntity {
       rectangle.size = rectangle.size.add(new Vector(0, 50));
     }
 
-    this._collisionBoxNormal.shapeList = rectangle.getBoundingLines();
+    this._collisionBoxNormal.shapes = rectangle.getBoundingLines();
     // 群友需求：希望Section框扩大交互范围，标题也能拖动
     const newRect = new Rectangle(rectangle.location.clone(), new Vector(rectangle.size.x, 50));
-    this._collisionBoxNormal.shapeList.push(newRect);
+    this._collisionBoxNormal.shapes.push(newRect);
     // 调整折叠状态
     this._collisionBoxWhenCollapsed = this.collapsedCollisionBox();
   }
@@ -202,10 +202,10 @@ export class Section extends ConnectableEntity {
     if (this.isCollapsed) {
       return this._collisionBoxWhenCollapsed.getRectangle();
     } else {
-      const topLine: Line = this._collisionBoxNormal.shapeList[0] as Line;
-      const rightLine: Line = this._collisionBoxNormal.shapeList[1] as Line;
-      const bottomLine: Line = this._collisionBoxNormal.shapeList[2] as Line;
-      const leftLine: Line = this._collisionBoxNormal.shapeList[3] as Line;
+      const topLine: Line = this._collisionBoxNormal.shapes[0] as Line;
+      const rightLine: Line = this._collisionBoxNormal.shapes[1] as Line;
+      const bottomLine: Line = this._collisionBoxNormal.shapes[2] as Line;
+      const leftLine: Line = this._collisionBoxNormal.shapes[3] as Line;
       return new Rectangle(
         new Vector(leftLine.start.x, topLine.start.y),
         new Vector(rightLine.end.x - leftLine.start.x, bottomLine.end.y - topLine.start.y),
