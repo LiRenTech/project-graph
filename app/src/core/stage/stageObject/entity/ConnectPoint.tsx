@@ -29,7 +29,7 @@ export class ConnectPoint extends ConnectableEntity {
   }
   set radius(value: number) {
     this._radius = value;
-    const rectangle = this._collisionBox.shapeList[0];
+    const rectangle = this._collisionBox.shapes[0];
     if (rectangle instanceof Rectangle) {
       rectangle.size = new Vector(value * 2, value * 2);
       rectangle.location = this.geometryCenter.subtract(new Vector(value, value));
@@ -88,7 +88,7 @@ export class ConnectPoint extends ConnectableEntity {
   move(delta: Vector): void {
     this.location = this.location.add(delta);
 
-    const rectangle = this._collisionBox.shapeList[0];
+    const rectangle = this._collisionBox.shapes[0];
     if (rectangle instanceof Rectangle) {
       rectangle.location = rectangle.location.add(delta);
     }
@@ -98,7 +98,7 @@ export class ConnectPoint extends ConnectableEntity {
   moveTo(location: Vector): void {
     this.location = location;
 
-    const rectangle = this._collisionBox.shapeList[0];
+    const rectangle = this._collisionBox.shapes[0];
     if (rectangle instanceof Rectangle) {
       rectangle.location = location.subtract(new Vector(10, 10));
     }

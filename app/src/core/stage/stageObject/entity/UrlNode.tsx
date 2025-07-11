@@ -63,12 +63,12 @@ export class UrlNode extends ConnectableEntity {
    * 若要修改节点的矩形，请使用 moveTo等 方法
    */
   public get rectangle(): Rectangle {
-    return this.collisionBox.shapeList[0] as Rectangle;
+    return this.collisionBox.shapes[0] as Rectangle;
   }
   move(delta: Vector): void {
     const newRectangle = this.rectangle.clone();
     newRectangle.location = newRectangle.location.add(delta);
-    this.collisionBox.shapeList[0] = newRectangle;
+    this.collisionBox.shapes[0] = newRectangle;
 
     // 移动雪花特效
     this.project.effects.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), this.rectangle, delta));
@@ -83,7 +83,7 @@ export class UrlNode extends ConnectableEntity {
   moveTo(location: Vector): void {
     const newRectangle = this.rectangle.clone();
     newRectangle.location = location.clone();
-    this.collisionBox.shapeList[0] = newRectangle;
+    this.collisionBox.shapes[0] = newRectangle;
     this.updateFatherSectionByMove();
   }
   isHiddenBySectionCollapse: boolean = false;
@@ -118,6 +118,6 @@ export class UrlNode extends ConnectableEntity {
     const newSize = getTextSize(this.title, Renderer.FONT_SIZE).add(Vector.same(Renderer.NODE_PADDING).multiply(2));
     newSize.x = Math.max(newSize.x, UrlNode.width);
     newSize.y = Math.max(newSize.y, UrlNode.height);
-    this.collisionBox.shapeList[0] = new Rectangle(this.rectangle.location.clone(), newSize);
+    this.collisionBox.shapes[0] = new Rectangle(this.rectangle.location.clone(), newSize);
   }
 }

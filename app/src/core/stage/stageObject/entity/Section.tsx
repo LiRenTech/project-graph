@@ -219,7 +219,7 @@ export class Section extends ConnectableEntity {
 
   move(delta: Vector): void {
     // 让自己移动
-    for (const shape of this.collisionBox.shapeList) {
+    for (const shape of this.collisionBox.shapes) {
       if (shape instanceof Line) {
         shape.start = shape.start.add(delta);
         shape.end = shape.end.add(delta);

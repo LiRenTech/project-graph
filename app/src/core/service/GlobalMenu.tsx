@@ -1,5 +1,5 @@
 import { open } from "@tauri-apps/plugin-dialog";
-import { Bot, ExternalLink, File, FileDown, FilePlus, FolderOpen, Save, SettingsIcon } from "lucide-react";
+import { Bot, ExternalLink, File, FileDown, FilePlus, FolderOpen, Save, SettingsIcon, TestTube2 } from "lucide-react";
 import { ReactNode } from "react";
 import { URI } from "vscode-uri";
 import { Dialog } from "../../components/dialog";
@@ -8,6 +8,8 @@ import SettingsWindow from "../../pages/_sub_window/SettingsWindow";
 import { projectsAtom, store } from "../../state";
 import { Project } from "../Project";
 import { loadAllServices } from "../loadAllServices";
+import { Serializer } from "../serialize";
+import { TextNode } from "../stage/stageObject/entity/TextNode";
 
 export namespace GlobalMenu {
   export class Menu {
@@ -65,7 +67,21 @@ export namespace GlobalMenu {
     ]),
     new Menu("设置", <SettingsIcon />, [
       new MenuItem("设置", <SettingsIcon />, () => {
-        SettingsWindow.open();
+        SettingsWindow.open("visual");
+      }),
+      new MenuItem("test", <TestTube2 />, () => {
+        console.log("=========test serialize");
+        const obj = new TextNode(Project.newDraft(), {
+          type: "core:text_node",
+          uuid: crypto.randomUUID(),
+          text: "hello",
+          details: "world",
+          location: [0, 0],
+          size: [0, 0],
+          color: [0, 0, 0, 0],
+          sizeAdjust: "auto",
+        });
+        console.log(Serializer.serialize(obj));
       }),
     ]),
     new Menu("AI", <Bot />, [

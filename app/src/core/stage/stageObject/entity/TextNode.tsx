@@ -6,6 +6,7 @@ import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../../render/canvas2d/renderer";
+import { serializable } from "../../../serialize";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { Entity } from "../abstract/StageEntity";
@@ -19,11 +20,17 @@ import { Section } from "./Section";
  * 2024年10月20日：Node 改名为 TextNode，防止与 原生 Node 类冲突
  */
 export class TextNode extends ConnectableEntity implements ResizeAble {
+  @serializable
   uuid: string;
+  @serializable
   text: string;
+  @serializable
   details: string;
-
+  @serializable
   public collisionBox: CollisionBox;
+  @serializable
+  color: Color = Color.Transparent;
+
   /**
    * 是否正在使用AI生成
    */
@@ -36,6 +43,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
    * auto：自动缩紧
    * manual：手动调整宽度，高度自动撑开。
    */
+  @serializable
   public sizeAdjust: Serialized.TextNodeSizeAdjust = "auto";
 
   /**
@@ -55,7 +63,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
    * 若要修改节点的矩形，请使用 moveTo等 方法
    */
   public get rectangle(): Rectangle {
-    return this.collisionBox.shapeList[0] as Rectangle;
+    return this.collisionBox.shapes[0] as Rectangle;
   }
 
   public get geometryCenter() {
@@ -82,7 +90,6 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
   }
   isHiddenBySectionCollapse = false;
 
-  color: Color = Color.Transparent;
   constructor(
     protected readonly project: Project,
     {
@@ -117,7 +124,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
    * 调整后的矩形是当前文字加了一圈padding之后的大小
    */
   private adjustSizeByText() {
-    this.collisionBox.shapeList[0] = new Rectangle(
+    this.collisionBox.shapes[0] = new Rectangle(
       this.rectangle.location.clone(),
       getMultiLineTextSize(this.text, Renderer.FONT_SIZE, 1.5).add(Vector.same(Renderer.NODE_PADDING).multiply(2)),
     );
@@ -132,7 +139,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
 
   // private adjustSizeByTextWidthLimitWidth(width: number) {
   //   const currentSize = this.project.textRenderer.measureMultiLineTextSize(this.text, Renderer.FONT_SIZE, width, 1.5);
-  //   this.collisionBox.shapeList[0] = new Rectangle(
+  //   this.collisionBox.shapes[0] = new Rectangle(
   //     this.rectangle.location.clone(),
   //     currentSize.clone().add(Vector.same(Renderer.NODE_PADDING).multiply(2)),
   //   );
@@ -149,7 +156,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
   }
 
   resizeHandle(delta: Vector) {
-    const currentRect: Rectangle = this.collisionBox.shapeList[0] as Rectangle;
+    const currentRect: Rectangle = this.collisionBox.shapes[0] as Rectangle;
     const newRectangle = currentRect.clone();
     // todo：宽度能自定义控制，但是高度不能
     const newSize = newRectangle.size.add(delta);
@@ -163,7 +170,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
     newSize.y = newTextSize.y + Renderer.NODE_PADDING * 2;
     newRectangle.size = newSize;
 
-    this.collisionBox.shapeList[0] = newRectangle;
+    this.collisionBox.shapes[0] = newRectangle;
   }
 
   resizeWidthTo(width: number) {
@@ -183,7 +190,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
   move(delta: Vector) {
     const newRectangle = this.rectangle.clone();
     newRectangle.location = newRectangle.location.add(delta);
-    this.collisionBox.shapeList[0] = newRectangle;
+    this.collisionBox.shapes[0] = newRectangle;
 
     // 移动雪花特效
     this.project.effects.addEffect(new NodeMoveShadowEffect(new ProgressNumber(0, 30), this.rectangle, delta));
@@ -213,7 +220,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
   moveTo(location: Vector) {
     const newRectangle = this.rectangle.clone();
     newRectangle.location = location.clone();
-    this.collisionBox.shapeList[0] = newRectangle;
+    this.collisionBox.shapes[0] = newRectangle;
     this.updateFatherSectionByMove();
   }
 }

@@ -115,7 +115,7 @@ export class CubicCatmullRomSplineEdge extends Edge {
 
   public getShape(): CubicCatmullRomSpline {
     // 重新计算形状
-    const crShape = this._collisionBox.shapeList[0] as CubicCatmullRomSpline;
+    const crShape = this._collisionBox.shapes[0] as CubicCatmullRomSpline;
     this.autoUpdateControlPoints(); // ?
     return crShape;
   }
@@ -141,14 +141,14 @@ export class CubicCatmullRomSplineEdge extends Edge {
       this.controlPoints = [startLocation, line.start].concat(middleControlPoints).concat([line.end, endLocation]);
     }
     // 重新生成新的形状
-    this._collisionBox.shapeList = [new CubicCatmullRomSpline(this.controlPoints, this.alpha, this.tension)];
+    this._collisionBox.shapes = [new CubicCatmullRomSpline(this.controlPoints, this.alpha, this.tension)];
   }
 
   /**
    * 获取箭头的位置和方向
    */
   getArrowHead(): { location: Vector; direction: Vector } {
-    const crShape = this._collisionBox.shapeList[0] as CubicCatmullRomSpline;
+    const crShape = this._collisionBox.shapes[0] as CubicCatmullRomSpline;
     const location = crShape.controlPoints[crShape.controlPoints.length - 2].clone();
     const lines = crShape.computeFunction();
     const funcs = lines[lines.length - 1];

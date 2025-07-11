@@ -80,7 +80,7 @@ export class SvgNode extends ConnectableEntity {
   move(delta: Vector): void {
     const newRectangle = this.collisionBox.getRectangle().clone();
     newRectangle.location = newRectangle.location.add(delta);
-    this.collisionBox.shapeList[0] = newRectangle;
+    this.collisionBox.shapes[0] = newRectangle;
     this.location = newRectangle.location.clone();
     this.updateFatherSectionByMove();
   }
@@ -88,7 +88,7 @@ export class SvgNode extends ConnectableEntity {
   moveTo(location: Vector): void {
     const newRectangle = this.collisionBox.getRectangle().clone();
     newRectangle.location = location.clone();
-    this.collisionBox.shapeList[0] = newRectangle;
+    this.collisionBox.shapes[0] = newRectangle;
     this.location = newRectangle.location.clone();
     this.updateFatherSectionByMove();
   }

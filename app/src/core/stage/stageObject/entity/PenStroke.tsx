@@ -42,9 +42,9 @@ export class PenStroke extends Entity {
   }
 
   private updateCollisionBoxBySegmentList() {
-    this.collisionBox.shapeList = [];
+    this.collisionBox.shapes = [];
     for (const segment of this.segmentList) {
-      this.collisionBox.shapeList.push(new Line(segment.startLocation, segment.endLocation));
+      this.collisionBox.shapes.push(new Line(segment.startLocation, segment.endLocation));
     }
   }
 

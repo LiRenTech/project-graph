@@ -2,23 +2,17 @@ import { Line } from "../../../dataStruct/shape/Line";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Shape } from "../../../dataStruct/shape/Shape";
 import { Vector } from "../../../dataStruct/Vector";
+import { serializable } from "../../../serialize";
 
 /**
  * 碰撞箱类
  */
 export class CollisionBox {
-  private _shapeList: Shape[] = [];
+  @serializable
+  shapes: Shape[] = [];
 
   constructor(shapeList: Shape[]) {
-    this._shapeList = shapeList;
-  }
-
-  get shapeList(): Shape[] {
-    return this._shapeList;
-  }
-
-  set shapeList(shapeList: Shape[]) {
-    this._shapeList = shapeList;
+    this.shapes = shapeList;
   }
 
   /**
@@ -26,11 +20,11 @@ export class CollisionBox {
    * @param shapeList 更新碰撞箱的形状列表
    */
   updateShapeList(shapeList: Shape[]): void {
-    this.shapeList = shapeList;
+    this.shapes = shapeList;
   }
 
   public isContainsPoint(location: Vector): boolean {
-    for (const shape of this.shapeList) {
+    for (const shape of this.shapes) {
       if (shape.isPointIn(location)) {
         return true;
       }
@@ -44,7 +38,7 @@ export class CollisionBox {
    * @returns
    */
   public isIntersectsWithRectangle(rectangle: Rectangle): boolean {
-    for (const shape of this.shapeList) {
+    for (const shape of this.shapes) {
       if (shape.isCollideWithRectangle(rectangle)) {
         return true;
       }
@@ -58,7 +52,7 @@ export class CollisionBox {
    * @returns
    */
   public isContainedByRectangle(rectangle: Rectangle): boolean {
-    for (const shape of this.shapeList) {
+    for (const shape of this.shapes) {
       const shapeRectangle = shape.getRectangle();
       const shapeLeftTop = shapeRectangle.location;
       const shapeRightBottom = new Vector(
@@ -83,7 +77,7 @@ export class CollisionBox {
   }
 
   public isIntersectsWithLine(line: Line): boolean {
-    for (const shape of this.shapeList) {
+    for (const shape of this.shapes) {
       if (shape.isCollideWithLine(line)) {
         return true;
       }
@@ -96,14 +90,14 @@ export class CollisionBox {
    * 如果形状数组为空，则返回00点的无大小矩形
    */
   getRectangle(): Rectangle {
-    if (this.shapeList.length === 0) {
+    if (this.shapes.length === 0) {
       return new Rectangle(Vector.getZero(), Vector.getZero());
     }
     let minX = Infinity;
     let minY = Infinity;
     let maxX = -Infinity;
     let maxY = -Infinity;
-    for (const shape of this.shapeList) {
+    for (const shape of this.shapes) {
       const rectangle = shape.getRectangle();
       const x = rectangle.location.x,
         y = rectangle.location.y;

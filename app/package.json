@@ -47,6 +47,7 @@
     "react-i18next": "^15.6.0",
     "react-router": "^7.6.3",
     "react-router-dom": "^7.6.3",
+    "reflect-metadata": "^0.2.2",
     "tauri-plugin-gamepad-api": "^0.0.5",
     "vditor": "^3.11.1",
     "vscode-uri": "^3.1.0",

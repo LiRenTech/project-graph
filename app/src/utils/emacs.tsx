@@ -1,7 +1,7 @@
 /**
  * <0>: 鼠标按键0
  * <1>: 鼠标按键1
- * <...>: 鼠标按键...
+ * <x>: 鼠标按键x
  * <MWU>: MouseWheelUp
  * <MWD>: MouseWheelDown
  * key: 其他按键
@@ -119,4 +119,33 @@ export function matchEmacsKey(key: string, event: KeyboardEvent | MouseEvent | W
   }
 
   return matchModifiers && matchKey;
+}
+
+/**
+ * 将事件转换为emacs格式的快捷键
+ */
+export function formatEmacsKey(event: KeyboardEvent | MouseEvent | WheelEvent): string {
+  let key = "";
+  if (event instanceof KeyboardEvent) {
+    const eventKey = event.key.toLowerCase();
+    if (eventKey in transformedKeys) {
+      key = transformedKeys[eventKey as keyof typeof transformedKeys];
+    } else {
+      key = event.key.toLowerCase();
+    }
+  }
+  if (event instanceof MouseEvent) {
+    key = `<${event.button}>`;
+  }
+  if (event instanceof WheelEvent) {
+    key = event.deltaY > 0 ? "<MWU>" : "<MWD>";
+  }
+
+  const modifiers = [];
+  if (event.ctrlKey) modifiers.push("C");
+  if (event.altKey) modifiers.push("A");
+  if (event.shiftKey) modifiers.push("S");
+  if (event.metaKey) modifiers.push("M");
+
+  return modifiers.map((it) => it + "-").join("") + key;
 }

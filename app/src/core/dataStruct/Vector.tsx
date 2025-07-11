@@ -1,8 +1,15 @@
+import { serializable } from "../serialize";
+
 export class Vector {
-  constructor(
-    public x: number,
-    public y: number,
-  ) {}
+  @serializable
+  x: number;
+  @serializable
+  y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
 
   static getZero(): Vector {
     return new Vector(0, 0);

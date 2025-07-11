@@ -181,7 +181,7 @@ export class ImageNode extends ConnectableEntity {
    * 若要修改节点的矩形，请使用 moveTo等 方法
    */
   public get rectangle(): Rectangle {
-    return this.collisionBox.shapeList[0] as Rectangle;
+    return this.collisionBox.shapes[0] as Rectangle;
   }
 
   public get geometryCenter() {
@@ -191,13 +191,13 @@ export class ImageNode extends ConnectableEntity {
   move(delta: Vector): void {
     const newRectangle = this.rectangle.clone();
     newRectangle.location = newRectangle.location.add(delta);
-    this.collisionBox.shapeList[0] = newRectangle;
+    this.collisionBox.shapes[0] = newRectangle;
     this.updateFatherSectionByMove();
   }
   moveTo(location: Vector): void {
     const newRectangle = this.rectangle.clone();
     newRectangle.location = location.clone();
-    this.collisionBox.shapeList[0] = newRectangle;
+    this.collisionBox.shapes[0] = newRectangle;
     this.updateFatherSectionByMove();
   }
 }

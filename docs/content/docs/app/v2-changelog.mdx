@@ -5,17 +5,17 @@ icon: CircleFadingArrowUp
 
 在 2025 年 8 月，Project Graph 迎来一周年，并且发布 2.0 版本，本次更新内容如下：
 
-## 多标签页功能
+## 多标签页功能 [#tabs]
 
 2.0 版本引入了从去年就有用户一直期待的多标签页功能，在一个窗口内可以同时打开多个工程，并可以自由切换。
 
-## `*.prg` 文件格式
+## `*.prg` 文件格式 [#prg]
 
 现在不再使用从 PyQt 版本就开始使用的 `*.json` 文件格式，换成了 `*.prg` 格式，同时将普通的 JSON 改为了 MsgPack，以减小文件大小。
 
 这样做还可以将图片文件直接嵌入到工程文件中，无需额外的引用。
 
-## “暂存”
+## “暂存” [#stash]
 
 在以前，如果软件崩溃或意外关闭，所有未保存的工作都会丢失。虽然有自动备份和自动保存功能，但是它们都存在缺陷。
 
@@ -28,7 +28,7 @@ icon: CircleFadingArrowUp
 
 如果你的硬盘速度非常慢，可以在设置中关闭暂存功能，以免影响软件流畅度。
 
-## 提高浏览器内核版本要求
+## 提高浏览器内核版本要求 [#browser-version]
 
 在此版本中，我们升级了各种框架的版本，浏览器内核版本要求也随之改变：
 
@@ -37,7 +37,7 @@ icon: CircleFadingArrowUp
 - Android System WebView 111
 - Safari 16.4
 
-### macOS 系统要求
+### macOS 系统要求 [#macos-version]
 
 同时，随着 Safari 版本要求的变更，我们将 macOS 系统的最小版本要求改为 11.0 (Big Sur)。
 
@@ -46,7 +46,7 @@ icon: CircleFadingArrowUp
 1. 打开系统设置中的“软件更新”页面
 2. 更新“其他可用更新”中的“Safari 浏览器”
 
-## 使用 URI 替代文件路径
+## 使用 URI 替代文件路径 [#uri]
 
 在之前 Project Graph 使用文件路径来标识项目文件，现在换成了 URI：
 
@@ -58,7 +58,7 @@ icon: CircleFadingArrowUp
 
 这是为了以后的云同步功能做铺垫，可以更好的区分不同类型的文件。
 
-## 使用 Rolldown 打包前端
+## 使用 Rolldown 打包前端 [#rolldown]
 
 Vite 计划将由 Rust 驱动的 JavaScript 打包工具 Rolldown 集成进来，以提升构建的性能和功能。
 
