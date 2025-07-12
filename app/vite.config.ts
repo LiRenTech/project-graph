@@ -2,22 +2,26 @@
 
 import generouted from "@generouted/react-router/plugin";
 import ViteYaml from "@modyfi/vite-plugin-yaml";
+import originalClassName from "@pglib/vite-plugin-original-class-name";
+import pgTheme from "@pglib/vite-plugin-pg-theme";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-oxc";
 import { defineConfig } from "vite";
-import pgTheme from "vite-plugin-pg-theme";
 import svgr from "vite-plugin-svgr";
 
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
-export default defineConfig(async () => ({
+export default defineConfig({
   plugins: [
     tailwindcss(),
     pgTheme({
       glob: "src/themes/*.pg-theme",
       out: "src/css/theme.pcss",
       defaultTheme: "dark",
+    }),
+    originalClassName({
+      staticMethodName: "className",
     }),
     // 将svg文件作为react组件导入
     // import Icon from "./icon.svg?react"
@@ -74,4 +78,4 @@ export default defineConfig(async () => ({
       LR_VITEST: "true",
     },
   },
-}));
+});

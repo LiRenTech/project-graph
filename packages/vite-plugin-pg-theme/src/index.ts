@@ -1,5 +1,5 @@
 import { glob, writeFile } from "node:fs/promises";
-import { createLogger, Plugin } from "vite";
+import { createLogger, type Plugin } from "vite";
 import { convertThemeToCss, generateUtilities, parseThemeFiles } from "./theme";
 
 const logger = createLogger("info", { prefix: "[pg-theme]" });

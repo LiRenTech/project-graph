@@ -1,5 +1,5 @@
 import MagicString from "magic-string";
-import { createFilter, createLogger, Plugin } from "vite";
+import { createFilter, createLogger, type Plugin } from "vite";
 
 const logger = createLogger("info", { prefix: "[original-class-name]" });
 
@@ -8,14 +8,15 @@ interface Config {
 }
 
 export default function originalClassName(pluginConfig: Config): Plugin {
-  const filter = createFilter(["**/*.js", "**/*.ts"], "node_modules/**");
+  const filter = createFilter(["**/*.tsx"], "node_modules/**");
+  const virtualModuleId = "virtual:original-class-name";
+  const resolvedVirtualModuleId = "\0" + virtualModuleId;
 
   return {
     name: "original-class-name",
     transform(code, id) {
       if (!filter(id)) return;
-
-      logger.info(`transform ${id}`);
+      const startTime = performance.now();
 
       const s = new MagicString(code);
       const classRegex = /(?:^|\s)(class\s+)(\w+)/g;
@@ -45,11 +46,26 @@ export default function originalClassName(pluginConfig: Config): Plugin {
         hasChanges = true;
       }
 
+      logger.info(`transformed ${id}, took ${(performance.now() - startTime).toFixed(2)}ms`, { timestamp: true });
       if (!hasChanges) return null;
 
       return {
         code: s.toString(),
       };
+    },
+    resolveId(id) {
+      if (id === virtualModuleId) {
+        return resolvedVirtualModuleId;
+      }
+    },
+    load(id) {
+      if (id === resolvedVirtualModuleId) {
+        return `\
+export function getOriginalNameOf(class_) {
+  return class_.${pluginConfig.staticMethodName};
+}
+`;
+      }
     },
   };
 }
