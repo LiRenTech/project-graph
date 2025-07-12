@@ -1,5 +1,6 @@
 {
-  "name": "@pglib/vite-plugin-pg-theme",
+  "name": "@pglib/vite-plugin-original-class-name",
+  "description": "Add original class names to the dist code",
   "version": "1.0.0",
   "type": "module",
   "files": [
@@ -23,6 +24,8 @@
     "vite": "^7.0.2"
   },
   "dependencies": {
+    "@rollup/pluginutils": "^5.2.0",
+    "magic-string": "^0.30.17",
     "yaml": "^2.8.0"
   },
   "peerDependencies": {
