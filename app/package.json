@@ -67,6 +67,7 @@
     "@types/react-dom": "^19.1.6",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react-oxc": "^0.2.2",
+    "@vitest/runner": "^3.2.4",
     "clsx": "^2.1.1",
     "jotai": "^2.12.5",
     "jsdom": "^26.1.0",

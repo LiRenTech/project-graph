@@ -1,9 +1,11 @@
 import { Serialized } from "../../types/node";
+import { flattenAllValues, serializable } from "../Serializer";
 
 /**
  * 颜色对象
  * 不透明度最大值为1，最小值为0
  */
+@flattenAllValues
 export class Color {
   static White = new Color(255, 255, 255);
   static Black = new Color(0, 0, 0);
@@ -16,12 +18,21 @@ export class Color {
   static Magenta = new Color(255, 0, 255);
   static Transparent = new Color(0, 0, 0, 0);
 
-  constructor(
-    public r: number,
-    public g: number,
-    public b: number,
-    public a: number = 1,
-  ) {}
+  @serializable
+  r: number;
+  @serializable
+  g: number;
+  @serializable
+  b: number;
+  @serializable
+  a: number;
+
+  constructor(r: number, g: number, b: number, a: number = 1) {
+    this.r = r;
+    this.g = g;
+    this.b = b;
+    this.a = a;
+  }
 
   toString() {
     return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;

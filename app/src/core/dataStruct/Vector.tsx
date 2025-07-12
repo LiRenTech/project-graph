@@ -1,5 +1,6 @@
-import { serializable } from "../serialize";
+import { flattenAllValues, serializable } from "../Serializer";
 
+@flattenAllValues
 export class Vector {
   @serializable
   x: number;

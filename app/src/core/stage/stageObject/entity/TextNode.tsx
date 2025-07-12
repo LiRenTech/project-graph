@@ -1,12 +1,11 @@
-import { Serialized } from "../../../../types/node";
 import { getMultiLineTextSize } from "../../../../utils/font";
 import { Project } from "../../../Project";
+import { passProjectAtArg1, serializable } from "../../../Serializer";
 import { Color } from "../../../dataStruct/Color";
 import { ProgressNumber } from "../../../dataStruct/ProgressNumber";
 import { Vector } from "../../../dataStruct/Vector";
 import { Rectangle } from "../../../dataStruct/shape/Rectangle";
 import { Renderer } from "../../../render/canvas2d/renderer";
-import { serializable } from "../../../serialize";
 import { NodeMoveShadowEffect } from "../../../service/feedbackService/effectEngine/concrete/NodeMoveShadowEffect";
 import { ConnectableEntity } from "../abstract/ConnectableEntity";
 import { Entity } from "../abstract/StageEntity";
@@ -19,6 +18,7 @@ import { Section } from "./Section";
  * 文字节点类
  * 2024年10月20日：Node 改名为 TextNode，防止与 原生 Node 类冲突
  */
+@passProjectAtArg1
 export class TextNode extends ConnectableEntity implements ResizeAble {
   @serializable
   uuid: string;
@@ -44,7 +44,7 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
    * manual：手动调整宽度，高度自动撑开。
    */
   @serializable
-  public sizeAdjust: Serialized.TextNodeSizeAdjust = "auto";
+  public sizeAdjust: string = "auto";
 
   /**
    * 节点是否被选中
@@ -93,22 +93,21 @@ export class TextNode extends ConnectableEntity implements ResizeAble {
   constructor(
     protected readonly project: Project,
     {
-      uuid,
+      uuid = crypto.randomUUID(),
       text = "",
       details = "",
-      location = [0, 0],
-      size = [0, 0],
-      color = [0, 0, 0, 0],
+      collisionBox = new CollisionBox([new Rectangle(Vector.getZero(), Vector.getZero())]),
+      color = Color.Transparent,
       sizeAdjust = "auto",
-    }: Partial<Serialized.TextNode> & { uuid: string },
+    },
     public unknown = false,
   ) {
     super();
     this.uuid = uuid;
     this.text = text;
     this.details = details;
-    this.collisionBox = new CollisionBox([new Rectangle(new Vector(...location), new Vector(...size))]);
-    this.color = new Color(...color);
+    this.collisionBox = collisionBox;
+    this.color = color;
     this.sizeAdjust = sizeAdjust;
     // if (this.text.length < TextNode.enableResizeCharCount) {
     //   this.adjustSizeByText();

@@ -6,9 +6,9 @@ import { Dialog } from "../../components/dialog";
 import AIWindow from "../../pages/_sub_window/AIWindow";
 import SettingsWindow from "../../pages/_sub_window/SettingsWindow";
 import { projectsAtom, store } from "../../state";
-import { Project } from "../Project";
 import { loadAllServices } from "../loadAllServices";
-import { Serializer } from "../serialize";
+import { Project } from "../Project";
+import { Serializer } from "../Serializer";
 import { TextNode } from "../stage/stageObject/entity/TextNode";
 
 export namespace GlobalMenu {
@@ -71,17 +71,22 @@ export namespace GlobalMenu {
       }),
       new MenuItem("test", <TestTube2 />, () => {
         console.log("=========test serialize");
-        const obj = new TextNode(Project.newDraft(), {
-          type: "core:text_node",
-          uuid: crypto.randomUUID(),
-          text: "hello",
-          details: "world",
-          location: [0, 0],
-          size: [0, 0],
-          color: [0, 0, 0, 0],
+        const project = Project.newDraft();
+        const obj = new TextNode(project, {});
+        const data = Serializer.serialize(obj);
+        console.log(data);
+        const data2 = {
+          details: "",
+          _: "TextNode",
+          uuid: "03c021a6-301d-4169-870a-b2b410b068bb",
+          text: "",
+          collisionBox: { shapes: [{}], _: "CollisionBox" },
+          color: { r: 0, _: "Color", g: 0, b: 0, a: 0 },
           sizeAdjust: "auto",
-        });
-        console.log(Serializer.serialize(obj));
+        };
+        const obj2 = Serializer.deserialize(project, data2);
+        console.log("=========test deserialize");
+        console.log(obj2);
       }),
     ]),
     new Menu("AI", <Bot />, [

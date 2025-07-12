@@ -203,6 +203,9 @@ importers:
       "@vitejs/plugin-react-oxc":
         specifier: ^0.2.2
         version: 0.2.2(rolldown-vite@7.0.4(@types/node@24.0.4)(esbuild@0.25.5)(jiti@2.4.2)(less@4.2.2)(sass-embedded@1.89.2)(terser@5.39.0)(tsx@4.19.2)(yaml@2.8.0))
+      "@vitest/runner":
+        specifier: ^3.2.4
+        version: 3.2.4
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
