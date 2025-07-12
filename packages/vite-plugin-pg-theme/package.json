@@ -6,6 +6,8 @@
   "files": [
     "dist"
   ],
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -13,14 +15,18 @@
     }
   },
   "scripts": {
-    "build": "tsc && vite build"
+    "build": "tsdown",
+    "type-check": "tsc"
   },
   "devDependencies": {
+    "tsdown": "^0.12.9",
     "typescript": "~5.8.3",
-    "vite": "^7.0.0",
-    "vite-plugin-dts": "^4.5.4"
+    "vite": "^7.0.2"
   },
   "dependencies": {
     "yaml": "^2.8.0"
+  },
+  "peerDependencies": {
+    "vite": "^7.0.2"
   }
 }
