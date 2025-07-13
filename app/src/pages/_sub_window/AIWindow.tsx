@@ -1,10 +1,11 @@
 import { useAtom } from "jotai";
-import { Bot, Code, FolderOpen, Loader2, Send, SettingsIcon, User, Wrench } from "lucide-react";
+import { Bot, FolderOpen, Loader2, Send, SettingsIcon, User } from "lucide-react";
 import OpenAI from "openai";
 import { useRef, useState } from "react";
 import Markdown from "../../components/Markdown";
 import { Rectangle } from "../../core/dataStruct/shape/Rectangle";
 import { Vector } from "../../core/dataStruct/Vector";
+import { Settings } from "../../core/service/Settings";
 import { SubWindow } from "../../core/service/SubWindow";
 import { activeProjectAtom } from "../../state";
 import SettingsWindow from "./SettingsWindow";
@@ -31,16 +32,20 @@ export default function AIWindow() {
     //     },
   ]);
   const [requesting, setRequesting] = useState(false);
-  const [streamingMessage, setStreamingMessage] = useState("");
   const [totalInputTokens, setTotalInputTokens] = useState(0);
   const [totalOutputTokens, setTotalOutputTokens] = useState(0);
   const messagesElRef = useRef<HTMLDivElement>(null);
+  const [showTokenCount] = Settings.use("aiShowTokenCount");
 
-  function removeLastMessage() {
-    setMessages((prev) => prev.slice(0, -1));
-  }
   function addMessage(message: OpenAI.ChatCompletionMessageParam & { tokens?: number }) {
     setMessages((prev) => [...prev, message]);
+  }
+  function setLastMessageContent(content: string) {
+    setMessages((prev) => {
+      const lastMessage = prev[prev.length - 1];
+      if (!lastMessage) return prev;
+      return [...prev.slice(0, -1), { ...lastMessage, content } as any];
+    });
   }
 
   function scrollToBottom() {
@@ -65,78 +70,60 @@ export default function AIWindow() {
       role: "user",
       content: inputValue,
     });
+    addMessage({
+      role: "assistant",
+      content: "Requesting...",
+    });
     const stream = await project.aiEngine.chat(msgs);
     let streamingMsg = "";
-    setStreamingMessage("");
     let lastChunk: OpenAI.ChatCompletionChunk | null = null;
     for await (const chunk of stream) {
       const delta = chunk.choices[0].delta;
+      console.log(delta.content);
       streamingMsg += delta.content;
-      setStreamingMessage((v) => v + delta.content);
+      setLastMessageContent(streamingMsg);
       scrollToBottom();
       lastChunk = chunk;
     }
-    setStreamingMessage("");
     setRequesting(false);
     if (!lastChunk) return;
     if (!lastChunk.usage) return;
-    removeLastMessage();
-    addMessage({
-      role: "user",
-      content: inputValue,
-      tokens: lastChunk.usage.prompt_tokens,
-    });
-    addMessage({
-      role: "assistant",
-      content: streamingMsg,
-      tokens: lastChunk.usage.completion_tokens,
-    });
     setTotalInputTokens((v) => v + lastChunk.usage!.prompt_tokens);
     setTotalOutputTokens((v) => v + lastChunk.usage!.completion_tokens);
-    setTimeout(() => {
-      scrollToBottom();
-    }, 100);
+    scrollToBottom();
   }
 
   return project ? (
     <div className="flex h-full flex-col p-2">
-      <div className="flex-1 overflow-y-auto hover:*:opacity-50" ref={messagesElRef}>
-        {messages.map((message, i) => (
-          <div key={i} className="hover:opacity-100! flex flex-col gap-2 p-2">
-            <div className="flex items-center gap-2">
-              {message.role === "system" ? (
-                <Code />
-              ) : message.role === "user" ? (
-                <User />
-              ) : message.role === "assistant" ? (
-                <Bot />
-              ) : message.role === "tool" ? (
-                <Wrench />
-              ) : (
-                <></>
-              )}
-              {/* {message.tokens && <span>{message.tokens} tokens</span>} */}
+      <div className="flex flex-1 flex-col gap-2 overflow-y-auto" ref={messagesElRef}>
+        {messages.map((msg, i) =>
+          msg.role === "user" ? (
+            <div key={i} className="flex justify-end">
+              <div className="el-ai-message-user max-w-11/12 rounded-2xl rounded-br-none px-3 py-2">
+                {msg.content as string}
+              </div>
             </div>
-            <div>
-              {message.role !== "user" ? <Markdown source={message.content as string} /> : (message.content as string)}
+          ) : msg.role === "assistant" ? (
+            <div key={i}>
+              <Markdown source={msg.content as string} />
             </div>
-          </div>
-        ))}
-        {streamingMessage && (
-          <div className="flex flex-col gap-2 p-2">
-            <Bot />
-            <Markdown source={streamingMessage} />
-          </div>
+          ) : (
+            <></>
+          ),
         )}
       </div>
       <div className="el-ai-input flex flex-col gap-2 rounded-xl border p-2">
         <div className="flex gap-2">
           <SettingsIcon className="el-ai-input-button cursor-pointer" onClick={() => SettingsWindow.open("ai")} />
-          <div className="flex-1"></div>
-          <User />
-          <span>{totalInputTokens}</span>
-          <Bot />
-          <span>{totalOutputTokens}</span>
+          {showTokenCount && (
+            <>
+              <div className="flex-1"></div>
+              <User />
+              <span>{totalInputTokens}</span>
+              <Bot />
+              <span>{totalOutputTokens}</span>
+            </>
+          )}
           <div className="flex-1"></div>
           {requesting ? (
             <Loader2 className="animate-spin" />

@@ -60,11 +60,11 @@
 --color-slider-line: var(--color-slider-line);
 --color-slider-handle: var(--color-slider-handle);
 --color-switch-false-bg: var(--color-switch-false-bg);
---color-switch-false-dot: var(--color-switch-false-dot);
+--color-switch-false-dot-bg: var(--color-switch-false-dot-bg);
 --color-switch-true-bg: var(--color-switch-true-bg);
---color-switch-true-dot: var(--color-switch-true-dot);
+--color-switch-true-dot-bg: var(--color-switch-true-dot-bg);
 --color-switch-disabled-bg: var(--color-switch-disabled-bg);
---color-switch-disabled-dot: var(--color-switch-disabled-dot);
+--color-switch-disabled-dot-bg: var(--color-switch-disabled-dot-bg);
 --color-toolbar-bg: var(--color-toolbar-bg);
 --color-toolbar-icon-hover-bg: var(--color-toolbar-icon-hover-bg);
 --color-toolbar-border: var(--color-toolbar-border);
@@ -83,6 +83,7 @@
 --color-ai-input-placeholder-text: var(--color-ai-input-placeholder-text);
 --color-ai-input-button-hover-bg: var(--color-ai-input-button-hover-bg);
 --color-ai-input-focus-within-border: var(--color-ai-input-focus-within-border);
+--color-ai-message-user-bg: var(--color-ai-message-user-bg);
 --color-stage-background: var(--color-stage-background);
 --color-stage-grid-normal: var(--color-stage-grid-normal);
 --color-stage-grid-heavy: var(--color-stage-grid-heavy);
@@ -3825,6 +3826,52 @@
   }
   &::placeholder {
     color: var(--color-ai-input-placeholder-text, var(--color-ai-input-text));
+  }
+}
+@utility el-ai-message-user {
+  background-color: var(--color-ai-message-user-bg);
+  color: var(--color-ai-message-user-text);
+  border-color: var(--color-ai-message-user-border, transparent);
+  --tw-shadow-color: var(--color-ai-message-user-shadow);
+  &:hover {
+    background-color: var(--color-ai-message-user-hover-bg, var(--color-ai-message-user-bg));
+    color: var(--color-ai-message-user-hover-text, var(--color-ai-message-user-text));
+    border-color: var(--color-ai-message-user-hover-border, var(--color-ai-message-user-border));
+    --tw-shadow-color: var(--color-ai-message-user-hover-shadow, var(--color-ai-message-user-shadow));
+  }
+  &:active {
+    background-color: var(--color-ai-message-user-active-bg, var(--color-ai-message-user-hover-bg, var(--color-ai-message-user-bg)));
+    color: var(--color-ai-message-user-active-text, var(--color-ai-message-user-hover-text, var(--color-ai-message-user-text)));
+    border-color: var(--color-ai-message-user-active-border, var(--color-ai-message-user-hover-border, var(--color-ai-message-user-border)));
+    --tw-shadow-color: var(--color-ai-message-user-active-shadow, var(--color-ai-message-user-hover-shadow, var(--color-ai-message-user-shadow)));
+  }
+  &:disabled,
+  &[disabled] {
+    background-color: var(--color-ai-message-user-disabled-bg, var(--color-ai-message-user-bg));
+    color: var(--color-ai-message-user-disabled-text, var(--color-ai-message-user-text));
+    border-color: var(--color-ai-message-user-disabled-border, var(--color-ai-message-user-border));
+    --tw-shadow-color: var(--color-ai-message-user-disabled-shadow, var(--color-ai-message-user-shadow));
+  }
+  &:focus {
+    background-color: var(--color-ai-message-user-focus-bg, var(--color-ai-message-user-bg));
+    color: var(--color-ai-message-user-focus-text, var(--color-ai-message-user-text));
+    border-color: var(--color-ai-message-user-focus-border, var(--color-ai-message-user-border));
+    --tw-shadow-color: var(--color-ai-message-user-focus-shadow, var(--color-ai-message-user-shadow));
+  }
+  &:focus-within {
+    background-color: var(--color-ai-message-user-focus-within-bg, var(--color-ai-message-user-bg));
+    color: var(--color-ai-message-user-focus-within-text, var(--color-ai-message-user-text));
+    border-color: var(--color-ai-message-user-focus-within-border, var(--color-ai-message-user-border));
+    --tw-shadow-color: var(--color-ai-message-user-focus-within-shadow, var(--color-ai-message-user-shadow));
+  }
+  &:focus-visible {
+    background-color: var(--color-ai-message-user-focus-visible-bg, var(--color-ai-message-user-bg));
+    color: var(--color-ai-message-user-focus-visible-text, var(--color-ai-message-user-text));
+    border-color: var(--color-ai-message-user-focus-visible-border, var(--color-ai-message-user-border));
+    --tw-shadow-color: var(--color-ai-message-user-focus-visible-shadow, var(--color-ai-message-user-shadow));
+  }
+  &::placeholder {
+    color: var(--color-ai-message-user-placeholder-text, var(--color-ai-message-user-text));
   }
 }
 @utility el-stage-Background {

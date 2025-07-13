@@ -15,7 +15,7 @@ colors:
   surface2: &surface2 oklch(26% 0 0)
   surface3: &surface3 oklch(37% 0 0)
   surface4: &surface4 oklch(55% 0 0)
-  primary: &primary oklch(70.7% 0.165 254.624)
+  primary: &primary oklch(65.7% 0.165 254.624)
 
 titlebar:
   bg: *surface1
@@ -108,14 +108,17 @@ slider:
 
 switch:
   false:
-    bg: *surface2
-    dot: *text
+    bg: *surface3
+    dot:
+      bg: *text
   true:
     bg: *primary
-    dot: *text
+    dot:
+      bg: *text
   disabled:
     bg: *surface3
-    dot: *text
+    dot:
+      bg: *surface4
 
 toolbar:
   bg: *surface1
@@ -150,6 +153,9 @@ ai:
         bg: *surface2
     focus-within:
       border: *primary
+  message:
+    user:
+      bg: *surface2
 
 stage:
   Background: "#181818"

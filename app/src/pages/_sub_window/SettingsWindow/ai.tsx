@@ -25,6 +25,7 @@ export default function AISettings() {
           </IconButton>
         }
       />
+      <SettingField settingKey="aiShowTokenCount" type="switch" />
     </>
   );
 }

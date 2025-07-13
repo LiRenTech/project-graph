@@ -17,9 +17,9 @@ export default function Switch({
 }) {
   return (
     <div
-      className={cn("group/switch el-switch-false-bg relative h-8 w-14 rounded-full hover:cursor-pointer", {
-        "el-switch-true-bg": value,
-        "el-switch-disabled-bg cursor-not-allowed": disabled,
+      className={cn("group/switch el-switch-false relative h-8 w-14 rounded-full hover:cursor-pointer", {
+        "el-switch-true": value,
+        "el-switch-disabled cursor-not-allowed": disabled,
       })}
       onClick={() => {
         const newValue = !value;

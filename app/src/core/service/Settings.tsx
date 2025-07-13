@@ -141,6 +141,7 @@ export namespace Settings {
     aiApiBaseUrl: string;
     aiApiKey: string;
     aiModel: string;
+    aiShowTokenCount: boolean;
   };
   export const defaultSettings: Settings = {
     language: "zh_CN",
@@ -259,6 +260,7 @@ export namespace Settings {
     aiApiBaseUrl: "https://generativelanguage.googleapis.com/v1beta/openai/",
     aiApiKey: "",
     aiModel: "gemini-2.5-flash",
+    aiShowTokenCount: false,
   };
 
   export const sync = defaultSettings;
