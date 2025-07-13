@@ -83,8 +83,15 @@ export namespace Serializer {
     for (const key in json) {
       if (key === "_") continue;
       const value = json[key];
-      if (typeof value === "object" && value !== null && "_" in value) {
+      if (value !== null && typeof value === "object" && "_" in value) {
         json[key] = deserialize(project, value);
+      }
+      if (value !== null && value instanceof Array) {
+        for (let i = 0; i < value.length; i++) {
+          if (value[i] !== null && typeof value[i] === "object" && "_" in value[i]) {
+            value[i] = deserialize(project, value[i]);
+          }
+        }
       }
     }
     const args = [];
@@ -99,7 +106,6 @@ export namespace Serializer {
     } else {
       args.push(json);
     }
-    console.log(args);
     return new class_(...args);
   }
 }

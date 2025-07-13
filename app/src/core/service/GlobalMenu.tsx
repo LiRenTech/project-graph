@@ -75,16 +75,7 @@ export namespace GlobalMenu {
         const obj = new TextNode(project, {});
         const data = Serializer.serialize(obj);
         console.log(data);
-        const data2 = {
-          details: "",
-          _: "TextNode",
-          uuid: "03c021a6-301d-4169-870a-b2b410b068bb",
-          text: "",
-          collisionBox: { shapes: [{}], _: "CollisionBox" },
-          color: { r: 0, _: "Color", g: 0, b: 0, a: 0 },
-          sizeAdjust: "auto",
-        };
-        const obj2 = Serializer.deserialize(project, data2);
+        const obj2 = Serializer.deserialize(project, data);
         console.log("=========test deserialize");
         console.log(obj2);
       }),

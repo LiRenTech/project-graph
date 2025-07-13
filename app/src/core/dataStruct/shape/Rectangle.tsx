@@ -1,13 +1,19 @@
+import { flattenAllValues, serializable } from "../../Serializer";
 import { Vector } from "../Vector";
 import { Line } from "./Line";
 import { Shape } from "./Shape";
 
+@flattenAllValues
 export class Rectangle extends Shape {
-  constructor(
-    public location: Vector,
-    public size: Vector,
-  ) {
+  @serializable
+  location: Vector;
+  @serializable
+  size: Vector;
+
+  constructor(location: Vector, size: Vector) {
     super();
+    this.location = location;
+    this.size = size;
   }
 
   /**
